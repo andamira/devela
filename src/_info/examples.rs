@@ -10,7 +10,8 @@
 
 /* in-crate integrated examples */
 
-#[cfg(all(feature = "bit", feature = "_bit_u8"))]
+#[cfg(feature = "_bit_u8")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_bit_u8")))]
 #[path = "../../examples/data/bitfield.rs"]
 pub mod bitfield;
 #[cfg(all(feature = "bit", feature = "_bit_u8"))]

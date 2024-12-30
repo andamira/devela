@@ -6,11 +6,8 @@
 
 #[cfg(_bit_·)]
 use super::Bitwise;
-#[cfg(doc)]
-#[cfg(feature = "data")]
-use crate::DataError::{MismatchedIndices, OutOfBounds, Overflow};
-#[cfg(feature = "data")]
-use crate::DataResult as Result;
+use crate::MismatchedBounds;
+use crate::{DataOverflow, IndexOutOfBounds, MismatchedIndices};
 
 /// Provides bitwise operations on `T`.
 ///
@@ -39,12 +36,10 @@ where
     /// Sets the rest of the bits to 0.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
     #[doc = include_str!("./benches/mask_checked_range.md")]
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self>;
+    fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* get */
 
@@ -60,11 +55,9 @@ where
     ///
     /// Sets the rest of the bits to 0.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* get value */
 
@@ -86,11 +79,9 @@ where
     /// The bits in the specified range are shifted rightwards so that the least
     /// significant bit (LSB) aligns with the units place, forming the integer value.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_get_value_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_get_value_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* set */
 
@@ -106,11 +97,9 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* set value */
 
@@ -129,27 +118,28 @@ where
     ///
     /// Leaves the rest of the bits unchanged.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_set_value_checked_range(self, value: Self::Inner, start: u32, end: u32) -> Result<Self>;
+    fn bit_set_value_checked_range(
+        self,
+        value: Self::Inner,
+        start: u32,
+        end: u32,
+    ) -> Result<Self, MismatchedBounds>;
 
     /// Sets the given checked `value` into the bits from the `[start..=end]` checked range.
     ///
     /// Leaves the rest of the bits unchanged.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`,
+    /// Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS`,
     /// [`MismatchedIndices`] if `start > end` and
-    /// [`Overflow`] if `value` does not fit within the specified bit range.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
+    /// [`DataOverflow`] if `value` does not fit within the specified bit range.
     fn bit_set_checked_value_checked_range(
         self,
         value: Self::Inner,
         start: u32,
         end: u32,
-    ) -> Result<Self>;
+    ) -> Result<Self, MismatchedBounds>;
 
     /* unset */
 
@@ -165,11 +155,9 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_unset_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_unset_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* flip */
 
@@ -185,11 +173,9 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* reverse */
 
@@ -205,11 +191,9 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_reverse_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_reverse_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* count */
 
@@ -221,11 +205,9 @@ where
 
     /// Counts the number of 1s in `bits` from the `[start..=end]` checked range.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32>;
+    fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32, MismatchedBounds>;
 
     /// Counts the number of 0s in `bits` from the `[start..=end]` range.
     /// # Panics
@@ -235,11 +217,9 @@ where
 
     /// Counts the number of 0s in `bits` from the `[start..=end]` checked range.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32>;
+    fn bit_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32, MismatchedBounds>;
 
     /* find first */
 
@@ -259,11 +239,13 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+    fn bit_find_first_one_checked_range(
+        self,
+        start: u32,
+        end: u32,
+    ) -> Result<Option<u32>, MismatchedBounds>;
 
     /// Finds the index of the first 0 in `bits` from the `[start..=end]` range.
     ///
@@ -281,11 +263,13 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+    fn bit_find_first_zero_checked_range(
+        self,
+        start: u32,
+        end: u32,
+    ) -> Result<Option<u32>, MismatchedBounds>;
 
     /* find last */
 
@@ -305,11 +289,13 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+    fn bit_find_last_one_checked_range(
+        self,
+        start: u32,
+        end: u32,
+    ) -> Result<Option<u32>, MismatchedBounds>;
 
     /// Finds the index of the last 0 in `bits` from the `[start..=end]` range.
     ///
@@ -327,11 +313,13 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    fn bit_find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+    fn bit_find_last_zero_checked_range(
+        self,
+        start: u32,
+        end: u32,
+    ) -> Result<Option<u32>, MismatchedBounds>;
 }
 
 macro_rules! impl_bit_ops {
@@ -357,130 +345,110 @@ macro_rules! impl_bit_ops {
             fn bit_mask_range(start: u32, end: u32) -> Self {
                 Bitwise::<$t>::mask_range(start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self> {
+            fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise::<$t>::mask_checked_range(start, end)?.0)
             }
             // get
             fn bit_get_range(self, start: u32, end: u32) -> Self {
                 Bitwise(self).get_range(start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self> {
+            fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).get_checked_range(start, end)?.0)
             }
             // get value
             fn bit_get_value_range(self, start: u32, end: u32) -> Self {
                 Bitwise(self).get_value_range(start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_get_value_checked_range(self, start: u32, end: u32) -> Result<Self> {
+            fn bit_get_value_checked_range(self, start: u32, end: u32)
+                -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).get_value_checked_range(start, end)?.0)
             }
             // set
             fn bit_set_range(self, start: u32, end: u32) -> Self {
                 Bitwise(self).set_range(start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self> {
+            fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).set_checked_range(start, end)?.0)
             }
             // set value
             fn bit_set_value_range(self, value: Self::Inner, start: u32, end: u32) -> Self {
                 Bitwise(self).set_value_range(value, start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             fn bit_set_value_checked_range(self, value: Self::Inner, start: u32, end: u32)
-                -> Result<Self> {
+                -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).set_value_checked_range(value, start, end)?.0)
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             fn bit_set_checked_value_checked_range(self, value: Self::Inner, start: u32, end: u32)
-                -> Result<Self> {
+                -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).set_checked_value_checked_range(value, start, end)?.0)
             }
             // unset
             fn bit_unset_range(self, start: u32, end: u32) -> Self {
                 Bitwise(self).unset_range(start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_unset_checked_range(self, start: u32, end: u32) -> Result<Self> {
+            fn bit_unset_checked_range(self, start: u32, end: u32)
+                -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).unset_checked_range(start, end)?.0)
             }
             // flip
             fn bit_flip_range(self, start: u32, end: u32) -> Self {
                 Bitwise(self).flip_range(start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self> {
+            fn bit_flip_checked_range(self, start: u32, end: u32)
+                -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).flip_checked_range(start, end)?.0)
             }
             // reverse
             fn bit_reverse_range(self, start: u32, end: u32) -> Self {
                 Bitwise(self).reverse_range(start, end).0
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_reverse_checked_range(self, start: u32, end: u32) -> Result<Self> {
+            fn bit_reverse_checked_range(self, start: u32, end: u32)
+                -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise(self).reverse_checked_range(start, end)?.0)
             }
             // count
             fn bit_count_ones_range(self, start: u32, end: u32) -> u32 {
                 Bitwise(self).count_ones_range(start, end)
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32> {
+            fn bit_count_ones_checked_range(self, start: u32, end: u32)
+                -> Result<u32, MismatchedBounds> {
                 Bitwise(self).count_ones_checked_range(start, end)
             }
             fn bit_count_zeros_range(self, start: u32, end: u32) -> u32 {
                 Bitwise(self).count_zeros_range(start, end)
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32> {
+            fn bit_count_zeros_checked_range(self, start: u32, end: u32)
+                -> Result<u32, MismatchedBounds> {
                 Bitwise(self).count_zeros_checked_range(start, end)
             }
             // find first
             fn bit_find_first_one_range(self, start: u32, end: u32) -> Option<u32> {
                 Bitwise(self).find_first_one_range(start, end)
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+            fn bit_find_first_one_checked_range(self, start: u32, end: u32)
+                -> Result<Option<u32>, MismatchedBounds> {
                 Bitwise(self).find_first_one_checked_range(start, end)
             }
             fn bit_find_first_zero_range(self, start: u32, end: u32) -> Option<u32> {
                 Bitwise(self).find_first_zero_range(start, end)
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+            fn bit_find_first_zero_checked_range(self, start: u32, end: u32)
+                -> Result<Option<u32>, MismatchedBounds> {
                 Bitwise(self).find_first_zero_checked_range(start, end)
             }
             // find last
             fn bit_find_last_one_range(self, start: u32, end: u32) -> Option<u32> {
                 Bitwise(self).find_last_one_range(start, end)
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+            fn bit_find_last_one_checked_range(self, start: u32, end: u32)
+                -> Result<Option<u32>, MismatchedBounds> {
                 Bitwise(self).find_last_one_checked_range(start, end)
             }
             fn bit_find_last_zero_range(self, start: u32, end: u32) -> Option<u32> {
                 Bitwise(self).find_last_zero_range(start, end)
             }
-            #[cfg(feature = "data")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-            fn bit_find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+            fn bit_find_last_zero_checked_range(self, start: u32, end: u32)
+                -> Result<Option<u32>, MismatchedBounds> {
                 Bitwise(self).find_last_zero_checked_range(start, end)
             }
         }
