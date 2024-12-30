@@ -15,10 +15,10 @@ Features are grouped in the following categories:
 
 There are no features enabled by default.
 
-Features from different categories are designed to be mostly independent from
-each other, to be composable.
+Features from *different categories* are designed to be (for the most part)
+*independent from each other*, to be orthogonally composable.
 
-Note that features are not all additive,
+Note however that not all features are additive,
 e.g. it's not possible to enable at the same time `std` and `no_std`,
 nor `safe` and `unsafe`.
 
@@ -42,16 +42,15 @@ By default the crate is `no_std` compatible without allocation.
 
 ### Module features
 
-*Module* features can be enabled independently of
-[*environment*], [*safety*] or [*dependency*].
-
 Enabling a parent module enables all its sub-modules,
 except for `os`.
 
 - `all`: enables all the root modules and extra submodules.
 
-Root modules & public sub-modules:
+<!-- NOTE: some links only work with inlined notation -->
+Root modules & public sub-modules features:
 - [`code`]
+  - [`error`]
 - [`data`]
   - [`hash`]
 - [`lang`]
@@ -63,57 +62,63 @@ Root modules & public sub-modules:
   - [`image`]
 - [`num`]:
   - [`alg`]: algebra (linear & symbolic).
-  - [`geom`]: geometry.
-  - [`prim`]:
+  - [`geom`][crate::num::geom]: geometry.
+  - `prim`:
     - `cast`: `PrimitiveCast`.
     - `join`: `PrimitiveJoin`.
     - `split`: `PrimitiveSplit`.
   - [`rand`]: random number generators.
   - `unit`: unit prefixes.
-  - [`wave`]: wavelets.
-- [`phys`]: enables all `phys` sub-features.
+  - [`wave`][crate::num::wave]: wavelets.
+- [`phys`]:
     - [`time`]
 - [`sys`]: enables all `sys` sub-features (except for `os`).
   - [`io`]: no_std `io` implementations.
   - [`mem`]
     - `bit`: `BitSize`.
-  - `os`:
+  - [`os`]:
     - [`linux`]
+    - `windows`
 - [`text`]
   - `ascii`: `AsciiChar`.
-  - [`fmt`]: `NumToStr`.
+  - [`fmt`][crate::text::fmt]: `NumToStr`.
   - [`str`]: `Str`, `ExtStr`, `ExtString`.
 - [`ui`]
   - [`layout`]
 - [`work`]
+  - [`process`]
+  - [`sync`]
+  - [`thread`]
 
-[`code`]: crate::code
-  [`result`]: mod@crate::result
-[`data`]: crate::data
-  [`hash`]: crate::data::hash
-[`lang`]: crate::lang
-[`media`]: mod@crate::media
-  [`audio`]: crate::media::audio
-  [`color`]: crate::media::color
-  [`draw`]: crate::media::draw
-  [`font`]: crate::media::font
-  [`image`]: crate::media::image
-[`num`]: crate::num
-  [`geom`]: crate::num::geom
-  [`rand`]: crate::num::rand
-  [`wave`]: crate::num::wave
-[`phys`]: crate::phys
-  [`time`]: crate::phys::time
-[`sys`]: crate::sys
-  [`io`]: crate::sys::io
-  [`mem`]: crate::sys::mem
-    [`linux`]: crate::sys::os::linux
-[`text`]: crate::text
-  [`fmt`]: crate::text::fmt
-  [`str`]: crate::text::str
-[`work`]: crate::work
-[`ui`]: crate::ui
-  [`layout`]: crate::ui::layout
+[`code`]:         crate::code
+  [`error`]:      crate::code::error
+[`data`]:         crate::data
+  [`hash`]:       crate::data::hash
+[`lang`]:         crate::lang
+[`media`]:        crate::media
+  [`audio`]:      crate::media::audio
+  [`color`]:      crate::media::color
+  [`draw`]:       crate::media::draw
+  [`font`]:       crate::media::font
+  [`image`]:      crate::media::image
+[`num`]:          crate::num
+  [`alg`]:        crate::num::alg
+  [`rand`]:       crate::num::rand
+[`phys`]:         crate::phys
+  [`time`]:       crate::phys::time
+[`sys`]:          crate::sys
+  [`io`]:         crate::sys::io
+  [`mem`]:        crate::sys::mem
+  [`os`]:         crate::sys::os
+    [`linux`]:    crate::sys::os::linux
+[`text`]:         crate::text
+  [`str`]:        crate::text::str
+[`ui`]:           crate::ui
+  [`layout`]:     crate::ui::layout
+[`work`]:         crate::work
+  [`process`]:    crate::work::process
+  [`sync`]:       crate::work::sync
+  [`thread`]:     crate::work::thread
 
 
 ### Safety features
@@ -296,9 +301,13 @@ They also set the corresponding flags:
 
 ### Dependency features
 
-Enabling any of them sets the `_dep_·` flag.
+- Optional dependencies are re-exported from the [`_dep`][crate::_dep] root module.
+- Can be enabled with the `dep_crate_name` feature in snake_case.
+- Enabling any of them sets the `_dep_·` flag.
 
-- `dep_all`: enables all the optional dependencies
-  - `linux_deps`: enables: `atomic`, `bytemuck`.
-  - `text_deps`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
-  - `work_deps`: enables `atomic`, `portable-atomic`.
+- `dep_all`: enables all the optional dependencies.
+
+There are also groups of dependencies associated to modules:
+- `linux_deps`: enables: `atomic`, `bytemuck`.
+- `text_deps`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
+- `work_deps`: enables `atomic`, `portable-atomic`.

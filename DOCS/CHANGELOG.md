@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New features & flags
 - new features for:
+  - code: `code`, `error`.
   - data: `hash`.
   - doc: `_docsrs[_stable]_nodep`.
   - num: `alg`, `geom`, `prim`, `cast`, `join`, `split`, `unit`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
@@ -128,7 +129,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove re-exported fns from `std::ptr` (namespaced in `Ptr`).
 - remove convenience fn: `out_dir` from the build script.
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
-- comment out unused features: `code`.
 - remove `Float::const_abs`.
 
 ### Changed

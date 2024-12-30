@@ -104,9 +104,17 @@ mod reflection {
 
     /* # modules */
 
+    pub const CODE: FlagsFeatures = FlagsFeatures {
+        flags: &["code··"],
+        features: &["code", "error"]
+    };
     pub const DATA: FlagsFeatures = FlagsFeatures {
         flags: &["_data_·"],
         features: &["data", "hash"]
+    };
+    pub const LANG: FlagsFeatures = FlagsFeatures {
+        flags: &["lang·"],
+        features: &["lang"]
     };
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         flags: &["_media_·"],
@@ -120,9 +128,13 @@ mod reflection {
             flags: &["prim···"],
             features: &["prim", "cast", "join", "split"]
         };
+    pub const PHYS: FlagsFeatures = FlagsFeatures {
+        flags: &["phys··"],
+        features: &["phys", "time"]
+    };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],
-        features: &["sys", "io", "mem", "time",
+        features: &["sys", "io", "mem",
             /* os: */ "linux", "windows"]
     };
         // RETHINK:
@@ -137,6 +149,10 @@ mod reflection {
     pub const UI: FlagsFeatures = FlagsFeatures {
         flags: &["_ui_·"],
         features: &["ui", "layout"]
+    };
+    pub const WORK: FlagsFeatures = FlagsFeatures {
+        flags: &["work··"],
+        features: &["work", "process", "sync", "thread"]
     };
 
     /* # capabilities */
@@ -237,12 +253,16 @@ mod reflection {
 
             /* modules */
 
+            CODE,
             DATA,
+            LANG,
             MEDIA,
             NUM, PRIM,
+            PHYS,
             SYS, MEM,
             TEXT,
             UI,
+            WORK,
 
             /* capabilities */
 

@@ -77,7 +77,7 @@ publish = true
 bench = false
 
 
-[features] # 234/300 (66 remaining), 119 visible, 115 hidden
+[features] # 237/300 (63 remaining), 122 visible, 115 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -130,13 +130,13 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	# "code", "lang",
-	"data", "media", "num", "phys", "sys", "text", "ui", "work",
+	"code", "data", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
 ]
-# code = []
+code = []
+	error = [] # AllError, DataError, NumError, TextError…
 data = ["hash"]
 	hash = [] # HashFnv, HashFx
-# lang = []
+lang = []
 media = ["audio", "color", "draw", "font", "image", "midi"]
 	audio = []
 	draw = []
@@ -170,8 +170,11 @@ text = ["ascii", "fmt", "str"]
 ui = ["layout"]
 	layout = []
 work = ["bytemuck?/zeroable_atomics"]
+	process = ["tokio?/process"]
+	sync = ["tokio?/sync"]
+	thread = ["tokio?/rt", "tokio?/rt-multi-thread"]
 
-
+# groups of dependencies related to root modules
 linux_deps = ["linux", "dep_atomic", "dep_bytemuck"]
 text_deps = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite", "dep_stringzilla",
 	"dep_unicode_segmentation", "dep_unicode_width"]
@@ -815,9 +818,9 @@ maintenance = { status = "experimental" }
 # WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
 type_alias_bounds = "deny" # detects bounds in type aliases
 unsafe_op_in_unsafe_fn = "deny" # unsafe use inside unsafe fn without unsafe block
-
+#
 missing_docs = "warn" # missing docs for public items
-
+#
 stable_features = "allow" # a feature attribute that has since been made stable
 unknown_lints = "allow" # unrecognized lint attributes
 
@@ -826,7 +829,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 # ------------------------------------------------------------------------------
 
 missing_crate_level_docs = "deny" # no documentation at the crate root
-
+#
 # broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
 
@@ -835,7 +838,7 @@ redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit
 # ------------------------------------------------------------------------------
 enum_glob_use = "deny" # `use Enum::*`
 missing_safety_doc = "deny" # no `# Safety` section in public unsafe fns
-
+#
 all = { level = "warn", priority = -1 } # (the default set of clippy lints)
 # a selection from pedantic:
 bool_to_int_with_if = "warn" # using an if statement to convert a bool to an int
@@ -859,7 +862,7 @@ unreadable_literal = "warn" #  long integral or float does not contain underscor
 # NOTE: not compatible with the iif! macro w/o being able to ignore it in an expr:
 # WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 # redundant_else = "warn" // else blocks that can be removed without changing semantics
-
+#
 empty_docs = "allow" # empty documentation
 doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
 mixed_attributes_style = "allow" # items with mixed (inner/outer) attributes
@@ -889,6 +892,8 @@ check-cfg = [ # Allowed config flags:
 	'cfg(_data_·)',
 	'cfg(_bit_·, _destaque_·, _stack_·)',
 	'cfg(_graph_·, _node_·)',
+	# lang:
+	'cfg(lang·)',
 	# media:
 	'cfg(_media_·)',
 	# num:
@@ -896,13 +901,16 @@ check-cfg = [ # Allowed config flags:
 	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
 	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i·, _int_u·)',
 	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
-	'cfg(prim···)',
+	# phys
+	'cfg(phys··)',
 	# sys
 	'cfg(_sys_·, _mem_·)',
 	# text:
 	'cfg(_char·, _string_·, _string_u·)',
-	# sys
+	# ui
 	'cfg(_ui_·)',
+	# work
+	'cfg(work··)',
 ]
 
 

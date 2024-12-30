@@ -54,31 +54,36 @@ use toml_edit::Document;
 /* config */
 
 #[rustfmt::skip]
-const ROOT_MODULES: [&str; 8 + 1] = [
-    // "code", "lang",
-    "data", "media", "num", "phys", "sys", "text", "ui", "work",
+const ROOT_MODULES: [&str; 10 + 1] = [
+    "code", "lang", "data", "media", "num", "phys", "sys", "text", "ui", "work",
 
     // sys::os submodules (platforms)
-    "linux", // "windows",
+    "linux", "windows",
 ];
 #[rustfmt::skip]
 const SUB_MODULES: &[&str] = &[
+    // code
+    "error",
     // data
-	"hash",
+    "hash",
     // media
     "audio", "draw", "color", "font", "image",
     // num
-    "alg", "geom", "prim", "rand", "unit", "wave",
+    "alg", "geom", "rand", "unit", "wave",
+    "prim",
         "cast", "join", "split",
     // phys
     "time",
     // sys
-    "io", "mem",
+    "io",
+    "mem",
         "bit",
     // text
     "ascii", "fmt", "str",
     // ui
-    "layout"
+    "layout",
+    // work
+    "process", "sync", "thread",
 ];
 
 //* dependencies *//
