@@ -12,7 +12,7 @@ use edge::impl_graph_edge;
 use crate::{
     num::niche::*,
     paste, unwrap, Array, Bare, ConstDefault,
-    DataError::{KeyAlreadyExists, NodeEmpty, NotEnoughSpace, OutOfBounds},
+    DataError::{IndexOutOfBounds, KeyAlreadyExists, NodeEmpty, NotEnoughSpace},
     DataResult as Result, Storage,
 };
 
@@ -80,7 +80,7 @@ macro_rules! impl_graph {
             /// where `E: Copy`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
             pub fn with_vertices(vertices: [Option<V>; VCAP]) -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
                 Ok(Self {
@@ -97,7 +97,7 @@ macro_rules! impl_graph {
             /// where `E: Clone`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
             pub fn with_vertices_clone(vertices: [Option<V>; VCAP]) -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
                 Ok(Self {
@@ -113,7 +113,7 @@ macro_rules! impl_graph {
             /// where `V: Copy, E: Copy`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -135,7 +135,7 @@ macro_rules! impl_graph {
             /// where `V: Clone, E: Clone`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -212,7 +212,7 @@ macro_rules! impl_graph {
             /// Removes a vertex from the graph, with the given `id`.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if `id >= VCAP`,
+            /// Returns [`IndexOutOfBounds`] if `id >= VCAP`,
             /// or [`NodeEmpty`] if the vertex didn't exist.
             pub fn remove_vertex(&mut self, id: $IDX) -> Result<()> {
                 Self::check_vertex_bounds(id)?;
@@ -268,7 +268,7 @@ macro_rules! impl_graph {
             /// Returns the new edge id, if there was space for it.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if `orig|dest >= VCAP`,
+            /// Returns [`IndexOutOfBounds`] if `orig|dest >= VCAP`,
             /// or [`NodeEmpty`] if any of the given vertices is empty,
             /// or [`NotEnoughSpace`] if the array of edges is full.
             pub fn add_edge(&mut self, orig: $IDX, dest: $IDX) -> Result<$IDX> {
@@ -295,7 +295,7 @@ macro_rules! impl_graph {
             /// Removes the edge with the given `id`.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if `id >= ECAP`.
+            /// Returns [`IndexOutOfBounds`] if `id >= ECAP`.
             pub fn remove_edge(&mut self, id: $IDX) -> Result<()> {
                 Self::check_edge_bounds(id)?;
                 self.edges[id as usize] = None;
@@ -363,7 +363,7 @@ macro_rules! impl_graph {
             // Makes sure the given vertex `id` is in bounds,
             const fn check_vertex_bounds(id: $IDX) -> Result<()> {
                 if id == $IDX::MAX || id >= VCAP as $IDX {
-                    Err(OutOfBounds(Some(id as usize)))
+                    Err(IndexOutOfBounds(Some(id as usize)))
                 } else {
                     Ok(())
                 }
@@ -371,7 +371,7 @@ macro_rules! impl_graph {
             // Makes sure the given edge `id` is in bounds,
             const fn check_edge_bounds(id: $IDX) -> Result<()> {
                 if id == $IDX::MAX || id >= ECAP as $IDX {
-                    Err(OutOfBounds(Some(id as usize)))
+                    Err(IndexOutOfBounds(Some(id as usize)))
                 } else {
                     Ok(())
                 }
@@ -380,9 +380,9 @@ macro_rules! impl_graph {
             // Makes sure the capacity const-generic arguments are in bounds.
             const fn check_capacity_bounds() -> Result<()> {
                 if ECAP >= $IDX::MAX as usize {
-                    Err(OutOfBounds(Some(ECAP)))
+                    Err(IndexOutOfBounds(Some(ECAP)))
                 } else if VCAP >= $IDX::MAX as usize {
-                    Err(OutOfBounds(Some(VCAP)))
+                    Err(IndexOutOfBounds(Some(VCAP)))
                 } else {
                     Ok(())
                 }

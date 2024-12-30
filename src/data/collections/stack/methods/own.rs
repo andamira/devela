@@ -11,7 +11,7 @@
 // - returning it.
 
 use crate::{
-    cswap, sf, Bare, DataNotEnough, NotEnoughElements, NotEnoughSpace, OutOfBounds, Own, Stack,
+    cswap, sf, Bare, DataNotEnough, IndexOutOfBounds, NotEnoughElements, NotEnoughSpace, Own, Stack,
 };
 
 // helper macro to impl methods for a Stack with custom index size.
@@ -45,7 +45,7 @@ macro_rules! impl_stack {
             /// copying `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `CAP > `[`" $IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -53,7 +53,7 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel "<i32, 16> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s;"]
             /// ```
-            pub const fn own_new(element: T) -> Own<Result<Self, OutOfBounds>, ()> {
+            pub const fn own_new(element: T) -> Own<Result<Self, IndexOutOfBounds>, ()> {
                 Own::empty(Self::new_copied(element))
             }
 
@@ -667,7 +667,8 @@ macro_rules! impl_stack {
                 let len = self.len as usize;
                 let mut arr = self.data.into_array_copy();
                 let [a, b, c, d, e, f] = sf! {[
-                    arr[len - 6], arr[len - 5], arr[len - 4], arr[len - 3], arr[len - 2], arr[len - 1]
+                    arr[len - 6], arr[len - 5], arr[len - 4],
+                    arr[len - 3], arr[len - 2], arr[len - 1]
                 ]};
                 arr[len - 6] = e;
                 arr[len - 5] = f;

@@ -7,7 +7,7 @@
 use crate::{
     num::niche::*,
     paste, unwrap, ConstDefault,
-    DataError::{NodeLinkNotSet, NodeLinkNotUnique, NotEnoughSpace, OutOfBounds},
+    DataError::{IndexOutOfBounds, NodeLinkNotSet, NodeLinkNotUnique, NotEnoughSpace},
     DataResult as Result, Mem, Own,
 };
 
@@ -90,7 +90,7 @@ macro_rules! impl_node {
             /// Creates a new node without data and unset links.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `LCAP >= " $IP "::MAX`."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `LCAP >= " $IP "::MAX`."]
             ///
             /// # Examples
             /// ```
@@ -119,7 +119,7 @@ macro_rules! impl_node {
             /// Creates a new node with the given `data` and unset links.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `LCAP >= " $IP "::MAX`."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `LCAP >= " $IP "::MAX`."]
             ///
             /// # Examples
             /// ```
@@ -193,7 +193,7 @@ macro_rules! impl_node {
             /// Retrieves the link value with the given `id`.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if the `id` is out of bounds,
+            /// Returns [`IndexOutOfBounds`] if the `id` is out of bounds,
             /// or [`NodeLinkNotSet`] if the link is unset.
             pub const fn get_link(&self, id: $IP) -> Result<$IP> {
                 let id = unwrap![ok? Self::validate(id)] as usize;
@@ -216,7 +216,7 @@ macro_rules! impl_node {
             /// Sets the optional `link` with the given `id`.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if either `id` or `link`
+            /// Returns [`IndexOutOfBounds`] if either `id` or `link`
             #[doc = "are `>= " $IP "::MAX` or `>= LCAP`."]
             ///
             /// # Examples
@@ -258,7 +258,7 @@ macro_rules! impl_node {
             /// Replaces the `link` with the given `id`, returning the old one.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if either `id` or `link`
+            /// Returns [`IndexOutOfBounds`] if either `id` or `link`
             #[doc = "are `>= " $IP "::MAX` or `>= LCAP`."]
             pub fn replace_link(&mut self, id: $IP, link: impl Into<Option<$IP>>)
                 -> Result<Option<$IP>> {
@@ -297,7 +297,7 @@ macro_rules! impl_node {
             /// Adds the given `link` to the list of links.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if `link >= LCAP`
+            /// Returns [`IndexOutOfBounds`] if `link >= LCAP`
             /// or [`NotEnoughSpace`] if all potential links are already set.
             ///
             /// # Examples
@@ -310,7 +310,7 @@ macro_rules! impl_node {
             /// assert![n.add_link(1).is_ok()];
             ///
             /// assert_eq![n.add_link(0), Err(DataError::NotEnoughSpace(Some(1)))];
-            /// assert_eq![n.add_link(4), Err(DataError::OutOfBounds(Some(4)))];
+            /// assert_eq![n.add_link(4), Err(DataError::IndexOutOfBounds(Some(4)))];
             /// ```
             pub fn add_link(&mut self, link: $IP) -> Result<()> {
                 let link = Self::validate_into(link)?;
@@ -325,7 +325,7 @@ macro_rules! impl_node {
             /// It calls [`find_link`][Self::find_link] to search for duplicates.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if `link >= LCAP`
+            /// Returns [`IndexOutOfBounds`] if `link >= LCAP`
             /// [`NodeLinkNotUnique`] if the link is not unique.
             ///
             /// # Examples
@@ -338,7 +338,7 @@ macro_rules! impl_node {
             /// assert![n.add_link_unique(2).is_ok()];
             ///
             /// assert_eq![n.add_link_unique(1), Err(DataError::NodeLinkNotUnique(Some(1)))];
-            /// assert_eq![n.add_link(3), Err(DataError::OutOfBounds(Some(3)))];
+            /// assert_eq![n.add_link(3), Err(DataError::IndexOutOfBounds(Some(3)))];
             /// ```
             pub fn add_link_unique(&mut self, link: $IP) -> Result<$IP> {
                 let ne_link = Self::validate_into(link)?;
@@ -364,7 +364,7 @@ macro_rules! impl_node {
             /// Returns `true` if the link with the given `id` is set.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds`] if `id >= LCAP`.
+            /// Returns [`IndexOutOfBounds`] if `id >= LCAP`.
             pub const fn is_link_set(&self, id: $IP) -> Result<bool> {
                 Ok(self.links[unwrap![ok? Self::validate(id)] as usize].is_some())
             }
@@ -435,23 +435,23 @@ macro_rules! impl_node {
 
             // Makes sure the capacity const-generic arguments are in bounds.
             const fn check_capacity_bounds() -> Result<()> {
-                if LCAP >= $IP::MAX as usize { Err(OutOfBounds(Some(LCAP))) } else { Ok(()) }
+                if LCAP >= $IP::MAX as usize { Err(IndexOutOfBounds(Some(LCAP))) } else { Ok(()) }
             }
             // Panics if the capacity is out of bounds.
             const fn panic_capacity_outbounded() { assert![LCAP < $IP::MAX as usize]; }
 
-            // Validates the `link` bounds and returns it, or `Err(OutOfBounds)`.
+            // Validates the `link` bounds and returns it, or `Err(IndexOutOfBounds)`.
             const fn validate(link: $IP) -> Result<$IP> {
                 if link as usize >= LCAP || link == $IP::MAX {
-                    Err(OutOfBounds(Some(link as usize)))
+                    Err(IndexOutOfBounds(Some(link as usize)))
                 } else {
                     Ok(link)
                 }
             }
-            // Validates the `link` bounds and returns it converted, or `Err(OutOfBounds)`.
+            // Validates the `link` bounds and returns it converted, or `Err(IndexOutOfBounds)`.
             const fn validate_into(link: $IP) -> Result<$NodeIndex> {
                 if link as usize >= LCAP || link == $IP::MAX {
-                    Err(OutOfBounds(Some(link as usize)))
+                    Err(IndexOutOfBounds(Some(link as usize)))
                 } else {
                     Ok(unwrap![some $NodeIndex::new(link)])
                 }

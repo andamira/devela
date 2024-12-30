@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{array_init, Array, Bare, ConstDefault, NotEnoughSpace, OutOfBounds, Own, Stack};
+use crate::{array_init, Array, Bare, ConstDefault, IndexOutOfBounds, NotEnoughSpace, Own, Stack};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 
@@ -36,7 +36,8 @@ macro_rules! impl_stack {
         // T, S: Bare
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Default, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
-            /// Converts the current stack to a different capacity while preserving all existing elements.
+            /// Converts the current stack to a different capacity
+            /// while preserving all existing elements.
             ///
             /// This method creates a new stack with the specified new capacity and moves the
             /// current elements into it. The operation ensures that the new stack can accommodate
@@ -45,7 +46,7 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`,
+            /// Returns [`IndexOutOfBounds(Some(NEW_CAP))`] if `NEW_CAP < self.len()`,
             #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
@@ -59,14 +60,16 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), more_cap.as_slice()];
             /// assert![s.resize_default::<2>().is_err()]; // too small
             /// ```
-            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Bare>, OutOfBounds> {
+            pub fn resize_default<const NEW_CAP: usize>(self)
+                -> Result<Stack<T, NEW_CAP, $IDX, Bare>, IndexOutOfBounds> {
                 if NEW_CAP < (self.len() as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
                     NEW_CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(OutOfBounds(Some(NEW_CAP)))
+                    Err(IndexOutOfBounds(Some(NEW_CAP)))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array();
-                    let mut new_arr = array_init![default [T; NEW_CAP], "safe_data", "unsafe_array"];
+                    let mut new_arr =
+                        array_init![default [T; NEW_CAP], "safe_data", "unsafe_array"];
                     for (i, item) in old_arr.into_iter().enumerate().take(NEW_CAP) {
                         new_arr[i] = item;
                     }
@@ -93,7 +96,8 @@ macro_rules! impl_stack {
             #[doc = "let drop_cap: Stack" $IDX:camel "::<_, 2> = s.resize_default_truncate();"]
             /// assert_eq![drop_cap.as_slice(), &[3, 4]];
             /// ```
-            pub fn resize_default_truncate<const NEW_CAP: usize>(self) -> Stack<T, NEW_CAP, $IDX, Bare> {
+            pub fn resize_default_truncate<const NEW_CAP: usize>(self)
+                -> Stack<T, NEW_CAP, $IDX, Bare> {
                 let start_idx = if self.len() as usize > NEW_CAP {
                     self.len() as usize - NEW_CAP
                 } else {
@@ -127,7 +131,7 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`,
+            /// Returns [`IndexOutOfBounds(Some(NEW_CAP))`] if `NEW_CAP < self.len()`,
             #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
@@ -143,11 +147,12 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), more_cap.as_slice()];
             /// assert![s.resize_default::<2>().is_err()]; // too small
             /// ```
-            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Boxed>, OutOfBounds> {
+            pub fn resize_default<const NEW_CAP: usize>(self)
+            -> Result<Stack<T, NEW_CAP, $IDX, Boxed>, IndexOutOfBounds> {
                 if NEW_CAP < (self.len() as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
                     NEW_CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(OutOfBounds(Some(NEW_CAP)))
+                    Err(IndexOutOfBounds(Some(NEW_CAP)))
                 } else {
                     let old_arr = self.data.into_vec();
                     let mut v = Vec::with_capacity(NEW_CAP);
@@ -156,7 +161,8 @@ macro_rules! impl_stack {
                     }
                     v.resize_with(NEW_CAP, Default::default);
 
-                    let new_arr: Box<[T; NEW_CAP]> = v.into_boxed_slice().try_into().unwrap_or_else(|_| {
+                    let new_arr: Box<[T; NEW_CAP]> =
+                        v.into_boxed_slice().try_into().unwrap_or_else(|_| {
                         panic!("Failed to convert Box<[T]> to Box<[T; NEW_CAP={}]>", NEW_CAP)
                     });
                     Ok(Stack {
@@ -165,7 +171,8 @@ macro_rules! impl_stack {
                     })
                 }
             }
-            /// Converts the current stack to a different capacity while preserving all existing elements.
+            /// Converts the current stack to a different capacity
+            /// while preserving all existing elements.
             ///
             /// This method creates a new stack with the specified new capacity and moves the
             /// current elements into it. The operation will drop any elements that can't fit
@@ -175,14 +182,18 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::{Boxed, Stack" $IDX:camel "};"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 8, Boxed>::from([1, 2, 3, 4]);"]
-            #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4, Boxed> = s.clone().resize_default_truncate();"]
+            #[doc = "let less_cap: Stack" $IDX:camel
+                "::<_, 4, Boxed> = s.clone().resize_default_truncate();"]
             /// assert_eq![less_cap.as_slice(), s.as_slice()];
-            #[doc = "let more_cap: Stack" $IDX:camel "::<_, 12, Boxed> = s.clone().resize_default_truncate();"]
+            #[doc = "let more_cap: Stack" $IDX:camel
+                    "::<_, 12, Boxed> = s.clone().resize_default_truncate();"]
             /// assert_eq![more_cap.as_slice(), s.as_slice()];
-            #[doc = "let drop_cap: Stack" $IDX:camel "::<_, 2, Boxed> = s.resize_default_truncate();"]
+            #[doc = "let drop_cap: Stack" $IDX:camel
+                    "::<_, 2, Boxed> = s.resize_default_truncate();"]
             /// assert_eq![drop_cap.as_slice(), &[3, 4]];
             /// ```
-            pub fn resize_default_truncate<const NEW_CAP: usize>(self) -> Stack<T, NEW_CAP, $IDX, Boxed> {
+            pub fn resize_default_truncate<const NEW_CAP: usize>(self)
+            -> Stack<T, NEW_CAP, $IDX, Boxed> {
                 let mut old_vec = self.data.into_vec();
 
                 // When reducing capacity, truncate elements from the front.
@@ -193,7 +204,8 @@ macro_rules! impl_stack {
                 // Ensure the vector's length matches NEW_CAP before conversion.
                 old_vec.resize_with(NEW_CAP, Default::default);
 
-                let new_arr: Box<[T; NEW_CAP]> = old_vec.into_boxed_slice().try_into().unwrap_or_else(|_| {
+                let new_arr: Box<[T; NEW_CAP]> =
+                    old_vec.into_boxed_slice().try_into().unwrap_or_else(|_| {
                     panic!("Failed to convert Box<[T]> to Box<[T; NEW_CAP={}]>", NEW_CAP)
                 });
                 Stack {
@@ -206,7 +218,8 @@ macro_rules! impl_stack {
         // T, S: Bare
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: ConstDefault + Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
-            /// Converts the current stack to a different capacity while preserving all existing elements.
+            /// Converts the current stack to a different capacity
+            /// while preserving all existing elements.
             ///
             /// This method creates a new stack with the specified new capacity and moves the
             /// current elements into it. The operation ensures that the new stack can accommodate
@@ -215,7 +228,7 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`,
+            /// Returns [`IndexOutOfBounds(Some(NEW_CAP))`] if `NEW_CAP < self.len()`,
             #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
@@ -224,16 +237,17 @@ macro_rules! impl_stack {
             #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 8> = Stack" $IDX:camel "::own_new(0)"]
             ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
-            #[doc = "const T: Stack" $IDX:camel "<i32, 4> = S.own_resize_default().s_const_unwrap().s;"]
+            #[doc = "const T: Stack" $IDX:camel
+                "<i32, 4> = S.own_resize_default().s_const_unwrap().s;"]
             /// assert_eq![S.as_slice(), T.as_slice()];
             /// let _ = S.own_resize_default::<2>().s_assert_err(); // too small
             /// ```
             pub const fn own_resize_default<const NEW_CAP: usize>(self)
-                -> Own<Result<Stack<T, NEW_CAP, $IDX, Bare>, OutOfBounds>, ()> {
+                -> Own<Result<Stack<T, NEW_CAP, $IDX, Bare>, IndexOutOfBounds>, ()> {
                 if NEW_CAP < (self.len as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
                     NEW_CAP > isize::MAX as usize / size_of::<T>() {
-                    Own::empty(Err(OutOfBounds(Some(NEW_CAP))))
+                    Own::empty(Err(IndexOutOfBounds(Some(NEW_CAP))))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array_copy();
                     let mut new_arr = array_init![const_default [T; NEW_CAP]];

@@ -166,9 +166,9 @@ mod full_composite {
     }}
     impl_error! { composite: from(f): MismatchedBounds, for: DataError {
         DataOverflow(i) => DataOverflow(i),
+        IndexOutOfBounds(i) => IndexOutOfBounds(i),
         MismatchedIndices(i) => MismatchedIndices(i),
         MismatchedLength(i) => MismatchedLength(i),
-        IndexOutOfBounds(i) => IndexOutOfBounds(i),
     }}
 }
 #[cfg(all(data··, feature = "error"))]
@@ -204,11 +204,11 @@ impl_error! { composite: fmt(f)
     pub enum MismatchedBounds {
         DOC_DATA_OVERFLOW:
             DataOverflow(i: Option<usize>) => DataOverflow(*i),
+        DOC_INDEX_OUT_OF_BOUNDS:
+            IndexOutOfBounds(i: Option<usize>) => IndexOutOfBounds(*i),
         DOC_MISMATCHED_INDICES:
             MismatchedIndices => MismatchedIndices,
         DOC_MISMATCHED_LENGTH:
             MismatchedLength(i: Mismatch<usize, usize>) => MismatchedLength(*i),
-        DOC_OUT_OF_BOUNDS:
-            IndexOutOfBounds(i: Option<usize>) => IndexOutOfBounds(*i),
     }
 }

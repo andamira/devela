@@ -1,7 +1,7 @@
 // devela::data::collections:array::d1::uninit::methods
 
 use crate::{
-    iif, ArrayUninit, MaybeUninit, Mem, OutOfBounds,
+    iif, ArrayUninit, IndexOutOfBounds, MaybeUninit, Mem,
     PartialSpace::{self, NotEnoughSpace, PartiallyAdded},
     Storage,
 };
@@ -54,10 +54,10 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// Returns `index` back if it's within the range already initialized.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
+    /// Returns [`IndexOutOfBounds`] if the index is larger than the initialized length.
     #[rustfmt::skip]
-    pub const fn verify_index(&self, index: usize) -> Result<usize, OutOfBounds> {
-        iif![index < self.init_len; Ok(index); Err(OutOfBounds(Some(index)))]
+    pub const fn verify_index(&self, index: usize) -> Result<usize, IndexOutOfBounds> {
+        iif![index < self.init_len; Ok(index); Err(IndexOutOfBounds(Some(index)))]
     }
 
     /* get */
@@ -65,9 +65,9 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// Returns a shared reference to an initialized element at a given index.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
+    /// Returns [`IndexOutOfBounds`] if the index is larger than the initialized length.
     /// or if the element at that index is not initialized.
-    pub fn get(&self, index: usize) -> Result<&T, OutOfBounds> {
+    pub fn get(&self, index: usize) -> Result<&T, IndexOutOfBounds> {
         let _ = self.verify_index(index)?;
         // SAFETY: the index is verified
         Ok(unsafe { self.data[index].assume_init_ref() })
@@ -76,9 +76,9 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// Returns an exclusive reference to an initialized element at a given index.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
+    /// Returns [`IndexOutOfBounds`] if the index is larger than the initialized length.
     /// or if the element at that index is not initialized.
-    pub fn get_mut(&mut self, index: usize) -> Result<&mut T, OutOfBounds> {
+    pub fn get_mut(&mut self, index: usize) -> Result<&mut T, IndexOutOfBounds> {
         let _ = self.verify_index(index)?;
         // SAFETY: the index is verified
         Ok(unsafe { self.data[index].assume_init_mut() })
@@ -89,10 +89,10 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// Initializes the next uninitialized element with the provided value.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
-    pub fn init_next(&mut self, value: T) -> Result<(), OutOfBounds> {
+    /// Returns [`IndexOutOfBounds`] if the index is larger than the initialized length.
+    pub fn init_next(&mut self, value: T) -> Result<(), IndexOutOfBounds> {
         if self.is_full() {
-            Err(OutOfBounds(None))
+            Err(IndexOutOfBounds(None))
         } else {
             self.data[self.init_len] = MaybeUninit::new(value);
             self.init_len += 1;
@@ -130,8 +130,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
 
     /// Replaces the value at a given index with a new value and returns the old value.
     /// # Errors
-    /// Returns [`OutOfBounds`] if the index is not within the range of initialized elements.
-    pub fn replace(&mut self, index: usize, value: T) -> Result<T, OutOfBounds> {
+    /// Returns [`IndexOutOfBounds`] if the index is not within the range of initialized elements.
+    pub fn replace(&mut self, index: usize, value: T) -> Result<T, IndexOutOfBounds> {
         let index = self.verify_index(index)?;
         // SAFETY: If the index is verified, the value is initialized
         let slot = unsafe { self.data[index].assume_init_mut() };
@@ -140,8 +140,9 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
 
     /// Swaps the values at two indices.
     /// # Errors
-    /// Returns [`OutOfBounds`] if either index is not within the range of initialized elements.
-    pub fn swap(&mut self, index1: usize, index2: usize) -> Result<(), OutOfBounds> {
+    /// Returns [`IndexOutOfBounds`]
+    /// if either index is not within the range of initialized elements.
+    pub fn swap(&mut self, index1: usize, index2: usize) -> Result<(), IndexOutOfBounds> {
         let idx1 = self.verify_index(index1)?;
         let idx2 = self.verify_index(index2)?;
         // SAFETY: If the indices are verified, the values are initialized

@@ -7,7 +7,7 @@
 use crate::BareBox;
 use crate::{
     Array, Array2d, Bare, Mismatch,
-    MismatchedBounds::{self, MismatchedLength, OutOfBounds},
+    MismatchedBounds::{self, IndexOutOfBounds, MismatchedLength},
     Storage,
 };
 #[cfg(feature = "alloc")]
@@ -22,7 +22,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
+    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
@@ -41,7 +41,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
+    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
@@ -67,7 +67,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// Returns a 2-dimensional grid, allocated in the heap,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
+    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
@@ -115,7 +115,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
+    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     #[allow(non_snake_case)]
     pub(crate) const fn check_CR() -> Result<(), MismatchedBounds> {
@@ -127,7 +127,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
                         Mismatch { need: CR, have: len, info: "C * R != CR" }))
             }
         } else {
-            Err(OutOfBounds(None)) // RETHINK: return some value
+            Err(IndexOutOfBounds(None)) // RETHINK: return some value
         }
     }
 

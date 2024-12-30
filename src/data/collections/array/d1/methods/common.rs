@@ -7,7 +7,9 @@
 // - methods
 // - methods for Option<T>
 
-use crate::{array_from_fn, iif, Array, ElementNotFound, MismatchedBounds, OutOfBounds, Storage};
+use crate::{
+    array_from_fn, iif, Array, ElementNotFound, IndexOutOfBounds, MismatchedBounds, Storage,
+};
 
 /// # Common constructors
 impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
@@ -82,9 +84,9 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// from the `start` index (inclusive).
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `start >= CAP`.
-    pub fn contains_from(&self, element: &T, start: usize) -> Result<bool, OutOfBounds> {
-        iif![start >= CAP; return Err(OutOfBounds(Some(start)))];
+    /// Returns [`IndexOutOfBounds`] if `start >= CAP`.
+    pub fn contains_from(&self, element: &T, start: usize) -> Result<bool, IndexOutOfBounds> {
+        iif![start >= CAP; return Err(IndexOutOfBounds(Some(start)))];
         Ok(self.iter().skip(start).any(|n| n == element))
     }
 
@@ -92,9 +94,9 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// from the `start` index (inclusive).
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `end >= CAP`.
-    pub fn contains_until(&self, element: &T, end: usize) -> Result<bool, OutOfBounds> {
-        iif![end >= CAP; return Err(OutOfBounds(Some(end)))];
+    /// Returns [`IndexOutOfBounds`] if `end >= CAP`.
+    pub fn contains_until(&self, element: &T, end: usize) -> Result<bool, IndexOutOfBounds> {
+        iif![end >= CAP; return Err(IndexOutOfBounds(Some(end)))];
         Ok(self.iter().take(end + 1).any(|n| n == element))
     }
 
@@ -102,7 +104,8 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// between the range `start..=end` (inclusive).
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`][MismatchedBounds:OutOfBounds] if either `start` or `end` `>= CAP`,
+    /// Returns [`IndexOutOfBounds`][MismatchedBounds:IndexOutOfBounds]
+    /// if either `start` or `end` `>= CAP`,
     /// or [`MismatchedIndices`][MismatchedBounds::MismatchedIndices] if `start > end`.
     pub fn contains_between(
         &self,
@@ -110,8 +113,8 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
         start: usize,
         end: usize,
     ) -> Result<bool, MismatchedBounds> {
-        iif![start >= CAP; return Err(MismatchedBounds::OutOfBounds(Some(start)))];
-        iif![end >= CAP; return Err(MismatchedBounds::OutOfBounds(Some(end)))];
+        iif![start >= CAP; return Err(MismatchedBounds::IndexOutOfBounds(Some(start)))];
+        iif![end >= CAP; return Err(MismatchedBounds::IndexOutOfBounds(Some(end)))];
         iif![start > end; return Err(MismatchedBounds::MismatchedIndices)];
         Ok(self.iter().skip(start).take(end - start + 1).any(|n| n == element))
     }

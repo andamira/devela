@@ -24,20 +24,20 @@ macro_rules! impl_graph_edge {
             /// in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
             pub const fn new(orig: Option<$IDX>, dest: Option<$IDX>) -> Result<Self> {
                 let orig = match orig {
                     None => None,
                     Some(idx) => {
                         if let Some(n) = <$Index>::new(idx) { Some(n) }
-                        else { return Err(OutOfBounds(Some(idx as usize))); }
+                        else { return Err(IndexOutOfBounds(Some(idx as usize))); }
                     }
                 };
                 let dest = match dest {
                     None => None,
                     Some(idx) => {
                         if let Some(n) = <$Index>::new(idx) { Some(n) }
-                        else { return Err(OutOfBounds(Some(idx as usize))); }
+                        else { return Err(IndexOutOfBounds(Some(idx as usize))); }
                     }
                 };
                 Ok(Self($Node { data: (), links: [orig, dest] }))
@@ -47,13 +47,13 @@ macro_rules! impl_graph_edge {
             /// in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
             pub const fn new_some(orig: $IDX, dest: $IDX) -> Result<Self> {
                 let Some(orig) = <$Index>::new(orig) else {
-                    return Err(OutOfBounds(Some(orig as usize)));
+                    return Err(IndexOutOfBounds(Some(orig as usize)));
                 };
                 let Some(dest) = <$Index>::new(dest) else {
-                    return Err(OutOfBounds(Some(dest as usize)));
+                    return Err(IndexOutOfBounds(Some(dest as usize)));
                 };
                 Ok(Self($Node { data: (), links: [Some(orig), Some(dest)] }))
             }
@@ -76,7 +76,7 @@ macro_rules! impl_graph_edge {
             /// Returns a new graph edge, with `data`, and two optional indices.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
             ///
             /// This method can't be *const* because in case of error,
             /// the destructor can't be evaluated.
@@ -85,14 +85,14 @@ macro_rules! impl_graph_edge {
                     None => None,
                     Some(idx) => {
                         if let Some(n) = <$Index>::new(idx) { Some(n) }
-                        else { return Err(OutOfBounds(Some(idx as usize))); }
+                        else { return Err(IndexOutOfBounds(Some(idx as usize))); }
                     }
                 };
                 let dest = match dest {
                     None => None,
                     Some(idx) => {
                         if let Some(n) = <$Index>::new(idx) { Some(n) }
-                        else { return Err(OutOfBounds(Some(idx as usize))); }
+                        else { return Err(IndexOutOfBounds(Some(idx as usize))); }
                     }
                 };
                 Ok(Self($Node { data, links: [orig, dest] }))
@@ -101,16 +101,16 @@ macro_rules! impl_graph_edge {
             /// Returns a new edge, with `data` and two indices.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
             ///
             /// This method can't be *const* because in case of error,
             /// the destructor can't be evaluated.
             pub fn with_some(data: E, orig: $IDX, dest: $IDX) -> Result<Self> {
                 let orig = if let Some(n) = <$Index>::new(orig) { Some(n) } else {
-                    return Err(OutOfBounds(Some(orig as usize)));
+                    return Err(IndexOutOfBounds(Some(orig as usize)));
                 };
                 let dest = if let Some(n) = <$Index>::new(dest) { Some(n) } else {
-                    return Err(OutOfBounds(Some(dest as usize)));
+                    return Err(IndexOutOfBounds(Some(dest as usize)));
                 };
                 Ok(Self($Node { data, links: [orig, dest] }))
             }
@@ -132,20 +132,20 @@ macro_rules! impl_graph_edge {
             /// Returns a new edge, with the given `data`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
             pub fn with_copy(data: E, orig: Option<$IDX>, dest: Option<$IDX>) -> Result<Self> {
                 let orig = match orig {
                     None => None,
                     Some(idx) => {
                         if let Some(n) = <$Index>::new(idx) { Some(n) }
-                        else { return Err(OutOfBounds(Some(idx as usize))); }
+                        else { return Err(IndexOutOfBounds(Some(idx as usize))); }
                     }
                 };
                 let dest = match dest {
                     None => None,
                     Some(idx) => {
                         if let Some(n) = <$Index>::new(idx) { Some(n) }
-                        else { return Err(OutOfBounds(Some(idx as usize))); }
+                        else { return Err(IndexOutOfBounds(Some(idx as usize))); }
                     }
                 };
                 Ok(Self($Node { data, links: [orig, dest] }))
@@ -154,14 +154,14 @@ macro_rules! impl_graph_edge {
             /// Returns a new edge, with the given `data`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`IndexOutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
             // This can't be const because the destructor can't be evaluated in case of Err.
             pub fn with_some_copy(data: E, orig: $IDX, dest: $IDX) -> Result<Self> {
                 let orig = if let Some(n) = <$Index>::new(orig) { Some(n) } else {
-                    return Err(OutOfBounds(Some(orig as usize)));
+                    return Err(IndexOutOfBounds(Some(orig as usize)));
                 };
                 let dest = if let Some(n) = <$Index>::new(dest) { Some(n) } else {
-                    return Err(OutOfBounds(Some(dest as usize)));
+                    return Err(IndexOutOfBounds(Some(dest as usize)));
                 };
                 Ok(Self($Node { data, links: [orig, dest] }))
             }

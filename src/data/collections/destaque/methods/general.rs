@@ -3,8 +3,8 @@
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use crate::_core::mem::{transmute_copy, MaybeUninit};
 use crate::{
-    array_from_fn, Array, Bare, DataNotEnough, Destaque, DestaqueIter, NotEnoughElements,
-    NotEnoughSpace, OutOfBounds, Storage,
+    array_from_fn, Array, Bare, DataNotEnough, Destaque, DestaqueIter, IndexOutOfBounds,
+    NotEnoughElements, NotEnoughSpace, Storage,
 };
 #[cfg(feature = "alloc")]
 use crate::{vec_ as vec, Boxed, Vec};
@@ -40,7 +40,7 @@ macro_rules! impl_destaque {
             /// cloning `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`IndexOutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -48,9 +48,9 @@ macro_rules! impl_destaque {
             #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
-            pub fn new(element: T) -> Result<Self, OutOfBounds> {
+            pub fn new(element: T) -> Result<Self, IndexOutOfBounds> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(OutOfBounds(Some(CAP)))
+                    Err(IndexOutOfBounds(Some(CAP)))
                 } else {
                     Ok(Self {
                         data: Array::<T, CAP, Bare>::with_cloned(element),
@@ -68,7 +68,7 @@ macro_rules! impl_destaque {
             /// copying `element` to fill the remaining free data, in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`IndexOutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -77,9 +77,9 @@ macro_rules! impl_destaque {
             #[doc = "const S: Destaque" $IDX:camel
                 "<i32, 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
             /// ```
-            pub const fn new_copied(element: T) -> Result<Self, OutOfBounds> {
+            pub const fn new_copied(element: T) -> Result<Self, IndexOutOfBounds> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(OutOfBounds(Some(CAP)))
+                    Err(IndexOutOfBounds(Some(CAP)))
                 } else {
                     let data = Array::with_copied(element);
                     Ok(Self { data, front: 0, back: 0, len: 0 })
@@ -721,7 +721,8 @@ macro_rules! impl_destaque {
             ///
             /// `( 1 2 3 4 -- 4 )` for `n = 3`
             /// # Errors
-            /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least `nth` elements.
+            /// Returns [`NotEnoughElements`]
+            /// if the destaque doesn't contain at least `nth` elements.
             /// # Examples
             /// ```
             #[doc = "# use devela::Destaque" $IDX:camel ";"]
@@ -1119,7 +1120,7 @@ macro_rules! impl_destaque {
                 // Rearrange elements into their correct positions in the temporary array
                 for i in 0..self.len as usize {
                     let index = (self.front as usize + i) % CAP;
-                    temp[i] = self.data[index as usize].clone(); // Clone from the current array to temp
+                    temp[i] = self.data[index as usize].clone(); // Clone from array to temp
                 }
 
                 // Move elements from temp back into self.data, now in a contiguous order
@@ -1641,7 +1642,8 @@ macro_rules! impl_destaque {
             ///
             /// `( 1 2 -- 6 5 4 3 1 2 )` for `[3 4 5 6]`
             /// # Errors
-            /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
+            /// Returns [`NotEnoughSpace`]
+            /// if the destaque becomes full before the iterator finishes.
             /// # Examples
             /// ```
             #[doc = "# use devela::Destaque" $IDX:camel ";"]

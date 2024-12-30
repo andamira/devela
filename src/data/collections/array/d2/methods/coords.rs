@@ -3,7 +3,7 @@
 //! 2-dimensional array coordinates and indexing methods
 //
 
-use crate::{iif, Array2d, OutOfBounds, Storage};
+use crate::{iif, Array2d, IndexOutOfBounds, Storage};
 
 /// Helper macro for implementing common methods generic on storage order.
 macro_rules! impl_maj {
@@ -31,8 +31,8 @@ macro_rules! impl_maj {
             /// Returns a reference to the element at the given 2D coordinates
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn get_ref(&self, col_row: [usize; 2]) -> Result<&T, OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn get_ref(&self, col_row: [usize; 2]) -> Result<&T, IndexOutOfBounds> {
                 Self::get_index(col_row).map(|idx| &self.data[idx])
             }
             /// Returns a reference to the element at the given 2D coordinates
@@ -49,8 +49,8 @@ macro_rules! impl_maj {
             /// Returns an exclusive reference to the element at the given 2D coordinates
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn get_mut(&mut self, col_row: [usize; 2]) -> Result<&mut T, OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn get_mut(&mut self, col_row: [usize; 2]) -> Result<&mut T, IndexOutOfBounds> {
                 Self::get_index(col_row).map(|idx| &mut self.data[idx])
             }
             /// Returns an exclusive reference to the element at the given 2D coordinates
@@ -67,8 +67,8 @@ macro_rules! impl_maj {
             /// Sets the element at the given 2D coordinates
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn set(&mut self, element: T, col_row: [usize; 2]) -> Result<(), OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn set(&mut self, element: T, col_row: [usize; 2]) -> Result<(), IndexOutOfBounds> {
                 self.get_mut(col_row).map(|e| {
                     *e = element;
                 })
@@ -93,8 +93,8 @@ macro_rules! impl_maj {
             /// Returns a clone of the element at the given 2D coordinates
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn get(&self, col_row: [usize; 2]) -> Result<T, OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn get(&self, col_row: [usize; 2]) -> Result<T, IndexOutOfBounds> {
                 Self::get_index(col_row).map(|idx| self.data[idx].clone())
             }
             /// Returns a clone of the element at the given 2D coordinates
@@ -119,8 +119,9 @@ macro_rules! impl_maj {
             /// Returns a reference to the element at the given 2D coordinates
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn [<get_ref_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<&T, OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn [<get_ref_ $D2 maj>](&self, col_row: [usize; 2])
+                -> Result<&T, IndexOutOfBounds> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| &self.data[idx])
             }
             /// Returns a reference to the element at the given 2D coordinates
@@ -137,8 +138,9 @@ macro_rules! impl_maj {
             /// Returns an exclusive reference to the element at the given 2D coordinates
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn [<get_mut_ $D2 maj>](&mut self, col_row: [usize; 2]) -> Result<&mut T, OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn [<get_mut_ $D2 maj>](&mut self, col_row: [usize; 2])
+                -> Result<&mut T, IndexOutOfBounds> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| &mut self.data[idx])
             }
             /// Returns an exclusive reference to the element at the given 2D coordinates
@@ -155,8 +157,9 @@ macro_rules! impl_maj {
             /// Sets the element at the given 2D coordinates
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn [<set_ $D2 maj>](&mut self, element: T, col_row: [usize; 2]) -> Result<(), OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn [<set_ $D2 maj>](&mut self, element: T, col_row: [usize; 2])
+                -> Result<(), IndexOutOfBounds> {
                 self.[<get_mut_ $D2 maj>](col_row).map(|e| {
                     *e = element;
                 })
@@ -175,8 +178,9 @@ macro_rules! impl_maj {
             /// Calculates the 1D array index from the given 2D coordinates
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the resulting index is `> CR`.
-            pub const fn [<get_index_ $D2 maj>](col_row: [usize; 2]) -> Result<usize, OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the resulting index is `> CR`.
+            pub const fn [<get_index_ $D2 maj>](col_row: [usize; 2])
+                -> Result<usize, IndexOutOfBounds> {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_index>](col_row)
             }
             /// Calculates the 1D array index from the given 2D coordinates
@@ -189,8 +193,9 @@ macro_rules! impl_maj {
             /// Calculates the 2D coordinates from the given 1D array index
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if `index` is `> CR`.
-            pub const fn [<get_coords_ $D2 maj>](index: usize) -> Result<[usize; 2], OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if `index` is `> CR`.
+            pub const fn [<get_coords_ $D2 maj>](index: usize)
+                -> Result<[usize; 2], IndexOutOfBounds> {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_coords>](index)
             }
             /// Calculates the 2D coordinates from the given 1D array index
@@ -209,8 +214,8 @@ macro_rules! impl_maj {
             /// Returns a clone of the element at the given 2D coordinates
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
-            /// Returns [`OutOfBounds`] if the coordinates are out of bounds.
-            pub fn [<get_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<T, OutOfBounds> {
+            /// Returns [`IndexOutOfBounds`] if the coordinates are out of bounds.
+            pub fn [<get_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<T, IndexOutOfBounds> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| self.data[idx].clone())
             }
             /// Returns a clone of the element at the given 2D coordinates
@@ -234,10 +239,10 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current row-major order.
     /// # Errors
-    /// Returns [`OutOfBounds`] if the resulting index is `>= CR`.
-    pub const fn get_index(col_row: [usize; 2]) -> Result<usize, OutOfBounds> {
+    /// Returns [`IndexOutOfBounds`] if the resulting index is `>= CR`.
+    pub const fn get_index(col_row: [usize; 2]) -> Result<usize, IndexOutOfBounds> {
         let idx = Self::get_index_unchecked(col_row);
-        iif![idx < CR; Ok(idx); Err(OutOfBounds(Some(idx)))]
+        iif![idx < CR; Ok(idx); Err(IndexOutOfBounds(Some(idx)))]
     }
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current row-major order.
@@ -253,9 +258,9 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// Calculates the 2D coordinates from the given 1D array index
     /// in the current row-major order.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `index` is `>= CR`.
-    pub const fn get_coords(index: usize) -> Result<[usize; 2], OutOfBounds> {
-        iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(OutOfBounds(Some(index)))]
+    /// Returns [`IndexOutOfBounds`] if `index` is `>= CR`.
+    pub const fn get_coords(index: usize) -> Result<[usize; 2], IndexOutOfBounds> {
+        iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(IndexOutOfBounds(Some(index)))]
     }
     /// Calculates the 2D coordinates from the given 1D array index
     /// in the current row-major order.
@@ -277,10 +282,10 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current column-major order.
     /// # Errors
-    /// Returns [`OutOfBounds`] if the resulting index is `>= CR`.
-    pub const fn get_index(col_row: [usize; 2]) -> Result<usize, OutOfBounds> {
+    /// Returns [`IndexOutOfBounds`] if the resulting index is `>= CR`.
+    pub const fn get_index(col_row: [usize; 2]) -> Result<usize, IndexOutOfBounds> {
         let idx = Self::get_index_unchecked(col_row);
-        iif![idx < CR; Ok(idx); Err(OutOfBounds(Some(idx)))]
+        iif![idx < CR; Ok(idx); Err(IndexOutOfBounds(Some(idx)))]
     }
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current column-major order.
@@ -296,9 +301,9 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// Calculates the 2D coordinates from the given 1D array index
     /// in the current column-major order.
     /// # Errors
-    /// Returns [`OutOfBounds`] if `index` is `>= CR`.
-    pub const fn get_coords(index: usize) -> Result<[usize; 2], OutOfBounds> {
-        iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(OutOfBounds(Some(index)))]
+    /// Returns [`IndexOutOfBounds`] if `index` is `>= CR`.
+    pub const fn get_coords(index: usize) -> Result<[usize; 2], IndexOutOfBounds> {
+        iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(IndexOutOfBounds(Some(index)))]
     }
     /// Calculates the 2D coordinates from the given 1D array index
     /// in the current column-major order.

@@ -1,8 +1,8 @@
 // devela::data::collections::stack::methods::general
 
 use crate::{
-    Array, Bare, DataNotEnough, NotEnoughElements, NotEnoughSpace, OutOfBounds, Stack, StackIter,
-    Storage,
+    Array, Bare, DataNotEnough, IndexOutOfBounds, NotEnoughElements, NotEnoughSpace, Stack,
+    StackIter, Storage,
 };
 #[cfg(feature = "alloc")]
 use crate::{Boxed, Vec};
@@ -39,7 +39,7 @@ macro_rules! impl_stack {
             /// cloning `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`IndexOutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -47,9 +47,9 @@ macro_rules! impl_stack {
             #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
-            pub fn new(element: T) -> Result<Self, OutOfBounds> {
+            pub fn new(element: T) -> Result<Self, IndexOutOfBounds> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(OutOfBounds(Some(CAP)))
+                    Err(IndexOutOfBounds(Some(CAP)))
                 } else {
                     Ok(Self {
                         data: Array::<T, CAP, Bare>::with_cloned(element),
@@ -65,7 +65,7 @@ macro_rules! impl_stack {
             /// copying `element` to fill the remaining free data, in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`IndexOutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -74,9 +74,9 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel
                 "<i32, 16> = unwrap![ok Stack" $IDX:camel "::new_copied(0)];"]
             /// ```
-            pub const fn new_copied(element: T) -> Result<Self, OutOfBounds> {
+            pub const fn new_copied(element: T) -> Result<Self, IndexOutOfBounds> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(OutOfBounds(Some(CAP)))
+                    Err(IndexOutOfBounds(Some(CAP)))
                 } else {
                     let data = Array::with_copied(element);
                     Ok(Self { data, len: 0 })
@@ -613,7 +613,8 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
             /// # fn main() -> Result<(), Box<dyn devela::Error>> {
-            #[doc = "let mut s = Stack" $IDX:camel "::<_, 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);"]
+            #[doc = "let mut s = Stack"
+                $IDX:camel "::<_, 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);"]
             /// s.rot2()?;
             /// assert_eq![s.as_slice(), &['c', 'd', 'e', 'f', 'a', 'b']];
             /// # Ok(()) }
