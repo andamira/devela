@@ -19,7 +19,7 @@ macro_rules! impl_maj {
     // $D2long: the other dimension long name
     // $CMAJ:   false for row-major order
     ( $RMAJ:literal:$D1:ident:$D1long:literal,
-      $CMAJ:literal:$D2:ident:$D2long:literal) => { crate::code::paste! {
+      $CMAJ:literal:$D2:ident:$D2long:literal) => { crate::paste! {
 
         // T, S
         #[doc = "# Single element indexing (" $D1long "-major order)"]

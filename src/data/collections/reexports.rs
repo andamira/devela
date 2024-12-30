@@ -3,12 +3,12 @@
 //! Reexported items.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 #[cfg(feature = "alloc")]
 mod impls_alloc {
     use super::*;
-    use crate::code::impl_cdef;
+    use crate::impl_cdef;
 
     // impl ConstDefault
     impl_cdef![<T> Self::new() => BTreeSet<T>, LinkedList<T>, Vec<T>, VecDeque<T>];

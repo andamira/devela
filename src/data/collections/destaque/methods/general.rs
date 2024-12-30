@@ -24,7 +24,7 @@ macro_rules! impl_destaque {
             impl_destaque![@$IDX:$cap];
         )+
     };
-    (@$IDX:ty : $cap:literal) => { crate::code::paste! {
+    (@$IDX:ty : $cap:literal) => { crate::paste! {
 
         /* constructors */
 

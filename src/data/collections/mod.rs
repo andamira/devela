@@ -18,7 +18,6 @@ mod destaque;
 // mod node;
 #[cfg(_stack_·)]
 mod stack;
-#[cfg(feature = "data")] // TEMP
 mod traits;
 #[cfg(feature = "_tuple")]
 mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
@@ -43,7 +42,6 @@ crate::items! { // structural access: _mods, _all, _always
         // pub use super::node::*;
         #[cfg(_stack_·)]
         pub use super::stack::_all::*;
-        #[cfg(feature = "data")] // TEMP
         pub use super::traits::_all::*;
         #[cfg(feature = "_tuple")]
         pub use super::tuple::_all::*;
