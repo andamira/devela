@@ -42,8 +42,8 @@ impl_error! { composite: fmt(f)
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 #[cfg(feature = "error")]
 mod full_composite {
-    use super::*;
     use super::reexports::crate_errors::*;
+    use super::*;
 
     #[doc = crate::TAG_RESULT!()]
     /// The root result type, aggregating all module-specific results.

@@ -58,7 +58,7 @@ const ROOT_MODULES: [&str; 10 + 1] = [
     "code", "lang", "data", "media", "num", "phys", "sys", "text", "ui", "work",
 
     // sys::os submodules (platforms)
-    "linux", "windows",
+    "linux", // "windows",
 ];
 #[rustfmt::skip]
 const SUB_MODULES: &[&str] = &[

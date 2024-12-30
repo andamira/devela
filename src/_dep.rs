@@ -92,7 +92,7 @@ reexport! { optional_crate (unsafe) "dep_raw_cpuid", "raw-cpuid", raw_cpuid,
     doc: "A library to parse the x86 CPUID instruction."
 }
 reexport! { optional_crate (safe) "dep_regex_lite", "regex-lite", regex_lite,
-    doc: " A lightweight regex engine that optimizes for binary size and compilation time."
+    doc: " A lightweight regex engine optimized for binary size and compilation time."
 }
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,
     doc: "Audio playback library."
@@ -107,10 +107,10 @@ reexport! { optional_crate (unsafe) "dep_serde", "serde", serde,
     doc: " A generic serialization/deserialization framework."
 }
 reexport! { optional_crate (unsafe) "dep_stringzilla", "stringzilla", stringzilla,
-    doc: "Faster SIMD-accelerated string search, sorting, fingerprints, and edit distances."
+    doc: "SIMD-accelerated string search, sorting, fingerprints, and edit distances."
 }
 reexport! { optional_crate (unsafe) "dep_sysinfo", "sysinfo", sysinfo,
-    doc: "Get system information such as processes, CPUs, disks, components and networks."
+    doc: "Get system information such as processes, CPUs, disks, and networks."
 }
 reexport! { optional_crate (unsafe) "dep_tinyaudio", "tinyaudio", tinyaudio,
     doc: "A cross-platform, easy-to-use, low-level, audio output library.",
