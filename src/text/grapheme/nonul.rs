@@ -8,7 +8,7 @@
 // - conversions
 
 use super::Grapheme;
-#[cfg(_char·)]
+#[cfg(_char··)]
 use crate::text::char::*;
 #[cfg(feature = "alloc")]
 use crate::CString;

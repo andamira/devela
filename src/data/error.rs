@@ -180,7 +180,8 @@ impl_error! { composite: fmt(f)
     /// An error composite of [`NotEnoughElements`] + [`NotEnoughSpace`].
     ///
     /// Used in methods of:
-    /// - [`Destaque`][crate::Destaque].
+    /// [`Destaque`][crate::Destaque],
+    /// [`Stack`][crate::Stack].
     pub enum DataNotEnough {
         DOC_NOT_ENOUGH_ELEMENTS:    Elements(i: Option<usize>)  => NotEnoughElements(*i),
         DOC_NOT_ENOUGH_SPACE:       Space(i: Option<usize>)     => NotEnoughSpace(*i),
@@ -190,17 +191,23 @@ impl_error! { composite: fmt(f)
     /// An error composite of [`NotEnoughSpace`] + [`PartiallyAdded`].
     ///
     /// Used in methods of:
-    /// - [`ArrayUninit`][crate::ArrayUninit].
+    /// [`ArrayUninit`][crate::ArrayUninit].
     pub enum PartialSpace {
         DOC_NOT_ENOUGH_SPACE:   NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
         DOC_PARTIALLY_ADDED:    PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
     }
 }
 impl_error! { composite: fmt(f)
-    /// An error composite of [`MismatchedIndices`] + [`IndexOutOfBounds`].
+    /// An error composite of
+    /// [`DataOverflow`] + [`IndexOutOfBounds`] +
+    /// [`MismatchedIndices`] + [`MismatchedLength`].
     ///
     /// Used in methods of:
-    /// - [`Array`][crate::Array].
+    /// [`Array`][crate::Array],
+    /// [`Array2d`][crate::Array2d],
+    /// [`bitfield!`][crate::bitfield],
+    /// [`BitOps`][crate::BitOps],
+    /// [`Bitwise`][crate::Bitwise].
     pub enum MismatchedBounds {
         DOC_DATA_OVERFLOW:
             DataOverflow(i: Option<usize>) => DataOverflow(*i),

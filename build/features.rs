@@ -31,7 +31,7 @@ mod reflection {
 
     /* # miscellaneous */
 
-    pub const MISCELLANEOUS: FlagsFeatures = FlagsFeatures {
+    pub const DEVELOPMENT: FlagsFeatures = FlagsFeatures {
         flags: &[],
         features: &[
             "__dbg",
@@ -50,8 +50,8 @@ mod reflection {
         features: &["std", "alloc", "no_std"]
     };
 
-    pub const SAFETY: FlagsFeatures = FlagsFeatures {
-        flags: &[],
+    pub const SAFE: FlagsFeatures = FlagsFeatures {
+        flags: &["safe··"],
         features: &[
             "safe",
             "safe_code",
@@ -67,7 +67,11 @@ mod reflection {
             "safe_text",
             "safe_ui", "safe_layout",
             "safe_work",
-
+        ]
+    };
+    pub const UNSAFE: FlagsFeatures = FlagsFeatures {
+        flags: &["unsafe··"],
+        features: &[
             "unsafe",
             "unsafe_array",
             "unsafe_async",
@@ -160,7 +164,7 @@ mod reflection {
     /* ## data */
 
     pub const BIT: FlagsFeatures = FlagsFeatures {
-        flags: &["_bit_·"],
+        flags: &["_bit··"],
         features: &[
             "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
             "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
@@ -173,37 +177,37 @@ mod reflection {
 
     // ### collections
     pub const DESTAQUE: FlagsFeatures = FlagsFeatures {
-        flags: &["_destaque_·"],
+        flags: &["_destaque··"],
         features: &["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
     };
     pub const GRAPH: FlagsFeatures = FlagsFeatures {
-        flags: &["_graph_·"],
+        flags: &["_graph··"],
         features: &["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
     };
     pub const NODE: FlagsFeatures = FlagsFeatures {
-        flags: &["_node_·"],
+        flags: &["_node··"],
         features: &["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
     };
     pub const STACK: FlagsFeatures = FlagsFeatures {
-        flags: &["_stack_·"],
+        flags: &["_stack··"],
         features: &["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"] };
 
     pub const SORT_INT: FlagsFeatures = FlagsFeatures {
-        flags: &["_sort_·", "_sort_int_·"],
+        flags: &["_sort··", "_sort_int··"],
         features: &[
             "_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
             "_sort_u8", "_sort_u16", "_sort_u32", "_sort_u64", "_sort_u128", "_sort_usize",
         ]
     };
     pub const SORT_FLOAT: FlagsFeatures = FlagsFeatures {
-        flags: &["_sort_·", "_sort_float_·"],
+        flags: &["_sort··", "_sort_float··"],
         features: &["_sort_f32", "_sort_f64"]
     };
 
     /* ## num */
 
     pub const CMP: FlagsFeatures = FlagsFeatures {
-        flags: &["_cmp_·"],
+        flags: &["_cmp··"],
         features: &[
             "_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
             "_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128",
@@ -213,25 +217,25 @@ mod reflection {
 
     // ### numbers
     pub const FLOAT: FlagsFeatures = FlagsFeatures {
-        flags: &["_float_·", "_nums_·"],
+        flags: &["_float··", "_nums··"],
         features: &["_float_f32", "_float_f64"] };
     pub const INT: FlagsFeatures = FlagsFeatures {
-        flags: &["_int_i·", "_int_·", "_nums_·"],
+        flags: &["_int_i··", "_int··", "_nums··"],
         features: &["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"] };
     pub const UINT: FlagsFeatures = FlagsFeatures {
-        flags: &["_int_u·", "_int_·", "_nums_·"],
+        flags: &["_int_u··", "_int··", "_nums··"],
         features: &["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"] };
 
     /* ## text */
 
     pub const STRING_U: FlagsFeatures = FlagsFeatures {
-        flags: &["_string_·", "_string_u·"],
+        flags: &["_string··", "_string_u··"],
         features: &["_string_u8", "_string_u16", "_string_u32", "_string_usize"] };
     pub const STRING: FlagsFeatures = FlagsFeatures {
-        flags: &["_string_·"],
+        flags: &["_string··"],
         features: &["_string_nonul"] };
     pub const CHAR: FlagsFeatures = FlagsFeatures {
-        flags: &["_char·"],
+        flags: &["_char··"],
         features: &["_char7", "_char8", "_char16", "_char24", "_char32"] };
 
 
@@ -243,11 +247,11 @@ mod reflection {
     /// This is the list of the constants defined above.
     pub(super) fn set_flags() {
         for ff in [
-            /* miscellaneous */
+            /* development */
 
-            MISCELLANEOUS,
+            DEVELOPMENT,
             ENVIRONMENT,
-            SAFETY,
+            SAFE, UNSAFE,
             NIGHTLY,
             DEPENDENCY,
 

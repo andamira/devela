@@ -16,7 +16,7 @@
 
 #[cfg(doc)]
 use crate::NumError::{self, Overflow};
-#[cfg(_int_·)]
+#[cfg(_int··)]
 use crate::{Frac, Int, NumResult as Result};
 
 // $i:    the integer type.

@@ -5,7 +5,7 @@
 
 // no items defined
 mod generic;
-#[cfg(_sort_·)]
+#[cfg(_sort··)]
 mod primitives;
 
 mod definition;

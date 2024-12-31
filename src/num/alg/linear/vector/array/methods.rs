@@ -4,11 +4,11 @@
 //
 
 #[allow(unused_imports)]
-#[cfg(all(not(feature = "std"), _float_·))]
+#[cfg(all(not(feature = "std"), _float··))]
 use crate::ExtFloat;
 use crate::Vector;
 use crate::{concat as cc, stringify as fy};
-#[cfg(_int_·)]
+#[cfg(_int··)]
 use crate::{unwrap, Int};
 
 /* common methods */

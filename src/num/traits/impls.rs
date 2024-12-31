@@ -3,7 +3,7 @@
 //!
 //
 
-#[cfg(all(_float_·, not(feature = "std")))]
+#[cfg(all(_float··, not(feature = "std")))]
 use crate::iif;
 #[allow(unused_imports)]
 use crate::num::{
@@ -13,7 +13,7 @@ use crate::num::{
     NumResult as Result,
 };
 use crate::paste;
-#[cfg(_float_·)]
+#[cfg(_float··)]
 use crate::{Add, Div, Mul, Neg, Rem, Sub};
 
 // $p:   the primitive type

@@ -7,9 +7,9 @@
 //   and instead use integer scaling functions Int::scale.
 // - maybe use NonExtreme for the signed representation.
 
-#[cfg(all(not(feature = "std"), _float_·))]
+#[cfg(all(not(feature = "std"), _float··))]
 use crate::ExtFloat;
-#[cfg(_float_·)]
+#[cfg(_float··)]
 #[allow(unused_imports)]
 use crate::{fsize, ExtFloatConst};
 use crate::{Angle, AngleDirection, AngleKind};
@@ -108,8 +108,8 @@ macro_rules! impl_angle {
 
             /// Converts the angle to radians.
             #[must_use]
-            #[cfg(any(feature = "std", _float_·))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", _float_·))))]
+            #[cfg(any(feature = "std", _float··))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", _float··))))]
             pub const fn to_rad(self) -> $f { self.to_float_normalized() * <$f>::TAU }
 
             /// Converts the angle to degrees.

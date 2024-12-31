@@ -13,7 +13,7 @@
 use super::super::shared_docs::*;
 #[cfg(feature = "cast")]
 use crate::Cast;
-#[cfg(_int_i·)]
+#[cfg(_int_i··)]
 use crate::NumError::NonNegativeRequired;
 use crate::{
     cfor, iif, paste, Int,

@@ -8,7 +8,7 @@ mod constants; // ExtFloatConst
 mod reexports;
 mod wrapper; // Float
 
-#[cfg(_float_·)]
+#[cfg(_float··)]
 crate::items! {
     mod ext_float; // ExtFloat
     mod shared_docs; // FORMULA_*!()
@@ -23,7 +23,7 @@ crate::items! { // structural access: _mods, _all, _always
     mod _mods {
         pub use super::{alias::*, constants::*, reexports::*, wrapper::*};
 
-        #[cfg(_float_·)] #[allow(unused, reason = "feature-gated")]
+        #[cfg(_float··)] #[allow(unused, reason = "feature-gated")]
         pub use super::{ext_float::*, wrapper::*, shared_docs::*};
     }
     pub(super) mod _all { #[doc(inline)]

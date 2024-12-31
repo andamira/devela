@@ -10,13 +10,13 @@ mod reexports;
 mod array;
 mod list;
 
-#[cfg(_destaque_·)]
+#[cfg(_destaque··)]
 mod destaque;
-// #[cfg(_graph_·)]
+// #[cfg(_graph··)]
 // mod graph;
-// #[cfg(_node_·)]
+// #[cfg(_node··)]
 // mod node;
-#[cfg(_stack_·)]
+#[cfg(_stack··)]
 mod stack;
 mod traits;
 #[cfg(feature = "_tuple")]
@@ -34,13 +34,13 @@ crate::items! { // structural access: _mods, _all, _always
     mod _mods {
         pub use super::{array::_all::*, list::_all::*, reexports::*};
 
-        #[cfg(_destaque_·)]
+        #[cfg(_destaque··)]
         pub use super::destaque::_all::*;
-        // #[cfg(_graph_·)]
+        // #[cfg(_graph··)]
         // pub use super::graph::*;
-        // #[cfg(_node_·)]
+        // #[cfg(_node··)]
         // pub use super::node::*;
-        #[cfg(_stack_·)]
+        #[cfg(_stack··)]
         pub use super::stack::_all::*;
         pub use super::traits::_all::*;
         #[cfg(feature = "_tuple")]

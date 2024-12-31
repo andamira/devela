@@ -8,7 +8,7 @@ mod consts; // ExtFloatConst
 #[cfg(all(test, feature = "_float_f32"))]
 mod tests_f32;
 
-#[cfg(_float_·)]
+#[cfg(_float··)]
 crate::items! {
     mod libm_std; // for either or neither.
     mod shared; // implements shared methods.

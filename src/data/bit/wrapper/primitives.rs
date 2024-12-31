@@ -3,7 +3,7 @@
 //! Implements `Bitwise` for the integer primitives.
 //
 
-#[cfg(_bit_·)]
+#[cfg(_bit··)]
 use crate::{
     iif, Bitwise,
     MismatchedBounds::{self, DataOverflow, IndexOutOfBounds, MismatchedIndices},

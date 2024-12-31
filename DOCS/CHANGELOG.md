@@ -144,8 +144,8 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs`.
   - `dep_linux` to `linux_deps`, `dep_text` to `text_deps`, `dep_work` to `work_deps`.
 - rename compilation flags:
-  - `_some_*` to `_*_·`.
-  - `_int_i_·` to `_int_i·`, `_int_u_·` to `_int_u·`, `_string_u_·` to `_string_u·`.
+  - `_some_*` to `_*··`.
+  - `_int_i_·` to `_int_i··`, `_int_u_·` to `_int_u··`, `_string_u_·` to `_string_u··`.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - feature gate methods returning `DataResult` in: `Array`, `Array2d`, `ArrayUninit`, `Bitwise`, `BitOps`.
 - show build *env* variables if `__dbg` feature is enabled.

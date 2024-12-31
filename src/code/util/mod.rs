@@ -38,7 +38,7 @@ mod paste; // paste! wrapped for docs
 mod r#const; // CONST!
 mod reexports; // re-exported items
 
-#[cfg(_bit_·)]
+#[cfg(_bit··)]
 mod enumset; // enumset!
 
 crate::items! { // structural access: _mods, _internals, _all, _always
@@ -53,7 +53,7 @@ crate::items! { // structural access: _mods, _internals, _all, _always
             ident::*, iif::*, impl_trait::*, include::*, items::*, paste::*, r#const::*,
             reexports::*,
         };
-        #[cfg(_bit_·)]
+        #[cfg(_bit··)]
         pub use super::enumset::*;
     }
     pub(super) mod _internals {

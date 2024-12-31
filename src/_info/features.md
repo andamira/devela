@@ -45,6 +45,9 @@ By default the crate is `no_std` compatible without allocation.
 Enabling a parent module enables all its sub-modules,
 except for `os`.
 
+They set automatic compile flags named `*··`, used for reflection.
+For example, `num··` will be set if any num submodule feature is enabled.
+
 - `all`: enables all the root modules and extra submodules.
 
 <!-- NOTE: some links only work with inlined notation -->
@@ -128,6 +131,8 @@ They offer a convenient way to opt in and out of safety in a granular fashion.
 - `unsafe_*` features enable the use of unsafe by *purpose*.
 - `safe_*` features disable the use of unsafe per *module*.
 
+Enabling any of them sets either the `safe··` or `unsafe··` flag.
+
 To be able to use any unsafe functionality it's necessary to:
 1. enable the corresponding `unsafe` feature.
 2. don't enable that module's `safe` feature.
@@ -171,7 +176,7 @@ To be able to use any unsafe functionality it's necessary to:
 
 ### Nightly features
 
-Enabling any of them sets the `_nightly_·` flag.
+Enabling any of them sets the `nightly··` flag.
 
 - `nightly`: enables the nightly features:
   - `nightly_autodiff`: enables [`autodiff`].
@@ -213,7 +218,7 @@ Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
     - `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
 
 They also set the corresponding flag:
-`_bit_·`.
+`_bit··`.
 
 [`Bitwise`]: crate::data::Bitwise
 [`bitfield`]: crate::data::bitfield
@@ -228,7 +233,7 @@ Enable specific implementations of data collections
     `_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
 
 They also set the corresponding flags:
-`_destaque_·`, `_graph_·`, `_node_·`, `_stack_·`.
+`_destaque··`, `_graph··`, `_node··`, `_stack··`.
 
 Enable specific implementations for [`Sort`].
 `_sort_all`:
@@ -237,7 +242,7 @@ Enable specific implementations for [`Sort`].
   `_sort_f32`, `_sort_f64`.
 
 They also set the corresponding flags:
-`_sort_·`, `_sort_int_·`, `_sort_float_·`.
+`_sort··`, `_sort_int··`, `_sort_float··`.
 
 Implement the [`Tuple`] trait for some maximum arity (12 by default).
 - `_tuple[_24|_36|_48|_72]`.
@@ -257,7 +262,7 @@ Enable specific implementations for [`Compare`]:
   - `_cmp_u8`, `_cmp_u16`, `_cmp_u32`, `_cmp_u64`, `_cmp_u128`,
 
 They also set the corresponding flag:
-`_cmp_·`.
+`_cmp··`.
 
 Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [`Vector`]:
 - `_num_all`:
@@ -271,7 +276,7 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [
       - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
 
 They also set the corresponding flags:
-`_nums_·`, `_float_·`, `_int_·`, `_int_i·`, `_int_u·`.
+`_nums··`, `_float··`, `_int··`, `_int_i··`, `_int_u··`.
 
 [`Compare`]: crate::num::Compare
 [`Float`]: crate::num::Float
@@ -292,7 +297,7 @@ Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
   - `_string_nonul`.
 
 They also set the corresponding flags:
-`_char·`, `_string_·`, `_string_u·`.
+`_char··`, `_string··`, `_string_u··`.
 
 [`CharU*`]: crate::text::CharU8
 [`StringU*`]: crate::text::StringU8
@@ -303,7 +308,7 @@ They also set the corresponding flags:
 
 - Optional dependencies are re-exported from the [`_dep`][crate::_dep] root module.
 - Can be enabled with the `dep_crate_name` feature in snake_case.
-- Enabling any of them sets the `_dep_·` flag.
+- Enabling any of them sets the `_dep··` flag.
 
 - `dep_all`: enables all the optional dependencies.
 

@@ -19,7 +19,7 @@ mod ext_string;
 #[cfg(feature = "_string_nonul")] // RETHINK
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
 mod nonul;
-#[cfg(_string_u·)]
+#[cfg(_string_u··)]
 mod string_u;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -40,7 +40,7 @@ crate::items! { // structural access: _mods, _all, _always
 
         #[cfg(feature = "_string_nonul")] // RETHINK
         pub use super::nonul::*;
-        #[cfg(_string_u·)]
+        #[cfg(_string_u··)]
         pub use super::string_u::*;
 
         #[doc(inline)] #[cfg(feature = "dep_const_str")]

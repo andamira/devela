@@ -5,7 +5,7 @@
 
 mod namespace; // Int
 
-#[cfg(_int_·)]
+#[cfg(_int··)]
 crate::items! {
     mod impl_base;
     mod impl_combinatorics;

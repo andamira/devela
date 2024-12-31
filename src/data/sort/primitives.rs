@@ -3,13 +3,13 @@
 //! Implements compile-time sorting algorithms for arrays of primitives.
 //
 
-#[cfg(_sort_float_·)]
+#[cfg(_sort_float··)]
 use crate::Compare;
 use crate::{cfor, cswap, iif, paste, Sort};
 
 /* impl Sort on primitives */
 
-#[cfg(_sort_·)]
+#[cfg(_sort··)]
 macro_rules! impl_sort {
     () => {
         impl_sort![signed i8:"_sort_i8", i16:"_sort_i16", i32:"_sort_i32",
@@ -163,5 +163,5 @@ macro_rules! impl_sort {
         }
     }};
 }
-#[cfg(_sort_·)]
+#[cfg(_sort··)]
 impl_sort![];

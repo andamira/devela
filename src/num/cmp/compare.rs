@@ -16,7 +16,7 @@ use crate::Ordering::{self, Equal, Greater, Less};
 use crate::{iif, paste};
 
 #[allow(unused_imports)]
-#[cfg(_float_·)]
+#[cfg(_float··)]
 use crate::Float;
 #[allow(unused_imports)]
 #[cfg(feature = "nightly_float")]

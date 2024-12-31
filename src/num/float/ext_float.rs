@@ -5,7 +5,7 @@
 // IMPROVE: remove redundant methods implemented in `core`
 
 use super::shared_docs::*;
-#[cfg(_float_·)]
+#[cfg(_float··)]
 use crate::Float;
 use crate::{ExtFloatConst, Sign};
 

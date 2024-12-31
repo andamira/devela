@@ -3,7 +3,7 @@
 //!
 //
 
-#[cfg(_float_·)]
+#[cfg(_float··)]
 #[allow(unused_imports)]
 use crate::{Angle, AngleDirection, AngleKind, ExtFloat, ExtFloatConst, Float};
 

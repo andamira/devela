@@ -7,7 +7,7 @@ mod alias; // [i|u]size_[down|up]
 mod fns; // prime_number_teorem
 mod gcd; // GcdReturn
 
-#[cfg(_int_·)]
+#[cfg(_int··)]
 crate::items! {
     mod divisor;
     mod num_trait; // NumInt, NumRefInt
@@ -25,7 +25,7 @@ crate::items! { // structural access: _mods, _all, _always
         #[allow(unused, reason = "fns")]
         pub use super::{alias::*, fns::*, gcd::*};
 
-        #[cfg(_int_·)]
+        #[cfg(_int··)]
         pub use super::{divisor::*, num_trait::*, wrapper::_all::*};
     }
     pub(super) mod _all {

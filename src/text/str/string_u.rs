@@ -20,7 +20,7 @@ use crate::{
     TextResult as Result,
 };
 
-#[cfg(all(_string_u·, feature = "alloc"))]
+#[cfg(all(_string_u··, feature = "alloc"))]
 use crate::{CString, ToString};
 
 macro_rules! impl_string_u {

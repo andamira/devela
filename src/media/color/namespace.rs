@@ -6,7 +6,7 @@
 #[allow(unused_imports)]
 use crate::code::{iif, paste, sf, CONST};
 
-#[cfg(all(_float_·, not(feature = "std")))]
+#[cfg(all(_float··, not(feature = "std")))]
 #[allow(unused_imports, reason = "!std: powf, powi")]
 use crate::num::ExtFloat;
 

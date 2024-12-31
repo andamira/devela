@@ -5,7 +5,7 @@
 
 // mod r#trait; // TODO
 
-#[cfg(_int_·)]
+#[cfg(_int··)]
 mod wrapper;
 
 crate::items! { // structural access: _mods, _all
@@ -13,7 +13,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        #[cfg(_int_·)]
+        #[cfg(_int··)]
         pub use super::wrapper::*;
     }
     pub(super) mod _all {

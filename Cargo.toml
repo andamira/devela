@@ -96,8 +96,8 @@ bench = false
 # - ["__name"]: Development & maintenance features.
 #
 # Notes:
-# - Features are in sync with build/features.rs & src/_doc/features.md.
-# - List and count features with `utils/manifest.sh features`.
+# - Features are in sync with ./build/features.rs & ./src/_doc/features.md.
+# - List and count features with `./utils/manifest.sh features`.
 
 
 #* Development features *#
@@ -128,6 +128,8 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 
 #* Module features *#
 # ------------------------------------------------------------------------------
+# They set automatic compile flags named `*··`, used for reflection.
+# For example, `num··` will be set if any num submodule feature is enabled.
 
 all = [ # enables all the modules and submodules
 	"code", "data", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
@@ -185,6 +187,7 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 # ------------------------------------------------------------------------------
 # They are prefixed with either `safe` or `unsafe`.
 # Safe features are associated to *modules*, and unsafe features to *purposes*.
+# Enabling any of these will set either the `safe··` or `unsafe··` reflection flags.
 #
 # Usage:
 # 1. enable the desired `unsafe` feature.
@@ -242,6 +245,7 @@ safest = [ # forbids `unsafe` even in dependencies (except for the standard libr
 #* Nightly features *#
 # ------------------------------------------------------------------------------
 # They are prefixed with `nightly_`.
+# Enabling any of these will set the `nightly··` reflection flag.
 #
 ## Links
 # - https://doc.rust-lang.org/unstable-book/library-features.html
@@ -255,23 +259,23 @@ nightly = [ # In sync with ./build/features.rs::NIGHTLY & ./src/lib.rs:
 ] # enables all the following features:
 	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 	nightly_autodiff = [] # autodiff
-
+	#
 	# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
 	nightly_bigint = [] # bigint_helper_methods
-
+	#
 	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
-
+	#
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 	nightly_doc = [] # DISABLED(doc_auto_cfg)
-
+	#
 	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
 	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
-
+	#
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
-
+	#
 	# nightly features that should become stable soon enough. See ./DOCS/NIGHTLY.md.
 	nightly_stable = [ # In sync with ./src/lib.rs:
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
@@ -286,8 +290,8 @@ nightly = [ # In sync with ./build/features.rs::NIGHTLY & ./src/lib.rs:
 #
 # Enabling them enables extra implementations which increases compilation times.
 #
-# They set automatic compile flags named `_*_·`, used for reflection.
-# For example, `_stack_·` will be set if any _stack_* feature is enabled.
+# They set automatic compile flags named `_*··`, used for reflection.
+# For example, `_stack··` will be set if any _stack* feature is enabled.
 
 # default = [] # default capabilities
 
@@ -469,8 +473,9 @@ _string_all = [
 
 #* Dependency features *#
 # ------------------------------------------------------------------------------
-# The names are prefixed with `dep_`, and don't have dashes.
+# The names are prefixed with `dep_`, using underscores in place of dashes.
 # They are associated to optional dependencies and groups of modules.
+# Enabling any of these will set the `dep··` reflection flag.
 #
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
@@ -535,7 +540,7 @@ dep_wide = ["dep:wide"]                                                         
 #
 # When adding a new optional dependency:
 # 1. Add a new entry below.
-# 2. Add a new entry in src/_deps.rs.
+# 2. Add a new entry in ./src/_deps.rs.
 # 3. Update `dep_all` above and ./config/dep_all.rs.
 #
 # Notes:
@@ -885,29 +890,29 @@ check-cfg = [ # Allowed config flags:
 	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
 	#
-	# Compilation flags for reflection are enabled in: "/build/features.rs"
-	# ---------------------------------------------------------------------
-	"cfg(nightly··, dep··)",
+	# Compilation flags for reflection are configured in: ./build/features.rs
+	# -----------------------------------------------------------------------
+	"cfg(safe··, unsafe··, nightly··, dep··)",
 	# data:
 	'cfg(data··)',
-	'cfg(_bit_·, _destaque_·, _stack_·)',
-	'cfg(_graph_·, _node_·)',
+	'cfg(_bit··, _destaque··, _stack··)',
+	'cfg(_graph··, _node··)',
 	# lang:
 	'cfg(lang··)',
 	# media:
 	'cfg(media··)',
 	# num:
 	'cfg(num··, prim···)',
-	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
-	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i·, _int_u·)',
-	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
+	'cfg(_sort··, _sort_int··, _sort_float··)',
+	'cfg(_nums··, _cmp··, _float··, _int··, _int_i··, _int_u··)',
+	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
 	# phys
 	'cfg(phys··)',
 	# sys
 	'cfg(sys··, mem··)',
 	# text:
 	'cfg(text··)',
-	'cfg(_char·, _string_·, _string_u·)',
+	'cfg(_char··, _string··, _string_u··)',
 	# ui
 	'cfg(ui··)',
 	# work

@@ -5,7 +5,7 @@
 
 mod r#trait; // BitOps
 
-#[cfg(_bit_·)]
+#[cfg(_bit··)]
 crate::items! {
     mod field; // bitfield
     mod wrapper; // Bitwise
@@ -17,7 +17,7 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::r#trait::*;
-        #[cfg(_bit_·)]
+        #[cfg(_bit··)]
         pub use super::{field::_all::*, wrapper::*};
     }
     pub(super) mod _all {

@@ -4,10 +4,11 @@
 // - definition
 // - impls
 
-#[cfg(_bit_·)]
+#[cfg(_bit··)]
 use super::Bitwise;
 use crate::MismatchedBounds;
-use crate::{DataOverflow, IndexOutOfBounds, MismatchedIndices};
+#[cfg(doc)]
+use crate::MismatchedBounds::{DataOverflow, IndexOutOfBounds, MismatchedIndices};
 
 /// Provides bitwise operations on `T`.
 ///
