@@ -1,4 +1,5 @@
 // devela::examples::work::coro_run
+//!
 
 use devela::{serr, sok, CoroRun};
 
