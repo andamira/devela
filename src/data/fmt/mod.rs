@@ -3,7 +3,6 @@
 //! Data serialization and deserialization.
 //
 
-mod reexports;
 mod types;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -13,7 +12,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{reexports::*, types::*};
+        pub use super::types::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
