@@ -45,7 +45,7 @@
         const_make_ascii,
         const_maybe_uninit_assume_init,
         const_option_ext,
-        const_pin, // subset (_2)
+        const_pin,
         const_ptr_is_null,
         const_unicode_case_lookup,
         // ip, // subset
@@ -64,6 +64,7 @@
         const_maybe_uninit_write,
         const_nonnull_new,
         const_size_of_val,
+        const_swap,
         coverage_attribute,
         do_not_recommend, // diagnostics
         extended_varargs_abi_support,
@@ -80,7 +81,6 @@
         cell_update,
         const_array_from_ref,
         const_slice_from_ref,
-        const_swap,
         // derive_smart_pointer, // x
         // get_disjoint_mut, // ?
         // hash_extract_if, // ?
