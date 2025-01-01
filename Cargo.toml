@@ -603,7 +603,7 @@ default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.16" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.18" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
