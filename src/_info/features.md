@@ -50,7 +50,7 @@ For example, `num··` will be set if any num submodule feature is enabled.
 
 - `all`: enables all the root modules and extra submodules.
 
-<!-- NOTE: some links only work with inlined notation -->
+<!-- BUG: some links only work with inlined notation -->
 Root modules & public sub-modules features:
 - [`code`]
   - [`error`]
@@ -179,6 +179,7 @@ To be able to use any unsafe functionality it's necessary to:
 Enabling any of them sets the `nightly··` flag.
 
 - `nightly`: enables the nightly features:
+  - `nightly_allocator`: enables [`allocator_api`].
   - `nightly_autodiff`: enables [`autodiff`].
   - `nightly_bigint`: enables [`bigint_helper_methods`].
   - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
@@ -190,7 +191,9 @@ Enabling any of them sets the `nightly··` flag.
     - `nightly_stable_next2`: in the version after that.
     - `nightly_stable_later`: later than that but *soon enough*.
 
+[`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
 [`autodiff`]: https://github.com/rust-lang/rust/issues/124509
+[`bigint_helper_methods`]: https://github.com/rust-lang/rust/issues/85532
 [`coroutines`]: https://github.com/rust-lang/rust/issues/43122
 [`doc_cfg]: https://github.com/rust-lang/rust/issues/43781
 [`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
@@ -203,12 +206,10 @@ Enabling any of them sets the `nightly··` flag.
 These semi-hidden features allows to fine-tune extra capabilities.
 Enabling them will likely worsen compilation times.
 
-- `_default`: enables default capabilities.
-- `_max`: enables the maximum capabilities.
-
 Documentation capabilities:
-- `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
-- `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.
+- `_docsrs[_stable][_min|_nodep]`: enables the most complete (or custom) version
+  of the documentation, for [docs.rs](https://docs.rs).
+- …
 
 #### `data` capabilities
 

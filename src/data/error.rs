@@ -103,8 +103,10 @@ Optionally contains the number of elements added.",
     } else { write!(f, "Only a subset of elements could be added.") }
 }
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(all(data··, feature = "error"))))]
-#[cfg(all(data··, feature = "error"))]
+#[cfg(all(feature = "error", data··))]
+pub use full_composite::*;
+#[cfg(all(feature = "error", data··))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "error", data··))))]
 mod full_composite {
     use super::*;
     use crate::{
@@ -171,8 +173,6 @@ mod full_composite {
         MismatchedCapacity(i) => MismatchedCapacity(i),
     }}
 }
-#[cfg(all(data··, feature = "error"))]
-pub use full_composite::*;
 
 /* Partial Composite Errors */
 
