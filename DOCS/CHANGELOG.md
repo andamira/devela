@@ -191,7 +191,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - rename re-wrapped macros to avoid prelude collision when glob importing:
     - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
 - modules:
-  - make modules public: `sys::arch`, `text::fmt`.
+  - make modules public: `data::serde`, `sys::arch`, `text::fmt`.
   - rename:
     - `num::geom::algebra` to `num::algebra::linear`.
     - `exec` to `work`, and related features.
