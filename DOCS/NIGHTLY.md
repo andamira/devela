@@ -64,11 +64,14 @@
 - 1.??: ·[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 - 1.??: ?[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 - 1.??: ·[cell_update](https://github.com/rust-lang/rust/pull/134446)
-- 1.??: ·[const_·array|slice·_from_ref](https://github.com/rust-lang/rust/issues/90206)
+- 1.??: ·[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
+        · const_slice_from_ref
 - 1.??: ·[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
         · const_str_split_at
-- 1.??: x[derive_smart_pointer](https://github.com/rust-lang/rust/pull/133820)
-- 1.??: ?[get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
+- 1.??: ·[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
+- 1.??: ·[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
+- 1.??:  [get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
+        · get_many_mut (old name)
 - 1.??: ?[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.??: ·[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
@@ -100,6 +103,7 @@
 - 1.?? F[f16|f128](https://github.com/rust-lang/rust/issues/116909) `nightly_float`
 - 1.??  [generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.??  [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
+- 1.??  [maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
 - 1.??  [mpmc_channel](https://github.com/rust-lang/rust/pull/126839)
 - 1.??  [passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.?? F[portable_simd](https://github.com/rust-lang/rust/issues/86656) `nightly_simd`

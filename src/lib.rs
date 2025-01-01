@@ -81,9 +81,12 @@
         // box_uninit_write, // ?
         cell_update,
         const_array_from_ref,
+        const_is_char_boundary,
+        const_slice_flatten,
         const_slice_from_ref,
-        // derive_smart_pointer, // x
-        // get_disjoint_mut, // ?
+        const_str_split_at,
+        derive_coerce_pointee,
+        get_many_mut, // get_disjoint_mut (new name)
         // hash_extract_if, // ?
         impl_trait_in_assoc_type,
         isqrt,
