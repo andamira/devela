@@ -30,9 +30,12 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 30 optional dependencies */
-// In sync with /Cargo.toml::dep_all & /utils/check.rs::DEP_ALL
+/* 34 optional dependencies */
+// In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
 
+reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,
+    doc: "Mirror of Rust's allocator api for use on stable rust"
+}
 reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
 }
