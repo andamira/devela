@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 34 optional dependencies */
+/* 36 optional dependencies */
 // In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
 
 reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,
@@ -38,6 +38,9 @@ reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allo
 }
 reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
+}
+reexport! { optional_crate (unsafe) "dep_bumpalo", "bumpalo", bumpalo,
+    doc: "A fast bump allocation arena for Rust."
 }
 reexport! { optional_crate (unsafe) "dep_bytemuck", "bytemuck", bytemuck,
     doc: "Small utilities for casting between plain data types."
@@ -142,4 +145,7 @@ reexport! { optional_crate (unsafe) "dep_web_sys", "web-sys", web_sys,
 }
 reexport! { optional_crate (unsafe) "dep_wide", "wide", wide,
     doc: "SIMD-compatible data types."
+}
+reexport! { optional_crate (safe) /*±*/ "dep_winnow", "winnow", winnow,
+    doc: "A byte-oriented, zero-copy, parser combinators library."
 }

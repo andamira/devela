@@ -77,7 +77,7 @@ publish = true
 bench = false
 
 
-[features] # 243/300 (57 remaining), 128 visible, 115 hidden
+[features] # 245/300 (55 remaining), 130 visible, 115 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -115,12 +115,14 @@ __force_miri_dst = [] # inhibits disabling miri on the data::dst module
 alloc = [ # enables `alloc` functionality
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "jiff?/alloc",
 	"memchr?/alloc", "rand_core?/alloc", "rustix?/alloc", "serde?/alloc",
+	"winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc", "allocator-api2?/std", "atomic?/std", "bytemuck?/extern_crate_std",
-	"jiff?/std", "js-sys?/std", "log?/std", "memchr?/std", "nc?/std",
-	"rand_core?/std", "raw-cpuid?/std", "regex-lite?/std", "rustix?/std",
-	"serde?/std", "tracing?/std", "wasm-bindgen?/std", "web-sys?/std", "wide?/std",
+	"alloc", "allocator-api2?/std", "atomic?/std", "bumpalo?/std",
+	"bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std", "log?/std",
+	"memchr?/std", "nc?/std", "rand_core?/std", "raw-cpuid?/std", "regex-lite?/std",
+	"rustix?/std", "serde?/std", "tracing?/std", "wasm-bindgen?/std", "web-sys?/std",
+	"wide?/std", "winnow?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -254,7 +256,7 @@ nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
 	# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
 	nightly_allocator = [ # allocator_api
-		"allocator-api2?/nightly", "hashbrown?/nightly"]
+		"allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
 	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 	nightly_autodiff = [] # autodiff
 	#
@@ -478,28 +480,30 @@ _string_all = [
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-# In sync with ./config/dep_all.rs.
-dep_all = [ # enables all 34 optional dependencies:
-	"dep_allocator_api2", "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm",
-	"dep_hashbrown", "dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr",
-	"dep_midir", "dep_miniquad", "dep_nc", "dep_portable_atomic", "dep_pyo3",
+# In sync with ./config/dep_all.rs & ./src/_dep.rs
+dep_all = [ # enables all 36 optional dependencies:
+	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
+	"dep_crossterm", "dep_hashbrown", "dep_jiff", "dep_js_sys", "dep_libm", "dep_log",
+	"dep_memchr", "dep_midir", "dep_miniquad", "dep_nc", "dep_portable_atomic", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rodio",
 	"dep_rustix", "dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_serde",
 	"dep_tinyaudio", "dep_tokio", "dep_tracing", "dep_unicode_segmentation",
-	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
+	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow"
 ]
 
 # misc. groups of dependencies:
-alloc_deps = ["alloc", "dep_allocator_api2"]
+alloc_deps = ["alloc", "dep_bumpalo", "dep_allocator_api2"]
 linux_deps = ["linux", "dep_atomic", "dep_bytemuck", "dep_nc", "dep_rustix"]
 text_deps  = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
 	"dep_stringzilla", "dep_unicode_segmentation", "dep_unicode_width"]
 work_deps  = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon", "dep_tokio"]
 
 # standalone dependencies:
-dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2"]        # mem::alloc
+dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2",        # sys::mem::alloc
+	"bumpalo?/allocator-api2"]
 dep_atomic = ["dep:atomic"]                                                     # work::sync
-dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···...:::
+dep_bumpalo = ["dep:bumpalo"]                                                   # sys::mem::alloc
+dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···
 dep_const_str = ["dep:const-str"]                                               # text::str
 dep_crossterm = ["dep:crossterm", "std"]                                        # ui::term
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"]                   # data::cols
@@ -507,7 +511,7 @@ dep_jiff = ["dep:jiff", "alloc"]                                                
 dep_js_sys = ["dep:js-sys"]                                                     # lang::js
 dep_libm = ["dep:libm"]                                                         # num::float
 dep_log = ["dep:log", "tracing?/log"]                                           # sys::log
-dep_memchr = ["dep:memchr"]                                                     # text:str
+dep_memchr = ["dep:memchr", "winnow?/simd"]                                     # text:str
 dep_midir = ["dep:midir"]                                                       # media::midi
 dep_miniquad = ["dep:miniquad"]                                                 # sys::screen
 dep_nc = ["dep:nc"]                                                             # sys::os::linux
@@ -520,7 +524,7 @@ dep_regex_lite = ["dep:regex-lite", "std"]                                      
 dep_rodio = ["dep:rodio"]                                                       # sys::sound
 dep_rustix = ["dep:rustix"]                                                     # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
-dep_serde = ["dep:serde", "allocator-api2?/serde"]                              # data::serde
+dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde"]            # data::serde
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
 dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
@@ -531,9 +535,10 @@ dep_unicode_width = ["dep:unicode-width"]                                       
 dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         # lang
 dep_web_sys = ["dep:web-sys"]                                                   # ui::web
 dep_wide = ["dep:wide"]                                                         # ...
+dep_winnow = ["dep:winnow"]                                                     # text::parse
 
 
-[dependencies] # 36 (2 required, 34 optional)
+[dependencies] # 38 (2 required, 36 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -569,7 +574,7 @@ package = "paste" # safe, ARCHIVED
 version = "0.2.21" # ✗ https://github.com/zakarumych/allocator-api2/commits/main/
 optional = true # unsafe
 default-features = false # 6 https://docs.rs/crate/allocator-api2/latest/features
-feature = ["fresh-rust"]
+features = ["fresh-rust"]
 # WAIT: [nightly impl for unsize_box](https://github.com/zakarumych/allocator-api2/pull/23)
 
 [dependencies.atomic] # https://crates.io/crates/atomic
@@ -577,6 +582,12 @@ version = "0.6.0" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
 optional = true # unsafe
 default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
+
+[dependencies.bumpalo] # https://crates.io/crates/bumpalo
+version = "3.16.0" # ✓ https://github.com/fitzgen/bumpalo/blob/main/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 7 https://docs.rs/crate/bumpalo/latest/features
+features = ["boxed", "collections"]
 
 [dependencies.bytemuck] # https://crates.io/crates/bytemuck
 version = "1.21.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
@@ -766,6 +777,10 @@ version = "0.7.30" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
+[dependencies.winnow] # https://crates.io/crates/winnow
+version = "0.6.21" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
+optional = true # ±safe (very little unsafe)
+default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 
 [dev-dependencies]
 # Used for benchmarks, examples and tests. They inherit from [dependencies].
