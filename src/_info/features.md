@@ -313,7 +313,8 @@ They also set the corresponding flags:
 
 - `dep_all`: enables all the optional dependencies.
 
-There are also groups of dependencies associated to modules:
-- `linux_deps`: enables: `atomic`, `bytemuck`.
-- `text_deps`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
-- `work_deps`: enables `atomic`, `portable-atomic`.
+There are also the following groups of dependencies:
+- `alloc_deps`: enables: `alloc`, `dep_allocator_api2`.
+- `linux_deps`: enables: `linux`, `dep_atomic`, `dep_bytemuck`, `dep_nc`, `dep_rustix`.
+- `text_deps`: enables: `text`, `dep_const_str`, `dep_memchr`, `dep_regex_lite`, `dep_stringzilla`, `dep_unicode_segmentation`, `dep_unicode_width`.
+- `work_deps`: enables `work`, `dep_atomic`, `dep_portable_atomic`, `dep_rayon`, `dep_tokio`.

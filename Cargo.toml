@@ -175,13 +175,6 @@ work = ["bytemuck?/zeroable_atomics"]
 	sync = ["tokio?/sync"]
 	thread = ["tokio?/rt", "tokio?/rt-multi-thread"]
 
-# groups of dependencies related to root modules
-alloc_deps = ["alloc", "dep_allocator_api2"]
-linux_deps = ["linux", "dep_atomic", "dep_bytemuck"]
-text_deps = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
-	"dep_stringzilla", "dep_unicode_segmentation", "dep_unicode_width"]
-work_deps = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon"]
-
 
 #* Safety features *#
 # ------------------------------------------------------------------------------
@@ -494,8 +487,16 @@ dep_all = [ # enables all 34 optional dependencies:
 	"dep_rustix", "dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_serde",
 	"dep_tinyaudio", "dep_tokio", "dep_tracing", "dep_unicode_segmentation",
 	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
-] # enable groups of dependencies (unlocking extra functionality in certain modules):
+]
 
+# misc. groups of dependencies:
+alloc_deps = ["alloc", "dep_allocator_api2"]
+linux_deps = ["linux", "dep_atomic", "dep_bytemuck", "dep_nc", "dep_rustix"]
+text_deps  = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
+	"dep_stringzilla", "dep_unicode_segmentation", "dep_unicode_width"]
+work_deps  = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon", "dep_tokio"]
+
+# standalone dependencies:
 dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2"]        # mem::alloc
 dep_atomic = ["dep:atomic"]                                                     # work::sync
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···...:::
