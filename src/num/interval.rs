@@ -5,12 +5,16 @@
 
 use crate::{iif, Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
 
-/// An interval type.
+/// Represents an interval with a `lower` and an `upper` bound.
+///
+/// The `Interval` type allows modeling ranges of values with optional inclusion
+/// or exclusion at each bound. This is useful for mathematical operations,
+/// range checks, and interval arithmetic.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Interval<T> {
-    /// The lower bound (also known as the *start* bound or the *left* bound).
+    /// The lower bound (also known as the *start* bound, or the *left* bound).
     pub lower: Bound<T>,
-    /// The upper bound (also known as the *end* bound or the *right* bound).
+    /// The upper bound (also known as the *end*, bound or the *right* bound).
     pub upper: Bound<T>,
 }
 
@@ -157,7 +161,10 @@ impl<T> Interval<T> {
 }
 
 impl<T: PartialOrd> Interval<T> {
-    /// Validates that the interval is properly ordered.
+    /// Validates that the interval bounds are ordered correctly.
+    ///
+    /// Returns `true` if the lower bound is less than or equal to the upper bound.
+    /// Unbounded intervals are always considered valid.
     #[must_use]
     pub fn is_valid(&self) -> bool {
         match (&self.lower, &self.upper) {
@@ -170,6 +177,13 @@ impl<T: PartialOrd> Interval<T> {
     }
 
     /// Checks if the interval contains the given value.
+    ///
+    /// ```
+    /// # use devela::Interval;
+    /// let interval = Interval::closed(1, 5);
+    /// assert!(interval.contains(&3));
+    /// assert!(!interval.contains(&6));
+    /// ```
     #[must_use]
     pub fn contains(&self, value: &T) -> bool {
         let lower_check = match &self.lower {
@@ -334,6 +348,11 @@ mod impl_traits {
         use core::fmt;
 
         impl<T: fmt::Display> fmt::Display for Interval<T> {
+            /// Formats the interval as a human-readable string.
+            ///
+            /// Examples:
+            /// - `(-∞, 5]` for an unbounded lower bound and inclusive upper bound.
+            /// - `[1, 3)` for a closed lower bound and open upper bound.
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 let lower = match &self.lower {
                     Bound::Included(value) => format!("[{}", value),

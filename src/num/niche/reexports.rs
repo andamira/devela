@@ -22,13 +22,12 @@ reexport! { rust: core::num,
     Saturating
 }
 reexport! { rust: core::num,
-    doc: "Provides intentionally-wrapped arithmetic on T.",
+    doc: "Provides intentionally-wrapped arithmetic on `T`.",
     Wrapping
 }
 
-// IMPROVE: Make custom type
 reexport! { rust: core::num,
     tag: crate::TAG_ERROR!(),
     doc: "The error type returned when a checked integral type conversion fails.",
-    TryFromIntError
+    TryFromIntError // IMPROVE: recreate
 }

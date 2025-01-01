@@ -66,17 +66,17 @@ reexport! { rust: core::iter,
 }
 reexport! { rust: core::iter,
     tag: crate::TAG_ITERATOR!(),
-    doc: "An iterator where each iteration calls the provided closure `F: FnMut() -> Option<T>`.",
+    doc: "An iterator where each iteration calls a closure `F: FnMut() -> Option<T>`.",
     @FromFn as IterFromFn
 }
 reexport! { rust: core::iter,
     tag: crate::TAG_ITERATOR!(),
-    doc: "An iterator that yields `None` forever after the underlying iterator yields `None` once.",
+    doc: "An iterator that yields `None` forever after the underlying yields `None` once.",
     @Fuse as IterFuse
 }
 reexport! { rust: core::iter,
     tag: crate::TAG_ITERATOR!(),
-    doc: "An iterator that calls a function with a reference to each element before yielding it.",
+    doc: "An iterator that calls a fn with a reference to each element before yielding it.",
     @Inspect as IterInspect
 }
 reexport! { rust: core::iter,
@@ -101,7 +101,7 @@ reexport! { rust: core::iter,
 }
 reexport! { rust: core::iter,
     tag: crate::TAG_ITERATOR!(),
-    doc: "An iterator with a `peek()` that returns an optional reference to the next element.",
+    doc: "An iterator with a `peek()` that returns an optional ref to the next element.",
     @Peekable as IterPeekable
 }
 reexport! { rust: core::iter,
@@ -231,7 +231,7 @@ reexport! { rust: core::iter,
     @repeat_with as iter_repeat_with
 }
 reexport! { rust: core::iter,
-    doc: "Creates an iterator where each successive item is computed based on the preceding one.",
+    doc: "Creates an iterator where each successive item is computed based on the previous.",
     @successors as iter_successors
 }
 reexport! { rust: core::iter,

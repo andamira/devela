@@ -25,6 +25,6 @@ reexport! { rust: core::num,
 // - https://doc.rust-lang.org/src/core/str/error.rs.html#47-50
 reexport! { rust: core::str,
     tag: crate::TAG_ERROR!(),
-    doc: "Errors which can occur when attempting to interpret a sequence of u8 as a string.",
-    Utf8Error
+    doc: "An error which can occur when interpreting a sequence of `u8` as a string.",
+    Utf8Error // IMPROVE: recreate
 }

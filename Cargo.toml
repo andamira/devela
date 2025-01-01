@@ -187,7 +187,6 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 # ------------------------------------------------------------------------------
 # They are prefixed with either `safe` or `unsafe`.
 # Safe features are associated to *modules*, and unsafe features to *purposes*.
-# Enabling any of these will set either the `safe··` or `unsafe··` reflection flags.
 #
 # Usage:
 # 1. enable the desired `unsafe` feature.
@@ -196,35 +195,39 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 # The `safest` feature forbids unsafe transitively in dependencies
 # (except for Rust's `core`, `alloc` and `std`).
 
-safe = [ # forbids `unsafe` (and overrides unsafe features)
+safe = [ # [9] forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_num",
 	"safe_phys", "safe_sys", "safe_text", "safe_work",
-] # in 9 specific root modules:
+] # `safe··`
 	safe_code = []
 	safe_data = []
 	safe_lang = []
-	safe_media = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image"]
+	safe_media = [ # [5]
+		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image"]
 		safe_audio = []
 		safe_color = []
 		safe_draw = []
 		safe_font = []
 		safe_image = []
 	safe_num = []
-	safe_phys = ["safe_time"]
+	safe_phys = ["safe_time"] # [1]
 		safe_time = []
-	safe_sys = ["safe_io", "safe_mem"]
+	safe_sys = ["safe_io", "safe_mem"] # [2]
 		safe_io = []
 		safe_mem = []
 	safe_text = []
-	safe_ui = ["safe_layout"]
+	safe_ui = ["safe_layout"] # [1]
 		safe_layout = []
 	safe_work = []
-
-unsafe = [ # enables `unsafe` (as long as it isn't forbidden for that module)
+		# safe_async
+safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
+	"safe"
+]
+unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that module)
 	"unsafe_array", "unsafe_async", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
-] # for 11 specific purposes:
+] # `unsafe··`
 	unsafe_array   = [] # faster array initialization, UninitArray.
 	unsafe_async   = [] # task_waker_noop, CoroRun.
 	unsafe_hint    = [] # unreachable_unchecked, unchecked arithmetic.
@@ -237,9 +240,6 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden for that module)
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-safest = [ # forbids `unsafe` even in dependencies (except for the standard library)
-	"safe",
-]
 
 
 #* Nightly features *#
@@ -252,11 +252,11 @@ safest = [ # forbids `unsafe` even in dependencies (except for the standard libr
 # - https://releases.rs/
 # - ./utils/release_dates.rs
 
-nightly = [ # In sync with ./build/features.rs::NIGHTLY & ./src/lib.rs:
+nightly = [ # [7] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	"nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_doc",
 	"nightly_float", "nightly_simd",
 	"nightly_stable",
-] # enables all the following features:
+] # `nightly··`
 	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 	nightly_autodiff = [] # autodiff
 	#
@@ -492,20 +492,20 @@ dep_all = [ # enables all 33 optional dependencies:
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
 dep_atomic = ["dep:atomic"]                                                     # work::sync
-dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # *
+dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···...:::
 dep_const_str = ["dep:const-str"]                                               # text::str
-dep_crossterm = ["dep:crossterm", "std"]                                        # ui::backend
-dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"]                   # data::collections
+dep_crossterm = ["dep:crossterm", "std"]                                        # ui::term
+dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"]                   # data::cols
 dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
-dep_js_sys = ["dep:js-sys"]                                                     # lang
+dep_js_sys = ["dep:js-sys"]                                                     # lang::js
 dep_libm = ["dep:libm"]                                                         # num::float
 dep_log = ["dep:log", "tracing?/log"]                                           # sys::log
-dep_memchr = ["dep:memchr"]                                                     # text
+dep_memchr = ["dep:memchr"]                                                     # text:str
 dep_midir = ["dep:midir"]                                                       # media::midi
-dep_miniquad = ["dep:miniquad"]                                                 # sys::?
-dep_nc = ["dep:nc"]                                                             # sys::os
+dep_miniquad = ["dep:miniquad"]                                                 # sys::screen
+dep_nc = ["dep:nc"]                                                             # sys::os::linux
 dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
-dep_pyo3 = ["dep:pyo3", "std"]                                                  # lang
+dep_pyo3 = ["dep:pyo3", "std"]                                                  # lang::py
 dep_rand_core = ["dep:rand_core"]                                               # num::rand
 dep_rayon = ["dep:rayon", "sysinfo?/multithread"]                               # work::thread
 dep_raw_cpuid = ["dep:raw-cpuid"]                                               # sys::arch
@@ -515,15 +515,15 @@ dep_rustix = ["dep:rustix"]                                                     
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
 dep_serde = ["dep:serde"]                                                       # data
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
-dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys
+dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
 dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
 dep_tokio = ["dep:tokio"]                                                       # work::async
 dep_tracing = ["dep:tracing"]                                                   # sys::log
-dep_unicode_segmentation = ["dep:unicode-segmentation"]                         # text
-dep_unicode_width = ["dep:unicode-width"]                                       # text
+dep_unicode_segmentation = ["dep:unicode-segmentation"]                         # text::
+dep_unicode_width = ["dep:unicode-width"]                                       # text::
 dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         # lang
-dep_web_sys = ["dep:web-sys"]                                                   # sys::?
-dep_wide = ["dep:wide"]                                                         # *
+dep_web_sys = ["dep:web-sys"]                                                   # ui::web
+dep_wide = ["dep:wide"]                                                         # ...
 
 
 [dependencies] # 35 (2 required, 33 optional)
@@ -693,6 +693,7 @@ default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 version = "1.0.217" # ✗ https://github.com/serde-rs/serde/releases
 optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/serde/latest/features
+# WAIT [Const generics support](https://github.com/serde-rs/serde/issues/1937)
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
 version = "3.11.3" # ✗ https://github.com/ashvardanian/StringZilla/releases

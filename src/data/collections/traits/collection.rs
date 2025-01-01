@@ -28,7 +28,7 @@ use crate::{HashMap, HashSet};
 
 type Result<T> = crate::Result<T, NotAvailable>;
 
-/// An abstract data collection.
+/// An abstract *collection* data type.
 ///
 /// By default returns [`NotImplemented`][E::NotImplemented] for every method.
 #[rustfmt::skip] #[allow(unused_variables)]

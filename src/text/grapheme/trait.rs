@@ -3,5 +3,5 @@
 //!
 //
 
-/// Common trait for extended grapheme cluster types.
+/// Common trait for <abbr title="Extended Grapheme Cluster">EGC</abbr> types.
 pub trait Grapheme {}
