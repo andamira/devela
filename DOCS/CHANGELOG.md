@@ -18,10 +18,10 @@ The format is based on [Keep a Changelog], and this project adheres to
   - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`, `midi`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `ascii`, `fmt`, `str`, `_char7`, `_char8`, `_char16`.
-  - nightly: `nightly_autodiff`, `nightly_bigint`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
+  - nightly: `nightly_alloc`, `nightly_autodiff`, `nightly_bigint`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
   - safety: `safe_audio`, `safe_color`, `safe_draw`, `safe_ffi`, `safe_font`, `safe_image`, `safe_io`, `safe_layout`, `safe_ui`, `safest`, `unsafe_async`.
   - ui: `ui`, `layout`.
-  - other: `lang`, `windows`, `work_deps`, `__force_miri_dst`.
+  - other: `alloc_deps`, `lang`, `windows`, `__force_miri_dst`.
 - new cfg flags: `cargo_primary_package`, `*·`, `_*··`.
 
 #### New items

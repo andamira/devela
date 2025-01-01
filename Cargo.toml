@@ -77,7 +77,7 @@ publish = true
 bench = false
 
 
-[features] # 241/300 (59 remaining), 126 visible, 115 hidden
+[features] # 243/300 (57 remaining), 128 visible, 115 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -176,10 +176,11 @@ work = ["bytemuck?/zeroable_atomics"]
 	thread = ["tokio?/rt", "tokio?/rt-multi-thread"]
 
 # groups of dependencies related to root modules
+alloc_deps = ["alloc", "dep_allocator_api2"]
 linux_deps = ["linux", "dep_atomic", "dep_bytemuck"]
-text_deps = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite", "dep_stringzilla",
-	"dep_unicode_segmentation", "dep_unicode_width"]
-work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
+text_deps = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
+	"dep_stringzilla", "dep_unicode_segmentation", "dep_unicode_width"]
+work_deps = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon"]
 
 
 #* Safety features *#
@@ -250,12 +251,17 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 # - https://doc.rust-lang.org/unstable-book/library-features.html
 # - https://releases.rs/
 # - ./utils/release_dates.rs
+# - ./DOCS/NIGHTLY.md
 
-nightly = [ # [7] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
-	"nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_doc",
-	"nightly_float", "nightly_simd",
+nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
+	"nightly_allocator", "nightly_autodiff", "nightly_bigint", "nightly_coro",
+	"nightly_doc", "nightly_float", "nightly_simd",
 	"nightly_stable",
 ] # `nightly··`
+	# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
+	# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
+	nightly_allocator = [ # allocator_api
+		"allocator-api2?/nightly", "hashbrown?/nightly"]
 	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 	nightly_autodiff = [] # autodiff
 	#
@@ -267,15 +273,15 @@ nightly = [ # [7] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	#
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-	nightly_doc = [] # DISABLED(doc_auto_cfg)
+	nightly_doc = [] # not(doc_auto_cfg)
 	#
 	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
 	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
 	#
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
-	nightly_simd = []
+	nightly_simd = [] # portable_simd
 	#
-	# nightly features that should become stable soon enough. See ./DOCS/NIGHTLY.md.
+	# nightly features that should become stable soon enough.
 	nightly_stable = [ # In sync with ./src/lib.rs:
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
 		nightly_stable_next1 = [] # 1.84
@@ -490,7 +496,7 @@ dep_all = [ # enables all 34 optional dependencies:
 	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
-dep_allocator_api2 = ["dep:allocator-api2"]                                     # mem::alloc
+dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2"]        # mem::alloc
 dep_atomic = ["dep:atomic"]                                                     # work::sync
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···...:::
 dep_const_str = ["dep:const-str"]                                               # text::str

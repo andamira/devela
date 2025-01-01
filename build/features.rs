@@ -91,6 +91,7 @@ mod reflection {
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
         flags: &["nightly··"],
         features: &[
+            "nightly_allocator",
             "nightly_autodiff",
             "nightly_bigint",
             "nightly_coro",

@@ -28,6 +28,7 @@
 // nightly
 //
 // In sync with Cargo.toml::nightly & build/features.rs::NIGHTLY
+#![cfg_attr(feature = "nightly_allocator", feature(allocator_api))]
 #![cfg_attr(feature = "nightly_autodiff", feature(autodiff))]
 #![cfg_attr(feature = "nightly_bigint", feature(bigint_helper_methods))]
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
