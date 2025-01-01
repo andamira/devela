@@ -7,7 +7,7 @@
 use crate::BareBox;
 use crate::{
     Array, Array2d, Bare, Mismatch,
-    MismatchedBounds::{self, IndexOutOfBounds, MismatchedLength},
+    MismatchedBounds::{self, IndexOutOfBounds, MismatchedCapacity},
     Storage,
 };
 #[cfg(feature = "alloc")]
@@ -23,7 +23,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// using `element` to fill the remaining free data.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedLength`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::data::Array2d;
@@ -42,7 +42,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// using `element` to fill the remaining free data.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedLength`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::{Array2d, MismatchedBounds};
@@ -68,7 +68,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// using `element` to fill the remaining free data.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedLength`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::{Boxed, Array2d};
@@ -116,14 +116,14 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedLength`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     #[allow(non_snake_case)]
     pub(crate) const fn check_CR() -> Result<(), MismatchedBounds> {
         if let Some(len) = C.checked_mul(R) {
             if len == CR {
                 Ok(())
             } else {
-                Err(MismatchedLength(
+                Err(MismatchedCapacity(
                         Mismatch { need: CR, have: len, info: "C * R != CR" }))
             }
         } else {

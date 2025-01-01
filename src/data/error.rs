@@ -9,9 +9,9 @@
 //   - IndexOutOfBounds
 //   - InvalidAxisLength
 //   - KeyAlreadyExists
+//   - MismatchedCapacity
 //   - MismatchedDimensions
 //   - MismatchedIndices
-//   - MismatchedLength
 //   - NodeEmpty
 //   - NodeLinkNotSet
 //   - NodeLinkNotUnique
@@ -55,6 +55,10 @@ impl_error! { individual: KeyAlreadyExists,
     DOC_KEY_ALREADY_EXISTS = "The key already exists.",
     self+f => write!(f, "The key already exists.")
 }
+impl_error! { individual: MismatchedCapacity(pub Mismatch<usize, usize>),
+    DOC_MISMATCHED_CAPACITY = "The given capacity did not match the required constraints.",
+    self+f => write!(f, "Mismatched capacity: {:?}.", self.0)
+}
 impl_error! { individual: MismatchedDimensions(pub Mismatch<usize, usize>),
     DOC_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
     self+f => write!(f, "Mismatched dimensions: {:?}.", self.0)
@@ -62,10 +66,6 @@ impl_error! { individual: MismatchedDimensions(pub Mismatch<usize, usize>),
 impl_error! { individual: MismatchedIndices,
     DOC_MISMATCHED_INDICES = "The given indices does not match the expected order.",
     self+f => write!(f, "The given indices does not match the expected order.")
-}
-impl_error! { individual: MismatchedLength(pub Mismatch<usize, usize>),
-    DOC_MISMATCHED_LENGTH = "The given length or capacity did not match the required constraints.",
-    self+f => write!(f, "Mismatched length or capacity: {:?}.", self.0)
 }
 impl_error! { individual: NodeEmpty(pub Option<usize>),
     DOC_NODE_EMPTY = "The node is empty.",
@@ -130,12 +130,12 @@ mod full_composite {
                 InvalidAxisLength(i: Option<usize>) => InvalidAxisLength(*i),
             DOC_KEY_ALREADY_EXISTS:
                 KeyAlreadyExists => KeyAlreadyExists,
+            DOC_MISMATCHED_CAPACITY:
+                MismatchedCapacity(c: Mismatch<usize, usize>) => MismatchedCapacity(*c),
             DOC_MISMATCHED_DIMENSIONS:
-                MismatchedDimensions(i: Mismatch<usize, usize>) => MismatchedDimensions(*i),
+                MismatchedDimensions(d: Mismatch<usize, usize>) => MismatchedDimensions(*d),
             DOC_MISMATCHED_INDICES:
                 MismatchedIndices => MismatchedIndices,
-            DOC_MISMATCHED_LENGTH:
-                MismatchedLength(i: Mismatch<usize, usize>) => MismatchedLength(*i),
             DOC_NODE_EMPTY:
                 NodeEmpty(i: Option<usize>) => NodeEmpty(*i),
             DOC_NODE_LINK_NOT_SET:
@@ -168,7 +168,7 @@ mod full_composite {
         DataOverflow(i) => DataOverflow(i),
         IndexOutOfBounds(i) => IndexOutOfBounds(i),
         MismatchedIndices(i) => MismatchedIndices(i),
-        MismatchedLength(i) => MismatchedLength(i),
+        MismatchedCapacity(i) => MismatchedCapacity(i),
     }}
 }
 #[cfg(all(data··, feature = "error"))]
@@ -200,7 +200,7 @@ impl_error! { composite: fmt(f)
 impl_error! { composite: fmt(f)
     /// An error composite of
     /// [`DataOverflow`] + [`IndexOutOfBounds`] +
-    /// [`MismatchedIndices`] + [`MismatchedLength`].
+    /// [`MismatchedIndices`] + [`MismatchedCapacity`].
     ///
     /// Used in methods of:
     /// [`Array`][crate::Array],
@@ -213,9 +213,9 @@ impl_error! { composite: fmt(f)
             DataOverflow(i: Option<usize>) => DataOverflow(*i),
         DOC_INDEX_OUT_OF_BOUNDS:
             IndexOutOfBounds(i: Option<usize>) => IndexOutOfBounds(*i),
+        DOC_MISMATCHED_CAPACITY:
+            MismatchedCapacity(c: Mismatch<usize, usize>) => MismatchedCapacity(*c),
         DOC_MISMATCHED_INDICES:
             MismatchedIndices => MismatchedIndices,
-        DOC_MISMATCHED_LENGTH:
-            MismatchedLength(i: Mismatch<usize, usize>) => MismatchedLength(*i),
     }
 }
