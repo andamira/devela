@@ -6,9 +6,7 @@
 use super::*;
 #[cfg(feature = "ascii")]
 use crate::AsciiChar;
-use crate::{text::char::NonSurrogateU16, Char};
-#[cfg(feature = "text")]
-use crate::{TextError::CharConversion, TextResult as Result};
+use crate::{text::char::NonSurrogateU16, Char, DataOverflow};
 
 impl char16 {
     /* private helper fns */
@@ -74,26 +72,29 @@ impl char16 {
         char16::new_unchecked(c.0 as u16)
     }
     /// Tries to convert a `char` to `char16`.
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-    pub const fn try_from_char(c: char) -> Result<char16> {
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if the character can't fit in 16 bits.
+    pub const fn try_from_char(c: char) -> Result<char16, DataOverflow> {
         if Char::byte_len(c as u32) <= 2 {
             Ok(char16::new_unchecked(c as u32 as u16))
         } else {
-            Err(CharConversion)
+            Err(DataOverflow(Some(c as u32 as usize)))
         }
     }
 
     //
 
     /// Tries to convert this `char16` to `AsciiChar`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
+    ///
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     #[cfg(feature = "ascii")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
-    pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
+    pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
         if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
             if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
@@ -106,23 +107,25 @@ impl char16 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
         }
-        Err(CharConversion)
+        Err(DataOverflow(Some(self.to_u32() as usize)))
     }
 
     /// Tries to convert this `char16` to `char7`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
     #[cfg(feature = "_char7")]
-    #[cfg(feature = "text")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-    pub const fn try_to_char7(self) -> Result<char7> {
+    pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
         char7::try_from_char16(self)
     }
     /// Tries to convert this `char16` to `char8`.
-    #[cfg(feature = "text")]
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
     #[cfg(feature = "_char8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-    pub const fn try_to_char8(self) -> Result<char8> {
+    pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
         char8::try_from_char16(self)
     }
     /// Converts this `char16` to `char`.

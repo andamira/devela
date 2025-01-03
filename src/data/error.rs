@@ -28,7 +28,7 @@
 
 use crate::{impl_error, Mismatch};
 
-impl_error! { individual: DataOverflow(Option<usize>),
+impl_error! { individual: DataOverflow(pub Option<usize>),
     DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.",
     self+f => if let Some(v) = self.0 {
         write!(f, "The value {v} has surpassed the bounds of the representable data space.")
@@ -124,6 +124,8 @@ mod full_composite {
             DOC_NOT_IMPLEMENTED: NotImplemented => NotImplemented,
             DOC_NOT_SUPPORTED: NotSupported => NotSupported,
             //
+            DOC_DATA_OVERFLOW:
+                DataOverflow => DataOverflow,
             DOC_ELEMENT_NOT_FOUND:
                 ElementNotFound => ElementNotFound,
             DOC_INDEX_OUT_OF_BOUNDS:
@@ -148,8 +150,6 @@ mod full_composite {
                 NotEnoughElements(i: Option<usize>) => NotEnoughElements(*i),
             DOC_NOT_ENOUGH_SPACE:
                 NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
-            DOC_DATA_OVERFLOW:
-                DataOverflow => DataOverflow,
             DOC_PARTIALLY_ADDED:
                 PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
         }

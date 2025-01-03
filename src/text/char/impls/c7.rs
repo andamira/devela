@@ -1,11 +1,9 @@
 // devela::text::char::impls::char7
 
 use super::*;
-use crate::text::char::NonExtremeU8;
 #[cfg(feature = "ascii")]
 use crate::AsciiChar;
-#[cfg(feature = "text")]
-use crate::{Char, TextError::CharConversion, TextResult as Result};
+use crate::{Char, DataOverflow, NonExtremeU8};
 
 impl char7 {
     /* private helper fns */
@@ -52,37 +50,40 @@ impl char7 {
     }
 
     /// Tries to convert a `char8` to `char7`.
-    #[cfg(feature = "text")]
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     #[cfg(feature = "_char8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
-    pub const fn try_from_char8(c: char8) -> Result<char7> {
+    pub const fn try_from_char8(c: char8) -> Result<char7, DataOverflow> {
         if Char::is_7bit(c.to_u32()) {
             Ok(char7::new_unchecked(c.to_u32() as u8))
         } else {
-            Err(CharConversion)
+            Err(DataOverflow(Some(c.to_u32() as usize)))
         }
     }
     /// Tries to convert a `char16` to `char7`.
-    #[cfg(feature = "text")]
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     #[cfg(feature = "_char16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
-    pub const fn try_from_char16(c: char16) -> Result<char7> {
+    pub const fn try_from_char16(c: char16) -> Result<char7, DataOverflow> {
         if Char::is_7bit(c.to_u32()) {
             Ok(char7::new_unchecked(c.to_u32() as u8))
         } else {
-            Err(CharConversion)
+            Err(DataOverflow(Some(c.to_u32() as usize)))
         }
     }
     /// Tries to convert a `char` to `char7`.
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-    pub const fn try_from_char(c: char) -> Result<char7> {
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
+    pub const fn try_from_char(c: char) -> Result<char7, DataOverflow> {
         if Char::is_7bit(c as u32) {
             Ok(char7::new_unchecked(c as u32 as u8))
         } else {
-            Err(CharConversion)
+            Err(DataOverflow(Some(c as u32 as usize)))
         }
     }
 

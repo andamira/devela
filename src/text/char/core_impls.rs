@@ -3,10 +3,8 @@
 //! implementations of core traits
 //
 
-#[cfg(all(feature = "text", _char··))]
-use crate::{TextError, TextResult as Result};
 #[allow(unused_imports)]
-use crate::{_core::fmt, paste, text::char::*, unwrap, ConstDefault};
+use crate::{DataOverflow, _core::fmt, paste, text::char::*, unwrap, ConstDefault};
 
 /* Default, Display, Debug */
 
@@ -83,7 +81,6 @@ mod c7 {
         }
     }
     #[cfg(feature = "_char8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     impl From<char7> for char8 {
         #[must_use]
         fn from(c: char7) -> char8 {
@@ -91,7 +88,6 @@ mod c7 {
         }
     }
     #[cfg(feature = "_char16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     impl From<char7> for char16 {
         #[must_use]
         fn from(c: char7) -> char16 {
@@ -113,17 +109,13 @@ mod c8 {
         }
     }
     #[cfg(feature = "_char7")]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     impl TryFrom<char8> for char7 {
-        type Error = TextError;
-        fn try_from(c: char8) -> Result<char7> {
+        type Error = DataOverflow;
+        fn try_from(c: char8) -> Result<char7, DataOverflow> {
             c.try_to_char7()
         }
     }
     #[cfg(feature = "_char16")]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     impl From<char8> for char16 {
         #[must_use]
         fn from(c: char8) -> char16 {
@@ -145,20 +137,16 @@ mod c16 {
         }
     }
     #[cfg(feature = "_char7")]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     impl TryFrom<char16> for char7 {
-        type Error = TextError;
-        fn try_from(c: char16) -> Result<char7> {
+        type Error = DataOverflow;
+        fn try_from(c: char16) -> Result<char7, DataOverflow> {
             c.try_to_char7()
         }
     }
     #[cfg(feature = "_char8")]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     impl TryFrom<char16> for char8 {
-        type Error = TextError;
-        fn try_from(c: char16) -> Result<char8> {
+        type Error = DataOverflow;
+        fn try_from(c: char16) -> Result<char8, DataOverflow> {
             c.try_to_char8()
         }
     }
@@ -167,29 +155,23 @@ mod c16 {
 /* From char */
 
 #[cfg(feature = "_char7")]
-#[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 impl TryFrom<char> for char7 {
-    type Error = TextError;
-    fn try_from(c: char) -> Result<char7> {
+    type Error = DataOverflow;
+    fn try_from(c: char) -> Result<char7, DataOverflow> {
         char7::try_from_char(c)
     }
 }
 #[cfg(feature = "_char8")]
-#[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 impl TryFrom<char> for char8 {
-    type Error = TextError;
-    fn try_from(c: char) -> Result<char8> {
+    type Error = DataOverflow;
+    fn try_from(c: char) -> Result<char8, DataOverflow> {
         char8::try_from_char(c)
     }
 }
 #[cfg(feature = "_char16")]
-#[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 impl TryFrom<char> for char16 {
-    type Error = TextError;
-    fn try_from(c: char) -> Result<char16> {
+    type Error = DataOverflow;
+    fn try_from(c: char) -> Result<char16, DataOverflow> {
         char16::try_from_char(c)
     }
 }

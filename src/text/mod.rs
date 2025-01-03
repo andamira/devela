@@ -12,12 +12,9 @@
 mod ascii;
 #[allow(hidden_glob_reexports, reason = "re-exported char")]
 mod char;
+mod error;
 mod grapheme; // Grapheme
 mod parse;
-
-#[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-mod error;
 
 pub mod fmt;
 pub mod str;
@@ -30,7 +27,6 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
 
     mod _mods {
         pub use super::{ascii::_all::*, char::_all::*, grapheme::_all::*, parse::_all::*};
-        #[cfg(feature = "text")]
         pub use super::error::*;
     }
     mod _pub_mods {

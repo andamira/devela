@@ -28,7 +28,7 @@ pub struct GraphemeNonul<const CAP: usize>(StringNonul<CAP>);
 /* impls */
 
 impl<const CAP: usize> GraphemeNonul<CAP> {
-    /// Creates a new empty `StringNonul`.
+    /// Creates a new empty `GraphemeNonul`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255.

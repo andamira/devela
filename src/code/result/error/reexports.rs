@@ -58,7 +58,7 @@ pub(crate) mod crate_errors {
     pub use crate::sys::io::{IoError, IoErrorKind, IoResult};
 
     #[doc(inline)]
-    #[cfg(feature = "text")]
+    #[cfg(text··)]
     pub use crate::text::{TextError, TextResult};
 
     /* ui */

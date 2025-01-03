@@ -17,7 +17,6 @@ use crate::{
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
-// #[cfg(feature = "text")]
 // use crate::{StringU16, StringU32, GraphemeU8, StringU8};
 #[cfg(feature = "alloc")]
 use crate::GraphemeString;

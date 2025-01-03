@@ -18,7 +18,7 @@ use crate::{
 };
 
 #[cfg(feature = "alloc")]
-use crate::text::{CString, ToString};
+use crate::{CString, ToString};
 
 /* definitions */
 
@@ -93,7 +93,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::text::{TextResult, StringNonul};
+    /// # use devela::{TextResult, StringNonul};
     /// # fn main() -> TextResult<()> {
     /// let mut s = StringNonul::<4>::new()?;
     /// assert_eq![0, s.len()];

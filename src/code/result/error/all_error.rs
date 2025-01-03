@@ -42,7 +42,7 @@ impl_error! { composite: fmt(f)
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 #[cfg(feature = "error")]
 mod full_composite {
-    use super::reexports::crate_errors::*;
+    use super::super::reexports::crate_errors::*;
     use super::*;
 
     #[doc = crate::TAG_RESULT!()]
@@ -78,8 +78,8 @@ mod full_composite {
         Io(IoError),
 
         /// A text-related error.
-        #[cfg(feature = "text")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+        #[cfg(text··)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(text··)))]
         Text(TextError),
 
         // IMPROVE Phys
@@ -122,8 +122,8 @@ mod full_composite {
         Time(()), // TODO
 
         /// A text-related error.
-        #[cfg(feature = "text")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+        #[cfg(text··)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(text··)))]
         Text(()), // TODO
 
         /// Other static error.
@@ -153,7 +153,7 @@ mod full_composite {
                     (E::Io(e1), E::Io(e2)) => e1.error_eq(e2),
                     #[cfg(feature = "time")]
                     (E::Time(e1), E::Time(e2)) => e1.error_eq(e2),
-                    #[cfg(feature = "text")]
+                    #[cfg(text··)]
                     (E::Text(e1), E::Text(e2)) => e1.error_eq(e2),
                     (E::Other(s1), E::Other(s2)) => s1 == s2,
 
@@ -173,7 +173,7 @@ mod full_composite {
                     E::Io(e) => K::Io(e.error_kind()),
                     #[cfg(feature = "time")]
                     E::Time(e) => K::Time(e.error_kind()),
-                    #[cfg(feature = "text")]
+                    #[cfg(text··)]
                     E::Text(e) => K::Text(e.error_kind()),
                     E::Other(_s) => K::Other,
                 }
@@ -192,7 +192,7 @@ mod full_composite {
                 E::Io(e) => write!(f, "{e:?}"),
                 #[cfg(feature = "time")]
                 E::Time(e) => write!(f, "{e:?}"),
-                #[cfg(feature = "text")]
+                #[cfg(text··)]
                 E::Text(e) => write!(f, "{e:?}"),
                 E::Other(s) => write!(f, "{s}"),
             }
