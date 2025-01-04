@@ -614,7 +614,7 @@ default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.18" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.21" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
@@ -773,12 +773,12 @@ optional = true # unsafe (unsafe dependencies)
 default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
 
 [dependencies.wide] # https://crates.io/crates/wide
-version = "0.7.30" # ✗ https://github.com/Lokathor/wide/commits/main/
+version = "0.7.31" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
 [dependencies.winnow] # https://crates.io/crates/winnow
-version = "0.6.21" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
+version = "0.6.22" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
 optional = true # ±safe (very little unsafe)
 default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 
