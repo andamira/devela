@@ -1,15 +1,15 @@
 // devela::code::util::error
 //
+//! Defines [`impl_error!`]
+//
 
 /// Helper to define individual and composite error types.
 ///
 /// It also helps implementing `From` and `TryFrom` between them.
-///
-/// NOTE: For now it only supports *empty* or *tuple* enum variants.
 macro_rules! impl_error {
     (
-    // Defines a standalone error type.
-    individual: $struct_name:ident $(( $vis:vis $inner:ty ))?,
+    // Defines a standalone error tuple-struct.
+    individual: $struct_name:ident $(( $($tuple_vis:vis $tuple_ty:ty),+ ))?,
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
@@ -19,8 +19,29 @@ macro_rules! impl_error {
         #[doc = crate::TAG_ERROR!()]
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
-        pub struct $struct_name $(($vis $inner ))?;
+        pub struct $struct_name $(( $($tuple_vis $tuple_ty),+ ) )?;
 
+        $crate::impl_error![@individual $struct_name, $self+$fmt=>$display_expr];
+    };
+    (
+    // Defines a standalone error struct with fields.
+    individual: $struct_name:ident { $($field_vis:vis $field_name:ident : $field_ty:ty ),+ },
+        $DOC_NAME:ident = $doc_str:literal,
+        $self:ident + $fmt:ident => $display_expr:expr
+        $(,)?
+    ) => {
+        $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
+
+        #[doc = crate::TAG_ERROR!()]
+        #[doc = $DOC_NAME!()]
+        #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
+        pub struct $struct_name { $( $field_vis $field_name: $field_ty),+ }
+
+        $crate::impl_error![@individual $struct_name, $self+$fmt=>$display_expr];
+    };
+    (
+    // shared code between individual: definitions
+    @individual $struct_name:ident, $self:ident+$fmt:ident => $display_expr:expr) => {
         impl $crate::Display for $struct_name {
             fn fmt(&$self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 $display_expr
