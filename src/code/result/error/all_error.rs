@@ -13,15 +13,15 @@
 
 use crate::impl_error;
 
-impl_error![individual: FailedErrorConversion,
+impl_error![individual: pub struct FailedErrorConversion;
     DOC_FAILED_CONVERSION = "A failed conversion between two error types.",
     self+f => write!(f, "Failed to convert between error types"),
 ];
-impl_error![individual: NotImplemented,
+impl_error![individual: pub struct NotImplemented;
     DOC_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
 ];
-impl_error![individual: NotSupported,
+impl_error![individual: pub struct NotSupported;
     DOC_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
 ];
