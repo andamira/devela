@@ -75,7 +75,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - macros: `cfg_if!`, `const_assert!`.
   - traits: `ConstBool`.
 - optional dependencies:
-  - `allocator-api2`, `bumpalo`, `crossterm`, `jiff`, `js-sys`, `midir`, `nc`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `rustix`, `stringzilla`, `safe_arch`, `serde`, `sysinfo`, `tinyaudio`, `tokio`, `tracing`, `wasm-bindgen`, `web-sys`, `winnow`.
+  - `allocator-api2`, `bumpalo`, `crossterm`, `jiff`, `js-sys`, `midir`, `nc`, `pyo3`, `rayon`, `regex-lite`, `rkyv`, `rodio`, `rustix`, `safe_arch`, `serde`, `stringzilla`, `sysinfo`, `tinyaudio`, `tokio`, `tracing`, `wasm-bindgen`, `web-sys`, `winnow`.
 - re-export:
   - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt, path}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.

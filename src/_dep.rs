@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 36 optional dependencies */
+/* 37 optional dependencies */
 // In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
 
 reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,
@@ -99,6 +99,9 @@ reexport! { optional_crate (unsafe) "dep_raw_cpuid", "raw-cpuid", raw_cpuid,
 }
 reexport! { optional_crate (safe) "dep_regex_lite", "regex-lite", regex_lite,
     doc: " A lightweight regex engine optimized for binary size and compilation time."
+}
+reexport! { optional_crate (unsafe) "dep_rkyv", "rkyv", rkyv,
+    doc: "A zero-copy deserialization framework for Rust."
 }
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,
     doc: "Audio playback library."

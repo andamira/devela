@@ -5,6 +5,8 @@
 //
 
 use crate::{Array, Bare, Storage};
+#[cfg(feature = "dep_rkyv")]
+use rkyv::{Archive, Deserialize, Serialize};
 
 /* types */
 
@@ -96,6 +98,7 @@ use crate::{Array, Bare, Storage};
 /// [`tuck_front`][Self::tuck_front],
 /// [`tuck2_back`][Self::tuck2_back],
 /// [`tuck2_front`][Self::tuck2_front].
+#[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 pub struct Destaque<T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) data: Array<T, CAP, S>,
     pub(super) len: IDX,
