@@ -43,6 +43,7 @@
     feature(
         const_atomic_from_ptr,
         const_char_encode_utf16,
+        const_float_methods,
         const_make_ascii,
         const_maybe_uninit_assume_init,
         const_option_ext,
@@ -61,7 +62,6 @@
         build_hasher_default_const_new,
         const_align_of_val,
         // const_collections_with_hasher, // ?
-        const_float_methods,
         const_maybe_uninit_write,
         const_nonnull_new,
         const_size_of_val,

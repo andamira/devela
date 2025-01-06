@@ -1,30 +1,13 @@
-
-
-# 1.83 became stable on 2024-11-28:
-- 1.83: ✓[char::MIN](https://github.com/rust-lang/rust/pull/130154)
-- 1.83:  [const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
-- 1.83: ✓[const_char_encode_utf8](https://github.com/rust-lang/rust/pull/131463)
-- 1.83:  [const_extern_fn](https://github.com/rust-lang/rust/pull/129753)
-- 1.83: ✓[const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
-- 1.83: ✓[const_float_classify](https://github.com/rust-lang/rust/pull/130157)
-- 1.83: ✓[const_intrinsic_copy](https://github.com/rust-lang/rust/pull/130762)
-- 1.83: ✓[const_maybe_uninit_as_mut_ptr](https://github.com/rust-lang/rust/pull/130542)
-- 1.83: ✓[const_mut_refs|const_refs_to_cell](https://github.com/rust-lang/rust/pull/129195)
-- 1.83:  [const_refs_to_static](https://github.com/rust-lang/rust/pull/129759)
-- 1.83:  [const_result](https://github.com/rust-lang/rust/pull/131287)
-- 1.83: ✓[const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/pull/130403)
-- 1.83: ✓[const_slice_split_at_mut](https://github.com/rust-lang/rust/pull/130428)
-- 1.83:  [duration_consts_float](https://github.com/rust-lang/rust/pull/131289)
-- 1.83:  [entry_insert](https://github.com/rust-lang/rust/pull/130290)
-- 1.83: ✓[io_error_more](https://github.com/rust-lang/rust/pull/128316)
-- 1.83: ✓[r#ident](https://github.com/rust-lang/rust/pull/126452)
-- 1.83: ✓[rustdoc: table of contents](https://github.com/rust-lang/rust/pull/120736)
-- 1.83: ✓[waker_getters](https://github.com/rust-lang/rust/pull/129919)
+Legend:
+- `·` = enabled by non-specific feature (nightly_[next1|next2|later)
+- `F` = enabled by specific feature, shown at the end of the line
+- `?` = can't be enabled, apparently
+- `✓` = past feature explicitly used
 
 # 1.84 will be stable on 2024-01-09: (nightly_stable_next1)
 - 1.84: ·[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
 - 1.84: ·[const_char_encode_utf16](https://github.com/rust-lang/rust/pull/132153)
-- 1.84: →[const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
+- 1.84: ·[const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
 - 1.84: ·[const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
 - 1.84: ·[const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
 - 1.84: ·[const_option_ext](https://github.com/rust-lang/rust/pull/132966)
@@ -84,7 +67,7 @@
 - 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
 - 1.??: ·[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
-# .‥… much later
+# .‥… probably even later
 - 1.?? F[allocator_api](https://github.com/rust-lang/rust/issues/32838) `nightly_allocator`
 - 1.?? F[autodiff](https://github.com/rust-lang/rust/issues/124509) `nightly_autodiff`
 - 1.?? F[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532) `nightly_bigint`
@@ -114,6 +97,7 @@
 - [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 - [offset_of_enum](https://github.com/rust-lang/rust/issues/120141)
 - [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
+  - https://rust-lang.github.io/rfcs/2580-ptr-meta.html
 - [type_alias_impl_trait|impl_trait_in_assoc_type](https://github.com/rust-lang/rust/issues/63063)
 
 # Meta tracking issues:
@@ -138,3 +122,45 @@
 - [Rust 2024 Edition](https://github.com/rust-lang/rust-project-goals/issues/117)
 - [stabilize cargo-script](https://github.com/rust-lang/rust-project-goals/issues/119)
 - [stabilize doc_cfg](https://github.com/rust-lang/rust-project-goals/issues/120)
+
+# Past releases
+## 1.82 became stable on 2024-10-17:
+- 1.82:  [asm_const](https://github.com/rust-lang/rust/pull/128570)
+- 1.82:  [char_indices_offset](https://github.com/rust-lang/rust/pull/129276)
+- 1.82: ✓[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/pull/128596)
+- 1.82: ✓[const_int_from_str](https://github.com/rust-lang/rust/pull/124941)
+- 1.82: ✓[const_waker](https://github.com/rust-lang/rust/pull/128228)
+- 1.82:  [debug_more_non_exhaustive](https://github.com/rust-lang/rust/pull/131109)
+- 1.82:  [iter::repeat_n](https://github.com/rust-lang/rust/pull/129294)
+- 1.82:  [is_none_or](https://github.com/rust-lang/rust/pull/129086)
+- 1.82:  [is_sorted](https://github.com/rust-lang/rust/pull/128279)
+- 1.82:  [min_exhaustive_patterns](https://github.com/rust-lang/rust/pull/122792)
+- 1.82:  [new_uninit](https://github.com/rust-lang/rust/pull/129401)
+- 1.82:  [offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
+- 1.82:  [raw_ref_op](https://github.com/rust-lang/rust/pull/127679)
+- 1.82:  [ready_into_inner](https://github.com/rust-lang/rust/pull/116528)
+- 1.82:  [thread_spawn_unchecked](https://github.com/rust-lang/rust/pull/129161)
+- 1.82:  [unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
+- 1.82:  [unsafe_attributes](https://github.com/rust-lang/rust/pull/128771)
+
+## 1.83 became stable on 2024-11-28:
+- 1.83: ✓[char::MIN](https://github.com/rust-lang/rust/pull/130154)
+- 1.83:  [const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
+- 1.83: ✓[const_char_encode_utf8](https://github.com/rust-lang/rust/pull/131463)
+- 1.83:  [const_extern_fn](https://github.com/rust-lang/rust/pull/129753)
+- 1.83: ✓[const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
+- 1.83: ✓[const_float_classify](https://github.com/rust-lang/rust/pull/130157)
+- 1.83: ✓[const_intrinsic_copy](https://github.com/rust-lang/rust/pull/130762)
+- 1.83: ✓[const_maybe_uninit_as_mut_ptr](https://github.com/rust-lang/rust/pull/130542)
+- 1.83: ✓[const_mut_refs|const_refs_to_cell](https://github.com/rust-lang/rust/pull/129195)
+- 1.83:  [const_refs_to_static](https://github.com/rust-lang/rust/pull/129759)
+- 1.83:  [const_result](https://github.com/rust-lang/rust/pull/131287)
+- 1.83: ✓[const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/pull/130403)
+- 1.83: ✓[const_slice_split_at_mut](https://github.com/rust-lang/rust/pull/130428)
+- 1.83:  [duration_consts_float](https://github.com/rust-lang/rust/pull/131289)
+- 1.83:  [entry_insert](https://github.com/rust-lang/rust/pull/130290)
+- 1.83: ✓[io_error_more](https://github.com/rust-lang/rust/pull/128316)
+- 1.83: ✓[r#ident](https://github.com/rust-lang/rust/pull/126452)
+- 1.83: ✓[rustdoc: table of contents](https://github.com/rust-lang/rust/pull/120736)
+- 1.83: ✓[waker_getters](https://github.com/rust-lang/rust/pull/129919)
+
