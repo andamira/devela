@@ -103,8 +103,8 @@ bench = false
 #* Development features *#
 # ------------------------------------------------------------------------------
 
-__dbg = [] # for debugging purposes, shows enabled features
-__no_test = [] # allows excluding examples from being tested
+__dbg = [] # shows extra debugging information.
+__no_test = [] # exclude examples from being tested.
 
 __force_miri_dst = [] # inhibits disabling miri on the data::dst module
 
