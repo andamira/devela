@@ -45,7 +45,7 @@ pub use full_composite::*;
 #[cfg(feature = "error")]
 mod full_composite {
     use super::super::reexports::crate_errors::*;
-    use super::*;
+    // use super::*;
 
     #[doc = crate::TAG_RESULT!()]
     /// The root result type, aggregating all module-specific results.

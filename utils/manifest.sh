@@ -14,14 +14,15 @@ crate_name=$(cargo metadata --format-version 1 --no-deps \
 operation="$1"
 
 case "$operation" in
+  # Output summary of dependencies and features
   summary)
-    # Output summary of dependencies and features
     "$SCRIPT_DIR/manifest.sh" dependencies | rg '\[dependencies\]'
     "$SCRIPT_DIR/manifest.sh" features | rg '\[features\]'
     ;;
-  
+
+  # Retrieve and display dependencies
   dependencies)
-    # Retrieve and display dependencies
+
     dependencies=$(cargo metadata --format-version 1 --no-deps \
       | jq -r ".packages[] | select(.name == \"$crate_name\") | .dependencies")
 
@@ -45,9 +46,9 @@ case "$operation" in
     # Output dependency counts
     echo "\n[dependencies] # $total_non_dev ($required required, $optional optional)"
     ;;
-  
+
+  # Retrieve and display features
   features)
-    # Retrieve and display features
     features=$(cargo metadata --format-version=1 --no-deps | jq ".packages[] | select(.name == \"$crate_name\") | .features | keys")
 
     # Output feature list
@@ -63,7 +64,7 @@ case "$operation" in
     # Output feature counts
     echo "\n[features] # $total/300 ($remaining remaining), $visible visible, $hidden hidden"
     ;;
-  
+
   *)
     echo "Usage: $0 {summary|dependencies|features}"
     exit 1

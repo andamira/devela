@@ -3,7 +3,7 @@
 use super::*;
 
 #[test]
-fn array2d_indexing() {
+fn indexing() {
     type XMAJ = Array2d<u32, 3, 3, { 3 * 3 }>;
 
     assert_eq!(XMAJ::get_index_unchecked([0, 0]), 0);
@@ -36,7 +36,7 @@ fn array2d_indexing() {
 }
 
 #[test]
-fn array2d_check() {
+fn check() {
     // Initialize a 2D grid (3x3) in ROW MAJOR order
     // let xmaj = Array2d::<u32, (), 3, 3, { 3 * 3 }>::with_cloned(0).unwrap();
 

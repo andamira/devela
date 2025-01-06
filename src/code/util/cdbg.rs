@@ -96,7 +96,7 @@ macro_rules! cdbg {
     }};
     (f @ $($v:expr),+ $(,)?) => { ($($crate::cdbg![f @ $v]),+,) };
     (f @) => { eprintln!("[{}:{}:{}]", file!(), line!(), column!()) };
-    (// (pretty-print) (equivalent to `dbg!`)                       cdbg![f# x];
+    (// (pretty-print) (equivalent to `dbg!`)                       cdbg![f # x];
      f # $v:expr $(,)?) => {{
         eprint!("[{}:{}:{}] ", file!(), line!(), column!());
         $crate::cdbg![# $v]
@@ -111,7 +111,7 @@ macro_rules! cdbg {
     }};
     (fln @ $($v:expr),+ $(,)?) => { ($($crate::cdbg![fln @ $v]),+,) };
     (fln @) => { eprintln!("[{}:{}:{}]", file!(), line!(), column!()) };
-    (// (pretty-print)                                              cdbg![fln# x];
+    (// (pretty-print)                                              cdbg![fln # x];
      fln # $v:expr $(,)?) => {{
         eprintln!("[{}:{}:{}]", file!(), line!(), column!());
         $crate::cdbg![# $v]

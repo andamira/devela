@@ -9,13 +9,13 @@ use rkyv::{Archive, Deserialize, Serialize};
 
 /// A static 2-dimensional [`Array`].
 ///
-/// It is generic in respect to its
-/// elements (`T`),
-/// columns (`C`),
-/// rows (`R`),
-/// size (`CR`),
-/// storage order (`RMAJ`)
-/// and storage (`S`).
+/// It is generic in respect to its:
+/// - elements (`T`),
+/// - number of columns (`C`),
+/// - number of rows (`R`),
+/// - total capacity (`CR`),
+/// - storage order (`RMAJ`)
+/// - storage abstraction (`S`).
 ///
 /// The total lenght `CR` must be equal to the product `C` * `R`.
 ///
