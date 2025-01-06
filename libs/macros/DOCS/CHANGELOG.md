@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.13.0] - (TBD)
 
+## [0.12.1] - (TBD)
+
+- new macro `field_of`.
+- remove inline attributes.
 
 ## [0.12.0] - 2024-12-01
 
