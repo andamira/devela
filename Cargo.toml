@@ -32,7 +32,7 @@ name = "devela_macros"
 description = "procedural macros for devela"
 version = "0.12.0"
 edition = "2021"
-rust-version = "1.72.1" # sync with README.md, check.sh & .github/workflows/check.yml
+rust-version = "1.72.1" # sync with ./README.md, ./check.sh & ./.github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela_macros"
 documentation = "https://docs.rs/devela_macros"
@@ -41,7 +41,6 @@ include = [
 	"/Cargo.toml",
 	"/DOCS/*", "/LICENSE*",
 	"/src/**/*.rs", "/src/**/*.md",
-
 	# examples used in docs:
 	"/examples/*.rs",
 ]
@@ -58,34 +57,25 @@ proc-macro = true
 
 #* Miscellaneous features *#
 # ------------------------------------------------------------------------------
-
-default = ["safe", "dep_hashbrown"]
-
+default = ["std", "safe"]
 
 #* Environment features *#
 # ------------------------------------------------------------------------------
-
 std = ["alloc"]
 alloc = []
 
-
 #* Safety features *#
 # ------------------------------------------------------------------------------
-
 unsafe = [] # enables unsafe features in this crate (unused)
 safe = [] # forbids `unsafe` in this crate
 
-
-#* Nightly features tree *#
+#* Nightly features *#
 # ------------------------------------------------------------------------------
-
 nightly = ["nightly_doc"]
 	nightly_doc = [] # doc_cfg
 
-
 #* Capability features *#
 # ------------------------------------------------------------------------------
-
 # The most complete version of the documentation:
 _docsrs = ["nightly", "std", "unsafe", "dep_hashbrown"]
 
@@ -118,7 +108,6 @@ maintenance = { status = "experimental" }
 
 # examples
 # ==============================================================================
-
 [[example]]
 name = "cif"
 required-features = ["alloc"]
