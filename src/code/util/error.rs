@@ -29,7 +29,7 @@ macro_rules! impl_error {
     (
     // Defines a standalone error struct with fields.
     individual: $struct_vis:vis struct $struct_name:ident {
-            $($field_vis:vis $field_name:ident : $field_ty:ty ),+
+            $($(#[$field_attr:meta])* $field_vis:vis $field_name:ident : $field_ty:ty ),+
         }
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
@@ -40,7 +40,10 @@ macro_rules! impl_error {
         #[doc = crate::TAG_ERROR!()]
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
-        $struct_vis struct $struct_name { $( $field_vis $field_name: $field_ty),+ }
+        $struct_vis struct $struct_name {
+            $( $(#[$field_attr])*
+            $field_vis $field_name: $field_ty),+
+        }
 
         $crate::impl_error![@individual $struct_name, $self+$fmt=>$display_expr];
     };
@@ -118,6 +121,7 @@ macro_rules! impl_error {
             fn try_from($arg: $for) -> Result<$from, crate::FailedErrorConversion> {
                 match $arg {
                     $for::$variant $(($try_arg))? => Ok($from $(($try_arg))? ),
+                    #[allow(unreachable_patterns)]
                     _ => Err(crate::FailedErrorConversion)
                 }
             }

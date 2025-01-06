@@ -59,8 +59,8 @@ mod full_composite {
     #[derive(Debug)]
     pub enum AllError {
         /// A data-related error.
-        #[cfg(feature = "data")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
+        #[cfg(data··)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(data··)))]
         Data(DataError),
 
         /// A media-related error.

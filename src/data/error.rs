@@ -166,7 +166,7 @@ mod full_composite {
             DOC_NOT_SUPPORTED: NotSupported => NotSupported,
             //
             DOC_DATA_OVERFLOW:
-                DataOverflow => DataOverflow,
+                DataOverflow(i: Option<usize>) => DataOverflow(*i),
             DOC_ELEMENT_NOT_FOUND:
                 ElementNotFound => ElementNotFound,
             DOC_INDEX_OUT_OF_BOUNDS:
@@ -210,8 +210,8 @@ mod full_composite {
     impl_error! { composite: from(f): MismatchedBounds, for: DataError {
         DataOverflow(i) => DataOverflow(i),
         IndexOutOfBounds(i) => IndexOutOfBounds(i),
-        MismatchedIndices(i) => MismatchedIndices(i),
         MismatchedCapacity(i) => MismatchedCapacity(i),
+        MismatchedIndices => MismatchedIndices,
     }}
 
     #[doc = crate::TAG_RESULT!()]
