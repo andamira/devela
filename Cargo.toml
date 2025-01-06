@@ -481,13 +481,13 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 36 optional dependencies:
+dep_all = [ # enables all 39 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
-	"dep_crossterm", "dep_hashbrown", "dep_jiff", "dep_js_sys", "dep_libm", "dep_log",
-	"dep_memchr", "dep_midir", "dep_miniquad", "dep_nc", "dep_portable_atomic", "dep_pyo3",
-	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rkyv", "dep_rodio",
-	"dep_rustix", "dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_serde",
-	"dep_tinyaudio", "dep_tokio", "dep_tracing", "dep_unicode_segmentation",
+	"dep_crossterm", "dep_hashbrown", "dep_jiff", "dep_js_sys", "dep_kira", "dep_libm",
+	"dep_log", "dep_memchr", "dep_midir", "dep_miniquad", "dep_nc", "dep_portable_atomic",
+	"dep_pyo3", "dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rkyv",
+	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_serde", "dep_stringzilla", "dep_sysinfo",
+	"dep_symphonia", "dep_tinyaudio", "dep_tokio", "dep_tracing", "dep_unicode_segmentation",
 	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow"
 ]
 
@@ -510,6 +510,7 @@ dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown",                   
 	"rkyv?/hashbrown-0_15"]
 dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
 dep_js_sys = ["dep:js-sys"]                                                     # lang::js
+dep_kira = ["dep:kira"]                                                         # sys::sound
 dep_libm = ["dep:libm"]                                                         # num::float
 dep_log = ["dep:log", "tracing?/log"]                                           # sys::log
 dep_memchr = ["dep:memchr", "winnow?/simd"]                                     # text:str
@@ -526,8 +527,10 @@ dep_rkyv = ["dep:rkyv"]                                                         
 dep_rodio = ["dep:rodio"]                                                       # sys::sound
 dep_rustix = ["dep:rustix"]                                                     # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
-dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde"]            # data::serde
+dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",            # data::serde
+	"kira?/serde"]
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
+dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]        # sys::sound
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
 dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
 dep_tokio = ["dep:tokio"]                                                       # work::async
@@ -540,7 +543,7 @@ dep_wide = ["dep:wide"]                                                         
 dep_winnow = ["dep:winnow"]                                                     # text::parse
 
 
-[dependencies] # 39 (2 required, 37 optional)
+[dependencies] # 41 (2 required, 39 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -627,6 +630,13 @@ optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
 # deps: once-cell, wasm-bindgen/std
 
+[dependencies.kira] # https://crates.io/crates/kira
+version = "0.10.0" # ✓ https://github.com/tesselode/kira/releases
+optional = true # safe (although unsafe deps?)
+default-features = false # 10 https://docs.rs/crate/kira/latest/features
+features = ["cpal"] # symphonia, flac, mp3, ogg, wav
+# https://docs.rs/kira/latest/kira/#features
+
 [dependencies.libm] # https://crates.io/crates/libm
 version = "0.2.11" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
 optional = true # unsafe
@@ -696,7 +706,7 @@ features = ["string"]
 # WAIT: [no_std](https://github.com/rust-lang/regex/issues/1122)
 
 [dependencies.rkyv] # https://crates.io/crates/rkyv
-version = "0.8.9" # ✗ https://github.com/rkyv/rkyv/releases
+version = "0.8.9" # ✓ https://github.com/rkyv/rkyv/releases
 optional = true # unsafe
 default-features = false # 23  https://docs.rs/crate/rkyv/latest/features
 features = ["bytecheck"] # https://docs.rs/rkyv/latest/rkyv/#features
@@ -736,6 +746,13 @@ optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 # WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)
 # WAIT [fix cmake code](https://github.com/ashvardanian/StringZilla/pull/85)
+
+[dependencies.symphonia] # https://crates.io/crates/symphonia
+version = "0.5.4" # ✓ https://github.com/pdeljanov/Symphonia/releases
+optional = true # safe
+default-features = false # 36 https://docs.rs/crate/symphonia/latest/features
+features = [] # adpcm, flac, mkv, ogg, pcm, vorbis, wav, symphonia-[bundle|codec|format]*, opt-simd
+# IMPROVE: feature-gate
 
 [dependencies.sysinfo] # https://crates.io/crates/sysinfo
 version = "0.33.1" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md

@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 37 optional dependencies */
+/* 39 optional dependencies */
 // In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
 
 reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,
@@ -62,6 +62,9 @@ reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
 }
 reexport! { optional_crate (unsafe) "dep_js_sys", "js-sys", js_sys,
     doc: "Bindings for all JS global objects and functions in all JS environments."
+}
+reexport! { optional_crate (safe) "dep_kira", "kira", kira,
+    doc: "Expressive audio library for games."
 }
 reexport! { optional_crate (unsafe) "dep_libm", "libm", libm,
     doc: "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust."
@@ -117,6 +120,9 @@ reexport! { optional_crate (unsafe) "dep_serde", "serde", serde,
 }
 reexport! { optional_crate (unsafe) "dep_stringzilla", "stringzilla", stringzilla,
     doc: "SIMD-accelerated string search, sorting, fingerprints, and edit distances."
+}
+reexport! { optional_crate (safe) "dep_symphonia", "symphonia", symphonia,
+    doc: " Pure Rust media container and audio decoding library."
 }
 reexport! { optional_crate (unsafe) "dep_sysinfo", "sysinfo", sysinfo,
     doc: "Get system information such as processes, CPUs, disks, and networks."
