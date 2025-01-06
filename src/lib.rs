@@ -193,6 +193,31 @@ pub fn ident_unique(input: TokenStream) -> TokenStream {
     body_ident_unique(input)
 }
 
+/// Generates an expression for accessing a field of a tuple or struct.
+///
+/// Constructs an expression in the form `<value>.<field>`, where `<value>`
+/// is a tuple or struct, and `<field>` is the field to access, either
+/// a zero-based index (for tuples) or a named field (for structs).
+///
+/// # Example
+/// ```
+/// # use devela_macros::field_of;
+/// let my_tuple = (42, 100, 300);
+/// let value = field_of!(my_tuple, 1); // expands to `my_tuple.1`
+/// assert_eq!(value, 100);
+///
+/// struct MyStruct { x: i32, y: i32 }
+/// let my_struct = MyStruct { x: 10, y: 20 };
+/// let value = field_of!(my_struct, y); // expands to `my_struct.y`
+/// assert_eq!(value, 20);
+/// ```
+#[proc_macro]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn field_of(input: TokenStream) -> TokenStream {
+    body_field_of(input)
+}
+
 /* macros: niche */
 
 /// Generates a unit-only enum with variants associated to a specified range.
