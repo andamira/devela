@@ -25,36 +25,37 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new cfg flags: `cargo_primary_package`, `*·`, `_*··`.
 
 #### New items
-- structs:
-  - namespaces: `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
+- new structs:
+  - new namespaces: `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`.
-  - standalone error types: `FailedErrorConversion`, `DataNotEnough`, `NotImplemented`, `NotSupported`, `ElementNotFound`, `InvalidAxisLength`, `KeyAlreadyExists`, `MismatchedCapacity`, `MismatchedDimensions`, `MismatchedIndices`, `NodeEmpty`, `NodeLinkNotSet`, `NodeLinkNotUnique`, `NotEnoughElements`, `NotEnoughSpace`, `IndexOutOfBounds`, `DataOverflow`, `PartiallyAdded`.
-  - composite error types: `NotAvailable`, `DataNotEnough`, `MismatchedBounds`, `PartialSpace`.
+  - new standalone error types: `FailedErrorConversion`, `DataNotEnough`, `NotImplemented`, `NotSupported`, `ElementNotFound`, `InvalidAxisLength`, `KeyAlreadyExists`, `MismatchedCapacity`, `MismatchedDimensions`, `MismatchedIndices`, `NodeEmpty`, `NodeLinkNotSet`, `NodeLinkNotUnique`, `NotEnoughElements`, `NotEnoughSpace`, `IndexOutOfBounds`, `DataOverflow`, `PartiallyAdded`.
+  - new composite error types: `NotAvailable`, `DataNotEnough`, `MismatchedBounds`, `PartialSpace`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `HasherPengy`.
   - `Lgc16`.
   - `TimeSplit`.
   - `TypeResource`.
   - `WaveletHaar`, `WaveletUnitVec`.
-- aliases:
+- new aliases:
   - `AllocMapFx`, `AllocSetFx`, `FmtResult`, `NoTime`.
   - `MediaResult`, `AudioResult`, `ColorResult`, `DrawResult`,`FontResult`, `ImageResult`.
   - `UiResult`, `LayoutResult`.
   - re-exported primitives: `char`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
-- enums:
+- new enums:
   - `AllError`, `AllErrorKind`.
   - `MediaError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`.
   - `UiError`, `LayoutError`.
   - `WaveletUnitRole`.
-- enum variants:
+- new enum variants:
   - `DataError::ElementNotFound`.
-- traits:
+- new traits:
   - `ColorBase`, `ExtCellOption`, `ExtError`, `ExtOptRes`, `ExtPath`, `ExtThread`, `MemPod`, `TypeResourced`, `Unit`.
   - `WaveletCompressionVec`, `WaveletTransformVec`.
-- associated methods and constants for:
+- new associated methods and constants for:
   - `Array`: `from_fn`, `contains_[from|to|between]`, `as_bare_mut_slice`, `get[_mut]`.
-  - `Array` when storing `Option<T>`.
+  - `Array`, when storing `Option<T>`.
+  - `Array2d`: `cap_col`, `cap_row`, `cap_major`, `cap_minor`, `num_major`, `num_minor`.
   - `BareBox`.
   - `ExtAny` method `type_id`.
   - `Float` and `ExtFloat`:
@@ -66,17 +67,17 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
   - `Slice`: `eq`, `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut][_checked]`, `range_from[_mut][_checked]`, `range_to[_mut][_checked]`, `take_first[_mut][_checked]`, `take_last[_mut][_checked]`, `take_omit_last[_mut][_checked]`.
   - `UnicodeScalar` & `char*` types: `MIN`.
-- macros:
+- new macros:
   - `id_seq!`, `impl_trait!`, `include_from!`, `mod_from!`, `str!`, `type_marker!`, `type_resource!`.
   - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
   - private: `doc_availability!`, `impl_error`, `EMOJI_*`, `TAG_*`.
-- vendored:
+- new vendored items
   - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
   - macros: `cfg_if!`, `const_assert!`.
   - traits: `ConstBool`.
-- optional dependencies:
+- new optional dependencies:
   - `allocator-api2`, `bumpalo`, `crossterm`, `jiff`, `js-sys`, `midir`, `nc`, `pyo3`, `rayon`, `regex-lite`, `rkyv`, `rodio`, `rustix`, `safe_arch`, `serde`, `stringzilla`, `sysinfo`, `tinyaudio`, `tokio`, `tracing`, `wasm-bindgen`, `web-sys`, `winnow`.
-- re-export:
+- new re-exported:
   - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt, path}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:

@@ -1,6 +1,6 @@
 // devela::data::collections::array::d2::methods::general
 //
-//! 2-dimensional array general methods
+//! 2-dimensional array general methods.
 //
 
 #[cfg(doc)]
@@ -26,7 +26,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// or [`MismatchedCapacity`] if `C * R != CR`.
     /// # Examples
     /// ```
-    /// # use devela::data::Array2d;
+    /// # use devela::Array2d;
     /// let g = Array2d::<_, 4, 4, {4 * 4}>::with_cloned('.');
     /// ```
     pub fn with_cloned(element: T) -> Result<Self, MismatchedBounds> {
@@ -88,30 +88,20 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
 {
     /* general queries */
 
-    /// Returns the total length of the array, equals `C * R`.
-    #[must_use]
-    pub const fn len(&self) -> usize { CR }
+    /// Returns the total capacity of the array, equals `CR == C * R`.
+    #[must_use] pub const fn capacity(&self) -> usize { CR }
 
-    /// Returns the length of the C axis.
-    /// (AKA width, number of columns or row length).
-    #[must_use] pub const fn x_len(&self) -> usize { C }
+    /// Returns the capacity of a column, equivalent to [`num_rows`][Self::num_rows] == `R`.
+    #[must_use] pub const fn cap_col(&self) -> usize { R }
 
-    /// Returns the length of the R axis
-    /// (AKA height, number of rows or column length).
-    #[must_use] pub const fn y_len(&self) -> usize { C }
+    /// Returns the capacity of a row, equivalent to [`num_cols`][Self::num_cols] == `C`.
+    #[must_use] pub const fn cap_row(&self) -> usize { C }
 
-    /// Returns `true` if the stack is empty (has 0 length).
-    /// # Examples
-    /// ```
-    /// # use devela::Array2d;
-    /// let g1 = Array2d::<i32, 3, 3, 9>::default();
-    /// assert![!g1.is_empty()];
-    ///
-    /// let g2 = Array2d::<i32, 0, 0, 0>::default();
-    /// assert![g2.is_empty()];
-    /// ```
-    #[must_use]
-    pub const fn is_empty(&self) -> bool { CR == 0 }
+    /// Returns the number of columns, equivalent to [`cap_row`][Self::cap_row] == `C`.
+    #[must_use] pub const fn num_cols(&self) -> usize { C }
+
+    /// Returns the number of rows, equivalent to [`cap_col`][Self::cap_col] == `R`.
+    #[must_use] pub const fn num_rows(&self) -> usize { R }
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
@@ -120,15 +110,9 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     #[allow(non_snake_case)]
     pub(crate) const fn check_CR() -> Result<(), MismatchedBounds> {
         if let Some(len) = C.checked_mul(R) {
-            if len == CR {
-                Ok(())
-            } else {
-                Err(MismatchedCapacity(
-                        Mismatch { need: CR, have: len, info: "C * R != CR" }))
-            }
-        } else {
-            Err(IndexOutOfBounds(None)) // RETHINK: return some value
-        }
+            if len == CR { Ok(()) } else {
+                Err(MismatchedCapacity( Mismatch { need: CR, have: len, info: "C * R != CR" })) }
+        } else { Err(IndexOutOfBounds(None)) } // RETHINK: return some value
     }
 
     /// Checks the geometry of the columns, rows and their product length.
@@ -168,6 +152,46 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     // /// ```
     #[must_use]
     pub fn as_mut_slice(&mut self) -> &mut [T] { self.data.as_mut_slice() }
+}
+
+/* Order-dependent */
+
+#[rustfmt::skip]
+impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, C, R, CR, true, S> {
+    /// Returns the capacity per item in the major dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of columns. For column-major, this is the number of rows.
+    #[must_use] pub const fn cap_major(&self) -> usize { C }
+
+    /// Returns the capacity per item in the minor dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of rows. For column-major, this is the number of columns.
+    #[must_use] pub const fn cap_minor(&self) -> usize { R }
+
+    /// Returns the number of items in the major dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of rows. For column-major, this is the number of columns.
+    #[must_use] pub const fn num_major(&self) -> usize { R }
+
+    /// Returns the number of items in the minor dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of columns. For column-major, this is the number of rows.
+    #[must_use] pub const fn num_minor(&self) -> usize { C }
+}
+
+#[rustfmt::skip]
+impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, C, R, CR, false, S> {
+    /// Returns the capacity per item in the major dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of columns. For column-major, this is the number of rows.
+    #[must_use] pub const fn cap_major(&self) -> usize { R }
+
+    /// Returns the capacity per item in the minor dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of rows. For column-major, this is the number of columns.
+    #[must_use] pub const fn cap_minor(&self) -> usize { C }
+
+    /// Returns the number of items in the major dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of rows. For column-major, this is the number of columns.
+    #[must_use] pub const fn num_major(&self) -> usize { C }
+
+    /// Returns the number of items in the minor dimension based on layout (`RMAJ`).
+    /// For row-major, this is the number of columns. For column-major, this is the number of rows.
+    #[must_use] pub const fn num_minor(&self) -> usize { R }
 }
 
 // T, S: Bare

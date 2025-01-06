@@ -1,6 +1,6 @@
 // devela::data::collections::array::d1::methods::general
 //
-//! 1-dimensional array common methods (Storage-independent).
+//! 1-dimensional array general methods (Storage-independent).
 //
 // TOC
 // - constructors
