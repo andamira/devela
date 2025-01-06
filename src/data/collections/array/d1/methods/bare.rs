@@ -5,7 +5,8 @@
 // TOC
 // - constructors
 // - methods
-// - methods for Option<T>
+// - indexing methods (panicking)
+// - Option<T> methods
 
 use crate::{array_init, iif, Array, Bare, BareBox};
 

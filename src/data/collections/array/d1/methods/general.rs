@@ -1,17 +1,18 @@
-// devela::data::collections::array::d1::methods
+// devela::data::collections::array::d1::methods::general
 //
 //! 1-dimensional array common methods (Storage-independent).
 //
 // TOC
 // - constructors
 // - methods
-// - methods for Option<T>
+// - T: PartialEq methods
+// - Option<T> methods
 
 use crate::{
     array_from_fn, iif, Array, ElementNotFound, IndexOutOfBounds, MismatchedBounds, Storage,
 };
 
-/// # Common constructors
+/// # Constructors
 impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns a new `Array` from the given primitive `array`.
     pub fn new(array: [T; CAP]) -> Self {
@@ -27,9 +28,9 @@ impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
     // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 }
 
-/// # Common methods
+/// # Methods
 impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
-    /// Returns the capacity of the array.
+    /// Returns the total capacity of the array, equals `CAP`.
     #[must_use]
     pub const fn capacity(&self) -> usize {
         CAP
@@ -64,7 +65,7 @@ impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
     }
 }
 
-/// # Common `T: PartialEq` methods
+/// # `T: PartialEq` methods
 impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns `true` if the array contains `element`.
     ///
@@ -138,7 +139,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     }
 }
 
-/// # Common `Option<T>` methods
+/// # `Option<T>` methods
 impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     /// Takes out some element at `index`, leaving `None` in its place.
     #[must_use]

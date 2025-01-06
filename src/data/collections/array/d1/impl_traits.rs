@@ -2,6 +2,10 @@
 //
 //! 1-dimensional array trait impls
 //
+// TOC
+// - utility traits
+// - iterator related
+// - bitwise ops
 
 use crate::{
     array_init, Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign,
@@ -11,6 +15,8 @@ use crate::{
 
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed};
+
+/* utility traits */
 
 // Deref
 impl<T, const CAP: usize, S: Storage> Deref for Array<T, CAP, S> {

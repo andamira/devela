@@ -3,9 +3,8 @@
 //! 1-dimensional array methods
 //
 
-mod common;
-
 mod bare;
+mod general;
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
