@@ -39,6 +39,8 @@ impl_error! { composite: fmt(f)
     }
 }
 
+#[cfg(feature = "error")]
+pub use full_composite::*;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 #[cfg(feature = "error")]
 mod full_composite {

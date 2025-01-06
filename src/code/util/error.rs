@@ -73,8 +73,12 @@ macro_rules! impl_error {
         $(#[$enum_attr:meta])*
         $vis:vis enum $enum_name:ident { $(
             $DOC_VAR:ident:
-            $variant:ident $(($var_arg:ident: $var_data:ty))?
-                => $indiv_type:ident $(($indiv_expr:expr))?
+            $variant:ident
+                $(($tuple_elem_name:ident: $tuple_elem_ty:ty))? // tuple-struct, or…
+                $({ $($field_name:ident: $field_ty:ty),+ })? // struct with fields
+                => $individual_error_name:ident
+                    $(($tuple_elem_display_expr:expr))? // tuple-struct, or…
+                    $({ $($field_display_name:ident: $field_display_expr:expr),+ })? // field-struct
         ),+ $(,)? }
     ) => {
         #[doc = crate::TAG_ERROR_COMPOSITE!()]
@@ -82,7 +86,9 @@ macro_rules! impl_error {
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $enum_name { $(
             #[doc = $DOC_VAR!()]
-            $variant $(($var_data))?
+            $variant
+                $(($tuple_elem_ty))? // tuple-struct, or…
+                $({$($field_name: $field_ty),+})? // field-struct
         ),+ }
 
         // impl Error, ExtError & Display:
@@ -95,14 +101,22 @@ macro_rules! impl_error {
         impl $crate::Display for $enum_name  {
             fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 match self { $(
-                    $enum_name::$variant $(($var_arg))? =>
-                        $crate::Display::fmt(&$indiv_type $(($indiv_expr))?, $fmt),
+                    $enum_name::$variant
+                    $(($tuple_elem_name))? // tuple-struct, or…
+                    $({$($field_name),+})? // field-struct
+                    =>
+                        $crate::Display::fmt(&$individual_error_name
+                            $(($tuple_elem_display_expr))? // tuple-struct, or…
+                            $({$($field_display_name: $field_display_expr),+})? // field-struct
+                        , $fmt),
                 )+ }
             }
         }
         // impl From multiple individual errors for a composite error, and TryFrom in reverse:
         $crate::impl_error! { from multiple for: $enum_name { $(
-            $indiv_type, _f => $variant $((_f.0), try:$var_arg)?
+            $individual_error_name, _f => $variant
+                $((_f.0), try:$tuple_elem_name)? // tuple-struct, or…
+                // $($($field_name),+})? // field-struct WIP
         ),+ }}
     };
     (
