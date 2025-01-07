@@ -11,7 +11,7 @@ use crate::reexport;
 /// crate">`devela_macros`</span>
 pub use devela_macros::{
     cif, coalesce, compile, compile_attr, compile_doc, enumint, ident_total, ident_total_unique,
-    ident_unique,
+    ident_unique, field_of,
 };
 
 /* `core::hint` functions re-exports */

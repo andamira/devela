@@ -566,7 +566,7 @@ dep_winnow = ["dep:winnow"]                                                     
 #* required dependencies *#
 
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
-version  = "0.12.0" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
+version  = "0.12.1" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
 # path = "./macros" # safe
 
 [dependencies.paste_crate] # https://crates.io/crates/paste
