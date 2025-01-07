@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.13.0] - (TBD)
 
-## [0.12.1] - (TBD)
+## [0.12.1] - 2025-01-07
 
 - new macro `field_of`.
 - make `std` a default feature.
@@ -183,7 +183,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - new attribute macro `include_block`.
 
-[unreleased]: https://github.com/andamira/devela_macros/compare/v0.11.0...HEAD
+[unreleased]: https://github.com/andamira/devela_macros/compare/v0.12.1...HEAD
+[0.12.1]: https://github.com/andamira/devela_macros/releases/tag/v0.12.1
 [0.12.0]: https://github.com/andamira/devela_macros/releases/tag/v0.12.0
 [0.11.0]: https://github.com/andamira/devela_macros/releases/tag/v0.11.0
 [0.10.0]: https://github.com/andamira/devela_macros/releases/tag/v0.10.0
