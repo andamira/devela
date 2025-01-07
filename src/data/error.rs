@@ -110,8 +110,8 @@ impl_error! { composite: fmt(f)
     /// [`Destaque`][crate::Destaque],
     /// [`Stack`][crate::Stack].
     pub enum DataNotEnough {
-        DOC_NOT_ENOUGH_ELEMENTS:    Elements(i: Option<usize>)  => NotEnoughElements(*i),
-        DOC_NOT_ENOUGH_SPACE:       Space(i: Option<usize>)     => NotEnoughSpace(*i),
+        DOC_NOT_ENOUGH_ELEMENTS:    Elements(i|0: Option<usize>)  => NotEnoughElements(*i),
+        DOC_NOT_ENOUGH_SPACE:       Space(i|0: Option<usize>)     => NotEnoughSpace(*i),
     }
 }
 impl_error! { composite: fmt(f)
@@ -127,11 +127,11 @@ impl_error! { composite: fmt(f)
     /// [`Bitwise`][crate::Bitwise].
     pub enum MismatchedBounds {
         DOC_DATA_OVERFLOW:
-            DataOverflow(i: Option<usize>) => DataOverflow(*i),
+            DataOverflow(i|0: Option<usize>) => DataOverflow(*i),
         DOC_INDEX_OUT_OF_BOUNDS:
-            IndexOutOfBounds(i: Option<usize>) => IndexOutOfBounds(*i),
+            IndexOutOfBounds(i|0: Option<usize>) => IndexOutOfBounds(*i),
         DOC_MISMATCHED_CAPACITY:
-            MismatchedCapacity(c: Mismatch<usize, usize>) => MismatchedCapacity(*c),
+            MismatchedCapacity(c|0: Mismatch<usize, usize>) => MismatchedCapacity(*c),
         DOC_MISMATCHED_INDICES:
             MismatchedIndices => MismatchedIndices,
     }
@@ -143,8 +143,8 @@ impl_error! { composite: fmt(f)
     /// Used in methods of:
     /// [`ArrayUninit`][crate::ArrayUninit].
     pub enum PartialSpace {
-        DOC_NOT_ENOUGH_SPACE:   NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
-        DOC_PARTIALLY_ADDED:    PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
+        DOC_NOT_ENOUGH_SPACE:   NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
+        DOC_PARTIALLY_ADDED:    PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
     }
 }
 
@@ -166,33 +166,33 @@ mod full_composite {
             DOC_NOT_SUPPORTED: NotSupported => NotSupported,
             //
             DOC_DATA_OVERFLOW:
-                DataOverflow(i: Option<usize>) => DataOverflow(*i),
+                DataOverflow(i|0: Option<usize>) => DataOverflow(*i),
             DOC_ELEMENT_NOT_FOUND:
                 ElementNotFound => ElementNotFound,
             DOC_INDEX_OUT_OF_BOUNDS:
-                IndexOutOfBounds(i: Option<usize>) => IndexOutOfBounds(*i),
+                IndexOutOfBounds(i|0: Option<usize>) => IndexOutOfBounds(*i),
             DOC_INVALID_AXIS_LENGTH:
-                InvalidAxisLength(i: Option<usize>) => InvalidAxisLength(*i),
+                InvalidAxisLength(i|0: Option<usize>) => InvalidAxisLength(*i),
             DOC_KEY_ALREADY_EXISTS:
                 KeyAlreadyExists => KeyAlreadyExists,
             DOC_MISMATCHED_CAPACITY:
-                MismatchedCapacity(c: Mismatch<usize, usize>) => MismatchedCapacity(*c),
+                MismatchedCapacity(c|0: Mismatch<usize, usize>) => MismatchedCapacity(*c),
             DOC_MISMATCHED_DIMENSIONS:
-                MismatchedDimensions(d: Mismatch<usize, usize>) => MismatchedDimensions(*d),
+                MismatchedDimensions(d|0: Mismatch<usize, usize>) => MismatchedDimensions(*d),
             DOC_MISMATCHED_INDICES:
                 MismatchedIndices => MismatchedIndices,
             DOC_NODE_EMPTY:
-                NodeEmpty(i: Option<usize>) => NodeEmpty(*i),
+                NodeEmpty(i|0: Option<usize>) => NodeEmpty(*i),
             DOC_NODE_LINK_NOT_SET:
-                NodeLinkNotSet(i: Option<usize>) => NodeLinkNotSet(*i),
+                NodeLinkNotSet(i|0: Option<usize>) => NodeLinkNotSet(*i),
             DOC_NODE_LINK_NOT_UNIQUE:
-                NodeLinkNotUnique(i: Option<usize>) => NodeLinkNotUnique(*i),
+                NodeLinkNotUnique(i|0: Option<usize>) => NodeLinkNotUnique(*i),
             DOC_NOT_ENOUGH_ELEMENTS:
-                NotEnoughElements(i: Option<usize>) => NotEnoughElements(*i),
+                NotEnoughElements(i|0: Option<usize>) => NotEnoughElements(*i),
             DOC_NOT_ENOUGH_SPACE:
-                NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
+                NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
             DOC_PARTIALLY_ADDED:
-                PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
+                PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
         }
     }
     impl_error! { composite: from(f): NotAvailable, for: DataError {
