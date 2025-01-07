@@ -10,8 +10,8 @@ use crate::reexport;
 /// <span class="stab portability" title="re-exported from the `devela_macros`
 /// crate">`devela_macros`</span>
 pub use devela_macros::{
-    cif, coalesce, compile, compile_attr, compile_doc, enumint, ident_total, ident_total_unique,
-    ident_unique, field_of,
+    cif, coalesce, compile, compile_attr, compile_doc, enumint, field_of, ident_total,
+    ident_total_unique, ident_unique,
 };
 
 /* `core::hint` functions re-exports */

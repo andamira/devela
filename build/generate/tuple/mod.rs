@@ -54,7 +54,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     /// # Features
     /// By default it's implemented for tuples of arity of 12 or less.
     /// It supports increased arities of 24, 36, 48 and 72 by enabling the
-    /// corresponding capability feature: `_tuple_arity_[24|36|48|72]`.
+    /// corresponding capability feature: `_tuple_[24|36|48|72]`.
     ///
     /// # Derived work"#)?;
     let modifications = manifest_dir()

@@ -579,7 +579,7 @@ package = "paste" # safe, ARCHIVED
 version = "0.2.21" # ✗ https://github.com/zakarumych/allocator-api2/commits/main/
 optional = true # unsafe
 default-features = false # 6 https://docs.rs/crate/allocator-api2/latest/features
-features = ["fresh-rust"]
+features = [] # ["fresh-rust"] WAIT:FIX: https://github.com/zakarumych/allocator-api2/issues/26
 # WAIT: [nightly impl for unsize_box](https://github.com/zakarumych/allocator-api2/pull/23)
 
 [dependencies.atomic] # https://crates.io/crates/atomic

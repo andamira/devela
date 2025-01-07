@@ -5,7 +5,7 @@
 
 use crate::{Bare, Storage};
 #[cfg(feature = "dep_rkyv")]
-use rkyv::{Archive, Serialize, Deserialize};
+use rkyv::{Archive, Deserialize, Serialize};
 
 /// A static 1-dimensional array backed by the core [array] primitive.
 ///

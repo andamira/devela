@@ -95,6 +95,7 @@ const DEP_ALL: &[&str] = &include!["../config/dep_all.rs"];
 #[rustfmt::skip]
 const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
     "dep_midir", "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
+    "dep_kira", // REASON: alsa-sys (feature `cpal`)
 ];
 /// Dependencies to not cross compile, ever.
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
