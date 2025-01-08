@@ -1,6 +1,6 @@
 // devela::data::collections::tuple
 //
-//!
+//! Re-exports thec code-generated [`Tuple`] trait, and defines related items.
 //
 // See also
 // - https://dev-doc.rust-lang.org/stable/unstable-book/library-features/tuple-trait.html
@@ -8,6 +8,7 @@
 #[cfg(test)]
 mod tests;
 
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_tuple")))]
 mod codegen {
     use crate::{Debug, Display, FmtResult, Formatter};
 

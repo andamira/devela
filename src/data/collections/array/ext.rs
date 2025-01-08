@@ -5,7 +5,9 @@
 
 use crate::{Debug, Display, FmtResult, Formatter};
 
-/// A formatting wrapper for [arrays][array], implementing [`Display`] and [`Debug`].
+/// A formatting wrapper for core [arrays][array], implementing [`Display`] and [`Debug`].
+///
+/// It is created by the [`ExtArray::fmt`] method.
 #[repr(transparent)]
 pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
 
@@ -45,7 +47,7 @@ pub trait ExtArray: Sealed {
     /// The length of this array.
     const LEN: usize;
 
-    /// Wraps the array in a [`ArrayFmt`] for formatting purposes.
+    /// Wraps the array in an [`ArrayFmt`] for formatting purposes.
     #[rustfmt::skip]
     fn fmt(&self) -> ArrayFmt<Self> where Self: Sized { ArrayFmt(self) }
 }
@@ -54,10 +56,7 @@ impl<T, const LEN: usize> ExtArray for [T; LEN] {
     const LEN: usize = LEN;
 }
 
-impl<T, const LEN: usize> ArrayDisplay for [T; LEN]
-where
-    T: Display,
-{
+impl<T: Display, const LEN: usize> ArrayDisplay for [T; LEN] {
     fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {
         write!(f, "[")?;
         for (index, element) in self.iter().enumerate() {
@@ -69,10 +68,7 @@ where
         write!(f, "]")
     }
 }
-impl<T, const LEN: usize> ArrayDebug for [T; LEN]
-where
-    T: Debug,
-{
+impl<T: Debug, const LEN: usize> ArrayDebug for [T; LEN] {
     fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()> {
         f.debug_list().entries(self.iter()).finish()
     }

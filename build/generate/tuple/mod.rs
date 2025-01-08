@@ -626,6 +626,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     // --------------------------------------------------------------------------
 
     // into
+    w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over elements of a [`Tuple`].")?;
     w!(f, "#[derive(Clone)]")?;
     w!(f, "pub struct TupleIter<")?;
@@ -645,6 +646,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     }}")?;
 
     // ref
+    w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over shared references to elements of a [`Tuple`].")?;
     w!(f, "#[derive(Clone)]")?;
     w!(f, "pub struct TupleIterRef<'a, ")?;
@@ -664,6 +666,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     }}")?;
 
     // mut
+    w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over exclusive references to elements of a [`Tuple`].")?;
     w!(f, "pub struct TupleIterMut<'a, ")?;
         for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
