@@ -228,6 +228,19 @@ mod impl_traits {
     use super::*;
     use crate::{NumError, NumError::IncompatibleBounds, NumResult, Ordering, RangeBounds};
 
+    /// Provides the default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
+    ///
+    /// This choice emphasizes neutrality and generality,
+    /// where the interval encompasses all possible values of `T`. It:
+    /// - Represents a neutral and maximal range for generic use cases.
+    /// - Avoids reliance on [`Default`] for `T`, making it applicable to all types.
+    /// - Aligns with mathematical conventions, where unbounded intervals are a natural default.
+    impl<T> Default for Interval<T> {
+        fn default() -> Self {
+            Self::unbounded()
+        }
+    }
+
     /* infallible conversions */
 
     // lower-closed
