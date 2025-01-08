@@ -1,8 +1,8 @@
 // devela::data::collections::stack::methods::general
 
 use crate::{
-    Array, Bare, DataNotEnough, IndexOutOfBounds, NotEnoughElements, NotEnoughSpace, Stack,
-    StackIter, Storage,
+    Array, Bare, Compare, DataNotEnough, MismatchedCapacity, NotEnoughElements, NotEnoughSpace,
+    Stack, StackIter, Storage,
 };
 #[cfg(feature = "alloc")]
 use crate::{Boxed, Vec};
@@ -39,7 +39,7 @@ macro_rules! impl_stack {
             /// cloning `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`IndexOutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -47,9 +47,10 @@ macro_rules! impl_stack {
             #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
-            pub fn new(element: T) -> Result<Self, IndexOutOfBounds> {
-                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(IndexOutOfBounds(Some(CAP)))
+            pub fn new(element: T) -> Result<Self, MismatchedCapacity> {
+                let max = Compare($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
+                if CAP > max {
+                    Err(MismatchedCapacity::closed(0, max, CAP))
                 } else {
                     Ok(Self {
                         data: Array::<T, CAP, Bare>::with_cloned(element),
@@ -65,7 +66,7 @@ macro_rules! impl_stack {
             /// copying `element` to fill the remaining free data, in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`IndexOutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -74,9 +75,10 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel
                 "<i32, 16> = unwrap![ok Stack" $IDX:camel "::new_copied(0)];"]
             /// ```
-            pub const fn new_copied(element: T) -> Result<Self, IndexOutOfBounds> {
-                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
-                    Err(IndexOutOfBounds(Some(CAP)))
+            pub const fn new_copied(element: T) -> Result<Self, MismatchedCapacity> {
+                let max = Compare($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
+                if CAP > max {
+                    Err(MismatchedCapacity::closed(0, max, CAP))
                 } else {
                     let data = Array::with_copied(element);
                     Ok(Self { data, len: 0 })

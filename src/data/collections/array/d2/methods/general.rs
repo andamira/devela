@@ -111,7 +111,8 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     pub(crate) const fn check_CR() -> Result<(), MismatchedBounds> {
         if let Some(len) = C.checked_mul(R) {
             if len == CR { Ok(()) } else {
-                Err(MismatchedCapacity( Mismatch { need: CR, have: len, info: "C * R != CR" })) }
+                Err(MismatchedCapacity(Mismatch::in_closed_interval(CR, CR, len, "C * R != CR")))
+            }
         } else { Err(IndexOutOfBounds(None)) } // RETHINK: return some value
     }
 

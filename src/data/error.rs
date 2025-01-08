@@ -26,7 +26,7 @@
 //   - DataError
 //   - DataResult
 
-use crate::{impl_error, Mismatch};
+use crate::{impl_error, Interval, Mismatch};
 
 impl_error! { individual: pub struct DataOverflow(pub Option<usize>);
     DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.",
@@ -55,9 +55,16 @@ impl_error! { individual: pub struct KeyAlreadyExists;
     DOC_KEY_ALREADY_EXISTS = "The key already exists.",
     self+f => write!(f, "The key already exists.")
 }
-impl_error! { individual: pub struct MismatchedCapacity(pub Mismatch<usize, usize>);
+impl_error! { individual: pub struct MismatchedCapacity(pub Mismatch<Interval<usize>, usize>);
     DOC_MISMATCHED_CAPACITY = "The given capacity did not match the required constraints.",
     self+f => write!(f, "Mismatched capacity: {:?}.", self.0)
+}
+impl MismatchedCapacity {
+    /// Creates a mismatch where `need` is an [`Interval::closed`], and `have` is outside it.
+    #[must_use]
+    pub const fn in_closed_interval(lower: usize, upper: usize, have: usize) -> Self {
+        Self(Mismatch::in_closed_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))
+    }
 }
 impl_error! { individual: pub struct MismatchedDimensions(pub Mismatch<usize, usize>);
     DOC_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
@@ -131,7 +138,7 @@ impl_error! { composite: fmt(f)
         DOC_INDEX_OUT_OF_BOUNDS:
             IndexOutOfBounds(i|0: Option<usize>) => IndexOutOfBounds(*i),
         DOC_MISMATCHED_CAPACITY:
-            MismatchedCapacity(c|0: Mismatch<usize, usize>) => MismatchedCapacity(*c),
+            MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
         DOC_MISMATCHED_INDICES:
             MismatchedIndices => MismatchedIndices,
     }
@@ -176,7 +183,7 @@ mod full_composite {
             DOC_KEY_ALREADY_EXISTS:
                 KeyAlreadyExists => KeyAlreadyExists,
             DOC_MISMATCHED_CAPACITY:
-                MismatchedCapacity(c|0: Mismatch<usize, usize>) => MismatchedCapacity(*c),
+                MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
             DOC_MISMATCHED_DIMENSIONS:
                 MismatchedDimensions(d|0: Mismatch<usize, usize>) => MismatchedDimensions(*d),
             DOC_MISMATCHED_INDICES:
