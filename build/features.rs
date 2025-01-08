@@ -162,6 +162,15 @@ mod reflection {
 
     /* # capabilities */
 
+    /* ## code */
+
+    pub const UNROLL: FlagsFeatures = FlagsFeatures {
+        flags: &[],
+        features: &[
+            "_unroll", "_unroll_128", "_unroll_256", "_unroll_512", "_unroll_1024", "_unroll_2048",
+        ]
+    };
+
     /* ## data */
 
     pub const BIT: FlagsFeatures = FlagsFeatures {
@@ -271,6 +280,8 @@ mod reflection {
 
             /* capabilities */
 
+            // code
+            UNROLL,
             // data
             BIT, TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections

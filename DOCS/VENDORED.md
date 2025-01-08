@@ -8,16 +8,16 @@ See linked files for detailed changes.
 - [const_list] by Douglas Dwyer, as the [`ConstList`] struct.
 - [crossbeam-utils] by The Crossbeam Project Developers, as the [`CacheAlign`] struct.
 - [fmtor] by Tyler Ruckinger, as part of the [`ExtOption`] trait.
-- [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][m1]).
+- [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][M_fxhash]).
 - [no_std_io]|[core2] by *Brendan Molloy*, as part of the [`io`] module.
 - [numtoa] by Michael Murphy, as the [`NumToStr`] trait.
 - [pollster] by Joshua Barretto, as the [`future_block`] fn.
-- [quickdiv] by Darko Trifunovski, as the [`Divisor`] struct ([*mod*][m7]).
-- [stack_dst] by John Hodge, as the [`data::dst`] module ([*mod*][m2]).
+- [quickdiv] by Darko Trifunovski, as the [`Divisor`] struct ([*mod*][M_quickdiv]).
+- [stack_dst] by John Hodge, as the [`data::dst`] module ([*mod*][M_stack_dst]).
 - [static_assertions] by Nikolai Vazquez, as part of the [`const_assert`] macro
-  and the [`ConstBool`] trait ([*mod*][m3]).
-- [tailcall-chunk] by Tushar Mathur, as the [`VecChunk`] struct ([*mod*][m4]).
-- [tupl] by *Dragoteryx*, as part of the [`Tuple`] trait ([*mod*][m5]).
+  and the [`ConstBool`] trait ([*mod*][M_sta_ase]).
+- [tailcall-chunk] by Tushar Mathur, as the [`VecChunk`] struct ([*mod*][M_tailcall]).
+- [tupl] by *Dragoteryx*, as part of the [`Tuple`] trait ([*mod*][M_tupl]).
 
 [cfg_if]: https://crates.io/crates/cfg_if/1.0.0
   [`cfg_if`]: https://docs.rs/devela/latest/devela/code/macro.cfg_if.html
@@ -28,7 +28,7 @@ See linked files for detailed changes.
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
   [`ExtOption`]: https://docs.rs/devela/latest/devela/code/trait.ExtOption.html
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
-  [m1]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
+  [M_fxhash]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
   [`HasherFx`]: https://docs.rs/devela/latest/devela/data/hash/struct.HasherFx.html
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
@@ -36,34 +36,37 @@ See linked files for detailed changes.
 [numtoa]: https://crates.io/crates/numtoa/0.2.4
   [`NumToStr`]: https://docs.rs/devela/latest/devela/text/fmt/trait.NumToStr.html
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
-  [m2]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
+  [M_stack_dst]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
   [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
 [pollster]: https://crates.io/crates/pollster/0.3.0
   [`future_block`]: https://docs.rs/devela/latest/devela/exec/fn.future_block.html
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
-  [m7]: https://github.com/andamira/devela/blob/main/src/num/int/divisor/MODIFICATIONS.md
+  [M_quickdiv]: https://github.com/andamira/devela/blob/main/src/num/int/divisor/MODIFICATIONS.md
   [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
-  [m3]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
+  [M_sta_ase]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
   [`const_assert`]: https://docs.rs/devela/latest/devela/code/macro.const_assert.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/logic/trait.ConstBool.html
 [tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
-  [m4]: https://github.com/andamira/devela/blob/main/src/data/collections/vec/chunk/MODIFICATIONS.md
+  [M_tailcall]: https://github.com/andamira/devela/blob/main/src/data/collections/vec/chunk/MODIFICATIONS.md
   [`VecChunk`]: https://docs.rs/devela/latest/devela/data/collections/struct.VecChunk.html
 [tupl]: https://crates.io/crates/tupl/0.4.0
-  [m5]: https://github.com/andamira/devela/blob/main/build/generate/tuple/MODIFICATIONS.md
+  [M_tupl]: https://github.com/andamira/devela/blob/main/build/generate/tuple/MODIFICATIONS.md
   [`Tuple`]: https://docs.rs/devela/latest/devela/data/collections/trait.Tuple.html
 
 ## Works under MIT License
 - [const_for] by Joachim Enggård Nebel, as the [`cfor`] macro.
-- [object-id] by *Altertech*, as part of the [`IdPinBox`] and [`IdPin`] structs ([*mod*][m6]).
+- [crunchy] by Eira Fransham, as the [`unroll`] macro.
+- [object-id] by *Altertech*, as part of the [`IdPinBox`] and [`IdPin`] structs ([*mod*][M_objid]).
 - [rawbytes] by Frank Denis, as `Mem`'s [`as_bytes`] and [`as_bytes_mut`] methods.
 - [unsized-stack] by *storycraft*, as the [`FatPtr`] struct.
 
 [const_for]: https://crates.io/crates/const_for/0.1.4
   [`cfor`]: https://docs.rs/devela/latest/devela/code/macro.cfor.html
+[crunchy]: https://crates.io/crates/crunchy/0.2.2
+  [`unroll`]: https://docs.rs/devela/latest/devela/code/macro.unroll.html
 [object-id]: https://crates.io/crates/object-id/0.1.4
-  [m6]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
+  [M_objid]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
   [`IdPin`]: https://docs.rs/devela/latest/devela/data/id/struct.IdPin.html
   [`IdPinBox`]: https://docs.rs/devela/latest/devela/data/id/struct.IdPinBox.html
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0

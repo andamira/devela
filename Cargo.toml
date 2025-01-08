@@ -77,7 +77,7 @@ publish = true
 bench = false
 
 
-[features] # 246/300 (54 remaining), 130 visible, 116 hidden
+[features] # 254/300 (46 remaining), 133 visible, 121 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -326,6 +326,17 @@ _docs_min = [ # the minimum capabilities to document each library item
 ]
 _docs_max = [ # the maximum capabities relevant for documentation
 	"_data_all", "_num_all", "_text_all"] # _tuple_72
+
+#* code capabilities *#
+# ---------------------
+
+# `unroll!` macro and maximum recursion supported
+_unroll = [] # recursion 64
+_unroll_128 = ["_unroll"]
+_unroll_256 = ["_unroll_128"]
+_unroll_512 = ["_unroll_256"]
+_unroll_1024 = ["_unroll_512"]
+_unroll_2048 = ["_unroll_1024"]
 
 #* data capabilities *#
 # ---------------------

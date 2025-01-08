@@ -40,6 +40,8 @@ mod reexports; // re-exported items
 
 #[cfg(_bit··)]
 mod enumset; // enumset!
+#[cfg(feature = "_unroll")]
+mod unroll; // unroll!
 
 crate::items! { // structural access: _mods, _internals, _all, _always
     #[allow(unused)]
@@ -55,6 +57,8 @@ crate::items! { // structural access: _mods, _internals, _all, _always
         };
         #[cfg(_bit··)]
         pub use super::enumset::*;
+        #[cfg(feature = "_unroll")]
+        pub use super::unroll::_all::*;
     }
     pub(super) mod _internals {
         pub(crate) use super::{_doc::*, _reexport::*, error::*};

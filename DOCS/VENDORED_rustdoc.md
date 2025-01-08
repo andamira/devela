@@ -18,6 +18,7 @@
 
 <!-- orig: MIT -->
   [`cfor`]: crate::cfor
+  [`unroll`]: crate::unroll
   [`IdPin`]: crate::IdPin
   [`IdPinBox`]: crate::IdPinBox
   [`as_bytes`]: crate::Mem#method.as_bytes

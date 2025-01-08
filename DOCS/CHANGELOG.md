@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New features & flags
 - new features for:
-  - code: `code`, `error`.
+  - code: `code`, `error`, `_unroll`, `_unroll_128`, `_unroll_256`, `_unroll_512`, `_unroll_1024`, `_unroll_2048`.
   - data: `hash`.
   - doc: `_docsrs[_stable]_nodep`.
   - num: `alg`, `geom`, `prim`, `cast`, `join`, `split`, `unit`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
@@ -68,8 +68,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Slice`: `eq`, `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut][_checked]`, `range_from[_mut][_checked]`, `range_to[_mut][_checked]`, `take_first[_mut][_checked]`, `take_last[_mut][_checked]`, `take_omit_last[_mut][_checked]`.
   - `UnicodeScalar` & `char*` types: `MIN`.
 - new macros:
-  - `id_seq!`, `impl_trait!`, `include_from!`, `mod_from!`, `str!`, `type_marker!`, `type_resource!`.
-  - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
+  - `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `const_bool!`, `field_of!`, `id_seq!`, `impl_non_value!`, `impl_trait!`, `include_from!`, `mod_from!`, `str!`, `type_marker!`, `type_resource!`, `unroll`.
   - private: `doc_availability!`, `impl_error`, `EMOJI_*`, `TAG_*`.
 - new vendored items
   - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
@@ -81,7 +80,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt, path}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:
-    - `assert_unchecked!`, `autodiff`, `compile_error!`, `concat`, `enumint!`, `field_of!`, `format!`, `format_args!`, `option_env!`, `stringify`, `thread_local!`, `write!`, `writeln!`.
+    - `assert_unchecked!`, `autodiff`, `compile_error!`, `concat`, `enumint!`, `format!`, `format_args!`, `option_env!`, `stringify`, `thread_local!`, `write!`, `writeln!`.
     - wrapped: `env!`, as `env_!`, `vec!` as `vec_!`.
   - structs:
     - `NonZero`, `Saturating`, `Wrapping`, `OsStr`, `OsString`.
