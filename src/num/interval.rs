@@ -3,7 +3,10 @@
 //! Defines the [`Interval`] wrapper type.
 //
 
-use crate::{iif, Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
+use crate::{
+    iif, Bound, ConstDefault, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo,
+    RangeToInclusive,
+};
 
 /// Represents an interval with a `lower` and an `upper` bound.
 ///
@@ -28,31 +31,28 @@ impl<T> Interval<T> {
 
     /// Creates a single-point interval,
     /// equivalent to [`closed`][Interval::closed]`(value, value)`.
-    #[must_use]
-    pub fn point(value: T) -> Self
-    where
-        T: Clone,
-    {
+    #[must_use] #[rustfmt::skip]
+    pub fn point(value: T) -> Self where T: Clone {
         Self::closed(value.clone(), value)
     }
 
     /// Creates a canonical empty interval,
     /// equivalent to [`open`][Interval::open]`(T::default(), T::default())`.
-    #[must_use]
-    pub fn empty() -> Self
-    where
-        T: Default,
-    {
+    #[must_use] #[rustfmt::skip]
+    pub fn empty() -> Self where T: Default {
         Self::open(T::default(), T::default())
+    }
+    /// Creates a canonical empty interval,
+    /// equivalent to [`open`][Interval::open]`(T::default(), T::default())`.
+    #[must_use] #[rustfmt::skip]
+    pub const fn empty_const() -> Self where T: ConstDefault {
+        Self::open(T::DEFAULT, T::DEFAULT)
     }
 
     /// Creates a canonical empty interval,
     /// equivalent to [`open`][Interval::open]`(value, value)`.
-    #[must_use]
-    pub fn empty_with(value: T) -> Self
-    where
-        T: Clone,
-    {
+    #[must_use] #[rustfmt::skip]
+    pub fn empty_with(value: T) -> Self where T: Clone {
         Self::open(value.clone(), value)
     }
 
@@ -274,9 +274,11 @@ impl<T: PartialOrd> Interval<T> {
 #[rustfmt::skip]
 mod impl_traits {
     use super::*;
-    use crate::{NumError, NumError::IncompatibleBounds, NumResult, Ordering, RangeBounds};
+    use crate::{
+        ConstDefault, NumError, NumError::IncompatibleBounds, NumResult, Ordering, RangeBounds,
+    };
 
-    /// Provides the default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
+    /// Provides a default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
     ///
     /// This choice emphasizes neutrality and generality,
     /// where the interval encompasses all possible values of `T`. It:
@@ -287,6 +289,14 @@ mod impl_traits {
         fn default() -> Self {
             Self::unbounded()
         }
+    }
+    /// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
+    ///
+    /// See the [`Default`][Self::default] implementation for more information.
+    ///
+    /// See [`Default`] for more information.
+    impl<T> ConstDefault for Interval<T> {
+        const DEFAULT: Self = Self::unbounded();
     }
 
     /* infallible conversions */
