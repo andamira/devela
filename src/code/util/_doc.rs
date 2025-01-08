@@ -197,7 +197,7 @@ crate::CONST! { pub(crate),
     //
     TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic type'>",
         crate::EMOJI_ATOMIC!(), "</span>");
-    TAG_ERROR = concat!("<span class='stab portability' title='Error type'>",
+    TAG_ERROR = concat!("<span class='stab portability' title='Individual error type'>",
         crate::EMOJI_ERROR!(), "</span>");
     TAG_ERROR_COMPOSITE =
         concat!("<span class='stab portability' title='Composite error type'>",

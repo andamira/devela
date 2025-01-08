@@ -1,10 +1,10 @@
 // devela build::generate::tuple
 //
-//! Code generator for the `unroll!` macro.
-//!
-//! TOC
-//! - `unroll!` macro definition.
-//! - tests.
+//! Code generator for the [`unroll!`] macro.
+//
+// TOC
+// - `unroll!` macro definition.
+// - tests.
 
 use super::super::utils::*;
 use std::{
@@ -67,7 +67,6 @@ pub(crate) fn generate() -> Result<(), Error> {
 "#;
     w!(f, "{0}", macro_code1)?;
 
-    // TODO: derived work
     let modifications = manifest_dir()
         .join("build").join("generate").join("unroll").join("MODIFICATIONS.md");
     w!(f, "#[doc = \"{}\"]", &read_to_string(modifications)?)?;

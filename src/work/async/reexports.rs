@@ -56,8 +56,7 @@ reexport! { rust: core::task,
     @Waker as TaskWaker
 }
 reexport! { rust: core::task,
-    doc: "Indicates whether a value is available or if the current task has been scheduled
-        to receive a wakeup instead.",
+    doc: "Indicates whether a value is ready or if the current task is still pending.",
     @Poll as TaskPoll
 }
 reexport! { rust: core::task,

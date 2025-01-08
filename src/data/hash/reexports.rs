@@ -10,8 +10,7 @@ reexport! { rust: core::hash,
     @BuildHasher as HasherBuild
 }
 reexport! { rust: core::hash,
-    doc: "Used to create a default [`HasherBuild`] instance for types that implement
-        [`Hasher`] and [`Default`]",
+    doc: "Create a default [`HasherBuild`] instance for `T:`[`Hasher`]` + `[`Default`] types.",
     @BuildHasherDefault as HasherBuildDefault
 }
 reexport! { rust: core::hash,

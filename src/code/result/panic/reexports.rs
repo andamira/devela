@@ -24,7 +24,7 @@ reexport! { rust: core::panic,
 /* traits */
 
 reexport! { rust: core::panic,
-    doc: "A marker trait representing types where a shared reference is considered unwind safe.",
+    doc: "A marker trait which represents a shared reference considered unwind safe.",
     @RefUnwindSafe as PanicRefUnwindSafe
     // RefUnwindSafe
 }
