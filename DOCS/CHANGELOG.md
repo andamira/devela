@@ -26,8 +26,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New items
 - new structs:
+  - `Interval`, `Pnm`.
   - new namespaces: `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
-  - `CompressionMode`, `EncodingMode`, `Pnm`.
   - new standalone error types: `FailedErrorConversion`, `DataNotEnough`, `NotImplemented`, `NotSupported`, `ElementNotFound`, `InvalidAxisLength`, `KeyAlreadyExists`, `MismatchedCapacity`, `MismatchedDimensions`, `MismatchedIndices`, `NodeEmpty`, `NodeLinkNotSet`, `NodeLinkNotUnique`, `NotEnoughElements`, `NotEnoughSpace`, `IndexOutOfBounds`, `DataOverflow`, `PartiallyAdded`.
   - new composite error types: `NotAvailable`, `DataNotEnough`, `MismatchedBounds`, `PartialSpace`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
@@ -43,10 +43,8 @@ The format is based on [Keep a Changelog], and this project adheres to
   - re-exported primitives: `char`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - new enums:
-  - `AllError`, `AllErrorKind`.
-  - `MediaError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`.
-  - `UiError`, `LayoutError`.
-  - `WaveletUnitRole`.
+  - `CompressionMode`, `EncodingMode`, `WaveletUnitRole`.
+  - `AllError`, `AllErrorKind`, `MediaError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `UiError`, `LayoutError`.
 - new enum variants:
   - `DataError::ElementNotFound`.
 - new traits:

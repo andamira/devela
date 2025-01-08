@@ -1,6 +1,6 @@
 // devela::code::interval
 //
-//!
+//! Defines the [`Interval`] wrapper type.
 //
 
 use crate::{iif, Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
@@ -24,6 +24,36 @@ impl<T> Interval<T> {
     #[must_use]
     pub const fn new(lower: Bound<T>, upper: Bound<T>) -> Self {
         Self { lower, upper }
+    }
+
+    /// Creates a single-point interval,
+    /// equivalent to [`closed`][Interval::closed]`(value, value)`.
+    #[must_use]
+    pub fn point(value: T) -> Self
+    where
+        T: Clone,
+    {
+        Self::closed(value.clone(), value)
+    }
+
+    /// Creates a canonical empty interval,
+    /// equivalent to [`open`][Interval::open]`(T::default(), T::default())`.
+    #[must_use]
+    pub fn empty() -> Self
+    where
+        T: Default,
+    {
+        Self::open(T::default(), T::default())
+    }
+
+    /// Creates a canonical empty interval,
+    /// equivalent to [`open`][Interval::open]`(value, value)`.
+    #[must_use]
+    pub fn empty_with(value: T) -> Self
+    where
+        T: Clone,
+    {
+        Self::open(value.clone(), value)
     }
 
     // lower-closed
@@ -161,12 +191,30 @@ impl<T> Interval<T> {
 }
 
 impl<T: PartialOrd> Interval<T> {
+    /// Checks if the interval is empty (contains no values).
+    ///
+    /// An interval is empty if:
+    /// - The bounds exclude each other, such as `(x, x)`, `[x, x)`, or `(x, x]`.
+    /// - The `lower` bound is strictly greater than the `upper` bound.
+    ///
+    /// Unbounded intervals are never empty.
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        match (&self.lower, &self.upper) {
+            (Bound::Unbounded, _) | (_, Bound::Unbounded) => false,
+            (Bound::Included(a), Bound::Included(b)) => a > b,
+            (Bound::Included(a), Bound::Excluded(b)) => a >= b,
+            (Bound::Excluded(a), Bound::Included(b)) => a >= b,
+            (Bound::Excluded(a), Bound::Excluded(b)) => a >= b,
+        }
+    }
+
     /// Validates that the interval bounds are ordered correctly.
     ///
     /// Returns `true` if the lower bound is less than or equal to the upper bound.
-    /// Unbounded intervals are always considered valid.
+    /// Unbounded intervals are always considered well ordered.
     #[must_use]
-    pub fn is_valid(&self) -> bool {
+    pub fn is_well_ordered(&self) -> bool {
         match (&self.lower, &self.upper) {
             (Bound::Unbounded, _) | (_, Bound::Unbounded) => true,
             (Bound::Included(a), Bound::Included(b)) => a <= b,
