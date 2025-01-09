@@ -1,11 +1,15 @@
 // devela::text::ext::slice
 //
-//! trait ExtStr
+//! Defines the [`ExtStr`] trait.
 //
+// WAIT: [str_as_str](https://github.com/rust-lang/rust/issues/130366)
+// WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
+// IMPROVE: use `NumToStr`
 
 use crate::{cold_empty_string, iif, Str};
+#[cfg(feature = "alloc")]
+use crate::{Arc, Box, Rc};
 
-// IMPROVE: use `NumToStr`
 use crate::{Ascii, Slice};
 
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
@@ -16,6 +20,26 @@ impl Sealed for str {}
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtStr: Sealed {
+    /// Converts the string slice into a `Box<str>`.
+    ///
+    /// Allows single ownership with exact allocation,
+    /// for when you don't need to clone or share.
+    #[cfg(feature = "alloc")]
+    fn to_box(&self) -> Box<str>;
+
+    /// Converts the string slice into an `Rc<str>`.
+    ///
+    /// Allows shared ownership with reference counting,
+    /// reducing memory duplication in single-threaded scenarios.
+    #[cfg(feature = "alloc")]
+    fn to_rc(&self) -> Rc<str>;
+
+    /// Converts the string slice into an `Arc<str>`.
+    ///
+    /// When you need shared ownership of a string slice across multiple threads.
+    #[cfg(feature = "alloc")]
+    fn to_arc(&self) -> Arc<str>;
+
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
     /// # Examples
@@ -64,6 +88,19 @@ pub trait ExtStr: Sealed {
 }
 
 impl ExtStr for str {
+    #[cfg(feature = "alloc")]
+    fn to_box(&self) -> Box<str> {
+        Box::from(self)
+    }
+    #[cfg(feature = "alloc")]
+    fn to_rc(&self) -> Rc<str> {
+        Rc::from(self)
+    }
+    #[cfg(feature = "alloc")]
+    fn to_arc(&self) -> Arc<str> {
+        Arc::from(self)
+    }
+
     fn repeat_into<'input, const CAP: usize>(
         &self,
         n: usize,

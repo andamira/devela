@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::text::{String, ToString};
+use crate::{Arc, Box, Rc, String, ToString};
 
 /// Marker trait to prevent downstream implementations of the [`ExtString`] trait.
 #[cfg(feature = "alloc")]
@@ -17,6 +17,23 @@ impl Sealed for String {}
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait, cfg(feature = "alloc")))]
 pub trait ExtString: Sealed {
+    /// Converts the string into a `Box<str>`.
+    ///
+    /// Allows single ownership with exact allocation,
+    /// for when you don't need to clone or share.
+    fn to_box(self) -> Box<str>;
+
+    /// Converts the string into an `Rc<str>`.
+    ///
+    /// Allows shared ownership with reference counting,
+    /// reducing memory duplication in single-threaded scenarios.
+    fn to_rc(self) -> Rc<str>;
+
+    /// Converts the string into an `Arc<str>`.
+    ///
+    /// When you need shared ownership of a string slice across multiple threads.
+    fn to_arc(self) -> Arc<str>;
+
     /// Returns a [`String`] where you always know each character's position.
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
@@ -36,6 +53,17 @@ pub trait ExtString: Sealed {
 
 #[cfg(feature = "alloc")]
 impl ExtString for String {
+    /// It just calls the method [`String::into_boxed_str`].
+    fn to_box(self) -> Box<str> {
+        self.into_boxed_str()
+    }
+    fn to_rc(self) -> Rc<str> {
+        Rc::from(self)
+    }
+    fn to_arc(self) -> Arc<str> {
+        Arc::from(self)
+    }
+
     fn new_counter(mut length: usize, separator: char) -> String {
         let mut cstr = String::new();
 
