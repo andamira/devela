@@ -2,7 +2,7 @@
 
 [![Repository](https://flat.badgen.net/badge/github/v0.22.0/blue?icon=git)](https://github.com/andamira/devela)
 [![Documentation ahead](https://flat.badgen.net/badge/docs/ahead*/blue)](https://andamira.github.io/libera/doc/devela/)
-[![MSRV ahead 1.83.0](https://flat.badgen.net/badge/MSRV/1.83.0/blue)](https://releases.rs/docs/1.83.0/)
+[![MSRV ahead 1.84.0](https://flat.badgen.net/badge/MSRV/1.84.0/blue)](https://releases.rs/docs/1.84.0/)
 <br/>
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
 [![Documentation](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)

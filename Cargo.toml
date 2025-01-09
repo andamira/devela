@@ -40,14 +40,14 @@
 
 [workspace]
 members = [".", "macros"]
-resolver = "2"
+resolver = "3"
 
 [package]
 name = "devela"
 description = "A cohesive development layer."
 version = "0.22.0-wip"
 edition = "2021"
-rust-version = "1.83.0" # In sync with README.md & .github/workflows/check.yml
+rust-version = "1.84.0" # In sync with README.md & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
