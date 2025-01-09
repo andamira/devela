@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 #### New items
 - new structs:
   - `Interval`, `Pnm`.
-  - new namespaces: `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
+  - new namespaces: `Alloc`, `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - new standalone error types: `FailedErrorConversion`, `DataNotEnough`, `NotImplemented`, `NotSupported`, `ElementNotFound`, `InvalidAxisLength`, `KeyAlreadyExists`, `MismatchedCapacity`, `MismatchedDimensions`, `MismatchedIndices`, `NodeEmpty`, `NodeLinkNotSet`, `NodeLinkNotUnique`, `NotEnoughElements`, `NotEnoughSpace`, `IndexOutOfBounds`, `DataOverflow`, `PartiallyAdded`.
   - new composite error types: `NotAvailable`, `DataNotEnough`, `MismatchedBounds`, `PartialSpace`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
@@ -75,7 +75,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new optional dependencies:
   - `allocator-api2`, `bumpalo`, `crossterm`, `jiff`, `js-sys`, `kira`, `midir`, `nc`, `pyo3`, `rayon`, `regex-lite`, `rkyv`, `rodio`, `rustix`, `safe_arch`, `serde`, `stringzilla`, `symphonia`, `sysinfo`, `tinyaudio`, `tokio`, `tracing`, `wasm-bindgen`, `web-sys`, `winnow`.
 - new re-exported:
-  - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt, path}`.
+  - items from: `alloc::alloc`,`core::{cell, num, ops, result}`, `std::{backtrace, fmt, path}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:
     - `assert_unchecked!`, `autodiff`, `compile_error!`, `concat`, `enumint!`, `format!`, `format_args!`, `option_env!`, `stringify`, `thread_local!`, `write!`, `writeln!`.

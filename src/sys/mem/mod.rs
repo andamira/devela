@@ -10,6 +10,7 @@
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
 
 mod aligned;
+mod alloc;
 mod cache_align;
 mod cswap;
 mod ext;
@@ -37,8 +38,8 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
 
     mod _mods {
         pub use super::{
-            aligned::*, cache_align::*, cswap::*, ext::*, namespace::*, ptr::_all::*,
-            reexports::*, size::_all::*, slice::_all::*, storage::*,
+            aligned::*, alloc::_all::*, cache_align::*, cswap::*, ext::*, namespace::*,
+            ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,
         };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
         pub use super::pin::Pinned;

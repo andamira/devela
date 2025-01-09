@@ -1,0 +1,71 @@
+// devela::sys::mem::alloc::namespace
+//
+//! Defines the [`Alloc`] namespace.
+//
+
+#[allow(unused_imports, reason = "unsafe feature-gated")]
+#[cfg(feature = "alloc")]
+use crate::{
+    Layout,
+    _dep::_alloc::alloc::{alloc, alloc_zeroed, dealloc, handle_alloc_error, realloc},
+};
+
+/// Memory-allocation-related operations.
+///
+/// See also: [`Mem`][crate::Mem], [`ExtMem`][crate::ExtMem],
+/// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
+pub struct Alloc;
+
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg(feature = "alloc")]
+impl Alloc {
+    /// Signals a memory allocation error.
+    ///
+    /// # Safety
+    /// See `std::alloc::`[`handle_alloc_error`].
+    pub fn handle_alloc_error(layout: Layout) -> ! {
+        handle_alloc_error(layout)
+    }
+}
+
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg(feature = "alloc")]
+#[rustfmt::skip]
+impl Alloc {
+    /// Allocates memory with the global allocator.
+    ///
+    /// # Safety
+    /// See `std::alloc::`[`alloc`].
+    #[must_use]
+    pub unsafe fn alloc(layout: Layout) -> *mut u8 {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { alloc(layout) }
+    }
+    /// Allocates zero-initialized memory with the global allocator.
+    ///
+    /// # Safety
+    /// See `std::alloc::`[`alloc_zeroed`].
+    #[must_use]
+    pub unsafe fn alloc_zeroed(layout: Layout) -> *mut u8 {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { alloc_zeroed(layout) }
+    }
+    /// Deallocates memory with the global allocator.
+    ///
+    /// # Safety
+    /// See `std::alloc::`[`dealloc`].
+    pub unsafe fn dealloc(ptr: *mut u8, layout: Layout) {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { dealloc(ptr, layout) }
+    }
+    /// Reallocates memory with the global allocator.
+    ///
+    /// # Safety
+    /// See `std::alloc::`[`realloc`].
+    pub unsafe fn realloc(ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { realloc(ptr, layout, new_size) }
+    }
+}
