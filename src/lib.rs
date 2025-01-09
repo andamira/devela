@@ -111,8 +111,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 // safety
 #[cfg(all(
     feature = "safe",
-    // In sync with Cargo.toml::unsafe & build/features.rs::SAFETY
-    any(feature = "unsafe", // includes all 12 specific purposes below:
+    // In sync with Cargo.toml::unsafe & build/features.rs::UNSAFE
+    any(feature = "unsafe", // includes all 11 specific purposes below:
         feature = "unsafe_array", feature = "unsafe_async", feature = "unsafe_hint",
         feature = "unsafe_layout", feature = "unsafe_niche", feature = "unsafe_ptr",
         feature = "unsafe_slice", feature = "unsafe_str", feature = "unsafe_sync",

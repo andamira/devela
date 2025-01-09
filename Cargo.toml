@@ -189,6 +189,8 @@ work = ["bytemuck?/zeroable_atomics"]
 #
 # The `safest` feature forbids unsafe transitively in dependencies
 # (except for Rust's `core`, `alloc` and `std`).
+#
+# In sync with ./build/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
 
 safe = [ # [9] forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_num",

@@ -50,6 +50,7 @@ mod reflection {
         features: &["std", "alloc", "no_std"]
     };
 
+    // In sync with ./Cargo.toml::[un][safe][st] & ./src/lib.rs::safety
     pub const SAFE: FlagsFeatures = FlagsFeatures {
         flags: &["safe··"],
         features: &[
@@ -69,21 +70,17 @@ mod reflection {
             "safe_work",
         ]
     };
+    pub const SAFEST: FlagsFeatures = FlagsFeatures {
+        flags: &[],
+        features: &["safest"],
+    };
     pub const UNSAFE: FlagsFeatures = FlagsFeatures {
         flags: &["unsafe··"],
         features: &[
-            "unsafe",
-            "unsafe_array",
-            "unsafe_async",
-            "unsafe_hint",
-            "unsafe_layout",
-            "unsafe_niche",
-            "unsafe_ptr",
-            "unsafe_slice",
-            "unsafe_str",
-            "unsafe_sync",
-            "unsafe_syscall",
-            "unsafe_thread",
+            "unsafe", // [11]
+            "unsafe_array", "unsafe_async", "unsafe_hint", "unsafe_layout",
+            "unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
+            "unsafe_sync", "unsafe_syscall", "unsafe_thread",
         ]
     };
 

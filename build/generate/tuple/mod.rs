@@ -1,13 +1,14 @@
 // devela build::generate::tuple
 //
-//! Code generator for the `Tuple` trait, `TupleElement*` enums and `TupleIter*` structs.
-//!
-//! TOC
-//! - Tuple trait definition
-//! - manual Tuple impls for arities < 2
-//! - automatic Tuple impls for arities >= 2
-//! - enums definitions
-//! - iterators definitions and implementations
+//! Code generator for the [`Tuple`] trait, `TupleElement*` enums and `TupleIter*` structs.
+//
+// TOC
+// - Tuple trait definition
+// - manual Tuple impls for arities < 2
+// - automatic Tuple impls for arities >= 2
+// - enums definitions
+// - iterators definitions and implementations
+//
 
 use super::super::utils::*;
 use std::{

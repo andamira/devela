@@ -2,14 +2,19 @@
 //
 //! Reexported items.
 //
+// WAIT: [unique_rc_arc](https://github.com/rust-lang/rust/issues/112566)
 
-use crate::code::reexport;
+use crate::reexport;
 
 /* structs */
 
 reexport! { rust: alloc::sync,
     doc: "A thread-safe reference-counting pointer.",
     Arc
+}
+reexport! { rust: alloc::sync,
+    doc: "A version of [`Arc`] that holds a non-owning reference to the managed allocation.",
+    @Weak as ArcWeak
 }
 reexport! { rust: std::sync,
     doc: "Enables multiple threads to synchronize the beginning of some computation.",
@@ -64,10 +69,6 @@ reexport! { rust: std::sync,
     doc: "A type indicating whether a timed wait on a condition variable returned
         due to a time out or not.",
     WaitTimeoutResult
-}
-reexport! { rust: alloc::sync,
-    doc: "A version of [`Arc`] that holds a non-owning reference to the managed allocation.",
-    @Weak as ArcWeak
 }
 
 /* enums */
