@@ -77,7 +77,11 @@ impl<N, H> Mismatch<Interval<N>, H> {
     /// and `have` is outside it.
     #[must_use]
     pub const fn in_closed_open_interval(lower: N, upper: N, have: H, info: &'static str) -> Self {
-        Self { need: Interval::closed_open(lower, upper), have, info }
+        Self {
+            need: Interval::closed_open(lower, upper),
+            have,
+            info,
+        }
     }
 
     /// Creates a mismatch where `need` is an [`Interval::open`],

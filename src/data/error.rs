@@ -62,7 +62,7 @@ impl_error! { individual: pub struct MismatchedCapacity(pub Mismatch<Interval<us
 impl MismatchedCapacity {
     /// Creates a mismatch where `need` is an [`Interval::closed`], and `have` is outside it.
     #[must_use]
-    pub const fn in_closed_interval(lower: usize, upper: usize, have: usize) -> Self {
+    pub const fn closed(lower: usize, upper: usize, have: usize) -> Self {
         Self(Mismatch::in_closed_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))
     }
 }

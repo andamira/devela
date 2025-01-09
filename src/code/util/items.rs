@@ -16,7 +16,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::code::sf;
+/// # use devela::sf;
 /// // rustfmt has no powers here
 /// sf! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```
@@ -36,7 +36,7 @@ pub use sf;
 ///
 /// # Examples
 /// ```
-/// # use devela::code::items;
+/// # use devela::items;
 /// #[cfg(feature = "std")]
 /// items! {
 ///     mod something {

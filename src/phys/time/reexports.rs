@@ -3,17 +3,17 @@
 //! Reexported items from `core`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 /* core */
 
-// IMPROVE
 reexport! { rust: core::time,
-    doc: "Represents a span of time, with `u64` seconds and `u32` nanoseconds.",
+    doc: "A span of time, with `u64` seconds and `u32` nanoseconds.",
     @Duration as Duration
 }
 reexport! { rust: core::time,
-    doc: "Can be returned when converting a floating-point value of seconds into a Duration.",
+    tag: crate::TAG_ERROR!(),
+    doc: "Error returned from converting floating-point seconds into a [`Duration`].",
     @TryFromFloatSecsError as DurationErrorTryFromFloatSecs
 }
 
@@ -28,7 +28,8 @@ reexport! { rust: std::time,
     SystemTime
 }
 reexport! { rust: std::time,
-    doc: "An error returned from the duration_since and elapsed methods on [`SystemTime`].",
+    tag: crate::TAG_ERROR!(),
+    doc: "Error returned from the `duration_since` and `elapsed` methods on [`SystemTime`].",
     SystemTimeError
 }
 reexport! { rust: std::time,
