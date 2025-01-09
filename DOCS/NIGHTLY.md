@@ -4,26 +4,7 @@ Legend:
 - `?` = can't be enabled, apparently
 - `✓` = past feature explicitly used
 
-# 1.84 will be stable on 2024-01-09: (nightly_stable_next1)
-- 1.84: ·[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
-- 1.84: ·[const_char_encode_utf16](https://github.com/rust-lang/rust/pull/132153)
-- 1.84: ·[const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
-- 1.84: ·[const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
-- 1.84: ·[const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
-- 1.84: ·[const_option_ext](https://github.com/rust-lang/rust/pull/132966)
-- 1.84: ·[const_pin](https://github.com/rust-lang/rust/issues/76654)
-- 1.84: ·[const_ptr_is_null](https://github.com/rust-lang/rust/pull/133116)
-- 1.84: ·[const_unicode_case_lookup](https://github.com/rust-lang/rust/pull/132948)
-- 1.84: ?[Do not run lints that cannot emit](https://github.com/rust-lang/rust/pull/125116)
-- 1.84: ?[inline assembly s390x](https://github.com/rust-lang/rust/pull/131258)
-- 1.84: ?[inline assembly Arm64EC ](https://github.com/rust-lang/rust/pull/131781)
-- 1.84: ?[Ipv6Addr::is_(unicast_link|unique)_local](https://github.com/rust-lang/rust/pull/129238)
-- 1.84: ?[Provenance(Strict,Exposed)](https://github.com/rust-lang/rust/pull/130350)
-- 1.84: ·[pin_deref_mut](https://github.com/rust-lang/rust/pull/129424)
-- 1.84: ·[result_ffi_guarantees](https://github.com/rust-lang/rust/pull/130628)
-- 1.84: ?[wasm:multivalue,reference-types,tail-call](https://github.com/rust-lang/rust/pull/131080)
-
-# 1.85 will be stable on 2025-02-20: (nightly_stable_next2)
+# 1.85 will be stable on 2025-02-20: (nightly_stable_next1)
 - 1.85: …[2024 edition](https://github.com/rust-lang/rust/issues/117258)
 - 1.85: ·[async_closure](https://github.com/rust-lang/rust/pull/132706)
 - 1.85: ·[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
@@ -43,7 +24,11 @@ Legend:
 - 1.85: ·[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
 - 1.85: ·[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
 
-# 1.‥… (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
+# 1.86 will be stable on 2025-04-03 (nightly_stable_next2)
+
+- …
+
+# .‥… will be stable later (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 - 1.??: ·[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 - 1.??: ?[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 - 1.??: ·[cell_update](https://github.com/rust-lang/rust/pull/134446)
@@ -124,26 +109,27 @@ Legend:
 - [stabilize doc_cfg](https://github.com/rust-lang/rust-project-goals/issues/120)
 
 # Past releases
-## 1.82 became stable on 2024-10-17:
-- 1.82:  [asm_const](https://github.com/rust-lang/rust/pull/128570)
-- 1.82:  [char_indices_offset](https://github.com/rust-lang/rust/pull/129276)
-- 1.82: ✓[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/pull/128596)
-- 1.82: ✓[const_int_from_str](https://github.com/rust-lang/rust/pull/124941)
-- 1.82: ✓[const_waker](https://github.com/rust-lang/rust/pull/128228)
-- 1.82:  [debug_more_non_exhaustive](https://github.com/rust-lang/rust/pull/131109)
-- 1.82:  [iter::repeat_n](https://github.com/rust-lang/rust/pull/129294)
-- 1.82:  [is_none_or](https://github.com/rust-lang/rust/pull/129086)
-- 1.82:  [is_sorted](https://github.com/rust-lang/rust/pull/128279)
-- 1.82:  [min_exhaustive_patterns](https://github.com/rust-lang/rust/pull/122792)
-- 1.82:  [new_uninit](https://github.com/rust-lang/rust/pull/129401)
-- 1.82:  [offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
-- 1.82:  [raw_ref_op](https://github.com/rust-lang/rust/pull/127679)
-- 1.82:  [ready_into_inner](https://github.com/rust-lang/rust/pull/116528)
-- 1.82:  [thread_spawn_unchecked](https://github.com/rust-lang/rust/pull/129161)
-- 1.82:  [unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
-- 1.82:  [unsafe_attributes](https://github.com/rust-lang/rust/pull/128771)
 
-## 1.83 became stable on 2024-11-28:
+# 1.84 became stable on 2024-01-09: <https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html>
+- 1.84:  [const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
+- 1.84:  [const_char_encode_utf16](https://github.com/rust-lang/rust/pull/132153)
+- 1.84:  [const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
+- 1.84:  [const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
+- 1.84:  [const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
+- 1.84:  [const_option_ext](https://github.com/rust-lang/rust/pull/132966)
+- 1.84:  [const_pin](https://github.com/rust-lang/rust/issues/76654)
+- 1.84:  [const_ptr_is_null](https://github.com/rust-lang/rust/pull/133116)
+- 1.84:  [const_unicode_case_lookup](https://github.com/rust-lang/rust/pull/132948)
+- 1.84:  [Do not run lints that cannot emit](https://github.com/rust-lang/rust/pull/125116)
+- 1.84:  [inline assembly s390x](https://github.com/rust-lang/rust/pull/131258)
+- 1.84:  [inline assembly Arm64EC ](https://github.com/rust-lang/rust/pull/131781)
+- 1.84:  [Ipv6Addr::is_(unicast_link|unique)_local](https://github.com/rust-lang/rust/pull/129238)
+- 1.84:  [Provenance(Strict,Exposed)](https://github.com/rust-lang/rust/pull/130350)
+- 1.84:  [pin_deref_mut](https://github.com/rust-lang/rust/pull/129424)
+- 1.84:  [result_ffi_guarantees](https://github.com/rust-lang/rust/pull/130628)
+- 1.84:  [wasm:multivalue,reference-types,tail-call](https://github.com/rust-lang/rust/pull/131080)
+
+## 1.83 became stable on 2024-11-28: <https://blog.rust-lang.org/2024/11/28/Rust-1.83.0.html>
 - 1.83: ✓[char::MIN](https://github.com/rust-lang/rust/pull/130154)
 - 1.83:  [const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
 - 1.83: ✓[const_char_encode_utf8](https://github.com/rust-lang/rust/pull/131463)
@@ -163,4 +149,23 @@ Legend:
 - 1.83: ✓[r#ident](https://github.com/rust-lang/rust/pull/126452)
 - 1.83: ✓[rustdoc: table of contents](https://github.com/rust-lang/rust/pull/120736)
 - 1.83: ✓[waker_getters](https://github.com/rust-lang/rust/pull/129919)
+
+## 1.82 became stable on 2024-10-17: <https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html>
+- 1.82:  [asm_const](https://github.com/rust-lang/rust/pull/128570)
+- 1.82:  [char_indices_offset](https://github.com/rust-lang/rust/pull/129276)
+- 1.82: ✓[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/pull/128596)
+- 1.82: ✓[const_int_from_str](https://github.com/rust-lang/rust/pull/124941)
+- 1.82: ✓[const_waker](https://github.com/rust-lang/rust/pull/128228)
+- 1.82:  [debug_more_non_exhaustive](https://github.com/rust-lang/rust/pull/131109)
+- 1.82:  [iter::repeat_n](https://github.com/rust-lang/rust/pull/129294)
+- 1.82:  [is_none_or](https://github.com/rust-lang/rust/pull/129086)
+- 1.82:  [is_sorted](https://github.com/rust-lang/rust/pull/128279)
+- 1.82:  [min_exhaustive_patterns](https://github.com/rust-lang/rust/pull/122792)
+- 1.82:  [new_uninit](https://github.com/rust-lang/rust/pull/129401)
+- 1.82:  [offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
+- 1.82:  [raw_ref_op](https://github.com/rust-lang/rust/pull/127679)
+- 1.82:  [ready_into_inner](https://github.com/rust-lang/rust/pull/116528)
+- 1.82:  [thread_spawn_unchecked](https://github.com/rust-lang/rust/pull/129161)
+- 1.82:  [unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
+- 1.82:  [unsafe_attributes](https://github.com/rust-lang/rust/pull/128771)
 

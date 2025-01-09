@@ -38,25 +38,8 @@
 #![cfg_attr(feature = "nightly_float", feature(f16, f128))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
 // "nightly_stable" includes:
-#![cfg_attr( // 1.84
-    feature = "nightly_stable_next1",
-    feature(
-        const_atomic_from_ptr,
-        const_char_encode_utf16,
-        const_float_methods,
-        const_make_ascii,
-        const_maybe_uninit_assume_init,
-        const_option_ext,
-        const_pin,
-        const_ptr_is_null,
-        const_unicode_case_lookup,
-        // ip, // subset
-        pin_deref_mut,
-        result_ffi_guarantees,
-    )
-)]
 #![cfg_attr( // 1.85
-    feature = "nightly_stable_next2",
+    feature = "nightly_stable_next1",
     feature(
         async_closure,
         build_hasher_default_const_new,
@@ -74,6 +57,10 @@
         ptr_fn_addr_eq,
     )
 )]
+// #![cfg_attr( // 1.86
+//     feature = "nightly_stable_next2",
+//     feature()
+// )]
 #![cfg_attr( // 1.??
     feature = "nightly_stable_later",
     feature(

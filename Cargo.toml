@@ -279,10 +279,10 @@ nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	nightly_simd = [] # portable_simd
 	#
 	# nightly features that should become stable soon enough.
-	nightly_stable = [ # In sync with ./src/lib.rs:
+	nightly_stable = [ # In sync with ./src/lib.rs and ./DOCS/NIGHTLY.md
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
-		nightly_stable_next1 = [] # 1.84
-		nightly_stable_next2 = [] # 1.85 (+edition 2024)
+		nightly_stable_next1 = [] # 1.85 (+edition 2024)
+		nightly_stable_next2 = [] # 1.86
 		nightly_stable_later = [] # 1.?? stable soon enough
 
 
