@@ -539,7 +539,7 @@ dep_rodio = ["dep:rodio"]                                                       
 dep_rustix = ["dep:rustix"]                                                     # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",            # data::serde
-	"kira?/serde"]
+	"kira?/serde", "wide?/serde"]
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]        # sys::sound
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
@@ -642,7 +642,7 @@ default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
 # deps: once-cell, wasm-bindgen/std
 
 [dependencies.kira] # https://crates.io/crates/kira
-version = "0.10.0" # ✓ https://github.com/tesselode/kira/releases
+version = "0.10.1" # ✓ https://github.com/tesselode/kira/releases
 optional = true # safe (although unsafe deps?)
 default-features = false # 10 https://docs.rs/crate/kira/latest/features
 features = ["cpal"] # symphonia, flac, mp3, ogg, wav
@@ -731,7 +731,7 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"] # IMPROVE: feature-gate
 
 [dependencies.rustix] # https://crates.io/crates/rustix
-version = "0.38.41" # ✓ https://github.com/bytecodealliance/rustix/releases
+version = "0.38.43" # ✓ https://github.com/bytecodealliance/rustix/releases
 optional = true # unsafe
 default-features = false # 39 https://docs.rs/crate/rustix/latest/features
 features = [ # IMPROVE: feature-gate
@@ -772,12 +772,12 @@ default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
 features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
 
 [dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
-version = "1.0.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
+version = "1.1.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
 
 [dependencies.tokio] # https://crates.io/crates/tokio
-version = "1.42.0" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
+version = "1.43.0" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 23 https://docs.rs/crate/tokio/latest/features
 features =  [] # https://docs.rs/tokio/#feature-flags
@@ -811,7 +811,7 @@ optional = true # unsafe (unsafe dependencies)
 default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
 
 [dependencies.wide] # https://crates.io/crates/wide
-version = "0.7.31" # ✗ https://github.com/Lokathor/wide/commits/main/
+version = "0.7.32" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
