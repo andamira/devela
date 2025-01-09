@@ -21,7 +21,66 @@ pub struct Interval<T> {
     pub upper: Bound<T>,
 }
 
-/// # Constructors
+/// # Methodical constructors
+impl<T> Interval<T> {
+    // lower-closed
+
+    /// Creates a closed interval $[l, u]$ `lower..=upper` [`RangeInclusive`].
+    #[must_use]
+    pub const fn closed(lower: T, upper: T) -> Self {
+        Self::new(Bound::Included(lower), Bound::Included(upper))
+    }
+    /// Creates a half-open interval $[l, u)$ `lower..upper` [`Range`].
+    #[must_use]
+    pub const fn closed_open(lower: T, upper: T) -> Self {
+        Self::new(Bound::Included(lower), Bound::Excluded(upper))
+    }
+    /// Creates an interval $[l, ∞)$ `lower..` [`RangeFrom`].
+    #[must_use]
+    pub const fn closed_unbounded(lower: T) -> Self {
+        Self::new(Bound::Included(lower), Bound::Unbounded)
+    }
+
+    // lower-open
+
+    /// Creates an open interval $(l, u)$.
+    #[must_use]
+    pub const fn open(lower: T, upper: T) -> Self {
+        Self::new(Bound::Excluded(lower), Bound::Excluded(upper))
+    }
+
+    /// Creates a half-open interval $(a, b]$.
+    #[must_use]
+    pub const fn open_closed(lower: T, upper: T) -> Self {
+        Self::new(Bound::Excluded(lower), Bound::Included(upper))
+    }
+
+    /// Creates an interval $(l, ∞)$.
+    #[must_use]
+    pub const fn open_unbounded(lower: T) -> Self {
+        Self::new(Bound::Excluded(lower), Bound::Unbounded)
+    }
+
+    // lower-unbounded
+
+    /// Creates an unbounded interval $(-∞, ∞)$ `..` [`RangeFull`].
+    #[must_use]
+    pub const fn unbounded() -> Self {
+        Self::new(Bound::Unbounded, Bound::Unbounded)
+    }
+    /// Creates an interval $(-∞, u]$ `..upper` [`RangeTo`].
+    #[must_use]
+    pub const fn unbounded_closed(upper: T) -> Self {
+        Self::new(Bound::Unbounded, Bound::Included(upper))
+    }
+    /// Creates an interval $(-∞, u)$ `..=upper` [`RangeToInclusive`].
+    #[must_use]
+    pub const fn unbounded_open(upper: T) -> Self {
+        Self::new(Bound::Unbounded, Bound::Excluded(upper))
+    }
+}
+
+/// # Additional constructors
 impl<T> Interval<T> {
     /// Creates a new interval with the given `lower` and `upper` bounds.
     #[must_use]
@@ -54,62 +113,6 @@ impl<T> Interval<T> {
     #[must_use] #[rustfmt::skip]
     pub fn empty_with(value: T) -> Self where T: Clone {
         Self::open(value.clone(), value)
-    }
-
-    // lower-closed
-
-    /// Creates a closed interval $[l, u]$ `lower..=upper` [`RangeInclusive`].
-    #[must_use]
-    pub const fn closed(lower: T, upper: T) -> Self {
-        Self::new(Bound::Included(lower), Bound::Included(upper))
-    }
-    /// Creates a half-open interval $[l, u)$ `lower..upper` [`Range`].
-    #[must_use]
-    pub const fn closed_open(lower: T, upper: T) -> Self {
-        Self::new(Bound::Included(lower), Bound::Excluded(upper))
-    }
-    /// Creates an interval $[l, ∞)$ `lower..` [`RangeFrom`].
-    #[must_use]
-    pub const fn closed_unbounded(lower: T) -> Self {
-        Self::new(Bound::Included(lower), Bound::Unbounded)
-    }
-
-    // lower-unbounded
-
-    /// Creates an unbounded interval $(-∞, ∞)$ `..` [`RangeFull`].
-    #[must_use]
-    pub const fn unbounded() -> Self {
-        Self::new(Bound::Unbounded, Bound::Unbounded)
-    }
-    /// Creates an interval $(-∞, u]$ `..upper` [`RangeTo`].
-    #[must_use]
-    pub const fn unbounded_closed(upper: T) -> Self {
-        Self::new(Bound::Unbounded, Bound::Included(upper))
-    }
-    /// Creates an interval $(-∞, u)$ `..=upper` [`RangeToInclusive`].
-    #[must_use]
-    pub const fn unbounded_open(upper: T) -> Self {
-        Self::new(Bound::Unbounded, Bound::Excluded(upper))
-    }
-
-    // lower-open
-
-    /// Creates an open interval $(l, u)$.
-    #[must_use]
-    pub const fn open(lower: T, upper: T) -> Self {
-        Self::new(Bound::Excluded(lower), Bound::Excluded(upper))
-    }
-
-    /// Creates a half-open interval $(a, b]$.
-    #[must_use]
-    pub const fn open_closed(lower: T, upper: T) -> Self {
-        Self::new(Bound::Excluded(lower), Bound::Included(upper))
-    }
-
-    /// Creates an interval $(l, ∞)$.
-    #[must_use]
-    pub const fn open_unbounded(lower: T) -> Self {
-        Self::new(Bound::Excluded(lower), Bound::Unbounded)
     }
 }
 
