@@ -1,7 +1,8 @@
 // devela::sys::mem::ptr::namespace
 //
-//! `Ptr` namespace.
+//! Defines the [`Ptr`] namespace.
 //
+// WAIT: [intra-doc links to pointers](https://github.com/rust-lang/rust/issues/80896)
 
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use crate::_core::ptr::{
@@ -11,8 +12,9 @@ use crate::_core::ptr::{
 use crate::{
     iif, Hasher,
     _core::ptr::{
-        addr_eq, eq, from_mut, from_ref, hash, null, null_mut, slice_from_raw_parts,
-        slice_from_raw_parts_mut,
+        addr_eq, dangling, dangling_mut, eq, from_mut, from_ref, hash, null, null_mut,
+        slice_from_raw_parts, slice_from_raw_parts_mut, with_exposed_provenance,
+        with_exposed_provenance_mut, without_provenance, without_provenance_mut,
     },
 };
 
@@ -36,6 +38,7 @@ impl Ptr {
     /// Compares raw pointer addresses for equality, ignoring any metadata in fat pointers.
     ///
     /// See `core::ptr::`[`addr_eq`].
+    #[must_use]
     pub fn addr_eq<T: ?Sized, U: ?Sized>(p: *const T, q: *const U) -> bool {
         addr_eq(p, q)
     }
@@ -43,8 +46,24 @@ impl Ptr {
     /// Compares raw pointers for equality.
     ///
     /// See `core::ptr::`[`eq`].
+    #[must_use]
     pub fn eq<T: ?Sized>(a: *const T, b: *const T) -> bool {
         eq(a, b)
+    }
+
+    /// Creates a new pointer that is dangling, but non-null and well-aligned.
+    ///
+    /// See `core::ptr::`[`dangling`].
+    #[must_use]
+    pub const fn dangling<T>() -> *const T {
+        dangling()
+    }
+    /// Creates a new pointer that is dangling, but non-null and well-aligned.
+    ///
+    /// See `core::ptr::`[`dangling_mut`].
+    #[must_use]
+    pub const fn dangling_mut<T>() -> *mut T {
+        dangling_mut()
     }
 
     /// Returns `true` if it's probable the given `address` is in the stack, for a
@@ -83,6 +102,7 @@ impl Ptr {
     /// Convert an exclusive reference to a raw pointer.
     ///
     /// See `core::ptr::`[`from_mut`].
+    #[must_use]
     pub const fn from_mut<T: ?Sized>(r: &mut T) -> *mut T {
         from_mut(r)
     }
@@ -90,6 +110,7 @@ impl Ptr {
     /// Convert a shared reference to a raw pointer.
     ///
     /// See `core::ptr::`[`from_ref`].
+    #[must_use]
     pub const fn from_ref<T: ?Sized>(r: &T) -> *const T {
         from_ref(r)
     }
@@ -103,9 +124,11 @@ impl Ptr {
 
     /// Creates a null raw pointer.
     ///
-    /// See `core::ptr::`[`null`].
+    /// See `core::ptr::`[`null`]
+    /// and `<ptr>::`[`is_null`][pointer#method.is_null].
     // WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
     // T: Thin + ?Sized https://doc.rust-lang.org/core/ptr/traitalias.Thin.html
+    #[must_use]
     pub const fn null<T>() -> *const T {
         null()
     }
@@ -115,6 +138,7 @@ impl Ptr {
     /// See `core::ptr::`[`null_mut`].
     // WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
     // T: Thin + ?Sized https://doc.rust-lang.org/core/ptr/traitalias.Thin.html
+    #[must_use]
     pub const fn null_mut<T>() -> *mut T {
         null_mut()
     }
@@ -139,6 +163,7 @@ impl Ptr {
     /// ```
     ///
     /// Note that when `other_size == 0` it returns `(1, 0)` which is an invalid ratio.
+    #[must_use]
     pub const fn size_ratio(other_size: usize) -> [usize; 2] {
         const fn gcd(m: usize, n: usize) -> usize {
             iif![n == 0; m; gcd(n, m % n)]
@@ -150,7 +175,8 @@ impl Ptr {
     /// Forms a raw slice from a pointer and a length.
     ///
     /// See `core::ptr::`[`slice_from_raw_parts`], and also
-    /// `Slice::`[from_raw_parts`][crate::Slice::from_raw_parts].
+    /// `Slice::`[`from_raw_parts`][crate::Slice::from_raw_parts].
+    #[must_use]
     pub const fn slice_from_raw_parts<T>(data: *const T, len: usize) -> *const [T] {
         slice_from_raw_parts(data, len)
     }
@@ -158,9 +184,48 @@ impl Ptr {
     /// Forms a mutable raw slice from a mutable pointer and a length.
     ///
     /// See `core::ptr::`[`slice_from_raw_parts_mut`], and also
-    /// `Slice::`[from_raw_parts_mut`][crate::Slice::from_raw_parts_mut].
+    /// `Slice::`[`from_raw_parts_mut`][crate::Slice::from_raw_parts_mut].
+    #[must_use]
     pub const fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
         slice_from_raw_parts_mut(data, len)
+    }
+
+    /// Converts an address back to a pointer,
+    /// picking up some previously ‘exposed’ *provenance*.
+    ///
+    /// See `core::ptr::`[`with_exposed_provenance`]
+    /// and `<ptr>::`[`expose_provenance`][pointer#method.expose_provenance].
+    #[must_use]
+    pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
+        with_exposed_provenance(addr)
+    }
+    /// Converts an address back to a mutable pointer,
+    /// picking up some previously ‘exposed’ *provenance*.
+    ///
+    /// See `core::ptr::`[`with_exposed_provenance_mut`]
+    /// and `<ptr>::`[`expose_provenance`][pointer#method.expose_provenance].
+    #[must_use]
+    pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
+        with_exposed_provenance_mut(addr)
+    }
+
+    /// Creates a pointer with the given address and no *provenance*.
+    ///
+    /// See `core::ptr::`[`without_provenance`]
+    /// `<ptr>::`[`with_addr`][pointer#method.with_addr],
+    /// and `<ptr>::`[`map_addr`][pointer#method.map_addr].
+    #[must_use]
+    pub fn without_provenance<T>(addr: usize) -> *const T {
+        without_provenance(addr)
+    }
+    /// Creates a pointer with the given address and no *provenance*.
+    ///
+    /// See `core::ptr::`[`without_provenance_mut`]
+    /// `<ptr>::`[`with_addr`][pointer#method.with_addr],
+    /// and `<ptr>::`[`map_addr`][pointer#method.map_addr].
+    #[must_use]
+    pub fn without_provenance_mut<T>(addr: usize) -> *mut T {
+        without_provenance_mut(addr)
     }
 }
 
@@ -200,6 +265,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`read`].
+    #[must_use]
     pub const unsafe fn read<T>(src: *const T) -> T {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { read(src) }
@@ -209,6 +275,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`read_unaligned`].
+    #[must_use]
     pub const unsafe fn read_unaligned<T>(src: *const T) -> T {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { read_unaligned(src) }
@@ -218,6 +285,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`read_volatile`].
+    #[must_use]
     pub unsafe fn read_volatile<T>(src: *const T) -> T {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { read_volatile(src) }
@@ -227,6 +295,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`replace`].
+    #[must_use]
     pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { replace(dst, src) }
