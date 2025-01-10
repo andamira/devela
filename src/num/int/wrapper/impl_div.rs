@@ -1,6 +1,6 @@
 // devela::num::int::wrapper::impl_div
 //
-//! implements division related functions
+//! Implements division-related methods for [`Int`].
 //
 // TOC
 // - signed|unsigned:
@@ -15,38 +15,41 @@
 use super::super::shared_docs::*;
 use crate::{iif, paste, Int};
 
+/// Implements division-related methods for [`Int`].
+///
+/// # Args
 /// $t:   the input/output type
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-/// $d:  the doclink suffix for the method name
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8"
+///
+/// $d:   the doclink suffix for the method name
 macro_rules! impl_div {
     () => {
         impl_div![signed
-            i8:"_int_i8":"",
-            i16:"_int_i16":"-1",
-            i32:"_int_i32":"-2",
-            i64:"_int_i64":"-3",
-            i128:"_int_i128":"-4",
-            isize:"_int_isize":"-5"
+            i8    :"_int_i8":"",
+            i16   :"_int_i16":"-1",
+            i32   :"_int_i32":"-2",
+            i64   :"_int_i64":"-3",
+            i128  :"_int_i128":"-4",
+            isize :"_int_isize":"-5"
         ];
         impl_div![unsigned
-            u8:"_int_u8":"-6",
-            u16:"_int_u16":"-7",
-            u32:"_int_u32":"-8",
-            u64:"_int_u64":"-9",
-            u128:"_int_u128":"-10",
-            usize:"_int_usize":"-11"
+            u8    :"_int_u8"    :"-6",
+            u16   :"_int_u16"   :"-7",
+            u32   :"_int_u32"   :"-8",
+            u64   :"_int_u64"   :"-9",
+            u128  :"_int_u128"  :"-10",
+            usize :"_int_usize" :"-11"
         ];
     };
-
     (signed $( $t:ty : $cap:literal : $d:literal ),+) => {
         $( impl_div![@signed $t:$cap:$d]; )+
     };
     (unsigned $( $t:ty : $cap:literal : $d:literal ),+) => {
         $( impl_div![@unsigned $t:$cap:$d]; )+
     };
-
+    (
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
+    @signed $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
@@ -243,9 +246,9 @@ macro_rules! impl_div {
             }
         }
     }};
-
+    (
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+    @unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]

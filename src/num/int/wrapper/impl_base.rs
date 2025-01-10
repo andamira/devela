@@ -1,6 +1,6 @@
 // devela::num::int::wrapper::impl_base
 //
-//! implements base related functions
+/// Implements base-related methods for [`Int`].
 //
 // TOC
 // - signed|unsigned:
@@ -10,41 +10,43 @@
 //   - digits_base_sign
 //   - digital_root
 //   - digital_root_base
-
 use crate::{iif, paste, Int};
 
-/// $t:  the integer primitive input/output type, and the niche inner type
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-/// $d:  the doclink suffix for the method name
+/// Implements base-related methods for [`Int`].
+///
+/// # Args
+/// $t:   the integer primitive input/output type, and the niche inner type
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8"
+///
+/// $d:   the doclink suffix for the method name
 macro_rules! impl_base {
     () => {
-        impl_base![prim_signed
-            i8:"_int_i8":"",
-            i16:"_int_i16":"-1",
-            i32:"_int_i32":"-2",
-            i64:"_int_i64":"-3",
-            i128:"_int_i128":"-4",
-            isize:"_int_isize":"-5"
+        impl_base![signed
+            i8    :"_int_i8"    |"",
+            i16   :"_int_i16"   |"-1",
+            i32   :"_int_i32"   |"-2",
+            i64   :"_int_i64"   |"-3",
+            i128  :"_int_i128"  |"-4",
+            isize :"_int_isize" |"-5"
         ];
-        impl_base![prim_unsigned
-            u8:"_int_u8":"-6",
-            u16:"_int_u16":"-7",
-            u32:"_int_u32":"-8",
-            u64:"_int_u64":"-9",
-            u128:"_int_u128":"-10",
-            usize:"_int_usize":"-11"
+        impl_base![unsigned
+            u8    :"_int_u8"    |"-6",
+            u16   :"_int_u16"   |"-7",
+            u32   :"_int_u32"   |"-8",
+            u64   :"_int_u64"   |"-9",
+            u128  :"_int_u128"  |"-10",
+            usize :"_int_usize" |"-11"
         ];
     };
-
-    (prim_signed $( $t:ty : $cap:literal : $d:literal ),+) => {
-        $( impl_base![@prim_signed $t:$cap:$d]; )+
+    (signed $( $t:ty : $cap:literal | $d:literal ),+) => {
+        $( impl_base![@signed $t:$cap | $d]; )+
     };
-    (prim_unsigned $( $t:ty : $cap:literal : $d:literal ),+) => {
-        $( impl_base![@prim_unsigned $t:$cap:$d]; )+
+    (unsigned $( $t:ty : $cap:literal | $d:literal ),+) => {
+        $( impl_base![@unsigned $t:$cap | $d]; )+
     };
-
+    (
     // implements ops on signed primitives
-    (@prim_signed $t:ty : $cap:literal : $d:literal) => { paste! {
+    @signed $t:ty : $cap:literal | $d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
@@ -181,9 +183,9 @@ macro_rules! impl_base {
             }
         }
     }};
-
+    (
     // implements ops on unsigned primitives
-    (@prim_unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+    @unsigned $t:ty : $cap:literal | $d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]

@@ -1,6 +1,6 @@
 // devela::num::int::wrapper::impl_core
 //
-//! implements core integer functions
+//! Implements core methods for [`Int`].
 //
 // TOC
 // - signed|unsigned
@@ -25,50 +25,55 @@ use crate::Cast;
 #[allow(unused_imports)]
 use crate::{cswap, iif, paste, unwrap, GcdReturn, Int, NumError::Overflow, NumResult as Result};
 
+/// Implements core methods for [`Int`].
+///
+/// # Args
 /// $t:    the input/output type
-/// $cap:  the capability feature that enables the given implementation. E.g "_int_u8".
+/// $cap:  the capability feature enabling the given implementation. E.g "_int_u8"
 ///
 /// $ut:   the unsigned type of the same size as $t (only for signed)
-/// $ucap: the feature that enables some methods related to `$ut`. (signed midpoint)
+/// $ucap: the feature enabling some methods related to `$ut` (signed midpoint)
 ///
-/// $up:   the upcasted type to do the operations on (for lcm). E.g u8.
+/// $up:   the upcasted type to do the operations on (for lcm). E.g u8
 ///
-/// $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16. (only for unsigned)
-/// $icap: the feature that enables some methods related to `$iup`. E.g "_int_i16". (only for unsigned)
+/// $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16 (only for unsigned)
+/// $icap: the feature enabling some methods related to `$iup`. E.g "_int_i16" (only for unsigned)
 ///
 /// $d:    the doclink suffix for the method name
 macro_rules! impl_core {
     () => {
         impl_core![signed
-            i8:"_int_i8":u8:"_int_u8"|i16:"",
-            i16:"_int_i16":u16:"_int_u16"|i32:"-1",
-            i32:"_int_i32":u32:"_int_u32"|i64:"-2",
-            i64:"_int_i64":u64:"_int_u64"|i128:"-3",
-            i128:"_int_i128":u128:"_int_u128"|i128:"-4",
-            isize:"_int_isize":usize:"_int_usize"|isize_up:"-5"
+            // $t :$cap         :$ut   :$ucap        |$up      |$d
+            i8    :"_int_i8"    :u8    :"_int_u8"    |i16      |"",
+            i16   :"_int_i16"   :u16   :"_int_u16"   |i32      |"-1",
+            i32   :"_int_i32"   :u32   :"_int_u32"   |i64      |"-2",
+            i64   :"_int_i64"   :u64   :"_int_u64"   |i128     |"-3",
+            i128  :"_int_i128"  :u128  :"_int_u128"  |i128     |"-4",
+            isize :"_int_isize" :usize :"_int_usize" |isize_up |"-5"
         ];
         impl_core![unsigned
-            u8:"_int_u8":u16|i16:"_int_i16":"-6",
-            u16:"_int_u16":u32|i32:"_int_i32":"-7",
-            u32:"_int_u32":u64|i64:"_int_i64":"-8",
-            u64:"_int_u64":u128|i128:"_int_i128":"-9",
-            u128:"_int_u128":u128|i128:"_int_i128":"-10"
+            // $t :$cap         :$up      |$iup     :$iucap          |$d
+            u8    :"_int_u8"    :u16      |i16      :"_int_i16"      |"-6",
+            u16   :"_int_u16"   :u32      |i32      :"_int_i32"      |"-7",
+            u32   :"_int_u32"   :u64      |i64      :"_int_i64"      |"-8",
+            u64   :"_int_u64"   :u128     |i128     :"_int_i128"     |"-9",
+            u128  :"_int_u128"  :u128     |i128     :"_int_i128"     |"-10"
+          //usize :"_int_usize" :usize_up |isize_up :"_int_isize_up" |"-11"]; // MAYBE
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_core![unsigned usize:"_int_usize":usize_up|isize_up:"_int_i64":"-11"];
+        impl_core![unsigned usize :"_int_usize" :usize_up |isize_up :"_int_i64"  |"-11"];
         #[cfg(target_pointer_width = "64")]
-        impl_core![unsigned usize:"_int_usize":usize_up|isize_up:"_int_i128":"-11"];
+        impl_core![unsigned usize :"_int_usize" :usize_up |isize_up :"_int_i128" |"-11"];
     };
-
-    (signed $( $t:ty : $cap:literal : $ut:ty : $ucap:literal | $up:ty : $d:literal ),+) => {
-        $( impl_core![@signed $t:$cap:$ut:$ucap:$up:$d]; )+
+    (signed $( $t:ty : $cap:literal : $ut:ty : $ucap:literal | $up:ty |$d:literal ),+) => {
+        $( impl_core![@signed   $t :$cap :$ut :$ucap :$up |$d]; )+
     };
-    (unsigned $( $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal ),+) => {
-        $( impl_core![@unsigned $t:$cap:$up|$iup:$icap : $d]; )+
+    (unsigned $( $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal |$d:literal ),+) => {
+        $( impl_core![@unsigned $t :$cap :$up |$iup :$icap |$d]; )+
     };
-
+    (
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $ut:ty : $ucap:literal : $up:ty : $d:literal) => { paste! {
+    @signed $t:ty : $cap:literal : $ut:ty : $ucap:literal : $up:ty |$d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
@@ -361,9 +366,9 @@ macro_rules! impl_core {
             }
         }
     }};
-
+    (
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal) => { paste! {
+    @unsigned $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal |$d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
@@ -587,8 +592,8 @@ macro_rules! impl_core {
             /// # Examples
             /// ```
             /// # use devela::Int;
-            #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
-            #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
+            #[doc ="assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
+            #[doc ="assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
             /// # #[cfg(feature = "_int_u8")]
             /// assert![Int(200_u8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```

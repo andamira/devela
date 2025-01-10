@@ -1,6 +1,6 @@
 // devela::num::int::wrapper::impl_modulo
 //
-//! implements modulo related functions
+//! Implements modulo-related methods for [`Int`].
 //
 // TOC
 // - signed|unsigned:
@@ -35,7 +35,7 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 #[cold] #[inline(never)] #[cfg(_int_i··)] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
-/// helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
+/// Helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
 ///
 /// $op:  an overloadable operator (+, -, *, /)
 /// $fn:  the corresponding function (add, sub, mul, div)
@@ -92,46 +92,50 @@ macro_rules! upcastop {
     }};
 }
 
+/// Implements modulo-related methods for [`Int`].
+///
+/// # Args
 /// $t:     the input/output type
-/// $cap:   the capability feature that enables the given implementation. E.g "_int_u8".
-/// $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16.
-/// $iup:   the signed upcasted type for some methods. E.g. i16.
-/// $icap:  the feature that enables some methods related to `$iup`. E.g "_int_i16".
-/// $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t.
+/// $cap:   the capability feature that enables the given implementation. E.g "_int_u8"
+/// $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16
+/// $iup:   the signed upcasted type for some methods. E.g. i16
+/// $icap:  the feature that enables some methods related to `$iup`. E.g "_int_i16"
+/// $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t
+///
+/// $d:   the doclink suffix for the method name
 macro_rules! impl_modulo {
     () => {
         impl_modulo![signed
-            (i8:"_int_i8", i16:Y, ""),
-            (i16:"_int_i16", i32:Y, "-1"),
-            (i32:"_int_i32", i64:Y, "-2"),
-            (i64:"_int_i64", i128:Y, "-3"),
-            (i128:"_int_i128", i128:N, "-4"),
-            (isize:"_int_isize", isize_up:Y, "-5")
+            (i8    :"_int_i8",    i16      :Y |""),
+            (i16   :"_int_i16",   i32      :Y |"-1"),
+            (i32   :"_int_i32",   i64      :Y |"-2"),
+            (i64   :"_int_i64",   i128     :Y |"-3"),
+            (i128  :"_int_i128",  i128     :N |"-4"),
+            (isize :"_int_isize", isize_up :Y |"-5")
         ];
         impl_modulo![unsigned
-            (u8:"_int_u8", u16|i16:"_int_i16":Y, "-6"),
-            (u16:"_int_u16", u32|i32:"_int_i32":Y, "-7"),
-            (u32:"_int_u32", u64|i64:"_int_i64":Y, "-8"),
-            (u64:"_int_u64", u128|i128:"_int_i128":Y, "-9"),
-            (u128:"_int_u128", u128|i128:"_int_i128":N, "-10")
+            (u8   :"_int_u8",   u16|i16   :"_int_i16"  :Y |"-6"),
+            (u16  :"_int_u16",  u32|i32   :"_int_i32"  :Y |"-7"),
+            (u32  :"_int_u32",  u64|i64   :"_int_i64"  :Y |"-8"),
+            (u64  :"_int_u64",  u128|i128 :"_int_i128" :Y |"-9"),
+            (u128 :"_int_u128", u128|i128 :"_int_i128" :N |"-10")
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_modulo![unsigned (usize:"_int_usize", usize_up|isize_up:"_int_i64":Y, "-11")];
+        impl_modulo![unsigned (usize :"_int_usize", usize_up|isize_up :"_int_i64"  :Y |"-11")];
         #[cfg(target_pointer_width = "64")]
-        impl_modulo![unsigned (usize:"_int_usize", usize_up|isize_up:"_int_i128":Y, "-11")];
+        impl_modulo![unsigned (usize :"_int_usize", usize_up|isize_up :"_int_i128" :Y |"-11")];
     };
-
-    (signed $( ($t:ty : $cap:literal, $up:ty:$is_up:ident, $d:literal) ),+) => {
-        $( impl_modulo![@signed ($t:$cap, $up:$is_up, $d)]; )+
+    (signed $( ($t:ty : $cap:literal, $up:ty:$is_up:ident |$d:literal) ),+) => {
+        $( impl_modulo![@signed ($t:$cap, $up:$is_up |$d)]; )+
     };
     (unsigned $(
-        ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident, $d:literal)
+        ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident |$d:literal)
     ),+ ) => {
-        $( impl_modulo![@unsigned ($t:$cap, $up|$iup:$icap :$is_up, $d)]; )+
+        $( impl_modulo![@unsigned ($t:$cap, $up|$iup:$icap :$is_up |$d)]; )+
     };
-
+    (
     // implements signed ops
-    (@signed ($t:ty : $cap:literal, $up:ty:$is_up:ident, $d:literal) ) => { paste! {
+    @signed ($t:ty : $cap:literal, $up:ty:$is_up:ident |$d:literal) ) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
@@ -876,10 +880,10 @@ macro_rules! impl_modulo {
             }
         }
     }};
-
+    (
     // implements unsigned ops
-    (@unsigned
-         ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident, $d:literal)
+    @unsigned
+         ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident |$d:literal)
     ) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///

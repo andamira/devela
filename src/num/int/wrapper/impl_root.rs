@@ -1,6 +1,6 @@
 // devela::num::int::wrapper::impl_root
 //
-//! implements root related functions
+//! Implements root related methods for [`Int`].
 //
 // TOC
 // - signed|unsigned:
@@ -29,40 +29,43 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 #[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int··)]
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
+/// Implements root related methods for [`Int`].
+///
+/// # Args
 /// $t:   the input/output type. E.g. i8.
 /// $up:  the upcasted input/output type. E.g. i16.
 /// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 /// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
+///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_root {
     () => {
         impl_root![signed
-            i8|i16:"_int_i8":"_cmp_i8" | "",
-            i16|i32:"_int_i16":"_cmp_i16" | "-1",
-            i32|i64:"_int_i32":"_cmp_i32" | "-2",
-            i64|i128:"_int_i64":"_cmp_i64" | "-3",
-            i128|i128:"_int_i128":"_cmp_i128" | "-4",
-            isize|isize_up:"_int_isize":"_cmp_isize" | "-5"
+            i8    |i16      :"_int_i8"    :"_cmp_i8"     |"",
+            i16   |i32      :"_int_i16"   :"_cmp_i16"    |"-1",
+            i32   |i64      :"_int_i32"   :"_cmp_i32"    |"-2",
+            i64   |i128     :"_int_i64"   :"_cmp_i64"    |"-3",
+            i128  |i128     :"_int_i128"  :"_cmp_i128"   |"-4",
+            isize |isize_up :"_int_isize" :"_cmp_isize"  |"-5"
         ];
         impl_root![unsigned
-            u8|u16:"_int_u8":"_cmp_u8" | "-6",
-            u16|u32:"_int_u16":"_cmp_u16" | "-7",
-            u32|u64:"_int_u32":"_cmp_u32" | "-8",
-            u64|u128:"_int_u64":"_cmp_u64" | "-9",
-            u128|u128:"_int_u128":"_cmp_u128" | "-10",
-            usize|usize_up:"_int_usize" | "-11" // no _cmp_usize
+            u8    |u16      :"_int_u8"    :"_cmp_u8"     |"-6",
+            u16   |u32      :"_int_u16"   :"_cmp_u16"    | "-7",
+            u32   |u64      :"_int_u32"   :"_cmp_u32"    | "-8",
+            u64   |u128     :"_int_u64"   :"_cmp_u64"    | "-9",
+            u128  |u128     :"_int_u128"  :"_cmp_u128"   | "-10",
+            usize |usize_up :"_int_usize" /*_cmp_usize*/ | "-11" // always available
         ];
     };
-
     (signed $( $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal ),+) => {
         $( impl_root![@signed $t|$up:$cap $(:$cmp)? | $d]; )+
     };
     (unsigned $( $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal ),+) => {
         $( impl_root![@unsigned $t|$up:$cap $(:$cmp)? | $d]; )+
     };
-
+    (
     // implements signed ops
-    (@signed $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal) => { paste! {
+    @signed $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal) => { paste! {
         /* sqrt (signed) */
 
         #[doc = crate::doc_availability!(feature = $cap)]
@@ -346,9 +349,9 @@ macro_rules! impl_root {
             // TODO: root_round
         }
     }};
-
+    (
     // implements unsigned ops
-    (@unsigned $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal) => { paste! {
+    @unsigned $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
