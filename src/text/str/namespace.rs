@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::ExtStr;
 use crate::{
-    iif, Ascii, Slice, Utf8Error,
+    iif, Ascii, InvalidUtf8, Slice,
     _core::str::{from_utf8, from_utf8_mut},
 };
 #[allow(unused_imports, reason = "unsafe_str only")]
@@ -27,16 +27,22 @@ impl Str {
     /// Converts a slice of bytes to a string slice.
     ///
     /// See [`from_utf8`].
-    pub const fn from_utf8(v: &[u8]) -> Result<&str, Utf8Error> {
-        from_utf8(v)
+    pub const fn from_utf8(v: &[u8]) -> Result<&str, InvalidUtf8> {
+        match from_utf8(v) {
+            Ok(v) => Ok(v),
+            Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
+        }
     }
 
     /// Converts a mutable slice of bytes to a mutable string slice.
     ///
     /// See [`from_utf8_mut`].
-    // WAIT: https://github.com/rust-lang/rust/issues/91006
-    pub fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, Utf8Error> {
-        from_utf8_mut(v)
+    // WAIT: [const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
+    pub fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, InvalidUtf8> {
+        match from_utf8_mut(v) {
+            Ok(v) => Ok(v),
+            Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
+        }
     }
 
     /// Converts a slice of bytes to a string slice without checking valid UTF-8.

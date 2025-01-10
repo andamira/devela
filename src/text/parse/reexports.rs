@@ -21,10 +21,9 @@ reexport! { rust: core::num,
     @IntErrorKind as ParseIntErrorKind
 }
 
-// TODO: IMPROVE: recreate and impl conversion methods:
-// - https://doc.rust-lang.org/src/core/str/error.rs.html#47-50
-reexport! { rust: core::str,
-    tag: crate::TAG_ERROR!(),
-    doc: "An error which can occur when interpreting a sequence of `u8` as a string.",
-    Utf8Error // IMPROVE: recreate
-}
+// NOTE: Utf8Error not re-exported. See `InvalidUtf8` instead.
+// reexport! { rust: core::str,
+//     tag: crate::TAG_ERROR!(),
+//     doc: "An error which can occur when interpreting a sequence of `u8` as a string.",
+//     Utf8Error
+// }

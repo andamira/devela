@@ -12,9 +12,7 @@ use super::Grapheme;
 use crate::text::char::*;
 #[cfg(feature = "alloc")]
 use crate::CString;
-#[cfg(doc)]
-use crate::TextError::{NotEnoughCapacity, OutOfBounds};
-use crate::{unwrap, ConstDefault, IterChars, StringNonul, TextResult as Result};
+use crate::{unwrap, ConstDefault, IterChars, MismatchedCapacity, StringNonul};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -31,8 +29,8 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// Creates a new empty `GraphemeNonul`.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255.
-    pub const fn new() -> Result<Self> {
+    /// Returns [`MismatchedCapacity`] if `CAP` > 255.
+    pub const fn new() -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::new()]))
     }
 
@@ -41,13 +39,13 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`][char7#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()` and `CAP` < 1.
+    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
     #[cfg(feature = "_char7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
-    pub const fn from_char7(c: char7) -> Result<Self> {
+    pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
 
@@ -56,14 +54,13 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`][char8#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
+    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
     #[cfg(feature = "_char8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
-    pub const fn from_char8(c: char8) -> Result<Self> {
+    pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
 
@@ -72,14 +69,13 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`][char16#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
+    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
     #[cfg(feature = "_char16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
-    pub const fn from_char16(c: char16) -> Result<Self> {
+    pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }
 
@@ -88,12 +84,11 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
+    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    pub const fn from_char(c: char) -> Result<Self> {
+    pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char(c)]))
     }
 

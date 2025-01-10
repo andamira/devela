@@ -9,12 +9,8 @@
 #[allow(unused, reason = "±unsafe")]
 use crate::_core::str::{from_utf8, from_utf8_unchecked};
 use crate::{
-    cfor, iif,
-    text::char::*,
-    unwrap, ConstDefault, Deref, IterChars,
-    TextError::{self, InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
-    TextResult as Result,
-    _core::fmt,
+    cfor, iif, text::char::*, unwrap, ConstDefault, Deref, InvalidText, IterChars, Mismatch,
+    MismatchedCapacity, NotEnoughElements, _core::fmt,
 };
 
 #[cfg(feature = "alloc")]
@@ -70,12 +66,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Creates a new empty `StringNonul`.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255.
-    pub const fn new() -> Result<Self> {
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
+    pub const fn new() -> Result<Self, MismatchedCapacity> {
         if CAP <= u8::MAX as usize {
             Ok(Self { arr: [0; CAP] })
         } else {
-            Err(OutOfBounds(Some(CAP)))
+            Err(MismatchedCapacity::closed(0, u8::MAX as usize, CAP))
         }
     }
 
@@ -221,9 +217,9 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`NotEnoughElements`] if the string is empty.
-    pub fn try_pop(&mut self) -> Result<char> {
+    pub fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
         if self.is_empty() {
-            Err(NotEnoughElements(1))
+            Err(NotEnoughElements(Some(1)))
         } else {
             Ok(self.pop_unchecked())
         }
@@ -276,7 +272,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Errors
     /// Returns [`NotEnoughCapacity`]
     /// if the capacity is not enough to hold the given character.
-    pub fn try_push(&mut self, character: char) -> Result<usize> {
+    pub fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
         let char_len = character.len_utf8();
 
         if character == NUL_CHAR {
@@ -288,7 +284,7 @@ impl<const CAP: usize> StringNonul<CAP> {
             let _ = character.encode_utf8(&mut self.arr[len..new_len]);
             Ok(char_len)
         } else {
-            Err(NotEnoughCapacity(char_len))
+            Err(MismatchedCapacity::closed(0, self.len() + character.len_utf8(), CAP))
         }
     }
 
@@ -328,10 +324,10 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Errors
     /// Returns [`NotEnoughCapacity`] if the capacity is not enough
     /// to hold even the first non-nul character.
-    pub fn try_push_str(&mut self, string: &str) -> Result<usize> {
+    pub fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
         let first_char_len = string.chars().find(|&c| c != NUL_CHAR).map_or(0, |c| c.len_utf8());
         if self.remaining_capacity() < first_char_len {
-            Err(NotEnoughCapacity(first_char_len))
+            Err(MismatchedCapacity::closed(0, self.len() + first_char_len, CAP))
         } else {
             Ok(self.push_str(string))
         }
@@ -345,13 +341,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`NotEnoughCapacity`] if the slice wont completely fit.
-    pub fn try_push_str_complete(&mut self, string: &str) -> Result<usize> {
+    pub fn try_push_str_complete(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
         let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
-
         if self.remaining_capacity() >= non_nul_len {
             Ok(self.push_str(string))
         } else {
-            Err(NotEnoughCapacity(non_nul_len))
+            Err(MismatchedCapacity::closed(0, self.len() + string.len(), CAP))
         }
     }
 
@@ -362,13 +357,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c` is NUL an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
     /// and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
     #[rustfmt::skip]
-    pub const fn from_char(c: char) -> Result<Self> {
+    pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
 
         if c as u32 != 0 {
@@ -388,13 +383,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c`.[`is_nul()`][char7#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
     /// or [`NotEnoughCapacity`] if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
     #[cfg(feature = "_char7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
-    pub const fn from_char7(c: char7) -> Result<Self> {
+    pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             new.arr[0] = c.to_utf8_bytes()[0];
@@ -407,15 +402,14 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c`.[`is_nul()`][char8#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
+    /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
     #[rustfmt::skip]
     #[cfg(feature = "_char8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
-    pub const fn from_char8(c: char8) -> Result<Self> {
+    pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
@@ -432,15 +426,14 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c`.[`is_nul()`][char16#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
+    /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
     #[rustfmt::skip]
     #[cfg(feature = "_char16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
-    pub const fn from_char16(c: char16) -> Result<Self> {
+    pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
@@ -458,17 +451,17 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns a string from an array of `bytes`.
     ///
     /// # Errors
-    /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8,
-    /// and [`InvalidNul`] if the bytes contains a NUL character.
-    pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
+    /// Returns [`InvalidText::InvalidUtf8`] if the bytes are not valid UTF-8,
+    /// and [`InvalidText::Char`] if the bytes contains a NUL character.
+    pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
         match from_utf8(&bytes) {
             Ok(_) => {
                 cfor![index in 0..CAP => {
-                    iif![bytes[index] == 0; return Err(InvalidNul)];
+                    iif![bytes[index] == 0; return Err(InvalidText::Char('\0'))];
                 }];
                 Ok(Self { arr: bytes })
             }
-            Err(e) => Err(InvalidUtf8(Some(e))),
+            Err(e) => Err(InvalidText::from_utf8_error(e)),
         }
     }
 
@@ -492,7 +485,7 @@ impl<const CAP: usize> Default for StringNonul<CAP> {
     /// Returns an empty string.
     ///
     /// # Panics
-    /// Panics if `CAP > 255`.
+    /// Panics if `CAP > [`u8::MAX`]`.
     fn default() -> Self {
         Self::new().unwrap()
     }
@@ -501,7 +494,7 @@ impl<const CAP: usize> ConstDefault for StringNonul<CAP> {
     /// Returns an empty string.
     ///
     /// # Panics
-    /// Panics if `CAP > 255`.
+    /// Panics if `CAP > [`u8::MAX`]`.
     const DEFAULT: Self = unwrap![ok Self::new()];
 }
 
@@ -542,17 +535,16 @@ impl<const CAP: usize> AsRef<[u8]> for StringNonul<CAP> {
 }
 
 impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
-    type Error = TextError;
+    type Error = MismatchedCapacity;
 
     /// Tries to create a new `StringNonul` from the given string slice.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP > `[`u8::MAX`],
-    /// or [`NotEnoughCapacity`] if `CAP < str.len()`.
-    fn try_from(string: &str) -> Result<Self> {
+    /// Returns [`MismatchedCapacity`] if `CAP > `[`u8::MAX`] or if `CAP < str.len()`.
+    fn try_from(string: &str) -> Result<Self, MismatchedCapacity> {
         let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
         if CAP < non_nul_len {
-            Err(NotEnoughCapacity(non_nul_len))
+            Err(MismatchedCapacity::closed_open(0, non_nul_len, CAP))
         } else {
             let mut new_string = Self::new()?;
             let copied_bytes = new_string.push_str(string);
@@ -563,15 +555,21 @@ impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
 }
 
 impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
-    type Error = TextError;
+    type Error = InvalidText;
 
     /// Tries to create a new `StringNonul` from the given slice of `bytes`.
     ///
+    /// The string will stop before the first nul character or the end of the slice.
+    ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP > `[u8::MAX`],
-    /// [`NotEnoughCapacity`] if `CAP < bytes.len()`
-    /// or [`InvalidUtf8`] if the `bytes` are not valid UTF-8.
-    fn try_from(bytes: &[u8]) -> Result<Self> {
+    /// Returns [`InvalidText::Capacity`] if `CAP > `[u8::MAX`] or if `CAP < bytes.len()`
+    /// or [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
+    fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
+        if bytes.len() >= CAP {
+            #[rustfmt::skip]
+            return Err(InvalidText::Capacity(
+                Mismatch::in_closed_interval(0, bytes.len(), CAP, "")));
+        }
         match from_utf8(bytes) {
             Ok(_) => {
                 let mut arr = [0; CAP];
@@ -579,17 +577,13 @@ impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
 
                 for &byte in bytes.iter() {
                     if byte != 0 {
-                        if idx >= CAP {
-                            return Err(NotEnoughCapacity(bytes.len()));
-                        }
                         arr[idx] = byte;
                         idx += 1;
                     }
                 }
-
                 Ok(Self { arr })
             }
-            Err(e) => Err(InvalidUtf8(Some(e))),
+            Err(e) => Err(InvalidText::from_utf8_error(e)),
         }
     }
 }

@@ -10,14 +10,9 @@
 
 #[allow(unused, reason = "±unsafe")]
 use crate::_core::str::{from_utf8, from_utf8_unchecked};
-use crate::{cfor, Compare};
 use crate::{
-    text::char::*,
-    Deref, IterChars,
-    _core::fmt,
-    iif, paste, unwrap, ConstDefault,
-    TextError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
-    TextResult as Result,
+    cfor, text::char::*, Compare, Deref, IterChars, _core::fmt, iif, paste, unwrap, ConstDefault,
+    InvalidText, InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements,
 };
 
 #[cfg(all(_string_u··, feature = "alloc"))]
@@ -101,12 +96,12 @@ macro_rules! impl_string_u {
             #[doc = "Creates a new empty `String" $t:camel "` with a capacity of `CAP` bytes."]
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
-            pub const fn new() -> Result<Self> {
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            pub const fn new() -> Result<Self, MismatchedCapacity> {
                 if CAP <= $t::MAX as usize {
                     Ok(Self { arr: [0; CAP], len: 0 })
                 } else {
-                    Err(OutOfBounds(Some(CAP)))
+                    Err(MismatchedCapacity::closed(0, <$t>::MAX as usize, CAP))
                 }
             }
 
@@ -225,10 +220,11 @@ macro_rules! impl_string_u {
             /// # Errors
             /// Returns a [`NotEnoughElements`] error
             /// if the capacity is not enough to hold the `character`.
-            #[rustfmt::skip]
-            pub fn try_pop(&mut self) -> Result<char> {
-                self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
-                    .ok_or(NotEnoughElements(1))
+            pub fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
+                self.as_str().chars().last().map(|c| {
+                    self.len -= c.len_utf8() as $t; c
+                })
+                .ok_or(NotEnoughElements(Some(1)))
             }
 
             /// Appends to the end of the string the given `character`.
@@ -255,9 +251,9 @@ macro_rules! impl_string_u {
             /// Returns the number of bytes written.
             ///
             /// # Errors
-            /// Returns a [`NotEnoughCapacity`] error
+            /// Returns a [`MismatchedCapacity`] error
             /// if the capacity is not enough to hold the `character`.
-            pub fn try_push(&mut self, character: char) -> Result<usize> {
+            pub fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
                 let char_len = character.len_utf8();
                 if self.remaining_capacity() >= char_len {
                     let beg = self.len as usize;
@@ -266,7 +262,7 @@ macro_rules! impl_string_u {
                     self.len += char_len as $t;
                     Ok(char_len)
                 } else {
-                    Err(NotEnoughCapacity(char_len))
+                    Err(MismatchedCapacity::closed(0, self.len() + character.len_utf8(), CAP))
                 }
             }
 
@@ -297,13 +293,13 @@ macro_rules! impl_string_u {
             /// Returns the number of bytes written.
             ///
             /// # Errors
-            /// Returns [`NotEnoughCapacity`] if the capacity is not enough
+            /// Returns [`MismatchedCapacity`] if the capacity is not enough
             /// to hold even the first character.
-            pub fn try_push_str(&mut self, string: &str) -> Result<usize> {
+            pub fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
                 iif![string.is_empty(); return Ok(0)];
                 let first_char_len = string.chars().next().unwrap().len_utf8();
                 if self.remaining_capacity() < first_char_len {
-                    Err(NotEnoughCapacity(first_char_len))
+                    Err(MismatchedCapacity::closed(0, self.len() + first_char_len, CAP))
                 } else {
                     Ok(self.push_str(string))
                 }
@@ -315,11 +311,12 @@ macro_rules! impl_string_u {
             ///
             /// # Errors
             /// Returns [`NotEnoughCapacity`] if the slice wont completely fit.
-            pub fn try_push_str_complete(&mut self, string: &str) -> Result<usize> {
+            pub fn try_push_str_complete(&mut self, string: &str)
+            -> Result<usize, MismatchedCapacity> {
                 if self.remaining_capacity() >= string.len() {
                     Ok(self.push_str(string))
                 } else {
-                    Err(NotEnoughCapacity(string.len()))
+                    Err(MismatchedCapacity::closed(0, self.len() + string.len(), CAP))
                 }
             }
 
@@ -328,13 +325,12 @@ macro_rules! impl_string_u {
             #[doc = "Creates a new `String" $t:camel "` from a `char`."]
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
-            /// or [`NotEnoughCapacity`] if
-            /// `CAP < c.`[`len_utf8()`][super::UnicodeScalar#method.len_utf8].
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            /// or if `CAP < c.`[`len_utf8()`][super::UnicodeScalar#method.len_utf8].
             ///
             #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
-            pub const fn from_char(c: char) -> Result<Self> {
+            pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = Char::to_utf8_bytes(c);
@@ -350,13 +346,13 @@ macro_rules! impl_string_u {
             #[doc = "Creates a new `String" $t:camel "` from a `char7`."]
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
-            /// or [`NotEnoughCapacity`] if `CAP < 1.
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            /// or if `CAP < 1.
             ///
             #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
             #[cfg(feature = "_char7")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
-            pub const fn from_char7(c: char7) -> Result<Self> {
+            pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
                 new.arr[0] = c.to_utf8_bytes()[0];
                 new.len = 1;
@@ -366,14 +362,14 @@ macro_rules! impl_string_u {
             #[doc = "Creates a new `String" $t:camel "` from a `char8`."]
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
-            /// or [`NotEnoughCapacity`] if `CAP < 2.
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            /// or if `CAP < 2.
             ///
             #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
             #[cfg(feature = "_char8")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
-            pub const fn from_char8(c: char8) -> Result<Self> {
+            pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
@@ -386,15 +382,15 @@ macro_rules! impl_string_u {
 
             #[doc = "Creates a new `String" $t:camel "` from a `char16`."]
             ///
-            /// # Panics
-            #[doc = "Panics if `CAP > `[`" $t
+            /// # Errors
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
             ///
-            #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
+            #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
             #[cfg(feature = "_char16")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
-            pub const fn from_char16(c: char16) -> Result<Self> {
+            pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
@@ -412,12 +408,12 @@ macro_rules! impl_string_u {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
+            pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidUtf8> {
                 match from_utf8(&bytes) {
                     Ok(_) => {
                         Ok(Self { arr: bytes, len: CAP as $t })
                     },
-                    Err(e) => Err(InvalidUtf8(Some(e))),
+                    Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
                 }
             }
 
@@ -445,21 +441,22 @@ macro_rules! impl_string_u {
             #[doc = "This method will only be *const* if the `" $cmp "` feature is enabled."]
             #[cfg(feature = $cmp)]
             )? // $cmp
-            pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
+            pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t)
+            -> Result<Self, InvalidUtf8> {
                 let length = Compare(length).min(CAP as $t);
                 match from_utf8(bytes.split_at(length as usize).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
-                    Err(e) => Err(InvalidUtf8(Some(e))),
+                    Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
                 }
             }
             $( // $cmp
             #[allow(missing_docs)]
             #[cfg(not(feature = $cmp))]
-            pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
+            pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self, InvalidUtf8> {
                 let length = length.min(CAP as $t);
                 match from_utf8(bytes.split_at(length as usize).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
-                    Err(e) => Err(InvalidUtf8(Some(e))),
+                    Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
                 }
             }
             )?
@@ -507,7 +504,8 @@ macro_rules! impl_string_u {
             #[doc = "This method will only be *const* if the `" $cmp "` feature is enabled."]
             #[cfg(feature = $cmp)]
             )? // $cmp
-            pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
+            pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t)
+            -> Result<Self, InvalidUtf8> {
                 let length = Compare(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
@@ -516,13 +514,14 @@ macro_rules! impl_string_u {
                 }];
                 match from_utf8(bytes.split_at(ulen).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
-                    Err(e) => Err(InvalidUtf8(Some(e))),
+                    Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
                 }
             }
             $( // $cmp
             #[allow(missing_docs)]
             #[cfg(not(feature = $cmp))]
-            pub fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
+            pub fn from_bytes_nright(mut bytes: [u8; CAP], length: $t)
+            -> Result<Self, InvalidUtf8> {
                 let length = length.min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
@@ -531,7 +530,7 @@ macro_rules! impl_string_u {
                 }
                 match from_utf8(bytes.split_at(ulen).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
-                    Err(e) => Err(InvalidUtf8(Some(e))),
+                    Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
                 }
             }
             )?
@@ -638,16 +637,16 @@ macro_rules! impl_string_u {
         }
 
         impl<const CAP: usize> TryFrom<&str> for $name<CAP> {
-            type Error = TextError;
+            type Error = MismatchedCapacity;
 
             #[doc = "Tries to create a new `String" $t:camel "` from the given `string` slice."]
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]"]
-            /// or [`NotEnoughCapacity`] if `CAP < string.len()`.
-            fn try_from(string: &str) -> Result<Self> {
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]"]
+            /// or if `CAP < string.len()`.
+            fn try_from(string: &str) -> Result<Self, MismatchedCapacity> {
                 if CAP < string.len() {
-                    Err(NotEnoughCapacity(string.len()))
+                    Err(MismatchedCapacity::closed(0, CAP + string.len(), CAP))
                 } else {
                     let mut new_string = Self::new()?;
                     let bytes = string.as_bytes();
@@ -658,26 +657,29 @@ macro_rules! impl_string_u {
         }
 
         impl<const CAP: usize> TryFrom<&[u8]> for $name<CAP> {
-            type Error = TextError;
+            type Error = InvalidText;
 
-            #[doc = "Tries to create a new `String" $t:camel "` from the given slice of bytes."]
+            #[doc = "Tries to create a new `String" $t:camel "` from the given slice of` bytes`."]
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`],"]
-            /// [`NotEnoughCapacity`] if `CAP < bytes.len()`
-            /// or [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            fn try_from(bytes: &[u8]) -> Result<Self> {
+            #[doc = "Returns [`InvalidText::Capacity`] if `CAP > `[`" $t "::MAX`], or if "]
+            /// `CAP < bytes.len()`, and [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
+            fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
                 if CAP < bytes.len() {
-                    Err(NotEnoughCapacity(bytes.len()))
+                    return Err(InvalidText::Capacity(Mismatch::in_closed_interval(
+                        0,
+                        bytes.len(),
+                        CAP,
+                        "",
+                    )));
                 } else {
-                    // Check if the byte slice is valid UTF-8
                     match from_utf8(bytes) {
                         Ok(_) => {
                             let mut arr = [0; CAP];
                             arr[..bytes.len()].copy_from_slice(bytes);
                             Ok(Self { arr, len: bytes.len() as $t })
                         },
-                        Err(e) => Err(InvalidUtf8(Some(e))),
+                        Err(e) => Err(InvalidText::from_utf8_error(e)),
                     }
                 }
             }
