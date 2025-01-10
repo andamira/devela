@@ -3,7 +3,7 @@
 //! Data-related error types.
 //
 // TOC
-// - standalone data-related error types:
+// - individual data-related error types:
 //   - DataOverflow
 //   - ElementNotFound
 //   - IndexOutOfBounds
@@ -27,6 +27,8 @@
 //   - DataResult
 
 use crate::{impl_error, Interval, Mismatch};
+
+/* individual errors */
 
 impl_error! { individual: pub struct DataOverflow(pub Option<usize>);
     DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.",
@@ -64,6 +66,11 @@ impl MismatchedCapacity {
     #[must_use]
     pub const fn closed(lower: usize, upper: usize, have: usize) -> Self {
         Self(Mismatch::in_closed_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))
+    }
+     /// Creates a mismatch where `need` is an [`Interval::closed_open`], and `have` is outside it.
+    #[must_use]
+    pub const fn closed_open(lower: usize, upper: usize, have: usize) -> Self {
+        Self(Mismatch::in_closed_open_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))
     }
 }
 impl_error! { individual: pub struct MismatchedDimensions(pub Mismatch<usize, usize>);
@@ -109,6 +116,8 @@ Optionally contains the number of elements added.",
     self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements could be added.")
     } else { write!(f, "Only a subset of elements could be added.") }
 }
+
+/* composite errors */
 
 impl_error! { composite: fmt(f)
     /// An error composite of [`NotEnoughElements`] + [`NotEnoughSpace`].
