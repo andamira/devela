@@ -56,7 +56,7 @@ See linked files for detailed changes.
 
 ## Works under MIT License
 - [const_for] by Joachim Enggård Nebel, as the [`cfor`] macro.
-- [crunchy] by Eira Fransham, as the [`unroll`] macro.
+- [crunchy] by Eira Fransham, as the [`unroll`] macro ([*mod*][M_unroll]).
 - [object-id] by *Altertech*, as part of the [`IdPinBox`] and [`IdPin`] structs ([*mod*][M_objid]).
 - [rawbytes] by Frank Denis, as `Mem`'s [`as_bytes`] and [`as_bytes_mut`] methods.
 - [unsized-stack] by *storycraft*, as the [`FatPtr`] struct.
@@ -65,6 +65,7 @@ See linked files for detailed changes.
   [`cfor`]: https://docs.rs/devela/latest/devela/code/macro.cfor.html
 [crunchy]: https://crates.io/crates/crunchy/0.2.2
   [`unroll`]: https://docs.rs/devela/latest/devela/code/macro.unroll.html
+  [M_unroll]: https://github.com/andamira/devela/blob/main/build/generate/unroll/MODIFICATIONS.md
 [object-id]: https://crates.io/crates/object-id/0.1.4
   [M_objid]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
   [`IdPin`]: https://docs.rs/devela/latest/devela/data/id/struct.IdPin.html

@@ -1,5 +1,7 @@
 // devela::data::array::init
 //
+//! Defines the [`array_init!`] macro.
+//
 // WAIT: [Stack overflow with Boxed array](https://github.com/rust-lang/rust/issues/53827)
 
 /// Initializes a [`[$T; $LEN]`][array] array in multiple ways.
