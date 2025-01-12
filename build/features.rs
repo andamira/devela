@@ -258,7 +258,7 @@ mod reflection {
 
             DEVELOPMENT,
             ENVIRONMENT,
-            SAFE, UNSAFE,
+            SAFE, SAFEST, UNSAFE,
             NIGHTLY,
             DEPENDENCY,
 

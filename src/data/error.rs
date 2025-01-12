@@ -67,7 +67,7 @@ impl MismatchedCapacity {
     pub const fn closed(lower: usize, upper: usize, have: usize) -> Self {
         Self(Mismatch::in_closed_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))
     }
-     /// Creates a mismatch where `need` is an [`Interval::closed_open`], and `have` is outside it.
+    /// Creates a mismatch where `need` is an [`Interval::closed_open`], and `have` is outside it.
     #[must_use]
     pub const fn closed_open(lower: usize, upper: usize, have: usize) -> Self {
         Self(Mismatch::in_closed_open_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))

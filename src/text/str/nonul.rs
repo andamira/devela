@@ -89,8 +89,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{TextResult, StringNonul};
-    /// # fn main() -> TextResult<()> {
+    /// # use devela::{StringNonul, MismatchedCapacity};
+    /// # fn main() -> Result<(), MismatchedCapacity> {
     /// let mut s = StringNonul::<4>::new()?;
     /// assert_eq![0, s.len()];
     ///
