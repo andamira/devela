@@ -3,60 +3,53 @@
 //!
 //
 
-use super::Duration;
-
-#[doc = crate::TAG_RESULT!()]
-/// A time-related result.
-pub type TimeResult<T> = crate::Result<T, TimeError>;
-
-/// A time-related error.
-#[non_exhaustive]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum TimeError {
-    /// The `Duration` from a [`SystemTimeError`][std::time::SystemTimeError].
-    ///
-    /// Used to learn how far in the opposite direction a [`SystemTime`][super::SystemTime] lies.
-    // IMPROVE: generalize.
-    SystemTimeError(Duration),
-
-    /// The given value is out of bounds.
-    OutOfBounds(Option<usize>),
-}
+use crate::impl_error;
+#[cfg(feature = "std")]
+use crate::Duration;
 
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-mod std_impls {
-    use super::TimeError;
-    use std::time::SystemTimeError;
+use std::time::SystemTimeError as StdSystemTimeError;
 
-    impl From<SystemTimeError> for TimeError {
-        fn from(time: SystemTimeError) -> Self {
-            TimeError::SystemTimeError(time.duration())
-        }
+impl_error! { individual:
+    #[cfg(feature = "std")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    pub struct SystemTimeError(Duration);
+    DOC_SYSTEM_TIME_ERROR =
+    "An error returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
+This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
+    self+f => write!(f, "SystemTimeError difference: {:?}", self.0)
+}
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+impl From<StdSystemTimeError> for SystemTimeError {
+    fn from(from: StdSystemTimeError) -> Self {
+        SystemTimeError(from.duration())
     }
 }
 
-mod core_impls {
-    use crate::{impl_trait, TimeError};
+#[cfg(all(feature = "error", feature = "time"))]
+pub use full_composite::*;
+#[cfg(all(feature = "error", feature = "time"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "error", feature = "time"))))]
+mod full_composite {
+    use super::*;
+    use crate::{DataOverflow, DOC_DATA_OVERFLOW};
 
-    impl crate::Error for TimeError {}
-    impl crate::ExtError for TimeError {
-        type Kind = ();
-        fn error_eq(&self, other: &Self) -> bool {
-            self == other
+    #[doc = crate::TAG_RESULT!()]
+    /// A text-related result.
+    pub type TimeResult<T> = crate::Result<T, TimeError>;
+
+    impl_error! { composite: fmt(f)
+        /// A text-related composite error.
+        #[non_exhaustive]
+        pub enum TimeError {
+            DOC_DATA_OVERFLOW:
+                DataOverflow(o|0: Option<usize>) => DataOverflow(*o),
+
+            #[cfg(feature = "std")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+            DOC_SYSTEM_TIME_ERROR:
+                SystemTime(d|0: Duration) => SystemTimeError(*d),
         }
-        fn error_kind(&self) -> Self::Kind {}
     }
-    impl_trait! { fmt::Display for TimeError |self, f| {
-        use TimeError as E;
-        match self {
-            E::SystemTimeError(d) => {
-                write!(f, "SystemTimeError({d:?})")
-            }
-            E::OutOfBounds(v) => match v {
-                Some(v) => write!(f, "The given value {v} is out of bounds."),
-                None => write!(f, "The given value is out of bounds."),
-            },
-        }
-    }}
 }

@@ -27,11 +27,11 @@ reexport! { rust: std::time,
     doc: "A measurement of the system clock.",
     SystemTime
 }
-reexport! { rust: std::time,
-    tag: crate::TAG_ERROR!(),
-    doc: "Error returned from the `duration_since` and `elapsed` methods on [`SystemTime`].",
-    SystemTimeError
-}
+// reexport! { rust: std::time,
+//     tag: crate::TAG_ERROR!(),
+//     doc: "Error returned from the `duration_since` and `elapsed` methods on [`SystemTime`].",
+//     SystemTimeError
+// }
 reexport! { rust: std::time,
     doc: "A [`SystemTime`] anchored to “1970-01-01 00:00:00 UTC”.",
     UNIX_EPOCH

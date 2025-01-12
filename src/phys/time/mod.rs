@@ -7,12 +7,12 @@
 // safety
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
+mod error;
 mod reexports;
 
 #[cfg(feature = "time")]
 crate::items! {
     mod calendar;
-    mod error;
     mod fmt;
     mod no;
     mod split;
@@ -25,12 +25,12 @@ crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
     pub use _always::*;
 
-    mod _mods {
-        pub use super::reexports::*;
+    mod _mods { #![allow(unused)]
+        pub use super::{error::*, reexports::*};
 
         #[cfg(feature = "time")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
-        pub use super::{calendar::*, error::*, fmt::*, no::*, split::*, unix::*};
+        pub use super::{calendar::*, fmt::*, no::*, split::*, unix::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

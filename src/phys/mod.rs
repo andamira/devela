@@ -9,8 +9,6 @@
 // safety
 #![cfg_attr(feature = "safe_phys", forbid(unsafe_code))]
 
-// #[cfg(feature = "time")]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
 pub mod time;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -20,7 +18,6 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        // #[cfg(feature = "time")]
         pub use super::time::_all::*;
     }
     pub(super) mod _all {

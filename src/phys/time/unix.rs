@@ -313,7 +313,7 @@ impl TryFrom<UnixTimeI64> for UnixTimeU32 {
 #[cfg(feature = "std")]
 mod std_impls {
     #[cfg(feature = "cast")]
-    use crate::{Cast, TimeError, UnixTimeU32};
+    use crate::{Cast, DataOverflow, UnixTimeU32};
     use crate::{SystemTime, SystemTimeError, UnixTimeI64};
 
     impl TryFrom<SystemTime> for UnixTimeI64 {
@@ -327,16 +327,15 @@ mod std_impls {
         }
     }
 
-    #[cfg(feature = "cast")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+    #[cfg(all(feature = "cast", feature = "error"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "cast", feature = "error"))))]
     impl TryFrom<SystemTime> for UnixTimeU32 {
-        type Error = TimeError;
+        type Error = crate::TimeError;
 
         fn try_from(time: SystemTime) -> Result<Self, Self::Error> {
             let since = time.duration_since(SystemTime::UNIX_EPOCH)?;
-            let seconds = u32::try_from(since.as_secs()).map_err(|_| {
-                TimeError::OutOfBounds(Cast(since.as_secs()).checked_cast_to_usize().ok())
-            })?;
+            let seconds = u32::try_from(since.as_secs())
+                .map_err(|_| DataOverflow(Cast(since.as_secs()).checked_cast_to_usize().ok()))?;
             Ok(UnixTimeU32 { seconds })
         }
     }

@@ -28,7 +28,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new structs:
   - `Interval`, `Pnm`.
   - new namespaces: `Alloc`, `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
-  - new standalone error types: `FailedErrorConversion`, `DataNotEnough`, `NotImplemented`, `NotSupported`, `ElementNotFound`, `InvalidAxisLength`, `KeyAlreadyExists`, `MismatchedCapacity`, `MismatchedDimensions`, `MismatchedIndices`, `NodeEmpty`, `NodeLinkNotSet`, `NodeLinkNotUnique`, `NotEnoughElements`, `NotEnoughSpace`, `IndexOutOfBounds`, `DataOverflow`, `PartiallyAdded`.
+  - new standalone error types: `FailedErrorConversion`, `DataNotEnough`, `NotImplemented`, `NotSupported`, `ElementNotFound`, `InvalidAxisLength`, `KeyAlreadyExists`, `MismatchedCapacity`, `MismatchedDimensions`, `MismatchedIndices`, `NodeEmpty`, `NodeLinkNotSet`, `NodeLinkNotUnique`, `NotEnoughElements`, `NotEnoughSpace`, `IndexOutOfBounds`, `DataOverflow`, `PartiallyAdded`, `InvalidChar`, `InvalidUtf8`, `SystemTimeError`.
   - new composite error types: `NotAvailable`, `DataNotEnough`, `MismatchedBounds`, `PartialSpace`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `HasherPengy`.
@@ -84,7 +84,7 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `NonZero`, `Saturating`, `Wrapping`, `OsStr`, `OsString`.
     - `HashMapEntry` and `BTreeMapEntry`.
     - `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
-    - `FromStr`, `IterChars`, `Utf8Error`.
+    - `FromStr`, `IterChars`.
   - crate items from multiple related modules, like errors and strings.
 - new modules: `num::alg`, `sys::sound`, `media::{audio, color, draw, font, image, layout}`, `phys`, `ui`.
 - new `sys::os::linux` module and example `linux`.
