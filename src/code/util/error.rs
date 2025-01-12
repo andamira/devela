@@ -14,15 +14,19 @@
 macro_rules! impl_error {
     (
     // Defines a standalone error tuple-struct with elements.
-    individual: $struct_vis:vis struct $struct_name:ident
+    individual:
+        $(#[$attributes:meta])*
+        $struct_vis:vis struct $struct_name:ident
         $(( $($e_vis:vis $e_ty:ty),+ $(,)? ))? $(;$($_a:lifetime)?)?              // tuple-struct↓
         $({ $($(#[$f_attr:meta])* $f_vis:vis $f_name:ident: $f_ty:ty),+ $(,)? })? // field-struct↑
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
     ) => {
+        $(#[$attributes])*
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
+        $(#[$attributes])*
         #[doc = crate::TAG_ERROR!()]
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
@@ -30,12 +34,15 @@ macro_rules! impl_error {
             $(( $($e_vis $e_ty),+ ) )? $(; $($_a)?)?       // tuple-struct↓
         $({ $( $(#[$f_attr])* $f_vis $f_name: $f_ty),+ })? // field-struct↑
 
+        $(#[$attributes])*
         impl $crate::Display for $struct_name {
             fn fmt(&$self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 $display_expr
             }
         }
+        $(#[$attributes])*
         impl $crate::Error for $struct_name {}
+        $(#[$attributes])*
         impl $crate::ExtError for $struct_name {
             type Kind = ();
             fn error_eq(&self, other: &Self) -> bool { self == other }
@@ -49,7 +56,8 @@ macro_rules! impl_error {
     composite: fmt($fmt:ident)
         $(#[$enum_attr:meta])*
         $vis:vis enum $composite_error_name:ident { $(
-            $DOC_VAR:ident:
+            $(#[$variant_attr:meta])*
+            $DOC_VARIANT:ident:
             $variant_name:ident
                 $(( $($e_name:ident| $e_numb:literal: $e_ty:ty),+ ))?       // tuple-struct↓
                 $({ $($(#[$f_attr:meta])* $f_name:ident: $f_ty:ty),+ })?    // field-struct↑
@@ -62,7 +70,8 @@ macro_rules! impl_error {
         $(#[$enum_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
-            #[doc = $DOC_VAR!()]
+            $(#[$variant_attr])*
+            #[doc = $DOC_VARIANT!()]
             $variant_name
                 $(( $($e_ty),+ ))?                         // tuple-struct↓
                 $({ $($(#[$f_attr])* $f_name: $f_ty),+ })? // field-struct↑
@@ -78,9 +87,10 @@ macro_rules! impl_error {
         impl $crate::Display for $composite_error_name  {
             fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 match self { $(
+                    $(#[$variant_attr])*
                     $composite_error_name::$variant_name
-                    $(( $($e_name),+ ))? // tuple-struct|
-                    $({ $($f_name),+ })? // field-struct
+                    $(( $($e_name),+ ))? // tuple-struct↓
+                    $({ $($f_name),+ })? // field-struct↑
                     =>
                         $crate::Display::fmt(&$individual_error_name
                             $(( $($e_display_expr),+ ))?                // tuple-struct↓
@@ -92,6 +102,7 @@ macro_rules! impl_error {
         // implements From multiple individual errors for a composite error,
         // and implements TryFrom in reverse:
         $(
+            $(#[$variant_attr])*
             $crate::impl_error! { from(_f): $individual_error_name, for: $composite_error_name
                 => $variant_name
                 $(( $($e_name, $crate::field_of![_f, $e_numb] ),+ ))? // tuple-struct↓
