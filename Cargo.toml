@@ -689,7 +689,7 @@ default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/featu
 features = ["fallback", "float"]
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
-version = "0.23.3" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
+version = "0.23.4" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
 optional = true  # unsafe
 default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
@@ -818,7 +818,7 @@ optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
 [dependencies.winnow] # https://crates.io/crates/winnow
-version = "0.6.22" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
+version = "0.6.24" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
 optional = true # ±safe (very little unsafe)
 default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 
