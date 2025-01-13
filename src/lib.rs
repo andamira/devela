@@ -68,6 +68,7 @@
         // box_uninit_write, // ?
         cell_update,
         const_array_from_ref,
+        const_black_box,
         const_is_char_boundary,
         const_slice_flatten,
         const_slice_from_ref,
