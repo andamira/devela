@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## [0.22.0-wip] - (TBD)
+## [0.23.0-wip] *unreleased*
+
+## [0.22.0] 2025-01-13
 
 ### Added
 
@@ -1062,8 +1064,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.21.2...HEAD
-[0.22.0]: https://github.com/andamira/devela/releases/tag/v0.22.0 (TBD)
+[unreleased]: https://github.com/andamira/devela/compare/v0.22.0...HEAD
+[0.22.0]: https://github.com/andamira/devela/releases/tag/v0.22.0
 [0.21.2]: https://github.com/andamira/devela/releases/tag/v0.21.2
 [0.21.1]: https://github.com/andamira/devela/releases/tag/v0.21.1
 [0.21.0]: https://github.com/andamira/devela/releases/tag/v0.21.0

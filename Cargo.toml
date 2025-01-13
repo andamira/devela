@@ -45,7 +45,7 @@ resolver = "3"
 [package]
 name = "devela"
 description = "A cohesive development layer."
-version = "0.22.0-wip"
+version = "0.22.0"
 edition = "2021"
 rust-version = "1.84.0" # In sync with README.md & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -54,7 +54,7 @@ documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
-	"/build/**/*.rs",
+	"/build/**/*.rs", "/build/**/*.md",
 	"/src/**/*.rs", "/src/**/*.md",
 	"/config/*",
 	"/DOCS/VENDORED*.md",

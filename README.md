@@ -6,7 +6,7 @@
 <br/>
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
 [![Documentation](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
-[![MSRV 1.80.1](https://flat.badgen.net/badge/MSRV/1.80.1/purple)](https://releases.rs/docs/1.80.1/)
+[![MSRV 1.84.0](https://flat.badgen.net/badge/MSRV/1.84.0/purple)](https://releases.rs/docs/1.84.0/)
 
 ---
 
