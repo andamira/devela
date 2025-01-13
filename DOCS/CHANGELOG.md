@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.23.0-wip] *unreleased*
 
+## [0.22.1] 2025-01-13
+
+- fix docs compilation.
+
+
 ## [0.22.0] 2025-01-13
 
 ### Added

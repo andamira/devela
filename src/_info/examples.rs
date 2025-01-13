@@ -3,24 +3,23 @@
 //!
 //! These examples generate example structures for documentation purposes.
 //
-// NOTE: rustdoc doesn't detect changes in the examples, only in the library,
-// so it's necessary to modify the library to rebuild the examples docs
+// NOTE: rustdoc doesn't detect changes in the examples, but only in the library.
+// So it's necessary to modify the library in order to rebuild the examples docs.
 
 #![allow(unused)]
 
 /* in-crate integrated examples */
 
+#[cfg(all(feature = "bit", feature = "_bit_u8"))]
+#[path = "../../examples/code/enumset.rs"]
+pub mod enumset;
+#[path = "../../examples/code/enumint.rs"]
+pub mod enumint;
+
 #[cfg(feature = "_bit_u8")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_bit_u8")))]
 #[path = "../../examples/data/bitfield.rs"]
 pub mod bitfield;
-#[cfg(all(feature = "bit", feature = "_bit_u8"))]
-#[path = "../../examples/code/enumset.rs"]
-pub mod enumset;
-
-#[path = "../../examples/code/enumint.rs"]
-pub mod enumint;
-
 #[path = "../../examples/data/id_seq.rs"]
 pub mod id_seq;
 

@@ -45,7 +45,7 @@ resolver = "3"
 [package]
 name = "devela"
 description = "A cohesive development layer."
-version = "0.22.0"
+version = "0.22.1"
 edition = "2021"
 rust-version = "1.84.0" # In sync with README.md & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -65,6 +65,7 @@ include = [
 	"/examples/data/bitfield.rs",
 	"/examples/data/id_seq.rs",
 	"/examples/num/niche.rs",
+	"/examples/work/coro_run.rs",
 ]
 autoexamples = false
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]

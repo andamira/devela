@@ -1,6 +1,6 @@
 # devela
 
-[![Repository](https://flat.badgen.net/badge/github/v0.22.0/blue?icon=git)](https://github.com/andamira/devela)
+[![Repository](https://flat.badgen.net/badge/github/v0.22.1/blue?icon=git)](https://github.com/andamira/devela)
 [![Documentation ahead](https://flat.badgen.net/badge/docs/ahead*/blue)](https://andamira.github.io/libera/doc/devela/)
 [![MSRV ahead 1.84.0](https://flat.badgen.net/badge/MSRV/1.84.0/blue)](https://releases.rs/docs/1.84.0/)
 <br/>
@@ -25,8 +25,6 @@ Features are grouped into categories, enabling modular and orthogonal developmen
 
 For a full list of features and their categories, see the [Features Documentation].
 
-[Features Doucumentation]: https://andamira.github.io/libera/doc/devela/_info/features/index.html
-<!-- WAIT: publish -->
 [Features Documentation]: https://docs.rs/devela/latest/devela/_info/features/index.html
 
 
