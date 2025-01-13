@@ -30,7 +30,7 @@ impl_error! { individual:
         pub error_len: Option<usize>
     }
     DOC_INVALID_UTF8 = "Invalid Utf-8 found while interpreting a byte sequence.\n\n
-This is basically a replication of `core::str`[`Utf8Error`]`.",
+This is basically a replication of `core::str::`[`Utf8Error`]`.",
     self+f => if let Some(len) = self.error_len {
         write!(f, "Invalid UTF-8, valid up to: {}, len: {len}", self.valid_up_to)
     } else { write!(f, "Invalid UTF-8, valid up to: {}", self.valid_up_to) }

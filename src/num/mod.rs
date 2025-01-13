@@ -1,7 +1,7 @@
 // devela::num
 //
 //! Numerical types and math operations.
-#![doc = crate::doc_!(modules: crate; num: algebra, logic, niche, rand, wave)]
+#![doc = crate::doc_!(modules: crate; num: alg, geom, logic, niche, rand, wave)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: cmp, num)]
