@@ -45,21 +45,22 @@ resolver = "3"
 [package]
 name = "devela"
 description = "A cohesive development layer."
-version = "0.22.1"
-edition = "2021"
+version = "0.23.0-wip" # In sync with DOCS/CHANGELOG.md
 rust-version = "1.84.0" # In sync with README.md & .github/workflows/check.yml
+edition = "2021" # WAIT:1.85 edition 2024
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
-	"/Cargo.toml",
-	"/build/**/*.rs", "/build/**/*.md",
-	"/src/**/*.rs", "/src/**/*.md",
-	"/config/*",
-	"/DOCS/VENDORED*.md",
-	"/LICENSE*",
-	# examples used in docs:
+	# configuration:
+	"/Cargo.toml", "/config/*",
+	# source code:
+	"/build/**/*.rs", "/src/**/*.rs",
+	# documentation:
+	"/build/**/*.md", "/src/**/*.md",
+	"/DOCS/VENDORED*.md", "/LICENSE*",
+	# examples in documentation:
 	"/examples/code/enumint.rs",
 	"/examples/code/enumset.rs",
 	"/examples/data/bitfield.rs",
