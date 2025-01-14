@@ -633,7 +633,7 @@ default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.22" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.23" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
@@ -657,7 +657,7 @@ optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/libm/latest/features
 
 [dependencies.log] # https://crates.io/crates/log
-version = "0.4.22" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
+version = "0.4.25" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
 optional = true # safe (optional unsafe)
 default-features = false # 25 https://docs.rs/crate/log/latest/features
 # features = ["kv"]
