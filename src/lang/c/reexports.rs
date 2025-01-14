@@ -1,4 +1,4 @@
-// devela::ffi::reexports
+// devela::lang::c::reexports
 //
 //! Reexported items from `core`.
 //
@@ -20,14 +20,4 @@ reexport! { rust: core::ffi,
 reexport! { rust: alloc::ffi,
     doc: "An owned, C-compatible, nul-terminated string with no nul bytes in the middle.",
     CString
-}
-
-reexport! { rust: std::ffi,
-    doc: "Borrowed reference to an OS string (See [`OsString`]).",
-    OsStr
-}
-reexport! { rust: std::ffi,
-    doc: "A type that can represent owned, mutable platform-native strings,
-    but is cheaply inter-convertible with Rust strings.",
-    OsString
 }
