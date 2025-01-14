@@ -9,13 +9,21 @@ use crate::reexport;
 
 reexport! { rust: alloc::alloc,
     doc: "Layout of a block of memory.",
-    Layout
+    @Layout as MemLayout
 }
 reexport! { rust: alloc::alloc,
-    doc: "The parameters given to a `Layout` constructor did not satisfy the constraints.",
-    LayoutError
+    tag: crate::TAG_ERROR!(),
+    doc: "The parameters given to a [`MemLayout`] constructor did not satisfy the constraints.",
+    @LayoutError as MemLayoutError
 }
 reexport! { rust: alloc::alloc,
-    doc: "",
+    doc: "A memory allocator that can be registered as the standard library’s default.",
     GlobalAlloc
+}
+
+/* std */
+
+reexport! { rust: std::alloc,
+    doc: "The default memory allocator provided by the operating system.",
+    @System as SystemAlloc
 }

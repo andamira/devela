@@ -6,7 +6,7 @@
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 #[cfg(feature = "alloc")]
 use crate::{
-    Layout,
+    MemLayout,
     _dep::_alloc::alloc::{alloc, alloc_zeroed, dealloc, handle_alloc_error, realloc},
 };
 
@@ -23,7 +23,7 @@ impl Alloc {
     ///
     /// # Safety
     /// See `std::alloc::`[`handle_alloc_error`].
-    pub fn handle_alloc_error(layout: Layout) -> ! {
+    pub fn handle_alloc_error(layout: MemLayout) -> ! {
         handle_alloc_error(layout)
     }
 }
@@ -39,7 +39,7 @@ impl Alloc {
     /// # Safety
     /// See `std::alloc::`[`alloc`].
     #[must_use]
-    pub unsafe fn alloc(layout: Layout) -> *mut u8 {
+    pub unsafe fn alloc(layout: MemLayout) -> *mut u8 {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { alloc(layout) }
     }
@@ -48,7 +48,7 @@ impl Alloc {
     /// # Safety
     /// See `std::alloc::`[`alloc_zeroed`].
     #[must_use]
-    pub unsafe fn alloc_zeroed(layout: Layout) -> *mut u8 {
+    pub unsafe fn alloc_zeroed(layout: MemLayout) -> *mut u8 {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { alloc_zeroed(layout) }
     }
@@ -56,7 +56,7 @@ impl Alloc {
     ///
     /// # Safety
     /// See `std::alloc::`[`dealloc`].
-    pub unsafe fn dealloc(ptr: *mut u8, layout: Layout) {
+    pub unsafe fn dealloc(ptr: *mut u8, layout: MemLayout) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { dealloc(ptr, layout) }
     }
@@ -64,7 +64,7 @@ impl Alloc {
     ///
     /// # Safety
     /// See `std::alloc::`[`realloc`].
-    pub unsafe fn realloc(ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
+    pub unsafe fn realloc(ptr: *mut u8, layout: MemLayout, new_size: usize) -> *mut u8 {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { realloc(ptr, layout, new_size) }
     }
