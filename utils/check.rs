@@ -1,10 +1,10 @@
 #!/usr/bin/env -S rust-script -c
 //! ```cargo
 //! [dependencies]
-//! devela = { version = "0.21.2", features = ["std", "sys"] }
+//! devela = { version = "0.22.1", features = ["std"] }
 //! lexopt = "0.3"
-//! itertools = "0.13"
-//! toml_edit = "0.20"
+//! itertools = "0.14"
+//! toml_edit = "0.22"
 //! ```
 // NOTE: needs [rust-script](https://crates.io/crates/rust-script) to run.
 //
@@ -49,7 +49,7 @@ use std::{
     process::{exit, Command, Stdio},
     thread,
 };
-use toml_edit::Document;
+use toml_edit::ImDocument;
 
 /* config */
 
@@ -555,7 +555,7 @@ fn get_msrv() -> Result<String> {
     file.read_to_string(&mut contents)?;
 
     // Parse the contents as TOML and return the `rust`-version field
-    let cargo_toml: Document = contents.parse()?;
+    let cargo_toml: ImDocument<_> = contents.parse()?;
     cargo_toml
         .as_table()
         .get("package")
