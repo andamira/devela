@@ -30,7 +30,7 @@ pub mod image;
 pub mod midi;
 
 crate::items! { // structural access: _pub_mods, _all, _always
-    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
     mod _pub_mods {

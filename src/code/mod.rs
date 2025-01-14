@@ -21,7 +21,7 @@ pub mod util; // utility macros and functions
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
     pub use {_mods::*, _internals::*};
-    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
     mod _mods {

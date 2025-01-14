@@ -12,7 +12,7 @@
 pub mod linux;
 
 crate::items! { // structural access: _pub_mods, _all
-    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _pub_mods::*;
 
     mod _pub_mods {

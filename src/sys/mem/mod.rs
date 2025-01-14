@@ -33,7 +33,7 @@ pub mod cell;
 crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
     pub use {_mods::*, _hidden::*};
-    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
     mod _mods {

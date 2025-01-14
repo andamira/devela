@@ -46,7 +46,7 @@ mod unroll; // unroll!
 crate::items! { // structural access: _mods, _internals, _all, _always
     #[allow(unused)]
     pub use {_mods::*, _internals::*};
-    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _always::*;
 
     mod _mods {
