@@ -291,45 +291,44 @@ nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 #* Capability features *#
 # ------------------------------------------------------------------------------
 # Most of these features are prefixed with an underscore (_) to be semi-hidden.
-#
 # Enabling them enables extra implementations which increases compilation times.
 #
 # They set automatic compile flags named `_*··`, used for reflection.
 # For example, `_stack··` will be set if any _stack* feature is enabled.
+# Which is done in ./build/features.rs
+#
+# TOC
+# - default
+# - docs
+# - code
+# - data
+# - num
+# - text
 
-# default = [] # default capabilities
+# default = []
+_max = ["_data_all", "_num_all", "_text_all"]
+_maxest = ["_max", "_tuple_72", "_unroll_2048"]
 
-#* docs capabilities *#
+#* _docs capabilities *#
 # ---------------------
 # WAIT [\href does not work in display mode](https://github.com/KaTeX/KaTeX/issues/3571)
 # WAIT [support \SI and \si from siunitx](https://github.com/KaTeX/KaTeX/issues/817)
 
-# The most complete versions of the documentation:
-_docsrs = ["_docsrs_min", "_docs_max"]
-_docsrs_min = ["_docsrs_nodep", "dep_all"]
-_docsrs_nodep = ["_docsrs_stable_nodep", "nightly"]
-
-_docsrs_stable = ["_docsrs_stable_min", "_docs_max"]
-_docsrs_stable_min = ["_docsrs_stable_nodep", "dep_all"]
-_docsrs_stable_nodep = ["std", "unsafe", "_docs_min"]
-
-_docs_min = [ # the minimum capabilities to document each library item
+_docs = [ # the minimum capabilities to document everything
 	# modules:
-	"all",
-	"linux",
+	"all", "linux",
 	# data:
-	"_bit_u8",
-	"_destaque_u8", "_stack_u8", "_graph_u8",
-	"_tuple",
+	"_bit_u8", "_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll",
 	# num:
-	"_cmp_u8",
-	"_float_f32", "_int_u8",
+	"_cmp_f64", "_cmp_u32", "_cmp_i64",
+	"_float_f64", "_int_u32", "_int_i64",
 	# text:
-	"_string_u8", "_string_nonul",
-	"_char7", "_char8", "_char16",
+	"_string_u8", "_string_nonul", "_char_all",
 ]
-_docs_max = [ # the maximum capabities relevant for documentation
-	"_data_all", "_num_all", "_text_all"] # _tuple_72
+_docsrs_stable_nodep = ["_docs", "std", "unsafe"]              # + std + unsafe
+_docsrs_stable       = ["_docsrs_stable_nodep", "dep_all"]     # + dependencies
+_docsrs              = ["_docsrs_stable", "nightly"]           # + nightly
+_docsrs_nodep        = ["_docsrs_stable_nodep", "nightly"]     # - dependencies
 
 #* code capabilities *#
 # ---------------------
@@ -388,7 +387,7 @@ _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "
 		_stack_usize = []
 
 # `Tuple` trait and maximum arity supported (example relative compilation times)
-_tuple = [] # arity 12    # time:  3.3s, codegen: 96K  (for >=2nd compilations)
+_tuple = [] # arity 12    # time:  3.3s, codegen:  96K  (for >=2nd compilations)
 _tuple_24 = ["_tuple"]    # time:  4.0s, codegen: 279K
 _tuple_36 = ["_tuple_24"] # time:  4.6s, codegen: 561K
 _tuple_48 = ["_tuple_36"] # time:  6.3s, codegen: 942K
@@ -506,14 +505,14 @@ dep_all = [ # enables all 39 optional dependencies:
 	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow"
 ]
 
-# misc. groups of dependencies:
+# groups of dependencies, environment and modules
 alloc_deps = ["alloc", "dep_bumpalo", "dep_allocator_api2"]
 linux_deps = ["linux", "dep_atomic", "dep_bytemuck", "dep_nc", "dep_rustix"]
 text_deps  = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
 	"dep_stringzilla", "dep_unicode_segmentation", "dep_unicode_width"]
 work_deps  = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon", "dep_tokio"]
 
-# standalone dependencies:
+# individual dependencies features
 dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2",        # sys::mem::alloc
 	"bumpalo?/allocator-api2"]
 dep_atomic = ["dep:atomic"]                                                     # work::sync
@@ -562,28 +561,18 @@ dep_winnow = ["dep:winnow"]                                                     
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
-# Dependencies in each category (required, optional) are sorted alfabetically.
+## notes
+# - dependencies are sorted alfabetically, with links and comments.
+# - use `./utils/manifest.sh dependencies` to see the numbers.
 #
-# Links to each crate's crates.io page are provided alongside the entries,
-# as well as to the changelogs (✓), if available, or commit histories (✗).
-#
-# Crates using unsafe, even if transitively, are marked as so,
-# preventing enabling them if the `safest` feature is enabled.
-#
-# When adding a new optional dependency:
-# 1. Add a new entry below.
-# 2. Add a new entry in ./src/_deps.rs.
-# 3. Update `dep_all` above and ./config/dep_all.rs.
-#
-# Notes:
-# - List and count dependencies with `utils/manifest.sh dependencies`.
+## when adding a new optional dependency
+# 1. Update `dep_all` above and ./config/dep_all.rs.
+# 2. Add a new entry below and in ./src/_deps.rs.
 
 #* required dependencies *#
-
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version  = "0.12.1" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
 # path = "./macros" # safe
-
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED
@@ -869,6 +858,9 @@ lto = "thin"
 [package.metadata.docs.rs]
 # ==============================================================================
 # https://docs.rs/about/metadata
+#
+# Maximum build limits (https://docs.rs/crate/devela/latest/builds)
+# 6.44 GB RAM, 15 minutes, 102.4 kB log, no-network, 10 targets.
 
 no-default-features = true
 features = ["_docsrs"]
