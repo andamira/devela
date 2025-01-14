@@ -142,36 +142,48 @@ trr = "tree --format {p}:{r}" # with repository url
 # ------------------------------------------------------------------------------
 
 # https://crates.io/crates/cargo-show-asm
-# Has to be run from the root of the crate.
-# Functions need not to be inlined. Defaults to release mode.
+#
+# - Has to be run from the root of the crate.
+# - Functions need not to be inlined. Defaults to release mode.
+# - Needs to have installed rust sources and desired targets. E.g.:
+# ```sh
+# rustup component add rust-src
+# rustup target add riscv64imac-unknown-none-elf
+# ```
 A = "asm --simplify -p devela"
 Ar = "asm --simplify --rust -p devela" # print interleaved rust code
 # std targets:
-A_win64        = "A  --target x86_64-pc-windows-msvc"
-Ar_win64       = "Ar --target x86_64-pc-windows-msvc"
-A_mac64        = "A  --target x86_64-apple-darwin"
-Ar_mac64       = "Ar --target x86_64-apple-darwin"
-A_lin64        = "A  --target x86_64-unknown-linux-gnu"
-Ar_lin64       = "Ar --target x86_64-unknown-linux-gnu"
-A_lin32        = "A  --target i686-unknown-linux-gnu"
-Ar_lin32       = "Ar --target i686-unknown-linux-gnu"
-A_lin_riscv64  = "A  --target riscv64gc-unknown-linux-gnu"
-Ar_lin_riscv64 = "Ar --target riscv64gc-unknown-linux-gnu"
+A_and_arm64    = "A  --target aarch64-linux-android"          # android
+Ar_and_arm64   = "Ar --target aarch64-linux-android"
+A_and_pc64     = "A  --target x86_64-linux-android"
+Ar_and_pc64    = "Ar --target x86_64-linux-android"
+A_lin_pc32     = "A  --target i686-unknown-linux-gnu"         # linux
+Ar_lin_pc32    = "Ar --target i686-unknown-linux-gnu"
+A_lin_pc64     = "A  --target x86_64-unknown-linux-gnu"
+Ar_lin_pc64    = "Ar --target x86_64-unknown-linux-gnu"
 A_lin_arm64    = "A  --target aarch64-unknown-linux-gnu"
 Ar_lin_arm64   = "Ar --target aarch64-unknown-linux-gnu"
+A_lin_riscv64  = "A  --target riscv64gc-unknown-linux-gnu"
+Ar_lin_riscv64 = "Ar --target riscv64gc-unknown-linux-gnu"
+A_mac64        = "A  --target x86_64-apple-darwin"            # apple
+Ar_mac64       = "Ar --target x86_64-apple-darwin"
+A_win64        = "A  --target x86_64-pc-windows-msvc"         # windows
+Ar_win64       = "Ar --target x86_64-pc-windows-msvc"
 # no_std targets:
-A_64       = "A  --target x86_64-unknown-none"
-Ar_64      = "Ar --target x86_64-unknown-none"
-A_arm64    = "A  --target aarch64-unknown-none"
-Ar_arm64   = "Ar --target aarch64-unknown-none"
-A_arm32    = "A  --target thumbv7m-none-eabi"
-Ar_arm32   = "Ar --target thumbv7m-none-eabi"
-A_riscv64  = "A  --target thumbv7m-none-eabi"
-Ar_riscv64 = "Ar --target thumbv7m-none-eabi"
-A_wasi32   = "A  --target wasm32-wasip1"
-Ar_wasi32  = "Ar --target wasm32-wasip1"
-A_wasm32   = "A  --target wasm32-unknown-unknown"
-Ar_wasm32  = "Ar --target wasm32-unknown-unknown"
+A_pc32         = "A  --target i686-unknown-uefi"
+Ar_pc32        = "Ar --target i686-unknown-uefi"
+A_pc64         = "A  --target x86_64-unknown-none"
+Ar_pc64        = "Ar --target x86_64-unknown-none"
+A_arm32        = "A  --target thumbv7m-none-eabi"
+Ar_arm32       = "Ar --target thumbv7m-none-eabi"
+A_arm64        = "A  --target aarch64-unknown-none"
+Ar_arm64       = "Ar --target aarch64-unknown-none"
+A_riscv64      = "A  --target riscv64imac-unknown-none-elf"
+Ar_riscv64     = "Ar --target riscv64imac-unknown-none-elf"
+A_wasi32       = "A  --target wasm32-wasip1"
+Ar_wasi32      = "Ar --target wasm32-wasip1"
+A_wasm32       = "A  --target wasm32-unknown-unknown"
+Ar_wasm32      = "Ar --target wasm32-unknown-unknown"
 
 # https://crates.io/crates/cargo-expand
 E = "expand"
