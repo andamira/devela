@@ -33,8 +33,7 @@ reexport! { rust: std::ffi,
     OsStr
 }
 reexport! { rust: std::ffi,
-    doc: "A type that can represent owned, mutable platform-native strings,
-    but is cheaply inter-convertible with Rust strings.",
+    doc: "A type for owned, mutable native strings, interconvertible with Rust strings.",
     OsString
 }
 

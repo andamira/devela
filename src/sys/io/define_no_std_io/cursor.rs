@@ -5,8 +5,7 @@ use super::{
 };
 use core::cmp;
 
-/// An `IoCursor` wraps an in-memory buffer and provides it with a
-/// [`IoSeek`] implementation.
+/// Wraps an in-memory buffer and provides it with an [`IoSeek`] implementation.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Cursor.html>.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]

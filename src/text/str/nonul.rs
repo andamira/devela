@@ -21,8 +21,7 @@ use crate::{CString, ToString};
 /// The nul character.
 const NUL_CHAR: char = '\0';
 
-/// A UTF-8-encoded string, backed by an array with [`u8::MAX`] bytes of capacity.
-/// Can't contain nul chars.
+/// A UTF-8 string with up to [`u8::MAX`] bytes, excluding nul chars
 ///
 /// Internally, the first 0 byte in the array indicates the end of the string.
 ///
@@ -270,7 +269,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Trying to push a nul character does nothing and returns 0 bytes.
     ///
     /// # Errors
-    /// Returns [`NotEnoughCapacity`]
+    /// Returns [`MismatchedCapacity`]
     /// if the capacity is not enough to hold the given character.
     pub fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
         let char_len = character.len_utf8();
@@ -322,7 +321,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns the number of bytes written.
     ///
     /// # Errors
-    /// Returns [`NotEnoughCapacity`] if the capacity is not enough
+    /// Returns [`MismatchedCapacity`] if the capacity is not enough
     /// to hold even the first non-nul character.
     pub fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
         let first_char_len = string.chars().find(|&c| c != NUL_CHAR).map_or(0, |c| c.len_utf8());
@@ -340,7 +339,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Nul characters will not be taken into account.
     ///
     /// # Errors
-    /// Returns [`NotEnoughCapacity`] if the slice wont completely fit.
+    /// Returns [`MismatchedCapacity`] if the slice wont completely fit.
     pub fn try_push_str_complete(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
         let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
         if self.remaining_capacity() >= non_nul_len {
@@ -358,8 +357,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
+    /// or  if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
     #[rustfmt::skip]
@@ -384,7 +382,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()` and `CAP` < 1.
+    /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
     #[cfg(feature = "_char7")]

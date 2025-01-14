@@ -43,6 +43,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     // --------------------------------------------------------------------------
 
     w!(f, r#"
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// Extension trait providing convenience methods for [tuples][tuple].
 ///
 /// This trait is sealed and cannot be implemented for any other type.

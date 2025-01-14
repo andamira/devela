@@ -10,7 +10,7 @@ use super::{UnitBi, UnitSi};
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
 
-/// Unit prefixes.
+/// Common trait for unit prefixes.
 ///
 /// - <https://en.wikipedia.org/wiki/Unit_of_measurement>
 pub trait Unit: Sized {

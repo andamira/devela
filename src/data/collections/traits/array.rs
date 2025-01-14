@@ -9,6 +9,7 @@
 
 use crate::{DataCollection, IndexOutOfBounds, Storage};
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// An abstract *array* data type.
 ///
 /// - <https://en.wikipedia.org/wiki/Array_(data_type)#Abstract_arrays>

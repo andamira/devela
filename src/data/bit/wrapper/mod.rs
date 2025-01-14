@@ -8,6 +8,7 @@ mod primitives;
 #[cfg(all(test, feature = "_bit_u8"))]
 mod tests;
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Provides constant bitwise operations on `T`.
 ///
 /// It's implemented for:

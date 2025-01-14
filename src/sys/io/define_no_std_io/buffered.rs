@@ -574,8 +574,7 @@ impl<W: IoWrite, const S: usize> IoWrite for LineWriterShim<'_, W, S> {
     }
 }
 
-/// Wraps a writer and buffers output to it, flushing whenever a newline
-/// (`0x0a`, `'\n'`) is detected.
+/// Wraps a writer and buffers output to it, flushing whenever a newline is detected.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html>.
 pub struct IoLineWriter<W: IoWrite, const S: usize> {

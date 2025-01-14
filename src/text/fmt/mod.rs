@@ -1,6 +1,6 @@
 // devela::text::fmt
 //
-//! Formatting strings.
+//! Strings formatting.
 //!
 #![doc = crate::doc_!(extends: fmt)]
 //

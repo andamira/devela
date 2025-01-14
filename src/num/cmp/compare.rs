@@ -22,6 +22,7 @@ use crate::Float;
 #[cfg(feature = "nightly_float")]
 use ::core::{f128, f16};
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Provides comparing methods for `T`.
 ///
 /// It provides the non-*const* methods `pclamp`, `pmax`, `pmin`

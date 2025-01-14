@@ -10,8 +10,7 @@
 use crate::transmute;
 use crate::{ConstDefault, _core::fmt};
 
-/// One of the 128 Unicode characters from U+0000 through U+007F,
-/// often known as the [ASCII] subset.
+/// One of 128 Unicode characters (`U+0000` to `U+007F`), the ASCII subset.
 ///
 /// Officially, this is the first [block] in Unicode, _Basic Latin_.
 /// For details, see the [*C0 Controls and Basic Latin*][chart] code chart.

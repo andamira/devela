@@ -1,6 +1,6 @@
 // devela::text::parse
 //
-//! Parse strings.
+//! String-oriented parsing and manipulation without structured semantics.
 //
 
 mod byte_search; // ByteSearch, dep_memchr fns alternatives

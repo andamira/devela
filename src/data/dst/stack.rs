@@ -12,8 +12,9 @@ use crate::{ConstDefault, MaybeUninit, MemAligned, PhantomData, Ptr};
 
 /* public API */
 
-/// A statically allocated LIFO stack of <abbr title="Dynamically sized
-/// type">DST</abbr>s with pointer alignment.
+#[doc = crate::TAG_DATA_STRUCTURE!()]
+/// A statically allocated LIFO stack of
+/// <abbr title="Dynamically sized type">DST</abbr>s with pointer alignment.
 ///
 /// # Examples
 /// ```
@@ -32,6 +33,7 @@ pub type DstStackUsize<DST /*: ?Sized*/, const CAP: usize> = DstStack<DST, DstAr
 // single integer to track the position (using size_of_val when popping items,
 // and the known size when pushing).
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A statically allocated LIFO stack of <abbr title="Dynamically sized
 /// type">DST</abbr>s.
 ///

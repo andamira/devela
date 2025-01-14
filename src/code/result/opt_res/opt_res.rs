@@ -7,6 +7,7 @@
 // - fns: sok, serr
 // - trait ExtOptRes
 
+#[doc = crate::TAG_RESULT!()]
 /// An optional result for simple ternary logic.
 ///
 /// Combines [`Option`] and [`Result`] to handle three outcomes:

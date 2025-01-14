@@ -1,8 +1,9 @@
 // devela::code::result::value_quant
 //
-//!
+//! Defines [`ValueQuant`].
 //
 
+#[doc = crate::TAG_RESULT!()]
 /// A value with associated quantification.
 #[must_use]
 pub struct ValueQuant<V, Q> {

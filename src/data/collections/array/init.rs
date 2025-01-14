@@ -63,18 +63,6 @@ macro_rules! array_init {
         core::array::from_fn(|i| $init(i))
     }};
     (
-    // safe array initialization in the heap
-    safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
-        let mut v = $crate::data::Vec::<$T>::with_capacity($LEN);
-        for i in 0..$LEN {
-            #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
-            v.push($init(i));
-        }
-        v.into_boxed_slice().try_into().unwrap_or_else(|_| {
-            panic!("Can't turn the boxed slice into a boxed array")
-        })
-    }};
-    (
     // safe array initialization in the stack, compile-time friendly.
     safe_const_init [$T:ty; $LEN:expr], $const_init:expr, $copiable:expr) => {{
         let mut arr: [$T; $LEN] = [$copiable; $LEN];
@@ -85,6 +73,18 @@ macro_rules! array_init {
             i += 1;
         }
         arr
+    }};
+    (
+    // safe array initialization in the heap
+    safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
+        let mut v = $crate::data::Vec::<$T>::with_capacity($LEN);
+        for i in 0..$LEN {
+            #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
+            v.push($init(i));
+        }
+        v.into_boxed_slice().try_into().unwrap_or_else(|_| {
+            panic!("Can't turn the boxed slice into a boxed array")
+        })
     }};
     (
 
@@ -107,17 +107,6 @@ macro_rules! array_init {
         unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
-    // unsafe array initialization in the heap
-    unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
-        let mut v = $crate::data::Vec::<$T>::with_capacity($LEN);
-        #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
-        for i in 0..$LEN { v.push($init(i)); }
-        let slice = v.into_boxed_slice();
-        let raw_slice = Box::into_raw(slice);
-        // SAFETY: pointer comes from using `into_raw`, and capacity is right.
-        unsafe { Box::from_raw(raw_slice as *mut [$T; $LEN]) }
-    }};
-    (
     // unsafe array initialization in the stack, compile-time friendly.
     unsafe_const_init [$T:ty; $LEN:expr], $const_init:expr) => {{
         // WAIT: [maybe_uninit_uninit_array](https://github.com/rust-lang/rust/issues/96097)
@@ -133,6 +122,17 @@ macro_rules! array_init {
         unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
+    // unsafe array initialization in the heap
+    unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
+        let mut v = $crate::data::Vec::<$T>::with_capacity($LEN);
+        #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
+        for i in 0..$LEN { v.push($init(i)); }
+        let slice = v.into_boxed_slice();
+        let raw_slice = Box::into_raw(slice);
+        // SAFETY: pointer comes from using `into_raw`, and capacity is right.
+        unsafe { Box::from_raw(raw_slice as *mut [$T; $LEN]) }
+    }};
+    (
 
     /* safety-agnostic initializations */
 
@@ -144,14 +144,6 @@ macro_rules! array_init {
         { array_init![unsafe_init [$T; $LEN], $init] }
     }};
     (
-    // initialize an array in the heap
-    init_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $init:expr) => {{
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init_heap [$T; $LEN], $init] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init_heap [$T; $LEN], $init] }
-    }};
-    (
     // initialize an array the stack, compile-time friendly.
     // $copiable is only used by the safe version as temporary placeholder.
     const_init
@@ -160,6 +152,14 @@ macro_rules! array_init {
         { array_init![safe_const_init [$T; $LEN], $const_init, $copiable] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         { array_init![unsafe_const_init [$T; $LEN], $const_init ] }
+    }};
+    (
+    // initialize an array in the heap
+    init_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $init:expr) => {{
+        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
+        { array_init![safe_init_heap [$T; $LEN], $init] }
+        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
+        { array_init![unsafe_init_heap [$T; $LEN], $init] }
     }};
     (
 
@@ -189,17 +189,17 @@ macro_rules! array_init {
         { array_init![unsafe_init [$T; $LEN], |_| <$T>::default()] }
     }};
     (
+    // initialize an array in the stack with $T: ConstDefault::DEFAULT
+    const_default [$T:ty; $LEN:expr]) => {{
+        [<$T as $crate::ConstDefault>::DEFAULT; $LEN]
+    }};
+    (
     // initialize an array in the heap, with $T: Default::default()
     default_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         { array_init![safe_init_heap [$T; $LEN], |_| <$T>::default()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         { array_init![unsafe_init_heap [$T; $LEN], |_| <$T>::default()] }
-    }};
-    (
-    // initialize an array in the stack with $T: ConstDefault::DEFAULT
-    const_default [$T:ty; $LEN:expr]) => {{
-        [<$T as $crate::ConstDefault>::DEFAULT; $LEN]
     }};
     (
 

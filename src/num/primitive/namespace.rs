@@ -1,5 +1,6 @@
 // devela::num::primitive::namespace
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Provides *const* casting, joining and splitting operations between primitives.
 ///
 /// See also the related traits: [`PrimitiveCast`], [`PrimitiveJoin`] and [`PrimitiveSplit`].

@@ -3,6 +3,7 @@
 //! `Char` namespace.
 //
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Unicode scalars-related operations.
 ///
 /// See also [`ExtMem`][crate::ExtMem],

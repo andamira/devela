@@ -1,6 +1,6 @@
 // devela::data::collections::traits::queues
 //
-//! DataQueue, DataDeque abstract data type
+//! Defines the [`DataQueue`] & [`DataDeque`] abstract data types.
 //
 // TOC
 // - define traits DataQueue, DataDeque
@@ -9,6 +9,7 @@
 
 use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// An abstract *queue* data type.
 pub trait DataQueue: DataCollection {
     /// Remove an element from the (front of the) queue.
@@ -24,6 +25,7 @@ pub trait DataQueue: DataCollection {
     ) -> Result<(), NotEnoughSpace>;
 }
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// An abstract *double-ended queue* data type.
 pub trait DataDeque: DataQueue {
     /// Remove an element from the back of the queue.

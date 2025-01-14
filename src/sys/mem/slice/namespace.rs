@@ -12,6 +12,7 @@ use core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use core::slice::{from_raw_parts, from_raw_parts_mut};
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Slice-related operations, most of them *const*.
 ///
 /// It is designed as a utility namespace and does not hold or wrap data itself.

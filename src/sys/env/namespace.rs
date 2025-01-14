@@ -14,6 +14,7 @@
 #[cfg(feature = "std")]
 use crate::{IoResult, OsStr, OsString, Path, PathBuf, _dep::_std::env::*};
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// A namespaced wrapper for `std::env` functions and constants.
 pub struct Env;
 

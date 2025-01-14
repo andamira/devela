@@ -5,7 +5,7 @@
 
 use crate::{ConstDefault, Own};
 
-/// The `XorShift32` pseudo-random number generator.
+/// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has a 32-bit state and generates 32-bit numbers.
 ///

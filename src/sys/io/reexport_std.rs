@@ -43,13 +43,12 @@ reexport! { rust: not(std)|std::io,
     @Chain as IoChain
 }
 reexport! { rust: not(std)|std::io,
-    doc: "Wraps an in-memory buffer and provides it with a [`IoSeek`] implementation.",
+    doc: "Wraps an in-memory buffer and provides it with an [`IoSeek`] implementation.",
     @Cursor as IoCursor
 }
 reexport! { rust: not(std)|std::io,
     tag: crate::TAG_ERROR_COMPOSITE!(),
-    doc: "Error type for I/O operations of [`IoRead`], [`IoWrite`], [`IoSeek`],
-    and associated traits.",
+    doc: "Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations and associated traits.",
     @Error as IoError
 }
 // @IntoInnerError as IoIntoInnerError

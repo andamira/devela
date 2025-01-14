@@ -5,7 +5,8 @@
 
 use crate::{ConstDefault, Own};
 
-/// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr> pseudo-random number generator.
+/// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr>
+/// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

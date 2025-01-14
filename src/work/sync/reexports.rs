@@ -37,7 +37,7 @@ reexport! { rust: std::sync,
     MutexGuard
 }
 reexport! { rust: std::sync,
-    doc: "A synchronization primitive which can be used to run a one-time global initialization.",
+    doc: "A synchronization primitive for one-time global initialization.",
     Once
 }
 reexport! { rust: std::sync,
@@ -66,8 +66,7 @@ reexport! { rust: std::sync,
     RwLockWriteGuard
 }
 reexport! { rust: std::sync,
-    doc: "A type indicating whether a timed wait on a condition variable returned
-        due to a time out or not.",
+    doc: "Whether a timed wait on a condition variable returned due to a time out or not.",
     WaitTimeoutResult
 }
 

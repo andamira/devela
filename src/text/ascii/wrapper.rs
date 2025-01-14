@@ -13,6 +13,7 @@ use crate::Compare;
 #[cfg(feature = "_string_u8")]
 use crate::StringU8;
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Provides ASCII operations on `T`, most of them *const*.
 #[derive(Clone, Copy)]
 #[repr(transparent)]

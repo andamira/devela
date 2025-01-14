@@ -16,6 +16,7 @@ use crate::{
     },
 };
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Memory-related operations.
 ///
 /// See also: [`ExtMem`][crate::ExtMem], [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].

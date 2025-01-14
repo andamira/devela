@@ -5,7 +5,7 @@
 
 use crate::{ConstDefault, Own};
 
-/// The `XorShift8` pseudo-random number generator.
+/// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
 ///

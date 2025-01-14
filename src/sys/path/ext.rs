@@ -11,7 +11,7 @@ trait Sealed {}
 impl Sealed for Path {}
 impl Sealed for PathBuf {}
 
-/// Extension trait providing additional methods for paths.
+/// Extension trait providing additional methods for [`Path`] and [`PathBuf`].
 #[rustfmt::skip]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]

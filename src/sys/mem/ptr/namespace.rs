@@ -18,6 +18,7 @@ use crate::{
     },
 };
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Pointer-related operations.
 ///
 /// See also [`Mem`][crate::Mem], [`Slice`][crate::Slice].

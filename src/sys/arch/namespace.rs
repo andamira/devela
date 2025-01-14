@@ -13,6 +13,7 @@
 #[cfg(feature = "dep_safe_arch")]
 use crate::_dep::safe_arch::*;
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Arch-related functionality.
 ///
 /// Implementations that depend on: `dep_safe_arch` and (`x86` or `x86_64`) and target features:

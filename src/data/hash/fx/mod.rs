@@ -5,7 +5,10 @@ use crate::{ConstDefault, Hash, Hasher, HasherBuildDefault};
 /// A builder for default Fx hashers.
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 
-/// This hashing algorithm was extracted from the Rustc compiler.
+/// A hashing algorithm used in the Rustc compiler, implemented for
+/// [u32](#impl-HasherFx<u32>),
+/// [u64](#impl-HasherFx<u64>) &
+/// [usize](##impl-HasherFx<usize>).
 ///
 /// This is the same hashing algorithm used for some internal operations in
 /// Firefox. The strength of this algorithm is in hashing 4 bytes at a time on
@@ -13,11 +16,6 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 ///
 /// This hashing algorithm should not be used for cryptographic,
 /// or in scenarios where DoS attacks are a concern.
-///
-/// It's implemented for
-/// [u32](#impl-HasherFx<u32>),
-/// [u64](#impl-HasherFx<u64>) and
-/// [usize](##impl-HasherFx<usize>).
 ///
 /// # Derived Work
 #[doc = include_str!("./MODIFICATIONS.md")]

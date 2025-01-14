@@ -18,7 +18,8 @@ use crate::{Hasher, HasherBuild, RandomState};
 
 /* public definitions */
 
-/// The `Xoroshiro128++` pseudo-random number generator.
+/// The `Xoroshiro128++`
+/// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has a 128-bit state and generates 32-bit numbers.
 #[must_use]

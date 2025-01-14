@@ -10,7 +10,8 @@ use crate::code::{iif, paste, sf, CONST};
 #[allow(unused_imports, reason = "!std: powf, powi")]
 use crate::num::ExtFloat;
 
-/// Color namespace for constants and methods
+#[doc = crate::TAG_NAMESPACE!()]
+/// Color namespaced constants and methods.
 pub struct Color;
 
 ///

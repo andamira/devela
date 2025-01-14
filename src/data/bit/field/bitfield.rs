@@ -527,7 +527,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra const fn mask_checked_range(start: u32, end: u32)
                 -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise::<$T>::mask_checked_range(start, end) {
@@ -551,7 +551,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra const fn get_checked_range(self, start: u32, end: u32)
                 -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).get_checked_range(start, end) {
@@ -583,8 +583,8 @@ macro_rules! _bitfield {
             /// [`DataOverflow`] if `value` does not fit within the specified bit range.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
-            /// [`DataOverflow`]: crate:MismatchedBounds::DataOverflow
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
+            /// [`DataOverflow`]: crate::MismatchedBounds::DataOverflow
             $vis_extra const fn get_value_checked_range(self, start: u32, end: u32)
                 -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).get_value_checked_range(start, end) {
@@ -609,7 +609,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra const fn set_checked_range(self, start: u32, end: u32)
                 -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).set_checked_range(start, end) {
@@ -630,7 +630,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra fn mut_set_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::Result<(), $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).set_checked_range(start, end) {
@@ -664,7 +664,7 @@ macro_rules! _bitfield {
             /// and [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra const fn set_value_checked_range(self, value: $T, start: u32, end: u32)
                 -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).set_value_checked_range(value, start, end) {
@@ -683,8 +683,8 @@ macro_rules! _bitfield {
             /// [`DataOverflow`] if `value` does not fit within the specified bit range.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
-            /// [`DataOverflow`]: crate:MismatchedBounds::DataOverflow
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
+            /// [`DataOverflow`]: crate::MismatchedBounds::DataOverflow
             $vis_extra const fn set_checked_value_checked_range(self,
                 value: $T, start: u32, end: u32) -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits)
@@ -707,7 +707,7 @@ macro_rules! _bitfield {
             /// [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra fn mut_set_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::Result<(), $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).set_value_checked_range(value, start, end) {
@@ -722,8 +722,8 @@ macro_rules! _bitfield {
             /// [`DataOverflow`] if `value` does not fit within the specified bit range.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
-            /// [`DataOverflow`]: crate:MismatchedBounds::DataOverflow
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
+            /// [`DataOverflow`]: crate::MismatchedBounds::DataOverflow
             $vis_extra fn mut_set_checked_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::Result<(), $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits)
@@ -749,7 +749,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra const fn unset_checked_range(self, start: u32, end: u32)
                 -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).unset_checked_range(start, end) {
@@ -770,7 +770,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra fn mut_unset_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::Result<(), $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).unset_checked_range(start, end) {
@@ -794,7 +794,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra const fn flip_checked_range(self, start: u32, end: u32)
                 -> $crate::Result<Self, $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).flip_checked_range(start, end) {
@@ -815,7 +815,7 @@ macro_rules! _bitfield {
             /// or [`MismatchedIndices`] if `start > end`.
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
-            /// [`MismatchedIndices`]: crate:MismatchedBounds::MismatchedIndices
+            /// [`MismatchedIndices`]: crate::MismatchedBounds::MismatchedIndices
             $vis_extra fn mut_flip_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::Result<(), $crate::MismatchedBounds> {
                 match $crate::Bitwise(self.bits).flip_checked_range(start, end) {

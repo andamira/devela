@@ -18,6 +18,7 @@ use crate::{
     sf, unwrap,
 };
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// A string slice namespace.
 ///
 /// See also the [`std::str`] module.

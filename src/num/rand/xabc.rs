@@ -5,7 +5,7 @@
 
 use crate::{ConstDefault, Own};
 
-/// X ABC Algorithm Random Number Generator for 8-bit Devices.
+/// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
 ///
 /// It has a 32-bit state and generates 8-bit numbers.
 ///

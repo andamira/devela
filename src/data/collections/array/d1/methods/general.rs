@@ -105,9 +105,8 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// between the range `start..=end` (inclusive).
     ///
     /// # Errors
-    /// Returns [`IndexOutOfBounds`][MismatchedBounds:IndexOutOfBounds]
-    /// if either `start` or `end` `>= CAP`,
-    /// or [`MismatchedIndices`][MismatchedBounds::MismatchedIndices] if `start > end`.
+    /// Returns [`MismatchedBounds::IndexOutOfBounds`] if either `start` or `end` `>= CAP`,
+    /// or [`MismatchedBounds::MismatchedIndices`] if `start > end`.
     pub fn contains_between(
         &self,
         element: &T,

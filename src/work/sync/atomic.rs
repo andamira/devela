@@ -39,18 +39,18 @@ reexport! { "dep_atomic", "atomic", atomic,
 
 reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     tag: crate::TAG_ATOMIC!(),
-    doc: "A floating point type which can be safely shared between threads.",
+    doc: "A thread-safe floating-point type.",
     AtomicF32, AtomicF64
 }
 
 reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     tag: crate::TAG_ATOMIC!(),
-    doc: "A signed integer type which can be safely shared between threads.",
+    doc: "A thread-safe signed integer type.",
     AtomicI128
 }
 reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     tag: crate::TAG_ATOMIC!(),
-    doc: "An unsigned integer type which can be safely shared between threads.",
+    doc: "A thread-safe unsigned integer type.",
     AtomicU128
 }
 
@@ -70,14 +70,14 @@ pub(crate) use consts::*;
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
-#[doc = "A signed integer type which can be safely shared between threads.\n\n"]
+#[doc = "A thread-safe signed integer type.\n\n"]
 #[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
-#[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
+#[doc = "A thread-safe unsigned integer type.\n\n"]
 #[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};

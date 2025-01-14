@@ -5,6 +5,7 @@
 
 use ::core::fmt;
 
+#[doc = crate::TAG_RESULT!()]
 /// A return type for the calculated
 /// <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
 ///

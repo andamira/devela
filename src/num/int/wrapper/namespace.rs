@@ -3,6 +3,7 @@
 //! Defines the [`Int`] namespace wrapper.
 //
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Provides comprehensive integer operations on `T`, most of them *const*.
 ///
 /// It's implemented for:

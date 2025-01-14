@@ -13,7 +13,7 @@ reexport! { rust: alloc::alloc,
 }
 reexport! { rust: alloc::alloc,
     tag: crate::TAG_ERROR!(),
-    doc: "The parameters given to a [`MemLayout`] constructor did not satisfy the constraints.",
+    doc: "The [`MemLayout`] parameters violated constraints.",
     @LayoutError as MemLayoutError
 }
 reexport! { rust: alloc::alloc,

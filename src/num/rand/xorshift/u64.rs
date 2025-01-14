@@ -7,7 +7,7 @@
 use crate::Cast;
 use crate::{ConstDefault, Own};
 
-/// The `XorShift64` pseudo-random number generator.
+/// The `XorShift64` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has a 64-bit state and generates 64-bit numbers.
 ///

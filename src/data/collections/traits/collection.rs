@@ -1,6 +1,6 @@
 // devela::data::collections::traits::collection
 //
-//! DataCollection abstract data type
+//! Defines the [`DataCollection`] abstract data type.
 //
 // TOC
 // - define DataCollection
@@ -28,9 +28,10 @@ use crate::{HashMap, HashSet};
 
 type Result<T> = crate::Result<T, NotAvailable>;
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// An abstract *collection* data type.
 ///
-/// By default returns [`NotImplemented`][E::NotImplemented] for every method.
+/// By default returns [`NotImplemented`] for every method.
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait DataCollection {
     /// The element type of the collection.
@@ -62,9 +63,9 @@ impl<T, const LEN: usize, S: Storage> DataCollection for Array<T, LEN, S> {
     /// The capacity of a fixed-size array is always equal to its length.
     fn collection_capacity(&self) -> Result<usize> { Ok(LEN) }
     fn collection_len(&self) -> Result<usize> { Ok(LEN) }
-    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
+    /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
     fn collection_is_empty(&self) -> Result<bool> { Err(NotSupported) }
-    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
+    /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
     fn collection_is_full(&self) -> Result<bool> { Err(NotSupported) }
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
         Ok(self.contains(&element))
@@ -84,9 +85,9 @@ impl<T, const N: usize> DataCollection for [T; N] {
     fn collection_capacity(&self) -> Result<usize> { Ok(N) }
     fn collection_len(&self) -> Result<usize> { Ok(N) }
     // A fixed-size array is never empty nor full.
-    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
+    /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
     fn collection_is_empty(&self) -> Result<bool> { Err(NotSupported) }
-    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
+    /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
     fn collection_is_full(&self) -> Result<bool> { Err(NotSupported) }
 
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
@@ -137,9 +138,9 @@ impl<T> DataCollection for BinaryHeap<T> {
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
     fn collection_is_full(&self) -> Result<bool> { Ok(self.len() >= self.capacity()) }
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_contains(&self, _: Self::Element) -> Result<bool> { Err(NotSupported) }
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_count(&self, _: &Self::Element) -> Result<usize> { Err(NotSupported) }
 }
 
@@ -147,11 +148,11 @@ impl<T> DataCollection for BinaryHeap<T> {
 #[cfg(feature = "alloc")]
 impl<K, V> DataCollection for BTreeMap<K, V> {
     type Element = V;
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_capacity(&self) -> Result<usize> { Err(NotSupported) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_is_full(&self) -> Result<bool> { Err(NotSupported) }
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.values().any(|value| *value == element))
@@ -164,11 +165,11 @@ impl<K, V> DataCollection for BTreeMap<K, V> {
 #[cfg(feature = "alloc")]
 impl<V> DataCollection for BTreeSet<V> {
     type Element = V;
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_capacity(&self) -> Result<usize> { Err(NotSupported) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_is_full(&self) -> Result<bool> { Err(NotSupported) }
     /// This is less efficent than [`BTreeSet::contains`] for not having [`Ord`].
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
@@ -184,11 +185,11 @@ impl<V> DataCollection for BTreeSet<V> {
 #[cfg(all(feature = "alloc", feature = "dep_hashbrown"))]
 impl<K, V> DataCollection for HashMap<K, V> {
     type Element = V;
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_capacity(&self) -> Result<usize> { Err(NotSupported) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
-    /// Returns [`NotSupported`][E::NotSupported].
+    /// Returns [`NotSupported`].
     fn collection_is_full(&self) -> Result<bool> { Err(NotSupported) }
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.values().any(|value| *value == element))

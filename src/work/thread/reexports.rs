@@ -13,8 +13,7 @@ reexport! { rust: std::thread,
     @AccessError as ThreadAccessError
 }
 reexport! { rust: std::thread,
-    doc: "Thread factory, which can be used in order to configure the properties
-        of a new thread.",
+    doc: "Thread factory, which can be used to configure the properties of a new thread.",
     @Builder as ThreadBuilder
 }
 reexport! { rust: std::thread,

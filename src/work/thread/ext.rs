@@ -1,6 +1,6 @@
 // devela::work::thread::ext
 //
-//!
+//! Defines the [`ExtThread`] trait.
 //
 
 use crate::{Duration, Thread, ThreadJoinHandle, ThreadScope};
@@ -12,6 +12,7 @@ use std::thread::{
 trait Sealed {}
 impl Sealed for Thread {}
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Thread`]s.
 #[rustfmt::skip]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]

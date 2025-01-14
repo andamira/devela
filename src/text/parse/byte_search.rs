@@ -8,6 +8,7 @@ use crate::_dep::memchr::*;
 #[cfg(not(feature = "dep_memchr"))]
 use crate::iif;
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// A utility struct for searching bytes in slices.
 ///
 /// # Features

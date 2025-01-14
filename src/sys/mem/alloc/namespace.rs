@@ -10,6 +10,7 @@ use crate::{
     _dep::_alloc::alloc::{alloc, alloc_zeroed, dealloc, handle_alloc_error, realloc},
 };
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Memory-allocation-related operations.
 ///
 /// See also: [`Mem`][crate::Mem], [`ExtMem`][crate::ExtMem],

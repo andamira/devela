@@ -7,6 +7,7 @@ use crate::{Array, Bare, Storage};
 #[cfg(feature = "dep_rkyv")]
 use rkyv::{Archive, Deserialize, Serialize};
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A static 2-dimensional [`Array`].
 ///
 /// It is generic in respect to its:
@@ -35,10 +36,9 @@ use rkyv::{Archive, Deserialize, Serialize};
 ///   [`into_slice`][Self::into_slice]*(`alloc`)*,
 ///   [`into_vec`][Self::into_vec]*(`alloc`)*.
 /// - Query:
-///   [`len`][Self::len]
-///   [`x_len`][Self::x_len]
-///   [`y_len`][Self::y_len]
-///   [`is_empty`][Self::is_empty],
+///   [`capacity`][Self::capacity],
+///   [`cap_col`][Self::cap_col],
+///   [`cap_row`][Self::cap_row],
 ///   [`contains`][Self::contains].
 /// - Indexing and coordinates (for the current order):
 ///   - [`get_ref`][Self::get_ref]*([`uc`][Self::get_ref_unchecked])*,

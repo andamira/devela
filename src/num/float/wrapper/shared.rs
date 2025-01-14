@@ -59,7 +59,7 @@ macro_rules! impl_float_shared {
 
             /// The nearest integer to itself, default rounding
             ///
-            /// This is the default [`round_ties_away`] implementation.
+            /// This is the default [`round_ties_away`][Self::round_ties_away] implementation.
             #[must_use]
             pub const fn const_round(self) -> Float<$f> { self.const_round_ties_away() }
 

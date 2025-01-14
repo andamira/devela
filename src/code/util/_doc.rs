@@ -189,14 +189,19 @@ pub(crate) use std_core;
 // Tags definitions for visual type categorization in documentation.
 crate::CONST! { pub(crate),
     EMOJI_ATOMIC = "⚛️"; // ⚛️,🔬,🌐
+    EMOJI_DATA_STRUCTURE = "📦"; // 📦,🧩,🗂️,
     EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
     // EMOJI_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
     EMOJI_ITERATOR = "🔄"; // 🔄,
+    EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
     EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
     EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
     //
     TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic type'>",
         crate::EMOJI_ATOMIC!(), "</span>");
+    TAG_DATA_STRUCTURE =
+        concat!("<span class='stab portability' title='A generic data structure'>",
+        crate::EMOJI_DATA_STRUCTURE!(), "</span>");
     TAG_ERROR = concat!("<span class='stab portability' title='Individual error type'>",
         crate::EMOJI_ERROR!(), "</span>");
     TAG_ERROR_COMPOSITE =
@@ -204,6 +209,8 @@ crate::CONST! { pub(crate),
         crate::EMOJI_ERROR!(), "+</span>");
     TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator type'>",
         crate::EMOJI_ITERATOR!(), "</span>");
+    TAG_NAMESPACE = concat!("<span class='stab portability' title='Namespaced functionality'>",
+        crate::EMOJI_NAMESPACE!(), "</span>");
     TAG_PRIMITIVE = concat!("<span class='stab portability' title='Rust primitive'>",
         crate::EMOJI_PRIMITIVE!(), "</span>");
     TAG_RESULT = concat!("<span class='stab portability' title='Result type'>",

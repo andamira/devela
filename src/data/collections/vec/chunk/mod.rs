@@ -8,7 +8,8 @@ use crate::{vec_ as vec, Rc, RefCell, Vec};
 #[cfg(test)]
 mod tests;
 
-/// A persistent data structure that provides efficient append and concatenation operations.
+#[doc = crate::TAG_DATA_STRUCTURE!()]
+/// A persistent data structure with efficient append and concatenation operations.
 ///
 /// # Overview
 /// `VecChunk<A>` is an immutable data structure that allows O(1) complexity for append and

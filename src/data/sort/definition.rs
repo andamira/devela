@@ -3,6 +3,7 @@
 //! Defines and documents [`Sort`].
 //
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Provides sorting methods for arrays and slices of `T`, some of them *const*.
 ///
 /// It implements the following methods for sorting exclusive slices:

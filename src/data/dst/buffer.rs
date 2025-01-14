@@ -2,6 +2,7 @@
 
 use crate::{Array, ConstDefault, Deref, DerefMut, MaybeUninit, MemPod};
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// Represents the backing buffer for storing dynamically sized types.
 ///
 /// # Safety
@@ -99,8 +100,8 @@ unsafe impl<T: MemPod> DstBuf for crate::Vec<MaybeUninit<T>> {
     }
 }
 
-/// A static array for storing <abbr title="Dynamically sized
-/// type">DST</abbr>s.
+#[doc = crate::TAG_DATA_STRUCTURE!()]
+/// A static array for storing <abbr title="Dynamically sized type">DST</abbr>s.
 pub struct DstArray<T, const CAP: usize> {
     inner: Array<MaybeUninit<T>, CAP>,
 }

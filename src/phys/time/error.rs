@@ -15,7 +15,7 @@ impl_error! { individual:
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub struct SystemTimeError(Duration);
     DOC_SYSTEM_TIME_ERROR =
-    "An error returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
+    "Returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
     self+f => write!(f, "SystemTimeError difference: {:?}", self.0)
 }

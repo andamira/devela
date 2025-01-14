@@ -10,6 +10,7 @@ mod impl_traits;
 mod methods;
 mod private;
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A statically allocated FIFO queue of <abbr title="Dynamically sized type">DST</abbr>s.
 ///
 /// # Examples
@@ -27,6 +28,7 @@ pub struct DstQueue<DST: ?Sized, BUF: DstBuf> {
     data: BUF,
 }
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A statically allocated FIFO queue of <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 ///

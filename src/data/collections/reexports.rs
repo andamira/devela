@@ -38,10 +38,12 @@ reexport! { rust: core::array,
 /* from `alloc` */
 
 reexport! { rust: alloc::collections,
+    tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "A doubly-linked list with owned nodes.",
     LinkedList
 }
 reexport! { rust: alloc::collections,
+    tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "An ordered map based on a B-Tree.",
     BTreeMap
 }
@@ -50,18 +52,22 @@ reexport! { rust: alloc::collections::btree_map,
     @Entry as BTreeMapEntry
 }
 reexport! { rust: alloc::collections,
+    tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "An ordered set based on a B-Tree.",
     BTreeSet
 }
 reexport! { rust: alloc::collections,
+    tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "A priority queue implemented with a binary heap.",
     BinaryHeap
 }
 reexport! { rust: alloc::vec,
+    tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "A contiguous growable array.",
     Vec
 }
 reexport! { rust: alloc::collections,
+    tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "A double-ended growable queue.",
     VecDeque
 }
@@ -111,6 +117,7 @@ pub use hashbrown_reexports::*;
 mod hashbrown_reexports {
     use super::hashbrown_or_std;
 
+    #[doc = crate::TAG_DATA_STRUCTURE!()]
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
     #[doc = hashbrown_or_std!(end)]
@@ -120,6 +127,7 @@ mod hashbrown_reexports {
     )]
     pub use crate::_dep::hashbrown::HashMap;
 
+    #[doc = crate::TAG_DATA_STRUCTURE!()]
     #[doc = hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
     #[doc = hashbrown_or_std!(end)]

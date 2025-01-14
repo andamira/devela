@@ -14,6 +14,7 @@ struct ConstListItem<'a, T: 'a> {
     rest: &'a ConstList<'a, T>,
 }
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// An immutable, append-only, linear, functional, non-contiguous, list.
 ///
 /// A safe, predictable, and lightweight structure, suitable where immutability
@@ -105,7 +106,7 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
 }
 
 #[doc = crate::TAG_ITERATOR!()]
-/// Iterates over the contents of a `ConstList`.
+/// Iterates over the contents of a [`ConstList`].
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct ConstListIterator<'a, T> {

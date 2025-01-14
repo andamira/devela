@@ -5,12 +5,10 @@ use crate::{concat as cc, stringify as fy, Cast, ConstDefault, Hasher, HasherBui
 /// A builder for default Fnv hashers.
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
 
-/// A Fowler–Noll–Vo hasher.
-///
-/// It's implemented for
+/// A Fowler–Noll–Vo hasher, implemented for
 /// [u32](#impl-HasherFnv<u32>),
 /// [u64](#impl-HasherFnv<u64>),
-/// [u128](#impl-HasherFnv<u128>) and
+/// [u128](#impl-HasherFnv<u128>) &
 /// [usize](#impl-HasherFnv<usize>).
 ///
 /// It uses the `fnv-1a` variation which gives better avalanche characteristics.
