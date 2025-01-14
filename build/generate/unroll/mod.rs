@@ -63,8 +63,7 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// It supports increased limits of 128, 256, 512, 1024 and 2048 by enabling the
 /// corresponding capability feature: `_unroll_[128|256|512|1024|2048]`.
 ///
-/// # Derived work
-"#;
+/// # Derived work"#;
     w!(f, "{0}", macro_code1)?;
 
     let modifications = manifest_dir()
@@ -178,7 +177,7 @@ mod tests {
                 a.push(i);
             }
         }
-        assert_eq!(a, vec![]);
+        assert!(a.is_empty());
     }
 
     #[test]
