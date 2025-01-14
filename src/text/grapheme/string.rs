@@ -1,6 +1,6 @@
 // devela::text::grapheme::string
 //
-//!
+//! Defines [`GraphemeString`].
 //
 
 use crate::Grapheme;

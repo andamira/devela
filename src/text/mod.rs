@@ -1,7 +1,7 @@
 // devela::text
 //
 //! Text types and operations, text processing.
-#![doc = crate::doc_!(modules: crate; text: fmt, str)]
+#![doc = crate::doc_!(modules: crate; text: fmt, parse, str)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: ascii, char, fmt, str, string)]
@@ -14,9 +14,9 @@ mod ascii;
 mod char;
 mod error;
 mod grapheme; // Grapheme
-mod parse;
 
 pub mod fmt;
+pub mod parse;
 pub mod str;
 
 crate::items! { // structural access: _mods, _pub_mods, _all, _always
@@ -26,11 +26,10 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _mods {
-        pub use super::{ascii::_all::*, char::_all::*, grapheme::_all::*, parse::_all::*};
-        pub use super::error::*;
+        pub use super::{ascii::_all::*, char::_all::*, error::*, grapheme::_all::*};
     }
     mod _pub_mods {
-        pub use super::{fmt::_all::*, str::_all::*};
+        pub use super::{fmt::_all::*, parse::_all::*, str::_all::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
