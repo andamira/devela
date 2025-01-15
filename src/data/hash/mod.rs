@@ -3,6 +3,11 @@
 //! Generic hashing support.
 //!
 #![doc = crate::doc_!(extends: hash)]
+//!
+#![cfg_attr(
+    any(not(feature = "hash"), not(feature = "cast")),
+    doc = "## Features\nTo compile the missing items, enable the `hash` and `cast` features."
+)]
 //
 
 mod reexports;

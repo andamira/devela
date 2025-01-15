@@ -207,7 +207,7 @@ crate::CONST! { pub(crate),
     TAG_ERROR_COMPOSITE =
         concat!("<span class='stab portability' title='Composite error type'>",
         crate::EMOJI_ERROR!(), "+</span>");
-    TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator type'>",
+    TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator-related item'>",
         crate::EMOJI_ITERATOR!(), "</span>");
     TAG_NAMESPACE = concat!("<span class='stab portability' title='Namespaced functionality'>",
         crate::EMOJI_NAMESPACE!(), "</span>");

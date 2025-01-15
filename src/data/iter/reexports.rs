@@ -12,7 +12,7 @@
 
 use crate::code::reexport;
 
-/* types */
+/* core types */
 
 reexport! { rust: core::iter,
     tag: crate::TAG_ITERATOR!(),
@@ -160,46 +160,55 @@ reexport! { rust: core::iter,
     @Zip as IterZip
 }
 
-/* traits */
+/* core traits */
 
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator able to yield elements from both ends.",
     @DoubleEndedIterator as IteratorDoubleEnded
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that knows its exact length.",
     @ExactSizeIterator as IteratorExactSize
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "Extend a collection with the contents of an iterator.",
     @Extend as IteratorExtend
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "Conversion from an [`Iterator`].",
     @FromIterator as IteratorFrom
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that always continues to yield `None` when exhausted.",
     @FusedIterator as IteratorFused
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "Conversion into an [`Iterator`].",
     @IntoIterator as IteratorInto
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "A trait for dealing with iterators.",
     Iterator
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "Represents types that can be created by multiplying elements of an iterator.",
     @Product as IteratorProduct
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "Represents types that can be created by summing up an iterator.",
     @Sum as IteratorSum
 }
 
-/* functions */
+/* core functions */
 
 reexport! { rust: core::iter,
     extra_features: "nightly_coro",

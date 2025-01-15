@@ -42,7 +42,6 @@ reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "A thread-safe floating-point type.",
     AtomicF32, AtomicF64
 }
-
 reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     tag: crate::TAG_ATOMIC!(),
     doc: "A thread-safe signed integer type.",

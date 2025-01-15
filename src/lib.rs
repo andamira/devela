@@ -111,6 +111,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 // (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
 
+// https://doc.rust-lang.org/nightly/reference/names/preludes.html#extern-prelude
 extern crate self as devela;
 
 /* root modules */

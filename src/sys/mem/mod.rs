@@ -5,6 +5,10 @@
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
+#![cfg_attr(
+    any(not(feature = "bit")),
+    doc = "## Features\nTo compile the missing items, enable the `bit` feature."
+)]
 //
 // safety
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
