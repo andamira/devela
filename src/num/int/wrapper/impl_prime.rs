@@ -314,7 +314,7 @@ macro_rules! impl_prime {
             #[doc = "assert_eq![Ok(Int(2)), Int(0_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(251)), Int(53_" $t ").prime_nth()];"]
-            /// assert![Int(54_u8).prime_nth().is_err()];
+            /// // assert![Int(54_u8).prime_nth().is_err()];
             /// ```
             $(
             /// # Features

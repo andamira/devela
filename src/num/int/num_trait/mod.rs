@@ -404,11 +404,11 @@ pub trait NumInt: Num {
     /// # Examples
     /// ```
     /// # use devela::NumInt;
-    /// assert_eq![24_i32.int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
-    /// assert_eq![(-24_i32).int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
-    /// assert_eq![0_i32.int_factors(), Ok(vec![])];
-    /// assert_eq![1_i32.int_factors(), Ok(vec![1])];
-    /// assert_eq![7_i32.int_factors(), Ok(vec![1, 7])];
+    /// assert_eq![24_i64.int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
+    /// assert_eq![(-24_i64).int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
+    /// assert_eq![0_i64.int_factors(), Ok(vec![])];
+    /// assert_eq![1_i64.int_factors(), Ok(vec![1])];
+    /// assert_eq![7_i64.int_factors(), Ok(vec![1, 7])];
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -426,11 +426,11 @@ pub trait NumInt: Num {
     /// # Examples
     /// ```
     /// # use devela::NumInt;
-    /// assert_eq![24_i32.int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
-    /// assert_eq![(-24_i32).int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
-    /// assert_eq![0_i32.int_factors_proper(), Ok(vec![])];
-    /// assert_eq![1_i32.int_factors_proper(), Ok(vec![])];
-    /// assert_eq![7_i32.int_factors_proper(), Ok(vec![])];
+    /// assert_eq![24_i64.int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
+    /// assert_eq![(-24_i64).int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
+    /// assert_eq![0_i64.int_factors_proper(), Ok(vec![])];
+    /// assert_eq![1_i64.int_factors_proper(), Ok(vec![])];
+    /// assert_eq![7_i64.int_factors_proper(), Ok(vec![])];
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -448,11 +448,11 @@ pub trait NumInt: Num {
     /// # Examples
     /// ```
     /// # use devela::NumInt;
-    /// assert_eq![24_i32.int_factors_prime(), Ok(vec![2, 2, 2, 3])];
-    /// assert_eq![(-24_i32).int_factors_prime(), Ok(vec![2, 2, 2, 3])];
-    /// assert_eq![0_i32.int_factors_prime(), Ok(vec![])];
-    /// assert_eq![1_i32.int_factors_prime(), Ok(vec![])];
-    /// assert_eq![7_i32.int_factors_prime(), Ok(vec![7])];
+    /// assert_eq![24_i64.int_factors_prime(), Ok(vec![2, 2, 2, 3])];
+    /// assert_eq![(-24_i64).int_factors_prime(), Ok(vec![2, 2, 2, 3])];
+    /// assert_eq![0_i64.int_factors_prime(), Ok(vec![])];
+    /// assert_eq![1_i64.int_factors_prime(), Ok(vec![])];
+    /// assert_eq![7_i64.int_factors_prime(), Ok(vec![7])];
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -471,7 +471,7 @@ pub trait NumInt: Num {
     /// # Examples
     /// ```
     /// # use devela::NumInt;
-    /// assert_eq![24_i32.int_factors_prime_unique(), Ok(vec![2, 3])];
+    /// assert_eq![24_i64.int_factors_prime_unique(), Ok(vec![2, 3])];
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -498,7 +498,7 @@ pub trait NumInt: Num {
     /// ```
     /// # use devela::NumInt;
     /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
-    /// assert_eq![24_i32.int_factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];
+    /// assert_eq![24_i64.int_factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];
     ///
     /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
     /// assert_eq![upbuf[..2], [2, 3]];
@@ -524,7 +524,7 @@ pub trait NumInt: Num {
     /// ```
     /// # use devela::NumInt;
     /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
-    /// assert_eq![24_i32.int_factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];
+    /// assert_eq![24_i64.int_factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];
     ///
     /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
     /// assert_eq![upbuf[..2], [2, 3]];
@@ -550,15 +550,15 @@ pub trait NumInt: Num {
     /// ```
     /// # use devela::NumInt;
     /// let mut buf = [0; 5];
-    /// assert_eq![24_i32.int_factors_prime_buf(&mut buf), Ok(4)];
+    /// assert_eq![24_i64.int_factors_prime_buf(&mut buf), Ok(4)];
     ///
     /// assert_eq![buf[..4], [2, 2, 2, 3]];
-    /// assert![(24_i32 * 4).int_factors_prime_buf(&mut buf).is_err()];
+    /// assert![(24_i64 * 4).int_factors_prime_buf(&mut buf).is_err()];
     /// assert_eq![buf, [2, 2, 2, 2, 2]]; // the 3 didn't fit
     ///
-    /// assert_eq![0_i32.int_factors_prime_buf(&mut buf), Ok(0)];
-    /// assert_eq![1_i32.int_factors_prime_buf(&mut buf), Ok(0)];
-    /// assert_eq![7_i32.int_factors_prime_buf(&mut buf), Ok(1)];
+    /// assert_eq![0_i64.int_factors_prime_buf(&mut buf), Ok(0)];
+    /// assert_eq![1_i64.int_factors_prime_buf(&mut buf), Ok(0)];
+    /// assert_eq![7_i64.int_factors_prime_buf(&mut buf), Ok(1)];
     /// assert_eq![buf[..1], [7]];
     /// ```
     #[doc = link_impls!["factors_prime_buf"]]
@@ -584,7 +584,7 @@ pub trait NumInt: Num {
     /// ```
     /// # use devela::NumInt;
     /// let mut uniq = [0; 5];
-    /// assert_eq![24_i32.int_factors_prime_unique_buf(&mut uniq), Ok(2)];
+    /// assert_eq![24_i64.int_factors_prime_unique_buf(&mut uniq), Ok(2)];
     /// assert_eq![uniq, [2, 3, 2, 3, 0]];
     /// ```
     #[doc = link_impls!["factors_prime_unique_buf"]]
