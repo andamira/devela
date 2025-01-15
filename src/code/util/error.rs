@@ -8,9 +8,9 @@
 /// It also helps implementing `From` and `TryFrom` between them.
 //
 // NOTES:
-// - alternative sections for tuple-struct and field-struct variants are indicated.
-// - it uses the trick `$(;$($_a:lifetime)?` for the optional semicolon terminator,
-//   the never expected lifetime allows to include the non-identifier `;` later on.
+// - alternative sections for tuple-struct and field-struct variants are indicated in the margin.
+// - we are employing the trick `$(;$($_a:lifetime)?` for the optional semicolon terminator,
+//   where the never expected lifetime allows to refer to the non-identifier `;` later on.
 macro_rules! impl_error {
     (
     // Defines a standalone error tuple-struct with elements.
@@ -31,8 +31,8 @@ macro_rules! impl_error {
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
         $struct_vis struct $struct_name
-            $(( $($e_vis $e_ty),+ ) )? $(; $($_a)?)?       // tuple-struct↓
-        $({ $( $(#[$f_attr])* $f_vis $f_name: $f_ty),+ })? // field-struct↑
+            $(( $($e_vis $e_ty),+ ) )? $(; $($_a)?)?                              // tuple-struct↓
+        $({ $( $(#[$f_attr])* $f_vis $f_name: $f_ty),+ })?                        // field-struct↑
 
         $(#[$attributes])*
         impl $crate::Display for $struct_name {
@@ -59,11 +59,11 @@ macro_rules! impl_error {
             $(#[$variant_attr:meta])*
             $DOC_VARIANT:ident:
             $variant_name:ident
-                $(( $($e_name:ident| $e_numb:literal: $e_ty:ty),+ ))?       // tuple-struct↓
-                $({ $($(#[$f_attr:meta])* $f_name:ident: $f_ty:ty),+ })?    // field-struct↑
+                $(( $($e_name:ident| $e_numb:literal: $e_ty:ty),+ ))?             // tuple-struct↓
+                $({ $($(#[$f_attr:meta])* $f_name:ident: $f_ty:ty),+ })?          // field-struct↑
                 => $individual_error_name:ident
-                    $(( $($e_display_expr:expr),+ ))?                       // tuple-struct↓
-                    $({ $($f_display_name:ident: $f_display_exp:expr),+ })? // field-struct↑
+                    $(( $($e_display_expr:expr),+ ))?                             // tuple-struct↓
+                    $({ $($f_display_name:ident: $f_display_exp:expr),+ })?       // field-struct↑
         ),+ $(,)? }
     ) => {
         #[doc = crate::TAG_ERROR_COMPOSITE!()]
@@ -73,8 +73,8 @@ macro_rules! impl_error {
             $(#[$variant_attr])*
             #[doc = $DOC_VARIANT!()]
             $variant_name
-                $(( $($e_ty),+ ))?                         // tuple-struct↓
-                $({ $($(#[$f_attr])* $f_name: $f_ty),+ })? // field-struct↑
+                $(( $($e_ty),+ ))?                                                // tuple-struct↓
+                $({ $($(#[$f_attr])* $f_name: $f_ty),+ })?                        // field-struct↑
         ),+ }
 
         // implements Error, ExtError & Display:
@@ -89,12 +89,12 @@ macro_rules! impl_error {
                 match self { $(
                     $(#[$variant_attr])*
                     $composite_error_name::$variant_name
-                    $(( $($e_name),+ ))? // tuple-struct↓
-                    $({ $($f_name),+ })? // field-struct↑
+                    $(( $($e_name),+ ))?                                          // tuple-struct↓
+                    $({ $($f_name),+ })?                                          // field-struct↑
                     =>
                         $crate::Display::fmt(&$individual_error_name
-                            $(( $($e_display_expr),+ ))?                // tuple-struct↓
-                            $({ $($f_display_name: $f_display_exp),+})? // field-struct↑
+                            $(( $($e_display_expr),+ ))?                          // tuple-struct↓
+                            $({ $($f_display_name: $f_display_exp),+})?           // field-struct↑
                         , $fmt),
                 )+ }
             }
@@ -105,8 +105,8 @@ macro_rules! impl_error {
             $(#[$variant_attr])*
             $crate::impl_error! { from(_f): $individual_error_name, for: $composite_error_name
                 => $variant_name
-                $(( $($e_name, $crate::field_of![_f, $e_numb] ),+ ))? // tuple-struct↓
-                $({ $($f_name, $crate::field_of![_f, $f_name] ),+ })? // field-struct↑
+                $(( $($e_name, $crate::field_of![_f, $e_numb] ),+ ))?             // tuple-struct↓
+                $({ $($f_name, $crate::field_of![_f, $f_name] ),+ })?             // field-struct↑
             }
         )+
     };
@@ -115,9 +115,23 @@ macro_rules! impl_error {
     // as well as implementing `TryFrom` in reverse.
     from($fn_arg:ident): $from_individual:ident, for: $for_composite:ident
     => $variant_name:ident
-        $(( $($e_name:ident, $e_expr:expr),+ ))?  // tuple-struct↓
-        $({ $($f_name:ident,  $f_expr:expr),+ })? // field-struct↑
+        $(( $($e_name:ident, $e_expr:expr),+ ))?                                  // tuple-struct↓
+        $({ $($f_name:ident,  $f_expr:expr),+ })?                                 // field-struct↑
     $(,)? ) => {
+        $crate::paste! {
+            impl $for_composite {
+                #[doc = "*const* version of `From<" $from_individual "> for " $for_composite "`."]
+                #[allow(dead_code, reason = "seldomly used")]
+                // EXPERIMENTAL:IMPROVE make sure to only make it const if the type allows it
+                pub const fn [<from_ $from_individual:snake:lower>]($fn_arg: $from_individual)
+                -> $for_composite {
+                    $for_composite::$variant_name
+                        $(( $($e_expr),+ ))?                                      // tuple-struct↓
+                        $({ $($f_name: $f_expr),+ })?                             // field-struct↑
+                }
+            }
+        }
+
         /* (example)
         impl From<NotEnoughElements> for DataNotEnough {
             fn from (_f: NotEnoughElements) -> DataNotEnough {
@@ -127,8 +141,8 @@ macro_rules! impl_error {
         impl From<$from_individual> for $for_composite {
             fn from($fn_arg: $from_individual) -> $for_composite {
                 $for_composite::$variant_name
-                    $(( $($e_expr),+ ))?          // tuple-struct↓
-                    $({ $($f_name: $f_expr),+ })? // field-struct↑
+                    $(( $($e_expr),+ ))?                                          // tuple-struct↓
+                    $({ $($f_name: $f_expr),+ })?                                 // field-struct↑
             }
         }
         /* (example)
@@ -146,11 +160,11 @@ macro_rules! impl_error {
             fn try_from($fn_arg: $for_composite) -> Result<$from_individual, Self::Error> {
                 match $fn_arg {
                     $for_composite::$variant_name
-                        $(( $($e_name),+ ))?                    // tuple-struct↓
-                        $({ $($f_name),+ })?                    // field-struct↑
+                        $(( $($e_name),+ ))?                                      // tuple-struct↓
+                        $({ $($f_name),+ })?                                      // field-struct↑
                         => Ok($from_individual
-                            $(( $($e_name),+ ))?                // tuple-struct↓
-                            $({ $($f_name),+ })?                // field-struct↑
+                            $(( $($e_name),+ ))?                                  // tuple-struct↓
+                            $({ $($f_name),+ })?                                  // field-struct↑
                         ),
                         #[allow(unreachable_patterns)]
                         _ => Err(crate::FailedErrorConversion)
@@ -164,21 +178,21 @@ macro_rules! impl_error {
     // E.g. from(f): DataNotEnough for: DataError
     composite: from($fn_arg:ident): $from_subset:ident, for: $for_superset:ident { $(
         $from_variant:ident
-            $(( $($from_elem:ident),+ ))?         // tuple-struct↓
-            $({ $($from_field:ident),+ })?        // field-struct↑
+            $(( $($from_elem:ident),+ ))?                                         // tuple-struct↓
+            $({ $($from_field:ident),+ })?                                        // field-struct↑
                 => $for_variant:ident
-                    $(( $($for_elem:ident),+ ))?  // tuple-struct↓
-                    $({ $($for_field:ident),+ })? // field-struct↑
+                    $(( $($for_elem:ident),+ ))?                                  // tuple-struct↓
+                    $({ $($for_field:ident),+ })?                                 // field-struct↑
     ),+ $(,)? }
     ) => {
         impl From<$from_subset> for $for_superset {
             fn from($fn_arg: $from_subset) -> $for_superset { match $fn_arg { $(
                 $from_subset::$from_variant
-                    $(( $($from_elem),+ ))?              // tuple-struct↓
-                    $({ $($from_field),+ })?             // field-struct↑
+                    $(( $($from_elem),+ ))?                                       // tuple-struct↓
+                    $({ $($from_field),+ })?                                      // field-struct↑
                     => $for_superset::$for_variant
-                        $(( $($for_elem),+ ))?           // tuple-struct↓
-                        $({ $($for_field),+ })?          // field-struct↑
+                        $(( $($for_elem),+ ))?                                    // tuple-struct↓
+                        $({ $($for_field),+ })?                                   // field-struct↑
             ),+ } }
         }
         impl TryFrom<$for_superset> for $from_subset {
@@ -186,11 +200,11 @@ macro_rules! impl_error {
             fn try_from($fn_arg: $for_superset)
                 -> Result<$from_subset, crate::FailedErrorConversion> { match $fn_arg { $(
                     $for_superset::$for_variant
-                        $(( $($for_elem),+ ))?           // tuple-struct↓
-                        $({ $($for_field),+ })?          // field-struct↑
+                        $(( $($for_elem),+ ))?                                    // tuple-struct↓
+                        $({ $($for_field),+ })?                                   // field-struct↑
                             => Ok($from_subset::$from_variant
-                                $(( $($from_elem),+ ))?  // tuple-struct↓
-                                $({ $($from_field),+ })? // field-struct↑
+                                $(( $($from_elem),+ ))?                           // tuple-struct↓
+                                $({ $($from_field),+ })?                          // field-struct↑
                     ),)+
                     _ => Err(crate::FailedErrorConversion)
                 }
