@@ -32,6 +32,7 @@ mod terminal;
 
 /// Linux-specific extensions to [`std::io`].
 pub mod io {
+    #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
         #[cfg(all(
@@ -63,6 +64,7 @@ pub mod io {
 
 /// Linux-specific extensions to [`std::process`].
 pub mod process {
+    #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
         #[cfg(all(
@@ -87,6 +89,7 @@ pub mod process {
 
 /// Linux-specific extensions to [`std::thread`].
 pub mod thread {
+    #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
         #[cfg(all(

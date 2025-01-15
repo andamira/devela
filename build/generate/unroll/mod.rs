@@ -167,7 +167,7 @@ macro_rules! _unroll {
     let tests_code1 = r#"
 #[cfg(all(test, feature = "alloc"))]
 mod tests {
-    use crate::{format, unroll, vec_ as vec, Vec};
+    use crate::{unroll, vec_ as vec, Vec};
 
     #[test]
     fn invalid_range() {

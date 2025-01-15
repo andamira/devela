@@ -312,7 +312,7 @@ impl TryFrom<UnixTimeI64> for UnixTimeU32 {
 
 #[cfg(feature = "std")]
 mod std_impls {
-    #[cfg(feature = "cast")]
+    #[cfg(all(feature = "cast", feature = "error"))]
     use crate::{Cast, DataOverflow, UnixTimeU32};
     use crate::{SystemTime, SystemTimeError, UnixTimeI64};
 
