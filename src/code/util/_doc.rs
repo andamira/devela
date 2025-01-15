@@ -215,4 +215,7 @@ crate::CONST! { pub(crate),
         crate::EMOJI_PRIMITIVE!(), "</span>");
     TAG_RESULT = concat!("<span class='stab portability' title='Result type'>",
         crate::EMOJI_RESULT!() ,"</span>");
+
+    TAG_MAYBE_STD = "<span class='stab portability'
+title='re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>";
 }

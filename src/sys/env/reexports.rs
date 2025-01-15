@@ -3,7 +3,48 @@
 //! Reexported items from `core`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
+
+/* std items */
+
+reexport! { rust: std::env,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "Iterates over the arguments of a process, yielding them as [`String`][crate::String]s.",
+    @Args as IterArgs,
+}
+reexport! { rust: std::env,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "Iterates over the arguments of a process, yielding them as
+[`OsString`][crate::OsString]s.",
+    @ArgsOs as IterArgsOs,
+}
+reexport! { rust: std::env,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "An iterator over a snapshot of the environment variables of this process.",
+    @Vars as IterVars,
+}
+reexport! { rust: std::env,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "An iterator over a snapshot of the environment variables of this process.",
+    @VarsOs as IterVarsOs,
+}
+reexport! { rust: std::env,
+    tag: crate::TAG_ERROR!(),
+    doc: "Returned from [`Env::var`][crate::Env#method.var].",
+    VarError
+}
+reexport! { rust: std::env,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "An iterator that splits an environment variable into paths.",
+    @SplitPaths as IterSplitPaths,
+}
+reexport! { rust: std::env,
+    tag: crate::TAG_ERROR!(),
+    doc: "Returned from [Env::join_paths][crate::Env#method.join_paths].",
+    JoinPathsError,
+}
+
+/* core macros */
 
 reexport! { rust: core,
     doc: "Optionally inspects an environment variable at compile time.",

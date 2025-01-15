@@ -2,151 +2,41 @@
 //
 //! A namespaced wrapper for std
 //
-// NOTES:
-// - The lists of expected values for configuration flags can be copied from:
-//   https://github.com/rust-lang/rust/blob/master/tests/ui/check-cfg/well-known-values.stderr
-//   - Afterwards they can be procesed with vim commands similar to:
-//     s/`//g
-//     s/, /\r/g
-//     s/\([a-z0-9_.]\+\)/#[cfg(target_arch = "\1")]\r{ "\1" }/
-//     s/\([a-z0-9_.]\+\)/target_arch = "\1",/
+// TOC
+// - Constants
+// - Command line arguments
+// - Environment variables
+// - Paths
 
+#[cfg(all(feature = "std", feature = "unsafe_thread"))]
+use crate::_dep::_std::env::{remove_var, set_var};
+#[allow(deprecated, reason = "home_dir")] // TEMP WAIT 1.85
 #[cfg(feature = "std")]
-use crate::{IoResult, OsStr, OsString, Path, PathBuf, _dep::_std::env::*};
+use crate::{
+    IoResult, IterArgs, IterArgsOs, IterSplitPaths, IterVars, IterVarsOs, JoinPathsError, OsStr,
+    OsString, Path, PathBuf, VarError,
+    _dep::_std::env::{
+        args, args_os, current_dir, current_exe, home_dir, join_paths, set_current_dir,
+        split_paths, temp_dir, var, var_os, vars, vars_os,
+    },
+};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// A namespaced wrapper for `std::env` functions and constants.
 pub struct Env;
 
-impl Env {}
-
-/// # Functions related to command line arguments
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-impl Env {
-    /// Returns the arguments that this program was started with.
-    ///
-    /// See [args].
-    pub fn args() -> Args {
-        args()
-    }
-
-    /// See [args_os].
-    pub fn args_os() -> ArgsOs {
-        args_os()
-    }
-}
-
-/// # Functions related to environment variables
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-impl Env {
-    /// Fetches the environment variable key from the current process.
-    ///
-    /// See [var].
-    pub fn var<K: AsRef<OsStr>>(key: K) -> Result<String, VarError> {
-        var(key)
-    }
-
-    /// Returns an iterator of (variable, value) pairs of strings,
-    /// for all the environment variables of the current process.
-    ///
-    /// See [vars].
-    pub fn vars() -> Vars {
-        vars()
-    }
-
-    /// Fetches the environment variable key from the current process.
-    ///
-    /// See [var_os].
-    pub fn var_os<K: AsRef<OsStr>>(key: K) -> Option<OsString> {
-        var_os(key)
-    }
-
-    /// Returns an iterator of (variable, value) pairs of OS strings,
-    /// for all the environment variables of the current process.
-    ///
-    /// See [vars_os].
-    pub fn vars_os() -> VarsOs {
-        vars_os()
-    }
-
-    /// Removes the environment variable `key` from the environment
-    /// of the currently running process.
-    ///
-    /// # Safety
-    /// See [remove_var].
-    #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
-    pub unsafe fn remove_var<K: AsRef<OsStr>>(key: K) {
-        unsafe { remove_var(key) }
-    }
-
-    /// Sets the environment variable `key` to the value `value`
-    /// for the currently running process.
-    ///
-    /// # Safety
-    /// See [set_var].
-    #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
-    pub unsafe fn set_var<K: AsRef<OsStr>, V: AsRef<OsStr>>(key: K, value: V) {
-        unsafe { set_var(key, value) }
-    }
-}
-
-/// # Functions related to paths.
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-impl Env {
-    /// Returns the full filesystem path of the current running executable.
-    ///
-    /// See [current_exe].
-    pub fn current_exe() -> IoResult<PathBuf> {
-        current_exe()
-    }
-
-    /// Returns the current working directory.
-    ///
-    /// See [current_dir].
-    pub fn current_dir() -> IoResult<PathBuf> {
-        current_dir()
-    }
-
-    /// Changes the current working directory to the specified path.
-    ///
-    /// See [set_current_dir].
-    pub fn set_current_dir<P: AsRef<Path>>(path: P) -> IoResult<()> {
-        set_current_dir(path)
-    }
-
-    /// Returns the path of a temporary directory.
-    ///
-    /// See [temp_dir].
-    pub fn temp_dir() -> PathBuf {
-        temp_dir()
-    }
-
-    /// Joins a collection of [Path]s appropriately for the `PATH` environment variable.
-    ///
-    /// See [join_paths].
-    pub fn join_paths<I, T>(paths: I) -> Result<OsString, JoinPathsError>
-    where
-        I: IntoIterator<Item = T>,
-        T: AsRef<OsStr>,
-    {
-        join_paths(paths)
-    }
-
-    /// Parses input according to platform conventions for the `PATH` environment variable.
-    ///
-    /// See [split_paths].
-    pub fn split_paths<T: AsRef<OsStr> + ?Sized>(unparsed: &T) -> SplitPaths<'_> {
-        split_paths(unparsed)
-    }
-}
-
 /// # Constants
+/*
+The lists of expected values for not(std) configuration flags can be copied from:
+<https://github.com/rust-lang/rust/blob/master/tests/ui/check-cfg/well-known-values.stderr>.
+Afterwards they can be procesed with vim commands similar to:
+s/`//g
+s/, /\r/g
+s/\([a-z0-9_.]\+\)/#[cfg(target_arch = "\1")]\r{ "\1" }/
+s/\([a-z0-9_.]\+\)/target_arch = "\1",/
+*/
 impl Env {
+    #[doc = crate::TAG_MAYBE_STD!()]
     /// A string describing the architecture of the CPU that is currently in use.
     ///
     /// Expected values are:
@@ -244,6 +134,7 @@ impl Env {
         }
     };
 
+    #[doc = crate::TAG_MAYBE_STD!()]
     /// The family of the operating system.
     ///
     /// The expected values are: `unix`, `wasm`, and `windows`
@@ -324,6 +215,7 @@ impl Env {
         { "unknown" }
     };
 
+    #[doc = crate::TAG_MAYBE_STD!()]
     /// A string describing the specific operating system in use.
     ///
     /// The expected values are:
@@ -469,9 +361,9 @@ impl Env {
     /// that goes after the dot.
     ///
     /// Some possible values:
-    /// - so
-    /// - dylib
-    /// - dll
+    /// - `so`
+    /// - `dylib`
+    /// - `dll`
     #[cfg(feature = "std")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const DLL_EXTENSION: &'static str = std::env::consts::DLL_EXTENSION;
@@ -479,8 +371,8 @@ impl Env {
     /// Specifies the filename prefix used for shared libraries on this platform.
     ///
     /// Some possible values:
-    /// - lib
-    /// - "" (an empty string)
+    /// - `lib`
+    /// - `` (an empty string)
     #[cfg(feature = "std")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const DLL_PREFIX: &'static str = std::env::consts::DLL_PREFIX;
@@ -488,9 +380,9 @@ impl Env {
     /// Specifies the filename suffix used for shared libraries on this platform.
     ///
     /// Some possible values:
-    /// - .so
-    /// - .dylib
-    /// - .dll
+    /// - `.so`
+    /// - `.dylib`
+    /// - `.dll`
     #[cfg(feature = "std")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const DLL_SUFFIX: &'static str = std::env::consts::DLL_SUFFIX;
@@ -498,8 +390,8 @@ impl Env {
     /// Specifies the file extension, if any, used for executable binaries on this platform.
     ///
     /// Some possible values:
-    /// - exe
-    /// - "" (an empty string)
+    /// - `exe`
+    /// - `` (an empty string)
     #[cfg(feature = "std")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const EXE_EXTENSION: &'static str = std::env::consts::EXE_EXTENSION;
@@ -507,11 +399,145 @@ impl Env {
     /// Specifies the filename suffix used for executable binaries on this platform.
     ///
     /// Some possible values:
-    /// - .exe
-    /// - .nexe
-    /// - .pexe
-    /// - "" (an empty string)
+    /// - `.exe`
+    /// - `.nexe`
+    /// - `.pexe`
+    /// - `` (an empty string)
     #[cfg(feature = "std")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const EXE_SUFFIX: &'static str = std::env::consts::EXE_SUFFIX;
+}
+
+/// # Command line arguments
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+impl Env {
+    /// Returns the arguments that this program was started with.
+    ///
+    /// See [args].
+    pub fn args() -> IterArgs {
+        args()
+    }
+
+    /// See [args_os].
+    pub fn args_os() -> IterArgsOs {
+        args_os()
+    }
+}
+
+/// # Environment variables
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+impl Env {
+    /// Fetches the environment variable key from the current process.
+    ///
+    /// See [var].
+    pub fn var<K: AsRef<OsStr>>(key: K) -> Result<String, VarError> {
+        var(key)
+    }
+
+    /// Returns an iterator of (variable, value) pairs of strings,
+    /// for all the environment variables of the current process.
+    ///
+    /// See [vars].
+    pub fn vars() -> IterVars {
+        vars()
+    }
+
+    /// Fetches the environment variable key from the current process.
+    ///
+    /// See [var_os].
+    pub fn var_os<K: AsRef<OsStr>>(key: K) -> Option<OsString> {
+        var_os(key)
+    }
+
+    /// Returns an iterator of (variable, value) pairs of OS strings,
+    /// for all the environment variables of the current process.
+    ///
+    /// See [vars_os].
+    pub fn vars_os() -> IterVarsOs {
+        vars_os()
+    }
+
+    /// Removes the environment variable `key` from the environment
+    /// of the currently running process.
+    ///
+    /// # Safety
+    /// See [remove_var].
+    #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
+    pub unsafe fn remove_var<K: AsRef<OsStr>>(key: K) {
+        unsafe { remove_var(key) }
+    }
+
+    /// Sets the environment variable `key` to the value `value`
+    /// for the currently running process.
+    ///
+    /// # Safety
+    /// See [set_var].
+    #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
+    pub unsafe fn set_var<K: AsRef<OsStr>, V: AsRef<OsStr>>(key: K, value: V) {
+        unsafe { set_var(key, value) }
+    }
+}
+
+/// # Paths
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+impl Env {
+    /// Returns the full filesystem path of the current running executable.
+    ///
+    /// See [current_exe].
+    pub fn current_exe() -> IoResult<PathBuf> {
+        current_exe()
+    }
+
+    /// Returns the current working directory.
+    ///
+    /// See [current_dir].
+    pub fn current_dir() -> IoResult<PathBuf> {
+        current_dir()
+    }
+
+    /// Changes the current working directory to the specified path.
+    ///
+    /// See [set_current_dir].
+    pub fn set_current_dir<P: AsRef<Path>>(path: P) -> IoResult<()> {
+        set_current_dir(path)
+    }
+
+    /// Returns the path of the current user’s home directory if known.
+    ///
+    /// See [home_dir].
+    // WAIT: 1.85: [home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
+    #[allow(deprecated)]
+    pub fn home_dir() -> Option<PathBuf> {
+        home_dir()
+    }
+
+    /// Returns the path of a temporary directory.
+    ///
+    /// See [temp_dir].
+    pub fn temp_dir() -> PathBuf {
+        temp_dir()
+    }
+
+    /// Joins a collection of [Path]s appropriately for the `PATH` environment variable.
+    ///
+    /// See [join_paths].
+    pub fn join_paths<I, T>(paths: I) -> Result<OsString, JoinPathsError>
+    where
+        I: IntoIterator<Item = T>,
+        T: AsRef<OsStr>,
+    {
+        join_paths(paths)
+    }
+
+    /// Parses input according to platform conventions for the `PATH` environment variable.
+    ///
+    /// See [split_paths].
+    pub fn split_paths<T: AsRef<OsStr> + ?Sized>(unparsed: &T) -> IterSplitPaths<'_> {
+        split_paths(unparsed)
+    }
 }
