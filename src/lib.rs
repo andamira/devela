@@ -9,7 +9,7 @@
 //
 // lints
 //
-// (Most are defined in Cargo.toml)
+// (Most lints are defined in Cargo.toml::lints)
 // https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attribute.html
 #![cfg_attr(
     not(all(doc, feature = "_docsrs_stable")), // if features are incomplete…
@@ -139,7 +139,7 @@ pub mod _info;
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
-    // public items, feature-gated, visible at their origin and in `all`
+    // public items, feature-gated, visible at their origin and here in `all`
     //
     //! All the crate's items re-exported flat.
     //! <br/><hr>
@@ -165,7 +165,7 @@ pub mod all {
     };
 }
 mod _always {
-    // public items, not as much feature-gated
+    // public items, not as much feature-gated, bubbled up
     #[allow(unused_imports)]
     #[rustfmt::skip]
     pub use super::{
@@ -184,13 +184,18 @@ mod _always {
 #[doc(hidden)]
 pub use _hidden::*;
 mod _hidden {
-    // public items, but hidden
+    // public, hidden items
     pub use super::sys::_hidden::*;
 }
 #[allow(unused_imports)]
 pub(crate) use _internals::*;
 mod _internals {
-    // for internal use only
+    // private, internal items
     #[allow(unused_imports)]
-    pub(crate) use super::code::_internals::*;
+    #[rustfmt::skip]
+    pub(crate) use super::{
+        code::_internals::*,
+        data::_internals::*,
+        num::_internals::*,
+    };
 }

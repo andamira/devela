@@ -1,6 +1,6 @@
 // devela::num::no
 //
-//! Not a number.
+//! Allows the unit type [`()`] to represent the absence of a number.
 //
 
 /// Represents the absence of a number.

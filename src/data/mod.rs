@@ -24,9 +24,9 @@ pub mod serde;
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 pub mod dst;
 
-crate::items! { // structural access: _mods, _pub_mods, _all, _always
+crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
-    pub use _mods::*;
+    pub use {_mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
@@ -42,6 +42,8 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
             feature = "unsafe_layout"
         ))]
         pub use super::dst::_all::*;
+    }
+    pub(super) mod _internals { #![allow(unused)]
     }
     pub(super) mod _all {
         #[doc(inline)]
