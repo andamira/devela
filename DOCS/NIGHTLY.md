@@ -1,15 +1,21 @@
 Legend:
 - `·` = enabled by non-specific feature (nightly_[next1|next2|later)
+- `a` = enabled by non-specific feature (and depends on `alloc`)
+- `s` = enabled by non-specific feature (and depends on `std`)
 - `F` = enabled by specific feature, shown at the end of the line
-- `?` = can't be enabled, apparently
 - `✓` = past feature explicitly used
 
+See also
+- <https://github.com/rust-lang/rust/blob/master/library/core/src/lib.rs>
+- <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
+- <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
+
 # 1.85 will be stable on 2025-02-20: (nightly_stable_next1)
-- 1.85: …[2024 edition](https://github.com/rust-lang/rust/issues/117258)
+- 1.85:  [2024 edition](https://github.com/rust-lang/rust/issues/117258)
 - 1.85: ·[async_closure](https://github.com/rust-lang/rust/pull/132706)
 - 1.85: ·[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
         · const_size_of_val
-- 1.85: ?[const_collections_with_hasher](https://github.com/rust-lang/rust/pull/133696)
+- 1.85: s[const_collections_with_hasher](https://github.com/rust-lang/rust/pull/133696)
         · build_hasher_default_const_new
 - 1.85: ·[const_float_methods](https://github.com/rust-lang/rust/issues/117258)
 - 1.85: ·[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
@@ -19,7 +25,7 @@ Legend:
 - 1.85: ·[diagnostics::do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
 - 1.85:  [Extend impls for tuples 1-12](https://github.com/rust-lang/rust/pull/132187)
 - 1.85: ·[extended_varargs_abi_support](https://github.com/rust-lang/rust/pull/116161)
-- 1.85: ?[home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
+- 1.85:  [home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
 - 1.85: ·[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 - 1.85: ·[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
 - 1.85: ·[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
@@ -30,7 +36,7 @@ Legend:
 
 # .‥… will be stable later (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 - 1.??: ·[asm_goto](https://github.com/rust-lang/rust/pull/133870)
-- 1.??: ?[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
+- 1.??: a[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 - 1.??: ·[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: ·[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         · const_slice_from_ref
@@ -41,17 +47,18 @@ Legend:
 - 1.??: ·[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??:  [get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
         · get_many_mut (old name)
-- 1.??: ?[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
+- 1.??: s[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.??: ·[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: ·[let_chains](https://github.com/rust-lang/rust/pull/132833)
 - 1.??: ·[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: ·[naked_functions](https://github.com/rust-lang/rust/pull/134213)
-- 1.??: ?[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
+- 1.??: a[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: ·[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 - 1.??: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
 - 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
 - 1.??: ·[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
+- 1.??: a[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 
 # .‥… probably even later
 - 1.?? F[allocator_api](https://github.com/rust-lang/rust/issues/32838) `nightly_allocator`
