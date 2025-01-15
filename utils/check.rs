@@ -222,8 +222,8 @@ fn main() -> Result<()> {
         run_cargo("", "+nightly", &[cmd, "-F _docsrs", "--", "--color=always"])?;
 
         // std (un)safe (max capabilities)
-        run_cargo(&msrv, cmd, &["-F all,std,safe,_docs_max", "--", "--color=always"])?;
-        run_cargo(&msrv, cmd, &["-F all,std,unsafe,_docs_max", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F all,std,safe,_docs,_max", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F all,std,unsafe,_docs,_max", "--", "--color=always"])?;
 
         // std (un)safe + dep_all
         sf! { run_cargo(&msrv, cmd, &["-F all,std,safe,dep_all", "--", "--color=always"])?; }
