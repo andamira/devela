@@ -9,10 +9,10 @@ use crate::{
     iif, Ascii, InvalidUtf8, Slice,
     _core::str::{from_utf8, from_utf8_mut},
 };
-#[allow(unused_imports, reason = "unsafe_str only")]
+#[allow(unused_imports, reason = "unsafe")]
 #[cfg(feature = "alloc")]
 use crate::{Box, _dep::_alloc::str::from_boxed_utf8_unchecked};
-#[allow(unused_imports, reason = "unsafe_str only")]
+#[allow(unused_imports, reason = "unsafe")]
 use crate::{
     _core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
     sf, unwrap,
@@ -53,8 +53,8 @@ impl Str {
     /// # Safety
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg(all(not(feature = "safe_text"), unsafe··))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
     pub const unsafe fn from_utf8_unchecked(v: &[u8]) -> &str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked(v) }
@@ -67,8 +67,8 @@ impl Str {
     /// # Safety
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg(all(not(feature = "safe_text"), unsafe··))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
     pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked_mut(v) }
@@ -82,8 +82,8 @@ impl Str {
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
     #[cfg(feature = "alloc")]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "alloc", feature = "unsafe_str"))))]
+    #[cfg(all(not(feature = "safe_text"), unsafe··))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "alloc", unsafe··))))]
     pub unsafe fn from_boxed_utf8_unchecked(v: Box<[u8]>) -> Box<str> {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_boxed_utf8_unchecked(v) }

@@ -29,8 +29,12 @@ impl Alloc {
     }
 }
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+/// # Unsafe methods
+///
+/// ## Features
+/// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
+#[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
+#[cfg(all(not(feature = "safe_mem"), unsafe··))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 #[cfg(feature = "alloc")]
 #[rustfmt::skip]

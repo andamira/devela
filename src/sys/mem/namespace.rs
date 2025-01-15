@@ -126,9 +126,12 @@ impl Mem {
     }
 }
 
-/// # Unsafe methods gated by `unsafe_layout`
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+/// # Unsafe methods
+///
+/// ## Features
+/// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
+#[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
+#[cfg(all(not(feature = "safe_mem"), unsafe··))]
 impl Mem {
     // NOTE: can't compile, errors with: error[E0512]:
     // cannot transmute between types of different sizes, or dependently-sized types

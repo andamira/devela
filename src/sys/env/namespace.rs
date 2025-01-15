@@ -77,6 +77,7 @@ impl Env {
     /// # Safety
     /// See [remove_var].
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn remove_var<K: AsRef<OsStr>>(key: K) {
         unsafe { remove_var(key) }
     }
@@ -87,6 +88,7 @@ impl Env {
     /// # Safety
     /// See [set_var].
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn set_var<K: AsRef<OsStr>, V: AsRef<OsStr>>(key: K, value: V) {
         unsafe { set_var(key, value) }
     }

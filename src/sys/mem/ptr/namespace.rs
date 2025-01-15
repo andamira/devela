@@ -230,10 +230,13 @@ impl Ptr {
     }
 }
 
-/// # Unsafe methods gated by `unsafe_ptr`
+/// # Unsafe methods
+///
+/// ## Features
+/// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
+#[cfg(all(not(feature = "safe_mem"), unsafe··))]
 impl Ptr {
     /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Can overlap.
     ///
