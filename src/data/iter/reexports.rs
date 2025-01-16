@@ -247,3 +247,21 @@ reexport! { rust: core::iter,
     doc: "Converts the arguments to iterators and zips them.",
     @zip as iter_zip
 }
+
+/* itertool items */
+
+reexport! { "dep_itertools", "itertools", itertools,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "An [`Iterator`] blanket impl providing extra adaptors and methods.",
+    Itertools
+}
+reexport! { "dep_itertools", "itertools", itertools,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "An iterator that can be unzipped into multiple collections.",
+    @MultiUnzip as IteratorMultiUnzip
+}
+reexport! { "dep_itertools", "itertools", itertools,
+    tag: crate::TAG_ITERATOR!(),
+    doc: "An iterator that allows peeking at an element before deciding to accept it.",
+    @PeekingNext as IteratorPeekingNext
+}
