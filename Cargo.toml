@@ -79,7 +79,7 @@ publish = true
 bench = false
 
 
-[features] # 254/300 (46 remaining), 134 visible, 120 hidden
+[features] # 263/300 (37 remaining), 134 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -318,7 +318,7 @@ _docs = [ # the minimum capabilities to document everything
 	# modules:
 	"all", "linux",
 	# data:
-	"_bit_u8", "_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll",
+	"_bit_u8", "_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 	# num:
 	"_cmp_f64", "_cmp_u32", "_cmp_i64",
 	"_float_f64", "_int_u32", "_int_i64",
@@ -344,7 +344,7 @@ _unroll_2048 = ["_unroll_1024"]
 #* data capabilities *#
 # ---------------------
 
-_data_all = ["_bit_all", "_collections_all", "_tuple", "_sort_all"]
+_data_all = ["_bit_all", "_collections_all", "_tuple", "_sort_all", "_value_all"]
 
 # `Bitwise`, `bitfield`, `enumset`:
 _bit_all = [
@@ -386,13 +386,6 @@ _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "
 		_stack_u32 = []
 		_stack_usize = []
 
-# `Tuple` trait and maximum arity supported (example relative compilation times)
-_tuple = [] # arity 12    # time:  3.3s, codegen:  96K  (for >=2nd compilations)
-_tuple_24 = ["_tuple"]    # time:  4.0s, codegen: 279K
-_tuple_36 = ["_tuple_24"] # time:  4.6s, codegen: 561K
-_tuple_48 = ["_tuple_36"] # time:  6.3s, codegen: 942K
-_tuple_72 = ["_tuple_48"] # time: 10.3s, codegen: 2.0M
-
 # `Sort`:
 _sort_all = [
 	"_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
@@ -412,6 +405,27 @@ _sort_all = [
 	_sort_usize = []
 	_sort_f32 = ["_cmp_f32"]
 	_sort_f64 = ["_cmp_f64"]
+
+# `Tuple` trait and maximum arity supported (example relative compilation times)
+_tuple = [] # arity 12    # time:  3.3s, codegen:  96K  (for >=2nd compilations)
+_tuple_24 = ["_tuple"]    # time:  4.0s, codegen: 279K
+_tuple_36 = ["_tuple_24"] # time:  4.6s, codegen: 561K
+_tuple_48 = ["_tuple_36"] # time:  6.3s, codegen: 942K
+_tuple_72 = ["_tuple_48"] # time: 10.3s, codegen: 2.0M
+
+# `DataValue*, DataType*, DataRaw*`:
+_value_all = [
+	"_value8", "_value16", "_value32", "_value64",
+	"_value128", "_value256", "_value512", "_value1024",
+	]
+	_value8 = []
+	_value16 = []
+	_value32 = []
+	_value64 = []
+	_value128 = []
+	_value256 = []
+	_value512 = []
+	_value1024 = []
 
 #* num capabilities *#
 # ---------------------
