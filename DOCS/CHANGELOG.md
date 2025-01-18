@@ -5,7 +5,7 @@
 ### Added
 - new features: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
 - new traits `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
-- new types: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`.
+- new types: `DataValue*`, `DataType*`, `DataRaw*`, `Iter`,`NoData`.
 - new modules: `lang::{c}`.
 - new `ExtAny` methods: `type_hash`, `type_hash_with`.
 - new re-exports: `SystemAlloc`, `std::env::*`.
@@ -13,12 +13,13 @@
 - add more methods to `Env`.
 
 ### Removed
-- ungate `FxHasher`.
+- remove standalone re-exported `core::iter` functions.
 
 ### Changed
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.
 - rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
+- ungate `FxHasher`.
 
 ### Fixed
 - enable nightly features depending on `alloc` and `std`.

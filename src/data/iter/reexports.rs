@@ -111,6 +111,11 @@ reexport! { rust: core::iter,
 }
 reexport! { rust: core::iter,
     tag: crate::TAG_ITERATOR!(),
+    doc: "An iterator that repeats an element an exact number of times.",
+    @RepeatN as IterRepeatN
+}
+reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that endlessly repeats `A` by calling `F: FnMut() -> A`.",
     @RepeatWith as IterRepeatWith
 }
@@ -210,42 +215,13 @@ reexport! { rust: core::iter,
 
 /* core functions */
 
+// These are re-exported as methods of the Iter namespace.
+
+// WAIT:
 reexport! { rust: core::iter,
     extra_features: "nightly_coro",
     doc: "Creates an iterator where each iteration calls the provided coroutine.",
     @from_coroutine as iter_from_coroutine
-}
-reexport! { rust: core::iter,
-    doc: "Creates an iterator that yields nothing.",
-    @empty as iter_empty
-}
-reexport! { rust: core::iter,
-    doc: "Creates an iterator that calls the given closure `F: FnMut() -> Option<T>`.",
-    @from_fn as iter_from_fn
-}
-reexport! { rust: core::iter,
-    doc: "Creates an iterator that yields an element exactly once.",
-    @once as iter_once
-}
-reexport! { rust: core::iter,
-    doc: "Creates an iterator that lazily generates a value exactly once.",
-    @once_with as iter_once_with
-}
-reexport! { rust: core::iter,
-    doc: "Creates an iterator that endlessly repeats a single element.",
-    @repeat as iter_repeat
-}
-reexport! { rust: core::iter,
-    doc: "Creates an iterator that endlessly repeats calling `F: FnMut() -> A`.",
-    @repeat_with as iter_repeat_with
-}
-reexport! { rust: core::iter,
-    doc: "Creates an iterator where each successive item is computed based on the previous.",
-    @successors as iter_successors
-}
-reexport! { rust: core::iter,
-    doc: "Converts the arguments to iterators and zips them.",
-    @zip as iter_zip
 }
 
 /* itertool items */

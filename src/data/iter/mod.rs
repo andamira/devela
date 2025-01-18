@@ -5,6 +5,7 @@
 #![doc = crate::doc_!(extends: iter)]
 //
 
+mod namespace;
 mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -14,6 +15,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
+        pub use super::namespace::*;
         pub use super::reexports::*;
     }
     pub(super) mod _all {
