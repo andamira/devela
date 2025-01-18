@@ -19,7 +19,7 @@ use super::*;
 // -----------------------------------------------------------------------------
 
 define_data_value_type_raw! {
-    all_sizes: DataValue, DataType, DataRaw, // order matters
+    all_sizes: v: DataValue, t: DataType, r: DataRaw,
 
     // --------------------------------------------------------------- 1-B / 8-b
     copy_variants_1B:

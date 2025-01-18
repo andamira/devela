@@ -11,7 +11,7 @@
 #[allow(unused_macros)]
 macro_rules! define_data_value {
     (
-        v: $cname:ident, t: $tname:ident, r: $bname:ident,
+        v: $Vname:ident, t: $Tname:ident, r: $Rname:ident,
         size: $B:literal, $b:literal,
         feature: $feature:literal,
 
@@ -42,13 +42,13 @@ macro_rules! define_data_value {
         #[doc = $b "-bit data *value*, restricted to `Copy` variants, with extra `V`." ]
         ///
         /// See also:
-        #[doc = "- [" [<$tname $b Copy With>] "]" ]
-        #[doc = "- [" [<$cname $b With>] "][" [<$cname $b With>] "] -Copy" ]
-        #[doc = "- [" [<$cname $b Copy>] "][" [<$cname $b Copy>] "] -With" ]
-        #[doc = "- [" [<$cname $b>] "][" [<$cname $b>] "] -Copy -With" ]
+        #[doc = "- [" [<$Tname $b Copy With>] "]" ]
+        #[doc = "- [" [<$Vname $b With>] "][" [<$Vname $b With>] "] -Copy" ]
+        #[doc = "- [" [<$Vname $b Copy>] "][" [<$Vname $b Copy>] "] -With" ]
+        #[doc = "- [" [<$Vname $b>] "][" [<$Vname $b>] "] -Copy -With" ]
         #[derive(Clone, Copy, Debug)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub enum [<$cname $b Copy With>]<V: DataValue> {
+        pub enum [<$Vname $b Copy With>]<V: DataValue> {
             /// No data.
             NoData,
             /// Extra *data values*.
@@ -88,17 +88,17 @@ macro_rules! define_data_value {
         #[doc = $b "-bit data *value*, restricted to `Copy` variants." ]
         ///
         /// See also:
-        #[doc = "- [" [<$tname $b Copy>] "]" ]
-        #[doc = "- [" [<$cname $b>] "][" [<$cname $b>] "] -Copy" ]
-        #[doc = "- [" [<$cname $b Copy With>] "][" [<$cname $b Copy With>] "] +With" ]
-        #[doc = "- [" [<$cname $b With>] "][" [<$cname $b With>] "] -Copy +With" ]
+        #[doc = "- [" [<$Tname $b Copy>] "]" ]
+        #[doc = "- [" [<$Vname $b>] "][" [<$Vname $b>] "] -Copy" ]
+        #[doc = "- [" [<$Vname $b Copy With>] "][" [<$Vname $b Copy With>] "] +With" ]
+        #[doc = "- [" [<$Vname $b With>] "][" [<$Vname $b With>] "] -Copy +With" ]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub type [<$cname $b Copy>] = [< $cname $b With>]<$crate::NoData>;
+        pub type [<$Vname $b Copy>] = [< $Vname $b With>]<$crate::NoData>;
 
         // implement the DataValue trait
         $crate::impl_data_value![
-            v: [< $cname $b Copy With >], DataValue,
-            t: [< $tname $b Copy With >], DataType,
+            v: [< $Vname $b Copy With >], DataValue,
+            t: [< $Tname $b Copy With >], DataType,
             is_copy: true,
             copy_variants:
                 $( $cvname, $cvtype ),* ;
@@ -113,20 +113,20 @@ macro_rules! define_data_value {
             noncopy_variants_dep: ;
             noncopy_variants_psize_dep: ;
         ];
-        impl<V: DataValueCopy> DataValueCopy for [< $cname $b Copy With >]<V> { }
+        impl<V: DataValueCopy> DataValueCopy for [< $Vname $b Copy With >]<V> { }
 
         // ## non-copy version (DataValue)
         // -----------------------------------------------------------------
         #[doc = $b "-bit data *value*, with extra `V`." ]
         ///
         /// See also:
-        #[doc = "- [" [<$tname $b With>] "]" ]
-        #[doc = "- [" [<$cname $b Copy With>] "][" [<$cname $b Copy With>] "] +Copy" ]
-        #[doc = "- [" [<$cname $b>] "][" [<$cname $b>] "] -Width" ]
-        #[doc = "- [" [<$cname $b Copy>] "][" [<$cname $b Copy>] "] +Copy -Width" ]
+        #[doc = "- [" [<$Tname $b With>] "]" ]
+        #[doc = "- [" [<$Vname $b Copy With>] "][" [<$Vname $b Copy With>] "] +Copy" ]
+        #[doc = "- [" [<$Vname $b>] "][" [<$Vname $b>] "] -Width" ]
+        #[doc = "- [" [<$Vname $b Copy>] "][" [<$Vname $b Copy>] "] +Copy -Width" ]
         #[derive(Debug)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub enum [<$cname $b With>]<V: DataValue> {
+        pub enum [<$Vname $b With>]<V: DataValue> {
             /// No data.
             NoData,
             /// Extra *data values*.
@@ -186,17 +186,17 @@ macro_rules! define_data_value {
         #[doc = $b "-bit data *value*." ]
         ///
         /// See also:
-        #[doc = "- [" [<$tname $b>] "]" ]
-        #[doc = "- [" [<$cname $b Copy>] "][" [<$cname $b Copy>] "] +Copy" ]
-        #[doc = "- [" [<$cname $b With>] "][" [<$cname $b With>] "] +With" ]
-        #[doc = "- [" [<$cname $b Copy With>] "][" [<$cname $b Copy With>] "] +Copy +With" ]
+        #[doc = "- [" [<$Tname $b>] "]" ]
+        #[doc = "- [" [<$Vname $b Copy>] "][" [<$Vname $b Copy>] "] +Copy" ]
+        #[doc = "- [" [<$Vname $b With>] "][" [<$Vname $b With>] "] +With" ]
+        #[doc = "- [" [<$Vname $b Copy With>] "][" [<$Vname $b Copy With>] "] +Copy +With" ]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub type [<$cname $b>] = [< $cname $b With>]<$crate::NoData>;
+        pub type [<$Vname $b>] = [< $Vname $b With>]<$crate::NoData>;
 
         // implement the DataValue trait
         $crate::impl_data_value![
-            v: [< $cname $b With >], DataValue,
-            t: [< $tname $b With >], DataType,
+            v: [< $Vname $b With >], DataValue,
+            t: [< $Tname $b With >], DataType,
             is_copy: false,
             copy_variants:
                 $( $cvname, $cvtype ),* ;
@@ -219,11 +219,11 @@ macro_rules! define_data_value {
         // implement `TryFrom`<`DataValue`> for *contained-value*:
 
         $( // Copy
-            impl<V: DataValueCopy> TryFrom<[<$cname $b Copy With>]<V>> for $cvtype {
+            impl<V: DataValueCopy> TryFrom<[<$Vname $b Copy With>]<V>> for $cvtype {
                 type Error = ();
-                fn try_from(v: [<$cname $b Copy With>]<V>) -> Result<Self, Self::Error> {
+                fn try_from(v: [<$Vname $b Copy With>]<V>) -> Result<Self, Self::Error> {
                     match v {
-                        [<$cname $b Copy With>]::$cvname(v) => Ok(v),
+                        [<$Vname $b Copy With>]::$cvname(v) => Ok(v),
                         _ => Err(()),
                     }
                 }
@@ -231,22 +231,22 @@ macro_rules! define_data_value {
         )*
         $( // Copy feature-bound
             #[cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep ))]
-            impl<V: DataValue> TryFrom<[<$cname $b With>]<V>> for $cvtype_dep {
+            impl<V: DataValue> TryFrom<[<$Vname $b With>]<V>> for $cvtype_dep {
                 type Error = ();
-                fn try_from(v: [<$cname $b With>]<V>) -> Result<Self, Self::Error> {
+                fn try_from(v: [<$Vname $b With>]<V>) -> Result<Self, Self::Error> {
                     match v {
-                        [<$cname $b With>]::$cvname_dep(v) => Ok(v),
+                        [<$Vname $b With>]::$cvname_dep(v) => Ok(v),
                         _ => Err(()),
                     }
                 }
             }
         )*
         $( // non-Copy
-            impl<V: DataValue> TryFrom<[<$cname $b With>]<V>> for $vtype {
+            impl<V: DataValue> TryFrom<[<$Vname $b With>]<V>> for $vtype {
                 type Error = ();
-                fn try_from(v: [<$cname $b With>]<V>) -> Result<Self, Self::Error> {
+                fn try_from(v: [<$Vname $b With>]<V>) -> Result<Self, Self::Error> {
                     match v {
-                        [<$cname $b With>]::$vname(v) => Ok(v),
+                        [<$Vname $b With>]::$vname(v) => Ok(v),
                         _ => Err(()),
                     }
                 }
@@ -254,11 +254,11 @@ macro_rules! define_data_value {
         )*
         $( // non-Copy feature-bound
             #[cfg(all(feature = $vdep1_dep, feature = $vdep2_dep ))]
-            impl<V: DataValue> TryFrom<[<$cname $b With>]<V>> for $vtype_dep {
+            impl<V: DataValue> TryFrom<[<$Vname $b With>]<V>> for $vtype_dep {
                 type Error = ();
-                fn try_from(v: [<$cname $b With>]<V>) -> Result<Self, Self::Error> {
+                fn try_from(v: [<$Vname $b With>]<V>) -> Result<Self, Self::Error> {
                     match c {
-                        [<$cname $b With>]::$vname_dep(v) => Ok(v),
+                        [<$Vname $b With>]::$vname_dep(v) => Ok(v),
                         _ => Err(()),
                     }
                 }
@@ -268,32 +268,32 @@ macro_rules! define_data_value {
         // implement `From`<*contained-value*> for `DataValue`:
 
         $( // Copy
-            impl<V: DataValueCopy> From<$cvtype> for [<$cname $b Copy With>]<V> {
+            impl<V: DataValueCopy> From<$cvtype> for [<$Vname $b Copy With>]<V> {
                 fn from(v: $cvtype) -> Self {
-                    [<$cname $b Copy With>]::$cvname(v)
+                    [<$Vname $b Copy With>]::$cvname(v)
                 }
             }
         )*
         $( // Copy feature-bound
             #[cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep ))]
-            impl<V: DataValueCopy> From<$cvtype_dep> for [<$cname $b Copy With>]<V> {
+            impl<V: DataValueCopy> From<$cvtype_dep> for [<$Vname $b Copy With>]<V> {
                 fn from(v: $cvtype_dep) -> Self {
-                    [<$cname $b Copy With>]::$cvname_dep(v)
+                    [<$Vname $b Copy With>]::$cvname_dep(v)
                 }
             }
         )*
         $( // non-Copy
-            impl<V: DataValue> From<$vtype> for [<$cname $b With>]<V> {
+            impl<V: DataValue> From<$vtype> for [<$Vname $b With>]<V> {
                 fn from(v: $vtype) -> Self {
-                    [<$cname $b With>]::$vname(v)
+                    [<$Vname $b With>]::$vname(v)
                 }
             }
         )*
         $( // non-Copy feature-bound
             #[cfg(all(feature = $vdep1_dep, feature = $vdep2_dep ))]
-            impl<V: DataValue> From<$vtype_dep> for [<$cname $b With>]<V> {
+            impl<V: DataValue> From<$vtype_dep> for [<$Vname $b With>]<V> {
                 fn from(v: $vtype_dep) -> Self {
-                    [<$cname $b With>]::$vname_dep(v)
+                    [<$Vname $b With>]::$vname_dep(v)
                 }
             }
         )*
@@ -301,26 +301,26 @@ macro_rules! define_data_value {
         // from DataValue to DataRaw
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-        impl<V: DataValueCopy> From<[<$cname $b Copy With>]<V>> for $crate::[<$bname $b Copy>] {
-            fn from(cell: [<$cname $b Copy With>]<V>) -> Self {
+        impl<V: DataValueCopy> From<[<$Vname $b Copy With>]<V>> for $crate::[<$Rname $b Copy>] {
+            fn from(cell: [<$Vname $b Copy With>]<V>) -> Self {
                 match cell {
-                    [<$cname $b Copy With>]::NoData => Self { NoData: () },
-                    [<$cname $b Copy With>]::Extra(_) => Self { NoData: () },
+                    [<$Vname $b Copy With>]::NoData => Self { NoData: () },
+                    [<$Vname $b Copy With>]::Extra(_) => Self { NoData: () },
 
                     $( // fundamental types
-                        [<$cname $b Copy With>]::$cvname(v) => Self { $cvname: v },
+                        [<$Vname $b Copy With>]::$cvname(v) => Self { $cvname: v },
                     )*
 
                     $( // pointer-size dependant
                         #[cfg($cvpsize_psize)]
-                        [<$cname $b Copy With>]::$cvname_psize(v) => Self { $cvname_psize: v },
+                        [<$Vname $b Copy With>]::$cvname_psize(v) => Self { $cvname_psize: v },
                     )*
 
                     $( // feature-gated dependencies
                         #[cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))))]
-                        [<$cname $b Copy With>]::$cvname_dep(v) => Self { $cvname_dep: v },
+                        [<$Vname $b Copy With>]::$cvname_dep(v) => Self { $cvname_dep: v },
                     )*
                 }
             }
@@ -333,7 +333,7 @@ pub(crate) use define_data_value;
 #[allow(unused_macros)]
 macro_rules! define_data_type {
     (
-        v: $cname:ident, t: $tname:ident, r: $bname:ident,
+        v: $Vname:ident, t: $Tname:ident, r: $Rname:ident,
         size: $B:literal, $b:literal,
         feature: $feature:literal,
 
@@ -365,13 +365,13 @@ macro_rules! define_data_type {
         #[doc = $b "-bit data *type*, restricted to `Copy` variants, with extra `T`." ]
         ///
         /// See also:
-        #[doc = "- [" [<$cname $b Copy With>] "]" ]
-        #[doc = "- [" [<$tname $b With>]  "][" [<$tname $b With>] "] -Copy" ]
-        #[doc = "- [" [<$tname $b Copy>]  "][" [<$tname $b Copy>] "] -With" ]
-        #[doc = "- [" [<$tname $b>]  "][" [<$tname $b>] "] -Copy -With" ]
+        #[doc = "- [" [<$Vname $b Copy With>] "]" ]
+        #[doc = "- [" [<$Tname $b With>]  "][" [<$Tname $b With>] "] -Copy" ]
+        #[doc = "- [" [<$Tname $b Copy>]  "][" [<$Tname $b Copy>] "] -With" ]
+        #[doc = "- [" [<$Tname $b>]  "][" [<$Tname $b>] "] -Copy -With" ]
         #[derive(Clone, Copy, Debug)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub enum [< $tname $b Copy With >]<T: DataType> {
+        pub enum [< $Tname $b Copy With >]<T: DataType> {
             /// No data.
             NoData,
             /// A custom *data type* extension.
@@ -409,17 +409,17 @@ macro_rules! define_data_type {
         #[doc = $b "-bit data *type*, restricted to `Copy` variants." ]
         ///
         /// See also:
-        #[doc = "- [" [<$cname $b Copy>] "]" ]
-        #[doc = "- [" [<$tname $b>] "][" [<$tname $b>] "] -Copy" ]
-        #[doc = "- [" [<$tname $b Copy With>] "][" [<$tname $b Copy With>] "] +With" ]
-        #[doc = "- [" [<$tname $b With>] "][" [<$tname $b With>] "] -Copy +With" ]
+        #[doc = "- [" [<$Vname $b Copy>] "]" ]
+        #[doc = "- [" [<$Tname $b>] "][" [<$Tname $b>] "] -Copy" ]
+        #[doc = "- [" [<$Tname $b Copy With>] "][" [<$Tname $b Copy With>] "] +With" ]
+        #[doc = "- [" [<$Tname $b With>] "][" [<$Tname $b With>] "] -Copy +With" ]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub type [<$tname $b Copy>] = [< $tname $b Copy With>]<$crate::NoData>;
+        pub type [<$Tname $b Copy>] = [< $Tname $b Copy With>]<$crate::NoData>;
 
         // implement the DataType trait
         $crate::impl_data_type![
-            v: [< $cname $b Copy With >], DataValue,
-            t: [< $tname $b Copy With >], DataType,
+            v: [< $Vname $b Copy With >], DataValue,
+            t: [< $Tname $b Copy With >], DataType,
             is_copy: true,
             copy_variants:
                 $( $cvname, $cvtype ),* ;
@@ -434,7 +434,7 @@ macro_rules! define_data_type {
             noncopy_variants_dep: ;
             noncopy_variants_psize_dep: ;
         ];
-        impl<T: DataTypeCopy> DataTypeCopy for [< $tname $b Copy With >]<T>
+        impl<T: DataTypeCopy> DataTypeCopy for [< $Tname $b Copy With >]<T>
             where T::Value: DataValueCopy {}
 
         // ## non-copy version (DataType)
@@ -442,13 +442,13 @@ macro_rules! define_data_type {
         #[doc = $b "-bit data *type*, with extra `T`." ]
         ///
         /// See also:
-        #[doc = "- [" [<$cname $b With>] "]" ]
-        #[doc = "- [" [<$tname $b Copy With>] "][" [<$tname $b Copy With>] "] +Copy" ]
-        #[doc = "- [" [<$tname $b>] "][" [<$tname $b>] "] -With" ]
-        #[doc = "- [" [<$tname $b Copy>] "][" [<$tname $b Copy>] "] +Copy -With" ]
+        #[doc = "- [" [<$Vname $b With>] "]" ]
+        #[doc = "- [" [<$Tname $b Copy With>] "][" [<$Tname $b Copy With>] "] +Copy" ]
+        #[doc = "- [" [<$Tname $b>] "][" [<$Tname $b>] "] -With" ]
+        #[doc = "- [" [<$Tname $b Copy>] "][" [<$Tname $b Copy>] "] +Copy -With" ]
         #[derive(Clone, Copy, Debug)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub enum [< $tname $b With >]<T: DataType> {
+        pub enum [< $Tname $b With >]<T: DataType> {
             /// No data.
             NoData,
             /// A custom *data type* extension.
@@ -507,17 +507,17 @@ macro_rules! define_data_type {
         #[doc = $b "-bit data *type*"]
         ///
         /// See also:
-        #[doc = "- [" [<$cname $b>] "]" ]
-        #[doc = "- [" [<$tname $b Copy>] "][" [<$tname $b Copy>] "] +Copy" ]
-        #[doc = "- [" [<$tname $b With>] "][" [<$tname $b With>] "] +With" ]
-        #[doc = "- [" [<$tname $b Copy With>] "][" [<$tname $b Copy With>] "] +Copy +With" ]
+        #[doc = "- [" [<$Vname $b>] "]" ]
+        #[doc = "- [" [<$Tname $b Copy>] "][" [<$Tname $b Copy>] "] +Copy" ]
+        #[doc = "- [" [<$Tname $b With>] "][" [<$Tname $b With>] "] +With" ]
+        #[doc = "- [" [<$Tname $b Copy With>] "][" [<$Tname $b Copy With>] "] +Copy +With" ]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub type [<$tname $b>] = [< $tname $b With>]<$crate::NoData>;
+        pub type [<$Tname $b>] = [< $Tname $b With>]<$crate::NoData>;
 
         // implement the DataType trait
         $crate::impl_data_type![
-            v: [< $cname $b With >], DataValue,
-            t: [< $tname $b With >], DataType,
+            v: [< $Vname $b With >], DataValue,
+            t: [< $Tname $b With >], DataType,
             is_copy: false,
             copy_variants:
                 $( $cvname, $cvtype ),* ;
@@ -544,10 +544,20 @@ pub(crate) use define_data_type;
 /// Defines the `DataRaw*` union.
 ///
 /// It calls the macros: `impl_raw!`
+// NOTES:
+// - https://doc.rust-lang.org/stable/reference/items/unions.html
+// - https://doc.rust-lang.org/std/mem/struct.ManuallyDrop.html
+// - [non-Copy](https://github.com/rust-lang/rust/issues/55149)
+// DONE:1.64: refs in unions https://github.com/rust-lang/rust/pull/97995 (closed 55149)
+// WAIT? https://github.com/rust-lang/rust/issues/98102
+// IMPROVE:
+// - support With version (generics are supported I THINK)
+// - support non-Copy types by wrapping with ManuallyDrop<T>.
+// - add a not so unsafe api for first use cases, (space efficient rows).
 #[allow(unused_macros)]
 macro_rules! define_data_raw {
     (
-        v: $cname:ident, t: $tname:ident, r: $bname:ident,
+        v: $Vname:ident, t: $Tname:ident, r: $Rname:ident,
         size: $B:literal, $b:literal,
         feature: $feature:literal,
 
@@ -557,9 +567,10 @@ macro_rules! define_data_raw {
             $( $cvdoc_dep:literal, $cvname_dep:ident, $cvtype_dep:ty,
             $cvdep1_dep:literal, $cvdep2_dep:literal, )* ;
         copy_variants_psize:
-            $( $cvdoc_psize:literal, $cvname_psize:ident, $cvtype_psize:ty, $cvpsize_psize:meta, )* ;
+            $( $cvdoc_psize:literal, $cvname_psize:ident, $cvtype_psize:ty,
+                $cvpsize_psize:meta, )* ;
         copy_variants_psize_dep:
-            $( $cvname_psize_dep:ident, $cvtype_psize_dep:ty,
+            $( $cvdoc_psize_dep:literal, $cvname_psize_dep:ident, $cvtype_psize_dep:ty,
             $cvpsize_psize_dep:meta, $cvdep1_psize_dep:literal, $cvdep2_psize_dep:literal, )* ;
         noncopy_variants:
             $( $vdoc:literal, $vname:ident, $vtype:ty, )* ;
@@ -582,7 +593,7 @@ macro_rules! define_data_raw {
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
         #[allow(non_snake_case, reason = "union fields named like enum variants")]
-        pub union [< $bname $b Copy >] {
+        pub union [< $Rname $b Copy >] {
             /// Represents the absence of *data*.
             pub NoData: (),
 
@@ -619,19 +630,19 @@ macro_rules! define_data_raw {
         // TODO
         // #[doc = $b "-bit *untyped (raw)* data"]
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        // pub type [< $bname $b Copy >] = [< $bname $b >];
+        // pub type [< $Rname $b Copy >] = [< $Rname $b >];
 
         // Debug
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
-        impl core::fmt::Debug for [<$bname $b Copy>] {
+        impl core::fmt::Debug for [<$Rname $b Copy>] {
             fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-                write!(f, "{} {{...}}", stringify!{[< $bname $b Copy>]})
+                write!(f, "{} {{...}}", stringify!{[< $Rname $b Copy>]})
             }
         }
 
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
         $crate::impl_data_raw![
-            b: [< $bname $b Copy>],
+            r: [< $Rname $b Copy>],
         ];
     }};
 }

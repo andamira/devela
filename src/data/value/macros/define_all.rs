@@ -1,18 +1,6 @@
 // devela::data::value::macros::define_all
 //!
 //
-// IMPROVE: rename bname to rname
-// IMPROVE: rename args sensibly. - cname → vname (THINK value vs variant)
-/* DESIGN:WIP
-- copy variants
-    - cvdoc_0B, cvname_0B, cvtype_0B
-    - cvdoc_0B_dep, cvname_0B_dep, cvtype_0B_dep
-        - cvdep1_0B_dep, cvdep2_0B_dep             (feature-gates?)
-    - cvdoc_0B_psize, cvname_0B_psize, cvtype_0B_psize, cvpsize_1B_psize(meta)
-    - cvdoc_0B_psize_dep, cvname_0B_psize_dep, cvtype_0B_psize_dep, cvpsize_dep_0B_psize_dep
-- non-copy variants
-    - vdoc_0B, vname_0B, vtype_0B
-*/
 
 /// Defines all sizes.
 ///
@@ -49,18 +37,15 @@ macro_rules! define_data_value_type_raw {
     // The `single_size` arm is called making sure each size contains
     // all variants with a size less than or equal to the current size.
 
-    all_sizes: $cname:ident, $tname:ident, $bname:ident,
+    all_sizes: v: $Vname:ident, t: $Tname:ident, r: $Rname:ident,
 
     // 1-Byte / 8-bit
     copy_variants_1B: $(
         $cvdoc_1B:literal, $cvname_1B:ident, $cvtype_1B:ty,
-        // def:$cvdef_1B:stmt,
         )*
     copy_variants_1B_dep: $(
         $cvdoc_1B_dep:literal, $cvname_1B_dep:ident, $cvtype_1B_dep:ty,
-        // def:$cvdef_1B_dep:stmt,
-        $cvdep1_1B_dep:literal,
-        $cvdep2_1B_dep:literal,
+        $cvdep1_1B_dep:literal, $cvdep2_1B_dep:literal,
         )*
     copy_variants_1B_psize: $(
         $cvdoc_1B_psize:literal, $cvname_1B_psize:ident, $cvtype_1B_psize:ty,
@@ -323,12 +308,14 @@ macro_rules! define_data_value_type_raw {
         // 1-Byte / 8-bit
         #[cfg(feature = "_value8")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 1, 8, feature: "_value8",
+            single_size: $Vname, $Tname, $Rname, size: 1, 8, feature: "_value8",
             copy_variants:
-                $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )* ;
+                $( $cvdoc_1B, $cvname_1B, $cvtype_1B,
+                )* ;
             copy_variants_dep:
                 $( $cvdoc_1B_dep, $cvname_1B_dep, $cvtype_1B_dep,
-                    $cvdep1_1B_dep, $cvdep2_1B_dep, )* ;
+                    $cvdep1_1B_dep, $cvdep2_1B_dep,
+                )* ;
             copy_variants_psize:
                 $( $cvdoc_1B_psize, $cvname_1B_psize, $cvtype_1B_psize,
                     $cvpsize_1B_psize, )* ;
@@ -350,7 +337,7 @@ macro_rules! define_data_value_type_raw {
         // 2-Byte / 16-bit
         #[cfg(feature = "_value16")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 2, 16, feature: "_value16",
+            single_size: $Vname, $Tname, $Rname, size: 2, 16, feature: "_value16",
             copy_variants:
                 $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )*
                 $( $cvdoc_2B, $cvname_2B, $cvtype_2B, )* ;
@@ -393,7 +380,7 @@ macro_rules! define_data_value_type_raw {
         // 4-Byte / 32-bit
         #[cfg(feature = "_value32")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 4, 32, feature: "_value32",
+            single_size: $Vname, $Tname, $Rname, size: 4, 32, feature: "_value32",
             copy_variants:
                 $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )*
                 $( $cvdoc_2B, $cvname_2B, $cvtype_2B, )*
@@ -448,7 +435,7 @@ macro_rules! define_data_value_type_raw {
         // 8-Byte / 64-bit
         #[cfg(feature = "_value64")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 8, 64, feature: "_value64",
+            single_size: $Vname, $Tname, $Rname, size: 8, 64, feature: "_value64",
             copy_variants:
                 $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )*
                 $( $cvdoc_2B, $cvname_2B, $cvtype_2B, )*
@@ -513,7 +500,7 @@ macro_rules! define_data_value_type_raw {
         // 16-Byte / 128-bit
         #[cfg(feature = "_value128")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 16, 128, feature: "_value128",
+            single_size: $Vname, $Tname, $Rname, size: 16, 128, feature: "_value128",
             copy_variants:
                 $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )*
                 $( $cvdoc_2B, $cvname_2B, $cvtype_2B, )*
@@ -596,7 +583,7 @@ macro_rules! define_data_value_type_raw {
         // 32-Byte / 256-bit
         #[cfg(feature = "_value256")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 32, 256, feature: "_value256",
+            single_size: $Vname, $Tname, $Rname, size: 32, 256, feature: "_value256",
             copy_variants:
                 $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )*
                 $( $cvdoc_2B, $cvname_2B, $cvtype_2B, )*
@@ -699,7 +686,7 @@ macro_rules! define_data_value_type_raw {
         // 64-Byte / 512-bit
         #[cfg(feature = "_value512")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 64, 512, feature: "_value512",
+            single_size: $Vname, $Tname, $Rname, size: 64, 512, feature: "_value512",
             copy_variants:
                 $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )*
                 $( $cvdoc_2B, $cvname_2B, $cvtype_2B, )*
@@ -810,7 +797,7 @@ macro_rules! define_data_value_type_raw {
         // 128-Byte / 1024-bit
         #[cfg(feature = "_value1024")]
         $crate::define_data_value_type_raw! {
-            single_size: $cname, $tname, $bname, size: 128, 1024, feature: "_value1024",
+            single_size: $Vname, $Tname, $Rname, size: 128, 1024, feature: "_value1024",
             copy_variants:
                 $( $cvdoc_1B, $cvname_1B, $cvtype_1B, )*
                 $( $cvdoc_2B, $cvname_2B, $cvtype_2B, )*
@@ -939,7 +926,7 @@ macro_rules! define_data_value_type_raw {
     // This arm defines in one pass a single size `DataValue*`, `DataType*`, `DataRaw*`.
     //
     // It calls the macros: `define_data_value!`, `define_data_type!` and `define_data_raw!`.
-    single_size: $cname:ident, $tname:ident, $bname:ident,
+    single_size: $Vname:ident, $Tname:ident, $Rname:ident,
     size: $B:literal, $b:literal,
     feature: $feature:literal,
 
@@ -967,7 +954,7 @@ macro_rules! define_data_value_type_raw {
         $vpsize_psize_dep:meta, $vdep1_psize_dep:literal, $vdep2_psize_dep:literal, )* ;
     ) => {
         $crate::define_data_value! {
-            v:$cname, t:$tname, r:$bname, size: $B, $b, feature: $feature,
+            v:$Vname, t:$Tname, r:$Rname, size: $B, $b, feature: $feature,
             copy_variants:
                 $( $cvdoc, $cvname, $cvtype, )* ;
             copy_variants_dep:
@@ -992,7 +979,7 @@ macro_rules! define_data_value_type_raw {
                     $vpsize_psize_dep, $vdep1_psize_dep, $vdep2_psize_dep, )* ;
         }
         $crate::define_data_type! {
-            v:$cname, t:$tname, r:$bname, size: $B, $b, feature: $feature,
+            v:$Vname, t:$Tname, r:$Rname, size: $B, $b, feature: $feature,
             copy_variants:
                 $( $cvdoc, $cvname, $cvtype, )* ;
             copy_variants_dep:
@@ -1017,7 +1004,7 @@ macro_rules! define_data_value_type_raw {
                     $vpsize_psize_dep, $vdep1_psize_dep, $vdep2_psize_dep, )* ;
         }
         $crate::define_data_raw! {
-            v:$cname, t:$tname, r:$bname, size: $B, $b, feature: $feature,
+            v:$Vname, t:$Tname, r:$Rname, size: $B, $b, feature: $feature,
             copy_variants:
                 $( $cvdoc, $cvname, $cvtype, )* ;
             copy_variants_dep:
