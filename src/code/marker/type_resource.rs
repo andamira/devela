@@ -189,3 +189,21 @@ mod impls {
         fn from(value: String) -> Self { TypeResource::new(value) }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{type_resource, ExtAny};
+
+    type_resource![ClosureId: u64];
+
+    #[test]
+    fn closures_with_type_resource() {
+        let closure1 = || {};
+        let closure2 = || {};
+
+        let closure_id1 = ClosureId::new(closure1.type_hash());
+        let closure_id2 = ClosureId::new(closure2.type_hash());
+
+        assert_ne!(closure_id1, closure_id2);
+    }
+}
