@@ -7,6 +7,7 @@
 - new traits `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`.
 - new modules: `lang::{c}`.
+- new `ExtAny` methods: `type_hash`, `type_hash_with`.
 - new re-exports: `SystemAlloc`, `std::env::*`.
 - new optional dependencies: `itertools`.
 - add more methods to `Env`.

@@ -5,7 +5,8 @@
 // - WAIT: (const) [type_name](https://github.com/rust-lang/rust/issues/63084)
 // - WAIT: [trait_upcasting](https://github.com/rust-lang/rust/issues/65991)
 
-use core::any::{type_name_of_val, Any, TypeId};
+use crate::{Any, Hash, Hasher, HasherFx, TypeId};
+use core::any::type_name_of_val;
 
 #[cfg(feature = "alloc")]
 use crate::Box;
@@ -52,7 +53,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::code::ExtAny;
+    /// use devela::ExtAny;
     ///
     /// let x = 5;
     /// assert_eq!(x.type_name(), "i32");
@@ -78,6 +79,18 @@ pub trait ExtAny: Any + Sealed {
     /// ```
     #[must_use]
     fn type_is<T: 'static>(&self) -> bool { self.type_id() == TypeId::of::<T>() }
+
+    /// Returns a deterministic hash of the `TypeId` of `Self`.
+    fn type_hash(&self) -> u64 {
+        let hasher = HasherFx::<u64>::default();
+        self.type_hash_with(hasher)
+    }
+
+    /// Returns a deterministic hash of the `TypeId` of `Self` using a custom hasher.
+    fn type_hash_with<H: Hasher>(&self, mut hasher: H) -> u64 {
+        TypeId::of::<Self>().hash(&mut hasher);
+        hasher.finish()
+    }
 
     /* upcasts */
 
@@ -192,5 +205,26 @@ pub trait ExtAny: Any + Sealed {
     fn downcast_mut<T: 'static>(&mut self) -> Option<&mut T> {
         // SAFETY: We verify T is of the right type before downcasting
         unsafe { (*self).type_is::<T>().then(|| &mut *<*mut _>::cast(self)) }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::ExtAny;
+
+    #[test]
+    fn closure_type_ids() {
+        let closure1 = || {};
+        let closure2 = || {};
+        let closure_with_env = |x: i32| x + 1;
+
+        // Ensure `type_of` produces unique `TypeId`s for each closure.
+        assert_ne!(closure1.type_of(), closure2.type_of());
+        assert_ne!(closure1.type_of(), closure_with_env.type_of());
+        assert_ne!(closure2.type_of(), closure_with_env.type_of());
+
+        // All closure names in the same module are the same.
+        assert_eq!(closure1.type_name(), closure2.type_name());
+        assert_eq!(closure1.type_name(), closure_with_env.type_name());
     }
 }
