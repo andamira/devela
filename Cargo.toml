@@ -644,7 +644,7 @@ optional = true # safe enough (simple few)
 default-features = false # 3 https://docs.rs/crate/itertools/latest/features
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.23" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.24" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
@@ -656,7 +656,7 @@ default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
 # deps: once-cell, wasm-bindgen/std
 
 [dependencies.kira] # https://crates.io/crates/kira
-version = "0.10.1" # ✓ https://github.com/tesselode/kira/releases
+version = "0.10.2" # ✓ https://github.com/tesselode/kira/releases
 optional = true # safe (although unsafe deps?)
 default-features = false # 10 https://docs.rs/crate/kira/latest/features
 features = ["cpal"] # symphonia, flac, mp3, ogg, wav
