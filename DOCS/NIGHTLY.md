@@ -45,6 +45,7 @@ See also
         · const_str_split_at
 - 1.??: ·[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.??: ·[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
+- 1.??: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 - 1.??:  [get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
         · get_many_mut (old name)
 - 1.??: s[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)

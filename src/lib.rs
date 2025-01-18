@@ -74,6 +74,7 @@
     const_slice_from_ref,
     const_str_split_at,
     derive_coerce_pointee,
+    float_next_up_down,
     get_many_mut, // get_disjoint_mut (new name)
     impl_trait_in_assoc_type,
     isqrt,
