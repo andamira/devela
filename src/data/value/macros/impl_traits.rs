@@ -3,9 +3,9 @@
 //!
 //
 // TOC
-// - impl_data_type
-// - impl_data_value
-// - impl_data_raw/
+// - impl_data_type!
+// - impl_data_value!
+// - impl_data_raw!
 
 /// Implements the `DataType` trait.
 #[allow(unused_macros)]
@@ -15,23 +15,26 @@ macro_rules! impl_data_type {
         t: $Tname:ident, $tbound:ident,
         is_copy: $is_copy:stmt,
         copy_variants:
-            $( $cvname:ident, $cvtype:ty ),* ;
+            $( $C_name:ident, $C_type:ty ),* ;
         copy_variants_dep:
-            $( $cvname_dep:ident, $cvtype_dep:ty,
-            $cvdep1_dep:literal, $cvdep2_dep:literal ),* ;
+            $( $C_name_dep:ident, $C_type_dep:ty,
+            $C_dep1_dep:literal, $C_dep2_dep:literal ),* ;
         copy_variants_psize:
-            $( $cvname_psize:ident, $cvtype_psize:ty, $cvpsize_psize:meta ),* ;
+            $( $C_name_psize:ident, $C_type_psize:ty, $C_psize_psize:meta ),* ;
         copy_variants_psize_dep:
-            $( $cvname_psize_dep:ident, $cvtype_psize_dep:ty,
-            $cvpsize_psize_dep:meta, $cvdep1_psize_dep:literal, $cvdep2_psize_dep:literal ),* ;
+            $( $C_name_psize_dep:ident, $C_type_psize_dep:ty,
+            $C_psize_psize_dep:meta, $C_dep1_psize_dep:literal, $C_dep2_psize_dep:literal ),* ;
+
         noncopy_variants:
-            $( $vname:ident, $vtype:ty ),* ;
+            $( $N_name:ident, $N_type:ty ),* ;
         noncopy_variants_dep:
-            $( $vname_dep:ident, $vtype_dep:ty,
-            $vdep1_dep:literal, $vdep2_dep:literal ),* ;
+            $( $N_name_dep:ident, $N_type_dep:ty,
+            $N_dep1_dep:literal, $N_dep2_dep:literal ),* ;
+        noncopy_variants_psize:
+            $( $N_name_psize:ident, $N_type_psize:ty, $N_psize_psize:meta ),* ;
         noncopy_variants_psize_dep:
-            $( $vname_psize_dep:ident, $vtype_psize_dep:ty,
-            $vpsize_psize_dep:meta, $vdep1_psize_dep:literal, $vdep2_psize_dep:literal ),* ;
+            $( $N_name_psize_dep:ident, $N_type_psize_dep:ty,
+            $N_psize_psize_dep:meta, $N_dep1_psize_dep:literal, $N_dep2_psize_dep:literal ),* ;
     ) => { $crate::paste! {
         impl<T: $tbound> $crate::DataType for $Tname<T> {
             type Value = $Vname<T::Value>;
@@ -51,40 +54,46 @@ macro_rules! impl_data_type {
                     $Tname::NoData => align_of::<()>(),
                     $Tname::Extra(t) => t.data_value_align(),
 
-                    $( $Tname::$cvname => align_of::<$cvtype>(), )*
-                    $( $Tname::$vname => align_of::<$vtype>(), )*
+                    $( $Tname::$C_name => align_of::<$C_type>(), )*
+                    $( $Tname::$N_name => align_of::<$N_type>(), )*
 
                     $( // pointer-size dependant
-                        #[cfg($cvpsize_psize)]
-                        $Tname::$cvname_psize => align_of::<$cvtype_psize>(),
+                        #[cfg($C_psize_psize)]
+                        $Tname::$C_name_psize => align_of::<$C_type_psize>(),
                     )*
 
                     $( // feature-gated dependencies
-                        #[cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))]
+                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))))]
-                        $Tname::$cvname_dep => align_of::<$cvtype_dep>(),
+                            doc(cfg(all(feature = $C_dep1_dep,
+                                        feature = $C_dep2_dep))))]
+                        $Tname::$C_name_dep => align_of::<$C_type_dep>(),
                     )*
                     $(
-                        #[cfg(all(feature = $vdep1_dep, feature = $vdep2_dep))]
+                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $vdep1_dep, feature = $vdep2_dep))))]
-                        $Tname::$vname_dep => align_of::<$vtype_dep>(),
+                            doc(cfg(all(feature = $N_dep1_dep,
+                                        feature = $N_dep2_dep))))]
+                        $Tname::$N_name_dep => align_of::<$N_type_dep>(),
                     )*
 
                     $( // pointer-size & feature-gated dependencies
-                        #[cfg(all($cvpsize_psize_dep,
-                                feature = $cvdep1_psize_dep, feature = $cvdep2_psize_dep))]
+                        #[cfg(all($C_psize_psize_dep,
+                                feature = $C_dep1_psize_dep,
+                                feature = $C_dep2_psize_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $cvdep1_psize_dep, feature = $cvdep2_psize_dep))))]
-                        $Tname::$cvname_psize_dep => align_of::<$cvtype_psize_dep>(),
+                            doc(cfg(all(feature = $C_dep1_psize_dep,
+                                        feature = $C_dep2_psize_dep))))]
+                        $Tname::$C_name_psize_dep => align_of::<$C_type_psize_dep>(),
                     )*
                     $(
-                        #[cfg(all($vpsize_psize_dep,
-                                feature = $vdep1_psize_dep, feature = $vdep2_psize_dep))]
+                        #[cfg(all($N_psize_psize_dep,
+                                feature = $N_dep1_psize_dep,
+                                feature = $N_dep2_psize_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $vdep1_psize_dep, feature = $vdep2_psize_dep))))]
-                        $Tname::$vname_psize_dep => align_of::<$vtype_psize_dep>(),
+                            doc(cfg(all(feature = $N_dep1_psize_dep,
+                                        feature = $N_dep2_psize_dep))))]
+                        $Tname::$N_name_psize_dep => align_of::<$N_type_psize_dep>(),
                     )*
                 }
             }
@@ -93,40 +102,44 @@ macro_rules! impl_data_type {
                     $Tname::NoData => size_of::<()>(),
                     $Tname::Extra(t) => t.data_value_size(),
 
-                    $( $Tname::$cvname => size_of::<$cvtype>(), )*
-                    $( $Tname::$vname => size_of::<$vtype>(), )*
+                    $( $Tname::$C_name => size_of::<$C_type>(), )*
+                    $( $Tname::$N_name => size_of::<$N_type>(), )*
 
                     $( // pointer-size dependant
-                        #[cfg($cvpsize_psize)]
-                        $Tname::$cvname_psize => size_of::<$cvtype_psize>(),
+                        #[cfg($C_psize_psize)]
+                        $Tname::$C_name_psize => size_of::<$C_type_psize>(),
                     )*
 
                     $( // feature-gated dependencies
-                        #[cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))]
+                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))))]
-                        $Tname::$cvname_dep => size_of::<$cvtype_dep>(),
+                            doc(cfg(all(feature = $C_dep1_dep,
+                                        feature = $C_dep2_dep))))]
+                        $Tname::$C_name_dep => size_of::<$C_type_dep>(),
                     )*
                     $(
-                        #[cfg(all(feature = $vdep1_dep, feature = $vdep2_dep))]
+                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $vdep1_dep, feature = $vdep2_dep))))]
-                        $Tname::$vname_dep => size_of::<$vtype_dep>(),
+                            doc(cfg(all(feature = $N_dep1_dep,
+                                        feature = $N_dep2_dep))))]
+                        $Tname::$N_name_dep => size_of::<$N_type_dep>(),
                     )*
 
                     $( // pointer-size & feature-gated dependencies
-                        #[cfg(all($cvpsize_psize_dep,
-                                feature = $cvdep1_psize_dep, feature = $cvdep2_psize_dep))]
+                        #[cfg(all($C_psize_psize_dep,
+                                feature = $C_dep1_psize_dep, feature = $C_dep2_psize_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $cvdep1_psize_dep, feature = $cvdep2_psize_dep))))]
-                        $Tname::$cvname_psize_dep => size_of::<$cvtype_psize_dep>(),
+                            doc(cfg(all(feature = $C_dep1_psize_dep,
+                                        feature = $C_dep2_psize_dep))))]
+                        $Tname::$C_name_psize_dep => size_of::<$C_type_psize_dep>(),
                     )*
                     $(
-                        #[cfg(all($vpsize_psize_dep,
-                                feature = $vdep1_psize_dep, feature = $vdep2_psize_dep))]
+                        #[cfg(all($N_psize_psize_dep,
+                                feature = $N_dep1_psize_dep, feature = $N_dep2_psize_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $vdep1_psize_dep, feature = $vdep2_psize_dep))))]
-                        $Tname::$vname_psize_dep => size_of::<$vtype_psize_dep>(),
+                            doc(cfg(all(feature = $N_dep1_psize_dep,
+                                        feature = $N_dep2_psize_dep))))]
+                        $Tname::$N_name_psize_dep => size_of::<$N_type_psize_dep>(),
                     )*
                 }
             }
@@ -144,23 +157,26 @@ macro_rules! impl_data_value {
         t: $Tname:ident, $tbound:ident,
         is_copy: $is_copy:stmt,
         copy_variants:
-            $( $cvname:ident, $cvtype:ty ),* ;
+            $( $C_name:ident, $C_type:ty ),* ;
         copy_variants_dep:
-            $( $cvname_dep:ident, $cvtype_dep:ty,
-            $cvdep1_dep:literal, $cvdep2_dep:literal ),* ;
+            $( $C_name_dep:ident, $C_type_dep:ty,
+            $C_dep1_dep:literal, $C_dep2_dep:literal ),* ;
         copy_variants_psize:
-            $( $cvname_psize:ident, $cvtype_psize:ty, $cvpsize_psize:meta ),* ;
+            $( $C_name_psize:ident, $C_type_psize:ty, $C_psize_psize:meta ),* ;
         copy_variants_psize_dep:
-            $( $cvname_psize_dep:ident, $cvtype_psize_dep:ty,
-            $cvpsize_psize_dep:meta, $cvdep1_psize_dep:literal, $cvdep2_psize_dep:literal ),* ;
+            $( $C_name_psize_dep:ident, $C_type_psize_dep:ty,
+            $C_psize_psize_dep:meta, $C_dep1_psize_dep:literal, $C_dep2_psize_dep:literal ),* ;
+
         noncopy_variants:
-            $( $vname:ident, $vtype:ty ),* ;
+            $( $N_name:ident, $N_type:ty ),* ;
         noncopy_variants_dep:
-            $( $vname_dep:ident, $vtype_dep:ty,
-            $vdep1_dep:literal, $vdep2_dep:literal ),* ;
+            $( $N_name_dep:ident, $N_type_dep:ty,
+            $N_dep1_dep:literal, $N_dep2_dep:literal ),* ;
+        noncopy_variants_psize:
+            $( $N_name_psize:ident, $N_type_psize:ty, $N_psize_psize:meta ),* ;
         noncopy_variants_psize_dep:
-            $( $vname_psize_dep:ident, $vtype_psize_dep:ty,
-            $vpsize_psize_dep:meta, $vdep1_psize_dep:literal, $vdep2_psize_dep:literal ),* ;
+            $( $N_name_psize_dep:ident, $N_type_psize_dep:ty,
+            $N_psize_psize_dep:meta, $N_dep1_psize_dep:literal, $N_dep2_psize_dep:literal ),* ;
     ) => { $crate::paste! {
         impl<V: $cbound> $crate::DataValue for $Vname<V> {
             type Type = $Tname<V::Type>;
@@ -171,40 +187,46 @@ macro_rules! impl_data_value {
                     $Vname::NoData => Self::Type::NoData,
                     $Vname::Extra(t) => Self::Type::Extra(t.data_type()),
 
-                    $( $Vname::$cvname(_) => Self::Type::$cvname, )*
-                    $( $Vname::$vname(_) => Self::Type::$vname, )*
+                    $( $Vname::$C_name(_) => Self::Type::$C_name, )*
+                    $( $Vname::$N_name(_) => Self::Type::$N_name, )*
 
                     $( // pointer-size dependant
-                        #[cfg($cvpsize_psize)]
-                        $Vname::$cvname_psize(_) => Self::Type::$cvname_psize,
+                        #[cfg($C_psize_psize)]
+                        $Vname::$C_name_psize(_) => Self::Type::$C_name_psize,
                     )*
 
                     $( // feature-gated dependencies
-                        #[cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))]
+                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $cvdep1_dep, feature = $cvdep2_dep))))]
-                        $Vname::$cvname_dep(_) => Self::Type::$cvname_dep,
+                            doc(cfg(all(feature = $C_dep1_dep,
+                                        feature = $C_dep2_dep))))]
+                        $Vname::$C_name_dep(_) => Self::Type::$C_name_dep,
                     )*
                     $(
-                        #[cfg(all(feature = $vdep1_dep, feature = $vdep2_dep))]
+                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $vdep1_dep, feature = $vdep2_dep))))]
-                        $Vname::$vname_dep(_) => Self::Type::$vtype_dep,
+                            doc(cfg(all(feature = $N_dep1_dep,
+                                        feature = $N_dep2_dep))))]
+                        $Vname::$N_name_dep(_) => Self::Type::$N_type_dep,
                     )*
 
                     $( // pointer-size & feature-gated dependencies
-                        #[cfg(all($cvpsize_psize_dep,
-                            feature = $cvdep1_psize_dep, feature = $cvdep2_psize_dep))]
+                        #[cfg(all($C_psize_psize_dep,
+                            feature = $C_dep1_psize_dep,
+                            feature = $C_dep2_psize_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $cvdep1_psize_dep, feature = $cvdep2_psize_dep))))]
-                        $Vname::$cvname_psize_dep(_) => Self::Type::$cvname_psize_dep,
+                            doc(cfg(all(feature = $C_dep1_psize_dep,
+                                        feature = $C_dep2_psize_dep))))]
+                        $Vname::$C_name_psize_dep(_) => Self::Type::$C_name_psize_dep,
                     )*
                     $(
-                        #[cfg(all($vpsize_psize_dep,
-                                feature = $vdep1_psize_dep, feature = $vdep2_psize_dep))]
+                        #[cfg(all($N_psize_psize_dep,
+                                feature = $N_dep1_psize_dep,
+                                feature = $N_dep2_psize_dep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $vdep1_psize_dep, feature = $vdep2_psize_dep))))]
-                        $Vname::$vname_psize_dep(_) => Self::Type::$vname_psize_dep,
+                            doc(cfg(all(feature = $N_dep1_psize_dep,
+                                        feature = $N_dep2_psize_dep))))]
+                        $Vname::$N_name_psize_dep(_) => Self::Type::$N_name_psize_dep,
                     )*
                 }
             }
