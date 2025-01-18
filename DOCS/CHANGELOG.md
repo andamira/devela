@@ -11,6 +11,9 @@
 - new optional dependencies: `itertools`.
 - add more methods to `Env`.
 
+### Removed
+- ungate `FxHasher`.
+
 ### Changed
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.

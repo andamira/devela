@@ -10,11 +10,11 @@
 )]
 //
 
+mod fx; // HasherBuildFx, HasherFx (not feature-gated).
 mod reexports;
 
 #[cfg(feature = "hash")]
 crate::items! {
-    mod fx; // HasherBuildFx, HasherFx
     mod pengy; // hash_pengy
 
     #[cfg(feature = "cast")]
@@ -28,11 +28,11 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::reexports::*;
+        pub use super::{fx::*, reexports::*};
 
         #[cfg(feature = "hash")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "hash")))]
-        pub use super::{fx::*, pengy::*};
+        pub use super::pengy::*;
 
         #[cfg(all(feature = "hash", feature = "cast"))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "hash", feature = "cast"))))]
@@ -43,6 +43,6 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
+        pub use super::{fx::*, reexports::*};
     }
 }

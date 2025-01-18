@@ -5,8 +5,7 @@
 
 use crate::{ConstDefault, Hasher};
 
-/// A fast 64-bit non-cryptographic hash algorithm
-///
+/// A fast 64-bit non-cryptographic hash algorithm.
 ///
 /// # Derived work
 /// This is derived work from the [pengyhash] v0.2 algorithm,
