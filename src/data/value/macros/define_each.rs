@@ -25,28 +25,36 @@ macro_rules! define_data_value {
         feature: $feature:literal,
 
         copy:
-            $( $C_doc:literal, $C_name:ident, $C_type:ty, )* ;
+            $( $C_doc:literal, $C_name:ident, $C_type:ty,
+            )* ;
         copy@dep:
             $( $C_doc_dep:literal, $C_name_dep:ident, $C_type_dep:ty,
-            $C_dep1_dep:literal, $C_dep2_dep:literal, )* ;
+               $C_dep1_dep:literal, $C_dep2_dep:literal,
+            )* ;
         copy@ptr:
             $( $C_doc_ptr:literal, $C_name_ptr:ident, $C_type_ptr:ty,
-            $C_ptr_ptr:meta, )* ;
+               $C_ptr_ptr:meta,
+            )* ;
         copy@ptrdep:
             $( $C_doc_ptrdep:literal, $C_name_ptrdep:ident, $C_type_ptrdep:ty,
-            $C_ptr_ptrdep:meta, $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal, )* ;
+               $C_ptr_ptrdep:meta, $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal,
+             )* ;
 
         noncopy:
-            $( $N_doc:literal, $N_name:ident, $N_type:ty, )* ;
+            $( $N_doc:literal, $N_name:ident, $N_type:ty,
+            )* ;
         noncopy@dep:
             $( $N_doc_dep:literal, $N_name_dep:ident, $N_type_dep:ty,
-            $N_dep1_dep:literal, $N_dep2_dep:literal, )* ;
+               $N_dep1_dep:literal, $N_dep2_dep:literal,
+            )* ;
         noncopy@ptr:
             $( $N_doc_ptr:literal, $N_name_ptr:ident, $N_type_ptr:ty,
-            $N_ptr_ptr:meta, $N_dep1_ptr:literal, $N_dep2_ptr:literal, )* ;
+               $N_ptr_ptr:meta, $N_dep1_ptr:literal, $N_dep2_ptr:literal,
+            )* ;
         noncopy@ptrdep:
             $( $N_doc_ptrdep:literal, $N_name_ptrdep:ident, $N_type_ptrdep:ty,
-            $N_ptr_ptrdep:meta, $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal, )* ;
+               $N_ptr_ptrdep:meta, $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal,
+            )* ;
     ) => { $crate::paste! {
         // ## copy version (DataValue)
         // -----------------------------------------------------------------
@@ -115,14 +123,20 @@ macro_rules! define_data_value {
             is_copy: true,
 
             copy:
-                $( $C_name, $C_type ),* ;
+                $( $C_name, $C_type
+                ),* ;
             copy@dep:
-                $( $C_name_dep, $C_type_dep, $C_dep1_dep, $C_dep2_dep ),* ;
+                $( $C_name_dep, $C_type_dep,
+                   $C_dep1_dep, $C_dep2_dep
+                ),* ;
             copy@ptr:
-                $( $C_name_ptr, $C_type_ptr, $C_ptr_ptr ),* ;
+                $( $C_name_ptr, $C_type_ptr,
+                   $C_ptr_ptr
+                ),* ;
             copy@ptrdep:
-                $( $C_name_ptrdep, $C_type_ptrdep, $C_ptr_ptrdep,
-                $C_dep1_ptrdep, $C_dep2_ptrdep ),* ;
+                $( $C_name_ptrdep, $C_type_ptrdep,
+                   $C_ptr_ptrdep, $C_dep1_ptrdep, $C_dep2_ptrdep
+                ),* ;
 
             noncopy: ;
             noncopy@dep: ;
@@ -218,24 +232,36 @@ macro_rules! define_data_value {
             is_copy: false,
 
             copy:
-                $( $C_name, $C_type ),* ;
+                $( $C_name, $C_type
+                ),* ;
             copy@dep:
-                $( $C_name_dep, $C_type_dep, $C_dep1_dep, $C_dep2_dep ),* ;
+                $( $C_name_dep, $C_type_dep,
+                   $C_dep1_dep, $C_dep2_dep
+                ),* ;
             copy@ptr:
-                $( $C_name_ptr, $C_type_ptr, $C_ptr_ptr ),* ;
+                $( $C_name_ptr, $C_type_ptr,
+                   $C_ptr_ptr
+                ),* ;
             copy@ptrdep:
-                $( $C_name_ptrdep, $C_type_ptrdep, $C_ptr_ptrdep,
-                $C_dep1_ptrdep, $C_dep2_ptrdep ),* ;
+                $( $C_name_ptrdep, $C_type_ptrdep,
+                   $C_ptr_ptrdep, $C_dep1_ptrdep, $C_dep2_ptrdep
+                ),* ;
 
             noncopy:
-                $($N_name, $N_type ),* ;
+                $( $N_name, $N_type
+                ),* ;
             noncopy@dep:
-                $( $N_name_dep, $N_type_dep, $N_dep1_dep, $N_dep2_dep ),* ;
+                $( $N_name_dep, $N_type_dep,
+                   $N_dep1_dep, $N_dep2_dep
+                ),* ;
             noncopy@ptr:
-                $( $N_name_ptr, $N_type_ptr, $N_ptr_ptr ),* ;
+                $( $N_name_ptr, $N_type_ptr,
+                   $N_ptr_ptr
+                ),* ;
             noncopy@ptrdep:
-                $( $N_name_ptrdep, $N_type_ptrdep, $N_ptr_ptrdep,
-                $N_dep1_ptrdep, $N_dep2_ptrdep ),* ;
+                $( $N_name_ptrdep, $N_type_ptrdep,
+                   $N_ptr_ptrdep, $N_dep1_ptrdep, $N_dep2_ptrdep
+                ),* ;
         ];
 
         // implement `TryFrom`<`DataValue`> for *contained-value*:
@@ -360,28 +386,36 @@ macro_rules! define_data_type {
         feature: $feature:literal,
 
         copy:
-            $( $C_doc:literal, $C_name:ident, $C_type:ty, )* ;
+            $( $C_doc:literal, $C_name:ident, $C_type:ty,
+            )* ;
         copy@dep:
             $( $C_doc_dep:literal, $C_name_dep:ident, $C_type_dep:ty,
-            $C_dep1_dep:literal, $C_dep2_dep:literal, )* ;
+               $C_dep1_dep:literal, $C_dep2_dep:literal,
+            )* ;
         copy@ptr:
             $( $C_doc_ptr:literal, $C_name_ptr:ident, $C_type_ptr:ty,
-            $C_ptr_ptr:meta, )* ;
+               $C_ptr_ptr:meta,
+            )* ;
         copy@ptrdep:
             $( $C_doc_ptrdep:literal, $C_name_ptrdep:ident, $C_type_ptrdep:ty,
-            $C_ptr_ptrdep:meta, $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal, )* ;
+               $C_ptr_ptrdep:meta, $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal,
+            )* ;
 
         noncopy:
-            $( $N_doc:literal, $N_name:ident, $N_type:ty, )* ;
+            $( $N_doc:literal, $N_name:ident, $N_type:ty,
+            )* ;
         noncopy@dep:
             $( $N_doc_dep:literal, $N_name_dep:ident, $N_type_dep:ty,
-            $N_dep1_dep:literal, $N_dep2_dep:literal, )* ;
+               $N_dep1_dep:literal, $N_dep2_dep:literal,
+            )* ;
         noncopy@ptr:
             $( $N_doc_ptr:literal, $N_name_ptr:ident, $N_type_ptr:ty,
-            $N_ptr_ptr:meta, $N_dep1_ptr:literal, $N_dep2_ptr:literal, )* ;
+               $N_ptr_ptr:meta, $N_dep1_ptr:literal, $N_dep2_ptr:literal,
+            )* ;
         noncopy@ptrdep:
             $( $N_doc_ptrdep:literal, $N_name_ptrdep:ident, $N_type_ptrdep:ty,
-            $N_ptr_ptrdep:meta, $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal, )* ;
+               $N_ptr_ptrdep:meta, $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal,
+            )* ;
     ) =>  { $crate::paste! {
         // ## copy version (DataType)
         // -----------------------------------------------------------------
@@ -567,10 +601,12 @@ macro_rules! define_data_type {
             noncopy@dep:
                 $( $N_name_dep, $N_type_dep, $N_dep1_dep, $N_dep2_dep ),* ;
             noncopy@ptr:
-                $( $N_name_ptr, $N_type_ptr, $N_ptr_ptr ),* ;
+                $( $N_name_ptr, $N_type_ptr, $N_ptr_ptr
+                ),* ;
             noncopy@ptrdep:
                 $( $N_name_ptrdep, $N_type_ptrdep, $N_ptr_ptrdep,
-                $N_dep1_ptrdep, $N_dep2_ptrdep ),* ;
+                $N_dep1_ptrdep, $N_dep2_ptrdep
+                ),* ;
         ];
     }};
 }
@@ -598,28 +634,37 @@ macro_rules! define_data_raw {
         feature: $feature:literal,
 
         copy:
-            $( $C_doc:literal, $C_name:ident, $C_type:ty, )* ;
+            $( $C_doc:literal, $C_name:ident, $C_type:ty,
+            )* ;
         copy@dep:
             $( $C_doc_dep:literal, $C_name_dep:ident, $C_type_dep:ty,
-            $C_dep1_dep:literal, $C_dep2_dep:literal, )* ;
+               $C_dep1_dep:literal, $C_dep2_dep:literal,
+            )* ;
         copy@ptr:
             $( $C_doc_ptr:literal, $C_name_ptr:ident, $C_type_ptr:ty,
-                $C_ptr_ptr:meta, )* ;
+               $C_ptr_ptr:meta,
+            )* ;
         copy@ptrdep:
             $( $C_doc_ptrdep:literal, $C_name_ptrdep:ident, $C_type_ptrdep:ty,
-            $C_ptr_ptrdep:meta, $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal, )* ;
+               $C_ptr_ptrdep:meta, $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal,
+            )* ;
 
         noncopy:
-            $( $N_doc:literal, $N_name:ident, $N_type:ty, )* ;
+            $( $N_doc:literal, $N_name:ident, $N_type:ty,
+            )* ;
         noncopy@dep:
             $( $N_doc_dep:literal, $N_name_dep:ident, $N_type_dep:ty,
-            $N_dep1_dep:literal, $N_dep2_dep:literal, )* ;
+               $N_dep1_dep:literal, $N_dep2_dep:literal,
+            )* ;
         noncopy@ptr:
             $( $N_doc_ptr:literal, $N_name_ptr:ident, $N_type_ptr:ty,
-            $N_ptr_ptr:meta, $N_dep1_ptr:literal, $N_dep2_ptr:literal, )* ;
+               $N_ptr_ptr:meta, $N_dep1_ptr:literal, $N_dep2_ptr:literal,
+            )* ;
         noncopy@ptrdep:
             $( $N_doc_ptrdep:literal, $N_name_ptrdep:ident, $N_type_ptrdep:ty,
-            $N_ptr_ptrdep:meta, $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal, )* ;
+               $N_ptr_ptrdep:meta,
+               $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal,
+            )* ;
     ) => { $crate::paste!{
         // ## copy version (DataRaw)
         // -----------------------------------------------------------------
