@@ -6,6 +6,7 @@
 - new features: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
 - new traits `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `Iter`,`NoData`.
+- new macros: `maybe!`.
 - new modules: `lang::{c}`.
 - new `ExtAny` methods: `type_hash`, `type_hash_with`.
 - new re-exports: `SystemAlloc`, `std::env::*`.

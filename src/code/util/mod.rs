@@ -34,6 +34,7 @@ mod iif; // iif!
 mod impl_trait; // impl_trait!
 mod items; // items!, sf!
 mod include; // include_from!, mod_from!
+mod maybe; // maybe!
 mod paste; // paste! wrapped for docs
 mod r#const; // CONST!
 mod reexports; // re-exported items
@@ -51,8 +52,8 @@ crate::items! { // structural access: _mods, _internals, _all, _always
 
     mod _mods {
         pub use super::{
-            asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*,
-            ident::*, iif::*, impl_trait::*, include::*, items::*, paste::*, r#const::*,
+            asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
+            iif::*, impl_trait::*, include::*, items::*, maybe::*, paste::*, r#const::*,
             reexports::*,
         };
         #[cfg(_bit··)]
