@@ -185,6 +185,11 @@ macro_rules! define_data_value {
                 #[doc = $C_doc_ptr]
                 $C_name_ptr($C_type_ptr),
             )*
+            $(
+                #[cfg($N_ptr_ptr)]
+                #[doc = $N_doc_ptr]
+                $N_name_ptr($N_type_ptr),
+            )*
 
             $( // feature-gated dependencies
                 #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
@@ -559,6 +564,11 @@ macro_rules! define_data_type {
                 #[cfg($C_ptr_ptr)]
                 #[doc = $C_doc_ptr]
                 $C_name_ptr,
+            )*
+            $(
+                #[cfg($N_ptr_ptr)]
+                #[doc = $N_doc_ptr]
+                $N_name_ptr,
             )*
 
             $( // feature-gated dependencies

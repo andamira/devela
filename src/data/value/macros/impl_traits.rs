@@ -65,6 +65,10 @@ macro_rules! impl_data_value {
                         #[cfg($C_ptr_ptr)]
                         $Vname::$C_name_ptr(_) => Self::Type::$C_name_ptr,
                     )*
+                    $(
+                        #[cfg($N_ptr_ptr)]
+                        $Vname::$N_name_ptr(_) => Self::Type::$N_name_ptr,
+                    )*
 
                     $( // feature-gated dependencies
                         #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
@@ -182,6 +186,10 @@ macro_rules! impl_data_type {
                         #[cfg($C_ptr_ptr)]
                         $Tname::$C_name_ptr => align_of::<$C_type_ptr>(),
                     )*
+                    $(
+                        #[cfg($N_ptr_ptr)]
+                        $Tname::$N_name_ptr => align_of::<$N_type_ptr>(),
+                    )*
 
                     $( // feature-gated dependencies
                         #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
@@ -229,6 +237,10 @@ macro_rules! impl_data_type {
                     $( // pointer-size dependant
                         #[cfg($C_ptr_ptr)]
                         $Tname::$C_name_ptr => size_of::<$C_type_ptr>(),
+                    )*
+                    $(
+                        #[cfg($N_ptr_ptr)]
+                        $Tname::$N_name_ptr => size_of::<$N_type_ptr>(),
                     )*
 
                     $( // feature-gated dependencies
