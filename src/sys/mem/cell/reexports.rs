@@ -3,10 +3,20 @@
 //! Reexported items from `core`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 /* core */
 
+reexport! { rust: core::cell,
+    tag: crate::TAG_ERROR!(),
+    doc: "An error returned by [`RefCell::try_borrow`].",
+    @BorrowError as RefCellBorrowError
+}
+reexport! { rust: core::cell,
+    tag: crate::TAG_ERROR!(),
+    doc: "An error returned by [`RefCell::try_borrow_mut`].",
+    @BorrowMutError as RefCellBorrowMutError
+}
 reexport! { rust: core::cell,
     doc: "A mutable memory location.",
     Cell
