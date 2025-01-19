@@ -170,7 +170,66 @@ macro_rules! impl_data_type {
                 match self {
                     $Tname::None => Some(Self::Value::None),
                     $Tname::Extra(t) => Some(Self::Value::Extra(t.data_value_default()?)),
-                    _ => todo![], // TEMP TODO
+
+                    $( $Tname::$C_name =>
+                        $C_def.then(|| Self::Value::$C_name(<$C_type>::default())),
+                    )*
+                    $( $Tname::$N_name =>
+                        $N_def.then(|| Self::Value::$N_name(<$N_type>::default())),
+                    )*
+
+                    $( // pointer-size dependant
+                        #[cfg($C_ptr_ptr)]
+                        $Tname::$C_name_ptr =>
+                        $C_def_ptr.then(|| Self::Value::$C_name_ptr(<$C_type_ptr>::default())),
+                    )*
+                    $(
+                        #[cfg($N_ptr_ptr)]
+                        $Tname::$N_name_ptr =>
+                        $N_def_ptr.then(|| Self::Value::$N_name_ptr(<$N_type_ptr>::default())),
+                    )*
+
+
+                    $( // feature-gated dependencies
+                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $C_dep1_dep,
+                                        feature = $C_dep2_dep))))]
+                        $Tname::$C_name_dep =>
+                        $C_def_dep.then(|| Self::Value::$C_name_dep(<$C_type_dep>::default())),
+                    )*
+                    $(
+                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $N_dep1_dep,
+                                        feature = $N_dep2_dep))))]
+                        $Tname::$N_name_dep =>
+                        $N_def_dep.then(|| Self::Value::$N_name_dep(<$N_type_dep>::default())),
+                    )*
+
+
+                    $( // pointer-size & feature-gated dependencies
+                        #[cfg(all($C_ptr_ptrdep,
+                                feature = $C_dep1_ptrdep,
+                                feature = $C_dep2_ptrdep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $C_dep1_ptrdep,
+                                        feature = $C_dep2_ptrdep))))]
+                        $Tname::$C_name_ptrdep =>
+                        $C_def_ptrdep.then(||
+                            Self::Value::$C_name_ptrdep(<$C_type_ptrdep>::default())),
+                    )*
+                    $(
+                        #[cfg(all($N_ptr_ptrdep,
+                                feature = $N_dep1_ptrdep,
+                                feature = $N_dep2_ptrdep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $N_dep1_ptrdep,
+                                        feature = $N_dep2_ptrdep))))]
+                        $Tname::$N_name_ptrdep =>
+                        $N_def_ptrdep.then(||
+                            Self::Value::$N_name_ptrdep(<$N_type_ptrdep>::default())),
+                    )*
                 }
             }
 
