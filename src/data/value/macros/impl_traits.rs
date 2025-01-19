@@ -117,36 +117,44 @@ macro_rules! impl_data_type {
 
         copy:
             $( $C_name:ident, $C_type:ty,
+               [def:$C_def:stmt]
             )* ;
         copy@dep:
             $( $C_name_dep:ident, $C_type_dep:ty,
                $C_dep1_dep:literal, $C_dep2_dep:literal,
+               [def:$C_def_dep:stmt]
             )* ;
         copy@ptr:
             $( $C_name_ptr:ident, $C_type_ptr:ty,
                $C_ptr_ptr:meta,
+               [def:$C_def_ptr:stmt]
             )* ;
         copy@ptrdep:
             $( $C_name_ptrdep:ident, $C_type_ptrdep:ty,
                $C_ptr_ptrdep:meta,
                $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal,
+               [def:$C_def_ptrdep:stmt]
             )* ;
 
         noncopy:
             $( $N_name:ident, $N_type:ty,
+               [def:$N_def:stmt]
             )* ;
         noncopy@dep:
             $( $N_name_dep:ident, $N_type_dep:ty,
                $N_dep1_dep:literal, $N_dep2_dep:literal,
+               [def:$N_def_dep:stmt]
             )* ;
         noncopy@ptr:
             $( $N_name_ptr:ident, $N_type_ptr:ty,
                $N_ptr_ptr:meta,
+               [def:$N_def_ptr:stmt]
             )* ;
         noncopy@ptrdep:
             $( $N_name_ptrdep:ident, $N_type_ptrdep:ty,
                $N_ptr_ptrdep:meta,
                $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal,
+               [def:$N_def_ptrdep:stmt]
             )* ;
     ) => { $crate::paste! {
         impl<T: $tbound> $crate::DataType for $Tname<T> {

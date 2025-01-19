@@ -502,19 +502,23 @@ macro_rules! define_data_type {
 
             copy:
                 $( $C_name, $C_type,
+                   [def:$C_def]
                 )* ;
             copy@dep:
                 $( $C_name_dep, $C_type_dep,
                    $C_dep1_dep, $C_dep2_dep,
+                   [def:$C_def_dep]
                 )* ;
             copy@ptr:
                 $( $C_name_ptr, $C_type_ptr,
                    $C_ptr_ptr,
+                   [def:$C_def_ptr]
                 )* ;
             copy@ptrdep:
                 $( $C_name_ptrdep, $C_type_ptrdep,
-                    $C_ptr_ptrdep,
-                    $C_dep1_ptrdep, $C_dep2_ptrdep,
+                   $C_ptr_ptrdep,
+                   $C_dep1_ptrdep, $C_dep2_ptrdep,
+                   [def:$C_def_ptrdep]
                 )* ;
 
             noncopy: ;
@@ -614,36 +618,44 @@ macro_rules! define_data_type {
 
             copy:
                 $( $C_name, $C_type,
+                   [def:$C_def]
                 )* ;
             copy@dep:
                 $( $C_name_dep, $C_type_dep,
                    $C_dep1_dep, $C_dep2_dep,
+                   [def:$C_def_dep]
                 )* ;
             copy@ptr:
                 $( $C_name_ptr, $C_type_ptr,
                    $C_ptr_ptr,
+                   [def:$C_def_ptr]
                 )* ;
             copy@ptrdep:
                 $( $C_name_ptrdep, $C_type_ptrdep,
                    $C_ptr_ptrdep,
                    $C_dep1_ptrdep, $C_dep2_ptrdep,
+                   [def:$C_def_ptrdep]
                 )* ;
 
             noncopy:
                 $($N_name, $N_type,
+                   [def:$N_def]
                 )* ;
             noncopy@dep:
                 $( $N_name_dep, $N_type_dep,
                    $N_dep1_dep, $N_dep2_dep,
+                   [def:$N_def_dep]
                 )* ;
             noncopy@ptr:
                 $( $N_name_ptr, $N_type_ptr,
                    $N_ptr_ptr,
+                   [def:$N_def_ptr]
                 )* ;
             noncopy@ptrdep:
                 $( $N_name_ptrdep, $N_type_ptrdep,
                    $N_ptr_ptrdep,
                    $N_dep1_ptrdep, $N_dep2_ptrdep,
+                   [def:$N_def_ptrdep]
                 )* ;
         ];
     }};
