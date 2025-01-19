@@ -1,6 +1,6 @@
 // devela::data::value::macros::impls
 //
-//!
+//! Implements the traits: `DataValue`*, `DataType`*, `DataRaw`*.
 //
 // TOC
 // - impl_data_value!
@@ -64,8 +64,7 @@ macro_rules! impl_data_value {
                     $( // pointer-size dependant
                         #[cfg($C_ptr_ptr)]
                         $Vname::$C_name_ptr(_) => Self::Type::$C_name_ptr,
-                    )*
-                    $(
+                    )* $(
                         #[cfg($N_ptr_ptr)]
                         $Vname::$N_name_ptr(_) => Self::Type::$N_name_ptr,
                     )*
@@ -76,8 +75,7 @@ macro_rules! impl_data_value {
                             doc(cfg(all(feature = $C_dep1_dep,
                                         feature = $C_dep2_dep))))]
                         $Vname::$C_name_dep(_) => Self::Type::$C_name_dep,
-                    )*
-                    $(
+                    )* $(
                         #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $N_dep1_dep,
@@ -93,8 +91,7 @@ macro_rules! impl_data_value {
                             doc(cfg(all(feature = $C_dep1_ptrdep,
                                         feature = $C_dep2_ptrdep))))]
                         $Vname::$C_name_ptrdep(_) => Self::Type::$C_name_ptrdep,
-                    )*
-                    $(
+                    )* $(
                         #[cfg(all($N_ptr_ptrdep,
                                 feature = $N_dep1_ptrdep,
                                 feature = $N_dep2_ptrdep))]
@@ -171,44 +168,47 @@ macro_rules! impl_data_type {
                     $Tname::None => Some(Self::Value::None),
                     $Tname::Extra(t) => Some(Self::Value::Extra(t.data_value_default()?)),
 
-                    $( $Tname::$C_name =>
-                        $C_def.then(|| Self::Value::$C_name(<$C_type>::default())),
-                    )*
-                    $( $Tname::$N_name =>
-                        $N_def.then(|| Self::Value::$N_name(<$N_type>::default())),
+                    $(
+                        $Tname::$C_name =>
+                            $crate::maybe![default: $C_def, $C_type]
+                                .map(Self::Value::$C_name),
+                    )* $(
+                        $Tname::$N_name =>
+                            $crate::maybe![default: $N_def, $N_type]
+                                .map(Self::Value::$N_name),
                     )*
 
-                    $( // pointer-size dependant
+                    $(  // pointer-size dependant
                         #[cfg($C_ptr_ptr)]
                         $Tname::$C_name_ptr =>
-                        $C_def_ptr.then(|| Self::Value::$C_name_ptr(<$C_type_ptr>::default())),
-                    )*
-                    $(
+                            $crate::maybe![default: $C_def_ptr, $C_type_ptr]
+                                .map(Self::Value::$C_name_ptr),
+                    )* $(
                         #[cfg($N_ptr_ptr)]
                         $Tname::$N_name_ptr =>
-                        $N_def_ptr.then(|| Self::Value::$N_name_ptr(<$N_type_ptr>::default())),
+                           $crate::maybe![default: $N_def_ptr, $N_type_ptr]
+                           .map(Self::Value::$N_name_ptr),
                     )*
 
-
-                    $( // feature-gated dependencies
+                    $(  // feature-gated dependencies
                         #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $C_dep1_dep,
                                         feature = $C_dep2_dep))))]
                         $Tname::$C_name_dep =>
-                        $C_def_dep.then(|| Self::Value::$C_name_dep(<$C_type_dep>::default())),
-                    )*
-                    $(
+                            $crate::maybe![default: $C_def_dep, $C_type_dep]
+                                .map(Self::Value::$C_name_dep),
+                    )* $(
                         #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $N_dep1_dep,
                                         feature = $N_dep2_dep))))]
                         $Tname::$N_name_dep =>
-                        $N_def_dep.then(|| Self::Value::$N_name_dep(<$N_type_dep>::default())),
+                            $crate::maybe![default: $N_def_dep, $N_type_dep]
+                                .map(Self::Value::$N_name_dep),
                     )*
 
-
-                    $( // pointer-size & feature-gated dependencies
+                    $(  // pointer-size & feature-gated dependencies
                         #[cfg(all($C_ptr_ptrdep,
                                 feature = $C_dep1_ptrdep,
                                 feature = $C_dep2_ptrdep))]
@@ -216,10 +216,9 @@ macro_rules! impl_data_type {
                             doc(cfg(all(feature = $C_dep1_ptrdep,
                                         feature = $C_dep2_ptrdep))))]
                         $Tname::$C_name_ptrdep =>
-                        $C_def_ptrdep.then(||
-                            Self::Value::$C_name_ptrdep(<$C_type_ptrdep>::default())),
-                    )*
-                    $(
+                            $crate::maybe![default: $C_def_ptrdep, $C_type_ptrdep]
+                                .map(Self::Value::$C_name_ptrdep),
+                    )* $(
                         #[cfg(all($N_ptr_ptrdep,
                                 feature = $N_dep1_ptrdep,
                                 feature = $N_dep2_ptrdep))]
@@ -227,8 +226,8 @@ macro_rules! impl_data_type {
                             doc(cfg(all(feature = $N_dep1_ptrdep,
                                         feature = $N_dep2_ptrdep))))]
                         $Tname::$N_name_ptrdep =>
-                        $N_def_ptrdep.then(||
-                            Self::Value::$N_name_ptrdep(<$N_type_ptrdep>::default())),
+                            $crate::maybe![default: $N_def_ptrdep, $N_type_ptrdep]
+                                .map(Self::Value::$N_name_ptrdep),
                     )*
                 }
             }
@@ -241,23 +240,21 @@ macro_rules! impl_data_type {
                     $( $Tname::$C_name => align_of::<$C_type>(), )*
                     $( $Tname::$N_name => align_of::<$N_type>(), )*
 
-                    $( // pointer-size dependant
+                    $(  // pointer-size dependant
                         #[cfg($C_ptr_ptr)]
                         $Tname::$C_name_ptr => align_of::<$C_type_ptr>(),
-                    )*
-                    $(
+                    )* $(
                         #[cfg($N_ptr_ptr)]
                         $Tname::$N_name_ptr => align_of::<$N_type_ptr>(),
                     )*
 
-                    $( // feature-gated dependencies
+                    $(  // feature-gated dependencies
                         #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $C_dep1_dep,
                                         feature = $C_dep2_dep))))]
                         $Tname::$C_name_dep => align_of::<$C_type_dep>(),
-                    )*
-                    $(
+                    )* $(
                         #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $N_dep1_dep,
@@ -265,7 +262,7 @@ macro_rules! impl_data_type {
                         $Tname::$N_name_dep => align_of::<$N_type_dep>(),
                     )*
 
-                    $( // pointer-size & feature-gated dependencies
+                    $(  // pointer-size & feature-gated dependencies
                         #[cfg(all($C_ptr_ptrdep,
                                 feature = $C_dep1_ptrdep,
                                 feature = $C_dep2_ptrdep))]
@@ -273,8 +270,7 @@ macro_rules! impl_data_type {
                             doc(cfg(all(feature = $C_dep1_ptrdep,
                                         feature = $C_dep2_ptrdep))))]
                         $Tname::$C_name_ptrdep => align_of::<$C_type_ptrdep>(),
-                    )*
-                    $(
+                    )* $(
                         #[cfg(all($N_ptr_ptrdep,
                                 feature = $N_dep1_ptrdep,
                                 feature = $N_dep2_ptrdep))]
@@ -293,23 +289,21 @@ macro_rules! impl_data_type {
                     $( $Tname::$C_name => size_of::<$C_type>(), )*
                     $( $Tname::$N_name => size_of::<$N_type>(), )*
 
-                    $( // pointer-size dependant
+                    $(  // pointer-size dependant
                         #[cfg($C_ptr_ptr)]
                         $Tname::$C_name_ptr => size_of::<$C_type_ptr>(),
-                    )*
-                    $(
+                    )* $(
                         #[cfg($N_ptr_ptr)]
                         $Tname::$N_name_ptr => size_of::<$N_type_ptr>(),
                     )*
 
-                    $( // feature-gated dependencies
+                    $(  // feature-gated dependencies
                         #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $C_dep1_dep,
                                         feature = $C_dep2_dep))))]
                         $Tname::$C_name_dep => size_of::<$C_type_dep>(),
-                    )*
-                    $(
+                    )* $(
                         #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $N_dep1_dep,
@@ -317,15 +311,14 @@ macro_rules! impl_data_type {
                         $Tname::$N_name_dep => size_of::<$N_type_dep>(),
                     )*
 
-                    $( // pointer-size & feature-gated dependencies
+                    $(  // pointer-size & feature-gated dependencies
                         #[cfg(all($C_ptr_ptrdep,
                                 feature = $C_dep1_ptrdep, feature = $C_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",
                             doc(cfg(all(feature = $C_dep1_ptrdep,
                                         feature = $C_dep2_ptrdep))))]
                         $Tname::$C_name_ptrdep => size_of::<$C_type_ptrdep>(),
-                    )*
-                    $(
+                    )* $(
                         #[cfg(all($N_ptr_ptrdep,
                                 feature = $N_dep1_ptrdep, feature = $N_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",

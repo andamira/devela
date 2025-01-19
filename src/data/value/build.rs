@@ -134,7 +134,7 @@ define_data_value_type_raw! {
 
     // ------------------------------------------------------------ 64 B / 512-b
     copy@512:
-        "64-Byte byte array", ByteArray64B, [u8; 64], [def:true],
+        "64-Byte byte array", ByteArray64B, [u8; 64], [def:false],
     copy@512_dep:
     copy@512_ptr:
     copy@512_ptrdep:
@@ -148,7 +148,7 @@ define_data_value_type_raw! {
 
     // ---------------------------------------------------------- 128-B / 1024-b
     copy@1024:
-        "128-Byte byte array", ByteArray128B, [u8; 128], [def:true],
+        "128-Byte byte array", ByteArray128B, [u8; 128], [def:false],
     copy@1024_dep:
     copy@1024_ptr:
     copy@1024_ptrdep:
