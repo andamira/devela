@@ -23,14 +23,14 @@ define_data_value_type_raw! {
 
     // --------------------------------------------------------------- 1-B / 8-b
     copy@1B:
-        "8-bit unsigned integer ", U8, u8,
-        "8-bit signed integer", I8, i8,
-        "1-Byte array of bytes", ByteArray1B, [u8; 1],
-        "Boolean value", Bool, bool,
+        "8-bit unsigned integer ", U8, u8, [def:true],
+        "8-bit signed integer", I8, i8, [def:true],
+        "1-Byte array of bytes", ByteArray1B, [u8; 1], [def:true],
+        "Boolean value", Bool, bool, [def:true],
     copy@1B_dep:
     copy@1B_ptr:
-        "8-bit usize", Usize, usize, target_pointer_width = "8",
-        "8-bit isize", Isize, isize, target_pointer_width = "8",
+        "8-bit usize", Usize, usize, target_pointer_width = "8", [def:true],
+        "8-bit isize", Isize, isize, target_pointer_width = "8", [def:true],
     copy@1B_ptrdep:
 
     noncopy@1B:
@@ -40,16 +40,16 @@ define_data_value_type_raw! {
 
     // -------------------------------------------------------------- 2-B / 16-b
     copy@2B:
-        "16-bit unsigned integer ", U16, u16,
-        "16-bit signed integer", I16, i16,
-        "2-Byte array of bytes", ByteArray2B, [u8; 2],
+        "16-bit unsigned integer ", U16, u16, [def:true],
+        "16-bit signed integer", I16, i16, [def:true],
+        "2-Byte array of bytes", ByteArray2B, [u8; 2], [def:true],
     copy@2B_dep:
         // WAIT:
         // "16-bit floating-point number", F16, ::core::primiive::f16,
-        //     "nightly_float", "nightly_float",
+        //     "nightly_float", "nightly_float", [def:true],
     copy@2B_ptr:
-        "16-bit usize", Usize, usize, target_pointer_width = "16",
-        "16-bit isize", Isize, isize, target_pointer_width = "16",
+        "16-bit usize", Usize, usize, target_pointer_width = "16", [def:true],
+        "16-bit isize", Isize, isize, target_pointer_width = "16", [def:true],
     copy@2B_ptrdep:
     noncopy@2B:
 
@@ -59,15 +59,15 @@ define_data_value_type_raw! {
 
     // -------------------------------------------------------------- 4-B / 32-b
     copy@4B:
-        "32-bit unsigned integer ", U32, u32,
-        "32-bit signed integer", I32, i32,
-        "32-bit floating-point number", F32, f32,
-        "4-Byte array of bytes", ByteArray4B, [u8; 4],
-        "4-Byte char ", Char, char,
+        "32-bit unsigned integer ", U32, u32, [def:true],
+        "32-bit signed integer", I32, i32, [def:true],
+        "32-bit floating-point number", F32, f32, [def:true],
+        "4-Byte array of bytes", ByteArray4B, [u8; 4], [def:true],
+        "4-Byte char ", Char, char, [def:true],
     copy@4B_dep:
     copy@4B_ptr:
-        "32-bit usize", Usize, usize, target_pointer_width = "32",
-        "32-bit isize", Isize, isize, target_pointer_width = "32",
+        "32-bit usize", Usize, usize, target_pointer_width = "32", [def:true],
+        "32-bit isize", Isize, isize, target_pointer_width = "32", [def:true],
     copy@4B_ptrdep:
 
     noncopy@4B:
@@ -77,14 +77,14 @@ define_data_value_type_raw! {
 
     // -------------------------------------------------------------- 8-B / 64-b
     copy@8B:
-        "64-bit unsigned integer ", U64, u64,
-        "64-bit signed integer", I64, i64,
-        "64-bit floating-point number", F64, f64,
-        "8-Byte array of bytes", ByteArray8B, [u8; 8],
+        "64-bit unsigned integer ", U64, u64, [def:true],
+        "64-bit signed integer", I64, i64, [def:true],
+        "64-bit floating-point number", F64, f64, [def:true],
+        "8-Byte array of bytes", ByteArray8B, [u8; 8], [def:true],
     copy@8B_dep:
     copy@8B_ptr:
-        "64-bit usize", Usize, usize, target_pointer_width = "64",
-        "64-bit isize", Isize, isize, target_pointer_width = "64",
+        "64-bit usize", Usize, usize, target_pointer_width = "64", [def:true],
+        "64-bit isize", Isize, isize, target_pointer_width = "64", [def:true],
     copy@8B_ptrdep:
 
     noncopy@8B:
@@ -92,23 +92,23 @@ define_data_value_type_raw! {
     noncopy@8B_ptr:
     noncopy@8B_ptrdep:
         "6-Byte fat-pointer String", String, crate::String,
-            target_pointer_width = "16", "alloc", "alloc",
+            target_pointer_width = "16", "alloc", "alloc", [def:true],
 
     // ------------------------------------------------------------- 16-B /128-b
     copy@16B:
-        "128-bit unsigned integer ", U128, u128,
-        "128-bit signed integer", I128, i128,
-        "16-Byte array of bytes", ByteArray16B, [u8; 16],
-        "128-bit Duration", Duration, crate::Duration,
+        "128-bit unsigned integer ", U128, u128, [def:true],
+        "128-bit signed integer", I128, i128, [def:true],
+        "16-Byte array of bytes", ByteArray16B, [u8; 16], [def:true],
+        "128-bit Duration", Duration, crate::Duration, [def:true],
     copy@16B_dep:
         // WAIT:
         // "128-bit floating-point number", F128, ::core::primitive::f128,
-        //     "nightly_float", "nightly_float",
-        "128-bit SystemInstant", SystemInstant, crate::SystemInstant, "std", "std",
-        "128-bit SystemTime", SystemTime, crate::SystemTime, "std", "std",
+        //     "nightly_float", "nightly_float", [def:true],
+        "128-bit SystemInstant", SystemInstant, crate::SystemInstant, "std", "std", [def:true],
+        "128-bit SystemTime", SystemTime, crate::SystemTime, "std", "std", [def:true],
     copy@16B_ptr:
-        "128-bit usize", Usize, usize, target_pointer_width = "128",
-        "128-bit isize", Isize, isize, target_pointer_width = "128",
+        "128-bit usize", Usize, usize, target_pointer_width = "128", [def:true],
+        "128-bit isize", Isize, isize, target_pointer_width = "128", [def:true],
     copy@16B_ptrdep:
 
     noncopy@16B:
@@ -116,11 +116,11 @@ define_data_value_type_raw! {
     noncopy@16B_ptr:
     noncopy@16B_ptrdep:
         "12-Byte fat-pointer String", String, crate::String,
-            target_pointer_width = "32", "alloc", "alloc",
+            target_pointer_width = "32", "alloc", "alloc", [def:true],
 
     // ------------------------------------------------------------ 32-B / 256-b
     copy@32B:
-        "32-Byte array of bytes", ByteArray32B, [u8; 32],
+        "32-Byte array of bytes", ByteArray32B, [u8; 32], [def:true],
     copy@32B_dep:
     copy@32B_ptr:
     copy@32B_ptrdep:
@@ -130,11 +130,11 @@ define_data_value_type_raw! {
     noncopy@32B_ptr:
     noncopy@32B_ptrdep:
         "24-Byte fat-pointer String", String, crate::String,
-            target_pointer_width = "64", "alloc", "alloc",
+            target_pointer_width = "64", "alloc", "alloc", [def:true],
 
     // ------------------------------------------------------------ 64 B / 512-b
     copy@64B:
-        "64-Byte array of bytes", ByteArray64B, [u8; 64],
+        "64-Byte array of bytes", ByteArray64B, [u8; 64], [def:true],
     copy@64B_dep:
     copy@64B_ptr:
     copy@64B_ptrdep:
@@ -144,11 +144,11 @@ define_data_value_type_raw! {
     noncopy@64B_ptr:
     noncopy@64B_ptrdep:
         "48-Byte fat-pointer String", String, crate::String,
-            target_pointer_width = "128", "alloc", "alloc",
+            target_pointer_width = "128", "alloc", "alloc", [def:true],
 
     // ---------------------------------------------------------- 128-B / 1024-b
     copy@128B:
-        "128-Byte array of bytes", ByteArray128B, [u8; 128],
+        "128-Byte array of bytes", ByteArray128B, [u8; 128], [def:true],
     copy@128B_dep:
     copy@128B_ptr:
     copy@128B_ptrdep:

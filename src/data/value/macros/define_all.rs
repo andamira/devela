@@ -42,272 +42,337 @@ macro_rules! define_data_value_type_raw {
     // 1-Byte / 8-bit
     copy@1B: $(
         $C_doc_1B:literal, $C_name_1B:ident, $C_type_1B:ty,
+        [def:$C_def_1B:stmt],
         )*
     copy@1B_dep: $(
         $C_doc_1B_dep:literal, $C_name_1B_dep:ident, $C_type_1B_dep:ty,
         $C_dep1_1B_dep:literal, $C_dep2_1B_dep:literal,
+        [def:$C_def_1B_dep:stmt],
         )*
     copy@1B_ptr: $(
         $C_doc_1B_ptr:literal, $C_name_1B_ptr:ident, $C_type_1B_ptr:ty,
         $C_ptr_1B_ptr:meta,
+        [def:$C_def_1B_ptr:stmt],
         )*
     copy@1B_ptrdep: $(
         $C_doc_1B_ptrdep:literal, $C_name_1B_ptrdep:ident, $C_type_1B_ptrdep:ty,
         $C_ptrdep_1B_ptrdep:meta,
+        [def:$C_def_1B_ptrdep:stmt],
         )*
 
     noncopy@1B: $(
         $N_doc_1B:literal, $N_name_1B:ident, $N_type_1B:ty,
+        [def:$N_def_1B:stmt],
         )*
     noncopy@1B_dep: $(
         $N_doc_1B_dep:literal, $N_name_1B_dep:ident, $N_type_1B_dep:ty,
         $N_dep2_1B_dep:literal,
+        [def:$N_def_1B_dep:stmt],
         )*
     noncopy@1B_ptr: $(
         $N_doc_1B_ptr:literal, $N_name_1B_ptr:ident, $N_type_1B_ptr:ty,
         $N_ptr_1B_ptr:meta,
+        [def:$N_def_1B_ptr:stmt],
         )*
     noncopy@1B_ptrdep: $(
         $N_doc_1B_ptrdep:literal, $N_name_1B_ptrdep:ident, $N_type_1B_ptrdep:ty,
         $N_ptr_1B_ptrdep:meta,
         $N_dep1_1B_ptrdep:literal, $N_dep2_1B_ptrdep:literal
+        [def:$N_def_1B_ptrdep:stmt],
         ),*
 
     // 2-Byte / 16-bit
     copy@2B: $(
         $C_doc_2B:literal, $C_name_2B:ident, $C_type_2B:ty,
+        [def:$C_def_2B:stmt],
         )*
     copy@2B_dep: $(
         $C_doc_2B_dep:literal, $C_name_2B_dep:ident, $C_type_2B_dep:ty,
         $C_dep1_2B_dep:literal, $C_dep2_2B_dep:literal,
+        [def:$C_def_2B_dep:stmt],
         )*
     copy@2B_ptr: $(
         $C_doc_2B_ptr:literal, $C_name_2B_ptr:ident, $C_type_2B_ptr:ty,
         $C_ptr_2B_ptr:meta,
+        [def:$C_def_2B_ptr:stmt],
         )*
     copy@2B_ptrdep: $(
         $C_doc_2B_ptrdep:literal, $C_name_2B_ptrdep:ident, $C_type_2B_ptrdep:ty,
         $C_ptrdep_2B_ptrdep:meta,
+        [def:$C_def_2B_ptrdep:stmt],
         )*
 
     noncopy@2B: $(
         $N_doc_2B:literal, $N_name_2B:ident, $N_type_2B:ty,
+        [def:$N_def_2B:stmt],
         )*
     noncopy@2B_dep: $(
         $N_doc_2B_dep:literal, $N_name_2B_dep:ident, $N_type_2B_dep:ty,
         $N_dep1_2B_dep:literal,
+        [def:$N_def_2B_dep:stmt],
         )*
     noncopy@2B_ptr: $(
         $N_doc_2B_ptr:literal, $N_name_2B_ptr:ident, $N_type_2B_ptr:ty,
         $N_ptr_2B_ptr:meta,
+        [def:$N_def_2B_ptr:stmt],
         )*
     noncopy@2B_ptrdep: $(
         $N_doc_2B_ptrdep:literal, $N_name_2B_ptrdep:ident, $N_type_2B_ptrdep:ty,
         $N_ptr_2B_ptrdep:meta,
         $N_dep1_2B_ptrdep:literal, $N_dep2_2B_ptrdep:literal,
+        [def:$N_def_2B_ptrdep:stmt],
         )*
 
     // 4-Byte / 32-bit
     copy@4B: $(
         $C_doc_4B:literal, $C_name_4B:ident, $C_type_4B:ty,
+        [def:$C_def_4B:stmt],
         )*
     copy@4B_dep: $(
         $C_doc_4B_dep:literal, $C_name_4B_dep:ident, $C_type_4B_dep:ty,
         $C_dep1_4B_dep:literal, $C_dep2_4B_dep:literal,
+        [def:$C_def_4B_dep:stmt],
         )*
     copy@4B_ptr: $(
         $C_doc_4B_ptr:literal, $C_name_4B_ptr:ident, $C_type_4B_ptr:ty,
         $C_ptr_4B_ptr:meta,
+        [def:$C_def_4B_ptr:stmt],
         )*
     copy@4B_ptrdep: $(
         $C_doc_4B_ptrdep:literal, $C_name_4B_ptrdep:ident, $C_type_4B_ptrdep:ty,
         $C_ptrdep_4B_ptrdep:meta,
+        [def:$C_def_4B_ptrdep:stmt],
         )*
+
     noncopy@4B: $(
         $N_doc_4B:literal, $N_name_4B:ident, $N_type_4B:ty,
+        [def:$N_def_4B:stmt],
         )*
     noncopy@4B_dep: $(
         $N_doc_4B_dep:literal, $N_name_4B_dep:ident, $N_type_4B_dep:ty,
         $N_dep1_4B_dep:literal, $N_dep2_4B_dep:literal,
+        [def:$N_def_4B_dep:stmt],
         )*
     noncopy@4B_ptr: $(
         $N_doc_4B_ptr:literal, $N_name_4B_ptr:ident, $N_type_4B_ptr:ty,
         $N_ptr_4B_ptr:meta,
+        [def:$N_def_4B_ptr:stmt],
         )*
     noncopy@4B_ptrdep: $(
         $N_doc_4B_ptrdep:literal, $N_name_4B_ptrdep:ident, $N_type_4B_ptrdep:ty,
         $N_ptr_4B_ptrdep:meta,
         $N_dep1_4B_ptrdep:literal, $N_dep2_4B_ptrdep:literal,
+        [def:$N_def_4B_ptrdep:stmt],
         )*
 
     // 8-Byte / 64-bit
     copy@8B: $(
         $C_doc_8B:literal, $C_name_8B:ident, $C_type_8B:ty,
+        [def:$C_def_8B:stmt],
         )*
     copy@8B_dep: $(
         $C_doc_8B_dep:literal, $C_name_8B_dep:ident, $C_type_8B_dep:ty,
         $C_dep1_8B_dep:literal, $C_dep2_8B_dep:literal,
+        [def:$C_def_8B_dep:stmt],
         )*
     copy@8B_ptr: $(
         $C_doc_8B_ptr:literal, $C_name_8B_ptr:ident, $C_type_8B_ptr:ty,
         $C_ptr_8B_ptr:meta,
+        [def:$C_def_8B_ptr:stmt],
         )*
     copy@8B_ptrdep: $(
         $C_doc_8B_ptrdep:literal, $C_name_8B_ptrdep:ident, $C_type_8B_ptrdep:ty,
         $C_ptrdep_8B_ptrdep:meta,
+        [def:$C_def_8B_ptrdep:stmt],
         )*
 
     noncopy@8B: $(
         $N_doc_8B:literal, $N_name_8B:ident, $N_type_8B:ty,
+        [def:$N_def_8B:stmt],
         )*
     noncopy@8B_dep: $(
         $N_doc_8B_dep:literal, $N_name_8B_dep:ident, $N_type_8B_dep:ty,
         $N_dep1_8B_dep:literal, $N_dep2_8B_dep:literal,
+        [def:$N_def_8B_dep:stmt],
         )*
     noncopy@8B_ptr: $(
         $N_doc_8B_ptr:literal, $N_name_8B_ptr:ident, $N_type_8B_ptr:ty,
         $N_ptr_8B_ptr:meta,
+        [def:$N_def_8B_ptr:stmt],
         )*
     noncopy@8B_ptrdep: $(
         $N_doc_8B_ptrdep:literal, $N_name_8B_ptrdep:ident, $N_type_8B_ptrdep:ty,
         $N_ptr_8B_ptrdep:meta,
         $N_dep1_8B_ptrdep:literal, $N_dep2_8B_ptrdep:literal,
+        [def:$N_def_8B_ptrdep:stmt],
         )*
 
     // 16-Byte / 128-bit
     copy@16B: $(
         $C_doc_16B:literal, $C_name_16B:ident, $C_type_16B:ty,
+        [def:$C_def_16B:stmt],
         )*
     copy@16B_dep: $(
         $C_doc_16B_dep:literal, $C_name_16B_dep:ident, $C_type_16B_dep:ty,
         $C_dep1_16B_dep:literal, $C_dep2_16B_dep:literal,
+        [def:$C_def_16B_dep:stmt],
         )*
     copy@16B_ptr: $(
         $C_doc_16B_ptr:literal, $C_name_16B_ptr:ident, $C_type_16B_ptr:ty,
         $C_ptr_16B_ptr:meta,
+        [def:$C_def_16B_ptr:stmt],
         )*
     copy@16B_ptrdep: $(
         $C_doc_16B_ptrdep:literal, $C_name_16B_ptrdep:ident, $C_type_16B_ptrdep:ty,
         $C_ptrdep_16B_ptrdep:meta,
+        [def:$C_def_16B_ptrdep:stmt],
         )*
 
     noncopy@16B: $(
         $N_doc_16B:literal, $N_name_16B:ident, $N_type_16B:ty,
+        [def:$N_def_16B:stmt],
         )*
     noncopy@16B_dep: $(
         $N_doc_16B_dep:literal, $N_name_16B_dep:ident, $N_type_16B_dep:ty,
         $N_dep1_16B_dep:literal, $N_dep2_16B_dep:literal,
+        [def:$N_def_16B_dep:stmt],
         )*
     noncopy@16B_ptr: $(
         $N_doc_16B_ptr:literal, $N_name_16B_ptr:ident, $N_type_16B_ptr:ty,
         $N_ptr_16B_ptr:meta,
+        [def:$N_def_16B_ptr:stmt],
         )*
     noncopy@16B_ptrdep: $(
         $N_doc_16B_ptrdep:literal, $N_name_16B_ptrdep:ident, $N_type_16B_ptrdep:ty,
         $N_ptr_16B_ptrdep:meta,
         $N_dep1_16B_ptrdep:literal, $N_dep2_16B_ptrdep:literal,
+        [def:$N_def_16B_ptrdep:stmt],
         )*
 
     // 32-Byte / 256-bit
     copy@32B: $(
         $C_doc_32B:literal, $C_name_32B:ident, $C_type_32B:ty,
+        [def:$C_def_32B:stmt],
         )*
     copy@32B_dep: $(
         $C_doc_32B_dep:literal, $C_name_32B_dep:ident, $C_type_32B_dep:ty,
         $C_dep1_32B_dep:literal, $C_dep2_32B_dep:literal,
+        [def:$C_def_32B_dep:stmt],
         )*
     copy@32B_ptr: $(
         $C_doc_32B_ptr:literal, $C_name_32B_ptr:ident, $C_type_32B_ptr:ty,
         $C_ptr_32B_ptr:meta,
+        [def:$C_def_32B_ptr:stmt],
         )*
     copy@32B_ptrdep: $(
         $C_doc_32B_ptrdep:literal, $C_name_32B_ptrdep:ident, $C_type_32B_ptrdep:ty,
         $C_ptrdep_32B_ptrdep:meta,
+        [def:$C_def_32B_ptrdep:stmt],
         )*
 
     noncopy@32B: $(
         $N_doc_32B:literal, $N_name_32B:ident, $N_type_32B:ty,
+        [def:$N_def_32B:stmt],
         )*
     noncopy@32B_dep: $(
         $N_doc_32B_dep:literal, $N_name_32B_dep:ident, $N_type_32B_dep:ty,
         $N_dep1_32B_dep:literal, $N_dep2_32B_dep:literal,
+        [def:$N_def_32B_dep:stmt],
         )*
     noncopy@32B_ptr: $(
         $N_doc_32B_ptr:literal, $N_name_32B_ptr:ident, $N_type_32B_ptr:ty,
         $N_ptr_32B_ptr:meta,
+        [def:$N_def_32B_ptr:stmt],
         )*
     noncopy@32B_ptrdep: $(
         $N_doc_32B_ptrdep:literal, $N_name_32B_ptrdep:ident, $N_type_32B_ptrdep:ty,
         $N_ptr_32B_ptrdep:meta,
         $N_dep1_32B_ptrdep:literal, $N_dep2_32B_ptrdep:literal,
+        [def:$N_def_32B_ptrdep:stmt],
         )*
 
     // 64-Byte / 512-bit
     copy@64B: $(
         $C_doc_64B:literal, $C_name_64B:ident, $C_type_64B:ty,
+        [def:$C_def_64B:stmt],
         )*
     copy@64B_dep: $(
         $C_doc_64B_dep:literal, $C_name_64B_dep:ident, $C_type_64B_dep:ty,
         $C_dep1_64B_dep:literal, $C_dep2_64B_dep:literal,
+        [def:$C_def_64B_dep:stmt],
         )*
     copy@64B_ptr: $(
         $C_doc_64B_ptr:literal, $C_name_64B_ptr:ident, $C_type_64B_ptr:ty,
         $C_ptr_64B_ptr:meta,
+        [def:$C_def_64B_ptr:stmt],
         )*
     copy@64B_ptrdep: $(
         $C_doc_64B_ptrdep:literal, $C_name_64B_ptrdep:ident, $C_type_64B_ptrdep:ty,
         $C_ptrdep_64B_ptrdep:meta,
+        [def:$C_def_64B_ptrdep:stmt],
         )*
 
     noncopy@64B: $(
         $N_doc_64B:literal, $N_name_64B:ident, $N_type_64B:ty,
+        [def:$N_def_64B:stmt],
         )*
     noncopy@64B_dep: $(
         $N_doc_64B_dep:literal, $N_name_64B_dep:ident, $N_type_64B_dep:ty,
         $N_dep1_64B_dep:literal, $N_dep2_64B_dep:literal,
+        [def:$N_def_64B_dep:stmt],
         )*
     noncopy@64B_ptr: $(
         $N_doc_64B_ptr:literal, $N_name_64B_ptr:ident, $N_type_64B_ptr:ty,
         $N_ptr_64B_ptr:meta,
+        [def:$N_def_64B_ptr:stmt],
         )*
     noncopy@64B_ptrdep: $(
         $N_doc_64B_ptrdep:literal, $N_name_64B_ptrdep:ident, $N_type_64B_ptrdep:ty,
         $N_ptr_64B_ptrdep:meta,
         $N_dep1_64B_ptrdep:literal, $N_dep2_64B_ptrdep:literal,
+        [def:$N_def_64B_ptrdep:stmt],
         )*
 
     // 128-Byte / 1024-bit
     copy@128B: $(
         $C_doc_128B:literal, $C_name_128B:ident, $C_type_128B:ty,
+        [def:$C_def_128B:stmt],
         )*
     copy@128B_dep: $(
         $C_doc_128B_dep:literal, $C_name_128B_dep:ident, $C_type_128B_dep:ty,
         $C_dep1_128B_dep:literal, $C_dep2_128B_dep:literal,
+        [def:$C_def_128B_dep:stmt],
         )*
     copy@128B_ptr: $(
         $C_doc_128B_ptr:literal, $C_name_128B_ptr:ident, $C_type_128B_ptr:ty,
         $C_ptr_128B_ptr:meta,
+        [def:$C_def_128B_ptr:stmt],
         )*
     copy@128B_ptrdep: $(
         $C_doc_128B_ptrdep:literal, $C_name_128B_ptrdep:ident, $C_type_128B_ptrdep:ty,
         $C_ptrdep_128B_ptrdep:meta,
+        [def:$C_def_128B_ptrdep:stmt],
         )*
 
     noncopy@128B: $(
         $N_doc_128B:literal, $N_name_128B:ident, $N_type_128B:ty,
+        [def:$N_def_128B:stmt],
         )*
     noncopy@128B_dep: $(
         $N_doc_128B_dep:literal, $N_name_128B_dep:ident, $N_type_128B_dep:ty,
         $N_dep1_128B_dep:literal, $N_dep2_128B_dep:literal,
+        [def:$N_def_128B_dep:stmt],
         )*
     noncopy@128B_ptr: $(
         $N_doc_128B_ptr:literal, $N_name_128B_ptr:ident, $N_type_128B_ptr:ty,
         $N_ptr_128B_ptr:meta,
+        [def:$N_def_128B_ptr:stmt],
         )*
     noncopy@128B_ptrdep: $(
         $N_doc_128B_ptrdep:literal, $N_name_128B_ptrdep:ident, $N_type_128B_ptrdep:ty,
         $N_ptr_128B_ptrdep:meta,
         $N_dep1_128B_ptrdep:literal, $N_dep2_128B_ptrdep:literal,
+        [def:$N_def_128B_ptrdep:stmt],
         )*
 
     ) => {
