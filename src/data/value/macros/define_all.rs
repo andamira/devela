@@ -380,7 +380,7 @@ macro_rules! define_data_value_type_raw {
         // 8-bit / 1-Byte
         #[cfg(feature = "_value8")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 8, 1, feature: "_value8",
+            single_size: $Value, $Type, $Raw, size: 8, feature: "_value8",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -426,7 +426,7 @@ macro_rules! define_data_value_type_raw {
         // 16-bit / 2-Byte
         #[cfg(feature = "_value16")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 16, 2, feature: "_value16",
+            single_size: $Value, $Type, $Raw, size: 16, feature: "_value16",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -501,7 +501,7 @@ macro_rules! define_data_value_type_raw {
         // 32-bit / 4-Byte
         #[cfg(feature = "_value32")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 32, 4, feature: "_value32",
+            single_size: $Value, $Type, $Raw, size: 32, feature: "_value32",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -606,7 +606,7 @@ macro_rules! define_data_value_type_raw {
         // 64-bit / 8-Byte
         #[cfg(feature = "_value64")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 64, 8, feature: "_value64",
+            single_size: $Value, $Type, $Raw, size: 64, feature: "_value64",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -742,7 +742,7 @@ macro_rules! define_data_value_type_raw {
         // 128-bit / 16-Byte
         #[cfg(feature = "_value128")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 128, 16, feature: "_value128",
+            single_size: $Value, $Type, $Raw, size: 128, feature: "_value128",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -907,7 +907,7 @@ macro_rules! define_data_value_type_raw {
         // 256-bit / 32-Byte
         #[cfg(feature = "_value256")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 256, 32, feature: "_value256",
+            single_size: $Value, $Type, $Raw, size: 256, feature: "_value256",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -1102,7 +1102,7 @@ macro_rules! define_data_value_type_raw {
         // 512-bit / 64-Byte
         #[cfg(feature = "_value512")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 512, 64, feature: "_value512",
+            single_size: $Value, $Type, $Raw, size: 512, feature: "_value512",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -1327,7 +1327,7 @@ macro_rules! define_data_value_type_raw {
         // 1024-bit / 128-Byte
         #[cfg(feature = "_value1024")]
         $crate::define_data_value_type_raw! {
-            single_size: $Value, $Type, $Raw, size: 1024, 128, feature: "_value1024",
+            single_size: $Value, $Type, $Raw, size: 1024, feature: "_value1024",
 
             copy:
                 $( $C_doc_8, $C_name_8, $C_type_8,
@@ -1587,7 +1587,7 @@ macro_rules! define_data_value_type_raw {
     //
     // It calls the macros: `define_data_value!`, `define_data_type!` and `define_data_raw!`.
     single_size: $Value:ident, $Type:ident, $Raw:ident,
-    size: $b:literal, $B:literal,
+    size: $b:literal,
     feature: $feature:literal,
 
     copy:
@@ -1632,7 +1632,7 @@ macro_rules! define_data_value_type_raw {
     ) => {
         $crate::define_data_value! {
             v: $Value, t: $Type, r: $Raw,
-            size: $b, $B, feature: $feature,
+            size: $b, feature: $feature,
 
             copy:
                 $( $C_doc, $C_name, $C_type,
@@ -1676,7 +1676,7 @@ macro_rules! define_data_value_type_raw {
         }
         $crate::define_data_type! {
             v: $Value, t: $Type, r: $Raw,
-            size: $b, $B, feature: $feature,
+            size: $b, feature: $feature,
 
             copy:
                 $( $C_doc, $C_name, $C_type,
@@ -1720,7 +1720,7 @@ macro_rules! define_data_value_type_raw {
         }
         $crate::define_data_raw! {
             v: $Value, t: $Type, r: $Raw,
-            size: $b, $B, feature: $feature,
+            size: $b, feature: $feature,
 
             copy:
                 $( $C_doc, $C_name, $C_type,

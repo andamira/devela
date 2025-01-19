@@ -21,8 +21,7 @@
 macro_rules! define_data_value {
     (
         v: $Value:ident, t: $Type:ident, r: $Raw:ident,
-        size: $b:literal, $B:literal,
-        feature: $feature:literal,
+        size: $b:literal, feature: $feature:literal,
 
         copy:
             $( $C_doc:literal, $C_name:ident, $C_type:ty,
@@ -398,8 +397,7 @@ pub(crate) use define_data_value;
 macro_rules! define_data_type {
     (
         v: $Value:ident, t: $Type:ident, r: $Raw:ident,
-        size: $b:literal, $B:literal,
-        feature: $feature:literal,
+        size: $b:literal, feature: $feature:literal,
 
         copy:
             $( $C_doc:literal, $C_name:ident, $C_type:ty,
@@ -690,8 +688,7 @@ pub(crate) use define_data_type;
 macro_rules! define_data_raw {
     (
         v: $Value:ident, t: $Type:ident, r: $Raw:ident,
-        size: $b:literal, $B:literal,
-        feature: $feature:literal,
+        size: $b:literal, feature: $feature:literal,
 
         copy:
             $( $C_doc:literal, $C_name:ident, $C_type:ty,
