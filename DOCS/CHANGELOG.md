@@ -8,6 +8,7 @@
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `Iter`,`NoData`.
 - new macros: `maybe!`.
 - new modules: `lang::{c}`.
+- new method: `Char::len_utf8`.
 - new `ExtAny` methods: `type_hash`, `type_hash_with`.
 - new re-exports: `SystemAlloc`, `std::env::*`.
 - new optional dependencies: `itertools`.
@@ -15,6 +16,7 @@
 
 ### Removed
 - remove standalone re-exported `core::iter` functions.
+- deprecate `Char::len_to_utf8`.
 
 ### Changed
 - rename features:

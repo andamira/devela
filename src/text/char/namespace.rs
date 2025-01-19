@@ -66,11 +66,17 @@ impl Char {
             + ((code[3] > 0) & (code[3] & 0b1100_0000 != 0b1000_0000)) as u8
     }
 
-    /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8
+    /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8.
     #[must_use] #[rustfmt::skip]
-    pub const fn len_to_utf8(code: char) -> usize {
+    pub const fn len_utf8(code: char) -> usize {
         let code = code as u32;
         if code < 0x80 { 1 } else if code < 0x800 { 2 } else if code < 0x10_000 { 3 } else { 4 }
+    }
+    /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8.
+    #[must_use]
+    #[deprecated(since = "0.23.0", note = "Use` len_utf8` instead")]
+    pub const fn len_to_utf8(code: char) -> usize {
+        Self::len_utf8(code)
     }
 
     /// Converts this `char` to an UTF-8 encoded sequence of bytes.
