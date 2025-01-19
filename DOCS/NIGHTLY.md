@@ -32,7 +32,7 @@ See also
 
 # 1.86 will be stable on 2025-04-03 (nightly_stable_next2)
 
-- …
+- 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 
 # .‥… will be stable later (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 - 1.??: ·[asm_goto](https://github.com/rust-lang/rust/pull/133870)
@@ -45,7 +45,6 @@ See also
         · const_str_split_at
 - 1.??: ·[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.??: ·[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
-- 1.??: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 - 1.??:  [get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
         · get_many_mut (old name)
 - 1.??: s[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)

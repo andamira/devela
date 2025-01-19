@@ -60,7 +60,7 @@
     feature(const_collections_with_hasher,)
 )]
 // "nightly_stable_next2": 1.86 core, alloc, std…
-#![cfg_attr(feature = "nightly_stable_next2", feature())]
+#![cfg_attr(feature = "nightly_stable_next2", feature(float_next_up_down,))]
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature())]
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
@@ -74,7 +74,6 @@
     const_slice_from_ref,
     const_str_split_at,
     derive_coerce_pointee,
-    float_next_up_down,
     get_many_mut, // get_disjoint_mut (new name)
     impl_trait_in_assoc_type,
     isqrt,
