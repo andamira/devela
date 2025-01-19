@@ -15,31 +15,31 @@ macro_rules! impl_data_type {
         t: $Tname:ident, $tbound:ident,
         is_copy: $is_copy:stmt,
 
-        copy_variants:
+        copy:
             $( $C_name:ident, $C_type:ty ),* ;
-        copy_variants_dep:
+        copy@dep:
             $( $C_name_dep:ident, $C_type_dep:ty,
             $C_dep1_dep:literal, $C_dep2_dep:literal ),* ;
-        copy_variants_ptr:
+        copy@ptr:
             $( $C_name_ptr:ident, $C_type_ptr:ty,
                 $C_ptr_ptr:meta ),* ;
-        copy_variants_ptr_dep:
-            $( $C_name_ptr_dep:ident, $C_type_ptr_dep:ty,
-            $C_ptr_ptr_dep:meta,
-            $C_dep1_ptr_dep:literal, $C_dep2_ptr_dep:literal ),* ;
+        copy@ptrdep:
+            $( $C_name_ptrdep:ident, $C_type_ptrdep:ty,
+            $C_ptr_ptrdep:meta,
+            $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal ),* ;
 
-        noncopy_variants:
+        noncopy:
             $( $N_name:ident, $N_type:ty ),* ;
-        noncopy_variants_dep:
+        noncopy@dep:
             $( $N_name_dep:ident, $N_type_dep:ty,
             $N_dep1_dep:literal, $N_dep2_dep:literal ),* ;
-        noncopy_variants_ptr:
+        noncopy@ptr:
             $( $N_name_ptr:ident, $N_type_ptr:ty,
                 $N_ptr_ptr:meta ),* ;
-        noncopy_variants_ptr_dep:
-            $( $N_name_ptr_dep:ident, $N_type_ptr_dep:ty,
-            $N_ptr_ptr_dep:meta,
-            $N_dep1_ptr_dep:literal, $N_dep2_ptr_dep:literal ),* ;
+        noncopy@ptrdep:
+            $( $N_name_ptrdep:ident, $N_type_ptrdep:ty,
+            $N_ptr_ptrdep:meta,
+            $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal ),* ;
     ) => { $crate::paste! {
         impl<T: $tbound> $crate::DataType for $Tname<T> {
             type Value = $Vname<T::Value>;
@@ -83,22 +83,22 @@ macro_rules! impl_data_type {
                     )*
 
                     $( // pointer-size & feature-gated dependencies
-                        #[cfg(all($C_ptr_ptr_dep,
-                                feature = $C_dep1_ptr_dep,
-                                feature = $C_dep2_ptr_dep))]
+                        #[cfg(all($C_ptr_ptrdep,
+                                feature = $C_dep1_ptrdep,
+                                feature = $C_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $C_dep1_ptr_dep,
-                                        feature = $C_dep2_ptr_dep))))]
-                        $Tname::$C_name_ptr_dep => align_of::<$C_type_ptr_dep>(),
+                            doc(cfg(all(feature = $C_dep1_ptrdep,
+                                        feature = $C_dep2_ptrdep))))]
+                        $Tname::$C_name_ptrdep => align_of::<$C_type_ptrdep>(),
                     )*
                     $(
-                        #[cfg(all($N_ptr_ptr_dep,
-                                feature = $N_dep1_ptr_dep,
-                                feature = $N_dep2_ptr_dep))]
+                        #[cfg(all($N_ptr_ptrdep,
+                                feature = $N_dep1_ptrdep,
+                                feature = $N_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $N_dep1_ptr_dep,
-                                        feature = $N_dep2_ptr_dep))))]
-                        $Tname::$N_name_ptr_dep => align_of::<$N_type_ptr_dep>(),
+                            doc(cfg(all(feature = $N_dep1_ptrdep,
+                                        feature = $N_dep2_ptrdep))))]
+                        $Tname::$N_name_ptrdep => align_of::<$N_type_ptrdep>(),
                     )*
                 }
             }
@@ -131,20 +131,20 @@ macro_rules! impl_data_type {
                     )*
 
                     $( // pointer-size & feature-gated dependencies
-                        #[cfg(all($C_ptr_ptr_dep,
-                                feature = $C_dep1_ptr_dep, feature = $C_dep2_ptr_dep))]
+                        #[cfg(all($C_ptr_ptrdep,
+                                feature = $C_dep1_ptrdep, feature = $C_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $C_dep1_ptr_dep,
-                                        feature = $C_dep2_ptr_dep))))]
-                        $Tname::$C_name_ptr_dep => size_of::<$C_type_ptr_dep>(),
+                            doc(cfg(all(feature = $C_dep1_ptrdep,
+                                        feature = $C_dep2_ptrdep))))]
+                        $Tname::$C_name_ptrdep => size_of::<$C_type_ptrdep>(),
                     )*
                     $(
-                        #[cfg(all($N_ptr_ptr_dep,
-                                feature = $N_dep1_ptr_dep, feature = $N_dep2_ptr_dep))]
+                        #[cfg(all($N_ptr_ptrdep,
+                                feature = $N_dep1_ptrdep, feature = $N_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $N_dep1_ptr_dep,
-                                        feature = $N_dep2_ptr_dep))))]
-                        $Tname::$N_name_ptr_dep => size_of::<$N_type_ptr_dep>(),
+                            doc(cfg(all(feature = $N_dep1_ptrdep,
+                                        feature = $N_dep2_ptrdep))))]
+                        $Tname::$N_name_ptrdep => size_of::<$N_type_ptrdep>(),
                     )*
                 }
             }
@@ -162,31 +162,31 @@ macro_rules! impl_data_value {
         t: $Tname:ident, $tbound:ident,
         is_copy: $is_copy:stmt,
 
-        copy_variants:
+        copy:
             $( $C_name:ident, $C_type:ty ),* ;
-        copy_variants_dep:
+        copy@dep:
             $( $C_name_dep:ident, $C_type_dep:ty,
             $C_dep1_dep:literal, $C_dep2_dep:literal ),* ;
-        copy_variants_ptr:
+        copy@ptr:
             $( $C_name_ptr:ident, $C_type_ptr:ty,
                 $C_ptr_ptr:meta ),* ;
-        copy_variants_ptr_dep:
-            $( $C_name_ptr_dep:ident, $C_type_ptr_dep:ty,
-            $C_ptr_ptr_dep:meta,
-            $C_dep1_ptr_dep:literal, $C_dep2_ptr_dep:literal ),* ;
+        copy@ptrdep:
+            $( $C_name_ptrdep:ident, $C_type_ptrdep:ty,
+            $C_ptr_ptrdep:meta,
+            $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal ),* ;
 
-        noncopy_variants:
+        noncopy:
             $( $N_name:ident, $N_type:ty ),* ;
-        noncopy_variants_dep:
+        noncopy@dep:
             $( $N_name_dep:ident, $N_type_dep:ty,
             $N_dep1_dep:literal, $N_dep2_dep:literal ),* ;
-        noncopy_variants_ptr:
+        noncopy@ptr:
             $( $N_name_ptr:ident, $N_type_ptr:ty,
                 $N_ptr_ptr:meta ),* ;
-        noncopy_variants_ptr_dep:
-            $( $N_name_ptr_dep:ident, $N_type_ptr_dep:ty,
-            $N_ptr_ptr_dep:meta,
-            $N_dep1_ptr_dep:literal, $N_dep2_ptr_dep:literal ),* ;
+        noncopy@ptrdep:
+            $( $N_name_ptrdep:ident, $N_type_ptrdep:ty,
+            $N_ptr_ptrdep:meta,
+            $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal ),* ;
     ) => { $crate::paste! {
         impl<V: $cbound> $crate::DataValue for $Vname<V> {
             type Type = $Tname<V::Type>;
@@ -221,22 +221,22 @@ macro_rules! impl_data_value {
                     )*
 
                     $( // pointer-size & feature-gated dependencies
-                        #[cfg(all($C_ptr_ptr_dep,
-                            feature = $C_dep1_ptr_dep,
-                            feature = $C_dep2_ptr_dep))]
+                        #[cfg(all($C_ptr_ptrdep,
+                            feature = $C_dep1_ptrdep,
+                            feature = $C_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $C_dep1_ptr_dep,
-                                        feature = $C_dep2_ptr_dep))))]
-                        $Vname::$C_name_ptr_dep(_) => Self::Type::$C_name_ptr_dep,
+                            doc(cfg(all(feature = $C_dep1_ptrdep,
+                                        feature = $C_dep2_ptrdep))))]
+                        $Vname::$C_name_ptrdep(_) => Self::Type::$C_name_ptrdep,
                     )*
                     $(
-                        #[cfg(all($N_ptr_ptr_dep,
-                                feature = $N_dep1_ptr_dep,
-                                feature = $N_dep2_ptr_dep))]
+                        #[cfg(all($N_ptr_ptrdep,
+                                feature = $N_dep1_ptrdep,
+                                feature = $N_dep2_ptrdep))]
                         #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $N_dep1_ptr_dep,
-                                        feature = $N_dep2_ptr_dep))))]
-                        $Vname::$N_name_ptr_dep(_) => Self::Type::$N_name_ptr_dep,
+                            doc(cfg(all(feature = $N_dep1_ptrdep,
+                                        feature = $N_dep2_ptrdep))))]
+                        $Vname::$N_name_ptrdep(_) => Self::Type::$N_name_ptrdep,
                     )*
                 }
             }

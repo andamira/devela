@@ -17,14 +17,14 @@ macro_rules! define_data_value_type_raw {
     // This arm receives all the types ordered by size,
     // already classified according to the following grouping:
     //
-    // - copy_variants_nB:              (name, type),*
-    // - copy_variants_nB_dep:          (doc, name, type, dep1, dep2),*
-    // - copy_variants_nB_ptr:          (doc, name, type, ptr),*
-    // - copy_variants_nB_ptr_dep:      (doc, name, type, ptr, dep1, dep2),*
-    // - noncopy_variants_nB:           (doc, name, type),*
-    // - noncopy_variants_nB_dep:       (doc, name, type, dep1, dep2),*
-    // - noncopy_variants_nB_ptr:       (doc, name, type, ptr),*
-    // - noncopy_variants_nB_ptr_dep:   (doc, name, type, ptr, dep1, dep2),*
+    // - copy@nB:              (name, type),*
+    // - copy@nB_dep:          (doc, name, type, dep1, dep2),*
+    // - copy@nB_ptr:          (doc, name, type, ptr),*
+    // - copy@nB_ptrdep:       (doc, name, type, ptr, dep1, dep2),*
+    // - noncopy@nB:           (doc, name, type),*
+    // - noncopy@nB_dep:       (doc, name, type, dep1, dep2),*
+    // - noncopy@nB_ptr:       (doc, name, type, ptr),*
+    // - noncopy@nB_ptrdep:    (doc, name, type, ptr, dep1, dep2),*
     //
     // where:
     // - the `copy` prefix indicates the types are `Copy`,
@@ -40,274 +40,274 @@ macro_rules! define_data_value_type_raw {
     all_sizes: v: $Value:ident, t: $Type:ident, r: $Raw:ident,
 
     // 1-Byte / 8-bit
-    copy_variants_1B: $(
+    copy@1B: $(
         $C_doc_1B:literal, $C_name_1B:ident, $C_type_1B:ty,
         )*
-    copy_variants_1B_dep: $(
+    copy@1B_dep: $(
         $C_doc_1B_dep:literal, $C_name_1B_dep:ident, $C_type_1B_dep:ty,
         $C_dep1_1B_dep:literal, $C_dep2_1B_dep:literal,
         )*
-    copy_variants_1B_ptr: $(
+    copy@1B_ptr: $(
         $C_doc_1B_ptr:literal, $C_name_1B_ptr:ident, $C_type_1B_ptr:ty,
         $C_ptr_1B_ptr:meta,
         )*
-    copy_variants_1B_ptr_dep: $(
-        $C_doc_1B_ptr_dep:literal, $C_name_1B_ptr_dep:ident, $C_type_1B_ptr_dep:ty,
-        $C_ptr_dep_1B_ptr_dep:meta,
+    copy@1B_ptrdep: $(
+        $C_doc_1B_ptrdep:literal, $C_name_1B_ptrdep:ident, $C_type_1B_ptrdep:ty,
+        $C_ptrdep_1B_ptrdep:meta,
         )*
 
-    noncopy_variants_1B: $(
+    noncopy@1B: $(
         $N_doc_1B:literal, $N_name_1B:ident, $N_type_1B:ty,
         )*
-    noncopy_variants_1B_dep: $(
+    noncopy@1B_dep: $(
         $N_doc_1B_dep:literal, $N_name_1B_dep:ident, $N_type_1B_dep:ty,
         $N_dep2_1B_dep:literal,
         )*
-    noncopy_variants_1B_ptr: $(
+    noncopy@1B_ptr: $(
         $N_doc_1B_ptr:literal, $N_name_1B_ptr:ident, $N_type_1B_ptr:ty,
         $N_ptr_1B_ptr:meta,
         )*
-    noncopy_variants_1B_ptr_dep: $(
-        $N_doc_1B_ptr_dep:literal, $N_name_1B_ptr_dep:ident, $N_type_1B_ptr_dep:ty,
-        $N_ptr_1B_ptr_dep:meta,
-        $N_dep1_1B_ptr_dep:literal, $N_dep2_1B_ptr_dep:literal
+    noncopy@1B_ptrdep: $(
+        $N_doc_1B_ptrdep:literal, $N_name_1B_ptrdep:ident, $N_type_1B_ptrdep:ty,
+        $N_ptr_1B_ptrdep:meta,
+        $N_dep1_1B_ptrdep:literal, $N_dep2_1B_ptrdep:literal
         ),*
 
     // 2-Byte / 16-bit
-    copy_variants_2B: $(
+    copy@2B: $(
         $C_doc_2B:literal, $C_name_2B:ident, $C_type_2B:ty,
         )*
-    copy_variants_2B_dep: $(
+    copy@2B_dep: $(
         $C_doc_2B_dep:literal, $C_name_2B_dep:ident, $C_type_2B_dep:ty,
         $C_dep1_2B_dep:literal, $C_dep2_2B_dep:literal,
         )*
-    copy_variants_2B_ptr: $(
+    copy@2B_ptr: $(
         $C_doc_2B_ptr:literal, $C_name_2B_ptr:ident, $C_type_2B_ptr:ty,
         $C_ptr_2B_ptr:meta,
         )*
-    copy_variants_2B_ptr_dep: $(
-        $C_doc_2B_ptr_dep:literal, $C_name_2B_ptr_dep:ident, $C_type_2B_ptr_dep:ty,
-        $C_ptr_dep_2B_ptr_dep:meta,
+    copy@2B_ptrdep: $(
+        $C_doc_2B_ptrdep:literal, $C_name_2B_ptrdep:ident, $C_type_2B_ptrdep:ty,
+        $C_ptrdep_2B_ptrdep:meta,
         )*
 
-    noncopy_variants_2B: $(
+    noncopy@2B: $(
         $N_doc_2B:literal, $N_name_2B:ident, $N_type_2B:ty,
         )*
-    noncopy_variants_2B_dep: $(
+    noncopy@2B_dep: $(
         $N_doc_2B_dep:literal, $N_name_2B_dep:ident, $N_type_2B_dep:ty,
         $N_dep1_2B_dep:literal,
         )*
-    noncopy_variants_2B_ptr: $(
+    noncopy@2B_ptr: $(
         $N_doc_2B_ptr:literal, $N_name_2B_ptr:ident, $N_type_2B_ptr:ty,
         $N_ptr_2B_ptr:meta,
         )*
-    noncopy_variants_2B_ptr_dep: $(
-        $N_doc_2B_ptr_dep:literal, $N_name_2B_ptr_dep:ident, $N_type_2B_ptr_dep:ty,
-        $N_ptr_2B_ptr_dep:meta,
-        $N_dep1_2B_ptr_dep:literal, $N_dep2_2B_ptr_dep:literal,
+    noncopy@2B_ptrdep: $(
+        $N_doc_2B_ptrdep:literal, $N_name_2B_ptrdep:ident, $N_type_2B_ptrdep:ty,
+        $N_ptr_2B_ptrdep:meta,
+        $N_dep1_2B_ptrdep:literal, $N_dep2_2B_ptrdep:literal,
         )*
 
     // 4-Byte / 32-bit
-    copy_variants_4B: $(
+    copy@4B: $(
         $C_doc_4B:literal, $C_name_4B:ident, $C_type_4B:ty,
         )*
-    copy_variants_4B_dep: $(
+    copy@4B_dep: $(
         $C_doc_4B_dep:literal, $C_name_4B_dep:ident, $C_type_4B_dep:ty,
         $C_dep1_4B_dep:literal, $C_dep2_4B_dep:literal,
         )*
-    copy_variants_4B_ptr: $(
+    copy@4B_ptr: $(
         $C_doc_4B_ptr:literal, $C_name_4B_ptr:ident, $C_type_4B_ptr:ty,
         $C_ptr_4B_ptr:meta,
         )*
-    copy_variants_4B_ptr_dep: $(
-        $C_doc_4B_ptr_dep:literal, $C_name_4B_ptr_dep:ident, $C_type_4B_ptr_dep:ty,
-        $C_ptr_dep_4B_ptr_dep:meta,
+    copy@4B_ptrdep: $(
+        $C_doc_4B_ptrdep:literal, $C_name_4B_ptrdep:ident, $C_type_4B_ptrdep:ty,
+        $C_ptrdep_4B_ptrdep:meta,
         )*
-    noncopy_variants_4B: $(
+    noncopy@4B: $(
         $N_doc_4B:literal, $N_name_4B:ident, $N_type_4B:ty,
         )*
-    noncopy_variants_4B_dep: $(
+    noncopy@4B_dep: $(
         $N_doc_4B_dep:literal, $N_name_4B_dep:ident, $N_type_4B_dep:ty,
         $N_dep1_4B_dep:literal, $N_dep2_4B_dep:literal,
         )*
-    noncopy_variants_4B_ptr: $(
+    noncopy@4B_ptr: $(
         $N_doc_4B_ptr:literal, $N_name_4B_ptr:ident, $N_type_4B_ptr:ty,
         $N_ptr_4B_ptr:meta,
         )*
-    noncopy_variants_4B_ptr_dep: $(
-        $N_doc_4B_ptr_dep:literal, $N_name_4B_ptr_dep:ident, $N_type_4B_ptr_dep:ty,
-        $N_ptr_4B_ptr_dep:meta,
-        $N_dep1_4B_ptr_dep:literal, $N_dep2_4B_ptr_dep:literal,
+    noncopy@4B_ptrdep: $(
+        $N_doc_4B_ptrdep:literal, $N_name_4B_ptrdep:ident, $N_type_4B_ptrdep:ty,
+        $N_ptr_4B_ptrdep:meta,
+        $N_dep1_4B_ptrdep:literal, $N_dep2_4B_ptrdep:literal,
         )*
 
     // 8-Byte / 64-bit
-    copy_variants_8B: $(
+    copy@8B: $(
         $C_doc_8B:literal, $C_name_8B:ident, $C_type_8B:ty,
         )*
-    copy_variants_8B_dep: $(
+    copy@8B_dep: $(
         $C_doc_8B_dep:literal, $C_name_8B_dep:ident, $C_type_8B_dep:ty,
         $C_dep1_8B_dep:literal, $C_dep2_8B_dep:literal,
         )*
-    copy_variants_8B_ptr: $(
+    copy@8B_ptr: $(
         $C_doc_8B_ptr:literal, $C_name_8B_ptr:ident, $C_type_8B_ptr:ty,
         $C_ptr_8B_ptr:meta,
         )*
-    copy_variants_8B_ptr_dep: $(
-        $C_doc_8B_ptr_dep:literal, $C_name_8B_ptr_dep:ident, $C_type_8B_ptr_dep:ty,
-        $C_ptr_dep_8B_ptr_dep:meta,
+    copy@8B_ptrdep: $(
+        $C_doc_8B_ptrdep:literal, $C_name_8B_ptrdep:ident, $C_type_8B_ptrdep:ty,
+        $C_ptrdep_8B_ptrdep:meta,
         )*
 
-    noncopy_variants_8B: $(
+    noncopy@8B: $(
         $N_doc_8B:literal, $N_name_8B:ident, $N_type_8B:ty,
         )*
-    noncopy_variants_8B_dep: $(
+    noncopy@8B_dep: $(
         $N_doc_8B_dep:literal, $N_name_8B_dep:ident, $N_type_8B_dep:ty,
         $N_dep1_8B_dep:literal, $N_dep2_8B_dep:literal,
         )*
-    noncopy_variants_8B_ptr: $(
+    noncopy@8B_ptr: $(
         $N_doc_8B_ptr:literal, $N_name_8B_ptr:ident, $N_type_8B_ptr:ty,
         $N_ptr_8B_ptr:meta,
         )*
-    noncopy_variants_8B_ptr_dep: $(
-        $N_doc_8B_ptr_dep:literal, $N_name_8B_ptr_dep:ident, $N_type_8B_ptr_dep:ty,
-        $N_ptr_8B_ptr_dep:meta,
-        $N_dep1_8B_ptr_dep:literal, $N_dep2_8B_ptr_dep:literal,
+    noncopy@8B_ptrdep: $(
+        $N_doc_8B_ptrdep:literal, $N_name_8B_ptrdep:ident, $N_type_8B_ptrdep:ty,
+        $N_ptr_8B_ptrdep:meta,
+        $N_dep1_8B_ptrdep:literal, $N_dep2_8B_ptrdep:literal,
         )*
 
     // 16-Byte / 128-bit
-    copy_variants_16B: $(
+    copy@16B: $(
         $C_doc_16B:literal, $C_name_16B:ident, $C_type_16B:ty,
         )*
-    copy_variants_16B_dep: $(
+    copy@16B_dep: $(
         $C_doc_16B_dep:literal, $C_name_16B_dep:ident, $C_type_16B_dep:ty,
         $C_dep1_16B_dep:literal, $C_dep2_16B_dep:literal,
         )*
-    copy_variants_16B_ptr: $(
+    copy@16B_ptr: $(
         $C_doc_16B_ptr:literal, $C_name_16B_ptr:ident, $C_type_16B_ptr:ty,
         $C_ptr_16B_ptr:meta,
         )*
-    copy_variants_16B_ptr_dep: $(
-        $C_doc_16B_ptr_dep:literal, $C_name_16B_ptr_dep:ident, $C_type_16B_ptr_dep:ty,
-        $C_ptr_dep_16B_ptr_dep:meta,
+    copy@16B_ptrdep: $(
+        $C_doc_16B_ptrdep:literal, $C_name_16B_ptrdep:ident, $C_type_16B_ptrdep:ty,
+        $C_ptrdep_16B_ptrdep:meta,
         )*
 
-    noncopy_variants_16B: $(
+    noncopy@16B: $(
         $N_doc_16B:literal, $N_name_16B:ident, $N_type_16B:ty,
         )*
-    noncopy_variants_16B_dep: $(
+    noncopy@16B_dep: $(
         $N_doc_16B_dep:literal, $N_name_16B_dep:ident, $N_type_16B_dep:ty,
         $N_dep1_16B_dep:literal, $N_dep2_16B_dep:literal,
         )*
-    noncopy_variants_16B_ptr: $(
+    noncopy@16B_ptr: $(
         $N_doc_16B_ptr:literal, $N_name_16B_ptr:ident, $N_type_16B_ptr:ty,
         $N_ptr_16B_ptr:meta,
         )*
-    noncopy_variants_16B_ptr_dep: $(
-        $N_doc_16B_ptr_dep:literal, $N_name_16B_ptr_dep:ident, $N_type_16B_ptr_dep:ty,
-        $N_ptr_16B_ptr_dep:meta,
-        $N_dep1_16B_ptr_dep:literal, $N_dep2_16B_ptr_dep:literal,
+    noncopy@16B_ptrdep: $(
+        $N_doc_16B_ptrdep:literal, $N_name_16B_ptrdep:ident, $N_type_16B_ptrdep:ty,
+        $N_ptr_16B_ptrdep:meta,
+        $N_dep1_16B_ptrdep:literal, $N_dep2_16B_ptrdep:literal,
         )*
 
     // 32-Byte / 256-bit
-    copy_variants_32B: $(
+    copy@32B: $(
         $C_doc_32B:literal, $C_name_32B:ident, $C_type_32B:ty,
         )*
-    copy_variants_32B_dep: $(
+    copy@32B_dep: $(
         $C_doc_32B_dep:literal, $C_name_32B_dep:ident, $C_type_32B_dep:ty,
         $C_dep1_32B_dep:literal, $C_dep2_32B_dep:literal,
         )*
-    copy_variants_32B_ptr: $(
+    copy@32B_ptr: $(
         $C_doc_32B_ptr:literal, $C_name_32B_ptr:ident, $C_type_32B_ptr:ty,
         $C_ptr_32B_ptr:meta,
         )*
-    copy_variants_32B_ptr_dep: $(
-        $C_doc_32B_ptr_dep:literal, $C_name_32B_ptr_dep:ident, $C_type_32B_ptr_dep:ty,
-        $C_ptr_dep_32B_ptr_dep:meta,
+    copy@32B_ptrdep: $(
+        $C_doc_32B_ptrdep:literal, $C_name_32B_ptrdep:ident, $C_type_32B_ptrdep:ty,
+        $C_ptrdep_32B_ptrdep:meta,
         )*
 
-    noncopy_variants_32B: $(
+    noncopy@32B: $(
         $N_doc_32B:literal, $N_name_32B:ident, $N_type_32B:ty,
         )*
-    noncopy_variants_32B_dep: $(
+    noncopy@32B_dep: $(
         $N_doc_32B_dep:literal, $N_name_32B_dep:ident, $N_type_32B_dep:ty,
         $N_dep1_32B_dep:literal, $N_dep2_32B_dep:literal,
         )*
-    noncopy_variants_32B_ptr: $(
+    noncopy@32B_ptr: $(
         $N_doc_32B_ptr:literal, $N_name_32B_ptr:ident, $N_type_32B_ptr:ty,
         $N_ptr_32B_ptr:meta,
         )*
-    noncopy_variants_32B_ptr_dep: $(
-        $N_doc_32B_ptr_dep:literal, $N_name_32B_ptr_dep:ident, $N_type_32B_ptr_dep:ty,
-        $N_ptr_32B_ptr_dep:meta,
-        $N_dep1_32B_ptr_dep:literal, $N_dep2_32B_ptr_dep:literal,
+    noncopy@32B_ptrdep: $(
+        $N_doc_32B_ptrdep:literal, $N_name_32B_ptrdep:ident, $N_type_32B_ptrdep:ty,
+        $N_ptr_32B_ptrdep:meta,
+        $N_dep1_32B_ptrdep:literal, $N_dep2_32B_ptrdep:literal,
         )*
 
     // 64-Byte / 512-bit
-    copy_variants_64B: $(
+    copy@64B: $(
         $C_doc_64B:literal, $C_name_64B:ident, $C_type_64B:ty,
         )*
-    copy_variants_64B_dep: $(
+    copy@64B_dep: $(
         $C_doc_64B_dep:literal, $C_name_64B_dep:ident, $C_type_64B_dep:ty,
         $C_dep1_64B_dep:literal, $C_dep2_64B_dep:literal,
         )*
-    copy_variants_64B_ptr: $(
+    copy@64B_ptr: $(
         $C_doc_64B_ptr:literal, $C_name_64B_ptr:ident, $C_type_64B_ptr:ty,
         $C_ptr_64B_ptr:meta,
         )*
-    copy_variants_64B_ptr_dep: $(
-        $C_doc_64B_ptr_dep:literal, $C_name_64B_ptr_dep:ident, $C_type_64B_ptr_dep:ty,
-        $C_ptr_dep_64B_ptr_dep:meta,
+    copy@64B_ptrdep: $(
+        $C_doc_64B_ptrdep:literal, $C_name_64B_ptrdep:ident, $C_type_64B_ptrdep:ty,
+        $C_ptrdep_64B_ptrdep:meta,
         )*
 
-    noncopy_variants_64B: $(
+    noncopy@64B: $(
         $N_doc_64B:literal, $N_name_64B:ident, $N_type_64B:ty,
         )*
-    noncopy_variants_64B_dep: $(
+    noncopy@64B_dep: $(
         $N_doc_64B_dep:literal, $N_name_64B_dep:ident, $N_type_64B_dep:ty,
         $N_dep1_64B_dep:literal, $N_dep2_64B_dep:literal,
         )*
-    noncopy_variants_64B_ptr: $(
+    noncopy@64B_ptr: $(
         $N_doc_64B_ptr:literal, $N_name_64B_ptr:ident, $N_type_64B_ptr:ty,
         $N_ptr_64B_ptr:meta,
         )*
-    noncopy_variants_64B_ptr_dep: $(
-        $N_doc_64B_ptr_dep:literal, $N_name_64B_ptr_dep:ident, $N_type_64B_ptr_dep:ty,
-        $N_ptr_64B_ptr_dep:meta,
-        $N_dep1_64B_ptr_dep:literal, $N_dep2_64B_ptr_dep:literal,
+    noncopy@64B_ptrdep: $(
+        $N_doc_64B_ptrdep:literal, $N_name_64B_ptrdep:ident, $N_type_64B_ptrdep:ty,
+        $N_ptr_64B_ptrdep:meta,
+        $N_dep1_64B_ptrdep:literal, $N_dep2_64B_ptrdep:literal,
         )*
 
     // 128-Byte / 1024-bit
-    copy_variants_128B: $(
+    copy@128B: $(
         $C_doc_128B:literal, $C_name_128B:ident, $C_type_128B:ty,
         )*
-    copy_variants_128B_dep: $(
+    copy@128B_dep: $(
         $C_doc_128B_dep:literal, $C_name_128B_dep:ident, $C_type_128B_dep:ty,
         $C_dep1_128B_dep:literal, $C_dep2_128B_dep:literal,
         )*
-    copy_variants_128B_ptr: $(
+    copy@128B_ptr: $(
         $C_doc_128B_ptr:literal, $C_name_128B_ptr:ident, $C_type_128B_ptr:ty,
         $C_ptr_128B_ptr:meta,
         )*
-    copy_variants_128B_ptr_dep: $(
-        $C_doc_128B_ptr_dep:literal, $C_name_128B_ptr_dep:ident, $C_type_128B_ptr_dep:ty,
-        $C_ptr_dep_128B_ptr_dep:meta,
+    copy@128B_ptrdep: $(
+        $C_doc_128B_ptrdep:literal, $C_name_128B_ptrdep:ident, $C_type_128B_ptrdep:ty,
+        $C_ptrdep_128B_ptrdep:meta,
         )*
 
-    noncopy_variants_128B: $(
+    noncopy@128B: $(
         $N_doc_128B:literal, $N_name_128B:ident, $N_type_128B:ty,
         )*
-    noncopy_variants_128B_dep: $(
+    noncopy@128B_dep: $(
         $N_doc_128B_dep:literal, $N_name_128B_dep:ident, $N_type_128B_dep:ty,
         $N_dep1_128B_dep:literal, $N_dep2_128B_dep:literal,
         )*
-    noncopy_variants_128B_ptr: $(
+    noncopy@128B_ptr: $(
         $N_doc_128B_ptr:literal, $N_name_128B_ptr:ident, $N_type_128B_ptr:ty,
         $N_ptr_128B_ptr:meta,
         )*
-    noncopy_variants_128B_ptr_dep: $(
-        $N_doc_128B_ptr_dep:literal, $N_name_128B_ptr_dep:ident, $N_type_128B_ptr_dep:ty,
-        $N_ptr_128B_ptr_dep:meta,
-        $N_dep1_128B_ptr_dep:literal, $N_dep2_128B_ptr_dep:literal,
+    noncopy@128B_ptrdep: $(
+        $N_doc_128B_ptrdep:literal, $N_name_128B_ptrdep:ident, $N_type_128B_ptrdep:ty,
+        $N_ptr_128B_ptrdep:meta,
+        $N_dep1_128B_ptrdep:literal, $N_dep2_128B_ptrdep:literal,
         )*
 
     ) => {
@@ -316,146 +316,146 @@ macro_rules! define_data_value_type_raw {
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 1, 8, feature: "_value8",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B,
                 )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep, $C_dep2_1B_dep,
                 )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep,
-                    $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep,
+                    $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )* ;
         }
         // 2-Byte / 16-bit
         #[cfg(feature = "_value16")]
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 2, 16, feature: "_value16",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B, )*
                 $( $C_doc_2B, $C_name_2B, $C_type_2B, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep, $C_dep2_1B_dep,
                 )*
                 $( $C_doc_2B_dep, $C_name_2B_dep, $C_type_2B_dep,
                     $C_dep1_2B_dep, $C_dep2_2B_dep,
                 )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )*
                 $( $C_doc_2B_ptr, $C_name_2B_ptr, $C_type_2B_ptr,
                     $C_ptr_2B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )*
-                $( $C_doc_2B_ptr_dep, $C_name_2B_ptr_dep, $C_type_2B_ptr_dep,
-                    $C_ptr_dep_2B_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )*
+                $( $C_doc_2B_ptrdep, $C_name_2B_ptrdep, $C_type_2B_ptrdep,
+                    $C_ptrdep_2B_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )*
                 $( $N_doc_2B, $N_name_2B, $N_type_2B, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )*
                 $( $N_doc_2B_dep, $N_name_2B_dep, $N_type_2B_dep,
                     $N_dep1_2B_dep, $N_dep2_2B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )*
                 $( $N_doc_2B_ptr, $N_name_2B_ptr, $N_type_2B_ptr,
                     $N_ptr_2B_ptr, $N_dep1_2B_ptr, $N_dep2_2B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep, $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )*
-                $( $N_doc_2B_ptr_dep, $N_name_2B_ptr_dep, $N_type_2B_ptr_dep,
-                    $N_ptr_2B_ptr_dep, $N_dep1_2B_ptr_dep, $N_dep2_2B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep, $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )*
+                $( $N_doc_2B_ptrdep, $N_name_2B_ptrdep, $N_type_2B_ptrdep,
+                    $N_ptr_2B_ptrdep, $N_dep1_2B_ptrdep, $N_dep2_2B_ptrdep, )* ;
         }
         // 4-Byte / 32-bit
         #[cfg(feature = "_value32")]
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 4, 32, feature: "_value32",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B, )*
                 $( $C_doc_2B, $C_name_2B, $C_type_2B, )*
                 $( $C_doc_4B, $C_name_4B, $C_type_4B, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep, $C_dep2_1B_dep, )*
                 $( $C_doc_2B_dep, $C_name_2B_dep, $C_type_2B_dep,
                     $C_dep1_2B_dep, $C_dep2_2B_dep, )*
                 $( $C_doc_4B_dep, $C_name_4B_dep, $C_type_4B_dep,
                     $C_dep1_4B_dep, $C_dep2_4B_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )*
                 $( $C_doc_2B_ptr, $C_name_2B_ptr, $C_type_2B_ptr,
                     $C_ptr_2B_ptr, )*
                 $( $C_doc_4B_ptr, $C_name_4B_ptr, $C_type_4B_ptr,
                     $C_ptr_4B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )*
-                $( $C_doc_2B_ptr_dep, $C_name_2B_ptr_dep, $C_type_2B_ptr_dep,
-                    $C_ptr_dep_2B_ptr_dep, )*
-                $( $C_doc_4B_ptr_dep, $C_name_4B_ptr_dep, $C_type_4B_ptr_dep,
-                    $C_ptr_dep_4B_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )*
+                $( $C_doc_2B_ptrdep, $C_name_2B_ptrdep, $C_type_2B_ptrdep,
+                    $C_ptrdep_2B_ptrdep, )*
+                $( $C_doc_4B_ptrdep, $C_name_4B_ptrdep, $C_type_4B_ptrdep,
+                    $C_ptrdep_4B_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )*
                 $( $N_doc_2B, $N_name_2B, $N_type_2B, )*
                 $( $N_doc_4B, $N_name_4B, $N_type_4B, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )*
                 $( $N_doc_2B_dep, $N_name_2B_dep, $N_type_2B_dep,
                     $N_dep1_2B_dep, $N_dep2_2B_dep, )*
                 $( $N_doc_4B_dep, $N_name_4B_dep, $N_type_4B_dep,
                     $N_dep1_4B_dep, $N_dep2_4B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )*
                 $( $N_doc_2B_ptr, $N_name_2B_ptr, $N_type_2B_ptr,
                     $N_ptr_2B_ptr, $N_dep1_2B_ptr, $N_dep2_2B_ptr, )*
                 $( $N_doc_4B_ptr, $N_name_4B_ptr, $N_type_4B_ptr,
                     $N_ptr_4B_ptr, $N_dep1_4B_ptr, $N_dep2_4B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep, $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )*
-                $( $N_doc_2B_ptr_dep, $N_name_2B_ptr_dep, $N_type_2B_ptr_dep,
-                    $N_ptr_2B_ptr_dep, $N_dep1_2B_ptr_dep, $N_dep2_2B_ptr_dep, )*
-                $( $N_doc_4B_ptr_dep, $N_name_4B_ptr_dep, $N_type_4B_ptr_dep,
-                    $N_ptr_4B_ptr_dep, $N_dep1_4B_ptr_dep, $N_dep2_4B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep, $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )*
+                $( $N_doc_2B_ptrdep, $N_name_2B_ptrdep, $N_type_2B_ptrdep,
+                    $N_ptr_2B_ptrdep, $N_dep1_2B_ptrdep, $N_dep2_2B_ptrdep, )*
+                $( $N_doc_4B_ptrdep, $N_name_4B_ptrdep, $N_type_4B_ptrdep,
+                    $N_ptr_4B_ptrdep, $N_dep1_4B_ptrdep, $N_dep2_4B_ptrdep, )* ;
         }
         // 8-Byte / 64-bit
         #[cfg(feature = "_value64")]
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 8, 64, feature: "_value64",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B, )*
                 $( $C_doc_2B, $C_name_2B, $C_type_2B, )*
                 $( $C_doc_4B, $C_name_4B, $C_type_4B, )*
                 $( $C_doc_8B, $C_name_8B, $C_type_8B, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep, $C_dep2_1B_dep, )*
                 $( $C_doc_2B_dep, $C_name_2B_dep, $C_type_2B_dep,
@@ -464,7 +464,7 @@ macro_rules! define_data_value_type_raw {
                     $C_dep1_4B_dep, $C_dep2_4B_dep, )*
                 $( $C_doc_8B_dep, $C_name_8B_dep, $C_type_8B_dep,
                     $C_dep1_8B_dep, $C_dep2_8B_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )*
                 $( $C_doc_2B_ptr, $C_name_2B_ptr, $C_type_2B_ptr,
@@ -473,22 +473,22 @@ macro_rules! define_data_value_type_raw {
                     $C_ptr_4B_ptr, )*
                 $( $C_doc_8B_ptr, $C_name_8B_ptr, $C_type_8B_ptr,
                     $C_ptr_8B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )*
-                $( $C_doc_2B_ptr_dep, $C_name_2B_ptr_dep, $C_type_2B_ptr_dep,
-                    $C_ptr_dep_2B_ptr_dep, )*
-                $( $C_doc_4B_ptr_dep, $C_name_4B_ptr_dep, $C_type_4B_ptr_dep,
-                    $C_ptr_dep_4B_ptr_dep, )*
-                $( $C_doc_8B_ptr_dep, $C_name_8B_ptr_dep, $C_type_8B_ptr_dep,
-                    $C_ptr_dep_8B_ptr_dep, ),* ;
-            noncopy_variants:
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )*
+                $( $C_doc_2B_ptrdep, $C_name_2B_ptrdep, $C_type_2B_ptrdep,
+                    $C_ptrdep_2B_ptrdep, )*
+                $( $C_doc_4B_ptrdep, $C_name_4B_ptrdep, $C_type_4B_ptrdep,
+                    $C_ptrdep_4B_ptrdep, )*
+                $( $C_doc_8B_ptrdep, $C_name_8B_ptrdep, $C_type_8B_ptrdep,
+                    $C_ptrdep_8B_ptrdep, ),* ;
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )*
                 $( $N_doc_2B, $N_name_2B, $N_type_2B, )*
                 $( $N_doc_4B, $N_name_4B, $N_type_4B, )*
                 $( $N_doc_8B, $N_name_8B, $N_type_8B, )* ;
 
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )*
                 $( $N_doc_2B_dep, $N_name_2B_dep, $N_type_2B_dep,
@@ -497,7 +497,7 @@ macro_rules! define_data_value_type_raw {
                     $N_dep1_4B_dep, $N_dep2_4B_dep, )*
                 $( $N_doc_8B_dep, $N_name_8B_dep, $N_type_8B_dep,
                     $N_dep1_8B_dep, $N_dep2_8B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )*
                 $( $N_doc_2B_ptr, $N_name_2B_ptr, $N_type_2B_ptr,
@@ -506,28 +506,28 @@ macro_rules! define_data_value_type_raw {
                     $N_ptr_4B_ptr, $N_dep1_4B_ptr, $N_dep2_4B_ptr, )*
                 $( $N_doc_8B_ptr, $N_name_8B_ptr, $N_type_8B_ptr,
                     $N_ptr_8B_ptr, $N_dep1_8B_ptr, $N_dep2_8B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep, $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )*
-                $( $N_doc_2B_ptr_dep, $N_name_2B_ptr_dep, $N_type_2B_ptr_dep,
-                    $N_ptr_2B_ptr_dep, $N_dep1_2B_ptr_dep, $N_dep2_2B_ptr_dep, )*
-                $( $N_doc_4B_ptr_dep, $N_name_4B_ptr_dep, $N_type_4B_ptr_dep,
-                    $N_ptr_4B_ptr_dep, $N_dep1_4B_ptr_dep, $N_dep2_4B_ptr_dep, )*
-                $( $N_doc_8B_ptr_dep, $N_name_8B_ptr_dep, $N_type_8B_ptr_dep,
-                    $N_ptr_8B_ptr_dep, $N_dep1_8B_ptr_dep, $N_dep2_8B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep, $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )*
+                $( $N_doc_2B_ptrdep, $N_name_2B_ptrdep, $N_type_2B_ptrdep,
+                    $N_ptr_2B_ptrdep, $N_dep1_2B_ptrdep, $N_dep2_2B_ptrdep, )*
+                $( $N_doc_4B_ptrdep, $N_name_4B_ptrdep, $N_type_4B_ptrdep,
+                    $N_ptr_4B_ptrdep, $N_dep1_4B_ptrdep, $N_dep2_4B_ptrdep, )*
+                $( $N_doc_8B_ptrdep, $N_name_8B_ptrdep, $N_type_8B_ptrdep,
+                    $N_ptr_8B_ptrdep, $N_dep1_8B_ptrdep, $N_dep2_8B_ptrdep, )* ;
         }
         // 16-Byte / 128-bit
         #[cfg(feature = "_value128")]
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 16, 128, feature: "_value128",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B, )*
                 $( $C_doc_2B, $C_name_2B, $C_type_2B, )*
                 $( $C_doc_4B, $C_name_4B, $C_type_4B, )*
                 $( $C_doc_8B, $C_name_8B, $C_type_8B, )*
                 $( $C_doc_16B, $C_name_16B, $C_type_16B, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep, $C_dep2_1B_dep, )*
                 $( $C_doc_2B_dep, $C_name_2B_dep, $C_type_2B_dep,
@@ -538,7 +538,7 @@ macro_rules! define_data_value_type_raw {
                     $C_dep1_8B_dep, $C_dep2_8B_dep, )*
                 $( $C_doc_16B_dep, $C_name_16B_dep, $C_type_16B_dep,
                     $C_dep1_16B_dep, $C_dep2_16B_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )*
                 $( $C_doc_2B_ptr, $C_name_2B_ptr, $C_type_2B_ptr,
@@ -549,25 +549,25 @@ macro_rules! define_data_value_type_raw {
                     $C_ptr_8B_ptr, )*
                 $( $C_doc_16B_ptr, $C_name_16B_ptr, $C_type_16B_ptr,
                     $C_ptr_16B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )*
-                $( $C_doc_2B_ptr_dep, $C_name_2B_ptr_dep, $C_type_2B_ptr_dep,
-                    $C_ptr_dep_2B_ptr_dep, )*
-                $( $C_doc_4B_ptr_dep, $C_name_4B_ptr_dep, $C_type_4B_ptr_dep,
-                    $C_ptr_dep_4B_ptr_dep, )*
-                $( $C_doc_8B_ptr_dep, $C_name_8B_ptr_dep, $C_type_8B_ptr_dep,
-                    $C_ptr_dep_8B_ptr_dep, )*
-                $( $C_doc_16B_ptr_dep, $C_name_16B_ptr_dep, $C_type_16B_ptr_dep,
-                    $C_ptr_dep_16B_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )*
+                $( $C_doc_2B_ptrdep, $C_name_2B_ptrdep, $C_type_2B_ptrdep,
+                    $C_ptrdep_2B_ptrdep, )*
+                $( $C_doc_4B_ptrdep, $C_name_4B_ptrdep, $C_type_4B_ptrdep,
+                    $C_ptrdep_4B_ptrdep, )*
+                $( $C_doc_8B_ptrdep, $C_name_8B_ptrdep, $C_type_8B_ptrdep,
+                    $C_ptrdep_8B_ptrdep, )*
+                $( $C_doc_16B_ptrdep, $C_name_16B_ptrdep, $C_type_16B_ptrdep,
+                    $C_ptrdep_16B_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )*
                 $( $N_doc_2B, $N_name_2B, $N_type_2B, )*
                 $( $N_doc_4B, $N_name_4B, $N_type_4B, )*
                 $( $N_doc_8B, $N_name_8B, $N_type_8B, )*
                 $( $N_doc_16B, $N_name_16B, $N_type_16B, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )*
                 $( $N_doc_2B_dep, $N_name_2B_dep, $N_type_2B_dep,
@@ -578,7 +578,7 @@ macro_rules! define_data_value_type_raw {
                     $N_dep1_8B_dep, $N_dep2_8B_dep, )*
                 $( $N_doc_16B_dep, $N_name_16B_dep, $N_type_16B_dep,
                     $N_dep1_16B_dep, $N_dep2_16B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )*
                 $( $N_doc_2B_ptr, $N_name_2B_ptr, $N_type_2B_ptr,
@@ -589,31 +589,31 @@ macro_rules! define_data_value_type_raw {
                     $N_ptr_8B_ptr, $N_dep1_8B_ptr, $N_dep2_8B_ptr, )*
                 $( $N_doc_16B_ptr, $N_name_16B_ptr, $N_type_16B_ptr,
                     $N_ptr_16B_ptr, $N_dep1_16B_ptr, $N_dep2_16B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep, $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )*
-                $( $N_doc_2B_ptr_dep, $N_name_2B_ptr_dep, $N_type_2B_ptr_dep,
-                    $N_ptr_2B_ptr_dep, $N_dep1_2B_ptr_dep, $N_dep2_2B_ptr_dep, )*
-                $( $N_doc_4B_ptr_dep, $N_name_4B_ptr_dep, $N_type_4B_ptr_dep,
-                    $N_ptr_4B_ptr_dep, $N_dep1_4B_ptr_dep, $N_dep2_4B_ptr_dep, )*
-                $( $N_doc_8B_ptr_dep, $N_name_8B_ptr_dep, $N_type_8B_ptr_dep,
-                    $N_ptr_8B_ptr_dep, $N_dep1_8B_ptr_dep, $N_dep2_8B_ptr_dep, )*
-                $( $N_doc_16B_ptr_dep, $N_name_16B_ptr_dep, $N_type_16B_ptr_dep,
-                    $N_ptr_16B_ptr_dep, $N_dep1_16B_ptr_dep, $N_dep2_16B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep, $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )*
+                $( $N_doc_2B_ptrdep, $N_name_2B_ptrdep, $N_type_2B_ptrdep,
+                    $N_ptr_2B_ptrdep, $N_dep1_2B_ptrdep, $N_dep2_2B_ptrdep, )*
+                $( $N_doc_4B_ptrdep, $N_name_4B_ptrdep, $N_type_4B_ptrdep,
+                    $N_ptr_4B_ptrdep, $N_dep1_4B_ptrdep, $N_dep2_4B_ptrdep, )*
+                $( $N_doc_8B_ptrdep, $N_name_8B_ptrdep, $N_type_8B_ptrdep,
+                    $N_ptr_8B_ptrdep, $N_dep1_8B_ptrdep, $N_dep2_8B_ptrdep, )*
+                $( $N_doc_16B_ptrdep, $N_name_16B_ptrdep, $N_type_16B_ptrdep,
+                    $N_ptr_16B_ptrdep, $N_dep1_16B_ptrdep, $N_dep2_16B_ptrdep, )* ;
         }
         // 32-Byte / 256-bit
         #[cfg(feature = "_value256")]
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 32, 256, feature: "_value256",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B, )*
                 $( $C_doc_2B, $C_name_2B, $C_type_2B, )*
                 $( $C_doc_4B, $C_name_4B, $C_type_4B, )*
                 $( $C_doc_8B, $C_name_8B, $C_type_8B, )*
                 $( $C_doc_16B, $C_name_16B, $C_type_16B, )*
                 $( $C_doc_32B, $C_name_32B, $C_type_32B, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep,
                     $C_dep2_1B_dep, )*
@@ -632,7 +632,7 @@ macro_rules! define_data_value_type_raw {
                 $( $C_doc_32B_dep, $C_name_32B_dep, $C_type_32B_dep,
                     $C_dep1_32B_dep,
                     $C_dep2_32B_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )*
                 $( $C_doc_2B_ptr, $C_name_2B_ptr, $C_type_2B_ptr,
@@ -645,28 +645,28 @@ macro_rules! define_data_value_type_raw {
                     $C_ptr_16B_ptr, )*
                 $( $C_doc_32B_ptr, $C_name_32B_ptr, $C_type_32B_ptr,
                     $C_ptr_32B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )*
-                $( $C_doc_2B_ptr_dep, $C_name_2B_ptr_dep, $C_type_2B_ptr_dep,
-                    $C_ptr_dep_2B_ptr_dep, )*
-                $( $C_doc_4B_ptr_dep, $C_name_4B_ptr_dep, $C_type_4B_ptr_dep,
-                    $C_ptr_dep_4B_ptr_dep, )*
-                $( $C_doc_8B_ptr_dep, $C_name_8B_ptr_dep, $C_type_8B_ptr_dep,
-                    $C_ptr_dep_8B_ptr_dep, )*
-                $( $C_doc_16B_ptr_dep, $C_name_16B_ptr_dep, $C_type_16B_ptr_dep,
-                    $C_ptr_dep_16B_ptr_dep, )*
-                $( $C_doc_32B_ptr_dep, $C_name_32B_ptr_dep, $C_type_32B_ptr_dep,
-                    $C_ptr_dep_32B_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )*
+                $( $C_doc_2B_ptrdep, $C_name_2B_ptrdep, $C_type_2B_ptrdep,
+                    $C_ptrdep_2B_ptrdep, )*
+                $( $C_doc_4B_ptrdep, $C_name_4B_ptrdep, $C_type_4B_ptrdep,
+                    $C_ptrdep_4B_ptrdep, )*
+                $( $C_doc_8B_ptrdep, $C_name_8B_ptrdep, $C_type_8B_ptrdep,
+                    $C_ptrdep_8B_ptrdep, )*
+                $( $C_doc_16B_ptrdep, $C_name_16B_ptrdep, $C_type_16B_ptrdep,
+                    $C_ptrdep_16B_ptrdep, )*
+                $( $C_doc_32B_ptrdep, $C_name_32B_ptrdep, $C_type_32B_ptrdep,
+                    $C_ptrdep_32B_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )*
                 $( $N_doc_2B, $N_name_2B, $N_type_2B, )*
                 $( $N_doc_4B, $N_name_4B, $N_type_4B, )*
                 $( $N_doc_8B, $N_name_8B, $N_type_8B, )*
                 $( $N_doc_16B, $N_name_16B, $N_type_16B, )*
                 $( $N_doc_32B, $N_name_32B, $N_type_32B, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )*
                 $( $N_doc_2B_dep, $N_name_2B_dep, $N_type_2B_dep,
@@ -679,7 +679,7 @@ macro_rules! define_data_value_type_raw {
                     $N_dep1_16B_dep, $N_dep2_16B_dep, )*
                 $( $N_doc_32B_dep, $N_name_32B_dep, $N_type_32B_dep,
                     $N_dep1_32B_dep, $N_dep2_32B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )*
                 $( $N_doc_2B_ptr, $N_name_2B_ptr, $N_type_2B_ptr,
@@ -692,26 +692,26 @@ macro_rules! define_data_value_type_raw {
                     $N_ptr_16B_ptr, $N_dep1_16B_ptr, $N_dep2_16B_ptr, )*
                 $( $N_doc_32B_ptr, $N_name_32B_ptr, $N_type_32B_ptr,
                     $N_ptr_32B_ptr, $N_dep1_32B_ptr, $N_dep2_32B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep, $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )*
-                $( $N_doc_2B_ptr_dep, $N_name_2B_ptr_dep, $N_type_2B_ptr_dep,
-                    $N_ptr_2B_ptr_dep, $N_dep1_2B_ptr_dep, $N_dep2_2B_ptr_dep, )*
-                $( $N_doc_4B_ptr_dep, $N_name_4B_ptr_dep, $N_type_4B_ptr_dep,
-                    $N_ptr_4B_ptr_dep, $N_dep1_4B_ptr_dep, $N_dep2_4B_ptr_dep, )*
-                $( $N_doc_8B_ptr_dep, $N_name_8B_ptr_dep, $N_type_8B_ptr_dep,
-                    $N_ptr_8B_ptr_dep, $N_dep1_8B_ptr_dep, $N_dep2_8B_ptr_dep, )*
-                $( $N_doc_16B_ptr_dep, $N_name_16B_ptr_dep, $N_type_16B_ptr_dep,
-                    $N_ptr_16B_ptr_dep, $N_dep1_16B_ptr_dep, $N_dep2_16B_ptr_dep, )*
-                $( $N_doc_32B_ptr_dep, $N_name_32B_ptr_dep, $N_type_32B_ptr_dep,
-                    $N_ptr_32B_ptr_dep, $N_dep1_32B_ptr_dep, $N_dep2_32B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep, $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )*
+                $( $N_doc_2B_ptrdep, $N_name_2B_ptrdep, $N_type_2B_ptrdep,
+                    $N_ptr_2B_ptrdep, $N_dep1_2B_ptrdep, $N_dep2_2B_ptrdep, )*
+                $( $N_doc_4B_ptrdep, $N_name_4B_ptrdep, $N_type_4B_ptrdep,
+                    $N_ptr_4B_ptrdep, $N_dep1_4B_ptrdep, $N_dep2_4B_ptrdep, )*
+                $( $N_doc_8B_ptrdep, $N_name_8B_ptrdep, $N_type_8B_ptrdep,
+                    $N_ptr_8B_ptrdep, $N_dep1_8B_ptrdep, $N_dep2_8B_ptrdep, )*
+                $( $N_doc_16B_ptrdep, $N_name_16B_ptrdep, $N_type_16B_ptrdep,
+                    $N_ptr_16B_ptrdep, $N_dep1_16B_ptrdep, $N_dep2_16B_ptrdep, )*
+                $( $N_doc_32B_ptrdep, $N_name_32B_ptrdep, $N_type_32B_ptrdep,
+                    $N_ptr_32B_ptrdep, $N_dep1_32B_ptrdep, $N_dep2_32B_ptrdep, )* ;
         }
         // 64-Byte / 512-bit
         #[cfg(feature = "_value512")]
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 64, 512, feature: "_value512",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B, )*
                 $( $C_doc_2B, $C_name_2B, $C_type_2B, )*
                 $( $C_doc_4B, $C_name_4B, $C_type_4B, )*
@@ -719,7 +719,7 @@ macro_rules! define_data_value_type_raw {
                 $( $C_doc_16B, $C_name_16B, $C_type_16B, )*
                 $( $C_doc_32B, $C_name_32B, $C_type_32B, )*
                 $( $C_doc_64B, $C_name_64B, $C_type_64B, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep, $C_dep2_1B_dep, )*
                 $( $C_doc_2B_dep, $C_name_2B_dep, $C_type_2B_dep,
@@ -734,7 +734,7 @@ macro_rules! define_data_value_type_raw {
                     $C_dep1_32B_dep, $C_dep2_32B_dep, )*
                 $( $C_doc_64B_dep, $C_name_64B_dep, $C_type_64B_dep,
                     $C_dep1_64B_dep, $C_dep2_64B_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )*
                 $( $C_doc_2B_ptr, $C_name_2B_ptr, $C_type_2B_ptr,
@@ -749,23 +749,23 @@ macro_rules! define_data_value_type_raw {
                     $C_ptr_32B_ptr, )*
                 $( $C_doc_64B_ptr, $C_name_64B_ptr, $C_type_64B_ptr,
                     $C_ptr_64B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )*
-                $( $C_doc_2B_ptr_dep, $C_name_2B_ptr_dep, $C_type_2B_ptr_dep,
-                    $C_ptr_dep_2B_ptr_dep, )*
-                $( $C_doc_4B_ptr_dep, $C_name_4B_ptr_dep, $C_type_4B_ptr_dep,
-                    $C_ptr_dep_4B_ptr_dep, )*
-                $( $C_doc_8B_ptr_dep, $C_name_8B_ptr_dep, $C_type_8B_ptr_dep,
-                    $C_ptr_dep_8B_ptr_dep, )*
-                $( $C_doc_16B_ptr_dep, $C_name_16B_ptr_dep, $C_type_16B_ptr_dep,
-                    $C_ptr_dep_16B_ptr_dep, )*
-                $( $C_doc_32B_ptr_dep, $C_name_32B_ptr_dep, $C_type_32B_ptr_dep,
-                    $C_ptr_dep_32B_ptr_dep, )*
-                $( $C_doc_64B_ptr_dep, $C_name_64B_ptr_dep, $C_type_64B_ptr_dep,
-                    $C_ptr_dep_64B_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )*
+                $( $C_doc_2B_ptrdep, $C_name_2B_ptrdep, $C_type_2B_ptrdep,
+                    $C_ptrdep_2B_ptrdep, )*
+                $( $C_doc_4B_ptrdep, $C_name_4B_ptrdep, $C_type_4B_ptrdep,
+                    $C_ptrdep_4B_ptrdep, )*
+                $( $C_doc_8B_ptrdep, $C_name_8B_ptrdep, $C_type_8B_ptrdep,
+                    $C_ptrdep_8B_ptrdep, )*
+                $( $C_doc_16B_ptrdep, $C_name_16B_ptrdep, $C_type_16B_ptrdep,
+                    $C_ptrdep_16B_ptrdep, )*
+                $( $C_doc_32B_ptrdep, $C_name_32B_ptrdep, $C_type_32B_ptrdep,
+                    $C_ptrdep_32B_ptrdep, )*
+                $( $C_doc_64B_ptrdep, $C_name_64B_ptrdep, $C_type_64B_ptrdep,
+                    $C_ptrdep_64B_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )*
                 $( $N_doc_2B, $N_name_2B, $N_type_2B, )*
                 $( $N_doc_4B, $N_name_4B, $N_type_4B, )*
@@ -773,7 +773,7 @@ macro_rules! define_data_value_type_raw {
                 $( $N_doc_16B, $N_name_16B, $N_type_16B, )*
                 $( $N_doc_32B, $N_name_32B, $N_type_32B, )*
                 $( $N_doc_64B, $N_name_64B, $N_type_64B, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )*
                 $( $N_doc_2B_dep, $N_name_2B_dep, $N_type_2B_dep,
@@ -788,7 +788,7 @@ macro_rules! define_data_value_type_raw {
                     $N_dep1_32B_dep, $N_dep2_32B_dep, )*
                 $( $N_doc_64B_dep, $N_name_64B_dep, $N_type_64B_dep,
                     $N_dep1_64B_dep, $N_dep2_64B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )*
                 $( $N_doc_2B_ptr, $N_name_2B_ptr, $N_type_2B_ptr,
@@ -803,28 +803,28 @@ macro_rules! define_data_value_type_raw {
                     $N_ptr_32B_ptr, $N_dep1_32B_ptr, $N_dep2_32B_ptr, )*
                 $( $N_doc_64B_ptr, $N_name_64B_ptr, $N_type_64B_ptr,
                     $N_ptr_64B_ptr, $N_dep1_64B_ptr, $N_dep2_64B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep, $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )*
-                $( $N_doc_2B_ptr_dep, $N_name_2B_ptr_dep, $N_type_2B_ptr_dep,
-                    $N_ptr_2B_ptr_dep, $N_dep1_2B_ptr_dep, $N_dep2_2B_ptr_dep, )*
-                $( $N_doc_4B_ptr_dep, $N_name_4B_ptr_dep, $N_type_4B_ptr_dep,
-                    $N_ptr_4B_ptr_dep, $N_dep1_4B_ptr_dep, $N_dep2_4B_ptr_dep, )*
-                $( $N_doc_8B_ptr_dep, $N_name_8B_ptr_dep, $N_type_8B_ptr_dep,
-                    $N_ptr_8B_ptr_dep, $N_dep1_8B_ptr_dep, $N_dep2_8B_ptr_dep, )*
-                $( $N_doc_16B_ptr_dep, $N_name_16B_ptr_dep, $N_type_16B_ptr_dep,
-                    $N_ptr_16B_ptr_dep, $N_dep1_16B_ptr_dep, $N_dep2_16B_ptr_dep, )*
-                $( $N_doc_32B_ptr_dep, $N_name_32B_ptr_dep, $N_type_32B_ptr_dep,
-                    $N_ptr_32B_ptr_dep, $N_dep1_32B_ptr_dep, $N_dep2_32B_ptr_dep, )*
-                $( $N_doc_64B_ptr_dep, $N_name_64B_ptr_dep, $N_type_64B_ptr_dep,
-                    $N_ptr_64B_ptr_dep, $N_dep1_64B_ptr_dep, $N_dep2_64B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep, $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )*
+                $( $N_doc_2B_ptrdep, $N_name_2B_ptrdep, $N_type_2B_ptrdep,
+                    $N_ptr_2B_ptrdep, $N_dep1_2B_ptrdep, $N_dep2_2B_ptrdep, )*
+                $( $N_doc_4B_ptrdep, $N_name_4B_ptrdep, $N_type_4B_ptrdep,
+                    $N_ptr_4B_ptrdep, $N_dep1_4B_ptrdep, $N_dep2_4B_ptrdep, )*
+                $( $N_doc_8B_ptrdep, $N_name_8B_ptrdep, $N_type_8B_ptrdep,
+                    $N_ptr_8B_ptrdep, $N_dep1_8B_ptrdep, $N_dep2_8B_ptrdep, )*
+                $( $N_doc_16B_ptrdep, $N_name_16B_ptrdep, $N_type_16B_ptrdep,
+                    $N_ptr_16B_ptrdep, $N_dep1_16B_ptrdep, $N_dep2_16B_ptrdep, )*
+                $( $N_doc_32B_ptrdep, $N_name_32B_ptrdep, $N_type_32B_ptrdep,
+                    $N_ptr_32B_ptrdep, $N_dep1_32B_ptrdep, $N_dep2_32B_ptrdep, )*
+                $( $N_doc_64B_ptrdep, $N_name_64B_ptrdep, $N_type_64B_ptrdep,
+                    $N_ptr_64B_ptrdep, $N_dep1_64B_ptrdep, $N_dep2_64B_ptrdep, )* ;
         }
         // 128-Byte / 1024-bit
         #[cfg(feature = "_value1024")]
         $crate::define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 128, 1024, feature: "_value1024",
 
-            copy_variants:
+            copy:
                 $( $C_doc_1B, $C_name_1B, $C_type_1B, )*
                 $( $C_doc_2B, $C_name_2B, $C_type_2B, )*
                 $( $C_doc_4B, $C_name_4B, $C_type_4B, )*
@@ -833,7 +833,7 @@ macro_rules! define_data_value_type_raw {
                 $( $C_doc_32B, $C_name_32B, $C_type_32B, )*
                 $( $C_doc_64B, $C_name_64B, $C_type_64B, )*
                 $( $C_doc_128B, $C_name_128B, $C_type_128B, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_1B_dep, $C_name_1B_dep, $C_type_1B_dep,
                     $C_dep1_1B_dep, $C_dep2_1B_dep, )*
                 $( $C_doc_2B_dep, $C_name_2B_dep, $C_type_2B_dep,
@@ -850,7 +850,7 @@ macro_rules! define_data_value_type_raw {
                     $C_dep1_64B_dep, $C_dep2_64B_dep, )*
                 $( $C_doc_128B_dep, $C_name_128B_dep, $C_type_128B_dep,
                     $C_dep1_128B_dep, $C_dep2_128B_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_1B_ptr, $C_name_1B_ptr, $C_type_1B_ptr,
                     $C_ptr_1B_ptr, )*
                 $( $C_doc_2B_ptr, $C_name_2B_ptr, $C_type_2B_ptr,
@@ -867,25 +867,25 @@ macro_rules! define_data_value_type_raw {
                     $C_ptr_64B_ptr, )*
                 $( $C_doc_128B_ptr, $C_name_128B_ptr, $C_type_128B_ptr,
                     $C_ptr_128B_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_1B_ptr_dep, $C_name_1B_ptr_dep, $C_type_1B_ptr_dep,
-                    $C_ptr_dep_1B_ptr_dep, )*
-                $( $C_doc_2B_ptr_dep, $C_name_2B_ptr_dep, $C_type_2B_ptr_dep,
-                    $C_ptr_dep_2B_ptr_dep, )*
-                $( $C_doc_4B_ptr_dep, $C_name_4B_ptr_dep, $C_type_4B_ptr_dep,
-                    $C_ptr_dep_4B_ptr_dep, )*
-                $( $C_doc_8B_ptr_dep, $C_name_8B_ptr_dep, $C_type_8B_ptr_dep,
-                    $C_ptr_dep_8B_ptr_dep, )*
-                $( $C_doc_16B_ptr_dep, $C_name_16B_ptr_dep, $C_type_16B_ptr_dep,
-                    $C_ptr_dep_16B_ptr_dep, )*
-                $( $C_doc_32B_ptr_dep, $C_name_32B_ptr_dep, $C_type_32B_ptr_dep,
-                    $C_ptr_dep_32B_ptr_dep, )*
-                $( $C_doc_64B_ptr_dep, $C_name_64B_ptr_dep, $C_type_64B_ptr_dep,
-                    $C_ptr_dep_64B_ptr_dep, )*
-                $( $C_doc_128B_ptr_dep, $C_name_128B_ptr_dep, $C_type_128B_ptr_dep,
-                    $C_ptr_dep_128B_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_1B_ptrdep, $C_name_1B_ptrdep, $C_type_1B_ptrdep,
+                    $C_ptrdep_1B_ptrdep, )*
+                $( $C_doc_2B_ptrdep, $C_name_2B_ptrdep, $C_type_2B_ptrdep,
+                    $C_ptrdep_2B_ptrdep, )*
+                $( $C_doc_4B_ptrdep, $C_name_4B_ptrdep, $C_type_4B_ptrdep,
+                    $C_ptrdep_4B_ptrdep, )*
+                $( $C_doc_8B_ptrdep, $C_name_8B_ptrdep, $C_type_8B_ptrdep,
+                    $C_ptrdep_8B_ptrdep, )*
+                $( $C_doc_16B_ptrdep, $C_name_16B_ptrdep, $C_type_16B_ptrdep,
+                    $C_ptrdep_16B_ptrdep, )*
+                $( $C_doc_32B_ptrdep, $C_name_32B_ptrdep, $C_type_32B_ptrdep,
+                    $C_ptrdep_32B_ptrdep, )*
+                $( $C_doc_64B_ptrdep, $C_name_64B_ptrdep, $C_type_64B_ptrdep,
+                    $C_ptrdep_64B_ptrdep, )*
+                $( $C_doc_128B_ptrdep, $C_name_128B_ptrdep, $C_type_128B_ptrdep,
+                    $C_ptrdep_128B_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc_1B, $N_name_1B, $N_type_1B, )*
                 $( $N_doc_2B, $N_name_2B, $N_type_2B, )*
                 $( $N_doc_4B, $N_name_4B, $N_type_4B, )*
@@ -894,7 +894,7 @@ macro_rules! define_data_value_type_raw {
                 $( $N_doc_32B, $N_name_32B, $N_type_32B, )*
                 $( $N_doc_64B, $N_name_64B, $N_type_64B, )*
                 $( $N_doc_128B, $N_name_128B, $N_type_128B, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_1B_dep, $N_name_1B_dep, $N_type_1B_dep,
                     $N_dep1_1B_dep, $N_dep2_1B_dep, )*
                 $( $N_doc_2B_dep, $N_name_2B_dep, $N_type_2B_dep,
@@ -911,7 +911,7 @@ macro_rules! define_data_value_type_raw {
                     $N_dep1_64B_dep, $N_dep2_64B_dep, )*
                 $( $N_doc_128B_dep, $N_name_128B_dep, $N_type_128B_dep,
                     $N_dep1_128B_dep, $N_dep2_128B_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_1B_ptr, $N_name_1B_ptr, $N_type_1B_ptr,
                     $N_ptr_1B_ptr, $N_dep1_1B_ptr, $N_dep2_1B_ptr, )*
                 $( $N_doc_2B_ptr, $N_name_2B_ptr, $N_type_2B_ptr,
@@ -928,23 +928,23 @@ macro_rules! define_data_value_type_raw {
                     $N_ptr_64B_ptr, $N_dep1_64B_ptr, $N_dep2_64B_ptr, )*
                 $( $N_doc_128B_ptr, $N_name_128B_ptr, $N_type_128B_ptr,
                     $N_ptr_128B_ptr, $N_dep1_128B_ptr, $N_dep2_128B_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_1B_ptr_dep, $N_name_1B_ptr_dep, $N_type_1B_ptr_dep,
-                    $N_ptr_1B_ptr_dep, $N_dep1_1B_ptr_dep, $N_dep2_1B_ptr_dep, )*
-                $( $N_doc_2B_ptr_dep, $N_name_2B_ptr_dep, $N_type_2B_ptr_dep,
-                    $N_ptr_2B_ptr_dep, $N_dep1_2B_ptr_dep, $N_dep2_2B_ptr_dep, )*
-                $( $N_doc_4B_ptr_dep, $N_name_4B_ptr_dep, $N_type_4B_ptr_dep,
-                    $N_ptr_4B_ptr_dep, $N_dep1_4B_ptr_dep, $N_dep2_4B_ptr_dep, )*
-                $( $N_doc_8B_ptr_dep, $N_name_8B_ptr_dep, $N_type_8B_ptr_dep,
-                    $N_ptr_8B_ptr_dep, $N_dep1_8B_ptr_dep, $N_dep2_8B_ptr_dep, )*
-                $( $N_doc_16B_ptr_dep, $N_name_16B_ptr_dep, $N_type_16B_ptr_dep,
-                    $N_ptr_16B_ptr_dep, $N_dep1_16B_ptr_dep, $N_dep2_16B_ptr_dep, )*
-                $( $N_doc_32B_ptr_dep, $N_name_32B_ptr_dep, $N_type_32B_ptr_dep,
-                    $N_ptr_32B_ptr_dep, $N_dep1_32B_ptr_dep, $N_dep2_32B_ptr_dep, )*
-                $( $N_doc_64B_ptr_dep, $N_name_64B_ptr_dep, $N_type_64B_ptr_dep,
-                    $N_ptr_64B_ptr_dep, $N_dep1_64B_ptr_dep, $N_dep2_64B_ptr_dep, )*
-                $( $N_doc_128B_ptr_dep, $N_name_128B_ptr_dep, $N_type_128B_ptr_dep,
-                    $N_ptr_128B_ptr_dep, $N_dep1_128B_ptr_dep, $N_dep2_128B_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_1B_ptrdep, $N_name_1B_ptrdep, $N_type_1B_ptrdep,
+                    $N_ptr_1B_ptrdep, $N_dep1_1B_ptrdep, $N_dep2_1B_ptrdep, )*
+                $( $N_doc_2B_ptrdep, $N_name_2B_ptrdep, $N_type_2B_ptrdep,
+                    $N_ptr_2B_ptrdep, $N_dep1_2B_ptrdep, $N_dep2_2B_ptrdep, )*
+                $( $N_doc_4B_ptrdep, $N_name_4B_ptrdep, $N_type_4B_ptrdep,
+                    $N_ptr_4B_ptrdep, $N_dep1_4B_ptrdep, $N_dep2_4B_ptrdep, )*
+                $( $N_doc_8B_ptrdep, $N_name_8B_ptrdep, $N_type_8B_ptrdep,
+                    $N_ptr_8B_ptrdep, $N_dep1_8B_ptrdep, $N_dep2_8B_ptrdep, )*
+                $( $N_doc_16B_ptrdep, $N_name_16B_ptrdep, $N_type_16B_ptrdep,
+                    $N_ptr_16B_ptrdep, $N_dep1_16B_ptrdep, $N_dep2_16B_ptrdep, )*
+                $( $N_doc_32B_ptrdep, $N_name_32B_ptrdep, $N_type_32B_ptrdep,
+                    $N_ptr_32B_ptrdep, $N_dep1_32B_ptrdep, $N_dep2_32B_ptrdep, )*
+                $( $N_doc_64B_ptrdep, $N_name_64B_ptrdep, $N_type_64B_ptrdep,
+                    $N_ptr_64B_ptrdep, $N_dep1_64B_ptrdep, $N_dep2_64B_ptrdep, )*
+                $( $N_doc_128B_ptrdep, $N_name_128B_ptrdep, $N_type_128B_ptrdep,
+                    $N_ptr_128B_ptrdep, $N_dep1_128B_ptrdep, $N_dep2_128B_ptrdep, )* ;
         }
     };
     (
@@ -957,107 +957,107 @@ macro_rules! define_data_value_type_raw {
     size: $B:literal, $b:literal,
     feature: $feature:literal,
 
-    copy_variants:
+    copy:
         $( $C_doc:literal, $C_name:ident, $C_type:ty, )* ;
-    copy_variants_dep:
+    copy@dep:
         $( $C_doc_dep:literal, $C_name_dep:ident, $C_type_dep:ty,
         $C_dep1_dep:literal, $C_dep2_dep:literal, )* ;
-    copy_variants_ptr:
+    copy@ptr:
         $( $C_doc_ptr:literal, $C_name_ptr:ident, $C_type_ptr:ty,
         $C_ptr_ptr:meta, )* ;
-    copy_variants_ptr_dep:
-        $( $C_doc_ptr_dep:literal, $C_name_ptr_dep:ident, $C_type_ptr_dep:ty,
-        $C_ptr_ptr_dep:meta, $C_dep1_ptr_dep:literal, $C_dep2_ptr_dep:literal, )* ;
+    copy@ptrdep:
+        $( $C_doc_ptrdep:literal, $C_name_ptrdep:ident, $C_type_ptrdep:ty,
+        $C_ptr_ptrdep:meta, $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal, )* ;
 
-    noncopy_variants:
+    noncopy:
         $( $N_doc:literal, $N_name:ident, $N_type:ty, )* ;
-    noncopy_variants_dep:
+    noncopy@dep:
         $( $N_doc_dep:literal, $N_name_dep:ident, $N_type_dep:ty,
         $N_dep1_dep:literal, $N_dep2_dep:literal, )* ;
-    noncopy_variants_ptr:
+    noncopy@ptr:
         $( $N_doc_ptr:literal, $N_name_ptr:ident, $N_type_ptr:ty,
         $N_ptr_ptr:meta, $N_dep1_ptr:literal, $N_dep2_ptr:literal, )* ;
-    noncopy_variants_ptr_dep:
-        $( $N_doc_ptr_dep:literal, $N_name_ptr_dep:ident, $N_type_ptr_dep:ty,
-        $N_ptr_ptr_dep:meta, $N_dep1_ptr_dep:literal, $N_dep2_ptr_dep:literal, )* ;
+    noncopy@ptrdep:
+        $( $N_doc_ptrdep:literal, $N_name_ptrdep:ident, $N_type_ptrdep:ty,
+        $N_ptr_ptrdep:meta, $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal, )* ;
     ) => {
         $crate::define_data_value! {
             v: $Value, t: $Type, r: $Raw, size: $B, $b, feature: $feature,
-            copy_variants:
+            copy:
                 $( $C_doc, $C_name, $C_type, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_dep, $C_name_dep, $C_type_dep,
                     $C_dep1_dep, $C_dep2_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_ptr, $C_name_ptr, $C_type_ptr,
                     $C_ptr_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_ptr_dep, $C_name_ptr_dep, $C_type_ptr_dep,
-                    $C_ptr_ptr_dep, $C_dep1_ptr_dep, $C_dep2_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_ptrdep, $C_name_ptrdep, $C_type_ptrdep,
+                    $C_ptr_ptrdep, $C_dep1_ptrdep, $C_dep2_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc, $N_name, $N_type, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_dep, $N_name_dep, $N_type_dep,
                     $N_dep1_dep, $N_dep2_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_ptr, $N_name_ptr, $N_type_ptr,
                     $N_ptr_ptr, $N_dep1_ptr, $N_dep2_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_ptr_dep, $N_name_ptr_dep, $N_type_ptr_dep,
-                    $N_ptr_ptr_dep, $N_dep1_ptr_dep, $N_dep2_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_ptrdep, $N_name_ptrdep, $N_type_ptrdep,
+                    $N_ptr_ptrdep, $N_dep1_ptrdep, $N_dep2_ptrdep, )* ;
         }
         $crate::define_data_type! {
             v: $Value, t: $Type, r: $Raw, size: $B, $b, feature: $feature,
-            copy_variants:
+            copy:
                 $( $C_doc, $C_name, $C_type, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_dep, $C_name_dep, $C_type_dep,
                     $C_dep1_dep, $C_dep2_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_ptr, $C_name_ptr, $C_type_ptr,
                     $C_ptr_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_ptr_dep, $C_name_ptr_dep, $C_type_ptr_dep,
-                    $C_ptr_ptr_dep, $C_dep1_ptr_dep, $C_dep2_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_ptrdep, $C_name_ptrdep, $C_type_ptrdep,
+                    $C_ptr_ptrdep, $C_dep1_ptrdep, $C_dep2_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc, $N_name, $N_type, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_dep, $N_name_dep, $N_type_dep,
                     $N_dep1_dep, $N_dep2_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_ptr, $N_name_ptr, $N_type_ptr,
                     $N_ptr_ptr, $N_dep1_ptr, $N_dep2_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_ptr_dep, $N_name_ptr_dep, $N_type_ptr_dep,
-                    $N_ptr_ptr_dep, $N_dep1_ptr_dep, $N_dep2_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_ptrdep, $N_name_ptrdep, $N_type_ptrdep,
+                    $N_ptr_ptrdep, $N_dep1_ptrdep, $N_dep2_ptrdep, )* ;
         }
         $crate::define_data_raw! {
             v: $Value, t: $Type, r: $Raw, size: $B, $b, feature: $feature,
-            copy_variants:
+            copy:
                 $( $C_doc, $C_name, $C_type, )* ;
-            copy_variants_dep:
+            copy@dep:
                 $( $C_doc_dep, $C_name_dep, $C_type_dep,
                     $C_dep1_dep, $C_dep2_dep, )* ;
-            copy_variants_ptr:
+            copy@ptr:
                 $( $C_doc_ptr, $C_name_ptr, $C_type_ptr,
                     $C_ptr_ptr, )* ;
-            copy_variants_ptr_dep:
-                $( $C_doc_ptr_dep, $C_name_ptr_dep, $C_type_ptr_dep,
-                    $C_ptr_ptr_dep, $C_dep1_ptr_dep, $C_dep2_ptr_dep, )* ;
+            copy@ptrdep:
+                $( $C_doc_ptrdep, $C_name_ptrdep, $C_type_ptrdep,
+                    $C_ptr_ptrdep, $C_dep1_ptrdep, $C_dep2_ptrdep, )* ;
 
-            noncopy_variants:
+            noncopy:
                 $( $N_doc, $N_name, $N_type, )* ;
-            noncopy_variants_dep:
+            noncopy@dep:
                 $( $N_doc_dep, $N_name_dep, $N_type_dep,
                     $N_dep1_dep, $N_dep2_dep, )* ;
-            noncopy_variants_ptr:
+            noncopy@ptr:
                 $( $N_doc_ptr, $N_name_ptr, $N_type_ptr,
                     $N_ptr_ptr, $N_dep1_ptr, $N_dep2_ptr, )* ;
-            noncopy_variants_ptr_dep:
-                $( $N_doc_ptr_dep, $N_name_ptr_dep, $N_type_ptr_dep,
-                    $N_ptr_ptr_dep, $N_dep1_ptr_dep, $N_dep2_ptr_dep, )* ;
+            noncopy@ptrdep:
+                $( $N_doc_ptrdep, $N_name_ptrdep, $N_type_ptrdep,
+                    $N_ptr_ptrdep, $N_dep1_ptrdep, $N_dep2_ptrdep, )* ;
         }
     };
 }
