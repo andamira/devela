@@ -3,11 +3,111 @@
 //!
 //
 // TOC
-// - impl_data_type!
 // - impl_data_value!
+// - impl_data_type!
 // - impl_data_raw!
 
-/// Implements the `DataType` trait.
+/// Implements the [`DataValue`] trait.
+#[allow(unused_macros)]
+macro_rules! impl_data_value {
+    (
+        v: $Vname:ident, $cbound:ident,
+        t: $Tname:ident, $tbound:ident,
+        is_copy: $is_copy:stmt,
+
+        copy:
+            $( $C_name:ident, $C_type:ty
+            ),* ;
+        copy@dep:
+            $( $C_name_dep:ident, $C_type_dep:ty,
+               $C_dep1_dep:literal, $C_dep2_dep:literal
+            ),* ;
+        copy@ptr:
+            $( $C_name_ptr:ident, $C_type_ptr:ty,
+               $C_ptr_ptr:meta
+            ),* ;
+        copy@ptrdep:
+            $( $C_name_ptrdep:ident, $C_type_ptrdep:ty,
+               $C_ptr_ptrdep:meta,
+               $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal
+            ),* ;
+
+        noncopy:
+            $( $N_name:ident, $N_type:ty
+            ),* ;
+        noncopy@dep:
+            $( $N_name_dep:ident, $N_type_dep:ty,
+               $N_dep1_dep:literal, $N_dep2_dep:literal
+            ),* ;
+        noncopy@ptr:
+            $( $N_name_ptr:ident, $N_type_ptr:ty,
+               $N_ptr_ptr:meta
+            ),* ;
+        noncopy@ptrdep:
+            $( $N_name_ptrdep:ident, $N_type_ptrdep:ty,
+               $N_ptr_ptrdep:meta,
+               $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal
+            ),* ;
+    ) => { $crate::paste! {
+        impl<V: $cbound> $crate::DataValue for $Vname<V> {
+            type Type = $Tname<V::Type>;
+
+            fn data_value_is_copy(&self) -> bool { $is_copy }
+            fn data_type(&self) -> Self::Type {
+                match self {
+                    $Vname::None => Self::Type::None,
+                    $Vname::Extra(t) => Self::Type::Extra(t.data_type()),
+
+                    $( $Vname::$C_name(_) => Self::Type::$C_name, )*
+                    $( $Vname::$N_name(_) => Self::Type::$N_name, )*
+
+                    $( // pointer-size dependant
+                        #[cfg($C_ptr_ptr)]
+                        $Vname::$C_name_ptr(_) => Self::Type::$C_name_ptr,
+                    )*
+
+                    $( // feature-gated dependencies
+                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $C_dep1_dep,
+                                        feature = $C_dep2_dep))))]
+                        $Vname::$C_name_dep(_) => Self::Type::$C_name_dep,
+                    )*
+                    $(
+                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $N_dep1_dep,
+                                        feature = $N_dep2_dep))))]
+                        $Vname::$N_name_dep(_) => Self::Type::$N_type_dep,
+                    )*
+
+                    $( // pointer-size & feature-gated dependencies
+                        #[cfg(all($C_ptr_ptrdep,
+                            feature = $C_dep1_ptrdep,
+                            feature = $C_dep2_ptrdep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $C_dep1_ptrdep,
+                                        feature = $C_dep2_ptrdep))))]
+                        $Vname::$C_name_ptrdep(_) => Self::Type::$C_name_ptrdep,
+                    )*
+                    $(
+                        #[cfg(all($N_ptr_ptrdep,
+                                feature = $N_dep1_ptrdep,
+                                feature = $N_dep2_ptrdep))]
+                        #[cfg_attr(feature = "nightly_doc",
+                            doc(cfg(all(feature = $N_dep1_ptrdep,
+                                        feature = $N_dep2_ptrdep))))]
+                        $Vname::$N_name_ptrdep(_) => Self::Type::$N_name_ptrdep,
+                    )*
+                }
+            }
+        }
+    }};
+}
+#[allow(unused_imports)]
+pub(crate) use impl_data_value;
+
+/// Implements the [`DataType`] trait.
 #[allow(unused_macros)]
 macro_rules! impl_data_type {
     (
@@ -16,30 +116,38 @@ macro_rules! impl_data_type {
         is_copy: $is_copy:stmt,
 
         copy:
-            $( $C_name:ident, $C_type:ty ),* ;
+            $( $C_name:ident, $C_type:ty,
+            )* ;
         copy@dep:
             $( $C_name_dep:ident, $C_type_dep:ty,
-            $C_dep1_dep:literal, $C_dep2_dep:literal ),* ;
+               $C_dep1_dep:literal, $C_dep2_dep:literal,
+            )* ;
         copy@ptr:
             $( $C_name_ptr:ident, $C_type_ptr:ty,
-                $C_ptr_ptr:meta ),* ;
+               $C_ptr_ptr:meta,
+            )* ;
         copy@ptrdep:
             $( $C_name_ptrdep:ident, $C_type_ptrdep:ty,
-            $C_ptr_ptrdep:meta,
-            $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal ),* ;
+               $C_ptr_ptrdep:meta,
+               $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal,
+            )* ;
 
         noncopy:
-            $( $N_name:ident, $N_type:ty ),* ;
+            $( $N_name:ident, $N_type:ty,
+            )* ;
         noncopy@dep:
             $( $N_name_dep:ident, $N_type_dep:ty,
-            $N_dep1_dep:literal, $N_dep2_dep:literal ),* ;
+               $N_dep1_dep:literal, $N_dep2_dep:literal,
+            )* ;
         noncopy@ptr:
             $( $N_name_ptr:ident, $N_type_ptr:ty,
-                $N_ptr_ptr:meta ),* ;
+               $N_ptr_ptr:meta,
+            )* ;
         noncopy@ptrdep:
             $( $N_name_ptrdep:ident, $N_type_ptrdep:ty,
-            $N_ptr_ptrdep:meta,
-            $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal ),* ;
+               $N_ptr_ptrdep:meta,
+               $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal,
+            )* ;
     ) => { $crate::paste! {
         impl<T: $tbound> $crate::DataType for $Tname<T> {
             type Value = $Vname<T::Value>;
@@ -154,99 +262,7 @@ macro_rules! impl_data_type {
 #[allow(unused_imports)]
 pub(crate) use impl_data_type;
 
-/// Implements the [`DataValue`] trait.
-#[allow(unused_macros)]
-macro_rules! impl_data_value {
-    (
-        v: $Vname:ident, $cbound:ident,
-        t: $Tname:ident, $tbound:ident,
-        is_copy: $is_copy:stmt,
-
-        copy:
-            $( $C_name:ident, $C_type:ty ),* ;
-        copy@dep:
-            $( $C_name_dep:ident, $C_type_dep:ty,
-            $C_dep1_dep:literal, $C_dep2_dep:literal ),* ;
-        copy@ptr:
-            $( $C_name_ptr:ident, $C_type_ptr:ty,
-                $C_ptr_ptr:meta ),* ;
-        copy@ptrdep:
-            $( $C_name_ptrdep:ident, $C_type_ptrdep:ty,
-            $C_ptr_ptrdep:meta,
-            $C_dep1_ptrdep:literal, $C_dep2_ptrdep:literal ),* ;
-
-        noncopy:
-            $( $N_name:ident, $N_type:ty ),* ;
-        noncopy@dep:
-            $( $N_name_dep:ident, $N_type_dep:ty,
-            $N_dep1_dep:literal, $N_dep2_dep:literal ),* ;
-        noncopy@ptr:
-            $( $N_name_ptr:ident, $N_type_ptr:ty,
-                $N_ptr_ptr:meta ),* ;
-        noncopy@ptrdep:
-            $( $N_name_ptrdep:ident, $N_type_ptrdep:ty,
-            $N_ptr_ptrdep:meta,
-            $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal ),* ;
-    ) => { $crate::paste! {
-        impl<V: $cbound> $crate::DataValue for $Vname<V> {
-            type Type = $Tname<V::Type>;
-
-            fn data_value_is_copy(&self) -> bool { $is_copy }
-            fn data_type(&self) -> Self::Type {
-                match self {
-                    $Vname::None => Self::Type::None,
-                    $Vname::Extra(t) => Self::Type::Extra(t.data_type()),
-
-                    $( $Vname::$C_name(_) => Self::Type::$C_name, )*
-                    $( $Vname::$N_name(_) => Self::Type::$N_name, )*
-
-                    $( // pointer-size dependant
-                        #[cfg($C_ptr_ptr)]
-                        $Vname::$C_name_ptr(_) => Self::Type::$C_name_ptr,
-                    )*
-
-                    $( // feature-gated dependencies
-                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
-                        #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $C_dep1_dep,
-                                        feature = $C_dep2_dep))))]
-                        $Vname::$C_name_dep(_) => Self::Type::$C_name_dep,
-                    )*
-                    $(
-                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
-                        #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $N_dep1_dep,
-                                        feature = $N_dep2_dep))))]
-                        $Vname::$N_name_dep(_) => Self::Type::$N_type_dep,
-                    )*
-
-                    $( // pointer-size & feature-gated dependencies
-                        #[cfg(all($C_ptr_ptrdep,
-                            feature = $C_dep1_ptrdep,
-                            feature = $C_dep2_ptrdep))]
-                        #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $C_dep1_ptrdep,
-                                        feature = $C_dep2_ptrdep))))]
-                        $Vname::$C_name_ptrdep(_) => Self::Type::$C_name_ptrdep,
-                    )*
-                    $(
-                        #[cfg(all($N_ptr_ptrdep,
-                                feature = $N_dep1_ptrdep,
-                                feature = $N_dep2_ptrdep))]
-                        #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $N_dep1_ptrdep,
-                                        feature = $N_dep2_ptrdep))))]
-                        $Vname::$N_name_ptrdep(_) => Self::Type::$N_name_ptrdep,
-                    )*
-                }
-            }
-        }
-    }};
-}
-#[allow(unused_imports)]
-pub(crate) use impl_data_value;
-
-/// Implements the `DataRaw` trait.
+/// Implements the [`DataRaw`] trait.
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
 #[allow(unused_macros)]
 macro_rules! impl_data_raw {

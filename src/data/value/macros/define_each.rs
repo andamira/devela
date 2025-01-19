@@ -143,7 +143,8 @@ macro_rules! define_data_value {
                 ),* ;
             copy@ptrdep:
                 $( $C_name_ptrdep, $C_type_ptrdep,
-                   $C_ptr_ptrdep, $C_dep1_ptrdep, $C_dep2_ptrdep
+                   $C_ptr_ptrdep,
+                   $C_dep1_ptrdep, $C_dep2_ptrdep
                 ),* ;
 
             noncopy: ;
@@ -252,7 +253,8 @@ macro_rules! define_data_value {
                 ),* ;
             copy@ptrdep:
                 $( $C_name_ptrdep, $C_type_ptrdep,
-                   $C_ptr_ptrdep, $C_dep1_ptrdep, $C_dep2_ptrdep
+                   $C_ptr_ptrdep,
+                   $C_dep1_ptrdep, $C_dep2_ptrdep
                 ),* ;
 
             noncopy:
@@ -268,7 +270,8 @@ macro_rules! define_data_value {
                 ),* ;
             noncopy@ptrdep:
                 $( $N_name_ptrdep, $N_type_ptrdep,
-                   $N_ptr_ptrdep, $N_dep1_ptrdep, $N_dep2_ptrdep
+                   $N_ptr_ptrdep,
+                   $N_dep1_ptrdep, $N_dep2_ptrdep
                 ),* ;
         ];
 
@@ -498,14 +501,21 @@ macro_rules! define_data_type {
             is_copy: true,
 
             copy:
-                $( $C_name, $C_type ),* ;
+                $( $C_name, $C_type,
+                )* ;
             copy@dep:
-                $( $C_name_dep, $C_type_dep, $C_dep1_dep, $C_dep2_dep ),* ;
+                $( $C_name_dep, $C_type_dep,
+                   $C_dep1_dep, $C_dep2_dep,
+                )* ;
             copy@ptr:
-                $( $C_name_ptr, $C_type_ptr, $C_ptr_ptr ),* ;
+                $( $C_name_ptr, $C_type_ptr,
+                   $C_ptr_ptr,
+                )* ;
             copy@ptrdep:
-                $( $C_name_ptrdep, $C_type_ptrdep, $C_ptr_ptrdep,
-                $C_dep1_ptrdep, $C_dep2_ptrdep ),* ;
+                $( $C_name_ptrdep, $C_type_ptrdep,
+                    $C_ptr_ptrdep,
+                    $C_dep1_ptrdep, $C_dep2_ptrdep,
+                )* ;
 
             noncopy: ;
             noncopy@dep: ;
@@ -603,26 +613,38 @@ macro_rules! define_data_type {
             is_copy: false,
 
             copy:
-                $( $C_name, $C_type ),* ;
+                $( $C_name, $C_type,
+                )* ;
             copy@dep:
-                $( $C_name_dep, $C_type_dep, $C_dep1_dep, $C_dep2_dep ),* ;
+                $( $C_name_dep, $C_type_dep,
+                   $C_dep1_dep, $C_dep2_dep,
+                )* ;
             copy@ptr:
-                $( $C_name_ptr, $C_type_ptr, $C_ptr_ptr ),* ;
+                $( $C_name_ptr, $C_type_ptr,
+                   $C_ptr_ptr,
+                )* ;
             copy@ptrdep:
-                $( $C_name_ptrdep, $C_type_ptrdep, $C_ptr_ptrdep,
-                $C_dep1_ptrdep, $C_dep2_ptrdep ),* ;
+                $( $C_name_ptrdep, $C_type_ptrdep,
+                   $C_ptr_ptrdep,
+                   $C_dep1_ptrdep, $C_dep2_ptrdep,
+                )* ;
 
             noncopy:
-                $($N_name, $N_type ),* ;
+                $($N_name, $N_type,
+                )* ;
             noncopy@dep:
-                $( $N_name_dep, $N_type_dep, $N_dep1_dep, $N_dep2_dep ),* ;
+                $( $N_name_dep, $N_type_dep,
+                   $N_dep1_dep, $N_dep2_dep,
+                )* ;
             noncopy@ptr:
-                $( $N_name_ptr, $N_type_ptr, $N_ptr_ptr
-                ),* ;
+                $( $N_name_ptr, $N_type_ptr,
+                   $N_ptr_ptr,
+                )* ;
             noncopy@ptrdep:
-                $( $N_name_ptrdep, $N_type_ptrdep, $N_ptr_ptrdep,
-                $N_dep1_ptrdep, $N_dep2_ptrdep
-                ),* ;
+                $( $N_name_ptrdep, $N_type_ptrdep,
+                   $N_ptr_ptrdep,
+                   $N_dep1_ptrdep, $N_dep2_ptrdep,
+                )* ;
         ];
     }};
 }
