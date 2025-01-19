@@ -65,7 +65,8 @@ macro_rules! impl_float_shared {
 
             /// The nearest integer to itself, rounding ties away from `0.0`.
             ///
-            /// This is the default [`round`] implementation.
+            /// This is the default `round` method implementation,
+            /// without `std` nor `dep_libm`.
             ///
             /// # Formulation
             #[doc = FORMULA_ROUND_TIES_AWAY!()]

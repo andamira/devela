@@ -89,9 +89,9 @@ Root modules & public sub-modules features:
 - [`ui`]
   - [`layout`]
 - [`work`]
-  - [`process`]
-  - [`sync`]
-  - [`thread`]
+  - `process`
+  - `sync`
+  - `thread`
 
 [`code`]:         crate::code
   [`error`]:      crate::code::result::error
@@ -115,7 +115,7 @@ Root modules & public sub-modules features:
   [`os`]:         crate::sys::os
     [`linux`]:    crate::sys::os::linux
 [`text`]:         crate::text
-  [`str`]:        crate::text::str
+  [`str`]:        mod@crate::text::str
 [`ui`]:           crate::ui
   [`layout`]:     crate::ui::layout
 [`work`]:         crate::work
@@ -195,7 +195,7 @@ Enabling any of them sets the `nightly··` flag.
 [`autodiff`]: https://github.com/rust-lang/rust/issues/124509
 [`bigint_helper_methods`]: https://github.com/rust-lang/rust/issues/85532
 [`coroutines`]: https://github.com/rust-lang/rust/issues/43122
-[`doc_cfg]: https://github.com/rust-lang/rust/issues/43781
+[`doc_cfg`]: https://github.com/rust-lang/rust/issues/43781
 [`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
 [`f16`, `f128`]: https://github.com/rust-lang/rust/issues/116909
 [`portable_simd`]: https://github.com/rust-lang/rust/issues/86656
@@ -300,7 +300,7 @@ Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
 They also set the corresponding flags:
 `_char··`, `_string··`, `_string_u··`.
 
-[`CharU*`]: crate::text::CharU8
+[`char*`]: crate::text::char8
 [`StringU*`]: crate::text::StringU8
 [`StringNonul`]: crate::text::StringNonul
 

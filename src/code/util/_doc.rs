@@ -27,15 +27,17 @@ macro_rules! doc_ {
 
     /* list of submodules */
 
-    // IMPROVE: pass optional feature-gate arg for each module
-    (modules: $path:path; $self:ident) => {
+    // IMPROVE:MAYBE pass optional feature-gate arg for each module
+    ( // no submodules:
+        modules: $path:path; $self:ident) => {
         concat!(
             $crate::doc_!(@meta_start),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
             $crate::doc_!(@meta_end),
         )
     };
-    (modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
+    ( // with submodules:
+        modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
         concat!(
             $crate::doc_!(@meta_start),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]::{",
@@ -46,11 +48,11 @@ macro_rules! doc_ {
     // Handles the list of modules ensuring commas are only added between elements.
     (@modules: $path:path; $self:ident: $first:ident $(, $rest:ident)*) => {
         concat!(
-            "[", stringify!($first), "](",
+            "[", stringify!($first), "](mod@",
                 stringify!($path), "::", stringify!($self), "::",
                 stringify!($first), ")",
             $(
-                ", [", stringify!($rest), "](", stringify!($path), "::",
+                ", [", stringify!($rest), "](mod@", stringify!($path), "::",
                 stringify!($self), "::", stringify!($rest), ")"
             ),*
         )

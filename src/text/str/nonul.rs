@@ -449,7 +449,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns a string from an array of `bytes`.
     ///
     /// # Errors
-    /// Returns [`InvalidText::InvalidUtf8`] if the bytes are not valid UTF-8,
+    /// Returns [`InvalidText::Utf8`] if the bytes are not valid UTF-8,
     /// and [`InvalidText::Char`] if the bytes contains a NUL character.
     pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
         match from_utf8(&bytes) {

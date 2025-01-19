@@ -310,7 +310,7 @@ macro_rules! impl_string_u {
             /// Returns the number of bytes written in success.
             ///
             /// # Errors
-            /// Returns [`NotEnoughCapacity`] if the slice wont completely fit.
+            /// Returns [`MismatchedCapacity`] if the slice wont completely fit.
             pub fn try_push_str_complete(&mut self, string: &str)
             -> Result<usize, MismatchedCapacity> {
                 if self.remaining_capacity() >= string.len() {
@@ -326,7 +326,7 @@ macro_rules! impl_string_u {
             ///
             /// # Errors
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            /// or if `CAP < c.`[`len_utf8()`][super::UnicodeScalar#method.len_utf8].
+            /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
             ///
             #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]

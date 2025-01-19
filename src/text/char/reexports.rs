@@ -21,6 +21,6 @@ pub type char = crate::_core::primitive::char;
 
 reexport! { rust: core::str,
     tag: crate::TAG_ITERATOR!(),
-    doc: "An iterator over the [`char`]s of a string slice.",
+    doc: "An iterator over the [`char`][prim@char]s of a string slice.",
     @Chars as IterChars
 }

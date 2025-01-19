@@ -21,7 +21,8 @@ use crate::Vec;
 use crate::{GcdReturn, Num, NumError as E, NumResult as Result, ValueQuant};
 #[cfg(doc)]
 use E::{
-    MismatchedSizes, NonNegativeRequired, NonZeroRequired, NotImplemented, NotSupported, Overflow,
+    MismatchedSizes, NoInverse, NonNegativeRequired, NonZeroRequired, NotImplemented, NotSupported,
+    Overflow,
 };
 
 #[cfg(_int··)]

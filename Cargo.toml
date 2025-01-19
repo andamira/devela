@@ -108,7 +108,7 @@ bench = false
 __dbg = [] # shows extra debugging information.
 __no_test = [] # exclude examples from being tested.
 
-__force_miri_dst = [] # inhibits disabling miri on the data::dst module
+__force_miri_dst = [] # inhibits disabling miri on several modules
 
 
 #* Environment features *#
