@@ -104,8 +104,8 @@ define_data_value_type_raw! {
         // WAIT:
         // "128-bit floating-point number", F128, ::core::primitive::f128,
         //     "nightly_float", "nightly_float", [def:true],
-        "128-bit SystemInstant", SystemInstant, crate::SystemInstant, "std", "std", [def:true],
-        "128-bit SystemTime", SystemTime, crate::SystemTime, "std", "std", [def:true],
+        "128-bit SystemInstant", SystemInstant, crate::SystemInstant, "std", "std", [def:false],
+        "128-bit SystemTime", SystemTime, crate::SystemTime, "std", "std", [def:false],
     copy@128_ptr:
         "128-bit isize", Isize, isize, target_pointer_width = "128", [def:true],
         "128-bit usize", Usize, usize, target_pointer_width = "128", [def:true],
