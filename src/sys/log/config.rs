@@ -1,12 +1,13 @@
 // devela::sys::log::config
 
-#[expect(unused_imports, reason = "wip")]
+#[expect(unused_imports, reason = "WIP")]
 use super::{LogLevel, LogLevelFilter};
 
-///
+/// Configuration for a logger.
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_log")))]
 #[derive(Clone, Debug)]
-pub struct LoggerConfig {
+pub struct LogConfig {
     target_level: LogLevelFilter,
 }
 
-impl LoggerConfig {}
+impl LogConfig {}
