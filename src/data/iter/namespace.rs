@@ -22,7 +22,7 @@ impl Iter {
         empty()
     }
 
-    // WAIT:
+    // WAIT: https://github.com/rust-lang/rust/pull/135687
     // /// Creates a new iterator where each iteration calls the provided coroutine.
     // ///
     // /// See `core::iter::`[`from_corooutine`].

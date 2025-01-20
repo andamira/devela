@@ -18,6 +18,7 @@
 #[cfg(feature = "nightly_float")]
 use ::core::{f128, f16};
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait for floating-point types. Associated constants.
 ///
 /// # Constants

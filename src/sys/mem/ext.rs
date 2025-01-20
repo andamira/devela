@@ -7,6 +7,7 @@ use super::Mem;
 
 impl<T: ?Sized> ExtMem for T {}
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait for type memory information and manipulation.
 ///
 /// This trait is automatically implemented for every `?Sized` type,

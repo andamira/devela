@@ -217,7 +217,7 @@ reexport! { rust: core::iter,
 
 // These are re-exported as methods of the Iter namespace.
 
-// WAIT:
+// WAIT: https://github.com/rust-lang/rust/pull/135687
 reexport! { rust: core::iter,
     extra_features: "nightly_coro",
     doc: "Creates an iterator where each iteration calls the provided coroutine.",

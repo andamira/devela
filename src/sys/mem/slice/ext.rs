@@ -16,9 +16,12 @@ impl<T, const LEN: usize> Sealed for [T; LEN] {}
 #[cfg(feature = "alloc")]
 impl<T> Sealed for Vec<T> {}
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`&[T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
+///
+/// See also [`Slice`][crate::Slice] for *const* methods.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtSlice<T>: Sealed {
@@ -117,9 +120,12 @@ pub trait ExtSlice<T>: Sealed {
         U: TryFrom<T, Error = E>;
 }
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
+///
+/// See also [`Slice`][crate::Slice] for *const* methods.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 pub trait ExtSliceMut<T>: ExtSlice<T> {
     /* split */

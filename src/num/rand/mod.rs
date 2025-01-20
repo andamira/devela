@@ -41,6 +41,7 @@ crate::items! { // structural access: _mods, _internals, _all
         pub use super::{lgc::*, xabc::*, xoroshiro::*, xyza8::*};
     }
     pub(super) mod _internals { #![allow(unused)]
+        #[cfg(feature = "rand")]
         pub(crate) use super::xorshift::xorshift_basis;
     }
     pub(super) mod _all {

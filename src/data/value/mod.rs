@@ -13,7 +13,6 @@ crate::items! { // structural access: _mods, _internals, _all
     pub use {_mods::*, _internals::*};
 
     mod _mods { #![allow(unused)]
-        // pub use super::{build::*, macros::*, traits::*};
         pub use super::{build::*, traits::*};
     }
     pub(super) mod _internals { #![allow(unused)]

@@ -9,6 +9,7 @@ use crate::Cell;
 trait Sealed {}
 impl<T> Sealed for Cell<Option<T>> {}
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for `Cell<Option>`.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]

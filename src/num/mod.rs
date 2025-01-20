@@ -65,7 +65,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         pub use super::wave::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::_private::*;
+        pub(crate) use super::{_private::*, rand::_internals::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

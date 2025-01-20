@@ -23,6 +23,7 @@ reexport! { rust: std::path,
     @Display as PathDisplay
 }
 reexport! { rust: std::path,
+    tag: TAG_ITERATOR!(),
     doc: "An iterator over the [`IterPathComponents`]
 of a [`Path`], as [`OsStr`][crate::OsStr] slices.",
     @Iter as IterPath

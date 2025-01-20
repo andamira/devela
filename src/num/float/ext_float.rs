@@ -9,6 +9,7 @@ use super::shared_docs::*;
 use crate::Float;
 use crate::{ExtFloatConst, Sign};
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait for floating-point types. Associated methods.
 ///
 /// This trait can be more convenient to use than the [`Float`] struct,

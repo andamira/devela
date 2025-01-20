@@ -14,6 +14,8 @@ impl Sealed for Thread {}
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Thread`]s.
+///
+/// It offers the standalone functions in `std::thread` as associated methods.
 #[rustfmt::skip]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]

@@ -11,6 +11,7 @@ trait Sealed {}
 impl Sealed for Path {}
 impl Sealed for PathBuf {}
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Path`] and [`PathBuf`].
 #[rustfmt::skip]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
