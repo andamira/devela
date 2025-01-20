@@ -3,17 +3,23 @@
 //! 32-bit version of XorShift.
 //
 
-use crate::{ConstDefault, Own};
+use crate::{xorshift_basis, ConstDefault, Own};
 
 /// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has a 32-bit state and generates 32-bit numbers.
 ///
-/// This is the classic 32-bit XorShift algorithm (13, 17, 5),
-/// by George Marsaglia.
+/// This is the classic 32-bit *XorShift* algorithm by George Marsaglia.
+///
+/// The `BASIS` and triplet (`A`, `B`, `C`) values default to the canonical example.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct XorShift32(u32);
+pub struct XorShift32<
+    const BASIS: usize = 1,
+    const A: usize = 5,
+    const B: usize = 17,
+    const C: usize = 13,
+>(u32);
 
 impl Default for XorShift32 {
     fn default() -> Self {
@@ -25,25 +31,26 @@ impl ConstDefault for XorShift32 {
 }
 
 // private associated items
-impl XorShift32 {
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
+    XorShift32<BASIS, A, B, C>
+{
     const DEFAULT_SEED: u32 = 0xDEFA_0017;
 
-    #[cold] #[rustfmt::skip]
-    const fn cold_path_result() -> Option<Self> { None }
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
-impl XorShift32 {
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
+    XorShift32<BASIS, A, B, C>
+{
     /// Returns a seeded `XorShift32` generator from the given 32-bit seed.
     ///
-    /// Returns `None` if seed == `0`.
-    #[must_use]
-    pub const fn new(seed: u32) -> Option<Self> {
+    /// If the seed is `0`, the default seed is used instead.
+    pub const fn new(seed: u32) -> Self {
         if seed == 0 {
-            Self::cold_path_result()
+            Self::cold_path_default()
         } else {
-            Some(Self(seed))
+            Self(seed)
         }
     }
 
@@ -67,9 +74,7 @@ impl XorShift32 {
     #[must_use]
     pub fn next_u32(&mut self) -> u32 {
         let mut x = self.0;
-        x ^= x << 13;
-        x ^= x >> 17;
-        x ^= x << 5;
+        xorshift_basis!(x, BASIS, (A, B, C));
         self.0 = x;
         x
     }
@@ -77,9 +82,7 @@ impl XorShift32 {
     /// Returns a copy of the next new random state.
     pub const fn next_state(&self) -> Self {
         let mut x = self.0;
-        x ^= x << 13;
-        x ^= x >> 17;
-        x ^= x << 5;
+        xorshift_basis!(x, BASIS, (A, B, C));
         Self(x)
     }
 
@@ -92,30 +95,29 @@ impl XorShift32 {
 }
 
 /// # Extra constructors
-impl XorShift32 {
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
+    XorShift32<BASIS, A, B, C>
+{
     /// Returns a seeded `XorShift32` generator from the given 32-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[must_use]
-    pub const fn new1_u32(seed: u32) -> Option<Self> {
+    pub const fn new1_u32(seed: u32) -> Self {
         Self::new(seed)
     }
 
     /// Returns a seeded `XorShift32` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[must_use]
     #[cfg(feature = "join")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
-    pub const fn new2_u16(seeds: [u16; 2]) -> Option<Self> {
+    pub const fn new2_u16(seeds: [u16; 2]) -> Self {
         Self::new(crate::Cast::<u32>::from_u16_le(seeds))
     }
 
     /// Returns a seeded `XorShift32` generator from the given 4 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[must_use]
-    pub const fn new4_u8(seeds: [u8; 4]) -> Option<Self> {
+    pub const fn new4_u8(seeds: [u8; 4]) -> Self {
         Self::new(u32::from_le_bytes(seeds))
     }
 }
@@ -126,7 +128,9 @@ mod impl_rand {
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
     use crate::{Cast, XorShift32};
 
-    impl RngCore for XorShift32 {
+    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RngCore
+        for XorShift32<BASIS, A, B, C>
+    {
         /// Returns the next random `u32`.
         fn next_u32(&mut self) -> u32 {
             self.next_u32()
@@ -160,7 +164,9 @@ mod impl_rand {
         }
     }
 
-    impl SeedableRng for XorShift32 {
+    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> SeedableRng
+        for XorShift32<BASIS, A, B, C>
+    {
         type Seed = [u8; 4];
 
         /// When seeded with zero this implementation uses the default seed
@@ -174,3 +180,24 @@ mod impl_rand {
         }
     }
 }
+
+/// 81 × good triplets for 32-bit xorshift. (243 Bytes)
+#[doc(hidden)]
+#[rustfmt::skip]
+#[allow(dead_code)]
+pub const XOROSHIFT_32_TRIPLETS: [(u8, u8, u8); 81] = [
+    ( 1, 3,10), ( 1, 5,16), ( 1, 5,19), ( 1, 9,29), ( 1,11, 6), ( 1,11,16),
+    ( 1,19, 3), ( 1,21,20), ( 1,27,27), ( 2, 5,15), ( 2, 5,21), ( 2, 7, 7),
+    ( 2, 7, 9), ( 2, 7,25), ( 2, 9,15), ( 2,15,17), ( 2,15,25), ( 2,21, 9),
+    ( 3, 1,14), ( 3, 3,26), ( 3, 3,28), ( 3, 3,29), ( 3, 5,20), ( 3, 5,22),
+    ( 3, 5,25), ( 3, 7,29), ( 3,13, 7), ( 3,23,25), ( 3,25,24), ( 3,27,11),
+    ( 4, 3,17), ( 4, 3,27), ( 4, 5,15), ( 5, 3,21), ( 5, 7,22), ( 5, 9, 7),
+    ( 5, 9,28), ( 5, 9,31), ( 5,13, 6), ( 5,15,17), ( 5,17,13), ( 5,21,12),
+    ( 5,27, 8), ( 5,27,21), ( 5,27,25), ( 5,27,28), ( 6, 1,11), ( 6, 3,17),
+    ( 6,17, 9), ( 6,21, 7), ( 6,21,13), ( 7, 1, 9), ( 7, 1,18), ( 7, 1,25),
+    ( 7,13,25), ( 7,17,21), ( 7,25,12), ( 7,25,20), ( 8, 7,23), ( 8, 9,23),
+    ( 9, 5, 1), ( 9, 5,25), ( 9,11,19), ( 9,21,16), (10, 9,21), (10, 9,25),
+    (11, 7,12), (11,7, 16), (11,17,13), (11,21,13), (12, 9,23), (13, 3,17),
+    (13, 3,27), (13,5, 19), (13,17,15), (14, 1,15), (14,13,15), (15, 1,29),
+    (17,15,20), (17,15,23), (17,15,26)
+];

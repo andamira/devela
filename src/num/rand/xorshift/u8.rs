@@ -3,55 +3,49 @@
 //! 8-bit versions of XorShift.
 //
 
-use crate::{ConstDefault, Own};
+use crate::{xorshift_basis, ConstDefault, Own};
 
-/// An 8-bit version of `XorShift` supporting custom shift values.
+/// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
 /// It has poor statistical quality and limited entropy.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct XorShift8<const SH1: usize = 3, const SH2: usize = 4, const SH3: usize = 2>(u8);
+pub struct XorShift8<const A: usize = 3, const B: usize = 4, const C: usize = 2>(u8);
 
-impl<const SH1: usize, const SH2: usize, const SH3: usize> Default
-    for XorShift8<SH1, SH2, SH3>
-{
+impl<const A: usize, const B: usize, const C: usize> Default for XorShift8<A, B, C> {
     fn default() -> Self {
         Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
-impl<const SH1: usize, const SH2: usize, const SH3: usize> ConstDefault
-    for XorShift8<SH1, SH2, SH3>
-{
+impl<const A: usize, const B: usize, const C: usize> ConstDefault for XorShift8<A, B, C> {
     const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items
-impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8<SH1, SH2, SH3> {
+impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     const DEFAULT_SEED: u8 = 0xDE;
 
-    #[cold] #[rustfmt::skip]
-    const fn cold_path_result() -> Option<Self> { None }
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
-impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8<SH1, SH2, SH3> {
+impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed.
     ///
-    /// Returns `None` if seed == `0`.
+    /// If the seed is `0`, the default seed is used instead.
     ///
     /// # Panics
-    /// Panics in debug if either `SH1`, `SH2` or `SH3` are < 1 or > 7.
-    pub const fn new(seed: u8) -> Option<Self> {
-        debug_assert![SH1 > 0 && SH1 <= 7];
-        debug_assert![SH2 > 0 && SH1 <= 7];
-        debug_assert![SH3 > 0 && SH1 <= 7];
+    /// Panics in debug if either `A`, `B` or `C` are < 1 or > 7.
+    pub const fn new(seed: u8) -> Self {
+        debug_assert![A > 0 && A <= 7];
+        debug_assert![B > 0 && A <= 7];
+        debug_assert![C > 0 && A <= 7];
 
         if seed == 0 {
-            Self::cold_path_result()
+            Self::cold_path_default()
         } else {
-            Some(Self(seed))
+            Self(seed)
         }
     }
 
@@ -61,12 +55,12 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8<SH1, SH2, S
     /// The seed must not be `0`, otherwise every result will also be `0`.
     ///
     /// # Panics
-    /// Panics in debug if either `SH1`, `SH2` or `SH3` are < 1 or > 7,
+    /// Panics in debug if either `A`, `B` or `C` are < 1 or > 7,
     /// or if the seed is `0`.
     pub const fn new_unchecked(seed: u8) -> Self {
-        debug_assert![SH1 > 0 && SH1 <= 7];
-        debug_assert![SH2 > 0 && SH1 <= 7];
-        debug_assert![SH3 > 0 && SH1 <= 7];
+        debug_assert![A > 0 && A <= 7];
+        debug_assert![B > 0 && A <= 7];
+        debug_assert![C > 0 && A <= 7];
         debug_assert![seed != 0, "Seed must be non-zero"];
         Self(seed)
     }
@@ -81,9 +75,7 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8<SH1, SH2, S
     ///
     pub fn next_u8(&mut self) -> u8 {
         let mut x = self.0;
-        x ^= x << SH1;
-        x ^= x >> SH2;
-        x ^= x << SH3;
+        xorshift_basis!(x, 0, (A, B, C));
         self.0 = x;
         x
     }
@@ -91,9 +83,7 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8<SH1, SH2, S
     /// Returns a copy of the next new random state.
     pub const fn next_state(&self) -> Self {
         let mut x = self.0;
-        x ^= x << SH1;
-        x ^= x >> SH2;
-        x ^= x << SH3;
+        xorshift_basis!(x, 0, (A, B, C));
         Self(x)
     }
 
@@ -106,11 +96,11 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8<SH1, SH2, S
 }
 
 /// # Extra constructors
-impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8<SH1, SH2, SH3> {
+impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    pub const fn new1_u8(seed: u8) -> Option<Self> {
+    pub const fn new1_u8(seed: u8) -> Self {
         Self::new(seed)
     }
 }
@@ -121,9 +111,7 @@ mod impl_rand {
     use super::XorShift8;
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
-    impl<const SH1: usize, const SH2: usize, const SH3: usize> RngCore
-        for XorShift8<SH1, SH2, SH3>
-    {
+    impl<const A: usize, const B: usize, const C: usize> RngCore for XorShift8<A, B, C> {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
             u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
@@ -155,9 +143,7 @@ mod impl_rand {
         }
     }
 
-    impl<const SH1: usize, const SH2: usize, const SH3: usize> SeedableRng
-        for XorShift8<SH1, SH2, SH3>
-    {
+    impl<const A: usize, const B: usize, const C: usize> SeedableRng for XorShift8<A, B, C> {
         type Seed = [u8; 1];
 
         /// When seeded with zero this implementation uses the default seed

@@ -3,7 +3,7 @@
 //! 16-bit version of XorShift.
 //
 
-use crate::{ConstDefault, Own};
+use crate::{xorshift_basis, ConstDefault, Own};
 
 /// The `XorShift16` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
@@ -15,7 +15,12 @@ use crate::{ConstDefault, Own};
 /// [John Metcalf's 16-bit]: https://github.com/impomatic/xorshift798
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct XorShift16(u16);
+pub struct XorShift16<
+    const BASIS: usize = 0,
+    const A: usize = 7,
+    const B: usize = 9,
+    const C: usize = 8,
+>(u16);
 
 impl Default for XorShift16 {
     fn default() -> Self {
@@ -27,25 +32,26 @@ impl ConstDefault for XorShift16 {
 }
 
 // private associated items
-impl XorShift16 {
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
+    XorShift16<BASIS, A, B, C>
+{
     const DEFAULT_SEED: u16 = 0xDEFA;
 
-    #[cold] #[rustfmt::skip]
-    const fn cold_path_result() -> Option<Self> { None }
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
-impl XorShift16 {
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
+    XorShift16<BASIS, A, B, C>
+{
     /// Returns a seeded `XorShift16` generator from the given 16-bit seed.
     ///
-    /// Returns `None` if seed == `0`.
-    #[must_use]
-    pub const fn new(seed: u16) -> Option<Self> {
+    /// If the seed is `0`, the default seed is used instead.
+    pub const fn new(seed: u16) -> Self {
         if seed == 0 {
-            Self::cold_path_result()
+            Self::cold_path_default()
         } else {
-            Some(Self(seed))
+            Self(seed)
         }
     }
 
@@ -68,9 +74,7 @@ impl XorShift16 {
     #[must_use]
     pub fn next_u16(&mut self) -> u16 {
         let mut x = self.0;
-        x ^= x << 7;
-        x ^= x >> 9;
-        x ^= x << 8;
+        xorshift_basis!(x, BASIS, (A, B, C));
         self.0 = x;
         x
     }
@@ -78,9 +82,7 @@ impl XorShift16 {
     /// Returns a copy of the next new random state.
     pub const fn next_state(&self) -> Self {
         let mut x = self.0;
-        x ^= x << 7;
-        x ^= x >> 9;
-        x ^= x << 8;
+        xorshift_basis!(x, BASIS, (A, B, C));
         Self(x)
     }
 
@@ -93,19 +95,20 @@ impl XorShift16 {
 }
 
 /// # Extra constructors
-impl XorShift16 {
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
+    XorShift16<BASIS, A, B, C>
+{
     /// Returns a seeded `XorShift16` generator from the given 16-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    pub const fn new1_u16(seed: u16) -> Option<Self> {
+    pub const fn new1_u16(seed: u16) -> Self {
         Self::new(seed)
     }
 
     /// Returns a seeded `XorShift16` generator from the given 2 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[must_use]
-    pub const fn new2_u8(seeds: [u8; 2]) -> Option<Self> {
+    pub const fn new2_u8(seeds: [u8; 2]) -> Self {
         Self::new(u16::from_le_bytes(seeds))
     }
 }
@@ -116,7 +119,9 @@ mod impl_rand {
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
     use crate::{Cast, XorShift16};
 
-    impl RngCore for XorShift16 {
+    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RngCore
+        for XorShift16<BASIS, A, B, C>
+    {
         /// Returns the next 2 × random `u16` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
             Cast::<u32>::from_u16_le([self.next_u16(), self.next_u16()])
@@ -153,7 +158,9 @@ mod impl_rand {
         }
     }
 
-    impl SeedableRng for XorShift16 {
+    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> SeedableRng
+        for XorShift16<BASIS, A, B, C>
+    {
         type Seed = [u8; 2];
 
         /// When seeded with zero this implementation uses the default seed
@@ -167,3 +174,15 @@ mod impl_rand {
         }
     }
 }
+
+/// 4 × good triplets for 16-bit xorshift. (243 Bytes)
+///
+/// There are 60 shift triplets with the maximum period 2^16-1. 4 triplets pass
+/// a series of lightweight randomness tests including randomly plotting various
+/// n × n matrices using the high bits, low bits, reversed bits, etc. These are:
+#[doc(hidden)]
+#[rustfmt::skip]
+#[allow(dead_code)]
+pub const XOROSHIFT_16_TRIPLETS: [(u8, u8, u8); 4] = [
+    (6, 7, 13), (7, 9, 8), (7, 9, 13), (9, 7, 13)
+];

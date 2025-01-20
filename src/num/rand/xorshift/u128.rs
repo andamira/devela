@@ -29,8 +29,6 @@ impl ConstDefault for XorShift128 {
 impl XorShift128 {
     const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
 
-    #[cold] #[rustfmt::skip]
-    const fn cold_path_result() -> Option<Self> { None }
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
@@ -38,13 +36,12 @@ impl XorShift128 {
 impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 4 × 32-bit seeds.
     ///
-    /// Returns `None` if all given seeds are `0`.
-    #[must_use]
-    pub const fn new(seeds: [u32; 4]) -> Option<Self> {
+    /// If the seeds are all `0`, the default seed is used instead.
+    pub const fn new(seeds: [u32; 4]) -> Self {
         if (seeds[0] | seeds[1] | seeds[2] | seeds[3]) == 0 {
-            Self::cold_path_result()
+            Self::cold_path_default()
         } else {
-            Some(Self([seeds[0], seeds[1], seeds[2], seeds[3]]))
+            Self([seeds[0], seeds[1], seeds[2], seeds[3]])
         }
     }
 
@@ -114,7 +111,7 @@ impl XorShift128 {
     /// The seeds will be split in little endian order.
     #[cfg(feature = "split")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
-    pub const fn new1_u128(seed: u128) -> Option<Self> {
+    pub const fn new1_u128(seed: u128) -> Self {
         Self::new(Cast(seed).into_u32_le())
     }
 
@@ -123,7 +120,7 @@ impl XorShift128 {
     /// The seeds will be split in little endian order.
     #[cfg(feature = "split")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
-    pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
+    pub const fn new2_u64(seeds: [u64; 2]) -> Self {
         let [x, y] = Cast(seeds[0]).into_u32_le();
         let [z, a] = Cast(seeds[1]).into_u32_le();
         Self::new([x, y, z, a])
@@ -132,7 +129,7 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 4 × 32-bit seeds.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
+    pub const fn new4_u32(seeds: [u32; 4]) -> Self {
         Self::new(seeds)
     }
 
@@ -141,7 +138,7 @@ impl XorShift128 {
     /// The seeds will be joined in little endian order.
     #[cfg(feature = "join")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
-    pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
+    pub const fn new8_u16(seeds: [u16; 8]) -> Self {
         Self::new([
             Cast::<u32>::from_u16_le([seeds[0], seeds[1]]),
             Cast::<u32>::from_u16_le([seeds[2], seeds[3]]),
@@ -153,7 +150,7 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 16 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
+    pub const fn new16_u8(seeds: [u8; 16]) -> Self {
         Self::new([
             u32::from_le_bytes([seeds[0], seeds[1], seeds[2], seeds[3]]),
             u32::from_le_bytes([seeds[4], seeds[5], seeds[6], seeds[7]]),

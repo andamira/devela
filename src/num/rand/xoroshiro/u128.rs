@@ -269,7 +269,7 @@ impl ConstDefault for Xoroshiro128pp {
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::{Cast, Xoroshiro128pp};
+    use super::Xoroshiro128pp;
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for Xoroshiro128pp {
@@ -280,7 +280,7 @@ mod impl_rand {
 
         /// Returns the next random `u64`.
         fn next_u64(&mut self) -> u64 {
-            Cast::<u64>::from_u32_le([self.next_u32(), self.next_u32()])
+            ((self.next_u32() as u64) << 32) | (self.next_u32() as u64)
         }
 
         fn fill_bytes(&mut self, dest: &mut [u8]) {

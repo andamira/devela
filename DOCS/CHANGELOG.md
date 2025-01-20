@@ -6,8 +6,9 @@
 - new features: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
 - new traits `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `Iter`,`NoData`.
-- new macros: `maybe!`.
+- new macros: `maybe!`, `xorshift_custom!`.
 - new modules: `lang::{c}`.
+- new hidden const arrays: `XOROSHIFT_[16|32|64]_TRIPLETS`.
 - new method: `Char::len_utf8`.
 - new `ExtAny` methods: `type_hash`, `type_hash_with`.
 - new re-exports: `SystemAlloc`, `std::env::*`.
@@ -23,6 +24,7 @@
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.
 - rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
 - ungate: `FxHasher`, `Xorshift128p`.
+- make customizable: `XorShift[16|32|64]`.
 
 ### Fixed
 - enable nightly features depending on `alloc` and `std`.
