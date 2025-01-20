@@ -22,7 +22,7 @@
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.
 - rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
-- ungate `FxHasher`.
+- ungate: `FxHasher`, `Xorshift128p`.
 
 ### Fixed
 - enable nightly features depending on `alloc` and `std`.

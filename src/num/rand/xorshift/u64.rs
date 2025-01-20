@@ -1,6 +1,6 @@
 // alazar::xorshift::u64
 //
-//! 64-bit versions of XorShift generators.
+//! 64-bit version of XorShift.
 //
 
 #[cfg(feature = "join")]

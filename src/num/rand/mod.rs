@@ -11,15 +11,24 @@
 //! by implementing [`Copy`] and [`Default`].
 //!
 //! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
+//!
+//! # Features
+//! All <abbr title="Pseudo-Random Number Generator">PRNG</abbr>s require the
+//! `rand` feature, except for [`XorShift128p`], which is always compiled.
 //
 
-mod xabc;
+mod xorshift;
 
+#[cfg(feature = "rand")]
 crate::items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
     mod lgc;
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
     mod xoroshiro;
-    mod xorshift;
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
     mod xyza8;
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+    mod xabc;
 }
 
 crate::items! { // structural access: _mods, _all
@@ -27,7 +36,9 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
+        pub use super::xorshift::*;
+        #[cfg(feature = "rand")]
+        pub use super::{lgc::*, xabc::*, xoroshiro::*, xyza8::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

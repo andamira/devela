@@ -1,6 +1,6 @@
 // devela::num::rand::xorshift::u32
 //
-//! 32-bit versions of XorShift generators.
+//! 32-bit version of XorShift.
 //
 
 use crate::{ConstDefault, Own};

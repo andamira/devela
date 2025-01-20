@@ -1,6 +1,6 @@
 // devela::num::rand::xorshift::u16
 //
-//! 16-bit versions of XorShift generators.
+//! 16-bit version of XorShift.
 //
 
 use crate::{ConstDefault, Own};
@@ -9,8 +9,10 @@ use crate::{ConstDefault, Own};
 ///
 /// It has a 16-bit state and generates 16-bit numbers.
 ///
-/// This is John Metcalf's 16-bit (7, 8, 9) version of George Marsaglia's
+/// This is [John Metcalf's 16-bit] (7, 9, 8) version of George Marsaglia's
 /// original [`XorShift32`][super::XorShift32].
+///
+/// [John Metcalf's 16-bit]: https://github.com/impomatic/xorshift798
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift16(u16);
