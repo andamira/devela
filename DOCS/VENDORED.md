@@ -7,6 +7,7 @@ See linked files for detailed changes.
 - [cfg_if] by Alex Crichton, as the [`cfg_if`] macro.
 - [const_list] by Douglas Dwyer, as the [`ConstList`] struct.
 - [crossbeam-utils] by The Crossbeam Project Developers, as the [`CacheAlign`] struct.
+- [etcetera] by Luna Razzaghipour, as the [`DirEnv`] trait and related structs ([*mod*][M_dir]).
 - [fmtor] by Tyler Ruckinger, as part of the [`ExtOption`] trait.
 - [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][M_fxhash]).
 - [no_std_io]|[core2] by *Brendan Molloy*, as part of the [`io`] module.
@@ -25,6 +26,9 @@ See linked files for detailed changes.
   [`ConstList`]: https://docs.rs/devela/latest/devela/data/collections/struct.ConstList.html
 [crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.20
   [`CacheAlign`]: https://docs.rs/devela/latest/devela/mem/struct.CacheAlign.html
+[etcetera]: https://crates.io/crates/etcetera/0.8.0
+  [M_dir]: https://github.com/andamira/devela/blob/main/src/sys/env/dir/MODIFICATIONS.md
+  [`DirEnv`]: https://docs.rs/devela/latest/devela/sys/env/trait.DirEnv.html
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
   [`ExtOption`]: https://docs.rs/devela/latest/devela/code/trait.ExtOption.html
 [fxhash]: https://crates.io/crates/fxhash/0.2.1

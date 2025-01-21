@@ -4,6 +4,7 @@
   [`cfg_if`]: crate::cfg_if
   [`ConstList`]: crate::ConstList
   [`CacheAlign`]: crate::CacheAlign
+  [`DirEnv`]: crate::DirEnv
   [`ExtOption`]: crate::ExtOption
   [`HasherFx`]: crate::HasherFx
   [`Divisor`]: crate::Divisor

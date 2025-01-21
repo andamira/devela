@@ -9,6 +9,10 @@ mod arg;
 mod namespace;
 mod reexports;
 
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+mod dir;
+
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
@@ -17,6 +21,9 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods { #![allow(unused)]
         pub use super::{arg::*, namespace::*, reexports::*};
+
+        #[cfg(feature = "std")]
+        pub use super::dir::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
