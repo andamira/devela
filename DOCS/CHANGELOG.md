@@ -28,6 +28,7 @@
 - rename `LoggerConfig` to `LogConfig`.
 - ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
+- make public: `sys::env`.
 
 ### Fixed
 - enable nightly features depending on `alloc` and `std`.

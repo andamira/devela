@@ -1,7 +1,7 @@
 // devela::sys
 //
 //! System interfaces and hardware abstractions.
-#![doc = crate::doc_!(modules: crate; sys: arch, io, log, mem, os, path)]
+#![doc = crate::doc_!(modules: crate; sys: arch, env, io, log, mem, os, path)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
@@ -23,10 +23,10 @@ rustc --print target-list | cut -f3 -d'-'| sort | uniq # List of OSes supported
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
-mod env;
 mod sound; // IMPROVE
 
 pub mod arch;
+pub mod env;
 pub mod io;
 pub mod log;
 pub mod mem;
@@ -40,11 +40,12 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{env::_all::*, sound::_all::*};
+        pub use super::sound::_all::*;
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            arch::_all::*, io::_all::*, log::_all::*, mem::_all::*, os::_all::*, path::_all::*,
+            arch::_all::*, env::_all::*, io::_all::*, log::_all::*, mem::_all::*, os::_all::*,
+            path::_all::*,
         };
     }
     pub(super) mod _hidden {
