@@ -644,7 +644,7 @@ optional = true # safe enough (simple few)
 default-features = false # 3 https://docs.rs/crate/itertools/latest/features
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.24" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.25" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
@@ -731,7 +731,7 @@ features = ["string"]
 # WAIT: [no_std](https://github.com/rust-lang/regex/issues/1122)
 
 [dependencies.rkyv] # https://crates.io/crates/rkyv
-version = "0.8.9" # ✓ https://github.com/rkyv/rkyv/releases
+version = "0.8.10" # ✓ https://github.com/rkyv/rkyv/releases
 optional = true # unsafe
 default-features = false # 23  https://docs.rs/crate/rkyv/latest/features
 features = ["bytecheck"] # https://docs.rs/rkyv/latest/rkyv/#features
@@ -745,7 +745,7 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"] # IMPROVE: feature-gate
 
 [dependencies.rustix] # https://crates.io/crates/rustix
-version = "0.38.43" # ✓ https://github.com/bytecodealliance/rustix/releases
+version = "0.38.44" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 39 https://docs.rs/crate/rustix/latest/features
 features = [ # IMPROVE: feature-gate
