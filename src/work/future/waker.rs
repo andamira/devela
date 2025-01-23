@@ -1,4 +1,4 @@
-// devela::work::async::waker
+// devela::work::future::waker
 
 /// Creates a new `Waker` that does nothing when `wake` is called.
 // WAIT: [noop_waker](https://github.com/rust-lang/rust/pull/98286)

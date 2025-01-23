@@ -1,4 +1,4 @@
-// devela::work::async::block_on
+// devela::work::future::block_on
 //
 // Original source code by Joshua Barretto, licensed as MIT OR Apache-2.0
 // https://crates.io/crates/pollster/0.3.0

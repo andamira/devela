@@ -1,9 +1,9 @@
-// devela::work::async::coroutine
+// devela::work::future::coroutine
 //
 //! Coroutine implementations.
 //
 
-// NOTE: it depends on unsafe_async because of task_waker_noop
+// NOTE: it depends on unsafe_async because of `task_waker_noop`
 #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
 mod coro;

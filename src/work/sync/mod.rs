@@ -1,10 +1,10 @@
 // devela::work::sync
 //
 //! Synchronization primitives.
-#![doc = crate::doc_!(extends: sync)]
-#![doc = crate::doc_!(modules: crate::work; sync)]
-#![doc = crate::doc_!(newline)]
+// #![doc = crate::doc_!(modules: crate::work; sync)]
+// #![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: sync)]
 //
 
 mod atomic;

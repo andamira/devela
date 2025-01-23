@@ -1,4 +1,4 @@
-// devela::work::reexports
+// devela::work::future::reexports
 //
 //! Reexported items.
 //
