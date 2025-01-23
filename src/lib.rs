@@ -65,6 +65,7 @@
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature())]
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(feature = "nightly_stable_later", feature(
+    // anonymous_pipe, // ✗
     asm_goto,
     cell_update,
     const_array_from_ref,

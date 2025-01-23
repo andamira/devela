@@ -3,6 +3,7 @@ Legend:
 - `a` = enabled by non-specific feature (and depends on `alloc`)
 - `s` = enabled by non-specific feature (and depends on `std`)
 - `F` = enabled by specific feature, shown at the end of the line
+- `✗` = can't be enabled yet, apparently
 - `✓` = past feature explicitly used
 
 See also
@@ -35,6 +36,7 @@ See also
 - 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 
 # .‥… will be stable later (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
+- 1.??: ✗[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
 - 1.??: ·[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 - 1.??: a[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 - 1.??: ·[cell_update](https://github.com/rust-lang/rust/pull/134446)
