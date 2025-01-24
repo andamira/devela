@@ -21,6 +21,7 @@ reexport! { rust: std::sync,
     Barrier
 }
 reexport! { rust: std::sync,
+    tag: crate::TAG_RESULT!(),
     doc: "Returned by [`Barrier::wait()`] when all threads in the Barrier have rendezvoused.",
     BarrierWaitResult
 }
@@ -66,6 +67,7 @@ reexport! { rust: std::sync,
     RwLockWriteGuard
 }
 reexport! { rust: std::sync,
+    tag: crate::TAG_RESULT!(),
     doc: "Whether a timed wait on a condition variable returned due to a time out or not.",
     WaitTimeoutResult
 }
@@ -81,6 +83,7 @@ reexport! { rust: std::sync,
 /* aliases */
 
 reexport! { rust: std::sync,
+    tag: crate::TAG_RESULT!(),
     doc: "A type alias for the result of a lock method which can be poisoned.",
     LockResult
 }

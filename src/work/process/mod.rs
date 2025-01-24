@@ -1,15 +1,15 @@
-// devela::work::thread
+// devela::work::process
 //
-//! Native threads.
+//! Native processes and threads.
 //!
-#![doc = crate::doc_!(extends: thread)]
+#![doc = crate::doc_!(extends: process, thread)]
 //
 
 #[cfg(feature = "std")]
 crate::items! {
-    mod ext; // ExtThread
-    mod reexports;
-    mod sleep; // sleep4!
+    mod ext; // ExtProcess
+    mod reexports; // std::process::*
+    mod thread;
 }
 
 crate::items! { // structural access: _mods, _all, _always
@@ -20,7 +20,7 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         #[cfg(feature = "std")]
-        pub use super::{ext::*, reexports::*, sleep::*};
+        pub use super::{ext::*, reexports::*, thread::_all::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -28,6 +28,6 @@ crate::items! { // structural access: _mods, _all, _always
     }
     pub(super) mod _always { #![allow(unused)]
         #[cfg(feature = "std")]
-        pub use super::reexports::*;
+        pub use super::{ext::*, reexports::*, thread::_always::*};
     }
 }

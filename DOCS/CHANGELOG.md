@@ -4,7 +4,7 @@
 
 ### Added
 - new features: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
-- new traits `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`, `DirEnv`, `ExtLog`.
+- new traits `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`, `DirEnv`, `ExtLog`, `ExtProcess`.
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`, `NoData`, .
   - namespaces: `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
@@ -14,7 +14,7 @@
   - `Char::len_utf8`.
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
-- new re-exports: `SystemAlloc`, `std::env::*`, `::log::*`
+- new re-exports: `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
 - new optional dependencies: `itertools`.
 
 ### Removed
@@ -27,9 +27,10 @@
 - rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
 - rename `LoggerConfig` to `LogConfig`.
 - rename `work::async` to `work::future`.
+- rename `work::thread` to `work::process`.
 - ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
-- make public: `sys::env`, `work::{future, sync, thread}`.
+- make public: `sys::env`, `work::{future, process, sync}`.
 
 ### Fixed
 - enable nightly features depending on `alloc` and `std`.

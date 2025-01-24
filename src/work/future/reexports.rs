@@ -2,6 +2,8 @@
 //
 //! Reexported items.
 //
+// WAIT: [future_join](https://github.com/rust-lang/rust/issues/91642)
+// WAIT: [async_drop](https://github.com/rust-lang/rust/issues/126482)
 
 use crate::code::reexport;
 

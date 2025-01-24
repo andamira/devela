@@ -1,4 +1,4 @@
-// devela::work::thread::reexports
+// devela::work::process::thread::reexports
 //
 //! Reexported items.
 //
@@ -9,6 +9,7 @@ use crate::reexport;
 /* types */
 
 reexport! { rust: std::thread,
+    tag: crate::TAG_ERROR!(),
     doc: "An error returned by [`ThreadLocalKey::try_with`].",
     @AccessError as ThreadAccessError
 }
