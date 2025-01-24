@@ -11,7 +11,7 @@
   [`io`]: crate::sys::io
   [`NumToStr`]: crate::NumToStr
   [`data::dst`]: crate::data::dst
-  [`future_block`]: crate::future_block
+  [`block_on`]: crate::ExtFuture#method.block_on
   [`const_assert`]: crate::const_assert
   [`ConstBool`]: crate::ConstBool
   [`VecChunk`]: crate::VecChunk

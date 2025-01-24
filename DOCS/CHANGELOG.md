@@ -14,11 +14,13 @@
   - `Char::len_utf8`.
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
+  - `ExtFuture`: `pending`, `poll_fn`, `ready`.
 - new re-exports: `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
 - new optional dependencies: `itertools`.
 
 ### Removed
 - remove standalone re-exported `core::iter` functions.
+- remove standalone fns: `future_block`, `future_pending`, `future_ready`.
 - deprecate `Char::len_to_utf8`.
 
 ### Changed

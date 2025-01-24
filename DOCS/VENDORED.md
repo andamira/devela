@@ -12,7 +12,7 @@ See linked files for detailed changes.
 - [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][M_fxhash]).
 - [no_std_io]|[core2] by *Brendan Molloy*, as part of the [`io`] module.
 - [numtoa] by Michael Murphy, as the [`NumToStr`] trait.
-- [pollster] by Joshua Barretto, as the [`future_block`] fn.
+- [pollster] by Joshua Barretto, as the `ExtFuture::`[`block_on`] method.
 - [quickdiv] by Darko Trifunovski, as the [`Divisor`] struct ([*mod*][M_quickdiv]).
 - [stack_dst] by John Hodge, as the [`data::dst`] module ([*mod*][M_stack_dst]).
 - [static_assertions] by Nikolai Vazquez, as part of the [`const_assert`] macro
@@ -43,7 +43,7 @@ See linked files for detailed changes.
   [M_stack_dst]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
   [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
 [pollster]: https://crates.io/crates/pollster/0.3.0
-  [`future_block`]: https://docs.rs/devela/latest/devela/exec/fn.future_block.html
+  [`block_on`]: https://docs.rs/devela/latest/devela/work/future/trait.ExtFuture.html#method.block_on
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
   [M_quickdiv]: https://github.com/andamira/devela/blob/main/src/num/int/divisor/MODIFICATIONS.md
   [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html

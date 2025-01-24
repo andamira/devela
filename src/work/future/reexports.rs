@@ -14,7 +14,7 @@ reexport! { rust: core::future,
     @Pending as FuturePending
 }
 reexport! { rust: core::future,
-    doc: "A Future that wraps a function returning [`TaskPoll`][crate::work::TaskPoll].",
+    doc: "A Future that wraps a function returning [`TaskPoll`].",
     @PollFn as FuturePollFn
 }
 reexport! { rust: core::future,
@@ -29,14 +29,6 @@ reexport! { rust: core::future,
 reexport! { rust: core::future,
     doc: "Conversion into a `Future`.",
     IntoFuture
-}
-reexport! { rust: core::future,
-    doc: "Creates a [`FutureReady`].",
-    @ready as future_ready
-}
-reexport! { rust: core::future,
-    doc: "Creates a [`FuturePending`] future.",
-    @pending as future_pending
 }
 
 /* task */

@@ -8,7 +8,7 @@
 #[cfg(feature = "std")]
 crate::items! {
     mod ext; // ExtProcess
-    mod reexports; // std::process::*
+    mod reexports;
     mod thread;
 }
 

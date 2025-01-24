@@ -1,13 +1,7 @@
-// devela::work::future::block_on
+// devela::work::future::block
 //
 // Original source code by Joshua Barretto, licensed as MIT OR Apache-2.0
 // https://crates.io/crates/pollster/0.3.0
-//
-// MODIFICATIONS:
-// - removed the macro.
-// - removed all unsafe.
-// - renamed the function.
-// - misc. refactorings.
 //
 // MAYBE IMPROVE:
 // - [Lock-free and alloc-free implementation](https://github.com/zesterer/pollster/pull/9)
@@ -19,12 +13,15 @@ use crate::{pin, Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, T
 ///
 /// See also the [`ExtFuture`][super::ExtFuture] trait.
 ///
-/// # Examples
+/// # Example
 /// ```
 /// let future = async {};
-/// let result = devela::work::future_block(future);
+/// let result = devela::future_block(future);
 /// ```
-pub fn future_block<F: Future>(mut future: F) -> F::Output {
+///
+/// # Derived work
+#[doc = include_str!("./MODIFICATIONS.md")]
+pub(crate) fn future_block<F: Future>(mut future: F) -> F::Output {
     // Pin the future so that it can be polled.
     let mut future = pin!(future);
 
