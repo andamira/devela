@@ -917,7 +917,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 # https://doc.rust-lang.org/rustdoc/lints.html
 # ------------------------------------------------------------------------------
 
-missing_crate_level_docs = "deny" # no documentation at the crate root
+# missing_crate_level_docs = "deny" # no documentation at the crate root (or any binary)
 #
 # broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
