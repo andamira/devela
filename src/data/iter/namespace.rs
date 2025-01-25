@@ -4,8 +4,8 @@
 //
 // WAIT: [iter_chain](https://github.com/rust-lang/rust/issues/125964)
 
-#[cfg(feature = "nightly_coro")]
-use core::iter::from_coroutine;
+// #[cfg(feature = "nightly_coro")]
+// use core::iter::from_coroutine;
 use core::iter::{empty, from_fn, once, once_with, repeat, repeat_n, repeat_with, successors, zip};
 
 #[doc = crate::TAG_NAMESPACE!()]

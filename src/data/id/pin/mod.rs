@@ -18,12 +18,17 @@ use crate::{addr_of, Pin};
 ///
 /// It doesn't implement `Clone` or `Default`.
 ///
+#[cfg_attr(feature = "alloc", doc = "See also [`IdPinBox`].")]
+///
 /// # Example
 /// ```
 /// # use devela::IdPin;
 /// let mut data1: u8 = 0;
 /// let id1 = IdPin::new(&mut data1);
 /// ```
+///
+/// # Derived Work
+#[doc = include_str!("./MODIFICATIONS.md")]
 pub struct IdPin<'a> {
     inner: Pin<&'a mut u8>,
 }

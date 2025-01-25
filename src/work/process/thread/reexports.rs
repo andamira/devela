@@ -34,7 +34,8 @@ reexport! { rust: std::thread,
     @ScopedJoinHandle as ThreadScopedJoinHandle
 }
 reexport! { rust: std::thread,
-    doc: "A handle to a thread.",
+    doc: "A handle to a thread\n\n.
+See also the [`ExtThread`][crate::ExtThread] trait.",
     Thread
 }
 reexport! { rust: std::thread,

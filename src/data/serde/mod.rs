@@ -1,6 +1,6 @@
 // devela::data::serde
 //
-//! (De)serialization, encoding, compression.
+//! Structured serialization/deserialization.
 //
 
 mod types;

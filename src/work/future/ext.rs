@@ -4,11 +4,11 @@
 //
 
 #[cfg(feature = "std")]
+use crate::future_block;
+
 use {
-    crate::{
-        future_block, Future, FuturePending, FuturePollFn, FutureReady, TaskContext, TaskPoll,
-    },
-    std::future::{pending, poll_fn, ready},
+    crate::{Future, FuturePending, FuturePollFn, FutureReady, TaskContext, TaskPoll},
+    ::core::future::{pending, poll_fn, ready},
 };
 
 impl<F: Future> ExtFuture for F {}

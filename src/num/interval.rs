@@ -13,6 +13,7 @@ use crate::{
 /// The `Interval` type allows modeling ranges of values with optional inclusion
 /// or exclusion at each bound. This is useful for mathematical operations,
 /// range checks, and interval arithmetic.
+#[doc(alias = "Range")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Interval<T> {
     /// The lower bound (also known as the *start* bound, or the *left* bound).

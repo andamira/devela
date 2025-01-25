@@ -18,7 +18,8 @@ reexport! { rust: std::process,
 /* types */
 
 reexport! { rust: std::process,
-    doc: "Representation of a running or exited child process.",
+    doc: "Representation of a running or exited child process.\n\n
+See also the [`ExtProcess`][crate::ExtProcess] trait.",
     @Child as Process
 }
 reexport! { rust: std::process,

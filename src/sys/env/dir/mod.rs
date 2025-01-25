@@ -129,7 +129,7 @@ pub trait DirEnv {
     ///
     /// Currently, only the [`Xdg`](struct.Xdg.html) & [`DirUnix`] environments support this.
     ///
-    /// Note: The [XDG Base Directory Specification](spec) places additional
+    /// Note: The [XDG Base Directory Specification][spec] places additional
     /// requirements on this directory related to ownership, permissions, and
     /// persistence. This implementation does not check those requirements.
     ///

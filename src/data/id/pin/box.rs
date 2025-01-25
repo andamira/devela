@@ -9,6 +9,11 @@ use crate::{addr_of, Box, Pin};
 ///
 /// `IdPinBox` generates a unique ID by pinning a value in heap memory,
 /// ensuring that the ID remains stable and unique based on the memory address.
+///
+/// See also [`IdPin`][crate::IdPin].
+///
+/// # Derived Work
+#[doc = include_str!("./MODIFICATIONS.md")]
 #[derive(Clone)]
 pub struct IdPinBox {
     inner: Pin<Box<u8>>,

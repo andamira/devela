@@ -1,4 +1,7 @@
 // devela::code::util::const
+//
+//! Defines the CONST! macro.
+//
 
 /// A helper for constructing macro constants.
 ///

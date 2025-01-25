@@ -1,6 +1,7 @@
 // devela::sys::log::config
 
-#[expect(unused_imports, reason = "WIP")]
+#![allow(unused, reason = "WIP")]
+
 use super::{LogLevel, LogLevelFilter};
 
 /// Configuration for a logger.
@@ -10,4 +11,4 @@ pub struct LogConfig {
     target_level: LogLevelFilter,
 }
 
-impl LogConfig {}
+// impl LogConfig {}

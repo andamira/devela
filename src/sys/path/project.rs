@@ -4,16 +4,14 @@
 //
 
 #[cfg(not(miri))]
-use std::{
-    convert::AsRef,
-    env, fs, io,
-    path::{Path, PathBuf},
-};
+use crate::{AsRef, Env, IoError, IoErrorKind, IoResult, Path, PathBuf};
+use std::fs;
 
-/// Returns an absolute [`PathBuf`], relative to the `crate`'s root.
+/// Resolves a given path relative to the nearest `Cargo.toml` directory.
 ///
-/// It determines the root by finding the first `Cargo.toml` file, from the
-/// current directory through its ancestors.
+/// This function searches for the nearest `Cargo.toml` file starting from the
+/// current working directory and traversing upwards through its ancestors.
+/// Once the `Cargo.toml` is found, the provided `path` is appended to its directory.
 ///
 /// # Errors
 /// Returns an error if it can't find any `Cargo.toml` file,
@@ -21,16 +19,15 @@ use std::{
 ///
 /// # Examples
 /// ```
-/// use devela::sys::crate_root;
-///
+/// # use devela::crate_root;
 /// match crate_root("") {
 ///     Ok(p) => println!("Current crate root is {:?}", p),
 ///     Err(e) => println!("Error obtaining crate root {:?}", e)
 /// };
 /// ```
 #[cfg(not(miri))] // unsupported operation: `getcwd` not available when isolation is enabled
-pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
-    let current_path = env::current_dir()?;
+pub fn crate_root<P: AsRef<Path>>(path: P) -> IoResult<PathBuf> {
+    let current_path = Env::current_dir()?;
     let mut root_path = current_path.clone();
 
     for p in current_path.as_path().ancestors() {
@@ -40,7 +37,7 @@ pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
         }
         root_path.pop();
     }
-    Err(io::Error::new(io::ErrorKind::NotFound, "Ran out of places to find Cargo.toml"))
+    Err(IoError::new(IoErrorKind::NotFound, "Ran out of places to find Cargo.toml"))
 }
 
 /// Like [`crate_root`] but returns a [`String`].

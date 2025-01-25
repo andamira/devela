@@ -11,8 +11,8 @@ use crate::{ConstDefault, Own};
 ///
 /// It has a 128-bit state and generates 64-bit numbers.
 ///
-/// It offers a good balance between quality, versatility and state size, and
-/// has better statistical properties than [`XorShift128`][crate::XorShift128].
+/// It offers a good balance between quality, speed and state size, and
+/// has statistical properties than [`XorShift128`][crate::XorShift128].
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift128p([u64; 2]);
