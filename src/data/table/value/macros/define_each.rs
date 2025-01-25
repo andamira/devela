@@ -1,4 +1,4 @@
-// devela::data::value::macros::define_each
+// devela::data::table::value::macros::define_each
 //
 //!
 //
@@ -361,10 +361,10 @@ macro_rules! define_data_value {
             }
         )*
 
-        // from DataValue to DataRaw
+        // from DataValue to DataRawCopy
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-        impl<V: DataValueCopy> From<[<$Value $b Copy With>]<V>> for $crate::[<$Raw $b Copy>] {
+        impl<V: DataValueCopy> From<[<$Value $b Copy With>]<V>> for [<$Raw $b Copy>] {
             fn from(cell: [<$Value $b Copy With>]<V>) -> Self {
                 match cell {
                     [<$Value $b Copy With>]::None => Self { None: () },
@@ -381,8 +381,6 @@ macro_rules! define_data_value {
 
                     $( // feature-gated dependencies
                         #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
-                        #[cfg_attr(feature = "nightly_doc",
-                            doc(cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))))]
                         [<$Value $b Copy With>]::$C_name_dep(v) => Self { $C_name_dep: v },
                     )*
                 }

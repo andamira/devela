@@ -1,4 +1,4 @@
-// devela::data::value
+// devela::data::table::value
 //
 //! Enumerated data values and types, classified by size.
 //

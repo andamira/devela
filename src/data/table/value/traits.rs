@@ -1,4 +1,4 @@
-// devela::data::value::traits
+// devela::data::table::value::traits
 //
 //! Defines the traits [`DataType`], [`DataValue`], [`DataRaw`], and related.
 //

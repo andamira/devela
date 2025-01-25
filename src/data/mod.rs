@@ -1,7 +1,7 @@
 // devela::data
 //
 //! Data handling and manipulation.
-#![doc = crate::doc_!(modules: crate; data: collections, dst, hash, iter, serde, value)]
+#![doc = crate::doc_!(modules: crate; data: collections, dst, hash, iter, serde, table)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
@@ -19,7 +19,7 @@ pub mod collections;
 pub mod hash;
 pub mod iter;
 pub mod serde;
-pub mod value;
+pub mod table;
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -37,7 +37,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods {
         pub use super::{
-            collections::_all::*, hash::_all::*, iter::_all::*, serde::_all::*, value::_all::*,
+            collections::_all::*, hash::_all::*, iter::_all::*, serde::_all::*, table::_all::*,
         };
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -48,7 +48,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         pub use super::dst::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::value::_internals::*;
+        pub(crate) use super::table::_internals::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
