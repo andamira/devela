@@ -1,6 +1,9 @@
-// devela::data::id
+// devela::data::uid
 //
-//! Data identifiers.
+//! Abstractions for uniquely identifying data.
+//!
+//! Includes utilities for managing unique identifiers such as sequential IDs,
+//! scoped IDs, and universal unique identifiers.
 //
 
 mod pin; // pinned memory-based ids

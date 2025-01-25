@@ -1,6 +1,6 @@
 // devela::data::key
 //
-//! Abstractions for managing unique associations and key-based storage.
+//! Implementations of key-based storage.
 //!
 //! 
 //! Provides tools for mapping, indexing, and efficiently organizing data

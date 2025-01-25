@@ -1,4 +1,4 @@
-// devela::data::id::pin::box
+// devela::data::uid::pin::box
 //
 //! Pinned memory-based unique IDs.
 //

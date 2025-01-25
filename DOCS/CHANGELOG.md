@@ -8,7 +8,7 @@
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`, `NoData`, .
   - namespaces: `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
-- new modules: `data::{list, key, table}`, `lang::{c}`, `sys::log`.
+- new modules: `data::{list, key, table, uid}`, `lang::{c}`, `sys::log`.
 - new hidden const arrays: `XOROSHIFT_[16|32|64]_TRIPLETS`.
 - new methods:
   - `Char::len_utf8`.

@@ -1,4 +1,4 @@
-// devela::data::id::pin
+// devela::data::uid::pin
 //
 //!
 //

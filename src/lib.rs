@@ -146,7 +146,7 @@ pub use all::*;
 pub mod all {
     // public items, feature-gated, visible at their origin and here in `all`
     //
-    //! All the crate's items re-exported flat.
+    //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
     //! Note that these items are already re-exported (hidden) from the root,

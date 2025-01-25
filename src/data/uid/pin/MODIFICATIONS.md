@@ -4,7 +4,5 @@ including the following modifications:
 
 - make `no_std` compatible.
 - rename from `UniqueId` to `IdPinBox`.
-- make a non allocating version named `IdPin`.
+- make a non-allocating version named `IdPin`.
 - modify `Debug` impl to prefix the value with the struct name.
-- update documentation.
-- refactorize.

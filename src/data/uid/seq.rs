@@ -1,4 +1,4 @@
-// devela::data::id::seq
+// devela::data::uid::seq
 //
 //! Sequential unique IDs.
 //

@@ -1,4 +1,4 @@
-// devela::data::collections::reexports
+// devela::data::key::reexports
 //
 //! Reexported items.
 //

@@ -7,7 +7,7 @@
 use super::DataRaw;
 use crate::{DataType, DataTypeCopy, DataValue, DataValueCopy};
 
-/// Represents data absence.
+/// Represents the absence of data.
 pub type NoData = ();
 
 #[rustfmt::skip]
