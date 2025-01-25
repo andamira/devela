@@ -1,6 +1,6 @@
-// devela::data::collections::node
+// devela::data::node
 //
-//! Nodes.
+//! Abstractions for structured relationships.
 //!
 //! Nodes are a basic unit used to build more complex structures,
 //! like linked lists, graphs and trees.

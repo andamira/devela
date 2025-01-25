@@ -5,6 +5,7 @@
 
 use crate::{impl_cdef, reexport};
 
+#[cfg(feature = "alloc")]
 impl_cdef![<T> Self::new() => VecDeque<T>]; // impl ConstDefault
 
 reexport! { rust: alloc::collections,

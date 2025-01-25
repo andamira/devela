@@ -9,10 +9,10 @@
 // safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
+mod absence; // NoData
 mod bit;
 mod collection;
 mod error;
-mod no; // NoData
 mod sort;
 
 pub mod hash;
@@ -40,7 +40,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{bit::_all::*, collection::*, error::*, no::*, sort::_all::*};
+        pub use super::{absence::*, bit::_all::*, collection::*, error::*, sort::_all::*};
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{

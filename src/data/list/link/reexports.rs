@@ -3,6 +3,7 @@
 //! Reexported items.
 //
 
+#[cfg(feature = "alloc")]
 crate::impl_cdef![<T> Self::new() => LinkedList<T>]; // impl ConstDefault
 
 crate::reexport! { rust: alloc::collections,

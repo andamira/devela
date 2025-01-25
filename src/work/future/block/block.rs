@@ -13,12 +13,6 @@ use crate::{pin, Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, T
 ///
 /// See also the [`ExtFuture`][super::ExtFuture] trait.
 ///
-/// # Example
-/// ```
-/// let future = async {};
-/// let result = devela::future_block(future);
-/// ```
-///
 /// # Derived work
 #[doc = include_str!("./MODIFICATIONS.md")]
 pub(crate) fn future_block<F: Future>(mut future: F) -> F::Output {

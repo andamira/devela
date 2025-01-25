@@ -2,7 +2,6 @@
 //
 //! Implementations of key-based storage.
 //!
-//! 
 //! Provides tools for mapping, indexing, and efficiently organizing data
 //! through unique keys, including maps, sets, and other key-value structures.
 //!

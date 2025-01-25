@@ -3,7 +3,7 @@
 //! Allows the unit type [`()`] to represent the absence of a number.
 //
 
-/// Represents numeric absence.
+/// Represents the absence of a number.
 ///
 /// This can be used anywhere an implementation of [`Num`][super::Num] is expected,
 /// since it implements all the numeric traits, but does nothing.

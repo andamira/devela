@@ -1,4 +1,4 @@
-// devela::data::value::nodata
+// devela::data::absence
 //
 //! Implements traits for the unit type [`()`] to represent the absence of data.
 //
@@ -7,7 +7,7 @@
 use super::DataRaw;
 use crate::{DataType, DataTypeCopy, DataValue, DataValueCopy};
 
-/// Represents the absence of data.
+/// Represents the absence of some data.
 pub type NoData = ();
 
 #[rustfmt::skip]
