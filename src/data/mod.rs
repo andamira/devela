@@ -16,12 +16,17 @@ mod id;
 mod no; // NoData
 mod sort;
 
-pub mod collections;
 pub mod list;
 pub mod hash;
 pub mod iter;
+pub mod key;
 pub mod serde;
 pub mod table;
+
+// #[cfg(_graph··)]
+// pub mod graph;
+// #[cfg(_node··)]
+// pub mod node;
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -37,10 +42,10 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     mod _mods { #![allow(unused)]
         pub use super::{bit::_all::*, collection::*, error::*, id::_all::*, no::*, sort::_all::*};
     }
-    mod _pub_mods {
+    mod _pub_mods { #![allow(unused)]
         pub use super::{
-            collections::_all::*,
-            hash::_all::*, iter::_all::*, list::_all::*, serde::_all::*, table::_all::*,
+            hash::_all::*, iter::_all::*, key::_all::*, list::_all::*, serde::_all::*,
+            table::_all::*,
         };
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -49,6 +54,11 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
             feature = "unsafe_layout"
         ))]
         pub use super::dst::_all::*;
+
+        // #[cfg(_graph··)]
+        // pub use super::graph::*;
+        // #[cfg(_node··)]
+        // pub use super::node::*;
     }
     pub(super) mod _internals { #![allow(unused)]
         pub(crate) use super::table::_internals::*;
@@ -59,7 +69,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            collection::*, collections::_always::*, error::*, hash::_always::*, iter::_always::*,
+            collection::*, error::*, hash::_always::*, iter::_always::*, list::_always::*,
         };
     }
 }

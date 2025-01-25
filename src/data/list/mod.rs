@@ -14,7 +14,7 @@ pub mod stack;
 #[cfg(feature = "_tuple")]
 pub mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
 
-crate::items! { // structural access: _mods, _pub_mods, _all
+crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
     #[allow(unused)] #[doc(hidden, no_inline)]
@@ -31,5 +31,8 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::{_mods::*, _pub_mods::*};
+    }
+    pub(super) mod _always { #![allow(unused)]
+        pub use super::{array::_always::*, link::_always::*, queue::_always::*};
     }
 }

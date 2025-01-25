@@ -31,11 +31,6 @@ reexport! { rust: alloc::collections,
     doc: "An ordered set based on a B-Tree.",
     BTreeSet
 }
-reexport! { rust: alloc::collections,
-    tag: crate::TAG_DATA_STRUCTURE!(),
-    doc: "A priority queue implemented with a binary heap.",
-    BinaryHeap
-}
 
 /* from `hashbrown` or `std` */
 

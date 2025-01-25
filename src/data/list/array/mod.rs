@@ -32,4 +32,8 @@ crate::items! { // structural access: _mods, _all
         #[doc(inline)]
         pub use super::_mods::*;
     }
+    pub(super) mod _always { #![allow(unused)]
+        #[cfg(feature = "alloc")]
+        pub use super::vec::_always::*;
+    }
 }

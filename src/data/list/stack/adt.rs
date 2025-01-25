@@ -7,6 +7,8 @@
 // - impl for
 //   - VecDeque
 
+#![allow(dead_code, reason = "feature-gated implementations")]
+
 use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
 #[doc = crate::TAG_DATA_STRUCTURE!()]
