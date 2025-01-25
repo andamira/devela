@@ -8,7 +8,7 @@
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`, `NoData`, .
   - namespaces: `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
-- new modules: `data::table`, `lang::{c}`, `sys::log`.
+- new modules: `data::{list, table}`, `lang::{c}`, `sys::log`.
 - new hidden const arrays: `XOROSHIFT_[16|32|64]_TRIPLETS`.
 - new methods:
   - `Char::len_utf8`.
@@ -33,6 +33,7 @@
 - ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
 - make public: `sys::env`, `work::{future, process, sync}`.
+- move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
 
 ### Fixed
 - enable nightly features depending on `alloc` and `std`.

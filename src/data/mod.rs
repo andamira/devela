@@ -10,12 +10,14 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 mod bit;
+mod collection;
 mod error;
 mod id;
 mod no; // NoData
 mod sort;
 
 pub mod collections;
+pub mod list;
 pub mod hash;
 pub mod iter;
 pub mod serde;
@@ -33,11 +35,12 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{bit::_all::*, error::*, id::_all::*, no::*, sort::_all::*};
+        pub use super::{bit::_all::*, collection::*, error::*, id::_all::*, no::*, sort::_all::*};
     }
     mod _pub_mods {
         pub use super::{
-            collections::_all::*, hash::_all::*, iter::_all::*, serde::_all::*, table::_all::*,
+            collections::_all::*,
+            hash::_all::*, iter::_all::*, list::_all::*, serde::_all::*, table::_all::*,
         };
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -55,6 +58,8 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         pub use super::{_pub_mods::*, _mods::*};
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{collections::_always::*, error::*, hash::_always::*, iter::_always::*};
+        pub use super::{
+            collection::*, collections::_always::*, error::*, hash::_always::*, iter::_always::*,
+        };
     }
 }
