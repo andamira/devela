@@ -4,8 +4,8 @@
 ///
 /// - The name of each operation links to the official macro documentation.
 /// - Each operation is prefixed to document their const-compatibility:
-///   - ƒ&nbsp; means s const-fn compatible (can be used in runtime).
-///   - ≡ means const-context only compatible (restricted to compile-time contexts).
+///   - ƒ&nbsp; means const-fn compatible (can use runtime-context arguments).
+///   - ≡ means const-context only compatible (restricted to const-context arguments).
 ///
 /// # Operations
 /// - ƒ &nbsp;[`compare:`][::const_str::compare]
@@ -130,6 +130,11 @@ mod tests {
         const_assert!(!str!(compare: <, TWO, ONE));
     }
     #[test]
+    fn f_compare() {
+        let one = "1";
+        assert!(str!(compare: <, one, TEN));
+    }
+    #[test]
     const fn concat() {
         const MESSAGE: &str = str!(concat: TWO, " > ", ONE);
         const_assert!(str!(compare: ==, MESSAGE, "2 > 1"));
@@ -145,6 +150,11 @@ mod tests {
     const fn contains() {
         const_assert!(str!(contains: TEN, "1"));
         const_assert!(!str!(contains: TEN, "2"));
+    }
+    #[test]
+    fn f_contains() {
+        let ten = "10";
+        assert!(str!(contains: ten, "1"));
     }
     #[test]
     const fn cstr() {
@@ -175,7 +185,20 @@ mod tests {
         const_assert!(str!(ends_with: LANGS, "好"));
     }
     #[test]
-    const fn equal() {}
+    fn f_ends_with() {
+        let ten = "10";
+        assert!(str!(ends_with: ten, "0"));
+    }
+    #[test]
+    const fn equal() {
+        const_assert!(str!(equal: TEN, "10"));
+        const_assert!(!str!(ends_with: TEN, "1"));
+    }
+    #[test]
+    fn f_equal() {
+        let ten = "10";
+        assert!(str!(equal: ten, "10"));
+    }
     #[test]
     const fn from_utf8() {
         const BYTE_PATH: &[u8] = b"/tmp/file";
@@ -187,12 +210,18 @@ mod tests {
         use core::net::{IpAddr, Ipv4Addr, Ipv6Addr};
         const LOCALHOST_V4: Ipv4Addr = str!(ip_addr: v4, "127.0.0.1");
         const LOCALHOST_V6: Ipv6Addr = str!(ip_addr: v6, "::1");
-        const LOCALHOSTS: [IpAddr;2] = [str!(ip_addr: "127.0.0.1"), str!(ip_addr: "::1")];
-        const_assert!(eq_buf
-            &str!(ip_addr: v4, "127.0.0.1").octets(), &Ipv4Addr::new(127, 0, 0, 1).octets());
-        const_assert!(eq_buf
-            &str!(ip_addr: v6, "::1").octets(), &Ipv6Addr::LOCALHOST.octets());
+        const LOCALHOSTS: [IpAddr; 2] = [str!(ip_addr: "127.0.0.1"), str!(ip_addr: "::1")];
+        const_assert!(
+            eq_buf & str!(ip_addr: v4, "127.0.0.1").octets(),
+            &Ipv4Addr::new(127, 0, 0, 1).octets()
+        );
+        const_assert!(eq_buf & str!(ip_addr: v6, "::1").octets(), &Ipv6Addr::LOCALHOST.octets());
         const_assert!(LOCALHOSTS[0].is_ipv4() && LOCALHOSTS[1].is_ipv6());
+    }
+    #[test]
+    fn f_ip_address() {
+        let localhost_v4 = core::net::Ipv4Addr::LOCALHOST;
+        assert_eq!(str!(ip_addr: v4, "127.0.0.1"), localhost_v4);
     }
     #[test]
     const fn hex() {
@@ -213,6 +242,11 @@ mod tests {
         const_assert!(eq str!(parse: "16723", usize), 16723);
         const_assert!(eq str!(parse: "-100", i8), -100);
         const_assert!(eq str!(parse: "€", char), '€');
+    }
+    #[test]
+    fn f_parse() {
+        let t = "true";
+        assert_eq!(str!(parse: t, bool), true);
     }
     #[test]
     const fn raw_cstr() {
@@ -245,14 +279,29 @@ mod tests {
         const_assert!(!str!(starts_with: "banana", "a"));
     }
     #[test]
+    fn f_starts_with() {
+        let banana = "banana";
+        assert!(str!(starts_with: banana, 'b'));
+    }
+    #[test]
     const fn strip_prefix() {
         const_assert!(eq_str unwrap![some str!(strip_prefix: "banana", "ban")], "ana");
         const_assert!(str!(strip_prefix: "banana", "a").is_none());
     }
     #[test]
+    fn f_strip_prefix() {
+        let banana = "banana";
+        assert_eq!(unwrap![some str!(strip_prefix: banana, "ban")], "ana");
+    }
+    #[test]
     const fn strip_suffix() {
         const_assert!(eq_str unwrap![some str!(strip_suffix: "banana", "ana")], "ban");
         const_assert!(str!(strip_suffix: "banana", "b").is_none());
+    }
+    #[test]
+    fn f_strip_suffix() {
+        let banana = "banana";
+        assert_eq!(unwrap![some str!(strip_suffix: banana, "ana")], "ban");
     }
     #[test]
     const fn to_byte_array() {
@@ -291,9 +340,19 @@ mod tests {
         const_assert!(!str!(eq_ignore_ascii_case: "Ferrös", "FERRÖS"));
     }
     #[test]
+    fn f_eq_ignore_ascii_case() {
+        let ferris = "Ferris";
+        assert!(str!(eq_ignore_ascii_case: ferris, "FERRIS"));
+    }
+    #[test]
     const fn is_ascii() {
         const_assert!(str!(is_ascii: "hello\n"));
         const_assert!(!str!(is_ascii: LANGS));
+    }
+    #[test]
+    fn f_is_ascii() {
+        let ascii = "hello\n";
+        assert!(str!(is_ascii: ascii));
     }
     #[test]
     const fn squish() {
