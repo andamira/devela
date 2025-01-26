@@ -10,6 +10,8 @@
 - new macros: `maybe!`, `xorshift_custom!`.
 - new modules: `data::{list, key, table, uid}`, `lang::{c}`, `sys::log`.
 - new hidden const arrays: `XOROSHIFT_[16|32|64]_TRIPLETS`.
+- new macro arms:
+  - `str!`: `ip_addr`.
 - new methods:
   - `Char::len_utf8`.
   - `Env::*`.
@@ -33,6 +35,7 @@
 - rename `work::thread` to `work::process`.
 - ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
+- update `str!` macro docs and tests.
 - make public: `sys::env`, `work::{future, process, sync}`.
 - move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
 
