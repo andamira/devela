@@ -156,11 +156,11 @@ num = ["alg", "geom", "prim", "rand", "unit", "wave"]
 		cast = []  # PrimitiveCast
 		join = []  # PrimitiveJoin
 		split = [] # PrimitiveSplit
-	rand = [] # random number generators
+	rand = ["rustix?/rand"] # random number generators
 	unit = [] # unit prefixes
 	wave = [] # wavelets
 phys = ["time"]
-	time = []
+	time = ["rustix?/time"]
 sys = ["io", "mem"]
 	io = ["tokio?/io-util", "tokio?/io-std"] # no_std_io…
 	mem = ["bit"]
@@ -175,8 +175,8 @@ text = ["ascii", "fmt", "str"]
 ui = ["layout"]
 	layout = []
 work = ["bytemuck?/zeroable_atomics"]
-	process = ["tokio?/process"]
-	sync = ["tokio?/sync"]
+	process = ["rustix?/process", "tokio?/process"]
+	sync = ["rustix?/thread", "tokio?/sync"]
 	thread = ["tokio?/rt", "tokio?/rt-multi-thread"]
 
 
@@ -748,11 +748,11 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 version = "0.38.44" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 39 https://docs.rs/crate/rustix/latest/features
-features = [ # IMPROVE: feature-gate
-    "event", "fs", "io_uring", "mm", "mount", "net", "param", "pipe", "process",
-    "procfs", "pty", "rand", "runtime", "shm", "stdio", "system", "termios",
-    "thread", "time",
+features = [
+    "event", "fs", "io_uring", "mm", "mount", "net", "param", "pipe",
+    "procfs", "pty", "runtime", "shm", "stdio", "system", "termios",
 ]
+# feature-gated:IMPROVE: process, rand, thread, time,
 
 [dependencies.safe_arch] # https://crates.io/crates/safe_arch
 version = "0.7.4" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
