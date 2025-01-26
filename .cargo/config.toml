@@ -170,8 +170,8 @@ A_lin_riscv64  = "A  --target riscv64gc-unknown-linux-gnu"
 Ar_lin_riscv64 = "Ar --target riscv64gc-unknown-linux-gnu"
 A_mac64        = "A  --target x86_64-apple-darwin"            # apple
 Ar_mac64       = "Ar --target x86_64-apple-darwin"
-A_win64        = "A  --target x86_64-pc-windows-msvc"         # windows
-Ar_win64       = "Ar --target x86_64-pc-windows-msvc"
+A_win64        = "A  --target x86_64-pc-windows-gnu"          # windows
+Ar_win64       = "Ar --target x86_64-pc-windows-gnu"
 # no_std targets:
 A_pc32         = "A  --target i686-unknown-uefi"
 Ar_pc32        = "Ar --target i686-unknown-uefi"

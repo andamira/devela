@@ -120,7 +120,7 @@ const STD_ARCHES: &[&str] = &[
     //
     // Windows Cygwin 64-bit
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
-    "x86_64-pc-windows-msvc",
+    "x86_64-pc-windows-gnu",
 ];
 const STD_ARCHES_NO_CROSS_COMPILE: &[&str] = &[
     // Linux i686, 32-bit, std, little-endian, (kernel 3.2+, glibc 2.17+)
