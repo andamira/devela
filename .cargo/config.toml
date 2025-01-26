@@ -141,8 +141,11 @@ trr = "tree --format {p}:{r}" # with repository url
 #/ cargo subcommands: /#
 # ------------------------------------------------------------------------------
 
+# $ cargo install -f cargo-show-asm
 # https://crates.io/crates/cargo-show-asm
+# https://github.com/pacak/cargo-show-asm/blob/master/Changelog.md
 #
+# NOTE:
 # - Has to be run from the root of the crate.
 # - Functions need not to be inlined. Defaults to release mode.
 # - Needs to have installed rust sources and desired targets. E.g.:
@@ -185,13 +188,24 @@ Ar_wasi32      = "Ar --target wasm32-wasip1"
 A_wasm32       = "A  --target wasm32-unknown-unknown"
 Ar_wasm32      = "Ar --target wasm32-unknown-unknown"
 
+# $ cargo install -f cargo-expand
 # https://crates.io/crates/cargo-expand
+# https://github.com/dtolnay/cargo-expand/releases
+#
+# USAGE EXAMPLE:
+# $ cargo Elt -F dep_const_str text::str::r#macro::tests
 E = "expand"
 Eb = "expand --bin"
 Ee = "expand --example"
 El = "expand --lib"
+Elt = "expand --lib --tests"
 
+# $ cargo install -f cargo-llvm-lines
 # https://crates.io/crates/cargo-llvm-lines
+# https://github.com/dtolnay/cargo-llvm-lines/releases
+#
+# USAGE EXAMPLE:
+# $ cargo Lo --lib --filter data
 L = "llvm-lines --profile dev"
 Lo = "llvm-lines --profile dev-lto"
 Lr = "llvm-lines --profile release"
@@ -199,8 +213,15 @@ Lro = "llvm-lines --profile release-lto"
 # https://doc.rust-lang.org/stable/rustc/codegen-options/index.html#symbol-mangling-version
 L0 = "llvm-lines --profile dev -- -Csymbol-mangling-version=v0"
 
+# $ cargo install -f cargo-supply-chain
 # https://crates.io/crates/cargo-supply-chain
+# https://github.com/rust-secure-code/cargo-supply-chain/commits/master/
+#
+# NOTE:
+# - lists all crates in the supply chain, not just in the dependency tree.
+# - run Su first, to avoid re-downloading each time for other operations.
 S = "supply-chain"
-Sc = "supply-chain crates"
-Sp = "supply-chain publishers"
-Su = "supply-chain update"
+Sc = "S crates"
+Scd = "S crates --features dep_all"
+Sp = "S publishers"
+Su = "S update --cache-max-age 1w"
