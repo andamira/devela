@@ -15,7 +15,7 @@ crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
 
-    mod _mods {
+    mod _mods { #![allow(unused)]
         pub use super::{r#const::*, reexports::*};
     }
     pub(super) mod _all {

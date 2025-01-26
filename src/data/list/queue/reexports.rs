@@ -3,10 +3,10 @@
 //! Reexported items.
 //
 
-use crate::{impl_cdef, reexport};
+use crate::reexport;
 
 #[cfg(feature = "alloc")]
-impl_cdef![<T> Self::new() => VecDeque<T>]; // impl ConstDefault
+crate::impl_cdef![<T> Self::new() => VecDeque<T>]; // impl ConstDefault
 
 reexport! { rust: alloc::collections,
     tag: crate::TAG_DATA_STRUCTURE!(),
