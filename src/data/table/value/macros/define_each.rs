@@ -446,7 +446,7 @@ macro_rules! define_data_type {
         #[doc = "- [" [<$Type $b With>]  "][" [<$Type $b With>] "] -Copy" ]
         #[doc = "- [" [<$Type $b Copy>]  "][" [<$Type $b Copy>] "] -With" ]
         #[doc = "- [" [<$Type $b>]  "][" [<$Type $b>] "] -Copy -With" ]
-        #[derive(Clone, Copy, Debug)]
+        #[derive(Clone, Copy, Debug, PartialEq)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
         pub enum [< $Type $b Copy With >]<T: DataType> {
             /// Represents the absence of *data*.
@@ -539,7 +539,7 @@ macro_rules! define_data_type {
         #[doc = "- [" [<$Type $b Copy With>] "][" [<$Type $b Copy With>] "] +Copy" ]
         #[doc = "- [" [<$Type $b>] "][" [<$Type $b>] "] -With" ]
         #[doc = "- [" [<$Type $b Copy>] "][" [<$Type $b Copy>] "] +Copy -With" ]
-        #[derive(Clone, Copy, Debug)]
+        #[derive(Clone, Copy, Debug, PartialEq)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
         pub enum [< $Type $b With >]<T: DataType> {
             /// Represents the absence of *data*.
