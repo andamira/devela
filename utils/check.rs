@@ -163,21 +163,28 @@ const NO_STD_ARCHES: &[&str] = &[
 ];
 // For testing sys::linux
 const LINUX_ARCHES: &[&str] = &[
-    //* Tier 1 *
-    //----------
+    //* Tier 1 (+ tier 2 for musl) *
+    //------------------------------
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     //
     // Linux 64-bit
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "x86_64-unknown-linux-gnu",
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-2-with-host-tools
+    "x86_64-unknown-linux-musl",
+    //
     // Linux i686, 32-bit, std, little-endian, (kernel 3.2+, glibc 2.17+)
     // may need to install `libc6-dev-amd64-i386-cross` for testing
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "i686-unknown-linux-gnu",
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-2-without-host-tools
+    "i686-unknown-linux-musl",
     //
     // ARM64 Linux (kernel 4.1, glibc 2.17+)
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "aarch64-unknown-linux-gnu",
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-2-with-host-tools
+    "aarch64-unknown-linux-musl",
     //
     //* Tier 2 with host tools *
     //--------------------------

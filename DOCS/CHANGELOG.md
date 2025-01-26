@@ -19,6 +19,7 @@
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
 - new re-exports: `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
 - new optional dependencies: `itertools`.
+- add musl architectures to `check.rs` script.
 
 ### Removed
 - remove standalone re-exported `core::iter` functions.
@@ -38,6 +39,7 @@
 - update `str!` macro docs and tests.
 - make public: `sys::env`, `work::{future, process, sync}`.
 - move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
+- changed windows `msvc` target for `gnu`.
 
 ### Fixed
 - enable nightly features depending on `alloc` and `std`.
