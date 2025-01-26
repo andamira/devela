@@ -622,7 +622,7 @@ features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
 
 [dependencies.const-str] # https://crates.io/crates/const-str
-version = "0.5.7" # ✗ https://github.com/Nugine/const-str/commits/main/
+version = "0.6.0" # ✗ https://github.com/Nugine/const-str/commits/main/
 optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
@@ -644,7 +644,7 @@ optional = true # safe enough (simple few)
 default-features = false # 3 https://docs.rs/crate/itertools/latest/features
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.25" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.27" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
