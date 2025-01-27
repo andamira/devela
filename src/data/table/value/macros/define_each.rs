@@ -72,7 +72,7 @@ macro_rules! define_data_value {
         #[doc = "- [" [<$Value $b With>] "][" [<$Value $b With>] "] -Copy" ]
         #[doc = "- [" [<$Value $b Copy>] "][" [<$Value $b Copy>] "] -With" ]
         #[doc = "- [" [<$Value $b>] "][" [<$Value $b>] "] -Copy -With" ]
-        #[derive(Clone, Copy, Debug)]
+        #[derive(Clone, Copy, Debug, PartialEq)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
         pub enum [<$Value $b Copy With>]<V: DataValue> {
             /// Represents the absence of *data*.
@@ -162,7 +162,7 @@ macro_rules! define_data_value {
         #[doc = "- [" [<$Value $b Copy With>] "][" [<$Value $b Copy With>] "] +Copy" ]
         #[doc = "- [" [<$Value $b>] "][" [<$Value $b>] "] -Width" ]
         #[doc = "- [" [<$Value $b Copy>] "][" [<$Value $b Copy>] "] +Copy -Width" ]
-        #[derive(Debug)]
+        #[derive(Clone, Debug, PartialEq)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
         pub enum [<$Value $b With>]<V: DataValue> {
             /// Represents the absence of *data*.
