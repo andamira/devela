@@ -11,7 +11,7 @@
 
 use core::fmt::Debug;
 
-/// Common trait for *data types*.
+/// Common trait for enumerating *data types*.
 ///
 /// Allows extending `DataType*`**`With`** versions with custom *types*.
 ///
@@ -19,26 +19,27 @@ use core::fmt::Debug;
 /// - [`DataTypeCopy`]
 /// - [`DataValueCopy`]
 /// - [`DataValue`]
-pub trait DataType: Copy + Debug {
+pub trait DataType: Debug {
     /// The `DataValue` type that pairs with this `DataType`.
     type Value: DataValue;
 
-    /// Returns some default value corresponding to the current type.
-    ///
-    /// Or returns `None` if the actual type doesn't implement `Default`.
-    fn data_value_default(&self) -> Option<Self::Value>;
+    /// Returns whether all values represented by this type are `Copy`.
+    fn data_values_are_copy() -> bool;
 
-    /// Returns true if the data represented by this type is [`Copy`].
+    /// Returns whether the specific value for this type is `Copy`.
     fn data_value_is_copy(&self) -> bool;
 
-    /// Returns the alignment of the data represented by the current type.
+    /// Returns the default value for this type, or `None` if not available.
+    fn data_value_default(&self) -> Option<Self::Value>;
+
+    /// Returns the alignment of the value represented by this type.
     fn data_value_align(&self) -> usize;
 
-    /// Returns the size of the data represented by this type.
+    /// Returns the size of the value represented by this type.
     fn data_value_size(&self) -> usize;
 }
 
-/// Common marker trait for `Copy` *data types*.
+/// Common trait for enumerating `Copy`-constrained *data types*.
 ///
 /// Allows extending `DataType*Copy`**`With`** versions with custom *types*.
 ///
@@ -51,21 +52,19 @@ pub trait DataType: Copy + Debug {
 /// - [`DataType`]
 /// - [`DataValue`]
 /// - [`DataValueCopy`]
-pub trait DataTypeCopy: DataType
+pub trait DataTypeCopy: DataType + Copy
 where
     Self::Value: DataValueCopy,
 {
-    /// Returns some default value corresponding to the current (Copy) type.
+    /// Returns the default value for this `Copy` type, or `None` if not available.
     ///
-    /// Or returns `None` if the actual type doesn't implement `Default`.
-    ///
-    /// The default implementation calls [`DataType::data_value_default`].
+    /// The default implementation forwards to [`DataType::data_value_default`].
     fn data_value_copy_default(&self) -> Option<Self::Value> {
         self.data_value_default()
     }
 }
 
-/// Common trait for *data values*.
+/// Common trait for enumerating *data values*.
 ///
 /// Allows extending `DataValue*`**`With`** versions.
 ///
@@ -77,15 +76,17 @@ pub trait DataValue: Debug {
     /// The `DataType` type that pairs with this `DataValue`.
     type Type: DataType;
 
-    /// Returns the data type corresponding to the current value.
+    /// Returns whether all values are `Copy`.
+    fn data_values_are_copy() -> bool;
+
+    /// Returns the data type of this value.
     fn data_type(&self) -> Self::Type;
 
-    /// Whether the data type in the current variant is [`Copy`].
-    // MAYBE DELETE
+    /// Returns whether the specific value is `Copy`.
     fn data_value_is_copy(&self) -> bool;
 }
 
-/// Common marker trait for `Copy` *data values*.
+/// Common trait for enumerating `Copy`-constrained *data values*.
 ///
 /// Allows extending `DataValue*Copy`**`With`** versions.
 ///
@@ -101,26 +102,27 @@ pub trait DataValue: Debug {
 //
 // NOTE we must not require `where Self::Type: DataTypeCopy` to avoid loops.
 pub trait DataValueCopy: DataValue + Copy {
-    /// Returns the data type corresponding to the current (Copy) value.
+    /// Returns the data type associated with this `Copy` value.
     ///
-    /// The default implementation calls [`DataValue::data_type`].
+    /// The default implementation forwards to [`DataValue::data_type`].
     fn data_type_copy(&self) -> Self::Type {
         self.data_type()
     }
 }
 
-/// Common trait for *unsafe data values*.
+/// Common unsafe trait for enumerating *raw data values* without type metadata.
 ///
 /// # Safety
-/// You have to now what you're doing.
+/// You have to know what you're doing.
 #[cfg(feature = "unsafe_layout")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 pub unsafe trait DataRaw {}
 
-/// Comon marker trait for *unsafe* `Copy` *data values*.
+/// Common unsafe trait for enumerating `Copy`-constrained *raw data values*
+/// without type metadata.
 ///
 /// # Safety
-/// You have to now what you're doing.
+/// You have to know what you're doing.
 #[cfg(feature = "unsafe_layout")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 pub unsafe trait DataRawCopy: DataRaw + Copy {}

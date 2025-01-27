@@ -13,14 +13,20 @@ pub type NoData = ();
 #[rustfmt::skip]
 impl DataType for NoData {
     type Value = NoData;
-    fn data_value_default(&self) -> Option<Self::Value> { Some(()) }
+
+    fn data_values_are_copy() -> bool { true }
+
     fn data_value_is_copy(&self) -> bool { true }
+    fn data_value_default(&self) -> Option<Self::Value> { Some(()) }
     fn data_value_align(&self) -> usize { align_of::<NoData>() }
     fn data_value_size(&self) -> usize { size_of::<NoData>() }
 }
 #[rustfmt::skip]
 impl DataValue for NoData {
     type Type = NoData;
+
+    fn data_values_are_copy() -> bool { true }
+
     fn data_type(&self) -> Self::Type {}
     fn data_value_is_copy(&self) -> bool { true }
 }

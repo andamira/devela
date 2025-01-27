@@ -112,7 +112,7 @@ macro_rules! define_data_value {
             )*
         }
 
-        // alias DataValue Copy
+        // DataValue Copy (-With) alias
         #[doc = $b "-bit data *value*, restricted to `Copy` variants." ]
         ///
         /// See also:
@@ -121,13 +121,13 @@ macro_rules! define_data_value {
         #[doc = "- [" [<$Value $b Copy With>] "][" [<$Value $b Copy With>] "] +With" ]
         #[doc = "- [" [<$Value $b With>] "][" [<$Value $b With>] "] -Copy +With" ]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        pub type [<$Value $b Copy>] = [< $Value $b With>]<$crate::NoData>;
+        pub type [<$Value $b Copy>] = [< $Value $b Copy With>]<$crate::NoData>;
 
         // implement the DataValue trait
         $crate::impl_data_value![
             v: [< $Value $b Copy With >], DataValue,
             t: [< $Type $b Copy With >], DataType,
-            is_copy: true,
+            all_are_copy: true,
 
             copy:
                 $( $C_name, $C_type
@@ -242,7 +242,7 @@ macro_rules! define_data_value {
         $crate::impl_data_value![
             v: [< $Value $b With >], DataValue,
             t: [< $Type $b With >], DataType,
-            is_copy: false,
+            all_are_copy: false,
 
             copy:
                 $( $C_name, $C_type
@@ -475,10 +475,12 @@ macro_rules! define_data_type {
             )*
 
             $( // pointer-size & feature-gated dependencies
-                #[cfg(all($C_ptr_ptrdep, feature = $C_dep1_ptrdep,
+                #[cfg(all($C_ptr_ptrdep,
+                        feature = $C_dep1_ptrdep,
                         feature = $C_dep2_ptrdep))]
                 #[cfg_attr(feature = "nightly_doc",
-                    doc(cfg(all(feature = $C_dep1_ptrdep, feature = $C_dep2_ptrdep))))]
+                    doc(cfg(all(feature = $C_dep1_ptrdep,
+                                feature = $C_dep2_ptrdep))))]
                 #[doc = $C_doc_ptrdep]
                 $C_name_ptrdep,
             )*
@@ -499,7 +501,7 @@ macro_rules! define_data_type {
         $crate::impl_data_type![
             v: [< $Value $b Copy With >], DataValue,
             t: [< $Type $b Copy With >], DataType,
-            is_copy: true,
+            all_are_copy: true,
 
             copy:
                 $( $C_name, $C_type,
@@ -620,7 +622,7 @@ macro_rules! define_data_type {
         $crate::impl_data_type![
             v: [< $Value $b With >], DataValue,
             t: [< $Type $b With >], DataType,
-            is_copy: false,
+            all_are_copy: false,
 
             copy:
                 $( $C_name, $C_type,

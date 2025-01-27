@@ -11,9 +11,9 @@
 #[allow(unused_macros)]
 macro_rules! impl_data_value {
     (
-        v: $Vname:ident, $cbound:ident,
+        v: $Vname:ident, $vbound:ident,
         t: $Tname:ident, $tbound:ident,
-        is_copy: $is_copy:stmt,
+        all_are_copy: $all_are_copy:stmt,
 
         copy:
             $( $C_name:ident, $C_type:ty
@@ -49,10 +49,48 @@ macro_rules! impl_data_value {
                $N_dep1_ptrdep:literal, $N_dep2_ptrdep:literal
             ),* ;
     ) => { $crate::paste! {
-        impl<V: $cbound> $crate::DataValue for $Vname<V> {
+        impl<V: $vbound> $crate::DataValue for $Vname<V> {
             type Type = $Tname<V::Type>;
 
-            fn data_value_is_copy(&self) -> bool { $is_copy }
+            fn data_values_are_copy() -> bool { $all_are_copy }
+
+            fn data_value_is_copy(&self) -> bool {
+                match self {
+                    $Vname::None => true,
+                    $Vname::Extra(t) => t.data_value_is_copy(),
+
+                    $( $Vname::$C_name(_) => true, )*
+                    $( $Vname::$N_name(_) => false, )*
+
+                    $( // pointer-size dependant
+                        #[cfg($C_ptr_ptr)]
+                        $Vname::$C_name_ptr(_) => true,
+                    )* $(
+                        #[cfg($N_ptr_ptr)]
+                        $Vname::$N_name_ptr(_) => false,
+                    )*
+
+                    $( // feature-gated dependencies
+                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
+                        $Vname::$C_name_dep(_) => true,
+                    )* $(
+                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
+                        $Vname::$N_name_dep(_) => false,
+                    )*
+
+                    $( // pointer-size & feature-gated dependencies
+                        #[cfg(all($C_ptr_ptrdep,
+                            feature = $C_dep1_ptrdep,
+                            feature = $C_dep2_ptrdep))]
+                        $Vname::$C_name_ptrdep(_) => true,
+                    )* $(
+                        #[cfg(all($N_ptr_ptrdep,
+                                feature = $N_dep1_ptrdep,
+                                feature = $N_dep2_ptrdep))]
+                        $Vname::$N_name_ptrdep(_) => false,
+                    )*
+                }
+            }
             fn data_type(&self) -> Self::Type {
                 match self {
                     $Vname::None => Self::Type::None,
@@ -100,9 +138,9 @@ pub(crate) use impl_data_value;
 #[allow(unused_macros)]
 macro_rules! impl_data_type {
     (
-        v: $Vname:ident, $cbound:ident,
+        v: $Vname:ident, $vbound:ident,
         t: $Tname:ident, $tbound:ident,
-        is_copy: $is_copy:stmt,
+        all_are_copy: $all_are_copy:stmt,
 
         copy:
             $( $C_name:ident, $C_type:ty,
@@ -149,7 +187,45 @@ macro_rules! impl_data_type {
         impl<T: $tbound> $crate::DataType for $Tname<T> {
             type Value = $Vname<T::Value>;
 
-            fn data_value_is_copy(&self) -> bool { $is_copy }
+            fn data_values_are_copy() -> bool { $all_are_copy }
+
+            fn data_value_is_copy(&self) -> bool {
+                match self {
+                    $Tname::None => true,
+                    $Tname::Extra(t) => t.data_value_is_copy(),
+
+                    $( $Tname::$C_name => true, )*
+                    $( $Tname::$N_name => false, )*
+
+                    $(  // pointer-size dependant
+                        #[cfg($C_ptr_ptr)]
+                        $Tname::$C_name_ptr => true,
+                    )* $(
+                        #[cfg($N_ptr_ptr)]
+                        $Tname::$N_name_ptr => false,
+                    )*
+
+                    $(  // feature-gated dependencies
+                        #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
+                        $Tname::$C_name_dep => true,
+                    )* $(
+                        #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
+                        $Tname::$N_name_dep => false,
+                    )*
+
+                    $(  // pointer-size & feature-gated dependencies
+                        #[cfg(all($C_ptr_ptrdep,
+                                feature = $C_dep1_ptrdep,
+                                feature = $C_dep2_ptrdep))]
+                        $Tname::$C_name_ptrdep => true,
+                    )* $(
+                        #[cfg(all($N_ptr_ptrdep,
+                                feature = $N_dep1_ptrdep,
+                                feature = $N_dep2_ptrdep))]
+                        $Tname::$N_name_ptrdep => false,
+                    )*
+                }
+            }
 
             fn data_value_default(&self) -> Option<Self::Value> {
                 match self {
