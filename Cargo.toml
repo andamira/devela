@@ -644,13 +644,13 @@ optional = true # safe enough (simple few)
 default-features = false # 3 https://docs.rs/crate/itertools/latest/features
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.27" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1" # ✓ https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
 
 [dependencies.js-sys] # https://crates.io/crates/js-sys
-version = "0.3.77" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/js-sys
+version = "0.3.73" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/js-sys
 optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
 # deps: once-cell, wasm-bindgen/std
@@ -674,7 +674,7 @@ default-features = false # 25 https://docs.rs/crate/log/latest/features
 # features = ["kv"]
 
 [dependencies.memchr] # https://crates.io/crates/memchr
-version = "2.7.4" # ✗ https://github.com/BurntSushi/memchr/commits/master/
+version = "2.7" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/memchr/latest/features
 
@@ -695,7 +695,7 @@ default-features = false # 2 https://docs.rs/crate/nc/latest/features
 # WAIT: [rt_sigaction](https://github.com/XuShaohua/nc/issues/29)
 
 [dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
-version = "1.10.0" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
+version = "1.10" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
 features = ["fallback", "float"]
@@ -715,17 +715,17 @@ default-features = false # 5 https://docs.rs/crate/rand_core/latest/features
 # depends on syn, via zerocopy
 
 [dependencies.rayon] # https://crates.io/crates/rayon
-version = "1.10.0" # ✗ https://github.com/rayon-rs/rayon/commits/main/
+version = "1.10" # ✗ https://github.com/rayon-rs/rayon/commits/main/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/rayon/latest/features
 
 [dependencies.raw-cpuid] # https://crates.io/crates/raw-cpuid
-version = "11.2.0" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
+version = "11.2" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/raw-cpuid/latest/features
 
 [dependencies.regex-lite] # https://crates.io/crates/regex-lite
-version = "0.1.6" # ✗ https://github.com/rust-lang/regex/commits/master/regex-lite
+version = "0.1" # ✗ https://github.com/rust-lang/regex/commits/master/regex-lite
 optional = true # safe
 default-features = false # 2 https://docs.rs/crate/rayon/latest/features
 features = ["string"]
@@ -746,7 +746,7 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"] # IMPROVE: feature-gate
 
 [dependencies.rustix] # https://crates.io/crates/rustix
-version = "0.38.44" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
+version = "0.38.40" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 39 https://docs.rs/crate/rustix/latest/features
 features = [
@@ -761,13 +761,13 @@ optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
 [dependencies.serde] # https://crates.io/crates/serde
-version = "1.0.217" # ✗ https://github.com/serde-rs/serde/releases
+version = "1.0" # ✗ https://github.com/serde-rs/serde/releases
 optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/serde/latest/features
 # WAIT [Const generics support](https://github.com/serde-rs/serde/issues/1937)
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
-version = "3.11.3" # ✗ https://github.com/ashvardanian/StringZilla/releases
+version = "3.11" # ✗ https://github.com/ashvardanian/StringZilla/releases
 optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 # WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)
@@ -781,18 +781,18 @@ features = [] # adpcm, flac, mkv, ogg, pcm, vorbis, wav, symphonia-[bundle|codec
 # IMPROVE: feature-gate
 
 [dependencies.sysinfo] # https://crates.io/crates/sysinfo
-version = "0.33.1" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
+version = "0.33" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
 features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
 
 [dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
-version = "1.1.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
+version = "1.1" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
 
 [dependencies.tokio] # https://crates.io/crates/tokio
-version = "1.43.0" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
+version = "1.43" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 23 https://docs.rs/crate/tokio/latest/features
 features =  [] # https://docs.rs/tokio/#feature-flags
@@ -805,23 +805,23 @@ default-features = false # 20 https://docs.rs/crate/tracing/latest/features
 features = [] # https://docs.rs/tracing/#crate-feature-flags
 
 [dependencies.unicode-segmentation] # https://crates.io/crates/unicode-segmentation
-version = "1.12.0" # ✓ https://github.com/unicode-rs/unicode-segmentation?tab=readme-ov-file#change-log
+version = "1.12" # ✓ https://github.com/unicode-rs/unicode-segmentation?tab=readme-ov-file#change-log
 optional = true # safe
 default-features = false # 1 https://docs.rs/crate/unicode-segmentation/latest/features
 
 [dependencies.unicode-width] # https://crates.io/crates/unicode-width
-version = "0.2.0" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-ov-file#changelog
+version = "0.2" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-ov-file#changelog
 optional = true # safe
 default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
 
 [dependencies.wasm-bindgen] # https://crates.io/crates/wasm-bindgen
-version = "0.2.100" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md
+version = "0.2.96" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 10 https://docs.rs/crate/wasm-bindgen/latest/features
 
 [dependencies.web-sys] # https://crates.io/crates/web-sys
-version = "0.3.77" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/web-sys
+version = "0.3.73" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/web-sys
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
 
@@ -831,7 +831,7 @@ optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
 [dependencies.winnow] # https://crates.io/crates/winnow
-version = "0.6.24" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
+version = "0.6" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
 optional = true # ±safe (very little unsafe)
 default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 
