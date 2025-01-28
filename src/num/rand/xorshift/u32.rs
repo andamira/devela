@@ -125,7 +125,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
 #[cfg(all(feature = "dep_rand_core", feature = "join"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
 mod impl_rand {
-    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{RngCore, SeedableRng};
     use crate::{Cast, XorShift32};
 
     impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RngCore
@@ -156,11 +156,6 @@ mod impl_rand {
                     break;
                 }
             }
-        }
-
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
-            self.fill_bytes(dest);
-            Ok(())
         }
     }
 

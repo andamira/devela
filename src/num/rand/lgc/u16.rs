@@ -94,7 +94,7 @@ impl Lgc16 {
 #[cfg(all(feature = "dep_rand_core", feature = "join"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
 mod impl_rand {
-    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{RngCore, SeedableRng};
     use crate::{Cast, Lgc16};
 
     impl RngCore for Lgc16 {
@@ -102,7 +102,6 @@ mod impl_rand {
         fn next_u32(&mut self) -> u32 {
             Cast::<u32>::from_u16_le([self.next_u16(), self.next_u16()])
         }
-
         /// Returns the next 4 × random `u16` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
             Cast::<u64>::from_u16_le([
@@ -112,7 +111,6 @@ mod impl_rand {
                 self.next_u16(),
             ])
         }
-
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             let mut i = 0;
             while i < dest.len() {
@@ -129,11 +127,6 @@ mod impl_rand {
                     i += 1;
                 }
             }
-        }
-
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
-            self.fill_bytes(dest);
-            Ok(())
         }
     }
 

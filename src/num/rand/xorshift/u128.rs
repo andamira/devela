@@ -164,7 +164,7 @@ impl XorShift128 {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::XorShift128;
-    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl RngCore for XorShift128 {
         /// Returns the next random `u32`,
@@ -193,11 +193,6 @@ mod impl_rand {
                     break;
                 }
             }
-        }
-
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
-            self.fill_bytes(dest);
-            Ok(())
         }
     }
 

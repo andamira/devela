@@ -270,19 +270,17 @@ impl ConstDefault for Xoroshiro128pp {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::Xoroshiro128pp;
-    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl RngCore for Xoroshiro128pp {
         /// Returns the next random `u32`.
         fn next_u32(&mut self) -> u32 {
             self.next_u32()
         }
-
         /// Returns the next random `u64`.
         fn next_u64(&mut self) -> u64 {
             ((self.next_u32() as u64) << 32) | (self.next_u32() as u64)
         }
-
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             let mut i = 0;
             while i < dest.len() {
@@ -298,11 +296,6 @@ mod impl_rand {
                     break;
                 }
             }
-        }
-
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
-            self.fill_bytes(dest);
-            Ok(())
         }
     }
 

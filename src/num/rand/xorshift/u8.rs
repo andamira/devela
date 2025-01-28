@@ -109,7 +109,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::XorShift8;
-    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl<const A: usize, const B: usize, const C: usize> RngCore for XorShift8<A, B, C> {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
@@ -135,11 +135,6 @@ mod impl_rand {
             for byte in dest {
                 *byte = self.next_u8();
             }
-        }
-
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
-            self.fill_bytes(dest);
-            Ok(())
         }
     }
 

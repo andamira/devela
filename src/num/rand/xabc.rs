@@ -143,14 +143,13 @@ impl Xabc {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::Xabc;
-    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl RngCore for Xabc {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
             u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
         }
-
         /// Returns the next 8 × random `u8` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
             u64::from_le_bytes([
@@ -164,16 +163,10 @@ mod impl_rand {
                 self.next_u8(),
             ])
         }
-
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             for byte in dest {
                 *byte = self.next_u8();
             }
-        }
-
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
-            self.fill_bytes(dest);
-            Ok(())
         }
     }
 
