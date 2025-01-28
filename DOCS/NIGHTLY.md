@@ -54,6 +54,7 @@ See also
 - 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: ·[let_chains](https://github.com/rust-lang/rust/pull/132833)
 - 1.??: ·[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
+- 1.??: ✗[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
 - 1.??: ·[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: a[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: ·[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)

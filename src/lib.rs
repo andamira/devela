@@ -78,7 +78,8 @@
     const_slice_from_ref,
     const_str_split_at,
     derive_coerce_pointee,
-    get_many_mut, // get_disjoint_mut (new name)
+    get_many_mut, //  get_disjoint_mut
+    // map_many_mut, // ✗
     impl_trait_in_assoc_type,
     isqrt,
     let_chains,
