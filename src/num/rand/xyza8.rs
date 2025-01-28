@@ -48,6 +48,7 @@ use crate::{ConstDefault, Own};
 /// Licensed under the [BSD 2-Clause "Simplified" License][license]
 ///
 /// [license]: https://github.com/edrosten/8bit_rng/blob/master/LICENSE
+#[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8a {
     x: u8,
@@ -56,11 +57,13 @@ pub struct Xyza8a {
     a: u8,
 }
 
+/// Creates a new PRNG initialized with the default fixed seed.
 impl Default for Xyza8a {
     fn default() -> Self {
         Self::DEFAULT
     }
 }
+/// Creates a new PRNG initialized with the default fixed seed.
 impl ConstDefault for Xyza8a {
     const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
 }
@@ -76,13 +79,22 @@ impl Xyza8a {
         Self { x: seeds[0], y: seeds[1], z: seeds[2], a: seeds[3] }
     }
 
-    /// Returns the current random `u8`.
     #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> [u8; 4] {
+        [self.x, self.y, self.z, self.a]
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: [u8; 4]) -> Self {
+        Self { x: state[0], y: state[1], z: state[2], a: state[3] }
+    }
+
+    #[must_use]
+    /// Returns the current random `u8`.
     pub const fn current_u8(&self) -> u8 {
         self.a
     }
-
-    /// Updates the state and returns the next random `u8`.
+    /// Advances the state and returns the next random `u8`.
     pub fn next_u8(&mut self) -> u8 {
         let t = self.x ^ (self.x << 4);
         self.x = self.y;
@@ -93,8 +105,7 @@ impl Xyza8a {
     }
 
     /// Returns a copy of the next new random state.
-    #[must_use]
-    pub const fn next_state(&self) -> Self {
+    pub const fn peek_next_state(&self) -> Self {
         let mut new = *self;
 
         let t = new.x ^ (new.x << 4);
@@ -107,7 +118,7 @@ impl Xyza8a {
 
     /// Returns both the next random state and the `u8` value.
     pub const fn own_next_u8(self) -> Own<Self, u8> {
-        let s = self.next_state();
+        let s = self.peek_next_state();
         let v = s.current_u8();
         Own::new(s, v)
     }
@@ -177,6 +188,16 @@ impl Xyza8b {
         Self { x: seeds[0], y: seeds[1], z: seeds[2], a: seeds[3] }
     }
 
+    #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> [u8; 4] {
+        [self.x, self.y, self.z, self.a]
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: [u8; 4]) -> Self {
+        Self { x: state[0], y: state[1], z: state[2], a: state[3] }
+    }
+
     /// Returns the current random `u8`.
     pub const fn current_u8(&self) -> u8 {
         self.a
@@ -193,7 +214,7 @@ impl Xyza8b {
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_state(&self) -> Self {
+    pub const fn peek_next_state(&self) -> Self {
         let mut new = *self;
 
         let t = new.x ^ (new.x >> 1);
@@ -206,7 +227,7 @@ impl Xyza8b {
 
     /// Returns both the next random state and the `u8` value.
     pub const fn own_next_u8(self) -> Own<Self, u8> {
-        let s = self.next_state();
+        let s = self.peek_next_state();
         let v = s.current_u8();
         Own::new(s, v)
     }

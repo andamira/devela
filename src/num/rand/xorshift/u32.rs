@@ -21,11 +21,13 @@ pub struct XorShift32<
     const C: usize = 13,
 >(u32);
 
+/// Creates a new PRNG initialized with the default fixed seed.
 impl Default for XorShift32 {
     fn default() -> Self {
         Self::DEFAULT
     }
 }
+/// Creates a new PRNG initialized with the default fixed seed.
 impl ConstDefault for XorShift32 {
     const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
@@ -62,6 +64,16 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
         Self(seed)
     }
 
+    #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> u32 {
+        self.0
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: u32) -> Self {
+        Self(state)
+    }
+
     /// Returns the current random `u32`.
     #[must_use]
     pub const fn current_u32(&self) -> u32 {
@@ -80,7 +92,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_state(&self) -> Self {
+    pub const fn peek_next_state(&self) -> Self {
         let mut x = self.0;
         xorshift_basis!(x, BASIS, (A, B, C));
         Self(x)
@@ -88,7 +100,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
 
     /// Returns both the next random state and the `u32` value.
     pub const fn own_next_u32(self) -> Own<Self, u32> {
-        let s = self.next_state();
+        let s = self.peek_next_state();
         let v = s.current_u32();
         Own::new(s, v)
     }

@@ -40,6 +40,7 @@ use crate::{ConstDefault, Own};
 /// *EternityForest* in [Electro-Tech-Online.com][link].
 ///
 /// [link]: https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
+#[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xabc {
     a: u8,
@@ -48,11 +49,13 @@ pub struct Xabc {
     x: u8,
 }
 
+/// Creates a new PRNG initialized with the default fixed seed.
 impl Default for Xabc {
     fn default() -> Self {
         Self::DEFAULT
     }
 }
+/// Creates a new PRNG initialized with the default fixed seed.
 impl ConstDefault for Xabc {
     const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
 }
@@ -64,7 +67,6 @@ impl Xabc {
 
 impl Xabc {
     /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seeds.
-    #[must_use]
     pub const fn new(seeds: [u8; 3]) -> Self {
         let a = seeds[0];
         let b = seeds[1];
@@ -89,13 +91,22 @@ impl Xabc {
         self.c = self.c.wrapping_add(self.b >> 1) ^ self.a;
     }
 
+    #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> [u8; 4] {
+        [self.a, self.b, self.c, self.x]
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: [u8; 4]) -> Self {
+        Self { a: state[0], b: state[1], c: state[2], x: state[3] }
+    }
+
     /// Returns the current random `u8`.
     #[must_use]
     pub const fn current_u8(&self) -> u8 {
         self.c
     }
-
-    /// Returns the next random `u8`.
+    /// Advances the state and returns the next random `u8`.
     #[must_use]
     pub fn next_u8(&mut self) -> u8 {
         // x is incremented every round and is not affected by any other variable
@@ -111,8 +122,7 @@ impl Xabc {
     }
 
     /// Returns a copy of the next new random state.
-    #[must_use]
-    pub const fn next_state(&self) -> Self {
+    pub const fn peek_next_state(&self) -> Self {
         let [mut a, mut b, mut c, mut x] = [self.a, self.b, self.c, self.x];
         x += 1;
         a = a ^ c ^ x;
@@ -123,7 +133,7 @@ impl Xabc {
 
     /// Returns both the next random state and the `u8` value.
     pub const fn own_next_u8(self) -> Own<Self, u8> {
-        let s = self.next_state();
+        let s = self.peek_next_state();
         let v = s.current_u8();
         Own::new(s, v)
     }

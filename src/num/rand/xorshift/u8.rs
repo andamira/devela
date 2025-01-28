@@ -13,11 +13,13 @@ use crate::{xorshift_basis, ConstDefault, Own};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift8<const A: usize = 3, const B: usize = 4, const C: usize = 2>(u8);
 
+/// Creates a new PRNG initialized with the default fixed seed.
 impl<const A: usize, const B: usize, const C: usize> Default for XorShift8<A, B, C> {
     fn default() -> Self {
         Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
+/// Creates a new PRNG initialized with the default fixed seed.
 impl<const A: usize, const B: usize, const C: usize> ConstDefault for XorShift8<A, B, C> {
     const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
@@ -41,7 +43,6 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
         debug_assert![A > 0 && A <= 7];
         debug_assert![B > 0 && A <= 7];
         debug_assert![C > 0 && A <= 7];
-
         if seed == 0 {
             Self::cold_path_default()
         } else {
@@ -65,6 +66,16 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
         Self(seed)
     }
 
+    #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> u8 {
+        self.0
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: u8) -> Self {
+        Self(state)
+    }
+
     /// Returns the current random `u8`.
     #[must_use]
     pub const fn current_u8(&self) -> u8 {
@@ -81,7 +92,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_state(&self) -> Self {
+    pub const fn peek_next_state(&self) -> Self {
         let mut x = self.0;
         xorshift_basis!(x, 0, (A, B, C));
         Self(x)
@@ -89,7 +100,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
 
     /// Returns both the next random state and the `u8` value.
     pub const fn own_next_u8(self) -> Own<Self, u8> {
-        let s = self.next_state();
+        let s = self.peek_next_state();
         let v = s.current_u8();
         Own::new(s, v)
     }

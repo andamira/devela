@@ -92,6 +92,16 @@ impl Xoroshiro128pp {
         let seed = [(hash1 >> 32) as u32, hash1 as u32, (hash2 >> 32) as u32, hash2 as u32];
         Self::new_unchecked(seed)
     }
+
+    #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> [u32; 4] {
+        self.0
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: [u32; 4]) -> Self {
+        Self(state)
+    }
 }
 
 /// # Methods taking `&mut self`
@@ -169,7 +179,7 @@ impl Xoroshiro128pp {
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn copy_next_state(self) -> Self {
+    pub const fn copy_peek_next_state(self) -> Self {
         let mut x = self.0;
         let t = x[1] << 9;
         x[2] ^= x[0];
@@ -183,7 +193,7 @@ impl Xoroshiro128pp {
 
     /// Returns both the next random state and the `u32` value in a tuple.
     pub const fn own_next_u32(self) -> Own<Self, u32> {
-        let next_state = self.copy_next_state();
+        let next_state = self.copy_peek_next_state();
         let next_value = next_state.current_u32();
         Own::new(next_state, next_value)
     }
@@ -257,11 +267,13 @@ impl Xoroshiro128pp {
 
 /* trait implementations */
 
+/// Creates a new PRNG initialized with the default fixed seed.
 impl Default for Xoroshiro128pp {
     fn default() -> Self {
         Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
+/// Creates a new PRNG initialized with the default fixed seed.
 impl ConstDefault for Xoroshiro128pp {
     const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
@@ -369,7 +381,7 @@ impl Xoroshiro128pp {
                     s2 ^= state.0[2];
                     s3 ^= state.0[3];
                 }
-                state = state.copy_next_state();
+                state = state.copy_peek_next_state();
                 b += 1;
             }
             i += 1;

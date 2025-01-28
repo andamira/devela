@@ -7,8 +7,11 @@
 //!   [`Xabc`], [`Xyza8a`], [`Xyza8b`].
 //! - Classic *XorShift* algorithms and variations with a smaller state.
 //!
-//! These RNGs differ from the recommendations in [`RngCore`]
-//! by implementing [`Copy`] and [`Default`].
+//! The RNGs implement `Copy` for convenience and versatility.
+//! Be careful to not duplicate the state by accident.
+//!
+//! The `Default` implementation uses a fixed seed for convenience.
+//! Use a custom seed for unique random sequences.
 //!
 //! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
 //!

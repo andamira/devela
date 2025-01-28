@@ -9,14 +9,16 @@ use crate::{ConstDefault, Own};
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Lgc16(u16);
 
+/// Creates a new PRNG initialized with the default fixed seed.
 impl Default for Lgc16 {
     fn default() -> Self {
         Self::DEFAULT
     }
 }
+/// Creates a new PRNG initialized with the default fixed seed.
 impl ConstDefault for Lgc16 {
     const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
 }
@@ -45,12 +47,21 @@ impl Lgc16 {
         self.0 = seed;
     }
 
+    #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> u16 {
+        self.0
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: u16) -> Self {
+        Self(state)
+    }
+
     /// Returns the current seed value.
     #[must_use]
     pub const fn current_u16(&self) -> u16 {
         self.0
     }
-
     /// Advances to the next random `u16` value.
     #[must_use]
     pub fn next_u16(&mut self) -> u16 {
@@ -60,14 +71,14 @@ impl Lgc16 {
 
     /// Returns a copy of the next state of the generator.
     #[must_use]
-    pub const fn next_state(&self) -> Self {
+    pub const fn peek_next_state(&self) -> Self {
         let x = (Self::MUL.wrapping_mul(self.0).wrapping_add(Self::INC)) & Self::MOD;
         Self(x)
     }
 
     /// Returns both the next state and the `u16` value.
     pub const fn own_next_u16(self) -> Own<Self, u16> {
-        let s = self.next_state();
+        let s = self.peek_next_state();
         let v = s.current_u16();
         Own::new(s, v)
     }

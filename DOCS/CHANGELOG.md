@@ -17,6 +17,7 @@
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
+  - prngs: `from_state`, `inner_state`.
 - new re-exports: `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
 - new optional dependencies: `itertools`.
 - add musl architectures to `check.rs` script.
@@ -34,8 +35,10 @@
 - rename `LoggerConfig` to `LogConfig`.
 - rename `work::async` to `work::future`.
 - rename `work::thread` to `work::process`.
+- rename prngs `next_state` method to `peek_next_state`.
 - ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
+- derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.
 - make public: `sys::env`, `work::{future, process, sync}`.
 - move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.

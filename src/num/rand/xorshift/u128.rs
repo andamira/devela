@@ -16,11 +16,13 @@ use crate::{ConstDefault, Own};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift128([u32; 4]);
 
+/// Creates a new PRNG initialized with the default fixed seed.
 impl Default for XorShift128 {
     fn default() -> Self {
         Self::DEFAULT
     }
 }
+/// Creates a new PRNG initialized with the default fixed seed.
 impl ConstDefault for XorShift128 {
     const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
@@ -57,16 +59,26 @@ impl XorShift128 {
         Self(seeds)
     }
 
-    /// Returns the current random `u64`.
     #[must_use]
+    /// Returns the PRNG's inner state as a raw snapshot.
+    pub const fn inner_state(self) -> [u32; 4] {
+        self.0
+    }
+    /// Restores the PRNG from the given state.
+    pub const fn from_state(state: [u32; 4]) -> Self {
+        Self(state)
+    }
+
+    #[must_use]
+    /// Returns the current random `u64`.
     pub const fn current_u64(&self) -> u64 {
         ((self.0[0] as u64) << 32) | (self.0[1] as u64)
     }
 
+    #[must_use]
     /// Returns the next random `u64`.
     // Note how the output of the RNG is computed before updating the state,
     // unlike on Xoroshiro128pp, for example.
-    #[must_use]
     pub fn next_u64(&mut self) -> u64 {
         let t = self.0[3];
         let mut s = self.0[0];
@@ -81,7 +93,7 @@ impl XorShift128 {
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_state(&self) -> Self {
+    pub const fn peek_next_state(&self) -> Self {
         let mut x = self.0;
 
         let t = x[3];
@@ -98,7 +110,7 @@ impl XorShift128 {
 
     /// Returns both the next random state and the `u64` value.
     pub const fn own_next_u64(self) -> Own<Self, u64> {
-        let s = self.next_state();
+        let s = self.peek_next_state();
         let v = s.current_u64();
         Own::new(s, v)
     }
