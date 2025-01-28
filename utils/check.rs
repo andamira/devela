@@ -110,6 +110,17 @@ const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
 ];
+/// Dependencies to not include in minimal-versions test.
+// - https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#minimal-versions
+// - https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#direct-minimal-versions
+// - [minimal-versions](https://github.com/rust-lang/cargo/issues/5657)
+const DEP_NO_MINIMAL_VERSIONS: &[&str] = &[
+    // WAIT: [minimal-versions](https://github.com/diwic/alsa-sys/issues/14)
+    // WAIT: [minimal-versions](https://github.com/rust-num/num-rational/issues/133)
+    "dep_midir", "dep_rodio", "dep_tinyaudio", "dep_kira", // REASON: alsa-sys
+    // WAIT: [minimal-versions](https://github.com/PyO3/pyo3/issues/4877)
+    "dep_pyo3",
+];
 
 //* cross-compilation targets *//
 
@@ -373,6 +384,21 @@ fn main() -> Result<()> {
         // for arch in NO_STD_ARCHES {}
     }
 
+    /* minimal-versions */
+
+    if args.minimal_versions {
+        rust_setup_nightly()?;
+        headline(0, &format!["minimal versions:"]);
+
+        run_cargo("", "+nightly", &["update", "-Z", "minimal-versions"])?; // set min versions
+
+        let deps = filter_deps(&DEP_ALL, &[&DEP_NO_MINIMAL_VERSIONS]);
+        let feature_flags = format!("_docsrs_nodep,{}", deps.join(","));
+        run_cargo("", "+nightly", &["build", "-F", &feature_flags])?;
+
+        run_cargo("", "+nightly", &["update"])?; // set default max versions
+    }
+
     /* modules */
 
     // check individual modules
@@ -476,6 +502,7 @@ struct Args {
     single_modules: bool,
     all_modules_combinations: bool,
     all_modules_except: Option<String>,
+    minimal_versions: bool,
     miri: bool,
 }
 
@@ -490,6 +517,7 @@ fn get_args() -> Result<Args> {
     let mut single_modules = false;
     let mut all_modules_combinations = false;
     let mut all_modules_except = None;
+    let mut minimal_versions = false;
     let mut miri = false;
 
     let mut parser = lexopt::Parser::from_env();
@@ -510,6 +538,7 @@ fn get_args() -> Result<Args> {
             }
             Long("all-modules-combinations") => { all_modules_combinations = true; }
             Long("miri") => { miri = true; }
+            Long("minimal-versions") => { minimal_versions = true; }
             Long("no-msrv") => { no_msrv = true; }
             _ => { let err = arg.unexpected(); print_help(&parser); return Err(Box::new(err)); }
         }
@@ -523,6 +552,7 @@ fn get_args() -> Result<Args> {
         single_modules,
         all_modules_combinations,
         all_modules_except,
+        minimal_versions,
         miri,
         ..Default::default()
     })

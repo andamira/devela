@@ -707,6 +707,7 @@ default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
 # https://pyo3.rs/latest/features.html#features-reference
 # WAIT [no_std](https://github.com/PyO3/pyo3/issues/3510)
+# WAIT [minimal-versions](https://github.com/PyO3/pyo3/issues/4877)
 
 [dependencies.rand_core] # https://crates.io/crates/rand_core
 version = "0.9" # ✓ https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md
@@ -744,6 +745,8 @@ version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELO
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"] # IMPROVE: feature-gate
+# WAIT: [minimal-versions](https://github.com/diwic/alsa-sys/issues/14)
+# WAIT: [minimal-versions](https://github.com/rust-num/num-rational/issues/133)
 
 [dependencies.rustix] # https://crates.io/crates/rustix
 version = "0.38.40" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
