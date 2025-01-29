@@ -1,7 +1,7 @@
 // devela::data
 //
 //! Data handling and manipulation.
-#![doc = crate::doc_!(modules: crate; data: codec, iter, key, list, table, uid)]
+#![doc = crate::doc_!(modules: crate; data: codec, error, iter, key, list, table, uid)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
@@ -11,10 +11,10 @@
 
 mod absence; // NoData
 mod collection;
-mod error;
 mod sort;
 
 pub mod codec;
+pub mod error; // data-related errors
 pub mod iter;
 pub mod key;
 pub mod list;
@@ -38,11 +38,11 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{absence::*, collection::*, error::*, sort::_all::*};
+        pub use super::{absence::*, collection::*, sort::_all::*};
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            codec::_all::*, iter::_all::*, key::_all::*, list::_all::*,
+            codec::_all::*, error::*, iter::_all::*, key::_all::*, list::_all::*,
             table::_all::*, uid::_all::*,
         };
 

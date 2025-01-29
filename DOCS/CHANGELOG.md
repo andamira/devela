@@ -40,7 +40,7 @@
 - make customizable: `XorShift[16|32|64]`.
 - derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.
-- make public: `sys::env`, `work::{future, process, sync}`.
+- make public: `data::error`, `sys::env`, `work::{future, process, sync}`.
 - move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
 - move `data::{bit, hash, serde}` inside `data::codec`.
 - changed windows `msvc` target for `gnu`.
