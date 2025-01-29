@@ -79,7 +79,7 @@ publish = true
 bench = false
 
 
-[features] # 263/300 (37 remaining), 134 visible, 129 hidden
+[features] # 265/300 (35 remaining), 136 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -116,13 +116,13 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 
 alloc = [ # enables `alloc` functionality
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
-	"jiff?/alloc", "memchr?/alloc", "rkyv?/alloc", "rustix?/alloc", "serde?/alloc",
-	"winnow?/alloc",
+	"jiff?/alloc", "memchr?/alloc", "ring?/alloc", "rkyv?/alloc", "rustix?/alloc",
+	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "allocator-api2?/std", "atomic?/std", "bumpalo?/std",
 	"bytemuck?/extern_crate_std", "itertools?/use_std", "jiff?/std", "js-sys?/std",
-	"log?/std", "memchr?/std", "nc?/std", "raw-cpuid?/std", "regex-lite?/std",
+	"log?/std", "memchr?/std", "nc?/std", "raw-cpuid?/std", "regex-lite?/std", "ring?/std",
 	"rkyv?/std", "rustix?/std", "serde?/std", "tracing?/std", "wasm-bindgen?/std",
 	"web-sys?/std", "wide?/std", "winnow?/std",
 ]
@@ -510,15 +510,15 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 40 optional dependencies:
+dep_all = [ # enables all 42 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
 	"dep_crossterm", "dep_hashbrown", "dep_itertools", "dep_jiff", "dep_js_sys", "dep_kira",
 	"dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad", "dep_nc",
 	"dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_raw_cpuid",
-	"dep_regex_lite", "dep_rkyv", "dep_rodio", "dep_rustix", "dep_safe_arch", "dep_serde",
-	"dep_stringzilla", "dep_sysinfo", "dep_symphonia", "dep_tinyaudio", "dep_tokio",
-	"dep_tracing", "dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen",
-	"dep_web_sys", "dep_wide", "dep_winnow"
+	"dep_regex_lite", "dep_ring", "dep_rkyv", "dep_rodio", "dep_rustix", "dep_safe_arch",
+	"dep_serde", "dep_stringzilla", "dep_sysinfo", "dep_symphonia", "dep_tinyaudio", "dep_tokio",
+	"dep_tracing", "dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
+	"dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow"
 ]
 
 # groups of dependencies, environment and modules
@@ -554,6 +554,7 @@ dep_rand_core = ["dep:rand_core"]                                               
 dep_rayon = ["dep:rayon", "sysinfo?/multithread"]                               # work::thread
 dep_raw_cpuid = ["dep:raw-cpuid"]                                               # sys::arch
 dep_regex_lite = ["dep:regex-lite", "std"]                                      # text::parse
+dep_ring = ["dep:ring"]                                                         # data::*
 dep_rkyv = ["dep:rkyv"]                                                         # data::serde
 dep_rodio = ["dep:rodio"]                                                       # sys::sound
 dep_rustix = ["dep:rustix"]                                                     # sys::os
@@ -568,13 +569,14 @@ dep_tokio = ["dep:tokio"]                                                       
 dep_tracing = ["dep:tracing"]                                                   # sys::log
 dep_unicode_segmentation = ["dep:unicode-segmentation"]                         # text::
 dep_unicode_width = ["dep:unicode-width"]                                       # text::
+dep_ureq = ["dep:ureq"]                                                         # sys::net
 dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         # lang
 dep_web_sys = ["dep:web-sys"]                                                   # ui::web
 dep_wide = ["dep:wide"]                                                         # ...
 dep_winnow = ["dep:winnow"]                                                     # text::parse
 
 
-[dependencies] # 42 (2 required, 40 optional)
+[dependencies] # 44 (2 required, 42 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -733,6 +735,11 @@ default-features = false # 2 https://docs.rs/crate/rayon/latest/features
 features = ["string"]
 # WAIT: [no_std](https://github.com/rust-lang/regex/issues/1122)
 
+[dependencies.ring] # https://crates.io/crates/ring
+version = "0.17.8" # ✗ https://github.com/briansmith/ring/commits/main/
+optional = true # unsafe
+default-features = false # 10 https://docs.rs/crate/ring/latest/features
+
 [dependencies.rkyv] # https://crates.io/crates/rkyv
 version = "0.8.10" # ✓ https://github.com/rkyv/rkyv/releases
 optional = true # unsafe
@@ -818,6 +825,14 @@ version = "0.2" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-ov-
 optional = true # safe
 default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
+
+[dependencies.ureq] # https://crates.io/crates/ureq
+version = "3.0.2" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
+optional = true # safe
+default-features = false # 12 https://docs.rs/crate/ureq/latest/features
+# features = []
+# gzip, json, rustls, rustls-no-provider,
+# WAIT: [wasm,no_std](https://github.com/algesten/ureq/issues/667)
 
 [dependencies.wasm-bindgen] # https://crates.io/crates/wasm-bindgen
 version = "0.2.96" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md
