@@ -57,13 +57,13 @@ macro_rules! _bitfield {
         // $T: the inner integer primitive type (u8, i32, …).
         $(#[$struct_attributes:meta])*
         $vis:vis struct $name:ident($T:ty) {
-            // Custom fields (panics if $field_start > $field_end || field_end >= $T::BITS):
-            // $field: the name of the field
-            // $field_start: the starting bit index.
-            // $field_end: the ending bit index (optional).
+            // Custom fields (panics if $f_start > $f_end || field_end >= $T::BITS):
+            // $f: the name of the field
+            // $f_start: the starting bit index.
+            // $f_end: the ending bit index (optional).
             $(
-                $(#[$field_attrs:meta])*
-                $field:ident: $field_start:expr, $field_end:expr; // NAME: from_bit, to_bit;
+                $(#[$f_attrs:meta])*
+                $f:ident: $f_start:expr, $f_end:expr; // NAME: from_bit, to_bit;
             )*
         }
     } => { $crate::paste! {
@@ -77,48 +77,34 @@ macro_rules! _bitfield {
         impl Default for $name {
             fn default() -> Self { $name { bits: Default::default() } }
         }
-        impl core::fmt::Display for $name {
-            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                core::fmt::Display::fmt(&self.bits, f)
-            }}
-        impl core::fmt::Binary for $name {
-            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                core::fmt::Binary::fmt(&self.bits, f)
-            }}
-        impl core::fmt::Octal for $name {
-            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                core::fmt::Octal::fmt(&self.bits, f)
-            }}
-        impl core::fmt::LowerHex for $name {
-            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                core::fmt::LowerHex::fmt(&self.bits, f)
-            }}
-        impl core::fmt::UpperHex for $name {
-            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                core::fmt::UpperHex::fmt(&self.bits, f)
-            }}
-        impl core::fmt::UpperExp for $name {
-            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                core::fmt::UpperExp::fmt(&self.bits, f)
-        }}
-        impl core::fmt::LowerExp for $name {
-            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                core::fmt::LowerExp::fmt(&self.bits, f)
-        }}
+        $crate::impl_trait![fmt::Display for $name |self, f|
+            ::core::fmt::Display::fmt(&self.bits, f)];
+        $crate::impl_trait![fmt::Binary for $name |self, f|
+            ::core::fmt::Binary::fmt(&self.bits, f)];
+        $crate::impl_trait![fmt::Octal for $name |self, f|
+            ::core::fmt::Octal::fmt(&self.bits, f)];
+        $crate::impl_trait![fmt::LowerHex for $name |self, f|
+            ::core::fmt::LowerHex::fmt(&self.bits, f)];
+        $crate::impl_trait![fmt::UpperHex for $name |self, f|
+            ::core::fmt::UpperHex::fmt(&self.bits, f)];
+        $crate::impl_trait![fmt::LowerExp for $name |self, f|
+            ::core::fmt::LowerExp::fmt(&self.bits, f)];
+        $crate::impl_trait![fmt::UpperExp for $name |self, f|
+            ::core::fmt::UpperExp::fmt(&self.bits, f)];
 
         // /// # Custom fields constants
         #[allow(dead_code)]
         impl $name {
             $(
                 // The field bit mask
-                $( #[$field_attrs] )*
-                $vis_custom const $field: Self = {
-                    assert![$field_start <= $field_end,
+                $( #[$f_attrs] )*
+                $vis_custom const $f: Self = {
+                    assert![$f_start <= $f_end,
                         "The field_start bit is bigger than the field_end bit."];
-                    assert![$field_end < <$T>::BITS,
+                    assert![$f_end < <$T>::BITS,
                         "There are more fields than available bits in the inner primitive type."];
                     Self {
-                        bits: $crate::Bitwise::<$T>::mask_range($field_start, $field_end).0
+                        bits: $crate::Bitwise::<$T>::mask_range($f_start, $f_end).0
                     }
                 };
             )*
@@ -137,7 +123,7 @@ macro_rules! _bitfield {
             #[must_use]
             $vis_custom const fn with_all_fields() -> Self {
                 Self {
-                    bits: 0 $(| $crate::Bitwise::<$T>::mask_range($field_start, $field_end).0)*
+                    bits: 0 $(| $crate::Bitwise::<$T>::mask_range($f_start, $f_end).0)*
                 }
             }
 
@@ -149,94 +135,74 @@ macro_rules! _bitfield {
         }
 
         $(
-            #[doc = "# `" $field "` single field operations"]
+            #[doc = "# `" $f "` single field operations"]
             #[allow(dead_code)]
             impl $name {
-                /* constructor */
-
-                #[doc = "Returns a new `" $name "` with [`" $field "`][Self::" $field
-                    "] field set."]
                 #[must_use]
-                $vis_custom const fn [<with_field_ $field:lower>]() -> Self {
-                    Self::$field
+                #[doc = "Returns a new `" $name "` with [`" $f "`][Self::" $f "] field set."]
+                $vis_custom const fn [<with_field_ $f:lower>]() -> Self {
+                    Self::$f
                 }
 
-                /* query */
-
-                #[doc = "Returns `true` if the [`" $field "`][Self::" $field "] field is set."]
                 #[must_use]
-                $vis_custom const fn [<is_field_ $field:lower>](self) -> bool {
-                    Self::contains_mask(self, Self::$field.bits)
+                #[doc = "Whether the [`" $f "`][Self::" $f "] field is set."]
+                $vis_custom const fn [<is_field_ $f:lower>](self) -> bool {
+                    Self::contains_mask(self, Self::$f.bits)
                 }
-
-                /// Returns the size of the field in bits.
                 #[must_use]
-                $vis_custom const fn [<bits_field_ $field:lower>](self) -> u32 {
-                    $field_end - $field_start + 1
+                #[doc = "The size in bits of the [`" $f "`][Self::" $f "] field."]
+                $vis_custom const fn [<bits_field_ $f:lower>](self) -> u32 {
+                    $f_end - $f_start + 1
                 }
 
-                /* get */
-
-                #[doc = "Gets a copy of `self` with only the bits of [`" $field "`][Self::" $field
-                    "] field."]
+                // get|set|mut_field
                 #[must_use]
-                $vis_custom const fn [<get_field_ $field:lower>](self) -> Self {
-                    Self::intersect_mask(self, Self::$field.bits)
+                #[doc = "A copy of `self` with only the bits of [`" $f "`][Self::" $f "] field."]
+                $vis_custom const fn [<get_field_ $f:lower>](self) -> Self {
+                    Self::intersect_mask(self, Self::$f.bits)
                 }
-
-                /* get value */
-
-                #[doc = "Gets the value of the bits of [`" $field "`][Self::" $field "] field."]
                 #[must_use]
-                $vis_custom const fn [<get_field_value_ $field:lower>](self) -> Self {
-                    Self::get_value_range(self, $field_start, $field_end)
+                #[doc = "A copy of `self` with the [`" $f "`][Self::" $f "] field set."]
+                $vis_custom const fn [<set_field_ $f:lower>](self) -> Self {
+                    Self::set_mask(self, Self::$f.bits)
+                }
+                #[doc = "Sets the [`" $f "`][Self::" $f "] field."]
+                $vis_custom fn [<mut_set_field_ $f:lower>](&mut self) {
+                    Self::mut_set_mask(self, Self::$f.bits);
                 }
 
-                /* set */
-
-                #[doc = "Returns a copy of `self` with the [`"
-                    $field "`][Self::" $field "] field set."]
+                // get|set_field_value
                 #[must_use]
-                $vis_custom const fn [<set_field_ $field:lower>](self) -> Self {
-                    Self::set_mask(self, Self::$field.bits)
+                #[doc = "The value at the bit range of [`" $f "`][Self::" $f "] field."]
+                $vis_custom const fn [<get_field_value_ $f:lower>](self) -> Self {
+                    Self::get_value_range(self, $f_start, $f_end)
                 }
-                #[doc = "Sets the [`" $field "`][Self::" $field "] field."]
-                $vis_custom fn [<mut_set_field_ $field:lower>](&mut self) {
-                    Self::mut_set_mask(self, Self::$field.bits);
-                }
-
-                /* set value */
-
-                #[doc = "Sets the given `value` into the bits of [`" $field "`][Self::" $field
-                    "] field."]
-                $vis_custom const fn [<set_field_value_ $field:lower>](self, value: $T) -> Self {
-                    Self::set_value_range(self, value, $field_start, $field_end)
+                #[doc = "Sets the `value` into the bitrange of [`" $f "`][Self::" $f "] field."]
+                $vis_custom const fn [<set_field_value_ $f:lower>](self, value: $T) -> Self {
+                    Self::set_value_range(self, value, $f_start, $f_end)
                 }
 
-                /* unset */
-
-                #[doc = "Returns a copy of `self` with the [`" $field "`][Self::" $field
-                    "] field set."]
+                // [mut_]unset_field
                 #[must_use]
-                $vis_custom const fn [<unset_field_ $field:lower>](self) -> Self {
-                    Self::unset_mask(self, Self::$field.bits)
+                #[doc = "A copy of `self` with the [`" $f "`][Self::" $f "] field set."]
+                $vis_custom const fn [<unset_field_ $f:lower>](self) -> Self {
+                    Self::unset_mask(self, Self::$f.bits)
                 }
-                #[doc = "Unsets the [`" $field "`][Self::" $field "] field."]
-                $vis_custom fn [<mut_unset_field_ $field:lower>](&mut self) {
-                    Self::mut_unset_mask(self, Self::$field.bits);
+                #[doc = "Unsets the [`" $f "`][Self::" $f "] field."]
+                $vis_custom fn [<mut_unset_field_ $f:lower>](&mut self) {
+                    Self::mut_unset_mask(self, Self::$f.bits);
                 }
 
                 /* flip */
 
-                #[doc = "Returns a copy of `self` with the [`" $field "`][Self::" $field
-                    "] field flipped."]
                 #[must_use]
-                $vis_custom const fn [<flip_field_ $field:lower>](self) -> Self {
-                    Self::flip_mask(self, Self::$field.bits)
+                #[doc = "Returns a copy of `self` with the [`" $f "`][Self::" $f "] field flipped."]
+                $vis_custom const fn [<flip_field_ $f:lower>](self) -> Self {
+                    Self::flip_mask(self, Self::$f.bits)
                 }
-                #[doc = "Flips the [`" $field "`][Self::" $field "] field."]
-                $vis_custom fn [<mut_flip_field_ $field:lower>](&mut self) {
-                    Self::mut_flip_mask(self, Self::$field.bits);
+                #[doc = "Flips the [`" $f "`][Self::" $f "] field."]
+                $vis_custom fn [<mut_flip_field_ $f:lower>](&mut self) {
+                    Self::mut_flip_mask(self, Self::$f.bits);
                 }
             }
         )*
@@ -249,55 +215,37 @@ macro_rules! _bitfield {
 
             /* constructors & deconstructors */
 
-            #[doc = "Returns a new `" $name "` with the given inner `bits`."]
-            #[must_use]
+            #[must_use] #[doc = "Returns self with the given inner `bits`."]
             $vis_extra const fn with_bits(bits: $T) -> Self { Self { bits } }
 
-            #[doc = "Returns a new `" $name "` with all bits set to 0."]
-            #[must_use]
+            #[must_use] /// Returns self with all bits set to 0.
             $vis_extra const fn new_zeroed() -> Self { $name { bits: 0 } }
-
-            #[doc = "Returns a new `" $name "` with all bits set to 1."]
-            #[must_use]
+            #[must_use] /// Returns self with all bits set to 1.
             $vis_extra const fn new_oned() -> Self { Self::new_zeroed().flip() }
-
-            #[doc = "Returns the inner `" $T "` bits."]
-            #[must_use]
+            #[must_use] /// Returns the inner bits.
             $vis_extra const fn bits(self) -> $T { self.bits }
 
-            /* queries */
-
-            /// Returns the number of bits set (the number of ones).
-            #[must_use]
+            #[must_use] /// The number of bits set (number of ones).
             $vis_extra const fn count_ones(&self) -> u32 { self.bits.count_ones() }
-
-            /// Returns the number of bits unset (the number of zeros).
-            #[must_use]
+            #[must_use] /// The number of bits unset (number of zeros).
             $vis_extra const fn count_zeros(&self) -> u32 { self.bits.count_zeros() }
 
-            /// Returns `true` if all the bits are set to 0.
-            #[must_use]
+            #[must_use] /// Wether all bits are set to 0.
             $vis_extra const fn is_empty(self) -> bool { self.bits == 0 }
-
-            /// Returns `true` if all the bits are set to 1.
-            #[must_use]
+            #[must_use] /// Whether all bits are set to 1.
             $vis_extra const fn is_full(self) -> bool { self.bits == Self::new_oned().bits }
 
             /* get */
 
-            /// Returns `true` if the bit at `index` is set.
-            ///
+            #[must_use] /// Whether the bit at `index` is set.
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use]
             $vis_extra const fn is_bit_set(self, index: u32) -> bool {
                 (self.bits & (1 << index)) != 0
             }
-
-            /// Returns `true` if the bit at `index` is set, checked.
-            ///
+            /// Whether the bit at `index` is set, checked version.
             /// # Errors
-            /// Returns [`IndexOutOfBounds`] if `index > MAX_BIT`.
+            /// - If `index > MAX_BIT` Returns
             ///
             /// [`IndexOutOfBounds`]: crate::MismatchedBounds::IndexOutOfBounds
             $vis_extra const fn is_checked_bit_set(self, index: u32)
@@ -308,11 +256,10 @@ macro_rules! _bitfield {
                     Err($crate::MismatchedBounds::IndexOutOfBounds(Some(index as usize)))
                 }
             }
-
+            #[must_use]
             /// Returns a copy of `self` with only the value of the bit at `index`.
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use]
             $vis_extra const fn get_bit(self, index: u32) -> Self {
                 Self { bits: self.bits & (1 << index) }
             }
@@ -828,98 +775,70 @@ macro_rules! _bitfield {
         /// # Bit masks
         #[allow(dead_code)]
         impl $name {
-            /* contains */
-
-            /// Returns `true` if `self` contains all the same set bits that are set in `mask`.
             #[must_use]
+            /// Whether `self` contains all the same set bits that are set in `mask`.
             $vis_extra const fn contains_mask(self, mask: $T) -> bool {
-                (self.bits & mask) == mask
-            }
-            /// Returns `true` if `self` contains all the same set bits that are set in `other`.
+                (self.bits & mask) == mask }
             #[must_use]
+            /// Whether `self` contains all the same set bits that are set in `other`.
             $vis_extra const fn contains_other(self, other: Self) -> bool {
-                (self.bits & other.bits) == other.bits
-            }
+                (self.bits & other.bits) == other.bits }
 
-            /* overlaps */
-
-            /// Returns `true` if there's at least one set bit in common between `self` and `mask`.
             #[must_use]
+            /// Whether there's at least one set bit in common between `self` and `mask`.
             $vis_extra const fn overlaps_mask(&self, mask: $T) -> bool {
-                (self.bits & mask) != 0
-            }
-            /// Returns `true` if there's at least one set bit in common between `self` and `other`.
+                (self.bits & mask) != 0 }
             #[must_use]
+            /// Whether there's at least one set bit in common between `self` and `other`.
             $vis_extra const fn overlaps_other(&self, other: Self) -> bool {
-                (self.bits & other.bits) != 0
-            }
+                (self.bits & other.bits) != 0 }
 
             /* intersect */
 
-            /// Returns a copy of `self` with only the bits both in `self` and the `mask`.
-            #[must_use]
+            // [mut]_ intersect _[mask|other]
+            #[must_use] /// A copy of `self` with only the bits both in `self` and `mask`.
             $vis_extra const fn intersect_mask(self, mask: $T) -> Self {
-                Self { bits: self.bits & mask }
-            }
-            /// Returns a copy of `self` with only the bits both in `self` and `other`.
-            #[must_use]
+                Self { bits: self.bits & mask } }
+            #[must_use] /// A copy of `self` with only the bits both in `self` and `other`.
             $vis_extra const fn intersect_other(self, other: Self) -> Self {
-                Self { bits: self.bits & other.bits }
-            }
-            /// Only leaves the bits both in `self` and the `mask`.
-            $vis_extra fn mut_intersect_mask(&mut self, mask: $T) {
-                self.bits &= mask;
-            }
+                Self { bits: self.bits & other.bits } }
+            /// Only leaves the bits both in `self` and `mask`.
+            $vis_extra fn mut_intersect_mask(&mut self, mask: $T) { self.bits &= mask; }
             /// Only leaves the bits both in `self` and `other`.
-            $vis_extra fn mut_intersect_other(&mut self, other: Self) {
-                self.bits &= other.bits;
-            }
+            $vis_extra fn mut_intersect_other(&mut self, other: Self) { self.bits &= other.bits; }
 
-            /* set */
-
-            /// Returns a copy of `self` setting the bits that are set in the `mask`.
-            #[must_use]
+            // [mut]_ set _[mask|other]
+            #[must_use] /// A copy of `self` setting the bits that are set in `mask`.
             $vis_extra const fn set_mask(self, mask: $T) -> Self {
-                Self { bits: self.bits | mask }
-            }
-            /// Returns a copy of `self` setting the bits that are set in `other`.
-            #[must_use]
+                Self { bits: self.bits | mask } }
+            #[must_use] /// A copy of `self` setting the bits that are set in `other`.
             $vis_extra const fn set_other(self, other: Self) -> Self {
-                Self { bits: self.bits | other.bits }
-            }
-            /// Sets the bits that are set in the `mask`.
-            $vis_extra fn mut_set_mask(&mut self, mask: $T) {
-                self.bits |= mask;
-            }
-            /// Sets the bits that are set in the `other`.
-            $vis_extra fn mut_set_other(&mut self, other: Self) {
-                self.bits |= other.bits;
-            }
+                Self { bits: self.bits | other.bits } }
+            /// Sets the bits that are set in `mask`.
+            $vis_extra fn mut_set_mask(&mut self, mask: $T) { self.bits |= mask; }
+            /// Sets the bits that are set in `other`.
+            $vis_extra fn mut_set_other(&mut self, other: Self) { self.bits |= other.bits; }
 
             /* unset */
 
-            /// Returns a copy of `self` unsetting the bits that are set in the `mask`.
-            #[must_use]
+            #[must_use] /// A copy of `self` unsetting the bits that are set in `mask`.
             $vis_extra const fn unset_mask(self, mask: $T) -> Self {
                 Self { bits: self.bits & !mask }
             }
-            /// Returns a copy of `self` unsetting the bits that are set in `other`.
-            #[must_use]
+            #[must_use] /// A copy of `self` unsetting the bits that are set in `other`.
             $vis_extra const fn unset_other(self, other: Self) -> Self {
                 Self { bits: self.bits & !other.bits }
             }
-            /// Unsets the bits that are set in the `mask`.
+            /// Unsets the bits that are set in `mask`.
             $vis_extra fn mut_unset_mask(&mut self, mask: $T) {
-                self.bits &= !mask;
-            }
+                self.bits &= !mask; }
             /// Unsets the bits that are set in `other`.
             $vis_extra fn mut_unset_other(&mut self, other: Self) {
-                self.bits &= !other.bits;
-            }
+                self.bits &= !other.bits; }
 
             /* flip */
 
-            /// Returns a copy of `self` flipping the bits that are set in the `mask`.
+            /// A copy of `self` flipping the bits that are set in `mask`.
             #[must_use]
             $vis_extra const fn flip_mask(self, mask: $T) -> Self {
                 Self { bits: self.bits ^ mask }
@@ -929,7 +848,7 @@ macro_rules! _bitfield {
             $vis_extra const fn flip_other(self, other: Self) -> Self {
                 Self { bits: self.bits ^ other.bits }
             }
-            /// Flips the bits that are set in the `mask`.
+            /// Flips the bits that are set in `mask`.
             $vis_extra fn mut_flip_mask(&mut self, mask: $T) {
                 self.bits ^= mask;
             }
@@ -946,8 +865,8 @@ macro_rules! _bitfield {
         $(#[$struct_attributes:meta])*
         $vis:vis struct $name:ident($T:ty) {
             $(
-                $(#[$field_attrs:meta])*
-                $field:ident: $field_start:expr $(,$field_end:expr)?; // NAME: bit;
+                $(#[$f_attrs:meta])*
+                $f:ident: $f_start:expr $(,$f_end:expr)?; // NAME: bit;
             )*
         }
     } => {
@@ -956,12 +875,13 @@ macro_rules! _bitfield {
             $( #[$struct_attributes] )*
             $vis struct $name($T) {
                 $(
-                    $( #[$field_attrs] )*
-                    $field: $field_start, $crate::coalesce![$($field_end)?, $field_start];
+                    $( #[$f_attrs] )*
+                    $f: $f_start, $crate::coalesce![$($f_end)?, $f_start];
                 )*
             }
         }
     };
+
     { (custom) // only public custom fields
         $($tt:tt)+ } => { $crate::bitfield![ (custom:pub, extra:pub(crate)) $($tt)+ ]; };
     { (extra) // only public extra methods
