@@ -7,7 +7,8 @@
 #![doc = crate::doc_!(extends: hash)]
 //
 
-mod bit; // bit-focused types and traits.
+mod bit; // bitfield handling and binary transformations.
+mod radix; // radix-based encodings (Base32, Base64, Base58…).
 mod serde; // structured serialization/deserialization.
 mod types;
 
@@ -20,7 +21,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{bit::_all::*, serde::_all::*, types::*};
+        pub use super::{bit::_all::*, radix::_all::*, serde::_all::*, types::*};
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
