@@ -1,4 +1,4 @@
-// devela::data::hash::reexports
+// devela::data::codec::hash::reexports
 //
 //! Reexported items from `core`.
 //

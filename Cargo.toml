@@ -140,7 +140,8 @@ all = [ # enables all the modules and submodules
 code = []
 	error = [] # AllError, DataError, NumError, TextError…
 data = ["hash"]
-	hash = [] # HashFnv, HashFx
+	# codec
+		hash = [] # HashFnv, HashFx, HashPengy
 lang = []
 media = ["audio", "color", "draw", "font", "image", "midi"]
 	audio = []

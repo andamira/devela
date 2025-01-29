@@ -8,7 +8,7 @@
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`, `NoData`, .
   - namespaces: `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
-- new modules: `data::{list, key, table, uid}`, `lang::{c}`, `sys::log`.
+- new modules: `data::{codec, list, key, table, uid}`, `lang::{c}`, `sys::log`.
 - new hidden const arrays: `XOROSHIFT_[16|32|64]_TRIPLETS`.
 - new macro arms:
   - `str!`: `ip_addr`.
@@ -42,6 +42,7 @@
 - update `str!` macro docs and tests.
 - make public: `sys::env`, `work::{future, process, sync}`.
 - move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
+- move `data::{bit, hash, serde}` inside `data::codec`.
 - changed windows `msvc` target for `gnu`.
 
 ### Fixed

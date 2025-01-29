@@ -1,7 +1,7 @@
 // devela::data
 //
 //! Data handling and manipulation.
-#![doc = crate::doc_!(modules: crate; data: hash, iter, key, list, serde, table, uid)]
+#![doc = crate::doc_!(modules: crate; data: codec, iter, key, list, table, uid)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
@@ -10,16 +10,14 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 mod absence; // NoData
-mod bit;
 mod collection;
 mod error;
 mod sort;
 
-pub mod hash;
+pub mod codec;
 pub mod iter;
 pub mod key;
 pub mod list;
-pub mod serde;
 pub mod table;
 pub mod uid;
 
@@ -40,11 +38,11 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{absence::*, bit::_all::*, collection::*, error::*, sort::_all::*};
+        pub use super::{absence::*, collection::*, error::*, sort::_all::*};
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            hash::_all::*, iter::_all::*, key::_all::*, list::_all::*, serde::_all::*,
+            codec::_all::*, iter::_all::*, key::_all::*, list::_all::*,
             table::_all::*, uid::_all::*,
         };
 
@@ -69,7 +67,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            collection::*, error::*, hash::_always::*, iter::_always::*, list::_always::*,
+            codec::_always::*, collection::*, error::*, iter::_always::*, list::_always::*,
         };
     }
 }

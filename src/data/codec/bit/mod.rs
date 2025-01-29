@@ -1,4 +1,4 @@
-// devela::data::bit
+// devela::data::codec::bit
 //
 //! Bit-focused types and traits.
 //

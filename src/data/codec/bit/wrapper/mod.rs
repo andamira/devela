@@ -1,4 +1,4 @@
-// devela::data::bit::wrapper
+// devela::data::codec::bit::wrapper
 //
 //!
 //

@@ -1,4 +1,4 @@
-// devela::data::serde::types
+// devela::data::codec::types
 
 /// The primary mode for data encoding.
 ///

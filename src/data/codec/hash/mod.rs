@@ -1,4 +1,4 @@
-// devela::data::hash
+// devela::data::codec::hash
 //
 //! Generic hashing support.
 //!

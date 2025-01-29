@@ -1,6 +1,8 @@
 // devela::data::list
 //
 //! Implementations of sequential collections.
+#![doc = crate::doc_!(modules: crate::data; list: array, queue, stack)]
+#![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: array, collections, vec)]
 //

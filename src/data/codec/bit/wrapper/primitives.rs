@@ -1,4 +1,4 @@
-// devela::data::bit::ops::wrapper::primitives
+// devela::data::codec::bit::ops::wrapper::primitives
 //
 //! Implements `Bitwise` for the integer primitives.
 //

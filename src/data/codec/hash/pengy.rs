@@ -1,4 +1,4 @@
-// devela::data::hash::pengy
+// devela::data::codec::hash::pengy
 //
 //! Based on pengyhash v0.2 LICENSED as BSD-2.
 //

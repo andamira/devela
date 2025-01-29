@@ -1,4 +1,4 @@
-// devela::data::bit::field::bit_field
+// devela::data::codec::bit::field::bit_field
 //
 //! the bitfield! macro.
 //
