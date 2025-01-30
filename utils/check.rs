@@ -37,6 +37,10 @@
 //   - fn headline
 //   - fn is_current_host_compatible
 //   - fn filter_deps
+//
+// IMPROVE:
+// - filter-out cross-compiling only for no_std platforms.
+// - allow to associate a platform with features to be enabled.
 
 use devela::all::{crate_root, iif, sf};
 use itertools::Itertools;
@@ -88,28 +92,39 @@ const SUB_MODULES: &[&str] = &[
 
 //* dependencies *//
 
+#[rustfmt::skip]
 /// All the optional dependencies.
-#[rustfmt::skip]
 const DEP_ALL: &[&str] = &include!["../config/dep_all.rs"];
-/// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.
+
 #[rustfmt::skip]
+/// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.
 const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
     "dep_midir", "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
     "dep_kira", // REASON: alsa-sys (feature `cpal`)
 ];
+
 /// Dependencies to not cross compile, ever.
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // IMPROVE: allow activating `windows` feature
     "dep_crossterm",
-    // NOTE: https://docs.rs/nc/latest/nc/#supported-operating-systems-and-architectures
+    // because of pkg-config & libudev-sys
+    // SEE: https://gitlab.com/gilrs-project/gilrs/-/issues/86
+    "dep_gilrs",
+    // - https://docs.rs/nc/latest/nc/#supported-operating-systems-and-architectures
     "dep_nc",
     // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
     "dep_pyo3",
-    // NOTE: https://docs.rs/safe_arch/latest/safe_arch/#current-support
+    // (cross-compile to many platforms fails)
+    // - [to darwin from linux](https://github.com/briansmith/ring/issues/1442)
+    // - [to windows from linux](https://github.com/briansmith/ring/issues/894)
+    "dep_ring",
+    // - https://docs.rs/safe_arch/latest/safe_arch/#current-support
     "dep_safe_arch",
     // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
 ];
+
+#[rustfmt::skip]
 /// Dependencies to not include in minimal-versions test.
 // - https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#minimal-versions
 // - https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#direct-minimal-versions
