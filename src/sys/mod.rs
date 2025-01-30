@@ -1,7 +1,7 @@
 // devela::sys
 //
 //! System interfaces and hardware abstractions.
-#![doc = crate::doc_!(modules: crate; sys: arch, env, io, log, mem, os, path)]
+#![doc = crate::doc_!(modules: crate; sys: arch, env, io, log, mem, net, os, path)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
@@ -30,6 +30,7 @@ pub mod env;
 pub mod io;
 pub mod log;
 pub mod mem;
+pub mod net;
 pub mod os;
 pub mod path;
 
@@ -44,8 +45,8 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            arch::_all::*, env::_all::*, io::_all::*, log::_all::*, mem::_all::*, os::_all::*,
-            path::_all::*,
+            arch::_all::*, env::_all::*, io::_all::*, log::_all::*, mem::_all::*,
+            net::_all::*, os::_all::*, path::_all::*,
         };
     }
     pub(super) mod _hidden {

@@ -8,7 +8,7 @@
 - new types: `DataValue*`, `DataType*`, `DataRaw*`, `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - namespaces: `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
-- new modules: `data::{codec::{self, radix}, list, key, table, uid, xipher}`, `lang::{c}`, `sys::log`.
+- new modules: `data::{codec::{self, radix}, list, key, table, uid, xipher}`, `lang::{c}`, `sys::{log, net}`.
 - new hidden const arrays: `XOROSHIFT_[16|32|64]_TRIPLETS`.
 - new macro arms:
   - `str!`: `ip_addr`.
