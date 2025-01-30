@@ -168,7 +168,7 @@ sys = ["io", "mem"]
 		bit = [] # BitSize
 	# os
 		linux = []
-		windows = ["crossterm?/windows", "gilrs?/wgi", "midir?/winrt"]
+		windows = ["crossterm?/windows", "midir?/winrt"]
 text = ["ascii", "fmt", "str"]
 	ascii = [] # AsciiChar
 	fmt = [] # NumStr
@@ -642,6 +642,8 @@ features = ["bracketed-paste", "events"]
 version = "0.11.0" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS
 optional = true #
 default-features = false # 5 https://docs.rs/crate/gilrs/latest/features
+features = ["wgi"]
+# INSTALL: libudev-dev
 
 [dependencies.hashbrown] # https://crates.io/crates/hashbrown
 version = "0.15.1" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md

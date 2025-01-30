@@ -130,6 +130,8 @@ const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
 // - https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#direct-minimal-versions
 // - [minimal-versions](https://github.com/rust-lang/cargo/issues/5657)
 const DEP_NO_MINIMAL_VERSIONS: &[&str] = &[
+    // Using libudev-sys which uses pkc-config 3.2 from (2015-05-25)
+    "dep_gilrs",
     // WAIT: [minimal-versions](https://github.com/diwic/alsa-sys/issues/14)
     // WAIT: [minimal-versions](https://github.com/rust-num/num-rational/issues/133)
     "dep_midir", "dep_rodio", "dep_tinyaudio", "dep_kira", // REASON: alsa-sys
