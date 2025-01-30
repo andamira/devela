@@ -377,7 +377,7 @@ where
 
     /// Remove the last item from the slice.
     pub fn pop(&mut self) -> Option<I> {
-        if self.len() > 0 {
+        if !self.is_empty() {
             let ofs = self.len() - 1;
             let data = self.data.as_mut();
             let info_words = BUF::round_to_words(size_of::<usize>());

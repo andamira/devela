@@ -1,8 +1,6 @@
 // devela::sys::mem::aligned
 //
-//! Alignment
-//!
-//! Always available for internal use.
+//! Defines [`MemAligned`].
 //
 
 /// Marker trait to prevent downstream implementations of the [`MemAligned`] trait.

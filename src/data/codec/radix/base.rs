@@ -322,11 +322,11 @@ macro_rules! methods {
     (@non_alloc $radix:expr, $chunk_bits:expr, $Self:ident) => {
         /// Returns the required output buffer size for encoding `input_len` bytes.
         pub const fn encoded_len(input_len: usize) -> usize {
-            (input_len * 8 + ($chunk_bits - 1)) / $chunk_bits
+            (input_len * 8).div_ceil($chunk_bits)
         }
         /// Returns the required output buffer size for encoding `input_len` bytes.
         pub const fn encoded_len_padded(input_len: usize) -> usize {
-            let base_len = (input_len * 8 + ($chunk_bits - 1)) / $chunk_bits;
+            let base_len = (input_len * 8).div_ceil($chunk_bits);
             if PAD {
                 (base_len + 7) / 8 * 8 // Round up to nearest multiple of 8
             } else {
@@ -414,7 +414,7 @@ macro_rules! methods {
             let (mut buffer, mut bits_left) = (0, 0);
             for &byte in input {
                 if PAD && byte == b'=' { break; } // Ignore padding
-                let Some(value) = Self::decode_byte(byte) else { return None };
+                let value = Self::decode_byte(byte)?;
                 buffer = (buffer << $chunk_bits) | value as u32;
                 bits_left += $chunk_bits;
                 while bits_left >= 8 {

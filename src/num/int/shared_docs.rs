@@ -15,7 +15,7 @@ FORMULA_SCALE = r#"$$ \large v' = (b - a) \frac{v - min}{max - min} + a $$"#; //
 FORMULA_FACTORIAL = r#"$$ n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n-1) \cdot n $$"#;
 FORMULA_SUBFACTORIAL_RECURSIVE = r#"$$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$"#;
 FORMULA_SUBFACTORIAL_SUMMATION = r#"$$ \large !n = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} $$"#;
-FORMULA_SUBFACTORIAL_APPROXIMATION = r#"
+FORMULA_SUBFACTORIAL_APPROXIMATION = r#" $$
 \large !n = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
 \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor $$"#;
 ALGORITHM_SUBFACTORIAL = r#"$$

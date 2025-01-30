@@ -151,26 +151,25 @@ impl<T> CacheAlign<T> {
     pub const ALIGN: usize = align_of::<Self>();
 
     /// Pads and aligns a value to the length of a cache line.
-    ///
-    /// # Examples
     /// ```
     /// # use devela::CacheAlign;
     /// let padded_value = CacheAlign::new(1);
     /// ```
+    #[must_use]
     pub const fn new(t: T) -> CacheAlign<T> { CacheAlign::<T> { value: t } }
 
-    /// Returns the inner value.
-    ///
-    /// # Examples
+    /// The inner value.
     /// ```
     /// # use devela::CacheAlign;
     /// let padded_value = CacheAlign::new(7);
     /// let value = padded_value.into_inner();
     /// assert_eq!(value, 7);
     /// ```
+    #[must_use]
     pub fn into_inner(self) -> T { self.value }
 
-    /// Returns the copied inner value in compile-time.
+    #[must_use]
+    /// A copy of the inner value, in compile-time.
     pub const fn into_inner_copy(self) -> T where Self: Copy { self.value }
 }
 

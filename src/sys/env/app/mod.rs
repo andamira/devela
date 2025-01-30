@@ -198,7 +198,7 @@ pub trait AppEnv {
     }
 }
 
-/// Constructs a path by appending the given `path` to the provided `base` path.
+/// Helps construct a path by appending the given `path` to the provided `base` path.
 #[must_use] #[rustfmt::skip]
 fn app_in(mut base: PathBuf, path: &Path) -> PathBuf { base.push(path); base }
 
