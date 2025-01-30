@@ -4,12 +4,22 @@
 
 ### Added
 - new features: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
-- new traits `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`, `DirEnv`, `ExtLog`, `ExtProcess`.
-- new types: `DataValue*`, `DataType*`, `DataRaw*`, `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
+- new traits:
+  - data: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
+  - sys: `DirEnv`, `ExtLog`
+  - ui: `UiService`.
+  - work: `ExtProcess`.
+- new types:
+  - data: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
+  - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
+  - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
   - namespaces: `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
-- new modules: `data::{codec::{self, radix}, list, key, table, uid, xipher}`, `lang::{c}`, `sys::{log, net}`.
-- new hidden const arrays: `XOROSHIFT_[16|32|64]_TRIPLETS`.
+- new modules:
+  - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
+  - `lang::{c}`.
+  - `sys::{log, net}`.
+  - `ui::service`.
 - new macro arms:
   - `str!`: `ip_addr`.
 - new methods:
@@ -19,7 +29,7 @@
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
   - prngs: `from_state`, `inner_state`.
 - new re-exports: `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
-- new optional dependencies: `itertools`, `ring`, `ureq`.
+- new optional dependencies: `gilrs`, `itertools`, `ring`, `ureq`.
 - add musl architectures to `check.rs` script.
 
 ### Removed
