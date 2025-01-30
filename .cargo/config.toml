@@ -134,9 +134,9 @@ ndo = "doc --open --no-deps -F=nightly_doc"
 ndpo = "doc --open --no-deps -F=nightly_doc --document-private-items"
 
 # TREE
-tr = "tree"
-trf = "tree --format {p}:{f}" # with feature list
-trr = "tree --format {p}:{r}" # with repository url
+tr = "tree --no-dedupe"
+trf = "tr --format {p}:{f}" # with feature list
+trr = "tr --format {p}:{r}" # with repository url
 
 #/ cargo subcommands: /#
 # ------------------------------------------------------------------------------
