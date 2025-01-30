@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 42 optional dependencies */
+/* 46 optional dependencies */
 // In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
 
 reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,
@@ -61,6 +61,9 @@ reexport! { optional_crate (safe) "dep_gilrs", "gilrs", gilrs,
 reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
     features: "alloc"
+}
+reexport! { optional_crate (unsafe) "dep_image", "image", image,
+    doc: "Basic image processing and encoders/decoders for common image formats."
 }
 reexport! { optional_crate (safe) "dep_itertools", "itertools", itertools,
     doc: "Extra iterator adaptors, iterator methods, functions, and macros."
