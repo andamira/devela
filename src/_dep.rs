@@ -52,6 +52,9 @@ reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
     doc: "Cross-platform Terminal Manipulation Library.",
     features: "std"
 }
+reexport! { optional_crate (safe) "dep_gilrs", "gilrs", gilrs,
+    doc: "Game Input Library for Rust."
+}
 reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
     features: "alloc"

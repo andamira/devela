@@ -79,7 +79,7 @@ publish = true
 bench = false
 
 
-[features] # 265/300 (35 remaining), 136 visible, 129 hidden
+[features] # 266/300 (34 remaining), 137 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -168,7 +168,7 @@ sys = ["io", "mem"]
 		bit = [] # BitSize
 	# os
 		linux = []
-		windows = ["crossterm?/windows", "midir?/winrt"]
+		windows = ["crossterm?/windows", "gilrs?/wgi", "midir?/winrt"]
 text = ["ascii", "fmt", "str"]
 	ascii = [] # AsciiChar
 	fmt = [] # NumStr
@@ -510,10 +510,10 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 42 optional dependencies:
+dep_all = [ # enables all 43 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
-	"dep_crossterm", "dep_hashbrown", "dep_itertools", "dep_jiff", "dep_js_sys", "dep_kira",
-	"dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad", "dep_nc",
+	"dep_crossterm", "dep_gilrs", "dep_hashbrown", "dep_itertools", "dep_jiff", "dep_js_sys",
+	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad", "dep_nc",
 	"dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_raw_cpuid",
 	"dep_regex_lite", "dep_ring", "dep_rkyv", "dep_rodio", "dep_rustix", "dep_safe_arch",
 	"dep_serde", "dep_stringzilla", "dep_sysinfo", "dep_symphonia", "dep_tinyaudio", "dep_tokio",
@@ -536,6 +536,7 @@ dep_bumpalo = ["dep:bumpalo"]                                                   
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···
 dep_const_str = ["dep:const-str"]                                               # text::str
 dep_crossterm = ["dep:crossterm", "std"]                                        # ui::term
+dep_gilrs = ["dep:gilrs"]                                                       # ui::service
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown",                   # data::cols
 	"rkyv?/hashbrown-0_15"]
 dep_itertools = ["dep:itertools"]                                               # data::iter
@@ -560,7 +561,7 @@ dep_rodio = ["dep:rodio"]                                                       
 dep_rustix = ["dep:rustix"]                                                     # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",            # data::serde
-	"kira?/serde", "wide?/serde"]
+	"gilrs?/serde-serialize", "kira?/serde", "wide?/serde"]
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]        # sys::sound
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
@@ -634,6 +635,11 @@ version = "0.28.1" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/C
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
 features = ["bracketed-paste", "events"]
+
+[dependencies.gilrs] # https://crates.io/crates/gilrs
+version = "0.11.0" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS
+optional = true #
+default-features = false # 5 https://docs.rs/crate/gilrs/latest/features
 
 [dependencies.hashbrown] # https://crates.io/crates/hashbrown
 version = "0.15.1" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
