@@ -32,7 +32,11 @@ jobs:
       - name: "Install libraries via APT"
         run: |
           sudo apt update
-          sudo apt install -y libasound2-dev
+          # for alsa-sys, gilrs:
+          sudo apt install -y libasound2-dev libudev-dev
+          # for sdl2:
+          sudo apt install -y libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev \
+            libsdl2-mixer-dev libsdl2-ttf-dev
 
       - name: "cargo generate-lockfile"
         if: hashFiles('Cargo.lock') == ''
