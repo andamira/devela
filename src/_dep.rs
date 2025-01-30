@@ -94,7 +94,7 @@ reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", po
     doc: "Portable atomic types including 128-bit atomics, floats, etc."
 }
 reexport! { optional_crate (unsafe) "dep_pyo3", "pyo3", pyo3,
-    doc: " Bindings to Python interpreter.",
+    doc: "Bindings to Python interpreter.",
     features: "std"
 }
 reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
@@ -124,14 +124,17 @@ reexport! { optional_crate (unsafe) "dep_rustix", "rustix", rustix,
 reexport! { optional_crate (unsafe) "dep_safe_arch", "safe_arch", safe_arch,
     doc: "Exposes arch-specific intrinsics as safe functions."
 }
+reexport! { optional_crate (unsafe) "dep_sdl2", "sdl2", sdl2,
+    doc: "SDL2 bindings for Rust."
+}
 reexport! { optional_crate (unsafe) "dep_serde", "serde", serde,
-    doc: " A generic serialization/deserialization framework."
+    doc: "A generic serialization/deserialization framework."
 }
 reexport! { optional_crate (unsafe) "dep_stringzilla", "stringzilla", stringzilla,
     doc: "SIMD-accelerated string search, sorting, fingerprints, and edit distances."
 }
 reexport! { optional_crate (safe) "dep_symphonia", "symphonia", symphonia,
-    doc: " Pure Rust media container and audio decoding library."
+    doc: "Pure Rust media container and audio decoding library."
 }
 reexport! { optional_crate (unsafe) "dep_sysinfo", "sysinfo", sysinfo,
     doc: "Get system information such as processes, CPUs, disks, and networks."
