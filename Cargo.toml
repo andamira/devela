@@ -8,17 +8,17 @@
 # * [lib]
 #
 # * [features]
-#   - Development
+#   - Development          (__*)
 #   - Environment          (std,alloc,no_std)
-#   - Module               (data,media,num,sys,text,work…)
+#   - Module               (all,code,data,lang,media,num,phys,sys,text,ui,work, …)
 #   - Safety               (safe,unsafe,safest)
-#   - Nightly
-#   - Capability
-#     - default/docs
-#     - data
-#     - num
-#     - text
-#   - Dependency
+#   - Nightly              (nightly_*)
+#   - Capability           (_*)
+#     - doc                (_doc*)
+#     - data               (_data*, _bit*, _collections*, _sort*, _tuple*, _value*, …)
+#     - num                (_num*, _cmp*, _int_*, _float_*, …)
+#     - text               (_text*, _char*, _string_*)
+#   - Dependency           (dep_*)
 #
 # * [dependencies] (required|optional)
 #   * [dev-dependencies]
@@ -84,13 +84,13 @@ bench = false
 # https://doc.rust-lang.org/cargo/reference/features.html
 
 # Features are grouped in the following categories:
-# - Development      __[dbg,…]
-# - Environment      alloc,[no_]std
-# - Module
-# - Safety           [safe|unsafe]_
+# - Development      __*
+# - Environment      alloc, [no_]std
+# - Module           …
+# - Safety           [safe|unsafe]_*, …
 # - Nightly          nightly_[coro|simd|stable[_…]]
-# - Capability       _[data,num,…]
-# - Dependency       (dep_[all|linux|text|…]
+# - Capability       _*
+# - Dependency       dep_*
 #
 # Sintax:
 # - ["name"]: Visible public-facing features.
@@ -431,7 +431,7 @@ _value_all = [
 #* num capabilities *#
 # ---------------------
 
-_num_all = ["_nums_all", "_cmp_all"]
+_num_all = ["_cmp_all", "_nums_all"]
 
 # `Compare`:
 _cmp_all = [
@@ -535,7 +535,7 @@ dep_atomic = ["dep:atomic"]                                                     
 dep_bumpalo = ["dep:bumpalo"]                                                   # sys::mem::alloc
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···
 dep_const_str = ["dep:const-str"]                                               # text::str
-dep_crossterm = ["dep:crossterm", "std"]                                        # ui::term
+dep_crossterm = ["dep:crossterm", "std"]                                        # ui::service
 dep_fltk = ["dep:fltk"]                                                         # ui::service
 dep_gilrs = ["dep:gilrs"]                                                       # ui::service
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown",                   # data::cols
@@ -548,7 +548,7 @@ dep_libm = ["dep:libm"]                                                         
 dep_log = ["dep:log", "tracing?/log"]                                           # sys::log
 dep_memchr = ["dep:memchr", "winnow?/simd"]                                     # text:str
 dep_midir = ["dep:midir"]                                                       # media::midi
-dep_miniquad = ["dep:miniquad"]                                                 # sys::screen
+dep_miniquad = ["dep:miniquad"]                                                 # sys::service
 dep_nc = ["dep:nc"]                                                             # sys::os::linux
 dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                                  # lang::py
@@ -634,7 +634,7 @@ optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
 [dependencies.crossterm] # https://crates.io/crates/crossterm
-version = "0.28.1" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
+version = "0.28" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
 features = ["bracketed-paste", "events"]
@@ -645,7 +645,7 @@ optional = true # unsafe
 default-features = false # 23 https://docs.rs/crate/fltk/latest/features
 
 [dependencies.gilrs] # https://crates.io/crates/gilrs
-version = "0.11.0" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS
+version = "0.11" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS
 optional = true #
 default-features = false # 5 https://docs.rs/crate/gilrs/latest/features
 features = ["wgi"]
@@ -658,7 +658,7 @@ default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 
 [dependencies.itertools] # https://crates.io/crates/itertools
-version = "0.14.0" # ✓ https://github.com/rust-itertools/itertools/blob/master/CHANGELOG.md
+version = "0.14" # ✓ https://github.com/rust-itertools/itertools/blob/master/CHANGELOG.md
 optional = true # safe enough (simple few)
 default-features = false # 3 https://docs.rs/crate/itertools/latest/features
 
@@ -680,6 +680,7 @@ optional = true # safe (although unsafe deps?)
 default-features = false # 10 https://docs.rs/crate/kira/latest/features
 features = ["cpal"] # symphonia, flac, mp3, ogg, wav
 # https://docs.rs/kira/latest/kira/#features
+# INSTALL: libasound2-dev
 
 [dependencies.libm] # https://crates.io/crates/libm
 version = "0.2.11" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
@@ -701,6 +702,7 @@ default-features = false # 9 https://docs.rs/crate/memchr/latest/features
 version = "0.10.1" # ✓ https://github.com/Boddlnagg/midir/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/midir/latest/features
+# INSTALL: libasound2-dev
 
 [dependencies.miniquad] # https://crates.io/crates/miniquad
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
@@ -769,8 +771,10 @@ version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELO
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"] # IMPROVE: feature-gate
-# WAIT: [minimal-versions](https://github.com/diwic/alsa-sys/issues/14)
+# DONE [minimal-versions](https://github.com/diwic/alsa-sys/issues/14) WAIT alsa-rs
+# WAIT [new updated release](https://github.com/diwic/alsa-rs/)
 # WAIT: [minimal-versions](https://github.com/rust-num/num-rational/issues/133)
+# INSTALL: libasound2-dev
 
 [dependencies.rustix] # https://crates.io/crates/rustix
 version = "0.38.40" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
@@ -791,7 +795,9 @@ default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 version = "0.37.0" # ✓ https://github.com/Rust-SDL2/rust-sdl2/blob/HEAD/changelog.md
 optional = true # unsafe
 default-features = false # 15 https://docs.rs/crate/sdl2/latest/features
-# features = [] feature-gated: image, mixer, ttf
+# features = [] # https://crates.io/crates/sdl2#user-content-available-rust-features
+# feature-gated: image, gfx, mixer, ttf
+# INSTALL: libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
 
 [dependencies.serde] # https://crates.io/crates/serde
 version = "1.0" # ✗ https://github.com/serde-rs/serde/releases
@@ -823,6 +829,7 @@ features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature
 version = "1.1" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
+# INSTALL: libasound2-dev
 
 [dependencies.tokio] # https://crates.io/crates/tokio
 version = "1.43" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
@@ -849,7 +856,7 @@ default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
 
 [dependencies.ureq] # https://crates.io/crates/ureq
-version = "3.0.2" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
+version = "3.0.3" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
 optional = true # safe
 default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # features = []
