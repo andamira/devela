@@ -107,6 +107,8 @@ const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // IMPROVE: allow activating `windows` feature
     "dep_crossterm",
+    // (windows, linux, macos) https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md
+    "dep_fltk",
     // because of pkg-config & libudev-sys
     // SEE: https://gitlab.com/gilrs-project/gilrs/-/issues/86
     "dep_gilrs",

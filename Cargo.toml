@@ -643,6 +643,9 @@ features = ["bracketed-paste", "events"]
 version = "1.5" # ✓ https://github.com/fltk-rs/fltk-rs/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 23 https://docs.rs/crate/fltk/latest/features
+# https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md
+# features = ["fltk-bundled"] # IMPROVE: feature-gate
+# INSTALL: libpango1.0-dev libxft-dev
 
 [dependencies.gilrs] # https://crates.io/crates/gilrs
 version = "0.11" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS
@@ -928,6 +931,7 @@ lto = "thin"
 [package.metadata.docs.rs]
 # ==============================================================================
 # https://docs.rs/about/metadata
+# https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
 #
 # Maximum build limits (https://docs.rs/crate/devela/latest/builds)
 # 6.44 GB RAM, 15 minutes, 102.4 kB log, no-network, 10 targets.

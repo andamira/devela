@@ -3,6 +3,9 @@
 //!
 //
 
+#[cfg(feature = "alloc")]
+use crate::String;
+
 /// The capabilities supported by a [`UiService`][crate::UiService].
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct UiCap {
