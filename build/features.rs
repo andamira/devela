@@ -3,11 +3,35 @@
 //! Features debugging and compile flags enabling for reflexion.
 //
 
+#[cfg(feature = "__dbg")]
+use crate::utils::println;
+use std::{collections::HashSet, env, sync::OnceLock};
+
+/// The set of enabled features.
+pub(crate) static ENABLED_FEATURES: OnceLock<HashSet<String>> = OnceLock::new();
+
 pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
     super::utils::println_heading("Features & Flags:");
 
-    reflection::set_flags();
+    ENABLED_FEATURES.get_or_init(|| {
+        env::vars()
+            .filter_map(|(key, _)| key.strip_prefix("CARGO_FEATURE_").map(|f| f.to_lowercase()))
+            .collect::<HashSet<_>>()
+    });
+
+    #[cfg(feature = "__dbg")]
+    if let Some(f) = ENABLED_FEATURES.get() {
+        println(&format!("Enabled features ({}): {:?}", f.len(), f));
+        println("");
+    };
+
+    let _enabled_flags = reflection::set_flags();
+
+    #[cfg(feature = "__dbg")]
+    {
+        println(&format!("Enabled flags ({}): {:?}", _enabled_flags.len(), _enabled_flags));
+    }
 
     Ok(())
 }
@@ -17,9 +41,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 // https://doc.rust-lang.org/reference/conditional-compilation.html#set-configuration-options
 #[rustfmt::skip]
 mod reflection {
-    #[cfg(feature = "__dbg")]
-    use super::super::utils::println;
-    use std::env::var;
+    use super::ENABLED_FEATURES;
 
     /// A type that associates a list of flags with a list of features.
     pub struct FlagsFeatures<'a> {
@@ -252,7 +274,9 @@ mod reflection {
     /// Set the flags for all the corresponding enabled features from the list.
     ///
     /// This is the list of the constants defined above.
-    pub(super) fn set_flags() {
+    pub(super) fn set_flags() -> Vec<String> {
+        let mut enabled_flags = Vec::new();
+
         for ff in [
             /* development */
 
@@ -289,39 +313,22 @@ mod reflection {
             CMP,
             FLOAT, INT, UINT, // numbers
 
-        ] { set_flags_dbg_features(ff.flags, ff.features); }
+        ] { set_flags_dbg_features(ff.flags, ff.features, &mut enabled_flags); }
+
+        enabled_flags
     }
 
     /// Sets configuration flags for reflection if some features are enabled.
     ///
     /// - flag_names: The name of the cfg flag to set if any feature is enabled.
     /// - features:   The feature names to check.
-    #[cfg(not(feature = "__dbg"))]
-    fn set_flags_dbg_features(flags: &[&str], features: &[&str]) {
-        let is_enabled = features
-            .iter()
-            .any(|&f| var(format!("CARGO_FEATURE_{}", f.to_uppercase())).is_ok());
+    fn set_flags_dbg_features(flags: &[&str], features: &[&str], enabled: &mut Vec<String>) {
+        let is_enabled = features.iter().any(|&f| ENABLED_FEATURES.get().unwrap().contains(f));
         if is_enabled {
             for flag in flags {
                 println!("cargo:rustc-cfg={}", flag);
+                enabled.push(flag.to_string());
             }
-        }
-    }
-    #[cfg(feature = "__dbg")]
-    fn set_flags_dbg_features(flags: &[&str], features: &[&str]) {
-        let mut is_enabled = false;
-        features.iter().for_each(|&f| {
-            if var(format!("CARGO_FEATURE_{}", f.to_uppercase())).is_ok() {
-                println(&format!["feature = \"{f}\""]);
-                is_enabled = true;
-            }
-        });
-        if is_enabled {
-            for flag in flags {
-                println!("cargo:rustc-cfg={}", flag);
-                println(&format!["  flag = \"{flag}\""]);
-            }
-            println("");
         }
     }
 }
