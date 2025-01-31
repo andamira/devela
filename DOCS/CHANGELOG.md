@@ -39,6 +39,7 @@
 - deprecate `Char::len_to_utf8`.
 
 ### Changed
+- bump MSRV to 1.84.1.
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.
 - rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
