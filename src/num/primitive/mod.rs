@@ -3,9 +3,9 @@
 //! Helpers for converting between primitives.
 //
 
-#[cfg(prim···)]
+#[cfg(prim··)]
 crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(prim···)))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(prim··)))]
     mod namespace; // Cast
 
     #[cfg(test)]
@@ -24,7 +24,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        #[cfg(prim···)]
+        #[cfg(prim··)]
         pub use super::namespace::*;
 
         #[cfg(feature = "cast")]

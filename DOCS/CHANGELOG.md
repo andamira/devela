@@ -57,6 +57,7 @@
 - changed windows `msvc` target for `gnu`.
 
 ### Fixed
+- rename `prim···` flag to `prim··`
 - improve build script debug output.
 - enable nightly features depending on `alloc` and `std`.
 - feature-gate namespaced re-exported unsafe methods with `unsafe··`.

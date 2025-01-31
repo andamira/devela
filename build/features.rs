@@ -149,7 +149,7 @@ mod reflection {
         features: &["num", "alg", "geom", "prim", "rand", "unit", "wave"]
     };
         pub const PRIM: FlagsFeatures = FlagsFeatures {
-            flags: &["prim···"],
+            flags: &["prim··"],
             features: &["prim", "cast", "join", "split"]
         };
     pub const PHYS: FlagsFeatures = FlagsFeatures {

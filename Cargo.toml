@@ -1056,7 +1056,7 @@ check-cfg = [ # Allowed config flags:
 	# media:
 	'cfg(media··)',
 	# num:
-	'cfg(num··, prim···)',
+	'cfg(num··, prim··)',
 	'cfg(_sort··, _sort_int··, _sort_float··)',
 	'cfg(_nums··, _cmp··, _float··, _int··, _int_i··, _int_u··)',
 	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
