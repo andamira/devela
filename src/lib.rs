@@ -63,7 +63,7 @@
     feature(const_collections_with_hasher,)
 )]
 // "nightly_stable_next2": 1.86 core, alloc, std…
-#![cfg_attr(feature = "nightly_stable_next2", feature(float_next_up_down,))]
+#![cfg_attr(feature = "nightly_stable_next2", feature(const_black_box, float_next_up_down))]
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature())]
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
@@ -72,7 +72,6 @@
     asm_goto,
     cell_update,
     const_array_from_ref,
-    const_black_box,
     const_is_char_boundary,
     const_slice_flatten,
     const_slice_from_ref,

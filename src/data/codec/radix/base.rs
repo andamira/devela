@@ -310,7 +310,8 @@ macro_rules! methods {
                     i += 1;
                     continue;
                 } // Skip invalid character
-                if byte == mapped.unwrap() || (CASE && byte == mapped.unwrap().to_ascii_lowercase()) {
+                if byte == mapped.unwrap()
+                    || (CASE && byte == mapped.unwrap().to_ascii_lowercase()) {
                     return Some(i as u8);
                 }
                 i += 1;
@@ -328,7 +329,7 @@ macro_rules! methods {
         pub const fn encoded_len_padded(input_len: usize) -> usize {
             let base_len = (input_len * 8).div_ceil($chunk_bits);
             if PAD {
-                (base_len + 7) / 8 * 8 // Round up to nearest multiple of 8
+                base_len.div_ceil(8) * 8 // Round up to nearest multiple of 8
             } else {
                 base_len
             }

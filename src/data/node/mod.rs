@@ -2,8 +2,8 @@
 //
 //! Abstractions for structured relationships.
 //!
-//! Nodes are a basic unit used to build more complex structures,
-//! like linked lists, graphs and trees.
+//! This module provides tools for building and managing structured relationships
+//! in data systems. These abstractions are designed to work together.
 //
 
 // mod index;

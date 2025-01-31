@@ -53,7 +53,6 @@ crate::items! {
     /// - `$triplet`: `0..=3` for 16-bit; `0..=80` for 32-bit; `0..=274` for 64-bit.
     /// - `$seed`:    any value. If `0` is given the default seed will be used.
     ///
-    ///
     /// # Panics
     /// If the `$basis` is outside range `0..=7`.
     //

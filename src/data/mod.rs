@@ -43,7 +43,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            codec::_all::*, error::*, iter::_all::*, key::_all::*, list::_all::*,
+            codec::_all::*, error::_all::*, iter::_all::*, key::_all::*, list::_all::*,
             table::_all::*, uid::_all::*, xipher::_all::*,
         };
 
@@ -68,7 +68,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            codec::_always::*, collection::*, error::*, iter::_always::*, list::_always::*,
+            codec::_always::*, collection::*, error::_all::*, iter::_always::*, list::_always::*,
         };
     }
 }

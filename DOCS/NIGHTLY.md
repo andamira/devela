@@ -34,6 +34,7 @@ See also
 # 1.86 will be stable on 2025-04-03 (nightly_stable_next2)
 
 - 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
+- 1.86: ·[const_black_box](https://github.com/rust-lang/rust/pull/135414)
 
 # .‥… will be stable later (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 - 1.??: ✗[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
@@ -42,7 +43,6 @@ See also
 - 1.??: ·[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: ·[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         · const_slice_from_ref
-- 1.??: ·[const_black_box](https://github.com/rust-lang/rust/pull/135414)
 - 1.??: ·[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
         · const_str_split_at
 - 1.??: ·[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
