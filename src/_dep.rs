@@ -96,6 +96,9 @@ reexport! { optional_crate (unsafe) "dep_miniquad", "miniquad", miniquad,
 reexport! { optional_crate (unsafe) "dep_nc", "nc", nc,
     doc: "Access system calls directly in: linux, android, freebsd, netbsd, macos."
 }
+reexport! { optional_crate (safe) "dep_orion", "orion", orion,
+    doc: "Usable, easy and safe pure-Rust crypto."
+}
 reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "Portable atomic types including 128-bit atomics, floats, etc."
 }
