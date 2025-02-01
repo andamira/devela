@@ -79,7 +79,7 @@ path = "./src/Lib.rs"
 bench = false
 
 
-[features] # 270/300 (30 remaining), 141 visible, 129 hidden
+[features] # 271/300 (29 remaining), 142 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -510,15 +510,16 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 47 optional dependencies:
+dep_all = [ # enables all 48 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
 	"dep_crossterm", "dep_fltk", "dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools",
 	"dep_jiff", "dep_js_sys", "dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir",
 	"dep_miniquad", "dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3", "dep_rand_core",
 	"dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring", "dep_rkyv", "dep_rodio",
 	"dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_serde", "dep_stringzilla", "dep_sysinfo",
-	"dep_symphonia", "dep_tinyaudio", "dep_tokio", "dep_tracing", "dep_unicode_segmentation",
-	"dep_unicode_width", "dep_ureq", "dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow",
+	"dep_symphonia", "dep_tinyaudio", "dep_toml_edit", "dep_tokio", "dep_tracing",
+	"dep_unicode_segmentation", "dep_unicode_width", "dep_ureq", "dep_wasm_bindgen",
+	"dep_web_sys", "dep_wide", "dep_winnow",
 ]
 
 # groups of dependencies, environment and modules
@@ -565,11 +566,13 @@ dep_rustix = ["dep:rustix"]                                                     
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
 dep_sdl2 = ["dep:sdl2"]                                                         # ui::service
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",            # data::serde
-	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde", "wide?/serde"]
+	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde", "toml_edit?/serde",
+	"wide?/serde"]
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]        # sys::sound
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
 dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
+dep_toml_edit = ["dep:toml_edit"]                                               # text::parse
 dep_tokio = ["dep:tokio"]                                                       # work::async
 dep_tracing = ["dep:tracing"]                                                   # sys::log
 dep_unicode_segmentation = ["dep:unicode-segmentation"]                         # text::
@@ -578,10 +581,10 @@ dep_ureq = ["dep:ureq"]                                                         
 dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         # lang
 dep_web_sys = ["dep:web-sys"]                                                   # ui::web
 dep_wide = ["dep:wide"]                                                         # ...
-dep_winnow = ["dep:winnow"]                                                     # text::parse
+dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 # text::parse
 
 
-[dependencies] # 49 (2 required, 47 optional)
+[dependencies] # 50 (2 required, 48 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -850,6 +853,14 @@ version = "1.1" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.m
 optional = true # unsafe
 default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
 # INSTALL: libasound2-dev
+
+[dependencies.toml_edit] # https://crates.io/crates/toml_edit
+version = "0.22" # ✓ https://github.com/toml-rs/toml/blob/main/crates/toml_edit/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 6 https://docs.rs/crate/toml_edit/latest/features
+features = ["display"] #
+# feature-gated: parse, serde
+# WAIT: [Dotted key ordering](https://github.com/toml-rs/toml/issues/163)
 
 [dependencies.tokio] # https://crates.io/crates/tokio
 version = "1.43" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md

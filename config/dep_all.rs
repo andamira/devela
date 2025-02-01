@@ -9,6 +9,7 @@
     "dep_miniquad", "dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3", "dep_rand_core",
     "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring", "dep_rkyv", "dep_rodio",
     "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_serde", "dep_stringzilla", "dep_sysinfo",
-    "dep_symphonia", "dep_tinyaudio", "dep_tokio", "dep_tracing", "dep_unicode_segmentation",
-    "dep_unicode_width", "dep_ureq", "dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow",
+    "dep_symphonia", "dep_tinyaudio", "dep_toml_edit", "dep_tokio", "dep_tracing",
+    "dep_unicode_segmentation", "dep_unicode_width", "dep_ureq", "dep_wasm_bindgen",
+    "dep_web_sys", "dep_wide", "dep_winnow",
 ]
