@@ -29,7 +29,7 @@
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
   - prngs: `from_state`, `inner_state`.
 - new re-exports: `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
-- new optional dependencies: `fltk`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `toml_edit`, `ureq`.
+- new optional dependencies: `fltk`, `flume`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `toml_edit`, `ureq`.
 - add musl architectures to `check.rs` script.
 
 ### Removed

@@ -79,7 +79,7 @@ path = "./src/Lib.rs"
 bench = false
 
 
-[features] # 271/300 (29 remaining), 142 visible, 129 hidden
+[features] # 272/300 (28 remaining), 143 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -510,16 +510,16 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 48 optional dependencies:
+dep_all = [ # enables all 49 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
-	"dep_crossterm", "dep_fltk", "dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools",
-	"dep_jiff", "dep_js_sys", "dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir",
-	"dep_miniquad", "dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3", "dep_rand_core",
-	"dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring", "dep_rkyv", "dep_rodio",
-	"dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_serde", "dep_stringzilla", "dep_sysinfo",
-	"dep_symphonia", "dep_tinyaudio", "dep_toml_edit", "dep_tokio", "dep_tracing",
-	"dep_unicode_segmentation", "dep_unicode_width", "dep_ureq", "dep_wasm_bindgen",
-	"dep_web_sys", "dep_wide", "dep_winnow",
+	"dep_crossterm", "dep_fltk", "dep_flume", "dep_gilrs", "dep_hashbrown", "dep_image",
+	"dep_itertools", "dep_jiff", "dep_js_sys", "dep_kira", "dep_libm", "dep_log", "dep_memchr",
+	"dep_midir", "dep_miniquad", "dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3",
+	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring", "dep_rkyv",
+	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_serde", "dep_stringzilla",
+	"dep_sysinfo", "dep_symphonia", "dep_tinyaudio", "dep_toml_edit", "dep_tokio",
+	"dep_tracing", "dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
+	"dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow",
 ]
 
 # groups of dependencies, environment and modules
@@ -538,6 +538,7 @@ dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          
 dep_const_str = ["dep:const-str"]                                               # text::str
 dep_crossterm = ["dep:crossterm", "std"]                                        # ui::service
 dep_fltk = ["dep:fltk"]                                                         # ui::service
+dep_flume = ["dep:flume"]                                                       # work::sync
 dep_gilrs = ["dep:gilrs"]                                                       # ui::service
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown",                   # data::cols
 	"rkyv?/hashbrown-0_15"]
@@ -584,7 +585,7 @@ dep_wide = ["dep:wide"]                                                         
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 # text::parse
 
 
-[dependencies] # 50 (2 required, 48 optional)
+[dependencies] # 51 (2 required, 49 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -650,6 +651,14 @@ default-features = false # 23 https://docs.rs/crate/fltk/latest/features
 # https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md
 # features = ["fltk-bundled"] # IMPROVE: feature-gate
 # INSTALL: libpango1.0-dev libxft-dev
+
+[dependencies.flume] # https://crates.io/crates/flume
+version = "0.11" # ✓ https://github.com/zesterer/flume/blob/master/CHANGELOG.md
+optional = true # safe
+default-features = false # 8 https://docs.rs/crate/flume/latest/features
+features = [] #
+# feature-gated: TODO:async,
+# other: spin, eventual-fairness, select
 
 [dependencies.gilrs] # https://crates.io/crates/gilrs
 version = "0.11" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS

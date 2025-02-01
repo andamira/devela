@@ -55,6 +55,9 @@ reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
 reexport! { optional_crate (unsafe) "dep_fltk", "fltk", fltk,
     doc: "Rust bindings for the FLTK GUI library."
 }
+reexport! { optional_crate (safe) "dep_flume", "flume", flume,
+    doc: "A blazingly fast multi-producer channel."
+}
 reexport! { optional_crate (safe) "dep_gilrs", "gilrs", gilrs,
     doc: "Game Input Library for Rust."
 }
