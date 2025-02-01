@@ -58,6 +58,7 @@ See also
 - 1.??: ·[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: a[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: ·[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
+- 1.??: ✗[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
 - 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
 - 1.??: ·[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)

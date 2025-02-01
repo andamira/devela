@@ -85,6 +85,7 @@
     macro_metavar_expr,
     naked_functions,
     num_midpoint_signed,
+    // once_wait, // ✗
     trait_upcasting,
     unbounded_shifts,
     unsafe_cell_from_mut,

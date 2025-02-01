@@ -4,6 +4,9 @@
 //
 // NOTE: use relative imports (super::*) instead of crate::*,
 // so that it also works when compiling private documentation.
+//
+// SEE:
+// https://doc.rust-lang.org/cargo/reference/build-scripts.html
 
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(test, allow(dead_code))]

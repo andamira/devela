@@ -567,8 +567,8 @@ dep_rustix = ["dep:rustix"]                                                     
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
 dep_sdl2 = ["dep:sdl2"]                                                         # ui::service
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",            # data::serde
-	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde", "toml_edit?/serde",
-	"wide?/serde"]
+	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde",
+	"portable-atomic?/serde", "toml_edit?/serde", "wide?/serde"]
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]        # sys::sound
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
@@ -634,7 +634,7 @@ features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
 
 [dependencies.const-str] # https://crates.io/crates/const-str
-version = "0.6.0" # ✗ https://github.com/Nugine/const-str/commits/main/
+version = "0.6.1" # ✗ https://github.com/Nugine/const-str/commits/main/
 optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
@@ -751,7 +751,10 @@ default-features = false # 7 https://docs.rs/crate/orion/latest/features
 version = "1.10" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
+# https://docs.rs/portable-atomic/1.10.0/portable_atomic/#optional-features
 features = ["fallback", "float"]
+# feature-gated: serde
+# maybe: require-cas,
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
 version = "0.23.4" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
