@@ -681,6 +681,7 @@ features = ["jpeg", "png", "pnm"]
 # feature-gated: "rayon",
 # other: "bmp", "ff", "ico", "gif", "qoi", "dds", "hdr", "exr", "tga", "tiff", "webp"
 # heavy: "avif"
+# WAIT: [png 0.18](https://github.com/image-rs/image-png/issues/508)
 
 [dependencies.itertools] # https://crates.io/crates/itertools
 version = "0.14" # ✓ https://github.com/rust-itertools/itertools/blob/master/CHANGELOG.md

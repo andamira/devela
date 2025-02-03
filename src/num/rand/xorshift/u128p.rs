@@ -173,7 +173,7 @@ mod impl_rand {
         /// Returns the next random `u32`,
         /// from the first 32-bits of `next_u64`.
         fn next_u32(&mut self) -> u32 {
-            (self.next_u64() & 0xFFFF_FFFF) as u32
+            self.next_u64() as u32
         }
 
         /// Returns the next random `u64`.
