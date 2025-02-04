@@ -79,7 +79,7 @@ path = "./src/Lib.rs"
 bench = false
 
 
-[features] # 272/300 (28 remaining), 143 visible, 129 hidden
+[features] # 274/300 (26 remaining), 145 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -145,7 +145,7 @@ data = ["hash"]
 lang = []
 media = ["audio", "color", "draw", "font", "image", "midi"]
 	audio = ["sdl2?/mixer"]
-	draw = []
+	draw = ["sdl2?/gfx", "sdl3?/gfx"]
 	color = []
 	font = ["sdl2?/ttf"]
 	image = ["sdl2?/image"]
@@ -510,15 +510,15 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 49 optional dependencies:
+dep_all = [ # enables all 50 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
 	"dep_crossterm", "dep_fltk", "dep_flume", "dep_gilrs", "dep_hashbrown", "dep_image",
 	"dep_itertools", "dep_jiff", "dep_js_sys", "dep_kira", "dep_libm", "dep_log", "dep_memchr",
 	"dep_midir", "dep_miniquad", "dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring", "dep_rkyv",
-	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_serde", "dep_stringzilla",
-	"dep_sysinfo", "dep_symphonia", "dep_tinyaudio", "dep_toml_edit", "dep_tokio",
-	"dep_tracing", "dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
+	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_sdl3", "dep_serde",
+	"dep_stringzilla", "dep_sysinfo", "dep_symphonia", "dep_tinyaudio", "dep_toml_edit",
+	"dep_tokio", "dep_tracing", "dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
 	"dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow",
 ]
 
@@ -566,6 +566,7 @@ dep_rodio = ["dep:rodio"]                                                       
 dep_rustix = ["dep:rustix"]                                                     # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
 dep_sdl2 = ["dep:sdl2"]                                                         # ui::service
+dep_sdl3 = ["dep:sdl3"]                                                         # ui::service
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",            # data::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde",
 	"portable-atomic?/serde", "toml_edit?/serde", "wide?/serde"]
@@ -585,7 +586,7 @@ dep_wide = ["dep:wide"]                                                         
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 # text::parse
 
 
-[dependencies] # 51 (2 required, 49 optional)
+[dependencies] # 52 (2 required, 50 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -834,6 +835,13 @@ default-features = false # 15 https://docs.rs/crate/sdl2/latest/features
 # features = [] # https://crates.io/crates/sdl2#user-content-available-rust-features
 # feature-gated: image, gfx, mixer, ttf
 # INSTALL: libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+
+[dependencies.sdl3] # https://crates.io/crates/sdl3
+version = "0.14.4" # ✗ https://github.com/vhspace/sdl3-rs/commits/master/
+optional = true # unsafe
+default-features = false # 15 https://docs.rs/crate/sdl3/latest/features
+# features = [] #
+# feature-gated: gfx
 
 [dependencies.serde] # https://crates.io/crates/serde
 version = "1.0" # ✗ https://github.com/serde-rs/serde/releases

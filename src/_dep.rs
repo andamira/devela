@@ -139,6 +139,9 @@ reexport! { optional_crate (unsafe) "dep_safe_arch", "safe_arch", safe_arch,
 reexport! { optional_crate (unsafe) "dep_sdl2", "sdl2", sdl2,
     doc: "SDL2 bindings for Rust."
 }
+reexport! { optional_crate (unsafe) "dep_sdl3", "sdl3", sdl3,
+    doc: "SDL3 bindings for Rust."
+}
 reexport! { optional_crate (unsafe) "dep_serde", "serde", serde,
     doc: "A generic serialization/deserialization framework."
 }
