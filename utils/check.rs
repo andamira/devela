@@ -122,6 +122,8 @@ const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     "dep_ring",
     // - https://docs.rs/safe_arch/latest/safe_arch/#current-support
     "dep_safe_arch",
+    // (experimental)
+    "dep_sdl3",
     // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
 ];

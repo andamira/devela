@@ -3,11 +3,13 @@
 use crate::{Box, MiniquadRenderingBackend, String, Vec};
 #[cfg(feature = "std")]
 use ::miniquad::window::dropped_file_path;
+#[cfg(any(target_os = "windows", target_os = "linux"))]
+use ::miniquad::window::get_window_position;
 use ::miniquad::window::{
     blocking_event_loop, cancel_quit, clipboard_get, clipboard_set, dpi_scale, dropped_file_bytes,
-    dropped_file_count, get_window_position, high_dpi, new_rendering_backend, order_quit,
-    request_quit, schedule_update, screen_size, set_cursor_grab, set_fullscreen, set_mouse_cursor,
-    set_window_position, set_window_size, show_keyboard, show_mouse,
+    dropped_file_count, high_dpi, new_rendering_backend, order_quit, request_quit, schedule_update,
+    screen_size, set_cursor_grab, set_fullscreen, set_mouse_cursor, set_window_position,
+    set_window_size, show_keyboard, show_mouse,
 };
 use ::miniquad::CursorIcon;
 

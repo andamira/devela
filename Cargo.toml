@@ -146,7 +146,7 @@ data = ["hash"]
 lang = []
 media = ["audio", "color", "draw", "font", "image", "midi"]
 	audio = ["sdl2?/mixer"]
-	draw = ["sdl2?/gfx", "sdl3?/gfx"]
+	draw = ["sdl2?/gfx"] # "sdl3?/gfx"
 	color = []
 	font = ["sdl2?/ttf"]
 	image = ["sdl2?/image"]
@@ -636,7 +636,7 @@ features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
 
 [dependencies.const-str] # https://crates.io/crates/const-str
-version = "0.6.1" # ✗ https://github.com/Nugine/const-str/commits/main/
+version = "0.6.2" # ✗ https://github.com/Nugine/const-str/commits/main/
 optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
@@ -761,7 +761,7 @@ default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/featu
 # https://docs.rs/portable-atomic/1.10.0/portable_atomic/#optional-features
 features = ["fallback", "float"]
 # feature-gated: serde
-# maybe: require-cas,
+# feature-maybe: require-cas
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
 version = "0.23.4" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
@@ -776,7 +776,7 @@ features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
 version = "0.9" # ✓ https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md
 optional = true # safe
 default-features = false # 5 https://docs.rs/crate/rand_core/latest/features
-# depends on syn, via zerocopy
+# NOTE: depends on syn, via zerocopy
 
 [dependencies.rayon] # https://crates.io/crates/rayon
 version = "1.10" # ✗ https://github.com/rayon-rs/rayon/commits/main/
@@ -845,7 +845,7 @@ default-features = false # 15 https://docs.rs/crate/sdl2/latest/features
 version = "0.14.4" # ✗ https://github.com/vhspace/sdl3-rs/commits/master/
 optional = true # unsafe
 default-features = false # 15 https://docs.rs/crate/sdl3/latest/features
-# features = [] #
+features = ["build-from-source"] #
 # feature-gated: gfx
 
 [dependencies.serde] # https://crates.io/crates/serde
