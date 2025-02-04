@@ -23,7 +23,7 @@ pub struct UiCap {
     pub window: Option<UiCapWindow>,
 }
 
-/// Image-related capabilities.
+/// Image capabilities.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapImage {
     /// Maximum bitmap size, in native pixels.
@@ -41,7 +41,7 @@ pub struct UiCapImage {
     // pub palette_size: u16,
 }
 
-/// General Input capabilities.
+/// Input capabilities.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapInput {
     /// Gamepad input capabilities.
@@ -56,7 +56,7 @@ pub struct UiCapInput {
     pub touchscreen: bool,
 }
 
-/// Sound and music related capabilities.
+/// Sound capabilities.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapSound {
     /// Sound playback capabilities.

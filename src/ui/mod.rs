@@ -8,11 +8,8 @@
 
 #[cfg(ui··)]
 crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(ui··)))]
     mod error;
-
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(ui··)))]
-    pub mod service; // UiService*, ...
+    pub mod service; // UiService*, UiCap*
 }
 
 #[cfg(feature = "layout")]
@@ -29,7 +26,7 @@ crate::items! { // structural access: _mods, _all,
         #[cfg(ui··)]
         pub use super::error::*;
     }
-    pub(super) mod _pub_mods { #![allow(unused)]
+    mod _pub_mods { #![allow(unused)]
         #[cfg(feature = "layout")]
         pub use super::layout::_all::*;
 

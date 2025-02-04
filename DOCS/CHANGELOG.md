@@ -14,13 +14,15 @@
     - xifer: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
+    - `CrosstermService`.
+    - `MiniquadService`, `MiniquadEventHandlerExt`.
   - namespaces: `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
 - new modules:
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
   - `lang::{c}`.
   - `sys::{log, net}`.
-  - `ui::service`.
+  - `ui::service::{self, crossterm, miniquad}`.
 - new macro arms:
   - `str!`: `ip_addr`.
 - new methods:

@@ -172,7 +172,10 @@ mod reflection {
     };
     pub const UI: FlagsFeatures = FlagsFeatures {
         flags: &["ui··"],
-        features: &["ui", "layout"]
+        features: &[
+            "ui", "layout",
+            "dep_crossterm", "dep_fltk", "dep_girls", "dep_miniquad", "dep_sdl2", "dep_sdl3",
+        ]
     };
     pub const WORK: FlagsFeatures = FlagsFeatures {
         flags: &["work··"],

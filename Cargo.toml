@@ -640,7 +640,8 @@ optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
 [dependencies.crossterm] # https://crates.io/crates/crossterm
-version = "0.28" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
+# In sync with src::ui::service::crossterm::service
+version = "0.28.1" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
 features = ["bracketed-paste", "events"]
@@ -732,9 +733,12 @@ default-features = false # 7 https://docs.rs/crate/midir/latest/features
 # INSTALL: libasound2-dev
 
 [dependencies.miniquad] # https://crates.io/crates/miniquad
+# In sync with src::ui::service::miniquad::service
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
+# WAIT: [update conf module to derive more traits](https://github.com/not-fl3/miniquad/pull/523)
+# WAIT: [use AtomicPtr in NATIVE_DISPLAY](https://github.com/not-fl3/miniquad/pull/525)
 
 [dependencies.nc] # https://crates.io/crates/nc
 version = "0.9.5" # ✗ https://github.com/XuShaohua/nc/commits/main/
