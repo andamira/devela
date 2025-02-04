@@ -1,18 +1,6 @@
 # devela
 
-[![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
-[![MSRV 1.84.0](https://flat.badgen.net/badge/MSRV/1.84.0/purple)](https://releases.rs/docs/1.84.0/)
-[![Documentation](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
-&nbsp;<sup>←published</sup>
-<br/>
-[![Repository](https://flat.badgen.net/badge/github/v0.23.0/blue?icon=git)](https://github.com/andamira/devela)
-[![MSRV ahead 1.84.1](https://flat.badgen.net/badge/MSRV/1.84.1/blue)](https://releases.rs/docs/1.84.1/)
-[![Documentation ahead](https://flat.badgen.net/badge/docs/250117/blue)](https://andamira.github.io/libera/doc/devela/)
-&nbsp;<sup>←unpublished</sup>
-
----
-
-> A cohesive development layer
+*A cohesive development layer*
 
 *devela* is a modular foundation for easing development across diverse domains.
 

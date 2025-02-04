@@ -52,6 +52,7 @@ authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
+readme = "DOCS/CRATES_README.md"
 include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
