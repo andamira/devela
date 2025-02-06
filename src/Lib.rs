@@ -57,18 +57,18 @@
     num_midpoint,
     ptr_fn_addr_eq,
 ))]
-#![cfg_attr(all(feature = "nightly_stable_next1", feature = "alloc"), feature())]
+// #![cfg_attr(all(feature = "nightly_stable_next1", feature = "alloc"), feature())]
 #![cfg_attr(
     all(feature = "nightly_stable_next1", feature = "std"),
     feature(const_collections_with_hasher,)
 )]
 // "nightly_stable_next2": 1.86 core, alloc, std…
 #![cfg_attr(feature = "nightly_stable_next2", feature(const_black_box, float_next_up_down))]
-#![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
-#![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature())]
+// #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
+// #![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature())]
+//
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(feature = "nightly_stable_later", feature(
-    // anonymous_pipe, // ✗
     asm_goto,
     cell_update,
     const_array_from_ref,
@@ -76,16 +76,16 @@
     const_slice_flatten,
     const_slice_from_ref,
     const_str_split_at,
+    const_str_from_utf8,
     derive_coerce_pointee,
     get_many_mut, //  get_disjoint_mut
-    // map_many_mut, // ✗
     impl_trait_in_assoc_type,
     isqrt,
     let_chains,
     macro_metavar_expr,
     naked_functions,
+    non_zero_count_ones,
     num_midpoint_signed,
-    // once_wait, // ✗
     trait_upcasting,
     unbounded_shifts,
     unsafe_cell_from_mut,
@@ -94,8 +94,11 @@
     all(feature = "nightly_stable_later", feature = "alloc"),
     feature(box_uninit_write, new_zeroed_alloc, vec_pop_if,)
 )]
-#![cfg_attr(all(feature = "nightly_stable_later", feature = "std"), feature(hash_extract_if,))]
-#![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
+#![cfg_attr(
+    all(feature = "nightly_stable_later", feature = "std"),
+    feature(anonymous_pipe, const_mut_cursor, hash_extract_if, map_many_mut, once_wait,)
+)]
+// #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
 
 /* global safeguards */
 
