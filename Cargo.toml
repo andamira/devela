@@ -738,6 +738,7 @@ default-features = false # 7 https://docs.rs/crate/midir/latest/features
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
+features = ["log-impl"]
 # WAIT: [update conf module to derive more traits](https://github.com/not-fl3/miniquad/pull/523)
 # WAIT: [use AtomicPtr in NATIVE_DISPLAY](https://github.com/not-fl3/miniquad/pull/525)
 
