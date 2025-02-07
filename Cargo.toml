@@ -8,17 +8,17 @@
 # * [lib]
 #
 # * [features]
-#   - Development          (__*)
-#   - Environment          (std,alloc,no_std)
-#   - Module               (all,code,data,lang,media,num,phys,sys,text,ui,work, …)
-#   - Safety               (safe,unsafe,safest)
-#   - Nightly              (nightly_*)
-#   - Capability           (_*)
-#     - doc                (_doc*)
-#     - data               (_data*, _bit*, _collections*, _sort*, _tuple*, _value*, …)
-#     - num                (_num*, _cmp*, _int_*, _float_*, …)
-#     - text               (_text*, _char*, _string_*)
-#   - Dependency           (dep_*)
+#   - Development    (__*)
+#   - Environment    (std,alloc,no_std)
+#   - Module         (all,code,data,lang,media,num,phys,sys,text,ui,work, …)
+#   - Safety         (safe,unsafe,safest)
+#   - Nightly        (nightly_*)
+#   - Capability     (_*)
+#     - doc          (_doc*)
+#     - data         (_data*, _bit*, _collections*, _sort*, _tuple*, _value*, …)
+#     - num          (_num*, _cmp*, _int_*, _float_*, …)
+#     - text         (_text*, _char*, _string_*)
+#   - Dependency     (dep_*)
 #
 # * [dependencies] (required|optional)
 #   * [dev-dependencies]
@@ -44,7 +44,7 @@ resolver = "3"
 
 [package]
 name = "devela"
-description = "A cohesive development layer."
+description = "A development layer."
 version = "0.23.0-wip" # In sync with DOCS/CHANGELOG.md
 rust-version = "1.84.1" # In sync with README.md & .github/workflows/check.yml
 edition = "2021" # WAIT:1.85 edition 2024
@@ -240,7 +240,6 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 	unsafe_sync    = [] # Send and Sync impls.
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
-
 
 
 #* Nightly features *#
@@ -512,14 +511,16 @@ _string_all = [
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
 dep_all = [ # enables all 50 optional dependencies:
-	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck", "dep_const_str",
-	"dep_crossterm", "dep_fltk", "dep_flume", "dep_gilrs", "dep_hashbrown", "dep_image",
-	"dep_itertools", "dep_jiff", "dep_js_sys", "dep_kira", "dep_libm", "dep_log", "dep_memchr",
-	"dep_midir", "dep_miniquad", "dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3",
-	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring", "dep_rkyv",
-	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_sdl3", "dep_serde",
-	"dep_stringzilla", "dep_sysinfo", "dep_symphonia", "dep_tinyaudio", "dep_toml_edit",
-	"dep_tokio", "dep_tracing", "dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
+	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
+	"dep_const_str", "dep_crossterm", "dep_fltk", "dep_flume", "dep_gilrs",
+	"dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff", "dep_js_sys",
+	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
+	"dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3",
+	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring",
+	"dep_rkyv", "dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2",
+	"dep_sdl3", "dep_serde", "dep_stringzilla", "dep_sysinfo", "dep_symphonia",
+	"dep_tinyaudio", "dep_toml_edit", "dep_tokio", "dep_tracing",
+	"dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
 	"dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow",
 ]
 
@@ -531,60 +532,60 @@ text_deps  = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
 work_deps  = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon", "dep_tokio"]
 
 # individual dependencies features
-dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2",        # sys::mem::alloc
+dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2",          # sys::mem::alloc
 	"bumpalo?/allocator-api2"]
-dep_atomic = ["dep:atomic"]                                                     # work::sync
-dep_bumpalo = ["dep:bumpalo"]                                                   # sys::mem::alloc
-dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # ···
-dep_const_str = ["dep:const-str"]                                               # text::str
-dep_crossterm = ["dep:crossterm", "std"]                                        # ui::service
-dep_fltk = ["dep:fltk"]                                                         # ui::service
-dep_flume = ["dep:flume"]                                                       # work::sync
-dep_gilrs = ["dep:gilrs"]                                                       # ui::service
-dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown",                   # data::cols
+dep_atomic = ["dep:atomic"]                                                       # work::sync
+dep_bumpalo = ["dep:bumpalo"]                                                     # sys::mem::alloc
+dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                            # ···
+dep_const_str = ["dep:const-str"]                                                 # text::str
+dep_crossterm = ["dep:crossterm", "std"]                                          # ui::service
+dep_fltk = ["dep:fltk"]                                                           # ui::service
+dep_flume = ["dep:flume"]                                                         # work::sync
+dep_gilrs = ["dep:gilrs"]                                                         # ui::service
+dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown",                     # data::cols
 	"rkyv?/hashbrown-0_15"]
-dep_image = ["dep:image"]                                                       # media::image
-dep_itertools = ["dep:itertools"]                                               # data::iter
-dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
-dep_js_sys = ["dep:js-sys"]                                                     # lang::js
-dep_kira = ["dep:kira"]                                                         # sys::sound
-dep_libm = ["dep:libm"]                                                         # num::float
-dep_log = ["dep:log", "tracing?/log"]                                           # sys::log
-dep_memchr = ["dep:memchr", "winnow?/simd"]                                     # text:str
-dep_midir = ["dep:midir"]                                                       # media::midi
-dep_miniquad = ["dep:miniquad"]                                                 # sys::service
-dep_nc = ["dep:nc"]                                                             # sys::os::linux
-dep_orion = ["dep:orion"]                                                       # data::xipher
-dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
-dep_pyo3 = ["dep:pyo3", "std"]                                                  # lang::py
-dep_rand_core = ["dep:rand_core"]                                               # num::rand
-dep_rayon = ["dep:rayon", "image?/rayon", "sysinfo?/multithread"]               # work::thread
-dep_raw_cpuid = ["dep:raw-cpuid"]                                               # sys::arch
-dep_regex_lite = ["dep:regex-lite", "std"]                                      # text::parse
-dep_ring = ["dep:ring"]                                                         # data::xipher
-dep_rkyv = ["dep:rkyv"]                                                         # data::serde
-dep_rodio = ["dep:rodio"]                                                       # sys::sound
-dep_rustix = ["dep:rustix"]                                                     # sys::os
-dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
-dep_sdl2 = ["dep:sdl2"]                                                         # ui::service
-dep_sdl3 = ["dep:sdl3"]                                                         # ui::service
-dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",            # data::serde
+dep_image = ["dep:image"]                                                         # media::image
+dep_itertools = ["dep:itertools"]                                                 # data::iter
+dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
+dep_js_sys = ["dep:js-sys"]                                                       # lang::js
+dep_kira = ["dep:kira"]                                                           # sys::sound
+dep_libm = ["dep:libm"]                                                           # num::float
+dep_log = ["dep:log", "tracing?/log"]                                             # sys::log
+dep_memchr = ["dep:memchr", "winnow?/simd"]                                       # text:str
+dep_midir = ["dep:midir"]                                                         # media::midi
+dep_miniquad = ["dep:miniquad"]                                                   # sys::service
+dep_nc = ["dep:nc"]                                                               # sys::os::linux
+dep_orion = ["dep:orion"]                                                         # data::xipher
+dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
+dep_pyo3 = ["dep:pyo3", "std"]                                                    # lang::py
+dep_rand_core = ["dep:rand_core"]                                                 # num::rand
+dep_rayon = ["dep:rayon", "image?/rayon", "sysinfo?/multithread"]                 # work::thread
+dep_raw_cpuid = ["dep:raw-cpuid"]                                                 # sys::arch
+dep_regex_lite = ["dep:regex-lite", "std"]                                        # text::parse
+dep_ring = ["dep:ring"]                                                           # data::xipher
+dep_rkyv = ["dep:rkyv"]                                                           # data::serde
+dep_rodio = ["dep:rodio"]                                                         # sys::sound
+dep_rustix = ["dep:rustix"]                                                       # sys::os
+dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
+dep_sdl2 = ["dep:sdl2"]                                                           # ui::service
+dep_sdl3 = ["dep:sdl3"]                                                           # ui::service
+dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde",
 	"portable-atomic?/serde", "toml_edit?/serde", "wide?/serde"]
-dep_stringzilla = ["dep:stringzilla"]                                           # text::str
-dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]        # sys::sound
-dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys::
-dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
-dep_toml_edit = ["dep:toml_edit"]                                               # text::parse
-dep_tokio = ["dep:tokio"]                                                       # work::async
-dep_tracing = ["dep:tracing"]                                                   # sys::log
-dep_unicode_segmentation = ["dep:unicode-segmentation"]                         # text::
-dep_unicode_width = ["dep:unicode-width"]                                       # text::
-dep_ureq = ["dep:ureq"]                                                         # sys::net
-dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         # lang
-dep_web_sys = ["dep:web-sys"]                                                   # ui::web
-dep_wide = ["dep:wide"]                                                         # ...
-dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 # text::parse
+dep_stringzilla = ["dep:stringzilla"]                                             # text::str
+dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]          # sys::sound
+dep_sysinfo = ["dep:sysinfo", "std"]                                              # sys::
+dep_tinyaudio = ["dep:tinyaudio"]                                                 # sys::sound
+dep_toml_edit = ["dep:toml_edit"]                                                 # text::parse
+dep_tokio = ["dep:tokio"]                                                         # work::async
+dep_tracing = ["dep:tracing"]                                                     # sys::log
+dep_unicode_segmentation = ["dep:unicode-segmentation"]                           # text::
+dep_unicode_width = ["dep:unicode-width"]                                         # text::
+dep_ureq = ["dep:ureq"]                                                           # sys::net
+dep_wasm_bindgen = ["dep:wasm-bindgen"]                                           # lang
+dep_web_sys = ["dep:web-sys"]                                                     # ui::web
+dep_wide = ["dep:wide"]                                                           # ...
+dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                   # text::parse
 
 
 [dependencies] # 52 (2 required, 50 optional)
@@ -843,7 +844,7 @@ default-features = false # 15 https://docs.rs/crate/sdl2/latest/features
 # INSTALL: libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
 
 [dependencies.sdl3] # https://crates.io/crates/sdl3
-version = "0.14.4" # ✗ https://github.com/vhspace/sdl3-rs/commits/master/
+version = "0.14" # ✗ https://github.com/vhspace/sdl3-rs/commits/master/
 optional = true # unsafe
 default-features = false # 15 https://docs.rs/crate/sdl3/latest/features
 features = ["build-from-source"] #
@@ -940,6 +941,7 @@ default-features = false # 3 https://docs.rs/crate/wide/latest/features
 version = "0.7" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
 optional = true # ±safe (very little unsafe)
 default-features = false # 7 https://docs.rs/crate/winnow/latest/features
+
 
 [dev-dependencies]
 # Used for benchmarks, examples and tests. They inherit from [dependencies].
