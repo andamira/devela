@@ -3,7 +3,7 @@
 ## [0.23.0-wip] *unreleased*
 
 ### Added
-- new features: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
+- new features: `glsl, _maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
 - new traits:
   - data: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
   - sys: `DirEnv`, `ExtLog`
@@ -11,6 +11,7 @@
   - work: `ExtProcess`.
 - new types:
   - data:
+  - lang: `g_*`.
     - xifer: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
@@ -20,7 +21,7 @@
 - new macros: `maybe!`, `xorshift_custom!`.
 - new modules:
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
-  - `lang::{c}`.
+  - `lang::{c, glsl}`.
   - `sys::{log, net}`.
   - `ui::service::{self, crossterm, miniquad}`.
 - new macro arms:
