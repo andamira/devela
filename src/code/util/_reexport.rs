@@ -209,11 +209,11 @@ macro_rules! reexport {
       // Re-exports an optional crate
       //
       // $dep_safe:    [safe|unsafe] (affects compilation with "safest" feature)
-      // $dep_feat:    the dependency feature name
+      // $dep_feat:    the dependency feature that enables it
       // $dep_name:    the dependency real name
-      // $dep_mod:     the dependency module name
-      // $description: the dependency decription
-      // $f:           additional features needed
+      // $dep_mod:     the dependency module name (using _ instead of -)
+      // $description: the dependency description
+      // $f:           additional features needed to enable this dependency
       optional_crate ($dep_safe:tt)
       $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
       doc: $description:literal
@@ -250,7 +250,7 @@ macro_rules! reexport {
       // $dep_name:    the dependency name
       // $dep_mod:     the dependency module
       // $f:           additional features needed
-      // $description: the dependency decription
+      // $description: the dependency description
       // $item:
       // $item_to_rename:
       // $item_renamed:

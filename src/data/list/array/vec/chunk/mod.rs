@@ -188,10 +188,6 @@ impl<A> VecChunk<A> {
     /// - Creating the transformation: O(1)
     /// - Executing the transformation (during [`as_vec`](VecChunk::as_vec)): O(n)
     ///
-    /// # Arguments
-    /// * `f` - A function that takes a reference to an element of type `A` and returns
-    ///         a new element of type `A`
-    ///
     /// # Example
     /// ```
     /// # use devela::VecChunk;
@@ -245,10 +241,6 @@ impl<A> VecChunk<A> {
     /// - Creating the transformation: O(1)
     /// - Executing the transformation (during [`as_vec`](VecChunk::as_vec)): O(n)
     ///
-    /// # Arguments
-    /// * `f` - A function that takes an element of type `A` and returns
-    ///         a new `VecChunk<A>`
-    ///
     /// # Example
     /// ```
     /// # use devela::VecChunk;
@@ -287,10 +279,6 @@ impl<A> VecChunk<A> {
     ///
     /// This method is used internally by [`as_vec`](VecChunk::as_vec) to avoid
     /// allocating multiple vectors during the traversal.
-    ///
-    /// # Arguments
-    /// * `buf` - A mutable reference to a vector that will be populated with
-    ///           references to the chunk's elements
     pub fn as_vec_mut(&self, buf: &mut Vec<A>)
     where
         A: Clone,

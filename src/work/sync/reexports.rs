@@ -30,7 +30,11 @@ reexport! { rust: std::sync,
     Condvar
 }
 reexport! { rust: std::sync,
-    doc: "A mutual exclusion primitive useful for protecting shared data",
+    doc: "A value which is initialized on the first access.",
+    LazyLock
+}
+reexport! { rust: std::sync,
+    doc: "A mutual exclusion primitive useful for protecting shared data.",
     Mutex
 }
 reexport! { rust: std::sync,
