@@ -3,7 +3,11 @@
 #[cfg(test)]
 mod tests;
 #[allow(unused_imports, reason = "±unsafe")]
-use crate::_core::str::{from_utf8, from_utf8_unchecked};
+use crate::_core::str::from_utf8_unchecked;
+#[cfg(not(feature = "dep_simdutf8"))]
+use ::core::str::from_utf8;
+#[cfg(feature = "dep_simdutf8")]
+use ::simdutf8::basic::from_utf8;
 
 /// Converts a number into a string representation, storing it into a byte slice.
 ///

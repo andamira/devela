@@ -4,11 +4,15 @@
 //
 
 use crate::Grapheme;
-#[allow(unused)]
-use crate::{
-    Char,
-    _core::str::{from_utf8, from_utf8_unchecked},
-};
+#[allow(unused, reason = "feature-gated")]
+crate::items! {
+    use crate::{Char, _core::str::from_utf8_unchecked};
+    #[cfg(not(feature = "dep_simdutf8"))]
+    use ::core::str::from_utf8;
+    #[cfg(feature = "dep_simdutf8")]
+    use ::simdutf8::basic::from_utf8;
+}
+
 #[cfg(feature = "alloc")]
 use crate::{IterChars, String};
 #[cfg(feature = "dep_unicode_segmentation")]

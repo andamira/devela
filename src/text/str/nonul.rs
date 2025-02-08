@@ -7,14 +7,17 @@
 // - trait impls
 
 #[allow(unused, reason = "±unsafe")]
-use crate::_core::str::{from_utf8, from_utf8_unchecked};
+use crate::_core::str::from_utf8_unchecked;
 use crate::{
     cfor, iif, text::char::*, unwrap, ConstDefault, Deref, InvalidText, IterChars, Mismatch,
     MismatchedCapacity, NotEnoughElements, _core::fmt,
 };
-
 #[cfg(feature = "alloc")]
 use crate::{CString, ToString};
+#[cfg(not(feature = "dep_simdutf8"))]
+use ::core::str::from_utf8;
+#[cfg(feature = "dep_simdutf8")]
+use ::simdutf8::basic::from_utf8;
 
 /* definitions */
 
@@ -452,7 +455,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns [`InvalidText::Utf8`] if the bytes are not valid UTF-8,
     /// and [`InvalidText::Char`] if the bytes contains a NUL character.
     pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
-        match from_utf8(&bytes) {
+        // WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
+        match ::core::str::from_utf8(&bytes) {
             Ok(_) => {
                 cfor![index in 0..CAP => {
                     iif![bytes[index] == 0; return Err(InvalidText::Char('\0'))];
@@ -562,13 +566,14 @@ impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
     /// # Errors
     /// Returns [`InvalidText::Capacity`] if `CAP > `[u8::MAX`] or if `CAP < bytes.len()`
     /// or [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
+    // WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
     fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
         if bytes.len() >= CAP {
             #[rustfmt::skip]
             return Err(InvalidText::Capacity(
                 Mismatch::in_closed_interval(0, bytes.len(), CAP, "")));
         }
-        match from_utf8(bytes) {
+        match ::core::str::from_utf8(bytes) {
             Ok(_) => {
                 let mut arr = [0; CAP];
                 let mut idx = 0;

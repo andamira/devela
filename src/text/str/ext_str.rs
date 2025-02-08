@@ -6,11 +6,15 @@
 // WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
 // IMPROVE: use `NumToStr`
 
-use crate::{cold_empty_string, iif, Str};
+#[allow(unused_imports, reason = "doc | ±unsafe")]
+use crate::Str;
+use crate::{cold_empty_string, iif, Ascii, Slice};
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
-
-use crate::{Ascii, Slice};
+#[cfg(not(feature = "dep_simdutf8"))]
+use ::core::str::from_utf8;
+#[cfg(feature = "dep_simdutf8")]
+use ::simdutf8::basic::from_utf8;
 
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
 trait Sealed {}
@@ -118,7 +122,7 @@ impl ExtStr for str {
             }
         }
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return Str::from_utf8(&buffer[..index]).unwrap();
+        return from_utf8(&buffer[..index]).unwrap();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: since self is a valid &str, checks are unneeded.
         unsafe {
@@ -165,7 +169,7 @@ impl ExtStr for str {
             }
 
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            return Str::from_utf8(&buffer[..length]).unwrap();
+            return from_utf8(&buffer[..length]).unwrap();
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: We are only using with Ascii characters
             return unsafe { Str::from_utf8_unchecked(&buffer[..length]) };
