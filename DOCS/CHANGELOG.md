@@ -32,6 +32,8 @@
   - `ExtAny`: `type_hash`, `type_hash_with`.
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
   - prngs: `from_state`, `inner_state`.
+- new variants:
+  - `IoErrorKind:` `OutOfMemory`, `FilesystemLoop`, `FilesystemQuotaExceeded`, `CrossesDevices`, `InvalidFilename`, `InProgress`.
 - new re-exports: `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
 - new optional dependencies: `fltk`, `flume`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `toml_edit`, `ureq`.
 - add musl architectures to `check.rs` script.
@@ -39,6 +41,7 @@
 ### Removed
 - remove standalone re-exported `core::iter` functions.
 - remove standalone fns: `future_block`, `future_pending`, `future_ready`.
+- remove private variant `IoErrorKind::Uncategorized`.
 - remove module `data::collections`.
 - deprecate `Char::len_to_utf8`.
 
