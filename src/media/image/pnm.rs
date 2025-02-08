@@ -9,9 +9,9 @@ use crate::text::String;
 #[cfg(doc)]
 use crate::ImageError::FmtError;
 use crate::{
-    bytes_from_bits, ImageError,
+    bytes_from_bits, FmtWrite, ImageError,
     ImageError::{InvalidImageSize, InvalidPixel},
-    ImageResult as Result, TextWrite,
+    ImageResult as Result,
 };
 
 // Helper function: Returns `InvalidPixel` as the cold path.

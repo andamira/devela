@@ -5,8 +5,9 @@
 #![doc = crate::doc_!(extends: fmt)]
 //
 
-mod reexports;
 mod buf;
+mod namespace; // Fmt
+mod reexports;
 
 #[cfg(feature = "fmt")]
 mod num_to_str;
@@ -18,7 +19,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{buf::*, reexports::*};
+        pub use super::{buf::*, namespace::*, reexports::*};
 
         #[cfg(feature = "fmt")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "fmt")))]

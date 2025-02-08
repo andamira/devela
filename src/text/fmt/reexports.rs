@@ -11,10 +11,6 @@ reexport! { rust: core,
     doc: "Constructs parameters for the other string-formatting macros.",
     format_args
 }
-reexport! { rust: alloc,
-    doc: "Creates a String using interpolation of runtime expressions.",
-    format
-}
 reexport! { rust: core,
     doc: "Writes formatted data into a buffer.",
     write
@@ -24,15 +20,9 @@ reexport! { rust: core,
     writeln
 }
 
-/* functions */
-
-reexport! { rust: alloc::fmt,
-    doc: "Takes an [`FmtArguments`] struct and returns the resulting formatted string.",
-    @format as fmt_format
-}
-reexport! { rust: core::fmt,
-    doc: "Takes an output stream, and an [`FmtArguments`] struct.",
-    @write as fmt_write
+reexport! { rust: alloc,
+    doc: "Creates a String using interpolation of runtime expressions.",
+    format
 }
 
 /* traits */
@@ -75,7 +65,7 @@ reexport! { rust: core::fmt,
 }
 reexport! { rust: core::fmt,
     doc: "Writing or formatting into Unicode-accepting buffers or streams.",
-    @Write as TextWrite
+    @Write as FmtWrite
 }
 
 /* enums */

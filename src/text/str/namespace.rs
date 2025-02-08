@@ -1,6 +1,6 @@
 // devela::text::str::namespace
 //
-//! `Str` namespace.
+//! [`Str`] namespace.
 //
 
 #[cfg(doc)]

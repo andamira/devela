@@ -1,6 +1,6 @@
 // devela::text::char::namespace
 //
-//! `Char` namespace.
+//! [`Char`] namespace.
 //
 
 #[doc = crate::TAG_NAMESPACE!()]

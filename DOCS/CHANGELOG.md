@@ -17,7 +17,7 @@
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
     - `MiniquadService`, `MiniquadEventHandlerExt`.
-  - namespaces: `Iter`, `Log`.
+  - namespaces: `Fmt`, `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
 - new modules:
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
@@ -39,7 +39,7 @@
 - add musl architectures to `check.rs` script.
 
 ### Removed
-- remove standalone re-exported `core::iter` functions.
+- remove standalone re-exported fns from `std::{fmt, iter}`.
 - remove standalone fns: `future_block`, `future_pending`, `future_ready`.
 - remove private variant `IoErrorKind::Uncategorized`.
 - remove module `data::collections`.
@@ -51,6 +51,7 @@
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.
 - rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
 - rename `LoggerConfig` to `LogConfig`.
+- rename `TextWrite` trait to `FmtWrite`.
 - rename `work::async` to `work::future`.
 - rename `work::thread` to `work::process`.
 - rename `src/lib.rs` to `src/Lib.rs`.
@@ -62,6 +63,7 @@
 - make public: `data::error`, `sys::env`, `work::{future, process, sync}`.
 - move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
 - move `data::{bit, hash, serde}` inside `data::codec`.
+- move fns: `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
 - changed windows `msvc` target for `gnu`.
 
 ### Fixed
