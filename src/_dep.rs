@@ -145,6 +145,9 @@ reexport! { optional_crate (unsafe) "dep_sdl3", "sdl3", sdl3,
 reexport! { optional_crate (unsafe) "dep_serde", "serde", serde,
     doc: "A generic serialization/deserialization framework."
 }
+reexport! { optional_crate (unsafe) "dep_simdutf8", "simdutf8", simdutf8,
+    doc: "Blazingly fast API-compatible UTF-8 validation for Rust using SIMD extensions."
+}
 reexport! { optional_crate (unsafe) "dep_stringzilla", "stringzilla", stringzilla,
     doc: "SIMD-accelerated string search, sorting, fingerprints, and edit distances."
 }
