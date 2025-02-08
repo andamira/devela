@@ -40,7 +40,9 @@
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
 #![cfg_attr(feature = "nightly_float", feature(f16, f128))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
+//
 // "nightly_stable" includes:
+// ----------------------------
 // "nightly_stable_next1": 1.85 core, alloc, std…
 #![cfg_attr(feature = "nightly_stable_next1", feature(
     async_closure,
@@ -62,11 +64,18 @@
     all(feature = "nightly_stable_next1", feature = "std"),
     feature(const_collections_with_hasher,)
 )]
+// ----------------------------
 // "nightly_stable_next2": 1.86 core, alloc, std…
-#![cfg_attr(feature = "nightly_stable_next2", feature(const_black_box, float_next_up_down))]
+#![cfg_attr(
+    feature = "nightly_stable_next2",
+    feature(const_black_box, float_next_up_down, trait_upcasting,)
+)]
 // #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
-// #![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature())]
-//
+#![cfg_attr(
+    all(feature = "nightly_stable_next2", feature = "std"),
+    feature(const_mut_cursor, map_many_mut,)
+)]
+// ----------------------------
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(feature = "nightly_stable_later", feature(
     asm_goto,
@@ -86,7 +95,6 @@
     naked_functions,
     non_zero_count_ones,
     num_midpoint_signed,
-    trait_upcasting,
     unbounded_shifts,
     unsafe_cell_from_mut,
 ))]
@@ -96,7 +104,7 @@
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "std"),
-    feature(anonymous_pipe, const_mut_cursor, hash_extract_if, map_many_mut, once_wait,)
+    feature(anonymous_pipe, hash_extract_if, once_wait,)
 )]
 // #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
 

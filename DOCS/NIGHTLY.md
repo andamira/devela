@@ -32,8 +32,11 @@ See also
 
 # 1.86 will be stable on 2025-04-03 (nightly_stable_next2)
 
-- 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 - 1.86: ·[const_black_box](https://github.com/rust-lang/rust/pull/135414)
+- 1.86: s[const_mut_cursor](https://github.com/rust-lang/rust/pull/136634)
+- 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
+- 1.86: s[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
+- 1.86: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
 
 # .‥… will be stable later (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 - 1.??: s[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
@@ -44,7 +47,6 @@ See also
         · const_slice_from_ref
 - 1.??: ·[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
         · const_str_split_at
-- 1.??: s[const_mut_cursor](https://github.com/rust-lang/rust/pull/136634)
 - 1.??: ·[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.??: ·[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
 - 1.??: ·[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
@@ -55,13 +57,11 @@ See also
 - 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: ·[let_chains](https://github.com/rust-lang/rust/pull/132833)
 - 1.??: ·[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
-- 1.??: s[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
 - 1.??: ·[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: a[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: ·[non_zero_count_ones](https://github.com/rust-lang/rust/pull/136663)
 - 1.??: ·[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 - 1.??: s[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
 - 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
 - 1.??: ·[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: a[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
