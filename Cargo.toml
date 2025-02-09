@@ -80,7 +80,7 @@ path = "./src/Lib.rs"
 bench = false
 
 
-[features] # 275/300 (25 remaining), 146 visible, 129 hidden
+[features] # 276/300 (24 remaining), 147 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -117,16 +117,17 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 
 alloc = [ # enables `alloc` functionality
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
-	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "ring?/alloc", "rkyv?/alloc",
-	"rustix?/alloc", "serde?/alloc", "winnow?/alloc",
+	"jiff?/alloc", "memchr?/alloc", "orion?/alloc",
+	"ring?/alloc", "rkyv?/alloc", "rustix?/alloc", "serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc", "allocator-api2?/std", "atomic?/std", "bumpalo?/std",
-	"bytemuck?/extern_crate_std", "itertools?/use_std", "jiff?/std", "js-sys?/std",
-	"log?/std", "memchr?/std", "nc?/std", "orion?/safe_api", "raw-cpuid?/std",
-	"regex-lite?/std", "ring?/std", "rkyv?/std", "rustix?/std", "serde?/std",
-	"simdutf8?/std", "tracing?/std", "wasm-bindgen?/std", "web-sys?/std",
-	"wide?/std", "winnow?/std",
+	"alloc", "allocator-api2?/std", "atomic?/std",
+	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
+	"itertools?/use_std", "jiff?/std", "js-sys?/std", "log?/std",
+	"memchr?/std", "nc?/std", "orion?/safe_api",
+	"raw-cpuid?/std", "regex-lite?/std", "ring?/std", "rkyv?/std", "rustix?/std",
+	"serde?/std", "simdutf8?/std", "tracing?/std",
+	"wasm-bindgen?/std", "web-sys?/std", "wide?/std", "winnow?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -512,10 +513,10 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 50 optional dependencies:
+dep_all = [ # enables all 52 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
-	"dep_const_str", "dep_crossterm", "dep_fltk", "dep_flume", "dep_gilrs",
-	"dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff", "dep_js_sys",
+	"dep_const_str", "dep_crossterm", "dep_fltk", "dep_flume", "dep_fontdue",
+	"dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff", "dep_js_sys",
 	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
 	"dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring",
@@ -543,9 +544,10 @@ dep_const_str = ["dep:const-str"]                                               
 dep_crossterm = ["dep:crossterm", "std"]                                          # ui::service
 dep_fltk = ["dep:fltk"]                                                           # ui::service
 dep_flume = ["dep:flume"]                                                         # work::sync
+dep_fontdue = ["dep:fontdue"]                                                     # media::font
 dep_gilrs = ["dep:gilrs"]                                                         # ui::service
-dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown",                     # data::cols
-	"rkyv?/hashbrown-0_15"]
+dep_hashbrown = ["dep:hashbrown", "alloc", "fontdue?/hashbrown",                  # data::cols
+	"pyo3?/hashbrown", "rkyv?/hashbrown-0_15"]
 dep_image = ["dep:image"]                                                         # media::image
 dep_itertools = ["dep:itertools"]                                                 # data::iter
 dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
@@ -561,7 +563,8 @@ dep_orion = ["dep:orion"]                                                       
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                                    # lang::py
 dep_rand_core = ["dep:rand_core"]                                                 # num::rand
-dep_rayon = ["dep:rayon", "image?/rayon", "sysinfo?/multithread"]                 # work::thread
+dep_rayon = ["dep:rayon", "fontdue?/rayon", "image?/rayon",                       # work::thread
+	"sysinfo?/multithread"]
 dep_raw_cpuid = ["dep:raw-cpuid"]                                                 # sys::arch
 dep_regex_lite = ["dep:regex-lite", "std"]                                        # text::parse
 dep_ring = ["dep:ring"]                                                           # data::xipher
@@ -591,7 +594,7 @@ dep_wide = ["dep:wide"]                                                         
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                   # text::parse
 
 
-[dependencies] # 53 (2 required, 51 optional)
+[dependencies] # 54 (2 required, 52 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -666,6 +669,11 @@ default-features = false # 8 https://docs.rs/crate/flume/latest/features
 features = [] #
 # feature-gated: TODO:async,
 # other: spin, eventual-fairness, select
+
+[dependencies.fontdue] # https://crates.io/crates/gilrs
+version = "0.9.2" #
+optional = true #
+default-features = false #
 
 [dependencies.gilrs] # https://crates.io/crates/gilrs
 version = "0.11" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS

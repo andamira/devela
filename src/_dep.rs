@@ -58,6 +58,9 @@ reexport! { optional_crate (unsafe) "dep_fltk", "fltk", fltk,
 reexport! { optional_crate (safe) "dep_flume", "flume", flume,
     doc: "A blazingly fast multi-producer channel."
 }
+reexport! { optional_crate (unsafe) "dep_fontdue", "fontdue", fontdue,
+    doc: " A simple no_std font parser and rasterizer."
+}
 reexport! { optional_crate (safe) "dep_gilrs", "gilrs", gilrs,
     doc: "Game Input Library for Rust."
 }
