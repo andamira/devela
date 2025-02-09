@@ -7,7 +7,7 @@
 - new traits:
   - data: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
   - sys: `DirEnv`, `ExtLog`
-  - ui: `UiService`.
+  - ui: `MiniquadEventHandlerExt`, `UiService`.
   - work: `ExtProcess`.
 - new consts: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
 - new types:
@@ -18,7 +18,7 @@
   - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
-    - `MiniquadService`, `MiniquadEventHandlerExt`.
+    - `MiniquadService`.
   - namespaces: `Fmt`, `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
 - new modules:
