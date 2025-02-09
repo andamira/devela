@@ -38,7 +38,7 @@ impl Str {
     /// Converts a mutable slice of bytes to a mutable string slice.
     ///
     /// See [`from_utf8_mut`].
-    // WAIT: [const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
+    // WAIT: [const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
     pub fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, InvalidUtf8> {
         match from_utf8_mut(v) {
             Ok(v) => Ok(v),

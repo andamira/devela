@@ -6,13 +6,16 @@
 // WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
 // IMPROVE: use `NumToStr`
 
-#[allow(unused_imports, reason = "doc | ±unsafe")]
-use crate::Str;
 use crate::{cold_empty_string, iif, Ascii, Slice};
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
+
+#[allow(unused_imports, reason = "doc | ±unsafe")]
+use crate::Str;
+#[allow(unused_imports)]
 #[cfg(not(feature = "dep_simdutf8"))]
 use ::core::str::from_utf8;
+#[allow(unused_imports)]
 #[cfg(feature = "dep_simdutf8")]
 use ::simdutf8::basic::from_utf8;
 

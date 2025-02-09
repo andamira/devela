@@ -23,6 +23,7 @@ impl Fmt {
     /// See `alloc::fmt::`[`format`][fn@format].
     ///
     /// [`format_args!`]: crate::format_args
+    #[must_use]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn format(args: FmtArguments<'_>) -> String {

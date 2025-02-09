@@ -1,19 +1,26 @@
 // devela::text::fmt::num_to_str
+//
+//! Defines the [`NumToStr`] trait.
+//
+
+#[allow(unused_imports, reason = "±unsafe")]
+use crate::_core::str::from_utf8_unchecked;
+
+#[allow(unused_imports)]
+#[cfg(not(feature = "dep_simdutf8"))]
+use ::core::str::from_utf8;
+#[allow(unused_imports)]
+#[cfg(feature = "dep_simdutf8")]
+use ::simdutf8::basic::from_utf8;
 
 #[cfg(test)]
 mod tests;
-#[allow(unused_imports, reason = "±unsafe")]
-use crate::_core::str::from_utf8_unchecked;
-#[cfg(not(feature = "dep_simdutf8"))]
-use ::core::str::from_utf8;
-#[cfg(feature = "dep_simdutf8")]
-use ::simdutf8::basic::from_utf8;
 
 /// Converts a number into a string representation, storing it into a byte slice.
 ///
 /// # Features
 /// It makes use of the `unsafe_str` feature for faster unchecked conversion of
-/// the resulting bytes to a string slice.
+/// the resulting bytes to a string slice, and of the `dep_simdutf8` dependency.
 pub trait NumToStr<T> {
     /// Given a base for encoding and a mutable byte slice, write the number
     /// into the byte slice and return the indice where the inner string begins.

@@ -6,16 +6,17 @@
 // - definitions
 // - trait impls
 
-#[allow(unused, reason = "±unsafe")]
-use crate::_core::str::from_utf8_unchecked;
 use crate::{
     cfor, iif, text::char::*, unwrap, ConstDefault, Deref, InvalidText, IterChars, Mismatch,
     MismatchedCapacity, NotEnoughElements, _core::fmt,
 };
 #[cfg(feature = "alloc")]
 use crate::{CString, ToString};
+
+#[allow(unused_imports)]
 #[cfg(not(feature = "dep_simdutf8"))]
 use ::core::str::from_utf8;
+#[allow(unused_imports)]
 #[cfg(feature = "dep_simdutf8")]
 use ::simdutf8::basic::from_utf8;
 
@@ -168,7 +169,7 @@ impl<const CAP: usize> StringNonul<CAP> {
 
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
         // SAFETY: we ensure to contain only valid UTF-8
-        unsafe { from_utf8_unchecked(self.as_bytes()) }
+        unsafe { ::core::str::from_utf8_unchecked(self.as_bytes()) }
     }
 
     /// Returns the mutable inner string slice.

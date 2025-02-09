@@ -4,19 +4,21 @@
 //
 
 use crate::Grapheme;
-#[allow(unused, reason = "feature-gated")]
-crate::items! {
-    use crate::{Char, _core::str::from_utf8_unchecked};
-    #[cfg(not(feature = "dep_simdutf8"))]
-    use ::core::str::from_utf8;
-    #[cfg(feature = "dep_simdutf8")]
-    use ::simdutf8::basic::from_utf8;
-}
 
 #[cfg(feature = "alloc")]
 use crate::{IterChars, String};
 #[cfg(feature = "dep_unicode_segmentation")]
 use crate::{_dep::unicode_segmentation::UnicodeSegmentation, text::*};
+
+#[allow(unused, reason = "feature-gated")]
+use crate::{Char, _core::str::from_utf8_unchecked};
+
+#[allow(unused_imports)]
+#[cfg(not(feature = "dep_simdutf8"))]
+use ::core::str::from_utf8;
+#[allow(unused_imports)]
+#[cfg(feature = "dep_simdutf8")]
+use ::simdutf8::basic::from_utf8;
 
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
