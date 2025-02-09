@@ -5,6 +5,7 @@
 // safety
 #![cfg_attr(feature = "safe_font", forbid(unsafe_code))]
 
+mod bitmap;
 mod error;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -14,7 +15,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::error::*;
+        pub use super::{bitmap::*, error::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

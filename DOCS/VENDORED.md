@@ -83,6 +83,7 @@ See linked files for detailed changes.
 ## Other Licenses
 - [8bit_rng] by Edward Rosten, (BSD-2) as the [`Xyza8a`] and [`Xyza8b`] structs.
 - [apply] by GeorgeBurton (Unlicense) as part of the [`Chain`] and [`Hook`] structs.
+- [blit-fonts] by Andrew Reece (ISC) as the [`BLIT16`] and [`BLIT32`] bitmap fonts.
 - [pengyhash] by Alberto Fajardo (BSD-2), as the [`HasherPengy`] struct.
 - [size_of_trait] byt Joshua Nelson (BSD-3) as the [`size_of_expr`] fn.
 - [Xabc] by *EternityForest* (openly shared) as the [`Xabc`] struct.
@@ -94,6 +95,9 @@ See linked files for detailed changes.
 [apply]: https://crates.io/crates/apply/0.3.0
   [`Chain`]: https://docs.rs/devela/latest/devela/result/trait.Chain.html
   [`Hook`]: https://docs.rs/devela/latest/devela/result/trait.Hook.html
+[blit-fonts]: https://github.com/azmr/blit-fonts
+  [`FONT_3_5`]: https://docs.rs/devela/latest/devela/media/font/const.FONT_3_5.html
+  [`FONT_5_6`]: https://docs.rs/devela/latest/devela/media/font/const.FONT_5_6.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
   [`HasherPengy`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherPengy.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3

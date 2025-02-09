@@ -31,6 +31,8 @@
   [`Xyza8b`]: crate::num::rand::Xyza8b
   [`Chain`]: crate::result::Chain
   [`Hook`]: crate::result::Hook
+  [`FONT_3_5`]: crate::media::fonts::FONT_3_5
+  [`FONT_5_6`]: crate::media::fonts::FONT_5_6
   [`HasherPengy`]: crate::data::codec::hash::HasherPengy
   [`size_of_expr`]: crate::sys::memsize_of_expr
   [`Xabc`]: crate::num::rand::Xabc

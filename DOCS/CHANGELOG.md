@@ -9,10 +9,12 @@
   - sys: `DirEnv`, `ExtLog`
   - ui: `UiService`.
   - work: `ExtProcess`.
+- new consts: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
 - new types:
   - data:
   - lang: `g_*`.
     - xifer: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
+  - media: `BitmapFont`.
   - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
