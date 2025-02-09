@@ -39,7 +39,6 @@ impl Char {
             || (code >= 0xFFFE && (code & 0xFF) == 0xFF)
             // unallocated range (16 potential non-characters):
             || (code >= 0x2FE0 && code <= 0x2FEF)
-        // surrogates (0xD800..=0xDFFF) are already filtered out in `char`.
     }
 
     /// Returns the number of bytes needed to store the given unicode scalar `code`,
