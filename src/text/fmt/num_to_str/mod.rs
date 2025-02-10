@@ -21,6 +21,8 @@ mod tests;
 /// # Features
 /// It makes use of the `unsafe_str` feature for faster unchecked conversion of
 /// the resulting bytes to a string slice, and of the `dep_simdutf8` dependency.
+///
+#[doc = crate::doc_!(vendor: "numtoa")]
 pub trait NumToStr<T> {
     /// Given a base for encoding and a mutable byte slice, write the number
     /// into the byte slice and return the indice where the inner string begins.

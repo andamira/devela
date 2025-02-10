@@ -67,6 +67,7 @@
 - move `data::{bit, hash, serde}` inside `data::codec`.
 - move fns: `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
 - changed windows `msvc` target for `gnu`.
+- improve the documentation of vendored items.
 
 ### Fixed
 - rename `prim···` flag to `prim··`

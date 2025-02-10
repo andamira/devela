@@ -44,8 +44,7 @@ mod tests;
 /// - [Persistent Data Structures](https://en.wikipedia.org/wiki/Persistent_data_structure)
 /// - [Structural Sharing](https://hypirion.com/musings/understanding-persistent-vector-pt-1)
 ///
-/// # Derived Work
-#[doc = include_str!("./MODIFICATIONS.md")]
+#[doc = crate::doc_!(vendor: "tailcall-chunk")]
 #[must_use]
 #[derive(Clone)]
 pub enum VecChunk<A> {

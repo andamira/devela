@@ -12,6 +12,8 @@
 // use core::ptr::{metadata, from_raw_parts};
 
 /// Represents a fat pointer with separate data and metadata pointers.
+///
+#[doc = crate::doc_!(vendor: "unsized-stack")]
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct FatPtr {

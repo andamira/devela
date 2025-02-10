@@ -35,11 +35,7 @@ use crate::{ConstDefault, Own};
 ///
 /// It has a period of 487,780,609 from a zeroed state.
 ///
-/// # License
-/// This algorithm was originally openly published in December 2011 by user
-/// *EternityForest* in [Electro-Tech-Online.com][link].
-///
-/// [link]: https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
+#[doc = crate::doc_!(vendor: "Xabc")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xabc {

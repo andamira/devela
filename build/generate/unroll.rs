@@ -8,7 +8,7 @@
 
 use super::super::utils::*;
 use std::{
-    fs::{create_dir_all, read_to_string, File},
+    fs::{create_dir_all, File},
     io::{BufWriter, Error, Write},
     writeln as w,
 };
@@ -63,14 +63,10 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// It supports increased limits of 128, 256, 512, 1024 and 2048 by enabling the
 /// corresponding capability feature: `_unroll_[128|256|512|1024|2048]`.
 ///
-/// # Derived work"#;
+/// # Vendored
+/// This is adapted work from [crunchy][crate::_info::vendored#crunchy]"#;
+// In sync with code::utils::_doc::doc_!(vendor:)
     w!(f, "{0}", macro_code1)?;
-
-    let modifications = manifest_dir()
-        .join("build").join("generate").join("unroll").join("MODIFICATIONS.md");
-    w!(f, "#[doc = \"{}\"]", &read_to_string(modifications)?)?;
-
-
     let macro_code2 = r#"#[doc(hidden)]
 #[macro_export]
 macro_rules! _unroll {

@@ -25,8 +25,8 @@ pub trait ExtFuture: Future {
     /// let result = future.block_on();
     /// ```
     ///
-    /// # Derived work
-    #[doc = include_str!("./block/MODIFICATIONS.md")]
+    #[doc = crate::doc_!(vendor: "pollster")]
+    ///
     #[rustfmt::skip]
     #[cfg(feature = "std")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]

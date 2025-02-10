@@ -2,33 +2,6 @@
 //
 //!
 
-// Original license file:
-// https://github.com/edrosten/8bit_rng/blob/master/LICENSE
-/*
-Copyright Edward Rosten 2008--2013.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND OTHER CONTRIBUTORS ``AS IS''
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR OTHER CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-*/
-
 use crate::{ConstDefault, Own};
 
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
@@ -41,13 +14,7 @@ use crate::{ConstDefault, Own};
 ///
 /// Its longest cycle is 4_261_412_736.
 // (== u32::MAX + u16::MAX * 512 + 639).
-///
-/// # License
-/// This algorithm was ported from [8bit_rng](https://github.com/edrosten/8bit_rng).
-/// Copyright (c) 2008-2013 Edward Rosten.
-/// Licensed under the [BSD 2-Clause "Simplified" License][license]
-///
-/// [license]: https://github.com/edrosten/8bit_rng/blob/master/LICENSE
+#[doc = crate::doc_!(vendor: "8bit_rng")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8a {
@@ -159,6 +126,7 @@ impl Xyza8a {
 /// random number tests.
 ///
 /// Its longest cycle is 4,294,967,294.
+#[doc = crate::doc_!(vendor: "8bit_rng")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8b {
     x: u8,

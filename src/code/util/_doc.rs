@@ -74,6 +74,21 @@ macro_rules! doc_ {
             $( ", [", stringify!($rest), "](mod@", $crate::std_core!(), "::", stringify!($rest), ")" ),*
         )
     };
+    (
+    // Shows the `Vendored` doc section and links to the info line.
+    //
+    // $crate_id: the crate's name and html id anchor on the docs.
+    vendor: $crate_id:literal) => { concat!(
+        "\n\n# Vendored\n\nThis is adapted work from [",
+        $crate_id, "][crate::_info::vendored#", $crate_id, "].\n\n"
+    )};
+    (
+    // $crate_id:  the crate's name and html id anchor on the docs.
+    // $text_path: the path to the text file to include, explaining the modifications.
+    vendor_mod: $crate_id:literal, $text_path:literal) => { concat!(
+        "# ", $crate_id, "\n\n[*(↑)*][crate::_info::vendored#", $crate_id, "] ",
+        include_str!($text_path),
+    )};
 }
 pub(crate) use doc_;
 

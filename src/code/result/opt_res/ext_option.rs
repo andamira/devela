@@ -25,7 +25,7 @@ impl<T> Sealed for Option<T> {}
 pub trait ExtOption<T>: Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// # use devela::ExtOption;
     /// assert_eq!(Some(1).contains(&1), true);
@@ -42,7 +42,7 @@ pub trait ExtOption<T>: Sealed {
     /// - `Some(x)` if either of the options is `Some(x)` and the other is `None`.
     /// - `None` if both options are `None`.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// # use devela::ExtOption;
     /// # use core::{cmp::min, ops::Add};
@@ -59,28 +59,18 @@ pub trait ExtOption<T>: Sealed {
     #[must_use]
     fn reduce<F: FnOnce(T, T) -> T>(self, other: Option<T>, f: F) -> Option<T>;
 
-    /// Format some value, or display an empty string if it's `None`.
-    ///
-    /// # Examples
-    /// ```
-    /// # use devela::ExtOption;
-    /// assert_eq!("0x42", format!("{:#x}", Some(0x42).fmt_or_empty()));
-    /// assert_eq!("", format!("{:#x}", None::<u8>.fmt_or_empty()));
-    /// ```
-    #[must_use]
-    fn fmt_or_empty(&self) -> OptionFmt<T>;
-
     /// Format some value, or an alternative if it's `None`.
     ///
     /// The alternative value must implement [`Display`]
     /// regardless of which formatting is used originally.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// # use devela::ExtOption;
     /// assert_eq!("42", format!("{}", Some(Box::new(42)).fmt_or("Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or("Nothing")));
     /// ```
+    #[doc = crate::doc_!(vendor: "fmtor")]
     #[must_use]
     fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<T, U>;
 
@@ -93,7 +83,7 @@ pub trait ExtOption<T>: Sealed {
     /// Therefore, using a single [`OptionFmtOrElse`] object for multiple
     /// formatting operations will run the closure multiple times.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// # use devela::ExtOption;
     /// assert_eq!("42", format!("{}", Some(42).fmt_or_else(|| "Nothing")));
@@ -101,6 +91,17 @@ pub trait ExtOption<T>: Sealed {
     /// ```
     #[must_use]
     fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<T, F>;
+
+    /// Format some value, or display an empty string if it's `None`.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela::ExtOption;
+    /// assert_eq!("0x42", format!("{:#x}", Some(0x42).fmt_or_empty()));
+    /// assert_eq!("", format!("{:#x}", None::<u8>.fmt_or_empty()));
+    /// ```
+    #[must_use]
+    fn fmt_or_empty(&self) -> OptionFmt<T>;
 }
 
 impl<T> ExtOption<T> for Option<T> {

@@ -53,8 +53,7 @@ const FONT_3_3_GLYPHS: [u16; 95] = [
 /// A simple 3x5 bitmap font.
 ///
 /// It includes all 95 ASCII characters from space ' ' to tilde '~'.
-/// # Derived Work
-#[doc = include_str!("./MODS_BLIT.md")]
+#[doc = crate::doc_!(vendor: "blit-fonts")]
 pub const FONT_3_5: BitmapFont<u16> = BitmapFont {
     glyphs: &FONT_3_5_GLYPHS,
     first_glyph: ' ',
@@ -91,8 +90,7 @@ const FONT_3_5_GLYPHS: [u16; 95] = [
 /// A simple 5x6 bitmap font.
 ///
 /// It includes all 95 ASCII characters from space ' ' to tilde '~'.
-/// # Derived Work
-#[doc = include_str!("./MODS_BLIT.md")]
+#[doc = crate::doc_!(vendor: "blit-fonts")]
 pub const FONT_5_6: BitmapFont<u32> = BitmapFont {
     glyphs: &FONT_5_6_GLYPHS,
     first_glyph: ' ',

@@ -4,8 +4,7 @@
 //!
 #![doc = crate::doc_!(extends: io)]
 //!
-//! # Derived work
-#![doc = include_str!("./define_no_std_io/MODIFICATIONS.md")]
+#![doc = crate::doc_!(vendor: "no_std_io")]
 //
 // safety
 #![cfg_attr(feature = "safe_io", forbid(unsafe_code))]

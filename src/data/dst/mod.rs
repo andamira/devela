@@ -7,8 +7,7 @@
     url: "https://github.com/thepowersgang/stack_dst-rs/issues/14")]
 #![doc = include_str!("./Mod.md")]
 //!
-//! # Derived Work
-#![doc = include_str!("./MODIFICATIONS.md")]
+#![doc = crate::doc_!(vendor: "stack_dst")]
 //
 //
 #![allow(clippy::result_unit_err)] // IMPROVE

@@ -12,7 +12,7 @@
 
 use super::super::utils::*;
 use std::{
-    fs::{create_dir_all, read_to_string, File},
+    fs::{create_dir_all, File},
     io::{BufWriter, Error, Write},
     write as w0, writeln as w,
 };
@@ -58,10 +58,9 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// It supports increased arities of 24, 36, 48 and 72 by enabling the
 /// corresponding capability feature: `_tuple_[24|36|48|72]`.
 ///
-/// # Derived work"#)?;
-    let modifications = manifest_dir()
-        .join("build").join("generate").join("tuple").join("MODIFICATIONS.md");
-    w!(f, "#[doc = \"{}\"]", &read_to_string(modifications)?)?;
+/// # Vendored
+/// This is adapted work from [tupl][crate::_info::vendored#tupl]"#)?;
+// In sync with code::utils::_doc::doc_!(vendor:)
 
     w!(f, "{TAB1}#[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]
     #[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]

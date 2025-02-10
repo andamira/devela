@@ -8,4 +8,4 @@ including the following modifications:
 - remove `byteorder` dependency.
 - add const methods for hashing byte slices.
 - rename the structures.
-- misc. refactoring.
+- misc. refactors.

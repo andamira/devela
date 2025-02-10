@@ -186,6 +186,7 @@ impl Mem {
     ///     assert!(bytes == &[0, 0, 4, 210]);
     /// }
     /// ```
+    #[doc = crate::doc_!(vendor: "rawbytes")]
     #[must_use]
     pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
         // SAFETY:
@@ -212,6 +213,7 @@ impl Mem {
     ///     assert!(bytes == &[0, 0, 0, 210] && data.0 == 210);
     /// }
     /// ```
+    #[doc = crate::doc_!(vendor: "rawbytes")]
     #[must_use]
     pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
         // SAFETY:

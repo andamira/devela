@@ -12,8 +12,7 @@ use crate::{addr_of, Box, Pin};
 ///
 /// See also [`IdPin`][crate::IdPin].
 ///
-/// # Derived Work
-#[doc = include_str!("./MODIFICATIONS.md")]
+#[doc = crate::doc_!(vendor: "object-id")]
 #[derive(Clone)]
 pub struct IdPinBox {
     inner: Pin<Box<u8>>,

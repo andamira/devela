@@ -5,4 +5,4 @@ including the following modifications:
 - merge the multiple `const_assert*` macros into a single `const_assert!`.
 - rename the `to_bool` macro to `const_bool`, and simplify.
 - rename the `ToBool` trait to `ConstBool`, as well as its inner items.
-- update syntax to 2012 edition.
+- update syntax to 2021 edition.

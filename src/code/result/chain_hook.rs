@@ -27,8 +27,9 @@
 /// // We can sort it, but we don't receive the new vec.
 /// let v: Vec<i32> = vec![3, 2, 1, 5].chain_mut(|it| it.sort());
 /// ```
-///
 /// See also the [`Hook`][crate::Hook] trait.
+///
+#[doc = crate::doc_!(vendor: "apply")]
 pub trait Chain<R> {
     /// Chain a function which takes the parameter by value.
     #[must_use]
@@ -81,8 +82,9 @@ impl<T: ?Sized, R> Chain<R> for T {}
 ///     .hook_mut(|v| v.push(7));
 /// assert_eq![v, vec![1, 2, 3, 5, 7]];
 /// ```
-///
 /// See also the [`Chain`][crate::Chain] trait.
+///
+#[doc = crate::doc_!(vendor: "apply")]
 pub trait Hook: Sized {
     /// Applies a function which takes the parameter by shared reference,
     /// and then returns the (possibly) modified owned value.

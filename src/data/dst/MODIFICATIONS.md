@@ -10,4 +10,3 @@ including the following modifications:
 - replaced custom `Pod` trait for crate's `MemPod` trait.
 - changed using a raw pointer to `usize` for alignment.
 - refactored and updated the code to 2021 edition.
-

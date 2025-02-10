@@ -5,4 +5,4 @@ including the following modifications:
 - add `must_use` attribute.
 - make it `no_std` compatible.
 - rename the structure to `VecChunk`.
-- misc. refactoring.
+- misc. refactors.
