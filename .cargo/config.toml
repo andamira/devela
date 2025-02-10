@@ -31,10 +31,10 @@ unstable-options = true
 rustdocflags = [
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./config/rustdoc-header.html",
-	# "-Ctarget-cpu=native", # see instead: utils/cargo-native
+	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
 ]
 rustflags = [
-	# "-Ctarget-cpu=native", # see instead: utils/cargo-native
+	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
 ]
 
 

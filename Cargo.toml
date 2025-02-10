@@ -317,6 +317,10 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # ---------------------
 # WAIT [\href does not work in display mode](https://github.com/KaTeX/KaTeX/issues/3571)
 # WAIT [support \SI and \si from siunitx](https://github.com/KaTeX/KaTeX/issues/817)
+# WAIT [link to downstream crates](https://github.com/rust-lang/rust/issues/74481)
+# WAIT [typeless canonical url](https://github.com/rust-lang/rust/issues/55160)
+# WAIT [odd canonical path](https://github.com/rust-lang/rust/issues/124608)
+# WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 
 _docs = [ # the minimum capabilities to document everything
 	# modules:

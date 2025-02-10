@@ -12,7 +12,7 @@ use super::BitmapFont;
 /// A simple 3x3 bitmap font.
 ///
 /// Notes:
-/// - It includes all 95 ASCII characters from space ' ' to tilde '~'.
+/// - It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 /// - upper and lower case characters are the same.
 /// - 'S' == '5' and  'Z' == '2'.
 pub const FONT_3_3: BitmapFont<u16> = BitmapFont {
@@ -52,7 +52,7 @@ const FONT_3_3_GLYPHS: [u16; 95] = [
 
 /// A simple 3x5 bitmap font.
 ///
-/// It includes all 95 ASCII characters from space ' ' to tilde '~'.
+/// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::doc_!(vendor: "blit-fonts")]
 pub const FONT_3_5: BitmapFont<u16> = BitmapFont {
     glyphs: &FONT_3_5_GLYPHS,
@@ -89,7 +89,7 @@ const FONT_3_5_GLYPHS: [u16; 95] = [
 
 /// A simple 5x6 bitmap font.
 ///
-/// It includes all 95 ASCII characters from space ' ' to tilde '~'.
+/// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::doc_!(vendor: "blit-fonts")]
 pub const FONT_5_6: BitmapFont<u32> = BitmapFont {
     glyphs: &FONT_5_6_GLYPHS,

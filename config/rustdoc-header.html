@@ -3,11 +3,11 @@
     // Ensure this script runs only once per page load
     if (window.scriptLoaderInitialized) { return; } window.scriptLoaderInitialized = true;
 
-    /* configuration */
+    /* settings */
 
     const crateName = "devela";
 
-    // Allowed path prefixes for loading specific libraries
+    // Allowed path prefixes for loading resouces
     const allowedKatex = [
       "/all",
       "/num/",
@@ -26,15 +26,17 @@
     // console.log("Current path:", window.location.pathname);
     // console.log("Relative path after crate:", relativePath);
 
-    /* loading resources */
+    /* load resources */
 
     if (allowedKatex.some(prefix => relativePath.startsWith(prefix))) { loadKatex(); }
     if (allowedKatexChem.some(prefix => relativePath.startsWith(prefix))) { loadKatexChem(); }
 
+    /* define resources */
+
     function loadKatex() {
       console.log("Loading KaTeX for:", relativePath);
 
-      // https://katex.org/docs/browser.html#starter-template
+      // INFO: https://katex.org/docs/browser.html#starter-template
       const katexJS = document.createElement("script"); katexJS.defer = true;
       // katexJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/katex.min.js";
       // katexJS.integrity = "sha384-RdymN7NRJ+XoyeRY4185zXaxq9QWOOx3O7beyyrRK4KQZrPlCDQQpCu95FoCGPAE";
@@ -60,7 +62,7 @@
       `;
       document.head.appendChild(katexStyle);
 
-      // https://github.com/KaTeX/KaTeX/tree/main/contrib/copy-tex
+      // INFO: https://github.com/KaTeX/KaTeX/tree/main/contrib/copy-tex
       const copytexJS = document.createElement("script"); copytexJS.defer = true;
       // copytexJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/contrib/copy-tex.min.js";
       copytexJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/copy-tex.min.js";
@@ -68,7 +70,7 @@
       copytexJS.crossOrigin = "anonymous";
       document.head.appendChild(copytexJS);
 
-      // https://katex.org/docs/autorender.html
+      // INFO: https://katex.org/docs/autorender.html
       const autoRenderJS = document.createElement("script"); autoRenderJS.defer = true;
       // autoRenderJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/contrib/auto-render.min.js";
       autoRenderJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js";
@@ -89,7 +91,7 @@
     function loadKatexChem() {
       console.log("Loading KaTeX MhChem plugin for:", relativePath);
 
-      // https://github.com/KaTeX/KaTeX/blob/main/contrib/mhchem/README.md
+      // INFO: https://github.com/KaTeX/KaTeX/blob/main/contrib/mhchem/README.md
       const mhchemJS = document.createElement("script"); mhchemJS.defer = true;
       // mhchemJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/contrib/mhchem.min.js";
       mhchemJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/mhchem.min.js";

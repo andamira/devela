@@ -104,7 +104,7 @@
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "std"),
-    feature(anonymous_pipe, hash_extract_if, once_wait,file_lock,)
+    feature(anonymous_pipe, hash_extract_if, once_wait, file_lock,)
 )]
 // #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
 

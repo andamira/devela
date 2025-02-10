@@ -1,6 +1,6 @@
 // devela::sys::arch::namespace
 //
-//! Target feature-dependant namespaces.
+//! Defines the [`Arch`] namespace.
 //
 // TOC
 // - impl Arch blocks
@@ -16,7 +16,9 @@ use crate::_dep::safe_arch::*;
 #[doc = crate::TAG_NAMESPACE!()]
 /// Arch-related functionality.
 ///
-/// Implementations that depend on: `dep_safe_arch` and (`x86` or `x86_64`) and target features:
+/// ---
+/// Implementations that depend on: `dep_safe_arch`, (`x86` or `x86_64`)
+/// and the respective target feature:
 /// - [none](#functions-not-requiring-any-target-feature).
 /// - [`adx`](#functions-requiring-the-adx-target-feature).
 /// - [`aes`](#functions-requiring-the-aes-target-feature).
