@@ -11,6 +11,7 @@
 
 mod any; // dynamic typing and reflection
 mod default; // ConstDefault, Default
+mod guard; // ScopeGuard
 mod reexports; // re-exported items
 
 pub mod marker; // core::marker, type_marker!, type_resource!, TypeResource, TypeResourced
@@ -25,7 +26,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     pub use {_always::*, _pub_mods::*};
 
     mod _mods {
-        pub use super::{any::_all::*, default::*, reexports::*};
+        pub use super::{any::_all::*, default::*, guard::*, reexports::*};
     }
     mod _pub_mods {
         pub use super::{marker::_all::*, ops::_all::*, result::_all::*, util::_all::*};

@@ -36,6 +36,7 @@ pub mod vendored {
     #[doc = crate::doc_!(vendor_mod: "pollster", "../work/future/block/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "quickdiv", "../num/int/divisor/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "stack_dst", "../data/dst/MODIFICATIONS.md")]
+    #[doc = crate::doc_!(vendor_mod: "stated-scope-guard", "../code/guard/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "static_assertions", "../code/util/asserts/static/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "tailcall-chunk", "../data/list/array/vec/chunk/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "tupl", "../data/list/tuple/MODIFICATIONS.md")]

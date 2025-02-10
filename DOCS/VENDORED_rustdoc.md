@@ -21,6 +21,8 @@
   [`Divisor`]: crate::num::Divisor
   [M_stack_dst]: crate::_info::vendored::modifications#stack_dst
   [`data::dst`]: crate::data::dst
+  [M_stated-scope-guard]: crate::_info::vendored::modifications#stated-scope-guard
+  [`ScopeGuard`]: crate::code::ScopeGuard
   [M_static_assertions]: crate::_info::vendored::modifications#static_assertions
   [`const_assert`]: crate::code::util::const_assert
   [`ConstBool`]: crate::num::logic::ConstBool
