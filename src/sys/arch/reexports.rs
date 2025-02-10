@@ -35,7 +35,7 @@ reexport! { rust: std::arch,
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_safe_arch")))]
 pub use crate::_dep::safe_arch::cmp_op as arch_cmp;
 
-/// <span class='stab portability' title='re-exported from `safe_arch`>`safe_arch`</span>
+/// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
 #[cfg(all(feature = "dep_safe_arch", target_feature = "avx"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "avx")))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_safe_arch")))]

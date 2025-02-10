@@ -76,5 +76,6 @@
 - enable nightly features depending on `alloc` and `std`.
 - feature-gate namespaced re-exported unsafe methods with `unsafe··`.
 - refactor `rustdoc-header.html` to be modular, more efficient and versatile.
+- compile in docs.rs with `cpu-native` flag.
 
 [unreleased]: https://github.com/andamira/devela/compare/v0.23.0-wip...HEAD
