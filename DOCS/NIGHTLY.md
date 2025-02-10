@@ -37,6 +37,7 @@ See also
 - 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 - 1.86: s[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
 - 1.86: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
+- 1.86: a[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 
 # .‥… will be stable later (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 - 1.??: s[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
@@ -52,6 +53,7 @@ See also
 - 1.??: ·[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??:  [get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
         · get_many_mut (old name)
+- 1.??: s[file_lock](https://github.com/rust-lang/rust/pull/136794)
 - 1.??: s[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.??: ·[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
@@ -64,7 +66,6 @@ See also
 - 1.??: s[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
 - 1.??: ·[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
-- 1.??: a[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 
 # .‥… probably even later
 - 1.?? F[allocator_api](https://github.com/rust-lang/rust/issues/32838) `nightly_allocator`

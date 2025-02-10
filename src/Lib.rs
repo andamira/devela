@@ -70,7 +70,7 @@
     feature = "nightly_stable_next2",
     feature(const_black_box, float_next_up_down, trait_upcasting,)
 )]
-// #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
+#![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature(vec_pop_if,))]
 #![cfg_attr(
     all(feature = "nightly_stable_next2", feature = "std"),
     feature(const_mut_cursor, map_many_mut,)
@@ -100,11 +100,11 @@
 ))]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "alloc"),
-    feature(box_uninit_write, new_zeroed_alloc, vec_pop_if,)
+    feature(box_uninit_write, new_zeroed_alloc,)
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "std"),
-    feature(anonymous_pipe, hash_extract_if, once_wait,)
+    feature(anonymous_pipe, hash_extract_if, once_wait,file_lock,)
 )]
 // #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
 
