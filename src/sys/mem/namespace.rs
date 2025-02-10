@@ -189,7 +189,7 @@ impl Mem {
     #[doc = crate::doc_!(vendor: "rawbytes")]
     #[must_use]
     pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
-        // SAFETY:
+        // SAFETY: `v` is valid; u8 has alignment 1, size_of_val(v) gives the exact byte length.
         unsafe { from_raw_parts(v as *const _ as *const u8, size_of_val(v)) }
     }
 
@@ -216,7 +216,8 @@ impl Mem {
     #[doc = crate::doc_!(vendor: "rawbytes")]
     #[must_use]
     pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
-        // SAFETY:
+        // SAFETY: `v` is a valid, exclusive reference;
+        // u8’s alignment is 1, and size_of_val(v) bounds the mutable slice.
         unsafe { from_raw_parts_mut(v as *mut _ as *mut u8, size_of_val(v)) }
     }
 
@@ -237,7 +238,8 @@ impl Mem {
     /// ```
     #[must_use]
     pub const fn as_bytes_sized<T: Sync + Unpin>(v: &T) -> &[u8] {
-        // SAFETY:
+        // SAFETY: `v` is valid; casting to *const u8 is safe (u8 has alignment 1)
+        // and size_of::<T>() exactly covers the object.
         unsafe { from_raw_parts(v as *const T as *const u8, size_of::<T>()) }
     }
 }
