@@ -36,6 +36,7 @@ See also
 - 1.86: s[const_mut_cursor](https://github.com/rust-lang/rust/pull/136634)
 - 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 - 1.86: s[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
+- 1.86: ·[non_zero_count_ones](https://github.com/rust-lang/rust/pull/136663)
 - 1.86: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
 - 1.86: a[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 
@@ -61,7 +62,6 @@ See also
 - 1.??: ·[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: ·[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: a[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
-- 1.??: ·[non_zero_count_ones](https://github.com/rust-lang/rust/pull/136663)
 - 1.??: ·[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 - 1.??: s[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
