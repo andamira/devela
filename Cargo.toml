@@ -80,7 +80,7 @@ path = "./src/Lib.rs"
 bench = false
 
 
-[features] # 274/300 (26 remaining), 145 visible, 129 hidden
+[features] # 277/300 (23 remaining), 148 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -179,8 +179,12 @@ text = ["ascii", "fmt", "str"]
 	ascii = [] # AsciiChar
 	fmt = [] # NumStr
 	str = [] # Str, ExtStr, ExtString
-ui = ["layout"]
+ui = ["layout", "desk", "term", "web"]
 	layout = []
+	desk = []
+	# mobi = []
+	term = []
+	web = []
 work = ["bytemuck?/zeroable_atomics"]
 	process = ["rustix?/process", "tokio?/process"]
 	sync = ["rustix?/thread", "tokio?/sync"]

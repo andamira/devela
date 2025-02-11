@@ -3,7 +3,7 @@
 ## [0.23.0-wip] *unreleased*
 
 ### Added
-- new features: `glsl, _maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
+- new features: `desk`, `term`, `web`, `glsl, _maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
 - new traits:
   - data: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
   - sys: `DirEnv`, `ExtLog`
