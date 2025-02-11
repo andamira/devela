@@ -15,7 +15,7 @@
   - data:
     - xifer: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - lang: `g_*`.
-  - media: `BitmapFont`.
+  - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
@@ -25,6 +25,7 @@
 - new modules:
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
   - `lang::{c, glsl}`.
+  - `media::image::sixel`.
   - `sys::{log, net}`.
   - `ui::service::{self, crossterm, miniquad}`.
 - new macro arms:

@@ -34,10 +34,12 @@
 
 <!-- orig: MIT -->
   [`cfor`]: crate::code::util::cfor
-  [`unroll`]: crate::code::util::unroll
   [M_crunchy]: crate::_info::vendored::modifications#crunchy
-  [`IdPin`]: crate::data::uid::IdPin
+  [`unroll`]: crate::code::util::unroll
+  [M_icy_sixel]: crate::_info::vendored::modifications#icy_sixel
+  [`media::image::sixel`]: crate::media::image::sixel
   [M_object-id]: crate::_info::vendored::modifications#object-id
+  [`IdPin`]: crate::data::uid::IdPin
   [`IdPinBox`]: crate::IdPinBox
   [`as_bytes`]: crate::sys::mem::Mem::as_bytes
   [`as_bytes_mut`]: crate::sys::mem::Mem::as_bytes_mut

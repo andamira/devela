@@ -43,6 +43,7 @@ pub mod vendored {
     #[doc = crate::doc_!(vendor_mod: "tupl", "../data/list/tuple/MODIFICATIONS.md")]
     // MIT:
     #[doc = crate::doc_!(vendor_mod: "crunchy", "../code/util/unroll/MODIFICATIONS.md")]
+    #[doc = crate::doc_!(vendor_mod: "icy_sixel", "../media/image/sixel/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "object-id", "../data/uid/pin/MODIFICATIONS.md")]
     // other:
     // #[doc = crate::doc_!(vendor_mod: "blit-fonts", "../media/font/bitmap/MODS_BLIT.md")] // WIP

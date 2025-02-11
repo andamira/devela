@@ -18,7 +18,7 @@ See the linked modifications for detailed changes.
 - <i id="fxhash"></i>[fxhash] by Christopher Breeden,
   as the [`HasherFx`] struct ([*modifications*][M_fxhash]).
 - <i id="no_std_io"></i>[no_std_io]|[core2] by Brendan Molloy,
-  as part of the [`io`] module ([*modifications*][M_no_std_io]).
+  as part of the [`sys::io`] module ([*modifications*][M_no_std_io]).
 - <i id="numtoa"></i>[numtoa] by Michael Murphy,
   as the [`NumToStr`] trait ([*modifications*][M_numtoa]).
 - <i id="pollster"></i>[pollster] by Joshua Barretto,
@@ -55,9 +55,9 @@ See the linked modifications for detailed changes.
   [M_fxhash]: https://github.com/andamira/devela/blob/main/src/data/codec/hash/fx/MODIFICATIONS.md
   [`HasherFx`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherFx.html
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
-  [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/sys/io/define_no_std_io/MODIFICATIONS.md
 [core2]: https://crates.io/crates/core2/0.4.0
-  [`io`]: https://docs.rs/devela/latest/devela/sys/io/
+  [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/sys/io/define_no_std_io/MODIFICATIONS.md
+  [`sys::io`]: https://docs.rs/devela/latest/devela/sys/io/
 [numtoa]: https://crates.io/crates/numtoa/0.2.4
   [M_numtoa]: https://github.com/andamira/devela/blob/main/src/text/fmt/num_to_str/MODIFICATIONS.md
   [`NumToStr`]: https://docs.rs/devela/latest/devela/text/fmt/trait.NumToStr.html
@@ -89,6 +89,8 @@ See the linked modifications for detailed changes.
   as the [`cfor`] macro.
 - <i id="crunchy"></i>[crunchy] by Eira Fransham,
   as the [`unroll`] macro ([*modifications*][M_crunchy]).
+- <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
+  as the [`media::image::sixel`] module ([*modifications*][M_icy_sixel]).
 - <i id="object-id"></i>[object-id] by *Altertech*,
   as part of the [`IdPinBox`] and [`IdPin`] structs ([*modifications*][M_object-id]).
 - <i id="rawbytes"></i>[rawbytes] by Frank Denis,
@@ -99,8 +101,12 @@ See the linked modifications for detailed changes.
 [const_for]: https://crates.io/crates/const_for/0.1.4
   [`cfor`]: https://docs.rs/devela/latest/devela/code/util/macro.cfor.html
 [crunchy]: https://crates.io/crates/crunchy/0.2.3
-  [`unroll`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
   [M_crunchy]: https://github.com/andamira/devela/blob/main/build/generate/unroll/MODIFICATIONS.md
+  [`unroll`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
+[icy_sixel]: https://crates.io/crates/icy_sixel/0.1.3
+[libsixel]: https://github.com/saitoha/libsixel
+  [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/media/image/sixel/MODIFICATIONS.md
+  [`media::image::sixel`]: https://docs.rs/devela/latest/devela/media/image/sixel
 [object-id]: https://crates.io/crates/object-id/0.1.4
   [M_object-id]: https://github.com/andamira/devela/blob/main/src/data/uid/pin/MODIFICATIONS.md
   [`IdPin`]: https://docs.rs/devela/latest/devela/data/uid/struct.IdPin.html
