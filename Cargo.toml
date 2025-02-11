@@ -711,7 +711,7 @@ optional = true # safe enough (simple few)
 default-features = false # 3 https://docs.rs/crate/itertools/latest/features
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1" # ✓ https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.2" # ✓ https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
