@@ -7,8 +7,8 @@
 #[cfg(all(doc, feature = "alloc"))]
 use crate::{Box, Boxed};
 use crate::{Mem, Storage};
-#[cfg(feature = "dep_rkyv")]
-use rkyv::{Archive, Deserialize, Serialize};
+// #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
+// use rkyv::{Archive, Deserialize, Serialize};
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`BareBox`].
@@ -26,7 +26,7 @@ pub type Bare = ();
 /// # use devela::BareBox;
 /// let byte = BareBox::new(0_u8);
 /// ```
-#[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
+// #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 pub struct BareBox<T>(pub T);
 
 /// A zero-sized marker for a storage type that wraps its data in a [`BareBox`].

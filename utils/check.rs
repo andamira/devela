@@ -116,16 +116,18 @@ const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     "dep_nc",
     // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
     "dep_pyo3",
-    // (cross-compile to many platforms fails)
-    // - [to darwin from linux](https://github.com/briansmith/ring/issues/1442)
-    // - [to windows from linux](https://github.com/briansmith/ring/issues/894)
-    "dep_ring",
     // - https://docs.rs/safe_arch/latest/safe_arch/#current-support
     "dep_safe_arch",
     // (experimental)
     "dep_sdl3",
     // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
+    //
+    // DEP_DISABLED:
+    // // (cross-compile to many platforms fails)
+    // // - [to darwin from linux](https://github.com/briansmith/ring/issues/1442)
+    // // - [to windows from linux](https://github.com/briansmith/ring/issues/894)
+    // "dep_ring",
 ];
 
 #[rustfmt::skip]

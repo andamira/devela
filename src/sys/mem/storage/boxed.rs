@@ -6,13 +6,13 @@
 #[cfg(doc)]
 use crate::{Bare, BareBox};
 use crate::{Box, ConstDefault, Storage};
-#[cfg(feature = "dep_rkyv")]
-use rkyv::{Archive, Deserialize, Serialize};
+// #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
+// use rkyv::{Archive, Deserialize, Serialize};
 
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`Box`].
 ///
 /// Equivalent to the [`Bare`] marker struct which uses a [`BareBox`] for the underlying storage.
-#[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
+// #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 #[derive(Clone, Copy, Default, PartialEq, Eq)]
 pub struct Boxed;
 

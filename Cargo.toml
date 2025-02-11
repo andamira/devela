@@ -80,7 +80,7 @@ path = "./src/Lib.rs"
 bench = false
 
 
-[features] # 276/300 (24 remaining), 147 visible, 129 hidden
+[features] # 274/300 (26 remaining), 145 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -118,16 +118,18 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 alloc = [ # enables `alloc` functionality
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
 	"jiff?/alloc", "memchr?/alloc", "orion?/alloc",
-	"ring?/alloc", "rkyv?/alloc", "rustix?/alloc", "serde?/alloc", "winnow?/alloc",
+	"rustix?/alloc", "serde?/alloc", "winnow?/alloc",
+	# DEP_DISABLED: "ring?/alloc", "rkyv?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
 	"itertools?/use_std", "jiff?/std", "js-sys?/std", "log?/std",
 	"memchr?/std", "nc?/std", "orion?/safe_api",
-	"raw-cpuid?/std", "regex-lite?/std", "ring?/std", "rkyv?/std", "rustix?/std",
+	"raw-cpuid?/std", "regex-lite?/std", "rustix?/std",
 	"serde?/std", "simdutf8?/std", "tracing?/std",
 	"wasm-bindgen?/std", "web-sys?/std", "wide?/std", "winnow?/std",
+	# DEP_DISABLED: "ring?/std", "rkyv?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -523,13 +525,14 @@ dep_all = [ # enables all 52 optional dependencies:
 	"dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff", "dep_js_sys",
 	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
 	"dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3",
-	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_ring",
-	"dep_rkyv", "dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_sdl3",
+	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite",
+	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_sdl3",
 	"dep_serde", "dep_simdutf8", "dep_stringzilla", "dep_sysinfo", "dep_symphonia",
 	"dep_tinyaudio", "dep_toml_edit", "dep_tokio", "dep_tracing",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
 	"dep_wasm_bindgen", "dep_web_sys", "dep_wide", "dep_winnow",
 ]
+# DEP_DISABLED: "dep_ring", "dep_rkyv",
 
 # groups of dependencies, environment and modules
 alloc_deps = ["alloc", "dep_bumpalo", "dep_allocator_api2"]
@@ -550,8 +553,9 @@ dep_fltk = ["dep:fltk"]                                                         
 dep_flume = ["dep:flume"]                                                         # work::sync
 dep_fontdue = ["dep:fontdue"]                                                     # media::font
 dep_gilrs = ["dep:gilrs"]                                                         # ui::service
-dep_hashbrown = ["dep:hashbrown", "alloc", # "fontdue?/hashbrown",                # data::cols
-	"pyo3?/hashbrown", "rkyv?/hashbrown-0_15"]
+dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"]                     # data::cols
+	# WAIT: "fontdue?/hashbrown",
+	# DEP_DISABLED: "rkyv?/hashbrown-0_15"
 dep_image = ["dep:image"]                                                         # media::image
 dep_itertools = ["dep:itertools"]                                                 # data::iter
 dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
@@ -571,8 +575,6 @@ dep_rayon = ["dep:rayon", "fontdue?/rayon", "image?/rayon",                     
 	"sysinfo?/multithread"]
 dep_raw_cpuid = ["dep:raw-cpuid"]                                                 # sys::arch
 dep_regex_lite = ["dep:regex-lite", "std"]                                        # text::parse
-dep_ring = ["dep:ring"]                                                           # data::xipher
-dep_rkyv = ["dep:rkyv"]                                                           # data::serde
 dep_rodio = ["dep:rodio"]                                                         # sys::sound
 dep_rustix = ["dep:rustix"]                                                       # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
@@ -596,9 +598,13 @@ dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         
 dep_web_sys = ["dep:web-sys"]                                                     # ui::web
 dep_wide = ["dep:wide"]                                                           # ...
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                   # text::parse
+#
+# DEP_DISABLED:
+# dep_ring = ["dep:ring"]                                                           # data::xipher
+# dep_rkyv = ["dep:rkyv"]                                                           # data::serde
 
 
-[dependencies] # 54 (2 required, 52 optional)
+[dependencies] # 52 (2 required, 50 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -815,19 +821,6 @@ default-features = false # 2 https://docs.rs/crate/rayon/latest/features
 features = ["string"]
 # WAIT: [no_std](https://github.com/rust-lang/regex/issues/1122)
 
-[dependencies.ring] # https://crates.io/crates/ring
-version = "0.17.8" # ✗ https://github.com/briansmith/ring/commits/main/
-optional = true # unsafe
-default-features = false # 10 https://docs.rs/crate/ring/latest/features
-
-[dependencies.rkyv] # https://crates.io/crates/rkyv
-version = "0.8.10" # ✓ https://github.com/rkyv/rkyv/releases
-optional = true # unsafe
-default-features = false # 23  https://docs.rs/crate/rkyv/latest/features
-features = ["bytecheck"] # https://docs.rs/rkyv/latest/rkyv/#features
-# *aligned|unaligned, big_endian|*little_endian, pointer_width[16|*32|64]
-# MAYBE: https://crates.io/crates/rkyv_dyn
-
 [dependencies.rodio] # https://crates.io/crates/rodio
 version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md
 optional = true # unsafe (unsafe dependencies)
@@ -966,6 +959,21 @@ default-features = false # 3 https://docs.rs/crate/wide/latest/features
 version = "0.7" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md
 optional = true # ±safe (very little unsafe)
 default-features = false # 7 https://docs.rs/crate/winnow/latest/features
+
+# DEP_DISABLED:
+#
+# [dependencies.ring] # https://crates.io/crates/ring
+# version = "0.17.8" # ✗ https://github.com/briansmith/ring/commits/main/
+# optional = true # unsafe
+# default-features = false # 10 https://docs.rs/crate/ring/latest/features
+#
+# [dependencies.rkyv] # https://crates.io/crates/rkyv
+# version = "0.8.10" # ✓ https://github.com/rkyv/rkyv/releases
+# optional = true # unsafe
+# default-features = false # 23  https://docs.rs/crate/rkyv/latest/features
+# features = ["bytecheck"] # https://docs.rs/rkyv/latest/rkyv/#features
+# # *aligned|unaligned, big_endian|*little_endian, pointer_width[16|*32|64]
+# # MAYBE: https://crates.io/crates/rkyv_dyn
 
 
 [dev-dependencies]

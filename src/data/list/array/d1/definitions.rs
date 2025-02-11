@@ -4,8 +4,8 @@
 //
 
 use crate::{Bare, Storage};
-#[cfg(feature = "dep_rkyv")]
-use rkyv::{Archive, Deserialize, Serialize};
+// #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
+// use rkyv::{Archive, Deserialize, Serialize};
 
 #[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A static 1-dimensional array backed by the core [array] primitive.
@@ -63,7 +63,7 @@ use rkyv::{Archive, Deserialize, Serialize};
 ///   [`is_bare_empty`][Self::is_bare_empty]*(const)*,
 ///   [`is_bare_full`][Self::is_bare_full]*(const)*.
 #[must_use]
-#[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
+// #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 pub struct Array<T, const CAP: usize, S: Storage = Bare> {
     pub(crate) data: S::Stored<[T; CAP]>,
 }

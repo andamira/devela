@@ -6,8 +6,8 @@
 //
 
 use crate::{Array, Bare, Storage};
-#[cfg(feature = "dep_rkyv")]
-use rkyv::{Archive, Deserialize, Serialize};
+// #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
+// use rkyv::{Archive, Deserialize, Serialize};
 
 /* types */
 
@@ -128,7 +128,7 @@ use rkyv::{Archive, Deserialize, Serialize};
 ///     [`own_tuck`][Self::own_tuck]*([uc][Self::own_tuck_unchecked])*,
 ///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
 #[must_use]
-#[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
+//  #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 pub struct Stack<T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) data: Array<T, CAP, S>,
     pub(super) len: IDX,

@@ -46,6 +46,7 @@
 - remove standalone fns: `future_block`, `future_pending`, `future_ready`.
 - remove private variant `IoErrorKind::Uncategorized`.
 - remove module `data::collections`.
+- disable optional dependencies: `ring`, `rkyv`.
 - deprecate `Char::len_to_utf8`.
 
 ### Changed

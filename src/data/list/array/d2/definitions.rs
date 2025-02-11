@@ -4,8 +4,8 @@
 //
 
 use crate::{Array, Bare, Storage};
-#[cfg(feature = "dep_rkyv")]
-use rkyv::{Archive, Deserialize, Serialize};
+// #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
+// use rkyv::{Archive, Deserialize, Serialize};
 
 #[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A static 2-dimensional [`Array`].
@@ -67,7 +67,12 @@ use rkyv::{Archive, Deserialize, Serialize};
 //       would allow to use enums and arrays as const-generic parameters.
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560)
 //       would allow calculating CR automatically from C and R.
-#[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
+// #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
+// rkyv(archived = Array2dArchived, attr(doc = crate::TAG_RKYV![])))]
+// #[cfg_attr(
+//     all(feature = "dep_rkyv", feature = "nightly_doc"),
+//     rkyv(attr(doc(cfg(feature = "dep_rkiv"))))
+// )]
 pub struct Array2d<
     T,
     const C: usize,
