@@ -680,10 +680,11 @@ optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/fontdue/latest/features
 # feature-gated: simd, (WAIT:hashbrown)
 # WAIT: [new release](https://github.com/mooman219/fontdue/issues/157)
+# WAIT: [update ttf-parser](https://github.com/mooman219/fontdue/issues/159)
 
 [dependencies.gilrs] # https://crates.io/crates/gilrs
 version = "0.11" # ✗ https://gitlab.com/gilrs-project/gilrs/-/commits/master?ref_type=HEADS
-optional = true #
+optional = true # unsafe
 default-features = false # 5 https://docs.rs/crate/gilrs/latest/features
 features = ["wgi"]
 # INSTALL: libudev-dev
@@ -722,7 +723,7 @@ default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
 # deps: once-cell, wasm-bindgen/std
 
 [dependencies.kira] # https://crates.io/crates/kira
-version = "0.10.2" # ✓ https://github.com/tesselode/kira/releases
+version = "0.10" # ✓ https://github.com/tesselode/kira/releases
 optional = true # safe (although unsafe deps?)
 default-features = false # 10 https://docs.rs/crate/kira/latest/features
 features = ["cpal"] # symphonia, flac, mp3, ogg, wav
@@ -938,7 +939,7 @@ default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
 
 [dependencies.ureq] # https://crates.io/crates/ureq
-version = "3.0.3" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
+version = "3.0.5" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
 optional = true # safe
 default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # features = []
@@ -954,6 +955,7 @@ default-features = false # 10 https://docs.rs/crate/wasm-bindgen/latest/features
 version = "0.3.73" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/web-sys
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
+# IMPROVE: feature-gate
 
 [dependencies.wide] # https://crates.io/crates/wide
 version = "0.7.32" # ✗ https://github.com/Lokathor/wide/commits/main/
