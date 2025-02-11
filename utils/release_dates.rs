@@ -1,7 +1,7 @@
 #!/usr/bin/env -S rust-script -c
 //! ```cargo
 //! [dependencies]
-//! jiff = "0.1"
+//! jiff = "0.2"
 //! ```
 //
 // Links for next releases:

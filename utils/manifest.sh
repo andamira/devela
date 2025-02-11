@@ -51,6 +51,8 @@ case "$operation" in
   features)
     features=$(cargo metadata --format-version=1 --no-deps | jq ".packages[] | select(.name == \"$crate_name\") | .features | keys")
 
+	longest_feature=$(cargo metadata --format-version=1 --no-deps | jq -r ".packages[] | select(.name == \"$crate_name\") | .features | keys | map({name: ., length: length}) | sort_by(-.length) | first")
+
     # Output feature list
     echo "Features:"
     echo "$features"
@@ -60,6 +62,8 @@ case "$operation" in
     visible=$(echo "$features" | rg '"' | rg -v '"_' | wc -l)
     hidden=$(echo "$features" | rg '"_' | wc -l)
     remaining=$((300 - total))
+
+	echo "longest feature name: $longest_feature"
 
     # Output feature counts
     echo "\n[features] # $total/300 ($remaining remaining), $visible visible, $hidden hidden"
