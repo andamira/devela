@@ -9,9 +9,9 @@ use crate::text::String;
 #[cfg(doc)]
 use crate::ImageError::FmtError;
 use crate::{
-    bytes_from_bits, FmtWrite, ImageError,
+    FmtWrite, ImageError,
     ImageError::{InvalidImageSize, InvalidPixel},
-    ImageResult as Result,
+    ImageResult as Result, Mem,
 };
 
 // Helper function: Returns `InvalidPixel` as the cold path.
@@ -94,7 +94,7 @@ impl Pnm {
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn p1_encode_bits(bitmap: &[u8], width: usize, height: usize) -> Result<String> {
-        if bitmap.len() != bytes_from_bits(width * height) {
+        if bitmap.len() != Mem::bytes_from_bits(width * height) {
             return Err(InvalidImageSize(Some((width, height))));
         }
         let mut result = String::new();

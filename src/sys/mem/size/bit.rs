@@ -8,13 +8,13 @@
 // - trait definition
 // - trait impls
 
-use crate::{
-    bytes_from_bits, BareBox, ByteSized, Duration, Infallible, NonZeroI128, NonZeroI16, NonZeroI32,
-    NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64,
-    NonZeroU8, NonZeroUsize, Ordering, PhantomData, PhantomPinned,
-};
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
+use crate::{
+    BareBox, ByteSized, Duration, Infallible, Mem, NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64,
+    NonZeroI8, NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8,
+    NonZeroUsize, Ordering, PhantomData, PhantomPinned,
+};
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // use crate::{StringU16, StringU32, GraphemeU8, StringU8};
@@ -53,7 +53,7 @@ pub trait BitSized<const LEN: usize>: ByteSized {
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
     const BIT_SIZE: usize = {
-        let min_byte_size = bytes_from_bits(LEN);
+        let min_byte_size = Mem::bytes_from_bits(LEN);
         if min_byte_size > Self::BYTE_SIZE {
             panic!["BitSized::MIN_BYTE_SIZE > ByteSized::BYTE_SIZE"];
         }
@@ -68,7 +68,7 @@ pub trait BitSized<const LEN: usize>: ByteSized {
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
     const MIN_BYTE_SIZE: usize = {
-        let min_byte_size = bytes_from_bits(LEN);
+        let min_byte_size = Mem::bytes_from_bits(LEN);
         if min_byte_size > Self::BYTE_SIZE {
             panic!["BitSized::MIN_BYTE_SIZE > ByteSized::BYTE_SIZE"];
         }

@@ -68,6 +68,7 @@
 - move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
 - move `data::{bit, hash, serde}` inside `data::codec`.
 - move fns: `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
+- move `bytes_from_bits` fn to `Mem::bytes_from_bits`.
 - changed windows `msvc` target for `gnu`.
 - improve the documentation of vendored items.
 
