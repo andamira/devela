@@ -29,6 +29,7 @@ pub mod vendored {
     /// Detailed list of modifications in adapted work.
     //
     // Apache-2.0 or MIT:
+    #[doc = crate::doc_!(vendor_mod: "crossbeam-utils", "../sys/mem/cache_align/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "etcetera", "../sys/env/app/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "fxhash", "../data/codec/hash/fx/MODIFICATIONS.md")]
     #[doc = crate::doc_!(vendor_mod: "no_std_io", "../sys/io/define_no_std_io/MODIFICATIONS.md")]

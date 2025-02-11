@@ -10,7 +10,7 @@ See the linked modifications for detailed changes.
 - <i id="const_list"></i>[const_list] by Douglas Dwyer,
   as the [`ConstList`] struct.
 - <i id="crossbeam-utils"></i>[crossbeam-utils] by The Crossbeam Project Developers,
-  as the [`CacheAlign`] struct.
+  as the [`CacheAlign`] struct ([*modifications*][M_crossbeam-utils]).
 - <i id="etcetera"></i>[etcetera] by Luna Razzaghipour,
   as the [`AppEnv`] trait and related structs ([*modifications*][M_etcetera]).
 - <i id="fmtor"></i>[fmtor] by Tyler Ruckinger,
@@ -41,7 +41,8 @@ See the linked modifications for detailed changes.
   [`cfg-if`]: https://docs.rs/devela/latest/devela/code/util/macro.cfg_if.html
 [const_list]: https://crates.io/crates/const_list/0.1.0
   [`ConstList`]: https://docs.rs/devela/latest/devela/data/list/struct.ConstList.html
-[crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.20
+[crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.21
+  [M_crossbeam-utils]: https://github.com/andamira/devela/blob/main/src/sys/mem/MODIFICATIONS.md
   [`CacheAlign`]: https://docs.rs/devela/latest/devela/sys/mem/struct.CacheAlign.html
 [etcetera]: https://crates.io/crates/etcetera/0.8.0
   [M_etcetera]: https://github.com/andamira/devela/blob/main/src/sys/env/app/MODIFICATIONS.md
@@ -97,7 +98,7 @@ See the linked modifications for detailed changes.
 
 [const_for]: https://crates.io/crates/const_for/0.1.4
   [`cfor`]: https://docs.rs/devela/latest/devela/code/util/macro.cfor.html
-[crunchy]: https://crates.io/crates/crunchy/0.2.2
+[crunchy]: https://crates.io/crates/crunchy/0.2.3
   [`unroll`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
   [M_crunchy]: https://github.com/andamira/devela/blob/main/build/generate/unroll/MODIFICATIONS.md
 [object-id]: https://crates.io/crates/object-id/0.1.4

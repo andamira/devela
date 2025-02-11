@@ -3,6 +3,7 @@
 <!-- orig: Apache-2.0 OR MIT -->
   [`cfg-if`]: crate::code::util::cfg_if
   [`ConstList`]: crate::data::list::ConstList
+  [M_crossbeam-utils]: crate::_info::vendored::modifications#crossbeam-utils
   [`CacheAlign`]: crate::sys::mem::CacheAlign
   [M_etcetera]: crate::_info::vendored::modifications#etcetera
   [`AppEnv`]: crate::sys::env::AppEnv
