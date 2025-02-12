@@ -59,7 +59,6 @@
 - rename `TextWrite` trait to `FmtWrite`.
 - rename `work::async` to `work::future`.
 - rename `work::thread` to `work::process`.
-- rename `src/lib.rs` to `src/Lib.rs`.
 - rename prngs `next_state` method to `peek_next_state`.
 - ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.

@@ -76,7 +76,7 @@ build = "build/mod.rs"
 publish = true
 
 [lib]
-path = "./src/Lib.rs"
+# path = "./src/lib.rs"
 bench = false
 
 
