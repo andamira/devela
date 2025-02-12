@@ -4,6 +4,7 @@ This is derived work from the
 including the following modifications:
 
 - make it work with `no_std`.
+- make it work without `unsafe`.
 - make several functions `const`.
 - rename `sixel_dither` to `DitherConf`.
 - rename `MethodForRep` to `SixelMean`.

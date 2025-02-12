@@ -91,7 +91,20 @@ impl<W: IoWrite> SixelOutput<W> {
         }
     }
 
+    /// Returns the saved pixel as a character.
+    #[rustfmt::skip]
+    fn save_pixel_char(&self) -> char {
+        #[cfg(any(feature = "safe_image", not(feature = "unsafe_str")))]
+        { if let Some(c) = char::from_u32(self.save_pixel as u32) { c } else { unreachable!() } }
+
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        unsafe { char::from_u32_unchecked(self.save_pixel as u32) }
+    }
+
     /// Adds a "flash" signal in the output stream.
+    ///
+    /// # Features
+    /// This method makes use of the `unsafe_str` feature for converting a `u32` pixel to `char`.
     pub fn put_flash(&mut self) -> SixelResult<()> {
         if self.has_gri_arg_limit {
             /* VT240 Max 255 ? */
@@ -99,8 +112,7 @@ impl<W: IoWrite> SixelOutput<W> {
                 sf! {
                     /* argument of DECGRI('!') is limitted to 255 in real VT */
                     self.puts("!255"); self.advance();
-                    self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) });
-                    self.advance();
+                    self.putc(self.save_pixel_char()); self.advance();
                     self.save_count -= 255;
                 }
             }
@@ -110,11 +122,11 @@ impl<W: IoWrite> SixelOutput<W> {
                 /* DECGRI Graphics Repeat Introducer ! Pn Ch */
                 self.putc('!'); self.advance();
                 self.puti(self.save_count); self.advance();
-                self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) }); self.advance();
+                self.putc(self.save_pixel_char()); self.advance();
             }
         } else {
             for _ in 0..self.save_count {
-                self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) });
+                self.putc(self.save_pixel_char());
                 self.advance();
             }
         }
