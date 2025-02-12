@@ -7,13 +7,12 @@
 // - mod shader
 
 use crate::{
-    format_buf, g_vec2, g_vertex2, iif, vec_ as vec, Box, MiniquadEventHandlerExt, MiniquadWindow,
-    Vec,
+    format_buf, g_vec2, g_vertex2, iif, miniquad, vec_ as vec, Box, MiniquadEventHandlerExt,
+    MiniquadWindow, Vec,
 };
 use ::miniquad::{
-    Bindings, BufferLayout, BufferSource, BufferType, BufferUsage, EventHandler, FilterMode,
-    MipmapFilterMode, Pipeline, PipelineParams, RenderingBackend, ShaderSource, TextureFormat,
-    TextureId, TextureParams, VertexAttribute, VertexFormat,
+    Bindings, BufferLayout, EventHandler, FilterMode, MipmapFilterMode, Pipeline, PipelineParams,
+    RenderingBackend, TextureFormat, TextureId, TextureParams, VertexAttribute, VertexFormat,
 };
 
 /// Draws a single fullscreen quad textured by a pixel buffer.
@@ -93,7 +92,6 @@ impl MiniquadPixels {
     pub fn init(mut self) -> Self {
         let mut ctx: Box<dyn RenderingBackend> = MiniquadWindow::new_rendering_backend();
 
-        // Define vertices for the stage.
         #[rustfmt::skip]
         let vertices: [g_vertex2; 4] = [
             g_vertex2 { pos : g_vec2 { x: -1.0, y: -1.0 }, uv: g_vec2 { x: 0., y: 0. } },
@@ -101,21 +99,9 @@ impl MiniquadPixels {
             g_vertex2 { pos : g_vec2 { x:  1.0, y:  1.0 }, uv: g_vec2 { x: 1., y: 1. } },
             g_vertex2 { pos : g_vec2 { x: -1.0, y:  1.0 }, uv: g_vec2 { x: 0., y: 1. } },
         ];
-        let vertex_buffer = ctx.new_buffer(
-            BufferType::VertexBuffer,
-            BufferUsage::Immutable,
-            BufferSource::slice(&vertices),
-        );
-
-        // Define indices for the vertices.
         let indices: [u16; 6] = [0, 1, 2, 0, 2, 3];
-        let index_buffer = ctx.new_buffer(
-            BufferType::IndexBuffer,
-            BufferUsage::Immutable,
-            BufferSource::slice(&indices),
-        );
+        let (vbuf, ibuf) = miniquad![new_vertices_indices(ctx, Immutable, &vertices, &indices)];
 
-        // Create a new texture from the pixel data.
         let interp = iif![self.interpolation; FilterMode::Linear; FilterMode::Nearest];
 
         let texture = ctx.new_render_texture(TextureParams {
@@ -127,22 +113,9 @@ impl MiniquadPixels {
             ..Default::default()
         });
 
-        // Define bindings for the vertex, the index buffers and the texture.
-        let bindings = Bindings {
-            vertex_buffers: vec![vertex_buffer],
-            index_buffer,
-            images: vec![texture],
-        };
+        let bindings = miniquad![bindings(vec![vbuf], ibuf, vec![texture])];
+        let shader = miniquad![new_shader_glsl(ctx, VERTEX, FRAGMENT, shader_meta())].unwrap();
 
-        // Create a new shader.
-        let shader = ctx
-            .new_shader(
-                ShaderSource::Glsl { vertex: shader::VERTEX, fragment: shader::FRAGMENT },
-                shader::meta(),
-            )
-            .unwrap();
-
-        // Create a new pipeline.
         let pipeline = ctx.new_pipeline(
             &[BufferLayout::default()],
             &[
@@ -245,9 +218,18 @@ impl EventHandler for MiniquadPixels {
     }
 }
 
+use shader::{shader_meta, FRAGMENT, METAL, VERTEX};
 mod shader {
     use crate::{vec_ as vec, ToString};
     use ::miniquad::{ShaderMeta, UniformBlockLayout};
+
+    // Returns the shader metadata, such as the names of the images and uniforms it uses.
+    pub fn shader_meta() -> ShaderMeta {
+        ShaderMeta {
+            images: vec!["tex".to_string()],
+            uniforms: UniformBlockLayout { uniforms: vec![] },
+        }
+    }
 
     // Define the vertex shader, for transforming the vertices into screen coordinates.
     pub const VERTEX: &str = r#"#version 100
@@ -269,12 +251,4 @@ mod shader {
     void main() {
         gl_FragColor = texture2D(tex, texcoord);
     }"#;
-
-    // Returns the shader metadata, such as the names of the images and uniforms it uses.
-    pub fn meta() -> ShaderMeta {
-        ShaderMeta {
-            images: vec!["tex".to_string()],
-            uniforms: UniformBlockLayout { uniforms: vec![] },
-        }
-    }
 }
