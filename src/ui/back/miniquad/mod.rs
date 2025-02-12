@@ -2,11 +2,13 @@
 //
 //! [`miniquad`][crate::_dep::miniquad] UI backends.
 //
+// ISSUES
+// - WAIT: [precise input](https://github.com/not-fl3/miniquad/issues/117)
+// - WAIT: [linux resize](https://github.com/not-fl3/miniquad/issues/193)
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 mod base;
-mod reexports;
 mod service; // MiniquadEventHandlerExt, MiniquadService
 mod window; // MiniquadWindow
 
@@ -15,7 +17,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{reexports::*, service::*, window::*};
+        pub use super::{service::*, window::*};
         #[cfg(feature = "alloc")]
         pub use super::base::*;
     }

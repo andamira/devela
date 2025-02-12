@@ -6,17 +6,18 @@
 // - MiniquadEventHandlerExt
 // - MiniquadRenderingBackendExt
 
-use crate::{
-    iif, MiniquadConf, MiniquadEventHandler, UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService,
-};
+use crate::{iif, UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService};
 use crate::{Box, ToString};
 #[cfg(doc)]
 use ::miniquad::FilterMode;
+use ::miniquad::{conf::Conf, EventHandler, RenderingBackend};
 
-/// A wrapper over `MiniquadEventHandler` to allow lazy initialization.
+/// An extension trait for miniquad's `MiniquadEventHandler`.
 ///
-/// It also defines extra methods for convenience.
-pub trait MiniquadEventHandlerExt: MiniquadEventHandler {
+/// It allows lazy initialization and other methods.
+//
+// https://docs.rs/miniquad/latest/miniquad/trait.EventHandler.html
+pub trait MiniquadEventHandlerExt: EventHandler {
     /// Returns the event handler initialized.
     fn init(self) -> Self;
 
@@ -46,7 +47,7 @@ impl<T: MiniquadEventHandlerExt + 'static> UiService for MiniquadService<T> {
 /// `miniquad`'s UI Service.
 pub struct MiniquadService<T: MiniquadEventHandlerExt + 'static> {
     handler: Option<T>,
-    conf: MiniquadConf,
+    conf: Conf,
 
     /* pixel buffer settings */
     width: u32,
@@ -58,7 +59,7 @@ impl<T: MiniquadEventHandlerExt + 'static> Default for MiniquadService<T> {
     fn default() -> Self {
         Self {
             handler: None,
-            conf: MiniquadConf::default(),
+            conf: Conf::default(),
             //
             width: 0,
             height: 0,
@@ -93,7 +94,7 @@ impl<T: MiniquadEventHandlerExt + 'static> MiniquadService<T> {
     }
 
     /// Sets the given miniquad configuration.
-    pub fn conf(mut self, conf: MiniquadConf) -> Self {
+    pub fn conf(mut self, conf: Conf) -> Self {
         self.conf = conf;
         self
     }

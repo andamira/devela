@@ -7,13 +7,13 @@
 // - mod shader
 
 use crate::{
-    format_buf, g_vec2, g_vertex2, iif, vec_ as vec, Box, MiniquadEventHandler,
-    MiniquadEventHandlerExt, MiniquadWindow, Vec,
+    format_buf, g_vec2, g_vertex2, iif, vec_ as vec, Box, MiniquadEventHandlerExt, MiniquadWindow,
+    Vec,
 };
 use ::miniquad::{
-    Bindings, BufferLayout, BufferSource, BufferType, BufferUsage, FilterMode, MipmapFilterMode,
-    Pipeline, PipelineParams, RenderingBackend, ShaderSource, TextureFormat, TextureId,
-    TextureParams, VertexAttribute, VertexFormat,
+    Bindings, BufferLayout, BufferSource, BufferType, BufferUsage, EventHandler, FilterMode,
+    MipmapFilterMode, Pipeline, PipelineParams, RenderingBackend, ShaderSource, TextureFormat,
+    TextureId, TextureParams, VertexAttribute, VertexFormat,
 };
 
 /// Draws a single fullscreen quad textured by a pixel buffer.
@@ -177,7 +177,7 @@ impl MiniquadEventHandlerExt for MiniquadPixelBuf {
     fn maintain_aspect_ratio(&self) -> bool { self.maintain_aspect_ratio }
     fn set_maintain_aspect_ratio(&mut self, set: bool) { self.maintain_aspect_ratio = set; }
 }
-impl MiniquadEventHandler for MiniquadPixelBuf {
+impl EventHandler for MiniquadPixelBuf {
     fn update(&mut self) {}
     fn draw(&mut self) {
         if self.maintain_aspect_ratio {

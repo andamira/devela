@@ -1,6 +1,6 @@
 // devela::ui::back::miniquad::window
 
-use crate::{Box, MiniquadRenderingBackend, String, Vec};
+use crate::{Box, /*MiniquadRenderingBackend, */ String, Vec};
 #[cfg(feature = "std")]
 use ::miniquad::window::dropped_file_path;
 #[cfg(any(target_os = "windows", target_os = "linux"))]
@@ -11,7 +11,7 @@ use ::miniquad::window::{
     screen_size, set_cursor_grab, set_fullscreen, set_mouse_cursor, set_window_position,
     set_window_size, show_keyboard, show_mouse,
 };
-use ::miniquad::CursorIcon;
+use ::miniquad::{CursorIcon, RenderingBackend};
 
 /// A wrapper namespace over [`miniquad::window`] functions.
 pub struct MiniquadWindow;
@@ -21,7 +21,7 @@ impl MiniquadWindow {
     /// Returns a new rendering backend.
     ///
     /// It's normally `GlContext`, or maybe `MetalContext` in macos.
-    pub fn new_rendering_backend() -> Box<dyn MiniquadRenderingBackend> { new_rendering_backend() }
+    pub fn new_rendering_backend() -> Box<dyn RenderingBackend> { new_rendering_backend() }
 
     /* event loop */
 
