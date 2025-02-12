@@ -1,6 +1,6 @@
-// revela::ui::service
+// revela::ui::back
 //
-//! Ui services.
+//! UI backends.
 //
 
 mod cap;

@@ -1,6 +1,6 @@
-// devela::ui::service::crossterm
+// devela::ui::back::crossterm
 //
-//! `crossterm` Ui service.
+//! [`crossterm`][crate::_dep::crossterm] UI backends.
 //
 
 mod service;

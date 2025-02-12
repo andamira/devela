@@ -1,7 +1,7 @@
 // devela::ui
 //
 //! User interface functionality.
-#![doc = crate::doc_!(modules: crate; ui: layout, service)]
+#![doc = crate::doc_!(modules: crate; ui: back, front, layout)]
 //
 // safety
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
@@ -9,7 +9,8 @@
 #[cfg(ui··)]
 crate::items! {
     mod error;
-    pub mod service; // UiService*, UiCap*
+    pub mod back; // UiService*, UiCap*
+    pub mod front;
 }
 
 #[cfg(feature = "layout")]
@@ -31,7 +32,7 @@ crate::items! { // structural access: _mods, _all,
         pub use super::layout::_all::*;
 
         #[cfg(ui··)]
-        pub use super::service::_all::*;
+        pub use super::{back::_all::*, front::_all::*};
     }
     pub(super) mod _all { #![allow(unused)]
         pub use super::{_mods::*, _pub_mods::*};

@@ -1,4 +1,4 @@
-// devela::ui::service::crossterm::service
+// devela::ui::back::crossterm::service
 //
 //! Defines [`CrosstermService`].
 //
@@ -19,7 +19,7 @@ use crate::{
     /* Window, */ UiCapWindow, UiService,
 };
 
-/// `crossterm`'s UI service.
+/// `crossterm`'s UI backend service.
 //
 // https://docs.rs/crossterm/latest/crossterm/terminal/index.html
 pub struct CrosstermService;

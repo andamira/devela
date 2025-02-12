@@ -1,4 +1,4 @@
-// devela::ui::service::miniquad::base
+// devela::ui::back::miniquad::base
 //
 //! Defines [`MiniquadPixelBuf`].
 //

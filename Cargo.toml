@@ -181,10 +181,12 @@ text = ["ascii", "fmt", "str"]
 	str = [] # Str, ExtStr, ExtString
 ui = ["layout", "desk", "term", "web"]
 	layout = []
-	desk = []
-	# mobi = []
-	term = []
-	web = []
+	# back
+	# front
+		desk = []
+		# mobi = []
+		term = []
+		web = []
 work = ["bytemuck?/zeroable_atomics"]
 	process = ["rustix?/process", "tokio?/process"]
 	sync = ["rustix?/thread", "tokio?/sync"]
@@ -552,11 +554,11 @@ dep_atomic = ["dep:atomic"]                                                     
 dep_bumpalo = ["dep:bumpalo"]                                                     # sys::mem::alloc
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                            # ···
 dep_const_str = ["dep:const-str"]                                                 # text::str
-dep_crossterm = ["dep:crossterm", "std"]                                          # ui::service
-dep_fltk = ["dep:fltk"]                                                           # ui::service
+dep_crossterm = ["dep:crossterm", "std"]                                          # ui::back
+dep_fltk = ["dep:fltk"]                                                           # ui::back
 dep_flume = ["dep:flume"]                                                         # work::sync
 dep_fontdue = ["dep:fontdue"]                                                     # media::font
-dep_gilrs = ["dep:gilrs"]                                                         # ui::service
+dep_gilrs = ["dep:gilrs"]                                                         # ui::back
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"]                     # data::cols
 	# WAIT: "fontdue?/hashbrown",
 	# DEP_DISABLED: "rkyv?/hashbrown-0_15"
@@ -569,7 +571,7 @@ dep_libm = ["dep:libm"]                                                         
 dep_log = ["dep:log", "tracing?/log"]                                             # sys::log
 dep_memchr = ["dep:memchr", "winnow?/simd"]                                       # text:str
 dep_midir = ["dep:midir"]                                                         # media::midi
-dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                  # sys::service
+dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                  # ui::back
 dep_nc = ["dep:nc"]                                                               # sys::os::linux
 dep_orion = ["dep:orion"]                                                         # data::xipher
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
@@ -582,8 +584,8 @@ dep_regex_lite = ["dep:regex-lite", "std"]                                      
 dep_rodio = ["dep:rodio"]                                                         # sys::sound
 dep_rustix = ["dep:rustix"]                                                       # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
-dep_sdl2 = ["dep:sdl2"]                                                           # ui::service
-dep_sdl3 = ["dep:sdl3"]                                                           # ui::service
+dep_sdl2 = ["dep:sdl2"]                                                           # ui::back
+dep_sdl3 = ["dep:sdl3"]                                                           # ui::back
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde",
 	"portable-atomic?/serde", "toml_edit?/serde", "wide?/serde"]
@@ -662,7 +664,7 @@ optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
 [dependencies.crossterm] # https://crates.io/crates/crossterm
-# In sync with src::ui::service::crossterm::service
+# In sync with src::ui::back::crossterm::service
 version = "0.28.1" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
@@ -763,7 +765,7 @@ default-features = false # 7 https://docs.rs/crate/midir/latest/features
 # INSTALL: libasound2-dev
 
 [dependencies.miniquad] # https://crates.io/crates/miniquad
-# In sync with src::ui::service::miniquad::service
+# In sync with src::ui::back::miniquad::service
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/miniquad/latest/features

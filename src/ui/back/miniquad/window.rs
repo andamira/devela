@@ -1,4 +1,4 @@
-// devela::ui::service::miniquad::window
+// devela::ui::back::miniquad::window
 
 use crate::{Box, MiniquadRenderingBackend, String, Vec};
 #[cfg(feature = "std")]

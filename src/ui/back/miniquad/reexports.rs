@@ -1,4 +1,4 @@
-// devela::ui::service::miniquad::reexports
+// devela::ui::back::miniquad::reexports
 //
 //!
 //

@@ -1,7 +1,10 @@
-// devela::ui::service::miniquad::service
+// devela::ui::back::miniquad::service
 //
 //! Defines [`MiniquadEventHandlerExt`] and [`MiniquadService`].
 //
+// TOC
+// - MiniquadEventHandlerExt
+// - MiniquadRenderingBackendExt
 
 use crate::{
     iif, MiniquadConf, MiniquadEventHandler, UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService,

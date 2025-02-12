@@ -27,7 +27,7 @@
   - `lang::{c, glsl}`.
   - `media::image::sixel`.
   - `sys::{log, net}`.
-  - `ui::service::{self, crossterm, miniquad}`.
+  - `ui::{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
   - `str!`: `ip_addr`.
 - new methods:

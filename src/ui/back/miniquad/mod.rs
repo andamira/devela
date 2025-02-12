@@ -1,6 +1,6 @@
-// devela::ui::service::miniquad
+// devela::ui::back::miniquad
 //
-//! `miniquad` Ui service.
+//! [`miniquad`][crate::_dep::miniquad] UI backends.
 //
 
 #[cfg(feature = "alloc")]
