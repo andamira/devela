@@ -1,9 +1,9 @@
-// devela::ui::back::miniquad::base
+// devela::ui::back::miniquad::pixels
 //
-//! Defines [`MiniquadPixelBuf`].
+//! Defines [`MiniquadPixels`].
 //
 // TOC
-// - MiniquadPixelBuf
+// - MiniquadPixels
 // - mod shader
 
 use crate::{
@@ -17,7 +17,7 @@ use ::miniquad::{
 };
 
 /// Draws a single fullscreen quad textured by a pixel buffer.
-pub struct MiniquadPixelBuf {
+pub struct MiniquadPixels {
     ctx: Option<Box<dyn RenderingBackend>>,
     pipeline: Option<Pipeline>,
     bindings: Option<Bindings>,
@@ -34,11 +34,11 @@ pub struct MiniquadPixelBuf {
     maintain_aspect_ratio: bool,
 }
 
-impl core::fmt::Debug for MiniquadPixelBuf {
+impl core::fmt::Debug for MiniquadPixels {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         let mut buf = [0u8; 20];
 
-        f.debug_struct("MiniquadPixelBuf")
+        f.debug_struct("MiniquadPixels")
             // .field("ctx", "…")
             // .field("pipeline", "…")
             // .field("bindings", "…")
@@ -52,7 +52,7 @@ impl core::fmt::Debug for MiniquadPixelBuf {
     }
 }
 
-impl MiniquadPixelBuf {
+impl MiniquadPixels {
     /// Returns an uninitialized pixel-? stage with the given buffer size.
     ///
     /// By default it maintains the aspect ratio, and doesn't interpolate.
@@ -89,7 +89,7 @@ impl MiniquadPixelBuf {
     /// - Creates a texture from the pixel data with the specified size, and filtering mode.
     /// - Compiles the vertex and fragment shaders.
     /// - Sets up the rendering pipeline.
-    /// - Returns the initialized `MiniquadPixelBuf` instance.
+    /// - Returns the initialized `MiniquadPixels` instance.
     pub fn init(mut self) -> Self {
         let mut ctx: Box<dyn RenderingBackend> = MiniquadWindow::new_rendering_backend();
 
@@ -162,7 +162,7 @@ impl MiniquadPixelBuf {
 }
 
 #[rustfmt::skip]
-impl MiniquadEventHandlerExt for MiniquadPixelBuf {
+impl MiniquadEventHandlerExt for MiniquadPixels {
     fn init(self) -> Self { self.init() }
     fn interpolation(&self) -> bool { self.interpolation }
     fn set_interpolation(&mut self, set: bool) {
@@ -177,7 +177,7 @@ impl MiniquadEventHandlerExt for MiniquadPixelBuf {
     fn maintain_aspect_ratio(&self) -> bool { self.maintain_aspect_ratio }
     fn set_maintain_aspect_ratio(&mut self, set: bool) { self.maintain_aspect_ratio = set; }
 }
-impl EventHandler for MiniquadPixelBuf {
+impl EventHandler for MiniquadPixels {
     fn update(&mut self) {}
     fn draw(&mut self) {
         if self.maintain_aspect_ratio {

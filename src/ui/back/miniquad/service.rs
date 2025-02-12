@@ -4,13 +4,13 @@
 //
 // TOC
 // - MiniquadEventHandlerExt
-// - MiniquadRenderingBackendExt
+// - MiniquadService
 
 use crate::{iif, UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService};
 use crate::{Box, ToString};
 #[cfg(doc)]
 use ::miniquad::FilterMode;
-use ::miniquad::{conf::Conf, EventHandler, RenderingBackend};
+use ::miniquad::{conf::Conf, EventHandler};
 
 /// An extension trait for miniquad's `MiniquadEventHandler`.
 ///

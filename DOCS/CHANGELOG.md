@@ -19,7 +19,7 @@
   - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
-    - `MiniquadPixelBuf`, `MiniquadService`.
+    - `MiniquadPixels`, `MiniquadService`.
   - namespaces: `Fmt`, `Iter`, `Log`.
 - new macros: `maybe!`, `xorshift_custom!`.
 - new modules:
