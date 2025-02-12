@@ -81,9 +81,7 @@ impl MiniquadWindow {
     /// See: [High DPI Rendering][::miniquad::conf#high-dpi-rendering].
     pub fn dpi_scale() -> f32 { dpi_scale() }
 
-    /// True when high_dpi was requested and actually running in a high-dpi scenario
-    ///
-    /// NOTE: High DPI Rendering
+    /// Returns `true` if `high_dpi` was requested and it's running in a high-dpi scenario.
     pub fn high_dpi() -> bool { high_dpi() }
 
     /* quit */

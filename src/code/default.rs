@@ -6,6 +6,7 @@
 /* definitions */
 
 /// A trait for giving a type a useful default value in *compile-time*.
+// WAIT: [Make Default const](https://github.com/rust-lang/rust/pull/134628)
 pub trait ConstDefault {
     /// Returns the compile-time “default value” for a type.
     const DEFAULT: Self;
