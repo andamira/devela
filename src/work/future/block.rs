@@ -1,5 +1,7 @@
 // devela::work::future::block
 //
+//! Defines the private [`future_block`] standalone function.
+//
 // Original source code by Joshua Barretto, licensed as MIT OR Apache-2.0
 // https://crates.io/crates/pollster/0.3.0
 //

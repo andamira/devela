@@ -83,6 +83,16 @@ macro_rules! doc_ {
         $crate_id, "][crate::_info::vendored#", $crate_id, "].\n\n"
     )};
     (
+    // Assumes the path is in current directory. Used in `_info/vendored`.
+    //
+    // $crate_id:  the crate's name and html id anchor on the docs.
+    // $text_path: the path to the text file to include, explaining the modifications.
+    vendor_mod: $crate_id:literal) => { concat!(
+        "# ", $crate_id, "\n\n[*(↑)*][crate::_info::vendored#", $crate_id, "] ",
+        include_str!(concat!("./", $crate_id, ".md")),
+    )};
+    (
+    //
     // $crate_id:  the crate's name and html id anchor on the docs.
     // $text_path: the path to the text file to include, explaining the modifications.
     vendor_mod: $crate_id:literal, $text_path:literal) => { concat!(

@@ -1,9 +1,8 @@
 // devela build
 //
-//! The build scripts.
-//
-// NOTE: use relative imports (super::*) instead of crate::*,
-// so that it also works when compiling private documentation.
+// NOTE: imported from `../src/_info/mod.rs`.
+// NOTE: Have to use relative imports (super::*) instead of crate::*,
+// so that it can also work when compiling the private documentation.
 //
 // SEE:
 // https://doc.rust-lang.org/cargo/reference/build-scripts.html
