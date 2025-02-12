@@ -1,4 +1,4 @@
-// devela::num::cmp
+// devela::num::ord
 //
 //! Comparing and ordering values.
 // #![doc = crate::doc_!(extends: cmp)]

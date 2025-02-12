@@ -1,4 +1,4 @@
-// devela::num::cmp::compare
+// devela::num::ord::compare
 //
 //! Helper wrapper for comparing.
 //

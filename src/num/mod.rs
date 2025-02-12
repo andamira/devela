@@ -11,13 +11,13 @@
 
 mod _private; // upcasted_op!, impl_ops!
 
-mod cmp; // Compare
 mod error; // NumError, NumResult
 mod float; // fsize, ExtFloat, ExtFloatConst, Float
 mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
 mod interval; // Interval
 mod no; // NoNum
+mod ord; // Compare
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod sign; // Sign
 mod traits; // Num, NumRef
@@ -48,7 +48,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
 
     mod _mods { #![allow(unused)]
         pub use super::{
-            cmp::_all::*, error::*, float::_all::*, frac::_all::*, int::_all::*,
+            ord::_all::*, error::*, float::_all::*, frac::_all::*, int::_all::*,
             interval::*, no::*, primitive::_all::*, sign::*, traits::*,
         };
         #[cfg(feature = "unit")]
@@ -73,7 +73,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            cmp::_always::*, float::_always::*, int::_always::*, niche::_always::*,
+            ord::_always::*, float::_always::*, int::_always::*, niche::_always::*,
         };
     }
 }

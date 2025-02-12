@@ -55,10 +55,12 @@
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.
 - rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
+- rename modules:
+  - `num::cmp` to `num::ord`.
+  - `work::async` to `work::future`.
+  - `work::thread` to `work::process`.
 - rename `LoggerConfig` to `LogConfig`.
 - rename `TextWrite` trait to `FmtWrite`.
-- rename `work::async` to `work::future`.
-- rename `work::thread` to `work::process`.
 - rename prngs `next_state` method to `peek_next_state`.
 - ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
