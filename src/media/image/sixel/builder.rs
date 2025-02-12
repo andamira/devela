@@ -8,7 +8,7 @@
 // - extra methods
 // - sixel_string
 
-use super::super::{
+use super::{
     DitherConf, PixelFormat, SixelEncodePolicy, SixelError, SixelMean, SixelOutput, SixelQuality,
     SixelResult, SixelSplit,
 };

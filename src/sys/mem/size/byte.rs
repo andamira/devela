@@ -62,17 +62,3 @@ pub trait ByteSized: Sized {
         Ptr::size_ratio(Self::BYTE_SIZE)
     }
 }
-
-/// Returns the rounded up size in bytes from a size in bits.
-///
-/// This is equivalent to `(bit_size + 7) / 8` but handles potential overflow.
-#[must_use]
-pub const fn bytes_from_bits(bit_size: usize) -> usize {
-    if let Some(t) = bit_size.checked_add(8 - 1) {
-        t / 8
-    } else {
-        bytes_from_bits_cold()
-    }
-}
-#[cold] #[rustfmt::skip]
-const fn bytes_from_bits_cold() -> usize { usize::MAX / 8 }

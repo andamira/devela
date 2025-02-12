@@ -14,8 +14,6 @@ use crate::{IoWrite, String, Vec};
 mod enums; // RETHINK relocate
 mod pixel_format; // PixelFormat
 mod tosixel;
-mod builder; // Sixel
-pub use builder::Sixel; // main public element
 pub use enums::*;
 pub use pixel_format::*;
 

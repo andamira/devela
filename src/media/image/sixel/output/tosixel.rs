@@ -71,7 +71,7 @@ impl<W: IoWrite> SixelOutput<W> {
         self.puts(crate::format!("{}", i).as_str());
         #[cfg(feature = "fmt")]
         {
-            let mut buf = [0u8; 3];
+            let mut buf = [0u8; 11];
             self.puts(i.to_str_base(10, &mut buf));
         }
     }

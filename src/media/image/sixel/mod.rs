@@ -6,6 +6,7 @@
 #![doc = crate::doc_!(vendor: "icy_sixel")]
 //
 
+mod builder; // Sixel
 mod dither; // Dither, DitherConf…
 mod error; // SixelError
 mod quant;
@@ -19,7 +20,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{dither::*, error::*, output::*, quant::*};
+        pub use super::{builder::*, dither::*, error::*, output::*, quant::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

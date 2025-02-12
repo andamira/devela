@@ -218,7 +218,7 @@ impl EventHandler for MiniquadPixels {
     }
 }
 
-use shader::{shader_meta, FRAGMENT, METAL, VERTEX};
+use shader::{shader_meta, FRAGMENT, VERTEX};
 mod shader {
     use crate::{vec_ as vec, ToString};
     use ::miniquad::{ShaderMeta, UniformBlockLayout};
