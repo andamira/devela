@@ -37,6 +37,11 @@ pub(crate) struct SixelNode {
     /// Color data map for the tile.
     pub map: Vec<u8>,
 }
+impl SixelNode {
+    pub fn new(pal: i32, sx: i32, mx: i32, map: Vec<u8>) -> Self {
+        Self { pal, sx, mx, map }
+    }
+}
 
 /// Handles sixel data output to a specified writer destination.
 ///

@@ -21,7 +21,7 @@ use crate::{ConstDefault, Dither, String, ToString, Vec};
 ///
 /// # Example
 /// ```
-/// # use sixela::Sixel;
+/// # use devela::Sixel;
 /// // 2x2 pixels (Red, Green, Blue, White)
 /// const IMAGE_HEX: &[u8] = b"FF000000FF000000FFFFFFFF";
 /// //                         RRGGBBrrggbbRRGGBBrrggbb
@@ -38,9 +38,9 @@ pub struct Sixel<'a> {
     ///
     pub format: PixelFormat,
     ///
-    pub diffuse: Dither,
+    pub dither: Dither,
     ///
-    pub largest: SixelSplit,
+    pub split: SixelSplit,
     /// Method for choosing a representative mean color for the box.
     pub mean: SixelMean,
     ///
@@ -53,8 +53,8 @@ impl ConstDefault for Sixel<'_> {
         width: 0,
         height: 0,
         format: PixelFormat::DEFAULT,
-        diffuse: Dither::DEFAULT,
-        largest: SixelSplit::DEFAULT,
+        dither: Dither::DEFAULT,
+        split: SixelSplit::DEFAULT,
         mean: SixelMean::DEFAULT,
         quality: SixelQuality::DEFAULT,
     };
@@ -103,7 +103,7 @@ impl<'bytes> Sixel<'bytes> {
                 Err(SixelError::BadInput)
             } else {
                 sixel_string(bytes, self.width, self.height,
-                    self.format, self.diffuse, self.largest, self.mean, self.quality)
+                    self.format, self.dither, self.split, self.mean, self.quality)
             }
         } else {
             Err(SixelError::BadInput)
@@ -142,15 +142,15 @@ impl<'bytes> Sixel<'bytes> {
     pub const fn format(mut self, format: PixelFormat) -> Self {
         self.format = format; self
     }
-    /// Sets the method for diffusion.
+    /// Sets the method for dither diffusion.
     #[must_use]
-    pub const fn diffuse(mut self, diffuse: Dither) -> Self {
-        self.diffuse = diffuse; self
+    pub const fn dither(mut self, dither: Dither) -> Self {
+        self.dither = dither; self
     }
-    /// Sets the method for largest.
+    /// Sets the method for largest dimension for splitting.
     #[must_use]
-    pub const fn largest(mut self, largest: SixelSplit) -> Self {
-        self.largest = largest; self
+    pub const fn split(mut self, split: SixelSplit) -> Self {
+        self.split = split; self
     }
     /// Sets the method for mean.
     #[must_use]
@@ -174,7 +174,6 @@ macro_rules! add_method {
         }
     };
 }
-
 /// # Extra methods
 #[rustfmt::skip]
 impl Sixel<'_> {
@@ -200,24 +199,24 @@ impl Sixel<'_> {
     add_method![format_pal4, format, PixelFormat::PAL4];
     add_method![format_pal8, format, PixelFormat::PAL8];
     //
-    add_method![largest_auto, largest, SixelSplit::Auto];
-    add_method![largest_norm, largest, SixelSplit::Norm];
-    add_method![largest_lum, largest, SixelSplit::Lum];
+    add_method![split_auto, split, SixelSplit::Auto];
+    add_method![split_norm, split, SixelSplit::Norm];
+    add_method![split_lum, split, SixelSplit::Lum];
     //
     add_method![mean_auto, mean, SixelMean::Auto];
     add_method![mean_center, mean, SixelMean::Center];
     add_method![mean_colors, mean, SixelMean::Colors];
     add_method![mean_pixels, mean, SixelMean::Pixels];
     //
-    add_method![diffuse_auto, diffuse, Dither::Auto];
-    add_method![diffuse_none, diffuse, Dither::None];
-    add_method![diffuse_atkinson, diffuse, Dither::Atkinson];
-    add_method![diffuse_fs, diffuse, Dither::FS];
-    add_method![diffuse_jajuni, diffuse, Dither::JaJuNi];
-    add_method![diffuse_stucki, diffuse, Dither::Stucki];
-    add_method![diffuse_burkes, diffuse, Dither::Burkes];
-    add_method![diffuse_adither, diffuse, Dither::ADither];
-    add_method![diffuse_xdither, diffuse, Dither::XDither];
+    add_method![dither_auto, dither, Dither::Auto];
+    add_method![dither_none, dither, Dither::None];
+    add_method![dither_atkinson, dither, Dither::Atkinson];
+    add_method![dither_fs, dither, Dither::FS];
+    add_method![dither_jajuni, dither, Dither::JaJuNi];
+    add_method![dither_stucki, dither, Dither::Stucki];
+    add_method![dither_burkes, dither, Dither::Burkes];
+    add_method![dither_adither, dither, Dither::ADither];
+    add_method![dither_xdither, dither, Dither::XDither];
     //
     add_method![quality_auto, quality, SixelQuality::Auto];
     add_method![quality_high, quality, SixelQuality::High];
@@ -249,11 +248,11 @@ fn sixel_string(
     bytes: &[u8],
     width: i32,
     height: i32,
-    pixelformat: PixelFormat,
-    method_for_diffuse: Dither,
-    method_for_largest: SixelSplit,
-    method_for_mean: SixelMean,
-    quality_mode: SixelQuality,
+    pixel_format: PixelFormat,
+    dither: Dither,
+    split: SixelSplit,
+    mean: SixelMean,
+    quality: SixelQuality,
 ) -> SixelResult<String> {
     let mut sixel_data: Vec<u8> = Vec::new(); // MAYBE with_capacity
 
@@ -263,17 +262,9 @@ fn sixel_string(
 
     dither_conf.set_optimize_palette(true);
 
-    dither_conf.initialize(
-        bytes,
-        width,
-        height,
-        pixelformat,
-        method_for_largest,
-        method_for_mean,
-        quality_mode,
-    )?;
-    dither_conf.set_pixelformat(pixelformat);
-    dither_conf.set_diffusion_method(method_for_diffuse);
+    dither_conf.initialize(bytes, width, height, pixel_format, split, mean, quality)?;
+    dither_conf.set_pixel_format(pixel_format);
+    dither_conf.set_diffusion_method(dither);
 
     let mut bytes = bytes.to_vec();
     sixel_output.encode(&mut bytes, width, height, 0, &mut dither_conf)?;

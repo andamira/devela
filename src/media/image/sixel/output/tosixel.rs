@@ -3,12 +3,12 @@
 #![allow(clippy::identity_op, reason = "symmetry")]
 
 use super::super::{
-    sixel_helper_normalize_pixelformat, DitherConf, PixelFormat, SixelColorModel,
-    SixelEncodePolicy, SixelQuality, SIXEL_PALETTE_MAX,
+    DitherConf, PixelFormat, SixelColorModel, SixelEncodePolicy, SixelQuality, SIXEL_PALETTE_MAX,
 };
 use super::{SixelNode, SixelOutput};
-use crate::{format, vec_ as vec, IoWrite, Vec};
-use crate::{SixelError, SixelResult};
+#[cfg(feature = "fmt")]
+use crate::NumToStr;
+use crate::{iif, sf, vec_ as vec, IoWrite, SixelError, SixelResult, Vec};
 
 impl<W: IoWrite> SixelOutput<W> {
     /* GNU Screen penetration */
@@ -63,14 +63,32 @@ impl<W: IoWrite> SixelOutput<W> {
     }
 
     /// Writes an integer value to the output as a string.
+    ///
+    /// # Features
+    /// Uses the `fmt` feature to use [`NumToStr`][crate::NumToStr]
     pub(crate) fn puti(&mut self, i: i32) {
-        self.puts(format!("{}", i).as_str());
+        #[cfg(not(feature = "fmt"))]
+        self.puts(crate::format!("{}", i).as_str());
+        #[cfg(feature = "fmt")]
+        {
+            let mut buf = [0u8; 3];
+            self.puts(i.to_str_base(10, &mut buf));
+        }
     }
 
     /// Writes a byte value to the output as a string.
+    ///
+    /// # Features
+    /// Uses the `fmt` feature to use [`NumToStr`][crate::NumToStr]
     #[expect(unused, reason = "…")]
     pub(crate) fn putb(&mut self, b: u8) {
-        self.puts(format!("{}", b).as_str());
+        #[cfg(not(feature = "fmt"))]
+        self.puts(crate::format!("{}", b).as_str());
+        #[cfg(feature = "fmt")]
+        {
+            let mut buf = [0u8; 3];
+            self.puts(b.to_str_base(10, &mut buf));
+        }
     }
 
     /// Adds a "flash" signal in the output stream.
@@ -78,22 +96,22 @@ impl<W: IoWrite> SixelOutput<W> {
         if self.has_gri_arg_limit {
             /* VT240 Max 255 ? */
             while self.save_count > 255 {
-                /* argument of DECGRI('!') is limitted to 255 in real VT */
-                self.puts("!255");
-                self.advance();
-                self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) });
-                self.advance();
-                self.save_count -= 255;
+                sf! {
+                    /* argument of DECGRI('!') is limitted to 255 in real VT */
+                    self.puts("!255"); self.advance();
+                    self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) });
+                    self.advance();
+                    self.save_count -= 255;
+                }
             }
         }
         if self.save_count > 3 {
-            /* DECGRI Graphics Repeat Introducer ! Pn Ch */
-            self.putc('!');
-            self.advance();
-            self.puti(self.save_count);
-            self.advance();
-            self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) });
-            self.advance();
+            sf! {
+                /* DECGRI Graphics Repeat Introducer ! Pn Ch */
+                self.putc('!'); self.advance();
+                self.puti(self.save_count); self.advance();
+                self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) }); self.advance();
+            }
         } else {
             for _ in 0..self.save_count {
                 self.putc(unsafe { char::from_u32_unchecked(self.save_pixel as u32) });
@@ -107,9 +125,7 @@ impl<W: IoWrite> SixelOutput<W> {
 
     /// Outputs a single pixel to the sixel stream.
     pub fn put_pixel(&mut self, mut pix: u8) -> SixelResult<()> {
-        if pix > b'?' {
-            pix = b'\0';
-        }
+        iif![pix > b'?'; pix = b'\0'];
         pix += b'?';
         if pix == self.save_pixel {
             self.save_count += 1;
@@ -132,24 +148,19 @@ impl<W: IoWrite> SixelOutput<W> {
         if ncolors != 2 || keycolor == -1 {
             /* designate palette index */
             if self.active_palette != np.pal {
-                self.putc('#');
-                self.advance();
-                self.puti(np.pal);
-                self.advance();
-                self.active_palette = np.pal;
+                sf! {
+                    self.putc('#'); self.advance();
+                    self.puti(np.pal); self.advance();
+                    self.active_palette = np.pal;
+                }
             }
         }
-
         while *x < np.sx {
-            if *x != keycolor {
-                self.put_pixel(0)?;
-            }
+            iif![*x != keycolor; self.put_pixel(0)?];
             *x += 1;
         }
         while *x < np.mx {
-            if *x != keycolor {
-                self.put_pixel(np.map[*x as usize])?;
-            }
+            iif![*x != keycolor; self.put_pixel(np.map[*x as usize])?];
             *x += 1;
         }
         self.put_flash()?;
@@ -172,48 +183,36 @@ impl<W: IoWrite> SixelOutput<W> {
                 self.advance();
             }
         }
-
         if p[2] == 0 {
             pcount -= 1;
             if p[1] == 0 {
                 pcount -= 1;
-                if p[0] == 0 {
-                    pcount -= 1;
-                }
+                iif![p[0] == 0; pcount -= 1];
             }
         }
-
         if pcount > 0 {
-            self.puti(p[0]);
-            self.advance();
-            if pcount > 1 {
-                self.putc(';');
-                self.advance();
-                self.puti(p[1]);
-                self.advance();
-                if pcount > 2 {
-                    self.putc(';');
-                    self.advance();
-                    self.puti(p[2]);
-                    self.advance();
+            sf! {
+                self.puti(p[0]); self.advance();
+                if pcount > 1 {
+                    self.putc(';'); self.advance();
+                    self.puti(p[1]); self.advance();
+                    if pcount > 2 {
+                        self.putc(';'); self.advance();
+                        self.puti(p[2]); self.advance();
+                    }
                 }
             }
         }
-
         self.putc('q');
         self.advance();
-
         if use_raster_attributes {
-            self.puts("\"1;1;");
-            self.advance();
-            self.puti(width);
-            self.advance();
-            self.putc(';');
-            self.advance();
-            self.puti(height);
-            self.advance();
+            sf! {
+                self.puts("\"1;1;"); self.advance();
+                self.puti(width); self.advance();
+                self.putc(';'); self.advance();
+                self.puti(height); self.advance();
+            }
         }
-
         Ok(())
     }
 
@@ -225,23 +224,17 @@ impl<W: IoWrite> SixelOutput<W> {
         keycolor: i32,
     ) -> SixelResult<()> {
         if n != keycolor {
-            /* DECGCI Graphics Color Introducer  # Pc ; Pu; Px; Py; Pz */
-            self.putc('#');
-            self.advance();
-            self.puti(n);
-            self.advance();
-            self.puts(";2;");
-            self.advance();
-            self.puti((palette[n as usize * 3] as i32 * 100 + 127) / 255);
-            self.advance();
-            self.putc(';');
-            self.advance();
-            self.puti((palette[n as usize * 3 + 1] as i32 * 100 + 127) / 255);
-            self.advance();
-            self.putc(';');
-            self.advance();
-            self.puti((palette[n as usize * 3 + 2] as i32 * 100 + 127) / 255);
-            self.advance();
+            sf! {
+                /* DECGCI Graphics Color Introducer  # Pc ; Pu; Px; Py; Pz */
+                self.putc('#'); self.advance();
+                self.puti(n); self.advance();
+                self.puts(";2;"); self.advance();
+                self.puti((palette[n as usize * 3] as i32 * 100 + 127) / 255); self.advance();
+                self.putc(';'); self.advance();
+                self.puti((palette[n as usize * 3 + 1] as i32 * 100 + 127) / 255); self.advance();
+                self.putc(';'); self.advance();
+                self.puti((palette[n as usize * 3 + 2] as i32 * 100 + 127) / 255); self.advance();
+            }
         }
         Ok(())
     }
@@ -285,22 +278,16 @@ impl<W: IoWrite> SixelOutput<W> {
                 }
             }
             /* DECGCI Graphics Color Introducer  # Pc ; Pu; Px; Py; Pz */
-            self.putc('#');
-            self.advance();
-            self.puti(n as i32);
-            self.advance();
-            self.puts(";1;");
-            self.advance();
-            self.puti(h);
-            self.advance();
-            self.putc(';');
-            self.advance();
-            self.puti(l);
-            self.advance();
-            self.putc(';');
-            self.advance();
-            self.puti(s);
-            self.advance();
+            sf! {
+                self.putc('#'); self.advance();
+                self.puti(n as i32); self.advance();
+                self.puts(";1;"); self.advance();
+                self.puti(h); self.advance();
+                self.putc(';'); self.advance();
+                self.puti(l); self.advance();
+                self.putc(';'); self.advance();
+                self.puti(s); self.advance();
+            }
         }
         Ok(())
     }
@@ -422,13 +409,7 @@ impl<W: IoWrite> SixelOutput<W> {
                         mx = mx + n - 1;
                         mx += 1;
                     }
-                    let np = SixelNode {
-                        pal: c as i32,
-                        sx,
-                        mx,
-                        map: map[c * width as usize..].to_vec(),
-                    };
-
+                    let np = SixelNode::new(c as i32, sx, mx, map[c * width as usize..].to_vec());
                     self.nodes.insert(0, np);
                     sx = mx - 1;
                     sx += 1;
@@ -529,32 +510,16 @@ impl<W: IoWrite> SixelOutput<W> {
         height: i32,
         dither: &mut DitherConf,
     ) -> SixelResult<()> {
-        let input_pixels = match dither.pixelformat {
-            PixelFormat::PAL1
-            | PixelFormat::PAL2
-            | PixelFormat::PAL4
-            | PixelFormat::G1
-            | PixelFormat::G2
-            | PixelFormat::G4 => {
+        use PixelFormat as P;
+        let input_pixels = match dither.pixel_format {
+            P::PAL1 | P::PAL2 | P::PAL4 | P::G1 | P::G2 | P::G4 => {
                 let mut paletted_pixels = vec![0; (width * height * 3) as usize];
-                dither.pixelformat = sixel_helper_normalize_pixelformat(
-                    &mut paletted_pixels,
-                    pixels,
-                    dither.pixelformat,
-                    width,
-                    height,
-                )?;
+                dither.pixel_format =
+                    dither.pixel_format.normalize(&mut paletted_pixels, pixels, width, height)?;
                 paletted_pixels
             }
-
-            PixelFormat::PAL8 | PixelFormat::G8 | PixelFormat::GA88 | PixelFormat::AG88 => {
-                pixels.to_vec()
-            }
-
-            _ => {
-                /* apply palette */
-                dither.apply_palette(pixels, width, height)?
-            }
+            P::PAL8 | P::G8 | P::GA88 | P::AG88 => pixels.to_vec(),
+            _ => dither.apply_palette(pixels, width, height)?,
         };
         self.encode_header(width, height)?;
         self.encode_body(
@@ -582,15 +547,9 @@ impl<W: IoWrite> SixelOutput<W> {
         let maxcolors = 1 << 15;
         let mut px_idx = 0;
         let mut normalized_pixels = vec![0; (width * height * 3) as usize];
-        let pixels = if !matches!(dither.pixelformat, PixelFormat::BGR888) {
-            /* normalize pixelfromat */
-            sixel_helper_normalize_pixelformat(
-                &mut normalized_pixels,
-                pixels,
-                dither.pixelformat,
-                width,
-                height,
-            )?;
+
+        let pixels = if !matches!(dither.pixel_format, PixelFormat::BGR888) {
+            dither.pixel_format.normalize(&mut normalized_pixels, pixels, width, height)?;
             &mut normalized_pixels
         } else {
             pixels
@@ -605,31 +564,23 @@ impl<W: IoWrite> SixelOutput<W> {
         let mut palstate: Vec<i32> = vec![0; SIXEL_PALETTE_MAX];
         let mut palhitcount: Vec<i32> = vec![0; SIXEL_PALETTE_MAX];
         let mut marks = vec![false; (width * 6) as usize];
+
         while is_running {
-            let mut dst = 0;
-            let mut nextpal: usize = 0;
-            let mut threshold = 1;
-            let mut dirty = false;
-            let mut mptr = 0;
+            let (mut dst, mut mptr, mut nextpal) = (0, 0, 0);
+            let (mut threshold, mut dirty) = (1, false);
+            let (mut y, mut mod_y) = (0, 0);
+
             marks.clear();
             marks.resize((width * 6) as usize, false);
             palstate.clear();
             palstate.resize(SIXEL_PALETTE_MAX, 0);
-            let mut y = 0;
-            let mut mod_y = 0;
 
             loop {
                 for x in 0..width {
                     if marks[mptr] {
                         paletted_pixels[dst] = 255;
                     } else {
-                        dither.method_for_diffuse.apply_15bpp(
-                            &mut pixels[px_idx..],
-                            x,
-                            y,
-                            width,
-                            height,
-                        );
+                        dither.dither.apply_15bpp(&mut pixels[px_idx..], x, y, width, height);
                         let pix = ((pixels[px_idx] & 0xf8) as i32) << 7
                             | ((pixels[px_idx + 1] & 0xf8) as i32) << 2
                             | ((pixels[px_idx + 2] >> 3) & 0x1f) as i32;
@@ -650,13 +601,11 @@ impl<W: IoWrite> SixelOutput<W> {
                                     break;
                                 }
                             }
-
                             if nextpal >= 255 {
                                 dirty = true;
                                 paletted_pixels[dst] = 255;
                             } else {
                                 let pal = nextpal * 3;
-
                                 rgbhit[pix as usize] = 1;
                                 if output_count > 0 {
                                     rgbhit[((dither.palette[pal] as usize & 0xf8) << 7)
@@ -677,40 +626,24 @@ impl<W: IoWrite> SixelOutput<W> {
                             let pp = rgb2pal[pix as usize];
                             paletted_pixels[dst] = pp;
                             let pp = pp as usize;
-
                             marks[mptr] = true;
-                            if palstate[pp] != 0 {
-                                palstate[pp] = Self::PALETTE_HIT;
-                            }
-                            if palhitcount[pp] < 255 {
-                                palhitcount[pp] += 1;
-                            }
+                            iif![palstate[pp] != 0; palstate[pp] = Self::PALETTE_HIT];
+                            iif![palhitcount[pp] < 255; palhitcount[pp] += 1];
                         }
                     }
-
                     mptr += 1;
                     dst += 1;
                     px_idx += 3;
                 }
                 y += 1;
                 if y >= height {
-                    if dirty {
-                        mod_y = 5;
-                    } else {
-                        is_running = false;
-                        break;
-                    }
+                    iif![dirty; mod_y = 5; { is_running = false; break; }];
                 }
                 if dirty && (mod_y == 5 || y >= height) {
                     let orig_height = height;
-
-                    if output_count == 0 {
-                        self.encode_header(width, height)?;
-                    }
+                    iif![output_count == 0; self.encode_header(width, height)?];
                     output_count += 1;
-
                     height = y;
-
                     self.encode_body(
                         &paletted_pixels,
                         width,
@@ -739,10 +672,7 @@ impl<W: IoWrite> SixelOutput<W> {
                 }
             }
         }
-        if output_count == 0 {
-            self.encode_header(width, height)?;
-        }
-
+        iif![output_count == 0; self.encode_header(width, height)?];
         let _ = self.encode_body(
             &paletted_pixels,
             width,
@@ -753,9 +683,7 @@ impl<W: IoWrite> SixelOutput<W> {
             dither.bodyonly,
             Some(&palstate),
         );
-
         let _ = self.encode_footer();
-
         Ok(())
     }
 
@@ -768,42 +696,8 @@ impl<W: IoWrite> SixelOutput<W> {
         _depth: i32, /* color depth */
         dither: &mut DitherConf,
     ) -> SixelResult<()> /* output context */ {
-        /*
-            println!("sixel_encode: {} x {} depth {}", width, height, _depth);
-            println!("dither:");
-            println!("\treqcolors: {}", dither.reqcolors);
-            println!("\tncolors: {}", dither.ncolors);
-            println!("\torigcolors: {}", dither.origcolors);
-            println!("\toptimized: {}", dither.optimized);
-            println!("\toptimize_palette: {}", dither.optimize_palette);
-            println!("\tcomplexion: {}", dither.complexion);
-            println!("\tbodyonly: {}", dither.bodyonly);
-            println!("\tmethod_for_largest: {:?}", dither.method_for_largest as i32);
-            println!("\tmethod_for_rep: {:?}", dither.method_for_rep as i32);
-            println!("\tmethod_for_diffuse: {:?}", dither.method_for_diffuse as i32);
-            println!("\tquality_mode: {:?}", dither.quality_mode as i32);
-            println!("\tkeycolor: {:?}", dither.keycolor);
-            println!("\tpixelformat: {:?}", dither.pixelformat as i32);
-        */
-        if width < 1 {
-            return Err(SixelError::BadInput);
-            /*
-            sixel_helper_set_additional_message(
-                "sixel_encode: bad width parameter."
-                " (width < 1)");
-            status = SIXEL_BAD_INPUT;
-            goto end;*/
-        }
-
-        if height < 1 {
-            return Err(SixelError::BadInput);
-            /*
-            sixel_helper_set_additional_message(
-                "sixel_encode: bad height parameter."
-                " (height < 1)");
-            status = SIXEL_BAD_INPUT;
-            goto end;*/
-        }
+        iif![width < 1; return Err(SixelError::BadInput)];
+        iif![height < 1; return Err(SixelError::BadInput)];
         match dither.quality_mode {
             SixelQuality::Auto | SixelQuality::High | SixelQuality::Low | SixelQuality::Full => {
                 self.encode_dither(pixels, width, height, dither)?;

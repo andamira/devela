@@ -36,36 +36,43 @@ pub enum Dither {
     None = 1,
 
     /// Error diffusion dithering using Bill Atkinson's method.
+    ///
     /// Produces a softer dithering effect with a limited error spread.
     /// Often used in early Macintosh graphics.
     Atkinson = 2,
 
     /// Floyd-Steinberg error diffusion dithering.
+    ///
     /// A widely used method that spreads error to neighboring pixels for smooth gradients.
     /// Produces good results with minimal artifacts.
     FS = 3,
 
     /// Jarvis, Judice & Ninke (JaJuNi) error diffusion dithering.
+    ///
     /// Spreads quantization error further across neighboring pixels,
     /// resulting in smoother transitions but requiring more computation.
     JaJuNi = 4,
 
     /// Stucki error diffusion dithering.
+    ///
     /// Similar to JaJuNi but slightly optimized for faster computation.
     /// Produces high-quality results with minimal artifacts.
     Stucki = 5,
 
     /// Burkes error diffusion dithering.
+    ///
     /// A simplified version of Stucki with a smaller diffusion matrix,
     /// reducing computation while maintaining good quality.
     Burkes = 6,
 
     /// Positionally stable arithmetic dithering.
+    ///
     /// Applies a deterministic arithmetic transformation to each pixel,
     /// ensuring consistency without propagating errors.
     ADither = 7,
 
     /// Positionally stable XOR-based dithering.
+    ///
     /// Uses bitwise XOR operations for structured noise generation,
     /// creating a high-frequency dithering pattern without error diffusion.
     XDither = 8,

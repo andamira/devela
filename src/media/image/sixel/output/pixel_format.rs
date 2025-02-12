@@ -2,11 +2,14 @@
 //
 // TOC
 // - PixelFormat
+//   - bits_per_pixel
+//   - bytes_per_pixel
+//   - required_bytes
+//   - normalize
 // - get_rgb
 // - sixel_helper_compute_depth
 // - expand_rgb
 // - expand_palette
-// - sixel_helper_normalize_pixelformat
 
 #![allow(clippy::identity_op, reason = "symmetry")]
 
@@ -119,6 +122,60 @@ impl PixelFormat {
     pub const fn required_bytes(self, width: i32, height: i32) -> usize {
         let total_bits = width as usize * height as usize * self.bits_per_pixel();
         crate::Mem::bytes_from_bits(total_bits)
+    }
+
+    /// returns dst_pixelformat: PixelFormat,
+    pub(crate) fn normalize(
+        self,
+        dst: &mut [u8],
+        src: &[u8],
+        width: i32,
+        height: i32,
+    ) -> SixelResult<PixelFormat> /* height of source image */ {
+        match self {
+            PixelFormat::G8 => {
+                expand_rgb(dst, src, width, height, self, 1);
+                Ok(PixelFormat::RGB888)
+            }
+
+            PixelFormat::RGB565
+            | PixelFormat::RGB555
+            | PixelFormat::BGR565
+            | PixelFormat::BGR555
+            | PixelFormat::GA88
+            | PixelFormat::AG88 => {
+                expand_rgb(dst, src, width, height, self, 2);
+                Ok(PixelFormat::RGB888)
+            }
+
+            PixelFormat::RGB888 | PixelFormat::BGR888 => {
+                expand_rgb(dst, src, width, height, self, 3);
+                Ok(PixelFormat::RGB888)
+            }
+
+            PixelFormat::RGBA8888
+            | PixelFormat::ARGB8888
+            | PixelFormat::BGRA8888
+            | PixelFormat::ABGR8888 => {
+                expand_rgb(dst, src, width, height, self, 4);
+                Ok(PixelFormat::RGB888)
+            }
+
+            PixelFormat::PAL1 | PixelFormat::PAL2 | PixelFormat::PAL4 => {
+                expand_palette(dst, src, width, height, self)?;
+                Ok(PixelFormat::PAL8)
+            }
+
+            PixelFormat::G1 | PixelFormat::G2 | PixelFormat::G4 => {
+                expand_palette(dst, src, width, height, self)?;
+                Ok(PixelFormat::G8)
+            }
+            PixelFormat::PAL8 => {
+                dst[..((width * height) as usize)]
+                    .copy_from_slice(&src[..((width * height) as usize)]);
+                Ok(self)
+            }
+        }
     }
 }
 
@@ -243,57 +300,4 @@ fn expand_palette(
         }
     }
     Ok(())
-}
-
-/// returns dst_pixelformat: PixelFormat,
-pub(crate) fn sixel_helper_normalize_pixelformat(
-    dst: &mut [u8],
-    src: &[u8],
-    src_pixelformat: PixelFormat,
-    width: i32,
-    height: i32,
-) -> SixelResult<PixelFormat> /* height of source image */ {
-    match src_pixelformat {
-        PixelFormat::G8 => {
-            expand_rgb(dst, src, width, height, src_pixelformat, 1);
-            Ok(PixelFormat::RGB888)
-        }
-
-        PixelFormat::RGB565
-        | PixelFormat::RGB555
-        | PixelFormat::BGR565
-        | PixelFormat::BGR555
-        | PixelFormat::GA88
-        | PixelFormat::AG88 => {
-            expand_rgb(dst, src, width, height, src_pixelformat, 2);
-            Ok(PixelFormat::RGB888)
-        }
-
-        PixelFormat::RGB888 | PixelFormat::BGR888 => {
-            expand_rgb(dst, src, width, height, src_pixelformat, 3);
-            Ok(PixelFormat::RGB888)
-        }
-
-        PixelFormat::RGBA8888
-        | PixelFormat::ARGB8888
-        | PixelFormat::BGRA8888
-        | PixelFormat::ABGR8888 => {
-            expand_rgb(dst, src, width, height, src_pixelformat, 4);
-            Ok(PixelFormat::RGB888)
-        }
-
-        PixelFormat::PAL1 | PixelFormat::PAL2 | PixelFormat::PAL4 => {
-            expand_palette(dst, src, width, height, src_pixelformat)?;
-            Ok(PixelFormat::PAL8)
-        }
-
-        PixelFormat::G1 | PixelFormat::G2 | PixelFormat::G4 => {
-            expand_palette(dst, src, width, height, src_pixelformat)?;
-            Ok(PixelFormat::G8)
-        }
-        PixelFormat::PAL8 => {
-            dst[..((width * height) as usize)].copy_from_slice(&src[..((width * height) as usize)]);
-            Ok(src_pixelformat)
-        }
-    }
 }

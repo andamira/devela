@@ -5,9 +5,8 @@
 use crate::{vec_ as vec, Vec};
 
 use super::super::{
-    sixel_helper_normalize_pixelformat, sixel_quant_apply_palette, sixel_quant_make_palette,
-    Dither, PixelFormat, SixelError, SixelMean, SixelPalette, SixelQuality, SixelResult,
-    SixelSplit, SIXEL_PALETTE_MAX,
+    sixel_quant_apply_palette, sixel_quant_make_palette, Dither, PixelFormat, SixelError,
+    SixelMean, SixelPalette, SixelQuality, SixelResult, SixelSplit, SIXEL_PALETTE_MAX,
 };
 
 /// Configuration for sixel dithering.
@@ -40,13 +39,13 @@ pub(crate) struct DitherConf {
     /// Method for choosing a color from the box.
     pub mean_method: SixelMean,
     /// Method for diffusing
-    pub method_for_diffuse: Dither,
+    pub dither: Dither,
     /// Quality of histogram.
     pub quality_mode: SixelQuality,
     /// Background color.
     pub keycolor: i32,
     /// Pixelformat for internal processing.
-    pub pixelformat: PixelFormat,
+    pub pixel_format: PixelFormat,
 }
 
 impl DitherConf {
@@ -79,9 +78,9 @@ impl DitherConf {
             bodyonly: false,
             split_method: SixelSplit::Norm,
             mean_method: SixelMean::Center,
-            method_for_diffuse: Dither::FS,
+            dither: Dither::FS,
             quality_mode,
-            pixelformat: PixelFormat::RGB888,
+            pixel_format: PixelFormat::RGB888,
         })
     }
 
@@ -133,22 +132,21 @@ impl DitherConf {
         data: &[u8],
         width: i32,
         height: i32,
-        pixelformat: PixelFormat,
+        pixel_format: PixelFormat,
         split_method: SixelSplit,
         mean_method: SixelMean,
         quality_mode: SixelQuality,
     ) -> SixelResult<()> {
-        self.set_pixelformat(pixelformat);
+        self.set_pixel_format(pixel_format);
         #[expect(clippy::single_match_else, reason = "could be extended")]
-        let input_pixels = match pixelformat {
+        let input_pixels = match pixel_format {
             PixelFormat::RGB888 => data.to_vec(),
             _ => {
-                /* normalize pixelformat */
+                /* normalize pixel_format */
                 let mut normalized_pixels = vec![0; (width * height * 3) as usize];
-                self.set_pixelformat(sixel_helper_normalize_pixelformat(
+                self.set_pixel_format(pixel_format.normalize(
                     &mut normalized_pixels,
                     data,
-                    pixelformat,
                     width,
                     height,
                 )?);
@@ -175,14 +173,14 @@ impl DitherConf {
         self.palette = buf;
         self.optimized = true;
         if self.origcolors <= self.reqcolors {
-            self.method_for_diffuse = Dither::None;
+            self.dither = Dither::None;
         }
         Ok(())
     }
 
     /// Set diffusion method.
     pub fn set_diffusion_method(&mut self, method: Dither) {
-        self.method_for_diffuse = if matches!(method, Dither::Auto) {
+        self.dither = if matches!(method, Dither::Auto) {
             if self.ncolors > 16 {
                 Dither::FS
             } else {
@@ -234,8 +232,8 @@ impl DitherConf {
     }
 
     /// Set the pixel format
-    pub fn set_pixelformat(&mut self, pixelformat: PixelFormat) {
-        self.pixelformat = pixelformat;
+    pub fn set_pixel_format(&mut self, pixel_format: PixelFormat) {
+        self.pixel_format = pixel_format;
     }
 
     /// Set the transparent color index.
@@ -266,16 +264,11 @@ impl DitherConf {
             self.cachetable = Some(vec![0; 1 << (3 * 5)]);
         }
 
-        let mut input_pixels = if !matches!(self.pixelformat, PixelFormat::RGB888) {
-            /* normalize pixelformat */
+        let mut input_pixels = if !matches!(self.pixel_format, PixelFormat::RGB888) {
+            /* normalize pixel_format */
             let mut normalized_pixels = vec![0; (width * height * 3) as usize];
-            self.pixelformat = sixel_helper_normalize_pixelformat(
-                &mut normalized_pixels,
-                pixels,
-                self.pixelformat,
-                width,
-                height,
-            )?;
+            self.pixel_format =
+                self.pixel_format.normalize(&mut normalized_pixels, pixels, width, height)?;
             normalized_pixels
         } else {
             pixels.to_vec()
@@ -288,7 +281,7 @@ impl DitherConf {
             3,
             &mut self.palette,
             self.ncolors,
-            self.method_for_diffuse,
+            self.dither,
             self.optimized,
             self.optimize_palette,
             self.complexion,

@@ -7,6 +7,7 @@ including the following modifications:
 - make several functions `const`.
 - rename `sixel_dither` to `DitherConf`.
 - rename `MethodForRep` to `SixelMean`.
+- rename `DiffusionMethod` to `Dither`.
 - rename `MethodForLargest` to `SixelSplit`.
 - rename `BuiltinDither` to `SixelPalette`, and associate the palettes.
 - rename `PaletteType` to `SixelColorModel` and its `ColorBox` variant to `Colors`.
