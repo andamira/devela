@@ -79,7 +79,7 @@
 - make customizable: `XorShift[16|32|64]`.
 - derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.
-- make public: `data::error`, `sys::env`, `work::{future, process, sync}`.
+- make public: `data::error`, `sys::env`, `num::geom::shape`, `work::{future, process, sync}`.
 - change `msvc` windows target for `gnu`.
 - improve the documentation of vendored items.
 
