@@ -156,7 +156,7 @@ media = ["audio", "color", "draw", "font", "image", "midi"]
 	font = ["sdl2?/ttf"]
 	image = ["sdl2?/image"]
 	midi = []
-num = ["alg", "geom", "prim", "rand", "unit", "wave"]
+num = ["alg", "geom", "prim", "rand", "unit"]
 	alg  = [] # algebra (linear & symbolic)
 	geom = [] # geometry
 	prim = ["cast", "join", "split"]
@@ -165,9 +165,12 @@ num = ["alg", "geom", "prim", "rand", "unit", "wave"]
 		split = [] # PrimitiveSplit
 	rand = ["rustix?/rand"] # random number generators
 	unit = [] # unit prefixes
-	wave = [] # wavelets
-phys = ["time"]
+phys = ["time", "wave"]
+	# bio
+	# chem
+	# mech
 	time = ["rustix?/time"]
+	wave = [] # wavelets
 sys = ["io", "mem"]
 	io = ["tokio?/io-util", "tokio?/io-std"] # no_std_io…
 	mem = ["bit"]

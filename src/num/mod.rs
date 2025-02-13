@@ -1,7 +1,7 @@
 // devela::num
 //
 //! Numerical types and math operations.
-#![doc = crate::doc_!(modules: crate; num: alg, geom, logic, niche, ord, quant, rand, wave)]
+#![doc = crate::doc_!(modules: crate; num: alg, geom, logic, niche, ord, quant, rand)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: cmp, num)]
@@ -34,9 +34,6 @@ pub mod rand;
 #[cfg(feature = "alg")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
 pub mod alg;
-#[cfg(feature = "wave")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
-pub mod wave;
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
@@ -60,8 +57,6 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
 
         #[cfg(feature = "alg")]
         pub use super::alg::_all::*;
-        #[cfg(feature = "wave")]
-        pub use super::wave::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
         pub(crate) use super::{_private::*, rand::_internals::*};

@@ -1,4 +1,4 @@
-// devela::num::wave::alloc
+// devela::phys::wave::alloc
 //
 //! Wavelet items that allocate.
 //

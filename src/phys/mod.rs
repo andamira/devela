@@ -1,7 +1,7 @@
 // devela::phys
 //
 //! Physical units and measurements.
-#![doc = crate::doc_!(modules: crate; phys: time)]
+#![doc = crate::doc_!(modules: crate; phys: time, wave)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: time)]
@@ -11,18 +11,23 @@
 
 pub mod time;
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
+#[cfg(feature = "wave")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
+pub mod wave;
 
-    mod _mods {
+crate::items! { // structural access: _pub_mods, _all, _always
+    #[allow(unused)] #[doc(hidden, no_inline)]
+    pub use {_always::*, _pub_mods::*};
+
+    mod _pub_mods {
         pub use super::time::_all::*;
+
+        #[cfg(feature = "wave")]
+        pub use super::wave::_all::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
-        pub use super::_mods::*;
+        pub use super::_pub_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::time::_always::*;

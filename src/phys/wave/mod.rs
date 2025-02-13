@@ -1,4 +1,4 @@
-// devela::num::wave
+// devela::phys::wave
 //
 //! Wavelets.
 //

@@ -1,4 +1,4 @@
-// devela::num::wave::tests
+// devela::phys::wave::tests
 
 #[cfg(feature = "alloc")]
 #[cfg(any(feature = "std", feature = "_float_f64"))]

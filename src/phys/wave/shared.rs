@@ -1,4 +1,4 @@
-// devela::num::wave::shared
+// devela::phys::wave::shared
 
 /// Distinguishes the role of a component in wavelet analysis.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

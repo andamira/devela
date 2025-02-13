@@ -65,6 +65,7 @@
   - `data::{bit, hash, serde}` inside `data::codec`.
   - `num::cmp` to `num::ord`.
   - `num::geom::shape::{angle, extent}` inside `num::geom::metric`.
+  - `num::wave` to `phys::wave`.
   - `work::async` to `work::future`.
   - `work::thread` to `work::process`.
 - rename/move items:

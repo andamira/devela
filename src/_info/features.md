@@ -72,9 +72,9 @@ Root modules & public sub-modules features:
     - `split`: `PrimitiveSplit`.
   - [`rand`]: random number generators.
   - `unit`: unit prefixes.
-  - [`wave`][crate::num::wave]: wavelets.
 - [`phys`]:
-    - [`time`]
+  - [`time`]
+  - [`wave`][crate::phys::wave]: wavelets.
 - [`sys`]: enables all `sys` sub-features (except for `os`).
   - [`io`]: no_std `io` implementations.
   - [`mem`]
