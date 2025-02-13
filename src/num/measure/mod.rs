@@ -6,6 +6,7 @@
 //! that aren't tied to specific spatial interpretations.
 //
 
+mod cycle; // Ćycle, CycleCount
 mod interval; // Interval
 
 crate::items! { // structural access: _mods, _all
@@ -13,7 +14,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        pub use super::interval::*;
+        pub use super::{cycle::*, interval::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

@@ -8,7 +8,7 @@ use crate::{
     RangeToInclusive,
 };
 
-/// Represents a bounded range of values, defining `lower` and `upper` [`Bound`]s.
+/// A range of values with `lower` and `upper` [`Bound`]s.
 ///
 /// The `Interval` type allows modeling ranges of values with optional inclusion
 /// or exclusion at each bound. This is useful for mathematical operations,
