@@ -12,10 +12,22 @@ use crate::{cfor, cswap, iif, paste, Sort};
 #[cfg(_sort··)]
 macro_rules! impl_sort {
     () => {
-        impl_sort![signed i8:"_sort_i8", i16:"_sort_i16", i32:"_sort_i32",
-            i64:"_sort_i64", i128:"_sort_i128", isize:"_sort_isize"];
-        impl_sort![unsigned u8:"_sort_u8", u16:"_sort_u16", u32:"_sort_u32",
-            u64:"_sort_u64", u128:"_sort_u128", usize:"_sort_usize"];
+        impl_sort![signed
+            i8:"_sort_i8",
+            i16:"_sort_i16",
+            i32:"_sort_i32",
+            i64:"_sort_i64",
+            i128:"_sort_i128",
+            isize:"_sort_isize"
+        ];
+        impl_sort![unsigned
+            u8:"_sort_u8",
+            u16:"_sort_u16",
+            u32:"_sort_u32",
+            u64:"_sort_u64",
+            u128:"_sort_u128",
+            usize:"_sort_usize"
+        ];
         impl_sort![float f32:"_sort_f32", f64:"_sort_f64"];
     };
 

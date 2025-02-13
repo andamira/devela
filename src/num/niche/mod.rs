@@ -1,6 +1,6 @@
 // devela::num::niche
 //
-//! Specialized numeric types for niche behaviors and memory-efficient representations.
+//! Specialized numeric types and behaviors.
 //
 
 mod mem;

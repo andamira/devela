@@ -13,7 +13,7 @@ crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _always::*;
 
-    mod _mods {
+    mod _mods { #![allow(unused)]
         pub use super::error::*;
     }
     pub(super) mod _all {
