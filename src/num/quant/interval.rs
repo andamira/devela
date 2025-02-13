@@ -1,4 +1,4 @@
-// devela::num::interval
+// devela::num::quant::interval
 //
 //! Defines the [`Interval`] wrapper type.
 //

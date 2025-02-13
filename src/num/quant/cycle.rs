@@ -1,4 +1,4 @@
-// devela::num::cycle
+// devela::num::quant::cycle
 //
 //! Defines [`Cycle`], [`CycleCount`].
 //

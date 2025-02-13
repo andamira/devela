@@ -17,8 +17,8 @@
   - lang: `g_*`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - num:
-    - measure: `Cycle`, `CycleCount`.
     - geom::metric: `Distance`, `Orientation`, `Position`, `Region`, `Stride`, `RegionStrided`.
+    - quant: `Cycle`, `CycleCount`.
   - sys:
     - env::app: `AppApple`, `AppConfig`, `AppWindows`, `AppUnix`, `AppXdg`,
     - log: `LogConfig`.
@@ -31,7 +31,7 @@
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
   - `lang::{c, glsl}`.
   - `media::image::sixel`.
-  - `num::{measure, geom::metric, ord}`
+  - `num::{geom::metric, ord, quant}`
   - `sys::{log, net}`.
   - `ui::{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:

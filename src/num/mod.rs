@@ -1,7 +1,7 @@
 // devela::num
 //
 //! Numerical types and math operations.
-#![doc = crate::doc_!(modules: crate; num: alg, geom, logic, measure, niche, ord, rand, wave)]
+#![doc = crate::doc_!(modules: crate; num: alg, geom, logic, niche, ord, quant, rand, wave)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: cmp, num)]
@@ -26,9 +26,9 @@ mod unit; // Unit, Unit[Bi|Si]
 
 pub mod geom;
 pub mod logic;
-pub mod measure; // Cycle*, Interval
 pub mod niche; // NonZero*, NonValue*, NonRange*
 pub mod ord; // Compare
+pub mod quant; // Cycle*, Interval
 pub mod rand;
 
 #[cfg(feature = "alg")]
@@ -54,8 +54,8 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods {
         pub use super::{
-            geom::_all::*, logic::_all::*, measure::_all::*,
-            niche::_all::*, ord::_all::*, rand::_all::*,
+            geom::_all::*, logic::_all::*, niche::_all::*,
+            ord::_all::*, quant::_all::*,rand::_all::*,
         };
 
         #[cfg(feature = "alg")]

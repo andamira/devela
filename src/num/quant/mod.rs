@@ -1,9 +1,10 @@
-// devela::num::measure
+// devela::num::quant
 //
-//! Foundational abstractions for measurement and periodicity.
+//! Quantification and periodicity.
 //!
-//! This module provides general measurement concepts,
-//! that aren't tied to specific spatial interpretations.
+//! This module provides general concepts for measuring and quantifying values,
+//! including both discrete and continuous representations, without being tied
+//! to specific interpretations.
 //
 
 mod cycle; // Ćycle, CycleCount
