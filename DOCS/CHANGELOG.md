@@ -6,7 +6,7 @@
 - new features: `desk`, `term`, `web`, `glsl, _maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
 - new traits:
   - data: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
-  - sys: `DirEnv`, `ExtLog`
+  - sys: `AppEnv`, `ExtLog`
   - ui: `MiniquadEventHandlerExt`, `UiService`.
   - work: `ExtProcess`.
 - new consts: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
@@ -16,8 +16,12 @@
     - xifer: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - lang: `g_*`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
-  - num: `Cycle`, `CycleCount`.
-  - sys: `DirApple`, `DirWindows`, `DirUnix`, `DirXdg`, `LogConfig`,
+  - num:
+    - measure: `Cycle`, `CycleCount`.
+    - geom::metric: `Distance`, `Orientation`, `Position`, `Region`, `Stride`, `RegionStrided`.
+  - sys:
+    - env::app: `AppApple`, `AppConfig`, `AppWindows`, `AppUnix`, `AppXdg`,
+    - log: `LogConfig`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.

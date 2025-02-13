@@ -8,14 +8,21 @@
 //
 
 mod angle; // Angle, AngleDirection, AngleKind
+mod distance; // Distance
 mod extent; // Extent, Extent2d, Extent3d
+mod orientation; // Orientation
+mod position; // Position
+mod region; // Region
+mod stride; // Stride
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{angle::*, extent::*};
+        pub use super::{
+            angle::*, distance::*, extent::*, orientation::*, position::*, region::*, stride::*,
+        };
     }
     pub(super) mod _all {
         #[doc(inline)]
