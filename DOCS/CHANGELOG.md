@@ -31,7 +31,7 @@
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
   - `lang::{c, glsl}`.
   - `media::image::sixel`.
-  - `num::{measure, geom::metric}`
+  - `num::{measure, geom::metric, ord}`
   - `sys::{log, net}`.
   - `ui::{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
