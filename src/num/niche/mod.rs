@@ -1,12 +1,9 @@
 // devela::num::niche
 //
-//! Numeric types with niche memory layout optimization.
+//! Specialized numeric types for niche behaviors and memory-efficient representations.
 //
 
-#[cfg(test)]
-mod tests;
-
-mod non_value;
+mod mem;
 mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -16,7 +13,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{non_value::*, reexports::*};
+        pub use super::{mem::*, reexports::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

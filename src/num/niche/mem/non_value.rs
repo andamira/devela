@@ -89,9 +89,9 @@ macro_rules! impl_non_value {
             #[cfg(feature = "bit")]
             use $crate::{BitSized, ByteSized};
             use $crate::{
-                _core::num::*,
-                iif, unwrap, ConstDefault, FromStr, NumError::{Invalid, Overflow}, NumResult,
-                Debug, Display, FmtResult, Formatter, Binary, Octal, LowerHex, UpperHex,
+                _core::num::*, iif, unwrap, ConstDefault, FromStr,
+                NumError::{Invalid, Overflow}, NumResult, Debug, Display,
+                FmtResult, Formatter, Binary, Octal, LowerHex, UpperHex,
             };
 
             /* definition */
@@ -203,21 +203,15 @@ macro_rules! impl_non_value {
 
                 /// Returns the value as a primitive type.
                 #[must_use]
-                pub const fn get(&self) -> $IP {
-                    self.0.get() ^ V
-                }
+                pub const fn get(&self) -> $IP { self.0.get() ^ V }
 
                 /// Returns `true` if it is equal to the maximum value ([`MAX`][Self::MAX]).
                 #[must_use]
-                pub const fn is_max(&self) -> bool {
-                    self.get() == $IP::MAX
-                }
+                pub const fn is_max(&self) -> bool { self.get() == $IP::MAX }
 
                 /// Returns `true` if it is equal to the minimum value ([`MIN`][Self::MIN]).
                 #[must_use]
-                pub const fn is_min(&self) -> bool {
-                    self.get() == $IP::MIN
-                }
+                pub const fn is_min(&self) -> bool { self.get() == $IP::MIN }
 
                 /// Checked integer addition. Computes `self + rhs`.
                 ///
@@ -293,51 +287,33 @@ macro_rules! impl_non_value {
             /* core impls */
 
             impl<const V: $IP> Display for $name <V> {
-
                 fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    write!(f, "{}", self.get())
-                }
-            }
+                    write!(f, "{}", self.get()) } }
             impl<const V: $IP> Debug for $name <V> {
                 fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    write!(f, "{}::<{}>({})", stringify!($name), V, self.get())
-                }
-            }
+                    write!(f, "{}::<{}>({})", stringify!($name), V, self.get()) } }
             impl<const V: $IP> Binary for $name<V> {
                 fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    Binary::fmt(&self.get(), f)
-                }
-            }
+                    Binary::fmt(&self.get(), f) } }
             impl<const V: $IP> Octal for $name<V> {
                 fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    Octal::fmt(&self.get(), f)
-                }
-            }
+                    Octal::fmt(&self.get(), f) } }
             impl<const V: $IP> LowerHex for $name<V> {
                 fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    LowerHex::fmt(&self.get(), f)
-                }
-            }
+                    LowerHex::fmt(&self.get(), f) } }
             impl<const V: $IP> UpperHex for $name<V> {
                 fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    UpperHex::fmt(&self.get(), f)
-                }
-            }
-
+                    UpperHex::fmt(&self.get(), f) } }
             impl<const V: $IP> FromStr for $name<V> {
                 type Err = ParseIntError;
                 fn from_str(s: &str) -> Result<Self, Self::Err> {
-                    Self::new($IP::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err())
-                }
-            }
+                    Self::new($IP::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err()) } }
 
             /* conversions */
 
             impl<const V: $IP> From<$name<V>> for $IP {
                 #[must_use]
-                fn from(value: $name<V>) -> $IP {
-                    value.get()
-                }
+                fn from(value: $name<V>) -> $IP { value.get() }
             }
 
             impl<const V: $IP> TryFrom<$IP> for $name<V> {
