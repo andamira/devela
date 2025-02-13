@@ -68,7 +68,13 @@
 // "nightly_stable_next2": 1.86 core, alloc, std…
 #![cfg_attr(
     feature = "nightly_stable_next2",
-    feature(const_black_box, float_next_up_down, trait_upcasting, non_zero_count_ones)
+    feature(
+        const_black_box,
+        float_next_up_down,
+        trait_upcasting,
+        non_zero_count_ones,
+        target_feature_11,
+    )
 )]
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature(vec_pop_if,))]
 #![cfg_attr(

@@ -37,6 +37,7 @@ See also
 - 1.86: ·[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 - 1.86: s[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
 - 1.86: ·[non_zero_count_ones](https://github.com/rust-lang/rust/pull/136663)
+- 1.86: ·[target_feature_11](https://github.com/rust-lang/rust/pull/134090)
 - 1.86: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
 - 1.86: a[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 
