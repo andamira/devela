@@ -1,4 +1,4 @@
-// devela::num::geom::shape:angle::impl::test_int
+// devela::num::geom::metric:angle::impl::test_int
 
 #[allow(unused, reason = "±_int_*")]
 use crate::{assert_approx_eq_all, Angle, AngleDirection, AngleKind};
@@ -13,28 +13,28 @@ mod angle_i16 {
         let full = Angle::<i16>::new_full();
         let right = Angle::<i16>::new_right();
         let straight = Angle::<i16>::new_straight();
-        assert_eq!(full.0, 0);
-        assert_eq!(right.0, i16::MAX / 4);
-        assert_eq!(straight.0, i16::MAX / 2);
+        assert_eq!(full.turn, 0);
+        assert_eq!(right.turn, i16::MAX / 4);
+        assert_eq!(straight.turn, i16::MAX / 2);
 
         let full = Angle::<u16>::new_full();
         let right = Angle::<u16>::new_right();
         let straight = Angle::<u16>::new_straight();
-        assert_eq!(full.0, 0);
-        assert_eq!(right.0, u16::MAX / 4);
-        assert_eq!(straight.0, u16::MAX / 2);
+        assert_eq!(full.turn, 0);
+        assert_eq!(right.turn, u16::MAX / 4);
+        assert_eq!(straight.turn, u16::MAX / 2);
     }
 
     /// Integer representations should always be normalized.
     #[test]
     fn angle_normalization() {
-        let angle: Angle<i16> = Angle(12345);
+        let angle: Angle<i16> = Angle::new(12345);
         assert!(angle.is_normalized());
 
-        let mut angle = Angle(12345_i16);
+        let mut angle = Angle::new(12345_i16);
         // Should have no effect on normalized representation.
         angle.set_normalized();
-        assert_eq!(angle.0, 12345);
+        assert_eq!(angle.turn, 12345);
     }
 
     /// Test kind determination for an i16 representation.
@@ -43,15 +43,15 @@ mod angle_i16 {
         assert_eq!(Angle::<i16>::new_full().kind(), AngleKind::Full);
         assert_eq!(Angle::<i16>::new_right().kind(), AngleKind::Right);
         assert_eq!(Angle::<i16>::new_straight().kind(), AngleKind::Straight);
-        assert_eq!(Angle(i16::MAX / 8).kind(), AngleKind::Acute);
-        assert_eq!(Angle(i16::MAX / 3).kind(), AngleKind::Obtuse);
-        assert_eq!(Angle((3 * i16::MAX as i32 / 4) as i16).kind(), AngleKind::Reflex);
+        assert_eq!(Angle::new(i16::MAX / 8).kind(), AngleKind::Acute);
+        assert_eq!(Angle::new(i16::MAX / 3).kind(), AngleKind::Obtuse);
+        assert_eq!(Angle::new((3 * i16::MAX as i32 / 4) as i16).kind(), AngleKind::Reflex);
     }
 
     /// Test direction handling for signed integers.
     #[test]
     fn signed_angle_direction() {
-        let angle = Angle(-i16::MAX / 4);
+        let angle = Angle::new(-i16::MAX / 4);
         assert_eq!(angle.direction(), AngleDirection::Clockwise);
 
         let positive_angle = angle.with_direction(AngleDirection::CounterClockwise);
@@ -74,9 +74,9 @@ mod angle_i16 {
     /// Test boundaries for minimum and maximum values.
     #[test]
     fn angle_boundary_conditions() {
-        let zero_angle = Angle::<i16>(0_i16);
-        let min_angle = Angle::<i16>(i16::MIN);
-        let max_angle = Angle::<i16>(i16::MAX);
+        let zero_angle = Angle::<i16>::new(0_i16);
+        let min_angle = Angle::<i16>::new(i16::MIN);
+        let max_angle = Angle::<i16>::new(i16::MAX);
 
         // Even though `min_angle` represents a negative full turn,
         // it should still be considered normalized due to integer mapping.
@@ -93,7 +93,7 @@ mod angle_i16 {
     /// Verify that direction is correctly set for signed types.
     #[test]
     fn angle_set_direction() {
-        let mut angle = Angle::<i16>(-i16::MAX / 3);
+        let mut angle = Angle::<i16>::new(-i16::MAX / 3);
         assert_eq!(angle.direction(), AngleDirection::Clockwise);
 
         angle.set_direction(AngleDirection::CounterClockwise);
@@ -115,15 +115,15 @@ mod angle_u16 {
         let full = Angle::<u16>::new_full();
         let right = Angle::<u16>::new_right();
         let straight = Angle::<u16>::new_straight();
-        assert_eq!(full.0, 0);
-        assert_eq!(right.0, u16::MAX / 4);
-        assert_eq!(straight.0, u16::MAX / 2);
+        assert_eq!(full.turn, 0);
+        assert_eq!(right.turn, u16::MAX / 4);
+        assert_eq!(straight.turn, u16::MAX / 2);
     }
 
     /// Test direction handling for unsigned angles.
     #[test]
     fn unsigned_angle_direction() {
-        let unsigned_angle = Angle::<u16>(u16::MAX / 4);
+        let unsigned_angle = Angle::<u16>::new(u16::MAX / 4);
         assert_eq!(unsigned_angle.direction(), AngleDirection::CounterClockwise);
 
         // Setting direction should have no effect.

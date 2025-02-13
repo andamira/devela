@@ -1,4 +1,4 @@
-// devela::code::interval
+// devela::num::interval
 //
 //! Defines the [`Interval`] wrapper type.
 //
@@ -8,7 +8,7 @@ use crate::{
     RangeToInclusive,
 };
 
-/// An interval with `lower` and `upper` [`Bound`]s.
+/// Represents a bounded range of values, defining `lower` and `upper` [`Bound`]s.
 ///
 /// The `Interval` type allows modeling ranges of values with optional inclusion
 /// or exclusion at each bound. This is useful for mathematical operations,

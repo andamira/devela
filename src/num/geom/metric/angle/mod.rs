@@ -1,14 +1,18 @@
-// devela::num::geom::shape::angle
+// devela::num::geom::metric::angle
 //
-//! Definitions related to angles.
+//! Defines [`Angle`], [`AngleDirection`], [`AngleKind`].
 //
+// [`Angle`]s and [`Cycle`]s are closely related:
+// - An angle represents a fraction of a full rotation.
+// - A cycle represents a repeating pattern over a period.
+// - A full-turn normalized angle (0.0 to 1.0 or 0..256) is directly analogous to phase in a cycle.
 
 mod r#impl;
 
 mod kind;
 pub use kind::AngleKind;
 
-/// A generic angle.
+/// An angle represents a fraction of a full rotation.
 ///
 /// It's unit-agnostic over radians or degrees, and respects directionality.
 ///
@@ -67,7 +71,17 @@ pub use kind::AngleKind;
 ///     [`is_`](Self::is_kind). )*
 #[must_use]
 #[repr(transparent)]
-pub struct Angle<T>(pub T);
+pub struct Angle<T> {
+    /// A unit-agnostic rotation.
+    pub turn: T,
+}
+
+impl<T> Angle<T> {
+    /// Creates a new angle.
+    pub const fn new(turn: T) -> Self {
+        Self { turn }
+    }
+}
 
 /// The angle direction.
 ///

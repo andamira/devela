@@ -1,4 +1,4 @@
-// devela::num::geom::shape::angle::kind
+// devela::num::geom::metric::angle::kind
 //
 //! Definitions related to angles.
 //

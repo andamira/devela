@@ -1,4 +1,4 @@
-// devela::num::geom::shape::angle::impl::int
+// devela::num::geom::metric::angle::impl::int
 //
 //!
 //
@@ -65,7 +65,7 @@ macro_rules! impl_angle {
             /* private helpers */
 
             // Returns the inner value normalized as a float between -1 and 1
-            const fn to_float_normalized(self) -> $f { self.0 as $f / <$t>::MAX as $f }
+            const fn to_float_normalized(self) -> $f { self.turn as $f / <$t>::MAX as $f }
             // Returns the `value` associated to the full turn `unit`, scaled to the full $t range.
             #[cfg(any(feature = "std", feature = $fcap))]
             fn from_float_normalized(value: $f, unit: $f) -> $t {
@@ -75,33 +75,33 @@ macro_rules! impl_angle {
             /* construct */
 
             /// Creates a normalized full positive angle at 0 degrees.
-            pub const fn new_full() -> Self { Self(0) }
+            pub const fn new_full() -> Self { Self::new(0) }
 
             /// Creates a normalized right positive angle at 90 degrees.
-            pub const fn new_right() -> Self { Self(<$t>::MAX / 4) }
+            pub const fn new_right() -> Self { Self::new(<$t>::MAX / 4) }
 
             /// Creates a normalized straight positive angle at 180 degrees.
-            pub const fn new_straight() -> Self { Self(<$t>::MAX / 2) }
+            pub const fn new_straight() -> Self { Self::new(<$t>::MAX / 2) }
 
             /// Creates a new angle from a floating-point `radians` value.
             #[cfg(any(feature = "std", feature = $fcap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_rad(radians: $f) -> Self {
-                Self(Self::from_float_normalized(radians, <$f>::TAU))
+                Self::new(Self::from_float_normalized(radians, <$f>::TAU))
             }
 
             /// Creates a new angle from a floating-point `degrees` value.
             #[cfg(any(feature = "std", feature = $fcap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_deg(degrees: $f) -> Self {
-                Self(Self::from_float_normalized(degrees, 360.0))
+                Self::new(Self::from_float_normalized(degrees, 360.0))
             }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
             #[cfg(any(feature = "std", feature = $fcap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_custom(value: $f, custom_unit: $f) -> Self {
-                Self(Self::from_float_normalized(value, custom_unit))
+                Self::new(Self::from_float_normalized(value, custom_unit))
             }
 
             /* convert */
@@ -144,7 +144,7 @@ macro_rules! impl_angle {
 
             /// Returns the kind of the normalized angle.
             pub const fn kind(self) -> AngleKind {
-                let angle = self.positive().0;
+                let angle = self.positive().turn;
                 let right = <$t>::MAX / 4;
                 let straight = <$t>::MAX / 2;
                 use AngleKind as K;
@@ -167,7 +167,7 @@ macro_rules! impl_angle {
             /// Returns `true` if the angle is of the given `kind`.
             #[must_use]
             pub const fn is_kind(self, kind: AngleKind) -> bool {
-                let angle = self.positive().0;
+                let angle = self.positive().turn;
                 let right = <$t>::MAX / 4;
                 let straight = <$t>::MAX / 2;
 
@@ -203,9 +203,9 @@ macro_rules! impl_angle {
             /// The direction will be `Undefined` if the angle kind is [`Full`][AngleKind::Full].
             pub const fn direction(self) -> AngleDirection {
                 use AngleDirection as D;
-                if self.0 == 0 {
+                if self.turn == 0 {
                     D::Undefined
-                } else if self.0 > 0 {
+                } else if self.turn > 0 {
                     D::CounterClockwise
                 } else {
                     D::Clockwise
@@ -218,8 +218,8 @@ macro_rules! impl_angle {
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => Self(self.0.saturating_abs()),
-                    D::Clockwise => Self(-self.0.saturating_abs()),
+                    D::CounterClockwise | D::Undefined => Self::new(self.turn.saturating_abs()),
+                    D::Clockwise => Self::new(-self.turn.saturating_abs()),
                 }
             }
 
@@ -229,27 +229,27 @@ macro_rules! impl_angle {
             pub fn set_direction(&mut self, direction: AngleDirection) {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => self.0 = self.0.saturating_abs(),
-                    D::Clockwise => self.0 = -self.0.saturating_abs(),
+                    D::CounterClockwise | D::Undefined => self.turn = self.turn.saturating_abs(),
+                    D::Clockwise => self.turn = -self.turn.saturating_abs(),
                 }
             }
 
             /// Returns a version of the angle with inverted direction.
             pub const fn invert_direction(self) -> Self {
-                Self(self.0.saturating_neg())
+                Self::new(self.turn.saturating_neg())
             }
 
             /// Returns the negative version of the angle.
-            pub const fn negative(self) -> Self { Self(-self.0.saturating_abs()) }
+            pub const fn negative(self) -> Self { Self::new(-self.turn.saturating_abs()) }
 
             /// Sets the angle as negative.
-            pub fn set_negative(&mut self) { self.0 = -self.0.saturating_abs(); }
+            pub fn set_negative(&mut self) { self.turn = -self.turn.saturating_abs(); }
 
             /// Returns the positive version of the angle.
-            pub const fn positive(self) -> Self { Self(self.0.saturating_abs()) }
+            pub const fn positive(self) -> Self { Self::new(self.turn.saturating_abs()) }
 
             /// Sets the angle as positive.
-            pub fn set_positive(&mut self) { self.0 = self.0.saturating_abs(); }
+            pub fn set_positive(&mut self) { self.turn = self.turn.saturating_abs(); }
         }
     };
 

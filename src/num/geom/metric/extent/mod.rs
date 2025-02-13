@@ -1,4 +1,4 @@
-// devela::num::geom::shape::extent
+// devela::num::geom::metric::extent
 //
 //! A geometrical extent.
 //
@@ -14,12 +14,10 @@ mod methods;
 #[must_use]
 #[repr(transparent)]
 pub struct Extent<T, const D: usize> {
-    /// The D-dimensional extent.
-    extent: [T; D],
+    /// The D-dimensional size.
+    pub size: [T; D],
 }
-
 /// A 2-dimensional [`Extent`].
 pub type Extent2d<T> = Extent<T, 2>;
-
 /// A 3-dimensional [`Extent`].
 pub type Extent3d<T> = Extent<T, 3>;

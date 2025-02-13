@@ -1,4 +1,4 @@
-// devela::num::geom::shape::angle::impl::core_traits
+// devela::num::geom::metric::angle::impl::core_traits
 //
 //!
 //
@@ -10,7 +10,7 @@ use crate::{Angle, ConstDefault, Debug, FmtResult, Formatter, Ordering};
 // T:Clone
 impl<T: Clone> Clone for Angle<T> {
     fn clone(&self) -> Self {
-        Self(self.0.clone())
+        Self::new(self.turn.clone())
     }
 }
 
@@ -23,7 +23,7 @@ impl<T: Default> Default for Angle<T> {
     /// Returns a `Angle`, allocated in the stack,
     /// using the default value to fill the data.
     fn default() -> Self {
-        Self(T::default())
+        Self::new(T::default())
     }
 }
 
@@ -31,20 +31,20 @@ impl<T: Default> Default for Angle<T> {
 impl<T: ConstDefault> ConstDefault for Angle<T> {
     /// Returns a Angle, allocated in the stack,
     /// using the default value to fill the data.
-    const DEFAULT: Self = { Self(T::DEFAULT) };
+    const DEFAULT: Self = { Self::new(T::DEFAULT) };
 }
 
 // T:Debug
 impl<T: Debug> Debug for Angle<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-        write!(f, "Angle({:?})", self.0)
+        write!(f, "Angle({:?})", self.turn)
     }
 }
 
 // T:PartialEq
 impl<T: PartialEq> PartialEq for Angle<T> {
     fn eq(&self, other: &Self) -> bool {
-        self.0 == other.0
+        self.turn == other.turn
     }
 }
 // T:Eq
@@ -53,13 +53,13 @@ impl<T: Eq> Eq for Angle<T> {}
 // T:PartialOrd
 impl<T: PartialOrd> PartialOrd for Angle<T> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.0.partial_cmp(&other.0)
+        self.turn.partial_cmp(&other.turn)
     }
 }
 
 // T:Ord
 impl<T: Ord> Ord for Angle<T> {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.0.cmp(&other.0)
+        self.turn.cmp(&other.turn)
     }
 }

@@ -26,6 +26,7 @@
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
   - `lang::{c, glsl}`.
   - `media::image::sixel`.
+  - `num::{measure, geom::metric}`
   - `sys::{log, net}`.
   - `ui::{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
@@ -54,24 +55,27 @@
 - bump MSRV to 1.84.1.
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`.
-- rename re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
-- rename modules:
+- rename/move modules:
+  - `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
+  - `data::{bit, hash, serde}` inside `data::codec`.
   - `num::cmp` to `num::ord`.
+  - `num::geom::shape::{angle, extent}` inside `num::geom::metric`.
   - `work::async` to `work::future`.
   - `work::thread` to `work::process`.
-- rename `LoggerConfig` to `LogConfig`.
-- rename `TextWrite` trait to `FmtWrite`.
-- rename prngs `next_state` method to `peek_next_state`.
-- ungate: `FxHasher`, `Xorshift128p`.
+- rename/move items:
+  - `LoggerConfig` to `LogConfig`.
+  - `TextWrite` trait to `FmtWrite`.
+  - re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
+- rename/move fns/methods:
+  - from prngs: `next_state` method to `peek_next_state`.
+  - `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
+  - `bytes_from_bits` fn to `Mem::bytes_from_bits`.
+- feature-ungate: `FxHasher`, `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
 - derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.
 - make public: `data::error`, `sys::env`, `work::{future, process, sync}`.
-- move `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
-- move `data::{bit, hash, serde}` inside `data::codec`.
-- move fns: `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
-- move `bytes_from_bits` fn to `Mem::bytes_from_bits`.
-- changed windows `msvc` target for `gnu`.
+- change `msvc` windows target for `gnu`.
 - improve the documentation of vendored items.
 
 ### Fixed

@@ -1,4 +1,4 @@
-// devela::num::geom::shape::angle::impl::float
+// devela::num::geom::metric::angle::impl::float
 //
 //!
 //
@@ -29,27 +29,27 @@ macro_rules! impl_angle {
             /* construct */
 
             /// Creates a normalized full positive angle at 0 degrees.
-            pub const fn new_full() -> Self { Self(0.0) }
+            pub const fn new_full() -> Self { Self::new(0.0) }
 
             /// Creates a normalized right positive angle at 90 degrees (0.25).
-            pub const fn new_right() -> Self { Self(0.25) }
+            pub const fn new_right() -> Self { Self::new(0.25) }
 
             /// Creates a normalized straight positive angle at 180 degrees (0.5).
-            pub const fn new_straight() -> Self { Self(0.5) }
+            pub const fn new_straight() -> Self { Self::new(0.5) }
 
             /// Creates a new angle from a `radians` value.
             pub const fn from_rad(radians: $f) -> Self {
-                Self(radians / <$f>::TAU)
+                Self::new(radians / <$f>::TAU)
             }
 
             /// Creates a new angle from a `degrees` value.
             pub const fn from_deg(degrees: $f) -> Self {
-                Self(degrees / 360.0)
+                Self::new(degrees / 360.0)
             }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
             pub const fn from_custom(value: $f, custom_unit: $f) -> Self {
-                Self(value / custom_unit)
+                Self::new(value / custom_unit)
             }
 
             /* convert */
@@ -57,19 +57,19 @@ macro_rules! impl_angle {
             /// Converts the angle to radians.
             #[must_use]
             pub const fn to_rad(self) -> $f {
-                self.0 * <$f>::TAU
+                self.turn * <$f>::TAU
             }
 
             /// Converts the angle to degrees.
             #[must_use]
             pub const fn to_deg(self) -> $f {
-                self.0 * 360.0
+                self.turn * 360.0
             }
 
             /// Converts the angle to a `custom_unit` which represents a full turn.
             #[must_use]
             pub const fn to_custom(self, custom_unit: $f) -> $f {
-                self.0 * custom_unit
+                self.turn * custom_unit
             }
 
             /* normalize */
@@ -78,19 +78,19 @@ macro_rules! impl_angle {
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn is_normalized(self) -> bool {
-                crate::Compare(self.0).gt(-1.0) && crate::Compare(self.0).lt(1.0)
+                crate::Compare(self.turn).gt(-1.0) && crate::Compare(self.turn).lt(1.0)
             }
 
             /// Returns the angle normalized to the non-inclusive range -1 to 1.
             // BLOCKED: const by fract
             pub fn normalize(self) -> Self {
-                Self(self.0.fract())
+                Self::new(self.turn.fract())
             }
 
             /// Sets the angle normalized to the non-inclusive range -1 to 1.
             // BLOCKED: const by fract
             pub fn set_normalized(&mut self) {
-                self.0 = self.0.fract();
+                self.turn = self.turn.fract();
             }
 
             /* direction */
@@ -101,7 +101,7 @@ macro_rules! impl_angle {
             /// the direction can't be undefined.
             pub const fn direction(self) -> AngleDirection {
                 use AngleDirection::{Clockwise, CounterClockwise};
-                if Float(self.0).is_sign_negative() { Clockwise } else { CounterClockwise }
+                if Float(self.turn).is_sign_negative() { Clockwise } else { CounterClockwise }
             }
 
             /// Returns `true` if the angle has the given `direction`.
@@ -119,8 +119,8 @@ macro_rules! impl_angle {
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => Self(Float(self.0).abs().0),
-                    D::Clockwise => Self(Float(self.0).neg_abs().0),
+                    D::CounterClockwise | D::Undefined => Self::new(Float(self.turn).abs().0),
+                    D::Clockwise => Self::new(Float(self.turn).neg_abs().0),
                 }
             }
 
@@ -130,30 +130,30 @@ macro_rules! impl_angle {
             pub const fn set_direction(&mut self, direction: AngleDirection) {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => self.0 = Float(self.0).abs().0,
-                    D::Clockwise => self.0 = Float(self.0).neg_abs().0,
+                    D::CounterClockwise | D::Undefined => self.turn = Float(self.turn).abs().0,
+                    D::Clockwise => self.turn = Float(self.turn).neg_abs().0,
                 }
             }
 
             /// Returns a version of the angle with inverted direction.
             pub const fn invert_direction(self) -> Self {
-                Self(Float(self.0).flip_sign().0)
+                Self::new(Float(self.turn).flip_sign().0)
             }
 
             /// Returns the negative version of the angle.
-            pub const fn negative(self) -> Self { Self(Float(self.0).neg_abs().0) }
+            pub const fn negative(self) -> Self { Self::new(Float(self.turn).neg_abs().0) }
 
             /// Sets the angle as negative.
             pub const fn set_negative(&mut self) {
-                { self.0 = Float(self.0).neg_abs().0; }
+                { self.turn = Float(self.turn).neg_abs().0; }
             }
 
             /// Returns the positive version of the angle.
-            pub const fn positive(self) -> Self { Self(Float(self.0).abs().0) }
+            pub const fn positive(self) -> Self { Self::new(Float(self.turn).abs().0) }
 
             /// Sets the angle as positive.
             pub const fn set_positive(&mut self) {
-                self.0 = Float(self.0).abs().0;
+                self.turn = Float(self.turn).abs().0;
             }
 
             /* kind */
@@ -163,7 +163,7 @@ macro_rules! impl_angle {
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn kind(self) -> AngleKind {
-                let angle = crate::Compare(self.normalize().positive().0);
+                let angle = crate::Compare(self.normalize().positive().turn);
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
                 if angle.eq(0.0) { // 1 turn (0' or 360º)
                     Full
@@ -182,7 +182,7 @@ macro_rules! impl_angle {
             /// Returns the kind of the angle using a custom tolerance for approximate matching.
             // BLOCKED: const by normalize
             pub fn kind_approx(self, tolerance: $f) -> AngleKind {
-                let angle = self.normalize().positive().0;
+                let angle = self.normalize().positive().turn;
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
                 if (angle - 0.0).abs() <= tolerance {
                     Full
@@ -205,7 +205,7 @@ macro_rules! impl_angle {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             // BLOCKED: const by normalize
             pub fn is_kind(self, kind: AngleKind) -> bool {
-                let angle = crate::Compare(self.normalize().positive().0);
+                let angle = crate::Compare(self.normalize().positive().turn);
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
                 match kind {
                     Full => angle.eq(0.0),
@@ -221,7 +221,7 @@ macro_rules! impl_angle {
             #[must_use]
             // BLOCKED: const by normalize
             pub fn is_kind_approx(self, kind: AngleKind, tolerance: $f) -> bool {
-                let angle = self.normalize().positive().0;
+                let angle = self.normalize().positive().turn;
                 match kind {
                     AngleKind::Full => (angle - 0.0).abs() <= tolerance,
                     AngleKind::Right => (angle - 0.25).abs() <= tolerance,

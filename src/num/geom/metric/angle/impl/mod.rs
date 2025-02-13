@@ -1,4 +1,4 @@
-// devela::num::geom::shape::angle::impl
+// devela::num::geom::metric::angle::impl
 //
 //!
 //
