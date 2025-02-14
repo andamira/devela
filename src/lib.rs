@@ -66,16 +66,14 @@
 )]
 // ----------------------------
 // "nightly_stable_next2": 1.86 core, alloc, std…
-#![cfg_attr(
-    feature = "nightly_stable_next2",
-    feature(
-        const_black_box,
-        float_next_up_down,
-        trait_upcasting,
-        non_zero_count_ones,
-        target_feature_11,
-    )
-)]
+#![cfg_attr(feature = "nightly_stable_next2", feature(
+    const_black_box,
+    float_next_up_down,
+    get_many_mut, //  get_disjoint_mut
+    trait_upcasting,
+    non_zero_count_ones,
+    target_feature_11,
+))]
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature(vec_pop_if,))]
 #![cfg_attr(
     all(feature = "nightly_stable_next2", feature = "std"),
@@ -83,26 +81,29 @@
 )]
 // ----------------------------
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
-#![cfg_attr(feature = "nightly_stable_later", feature(
-    asm_goto,
-    cell_update,
-    const_array_from_ref,
-    const_is_char_boundary,
-    const_slice_flatten,
-    const_slice_from_ref,
-    const_str_split_at,
-    const_str_from_utf8,
-    derive_coerce_pointee,
-    get_many_mut, //  get_disjoint_mut
-    impl_trait_in_assoc_type,
-    isqrt,
-    let_chains,
-    macro_metavar_expr,
-    naked_functions,
-    num_midpoint_signed,
-    unbounded_shifts,
-    unsafe_cell_from_mut,
-))]
+#![cfg_attr(
+    feature = "nightly_stable_later",
+    feature(
+        asm_goto,
+        cell_update,
+        const_array_from_ref,
+        const_is_char_boundary,
+        const_slice_flatten,
+        const_slice_from_ref,
+        const_str_split_at,
+        const_str_from_utf8,
+        derive_coerce_pointee,
+        impl_trait_in_assoc_type,
+        integer_sign_cast,
+        isqrt,
+        let_chains,
+        macro_metavar_expr,
+        naked_functions,
+        num_midpoint_signed,
+        unbounded_shifts,
+        unsafe_cell_from_mut,
+    )
+)]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "alloc"),
     feature(box_uninit_write, new_zeroed_alloc,)
