@@ -22,11 +22,6 @@ pub mod table;
 pub mod uid;
 pub mod xipher; // cryptography
 
-// #[cfg(_graph··)]
-// pub mod graph;
-// #[cfg(_node··)]
-// pub mod node;
-
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
@@ -54,6 +49,9 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         ))]
         pub use super::dst::_all::*;
 
+        // WIPZONE
+        // pub use super::pool::*;
+        // pub use super::view::*;
         // #[cfg(_graph··)]
         // pub use super::graph::*;
         // #[cfg(_node··)]
@@ -62,7 +60,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     pub(super) mod _internals { #![allow(unused)]
         pub(crate) use super::table::_internals::*;
     }
-    pub(super) mod _all {
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::{_pub_mods::*, _mods::*};
     }
@@ -72,3 +70,10 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         };
     }
 }
+// WIPZONE
+// mod pool;
+// mod view;
+// #[cfg(_graph··)]
+// pub mod graph;
+// #[cfg(_node··)]
+// pub mod node;

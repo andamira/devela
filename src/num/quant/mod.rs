@@ -16,9 +16,15 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::{cycle::*, interval::*};
+        // WIPZONE
+        // pub use super::counter::*;
+        // pub use super::scale::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
 }
+// WIPZONE
+// mod counter;
+// mod scale;

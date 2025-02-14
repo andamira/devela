@@ -49,6 +49,8 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         pub use super::pin::Pinned;
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::pod::MemPod;
+        // WIPZONE
+        // pub use super::borrow::*;
     }
     mod _pub_mods {
         pub use super::cell::_all::*;
@@ -64,3 +66,5 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         pub use super::{cell::_always::*, ptr::_always::*, reexports::*};
     }
 }
+// WIPZONE
+// mod borrow;

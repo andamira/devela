@@ -17,6 +17,9 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods { #![allow(unused)]
         pub use super::{r#const::*, reexports::*};
+        // WIPZONE
+        // pub use super::l1::*;
+        // pub use super::l2::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -26,3 +29,8 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::{r#const::*, reexports::*};
     }
 }
+// WIPZONE
+// #[cfg(_list1··)]
+// mod l1;
+// #[cfg(_list2··)]
+// mod l2;

@@ -24,6 +24,8 @@ crate::items! { // structural access: _mods, _all, _always
         #[cfg(feature = "fmt")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "fmt")))]
         pub use super::num_to_str::*;
+        // WIPZONE
+        // pub use super::table::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -33,3 +35,5 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::reexports::*;
     }
 }
+// WIPZONE
+// mod table;

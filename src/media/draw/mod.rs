@@ -15,6 +15,11 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods { #![allow(unused)]
         pub use super::error::*;
+        // WIPZONE
+        // pub use super::buffer::*;
+        // pub use super::canvas::*;
+        // pub use super::grid::*;
+        // pub use super::line::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -23,3 +28,8 @@ crate::items! { // structural access: _mods, _all, _always
     pub(super) mod _always { #![allow(unused)]
     }
 }
+// WIPZONE
+// mod buffer;
+// mod canvas;
+// mod grid;
+// mod line;

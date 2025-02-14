@@ -27,6 +27,9 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
 
     mod _mods {
         pub use super::{ascii::_all::*, char::_all::*, error::*, grapheme::_all::*};
+        // WIPZONE
+        // pub use super::bytes::*;
+        // pub use super::cell::*;
     }
     mod _pub_mods {
         pub use super::{fmt::_all::*, parse::_all::*, str::_all::*};
@@ -41,3 +44,6 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         };
     }
 }
+// WIPZONE
+// mod bytes; // Utf8Byte
+// mod cell; // TextCell

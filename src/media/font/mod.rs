@@ -16,6 +16,9 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::{bitmap::*, error::*};
+        // WIPZONE
+        // #[cfg(feature = "std")]
+        // pub use super::bdf::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -24,3 +27,6 @@ crate::items! { // structural access: _mods, _all, _always
     pub(super) mod _always { #![allow(unused)]
     }
 }
+// WIPZONE
+// #[cfg(any(feature = "std", feature = "dep_hashbrown"))]
+// pub mod bdf;

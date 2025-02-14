@@ -3,8 +3,6 @@
 //! Structured serialization/deserialization.
 //
 
-// mod utils;
-
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
@@ -12,7 +10,11 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        // pub use super::utils::_all::*; // WIP
+        // WIPZONE
+        // pub use super::{
+        //     utils::_all::*,
+        //     rle::*,
+        // };
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -22,3 +24,6 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
 }
+// WIPZONE
+// mod rle;
+// mod utils;

@@ -48,6 +48,10 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
             arch::_all::*, env::_all::*, io::_all::*, log::_all::*, mem::_all::*,
             net::_all::*, os::_all::*, path::_all::*,
         };
+        // WIPZONE
+        // pub use super::fs::_all::*;
+        // #[cfg(feature = "std")]
+        // pub use super::bench::_all::*;
     }
     pub(super) mod _hidden {
         pub use super::mem::_hidden::*;
@@ -62,3 +66,7 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         };
     }
 }
+// WIPZONE
+// pub mod fs;
+// #[cfg(feature = "std")]
+// mod bench;

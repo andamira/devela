@@ -22,6 +22,10 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::atomic::*;
         #[cfg(feature = "alloc")]
         pub use super::reexports::*;
+        // WIPZONE
+        // pub use super::{
+        //     counter::*,
+        // };
     }
     pub(super) mod _all { #[allow(unused)]
         #[doc(inline)]
@@ -33,3 +37,5 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::reexports::*;
     }
 }
+// WIPZONE
+// mod counter;

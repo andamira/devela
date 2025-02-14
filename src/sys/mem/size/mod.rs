@@ -20,6 +20,10 @@ crate::items! { // structural access: _mods, _hidden, _all
         #[doc(inline)]
         #[cfg(feature = "bit")]
         pub use super::bit::*;
+
+        // WIPZONE
+        // #[cfg(feature = "alloc")]
+        // pub use super::heap::*;
     }
     pub(super) mod _hidden {
         #[doc(hidden)]
@@ -30,3 +34,6 @@ crate::items! { // structural access: _mods, _hidden, _all
         pub use super::_mods::*;
     }
 }
+// WIPZONE
+// #[cfg(feature = "alloc")]
+// mod heap;

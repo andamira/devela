@@ -84,7 +84,7 @@ fn find_box_boundaries(
 
 /// TODO
 #[must_use]
-#[expect(unused, reason = "WIP")]
+#[expect(unused, reason = "TEMP")]
 fn largest_by_norm(minval: &[i32], maxval: &[i32], depth: i32) -> i32 {
     let mut largest_spread_so_far = 0;
     let mut largest_dimension = 0;
@@ -102,7 +102,7 @@ fn largest_by_norm(minval: &[i32], maxval: &[i32], depth: i32) -> i32 {
 /// BLACKANDWHITE, GRAYSCALE, or RGB (which implies pamP->depth is 1 or 3).
 /// To save time, we don't actually check it.
 #[must_use]
-#[expect(unused, reason = "WIP")]
+#[expect(unused, reason = "TEMP")]
 fn largest_by_luminosity(minval: &[i32], maxval: &[i32], depth: i32) -> i32 {
     let retval;
     let lumin_factor = [0.2989, 0.5866, 0.1145];

@@ -17,6 +17,10 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::{base::*, error::*, namespace::*};
+        // WIPZONE
+        // pub use super::gray::*;
+        // pub use super::rgb::*;
+        // pub use super::spectral::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -25,3 +29,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub(super) mod _always { #![allow(unused)]
     }
 }
+// WIPZONE
+// mod gray;
+// mod rgb;
+// mod spectral;

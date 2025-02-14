@@ -5,6 +5,9 @@
 
 mod consts; // ExtFloatConst
 
+// WIPZONE
+// mod namespace; // Float
+
 #[cfg(all(test, feature = "_float_f32"))]
 mod tests_f32;
 

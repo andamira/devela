@@ -2,7 +2,7 @@
 //
 //! Language functionality, <abbr title = "Domain Specific Language">DSL</abbr>s
 //! and <abbr title = "Foreign Function Interface">FFI</abbr>s.
-#![doc = crate::doc_!(modules: crate; lang: c, glsl, /* js, py, script, wasm*/ )]
+#![doc = crate::doc_!(modules: crate; lang: c, glsl)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: ffi)]
@@ -20,10 +20,16 @@ crate::items! { // structural access:: _mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
-    mod _pub_mods {
+    mod _pub_mods { #![allow(unused)]
         pub use super::c::_all::*;
         #[cfg(feature = "glsl")]
         pub use super::glsl::_all::*;
+        // WIPZONE:
+        // pub use super::awk::_all::*;
+        // pub use super::js::_all::*;
+        // pub use super::py::_all::*;
+        // pub use super::script::_all::*;
+        // pub use super::wasm::_all::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -32,3 +38,9 @@ crate::items! { // structural access:: _mods, _all, _always
     pub(super) mod _always { #![allow(unused)]
     }
 }
+// WIPZONE
+// pub mod awk;
+// pub mod js;
+// pub mod py;
+// pub mod script;
+// pub mod wasm;
