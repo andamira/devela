@@ -30,7 +30,7 @@
 - new modules:
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
   - `lang::{c, glsl}`.
-  - `media::image::sixel`.
+  - `media::{image::sixel, video}`.
   - `num::{geom::metric, ord, quant}`
   - `sys::{log, net}`.
   - `ui::{back::{self, crossterm, miniquad}, front}`.

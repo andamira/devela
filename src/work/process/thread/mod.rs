@@ -27,7 +27,7 @@ crate::items! { // structural access: _mods, _all, _always
         crate::items! {
             // pub use super::pool::*;
             // pub use super::semaphore::*;
-        };
+        }
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

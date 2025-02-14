@@ -80,7 +80,7 @@ publish = true
 bench = false
 
 
-[features] # 277/300 (23 remaining), 148 visible, 129 hidden
+[features] # 278/300 (22 remaining), 149 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -152,14 +152,14 @@ lang = ["glsl"]
 	# js = []
 	# py = []
 	# wasm = ["ring?/wasm32_unknown_unknown_js"]
-media = ["audio", "color", "draw", "font", "image", "midi"] # "video"
+media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	audio = ["sdl2?/mixer"]
 	draw = ["sdl2?/gfx"] # "sdl3?/gfx"
 	color = []
 	font = ["sdl2?/ttf"]
 	image = ["sdl2?/image"]
 	midi = []
-	# video = [] # WIP
+	video = []
 num = ["alg", "geom", "prim", "rand", "unit"]
 	alg  = [] # algebra (linear & symbolic)
 	geom = [] # geometry

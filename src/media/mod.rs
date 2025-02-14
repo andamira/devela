@@ -1,7 +1,7 @@
 // devela::media
 //
 //! Multimedia functionality.
-#![doc = crate::doc_!(modules: crate; media: audio, color, draw, font, image)]
+#![doc = crate::doc_!(modules: crate; media: audio, color, draw, font, image, video)]
 #![doc = crate::doc_!(newline)]
 //
 // safety
@@ -28,6 +28,9 @@ pub mod image;
 #[cfg(feature = "midi")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "midi")))]
 pub mod midi;
+#[cfg(feature = "video")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "video")))]
+pub mod video;
 
 crate::items! { // structural access: _pub_mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
@@ -41,6 +44,7 @@ crate::items! { // structural access: _pub_mods, _all, _always
         #[cfg(feature = "font")]  pub use super::font::_all::*;
         #[cfg(feature = "image")] pub use super::image::_all::*;
         #[cfg(feature = "midi")]  pub use super::midi::_all::*;
+        #[cfg(feature = "video")] pub use super::video::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -53,5 +57,6 @@ crate::items! { // structural access: _pub_mods, _all, _always
         #[cfg(feature = "font")]  pub use super::font::_always::*;
         #[cfg(feature = "image")] pub use super::image::_always::*;
         #[cfg(feature = "midi")]  pub use super::midi::_always::*;
+        #[cfg(feature = "video")] pub use super::video::_always::*;
     }
 }
