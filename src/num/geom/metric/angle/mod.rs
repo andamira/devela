@@ -69,6 +69,9 @@ pub use kind::AngleKind;
 /// - Kind:
 ///   - [`kind`](Self::kind), *(
 ///     [`is_`](Self::is_kind). )*
+///
+/// This type does **not enforce normalization**, but it is expected
+/// to be normalized in most use cases.
 #[must_use]
 #[repr(transparent)]
 pub struct Angle<T> {
@@ -83,7 +86,7 @@ impl<T> Angle<T> {
     }
 }
 
-/// The angle direction.
+/// The direction of rotation of an angle.
 ///
 /// In mathematics and most graphics programming contexts, the default direction
 /// for angle measurements is counterclockwise from a defined zero point (usually
@@ -97,16 +100,35 @@ impl<T> Angle<T> {
 #[repr(i8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum AngleDirection {
-    /// By convention, positive angles represent a counterclockwise rotation.
+    /// By convention, **positive** angles represent a **counterclockwise** rotation.
     ///
-    /// This is the default direction.
+    /// Also known as the Right-Handed Rule.
+    ///
+    /// This is the default direction of rotation.
     #[default]
-    CounterClockwise = 1,
+    Positive = 1,
 
-    /// By convention, negative angles represent a counterclockwise rotation.
-    Clockwise = -1,
+    /// By convention, **negative** angles represent a **clockwise** rotation.
+    ///
+    /// Also known as the Left-Hand Rule.
+    Negative = -1,
 
-    /// An undefined direction can happen when a full turn angle is normalized
-    /// to an unsigned 0, like when using primitive signed integers.
+    /// An undefined direction can occur when a full-turn angle is normalized
+    /// to an unsigned `0`, such as when working with primitive signed integers.
     Undefined = 0,
+}
+
+#[allow(missing_docs, non_upper_case_globals)]
+impl AngleDirection {
+    /// Alias of **positive** angle direction.
+    pub const CounterClockwise: AngleDirection = AngleDirection::Positive;
+    pub const CCW: AngleDirection = AngleDirection::Positive;
+    pub const RightHandRule: AngleDirection = AngleDirection::Positive;
+    pub const RHR: AngleDirection = AngleDirection::Positive;
+
+    /// Alias of **negative** angle direction.
+    pub const Clockwise: AngleDirection = AngleDirection::Negative;
+    pub const CW: AngleDirection = AngleDirection::Negative;
+    pub const LeftHandRule: AngleDirection = AngleDirection::Positive;
+    pub const LHR: AngleDirection = AngleDirection::Positive;
 }

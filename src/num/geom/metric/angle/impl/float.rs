@@ -100,8 +100,8 @@ macro_rules! impl_angle {
             /// Since the floating-point representation always maintains the sign
             /// the direction can't be undefined.
             pub const fn direction(self) -> AngleDirection {
-                use AngleDirection::{Clockwise, CounterClockwise};
-                if Float(self.turn).is_sign_negative() { Clockwise } else { CounterClockwise }
+                use AngleDirection::{Negative, Positive};
+                if Float(self.turn).is_sign_negative() { Negative } else { Positive }
             }
 
             /// Returns `true` if the angle has the given `direction`.
@@ -119,8 +119,8 @@ macro_rules! impl_angle {
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => Self::new(Float(self.turn).abs().0),
-                    D::Clockwise => Self::new(Float(self.turn).neg_abs().0),
+                    D::Positive | D::Undefined => Self::new(Float(self.turn).abs().0),
+                    D::Negative => Self::new(Float(self.turn).neg_abs().0),
                 }
             }
 
@@ -130,8 +130,8 @@ macro_rules! impl_angle {
             pub const fn set_direction(&mut self, direction: AngleDirection) {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => self.turn = Float(self.turn).abs().0,
-                    D::Clockwise => self.turn = Float(self.turn).neg_abs().0,
+                    D::Positive | D::Undefined => self.turn = Float(self.turn).abs().0,
+                    D::Negative => self.turn = Float(self.turn).neg_abs().0,
                 }
             }
 

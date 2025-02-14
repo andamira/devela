@@ -52,13 +52,13 @@ mod angle_i16 {
     #[test]
     fn signed_angle_direction() {
         let angle = Angle::new(-i16::MAX / 4);
-        assert_eq!(angle.direction(), AngleDirection::Clockwise);
+        assert_eq!(angle.direction(), AngleDirection::Negative);
 
-        let positive_angle = angle.with_direction(AngleDirection::CounterClockwise);
-        assert_eq!(positive_angle.direction(), AngleDirection::CounterClockwise);
+        let positive_angle = angle.with_direction(AngleDirection::Positive);
+        assert_eq!(positive_angle.direction(), AngleDirection::Positive);
 
         let inverted = positive_angle.invert_direction();
-        assert_eq!(inverted.direction(), AngleDirection::Clockwise);
+        assert_eq!(inverted.direction(), AngleDirection::Negative);
     }
 
     /// Test conversion of angle to degrees using integer scaling.
@@ -94,14 +94,14 @@ mod angle_i16 {
     #[test]
     fn angle_set_direction() {
         let mut angle = Angle::<i16>::new(-i16::MAX / 3);
-        assert_eq!(angle.direction(), AngleDirection::Clockwise);
+        assert_eq!(angle.direction(), AngleDirection::Negative);
 
-        angle.set_direction(AngleDirection::CounterClockwise);
-        assert_eq!(angle.direction(), AngleDirection::CounterClockwise);
+        angle.set_direction(AngleDirection::Positive);
+        assert_eq!(angle.direction(), AngleDirection::Positive);
 
         // Undefined should be treated as counterclockwise.
         angle.set_direction(AngleDirection::Undefined);
-        assert_eq!(angle.direction(), AngleDirection::CounterClockwise);
+        assert_eq!(angle.direction(), AngleDirection::Positive);
     }
 }
 
@@ -124,10 +124,10 @@ mod angle_u16 {
     #[test]
     fn unsigned_angle_direction() {
         let unsigned_angle = Angle::<u16>::new(u16::MAX / 4);
-        assert_eq!(unsigned_angle.direction(), AngleDirection::CounterClockwise);
+        assert_eq!(unsigned_angle.direction(), AngleDirection::Positive);
 
         // Setting direction should have no effect.
-        let same_angle = unsigned_angle.with_direction(AngleDirection::Clockwise);
-        assert_eq!(same_angle.direction(), AngleDirection::CounterClockwise);
+        let same_angle = unsigned_angle.with_direction(AngleDirection::Negative);
+        assert_eq!(same_angle.direction(), AngleDirection::Positive);
     }
 }

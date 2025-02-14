@@ -206,9 +206,9 @@ macro_rules! impl_angle {
                 if self.turn == 0 {
                     D::Undefined
                 } else if self.turn > 0 {
-                    D::CounterClockwise
+                    D::Positive
                 } else {
-                    D::Clockwise
+                    D::Negative
                 }
             }
 
@@ -218,8 +218,8 @@ macro_rules! impl_angle {
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => Self::new(self.turn.saturating_abs()),
-                    D::Clockwise => Self::new(-self.turn.saturating_abs()),
+                    D::Positive | D::Undefined => Self::new(self.turn.saturating_abs()),
+                    D::Negative => Self::new(-self.turn.saturating_abs()),
                 }
             }
 
@@ -229,8 +229,8 @@ macro_rules! impl_angle {
             pub fn set_direction(&mut self, direction: AngleDirection) {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => self.turn = self.turn.saturating_abs(),
-                    D::Clockwise => self.turn = -self.turn.saturating_abs(),
+                    D::Positive | D::Undefined => self.turn = self.turn.saturating_abs(),
+                    D::Negative => self.turn = -self.turn.saturating_abs(),
                 }
             }
 
@@ -268,22 +268,22 @@ macro_rules! impl_angle {
 
             /// Returns the angle direction.
             ///
-            /// For unsigned integers the direction is always `CounterClockwise`.
-            pub const fn direction(self) -> AngleDirection { AngleDirection::CounterClockwise }
+            /// For unsigned integers the direction is always `Positive`.
+            pub const fn direction(self) -> AngleDirection { AngleDirection::Positive }
 
             /// Returns a version of the angle with the given `direction` (no-op for unsigned).
             ///
-            /// Unsigned integers can only have `CounterClockwise` direction.
+            /// Unsigned integers can only have `Positive` direction.
             pub const fn with_direction(self, _direction: AngleDirection) -> Self { self }
 
             /// Returns a version of the angle with the given `direction` (no-op for unsigned).
             ///
-            /// Unsigned integers can only have `CounterClockwise` direction.
+            /// Unsigned integers can only have `Positive` direction.
             pub const fn set_direction(self, _direction: AngleDirection) {}
 
             /// Returns a version of the angle with inverted direction (no-op for unsigned).
             ///
-            /// Unsigned integers can only have `CounterClockwise` direction.
+            /// Unsigned integers can only have `Positive` direction.
             pub const fn invert_direction(self) -> Self { self }
 
             /// Returns the negative version of the angle (no-op for unsigned).

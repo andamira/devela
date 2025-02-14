@@ -9,7 +9,9 @@
   - sys: `AppEnv`, `ExtLog`
   - ui: `MiniquadEventHandlerExt`, `UiService`.
   - work: `ExtProcess`.
-- new consts: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
+- new consts:
+  - media::font: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
+  - `AngleDirection::{CounterClockwise, CCW, RightHandRule, RHR, Clockwise, CW, LeftHandRule, LHR}`
 - new types:
   - code: `ScopeGuard`.
   - data:
@@ -72,6 +74,8 @@
   - `LoggerConfig` to `LogConfig`.
   - `TextWrite` trait to `FmtWrite`.
   - re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
+- rename variants:
+  - `AngleDirection`: `CounterClockwise` to `Positive`, `Clockwise` to `Negative`.
 - rename/move fns/methods:
   - from prngs: `next_state` method to `peek_next_state`.
   - `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.

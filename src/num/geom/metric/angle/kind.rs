@@ -1,11 +1,11 @@
 // devela::num::geom::metric::angle::kind
 //
-//! Definitions related to angles.
+//! Defines [`AngleKind`].
 //
 
 use crate::{ExtFloatConst, Interval};
 
-/// The angle kind, based on its normalized magnitude.
+/// The kind of [`Angle`], based on its normalized turn.
 ///
 /// The variant values are normalized to the full range of an u8.
 #[must_use]
