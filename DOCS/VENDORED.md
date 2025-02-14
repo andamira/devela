@@ -119,18 +119,18 @@ See the linked modifications for detailed changes.
 
 ## Other Licenses
 - <i id="8bit_rng"></i>[8bit_rng] by Edward Rosten, (BSD-2),
-  as the [`Xyza8a`] and [`Xyza8b`] structs.
+  as the [`Xyza8a`] and [`Xyza8b`] structs algorithms.
 - <i id="apply"></i>[apply] by GeorgeBurton (Unlicense),
   as part of the [`Chain`] and [`Hook`] structs.
 - <i id="blit-fonts"></i>[blit-fonts] by Andrew Reece (ISC),
-  as the [`FONT_3_5`] and [`FONT_5_6`] consts<!-- ([*modifications*][M_blit-fonts]) -->.
+  as the [`FONT_3_5`] and [`FONT_5_6`] consts data<!-- ([*modifications*][M_blit-fonts]) -->.
 - <i id="pengyhash"></i>[pengyhash] by Alberto Fajardo (BSD-2),
-  as the [`HasherPengy`] struct ([*modifications*][M_pengy]).
+  as the [`HasherPengy`] struct algorithm ([*modifications*][M_pengy]).
 - <i id="size_of_trait"></i>[size_of_trait] byt Joshua Nelson (BSD-3),
   as the [`size_of_expr`] fn.
 - <i id="Xabc"></i>[Xabc] by *EternityForest* (openly shared),
-  as the [`Xabc`] struct.
-- <i id="GraphicGems"></i>Graphics Gems (1985–1994) (permissive [EULA]),
+  as the [`Xabc`] struct algorithm.
+- <i id="GraphicGems"></i>[Graphics Gems] (1985–1994) (permissive EULA),
   as various algorithms.
 
 [8bit_rng]: https://github.com/edrosten/8bit_rng
@@ -150,4 +150,4 @@ See the linked modifications for detailed changes.
   [`size_of_expr`]: https://docs.rs/devela/latest/devela/sys/mem/macro.size_of_expr.html
 [Xabc]: https://web.archive.org/web/20140328221846/https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
   [`Xabc`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xabc.html
-[EULA]: https://github.com/erich666/GraphicsGems/blob/master/LICENSE.md
+[Graphics Gems]: https://www.realtimerendering.com/resources/GraphicsGems/
