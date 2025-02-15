@@ -10,10 +10,7 @@ mod reexports;
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-mod ext;
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-mod project;
+mod ext; // ExtPath
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
@@ -23,7 +20,7 @@ crate::items! { // structural access: _mods, _all
         pub use super::reexports::*;
 
         #[cfg(feature = "std")]
-        pub use super::{ext::*, project::*};
+        pub use super::ext::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

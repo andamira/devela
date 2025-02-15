@@ -53,7 +53,7 @@
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
-- remove standalone fns: `future_block`, `future_pending`, `future_ready`.
+- remove standalone fns: `crate_root`, `crate_root_string`, `future_block`, `future_pending`, `future_ready`.
 - remove private variant `IoErrorKind::Uncategorized`.
 - remove module `data::collections`.
 - disable optional dependencies: `ring`, `rkyv`.

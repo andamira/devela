@@ -15,7 +15,7 @@ mod build;
 pub mod examples;
 
 #[cfg(doc)]
-crate::items!{
+crate::items! {
     pub mod features {
         //! Library features.
         #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]

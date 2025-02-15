@@ -33,17 +33,17 @@ use crate::PathBuf;
 /// assert_eq![some_path.exists(), some_path.exists_ts(true)];
 /// # }
 /// ```
+#[must_use]
 #[derive(Debug, Clone)]
 pub struct FsPath {
-    path: PathBuf,
+    /// The inner `PathBuf`.
+    pub path: PathBuf,
 }
 
 mod methods {
-    use super::FsPath;
-    use crate::{Cow, IoError, IoErrorKind, IoResult, Path, PathBuf, PathDisplay, SystemTime};
-    use ::std::{
-        env,
-        fs::{self, FileType, Metadata, Permissions},
+    use crate::{
+        Cow, Env, FileMetadata, FilePermissions, FileType, Fs, FsPath, IoError, IoErrorKind,
+        IoResult, Path, PathBuf, PathDisplay, SystemTime,
     };
 
     /// # General methods.
@@ -55,36 +55,60 @@ mod methods {
         /// Returns the current working directory.
         ///
         /// Calls `std::env::`[`current_dir`][std::env::current_dir] under the hood.
-        pub fn from_current_dir() -> IoResult<Self> { Ok(Self { path: env::current_dir()? }) }
+        pub fn from_current_dir() -> IoResult<Self> { Ok(Self { path: Env::current_dir()? }) }
+
+        /// Retuns the path of `CARGO_MANIFEST_DIR`.
+        pub fn from_manifest_dir() -> Self {
+            Self {
+                path: PathBuf::from(Env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set"))
+            }
+        }
+
+        /// Retuns the path of `CARGO_MANIFEST_PATH`.
+        pub fn from_manifest_path() -> Self {
+            Self {
+                path: PathBuf::from(Env::var("CARGO_MANIFEST_PATH").expect("CARGO_MANIFEST_PATH not set"))
+            }
+        }
 
         /// Returns a temporary directory.
         ///
         /// Calls `std::env::`[`temp_dir`][std::env::temp_dir] under the hood.
-        pub fn from_temp_dir() -> Self { Self { path: env::temp_dir() } }
+        pub fn from_temp_dir() -> Self { Self { path: Env::temp_dir() } }
 
-        /// Returns an absolute `path` relative to the current Rust project's root.
+
+        /// Resolves a given path relative to the nearest `Cargo.toml` directory.
         ///
-        /// If a relative `path` is provided, it will be appended.
+        /// This function searches for the nearest `Cargo.toml` file starting from the
+        /// current working directory and traversing upwards through its ancestors.
+        /// Once the `Cargo.toml` is found, the provided `path` is appended to its directory.
         ///
-        /// The project's root is determined by the first `Cargo.toml` file
-        /// found from the current directory up through all the ancestors.
-        pub fn from_rust_project_root<P: AsRef<Path>>(path: P) -> IoResult<Self> {
-            let current_path = env::current_dir()?;
+        /// # Errors
+        /// Returns an error if it can't find any `Cargo.toml` file,
+        /// or if it encounters an invalid path during the search process.
+        ///
+        /// # Examples
+        /// ```
+        /// use devela::FsPath;
+        /// match FsPath::from_crate_root("") {
+        ///     Ok(p) => println!("Current crate root is {:?}", p),
+        ///     Err(e) => println!("Error obtaining crate root {:?}", e)
+        /// };
+        /// ```
+        #[cfg(not(miri))] // unsupported operation: getcwd not available when isolation is enabled
+        pub fn from_crate_root<P: AsRef<Path>>(path: P) -> IoResult<Self> {
+            let current_path = Env::current_dir()?;
             let mut root_path = current_path.clone();
 
             for p in current_path.as_path().ancestors() {
-                let has_cargo = fs::read_dir(p)?
-                    .any(|p| p.unwrap().file_name() == *"Cargo.toml");
+                let has_cargo = Fs::read_dir(p)?.any(|p| p.unwrap().file_name() == *"Cargo.toml");
                 if has_cargo {
-                    if path.as_ref().is_relative() {
-                        root_path.push(path);
-                    }
-                    return Ok(Self { path: root_path });
-                } else {
-                    root_path.pop();
+                    return Ok(Self { path: root_path.join(path.as_ref()) });
                 }
+                root_path.pop();
             }
-            Err(IoError::new(IoErrorKind::NotFound, "Ran out of places to find `Cargo.toml`")) }
+            Err(IoError::new(IoErrorKind::NotFound, "Ran out of places to find Cargo.toml"))
+        }
 
         /// Returns the canonical, absolute form of the path with all intermediate
         /// components normalized and symbolic links resolved.
@@ -172,7 +196,7 @@ mod methods {
         /* methods that return IoResult */
 
         /// Returns the metadata.
-        pub fn metadata(&self) -> IoResult<Metadata> { self.path.metadata() }
+        pub fn metadata(&self) -> IoResult<FileMetadata> { self.path.metadata() }
         /// Returns the `FileType`.
         pub fn file_type(&self) -> IoResult<FileType> { Ok(self.metadata()?.file_type()) }
         /// Returns the size of the file, in bytes.
@@ -189,7 +213,9 @@ mod methods {
         // permissions
 
         /// Returns the permissions of the file.
-        pub fn permissions(&self) -> IoResult<Permissions> { Ok(self.metadata()?.permissions()) }
+        pub fn permissions(&self) -> IoResult<FilePermissions> {
+            Ok(self.metadata()?.permissions())
+        }
         /// Is this a read-only file?
         pub fn is_readonly(&self) -> IoResult<bool> { Ok(self.permissions()?.readonly()) }
         /// Sets the read-only flag, returning the previous read-only state.
@@ -224,7 +250,7 @@ mod methods {
         /* methods that return IoResult */
 
         /// Returns the metadata that *optionally* traverses symbolic links.
-        pub fn metadata_ts(&self, traverse: bool) -> IoResult<Metadata> {
+        pub fn metadata_ts(&self, traverse: bool) -> IoResult<FileMetadata> {
             if traverse {
                 self.path.metadata()
             } else {
@@ -263,7 +289,7 @@ mod methods {
         // permissions
 
         /// Returns the permissions of the file.
-        pub fn permissions_ts(&self, traverse: bool) -> IoResult<Permissions> {
+        pub fn permissions_ts(&self, traverse: bool) -> IoResult<FilePermissions> {
             Ok(self.metadata_ts(traverse)?.permissions())
         }
 
