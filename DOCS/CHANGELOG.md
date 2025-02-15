@@ -34,7 +34,7 @@
   - `lang::{c, glsl}`.
   - `media::{image::sixel, video}`.
   - `num::{geom::metric, ord, quant}`
-  - `sys::{log, net}`.
+  - `sys::{log, net, fs}`.
   - `ui::{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
   - `str!`: `ip_addr`.
@@ -69,6 +69,7 @@
   - `num::cmp` to `num::ord`.
   - `num::geom::shape::{angle, extent}` inside `num::geom::metric`.
   - `num::wave` to `phys::wave`.
+  - `sys::path` inside `sys::fs`, made private.
   - `work::async` to `work::future`.
   - `work::thread` to `work::process`.
 - rename/move items:

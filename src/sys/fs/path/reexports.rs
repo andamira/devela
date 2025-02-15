@@ -1,4 +1,4 @@
-// devela::sys::path::reexports
+// devela::sys::fs::path::reexports
 //
 //! Reexported items from `core`.
 //

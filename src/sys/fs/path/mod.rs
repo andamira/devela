@@ -1,6 +1,6 @@
-// devela::sys::path
+// devela::sys::fs::path
 //
-//! Paths.
+//! Cross-platform path manipulation.
 //!
 #![doc = crate::doc_!(extends: path)]
 #![doc = crate::doc_!(newline)]

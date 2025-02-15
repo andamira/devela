@@ -1,7 +1,7 @@
 // devela::sys
 //
 //! System interfaces and hardware abstractions.
-#![doc = crate::doc_!(modules: crate; sys: arch, env, io, log, mem, net, os, path)]
+#![doc = crate::doc_!(modules: crate; sys: arch, env, fs, io, log, mem, net, os)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
@@ -25,14 +25,14 @@ rustc --print target-list | cut -f3 -d'-'| sort | uniq # List of OSes supported
 
 mod sound; // IMPROVE
 
-pub mod arch;
-pub mod env;
-pub mod io;
+pub mod arch; // Arch, *asm, detect_*, m128* m256*
+pub mod env; // App*, Arg*, Env
+pub mod fs; // Fs
+pub mod io; // Io*
 pub mod log;
-pub mod mem;
-pub mod net;
-pub mod os;
-pub mod path;
+pub mod mem; // Mem,
+pub mod net; // Ip*, Socket*, Tcp*, Udp*
+pub mod os; // Linux,
 
 crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
@@ -45,11 +45,9 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            arch::_all::*, env::_all::*, io::_all::*, log::_all::*, mem::_all::*,
-            net::_all::*, os::_all::*, path::_all::*,
+            arch::_all::*, env::_all::*, fs::_all::*, io::_all::*,
+            log::_all::*, mem::_all::*, net::_all::*, os::_all::*,
         };
-        // WIPZONE
-        // pub use super::fs::_all::*;
         // #[cfg(feature = "std")]
         // pub use super::bench::_all::*;
     }
@@ -67,6 +65,5 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     }
 }
 // WIPZONE
-// pub mod fs;
 // #[cfg(feature = "std")]
 // mod bench;

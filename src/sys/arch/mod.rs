@@ -1,6 +1,8 @@
 // devela::sys::arch
 //
 //! Architecture-specific intrinsics.
+//!
+#![doc = crate::doc_!(extends: arch)]
 //
 // NOTE In order to show in the docs all possible feature-gated functionality,
 // they have to be compiled with `RUSTDOCFLAGS="-Ctarget-cpu=native"`.
@@ -8,8 +10,6 @@
 // - Cargo.toml::[package.metadata.docs.rs]
 // - .cargo/config.toml
 // - utils/check.rs
-#![doc = crate::doc_!(extends: arch)]
-#![doc = crate::doc_!(newline)]
 //
 
 mod namespace;
