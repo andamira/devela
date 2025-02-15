@@ -60,7 +60,8 @@ include = [
 	"/build/**/*.rs", "/src/**/*.rs",
 	# documentation:
 	"/build/**/*.md", "/src/**/*.md",
-	"/DOCS/VENDORED*.md", "/LICENSE*",
+	"/DOCS/NIGHTLY.md", "/DOCS/VENDORED*.md",
+	"/LICENSE*",
 	# examples in documentation:
 	"/examples/code/enumint.rs",
 	"/examples/code/enumset.rs",

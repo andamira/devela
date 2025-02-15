@@ -48,6 +48,7 @@
     async_closure,
     build_hasher_default_const_new,
     const_align_of_val,
+    const_float_methods,
     const_maybe_uninit_write,
     const_nonnull_new,
     const_size_of_val,
@@ -68,11 +69,12 @@
 // "nightly_stable_next2": 1.86 core, alloc, std…
 #![cfg_attr(feature = "nightly_stable_next2", feature(
     const_black_box,
+    const_is_char_boundary,
     float_next_up_down,
     get_many_mut, //  get_disjoint_mut
-    trait_upcasting,
     non_zero_count_ones,
     target_feature_11,
+    trait_upcasting,
 ))]
 #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature(vec_pop_if,))]
 #![cfg_attr(
@@ -87,7 +89,6 @@
         asm_goto,
         cell_update,
         const_array_from_ref,
-        const_is_char_boundary,
         const_slice_flatten,
         const_slice_from_ref,
         const_str_split_at,

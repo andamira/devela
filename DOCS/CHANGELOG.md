@@ -49,6 +49,7 @@
 - new re-exports: `LazyLock`, `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
 - new optional dependencies: `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
 - add musl architectures to `check.rs` script.
+- add docs for monitored nightly features.
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
@@ -86,7 +87,7 @@
 - update `str!` macro docs and tests.
 - make public: `data::error`, `sys::env`, `num::geom::shape`, `work::{future, process, sync}`.
 - change `msvc` windows target for `gnu`.
-- improve the documentation of vendored items.
+- improve the docs for vendored items.
 
 ### Fixed
 - rename `prim···` flag to `prim··`

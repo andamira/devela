@@ -6,7 +6,7 @@
 #![cfg(any(doc, test))]
 #![cfg_attr(feature = "nightly_doc", doc(cfg(any(doc, test))))]
 
-/// The build scripts.
+/// Build functionality.
 #[cfg(feature = "std")]
 #[path = "../../build/mod.rs"]
 mod build;
@@ -15,12 +15,17 @@ mod build;
 pub mod examples;
 
 #[cfg(doc)]
-pub mod features {
-    //! Library features.
-    #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
-    #![doc = include_str!("./features.md")]
+crate::items!{
+    pub mod features {
+        //! Library features.
+        #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
+        #![doc = include_str!("./features.md")]
+    }
+    pub mod nightly {
+        //! Nightly features.
+        // WIP
+        #![doc = include_str!("../../DOCS/NIGHTLY.md")]
+    }
+    /// Vendored work.
+    pub mod vendored;
 }
-
-#[cfg(doc)]
-/// Vendored work.
-pub mod vendored;
