@@ -1,6 +1,6 @@
-// devela::sys::std::reexports
+// devela::sys::fs::reexports
 //
-//! Reexported items from `std`.
+//! Reexported items from `std::fs`.
 //
 
 #[allow(unused_imports)]

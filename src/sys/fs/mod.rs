@@ -6,22 +6,26 @@
 #![doc = crate::doc_!(newline)]
 //
 
-mod path;
-mod reexports;
+mod path; // ExtPath, Path*, sys::path::*
+mod reexports; // sys::fs::*
 
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-mod fs_path;
+crate::items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    mod namespace; // Fs
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    mod fs_path; // FsPath
+}
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{path::_all::*, reexports::*};
+        pub use super::{namespace::*, path::_all::*, reexports::*};
 
         #[cfg(feature = "std")]
-        pub use super::fs_path::*;
+        pub use super::{namespace::*, fs_path::*};
         // WIPZONE
         // pub use super::ext::*;
     }
