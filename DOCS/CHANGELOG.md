@@ -27,7 +27,7 @@
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
-  - namespaces: `Fmt`, `Iter`, `Log`.
+  - namespaces: `Fmt`, `FsPath`, `Iter`, `Log`.
 - new macros: `maybe!`, `miniquad!`, `xorshift_custom!`.
 - new modules:
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.

@@ -179,6 +179,7 @@ phys = ["time", "wave"]
 sys = ["io", "mem"]
 	# arch
 		# simd = ["fontdue?/simd"]
+	# fs
 	io = ["tokio?/io-util", "tokio?/io-std"] # no_std_io…
 	mem = ["bit"]
 		bit = [] # BitSize
