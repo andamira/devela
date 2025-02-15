@@ -89,6 +89,7 @@
         asm_goto,
         cell_update,
         const_array_from_ref,
+        const_ptr_sub_ptr,
         const_slice_flatten,
         const_slice_from_ref,
         const_str_split_at,
@@ -101,13 +102,14 @@
         macro_metavar_expr,
         naked_functions,
         num_midpoint_signed,
+        ptr_sub_ptr,
         unbounded_shifts,
         unsafe_cell_from_mut,
     )
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "alloc"),
-    feature(box_uninit_write, new_zeroed_alloc,)
+    feature(box_uninit_write, extract_if, new_zeroed_alloc,)
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "std"),
