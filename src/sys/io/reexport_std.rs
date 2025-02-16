@@ -3,7 +3,7 @@
 //! Reexported items from `std`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 /* io traits */
 

@@ -82,11 +82,18 @@
   - from prngs: `next_state` method to `peek_next_state`.
   - `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
   - `bytes_from_bits` fn to `Mem::bytes_from_bits`.
-- feature-ungate: `FxHasher`, `Xorshift128p`.
+- remove feature gates:
+  - `hash` for: `FxHasher`.
+  - `io` for: `IoError`, `IoErrorKind`, `IoWrite`.
+  - `rand` for: `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
 - derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.
-- make public: `data::error`, `sys::env`, `num::geom::shape`, `work::{future, process, sync}`.
+- make modules public:
+  - `data::error`.
+  - `num::geom::shape`.
+  - `sys::env`.
+  - `work::{future, process, sync}`.
 - change `msvc` windows target for `gnu`.
 - improve the docs for vendored items.
 

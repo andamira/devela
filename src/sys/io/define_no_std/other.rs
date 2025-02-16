@@ -1,12 +1,23 @@
 // devela::sys::io::reimplement_no_std::traits
+//
+// TOC
+// - mod alloc_impls
+// - trait IoRead
+// - trait IoSeek
+// - enum IoSeekFrom
+// - struct IoBytes
+// - trait IoBufRead
+// - struct IoChain
+// - struct IoTake
 
-use super::error::{IoError as Error, IoErrorKind, IoResult as Result};
 #[allow(unused_imports, reason = "±unsafe")]
 use crate::sf;
-use crate::OptRes;
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use core::{cmp, fmt, slice};
+use crate::{
+    IoError, IoErrorKind, IoResult, OptRes,
+    _core::{cmp, fmt, slice},
+};
 
 #[cfg(feature = "alloc")]
 mod alloc_impls {
@@ -22,7 +33,7 @@ mod alloc_impls {
     /// For safety, this function ensures that any allocated but uninitialized part of the buffer
     /// is truncated in case of a panic, preventing exposure of uninitialized data.
     ///
-    pub(super) fn read_to_end<R: IoRead + ?Sized>(r: &mut R, buf: &mut Vec<u8>) -> Result<usize> {
+    pub(super) fn read_to_end<R: IoRead + ?Sized>(r: &mut R, buf: &mut Vec<u8>) -> IoResult<usize> {
         read_to_end_with_reservation(r, buf, |_| 32)
     }
 
@@ -31,7 +42,7 @@ mod alloc_impls {
         r: &mut R,
         buf: &mut Vec<u8>,
         mut reservation_size: F,
-    ) -> Result<usize>
+    ) -> IoResult<usize>
     where
         R: IoRead + ?Sized,
         F: FnMut(&R) -> usize,
@@ -42,7 +53,7 @@ mod alloc_impls {
             r: &mut R,
             buf: &mut Vec<u8>,
             probe_size: usize,
-        ) -> Result<usize> {
+        ) -> IoResult<usize> {
             let mut probe = crate::vec_![0u8; probe_size];
             match r.read(&mut probe) {
                 Ok(n) => {
@@ -94,7 +105,7 @@ mod alloc_impls {
         r: &mut R,
         buf: &mut Vec<u8>,
         mut reservation_size: F,
-    ) -> Result<usize>
+    ) -> IoResult<usize>
     where
         R: IoRead + ?Sized,
         F: FnMut(&R) -> usize,
@@ -105,7 +116,7 @@ mod alloc_impls {
             r: &mut R,
             buf: &mut Vec<u8>,
             _probe_size: usize,
-        ) -> Result<usize> {
+        ) -> IoResult<usize> {
             let mut probe = [0u8; PROBE_SIZE];
             loop {
                 match r.read(&mut probe) {
@@ -177,39 +188,37 @@ mod alloc_impls {
 /// The `IoRead` trait allows for reading bytes from a source.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Read.html>.
+#[rustfmt::skip]
 pub trait IoRead {
     /// Pull some bytes from this source into the specified buffer, returning
     /// how many bytes were read.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.read>.
-    fn read(&mut self, buf: &mut [u8]) -> Result<usize>;
+    fn read(&mut self, buf: &mut [u8]) -> IoResult<usize>;
 
     /// Read all bytes until EOF in this source, placing them into `buf`.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_end>.
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> {
+    fn read_to_end(&mut self, buf: &mut Vec<u8>) -> IoResult<usize> {
         alloc_impls::read_to_end(self, buf)
     }
 
     /// Read the exact number of bytes required to fill `buf`.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.read_exact>.
-    fn read_exact(&mut self, mut buf: &mut [u8]) -> Result<()> {
+    fn read_exact(&mut self, mut buf: &mut [u8]) -> IoResult<()> {
         while !buf.is_empty() {
             match self.read(buf) {
                 Ok(0) => break,
-                Ok(n) => {
-                    let tmp = buf;
-                    buf = &mut tmp[n..];
-                }
+                Ok(n) => { let tmp = buf; buf = &mut tmp[n..]; }
                 Err(ref e) if e.kind() == IoErrorKind::Interrupted => {}
                 Err(e) => return Err(e),
             }
         }
         if !buf.is_empty() {
-            Err(Error::new(IoErrorKind::UnexpectedEof, "failed to fill whole buffer"))
+            Err(IoError::new(IoErrorKind::UnexpectedEof, "failed to fill whole buffer"))
         } else {
             Ok(())
         }
@@ -218,121 +227,22 @@ pub trait IoRead {
     /// Creates a "by reference" adaptor for this instance of `IoRead`.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.by_ref>.
-    fn by_ref(&mut self) -> &mut Self
-    where
-        Self: Sized,
-    {
-        self
-    }
+    fn by_ref(&mut self) -> &mut Self where Self: Sized { self }
 
     /// Transforms this `IoRead` instance to an [`Iterator`] over its bytes.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.bytes>.
-    fn bytes(self) -> IoBytes<Self>
-    where
-        Self: Sized,
-    {
-        IoBytes { inner: self }
-    }
+    fn bytes(self) -> IoBytes<Self> where Self: Sized { IoBytes { inner: self } }
 
     /// Creates an adaptor which will chain this stream with another.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.chain>.
-    fn chain<R: IoRead>(self, next: R) -> IoChain<Self, R>
-    where
-        Self: Sized,
-    {
-        IoChain { first: self, second: next, done_first: false }
+    fn chain<R: IoRead>(self, next: R) -> IoChain<Self, R> where Self: Sized {
+        IoChain::new(self, next, false)
     }
 
     /// Creates an adaptor which will read at most `limit` bytes from it.
-    ///
-    fn take(self, limit: u64) -> IoTake<Self>
-    where
-        Self: Sized,
-    {
-        IoTake { inner: self, limit }
-    }
-}
-
-/// A trait for objects which are byte-oriented sinks.
-///
-/// See <https://doc.rust-lang.org/std/io/trait.Write.html>.
-pub trait IoWrite {
-    /// Write a buffer into this writer, returning how many bytes were written.
-    ///
-    /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.write>.
-    fn write(&mut self, buf: &[u8]) -> Result<usize>;
-
-    /// Flush this output stream, ensuring that all intermediately buffered
-    /// contents reach their destination.
-    ///
-    /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.flush>.
-    fn flush(&mut self) -> Result<()>;
-
-    /// Attempts to write an entire buffer into this writer.
-    ///
-    /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.write_all>.
-    fn write_all(&mut self, mut buf: &[u8]) -> Result<()> {
-        while !buf.is_empty() {
-            match self.write(buf) {
-                Ok(0) => {
-                    return Err(Error::new(IoErrorKind::WriteZero, "failed to write whole buffer"));
-                }
-                Ok(n) => buf = &buf[n..],
-                Err(ref e) if e.kind() == IoErrorKind::Interrupted => {}
-                Err(e) => return Err(e),
-            }
-        }
-        Ok(())
-    }
-
-    /// Writes a formatted string into this writer, returning any error encountered.
-    ///
-    /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.write_fmt>.
-    fn write_fmt(&mut self, fmt: fmt::Arguments<'_>) -> Result<()> {
-        // Create a shim which translates an IoWrite to a fmt::Write and saves
-        // off I/O errors. instead of discarding them
-        struct Adaptor<'a, T: ?Sized + 'a> {
-            inner: &'a mut T,
-            error: Result<()>,
-        }
-
-        impl<T: IoWrite + ?Sized> fmt::Write for Adaptor<'_, T> {
-            fn write_str(&mut self, s: &str) -> fmt::Result {
-                match self.inner.write_all(s.as_bytes()) {
-                    Ok(()) => Ok(()),
-                    Err(e) => {
-                        self.error = Err(e);
-                        Err(fmt::Error)
-                    }
-                }
-            }
-        }
-
-        let mut output = Adaptor { inner: self, error: Ok(()) };
-        match fmt::write(&mut output, fmt) {
-            Ok(()) => Ok(()),
-            Err(..) => {
-                // check if the error came from the underlying `IoWrite` or not
-                if output.error.is_err() {
-                    output.error
-                } else {
-                    Err(Error::new(IoErrorKind::Other, "formatter error"))
-                }
-            }
-        }
-    }
-
-    /// Creates a "by reference" adaptor for this instance of `IoWrite`.
-    ///
-    /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.by_ref>.
-    fn by_ref(&mut self) -> &mut Self
-    where
-        Self: Sized,
-    {
-        self
-    }
+    fn take(self, limit: u64) -> IoTake<Self> where Self: Sized { IoTake::new(self, limit) }
 }
 
 /// The `IoSeek` trait provides a cursor which can be moved within a stream of
@@ -343,7 +253,7 @@ pub trait IoSeek {
     /// Seek to an offset, in bytes, in a stream.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Seek.html#method.seek>.
-    fn seek(&mut self, pos: IoSeekFrom) -> Result<u64>;
+    fn seek(&mut self, pos: IoSeekFrom) -> IoResult<u64>;
 }
 
 /// Enumeration of possible methods to seek within an I/O object.
@@ -374,13 +284,13 @@ pub enum IoSeekFrom {
 /// See <https://doc.rust-lang.org/std/io/trait.Bytes.html>.
 #[derive(Debug)]
 pub struct IoBytes<R> {
-    inner: R,
+    pub(super) inner: R,
 }
 
 impl<R: IoRead> Iterator for IoBytes<R> {
-    type Item = Result<u8>;
+    type Item = IoResult<u8>;
 
-    fn next(&mut self) -> OptRes<u8, Error> {
+    fn next(&mut self) -> OptRes<u8, IoError> {
         let mut byte = 0;
         loop {
             return match self.inner.read(slice::from_mut(&mut byte)) {
@@ -402,7 +312,7 @@ pub trait IoBufRead: IoRead {
     /// from the inner reader if it is empty.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.BufRead.html#method.fill_buf>.
-    fn fill_buf(&mut self) -> Result<&[u8]>;
+    fn fill_buf(&mut self) -> IoResult<&[u8]>;
 
     /// Tells this buffer that `amt` bytes have been consumed from the buffer,
     /// so they should no longer be returned in calls to `read`.
@@ -421,6 +331,10 @@ pub struct IoChain<T, U> {
 }
 
 impl<T, U> IoChain<T, U> {
+    pub(super) fn new(first: T, second: U, done_first: bool) -> Self {
+        IoChain { first, second, done_first }
+    }
+
     /// Consumes the `Chain`, returning the wrapped readers.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Chain.html#method.into_inner>.
@@ -450,7 +364,7 @@ impl<T: fmt::Debug, U: fmt::Debug> fmt::Debug for IoChain<T, U> {
 }
 
 impl<T: IoRead, U: IoRead> IoRead for IoChain<T, U> {
-    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+    fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
         if !self.done_first {
             match self.first.read(buf)? {
                 0 if !buf.is_empty() => self.done_first = true,
@@ -462,7 +376,7 @@ impl<T: IoRead, U: IoRead> IoRead for IoChain<T, U> {
 }
 
 impl<T: IoBufRead, U: IoBufRead> IoBufRead for IoChain<T, U> {
-    fn fill_buf(&mut self) -> Result<&[u8]> {
+    fn fill_buf(&mut self) -> IoResult<&[u8]> {
         if !self.done_first {
             match self.first.fill_buf()? {
                 [] => {
@@ -493,6 +407,10 @@ pub struct IoTake<T> {
 }
 
 impl<T> IoTake<T> {
+    pub(super) fn new(inner: T, limit: u64) -> Self {
+        IoTake { inner, limit }
+    }
+
     /// Returns the number of bytes that can be read before this instance will
     /// return EOF.
     ///
@@ -532,7 +450,7 @@ impl<T> IoTake<T> {
 }
 
 impl<T: IoRead> IoRead for IoTake<T> {
-    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+    fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
         // Don't call into inner reader at all at EOF because it may still block
         if self.limit == 0 {
             return Ok(0);
@@ -546,7 +464,7 @@ impl<T: IoRead> IoRead for IoTake<T> {
 
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> {
+    fn read_to_end(&mut self, buf: &mut Vec<u8>) -> IoResult<usize> {
         // Pass in a reservation_size closure that respects the current value
         // of limit for each read. If we hit the read limit, this prevents the
         // final zero-byte read from allocating again.
@@ -557,7 +475,7 @@ impl<T: IoRead> IoRead for IoTake<T> {
 }
 
 impl<T: IoBufRead> IoBufRead for IoTake<T> {
-    fn fill_buf(&mut self) -> Result<&[u8]> {
+    fn fill_buf(&mut self) -> IoResult<&[u8]> {
         // Don't call into inner reader at all at EOF because it may still block
         if self.limit == 0 {
             return Ok(&[]);
