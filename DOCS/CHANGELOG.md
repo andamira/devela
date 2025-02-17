@@ -5,17 +5,21 @@
 ### Added
 - new features: `desk`, `term`, `web`, `glsl, _maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
 - new traits:
-  - data: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
-  - sys: `AppEnv`, `ExtLog`
+  - data:
+    - codec: `Encodable`, `EncodabeLen`.
+    - table: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
+  - sys: `AppEnv`, `ExtLog`.
   - ui: `MiniquadEventHandlerExt`, `UiService`.
   - work: `ExtProcess`.
 - new consts:
   - media::font: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
-  - `AngleDirection::{CounterClockwise, CCW, RightHandRule, RHR, Clockwise, CW, LeftHandRule, LHR}`
+  - `AngleDirection::{CounterClockwise, CCW, RightHandRule, RHR, Clockwise, CW, LeftHandRule, LHR}`.
 - new types:
   - code: `ScopeGuard`.
-  - data:
-    - xifer: `DataValue*`, `DataType*`, `DataRaw*`, `NoData`, `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
+  - data: `NoData`.
+    - codec: `Base`, `EncodeBe`, `EncodeLe`, `EncodeIf`, `EncodeJoin`, `EncodeFlags`, `EncodeLen`, `EncodeLenValue`.
+    - table: `DataValue*`, `DataType*`, `DataRaw*`.
+    - xifer: `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - lang: `g_*`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - num:
@@ -33,7 +37,7 @@
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
   - `lang::{c, glsl}`.
   - `media::{image::sixel, video}`.
-  - `num::{geom::metric, ord, quant}`
+  - `num::{geom::metric, ord, quant}`.
   - `sys::{log, net, fs}`.
   - `ui::{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
@@ -46,7 +50,7 @@
   - prngs: `from_state`, `inner_state`.
 - new variants:
   - `IoErrorKind:` `OutOfMemory`, `FilesystemLoop`, `FilesystemQuotaExceeded`, `CrossesDevices`, `InvalidFilename`, `InProgress`.
-- new re-exports: `LazyLock`, `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`
+- new re-exports: `LazyLock`, `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`.
 - new optional dependencies: `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features.
@@ -98,7 +102,7 @@
 - improve the docs for vendored items.
 
 ### Fixed
-- rename `prim···` flag to `prim··`
+- rename `prim···` flag to `prim··`.
 - improve build script debug output.
 - enable nightly features depending on `alloc` and `std`.
 - feature-gate namespaced re-exported unsafe methods with `unsafe··`.

@@ -36,6 +36,8 @@
   [`cfor`]: crate::code::util::cfor
   [M_crunchy]: crate::_info::vendored::modifications#crunchy
   [`unroll`]: crate::code::util::unroll
+  [M_encode]: crate::_info::vendored::modifications#encode
+  [`data::codec::encode`]: crate::data::codec::encode
   [M_icy_sixel]: crate::_info::vendored::modifications#icy_sixel
   [`media::image::sixel`]: crate::media::image::sixel
   [M_object-id]: crate::_info::vendored::modifications#object-id

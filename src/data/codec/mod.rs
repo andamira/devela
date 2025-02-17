@@ -1,18 +1,38 @@
 // devela::data::codec
 //
-//! Encoding/Decoding data into compact, transportable or interoperable formats.
+//! Abstractions for encoding and decoding data.
 #![doc = crate::doc_!(modules: crate::data; codec: hash)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: hash)]
+//!
+//! ## Determinism & Side Effects
+//! Encoding and decoding should be **deterministic**.
+//! Implementations should avoid introducing side effects where possible.
+//!
+//! **Potential sources of non-determinism:**
+//! - Writing to or reading from external files or devices.
+//! - Using randomness during encoding or decoding.
+//! - Modifying or depending on global state.
+//!
+//! ## Example
+//! ```
+//! use devela::{Encodable, EncodeLenValue, IoWrite};
+//!
+//! # #[cfg(feature = "alloc")] { use devela::Vec;
+//! let mut buf = Vec::new();
+//! EncodeLenValue::<_, u8>::new("hello").encode(&mut buf).unwrap();
+//! assert_eq!(&buf, b"\x05hello");
+//! # }
+//! ```
 //
 
 mod bit; // bitfield handling and binary transformations.
+mod encode; // encoders and decoders.
 mod radix; // radix-based encodings (Base32, Base64, Base58…).
-mod serde; // structured serialization/deserialization.
 mod types;
 
-pub mod hash; // Hashing algorithms (Fnv, Fx, MD5).
+pub mod hash; // hashing algorithms (Fnv, Fx, MD5).
 
 crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
@@ -21,7 +41,9 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{bit::_all::*, radix::_all::*, serde::_all::*, types::*};
+        pub use super::{bit::_all::*, encode::_all::*, radix::_all::*, types::*};
+        // WIPZONE
+        // pub use serde::_all::*;
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
@@ -37,3 +59,8 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         pub use super::hash::_always::*;
     }
 }
+// WIP ZONE
+// mod compress; // compression algorithms
+// mod hex; // Hexadecimal literals and conversions.
+// mod rle; // Run-length encoding and similar techniques.
+// mod serde; // structured serialization/deserialization.

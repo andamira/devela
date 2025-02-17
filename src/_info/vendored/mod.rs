@@ -22,6 +22,7 @@
 #[doc = crate::doc_!(vendor_mod: "tupl")]
 // MIT:
 #[doc = crate::doc_!(vendor_mod: "crunchy")]
+#[doc = crate::doc_!(vendor_mod: "encode")]
 #[doc = crate::doc_!(vendor_mod: "icy_sixel")]
 #[doc = crate::doc_!(vendor_mod: "object-id")]
 // other:

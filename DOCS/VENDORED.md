@@ -89,6 +89,8 @@ See the linked modifications for detailed changes.
   as the [`cfor`] macro.
 - <i id="crunchy"></i>[crunchy] by Eira Fransham,
   as the [`unroll`] macro ([*modifications*][M_crunchy]).
+- <i id="encode"></i>[encode] by Altair Bueno,
+  as the [`data::codec::encode`] module ([*modifications*][M_encode]).
 - <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
   as the [`media::image::sixel`] module ([*modifications*][M_icy_sixel]).
 - <i id="object-id"></i>[object-id] by *Altertech*,
@@ -103,6 +105,9 @@ See the linked modifications for detailed changes.
 [crunchy]: https://crates.io/crates/crunchy/0.2.3
   [M_crunchy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/crunchy.md
   [`unroll`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
+[encode]: https://crates.io/crates/encode/0.1.2
+  [M_encode]: https://github.com/andamira/devela/blob/main/src/_info/vendored/encode.md
+  [`data::codec::encode`]: https://docs.rs/devela/latest/devela/data/codec/encode
 [icy_sixel]: https://crates.io/crates/icy_sixel/0.1.3
 [libsixel]: https://github.com/saitoha/libsixel
   [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/_info/vendored/icy_sixel.md
