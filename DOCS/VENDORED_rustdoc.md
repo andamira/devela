@@ -1,6 +1,6 @@
 <!-- Updated intra-doc links, to be loaded from: _doc::vendored -->
 
-<!-- orig: Apache-2.0 OR MIT -->
+<!-- license: Apache-2.0 OR MIT -->
   [`cfg-if`]: crate::code::util::cfg_if
   [`ConstList`]: crate::data::list::ConstList
   [M_crossbeam-utils]: crate::_info::vendored::modifications#crossbeam-utils
@@ -32,7 +32,7 @@
   [M_tupl]: crate::_info::vendored::modifications#tupl
   [`Tuple`]: crate::data::list::tuple::Tuple
 
-<!-- orig: MIT -->
+<!-- license: MIT -->
   [`cfor`]: crate::code::util::cfor
   [M_crunchy]: crate::_info::vendored::modifications#crunchy
   [`unroll`]: crate::code::util::unroll
@@ -45,7 +45,7 @@
   [`as_bytes_mut`]: crate::sys::mem::Mem::as_bytes_mut
   [`FatPtr`]: crate::sys::mem::FatPtr
 
-<!-- orig: OTHER -->
+<!-- license: OTHER -->
   [`Xyza8a`]: crate::num::rand::Xyza8a
   [`Xyza8b`]: crate::num::rand::Xyza8b
   [`Chain`]: crate::code::result::Chain
