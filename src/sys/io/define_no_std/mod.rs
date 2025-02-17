@@ -5,16 +5,16 @@
 // WAIT: [no_std io](https://github.com/rust-lang/rust/issues/48331)
 
 mod error; // IoError, IoErrorKind, IoResult
+mod read; // IoRead, IoBufRead, IoBytes, IoChain, IoTake
 mod write; // IoWrite
-pub use {error::*, write::*};
+pub use {error::*, read::*, write::*};
 
 #[cfg(feature = "io")]
 crate::items! {
     mod buffered; // IoBufReader, IoBufWriter, IoLineWriter, IntoInnerError
-    mod cursor; // IoCursor
+    mod cursor; // IoSeek, IoSeekFrom, IoCursor
     mod fns; // io_copy
     mod impls;
-    mod other; // IoSeekFrom, (IoBufRead, IoRead, IoSeek), (IoBytes, IoChain, IoTake)
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
-    pub use {buffered::*, cursor::*, fns::*, other::*};
+    pub use {buffered::*, cursor::*, fns::*};
 }

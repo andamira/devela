@@ -86,9 +86,9 @@
   - from prngs: `next_state` method to `peek_next_state`.
   - `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
   - `bytes_from_bits` fn to `Mem::bytes_from_bits`.
-- remove feature gates:
+- remove feature-gates:
   - `hash` for: `FxHasher`.
-  - `io` for: `IoError`, `IoErrorKind`, `IoWrite`.
+  - `io` for: `IoError`, `IoErrorKind`, `IoRead`, `IoWrite`, `IoBytes`, `IoChain`, `IoTake`.
   - `rand` for: `Xorshift128p`.
 - make customizable: `XorShift[16|32|64]`.
 - derive Copy for `Lgc16`.
