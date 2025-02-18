@@ -14,7 +14,6 @@ crate::items! {
     mod buffered; // IoBufReader, IoBufWriter, IoLineWriter, IntoInnerError
     mod cursor; // IoSeek, IoSeekFrom, IoCursor
     mod fns; // io_copy
-    mod impls;
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
     pub use {buffered::*, cursor::*, fns::*};
 }

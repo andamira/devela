@@ -9,6 +9,7 @@
 // - struct IoChain
 // - struct IoLines (TODO)
 // - struct IoTake
+// - impls
 // - mod alloc_impls
 
 #[allow(unused_imports, reason = "±unsafe")]
@@ -30,6 +31,9 @@ pub trait IoRead {
     /* provided */
 
     /// Read all bytes until EOF in this source, placing them into `buf`.
+    ///
+    /// # Features
+    /// Makes use of the `unsafe_slice` feature if enabled.
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> IoResult<usize> {
@@ -243,8 +247,6 @@ impl<T: IoRead> IoRead for IoTake<T> {
         self.limit -= n as u64;
         Ok(n)
     }
-    /// # Features
-    /// Makes use of the `unsafe_slice` feature-gate`.
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> IoResult<usize> {
@@ -269,6 +271,77 @@ impl<T: IoBufRead> IoBufRead for IoTake<T> {
         let amt = cmp::min(amt as u64, self.limit) as usize;
         self.limit -= amt as u64;
         self.inner.consume(amt);
+    }
+}
+
+/* impls */
+
+impl<R: IoRead + ?Sized> IoRead for &mut R {
+    fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
+        (**self).read(buf)
+    }
+    fn read_exact(&mut self, buf: &mut [u8]) -> IoResult<()> {
+        (**self).read_exact(buf)
+    }
+}
+impl<B: IoBufRead + ?Sized> IoBufRead for &mut B {
+    fn fill_buf(&mut self) -> IoResult<&[u8]> {
+        (**self).fill_buf()
+    }
+    fn consume(&mut self, amt: usize) {
+        (**self).consume(amt);
+    }
+}
+
+/// `IoRead` is implemented for `&[u8]` by copying from the slice.
+///
+/// Note that reading updates the slice to point to the yet unread part.
+/// The slice will be empty when EOF is reached.
+impl IoRead for &[u8] {
+    fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
+        let amt = cmp::min(buf.len(), self.len());
+        let (a, b) = self.split_at(amt);
+
+        // First check if the amount of bytes we want to read is small:
+        // `copy_from_slice` will generally expand to a call to `memcpy`, and
+        // for a single byte the overhead is significant.
+        if amt == 1 {
+            buf[0] = a[0];
+        } else {
+            buf[..amt].copy_from_slice(a);
+        }
+
+        *self = b;
+        Ok(amt)
+    }
+
+    fn read_exact(&mut self, buf: &mut [u8]) -> IoResult<()> {
+        if buf.len() > self.len() {
+            return Err(IoError::new(IoErrorKind::UnexpectedEof, "failed to fill whole buffer"));
+        }
+        let (a, b) = self.split_at(buf.len());
+
+        // First check if the amount of bytes we want to read is small:
+        // `copy_from_slice` will generally expand to a call to `memcpy`, and
+        // for a single byte the overhead is significant.
+        if buf.len() == 1 {
+            buf[0] = a[0];
+        } else {
+            buf.copy_from_slice(a);
+        }
+
+        *self = b;
+        Ok(())
+    }
+}
+
+impl IoBufRead for &[u8] {
+    fn fill_buf(&mut self) -> IoResult<&[u8]> {
+        Ok(*self)
+    }
+
+    fn consume(&mut self, amt: usize) {
+        *self = &self[amt..];
     }
 }
 

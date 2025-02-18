@@ -20,6 +20,11 @@ pub trait IoSeek {
     /// Seek to an offset, in bytes, in a stream.
     fn seek(&mut self, pos: IoSeekFrom) -> IoResult<u64>;
 }
+impl<S: IoSeek + ?Sized> IoSeek for &mut S {
+    fn seek(&mut self, pos: IoSeekFrom) -> IoResult<u64> {
+        (**self).seek(pos)
+    }
+}
 
 /// Enumeration of possible methods to seek within an I/O object.
 ///
