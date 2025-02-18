@@ -4,9 +4,11 @@
 //
 
 mod impls;
+#[cfg(test)]
+mod tests;
 
-mod combinators; // Encode*
-mod traits; // Encodable, EncodableLen
+mod combinators; // Codec*
+mod traits; // Decodable, Encodable, EncodableLen
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]

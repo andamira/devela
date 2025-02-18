@@ -1,75 +1,75 @@
 // devela::data::codec::encode::combinators
 //
 //! Defines
-//! [`EncodeBe`], [`EncodeIf`], [`EncodeLe`], [`EncodeFlags`], [`EncodeJoin`], [`EncodeLenValue`].
+//! [`CodecBe`], [`CodecIf`], [`CodecLe`], [`CodecFlags`], [`CodecJoin`], [`CodecLenValue`].
 //
 
 use crate::{
-    BitOr, Debug, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter, IoError,
-    IoErrorKind, IoResult, IoWrite, NonZero, PhantomData, TryFromIntError,
+    iif, BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
+    IoError, IoErrorKind, IoRead, IoResult, IoWrite, NonZero, PhantomData, TryFromIntError,
 };
 
 pub use {
-    cond::EncodeIf,
-    endian::{EncodeBe, EncodeLe},
-    flags::EncodeFlags,
-    join::EncodeJoin,
-    len::{EncodeLen, EncodeLenValue},
+    cond::CodecIf,
+    endian::{CodecBe, CodecLe},
+    flags::CodecFlags,
+    join::CodecJoin,
+    len::{CodecLen, CodecLenValue},
 };
 
 #[rustfmt::skip]
 mod endian {
     use super::*;
 
-    /// Encodes a number in big-endian order.
+    /// Encodes and decodes a number in big-endian order.
     ///
     /// # Example
     /// ```
-    /// use devela::{Encodable, EncodeBe};
+    /// use devela::{Encodable, CodecBe};
     ///
     /// let mut buf = [0u8; 32];
-    /// let len = EncodeBe::new(1u16).encode(&mut &mut buf[..]).unwrap();
+    /// let len = CodecBe::new(1u16).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], &[0, 1], "the most significant byte comes first");
     ///
     /// # #[cfg(feature = "alloc")] { use devela::Vec;
     /// let mut buf = Vec::<u8>::new();
-    /// EncodeBe::new(1u16).encode(&mut buf).unwrap();
+    /// CodecBe::new(1u16).encode(&mut buf).unwrap();
     /// assert_eq!(&buf, &[0, 1]);
     /// # }
     /// ```
     #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-    pub struct EncodeBe<W> {
+    pub struct CodecBe<W> {
         num: W,
     }
-    impl<W> EncodeBe<W> {
-        /// Creates a new [`EncodeBe`] combinator.
+    impl<W> CodecBe<W> {
+        /// Creates a new [`CodecBe`] combinator.
         pub const fn new(num: W) -> Self { Self { num } }
     }
 
-    /// Encodes a number in little-endian order.
+    /// Encodes and decodes a number in little-endian order.
     ///
     /// # Examples
     /// ```
-    /// use devela::{Encodable, EncodeLe};
+    /// use devela::{Encodable, CodecLe};
     ///
     /// let mut buf = [0u8; 2];
-    /// let len = EncodeLe::new(1u16).encode(&mut &mut buf[..]).unwrap();
+    /// let len = CodecLe::new(1u16).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], &[1, 0], "the least significant byte comes first");
     ///
     /// # #[cfg(feature = "alloc")] { use devela::Vec;
     /// let mut buf = Vec::<u8>::new();
-    /// EncodeLe::new(1u16).encode(&mut buf).unwrap();
+    /// CodecLe::new(1u16).encode(&mut buf).unwrap();
     /// assert_eq!(&buf, &[1, 0]);
     /// # }
     /// ```
     #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-    pub struct EncodeLe<E> {
+    pub struct CodecLe<E> {
         num: E,
     }
-    impl<W> EncodeLe<W> {
-        /// Creates a new [`EncodeLe`] combinator.
+    impl<W> CodecLe<W> {
+        /// Creates a new [`CodecLe`] combinator.
         pub const fn new(num: W) -> Self { Self { num } }
     }
     macro_rules! impl_endian {
@@ -81,13 +81,13 @@ mod endian {
             impl_endian!(prim: $($T),+);
             impl_endian!(non0: $($T),+);
             $(
-                impl TryFrom<usize> for EncodeBe<$T> {
+                impl TryFrom<usize> for CodecBe<$T> {
                     type Error = TryFromIntError;
                     fn try_from(value: usize) -> Result<Self, Self::Error> {
                         <$T>::try_from(value).map(Self::new)
                     }
                 }
-                impl TryFrom<usize> for EncodeLe<$T> {
+                impl TryFrom<usize> for CodecLe<$T> {
                     type Error = TryFromIntError;
                     fn try_from(value: usize) -> Result<Self, Self::Error> {
                         <$T>::try_from(value).map(Self::new)
@@ -99,47 +99,69 @@ mod endian {
             impl_endian!(prim: $($T),+);
         };
         (prim: $($T:ty),+) => {
-            $(
-                impl From<$T> for EncodeBe<$T> { fn from(num: $T) -> Self { Self { num } } }
-                impl From<EncodeBe<$T>> for $T { fn from(be: EncodeBe<$T>) -> Self { be.num } }
-                impl<W: IoWrite> Encodable<W> for EncodeBe<$T> {
+            $(  // Be
+                impl From<$T> for CodecBe<$T> { fn from(num: $T) -> Self { Self { num } } }
+                impl From<CodecBe<$T>> for $T { fn from(be: CodecBe<$T>) -> Self { be.num } }
+                impl<W: IoWrite> Encodable<W> for CodecBe<$T> {
                     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-                        writer.write(&self.num.to_be_bytes())
-                    }
-                }
-                impl From<$T> for EncodeLe<$T> { fn from(num: $T) -> Self { Self { num } } }
-                impl From<EncodeLe<$T>> for $T { fn from(be: EncodeLe<$T>) -> Self { be.num } }
-                impl<W: IoWrite> Encodable<W> for EncodeLe<$T> {
+                        writer.write(&self.num.to_be_bytes()) } }
+                impl<R: IoRead> Decodable<R> for CodecBe<$T> {
+                    type Output = $T;
+                    fn decode(reader: &mut R) -> IoResult<$T> {
+                        let mut buf = [0u8; size_of::<$T>()];
+                        reader.read_exact(&mut buf)?;
+                        Ok(<$T>::from_be_bytes(buf)) } }
+                // Le
+                impl From<$T> for CodecLe<$T> { fn from(num: $T) -> Self { Self { num } } }
+                impl From<CodecLe<$T>> for $T { fn from(be: CodecLe<$T>) -> Self { be.num } }
+                impl<W: IoWrite> Encodable<W> for CodecLe<$T> {
                     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-                        writer.write(&self.num.to_le_bytes())
-                    }
-                }
+                        writer.write(&self.num.to_le_bytes()) } }
+                impl<R: IoRead> Decodable<R> for CodecLe<$T> {
+                    type Output= $T;
+                    fn decode(reader: &mut R) -> IoResult<$T> {
+                        let mut buf = [0u8; size_of::<$T>()];
+                        reader.read_exact(&mut buf)?;
+                        Ok(<$T>::from_le_bytes(buf)) } }
             )+
         };
         (non0: $($T:ty),+) => {
-            $(
-                impl From<NonZero<$T>> for EncodeBe<NonZero<$T>> {
-                    fn from(num: NonZero<$T>) -> Self { Self { num } }
-                }
-                impl From<EncodeBe<NonZero<$T>>> for NonZero<$T> {
-                    fn from(be: EncodeBe<NonZero<$T>>) -> Self { be.num }
-                }
-                impl<W: IoWrite> Encodable<W> for EncodeBe<NonZero<$T>> {
+            $(  // Be
+                impl From<NonZero<$T>> for CodecBe<NonZero<$T>> {
+                    fn from(num: NonZero<$T>) -> Self { Self { num } } }
+                impl From<CodecBe<NonZero<$T>>> for NonZero<$T> {
+                    fn from(be: CodecBe<NonZero<$T>>) -> Self { be.num } }
+                impl<W: IoWrite> Encodable<W> for CodecBe<NonZero<$T>> {
                     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-                        writer.write(&self.num.get().to_be_bytes())
-                    }
-                }
-                impl From<NonZero<$T>> for EncodeLe<NonZero<$T>> {
-                    fn from(num: NonZero<$T>) -> Self { Self { num } }
-                }
-                impl From<EncodeLe<NonZero<$T>>> for NonZero<$T> {
-                    fn from(be: EncodeLe<NonZero<$T>>) -> Self { be.num }
-                }
-                impl<W: IoWrite> Encodable<W> for EncodeLe<NonZero<$T>> {
+                        writer.write(&self.num.get().to_be_bytes()) } }
+                impl<R: IoRead> Decodable<R> for CodecBe<NonZero<$T>> {
+                    type Output = NonZero<$T>;
+                    fn decode(reader: &mut R) -> IoResult<NonZero<$T>> {
+                        let mut buf = [0u8; size_of::<$T>()];
+                        reader.read_exact(&mut buf)?;
+                        let num = <$T>::from_be_bytes(buf);
+                        let non_zero = NonZero::<$T>::new(num)
+                            .ok_or(IoError::new(IoErrorKind::InvalidData,
+                                    "Decoded zero for NonZero type"))?;
+                        Ok(non_zero) } }
+                // Le
+                impl From<NonZero<$T>> for CodecLe<NonZero<$T>> {
+                    fn from(num: NonZero<$T>) -> Self { Self { num } } }
+                impl From<CodecLe<NonZero<$T>>> for NonZero<$T> {
+                    fn from(be: CodecLe<NonZero<$T>>) -> Self { be.num } }
+                impl<W: IoWrite> Encodable<W> for CodecLe<NonZero<$T>> {
                     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-                        writer.write(&self.num.get().to_be_bytes())
-                    }
-                }
+                        writer.write(&self.num.get().to_be_bytes()) } }
+                impl<R: IoRead> Decodable<R> for CodecLe<NonZero<$T>> {
+                    type Output = NonZero<$T>;
+                    fn decode(reader: &mut R) -> IoResult<NonZero<$T>> {
+                        let mut buf = [0u8; size_of::<$T>()];
+                        reader.read_exact(&mut buf)?;
+                        let num = <$T>::from_le_bytes(buf);
+                        let non_zero = NonZero::<$T>::new(num)
+                            .ok_or(IoError::new(IoErrorKind::InvalidData,
+                                    "Decoded zero for NonZero type"))?;
+                        Ok(non_zero) } }
             )+
         }
     }
@@ -149,34 +171,34 @@ mod endian {
 mod cond {
     use super::*;
 
-    /// Encodes conditionally an encodable.
+    /// Encodes and decodes conditionally.
     ///
     /// # Example
     /// ```
-    /// use devela::{Encodable, EncodeIf, CStr};
+    /// use devela::{Encodable, CodecIf, CStr};
     ///
     /// let non_empty = |s:&&CStr| !s.is_empty();
     /// let mut buf = [0u8; 64];
-    /// let len = EncodeIf::new(c"hello", non_empty).encode(&mut &mut buf[..]).unwrap();
+    /// let len = CodecIf::new(c"hello", non_empty).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"hello\0", "A non-empty CStr includes the null terminator");
     ///
     /// let mut buf = [0u8; 64];
-    /// let len = EncodeIf::new(c"", non_empty).encode(&mut &mut buf[..]).unwrap();
+    /// let len = CodecIf::new(c"", non_empty).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"", "An empty CStr does not produce any output");
     /// ```
     #[must_use]
     #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-    pub struct EncodeIf<E, F> { encodable: E, condition: F }
-    impl<E, F: Fn(&E) -> bool> EncodeIf<E, F> {
-        /// Creates a new [`EncodeIf`] combinator.
+    pub struct CodecIf<E, F> { encodable: E, condition: F }
+    impl<E, F: Fn(&E) -> bool> CodecIf<E, F> {
+        /// Creates a new [`CodecIf`] combinator.
         pub const fn new(encodable: E, condition: F) -> Self { Self { encodable, condition } }
     }
-    impl<E, F> AsRef<E> for EncodeIf<E, F> { fn as_ref(&self) -> &E { &self.encodable } }
-    impl<E, F> Deref for EncodeIf<E, F> {
+    impl<E, F> AsRef<E> for CodecIf<E, F> { fn as_ref(&self) -> &E { &self.encodable } }
+    impl<E, F> Deref for CodecIf<E, F> {
         type Target = E;
         fn deref(&self) -> &Self::Target { self.as_ref() }
     }
-    impl<E: Encodable<W>, W: IoWrite, F: Fn(&E) -> bool> Encodable<W> for EncodeIf<E, F> {
+    impl<E: Encodable<W>, W: IoWrite, F: Fn(&E) -> bool> Encodable<W> for CodecIf<E, F> {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
             if (self.condition)(&self.encodable) {
                 self.encodable.encode(writer)
@@ -190,20 +212,20 @@ mod cond {
 mod flags {
     use super::*;
 
-    /// Encodes a sequence of flags as a single byte.
+    /// Encodes and decodes a sequence of flags as a single byte.
     ///
     /// # Examples
     /// ```
-    /// use devela::{Encodable, EncodeFlags};
+    /// use devela::{Encodable, CodecFlags};
     ///
     /// let mut buf = [0u8; 1];
-    /// let len = EncodeFlags::new([true, false, false, true, false, false, false, false])
+    /// let len = CodecFlags::new([true, false, false, true, false, false, false, false])
     ///     .encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], &[0b_1001_0000]);
     ///
     /// # #[cfg(feature = "alloc")] { use devela::Vec;
     /// let mut buf = Vec::new();
-    /// EncodeFlags::new([true, false, false, true, false, false, false, false])
+    /// CodecFlags::new([true, false, false, true, false, false, false, false])
     ///     .encode(&mut buf).unwrap();
     /// assert_eq!(&buf, &[0b_1001_0000]);
     /// # }
@@ -211,37 +233,37 @@ mod flags {
     #[must_use]
     #[repr(transparent)]
     #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-    pub struct EncodeFlags([bool; 8]);
-    impl EncodeFlags {
-        /// Creates a new [`EncodeFlags`] combinator.
+    pub struct CodecFlags([bool; 8]);
+    impl CodecFlags {
+        /// Creates a new [`CodecFlags`] combinator.
         pub const fn new(flags: [bool; 8]) -> Self { Self(flags) }
     }
-    impl Debug for EncodeFlags {
+    impl Debug for CodecFlags {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-            write!(f, "EncodeFlags({:08b})", u8::from(*self))
+            write!(f, "CodecFlags({:08b})", u8::from(*self))
         }
     }
-    impl Deref for EncodeFlags {
+    impl Deref for CodecFlags {
         type Target = [bool; 8];
         fn deref(&self) -> &Self::Target { &self.0 }
     }
-    impl AsRef<[bool; 8]> for EncodeFlags {
+    impl AsRef<[bool; 8]> for CodecFlags {
         fn as_ref(&self) -> &[bool; 8] { &self.0 }
     }
-    impl From<u8> for EncodeFlags {
+    impl From<u8> for CodecFlags {
         fn from(from: u8) -> Self {
             let mut slice = [false; 8];
             slice.iter_mut().enumerate().rev().for_each(|(i, v)| { *v = (from & (1 << i)) != 0; });
             Self(slice)
         }
     }
-    impl From<EncodeFlags> for u8 {
-        fn from(from: EncodeFlags) -> Self {
+    impl From<CodecFlags> for u8 {
+        fn from(from: CodecFlags) -> Self {
             from.0.into_iter().rev().enumerate()
                 .filter_map(|(i, v)| v.then_some(1 << i)).fold(0u8, BitOr::bitor)
         }
     }
-    impl<W: IoWrite> Encodable<W> for EncodeFlags {
+    impl<W: IoWrite> Encodable<W> for CodecFlags {
         fn encode(&self, encoder: &mut W) -> IoResult<usize> {
             u8::from(*self).encode(encoder)
         }
@@ -252,47 +274,46 @@ mod flags {
 mod join {
     use super::*;
 
-    /// Encodes an iterator of encodables as a sequence with an optional `separator`.
+    /// Encodes and decodes an iterator of encodables as a sequence with an optional `separator`.
     ///
     /// # Example
     /// ```
-    /// use devela::{Encodable, EncodeJoin};
+    /// use devela::{Encodable, CodecJoin};
     ///
     /// let compact_map = [ (c"hello", 1u8), (c"world", 2u8) ];
     /// let mut buf = [0u8; 64];
-    /// let len = EncodeJoin::new(&compact_map).encode(&mut &mut buf[..]).unwrap();
+    /// let len = CodecJoin::new(&compact_map).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"hello\0\x01world\0\x02");
     ///
     /// let mut buf = [0u8; 64];
     /// let array = ["hello", "world", "another"];
-    /// let len = EncodeJoin::with(&array, ", ").encode(&mut &mut buf[..]).unwrap();
+    /// let len = CodecJoin::with(&array, ", ").encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"hello, world, another");
     ///
     /// # #[cfg(feature = "alloc")] { use devela::Vec;
     /// let mut buf = Vec::new();
-    /// let array = ["hello", "world", "another"];
-    /// EncodeJoin::with(&array, '/').encode(&mut buf).unwrap();
+    /// let len = CodecJoin::with(&array, "/").encode(&mut buf).unwrap();
     /// assert_eq!(&buf, b"hello/world/another");
     /// # }
     /// ```
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-    pub struct EncodeJoin<E, S> {
+    pub struct CodecJoin<E, S> {
         encodable_iter: E,
         separator: Option<S>,
     }
-    impl<E> EncodeJoin<E, ()> {
-        /// Creates a new [`EncodeJoin`] combinator, without a separator.
+    impl<E> CodecJoin<E, ()> {
+        /// Creates a new [`CodecJoin`] combinator, without a separator.
         pub const fn new(encodable_iter: E) -> Self {
             Self { encodable_iter, separator: None::<()> }
         }
     }
-    impl<E, S> EncodeJoin<E, S> {
-        /// Creates a new [`EncodeJoin`] combinator with a `separator`.
+    impl<E, S> CodecJoin<E, S> {
+        /// Creates a new [`CodecJoin`] combinator with a `separator`.
         pub const fn with(encodable_iter: E, separator: S) -> Self {
             Self { encodable_iter, separator: Some(separator) }
         }
     }
-    impl<E, S, W: IoWrite> Encodable<W> for EncodeJoin<E, S>
+    impl<E, S, W: IoWrite> Encodable<W> for CodecJoin<E, S>
     where
         E: Clone + IntoIterator,
         E::Item: Encodable<W>,
@@ -303,11 +324,7 @@ mod join {
             if let Some(sep) = &self.separator {
                 let mut is_first = true;
                 for encodable in self.encodable_iter.clone() {
-                    if is_first {
-                        is_first = false;
-                    } else {
-                        total += sep.encode(writer)?;
-                    }
+                    iif![is_first; is_first = false; total += sep.encode(writer)?];
                     total += encodable.encode(writer)?;
                 }
             } else {
@@ -331,62 +348,63 @@ mod len {
     ///
     /// # Example
     /// ```
-    /// use devela::{IoWrite, Encodable, EncodeLen};
+    /// use devela::{IoWrite, Encodable, CodecLen};
     ///
     /// let encodable = c"hello, world!";
-    /// let mut encoder = EncodeLen::new();
+    /// let mut encoder = CodecLen::new();
     /// encodable.encode(&mut encoder).unwrap();
     /// assert_eq!(encoder.size(), 14, "13 bytes from the ASCII string + 1 for the null terminator");
     /// ```
     #[must_use]
     #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
-    pub struct EncodeLen { size: usize, }
-    impl EncodeLen {
-        /// Creates a new [`EncodeLen`].
+    pub struct CodecLen { size: usize, }
+    impl CodecLen {
+        /// Creates a new [`CodecLen`].
         pub const fn new() -> Self { Self { size: 0 } }
         /// Returns the computed encoded size.
         pub const fn size(&self) -> usize { self.size }
     }
-    impl From<EncodeLen> for usize {
-        fn from(encoder: EncodeLen) -> usize { encoder.size }
+    impl From<CodecLen> for usize {
+        fn from(encoder: CodecLen) -> usize { encoder.size }
     }
-    impl FmtWrite for EncodeLen {
+    impl FmtWrite for CodecLen {
         fn write_str(&mut self, s: &str) -> FmtResult<()> { self.size += s.len(); Ok(()) }
     }
-    impl IoWrite for EncodeLen {
+    impl IoWrite for CodecLen {
         fn write(&mut self, slice: &[u8]) -> IoResult<usize> { self.size += slice.len(); Ok(self.size) }
         fn flush(&mut self) -> IoResult<()> { Ok(()) }
     }
 
-    /// Encodes a length prefixed value ([TLV](https://en.wikipedia.org/wiki/Type–length–value)).
+    /// Encodes and decodes a length prefixed value ([TLV]).
     ///
     /// # Examples
     /// ```
-    /// use devela::{Encodable, EncodeLenValue, TryFromIntError};
+    /// use devela::{Encodable, CodecLenValue, TryFromIntError};
     ///
     /// let mut buf = [0u8; 64];
-    /// let len = EncodeLenValue::<_, u8>::new("hello").encode(&mut &mut buf[..]).unwrap();
+    /// let len = CodecLenValue::<_, u8>::new("hello").encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"\x05hello", "A single byte indicates the length of the string");
     ///
     /// # #[cfg(feature = "alloc")] { use devela::Vec;
     /// let mut buf = Vec::new();
-    /// EncodeLenValue::<_, u8>::new("hello").encode(&mut buf).unwrap();
+    /// CodecLenValue::<_, u8>::new("hello").encode(&mut buf).unwrap();
     /// assert_eq!(&buf, b"\x05hello");
     /// # }
     /// ```
+    /// [TLV]: https://en.wikipedia.org/wiki/Type–length–value
     #[must_use]
     #[doc(alias("length", "prefix", "TLV"))]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     #[repr(transparent)]
-    pub struct EncodeLenValue<E, LEN> {
+    pub struct CodecLenValue<E, LEN> {
         encodable: E,
         phantom: PhantomData<LEN>,
     }
-    impl<E, LEN> EncodeLenValue<E, LEN> {
+    impl<E, LEN> CodecLenValue<E, LEN> {
         /// Creates a new TLV combinator.
         pub const fn new(encodable: E) -> Self { Self { encodable, phantom: PhantomData } }
     }
-    impl<E, LEN, W: IoWrite> Encodable<W> for EncodeLenValue<E, LEN>
+    impl<E, LEN, W: IoWrite> Encodable<W> for CodecLenValue<E, LEN>
     where
         E: Encodable<W> + EncodableLen,
         LEN: Encodable<W> + TryFrom<usize>,
@@ -395,9 +413,39 @@ mod len {
             let len = self.encodable.encoded_size()?;
             let len_encoded: LEN = LEN::try_from(len)
                 .map_err(|_| IoError::new(IoErrorKind::InvalidInput, "Length conversion failed"))?;
-            let mut total = len_encoded.encode(writer)?; // Encode the length using `LEN`
+            let mut total = len_encoded.encode(writer)?; // Encode the length.
             total += self.encodable.encode(writer)?; // Encode the actual content
             Ok(total)
+        }
+    }
+    impl<E, LEN, R: IoRead> Decodable<R> for CodecLenValue<E, LEN>
+    where
+        E: Decodable<R>,
+        LEN: Decodable<R>,
+        LEN::Output: TryInto<usize>,
+    {
+        type Output = E::Output;
+
+        fn decode(reader: &mut R) -> IoResult<Self::Output> {
+            let len_encoded: LEN::Output = LEN::decode(reader)?;
+            let len: usize = len_encoded.try_into()
+                .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid length value"))?;
+            /// Manually limit the read by tracking bytes read
+            struct LimitedReader<'a, R: IoRead> {
+                reader: &'a mut R,
+                remaining: usize,
+            }
+            impl<R: IoRead> IoRead for LimitedReader<'_, R> {
+                fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
+                    iif![self.remaining == 0; return Ok(0)];
+                    let len = buf.len().min(self.remaining);
+                    let n = self.reader.read(&mut buf[..len])?;
+                    self.remaining -= n;
+                    Ok(n)
+                }
+            }
+            let limited_reader = LimitedReader { reader, remaining: len };
+            E::decode(limited_reader.reader)
         }
     }
 }

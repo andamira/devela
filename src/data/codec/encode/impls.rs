@@ -1,36 +1,66 @@
 // devela::data::codec::encode::impls
 //
-//!
+//! General implementations of [`Decodable`] and [`Encodable`].
+//
 
 use crate::{
-    CStr, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite, IoError, IoErrorKind,
-    IoResult, IoWrite, NoData, Slice,
+    sf, CStr, Decodable, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite, IoError,
+    IoErrorKind, IoRead, IoResult, IoWrite, NoData, Slice,
 };
 
 #[cfg(feature = "alloc")]
 crate::items! {
-    use crate::{Cow, Box, String, Vec};
+    use crate::{iif, Cow, CString, Box, String, Vec};
 
     impl<W: IoWrite> Encodable<W> for Vec<u8> {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            writer.write(self.as_slice())
-        }
-    }
+            writer.write(self.as_slice()) } }
+    impl<R: IoRead> Decodable<R> for Vec<u8> {
+        type Output = Vec<u8>;
+        fn decode(reader: &mut R) -> IoResult<Self::Output> {
+            let mut buf = Vec::new();
+            reader.read_to_end(&mut buf)?;
+            Ok(buf) } }
+
     impl<W: IoWrite, T: Encodable<W>> Encodable<W> for Box<T> {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            self.as_ref().encode(writer)
-        }
-    }
-    impl<W: IoWrite, T: Clone + Encodable<W>> Encodable<W> for Cow<'_, T> {
-        fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            self.as_ref().encode(writer)
-        }
-    }
+            self.as_ref().encode(writer) } }
+    impl<R: IoRead, T: Decodable<R>> Decodable<R> for Box<T> {
+        type Output = Box<T::Output>;
+        fn decode(reader: &mut R) -> IoResult<Self::Output> {
+            Ok(Box::new(T::decode(reader)?)) } }
+
     impl<W: IoWrite> Encodable<W> for String {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            writer.write(self.as_bytes())
-        }
-    }
+            writer.write(self.as_bytes()) } }
+    impl<R: IoRead> Decodable<R> for String {
+        type Output = String;
+        fn decode(reader: &mut R) -> IoResult<Self::Output> {
+            let mut buf = Vec::new();
+            reader.read_to_end(&mut buf)?;
+            String::from_utf8(buf)
+                .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8")) } }
+
+    impl<W: IoWrite> Encodable<W> for CString {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            writer.write(self.as_bytes()) } }
+    impl<R: IoRead> Decodable<R> for CString {
+        type Output = CString;
+        fn decode(reader: &mut R) -> IoResult<Self::Output> {
+            let mut buf = Vec::new();
+            let mut byte = [0u8; 1];
+            loop {
+                reader.read_exact(&mut byte)?;
+                iif![byte[0] == 0; break];
+                buf.push(byte[0]);
+            }
+            CString::new(buf).map_err(|_|
+                IoError::new(IoErrorKind::InvalidData, "Invalid C string")) } }
+
+    // only Encodable (for now?)
+    impl<W: IoWrite, T: Clone + Encodable<W>> Encodable<W> for Cow<'_, T> {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            self.as_ref().encode(writer) } }
 }
 
 /* fmt */
@@ -63,53 +93,106 @@ impl<W: IoWrite> Encodable<W> for FmtArguments<'_> {
 
 impl<W: IoWrite> Encodable<W> for char {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        let mut buf = [0; 4];
-        let s = self.encode_utf8(&mut buf);
-        writer.write(s.as_bytes())
+        let bytes = (*self as u32).to_le_bytes();
+        writer.write(&bytes)
     }
 }
+impl<R: IoRead> Decodable<R> for char {
+    type Output = char;
+    fn decode(reader: &mut R) -> IoResult<Self::Output> {
+        let mut buf = [0u8; 4];
+        reader.read_exact(&mut buf)?;
+        char::from_u32(u32::from_le_bytes(buf))
+            .ok_or_else(|| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-32 character"))
+    }
+}
+
 impl<W: IoWrite> Encodable<W> for u8 {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
         writer.write(Slice::from_ref(self))
     }
 }
+impl<R: IoRead> Decodable<R> for u8 {
+    type Output = u8;
+    fn decode(reader: &mut R) -> IoResult<u8> {
+        let mut buf = [0u8; size_of::<u8>()];
+        reader.read_exact(&mut buf)?;
+        Ok(buf[0])
+    }
+}
+
 impl<W: IoWrite> Encodable<W> for i8 {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
         (*self as u8).encode(writer)
     }
 }
+impl<R: IoRead> Decodable<R> for i8 {
+    type Output = i8;
+    fn decode(reader: &mut R) -> IoResult<i8> {
+        let mut buf = [0u8; size_of::<i8>()];
+        reader.read_exact(&mut buf)?;
+        Ok(buf[0] as i8)
+    }
+}
+
 impl<W: IoWrite> Encodable<W> for bool {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
         u8::from(*self).encode(writer)
     }
 }
+impl<R: IoRead> Decodable<R> for bool {
+    type Output = bool;
+    fn decode(reader: &mut R) -> IoResult<Self::Output> {
+        let mut buf = [0u8; 1];
+        reader.read_exact(&mut buf)?;
+        match buf[0] {
+            0 => Ok(false),
+            1 => Ok(true),
+            _ => Err(IoError::new(IoErrorKind::InvalidData, "Invalid boolean value")),
+        }
+    }
+}
+
+// only Encodable
+/// Allows encoding of `&T` directly, forwarding calls to `T::encode()`.
 impl<T: Encodable<W> + ?Sized, W: IoWrite> Encodable<W> for &T {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
         T::encode(self, writer)
     }
 }
+// only Decodable
+// impl<R: IoRead, T: Decodable<R>> Decodable<IoTake<R>> for T {
+//     type Output = T::Output;
+//     fn decode(reader: &mut IoTake<R>) -> IoResult<Self::Output> {
+//         T::decode(reader)
+//     }
+// }
 
 /* slices, arrays */
 
-impl<W: IoWrite> Encodable<W> for [u8] {
-    fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        writer.write(self)
-    }
-}
-impl<W: IoWrite, const SIZE: usize> Encodable<W> for [u8; SIZE] {
-    fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        writer.write(self)
-    }
-}
-impl<W: IoWrite> Encodable<W> for str {
-    fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        writer.write(self.as_bytes())
-    }
-}
-impl<W: IoWrite> Encodable<W> for CStr {
-    fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        writer.write(self.to_bytes_with_nul())
-    }
+sf! {
+    impl<W: IoWrite, const SIZE: usize> Encodable<W> for [u8; SIZE] {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            writer.write(self) } }
+    impl<R: IoRead, const SIZE: usize> Decodable<R> for [u8; SIZE] {
+        type Output = [u8; SIZE];
+        fn decode(reader: &mut R) -> IoResult<Self::Output> {
+            let mut buf = [0u8; SIZE];
+            reader.read_exact(&mut buf)?;
+            Ok(buf) } }
+
+    // only Encodable
+    impl<W: IoWrite> Encodable<W> for [u8] {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            writer.write(self) } }
+    // only Encodable
+    impl<W: IoWrite> Encodable<W> for str {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            writer.write(self.as_bytes()) } }
+    // only Encodable
+    impl<W: IoWrite> Encodable<W> for CStr {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            writer.write(self.to_bytes_with_nul()) } }
 }
 
 /* tuples */
@@ -165,15 +248,15 @@ impl_encodable_for_tuple!();
 
 /* option, unit */
 
-#[rustfmt::skip]
-impl<T: Encodable<W>, W: IoWrite> Encodable<W> for Option<T> {
-    fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        match self { Some(value) => value.encode(writer), None => Ok(0) }
+sf! {
+    impl<T: Encodable<W>, W: IoWrite> Encodable<W> for Option<T> {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            match self { Some(value) => value.encode(writer), None => Ok(0) }
+        }
     }
-}
-#[rustfmt::skip]
-impl<W: IoWrite> Encodable<W> for NoData {
-    fn encode(&self, _writer: &mut W) -> IoResult<usize> { Ok(0) }
+    impl<W: IoWrite> Encodable<W> for NoData {
+        fn encode(&self, _writer: &mut W) -> IoResult<usize> { Ok(0) }
+    }
 }
 
 #[cfg(test)]
