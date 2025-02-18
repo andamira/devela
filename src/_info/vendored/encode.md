@@ -18,6 +18,7 @@ including the following modifications:
   - `LengthPrefix` to `CodecLenValue`.
 - merge `Iter` and `Separated` into `CodecJoin`, with an optional separator.
 - make `EncodableSize::encoded_size` be a provided method.
+- make `CodecLenValue` accept a codec for the length.
 - make doc tests work with `not(alloc)` as well.
 - encode `char` as a 4 byte unicode scalar.
 - remove `Encodable` impl for `Result`.
