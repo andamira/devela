@@ -376,67 +376,93 @@ mod len {
         fn flush(&mut self) -> IoResult<()> { Ok(()) }
     }
 
-    /// Encodes and decodes a length prefixed value ([TLV]).
+    /// Encodes and decodes a length prefixed value
+    /// (<abbr title = "Type-Length-Value">[TLV]</abbr>).
+    ///
+    /// Encodes a value by **prefixing it with its length** using a fixed-size integer.
+    ///
+    /// The length must either be a `u8`, or explicitly encoded in either big-endian
+    /// by using [`CodecBe`] or little-endian by using [`CodecLe`].
     ///
     /// # Examples
     /// ```
-    /// use devela::{Decodable, Encodable, CodecBe, CodecLe, CodecLenValue};
+    /// use devela::{Decodable, Encodable, CodecBe, CodecLenValue};
     ///
-    /// // Encoding using a u16 len prefix
+    /// // Non-allocating encoding...
     /// let mut buf = [0u8; 64];
-    /// let len = CodecLenValue::<_, u16, CodecBe<u16>>::new("hello")
-    ///     .encode(&mut &mut buf[..])
-    ///     .unwrap();
-    /// assert_eq!(&buf[..len], &[0, 5, b'h', b'e', b'l', b'l', b'o'], "A big-endian u16 len");
-    ///
-    /// // Decoding
+    /// let len = CodecLenValue::<_, u8>::new("hello").encode(&mut &mut buf[..]).unwrap();
+    /// assert_eq!(&buf[..len], &[5, b'h', b'e', b'l', b'l', b'o']);
+    /// // ...and decoding
     /// # #[cfg(feature = "alloc")] { use devela::String;
+    // TODO: make it non allocating
     /// let mut reader = &buf[..];
-    /// let decoded: String = CodecLenValue::<String, u16, CodecBe<u16>>::decode(&mut reader)
-    ///     .unwrap();
+    /// let decoded: String = CodecLenValue::<String, u8>::decode(&mut reader).unwrap();
     /// assert_eq!(decoded, "hello");
+    ///
+    /// let lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+    /// incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+    /// exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+    /// dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+    ///
+    /// // Allocating encoding...
+    /// let mut buf = Vec::new();
+    /// let len = CodecLenValue::<_, CodecBe<u16>>::new(lorem).encode(&mut buf).unwrap();
+    /// assert_eq!(&buf[..7], &[1, 78, b'L', b'o', b'r', b'e', b'm'], "A big-endian u16 len");
+    /// assert_eq![len, 336];
+    /// // ...and decoding
+    /// let mut reader = buf.as_slice();
+    /// let decoded: String = CodecLenValue::<String, CodecBe<u16>>::decode(&mut reader).unwrap();
+    /// assert_eq!(decoded, lorem);
     /// # }
+    /// ```
+    ///
+    /// The length must fit the given type:
+    /// ```should_panic
+    /// use devela::{Encodable, CodecLenValue};
+    ///
+    /// let mut buf = Vec::new();
+    /// let len = CodecLenValue::<_, u8>::new("*".repeat(300)).encode(&mut buf).expect("too long");
     /// ```
     /// [TLV]: https://en.wikipedia.org/wiki/Type–length–value
     #[must_use]
     #[doc(alias("length", "prefix", "TLV"))]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     #[repr(transparent)]
-    pub struct CodecLenValue<E, LEN, CodecEndian> {
+    pub struct CodecLenValue<E, CodecEndian> {
         encodable: E,
-        phantom: PhantomData<(LEN, CodecEndian)>,
+        phantom: PhantomData<CodecEndian>,
     }
-    impl<E, LEN, CodecEndian> CodecLenValue<E, LEN, CodecEndian> {
-        /// Creates a new TLV combinator.
-        pub const fn new(encodable: E) -> Self { Self { encodable, phantom: PhantomData } }
+    impl<E, CodecEndian> CodecLenValue<E, CodecEndian> {
+        /// Creates a new <abbr title = "Type-Length-Value">TLV</abbr> combinator.
+        pub const fn new(encodable: E) -> Self { Self { encodable, phantom: PhantomData, } }
     }
-    impl<E, LEN, CodecEndian, W: IoWrite> Encodable<W> for CodecLenValue<E, LEN, CodecEndian>
+    impl<E, CodecEndian, W: IoWrite> Encodable<W> for CodecLenValue<E, CodecEndian>
     where
         E: Encodable<W> + EncodableLen,
-        CodecEndian: From<LEN> + Encodable<W>,
-        LEN: TryFrom<usize>,
+        CodecEndian: From<<CodecEndian as CodecEndianLen>::Len> + Encodable<W> + CodecEndianLen,
+        <CodecEndian as CodecEndianLen>::Len: TryFrom<usize>,
     {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
             let len = self.encodable.encoded_size()?;
-            let len_encoded: LEN = LEN::try_from(len)
+            let len = <<CodecEndian as CodecEndianLen>::Len as TryFrom<usize>>::try_from(len)
                 .map_err(|_| IoError::new(IoErrorKind::InvalidInput, "Length conversion failed"))?;
-            let mut total = CodecEndian::from(len_encoded).encode(writer)?; // encode the length
-            total += self.encodable.encode(writer)?; // encode the actual content
+            let mut total = CodecEndian::from(len).encode(writer)?;
+            total += self.encodable.encode(writer)?;
             Ok(total)
         }
     }
-
-    impl<D, O, LEN, CodecEndian, R> Decodable<R> for CodecLenValue<D, LEN, CodecEndian>
+    impl<D, O, CodecEndian, R> Decodable<R> for CodecLenValue<D, CodecEndian>
     where
-        for<'i> D: Decodable<IoTake<&'i mut R>, Output = O>, // The TLV payload type to be decoded.
-        CodecEndian: Decodable<R, Output = LEN>, // The type used to decode the length prefix.
-        LEN: TryInto<usize>, // The type of the length prefix.
-        R: IoRead, // The underlying reader type which implements IoRead.
-        for<'r> &'r mut R: IoRead, // Ensure that &mut R itself implements IoRead
+        // D must be decodable from an IoTake wrapping &mut R.
+        for<'i> D: Decodable<IoTake<&'i mut R>, Output = O>,
+        // CodecEndian decodes the length prefix from R and its output is the associated Len.
+        CodecEndian: Decodable<R, Output = <CodecEndian as CodecEndianLen>::Len> + CodecEndianLen,
+        R: IoRead,
+        for<'r> &'r mut R: IoRead,
     {
         type Output = O;
         fn decode(reader: &mut R) -> IoResult<Self::Output> {
-            let len_encoded: LEN = CodecEndian::decode(reader)?;
+            let len_encoded = CodecEndian::decode(reader)?;
             let len: usize = len_encoded.try_into().map_err(|_| {
                 IoError::new(IoErrorKind::InvalidData, "Invalid length value")
             })?;
@@ -444,57 +470,21 @@ mod len {
             D::decode(&mut limited_reader)
         }
     }
-
-    // // An alternative that depends on cloning the reader.
-    // impl<E, LEN, CodecEndian, R> Decodable<R> for CodecLenValue<E, LEN, CodecEndian>
-    // where
-    //     E: Decodable<IoTake<R>>,
-    //     CodecEndian: Decodable<R, Output = LEN>,
-    //     LEN: TryInto<usize>,
-    //     R: IoRead + Clone,
-    // {
-    //     type Output = E::Output;
-    //
-    //     fn decode(reader: &mut R) -> IoResult<Self::Output> {
-    //         let len_encoded: LEN = CodecEndian::decode(reader)?;
-    //         let len: usize = len_encoded
-    //             .try_into()
-    //             .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid length value"))?;
-    //         let mut limited_reader = reader.clone().take(len as u64);
-    //         E::decode(&mut limited_reader)
-    //     }
-    // }
-
-    // // An alternative that requires the reader to be of the exact length of len+value.
-    // impl<D, LEN, CodecEndian, R: IoRead> Decodable<R> for CodecLenValue<D, LEN, CodecEndian>
-    // where
-    //     D: Decodable<R>,
-    //     CodecEndian: Decodable<R, Output = LEN>,
-    //     LEN: TryInto<usize>,
-    // {
-    //     type Output = D::Output;
-    //     fn decode(reader: &mut R) -> IoResult<Self::Output> {
-    //         let len_encoded: LEN = CodecEndian::decode(reader)?;
-    //         let len: usize = len_encoded
-    //             .try_into()
-    //             .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid length value"))?;
-    //
-    //         /// Manually limit the read by tracking bytes read
-    //         struct LimitedReader<'a, R: IoRead> {
-    //             reader: &'a mut R,
-    //             remaining: usize,
-    //         }
-    //         impl<R: IoRead> IoRead for LimitedReader<'_, R> {
-    //             fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
-    //                 iif![self.remaining == 0; return Ok(0)];
-    //                 let len = buf.len().min(self.remaining);
-    //                 let n = self.reader.read(&mut buf[..len])?;
-    //                 self.remaining -= n;
-    //                 Ok(n)
-    //             }
-    //         }
-    //         let limited_reader = LimitedReader { reader, remaining: len };
-    //         D::decode(limited_reader.reader)
-    //     }
-    // }
+    /// A private helper trait to tie a length type to the endian codec.
+    ///
+    /// This trait ensures that `CodecLenValue` only accepts explicit endianness encoders
+    /// (`CodecBe<T>` or `CodecLe<T>`) for encoding and decoding length prefixes
+    /// using unsized primitives, or simply `u8` where endianess is irrelevant.
+    ///
+    /// Justifications:
+    /// - Only endianness matters when encoding a fixed-length integer.
+    /// - Prevents accidental misuse by requiring an explicit choice.
+    /// - Keeps the API clean and avoids unnecessary complexity.
+    trait CodecEndianLen { type Len: TryInto<usize> + TryFrom<usize>; }
+    macro_rules! impl_codec_endian_len { ($($T:ty),+) => { $(
+        impl CodecEndianLen for CodecLe<$T> { type Len = $T; }
+        impl CodecEndianLen for CodecBe<$T> { type Len = $T; }
+    )+ }; }
+    impl_codec_endian_len![u8, u16, u32, usize];
+    impl CodecEndianLen for u8 { type Len = u8; }
 }
