@@ -3,8 +3,8 @@
 //!
 
 use crate::{
-    CStr, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite, IoError, IoResult, IoWrite,
-    Slice,
+    CStr, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite, IoError, IoErrorKind,
+    IoResult, IoWrite, NoData, Slice,
 };
 
 #[cfg(feature = "alloc")]
@@ -33,70 +33,31 @@ crate::items! {
     }
 }
 
+/* fmt */
+
+#[rustfmt::skip]
 impl<W: IoWrite> Encodable<W> for FmtArguments<'_> {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        let mut adapter = FmtAdapter { writer, error: None, total: 0 };
-        if Fmt::write(&mut adapter, *self).is_ok() {
-            Ok(adapter.total)
-        } else {
-            Err(adapter.error.expect("FmtAdapter always sets error on failure"))
+        // Allows to use `Fmt::write` to format `FmtArguments` directly into `IoWrite`.
+        struct InlineFmtAdapter<'a, W: IoWrite> {
+            writer: &'a mut W,
+            error: Option<IoError>,
+            total: usize,
         }
-    }
-}
-/// Acts as a bridge between [`FmtWrite`] and [`IoWrite`].
-///
-/// It allows to use `Fmt::write` to format `FmtArguments` directly into `IoWrite`.
-///
-/// This conversion is necessary because:
-/// - `FmtWrite` works with `&str` while `IoWrite` works with `&[u8]`.
-/// - `FmtWrite` does not return the byte count, but `IoWrite` does.
-/// - `FmtWrite` uses `FmtError` but we need to store `IoError`.
-struct FmtAdapter<'a, W> {
-    writer: &'a mut W,
-    error: Option<IoError>,
-    /// Track the total number of bytes written
-    total: usize,
-}
-impl<W: IoWrite> FmtWrite for FmtAdapter<'_, W> {
-    fn write_str(&mut self, s: &str) -> FmtResult<()> {
-        // if let Err(error) = self.writer.write(s.as_bytes()) {
-        //     self.error = Some(error);
-        //     Err(FmtError)
-        // } else {
-        //     Ok(())
-        // }
-        match self.writer.write(s.as_bytes()) {
-            Ok(n) => {
-                self.total += n;
-                Ok(())
-            }
-            Err(error) => {
-                self.error = Some(error);
-                Err(FmtError)
+        impl<W: IoWrite> FmtWrite for InlineFmtAdapter<'_, W> {
+            fn write_str(&mut self, s: &str) -> FmtResult<()> {
+                match self.writer.write(s.as_bytes()) {
+                    Ok(n) => { self.total += n; Ok(()) }
+                    Err(e) => { self.error = Some(e); Err(FmtError) }
+                }
             }
         }
+        let mut adapter = InlineFmtAdapter { writer, error: None, total: 0 };
+        if Fmt::write(&mut adapter, *self).is_ok() { Ok(adapter.total) }
+        else { Err(adapter.error
+            .unwrap_or_else(|| IoError::new(IoErrorKind::Other, "Formatting failed"))) }
     }
 }
-
-/* option_result */
-
-impl<T: Encodable<W>, W: IoWrite> Encodable<W> for Option<T> {
-    fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        match self {
-            Some(value) => value.encode(writer),
-            None => Ok(0),
-        }
-    }
-}
-// RETHINK?
-// impl<T: Encodable<W>, W: IoWrite> Encodable<W> for IoResult<T> {
-//     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-//         match self {
-//             Ok(value) => value.encode(writer),
-//             Err(err) => Err(err.clone()),
-//         }
-//     }
-// }
 
 /* primitives */
 
@@ -114,7 +75,6 @@ impl<W: IoWrite> Encodable<W> for u8 {
 }
 impl<W: IoWrite> Encodable<W> for i8 {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        #[allow(clippy::cast_sign_loss)] // CHECK REVIEW
         (*self as u8).encode(writer)
     }
 }
@@ -129,7 +89,7 @@ impl<T: Encodable<W> + ?Sized, W: IoWrite> Encodable<W> for &T {
     }
 }
 
-/* slices */
+/* slices, arrays */
 
 impl<W: IoWrite> Encodable<W> for [u8] {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
@@ -203,10 +163,17 @@ impl_encodable_for_tuple!(B C);
 impl_encodable_for_tuple!(B);
 impl_encodable_for_tuple!();
 
-impl<W: IoWrite> Encodable<W> for () {
-    fn encode(&self, _writer: &mut W) -> IoResult<usize> {
-        Ok(0)
+/* option, unit */
+
+#[rustfmt::skip]
+impl<T: Encodable<W>, W: IoWrite> Encodable<W> for Option<T> {
+    fn encode(&self, writer: &mut W) -> IoResult<usize> {
+        match self { Some(value) => value.encode(writer), None => Ok(0) }
     }
+}
+#[rustfmt::skip]
+impl<W: IoWrite> Encodable<W> for NoData {
+    fn encode(&self, _writer: &mut W) -> IoResult<usize> { Ok(0) }
 }
 
 #[cfg(test)]
@@ -214,15 +181,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn assert_that_some_option_can_be_encoded() {
+    fn option() {
         let mut writer = &mut [0u8; 32] as &mut [u8];
+        None::<Option<u8>>.encode(&mut writer).unwrap();
         Some(42u8).encode(&mut writer).unwrap();
-    }
-
-    #[test]
-    fn assert_that_none_encodes_nothing() {
-        let mut writer = &mut [0u8; 32] as &mut [u8];
-        let option: Option<u8> = None;
-        option.encode(&mut writer).unwrap();
     }
 }
