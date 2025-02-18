@@ -17,11 +17,11 @@
 //!
 //! ## Example
 //! ```
-//! use devela::{Encodable, EncodeLenValue, IoWrite};
+//! use devela::{Encodable, CodecLenValue, IoWrite};
 //!
 //! # #[cfg(feature = "alloc")] { use devela::Vec;
 //! let mut buf = Vec::new();
-//! EncodeLenValue::<_, u8>::new("hello").encode(&mut buf).unwrap();
+//! CodecLenValue::<_, u8>::new("hello").encode(&mut buf).unwrap();
 //! assert_eq!(&buf, b"\x05hello");
 //! # }
 //! ```

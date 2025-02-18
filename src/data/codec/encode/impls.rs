@@ -173,26 +173,48 @@ impl<T: Encodable<W> + ?Sized, W: IoWrite> Encodable<W> for &T {
 sf! {
     impl<W: IoWrite, const SIZE: usize> Encodable<W> for [u8; SIZE] {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            writer.write(self) } }
+            writer.write(self)
+        }
+    }
     impl<R: IoRead, const SIZE: usize> Decodable<R> for [u8; SIZE] {
         type Output = [u8; SIZE];
         fn decode(reader: &mut R) -> IoResult<Self::Output> {
             let mut buf = [0u8; SIZE];
             reader.read_exact(&mut buf)?;
-            Ok(buf) } }
+            Ok(buf)
+        }
+    }
+
+    impl<W: IoWrite> Encodable<W> for str {
+        fn encode(&self, writer: &mut W) -> IoResult<usize> {
+            writer.write(self.as_bytes())
+        }
+    }
+    impl<'a> Decodable<&'a mut &[u8]> for &'a str {
+        type Output = Self;
+        fn decode(reader: &mut &'a mut &[u8]) -> IoResult<Self::Output> {
+            // In this specialized case, we assume the reader is already limited
+            // to exactly the bytes for the string.
+            let s = ::core::str::from_utf8(reader)
+                .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8"))?;
+            // Consume the entire slice.
+            **reader = &[];
+            Ok(s)
+        }
+    }
 
     // only Encodable
     impl<W: IoWrite> Encodable<W> for [u8] {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            writer.write(self) } }
-    // only Encodable
-    impl<W: IoWrite> Encodable<W> for str {
-        fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            writer.write(self.as_bytes()) } }
+            writer.write(self)
+        }
+    }
     // only Encodable
     impl<W: IoWrite> Encodable<W> for CStr {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
-            writer.write(self.to_bytes_with_nul()) } }
+            writer.write(self.to_bytes_with_nul())
+        }
+    }
 }
 
 /* tuples */

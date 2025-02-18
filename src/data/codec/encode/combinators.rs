@@ -31,12 +31,13 @@ mod endian {
     /// let len = CodecBe::new(1u16).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], &[0, 1], "the most significant byte comes first");
     ///
-    /// # #[cfg(feature = "alloc")] { use devela::Vec;
+    /// # #[cfg(feature = "alloc")] {
     /// let mut buf = Vec::<u8>::new();
     /// CodecBe::new(1u16).encode(&mut buf).unwrap();
     /// assert_eq!(&buf, &[0, 1]);
     /// # }
     /// ```
+    #[doc = crate::doc_!(vendor: "encode")]
     #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecBe<W> {
@@ -57,12 +58,13 @@ mod endian {
     /// let len = CodecLe::new(1u16).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], &[1, 0], "the least significant byte comes first");
     ///
-    /// # #[cfg(feature = "alloc")] { use devela::Vec;
+    /// # #[cfg(feature = "alloc")] {
     /// let mut buf = Vec::<u8>::new();
     /// CodecLe::new(1u16).encode(&mut buf).unwrap();
     /// assert_eq!(&buf, &[1, 0]);
     /// # }
     /// ```
+    #[doc = crate::doc_!(vendor: "encode")]
     #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecLe<E> {
@@ -186,6 +188,7 @@ mod cond {
     /// let len = CodecIf::new(c"", non_empty).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"", "An empty CStr does not produce any output");
     /// ```
+    #[doc = crate::doc_!(vendor: "encode")]
     #[must_use]
     #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecIf<E, F> { encodable: E, condition: F }
@@ -223,13 +226,14 @@ mod flags {
     ///     .encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], &[0b_1001_0000]);
     ///
-    /// # #[cfg(feature = "alloc")] { use devela::Vec;
+    /// # #[cfg(feature = "alloc")] {
     /// let mut buf = Vec::new();
     /// CodecFlags::new([true, false, false, true, false, false, false, false])
     ///     .encode(&mut buf).unwrap();
     /// assert_eq!(&buf, &[0b_1001_0000]);
     /// # }
     /// ```
+    #[doc = crate::doc_!(vendor: "encode")]
     #[must_use]
     #[repr(transparent)]
     #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -290,13 +294,15 @@ mod join {
     /// let len = CodecJoin::with(&array, ", ").encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"hello, world, another");
     ///
-    /// # #[cfg(feature = "alloc")] { use devela::Vec;
+    /// # #[cfg(feature = "alloc")] {
     /// let mut buf = Vec::new();
     /// // Note if you'd use '/' (a char) it would get encoded as [47, 0, 0, 0].
     /// let len = CodecJoin::with(&array, "/").encode(&mut buf).unwrap();
     /// assert_eq!(&buf, b"hello/world/another");
     /// # }
     /// ```
+    #[doc = crate::doc_!(vendor: "encode")]
+    #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecJoin<E, S> {
         encodable_iter: E,
@@ -356,6 +362,7 @@ mod len {
     /// encodable.encode(&mut encoder).unwrap();
     /// assert_eq!(encoder.size(), 14, "13 bytes from the ASCII string + 1 for the null terminator");
     /// ```
+    #[doc = crate::doc_!(vendor: "encode")]
     #[must_use]
     #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecLen { size: usize, }
@@ -384,32 +391,32 @@ mod len {
     /// The length must either be a `u8`, or explicitly encoded in either big-endian
     /// by using [`CodecBe`] or little-endian by using [`CodecLe`].
     ///
+    /// [TLV]: https://en.wikipedia.org/wiki/Type–length–value
+    ///
     /// # Examples
     /// ```
     /// use devela::{Decodable, Encodable, CodecBe, CodecLenValue};
     ///
-    /// // Non-allocating encoding...
+    /// // Non-allocating
     /// let mut buf = [0u8; 64];
     /// let len = CodecLenValue::<_, u8>::new("hello").encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], &[5, b'h', b'e', b'l', b'l', b'o']);
-    /// // ...and decoding
-    /// # #[cfg(feature = "alloc")] { use devela::String;
-    // TODO: make it non allocating
+    /// //
     /// let mut reader = &buf[..];
-    /// let decoded: String = CodecLenValue::<String, u8>::decode(&mut reader).unwrap();
+    /// let decoded: &str = CodecLenValue::<&str, u8>::decode(&mut &mut reader).unwrap();
     /// assert_eq!(decoded, "hello");
     ///
+    /// # #[cfg(feature = "alloc")] {
     /// let lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
     /// incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
     /// exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
     /// dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
-    ///
-    /// // Allocating encoding...
+    /// // Allocating
     /// let mut buf = Vec::new();
     /// let len = CodecLenValue::<_, CodecBe<u16>>::new(lorem).encode(&mut buf).unwrap();
     /// assert_eq!(&buf[..7], &[1, 78, b'L', b'o', b'r', b'e', b'm'], "A big-endian u16 len");
     /// assert_eq![len, 336];
-    /// // ...and decoding
+    /// //
     /// let mut reader = buf.as_slice();
     /// let decoded: String = CodecLenValue::<String, CodecBe<u16>>::decode(&mut reader).unwrap();
     /// assert_eq!(decoded, lorem);
@@ -417,13 +424,16 @@ mod len {
     /// ```
     ///
     /// The length must fit the given type:
-    /// ```should_panic
-    /// use devela::{Encodable, CodecLenValue};
+    /// ```
+    /// # #[cfg(feature = "alloc")] {
+    /// use devela::{Encodable, CodecLe, CodecLenValue};
     ///
     /// let mut buf = Vec::new();
-    /// let len = CodecLenValue::<_, u8>::new("*".repeat(300)).encode(&mut buf).expect("too long");
+    /// assert![CodecLenValue::<_, u8>::new("*".repeat(451)).encode(&mut buf).is_err()];
+    /// assert![CodecLenValue::<_, CodecLe<u16>>::new("*".repeat(451)).encode(&mut buf).is_ok()];
+    /// # }
     /// ```
-    /// [TLV]: https://en.wikipedia.org/wiki/Type–length–value
+    #[doc = crate::doc_!(vendor: "encode")]
     #[must_use]
     #[doc(alias("length", "prefix", "TLV"))]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -470,6 +480,33 @@ mod len {
             D::decode(&mut limited_reader)
         }
     }
+
+    // Specialized implementation for &str.
+    impl<'a, CodecEndian> Decodable<&'a mut &'a [u8]> for CodecLenValue<&'a str, CodecEndian>
+    where
+        CodecEndian: CodecEndianLen + Decodable<&'a mut &'a [u8],
+            Output = <CodecEndian as CodecEndianLen>::Len>,
+        <CodecEndian as CodecEndianLen>::Len: TryInto<usize>,
+    {
+        type Output = &'a str;
+        fn decode(reader: &mut &'a mut &'a [u8]) -> IoResult<Self::Output> {
+            fn decode_str<'a>(buf: &mut &'a [u8], len: usize) -> IoResult<&'a str> {
+                if buf.len() < len {
+                    return Err(IoError::new(IoErrorKind::UnexpectedEof, "Not enough bytes"));
+                }
+                let (s_bytes, rest) = buf.split_at(len);
+                *buf = rest;
+                ::core::str::from_utf8(s_bytes)
+                    .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8"))
+            }
+            let len_encoded = CodecEndian::decode(reader)?;
+            let len: usize = len_encoded.try_into().map_err(|_| {
+                IoError::new(IoErrorKind::InvalidData, "Invalid length value")
+            })?;
+            decode_str(reader, len)
+        }
+    }
+
     /// A private helper trait to tie a length type to the endian codec.
     ///
     /// This trait ensures that `CodecLenValue` only accepts explicit endianness encoders
