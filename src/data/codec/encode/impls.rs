@@ -7,10 +7,11 @@ use crate::{
     sf, CStr, Decodable, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite, IoError,
     IoErrorKind, IoRead, IoResult, IoWrite, NoData, Slice,
 };
+crate::_use! {basic::from_utf8}
 
 #[cfg(feature = "alloc")]
 crate::items! {
-    use crate::{iif, Cow, CString, Box, String, Vec};
+    use crate::{iif, Cow, CString, Box, String, ToOwned, Vec};
 
     impl<W: IoWrite> Encodable<W> for Vec<u8> {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
@@ -38,9 +39,10 @@ crate::items! {
         fn decode(reader: &mut R) -> IoResult<Self::Output> {
             let mut buf = Vec::new();
             reader.read_to_end(&mut buf)?;
-            String::from_utf8(buf)
-                .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8")) } }
-
+            from_utf8(&buf).map(|s| s.to_owned())
+                .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8"))
+        }
+    }
     impl<W: IoWrite> Encodable<W> for CString {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
             writer.write(self.as_bytes()) } }
@@ -195,7 +197,7 @@ sf! {
         fn decode(reader: &mut &'a mut &[u8]) -> IoResult<Self::Output> {
             // In this specialized case, we assume the reader is already limited
             // to exactly the bytes for the string.
-            let s = ::core::str::from_utf8(reader)
+            let s = from_utf8(reader)
                 .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8"))?;
             // Consume the entire slice.
             **reader = &[];

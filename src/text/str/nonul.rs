@@ -12,13 +12,7 @@ use crate::{
 };
 #[cfg(feature = "alloc")]
 use crate::{CString, ToString};
-
-#[allow(unused_imports)]
-#[cfg(not(feature = "dep_simdutf8"))]
-use ::core::str::from_utf8;
-#[allow(unused_imports)]
-#[cfg(feature = "dep_simdutf8")]
-use ::simdutf8::basic::from_utf8;
+crate::_use! {basic::from_utf8}
 
 /* definitions */
 

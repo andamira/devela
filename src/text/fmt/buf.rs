@@ -4,11 +4,7 @@
 //
 
 use crate::{iif, FmtResult, FmtWrite, _core::cmp::min};
-
-#[cfg(not(feature = "dep_simdutf8"))]
-use ::core::str::from_utf8;
-#[cfg(feature = "dep_simdutf8")]
-use ::simdutf8::compat::from_utf8;
+crate::_use! {compat::from_utf8}
 
 /// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
 ///

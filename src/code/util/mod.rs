@@ -16,9 +16,10 @@
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
 // private modules
-mod _doc;
-mod _reexport;
-mod error; // define_error!
+mod _doc; // doc_! // RENAME: _doc!
+mod _reexport; // reexport! // RENAME _reexport!
+mod _use; // _use!
+mod error; // impl_error!
 
 #[doc(hidden)]
 pub use paste::__paste;
@@ -62,7 +63,7 @@ crate::items! { // structural access: _mods, _internals, _all, _always
         pub use super::unroll::_all::*;
     }
     pub(super) mod _internals {
-        pub(crate) use super::{_doc::*, _reexport::*, error::*};
+        pub(crate) use super::{_doc::*, _reexport::*, _use::*, error::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

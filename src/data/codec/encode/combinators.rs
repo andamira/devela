@@ -8,6 +8,7 @@ use crate::{
     iif, BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
     IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TryFromIntError,
 };
+crate::_use! {basic::from_utf8}
 
 pub use {
     cond::CodecIf,
@@ -496,7 +497,7 @@ mod len {
                 }
                 let (s_bytes, rest) = buf.split_at(len);
                 *buf = rest;
-                ::core::str::from_utf8(s_bytes)
+                from_utf8(s_bytes)
                     .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8"))
             }
             let len_encoded = CodecEndian::decode(reader)?;

@@ -5,10 +5,7 @@
 
 #[cfg(doc)]
 use crate::ExtStr;
-use crate::{
-    iif, Ascii, InvalidUtf8, Slice,
-    _core::str::{from_utf8, from_utf8_mut},
-};
+use crate::{iif, Ascii, InvalidUtf8, Slice, _core::str::from_utf8_mut};
 #[allow(unused_imports, reason = "unsafe")]
 #[cfg(feature = "alloc")]
 use crate::{Box, _dep::_alloc::str::from_boxed_utf8_unchecked};
