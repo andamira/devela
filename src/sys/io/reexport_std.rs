@@ -89,7 +89,30 @@ reexport! { rust: std::io,
     doc: "An iterator over the contents of an instance of BufRead split on a particular byte.",
     @Split as IoSplit
 }
-// ...Std...
+reexport! { rust: std::io,
+    doc: "A handle to the standard error stream of a process.",
+    Stderr
+}
+reexport! { rust: std::io,
+    doc: "A locked reference to the [`Stderr`] handle.",
+    StderrLock
+}
+reexport! { rust: std::io,
+    doc: "A handle to the standard input stream of a process.",
+    Stdin
+}
+reexport! { rust: std::io,
+    doc: "A locked reference to the [`Stdin`] handle.",
+    StdinLock
+}
+reexport! { rust: std::io,
+    doc: "A handle to the global standard output stream of the current process.",
+    Stdout
+}
+reexport! { rust: std::io,
+    doc: "A locked reference to the [`Stdout`] handle.",
+    StdoutLock
+}
 reexport! { rust: not(std)|std::io,
     doc: "Reader adapter which limits the bytes read from an underlying reader.",
     @Take as IoTake

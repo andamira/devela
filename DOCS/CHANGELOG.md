@@ -53,7 +53,8 @@
   - `IoErrorKind:` `OutOfMemory`, `FilesystemLoop`, `FilesystemQuotaExceeded`, `CrossesDevices`, `InvalidFilename`, `InProgress`.
 - new re-exports:
   - `alloc`: `alloc::SystemAlloc`.
-  - `std`: `{env::*, io::{IoEmpty, IoRepeat}, process::*, sync::LazyLock}`.
+  - `std`: `{env::*, process::*, sync::LazyLock}`.
+    - `io`: `IoEmpty`, `IoRepeat`, `Std[err|in|out][Lock]`.
   - `log`: `*`.
 - new optional dependencies: `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
 - add musl architectures to `check.rs` script.
