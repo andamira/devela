@@ -19,7 +19,7 @@
   - data: `NoData`.
     - codec: `Base`, `EncodeBe`, `EncodeLe`, `EncodeIf`, `EncodeJoin`, `EncodeFlags`, `EncodeLen`, `EncodeLenValue`.
     - table: `DataValue*`, `DataType*`, `DataRaw*`.
-    - xifer: `Crockford`, `Rfc4648`, `Rfc4648Hex`.
+    - xipher: `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - lang: `g_*`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - num:
@@ -32,7 +32,7 @@
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
-  - namespaces: `Fmt`, `Fs`, `FsPath`, `Iter`, `Log`.
+  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Log`.
 - new macros: `maybe!`, `miniquad!`, `xorshift_custom!`.
 - new modules:
   - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
@@ -62,7 +62,10 @@
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
-- remove standalone fns: `crate_root`, `crate_root_string`, `future_block`, `future_pending`, `future_ready`.
+- remove standalone fns:
+  - io: `io_*`.
+  - text: `crate_root`, `crate_root_string`.
+  - work: `future_block`, `future_pending`, `future_ready`.
 - remove private variant `IoErrorKind::Uncategorized`.
 - remove module `data::collections`.
 - disable optional dependencies: `ring`, `rkyv`.

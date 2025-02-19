@@ -15,6 +15,12 @@
     doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io"))))
 )]
 mod impls;
+#[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io"))))
+)]
+mod namespace;
 
 #[cfg(not(feature = "std"))]
 mod define_no_std;
@@ -28,6 +34,9 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
+        #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
+        pub use super::namespace::*;
+
         #[cfg(not(feature = "std"))]
         pub use super::define_no_std::*;
         #[cfg(feature = "std")]

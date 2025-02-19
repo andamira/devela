@@ -1,6 +1,13 @@
 // devela::sys::io::reimplement_no_std::fns
 //
-//! Defines [`io_copy`], [`IoEmpty`], [`IoRepeat`].
+//! Defines [`IoEmpty`], [`IoRepeat`], [`io_copy`], [`io_empty`], [`io_repeat`].
+//
+// TOC
+// - io_copy
+// - IoEmpty
+// - io_empty
+// - IoRepeat
+// - io_repeat
 //
 // TODO
 // - https://doc.rust-lang.org/std/io/struct.IoSlice.html
@@ -12,19 +19,19 @@ use crate::{IoError, Vec};
 
 /// Copies the entire contents of a reader into a writer.
 ///
+/// See <https://doc.rust-lang.org/std/io/fn.copy.html>.
+///
 /// # Features
 /// Makes use of the `unsafe_array` feature to employ [`MaybeUninit`].
-///
-/// See <https://doc.rust-lang.org/std/io/fn.copy.html>.
-pub fn io_copy<R, W, const S: usize>(reader: &mut R, writer: &mut W) -> IoResult<u64>
+pub(crate) fn io_copy<R, W, const LEN: usize>(reader: &mut R, writer: &mut W) -> IoResult<u64>
 where
     R: ?Sized + IoRead,
     W: ?Sized + IoWrite,
 {
     #[cfg(any(feature = "safe_io", not(feature = "unsafe_array")))]
-    let mut buf = [0u8; S];
+    let mut buf = [0u8; LEN];
     #[cfg(all(not(feature = "safe_io"), feature = "unsafe_array"))]
-    let mut buf = crate::MaybeUninit::<[u8; S]>::uninit();
+    let mut buf = crate::MaybeUninit::<[u8; LEN]>::uninit();
     let mut written = 0;
 
     loop {
@@ -60,6 +67,8 @@ where
 pub struct IoEmpty;
 
 sf! {
+    pub(crate) const fn io_empty() -> IoEmpty { IoEmpty }
+
     impl IoRead for IoEmpty {
         fn read(&mut self, _buf: &mut [u8]) -> IoResult<usize> { Ok(0) }
     }
@@ -91,32 +100,32 @@ pub struct IoRepeat {
     byte: u8,
 }
 impl_trait![fmt::Debug for IoRepeat |self, f| f.debug_struct("IoRepeat").finish_non_exhaustive()];
-
-impl IoRead for IoRepeat {
-    fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
-        for slot in &mut *buf {
-            *slot = self.byte;
+sf! {
+    pub(crate) const fn io_repeat(byte: u8) -> IoRepeat { IoRepeat { byte } }
+    impl IoRead for IoRepeat {
+        fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
+            for slot in &mut *buf { *slot = self.byte; }
+            Ok(buf.len())
         }
-        Ok(buf.len())
+        /// This function is not supported by `IoRepeat`, because there's no end of its data
+        #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        fn read_to_end(&mut self, _: &mut Vec<u8>) -> IoResult<usize> {
+            Err(IoError::from(IoErrorKind::OutOfMemory))
+        }
+        // /// This function is not supported by `IoRepeat`, because there's no end of its data
+        // #[cfg(feature = "alloc")]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        // fn read_to_string(&mut self, _: &mut String) -> IoResult<usize> {
+        //     Err(IoError::from(IoErrorKind::OutOfMemory))
+        // }
+        // fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> IoResult<usize> {
+        //     let mut nwritten = 0;
+        //     for buf in bufs {
+        //         nwritten += self.read(buf)?;
+        //     }
+        //     Ok(nwritten)
+        // }
+        // fn is_read_vectored(&self) -> bool { true }
     }
-    /// This function is not supported by `IoRepeat`, because there's no end of its data
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    fn read_to_end(&mut self, _: &mut Vec<u8>) -> IoResult<usize> {
-        Err(IoError::from(IoErrorKind::OutOfMemory))
-    }
-    // /// This function is not supported by `IoRepeat`, because there's no end of its data
-    // #[cfg(feature = "alloc")]
-    // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    // fn read_to_string(&mut self, _: &mut String) -> IoResult<usize> {
-    //     Err(IoError::from(IoErrorKind::OutOfMemory))
-    // }
-    // fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> IoResult<usize> {
-    //     let mut nwritten = 0;
-    //     for buf in bufs {
-    //         nwritten += self.read(buf)?;
-    //     }
-    //     Ok(nwritten)
-    // }
-    // fn is_read_vectored(&self) -> bool { true }
 }
