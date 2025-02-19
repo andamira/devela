@@ -3,7 +3,7 @@ This project includes code adapted from various permissively licensed sources.
 Below is a list of derived works, their origins, and relevant modifications.
 See the linked modifications for detailed changes.
 
-## Works under dual MIT OR Apache-2.0 licenses
+## MIT OR Apache-2.0 licenses
 
 - <i id="cfg-if"></i>[cfg-if] by Alex Crichton,
   as the [`cfg-if`] macro.
@@ -84,7 +84,7 @@ See the linked modifications for detailed changes.
   [M_tupl]: https://github.com/andamira/devela/blob/main/src/_info/vendored/tupl.md
   [`Tuple`]: https://docs.rs/devela/latest/devela/data/list/tuple/trait.Tuple.html
 
-## Works under MIT License
+## MIT licenses
 - <i id="const_for"></i>[const_for] by Joachim Enggård Nebel,
   as the [`cfor`] macro.
 - <i id="crunchy"></i>[crunchy] by Eira Fransham,
@@ -122,7 +122,7 @@ See the linked modifications for detailed changes.
 [unsized-stack]: https://crates.io/crates/unsized-stack/0.2.0
   [`FatPtr`]: https://docs.rs/devela/latest/devela/sys/mem/struct.FatPtr.html
 
-## Other Licenses
+## Other licenses
 - <i id="8bit_rng"></i>[8bit_rng] by Edward Rosten, (BSD-2),
   as the [`Xyza8a`] and [`Xyza8b`] structs algorithms.
 - <i id="apply"></i>[apply] by GeorgeBurton (Unlicense),
@@ -130,7 +130,7 @@ See the linked modifications for detailed changes.
 - <i id="blit-fonts"></i>[blit-fonts] by Andrew Reece (ISC),
   as the [`FONT_3_5`] and [`FONT_5_6`] consts data<!-- ([*modifications*][M_blit-fonts]) -->.
 - <i id="pengyhash"></i>[pengyhash] by Alberto Fajardo (BSD-2),
-  as the [`HasherPengy`] struct algorithm ([*modifications*][M_pengy]).
+  as the [`HasherPengy`] struct algorithm ([*modifications*][M_pengyhash]).
 - <i id="size_of_trait"></i>[size_of_trait] byt Joshua Nelson (BSD-3),
   as the [`size_of_expr`] fn.
 - <i id="Xabc"></i>[Xabc] by *EternityForest* (openly shared),
