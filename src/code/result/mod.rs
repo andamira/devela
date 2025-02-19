@@ -1,12 +1,15 @@
 // devela::code::result
 //
-//! Result handling.
+//! Resolving results.
+//!
 #![doc = crate::doc_!(modules: crate::code; result: error)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: backtrace, error, option, panic, result)]
 //!
-//! Streamlines error management, result chaining, and introduces utility types and macros.
+//! Computation doesn’t just yield values, it reaches resolutions.
+//! This module refines how results are formed, owned, transformed,
+//! and resolved, ensuring that every outcome finds its place.
 //
 
 mod chain_hook; // Chain, Hook
@@ -30,6 +33,9 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
             chain_hook::*, mismatch::*, opt_res::_all::*, own::*,
             panic::_all::*, reexports::*, value_quant::*,
         };
+        // WIPZONE
+        // #[cfg(feature = "_tuple")]
+        // pub use super::menu::*;
     }
     mod _pub_mods {
         pub use super::error::_all::*;
@@ -42,3 +48,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         pub use super::{error::_always::*, panic::_always::*, reexports::*};
     }
 }
+// WIPZONE
+// #[cfg(feature = "_tuple")]
+// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_tuple")))]
+// mod menu;

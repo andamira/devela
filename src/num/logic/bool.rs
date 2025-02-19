@@ -24,10 +24,10 @@ pub trait ConstBool {
     const VALUE: Self::Value;
 }
 sf! {
-    impl ConstBool for [(); 0] { type Value = False; const VALUE: False = False; }
-    impl ConstBool for [(); 1] { type Value = True; const VALUE: True = True; }
-    impl ConstBool for False { type Value = False; const VALUE: False = False; }
-    impl ConstBool for True { type Value = True; const VALUE: True = True; }
+    impl ConstBool for [(); 0] { type Value = False; const VALUE: Self::Value = False; }
+    impl ConstBool for [(); 1] { type Value = True; const VALUE: Self::Value = True; }
+    impl ConstBool for False { type Value = False; const VALUE: Self::Value = False; }
+    impl ConstBool for True { type Value = True; const VALUE: Self::Value = True; }
 }
 
 /// Converts a *const* `bool` expression to a type-level boolean.

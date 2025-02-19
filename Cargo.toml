@@ -137,7 +137,7 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 
 #* Module features *#
 # ------------------------------------------------------------------------------
-# They set automatic compile flags named `*··`, used for reflection.
+# They set compile flags named `*··` (two interpuncts), for reflection.
 # For example, `num··` will be set if any num submodule feature is enabled.
 
 all = [ # enables all the modules and submodules
@@ -299,6 +299,7 @@ nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	nightly_doc = [] # not(doc_auto_cfg)
 	#
 	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
+	# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
 	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
 	#
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)

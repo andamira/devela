@@ -23,7 +23,6 @@ crate::items! {
     }
     pub mod nightly {
         //! Nightly features.
-        // WIP
         #![doc = include_str!("../../DOCS/NIGHTLY.md")]
     }
     /// Vendored work.

@@ -36,7 +36,7 @@ crate::items! { // structural access: _pub_mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
-    mod _pub_mods {
+    mod _pub_mods { #![allow(unused)]
         #[cfg(media··)] pub use super::error::*;
         #[cfg(feature = "audio")] pub use super::audio::_all::*;
         #[cfg(feature = "color")] pub use super::color::_all::*;
