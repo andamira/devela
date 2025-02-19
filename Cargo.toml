@@ -520,10 +520,10 @@ _char_all = ["_char7", "_char8", "_char16"]
 _str_all = [
 	"_str_u8", "_str_u16", "_str_u32", "_str_usize",
 	"_str_nonul"]
-	_str_u8 = []
-	_str_u16 = []
-	_str_u32 = []
-	_str_usize = []
+	_str_u8 = ["str"]
+	_str_u16 = ["str"]
+	_str_u32 = ["str"]
+	_str_usize = ["str"]
 	#
 	_str_nonul = []
 

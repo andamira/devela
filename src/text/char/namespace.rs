@@ -1,12 +1,13 @@
 // devela::text::char::namespace
 //
-//! [`Char`] namespace.
+//! Defines the [`Char`] namespace.
 //
+// MAYBE: Defines the [`Char`] and [`Utf8`] namespaces.
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Unicode scalars-related operations.
 ///
-/// See also [`ExtMem`][crate::ExtMem],
+/// See also [`Str`][crate::Str], [`ExtMem`][crate::ExtMem],
 pub struct Char;
 
 impl Char {
@@ -41,9 +42,60 @@ impl Char {
             || (code >= 0x2FE0 && code <= 0x2FEF)
     }
 
+    /// Returns the expected UTF-8 byte length based on the first byte.
+    ///
+    /// This function does **not** validate UTF-8 but determines how many bytes
+    /// a valid sequence **should** occupy based on the leading byte.
+    ///
+    /// - ASCII (0xxxxxxx) → 1 byte
+    /// - 2-byte (110xxxxx) → 2 bytes
+    /// - 3-byte (1110xxxx) → 3 bytes
+    /// - 4-byte (11110xxx) → 4 bytes
+    ///
+    /// ### Caveat
+    /// - If used on malformed UTF-8, it may suggest a length longer than the actual valid sequence.
+    /// - Always use in conjunction with proper UTF-8 validation if handling untrusted input.
+    ///
+    /// For a stricter check, see [`utf8_len_checked`][Self::utf8_len_checked].
+    pub const fn utf8_len(first_byte: u8) -> u8 {
+        match first_byte {
+            0x00..=0x7F => 1, // ASCII (1 byte)
+            0xC0..=0xDF => 2, // 2-byte sequence
+            0xE0..=0xEF => 3, // 3-byte sequence
+            0xF0..=0xF7 => 4, // 4-byte sequence
+            _ => 0,           // Invalid leading byte
+        }
+    }
+
+    /// Returns the UTF-8 byte length or `None` if the first byte is invalid.
+    ///
+    /// This function detects invalid UTF-8 leading bytes and ensures
+    /// they fall within valid Unicode scalar boundaries.
+    ///
+    /// - Returns `Some(len)` for valid leading bytes.
+    /// - Returns `None` for invalid first bytes that cannot start a UTF-8 sequence.
+    ///
+    /// ### Stricter Handling
+    /// - Rejects overlong sequences (C0, C1).
+    /// - Enforces the valid UTF-8 upper bound (max `F4`).
+    /// - Safer for processing untrusted input where malformed UTF-8 must be detected.
+    ///
+    /// For a simpler length-only function, see [`utf8_len`][Self::utf8_len].
+    #[must_use]
+    pub const fn utf8_len_checked(first_byte: u8) -> Option<u8> {
+        match first_byte {
+            0x00..=0x7F => Some(1),
+            0xC2..=0xDF => Some(2),
+            0xE0..=0xEF => Some(3),
+            0xF0..=0xF4 => Some(4),
+            _ => None,
+        }
+    }
+
     /// Returns the number of bytes needed to store the given unicode scalar `code`,
     /// already UTF-8 encoded in 2 bytes.
     #[must_use]
+    #[deprecated(since = "0.23.0", note = "Use `utf8_len` instead")]
     pub const fn utf8_2bytes_len(code: [u8; 2]) -> u8 {
         1 + ((code[1] > 0) & (code[1] & 0b1100_0000 != 0b1000_0000)) as u8
     }
@@ -51,6 +103,7 @@ impl Char {
     /// Returns the number of bytes needed to store the given unicode scalar `code`,
     /// already UTF-8 encoded in 3 bytes.
     #[must_use]
+    #[deprecated(since = "0.23.0", note = "Use `utf8_len` instead")]
     pub const fn utf8_3bytes_len(code: [u8; 3]) -> u8 {
         1 + ((code[1] > 0) & (code[1] & 0b1100_0000 != 0b1000_0000)) as u8
             + ((code[2] > 0) & (code[2] & 0b1100_0000 != 0b1000_0000)) as u8
@@ -59,6 +112,7 @@ impl Char {
     /// Returns the number of bytes needed to store the given unicode scalar `code`,
     /// already UTF-8 encoded in 4 bytes.
     #[must_use]
+    #[deprecated(since = "0.23.0", note = "Use `utf8_len` instead")]
     pub const fn utf8_4bytes_len(code: [u8; 4]) -> u8 {
         1 + ((code[1] > 0) & (code[1] & 0b1100_0000 != 0b1000_0000)) as u8
             + ((code[2] > 0) & (code[2] & 0b1100_0000 != 0b1000_0000)) as u8
@@ -73,7 +127,7 @@ impl Char {
     }
     /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8.
     #[must_use]
-    #[deprecated(since = "0.23.0", note = "Use` len_utf8` instead")]
+    #[deprecated(since = "0.23.0", note = "Use `len_utf8` instead")]
     pub const fn len_to_utf8(code: char) -> usize {
         Self::len_utf8(code)
     }

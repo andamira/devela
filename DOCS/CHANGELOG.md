@@ -43,7 +43,7 @@
 - new macro arms:
   - `str!`: `ip_addr`.
 - new methods:
-  - `Char::len_utf8`.
+  - `Char::{len_utf8, utf8_len, utf8_len_checked}`.
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
@@ -88,10 +88,14 @@
   - from prngs: `next_state` method to `peek_next_state`.
   - `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
   - `bytes_from_bits` fn to `Mem::bytes_from_bits`.
+- deprecate fns/methods:
+  - `Char`: `utf8_2bytes_len`, `utf8_3bytes_len`, `utf8_4bytes_len`.
 - remove feature-gates:
   - `hash` for: `FxHasher`.
   - `io` for: `IoError`, `IoErrorKind`, `IoRead`, `IoWrite`, `IoBytes`, `IoChain`, `IoTake`.
   - `rand` for: `Xorshift128p`.
+- auto-enable features:
+  - `str`: when enabling `_str_u*`.
 - make customizable: `XorShift[16|32|64]`.
 - derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.

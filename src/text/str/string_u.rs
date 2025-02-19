@@ -8,13 +8,14 @@
 //   - trait impls
 // - tests
 
+#[cfg(feature = "str")]
+use crate::Str;
 #[allow(unused, reason = "±unsafe | ±_cmp*")]
-use crate::{cfor, Compare, Str};
+use crate::{cfor, Compare};
 use crate::{
     text::char::*, Deref, IterChars, _core::fmt, iif, paste, unwrap, ConstDefault, InvalidText,
     InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements,
 };
-
 #[cfg(all(_str_u··, feature = "alloc"))]
 use crate::{CString, ToString};
 
@@ -332,10 +333,8 @@ macro_rules! impl_str_u {
             #[rustfmt::skip]
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
-
                 let bytes = Char::to_utf8_bytes(c);
-                new.len = Char::utf8_4bytes_len(bytes) as $t;
-
+                new.len = Char::utf8_len(bytes[0]) as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
@@ -371,10 +370,8 @@ macro_rules! impl_str_u {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
-
                 let bytes = c.to_utf8_bytes();
-                new.len = Char::utf8_2bytes_len(bytes) as $t;
-
+                new.len = Char::utf8_len(bytes[0]) as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 Ok(new)
@@ -392,10 +389,8 @@ macro_rules! impl_str_u {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
-
                 let bytes = c.to_utf8_bytes();
-                new.len = Char::utf8_3bytes_len(bytes) as $t;
-
+                new.len = Char::utf8_len(bytes[0]) as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
