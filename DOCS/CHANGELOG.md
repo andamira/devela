@@ -27,6 +27,7 @@
     - quant: `Cycle`, `CycleCount`.
   - sys:
     - env::app: `AppApple`, `AppConfig`, `AppWindows`, `AppUnix`, `AppXdg`,
+    - io: `IoEmpty`, `IoRepeat`.
     - log: `LogConfig`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
@@ -50,7 +51,10 @@
   - prngs: `from_state`, `inner_state`.
 - new variants:
   - `IoErrorKind:` `OutOfMemory`, `FilesystemLoop`, `FilesystemQuotaExceeded`, `CrossesDevices`, `InvalidFilename`, `InProgress`.
-- new re-exports: `LazyLock`, `SystemAlloc`, `std::{env::*, process::*}`, `::log::*`.
+- new re-exports:
+  - `alloc`: `alloc::SystemAlloc`.
+  - `std`: `{env::*, io::{IoEmpty, IoRepeat}, process::*, sync::LazyLock}`.
+  - `log`: `*`.
 - new optional dependencies: `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features.

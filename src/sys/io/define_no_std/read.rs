@@ -11,12 +11,13 @@
 // - struct IoTake
 // - impls
 // - mod alloc_impls
+//
+// TODO:
+// - https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_string
 
-#[allow(unused_imports, reason = "±unsafe")]
-use crate::sf;
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{IoError, IoErrorKind, IoResult, _core::fmt, iif, OptRes, Slice};
+use crate::{IoError, IoErrorKind, IoResult, _core::fmt, iif, sf, OptRes, Slice};
 use ::core::cmp;
 
 /// The `IoRead` trait allows for reading bytes from a source.
@@ -276,20 +277,14 @@ impl<T: IoBufRead> IoBufRead for IoTake<T> {
 
 /* impls */
 
-impl<R: IoRead + ?Sized> IoRead for &mut R {
-    fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
-        (**self).read(buf)
+sf! {
+    impl<R: IoRead + ?Sized> IoRead for &mut R {
+        fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> { (**self).read(buf) }
+        fn read_exact(&mut self, buf: &mut [u8]) -> IoResult<()> { (**self).read_exact(buf) }
     }
-    fn read_exact(&mut self, buf: &mut [u8]) -> IoResult<()> {
-        (**self).read_exact(buf)
-    }
-}
-impl<B: IoBufRead + ?Sized> IoBufRead for &mut B {
-    fn fill_buf(&mut self) -> IoResult<&[u8]> {
-        (**self).fill_buf()
-    }
-    fn consume(&mut self, amt: usize) {
-        (**self).consume(amt);
+    impl<B: IoBufRead + ?Sized> IoBufRead for &mut B {
+        fn fill_buf(&mut self) -> IoResult<&[u8]> { (**self).fill_buf() }
+        fn consume(&mut self, amt: usize) { (**self).consume(amt); }
     }
 }
 
@@ -301,48 +296,28 @@ impl IoRead for &[u8] {
     fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
         let amt = cmp::min(buf.len(), self.len());
         let (a, b) = self.split_at(amt);
-
         // First check if the amount of bytes we want to read is small:
         // `copy_from_slice` will generally expand to a call to `memcpy`, and
         // for a single byte the overhead is significant.
-        if amt == 1 {
-            buf[0] = a[0];
-        } else {
-            buf[..amt].copy_from_slice(a);
-        }
-
+        iif![amt == 1; buf[0] = a[0]; buf[..amt].copy_from_slice(a)];
         *self = b;
         Ok(amt)
     }
-
     fn read_exact(&mut self, buf: &mut [u8]) -> IoResult<()> {
         if buf.len() > self.len() {
             return Err(IoError::new(IoErrorKind::UnexpectedEof, "failed to fill whole buffer"));
         }
         let (a, b) = self.split_at(buf.len());
-
-        // First check if the amount of bytes we want to read is small:
-        // `copy_from_slice` will generally expand to a call to `memcpy`, and
-        // for a single byte the overhead is significant.
-        if buf.len() == 1 {
-            buf[0] = a[0];
-        } else {
-            buf.copy_from_slice(a);
-        }
-
+        // See equivalent comment in `read` method.
+        iif![buf.len() == 1; buf[0] = a[0]; buf.copy_from_slice(a)];
         *self = b;
         Ok(())
     }
 }
-
+#[rustfmt::skip]
 impl IoBufRead for &[u8] {
-    fn fill_buf(&mut self) -> IoResult<&[u8]> {
-        Ok(*self)
-    }
-
-    fn consume(&mut self, amt: usize) {
-        *self = &self[amt..];
-    }
+    fn fill_buf(&mut self) -> IoResult<&[u8]> { Ok(*self) }
+    fn consume(&mut self, amt: usize) { *self = &self[amt..]; }
 }
 
 #[cfg(feature = "alloc")]

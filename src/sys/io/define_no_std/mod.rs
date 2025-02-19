@@ -13,7 +13,7 @@ pub use {error::*, read::*, write::*};
 crate::items! {
     mod buffered; // IoBufReader, IoBufWriter, IoLineWriter, IntoInnerError
     mod cursor; // IoSeek, IoSeekFrom, IoCursor
-    mod fns; // io_copy
+    mod other; // io_copy, IoEmpty, IoRepeat
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
-    pub use {buffered::*, cursor::*, fns::*};
+    pub use {buffered::*, cursor::*, other::*};
 }

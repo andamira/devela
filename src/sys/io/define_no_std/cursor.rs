@@ -16,6 +16,7 @@ use ::core::cmp;
 /// This struct is generally created by calling [`bytes`][IoRead::bytes] on a reader.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Seek.html>.
+// WAIT [seek_convenience](https://github.com/rust-lang/rust/issues/59359)
 pub trait IoSeek {
     /// Seek to an offset, in bytes, in a stream.
     fn seek(&mut self, pos: IoSeekFrom) -> IoResult<u64>;

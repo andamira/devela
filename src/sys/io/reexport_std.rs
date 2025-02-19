@@ -46,6 +46,10 @@ reexport! { rust: not(std)|std::io,
     doc: "Wraps an in-memory buffer and provides it with an [`IoSeek`] implementation.",
     @Cursor as IoCursor
 }
+reexport! { rust: std::io,
+    doc: "Ignores any data written via [`IoWrite`], and read via [`IoRead`].",
+    @Empty as IoEmpty
+}
 reexport! { rust: not(std)|std::io,
     tag: crate::TAG_ERROR_COMPOSITE!(),
     doc: "Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations and associated traits.",
@@ -68,7 +72,10 @@ reexport! { rust: std::io,
     doc: "An iterator over the lines of an instance of [`IoBufRead`].",
     @Lines as IoLines
 }
-// @Repeat as IoRepeat
+reexport! { rust: std::io,
+    doc: "A reader which yields one byte over and over and over and over and over and…",
+    @Repeat as IoRepeat
+}
 reexport! { rust: not(std)|std::io,
     tag: crate::TAG_RESULT!(),
     doc: "A specialized [`Result`] type for I/O operations.",
