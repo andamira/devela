@@ -66,7 +66,9 @@
 ### Changed
 - bump MSRV to 1.84.1.
 - rename features:
-  - `_docs_max` to `_max`, `_docs_min` to `_docs`.
+  - `_docs_max` to `_max`, `_docs_min` to `_docs`, `_string_*` to `_str_*`.
+- rename flags:
+  - `prim···` flag to `prim··`, `_str*` to `_str*`.
 - rename/move modules:
   - `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
   - `data::{bit, hash, serde}` inside `data::codec`.
@@ -102,7 +104,6 @@
 - improve the docs for vendored items.
 
 ### Fixed
-- rename `prim···` flag to `prim··`.
 - improve build script debug output.
 - enable nightly features depending on `alloc` and `std`.
 - feature-gate namespaced re-exported unsafe methods with `unsafe··`.

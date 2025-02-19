@@ -22,7 +22,7 @@ use crate::{
 use crate::GraphemeString;
 #[cfg(feature = "alloc")]
 use crate::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, String, Vec, VecDeque};
-#[cfg(feature = "_string_nonul")]
+#[cfg(feature = "_str_nonul")]
 use crate::{GraphemeNonul, StringNonul};
 
 #[cfg(feature = "dep_portable_atomic")]
@@ -217,7 +217,7 @@ bit_sized![= 64; for AtomicF64];
 #[cfg(feature = "dep_portable_atomic")]
 bit_sized![= 128; for AtomicI128, AtomicU128];
 
-#[cfg(feature = "_string_nonul")]
+#[cfg(feature = "_str_nonul")]
 bit_sized![<const LEN: usize> = LEN; for GraphemeNonul<LEN>, StringNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, GraphemeU8<LEN>];

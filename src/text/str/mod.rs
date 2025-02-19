@@ -16,10 +16,10 @@ mod r#macro; // str!
 
 #[cfg(all(feature = "str", feature = "alloc"))]
 mod ext_string;
-#[cfg(feature = "_string_nonul")] // RETHINK
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
+#[cfg(feature = "_str_nonul")] // RETHINK
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_str_nonul")))]
 mod nonul;
-#[cfg(_string_u··)]
+#[cfg(_str_u··)]
 mod string_u;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -38,9 +38,9 @@ crate::items! { // structural access: _mods, _all, _always
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "str")))]
         pub use super::ext_string::*;
 
-        #[cfg(feature = "_string_nonul")] // RETHINK
+        #[cfg(feature = "_str_nonul")] // RETHINK
         pub use super::nonul::*;
-        #[cfg(_string_u··)]
+        #[cfg(_str_u··)]
         pub use super::string_u::*;
 
         #[doc(inline)] #[cfg(feature = "dep_const_str")]

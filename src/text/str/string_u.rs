@@ -3,7 +3,7 @@
 //! `String` backed by an array.
 //
 // TOC
-// - impl_string_u!
+// - impl_str_u!
 //   - definitions
 //   - trait impls
 // - tests
@@ -15,29 +15,29 @@ use crate::{
     InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements,
 };
 
-#[cfg(all(_string_u··, feature = "alloc"))]
+#[cfg(all(_str_u··, feature = "alloc"))]
 use crate::{CString, ToString};
 
-macro_rules! impl_string_u {
+macro_rules! impl_str_u {
     () => {
-        impl_string_u![
-            u8:"_string_u8":"_cmp_u8",
-            u16:"_string_u16":"_cmp_u16",
-            u32:"_string_u32":"_cmp_u32",
-            usize:"_string_usize"
+        impl_str_u![
+            u8:"_str_u8":"_cmp_u8",
+            u16:"_str_u16":"_cmp_u16",
+            u32:"_str_u32":"_cmp_u32",
+            usize:"_str_usize"
         ];
     };
 
     (
     // $t:    the length type. E.g.: u8.
-    // $cap:  the capability that enables the implementation. E.g. _string_u8.
+    // $cap:  the capability that enables the implementation. E.g. _str_u8.
     // $cmp:  the optional capability associated to optional const methods. E.g. _cmp_u8.
     //
     // $name: the name of the type. E.g.: StringU8.
     $( $t:ty : $cap:literal $(: $cmp:literal)? ),+) => {
         $(
             #[cfg(feature = $cap)]
-            paste! { impl_string_u![@[<String $t:camel>], $t:$cap $(:$cmp)? ]; }
+            paste! { impl_str_u![@[<String $t:camel>], $t:$cap $(:$cmp)? ]; }
         )+
     };
 
@@ -50,7 +50,7 @@ macro_rules! impl_string_u {
         ///
         /// # Features
         /// It will be implemented if the corresponding feature is enabled:
-        /// `_string_u[8|16|32|size]`.
+        /// `_str_u[8|16|32|size]`.
         ///
         /// ## Methods
         /// - Construct:
@@ -707,7 +707,7 @@ macro_rules! impl_string_u {
         }
     }};
 }
-impl_string_u!();
+impl_str_u!();
 
 #[cfg(test)]
 mod tests {
@@ -715,7 +715,7 @@ mod tests {
     use super::*;
 
     #[test]
-    #[cfg(feature = "_string_u8")]
+    #[cfg(feature = "_str_u8")]
     fn push() {
         let mut s = StringU8::<3>::new().unwrap();
         assert![s.try_push('ñ').is_ok()];
@@ -727,7 +727,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "_string_u8")]
+    #[cfg(feature = "_str_u8")]
     fn pop() {
         let mut s = StringU8::<3>::new().unwrap();
         s.push('ñ');

@@ -17,7 +17,7 @@
 #     - doc          (_doc*)
 #     - data         (_data*, _bit*, _collections*, _sort*, _tuple*, _value*, …)
 #     - num          (_num*, _cmp*, _int_*, _float_*, …)
-#     - text         (_text*, _char*, _string_*)
+#     - text         (_text*, _char*, _str_*)
 #   - Dependency     (dep_*)
 #
 # * [dependencies] (required|optional)
@@ -352,7 +352,7 @@ _docs = [ # the minimum capabilities to document everything
 	"_cmp_f64", "_cmp_u32", "_cmp_i64",
 	"_float_f64", "_int_u32", "_int_i64",
 	# text:
-	"_string_u8", "_string_nonul", "_char_all",
+	"_str_u8", "_str_nonul", "_char_all",
 ]
 _docsrs_stable_nodep = ["_docs", "std", "unsafe"]              # + std + unsafe
 _docsrs_stable       = ["_docsrs_stable_nodep", "dep_all"]     # + dependencies
@@ -508,7 +508,7 @@ _nums_all = ["_float_all", "_int_all"]
 #* text capabilities *#
 # ---------------------
 
-_text_all = ["_char_all", "_string_all"]
+_text_all = ["_char_all", "_str_all"]
 
 # char*
 _char_all = ["_char7", "_char8", "_char16"]
@@ -517,15 +517,15 @@ _char_all = ["_char7", "_char8", "_char16"]
 	_char16 = []
 
 # StringU*, StringNonul:
-_string_all = [
-	"_string_u8", "_string_u16", "_string_u32", "_string_usize",
-	"_string_nonul"]
-	_string_u8 = []
-	_string_u16 = []
-	_string_u32 = []
-	_string_usize = []
+_str_all = [
+	"_str_u8", "_str_u16", "_str_u32", "_str_usize",
+	"_str_nonul"]
+	_str_u8 = []
+	_str_u16 = []
+	_str_u32 = []
+	_str_usize = []
 	#
-	_string_nonul = []
+	_str_nonul = []
 
 
 #* Dependency features *#
@@ -1158,7 +1158,7 @@ check-cfg = [ # Allowed config flags:
 	'cfg(sys··, mem··)',
 	# text:
 	'cfg(text··)',
-	'cfg(_char··, _string··, _string_u··)',
+	'cfg(_char··, _str··, _str_u··)',
 	# ui
 	'cfg(ui··)',
 	# work

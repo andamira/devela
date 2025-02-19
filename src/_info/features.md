@@ -292,13 +292,13 @@ Enable specific implementations for [`char*`]:
 - `_char7`, `_char8`, `_char16`.
 
 Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
-- `_string_all`:
-  - `_string_uall`:
-    - `_string_u8`, `_string_u16`, `_string_u32`, `_string_usize`.
-  - `_string_nonul`.
+- `_str_all`:
+  - `_str_uall`:
+    - `_str_u8`, `_str_u16`, `_str_u32`, `_str_usize`.
+  - `_str_nonul`.
 
 They also set the corresponding flags:
-`_char··`, `_string··`, `_string_u··`.
+`_char··`, `_str··`, `_str_u··`.
 
 [`char*`]: crate::text::char8
 [`StringU*`]: crate::text::StringU8

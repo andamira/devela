@@ -261,11 +261,11 @@ mod reflection {
     /* ## text */
 
     pub const STRING_U: FlagsFeatures = FlagsFeatures {
-        flags: &["_string··", "_string_u··"],
-        features: &["_string_u8", "_string_u16", "_string_u32", "_string_usize"] };
+        flags: &["_str··", "_str_u··"],
+        features: &["_str_u8", "_str_u16", "_str_u32", "_str_usize"] };
     pub const STRING: FlagsFeatures = FlagsFeatures {
-        flags: &["_string··"],
-        features: &["_string_nonul"] };
+        flags: &["_str··"],
+        features: &["_str_nonul"] };
     pub const CHAR: FlagsFeatures = FlagsFeatures {
         flags: &["_char··"],
         features: &["_char7", "_char8", "_char16", "_char24", "_char32"] };
