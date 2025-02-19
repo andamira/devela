@@ -6,13 +6,10 @@
 // WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
 // IMPROVE: use `NumToStr`
 
-use crate::{cold_empty_string, iif, Ascii, Slice};
+use crate::{iif, Ascii, Slice, Str};
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
-
 crate::_use! {basic::from_utf8}
-#[allow(unused_imports, reason = "doc | ±unsafe")]
-use crate::Str;
 
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
 trait Sealed {}
@@ -131,7 +128,7 @@ impl ExtStr for str {
     fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
         assert![buffer.len() >= length];
         if length == 0 {
-            cold_empty_string()
+            Str::new_cold_empty()
         } else {
             let separator = separator as u8;
             let mut index = length - 1; // start writing from the end

@@ -5,7 +5,7 @@
 
 #[cfg(doc)]
 use crate::ExtStr;
-use crate::{iif, Ascii, InvalidUtf8, Slice, _core::str::from_utf8_mut};
+use crate::{iif, Ascii, InvalidUtf8, Slice};
 #[allow(unused_imports, reason = "unsafe")]
 #[cfg(feature = "alloc")]
 use crate::{Box, _dep::_alloc::str::from_boxed_utf8_unchecked};
@@ -14,6 +14,12 @@ use crate::{
     _core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
     sf, unwrap,
 };
+// TODO: IMPROVE:
+// - one default, (simd == api if possible)
+// - other faster-simdversion if possible (no care about api, errors)
+// can't import either or, has to be both, for this module…
+use ::core::str::from_utf8_mut;
+// crate::_use! {basic::from_utf8} // MAYBE not needed
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// A string slice namespace.
@@ -24,12 +30,23 @@ pub struct Str;
 impl Str {
     /// Converts a slice of bytes to a string slice.
     ///
-    /// See [`from_utf8`].
+    /// See `core::str::`[`from_utf8`].
+    //
+    // WAIT:[const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
+    // /// # Features
+    // /// if the `dep_simdutf8` is enabled
+    // /// then `simdutf8::compat::`[`from_utf8`] is called instead.
     pub const fn from_utf8(v: &[u8]) -> Result<&str, InvalidUtf8> {
-        match from_utf8(v) {
+        // #[cfg(not(feature = "dep_simdutf8"))]
+        match ::core::str::from_utf8(v) {
             Ok(v) => Ok(v),
             Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
         }
+        // #[cfg(feature = "dep_simdutf8")]
+        // match ::simdutf8::compat::from_utf8(v) {
+        //     Ok(v) => Ok(v),
+        //     Err(e) => Err(InvalidUtf8::from_compat_utf8_error(e)),
+        // }
     }
 
     /// Converts a mutable slice of bytes to a mutable string slice.
@@ -159,7 +176,7 @@ impl Str {
         assert![buffer.len() >= length];
         assert![separator.is_ascii()];
         if length == 0 {
-            cold_empty_string()
+            Str::new_cold_empty()
         } else {
             let separator = separator as u8;
             let mut index = length - 1; // start writing from the end
@@ -208,8 +225,10 @@ impl Str {
             sf! { unsafe { Str::from_utf8_unchecked(Slice::range_to(buffer, length)) }}
         }
     }
-}
 
-/// The cold path that returns an empty string slice.
-#[cold] #[rustfmt::skip]
-pub(crate) const fn cold_empty_string() -> &'static str { "" }
+    /* private utilities */
+
+    /// The cold path that returns an empty string slice.
+    #[cold] #[rustfmt::skip]
+    pub(crate) const fn new_cold_empty() -> &'static str { "" }
+}

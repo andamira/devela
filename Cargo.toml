@@ -888,6 +888,7 @@ version = "0.1" # ✓ https://github.com/rusticstuff/simdutf8/blob/main/CHANGELO
 optional = true # unsafe
 default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # features = [] # https://github.com/rusticstuff/simdutf8/blob/main/Cargo.toml
+# WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
 version = "3.11" # ✗ https://github.com/ashvardanian/StringZilla/releases
