@@ -51,6 +51,10 @@ See also
 - 1.86: `a`[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 - 1.86: ` `[iter::FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
 
+# 1.87 will be stable on 2025-05-15
+
+- 1.87: `→`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
+
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)

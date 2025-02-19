@@ -37,6 +37,7 @@ macro_rules! _use {
         use ::simdutf8::basic::{
             from_utf8 as basic_from_utf8, from_utf8_mut as basic_from_utf8_mut,
         };
+
         #[allow(unused_imports)]
         #[cfg(not(feature = "dep_simdutf8"))]
         use ::core::str::{from_utf8 as compat_from_utf8, from_utf8_mut as compat_from_utf8_mut};

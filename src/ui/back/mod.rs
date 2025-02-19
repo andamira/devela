@@ -1,6 +1,7 @@
 // revela::ui::back
 //
 //! UI backends.
+#![doc = crate::doc_!(modules: crate::ui; back: miniquad, crossterm)]
 //
 
 mod cap;

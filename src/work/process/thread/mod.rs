@@ -21,10 +21,10 @@ crate::items! { // structural access: _mods, _all, _always
     mod _mods {
         #[cfg(feature = "std")]
         pub use super::{ext::*, reexports::*, sleep::*};
-
         // WIPZONE
         #[cfg(feature = "std")]
         crate::items! {
+            // pub use super::local::*;
             // pub use super::pool::*;
             // pub use super::semaphore::*;
         }
@@ -41,6 +41,7 @@ crate::items! { // structural access: _mods, _all, _always
 // WIPZONE
 #[cfg(feature = "std")]
 crate::items! {
+    // mod local; // ThreadLocal
     // mod pool;
     // mod semaphore; // Semaphore
 }

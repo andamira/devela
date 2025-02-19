@@ -21,6 +21,8 @@ pub type Point2d<T> = Point<T, 2>;
 /// A specific position in 3d-space without a size.
 pub type Point3d<T> = Point<T, 3>;
 
+/* lists */
+
 /// A static sequence of `N` `D`-dimensional [`Point`]s.
 #[must_use]
 #[repr(transparent)]

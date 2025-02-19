@@ -98,6 +98,7 @@ impl<W: IoWrite> SixelOutput<W> {
         { if let Some(c) = char::from_u32(self.save_pixel as u32) { c } else { unreachable!() } }
 
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        // SAFETY: TODO
         unsafe { char::from_u32_unchecked(self.save_pixel as u32) }
     }
 

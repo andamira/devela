@@ -2,6 +2,8 @@
 //
 //! Buffering wrappers for I/O traits
 //
+// TODO
+// - https://doc.rust-lang.org/std/io/struct.WriterPanicked.html
 
 use crate::{
     ByteSearch, IoBufRead, IoError, IoErrorKind, IoRead, IoResult, IoSeek, IoSeekFrom, IoWrite,
