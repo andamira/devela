@@ -1,5 +1,33 @@
 # Past releases
 
+Legend:
+
+- ` ` = not known to be explicitly used
+- `✓` = known to be explicitly used
+
+# 1.85 became be stable on [2025-02-20: ([`nightly_stable_next1`](https://releases.rs/docs/1.85.0/))
+>
+> https://github.com/rust-lang/rust/milestone/127
+
+- 1.85: `✓`[2024 edition](https://github.com/rust-lang/rust/issues/117258)
+- 1.85: ` `[async_closure](https://github.com/rust-lang/rust/pull/132706)
+- 1.85: ` `[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
+        ` ` `const_size_of_val`
+- 1.85: ` `[const_collections_with_hasher](https://github.com/rust-lang/rust/pull/133696)
+        ` ` `build_hasher_default_const_new`
+- 1.85: ` `[const_float_methods](https://github.com/rust-lang/rust/issues/130843)
+- 1.85: ` `[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
+- 1.85: ` `[const_nonnull_new](https://github.com/rust-lang/rust/pull/134116)
+- 1.85: ` `[const_swap](https://github.com/rust-lang/rust/pull/134757)
+- 1.85: ` `[coverage_attribute](https://github.com/rust-lang/rust/pull/130766)
+- 1.85: ` `[diagnostics::do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
+- 1.85: ` `[Extend impls for tuples 1-12](https://github.com/rust-lang/rust/pull/132187)
+- 1.85: ` `[extended_varargs_abi_support](https://github.com/rust-lang/rust/pull/116161)
+- 1.85: ` `[home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
+- 1.85: ` `[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
+- 1.85: ` `[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
+- 1.85: ` `[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
+
 # 1.84 became stable on [2024-01-09](https://releases.rs/docs/1.84.0/)
 > https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html
 > https://github.com/rust-lang/rust/milestone/126

@@ -6,7 +6,6 @@ Legend:
 - `a` = enabled by non-specific feature (and depends on `alloc`)
 - `s` = enabled by non-specific feature (and depends on `std`)
 - `F` = enabled by some specific feature, shown afterwards.
-- `✓` = past feature explicitly used
 
 See also
 - <https://doc.rust-lang.org/nightly/unstable-book/the-unstable-book.html>
@@ -14,29 +13,7 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-# 1.85 will be stable on 2025-02-20: ([`nightly_stable_next1`](https://releases.rs/docs/1.85.0/))
-> https://github.com/rust-lang/rust/milestone/127
-
-- 1.85: ` `[2024 edition](https://github.com/rust-lang/rust/issues/117258)
-- 1.85: `·`[async_closure](https://github.com/rust-lang/rust/pull/132706)
-- 1.85: `·`[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
-        `·` `const_size_of_val`
-- 1.85: `s`[const_collections_with_hasher](https://github.com/rust-lang/rust/pull/133696)
-      `·` build_hasher_default_const_new
-- 1.85: `·`[const_float_methods](https://github.com/rust-lang/rust/issues/130843)
-- 1.85: `·`[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
-- 1.85: `·`[const_nonnull_new](https://github.com/rust-lang/rust/pull/134116)
-- 1.85: `·`[const_swap](https://github.com/rust-lang/rust/pull/134757)
-- 1.85: `·`[coverage_attribute](https://github.com/rust-lang/rust/pull/130766)
-- 1.85: `·`[diagnostics::do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
-- 1.85: ` `[Extend impls for tuples 1-12](https://github.com/rust-lang/rust/pull/132187)
-- 1.85: `·`[extended_varargs_abi_support](https://github.com/rust-lang/rust/pull/116161)
-- 1.85: ` `[home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
-- 1.85: `·`[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
-- 1.85: `·`[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
-- 1.85: `·`[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
-
-# 1.86 will be stable on 2025-04-03 ([`nightly_stable_next2`](https://releases.rs/docs/1.86.0/))
+# 1.86 will be stable on 2025-04-03 ([`nightly_stable_next1`](https://releases.rs/docs/1.86.0/))
 > https://github.com/rust-lang/rust/milestone/128
 
 - 1.86: `·`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
@@ -53,12 +30,12 @@ See also
 - 1.86: `a`[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 - 1.86: ` `[iter::FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
 
-# 1.87 will be stable on 2025-05-15 ([`…`](https://releases.rs/docs/1.87.0/))
+# 1.87 will be stable on 2025-05-15 ([`nightly_stable_next2`](https://releases.rs/docs/1.87.0/))
 > https://github.com/rust-lang/rust/milestone/130
 
-- 1.87:→`·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
-- 1.87:→`·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
-- 1.87:→`s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
+- 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
+- 1.87: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
+- 1.87: `s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 

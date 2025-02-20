@@ -43,31 +43,8 @@
 //
 // "nightly_stable" includes:
 // ----------------------------
-// "nightly_stable_next1": 1.85 core, alloc, std…
+// "nightly_stable_next1": 1.86 core, alloc, std…
 #![cfg_attr(feature = "nightly_stable_next1", feature(
-    async_closure,
-    build_hasher_default_const_new,
-    const_align_of_val,
-    const_float_methods,
-    const_maybe_uninit_write,
-    const_nonnull_new,
-    const_size_of_val,
-    const_swap,
-    coverage_attribute,
-    do_not_recommend, // diagnostics
-    extended_varargs_abi_support,
-    noop_waker,
-    num_midpoint,
-    ptr_fn_addr_eq,
-))]
-// #![cfg_attr(all(feature = "nightly_stable_next1", feature = "alloc"), feature())]
-#![cfg_attr(
-    all(feature = "nightly_stable_next1", feature = "std"),
-    feature(const_collections_with_hasher,)
-)]
-// ----------------------------
-// "nightly_stable_next2": 1.86 core, alloc, std…
-#![cfg_attr(feature = "nightly_stable_next2", feature(
     const_black_box,
     const_is_char_boundary,
     float_next_up_down,
@@ -76,11 +53,16 @@
     target_feature_11,
     trait_upcasting,
 ))]
-#![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature(vec_pop_if,))]
+#![cfg_attr(all(feature = "nightly_stable_next1", feature = "alloc"), feature(vec_pop_if,))]
 #![cfg_attr(
-    all(feature = "nightly_stable_next2", feature = "std"),
+    all(feature = "nightly_stable_next1", feature = "std"),
     feature(const_mut_cursor, map_many_mut,)
 )]
+// ----------------------------
+// "nightly_stable_next2": 1.87 core, alloc, std…
+#![cfg_attr(feature = "nightly_stable_next2", feature(const_slice_flatten, integer_sign_cast,))]
+// #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
+#![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature(file_lock,))]
 // ----------------------------
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -90,14 +72,12 @@
         cell_update,
         const_array_from_ref,
         const_ptr_sub_ptr,
-        const_slice_flatten,
         const_slice_from_ref,
         const_str_split_at,
         const_str_from_utf8,
         const_swap_nonoverlapping,
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
-        integer_sign_cast,
         isqrt,
         let_chains,
         macro_metavar_expr,
@@ -114,7 +94,7 @@
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "std"),
-    feature(anonymous_pipe, hash_extract_if, once_wait, file_lock,)
+    feature(anonymous_pipe, hash_extract_if, once_wait,)
 )]
 // #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
 
