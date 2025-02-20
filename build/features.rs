@@ -99,8 +99,8 @@ mod reflection {
     pub const UNSAFE: FlagsFeatures = FlagsFeatures {
         flags: &["unsafe··"],
         features: &[
-            "unsafe", // [11]
-            "unsafe_array", "unsafe_async", "unsafe_hint", "unsafe_layout",
+            "unsafe", // [10]
+            "unsafe_array", "unsafe_hint", "unsafe_layout",
             "unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
             "unsafe_sync", "unsafe_syscall", "unsafe_thread",
         ]

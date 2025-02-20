@@ -47,7 +47,6 @@ macro_rules! impl_float_shared_series {
             ///
             /// The terms for the exponential function are calculated using
             /// [`exp_series_terms`][Self::exp_series_terms] using $y\cdot\ln(x)$.
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
             pub const fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
                 let xabs = self.abs().0;

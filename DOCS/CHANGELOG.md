@@ -67,9 +67,12 @@
   - text: `crate_root`, `crate_root_string`.
   - work: `future_block`, `future_pending`, `future_ready`.
 - remove private variant `IoErrorKind::Uncategorized`.
-- remove module `data::collections`.
+- remove features: `unsafe_async`.
+- remove modules: `data::collections`.
 - disable optional dependencies: `ring`, `rkyv`.
-- deprecate `Char::len_to_utf8`.
+- deprecate:
+  - `Char::len_to_utf8`.
+  - `Float::{const_[clamp|max|min|signum|copysign]}`.
 
 ### Changed
 - bump MSRV to 1.84.1.
@@ -105,6 +108,9 @@
 - auto-enable features:
   - `str`: when enabling `_str_u*`.
 - make customizable: `XorShift[16|32|64]`.
+- make const methods:
+  - `Float`: `clamp`, `max`, `min`, `signum`, `copysign`.
+  - `Mem`: `swap`.
 - derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.
 - make modules public:

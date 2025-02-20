@@ -3,9 +3,6 @@
 //! Coroutine implementations.
 //
 
-// NOTE: it depends on unsafe_async because of `task_waker_noop`
-#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
 mod coro;
 
 #[cfg(feature = "nightly_coro")]
@@ -19,11 +16,11 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
+        pub use super::coro::*;
+
         #[cfg(feature = "nightly_coro")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
         pub use super::reexports::*;
-        #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
-        pub use super::coro::*;
     }
     pub(super) mod _all { #[allow(unused)]
         #[doc(inline)]

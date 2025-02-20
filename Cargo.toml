@@ -81,7 +81,7 @@ publish = true
 bench = false
 
 
-[features] # 278/300 (22 remaining), 149 visible, 129 hidden
+[features] # 277/300 (23 remaining), 148 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -247,13 +247,13 @@ safe = [ # [9] forbids `unsafe` (and overrides unsafe features)
 safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
 	"safe"
 ]
-unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that module)
-	"unsafe_array", "unsafe_async", "unsafe_hint", "unsafe_layout",
+unsafe = [ # [10] enables `unsafe` (as long as it isn't forbidden for that module)
+	"unsafe_array", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
 ] # `unsafe··`
 	unsafe_array   = [] # faster array initialization, UninitArray.
-	unsafe_async   = [] # task_waker_noop, CoroRun.
+	# unsafe_async   = [] #
 	unsafe_hint    = [] # unreachable_unchecked, unchecked arithmetic.
 	unsafe_layout  = [] # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*.
 	unsafe_niche   = [] # unchecked niche constructors.
@@ -1215,6 +1215,6 @@ required-features = ["linux", "unsafe_syscall"]
 [[example]]
 name = "coro_run"
 path = "examples/work/coro_run.rs"
-required-features = ["unsafe_async", "alloc"]
+required-features = ["alloc"]
 
 # ==============================================================================

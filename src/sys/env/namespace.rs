@@ -1,6 +1,6 @@
 // devela::sys::env::env
 //
-//! A namespaced wrapper for std
+//! Defines the [`Env`] struct namespace.
 //
 // TOC
 // - Constants
@@ -10,7 +10,7 @@
 
 #[cfg(all(feature = "std", feature = "unsafe_thread"))]
 use crate::_dep::_std::env::{remove_var, set_var};
-#[allow(deprecated, reason = "home_dir")] // TEMP WAIT 1.85
+#[allow(deprecated, reason = "home_dir()")] // WAIT: 1.86?
 #[cfg(feature = "std")]
 use crate::{
     IoResult, IterArgs, IterArgsOs, IterSplitPaths, IterVars, IterVarsOs, JoinPathsError, OsStr,
@@ -510,7 +510,7 @@ impl Env {
     /// Returns the path of the current user’s home directory if known.
     ///
     /// See [home_dir].
-    // WAIT: 1.85: [home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
+    // WAIT: 1.86? https://blog.rust-lang.org/2025/02/20/Rust-1.85.0.html#updates-to-stdenvhome_dir
     #[allow(deprecated)]
     pub fn home_dir() -> Option<PathBuf> {
         home_dir()

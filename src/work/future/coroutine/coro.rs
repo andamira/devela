@@ -14,7 +14,7 @@
 
 use crate::{serr, sok, Debug, Future, OptRes, Pin, TaskContext, TaskPoll};
 #[cfg(feature = "alloc")]
-use crate::{task_waker_noop, Box, VecDeque};
+use crate::{Box, TaskWaker, VecDeque};
 
 /* coroutine */
 
@@ -163,8 +163,8 @@ impl<T, E: 'static + Debug> CoroRun<T, E> {
 
     /// Runs all the coroutines to completion.
     pub fn run(&mut self) {
-        let waker = task_waker_noop();
-        let mut context = TaskContext::from_waker(&waker);
+        let waker = TaskWaker::noop();
+        let mut context = TaskContext::from_waker(waker);
 
         while let Some(mut cor) = self.coros.pop_front() {
             let polled = cor.as_mut().poll(&mut context);

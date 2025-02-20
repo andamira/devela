@@ -1,6 +1,6 @@
 // devela::num::float::wrapper::shared
 //
-//! Shared methods.
+//! Defines all the shared, cross-platform public methods for `Float`.
 //
 
 #[allow(unused_imports)]
@@ -73,7 +73,7 @@ macro_rules! impl_float_shared {
             #[must_use]
             pub const fn const_round_ties_away(self) -> Float<$f> {
                 Float(self.0 +
-                    Float(0.5 - 0.25 * <$f>::EPSILON).const_copysign(self.0).0)
+                    Float(0.5 - 0.25 * <$f>::EPSILON).copysign(self.0).0)
                         .const_trunc()
             }
 
@@ -88,7 +88,7 @@ macro_rules! impl_float_shared {
                 } else {
                     #[allow(clippy::float_cmp, reason = "IMPROVE")]
                     if Float(self.0 - r.0).abs().0 == 0.5 { // -0.5 < error_margin
-                        Float(r.0 - self.const_signum().0)
+                        Float(r.0 - self.signum().0)
                     } else {
                         r
                     }
@@ -132,7 +132,7 @@ macro_rules! impl_float_shared {
             pub fn const_round_ties_odd(self) -> Float<$f> {
                 let r = self.const_round_ties_away();
                 iif![r.0 % 2.0 != 0.0; r ;
-                    iif![(self - r).abs() == 0.5; r + self.const_signum(); r]]
+                    iif![(self - r).abs() == 0.5; r + self.signum(); r]]
             }
 
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
@@ -164,18 +164,26 @@ macro_rules! impl_float_shared {
 
             /// A number that represents its sign, propagating `NaN`.
             #[must_use]
+            pub const fn signum(self) -> Float<$f> { Float(self.0.signum()) }
+            #[must_use] #[allow(missing_docs)]
+            #[deprecated(since = "0.23.0", note = "use `signum()` instead")]
             pub const fn const_signum(self) -> Float<$f> {
-                if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.const_copysign(self.0) }
+                // if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.copysign(self.0) }
+                self.signum()
             }
 
             /// A number composed of the magnitude of itself and the `sign` of other.
             #[must_use]
+            pub const fn copysign(self, sign: $f) -> Float<$f> { Float(self.0.copysign(sign)) }
+            #[must_use] #[allow(missing_docs)]
+            #[deprecated(since = "0.23.0", note = "use `copysign()` instead")]
             pub const fn const_copysign(self, sign: $f) -> Float<$f> {
-                const SIGN_MASK: $uf = <$uf>::MAX / 2 + 1;
-                const VALUE_MASK: $uf = <$uf>::MAX / 2;
-                let sign_bit = sign.to_bits() & SIGN_MASK;
-                let value_bits = self.0.to_bits() & VALUE_MASK;
-                Float(<$f>::from_bits(value_bits | sign_bit))
+                // const SIGN_MASK: $uf = <$uf>::MAX / 2 + 1;
+                // const VALUE_MASK: $uf = <$uf>::MAX / 2;
+                // let sign_bit = sign.to_bits() & SIGN_MASK;
+                // let value_bits = self.0.to_bits() & VALUE_MASK;
+                // Float(<$f>::from_bits(value_bits | sign_bit))
+                self.copysign(sign)
             }
 
             /// Returns the [`Sign`].
@@ -243,7 +251,6 @@ macro_rules! impl_float_shared {
 
             /// The least non-negative remainder of `self` % `other`.
             // NOTE: [yield inconsistent results](https://github.com/rust-lang/rust/issues/111405)
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
             pub const fn rem_euclid(self, other: $f) -> Float<$f> {
                 let r = self.0 % other;
@@ -377,11 +384,11 @@ macro_rules! impl_float_shared {
             }
 
             /// The absolute value of `self`.
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
             pub const fn abs(self) -> Float<$f> {
-                let mask = <$uf>::MAX / 2;
-                Float(<$f>::from_bits(self.0.to_bits() & mask))
+                // let mask = <$uf>::MAX / 2;
+                // Float(<$f>::from_bits(self.0.to_bits() & mask))
+                Self(self.0.abs())
             }
 
             /// The negative absolute value of `self` (sets its sign to be negative).
@@ -407,25 +414,34 @@ macro_rules! impl_float_shared {
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp(40., 80.), 40.];"]]
             /// ```
             /// See also: [`clamp_nan`][Self::clamp_nan], [`clamp_total`][Self::clamp_total].
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub const fn const_clamp(self, min: $f, max: $f) -> Float<$f> {
-                self.const_max(min).const_min(max)
+            pub const fn clamp(self, min: $f, max: $f) -> Float<$f> {
+                // self.max(min).min(max)
+                Self(self.0.clamp(min, max))
             }
 
             /// The maximum between itself and `other`, ignoring `NaN`.
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub const fn const_max(self, other: $f) -> Float<$f> {
-                if self.0.is_nan() || self.0 < other { Float(other) } else { self }
+            pub const fn max(self, other: $f) -> Float<$f> {
+                // if self.0.is_nan() || self.0 < other { Float(other) } else { self }
+                Self(self.0.max(other))
             }
 
             /// The minimum between itself and other, ignoring `NaN`.
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub const fn const_min(self, other: $f) -> Float<$f> {
-                if other.is_nan() || self.0 < other { self } else { Float(other) }
+            pub const fn min(self, other: $f) -> Float<$f> {
+                // if other.is_nan() || self.0 < other { self } else { Float(other) }
+                Self(self.0.min(other))
             }
+            ///
+            #[deprecated(since = "0.23.0", note = "use `clamp()` instead")]
+            pub const fn const_clamp(self, min: $f, max: $f) -> Float<$f> { self.clamp(min, max) }
+            ///
+            #[deprecated(since = "0.23.0", note = "use `max()` instead")]
+            pub const fn const_max(self, other: $f) -> Float<$f> { self.max(other) }
+            ///
+            #[deprecated(since = "0.23.0", note = "use `min()` instead")]
+            pub const fn const_min(self, other: $f) -> Float<$f> { self.min(other) }
 
             /// Returns itself clamped between `min` and `max`, using total order.
             ///

@@ -39,10 +39,22 @@ impl Ptr {
     /// Compares raw pointer addresses for equality, ignoring any metadata in fat pointers.
     ///
     /// See `core::ptr::`[`addr_eq`].
+    ///
+    /// For functions you can use `core::ptr::`[`fn_addr_eq`][core::ptr::fn_addr_eq] directly.
     #[must_use]
     pub fn addr_eq<T: ?Sized, U: ?Sized>(p: *const T, q: *const U) -> bool {
         addr_eq(p, q)
     }
+
+    // WAIT: `fn_ptr_trait`: FnPtr requires nightly. Until then can't name FnPtr.
+    // https://github.com/rust-lang/rust/issues/129322#issuecomment-2418860738
+    // /// Compares the *addresses* of the two function pointers for equality.
+    // ///
+    // /// See `core::ptr::`[`fn_addr_eq`].
+    // #[must_use]
+    // pub fn fn_addr_eq<T: ::core::marker::FnPtr, U: ::core::marker::FnPtr>(f: T, g: U) -> bool {
+    //     fn_addr_eq(p, q)
+    // }
 
     /// Compares raw pointers for equality.
     ///

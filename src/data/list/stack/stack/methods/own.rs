@@ -339,7 +339,7 @@ macro_rules! impl_stack {
             /// ```
             pub const fn own_nip_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
-                cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
+                cswap![tmp: arr[self.len as usize - 2], arr[self.len as usize - 1]];
                 let mut sta = Self::from_array_copy(arr);
                 sta.len -= 1;
                 Own::empty(sta)
@@ -382,8 +382,8 @@ macro_rules! impl_stack {
             /// ```
             pub const fn own_nip2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
-                cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
-                cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
+                cswap![tmp: arr[self.len as usize - 4], arr[self.len as usize - 2]];
+                cswap![tmp: arr[self.len as usize - 3], arr[self.len as usize - 1]];
                 let mut sta = Self::from_array_copy(arr);
                 sta.len -= 2;
                 Own::empty(sta)
@@ -432,7 +432,7 @@ macro_rules! impl_stack {
             /// ```
             pub const fn own_swap_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
-                cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
+                cswap![tmp: arr[self.len as usize - 2], arr[self.len as usize - 1]];
                 Own::empty(Self::from_array_copy(arr))
             }
 
@@ -477,8 +477,8 @@ macro_rules! impl_stack {
             /// ```
             pub const fn own_swap2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
-                cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
-                cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
+                cswap![tmp: arr[self.len as usize - 4], arr[self.len as usize - 2]];
+                cswap![tmp: arr[self.len as usize - 3], arr[self.len as usize - 1]];
                 Own::new(Self::from_array_copy(arr), ())
             }
 
@@ -921,7 +921,7 @@ macro_rules! impl_stack {
             pub const fn own_tuck_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 let a = arr[self.len as usize - 1];
-                cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
+                cswap![tmp: arr[self.len as usize - 2], arr[self.len as usize - 1]];
                 arr[self.len as usize] = a;
                 let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 1;
@@ -971,8 +971,8 @@ macro_rules! impl_stack {
             pub const fn own_tuck2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 // swap2
-                cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
-                cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
+                cswap![tmp: arr[self.len as usize - 4], arr[self.len as usize - 2]];
+                cswap![tmp: arr[self.len as usize - 3], arr[self.len as usize - 1]];
                 // over2
                 let a = arr[self.len as usize - 4];
                 let b = arr[self.len as usize - 3];

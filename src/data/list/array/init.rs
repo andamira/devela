@@ -97,7 +97,7 @@ macro_rules! array_init {
             unsafe { $crate::MaybeUninit::uninit().assume_init() };
         for (i, e) in &mut arr[..].iter_mut().enumerate() {
             #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
-            let _ = e.write($init(i));
+            let _ = e.write($init(i)); // NOTE: const since 1.85
         }
         // Can't use transmute for now, have to use transmute_copy:
         // - WAIT: [const generics transmute](https://github.com/rust-lang/rust/issues/61956)

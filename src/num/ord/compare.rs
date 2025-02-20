@@ -243,17 +243,8 @@ macro_rules! impl_comparing {
             #[doc = "assert_eq![2.0, Compare(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Compare(-5.0" $f ").clamp(-1.0, 2.0)];"]
             /// ```
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub const fn clamp(self, min: $f, max: $f) -> $f {
-                match self.total_cmp(min) {
-                    Less => min,
-                    _ => match self.total_cmp(max) {
-                        Greater => max,
-                        _ => self.0,
-                    }
-                }
-            }
+            pub const fn clamp(self, min: $f, max: $f) -> $f { self.0.clamp(min, max) }
 
             /// Compares and returns the *total ordered* maximum between `self` and `other`.
             ///
@@ -267,11 +258,8 @@ macro_rules! impl_comparing {
             #[doc = "assert_eq![" $f "::INFINITY, Compare(" $f "::INFINITY).max("
                 $f "::NEG_INFINITY)];"]
             /// ```
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub const fn max(self, other: $f) -> $f {
-                match Self(self.0).total_cmp(other) { Greater | Equal => self.0, Less => other }
-            }
+            pub const fn max(self, other: $f) -> $f { self.0.max(other) }
 
             /// Compares and returns the *total ordered* minimum between `self` and `other`.
             ///
@@ -285,11 +273,8 @@ macro_rules! impl_comparing {
             #[doc = "assert_eq![" $f "::NEG_INFINITY, Compare(" $f "::INFINITY).min("
                 $f "::NEG_INFINITY)];"]
             /// ```
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub const fn min(self, other: $f) -> $f {
-                match Self(self.0).total_cmp(other) { Greater | Equal => other, Less => self.0 }
-            }
+            pub const fn min(self, other: $f) -> $f { self.0.min(other) }
 
             /// Returns `true` if `self == other` using total order.
             #[must_use]

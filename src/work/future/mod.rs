@@ -16,7 +16,6 @@
 mod coroutine;
 mod ext;
 mod reexports;
-mod waker;
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
@@ -29,7 +28,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{coroutine::_all::*, ext::*, reexports::*, waker::*};
+        pub use super::{coroutine::_all::*, ext::*, reexports::*};
 
         #[cfg(feature = "std")]
         pub use super::block::*;

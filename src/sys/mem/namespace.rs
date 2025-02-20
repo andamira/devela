@@ -36,8 +36,7 @@ impl Mem {
     ///
     /// See `core::mem::`[`align_of_val`].
     #[must_use]
-    // WAIT: [const_align_of_val](https://github.com/rust-lang/rust/issues/46571)
-    pub fn align_of_val<T: ?Sized>(val: &T) -> usize {
+    pub const fn align_of_val<T: ?Sized>(val: &T) -> usize {
         align_of_val(val)
     }
 
@@ -105,15 +104,14 @@ impl Mem {
     /// Returns the size of the pointed-to value in bytes.
     /// See `core::mem::`[`size_of_val`].
     #[must_use]
-    // WAIT: [const_size_of_val](https://github.com/rust-lang/rust/issues/46571)
-    pub fn size_of_val<T: ?Sized>(val: &T) -> usize {
+    pub const fn size_of_val<T: ?Sized>(val: &T) -> usize {
         size_of_val(val)
     }
 
     /// Swaps the values at two locations, without deinitializing either one.
     ///
     /// See `core::mem::`[`swap`].
-    pub fn swap<T>(x: &mut T, y: &mut T) {
+    pub const fn swap<T>(x: &mut T, y: &mut T) {
         swap::<T>(x, y);
     }
 

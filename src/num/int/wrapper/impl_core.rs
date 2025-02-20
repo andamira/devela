@@ -150,7 +150,7 @@ macro_rules! impl_core {
                 while b != 0 {
                     b >>= b.trailing_zeros();
                     // ensure b >= a before subtraction:
-                    iif![a > b; cswap![a, b]; b -= a];
+                    iif![a > b; cswap!(mut: a, b); b -= a];
                 }
                 Int(a << k)
 
@@ -212,9 +212,9 @@ macro_rules! impl_core {
                         tb >>= 1;
                     }
                     if a > b {
-                        cswap![a, b];
-                        cswap![sa, ta];
-                        cswap![sb, tb];
+                        cswap![mut: a, b];
+                        cswap![mut: sa, ta];
+                        cswap![mut: sb, tb];
                     }
                     b -= a;
                     ta -= sa;
@@ -440,7 +440,7 @@ macro_rules! impl_core {
                 while b != 0 {
                     b >>= b.trailing_zeros();
                     // ensure b >= a before subtraction:
-                    iif![a > b; cswap![a, b]; b -= a];
+                    iif![a > b; cswap![mut: a, b]; b -= a];
                 }
                 Int(a << k)
 
@@ -511,9 +511,9 @@ macro_rules! impl_core {
                         tb >>= 1;
                     }
                     if a > b {
-                        cswap![a, b];
-                        cswap![sa, ta];
-                        cswap![sb, tb];
+                        cswap![mut: a, b];
+                        cswap![mut: sa, ta];
+                        cswap![mut: sb, tb];
                     }
                     b -= a;
                     ta -= sa;

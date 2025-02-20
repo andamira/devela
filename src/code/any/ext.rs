@@ -1,6 +1,6 @@
 // devela::code::any::ext
 //
-//!
+//! Defines the [`ExtAny`] trait.
 //
 // - WAIT: (const) [type_name](https://github.com/rust-lang/rust/issues/63084)
 // - WAIT: [trait_upcasting](https://github.com/rust-lang/rust/issues/65991)
