@@ -14,7 +14,7 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 # 1.86 will be stable on 2025-04-03 ([`nightly_stable_next1`](https://releases.rs/docs/1.86.0/))
-> https://github.com/rust-lang/rust/milestone/128
+> - <https://github.com/rust-lang/rust/milestone/128>
 
 - 1.86: `·`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
 - 1.86: `·`[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
@@ -31,11 +31,12 @@ See also
 - 1.86: ` `[iter::FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
 
 # 1.87 will be stable on 2025-05-15 ([`nightly_stable_next2`](https://releases.rs/docs/1.87.0/))
-> https://github.com/rust-lang/rust/milestone/130
+> - <https://github.com/rust-lang/rust/milestone/130>
 
 - 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.87: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.87: `s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
+- 1.87: `·`[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -47,6 +48,7 @@ See also
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
+- 1.??: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
 - 1.??: `·`[const_swap_nonoverlapping//github.com/rust-lang/rust/pull/137280)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
@@ -59,8 +61,8 @@ See also
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
-- 1.??: `·`[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
+- 1.??: `s`[os_str_display](https://github.com/rust-lang/rust/pull/137336)
 - 1.??: `·`[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
         `·` `const_ptr_sub_ptr`
 - 1.??: `·`[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
@@ -103,10 +105,11 @@ See also
 - 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:
-- [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
+- [local_waker](https://github.com/rust-lang/rust/issues/118959)
 - [offset_of_enum](https://github.com/rust-lang/rust/issues/120141)
 - [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
  ` `- <https://rust-lang.github.io/rfcs/2580-ptr-meta.html>
+- [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 - [type_alias_impl_trait|impl_trait_in_assoc_type](https://github.com/rust-lang/rust/issues/63063)
 
 # Meta tracking issues:
@@ -128,7 +131,6 @@ See also
 - [Linux building on stable](https://github.com/rust-lang/rust-project-goals/issues/116)
 - [next generation trait solver](https://github.com/rust-lang/rust-project-goals/issues/113)
 - [optimize clippy & linting](https://github.com/rust-lang/rust-project-goals/issues/114)
-- [Rust 2024 Edition](https://github.com/rust-lang/rust-project-goals/issues/117)
 - [stabilize cargo-script](https://github.com/rust-lang/rust-project-goals/issues/119)
 - [stabilize doc_cfg](https://github.com/rust-lang/rust-project-goals/issues/120)
 

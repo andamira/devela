@@ -4,41 +4,40 @@ Legend:
 
 - ` ` = not known to be explicitly used
 - `✓` = known to be explicitly used
+- `…` = intended to be used
 
 # 1.85 became be stable on [2025-02-20: ([`nightly_stable_next1`](https://releases.rs/docs/1.85.0/))
->
-> https://github.com/rust-lang/rust/milestone/127
+> - <https://blog.rust-lang.org/2025/02/20/Rust-1.85.0.html>
+> - <https://github.com/rust-lang/rust/milestone/127>
 
 - 1.85: `✓`[2024 edition](https://github.com/rust-lang/rust/issues/117258)
 - 1.85: ` `[async_closure](https://github.com/rust-lang/rust/pull/132706)
-- 1.85: ` `[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
-        ` ` `const_size_of_val`
+- 1.85: `✓`[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
+        `✓` `const_size_of_val`
 - 1.85: ` `[const_collections_with_hasher](https://github.com/rust-lang/rust/pull/133696)
         ` ` `build_hasher_default_const_new`
-- 1.85: ` `[const_float_methods](https://github.com/rust-lang/rust/issues/130843)
+- 1.85: `✓`[const_float_methods](https://github.com/rust-lang/rust/issues/130843)
 - 1.85: ` `[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
 - 1.85: ` `[const_nonnull_new](https://github.com/rust-lang/rust/pull/134116)
-- 1.85: ` `[const_swap](https://github.com/rust-lang/rust/pull/134757)
+- 1.85: `✓`[const_swap](https://github.com/rust-lang/rust/pull/134757)
 - 1.85: ` `[coverage_attribute](https://github.com/rust-lang/rust/pull/130766)
 - 1.85: ` `[diagnostics::do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
 - 1.85: ` `[Extend impls for tuples 1-12](https://github.com/rust-lang/rust/pull/132187)
 - 1.85: ` `[extended_varargs_abi_support](https://github.com/rust-lang/rust/pull/116161)
-- 1.85: ` `[home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
-- 1.85: ` `[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
-- 1.85: ` `[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
+- 1.85: `✓`[home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
+- 1.85: `✓`[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
+- 1.85: `…`[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
 - 1.85: ` `[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
 
 # 1.84 became stable on [2024-01-09](https://releases.rs/docs/1.84.0/)
-> https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html
-> https://github.com/rust-lang/rust/milestone/126
-> https://blog.rust-lang.org/2025/01/30/Rust-1.84.1.html
-> https://github.com/rust-lang/rust/milestone/129
+> - <https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html>
+> - <https://github.com/rust-lang/rust/milestone/126>
 
 - 1.84: ` `[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
 - 1.84: ` `[const_char_encode_utf16](https://github.com/rust-lang/rust/pull/132153)
-- 1.84: ` `[const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
+- 1.84: `✓`[const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
 - 1.84: ` `[const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
-- 1.84: ` `[const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
+- 1.84: `…`[const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
 - 1.84: ` `[const_option_ext](https://github.com/rust-lang/rust/pull/132966)
 - 1.84: ` `[const_pin](https://github.com/rust-lang/rust/issues/76654)
 - 1.84: ` `[const_ptr_is_null](https://github.com/rust-lang/rust/pull/133116)
@@ -53,8 +52,8 @@ Legend:
 - 1.84: ` `[wasm:multivalue,reference-types,tail-call](https://github.com/rust-lang/rust/pull/131080)
 
 # 1.83 became stable on [2024-11-28](https://releases.rs/docs/1.83.0/)
-> https://blog.rust-lang.org/2024/11/28/Rust-1.83.0.html
-> https://github.com/rust-lang/rust/milestone/125
+> - <https://blog.rust-lang.org/2024/11/28/Rust-1.83.0.html>
+> - <https://github.com/rust-lang/rust/milestone/125>
 
 - 1.83: `✓`[char::MIN](https://github.com/rust-lang/rust/pull/130154)
 - 1.83: ` `[const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
@@ -77,8 +76,8 @@ Legend:
 - 1.83: `✓`[waker_getters](https://github.com/rust-lang/rust/pull/129919)
 
 # 1.82 became stable on [2024-10-17](https://releases.rs/docs/1.82.0/)
-> https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html
-> https://github.com/rust-lang/rust/milestone/123
+> - <https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html>
+> - <https://github.com/rust-lang/rust/milestone/123>
 
 - 1.82: ` `[asm_const](https://github.com/rust-lang/rust/pull/128570)
 - 1.82: ` `[char_indices_offset](https://github.com/rust-lang/rust/pull/129276)
