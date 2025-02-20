@@ -8,7 +8,7 @@ use crate::impl_error;
 use crate::Duration;
 
 #[cfg(feature = "std")]
-use std::time::SystemTimeError as StdSystemTimeError;
+use ::std::time::SystemTimeError as StdSystemTimeError;
 
 impl_error! { individual:
     #[cfg(feature = "std")]
@@ -50,6 +50,13 @@ mod full_composite {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
             DOC_SYSTEM_TIME_ERROR:
                 SystemTime(d|0: Duration) => SystemTimeError(*d),
+        }
+    }
+    #[cfg(feature = "std")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    impl From<StdSystemTimeError> for TimeError {
+        fn from(from: StdSystemTimeError) -> Self {
+            TimeError::SystemTime(from.duration())
         }
     }
 }

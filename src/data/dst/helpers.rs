@@ -93,7 +93,7 @@ pub(crate) fn check_fat_pointer<U, T: ?Sized>(v: &U, get_ref: impl FnOnce(&U) ->
 /// - `meta`  - Metadata slot (must be 1 usize long)
 /// - `data`  - Data slot, must be at least `count * sizeof(T)` long
 /// - `count` - Number of items to insert
-/// - `gen`   - Generator function (is passed the current index)
+/// - `make`  - Generator function (is passed the current index)
 /// - `reset_slot` - A slot updated with `reset_value` when a panic happens before push is complete
 /// - `reset_value` - Value used in `reset_slot`
 ///
@@ -102,7 +102,7 @@ pub(crate) unsafe fn list_push_gen<T, W: MemPod>(
     meta: &mut BufSlice<W>,
     data: &mut BufSlice<W>,
     count: usize,
-    mut gen: impl FnMut(usize) -> T,
+    mut make: impl FnMut(usize) -> T,
     reset_slot: &mut usize,
     reset_value: usize,
 ) {
@@ -130,7 +130,7 @@ pub(crate) unsafe fn list_push_gen<T, W: MemPod>(
     let mut ptr = data.as_mut_ptr() as *mut T;
     let mut clr = PanicState(ptr, 0, reset_slot, reset_value);
     for i in 0..count {
-        let val = gen(i);
+        let val = make(i);
         // SAFETY: caller must ensure safety
         unsafe {
             ptr::write(ptr, val);

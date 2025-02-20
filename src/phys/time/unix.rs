@@ -143,7 +143,7 @@ impl UnixTimeI64 {
     // Returns the number of seconds since `1970-01-01 00:00:00 UTC`.
     #[cfg(feature = "std")]
     fn unix_time_64() -> i64 {
-        use std::time::SystemTime;
+        use crate::SystemTime;
         SystemTime::now()
             .duration_since(SystemTime::UNIX_EPOCH)
             .unwrap()
@@ -251,7 +251,7 @@ impl UnixTimeU32 {
     // Because of `u32` this will only work until `06:28:15 UTC on 07 February 2106`.
     #[cfg(feature = "std")]
     fn unix_time_32() -> u32 {
-        use std::time::SystemTime;
+        use crate::SystemTime;
         SystemTime::now()
             .duration_since(SystemTime::UNIX_EPOCH)
             .unwrap()

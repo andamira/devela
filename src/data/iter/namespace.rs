@@ -55,11 +55,11 @@ impl Iter {
     /// Creates an iterator that lazily generates a value exactly once.
     ///
     /// See `core::iter::`[`once_with`].
-    pub fn once_with<A, F>(gen: F) -> crate::IterOnceWith<F>
+    pub fn once_with<A, F>(make: F) -> crate::IterOnceWith<F>
     where
         F: FnOnce() -> A,
     {
-        once_with(gen)
+        once_with(make)
     }
 
     /// Creates an iterator that endlessly repeats a single element.

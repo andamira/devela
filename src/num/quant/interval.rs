@@ -239,13 +239,13 @@ impl<T: PartialOrd> Interval<T> {
     #[must_use]
     pub fn contains(&self, value: &T) -> bool {
         let lower_check = match &self.lower {
-            Bound::Included(ref lower) => *lower <= *value,
-            Bound::Excluded(ref lower) => *lower < *value,
+            Bound::Included(lower) => *lower <= *value,
+            Bound::Excluded(lower) => *lower < *value,
             Bound::Unbounded => true,
         };
         let upper_check = match &self.upper {
-            Bound::Included(ref upper) => *value <= *upper,
-            Bound::Excluded(ref upper) => *value < *upper,
+            Bound::Included(upper) => *value <= *upper,
+            Bound::Excluded(upper) => *value < *upper,
             Bound::Unbounded => true,
         };
         lower_check && upper_check
@@ -479,15 +479,15 @@ mod impl_traits {
             (Unbounded, Unbounded) => Some(Ordering::Equal),
             (Unbounded, _) => Some(Ordering::Less),
             (_, Unbounded) => Some(Ordering::Greater),
-            (Included(ref a_val), Included(ref b_val)) => a_val.partial_cmp(b_val),
-            (Excluded(ref a_val), Excluded(ref b_val)) => a_val.partial_cmp(b_val),
-            (Included(ref a_val), Excluded(ref b_val)) => {
+            (Included(a_val), Included(b_val)) => a_val.partial_cmp(b_val),
+            (Excluded(a_val), Excluded(b_val)) => a_val.partial_cmp(b_val),
+            (Included(a_val), Excluded(b_val)) => {
                 match a_val.partial_cmp(b_val) {
                     Some(Ordering::Equal) => Some(Ordering::Less),
                     ord => ord,
                 }
             }
-            (Excluded(ref a_val), Included(ref b_val)) => {
+            (Excluded(a_val), Included(b_val)) => {
                 match a_val.partial_cmp(b_val) {
                     Some(Ordering::Equal) => Some(Ordering::Greater),
                     ord => ord,
@@ -501,15 +501,15 @@ mod impl_traits {
             (Unbounded, Unbounded) => Ordering::Equal,
             (Unbounded, _) => Ordering::Less,
             (_, Unbounded) => Ordering::Greater,
-            (Included(ref a_val), Included(ref b_val)) => a_val.cmp(b_val),
-            (Excluded(ref a_val), Excluded(ref b_val)) => a_val.cmp(b_val),
-            (Included(ref a_val), Excluded(ref b_val)) => {
+            (Included(a_val), Included(b_val)) => a_val.cmp(b_val),
+            (Excluded(a_val), Excluded(b_val)) => a_val.cmp(b_val),
+            (Included(a_val), Excluded(b_val)) => {
                 match a_val.cmp(b_val) {
                     Ordering::Equal => Ordering::Less,
                     ord => ord,
                 }
             }
-            (Excluded(ref a_val), Included(ref b_val)) => {
+            (Excluded(a_val), Included(b_val)) => {
                 match a_val.cmp(b_val) {
                     Ordering::Equal => Ordering::Greater,
                     ord => ord,
