@@ -57,71 +57,71 @@ mod auto_impls {
 ///
 /// # Methods
 /// - base:
-///     [`digital_root`][Self::int_digital_root],
-///     [`digital_root_base`][Self::int_digital_root_base],
-///     [`digits`][Self::int_digits],
-///     [`digits_sign`][Self::int_digits_sign],
-///     [`digits_base`][Self::int_digits_base],
-///     [`digits_base_sign`][Self::int_digits_base_sign].
+///   [`digital_root`][Self::int_digital_root],
+///   [`digital_root_base`][Self::int_digital_root_base],
+///   [`digits`][Self::int_digits],
+///   [`digits_sign`][Self::int_digits_sign],
+///   [`digits_base`][Self::int_digits_base],
+///   [`digits_base_sign`][Self::int_digits_base_sign].
 /// - core:
-///     [`abs`][Self::int_abs],
-///     [`is_even`][Self::int_is_even],
-///     [`is_odd`][Self::int_is_odd],
-///     [`gcd`][Self::int_gcd],
-///     [`gcd_ext`][Self::int_gcd_ext],
-///     [`lcm`][Self::int_lcm],
-///     [`scale`][Self::int_scale].
-///     [`midpoint`][Self::int_midpoint].
+///   [`abs`][Self::int_abs],
+///   [`is_even`][Self::int_is_even],
+///   [`is_odd`][Self::int_is_odd],
+///   [`gcd`][Self::int_gcd],
+///   [`gcd_ext`][Self::int_gcd_ext],
+///   [`lcm`][Self::int_lcm],
+///   [`scale`][Self::int_scale].
+///   [`midpoint`][Self::int_midpoint].
 /// - combinatorics:
-///     [`factorial`][Self::int_factorial],
-///     [`subfactorial`][Self::int_subfactorial],
-///     [`permute`][Self::int_permute],
-///     [`permute_rep`][Self::int_permute_rep],
-///     [`combine`][Self::int_combine],
-///     [`combine_rep`][Self::int_combine_rep].
+///   [`factorial`][Self::int_factorial],
+///   [`subfactorial`][Self::int_subfactorial],
+///   [`permute`][Self::int_permute],
+///   [`permute_rep`][Self::int_permute_rep],
+///   [`combine`][Self::int_combine],
+///   [`combine_rep`][Self::int_combine_rep].
 /// - division:
-///     [`div_rem`][Self::int_div_rem],
-///     [`div_ceil`][Self::int_div_ceil],
-///     [`div_floor`][Self::int_div_floor],
-///     [`div_ties_away`][Self::int_div_ties_away],
-///     [`div_ties_towards`][Self::int_div_ties_towards]
-///     [`div_ties_even`][Self::int_div_ties_even],
-///     [`div_ties_odd`][Self::int_div_ties_odd].
+///   [`div_rem`][Self::int_div_rem],
+///   [`div_ceil`][Self::int_div_ceil],
+///   [`div_floor`][Self::int_div_floor],
+///   [`div_ties_away`][Self::int_div_ties_away],
+///   [`div_ties_towards`][Self::int_div_ties_towards]
+///   [`div_ties_even`][Self::int_div_ties_even],
+///   [`div_ties_odd`][Self::int_div_ties_odd].
 /// - factors:
-///     [`factors`][Self::int_factors],
-///     [`factors_proper`][Self::int_factors_proper],
-///     [`factors_prime`][Self::int_factors_prime],
-///     [`factors_prime_unique`][Self::int_factors_prime_unique],
-///     [`factors_buf`][Self::int_factors_buf`],
-///     [`factors_proper_buf`][Self::int_factors_proper_buf`],
-///     [`factors_prime_buf`][Self::int_factors_prime_buf`],
-///     [`factors_prime_unique_buf`][Self::int_factors_prime_unique_buf`].
+///   [`factors`][Self::int_factors],
+///   [`factors_proper`][Self::int_factors_proper],
+///   [`factors_prime`][Self::int_factors_prime],
+///   [`factors_prime_unique`][Self::int_factors_prime_unique],
+///   [`factors_buf`][Self::int_factors_buf`],
+///   [`factors_proper_buf`][Self::int_factors_proper_buf`],
+///   [`factors_prime_buf`][Self::int_factors_prime_buf`],
+///   [`factors_prime_unique_buf`][Self::int_factors_prime_unique_buf`].
 /// - modulo:
-///     [`modulo`][Self::int_modulo],
-///     [`modulo_cycles`][Self::int_modulo_cycles],
-///     [`modulo_add`][Self::int_modulo_add],
-///     [`modulo_add_cycles`][Self::int_modulo_add_cycles],
-///     [`modulo_add_inv`][Self::int_modulo_add_inv],
-///     [`modulo_sub`][Self::int_modulo_sub],
-///     [`modulo_sub_cycles`][Self::int_modulo_sub_cycles],
-///     [`modulo_mul`][Self::int_modulo_mul],
-///     [`modulo_mul_cycles`][Self::int_modulo_mul_cycles],
-///     [`modulo_mul_inv`][Self::int_modulo_mul_inv],
-///     [`modulo_div`][Self::int_modulo_div].
+///   [`modulo`][Self::int_modulo],
+///   [`modulo_cycles`][Self::int_modulo_cycles],
+///   [`modulo_add`][Self::int_modulo_add],
+///   [`modulo_add_cycles`][Self::int_modulo_add_cycles],
+///   [`modulo_add_inv`][Self::int_modulo_add_inv],
+///   [`modulo_sub`][Self::int_modulo_sub],
+///   [`modulo_sub_cycles`][Self::int_modulo_sub_cycles],
+///   [`modulo_mul`][Self::int_modulo_mul],
+///   [`modulo_mul_cycles`][Self::int_modulo_mul_cycles],
+///   [`modulo_mul_inv`][Self::int_modulo_mul_inv],
+///   [`modulo_div`][Self::int_modulo_div].
 /// - primes:
-///     [`is_prime`][Self::int_is_prime],
-///     [`prime_nth`][Self::int_prime_nth],
-///     [`prime_pi`][Self::int_prime_pi],
-///     [`totient`][Self::int_totient].
+///   [`is_prime`][Self::int_is_prime],
+///   [`prime_nth`][Self::int_prime_nth],
+///   [`prime_pi`][Self::int_prime_pi],
+///   [`totient`][Self::int_totient].
 /// - roots:
-///     [`is_square`][Self::int_is_square],
-//     [`is_power`][Self::int_is_power], TODO
-///     [`sqrt_ceil`][Self::int_sqrt_ceil],
-///     [`sqrt_floor`][Self::int_sqrt_floor],
-///     [`sqrt_round`][Self::int_sqrt_round],
-///     [`root_ceil`][Self::int_root_ceil],
-///     [`root_floor`][Self::int_root_floor].
-//     [`root_round`][Self::int_root_round], TODO
+///   [`is_square`][Self::int_is_square],
+//   [`is_power`][Self::int_is_power], TODO
+///   [`sqrt_ceil`][Self::int_sqrt_ceil],
+///   [`sqrt_floor`][Self::int_sqrt_floor],
+///   [`sqrt_round`][Self::int_sqrt_round],
+///   [`root_ceil`][Self::int_root_ceil],
+///   [`root_floor`][Self::int_root_floor].
+//   [`root_round`][Self::int_root_round], TODO
 //
 // In sync with src/num/int/num_trait/ref.rs (int_ref_* methods)
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]

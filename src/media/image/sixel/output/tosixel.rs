@@ -27,7 +27,7 @@ impl<W: IoWrite> SixelOutput<W> {
         let mut pos = 0;
         while pos < nwrite {
             let _ = self.fn_write.write(dcs_start.as_bytes());
-            let _ = self.fn_write.write(self.buffer[pos..pos + splitsize].as_bytes());
+            let _ = self.fn_write.write(&self.buffer.as_bytes()[pos..pos + splitsize]);
             let _ = self.fn_write.write(dcs_end.as_bytes());
             pos += splitsize;
         }
@@ -46,7 +46,7 @@ impl<W: IoWrite> SixelOutput<W> {
                 );
             } else {
                 let _ =
-                    self.fn_write.write(self.buffer[..SixelOutput::<W>::PACKET_SIZE].as_bytes());
+                    self.fn_write.write(&self.buffer.as_bytes()[..SixelOutput::<W>::PACKET_SIZE]);
             }
             self.buffer.drain(0..SixelOutput::<W>::PACKET_SIZE);
         }
