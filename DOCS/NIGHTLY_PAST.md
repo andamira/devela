@@ -1,6 +1,11 @@
 # Past releases
 
-# 1.84 became stable on [2024-01-09](https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html):
+# 1.84 became stable on [2024-01-09](https://releases.rs/docs/1.84.0/)
+> https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html
+> https://github.com/rust-lang/rust/milestone/126
+> https://blog.rust-lang.org/2025/01/30/Rust-1.84.1.html
+> https://github.com/rust-lang/rust/milestone/129
+
 - 1.84: ` `[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
 - 1.84: ` `[const_char_encode_utf16](https://github.com/rust-lang/rust/pull/132153)
 - 1.84: ` `[const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
@@ -19,7 +24,10 @@
 - 1.84: ` `[result_ffi_guarantees](https://github.com/rust-lang/rust/pull/130628)
 - 1.84: ` `[wasm:multivalue,reference-types,tail-call](https://github.com/rust-lang/rust/pull/131080)
 
-## 1.83 became stable on [2024-11-28](https://blog.rust-lang.org/2024/11/28/Rust-1.83.0.html):
+# 1.83 became stable on [2024-11-28](https://releases.rs/docs/1.83.0/)
+> https://blog.rust-lang.org/2024/11/28/Rust-1.83.0.html
+> https://github.com/rust-lang/rust/milestone/125
+
 - 1.83: `✓`[char::MIN](https://github.com/rust-lang/rust/pull/130154)
 - 1.83: ` `[const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
 - 1.83: `✓`[const_char_encode_utf8](https://github.com/rust-lang/rust/pull/131463)
@@ -40,7 +48,10 @@
 - 1.83: `✓`[rustdoc: table of contents](https://github.com/rust-lang/rust/pull/120736)
 - 1.83: `✓`[waker_getters](https://github.com/rust-lang/rust/pull/129919)
 
-## 1.82 became stable on [2024-10-17](https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html):
+# 1.82 became stable on [2024-10-17](https://releases.rs/docs/1.82.0/)
+> https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html
+> https://github.com/rust-lang/rust/milestone/123
+
 - 1.82: ` `[asm_const](https://github.com/rust-lang/rust/pull/128570)
 - 1.82: ` `[char_indices_offset](https://github.com/rust-lang/rust/pull/129276)
 - 1.82: `✓`[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/pull/128596)

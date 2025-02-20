@@ -15,6 +15,7 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 # 1.85 will be stable on 2025-02-20: ([`nightly_stable_next1`](https://releases.rs/docs/1.85.0/))
+> https://github.com/rust-lang/rust/milestone/127
 
 - 1.85: ` `[2024 edition](https://github.com/rust-lang/rust/issues/117258)
 - 1.85: `·`[async_closure](https://github.com/rust-lang/rust/pull/132706)
@@ -36,6 +37,7 @@ See also
 - 1.85: `·`[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
 
 # 1.86 will be stable on 2025-04-03 ([`nightly_stable_next2`](https://releases.rs/docs/1.86.0/))
+> https://github.com/rust-lang/rust/milestone/128
 
 - 1.86: `·`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
 - 1.86: `·`[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
@@ -51,9 +53,12 @@ See also
 - 1.86: `a`[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
 - 1.86: ` `[iter::FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
 
-# 1.87 will be stable on 2025-05-15
+# 1.87 will be stable on 2025-05-15 ([`…`](https://releases.rs/docs/1.87.0/))
+> https://github.com/rust-lang/rust/milestone/130
 
-- 1.87: `→`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
+- 1.87:→`·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
+- 1.87:→`·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
+- 1.87:→`s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -64,11 +69,10 @@ See also
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
-- 1.??: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.??: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
+- 1.??: `·`[const_swap_nonoverlapping//github.com/rust-lang/rust/pull/137280)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
-- 1.??: `s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `s`[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)

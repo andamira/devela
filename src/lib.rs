@@ -94,6 +94,7 @@
         const_slice_from_ref,
         const_str_split_at,
         const_str_from_utf8,
+        const_swap_nonoverlapping,
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
         integer_sign_cast,
