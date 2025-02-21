@@ -7,7 +7,9 @@
 //! and some useful definitions from `core`.
 //
 
-use crate::{reexport, DOC_ATOMIC_CORE_PORTABLE, TAG_ATOMIC, TAG_ATOMIC_CORE_PORTABLE};
+use crate::{reexport, TAG_ATOMIC};
+#[cfg(feature = "dep_portable_atomic")]
+use crate::{DOC_ATOMIC_CORE_PORTABLE, TAG_ATOMIC_CORE_PORTABLE};
 
 /* from `core` */
 

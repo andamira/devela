@@ -46,6 +46,8 @@ crate::items! {
 pub struct Float<T>(pub T);
 
 crate::num::impl_ops![Float: f32:"_float_f32", f64:"_float_f64"];
+// #[cfg(feature = "nightly_float")]
+// crate::num::impl_ops![Float: f16:"_float_f16", f128:"_float_f128"];
 
 #[rustfmt::skip]
 mod core_impls {
