@@ -168,7 +168,6 @@ pub enum IoErrorKind {
     NotSeekable,
 
     /// Filesystem quota was exceeded.
-    // WAIT:1.?? [io_error_more](https://github.com/rust-lang/rust/issues/86442)
     FilesystemQuotaExceeded,
 
     /// File larger than allowed or supported.
@@ -194,7 +193,6 @@ pub enum IoErrorKind {
     Deadlock,
 
     /// Cross-device or cross-filesystem (hard) link or rename.
-    // WAIT:1.86 [io_error_more](https://github.com/rust-lang/rust/pull/134074)
     CrossesDevices,
 
     /// Too many (hard) links to the same filesystem object.
