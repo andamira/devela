@@ -5,16 +5,18 @@
 // WAIT: [future_join](https://github.com/rust-lang/rust/issues/91642)
 // WAIT: [async_drop](https://github.com/rust-lang/rust/issues/126482)
 
-use crate::code::reexport;
+use crate::{reexport, TAG_ATOMIC, TAG_ATOMIC_ALLOC_PORTABLE_UTIL};
 
 /* from either `alloc` or `portable-atomic-util` and `alloc` */
 
-#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[doc = TAG_ATOMIC!()]
+#[doc = TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
 #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub use crate::_dep::portable_atomic_util::task::Wake as TaskWake;
 //
-#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[doc = TAG_ATOMIC!()]
+#[doc = TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
 #[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub use crate::_dep::_alloc::task::Wake as TaskWake;

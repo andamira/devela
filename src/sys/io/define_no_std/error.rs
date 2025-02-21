@@ -9,7 +9,7 @@ use crate::{impl_trait, Debug, From, Result};
 pub type IoResult<T> = Result<T, IoError>;
 
 #[doc = crate::TAG_ERROR_COMPOSITE!()]
-/// Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations and associated traits.
+/// Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Error.html>.
 // #[derive(Clone, Copy)] // std::io::Error derives no Clone, Copy or PartialEq…

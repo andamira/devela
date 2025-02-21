@@ -240,7 +240,7 @@ mod flags {
     #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecFlags([bool; 8]);
     impl CodecFlags {
-        /// Creates a new [`CodecFlags`] combinator.
+        /// Creates a new [`CodecFlags`] combinator from 8 `bool`s.
         pub const fn new(flags: [bool; 8]) -> Self { Self(flags) }
     }
     impl Debug for CodecFlags {
@@ -279,7 +279,7 @@ mod flags {
 mod join {
     use super::*;
 
-    /// Encodes and decodes an iterator of encodables as a sequence with an optional `separator`.
+    /// Encodes and decodes an iterator as a sequence with an optional `separator`.
     ///
     /// # Example
     /// ```

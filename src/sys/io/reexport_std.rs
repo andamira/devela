@@ -52,7 +52,7 @@ reexport! { rust: std::io,
 }
 reexport! { rust: not(std)|std::io,
     tag: crate::TAG_ERROR_COMPOSITE!(),
-    doc: "Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations and associated traits.",
+    doc: "Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.",
     @Error as IoError
 }
 // @IntoInnerError as IoIntoInnerError

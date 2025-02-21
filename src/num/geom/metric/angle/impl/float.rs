@@ -15,9 +15,11 @@ use crate::{Angle, AngleDirection, AngleKind, ExtFloat, ExtFloatConst, Float};
 /// $cmp: the capability associated to some methods. E.g. _cmp_f32.
 macro_rules! impl_angle {
     () => {
-        impl_angle![float f32:"_float_f32":"_cmp_f32", f64:"_float_f64":"_cmp_f64"];
+        impl_angle![float
+            f32:"_float_f32":"_cmp_f32",
+            f64:"_float_f64":"_cmp_f64"
+        ];
     };
-
     (float $($f:ty : $cap:literal : $cmp:literal),+) => {
         $( impl_angle![@float $f:$cap:$cmp]; )+
     };
@@ -38,14 +40,10 @@ macro_rules! impl_angle {
             pub const fn new_straight() -> Self { Self::new(0.5) }
 
             /// Creates a new angle from a `radians` value.
-            pub const fn from_rad(radians: $f) -> Self {
-                Self::new(radians / <$f>::TAU)
-            }
+            pub const fn from_rad(radians: $f) -> Self { Self::new(radians / <$f>::TAU) }
 
             /// Creates a new angle from a `degrees` value.
-            pub const fn from_deg(degrees: $f) -> Self {
-                Self::new(degrees / 360.0)
-            }
+            pub const fn from_deg(degrees: $f) -> Self { Self::new(degrees / 360.0) }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
             pub const fn from_custom(value: $f, custom_unit: $f) -> Self {
@@ -56,21 +54,15 @@ macro_rules! impl_angle {
 
             /// Converts the angle to radians.
             #[must_use]
-            pub const fn to_rad(self) -> $f {
-                self.turn * <$f>::TAU
-            }
+            pub const fn to_rad(self) -> $f { self.turn * <$f>::TAU }
 
             /// Converts the angle to degrees.
             #[must_use]
-            pub const fn to_deg(self) -> $f {
-                self.turn * 360.0
-            }
+            pub const fn to_deg(self) -> $f { self.turn * 360.0 }
 
             /// Converts the angle to a `custom_unit` which represents a full turn.
             #[must_use]
-            pub const fn to_custom(self, custom_unit: $f) -> $f {
-                self.turn * custom_unit
-            }
+            pub const fn to_custom(self, custom_unit: $f) -> $f { self.turn * custom_unit }
 
             /* normalize */
 
@@ -83,15 +75,11 @@ macro_rules! impl_angle {
 
             /// Returns the angle normalized to the non-inclusive range -1 to 1.
             // BLOCKED: const by fract
-            pub fn normalize(self) -> Self {
-                Self::new(self.turn.fract())
-            }
+            pub fn normalize(self) -> Self { Self::new(self.turn.fract()) }
 
             /// Sets the angle normalized to the non-inclusive range -1 to 1.
             // BLOCKED: const by fract
-            pub fn set_normalized(&mut self) {
-                self.turn = self.turn.fract();
-            }
+            pub fn set_normalized(&mut self) { self.turn = self.turn.fract(); }
 
             /* direction */
 
@@ -144,17 +132,13 @@ macro_rules! impl_angle {
             pub const fn negative(self) -> Self { Self::new(Float(self.turn).neg_abs().0) }
 
             /// Sets the angle as negative.
-            pub const fn set_negative(&mut self) {
-                { self.turn = Float(self.turn).neg_abs().0; }
-            }
+            pub const fn set_negative(&mut self) { { self.turn = Float(self.turn).neg_abs().0; } }
 
             /// Returns the positive version of the angle.
             pub const fn positive(self) -> Self { Self::new(Float(self.turn).abs().0) }
 
             /// Sets the angle as positive.
-            pub const fn set_positive(&mut self) {
-                self.turn = Float(self.turn).abs().0;
-            }
+            pub const fn set_positive(&mut self) { self.turn = Float(self.turn).abs().0; }
 
             /* kind */
 

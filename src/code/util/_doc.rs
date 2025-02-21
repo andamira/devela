@@ -242,7 +242,7 @@ mod tags {
         EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
         EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
         //
-        TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic type'>",
+        TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic-related item'>",
             crate::EMOJI_ATOMIC!(), "</span>");
         TAG_DATA_STRUCTURE =
             concat!("<span class='stab portability' title='A generic data structure'>",
