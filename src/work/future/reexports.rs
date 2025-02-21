@@ -7,7 +7,19 @@
 
 use crate::code::reexport;
 
-/* future */
+/* from either `alloc` or `portable-atomic-util` and `alloc` */
+
+#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub use crate::_dep::portable_atomic_util::task::Wake as TaskWake;
+//
+#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub use crate::_dep::_alloc::task::Wake as TaskWake;
+
+/* `core` future */
 
 reexport! { rust: core::future,
     doc: "A future which never resolves, representing a computation that never finishes.",
@@ -31,7 +43,7 @@ reexport! { rust: core::future,
     IntoFuture
 }
 
-/* task */
+/* `core` task */
 
 reexport! { rust: core::task,
     doc: "The context of an asynchronous task.",
@@ -56,8 +68,4 @@ reexport! { rust: core::task,
 reexport! { rust: core::task,
     doc: "Extracts the successful type of a [`TaskPoll<T>`].",
     @ready as task_ready
-}
-reexport! { rust: alloc::task,
-    doc: "The implementation of waking a task on an executor.",
-    @Wake as TaskWake
 }

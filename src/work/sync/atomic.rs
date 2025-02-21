@@ -55,18 +55,6 @@ reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
 
 /* from either `portable-atomic` or `core` */
 
-mod consts {
-    #![allow(unused)]
-    crate::CONST! { pub(crate),
-        TAG_ATOMIC_CORE_PORTABLE = concat!("<span class='stab portability' ",
-            "title='re-exported either from `core` or from the `portable-atomic` crate'>",
-            "`?core`</span>");
-        DOC_ATOMIC_CORE_PORTABLE = concat!("*Re-exported either from `core` or from the ",
-            "[`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---");
-    }
-}
-pub(crate) use consts::*;
-
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "A thread-safe signed integer type.\n\n"]

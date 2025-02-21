@@ -6,16 +6,34 @@
 
 use crate::reexport;
 
-/* structs */
+/* from either `alloc` or `portable-atomic-util` */
 
-reexport! { rust: alloc::sync,
-    doc: "A thread-safe reference-counting pointer.",
-    Arc
-}
-reexport! { rust: alloc::sync,
-    doc: "A version of [`Arc`] that holds a non-owning reference to the managed allocation.",
-    @Weak as ArcWeak
-}
+#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[doc = "A thread-safe reference-counting pointer.\n\n"]
+#[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub use crate::_dep::portable_atomic_util::Arc;
+//
+#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[doc = "A thread-safe reference-counting pointer.\n\n"]
+#[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub use crate::_dep::_alloc::sync::Arc;
+
+#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[doc = "A version of [`Arc`] that holds a non-owning reference to the managed allocation.\n\n"]
+#[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub use crate::_dep::portable_atomic_util::Weak as ArcWeak;
+//
+#[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+#[doc = "A version of [`Arc`] that holds a non-owning reference to the managed allocation.\n\n"]
+#[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub use crate::_dep::_alloc::sync::Weak as ArcWeak;
+
+/* `std` structs */
+
 reexport! { rust: std::sync,
     doc: "Enables multiple threads to synchronize the beginning of some computation.",
     Barrier
@@ -76,7 +94,7 @@ reexport! { rust: std::sync,
     WaitTimeoutResult
 }
 
-/* enums */
+/* `std` enums */
 
 reexport! { rust: std::sync,
     tag: crate::TAG_ERROR_COMPOSITE!(),
@@ -84,7 +102,7 @@ reexport! { rust: std::sync,
     TryLockError
 }
 
-/* aliases */
+/* `std` aliases */
 
 reexport! { rust: std::sync,
     tag: crate::TAG_RESULT!(),

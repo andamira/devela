@@ -229,36 +229,56 @@ macro_rules! std_core {
 }
 pub(crate) use std_core;
 
-// Tags definitions for visual type categorization in documentation.
-crate::CONST! { pub(crate),
-    EMOJI_ATOMIC = "⚛️"; // ⚛️,🔬,🌐
-    EMOJI_DATA_STRUCTURE = "📦"; // 📦,🧩,🗂️,
-    EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
-    // EMOJI_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
-    EMOJI_ITERATOR = "🔄"; // 🔄,
-    EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
-    EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
-    EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
-    //
-    TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic type'>",
-        crate::EMOJI_ATOMIC!(), "</span>");
-    TAG_DATA_STRUCTURE =
-        concat!("<span class='stab portability' title='A generic data structure'>",
-        crate::EMOJI_DATA_STRUCTURE!(), "</span>");
-    TAG_ERROR = concat!("<span class='stab portability' title='Individual error type'>",
-        crate::EMOJI_ERROR!(), "</span>");
-    TAG_ERROR_COMPOSITE =
-        concat!("<span class='stab portability' title='Composite error type'>",
-        crate::EMOJI_ERROR!(), "+</span>");
-    TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator-related item'>",
-        crate::EMOJI_ITERATOR!(), "</span>");
-    TAG_NAMESPACE = concat!("<span class='stab portability' title='Namespaced functionality'>",
-        crate::EMOJI_NAMESPACE!(), "</span>");
-    TAG_PRIMITIVE = concat!("<span class='stab portability' title='Rust primitive'>",
-        crate::EMOJI_PRIMITIVE!(), "</span>");
-    TAG_RESULT = concat!("<span class='stab portability' title='Result type'>",
-        crate::EMOJI_RESULT!() ,"</span>");
+/// Private tags definitions for visual type categorization in documentation.
+mod tags {
+    #![allow(unused)]
+    crate::CONST! { pub(crate),
+        EMOJI_ATOMIC = "⚛️"; // ⚛️,🔬,🌐
+        EMOJI_DATA_STRUCTURE = "📦"; // 📦,🧩,🗂️,
+        EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
+        // EMOJI_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
+        EMOJI_ITERATOR = "🔄"; // 🔄,
+        EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
+        EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
+        EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
+        //
+        TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic type'>",
+            crate::EMOJI_ATOMIC!(), "</span>");
+        TAG_DATA_STRUCTURE =
+            concat!("<span class='stab portability' title='A generic data structure'>",
+            crate::EMOJI_DATA_STRUCTURE!(), "</span>");
+        TAG_ERROR = concat!("<span class='stab portability' title='Individual error type'>",
+            crate::EMOJI_ERROR!(), "</span>");
+        TAG_ERROR_COMPOSITE =
+            concat!("<span class='stab portability' title='Composite error type'>",
+            crate::EMOJI_ERROR!(), "+</span>");
+        TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator-related item'>",
+            crate::EMOJI_ITERATOR!(), "</span>");
+        TAG_NAMESPACE = concat!("<span class='stab portability' title='Namespaced functionality'>",
+            crate::EMOJI_NAMESPACE!(), "</span>");
+        TAG_PRIMITIVE = concat!("<span class='stab portability' title='Rust primitive'>",
+            crate::EMOJI_PRIMITIVE!(), "</span>");
+        TAG_RESULT = concat!("<span class='stab portability' title='Result type'>",
+            crate::EMOJI_RESULT!() ,"</span>");
 
-    TAG_MAYBE_STD = "<span class='stab portability'
-title='re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>";
+        TAG_MAYBE_STD = "<span class='stab portability'
+    title='re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>";
+
+        /* optional dependencies */
+
+        // used in: work::sync::atomic
+        TAG_ATOMIC_CORE_PORTABLE = concat!("<span class='stab portability' ",
+            "title='re-exported either from `core` or from the `portable-atomic` crate'>",
+            "`?core`</span>");
+        DOC_ATOMIC_CORE_PORTABLE = concat!("*Re-exported either from `core` or from the ",
+            "[`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---");
+
+        // used in: work::sync::re-exports and work::future::re-exports
+        TAG_ATOMIC_ALLOC_PORTABLE_UTIL = concat!("<span class='stab portability' ",
+            "title='re-exported either from `alloc` or from the `portable-atomic-util` crate'>",
+            "`?alloc`</span>");
+        DOC_ATOMIC_ALLOC_PORTABLE_UTIL = concat!("*Re-exported either from `alloc` or from the ",
+            "[`portable-atomic-util`](https://docs.rs/portable-atomic-util)* crate.\n\n---");
+    }
 }
+pub(crate) use tags::*;
