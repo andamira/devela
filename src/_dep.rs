@@ -108,6 +108,10 @@ reexport! { optional_crate (safe) "dep_orion", "orion", orion,
 reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "Portable atomic types including 128-bit atomics, floats, etc."
 }
+reexport! { optional_crate (unsafe) "dep_portable_atomic_util", "portable-atomic-util",
+    portable_atomic_util,
+    doc: "Synchronization primitives built with `portable-atomic`."
+}
 reexport! { optional_crate (unsafe) "dep_pyo3", "pyo3", pyo3,
     doc: "Bindings to Python interpreter.",
     features: "std"

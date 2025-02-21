@@ -81,7 +81,7 @@ publish = true
 bench = false
 
 
-[features] # 277/300 (23 remaining), 148 visible, 129 hidden
+[features] # 279/300 (21 remaining), 150 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -118,7 +118,7 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 
 alloc = [ # enables `alloc` functionality
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
-	"jiff?/alloc", "memchr?/alloc", "orion?/alloc",
+	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "portable-atomic-util?/alloc",
 	"rustix?/alloc", "serde?/alloc", "winnow?/alloc",
 	# DEP_DISABLED: "ring?/alloc", "rkyv?/alloc",
 ]
@@ -126,7 +126,7 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
 	"itertools?/use_std", "jiff?/std", "js-sys?/std", "log?/std",
-	"memchr?/std", "nc?/std", "orion?/safe_api",
+	"memchr?/std", "nc?/std", "orion?/safe_api", "portable-atomic-util?/std",
 	"raw-cpuid?/std", "regex-lite?/std", "rustix?/std",
 	"serde?/std", "simdutf8?/std", "tracing?/std",
 	"wasm-bindgen?/std", "web-sys?/std", "wide?/std", "winnow?/std",
@@ -543,7 +543,7 @@ dep_all = [ # enables all 52 optional dependencies:
 	"dep_const_str", "dep_crossterm", "dep_fltk", "dep_flume", "dep_fontdue",
 	"dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff", "dep_js_sys",
 	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
-	"dep_nc", "dep_orion", "dep_portable_atomic", "dep_pyo3",
+	"dep_nc", "dep_orion", "dep_portable_atomic", "dep_portable_atomic_util", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite",
 	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_sdl3",
 	"dep_serde", "dep_simdutf8", "dep_stringzilla", "dep_sysinfo", "dep_symphonia",
@@ -587,6 +587,7 @@ dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                
 dep_nc = ["dep:nc"]                                                               # sys::os::linux
 dep_orion = ["dep:orion"]                                                         # data::xipher
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
+dep_portable_atomic_util = ["dep:portable-atomic-util"]                           # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                                    # lang::py
 dep_rand_core = ["dep:rand_core"]                                                 # num::rand
 dep_rayon = ["dep:rayon", "fontdue?/rayon", "image?/rayon",                       # work::thread
@@ -622,7 +623,7 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 # dep_rkyv = ["dep:rkyv"]                                                           # data::serde
 
 
-[dependencies] # 52 (2 required, 50 optional)
+[dependencies] # 53 (2 required, 51 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -805,6 +806,11 @@ default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/featu
 features = ["fallback", "float"]
 # feature-gated: serde
 # feature-maybe: require-cas
+
+[dependencies.portable-atomic-util] # https://crates.io/crates/portable-atomic-util
+version = "0.2.4" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/portable-atomic-util/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
 version = "0.23.4" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
