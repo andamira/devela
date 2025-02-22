@@ -20,7 +20,7 @@ including the following modifications:
 - make `EncodableSize::encoded_size` be a provided method.
 - make `CodecLenValue` accept a codec for the length.
 - make doc tests work with `not(alloc)` as well.
-- encode `char` as a 4 byte unicode scalar.
+- support `[i|u]size` for `Codec[Be|Le`.
 - remove `Encodable` impl for `Result`.
 - remove all unnecessary dependencies.
 - refactor macros and implementations.

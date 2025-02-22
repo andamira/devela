@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    sf, CStr, Decodable, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite, IoError,
-    IoErrorKind, IoRead, IoResult, IoWrite, NoData, Slice,
+    sf, CStr, Char, Decodable, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite,
+    IoError, IoErrorKind, IoRead, IoResult, IoWrite, NoData, Slice,
 };
 crate::_use! {basic::from_utf8}
 
@@ -91,21 +91,28 @@ impl<W: IoWrite> Encodable<W> for FmtArguments<'_> {
     }
 }
 
-/* primitives */
+/* primitives: char, byte, bool */
 
 impl<W: IoWrite> Encodable<W> for char {
-    fn encode(&self, writer: &mut W) -> IoResult<usize> {
-        let bytes = (*self as u32).to_le_bytes();
-        writer.write(&bytes)
+    fn encode(&self, w: &mut W) -> IoResult<usize> {
+        let mut buf = [0; 4];
+        let s = self.encode_utf8(&mut buf);
+        w.write(s.as_bytes())
     }
 }
 impl<R: IoRead> Decodable<R> for char {
     type Output = char;
     fn decode(reader: &mut R) -> IoResult<Self::Output> {
-        let mut buf = [0u8; 4];
-        reader.read_exact(&mut buf)?;
-        char::from_u32(u32::from_le_bytes(buf))
-            .ok_or_else(|| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-32 character"))
+        let mut buf = [0u8; 4]; // UTF-8 can be up to 4 bytes
+        reader.read_exact(&mut buf[..1])?;
+        let len = Char::utf8_len(buf[0]) as usize;
+        reader.read_exact(&mut buf[1..len])?;
+        let utf8_str = from_utf8(&buf[..len])
+            .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8 sequence"))?;
+        utf8_str
+            .chars()
+            .next()
+            .ok_or_else(|| IoError::new(IoErrorKind::UnexpectedEof, "Empty UTF-8 sequence"))
     }
 }
 
