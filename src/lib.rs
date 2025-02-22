@@ -65,7 +65,10 @@
     feature(const_slice_flatten, integer_sign_cast, num_midpoint_signed,)
 )]
 // #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
-#![cfg_attr(all(feature = "nightly_stable_next2", feature = "std"), feature(file_lock,))]
+#![cfg_attr(
+    all(feature = "nightly_stable_next2", feature = "std"),
+    feature(file_lock, os_str_display,)
+)]
 // ----------------------------
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -96,7 +99,7 @@
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "std"),
-    feature(anonymous_pipe, hash_extract_if, once_wait, os_str_display,)
+    feature(anonymous_pipe, hash_extract_if, once_wait,)
 )]
 // #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
 
