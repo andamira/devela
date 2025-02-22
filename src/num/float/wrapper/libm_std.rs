@@ -136,20 +136,17 @@ mod _libm {
                 /// The fractional part.
                 /// # Formulation
                 #[doc = FORMULA_FRACT!()]
-                #[must_use]
                 pub fn fract(self) -> Float<$f> { Float(self.0 - Libm::<$f>::trunc(self.0)) }
 
                 /// The integral and fractional parts.
                 /// # Formulation
                 #[doc = FORMULA_SPLIT!()]
-                #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
                     let (i, f) = Libm::<$f>::modf(self.0);
                     (Self(i), Self(f))
                 }
 
                 /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
-                #[must_use]
                 pub fn round_ties_even(self) -> Float<$f> {
                     let r = self.round_ties_away();
                     iif![r.0 % 2.0 == 0.0; r;
@@ -157,18 +154,15 @@ mod _libm {
                 }
 
                 /// Raises `x` to the `p` integer power.
-                #[must_use]
                 pub fn powi(self, p: $e) -> Float<$f> { self.powf(p as $f) }
 
                 /// The logarithm of the number with respect to an arbitrary base.
-                #[must_use]
                 pub fn log(self, base: $f) -> Float<$f> {
                     // Float(Self::ln(base).0 / Self::ln(self).0)
                     Float(Float(base).ln().0 / self.ln().0)
                 }
 
                 /// The sine and cosine.
-                #[must_use]
                 pub fn sin_cos(self) -> (Float<$f>, Float<$f>) {
                     let (sin, cos) = Libm::<$f>::sincos(self.0);
                     (Float(sin), Float(cos))
@@ -178,16 +172,13 @@ mod _libm {
 
                 /// The natural logarithm of the absolute value of the gamma function,
                 /// plus its sign.
-                #[must_use]
                 pub fn lgamma_r(self) -> (Float<$f>, $e) {
                     let (f, sign) = Libm::<$f>::lgamma_r(self.0);
                     (Float(f), sign)
                 }
                 /// Bessel function of the first kind, of order `n`.
-                #[must_use]
                 pub fn jn(self, n: $e) -> Float<$f> { Float(Libm::<$f>::jn(n, self.0)) }
                 /// Bessel function of the second kind, of order `n`.
-                #[must_use]
                 pub fn yn(self, n: $e) -> Float<$f> { Float(Libm::<$f>::yn(n, self.0)) }
             }
         };
@@ -309,10 +300,8 @@ mod _std {
             // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// Raises itself to the `p` integer power.
-                #[must_use]
                 pub fn powi(self, p: $e) -> Float<$f> { Float(<$f>::powi(self.0, p)) }
                 /// Both the sine and cosine.
-                #[must_use]
                 pub fn sin_cos(self) -> (Float<$f>, Float<$f>) {
                     let (sin, cos) = <$f>::sin_cos(self.0);
                     (Float(sin), Float(cos))
@@ -320,7 +309,6 @@ mod _std {
                 /// The integral and fractional parts of `x`.
                 /// # Formulation
                 #[doc = FORMULA_SPLIT!()]
-                #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
                     let trunc = self.trunc();
                     (trunc, Float(self.0 - trunc.0))
@@ -356,19 +344,16 @@ mod _no_std_no_libm {
                 /// The largest integer less than or equal to itself.
                 /// # Formulation
                 #[doc = crate::FORMULA_FLOOR!()]
-                #[must_use]
                 pub const fn floor(self) -> Float<$f> { self.const_floor() }
 
                 /// The smallest integer greater than or equal to itself.
                 /// # Formulation
                 #[doc = FORMULA_CEIL!()]
-                #[must_use]
                 pub const fn ceil(self) -> Float<$f> { self.const_ceil() }
 
                 /// The nearest integer to itself, default rounding
                 ///
                 /// This is the default [`round_ties_away`] implementation.
-                #[must_use]
                 pub const fn round(self) -> Float<$f> { self.const_round() }
 
                 /// The nearest integer to itself, rounding ties away from `0.0`.
@@ -377,13 +362,11 @@ mod _no_std_no_libm {
                 ///
                 /// # Formulation
                 #[doc = FORMULA_ROUND_TIES_AWAY!()]
-                #[must_use]
                 pub const fn round_ties_away(self) -> Float<$f> {self.const_round_ties_away() }
 
                 /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
                 /// # Formulation
                 #[doc = FORMULA_ROUND_TIES_EVEN!()]
-                #[must_use]
                 pub const fn round_ties_even(self) -> Float<$f> { self.const_round_ties_even() }
 
                 /// The integral part.
@@ -396,23 +379,19 @@ mod _no_std_no_libm {
                 /// of the floating-point number. The exponent is extracted, and a mask is
                 /// created to remove the fractional part. The new bits are then used to create
                 /// the truncated floating-point number.
-                #[must_use]
                 pub const fn trunc(self) -> Float<$f> { self.const_trunc() }
 
                 /// The fractional part.
                 /// # Formulation
                 #[doc = FORMULA_FRACT!()]
-                #[must_use]
                 pub const fn fract(self) -> Float<$f> { self.const_fract() }
 
                 /// The integral and fractional parts.
                 /// # Formulation
                 #[doc = FORMULA_SPLIT!()]
-                #[must_use]
                 pub const fn split(self) -> (Float<$f>, Float<$f>) { self.const_split() }
 
                 /// Raises itself to the `p` integer power.
-                #[must_use]
                 pub const fn powi(self, p: $ie) -> Float<$f> { self.const_powi(p) }
             }
         };
@@ -459,7 +438,7 @@ macro_rules! impl_fp {
         // Matches a single operation and implements it using the `libm` library.
         @libm : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
     ) => {
-        $(#[doc = $doc])? #[must_use]
+        $(#[doc = $doc])?
         pub fn $op(self, $($arg: $f),*) -> Float<$f> {
             Float($crate::_dep::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
         }
@@ -468,7 +447,7 @@ macro_rules! impl_fp {
         // Matches a single operation and implements it using the `std` library.
         @std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
     ) => {
-        $(#[doc = $doc])? #[must_use]
+        $(#[doc = $doc])?
         pub fn $op(self, $($arg: $f),*) -> Float<$f> {
             Float(<$f>::$opfn(self.0, $($arg),*))
         }

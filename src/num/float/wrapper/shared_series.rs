@@ -47,7 +47,6 @@ macro_rules! impl_float_shared_series {
             ///
             /// The terms for the exponential function are calculated using
             /// [`exp_series_terms`][Self::exp_series_terms] using $y\cdot\ln(x)$.
-            #[must_use]
             pub const fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
                 let xabs = self.abs().0;
                 if xabs == 0.0 {
@@ -67,7 +66,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_EXP_SERIES!()]
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
-            #[must_use]
             pub const fn exp_series(self, terms: $ue) -> Float<$f> {
                 iif![self.0 < 0.0; return Float(1.0 / Float(-self.0).exp_series(terms).0)];
                 let (mut result, mut term) = (1.0, 1.0);
@@ -83,7 +81,6 @@ macro_rules! impl_float_shared_series {
             /// Determines the number of terms needed for [`exp_series`][Self::exp_series]
             /// to reach a stable result based on the input value.
             #[doc = TABLE_EXP_SERIES_TERMS!()]
-            #[must_use]
             pub const fn exp_series_terms(self) -> $ue { paste! {
                 Self::[<exp_series_terms_ $f>](self.0)
             }}
@@ -94,7 +91,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_EXP_M1_SERIES!()]
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
-            #[must_use]
             pub const fn exp_m1_series(self, terms: $ue) -> Float<$f> {
                 if self.0 < 0.0 {
                     Float(1.0 / Float(-self.0).exp_m1_series(terms).0)
@@ -120,7 +116,6 @@ macro_rules! impl_float_shared_series {
             ///
             /// The maximum values with a representable result are:
             /// 127 for `f32` and 1023 for `f64`.
-            #[must_use]
             pub const fn exp2_series(self, terms: $ue) -> Float<$f> {
                 let (mut result, mut term) = (1.0, self.0 * Self::LN_2.0);
                 let mut n = 1;
@@ -135,7 +130,6 @@ macro_rules! impl_float_shared_series {
             /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
             /// to reach a stable result based on the input value.
             #[doc = TABLE_EXP2_SERIES_TERMS!()]
-            #[must_use]
             pub const fn exp2_series_terms(self) -> $ue { paste! {
                 Self::[<exp2_series_terms_ $f>](self.0)
             }}
@@ -149,7 +143,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_LN_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn ln_series(self, terms: $ue) -> Float<$f> {
                 if self.0 < 0.0 {
                     Self::NAN
@@ -177,7 +170,6 @@ macro_rules! impl_float_shared_series {
             /// than if the operations were performed separately.
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn ln_1p_series(self, terms: $ue) -> Float<$f> {
                 if self.0 < -1.0 {
                     Self::NAN
@@ -202,7 +194,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_LOG_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn log_series(self, base: $f, terms: $ue) -> Float<$f> {
                 if base <= 0.0 {
                     Self::NAN
@@ -222,7 +213,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_LOG2_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn log2_series(self, terms: $ue) -> Float<$f> {
                 Float(self.ln_series(terms).0 / 2.0).ln_series(terms)
             }
@@ -233,7 +223,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_LOG10_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn log10_series(self, terms: $ue) -> Float<$f> {
                 Float(self.ln_series(terms).0 / 10.0).ln_series(terms)
             }
@@ -254,7 +243,6 @@ macro_rules! impl_float_shared_series {
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
             #[doc = TABLE_SIN_SERIES_TERMS!()]
-            #[must_use]
             pub const fn sin_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
                 let (mut sin, mut term, mut factorial) = (x, x, 1.0);
@@ -276,7 +264,6 @@ macro_rules! impl_float_shared_series {
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
             #[doc = TABLE_COS_SERIES_TERMS!()]
-            #[must_use]
             pub const fn cos_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
                 let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
@@ -291,7 +278,6 @@ macro_rules! impl_float_shared_series {
             }
 
             /// Computes the sine and the cosine using Taylor series expansion.
-            #[must_use]
             pub const fn sin_cos_series(self, terms: $ue) -> (Float<$f>, Float<$f>) {
                 (self.sin_series(terms), self.cos_series(terms))
             }
@@ -308,7 +294,6 @@ macro_rules! impl_float_shared_series {
             /// The Taylor series for sine and cosine converge relatively quickly
             /// and uniformly over the entire domain.
             #[doc = TABLE_TAN_SERIES_TERMS!()]
-            #[must_use]
             pub const fn tan_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
                 let (sin, cos) = x.sin_cos_series(terms);
@@ -329,7 +314,6 @@ macro_rules! impl_float_shared_series {
             /// may be necessary.
             ///
             /// See also [`asin_series_terms`][Self::asin_series_terms].
-            #[must_use]
             pub const fn asin_series(self, terms: $ue) -> Float<$f> {
                 iif![self.abs().0 > 1.0; return Self::NAN];
                 let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
@@ -361,7 +345,6 @@ macro_rules! impl_float_shared_series {
             ///
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
             pub const fn acos_series(self, terms: $ue) -> Float<$f> {
                 iif![self.abs().0 > 1.0; return Self::NAN];
                 Float(Self::FRAC_PI_2.0 - self.asin_series(terms).0)
@@ -387,7 +370,6 @@ macro_rules! impl_float_shared_series {
             /// may be necessary.
             ///
             /// See also [`atan_series_terms`][Self::atan_series_terms].
-            #[must_use]
             pub const fn atan_series(self, terms: $ue) -> Float<$f> {
                 if self.abs().0 > 1.0 {
                     if self.0 > 0.0 {
@@ -422,7 +404,6 @@ macro_rules! impl_float_shared_series {
             /// using Taylor series expansion.
             ///
             /// See also [`atan_series_terms`][Self::atan_series_terms].
-            #[must_use]
             pub const fn atan2_series(self, other: $f, terms: $ue) -> Float<$f> {
                 if other > 0.0 {
                     Float(self.0 / other).atan_series(terms)
@@ -448,7 +429,6 @@ macro_rules! impl_float_shared_series {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
             pub const fn sinh_series(self, terms: $ue) -> Float<$f> {
                 Float((self.exp_series(terms).0 - -self.exp_series(terms).0) / 2.0)
             }
@@ -461,7 +441,6 @@ macro_rules! impl_float_shared_series {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
             pub const fn cosh_series(self, terms: $ue) -> Float<$f> {
                 Float((self.exp_series(terms).0 + -self.exp_series(terms).0) / 2.0)
             }
@@ -474,7 +453,6 @@ macro_rules! impl_float_shared_series {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
             pub const fn tanh_series(self, terms: $ue) -> Float<$f> {
                 let sinh_approx = self.sinh_series(terms);
                 let cosh_approx = self.cosh_series(terms);
@@ -487,7 +465,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_ASINH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn asinh_series(self, terms: $ue) -> Float<$f> {
                 let sqrt = Float(self.0 * self.0 + 1.0).sqrt_nr().0;
                 Float(self.0 + sqrt).ln_series(terms)
@@ -499,7 +476,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_ACOSH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn acosh_series(self, terms: $ue) -> Float<$f> {
                 if self.0 < 1.0 {
                     Self::NAN
@@ -515,7 +491,6 @@ macro_rules! impl_float_shared_series {
             #[doc = FORMULA_ATANH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
             pub const fn atanh_series(self, terms: $ue) -> Float<$f> {
                 if self.0 >= 1.0 {
                     Self::INFINITY

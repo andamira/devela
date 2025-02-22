@@ -36,7 +36,6 @@ macro_rules! impl_float_shared {
             /// The largest integer less than or equal to itself.
             /// # Formulation
             #[doc = crate::FORMULA_FLOOR!()]
-            #[must_use]
             pub const fn const_floor(self) -> Float<$f> {
                 let mut result = self.const_trunc().0;
                 if self.0.is_sign_negative() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
@@ -48,7 +47,6 @@ macro_rules! impl_float_shared {
             /// The smallest integer greater than or equal to itself.
             /// # Formulation
             #[doc = FORMULA_CEIL!()]
-            #[must_use]
             pub const fn const_ceil(self) -> Float<$f> {
                 let mut result = self.const_trunc().0;
                 if self.0.is_sign_positive() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
@@ -60,7 +58,6 @@ macro_rules! impl_float_shared {
             /// The nearest integer to itself, default rounding
             ///
             /// This is the default [`round_ties_away`][Self::round_ties_away] implementation.
-            #[must_use]
             pub const fn const_round(self) -> Float<$f> { self.const_round_ties_away() }
 
             /// The nearest integer to itself, rounding ties away from `0.0`.
@@ -70,7 +67,6 @@ macro_rules! impl_float_shared {
             ///
             /// # Formulation
             #[doc = FORMULA_ROUND_TIES_AWAY!()]
-            #[must_use]
             pub const fn const_round_ties_away(self) -> Float<$f> {
                 Float(self.0 +
                     Float(0.5 - 0.25 * <$f>::EPSILON).copysign(self.0).0)
@@ -80,7 +76,6 @@ macro_rules! impl_float_shared {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
             /// # Formulation
             #[doc = FORMULA_ROUND_TIES_EVEN!()]
-            #[must_use]
             pub const fn const_round_ties_even(self) -> Float<$f> {
                 let r = self.const_round_ties_away();
                 if r.0 % 2.0 == 0.0 {
@@ -105,7 +100,6 @@ macro_rules! impl_float_shared {
             /// of the floating-point number. The exponent is extracted, and a mask is
             /// created to remove the fractional part. The new bits are then used to create
             /// the truncated floating-point number.
-            #[must_use]
             pub const fn const_trunc(self) -> Float<$f> {
                 let bits = self.0.to_bits();
                 const BIAS: $ie = Float::<$f>::BIAS as $ie;
@@ -128,7 +122,6 @@ macro_rules! impl_float_shared {
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
             /// # Formulation
             #[doc = FORMULA_ROUND_TIES_ODD!()]
-            #[must_use]
             pub fn const_round_ties_odd(self) -> Float<$f> {
                 let r = self.const_round_ties_away();
                 iif![r.0 % 2.0 != 0.0; r ;
@@ -138,7 +131,6 @@ macro_rules! impl_float_shared {
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
             /// # Formulation
             #[doc = FORMULA_ROUND_TIES_ODD!()]
-            #[must_use]
             pub fn round_ties_odd(self) -> Float<$f> {
                 let r = self.round_ties_away();
                 iif![r.0 % 2.0 != 0.0; r ;
@@ -148,7 +140,6 @@ macro_rules! impl_float_shared {
             /// The fractional part.
             /// # Formulation
             #[doc = FORMULA_FRACT!()]
-            #[must_use]
             pub const fn const_fract(self) -> Float<$f> {
                 Float(self.0 - self.const_trunc().0)
             }
@@ -156,16 +147,14 @@ macro_rules! impl_float_shared {
             /// The integral and fractional parts.
             /// # Formulation
             #[doc = FORMULA_SPLIT!()]
-            #[must_use]
             pub const fn const_split(self) -> (Float<$f>, Float<$f>) {
                 let trunc = self.const_trunc();
                 (trunc, Float(self.0 - trunc.0))
             }
 
             /// A number that represents its sign, propagating `NaN`.
-            #[must_use]
             pub const fn signum(self) -> Float<$f> { Float(self.0.signum()) }
-            #[must_use] #[allow(missing_docs)]
+            #[allow(missing_docs)]
             #[deprecated(since = "0.23.0", note = "use `signum()` instead")]
             pub const fn const_signum(self) -> Float<$f> {
                 // if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.copysign(self.0) }
@@ -173,9 +162,8 @@ macro_rules! impl_float_shared {
             }
 
             /// A number composed of the magnitude of itself and the `sign` of other.
-            #[must_use]
             pub const fn copysign(self, sign: $f) -> Float<$f> { Float(self.0.copysign(sign)) }
-            #[must_use] #[allow(missing_docs)]
+            #[allow(missing_docs)]
             #[deprecated(since = "0.23.0", note = "use `copysign()` instead")]
             pub const fn const_copysign(self, sign: $f) -> Float<$f> {
                 // const SIGN_MASK: $uf = <$uf>::MAX / 2 + 1;
@@ -187,13 +175,11 @@ macro_rules! impl_float_shared {
             }
 
             /// Returns the [`Sign`].
-            #[must_use]
             pub const fn sign(self) -> Sign {
                 if self.is_sign_positive() { Sign::Positive } else { Sign::Negative }
             }
 
             /// Returns the [`Sign`], returning [`None`][Sign::None] for zero
-            #[must_use]
             pub const fn sign_nonzero(self) -> Sign {
                 if self.is_zero() {
                     Sign::None
@@ -232,14 +218,12 @@ macro_rules! impl_float_shared {
             }
 
             /// Computes `(x * mul + add)` normally.
-            #[must_use]
             pub const fn mul_add_fallback(self, mul: $f, add: $f) -> Float<$f> {
                 Float(self.0 * mul + add)
             }
 
             /// The euclidean division.
             // NOTE: [incorrect computations](https://github.com/rust-lang/rust/issues/107904)
-            #[must_use]
             pub fn div_euclid(self, other: $f) -> Float<$f> {
                 let q = Float(self.0 / other).trunc().0;
                 if self.0 % other < 0.0 {
@@ -251,7 +235,6 @@ macro_rules! impl_float_shared {
 
             /// The least non-negative remainder of `self` % `other`.
             // NOTE: [yield inconsistent results](https://github.com/rust-lang/rust/issues/111405)
-            #[must_use]
             pub const fn rem_euclid(self, other: $f) -> Float<$f> {
                 let r = self.0 % other;
                 iif![r < 0.0; Float(r + Float(other).abs().0); Float(r)]
@@ -272,7 +255,6 @@ macro_rules! impl_float_shared {
             #[doc = cc!["assert_eq![Float(0.125_", sfy![$f], ").scale(0., 1., 0., 360.), 45.];"]]
             #[doc = cc!["assert_eq![Float(-0.75_", sfy![$f], ").scale(-1., 1., 0., 360.), 45.];"]]
             /// ```
-            #[must_use]
             pub const fn scale(self, min: $f, max: $f, u: $f, v: $f) -> Float<$f> {
                 Float((v - u) * (self.0 - min) / (max - min) + u)
             }
@@ -291,14 +273,12 @@ macro_rules! impl_float_shared {
             #[doc = cc!["assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"]]
             // TODO more examples extrapolated
             /// ```
-            #[must_use]
             pub const fn lerp(self, u: $f, v: $f) -> Float<$f> {
                 Float((1.0 - self.0) * u + self.0 * v)
             }
 
             /// $ 1 / \sqrt{x} $ the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            #[must_use]
             pub const fn fisr(self) -> Float<$f> {
                 let (mut i, three_halfs, x2) = (self.0.to_bits(), 1.5, self.0 * 0.5);
                 i = Self::FISR_MAGIC - (i >> 1);
@@ -308,7 +288,6 @@ macro_rules! impl_float_shared {
 
             /// $ \sqrt{x} $ The square root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            #[must_use]
             pub const fn sqrt_nr(self) -> Float<$f> {
                 if self.0 < 0.0 {
                     Self::NAN
@@ -327,7 +306,6 @@ macro_rules! impl_float_shared {
 
             /// $ \sqrt{x} $ the square root calculated using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            #[must_use]
             pub const fn sqrt_fisr(self) -> Float<$f> { Float(1.0 / self.fisr().0) }
 
             /// The hypothenuse (the euclidean distance) using the
@@ -335,7 +313,6 @@ macro_rules! impl_float_shared {
             ///
             /// # Formulation
             #[doc = FORMULA_HYPOT_FISR!()]
-            #[must_use]
             pub const fn hypot_fisr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_fisr()
             }
@@ -345,14 +322,12 @@ macro_rules! impl_float_shared {
             ///
             /// # Formulation
             #[doc = FORMULA_HYPOT_NR!()]
-            #[must_use]
             pub const fn hypot_nr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_nr()
             }
 
             /// $ \sqrt\[3\]{x} $ The cubic root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            #[must_use]
             pub const fn cbrt_nr(self) -> Float<$f> {
                 iif![self.0 == 0.0; return self];
                 let mut guess = self.0;
@@ -371,7 +346,6 @@ macro_rules! impl_float_shared {
             /// 34 for `f32` and 170 for `f64`.
             ///
             /// Note that precision is poor for large values.
-            #[must_use]
             pub const fn factorial(x: $ue) -> Float<$f> {
                 let mut result = Self::ONE.0;
                 // for i in 1..=x { result *= i as $f; }
@@ -384,7 +358,6 @@ macro_rules! impl_float_shared {
             }
 
             /// The absolute value of `self`.
-            #[must_use]
             pub const fn abs(self) -> Float<$f> {
                 // let mask = <$uf>::MAX / 2;
                 // Float(<$f>::from_bits(self.0.to_bits() & mask))
@@ -392,32 +365,27 @@ macro_rules! impl_float_shared {
             }
 
             /// The negative absolute value of `self` (sets its sign to be negative).
-            #[must_use]
             pub const fn neg_abs(self) -> Float<$f> {
                 if self.is_sign_negative() { self } else { self.flip_sign() }
             }
 
             /// Flips its sign.
-            #[must_use]
             pub const fn flip_sign(self) -> Float<$f> {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 Float(<$f>::from_bits(self.0.to_bits() ^ sign_bit_mask))
             }
 
             /// Takes the reciprocal (inverse), $1/x$.
-            #[must_use]
             pub const fn recip(self) -> Float<$f> {
                 Self(self.0.recip())
             }
 
             /// Converts radians to degrees.
-            #[must_use]
             pub const fn to_degrees(self) -> Float<$f> {
                 Self(self.0.to_degrees())
             }
 
             /// Converts degrees to radians.
-            #[must_use]
             pub const fn to_radians(self) -> Float<$f> {
                 Self(self.0.to_radians())
             }
@@ -432,21 +400,18 @@ macro_rules! impl_float_shared {
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp(40., 80.), 40.];"]]
             /// ```
             /// See also: [`clamp_nan`][Self::clamp_nan], [`clamp_total`][Self::clamp_total].
-            #[must_use]
             pub const fn clamp(self, min: $f, max: $f) -> Float<$f> {
                 // self.max(min).min(max)
                 Self(self.0.clamp(min, max))
             }
 
             /// The maximum between itself and `other`, ignoring `NaN`.
-            #[must_use]
             pub const fn max(self, other: $f) -> Float<$f> {
                 // if self.0.is_nan() || self.0 < other { Float(other) } else { self }
                 Self(self.0.max(other))
             }
 
             /// The minimum between itself and other, ignoring `NaN`.
-            #[must_use]
             pub const fn min(self, other: $f) -> Float<$f> {
                 // if other.is_nan() || self.0 < other { self } else { Float(other) }
                 Self(self.0.min(other))
@@ -471,7 +436,6 @@ macro_rules! impl_float_shared {
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp_total(40., 80.), 40.];"]]
             /// ```
             /// See also: [`clamp`][Self::clamp], [`clamp_nan`][Self::clamp_nan].
-            #[must_use]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
@@ -481,7 +445,6 @@ macro_rules! impl_float_shared {
             /// Returns the maximum between itself and `other`, using total order.
             ///
             /// See also: [`max_nan`][Self::max_nan].
-            #[must_use]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn max_total(self, other: $f) -> Float<$f> {
@@ -491,7 +454,6 @@ macro_rules! impl_float_shared {
             /// Returns the minimum between itself and `other`, using total order.
             ///
             /// See also: [`min_nan`][Self::min_nan].
-            #[must_use]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn min_total(self, other: $f) -> Float<$f> {
@@ -508,7 +470,6 @@ macro_rules! impl_float_shared {
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp_nan(40., 80.), 40.];"]]
             /// ```
             /// See also: [`clamp`][Self::clamp], [`clamp_total`][Self::clamp_total].
-            #[must_use]
             pub const fn clamp_nan(self, min: $f, max: $f) -> Float<$f> {
                 self.max_nan(min).min_nan(max)
             }
@@ -523,7 +484,6 @@ macro_rules! impl_float_shared {
             /// ```
             /// See also: [`max_total`][Self::max_total].
             // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
-            #[must_use]
             #[expect(clippy::float_cmp, reason = "TODO:CHECK:IMPROVE?")]
             pub const fn max_nan(self, other: $f) -> Float<$f> {
                 if self.0 > other {
@@ -548,7 +508,6 @@ macro_rules! impl_float_shared {
             /// ```
             /// See also: [`min_total`][Self::min_total].
             // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
-            #[must_use]
             #[expect(clippy::float_cmp, reason = "TODO:CHECK:IMPROVE?")]
             pub const fn min_nan(self, other: $f) -> Float<$f> {
                 if self.0 < other {
@@ -567,13 +526,11 @@ macro_rules! impl_float_shared {
             ///
             /// This returns `NaN` when either argument is `NaN`,
             /// or if a combination of `+inf` and `-inf` is provided as arguments.
-            #[must_use]
             pub const fn midpoint(self, other: $f) -> Float<$f> {
                 Self(self.0.midpoint(other))
             }
 
             /// Raises itself to the `p` integer power.
-            #[must_use]
             pub const fn const_powi(self, p: $ie) -> Float<$f> {
                 match p {
                     0 => Self::ONE,
@@ -614,7 +571,6 @@ macro_rules! impl_float_shared {
             ///
             /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
             // WAIT: [for-loops in constants](https://github.com/rust-lang/rust/issues/87575)
-            #[must_use]
             pub const fn eval_poly(self, coefficients: &[$f]) -> Float<$f> {
                 let coef = coefficients;
                 match coef.len() {

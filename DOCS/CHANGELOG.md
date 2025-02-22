@@ -112,6 +112,8 @@
 - make const methods:
   - `Float`: `clamp`, `max`, `min`, `signum`, `copysign`.
   - `Mem`: `swap`.
+- change attributes:
+  - mark `Float` and `Sign` as `must_use`.
 - derive Copy for `Lgc16`.
 - update `str!` macro docs and tests.
 - make modules public:

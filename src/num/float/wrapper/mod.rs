@@ -42,6 +42,7 @@ crate::items! {
 ///   [`y0`][Float#method.y0], [`y1`][Float#method.y1], [`yn`][Float#method.yn].
 /// - Error functions: [`erf`][Float#method.erf], [`erfc`][Float#method.erfc].
 /// - [`exp10`][Float#method.exp10].
+#[must_use]
 #[repr(transparent)]
 pub struct Float<T>(pub T);
 
@@ -54,7 +55,6 @@ mod core_impls {
     use crate::{_core::fmt, Float, Ordering};
 
     impl<T: Clone> Clone for Float<T> {
-        #[must_use]
         fn clone(&self) -> Self { Self(self.0.clone()) }
     }
     impl<T: Copy> Copy for Float<T> {}

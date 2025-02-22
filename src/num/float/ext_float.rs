@@ -92,11 +92,9 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     fn neg_abs(self) -> Self;
 
     /// Returns the `Sign` of `self`.
-    #[must_use]
     fn sign(self) -> Sign;
 
     /// Returns the `Sign` of `self`, except for zero.
-    #[must_use]
     fn sign_nonzero(self) -> Sign;
 
     /// A number that represents the sign of `self`.
