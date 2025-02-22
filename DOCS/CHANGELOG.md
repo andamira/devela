@@ -35,12 +35,12 @@
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Log`.
 - new macros: `maybe!`, `miniquad!`, `xorshift_custom!`.
 - new modules:
-  - `data::{codec::{self, radix}, list, key, table, uid, xipher}`.
-  - `lang::{c, glsl}`.
-  - `media::{image::sixel, video}`.
-  - `num::{geom::metric, ord, quant}`.
-  - `sys::{log, net, fs}`.
-  - `ui::{back::{self, crossterm, miniquad}, front}`.
+  - data: `{codec::{self, radix}, list, key, table, uid, xipher}`.
+  - lang: `{c, glsl}`.
+  - media: `{image::sixel, video}`.
+  - num: `{geom::metric, ord, quant}`.
+  - sys: `{log, net, fs}`.
+  - ui: `{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
   - `str!`: `ip_addr`.
 - new methods:
@@ -48,14 +48,15 @@
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
+  - `Float`: `midpoint`, `recip`, `to_degrees`, `to_radians`.
   - prngs: `from_state`, `inner_state`.
 - new variants:
   - `IoErrorKind:` `OutOfMemory`, `FilesystemLoop`, `FilesystemQuotaExceeded`, `CrossesDevices`, `InvalidFilename`, `InProgress`.
 - new re-exports:
-  - `alloc`: `alloc::SystemAlloc`.
-  - `std`: `{env::*, process::*, sync::LazyLock}`.
-    - `io`: `IoEmpty`, `IoRepeat`, `Std[err|in|out][Lock]`.
-  - `log`: `*`.
+  - alloc: `alloc::SystemAlloc`.
+  - std: `{env::*, process::*, sync::LazyLock}`.
+    - io: `IoEmpty`, `IoRepeat`, `Std[err|in|out][Lock]`.
+  - log: `*`.
 - new optional dependencies: `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features.

@@ -14,10 +14,7 @@ use crate::Float;
 #[cfg(feature = "nightly_float")]
 use ::core::{f128, f16};
 
-/// impl technical constants
-///
-/// $f: the floating-point type.
-/// $u: unsigned integer type with the same bit-size.
+/// impl. floating-point technical constants
 macro_rules! float_technical_const_impls {
     () => {
         float_technical_const_impls![
@@ -38,7 +35,15 @@ macro_rules! float_technical_const_impls {
             f128:u128[16383, 15, 112, 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, 1e-30]
         ];
     };
-    ($( $f:ty:$u:ty
+    (
+        // $f:    the floating-point type
+        // $u:    unsigned integer type with the same bit-size
+        // $bias: the bias value
+        // $exp:  bitso for the exponent
+        // $sig:  explicit bits for the significand (= mantissa -1)
+        // $fisr: magic fisr constant
+        // $nrt:  newton-rapson-tolerance for sqrt()
+        $( $f:ty:$u:ty
         [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal] ),+) => {
         $( float_technical_const_impls![@$f:$u[$bias, $exp, $sig, $fisr, $nrt]]; )+
     };

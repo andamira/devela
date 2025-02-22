@@ -404,6 +404,24 @@ macro_rules! impl_float_shared {
                 Float(<$f>::from_bits(self.0.to_bits() ^ sign_bit_mask))
             }
 
+            /// Takes the reciprocal (inverse), $1/x$.
+            #[must_use]
+            pub const fn recip(self) -> Float<$f> {
+                Self(self.0.recip())
+            }
+
+            /// Converts radians to degrees.
+            #[must_use]
+            pub const fn to_degrees(self) -> Float<$f> {
+                Self(self.0.to_degrees())
+            }
+
+            /// Converts degrees to radians.
+            #[must_use]
+            pub const fn to_radians(self) -> Float<$f> {
+                Self(self.0.to_radians())
+            }
+
             /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
             ///
             /// # Example
@@ -543,6 +561,15 @@ macro_rules! impl_float_shared {
                     // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
                     Float(self.0 + other)
                 }
+            }
+
+            /// Calculates the middle point of `self` and `other`.
+            ///
+            /// This returns `NaN` when either argument is `NaN`,
+            /// or if a combination of `+inf` and `-inf` is provided as arguments.
+            #[must_use]
+            pub const fn midpoint(self, other: $f) -> Float<$f> {
+                Self(self.0.midpoint(other))
             }
 
             /// Raises itself to the `p` integer power.
