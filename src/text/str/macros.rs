@@ -35,9 +35,6 @@ macro_rules! strjoin {
         $crate::strjoin!($A, $crate::strjoin!($B, $($rest),+))
     };
     ($A:expr, $B:expr) => {{
-        const A: &str = $A;
-        const B: &str = $B;
-        const LEN: usize = A.len() + B.len();
         const fn combined() -> [u8; LEN] {
             let mut out = [0u8; LEN];
             out = copy_slice(A.as_bytes(), out, 0);
@@ -51,7 +48,10 @@ macro_rules! strjoin {
             }
             output
         }
-        const RESULT: &[u8] = &combinjoined();
+        const A: &str = $A;
+        const B: &str = $B;
+        const LEN: usize = A.len() + B.len();
+        const RESULT: &[u8] = &combined();
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         { $crate::unwrap!(ok::core::str::from_utf8(RESULT)) }
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]

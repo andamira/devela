@@ -3,13 +3,7 @@
 //! Defines
 //! [`CodecBe`], [`CodecIf`], [`CodecLe`], [`CodecFlags`], [`CodecJoin`], [`CodecLenValue`].
 //
-
-use crate::{
-    iif, BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
-    IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TryFromIntError,
-};
-crate::_use! {basic::from_utf8}
-
+// TOC
 pub use {
     cond::CodecIf,
     endian::{CodecBe, CodecLe},
@@ -17,6 +11,12 @@ pub use {
     join::CodecJoin,
     len::{CodecLen, CodecLenValue},
 };
+
+use crate::{
+    iif, BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
+    IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TryFromIntError,
+};
+crate::_use! {basic::from_utf8}
 
 #[rustfmt::skip]
 mod endian {
@@ -245,8 +245,7 @@ mod flags {
     }
     impl Debug for CodecFlags {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-            write!(f, "CodecFlags({:08b})", u8::from(*self))
-        }
+            write!(f, "CodecFlags({:08b})", u8::from(*self)) }
     }
     impl Deref for CodecFlags {
         type Target = [bool; 8];
@@ -259,22 +258,18 @@ mod flags {
         fn from(from: u8) -> Self {
             let mut slice = [false; 8];
             slice.iter_mut().enumerate().rev().for_each(|(i, v)| { *v = (from & (1 << i)) != 0; });
-            Self(slice)
-        }
+            Self(slice) }
     }
     impl From<CodecFlags> for u8 {
         fn from(from: CodecFlags) -> Self {
             from.0.into_iter().rev().enumerate()
-                .filter_map(|(i, v)| v.then_some(1 << i)).fold(0u8, BitOr::bitor)
-        }
+                .filter_map(|(i, v)| v.then_some(1 << i)).fold(0u8, BitOr::bitor) }
     }
     impl<W: IoWrite> Encodable<W> for CodecFlags {
         fn encode(&self, encoder: &mut W) -> IoResult<usize> {
-            u8::from(*self).encode(encoder)
-        }
+            u8::from(*self).encode(encoder) }
     }
 }
-
 #[rustfmt::skip]
 mod join {
     use super::*;

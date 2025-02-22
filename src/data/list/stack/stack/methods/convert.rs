@@ -29,7 +29,7 @@ macro_rules! impl_stack {
             => u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
     };
 
-    ($IDX:ty : $cap:literal => $( $NEW_IDX:ty : $new_cap:literal ),+ ) => { crate::paste! {
+    ($IDX:ty : $cap:literal => $( $NEW_IDX:ty : $new_cap:literal ),+ ) => { $crate::paste! {
         /* resize */
 
         /// # Stack resize.

@@ -34,7 +34,7 @@ macro_rules! impl_stack {
             impl_stack![@own $IDX:$cap];
         )+
     };
-    (@own $IDX:ty : $cap:literal) => { crate::paste! {
+    (@own $IDX:ty : $cap:literal) => { $crate::paste! {
         // T: Copy, S: Bare
         /// # Chainable *const* operations depending on `T: Copy`
         ///

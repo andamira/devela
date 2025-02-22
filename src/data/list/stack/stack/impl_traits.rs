@@ -25,7 +25,7 @@ macro_rules! impl_stack {
             impl_stack![@$IDX:$cap];
         )+
     };
-    (@$IDX:ty : $cap:literal) => { crate::paste! {
+    (@$IDX:ty : $cap:literal) => { $crate::paste! {
         /* impl data traits */
 
         impl<T, const LEN: usize, S: Storage> DataCollection for Stack<T, LEN, $IDX, S> {
