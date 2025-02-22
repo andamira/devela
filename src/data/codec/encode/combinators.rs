@@ -77,8 +77,10 @@ mod endian {
     }
     macro_rules! impl_endian {
         () => {
-            impl_endian![int: u8, u16, u32, u64, u128, i8, i16, i32, i64, i128];
+            impl_endian![int: u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, isize];
+            impl_endian![prim: usize]; impl_endian![non0: usize];
             impl_endian![float: f32, f64];
+            // impl_endian![float: f16, f128]; // TODO
         };
         (int: $($T:ty),+) => {
             impl_endian!(prim: $($T),+);
