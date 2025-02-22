@@ -321,7 +321,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`swap`].
-    pub unsafe fn swap<T>(x: *mut T, y: *mut T) {
+    pub const unsafe fn swap<T>(x: *mut T, y: *mut T) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { swap(x, y); }
     }
