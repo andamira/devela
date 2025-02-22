@@ -115,7 +115,7 @@
 - change attributes:
   - mark `Float` and `Sign` as `must_use`.
 - derive Copy for `Lgc16`.
-- update `str!` macro docs and tests.
+- update `str!` macro docs, tests and syntax: remove `:` suffix.
 - make modules public:
   - `data::error`.
   - `num::geom::shape`.
