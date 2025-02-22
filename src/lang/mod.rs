@@ -15,6 +15,9 @@ pub mod c;
 #[cfg(feature = "glsl")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "glsl")))]
 pub mod glsl;
+#[cfg(feature = "js")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "js")))]
+pub mod js;
 
 crate::items! { // structural access:: _mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
@@ -24,9 +27,10 @@ crate::items! { // structural access:: _mods, _all, _always
         pub use super::c::_all::*;
         #[cfg(feature = "glsl")]
         pub use super::glsl::_all::*;
+        #[cfg(feature = "js")]
+        pub use super::js::_all::*;
         // WIPZONE:
         // pub use super::awk::_all::*;
-        // pub use super::js::_all::*;
         // pub use super::py::_all::*;
         // pub use super::script::_all::*;
         // pub use super::wasm::_all::*;
@@ -40,7 +44,6 @@ crate::items! { // structural access:: _mods, _all, _always
 }
 // WIPZONE
 // pub mod awk;
-// pub mod js;
 // pub mod py;
 // pub mod script;
 // pub mod wasm;

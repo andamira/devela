@@ -29,4 +29,5 @@ crate::doc_! { vendor_mod: "icy_sixel", icy_sixel }
 crate::doc_! { vendor_mod: "object-id", object_id }
 // Other
 // crate::doc_! { vendor_mod: "blit-fonts", blit_fonts }
+crate::doc_! { vendor_mod: "jiff", jiff }
 crate::doc_! { vendor_mod: "pengyhash", pengyhash }

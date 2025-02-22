@@ -129,6 +129,8 @@ See the linked modifications for detailed changes.
   as part of the [`Chain`] and [`Hook`] structs.
 - <i id="blit-fonts"></i>[blit-fonts] by Andrew Reece (ISC),
   as the [`FONT_3_5`] and [`FONT_5_6`] consts data<!-- ([*modifications*][M_blit-fonts]) -->.
+- <i id="jiff"></i>[jiff] by Andrew Gallant (Unlicense),
+  as the [`TimeDelta`] struct ([*modifications*][M_jiff]).
 - <i id="pengyhash"></i>[pengyhash] by Alberto Fajardo (BSD-2),
   as the [`HasherPengy`] struct algorithm ([*modifications*][M_pengyhash]).
 - <i id="size_of_trait"></i>[size_of_trait] byt Joshua Nelson (BSD-3),
@@ -148,6 +150,9 @@ See the linked modifications for detailed changes.
   <!-- [M_blit-fonts]: https://github.com/andamira/devela/blob/main/src/media/font/bitmap/MODS_BLIT.md -->
   [`FONT_3_5`]: https://docs.rs/devela/latest/devela/media/font/const.FONT_3_5.html
   [`FONT_5_6`]: https://docs.rs/devela/latest/devela/media/font/const.FONT_5_6.html
+[jiff]: https://crates.io/crates/jiff/0.2.1
+  [M_jiff]: https://github.com/andamira/devela/blob/main/src/_info/vendored/jiff.md
+  [`TimeDelta`]: https://docs.rs/devela/latest/devela/phys/time/struct.TimeDelta.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
   [M_pengy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/pengy.md
   [`HasherPengy`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherPengy.html

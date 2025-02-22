@@ -148,9 +148,9 @@ code = []
 data = ["hash"]
 	# codec
 		hash = [] # HashFnv, HashFx, HashPengy
-lang = ["glsl"]
+lang = ["glsl", "js"]
 	glsl = []
-	# js = []
+	js = []
 	# py = []
 	# wasm = ["ring?/wasm32_unknown_unknown_js"]
 media = ["audio", "color", "draw", "font", "image", "midi", "video"]

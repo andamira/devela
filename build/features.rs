@@ -138,7 +138,7 @@ mod reflection {
     };
     pub const LANG: FlagsFeatures = FlagsFeatures {
         flags: &["lang··"],
-        features: &["lang"]
+        features: &["lang", "glsl", "js"]
     };
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         flags: &["media··"],

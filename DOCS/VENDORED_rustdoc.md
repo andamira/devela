@@ -55,6 +55,8 @@
   [M_blitfonts]: crate::_info::vendored::blit_fonts
   [`FONT_3_5`]: crate::media::font::FONT_3_5
   [`FONT_5_6`]: crate::media::font::FONT_5_6
+  [M_jiff]: crate::_info::vendored::jiff
+  [`TimeDelta`]: crate::phys::time::TimeDelta
   [M_pengyhash]: crate::_info::vendored::pengyhash
   [`HasherPengy`]: crate::data::codec::hash::HasherPengy
   [`size_of_expr`]: crate::sys::mem::size_of_expr
