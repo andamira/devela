@@ -52,6 +52,7 @@ enum SignalState {
 }
 
 impl TaskWake for Signal {
+    // WAIT: [arbitrary_self_types](https://github.com/rust-lang/rust/pull/135881)
     fn wake(self: Arc<Self>) {
         self.notify();
     }

@@ -18,7 +18,7 @@ mod ext;
 mod reexports;
 
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg(not(feature = "dep_portable_atomic_util"))]
 mod block;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -31,6 +31,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::{coroutine::_all::*, ext::*, reexports::*};
 
         #[cfg(feature = "std")]
+        #[cfg(not(feature = "dep_portable_atomic_util"))]
         pub use super::block::*;
     }
     pub(super) mod _all {

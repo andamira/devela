@@ -116,6 +116,7 @@ See also
 
 # Meta tracking issues:
 - [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874)
+  - [stabilize arbitrary self types v2](https://github.com/rust-lang/rust/pull/135881)
 - [cargo config search](https://github.com/rust-lang/cargo/issues/9769)
 - [const fn](https://github.com/rust-lang/rust/issues/57563)
 - [feature-metadata](https://github.com/rust-lang/cargo/issues/14157)

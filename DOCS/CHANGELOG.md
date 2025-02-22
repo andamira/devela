@@ -127,7 +127,9 @@
 ### Fixed
 - improve build script debug output.
 - enable nightly features depending on `alloc` and `std`.
-- feature-gate namespaced re-exported unsafe methods with `unsafe··`.
+- feature-gate:
+  - `ExtFuture::block`.
+  - namespaced re-exported unsafe methods with `unsafe··`.
 - refactor `rustdoc-header.html` to be modular, more efficient and versatile.
 - compile in docs.rs with `cpu-native` flag.
 
