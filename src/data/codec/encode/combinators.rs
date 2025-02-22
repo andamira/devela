@@ -244,6 +244,28 @@ mod flags {
     impl CodecFlags {
         /// Creates a new [`CodecFlags`] combinator from 8 `bool`s.
         pub const fn new(flags: [bool; 8]) -> Self { Self(flags) }
+        /// Creates a new [`CodecFlags`] from a slice of `bool`s.
+        ///
+        /// Takes the first 8 `bool`s and fills missing with `false`.
+        pub fn from_slice(slice: &[bool]) -> Self {
+            let mut flags = [false; 8];
+            for (i, &b) in slice.iter().take(8).enumerate() { flags[i] = b; }
+            Self(flags)
+        }
+        /// Creates a new [`CodecFlags`] from a slice of arbitrary types.
+        ///
+        /// The closure `f` is run for each element.
+        pub fn from_iter<T, I, F>(iter: I, mut f: F) -> Self
+        where
+            I: IntoIterator<Item = T>,
+            F: FnMut(T) -> bool,
+        {
+            let mut flags = [false; 8];
+            for (i, v) in iter.into_iter().take(8).enumerate() {
+                flags[i] = f(v);
+            }
+            Self(flags)
+        }
     }
     impl Debug for CodecFlags {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
