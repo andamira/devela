@@ -1,4 +1,65 @@
-// devela::text::str::macro
+// devela::text::str::macros
+//
+//! Defines the [`str!`] and [`strjoin!`] macros.
+//
+
+/// Joins multiple string slices in compile-time.
+///
+/// # Example
+/// ```
+/// # use devela::{strjoin, const_assert};
+/// const BASE: &str = "path/to";
+/// const PART1: &str = "/foo";
+/// const PART2: &str = "/bar";
+/// const PATH: &str = strjoin!(BASE, PART1, PART2);
+/// const_assert![eq_str PATH, "path/to/foo/bar"];
+/// ```
+/// # Features
+/// Makes use of the `unsafe_str` feature if available.
+//
+// - source: https://users.rust-lang.org/t/concatenate-const-strings/51712/7
+// - modifications:
+//   - make unsafe optional.
+//   - support the trivial cases.
+//   - suport more than 2 arguments.
+//   - simplify reassignments and loop.
+#[doc(hidden)]
+#[macro_export]
+#[rustfmt::skip]
+macro_rules! strjoin {
+    // trivial cases:
+    () => { "" };
+    ($A:expr) => { $A };
+    // variadic case: Reduce to two-argument case:
+    ($A:expr, $B:expr, $($rest:expr),+) => {
+        $crate::strjoin!($A, $crate::strjoin!($B, $($rest),+))
+    };
+    ($A:expr, $B:expr) => {{
+        const A: &str = $A;
+        const B: &str = $B;
+        const LEN: usize = A.len() + B.len();
+        const fn combined() -> [u8; LEN] {
+            let mut out = [0u8; LEN];
+            out = copy_slice(A.as_bytes(), out, 0);
+            copy_slice(B.as_bytes(), out, A.len())
+        }
+        const fn copy_slice(input: &[u8], mut output: [u8; LEN], offset: usize) -> [u8; LEN] {
+            let mut index = 0;
+            while index < input.len() {
+                output[offset + index] = input[index];
+                index += 1;
+            }
+            output
+        }
+        const RESULT: &[u8] = &combinjoined();
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        { $crate::unwrap!(ok::core::str::from_utf8(RESULT)) }
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        unsafe { ::core::str::from_utf8_unchecked(RESULT) }
+    }};
+}
+#[doc(inline)]
+pub use strjoin;
 
 /// [`&str`] compile-time operations, namespaced from the [const-str][::const_str] crate.
 ///
@@ -75,6 +136,7 @@
 ///   Splits a [`&str`] by ASCII whitespaces, and joins the parts with a single space.
 #[macro_export]
 #[doc(hidden)]
+#[cfg(feature = "dep_const_str")]
 macro_rules! _str { // 29 arms
     (compare: $($t:tt)*) => {$crate::_dep::const_str::compare!{$($t)*} };
     (concat: $($t:tt)*) => {$crate::_dep::const_str::concat!{$($t)*} };
@@ -110,10 +172,12 @@ macro_rules! _str { // 29 arms
 }
 #[doc(inline)]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_const_str")))]
+#[cfg(feature = "dep_const_str")]
 pub use _str as str;
 
 #[cfg(test)]
-mod tests {
+#[cfg(feature = "dep_const_str")]
+mod tests_str {
     #![allow(unused)]
 
     use crate::{const_assert, str, unwrap, CStr, Slice};

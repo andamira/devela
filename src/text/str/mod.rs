@@ -5,14 +5,12 @@
 #![doc = crate::doc_!(extends: str, string)]
 
 mod reexports;
+mod macros; // str!, strjoin!
 
 #[cfg(feature = "str")]
 mod ext_str; // ExtStr
 #[cfg(feature = "str")]
 mod namespace; // Str
-
-#[cfg(feature = "dep_const_str")]
-mod r#macro; // str!
 
 #[cfg(all(feature = "str", feature = "alloc"))]
 mod ext_string;
@@ -43,8 +41,8 @@ crate::items! { // structural access: _mods, _all, _always
         #[cfg(_str_u··)]
         pub use super::string_u::*;
 
-        #[doc(inline)] #[cfg(feature = "dep_const_str")]
-        pub use super::r#macro::str;
+        #[doc(inline)]
+        pub use super::macros::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
