@@ -38,6 +38,9 @@ See also
 - 1.87: `s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
 - 1.87: `·`[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 - 1.87: `s`[os_str_display](https://github.com/rust-lang/rust/pull/137336)
+- 1.87: `·`[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
+        `·` `const_ptr_sub_ptr`
+- 1.87: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
@@ -64,10 +67,7 @@ See also
 - 1.??: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `·`[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
-        `·` `const_ptr_sub_ptr`
 - 1.??: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
-- 1.??: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
 # … should be stable even later in the future

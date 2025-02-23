@@ -62,7 +62,14 @@
 // "nightly_stable_next2": 1.87 core, alloc, std…
 #![cfg_attr(
     feature = "nightly_stable_next2",
-    feature(const_slice_flatten, integer_sign_cast, num_midpoint_signed,)
+    feature(
+        const_slice_flatten,
+        integer_sign_cast,
+        num_midpoint_signed,
+        const_ptr_sub_ptr,
+        ptr_sub_ptr,
+        unsigned_is_multiple_of
+    )
 )]
 // #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
 #![cfg_attr(
@@ -77,7 +84,6 @@
         asm_goto,
         cell_update,
         const_array_from_ref,
-        const_ptr_sub_ptr,
         const_slice_from_ref,
         const_str_split_at,
         const_str_from_utf8,
@@ -88,7 +94,6 @@
         let_chains,
         macro_metavar_expr,
         naked_functions,
-        ptr_sub_ptr,
         unbounded_shifts,
         unsafe_cell_from_mut,
     )
