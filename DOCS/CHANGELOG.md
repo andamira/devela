@@ -36,7 +36,8 @@
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Log`.
-- new macros: `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
+- new macros:
+  - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
 - new modules:
   - data: `{codec::{self, radix}, list, key, table, uid, xipher}`.
   - lang: `{c, glsl}`.
