@@ -54,7 +54,8 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
 - 1.??: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
-- 1.??: `·`[const_swap_nonoverlapping//github.com/rust-lang/rust/pull/137280)
+- 1.??: `·`[const_swap_nonoverlapping(https://github.com/rust-lang/rust/pull/137280)
+- 1.??: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
@@ -73,11 +74,11 @@ See also
 # … should be stable even later in the future
 
 - 1.?? `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
-       `nightly_allocator`
+        = `nightly_allocator`
 - 1.?? `F`[autodiff](https://github.com/rust-lang/rust/issues/124509)
           `nightly_autodiff`
 - 1.?? `F`[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
-       `nightly_bigint`
+        = `nightly_bigint`
 - 1.?? ` `[box_into_inner](https://github.com/rust-lang/rust/issues/80437)
 - 1.?? ` `[cfg(accessible(::path::to::thing))](https://github.com/rust-lang/rust/issues/64797)
 - 1.?? ` `[cfg(version(..))](https://github.com/rust-lang/rust/issues/64796)
@@ -88,20 +89,20 @@ See also
 - 1.?? ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
 - 1.?? ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
 - 1.?? `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
-       `nightly_coro`
+        = `nightly_coro`
 - 1.?? `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
-       `nightly_doc`
+        = `nightly_doc`
 - 1.?? `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-       `nightly_doc`
+        = `nightly_doc`
 - 1.?? `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
-       `nightly_float`
+        = `nightly_float`
 - 1.?? ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
 - 1.?? ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
 - 1.?? ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.?? `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
-       `nightly_simd`
+        = `nightly_simd`
 - 1.?? ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
 - 1.?? ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137)
 - 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)

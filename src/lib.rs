@@ -88,6 +88,7 @@
         const_str_split_at,
         const_str_from_utf8,
         const_swap_nonoverlapping,
+        c_str_module,
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
         isqrt,
