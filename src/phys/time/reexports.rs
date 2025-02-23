@@ -9,7 +9,7 @@ use crate::reexport;
 
 reexport! { rust: core::time,
     doc: "A span of time, with `u64` seconds and `u32` nanoseconds.",
-    @Duration as Duration
+    Duration
 }
 reexport! { rust: core::time,
     tag: crate::TAG_ERROR!(),

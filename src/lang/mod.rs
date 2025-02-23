@@ -2,7 +2,7 @@
 //
 //! Language functionality, <abbr title = "Domain Specific Language">DSL</abbr>s
 //! and <abbr title = "Foreign Function Interface">FFI</abbr>s.
-#![doc = crate::doc_!(modules: crate; lang: c, glsl)]
+#![doc = crate::doc_!(modules: crate; lang: c, glsl, js)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: ffi)]
