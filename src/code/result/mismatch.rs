@@ -111,7 +111,6 @@ mod core_impls {
 
     impl<N: Default, H: Default> Default for Mismatch<N, H> {
         /// Returns a default `Mismatch`.
-        #[must_use]
         fn default() -> Self {
             Self {
                 need: Default::default(),

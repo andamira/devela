@@ -307,31 +307,25 @@ mod impl_traits {
 
     // lower-closed
     impl<T> From<RangeInclusive<T>> for Interval<T> {
-        #[must_use]
         fn from(r: RangeInclusive<T>) -> Self {
             let (start, end) = r.into_inner();
             Self::closed(start, end)
         }
     }
     impl<T> From<Range<T>> for Interval<T> {
-        #[must_use]
         fn from(r: Range<T>) -> Self { Self::closed_open(r.start, r.end) }
     }
     impl<T> From<RangeFrom<T>> for Interval<T> {
-        #[must_use]
         fn from(r: RangeFrom<T>) -> Self { Self::closed_unbounded(r.start) }
     }
     // lower-unbounded
     impl<T> From<RangeFull> for Interval<T> {
-        #[must_use]
         fn from(_: RangeFull) -> Self { Self::unbounded() }
     }
     impl<T> From<RangeTo<T>> for Interval<T> {
-        #[must_use]
         fn from(r: RangeTo<T>) -> Self { Self::unbounded_closed(r.end) }
     }
     impl<T> From<RangeToInclusive<T>> for Interval<T> {
-        #[must_use]
         fn from(r: RangeToInclusive<T>) -> Self { Self::unbounded_open(r.end) }
     }
 

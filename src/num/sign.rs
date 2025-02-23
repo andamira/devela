@@ -92,7 +92,6 @@ macro_rules! impl_from_sign {
     (@sint: $sint:ty) => {
         impl From<Sign> for $sint {
             /// Returns 0 if `None`, 1 if `Positive` and -1 if `Negative`.
-            #[must_use]
             fn from(s: Sign) -> $sint {
                 match s {
                     Sign::None => 0,

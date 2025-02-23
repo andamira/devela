@@ -46,16 +46,13 @@ mod core_impls {
     impl<T: Copy> Copy for Compare<T> {}
 
     impl<T: PartialEq> PartialEq for Compare<T> {
-        #[must_use]
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: Eq> Eq for Compare<T> {}
     impl<T: PartialOrd> PartialOrd for Compare<T> {
-        #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> { self.0.partial_cmp(&other.0) }
     }
     impl<T: Ord> Ord for Compare<T> {
-        #[must_use]
         fn cmp(&self, other: &Self) -> Ordering { self.0.cmp(&other.0) }
     }
 

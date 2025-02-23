@@ -68,22 +68,18 @@ mod core_impls {
     }
 
     impl<T: PartialEq> PartialEq for Float<T> {
-        #[must_use]
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: PartialEq> PartialEq<T> for Float<T> {
-        #[must_use]
         fn eq(&self, other: &T) -> bool { self.0.eq(other) }
     }
 
     impl<T: PartialOrd> PartialOrd for Float<T> {
-        #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
     impl<T: PartialOrd> PartialOrd<T> for Float<T> {
-        #[must_use]
         fn partial_cmp(&self, other: &T) -> Option<Ordering> {
             self.0.partial_cmp(other)
         }

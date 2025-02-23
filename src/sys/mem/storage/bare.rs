@@ -194,7 +194,6 @@ mod core_impls {
         }
     }
     impl<T> ops::DerefMut for BareBox<T> {
-        #[must_use]
         fn deref_mut(&mut self) -> &mut T {
             &mut self.0
         }
@@ -206,21 +205,18 @@ mod core_impls {
         }
     }
     impl<T> convert::AsMut<T> for BareBox<T> {
-        #[must_use]
         fn as_mut(&mut self) -> &mut T {
             &mut self.0
         }
     }
 
     impl<T> From<T> for BareBox<T> {
-        #[must_use]
         fn from(t: T) -> Self {
             BareBox(t)
         }
     }
 
     impl<T: Clone> Clone for BareBox<T> {
-        #[must_use]
         fn clone(&self) -> Self {
             BareBox(self.0.clone())
         }
@@ -228,7 +224,6 @@ mod core_impls {
     impl<T: Copy> Copy for BareBox<T> {}
 
     impl<T: Default> Default for BareBox<T> {
-        #[must_use]
         fn default() -> Self {
             BareBox(T::default())
         }
@@ -239,7 +234,6 @@ mod core_impls {
     }
 
     impl<T: PartialEq> PartialEq for BareBox<T> {
-        #[must_use]
         fn eq(&self, other: &Self) -> bool {
             self.0.eq(&other.0)
         }
@@ -247,13 +241,11 @@ mod core_impls {
     impl<T: Eq> Eq for BareBox<T> {}
 
     impl<T: PartialOrd> PartialOrd for BareBox<T> {
-        #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
     impl<T: Ord> Ord for BareBox<T> {
-        #[must_use]
         fn cmp(&self, other: &Self) -> cmp::Ordering {
             self.0.cmp(&other.0)
         }
@@ -282,7 +274,6 @@ mod core_impls {
         }
     }
     impl<T: hash::Hasher> hash::Hasher for BareBox<T> {
-        #[must_use]
         fn finish(&self) -> u64 {
             self.0.finish()
         }
@@ -294,19 +285,15 @@ mod core_impls {
     impl<I: Iterator> Iterator for BareBox<I> {
         type Item = I::Item;
 
-        #[must_use]
         fn next(&mut self) -> Option<I::Item> {
             self.0.next()
         }
-        #[must_use]
         fn size_hint(&self) -> (usize, Option<usize>) {
             self.0.size_hint()
         }
-        #[must_use]
         fn nth(&mut self, n: usize) -> Option<I::Item> {
             self.0.nth(n)
         }
-        #[must_use]
         fn last(self) -> Option<I::Item> {
             self.0.last()
         }
