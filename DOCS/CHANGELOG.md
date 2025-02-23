@@ -28,6 +28,7 @@
   - num:
     - geom::metric: `Distance`, `Orientation`, `Position`, `Region`, `Stride`, `RegionStrided`.
     - quant: `Cycle`, `CycleCount`.
+  - phys: `TimeDelta`.
   - sys:
     - env::app: `AppApple`, `AppConfig`, `AppWindows`, `AppUnix`, `AppXdg`,
     - io: `IoEmpty`, `IoRepeat`.

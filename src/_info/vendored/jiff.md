@@ -3,10 +3,13 @@ This is derived work from the
 including the following modifications:
 
 - rename `SignedDuration` to `TimeDelta`.
-- add methods involving `SystemInstant`.
+- new methods:
+  - `neg_abs`.
+- rename methods:
+  - `unsigned_abs` to `abs_duration`.
 - remove `jiff`-specific functionality.
 - feature-gate float-specific methods.
+- update docs, remove examples.
 - remove `inline` attributes.
 - add extra conversions.
-- remove doc-examples.
-- remove tests.
+- misc. refactors.
