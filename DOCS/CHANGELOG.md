@@ -38,6 +38,7 @@
     - `MiniquadPixels`, `MiniquadService`.
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Log`.
 - new macros:
+  - `define_static_map`.
   - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
 - new modules:
   - data: `{codec::{self, radix}, list, key, table, uid, xipher}`.

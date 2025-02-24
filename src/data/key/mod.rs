@@ -8,11 +8,8 @@
 #![doc = crate::doc_!(extends: collections)]
 //
 
-// mod map;
-// mod set;
-// mod trie;
-
 mod reexports;
+mod static_map; // define_static_map!
 
 crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
@@ -22,6 +19,10 @@ crate::items! { // structural access: _mods, _pub_mods, _all
 
     mod _mods { #![allow(unused)]
         pub use super::reexports::*;
+        pub use super::static_map::*;
+        // WIPZONE
+        // pub use set::*;
+        // pub use trie::*;
     }
     mod _pub_mods { #![allow(unused)]
     }
@@ -30,3 +31,6 @@ crate::items! { // structural access: _mods, _pub_mods, _all
         pub use super::{_mods::*, _pub_mods::*};
     }
 }
+// WIPZONE
+// mod set;
+// mod trie;
