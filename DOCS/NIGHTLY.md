@@ -47,6 +47,7 @@ See also
 
 - 1.??: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
 - 1.??: `·`[asm_goto](https://github.com/rust-lang/rust/pull/133870)
+- 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `a`[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 - 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)

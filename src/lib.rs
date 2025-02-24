@@ -82,6 +82,7 @@
     feature = "nightly_stable_later",
     feature(
         asm_goto,
+        assert_matches,
         cell_update,
         const_array_from_ref,
         const_slice_from_ref,
