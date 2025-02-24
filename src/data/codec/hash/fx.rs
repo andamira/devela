@@ -56,9 +56,18 @@ macro_rules! impl_fx {
                 state.state
             }
 
-            /// A const method for when you need a hash of a byte slice.
+            /// Computes a hash of a byte slice using the **default seed**.
+            ///
+            /// Equivalent to calling [`Self::hash_bytes_with_seed`] with `0`.
             pub const fn hash_bytes(v: &[u8]) -> $t {
-                Self::write(0, v)
+                Self::hash_bytes_with_seed(0, v)
+            }
+
+            /// Computes a hash of a byte slice using a **custom seed**.
+            ///
+            /// This allows deterministic but varied hashing for different use cases.
+            pub const fn hash_bytes_with_seed(seed: $t, v: &[u8]) -> $t {
+                Self::write(seed, v)
             }
 
             const fn hash_word(mut hash: $t, word: $t) -> $t {
