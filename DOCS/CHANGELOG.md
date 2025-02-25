@@ -76,7 +76,9 @@
   - work: `future_block`, `future_pending`, `future_ready`.
 - remove private variant `IoErrorKind::Uncategorized`.
 - remove features: `unsafe_async`.
-- remove modules: `data::collections`.
+- remove modules:
+  - `data::collections`.
+  - `num::alg`.
 - disable optional dependencies: `ring`, `rkyv`.
 - deprecate:
   - `Char::len_to_utf8`.
@@ -92,6 +94,7 @@
   - `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
   - `data::{bit, hash, serde}` inside `data::codec`.
   - `num::cmp` to `num::ord`.
+  - `num::alg::linear` to `num::geom::linear`.
   - `num::geom::shape::{angle, extent}` inside `num::geom::metric`.
   - `num::wave` to `phys::wave`.
   - `sys::path` inside `sys::fs`, made private.

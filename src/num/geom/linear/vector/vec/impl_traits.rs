@@ -1,4 +1,4 @@
-// devela::num::alg::linear::vector::vec::impl_traits
+// devela::num::geom::linear::vector::vec::impl_traits
 //
 //!
 //

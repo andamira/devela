@@ -1,4 +1,4 @@
-// devela::num::alg::linear::vector::vec::methods
+// devela::num::geom::linear::vector::vec::methods
 //
 //! impl methods for VecVector
 //

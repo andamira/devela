@@ -1,7 +1,7 @@
 // devela::num
 //
 //! Numerical types and math operations.
-#![doc = crate::doc_!(modules: crate; num: alg, geom, logic, niche, ord, quant, rand)]
+#![doc = crate::doc_!(modules: crate; num: geom, logic, niche, ord, quant, rand)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: cmp, num)]
@@ -31,10 +31,6 @@ pub mod ord; // Compare
 pub mod quant; // Cycle*, Interval
 pub mod rand;
 
-#[cfg(feature = "alg")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
-pub mod alg;
-
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
     pub use {_internals::*, _mods::*};
@@ -54,9 +50,8 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
             geom::_all::*, logic::_all::*, niche::_all::*,
             ord::_all::*, quant::_all::*,rand::_all::*,
         };
-
-        #[cfg(feature = "alg")]
-        pub use super::alg::_all::*;
+        // WIPZONE
+        // pub use super::symb::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
         pub(crate) use super::{_private::*, rand::_internals::*};
@@ -71,3 +66,5 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         };
     }
 }
+// WIPZONE
+// pub mod symb;

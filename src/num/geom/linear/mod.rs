@@ -1,9 +1,8 @@
-// devela::num::alg::linear
+// devela::num::geom::linear
 //
 //! Linear algebra.
 //
 
-// mod matrix; // TODO
 mod vector;
 
 crate::items! { // structural access: _mods, _all
@@ -12,9 +11,13 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::vector::*;
+        // WIPZONE
+        // pub use super::matrix::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
 }
+// WIPZONE
+// mod matrix;

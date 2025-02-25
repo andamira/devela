@@ -1,9 +1,10 @@
 // devela::num::geom
 //
 //! Geometric types and operations, spatial constructs and analysis.
-#![doc = crate::doc_!(modules: crate::num; geom: metric, shape)]
+#![doc = crate::doc_!(modules: crate::num; geom: linear, metric, shape)]
 //
 
+pub mod linear; // Vector*, Matrix*
 pub mod metric; // Position, Distance, Extent, Stride...
 
 #[cfg(feature = "geom")]
@@ -18,6 +19,7 @@ crate::items! { // structural access: _mods, _all
 
     // mod _mods {}
     mod _pub_mods { #![allow(unused)]
+        pub use super::linear::_all::*;
         pub use super::metric::_all::*;
 
         #[cfg(feature = "geom")]

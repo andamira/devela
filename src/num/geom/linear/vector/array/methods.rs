@@ -1,4 +1,4 @@
-// devela::num::alg::linear::vector::array::methods
+// devela::num::geom::linear::vector::array::methods
 //
 //! impl methods for Vector
 //
