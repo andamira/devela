@@ -58,7 +58,7 @@ See also
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
-- 1.??: `·`[const_swap_nonoverlapping(https://github.com/rust-lang/rust/pull/137280)
+- 1.??: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
 - 1.??: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
@@ -115,6 +115,9 @@ See also
  ` `- <https://rust-lang.github.io/rfcs/2580-ptr-meta.html>
 - [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 - [type_alias_impl_trait|impl_trait_in_assoc_type](https://github.com/rust-lang/rust/issues/63063)
+
+# Pitfalls
+- [const_evaluatable_unchecked](https://github.com/rust-lang/rust/issues/76200)
 
 # Meta tracking issues:
 - [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874)

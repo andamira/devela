@@ -16,6 +16,9 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::{option::*, reexports::*};
+        // WIPZONE
+        // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+        // pub use super::ghost::*; // WIP
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -25,3 +28,6 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::reexports::*;
     }
 }
+// WIPZONE
+// #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+// mod ghost; // WIP

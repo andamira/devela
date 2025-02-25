@@ -10,18 +10,18 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 ///
 /// # Arguments
 /// - `$NAME`:      the name of the new hashmap.
-/// - `$K`:         the integer primitive type for the keys.
+/// - `$KEY`:       the integer primitive type for the keys.
 ///
 /// optional:
-/// - `$EMPTY`:     the $K value for empty entries.
-/// - `$TOMB`:      the $K value for deleted entries.
+/// - `$EMPTY`:     the `$KEY` value for empty entries.
+/// - `$TOMB`:      the `$KEY` value for deleted entries.
 /// - `$HASH_ARG`:  the argument representing the byte slice.
 /// - `$HASH_EXPR`: the const hasher expression using `$HASH_ARG`.
 ///
 /// # Notes
 /// - values `V` have to be `Copy` + `ConstDefault`.
-/// - keys `$K` can be any primitive integers, floats or `char`.
-/// - Two specific `$K` values are reserved to indicate empty deleted keys.
+/// - keys `$KEY` can be any primitive integers, floats or `char`.
+/// - Two specific `$KEY` values are reserved to indicate empty deleted keys.
 ///   They default to `MIN` and `MAX`, respectively, but can be customized.
 /// - The default hasher is [`HasherFx`][crate::HasherFx].
 ///
@@ -91,67 +91,67 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 macro_rules! define_static_map {
     (
         // Default constructor
-        $NAME:ident, KEY:$K:ty $(,)?
+        $NAME:ident, KEY:$KEY:ty $(,)?
     ) => {
-        $crate::define_static_map![ $NAME, KEY:$K,
-            EMPTY:<$K>::MIN, TOMB:<$K>::MAX,
+        $crate::define_static_map![ $NAME, KEY:$KEY,
+            EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
     (
         // Custom Empty/Tomb, Default Hasher
-        $NAME:ident, KEY:$K:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
+        $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
     ) => {
-        $crate::define_static_map![ $NAME, KEY:$K,
+        $crate::define_static_map![ $NAME, KEY:$KEY,
             EMPTY:$EMPTY, TOMB:$TOMB,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
     (
         // Custom Hasher, Default Empty/Tomb
-        $NAME:ident, KEY:$K:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
+        $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
-        $crate::define_static_map![$NAME, KEY:$K, EMPTY:<$K>::MIN, TOMB:<$K>::MAX,
+        $crate::define_static_map![$NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER: | $HASH_ARG | $HASH_EXPR
         ];
     };
     (
         // Fully Customizable
-        $NAME:ident, KEY:$K:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
+        $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
-        #[doc = concat!("A custom static hashmap with `", stringify!($K), "` keys.")]
+        #[doc = concat!("A custom static hashmap with `", stringify!($KEY), "` keys.")]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         pub struct $NAME<K: Copy, V: Copy + $crate::ConstDefault, const N: usize> {
             keys: [K; N],
             values: [V; N],
         }
 
-        impl<V: Copy + $crate::ConstDefault, const N: usize> Default for $NAME<$K, V, N> {
+        impl<V: Copy + $crate::ConstDefault, const N: usize> Default for $NAME<$KEY, V, N> {
             fn default() -> Self { Self::new() }
         }
 
         #[allow(unused)]
-        impl<V: Copy + $crate::ConstDefault, const N: usize> $NAME<$K, V, N> {
+        impl<V: Copy + $crate::ConstDefault, const N: usize> $NAME<$KEY, V, N> {
             /// Special marker value for deleted slots.
-            pub const TOMB: $K = $TOMB as $K;
+            pub const TOMB: $KEY = $TOMB as $KEY;
             /// Special marker value for empty slots.
-            pub const EMPTY: $K = $EMPTY as $K;
+            pub const EMPTY: $KEY = $EMPTY as $KEY;
 
             /// Creates an empty hashmap.
             ///
             /// # Panics
             /// Panics in debug if `EMPTY` and `TOMB` are equal,
-            /// or if any of them are out of range for `$K`.
+            /// or if any of them are out of range for `$KEY`.
             #[allow(clippy::float_cmp_const)]
             pub const fn new() -> Self {
                 debug_assert![$EMPTY != $TOMB, "`$EMPTY` and `$TOMB` must be distinct"];
-                debug_assert![($EMPTY as i128) >= (<$K>::MIN as i128)
-                    && ($EMPTY as i128) <= (<$K>::MAX as i128),
-                    "`$EMPTY` value is out of range for type `$K`"];
-                debug_assert![($TOMB as i128) >= (<$K>::MIN as i128)
-                    && ($TOMB as i128) <= (<$K>::MAX as i128),
-                    "`$TOMB` value is out of range for type `$K`"];
+                debug_assert![($EMPTY as i128) >= (<$KEY>::MIN as i128)
+                    && ($EMPTY as i128) <= (<$KEY>::MAX as i128),
+                    "`$EMPTY` value is out of range for type `$KEY`"];
+                debug_assert![($TOMB as i128) >= (<$KEY>::MIN as i128)
+                    && ($TOMB as i128) <= (<$KEY>::MAX as i128),
+                    "`$TOMB` value is out of range for type `$KEY`"];
                 Self {
                     keys: [Self::EMPTY; N],
                     values: [V::DEFAULT; N],
@@ -162,7 +162,7 @@ macro_rules! define_static_map {
             ///
             /// # Returns
             /// - `Ok(())` if the insertion succeeds.
-            /// - `Err([`NotEnoughSpace`])` if no slots are available.
+            /// - `Err(`[`NotEnoughSpace`]`)` if no slots are available.
             ///
             /// # Behavior
             /// - Computes the **hash index** of the key.
@@ -172,7 +172,7 @@ macro_rules! define_static_map {
             /// - If the slot contains another key, **probes forward** until an open slot is found.
             /// - If no open slots exist, returns an error.
             #[allow(clippy::float_cmp, clippy::float_cmp_const)]
-            pub const fn insert(&mut self, key: $K, value: V)
+            pub const fn insert(&mut self, key: $KEY, value: V)
                 -> Result<(), $crate::NotEnoughSpace> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
@@ -209,7 +209,7 @@ macro_rules! define_static_map {
             /// - If a `TOMB` (deleted slot) is encountered, it **continues probing**.
             /// - If an `EMPTY` slot is reached, the key is **not in the table**.
             #[allow(clippy::float_cmp, clippy::float_cmp_const)]
-            pub const fn get(&self, key: $K) -> Option<V> {
+            pub const fn get(&self, key: $KEY) -> Option<V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 let mut i = 0;
@@ -234,7 +234,7 @@ macro_rules! define_static_map {
             /// - **Does NOT free the slot for immediate reuse**.
             /// - New insertions only reuse a `TOMB` slot if no earlier `EMPTY` slots exist.
             #[allow(clippy::float_cmp, clippy::float_cmp_const)]
-            pub const fn remove(&mut self, key: $K) -> bool {
+            pub const fn remove(&mut self, key: $KEY) -> bool {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 let mut i = 0;
@@ -251,7 +251,7 @@ macro_rules! define_static_map {
             /// # Behavior
             /// - Calls `remove()`, returning `true` if the key was found.
             /// - If `should_rebuild()` returns `true`, calls `rebuild()`.
-            pub const fn remove_rebuild(&mut self, key: $K) -> bool {
+            pub const fn remove_rebuild(&mut self, key: $KEY) -> bool {
                 let removed = self.remove(key);
                 if removed && self.should_rebuild() { self.rebuild(); }
                 removed
@@ -339,22 +339,22 @@ macro_rules! define_static_map {
             /* utility */
 
             /// Computes a hash index.
-            #[$crate::compile(not(same($K, char)))] // for integers and floats
-            pub const fn hash_index(&self, key: $K) -> usize {
+            #[$crate::compile(not(same($KEY, char)))] // for integers and floats
+            pub const fn hash_index(&self, key: $KEY) -> usize {
                 let $HASH_ARG = &key.to_le_bytes();
                 let expr = $HASH_EXPR;
                 expr % N
             }
             /// Computes a hash index.
-            #[$crate::compile(same($K, char))] // only for chars
-            pub const fn hash_index(&self, key: $K) -> usize {
+            #[$crate::compile(same($KEY, char))] // only for chars
+            pub const fn hash_index(&self, key: $KEY) -> usize {
                 let $HASH_ARG = &(key as u32).to_le_bytes();
                 let expr = $HASH_EXPR;
                 expr % N
             }
 
             /// Ensures the given key is not EMPTY or TOMB.
-            const fn debug_assert_valid_key(key: $K) {
+            const fn debug_assert_valid_key(key: $KEY) {
                 debug_assert!(key != Self::EMPTY, "Key cannot be `EMPTY` marker");
                 debug_assert!(key != Self::TOMB, "Key cannot be `TOMB` marker");
             }

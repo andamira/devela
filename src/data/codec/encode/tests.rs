@@ -1,6 +1,7 @@
 // devela::data::codec::encode::tests
 
 use super::*;
+#[cfg(feature = "alloc")]
 use crate::IoRead;
 
 #[allow(unused_imports)]
