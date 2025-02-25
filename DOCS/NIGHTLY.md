@@ -34,12 +34,16 @@ See also
 > - <https://github.com/rust-lang/rust/milestone/130>
 
 - 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
+- 1.87: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
+- 1.87: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
+- 1.87: `s`[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.87: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.87: `s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
 - 1.87: `·`[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 - 1.87: `s`[os_str_display](https://github.com/rust-lang/rust/pull/137336)
 - 1.87: `·`[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
         `·` `const_ptr_sub_ptr`
+- 1.87: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
 - 1.87: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
 
@@ -53,14 +57,11 @@ See also
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
-- 1.??: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
 - 1.??: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
 - 1.??: `·`[const_swap_nonoverlapping(https://github.com/rust-lang/rust/pull/137280)
 - 1.??: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
-- 1.??: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
-- 1.??: `s`[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
@@ -69,7 +70,6 @@ See also
 - 1.??: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
 # … should be stable even later in the future

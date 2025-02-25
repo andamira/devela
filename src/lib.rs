@@ -67,14 +67,16 @@
         integer_sign_cast,
         num_midpoint_signed,
         const_ptr_sub_ptr,
+        const_str_from_utf8,
         ptr_sub_ptr,
+        unbounded_shifts,
         unsigned_is_multiple_of
     )
 )]
-// #![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature())]
+#![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature(extract_if,))]
 #![cfg_attr(
     all(feature = "nightly_stable_next2", feature = "std"),
-    feature(file_lock, os_str_display,)
+    feature(file_lock, hash_extract_if, os_str_display,)
 )]
 // ----------------------------
 // "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
@@ -87,7 +89,6 @@
         const_array_from_ref,
         const_slice_from_ref,
         const_str_split_at,
-        const_str_from_utf8,
         const_swap_nonoverlapping,
         c_str_module,
         derive_coerce_pointee,
@@ -96,17 +97,16 @@
         let_chains,
         macro_metavar_expr,
         naked_functions,
-        unbounded_shifts,
         unsafe_cell_from_mut,
     )
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "alloc"),
-    feature(box_uninit_write, extract_if, new_zeroed_alloc, const_vec_string_slice,)
+    feature(box_uninit_write, new_zeroed_alloc, const_vec_string_slice,)
 )]
 #![cfg_attr(
     all(feature = "nightly_stable_later", feature = "std"),
-    feature(anonymous_pipe, hash_extract_if, once_wait,)
+    feature(anonymous_pipe, once_wait,)
 )]
 // #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
 
