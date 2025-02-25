@@ -7,6 +7,9 @@ use crate::{sf, Deref, DerefMut, NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{NotImplemented, NotSupported};
 
+mod constants; // ExtNumConst
+pub use constants::*;
+
 mod impls;
 
 sf! {

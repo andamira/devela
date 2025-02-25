@@ -11,6 +11,7 @@
   - data:
     - codec: `Encodable`, `EncodabeLen`.
     - table: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
+  - num: `ExtNumConst`.
   - sys: `AppEnv`, `ExtLog`.
   - ui: `MiniquadEventHandlerExt`, `UiService`.
   - work: `ExtProcess`.
