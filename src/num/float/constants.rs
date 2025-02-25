@@ -1,6 +1,6 @@
 // devela::num::float::constants
 //
-//! Defines `ExtFloatConst` and implements it for primitives.
+//! Defines `ExtFloatConst` and implements it for floating-point primitives.
 //
 // TOC
 // - trait ExtFloatConst
@@ -14,6 +14,8 @@
 // NOTE: In sync with num::float:wrapper::consts
 
 #![allow(clippy::excessive_precision)]
+
+use crate::Float; // because of float_technical_const_impls! consts
 
 #[cfg(feature = "nightly_float")]
 use ::core::{f128, f16};
@@ -29,7 +31,7 @@ use ::core::{f128, f16};
 /// - Representation, precision and computational bounds:
 /// [`NAN`], [`INFINITY`], [`NEG_INFINITY`], [`MIN`], [`MIN_POSITIVE`], [`MAX`], [`MIN_EXP`],
 /// [`MAX_EXP`], [`MIN_10_EXP`], [`MAX_10_EXP`], [`EPSILON`], [`RADIX`], [`DIGITS`],
-/// [`MANTISSA_DIGITS`].
+/// [`MANTISSA_DIGITS`], [`SIGNIFICAND_BITS`], [`EXPONENT_BIAS`], [`EXPONENT_BITS`].
 ///
 /// - Arc degrees: [`ARC_DEGREE`], [`ARC_MINUTE`], [`ARC_SECOND`].
 ///
@@ -76,6 +78,9 @@ use ::core::{f128, f16};
 /// [`RADIX`]: Self::RADIX
 /// [`DIGITS`]: Self::DIGITS
 /// [`MANTISSA_DIGITS`]: Self::MANTISSA_DIGITS
+/// [`SIGNIFICAND_BITS`]: Self::SIGNIFICAND_BITS
+/// [`EXPONENT_BIAS`]: Self::EXPONENT_BIAS
+/// [`EXPONENT_BITS`]: Self::EXPONENT_BITS
 ///
 /// [`ARC_DEGREE`]: Self::ARC_DEGREE
 /// [`ARC_MINUTE`]: Self::ARC_MINUTE
@@ -170,6 +175,9 @@ pub trait ExtFloatConst: Sized {
     #[doc = RADIX!()]               const RADIX: u32;
     #[doc = DIGITS!()]              const DIGITS: u32;
     #[doc = MANTISSA_DIGITS!()]     const MANTISSA_DIGITS: u32;
+    #[doc = SIGNIFICAND_BITS!()]    const SIGNIFICAND_BITS: u32;
+    #[doc = EXPONENT_BIAS!()]       const EXPONENT_BIAS: u32;
+    #[doc = EXPONENT_BITS!()]       const EXPONENT_BITS: u32;
     // pi
     #[doc = PI!()]                  const PI: Self;
     #[doc = FRAC_PI_2!()]           const FRAC_PI_2: Self;
@@ -269,6 +277,9 @@ crate::CONST! { pub(in crate::num::float),
     RADIX = r#"The radix or base of the internal representation."#;
     DIGITS = r#"Approximate number of significant digits in base 10."#;
     MANTISSA_DIGITS = r#"Number of significant digits in base 2."#;
+    SIGNIFICAND_BITS = "Number of explicit bits used to represent the significand (or mantissa).";
+    EXPONENT_BIAS = r#"Exponent bias for representing both positive and negative exponents."#;
+    EXPONENT_BITS = r#"Number of bits used to represent the exponent."#;
 
     // pi
     PI = r#"$ π = \frac{1}{2} τ = 180º $
@@ -513,6 +524,9 @@ macro_rules! impl_ext_float_const {
             const RADIX: u32 = <$f>::RADIX;
             const DIGITS: u32 = <$f>::DIGITS;
             const MANTISSA_DIGITS: u32 = <$f>::MANTISSA_DIGITS;
+            const SIGNIFICAND_BITS: u32 = Float::<$f>::SIGNIFICAND_BITS;
+            const EXPONENT_BIAS: u32 = Float::<$f>::EXPONENT_BIAS;
+            const EXPONENT_BITS: u32 = Float::<$f>::EXPONENT_BITS;
             const MIN: $f = <$f>::MIN;
             const MIN_POSITIVE: $f = <$f>::MIN_POSITIVE;
             const MAX: $f = <$f>::MAX;

@@ -19,50 +19,49 @@ macro_rules! float_technical_const_impls {
     () => {
         float_technical_const_impls![
             // Uses Lomont's single precision magic number for fisqrt
-            f32:u32[127, 8, 23, 0x5f37_59df, 1e-6],
+            f32:u32[8, 0x5f37_59df, 1e-6],
 
             // Uses Lomont's double precision magic number for fisqrt
-            // f64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15],
+            // f64[11, 0x5fe6_eb50_c7b5_37a9, 1e-15],
             //
             // Uses Matthew Robertson's double precision magic number
-            f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-12]
+            f64:u64[11, 0x5fe6_eb50_c7b5_37a9, 1e-12]
         ];
         #[cfg(feature = "nightly_float")]
         float_technical_const_impls![
             // Uses a half-precision magic number found by brute-force
-            f16:u16[15, 5, 10, 0x59b9, 1e-3],
+            f16:u16[5, 0x59b9, 1e-3],
             // Uses Matthew Robertson's quadruple precision magic number
-            f128:u128[16383, 15, 112, 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, 1e-30]
+            f128:u128[15, 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, 1e-30]
         ];
     };
     (
         // $f:    the floating-point type
         // $u:    unsigned integer type with the same bit-size
-        // $bias: the bias value
-        // $exp:  bitso for the exponent
-        // $sig:  explicit bits for the significand (= mantissa -1)
+        // [
+        // $ebit:  bits for the exponent
         // $fisr: magic fisr constant
         // $nrt:  newton-rapson-tolerance for sqrt()
+        // ]
         $( $f:ty:$u:ty
-        [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal] ),+) => {
-        $( float_technical_const_impls![@$f:$u[$bias, $exp, $sig, $fisr, $nrt]]; )+
+        [$ebit:literal, $fisr:literal, $nrt:literal] ),+) => {
+        $( float_technical_const_impls![@$f:$u[$ebit, $fisr, $nrt]]; )+
     };
     (@$f:ty:$u:ty
-        [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal] ) => {
-        // #[allow(unused)]
+        [$ebit:literal, $fisr:literal, $nrt:literal] ) => {
         impl Float<$f> {
-            /// Bias value used in the exponent to allow representation of both positive
-            /// and negative exponents.
-            pub(super) const BIAS: u32 = $bias;
-            /// Number of bits used to represent the exponent.
-            pub(super) const EXPONENT_BITS: u32 = $exp;
-            /// Number of explicit bits used to represent the significand (or mantissa).
-            ///
-            /// Note that std's `MANTISSA_DIGITS` floating-point constant equals
-            /// `SIGNIFICAND_BITS + 1` since it accounts for an additional implicit leading bit,
-            /// which is not stored but assumed in the standard floating-point representation.
-            pub(super) const SIGNIFICAND_BITS: u32 = $sig;
+            // MAYBE move below (split them up)
+            // MAYBE move to ExtFloatConst (make all public)
+            #[doc = SIGNIFICAND_BITS!()]
+            pub const SIGNIFICAND_BITS: u32 = <$f>::MANTISSA_DIGITS -1;
+            #[doc = EXPONENT_BIAS!()]
+            pub const EXPONENT_BIAS: u32 = <$f>::MAX_EXP as u32 - 1;
+            #[doc = EXPONENT_BITS!()]
+            pub const EXPONENT_BITS: u32 = $ebit;
+
+            /// Fast inverse square root magic constant.
             pub(super) const FISR_MAGIC: $u = $fisr;
+
             /// Tolerances for the difference between successive guesses using the
             /// Newton-Raphson method for square root calculation:
             pub(super) const NR_TOLERANCE: $f = $nrt;

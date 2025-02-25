@@ -102,7 +102,7 @@ macro_rules! impl_float_shared {
             /// the truncated floating-point number.
             pub const fn const_trunc(self) -> Float<$f> {
                 let bits = self.0.to_bits();
-                const BIAS: $ie = Float::<$f>::BIAS as $ie;
+                const BIAS: $ie = Float::<$f>::EXPONENT_BIAS as $ie;
                 const SIG_BITS: $ie = Float::<$f>::SIGNIFICAND_BITS as $ie;
                 const EXP_MASK: $uf = (1 << Float::<$f>::EXPONENT_BITS) - 1;
 
