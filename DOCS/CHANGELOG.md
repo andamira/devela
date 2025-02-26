@@ -28,7 +28,9 @@
   - lang: `g_*`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - num:
-    - geom::metric: `Distance`, `Orientation`, `Position`, `Region`, `Stride`, `RegionStrided`.
+    - geom:
+      - linear: `Matrix`.
+      - metric: `Distance`, `Orientation`, `Position`, `Region`, `Stride`, `RegionStrided`.
     - quant: `Cycle`, `CycleCount`.
   - phys: `TimeDelta`.
   - sys:

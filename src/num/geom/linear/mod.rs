@@ -4,6 +4,7 @@
 //
 
 mod vector;
+mod matrix;
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
@@ -11,8 +12,9 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::vector::*;
+        pub use super::matrix::*;
         // WIPZONE
-        // pub use super::matrix::*;
+        // pub use super::affine::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -20,4 +22,4 @@ crate::items! { // structural access: _mods, _all
     }
 }
 // WIPZONE
-// mod matrix;
+// mod affine; // Affine
