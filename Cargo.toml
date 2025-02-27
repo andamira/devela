@@ -804,10 +804,10 @@ default-features = false # 7 https://docs.rs/crate/orion/latest/features
 # feature-gated: alloc, safe_api, serde
 
 [dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
-version = "1.10" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
+version = "1.11" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
-# https://docs.rs/portable-atomic/1.10.0/portable_atomic/#optional-features
+# https://docs.rs/portable-atomic/1.11.0/portable_atomic/#optional-features
 features = ["fallback", "float"]
 # feature-gated: serde
 # feature-maybe: require-cas
@@ -903,7 +903,7 @@ default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
-version = "3.11" # ✗ https://github.com/ashvardanian/StringZilla/releases
+version = "3.12" # ✗ https://github.com/ashvardanian/StringZilla/releases
 optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 # WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)
@@ -961,7 +961,7 @@ default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
 
 [dependencies.ureq] # https://crates.io/crates/ureq
-version = "3.0.5" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
+version = "3.0.7" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
 optional = true # safe
 default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # features = []
