@@ -33,7 +33,7 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 /// ```
 /// # use devela::define_static_map;
 /// // Define a static hashmap with `u16` keys and default hasher
-/// define_static_map![ExampleMap, KEY: u16];
+/// define_static_map![const ExampleMap, KEY: u16];
 ///
 /// let mut map = ExampleMap::<u16, u32, 8>::new();
 ///
@@ -65,7 +65,7 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 /// ```
 /// # use devela::{define_static_map, HasherFx};
 /// // Define a static hashmap using `HasherFx` with a custom seed
-/// define_static_map![ExampleMapFxSeeded, KEY: u16,
+/// define_static_map![const ExampleMapFxSeeded, KEY: u16,
 ///     HASHER: |b| HasherFx::<usize>::hash_bytes_with_seed(123, b)
 /// ];
 /// let mut map = ExampleMapFxSeeded::<u16, u32, 8>::new();
@@ -75,7 +75,8 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 /// # #[cfg(feature = "hash")] {
 /// # use devela::HasherPengy;
 /// // Define a static hashmap using a stateful pengy hasher
-/// define_static_map![ExampleMapPengy, KEY: u16,
+/// # #[cfg(feature = "hash")]
+/// define_static_map![const ExampleMapPengy, KEY: u16,
 ///     HASHER: |b| {
 ///         let mut p = HasherPengy::new();
 ///         p.process(b);
