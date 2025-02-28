@@ -11,7 +11,7 @@ use crate::define_static_map;
 mod v_non_copy {
     use crate::{StaticMapEntry, String, ToString};
 
-    super::define_static_map![TestMapU8, KEY: u8];
+    super::define_static_map![const TestMapU8, KEY: u8];
 
     #[test]
     fn get_ref() {
@@ -83,14 +83,47 @@ mod v_non_copy {
         assert_eq!(map.replace_with(1, || "Replaced".to_string()), Some("Hello".to_string()));
         assert_eq!(map.get_ref(1), None);
     }
+    #[test]
+    fn type_id() {
+        use crate::{Hash, Hasher, HasherFx, TypeId};
+
+        /// Hashes a `TypeId` into a `u64` using `HasherFx`.
+        fn hash_type_id<T: 'static>() -> u64 {
+            let mut hasher = HasherFx::<u64>::new();
+            TypeId::of::<T>().hash(&mut hasher);
+            hasher.finish()
+        }
+        struct Empty;
+        struct Tomb;
+
+        super::define_static_map![TypeIdMapU8, KEY:u64,
+            EMPTY:hash_type_id::<Empty>(),
+            TOMB:hash_type_id::<Tomb>()];
+        let mut map: TypeIdMapU8<u64, char, 4> = TypeIdMapU8::new();
+
+        // Insert some type-based keys
+        let type_a = hash_type_id::<i32>();
+        let type_b = hash_type_id::<f64>();
+
+        assert!(map.insert(type_a, 'A').is_ok());
+        assert!(map.insert(type_b, 'B').is_ok());
+
+        // Retrieve values
+        assert_eq!(map.get_ref(type_a), Some(&'A'));
+        assert_eq!(map.get_ref(type_b), Some(&'B'));
+
+        // Ensure a non-existent key returns `None`
+        let unknown_type = hash_type_id::<bool>();
+        assert_eq!(map.get_ref(unknown_type), None);
+    }
 }
 
 mod k_u8 {
-    super::define_static_map![TestMapU8, KEY:u8];
+    super::define_static_map![const TestMapU8, KEY:u8];
 
     #[test]
     const fn map_custom_empty_tomb() {
-        super::define_static_map![TestMapU8Custom, KEY: u8, EMPTY: 1, TOMB: 66];
+        super::define_static_map![const TestMapU8Custom, KEY: u8, EMPTY: 1, TOMB: 66];
         let mut _map = TestMapU8Custom::<u8, u32, 4>::new();
     }
     #[test]
@@ -146,7 +179,7 @@ mod k_u8 {
 
 #[rustfmt::skip]
 mod k_u8_panicking {
-    super::define_static_map![TestMapU8, KEY:u8];
+    super::define_static_map![const TestMapU8, KEY:u8];
 
     #[allow(unused)] type M = TestMapU8::<u8, u32, 4>;
     #[test] #[cfg(debug_assertions)] #[should_panic(expected = "Key cannot be `EMPTY` marker")]
@@ -164,11 +197,11 @@ mod k_u8_panicking {
 }
 
 mod k_f32 {
-    super::define_static_map![TestMapF32, KEY:f32];
+    super::define_static_map![const TestMapF32, KEY:f32];
 
     #[test]
     fn map_custom_empty_tomb() {
-        super::define_static_map![TestMapF32Custom,
+        super::define_static_map![const TestMapF32Custom,
             KEY: f32, EMPTY: f32::NEG_INFINITY, TOMB: f32::INFINITY];
         let mut _map = TestMapF32Custom::<f32, u32, 4>::new();
     }
@@ -206,16 +239,13 @@ mod k_f32 {
 }
 
 mod k_char {
-    super::define_static_map![TestMapChar, KEY:char];
+    super::define_static_map![const TestMapChar, KEY:char];
 
     #[test]
     fn map_custom_empty_tomb() {
-        super::define_static_map![TestMapCharCustom, KEY: char, EMPTY: '\0', TOMB: 'Ŧ'];
+        super::define_static_map![const TestMapCharCustom, KEY: char, EMPTY: '\0', TOMB: 'Ŧ'];
         let mut map = TestMapCharCustom::<char, u32, 4>::new();
         assert_eq!(map.insert('a', 100), Ok(()));
-
-        // can use u8 values, because they cast to `char`
-        super::define_static_map![TestMapCharCustom2, KEY: char, EMPTY: 0u8, TOMB: 1u8];
     }
     #[test]
     fn map_insert_get() {
