@@ -772,6 +772,69 @@ macro_rules! define_static_map {
         }
     };
     // --------------------------------------------------------------------------------------------
+    (typeid // uses 64-bit hashes of `TypeId`s for the keys
+     $NAME:ident $(,)?) => {
+        $crate::define_static_map![$NAME, KEY: u64,
+            EMPTY: type_id_hash::<Empty>(), TOMB: type_id_hash::<Tomb>(),
+            HASHER: |bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
+        ];
+
+        struct Empty;
+        struct Tomb;
+        fn type_id_hash<T: 'static>() -> u64 {
+            let mut hasher = HasherFx::<u64>::new();
+            $crate::TypeId::of::<T>().hash(&mut hasher);
+            hasher.finish()
+        }
+
+        /// Convenience methods for when the keys are `TypeId`s.
+        impl<V, const N: usize> $NAME<u64, V, N> {
+            /// Returns the hash of `T`'s `TypeId`.
+            pub fn type_id_hash<T: 'static>() -> u64 { type_id_hash::<T>() }
+
+            /// Retrieves some exclusive reference to the value associated with the given type `T`.
+            ///
+            /// Calls [`get_ref`][Self::get_ref] with the hash of its type id.
+            pub fn get_ref_type<T: 'static>(&self) -> Option<&V> {
+                let key = Self::type_id_hash::<T>();
+                self.get_ref(key)
+            }
+            /// Retrieves some exclusive reference to the value associated with the given type `T`.
+            ///
+            /// Calls [`get_mut`][Self::get_mut] with the hash of its type id.
+            pub fn get_mut_type<T: 'static>(&mut self) -> Option<&mut V> {
+                let key = Self::type_id_hash::<T>();
+                self.get_mut(key)
+            }
+
+            /// Inserts a value paired with the given type `T`.
+            ///
+            /// Calls [`insert`][Self::insert] with the hash of its type id.
+            pub fn insert_type<T: 'static>(&mut self, value: V)
+                -> Result<(), $crate::NotEnoughSpace> {
+                let key = Self::type_id_hash::<T>();
+                self.insert(key, value)
+            }
+        }
+        impl<V: Copy, const N: usize> $NAME<u64, V, N> {
+            /// Retrieves some value associated with the given type `T`.
+            ///
+            /// Calls [`get`][Self::get] with the hash of its type id.
+            pub fn get_type<T: 'static>(&self) -> Option<V> {
+                let key = Self::type_id_hash::<T>();
+                self.get(key)
+            }
+            /// Removes the value paired with the given type `T`.
+            ///
+            /// Calls [`remove`][Self::remove] with the hash of its type id.
+            pub fn remove_type<T: 'static>(&mut self) -> bool {
+                let key = Self::type_id_hash::<T>();
+                self.remove(key)
+            }
+        }
+    };
+
+    // --------------------------------------------------------------------------------------------
     (@shared $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?) => {
         #[allow(unused)]
         impl<V, const N: usize> $NAME<$KEY, V, N> {
