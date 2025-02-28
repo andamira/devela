@@ -7,13 +7,14 @@
 mod tests;
 
 mod define; // define_static_map!
+mod entry; // StaticEntry
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::define::*;
+        pub use super::{define::*, entry::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

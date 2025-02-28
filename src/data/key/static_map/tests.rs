@@ -2,8 +2,88 @@
 //
 //!
 //
+// IMPROVE: make copy methods const, use const_assert
 
 use crate::define_static_map;
+
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+mod v_non_copy {
+    use crate::{StaticMapEntry, String, ToString};
+
+    super::define_static_map![TestMapU8, KEY: u8];
+
+    #[test]
+    fn get_ref() {
+        let mut map = TestMapU8::<u8, u32, 4>::default();
+        map.insert(1, 100).unwrap();
+        assert_eq!(map.get_ref(1), Some(&100));
+        assert_eq!(map.get_ref(2), None);
+    }
+    #[test]
+    fn get_mut() {
+        let mut map = TestMapU8::<u8, String, 4>::default();
+        map.insert_move(1, "Hello".to_string()).unwrap();
+        if let Some(v) = map.get_mut(1) {
+            v.push_str(", World!");
+        }
+        assert_eq!(map.get_ref(1), Some(&"Hello, World!".to_string()));
+    }
+
+    #[test]
+    fn entry_occupied() {
+        let mut map = TestMapU8::<u8, u32, 4>::default();
+        map.insert(1, 100).unwrap();
+        match map.entry(1) {
+            StaticMapEntry::Occupied(v) => {
+                *v = 200; // Modify in place
+            }
+            _ => panic!("Expected occupied entry"),
+        }
+        assert_eq!(map.get_ref(1), Some(&200));
+    }
+    #[test]
+    fn entry_vacant() {
+        let mut map = TestMapU8::<u8, u32, 4>::default();
+        match map.entry(1) {
+            StaticMapEntry::Vacant(idx) => {
+                map.keys[idx] = 1;
+                map.values[idx] = 100;
+            }
+            _ => panic!("Expected vacant entry"),
+        }
+        assert_eq!(map.get_ref(1), Some(&100));
+    }
+
+    #[test]
+    fn insert_move() {
+        let mut map = TestMapU8::<u8, String, 4>::default();
+        map.insert_move(1, "Hello".to_string()).unwrap();
+        assert_eq!(map.get_ref(1), Some(&"Hello".to_string()));
+    }
+
+    #[test]
+    fn replace() {
+        let mut map = TestMapU8::<u8, String, 4>::default();
+        map.insert_move(1, "Hello".to_string()).unwrap();
+        assert_eq!(map.replace(1, "Replaced".to_string()), Some("Hello".to_string()));
+        assert_eq!(map.get_ref(1), None);
+    }
+    #[test]
+    fn replace_default() {
+        let mut map = TestMapU8::<u8, String, 4>::default();
+        map.insert_move(1, "Hello".to_string()).unwrap();
+        assert_eq!(map.replace_default(1), Some("Hello".to_string()));
+        assert_eq!(map.get_ref(1), None);
+    }
+    #[test]
+    fn replace_with() {
+        let mut map = TestMapU8::<u8, String, 4>::default();
+        map.insert_move(1, "Hello".to_string()).unwrap();
+        assert_eq!(map.replace_with(1, || "Replaced".to_string()), Some("Hello".to_string()));
+        assert_eq!(map.get_ref(1), None);
+    }
+}
 
 mod k_u8 {
     super::define_static_map![TestMapU8, KEY:u8];

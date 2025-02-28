@@ -23,6 +23,7 @@
   - code: `ScopeGuard`.
   - data: `NoData`.
     - codec: `Base`, `EncodeBe`, `EncodeLe`, `EncodeIf`, `EncodeJoin`, `EncodeFlags`, `EncodeLen`, `EncodeLenValue`.
+    - key: `StaticMapEntry`.
     - table: `DataValue*`, `DataType*`, `DataRaw*`.
     - xipher: `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - lang: `g_*`.

@@ -129,12 +129,132 @@ macro_rules! define_static_map {
 
         /* V */
 
+        impl<V: Default, const N: usize> Default for $NAME<$KEY, V, N> {
+            /// Creates an empty hashmap.
+            ///
+            /// # Panics
+            /// Panics in debug if `EMPTY` and `TOMB` are equal,
+            /// or if any of them are out of range for `$KEY`.
+            fn default() -> Self {
+                Self:: debug_assert_invariants();
+                Self {
+                    keys: [Self::EMPTY; N],
+                    values: $crate::array_init![default [V; N], "safe_data", "unsafe_array"],
+                }
+            }
+        }
+
         #[allow(unused)]
         impl<V, const N: usize> $NAME<$KEY, V, N> {
             /// Special marker value for deleted slots.
             pub const TOMB: $KEY = $TOMB as $KEY;
             /// Special marker value for empty slots.
             pub const EMPTY: $KEY = $EMPTY as $KEY;
+
+            /// Retrieves some shared reference to the value associated with the given key.
+            pub const fn get_ref(&self, key: $KEY) -> Option<&V> {
+                Self::debug_assert_valid_key(key);
+                let mut index = self.hash_index(key);
+                let mut i = 0;
+                while i < N {
+                    if self.keys[index] == key { return Some(&self.values[index]); }
+                    if self.keys[index] == Self::EMPTY { return None; }
+                    index = (index + 1) % N;
+                    i += 1;
+                }
+                None
+            }
+            /// Retrieves some exclusive reference to the value associated with the given key.
+            pub const fn get_mut(&mut self, key: $KEY) -> Option<&mut V> {
+                Self::debug_assert_valid_key(key);
+                let mut index = self.hash_index(key);
+                let mut i = 0;
+                while i < N {
+                    if self.keys[index] == key { return Some(&mut self.values[index]); }
+                    if self.keys[index] == Self::EMPTY { return None; }
+                    index = (index + 1) % N;
+                    i += 1;
+                }
+                None
+            }
+
+            /// Retrieves an entry for a given key.
+            pub const fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<V> {
+                Self::debug_assert_valid_key(key);
+                let mut index = self.hash_index(key);
+                let mut i = 0;
+                let mut tombstone_index = None;
+                while i < N {
+                    if self.keys[index] == Self::EMPTY {
+                        return $crate::StaticMapEntry::Vacant(index);
+                    }
+                    if self.keys[index] == key {
+                        return $crate::StaticMapEntry::Occupied(&mut self.values[index]);
+                    }
+                    if self.keys[index] == Self::TOMB && tombstone_index.is_none() {
+                        tombstone_index = Some(index);
+                    }
+                    index = (index + 1) % N;
+                    i += 1;
+                }
+                // If full, return N (invalid index)
+                $crate::StaticMapEntry::Vacant($crate::unwrap![some_or tombstone_index, N])
+            }
+
+            /// Inserts a key-value pair, consuming the value.
+            pub fn insert_move(&mut self, key: $KEY, value: V)
+                -> Result<(), $crate::NotEnoughSpace> {
+                match self.entry(key) {
+                    $crate::StaticMapEntry::Occupied(slot) => {
+                        *slot = value; // Overwrite existing value
+                        Ok(())
+                    }
+                    $crate::StaticMapEntry::Vacant(index) if index < N => {
+                        self.keys[index] = key;
+                        self.values[index] = value;
+                        Ok(())
+                    }
+                    _ => Err($crate::NotEnoughSpace(Some(1))),
+                }
+            }
+
+            /// Removes and returns the value for a given key, replacing it with a provided value.
+            #[rustfmt::skip]
+            pub fn replace(&mut self, key: $KEY, replacement: V) -> Option<V> {
+                match self._replace_internal(key) {
+                    Some(slot) => Some($crate::Mem::replace(slot, replacement)),
+                    None => None,
+                }
+            }
+            /// Removes and returns the value for a given key, replacing it with `V::default()`.
+            #[rustfmt::skip]
+            pub fn replace_default(&mut self, key: $KEY) -> Option<V> where V: Default {
+                self._replace_internal(key).map(|v| $crate::Mem::replace(v, V::default()))
+            }
+            /// Removes and returns the value for a given key, replacing it with a custom value.
+            #[rustfmt::skip]
+            pub fn replace_with<F>(&mut self, key: $KEY, replacement: F) -> Option<V>
+            where F: FnOnce() -> V {
+                self._replace_internal(key).map(|v| $crate::Mem::replace(v, replacement()))
+            }
+            /// Internal function to locate and mark a key as removed.
+            ///
+            /// Returns a mutable reference to the value slot for replacement.
+            const fn _replace_internal(&mut self, key: $KEY) -> Option<&mut V> {
+                Self::debug_assert_valid_key(key);
+                let mut index = self.hash_index(key);
+                let mut i = 0;
+                while i < N {
+                    if self.keys[index] == key {
+                        self.keys[index] = Self::TOMB;
+                        return Some(&mut self.values[index]);
+                    }
+                    if self.keys[index] == Self::EMPTY { return None; }
+                    index = (index + 1) % N;
+                    i += 1;
+                }
+                None
+            }
 
             /* introspection */
 
@@ -210,12 +330,23 @@ macro_rules! define_static_map {
                 debug_assert!(key != Self::EMPTY, "Key cannot be `EMPTY` marker");
                 debug_assert!(key != Self::TOMB, "Key cannot be `TOMB` marker");
             }
+            /// Ensures the type invariants hold.
+            const fn debug_assert_invariants() {
+                debug_assert![$EMPTY != $TOMB, "`$EMPTY` and `$TOMB` must be distinct"];
+                debug_assert![($EMPTY as i128) >= (<$KEY>::MIN as i128)
+                    && ($EMPTY as i128) <= (<$KEY>::MAX as i128),
+                    "`$EMPTY` value is out of range for type `$KEY`"];
+                debug_assert![($TOMB as i128) >= (<$KEY>::MIN as i128)
+                    && ($TOMB as i128) <= (<$KEY>::MAX as i128),
+                    "`$TOMB` value is out of range for type `$KEY`"];
+            }
         }
 
         /* V: Copy */
 
-        impl<V: Copy + $crate::ConstDefault, const N: usize> Default for $NAME<$KEY, V, N> {
-            fn default() -> Self { Self::new() }
+        impl<V: Copy + $crate::ConstDefault, const N: usize>
+            $crate::ConstDefault for $NAME<$KEY, V, N> {
+            const DEFAULT: Self = Self::new();
         }
 
         #[allow(unused)]
@@ -227,13 +358,7 @@ macro_rules! define_static_map {
             /// or if any of them are out of range for `$KEY`.
             #[allow(clippy::float_cmp_const)]
             pub const fn new() -> Self {
-                debug_assert![$EMPTY != $TOMB, "`$EMPTY` and `$TOMB` must be distinct"];
-                debug_assert![($EMPTY as i128) >= (<$KEY>::MIN as i128)
-                    && ($EMPTY as i128) <= (<$KEY>::MAX as i128),
-                    "`$EMPTY` value is out of range for type `$KEY`"];
-                debug_assert![($TOMB as i128) >= (<$KEY>::MIN as i128)
-                    && ($TOMB as i128) <= (<$KEY>::MAX as i128),
-                    "`$TOMB` value is out of range for type `$KEY`"];
+                Self:: debug_assert_invariants();
                 Self {
                     keys: [Self::EMPTY; N],
                     values: [V::DEFAULT; N],
