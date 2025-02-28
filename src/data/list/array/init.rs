@@ -139,9 +139,9 @@ macro_rules! array_init {
     // initialize an array in the stack
     init [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $init:expr) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init [$T; $LEN], $init] }
+        { $crate::array_init![safe_init [$T; $LEN], $init] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init [$T; $LEN], $init] }
+        { $crate::array_init![unsafe_init [$T; $LEN], $init] }
     }};
     (
     // initialize an array the stack, compile-time friendly.
@@ -149,34 +149,34 @@ macro_rules! array_init {
     const_init
     [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $const_init:expr, $copiable:expr) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_const_init [$T; $LEN], $const_init, $copiable] }
+        { $crate::array_init![safe_const_init [$T; $LEN], $const_init, $copiable] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_const_init [$T; $LEN], $const_init ] }
+        { $crate::array_init![unsafe_const_init [$T; $LEN], $const_init ] }
     }};
     (
     // initialize an array in the heap
     init_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $init:expr) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init_heap [$T; $LEN], $init] }
+        { $crate::array_init![safe_init_heap [$T; $LEN], $init] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init_heap [$T; $LEN], $init] }
+        { $crate::array_init![unsafe_init_heap [$T; $LEN], $init] }
     }};
     (
 
     // initialize an array in the stack by cloning $clonable
     clone [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init [$T; $LEN], |_| $clonable.clone()] }
+        { $crate::array_init![safe_init [$T; $LEN], |_| $clonable.clone()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init [$T; $LEN], |_| $clonable.clone()] }
+        { $crate::array_init![unsafe_init [$T; $LEN], |_| $clonable.clone()] }
     }};
     (
     // initialize an array in the heap, by cloning $clonable
     clone_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init_heap [$T; $LEN], |_| $clonable.clone()] }
+        { $crate::array_init![safe_init_heap [$T; $LEN], |_| $clonable.clone()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init_heap [$T; $LEN], |_| $clonable.clone()] }
+        { $crate::array_init![unsafe_init_heap [$T; $LEN], |_| $clonable.clone()] }
     }};
     (
 
@@ -184,9 +184,9 @@ macro_rules! array_init {
     default [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init [$T; $LEN], |_| <$T>::default()] }
+        { $crate::array_init![safe_init [$T; $LEN], |_| <$T>::default()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init [$T; $LEN], |_| <$T>::default()] }
+        { $crate::array_init![unsafe_init [$T; $LEN], |_| <$T>::default()] }
     }};
     (
     // initialize an array in the stack with $T: ConstDefault::DEFAULT
@@ -197,9 +197,9 @@ macro_rules! array_init {
     // initialize an array in the heap, with $T: Default::default()
     default_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init_heap [$T; $LEN], |_| <$T>::default()] }
+        { $crate::array_init![safe_init_heap [$T; $LEN], |_| <$T>::default()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init_heap [$T; $LEN], |_| <$T>::default()] }
+        { $crate::array_init![unsafe_init_heap [$T; $LEN], |_| <$T>::default()] }
     }};
     (
 
@@ -211,9 +211,9 @@ macro_rules! array_init {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init [$T; $LEN], init_closure] }
+        { $crate::array_init![safe_init [$T; $LEN], init_closure] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init [$T; $LEN], init_closure] }
+        { $crate::array_init![unsafe_init [$T; $LEN], init_closure] }
     }};
     (
     // initialize an array in the heap with an IntoIterator<Item = $T> and with
@@ -225,9 +225,9 @@ macro_rules! array_init {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init![safe_init_heap [$T; $LEN], init_closure] }
+        { $crate::array_init![safe_init_heap [$T; $LEN], init_closure] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init![unsafe_init_heap [$T; $LEN], init_closure] }
+        { $crate::array_init![unsafe_init_heap [$T; $LEN], init_closure] }
     }};
     (
 

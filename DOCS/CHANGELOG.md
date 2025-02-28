@@ -144,6 +144,7 @@
 
 ### Fixed
 - improve build script debug output.
+- make `array_init` use absolute paths internally.
 - enable nightly features depending on `alloc` and `std`.
 - feature-gate:
   - `ExtFuture::block`.
