@@ -1,6 +1,6 @@
 // devela::sys::mem::slice::wrapper
 //
-//! `Slice` namespace.
+//! Defines the [`Slice`] namespace.
 //
 // TODO:
 // - unchecked subslicing.

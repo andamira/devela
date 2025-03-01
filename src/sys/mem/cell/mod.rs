@@ -5,8 +5,8 @@
 #![doc = crate::doc_!(extends: cell)]
 //
 
-mod option;
-mod reexports;
+mod option; // ExtCellOption
+mod reexports; // ::core::cell::*
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -17,6 +17,8 @@ crate::items! { // structural access: _mods, _all, _always
     mod _mods {
         pub use super::{option::*, reexports::*};
         // WIPZONE
+        // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+        // pub use super::scell::*;
         // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
         // pub use super::ghost::*; // WIP
     }
@@ -29,5 +31,7 @@ crate::items! { // structural access: _mods, _all, _always
     }
 }
 // WIPZONE
+// #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+// mod scell; // define_singleton!
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
 // mod ghost; // WIP

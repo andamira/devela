@@ -3,11 +3,11 @@
 //! Memory size functionality.
 //
 
-mod byte;
+mod byte; // ByteSized
 mod expr;
 
 #[cfg(feature = "bit")]
-mod bit;
+mod bit; // BitSized
 
 crate::items! { // structural access: _mods, _hidden, _all
     #[allow(unused)]

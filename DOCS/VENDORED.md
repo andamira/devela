@@ -6,7 +6,7 @@ See the linked modifications for detailed changes.
 ## MIT OR Apache-2.0 licenses
 
 - <i id="cfg-if"></i>[cfg-if] by Alex Crichton,
-  as the [`cfg-if`] macro.
+  as the [`cfg-if!`] macro.
 - <i id="const_list"></i>[const_list] by Douglas Dwyer,
   as the [`ConstList`] struct.
 - <i id="crossbeam-utils"></i>[crossbeam-utils] by The Crossbeam Project Developers,
@@ -30,7 +30,7 @@ See the linked modifications for detailed changes.
 - <i id="stated-scope-guard"></i>[stated-scope-guard] by EvianZhang,
   as part the [`ScopeGuard`] struct ([*modifications*][M_stated-scope-guard]).
 - <i id="static_assertions"></i>[static_assertions] by Nikolai Vazquez,
-  as part of the [`const_assert`] macro and the [`ConstBool`] trait
+  as part of the [`const_assert!`] macro and the [`ConstBool`] trait
   ([*modifications*][M_static_assertions]).
 - <i id="tailcall-chunk"></i>[tailcall-chunk] by Tushar Mathur,
   as the [`VecChunk`] struct ([*modifications*][M_tailcall-chunk]).
@@ -38,7 +38,7 @@ See the linked modifications for detailed changes.
   as part of the [`Tuple`] trait ([*modifications*][M_tupl]).
 
 [cfg-if]: https://crates.io/crates/cfg-if/1.0.0
-  [`cfg-if`]: https://docs.rs/devela/latest/devela/code/util/macro.cfg_if.html
+  [`cfg-if!`]: https://docs.rs/devela/latest/devela/code/util/macro.cfg_if.html
 [const_list]: https://crates.io/crates/const_list/0.1.0
   [`ConstList`]: https://docs.rs/devela/latest/devela/data/list/struct.ConstList.html
 [crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.21
@@ -75,7 +75,7 @@ See the linked modifications for detailed changes.
   [`ScopeGuard`]: https://docs.rs/devela/latest/devela/code/struct.ScopeGuard.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
   [M_static_assertions]: https://github.com/andamira/devela/blob/main/src/_info/vendored/static_assertions.md
-  [`const_assert`]: https://docs.rs/devela/latest/devela/code/util/macro.const_assert.html
+  [`const_assert!`]: https://docs.rs/devela/latest/devela/code/util/macro.const_assert.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/logic/trait.ConstBool.html
 [tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
   [M_tailcall-chunk]: https://github.com/andamira/devela/blob/main/src/_info/vendored/tailcall-chunk.md
@@ -86,9 +86,9 @@ See the linked modifications for detailed changes.
 
 ## MIT licenses
 - <i id="const_for"></i>[const_for] by Joachim Enggård Nebel,
-  as the [`cfor`] macro.
+  as the [`cfor!`] macro.
 - <i id="crunchy"></i>[crunchy] by Eira Fransham,
-  as the [`unroll`] macro ([*modifications*][M_crunchy]).
+  as the [`unroll!`] macro ([*modifications*][M_crunchy]).
 - <i id="current"></i>[current] by *PistonDevelopers*,
   as the structs [`Current`] and [`CurrentGuard`] ([*modifications*][M_current]).
 - <i id="encode"></i>[encode] by Altair Bueno,
@@ -103,10 +103,10 @@ See the linked modifications for detailed changes.
   as the [`FatPtr`] struct.
 
 [const_for]: https://crates.io/crates/const_for/0.1.4
-  [`cfor`]: https://docs.rs/devela/latest/devela/code/util/macro.cfor.html
+  [`cfor!`]: https://docs.rs/devela/latest/devela/code/util/macro.cfor.html
 [crunchy]: https://crates.io/crates/crunchy/0.2.3
   [M_crunchy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/crunchy.md
-  [`unroll`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
+  [`unroll!`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
 [current]: https://crates.io/crates/current/0.1.2
   [M_current]: https://github.com/andamira/devela/blob/main/src/_info/vendored/current.md
   [`Current`]: https://docs.rs/devela/latest/devela/sys/mem/struct.Current.html
@@ -140,7 +140,7 @@ See the linked modifications for detailed changes.
 - <i id="pengyhash"></i>[pengyhash] by Alberto Fajardo (BSD-2),
   as the [`HasherPengy`] struct algorithm ([*modifications*][M_pengyhash]).
 - <i id="size_of_trait"></i>[size_of_trait] byt Joshua Nelson (BSD-3),
-  as the [`size_of_expr`] fn.
+  as the [`size_of_expr!`] macro.
 - <i id="Xabc"></i>[Xabc] by *EternityForest* (openly shared),
   as the [`Xabc`] struct algorithm.
 - <i id="GraphicGems"></i>[Graphics Gems] (1985–1994) (permissive EULA),

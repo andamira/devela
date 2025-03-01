@@ -8,8 +8,8 @@
 #[cfg(test)]
 mod tests;
 
-mod ext;
-mod namespace;
+mod ext; // ExtSlice
+mod namespace; // Slice
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]

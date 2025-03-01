@@ -1,6 +1,6 @@
 // devela::sys::mem::ext
 //
-//! An extension trait for memory management over `T`.
+//! Defines [`ExtMem`], An extension trait for memory management over `T`.
 //
 
 use super::Mem;

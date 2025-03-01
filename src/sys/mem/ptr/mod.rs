@@ -5,8 +5,8 @@
 // #![doc = crate::doc_!(extends: ptr)]
 //
 
-mod namespace;
-mod reexports;
+mod namespace; // Ptr
+mod reexports; // ::core::ptr::*
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 mod fat;

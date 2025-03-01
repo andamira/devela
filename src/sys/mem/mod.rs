@@ -13,31 +13,31 @@
 // safety
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
 
-mod aligned;
-mod alloc;
-mod cache_align;
-mod cswap;
-mod ext;
-mod namespace;
-mod ptr;
-mod reexports;
-mod size;
-mod slice;
-mod storage;
+mod aligned; // MemAligned
+mod alloc; // Alloc, ::alloc::alloc::*
+mod cache_align; // CacheAlign
+mod cswap; // cswap!
+mod ext; // ExtMem
+mod namespace; // Mem
+mod ptr; // Ptr, ::core::ptr::*
+mod reexports; // ::core::mem::*
+mod size; // size_of_expr!, BitSized, ByteSized,
+mod slice; // Slice, ExtSlice
+mod storage; // Bare, BareBox, Boxed, Storage
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-mod pin;
+mod pin; // Pinned
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-mod pod;
+mod pod; // MemPod
 
 #[cfg(feature = "std")]
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "std", feature = "unsafe_layout"))))]
 mod guard; // Current, CurrrentGuard
 
-pub mod cell;
+pub mod cell; // ExtCellOption, ::core::cell::*
 
 crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
@@ -45,7 +45,7 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
-    mod _mods {
+    mod _mods { #![allow(unused)]
         pub use super::{
             aligned::*, alloc::_all::*, cache_align::*, cswap::*, ext::*, namespace::*,
             ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,

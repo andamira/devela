@@ -1,6 +1,6 @@
 // devela::sys::mem::pin
 //
-//!
+//! Defines [`Pinned`].
 //
 
 use crate::Pin;

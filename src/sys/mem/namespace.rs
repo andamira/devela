@@ -1,6 +1,6 @@
 // devela::sys::mem::namespace
 //
-//! `Mem` namespace.
+//! Defines the [`Mem`] namespace.
 //
 
 #[allow(unused_imports, reason = "unsafe feature-gated")]

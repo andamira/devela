@@ -1,6 +1,6 @@
 // devela::sys::mem::slice::ext
 //
-//!
+//! Defines [`ExtSlice`].
 //
 
 use super::Slice;

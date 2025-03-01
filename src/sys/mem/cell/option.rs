@@ -1,6 +1,6 @@
 // devela::sys::mem::cell::option
 //
-//! Functionality related to byte sizes.
+//! Defines [`ExtCellOption`].
 //
 
 use crate::Cell;
