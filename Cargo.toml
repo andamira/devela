@@ -1046,6 +1046,15 @@ lto = "thin" # false, thin, fat, off
 inherits = "release"
 lto = "thin"
 
+[profile.wasm]
+inherits = "release"
+# https://rustwasm.github.io/docs/book/reference/code-size.html
+opt-level = "s"      # Optimize for size
+lto = true           # Enable link-time optimizations
+codegen-units = 1    # Improve optimization at the cost of compile time
+panic = "abort"      # Reduce binary size (no unwinding)
+strip = true         # Remove debug symbols for smaller binaries
+
 
 [package.metadata.docs.rs]
 # ==============================================================================
