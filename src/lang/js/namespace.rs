@@ -13,7 +13,8 @@
 
 use devela::js_reexport;
 
-/// a Javascript Web Api namespace.
+/// a Javascript namespace.
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
 pub struct Js;
 
 /// # Web API canvas

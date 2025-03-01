@@ -8,4 +8,4 @@ crate-type = ["cdylib"]
 path = "lib.rs"
 
 [dependencies]
-devela = { path = "../../..", features = ["js"] }
+devela = { path = "../../..", features = ["js", "unsafe_ffi"] }

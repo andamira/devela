@@ -160,7 +160,7 @@ To be able to use any unsafe functionality it's necessary to:
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), including:
   - `unsafe_array`: faster array initialization, `UninitArray`.
-  - `unsafe_async`: task_waker_noop, `CoroRun`.
+  - `unsafe_ffi`: unsafe foreign function calls (WASM, OS, external C).
   - `unsafe_hint`: unreachable_unchecked, assert_unchecked.
   - `unsafe_layout`: `MemPod`, DSTs in the stack, `ExtAny::downcast*`.
   - `unsafe_niche`: unchecked niche constructors.

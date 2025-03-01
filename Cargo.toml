@@ -81,7 +81,7 @@ publish = true
 bench = false
 
 
-[features] # 279/300 (21 remaining), 150 visible, 129 hidden
+[features] # 280/300 (20 remaining), 151 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -252,13 +252,14 @@ safe = [ # [9] forbids `unsafe` (and overrides unsafe features)
 safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
 	"safe"
 ]
-unsafe = [ # [10] enables `unsafe` (as long as it isn't forbidden for that module)
-	"unsafe_array", "unsafe_hint", "unsafe_layout",
+unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that module)
+	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
 ] # `unsafe··`
 	unsafe_array   = [] # faster array initialization, UninitArray.
 	# unsafe_async   = [] #
+	unsafe_ffi     = [] # unsafe foreign function calls (WASM, OS, external C)
 	unsafe_hint    = [] # unreachable_unchecked, unchecked arithmetic.
 	unsafe_layout  = [] # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*.
 	unsafe_niche   = [] # unchecked niche constructors.
