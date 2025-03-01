@@ -39,8 +39,8 @@
 # * [[example]]
 
 [workspace]
-members = [".", "macros"]
 resolver = "3"
+members = [".", "macros", "examples/lang/js_web_api"]
 
 [package]
 name = "devela"

@@ -1,0 +1,11 @@
+[package]
+name = "js_web_api"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+path = "lib.rs"
+
+[dependencies]
+devela = { path = "../../..", features = ["js"] }

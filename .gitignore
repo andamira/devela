@@ -3,3 +3,4 @@
 /macros
 /tools/*.rs
 /tools/*.txt
+/examples/lang/js_web_api/web/*
