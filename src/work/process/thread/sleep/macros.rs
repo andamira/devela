@@ -1,4 +1,4 @@
-// devela::work::process::thread::sleep
+// devela::work::process::thread::sleep::macros
 
 /// A more compact [`Thread::sleep`][crate::Thread#method.sleep].
 ///
