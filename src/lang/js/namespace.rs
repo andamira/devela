@@ -19,6 +19,12 @@ pub struct Js;
 /// # Web API canvas
 #[rustfmt::skip]
 impl Js {
+    /* custom */
+    /// Sets the active canvas by ID.
+    pub fn set_canvas(id: &str) { unsafe { set_canvas(id.as_ptr(), id.len()); } }
+
+    /* draw */
+
     /// Draws a filled rectangle.
     ///
     /// See: [fillRect].
@@ -44,18 +50,21 @@ impl Js {
     /// [fillText]: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText
     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_text
     pub fn fill_text(text: &str, x: f64, y: f64) {
-        unsafe { js_fill_text(text.as_ptr(), text.len(), x, y); }
+        unsafe { fill_text(text.as_ptr(), text.len(), x, y); }
     }
 }
 js_reexport! {
     [ module: "api_canvas" ]
+    /* custom */
+    unsafe fn set_canvas(str_ptr: *const u8, str_len: usize);
+
     /* draw */
     safe fn fill_rect(x: f64, y: f64, w: f64, h: f64);
     safe fn set_color(r: u8, g: u8, b: u8);
     safe fn draw_line(x1: f64, y1: f64, x2: f64, y2: f64);
     safe fn draw_circle(x: f64, y: f64, radius: f64);
     /* text */
-    unsafe fn "fill_text" js_fill_text(str_ptr: *const u8, str_len: usize, x: f64, y: f64);
+    unsafe fn fill_text(str_ptr: *const u8, str_len: usize, x: f64, y: f64);
 }
 
 /// # Web API console

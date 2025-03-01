@@ -10,6 +10,8 @@ use devela::{format_buf, Js};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
+    Js::set_canvas("example_canvas_1");
+
     let mut buf = [0u8; 32];
     Js::console_log(format_buf![&mut buf, "time: {:.2}", Js::get_time()].unwrap());
 
