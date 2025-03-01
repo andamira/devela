@@ -13,6 +13,8 @@
 ///   - `riscv64`: Uses `wfi` (wait-for-interrupt) to idle the core.
 ///   - **Fallback:** Uses an infinite loop.
 ///   - (It uses `unsafe`, except for `wasm32` and the fallback.
+/// - `web_api`: Logs panic info to the Web console. It requires the `js` feature.
+///   - Accepts the size of the log buffer size in bytes. Defaults to `1024` bytes.
 /// - `custom`: Uses a user-provided function as the panic handler.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -54,6 +56,46 @@ macro_rules! define_panic_handler {
             }
 
             loop {} // Always fallback to avoid UB if nothing else applies
+        }
+    };
+    (web_api) => {
+        $crate::define_panic_handler!(web_api: 1024);
+    };
+    (web_api: $buffer_bytes:literal) => {
+        #[panic_handler]
+        fn panic(info: &::core::panic::PanicInfo) -> ! {
+            #[cfg(target_arch = "wasm32")]
+            {
+                let mut buf = [0u8; $buffer_bytes];
+
+                // Extract and log the panic message
+                $crate::Js::console_group("#[panic_handler]");
+                match format_buf![&mut buf, "{}", info.message()] {
+                    Ok(msg_str) => $crate::Js::console_debug(msg_str),
+                    Err(truncated) => {
+                        $crate::Js::console_debug(truncated);
+                        $crate::Js::console_warn("Panic message was truncated!");
+                    }
+                }
+
+                // Extract and log the panic location
+                match info.location()
+                    .map(|loc| format_buf![&mut buf, "At {}:{}:{}",
+                        loc.file(), loc.line(), loc.column()])
+                    .unwrap_or(Ok("<panic location unknown>".into()))
+                {
+                    Ok(loc_str) => $crate::Js::console_debug(loc_str),
+                    Err(truncated) => {
+                        $crate::Js::console_debug(truncated);
+                        $crate::Js::console_warn("Panic location was truncated!");
+                    }
+                }
+                $crate::Js::console_group_end();
+
+                ::core::arch::wasm32::unreachable();
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            loop {}
         }
     };
     (custom, $func:path) => {
