@@ -8,8 +8,12 @@ use crate::reexport;
 /* structs */
 
 reexport! { rust: core::panic,
-    doc: "A struct providing information about a panic.",
+    doc: "Passed to `#[panic_handler]` in `no_std`, where panics always carry a formatted message.",
     PanicInfo
+}
+reexport! { rust: std::panic,
+    doc: "Passed to `std::panic::set_hook` in `std`, where panics can have arbitrary payloads.",
+    PanicHookInfo
 }
 reexport! { rust: core::panic,
     doc: "A struct containing information about the location of a panic.",
@@ -18,7 +22,6 @@ reexport! { rust: core::panic,
 reexport! { rust: core::panic,
     doc: "A simple wrapper around a type to assert that it is unwind safe.",
     @AssertUnwindSafe as PanicAssertUnwindSafe
-    // AssertUnwindSafe
 }
 
 /* traits */

@@ -71,6 +71,7 @@
     - `alloc::System` as `SystemAlloc`.
     - env: `*`.
     - io: `IoEmpty`, `IoRepeat`, `Std[err|in|out][Lock]`.
+    - panic: `PanicHookInfo`.
     - process: `*`.
     - sync: `LazyLock`.
   - log: `*`.
