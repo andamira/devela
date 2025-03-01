@@ -89,6 +89,8 @@ See the linked modifications for detailed changes.
   as the [`cfor`] macro.
 - <i id="crunchy"></i>[crunchy] by Eira Fransham,
   as the [`unroll`] macro ([*modifications*][M_crunchy]).
+- <i id="current"></i>[current] by *PistonDevelopers*,
+  as the structs [`Current`] and [`CurrentGuard`] ([*modifications*][M_current]).
 - <i id="encode"></i>[encode] by Altair Bueno,
   as the [`data::codec::encode`] module ([*modifications*][M_encode]).
 - <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
@@ -105,6 +107,10 @@ See the linked modifications for detailed changes.
 [crunchy]: https://crates.io/crates/crunchy/0.2.3
   [M_crunchy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/crunchy.md
   [`unroll`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
+[current]: https://crates.io/crates/current/0.1.2
+  [M_current]: https://github.com/andamira/devela/blob/main/src/_info/vendored/current.md
+  [`Current`]: https://docs.rs/devela/latest/devela/sys/mem/struct.Current.html
+  [`CurrentGuard`]: https://docs.rs/devela/latest/devela/sys/mem/struct.CurrentGuard.html
 [encode]: https://crates.io/crates/encode/0.1.2
   [M_encode]: https://github.com/andamira/devela/blob/main/src/_info/vendored/encode.md
   [`data::codec::encode`]: https://docs.rs/devela/latest/devela/data/codec/encode

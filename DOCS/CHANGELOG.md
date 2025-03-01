@@ -38,6 +38,7 @@
     - env::app: `AppApple`, `AppConfig`, `AppWindows`, `AppUnix`, `AppXdg`,
     - io: `IoEmpty`, `IoRepeat`.
     - log: `LogConfig`.
+    - mem: `Current`, `CurrentGuard`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.

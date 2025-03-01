@@ -24,6 +24,7 @@ crate::doc_! { vendor_mod: "tailcall-chunk", tailcall_chunk }
 crate::doc_! { vendor_mod: "tupl", tupl }
 // MIT
 crate::doc_! { vendor_mod: "crunchy", crunchy }
+crate::doc_! { vendor_mod: "current", current }
 crate::doc_! { vendor_mod: "encode", encode }
 crate::doc_! { vendor_mod: "icy_sixel", icy_sixel }
 crate::doc_! { vendor_mod: "object-id", object_id }

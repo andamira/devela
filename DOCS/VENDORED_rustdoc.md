@@ -36,6 +36,9 @@
   [`cfor`]: crate::code::util::cfor
   [M_crunchy]: crate::_info::vendored::crunchy
   [`unroll`]: crate::code::util::unroll
+  [M_current]: crate::_info::vendored::current
+  [`Current`]: crate::sys::mem::Current
+  [`CurrentGuard`]: crate::sys::mem::CurrentGuard
   [M_encode]: crate::_info::vendored::encode
   [`data::codec::encode`]: crate::data::codec::encode
   [M_icy_sixel]: crate::_info::vendored::icy_sixel
