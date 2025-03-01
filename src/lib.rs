@@ -97,6 +97,7 @@
         let_chains,
         macro_metavar_expr,
         naked_functions,
+        slice_take,
         unsafe_cell_from_mut,
     )
 )]

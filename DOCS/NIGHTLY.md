@@ -70,9 +70,10 @@ See also
 - 1.??: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
+- 1.??: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
-# … should be stable even later in the future
+# … may be stable even later
 
 - 1.?? `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
         = `nightly_allocator`
@@ -83,6 +84,8 @@ See also
 - 1.?? ` `[box_into_inner](https://github.com/rust-lang/rust/issues/80437)
 - 1.?? ` `[cfg(accessible(::path::to::thing))](https://github.com/rust-lang/rust/issues/64797)
 - 1.?? ` `[cfg(version(..))](https://github.com/rust-lang/rust/issues/64796)
+- 1.?? ` `[concat_bytes](https://github.com/rust-lang/rust/issues/87555)
+- 1.?? ` `[concat_idents](https://github.com/rust-lang/rust/issues/29599)
 - 1.?? ` `[const_async_blocks](https://github.com/rust-lang/rust/issues/85368)
 - 1.?? ` `[const_closures](https://github.com/rust-lang/rust/issues/106003)
 - 1.?? ` `[const_for](https://github.com/rust-lang/rust/issues/87575)
