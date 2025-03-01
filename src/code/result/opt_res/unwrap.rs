@@ -239,7 +239,7 @@ pub use unwrap;
 #[cfg(test)]
 mod tests {
     #[cfg(feature = "std")]
-    use crate::panic_catch;
+    use crate::Panic;
     use crate::{serr, sok, unwrap, OptRes};
 
     const OPTION_SOME: Option<bool> = Some(true);
@@ -261,8 +261,8 @@ mod tests {
     }
     #[test] #[cfg(feature = "std")] #[rustfmt::skip]
     fn test_unwrap_option_panic() {
-        assert![panic_catch(|| { assert![unwrap![some OPTION_NONE]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![some_expect OPTION_NONE, "ERR"]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![some OPTION_NONE]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![some_expect OPTION_NONE, "ERR"]] }).is_err()];
     }
 
     #[test]
@@ -279,11 +279,11 @@ mod tests {
     }
     #[test] #[cfg(feature = "std")] #[rustfmt::skip]
     fn test_unwrap_result_panic() {
-        assert![panic_catch(|| { assert![unwrap![ok RESULT_ERR]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![ok_expect RESULT_ERR, "ERR"]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![ok RESULT_ERR]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![ok_expect RESULT_ERR, "ERR"]] }).is_err()];
 
-        assert![panic_catch(|| { assert![unwrap![err RESULT_OK]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![err_expect RESULT_OK, "ERR"]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![err RESULT_OK]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![err_expect RESULT_OK, "ERR"]] }).is_err()];
     }
 
     #[test]
@@ -302,14 +302,14 @@ mod tests {
     }
     #[test] #[cfg(feature = "std")] #[rustfmt::skip]
     fn test_unwrap_optres_panic() {
-        assert![panic_catch(|| { assert![unwrap![sok OPTRES_ERR]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![sok OPTRES_NONE]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![sok_expect OPTRES_ERR, "ERR"]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![sok_expect OPTRES_NONE, "ERR"]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![sok OPTRES_ERR]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![sok OPTRES_NONE]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![sok_expect OPTRES_ERR, "ERR"]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![sok_expect OPTRES_NONE, "ERR"]] }).is_err()];
 
-        assert![panic_catch(|| { assert![unwrap![serr OPTRES_OK]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![serr OPTRES_NONE]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![serr_expect OPTRES_OK, "ERR"]] }).is_err()];
-        assert![panic_catch(|| { assert![unwrap![serr_expect OPTRES_NONE, "ERR"]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![serr OPTRES_OK]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![serr OPTRES_NONE]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![serr_expect OPTRES_OK, "ERR"]] }).is_err()];
+        assert![Panic::catch(|| { assert![unwrap![serr_expect OPTRES_NONE, "ERR"]] }).is_err()];
     }
 }

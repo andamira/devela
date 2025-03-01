@@ -42,7 +42,7 @@
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
-  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Log`.
+  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Log`, `Panic`.
 - new macros:
   - `define_static_map`.
   - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
@@ -83,6 +83,7 @@
 - remove standalone re-exported fns from `std::{fmt, iter}`.
 - remove standalone fns:
   - io: `io_*`.
+  - panic: `panic_*`.
   - text: `crate_root`, `crate_root_string`.
   - work: `future_block`, `future_pending`, `future_ready`.
 - remove private variant `IoErrorKind::Uncategorized`.
