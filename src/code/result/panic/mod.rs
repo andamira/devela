@@ -7,6 +7,7 @@
 //!
 //
 
+mod define; // define_panic_handler!
 mod namespace; // Panic
 mod reexports;
 
@@ -17,7 +18,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{namespace::*, reexports::*};
+        pub use super::{define::*, namespace::*, reexports::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
