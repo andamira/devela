@@ -43,6 +43,7 @@ macro_rules! js_reexport {
     ) => {
         $( #[link(wasm_import_module = $module)] )?
         unsafe extern "C" { $(
+            $(#[$fn_attrs])*
             $( #[link_name = $js_fn] )?
             $vis $(safe$($_s)?)? $(unsafe$($_u)?)?
             fn $fn($($param: $param_ty),*) $(-> $fn_return)?;

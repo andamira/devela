@@ -3,6 +3,7 @@
 //! Javascript interfacing.
 //
 
+mod namespace; // Js
 mod reexport; // js_reexport!
 
 crate::items! { // structural access: _mods, _all
@@ -10,7 +11,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::reexport::*;
+        pub use super::{namespace::*, reexport::*};
         // WIPZONE
     }
     pub(super) mod _all { #![allow(unused)]

@@ -42,7 +42,7 @@
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
-  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Log`, `Panic`.
+  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Log`, `Panic`.
 - new macros:
   - `define_panic_handler!`, `define_static_map!`.
   - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
