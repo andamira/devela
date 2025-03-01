@@ -1,34 +1,35 @@
-#!/usr/bin/env -S rust-script -c
+#!/usr/bin/env -S rust-script -c --debug
 //! ```cargo
 //! [dependencies]
 //! devela = { path = "../../../../devela", features = ["std"]}
 //! ```
 //!
-//! Defines the [`Current`] and [`CurrentGuard`]
+//! Defines the [`Current`] and [`CurrentGuard`] structs.
 //
 
 use ::devela::{
     any_type_name, define_static_map, transmute, Any, Deref, DerefMut, Hash, Hasher, HasherFx, Mem,
-    PhantomData, RefCell,
+    PhantomData, PtrNonNull, RefCell,
 };
 
-define_static_map![typeid KeyCurrentMap];
-
 // Stores the current pointers for concrete types.
+define_static_map![typeid KeyCurrentMap];
 thread_local! {
-    static CURRENT_PTR_MAP: RefCell<KeyCurrentMap<u64, usize, 64>>
-        = RefCell::new(KeyCurrentMap::new());
+    static CURRENT_PTR_MAP: RefCell<KeyCurrentMap<u64, PtrNonNull<u8>, 64>>
+        = RefCell::new(KeyCurrentMap::new_cloned(PtrNonNull::<u8>::dangling()));
 }
 
-/// A guard that temporarily sets a global current pointer for a given type.
+/// A guard that temporarily sets a global current pointer for `T`, restoring the old one on drop.
 ///
-/// When dropped, it restores the previous pointer (or removes it if none existed).
+/// When dropped, it restores the previous pointer or sets a placeholder if none existed."
 ///
 /// This is useful for tracking the current instance of a type within a thread.
 #[cfg_attr(doc, doc = ::devela::doc_!(vendor: "current"))]
 pub struct CurrentGuard<'a, T: Any> {
-    _val: &'a mut T,
-    old_ptr: Option<usize>,
+    /// The active instance of `T` for the duration of this guard.
+    _current: &'a mut T,
+    /// The previous pointer, restored when this guard is dropped.
+    prev_ptr: Option<PtrNonNull<T>>,
 }
 impl<T: Any> CurrentGuard<'_, T> {
     /// Creates a new *current guard* for the given value.
@@ -47,35 +48,27 @@ impl<T: Any> CurrentGuard<'_, T> {
     /// let mut my_value = MyType::new();
     /// let guard = CurrentGuard::new(&mut my_value);
     /// ```
-    pub fn new(val: &mut T) -> CurrentGuard<T> {
-        let ptr = val as *mut T as usize;
-        let old_ptr = CURRENT_PTR_MAP.with(|current| {
+    pub fn new(current: &mut T) -> CurrentGuard<T> {
+        let ptr = PtrNonNull::from(&mut *current).cast::<u8>();
+        let prev_ptr = CURRENT_PTR_MAP.with(|current| {
             let mut map = current.borrow_mut();
             if let Some(entry) = map.get_mut_type::<T>() {
-                Some(Mem::replace(entry, ptr))
+                Some(Mem::replace(entry, ptr).cast::<T>())
             } else {
-                map.insert_type::<T>(ptr).ok();
+                map.insert_type::<T>(ptr.cast()).ok();
                 None
             }
         });
-        CurrentGuard { old_ptr, _val: val }
+        CurrentGuard { prev_ptr, _current: current }
     }
 }
 impl<T: Any> Drop for CurrentGuard<'_, T> {
     fn drop(&mut self) {
         CURRENT_PTR_MAP.with(|current| {
             let mut map = current.borrow_mut();
-            match self.old_ptr {
-                None => {
-                    map.remove_type::<T>();
-                }
-                Some(old_ptr) => {
-                    if let Some(entry) = map.get_mut_type::<T>() {
-                        *entry = old_ptr;
-                    } else {
-                        map.insert_type::<T>(old_ptr).ok();
-                    }
-                }
+            match self.prev_ptr {
+                None => map.insert_type::<T>(PtrNonNull::<u8>::dangling().cast()).ok(),
+                Some(prev_ptr) => map.insert_type::<T>(prev_ptr.cast()).ok(),
             }
         });
     }
@@ -90,8 +83,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 /// - Provide safe, structured access to a global instance of `T`.
 /// - Prevent direct global mutable access in safe code.
 ///
-/// This is not a normal smart pointer, as it does not own the value.
-/// Instead, it interacts with thread-local state.
+/// Not a smart pointer; instead, it acts as a reference handle for thread-local state.
 #[cfg_attr(doc, doc = ::devela::doc_!(vendor: "current"))]
 pub struct Current<T>(PhantomData<T>);
 
@@ -127,13 +119,9 @@ impl<T: Any> Current<T> {
     /// ```
     #[rustfmt::skip]
     pub unsafe fn current(&mut self) -> Option<&mut T> {
-        let ptr: Option<usize> = CURRENT_PTR_MAP.with(|current| current.borrow().get_type::<T>());
-        let ptr = match ptr {
-            None => { return None; }
-            Some(x) => x,
-        };
-        // SAFETY: Caller must ensure `T` is still valid.
-        Some(unsafe { &mut *(ptr as *mut T) })
+        let ptr: PtrNonNull<u8> = CURRENT_PTR_MAP.with(|current| current.borrow().get_type::<T>())?;
+        // SAFETY: The pointer is non-null but may not be valid; ensure `CurrentGuard<T>` is active.
+        Some(unsafe { &mut *ptr.cast::<T>().as_ptr() })
     }
 
     /// Retrieves an exclusive reference to the current instance of `T`, or panics.
@@ -151,7 +139,7 @@ impl<T: Any> Current<T> {
     /// let current = unsafe { Current::<MyType>::new().current_unwrap() };
     /// ```
     pub unsafe fn current_unwrap(&mut self) -> &mut T {
-        // SAFETY: Only safe if a current instance of `T` exists.
+        // SAFETY: Panics if no `CurrentGuard<T>` exists, preventing invalid access.
         match unsafe { self.current() } {
             None => panic!("No current `{}` is set", any_type_name::<T>()),
             Some(x) => x,
@@ -164,13 +152,10 @@ impl<T: Any> Deref for Current<T> {
     #[inline(always)] #[rustfmt::skip]
     fn deref<'a>(&'a self) -> &'a T {
         // SAFETY:
-        // - `Current` does not contain any actual value.
-        // - It is safe to transmute `&Current<T>` to `&mut Current<T>` because it only acts
-        //   as an access point for the global instance.
-        // WARNING:
-        // - This must only be called when `CurrentGuard<T>` is active.
-        // - If no instance is set, `current_unwrap()` will panic.
-        #[allow(mutable_transmutes, reason = "`Current` does not contain anything")]
+        // - `Current<T>` is only an access point, not an actual value.
+        // - Transmuting `&Current<T>` to `&mut Current<T>` is safe since it's never directly used.
+        // - Caller must ensure `CurrentGuard<T>` is active; otherwise, `current_unwrap` panics.
+        #[allow(mutable_transmutes, reason = "`Current` only acts as a reference handle")]
         unsafe { transmute::<&Current<T>, &'a mut Current<T>>(self).current_unwrap() }
     }
 }
@@ -178,13 +163,11 @@ impl<T: Any> DerefMut for Current<T> {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut T {
         // SAFETY:
-        // - The caller must ensure that a `CurrentGuard<T>` exists.
-        // - If no guard is active, `current_unwrap()` will panic.
+        // - Requires an active `CurrentGuard<T>`, ensuring a valid instance.
+        // - If no guard exists, `current_unwrap` panics instead of returning an invalid reference.
         unsafe { self.current_unwrap() }
     }
 }
-
-/* example script */
 
 #[allow(unused, reason = "example script")]
 fn main() {
@@ -192,29 +175,23 @@ fn main() {
         text: String,
     }
     impl State {
+        // prints the current text, and changes it to "world!"
         fn print() {
-            let ctx = unsafe { &*Current::<State>::new() };
+            let mut ctx = unsafe { Current::<State>::new() };
             println!("{}", ctx.text);
-            // E0716: temporary-value-dropped-while-borrowed
-            // unsafe { &mut *Current::<State>::new() }.text = "world!".to_string();
-            let ctx2 = unsafe { &mut *Current::<State>::new() };
-            ctx2.text = "world!".to_string();
+            ctx.text = "world!".to_string();
         }
+        // changes the text to "good bye" and calls print() two times.
         fn bar() {
             let mut bar = State { text: "good bye".to_string() };
             let guard = CurrentGuard::new(&mut bar);
-            State::print();
-            State::print();
-            drop(guard);
+            State::print(); // good bye
+            State::print(); // world!
         }
     }
     let mut ctx = State { text: "hello".to_string() };
-    {
-        let guard = CurrentGuard::new(&mut ctx);
-        State::print();
-        State::print();
-        State::bar();
-        drop(guard);
-    }
-    ctx.text = "hi!".to_string();
+    let guard = CurrentGuard::new(&mut ctx);
+    State::print(); // hello
+    State::print(); // world!
+    State::bar(); // good bye world!
 }
