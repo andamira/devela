@@ -117,6 +117,15 @@ macro_rules! unwrap {
     };
 
     (
+      // Unwraps the contained `Ok` value, or the `Err` value (must be the same type).
+      ok_err $value:expr) => {
+        match $value {
+            Ok(v) => v,
+            Err(v) => v,
+        }
+    };
+
+    (
       // Unwraps the contained `Err` value, or panics if it's `Ok`.
       err $value:expr ) => {
         match $value {

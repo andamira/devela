@@ -56,6 +56,7 @@
   - ui: `{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
   - `str!`: `ip_addr`.
+  - `unwrap!`: `ok_err`.
 - new methods:
   - `Char::{len_utf8, utf8_len, utf8_len_checked}`.
   - `Env::*`.
