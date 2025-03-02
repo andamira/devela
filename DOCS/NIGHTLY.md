@@ -52,7 +52,7 @@ See also
 - 1.??: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
 - 1.??: `·`[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
-- 1.??: `a`[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
+- 1.??: `a`[box_uninit_write](https://github.com/rust-lang/rust/pull/137850)
 - 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
@@ -71,6 +71,7 @@ See also
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
+        ` ` `split_off` (new name)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
 # … may be stable even later
@@ -104,6 +105,7 @@ See also
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
 - 1.?? ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
+- 1.?? ` `[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
 - 1.?? ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.?? `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
         = `nightly_simd`
