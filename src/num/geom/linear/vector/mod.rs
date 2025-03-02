@@ -1,4 +1,4 @@
-// devela::num::alg::linear::vector
+// devela::num::geom::linear::vector
 //
 //! Linear algebra vectors.
 //!

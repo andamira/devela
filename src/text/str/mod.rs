@@ -28,6 +28,7 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::reexports::*;
+        pub use super::macros::*;
 
         #[cfg(feature = "str")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "str")))]
@@ -40,9 +41,6 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::nonul::*;
         #[cfg(_str_u··)]
         pub use super::string_u::*;
-
-        #[doc(inline)]
-        pub use super::macros::{str, strjoin};
     }
     pub(super) mod _all {
         #[doc(inline)]

@@ -12,7 +12,7 @@ crate::items! { // structural access: _mods, _all
     mod _mods {
         pub use super::bool::*;
         // WIPZONE
-        // pub use super::binary::*;
+        // pub use super::bops::*;
         // pub use super::choice::*;
         // pub use super::items::*;
         // pub use super::linear::*;
@@ -24,7 +24,7 @@ crate::items! { // structural access: _mods, _all
     }
 }
 // WIPZONE
-// mod binary;
+// mod bops;
 // mod choice;
 // mod items;
 // mod linear;
