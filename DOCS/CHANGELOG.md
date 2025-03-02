@@ -55,6 +55,7 @@
   - sys: `{log, net, fs}`.
   - ui: `{back::{self, crossterm, miniquad}, front}`.
 - new macro arms:
+  - `format_buf!`: `?`.
   - `str!`: `ip_addr`.
   - `unwrap!`: `ok_err`.
 - new methods:

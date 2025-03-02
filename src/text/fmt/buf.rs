@@ -17,9 +17,13 @@ crate::_use! {compat::from_utf8}
 /// # Example
 /// ```
 /// # use devela::format_buf;
-/// let mut buf = [0u8; 64];
-/// let s = format_buf![&mut buf, "Test: {} {}", "foo", 42];
-/// assert_eq!(Ok("Test: foo 42"), s);
+/// let mut buf = [0u8; 12];
+/// let s = format_buf![&mut buf, "Test: {} {}", "foo", 4];
+/// assert_eq!(Ok("Test: foo 4"), s);
+///
+/// // use the `?` arm to unwrap the result even if it's truncated
+/// let s = format_buf![? &mut buf, "Test: {} {}", "foo", 400_000];
+/// assert_eq!("Test: foo 40", s);
 /// ```
 /// # Features
 /// Makes use of the `unsafe_str` feature if enabled.
@@ -28,6 +32,9 @@ crate::_use! {compat::from_utf8}
 macro_rules! format_buf {
     ($buf:expr, $($arg:tt)*) => {
         $crate::Fmt::format_buf($buf, $crate::format_args![$($arg)*])
+    };
+    (? $buf:expr, $($arg:tt)*) => {
+        $crate::unwrap![ok_err $crate::Fmt::format_buf($buf, $crate::format_args![$($arg)*])]
     };
 }
 #[doc(inline)]
