@@ -88,6 +88,7 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 /// assert_eq!(map.get(1), Some(100));
 /// # }
 /// ```
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! define_static_map {
     // --------------------------------------------------------------------------------------------
@@ -788,6 +789,7 @@ macro_rules! define_static_map {
             hasher.finish()
         }
 
+        #[allow(unused)]
         /// Convenience methods for when the keys are `TypeId`s.
         impl<V, const N: usize> $NAME<u64, V, N> {
             /// Returns the hash of `T`'s `TypeId`.
@@ -817,6 +819,7 @@ macro_rules! define_static_map {
                 self.insert(key, value)
             }
         }
+        #[allow(unused)]
         impl<V: Copy, const N: usize> $NAME<u64, V, N> {
             /// Retrieves some value associated with the given type `T`.
             ///
@@ -920,4 +923,5 @@ macro_rules! define_static_map {
         }
     };
 }
+#[doc(inline)]
 pub use define_static_map;
