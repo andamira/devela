@@ -27,6 +27,10 @@ crate::items! { // structural access: _mods, _all
         pub use super::reexport::*;
 
         // WIPZONE
+        // #[cfg(feature = "alloc")]
+        // pub use super::bson::*;
+        // #[cfg(feature = "std")]
+        // pub use super::json::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -34,3 +38,7 @@ crate::items! { // structural access: _mods, _all
     }
 }
 // WIPZONE
+// #[cfg(feature = "alloc")]
+// mod bson;
+// #[cfg(feature = "std")]
+// mod json;

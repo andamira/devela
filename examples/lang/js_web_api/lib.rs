@@ -6,16 +6,26 @@
 #![no_std]
 devela::define_panic_handler! { web_api }
 
-use devela::{format_buf, Js, JsEvent};
+use devela::{format_buf, unwrap, Js, JsEvent};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
-    Js::set_canvas("example_canvas_1");
+    Js::set_canvas("#example_canvas_1");
 
-    let mut buf = [0u8; 32];
-    Js::console_log(format_buf![&mut buf, "time: {}ms", Js::get_time()].unwrap());
+    let mut buf = [0u8; 256];
 
-    Js::fill_style(255, 0, 0);
+    /* console */
+
+    Js::console_log(format_buf![&mut buf, "example log at: {}ms", Js::get_time()].unwrap());
+    Js::console_info("example info");
+    Js::console_debug("example debug");
+    Js::console_warn("example warn");
+    Js::console_error("example error");
+    Js::console_trace();
+
+    /* draw */
+
+    Js::fill_style(255, 0, 0); // Red
     Js::fill_rect(10.0, 10.0, 100.0, 100.0);
 
     Js::fill_style(0, 255, 0); // Green
@@ -24,15 +34,10 @@ pub extern "C" fn main() {
     Js::stroke_style(0, 0, 255); // Blue
     Js::draw_line(200.0, 20.0, 300.0, 100.0);
 
-    Js::console_log("example log");
-    Js::console_info("example info");
-    Js::console_debug("example debug");
-    Js::console_error("example error");
-    Js::console_trace();
-    Js::console_log(format_buf![&mut buf, "time: {}", Js::get_time()].unwrap());
+    /* text */
 
-    let mut buf = [0u8; 32];
-    Js::console_warn(format_buf![&mut buf, "warn nº {}", 5].unwrap());
+    let metrics = Js::measure_text_full("Hello, world!");
+    Js::console_log(&format_buf![&mut buf, "{metrics:?}"].unwrap());
 
     // Add an event listener to the canvas for clicks
     Js::event_add_listener("#example_canvas_1", JsEvent::Click, canvas_click);

@@ -27,7 +27,7 @@
     - key: `StaticMapEntry`.
     - table: `DataValue*`, `DataType*`, `DataRaw*`.
     - xipher: `Crockford`, `Rfc4648`, `Rfc4648Hex`.
-  - lang: `g_*` `JsEvent`, `JsPermission`, `JsPermissionState`.
+  - lang: `g_*` `JsEvent`, `JsPermission`, `JsPermissionState`, `JsTextMetrics`, `JsTextMetricsFull`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - num:
     - geom:

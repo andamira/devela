@@ -9,3 +9,4 @@ path = "lib.rs"
 
 [dependencies]
 devela = { path = "../../..", features = ["js", "unsafe_ffi"] }
+# devela = { git = "https://github.com/andamira/devela", features = ["js", "unsafe_ffi"] }

@@ -19,7 +19,10 @@
 //     - time
 //   - advanced & experimental
 
-use devela::{js_reexport, transmute, Js, JsEvent, JsPermission, JsPermissionState};
+use devela::{
+    js_reexport, transmute, Js, JsEvent, JsPermission, JsPermissionState, JsTextMetrics,
+    JsTextMetricsFull,
+};
 
 // helper for Web API doc links
 #[rustfmt::skip]
@@ -243,7 +246,6 @@ impl Js {
         unsafe { permissions_query(permission.as_str().as_ptr(), permission.as_str().len()) }
         .into()
     }
-
 }
 js_reexport! {
     [ module: "api_permissions" ]
@@ -258,54 +260,85 @@ js_reexport! {
 /// - <https://html.spec.whatwg.org/multipage/canvas.html>
 #[rustfmt::skip]
 impl Js {
-    /* custom */
-    /// Sets the active canvas by ID.
-    pub fn set_canvas(id: &str) { unsafe { set_canvas(id.as_ptr(), id.len()); } }
+    /* misc. */
+    /// Sets the active canvas using a CSS `selector`.
+    pub fn set_canvas(selector: &str) { unsafe { set_canvas(selector.as_ptr(), selector.len()); } }
 
-    /* colors and styles */
-
+    /* color settings */
     #[doc = web_api!(canvas "fillStyle")]
     /// Sets the color or style for filling shapes.
     pub fn fill_style(r: u8, g: u8, b: u8) { fill_style(r, g, b); }
-
     #[doc = web_api!(canvas "strokeStyle")]
     /// Sets the color or style for lines.
     pub fn stroke_style(r: u8, g: u8, b: u8) { stroke_style(r, g, b); }
 
-    /* draw */
-
+    /* drawing rectangles */
     #[doc = web_api!(canvas "fillRect")]
     /// Draws a filled rectangle.
     pub fn fill_rect(x: f64, y: f64, w: f64, h: f64) { fill_rect(x, y, w, h); }
+    #[doc = web_api!(canvas "strokeRect")]
+    /// Draws a rectangular outline.
+    pub fn stroke_rect(x: f64, y: f64, w: f64, h: f64) { stroke_rect(x, y, w, h); }
+    #[doc = web_api!(canvas "clearRect")]
+    /// Clears the specified rectangular area, making it fully transparent.
+    pub fn clear_rect(x: f64, y: f64, w: f64, h: f64) { clear_rect(x, y, w, h); }
 
-    ///
+    /* drawing shapes */
+    /// Draws a line.
     pub fn draw_line(x1: f64, y1: f64, x2: f64, y2: f64) { draw_line(x1, y1, x2, y2); }
-
-    ///
+    /// Draws a circle.
     pub fn draw_circle(x: f64, y: f64, radius: f64) { draw_circle(x, y, radius); }
 
-    /* text */
-
+    /* drawing text */
     #[doc = web_api!(canvas "fillText")]
-    /// Draws a filled text string at the specified coordinates
+    /// Draws filled text at the specified position.
     pub fn fill_text(text: &str, x: f64, y: f64) {
         unsafe { fill_text(text.as_ptr(), text.len(), x, y); }
+    }
+    #[doc = web_api!(canvas "strokeText")]
+    /// Draws text outline at the specified position.
+    pub fn stroke_text(text: &str, x: f64, y: f64) {
+        unsafe { stroke_text(text.as_ptr(), text.len(), x, y); }
+    }
+    #[doc = web_api!(canvas "measureText")]
+    /// Measures the essential properties of text.
+    pub fn measure_text(text: &str) -> JsTextMetrics {
+        let mut m = JsTextMetrics::default();
+        unsafe { measure_text(text.as_ptr(), text.len(), &mut m as *mut JsTextMetrics); }
+        m
+    }
+    #[doc = web_api!(canvas "measureTextFull")]
+    /// Measures all available text metrics.
+    pub fn measure_text_full(text: &str) -> JsTextMetricsFull {
+        let mut m = JsTextMetricsFull::default();
+        unsafe { measure_text_full(text.as_ptr(), text.len(), &mut m as *mut JsTextMetricsFull); }
+        m
     }
 }
 js_reexport! {
     [ module: "api_canvas" ]
-    /* custom */
+    /* misc. */
     unsafe fn set_canvas(str_ptr: *const u8, str_len: usize);
-
-    /* draw */
-    safe fn "fillRect" fill_rect(x: f64, y: f64, w: f64, h: f64);
+    /* color settings */
     safe fn "fillStyle" fill_style(r: u8, g: u8, b: u8);
     safe fn "strokeStyle" stroke_style(r: u8, g: u8, b: u8);
+    /* drawing rectangles */
+    safe fn "fillRect" fill_rect(x: f64, y: f64, w: f64, h: f64);
+    safe fn "stroke_Rect" stroke_rect(x: f64, y: f64, w: f64, h: f64);
+    safe fn "clearRect" clear_rect(x: f64, y: f64, w: f64, h: f64);
+    /* drawing paths */
+    //
+    /* drawing shapes */
     safe fn draw_line(x1: f64, y1: f64, x2: f64, y2: f64);
     safe fn draw_circle(x: f64, y: f64, radius: f64);
 
-    /* text */
+    /* drawing text */
     unsafe fn "fillText" fill_text(str_ptr: *const u8, str_len: usize, x: f64, y: f64);
+    unsafe fn "strokeText" stroke_text(str_ptr: *const u8, str_len: usize, x: f64, y: f64);
+    unsafe fn "measureText" measure_text(text_ptr: *const u8, text_len: usize,
+        out_metrics: *mut JsTextMetrics);
+    unsafe fn "measureTextFull" measure_text_full(text_ptr: *const u8, text_len: usize,
+        out_metrics: *mut JsTextMetricsFull);
 }
 
 /// # Web API time
