@@ -3,7 +3,7 @@
 //! Logic related types and functionality.
 //
 
-mod bool;
+mod bool; // ConstBool, False, True
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]

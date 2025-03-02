@@ -42,7 +42,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::string_u::*;
 
         #[doc(inline)]
-        pub use super::macros::*;
+        pub use super::macros::{str, strjoin};
     }
     pub(super) mod _all {
         #[doc(inline)]

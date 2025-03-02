@@ -24,10 +24,10 @@ pub trait ConstBool {
     const VALUE: Self::Value;
 }
 sf! {
-    impl ConstBool for [(); 0] { type Value = False; const VALUE: Self::Value = False; }
-    impl ConstBool for [(); 1] { type Value = True; const VALUE: Self::Value = True; }
     impl ConstBool for False { type Value = False; const VALUE: Self::Value = False; }
+    impl ConstBool for [(); 0] { type Value = False; const VALUE: Self::Value = False; }
     impl ConstBool for True { type Value = True; const VALUE: Self::Value = True; }
+    impl ConstBool for [(); 1] { type Value = True; const VALUE: Self::Value = True; }
 }
 
 /// Converts a *const* `bool` expression to a type-level boolean.
@@ -55,13 +55,17 @@ macro_rules! const_bool {
 #[doc(inline)]
 pub use const_bool;
 
-/// A type-level logical true.
+/// A type-level logical *true*.
+///
+/// The second state in binary and ternary logic.
 ///
 /// See also the [`ConstBool`] trait, the [`const_bool`] macro, and the [`False`] type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct True;
 
-/// A type-level logical false.
+/// A type-level logical *false*.
+///
+/// The first state in binary and ternary logic.
 ///
 /// See also the [`ConstBool`] trait, the [`const_bool`] macro, and the [`True`] type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
