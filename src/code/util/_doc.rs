@@ -237,6 +237,8 @@ mod tags {
         EMOJI_DATA_STRUCTURE = "📦"; // 📦,🧩,🗂️,
         EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
         // EMOJI_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
+        EMOJI_EXPERIMENTAL = "🧪";
+        EMOJI_NON_STANDARD = "⚠️";
         EMOJI_ITERATOR = "🔄"; // 🔄,
         EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
         EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
@@ -260,6 +262,13 @@ mod tags {
             crate::EMOJI_PRIMITIVE!(), "</span>");
         TAG_RESULT = concat!("<span class='stab portability' title='Result type'>",
             crate::EMOJI_RESULT!() ,"</span>");
+
+        TAG_EXPERIMENTAL = concat!(
+            "<span class='stab portability' title='Experimental functionality'>",
+            crate::EMOJI_EXPERIMENTAL!(), "</span>");
+        TAG_NON_STANDARD = concat!(
+            "<span class='stab portability' title='Non-standard. Expect poor cross-compatibility'>",
+            crate::EMOJI_NON_STANDARD!(), "</span>");
 
         TAG_MAYBE_STD = "<span class='stab portability'
     title='re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>";

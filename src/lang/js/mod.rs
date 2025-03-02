@@ -3,7 +3,7 @@
 //! Javascript interfacing.
 //
 
-mod namespace; // Js
+mod definitions; // Js, JsPermission*
 
 #[cfg(feature = "unsafe_ffi")]
 crate::items! {
@@ -21,7 +21,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::namespace::*;
+        pub use super::definitions::*;
 
         #[cfg(feature = "unsafe_ffi")]
         pub use super::reexport::*;

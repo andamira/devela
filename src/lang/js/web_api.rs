@@ -5,30 +5,190 @@
 // In sync with `./web_api.js`.
 //
 // TOC
-// - canvas
-// - console
-// - time
+// - core APis
+//   - console
+//   - history
+//   - permissions
+//
+// - extended APis
+//   - media & graphics
+//     - canvas
+//   - system & hardware
+//   - performance & optimization
+//     - time
+//   - advanced & experimental
 
-use devela::{js_reexport, Js};
+use devela::{js_reexport, Js, JsPermission, JsPermissionState};
+
+// helper for Web API doc links
+#[rustfmt::skip]
+macro_rules! web_api {
+    ($path_with_end_bar:literal, $method:literal) => { concat!["([", $method,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/",
+        $path_with_end_bar, $method, "))" ]
+    };
+    (canvas $method:literal) => { concat!["([", $method,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/",
+        $method, "))" ]
+    };
+    (console $method:literal) => { concat!["([", $method,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
+        $method, "_static))" ] };
+}
+
+/* core APIs */
+
+/// # Web API console
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/console>
+#[rustfmt::skip]
+impl Js {
+    #[doc = web_api!(console "debug")]
+    /// Outputs a message to the console with the debug log level.
+    pub fn console_debug(text: &str) { unsafe { console_debug(text.as_ptr(), text.len()); } }
+    #[doc = web_api!(console "error")]
+    /// Outputs a message to the console with the error log level.
+    pub fn console_error(text: &str) { unsafe { console_error(text.as_ptr(), text.len()); } }
+    #[doc = web_api!(console "info")]
+    /// Outputs a message to the console with the info log level.
+    pub fn console_info(text: &str) { unsafe { console_info(text.as_ptr(), text.len()); } }
+    #[doc = web_api!(console "log")]
+    /// Outputs a message to the console.
+    pub fn console_log(text: &str) { unsafe { console_log(text.as_ptr(), text.len()); } }
+    #[doc = web_api!(console "trace")]
+    /// Outputs a stack trace.
+    pub fn console_trace() { unsafe { console_trace(); } }
+    #[doc = web_api!(console "warn")]
+    /// Outputs a message to the console with the warning log level.
+    pub fn console_warn(text: &str) { unsafe { console_warn(text.as_ptr(), text.len()); } }
+    //
+    #[doc = web_api!(console "group")]
+    /// Creates a new inline group, indenting all following output by another level.
+    pub fn console_group(text: &str) { unsafe { console_group(text.as_ptr(), text.len()); } }
+    #[doc = web_api!(console "groupEnd")]
+    /// Exits the current inline group.
+    pub fn console_group_end() { unsafe { console_group_end(); } }
+}
+js_reexport! {
+    [ module: "api_console" ]
+    unsafe fn "console_debug" console_debug(str_ptr: *const u8, str_len: usize);
+    unsafe fn "console_error" console_error(str_ptr: *const u8, str_len: usize);
+    unsafe fn "console_info" console_info(str_ptr: *const u8, str_len: usize);
+    unsafe fn "console_log" console_log(str_ptr: *const u8, str_len: usize);
+    unsafe fn "console_trace" console_trace();
+    unsafe fn "console_warn" console_warn(str_ptr: *const u8, str_len: usize);
+    //
+    unsafe fn "console_group" console_group(str_ptr: *const u8, str_len: usize);
+    unsafe fn "console_groupEnd" console_group_end();
+}
+
+/// # Web API history & navigation
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/History>
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Location>
+#[rustfmt::skip]
+impl Js {
+    #[doc = web_api!("History", "back")]
+    /// Moves the browser back one step in the session history.
+    pub fn history_back() { unsafe { history_back(); } }
+
+    #[doc = web_api!("History", "forward")]
+    /// Moves the browser forward one step in the session history.
+    pub fn history_forward() { unsafe { history_forward(); } }
+
+    #[doc = web_api!("History", "go")]
+    /// Moves the browser to a specific point in the session history.
+    /// Use negative values to go back, positive to go forward.
+    pub fn history_go(delta: i32) { unsafe { history_go(delta); } }
+
+    #[doc = web_api!("History", "pushState")]
+    /// Adds an entry to the session history stack.
+    pub fn history_push_state(state: &str, title: &str, url: &str) {
+        unsafe { history_push_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
+            url.as_ptr(), url.len()); }
+    }
+
+    #[doc = web_api!("History", "replaceState")]
+    /// Modifies the current history entry without creating a new one.
+    pub fn history_replace_state(state: &str, title: &str, url: &str) {
+        unsafe { history_replace_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
+            url.as_ptr(), url.len()); }
+    }
+
+    #[doc = web_api!("Location", "reload")]
+    /// Reloads the current document.
+    pub fn location_reload() { unsafe { location_reload(); } }
+
+    #[doc = web_api!("Location", "assign")]
+    /// Loads the specified URL.
+    pub fn location_assign(url: &str) { unsafe { location_assign(url.as_ptr(), url.len()); } }
+
+    #[doc = web_api!("Location", "replace")]
+    /// Replaces the current document with the specified URL without creating a new entry in the history.
+    pub fn location_replace(url: &str) { unsafe { location_replace(url.as_ptr(), url.len()); } }
+}
+js_reexport! {
+    [ module: "api_history_navigation" ]
+    unsafe fn "history_back" history_back();
+    unsafe fn "history_forward" history_forward();
+    unsafe fn "history_go" history_go(delta: i32);
+    unsafe fn "history_pushState" history_push_state(state_ptr: *const u8, state_len: usize,
+        title_ptr: *const u8, title_len: usize, url_ptr: *const u8, url_len: usize);
+    unsafe fn "history_replaceState" history_replace_state(state_ptr: *const u8, state_len: usize,
+        title_ptr: *const u8, title_len: usize, url_ptr: *const u8, url_len: usize);
+    //
+    unsafe fn "location_reload" location_reload();
+    unsafe fn "location_assign" location_assign(url_ptr: *const u8, url_len: usize);
+    unsafe fn "location_replace" location_replace(url_ptr: *const u8, url_len: usize);
+}
+
+/// # Web API permissions
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
+#[rustfmt::skip]
+impl Js {
+    #[doc = web_api!("Permissions", "query")]
+    /// Queries the status of a given permission.
+    ///
+    /// Returns `Granted`, `Denied`, `Prompt`, or `Unknown` if unsupported.
+    pub fn permissions_query(permission: JsPermission) -> JsPermissionState {
+        unsafe { permissions_query(permission.as_str().as_ptr(), permission.as_str().len()) }
+        .into()
+    }
+
+}
+js_reexport! {
+    [ module: "api_permissions" ]
+    unsafe fn "permissions_query" permissions_query(name_ptr: *const u8, name_len: usize) -> i32;
+}
+
+/* extended APIs */
 
 /// # Web API canvas
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D>
+/// - <https://html.spec.whatwg.org/multipage/canvas.html>
 #[rustfmt::skip]
 impl Js {
     /* custom */
     /// Sets the active canvas by ID.
     pub fn set_canvas(id: &str) { unsafe { set_canvas(id.as_ptr(), id.len()); } }
 
+    /* colors and styles */
+
+    #[doc = web_api!(canvas "fillStyle")]
+    /// Sets the color or style for filling shapes.
+    pub fn fill_style(r: u8, g: u8, b: u8) { fill_style(r, g, b); }
+
+    #[doc = web_api!(canvas "strokeStyle")]
+    /// Sets the color or style for lines.
+    pub fn stroke_style(r: u8, g: u8, b: u8) { stroke_style(r, g, b); }
+
     /* draw */
 
+    #[doc = web_api!(canvas "fillRect")]
     /// Draws a filled rectangle.
-    ///
-    /// See: [fillRect].
-    ///
-    /// [fillRect]: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect
     pub fn fill_rect(x: f64, y: f64, w: f64, h: f64) { fill_rect(x, y, w, h); }
-
-    ///
-    pub fn set_color(r: u8, g: u8, b: u8) { set_color(r, g, b); }
 
     ///
     pub fn draw_line(x1: f64, y1: f64, x2: f64, y2: f64) { draw_line(x1, y1, x2, y2); }
@@ -38,12 +198,8 @@ impl Js {
 
     /* text */
 
+    #[doc = web_api!(canvas "fillText")]
     /// Draws a filled text string at the specified coordinates
-    ///
-    /// See [fillText].
-    ///
-    /// [fillText]: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText
-    // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_text
     pub fn fill_text(text: &str, x: f64, y: f64) {
         unsafe { fill_text(text.as_ptr(), text.len(), x, y); }
     }
@@ -54,42 +210,14 @@ js_reexport! {
     unsafe fn set_canvas(str_ptr: *const u8, str_len: usize);
 
     /* draw */
-    safe fn fill_rect(x: f64, y: f64, w: f64, h: f64);
-    safe fn set_color(r: u8, g: u8, b: u8);
+    safe fn "fillRect" fill_rect(x: f64, y: f64, w: f64, h: f64);
+    safe fn "fillStyle" fill_style(r: u8, g: u8, b: u8);
+    safe fn "strokeStyle" stroke_style(r: u8, g: u8, b: u8);
     safe fn draw_line(x1: f64, y1: f64, x2: f64, y2: f64);
     safe fn draw_circle(x: f64, y: f64, radius: f64);
-    /* text */
-    unsafe fn fill_text(str_ptr: *const u8, str_len: usize, x: f64, y: f64);
-}
 
-/// # Web API console
-#[rustfmt::skip]
-impl Js {
-    ///
-    pub fn console_debug(text: &str) { unsafe { console_debug(text.as_ptr(), text.len()); } }
-    ///
-    pub fn console_info(text: &str) { unsafe { console_info(text.as_ptr(), text.len()); } }
-    ///
-    pub fn console_log(text: &str) { unsafe { console_log(text.as_ptr(), text.len()); } }
-    ///
-    pub fn console_warn(text: &str) { unsafe { console_warn(text.as_ptr(), text.len()); } }
-    ///
-    pub fn console_error(text: &str) { unsafe { console_error(text.as_ptr(), text.len()); } }
-    ///
-    pub fn console_group(text: &str) { unsafe { console_group(text.as_ptr(), text.len()); } }
-    ///
-    pub fn console_group_end() { unsafe { console_group_end(); } }
-}
-// https://developer.mozilla.org/en-US/docs/Web/API/console
-js_reexport! {
-    [ module: "api_console" ]
-    unsafe fn "console_debug" console_debug(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_info" console_info(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_log" console_log(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_warn" console_warn(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_error" console_error(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_group" console_group(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_group_end" console_group_end();
+    /* text */
+    unsafe fn "fillText" fill_text(str_ptr: *const u8, str_len: usize, x: f64, y: f64);
 }
 
 /// # Web API time

@@ -36,18 +36,64 @@ export async function initWasm(wasmPath, imports = {}) {
 	/* bindings */
 
 	const wasmBindings = {
+
+		/* core APIs */
+
+		api_console: {
+			// Console API
+			console_debug: (ptr, len) => console.debug(str_decode(ptr, len)),
+			console_error: (ptr, len) => console.error(str_decode(ptr, len)),
+			console_info: (ptr, len) => console.info(str_decode(ptr, len)),
+			console_log: (ptr, len) => console.log(str_decode(ptr, len)),
+			console_trace: () => console.trace(),
+			console_warn: (ptr, len) => console.warn(str_decode(ptr, len)),
+			//
+			console_group: (ptr, len) => console.group(str_decode(ptr, len)),
+			console_groupEnd: () => console.groupEnd(),
+		},
+		api_history_navigation: {
+			// History API
+			history_back: () => history.back(),
+			history_forward: () => history.forward(),
+			history_go: (delta) => history.go(delta),
+			history_pushState: (statePtr, stateLen, titlePtr, titleLen, urlPtr, urlLen) =>
+				history.pushState(str_decode(statePtr, stateLen),
+					str_decode(titlePtr, titleLen), str_decode(urlPtr, urlLen)),
+			history_replaceState: (statePtr, stateLen, titlePtr, titleLen, urlPtr, urlLen) =>
+				history.replaceState(str_decode(statePtr, stateLen),
+					str_decode(titlePtr, titleLen), str_decode(urlPtr, urlLen)),
+			// Location API
+			location_reload: () => location.reload(),
+			location_assign: (urlPtr, urlLen) => location.assign(str_decode(urlPtr, urlLen)),
+			location_replace: (urlPtr, urlLen) => location.replace(str_decode(urlPtr, urlLen)),
+		},
+		api_permissions: {
+			permissions_query: (namePtr, nameLen) => {
+				return navigator.permissions.query({ name: str_decode(namePtr, nameLen) })
+					.then(result => {
+						switch (result.state) {
+							case "granted": return 1;  // JsPermissionState::Granted
+							case "denied": return -1;  // JsPermissionState::Denied
+							case "prompt": return 0;   // JsPermissionState::Prompt
+							default: return -2;        // JsPermissionState::Unknown
+						}
+					})
+					.catch(() => -3); // JsPermissionState::Error
+			},
+		},
+
+		/* extended APIs*/
+
 		api_canvas: {
 			/* custom */
 			set_canvas: (ptr, len) => { set_canvas(str_decode(ptr, len)); },
 
 			/* basic drawing */
-			fill_rect: (x, y, w, h) => ctx.fillRect(x, y, w, h),
+			fillRect: (x, y, w, h) => ctx.fillRect(x, y, w, h),
 
 			/* color Setting */
-			set_color: (r, g, b) => {
-				ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-				ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
-			},
+			fillStyle: (r, g, b) => ctx.fillStyle = `rgb(${r}, ${g}, ${b})`,
+			strokeStyle: (r, g, b) => ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`,
 
 			/* shapes */
 			draw_line: (x1, y1, x2, y2) => {
@@ -63,18 +109,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			},
 
 			/* text */
-			fill_text: (ptr, len, x, y) => {
-				ctx.fillText(str_decode(ptr, len), x, y);
-			},
-		},
-		api_console: {
-			console_debug: (ptr, len) => console.debug(str_decode(ptr, len)),
-			console_info: (ptr, len) => console.info(str_decode(ptr, len)),
-			console_log: (ptr, len) => console.log(str_decode(ptr, len)),
-			console_warn: (ptr, len) => console.warn(str_decode(ptr, len)),
-			console_error: (ptr, len) => console.error(str_decode(ptr, len)),
-			console_group: (ptr, len) => console.group(str_decode(ptr, len)),
-			console_group_end: () => console.groupEnd(),
+			fillText: (ptr, len, x, y) => ctx.fillText(str_decode(ptr, len), x, y),
 		},
 		api_timing: {
 			get_time: () => performance.now(),
