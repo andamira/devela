@@ -7,6 +7,7 @@
 // TOC
 // - core APis
 //   - console
+//   - events
 //   - history
 //   - permissions
 //
@@ -18,7 +19,7 @@
 //     - time
 //   - advanced & experimental
 
-use devela::{js_reexport, Js, JsPermission, JsPermissionState};
+use devela::{js_reexport, transmute, Js, JsEvent, JsPermission, JsPermissionState};
 
 // helper for Web API doc links
 #[rustfmt::skip]
@@ -80,6 +81,93 @@ js_reexport! {
     //
     unsafe fn "console_group" console_group(str_ptr: *const u8, str_len: usize);
     unsafe fn "console_groupEnd" console_group_end();
+}
+
+/// # Web API Events
+///
+/// Provides event handling for interactivity.
+/// Uses Rust function pointers to manage callbacks.
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Event>
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/EventListener>
+#[rustfmt::skip]
+impl Js {
+    #[doc = web_api!("Event", "addEventListener")]
+    /// Attaches a Rust function `event` listener from an `element`.
+    pub fn event_add_listener(element: &str, event: JsEvent, rust_fn: extern "C" fn()) {
+        unsafe {
+            event_add_listener(element.as_ptr(), element.len(),
+            event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
+        }
+    }
+    #[doc = web_api!("Event", "removeEventListener")]
+    /// Removes a a Rust function `event` listener from an `element`.
+    pub fn event_remove_listener(element: &str, event: JsEvent, rust_fn: extern "C" fn()) {
+        unsafe {
+            event_remove_listener(element.as_ptr(), element.len(),
+            event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
+        }
+    }
+    #[doc = web_api!("Event", "addEventListenerJs")]
+    /// Attaches a JavaScript function `event` linstener to an `element`.
+    pub fn event_add_listener_js(element: &str, event: JsEvent, js_fn_name: &str) {
+        unsafe {
+            event_add_listener_js(element.as_ptr(), element.len(),
+            event.as_str().as_ptr(), event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
+        }
+    }
+    #[doc = web_api!("Event", "removeEventListenerJs")]
+    /// Removes a JavaScript function `event` listener from an `element`.
+    pub fn event_remove_listener_js(element: &str, event: JsEvent, js_fn_name: &str) {
+        unsafe {
+            event_remove_listener_js(
+                element.as_ptr(), element.len(),
+                event.as_str().as_ptr(), event.as_str().len(),
+                js_fn_name.as_ptr(), js_fn_name.len()
+            );
+        }
+    }
+
+    /// Callback dispatcher for WebAssembly events.
+    ///
+    /// - This function is used by JavaScript to invoke a Rust function pointer.
+    /// - It allows Rust event listeners to execute when triggered by JS.
+    /// - The `callback_ptr` is a function pointer cast from JS,
+    ///   which is then transmuted into a callable Rust function.
+    ///
+    /// # Safety
+    /// `callback_ptr` must be a valid function pointer.
+    ///
+    /// # Example
+    /// ```ignore
+    /// #[unsafe(no_mangle)]
+    /// pub extern "C" fn my_callback() {
+    ///     Js::console_log("Button clicked!");
+    /// }
+    /// Js::event_add_listener("#my_button", JsEvent::Click, my_callback);
+    /// ```
+    #[unsafe(no_mangle)]
+    pub unsafe extern "C" fn wasm_callback(callback_ptr: usize) {
+        let callback = callback_ptr as *const ();
+        let callback: extern "C" fn() = unsafe { transmute(callback) };
+        callback();
+    }
+}
+js_reexport! {
+    [ module: "api_events" ]
+    unsafe fn "event_addListener" event_add_listener(element_ptr: *const u8,
+        element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
+    unsafe fn "event_removeListener" event_remove_listener(element_ptr: *const u8,
+        element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
+    unsafe fn "event_addListenerJs" event_add_listener_js(
+        element_ptr: *const u8, element_len: usize,
+        event_ptr: *const u8, event_len: usize, js_fn_ptr: *const u8, js_fn_len: usize
+    );
+    unsafe fn "event_removeListenerJs" event_remove_listener_js(
+        element_ptr: *const u8, element_len: usize,
+        event_ptr: *const u8, event_len: usize, js_fn_ptr: *const u8, js_fn_len: usize
+    );
 }
 
 /// # Web API history & navigation

@@ -3,7 +3,7 @@
 //! Javascript interfacing.
 //
 
-mod definitions; // Js, JsPermission*
+mod definitions; // Js, JsEvent, JsPermission*
 
 #[cfg(feature = "unsafe_ffi")]
 crate::items! {

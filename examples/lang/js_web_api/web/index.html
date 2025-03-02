@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA9UlEQVR4nNWSvQ4BQRDH7zEQHdGbRSWR6NB7Fy+h0syceCFRuY5EfHQ+dja5TuRkiZDj7ty6Cyb5Nzv/md/O7FrWt0OQnJvkYgDYM8l9ByBQdQTxRheaCJDXFVStQIA2mDYXd8gqdB1JyHoLYKt2uoDUJ6BALcs2FwXJcTIAlLNrQ14AyaPAQ/3iRS4AsfoQIE8VPDR0Dkg2Abn36Afi7mcAlINA860GeWQMqJIqRQFqtMv/3S/yfhMAyE5SAEB2ot5Of8G+ln/CKM9bUR24GUC5Lw+3uTBAkM/o9jpe7ddoCkE8Eehmn5ohT/1negrtjwX4qzgD6Hqzl/utxkoAAAAASUVORK5CYII=">
-    <title>Rust Js Web API example</title>
-</head>
-<body>
-    <canvas id="example_canvas_1" width="500" height="500"></canvas>
     <script type="module">
-        import { initWasm } from "./web_api.js";
-        let wasmInstance;
-        initWasm("js_web_api.wasm")
-            .then(instance => { wasmInstance = instance; })
-            .catch(err => console.error("WASM loading failed:", err));
+      import { initWasm } from "./web_api.js";
+      window.addEventListener("DOMContentLoaded", () => {
+          let wasmInstance;
+          initWasm("js_web_api.wasm")
+              .then(instance => { wasmInstance = instance; })
+              .catch(err => console.error("WASM loading failed:", err));
+      });
     </script>
-</body>
+    <title>Rust Js Web API example</title>
+  </head>
+  <body>
+    <canvas id="example_canvas_1" width="500" height="500"></canvas>
+  </body>
 </html>
