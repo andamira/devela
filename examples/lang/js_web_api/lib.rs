@@ -4,9 +4,10 @@
 //
 
 #![no_std]
+#![allow(static_mut_refs, reason = "safe in single-threaded")]
 devela::define_panic_handler! { web_api }
 
-use devela::{format_buf, unwrap, Js, JsEvent};
+use devela::{format_buf, Js, JsEvent};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
@@ -16,7 +17,7 @@ pub extern "C" fn main() {
 
     /* console */
 
-    Js::console_log(format_buf![&mut buf, "example log at: {}ms", Js::get_time()].unwrap());
+    Js::console_log(format_buf![?&mut buf, "example log at: {}ms", Js::performance_now()]);
     Js::console_info("example info");
     Js::console_debug("example debug");
     Js::console_warn("example warn");
@@ -37,7 +38,7 @@ pub extern "C" fn main() {
     /* text */
 
     let metrics = Js::measure_text_full("Hello, world!");
-    Js::console_log(&format_buf![&mut buf, "{metrics:?}"].unwrap());
+    Js::console_log(&format_buf![?&mut buf, "{metrics:?}"]);
 
     // Add an event listener to the canvas for clicks
     Js::event_add_listener("#example_canvas_1", JsEvent::Click, canvas_click);
@@ -50,13 +51,21 @@ pub extern "C" fn main() {
 /// Called when clicking on the canvas.
 #[unsafe(no_mangle)]
 pub extern "C" fn canvas_click() {
-    let time = Js::get_time();
-    let mut buf = [0u8; 64];
+    let time = Js::performance_now();
+
+    static mut BUF: [u8; 64] = [0; 64];
+    let buf: &mut [u8] = unsafe { &mut BUF };
+
+    let times = Js::performance_event_count(JsEvent::Click) + 1;
+    Js::console_log(format_buf![?buf, "Canvas clicked {times} times"]);
+
+    let origin = Js::performance_time_origin();
+    Js::console_log(format_buf![?buf, "origin {origin}ms"]);
 
     Js::fill_style(200, 0, 50);
     Js::fill_rect(50.0, 50.0, 100.0, 100.0);
 
-    Js::console_log(format_buf![&mut buf, "Canvas clicked at: {time}ms"].unwrap());
+    Js::console_log(format_buf![?buf, "Canvas clicked at: {time}ms"]);
     Js::fill_style(50, 50, 200);
-    Js::fill_text(format_buf![&mut buf, "time: {time}ms"].unwrap(), 60.0, 100.0);
+    Js::fill_text(format_buf![?buf, "time: {time}ms"], 60.0, 100.0);
 }

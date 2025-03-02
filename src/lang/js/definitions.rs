@@ -38,22 +38,16 @@ pub struct Js;
 pub enum JsEvent {
     /// Fires when an element is clicked.
     Click,
-
     /// Fires when a key is pressed down.
     KeyDown,
-
     /// Fires when a key is released.
     KeyUp,
-
     /// Fires when the mouse moves over an element.
     MouseMove,
-
     /// Fires when the mouse button is pressed down.
     MouseDown,
-
     /// Fires when the mouse button is released.
     MouseUp,
-
     /// Fires when the window is resized.
     Resize,
 }
@@ -83,55 +77,40 @@ pub enum JsPermission {
     #[doc = TAG_EXPERIMENTAL!()]
     /// Access to accelerometer sensor data.
     Accelerometer,
-
     #[doc = TAG_EXPERIMENTAL!()]
     /// Background sync capability for web applications.
     BackgroundSync,
-
     /// Access to the device camera.
     Camera,
-
     #[doc = TAG_EXPERIMENTAL!()]
     #[doc = TAG_NON_STANDARD!()]
     /// Read access to the system clipboard.
     ClipboardRead,
-
     #[doc = TAG_EXPERIMENTAL!()]
     /// Write access to the system clipboard.
     ClipboardWrite,
-
     /// Access to device geolocation data.
     Geolocation,
-
     #[doc = TAG_EXPERIMENTAL!()]
     /// Access to gyroscope sensor data.
     Gyroscope,
-
     /// Access to the device microphone.
     Microphone,
-
     /// MIDI device access (without system exclusive messages).
     Midi,
-
     /// Permission to display system notifications.
     Notifications,
-
     #[doc = TAG_EXPERIMENTAL!()]
     /// Permission to use a payment handler.
     PaymentHandler,
-
     /// Persistent storage access to prevent data loss.
     PersistentStorage,
-
     /// Permission to receive push notifications.
     Push,
-
     /// Allows preventing the screen from sleeping.
     ScreenWakeLock,
-
     /// Access to storage that requires explicit user permission.
     StorageAccess,
-
     #[doc = TAG_EXPERIMENTAL!()]
     /// Allows a site to access storage without top-level navigation.
     TopLevelStorageAccess,

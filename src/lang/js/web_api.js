@@ -138,18 +138,14 @@ export async function initWasm(wasmPath, imports = {}) {
 		api_canvas: {
 			/* misc. */
 			set_canvas: (ptr, len) => { set_canvas(str_decode(ptr, len)); },
-
 			/* color settings */
 			fillStyle: (r, g, b) => ctx.fillStyle = `rgb(${r}, ${g}, ${b})`,
 			strokeStyle: (r, g, b) => ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`,
-
 			/* drawing rectangles */
 			fillRect: (x, y, w, h) => ctx.fillRect(x, y, w, h),
 			strokeRect: (x, y, w, h) => ctx.strokeRect(x, y, w, h),
 			clearRect: (x, y, w, h) => ctx.clearRect(x, y, w, h),
-
 			/* drawing paths */
-
 			/* drawing shapes */
 			draw_line: (x1, y1, x2, y2) => {
 				ctx.beginPath();
@@ -162,7 +158,6 @@ export async function initWasm(wasmPath, imports = {}) {
 				ctx.arc(x, y, r, 0, Math.PI * 2);
 				ctx.fill();
 			},
-
 			/* drawing text */
 			fillText: (ptr, len, x, y) => ctx.fillText(str_decode(ptr, len), x, y),
 			strokeText: (ptr, len, x, y) => ctx.strokeText(str_decode(ptr, len), x, y),
@@ -194,8 +189,13 @@ export async function initWasm(wasmPath, imports = {}) {
 				outMetrics[11] = metrics.ideographicBaseline ?? 0.0;
 			},
 		}, // api_canvas
-		api_timing: {
-			get_time: () => performance.now(),
+		api_performance: {
+			now: () => performance.now(),
+			timeOrigin: () => performance.timeOrigin,
+			eventCounts: (eventPtr, eventLen) => {
+				const eventName = str_decode(eventPtr, eventLen);
+				return performance.eventCounts?.get([eventName]) ?? 0;
+			}
 		}
 	};
 

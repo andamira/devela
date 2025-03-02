@@ -341,13 +341,27 @@ js_reexport! {
         out_metrics: *mut JsTextMetricsFull);
 }
 
-/// # Web API time
+/// # Web API performance
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Performance>
 #[rustfmt::skip]
 impl Js {
-    ///
-    pub fn get_time() -> f64 { get_time() }
+    #[doc = web_api!("Performance", "now")]
+    /// Retrieves a high-resolution timestamp in milliseconds.
+    pub fn performance_now() -> f64 { performance_now() }
+    #[doc = web_api!("Performance", "timeOrigin")]
+    /// Retrieves the time origin in milliseconds.
+    pub fn performance_time_origin() -> f64 { performance_time_origin() }
+    #[doc = web_api!("Performance", "eventCounts")]
+    /// Retrieves the count of recorded events.
+    pub fn performance_event_count(event: JsEvent) -> u32 {
+        let name = event.as_str();
+        unsafe { performance_event_count(name.as_ptr(), name.len()) }
+    }
 }
 js_reexport! {
-    [ module: "api_timing" ]
-    safe fn get_time() -> f64;
+    [ module: "api_performance" ]
+    safe fn "now" performance_now() -> f64;
+    safe fn "timeOrigin" performance_time_origin() -> f64;
+    unsafe fn "eventCounts" performance_event_count(event_ptr: *const u8, event_len: usize) -> u32;
 }
