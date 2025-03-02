@@ -1,4 +1,6 @@
 // devela::lang::js::web_api.js
+//
+// In sync with `./web_api.js`.
 
 export async function initWasm(wasmPath, imports = {}) {
 	/* config */

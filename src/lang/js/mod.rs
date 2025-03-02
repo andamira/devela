@@ -3,10 +3,17 @@
 //! Javascript interfacing.
 //
 
+mod namespace; // Js
+
 #[cfg(feature = "unsafe_ffi")]
 crate::items! {
-    mod namespace; // Js
     mod reexport; // js_reexport!
+
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
+    // #[cfg(target_arch = "wasm32")]
+    #[cfg(not(windows))]
+    mod web_api;
 }
 
 crate::items! { // structural access: _mods, _all
@@ -14,8 +21,11 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
+        pub use super::namespace::*;
+
         #[cfg(feature = "unsafe_ffi")]
-        pub use super::{namespace::*, reexport::*};
+        pub use super::reexport::*;
+
         // WIPZONE
     }
     pub(super) mod _all { #![allow(unused)]
