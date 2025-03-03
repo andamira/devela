@@ -2,6 +2,8 @@
 //
 //! Architecture-specific intrinsics.
 //!
+//! LINKS
+//! - <https://github.com/rust-lang/stdarch>
 #![doc = crate::doc_!(extends: arch)]
 //
 // NOTE In order to show in the docs all possible feature-gated functionality,

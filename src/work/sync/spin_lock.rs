@@ -19,19 +19,13 @@ use crate::{ExtThread, Thread};
 /// # use devela::SpinLock;
 /// let lock = SpinLock::<i32, 5, 10, 100>::new(42);
 ///
-/// // Acquire the lock
-/// let mut guard = lock.lock();
+/// let mut guard = lock.lock(); // Acquire the lock
 /// *guard += 1; // Modify the locked value
-///
-/// // Lock is automatically released when `guard` goes out of scope
-/// ```
-/// ```
-/// # use devela::SpinLock;
-/// let lock = SpinLock::<i32, 5, 10, 100>::new(10);
 ///
 /// if let Some(mut guard) = lock.try_lock() {
 ///     *guard *= 2; // Modify only if lock was acquired
 /// }
+/// // Lock is automatically released when `guard` goes out of scope
 /// ```
 #[derive(Default)]
 pub struct SpinLock<T, const SPIN: usize = 5, const YIELD: usize = 10, const SLEEP: u64 = 100> {

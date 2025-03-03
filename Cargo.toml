@@ -154,7 +154,6 @@ lang = ["glsl", "js"]
 	glsl = []
 	js = []
 	# py = []
-	# wasm = ["ring?/wasm32_unknown_unknown_js"]
 media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	audio = ["sdl2?/mixer"]
 	draw = ["sdl2?/gfx"] # "sdl3?/gfx"
@@ -181,6 +180,7 @@ phys = ["time", "wave"]
 sys = ["io", "mem"]
 	# arch
 		# simd = ["fontdue?/simd"]
+		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
 	# fs
 	io = ["tokio?/io-util", "tokio?/io-std"] # no_std_io…
 	mem = ["bit"]

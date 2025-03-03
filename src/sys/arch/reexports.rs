@@ -4,7 +4,6 @@
 ///
 /// # Links
 /// - <https://doc.rust-lang.org/core/arch/>
-
 use crate::reexport;
 
 /* `core` re-exports */

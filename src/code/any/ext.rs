@@ -59,6 +59,8 @@ pub trait ExtAny: Any + Sealed {
     /// let x = 5;
     /// assert_eq!(x.type_name(), "i32");
     /// ```
+    ///
+    /// See also [`any_type_name`][crate::any_type_name].
     #[must_use]
     fn type_name(&self) -> &'static str { type_name_of_val(self) }
 

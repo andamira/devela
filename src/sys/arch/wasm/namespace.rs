@@ -3,12 +3,12 @@
 //! Defines the [`Wasm`] namespace.
 //!
 //! # Links
-//! - https://doc.rust-lang.org/rustc/platform-support/wasm32-unknown-unknown.html
-//! - https://doc.rust-lang.org/rustc/platform-support/wasm64-unknown-unknown.html
-//! - https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip1.html
-//! - https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip1-threads.html
-//! - https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip2.html
-//! - https://surma.dev/things/rust-to-webassembly/ (2023-02-10)
+//! - <https://doc.rust-lang.org/rustc/platform-support/wasm32-unknown-unknown.html>
+//! - <https://doc.rust-lang.org/rustc/platform-support/wasm64-unknown-unknown.html>
+//! - <https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip1.html>
+//! - <https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip1-threads.html>
+//! - <https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip2.html>
+//! - <https://surma.dev/things/rust-to-webassembly/> (2023-02-10)
 //!
 //! # Info
 //! - Show all features

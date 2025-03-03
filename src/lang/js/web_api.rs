@@ -94,11 +94,11 @@ js_reexport! {
 /// ## Security Warning
 /// - Avoid passing untrusted input, as this executes arbitrary JS.
 /// - Ensure all evaluated code is **safe and controlled**.
+#[rustfmt::skip]
 impl Js {
     /// Executes JavaScript code immediately.
-    pub fn eval(js_code: &str) {
-        unsafe { eval(js_code.as_ptr(), js_code.len()); }
-    }
+    pub fn eval(js_code: &str) { unsafe { eval(js_code.as_ptr(), js_code.len()); } }
+
     /// Executes JavaScript code after a delay.
     ///
     /// Returns a timeout ID, which can be used to cancel execution.
@@ -106,9 +106,8 @@ impl Js {
         unsafe { eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) }
     }
     /// Cancels a timeout started by [`eval_timeout`][Self::eval_timeout].
-    pub fn eval_timeout_clear(timeout_id: u32) {
-        unsafe { eval_timeout_clear(timeout_id); }
-    }
+    pub fn eval_timeout_clear(timeout_id: u32) { unsafe { eval_timeout_clear(timeout_id); } }
+
     /// Executes JavaScript code repeatedly at a fixed interval.
     ///
     /// Returns an interval ID, which can be used to cancel execution.
@@ -116,9 +115,7 @@ impl Js {
         unsafe { eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) }
     }
     /// Cancels an interval started by [`eval_interval`][Self::eval_interval].
-    pub fn eval_interval_clear(interval_id: u32) {
-        unsafe { eval_interval_clear(interval_id); }
-    }
+    pub fn eval_interval_clear(interval_id: u32) { unsafe { eval_interval_clear(interval_id); } }
 }
 js_reexport! {
     [ module: "api_eval" ]
