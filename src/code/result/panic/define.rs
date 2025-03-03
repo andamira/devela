@@ -70,7 +70,7 @@ macro_rules! define_panic_handler {
 
                 // Extract and log the panic message
                 $crate::Js::console_group("#[panic_handler]");
-                match format_buf![&mut buf, "{}", info.message()] {
+                match $crate::format_buf![&mut buf, "{}", info.message()] {
                     Ok(msg_str) => $crate::Js::console_debug(msg_str),
                     Err(truncated) => {
                         $crate::Js::console_debug(truncated);
@@ -80,7 +80,7 @@ macro_rules! define_panic_handler {
 
                 // Extract and log the panic location
                 match info.location()
-                    .map(|loc| format_buf![&mut buf, "At {}:{}:{}",
+                    .map(|loc| $crate::format_buf![&mut buf, "At {}:{}:{}",
                         loc.file(), loc.line(), loc.column()])
                     .unwrap_or(Ok("<panic location unknown>".into()))
                 {

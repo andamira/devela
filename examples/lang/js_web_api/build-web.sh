@@ -14,7 +14,12 @@ TARGET_DIR="target/wasm32-unknown-unknown/${PROFILE}/"
 JS_DIR="../../../src/lang/js/"
 # JS_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/js/web_api.js"
 
-CARGO_TARGET_DIR="./target/" cargo b --profile $PROFILE --target wasm32-unknown-unknown
+CARGO_TARGET_DIR="./target/"
+# RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
+
+# build command
+export RUSTFLAGS=$RUSTFLAGS
+cargo b --profile $PROFILE --target wasm32-unknown-unknown
 
 mkdir -p $WEB_DIR
 

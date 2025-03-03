@@ -94,5 +94,5 @@ Legend:
 - 1.82: ` `[raw_ref_op](https://github.com/rust-lang/rust/pull/127679)
 - 1.82: ` `[ready_into_inner](https://github.com/rust-lang/rust/pull/116528)
 - 1.82: ` `[thread_spawn_unchecked](https://github.com/rust-lang/rust/pull/129161)
-- 1.82: ` `[unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
-- 1.82: ` `[unsafe_attributes](https://github.com/rust-lang/rust/pull/128771)
+- 1.82: `✓`[unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
+- 1.82: `✓`[unsafe_attributes](https://github.com/rust-lang/rust/pull/128771)
