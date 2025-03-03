@@ -1,12 +1,13 @@
 // devela::lang:js::web_api
+// (in sync with ./web_api.js)
 //
 //! Implements Web API methods for [`Js`].
 //
-// In sync with `./web_api.js`.
 //
 // TOC
 // - core APis
 //   - console
+//   - eval
 //   - events
 //   - history
 //   - permissions
@@ -84,6 +85,48 @@ js_reexport! {
     //
     unsafe fn "console_group" console_group(str_ptr: *const u8, str_len: usize);
     unsafe fn "console_groupEnd" console_group_end();
+}
+
+/// # JavaScript Evaluation
+///
+/// Executes JavaScript code from Rust.
+///
+/// ## Security Warning
+/// - Avoid passing untrusted input, as this executes arbitrary JS.
+/// - Ensure all evaluated code is **safe and controlled**.
+impl Js {
+    /// Executes JavaScript code immediately.
+    pub fn eval(js_code: &str) {
+        unsafe { eval(js_code.as_ptr(), js_code.len()); }
+    }
+    /// Executes JavaScript code after a delay.
+    ///
+    /// Returns a timeout ID, which can be used to cancel execution.
+    pub fn eval_timeout(js_code: &str, delay_ms: u32) -> u32 {
+        unsafe { eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) }
+    }
+    /// Cancels a timeout started by [`eval_timeout`][Self::eval_timeout].
+    pub fn eval_timeout_clear(timeout_id: u32) {
+        unsafe { eval_timeout_clear(timeout_id); }
+    }
+    /// Executes JavaScript code repeatedly at a fixed interval.
+    ///
+    /// Returns an interval ID, which can be used to cancel execution.
+    pub fn eval_interval(js_code: &str, interval_ms: u32) -> u32 {
+        unsafe { eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) }
+    }
+    /// Cancels an interval started by [`eval_interval`][Self::eval_interval].
+    pub fn eval_interval_clear(interval_id: u32) {
+        unsafe { eval_interval_clear(interval_id); }
+    }
+}
+js_reexport! {
+    [ module: "api_eval" ]
+    unsafe fn eval(js_code_ptr: *const u8, js_code_len: usize);
+    unsafe fn eval_timeout(js_code_ptr: *const u8, js_code_len: usize, delay_ms: u32) -> u32;
+    unsafe fn eval_interval(js_code_ptr: *const u8, js_code_len: usize, interval_ms: u32) -> u32;
+    unsafe fn eval_timeout_clear(timeout_id: u32);
+    unsafe fn eval_interval_clear(interval_id: u32);
 }
 
 /// # Web API Events

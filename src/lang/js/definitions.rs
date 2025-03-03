@@ -1,6 +1,6 @@
-// devela::lang:js::namespace
+// devela::lang:js::definitions
 //
-//! Defines the [`Js`] namespace and related items.
+//! Defines the [`Js`] namespace and other items.
 //
 // TOC
 // - struct Js

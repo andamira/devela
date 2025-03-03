@@ -3,6 +3,7 @@
 //! A Web API canvas example.
 //
 
+// global config
 #![no_std]
 #![allow(static_mut_refs, reason = "safe in single-threaded")]
 devela::define_panic_handler! { web_api }
@@ -24,15 +25,22 @@ pub extern "C" fn main() {
     Js::console_error("example error");
     Js::console_trace();
 
-    /* draw */
+    /* eval */
 
-    Js::fill_style(255, 0, 0); // Red
+    Js::eval("console.log('Hello from Rust!');");
+    Js::eval_timeout("console.log('Delayed!');", 1000);
+    Js::eval_interval("console.log('Repeating!');", 2000);
+
+    let cleared = Js::eval_timeout("console.error('This should not run!');", 1500);
+    Js::eval_timeout_clear(cleared);
+
+    /* draw shapes */
+
+    Js::fill_style(255, 0, 0);
     Js::fill_rect(10.0, 10.0, 100.0, 100.0);
-
-    Js::fill_style(0, 255, 0); // Green
+    Js::fill_style(0, 255, 0);
     Js::draw_circle(150.0, 50.0, 30.0);
-
-    Js::stroke_style(0, 0, 255); // Blue
+    Js::stroke_style(0, 0, 255);
     Js::draw_line(200.0, 20.0, 300.0, 100.0);
 
     /* text */

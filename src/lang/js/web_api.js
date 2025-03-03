@@ -1,6 +1,18 @@
 // devela::lang::js::web_api.js
+// (in sync with ./web_api.rs)
 //
-// In sync with `./web_api.rs`.
+// TOC
+// - config
+// - helpers
+// - bindings
+//   - core
+//     - console
+//     - eval
+//     - events
+//     - history_navigation
+//     - performance
+//   - extended
+//     - canvas
 
 export async function initWasm(wasmPath, imports = {}) {
 	/* config */
@@ -20,15 +32,9 @@ export async function initWasm(wasmPath, imports = {}) {
 	// Sets the active canvas.
 	function set_canvas(selector) {
 		const newCanvas = document.querySelector(selector);
-		if (!newCanvas) {
-			console.error(`Canvas with ID "${canvasId}" not found`);
-			return;
-		}
+		if (!newCanvas) { console.error(`Canvas with ID "${canvasId}" not found`); return; }
 		const newCtx = newCanvas.getContext("2d");
-		if (!newCtx) {
-			console.error(`Failed to get 2D context for canvas "${canvasId}"`);
-			return;
-		}
+		if (!newCtx) { console.error(`Failed to get 2D context for canvas "${canvasId}"`); return; }
 		canvas = newCanvas;
 		ctx = newCtx;
 	}
@@ -51,7 +57,25 @@ export async function initWasm(wasmPath, imports = {}) {
 			console_group: (ptr, len) => console.group(str_decode(ptr, len)),
 			console_groupEnd: () => console.groupEnd(),
 		},
+		api_eval: {
+			eval: (jsCodePtr, jsCodeLen) => {
+				const jsCode = str_decode(jsCodePtr, jsCodeLen);
+				try { eval(jsCode); }
+				catch (err) { console.error("Error evaluating JavaScript:", err); }
+			},
+			eval_timeout: (jsCodePtr, jsCodeLen, delayMs) => {
+				const jsCode = str_decode(jsCodePtr, jsCodeLen);
+				return setTimeout(() => eval(jsCode), delayMs);
+			},
+			eval_interval: (jsCodePtr, jsCodeLen, intervalMs) => {
+				const jsCode = str_decode(jsCodePtr, jsCodeLen);
+				return setInterval(() => eval(jsCode), intervalMs);
+			},
+			eval_timeout_clear: (id) => { clearTimeout(id); },
+			eval_interval_clear: (id) => { clearInterval(id); }
+		},
 		api_events: {
+			// Events API
 			_callbacks: new Map(),
 			event_addListener: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
 				const element = document.querySelector(str_decode(ePtr, eLen));
@@ -73,33 +97,23 @@ export async function initWasm(wasmPath, imports = {}) {
 				const element = document.querySelector(str_decode(ePtr, eLen));
 				const event = str_decode(eventPtr, eventLen);
 				const jsFnName = str_decode(jsFnPtr, jsFnLen);
-				if (!element) {
-					console.error(`Element not found for event '${event}'`);
-					return;
-				}
+				if (!element) { console.error(`Element not found for event '${event}'`); return; }
 				if (typeof window[jsFnName] === "function") {
 					const callback = window[jsFnName];
 					api_events._callbacks_js.set(jsFnName, callback);
-					element.addEventListener(event, callback);
-				} else {
-					console.error(`JS function '${jsFnName}' not found.`);
-				}
+					element.addEventListener(event, callback); }
+				else { console.error(`JS function '${jsFnName}' not found.`); }
 			},
 			event_removeListenerJs: (ePtr, eLen, eventPtr, eventLen, jsFnPtr, jsFnLen) => {
 				const element = document.querySelector(str_decode(ePtr, eLen));
 				const event = str_decode(eventPtr, eventLen);
 				const jsFnName = str_decode(jsFnPtr, jsFnLen);
-				if (!element) {
-					console.error(`Element not found for event '${event}'`);
-					return;
-				}
+				if (!element) { console.error(`Element not found for event '${event}'`); return; }
 				const callback = api_events._callbacks_js.get(jsFnName);
 				if (callback) {
 					element.removeEventListener(event, callback);
-					api_events._callbacks_js.delete(jsFnName);
-				} else {
-					console.error(`No event listener found for '${jsFnName}' on '${event}'.`);
-				}
+					api_events._callbacks_js.delete(jsFnName); }
+				else { console.error(`No event listener found for '${jsFnName}' on '${event}'.`); }
 			},
 		}, // api_events
 		api_history_navigation: {
@@ -121,15 +135,13 @@ export async function initWasm(wasmPath, imports = {}) {
 		api_permissions: {
 			permissions_query: (namePtr, nameLen) => {
 				return navigator.permissions.query({ name: str_decode(namePtr, nameLen) })
-					.then(result => { // JsPermissionState::*
-						switch (result.state) {
-							case "granted": return 1; 	// Granted
-							case "prompt": return 0; 	// Prompt
-							case "denied": return -1; 	// Denied
-							default: return -2; 		// Unknown
-						}
-					})
-					.catch(() => -3); // Error
+					.then(result => {
+						switch (result.state) { // JsPermissionState::
+							case "granted": return 1; // Granted
+							case "prompt": return 0;  // Prompt
+							case "denied": return -1; // Denied
+							default: return -2;       // Unknown
+						}}).catch(() => -3); // Error
 			},
 		},
 
@@ -198,6 +210,8 @@ export async function initWasm(wasmPath, imports = {}) {
 			}
 		}
 	};
+
+	/* window namespace */
 
 	window.api_events = wasmBindings.api_events;
 	window.wasm_callback = (callbackPtr) => {
