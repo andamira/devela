@@ -8,13 +8,22 @@
 #![allow(static_mut_refs, reason = "safe in single-threaded")]
 devela::define_panic_handler! { web_api }
 
-use devela::{format_buf, Js, JsEvent};
+use devela::{format_buf, Js, JsEvent, Wasm};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
     Js::set_canvas("#example_canvas_1");
 
     let mut buf = [0u8; 256];
+
+    /* wasm architecture */
+
+    Js::console_log(&format_buf![?&mut buf, "Wasm memory: {}, bytes: {}",
+        Wasm::memory_size(), Wasm::memory_bytes()]);
+    Js::console_log(&format_buf![?&mut buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
+    Js::console_log(&format_buf![?&mut buf, "Wasm::simd128: {}", Wasm::has_simd()]);
+    Js::console_log(&format_buf![?&mut buf, "Wasm::mutable-globals: {}",
+        Wasm::has_mutable_globals()]);
 
     /* console */
 
@@ -30,7 +39,6 @@ pub extern "C" fn main() {
     Js::eval("console.log('Hello from Rust!');");
     Js::eval_timeout("console.log('Delayed!');", 1000);
     Js::eval_interval("console.log('Repeating!');", 2000);
-
     let cleared = Js::eval_timeout("console.error('This should not run!');", 1500);
     Js::eval_timeout_clear(cleared);
 

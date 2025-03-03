@@ -14,6 +14,7 @@
 
 mod namespace;
 mod reexports;
+mod wasm;
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -22,7 +23,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{namespace::*, reexports::*};
+        pub use super::{namespace::*, reexports::*, wasm::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

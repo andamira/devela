@@ -1,7 +1,9 @@
 // devela::sys::arch::reexports
 //
 //! Reexported items from `core`.
-//
+///
+/// # Links
+/// - <https://doc.rust-lang.org/core/arch/>
 
 use crate::reexport;
 

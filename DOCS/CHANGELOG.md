@@ -149,6 +149,8 @@
   - `sys::env`.
   - `work::{future, process, sync}`.
 - change `msvc` windows target for `gnu`.
+- update scripts:
+  - `utils/check.rs`: add target components for the nightly toolchain.
 - improve the docs for vendored items.
 
 ### Fixed

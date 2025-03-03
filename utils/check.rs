@@ -683,8 +683,10 @@ fn run_cargo(msrv: &str, command: &str, arguments: &[&str]) -> Result<()> {
     }
 }
 
-/// Makes sure to install all the architectures and components for the current MSRV.
+/// Makes sure to install all the architectures and components for the current MSRV and nightly.
 fn rust_setup_arches(msrv: &str) -> Result<()> {
+    println!("> rust_setup_arches() // for MSRV and nightly");
+
     if !msrv.is_empty() {
         println!("rustup override set {msrv}");
         sf! { let _ = Command::new("rustup").args(["override", "set", msrv]).status()?; }
@@ -693,7 +695,6 @@ fn rust_setup_arches(msrv: &str) -> Result<()> {
         println!("rustup component add rustfmt");
         sf! { let _ = Command::new("rustup").args(["component", "add", "rustfmt"]).status()?; }
     }
-
     for ref arch in STD_ARCHES
         .into_iter()
         .chain(LINUX_ARCHES.into_iter())
@@ -702,6 +703,7 @@ fn rust_setup_arches(msrv: &str) -> Result<()> {
     {
         println!("rustup target add {arch}");
         sf! { let _ = Command::new("rustup").args(["target", "add", arch]).status()?; }
+        sf! { let _ = Command::new("rustup").args(["+nightly", "target", "add", arch]).status()?; }
     }
     Ok(())
 }
