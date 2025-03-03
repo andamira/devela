@@ -167,7 +167,7 @@ To be able to use any unsafe functionality it's necessary to:
   - `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
   - `unsafe_slice`: extra slice methods, avoid bound checks.
   - `unsafe_str`: unchecked utf-8 `char` and `&str` conversions.
-  - `unsafe_sync`: implement `Send` and `Sync`.
+  - `unsafe_sync`: `SpinLock`, implement `Send` and `Sync`.
   - `unsafe_syscall`: os syscalls.
   - `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
 

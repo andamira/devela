@@ -12,6 +12,10 @@ mod atomic;
 #[cfg(feature = "alloc")]
 mod reexports;
 
+#[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+mod spin_lock; // SpinLock, SpinLockGuard
+
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
@@ -22,6 +26,10 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::atomic::*;
         #[cfg(feature = "alloc")]
         pub use super::reexports::*;
+
+        #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
+        pub use super::spin_lock::*;
+
         // WIPZONE
         // pub use super::{
         //     counter::*,

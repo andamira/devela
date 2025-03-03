@@ -266,7 +266,7 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 	unsafe_ptr     = [] # Pinned, pop methods without Clone, Ptr::*.
 	unsafe_slice   = [] # extra slice methods, avoid bound checks.
 	unsafe_str     = [] # unchecked utf-8 char and &str conversions.
-	unsafe_sync    = [] # Send and Sync impls.
+	unsafe_sync    = [] # SpinLock, Send and Sync impls.
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 

@@ -1,6 +1,9 @@
 <!-- Updated intra-doc links, to be loaded from: _doc::vendored -->
 
 <!-- license: Apache-2.0 OR MIT -->
+  [M_bytehound-preload]: crate::_info::vendored::bytehound-preload
+  [`SpinLock`]: crate::work::sync::SpinLock
+  [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
   [`cfg-if!`]: crate::code::util::cfg_if
   [`ConstList`]: crate::data::list::ConstList
   [M_crossbeam-utils]: crate::_info::vendored::crossbeam_utils

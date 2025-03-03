@@ -5,6 +5,8 @@ See the linked modifications for detailed changes.
 
 ## MIT OR Apache-2.0 licenses
 
+- <i id="bytehound-preload"></i>[bytehound-preload] by Jan Bujak,
+  as the [`SpinLock`] and [`SpinLockGuard`] structs.
 - <i id="cfg-if"></i>[cfg-if] by Alex Crichton,
   as the [`cfg-if!`] macro.
 - <i id="const_list"></i>[const_list] by Douglas Dwyer,
@@ -37,6 +39,10 @@ See the linked modifications for detailed changes.
 - <i id="tupl"></i>[tupl] by *Dragoteryx*,
   as part of the [`Tuple`] trait ([*modifications*][M_tupl]).
 
+[bytehound-preload]: https://github.com/koute/bytehound/blob/77ea03c7ed90ad4f176c316cd837a77bc09aa6f3/preload/src/spin_lock.rs
+  [M_bytehound-preload]: https://github.com/andamira/devela/blob/main/src/_info/vendored/bytehound-preload.md
+  [`SpinLock`]: https://docs.rs/devela/latest/devela/work/sync/struct.SpinLock.html
+  [`SpinLockGuard`]: https://docs.rs/devela/latest/devela/work/sync/struct.SpinLockGuard.html
 [cfg-if]: https://crates.io/crates/cfg-if/1.0.0
   [`cfg-if!`]: https://docs.rs/devela/latest/devela/code/util/macro.cfg_if.html
 [const_list]: https://crates.io/crates/const_list/0.1.0
@@ -163,7 +169,7 @@ See the linked modifications for detailed changes.
   [M_pengy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/pengy.md
   [`HasherPengy`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherPengy.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
-  [`size_of_expr`]: https://docs.rs/devela/latest/devela/sys/mem/macro.size_of_expr.html
+  [`size_of_expr!`]: https://docs.rs/devela/latest/devela/sys/mem/macro.size_of_expr.html
 [Xabc]: https://web.archive.org/web/20140328221846/https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
   [`Xabc`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xabc.html
 [Graphics Gems]: https://www.realtimerendering.com/resources/GraphicsGems/
