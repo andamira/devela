@@ -61,6 +61,15 @@ pub trait ExtThread: Sealed {
     /// See `std::thread::`[sleep].
     fn sleep(duration: Duration) { sleep(duration) }
 
+    /// Puts the current thread to sleep for at least the specified amount of `milliseconds`.
+    fn sleep_ms(milliseconds: u64) { sleep(Duration::from_millis(milliseconds)) }
+
+    /// Puts the current thread to sleep for at least the specified amount of `nanoseconds`.
+    fn sleep_us(microseconds: u64) { sleep(Duration::from_micros(microseconds)) }
+
+    /// Puts the current thread to sleep for at least the specified amount of `nanoseconds`.
+    fn sleep_ns(nanoseconds: u64) { sleep(Duration::from_nanos(nanoseconds)) }
+
     /// Spawns a new thread, returning a [`ThreadJoinHandle`] for it.
     ///
     /// See `std::thread::`[spawn].

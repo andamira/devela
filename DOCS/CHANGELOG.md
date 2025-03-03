@@ -63,6 +63,7 @@
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
+  - `ExtThread`: `sleep_ms`, `sleep_us`, `sleep_ns`.
   - `Float`: `midpoint`, `recip`, `to_degrees`, `to_radians`.
   - `HasherFx`: `hash_bytes_with_seed`.
   - prngs: `from_state`, `inner_state`.
