@@ -1,3 +1,4 @@
+// devela::sys::env::app
 //
 //! Defines [`AppConfig`], [`AppEnv`], [`AppApple`], [`AppUnix`], [`AppWindows`] and [`AppXdg`].
 //
@@ -222,7 +223,7 @@ impl AppXdg {
     }
     // Returns `None` if the path obtained from the env var isn’t absolute.
     fn env_var_or_none(env_var: &str) -> Option<PathBuf> {
-        Env::var(env_var).ok().and_then(|path| {
+        Env::var_os(env_var).and_then(|path| {
             let path = PathBuf::from(path);
             path.is_absolute().then_some(path)
         })
