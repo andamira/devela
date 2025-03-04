@@ -26,7 +26,7 @@ macro_rules! unwrap {
       some $value:expr) => {
         match $value {
             Some(v) => v,
-            None => core::panic![],
+            None => ::core::panic![],
         }
     };
     (
@@ -34,7 +34,7 @@ macro_rules! unwrap {
       some_expect $value:expr, $message:literal) => {
         match $value {
             Some(v) => v,
-            None => core::panic!["{}", $message],
+            None => ::core::panic!["{}", $message],
         }
     };
     (
@@ -79,7 +79,7 @@ macro_rules! unwrap {
       ok $value:expr ) => {
         match $value {
             Ok(v) => v,
-            Err(_) => core::panic![],
+            Err(_) => ::core::panic![],
         }
     };
     (
@@ -87,7 +87,7 @@ macro_rules! unwrap {
       ok_expect $value:expr, $message:literal) => {
         match $value {
             Ok(v) => v,
-            Err(_) => core::panic!["{}", $message],
+            Err(_) => ::core::panic!["{}", $message],
         }
     };
     (
@@ -129,7 +129,7 @@ macro_rules! unwrap {
       // Unwraps the contained `Err` value, or panics if it's `Ok`.
       err $value:expr ) => {
         match $value {
-            Ok(_) => core::panic![],
+            Ok(_) => ::core::panic![],
             Err(v) => v,
         }
     };
@@ -137,7 +137,7 @@ macro_rules! unwrap {
       // Unwraps the contained `Err` value, or panics the given message if it's `Ok`.
       err_expect $value:expr, $message:literal) => {
         match $value {
-            Ok(_) => core::panic!["{}", $message],
+            Ok(_) => ::core::panic!["{}", $message],
             Err(v) => v,
         }
     };
@@ -186,8 +186,8 @@ macro_rules! unwrap {
       sok $value:expr ) => {
         match $value {
             Some(Ok(v)) => v,
-            Some(Err(_)) => core::panic![],
-            None => core::panic![],
+            Some(Err(_)) => ::core::panic![],
+            None => ::core::panic![],
         }
     };
 
@@ -197,8 +197,8 @@ macro_rules! unwrap {
       sok_expect $value:expr, $message:literal) => {
         match $value {
             Some(Ok(v)) => v,
-            Some(Err(_)) => core::panic!["{}", $message],
-            None => core::panic!["{}", $message],
+            Some(Err(_)) => ::core::panic!["{}", $message],
+            None => ::core::panic!["{}", $message],
         }
     };
     (
@@ -216,9 +216,9 @@ macro_rules! unwrap {
       // or panics if it's `Some(Ok)` or `None`.
       serr $value:expr ) => {
         match $value {
-            Some(Ok(_)) => core::panic![],
+            Some(Ok(_)) => ::core::panic![],
             Some(Err(v)) => v,
-            None => core::panic![],
+            None => ::core::panic![],
         }
     };
     (
@@ -226,9 +226,9 @@ macro_rules! unwrap {
       // or panics with the given message if it's `Some(Ok)` or `None`.
       serr_expect $value:expr, $message:literal) => {
         match $value {
-            Some(Ok(_)) => core::panic!["{}", $message],
+            Some(Ok(_)) => ::core::panic!["{}", $message],
             Some(Err(v)) => v,
-            None => core::panic!["{}", $message],
+            None => ::core::panic!["{}", $message],
         }
     };
     (
