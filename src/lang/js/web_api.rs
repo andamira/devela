@@ -11,19 +11,18 @@
 //   - events
 //   - history
 //   - permissions
-//
 // - extended APis
-//   - media & graphics
-//     - canvas
-//   - system & hardware
-//   - performance & optimization
-//     - time
-//   - advanced & experimental
+//   - canvas
+//   - system
+//   - performance
+//   - workers
 
 use devela::{
     js_reexport, transmute, Js, JsEvent, JsPermission, JsPermissionState, JsTextMetrics,
     JsTextMetricsFull,
 };
+#[cfg(feature = "alloc")]
+use devela::{vec_ as vec, Vec};
 
 // helper for Web API doc links
 #[rustfmt::skip]
@@ -364,7 +363,7 @@ js_reexport! {
     safe fn "strokeStyle" stroke_style(r: u8, g: u8, b: u8);
     /* drawing rectangles */
     safe fn "fillRect" fill_rect(x: f64, y: f64, w: f64, h: f64);
-    safe fn "stroke_Rect" stroke_rect(x: f64, y: f64, w: f64, h: f64);
+    safe fn "strokeRect" stroke_rect(x: f64, y: f64, w: f64, h: f64);
     safe fn "clearRect" clear_rect(x: f64, y: f64, w: f64, h: f64);
     /* drawing paths */
     //
@@ -404,4 +403,53 @@ js_reexport! {
     safe fn "now" performance_now() -> f64;
     safe fn "timeOrigin" performance_time_origin() -> f64;
     unsafe fn "eventCounts" performance_event_count(event_ptr: *const u8, event_len: usize) -> u32;
+}
+
+/// Web API workers
+#[rustfmt::skip]
+impl Js {
+    /// Spawns a Web Worker and returns its ID.
+    pub fn worker_spawn(worker_script: &str) -> u32 {
+        unsafe { worker_spawn(worker_script.as_ptr(), worker_script.len()) }
+    }
+    /// Stops a specific Web Worker by ID.
+    pub fn worker_stop(worker_id: u32) { worker_stop(worker_id); }
+    /// Stops all Web Workers.
+    pub fn worker_stop_all() { worker_stop_all(); }
+    /// Returns the number of active workers.
+    pub fn worker_list_len() -> u32 { worker_list_len() }
+    /// Returns the list of active worker IDs.
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    pub fn worker_list() -> Vec<u32> {
+        let len = worker_list_len();
+        let mut workers = vec![0; len as usize];
+        let _ = unsafe { worker_list(workers.as_mut_ptr(), len) };
+        workers
+    }
+    /// Writes active worker IDs into a buffer and returns the number written.
+    pub fn worker_list_buf(buffer: &mut [u32]) -> usize {
+        let len = worker_list_len() as usize;
+        let count = len.min(buffer.len());
+        (unsafe { worker_list(buffer.as_mut_ptr(), count as u32) }) as usize
+    }
+    /// Runs JavaScript inside a specific Web Worker or the main thread.
+    pub fn worker_eval(worker_id: Option<u32>, job_id: u32, js_code: &str) {
+        let worker_id = worker_id.unwrap_or(0); // 0 means main thread
+        unsafe { worker_eval(worker_id, job_id, js_code.as_ptr(), js_code.len()); }
+    }
+    /// Sends a message to a specific Web Worker.
+    pub fn worker_send_message(worker_id: u32, msg: &str) {
+        unsafe { worker_send_message(worker_id, msg.as_ptr(), msg.len()); }
+    }
+}
+js_reexport! {
+    [module: "api_workers"]
+    unsafe fn worker_spawn(script_ptr: *const u8, script_len: usize) -> u32;
+    safe fn worker_stop(worker_id: u32);
+    safe fn worker_stop_all();
+    safe fn worker_list_len() -> u32;
+    unsafe fn worker_list(worker_list_ptr: *mut u32, len: u32) -> u32;
+    unsafe fn worker_eval(worker_id: u32, job_id: u32, js_code_ptr: *const u8, js_code_len: usize);
+    unsafe fn worker_send_message(worker_id: u32, msg_ptr: *const u8, msg_len: usize);
 }

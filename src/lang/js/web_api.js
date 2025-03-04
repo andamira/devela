@@ -10,18 +10,19 @@
 //     - eval
 //     - events
 //     - history_navigation
-//     - performance
 //   - extended
 //     - canvas
+//     - performance
+//     - workers
 
 export async function initWasm(wasmPath, imports = {}) {
-	/* config */
+	/* Config */
 
 	let wasmInstance;
 	let canvas = null;
 	let ctx = null;
 
-	/* helpers */
+	/* Helpers */
 
 	// Decode UTF-8 strings from WASM memory
 	function str_decode(ptr, len) {
@@ -39,11 +40,11 @@ export async function initWasm(wasmPath, imports = {}) {
 		ctx = newCtx;
 	}
 
-	/* bindings */
+	/* Bindings */
 
 	const wasmBindings = {
 
-		/* core APIs */
+		/* Core APIs */
 
 		api_console: {
 			// Console API
@@ -122,11 +123,11 @@ export async function initWasm(wasmPath, imports = {}) {
 			history_forward: () => history.forward(),
 			history_go: (delta) => history.go(delta),
 			history_pushState: (statePtr, stateLen, titlePtr, titleLen, urlPtr, urlLen) =>
-				history.pushState(str_decode(statePtr, stateLen),
-					str_decode(titlePtr, titleLen), str_decode(urlPtr, urlLen)),
+			history.pushState(str_decode(statePtr, stateLen),
+				str_decode(titlePtr, titleLen), str_decode(urlPtr, urlLen)),
 			history_replaceState: (statePtr, stateLen, titlePtr, titleLen, urlPtr, urlLen) =>
-				history.replaceState(str_decode(statePtr, stateLen),
-					str_decode(titlePtr, titleLen), str_decode(urlPtr, urlLen)),
+			history.replaceState(str_decode(statePtr, stateLen),
+				str_decode(titlePtr, titleLen), str_decode(urlPtr, urlLen)),
 			// Location API
 			location_reload: () => location.reload(),
 			location_assign: (urlPtr, urlLen) => location.assign(str_decode(urlPtr, urlLen)),
@@ -145,7 +146,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			},
 		},
 
-		/* extended APIs*/
+		/* Extended APIs*/
 
 		api_canvas: {
 			/* misc. */
@@ -208,22 +209,129 @@ export async function initWasm(wasmPath, imports = {}) {
 				const eventName = str_decode(eventPtr, eventLen);
 				return performance.eventCounts?.get([eventName]) ?? 0;
 			}
-		}
+		},
+		api_workers: {
+			_workers: new Map(),      // Map of worker_id -> Worker instance
+			_nextWorkerId: 1,         // Auto-incrementing worker ID
+			_jobQueue: new Map(),     // Job ID -> Promise resolution mapping
+			_messageQueue: new Map(), // Worker ID -> Message Handlers
+
+			// Spawns a new worker and returns its unique ID.
+			worker_spawn: (script_ptr, script_len) => {
+				let script = str_decode(script_ptr, script_len);
+				let worker;
+				if (script.startsWith("function") || script.includes("self.onmessage")) {
+					const blob = new Blob([script], { type: "application/javascript" });
+					worker = new Worker(URL.createObjectURL(blob));
+				} else { // then it's a file to load
+					worker = new Worker(script);
+				}
+				const wid = wasmBindings.api_workers._nextWorkerId++;
+				worker.onmessage = (event) => wasmBindings.api_workers._handleMessage(wid, event);
+				worker.onerror = (error) => console.error(`Worker ${wid} error:`, error);
+				wasmBindings.api_workers._workers.set(wid, worker);
+				return wid;
+			},
+			// Stops a specific worker by ID.
+			worker_stop: (worker_id) => {
+				const worker = wasmBindings.api_workers._workers.get(worker_id);
+				if (worker) {
+					worker.terminate();
+					wasmBindings.api_workers._workers.delete(worker_id);
+				}
+			},
+			// Stops all active workers.
+			worker_stop_all: () => {
+				wasmBindings.api_workers._workers.forEach(worker => worker.terminate());
+				wasmBindings.api_workers._workers.clear();
+			},
+			// Returns the number of active workers.
+			worker_list_len: () => { return wasmBindings.api_workers._workers.size; },
+			// Write worker IDs into the Rust buffer and returns the number of IDs written
+			worker_list: (buf_ptr, buf_len) => {
+				const workers = Array.from(wasmBindings.api_workers._workers.keys());
+				const count = Math.min(workers.length, buf_len);
+				const buffer = new Uint32Array(wasmInstance.exports.memory.buffer, buf_ptr, buf_len);
+				for (let i = 0; i < count; i++) {
+					buffer[i] = workers[i];
+				}
+				return count;
+			},
+			// Sends a message to a worker.
+			worker_send_message: (worker_id, msg_ptr, msg_len) => {
+				const message = str_decode(msg_ptr, msg_len);
+				const worker = wasmBindings.api_workers._workers.get(worker_id);
+				if (!worker) { console.error(`Worker ${worker_id} not found.`); return; }
+				worker.postMessage({ type: "message", message });
+			},
+			// Handles messages received from workers.
+			_handleMessage: (worker_id, event) => {
+				if (event.data.type === "message") {
+					const handler = wasmBindings.api_workers._messageQueue.get(worker_id);
+					if (handler) {
+						handler(event.data.message);
+					}
+				} else if (event.data.type === "eval_result") {
+					const { jobId, result } = event.data;
+					const resolve = wasmBindings.api_workers._jobQueue.get(jobId);
+					if (resolve) {
+						resolve(result);
+						wasmBindings.api_workers._jobQueue.delete(jobId);
+					}
+				}
+			},
+			// Runs JavaScript inside a specific Web Worker or the main thread.
+			worker_eval: (worker_id, jobId, jsCodePtr, jsCodeLen) => {
+				const jsCode = str_decode(jsCodePtr, jsCodeLen);
+				if (worker_id === 0) {
+					// Run JS in the main thread
+					try {
+						const result = eval(jsCode);
+						return result;
+					} catch (error) {
+						console.error("Eval error:", error);
+						return `Error: ${error.message}`;
+					}
+				} else {
+					// Run JS in a worker
+					return new Promise((resolve) => {
+						const worker = wasmBindings.api_workers._workers.get(worker_id);
+						if (!worker) {
+							console.error(`Worker ${worker_id} not found.`);
+							return;
+						}
+						wasmBindings.api_workers._jobQueue.set(jobId, resolve);
+						worker.postMessage({ type: "eval", jobId, jsCode });
+					});
+				}
+			}
+		},
 	};
 
-	/* window namespace */
+	/* Global Namespace Setup */
 
+	// Make Web API modules globally accessible from Rust
 	window.api_events = wasmBindings.api_events;
-	window.wasm_callback = (callbackPtr) => {
-		wasmInstance.exports.wasm_callback(callbackPtr); // Js::wasm_callback
-	};
+	window.api_workers = wasmBindings.api_workers;
 
+	// Allows Rust to call JavaScript functions via function pointers (Js::wasm_callback)
+	window.wasm_callback = (callbackPtr) => { wasmInstance.exports.wasm_callback(callbackPtr); };
+
+	/* WASM Instantiation */
+
+	// Combine default bindings with additional imports from Rust
 	const finalImports = { ...wasmBindings, ...imports };
-	const response = await fetch(wasmPath);
-	const wasm = await WebAssembly.instantiateStreaming(response, finalImports);
 
-	wasmInstance = wasm.instance;
-	wasm.instance.exports.main();
+	try { // Fetch and instantiate the WebAssembly binary
+		const response = await fetch(wasmPath);
+		if (!response.ok) throw new Error(`Failed to load WASM: ${response.statusText}`);
+		const wasm = await WebAssembly.instantiateStreaming(response, finalImports);
+		wasmInstance = wasm.instance;
+		wasm.instance.exports.main();
+		return wasmInstance;
+	} catch (error) { console.error("WASM loading failed:", error); return null; }
 
+	wasmInstance = wasm.instance; // Store the WebAssembly instance globally
+	wasm.instance.exports.main(); // Run the extern Rust `main()` function
 	return wasmInstance;
 }
