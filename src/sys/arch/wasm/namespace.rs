@@ -76,7 +76,7 @@ impl Wasm {
     /// On non-WASM platforms, always returns `0`.
     ///
     /// See `core::arch::wasm32::`[`memory_size`].
-    pub fn memory_size() -> usize {
+    pub fn memory_pages() -> usize {
         #[cfg(target_family = "wasm")]
         return memory_size(0);
         #[cfg(not(target_family = "wasm"))]
@@ -87,7 +87,7 @@ impl Wasm {
     ///
     /// On non-WASM platforms, always returns `0`.
     pub fn memory_bytes() -> usize {
-        Self::memory_size().saturating_mul(Self::PAGE_BYTES)
+        Self::memory_pages().saturating_mul(Self::PAGE_BYTES)
     }
 
     /// Attempts to grow the default linear memory by the specified `delta` of pages.
@@ -100,7 +100,7 @@ impl Wasm {
     pub fn memory_grow(delta: usize) -> bool {
         #[cfg(target_family = "wasm")]
         {
-            let previous = Self::memory_size();
+            let previous = Self::memory_pages();
             let result = memory_grow(0, delta);
             return previous != result;
         }
@@ -113,7 +113,7 @@ impl Wasm {
     /// On non-WASM platforms, always returns `false`.
     pub fn memory_can_grow() -> bool {
         #[cfg(target_family = "wasm")]
-        return Self::memory_size() < Self::MAX_PAGES;
+        return Self::memory_pages() < Self::MAX_PAGES;
         #[cfg(not(target_family = "wasm"))]
         false
     }

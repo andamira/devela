@@ -7,11 +7,8 @@
     <title>Rust Js Web API example</title>
     <script type="module">
       import { initWasm } from "./web_api.js";
-      window.addEventListener("DOMContentLoaded", () => {
-          let wasmInstance;
-          initWasm("js_web_api.wasm")
-              .then(instance => { wasmInstance = instance; })
-              .catch(err => console.error("WASM loading failed:", err));
+      window.addEventListener("DOMContentLoaded", async () => {
+          window.wasmInstance = await initWasm("js_web_api.wasm");
       });
     </script>
   </head>

@@ -10,24 +10,27 @@ devela::define_panic_handler! { web_api }
 
 use devela::{format_buf, Js, JsEvent, Wasm};
 
+/// Static string buffer for printing to the console.
+static mut BUF: [u8; 256] = [0; 256];
+
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
-    Js::set_canvas("#example_canvas_1");
+    let buf: &mut [u8] = unsafe { &mut BUF };
 
-    let mut buf = [0u8; 256];
+    Js::set_canvas("#example_canvas_1");
 
     /* wasm architecture */
 
-    Js::console_log(&format_buf![?&mut buf, "Wasm memory: {}, bytes: {}",
-        Wasm::memory_size(), Wasm::memory_bytes()]);
-    Js::console_log(&format_buf![?&mut buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
-    Js::console_log(&format_buf![?&mut buf, "Wasm::simd128: {}", Wasm::has_simd()]);
-    Js::console_log(&format_buf![?&mut buf, "Wasm::mutable-globals: {}",
-        Wasm::has_mutable_globals()]);
+    let wasm_pages = Wasm::memory_pages();
+    let wasm_bytes =  Wasm::memory_bytes();
+    Js::console_log(&format_buf![?buf, "Wasm memory pages: {wasm_pages}, bytes: {wasm_bytes}"]);
+    Js::console_log(&format_buf![?buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
+    Js::console_log(&format_buf![?buf, "Wasm::simd128: {}", Wasm::has_simd()]);
+    Js::console_log(&format_buf![?buf, "Wasm::mutable-globals: {}", Wasm::has_mutable_globals()]);
 
     /* console */
 
-    Js::console_log(format_buf![?&mut buf, "example log at: {}ms", Js::performance_now()]);
+    Js::console_log(format_buf![?buf, "example log at: {}ms", Js::performance_now()]);
     Js::console_info("example info");
     Js::console_debug("example debug");
     Js::console_warn("example warn");
@@ -54,7 +57,7 @@ pub extern "C" fn main() {
     /* text */
 
     let metrics = Js::measure_text_full("Hello, world!");
-    Js::console_log(&format_buf![?&mut buf, "{metrics:?}"]);
+    Js::console_log(&format_buf![?buf, "{metrics:?}"]);
 
     // Add an event listener to the canvas for clicks
     Js::event_add_listener("#example_canvas_1", JsEvent::Click, canvas_click);
@@ -67,10 +70,8 @@ pub extern "C" fn main() {
 /// Called when clicking on the canvas.
 #[unsafe(no_mangle)]
 pub extern "C" fn canvas_click() {
-    let time = Js::performance_now();
-
-    static mut BUF: [u8; 64] = [0; 64];
     let buf: &mut [u8] = unsafe { &mut BUF };
+    let time = Js::performance_now();
 
     let times = Js::performance_event_count(JsEvent::Click) + 1;
     Js::console_log(format_buf![?buf, "Canvas clicked {times} times"]);
