@@ -109,6 +109,7 @@
 - rename flags:
   - `prim···` flag to `prim··`, `_str*` to `_str*`.
 - rename/move modules:
+  - `code::result::{error, panic}` inside `code`.
   - `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
   - `data::{bit, hash, serde}` inside `data::codec`.
   - `num::cmp` to `num::ord`.

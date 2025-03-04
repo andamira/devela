@@ -1,10 +1,10 @@
-// devela::code::result::error
+// devela::code::error
 //
-//! Error-related types and traits.
+//! Errors, backtraces, structured handling.
 //!
 //! It re-exports the error and result types defined in other modules.
 //!
-#![doc = crate::doc_!(extends: error)]
+#![doc = crate::doc_!(extends: backtrace, error)]
 //
 
 mod ext; // ExtError

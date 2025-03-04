@@ -1,15 +1,13 @@
-// devela::code::result::panic
+// devela::code::panic
 //
-//! Panic support,
-#![doc = crate::doc_!(extends: panic)]
-#![doc = crate::doc_!(modules: crate::code::result; panic)]
-#![doc = crate::doc_!(newline)]
+//! Panic hooks, unwinding, abort strategies.
 //!
+#![doc = crate::doc_!(extends: panic)]
 //
 
 mod define; // define_panic_handler!
 mod namespace; // Panic
-mod reexports;
+mod reexports; // ::core::panic::*
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -20,7 +18,7 @@ crate::items! { // structural access: _mods, _all, _always
     mod _mods {
         pub use super::{define::*, namespace::*, reexports::*};
     }
-    pub(super) mod _all {
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }

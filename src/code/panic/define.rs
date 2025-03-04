@@ -1,4 +1,4 @@
-// devela::code::result::panic::define
+// devela::code::panic::define
 //
 //! Defines the [`define_panic_handler!`] macro.
 //

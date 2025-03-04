@@ -1,4 +1,4 @@
-// devela::code::result::panic::reexports
+// devela::code::panic::reexports
 //
 //! Reexported items.
 //
@@ -8,7 +8,7 @@ use crate::reexport;
 /* structs */
 
 reexport! { rust: core::panic,
-    doc: "Passed to `#[panic_handler]` in `no_std`, where panics always carry a formatted message.",
+    doc: "Passed to `#[panic_handler]` in `no_std`, always carrying a formatted message.",
     PanicInfo
 }
 reexport! { rust: std::panic,
