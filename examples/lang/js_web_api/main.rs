@@ -22,7 +22,7 @@ pub extern "C" fn main() {
     /* wasm architecture */
 
     let wasm_pages = Wasm::memory_pages();
-    let wasm_bytes =  Wasm::memory_bytes();
+    let wasm_bytes = Wasm::memory_bytes();
     Js::console_log(&format_buf![?buf, "Wasm memory pages: {wasm_pages}, bytes: {wasm_bytes}"]);
     Js::console_log(&format_buf![?buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
     Js::console_log(&format_buf![?buf, "Wasm::simd128: {}", Wasm::has_simd()]);

@@ -9,6 +9,8 @@
 // - enum JsPermissionState
 // - struct JsTextMetrics
 // - struct JsTextMetricsFull
+// - struct JsWorker
+// - enum JsWorkerError
 
 use crate::{TAG_EXPERIMENTAL, TAG_NON_STANDARD};
 
@@ -217,4 +219,45 @@ pub struct JsTextMetricsFull {
     pub alphabetic_baseline: f32,
     /// Ideographic baseline position.
     pub ideographic_baseline: f32,
+}
+
+/// A handle to a JavaScript Web Worker.
+#[repr(C)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct JsWorker {
+    pub(super) id: u32,
+}
+#[rustfmt::skip]
+impl JsWorker {
+    /// Returns a new invalid worker.
+    pub const fn invalid() -> Self { JsWorker { id: 0 } }
+    /// Returns the worker's ID.
+    pub const fn id(self) -> u32 { self.id }
+}
+#[rustfmt::skip]
+#[cfg(all(not(windows), feature = "unsafe_ffi"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
+impl JsWorker {
+    /// Spawns a new JavaScript Web Worker from a script.
+    pub fn spawn(script: &str) -> Result<Self, JsWorkerError> { Js::worker_spawn(script) }
+    /// Stops this Web Worker.
+    pub fn stop(self) { Js::worker_stop(self); }
+    /// Checks if this worker is still active by querying JavaScript.
+    pub fn is_active(self) -> bool { Js::worker_is_active(self) }
+    /// Sends a message to this Web Worker.
+    pub fn send_message(self, message: &str) { Js::worker_send_message(self, message); }
+    /// Executes JavaScript in this Web Worker.
+    pub fn eval(self, job_id: u32, js_code: &str) -> Result<(), JsWorkerError> {
+        Js::worker_eval(self, job_id, js_code)
+    }
+}
+
+/// Errors that can occur when working with JavaScript Web Workers.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum JsWorkerError {
+    /// The worker script provided was invalid.
+    InvalidScript,
+    /// The worker was not found.
+    WorkerNotFound,
 }

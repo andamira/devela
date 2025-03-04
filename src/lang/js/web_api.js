@@ -232,6 +232,8 @@ export async function initWasm(wasmPath, imports = {}) {
 				wasmBindings.api_workers._workers.set(wid, worker);
 				return wid;
 			},
+			// Returns `true` if the given worker is active.
+			worker_is_active: (wid) => { return wasmBindings.api_workers._workers.has(wid); },
 			// Stops a specific worker by ID.
 			worker_stop: (worker_id) => {
 				const worker = wasmBindings.api_workers._workers.get(worker_id);
@@ -283,28 +285,15 @@ export async function initWasm(wasmPath, imports = {}) {
 			// Runs JavaScript inside a specific Web Worker or the main thread.
 			worker_eval: (worker_id, jobId, jsCodePtr, jsCodeLen) => {
 				const jsCode = str_decode(jsCodePtr, jsCodeLen);
-				if (worker_id === 0) {
-					// Run JS in the main thread
-					try {
-						const result = eval(jsCode);
-						return result;
-					} catch (error) {
-						console.error("Eval error:", error);
-						return `Error: ${error.message}`;
-					}
-				} else {
-					// Run JS in a worker
-					return new Promise((resolve) => {
-						const worker = wasmBindings.api_workers._workers.get(worker_id);
-						if (!worker) {
-							console.error(`Worker ${worker_id} not found.`);
-							return;
-						}
-						wasmBindings.api_workers._jobQueue.set(jobId, resolve);
-						worker.postMessage({ type: "eval", jobId, jsCode });
-					});
+				const worker = wasmBindings.api_workers._workers.get(worker_id);
+				if (!worker) {
+					console.error(`Worker ${worker_id} not found.`);
+					return false;
 				}
-			}
+				wasmBindings.api_workers._jobQueue.set(jobId, () => {});
+				worker.postMessage({ type: "eval", jobId, jsCode });
+				return true;
+			},
 		},
 	};
 

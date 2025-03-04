@@ -11,7 +11,6 @@ crate::items! {
 
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
-    // #[cfg(target_arch = "wasm32")]
     #[cfg(not(windows))]
     mod web_api;
 }

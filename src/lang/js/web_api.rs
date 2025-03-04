@@ -19,7 +19,7 @@
 
 use devela::{
     js_reexport, transmute, Js, JsEvent, JsPermission, JsPermissionState, JsTextMetrics,
-    JsTextMetricsFull,
+    JsTextMetricsFull, JsWorker, JsWorkerError,
 };
 #[cfg(feature = "alloc")]
 use devela::{vec_ as vec, Vec};
@@ -409,47 +409,56 @@ js_reexport! {
 #[rustfmt::skip]
 impl Js {
     /// Spawns a Web Worker and returns its ID.
-    pub fn worker_spawn(worker_script: &str) -> u32 {
-        unsafe { worker_spawn(worker_script.as_ptr(), worker_script.len()) }
+    pub fn worker_spawn(script: &str) -> Result<JsWorker, JsWorkerError> {
+        let id = unsafe { worker_spawn(script.as_ptr(), script.len()) };
+        if id == 0 { Err(JsWorkerError::InvalidScript) } else { Ok(JsWorker { id }) }
     }
+    /// Checks if this worker is still active by querying JavaScript.
+    pub fn worker_is_active(worker: JsWorker) -> bool { worker_is_active(worker.id()) }
     /// Stops a specific Web Worker by ID.
-    pub fn worker_stop(worker_id: u32) { worker_stop(worker_id); }
+    pub fn worker_stop(worker: JsWorker) { worker_stop(worker.id()); }
     /// Stops all Web Workers.
     pub fn worker_stop_all() { worker_stop_all(); }
     /// Returns the number of active workers.
-    pub fn worker_list_len() -> u32 { worker_list_len() }
+    pub fn worker_list_len() -> usize { worker_list_len() as usize }
     /// Returns the list of active worker IDs.
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    pub fn worker_list() -> Vec<u32> {
-        let len = worker_list_len();
-        let mut workers = vec![0; len as usize];
-        let _ = unsafe { worker_list(workers.as_mut_ptr(), len) };
+    pub fn worker_list() -> Vec<JsWorker> {
+        let len = worker_list_len() as usize;
+        let mut workers = vec![JsWorker::default(); len];
+        let count = Js::worker_list_buf(&mut workers);
+        workers.truncate(count);
         workers
     }
-    /// Writes active worker IDs into a buffer and returns the number written.
-    pub fn worker_list_buf(buffer: &mut [u32]) -> usize {
+    /// Writes active worker handles into a buffer and returns the number written.
+    pub fn worker_list_buf(buffer: &mut [JsWorker]) -> usize {
         let len = worker_list_len() as usize;
         let count = len.min(buffer.len());
-        (unsafe { worker_list(buffer.as_mut_ptr(), count as u32) }) as usize
+        unsafe { worker_list(buffer.as_mut_ptr() as *mut u32, count as u32); }
+        count
     }
-    /// Runs JavaScript inside a specific Web Worker or the main thread.
-    pub fn worker_eval(worker_id: Option<u32>, job_id: u32, js_code: &str) {
-        let worker_id = worker_id.unwrap_or(0); // 0 means main thread
-        unsafe { worker_eval(worker_id, job_id, js_code.as_ptr(), js_code.len()); }
+    /// Executes JavaScript code inside this worker.
+    ///
+    /// Returns `Ok(())` if the worker exists and the job was sent, otherwise `Err(JsWorkerError)`.
+    pub fn worker_eval(worker: JsWorker, job_id: u32, js_code: &str) -> Result<(), JsWorkerError> {
+        let success = unsafe { worker_eval(worker.id, job_id, js_code.as_ptr(), js_code.len()) };
+        if success { Ok(()) } else { Err(JsWorkerError::WorkerNotFound) }
     }
     /// Sends a message to a specific Web Worker.
-    pub fn worker_send_message(worker_id: u32, msg: &str) {
-        unsafe { worker_send_message(worker_id, msg.as_ptr(), msg.len()); }
+    pub fn worker_send_message(worker: JsWorker, msg: &str) {
+        unsafe { worker_send_message(worker.id(), msg.as_ptr(), msg.len()); }
     }
 }
 js_reexport! {
     [module: "api_workers"]
     unsafe fn worker_spawn(script_ptr: *const u8, script_len: usize) -> u32;
+    safe fn worker_is_active(worker_id: u32) -> bool;
     safe fn worker_stop(worker_id: u32);
     safe fn worker_stop_all();
     safe fn worker_list_len() -> u32;
     unsafe fn worker_list(worker_list_ptr: *mut u32, len: u32) -> u32;
-    unsafe fn worker_eval(worker_id: u32, job_id: u32, js_code_ptr: *const u8, js_code_len: usize);
+    unsafe fn worker_eval(worker_id: u32, job_id: u32,
+        js_code_ptr: *const u8, js_code_len: usize) -> bool;
     unsafe fn worker_send_message(worker_id: u32, msg_ptr: *const u8, msg_len: usize);
 }
