@@ -87,6 +87,7 @@
         assert_matches,
         cell_update,
         const_array_from_ref,
+        const_cell,
         const_slice_from_ref,
         const_str_split_at,
         const_swap_nonoverlapping,

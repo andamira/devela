@@ -1,7 +1,7 @@
 <!-- Updated intra-doc links, to be loaded from: _doc::vendored -->
 
 <!-- license: Apache-2.0 OR MIT -->
-  [M_bytehound-preload]: crate::_info::vendored::bytehound-preload
+  [M_bytehound-preload]: crate::_info::vendored::bytehound_preload
   [`SpinLock`]: crate::work::sync::SpinLock
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
   [`cfg-if!`]: crate::code::util::cfg_if
@@ -46,7 +46,7 @@
   [`data::codec::encode`]: crate::data::codec::encode
   [M_icy_sixel]: crate::_info::vendored::icy_sixel
   [`media::image::sixel`]: crate::media::image::sixel
-  [M_object-id]: crate::_info::vendored::object-id
+  [M_object-id]: crate::_info::vendored::object_id
   [`IdPin`]: crate::data::uid::IdPin
   [`IdPinBox`]: crate::IdPinBox
   [`as_bytes`]: crate::sys::mem::Mem::as_bytes

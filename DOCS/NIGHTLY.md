@@ -57,6 +57,7 @@ See also
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
+- 1.??: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
 - 1.??: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
 - 1.??: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
 - 1.??: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)

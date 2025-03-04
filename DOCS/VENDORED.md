@@ -6,7 +6,7 @@ See the linked modifications for detailed changes.
 ## MIT OR Apache-2.0 licenses
 
 - <i id="bytehound-preload"></i>[bytehound-preload] by Jan Bujak,
-  as the [`SpinLock`] and [`SpinLockGuard`] structs.
+  as the [`SpinLock`] and [`SpinLockGuard`] structs ([*modifications*][M_bytehound-preload]).
 - <i id="cfg-if"></i>[cfg-if] by Alex Crichton,
   as the [`cfg-if!`] macro.
 - <i id="const_list"></i>[const_list] by Douglas Dwyer,
