@@ -27,7 +27,7 @@
     - key: `StaticMapEntry`.
     - table: `DataValue*`, `DataType*`, `DataRaw*`.
     - xipher: `Crockford`, `Rfc4648`, `Rfc4648Hex`.
-  - lang: `g_*` `JsEvent`, `JsPermission`, `JsPermissionState`, `JsTextMetrics`, `JsTextMetricsFull`, `JsWorker`, `JsWorkerError`.
+  - lang: `g_*` `JsEvent`, `JsPermission`, `JsPermissionState`, `JsTextMetrics`, `JsTextMetricsFull`, `JsWorker`, `JsWorkerError`, `JsWorkerJob`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - num:
     - geom:
@@ -92,6 +92,8 @@
   - panic: `panic_*`.
   - text: `crate_root`, `crate_root_string`.
   - work: `future_block`, `future_pending`, `future_ready`.
+- remove methods:
+  - `Float:` `const_round_ties_odd`.
 - remove private variant `IoErrorKind::Uncategorized`.
 - remove features: `unsafe_async`.
 - remove modules:
@@ -141,7 +143,7 @@
   - `str`: when enabling `_str_u*`.
 - make customizable: `XorShift[16|32|64]`.
 - make const methods:
-  - `Float`: `clamp`, `max`, `min`, `signum`, `copysign`.
+  - `Float`: `clamp`, `copysign`, `div_euclid`, `max`, `min`, `min_total`, `round_ties_odd`, `signum`.
   - `Mem`: `swap`.
 - change attributes:
   - mark `Float` and `Sign` as `must_use`.

@@ -122,19 +122,11 @@ macro_rules! impl_float_shared {
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
             /// # Formulation
             #[doc = FORMULA_ROUND_TIES_ODD!()]
-            pub fn const_round_ties_odd(self) -> Float<$f> {
+            #[allow(clippy::float_cmp, reason = "RETHINK (self.0 - r.0).abs() == 0.5")]
+            pub const fn round_ties_odd(self) -> Float<$f> {
                 let r = self.const_round_ties_away();
                 iif![r.0 % 2.0 != 0.0; r ;
-                    iif![(self - r).abs() == 0.5; r + self.signum(); r]]
-            }
-
-            /// Returns the nearest integer, rounding ties to the nearest odd integer.
-            /// # Formulation
-            #[doc = FORMULA_ROUND_TIES_ODD!()]
-            pub fn round_ties_odd(self) -> Float<$f> {
-                let r = self.round_ties_away();
-                iif![r.0 % 2.0 != 0.0; r ;
-                    iif![(self - r).abs() == 0.5; r + self.signum(); r]]
+                    iif![(self.0 - r.0).abs() == 0.5; Float(r.0 + self.0.signum()); r]]
             }
 
             /// The fractional part.
@@ -224,7 +216,7 @@ macro_rules! impl_float_shared {
 
             /// The euclidean division.
             // NOTE: [incorrect computations](https://github.com/rust-lang/rust/issues/107904)
-            pub fn div_euclid(self, other: $f) -> Float<$f> {
+            pub const fn div_euclid(self, other: $f) -> Float<$f> {
                 let q = Float(self.0 / other).trunc().0;
                 if self.0 % other < 0.0 {
                     iif![other > 0.0; Float(q - 1.0); Float(q + 1.0)]
@@ -456,7 +448,7 @@ macro_rules! impl_float_shared {
             /// See also: [`min_nan`][Self::min_nan].
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
-            pub fn min_total(self, other: $f) -> Float<$f> {
+            pub const fn min_total(self, other: $f) -> Float<$f> {
                 Float(crate::Compare(self.0).min(other))
             }
 
