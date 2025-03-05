@@ -46,6 +46,10 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 
     /* Collect enabled cfg flags from both RUSTFLAGS and RUSTDOCFLAGS */
 
+    // WARNING: `RUSTDOCFLAGS` changes may not take effect immediately!
+    // ------------------------------------------------------------------
+    // Unlike `RUSTFLAGS`, changes to `RUSTDOCFLAGS` may not always trigger a rebuild.
+    // Cargo caches documentation builds, so previously compiled flags might still apply.
     ENABLED_CFG_FLAGS.get_or_init(|| {
         let mut cfg_flags = HashSet::new();
         if let Ok(value) = env::var("RUSTDOCFLAGS") {
@@ -84,7 +88,16 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 mod reflection {
     use super::{ENABLED_CARGO_FEATURES, ENABLED_CFG_FLAGS};
 
-    /* FLAGS */
+    /* FLAGS
+   -------------------------------------------------------------------------
+   - Each `FlagsFlags` entry maps `cfg_flags` (required for activation)
+     to `auto_flags` (which get enabled when any `cfg_flags` is present).
+
+   - Important: Auto-enabled flags **do not propagate recursively**.
+     If a flag (e.g., `nightly_stable`) has its own dependent flags,
+     it must be explicitly included in the `cfg_flags` list of the parent
+     (e.g., `nightly` must list `nightly_stable` if its children should be active).
+    */
 
     /// Associates a set of automatically enabled flags with a set of `cfg` flags.
     pub struct FlagsFlags<'a> {
@@ -93,12 +106,37 @@ mod reflection {
         /// `cfg` flags that trigger the corresponding `auto_flags`.
         cfg_flags: &'a [&'a str],
     }
+
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
-        auto_flags: &["nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_simd"],
+        auto_flags: &[
+            "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_simd",
+            "nightly_stable",
+                "nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later",
+        ],
         cfg_flags: &["nightly"],
     };
+        pub const FLAGS_NIGHTLY_STABLE: FlagsFlags = FlagsFlags {
+            auto_flags: &["nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"],
+            cfg_flags: &["nightly_stable"],
+        };
+        pub const FLAGS_NIGHTLY_REF: FlagsFlags = FlagsFlags {
+            auto_flags: &["nightly··"],
+            cfg_flags: &[ "nightly",
+                "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_simd",
+                "nightly_stable",
+                    "nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later",
+            ],
+        };
 
-    /* FEATURES */
+    /* FEATURES
+   -------------------------------------------------------------------------
+   - Each `FlagsFeatures` entry maps `features` (required for activation)
+     to `ref_flags` (which get enabled when any `features` are present).
+
+   - Features propagate **transitively**—enabling a feature activates all its
+     direct and indirect flags. (e.g., enabling `"sys"` also enables `"mem"` and,
+     through it, `"mem··"`, even though `"mem··"` isn't directly enabled in `"sys"`).
+    */
 
     /// Associates a set of reflection flags with a set of `cfg` features.
     pub struct FlagsFeatures<'a> {
@@ -166,15 +204,7 @@ mod reflection {
     // In sync with ./Cargo.toml::nightly & ./src/lib.rs
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["nightly··"],
-        features: &[
-            "nightly_allocator",
-            "nightly_autodiff",
-            "nightly_bigint",
-            "nightly_doc",
-            "nightly_float",
-            "nightly_simd",
-            "nightly_stable",
-        ]
+        features: &["nightly_allocator", "nightly_doc", "nightly_float"]
     };
 
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
@@ -398,7 +428,7 @@ mod reflection {
     pub(super) fn set_ref_flags_from_cfg_flags() -> Vec<String> {
         let mut enabled_ref_flags = Vec::new();
         for ff in [
-            FLAGS_NIGHTLY,
+            FLAGS_NIGHTLY, FLAGS_NIGHTLY_STABLE, FLAGS_NIGHTLY_REF,
         ] {
             set_flags_dbg_flags(ff.auto_flags, ff.cfg_flags, &mut enabled_ref_flags);
         }

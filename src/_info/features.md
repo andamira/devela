@@ -174,22 +174,31 @@ To be able to use any unsafe functionality it's necessary to:
 - `safest`: forbids `unsafe` even in dependencies (except for the standard library).
 
 
-### Nightly features
+### Nightly cfg flags and features
 
 Enabling any of them sets the `nightly··` flag.
 
-- `nightly`: enables the nightly features:
-  - `nightly_allocator`: enables [`allocator_api`].
+#### Flags
+Usage example:
+```sh
+RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly b
+```
+
+- `nightly`: enables the nightly cfg flags:
   - `nightly_autodiff`: enables [`autodiff`].
   - `nightly_bigint`: enables [`bigint_helper_methods`].
   - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
-  - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
-  - `nightly_float`: enables [`f16`, `f128`].
   - `nightly_simd`: enables [`portable_simd`].
   - `nightly_stable`: enables stabilized features marked to be released *soon*:
     - `nightly_stable_next1`: in the next version.
     - `nightly_stable_next2`: in the version after that.
     - `nightly_stable_later`: later than that but *soon enough*.
+
+#### Features
+- `nightly`: enables the nightly features:
+  - `nightly_allocator`: enables [`allocator_api`].
+  - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
+  - `nightly_float`: enables [`f16`, `f128`].
 
 [`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
 [`autodiff`]: https://github.com/rust-lang/rust/issues/124509

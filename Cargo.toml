@@ -81,7 +81,7 @@ publish = true
 bench = false
 
 
-[features] # 278/300 (22 remaining), 149 visible, 129 hidden
+[features] # 272/300 (28 remaining), 143 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -282,8 +282,8 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 # - ./utils/release_dates.rs
 # - ./DOCS/NIGHTLY.md
 
-nightly = [ # [4] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
-	"nightly_allocator", "nightly_doc", "nightly_float", "nightly_stable",
+nightly = [ # [3] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
+	"nightly_allocator", "nightly_doc", "nightly_float",
 ] # `nightly··`
 	# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
 	# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
@@ -296,13 +296,6 @@ nightly = [ # [4] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
 	# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
 	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
-	#
-	# nightly features that should become stable soon enough.
-	nightly_stable = [ # In sync with ./src/lib.rs and ./DOCS/NIGHTLY.md
-		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
-		nightly_stable_next1 = [] # 1.86
-		nightly_stable_next2 = [] # 1.87
-		nightly_stable_later = [] # 1.??
 
 
 #* Capability features *#
@@ -1053,13 +1046,13 @@ strip = true         # Remove debug symbols for smaller binaries
 
 no-default-features = true
 features = ["_docsrs"]
-default-target = "x86_64-unknown-linux-gnu"
+rustc-args = ["--cfg", "nightly"]
 rustdoc-args = [
 	"--generate-link-to-definition",
 	"--html-in-header", "./config/rustdoc-header.html",
 	"-Ctarget-cpu=native", # see ./utils/cargo-native for local docs
 ]
-
+default-target = "x86_64-unknown-linux-gnu"
 
 [badges]
 # ==============================================================================
@@ -1154,6 +1147,12 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(nightly_bigint)", # bigint_helper_methods
 		# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 		"cfg(nightly_simd)", # portable_simd
+		#
+		# nightly features that should become stable soon enough.
+		"cfg(nightly_stable)", # In sync with ./src/lib.rs and ./DOCS/NIGHTLY.md
+			"cfg(nightly_stable_next1)", # 1.86
+			"cfg(nightly_stable_next2)", # 1.87
+			"cfg(nightly_stable_later)", # 1.??
 	#
 	# Auto-enabled reflection flags from ./build/features.rs
 	# --------------------------------------------------------------------------

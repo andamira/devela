@@ -2,10 +2,15 @@
 
 Legend:
 - ` ` = not enabled / can't be enabled
-- `·` = enabled by non-specific feature (`nightly_[next1|next2|later`)
-- `a` = enabled by non-specific feature (and depends on `alloc`)
-- `s` = enabled by non-specific feature (and depends on `std`)
-- `F` = enabled by some specific feature, shown afterwards.
+- `·` = enabled by non-specific cfg flag (`nightly_[next1|next2|later`)
+- `a` = enabled by non-specific cfg flag (and depends on `alloc`)
+- `s` = enabled by non-specific cfg flag (and depends on `std`)
+- `F` = enabled by some specific cfg flag, shown afterwards.
+
+Usage example:
+```sh
+RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly b
+```
 
 See also
 - <https://doc.rust-lang.org/nightly/unstable-book/the-unstable-book.html>

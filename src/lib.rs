@@ -30,11 +30,6 @@
 //
 // nightly
 //
-// (In sync with Cargo.toml::[lints.rust.unexpected_cfgs] & build/features.rs::FLAGS_NIGHTLY)
-#![cfg_attr(nightly_autodiff, feature(autodiff))]
-#![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
-#![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
-#![cfg_attr(nightly_simd, feature(portable_simd))]
 // (In sync with Cargo.toml::nightly & build/features.rs::NIGHTLY)
 #![cfg_attr(feature = "nightly_allocator", feature(allocator_api))]
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
@@ -42,10 +37,15 @@
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
 #![cfg_attr(feature = "nightly_float", feature(f16, f128))]
 //
-// "nightly_stable" includes:
+// (In sync with Cargo.toml::[lints.rust.unexpected_cfgs] & build/features.rs::FLAGS_NIGHTLY)
+#![cfg_attr(nightly_autodiff, feature(autodiff))]
+#![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
+#![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
+#![cfg_attr(nightly_simd, feature(portable_simd))]
+// `nightly_stable` includes:
 // ----------------------------
-// "nightly_stable_next1": 1.86 core, alloc, std…
-#![cfg_attr(feature = "nightly_stable_next1", feature(
+// `nightly_stable_next1`: 1.86 core, alloc, std…
+#![cfg_attr(nightly_stable_next1, feature(
     const_black_box,
     const_is_char_boundary,
     float_next_up_down,
@@ -54,15 +54,15 @@
     target_feature_11,
     trait_upcasting,
 ))]
-#![cfg_attr(all(feature = "nightly_stable_next1", feature = "alloc"), feature(vec_pop_if,))]
+#![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature(vec_pop_if,))]
 #![cfg_attr(
-    all(feature = "nightly_stable_next1", feature = "std"),
+    all(nightly_stable_next1, feature = "std"),
     feature(const_mut_cursor, map_many_mut,)
 )]
 // ----------------------------
-// "nightly_stable_next2": 1.87 core, alloc, std…
+// `nightly_stable_next2`: 1.87 core, alloc, std…
 #![cfg_attr(
-    feature = "nightly_stable_next2",
+    nightly_stable_next2,
     feature(
         const_slice_flatten,
         integer_sign_cast,
@@ -74,15 +74,15 @@
         unsigned_is_multiple_of
     )
 )]
-#![cfg_attr(all(feature = "nightly_stable_next2", feature = "alloc"), feature(extract_if,))]
+#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature(extract_if,))]
 #![cfg_attr(
-    all(feature = "nightly_stable_next2", feature = "std"),
+    all(nightly_stable_next2, feature = "std"),
     feature(file_lock, hash_extract_if, os_str_display,)
 )]
 // ----------------------------
-// "nightly_stable_later": 1.?? core, alloc, std, not(miri)…
+// `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
-    feature = "nightly_stable_later",
+    nightly_stable_later,
     feature(
         asm_goto,
         assert_matches,
@@ -104,14 +104,14 @@
     )
 )]
 #![cfg_attr(
-    all(feature = "nightly_stable_later", feature = "alloc"),
+    all(nightly_stable_later, feature = "alloc"),
     feature(box_uninit_write, new_zeroed_alloc, const_vec_string_slice,)
 )]
 #![cfg_attr(
-    all(feature = "nightly_stable_later", feature = "std"),
+    all(nightly_stable_later, feature = "std"),
     feature(anonymous_pipe, once_wait,)
 )]
-// #![cfg_attr(all(feature = "nightly_stable_later", not(miri)), feature())]
+// #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
 /* global safeguards */
 
