@@ -109,7 +109,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(anonymous_pipe, once_wait,)
+    feature(anonymous_pipe, once_wait,os_string_pathbuf_leak,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 

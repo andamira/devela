@@ -76,6 +76,7 @@ See also
 - 1.??: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
+- 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
 - 1.??: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
         ` ` `split_off` (new name)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
