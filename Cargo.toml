@@ -81,7 +81,7 @@ publish = true
 bench = false
 
 
-[features] # 279/300 (21 remaining), 150 visible, 129 hidden
+[features] # 278/300 (22 remaining), 149 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -282,21 +282,13 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 # - ./utils/release_dates.rs
 # - ./DOCS/NIGHTLY.md
 
-nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
-	"nightly_allocator", "nightly_autodiff", "nightly_bigint",
-	"nightly_doc", "nightly_float", "nightly_simd",
-	"nightly_stable",
+nightly = [ # [4] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
+	"nightly_allocator", "nightly_doc", "nightly_float", "nightly_stable",
 ] # `nightly··`
 	# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
 	# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
 	nightly_allocator = [ # allocator_api
 		"allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
-	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
-	nightly_autodiff = [] # autodiff
-	#
-	# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
-	nightly_bigint = [] # bigint_helper_methods
-	#
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 	nightly_doc = [] # not(doc_auto_cfg)
@@ -304,9 +296,6 @@ nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
 	# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
 	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
-	#
-	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
-	nightly_simd = [] # portable_simd
 	#
 	# nightly features that should become stable soon enough.
 	nightly_stable = [ # In sync with ./src/lib.rs and ./DOCS/NIGHTLY.md
@@ -1159,6 +1148,12 @@ check-cfg = [ # Allowed configuration flags:
 	"cfg(nightly)", # [1] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
 		# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 		"cfg(nightly_coro)", # coroutines, coroutine_trait, iter_from_coroutine
+		# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
+		"cfg(nightly_autodiff)", # autodiff
+		# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
+		"cfg(nightly_bigint)", # bigint_helper_methods
+		# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
+		"cfg(nightly_simd)", # portable_simd
 	#
 	# Auto-enabled reflection flags from ./build/features.rs
 	# --------------------------------------------------------------------------

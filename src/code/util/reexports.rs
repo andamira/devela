@@ -27,7 +27,7 @@ doc: "Informs the compiler that the current calling site is not reachable.", unr
 
 /* `core` macros re-exports */
 
-reexport! { rust: core::autodiff, extra_features: "nightly_autodiff",
+reexport! { rust: core::autodiff, extra_flags:(nightly_autodiff),
 doc: "Automatic Differentiation macro.", autodiff }
 
 // source code

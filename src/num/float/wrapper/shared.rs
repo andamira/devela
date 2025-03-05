@@ -600,7 +600,7 @@ macro_rules! impl_float_shared {
             /// # Formulation
             #[doc = FORMULA_DERIVATIVE!()]
             ///
-            /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` feature.
+            /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` cfg flag.
             ///
             /// [finite difference method]: https://en.wikipedia.org/wiki/Finite_difference_method
             /// [`autodiff`]: crate::autodiff

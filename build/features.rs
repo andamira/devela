@@ -94,7 +94,7 @@ mod reflection {
         cfg_flags: &'a [&'a str],
     }
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
-        auto_flags: &["nightly_coro"],
+        auto_flags: &["nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_simd"],
         cfg_flags: &["nightly"],
     };
 
