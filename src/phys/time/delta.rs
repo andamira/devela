@@ -15,6 +15,8 @@ use crate::Duration;
 use crate::ExtFloat;
 #[cfg(feature = "std")]
 use crate::SystemInstant;
+#[cfg(feature = "_float_f64")]
+use crate::{unwrap, Float};
 
 /// A signed duration of time, stored as an `(i64, i32)` pair of seconds and nanoseconds.
 ///
@@ -451,25 +453,13 @@ impl TimeDelta {
 /// # Operations involving floating-point numbers.
 impl TimeDelta {
     /// Returns the number of seconds, with a possible fractional nanosecond component.
-    pub fn as_secs_f64(&self) -> f64 {
+    pub const fn as_secs_f64(&self) -> f64 {
         (self.secs as f64) + ((self.nanos as f64) / (NANOS_PER_SEC as f64))
     }
 
     /// Returns the number of seconds, with a possible fractional nanosecond component.
-    pub fn as_secs_f32(&self) -> f32 {
+    pub const fn as_secs_f32(&self) -> f32 {
         (self.secs as f32) + ((self.nanos as f32) / (NANOS_PER_SEC as f32))
-    }
-
-    /// Returns the number of milliseconds, with a possible fractional nanosecond component.
-    pub fn as_millis_f64(&self) -> f64 {
-        ((self.secs as f64) * (MILLIS_PER_SEC as f64))
-            + ((self.nanos as f64) / (NANOS_PER_MILLI as f64))
-    }
-
-    /// Returns the number of milliseconds, with a possible fractional nanosecond component.
-    pub fn as_millis_f32(&self) -> f32 {
-        ((self.secs as f32) * (MILLIS_PER_SEC as f32))
-            + ((self.nanos as f32) / (NANOS_PER_MILLI as f32))
     }
 
     /// Returns a signed duration corresponding to the number of seconds.
@@ -539,6 +529,77 @@ impl TimeDelta {
         }
         let nanos = (secs.fract() * (NANOS_PER_SEC as f32)).round() as i32;
         let secs = secs.trunc() as i64;
+        Ok(TimeDelta::new_unchecked(secs, nanos))
+    }
+
+    /// Returns the number of milliseconds, with a possible fractional nanosecond component.
+    pub const fn as_millis_f64(&self) -> f64 {
+        ((self.secs as f64) * (MILLIS_PER_SEC as f64))
+            + ((self.nanos as f64) / (NANOS_PER_MILLI as f64))
+    }
+    /// Returns the number of milliseconds, with a possible fractional nanosecond component.
+    pub const fn as_millis_f32(&self) -> f32 {
+        ((self.secs as f32) * (MILLIS_PER_SEC as f32))
+            + ((self.nanos as f32) / (NANOS_PER_MILLI as f32))
+    }
+
+    /// Returns a signed duration corresponding to the number of milliseconds.
+    ///
+    /// The number given may have a fractional nanosecond component.
+    ///
+    /// # Panics
+    /// Panics if the given float overflows the minimum or maximum signed duration values.
+    #[cfg(any(feature = "std", feature = "_float_f64"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    pub fn from_millis_f64(millis: f64) -> TimeDelta {
+        TimeDelta::try_from_millis_f64(millis).expect("finite and in-bounds f64")
+    }
+
+    /// Returns a signed duration corresponding to the number of milliseconds.
+    ///
+    /// The number given may have a fractional nanosecond component.
+    ///
+    /// If the given float overflows the minimum or maximum signed duration
+    /// values, then an error is returned.
+    #[cfg(any(feature = "std", feature = "_float_f64"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    pub fn try_from_millis_f64(millis: f64) -> Result<TimeDelta, &'static str> {
+        if !millis.is_finite() {
+            return Err("could not convert non-finite milliseconds {millis} to signed duration");
+        }
+        if millis < (i64::MIN as f64) {
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MIN");
+        }
+        if millis > (i64::MAX as f64) {
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MAX");
+        }
+        let nanos = (millis.fract() * (NANOS_PER_MILLI as f64)).round() as i32;
+        let secs = millis.trunc() as i64 / MILLIS_PER_SEC;
+        Ok(TimeDelta::new_unchecked(secs, nanos))
+    }
+    /// Compile-time friendly version of `try_from_millis_f64`.
+    #[cfg(feature = "_float_f64")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_float_f64")))]
+    pub const fn const_from_millis_f64(millis: f64) -> TimeDelta {
+        unwrap![ok_expect TimeDelta::const_try_from_millis_f64(millis),
+            "finite and in-bounds f64"]
+    }
+    /// Compile-time friendly version of `try_from_millis_f64`.
+    #[cfg(feature = "_float_f64")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_float_f64")))]
+    pub const fn const_try_from_millis_f64(millis: f64) -> Result<TimeDelta, &'static str> {
+        if !millis.is_finite() {
+            return Err("could not convert non-finite milliseconds {millis} to signed duration");
+        }
+        if millis < (i64::MIN as f64) {
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MIN");
+        }
+        if millis > (i64::MAX as f64) {
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MAX");
+        }
+        use crate::Float;
+        let nanos = Float(Float(millis).fract().0 * (NANOS_PER_MILLI as f64)).const_round().0 as i32;
+        let secs = (Float(millis).const_trunc().0 as i64) / MILLIS_PER_SEC;
         Ok(TimeDelta::new_unchecked(secs, nanos))
     }
 
@@ -728,17 +789,25 @@ impl TryFrom<TimeDelta> for Duration {
 }
 
 #[cfg(feature = "dep_jiff")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_jiff")))]
 mod impl_jiff {
     use {super::TimeDelta, ::jiff::SignedDuration};
-    impl From<SignedDuration> for TimeDelta {
-        fn from(from: SignedDuration) -> TimeDelta {
+
+    impl TimeDelta {
+        /// Converts [`SignedDuration`] into [`TimeDelta`].
+        pub const fn from_jiff(from: SignedDuration) -> TimeDelta {
             TimeDelta::new(from.as_secs(), from.subsec_nanos())
         }
+        /// Converts [`TimeDelta`] into [`SignedDuration`].
+        pub const fn to_jiff(self) -> SignedDuration {
+            SignedDuration::new(self.secs, self.nanos)
+        }
+    }
+    impl From<SignedDuration> for TimeDelta {
+        fn from(from: SignedDuration) -> TimeDelta { Self::from_jiff(from) }
     }
     impl From<TimeDelta> for SignedDuration {
-        fn from(from: TimeDelta) -> SignedDuration {
-            SignedDuration::new(from.secs, from.nanos)
-        }
+        fn from(from: TimeDelta) -> SignedDuration { from.to_jiff() }
     }
 }
 
