@@ -212,19 +212,22 @@ export async function initWasm(wasmPath, imports = {}) {
 		},
 		api_workers: {
 			_workers: new Map(),      // Map of worker_id -> Worker instance
-			_nextWorkerId: 1,         // Auto-incrementing worker ID
+			_nextWorkerId: 1,         // Tracks worker IDs
+			_nextJobId: 1,            // Tracks job IDs
 			_jobQueue: new Map(),     // Job ID -> Promise resolution mapping
 			_messageQueue: new Map(), // Worker ID -> Message Handlers
+			_evalResults: new Map(), // Stores job results until Rust polls for them
 
 			// Spawns a new worker and returns its unique ID.
 			worker_spawn: (script_ptr, script_len) => {
-				let script = str_decode(script_ptr, script_len);
+				const script = str_decode(script_ptr, script_len);
 				let worker;
 				if (script.startsWith("function") || script.includes("self.onmessage")) {
 					const blob = new Blob([script], { type: "application/javascript" });
 					worker = new Worker(URL.createObjectURL(blob));
-				} else { // then it's a file to load
-					worker = new Worker(script);
+				} else { // then it's a file to load:
+					try { worker = new Worker(script); }
+					catch (error) { return 0; }
 				}
 				const wid = wasmBindings.api_workers._nextWorkerId++;
 				worker.onmessage = (event) => wasmBindings.api_workers._handleMessage(wid, event);
@@ -268,31 +271,47 @@ export async function initWasm(wasmPath, imports = {}) {
 			},
 			// Handles messages received from workers.
 			_handleMessage: (worker_id, event) => {
-				if (event.data.type === "message") {
-					const handler = wasmBindings.api_workers._messageQueue.get(worker_id);
-					if (handler) {
-						handler(event.data.message);
-					}
-				} else if (event.data.type === "eval_result") {
+				if (event.data.type === "eval_result") {
 					const { jobId, result } = event.data;
-					const resolve = wasmBindings.api_workers._jobQueue.get(jobId);
-					if (resolve) {
-						resolve(result);
-						wasmBindings.api_workers._jobQueue.delete(jobId);
-					}
+					wasmBindings.api_workers._evalResults.set(jobId, result);
+				} else if (event.data.type === "message_response") {
+					console.log(`Worker ${worker_id} response: ${event.data.message}`);
 				}
 			},
-			// Runs JavaScript inside a specific Web Worker or the main thread.
-			worker_eval: (worker_id, jobId, jsCodePtr, jsCodeLen) => {
+			// Runs JavaScript inside a worker
+			//
+			// Returns the JobId or 0 to indicate failure
+			worker_eval: (worker_id, jsCodePtr, jsCodeLen) => {
 				const jsCode = str_decode(jsCodePtr, jsCodeLen);
 				const worker = wasmBindings.api_workers._workers.get(worker_id);
-				if (!worker) {
-					console.error(`Worker ${worker_id} not found.`);
-					return false;
-				}
-				wasmBindings.api_workers._jobQueue.set(jobId, () => {});
+				if (!worker) { console.error(`Worker ${worker_id} not found.`); return 0; }
+				const jobId = wasmBindings.api_workers._nextJobId++;
+				wasmBindings.api_workers._evalResults.set(jobId, null); // Mark as pending
 				worker.postMessage({ type: "eval", jobId, jsCode });
-				return true;
+				return jobId; // Return the generated job ID
+			},
+			// Polls for the evaluation result and returns a pointer to the stored string.
+			worker_poll: (jobId) => {
+				if (wasmBindings.api_workers._evalResults.has(jobId)) {
+					const result = wasmBindings.api_workers._evalResults.get(jobId);
+					if (result === null) { return 0; } // Still pending
+					wasmBindings.api_workers._evalResults.delete(jobId);
+					return str_store(result); // Store in WASM memory and return pointer
+				}
+				return 0; // Job does not exist
+			},
+			// Polls for the evaluation result and writes it into a buffer.
+			worker_poll_buf: (jobId, bufPtr, bufLen) => {
+				if (!wasmBindings.api_workers._evalResults.has(jobId)) { return -1; } // not found
+				const result = wasmBindings.api_workers._evalResults.get(jobId);
+				if (result === null) { return 0; } // not ready
+				console.log(`~~~ Writing result for job ${jobId} to buffer.`);
+				wasmBindings.api_workers._evalResults.delete(jobId);
+				const buf = new Uint8Array(wasmInstance.exports.memory.buffer, bufPtr, bufLen);
+				const encoded = new TextEncoder().encode(result);
+				const bytesWritten = Math.min(encoded.length, bufLen);
+				buf.set(encoded.subarray(0, bytesWritten));
+				return bytesWritten;
 			},
 		},
 	};

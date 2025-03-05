@@ -16,13 +16,14 @@
 //   - system
 //   - performance
 //   - workers
+// - helpers
 
 use devela::{
     js_reexport, transmute, Js, JsEvent, JsPermission, JsPermissionState, JsTextMetrics,
-    JsTextMetricsFull, JsWorker, JsWorkerError,
+    JsTextMetricsFull, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
 };
 #[cfg(feature = "alloc")]
-use devela::{vec_ as vec, Vec};
+use devela::{vec_ as vec, String, Vec};
 
 // helper for Web API doc links
 #[rustfmt::skip]
@@ -342,16 +343,16 @@ impl Js {
     #[doc = web_api!(canvas "measureText")]
     /// Measures the essential properties of text.
     pub fn measure_text(text: &str) -> JsTextMetrics {
-        let mut m = JsTextMetrics::default();
-        unsafe { measure_text(text.as_ptr(), text.len(), &mut m as *mut JsTextMetrics); }
-        m
+        let (mut metrics, ptr, len) = (JsTextMetrics::default(), text.as_ptr(), text.len());
+        unsafe { measure_text(ptr, len, &mut metrics as *mut JsTextMetrics); }
+        metrics
     }
     #[doc = web_api!(canvas "measureTextFull")]
     /// Measures all available text metrics.
     pub fn measure_text_full(text: &str) -> JsTextMetricsFull {
-        let mut m = JsTextMetricsFull::default();
-        unsafe { measure_text_full(text.as_ptr(), text.len(), &mut m as *mut JsTextMetricsFull); }
-        m
+        let (mut metrics, ptr, len) = (JsTextMetricsFull::default(), text.as_ptr(), text.len());
+        unsafe { measure_text_full(ptr, len, &mut metrics as *mut JsTextMetricsFull); }
+        metrics
     }
 }
 js_reexport! {
@@ -438,17 +439,39 @@ impl Js {
         unsafe { worker_list(buffer.as_mut_ptr() as *mut u32, count as u32); }
         count
     }
-    /// Executes JavaScript code inside this worker.
-    ///
-    /// Returns `Ok(())` if the worker exists and the job was sent, otherwise `Err(JsWorkerError)`.
-    pub fn worker_eval(worker: JsWorker, job_id: u32, js_code: &str) -> Result<(), JsWorkerError> {
-        let success = unsafe { worker_eval(worker.id, job_id, js_code.as_ptr(), js_code.len()) };
-        if success { Ok(()) } else { Err(JsWorkerError::WorkerNotFound) }
-    }
     /// Sends a message to a specific Web Worker.
     pub fn worker_send_message(worker: JsWorker, msg: &str) {
         unsafe { worker_send_message(worker.id(), msg.as_ptr(), msg.len()); }
     }
+    /// Requests execution of JavaScript inside a worker.
+    pub fn worker_eval(worker: JsWorker, js_code: &str) -> JsWorkerJob {
+        let id = unsafe { worker_eval(worker.id(), js_code.as_ptr(), js_code.len()) };
+        JsWorkerJob { worker, id }
+    }
+    /// Polls for the result of a JavaScript execution in a worker.
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    pub fn worker_poll(job: JsWorkerJob) -> TaskPoll<Result<String, JsWorkerError>> {
+        if !job.worker().is_active() { return TaskPoll::Ready(Err(JsWorkerError::WorkerNotFound)); }
+        let result_ptr = unsafe { worker_poll(job.id()) };
+        if result_ptr.is_null() { TaskPoll::Pending }
+        else { TaskPoll::Ready(Ok(unsafe { read_js_string(result_ptr) })) }
+    }
+    /// Polls for the result of a JavaScript execution in a worker, and writes it into `buffer`.
+    ///
+    /// If ready, returns the number of bytes written to the buffer.
+    pub fn worker_poll_buf(job: JsWorkerJob, buffer: &mut [u8])
+        -> TaskPoll<Result<usize, JsWorkerError>> {
+        if !job.worker().is_active() { return TaskPoll::Ready(Err(JsWorkerError::WorkerNotFound)); }
+        let written = unsafe { worker_poll_buf(job.id(), buffer.as_mut_ptr(), buffer.len()) };
+        match written {
+            0 => TaskPoll::Pending,
+            u32::MAX => TaskPoll::Ready(Err(JsWorkerError::JobNotFound)),
+            _ => TaskPoll::Ready(Ok(written as usize)),
+        }
+    }
+    /// Cancels an ongoing JavaScript evaluation.
+    pub fn worker_eval_cancel(job: JsWorkerJob) { worker_cancel_eval(job.id()); }
 }
 js_reexport! {
     [module: "api_workers"]
@@ -458,7 +481,26 @@ js_reexport! {
     safe fn worker_stop_all();
     safe fn worker_list_len() -> u32;
     unsafe fn worker_list(worker_list_ptr: *mut u32, len: u32) -> u32;
-    unsafe fn worker_eval(worker_id: u32, job_id: u32,
-        js_code_ptr: *const u8, js_code_len: usize) -> bool;
     unsafe fn worker_send_message(worker_id: u32, msg_ptr: *const u8, msg_len: usize);
+    unsafe fn worker_eval(worker_id: u32, js_code_ptr: *const u8, js_code_len: usize) -> u32;
+    #[cfg(feature = "alloc")]
+    unsafe fn worker_poll(job_id: u32) -> *const u8;
+    unsafe fn worker_poll_buf(job_id: u32, buffer_ptr: *mut u8, buffer_len: usize) -> u32;
+    safe fn worker_cancel_eval(job_id: u32);
+}
+
+/* helpers */
+
+/// Reads a UTF-8 string from JavaScript's memory using a pointer.
+///
+/// # Safety
+/// - `ptr` must be a valid UTF-8 string stored in WebAssembly memory.
+/// - Assumes the string is **null-terminated** or has a known length stored elsewhere.
+#[cfg(feature = "alloc")] #[rustfmt::skip]
+unsafe fn read_js_string(ptr: *const u8) -> String {
+    if ptr.is_null() { return String::new(); }
+    let mut len = 0;
+    while unsafe { *ptr.add(len) } != 0 { len += 1; }
+    let slice = unsafe { ::core::slice::from_raw_parts(ptr, len) };
+    String::from_utf8_lossy(slice).into_owned()
 }
