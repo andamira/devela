@@ -3,7 +3,7 @@
 //! Javascript interfacing.
 //
 
-mod definitions; // Js, JsEvent, JsPermission*
+mod types; // Js, JsEvent, JsPermission*, JsWorker...
 
 #[cfg(feature = "unsafe_ffi")]
 crate::items! {
@@ -20,24 +20,13 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::definitions::*;
+        pub use super::types::*;
 
         #[cfg(feature = "unsafe_ffi")]
         pub use super::reexport::*;
-
-        // WIPZONE
-        // #[cfg(feature = "alloc")]
-        // pub use super::bson::*;
-        // #[cfg(feature = "std")]
-        // pub use super::json::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }
 }
-// WIPZONE
-// #[cfg(feature = "alloc")]
-// mod bson;
-// #[cfg(feature = "std")]
-// mod json;
