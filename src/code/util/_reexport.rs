@@ -29,7 +29,8 @@ macro_rules! reexport {
     ( // when the item is available in `core`
       rust : core $( :: $( $core_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( extra_features: $($extraf:literal),+ $(,)? )?
+      $( extra_features: $($extra_feat:literal),+ $(,)? )?
+      $( extra_flags:($($extra_flag:ident),+) $(,)? )?
       $( tag: $tag:expr, )?
       doc: $description:literal,
       $( $item:ident ),*
@@ -48,10 +49,12 @@ macro_rules! reexport {
 
         #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
             $( feature = $module_feature, )?
-            $( all($(feature = $extraf),+) )?
+            $( all($(feature = $extra_feat),+) )?
+            $( all($($extra_flag),+) )?
         ))))]
         #[cfg(all(
-            $( $(feature = $extraf),+ )?
+            $( $(feature = $extra_feat),+ )?
+            $( $($extra_flag),+ )?
         ))]
         pub use core :: $($( $core_path :: )+)? {
             $( $item ),*

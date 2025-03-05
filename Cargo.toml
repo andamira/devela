@@ -81,7 +81,7 @@ publish = true
 bench = false
 
 
-[features] # 280/300 (20 remaining), 151 visible, 129 hidden
+[features] # 279/300 (21 remaining), 150 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -283,7 +283,7 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 # - ./DOCS/NIGHTLY.md
 
 nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
-	"nightly_allocator", "nightly_autodiff", "nightly_bigint", "nightly_coro",
+	"nightly_allocator", "nightly_autodiff", "nightly_bigint",
 	"nightly_doc", "nightly_float", "nightly_simd",
 	"nightly_stable",
 ] # `nightly··`
@@ -296,9 +296,6 @@ nightly = [ # [8] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
 	#
 	# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
 	nightly_bigint = [] # bigint_helper_methods
-	#
-	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
-	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	#
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
@@ -1147,7 +1144,7 @@ wrong_self_convention = "allow" # `is_` methods having an owned self
 # https://doc.rust-lang.org/rustc/check-cfg.html
 # ------------------------------------------------------------------------------
 level = "warn"
-check-cfg = [ # Allowed config flags:
+check-cfg = [ # Allowed configuration flags:
 	# Defined if the library is compiled as the primary package (not a dependency).
 	'cfg(cargo_primary_package)',
 	#
@@ -1157,8 +1154,14 @@ check-cfg = [ # Allowed config flags:
 	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
 	#
-	# Compilation flags for reflection are configured in: ./build/features.rs
-	# -----------------------------------------------------------------------
+	# Nightly flags hierarchy (gating unstable functionality):
+	# --------------------------------------------------------------------------
+	"cfg(nightly)", # [1] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+		# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
+		"cfg(nightly_coro)", # coroutines, coroutine_trait, iter_from_coroutine
+	#
+	# Auto-enabled reflection flags from ./build/features.rs
+	# --------------------------------------------------------------------------
 	"cfg(safe··, unsafe··, nightly··, dep··)",
 	# data:
 	'cfg(data··)',

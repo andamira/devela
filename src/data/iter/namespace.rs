@@ -4,7 +4,7 @@
 //
 // WAIT: [iter_chain](https://github.com/rust-lang/rust/issues/125964)
 
-// #[cfg(feature = "nightly_coro")]
+// #[cfg(nightly_coro)]
 // use core::iter::from_coroutine;
 use core::iter::{empty, from_fn, once, once_with, repeat, repeat_n, repeat_with, successors, zip};
 
@@ -26,8 +26,8 @@ impl Iter {
     // /// Creates a new iterator where each iteration calls the provided coroutine.
     // ///
     // /// See `core::iter::`[`from_corooutine`].
-    // #[cfg(feature = "nightly_coro")]
-    // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
+    // #[cfg(nightly_coro)]
+    // #[cfg_attr(feature = "nightly_doc", doc(cfg(nightly_coro)))]
     // pub fn from_coroutine<G>(coroutine: G) -> core::iter::FromCoroutine<G>
     // where
     //     G: crate::Coroutine<Return = ()> + Unpin,

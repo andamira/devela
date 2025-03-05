@@ -106,6 +106,8 @@
 - bump MSRV to 1.84.1.
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`, `_string_*` to `_str_*`.
+- change features into cfg flags:
+  - `nightly`, `nightly_coro`.
 - rename flags:
   - `prim···` flag to `prim··`, `_str*` to `_str*`.
 - rename/move modules:
@@ -153,6 +155,7 @@
 - change `msvc` windows target for `gnu`.
 - update scripts:
   - `utils/check.rs`: add target components for the nightly toolchain.
+  - `build/features.rs`: support cfg flags auto-enabling other flags. Improve docs.
 - improve the docs for vendored items.
 
 ### Fixed

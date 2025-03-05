@@ -59,7 +59,7 @@ pub use size_of_expr;
 /* tests */
 
 // has to be a separate file because of experimental syntax
-#[cfg(all(test, feature = "nightly_coro", feature = "alloc"))]
+#[cfg(all(test, nightly_coro, feature = "alloc"))]
 mod test_coro;
 
 #[cfg(test)]
