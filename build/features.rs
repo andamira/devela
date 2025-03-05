@@ -63,7 +63,11 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
     if let Some(f) = ENABLED_CFG_FLAGS.get() {
         let filtered_flags: Vec<_> = f.iter().filter(|&flag| flag != "--cfg").collect();
-        println(&format!("Active compiler cfg flags ({}): {:?}", filtered_flags.len(), filtered_flags));
+        println(&format!(
+            "Active compiler cfg flags ({}): {:?}",
+            filtered_flags.len(),
+            filtered_flags
+        ));
         println("");
     }
     // Enable reflection flags based on cfg flags (e.g., RUSTFLAGS)
@@ -424,7 +428,6 @@ mod reflection {
     /* cfg flags */
 
     /// Sets automatic flags, based on enabled cfg flags.
-    #[expect(clippy::single_element_loop, reason = "only one element for now")]
     pub(super) fn set_ref_flags_from_cfg_flags() -> Vec<String> {
         let mut enabled_ref_flags = Vec::new();
         for ff in [

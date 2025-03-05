@@ -15,7 +15,6 @@ mod core_impls {
     use crate::{Cast, ConstDefault, Ordering, _core::fmt};
 
     impl<T: Clone> Clone for Cast<T> {
-        #[must_use]
         fn clone(&self) -> Self {
             Cast(self.0.clone())
         }
@@ -23,7 +22,6 @@ mod core_impls {
     impl<T: Copy> Copy for Cast<T> {}
 
     impl<T: Default> Default for Cast<T> {
-        #[must_use]
         fn default() -> Self {
             Cast(T::default())
         }
@@ -34,7 +32,6 @@ mod core_impls {
     }
 
     impl<T: PartialEq> PartialEq for Cast<T> {
-        #[must_use]
         fn eq(&self, other: &Self) -> bool {
             self.0.eq(&other.0)
         }
@@ -42,13 +39,11 @@ mod core_impls {
     impl<T: Eq> Eq for Cast<T> {}
 
     impl<T: PartialOrd> PartialOrd for Cast<T> {
-        #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
     impl<T: Ord> Ord for Cast<T> {
-        #[must_use]
         fn cmp(&self, other: &Self) -> Ordering {
             self.0.cmp(&other.0)
         }

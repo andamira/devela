@@ -55,10 +55,7 @@
     trait_upcasting,
 ))]
 #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature(vec_pop_if,))]
-#![cfg_attr(
-    all(nightly_stable_next1, feature = "std"),
-    feature(const_mut_cursor, map_many_mut,)
-)]
+#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature(const_mut_cursor, map_many_mut,))]
 // ----------------------------
 // `nightly_stable_next2`: 1.87 core, alloc, std…
 #![cfg_attr(
@@ -109,7 +106,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(anonymous_pipe, once_wait,os_string_pathbuf_leak,)
+    feature(anonymous_pipe, once_wait, os_string_pathbuf_leak,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
