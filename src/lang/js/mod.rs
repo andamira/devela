@@ -1,6 +1,6 @@
 // devela::lang::js
 //
-//! Javascript interfacing.
+//! JavaScript interfacing.
 //
 
 mod types; // Js, JsEvent, JsPermission*, JsWorker...

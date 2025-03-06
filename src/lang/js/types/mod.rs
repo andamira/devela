@@ -6,11 +6,12 @@
 mod event; // JsEvent
 mod instant; // JsInstant
 mod permission; // JsPermission, JsPermissionState
+mod primitives; // js_number, js_int32, js_uint32...
 mod text; // JsTextMetrics, JsTextMetricsFull
 mod timeout; // JsTimeout
 mod worker; // JsWorker, JsWorkerError, JsWorkerJob
 
-pub use {event::*, instant::*, permission::*, text::*, timeout::*, worker::*};
+pub use {event::*, instant::*, permission::*, primitives::*, text::*, timeout::*, worker::*};
 
 // WIPZONE
 // #[cfg(feature = "alloc")]
@@ -18,6 +19,7 @@ pub use {event::*, instant::*, permission::*, text::*, timeout::*, worker::*};
 // #[cfg(feature = "std")]
 // crate::items! { mod json; pub use json::*; }
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// A Javascript namespace.
 ///
 /// # Methods

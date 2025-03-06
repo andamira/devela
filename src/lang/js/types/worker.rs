@@ -11,6 +11,8 @@ use crate::String;
 use crate::{Js, TaskPoll};
 
 /// A handle to a JavaScript Web Worker.
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JsWorker {
