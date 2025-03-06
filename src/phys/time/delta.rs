@@ -9,14 +9,14 @@
 // - additional methods
 // - conversions
 
-use crate::Duration;
-#[allow(unused)]
-#[cfg(_float··)]
-use crate::ExtFloat;
+#[cfg(feature = "js")]
+use crate::JsInstant;
 #[cfg(feature = "std")]
 use crate::SystemInstant;
-#[cfg(feature = "_float_f64")]
-use crate::{unwrap, Float};
+use crate::{unwrap, Duration};
+#[allow(unused)]
+#[cfg(_float··)]
+use crate::{ExtFloat, Float};
 
 /// A signed duration of time, stored as an `(i64, i32)` pair of seconds and nanoseconds.
 ///
@@ -468,20 +468,15 @@ impl TimeDelta {
     ///
     /// # Panics
     /// Panics if the given float overflows the minimum or maximum signed duration values.
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn from_secs_f64(secs: f64) -> TimeDelta {
         TimeDelta::try_from_secs_f64(secs).expect("finite and in-bounds f64")
     }
-
     /// Returns a signed duration corresponding to the number of seconds.
     ///
     /// The number given may have a fractional nanosecond component.
     ///
     /// # Panics
     /// Panics if the given float overflows the minimum or maximum signed duration values.
-    #[cfg(any(feature = "std", feature = "_float_f32"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f32"))))]
     pub fn from_secs_f32(secs: f32) -> TimeDelta {
         TimeDelta::try_from_secs_f32(secs).expect("finite and in-bounds f32")
     }
@@ -492,21 +487,32 @@ impl TimeDelta {
     ///
     /// If the given float overflows the minimum or maximum signed duration
     /// values, then an error is returned.
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    ///
+    /// # Features
+    /// - Uses `std` or `_float_f64` when available, leveraging `trunc`, `fract`, and `round`
+    ///   for precise, bias-free conversion.
+    /// - In strict `no_std` mode, manually rounds using integer arithmetic, ensuring correctness
+    ///   while lacking exact fractional nanosecond precision.
+    #[rustfmt::skip]
     pub fn try_from_secs_f64(secs: f64) -> Result<TimeDelta, &'static str> {
         if !secs.is_finite() {
-            return Err("could not convert non-finite seconds {secs} to signed duration");
-        }
+            return Err("could not convert non-finite seconds {secs} to signed duration"); }
         if secs < (i64::MIN as f64) {
-            return Err("floating point seconds {secs} overflows TimeDelta::MIN");
-        }
+            return Err("floating point seconds {secs} overflows TimeDelta::MIN"); }
         if secs > (i64::MAX as f64) {
-            return Err("floating point seconds {secs} overflows TimeDelta::MAX");
+            return Err("floating point seconds {secs} overflows TimeDelta::MAX"); }
+        let (isecs, nanos);
+        #[cfg(any(feature = "std", feature = "_float_f64"))] {
+            isecs = secs.trunc() as i64;
+            nanos = (secs.fract() * NANOS_PER_SEC as f64).round() as i32;
         }
-        let nanos = (secs.fract() * (NANOS_PER_SEC as f64)).round() as i32;
-        let secs = secs.trunc() as i64;
-        Ok(TimeDelta::new_unchecked(secs, nanos))
+        #[cfg(not(any(feature = "std", feature = "_float_f64")))] {
+            let secs_rounded = if secs >= 0.0 { secs + 0.5 }  // Round normally
+            else { secs - 0.5 };  // Round away from zero for negatives
+            isecs = secs_rounded as i64;
+            nanos = ((secs_rounded - isecs as f64) * NANOS_PER_SEC as f64) as i32;
+        }
+        Ok(TimeDelta::new_unchecked(isecs, nanos))
     }
 
     /// Returns a signed duration corresponding to the number of seconds.
@@ -515,21 +521,26 @@ impl TimeDelta {
     ///
     /// If the given float overflows the minimum or maximum signed duration
     /// values, then an error is returned.
-    #[cfg(any(feature = "std", feature = "_float_f32"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f32"))))]
+    #[rustfmt::skip]
     pub fn try_from_secs_f32(secs: f32) -> Result<TimeDelta, &'static str> {
         if !secs.is_finite() {
-            return Err("could not convert non-finite seconds {secs} to signed duration");
-        }
+            return Err("could not convert non-finite seconds {secs} to signed duration"); }
         if secs < (i64::MIN as f32) {
-            return Err("floating point seconds {secs} overflows TimeDelta::MIN");
-        }
+            return Err("floating point seconds {secs} overflows TimeDelta::MIN"); }
         if secs > (i64::MAX as f32) {
-            return Err("floating point seconds {secs} overflows TimeDelta::MAX");
+            return Err("floating point seconds {secs} overflows TimeDelta::MAX"); }
+        let (isecs, nanos);
+        #[cfg(any(feature = "std", feature = "_float_f32"))] {
+            isecs = secs.trunc() as i64;
+            nanos = (secs.fract() * NANOS_PER_SEC as f32).round() as i32;
         }
-        let nanos = (secs.fract() * (NANOS_PER_SEC as f32)).round() as i32;
-        let secs = secs.trunc() as i64;
-        Ok(TimeDelta::new_unchecked(secs, nanos))
+        #[cfg(not(any(feature = "std", feature = "_float_f32")))] {
+            let secs_rounded = if secs >= 0.0 { secs + 0.5 }  // Round normally
+            else { secs - 0.5 };  // Round away from zero for negatives
+            isecs = secs_rounded as i64;
+            nanos = ((secs_rounded - isecs as f32) * NANOS_PER_SEC as f32) as i32;
+        }
+        Ok(TimeDelta::new_unchecked(isecs, nanos))
     }
 
     /// Returns the number of milliseconds, with a possible fractional nanosecond component.
@@ -549,10 +560,12 @@ impl TimeDelta {
     ///
     /// # Panics
     /// Panics if the given float overflows the minimum or maximum signed duration values.
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn from_millis_f64(millis: f64) -> TimeDelta {
         TimeDelta::try_from_millis_f64(millis).expect("finite and in-bounds f64")
+    }
+    /// Compile-time friendly version of `try_from_millis_f64`.
+    pub const fn const_from_millis_f64(millis: f64) -> TimeDelta {
+        unwrap![ok_expect TimeDelta::const_try_from_millis_f64(millis), "finite and in-bounds f64"]
     }
 
     /// Returns a signed duration corresponding to the number of milliseconds.
@@ -561,47 +574,72 @@ impl TimeDelta {
     ///
     /// If the given float overflows the minimum or maximum signed duration
     /// values, then an error is returned.
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    ///
+    /// # Features
+    /// - Uses `std` or `_float_f64` when available, leveraging `round`, `div_euclid`,
+    ///   and `rem_euclid` for precise, bias-free conversion.
+    /// - In strict `no_std` mode, manually rounds using integer arithmetic, ensuring correctness
+    ///   while lacking exact Euclidean division for negatives.
+    #[rustfmt::skip]
     pub fn try_from_millis_f64(millis: f64) -> Result<TimeDelta, &'static str> {
         if !millis.is_finite() {
-            return Err("could not convert non-finite milliseconds {millis} to signed duration");
-        }
+            return Err("could not convert non-finite milliseconds {millis} to signed duration"); }
         if millis < (i64::MIN as f64) {
-            return Err("floating point milliseconds {millis} overflows TimeDelta::MIN");
-        }
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MIN"); }
         if millis > (i64::MAX as f64) {
-            return Err("floating point milliseconds {millis} overflows TimeDelta::MAX");
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MAX"); }
+        let (millis_rounded, secs, nanos);
+        #[cfg(any(feature = "std", feature = "_float_f64"))]
+        {
+            millis_rounded = millis.round();
+            secs = millis_rounded.div_euclid(1_000.0) as i64;
+            nanos = (millis_rounded.rem_euclid(1_000.0) * 1_000_000.0) as i32;
         }
-        let nanos = (millis.fract() * (NANOS_PER_MILLI as f64)).round() as i32;
-        let secs = millis.trunc() as i64 / MILLIS_PER_SEC;
+        #[cfg(not(any(feature = "std", feature = "_float_f64")))]
+        {
+            millis_rounded = if millis >= 0.0 { millis + 0.5 }  // Round normally
+            else { millis - 0.5 };  // Round away from zero for negatives
+            let millis_i64 = millis_rounded as i64;
+            secs = millis_i64 / MILLIS_PER_SEC;
+            nanos = ((millis_i64 % MILLIS_PER_SEC) * NANOS_PER_MILLI as i64) as i32;
+        }
         Ok(TimeDelta::new_unchecked(secs, nanos))
     }
     /// Compile-time friendly version of `try_from_millis_f64`.
-    #[cfg(feature = "_float_f64")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_float_f64")))]
-    pub const fn const_from_millis_f64(millis: f64) -> TimeDelta {
-        unwrap![ok_expect TimeDelta::const_try_from_millis_f64(millis),
-            "finite and in-bounds f64"]
-    }
-    /// Compile-time friendly version of `try_from_millis_f64`.
-    #[cfg(feature = "_float_f64")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_float_f64")))]
+    ///
+    /// # Features
+    /// - Uses `_float_f64` if enabled, leveraging [`Float`]'s `const_round`, `div_euclid`,
+    ///   and `rem_euclid` for precise, bias-free conversion.
+    /// - Without `_float_f64`, rounds manually using integer arithmetic, preventing
+    ///   systematic underestimation but lacking exact Euclidean division for negatives.
+    #[rustfmt::skip]
     pub const fn const_try_from_millis_f64(millis: f64) -> Result<TimeDelta, &'static str> {
         if !millis.is_finite() {
-            return Err("could not convert non-finite milliseconds {millis} to signed duration");
-        }
+            return Err("could not convert non-finite milliseconds {millis} to signed duration"); }
         if millis < (i64::MIN as f64) {
-            return Err("floating point milliseconds {millis} overflows TimeDelta::MIN");
-        }
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MIN"); }
         if millis > (i64::MAX as f64) {
-            return Err("floating point milliseconds {millis} overflows TimeDelta::MAX");
+            return Err("floating point milliseconds {millis} overflows TimeDelta::MAX"); }
+        let (millis_rounded, secs, nanos);
+        #[cfg(feature = "_float_f64")]
+        {
+            millis_rounded = Float(millis).const_round().0 as i64;
+            secs = Float(millis_rounded as f64).div_euclid(MILLIS_PER_SEC as f64).0 as i64;
+            nanos = Float(millis_rounded as f64).rem_euclid(MILLIS_PER_SEC as f64).0 as i64
+            * NANOS_PER_MILLI as i64;
         }
-        use crate::Float;
-        let nanos = Float(Float(millis).fract().0 * (NANOS_PER_MILLI as f64)).const_round().0 as i32;
-        let secs = (Float(millis).const_trunc().0 as i64) / MILLIS_PER_SEC;
-        Ok(TimeDelta::new_unchecked(secs, nanos))
+        #[cfg(not(feature = "_float_f64"))]
+        {
+            // millis_rounded = millis as i64; // slight systematic underestimation
+            millis_rounded = if millis >= 0.0 { (millis + 0.5) as i64 }  // Round normally
+            else { (millis - 0.5) as i64 };  // Round away from zero for negatives
+            secs = millis_rounded / MILLIS_PER_SEC;
+            nanos = (millis_rounded % MILLIS_PER_SEC) * NANOS_PER_MILLI as i64;
+        }
+        Ok(TimeDelta::new_unchecked(secs, nanos as i32))
     }
+
+    /* ops */
 
     /// Returns the result of multiplying this duration by the given 64-bit float.
     ///
@@ -612,7 +650,6 @@ impl TimeDelta {
     pub fn mul_f64(self, rhs: f64) -> TimeDelta {
         TimeDelta::from_secs_f64(rhs * self.as_secs_f64())
     }
-
     /// Returns the result of multiplying this duration by the given 32-bit float.
     ///
     /// # Panics
@@ -632,7 +669,6 @@ impl TimeDelta {
     pub fn div_f64(self, rhs: f64) -> TimeDelta {
         TimeDelta::from_secs_f64(self.as_secs_f64() / rhs)
     }
-
     /// Returns the result of dividing this duration by the given `f32`.
     ///
     /// # Panics
@@ -644,14 +680,13 @@ impl TimeDelta {
     }
 
     /// Divides this signed duration by another signed duration.
-    pub fn div_duration_f64(self, rhs: TimeDelta) -> f64 {
+    pub const fn div_delta_f64(self, rhs: TimeDelta) -> f64 {
         let lhs_nanos = (self.secs as f64) * (NANOS_PER_SEC as f64) + (self.nanos as f64);
         let rhs_nanos = (rhs.secs as f64) * (NANOS_PER_SEC as f64) + (rhs.nanos as f64);
         lhs_nanos / rhs_nanos
     }
-
     /// Divides this signed duration by another signed duration.
-    pub fn div_duration_f32(self, rhs: TimeDelta) -> f32 {
+    pub const fn div_delta_f32(self, rhs: TimeDelta) -> f32 {
         let lhs_nanos = (self.secs as f32) * (NANOS_PER_SEC as f32) + (self.nanos as f32);
         let rhs_nanos = (rhs.secs as f32) * (NANOS_PER_SEC as f32) + (rhs.nanos as f32);
         lhs_nanos / rhs_nanos
@@ -661,6 +696,7 @@ impl TimeDelta {
 /// Additional methods not found in the standard library.
 ///
 /// In most cases, these APIs exist as a result of the fact that this duration is signed.
+#[rustfmt::skip]
 impl TimeDelta {
     /// Returns the number of whole hours in this duration.
     ///
@@ -668,18 +704,14 @@ impl TimeDelta {
     ///
     /// This does not include any fractional component corresponding to units
     /// less than an hour.
-    pub const fn as_hours(&self) -> i64 {
-        self.as_secs() / (MINS_PER_HOUR * SECS_PER_MINUTE)
-    }
+    pub const fn as_hours(&self) -> i64 { self.as_secs() / (MINS_PER_HOUR * SECS_PER_MINUTE) }
 
     /// Returns the number of whole minutes in this duration.
     ///
     /// The value returned is negative when the duration is negative.
     ///
     /// This does not include any fractional component corresponding to units less than a minute.
-    pub const fn as_mins(&self) -> i64 {
-        self.as_secs() / SECS_PER_MINUTE
-    }
+    pub const fn as_mins(&self) -> i64 { self.as_secs() / SECS_PER_MINUTE }
 
     /// Returns the absolute value of this signed duration.
     ///
@@ -716,14 +748,9 @@ impl TimeDelta {
     /// This returns none if the negation does not exist. This occurs in
     /// precisely the cases when [`TimeDelta::as_secs`] is equal to `i64::MIN`.
     pub const fn checked_neg(self) -> Option<TimeDelta> {
-        let Some(secs) = self.secs.checked_neg() else {
-            return None;
-        };
-        Some(TimeDelta::new_unchecked(
-            secs,
-            // Always OK because `-999_999_999 <= self.nanos <= 999_999_999`.
-            -self.nanos,
-        ))
+        let Some(secs) = self.secs.checked_neg() else { return None; };
+        // -self.nanos always OK because `-999_999_999 <= self.nanos <= 999_999_999`.
+        Some(TimeDelta::new_unchecked(secs, -self.nanos))
     }
 
     /// Returns a number that represents the sign of this duration.
@@ -734,26 +761,18 @@ impl TimeDelta {
     ///
     /// The above cases are mutually exclusive.
     pub const fn signum(self) -> i8 {
-        if self.is_zero() {
-            0
-        } else if self.is_positive() {
-            1
-        } else {
-            debug_assert!(self.is_negative());
-            -1
-        }
+        if self.is_zero() { 0 }
+        else if self.is_positive() { 1 }
+        else { debug_assert!(self.is_negative()); -1 }
     }
 
     /// Returns true when this duration is positive. That is, greater than [`TimeDelta::ZERO`].
-    pub const fn is_positive(&self) -> bool {
-        self.secs.is_positive() || self.nanos.is_positive()
-    }
-
+    pub const fn is_positive(&self) -> bool { self.secs.is_positive() || self.nanos.is_positive() }
     /// Returns true when this duration is negative. That is, less than [`TimeDelta::ZERO`].
-    pub const fn is_negative(&self) -> bool {
-        self.secs.is_negative() || self.nanos.is_negative()
-    }
+    pub const fn is_negative(&self) -> bool { self.secs.is_negative() || self.nanos.is_negative() }
 }
+
+/* conversions */
 
 impl TryFrom<Duration> for TimeDelta {
     type Error = &'static str;
@@ -766,8 +785,6 @@ impl TryFrom<Duration> for TimeDelta {
         Ok(TimeDelta::new_unchecked(secs, nanos))
     }
 }
-
-/* conversions */
 
 impl TryFrom<TimeDelta> for Duration {
     type Error = &'static str;
@@ -788,20 +805,31 @@ impl TryFrom<TimeDelta> for Duration {
     }
 }
 
+#[rustfmt::skip]
+#[cfg(feature = "js")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "js")))]
+impl TimeDelta {
+    /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
+    pub fn from_js(js: JsInstant) -> Self { Self::from_millis_f64(js.ms_timestamp) }
+    /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
+    pub const fn const_from_js(js: JsInstant) -> Self {
+        Self::const_from_millis_f64(js.ms_timestamp)
+    }
+    /// Converts a `TimeDelta` into a `JsInstant`, interpreting it as an absolute timestamp.
+    pub const fn to_js(self) -> JsInstant { JsInstant::new(self.as_millis_f64()) }
+}
+#[rustfmt::skip]
 #[cfg(feature = "dep_jiff")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_jiff")))]
 mod impl_jiff {
     use {super::TimeDelta, ::jiff::SignedDuration};
-
     impl TimeDelta {
         /// Converts [`SignedDuration`] into [`TimeDelta`].
         pub const fn from_jiff(from: SignedDuration) -> TimeDelta {
             TimeDelta::new(from.as_secs(), from.subsec_nanos())
         }
         /// Converts [`TimeDelta`] into [`SignedDuration`].
-        pub const fn to_jiff(self) -> SignedDuration {
-            SignedDuration::new(self.secs, self.nanos)
-        }
+        pub const fn to_jiff(self) -> SignedDuration { SignedDuration::new(self.secs, self.nanos) }
     }
     impl From<SignedDuration> for TimeDelta {
         fn from(from: SignedDuration) -> TimeDelta { Self::from_jiff(from) }
