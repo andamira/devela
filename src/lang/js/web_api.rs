@@ -9,7 +9,7 @@
 //   - console
 //   - eval
 //   - events
-//   - history
+//   - history_location
 //   - permissions
 // - extended APis
 //   - canvas
@@ -213,7 +213,7 @@ js_reexport! {
     );
 }
 
-/// # Web API history & navigation
+/// # Web API history & location
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/History>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Location>
@@ -259,7 +259,7 @@ impl Js {
     pub fn location_replace(url: &str) { unsafe { location_replace(url.as_ptr(), url.len()); } }
 }
 js_reexport! {
-    [ module: "api_history_navigation" ]
+    [ module: "api_history_location" ]
     unsafe fn "history_back" history_back();
     unsafe fn "history_forward" history_forward();
     unsafe fn "history_go" history_go(delta: i32);

@@ -9,7 +9,8 @@
 //     - console
 //     - eval
 //     - events
-//     - history_navigation
+//     - history_location
+//     - permissions
 //   - extended
 //     - canvas
 //     - performance
@@ -18,7 +19,7 @@
 export async function initWasm(wasmPath, imports = {}) {
 	/* Config */
 
-	let wasmInstance;
+	let wasm;
 	let canvas = null;
 	let ctx = null;
 
@@ -26,7 +27,7 @@ export async function initWasm(wasmPath, imports = {}) {
 
 	// Decode UTF-8 strings from WASM memory
 	function str_decode(ptr, len) {
-		const memory = new Uint8Array(wasmInstance.exports.memory.buffer, ptr, len);
+		const memory = new Uint8Array(wasm.exports.memory.buffer, ptr, len);
 		return new TextDecoder("utf-8").decode(memory);
 	}
 
@@ -42,8 +43,7 @@ export async function initWasm(wasmPath, imports = {}) {
 
 	/* Bindings */
 
-	const wasmBindings = {
-
+	const wasmApi = {
 		/* Core APIs */
 
 		api_console: {
@@ -117,7 +117,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				else { console.error(`No event listener found for '${jsFnName}' on '${event}'.`); }
 			},
 		}, // api_events
-		api_history_navigation: {
+		api_history_location: {
 			// History API
 			history_back: () => history.back(),
 			history_forward: () => history.forward(),
@@ -177,8 +177,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			measureText: (textPtr, textLen, outMetricsPtr) => {
 				const text = str_decode(textPtr, textLen);
 				const metrics = ctx.measureText(text);
-				const outMetrics
-					= new Float32Array(wasmInstance.exports.memory.buffer, outMetricsPtr, 3);
+				const outMetrics = new Float32Array(wasm.exports.memory.buffer, outMetricsPtr, 3);
 				outMetrics[0] = metrics.width;
 				outMetrics[1] = metrics.actualBoundingBoxAscent;
 				outMetrics[2] = metrics.actualBoundingBoxDescent;
@@ -187,7 +186,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				const text = str_decode(textPtr, textLen);
 				const metrics = ctx.measureText(text);
 				const outMetrics
-					= new Float32Array(wasmInstance.exports.memory.buffer, outMetricsPtr, 12);
+					= new Float32Array(wasm.exports.memory.buffer, outMetricsPtr, 12);
 				outMetrics[0] = metrics.width;
 				outMetrics[1] = metrics.actualBoundingBoxLeft;
 				outMetrics[2] = metrics.actualBoundingBoxRight;
@@ -217,7 +216,6 @@ export async function initWasm(wasmPath, imports = {}) {
 			_jobQueue: new Map(),     // Job ID -> Promise resolution mapping
 			_messageQueue: new Map(), // Worker ID -> Message Handlers
 			_evalResults: new Map(), // Stores job results until Rust polls for them
-
 			// Spawns a new worker and returns its unique ID.
 			worker_spawn: (script_ptr, script_len) => {
 				const script = str_decode(script_ptr, script_len);
@@ -225,38 +223,38 @@ export async function initWasm(wasmPath, imports = {}) {
 				if (script.startsWith("function") || script.includes("self.onmessage")) {
 					const blob = new Blob([script], { type: "application/javascript" });
 					worker = new Worker(URL.createObjectURL(blob));
-				} else { // then it's a file to load:
+				} else { // if not a script in a string then it's a script in a file
 					try { worker = new Worker(script); }
 					catch (error) { return 0; }
 				}
-				const wid = wasmBindings.api_workers._nextWorkerId++;
-				worker.onmessage = (event) => wasmBindings.api_workers._handleMessage(wid, event);
+				const wid = wasmApi.api_workers._nextWorkerId++;
+				worker.onmessage = (event) => wasmApi.api_workers._handleMessage(wid, event);
 				worker.onerror = (error) => console.error(`Worker ${wid} error:`, error);
-				wasmBindings.api_workers._workers.set(wid, worker);
+				wasmApi.api_workers._workers.set(wid, worker);
 				return wid;
 			},
 			// Returns `true` if the given worker is active.
-			worker_is_active: (wid) => { return wasmBindings.api_workers._workers.has(wid); },
+			worker_is_active: (wid) => { return wasmApi.api_workers._workers.has(wid); },
 			// Stops a specific worker by ID.
 			worker_stop: (worker_id) => {
-				const worker = wasmBindings.api_workers._workers.get(worker_id);
+				const worker = wasmApi.api_workers._workers.get(worker_id);
 				if (worker) {
 					worker.terminate();
-					wasmBindings.api_workers._workers.delete(worker_id);
+					wasmApi.api_workers._workers.delete(worker_id);
 				}
 			},
 			// Stops all active workers.
 			worker_stop_all: () => {
-				wasmBindings.api_workers._workers.forEach(worker => worker.terminate());
-				wasmBindings.api_workers._workers.clear();
+				wasmApi.api_workers._workers.forEach(worker => worker.terminate());
+				wasmApi.api_workers._workers.clear();
 			},
 			// Returns the number of active workers.
-			worker_list_len: () => { return wasmBindings.api_workers._workers.size; },
+			worker_list_len: () => { return wasmApi.api_workers._workers.size; },
 			// Write worker IDs into the Rust buffer and returns the number of IDs written
 			worker_list: (buf_ptr, buf_len) => {
-				const workers = Array.from(wasmBindings.api_workers._workers.keys());
+				const workers = Array.from(wasmApi.api_workers._workers.keys());
 				const count = Math.min(workers.length, buf_len);
-				const buffer = new Uint32Array(wasmInstance.exports.memory.buffer, buf_ptr, buf_len);
+				const buffer = new Uint32Array(wasm.exports.memory.buffer, buf_ptr, buf_len);
 				for (let i = 0; i < count; i++) {
 					buffer[i] = workers[i];
 				}
@@ -265,7 +263,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			// Sends a message to a worker.
 			worker_send_message: (worker_id, msg_ptr, msg_len) => {
 				const message = str_decode(msg_ptr, msg_len);
-				const worker = wasmBindings.api_workers._workers.get(worker_id);
+				const worker = wasmApi.api_workers._workers.get(worker_id);
 				if (!worker) { console.error(`Worker ${worker_id} not found.`); return; }
 				worker.postMessage({ type: "message", message });
 			},
@@ -273,41 +271,39 @@ export async function initWasm(wasmPath, imports = {}) {
 			_handleMessage: (worker_id, event) => {
 				if (event.data.type === "eval_result") {
 					const { jobId, result } = event.data;
-					wasmBindings.api_workers._evalResults.set(jobId, result);
+					wasmApi.api_workers._evalResults.set(jobId, result);
 				} else if (event.data.type === "message_response") {
 					console.log(`Worker ${worker_id} response: ${event.data.message}`);
 				}
 			},
-			// Runs JavaScript inside a worker
-			//
-			// Returns the JobId or 0 to indicate failure
+			// Runs JavaScript inside a worker, and returns the JobId or 0 to indicate failure.
 			worker_eval: (worker_id, jsCodePtr, jsCodeLen) => {
 				const jsCode = str_decode(jsCodePtr, jsCodeLen);
-				const worker = wasmBindings.api_workers._workers.get(worker_id);
+				const worker = wasmApi.api_workers._workers.get(worker_id);
 				if (!worker) { console.error(`Worker ${worker_id} not found.`); return 0; }
-				const jobId = wasmBindings.api_workers._nextJobId++;
-				wasmBindings.api_workers._evalResults.set(jobId, null); // Mark as pending
+				const jobId = wasmApi.api_workers._nextJobId++;
+				wasmApi.api_workers._evalResults.set(jobId, null); // Mark as pending
 				worker.postMessage({ type: "eval", jobId, jsCode });
 				return jobId; // Return the generated job ID
 			},
 			// Polls for the evaluation result and returns a pointer to the stored string.
 			worker_poll: (jobId) => {
-				if (wasmBindings.api_workers._evalResults.has(jobId)) {
-					const result = wasmBindings.api_workers._evalResults.get(jobId);
+				if (wasmApi.api_workers._evalResults.has(jobId)) {
+					const result = wasmApi.api_workers._evalResults.get(jobId);
 					if (result === null) { return 0; } // Still pending
-					wasmBindings.api_workers._evalResults.delete(jobId);
+					wasmApi.api_workers._evalResults.delete(jobId);
 					return str_store(result); // Store in WASM memory and return pointer
 				}
 				return 0; // Job does not exist
 			},
 			// Polls for the evaluation result and writes it into a buffer.
 			worker_poll_buf: (jobId, bufPtr, bufLen) => {
-				if (!wasmBindings.api_workers._evalResults.has(jobId)) { return -1; } // not found
-				const result = wasmBindings.api_workers._evalResults.get(jobId);
+				if (!wasmApi.api_workers._evalResults.has(jobId)) { return -1; } // not found
+				const result = wasmApi.api_workers._evalResults.get(jobId);
 				if (result === null) { return 0; } // not ready
 				console.log(`~~~ Writing result for job ${jobId} to buffer.`);
-				wasmBindings.api_workers._evalResults.delete(jobId);
-				const buf = new Uint8Array(wasmInstance.exports.memory.buffer, bufPtr, bufLen);
+				wasmApi.api_workers._evalResults.delete(jobId);
+				const buf = new Uint8Array(wasm.exports.memory.buffer, bufPtr, bufLen);
 				const encoded = new TextEncoder().encode(result);
 				const bytesWritten = Math.min(encoded.length, bufLen);
 				buf.set(encoded.subarray(0, bytesWritten));
@@ -319,27 +315,23 @@ export async function initWasm(wasmPath, imports = {}) {
 	/* Global Namespace Setup */
 
 	// Make Web API modules globally accessible from Rust
-	window.api_events = wasmBindings.api_events;
-	window.api_workers = wasmBindings.api_workers;
+	window.api_events = wasmApi.api_events;
+	window.api_workers = wasmApi.api_workers;
 
 	// Allows Rust to call JavaScript functions via function pointers (Js::wasm_callback)
-	window.wasm_callback = (callbackPtr) => { wasmInstance.exports.wasm_callback(callbackPtr); };
+	window.wasm_callback = (callbackPtr) => { wasm.exports.wasm_callback(callbackPtr); };
 
 	/* WASM Instantiation */
 
 	// Combine default bindings with additional imports from Rust
-	const finalImports = { ...wasmBindings, ...imports };
+	const finalImports = { ...wasmApi, ...imports };
 
 	try { // Fetch and instantiate the WebAssembly binary
 		const response = await fetch(wasmPath);
 		if (!response.ok) throw new Error(`Failed to load WASM: ${response.statusText}`);
-		const wasm = await WebAssembly.instantiateStreaming(response, finalImports);
-		wasmInstance = wasm.instance;
-		wasm.instance.exports.main();
-		return wasmInstance;
+		const wasmModule = await WebAssembly.instantiateStreaming(response, finalImports);
+		wasm = wasmModule.instance; // Store the WASM instance globally
+		wasmModule.instance.exports.main(); // Run the extern Rust `main()` function
+		return wasm;
 	} catch (error) { console.error("WASM loading failed:", error); return null; }
-
-	wasmInstance = wasm.instance; // Store the WebAssembly instance globally
-	wasm.instance.exports.main(); // Run the extern Rust `main()` function
-	return wasmInstance;
 }
