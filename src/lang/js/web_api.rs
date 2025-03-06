@@ -388,10 +388,11 @@ js_reexport! {
 impl Js {
     #[doc = web_api!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.
-    pub fn performance_now() -> JsInstant { JsInstant::new(performance_now()) }
+    pub fn performance_now() -> JsInstant { JsInstant::from_millis_f64(performance_now()) }
     #[doc = web_api!("Performance", "timeOrigin")]
     /// Retrieves the time origin in milliseconds.
-    pub fn performance_time_origin() -> JsInstant { JsInstant::new(performance_time_origin()) }
+    pub fn performance_time_origin() -> JsInstant {
+        JsInstant::from_millis_f64(performance_time_origin()) }
     #[doc = web_api!("Performance", "eventCounts")]
     /// Retrieves the count of recorded events.
     pub fn performance_event_count(event: JsEvent) -> u32 {
