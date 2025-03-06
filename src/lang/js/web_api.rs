@@ -19,7 +19,7 @@
 // - helpers
 
 use devela::{
-    js_reexport, transmute, Js, JsEvent, JsPermission, JsPermissionState, JsTextMetrics,
+    js_reexport, transmute, Js, JsEvent, JsInstant, JsPermission, JsPermissionState, JsTextMetrics,
     JsTextMetricsFull, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
 };
 #[cfg(feature = "alloc")]
@@ -388,10 +388,10 @@ js_reexport! {
 impl Js {
     #[doc = web_api!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.
-    pub fn performance_now() -> f64 { performance_now() }
+    pub fn performance_now() -> JsInstant { JsInstant::new(performance_now()) }
     #[doc = web_api!("Performance", "timeOrigin")]
     /// Retrieves the time origin in milliseconds.
-    pub fn performance_time_origin() -> f64 { performance_time_origin() }
+    pub fn performance_time_origin() -> JsInstant { JsInstant::new(performance_time_origin()) }
     #[doc = web_api!("Performance", "eventCounts")]
     /// Retrieves the count of recorded events.
     pub fn performance_event_count(event: JsEvent) -> u32 {

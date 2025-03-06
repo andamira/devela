@@ -7,6 +7,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::String;
+#[allow(unused_imports)]
 use crate::{Js, TaskPoll};
 
 /// A handle to a JavaScript Web Worker.
