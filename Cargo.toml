@@ -641,7 +641,7 @@ default-features = false # 7 https://docs.rs/crate/bumpalo/latest/features
 features = ["boxed", "collections"]
 
 [dependencies.bytemuck] # https://crates.io/crates/bytemuck
-version = "1.21.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
+version = "1.22.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
 optional = true # unsafe
 default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
@@ -825,12 +825,12 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # INSTALL: libasound2-dev
 
 [dependencies.rustix] # https://crates.io/crates/rustix
-version = "0.38.40" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
+version = "1.0" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 39 https://docs.rs/crate/rustix/latest/features
 features = [
     "event", "fs", "io_uring", "mm", "mount", "net", "param", "pipe",
-    "procfs", "pty", "runtime", "shm", "stdio", "system", "termios",
+    "pty", "runtime", "shm", "stdio", "system", "termios",
 ]
 # feature-gated:IMPROVE: process, rand, thread, time,
 
