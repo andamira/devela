@@ -83,7 +83,7 @@
 - new profile: `wasm`.
 - new example: `js_web_api`.
 - add musl architectures to `check.rs` script.
-- add docs for monitored nightly features.
+- add docs for monitored nightly features and for disabled dependencies.
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
@@ -99,7 +99,7 @@
 - remove modules:
   - `data::collections`.
   - `num::alg`.
-- disable optional dependencies: `ring`, `rkyv`.
+- disable optional dependencies: `js-sys`, `ring`, `rkyv`, `wasm-bindgen`, `web-sys`.
 - deprecate:
   - `Char::len_to_utf8`.
   - `Float::{const_[clamp|max|min|signum|copysign]}`.

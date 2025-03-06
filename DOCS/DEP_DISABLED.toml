@@ -1,0 +1,53 @@
+# DEP_DISABLED
+#
+# Disabled dependencies, that has been tested
+
+std = [
+	"ring?/std", "rkyv?/std", "wasm-bindgen?/std", "js-sys?/std", "web-sys?/std",
+]
+
+dep_all = [
+	"dep_js_sys", "dep_ring", "dep_rkyv", "dep_wasm_bindgen", "dep_web_sys"
+]
+
+dep_hashbrown = [ "rkyv?/hashbrown-0_15" ]
+# DEP_DISABLED:
+# dep_js_sys = ["dep:js-sys"]                                                       # lang::js
+# dep_ring = ["dep:ring"]                                                           # data::xipher
+# dep_rkyv = ["dep:rkyv"]                                                           # data::serde
+# dep_wasm_bindgen = ["dep:wasm-bindgen"]                                           # lang
+# dep_web_sys = ["dep:web-sys"]                                                     # ui::web
+
+
+[dependencies]
+
+[dependencies.js-sys] # https://crates.io/crates/js-sys
+version = "0.3.73" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/js-sys
+optional = true # unsafe
+default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
+# deps: once-cell, wasm-bindgen/std
+
+[dependencies.ring] # https://crates.io/crates/ring
+version = "0.17.8" # ✗ https://github.com/briansmith/ring/commits/main/
+optional = true # unsafe
+default-features = false # 10 https://docs.rs/crate/ring/latest/features
+
+[dependencies.rkyv] # https://crates.io/crates/rkyv
+version = "0.8.10" # ✓ https://github.com/rkyv/rkyv/releases
+optional = true # unsafe
+default-features = false # 23  https://docs.rs/crate/rkyv/latest/features
+features = ["bytecheck"] # https://docs.rs/rkyv/latest/rkyv/#features
+# *aligned|unaligned, big_endian|*little_endian, pointer_width[16|*32|64]
+# MAYBE: https://crates.io/crates/rkyv_dyn
+
+[dependencies.wasm-bindgen] # https://crates.io/crates/wasm-bindgen
+version = "0.2.96" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 10 https://docs.rs/crate/wasm-bindgen/latest/features
+
+[dependencies.web-sys] # https://crates.io/crates/web-sys
+version = "0.3.73" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/web-sys
+optional = true # unsafe (unsafe dependencies)
+default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
+# IMPROVE: feature-gate
+

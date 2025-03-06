@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 51 optional dependencies */
+/* 48 optional dependencies */
 // In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
 
 reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,
@@ -77,9 +77,6 @@ reexport! { optional_crate (safe) "dep_itertools", "itertools", itertools,
 reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
     doc: "A high level datetime library that is secure and performant.",
     features: "alloc"
-}
-reexport! { optional_crate (unsafe) "dep_js_sys", "js-sys", js_sys,
-    doc: "Bindings for all JS global objects and functions in all JS environments."
 }
 reexport! { optional_crate (safe) "dep_kira", "kira", kira,
     doc: "Expressive audio library for games."
@@ -128,12 +125,6 @@ reexport! { optional_crate (unsafe) "dep_raw_cpuid", "raw-cpuid", raw_cpuid,
 reexport! { optional_crate (safe) "dep_regex_lite", "regex-lite", regex_lite,
     doc: "A lightweight regex engine optimized for binary size and compilation time."
 }
-// reexport! { optional_crate (safe) "dep_ring", "ring", ring,
-//     doc: "Safe, fast, small crypto using Rust."
-// }
-// reexport! { optional_crate (unsafe) "dep_rkyv", "rkyv", rkyv,
-//     doc: "A zero-copy deserialization framework for Rust."
-// }
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,
     doc: "Audio playback library."
 }
@@ -188,12 +179,6 @@ reexport! { optional_crate (safe) "dep_unicode_width", "unicode-width", unicode_
 }
 reexport! { optional_crate (safe) "dep_ureq", "ureq", ureq,
     doc: "Simple, safe HTTP client."
-}
-reexport! { optional_crate (unsafe) "dep_wasm_bindgen", "wasm-bindgen", wasm_bindgen,
-    doc: "Easy support for interacting between JS and Rust."
-}
-reexport! { optional_crate (unsafe) "dep_web_sys", "web-sys", web_sys,
-    doc: "Bindings for all Web APIs."
 }
 reexport! { optional_crate (unsafe) "dep_wide", "wide", wide,
     doc: "SIMD-compatible data types."
