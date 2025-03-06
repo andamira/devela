@@ -7,9 +7,10 @@ mod event; // JsEvent
 mod instant; // JsInstant
 mod permission; // JsPermission, JsPermissionState
 mod text; // JsTextMetrics, JsTextMetricsFull
+mod timeout; // JsTimeout
 mod worker; // JsWorker, JsWorkerError, JsWorkerJob
 
-pub use {event::*, instant::*, permission::*, text::*, worker::*};
+pub use {event::*, instant::*, permission::*, text::*, timeout::*, worker::*};
 
 // WIPZONE
 // #[cfg(feature = "alloc")]

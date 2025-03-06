@@ -11,6 +11,7 @@
 //   - events
 //   - history_location
 //   - permissions
+//   - window
 // - extended APis
 //   - canvas
 //   - system
@@ -20,7 +21,7 @@
 
 use devela::{
     js_reexport, transmute, Js, JsEvent, JsInstant, JsPermission, JsPermissionState, JsTextMetrics,
-    JsTextMetricsFull, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
+    JsTextMetricsFull, JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
 };
 #[cfg(feature = "alloc")]
 use devela::{vec_ as vec, String, Vec};
@@ -99,31 +100,20 @@ impl Js {
     /// Executes JavaScript code immediately.
     pub fn eval(js_code: &str) { unsafe { eval(js_code.as_ptr(), js_code.len()); } }
 
-    /// Executes JavaScript code after a delay.
-    ///
-    /// Returns a timeout ID, which can be used to cancel execution.
-    pub fn eval_timeout(js_code: &str, delay_ms: u32) -> u32 {
-        unsafe { eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) }
+    /// Executes JavaScript code after a delay in milliseconds.
+    pub fn eval_timeout(js_code: &str, delay_ms: u32) -> JsTimeout {
+        JsTimeout { id: unsafe { eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } }
     }
-    /// Cancels a timeout started by [`eval_timeout`][Self::eval_timeout].
-    pub fn eval_timeout_clear(timeout_id: u32) { unsafe { eval_timeout_clear(timeout_id); } }
-
-    /// Executes JavaScript code repeatedly at a fixed interval.
-    ///
-    /// Returns an interval ID, which can be used to cancel execution.
-    pub fn eval_interval(js_code: &str, interval_ms: u32) -> u32 {
-        unsafe { eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) }
+    /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
+    pub fn eval_interval(js_code: &str, interval_ms: u32) -> JsTimeout {
+        JsTimeout { id: unsafe { eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } }
     }
-    /// Cancels an interval started by [`eval_interval`][Self::eval_interval].
-    pub fn eval_interval_clear(interval_id: u32) { unsafe { eval_interval_clear(interval_id); } }
 }
 js_reexport! {
     [ module: "api_eval" ]
     unsafe fn eval(js_code_ptr: *const u8, js_code_len: usize);
     unsafe fn eval_timeout(js_code_ptr: *const u8, js_code_len: usize, delay_ms: u32) -> u32;
     unsafe fn eval_interval(js_code_ptr: *const u8, js_code_len: usize, interval_ms: u32) -> u32;
-    unsafe fn eval_timeout_clear(timeout_id: u32);
-    unsafe fn eval_interval_clear(interval_id: u32);
 }
 
 /// # Web API Events
@@ -290,6 +280,25 @@ impl Js {
 js_reexport! {
     [ module: "api_permissions" ]
     unsafe fn "permissions_query" permissions_query(name_ptr: *const u8, name_len: usize) -> i32;
+}
+
+/// # Web API window
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Window>
+#[rustfmt::skip]
+impl Js {
+    #[doc = web_api!("Window", "setTimeout")]
+    /// Calls a function after a delay in milliseconds.
+    pub fn set_timeout(callback: extern "C" fn(), delay_ms: u32) -> JsTimeout {
+        JsTimeout { id: unsafe { set_timeout(callback as usize, delay_ms) } } }
+    #[doc = web_api!("Window", "clearTimeout")]
+    /// Cancels a timeout.
+    pub fn clear_timeout(id: JsTimeout) { clear_timeout(id.id) }
+}
+js_reexport! {
+    [module: "api_window"]
+    unsafe fn set_timeout(callback_ptr: usize, delay_ms: u32) -> u32;
+    safe fn clear_timeout(timeout_id: u32);
 }
 
 /* extended APIs */

@@ -11,6 +11,7 @@
 //     - events
 //     - history_location
 //     - permissions
+//     - window
 //   - extended
 //     - canvas
 //     - performance
@@ -72,8 +73,6 @@ export async function initWasm(wasmPath, imports = {}) {
 				const jsCode = str_decode(jsCodePtr, jsCodeLen);
 				return setInterval(() => eval(jsCode), intervalMs);
 			},
-			eval_timeout_clear: (id) => { clearTimeout(id); },
-			eval_interval_clear: (id) => { clearInterval(id); }
 		},
 		api_events: {
 			// Events API
@@ -145,6 +144,12 @@ export async function initWasm(wasmPath, imports = {}) {
 						}}).catch(() => -3); // Error
 			},
 		},
+		api_window: {
+			set_timeout: (callback_ptr, delayMs) => {
+				return setTimeout(() => { wasm.exports.wasm_callback(callback_ptr); }, delayMs);
+			},
+			clear_timeout: (timeoutId) => { clearTimeout(timeoutId); },
+		}, // api_window
 
 		/* Extended APIs*/
 
