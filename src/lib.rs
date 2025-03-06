@@ -67,11 +67,12 @@
         const_ptr_sub_ptr,
         const_str_from_utf8,
         ptr_sub_ptr,
+        slice_take,
         unbounded_shifts,
         unsigned_is_multiple_of
     )
 )]
-#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature(extract_if,))]
+#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature(box_uninit_write, extract_if,))]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "std"),
     feature(file_lock, hash_extract_if, os_str_display,)
@@ -96,13 +97,12 @@
         let_chains,
         macro_metavar_expr,
         naked_functions,
-        slice_take,
         unsafe_cell_from_mut,
     )
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(box_uninit_write, new_zeroed_alloc, const_vec_string_slice,)
+    feature(new_zeroed_alloc, const_vec_string_slice,)
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),

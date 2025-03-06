@@ -38,6 +38,7 @@ See also
 # 1.87 will be stable on 2025-05-15 ([`nightly_stable_next2`](https://releases.rs/docs/1.87.0/))
 > - <https://github.com/rust-lang/rust/milestone/130>
 
+- 1.87: `a`[box_uninit_write](https://github.com/rust-lang/rust/pull/137850)
 - 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.87: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
 - 1.87: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
@@ -48,6 +49,8 @@ See also
 - 1.87: `s`[os_str_display](https://github.com/rust-lang/rust/pull/137336)
 - 1.87: `·`[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
         `·` `const_ptr_sub_ptr`
+- 1.87: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
+        ` ` `split_off` (new name)
 - 1.87: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
 - 1.87: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
@@ -57,7 +60,6 @@ See also
 - 1.??: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
 - 1.??: `·`[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
-- 1.??: `a`[box_uninit_write](https://github.com/rust-lang/rust/pull/137850)
 - 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
@@ -77,8 +79,6 @@ See also
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
-- 1.??: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
-        ` ` `split_off` (new name)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
 # … may be stable even later
