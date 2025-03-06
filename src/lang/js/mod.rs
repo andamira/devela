@@ -54,15 +54,19 @@ crate::items! {
     mod web_api;
 }
 
-crate::items! { // structural access: _mods, _all
+crate::items! { // structural access: _mods, _internals, _all
     #[allow(unused)]
-    pub use _mods::*;
+    pub use {_mods::*, _internals::*};
 
     mod _mods { #![allow(unused)]
         pub use super::types::*;
 
         #[cfg(feature = "unsafe_ffi")]
         pub use super::reexport::*;
+    }
+    pub(super) mod _internals {
+        #[cfg(all(feature = "unsafe_ffi", not(windows)))]
+        pub(crate) use super::web_api::web_api;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

@@ -40,7 +40,7 @@ macro_rules! web_api {
         "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
         $method, "_static))" ] };
 }
-pub(in crate::lang::js) use web_api;
+pub(crate) use web_api;
 
 /* core APIs */
 

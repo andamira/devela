@@ -28,7 +28,7 @@ impl JsWorker {
 }
 
 #[rustfmt::skip]
-#[cfg(all(not(windows), feature = "unsafe_ffi"))]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
 impl JsWorker {
@@ -77,7 +77,7 @@ impl JsWorkerJob {
 }
 
 #[rustfmt::skip]
-#[cfg(all(not(windows), feature = "unsafe_ffi"))]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
 impl JsWorkerJob {

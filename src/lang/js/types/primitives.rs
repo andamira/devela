@@ -35,7 +35,8 @@ pub type js_int32 = i32;
 /// - **Only `>>>` (unsigned right shift) preserves unsigned semantics.**
 pub type js_uint32 = u32;
 
-/* numeric constants */ // MAYBE
+/* numeric constants */
+// MAYBE
 
 // /// The JavaScript `NaN` (Not-a-Number) value.
 // pub const js_nan: js_number = js_number::NAN;

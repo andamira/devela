@@ -1,8 +1,10 @@
 // devela::lang:js::types::timeout
 //
 
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+use crate::web_api;
 #[allow(unused_imports)]
-use crate::{web_api, Js};
+use crate::Js;
 
 /// A handle to a JavaScript timeout.
 ///
@@ -22,7 +24,7 @@ impl JsTimeout {
 }
 
 #[rustfmt::skip]
-#[cfg(all(not(windows), feature = "unsafe_ffi"))]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
 impl JsTimeout {
@@ -52,5 +54,5 @@ impl JsTimeout {
     #[doc = web_api!("Window", "clearTimeout")]
     #[doc = web_api!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
-    pub fn clear(self) { Js::window_clear_timeout(id.id); }
+    pub fn clear(self) { Js::window_clear_timeout(self); }
 }

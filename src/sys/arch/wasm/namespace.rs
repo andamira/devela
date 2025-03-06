@@ -102,7 +102,7 @@ impl Wasm {
         {
             let previous = Self::memory_pages();
             let result = memory_grow(0, delta);
-            return previous != result;
+            previous != result
         }
         #[cfg(not(target_family = "wasm"))]
         false

@@ -215,6 +215,7 @@ mod _internals {
     pub(crate) use super::{
         code::_internals::*,
         data::_internals::*,
+        lang::_internals::*,
         num::_internals::*,
     };
 }

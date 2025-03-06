@@ -217,7 +217,7 @@ macro_rules! impl_float_shared {
             /// The euclidean division.
             // NOTE: [incorrect computations](https://github.com/rust-lang/rust/issues/107904)
             pub const fn div_euclid(self, other: $f) -> Float<$f> {
-                let q = Float(self.0 / other).trunc().0;
+                let q = Float(self.0 / other).const_trunc().0;
                 if self.0 % other < 0.0 {
                     iif![other > 0.0; Float(q - 1.0); Float(q + 1.0)]
                 } else {
