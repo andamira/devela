@@ -40,6 +40,7 @@ macro_rules! web_api {
         "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
         $method, "_static))" ] };
 }
+pub(in crate::lang::js) use web_api;
 
 /* core APIs */
 
@@ -276,9 +277,11 @@ impl Js {
     /// - Avoid passing untrusted input, as this executes arbitrary JS.
     /// - Ensure all evaluated code is **safe and controlled**.
     pub fn window_eval(js_code: &str) { unsafe { window_eval(js_code.as_ptr(), js_code.len()); } }
+    #[doc = web_api!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
     pub fn window_eval_timeout(js_code: &str, delay_ms: u32) -> JsTimeout { JsTimeout {
         id: unsafe { window_eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } } }
+    #[doc = web_api!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
     pub fn window_eval_interval(js_code: &str, interval_ms: u32) -> JsTimeout { JsTimeout {
         id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
