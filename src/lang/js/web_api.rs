@@ -7,7 +7,6 @@
 // TOC
 // - core APis
 //   - console
-//   - eval
 //   - events
 //   - history_location
 //   - permissions
@@ -88,34 +87,6 @@ js_reexport! {
     unsafe fn "console_groupEnd" console_group_end();
 }
 
-/// # JavaScript Evaluation
-///
-/// Executes JavaScript code from Rust.
-///
-/// ## Security Warning
-/// - Avoid passing untrusted input, as this executes arbitrary JS.
-/// - Ensure all evaluated code is **safe and controlled**.
-#[rustfmt::skip]
-impl Js {
-    /// Executes JavaScript code immediately.
-    pub fn eval(js_code: &str) { unsafe { eval(js_code.as_ptr(), js_code.len()); } }
-
-    /// Executes JavaScript code after a delay in milliseconds.
-    pub fn eval_timeout(js_code: &str, delay_ms: u32) -> JsTimeout {
-        JsTimeout { id: unsafe { eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } }
-    }
-    /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
-    pub fn eval_interval(js_code: &str, interval_ms: u32) -> JsTimeout {
-        JsTimeout { id: unsafe { eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } }
-    }
-}
-js_reexport! {
-    [ module: "api_eval" ]
-    unsafe fn eval(js_code_ptr: *const u8, js_code_len: usize);
-    unsafe fn eval_timeout(js_code_ptr: *const u8, js_code_len: usize, delay_ms: u32) -> u32;
-    unsafe fn eval_interval(js_code_ptr: *const u8, js_code_len: usize, interval_ms: u32) -> u32;
-}
-
 /// # Web API Events
 ///
 /// Provides event handling for interactivity.
@@ -175,9 +146,7 @@ impl Js {
     /// # Example
     /// ```ignore
     /// #[unsafe(no_mangle)]
-    /// pub extern "C" fn my_callback() {
-    ///     Js::console_log("Button clicked!");
-    /// }
+    /// pub extern "C" fn my_callback() { Js::console_log("Button clicked!"); }
     /// Js::event_add_listener("#my_button", JsEvent::Click, my_callback);
     /// ```
     #[unsafe(no_mangle)]
@@ -289,16 +258,51 @@ js_reexport! {
 impl Js {
     #[doc = web_api!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
-    pub fn set_timeout(callback: extern "C" fn(), delay_ms: u32) -> JsTimeout {
-        JsTimeout { id: unsafe { set_timeout(callback as usize, delay_ms) } } }
+    pub fn window_set_timeout(callback: extern "C" fn(), delay_ms: u32) -> JsTimeout {
+        JsTimeout { id: unsafe { window_set_timeout(callback as usize, delay_ms) } }
+    }
+    #[doc = web_api!("Window", "setInterval")]
+    /// Calls a function repeatedly at a fixed interval in milliseconds.
+    pub fn window_set_interval(callback: extern "C" fn(), interval_ms: u32) -> JsTimeout {
+        JsTimeout { id: unsafe { window_set_interval(callback as usize, interval_ms) } }
+    }
     #[doc = web_api!("Window", "clearTimeout")]
-    /// Cancels a timeout.
-    pub fn clear_timeout(id: JsTimeout) { clear_timeout(id.id) }
+    #[doc = web_api!("Window", "clearInterval")]
+    /// Cancels a timeout or interval.
+    pub fn window_clear_timeout(id: JsTimeout) { window_clear_timeout(id.id); }
+
+    /// Executes JavaScript code immediately.
+    /// ## Security Warning
+    /// - Avoid passing untrusted input, as this executes arbitrary JS.
+    /// - Ensure all evaluated code is **safe and controlled**.
+    pub fn window_eval(js_code: &str) { unsafe { window_eval(js_code.as_ptr(), js_code.len()); } }
+    /// Executes JavaScript code after a delay in milliseconds.
+    pub fn window_eval_timeout(js_code: &str, delay_ms: u32) -> JsTimeout { JsTimeout {
+        id: unsafe { window_eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } } }
+    /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
+    pub fn window_eval_interval(js_code: &str, interval_ms: u32) -> JsTimeout { JsTimeout {
+        id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
+
+    #[doc = web_api!("Window", "requestAnimationFrame")]
+    /// Requests an animation frame, executing the given `callback`.
+    pub fn window_request_animation_frame(callback: extern "C" fn()) -> u32 {
+        unsafe { window_request_animation_frame(callback as usize) } }
+    /// Cancels a request for an animation frame.
+    pub fn window_cancel_animation_frame(id: u32) { window_cancel_animation_frame(id); }
 }
 js_reexport! {
     [module: "api_window"]
-    unsafe fn set_timeout(callback_ptr: usize, delay_ms: u32) -> u32;
-    safe fn clear_timeout(timeout_id: u32);
+    unsafe fn window_set_timeout(callback_ptr: usize, delay_ms: u32) -> u32;
+    unsafe fn window_set_interval(callback_ptr: usize, interval_ms: u32) -> u32;
+    safe fn window_clear_timeout(timeout_id: u32);
+    //
+    unsafe fn window_eval(js_code_ptr: *const u8, js_code_len: usize);
+    unsafe fn window_eval_timeout(js_code_ptr: *const u8, js_code_len: usize, delay_ms: u32) -> u32;
+    unsafe fn window_eval_interval(js_code_ptr: *const u8, js_code_len: usize, interval_ms: u32)
+        -> u32;
+    //
+    unsafe fn window_request_animation_frame(callback_ptr: usize) -> u32;
+    safe fn window_cancel_animation_frame(requestId: u32);
 }
 
 /* extended APIs */

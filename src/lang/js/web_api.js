@@ -7,7 +7,6 @@
 // - bindings
 //   - core
 //     - console
-//     - eval
 //     - events
 //     - history_location
 //     - permissions
@@ -58,21 +57,6 @@ export async function initWasm(wasmPath, imports = {}) {
 			//
 			console_group: (ptr, len) => console.group(str_decode(ptr, len)),
 			console_groupEnd: () => console.groupEnd(),
-		},
-		api_eval: {
-			eval: (jsCodePtr, jsCodeLen) => {
-				const jsCode = str_decode(jsCodePtr, jsCodeLen);
-				try { eval(jsCode); }
-				catch (err) { console.error("Error evaluating JavaScript:", err); }
-			},
-			eval_timeout: (jsCodePtr, jsCodeLen, delayMs) => {
-				const jsCode = str_decode(jsCodePtr, jsCodeLen);
-				return setTimeout(() => eval(jsCode), delayMs);
-			},
-			eval_interval: (jsCodePtr, jsCodeLen, intervalMs) => {
-				const jsCode = str_decode(jsCodePtr, jsCodeLen);
-				return setInterval(() => eval(jsCode), intervalMs);
-			},
 		},
 		api_events: {
 			// Events API
@@ -145,12 +129,31 @@ export async function initWasm(wasmPath, imports = {}) {
 			},
 		},
 		api_window: {
-			set_timeout: (callback_ptr, delayMs) => {
+			window_set_timeout: (callback_ptr, delayMs) => {
 				return setTimeout(() => { wasm.exports.wasm_callback(callback_ptr); }, delayMs);
 			},
-			clear_timeout: (timeoutId) => { clearTimeout(timeoutId); },
+			window_set_interval: (callback_ptr, intervalMs) => {
+				return setInterval(() => { wasm.exports.wasm_callback(callback_ptr); }, intervalMs);
+			},
+			window_clear_timeout: (timeoutId) => { clearTimeout(timeoutId); },
+			window_eval: (jsCodePtr, jsCodeLen) => {
+				const jsCode = str_decode(jsCodePtr, jsCodeLen);
+				try { eval(jsCode); }
+				catch (err) { console.error("Error evaluating JavaScript:", err); }
+			},
+			window_eval_timeout: (jsCodePtr, jsCodeLen, delayMs) => {
+				const jsCode = str_decode(jsCodePtr, jsCodeLen);
+				return setTimeout(() => eval(jsCode), delayMs);
+			},
+			window_eval_interval: (jsCodePtr, jsCodeLen, intervalMs) => {
+				const jsCode = str_decode(jsCodePtr, jsCodeLen);
+				return setInterval(() => eval(jsCode), intervalMs);
+			},
+			window_request_animation_frame: (callback_ptr) => {
+				return requestAnimationFrame(() => { wasm.exports.wasm_callback(callback_ptr); });
+			},
+			window_cancel_animation_frame: (requestId) => { cancelAnimationFrame(requestId); },
 		}, // api_window
-
 		/* Extended APIs*/
 
 		api_canvas: {

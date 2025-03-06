@@ -39,11 +39,11 @@ pub extern "C" fn main() {
 
     /* eval */
 
-    Js::eval("console.log('Hello from Rust!');");
-    Js::eval_timeout("console.log('Delayed!');", 1000);
-    Js::eval_interval("console.log('Repeating!');", 2000);
-    let cleared = Js::eval_timeout("console.error('This should not run!');", 1500);
-    Js::clear_timeout(cleared);
+    Js::window_eval("console.log('Hello from Rust!');");
+    Js::window_eval_timeout("console.log('Delayed!');", 1000);
+    Js::window_eval_interval("console.log('Repeating!');", 2000);
+    let cleared = Js::window_eval_timeout("console.error('This should not run!');", 1500);
+    Js::window_clear_timeout(cleared);
 
     /* draw shapes */
 
