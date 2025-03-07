@@ -6,6 +6,7 @@ Legend:
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
 - `F` = enabled by some specific cfg flag, shown afterwards.
+- `✓` = enabled already
 
 Usage example:
 ```sh
@@ -39,6 +40,7 @@ See also
 > - <https://github.com/rust-lang/rust/milestone/130>
 
 - 1.87: `a`[box_uninit_write](https://github.com/rust-lang/rust/pull/137850)
+- 1.87: `·`[const_copy_from_slice](https://github.com/rust-lang/rust/pull/138098)
 - 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.87: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
 - 1.87: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
@@ -51,9 +53,12 @@ See also
         `·` `const_ptr_sub_ptr`
 - 1.87: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
         ` ` `split_off` (new name)
+- 1.87: `a`[string_extend_from_within](https://github.com/rust-lang/rust/pull/137569)
 - 1.87: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
 - 1.87: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
+- 1.87: `✓`[Undeprecate env::home_dir](https://github.com/rust-lang/rust/pull/137327)
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
+- 1.87: ` `[Update stdarch](https://github.com/rust-lang/rust/pull/136831) CHECK
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -65,6 +70,8 @@ See also
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
+- 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
+        `·` `const_sockaddr_setters`
 - 1.??: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
 - 1.??: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
 - 1.??: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
@@ -79,16 +86,17 @@ See also
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
+- 1.??: `·`[precise_capturing_in_traits](https://github.com/rust-lang/rust/pull/138128)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
 # … may be stable even later
 
 - 1.?? `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
-        = `nightly_allocator`
+        = `nightly_allocator` feature
 - 1.?? `F`[autodiff](https://github.com/rust-lang/rust/issues/124509)
-          `nightly_autodiff`
+          `nightly_autodiff` flag
 - 1.?? `F`[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
-        = `nightly_bigint`
+        = `nightly_bigint` flag
 - 1.?? ` `[box_into_inner](https://github.com/rust-lang/rust/issues/80437)
 - 1.?? ` `[cfg(accessible(::path::to::thing))](https://github.com/rust-lang/rust/issues/64797)
 - 1.?? ` `[cfg(version(..))](https://github.com/rust-lang/rust/issues/64796)
@@ -101,13 +109,13 @@ See also
 - 1.?? ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
 - 1.?? ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
 - 1.?? `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
-        = `nightly_coro`
+        = `nightly_coro` flag
 - 1.?? `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
-        = `nightly_doc`
+        = `nightly_doc` feature
 - 1.?? `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-        = `nightly_doc`
+        = `nightly_doc` feature
 - 1.?? `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
-        = `nightly_float`
+        = `nightly_float` feature
 - 1.?? ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
@@ -115,7 +123,7 @@ See also
 - 1.?? ` `[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
 - 1.?? ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.?? `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
-        = `nightly_simd`
+        = `nightly_simd` flag
 - 1.?? ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
 - 1.?? ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137)
 - 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)

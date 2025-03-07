@@ -30,14 +30,14 @@
 //
 // nightly
 //
-// (In sync with Cargo.toml::nightly & build/features.rs::NIGHTLY)
+// (In sync with ../Cargo.toml::nightly, ../DOCS/NIGHTLY.md & ../build/features.rs::NIGHTLY)
 #![cfg_attr(feature = "nightly_allocator", feature(allocator_api))]
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(all(feature = "nightly_doc", miri), allow(unused_attributes))]
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
 #![cfg_attr(feature = "nightly_float", feature(f16, f128))]
 //
-// (In sync with Cargo.toml::[lints.rust.unexpected_cfgs] & build/features.rs::FLAGS_NIGHTLY)
+// (In sync with ../Cargo.toml::[lints.rust.unexpected_cfgs] & ../build/features.rs::FLAGS_NIGHTLY)
 #![cfg_attr(nightly_autodiff, feature(autodiff))]
 #![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
 #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
@@ -61,6 +61,7 @@
 #![cfg_attr(
     nightly_stable_next2,
     feature(
+        const_copy_from_slice,
         const_slice_flatten,
         integer_sign_cast,
         num_midpoint_signed,
@@ -69,10 +70,13 @@
         ptr_sub_ptr,
         slice_take,
         unbounded_shifts,
-        unsigned_is_multiple_of
+        unsigned_is_multiple_of,
     )
 )]
-#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature(box_uninit_write, extract_if,))]
+#![cfg_attr(
+    all(nightly_stable_next2, feature = "alloc"),
+    feature(box_uninit_write, extract_if, string_extend_from_within,)
+)]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "std"),
     feature(file_lock, hash_extract_if, os_str_display,)
@@ -87,7 +91,9 @@
         cell_update,
         const_array_from_ref,
         const_cell,
+        const_char_classify,
         const_slice_from_ref,
+        const_sockaddr_setters,
         const_str_split_at,
         const_swap_nonoverlapping,
         c_str_module,
@@ -97,6 +103,7 @@
         let_chains,
         macro_metavar_expr,
         naked_functions,
+        precise_capturing_in_traits,
         unsafe_cell_from_mut,
     )
 )]
@@ -118,7 +125,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 // safety
 #[cfg(all(
     feature = "safe",
-    // In sync with Cargo.toml::unsafe & build/features.rs::UNSAFE
+    // In sync with ../Cargo.toml::unsafe & ../build/features.rs::UNSAFE
     any(feature = "unsafe", // includes all 11 specific purposes below:
         feature = "unsafe_array", feature = "unsafe_ffi", feature = "unsafe_hint",
         feature = "unsafe_layout", feature = "unsafe_niche", feature = "unsafe_ptr",

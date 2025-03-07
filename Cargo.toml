@@ -281,7 +281,7 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 # - ./utils/release_dates.rs
 # - ./DOCS/NIGHTLY.md
 
-nightly = [ # [3] (in sync with ./build/features.rs::NIGHTLY & ./src/lib.rs)
+nightly = [ # [3] (in sync with ./src/lib.rs, ./build/features.rs::NIGHTLY & ./DOCS/NIGHTLY.md)
 	"nightly_allocator", "nightly_doc", "nightly_float",
 ] # `nightly··`
 	# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
