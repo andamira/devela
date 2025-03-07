@@ -9,6 +9,7 @@
 
 use super::BitmapFont;
 
+#[doc = crate::TAG_FONT!()]
 /// A simple 3x3 bitmap font.
 ///
 /// Notes:
@@ -50,6 +51,7 @@ const FONT_3_3_GLYPHS: [u16; 95] = [
     0b_110010011, 0b_110011110, 0b_010010010, 0b_011110011, 0b_000110011, // z { | } ~
 ];
 
+#[doc = crate::TAG_FONT!()]
 /// A simple 3x5 bitmap font.
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
@@ -87,6 +89,7 @@ const FONT_3_5_GLYPHS: [u16; 95] = [
     0x_73b8, 0x_64d6, 0x_2492, 0x_3593, 0x_03e0, // z { | } ~
 ];
 
+#[doc = crate::TAG_FONT!()]
 /// A simple 5x6 bitmap font.
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.

@@ -8,6 +8,7 @@ use crate::{
     NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
 };
 
+#[doc = crate::TAG_NUM!()]
 /// Fundamental numeric constants for both integer and floating-point types.
 pub trait ExtNumConst {
     /// The underlying numeric type implementing this trait.

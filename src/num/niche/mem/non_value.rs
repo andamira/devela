@@ -364,5 +364,6 @@ macro_rules! impl_non_value {
         }
     }};
 }
+#[doc = crate::TAG_NUM!()]
 #[doc(inline)]
 pub use impl_non_value;

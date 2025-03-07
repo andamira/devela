@@ -1,17 +1,22 @@
 // devela::num::geom::metric::angle
 //
 //! Defines [`Angle`], [`AngleDirection`], [`AngleKind`].
+//!
+//! [`Angle`]s and [`Cycle`][crate::Cycle]s are closely related:
+//! - An angle represents a fraction of a full rotation.
+//! - A cycle represents a repeating pattern over a period.
+//! - A full-turn normalized angle (0.0 to 1.0 or 0..256) is directly analogous to phase in a cycle.
 //
-// [`Angle`]s and [`Cycle`]s are closely related:
-// - An angle represents a fraction of a full rotation.
-// - A cycle represents a repeating pattern over a period.
-// - A full-turn normalized angle (0.0 to 1.0 or 0..256) is directly analogous to phase in a cycle.
+// TOC
+// - struct Angle
+// - struct AngleDirection
 
 mod r#impl;
 
 mod kind;
 pub use kind::AngleKind;
 
+#[doc = crate::TAG_GEOM!()]
 /// An angle represents a fraction of a full rotation.
 ///
 /// It's unit-agnostic over radians or degrees, and respects directionality.
@@ -86,6 +91,7 @@ impl<T> Angle<T> {
     }
 }
 
+#[doc = crate::TAG_GEOM!()]
 /// The direction of rotation of an angle.
 ///
 /// In mathematics and most graphics programming contexts, the default direction

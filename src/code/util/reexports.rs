@@ -63,7 +63,7 @@ reexport! { rust: core,
 doc: "Parses a file as an expression or an item according to the context.", include }
 reexport! { rust: core,
 doc: "Includes a file as a reference to a byte array.", include_bytes }
-reexport! { rust: core,
+reexport! { rust: core, tag: crate::TAG_TEXT!(),
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
 // concatenating

@@ -3,6 +3,8 @@
 //! Not a time.
 //
 
+#[doc = crate::TAG_NO!()]
+#[doc = crate::TAG_TIME!()]
 /// Represents the absence of time.
 ///
 /// This can be used anywhere an implementation of a time-related trait or

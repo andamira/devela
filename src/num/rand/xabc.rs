@@ -5,6 +5,7 @@
 
 use crate::{ConstDefault, Own};
 
+#[doc = crate::TAG_RAND!()]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
 ///
 /// It has a 32-bit state and generates 8-bit numbers.

@@ -6,6 +6,7 @@
 #[cfg(doc)]
 use crate::{Distance, Orientation};
 
+#[doc = crate::TAG_GEOM!()]
 /// A location in `D`-dimensional space.
 ///
 /// Represents an absolute position in a coordinate system.

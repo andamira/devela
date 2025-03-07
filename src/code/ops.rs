@@ -24,26 +24,26 @@ crate::items! { // structural access: _mods, _all, _always
 }
 
 mod reexports {
-    use crate::reexport;
+    use crate::{reexport, TAG_QUANT};
 
     // enums
-    reexport! { rust: core::ops,
+    reexport! { rust: core::ops, tag: TAG_QUANT!(),
     doc: "An endpoint of a range of keys.\n\n See also `num::`[`Interval`][crate::Interval].",
     Bound }
     reexport! { rust: core::ops,
     doc: "Used to tell an operation whether it should exit early or go on as usual.", ControlFlow }
 
     // structs
-    reexport! { rust: core::ops,
+    reexport! { rust: core::ops, tag: TAG_QUANT!(),
     doc: "A range bounded inclusively below and exclusively above (`start..end`).", Range }
-    reexport! { rust: core::ops,
+    reexport! { rust: core::ops, tag: TAG_QUANT!(),
     doc: "A range only bounded inclusively below (`start..`).", RangeFrom }
-    reexport! { rust: core::ops, doc: "An unbounded range (`..`).", RangeFull }
-    reexport! { rust: core::ops,
+    reexport! { rust: core::ops, tag: TAG_QUANT!(), doc: "An unbounded range (`..`).", RangeFull }
+    reexport! { rust: core::ops, tag: TAG_QUANT!(),
     doc: "A range bounded inclusively below and above (`start..=end`).", RangeInclusive }
-    reexport! { rust: core::ops,
+    reexport! { rust: core::ops, tag: TAG_QUANT!(),
     doc: "A range only bounded exclusively above (`..end`).", RangeTo }
-    reexport! { rust: core::ops,
+    reexport! { rust: core::ops, tag: TAG_QUANT!(),
     doc: "A range only bounded inclusively above (`..=end`).", RangeToInclusive }
 
     // traits

@@ -5,6 +5,7 @@
 
 use crate::{xorshift_basis, ConstDefault, Own};
 
+#[doc = crate::TAG_RAND!()]
 /// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has a 32-bit state and generates 32-bit numbers.

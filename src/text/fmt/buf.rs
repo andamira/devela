@@ -6,6 +6,7 @@
 use crate::{iif, FmtResult, FmtWrite, _core::cmp::min};
 crate::_use! {compat::from_utf8}
 
+#[doc = crate::TAG_FMT!()]
 /// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
 ///
 /// Underneath it calls [`Fmt::format_buf`][crate::Fmt::format_buf] and [`format_args!`].

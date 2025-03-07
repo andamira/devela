@@ -110,7 +110,7 @@ pub trait DataValueCopy: DataValue + Copy {
     }
 }
 
-/// Common unsafe trait for enumerating *raw data values* without type metadata.
+/// Common unsafe trait for enumerating untagged *raw data values*.
 ///
 /// # Safety
 /// You have to know what you're doing.
@@ -118,8 +118,7 @@ pub trait DataValueCopy: DataValue + Copy {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 pub unsafe trait DataRaw {}
 
-/// Common unsafe trait for enumerating `Copy`-constrained *raw data values*
-/// without type metadata.
+/// Common unsafe trait for enumerating `Copy`-constrained untagged *raw data values*.
 ///
 /// # Safety
 /// You have to know what you're doing.

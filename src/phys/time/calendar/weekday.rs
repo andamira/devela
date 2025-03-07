@@ -7,6 +7,7 @@ use crate::{Display, FmtResult, Formatter, FromStr};
 #[allow(clippy::enum_glob_use)]
 use Weekday::*;
 
+#[doc = crate::TAG_TIME!()]
 /// The days of the week.
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

@@ -17,6 +17,7 @@ sf! {
     impl<T: Num> NumRef<'_> for &mut T { type Own = T; }
 }
 
+#[doc = crate::TAG_NUM!()]
 /// Common trait for numeric types.
 ///
 /// # Notes
@@ -126,6 +127,7 @@ pub trait Num {
     fn num_ref_abs(&self) -> Result<Self::Out> { E::ni() }
 }
 
+#[doc = crate::TAG_NUM!()]
 /// Common auto-trait for referenced numeric types.
 ///
 /// It is automatically implemented for references of types implementing [`Num`].

@@ -83,13 +83,9 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
             AtomicOrdering::Acquire, AtomicOrdering::Acquire).is_err() {
             #[cfg(feature = "std")]
             {
-                if spin < SPIN {
-                    spin_loop();
-                } else if spin < YIELD {
-                    Thread::yield_now();
-                } else if SLEEP > 0 {
-                    Thread::sleep_ns(SLEEP);
-                }
+                if spin < SPIN { spin_loop(); }
+                else if spin < YIELD { Thread::yield_now(); }
+                else if SLEEP > 0 { Thread::sleep_ns(SLEEP); }
                 spin += 1;
             }
             #[cfg(not(feature = "std"))]
@@ -107,14 +103,10 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
     }
 
     /// Checks if the lock is currently held.
-    pub fn is_locked(&self) -> bool {
-        self.lock.load(AtomicOrdering::Acquire)
-    }
+    pub fn is_locked(&self) -> bool { self.lock.load(AtomicOrdering::Acquire) }
 
     /// Consumes the lock and returns the inner value.
-    pub fn into_inner(self) -> T {
-        self.value.into_inner()
-    }
+    pub fn into_inner(self) -> T { self.value.into_inner() }
 
     /// Tries to consume the lock and return the inner value.
     ///

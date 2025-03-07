@@ -236,55 +236,86 @@ mod tags {
         EMOJI_ATOMIC = "⚛️"; // ⚛️,🔬,🌐
         EMOJI_DATA_STRUCTURE = "📦"; // 📦,🧩,🗂️,
         EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
-        // EMOJI_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
+        // EMOJI_ERROR_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
         EMOJI_EXPERIMENTAL = "🧪";
-        EMOJI_NON_STANDARD = "⚠️";
+        EMOJI_FONT = "🅵"; // 🅵,, 🅰, ℱ, 𝔉, 𝕱, 𝐅
+        EMOJI_FMT = "🖹"; // 🖹, 📄, 📝, 🄵, ✎, ℱ, 𝔽
+        EMOJI_GEOM = "📐";
         EMOJI_ITERATOR = "🔄"; // 🔄,
         EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
+        EMOJI_NON_STANDARD = "⚠️";
+        EMOJI_NO = "∅"; // ∅, ⊘, ⬛
+        EMOJI_NUM = "𝟙"; // 🔢, 🔟, ❶, ➀, 𝟙
         EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
+        EMOJI_QUANT = "📏";
+        EMOJI_RAND = "🎲"; // 🎲, 🎰, 🔀
         EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
+        EMOJI_TEXT = "𝐓"; // 𝐓, 𝓣, 𝔸, 🄰
+        EMOJI_TIME = "🕘"; // 🕘, ⏳, 📅
         //
-        TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic-related item'>",
+        SPAN_OPEN = "<span class='stab portability' title=";
+        // SPAN_OPEN = "<span class='tag-emoji' title=";
+        //
+        TAG_ATOMIC = concat!(crate::SPAN_OPEN!(), "'Atomic-related item'>",
             crate::EMOJI_ATOMIC!(), "</span>");
         TAG_DATA_STRUCTURE =
-            concat!("<span class='stab portability' title='A generic data structure'>",
+            concat!(crate::SPAN_OPEN!(), "'A generic data structure'>",
             crate::EMOJI_DATA_STRUCTURE!(), "</span>");
-        TAG_ERROR = concat!("<span class='stab portability' title='Individual error type'>",
+        TAG_ERROR = concat!(crate::SPAN_OPEN!(), "'Individual error type'>",
             crate::EMOJI_ERROR!(), "</span>");
         TAG_ERROR_COMPOSITE =
-            concat!("<span class='stab portability' title='Composite error type'>",
+            concat!(crate::SPAN_OPEN!(), "'Composite error type'>",
             crate::EMOJI_ERROR!(), "+</span>");
-        TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator-related item'>",
-            crate::EMOJI_ITERATOR!(), "</span>");
-        TAG_NAMESPACE = concat!("<span class='stab portability' title='Namespaced functionality'>",
-            crate::EMOJI_NAMESPACE!(), "</span>");
-        TAG_PRIMITIVE = concat!("<span class='stab portability' title='Rust primitive'>",
-            crate::EMOJI_PRIMITIVE!(), "</span>");
-        TAG_RESULT = concat!("<span class='stab portability' title='Result type'>",
-            crate::EMOJI_RESULT!() ,"</span>");
-
         TAG_EXPERIMENTAL = concat!(
             "<span class='stab portability' title='Experimental functionality'>",
             crate::EMOJI_EXPERIMENTAL!(), "</span>");
+        TAG_FONT = concat!("<span class='stab portability' title='Font-related item'>",
+            crate::EMOJI_FONT!(), "</span>");
+        TAG_FMT =
+            concat!(crate::SPAN_OPEN!(), "'Text Formatting & Representation item'>",
+            crate::EMOJI_FMT!(), "</span>");
+        TAG_GEOM =
+            concat!(crate::SPAN_OPEN!(), "'Geometric multi-dimensional item'>",
+            crate::EMOJI_GEOM!(), "</span>");
+        TAG_ITERATOR = concat!(crate::SPAN_OPEN!(), "'Iterator-related item'>",
+            crate::EMOJI_ITERATOR!(), "</span>");
+        TAG_NAMESPACE = concat!(crate::SPAN_OPEN!(), "'Namespaced functionality'>",
+            crate::EMOJI_NAMESPACE!(), "</span>");
         TAG_NON_STANDARD = concat!(
             "<span class='stab portability' title='Non-standard. Expect poor cross-compatibility'>",
             crate::EMOJI_NON_STANDARD!(), "</span>");
+        TAG_NO = concat!(crate::SPAN_OPEN!(), "'Absence or Empty effect item'>",
+            crate::EMOJI_NO!(), "</span>");
+        TAG_NUM = concat!(crate::SPAN_OPEN!(), "'Numeric value-related item'>",
+            crate::EMOJI_NUM!(), "</span>");
+        TAG_PRIMITIVE = concat!(crate::SPAN_OPEN!(), "'Rust primitive type'>",
+            crate::EMOJI_PRIMITIVE!(), "</span>");
+        TAG_QUANT = concat!(crate::SPAN_OPEN!(), "'Quantification item (1D)'>",
+            crate::EMOJI_QUANT!(), "</span>");
+        TAG_RAND = concat!(crate::SPAN_OPEN!(), "'Randomness-related item'>",
+            crate::EMOJI_RAND!(), "</span>");
+        TAG_RESULT = concat!(crate::SPAN_OPEN!(), "'Result type'>",
+            crate::EMOJI_RESULT!() ,"</span>");
+        TAG_TEXT = concat!(crate::SPAN_OPEN!(), "'Text-related type'>",
+            crate::EMOJI_TEXT!() ,"</span>");
+        TAG_TIME = concat!(crate::SPAN_OPEN!(), "'Time-related type'>",
+            crate::EMOJI_TIME!() ,"</span>");
 
-        TAG_MAYBE_STD = "<span class='stab portability'
-    title='re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>";
+        TAG_MAYBE_STD = concat!(crate::SPAN_OPEN!(),
+            "'re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>");
 
         /* optional dependencies */
 
         // used in: work::sync::atomic
-        TAG_ATOMIC_CORE_PORTABLE = concat!("<span class='stab portability' ",
-            "title='re-exported either from `core` or from the `portable-atomic` crate'>",
+        TAG_ATOMIC_CORE_PORTABLE = concat!(crate::SPAN_OPEN!(),
+            "'re-exported either from `core` or from the `portable-atomic` crate'>",
             "`?core`</span>");
         DOC_ATOMIC_CORE_PORTABLE = concat!("*Re-exported either from `core` or from the ",
             "[`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---");
 
         // used in: work::sync::re-exports and work::future::re-exports
-        TAG_ATOMIC_ALLOC_PORTABLE_UTIL = concat!("<span class='stab portability' ",
-            "title='re-exported either from `alloc` or from the `portable-atomic-util` crate'>",
+        TAG_ATOMIC_ALLOC_PORTABLE_UTIL = concat!(crate::SPAN_OPEN!(),
+            "'re-exported either from `alloc` or from the `portable-atomic-util` crate'>",
             "`?alloc`</span>");
         DOC_ATOMIC_ALLOC_PORTABLE_UTIL = concat!("*Re-exported either from `alloc` or from the ",
             "[`portable-atomic-util`](https://docs.rs/portable-atomic-util)* crate.\n\n---");

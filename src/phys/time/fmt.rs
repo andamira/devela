@@ -16,6 +16,7 @@ use crate::{format, String};
 use crate::{format_buf, Ascii, StringU8};
 use crate::{NoTime, TimeSplit, TimeSplitHourNano};
 
+#[doc = crate::TAG_TIME!()]
 /// Timecode splitting and formatting.
 ///
 /// # Examples

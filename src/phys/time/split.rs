@@ -5,6 +5,7 @@
 
 use crate::{Duration, ExtAny, _core::fmt};
 
+#[doc = crate::TAG_TIME!()]
 /// A full time split from years to nanoseconds.
 ///
 /// See also the related aliases:
@@ -38,31 +39,42 @@ pub struct TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
 
 /* aliases */
 
+#[doc = crate::TAG_TIME!()]
 /// A time split from years to nanoseconds, normalized *(192b size, 152b payload)*.
 pub type TimeSplitNorm = TimeSplit<u64, u8, u8, u8, u8, u8, u16, u16, u16>;
 
+#[doc = crate::TAG_TIME!()]
 /// A time split from years to days.
 pub type TimeSplitYearDay<Y, MO, D> = TimeSplit<Y, MO, D, (), (), (), (), (), ()>;
+#[doc = crate::TAG_TIME!()]
 /// A time split from years to days, normalized *(128b size, 80b payload)*.
 pub type TimeSplitYearDayNorm = TimeSplit<u64, u8, u8, (), (), (), (), (), ()>;
 
+#[doc = crate::TAG_TIME!()]
 /// A time split from years to seconds.
 pub type TimeSplitYearSec<Y, MO, D, H, M, S> = TimeSplit<Y, MO, D, H, M, S, (), (), ()>;
+#[doc = crate::TAG_TIME!()]
 /// A time split from years to seconds, normalized *(128b size, 104b payload)*.
 pub type TimeSplitYearSecNorm = TimeSplit<u64, u8, u8, u8, u8, u8, (), (), ()>;
 
+#[doc = crate::TAG_TIME!()]
 /// A time split from hours to seconds.
 pub type TimeSplitHourSec<H, M, S> = TimeSplit<(), (), (), H, M, S, (), (), ()>;
+#[doc = crate::TAG_TIME!()]
 /// A time split from hours to seconds, normalized *(128b size, 80b payload)*.
 pub type TimeSplitHourSecNorm = TimeSplit<(), (), (), u64, u8, u8, (), (), ()>;
 
+#[doc = crate::TAG_TIME!()]
 /// A time split from hours to nanoseconds.
 pub type TimeSplitHourNano<H, M, S, MS, US, NS> = TimeSplit<(), (), (), H, M, S, MS, US, NS>;
+#[doc = crate::TAG_TIME!()]
 /// A time split from hours to seconds, normalized *(128b size & payload)*.
 pub type TimeSplitHourNanoNorm = TimeSplit<(), (), (), u64, u8, u8, u16, u16, u16>;
 
+#[doc = crate::TAG_TIME!()]
 /// A time split from milliseconds to nanoseconds.
 pub type TimeSplitMilliNano<MS, US, NS> = TimeSplit<(), (), (), (), (), (), MS, US, NS>;
+#[doc = crate::TAG_TIME!()]
 /// A time split from milliseconds to nanoseconds, normalized *(48b size & payload)*.
 pub type TimeSplitMilliNanoNorm = TimeSplit<(), (), (), (), (), (), u16, u16, u16>;
 

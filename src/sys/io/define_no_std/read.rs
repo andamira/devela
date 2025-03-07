@@ -64,8 +64,8 @@ pub trait IoRead {
     fn take(self, limit: u64) -> IoTake<Self> where Self: Sized { IoTake::new(self, limit) }
 }
 
-/// A type of `IoRead`er which has an internal buffer, allowing it
-/// to perform extra ways of reading.
+/// A type of `IoRead`er with an internal buffer,
+/// allowing it to perform extra ways of reading.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.BufRead.html>.
 pub trait IoBufRead: IoRead {

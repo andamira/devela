@@ -18,6 +18,7 @@ crate::items! {
     mod shared_series; // with Taylor Series.
 }
 
+#[doc = crate::TAG_NUM!()]
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 ///

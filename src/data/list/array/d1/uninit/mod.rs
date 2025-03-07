@@ -7,6 +7,7 @@ use crate::{Bare, MaybeUninit, Storage};
 
 mod methods;
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A static array allowing uninitialized elements.
 #[derive(Default)]
 pub struct ArrayUninit<T, const CAP: usize, S: Storage = Bare> {

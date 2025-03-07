@@ -141,10 +141,12 @@ unsafe impl<T: MemPod, const CAP: usize> DstBuf for DstArray<T, CAP> {
     }
 }
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A statically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 pub type DstArrayUsize<const CAP: usize> = DstArray<usize, CAP>;
 
+#[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A dynamically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 #[cfg(feature = "alloc")]

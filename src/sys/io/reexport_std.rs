@@ -55,7 +55,11 @@ reexport! { rust: not(std)|std::io,
     doc: "Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.",
     @Error as IoError
 }
-// @IntoInnerError as IoIntoInnerError
+reexport! { rust: std::io,
+    tag: crate::TAG_ERROR!(),
+    doc: "An error returned by [`IoBufWriter::into_inner`]",
+    @IntoInnerError as IoIntoInnerError
+}
 reexport! { rust: std::io,
     doc: "A buffer type used with `IoWrite::write_vectored`.",
     IoSlice

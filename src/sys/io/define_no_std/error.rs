@@ -1,6 +1,8 @@
 // devela::sys::io::error
 
 use crate::{impl_trait, Debug, From, Result};
+#[cfg(doc)]
+use crate::{IoRead, IoSeek, IoWrite};
 
 #[doc = crate::TAG_RESULT!()]
 /// A specialized [`Result`] type for I/O operations.

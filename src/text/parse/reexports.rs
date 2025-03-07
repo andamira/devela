@@ -3,20 +3,20 @@
 //!
 //
 
-use crate::reexport;
+use crate::{reexport, TAG_ERROR, TAG_NUM, TAG_TEXT};
 
 reexport! { rust: core::num,
-    tag: crate::TAG_ERROR!(),
+    tag: concat![TAG_TEXT!(), TAG_NUM!(), TAG_ERROR!()],
     doc: "An error which can be returned when parsing an integer.",
     ParseIntError
 }
 reexport! { rust: core::num,
-    tag: crate::TAG_ERROR!(),
+    tag: concat![TAG_TEXT!(), TAG_NUM!(), TAG_ERROR!()],
     doc: "An error which can be returned when parsing an float.",
     ParseFloatError
 }
 reexport! { rust: core::num,
-    tag: crate::TAG_ERROR_COMPOSITE!(),
+    tag: concat![TAG_TEXT!(), TAG_NUM!(), TAG_ERROR!()],
     doc: "Kinds of errors that can cause parsing an integer to fail.",
     @IntErrorKind as ParseIntErrorKind
 }

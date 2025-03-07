@@ -37,7 +37,8 @@ crate::items! { // structural access:: _mods, _internals, _all, _always
         // pub use super::tg::_all::*;
     }
     pub(super) mod _internals {
-        pub(crate) use super::js::*;
+        #[cfg(feature = "js")]
+        pub(crate) use super::js::_internals::*;
     }
     pub(super) mod _all {
         #[doc(inline)]

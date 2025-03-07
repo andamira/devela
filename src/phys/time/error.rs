@@ -35,12 +35,14 @@ mod full_composite {
     use super::*;
     use crate::{DataOverflow, DOC_DATA_OVERFLOW};
 
+    #[doc = crate::TAG_TIME!()]
     #[doc = crate::TAG_RESULT!()]
     /// A text-related result.
     pub type TimeResult<T> = crate::Result<T, TimeError>;
 
     impl_error! { composite: fmt(f)
-        /// A text-related composite error.
+        #[doc = crate::TAG_TIME!()]
+        /// A time-related composite error.
         #[non_exhaustive]
         pub enum TimeError {
             DOC_DATA_OVERFLOW:

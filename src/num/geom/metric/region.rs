@@ -5,6 +5,7 @@
 
 use crate::{Extent, Position, Stride};
 
+#[doc = crate::TAG_GEOM!()]
 /// A [`Position`]ed [`Extent`].
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -15,11 +16,14 @@ pub struct Region<T, const D: usize> {
     pub size: Extent<T, D>,
 }
 
+#[doc = crate::TAG_GEOM!()]
 /// A 2-dimensional [`Region`].
 pub type Region2d<T> = Region<T, 2>;
+#[doc = crate::TAG_GEOM!()]
 /// A 3-dimensional [`Region`].
 pub type Region3d<T> = Region<T, 3>;
 
+#[doc = crate::TAG_GEOM!()]
 /// A [`Stride`]d [`Region`] defining structured traversal.
 ///
 /// `RegionStrided` extends `Region` by adding a stride, allowing

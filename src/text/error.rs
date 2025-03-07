@@ -49,6 +49,7 @@ impl InvalidUtf8 {
 /* composite errors */
 
 impl_error! { composite: fmt(f)
+    #[doc = crate::TAG_TEXT!()]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
     ///
     /// Used in methods of:

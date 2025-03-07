@@ -3,6 +3,7 @@
 //! Defines the [`str!`] and [`strjoin!`] macros.
 //
 
+#[doc = crate::TAG_TEXT!()]
 /// Joins multiple string slices in compile-time.
 ///
 /// # Example
@@ -61,6 +62,7 @@ macro_rules! strjoin {
 #[doc(inline)]
 pub use strjoin;
 
+#[doc = crate::TAG_TEXT!()]
 /// [`&str`] compile-time operations, namespaced from the [const-str][::const_str] crate.
 ///
 /// - The name of each operation links to the official macro documentation.

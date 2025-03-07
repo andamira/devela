@@ -9,6 +9,7 @@ use crate::_dep::memchr::*;
 use crate::iif;
 
 #[doc = crate::TAG_NAMESPACE!()]
+// #[doc = crate::TAG_SEARCH!()] // TODO
 /// A utility struct for searching bytes in slices.
 ///
 /// # Features

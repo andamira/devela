@@ -13,6 +13,7 @@ macro_rules! impl_fsize {
     };
     ($float:ty , $pointer_width:literal) => {
         #[doc = crate::TAG_PRIMITIVE!()]
+        #[doc = crate::TAG_NUM!()]
         /// A pointer-sized floating-point primitive.
         ///
         /// # Features

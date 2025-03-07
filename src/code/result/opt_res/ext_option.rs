@@ -10,6 +10,7 @@ use crate::Display;
 trait Sealed {}
 impl<T> Sealed for Option<T> {}
 
+#[doc = crate::TAG_RESULT!()]
 /// Extension trait providing additional methods for [`Option`].
 ///
 /// This trait is sealed and cannot be implemented for any other type.

@@ -19,6 +19,7 @@ crate::_use! {basic::from_utf8}
 /// The nul character.
 const NUL_CHAR: char = '\0';
 
+#[doc = crate::TAG_TEXT!()]
 /// A UTF-8 string with up to [`u8::MAX`] bytes, excluding nul chars
 ///
 /// Internally, the first 0 byte in the array indicates the end of the string.

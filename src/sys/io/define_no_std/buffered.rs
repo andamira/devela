@@ -147,13 +147,15 @@ pub struct IoBufWriter<W: IoWrite, const S: usize> {
     panicked: bool,
 }
 
-/// An error returned by [`IoBufWriter::into_inner`] which combines an error that
-/// happened while writing out the buffer, and the buffered writer object
-/// which may be used to recover from the condition.
+#[doc = crate::TAG_ERROR!()]
+/// An error returned by [`IoBufWriter::into_inner`]
+///
+/// It combines an error that happened while writing out the buffer,
+/// and the buffered writer object which may be used to recover from the condition.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.IntoInnerError.html>.
 #[derive(Debug)]
-pub struct IntoInnerError<W>(W, IoError);
+pub struct IoIntoInnerError<W>(W, IoError);
 
 impl<W: IoWrite, const S: usize> IoBufWriter<W, S> {
     /// Creates a new `IoBufWriter<W>` with a default buffer capacity. The default is currently 8 KB,
@@ -277,9 +279,9 @@ impl<W: IoWrite, const S: usize> IoBufWriter<W, S> {
     /// Unwraps this `IoBufWriter<W>`, returning the underlying writer.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufWriter.html#method.into_inner>.
-    pub fn into_inner(mut self) -> crate::Result<W, IntoInnerError<IoBufWriter<W, S>>> {
+    pub fn into_inner(mut self) -> crate::Result<W, IoIntoInnerError<IoBufWriter<W, S>>> {
         match self.flush_buf() {
-            Err(e) => Err(IntoInnerError(self, e)),
+            Err(e) => Err(IoIntoInnerError(self, e)),
             Ok(()) => Ok(self.inner.take().unwrap()),
         }
     }
@@ -356,9 +358,8 @@ impl<W: IoWrite, const S: usize> Drop for IoBufWriter<W, S> {
     }
 }
 
-impl<W> IntoInnerError<W> {
-    /// Returns the error which caused the call to [`IoBufWriter::into_inner()`]
-    /// to fail.
+impl<W> IoIntoInnerError<W> {
+    /// Returns the error which caused the call to [`IoBufWriter::into_inner()`] to fail.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.IntoInnerError.html#method.error>.
     pub fn error(&self) -> &IoError {
@@ -373,13 +374,13 @@ impl<W> IntoInnerError<W> {
     }
 }
 
-impl<W> From<IntoInnerError<W>> for IoError {
-    fn from(iie: IntoInnerError<W>) -> IoError {
+impl<W> From<IoIntoInnerError<W>> for IoError {
+    fn from(iie: IoIntoInnerError<W>) -> IoError {
         iie.1
     }
 }
 
-impl<W> fmt::Display for IntoInnerError<W> {
+impl<W> fmt::Display for IoIntoInnerError<W> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.error().fmt(f)
     }
@@ -585,10 +586,10 @@ impl<W: IoWrite, const S: usize> IoLineWriter<W, S> {
     /// Unwraps this `IoLineWriter`, returning the underlying writer.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html#method.into_inner>.
-    pub fn into_inner(self) -> Result<W, IntoInnerError<IoLineWriter<W, S>>> {
+    pub fn into_inner(self) -> Result<W, IoIntoInnerError<IoLineWriter<W, S>>> {
         self.inner
             .into_inner()
-            .map_err(|IntoInnerError(buf, e)| IntoInnerError(IoLineWriter { inner: buf }, e))
+            .map_err(|IoIntoInnerError(buf, e)| IoIntoInnerError(IoLineWriter { inner: buf }, e))
     }
 }
 

@@ -5,6 +5,7 @@
 
 use crate::{ConstDefault, Own};
 
+#[doc = crate::TAG_RAND!()]
 /// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr>
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///

@@ -3,6 +3,7 @@
 //! Defines [`Stride`].
 //
 
+#[doc = crate::TAG_GEOM!()]
 /// A step size for traversing dimensions or repetitions.
 ///
 /// `Stride` defines the spacing between adjacent elements in a structured layout.

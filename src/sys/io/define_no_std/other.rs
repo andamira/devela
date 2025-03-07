@@ -58,8 +58,9 @@ where
     }
 }
 
-/// `Empty` ignores any data written via [`IoWrite`], and will always be empty
-/// (returning zero bytes) when read via [`IoRead`].
+/// `Empty` ignores any data written via [`IoWrite`], and will always be empty.
+///
+/// Returning zero bytes when read via [`IoRead`].
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Empty.html>.
 #[non_exhaustive]

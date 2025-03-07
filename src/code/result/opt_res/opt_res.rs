@@ -77,6 +77,7 @@
 /// ```
 pub type OptRes<T, E> = Option<Result<T, E>>;
 
+#[doc = crate::TAG_RESULT!()]
 /// Wraps the given [`OptRes`] `value` in a [`Some`]`(`[`Ok`]`(value))`.
 ///
 /// See also: [`serr`].
@@ -84,6 +85,7 @@ pub const fn sok<T, E>(value: T) -> OptRes<T, E> {
     Some(Ok(value))
 }
 
+#[doc = crate::TAG_RESULT!()]
 /// Wraps the given [`OptRes`] `value` in a [`Some`]`(`[`Err`]`(error))`.
 ///
 /// See also: [`sok`].
@@ -95,6 +97,7 @@ pub const fn serr<T, E>(error: E) -> OptRes<T, E> {
 pub(super) trait Sealed {}
 impl<T, E> Sealed for OptRes<T, E> {}
 
+#[doc = crate::TAG_RESULT!()]
 /// Extension trait providing additional methods for [`OptRes`].
 ///
 /// This trait is sealed and cannot be implemented for any other type.

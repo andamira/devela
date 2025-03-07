@@ -8,6 +8,7 @@ use crate::{FmtArguments, FmtError, FmtWrite, _core::fmt::write};
 #[cfg(feature = "alloc")]
 use crate::{String, _dep::_alloc::fmt::format};
 
+#[doc = crate::TAG_TEXT!()]
 #[doc = crate::TAG_NAMESPACE!()]
 /// A string formatting namespace.
 ///

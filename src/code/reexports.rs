@@ -36,7 +36,7 @@ doc: "An attempted conversion that consumes self, which may or may not be expens
     TryInto }
 
 // functions
-reexport! { rust: core::convert,
+reexport! { rust: core::convert, tag: crate::TAG_NO!(),
 doc: "The identity function. Just returns back its input.", identity }
 
 /* `core::default` re-exports */

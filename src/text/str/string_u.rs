@@ -45,6 +45,7 @@ macro_rules! impl_str_u {
     (@$name:ty, $t:ty : $cap:literal $(: $cmp:literal)? ) => { paste! {
         /* definitions */
 
+        #[doc = crate::TAG_TEXT!()]
         #[doc = "A UTF-8–encoded string, backed by an array with [`" $t "::MAX`] bytes of capacity."]
         ///
         #[doc = "Internally, the current length is stored as a [`" $t "`]."]

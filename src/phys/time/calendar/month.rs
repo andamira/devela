@@ -7,6 +7,7 @@ use crate::{Display, FmtResult, Formatter, FromStr};
 #[allow(clippy::enum_glob_use)]
 use Month::*;
 
+#[doc = crate::TAG_TIME!()]
 /// The months of the year.
 #[repr(u8)]
 #[allow(missing_docs)]

@@ -8,6 +8,7 @@ use crate::{
     RangeToInclusive,
 };
 
+#[doc = crate::TAG_QUANT!()]
 /// A range of values with `lower` and `upper` [`Bound`]s.
 ///
 /// The `Interval` type allows modeling ranges of values with optional inclusion

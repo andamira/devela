@@ -6,6 +6,7 @@ use crate::{
     compile, iif, isize_up, paste, usize_up,
 };
 
+#[doc = crate::TAG_NUM!()]
 /// Faster divisor for division and modulo operations.
 ///
 /// # Features

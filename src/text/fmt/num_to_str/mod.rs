@@ -10,6 +10,8 @@ use crate::_core::str::from_utf8_unchecked;
 #[cfg(test)]
 mod tests;
 
+#[doc = crate::TAG_TEXT!()]
+#[doc = crate::TAG_NUM!()]
 /// Converts a number into a string representation, storing it into a byte slice.
 ///
 /// # Features

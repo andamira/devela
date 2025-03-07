@@ -22,6 +22,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
 /* public types */
 
+#[doc = crate::TAG_TEXT!()]
 /// A 7-bit [unicode scalar][scalar], limited to [basic latin][0w] subset
 /// (ASCII).
 ///
@@ -37,6 +38,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char7(pub(super) NonExtremeU8);
 
+#[doc = crate::TAG_TEXT!()]
 /// An 8-bit [unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
 ///
@@ -55,6 +57,7 @@ pub struct char7(pub(super) NonExtremeU8);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char8(pub(super) u8);
 
+#[doc = crate::TAG_TEXT!()]
 /// A 16-bit [unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
 ///
@@ -74,6 +77,7 @@ pub struct char8(pub(super) u8);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
 
+#[doc = crate::TAG_TEXT!()]
 /// Common trait for unicode scalar types.
 ///
 /// It's implemented for: [`char7`], [`char8`], [`char16`],

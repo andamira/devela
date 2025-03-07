@@ -14,6 +14,7 @@ crate::_use! {basic::from_utf8}
 #[allow(unused, reason = "feature-gated")]
 use crate::{Char, _core::str::from_utf8_unchecked};
 
+#[doc = crate::TAG_TEXT!()]
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[repr(transparent)]

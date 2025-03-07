@@ -17,6 +17,7 @@ use crate::{unwrap, ConstDefault, IterChars, MismatchedCapacity, StringNonul};
 
 /* definitions */
 
+#[doc = crate::TAG_TEXT!()]
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`StringNonul`].
 #[must_use]
 #[repr(transparent)]

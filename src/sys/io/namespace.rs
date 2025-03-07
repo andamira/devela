@@ -38,12 +38,16 @@ impl Io {
     /// Creates a value that is always at EOF for reads, and ignores all data written.
     ///
     /// See `std::io::`[`empty`].
+    ///
+    /// [`empty`]: ::std::io::empty
     #[must_use]
     pub const fn empty() -> IoEmpty { empty() }
 
     /// Creates an instance of a reader that infinitely repeats one byte.
     ///
     /// See `std::io::`[`repeat`].
+    ///
+    /// [`repeat`]: ::std::io::repeat
     #[must_use]
     pub const fn repeat(byte: u8) -> IoRepeat { repeat(byte) }
 }

@@ -20,6 +20,7 @@
 use crate::Vec;
 use crate::{Deref, GcdReturn, Num, NumInt, NumRef, NumResult as Result, ValueQuant};
 
+#[doc = crate::TAG_NUM!()]
 /// Common auto-trait for referenced integer types.
 ///
 /// # Notes

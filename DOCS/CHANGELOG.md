@@ -74,7 +74,7 @@
   - std:
     - `alloc::System` as `SystemAlloc`.
     - env: `*`.
-    - io: `IoEmpty`, `IoRepeat`, `Std[err|in|out][Lock]`.
+    - io: `IoEmpty`, `IoIntoInnerError`, `IoRepeat`, `Std[err|in|out][Lock]`.
     - panic: `PanicHookInfo`.
     - process: `*`.
     - sync: `LazyLock`.
@@ -84,6 +84,7 @@
 - new example: `js_web_api`.
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features and for disabled dependencies.
+- add more doc tags: `TAG_FMT`, `TAG_GEOM`, `TAG_NO`, `TAG_NUM`, `TAG_QUANT`, `TAG_RAND`, `TAG_TEXT`, `TAG_TIME`.
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.

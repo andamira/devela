@@ -9,20 +9,24 @@ use crate::Vec;
 mod impl_traits;
 mod methods;
 
+#[doc = crate::TAG_GEOM!()]
 /// A coordinate position in `D`-space without extent.
 pub struct Point<T, const D: usize> {
     /// The D-dimensional coordinates.
     pub coords: [T; D],
 }
 
+#[doc = crate::TAG_GEOM!()]
 /// A specific position in 2d-space without a size.
 pub type Point2d<T> = Point<T, 2>;
 
+#[doc = crate::TAG_GEOM!()]
 /// A specific position in 3d-space without a size.
 pub type Point3d<T> = Point<T, 3>;
 
 /* lists */
 
+#[doc = crate::TAG_GEOM!()]
 /// A static sequence of `N` `D`-dimensional [`Point`]s.
 #[must_use]
 #[repr(transparent)]
@@ -31,6 +35,7 @@ pub struct Points<T, const D: usize, const N: usize> {
     pub array: [Point<T, D>; N],
 }
 
+#[doc = crate::TAG_GEOM!()]
 /// A dynamic sequence of `D`-dimensional [`Point`]s.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
