@@ -113,7 +113,9 @@ mod reflection {
 
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
         auto_flags: &[
-            "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_doc", "nightly_simd",
+            "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_doc",
+            "nightly_float", "nightly_simd",
+            //
             "nightly_stable",
                 "nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later",
         ],
@@ -126,7 +128,9 @@ mod reflection {
         pub const FLAGS_NIGHTLY_REFLECT: FlagsFlags = FlagsFlags {
             auto_flags: &["nightly··"],
             cfg_flags: &[ "nightly",
-                "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_simd",
+                "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_doc",
+                "nightly_float", "nightly_simd",
+                //
                 "nightly_stable",
                     "nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later",
             ],
@@ -208,7 +212,7 @@ mod reflection {
     // In sync with ./Cargo.toml::nightly & ./src/lib.rs
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["nightly··"],
-        features: &["nightly_allocator", "nightly_float"]
+        features: &["nightly_allocator"]
     };
 
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {

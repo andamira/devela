@@ -44,9 +44,9 @@ define_data_value_type_raw! {
         "16-bit unsigned integer ", U16, u16, [def:true],
         "2-Byte byte array", ByteArray2B, [u8; 2], [def:true],
     copy@16_dep:
-        // WAIT:
-        // "16-bit floating-point number", F16, ::core::primiive::f16,
-        //     "nightly_float", "nightly_float", [def:true],
+        // WAIT: FIX: use flag
+        // "16-bit floating-point number", F16, ::core::primitive::f16,
+        //     nightly_float, nightly_float, [def:true],
     copy@16_ptr:
         "16-bit isize", Isize, isize, target_pointer_width = "16", [def:true],
         "16-bit usize", Usize, usize, target_pointer_width = "16", [def:true],
@@ -101,9 +101,9 @@ define_data_value_type_raw! {
         "16-Byte byte array", ByteArray16B, [u8; 16], [def:true],
         "128-bit Duration", Duration, crate::Duration, [def:true],
     copy@128_dep:
-        // WAIT:
+        // WAIT: FIX:use flag
         // "128-bit floating-point number", F128, ::core::primitive::f128,
-        //     "nightly_float", "nightly_float", [def:true],
+        //     nightly_float, nightly_float, [def:true],
         "128-bit SystemInstant", SystemInstant, crate::SystemInstant, "std", "std", [def:false],
         "128-bit SystemTime", SystemTime, crate::SystemTime, "std", "std", [def:false],
     copy@128_ptr:

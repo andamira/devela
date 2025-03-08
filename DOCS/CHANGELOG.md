@@ -110,7 +110,7 @@
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`, `_string_*` to `_str_*`.
 - change features into cfg flags:
-  - `nightly`, `nightly_autodiff`, `nightly_bigint`, `nightly_coro`, `nightly_doc`, `nightly_simd`, `nightly_stable`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
+  - `nightly`, `nightly_autodiff`, `nightly_bigint`, `nightly_coro`, `nightly_doc`, `nightly_float`, `nightly_simd`, `nightly_stable`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
 - rename flags:
   - `prim···` flag to `prim··`, `_str*` to `_str*`.
 - rename/move modules:

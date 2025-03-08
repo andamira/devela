@@ -17,7 +17,7 @@
 
 use crate::Float; // because of float_technical_const_impls! consts
 
-#[cfg(feature = "nightly_float")]
+#[cfg(nightly_float)]
 use ::core::{f128, f16};
 
 #[doc = crate::TAG_NUM!()]
@@ -668,11 +668,11 @@ macro_rules! impl_ext_float_const {
     };
 }
 impl_ext_float_const![f32, f64];
-#[cfg(feature = "nightly_float")]
+#[cfg(nightly_float)]
 impl_ext_float_const![
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "nightly_float")))]
+    #[cfg_attr(nightly_doc, doc(cfg(nightly_float)))]
     f16,
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "nightly_float")))]
+    #[cfg_attr(nightly_doc, doc(cfg(nightly_float)))]
     f128
 ];
 
@@ -682,11 +682,11 @@ struct TempFloat<T> {
 }
 macro_rules! impl_temp_float {
     () => {
-        #[cfg(feature = "nightly_float")]
+        #[cfg(nightly_float)]
         impl_temp_float![f16: 1e-4, 1e-3, 1e-2]; // ~3–4 decimal digits of precision.
         impl_temp_float![f32: 1e-7, 1e-6, 1e-5]; // ~7 decimal digits of precision.
         impl_temp_float![f64: 1e-12, 1e-9, 1e-6]; // ~15–16 decimal digits of precision.
-        #[cfg(feature = "nightly_float")]
+        #[cfg(nightly_float)]
         impl_temp_float![f128: 1e-30, 1e-27, 1e-24]; // ~33–34 decimal digits of precision.
     };
     ($f:ty: $lm:literal, $mm:literal, $hm:literal) => {

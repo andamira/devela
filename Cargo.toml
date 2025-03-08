@@ -81,7 +81,7 @@ publish = true
 bench = false
 
 
-[features] # 268/300 (32 remaining), 139 visible, 129 hidden
+[features] # 267/300 (33 remaining), 138 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -281,16 +281,13 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 # - ./utils/release_dates.rs
 # - ./DOCS/NIGHTLY.md
 
-nightly = [ # [2] (in sync with ./src/lib.rs, ./build/features.rs::NIGHTLY & ./DOCS/NIGHTLY.md)
-	"nightly_allocator", "nightly_float",
+nightly = [ # [1] (in sync with ./src/lib.rs, ./build/features.rs::NIGHTLY & ./DOCS/NIGHTLY.md)
+	"nightly_allocator",
 ] # `nightly··`
 	# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
 	# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
 	nightly_allocator = [ # allocator_api
 		"allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
-	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
-	# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
-	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
 
 
 #* Capability features *#
@@ -1103,6 +1100,10 @@ check-cfg = [ # Allowed configuration flags:
 		# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 		# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 		"cfg(nightly_doc)", # not(doc_auto_cfg)
+		# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
+		# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
+		# NOTE: dep features: ["bytemuck?/nightly_float"]
+		"cfg(nightly_float)", # f16, f128
 		# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 		"cfg(nightly_simd)", # portable_simd
 		#

@@ -115,7 +115,7 @@ See also
 - 1.?? `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
         = `nightly_doc` flag
 - 1.?? `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
-        = `nightly_float` feature
+        = `nightly_float` flag
 - 1.?? ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)

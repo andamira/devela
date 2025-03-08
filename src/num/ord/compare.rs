@@ -19,7 +19,7 @@ use crate::{iif, paste};
 #[cfg(_float··)]
 use crate::Float;
 #[allow(unused_imports)]
-#[cfg(feature = "nightly_float")]
+#[cfg(nightly_float)]
 use ::core::{f128, f16};
 
 #[doc = crate::TAG_NAMESPACE!()]
@@ -161,7 +161,7 @@ macro_rules! impl_comparing {
             f32:"_cmp_f32":32:31,
             f64:"_cmp_f64":64:63
         ];
-        #[cfg(feature = "nightly_float")]
+        #[cfg(nightly_float)]
         impl_comparing![float:
             f16:"_cmp_f16":16:15,
             f128:"_cmp_f128":128:127
@@ -235,7 +235,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
-            #[cfg_attr(feature = "nightly_float", doc = "# #![feature(f16, f128)]")]
+            #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![2.0, Compare(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Compare(-5.0" $f ").clamp(-1.0, 2.0)];"]
@@ -247,7 +247,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
-            #[cfg_attr(feature = "nightly_float", doc = "# #![feature(f16, f128)]")]
+            #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![2.0, Compare(2.0" $f ").max(-1.0)];"]
             #[doc = "assert_eq![2.0, Compare(1.0" $f ").max(2.0)];"]
@@ -262,7 +262,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
-            #[cfg_attr(feature = "nightly_float", doc = "# #![feature(f16, f128)]")]
+            #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![-1.0, Compare(2.0" $f ").min(-1.0)];"]
             #[doc = "assert_eq![1.0, Compare(1.0" $f ").min(2.0)];"]

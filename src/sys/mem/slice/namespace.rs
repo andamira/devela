@@ -654,7 +654,7 @@ macro_rules! impl_prim {
             f32, f64,
             bool, char
         ];
-        #[cfg(feature = "nightly_float")]
+        #[cfg(nightly_float)]
         impl_prim![f16, f128];
     };
     ($($t:ty),+) => { $( impl_prim![@$t]; )+ };

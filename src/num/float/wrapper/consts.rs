@@ -11,7 +11,7 @@
 
 use super::super::constants::{ExtFloatConst, *};
 use crate::Float;
-#[cfg(feature = "nightly_float")]
+#[cfg(nightly_float)]
 use ::core::{f128, f16};
 
 /// impl. floating-point technical constants
@@ -27,7 +27,7 @@ macro_rules! float_technical_const_impls {
             // Uses Matthew Robertson's double precision magic number
             f64:u64[11, 0x5fe6_eb50_c7b5_37a9, 1e-12]
         ];
-        #[cfg(feature = "nightly_float")]
+        #[cfg(nightly_float)]
         float_technical_const_impls![
             // Uses a half-precision magic number found by brute-force
             f16:u16[5, 0x59b9, 1e-3],
@@ -76,7 +76,7 @@ float_technical_const_impls![];
 macro_rules! float_const_impls {
     () => {
         float_const_impls![f32, f64];
-        #[cfg(feature = "nightly_float")]
+        #[cfg(nightly_float)]
         float_const_impls![f16, f128];
     };
     ($( $f:ty),+) => { $( float_const_impls![@$f]; )+ };
