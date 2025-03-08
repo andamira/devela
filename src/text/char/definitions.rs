@@ -34,7 +34,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 #[repr(transparent)]
 #[cfg(feature = "_char7")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char7(pub(super) NonExtremeU8);
 
@@ -53,7 +53,7 @@ pub struct char7(pub(super) NonExtremeU8);
 /// [1w]: https://en.wikipedia.org/wiki/Latin-1_Supplement
 #[repr(transparent)]
 #[cfg(feature = "_char8")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char8(pub(super) u8);
 
@@ -73,7 +73,7 @@ pub struct char8(pub(super) u8);
 /// [0w]: https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
 #[repr(transparent)]
 #[cfg(feature = "_char16")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
 

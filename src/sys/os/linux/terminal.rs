@@ -26,10 +26,7 @@ use crate::_dep::atomic::{Atomic, Ordering as AtomicOrdering};
 ///
 /// [`atomic`]: crate::_dep::atomic
 /// [`bytemuck`]: crate::_dep::bytemuck
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "dep_atomic", feature = "dep_bytemuck")))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))))]
 #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
 
@@ -42,10 +39,7 @@ pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios
 #[derive(Debug, Default)]
 pub struct LinuxTerminal;
 
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "dep_atomic", feature = "dep_bytemuck")))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))))]
 #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
 impl Drop for LinuxTerminal {
     fn drop(&mut self) {
@@ -85,10 +79,7 @@ impl LinuxTerminal {
     }
 
     /// Saves the current terminal state into [`LINUX_TERMINAL_STATE`].
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic"))))]
     #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
     pub fn save_state() -> Result<(), isize> {
         LINUX_TERMINAL_STATE.store(LinuxTermios::get_state()?, AtomicOrdering::Relaxed);
@@ -96,10 +87,7 @@ impl LinuxTerminal {
     }
 
     /// Restores the current terminal state into [`LINUX_TERMINAL_STATE`].
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic"))))]
     #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
     pub fn restore_saved_state() -> Result<(), isize> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))

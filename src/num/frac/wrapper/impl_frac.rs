@@ -47,7 +47,7 @@ macro_rules! impl_frac {
         ///
         #[doc = "# Fraction related methods for `[" $i "; 2]`\n\n"]
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use]
@@ -131,7 +131,7 @@ macro_rules! impl_frac {
         ///
         #[doc = "# Fraction related methods for `[Int<" $i ">; 2]`\n\n"]
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use]

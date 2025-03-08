@@ -9,7 +9,7 @@
 mod reexports;
 
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod ext; // ExtPath
 
 crate::items! { // structural access: _mods, _all

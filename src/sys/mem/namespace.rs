@@ -145,7 +145,7 @@ impl Mem {
 ///
 /// ## Features
 /// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
-#[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
+#[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
 #[cfg(all(not(feature = "safe_mem"), unsafe··))]
 impl Mem {
     // NOTE: can't compile, errors with: error[E0512]:
@@ -181,7 +181,7 @@ impl Mem {
 
 /// # Unsafe methods gated by `unsafe_slice`
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
 impl Mem {
     /// View any `T: Sync + Unpin + ?Sized` as `&[u8]`.
     ///

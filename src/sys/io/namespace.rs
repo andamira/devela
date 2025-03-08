@@ -55,7 +55,7 @@ impl Io {
 /// # Methods only available in `std`.
 #[rustfmt::skip]
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl Io {
     /// Reads all bytes from a reader into a new String.
     ///

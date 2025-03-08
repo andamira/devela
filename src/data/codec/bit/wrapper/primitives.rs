@@ -27,7 +27,7 @@ macro_rules! impl_bits_wrapper {
 
         #[doc = concat!["# Implementation for `", stringify!($t), "`."]]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Bitwise::<$t> {
             /* constants */
 

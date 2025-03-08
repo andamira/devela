@@ -123,7 +123,7 @@ impl XorShift128 {
     ///
     /// The seeds will be split in little endian order.
     #[cfg(feature = "split")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
     pub const fn new1_u128(seed: u128) -> Self {
         Self::new(Cast(seed).into_u32_le())
     }
@@ -132,7 +132,7 @@ impl XorShift128 {
     ///
     /// The seeds will be split in little endian order.
     #[cfg(feature = "split")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
     pub const fn new2_u64(seeds: [u64; 2]) -> Self {
         let [x, y] = Cast(seeds[0]).into_u32_le();
         let [z, a] = Cast(seeds[1]).into_u32_le();
@@ -150,7 +150,7 @@ impl XorShift128 {
     ///
     /// The seeds will be joined in little endian order.
     #[cfg(feature = "join")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new8_u16(seeds: [u16; 8]) -> Self {
         Self::new([
             Cast::<u32>::from_u16_le([seeds[0], seeds[1]]),
@@ -174,7 +174,7 @@ impl XorShift128 {
 }
 
 #[cfg(feature = "dep_rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::XorShift128;
     use crate::_dep::rand_core::{RngCore, SeedableRng};

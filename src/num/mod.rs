@@ -21,7 +21,7 @@ mod sign; // Sign
 mod traits; // Num, NumRef, ExtNumConst
 
 #[cfg(feature = "unit")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unit")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
 mod unit; // Unit, Unit[Bi|Si]
 
 pub mod geom;

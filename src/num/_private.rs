@@ -189,7 +189,7 @@ macro_rules! impl_ops {
     };
     (@neg $W:ident($T:ty : $cap:literal)) => {
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl core::ops::Neg for $W<$T> {
             type Output = $W<$T>;
             fn neg(self) -> $W<$T> { $W(self.0.neg()) }
@@ -204,43 +204,43 @@ macro_rules! impl_ops {
         @op $W:ident($T:ty : $cap:literal), $trait:ident, $fn:ident) => {
         /* $W<$T> op $W<$T> -> $W<$T> */
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl core::ops::$trait for $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'s> core::ops::$trait<$W<$T>> for &'s $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'o> core::ops::$trait<&'o $W<$T>> for $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'s, 'o> core::ops::$trait<&'o $W<$T>> for &'s $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
         }
         /* $W<$T> op $T -> $W<$T> */
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl core::ops::$trait<$T> for $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, $T];
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'s> core::ops::$trait<$T> for &'s $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, $T];
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'o> core::ops::$trait<&'o $T> for $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, &'o $T];
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'s, 'o> core::ops::$trait<&'o $T> for &'s $W<$T> {
             $crate::num::impl_ops![@op_body $W($T), $fn, &'o $T];
         }
@@ -253,23 +253,23 @@ macro_rules! impl_ops {
     (@op_assign $W:ident($T:ty : $cap:literal), $trait:ident, $fn:ident) => { $crate::paste! {
         /* $W<$T> op_assign $W<$T> */
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl core::ops::$trait for $W<$T> {
             fn $fn(&mut self, other: $W<$T>) { self.0.$fn(other.0); }
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'o> core::ops::$trait<&'o $W<$T>> for $W<$T> {
             fn $fn(&mut self, other: &'o $W<$T>) { self.0.$fn(other.0); }
         }
         /* $W<$T> op_assign $T -> $W<$T> */
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl core::ops::$trait<$T> for $W<$T> {
             fn $fn(&mut self, other: $T) { self.0.$fn(other); }
         }
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<'o> core::ops::$trait<&'o $T> for $W<$T> {
             fn $fn(&mut self, other: &'o $T) { self.0.$fn(other); }
         }

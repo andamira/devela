@@ -69,7 +69,7 @@ impl Str {
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), unsafe··))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
+    #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
     pub const unsafe fn from_utf8_unchecked(v: &[u8]) -> &str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked(v) }
@@ -83,7 +83,7 @@ impl Str {
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), unsafe··))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(unsafe··)))]
+    #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
     pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked_mut(v) }
@@ -98,7 +98,7 @@ impl Str {
     #[must_use]
     #[cfg(feature = "alloc")]
     #[cfg(all(not(feature = "safe_text"), unsafe··))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "alloc", unsafe··))))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", unsafe··))))]
     pub unsafe fn from_boxed_utf8_unchecked(v: Box<[u8]>) -> Box<str> {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_boxed_utf8_unchecked(v) }

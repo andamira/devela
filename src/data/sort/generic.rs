@@ -39,7 +39,7 @@ impl<T: Ord> Sort<&mut [T]> {
     /// assert_eq![freq, [3, 7, 5, 2]];
     /// ```
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn counting(self) -> Vec<usize>
     where
         T: Clone,
@@ -146,7 +146,7 @@ impl<T: Ord> Sort<&mut [T]> {
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn merge(self)
     where
         T: Copy,

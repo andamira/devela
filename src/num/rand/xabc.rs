@@ -147,7 +147,7 @@ impl Xabc {
 }
 
 #[cfg(feature = "dep_rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::Xabc;
     use crate::_dep::rand_core::{RngCore, SeedableRng};

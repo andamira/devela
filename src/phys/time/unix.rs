@@ -55,7 +55,7 @@ impl UnixTimeI64 {
     /// Returns a new `UnixTimeI64` anchored to the current second.
     #[cfg(feature = "std")]
     // all(not(feature = "std"), feature = "unsafe", feature = "libc")
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     // all(feature = "no_std", feature = "unsafe", feature = "libc")
     pub fn now() -> Self {
         Self { seconds: Self::unix_time_64() }
@@ -183,7 +183,7 @@ impl UnixTimeU32 {
     /// Returns a new `UnixTimeU32` anchored to the current second.
     #[cfg(feature = "std")]
     // all(not(feature = "std"), feature = "unsafe", feature = "libc")
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     // all(feature = "no_std", feature = "unsafe", feature = "libc")
     pub fn now() -> Self {
         Self { seconds: Self::unix_time_32() }
@@ -330,7 +330,7 @@ mod std_impls {
     }
 
     #[cfg(all(feature = "cast", feature = "error"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "cast", feature = "error"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "cast", feature = "error"))))]
     impl TryFrom<SystemTime> for UnixTimeU32 {
         type Error = crate::TimeError;
 

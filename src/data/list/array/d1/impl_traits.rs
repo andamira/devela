@@ -148,7 +148,7 @@ impl<T: ConstDefault, const CAP: usize> ConstDefault for Array<T, CAP, Bare> {
 
 // T: Default, S: Boxed
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T: Default, const CAP: usize> Default for Array<T, CAP, Boxed> {
     /// Returns an array, allocated in the heap,
     /// using the default value to fill the data.
@@ -170,7 +170,7 @@ impl<T, const CAP: usize> From<Array<T, CAP, Bare>> for [T; CAP] {
     }
 }
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T, const CAP: usize> From<Array<T, CAP, Boxed>> for Box<[T; CAP]> {
     fn from(array: Array<T, CAP, Boxed>) -> Box<[T; CAP]> {
         array.data
@@ -201,7 +201,7 @@ where
 }
 
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T: Default, I, const CAP: usize> From<I> for Array<T, CAP, Boxed>
 where
     I: IntoIterator<Item = T>,

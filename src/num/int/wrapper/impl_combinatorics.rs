@@ -309,7 +309,7 @@ macro_rules! impl_combinatorics {
             #[doc = "assert![Int(3_" $t ").permute_rep(-2).is_err()];"]
             /// ```
             #[cfg(feature = "cast")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
@@ -562,7 +562,7 @@ macro_rules! impl_combinatorics {
             #[doc = "assert![Int(" $t "::MAX).permute_rep(" $t "::MAX).is_err()];"]
             /// ```
             #[cfg(feature = "cast")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 let Ok(r_u32) = Cast(r).checked_cast_to_u32() else {

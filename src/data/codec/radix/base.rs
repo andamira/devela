@@ -409,7 +409,7 @@ macro_rules! methods {
         /// Decodes `input` into a `Vec<u8>`,
         /// returns `None` if invalid characters are found.
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         pub fn decode(input: &[u8]) -> Option<$crate::Vec<u8>> {
             let mut output = $crate::Vec::with_capacity(Self::decoded_len(input.len()));
             let (mut buffer, mut bits_left) = (0, 0);
@@ -427,7 +427,7 @@ macro_rules! methods {
         }
         /// Encodes `input` into a `String`.
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         pub fn encode(input: &[u8]) -> $crate::String {
             let mut output = $crate::String::with_capacity($Self::encoded_len(input.len()));
             let (mut buffer, mut bits_left) = (0, 0);

@@ -16,7 +16,7 @@ impl<T, E> Sealed for Result<T, E> {}
 ///
 /// Based on work from:
 /// - <https://github.com/rust-lang/rust/issues/62358> (contains).
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtResult<T, E>: Sealed {
     /// Returns `true` if the result is an [`Ok`] value containing the given value.

@@ -7,7 +7,7 @@
 use crate::define_static_map;
 
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod v_non_copy {
     use crate::{StaticMapEntry, String, ToString};
 

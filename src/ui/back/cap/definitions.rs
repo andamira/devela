@@ -17,7 +17,7 @@ pub struct UiCap {
     pub sound: Option<UiCapSound>,
     /// System capabilities.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub system: Option<UiCapSystem>,
     /// Windowing capabilities.
     pub window: Option<UiCapWindow>,
@@ -65,7 +65,7 @@ pub struct UiCapSound {
 
 /// System capabilities.
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct UiCapSystem {
     /// The name of the detected OS version.

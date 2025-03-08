@@ -22,7 +22,7 @@ pub mod table;
 pub mod uid;
 pub mod xipher; // cryptography
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 pub mod dst;

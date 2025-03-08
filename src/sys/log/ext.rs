@@ -6,12 +6,12 @@ use crate::Box;
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Logger`]s.
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_log")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]
 pub trait ExtLogger: Logger {
     /// Returns the logger as a `Logger` trait object.
     #[must_use]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn as_logger(self: Box<Self>) -> Box<dyn Logger>;
 
     /// Returns a reference of the configuration.

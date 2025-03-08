@@ -6,7 +6,7 @@
 mod coro;
 
 #[cfg(nightly_coro)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(nightly_coro)))]
+#[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
 mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -19,7 +19,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::coro::*;
 
         #[cfg(nightly_coro)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(nightly_coro)))]
+        #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
         pub use super::reexports::*;
     }
     pub(super) mod _all { #[allow(unused)]

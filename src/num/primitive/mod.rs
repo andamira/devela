@@ -5,7 +5,7 @@
 
 #[cfg(prim··)]
 crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(prim··)))]
+    #[cfg_attr(nightly_doc, doc(cfg(prim··)))]
     mod namespace; // Cast
 
     #[cfg(test)]
@@ -28,15 +28,15 @@ crate::items! { // structural access: _mods, _all
         pub use super::namespace::*;
 
         #[cfg(feature = "cast")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
         pub use super::cast::*;
 
         #[cfg(feature = "join")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
         pub use super::join::*;
 
         #[cfg(feature = "split")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
         pub use super::split::*;
     }
     pub(super) mod _all { #![allow(unused)]

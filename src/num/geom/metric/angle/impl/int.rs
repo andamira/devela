@@ -60,7 +60,7 @@ macro_rules! impl_angle {
     (@int $t:ty : $f:ty ; $tcap:literal : $fcap:literal) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`.")]
         #[cfg(feature = $tcap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $tcap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $tcap)))]
         impl Angle<$t> {
             /* private helpers */
 
@@ -85,21 +85,21 @@ macro_rules! impl_angle {
 
             /// Creates a new angle from a floating-point `radians` value.
             #[cfg(any(feature = "std", feature = $fcap))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_rad(radians: $f) -> Self {
                 Self::new(Self::from_float_normalized(radians, <$f>::TAU))
             }
 
             /// Creates a new angle from a floating-point `degrees` value.
             #[cfg(any(feature = "std", feature = $fcap))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_deg(degrees: $f) -> Self {
                 Self::new(Self::from_float_normalized(degrees, 360.0))
             }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
             #[cfg(any(feature = "std", feature = $fcap))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_custom(value: $f, custom_unit: $f) -> Self {
                 Self::new(Self::from_float_normalized(value, custom_unit))
             }
@@ -109,7 +109,7 @@ macro_rules! impl_angle {
             /// Converts the angle to radians.
             #[must_use]
             #[cfg(any(feature = "std", _float··))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", _float··))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", _float··))))]
             pub const fn to_rad(self) -> $f { self.to_float_normalized() * <$f>::TAU }
 
             /// Converts the angle to degrees.
@@ -194,7 +194,7 @@ macro_rules! impl_angle {
 
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`, signed.")]
         #[cfg(feature = $tcap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $tcap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $tcap)))]
         impl Angle<$t> {
             /* direction */
 
@@ -262,7 +262,7 @@ macro_rules! impl_angle {
 
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`, unsigned.")]
         #[cfg(feature = $tcap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $tcap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $tcap)))]
         impl Angle<$t> {
             /* direction */
 

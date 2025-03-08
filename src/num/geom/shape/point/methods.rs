@@ -18,14 +18,14 @@ impl<T, const D: usize> Point<T, D> {
     /// Consumes this `Point` and converts it into a `Vector`.
     #[must_use]
     #[cfg(feature = "alg")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
     pub fn into_vector(self) -> Vector<T, D> {
         Vector::new(self.coords)
     }
     /// Converts this `Point` to a `Vector`, keeping `self` intact.
     #[must_use]
     #[cfg(feature = "alg")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
     pub const fn to_vector(self) -> Vector<T, D> where T: Copy {
         Vector::new(self.coords)
     }
@@ -33,14 +33,14 @@ impl<T, const D: usize> Point<T, D> {
     /// Creates a `Point` from a `Vector`.
     #[must_use]
     #[cfg(feature = "alg")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
     pub fn from_vector(v: Vector<T, D>) -> Self {
         Self::new(v.coords)
     }
     /// Creates a `Point` from a constant `Vector`.
     #[must_use]
     #[cfg(feature = "alg")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
     pub const fn from_vector_const(v: Vector<T, D>) -> Self where T: Copy {
         Self::new(v.coords)
     }
@@ -122,19 +122,19 @@ macro_rules! impl_point {
     (int $($t:ty : $cap:literal),+) => { $( impl_point![@int $t:$cap]; )+ };
     (@int $t:ty : $cap:literal) => {
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$t, D> {
             /// Adds the given vector.
             #[must_use]
             #[cfg(feature = "alg")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
             pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {
                 Self { coords: Vector::new(self.coords).c_add(v).coords }
             }
             // /// Subtracts the given vector.
             //
             // #[cfg(feature = "alg")]
-            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
             // pub const fn c_sub_vector(self, v: Vector<$t, D>) -> Self {
             //     Self { coords: self.coords.c_sub(v) }
             // }
@@ -145,35 +145,35 @@ macro_rules! impl_point {
         impl_point![int $t:$cap];
 
         // #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
     };
     (uint $($t:ty : $cap:literal),+) => { $( impl_point![@uint $t:$cap]; )+ };
     (@uint $t:ty : $cap:literal) => {
         impl_point![int $t:$cap];
 
         // #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
     };
 
     // $f: the inner floating-point primitive type
     (float $( $f:ty : $cap:literal ),+) => { $( impl_point![@float $f:$cap]; )+ };
     (@float $f:ty : $cap:literal) => {
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$f, D> {
             // TODO
             //
             // /// Adds the given vector.
             //
             // #[cfg(feature = "alg")]
-            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
             // pub fn add_vector(self, v: Vector<$f, D>) -> Self {
             //     Self { coords: self.coords.add(v) }
             // }
             // /// Subtracts the given vector.
             //
             // #[cfg(feature = "alg")]
-            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
             // pub fn sub_vector(self, v: Vector<$f, D>) -> Self {
             //     Self { coords: self.coords.sub(v) }
             // }

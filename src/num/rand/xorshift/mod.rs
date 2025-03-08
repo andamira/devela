@@ -23,7 +23,7 @@ crate::items! {
     mod u32;  // ( 5,17,13)   (customizable, canonical default)
     mod u64;  // (13, 7,17)   (customizable, canonical default)
     mod u8;   // ( 3, 4, 2)   (customizable)
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
     pub use {
         u128::XorShift128,
         u16::XorShift16,
@@ -63,7 +63,7 @@ crate::items! {
     #[doc(hidden)]
     #[macro_export]
     #[rustfmt::skip]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
     macro_rules! _xorshift_custom {
         (bits:$bits:literal, basis:$basis:expr, triplet:$triplet:expr, seed:$seed:expr) => {{
             $crate::paste! {

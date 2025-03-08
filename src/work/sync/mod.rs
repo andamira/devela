@@ -13,7 +13,7 @@ mod atomic;
 mod reexports;
 
 #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
 mod spin_lock; // SpinLock, SpinLockGuard
 
 crate::items! { // structural access: _mods, _all, _always

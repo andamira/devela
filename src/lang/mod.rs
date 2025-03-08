@@ -13,10 +13,10 @@
 pub mod c;
 
 #[cfg(feature = "glsl")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "glsl")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "glsl")))]
 pub mod glsl;
 #[cfg(feature = "js")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "js")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 pub mod js;
 
 crate::items! { // structural access:: _mods, _internals, _all, _always

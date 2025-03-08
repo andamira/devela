@@ -24,13 +24,13 @@ mod xorshift;
 
 #[cfg(feature = "rand")]
 crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
     mod lgc;
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
     mod xoroshiro;
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
     mod xyza8;
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
     mod xabc;
 }
 

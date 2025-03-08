@@ -190,7 +190,7 @@ mod impl_core {
 }
 
 // #[cfg(feature = "alloc")]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 // mod impl_alloc {
 //     // TODO: fxhash, fnv, ahash
 //     // #[cfg(feature = "dep_hashbrown")]
@@ -200,7 +200,7 @@ mod impl_core {
 // }
 
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod impl_std {
     use std::{
         cell::LazyCell,

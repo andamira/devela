@@ -27,7 +27,7 @@ pub enum UiError {
 
     /// Layout-related error.
     #[cfg(feature = "layout")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "layout")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "layout")))]
     Layout(LayoutError),
 
     /// An io error.

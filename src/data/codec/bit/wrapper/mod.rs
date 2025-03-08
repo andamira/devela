@@ -30,7 +30,7 @@ mod tests;
 /// [`u128`]: Self#implementation-for-u128
 /// [`usize`]: Self#implementation-for-usize
 #[repr(transparent)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_bit··)))]
+#[cfg_attr(nightly_doc, doc(cfg(_bit··)))]
 pub struct Bitwise<T>(pub T);
 
 #[rustfmt::skip]

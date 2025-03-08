@@ -60,29 +60,20 @@ mod hashbrown_reexports {
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
     #[doc = hashbrown_or_std!(end)]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep_hashbrown", feature = "std")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashMap;
 
     #[doc = crate::TAG_DATA_STRUCTURE!()]
     #[doc = hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
     #[doc = hashbrown_or_std!(end)]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep_hashbrown", feature = "std")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::hash_map::Entry as HashMapEntry;
 
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
     #[doc = hashbrown_or_std!(end)]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep_hashbrown", feature = "std")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashSet;
 }
 
@@ -95,45 +86,36 @@ mod std_reexports {
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
     #[doc = hashbrown_or_std!(end)]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep_hashbrown", feature = "std")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::HashMap;
 
     #[doc = hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
     #[doc = hashbrown_or_std!(end)]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep_hashbrown", feature = "std")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::Entry as HashMapEntry;
 
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
     #[doc = hashbrown_or_std!(end)]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep_hashbrown", feature = "std")))
-    )]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::HashSet;
 }
 
 /// The `HashMap` in the standard library.
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub type HashMapStd<K, V> = std::collections::HashMap<K, V>;
 /// The `HashSet` in the standard library.
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub type HashSetStd<T> = std::collections::HashSet<T>;
 
 #[cfg(all(feature = "hash", any(feature = "std", feature = "dep_hashbrown")))]
 pub use aliases::*;
 #[cfg(all(feature = "hash", any(feature = "std", feature = "dep_hashbrown")))]
 #[cfg_attr(
-    feature = "nightly_doc",
+    nightly_doc,
     doc(cfg(all(
         feature = "hash",
         any(feature = "std", all(feature = "dep_hashbrown", feature = "hash"))

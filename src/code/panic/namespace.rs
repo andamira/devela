@@ -15,7 +15,7 @@ use crate::{
 pub struct Panic;
 
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl Panic {
     /// Invokes a closure, capturing the cause of an unwinding panic if one occurs.
     ///

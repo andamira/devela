@@ -11,9 +11,9 @@ mod reexports; // sys::fs::*
 
 #[cfg(feature = "std")]
 crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     mod namespace; // Fs
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     mod fs_path; // FsPath
 }
 

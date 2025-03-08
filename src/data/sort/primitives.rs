@@ -38,7 +38,7 @@ macro_rules! impl_sort {
 
     (@signed $t:ty : $cap:literal) => { paste! {
         /// Implement const sorting methods for arrays of primitives.
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
@@ -84,7 +84,7 @@ macro_rules! impl_sort {
     }};
 
     (@unsigned $t:ty : $cap:literal) => { paste! {
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
@@ -130,7 +130,7 @@ macro_rules! impl_sort {
     }};
 
     (@float $t:ty : $cap:literal) => { paste! {
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.

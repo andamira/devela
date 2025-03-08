@@ -23,11 +23,11 @@ mod consts;
 mod structs;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
 mod fns;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
 mod terminal;
 
 /// Linux-specific extensions to [`std::io`].

@@ -28,7 +28,7 @@ use crate::{Deref, GcdReturn, Num, NumInt, NumRef, NumResult as Result, ValueQua
 /// - Mutable operations are only available for exclusive (`&mut`) references.
 //
 // In sync with src/num/int/num_trait/mod.rs (int_ref_* methods)
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[rustfmt::skip]
 pub trait NumRefInt<'a>: NumRef<'a>
 where
@@ -87,19 +87,19 @@ where
     /* factors (allocating) */
 
     #[doc = own_fn!["int_ref_factors"]]
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn int_ref_factors(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors() }
     #[doc = own_fn!["int_ref_factors_proper"]]
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn int_ref_factors_proper(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_proper() }
     #[doc = own_fn!["int_ref_factors_prime"]]
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_prime() }
     #[doc = own_fn!["int_ref_factors_prime_unique"]]
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime_unique(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_prime_unique() }
 

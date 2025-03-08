@@ -4,7 +4,7 @@
 //
 
 #![cfg(any(doc, test))]
-#![cfg_attr(feature = "nightly_doc", doc(cfg(any(doc, test))))]
+#![cfg_attr(nightly_doc, doc(cfg(any(doc, test))))]
 
 /// Build functionality.
 #[cfg(feature = "std")]

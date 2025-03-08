@@ -403,7 +403,7 @@ impl UnitSi {
     /// Reduces the given value to the most appropriate SI prefix as an `f64`,
     /// returning a tuple of the reduced size and the prefix.
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn reduce(value: f64) -> (f64, Self) {
         match value.abs() {
             value if value >= UnitSi::Quetta.factor() => {
@@ -587,7 +587,7 @@ impl UnitSi {
     #[must_use]
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
     #[cfg_attr(
-        feature = "nightly_doc",
+        nightly_doc,
         doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
     )]
     pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
@@ -624,7 +624,7 @@ impl UnitSi {
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn reduce_chain_i64(value: i64, threshold: i64) -> Vec<(i64, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
@@ -648,7 +648,7 @@ impl UnitSi {
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn reduce_chain_i128(value: i128, threshold: i128) -> Vec<(i128, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
@@ -821,7 +821,7 @@ mod tests {
     #[test]
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
     #[cfg_attr(
-        feature = "nightly_doc",
+        nightly_doc,
         doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
     )]
     fn unit_si_reduce_chain() {

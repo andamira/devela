@@ -8,7 +8,7 @@ pub mod linear; // Vector*, Matrix*
 pub mod metric; // Position, Distance, Extent, Stride...
 
 #[cfg(feature = "geom")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "geom")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "geom")))]
 pub mod shape; // Point, …
 
 crate::items! { // structural access: _mods, _all

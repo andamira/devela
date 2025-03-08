@@ -8,10 +8,10 @@ mod cap;
 mod definition;
 
 #[cfg(feature = "dep_crossterm")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_crossterm")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_crossterm")))]
 pub mod crossterm;
 #[cfg(feature = "dep_miniquad")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_miniquad")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_miniquad")))]
 pub mod miniquad;
 
 crate::items! { // structural access: _mods, _all

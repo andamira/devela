@@ -31,11 +31,11 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::{fx::*, reexports::*};
 
         #[cfg(feature = "hash")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "hash")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "hash")))]
         pub use super::pengy::*;
 
         #[cfg(all(feature = "hash", feature = "cast"))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "hash", feature = "cast"))))]
+        #[cfg_attr(nightly_doc, doc(cfg(all(feature = "hash", feature = "cast"))))]
         pub use super::fnv::*;
     }
     pub(super) mod _all {

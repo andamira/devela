@@ -151,21 +151,21 @@ impl Xoroshiro128pp {
     /// Generates the next random value split into 2 u16 values.
     #[must_use]
     #[cfg(feature = "split")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
     pub fn next2_u16(&mut self) -> [u16; 2] {
         Cast(self.next_u32()).into_u16_ne()
     }
     /// Returns the next u64, advancing the state 2 times.
     #[must_use]
     #[cfg(feature = "join")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub fn next_u64(&mut self) -> u64 {
         Cast::<u64>::from_u32_ne(self.next2())
     }
     /// Returns the next u128, advancing the state 4 times.
     #[must_use]
     #[cfg(feature = "join")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub fn next_u128(&mut self) -> u128 {
         Cast::<u128>::from_u32_ne(self.next4())
     }
@@ -216,7 +216,7 @@ impl Xoroshiro128pp {
     ///
     /// The seeds will be split in little endian order.
     #[cfg(feature = "split")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(Cast(seed).into_u32_le())
     }
@@ -225,7 +225,7 @@ impl Xoroshiro128pp {
     ///
     /// The seeds will be split in little endian order.
     #[cfg(feature = "split")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
     pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
         let [x, y] = Cast(seeds[0]).into_u32_le();
         let [z, a] = Cast(seeds[1]).into_u32_le();
@@ -243,7 +243,7 @@ impl Xoroshiro128pp {
     ///
     /// The seeds will be joined in little endian order.
     #[cfg(feature = "join")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             Cast::<u32>::from_u16_le([seeds[0], seeds[1]]),
@@ -280,7 +280,7 @@ impl ConstDefault for Xoroshiro128pp {
 }
 
 #[cfg(feature = "dep_rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::Xoroshiro128pp;
     use crate::_dep::rand_core::{RngCore, SeedableRng};

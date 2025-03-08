@@ -31,7 +31,7 @@ macro_rules! impl_destaque {
         #[doc = "# Methods for `Destaque" $IDX:camel "`\n\n"]
         /// --------------------------------------------------
         /// --------------------------------------------------
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {}
 
         // T: Clone, S: Bare
@@ -91,7 +91,7 @@ macro_rules! impl_destaque {
 
         // T: Clone, S: Boxed
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Boxed> {
             /// Returns an empty destaque, allocated in the heap,
             /// cloning `element` to fill the remaining free data.
@@ -405,7 +405,7 @@ macro_rules! impl_destaque {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop_front(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -425,7 +425,7 @@ macro_rules! impl_destaque {
             ///
             /// This is the habitual *dequeue* operation for a single-ended **queue**.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn dequeue(&mut self) -> Result<T, NotEnoughElements> {
                 self.pop_front()
             }
@@ -449,7 +449,7 @@ macro_rules! impl_destaque {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop_back(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -1151,7 +1151,7 @@ macro_rules! impl_destaque {
             /// # Ok(()) }
             /// ```
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn to_vec(&self) -> Vec<T> {
                 if self.is_empty() {
                     vec![]

@@ -44,7 +44,7 @@ impl char7 {
     /// Converts an `AsciiChar` to `char7`.
     #[must_use]
     #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> char7 {
         char7::new_unchecked(c as u8)
     }
@@ -54,7 +54,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     #[cfg(feature = "_char8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn try_from_char8(c: char8) -> Result<char7, DataOverflow> {
         if Char::is_7bit(c.to_u32()) {
             Ok(char7::new_unchecked(c.to_u32() as u8))
@@ -67,7 +67,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     #[cfg(feature = "_char16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn try_from_char16(c: char16) -> Result<char7, DataOverflow> {
         if Char::is_7bit(c.to_u32()) {
             Ok(char7::new_unchecked(c.to_u32() as u8))
@@ -92,7 +92,7 @@ impl char7 {
     /// Converts a `char7` to `AsciiChar`.
     #[must_use]
     #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]
     pub const fn to_ascii_char(c: char7) -> AsciiChar {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         return if let Some(c) = AsciiChar::from_u8(c.0.get()) { c } else { unreachable!() };
@@ -106,14 +106,14 @@ impl char7 {
     /// Converts this `char7` to `char8`.
     #[must_use]
     #[cfg(feature = "_char8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn to_char8(self) -> char8 {
         char8::from_char7(self)
     }
     /// Converts this `char7` to `char16`.
     #[must_use]
     #[cfg(feature = "_char16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn to_char16(self) -> char16 {
         char16::from_char7(self)
     }

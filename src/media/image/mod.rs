@@ -13,9 +13,9 @@ mod pnm;
 #[cfg(all(feature = "alloc", feature = "term"))]
 #[cfg(any(feature = "io", feature = "std"))]
 #[cfg(any(feature = "dep_hashbrown", feature = "std"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "alloc", feature = "term"))))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "io", feature = "std"))))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", feature = "term"))))]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "io", feature = "std"))))]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
 pub mod sixel;
 
 crate::items! { // structural access: _mods, _pub_mods, _all, _always

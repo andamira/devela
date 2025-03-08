@@ -890,5 +890,5 @@ macro_rules! _bitfield {
         $($tt:tt)+ } => { $crate::bitfield![ (custom:pub, extra:pub) $($tt)+ ]; };
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_bit··)))]
+#[cfg_attr(nightly_doc, doc(cfg(_bit··)))]
 pub use _bitfield as bitfield; // see crate::code::utils::mod.rs

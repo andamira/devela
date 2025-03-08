@@ -16,7 +16,7 @@ impl<Candidate, Requirement> Sealed for (Candidate, Requirement) {}
 // WAIT:DONE:1.79 [ptr.is_aligned](https://github.com/rust-lang/rust/pull/121948)
 // WAIT: [pointer_is_aligned_to](https://github.com/rust-lang/rust/issues/96284)
 // WAIT: [const_pointer_is_aligned](https://github.com/rust-lang/rust/issues/104203)
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait MemAligned: Sealed {
     /// Checks if the `Candidate`'s alignment is compatible with the `Requirement`'s alignment.

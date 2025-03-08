@@ -15,7 +15,7 @@ mod init; // array_init!
 mod reexports;
 
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod vec;
 
 crate::items! { // structural access: _mods, _all

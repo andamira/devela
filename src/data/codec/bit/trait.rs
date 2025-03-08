@@ -338,7 +338,7 @@ macro_rules! impl_bit_ops {
     ($($t:ty : $cap:literal),+) => { $( impl_bit_ops![@$t:$cap]; )+ };
     (@$t:ty : $cap:literal) => {
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl BitOps for $t {
             type Inner = $t;
 

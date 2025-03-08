@@ -69,7 +69,7 @@ macro_rules! impl_node {
         /// - data_ref, data_mut,
         /// - replace_data
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         pub struct $Node<D = (), const LCAP: usize = 0> {
             /// The node data. Defaults to the [unit] type if not specified.
             pub data: D,

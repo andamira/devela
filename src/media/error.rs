@@ -24,23 +24,23 @@ pub type MediaResult<T> = crate::Result<T, MediaError>;
 pub enum MediaError {
     ///
     #[cfg(feature = "audio")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "audio")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "audio")))]
     Audio(AudioError),
     ///
     #[cfg(feature = "color")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "color")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "color")))]
     Color(ColorError),
     ///
     #[cfg(feature = "draw")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "draw")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "draw")))]
     Draw(DrawError),
     ///
     #[cfg(feature = "font")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "font")))]
     Font(FontError),
     ///
     #[cfg(feature = "image")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "font")))]
     Image(ImageError),
 }
 

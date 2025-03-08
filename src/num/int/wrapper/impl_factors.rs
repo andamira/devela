@@ -90,7 +90,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
                 let n = self.0.abs();
                 iif![n == 0; return vec![];
@@ -125,7 +125,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0.abs();
                 iif![n == 0; return vec![]];
@@ -162,7 +162,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_prime(self) -> Vec<$t> {
                 let mut factors = Vec::new();
                 let mut n = self.0.abs();
@@ -197,7 +197,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
                 self.factors_prime().hook_mut(|v| v.dedup())
             }
@@ -215,7 +215,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
                 let mut factors = Vec::new();
                 let mut current = None;
@@ -642,7 +642,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
                 let n = self.0;
                 iif![n == 0; return vec![]; iif![n == 1; return vec![1]]];
@@ -676,7 +676,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0;
                 iif![n == 0; return vec![]];
@@ -712,7 +712,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_prime(self) -> Vec<$t> {
                 let mut factors = Vec::new();
                 let mut n = self.0;
@@ -746,7 +746,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
                 self.factors_prime().hook_mut(|v| v.dedup())
             }
@@ -763,7 +763,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
                 let mut factors = Vec::new();
                 let mut current = None;

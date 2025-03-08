@@ -51,7 +51,7 @@ impl Pnm {
     /// `width` * `height` elements, [`InvalidPixel`] if any pixel value is invalid
     /// and [`FmtError`] if the string writing fails.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn p1_encode_bytes(bitmap: &[u8], width: usize, height: usize) -> Result<String> {
         if bitmap.len() != width * height {
             return Err(InvalidImageSize(Some((width, height))));
@@ -92,7 +92,7 @@ impl Pnm {
     /// the number of expected bytes `width` * `height` elements
     /// and [`FmtError`] if the string writing fails.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn p1_encode_bits(bitmap: &[u8], width: usize, height: usize) -> Result<String> {
         if bitmap.len() != Mem::bytes_from_bits(width * height) {
             return Err(InvalidImageSize(Some((width, height))));

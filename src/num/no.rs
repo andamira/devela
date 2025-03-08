@@ -21,7 +21,7 @@ impl super::Num for NoNum {
 }
 
 #[cfg(_int··)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_int··)))]
+#[cfg_attr(nightly_doc, doc(cfg(_int··)))]
 impl super::NumInt for NoNum {
     type OutI = ();
 }

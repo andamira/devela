@@ -115,5 +115,5 @@ macro_rules! _enumset {
     }};
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_bit_·)))]
+#[cfg_attr(nightly_doc, doc(cfg(_bit_·)))]
 pub use _enumset as enumset;

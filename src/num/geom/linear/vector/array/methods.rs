@@ -58,7 +58,7 @@ macro_rules! impl_vector {
     (@int $t:ty : $cap:literal $(: $cmp:literal)? ) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`.")]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// A `Vector` with all ones.
             pub const ONE: Self = Self::new([1; D]);
@@ -193,7 +193,7 @@ macro_rules! impl_vector {
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, signed.")]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// A `Vector` with all negative ones.
             pub const NEG_ONE: Self = Self::new([-1; D]);
@@ -252,7 +252,7 @@ macro_rules! impl_vector {
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, unsigned.")]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// Calculates the floored magnitude of the vector.
             ///
@@ -306,7 +306,7 @@ macro_rules! impl_vector {
     (@float $f:ty : $cap:literal $(: $cmp:literal)? ) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($f), "`.")]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$f, D> {
             /// A `Vector` with all ones.
             pub const ONE: Self = Self::new([1.0; D]);

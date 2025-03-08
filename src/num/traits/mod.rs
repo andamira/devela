@@ -35,7 +35,7 @@ sf! {
 ///
 /// See also [`NumRef`] which is automatically implemented for `Num` references.
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[allow(unused_variables, reason = "default implementation is not implemented")]
 pub trait Num {
     /// The internal representation of this numeric type.
@@ -133,7 +133,7 @@ pub trait Num {
 /// It is automatically implemented for references of types implementing [`Num`].
 /// Mutable operations are only available for exclusive (`&mut`) references.
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
     /// The owned version of this numeric type.
     type Own: Num;

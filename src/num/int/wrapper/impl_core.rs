@@ -292,7 +292,7 @@ macro_rules! impl_core {
             /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
             #[cfg(feature = "cast")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
@@ -350,7 +350,7 @@ macro_rules! impl_core {
             // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
             // NOTE: based on Rust's std implementation.
             #[cfg(feature = $ucap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $ucap)))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $ucap)))]
             pub const fn midpoint(self, other: $t) -> Int<$t> {
                 const U: $ut = <$t>::MIN.unsigned_abs();
 
@@ -475,7 +475,7 @@ macro_rules! impl_core {
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
             #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn gcd_ext(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 if self.0 == 0 { return Ok(GcdReturn::new(Int(b), Int(0), Int(1))); }
                 if b == 0 { return Ok(GcdReturn::new(self, Int(1), Int(0))); }
@@ -545,7 +545,7 @@ macro_rules! impl_core {
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
             #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
                 let b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
@@ -598,7 +598,7 @@ macro_rules! impl_core {
             /// assert![Int(200_u8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
             #[cfg(feature = "cast")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);

@@ -27,7 +27,7 @@ impl Iter {
     // ///
     // /// See `core::iter::`[`from_corooutine`].
     // #[cfg(nightly_coro)]
-    // #[cfg_attr(feature = "nightly_doc", doc(cfg(nightly_coro)))]
+    // #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
     // pub fn from_coroutine<G>(coroutine: G) -> core::iter::FromCoroutine<G>
     // where
     //     G: crate::Coroutine<Return = ()> + Unpin,

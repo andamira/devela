@@ -78,7 +78,7 @@ impl InvalidText {
 #[cfg(all(feature = "error", text··))]
 pub use full_composite::*;
 #[cfg(all(feature = "error", text··))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "error", text··))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "error", text··))))]
 mod full_composite {
     use super::*;
     use crate::{ElementNotFound, MismatchedCapacity, DOC_ELEMENT_NOT_FOUND};

@@ -17,7 +17,7 @@ pub use super::_core; // for completion
 
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
 /// *Re-exported Rust `alloc` library.*
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[cfg(feature = "alloc")]
 #[doc(inline)]
 pub extern crate alloc as _alloc;
@@ -25,7 +25,7 @@ pub extern crate alloc as _alloc;
 /// <span class='stab portability' title='re-exported `std`'>`std`</span>
 /// *Re-exported Rust `std` library.*
 /// <br/><hr>
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[cfg(feature = "std")]
 #[doc(inline)]
 pub use ::std as _std;

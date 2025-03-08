@@ -1801,15 +1801,15 @@ macro_rules! impl_arch {
         $( #[doc = $doc] )*
         $(
         #[cfg(any($(feature = $feature),+))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(any($(feature = $feature),+))))]
+        #[cfg_attr(nightly_doc, doc(cfg(any($(feature = $feature),+))))]
         )?
         $(
         #[cfg(any($(target_arch = $target_arch),+))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(any($(target_arch = $target_arch),+))))]
+        #[cfg_attr(nightly_doc, doc(cfg(any($(target_arch = $target_arch),+))))]
         )?
         $(
         #[cfg(any($(target_feature = $target_feature),+))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(any($(target_feature = $target_feature),+))))]
+        #[cfg_attr(nightly_doc, doc(cfg(any($(target_feature = $target_feature),+))))]
         )?
         impl Arch { $($item)* }
     };

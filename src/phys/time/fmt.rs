@@ -41,7 +41,7 @@ impl Timecode {
     // -> 64 bits
     #[must_use]
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn split_secs_f64(seconds: f64) -> TimeSplitHourNano<u32, u8, u8, u16, NoTime, NoTime> {
         let ms = (seconds.fract() * 1000.) as u16;
         let mut ts = seconds.trunc() as u64;
@@ -91,9 +91,9 @@ impl Timecode {
     //
     // -> 96 bits
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_str_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub fn secs_f64(seconds: f64) -> StringU8<12> {
         let TimeSplitHourNano { h, m, s, ms, .. } = Self::split_secs_f64(seconds);
         let m = Ascii(m as u32).digits_str(2);
@@ -125,7 +125,7 @@ impl Timecode {
     ///
     /// The seconds are clamped to 999 (more than 16 minutes).
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     // -> 192 bits in "64", 92 bits in "32"
     pub fn nanos_u64_alloc(ns: u64) -> String {
         let (us, ns_rem) = (ns / 1_000, ns % 1_000);
@@ -149,7 +149,7 @@ impl Timecode {
     /// The seconds are clamped to 999 (more than 16 minutes).
     // -> 208 bits
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_str_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub fn nanos_u64(nanos: u64) -> StringU8<23> {
         let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
         let s_str = Ascii(s.min(999)).digits_str(3);

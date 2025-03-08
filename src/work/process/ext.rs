@@ -15,7 +15,7 @@ impl Sealed for Process {}
 ///
 /// It offers the standalone functions in `std::process` as associated methods.
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtProcess: Sealed {
     /// Terminates the current process in an abnormal fashion.

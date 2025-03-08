@@ -365,7 +365,7 @@ impl Env {
     /// - `dylib`
     /// - `dll`
     #[cfg(feature = "std")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub const DLL_EXTENSION: &'static str = std::env::consts::DLL_EXTENSION;
 
     /// Specifies the filename prefix used for shared libraries on this platform.
@@ -374,7 +374,7 @@ impl Env {
     /// - `lib`
     /// - `` (an empty string)
     #[cfg(feature = "std")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub const DLL_PREFIX: &'static str = std::env::consts::DLL_PREFIX;
 
     /// Specifies the filename suffix used for shared libraries on this platform.
@@ -384,7 +384,7 @@ impl Env {
     /// - `.dylib`
     /// - `.dll`
     #[cfg(feature = "std")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub const DLL_SUFFIX: &'static str = std::env::consts::DLL_SUFFIX;
 
     /// Specifies the file extension, if any, used for executable binaries on this platform.
@@ -393,7 +393,7 @@ impl Env {
     /// - `exe`
     /// - `` (an empty string)
     #[cfg(feature = "std")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub const EXE_EXTENSION: &'static str = std::env::consts::EXE_EXTENSION;
 
     /// Specifies the filename suffix used for executable binaries on this platform.
@@ -404,13 +404,13 @@ impl Env {
     /// - `.pexe`
     /// - `` (an empty string)
     #[cfg(feature = "std")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub const EXE_SUFFIX: &'static str = std::env::consts::EXE_SUFFIX;
 }
 
 /// # Command line arguments
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl Env {
     /// Returns the arguments that this program was started with.
     ///
@@ -427,7 +427,7 @@ impl Env {
 
 /// # Environment variables
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl Env {
     /// Fetches the environment variable key from the current process.
     ///
@@ -465,7 +465,7 @@ impl Env {
     /// # Safety
     /// See [remove_var].
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn remove_var<K: AsRef<OsStr>>(key: K) {
         unsafe { remove_var(key) }
     }
@@ -476,7 +476,7 @@ impl Env {
     /// # Safety
     /// See [set_var].
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn set_var<K: AsRef<OsStr>, V: AsRef<OsStr>>(key: K, value: V) {
         unsafe { set_var(key, value) }
     }
@@ -484,7 +484,7 @@ impl Env {
 
 /// # Paths
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl Env {
     /// Returns the full filesystem path of the current running executable.
     ///

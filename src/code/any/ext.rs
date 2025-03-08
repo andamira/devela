@@ -192,7 +192,7 @@ pub trait ExtAny: Any + Sealed {
     /// ```
     #[must_use]
     #[cfg(feature = "unsafe_layout")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
     fn downcast_ref<T: 'static>(&self) -> Option<&T> {
         // SAFETY: We verify T is of the right type before downcasting
         unsafe { (*self).type_is::<T>().then(|| &*<*const _>::cast(self)) }
@@ -204,7 +204,7 @@ pub trait ExtAny: Any + Sealed {
     /// since it's [already implemented for `dyn Any`][Any#method.downcast_mut].
     #[must_use]
     #[cfg(feature = "unsafe_layout")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
     fn downcast_mut<T: 'static>(&mut self) -> Option<&mut T> {
         // SAFETY: We verify T is of the right type before downcasting
         unsafe { (*self).type_is::<T>().then(|| &mut *<*mut _>::cast(self)) }

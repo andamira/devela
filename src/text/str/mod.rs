@@ -15,7 +15,7 @@ mod namespace; // Str
 #[cfg(all(feature = "str", feature = "alloc"))]
 mod ext_string;
 #[cfg(feature = "_str_nonul")] // RETHINK
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_str_nonul")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "_str_nonul")))]
 mod nonul;
 #[cfg(_str_u··)]
 mod string_u;
@@ -31,10 +31,10 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::macros::*;
 
         #[cfg(feature = "str")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "str")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
         pub use super::{ext_str::*, namespace::*};
         #[cfg(all(feature = "str", feature = "alloc"))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "str")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
         pub use super::ext_string::*;
 
         #[cfg(feature = "_str_nonul")] // RETHINK

@@ -50,7 +50,7 @@ macro_rules! impl_int {
     };
     (@signed $t:ident : $cap:literal | $ut:ident:$ucap:literal) => { $crate::paste! {
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl NumInt for $t {
             type OutI = $t;
 
@@ -68,11 +68,11 @@ macro_rules! impl_int {
                     GcdReturn { gcd, x, y } => Ok(GcdReturn { gcd: gcd.0, x: x.0, y: y.0 }) }}
 
             #[cfg(feature = $ucap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $ucap)))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $ucap)))]
             fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(self).midpoint(other).0) }
             #[cfg(feature = $ucap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $ucap)))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $ucap)))]
             fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(*self).midpoint(*other).0) }
 
@@ -114,7 +114,7 @@ macro_rules! impl_int {
     };
     (@unsigned $t:ident : $cap:literal | $io:ident : $iocap:literal) => { $crate::paste! {
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl NumInt for $t {
             type OutI = $io;
 
@@ -123,13 +123,13 @@ macro_rules! impl_int {
             /* core */
 
             #[cfg(all(feature = $iocap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_gcd_ext(self, other: Self::Rhs)
                 -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 Int(self).gcd_ext(other)
                     .map(|res| GcdReturn { gcd: res.gcd.0, x: res.x.0, y: res.y.0 }) }
             #[cfg(all(feature = $iocap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_ref_gcd_ext(&self, other: &Self::Rhs)
                 -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 Int(*self).gcd_ext(*other)
@@ -143,20 +143,20 @@ macro_rules! impl_int {
             /* modulo */
 
             #[cfg(all(feature = $iocap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_modulo_mul_inv(self, modulus: Self) -> Result<Self> {
                 Int(self).modulo_mul_inv(modulus).map(|n|n.0) }
             #[cfg(all(feature = $iocap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_ref_modulo_mul_inv(&self, modulus: &Self) -> Result<Self> {
                 Int(*self).modulo_mul_inv(*modulus).map(|n|n.0) }
 
             #[cfg(all(feature = $iocap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_modulo_div(self, other: Self, modulus: Self) -> Result<Self> {
                 Int(self).modulo_div(other, modulus).map(|n|n.0) }
             #[cfg(all(feature = $iocap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_ref_modulo_div(&self, other: &Self, modulus: &Self) -> Result<Self> {
                 Int(*self).modulo_div(*other, *modulus).map(|n|n.0) }
 
@@ -232,11 +232,11 @@ macro_rules! impl_int {
             match Int(*self).lcm(*other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
 
         #[cfg(feature = "cast")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
         fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
             -> Result<Self::Out> where Self: Sized { Int(self).scale(min, max, a, b).map(|n|n.0) }
         #[cfg(feature = "cast")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
         fn int_ref_scale(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
             -> Result<Self::Out> { Int(*self).scale(*min, *max, *a, *b).map(|n|n.0) }
 
@@ -261,11 +261,11 @@ macro_rules! impl_int {
         fn int_ref_permute(&self, r: &Self) -> Result<Self::Out> {
             Int(*self).permute(*r).map(|n|n.0) }
         #[cfg(feature = "cast")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
         fn int_permute_rep(self, r: Self) -> Result<Self::Out> {
             Int(self).permute_rep(r).map(|n|n.0) }
         #[cfg(feature = "cast")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
         fn int_ref_permute_rep(&self, r: &Self) -> Result<Self::Out> {
             Int(*self).permute_rep(*r).map(|n|n.0) }
 
@@ -298,31 +298,31 @@ macro_rules! impl_int {
         /* factors (allocating) */
 
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_factors(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors()) }
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_ref_factors(&self) -> Result<Vec<Self::Out>> { Ok(Int(*self).factors()) }
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_factors_proper(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_proper()) }
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_ref_factors_proper(&self) -> Result<Vec<Self::Out>> {
             Ok(Int(*self).factors_proper()) }
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_factors_prime(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_prime()) }
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_ref_factors_prime(&self) -> Result<Vec<Self::Out>> {
             Ok(Int(*self).factors_prime()) }
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_factors_prime_unique(self) -> Result<Vec<Self::Out>> {
             Ok(Int(self).factors_prime_unique()) }
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_ref_factors_prime_unique(&self) -> Result<Vec<Self::Out>> {
             Ok(Int(*self).factors_prime_unique()) }
 

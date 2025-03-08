@@ -17,7 +17,7 @@ impl Sealed for Thread {}
 ///
 /// It offers the standalone functions in `std::thread` as associated methods.
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtThread: Sealed {
     /// Gets a handle to the thread that invokes it.

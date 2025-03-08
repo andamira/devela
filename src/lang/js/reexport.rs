@@ -60,5 +60,5 @@ macro_rules! _js_reexport {
     };
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 pub use _js_reexport as js_reexport;

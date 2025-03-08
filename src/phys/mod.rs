@@ -12,7 +12,7 @@
 pub mod time;
 
 #[cfg(feature = "wave")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
 pub mod wave;
 
 crate::items! { // structural access: _pub_mods, _all, _always

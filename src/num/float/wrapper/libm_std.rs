@@ -131,7 +131,7 @@ mod _libm {
             ///
             /// # *Implementations using the `libm` feature*.
             #[cfg(feature = $cap )]
-            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The fractional part.
                 /// # Formulation
@@ -297,7 +297,7 @@ mod _std {
             ///
             /// # *Implementations using the `std` feature*.
             #[cfg(feature = $cap )]
-            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// Raises itself to the `p` integer power.
                 pub fn powi(self, p: $e) -> Float<$f> { Float(<$f>::powi(self.0, p)) }
@@ -339,7 +339,7 @@ mod _no_std_no_libm {
             ///
             /// # *Implementations without `std` or `libm`*.
             #[cfg(feature = $cap )]
-            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
                 /// # Formulation

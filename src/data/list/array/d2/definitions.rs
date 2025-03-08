@@ -70,7 +70,7 @@ use crate::{Array, Bare, Storage};
 // #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 // rkyv(archived = Array2dArchived, attr(doc = crate::TAG_RKYV![])))]
 // #[cfg_attr(
-//     all(feature = "dep_rkyv", feature = "nightly_doc"),
+//     all(feature = "dep_rkyv", nightly_doc),
 //     rkyv(attr(doc(cfg(feature = "dep_rkiv"))))
 // )]
 pub struct Array2d<

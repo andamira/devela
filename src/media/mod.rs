@@ -8,28 +8,28 @@
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 
 #[cfg(media··)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(media··)))]
+#[cfg_attr(nightly_doc, doc(cfg(media··)))]
 mod error;
 #[cfg(feature = "audio")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "audio")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "audio")))]
 pub mod audio;
 #[cfg(feature = "color")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "color")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "color")))]
 pub mod color;
 #[cfg(feature = "draw")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "draw")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "draw")))]
 pub mod draw;
 #[cfg(feature = "font")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "font")))]
 pub mod font;
 #[cfg(feature = "image")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "image")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
 pub mod image;
 #[cfg(feature = "midi")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "midi")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "midi")))]
 pub mod midi;
 #[cfg(feature = "video")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "video")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "video")))]
 pub mod video;
 
 crate::items! { // structural access: _pub_mods, _all, _always

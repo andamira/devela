@@ -86,7 +86,7 @@ impl_from_trait![
 /* implements the Cast wrapper methods */
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
 impl Cast<u16> {
     /// Constructs a `u16` from an array of `[u8; 2]` in big-endian order.
     #[must_use]
@@ -102,7 +102,7 @@ impl Cast<u16> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
 impl Cast<u32> {
     /// Constructs a `u32` from an array of `[u16; 2]` in big-endian order.
     #[must_use]
@@ -140,7 +140,7 @@ impl Cast<u32> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
 impl Cast<u64> {
     /// Constructs a `u64` from an array of `[u32; 2]` in big-endian order.
     #[must_use]
@@ -206,7 +206,7 @@ impl Cast<u64> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
 impl Cast<u128> {
     /// Constructs a `u128` from an array of `[u64; 2]` in big-endian order.
     #[must_use]

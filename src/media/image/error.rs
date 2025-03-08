@@ -37,7 +37,7 @@ pub enum ImageError {
     /// An `I/O` error.
     #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
     #[cfg_attr(
-        feature = "nightly_doc",
+        nightly_doc,
         doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io"))))
     )]
     IoError(IoErrorKind),

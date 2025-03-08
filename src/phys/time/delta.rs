@@ -647,7 +647,7 @@ impl TimeDelta {
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn mul_f64(self, rhs: f64) -> TimeDelta {
         TimeDelta::from_secs_f64(rhs * self.as_secs_f64())
     }
@@ -656,7 +656,7 @@ impl TimeDelta {
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
     #[cfg(any(feature = "std", feature = "_float_f32"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f32"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f32"))))]
     pub fn mul_f32(self, rhs: f32) -> TimeDelta {
         TimeDelta::from_secs_f32(rhs * self.as_secs_f32())
     }
@@ -666,7 +666,7 @@ impl TimeDelta {
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn div_f64(self, rhs: f64) -> TimeDelta {
         TimeDelta::from_secs_f64(self.as_secs_f64() / rhs)
     }
@@ -675,7 +675,7 @@ impl TimeDelta {
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
     #[cfg(any(feature = "std", feature = "_float_f32"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f32"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f32"))))]
     pub fn div_f32(self, rhs: f32) -> TimeDelta {
         TimeDelta::from_secs_f32(self.as_secs_f32() / rhs)
     }
@@ -808,7 +808,7 @@ impl TryFrom<TimeDelta> for Duration {
 
 #[rustfmt::skip]
 #[cfg(feature = "js")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "js")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 impl TimeDelta {
     /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
     pub fn from_js(js: JsInstant) -> Self { Self::from_millis_f64(js.as_millis_f64()) }
@@ -821,7 +821,7 @@ impl TimeDelta {
 }
 #[rustfmt::skip]
 #[cfg(feature = "dep_jiff")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_jiff")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_jiff")))]
 mod impl_jiff {
     use {super::TimeDelta, ::jiff::SignedDuration};
     impl TimeDelta {

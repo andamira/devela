@@ -73,7 +73,7 @@ macro_rules! define_data_value {
         #[doc = "- [" [<$Value $b Copy>] "][" [<$Value $b Copy>] "] -With" ]
         #[doc = "- [" [<$Value $b>] "][" [<$Value $b>] "] -Copy -With" ]
         #[derive(Clone, Copy, Debug, PartialEq)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub enum [<$Value $b Copy With>]<V: DataValue> {
             /// Represents the absence of *data*.
             None,
@@ -93,7 +93,7 @@ macro_rules! define_data_value {
 
             $( // feature-gated dependencies
                 #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_dep,
                                 feature = $C_dep2_dep))))]
                 #[doc = $C_doc_dep]
@@ -104,7 +104,7 @@ macro_rules! define_data_value {
                 #[cfg(all($C_ptr_ptrdep,
                         feature = $C_dep1_ptrdep,
                         feature = $C_dep2_ptrdep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_ptrdep,
                                 feature = $C_dep2_ptrdep))))]
                 #[doc = $C_doc_ptrdep]
@@ -120,7 +120,7 @@ macro_rules! define_data_value {
         #[doc = "- [" [<$Value $b>] "][" [<$Value $b>] "] -Copy" ]
         #[doc = "- [" [<$Value $b Copy With>] "][" [<$Value $b Copy With>] "] +With" ]
         #[doc = "- [" [<$Value $b With>] "][" [<$Value $b With>] "] -Copy +With" ]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub type [<$Value $b Copy>] = [< $Value $b Copy With>]<$crate::NoData>;
 
         // implement the DataValue trait
@@ -163,7 +163,7 @@ macro_rules! define_data_value {
         #[doc = "- [" [<$Value $b>] "][" [<$Value $b>] "] -Width" ]
         #[doc = "- [" [<$Value $b Copy>] "][" [<$Value $b Copy>] "] +Copy -Width" ]
         #[derive(Clone, Debug, PartialEq)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub enum [<$Value $b With>]<V: DataValue> {
             /// Represents the absence of *data*.
             None,
@@ -192,14 +192,14 @@ macro_rules! define_data_value {
 
             $( // feature-gated dependencies
                 #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))))]
                 #[doc = $C_doc_dep]
                 $C_name_dep($C_type_dep),
             )*
             $(
                 #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))))]
                 #[doc = $N_doc_dep]
                 $N_name_dep($N_type_dep),
@@ -209,7 +209,7 @@ macro_rules! define_data_value {
                 #[cfg(all($C_ptr_ptrdep,
                         feature = $C_dep1_ptrdep,
                         feature = $C_dep2_ptrdep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_ptrdep,
                                 feature = $C_dep2_ptrdep))))]
                 #[doc = $C_doc_ptrdep]
@@ -219,7 +219,7 @@ macro_rules! define_data_value {
                 #[cfg(all($N_ptr_ptrdep,
                         feature = $N_dep1_ptrdep,
                         feature = $N_dep2_ptrdep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $N_dep1_ptrdep,
                                 feature = $N_dep2_ptrdep))))]
                 #[doc = $N_doc_ptrdep]
@@ -235,7 +235,7 @@ macro_rules! define_data_value {
         #[doc = "- [" [<$Value $b Copy>] "][" [<$Value $b Copy>] "] +Copy" ]
         #[doc = "- [" [<$Value $b With>] "][" [<$Value $b With>] "] +With" ]
         #[doc = "- [" [<$Value $b Copy With>] "][" [<$Value $b Copy With>] "] +Copy +With" ]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub type [<$Value $b>] = [< $Value $b With>]<$crate::NoData>;
 
         // implement the DataValue trait
@@ -363,7 +363,7 @@ macro_rules! define_data_value {
 
         // from DataValue to DataRawCopy
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
         impl<V: DataValueCopy> From<[<$Value $b Copy With>]<V>> for [<$Raw $b Copy>] {
             fn from(cell: [<$Value $b Copy With>]<V>) -> Self {
                 match cell {
@@ -447,7 +447,7 @@ macro_rules! define_data_type {
         #[doc = "- [" [<$Type $b Copy>]  "][" [<$Type $b Copy>] "] -With" ]
         #[doc = "- [" [<$Type $b>]  "][" [<$Type $b>] "] -Copy -With" ]
         #[derive(Clone, Copy, Debug, PartialEq)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub enum [< $Type $b Copy With >]<T: DataType> {
             /// Represents the absence of *data*.
             None,
@@ -467,7 +467,7 @@ macro_rules! define_data_type {
 
             $( // feature-gated dependencies
                 #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_dep,
                                 feature = $C_dep2_dep))))]
                 #[doc = $C_doc_dep]
@@ -478,7 +478,7 @@ macro_rules! define_data_type {
                 #[cfg(all($C_ptr_ptrdep,
                         feature = $C_dep1_ptrdep,
                         feature = $C_dep2_ptrdep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_ptrdep,
                                 feature = $C_dep2_ptrdep))))]
                 #[doc = $C_doc_ptrdep]
@@ -494,7 +494,7 @@ macro_rules! define_data_type {
         #[doc = "- [" [<$Type $b>] "][" [<$Type $b>] "] -Copy" ]
         #[doc = "- [" [<$Type $b Copy With>] "][" [<$Type $b Copy With>] "] +With" ]
         #[doc = "- [" [<$Type $b With>] "][" [<$Type $b With>] "] -Copy +With" ]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub type [<$Type $b Copy>] = [< $Type $b Copy With>]<$crate::NoData>;
 
         // implement the DataType trait
@@ -542,7 +542,7 @@ macro_rules! define_data_type {
         #[doc = "- [" [<$Type $b>] "][" [<$Type $b>] "] -With" ]
         #[doc = "- [" [<$Type $b Copy>] "][" [<$Type $b Copy>] "] +Copy -With" ]
         #[derive(Clone, Copy, Debug, PartialEq)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub enum [< $Type $b With >]<T: DataType> {
             /// Represents the absence of *data*.
             None,
@@ -571,7 +571,7 @@ macro_rules! define_data_type {
 
             $( // feature-gated dependencies
                 #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_dep,
                                 feature = $C_dep2_dep))))]
                 #[doc = $C_doc_dep]
@@ -579,7 +579,7 @@ macro_rules! define_data_type {
             )*
             $(
                 #[cfg(all(feature = $N_dep1_dep, feature = $N_dep2_dep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $N_dep1_dep,
                                 feature = $N_dep2_dep))))]
                 #[doc = $N_doc_dep]
@@ -589,7 +589,7 @@ macro_rules! define_data_type {
                 #[cfg(all($C_ptr_ptrdep,
                         feature = $C_dep1_ptrdep,
                         feature = $C_dep2_ptrdep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_ptrdep,
                                 feature = $C_dep2_ptrdep))))]
                 #[doc = $C_doc_ptrdep]
@@ -599,7 +599,7 @@ macro_rules! define_data_type {
                 #[cfg(all($N_ptr_ptrdep,
                         feature = $N_dep1_ptrdep,
                         feature = $N_dep2_ptrdep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $N_dep1_ptrdep,
                                 feature = $N_dep2_ptrdep))))]
                 #[doc = $N_doc_ptrdep]
@@ -615,7 +615,7 @@ macro_rules! define_data_type {
         #[doc = "- [" [<$Type $b Copy>] "][" [<$Type $b Copy>] "] +Copy" ]
         #[doc = "- [" [<$Type $b With>] "][" [<$Type $b With>] "] +With" ]
         #[doc = "- [" [<$Type $b Copy With>] "][" [<$Type $b Copy With>] "] +Copy +With" ]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         pub type [<$Type $b>] = [< $Type $b With>]<$crate::NoData>;
 
         // implement the DataType trait
@@ -736,8 +736,8 @@ macro_rules! define_data_raw {
         #[repr(C)]
         #[doc = $b "-bit *raw* data, restricted to `Copy` variants."]
         #[derive(Copy, Clone)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
         #[allow(non_snake_case, reason = "union fields named like enum variants")]
         pub union [< $Raw $b Copy >] {
@@ -758,7 +758,7 @@ macro_rules! define_data_raw {
             // feature-gated dependencies
             $(
                 #[cfg(all(feature = $C_dep1_dep, feature = $C_dep2_dep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_dep,
                                 feature = $C_dep2_dep))))]
                 #[doc = $C_doc_dep]
@@ -769,7 +769,7 @@ macro_rules! define_data_raw {
                 #[cfg(all($C_ptr_ptrdep,
                         feature = $C_dep1_ptrdep,
                         feature = $C_dep2_ptrdep))]
-                #[cfg_attr(feature = "nightly_doc",
+                #[cfg_attr(nightly_doc,
                     doc(cfg(all(feature = $C_dep1_ptrdep,
                                 feature = $C_dep2_ptrdep))))]
                 #[doc = $C_doc_ptrdep]
@@ -779,7 +779,7 @@ macro_rules! define_data_raw {
         // type aliases:
         // TODO
         // #[doc = $b "-bit *untyped (raw)* data"]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $feature)))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         // pub type [< $Raw $b Copy >] = [< $Raw $b >];
 
         // Debug

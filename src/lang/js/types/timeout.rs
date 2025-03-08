@@ -25,8 +25,8 @@ impl JsTimeout {
 
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl JsTimeout {
     #[doc = web_api!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.

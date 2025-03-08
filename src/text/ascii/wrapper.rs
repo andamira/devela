@@ -96,7 +96,7 @@ impl Ascii<usize> {
     /// - Makes use of the `unsafe_str` feature if enabled.
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
         let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
@@ -183,7 +183,7 @@ impl Ascii<u8> {
     /// - Makes use of the `unsafe_str` feature if enabled.
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<3> {
         let width = Compare(width).clamp(self.count_digits(), 3);
 
@@ -292,7 +292,7 @@ impl Ascii<u16> {
     /// - Makes use of the `unsafe_str` feature if enabled.
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<5> {
         let width = Compare(width).clamp(self.count_digits(), 5);
 
@@ -407,7 +407,7 @@ impl Ascii<u32> {
     /// - Makes use of the `unsafe_str` feature if enabled.
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<10> {
         let width = Compare(width).clamp(self.count_digits(), 10);
 
@@ -512,7 +512,7 @@ impl Ascii<u64> {
     /// - Makes use of the `unsafe_str` feature if enabled.
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<20> {
         let width = Compare(width).clamp(self.count_digits(), 20);
 
@@ -636,7 +636,7 @@ impl Ascii<u128> {
     /// - Makes use of the `unsafe_str` feature if enabled.
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_str_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<39> {
         let width = Compare(width).clamp(self.count_digits(), 39);
 

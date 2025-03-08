@@ -201,9 +201,9 @@ mod impls {
         }
     }
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
     unsafe impl<T: Send> Send for CacheAlign<T> {}
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
     unsafe impl<T: Sync> Sync for CacheAlign<T> {}
 }

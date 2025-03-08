@@ -111,9 +111,9 @@ See also
 - 1.?? `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
         = `nightly_coro` flag
 - 1.?? `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
-        = `nightly_doc` feature
+        = `nightly_doc` flag
 - 1.?? `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-        = `nightly_doc` feature
+        = `nightly_doc` flag
 - 1.?? `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
         = `nightly_float` feature
 - 1.?? ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)

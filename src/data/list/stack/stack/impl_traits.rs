@@ -93,7 +93,7 @@ macro_rules! impl_stack {
         }
 
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         impl<T: Default, I, const CAP: usize> From<I> for Stack<T, CAP, $IDX, Boxed>
         where
             I: IntoIterator<Item = T>,
@@ -236,7 +236,7 @@ impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
 
 // T: Default, S: Boxed
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, Boxed> {
     /// Returns an empty stack, allocated in the heap,
     /// using the default value to fill the remaining free data.

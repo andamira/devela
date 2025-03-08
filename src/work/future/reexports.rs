@@ -12,13 +12,13 @@ use crate::reexport;
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
 #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub use crate::_dep::portable_atomic_util::task::Wake as TaskWake;
 //
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
 #[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub use crate::_dep::_alloc::task::Wake as TaskWake;
 
 /* `core` future */

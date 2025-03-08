@@ -88,7 +88,7 @@ pub trait ExtMem {
     /// # Safety
     /// See [`Mem::zeroed`].
     #[must_use]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     unsafe fn mem_zeroed<T>() -> T { unsafe { Mem::zeroed::<T>() } }
 
@@ -97,7 +97,7 @@ pub trait ExtMem {
     /// # Safety
     /// See [`Mem::transmute_copy`].
     #[must_use]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     unsafe fn mem_transmute_copy<Src, Dst>(src: &Src) -> Dst {
         unsafe { Mem::transmute_copy::<Src, Dst>(src) }
@@ -108,7 +108,7 @@ pub trait ExtMem {
     /// See [`Mem::as_bytes`], and for the `const` version for sized types
     /// see [`Mem::as_bytes_sized`].
     #[must_use]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     fn mem_as_bytes(&self) -> &[u8] where Self: Sync + Unpin { Mem::as_bytes(self) }
 
@@ -116,7 +116,7 @@ pub trait ExtMem {
     ///
     /// See [`Mem::as_bytes_mut`].
     #[must_use]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     fn mem_as_bytes_mut(&mut self) -> &mut [u8] where Self: Sync + Unpin { Mem::as_bytes_mut(self) }
 }

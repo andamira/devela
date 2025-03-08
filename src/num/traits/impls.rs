@@ -40,7 +40,7 @@ macro_rules! impl_num {
     (@i $p:ident : $cap:literal) => { paste! {
         // i*
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for $p {
             type Inner = $p;
             type Out = $p;
@@ -70,7 +70,7 @@ macro_rules! impl_num {
 
         // NonZeroI*
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type Out = [<NonZero $p:camel>];
@@ -118,7 +118,7 @@ macro_rules! impl_num {
     (@non_value i $p:ident : $cap:literal) => { paste! {
         // NonValueI*
         #[cfg(feature = $cap)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
             type Inner = $p;
             type Out =  [<NonValue $p:camel>]<V>;
@@ -133,7 +133,7 @@ macro_rules! impl_num {
     (@u $p:ident : $cap:literal) => { paste! {
         // u*
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for $p {
             type Inner = $p;
             type Out = $p;
@@ -165,7 +165,7 @@ macro_rules! impl_num {
 
         // NonZeroU*
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type Out = [<NonZero $p:camel>];
@@ -214,7 +214,7 @@ macro_rules! impl_num {
     (@non_value u $p:ident : $cap:literal) => { paste! {
         // NonValueU*
         #[cfg(feature = $cap)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
             type Inner = $p;
             type Out = [<NonValue $p:camel>]<V>;
@@ -228,7 +228,7 @@ macro_rules! impl_num {
     (@f $p:ident : $cap:literal) => {
         // f*
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for $p { paste! {
             type Inner = $p;
             type Out = $p;

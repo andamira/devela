@@ -110,13 +110,13 @@ sf! {
         }
         /// This function is not supported by `IoRepeat`, because there's no end of its data
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn read_to_end(&mut self, _: &mut Vec<u8>) -> IoResult<usize> {
             Err(IoError::from(IoErrorKind::OutOfMemory))
         }
         // /// This function is not supported by `IoRepeat`, because there's no end of its data
         // #[cfg(feature = "alloc")]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         // fn read_to_string(&mut self, _: &mut String) -> IoResult<usize> {
         //     Err(IoError::from(IoErrorKind::OutOfMemory))
         // }

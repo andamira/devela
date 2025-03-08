@@ -21,7 +21,7 @@ impl<T> Sealed for Option<T> {}
 /// Based on work from:
 /// - <https://github.com/rust-lang/rust/issues/62358> (contains).
 /// - <https://github.com/rust-lang/rust/pull/87036> (reduce).
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtOption<T>: Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.

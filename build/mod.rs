@@ -9,7 +9,7 @@
 // SEE:
 // https://doc.rust-lang.org/cargo/reference/build-scripts.html
 
-#![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(test, allow(dead_code))]
 
 mod environment;

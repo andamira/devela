@@ -14,7 +14,7 @@ use crate::DerefMut;
 mod bare;
 #[cfg(feature = "alloc")]
 crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     mod boxed;
     pub use boxed::*;
 }

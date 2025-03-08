@@ -62,8 +62,8 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// This is adapted work from [tupl][crate::_info::vendored#tupl]"#)?;
 // In sync with code::utils::_doc::doc_!(vendor:)
 
-    w!(f, "{TAB1}#[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]
-    #[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]
+    w!(f, "{TAB1}#[cfg_attr(nightly_doc, doc(notable_trait))]
+    #[cfg_attr(nightly_doc, doc(notable_trait))]
     #[allow(private_bounds)]
     pub trait Tuple: Sealed {{
 

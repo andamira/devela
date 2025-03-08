@@ -441,7 +441,7 @@ impl Js {
     pub fn worker_list_len() -> usize { worker_list_len() as usize }
     /// Returns the list of active worker IDs.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn worker_list() -> Vec<JsWorker> {
         let len = worker_list_len() as usize;
         let mut workers = vec![JsWorker::default(); len];
@@ -467,7 +467,7 @@ impl Js {
     }
     /// Polls for the result of a JavaScript execution in a worker.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn worker_poll(job: JsWorkerJob) -> TaskPoll<Result<String, JsWorkerError>> {
         if !job.worker().is_active() { return TaskPoll::Ready(Err(JsWorkerError::WorkerNotFound)); }
         let result_ptr = unsafe { worker_poll(job.id()) };

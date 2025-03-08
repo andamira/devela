@@ -22,7 +22,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::{buf::*, namespace::*, reexports::*};
 
         #[cfg(feature = "fmt")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "fmt")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "fmt")))]
         pub use super::num_to_str::*;
         // WIPZONE
         // pub use super::table::*;

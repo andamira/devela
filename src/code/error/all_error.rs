@@ -41,7 +41,7 @@ impl_error! { composite: fmt(f)
 
 #[cfg(feature = "error")]
 pub use full_composite::*;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "error")))]
 #[cfg(feature = "error")]
 mod full_composite {
     use super::super::reexports::crate_errors::*;
@@ -62,12 +62,12 @@ mod full_composite {
     pub enum AllError {
         /// A data-related error.
         #[cfg(data··)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(data··)))]
+        #[cfg_attr(nightly_doc, doc(cfg(data··)))]
         Data(DataError),
 
         /// A media-related error.
         #[cfg(media··)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(media··)))]
+        #[cfg_attr(nightly_doc, doc(cfg(media··)))]
         Media(MediaError),
 
         /// A numeric-related error.
@@ -76,18 +76,18 @@ mod full_composite {
         // IMPROVE Sys
         /// An I/O-related error.
         #[cfg(feature = "io")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "io")))]
         Io(IoError),
 
         /// A text-related error.
         #[cfg(text··)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(text··)))]
+        #[cfg_attr(nightly_doc, doc(cfg(text··)))]
         Text(TextError),
 
         // IMPROVE Phys
         /// A time-related error.
         #[cfg(feature = "time")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
         Time(TimeError),
 
         /// Other static error.
@@ -102,12 +102,12 @@ mod full_composite {
     pub enum AllErrorKind {
         /// A data-related error.
         #[cfg(data··)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(data··)))]
+        #[cfg_attr(nightly_doc, doc(cfg(data··)))]
         Data(()), // TODO
 
         /// A media-related error.
         #[cfg(media··)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(media··)))]
+        #[cfg_attr(nightly_doc, doc(cfg(media··)))]
         Media(()), // TODO
         //
         /// A numeric-related error.
@@ -115,17 +115,17 @@ mod full_composite {
 
         /// An I/O error.
         #[cfg(feature = "io")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "io")))]
         Io(IoErrorKind),
 
         /// A time error.
         #[cfg(feature = "time")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
         Time(()), // TODO
 
         /// A text-related error.
         #[cfg(text··)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(text··)))]
+        #[cfg_attr(nightly_doc, doc(cfg(text··)))]
         Text(()), // TODO
 
         /// Other static error.

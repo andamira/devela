@@ -173,7 +173,7 @@ macro_rules! _str { // 29 arms
     (unwrap $($t:tt)*) => {$crate::_dep::const_str::unwrap!{$($t)*} };
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_const_str")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_const_str")))]
 #[cfg(feature = "dep_const_str")]
 pub use _str as str;
 

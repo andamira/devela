@@ -27,7 +27,7 @@ reexport! { rust: alloc::vec,
 /// only the macro we have to wrap it with our own.
 #[macro_export]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! vec_ { ($($tt:tt)*) => { $crate::_dep::_alloc::vec![$($tt)*] } }
 #[cfg(feature = "alloc")]

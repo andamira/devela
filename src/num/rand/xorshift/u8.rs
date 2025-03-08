@@ -118,7 +118,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
 }
 
 #[cfg(feature = "dep_rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::XorShift8;
     use crate::_dep::rand_core::{RngCore, SeedableRng};

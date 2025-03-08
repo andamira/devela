@@ -13,7 +13,7 @@ impl<T> Sealed for Vec<T> {}
 /// Extension trait providing additional methods for [`Vec`].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtVec<T>: Sealed {
     /* convert */

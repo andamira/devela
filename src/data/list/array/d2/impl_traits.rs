@@ -80,7 +80,7 @@ impl<T: ConstDefault, const C: usize, const R: usize, const CR: usize, const RMA
 
 // T: Default, S: Boxed
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bool> Default
     for Array2d<T, C, R, CR, RMAJ, Boxed>
 {

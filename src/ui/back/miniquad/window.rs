@@ -71,7 +71,7 @@ impl MiniquadWindow {
     ///
     /// The `index` parameter specifies which dropped file to retrieve, starting from 0.
     #[cfg(feature = "std")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub fn dropped_file_path(index: usize) -> Option<crate::PathBuf> { dropped_file_path(index) }
 
     /* dpi */
@@ -124,7 +124,7 @@ impl MiniquadWindow {
     ///
     /// See `::miniquad::`[`get_window_position`][set_window_position].
     #[cfg(any(target_os = "windows", target_os = "linux"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(target_os = "windows", target_os = "linux"))))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(target_os = "windows", target_os = "linux"))))]
     pub fn get_position() -> (u32, u32) { get_window_position() }
 
     /// Set the window position.

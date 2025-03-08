@@ -8,7 +8,7 @@
 //
 
 #[cfg(feature = "linux")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
 pub mod linux;
 
 crate::items! { // structural access: _pub_mods, _all

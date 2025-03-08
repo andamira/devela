@@ -139,7 +139,7 @@ impl<T, E> Future for CoroYield<'_, T, E> {
 /// ```
 #[derive(Default)]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub struct CoroRun<T, E> {
     #[allow(clippy::type_complexity)]
     coros: VecDeque<Pin<Box<dyn Future<Output = OptRes<T, E>>>>>,

@@ -122,7 +122,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     ///
     /// The seeds will be joined in little endian order.
     #[cfg(feature = "join")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new2_u32(seeds: [u32; 2]) -> Self {
         Self::new(Cast::<u64>::from_u32_le(seeds))
     }
@@ -131,7 +131,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     ///
     /// The seeds will be joined in little endian order.
     #[cfg(feature = "join")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new4_u16(seeds: [u16; 4]) -> Self {
         Self::new(Cast::<u64>::from_u16_le(seeds))
     }
@@ -145,7 +145,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
 }
 
 #[cfg(feature = "dep_rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::XorShift64;
     use crate::_dep::rand_core::{RngCore, SeedableRng};

@@ -60,7 +60,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 
 // T: Clone, S: Boxed
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Boxed>
 {
@@ -218,7 +218,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 // T, S: Boxed
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Boxed>
 {

@@ -19,7 +19,7 @@ macro_rules! impl_fsize {
         /// # Features
         /// Makes use of `nightly_float` in 16-bit architectures.
         // #[cfg_attr(
-        //     feature = "nightly_doc",
+        //     nightly_doc,
         //     doc(cfg(any(
         //         target_pointer_width = "16",
         //         target_pointer_width = "32",

@@ -20,7 +20,7 @@ crate::items! { // structural access: _mods, _all
         pub use super::wrapper::Ascii;
 
         #[cfg(feature = "ascii")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]
         pub use super::char::AsciiChar;
     }
     pub(super) mod _all {

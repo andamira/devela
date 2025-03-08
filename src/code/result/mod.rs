@@ -43,5 +43,5 @@ crate::items! { // structural access: _mods, _all, _always
 }
 // WIPZONE
 // #[cfg(feature = "_tuple")]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_tuple")))]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
 // mod menu;

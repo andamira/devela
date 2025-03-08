@@ -10,7 +10,7 @@ mod shared; // WaveletHaar, WaveletUnitRole
 
 #[cfg(feature = "alloc")]
 #[cfg(any(feature = "std", feature = "_float_f64"))] // NOTE: not documented
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod alloc;
 
 crate::items! { // structural access: _mods, _all

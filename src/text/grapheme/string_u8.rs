@@ -39,7 +39,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 1 and <= 255.
     #[cfg(feature = "_char7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
     }
@@ -52,7 +52,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 2 and <= 255.
     #[cfg(feature = "_char8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
     }
@@ -65,7 +65,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 3 and <= 255.
     #[cfg(feature = "_char16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
@@ -117,7 +117,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// The content must be valid UTF-8.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         // SAFETY: caller must ensure safety
         unsafe { self.0.as_bytes_mut() }
@@ -143,7 +143,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// # Safety
     /// The content must be valid UTF-8.
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_mut_str(&mut self) -> &mut str {
         self.0.as_mut_str()
     }
@@ -155,7 +155,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[rustfmt::skip]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn to_cstring(&self) -> CString { self.0.to_cstring() }
 }
 

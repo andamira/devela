@@ -34,8 +34,8 @@ impl JsInstant {
 
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl JsInstant {
     /// Returns the current instant using `performance.now()`.
     pub fn now() -> Self { Js::performance_now() }

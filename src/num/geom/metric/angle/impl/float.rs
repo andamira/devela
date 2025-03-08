@@ -25,7 +25,7 @@ macro_rules! impl_angle {
     };
     (@float $f:ty : $cap:literal : $cmp:literal) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($f), "`.")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         #[cfg(feature = $cap )]
         impl Angle<$f> {
             /* construct */
@@ -68,7 +68,7 @@ macro_rules! impl_angle {
 
             /// Returns `true` if the angle is between -1 and 1 (non-inclusive).
             #[cfg(feature = $cmp)]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $cmp)))]
             pub const fn is_normalized(self) -> bool {
                 crate::Compare(self.turn).gt(-1.0) && crate::Compare(self.turn).lt(1.0)
             }
@@ -145,7 +145,7 @@ macro_rules! impl_angle {
             /// Returns the kind of the normalized angle.
             // BLOCKED: const by normalize
             #[cfg(feature = $cmp)]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $cmp)))]
             pub fn kind(self) -> AngleKind {
                 let angle = crate::Compare(self.normalize().positive().turn);
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
@@ -186,7 +186,7 @@ macro_rules! impl_angle {
             /// Returns `true` if the angle is of the given `kind`.
             #[must_use]
             #[cfg(feature = $cmp)]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $cmp)))]
             // BLOCKED: const by normalize
             pub fn is_kind(self, kind: AngleKind) -> bool {
                 let angle = crate::Compare(self.normalize().positive().turn);

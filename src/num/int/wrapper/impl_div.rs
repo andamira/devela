@@ -62,7 +62,7 @@ macro_rules! impl_div {
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the truncated quotient and the remainder.
             #[must_use]
@@ -261,7 +261,7 @@ macro_rules! impl_div {
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned division */
 

@@ -36,7 +36,7 @@ macro_rules! color_gamma_fns {
             /// \end{align}
             /// $$
             #[cfg(any(feature = "std", feature = $cap))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $cap))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $cap))))]
             pub fn [<gamma_apply_ $t>](c: $t, gamma: $t) -> $t {
                 iif![c <= 0.003_130_8; 12.92 * c; 1.055 * c.powf(1.0 / gamma) - 0.055]
             }
@@ -54,7 +54,7 @@ macro_rules! color_gamma_fns {
             /// \end{align}
             /// $$
             #[cfg(any(feature = "std", feature = $cap))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $cap))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $cap))))]
             pub fn [<gamma_remove_ $t>](c: $t, gamma: $t) -> $t {
                 iif![c <= 0.040_45; c / 12.92; ((c + 0.055) / (1.055)).powf(gamma)]
             }

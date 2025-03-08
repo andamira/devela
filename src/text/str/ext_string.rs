@@ -16,7 +16,7 @@ impl Sealed for String {}
 /// Extension trait providing additional methods for [`String`].
 #[expect(private_bounds, reason = "Sealed")]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait, cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(notable_trait, cfg(feature = "alloc")))]
 pub trait ExtString: Sealed {
     /// Converts the string into a `Box<str>`.
     ///

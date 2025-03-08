@@ -35,10 +35,7 @@ pub struct LinuxTermios {
     pub c_cc: [u8; 19],
 }
 
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck")))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck"))))]
 #[cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck"))]
 unsafe impl crate::_dep::bytemuck::NoUninit for LinuxTermios {}
 
@@ -87,7 +84,7 @@ impl LinuxTermios {
     /// # Errors
     /// In case of an error returns the [`LINUX_ERRNO`] value from [`linux_sys_ioctl`].
     #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub fn get_state() -> Result<LinuxTermios, isize> {
         let mut state = LinuxTermios::new();
         let res = unsafe {
@@ -100,7 +97,7 @@ impl LinuxTermios {
     ///
     /// Returns the [`LINUX_ERRNO`] value from [`linux_sys_ioctl`].
     #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub fn set_state(mut state: LinuxTermios) -> Result<(), isize> {
         let res = unsafe {
             linux_sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, state.as_mut_bytes_ptr())
@@ -135,7 +132,7 @@ impl LinuxTermios {
 
     /// Returns the size of the window, in cells and pixels.
     #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub fn get_winsize() -> Result<LinuxTerminalSize, isize> {
         let mut winsize = LinuxTerminalSize::default();
         let res = unsafe {

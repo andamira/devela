@@ -1418,7 +1418,7 @@ macro_rules! impl_modulo {
             /// # Ok(()) }
             /// ```
             #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1448,7 +1448,7 @@ macro_rules! impl_modulo {
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
             #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let (gcd, x, _) = unwrap![ok self.gcd_ext(modulus)].as_tuple_copy();
                 if gcd.0 != 1 {
@@ -1486,7 +1486,7 @@ macro_rules! impl_modulo {
             /// # Ok(()) }
             /// ```
             #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn modulo_div(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1507,7 +1507,7 @@ macro_rules! impl_modulo {
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
             #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn modulo_div_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let inverse = Int(other).modulo_mul_inv_unchecked(modulus);
                 self.modulo_mul_unchecked(inverse.0, modulus)

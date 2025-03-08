@@ -36,7 +36,7 @@ pub trait IoRead {
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> IoResult<usize> {
         alloc_impls::read_to_end(self, buf)
     }
@@ -79,7 +79,7 @@ pub trait IoBufRead: IoRead {
 
     // TODO:IO_LINES
     // #[cfg(feature = "alloc")]
-    // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     // fn read_line(&mut self, buf: &mut String) -> IoResult<usize> {
     //     // Note that we are not calling the `.read_until` method here, but
     //     // rather our hardcoded implementation. For more details as to why, see
@@ -89,7 +89,7 @@ pub trait IoBufRead: IoRead {
     //
     // /// Returns an iterator over the lines of this reader.
     // #[cfg(feature = "alloc")]
-    // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     // fn lines(self) -> IoLines<Self>
     // where
     //     Self: Sized,
@@ -187,13 +187,13 @@ impl<T: IoBufRead, U: IoBufRead> IoBufRead for IoChain<T, U> {
 // /// [`lines`]: IoBufRead::lines
 // #[derive(Debug)]
 // #[cfg(feature = "alloc")]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 // pub struct IoLines<B> {
 //     buf: B,
 // }
 //
 // #[cfg(feature = "alloc")]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 // impl<B: IoBufRead> Iterator for IoLines<B> {
 //     type Item = IoResult<String>;
 //
@@ -249,7 +249,7 @@ impl<T: IoRead> IoRead for IoTake<T> {
         Ok(n)
     }
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> IoResult<usize> {
         // Pass in a reservation_size closure that respects the current value
         // of limit for each read. If we hit the read limit, this prevents the

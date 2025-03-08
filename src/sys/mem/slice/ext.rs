@@ -22,7 +22,7 @@ impl<T> Sealed for Vec<T> {}
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`Slice`][crate::Slice] for *const* methods.
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtSlice<T>: Sealed {
     /* split */
@@ -99,7 +99,7 @@ pub trait ExtSlice<T>: Sealed {
     /// ```
     #[must_use]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn slice_into_vec<U>(&self) -> Vec<U>
     where
         T: Clone,
@@ -113,7 +113,7 @@ pub trait ExtSlice<T>: Sealed {
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec::<_, i32>()];
     /// ```
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn slice_try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
     where
         T: Clone,
@@ -126,7 +126,7 @@ pub trait ExtSlice<T>: Sealed {
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`Slice`][crate::Slice] for *const* methods.
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 pub trait ExtSliceMut<T>: ExtSlice<T> {
     /* split */
 

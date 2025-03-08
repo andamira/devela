@@ -37,7 +37,7 @@
 /// ```
 // Source code is based on Rust std `dbg!` implementation
 #[macro_export]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cdbg {
     // has to be the first arm

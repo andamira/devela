@@ -35,7 +35,7 @@ macro_rules! impl_float_shared_series {
         /// # *Common methods with or without `std` or `libm`*.
         ///   *Implemented using Taylor series.*
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Float<$f> {
             /// Raises itself to the `y` floating point power using the Taylor series via the
             /// `exp` and `ln` functions.

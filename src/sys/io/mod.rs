@@ -10,16 +10,10 @@
 #![cfg_attr(feature = "safe_io", forbid(unsafe_code))]
 
 #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io"))))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))))]
 mod impls;
 #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io"))))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))))]
 mod namespace;
 
 #[cfg(not(feature = "std"))]

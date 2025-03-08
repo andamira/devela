@@ -104,7 +104,7 @@ impl<T, E> Sealed for OptRes<T, E> {}
 ///
 /// See also [`ExtOption`][crate::ExtOption],
 /// [`ExtResult`][crate::ExtResult],
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtOptRes<T, E>: Sealed {
     /// Transposes `Option<Result<T, E>>` into `Result<Option<T>, E>`.

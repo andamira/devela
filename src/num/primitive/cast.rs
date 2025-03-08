@@ -238,7 +238,7 @@ macro_rules! impl_cast_methods {
         ///
         /// # Errors
         /// Checked methods will return [`Overflow`] if `self` can't fit in the returned type.
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
         impl Cast<$t> {
             /* checked */
 

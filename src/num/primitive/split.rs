@@ -48,7 +48,7 @@ impl_into_trait![
 /* implements the Cast wrapper methods */
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u16> {
     /// Splits a `u16` into an array of `[u8; 2]` in big-endian order.
     #[must_use]
@@ -64,7 +64,7 @@ impl Cast<u16> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u32> {
     /// Splits a `u32` into an array of `[u16; 2]` in big-endian order.
     #[must_use]
@@ -106,7 +106,7 @@ impl Cast<u32> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u64> {
     /// Splits a `u64` into an array of `[u32; 2]` in big-endian order.
     #[must_use]
@@ -184,7 +184,7 @@ impl Cast<u64> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u128> {
     /// Splits a `u128` into an array of `[u64; 2]` in big-endian order.
     #[must_use]

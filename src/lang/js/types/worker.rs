@@ -29,8 +29,8 @@ impl JsWorker {
 
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl JsWorker {
     /// Spawns a new JavaScript Web Worker from a script.
     pub fn spawn(script: &str) -> Result<Self, JsWorkerError> { Js::worker_spawn(script) }
@@ -78,12 +78,12 @@ impl JsWorkerJob {
 
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "wasm32")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl JsWorkerJob {
     /// Polls the result of this job.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(target_arch = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(target_arch = "alloc")))]
     pub fn poll(self) -> TaskPoll<Result<String, JsWorkerError>> { Js::worker_poll(self) }
     /// Polls the result of this job and writes it into `buffer`.
     ///

@@ -130,7 +130,7 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
     /// - This is a **manual unlocking mechanism**. If used incorrectly,
     ///   it may allow multiple threads to access `T` simultaneously.
     #[cfg(debug_assertions)]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(debug_assertions)))]
+    #[cfg_attr(nightly_doc, doc(cfg(debug_assertions)))]
     pub unsafe fn debug_force_unlock(&self) { self.lock.store(false, AtomicOrdering::SeqCst); }
 }
 

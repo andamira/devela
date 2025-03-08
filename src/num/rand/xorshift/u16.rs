@@ -127,7 +127,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
 }
 
 #[cfg(all(feature = "dep_rand_core", feature = "join"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
 mod impl_rand {
     use crate::_dep::rand_core::{RngCore, SeedableRng};
     use crate::{Cast, XorShift16};

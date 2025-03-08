@@ -113,7 +113,7 @@ mod reflection {
 
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
         auto_flags: &[
-            "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_simd",
+            "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_doc", "nightly_simd",
             "nightly_stable",
                 "nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later",
         ],
@@ -123,7 +123,7 @@ mod reflection {
             auto_flags: &["nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"],
             cfg_flags: &["nightly_stable"],
         };
-        pub const FLAGS_NIGHTLY_REF: FlagsFlags = FlagsFlags {
+        pub const FLAGS_NIGHTLY_REFLECT: FlagsFlags = FlagsFlags {
             auto_flags: &["nightly··"],
             cfg_flags: &[ "nightly",
                 "nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_simd",
@@ -208,7 +208,7 @@ mod reflection {
     // In sync with ./Cargo.toml::nightly & ./src/lib.rs
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["nightly··"],
-        features: &["nightly_allocator", "nightly_doc", "nightly_float"]
+        features: &["nightly_allocator", "nightly_float"]
     };
 
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
@@ -431,7 +431,7 @@ mod reflection {
     pub(super) fn set_ref_flags_from_cfg_flags() -> Vec<String> {
         let mut enabled_ref_flags = Vec::new();
         for ff in [
-            FLAGS_NIGHTLY, FLAGS_NIGHTLY_STABLE, FLAGS_NIGHTLY_REF,
+            FLAGS_NIGHTLY, FLAGS_NIGHTLY_STABLE, FLAGS_NIGHTLY_REFLECT,
         ] {
             set_flags_dbg_flags(ff.auto_flags, ff.cfg_flags, &mut enabled_ref_flags);
         }

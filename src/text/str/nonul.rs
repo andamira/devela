@@ -147,7 +147,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
         // SAFETY: caller must ensure safety
@@ -175,7 +175,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// ends and the underlying `str` is used.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_mut_str(&mut self) -> &mut str {
         // SAFETY: caller must ensure safety
         unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
@@ -189,7 +189,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[must_use]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn to_cstring(&self) -> CString {
         CString::new(self.to_string()).unwrap()
     }
@@ -384,7 +384,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 1.
     #[cfg(feature = "_char7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
@@ -404,7 +404,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 2.
     #[rustfmt::skip]
     #[cfg(feature = "_char8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
@@ -428,7 +428,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 3.
     #[rustfmt::skip]
     #[cfg(feature = "_char16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
@@ -470,7 +470,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
         Self { arr: bytes }
     }

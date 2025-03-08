@@ -10,7 +10,7 @@
 #[cfg(test)]
 mod tests;
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_tuple")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
 mod codegen {
     use crate::{Debug, Display, FmtResult, Formatter};
 

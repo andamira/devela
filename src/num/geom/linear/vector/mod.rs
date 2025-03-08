@@ -38,7 +38,7 @@ pub type Vector3d<T> = Vector<T, 3>;
 /// A dynamic vector, backed by a primitive [`Vec`].
 #[repr(transparent)]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub struct VecVector<T> {
     /// The vector coordinates in some basis.
     pub coords: Vec<T>,
@@ -54,7 +54,7 @@ pub trait NumVector: Num {
 }
 
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 impl<T: Num + 'static, const D: usize>
     TryInto<Box<dyn NumVector<Scalar = T, Rhs = Self, Inner = [T; D], Out = Self>>>
     for Vector<T, D>

@@ -9,7 +9,7 @@ mod methods;
 mod definitions; // Array
 
 #[cfg(feature = "unsafe_array")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_array")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 mod uninit; // ArrayUninit
 
 crate::items! { // structural access: _mods, _all

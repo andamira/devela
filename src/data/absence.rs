@@ -36,5 +36,5 @@ impl DataTypeCopy for NoData {}
 impl DataValueCopy for NoData {}
 
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_layout")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 unsafe impl DataRaw for NoData {}

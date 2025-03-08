@@ -460,7 +460,7 @@ impl AsciiChar {
     /// `b` must be in `0..=127`, or else this is UB.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
         // SAFETY: Our safety precondition is that `b` is in-range.
         unsafe { transmute(b) }
@@ -509,7 +509,7 @@ impl AsciiChar {
     /// something useful. It might be tightened before stabilization.)
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn digit_unchecked(d: u8) -> Self {
         debug_assert!(d < 10);
 
@@ -537,7 +537,7 @@ impl AsciiChar {
     /// Views this ASCII character as a one-code-unit UTF-8 `str`.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const fn as_str(&self) -> &str {
         Self::slice_as_str(core::slice::from_ref(self))
     }
@@ -547,7 +547,7 @@ impl AsciiChar {
     /// Views a slice of ASCII characters as a UTF-8 `str`.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_str(slice: &[AsciiChar]) -> &str {
         let ascii_ptr: *const [AsciiChar] = slice;
         let str_ptr = ascii_ptr as *const str;
@@ -559,7 +559,7 @@ impl AsciiChar {
     /// Views a slice of ASCII characters as a slice of `u8` bytes.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_bytes(slice: &[AsciiChar]) -> &[u8] {
         AsciiChar::slice_as_str(slice).as_bytes()
     }

@@ -52,7 +52,7 @@ pub use crate::CString;
 
 impl_cdef!["" => &str];
 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
 impl crate::ConstDefault for &mut str {
     // SAFETY: The empty string is valid UTF-8.
     const DEFAULT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) };

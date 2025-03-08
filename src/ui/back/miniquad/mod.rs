@@ -11,7 +11,7 @@ mod service; // MiniquadEventHandlerExt, MiniquadService
 mod window; // MiniquadWindow
 
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod pixels; // MiniquadPixels
 
 crate::items! { // structural access: _mods, _all

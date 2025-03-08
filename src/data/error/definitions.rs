@@ -167,7 +167,7 @@ impl_error! { composite: fmt(f)
 #[cfg(all(feature = "error", data··))]
 pub use full_composite::*;
 #[cfg(all(feature = "error", data··))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "error", data··))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "error", data··))))]
 mod full_composite {
     use super::*;
     use crate::{

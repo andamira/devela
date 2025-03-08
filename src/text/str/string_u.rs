@@ -85,7 +85,7 @@ macro_rules! impl_str_u {
         ///   [`try_push_str_complete`][Self::try_push_str_complete].
         #[must_use]
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         pub struct $name<const CAP: usize> {
             // WAIT: for when we can use CAP: u8 for panic-less const boundary check.
             arr: [u8; CAP],
@@ -157,7 +157,7 @@ macro_rules! impl_str_u {
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[must_use]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
             pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
                 // SAFETY: caller must ensure safety
                 unsafe { self.arr.get_unchecked_mut(0..self.len as usize) }
@@ -181,7 +181,7 @@ macro_rules! impl_str_u {
             /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
             pub fn as_mut_str(&mut self) -> &mut str {
                 unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
             }
@@ -193,7 +193,7 @@ macro_rules! impl_str_u {
             /// Returns a new allocated C-compatible, nul-terminanted string.
             #[must_use] #[rustfmt::skip]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             pub fn to_cstring(&self) -> CString { CString::new(self.to_string()).unwrap() }
 
             /* operations */
@@ -351,7 +351,7 @@ macro_rules! impl_str_u {
             ///
             #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
             #[cfg(feature = "_char7")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
             pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
                 new.arr[0] = c.to_utf8_bytes()[0];
@@ -368,7 +368,7 @@ macro_rules! impl_str_u {
             #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
             #[cfg(feature = "_char8")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
                 let bytes = c.to_utf8_bytes();
@@ -387,7 +387,7 @@ macro_rules! impl_str_u {
             #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
             #[cfg(feature = "_char16")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
                 let bytes = c.to_utf8_bytes();
@@ -420,7 +420,7 @@ macro_rules! impl_str_u {
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
                 Self { arr: bytes, len: CAP as $t }
             }
@@ -473,7 +473,7 @@ macro_rules! impl_str_u {
             #[cfg(feature = $cmp)]
             )? // $cmp
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
                 Self { arr: bytes, len: Compare(length).min(CAP as $t) }
             }
@@ -548,7 +548,7 @@ macro_rules! impl_str_u {
             #[cfg(feature = $cmp)]
             )? // $cmp
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
                 -> Self {
                 let length = Compare(length).min(CAP as $t);
@@ -691,7 +691,7 @@ macro_rules! impl_str_u {
             #[cfg(target_os = "wasi")]
             use std::os::wasi::ffi::OsStrExt;
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(
+            #[cfg_attr(nightly_doc, doc(cfg(
                 all(feature = "std", any(unix, target_os = "wasi"))
             )))]
             impl<const CAP: usize> AsRef<OsStr> for $name<CAP> {

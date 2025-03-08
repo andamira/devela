@@ -81,7 +81,7 @@ unsafe impl<T: MemPod, const CAP: usize> DstBuf for [MaybeUninit<T>; CAP] {
 /// }
 /// ```
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 unsafe impl<T: MemPod> DstBuf for crate::Vec<MaybeUninit<T>> {
     type Inner = T;
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
@@ -150,13 +150,13 @@ pub type DstArrayUsize<const CAP: usize> = DstArray<usize, CAP>;
 /// A dynamically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub type DstVecUsize = crate::Vec<MaybeUninit<usize>>;
 
 // MAYBE
 // /// A DST buffer backing onto a Vec.
 // #[cfg(feature = "alloc")]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 // pub struct DstVec<T: MemPod>(crate::Vec<MaybeUninit<T>>);
 // impl<T: MemPod> Deref for DstVec<T> {
 //     type Target = Vec<MaybeUninit<T>>;

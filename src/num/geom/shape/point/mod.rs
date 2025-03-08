@@ -38,7 +38,7 @@ pub struct Points<T, const D: usize, const N: usize> {
 #[doc = crate::TAG_GEOM!()]
 /// A dynamic sequence of `D`-dimensional [`Point`]s.
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub struct VecPoints<T, const D: usize> {
     /// The vec of points.
     pub vec: Vec<Point<T, D>>,

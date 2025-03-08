@@ -18,7 +18,7 @@ pub trait UiService {
     /// Returns the service version string.
     // IMPROVE: Use StringU8<16>
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn version_string(&self) -> crate::String {
         let v = self.version();
         crate::format!["v{}.{}.{}", v.0, v.1, v.2]

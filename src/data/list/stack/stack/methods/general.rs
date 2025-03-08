@@ -30,7 +30,7 @@ macro_rules! impl_stack {
         #[doc = "# Methods for `Stack" $IDX:camel "`\n\n"]
         /// --------------------------------------------------
         /// --------------------------------------------------
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<T: Clone, const CAP: usize> Stack<T, CAP, $IDX, Bare> {}
 
         // T: Clone, S: Bare
@@ -88,7 +88,7 @@ macro_rules! impl_stack {
 
         // T: Clone, S: Boxed
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         impl<T: Clone, const CAP: usize> Stack<T, CAP, $IDX, Boxed> {
             /// Returns an empty stack, allocated in the heap,
             /// cloning `element` to fill the remaining free data.
@@ -290,7 +290,7 @@ macro_rules! impl_stack {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -656,7 +656,7 @@ macro_rules! impl_stack {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             // safe-only version that depends on T: Clone
             pub fn pop(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
@@ -868,7 +868,7 @@ macro_rules! impl_stack {
             /// # Ok(()) }
             /// ```
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
             #[must_use]
             pub fn to_vec(&self) -> Vec<T> {
                 let mut vec = Vec::with_capacity(self.len as usize);

@@ -460,7 +460,7 @@ macro_rules! impl_float_ext {
     };
     (@$f:ty, $ue:ty|$ie:ty, $cap:literal : $cmp:literal) => {
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl ExtFloat for $f {
             fn floor(self) -> Self { Float(self).floor().0 }
 
