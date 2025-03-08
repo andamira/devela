@@ -63,8 +63,8 @@ Root modules & public sub-modules features:
   - [`font`]
   - [`image`]
 - [`num`]:
-  - [`alg`]: algebra (linear & symbolic).
   - [`geom`][crate::num::geom]: geometry.
+  - [`logic`]:
   - `prim`:
     - `cast`: `PrimitiveCast`.
     - `join`: `PrimitiveJoin`.
@@ -88,14 +88,14 @@ Root modules & public sub-modules features:
 - [`ui`]
   - [`layout`]
 - [`work`]
+  - `future`
   - `process`
   - `sync`
-  - `thread`
 
 [`code`]:         crate::code
-  [`error`]:      crate::code::result::error
+  [`error`]:      crate::code::error
 [`data`]:         crate::data
-  [`hash`]:       crate::data::hash
+  [`hash`]:       crate::data::codec::hash
 [`lang`]:         crate::lang
 [`media`]:        crate::media
   [`audio`]:      crate::media::audio
@@ -104,7 +104,7 @@ Root modules & public sub-modules features:
   [`font`]:       crate::media::font
   [`image`]:      crate::media::image
 [`num`]:          crate::num
-  [`alg`]:        crate::num::alg
+  [`logic`]:      crate::num::logic
   [`rand`]:       crate::num::rand
 [`phys`]:         crate::phys
   [`time`]:       crate::phys::time
@@ -118,9 +118,9 @@ Root modules & public sub-modules features:
 [`ui`]:           crate::ui
   [`layout`]:     crate::ui::layout
 [`work`]:         crate::work
+  [`future`]:     crate::work::future
   [`process`]:    crate::work::process
   [`sync`]:       crate::work::sync
-  [`thread`]:     crate::work::thread
 
 
 ### Safety features

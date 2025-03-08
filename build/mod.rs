@@ -1,4 +1,4 @@
-// devela build
+// devela::build
 //
 //!
 //
@@ -16,6 +16,7 @@ mod environment;
 mod features;
 mod generate;
 mod utils;
+pub(crate) use utils::*;
 
 fn main() {
     if let Err(err) = try_main() {

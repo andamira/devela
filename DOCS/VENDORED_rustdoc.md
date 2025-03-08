@@ -20,7 +20,7 @@
   [M_numtoa]: crate::_info::vendored::numtoa
   [`NumToStr`]: crate::text::fmt::NumToStr
   [M_pollster]: crate::_info::vendored::pollster
-  [`block_on`]: crate::work::future::ExtFuture::block_on
+  [`block_on`]: crate::work::future::ExtFuture#method.block_on
   [M_quickdiv]: crate::_info::vendored::quickdiv
   [`Divisor`]: crate::num::Divisor
   [M_stack_dst]: crate::_info::vendored::stack_dst
@@ -43,7 +43,7 @@
   [`Current`]: crate::sys::mem::Current
   [`CurrentGuard`]: crate::sys::mem::CurrentGuard
   [M_encode]: crate::_info::vendored::encode
-  [`data::codec::encode`]: crate::data::codec::encode
+  [`data::codec`]: crate::data::codec
   [M_icy_sixel]: crate::_info::vendored::icy_sixel
   [`media::image::sixel`]: crate::media::image::sixel
   [M_object-id]: crate::_info::vendored::object_id
@@ -58,7 +58,7 @@
   [`Xyza8b`]: crate::num::rand::Xyza8b
   [`Chain`]: crate::code::result::Chain
   [`Hook`]: crate::code::result::Hook
-  [M_blitfonts]: crate::_info::vendored::blit_fonts
+ <!-- [M_blitfonts]: crate::_info::vendored::blit-fonts -->
   [`FONT_3_5`]: crate::media::font::FONT_3_5
   [`FONT_5_6`]: crate::media::font::FONT_5_6
   [M_jiff]: crate::_info::vendored::jiff

@@ -98,7 +98,7 @@ See the linked modifications for detailed changes.
 - <i id="current"></i>[current] by *PistonDevelopers*,
   as the structs [`Current`] and [`CurrentGuard`] ([*modifications*][M_current]).
 - <i id="encode"></i>[encode] by Altair Bueno,
-  as the [`data::codec::encode`] module ([*modifications*][M_encode]).
+  as some items in the [`data::codec`] module ([*modifications*][M_encode]).
 - <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
   as the [`media::image::sixel`] module ([*modifications*][M_icy_sixel]).
 - <i id="object-id"></i>[object-id] by *Altertech*,
@@ -119,7 +119,7 @@ See the linked modifications for detailed changes.
   [`CurrentGuard`]: https://docs.rs/devela/latest/devela/sys/mem/struct.CurrentGuard.html
 [encode]: https://crates.io/crates/encode/0.1.2
   [M_encode]: https://github.com/andamira/devela/blob/main/src/_info/vendored/encode.md
-  [`data::codec::encode`]: https://docs.rs/devela/latest/devela/data/codec/encode
+  [`data::codec`]: https://docs.rs/devela/latest/devela/data/codec/
 [icy_sixel]: https://crates.io/crates/icy_sixel/0.1.3
 [libsixel]: https://github.com/saitoha/libsixel
   [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/_info/vendored/icy_sixel.md

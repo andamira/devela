@@ -305,7 +305,7 @@ macro_rules! define_static_map {
             ///
             /// # Returns
             /// - `Ok(())` if the insertion succeeds.
-            /// - `Err(`[`NotEnoughSpace`]`)` if no slots are available.
+            /// - `Err(`[`NotEnoughSpace`][crate::NotEnoughSpace]`)` if no slots are available.
             ///
             /// # Behavior
             /// - Computes the **hash index** of the key.
@@ -643,7 +643,7 @@ macro_rules! define_static_map {
             ///
             /// # Returns
             /// - `Ok(())` if the insertion succeeds.
-            /// - `Err(`[`NotEnoughSpace`]`)` if no slots are available.
+            /// - `Err(`[`NotEnoughSpace`][crate::NotEnoughSpace]`)` if no slots are available.
             ///
             /// # Behavior
             /// - Computes the **hash index** of the key.
@@ -813,6 +813,10 @@ macro_rules! define_static_map {
             /// Inserts a value paired with the given type `T`.
             ///
             /// Calls [`insert`][Self::insert] with the hash of its type id.
+            ///
+            /// # Returns
+            /// - `Ok(())` if the insertion succeeds.
+            /// - `Err(`[`NotEnoughSpace`][crate::NotEnoughSpace]`)` if no slots are available.
             pub fn insert_type<T: 'static>(&mut self, value: V)
                 -> Result<(), $crate::NotEnoughSpace> {
                 let key = Self::type_id_hash::<T>();

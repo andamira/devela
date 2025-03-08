@@ -15,7 +15,8 @@
 // WAIT: [Per-crate-type lint configuration](https://github.com/rust-lang/cargo/issues/15046)
 #![deny(rustdoc::missing_crate_level_docs, rustdoc::missing_debug_implementations)]
 #![cfg_attr(
-    not(all(doc, feature = "_docsrs_stable")), // if features are incomplete…
+    not(all(doc, feature = "_docsrs")), // if features are incomplete…
+    // not(all(doc, feature = "_docs", feature = "std")),
     allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
 )]
 //

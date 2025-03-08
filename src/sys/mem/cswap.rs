@@ -7,7 +7,7 @@
 ///
 /// For that it uses either:
 /// 1. a temporary variable.
-/// 3. [`Mem::swap`] over their respective mutable references.
+/// 3. [`Mem::swap`][crate::Mem::swap] over their respective mutable references.
 /// 3. the [xor swap method], making sure the values are not the same, first.
 /// 4. the xor swap method, unchecked. If both values are the same they will get corrupted.
 ///

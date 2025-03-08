@@ -1,5 +1,8 @@
 // devela::lang:js::types::text
 
+#[cfg(doc)]
+use crate::Js;
+
 /// Text Metrics.
 ///
 /// Represents the size of rendered text, measured by [`Js::measure_text`].

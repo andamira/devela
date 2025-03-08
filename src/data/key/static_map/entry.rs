@@ -5,7 +5,7 @@
 
 /// Represents an entry in a [static map] allowing for in-place mutation or insertion.
 ///
-/// [static map]: define_static_map
+/// [static map]: crate::define_static_map
 #[derive(Debug)]
 pub enum StaticMapEntry<'a, V> {
     /// An entry that contains a value.

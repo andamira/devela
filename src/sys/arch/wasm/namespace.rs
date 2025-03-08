@@ -76,6 +76,7 @@ impl Wasm {
     /// On non-WASM platforms, always returns `0`.
     ///
     /// See `core::arch::wasm32::`[`memory_size`].
+    #[allow(rustdoc::broken_intra_doc_links, reason = "cross-platform")]
     pub fn memory_pages() -> usize {
         #[cfg(target_family = "wasm")]
         return memory_size(0);
@@ -85,7 +86,7 @@ impl Wasm {
 
     /// Returns the current memory size in bytes.
     ///
-    /// On non-WASM platforms, always returns `0`.
+    /// On non-WASM platforms it always returns `0`.
     pub fn memory_bytes() -> usize {
         Self::memory_pages().saturating_mul(Self::PAGE_BYTES)
     }
@@ -93,10 +94,8 @@ impl Wasm {
     /// Attempts to grow the default linear memory by the specified `delta` of pages.
     ///
     /// Returns `true` on success.
-    /// On non-WASM platforms, always returns `false`.
-    ///
-    /// See `core::arch::wasm32::`[`memory_grow`].
-    #[allow(unused_variables, reason = "cross-platform")]
+    /// On non-WASM platforms it always returns `false`.
+    #[allow(unused_variables, rustdoc::broken_intra_doc_links, reason = "cross-platform")]
     pub fn memory_grow(delta: usize) -> bool {
         #[cfg(target_family = "wasm")]
         {
@@ -110,7 +109,7 @@ impl Wasm {
 
     /// Returns `true` if memory can still grow.
     ///
-    /// On non-WASM platforms, always returns `false`.
+    /// On non-WASM platforms it always returns `false`.
     pub fn memory_can_grow() -> bool {
         #[cfg(target_family = "wasm")]
         return Self::memory_pages() < Self::MAX_PAGES;

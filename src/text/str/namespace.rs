@@ -37,6 +37,7 @@ impl Str {
     // /// # Features
     // /// if the `dep_simdutf8` is enabled
     // /// then `simdutf8::compat::`[`from_utf8`] is called instead.
+    #[allow(rustdoc::broken_intra_doc_links, reason = "±unsafe")]
     pub const fn from_utf8(v: &[u8]) -> Result<&str, InvalidUtf8> {
         // #[cfg(not(feature = "dep_simdutf8"))]
         match ::core::str::from_utf8(v) {
