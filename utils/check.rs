@@ -260,7 +260,8 @@ fn main() -> Result<()> {
         // WAIT: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
         // nightly unsafe
-        run_cargo("", "+nightly", &[cmd, "-F _docsrs", "--", "--color=always"])?;
+        sf! { run_cargo_with_env("", "+nightly", &[cmd, "-F _docsrs", "--", "--color=always"],
+            &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe (max capabilities)
         run_cargo(&msrv, cmd, &["-F all,std,safe,_docs,_max", "--", "--color=always"])?;
@@ -292,7 +293,8 @@ fn main() -> Result<()> {
     if args.docs {
         rust_setup_nightly()?;
         headline(0, &format!["`all` docs compilation:"]);
-        run_cargo("", "+nightly", &["doc", "--no-deps", "-F _docsrs"])?;
+        sf! { run_cargo_with_env("", "+nightly", &["doc", "--no-deps", "-F _docsrs"],
+            &[("RUSTFLAGS", "--cfg nightly")])?; }
     }
 
     /* arches */
@@ -378,8 +380,9 @@ fn main() -> Result<()> {
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
-            sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
-            "-F all,std,unsafe,nightly"])?; }
+            sf! { run_cargo_with_env("", "+nightly",
+                &["miri", "test", "--target", arch, "-F", "all,std,unsafe"],
+                &[("RUSTFLAGS", "--cfg nightly")],)?; }
             a += 1;
         }
 
@@ -387,10 +390,12 @@ fn main() -> Result<()> {
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
             let deps = filter_deps(&DEP_ALL, &[&DEP_NO_CROSS_COMPILE_EVER]);
-            let feature_flags = format!("all,std,unsafe,nightly,{}", deps.join(","));
+            let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
 
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
-            run_cargo("", "+nightly", &["miri", "test", "--target", arch, "-F", &feature_flags])?;
+            sf! { run_cargo_with_env("", "+nightly",
+                &["miri", "test", "--target", arch, "-F", &feature_flags],
+                &[("RUSTFLAGS", "--cfg nightly")])?; }
 
             a += 1;
         }
@@ -399,8 +404,9 @@ fn main() -> Result<()> {
         env::remove_var("MIRIFLAGS");
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
-            sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
-            "-F all,no_std,unsafe,nightly"])?; }
+            sf! { run_cargo_with_env("", "+nightly",
+                &["miri", "test", "--target", arch, "-F", "all,no_std,unsafe"],
+                &[("RUSTFLAGS", "--cfg nightly")])?; }
             a += 1;
         }
         // WAITING for FIX: https://github.com/rust-lang/wg-cargo-std-aware/issues/69
@@ -417,7 +423,8 @@ fn main() -> Result<()> {
 
         let deps = filter_deps(&DEP_ALL, &[&DEP_NO_MINIMAL_VERSIONS]);
         let feature_flags = format!("_docsrs_nodep,{}", deps.join(","));
-        run_cargo("", "+nightly", &["build", "-F", &feature_flags])?;
+        sf! { run_cargo_with_env( "", "+nightly", &["build", "-F", &feature_flags],
+            &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         run_cargo("", "+nightly", &["update"])?; // set default max versions
     }
@@ -629,30 +636,52 @@ fn get_msrv() -> Result<String> {
 ///
 /// If `msrv` is empty then it will be ignored.
 fn run_cargo(msrv: &str, command: &str, arguments: &[&str]) -> Result<()> {
-    let mut child = if msrv.is_empty() {
+    run_cargo_inner(msrv, command, arguments, &[])
+}
+
+/// Runs the given cargo `command` with `arguments`, using the `msrv` rust version,
+/// and applies the provided environment variables.
+fn run_cargo_with_env(
+    msrv: &str,
+    command: &str,
+    arguments: &[&str],
+    envs: &[(&str, &str)],
+) -> Result<()> {
+    run_cargo_inner(msrv, command, arguments, envs)
+}
+
+/// Shared internal function to execute cargo with optional environment variables.
+fn run_cargo_inner(
+    msrv: &str,
+    command: &str,
+    arguments: &[&str],
+    envs: &[(&str, &str)],
+) -> Result<()> {
+    let mut cmd = if msrv.is_empty() {
         println!("$ cargo {command} {}", arguments.join(" "));
 
-        Command::new("cargo")
-            .arg(command)
-            .args(["--color", "always"])
-            .args(arguments)
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .spawn()?
+        let mut c = Command::new("cargo");
+        c.arg(command).args(["--color", "always"]).args(arguments);
+        c
     } else {
-        sf! { println!("$ rustup run {msrv} cargo {command} {}", arguments.join(" ")); }
-        Command::new("rustup")
-            // .arg("--verbose")
-            .arg("run")
+        println!("$ rustup run {msrv} cargo {command} {}", arguments.join(" "));
+
+        let mut c = Command::new("rustup");
+        c.arg("run")
             .arg(msrv)
             .arg("cargo")
             .args(["--color", "always"])
             .arg(command)
-            .args(arguments)
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .spawn()?
+            .args(arguments);
+        c
     };
+
+    // Set environment variables if provided
+    for &(key, value) in envs {
+        cmd.env(key, value);
+    }
+
+    let mut child = cmd.stdout(Stdio::piped()).stderr(Stdio::piped()).spawn()?;
 
     let stdout = child.stdout.take().unwrap();
     let stderr = child.stderr.take().unwrap();

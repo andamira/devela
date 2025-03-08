@@ -12,7 +12,6 @@
 #   - Environment    (std,alloc,no_std)
 #   - Module         (all,code,data,lang,media,num,phys,sys,text,ui,work, …)
 #   - Safety         (safe,unsafe,safest)
-#   - Nightly        (nightly_*)
 #   - Capability     (_*)
 #     - doc          (_doc*)
 #     - data         (_data*, _bit*, _collections*, _sort*, _tuple*, _value*, …)
@@ -34,6 +33,9 @@
 #   * [lints.rustdoc]
 #   * [lints.clippy]
 #   * [lints.rust.unexpected_cfgs]
+#     - configuration
+#       - nightly       (nightly_*)
+#     - reflection      (*··)
 #
 # * [[bench]]
 # * [[example]]
@@ -81,7 +83,7 @@ publish = true
 bench = false
 
 
-[features] # 267/300 (33 remaining), 138 visible, 129 hidden
+[features] # 263/300 (37 remaining), 136 visible, 127 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -90,7 +92,6 @@ bench = false
 # - Environment      alloc, [no_]std
 # - Module           …
 # - Safety           [safe|unsafe]_*, …
-# - Nightly          nightly_[coro|simd|stable[_…]]
 # - Capability       _*
 # - Dependency       dep_*
 #
@@ -270,20 +271,6 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
 
-#* Nightly features *#
-# ------------------------------------------------------------------------------
-# They are prefixed with `nightly_`.
-# Enabling any of these will set the `nightly··` reflection flag.
-#
-## Links
-# - https://doc.rust-lang.org/unstable-book/library-features.html
-# - https://releases.rs/
-# - ./utils/release_dates.rs
-# - ./DOCS/NIGHTLY.md
-
-nightly = []
-
-
 #* Capability features *#
 # ------------------------------------------------------------------------------
 # Most of these features are prefixed with an underscore (_) to be semi-hidden.
@@ -325,10 +312,8 @@ _docs = [ # the minimum capabilities to document everything
 	# text:
 	"_str_u8", "_str_nonul", "_char_all",
 ]
-_docsrs_stable_nodep = ["_docs", "std", "unsafe"]              # + std + unsafe
-_docsrs_stable       = ["_docsrs_stable_nodep", "dep_all"]     # + dependencies
-_docsrs              = ["_docsrs_stable", "nightly"]           # + nightly
-_docsrs_nodep        = ["_docsrs_stable_nodep", "nightly"]     # - dependencies
+_docsrs_nodep = ["_docs", "std", "unsafe"]   # + std + unsafe
+_docsrs       = ["_docsrs_nodep", "dep_all"] # + dependencies
 
 #* code capabilities *#
 # ---------------------
@@ -1084,7 +1069,15 @@ check-cfg = [ # Allowed configuration flags:
 	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------
-	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+	# They are prefixed with `nightly_`.
+	# Enabling any of these will set the `nightly··` reflection flag.
+	#
+	## Links
+	# - https://doc.rust-lang.org/unstable-book/library-features.html
+	# - https://releases.rs/
+	# - ./utils/release_dates.rs
+	# - ./DOCS/NIGHTLY.md
+	"cfg(nightly)", # [7] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
 		# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
 		# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
 		# NOTE:dep features: "allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]

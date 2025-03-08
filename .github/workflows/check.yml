@@ -52,10 +52,10 @@ jobs:
           components: clippy
 
       - name: "cargo clippy -F all,std,unsafe"
-        run: cargo clippy -F all,std,unsafe
+        run: cargo clippy -F all,std,unsafe,__dbg
 
       - name: "cargo clippy -F all,safe"
-        run: cargo clippy -F all,safe
+        run: cargo clippy -F all,safe,__dbg
 
   # 3. documentation
   doc:
@@ -83,10 +83,13 @@ jobs:
       - name: "Install nightly"
         uses: dtolnay/rust-toolchain@nightly
 
-      - name: "cargo +nightly doc -F _docsrs"
-        run: cargo doc -F _docsrs
+      - name: "cargo +nightly doc -F _docsrs,__dbg"
+        run: |
+          echo "Running nightly docs with RUSTFLAGS: $RUSTFLAGS"
+          cargo doc -F _docsrs,__dbg
         env:
-          RUSTDOCFLAGS: --cfg _docsrs
+          RUSTFLAGS: "--cfg nightly -Ctarget-cpu=native"
+          RUSTDOCFLAGS: "--cfg nightly -Ctarget-cpu=native"
 
   # 4. minimum supported Rust version
   msrv:
@@ -108,8 +111,8 @@ jobs:
         with:
           toolchain: ${{ matrix.msrv }}
 
-      - name: "cargo +${{ matrix.msrv }} check -F all,std,unsafe"
-        run: cargo check -F all,std,unsafe
+      - name: "cargo +${{ matrix.msrv }} check -F all,std,unsafe,__dbg"
+        run: cargo check -F all,std,unsafe,__dbg
 
-      - name: "cargo +${{ matrix.msrv }} check -F all,safe"
-        run: cargo check -F all,safe
+      - name: "cargo +${{ matrix.msrv }} check -F all,safe,__dbg"
+        run: cargo check -F all,safe,__dbg

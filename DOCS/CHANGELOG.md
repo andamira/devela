@@ -157,7 +157,10 @@
   - `work::{future, process, sync}`.
 - change `msvc` windows target for `gnu`.
 - update scripts:
-  - `utils/check.rs`: add target components for the nightly toolchain.
+  - `utils/check.rs`:
+    - add target components for the nightly toolchain.
+    - add new fn `run_cargo_with_env`, sharing most of the logic with `run_cargo`.
+    - enable `__dbg` feature & `-Ctarget-cpu=native`.
   - `build/features.rs`: support cfg flags auto-enabling other flags. Improve docs.
 - improve the docs for vendored items.
 

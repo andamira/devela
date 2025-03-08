@@ -1,17 +1,16 @@
-## Features
+## Features and Flags
 
 Features are grouped in the following categories:
 - [*Development*](#development-features) (`__*`)
 - [*Environment*](#environment-features) (`alloc`, `std`, `no_std`)
 - [*Module*](#module-features) (`all`, `code`, `data`, `lang`, `media`, `num`, …)
 - [*Safety*](#safety-features) (`safe*`, `unsafe*`)
-- [*Nightly*](#nightly-features) (`nightly_*`)
 - [*Capability*](#capability-features)  (`_*`)
 - [*Dependency*](#dependency-features) (`dep_*`)
 
-[*environment*]: #environment-features
-[*dependency*]: #dependency-features
-[*safety*]: #safety-features
+Flags are grouped in the following categories:
+- [*Nightly*](#nightly-flags) (`nightly_*`)
+- *reflection* (`*··`)
 
 There are no features enabled by default.
 
@@ -174,38 +173,6 @@ To be able to use any unsafe functionality it's necessary to:
 - `safest`: forbids `unsafe` even in dependencies (except for the standard library).
 
 
-### Nightly cfg flags
-
-Enabling any of them sets the `nightly··` flag.
-
-Usage example:
-```sh
-RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly b
-```
-
-- `nightly`: enables the nightly cfg flags:
-  - `nightly_allocator`: enables [`allocator_api`].
-  - `nightly_autodiff`: enables [`autodiff`].
-  - `nightly_bigint`: enables [`bigint_helper_methods`].
-  - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
-  - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
-  - `nightly_float`: enables [`f16`, `f128`].
-  - `nightly_simd`: enables [`portable_simd`].
-  - `nightly_stable`: enables stabilized features marked to be released *soon*:
-    - `nightly_stable_next1`: in the next version.
-    - `nightly_stable_next2`: in the version after that.
-    - `nightly_stable_later`: later than that but *soon enough*.
-
-[`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
-[`autodiff`]: https://github.com/rust-lang/rust/issues/124509
-[`bigint_helper_methods`]: https://github.com/rust-lang/rust/issues/85532
-[`coroutines`]: https://github.com/rust-lang/rust/issues/43122
-[`doc_cfg`]: https://github.com/rust-lang/rust/issues/43781
-[`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
-[`f16`, `f128`]: https://github.com/rust-lang/rust/issues/116909
-[`portable_simd`]: https://github.com/rust-lang/rust/issues/86656
-
-
 ### Capability features
 
 These semi-hidden features allows to fine-tune extra capabilities.
@@ -323,3 +290,36 @@ There are also the following groups of dependencies:
 - `linux_deps`: enables: `linux`, `dep_atomic`, `dep_bytemuck`, `dep_nc`, `dep_rustix`.
 - `text_deps`: enables: `text`, `dep_const_str`, `dep_memchr`, `dep_regex_lite`, `dep_stringzilla`, `dep_unicode_segmentation`, `dep_unicode_width`.
 - `work_deps`: enables `work`, `dep_atomic`, `dep_portable_atomic`, `dep_rayon`, `dep_tokio`.
+
+
+### Nightly flags
+
+Enabling any of them sets the `nightly··` reflection flag.
+
+Usage example:
+```sh
+RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly build
+```
+
+- `nightly`: enables the nightly cfg flags:
+  - `nightly_allocator`: enables [`allocator_api`].
+  - `nightly_autodiff`: enables [`autodiff`].
+  - `nightly_bigint`: enables [`bigint_helper_methods`].
+  - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
+  - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
+  - `nightly_float`: enables [`f16`, `f128`].
+  - `nightly_simd`: enables [`portable_simd`].
+  - `nightly_stable`: enables stabilized features marked to be released *soon*:
+    - `nightly_stable_next1`: in the next version.
+    - `nightly_stable_next2`: in the version after that.
+    - `nightly_stable_later`: later than that but *soon enough*.
+
+[`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
+[`autodiff`]: https://github.com/rust-lang/rust/issues/124509
+[`bigint_helper_methods`]: https://github.com/rust-lang/rust/issues/85532
+[`coroutines`]: https://github.com/rust-lang/rust/issues/43122
+[`doc_cfg`]: https://github.com/rust-lang/rust/issues/43781
+[`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
+[`f16`, `f128`]: https://github.com/rust-lang/rust/issues/116909
+[`portable_simd`]: https://github.com/rust-lang/rust/issues/86656
+

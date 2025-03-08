@@ -76,11 +76,11 @@ jobs:
       - name: "cargo update -Zminimal-versions"
         run: cargo +nightly update -Zminimal-versions
 
-      - name: "cargo test --locked -F all,std,unsafe"
-        run: cargo test --locked -F all,std,unsafe
+      - name: "cargo test --locked -F all,std,unsafe,__dbg"
+        run: cargo test --locked -F all,std,unsafe,__dbg
 
-      - name: "cargo test --locked -F all,safe"
-        run: cargo test --locked -F all,safe
+      - name: "cargo test --locked -F all,safe,__dbg"
+        run: cargo test --locked -F all,safe,__dbg
 
   # 3.
   os-check:
@@ -103,11 +103,11 @@ jobs:
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
 
-      - name: "cargo test --locked -F all,std,unsafe"
-        run: cargo test --locked -F all,std,unsafe
+      - name: "cargo test --locked -F all,std,unsafe,__dbg"
+        run: cargo test --locked -F all,std,unsafe,__dbg
 
-      - name: "cargo test --locked -F all,safe"
-        run: cargo test --locked -F all,safe
+      - name: "cargo test --locked -F all,safe,__dbg"
+        run: cargo test --locked -F all,safe,__dbg
 
   # 4.
   # coverage:
