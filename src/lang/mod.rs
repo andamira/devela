@@ -36,7 +36,7 @@ crate::items! { // structural access:: _mods, _internals, _all, _always
         // pub use super::script::_all::*;
         // pub use super::tg::_all::*;
     }
-    pub(super) mod _internals {
+    pub(super) mod _internals { #![allow(unused)]
         #[cfg(feature = "js")]
         pub(crate) use super::js::_internals::*;
     }

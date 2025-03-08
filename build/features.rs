@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "__dbg")]
-use super::println;
+use super::utils::println;
 use std::{collections::HashSet, env, sync::OnceLock};
 
 /// The set of enabled cargo features.

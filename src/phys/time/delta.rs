@@ -11,8 +11,8 @@
 
 #[cfg(feature = "js")]
 use crate::JsInstant;
-#[cfg(feature = "std")]
-use crate::SystemInstant;
+// #[cfg(feature = "std")]
+// use crate::SystemInstant;
 use crate::{unwrap, Duration};
 #[allow(unused)]
 #[cfg(_float··)]

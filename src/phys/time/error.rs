@@ -48,6 +48,7 @@ mod full_composite {
             DOC_DATA_OVERFLOW:
                 DataOverflow(o|0: Option<usize>) => DataOverflow(*o),
 
+            // FIXME
             #[cfg(feature = "std")]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
             DOC_SYSTEM_TIME_ERROR:

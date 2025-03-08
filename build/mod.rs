@@ -14,9 +14,8 @@
 
 mod environment;
 mod features;
-mod generate;
-mod utils;
-pub(crate) use utils::*;
+mod generate; // tuple, unroll
+mod utils; // out_dir, manifest_dir, manifest_path, println* , TAB*
 
 fn main() {
     if let Err(err) = try_main() {

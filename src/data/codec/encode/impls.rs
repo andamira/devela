@@ -68,6 +68,7 @@ crate::items! {
 /* fmt */
 
 #[rustfmt::skip]
+#[allow(clippy::io_other_error, reason = "not implemented in core version")]
 impl<W: IoWrite> Encodable<W> for FmtArguments<'_> {
     fn encode(&self, writer: &mut W) -> IoResult<usize> {
         // Allows to use `Fmt::write` to format `FmtArguments` directly into `IoWrite`.

@@ -4,7 +4,7 @@
 //
 
 use super::{Extent, Extent2d, Extent3d};
-use crate::{cfor, iif, Bound, ConstDefault, Interval};
+use crate::{cfor, iif};
 
 #[rustfmt::skip]
 impl<T, const D: usize> Extent<T, D> {

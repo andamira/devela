@@ -5,7 +5,7 @@
 // - struct JsWorkerError
 // - struct JsWorkerJob
 
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "unsafe_ffi", feature = "alloc", not(windows)))]
 use crate::String;
 #[allow(unused_imports)]
 use crate::{Js, TaskPoll};

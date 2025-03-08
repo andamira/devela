@@ -317,6 +317,10 @@ impl IoError {
         IoError { repr: Repr::Custom(Custom { kind, error }) }
     }
 
+    // MAYBE
+    // pub fn other<E>(error: E) -> Error
+    // where E: Into<Box<dyn Error + Send + Sync>>,
+
     /// Returns a reference to the inner error wrapped by this error (if any).
     pub fn get_ref(&self) -> Option<&&'static str> {
         match self.repr {
