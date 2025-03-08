@@ -92,7 +92,7 @@ See also
 # … may be stable even later
 
 - 1.?? `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
-        = `nightly_allocator` feature
+        = `nightly_allocator` flag
 - 1.?? `F`[autodiff](https://github.com/rust-lang/rust/issues/124509)
           `nightly_autodiff` flag
 - 1.?? `F`[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)

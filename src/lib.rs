@@ -28,12 +28,10 @@
 //
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
-// nightly
-//
-// (In sync with ../Cargo.toml::nightly, ../DOCS/NIGHTLY.md & ../build/features.rs::NIGHTLY)
-#![cfg_attr(feature = "nightly_allocator", feature(allocator_api))]
+// nightly (flags)
 //
 // (In sync with ../Cargo.toml::[lints.rust.unexpected_cfgs] & ../build/features.rs::FLAGS_NIGHTLY)
+#![cfg_attr(nightly_allocator, feature(allocator_api))]
 #![cfg_attr(nightly_autodiff, feature(autodiff))]
 #![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
 #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]

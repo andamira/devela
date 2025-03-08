@@ -126,12 +126,6 @@ d = "doc --no-deps"
 do = "doc --no-deps --open"
 dp = "doc --no-deps --document-private-items"
 dpo = "doc --no-deps --open --document-private-items"
-# +nightly
-nd = "doc --no-deps -F=nightly_doc"
-ndp = "doc --no-deps -F=nightly_doc --document-private-items"
-#
-ndo = "doc --open --no-deps -F=nightly_doc"
-ndpo = "doc --open --no-deps -F=nightly_doc --document-private-items"
 
 # TREE
 tr = "tree --no-dedupe"

@@ -281,13 +281,7 @@ unsafe = [ # [11] enables `unsafe` (as long as it isn't forbidden for that modul
 # - ./utils/release_dates.rs
 # - ./DOCS/NIGHTLY.md
 
-nightly = [ # [1] (in sync with ./src/lib.rs, ./build/features.rs::NIGHTLY & ./DOCS/NIGHTLY.md)
-	"nightly_allocator",
-] # `nightly··`
-	# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
-	# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
-	nightly_allocator = [ # allocator_api
-		"allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
+nightly = []
 
 
 #* Capability features *#
@@ -1090,7 +1084,11 @@ check-cfg = [ # Allowed configuration flags:
 	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------
-	"cfg(nightly)", # [1] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+		# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
+		# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
+		# NOTE:dep features: "allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
+		"cfg(nightly_allocator)", # allocator_api
 		# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 		"cfg(nightly_autodiff)", # autodiff
 		# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
