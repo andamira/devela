@@ -1,7 +1,7 @@
 // devela::data
 //
 //! Data handling and manipulation.
-#![doc = crate::doc_!(modules: crate; data: codec, error, iter, key, list, table, uid, xipher)]
+#![doc = crate::doc_!(modules: crate; data: codec, iter, key, list, table, uid, xipher)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
@@ -14,7 +14,6 @@ mod collection;
 mod sort;
 
 pub mod codec;
-pub mod error; // data-related errors
 pub mod iter;
 pub mod key;
 pub mod list;
@@ -38,7 +37,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            codec::_all::*, error::_all::*, iter::_all::*, key::_all::*, list::_all::*,
+            codec::_all::*, iter::_all::*, key::_all::*, list::_all::*,
             table::_all::*, uid::_all::*, xipher::_all::*,
         };
 
@@ -66,7 +65,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            codec::_always::*, collection::*, error::_all::*, iter::_always::*, list::_always::*,
+            codec::_always::*, collection::*, iter::_always::*, list::_always::*,
         };
     }
 }

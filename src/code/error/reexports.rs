@@ -32,7 +32,7 @@ pub(crate) mod crate_errors {
     /* data */
     #[doc(inline)]
     #[cfg(data··)]
-    pub use crate::data::{DataError, DataResult};
+    pub use crate::{DataError, DataResult};
 
     /* media */
     #[doc(inline)]

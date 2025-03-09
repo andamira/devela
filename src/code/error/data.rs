@@ -1,6 +1,6 @@
-// devela::data::error::definitions
+// devela::code::error::data
 //
-//!
+//! Data-related errors.
 //
 // TOC
 // - individual data-related error types:

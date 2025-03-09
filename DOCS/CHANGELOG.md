@@ -117,11 +117,12 @@
   - `code::result::{error, panic}` inside `code`.
   - `data::collections::{array, destaque, list, stack, vec}` inside `data::list`.
   - `data::{bit, hash, serde}` inside `data::codec`.
+  - `data::error` inside `code::error`, make private.
   - `num::cmp` to `num::ord`.
   - `num::alg::linear` to `num::geom::linear`.
   - `num::geom::shape::{angle, extent}` inside `num::geom::metric`.
   - `num::wave` to `phys::wave`.
-  - `sys::path` inside `sys::fs`, made private.
+  - `sys::path` inside `sys::fs`, make private.
   - `work::async` to `work::future`.
   - `work::thread` to `work::process`.
 - rename/move items:
