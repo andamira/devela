@@ -19,7 +19,7 @@ use crate::{unwrap, Duration};
 use crate::{ExtFloat, Float};
 
 #[doc = crate::TAG_TIME!()]
-/// A signed duration of time, stored as an `(i64, i32)` pair of seconds and nanoseconds.
+/// A signed duration of time, stored as an `(i64, i32)` pair of secs and nanos.
 ///
 /// Supports negative values, allowing representation of both past and future offsets.
 //

@@ -3,14 +3,14 @@
 //!
 //
 
-use crate::impl_error;
+use crate::define_error;
 #[cfg(feature = "std")]
 use crate::Duration;
 
 #[cfg(feature = "std")]
 use ::std::time::SystemTimeError as StdSystemTimeError;
 
-impl_error! { individual:
+define_error! { individual:
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub struct SystemTimeError(Duration);
@@ -40,7 +40,7 @@ mod full_composite {
     /// A text-related result.
     pub type TimeResult<T> = crate::Result<T, TimeError>;
 
-    impl_error! { composite: fmt(f)
+    define_error! { composite: fmt(f)
         #[doc = crate::TAG_TIME!()]
         /// A time-related composite error.
         #[non_exhaustive]

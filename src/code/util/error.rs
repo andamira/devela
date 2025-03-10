@@ -1,6 +1,6 @@
 // devela::code::util::error
 //
-//! Defines [`impl_error!`]
+//! Defines [`define_error!`]
 //
 
 /// Helper to define individual and composite error types.
@@ -11,7 +11,7 @@
 // - alternative sections for tuple-struct and field-struct variants are indicated in the margin.
 // - we are employing the trick `$(;$($_a:lifetime)?` for the optional semicolon terminator,
 //   where the never expected lifetime allows to refer to the non-identifier `;` later on.
-macro_rules! impl_error {
+macro_rules! define_error {
     (
     // Defines a standalone error tuple-struct with elements.
     individual:
@@ -103,7 +103,7 @@ macro_rules! impl_error {
         // and implements TryFrom in reverse:
         $(
             $(#[$variant_attr])*
-            $crate::impl_error! { from(_f): $individual_error_name, for: $composite_error_name
+            $crate::define_error! { from(_f): $individual_error_name, for: $composite_error_name
                 => $variant_name
                 $(( $($e_name, $crate::field_of![_f, $e_numb] ),+ ))?             // tuple-struct↓
                 $({ $($f_name, $crate::field_of![_f, $f_name] ),+ })?             // field-struct↑
@@ -212,26 +212,26 @@ macro_rules! impl_error {
         }
     };
 }
-pub(crate) use impl_error;
+pub(crate) use define_error;
 
 #[cfg(test)]
 mod tests {
-    use super::impl_error;
+    use super::define_error;
 
     #[test]
-    fn impl_error() {
+    fn define_error() {
         /* define individual errors */
 
-        impl_error! { individual: pub struct UnitStruct;
+        define_error! { individual: pub struct UnitStruct;
             DOC_UNIT_STRUCT = "docstring", self+f => write!(f, "display"),
         }
-        impl_error! { individual: pub struct SingleElement(pub(crate) Option<u8>);
+        define_error! { individual: pub struct SingleElement(pub(crate) Option<u8>);
             DOC_SINGLE_ELEMENT = "docstring", self+f => write!(f, "display"),
         }
-        impl_error! { individual: pub struct MultipleElements(pub i32, u32,);
+        define_error! { individual: pub struct MultipleElements(pub i32, u32,);
             DOC_MULTI_ELEMENT = "docstring", self+f => write!(f, "display")
         }
-        impl_error! { individual: pub struct StructFields {
+        define_error! { individual: pub struct StructFields {
                 #[doc = "field1"] pub f1: bool,
                 #[doc = "field2"] f2: Option<char>
             }
@@ -241,7 +241,7 @@ mod tests {
         /* define composite errors
          * (includes conversions between variants and indidual errors) */
 
-        impl_error! { composite: fmt(f)
+        define_error! { composite: fmt(f)
             /// A composite error superset.
             pub enum CompositeSuperset {
                 DOC_UNIT_STRUCT: SuperUnit => UnitStruct,
@@ -251,7 +251,7 @@ mod tests {
                     => StructFields { f1: *f1, f2: *f2 },
             }
         }
-        impl_error! { composite: fmt(f)
+        define_error! { composite: fmt(f)
             /// A composite error subset.
             // removed the unit struct variant (the most trivial case)
             pub enum CompositeSubset {
@@ -264,7 +264,7 @@ mod tests {
 
         /* implement conversions between composite errors */
 
-        impl_error! { composite: from(f): CompositeSubset, for: CompositeSuperset {
+        define_error! { composite: from(f): CompositeSubset, for: CompositeSuperset {
             SubSingle(i) => SuperSingle(i),
             SubMultiple(i, j) => SuperMultiple(i, j),
             SubStruct { f1, f2 } => SuperStruct { f1, f2 },

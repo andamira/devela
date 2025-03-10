@@ -129,6 +129,7 @@
   - `LoggerConfig` to `LogConfig`.
   - `TextWrite` trait to `FmtWrite`.
   - re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
+  - `impl_error!` to `define_error!`.
 - rename variants:
   - `AngleDirection`: `CounterClockwise` to `Positive`, `Clockwise` to `Negative`.
 - rename/move fns/methods:

@@ -19,7 +19,7 @@
 mod _doc; // doc_! // RENAME: _doc!
 mod _reexport; // reexport! // RENAME _reexport!
 mod _use; // _use!
-mod error; // impl_error!
+mod error; // define_error!
 
 #[doc(hidden)]
 pub use paste::__paste;

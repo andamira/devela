@@ -11,18 +11,18 @@
 //   - TextError
 
 use crate::{
-    _core::str::Utf8Error, impl_error, Interval, Mismatch, MismatchedCapacity,
+    _core::str::Utf8Error, define_error, Interval, Mismatch, MismatchedCapacity,
     DOC_MISMATCHED_CAPACITY,
 };
 
 /* individual errors */
 
-impl_error! { individual: pub struct InvalidChar(char);
+define_error! { individual: pub struct InvalidChar(char);
     DOC_INVALID_CHAR = "An invalid given character was found.",
     self+f => write!(f, "An invalid {:?} character was found.", self.0)
 }
 
-impl_error! { individual:
+define_error! { individual:
     pub struct InvalidUtf8 {
         /// The index in the given string up to which valid UTF-8 was verified.
         pub valid_up_to: usize,
@@ -48,7 +48,7 @@ impl InvalidUtf8 {
 
 /* composite errors */
 
-impl_error! { composite: fmt(f)
+define_error! { composite: fmt(f)
     #[doc = crate::TAG_TEXT!()]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
     ///
@@ -87,7 +87,7 @@ mod full_composite {
     /// A text-related result.
     pub type TextResult<T> = crate::Result<T, TextError>;
 
-    impl_error! { composite: fmt(f)
+    define_error! { composite: fmt(f)
         /// A text-related composite error.
         #[non_exhaustive]
         pub enum TextError {
@@ -110,7 +110,7 @@ mod full_composite {
                 MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
         }
     }
-    impl_error! { composite: from(f): InvalidText, for: TextError {
+    define_error! { composite: from(f): InvalidText, for: TextError {
         Char(c) => InvalidChar(c),
         Utf8 { valid_up_to, error_len } => InvalidUtf8 { valid_up_to, error_len },
         Capacity(i) => MismatchedCapacity(i),

@@ -11,24 +11,24 @@
 //   - AllResult
 //   - AllError
 
-use crate::impl_error;
+use crate::define_error;
 
-impl_error![individual: pub struct FailedErrorConversion;
+define_error![individual: pub struct FailedErrorConversion;
     DOC_FAILED_CONVERSION = "A failed conversion between two error types.",
     self+f => write!(f, "Failed to convert between error types"),
 ];
-impl_error![individual: pub struct NotImplemented;
+define_error![individual: pub struct NotImplemented;
     DOC_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
 ];
-impl_error![individual: pub struct NotSupported;
+define_error![individual: pub struct NotSupported;
     DOC_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
 ];
 
 /* composite errors: */
 
-impl_error! { composite: fmt(f)
+define_error! { composite: fmt(f)
     /// An error composite of [`NotImplemented`] + [`NotSupported`].
     ///
     /// Used in methods of:
