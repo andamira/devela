@@ -83,7 +83,7 @@ publish = true
 bench = false
 
 
-[features] # 263/300 (37 remaining), 136 visible, 127 hidden
+[features] # 264/300 (36 remaining), 137 visible, 127 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -502,9 +502,9 @@ _str_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 52 optional dependencies:
+dep_all = [ # enables all 49 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
-	"dep_const_str", "dep_crossterm", "dep_fltk", "dep_flume", "dep_fontdue",
+	"dep_const_str", "dep_crossterm", "dep_fltk", "dep_flume", "dep_fontdue", "dep_ffmpeg",
 	"dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff",
 	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
 	"dep_nc", "dep_orion", "dep_portable_atomic", "dep_portable_atomic_util", "dep_pyo3",
@@ -531,6 +531,7 @@ dep_bumpalo = ["dep:bumpalo"]                                                   
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                            # ···
 dep_const_str = ["dep:const-str"]                                                 # text::str
 dep_crossterm = ["dep:crossterm", "std"]                                          # ui::back
+dep_ffmpeg = ["dep:ffmpeg-the-third"]                                             # media::video
 dep_fltk = ["dep:fltk"]                                                           # ui::back
 dep_flume = ["dep:flume"]                                                         # work::sync
 dep_fontdue = ["dep:fontdue"]                                                     # media::font
@@ -579,7 +580,7 @@ dep_wide = ["dep:wide"]                                                         
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                   # text::parse
 
 
-[dependencies] # 50 (2 required, 48 optional)
+[dependencies] # 51 (2 required, 49 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -638,6 +639,19 @@ version = "0.28.1" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/C
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
 features = ["bracketed-paste", "events"]
+
+[dependencies.ffmpeg-the-third] # https://crates.io/crates/ffmpeg-the-third
+version = "3.0.1" # ✓ https://github.com/shssoichiro/ffmpeg-the-third/blob/master/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 65 https://docs.rs/crate/ffmpeg-the-third/latest/features
+features = [
+	# default:
+	"codec", "device", "filter", "format",
+	"non-exhaustive-enums", "software-resampling", "software-scaling",
+	# "static", # FAILS
+]
+# INSTALL: clang pkg-config
+# libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev
 
 [dependencies.fltk] # https://crates.io/crates/fltk
 version = "1.5" # ✓ https://github.com/fltk-rs/fltk-rs/blob/master/CHANGELOG.md

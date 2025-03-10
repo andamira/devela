@@ -79,7 +79,7 @@
     - process: `*`.
     - sync: `LazyLock`.
   - log: `*`.
-- new optional dependencies: `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
+- new optional dependencies: `ffmpeg-the-third`, `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
 - new profile: `wasm`.
 - new example: `js_web_api`.
 - add musl architectures to `check.rs` script.

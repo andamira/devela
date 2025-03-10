@@ -52,6 +52,9 @@ reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
     doc: "Cross-platform Terminal Manipulation Library.",
     features: "std"
 }
+reexport! { optional_crate (unsafe) "dep_ffmpeg", "ffmpeg-the-third", ffmpeg_the_third,
+    doc: "FFmpeg bindings."
+}
 reexport! { optional_crate (unsafe) "dep_fltk", "fltk", fltk,
     doc: "Rust bindings for the FLTK GUI library."
 }
