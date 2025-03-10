@@ -531,7 +531,7 @@ dep_hashbrown = ["dep:hashbrown", "alloc", "fontdue?/hashbrown",                
 	"pyo3?/hashbrown"]
 dep_image = ["dep:image"]                                                         # media::image
 dep_itertools = ["dep:itertools"]                                                 # data::iter
-dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
+dep_jiff = ["dep:jiff", "alloc", "pyo3?/jiff-02"]                                 # phys::time
 dep_kira = ["dep:kira"]                                                           # sys::sound
 dep_libm = ["dep:libm"]                                                           # num::float
 dep_log = ["dep:log", "tracing?/log"]                                             # sys::log
@@ -555,7 +555,7 @@ dep_sdl2 = ["dep:sdl2"]                                                         
 dep_sdl3 = ["dep:sdl3"]                                                           # ui::back
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde",
-	"portable-atomic?/serde", "toml_edit?/serde", "wide?/serde"]
+	"portable-atomic?/serde", "pyo3?/serde", "toml_edit?/serde", "wide?/serde"]
 dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
 dep_stringzilla = ["dep:stringzilla"]                                             # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]          # sys::sound
@@ -755,9 +755,9 @@ optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
-version = "0.23.4" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
+version = "0.24.0" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
 optional = true  # unsafe
-default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
+default-features = false # 37 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
 # https://pyo3.rs/latest/features.html#features-reference
 # WAIT [no_std](https://github.com/PyO3/pyo3/issues/3510)
@@ -874,7 +874,7 @@ features = ["display"] #
 # WAIT: [Dotted key ordering](https://github.com/toml-rs/toml/issues/163)
 
 [dependencies.tokio] # https://crates.io/crates/tokio
-version = "1.43" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
+version = "1.44" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 23 https://docs.rs/crate/tokio/latest/features
 features =  [] # https://docs.rs/tokio/#feature-flags
