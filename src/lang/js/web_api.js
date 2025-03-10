@@ -30,7 +30,6 @@ export async function initWasm(wasmPath, imports = {}) {
 		const memory = new Uint8Array(wasm.exports.memory.buffer, ptr, len);
 		return new TextDecoder("utf-8").decode(memory);
 	}
-
 	// Sets the active canvas.
 	function set_canvas(selector) {
 		const newCanvas = document.querySelector(selector);
@@ -40,14 +39,19 @@ export async function initWasm(wasmPath, imports = {}) {
 		canvas = newCanvas;
 		ctx = newCtx;
 	}
+	// Gets an element.
+	function get_element(ptr, len) {
+        const selector = str_decode(ptr, len);
+        if (selector === "window") return window;
+        if (selector === "document") return document;
+        return document.querySelector(selector);
+    }
 
 	/* Bindings */
 
 	const wasmApi = {
 		/* Core APIs */
-
-		api_console: {
-			// Console API
+		api_console: { // Console API
 			console_debug: (ptr, len) => console.debug(str_decode(ptr, len)),
 			console_error: (ptr, len) => console.error(str_decode(ptr, len)),
 			console_info: (ptr, len) => console.info(str_decode(ptr, len)),
@@ -58,19 +62,19 @@ export async function initWasm(wasmPath, imports = {}) {
 			console_group: (ptr, len) => console.group(str_decode(ptr, len)),
 			console_groupEnd: () => console.groupEnd(),
 		},
-		api_events: {
-			// Events API
+		api_events: { // Events API
 			_callbacks: new Map(),
+			// Generic event listener registration
 			event_addListener: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
-				const element = document.querySelector(str_decode(ePtr, eLen));
+				const element = get_element(ePtr, eLen)
 				const event = str_decode(eventPtr, eventLen);
 				if (!element) return;
-				const callback = () => wasm_callback(callbackPtr);
+				const callback = () => wasm.exports.wasm_callback(callbackPtr);
 				api_events._callbacks.set(callbackPtr, callback);
 				element.addEventListener(event, callback);
 			},
 			event_removeListener: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
-				const element = document.querySelector(str_decode(ePtr, eLen));
+				const element = get_element(ePtr, eLen)
 				const event = str_decode(eventPtr, eventLen);
 				const callback = api_events._callbacks.get(callbackPtr);
 				if (!element || !callback) return;
@@ -78,7 +82,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				api_events._callbacks.delete(callbackPtr);
 			},
 			event_addListenerJs: (ePtr, eLen, eventPtr, eventLen, jsFnPtr, jsFnLen) => {
-				const element = document.querySelector(str_decode(ePtr, eLen));
+				const element = get_element(ePtr, eLen)
 				const event = str_decode(eventPtr, eventLen);
 				const jsFnName = str_decode(jsFnPtr, jsFnLen);
 				if (!element) { console.error(`Element not found for event '${event}'`); return; }
@@ -89,7 +93,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				else { console.error(`JS function '${jsFnName}' not found.`); }
 			},
 			event_removeListenerJs: (ePtr, eLen, eventPtr, eventLen, jsFnPtr, jsFnLen) => {
-				const element = document.querySelector(str_decode(ePtr, eLen));
+				const element = get_element(ePtr, eLen)
 				const event = str_decode(eventPtr, eventLen);
 				const jsFnName = str_decode(jsFnPtr, jsFnLen);
 				if (!element) { console.error(`Element not found for event '${event}'`); return; }
@@ -99,9 +103,39 @@ export async function initWasm(wasmPath, imports = {}) {
 					api_events._callbacks_js.delete(jsFnName); }
 				else { console.error(`No event listener found for '${jsFnName}' on '${event}'.`); }
 			},
+			event_addListenerMouse: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
+				const element = get_element(ePtr, eLen)
+				const event = str_decode(eventPtr, eventLen);
+				if (!element) return;
+				const callback = (e) => {
+					const button = e.type === "mousemove" ? -1 : e.button; // -1 for no clicks
+					const buttons = e.buttons; // Bitmask of currently held buttons
+					wasm.exports.wasm_callback_mouse(callbackPtr,
+						button, buttons, e.clientX, e.clientY);
+				};
+				api_events._callbacks.set(callbackPtr, callback);
+				element.addEventListener(event, callback);
+			},
+			event_addListenerPointer: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
+				const element = get_element(ePtr, eLen)
+				const event = str_decode(eventPtr, eventLen);
+				if (!element) return;
+				const callback = (e) => {
+					console.log(e);
+					// NOTE: if we manage mouse events the mouse callback doesn't get triggered
+					if (e.pointerType !== "mouse") {
+						e.preventDefault(); // STOP mouse event from firing
+						wasm.exports.wasm_callback_pointer(
+							callbackPtr, e.pointerId, e.clientX, e.clientY, e.pressure,
+							e.tiltX, e.tiltY, e.twist || 0
+						);
+					}
+				};
+				api_events._callbacks.set(callbackPtr, callback);
+				element.addEventListener(event, callback);
+			},
 		}, // api_events
-		api_history_location: {
-			// History API
+		api_history_location: { // History & Location API
 			history_back: () => history.back(),
 			history_forward: () => history.forward(),
 			history_go: (delta) => history.go(delta),
@@ -116,7 +150,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			location_assign: (urlPtr, urlLen) => location.assign(str_decode(urlPtr, urlLen)),
 			location_replace: (urlPtr, urlLen) => location.replace(str_decode(urlPtr, urlLen)),
 		},
-		api_permissions: {
+		api_permissions: { // Permissions API
 			permissions_query: (namePtr, nameLen) => {
 				return navigator.permissions.query({ name: str_decode(namePtr, nameLen) })
 					.then(result => {
@@ -128,7 +162,7 @@ export async function initWasm(wasmPath, imports = {}) {
 						}}).catch(() => -3); // Error
 			},
 		},
-		api_window: {
+		api_window: { // Window API
 			window_set_timeout: (callback_ptr, delayMs) => {
 				return setTimeout(() => { wasm.exports.wasm_callback(callback_ptr); }, delayMs);
 			},
@@ -155,8 +189,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			window_cancel_animation_frame: (requestId) => { cancelAnimationFrame(requestId); },
 		}, // api_window
 		/* Extended APIs*/
-
-		api_canvas: {
+		api_canvas: { // Canvas API
 			/* misc. */
 			set_canvas: (ptr, len) => { set_canvas(str_decode(ptr, len)); },
 			/* color settings */
@@ -217,7 +250,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				return performance.eventCounts?.get([eventName]) ?? 0;
 			}
 		},
-		api_workers: {
+		api_workers: { // Workers API
 			_workers: new Map(),      // Map of worker_id -> Worker instance
 			_nextWorkerId: 1,         // Tracks worker IDs
 			_nextJobId: 1,            // Tracks job IDs
@@ -325,9 +358,6 @@ export async function initWasm(wasmPath, imports = {}) {
 	// Make Web API modules globally accessible from Rust
 	window.api_events = wasmApi.api_events;
 	window.api_workers = wasmApi.api_workers;
-
-	// Allows Rust to call JavaScript functions via function pointers (Js::wasm_callback)
-	window.wasm_callback = (callbackPtr) => { wasm.exports.wasm_callback(callbackPtr); };
 
 	/* WASM Instantiation */
 

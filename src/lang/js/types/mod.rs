@@ -3,7 +3,7 @@
 //! Defines the [`Js`] namespace and other items.
 //
 
-mod event; // JsEvent
+mod event; // JsEvent, JsEventKey, JsEventMouse, JsEventPointer
 mod instant; // JsInstant
 mod permission; // JsPermission, JsPermissionState
 mod primitives; // js_number, js_int32, js_uint32...

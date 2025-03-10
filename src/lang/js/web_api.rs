@@ -19,9 +19,9 @@
 // - helpers
 
 use devela::{
-    js_bool, js_int32, js_number, js_reexport, js_uint32, transmute, Js, JsEvent, JsInstant,
-    JsPermission, JsPermissionState, JsTextMetrics, JsTextMetricsFull, JsTimeout, JsWorker,
-    JsWorkerError, JsWorkerJob, TaskPoll,
+    js_bool, js_int32, js_number, js_reexport, js_uint32, transmute, Js, JsEvent, JsEventMouse,
+    JsEventPointer, JsInstant, JsPermission, JsPermissionState, JsTextMetrics, JsTextMetricsFull,
+    JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
 };
 #[cfg(feature = "alloc")]
 use devela::{vec_ as vec, String, Vec};
@@ -116,7 +116,7 @@ impl Js {
         }
     }
     #[doc = web_api!("EventTarget/", "addEventListener")]
-    /// Attaches a JavaScript function `event` linstener to an `element`.
+    /// Attaches a JavaScript function `event` listener on an `element`.
     pub fn event_add_listener_js(element: &str, event: JsEvent, js_fn_name: &str) {
         unsafe {
             event_add_listener_js(element.as_ptr(), element.len(),
@@ -127,15 +127,39 @@ impl Js {
     /// Removes a JavaScript function `event` listener from an `element`.
     pub fn event_remove_listener_js(element: &str, event: JsEvent, js_fn_name: &str) {
         unsafe {
-            event_remove_listener_js(
-                element.as_ptr(), element.len(),
-                event.as_str().as_ptr(), event.as_str().len(),
-                js_fn_name.as_ptr(), js_fn_name.len()
-            );
+            event_remove_listener_js(element.as_ptr(), element.len(), event.as_str().as_ptr(),
+            event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
+        }
+    }
+    //
+    #[doc = web_api!("EventTarget/", "addEventListener")]
+    /// Attaches a Rust function as a `mouse event` listener on an `element`.
+    ///
+    /// The callback receives `JsEventMouse` with button, buttons mask, and coordinates.
+    ///
+    /// This will trigger on pointer events as well.
+    pub fn event_add_listener_mouse(element: &str, event: JsEvent,
+        callback: extern "C" fn(JsEventMouse)) {
+        unsafe {
+            event_add_listener_mouse(element.as_ptr(), element.len(),
+                event.as_str().as_ptr(), event.as_str().len(), callback as usize);
+        }
+    }
+    #[doc = web_api!("EventTarget/", "addEventListener")]
+    /// Attaches a Rust function as a `pointer event` listener on an `element`.
+    ///
+    /// The callback receives `JsEventPointer` with id, coordinates, and pressure.
+    pub fn event_add_listener_pointer(element: &str, event: JsEvent,
+        callback: extern "C" fn(JsEventPointer)) {
+        unsafe {
+            event_add_listener_pointer(element.as_ptr(), element.len(),
+                event.as_str().as_ptr(), event.as_str().len(), callback as usize);
         }
     }
 
-    /// Callback dispatcher for WebAssembly events.
+    /* callbacks */
+
+    /// Callback dispatcher for WebAssembly events without args.
     ///
     /// - This function is used by JavaScript to invoke a Rust function pointer.
     /// - It allows Rust event listeners to execute when triggered by JS.
@@ -157,6 +181,39 @@ impl Js {
         let callback: extern "C" fn() = unsafe { transmute(callback) };
         callback();
     }
+    /// WebAssembly mouse event callback dispatcher.
+    ///
+    /// - Called from JavaScript when a mouse event is fired.
+    /// - Passes the `JsEventMouse` struct to the Rust callback.
+    ///
+    /// # Safety
+    /// - `callback_ptr` must be a valid function pointer.
+    #[unsafe(no_mangle)]
+    pub unsafe extern "C" fn wasm_callback_mouse(callback_ptr: usize,
+        button: js_int32, buttons: js_int32, x: js_number, y: js_number) {
+        let callback = callback_ptr as *const ();
+        let callback: extern "C" fn(JsEventMouse) = unsafe { transmute(callback) };
+        callback(JsEventMouse::new(x, y, button as u8, buttons as u8));
+    }
+    /// WebAssembly mouse event callback dispatcher.
+    ///
+    /// - Called from JavaScript when a pointer event is fired.
+    /// - Passes the `JsEventPointer` struct to the Rust callback.
+    ///
+    /// # Safety
+    /// - `callback_ptr` must be a valid function pointer.
+    // WAIT: In firefox + linux + X11 needs the env variable `MOZ_USE_XINPUT2=1`
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1606832
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1207700
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1822714
+    #[unsafe(no_mangle)]
+    pub unsafe extern "C" fn wasm_callback_pointer(callback_ptr: usize,
+        id: js_int32, x: js_number, y: js_number, pressure: js_number,
+        tilt_x: js_int32, tilt_y: js_int32, twist: js_int32) {
+        let callback = callback_ptr as *const ();
+        let callback: extern "C" fn(JsEventPointer) = unsafe { transmute(callback) };
+        callback(JsEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16));
+    }
 }
 js_reexport! {
     [ module: "api_events" ]
@@ -172,6 +229,11 @@ js_reexport! {
         element_ptr: *const u8, element_len: usize,
         event_ptr: *const u8, event_len: usize, js_fn_ptr: *const u8, js_fn_len: usize
     );
+    //
+    unsafe fn "event_addListenerMouse" event_add_listener_mouse(element_ptr: *const u8,
+        element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
+    unsafe fn "event_addListenerPointer" event_add_listener_pointer(element_ptr: *const u8,
+        element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
 }
 
 /// # Web API history & location
