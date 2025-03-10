@@ -74,7 +74,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "alloc"),
-    feature(box_uninit_write,  const_vec_string_slice, extract_if, string_extend_from_within,)
+    feature(box_uninit_write, const_vec_string_slice, extract_if, string_extend_from_within,)
 )]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "std"),
