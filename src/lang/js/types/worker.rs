@@ -8,7 +8,7 @@
 #[cfg(all(feature = "unsafe_ffi", feature = "alloc", not(windows)))]
 use crate::String;
 #[allow(unused_imports)]
-use crate::{Js, TaskPoll};
+use crate::{js_uint32, Js, TaskPoll};
 
 /// A handle to a JavaScript Web Worker.
 ///
@@ -16,7 +16,7 @@ use crate::{Js, TaskPoll};
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JsWorker {
-    pub(in crate::lang::js) id: u32,
+    pub(in crate::lang::js) id: js_uint32,
 }
 
 #[rustfmt::skip]
@@ -24,7 +24,7 @@ impl JsWorker {
     /// Returns a new invalid worker.
     pub const fn invalid() -> Self { JsWorker { id: 0 } }
     /// Returns the worker's ID.
-    pub const fn id(self) -> u32 { self.id }
+    pub const fn id(self) -> js_uint32 { self.id }
 }
 
 #[rustfmt::skip]
@@ -65,7 +65,7 @@ pub enum JsWorkerError {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct JsWorkerJob {
     pub(in crate::lang::js) worker: JsWorker,
-    pub(in crate::lang::js) id: u32,
+    pub(in crate::lang::js) id: js_uint32,
 }
 
 #[rustfmt::skip]
@@ -73,7 +73,7 @@ impl JsWorkerJob {
     /// Returns the associated worker.
     pub const fn worker(self) -> JsWorker { self.worker }
     /// Returns the job's ID.
-    pub const fn id(self) -> u32 { self.id }
+    pub const fn id(self) -> js_uint32 { self.id }
 }
 
 #[rustfmt::skip]

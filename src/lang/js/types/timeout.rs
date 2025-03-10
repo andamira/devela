@@ -4,7 +4,7 @@
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 use crate::web_api;
 #[allow(unused_imports)]
-use crate::Js;
+use crate::{js_uint32, Js};
 
 /// A handle to a JavaScript timeout.
 ///
@@ -12,7 +12,7 @@ use crate::Js;
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JsTimeout {
-    pub(in crate::lang::js) id: u32,
+    pub(in crate::lang::js) id: js_uint32,
 }
 
 #[rustfmt::skip]
@@ -20,7 +20,7 @@ impl JsTimeout {
     /// Returns a new invalid handle.
     pub const fn invalid() -> Self { JsTimeout { id: 0 } }
     /// Returns the numeric ID of the handle.
-    pub const fn id(self) -> u32 { self.id }
+    pub const fn id(self) -> js_uint32 { self.id }
 }
 
 #[rustfmt::skip]
@@ -30,11 +30,11 @@ impl JsTimeout {
 impl JsTimeout {
     #[doc = web_api!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
-    pub fn timeout(callback: extern "C" fn(), delay_ms: u32) -> Self {
+    pub fn timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> Self {
         Js::window_set_timeout(callback, delay_ms) }
     #[doc = web_api!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
-    pub fn interval(callback: extern "C" fn(), interval_ms: u32) -> Self {
+    pub fn interval(callback: extern "C" fn(), interval_ms: js_uint32) -> Self {
         Js::window_set_timeout(callback, interval_ms) }
 
     /// Executes JavaScript code immediately.
@@ -44,11 +44,11 @@ impl JsTimeout {
     pub fn eval(js_code: &str) { Js::window_eval(js_code) }
     #[doc = web_api!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
-    pub fn eval_timeout(js_code: &str, delay_ms: u32) -> Self {
+    pub fn eval_timeout(js_code: &str, delay_ms: js_uint32) -> Self {
         Js::window_eval_timeout(js_code, delay_ms) }
     #[doc = web_api!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
-    pub fn eval_interval(js_code: &str, interval_ms: u32) -> Self {
+    pub fn eval_interval(js_code: &str, interval_ms: js_uint32) -> Self {
         Js::window_eval_interval(js_code, interval_ms) }
 
     #[doc = web_api!("Window", "clearTimeout")]

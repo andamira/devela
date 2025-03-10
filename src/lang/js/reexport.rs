@@ -15,6 +15,15 @@
 ///     unsafe fn "js_fn" rs_fn(ptr: *const u8, len: usize, x: f64, y: f64);
 /// }
 /// ```
+///
+/// Use *safe* fn when:
+/// - The function does not perform pointer dereferencing or other memory-unsafe operations.
+/// - It always behaves safely (e.g., a function that just draws to the Canvas API).
+///
+/// Use *unsafe* fn if:
+/// - The function can mutate raw memory (e.g., passing buffers, pointers).
+/// - It performs DOM manipulations that might trigger undefined behavior.
+/// - It can throw exceptions that Rust cannot catch.
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _js_reexport {

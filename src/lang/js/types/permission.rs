@@ -1,6 +1,6 @@
 // devela::lang:js::types::permission
 
-use crate::{TAG_EXPERIMENTAL, TAG_NON_STANDARD};
+use crate::{js_int32, TAG_EXPERIMENTAL, TAG_NON_STANDARD};
 
 /// # Web API permissions
 ///
@@ -92,8 +92,8 @@ pub enum JsPermissionState {
     Error = -3,
 }
 
-impl From<i32> for JsPermissionState {
-    fn from(from: i32) -> Self {
+impl From<js_int32> for JsPermissionState {
+    fn from(from: js_int32) -> Self {
         use JsPermissionState as S;
         match from {
             1 => S::Granted,

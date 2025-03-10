@@ -22,6 +22,9 @@ pub use {event::*, instant::*, permission::*, primitives::*, text::*, timeout::*
 #[doc = crate::TAG_NAMESPACE!()]
 /// A Javascript namespace.
 ///
+/// # Features
+/// All methods depend on the `unsafe_ffi` feature and the `wasm32` architecture.
+///
 /// # Methods
 /// - core APis
 ///   - [console](#web-api-console)

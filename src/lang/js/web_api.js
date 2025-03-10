@@ -281,7 +281,7 @@ export async function initWasm(wasmPath, imports = {}) {
 					const { jobId, result } = event.data;
 					wasmApi.api_workers._evalResults.set(jobId, result);
 				} else if (event.data.type === "message_response") {
-					console.log(`Worker ${worker_id} response: ${event.data.message}`);
+					console.log(`Worker ${worker_id} response: ${event.data.message}`); // IMPROVE
 				}
 			},
 			// Runs JavaScript inside a worker, and returns the JobId or 0 to indicate failure.

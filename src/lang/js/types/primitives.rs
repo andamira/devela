@@ -10,8 +10,9 @@ use crate::TAG_PRIMITIVE;
 #[doc = crate::TAG_NUM!()]
 /// A JavaScript Number.
 ///
-/// JavaScript does not distinguish between integers and floating-point numbers at the type level.
 /// All numeric values are represented as IEEE 754 **64-bit floating-point** values.
+///
+/// JavaScript does not distinguish between integers and floating-point numbers at the type level.
 pub type js_number = f64;
 
 #[doc = TAG_PRIMITIVE!()]

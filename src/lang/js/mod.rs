@@ -48,9 +48,7 @@ mod types; // Js, JsEvent, JsPermission*, JsWorker...
 crate::items! {
     mod reexport; // js_reexport!
 
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
-    #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
-    #[cfg(not(windows))]
+    #[cfg(not(windows))] // NOTE: compiles in unix, which is good for docs
     mod web_api;
 }
 

@@ -2,7 +2,7 @@
 
 use crate::{impl_trait, Display};
 #[allow(unused_imports)]
-use crate::{Js, TimeDelta};
+use crate::{js_number, Js, TimeDelta};
 
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 ///
@@ -10,18 +10,18 @@ use crate::{Js, TimeDelta};
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct JsInstant {
     /// Milliseconds since `performance.timeOrigin`.
-    pub ms: f64,
+    pub ms: js_number,
 }
 #[rustfmt::skip]
 impl JsInstant {
-    /// Returns the time in `f64` milliseconds.
-    pub const fn as_millis_f64(self) -> f64 { self.ms }
+    /// Returns the time in milliseconds.
+    pub const fn as_millis_f64(self) -> js_number { self.ms }
     /// Returns a new `JsInstant` from a timestamp in milliseconds.
-    pub const fn from_millis_f64(millis: f64) -> Self { Self { ms: millis } }
+    pub const fn from_millis_f64(millis: js_number) -> Self { Self { ms: millis } }
     /// Returns the time in `f64` seconds.
-    pub const fn as_secs_f64(self) -> f64 { self.ms / 1_000.0 }
+    pub const fn as_secs_f64(self) -> js_number { self.ms / 1_000.0 }
     /// Returns a new `JsInstant` from a timestamp in milliseconds.
-    pub const fn from_secs_f64(secs: f64) -> Self { Self { ms: secs * 1_000.0 } }
+    pub const fn from_secs_f64(secs: js_number) -> Self { Self { ms: secs * 1_000.0 } }
 
     /// Returns the duration between this and an earlier `JsInstant`.
     pub const fn since(self, earlier: Self) -> Self { Self::from_millis_f64(self.ms - earlier.ms) }
