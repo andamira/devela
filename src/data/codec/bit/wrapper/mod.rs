@@ -29,75 +29,44 @@ mod tests;
 /// [`u64`]: Self#implementation-for-u64
 /// [`u128`]: Self#implementation-for-u128
 /// [`usize`]: Self#implementation-for-usize
+#[must_use]
 #[repr(transparent)]
 #[cfg_attr(nightly_doc, doc(cfg(_bit··)))]
 pub struct Bitwise<T>(pub T);
 
 #[rustfmt::skip]
 mod core_impls {
-    use {super::Bitwise, core::{fmt, cmp, hash}};
+    use crate::{impl_trait, Bitwise, Hash, Hasher, Ordering};
 
-    impl<T: Clone> Clone for Bitwise<T> {
-        #[must_use]
-        fn clone(&self) -> Self { Self(self.0.clone()) }
-    }
+    impl<T: Clone> Clone for Bitwise<T> { fn clone(&self) -> Self { Self(self.0.clone()) } }
     impl<T: Copy> Copy for Bitwise<T> {}
-    impl<T: fmt::Debug> fmt::Debug for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            f.debug_tuple("Bitwise").field(&self.0).finish()
-        }
-    }
-    impl<T: fmt::Display> fmt::Display for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
-    }
-    impl<T: fmt::Binary> fmt::Binary for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Binary::fmt(&self.0, f) }
-    }
-    impl<T: fmt::Octal> fmt::Octal for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Octal::fmt(&self.0, f) }
-    }
-    impl<T: fmt::LowerHex> fmt::LowerHex for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::LowerHex::fmt(&self.0, f) }
-    }
-    impl<T: fmt::UpperHex> fmt::UpperHex for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::UpperHex::fmt(&self.0, f) }
-    }
-    impl<T: fmt::UpperExp> fmt::UpperExp for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::UpperExp::fmt(&self.0, f) }
-    }
-    impl<T: fmt::LowerExp> fmt::LowerExp for Bitwise<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::LowerExp::fmt(&self.0, f) }
-    }
+
+    impl_trait![fmt::Debug for Bitwise<T> where T |self, f|
+        f.debug_tuple("Bitwise").field(&self.0).finish()
+    ];
+    impl_trait![fmt::Display for Bitwise<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Binary for Bitwise<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Octal for Bitwise<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerHex for Bitwise<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperHex for Bitwise<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerExp for Bitwise<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperExp for Bitwise<T> where T |self, f| self.0.fmt(f)];
 
     impl<T: PartialEq> PartialEq for Bitwise<T> {
-        #[must_use]
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: Eq> Eq for Bitwise<T> {}
     impl<T: PartialOrd> PartialOrd for Bitwise<T> {
-        #[must_use]
-        fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-            self.0.partial_cmp(&other.0)
-        }
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> { self.0.partial_cmp(&other.0) }
     }
     impl<T: Ord> Ord for Bitwise<T> {
-        #[must_use]
-        fn cmp(&self, other: &Self) -> cmp::Ordering {
-            self.0.cmp(&other.0)
-        }
+        fn cmp(&self, other: &Self) -> Ordering { self.0.cmp(&other.0) }
     }
-    impl<T: hash::Hash> hash::Hash for Bitwise<T> {
-        fn hash<H: hash::Hasher>(&self, state: &mut H) {
-            self.0.hash(state);
-        }
+    impl<T: Hash> Hash for Bitwise<T> {
+        fn hash<H: Hasher>(&self, state: &mut H) { self.0.hash(state); }
     }
-    impl<T: hash::Hasher> hash::Hasher for Bitwise<T> {
-        #[must_use]
-        fn finish(&self) -> u64 {
-            self.0.finish()
-        }
-        fn write(&mut self, bytes: &[u8]) {
-            self.0.write(bytes);
-        }
+    impl<T: Hasher> Hasher for Bitwise<T> {
+        fn finish(&self) -> u64 { self.0.finish() }
+        fn write(&mut self, bytes: &[u8]) { self.0.write(bytes); }
     }
 }

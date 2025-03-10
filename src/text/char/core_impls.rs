@@ -26,7 +26,6 @@ macro_rules! char_core_impls {
     (@$name:ident + $default:expr) => { paste! {
         impl Default for super::$name {
             /// Returns the default value of `\x00` (nul character).
-            #[must_use]
             fn default() -> Self { $default }
         }
         impl ConstDefault for super::$name {
@@ -75,21 +74,18 @@ mod c7 {
     use super::super::*;
 
     impl From<char7> for char {
-        #[must_use]
         fn from(c: char7) -> char {
             c.to_char()
         }
     }
     #[cfg(feature = "_char8")]
     impl From<char7> for char8 {
-        #[must_use]
         fn from(c: char7) -> char8 {
             c.to_char8()
         }
     }
     #[cfg(feature = "_char16")]
     impl From<char7> for char16 {
-        #[must_use]
         fn from(c: char7) -> char16 {
             c.to_char16()
         }
@@ -103,7 +99,6 @@ mod c8 {
     use super::*;
 
     impl From<char8> for char {
-        #[must_use]
         fn from(c: char8) -> char {
             c.to_char()
         }
@@ -117,7 +112,6 @@ mod c8 {
     }
     #[cfg(feature = "_char16")]
     impl From<char8> for char16 {
-        #[must_use]
         fn from(c: char8) -> char16 {
             c.to_char16()
         }
@@ -131,7 +125,6 @@ mod c16 {
     use super::*;
 
     impl From<char16> for char {
-        #[must_use]
         fn from(c: char16) -> char {
             c.to_char()
         }

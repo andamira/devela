@@ -416,7 +416,6 @@ macro_rules! impl_root {
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[cfg(feature = $cmp)]
             )? // $cmp
-            #[must_use]
             pub const fn sqrt_ceil(self) -> Int<$t> {
                 let a = self.0; let floor = self.sqrt_floor();
                 iif![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
@@ -448,7 +447,6 @@ macro_rules! impl_root {
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[cfg(feature = $cmp)]
             )? // $cmp
-            #[must_use]
             pub const fn sqrt_floor(self) -> Int<$t> {
                 let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a < 2 {

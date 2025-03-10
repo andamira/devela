@@ -47,7 +47,6 @@ impl LinuxTimespec {
 }
 
 impl From<Duration> for LinuxTimespec {
-    #[must_use]
     fn from(duration: Duration) -> Self {
         Self::with(duration)
     }

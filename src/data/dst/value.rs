@@ -442,13 +442,11 @@ mod core_impls {
 
     impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstValue<DST, BUF> {
         type Target = DST;
-        #[must_use]
         fn deref(&self) -> &DST {
             unsafe { &*self.as_ptr() }
         }
     }
     impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstValue<DST, BUF> {
-        #[must_use]
         fn deref_mut(&mut self) -> &mut DST {
             unsafe { &mut *self.as_ptr_mut() }
         }
@@ -473,13 +471,11 @@ mod core_impls {
     }
     impl_trait! { iter::Iterator;
         type Item = DST::Item;
-        #[must_use]
         fn next(&mut self) -> Option<Self::Item> {
             (**self).next()
         }
     }
     impl_trait! { iter::DoubleEndedIterator;
-        #[must_use]
         fn next_back(&mut self) -> Option<Self::Item> {
             (**self).next_back()
         }

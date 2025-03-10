@@ -226,7 +226,6 @@ macro_rules! impl_prime {
             /// ```
             /// # Links
             /// - <https://en.wikipedia.org/wiki/Euler%27s_totient_function>.
-            #[must_use]
             pub const fn totient(self) -> Int<$t> {
                 let (mut n, mut result, mut i) = (self.0.abs(), self.0.abs(), 2);
                 while i * i <= n {
@@ -404,7 +403,6 @@ macro_rules! impl_prime {
             /// ```
             /// # Links
             /// - <https://en.wikipedia.org/wiki/Euler%27s_totient_function>.
-            #[must_use]
             pub const fn totient(self) -> Int<$t> {
                 let (mut n, mut result, mut i) = (self.0, self.0, 2);
                 while i * i <= n {

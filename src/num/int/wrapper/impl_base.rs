@@ -68,7 +68,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits()];"]
             #[doc = "assert_eq![Int(3), Int(-128_" $t ").digits()];"]
             /// ```
-            #[must_use]
             pub const fn digits(self) -> Int<$t> {
                 let a = self.0; let n = iif![a == $t::MIN; $t::MAX; a.abs()];
                 iif![let Some(c) = n.checked_ilog10(); Int(c as $t + 1); Int(1)]
@@ -83,7 +82,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits_sign()];"]
             #[doc = "assert_eq![Int(4), Int(-128_" $t ").digits_sign()];"]
             /// ```
-            #[must_use]
             pub const fn digits_sign(self) -> Int<$t> {
                 let a = self.0; let mut res = (a < 0) as $t;
                 let n = iif![a == $t::MIN; $t::MAX; a.abs()];
@@ -104,7 +102,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(0), Int(100_" $t ").digits_base(0)];"]
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base(100)];"]
             /// ```
-            #[must_use]
             pub const fn digits_base(self, mut base: $t) -> Int<$t> {
                 let mut a = self.0;
                 iif![base == 0; return Int(0)];
@@ -127,7 +124,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(0), Int(100_" $t ").digits_base_sign(0)];"]
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base_sign(100)];"]
             /// ```
-            #[must_use]
             pub const fn digits_base_sign(self, mut base: $t) -> Int<$t> {
                 let mut a = self.0;
                 iif![base == 0; return Int(0)];
@@ -148,7 +144,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(-127_" $t ").digital_root()];"]
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
             /// ```
-            #[must_use]
             pub const fn digital_root(self) -> Int<$t> {
                 let mut n = self.0.abs();
                 let mut sum = 0;
@@ -170,7 +165,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(9), Int(-126_" $t ").digital_root_base(10)];"]
             #[doc = "assert_eq![Int(3), Int(-33_" $t ").digital_root_base(16)];"]
             /// ```
-            #[must_use]
             pub const fn digital_root_base(self, base: $t) -> Int<$t> {
                 let (mut n, base) = (self.0.abs(), base.abs());
                 let mut sum = 0;
@@ -207,13 +201,11 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits()];"]
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits()];"]
             /// ```
-            #[must_use]
             pub const fn digits(self) -> Int<$t> {
                 iif![let Some(c) = self.0.checked_ilog10(); Int(c as $t + 1); Int(1)]
             }
 
             /// An alias of [`digits`][Self#digits].
-            #[must_use]
             pub const fn digits_sign(self) -> Int<$t> { self.digits() }
 
             /// Returns the number of digits in the given `base`.
@@ -227,14 +219,12 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(0), Int(100_" $t ").digits_base(0)];"]
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base(100)];"]
             /// ```
-            #[must_use]
             pub const fn digits_base(self, base: $t) -> Int<$t> {
                 let a = self.0; iif![base == 0; return Int(0)];
                 iif![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
             }
 
             /// An alias of [`digits_base`][Self#digits_base].
-            #[must_use]
             pub const fn digits_base_sign(self, base: $t) -> Int<$t> { self.digits_base(base) }
 
             /* unsigned digital_root */
@@ -246,7 +236,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(127_" $t ").digital_root()];"]
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
             /// ```
-            #[must_use]
             pub const fn digital_root(self) -> Int<$t> {
                 let [mut a, mut sum] = [self.0, 0];
                 while a > 0 {
@@ -264,7 +253,6 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(127_" $t ").digital_root_base(10)];"]
             #[doc = "assert_eq![Int(3), Int(33_" $t ").digital_root_base(16)];"]
             /// ```
-            #[must_use]
             pub const fn digital_root_base(self, base: $t) -> Int<$t> {
                 let [mut a, mut sum] = [self.0, 0];
                 while a > 0 {

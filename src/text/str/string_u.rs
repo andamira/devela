@@ -607,28 +607,28 @@ macro_rules! impl_str_u {
         }
 
         impl<const CAP: usize> PartialEq<&str> for $name<CAP> {
-            #[must_use] #[rustfmt::skip]
+            #[rustfmt::skip]
             fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
         }
         // and for when &str is on the left-hand side of the comparison
         impl<const CAP: usize> PartialEq<$name<CAP>> for &str {
-            #[must_use] #[rustfmt::skip]
+            #[rustfmt::skip]
             fn eq(&self, string: & $name<CAP>) -> bool { *self == string.as_str() }
         }
 
         impl<const CAP: usize> Deref for $name<CAP> {
             type Target = str;
-            #[must_use] #[rustfmt::skip]
+            #[rustfmt::skip]
             fn deref(&self) -> &Self::Target { self.as_str() }
         }
 
         impl<const CAP: usize> AsRef<str> for $name<CAP> {
-            #[must_use] #[rustfmt::skip]
+            #[rustfmt::skip]
             fn as_ref(&self) -> &str { self.as_str() }
         }
 
         impl<const CAP: usize> AsRef<[u8]> for $name<CAP> {
-            #[must_use] #[rustfmt::skip]
+            #[rustfmt::skip]
             fn as_ref(&self) -> &[u8] { self.as_bytes() }
         }
 
@@ -695,7 +695,6 @@ macro_rules! impl_str_u {
                 all(feature = "std", any(unix, target_os = "wasi"))
             )))]
             impl<const CAP: usize> AsRef<OsStr> for $name<CAP> {
-            #[must_use]
                 fn as_ref(&self) -> &OsStr {
                     OsStr::from_bytes(self.as_bytes())
                 }

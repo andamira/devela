@@ -123,7 +123,6 @@ macro_rules! impl_non_value {
             impl Default for [<NonExtreme $s:upper $b>] {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
-                #[must_use]
                 fn default() -> Self {
                     #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                     return [<NonExtreme $s:upper $b>]::new($IP::default()).unwrap();
@@ -191,7 +190,6 @@ macro_rules! impl_non_value {
                 /// Panics in debug if the given `value` is equal to `V`.
                 /// # Safety
                 /// The given `value` must never be equal to `V`.
-                #[must_use]
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                 pub const unsafe fn new_unchecked(value: $IP) -> Self {
                     #[cfg(debug_assertions)]
@@ -312,7 +310,6 @@ macro_rules! impl_non_value {
             /* conversions */
 
             impl<const V: $IP> From<$name<V>> for $IP {
-                #[must_use]
                 fn from(value: $name<V>) -> $IP { value.get() }
             }
 

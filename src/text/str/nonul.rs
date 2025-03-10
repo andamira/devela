@@ -507,27 +507,27 @@ impl<const CAP: usize> fmt::Debug for StringNonul<CAP> {
 }
 
 impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> {
-    #[must_use] #[rustfmt::skip]
+    #[rustfmt::skip]
     fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
 }
 impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str {
-    #[must_use] #[rustfmt::skip]
+    #[rustfmt::skip]
     fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_str() }
 }
 
 impl<const CAP: usize> Deref for StringNonul<CAP> {
     type Target = str;
-    #[must_use] #[rustfmt::skip]
+    #[rustfmt::skip]
     fn deref(&self) -> &Self::Target { self.as_str() }
 }
 
 impl<const CAP: usize> AsRef<str> for StringNonul<CAP> {
-    #[must_use] #[rustfmt::skip]
+    #[rustfmt::skip]
     fn as_ref(&self) -> &str { self.as_str() }
 }
 
 impl<const CAP: usize> AsRef<[u8]> for StringNonul<CAP> {
-    #[must_use] #[rustfmt::skip]
+    #[rustfmt::skip]
     fn as_ref(&self) -> &[u8] { self.as_bytes() }
 }
 

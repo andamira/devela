@@ -396,7 +396,6 @@ mod core_impls {
         }
     }
     impl<DST: ?Sized, BUF: DstBuf + Default> Default for DstStack<DST, BUF> {
-        #[must_use]
         fn default() -> Self {
             DstStack::new()
         }
@@ -423,7 +422,6 @@ mod core_impls {
 
     impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstStackIter<'a, DST, BUF> {
         type Item = &'a DST;
-        #[must_use]
         fn next(&mut self) -> Option<&'a DST> {
             if self.1 == 0 {
                 None
@@ -438,7 +436,6 @@ mod core_impls {
 
     impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstStackIterMut<'a, DST, BUF> {
         type Item = &'a mut DST;
-        #[must_use]
         fn next(&mut self) -> Option<&'a mut DST> {
             if self.1 == 0 {
                 None

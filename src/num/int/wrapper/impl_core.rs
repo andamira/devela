@@ -91,7 +91,6 @@ macro_rules! impl_core {
         #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns the absolute value of `self`.
-            #[must_use]
             pub const fn abs(self) -> Int<$t> { Int(self.0.abs()) }
 
             /// Returns `true` if `self` is an even number.
@@ -136,7 +135,6 @@ macro_rules! impl_core {
             #[doc = "assert_eq![Int(36), Int(0_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
-            #[must_use]
             pub const fn gcd(self, b: $t) -> Int<$t> {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
                 iif![a == 0; return Int(b)];
@@ -386,7 +384,6 @@ macro_rules! impl_core {
         #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
-            #[must_use]
             pub const fn abs(self) -> Int<$t> { self }
 
             /// Returns `true` if `self` is an even number.
@@ -426,7 +423,6 @@ macro_rules! impl_core {
             #[doc = "assert_eq![Int(36), Int(0_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
-            #[must_use]
             pub const fn gcd(self, mut b: $t) -> Int<$t> {
                 let mut a = self.0;
                 iif![a == 0; return Int(b)];

@@ -90,7 +90,6 @@ macro_rules! impl_frac {
             pub const fn is_reduced(self) -> bool { self.gcd() == 1 }
 
             /// Simplify a fraction.
-            #[must_use]
             pub const fn reduce(self) -> $fout {
                 let g = self.gcd();
                 Frac([self.0[0] / g, self.0[1] / g])
@@ -168,7 +167,6 @@ macro_rules! impl_frac {
             pub const fn is_reduced(self) -> bool { self.gcd().0 == 1 }
 
             /// Simplify a fraction.
-            #[must_use]
             pub const fn reduce(self) -> $fout {
                 let g = self.gcd().0;
                 Frac([Int(self.0[0].0 / g), Int(self.0[1].0 / g)])

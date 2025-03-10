@@ -54,7 +54,6 @@ impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstQueuePopHandle<'_, DST, BUF> {
 
 impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstQueueIter<'a, DST, BUF> {
     type Item = &'a DST;
-    #[must_use]
     fn next(&mut self) -> Option<&'a DST> {
         if self.1 == self.0.write_pos {
             None
@@ -69,7 +68,6 @@ impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstQueueIter<'a,
 }
 impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstQueueIterMut<'a, DST, BUF> {
     type Item = &'a mut DST;
-    #[must_use]
     fn next(&mut self) -> Option<&'a mut DST> {
         if self.1 == self.0.write_pos {
             None

@@ -1,6 +1,6 @@
 // devela::num::float::ext_float
 //
-//! Extention trait for floatin-point methods.
+//! Extention trait for floating-point primitives.
 //
 // IMPROVE: remove redundant methods implemented in `core`
 
@@ -443,9 +443,9 @@ pub trait ExtFloat: ExtFloatConst + Sized {
         F: Fn(Self, Self) -> Self;
 }
 
-macro_rules! impl_float_ext {
+macro_rules! impl_ext_float {
     () => {
-        impl_float_ext![
+        impl_ext_float![
             (f32, u32 | i32):"_float_f32":"_cmp_f32",
             (f64, u32 | i32):"_float_f64":"_cmp_f32"];
     };
@@ -456,7 +456,7 @@ macro_rules! impl_float_ext {
     // $cap: the capability feature that enables the given implementation. E.g "_float_f32".
     // $cmp: the feature that enables the given implementation. E.g "_cmp_f32".
     ($( ($f:ty, $ue:ty|$ie:ty): $cap:literal : $cmp:literal ),+) => {
-        $( impl_float_ext![@$f, $ue|$ie, $cap:$cmp]; )+
+        $( impl_ext_float![@$f, $ue|$ie, $cap:$cmp]; )+
     };
     (@$f:ty, $ue:ty|$ie:ty, $cap:literal : $cmp:literal) => {
         #[cfg(feature = $cap )]
@@ -733,4 +733,4 @@ macro_rules! impl_float_ext {
         }
     }
 }
-impl_float_ext!();
+impl_ext_float!();
