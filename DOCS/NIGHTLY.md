@@ -43,6 +43,7 @@ See also
 - 1.87: `·`[const_copy_from_slice](https://github.com/rust-lang/rust/pull/138098)
 - 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
 - 1.87: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
+- 1.87: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
 - 1.87: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
 - 1.87: `s`[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.87: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
@@ -56,6 +57,7 @@ See also
 - 1.87: `a`[string_extend_from_within](https://github.com/rust-lang/rust/pull/137569)
 - 1.87: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
 - 1.87: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
+- 1.87: ` `[Allow `*const W<dyn A>` -> `*const dyn A` ptr cast](https://github.com/rust-lang/rust/pull/136127)
 - 1.87: `✓`[Undeprecate env::home_dir](https://github.com/rust-lang/rust/pull/137327)
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
 - 1.87: ` `[Update stdarch](https://github.com/rust-lang/rust/pull/136831) CHECK
@@ -72,7 +74,6 @@ See also
 - 1.??: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
-- 1.??: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
 - 1.??: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
 - 1.??: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
@@ -87,6 +88,7 @@ See also
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
 - 1.??: `·`[precise_capturing_in_traits](https://github.com/rust-lang/rust/pull/138128)
+- 1.??: `·`[repr128](https://github.com/rust-lang/rust/pull/138285)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
 # … may be stable even later

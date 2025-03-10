@@ -74,7 +74,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "alloc"),
-    feature(box_uninit_write, extract_if, string_extend_from_within,)
+    feature(box_uninit_write,  const_vec_string_slice, extract_if, string_extend_from_within,)
 )]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "std"),
@@ -103,13 +103,11 @@
         macro_metavar_expr,
         naked_functions,
         precise_capturing_in_traits,
+        repr128,
         unsafe_cell_from_mut,
     )
 )]
-#![cfg_attr(
-    all(nightly_stable_later, feature = "alloc"),
-    feature(new_zeroed_alloc, const_vec_string_slice,)
-)]
+#![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
     feature(anonymous_pipe, once_wait, os_string_pathbuf_leak,)
