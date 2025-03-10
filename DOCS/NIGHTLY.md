@@ -2,6 +2,7 @@
 
 Legend:
 - ` ` = not enabled / can't be enabled
+- `i` = not enabled (incomplete_features).
 - `·` = enabled by non-specific cfg flag (`nightly_[next1|next2|later`)
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
@@ -88,7 +89,7 @@ See also
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
 - 1.??: `·`[precise_capturing_in_traits](https://github.com/rust-lang/rust/pull/138128)
-- 1.??: `·`[repr128](https://github.com/rust-lang/rust/pull/138285)
+- 1.??: `i`[repr128](https://github.com/rust-lang/rust/pull/138285)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 
 # … may be stable even later

@@ -103,7 +103,7 @@
         macro_metavar_expr,
         naked_functions,
         precise_capturing_in_traits,
-        repr128,
+        // repr128, // incomplete_features
         unsafe_cell_from_mut,
     )
 )]
