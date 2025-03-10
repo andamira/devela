@@ -11,6 +11,7 @@ use crate::Duration;
 use ::std::time::SystemTimeError as StdSystemTimeError;
 
 define_error! { individual:
+    +tag: crate::TAG_TIME!(),
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub struct SystemTimeError(Duration);

@@ -14,7 +14,26 @@
 macro_rules! define_error {
     (
     // Defines a standalone error tuple-struct with elements.
+    //
+    // # Args
+    // $tag:          optional additional doc tag.
+    // $attributes:   attributes for the const & struct declarations, and its implementations.
+    // $struct_name:  the name of the individual error struct.
+    // $struct_vis:   its visibility.
+    //
+    //  $e_vis
+    //  $e_ty:
+    //
+    //  $f_attr
+    //  $f_vis
+    //  $f_name
+    //  $f_ty
+    //
+    // $DOC_NAME
+    // $doc_str
+    //
     individual:
+        $(+tag: $tag:expr ,)?
         $(#[$attributes:meta])*
         $struct_vis:vis struct $struct_name:ident
         $(( $($e_vis:vis $e_ty:ty),+ $(,)? ))? $(;$($_a:lifetime)?)?              // tuple-struct↓
@@ -26,8 +45,9 @@ macro_rules! define_error {
         $(#[$attributes])*
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
-        $(#[$attributes])*
+        $(#[doc = $tag])?
         #[doc = crate::TAG_ERROR!()]
+        $(#[$attributes])*
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
         $struct_vis struct $struct_name
