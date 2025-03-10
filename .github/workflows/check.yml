@@ -72,6 +72,9 @@ jobs:
           sudo apt update
           # for alsa-sys, gilrs:
           sudo apt install -y libasound2-dev libudev-dev
+          # for ffmpeg:
+          sudo apt install -y clang pkg-config libavcodec-dev libavdevice-dev \
+            libavfilter-dev libavformat-dev libavutil-dev
           # for fltk:
           sudo apt install -y libpango1.0-dev libxft-dev # libxext-dev libxft-dev \
             # libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev libpng-dev \
