@@ -66,6 +66,7 @@
   - `ExtThread`: `sleep_ms`, `sleep_us`, `sleep_ns`.
   - `Float`: `midpoint`, `recip`, `to_degrees`, `to_radians`.
   - `HasherFx`: `hash_bytes_with_seed`.
+  - `Slice::<u8>::const_copy`.
   - prngs: `from_state`, `inner_state`.
 - new variants:
   - `IoErrorKind:` `OutOfMemory`, `FilesystemLoop`, `FilesystemQuotaExceeded`, `CrossesDevices`, `InvalidFilename`, `InProgress`.

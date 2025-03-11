@@ -625,6 +625,14 @@ impl<T> Slice<T> {
 
 /// # Methods for slices of bytes.
 impl Slice<u8> {
+    /// Copies the `src` slice into `dst` in compile-time.
+    pub const fn const_copy<const N: usize>(src: &[u8; N], dst: &mut [u8; N]) {
+        let mut i = 0;
+        while i < N {
+            dst[i] = src[i];
+            i += 1;
+        }
+    }
     /// Returns a subslice without the given leading `byte`s.
     #[must_use]
     pub const fn trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
