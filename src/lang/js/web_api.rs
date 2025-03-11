@@ -189,11 +189,13 @@ impl Js {
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
     #[unsafe(no_mangle)]
-    pub unsafe extern "C" fn wasm_callback_mouse(callback_ptr: usize,
-        button: js_int32, buttons: js_int32, x: js_number, y: js_number) {
+    pub unsafe extern "C" fn wasm_callback_mouse(callback_ptr: usize, button: js_int32,
+        buttons: js_int32, x: js_number, y: js_number, etype: js_int32, time_stamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(JsEventMouse) = unsafe { transmute(callback) };
-        callback(JsEventMouse::new(x, y, button as u8, buttons as u8));
+        let etype = JsEvent::from_repr(etype as u8);
+        let time_stamp = JsInstant::from_millis_f64(time_stamp);
+        callback(JsEventMouse::new(x, y, button as u8, buttons as u8, etype, time_stamp));
     }
     /// WebAssembly mouse event callback dispatcher.
     ///
@@ -207,12 +209,15 @@ impl Js {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1207700
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1822714
     #[unsafe(no_mangle)]
-    pub unsafe extern "C" fn wasm_callback_pointer(callback_ptr: usize,
-        id: js_int32, x: js_number, y: js_number, pressure: js_number,
-        tilt_x: js_int32, tilt_y: js_int32, twist: js_int32) {
+    pub unsafe extern "C" fn wasm_callback_pointer(callback_ptr: usize, id: js_int32,
+        x: js_number, y: js_number, pressure: js_number, tilt_x: js_int32, tilt_y: js_int32,
+        twist: js_int32, etype: js_int32, time_stamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(JsEventPointer) = unsafe { transmute(callback) };
-        callback(JsEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16));
+        let etype = JsEvent::from_repr(etype as u8);
+        let time_stamp = JsInstant::from_millis_f64(time_stamp);
+        callback(JsEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16,
+            etype, time_stamp));
     }
 }
 js_reexport! {

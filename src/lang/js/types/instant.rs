@@ -7,6 +7,7 @@ use crate::{js_number, Js, TimeDelta};
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 ///
 /// The internal representation is a double-precision floating-point millisecond value.
+#[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct JsInstant {
     /// Milliseconds since `performance.timeOrigin`.

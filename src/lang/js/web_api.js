@@ -46,6 +46,23 @@ export async function initWasm(wasmPath, imports = {}) {
         if (selector === "document") return document;
         return document.querySelector(selector);
     }
+	// Helper function to map event names to `JsEvent` indices, matching Rust's repr.
+	function get_event_type(eventName) {
+		const eventMap = {
+			"click": 1,
+			"keydown": 2,
+			"keyup": 3,
+			"mousedown": 4,
+			"mouseup": 5,
+			"mousemove": 6,
+			"pointerdown": 7,
+			"pointerup": 8,
+			"pointermove": 9,
+			// 10
+			"resize": 11,
+		};
+		return eventMap[eventName] ?? 0; // Default to 255 for unknown events
+	}
 
 	/* Bindings */
 
@@ -105,29 +122,32 @@ export async function initWasm(wasmPath, imports = {}) {
 			},
 			event_addListenerMouse: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
 				const element = get_element(ePtr, eLen)
-				const event = str_decode(eventPtr, eventLen);
 				if (!element) return;
+				const event = str_decode(eventPtr, eventLen);
 				const callback = (e) => {
 					const button = e.type === "mousemove" ? -1 : e.button; // -1 for no clicks
 					const buttons = e.buttons; // Bitmask of currently held buttons
+					const etype = get_event_type(e.type);
+					const time_stamp = e.timeStamp;
 					wasm.exports.wasm_callback_mouse(callbackPtr,
-						button, buttons, e.clientX, e.clientY);
+						button, buttons, e.clientX, e.clientY, etype, time_stamp);
 				};
 				api_events._callbacks.set(callbackPtr, callback);
 				element.addEventListener(event, callback);
 			},
 			event_addListenerPointer: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
 				const element = get_element(ePtr, eLen)
-				const event = str_decode(eventPtr, eventLen);
 				if (!element) return;
+				const event = str_decode(eventPtr, eventLen);
 				const callback = (e) => {
-					console.log(e);
+					const etype = get_event_type(e.type);
+					const time_stamp = e.timeStamp;
 					// NOTE: if we manage mouse events the mouse callback doesn't get triggered
 					if (e.pointerType !== "mouse") {
 						e.preventDefault(); // STOP mouse event from firing
 						wasm.exports.wasm_callback_pointer(
 							callbackPtr, e.pointerId, e.clientX, e.clientY, e.pressure,
-							e.tiltX, e.tiltY, e.twist || 0
+							e.tiltX, e.tiltY, e.twist || 0, etype, time_stamp,
 						);
 					}
 				};
