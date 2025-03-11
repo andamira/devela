@@ -10,6 +10,21 @@
 /// See also [`Str`][crate::Str], [`ExtMem`][crate::ExtMem],
 pub struct Char;
 
+/// Global ASCII lookup table for fast UTF-8 encoding.
+#[rustfmt::skip]
+pub(crate) static ASCII_TABLE: [&str; 128] = [
+    "\0", "\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07", "\x08", "\t", "\n",
+    "\x0B", "\x0C", "\r", "\x0E", "\x0F", "\x10", "\x11", "\x12", "\x13", "\x14", "\x15",
+    "\x16", "\x17", "\x18", "\x19", "\x1A", "\x1B", "\x1C", "\x1D", "\x1E", "\x1F",
+    " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?",
+    "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+    "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_",
+    "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+    "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", "\x7F",
+];
+
+/// # Methods over `u32`.
 impl Char {
     /// Returns the number of bytes necessary to store the given unicode scalar `code`.
     #[must_use]
@@ -41,7 +56,10 @@ impl Char {
             // unallocated range (16 potential non-characters):
             || (code >= 0x2FE0 && code <= 0x2FEF)
     }
+}
 
+/// # Methods over bytes.
+impl Char {
     /// Returns the expected UTF-8 byte length based on the first byte.
     ///
     /// This function does **not** validate UTF-8 but determines how many bytes
@@ -118,7 +136,11 @@ impl Char {
             + ((code[2] > 0) & (code[2] & 0b1100_0000 != 0b1000_0000)) as u8
             + ((code[3] > 0) & (code[3] & 0b1100_0000 != 0b1000_0000)) as u8
     }
+}
 
+/// # Methods over `char`
+#[rustfmt::skip]
+impl Char {
     /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8.
     #[must_use] #[rustfmt::skip]
     pub const fn len_utf8(code: char) -> usize {
@@ -128,9 +150,7 @@ impl Char {
     /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8.
     #[must_use]
     #[deprecated(since = "0.23.0", note = "Use `len_utf8` instead")]
-    pub const fn len_to_utf8(code: char) -> usize {
-        Self::len_utf8(code)
-    }
+    pub const fn len_to_utf8(code: char) -> usize { Self::len_utf8(code) }
 
     /// Converts this `char` to an UTF-8 encoded sequence of bytes.
     ///
@@ -175,5 +195,64 @@ impl Char {
                 [x, y, z, w]
             }
         }
+    }
+
+    /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
+    #[must_use]
+    pub const fn to_ascii_str(c: char) -> &'static str {
+        if c.is_ascii() { ASCII_TABLE[c as usize] } else { "" }
+    }
+    /// Returns the ASCII representation as a `&'static str`, or panics if non-ASCII.
+    ///
+    /// # Panics
+    /// Panics if the character is not ASCII.
+    #[must_use]
+    pub const fn to_ascii_str_unchecked(c: char) -> &'static str { ASCII_TABLE[c as usize] }
+
+    /// Converts a character to its closest ASCII equivalent, if possible.
+    ///
+    /// This function attempts to replace accented or special characters with
+    /// their ASCII counterparts. If a mapping exists, it returns `Some(char)`,
+    /// otherwise, it returns `None`.
+    #[must_use]
+    pub const fn to_ascii_fold(c: char) -> Option<char> {
+        match c {
+            // ASCII already, return as-is
+            _ if c.is_ascii() => Some(c),
+            // Latin-1 Supplement
+            'À' | 'Á' | 'Â' | 'Ã' | 'Ä' | 'Å' => Some('A'),
+            'à' | 'á' | 'â' | 'ã' | 'ä' | 'å' => Some('a'),
+            'È' | 'É' | 'Ê' | 'Ë' => Some('E'),
+            'è' | 'é' | 'ê' | 'ë' => Some('e'),
+            'Ì' | 'Í' | 'Î' | 'Ï' => Some('I'),
+            'ì' | 'í' | 'î' | 'ï' => Some('i'),
+            'Ò' | 'Ó' | 'Ô' | 'Õ' | 'Ö' => Some('O'),
+            'ò' | 'ó' | 'ô' | 'õ' | 'ö' => Some('o'),
+            'Ù' | 'Ú' | 'Û' | 'Ü' => Some('U'),
+            'ù' | 'ú' | 'û' | 'ü' => Some('u'),
+            'Ý' | 'Ÿ' => Some('Y'),
+            'ý' | 'ÿ' => Some('y'),
+            'Ç' => Some('C'),
+            'ç' => Some('c'),
+            'Ñ' => Some('N'),
+            'ñ' => Some('n'),
+            // Ligatures & Special Cases
+            'Æ' => Some('A'), 'æ' => Some('a'),
+            'Œ' => Some('O'), 'œ' => Some('o'),
+            // Symbols that could be mapped
+            'ß' => Some('s'), // German sharp S → s
+            'Ð' => Some('D'), 'ð' => Some('d'),
+            'Þ' => Some('P'), 'þ' => Some('p'),
+            _ => None, // No reasonable ASCII mapping
+        }
+    }
+    /// Converts a character to its closest ASCII equivalent,
+    /// or returns the input character if no mapping exists.
+    ///
+    /// This function is similar to [`to_ascii_fold`], but **never returns `None`**.
+    /// If no ASCII equivalent exists, the input character is returned unchanged.
+    #[must_use]
+    pub const fn to_ascii_fold_unchecked(c: char) -> char {
+        if let Some(m) = Self::to_ascii_fold(c) { m } else { c }
     }
 }
