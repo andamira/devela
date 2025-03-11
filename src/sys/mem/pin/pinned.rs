@@ -1,4 +1,4 @@
-// devela::sys::mem::pin
+// devela::sys::mem::pin::pinned
 //
 //! Defines [`Pinned`].
 //

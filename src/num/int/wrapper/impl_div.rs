@@ -65,7 +65,6 @@ macro_rules! impl_div {
         #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the truncated quotient and the remainder.
-            #[must_use]
             pub const fn div_rem(self, b: $t) -> [Int<$t>; 2] {
                 let a = self.0; [Int(a / b), Int(a % b)]
             }
@@ -260,7 +259,6 @@ macro_rules! impl_div {
             /* unsigned division */
 
             /// Returns the truncated quotient and the remainder.
-            #[must_use]
             pub const fn div_rem(self, b: $t) -> [Int<$t>; 2] {
                 let a = self.0; [Int(a / b), Int(a % b)]
             }

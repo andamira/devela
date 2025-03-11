@@ -47,41 +47,36 @@ possible for other types to opt in to move-from-deref.
     Box
 }
 
-/* mem */
+/* mem structs */
 
 reexport! { rust: core::mem,
     doc: "A wrapper to inhibit compiler from automatically calling `T`’s destructor.",
     ManuallyDrop
 }
 reexport! { rust: core::mem,
-    doc: "A wrapper type to construct uninitialized instances of `T`.",
-    MaybeUninit
-}
-reexport! { rust: core::mem,
     doc: "Opaque type representing the discriminant of an enum.",
     Discriminant
 }
+
+/* mem unions */
+
+reexport! { rust: core::mem,
+    doc: "A wrapper type to construct uninitialized instances of `T`.",
+    MaybeUninit
+}
+/* mem macros */
 
 reexport! { rust: core::mem,
     doc: "Expands to the offset in bytes of a field from the beginning of the given type.",
     offset_of
 }
 
+/* mem functions */
+
 // NOTE: can't namespace this in `Mem`.
 reexport! { rust: core::mem,
     doc: "Reinterprets the bits of a value of one type as another type.",
     transmute
-}
-
-/* pin */
-
-reexport! { rust: core::pin,
-    doc: "Constructs a <code>[Pin]<[&mut] T></code>, by pinning a `value: T` locally.",
-    pin
-}
-reexport! { rust: core::pin,
-    doc: "A pointer which pins its pointee in place.",
-    Pin
 }
 
 /* rc */

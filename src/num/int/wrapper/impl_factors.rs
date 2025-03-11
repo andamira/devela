@@ -19,6 +19,11 @@
 //     - factors_prime_unique_buf
 //     - factors_prime_unique_exp_buf
 //     - factors_prime_unique_plus_buf
+//
+// TODO MAYBE BENCH implementing another factorization solution
+// - https://www.reddit.com/r/matheducation/comments/1iog8xg/covering_the_basics_how_to_find_factors_gcse_math/
+// 2 arrays (subdivide, first, last next, corresponding, etc. )
+// could be 2 mutable parts of the same array, with split_mut.
 
 use crate::{iif, paste, Int, NumError::MismatchedSizes, NumResult as Result};
 #[cfg(feature = "alloc")]

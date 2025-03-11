@@ -621,7 +621,6 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
             /// more probably than in [`modulo_sub_unchecked`][Self::modulo_sub_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[must_use]
             pub const fn modulo_sub_cycles_unchecked(self, other: $t, modulus: $t)
                 -> (Int<$t>, Int<$t>) {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);

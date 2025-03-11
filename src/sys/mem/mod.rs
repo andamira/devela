@@ -19,15 +19,13 @@ mod cache_align; // CacheAlign
 mod cswap; // cswap!
 mod ext; // ExtMem
 mod namespace; // Mem
+mod pin; // Pinned, ::core::pin::*
 mod ptr; // Ptr, ::core::ptr::*
 mod reexports; // ::core::mem::*
 mod size; // size_of_expr!, BitSized, ByteSized,
 mod slice; // Slice, ExtSlice
 mod storage; // Bare, BareBox, Boxed, Storage
 
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
-mod pin; // Pinned
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 mod pod; // MemPod
@@ -48,10 +46,8 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     mod _mods { #![allow(unused)]
         pub use super::{
             aligned::*, alloc::_all::*, cache_align::*, cswap::*, ext::*, namespace::*,
-            ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,
+            pin::_all::*, ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,
         };
-        #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-        pub use super::pin::Pinned;
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::pod::MemPod;
         #[cfg(feature = "std")]
@@ -71,7 +67,7 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         pub use super::{_mods::*, _pub_mods::*};
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{cell::_always::*, ptr::_always::*, reexports::*};
+        pub use super::{cell::_always::*, pin::_always::*, ptr::_always::*, reexports::*};
     }
 }
 // WIPZONE

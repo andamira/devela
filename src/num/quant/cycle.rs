@@ -29,3 +29,37 @@ pub struct CycleCount<T, N> {
     /// The total number of repetitions.
     pub count: N,
 }
+
+// WIPZONE
+
+// #[doc = crate::TAG_QUANT!()]
+// /// Cyclic behavior.
+// ///
+// /// Defines operations common to periodic structures, such as retrieving
+// /// the period, normalizing values within the cycle, applying offsets,
+// /// and handling bounded or repeated cycles.
+// pub trait Cycled<T> {
+//     /// Returns the fundamental period of the cycle.
+//     fn cycle_period(&self) -> T;
+//
+//     /// Normalizes a value within the cycle's periodic range.
+//     ///
+//     /// Ensures that the input `value` is wrapped within `[0, period)`.
+//     fn cycle_normalize(&self, value: T) -> T;
+//
+//     ///
+//     fn cycle_count(&self) -> T;
+//
+//     ///
+//     fn cycle_offset(&self) -> T;
+//
+//     /// Advances the cycle by a given offset.
+//     ///
+//     /// This may modify internal state or return a new cycle with the offset applied.
+//     fn with_offset(&self, offset: T) -> Self;
+//
+//     /// Determines how many complete cycles fit within a given range.
+//     ///
+//     /// This method is useful for bounded or counted cycles.
+//     fn cycles_in_range(&self, range: T) -> T;
+// }

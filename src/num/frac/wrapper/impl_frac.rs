@@ -133,11 +133,9 @@ macro_rules! impl_frac {
         // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
-            #[must_use]
             pub const fn numerator(self) -> Int<$i> { self.0[0] }
 
             /// Returns the denominator (the second number of the sequence).
-            #[must_use]
             pub const fn denominator(self) -> Int<$i> { self.0[1] }
 
             /// Retuns `true` if the fraction is valid `(denominator != 0)`.
@@ -174,7 +172,6 @@ macro_rules! impl_frac {
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
             /// between the numerator and the denominator.
-            #[must_use]
             pub const fn gcd(self) -> Int<$i> { self.0[0].gcd(self.0[1].0) }
 
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>
