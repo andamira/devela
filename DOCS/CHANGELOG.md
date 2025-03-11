@@ -41,6 +41,7 @@
     - log: `LogConfig`.
     - mem: `Current`, `CurrentGuard`, `SpinLock`, `SpinLockGuard`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
+    - `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Log`, `Panic`.

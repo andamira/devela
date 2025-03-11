@@ -14,7 +14,7 @@ pub mod crossterm;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_miniquad")))]
 pub mod miniquad;
 
-crate::items! { // structural access: _mods, _all
+crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
     pub use _mods::*;
     #[allow(unused)] #[doc(hidden, no_inline)]

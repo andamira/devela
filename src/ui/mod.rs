@@ -10,6 +10,7 @@
 crate::items! {
     mod error;
     pub mod back; // UiService*, UiCap*
+    pub mod event; // Event[Button[State]|Mouse|Pointer[Type]|TimeStamp|Wheel]
     pub mod front;
 }
 
@@ -32,7 +33,7 @@ crate::items! { // structural access: _mods, _all,
         pub use super::layout::_all::*;
 
         #[cfg(ui··)]
-        pub use super::{back::_all::*, front::_all::*};
+        pub use super::{back::_all::*, event::_all::*, front::_all::*};
     }
     pub(super) mod _all { #![allow(unused)]
         pub use super::{_mods::*, _pub_mods::*};
