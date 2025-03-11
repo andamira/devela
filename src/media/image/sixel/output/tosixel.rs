@@ -594,8 +594,8 @@ impl<W: IoWrite> SixelOutput<W> {
                         paletted_pixels[dst] = 255;
                     } else {
                         dither.dither.apply_15bpp(&mut pixels[px_idx..], x, y, width, height);
-                        let pix = ((pixels[px_idx] & 0xf8) as i32) << 7
-                            | ((pixels[px_idx + 1] & 0xf8) as i32) << 2
+                        let pix = (((pixels[px_idx] & 0xf8) as i32) << 7)
+                            | (((pixels[px_idx + 1] & 0xf8) as i32) << 2)
                             | ((pixels[px_idx + 2] >> 3) & 0x1f) as i32;
 
                         if rgbhit[pix as usize] == 0 {

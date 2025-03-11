@@ -107,6 +107,10 @@ const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // IMPROVE: allow activating `windows` feature
     "dep_crossterm",
+    // (fails on miri on windows)
+    // https://github.com/zmwangx/rust-ffmpeg/wiki/Notes-on-building#building-on-windows
+    // https://github.com/shssoichiro/ffmpeg-the-third/blob/master/.github/workflows/build.yml#L132
+    "dep_ffmpeg",
     // (windows, linux, macos) https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md
     "dep_fltk",
     // because of pkg-config & libudev-sys

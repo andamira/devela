@@ -428,7 +428,7 @@ fn compute_histogram(
         if histogram[memory[i]] > 0 {
             let mut tuple: Vec<i32> = vec![0; depth as usize];
             for n in 0..depth {
-                tuple[(depth - 1 - n) as usize] = ((memory[it] >> (n * 5) & 0x1f) << 3) as i32;
+                tuple[(depth - 1 - n) as usize] = (((memory[it] >> (n * 5)) & 0x1f) << 3) as i32;
             }
             colorfreqtable.insert(i as i32, Tuple { value: histogram[memory[i]], tuple });
         }
