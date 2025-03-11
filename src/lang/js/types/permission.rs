@@ -50,7 +50,6 @@ pub enum JsPermission {
     /// Allows a site to access storage without top-level navigation.
     TopLevelStorageAccess,
 }
-
 impl JsPermission {
     /// Returns the permission name as a string.
     pub fn as_str(self) -> &'static str {

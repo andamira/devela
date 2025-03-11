@@ -13,7 +13,6 @@ use crate::{js_uint32, Js, TaskPoll};
 /// A handle to a JavaScript Web Worker.
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
-#[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JsWorker {
     pub(in crate::lang::js) id: js_uint32,
@@ -61,7 +60,6 @@ pub enum JsWorkerError {
 }
 
 /// Represents a job running inside a [`JsWorker`].
-#[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct JsWorkerJob {
     pub(in crate::lang::js) worker: JsWorker,
