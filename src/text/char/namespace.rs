@@ -25,6 +25,7 @@ pub(crate) static ASCII_TABLE: [&str; 128] = [
 ];
 
 /// # Methods over `u32`.
+#[rustfmt::skip]
 impl Char {
     /// Returns the number of bytes necessary to store the given unicode scalar `code`.
     #[must_use]
@@ -56,6 +57,18 @@ impl Char {
             // unallocated range (16 potential non-characters):
             || (code >= 0x2FE0 && code <= 0x2FEF)
     }
+
+    /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
+    #[must_use]
+    pub const fn code_to_ascii_str(c: u32) -> &'static str {
+        if Char::is_7bit(c) { ASCII_TABLE[c as usize] } else { "" }
+    }
+    /// Returns the ASCII representation as a `&'static str`, or panics if non-ASCII.
+    ///
+    /// # Panics
+    /// Panics if the character is not ASCII.
+    #[must_use]
+    pub const fn code_to_ascii_str_unchecked(c: u32) -> &'static str { ASCII_TABLE[c as usize] }
 }
 
 /// # Methods over bytes.
