@@ -42,6 +42,7 @@
     - mem: `Current`, `CurrentGuard`, `SpinLock`, `SpinLockGuard`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`.
+    - `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Log`, `Panic`.

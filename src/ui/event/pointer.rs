@@ -223,15 +223,18 @@ mod impl_js {
     }
 }
 
-/* tests */
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-#[test] #[rustfmt::skip]
-fn test_size_of() {
-    assert_eq![16, size_of::<EventMouse>()];        // 128
-    assert_eq![02, size_of::<EventButton>()];       // 16
-    assert_eq![01, size_of::<EventButtonState>()];  // 8
-    assert_eq![36, size_of::<EventPointer>()];      // 288
-    assert_eq![01, size_of::<EventPointerType>()];  // 8
-    // assert_eq![01, size_of::<EventPointerPhase>()]; // 8
-    assert_eq![20, size_of::<EventWheel>()];        // 160
+    #[test] #[rustfmt::skip]
+    fn sizes_of() {
+        assert_eq![16, size_of::<EventMouse>()];        // 128
+        assert_eq![02, size_of::<EventButton>()];       // 16
+        assert_eq![01, size_of::<EventButtonState>()];  // 8
+        assert_eq![36, size_of::<EventPointer>()];      // 288
+        assert_eq![01, size_of::<EventPointerType>()];  // 8
+        // assert_eq![01, size_of::<EventPointerPhase>()]; // 8
+        assert_eq![20, size_of::<EventWheel>()];        // 160
+    }
 }
