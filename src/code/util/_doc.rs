@@ -238,6 +238,7 @@ mod tags {
         EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
         // EMOJI_ERROR_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
         EMOJI_EXPERIMENTAL = "🧪";
+        EMOJI_FFI = "🛡️"; // 🛡️, ✅
         EMOJI_FONT = "🅵"; // 🅵,, 🅰, ℱ, 𝔉, 𝕱, 𝐅
         EMOJI_FMT = "🖹"; // 🖹, 📄, 📝, 🄵, ✎, ℱ, 𝔽
         EMOJI_GEOM = "📐";
@@ -269,6 +270,8 @@ mod tags {
         TAG_EXPERIMENTAL = concat!(
             "<span class='stab portability' title='Experimental functionality'>",
             crate::EMOJI_EXPERIMENTAL!(), "</span>");
+        TAG_FFI = concat!("<span class='stab portability' title='Ffi-safe version'>",
+            crate::EMOJI_FFI!(), "</span>");
         TAG_FONT = concat!("<span class='stab portability' title='Font-related item'>",
             crate::EMOJI_FONT!(), "</span>");
         TAG_FMT =
