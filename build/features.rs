@@ -210,6 +210,7 @@ mod reflection {
         ]
     };
 
+    // In sync with ../Cargo.toml::dep_all & ../src/_dep.rs
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["dep··"],
         features: &include!{"../config/dep_all.rs"},
@@ -229,13 +230,19 @@ mod reflection {
         ref_flags: &["lang··"],
         features: &["lang", "glsl", "js"]
     };
+        pub const FFI: FlagsFeatures = FlagsFeatures {
+            ref_flags: &["ffi··"],
+            features: &["glsl", "js"]
+        };
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         ref_flags: &["media··"],
         features: &["media", "audio", "color", "draw", "font", "image"]
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         ref_flags: &["num··"],
-        features: &["num", "alg", "geom", "prim", "rand", "unit"]
+        features: &["num", "alg", "geom", "rand", "unit",
+            "prim", "cast", "join", "split",
+        ]
     };
         pub const PRIM: FlagsFeatures = FlagsFeatures {
             ref_flags: &["prim··"],
@@ -247,7 +254,8 @@ mod reflection {
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["sys··"],
-        features: &["sys", "io", "mem",
+        features: &["sys", "io",
+            "mem", "bit",
             /* os: */ "linux", "windows"]
     };
         // RETHINK:
@@ -382,7 +390,7 @@ mod reflection {
 
             CODE,
             DATA,
-            LANG,
+            LANG, FFI,
             MEDIA,
             NUM, PRIM,
             PHYS,

@@ -152,9 +152,10 @@ data = ["hash"]
 	# list = []
 	# xipher = ["dep_orion"]
 lang = ["glsl", "js"]
-	glsl = []
-	js = []
-	# py = []
+	# ffi
+		glsl = []
+		js = []
+		# py = []
 media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	audio = ["sdl2?/mixer"]
 	draw = ["sdl2?/gfx"] # "sdl3?/gfx"
@@ -1126,32 +1127,33 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_stable_next2)", # 1.87
 			"cfg(nightly_stable_later)", # 1.??
 	#
-	# Auto-enabled reflection flags from ./build/features.rs
+	# Auto-enabled reflection flags from ./build/features.rs (36)
 	# --------------------------------------------------------------------------
+	# general: (4)
 	"cfg(unsafe··, safe··, nightly··, dep··)",
-	# data:
+	# data: (6)
 	'cfg(data··)',
 	'cfg(_bit··, _destaque··, _stack··)',
 	'cfg(_graph··, _node··)',
-	# lang:
-	'cfg(lang··)',
-	# media:
+	# lang: (2)
+	'cfg(lang··, ffi··)',
+	# media: (1)
 	'cfg(media··)',
-	# num:
+	# num: (14)
 	'cfg(num··, prim··)',
 	'cfg(_sort··, _sort_int··, _sort_float··)',
 	'cfg(_nums··, _cmp··, _float··, _int··, _int_i··, _int_u··)',
 	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
-	# phys
+	# phys: (1)
 	'cfg(phys··)',
-	# sys
+	# sys: (2)
 	'cfg(sys··, mem··)',
-	# text:
+	# text: (4)
 	'cfg(text··)',
 	'cfg(_char··, _str··, _str_u··)',
-	# ui
+	# ui: (1)
 	'cfg(ui··)',
-	# work
+	# work: (1)
 	'cfg(work··)',
 ]
 

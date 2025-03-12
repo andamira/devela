@@ -1,4 +1,4 @@
-// In sync with: ../Cargo.toml::dep_all & ../src/_dep.rs
+// In sync with ../Cargo.toml::dep_all, ../build/features.rs::DEPENDENCY & ../src/_dep.rs
 // Used from: ../build/features.rs::DEPENDENCY.features & ../utils/check.rs::DEP_ALL.
 //
 // NOTE: make sure to recompile `../utils/check.rs` after modifying this file.
