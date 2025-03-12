@@ -42,7 +42,7 @@
 //!
 //! While Web Workers enable concurrency, they communicate via message passing
 //! and do not share memory except through `SharedArrayBuffer`.
-mod types; // Js, JsEvent, JsPermission*, JsWorker...
+mod types; // Js, JsEventKind, JsPermission*, JsWorker...
 
 #[cfg(feature = "unsafe_ffi")]
 crate::items! {

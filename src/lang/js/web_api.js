@@ -46,8 +46,8 @@ export async function initWasm(wasmPath, imports = {}) {
         if (selector === "document") return document;
         return document.querySelector(selector);
     }
-	// Helper function to map event names to `JsEvent` indices, matching Rust's repr.
-	function get_event_type(eventName) {
+	// Helper function to map event names to `JsEventKind` indices, matching Rust's repr.
+	function get_event_kind(eventName) {
 		const eventMap = {
 			"click": 1,
 			"keydown": 2,
@@ -127,7 +127,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				const callback = (e) => {
 					const button = e.type === "mousemove" ? -1 : e.button; // -1 for no clicks
 					const buttons = e.buttons; // Bitmask of currently held buttons
-					const etype = get_event_type(e.type);
+					const etype = get_event_kind(e.type);
 					const time_stamp = e.timeStamp;
 					wasm.exports.wasm_callback_mouse(callbackPtr,
 						button, buttons, e.clientX, e.clientY, etype, time_stamp);
@@ -140,7 +140,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				if (!element) return;
 				const event = str_decode(eventPtr, eventLen);
 				const callback = (e) => {
-					const etype = get_event_type(e.type);
+					const etype = get_event_kind(e.type);
 					const time_stamp = e.timeStamp;
 					// NOTE: if we manage mouse events the mouse callback doesn't get triggered
 					if (e.pointerType !== "mouse") {

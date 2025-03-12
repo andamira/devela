@@ -1,6 +1,6 @@
 // devela::lang:js::types::event
 //
-//! Defines [`JsEvent`], [`JsEventMouse`], [`JsEventPointer`], [`JsKeyLocation`].
+//! Defines [`JsEventKind`], [`JsEventMouse`], [`JsEventPointer`], [`JsKeyLocation`].
 //
 
 #![allow(dead_code, reason = "feature-gated")]
@@ -13,7 +13,7 @@ use crate::{js_int32, js_number, JsInstant};
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum JsEvent {
+pub enum JsEventKind {
     /// Unknown event. Default case.
     #[default]
     None = 0,
@@ -46,10 +46,10 @@ pub enum JsEvent {
     /// Fires when the window is resized.
     Resize = 11,
 }
-impl JsEvent {
-    /// Constructs a JsEvent from it's representation.
+impl JsEventKind {
+    /// Constructs a `JsEventKind` from its representation.
     pub const fn from_repr(from: u8) -> Self {
-        use JsEvent as E;
+        use JsEventKind as E;
         match from {
             1 => E::Click,
             2 => E::KeyDown,
@@ -67,7 +67,7 @@ impl JsEvent {
     }
     /// Returns the event name as a string.
     pub const fn as_str(self) -> &'static str {
-        use JsEvent as E;
+        use JsEventKind as E;
         match self {
             E::Click => "click",
             E::KeyDown => "keydown",
@@ -103,7 +103,7 @@ pub struct JsEventMouse {
     /// A bitmask of buttons currently being held down (`1`: left, `2`: right, `4`: middle).
     pub buttons: u8,
     /// The type of mouse event (Click, MouseDown, MouseMove, etc.).
-    pub etype: JsEvent,
+    pub etype: JsEventKind,
     /// The JavaScript event timestamp.
     pub time_stamp: JsInstant,
 }
@@ -113,7 +113,7 @@ impl JsEventMouse {
         y: js_number,
         button: u8,
         buttons: u8,
-        etype: JsEvent,
+        etype: JsEventKind,
         time_stamp: JsInstant,
     ) -> Self {
         Self { x, y, button, buttons, etype, time_stamp }
@@ -143,7 +143,7 @@ pub struct JsEventPointer {
     /// The rotation of the stylus around its own axis (0° to 359°).
     pub twist: u16,
     /// The type of pointer event (PointerDown, PointerMove, etc.).
-    pub etype: JsEvent,
+    pub etype: JsEventKind,
     /// The JavaScript event timestamp.
     pub time_stamp: JsInstant,
 }
@@ -157,7 +157,7 @@ impl JsEventPointer {
         tilt_x: i8,
         tilt_y: i8,
         twist: u16,
-        etype: JsEvent,
+        etype: JsEventKind,
         time_stamp: JsInstant,
     ) -> Self {
         Self { x, y, pressure, id, tilt_x, tilt_y, twist, etype, time_stamp }
@@ -195,7 +195,7 @@ impl JsKeyLocation {
 
 #[test] #[rustfmt::skip]
 fn test_size_of() {
-    assert_eq![04, size_of::<JsEvent>()];        // 32
+    assert_eq![04, size_of::<JsEventKind>()];    // 32
     assert_eq![32, size_of::<JsEventMouse>()];   // 256
     assert_eq![48, size_of::<JsEventPointer>()]; // 384
     assert_eq![01, size_of::<JsKeyLocation>()];  // 8

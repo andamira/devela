@@ -19,7 +19,7 @@
 // - helpers
 
 use devela::{
-    js_bool, js_int32, js_number, js_reexport, js_uint32, transmute, Js, JsEvent, JsEventMouse,
+    js_bool, js_int32, js_number, js_reexport, js_uint32, transmute, Js, JsEventKind, JsEventMouse,
     JsEventPointer, JsInstant, JsPermission, JsPermissionState, JsTextMetrics, JsTextMetricsFull,
     JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
 };
@@ -101,7 +101,7 @@ js_reexport! {
 impl Js {
     #[doc = web_api!("EventTarget/", "addEventListener")]
     /// Attaches a Rust function `event` listener from an `element`.
-    pub fn event_add_listener(element: &str, event: JsEvent, rust_fn: extern "C" fn()) {
+    pub fn event_add_listener(element: &str, event: JsEventKind, rust_fn: extern "C" fn()) {
         unsafe {
             event_add_listener(element.as_ptr(), element.len(),
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
@@ -109,7 +109,7 @@ impl Js {
     }
     #[doc = web_api!("EventTarget/", "removeEventListener")]
     /// Removes a a Rust function `event` listener from an `element`.
-    pub fn event_remove_listener(element: &str, event: JsEvent, rust_fn: extern "C" fn()) {
+    pub fn event_remove_listener(element: &str, event: JsEventKind, rust_fn: extern "C" fn()) {
         unsafe {
             event_remove_listener(element.as_ptr(), element.len(),
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
@@ -117,7 +117,7 @@ impl Js {
     }
     #[doc = web_api!("EventTarget/", "addEventListener")]
     /// Attaches a JavaScript function `event` listener on an `element`.
-    pub fn event_add_listener_js(element: &str, event: JsEvent, js_fn_name: &str) {
+    pub fn event_add_listener_js(element: &str, event: JsEventKind, js_fn_name: &str) {
         unsafe {
             event_add_listener_js(element.as_ptr(), element.len(),
             event.as_str().as_ptr(), event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
@@ -125,7 +125,7 @@ impl Js {
     }
     #[doc = web_api!("EventTarget/", "removeEventListener")]
     /// Removes a JavaScript function `event` listener from an `element`.
-    pub fn event_remove_listener_js(element: &str, event: JsEvent, js_fn_name: &str) {
+    pub fn event_remove_listener_js(element: &str, event: JsEventKind, js_fn_name: &str) {
         unsafe {
             event_remove_listener_js(element.as_ptr(), element.len(), event.as_str().as_ptr(),
             event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
@@ -138,7 +138,7 @@ impl Js {
     /// The callback receives `JsEventMouse` with button, buttons mask, and coordinates.
     ///
     /// This will trigger on pointer events as well.
-    pub fn event_add_listener_mouse(element: &str, event: JsEvent,
+    pub fn event_add_listener_mouse(element: &str, event: JsEventKind,
         callback: extern "C" fn(JsEventMouse)) {
         unsafe {
             event_add_listener_mouse(element.as_ptr(), element.len(),
@@ -149,7 +149,7 @@ impl Js {
     /// Attaches a Rust function as a `pointer event` listener on an `element`.
     ///
     /// The callback receives `JsEventPointer` with id, coordinates, and pressure.
-    pub fn event_add_listener_pointer(element: &str, event: JsEvent,
+    pub fn event_add_listener_pointer(element: &str, event: JsEventKind,
         callback: extern "C" fn(JsEventPointer)) {
         unsafe {
             event_add_listener_pointer(element.as_ptr(), element.len(),
@@ -173,7 +173,7 @@ impl Js {
     /// ```ignore
     /// #[unsafe(no_mangle)]
     /// pub extern "C" fn my_callback() { Js::console_log("Button clicked!"); }
-    /// Js::event_add_listener("#my_button", JsEvent::Click, my_callback);
+    /// Js::event_add_listener("#my_button", JsEventKind::Click, my_callback);
     /// ```
     #[unsafe(no_mangle)]
     pub unsafe extern "C" fn wasm_callback(callback_ptr: usize) {
@@ -193,7 +193,7 @@ impl Js {
         buttons: js_int32, x: js_number, y: js_number, etype: js_int32, time_stamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(JsEventMouse) = unsafe { transmute(callback) };
-        let etype = JsEvent::from_repr(etype as u8);
+        let etype = JsEventKind::from_repr(etype as u8);
         let time_stamp = JsInstant::from_millis_f64(time_stamp);
         callback(JsEventMouse::new(x, y, button as u8, buttons as u8, etype, time_stamp));
     }
@@ -214,7 +214,7 @@ impl Js {
         twist: js_int32, etype: js_int32, time_stamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(JsEventPointer) = unsafe { transmute(callback) };
-        let etype = JsEvent::from_repr(etype as u8);
+        let etype = JsEventKind::from_repr(etype as u8);
         let time_stamp = JsInstant::from_millis_f64(time_stamp);
         callback(JsEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16,
             etype, time_stamp));
@@ -488,7 +488,7 @@ impl Js {
         JsInstant::from_millis_f64(performance_time_origin()) }
     #[doc = web_api!("Performance/", "eventCounts")]
     /// Retrieves the count of recorded events.
-    pub fn performance_event_count(event: JsEvent) -> js_uint32 {
+    pub fn performance_event_count(event: JsEventKind) -> js_uint32 {
         let name = event.as_str();
         unsafe { performance_event_count(name.as_ptr(), name.len()) }
     }

@@ -8,7 +8,7 @@
 #![allow(static_mut_refs, reason = "safe in single-threaded")]
 devela::define_panic_handler! { web_api }
 
-use devela::{format_buf, Js, JsEvent, Wasm};
+use devela::{format_buf, Js, JsEventKind, Wasm};
 
 /// Static string buffer for printing to the console.
 static mut BUF: [u8; 256] = [0; 256];
@@ -37,8 +37,9 @@ pub extern "C" fn main() {
     Js::console_error("example error");
     Js::console_trace();
 
-    /* eval */
+    /* window */
 
+    // eval
     Js::window_eval("console.log('Hello from Rust!');");
     Js::window_eval_timeout("console.log('Delayed!');", 1000);
     Js::window_eval_interval("console.log('Repeating!');", 2000);
@@ -59,8 +60,10 @@ pub extern "C" fn main() {
     let metrics = Js::measure_text_full("Hello, world!");
     Js::console_log(&format_buf![?buf, "{metrics:?}"]);
 
+    /* events */
+
     // Add an event listener to the canvas for clicks
-    Js::event_add_listener("#example_canvas_1", JsEvent::Click, canvas_click);
+    Js::event_add_listener("#example_canvas_1", JsEventKind::Click, canvas_click);
     Js::fill_style(0, 0, 0);
     Js::fill_text("Click the canvas!", 60.0, 30.0);
 
@@ -73,7 +76,7 @@ pub extern "C" fn canvas_click() {
     let buf: &mut [u8] = unsafe { &mut BUF };
     let time = Js::performance_now();
 
-    let times = Js::performance_event_count(JsEvent::Click) + 1;
+    let times = Js::performance_event_count(JsEventKind::Click) + 1;
     Js::console_log(format_buf![?buf, "Canvas clicked {times} times"]);
 
     let origin = Js::performance_time_origin();

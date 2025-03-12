@@ -128,7 +128,7 @@ pub struct EventWheel {
 #[cfg(feature = "js")] #[rustfmt::skip]
 mod impl_js {
     use super::*;
-    use crate::{iif, js_number, JsEvent, JsEventMouse, JsInstant};
+    use crate::{iif, js_number, JsEventKind, JsEventMouse, JsInstant};
 
     /* mouse */
 
@@ -193,27 +193,27 @@ mod impl_js {
 
     // IMPROVE: MAYBE impl try_ methods
     impl EventButtonState {
-        /// Converts a `JsEvent` into `EventButtonState`.
-        pub const fn from_js(js_event: JsEvent) -> Self {
-            use {JsEvent as J, EventButtonState as E};
+        /// Converts a `JsEventKind` into `EventButtonState`.
+        pub const fn from_js(js_event: JsEventKind) -> Self {
+            use {JsEventKind as J, EventButtonState as E};
             match js_event {
                 J::Click | J::MouseDown | J::PointerDown => E::Pressed,
                 J::MouseUp | J::PointerUp => E::Released,
                 _ => E::Moved,
             }
         }
-        /// Converts a `EventButtonState` into a `JsEvent`.
-        pub const fn to_js_as_mouse(self) -> JsEvent {
-            use {JsEvent as J, EventButtonState as E};
+        /// Converts a `EventButtonState` into a `JsEventKind`.
+        pub const fn to_js_as_mouse(self) -> JsEventKind {
+            use {JsEventKind as J, EventButtonState as E};
             match self {
                 E::Pressed => J::MouseDown,
                 E::Released => J::MouseUp,
                 E::Moved => J::MouseMove,
             }
         }
-        /// Converts a `EventButtonState` into a `JsEvent`.
-        pub const fn to_js_as_pointer(self) -> JsEvent {
-            use {JsEvent as J, EventButtonState as E};
+        /// Converts a `EventButtonState` into a `JsEventKind`.
+        pub const fn to_js_as_pointer(self) -> JsEventKind {
+            use {JsEventKind as J, EventButtonState as E};
             match self {
                 E::Pressed => J::PointerDown,
                 E::Released => J::PointerUp,
