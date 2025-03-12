@@ -60,7 +60,7 @@
   - `str!`: `ip_addr`.
   - `unwrap!`: `ok_err`.
 - new methods:
-  - `Char`: `len_utf8`, `[code_]to_ascii_str[_unchecked]`, `to_ascii_fold[_unchecked]`, `utf8_len[_checked]`.
+  - `Char`: `len_utf8`, `code_len_utf8[_unchecked]`,`code_to_utf8_bytes[_unchecked]`, `[code_]to_ascii_str[_unchecked]`, `is_valid`, `to_ascii_fold[_unchecked]`, `utf8_len[_checked]`.
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
