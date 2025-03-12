@@ -240,6 +240,7 @@ impl Char {
 }
 
 /// # Methods over `u8`.
+#[rustfmt::skip]
 impl Char {
     /// Returns the expected UTF-8 byte length based on the first byte.
     ///
@@ -316,5 +317,63 @@ impl Char {
         1 + ((code[1] > 0) & (code[1] & 0b1100_0000 != 0b1000_0000)) as u8
             + ((code[2] > 0) & (code[2] & 0b1100_0000 != 0b1000_0000)) as u8
             + ((code[3] > 0) & (code[3] & 0b1100_0000 != 0b1000_0000)) as u8
+    }
+
+    /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
+    ///
+    /// Returns `Some((code, len))` if the input is a valid UTF-8 sequence
+    /// and the decoded code point is a valid Unicode scalar.
+    ///
+    /// Returns `None` if:
+    /// - The index is out of bounds.
+    /// - The bytes do not form a valid UTF-8 sequence.
+    /// - The decoded value is not a valid Unicode scalar.
+    ///
+    /// # Example
+    /// ```
+    /// use devela::Char;
+    /// let bytes = b"\xE2\x98\x83"; // UTF-8 for '☃' (U+2603)
+    /// assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x2603, 3)));
+    ///
+    /// let invalid = b"\x80"; // Invalid leading byte
+    /// assert_eq!(Char::utf8_bytes_to_code(invalid, 0), None);
+    /// ```
+    #[must_use]
+    pub const fn utf8_bytes_to_code(bytes: &[u8], index: usize) -> Option<(u32, usize)> {
+        if index >= bytes.len() { return None; } // out of bounds?
+        let first = bytes[index];
+        let len = Char::utf8_len_checked(first).unwrap(); // invalid leading byte?
+        if index + (len as usize) > bytes.len() { return None; } // not enough bytes?
+        Some(Char::utf8_bytes_to_code_unchecked(bytes, index))
+    }
+    /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
+    ///
+    /// Returns `(code, len)`, where `code` is the decoded Unicode scalar,
+    /// and `len` is the number of bytes consumed.
+    ///
+    /// Assumes `bytes[index..]` contains a valid UTF-8 sequence.
+    #[must_use]
+    pub const fn utf8_bytes_to_code_unchecked(bytes: &[u8], index: usize) -> (u32, usize) {
+        let first = bytes[index];
+        match first {
+            0x00..=0x7F => (first as u32, 1), // 1-byte ASCII
+            0xC2..=0xDF => ( // 2-byte UTF-8
+                ((first as u32 & 0b0001_1111) << 6) | (bytes[index + 1] as u32 & 0b0011_1111),
+                2,
+            ),
+            0xE0..=0xEF => ( // 3-byte UTF-8
+                ((first as u32 & 0b0000_1111) << 12)
+                    | ((bytes[index + 1] as u32 & 0b0011_1111) << 6)
+                    | (bytes[index + 2] as u32 & 0b0011_1111),
+                3,
+            ),
+            _ => ( // 4-byte UTF-8
+                ((first as u32 & 0b0000_0111) << 18)
+                    | ((bytes[index + 1] as u32 & 0b0011_1111) << 12)
+                    | ((bytes[index + 2] as u32 & 0b0011_1111) << 6)
+                    | (bytes[index + 3] as u32 & 0b0011_1111),
+                4,
+            ),
+        }
     }
 }
