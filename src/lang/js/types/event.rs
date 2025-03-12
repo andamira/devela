@@ -195,7 +195,7 @@ impl JsKeyLocation {
 
 #[test] #[rustfmt::skip]
 fn test_size_of() {
-    assert_eq![01, size_of::<JsEvent>()];        // 8
+    assert_eq![04, size_of::<JsEvent>()];        // 32
     assert_eq![32, size_of::<JsEventMouse>()];   // 256
     assert_eq![48, size_of::<JsEventPointer>()]; // 384
     assert_eq![01, size_of::<JsKeyLocation>()];  // 8

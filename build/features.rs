@@ -62,7 +62,8 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     });
     #[cfg(feature = "__dbg")]
     if let Some(f) = ENABLED_CFG_FLAGS.get() {
-        let filtered_flags: Vec<_> = f.iter().filter(|&flag| flag != "--cfg").collect();
+        // IMPROVE
+        let filtered_flags: Vec<_> = f.iter().filter(|&f| f != "--cfg" && f != "-C").collect();
         println(&format!(
             "Active compiler cfg flags ({}): {:?}",
             filtered_flags.len(),

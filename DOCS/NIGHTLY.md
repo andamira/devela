@@ -59,6 +59,7 @@ See also
 - 1.87: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
 - 1.87: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
 - 1.87: ` `[Allow `*const W<dyn A>` -> `*const dyn A` ptr cast](https://github.com/rust-lang/rust/pull/136127)
+- 1.87: ` `[Reduce fmt width & precision to 16 bits](https://github.com/rust-lang/rust/pull/136932)
 - 1.87: `✓`[Undeprecate env::home_dir](https://github.com/rust-lang/rust/pull/137327)
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
 - 1.87: ` `[Update stdarch](https://github.com/rust-lang/rust/pull/136831) CHECK

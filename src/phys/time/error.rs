@@ -38,7 +38,7 @@ mod full_composite {
 
     #[doc = crate::TAG_TIME!()]
     #[doc = crate::TAG_RESULT!()]
-    /// A text-related result.
+    /// A time-related result.
     pub type TimeResult<T> = crate::Result<T, TimeError>;
 
     define_error! { composite: fmt(f)
