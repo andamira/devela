@@ -16,7 +16,7 @@ use crate::{js_int32, js_number, JsInstant};
 pub enum JsEventKind {
     /// Unknown event. Default case.
     #[default]
-    None = 0,
+    Unknown = 0,
 
     /// Fires when an element is clicked.
     Click = 1,
@@ -62,7 +62,7 @@ impl JsEventKind {
             9 => E::PointerMove,
             10 => E::GamepadPoll,
             11 => E::Resize,
-            _ => E::None,
+            _ => E::Unknown,
         }
     }
     /// Returns the event name as a string.
@@ -80,7 +80,7 @@ impl JsEventKind {
             E::PointerMove => "pointermove",
             E::GamepadPoll => "gamepadpoll",
             E::Resize => "resize",
-            E::None => "none",
+            E::Unknown => "none",
         }
     }
 }
@@ -193,10 +193,21 @@ impl JsKeyLocation {
     }
 }
 
-#[test] #[rustfmt::skip]
-fn test_size_of() {
-    assert_eq![04, size_of::<JsEventKind>()];    // 32
-    assert_eq![32, size_of::<JsEventMouse>()];   // 256
-    assert_eq![48, size_of::<JsEventPointer>()]; // 384
-    assert_eq![01, size_of::<JsKeyLocation>()];  // 8
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test] #[rustfmt::skip]
+    fn sizes_of() {
+        assert_eq![ 4, size_of::<JsEventKind>()];    // 32
+        assert_eq![32, size_of::<JsEventMouse>()];   // 256
+        assert_eq![48, size_of::<JsEventPointer>()]; // 384
+        assert_eq![ 1, size_of::<JsKeyLocation>()];  // 8
+    }
+    #[test]
+    fn js_event_conversions() {
+        assert_eq!(JsEventKind::from_repr(2), JsEventKind::KeyDown);
+        assert_eq!(JsEventKind::from_repr(3), JsEventKind::KeyUp);
+        assert_eq!(JsEventKind::from_repr(99), JsEventKind::Unknown);
+    }
 }
