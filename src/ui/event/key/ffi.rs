@@ -172,7 +172,6 @@ crate::items! {
     impl From<KeyFfi> for Key { fn from(k: KeyFfi) -> Self { Key::from_ffi(k) } }
 }
 
-
 #[cfg(feature = "js")]
 pub(crate) static F_KEYS: [&str; 48] = [
     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15",

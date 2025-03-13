@@ -7,6 +7,8 @@
 // - methods over u32
 // - methods over u8
 
+use crate::unwrap;
+
 #[doc = crate::TAG_NAMESPACE!()]
 /// Unicode scalars-related operations.
 ///
@@ -331,19 +333,18 @@ impl Char {
     ///
     /// # Example
     /// ```
-    /// use devela::Char;
-    /// let bytes = b"\xE2\x98\x83"; // UTF-8 for '☃' (U+2603)
-    /// assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x2603, 3)));
+    /// # use devela::Char;
+    /// assert_eq!(Char::utf8_bytes_to_code("Ħ".as_bytes(), 0), Some((u32::from('Ħ'), 2)));
     ///
     /// let invalid = b"\x80"; // Invalid leading byte
     /// assert_eq!(Char::utf8_bytes_to_code(invalid, 0), None);
     /// ```
     #[must_use]
     pub const fn utf8_bytes_to_code(bytes: &[u8], index: usize) -> Option<(u32, usize)> {
-        if index >= bytes.len() { return None; } // out of bounds?
+        if index >= bytes.len() { return None; } // out of bounds
         let first = bytes[index];
-        let len = Char::utf8_len_checked(first).unwrap(); // invalid leading byte?
-        if index + (len as usize) > bytes.len() { return None; } // not enough bytes?
+        let len = unwrap![some? Char::utf8_len_checked(first)]; // invalid leading byte?
+        if index + (len as usize) > bytes.len() { return None; } // not enough bytes
         Some(Char::utf8_bytes_to_code_unchecked(bytes, index))
     }
     /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
@@ -358,22 +359,55 @@ impl Char {
         match first {
             0x00..=0x7F => (first as u32, 1), // 1-byte ASCII
             0xC2..=0xDF => ( // 2-byte UTF-8
-                ((first as u32 & 0b0001_1111) << 6) | (bytes[index + 1] as u32 & 0b0011_1111),
-                2,
+                (((first as u32 & 0b0001_1111) << 6) |
+                 (bytes[index + 1] as u32 & 0b0011_1111)),
+                2
             ),
             0xE0..=0xEF => ( // 3-byte UTF-8
-                ((first as u32 & 0b0000_1111) << 12)
-                    | ((bytes[index + 1] as u32 & 0b0011_1111) << 6)
-                    | (bytes[index + 2] as u32 & 0b0011_1111),
-                3,
+                (((first as u32 & 0b0000_1111) << 12) |
+                 ((bytes[index + 1] as u32 & 0b0011_1111) << 6) |
+                 (bytes[index + 2] as u32 & 0b0011_1111)),
+                3
             ),
-            _ => ( // 4-byte UTF-8
-                ((first as u32 & 0b0000_0111) << 18)
-                    | ((bytes[index + 1] as u32 & 0b0011_1111) << 12)
-                    | ((bytes[index + 2] as u32 & 0b0011_1111) << 6)
-                    | (bytes[index + 3] as u32 & 0b0011_1111),
-                4,
+            0xF0..=0xF4 => ( // 4-byte UTF-8
+                (((first as u32 & 0b0000_0111) << 18) |
+                 ((bytes[index + 1] as u32 & 0b0011_1111) << 12) |
+                 ((bytes[index + 2] as u32 & 0b0011_1111) << 6) |
+                 (bytes[index + 3] as u32 & 0b0011_1111)),
+                4
             ),
+            _ => (0xFFFD, 1), // Invalid sequence → Return Unicode replacement char (U+FFFD)
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Char;
+
+    #[test]
+    fn utf8_bytes_to_code() {
+        // Single ASCII character
+        assert_eq!(Char::utf8_bytes_to_code(b"a", 0), Some((97, 1))); // 'a' -> U+0061
+
+        // Multi-byte UTF-8 character
+        let bytes = "Ħ".as_bytes(); // 'Ħ' (U+0126) -> [0xC4, 0xA6]
+        assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x0126, 2)));
+        assert_eq!(char::from_u32(0x0126), Some('Ħ'));
+
+        // 3-byte UTF-8
+        let bytes = "✓".as_bytes(); // '✓' (U+2713) -> [0xE2, 0x9C, 0x93]
+        assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x2713, 3)));
+
+        // 4-byte UTF-8
+        let bytes = "🚀".as_bytes(); // '🚀' (U+1F680) -> [0xF0, 0x9F, 0x9A, 0x80]
+        assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x1F680, 4)));
+
+        // Invalid byte sequence
+        let invalid = b"\x80"; // Invalid leading byte
+        assert_eq!(Char::utf8_bytes_to_code(invalid, 0), None);
+
+        let incomplete = b"\xE2\x9C"; // Incomplete 3-byte sequence
+        assert_eq!(Char::utf8_bytes_to_code(incomplete, 0), None);
     }
 }
