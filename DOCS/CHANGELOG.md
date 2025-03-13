@@ -51,7 +51,7 @@
   - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
 - new modules:
   - data: `{codec::{self, radix}, list, key, table, uid, xipher}`.
-  - lang: `{dsl, ffi::{self, c, glsl}, i18n, ling::{con, nat}}`.
+  - lang: `{dsl, ffi::{self, c, glsl}, i18n, ling::{art, nat}}`.
   - media: `{image::sixel, video}`.
   - num: `{geom::metric, ord, quant}`.
   - sys: `{log, net, fs}`.

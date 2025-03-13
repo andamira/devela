@@ -1,6 +1,6 @@
-// devela::lang::ling::con
+// devela::lang::ling::art
 //
-//! Constructed languages.
+//! Artificial languages.
 //
 
 crate::items! { // structural access: _mods, _all

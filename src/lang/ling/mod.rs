@@ -3,7 +3,7 @@
 //! Linguistics. Language structure, rules, and actual languages.
 //
 
-pub mod con;
+pub mod art;
 pub mod nat;
 
 crate::items! { // structural access: _pub_mods, _mods, _all
@@ -13,7 +13,7 @@ crate::items! { // structural access: _pub_mods, _mods, _all
     pub use _pub_mods::*;
 
     mod _pub_mods { #![allow(unused)]
-        // pub use super::con::_all::*;
+        // pub use super::art::_all::*;
         // pub use super::nat::_all::*;
     }
     mod _mods { #![allow(unused)]
