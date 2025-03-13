@@ -1,40 +1,61 @@
 #!/bin/sh
 #
-## install optional tools
+## install required tools
+# $ apt install jq
+#
+## install alternative tools
 # $ apt install uglifyjs
 # $ cargo install wasm-opt
 
-set -ex
+set -e
 
+# CONFIG
 CRATE_NAME="js_web_api"
+WASM_NAME="${CRATE_NAME}.wasm"
+JS_LIB_DIR="../../../src/lang/ffi/js/"
+JS_LIB_NAME="web_api.js"
+# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/ffi/js/${JS_LIB_NAME}"
 PROFILE="wasm"
 WEB_DIR="./web/"
-WASM="${CRATE_NAME}.wasm"
-TARGET_DIR="target/wasm32-unknown-unknown/${PROFILE}/"
-JS_DIR="../../../src/lang/js/"
-# JS_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/js/web_api.js"
+RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
+BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown"
 
-CARGO_TARGET_DIR="./target/"
-# RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
 
-# build command
+# BUILD
+echo "$ export RUSTFLAGS=\"$RUSTFLAGS\""
+echo "$ $BUILD_CMD"
+#
 export RUSTFLAGS=$RUSTFLAGS
-cargo b --profile $PROFILE --target wasm32-unknown-unknown
+WASM_PATH=$(${BUILD_CMD} --message-format=json \
+	| jq -r 'select(.filenames != null) | .filenames[] | select(endswith(".wasm"))' )
 
+
+# WEB DIR
 mkdir -p $WEB_DIR
 
-# wasm binary
-cp "${TARGET_DIR}/${WASM}" $WEB_DIR
-# wasm-opt -Oz --strip-debug --strip-producers -o "$WEB_DIR/$WASM" "${TARGET_DIR}${WASM}"
 
-# js library
-cp "${JS_DIR}web_api.js" $WEB_DIR
-# uglifyjs "${JS_DIR}web_api.js" -o "${WEB_DIR}web_api.js"
-# curl -s "${JS_URL}" > "${WEB_DIR}web_api.js"
+# WASM
+echo "cp $WASM_PATH $WEB_DIR$WASM_NAME"
+cp "$WASM_PATH" "$WEB_DIR/$WASM_NAME"
+#
+# alternative:
+# wasm-opt -Oz --strip-debug --strip-producers -o "$WEB_DIR/$WASM_NAME" "${WASM_PATH}"
 
-chmod -x "${WEB_DIR}${WASM}"
 
-# cleanup
-# rm -r target
+# JS_LIB
+echo " to $WEB_DIR$JS_LIB_NAME"
+cp "${JS_LIB_DIR}${JS_LIB_NAME}" "${WEB_DIR}"
+#
+# alternative:
+# uglifyjs "${JS_LIB_DIR}${JS_LIB_NAME}" -o "${WEB_DIR}${JS_LIB_NAME}"
+#
+# alternative:
+# curl -s "${JS_LIB_URL}" > "${WEB_DIR}${JS_LIB_NAME}"
 
-echo "start a server in the ./web directory to see the example"
+
+# CLEAN PERMISSIONS
+chmod -x "${WEB_DIR}${WASM_NAME}"
+
+
+echo "Done."
+echo "start a server in the ./web directory to run the example"
