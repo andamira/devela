@@ -1,4 +1,4 @@
-// devela::lang:js::types::permission
+// devela::lang::ffi::js::types::permission
 
 use crate::{js_int32, TAG_EXPERIMENTAL, TAG_NON_STANDARD};
 

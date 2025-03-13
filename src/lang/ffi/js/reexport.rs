@@ -1,4 +1,4 @@
-// devela::lang::js::reexport
+// devela::lang::ffi::js::reexport
 //
 //! Defines the [`js_reexport`] macro.
 //

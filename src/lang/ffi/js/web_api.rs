@@ -1,4 +1,4 @@
-// devela::lang:js::web_api
+// devela::lang::ffi::js::web_api
 // (in sync with ./web_api.js)
 //
 //! Implements Web API methods for [`Js`].

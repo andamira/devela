@@ -1,4 +1,4 @@
-// devela::lang:js::types::primitives
+// devela::lang::ffi::js::types::primitives
 
 #![allow(non_camel_case_types, non_upper_case_globals)]
 

@@ -1,4 +1,4 @@
-// devela::lang:js::types::instant
+// devela::lang::ffi::js::types::instant
 
 use crate::{impl_trait, Display};
 #[allow(unused_imports)]

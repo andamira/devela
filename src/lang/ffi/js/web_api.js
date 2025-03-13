@@ -1,4 +1,4 @@
-// devela::lang::js::web_api.js
+// devela::lang::ffi::js::web_api.js
 // (in sync with ./web_api.rs)
 //
 // TOC

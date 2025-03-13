@@ -1,4 +1,4 @@
-// devela::lang:js::types::event
+// devela::lang::ffi::js::types::event
 //
 //! Defines [`JsEventKind`], [`JsEventMouse`], [`JsEventPointer`], [`JsKeyLocation`].
 //

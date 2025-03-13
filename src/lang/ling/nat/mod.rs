@@ -1,19 +1,22 @@
-// devela::lang::c
+// devela::lang::ling::nat
 //
-//! <a href="https://en.wikipedia.org/wiki/C_(programming_language)">C</a> interfacing.
+//! Natural languages.
 //
-
-mod reexports;
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::reexports::*;
+        // WIPZONE:
+        // pub use super::en::_all::*;
+        // pub use super::es::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }
 }
+// WIPZONE
+// pub mod en;
+// pub mod es;

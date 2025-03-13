@@ -1,4 +1,4 @@
-// devela::lang::glsl
+// devela::lang::ffi::glsl
 //
 //! GLSL types.
 //

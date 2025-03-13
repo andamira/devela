@@ -1,4 +1,4 @@
-// devela::lang:js::types::worker
+// devela::lang::ffi::js::types::worker
 //
 // TOC
 // - struct JsWorker
@@ -15,7 +15,7 @@ use crate::{js_uint32, Js, TaskPoll};
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JsWorker {
-    pub(in crate::lang::js) id: js_uint32,
+    pub(in crate::lang::ffi::js) id: js_uint32,
 }
 
 #[rustfmt::skip]
@@ -62,8 +62,8 @@ pub enum JsWorkerError {
 /// Represents a job running inside a [`JsWorker`].
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct JsWorkerJob {
-    pub(in crate::lang::js) worker: JsWorker,
-    pub(in crate::lang::js) id: js_uint32,
+    pub(in crate::lang::ffi::js) worker: JsWorker,
+    pub(in crate::lang::ffi::js) id: js_uint32,
 }
 
 #[rustfmt::skip]

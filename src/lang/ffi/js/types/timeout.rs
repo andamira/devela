@@ -1,4 +1,4 @@
-// devela::lang:js::types::timeout
+// devela::lang::ffi::js::types::timeout
 //
 
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
@@ -12,7 +12,7 @@ use crate::{js_uint32, Js};
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JsTimeout {
-    pub(in crate::lang::js) id: js_uint32,
+    pub(in crate::lang::ffi::js) id: js_uint32,
 }
 
 #[rustfmt::skip]

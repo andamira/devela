@@ -1,4 +1,4 @@
-// devela::lang:js::types::text
+// devela::lang::ffi::js::types::text
 
 #[cfg(doc)]
 use crate::Js;

@@ -1,6 +1,6 @@
-// devela::lang::js
+// devela::lang::ffi::js
 //
-//! JavaScript Interfacing.
+//! <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a> interfacing.
 //!
 //! # Overview
 //!

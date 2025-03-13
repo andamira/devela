@@ -1,4 +1,4 @@
-// devela::lang:js::types
+// devela::lang::ffi::js::types
 //
 //! Defines the [`Js`] namespace and other items.
 //
