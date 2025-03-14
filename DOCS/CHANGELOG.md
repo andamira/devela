@@ -131,8 +131,11 @@
 - rename/move items:
   - `LoggerConfig` to `LogConfig`.
   - `TextWrite` trait to `FmtWrite`.
+  - `Coro` to `CoroWorker`, `CoroYield` to `CoroWork`, `CoroRun` to `CoroManager`.
   - re-exports: `Layout` to `MemLayout`, `LayoutError` to `MemLayoutError`.
   - `impl_error!` to `define_error!`.
+- rename examples:
+  - `coro_run` to `coro_manager`.
 - rename variants:
   - `AngleDirection`: `CounterClockwise` to `Positive`, `Clockwise` to `Negative`.
 - rename/move fns/methods:

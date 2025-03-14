@@ -1209,8 +1209,8 @@ required-features = ["linux", "unsafe_syscall"]
 
 # work
 [[example]]
-name = "coro_run"
-path = "examples/work/coro_run.rs"
+name = "coro_manager"
+path = "examples/work/coro_manager.rs"
 required-features = ["alloc"]
 
 # ==============================================================================

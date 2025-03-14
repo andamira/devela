@@ -18,39 +18,39 @@ use crate::{Box, TaskWaker, VecDeque};
 
 /* coroutine */
 
-/// Represents a single thread stackless coroutine.
+/// Represents a single-thread stackless coroutine worker.
 ///
 /// It has a private status that can be either running or halted.
 #[derive(Clone, Copy, Debug)]
-pub struct Coro<T, E> {
-    status: CoroStatus,
+pub struct CoroWorker<T, E> {
+    status: CoroWorkerStatus,
     result: OptRes<T, E>,
 }
 
-// Private coroutine status.
+/// Private coroutine worker status.
 #[derive(Clone, Copy, Debug)]
-enum CoroStatus {
+enum CoroWorkerStatus {
     Halted,
     Running,
 }
 
-impl<T, E> Coro<T, E> {
-    // Returns a new coroutine.
+impl<T, E> CoroWorker<T, E> {
+    /// Returns a new coroutine worker.
     #[allow(unused)]
     const fn new() -> Self {
-        Coro { status: CoroStatus::Running, result: None }
+        CoroWorker { status: CoroWorkerStatus::Running, result: None }
     }
 
-    /// Yields an [`Ok`] `value` and returns an awaitable CoroYield.
-    pub fn yield_ok(&mut self, value: T) -> CoroYield<'_, T, E> {
+    /// Yields an [`Ok`] `value` and returns an awaitable `CoroWork`.
+    pub fn yield_ok(&mut self, value: T) -> CoroWork<'_, T, E> {
         self.result = sok(value);
-        CoroYield { cor: self }
+        CoroWork { cor: self }
     }
 
-    /// Yields an [`Err`] and returns an awaitable future.
-    pub fn yield_err(&mut self, error: E) -> CoroYield<'_, T, E> {
+    /// Yields an [`Err`] and returns an awaitable `CoroWork`.
+    pub fn yield_err(&mut self, error: E) -> CoroWork<'_, T, E> {
         self.result = serr(error);
-        CoroYield { cor: self }
+        CoroWork { cor: self }
     }
 }
 
@@ -60,17 +60,17 @@ impl<T, E> Coro<T, E> {
 /// [`Pending`][TaskPoll::Pending] status each time it's polled.
 ///
 /// This allows the coroutine to yield control back and be resumed later.
-pub struct CoroYield<'a, T, E> {
-    cor: &'a mut Coro<T, E>,
+pub struct CoroWork<'a, T, E> {
+    cor: &'a mut CoroWorker<T, E>,
 }
 
-impl<T, E> Future for CoroYield<'_, T, E> {
+impl<T, E> Future for CoroWork<'_, T, E> {
     type Output = OptRes<T, E>;
 
     fn poll(mut self: Pin<&mut Self>, _cx: &mut TaskContext) -> TaskPoll<OptRes<T, E>> {
         match self.cor.status {
-            CoroStatus::Halted => {
-                self.cor.status = CoroStatus::Running;
+            CoroWorkerStatus::Halted => {
+                self.cor.status = CoroWorkerStatus::Running;
                 if let Some(result) = self.cor.result.take() {
                     match result {
                         Err(error) => TaskPoll::Ready(serr(error)),
@@ -80,20 +80,20 @@ impl<T, E> Future for CoroYield<'_, T, E> {
                     unreachable!();
                 }
             }
-            CoroStatus::Running => {
-                self.cor.status = CoroStatus::Halted;
+            CoroWorkerStatus::Running => {
+                self.cor.status = CoroWorkerStatus::Halted;
                 TaskPoll::Pending
             }
         }
     }
 }
 
-/* runner */
+/* manager */
 
-/// A managed dynamic collection of single-thread [`Coro`]utines.
+/// A managed dynamic collection of single-thread [`CoroWorker`] coroutines.
 ///
-/// It maintains a queue of coroutines in the stack, and runs them in a loop until
-/// they are all complete.
+/// It maintains a queue of coroutines in the stack, and runs them in a loop
+/// until they are all complete.
 ///
 /// When a coroutine is polled and returns [`TaskPoll::Pending`], it is put back
 /// into the queue to be run again later. If it returns [`TaskPoll::Ready`]
@@ -101,7 +101,7 @@ impl<T, E> Future for CoroYield<'_, T, E> {
 ///
 /// # Examples
 /// ```
-#[doc = include_str!("../../../../examples/work/coro_run.rs")]
+#[doc = include_str!("../../../../examples/work/coro_manager.rs")]
 /// ```
 /// It outputs:
 /// ```text
@@ -140,25 +140,25 @@ impl<T, E> Future for CoroYield<'_, T, E> {
 #[derive(Default)]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-pub struct CoroRun<T, E> {
+pub struct CoroManager<T, E> {
     #[allow(clippy::type_complexity)]
     coros: VecDeque<Pin<Box<dyn Future<Output = OptRes<T, E>>>>>,
 }
 
 #[cfg(feature = "alloc")]
-impl<T, E: 'static + Debug> CoroRun<T, E> {
-    /// Returns a new empty runner.
+impl<T, E: 'static + Debug> CoroManager<T, E> {
+    /// Returns a new empty manager.
     pub fn new() -> Self {
-        CoroRun { coros: VecDeque::new() }
+        CoroManager { coros: VecDeque::new() }
     }
 
-    /// Adds a closure to the runner.
+    /// Adds a closure to the manager.
     pub fn push<C, F>(&mut self, closure: C)
     where
-        C: FnOnce(Coro<T, E>) -> F,
+        C: FnOnce(CoroWorker<T, E>) -> F,
         F: Future<Output = OptRes<T, E>> + 'static,
     {
-        self.coros.push_back(Box::pin(closure(Coro::new())));
+        self.coros.push_back(Box::pin(closure(CoroWorker::new())));
     }
 
     /// Runs all the coroutines to completion.

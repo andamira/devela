@@ -1,10 +1,10 @@
-// devela::examples::work::coro_run
+// devela::examples::work::coro_manager
 //!
 
-use devela::{serr, sok, CoroRun};
+use devela::{serr, sok, CoroManager};
 
 fn main() {
-    let mut cr = CoroRun::<char, String>::new();
+    let mut cr = CoroManager::<char, String>::new();
 
     for i in 1..=3 {
         cr.push(|mut c| async move {
