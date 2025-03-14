@@ -19,7 +19,7 @@ mod namespace;
 #[cfg(not(feature = "std"))]
 mod define_no_std;
 #[cfg(feature = "std")]
-mod reexport_std;
+mod reexports_std;
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -34,7 +34,7 @@ crate::items! { // structural access: _mods, _all, _always
         #[cfg(not(feature = "std"))]
         pub use super::define_no_std::*;
         #[cfg(feature = "std")]
-        pub use super::reexport_std::*;
+        pub use super::reexports_std::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -42,6 +42,6 @@ crate::items! { // structural access: _mods, _all, _always
     }
     pub(super) mod _always { #![allow(unused)]
         #[cfg(feature = "std")]
-        pub use super::reexport_std::*;
+        pub use super::reexports_std::*;
     }
 }
