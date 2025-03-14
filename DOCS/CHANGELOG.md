@@ -127,7 +127,6 @@
   - `num::wave` to `phys::wave`.
   - `sys::path` inside `sys::fs`, make private.
   - `work::async` to `work::future`.
-  - `work::thread` to `work::process`.
 - rename/move items:
   - `LoggerConfig` to `LogConfig`.
   - `TextWrite` trait to `FmtWrite`.

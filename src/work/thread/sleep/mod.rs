@@ -1,4 +1,4 @@
-// devela::work::process::thread::sleep
+// devela::work::thread::sleep
 //
 //! Thread sleeping functionality.
 //

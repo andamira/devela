@@ -1,4 +1,4 @@
-// devela::work::process::thread
+// devela::work::thread
 //
 //! Native threads.
 //!

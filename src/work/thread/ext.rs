@@ -1,4 +1,4 @@
-// devela::work::process::thread::ext
+// devela::work::thread::ext
 //
 //! Defines the [`ExtThread`] trait.
 //
