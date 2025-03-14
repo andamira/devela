@@ -56,6 +56,7 @@
   - num: `{geom::metric, ord, quant}`.
   - sys: `{log, net, fs}`.
   - ui: `{back::{self, crossterm, miniquad}, front}`.
+  - work: `sync::mpsc`.
 - new macro arms:
   - `format_buf!`: `?`.
   - `str!`: `ip_addr`.
@@ -80,7 +81,7 @@
     - io: `IoEmpty`, `IoIntoInnerError`, `IoRepeat`, `Std[err|in|out][Lock]`.
     - panic: `PanicHookInfo`.
     - process: `*`.
-    - sync: `LazyLock`.
+    - sync: `LazyLock`, `mpsc::*`.
   - log: `*`.
 - new optional dependencies: `ffmpeg-the-third`, `fltk`, `flume`, `fontdue`, `gilrs`, `image`, `itertools`, `orion`, `ring`, `sdl2`, `sdl3`, `simdutf8`, `toml_edit`, `ureq`.
 - new profile: `wasm`.
@@ -161,7 +162,7 @@
   - `data::error`.
   - `num::geom::shape`.
   - `sys::env`.
-  - `work::{future, process, sync::{self, atomic}}`.
+  - `work::{future, process, sync::atomic}`.
 - change `msvc` windows target for `gnu`.
 - update scripts:
   - `utils/check.rs`:
