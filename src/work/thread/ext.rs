@@ -35,7 +35,7 @@ pub trait ExtThread: Sealed {
     /// Returns an estimate of the default amount of parallelism a program should use.
     ///
     /// See `std::thread::`[available_parallelism].
-    fn parallelism() ->  Result<usize, crate::IoError> {
+    fn available_parallelism() ->  Result<usize, crate::IoError> {
         available_parallelism().map(|n|n.get())
     }
 

@@ -142,6 +142,7 @@
   - from prngs: `next_state` method to `peek_next_state`.
   - `fmt_write`, `fmt_format` and `format_buf_args` to `Fmt::{write, format, format_buf`, respectively.
   - `bytes_from_bits` fn to `Mem::bytes_from_bits`.
+  - `ExtThread::parallelism` to `available_parallelism`.
 - deprecate fns/methods:
   - `Char`: `utf8_2bytes_len`, `utf8_3bytes_len`, `utf8_4bytes_len`.
 - remove feature-gates:
