@@ -8,7 +8,6 @@
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
 mod delta; // TimeDelta
-mod error;
 mod reexports;
 
 #[cfg(feature = "time")]
@@ -27,7 +26,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{delta::*, error::*, reexports::*};
+        pub use super::{delta::*, reexports::*};
 
         #[cfg(feature = "time")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]

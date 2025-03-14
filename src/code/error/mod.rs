@@ -12,6 +12,7 @@ mod all_error; // AllError, modular errors
 mod reexports;
 
 mod data; // data-related errors
+mod time; // time-related errors
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -20,13 +21,18 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{all_error::*, data::*, ext::*, reexports::*};
+        pub use super::{all_error::*, ext::*, reexports::*};
+        pub use super::{data::*, time::*};
+        // WIPZONE
+        // pub use super::num::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{all_error::*, data::*, ext::*, reexports::*};
+        pub use super::{all_error::*, data::*, ext::*, num::*, reexports::*};
     }
 }
+// WIPZONE
+// mod num; // numeric-related errors

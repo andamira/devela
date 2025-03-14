@@ -61,11 +61,6 @@ pub(crate) mod crate_errors {
     #[doc(inline)]
     pub use crate::num::{NumError, NumResult};
 
-    /* phys */
-    #[doc(inline)]
-    #[cfg(feature = "time")]
-    pub use crate::phys::time::{TimeError, TimeResult};
-
     /* sys */
     #[doc(inline)]
     #[cfg(feature = "io")]

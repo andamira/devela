@@ -1,14 +1,21 @@
-// devela::phys::time::error
+// devela::code::error::time
 //
-//!
+//! Time-related errors.
 //
+// TOC
+// - individual data-related error types:
+//   - SystemTimeError
+//   - Timeout
+// - partial composite errors:
+// - full composite errors:
+//   - TimeError
+//   - TimeResult
 
 use crate::define_error;
 #[cfg(feature = "std")]
-use crate::Duration;
+use {crate::Duration, ::std::time::SystemTimeError as StdSystemTimeError};
 
-#[cfg(feature = "std")]
-use ::std::time::SystemTimeError as StdSystemTimeError;
+/* individual errors */
 
 define_error! { individual:
     +tag: crate::TAG_TIME!(),
@@ -28,6 +35,11 @@ impl From<StdSystemTimeError> for SystemTimeError {
     }
 }
 
+define_error! { individual: pub struct Timeout;
+    DOC_KEY_ALREADY_EXISTS = "The operation has exceeded the allowed execution time.",
+    self+f => write!(f, "The operation has exceeded the allowed execution time.")
+}
+
 #[cfg(all(feature = "error", feature = "time"))]
 pub use full_composite::*;
 #[cfg(all(feature = "error", feature = "time"))]
@@ -35,11 +47,6 @@ pub use full_composite::*;
 mod full_composite {
     use super::*;
     use crate::{DataOverflow, DOC_DATA_OVERFLOW};
-
-    #[doc = crate::TAG_TIME!()]
-    #[doc = crate::TAG_RESULT!()]
-    /// A time-related result.
-    pub type TimeResult<T> = crate::Result<T, TimeError>;
 
     define_error! { composite: fmt(f)
         #[doc = crate::TAG_TIME!()]
@@ -63,4 +70,9 @@ mod full_composite {
             TimeError::SystemTime(from.duration())
         }
     }
+
+    #[doc = crate::TAG_TIME!()]
+    #[doc = crate::TAG_RESULT!()]
+    /// A time-related result.
+    pub type TimeResult<T> = crate::Result<T, TimeError>;
 }
