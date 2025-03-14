@@ -161,7 +161,7 @@
   - `data::error`.
   - `num::geom::shape`.
   - `sys::env`.
-  - `work::{future, process, sync}`.
+  - `work::{future, process, sync::{self, atomic}}`.
 - change `msvc` windows target for `gnu`.
 - update scripts:
   - `utils/check.rs`:

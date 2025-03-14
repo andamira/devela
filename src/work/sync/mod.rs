@@ -7,8 +7,6 @@
 #![doc = crate::doc_!(extends: sync)]
 //
 
-mod atomic;
-
 #[cfg(feature = "alloc")]
 mod reexports;
 
@@ -16,14 +14,15 @@ mod reexports;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
 mod spin_lock; // SpinLock, SpinLockGuard
 
-crate::items! { // structural access: _mods, _all, _always
+pub mod atomic;
+
+crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _always::*;
 
     mod _mods {
-        pub use super::atomic::*;
         #[cfg(feature = "alloc")]
         pub use super::reexports::*;
 
@@ -35,9 +34,12 @@ crate::items! { // structural access: _mods, _all, _always
         //     counter::*,
         // };
     }
+    mod _pub_mods { #![allow(unused)]
+        pub use super::atomic::*;
+    }
     pub(super) mod _all { #[allow(unused)]
         #[doc(inline)]
-        pub use super::_mods::*;
+        pub use super::{_mods::*, _pub_mods::*};
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::atomic::*;
