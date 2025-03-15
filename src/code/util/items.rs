@@ -3,13 +3,13 @@
 //! skip formatting macros
 //
 
-/// *`s`kip `f`ormatting* wrapper macro.
+/// *`s`kip `f`ormatting* macro.
 ///
 /// Preserves the formatting of the code provided as arguments, by relying on
 /// the fact that `rustfmt` does not usually apply formatting inside macros.
 ///
-/// *Rust will format macros only if they use parenthesis `()` and the input is
-/// separated by commas, then it formats is the same way as function call.*
+/// *Rust will format macros only if they use parenthesis `()`
+/// and the input is separated by commas, as if it were a function call.*
 ///
 /// This macro can be used as an alternative to the `#[rustfmt::skip]` attribute,
 /// specially in places where it can't be applied yet on stable rust.
@@ -26,7 +26,7 @@ macro_rules! sf { ( $($line:tt)+ ) => { $($line)+ }; }
 #[doc(inline)]
 pub use sf;
 
-/// Groups items together and expands them as if they were written directly.
+/// Groups *`items`* together and expands them as if they were written directly.
 ///
 /// It can be useful to apply an attribute to a group of items.
 ///
