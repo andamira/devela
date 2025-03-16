@@ -1,6 +1,6 @@
 // devela::num::traits::constants
 //
-//! Defines `ExtNumConst` and implements it for primitives.
+//! Defines [`NumConst`] and implements it for primitives.
 //
 
 use crate::{
@@ -10,7 +10,7 @@ use crate::{
 
 #[doc = crate::TAG_NUM!()]
 /// Fundamental numeric constants for both integer and floating-point types.
-pub trait ExtNumConst {
+pub trait NumConst {
     /// The underlying numeric type implementing this trait.
     type Num;
 
@@ -30,13 +30,13 @@ pub trait ExtNumConst {
     const NUM_NEG_ONE: Option<Self::Num>;
 
     /// The smallest representable positive value.
-    const NUM_MIN_POSITIVE: Self::Num;
+    const NUM_MIN_POSITIVE: Option<Self::Num>;
 
     /// The greatest representable negative value, if applicable.
     const NUM_MAX_NEGATIVE: Option<Self::Num>;
 
     /// The maximum power of two within the type’s range.
-    const NUM_MAX_POWER_OF_TWO: Self::Num;
+    const NUM_MAX_POWER_OF_TWO: Option<Self::Num>;
 }
 
 ///
@@ -57,16 +57,16 @@ macro_rules! impl_ext_num_const {
     };
     (@$T:ty | $U:ty: $ZERO:expr, $ONE:expr, $TWO:expr, $THREE:expr,
      $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr) => {
-        impl ExtNumConst for $T {
+        impl NumConst for $T {
             type Num = $T;
             const NUM_ZERO: Option<$T> = $ZERO;
             const NUM_ONE: $T = $ONE;
             const NUM_TWO: $T = $TWO;
             const NUM_THREE: $T = $THREE;
             const NUM_NEG_ONE: Option<$T> = $NEG_ONE;
-            const NUM_MIN_POSITIVE: $T = $MIN_POS;
+            const NUM_MIN_POSITIVE: Option<$T> = $MIN_POS;
             const NUM_MAX_NEGATIVE: Option<$T> = $MAX_NEG;
-            const NUM_MAX_POWER_OF_TWO: $T = $MAX_POW2;
+            const NUM_MAX_POWER_OF_TWO: Option<$T> = $MAX_POW2;
         }
     };
 
@@ -75,28 +75,28 @@ macro_rules! impl_ext_num_const {
     (float: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
             Some(0.0), 1.0, 2.0, 3.0,
-            Some(-1.0),         // NEG_ONE
-            <$T>::MIN_POSITIVE, // MIN_POS
-            Some(-0.0),         // MAX_NEG // ↓ MAX_POW2
-            <$T>::from_bits(((<$T>::EXPONENT_BIAS as $U << 1) << (<$T>::SIGNIFICAND_BITS)))
+            Some(-1.0),               // NEG_ONE
+            Some(<$T>::MIN_POSITIVE), // MIN_POS
+            Some(-0.0),               // MAX_NEG // ↓ MAX_POW2
+            Some(<$T>::from_bits(((<$T>::EXPONENT_BIAS as $U << 1) << (<$T>::SIGNIFICAND_BITS))))
         ];
     )+};
     (int: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
             Some(0), 1, 2, 3,
             Some(-1),   // NEG_ONE
-            1,          // MIN_POS
+            Some(1),    // MIN_POS
             Some(-1),   // MAX_NEG
-            <$T>::MAX - (<$T>::MAX >> 1) // MAX_POW2
+            Some(<$T>::MAX - (<$T>::MAX >> 1)) // MAX_POW2
         ];
     )+};
     (uint: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
             Some(0), 1, 2, 3,
-            None,   // NEG_ONE
-            1,      // MIN_POS
-            None,   // MAX_NEG
-            <$T>::MAX ^ (<$T>::MAX >> 1) // MAX_POW2
+            None,    // NEG_ONE
+            Some(1), // MIN_POS
+            None,    // MAX_NEG
+            Some(<$T>::MAX ^ (<$T>::MAX >> 1)) // MAX_POW2
           ];
     )+};
     (non0int: $( $T:ty | $U:ty ),+) => { $(
@@ -105,10 +105,10 @@ macro_rules! impl_ext_num_const {
             unwrap![some <$T>::new(1)],
             unwrap![some <$T>::new(2)],
             unwrap![some <$T>::new(3)],
-            <$T>::new(-1),              // NEG_ONE
-            unwrap![some <$T>::new(1)], // MIN_POS
-            <$T>::new(-1),              // MAX_NEG
-            unwrap![some <$T>::new(<$T>::MAX.get() - (<$T>::MAX.get() >> 1))] // MAX_POW2
+            <$T>::new(-1), // NEG_ONE
+            <$T>::new(1),  // MIN_POS
+            <$T>::new(-1), // MAX_NEG
+            <$T>::new(<$T>::MAX.get() - (<$T>::MAX.get() >> 1)) // MAX_POW2
         ];
     )+};
     (non0uint: $( $T:ty | $U:ty ),+) => { $(
@@ -117,10 +117,10 @@ macro_rules! impl_ext_num_const {
             unwrap![some <$T>::new(1)],
             unwrap![some <$T>::new(2)],
             unwrap![some <$T>::new(3)],
-            None,                       // NEG_ONE
-            unwrap![some <$T>::new(1)], // MIN_POS
-            None,                       // MAX_NEG
-            unwrap![some <$T>::new(<$T>::MAX.get() ^ (<$T>::MAX.get() >> 1))] // MAX_POW2
+            None,          // NEG_ONE
+            <$T>::new(1),  // MIN_POS
+            None,          // MAX_NEG
+            <$T>::new(<$T>::MAX.get() ^ (<$T>::MAX.get() >> 1)) // MAX_POW2
         ];
     )+};
 }
@@ -128,7 +128,7 @@ impl_ext_num_const![];
 
 #[cfg(test)]
 mod tests {
-    use super::{ExtFloatConst, ExtNumConst, NonZeroI8, NonZeroU8};
+    use super::{ExtFloatConst, NonZeroI8, NonZeroU8, NumConst};
 
     #[test]
     fn float() {
@@ -137,10 +137,10 @@ mod tests {
         assert_eq!(f32::NUM_TWO, 2.0);
         assert_eq!(f32::NUM_THREE, 3.0);
         assert_eq!(f32::NUM_NEG_ONE, Some(-1.0));
-        assert_eq!(f32::NUM_MIN_POSITIVE, f32::MIN_POSITIVE);
+        assert_eq!(f32::NUM_MIN_POSITIVE, Some(f32::MIN_POSITIVE));
         assert_eq!(f32::NUM_MAX_NEGATIVE, Some(-0.0));
-        assert_eq!(f32::NUM_MAX_POWER_OF_TWO, 2.0_f32.powi(f32::EXPONENT_BIAS as i32));
-        assert_eq!(f64::NUM_MAX_POWER_OF_TWO, 2.0_f64.powi(f64::EXPONENT_BIAS as i32));
+        assert_eq!(f32::NUM_MAX_POWER_OF_TWO, Some(2.0_f32.powi(f32::EXPONENT_BIAS as i32)));
+        assert_eq!(f64::NUM_MAX_POWER_OF_TWO, Some(2.0_f64.powi(f64::EXPONENT_BIAS as i32)));
     }
     #[test]
     fn int() {
@@ -149,9 +149,9 @@ mod tests {
         assert_eq!(i8::NUM_TWO, 2);
         assert_eq!(i8::NUM_THREE, 3);
         assert_eq!(i8::NUM_NEG_ONE, Some(-1));
-        assert_eq!(i8::NUM_MIN_POSITIVE, 1);
+        assert_eq!(i8::NUM_MIN_POSITIVE, Some(1));
         assert_eq!(i8::NUM_MAX_NEGATIVE, Some(-1));
-        assert_eq!(i8::NUM_MAX_POWER_OF_TWO, 64);
+        assert_eq!(i8::NUM_MAX_POWER_OF_TWO, Some(64));
     }
     #[test]
     fn uint() {
@@ -160,9 +160,9 @@ mod tests {
         assert_eq!(u8::NUM_TWO, 2);
         assert_eq!(u8::NUM_THREE, 3);
         assert_eq!(u8::NUM_NEG_ONE, None);
-        assert_eq!(u8::NUM_MIN_POSITIVE, 1);
+        assert_eq!(u8::NUM_MIN_POSITIVE, Some(1));
         assert_eq!(u8::NUM_MAX_NEGATIVE, None);
-        assert_eq!(u8::NUM_MAX_POWER_OF_TWO, 128);
+        assert_eq!(u8::NUM_MAX_POWER_OF_TWO, Some(128));
     }
     #[test]
     fn non0int() {
@@ -170,10 +170,10 @@ mod tests {
         assert_eq!(NonZeroI8::NUM_ONE, NonZeroI8::new(1).unwrap());
         assert_eq!(NonZeroI8::NUM_TWO, NonZeroI8::new(2).unwrap());
         assert_eq!(NonZeroI8::NUM_THREE, NonZeroI8::new(3).unwrap());
-        assert_eq!(NonZeroI8::NUM_NEG_ONE, Some(NonZeroI8::new(-1).unwrap()));
-        assert_eq!(NonZeroI8::NUM_MIN_POSITIVE, NonZeroI8::new(1).unwrap());
-        assert_eq!(NonZeroI8::NUM_MAX_NEGATIVE, Some(NonZeroI8::new(-1).unwrap()));
-        assert_eq!(NonZeroI8::NUM_MAX_POWER_OF_TWO, NonZeroI8::new(64).unwrap());
+        assert_eq!(NonZeroI8::NUM_NEG_ONE, NonZeroI8::new(-1));
+        assert_eq!(NonZeroI8::NUM_MIN_POSITIVE, NonZeroI8::new(1));
+        assert_eq!(NonZeroI8::NUM_MAX_NEGATIVE, NonZeroI8::new(-1));
+        assert_eq!(NonZeroI8::NUM_MAX_POWER_OF_TWO, NonZeroI8::new(64));
     }
     #[test]
     fn non0uint() {
@@ -182,8 +182,8 @@ mod tests {
         assert_eq!(NonZeroU8::NUM_TWO, NonZeroU8::new(2).unwrap());
         assert_eq!(NonZeroU8::NUM_THREE, NonZeroU8::new(3).unwrap());
         assert_eq!(NonZeroU8::NUM_NEG_ONE, None);
-        assert_eq!(NonZeroU8::NUM_MIN_POSITIVE, NonZeroU8::new(1).unwrap());
+        assert_eq!(NonZeroU8::NUM_MIN_POSITIVE, NonZeroU8::new(1));
         assert_eq!(NonZeroU8::NUM_MAX_NEGATIVE, None);
-        assert_eq!(NonZeroU8::NUM_MAX_POWER_OF_TWO, NonZeroU8::new(128).unwrap());
+        assert_eq!(NonZeroU8::NUM_MAX_POWER_OF_TWO, NonZeroU8::new(128));
     }
 }

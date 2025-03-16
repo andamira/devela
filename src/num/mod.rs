@@ -18,7 +18,7 @@ mod int; // [i|u]size_[down|up], Int
 mod no; // NoNum
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod sign; // Sign
-mod traits; // Num, NumRef, ExtNumConst
+mod traits; // Num, NumConst, NumRef
 
 #[cfg(feature = "unit")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
