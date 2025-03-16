@@ -11,7 +11,7 @@
 use crate::ExtFloat;
 #[cfg(_float··)]
 #[allow(unused_imports)]
-use crate::{fsize, ExtFloatConst};
+use crate::{fsize, FloatConst};
 use crate::{Angle, AngleDirection, AngleKind};
 
 /// impl `Angle` methods with an integer representation:

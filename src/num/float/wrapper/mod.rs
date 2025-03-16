@@ -3,7 +3,7 @@
 //! Floating-point wrapper struct.
 //
 
-mod consts; // ExtFloatConst
+mod consts; // FloatConst
 
 // WIPZONE
 // mod namespace; // Float
@@ -22,7 +22,7 @@ crate::items! {
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 ///
-/// See also the [`ExtFloat`][super::ExtFloat] and [`ExtFloatConst`][super::ExtFloatConst] traits.
+/// See also the [`ExtFloat`][super::ExtFloat] and [`FloatConst`][super::FloatConst] traits.
 ///
 /// # Methods
 /// TODO

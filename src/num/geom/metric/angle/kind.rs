@@ -3,7 +3,7 @@
 //! Defines [`AngleKind`].
 //
 
-use crate::{ExtFloatConst, Interval};
+use crate::{FloatConst, Interval};
 
 #[doc = crate::TAG_GEOM!()]
 /// The kind of [`Angle`], based on its normalized turn.

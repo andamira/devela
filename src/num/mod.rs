@@ -12,7 +12,7 @@
 mod _private; // upcasted_op!, impl_ops!
 
 mod error; // NumError, NumResult
-mod float; // fsize, ExtFloat, ExtFloatConst, Float
+mod float; // fsize, ExtFloat, Float, FloatConst
 mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
 mod no; // NoNum

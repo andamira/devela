@@ -9,7 +9,7 @@
 #![allow(clippy::excessive_precision, reason = "constants are defined with 81 decimals")]
 #![allow(dead_code, reason = "WIP f16,f128")]
 
-use super::super::constants::{ExtFloatConst, *};
+use super::super::constants::{FloatConst, *};
 use crate::Float;
 #[cfg(nightly_float)]
 use ::core::{f128, f16};
@@ -51,7 +51,7 @@ macro_rules! float_technical_const_impls {
         [$ebit:literal, $fisr:literal, $nrt:literal] ) => {
         impl Float<$f> {
             // MAYBE move below (split them up)
-            // MAYBE move to ExtFloatConst (make all public)
+            // MAYBE move to FloatConst (make all public)
             #[doc = SIGNIFICAND_BITS!()]
             pub const SIGNIFICAND_BITS: u32 = <$f>::MANTISSA_DIGITS -1;
             #[doc = EXPONENT_BIAS!()]
@@ -83,7 +83,7 @@ macro_rules! float_const_impls {
     (@$f:ty) => {
         /// # *Mathematical constants*.
         ///
-        /// See [`ExtFloatConst`].
+        /// See [`FloatConst`].
         impl Float<$f> {
             #[doc = ONE!()]
             pub const ONE: Float<$f> = Float(<$f>::ONE);

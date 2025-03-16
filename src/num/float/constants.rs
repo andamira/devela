@@ -1,9 +1,9 @@
 // devela::num::float::constants
 //
-//! Defines `ExtFloatConst` and implements it for floating-point primitives.
+//! Defines [`FloatConst`] and implements it for floating-point primitives.
 //
 // TOC
-// - trait ExtFloatConst
+// - trait FloatConst
 // - CONST shared doc strings
 // - macro impl_ext_float_const!
 // - struct TempFloat
@@ -152,7 +152,7 @@ use ::core::{f128, f16};
 /// [`LN_2`]: Self::LN_2
 /// [`LN_10`]: Self::LN_10
 #[rustfmt::skip]
-pub trait ExtFloatConst: Sized {
+pub trait FloatConst: Sized {
     // identities
     #[doc = ONE!()]                 const ONE: Self;
     #[doc = ZERO!()]                const ZERO: Self;
@@ -507,7 +507,7 @@ macro_rules! impl_ext_float_const {
     (@$(#[$attrs:meta])* $f:ty) => {
         /// # *Mathematical constants*.
         $(#[$attrs])*
-        impl ExtFloatConst for $f {
+        impl FloatConst for $f {
             // identities
             const ONE: $f = 1.0;
             const ZERO: $f = 0.0;

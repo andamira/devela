@@ -18,7 +18,7 @@
   - work: `ExtProcess`.
 - new consts:
   - media::font: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
-  - `Float`|`ExtFloatConst`: `EXPONENT_BIAS`, `EXPONENT_BITS`, `SIGNIFICANT_BITS`.
+  - `Float`|`FloatConst`: `EXPONENT_BIAS`, `EXPONENT_BITS`, `SIGNIFICANT_BITS`.
   - `AngleDirection::{CounterClockwise, CCW, RightHandRule, RHR, Clockwise, CW, LeftHandRule, LHR}`.
 - new types:
   - code: `Enum`, `ScopeGuard`, `TimeError`.
@@ -129,6 +129,7 @@
   - `sys::path` inside `sys::fs`, make private.
   - `work::async` to `work::future`.
 - rename/move items:
+  - `ExtFloatConst` to `FloatConst`.
   - `LoggerConfig` to `LogConfig`.
   - `TextWrite` trait to `FmtWrite`.
   - `Coro` to `CoroWorker`, `CoroYield` to `CoroWork`, `CoroRun` to `CoroManager`.

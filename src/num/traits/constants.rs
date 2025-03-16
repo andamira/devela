@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    unwrap, ExtFloatConst, NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8,
-    NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
+    unwrap, FloatConst, NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize,
+    NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
 };
 
 #[doc = crate::TAG_NUM!()]
@@ -128,7 +128,7 @@ impl_ext_num_const![];
 
 #[cfg(test)]
 mod tests {
-    use super::{ExtFloatConst, NonZeroI8, NonZeroU8, NumConst};
+    use super::{FloatConst, NonZeroI8, NonZeroU8, NumConst};
 
     #[test]
     fn float() {

@@ -5,7 +5,7 @@
 
 #[cfg(_float··)]
 #[allow(unused_imports)]
-use crate::{Angle, AngleDirection, AngleKind, ExtFloat, ExtFloatConst, Float};
+use crate::{Angle, AngleDirection, AngleKind, ExtFloat, Float, FloatConst};
 
 /// impl `Angle` methods with a floating-point representation.
 ///

@@ -7,7 +7,7 @@
 use super::shared_docs::*;
 #[cfg(_float··)]
 use crate::Float;
-use crate::{ExtFloatConst, Sign};
+use crate::{FloatConst, Sign};
 
 #[doc = crate::TAG_NUM!()]
 #[doc = crate::TAG_NAMESPACE!()]
@@ -21,7 +21,7 @@ use crate::{ExtFloatConst, Sign};
 ///
 /// `Float` has a few more methods implemented if the `dep_libm` feature is enabled.
 #[rustfmt::skip]
-pub trait ExtFloat: ExtFloatConst + Sized {
+pub trait ExtFloat: FloatConst + Sized {
 
     /// The largest integer less than or equal to `self`.
     ///

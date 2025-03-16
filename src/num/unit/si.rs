@@ -601,7 +601,7 @@ impl UnitSi {
         // Ensure the threshold is positive and above a small epsilon value
         // in order to prevent infinite loops
         let effective_threshold =
-            if threshold <= 0.0 { crate::ExtFloatConst::MEDIUM_MARGIN } else { threshold };
+            if threshold <= 0.0 { crate::FloatConst::MEDIUM_MARGIN } else { threshold };
 
         while remainder.abs() > effective_threshold {
             let (size, unit) = Self::reduce(remainder);
@@ -770,7 +770,7 @@ mod tests {
     };
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
     use crate::vec_ as vec;
-    use crate::{code::sf, num::ExtFloatConst};
+    use crate::{code::sf, num::FloatConst};
 
     /* reduce */
 

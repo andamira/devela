@@ -4,8 +4,8 @@
 //
 
 mod alias; // fsize
-mod constants; // ExtFloatConst
-mod reexports;
+mod constants; // FloatConst
+mod reexports; // core::num::FloatCategory
 mod wrapper; // Float
 
 #[cfg(_float··)]
