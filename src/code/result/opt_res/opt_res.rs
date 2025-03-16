@@ -8,14 +8,16 @@
 // - trait ExtOptRes
 
 #[doc = crate::TAG_RESULT!()]
-/// An optional result for simple ternary logic.
+/// An optional result type that combines success, failure, and absence.
 ///
-/// Combines [`Option`] and [`Result`] to handle three outcomes:
-/// success ([`Ok`]), failure ([`Err`]), or no value ([`None`]).
+/// Combines [`Option`] and [`Result`] to provide a
+/// structured outcome type with three possible states:
+/// - A successful value ([`Ok`])
+/// - A failure ([`Err`])
+/// - No value ([`None`])
 ///
-/// It can simplify insertion, removal, and value presence management for
-/// collections lacking [`Clone`] or [`Default`], by using [`Option::take`],
-/// and enhance control flow in stateful or asynchronous contexts.
+/// It can simplify value presence management in collections lacking [`Clone`] or [`Default`],
+/// by using [`Option::take`], and enhance control flow in stateful or asynchronous contexts.
 ///
 /// See also: [`sok`] and [`serr`].
 ///

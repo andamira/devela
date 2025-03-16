@@ -12,11 +12,11 @@ mod reexports;
 
 #[cfg(feature = "time")]
 crate::items! {
-    mod calendar;
-    mod fmt;
-    mod no;
-    mod split;
-    mod unix;
+    mod calendar; // Month, Weekday
+    mod fmt; // Timecode
+    mod no; // NoTime
+    mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
+    mod unix; // UnixTime[I64|U32]
 }
 
 crate::items! { // structural access: _mods, _all, _always

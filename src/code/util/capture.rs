@@ -5,7 +5,7 @@
 
 /// Captures the first token from a list of inputs.
 ///
-/// Usage: `first!(<category> <first>, <tail>*, <optional_comma>?);`
+/// Usage: `capture_first!(<category> <first>, <tail>*, <optional_comma>?);`
 ///
 /// # Example
 /// ```

@@ -43,7 +43,6 @@ macro_rules! impl_bits_wrapper {
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[doc = include_str!("../benches/mask_range.md")]
-            #[must_use]
             pub const fn mask_range(start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
                 // a mask with all bits set, from 0 to end:
@@ -84,7 +83,6 @@ macro_rules! impl_bits_wrapper {
             /// Sets the rest of the bits to 0.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use]
             pub const fn get_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 & Self::mask_range(start, end).0)
             }
@@ -113,7 +111,6 @@ macro_rules! impl_bits_wrapper {
             /// significant bit (LSB) aligns with the units place, forming the integer value.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use]
             pub const fn get_value_range(self, start: u32, end: u32) -> Self {
                 Self((self.0 & Self::mask_range(start, end).0) >> start)
             }
@@ -142,7 +139,6 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use]
             pub const fn set_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 | Self::mask_range(start, end).0)
             }
@@ -172,7 +168,6 @@ macro_rules! impl_bits_wrapper {
             /// the existing bits in that range. The rest of the bits in `self` remain unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use]
             pub const fn set_value_range(self, value: $t, start: u32, end: u32) -> Self {
                 let mask = Self::mask_range(start, end).0;
                 let value_shifted = (value << start) & mask;
@@ -223,7 +218,6 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use]
             pub const fn unset_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 & !Self::mask_range(start, end).0)
             }
@@ -249,7 +243,6 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use]
             pub const fn flip_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 ^ Self::mask_range(start, end).0)
             }
@@ -275,7 +268,6 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use]
             pub const fn reverse_range(self, start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
                 // If the entire range of bits is selected, simply reverse all bits

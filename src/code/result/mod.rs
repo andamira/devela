@@ -1,22 +1,28 @@
 // devela::code::result
 //
-//! Results, options, and outcome-based types.
+//! Structured resolution and parameterized outcome-based types.
+//!
 // #![doc = crate::doc_!(modules: crate::code; result)]
 // #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: option, result)]
 //!
-//! Computation doesn’t just yield values, it reaches resolutions.
-//! This module refines how results are formed, owned, transformed,
-//! and resolved, ensuring that every outcome finds its place.
+//! Computation doesn’t just yield values, it organizes outcomes.
+//! This module refines how results, selections, and structured alternatives
+//! are formed, owned, transformed, and resolved, ensuring that every outcome
+//! finds its place.
+//!
+//! It includes fundamental outcome types ([`Option`], [`Result`], [`OptRes`]),
+//! structured ownership ([`Own`]), quantified values ([`ValueQuant`]),
+//! mismatch-aware comparisons ([`Mismatch`]), and flexible sum types ([`Enum`]).
 //
 
 mod chain_hook; // Chain, Hook
-mod mismatch; // MisMatch
+mod mismatch; // Mismatch
 mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
 mod own; // Own
 mod r#enum; // Enum
-mod reexports;
+mod reexports; // code::result::Result
 mod value_quant; // ValueQuant
 
 crate::items! { // structural access: _mods, _all, _always

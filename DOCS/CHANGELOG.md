@@ -21,7 +21,7 @@
   - `Float`|`FloatConst`: `EXPONENT_BIAS`, `EXPONENT_BITS`, `SIGNIFICANT_BITS`.
   - `AngleDirection::{CounterClockwise, CCW, RightHandRule, RHR, Clockwise, CW, LeftHandRule, LHR}`.
 - new types:
-  - code: `Enum`, `ScopeGuard`, `TimeError`.
+  - code: `Enum`, `ScopeGuard`, `TimeError`, `Timeout`.
   - data: `NoData`.
     - codec: `Base`, `EncodeBe`, `EncodeLe`, `EncodeIf`, `EncodeJoin`, `EncodeFlags`, `EncodeLen`, `EncodeLenValue`.
     - key: `StaticMapEntry`.
