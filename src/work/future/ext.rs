@@ -19,9 +19,11 @@ crate::CONST! {
     DOC_BLOCK_ON = r#"Blocks the thread until the future is ready.
 # Example
 ```
+# #[cfg(not(feature = "dep_portable_atomic_util"))] {
 # use devela::ExtFuture as _;
 let future = async {};
 let result = future.block_on();
+# }
 ```
 # Features
 This method is only available if the `dep_portable_atomic_util` feature is **disabled**,

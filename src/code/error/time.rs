@@ -13,7 +13,10 @@
 
 use crate::define_error;
 #[cfg(feature = "std")]
-use {crate::Duration, ::std::time::SystemTimeError as StdSystemTimeError};
+use {
+    crate::{Duration, MpscRecvTimeoutError},
+    ::std::time::SystemTimeError as StdSystemTimeError,
+};
 
 /* individual errors */
 
@@ -27,17 +30,20 @@ define_error! { individual:
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
     self+f => write!(f, "SystemTimeError difference: {:?}", self.0)
 }
-#[cfg(feature = "std")]
+#[cfg(feature = "std")] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl From<StdSystemTimeError> for SystemTimeError {
-    fn from(from: StdSystemTimeError) -> Self {
-        SystemTimeError(from.duration())
-    }
+    fn from(from: StdSystemTimeError) -> Self { SystemTimeError(from.duration()) }
 }
 
 define_error! { individual: pub struct Timeout;
     DOC_KEY_ALREADY_EXISTS = "The operation has exceeded the allowed execution time.",
     self+f => write!(f, "The operation has exceeded the allowed execution time.")
+}
+#[cfg(feature = "std")] #[rustfmt::skip]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
+impl From<MpscRecvTimeoutError> for Timeout {
+    fn from(_from: MpscRecvTimeoutError) -> Self { Timeout }
 }
 
 #[cfg(all(feature = "error", feature = "time"))]

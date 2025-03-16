@@ -45,7 +45,7 @@ pub use full_composite::*;
 #[cfg(feature = "error")]
 mod full_composite {
     use super::super::reexports::crate_errors::*;
-    use crate::TimeError; // TEMP
+    use crate::TimeError; /* TEMP */
     // use super::*;
 
     #[doc = crate::TAG_RESULT!()]
