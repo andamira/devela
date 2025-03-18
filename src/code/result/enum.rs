@@ -56,11 +56,11 @@ macro_rules! impl_enum {
             pub const MAX_ARITY: usize = $crate::ident_total!($($T),+);
             // pub const MAX_ARITY: usize = $crate::capture_last![literal $($nth),+]; // BENCH
 
-            /// Returns `true` if `self` is the variant at `index` (0-based).
+            /// Checks whether the current variant is at `index` (0-based).
             pub const fn is_variant_index(&self, index: usize) -> bool {
                 self.variant_index() == index
             }
-            /// Returns `true` if `self` is the variant at `index` (0-based).
+            /// Checks whether the current variant has the given `name`.
             pub const fn is_variant_name(&self, name: &str) -> bool {
                 $crate::Slice::<&str>::eq(self.variant_name(), name)
             }
@@ -101,6 +101,35 @@ macro_rules! impl_enum {
                 $( iif![<$T>::type_id() == <()>::type_id(); u = true; iif![u; return false]]; )+
                 true
             }
+        }
+        /// # Conversion methods.
+        impl< $($T: Clone),+ > Enum<$($T),+> {
+            /// Returns a tuple with `Some(value)` for the active variant and `None` elsewhere.
+            // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
+            // FUTURE: IMPROVE make the `()` types not wrapped in option.
+            pub fn into_tuple_options(self) -> ($(Option<$T>),+) { $crate::paste! {
+                ( $(
+                    if $nth - 1 == self.variant_index() {
+                        self.clone().[<into_ $T:lower>]()
+                    } else {
+                        None::<$T>
+                    }
+                ),+ )
+            }}
+        }
+        impl< $($T),+ > Enum<$($T),+> {
+            /// Returns a tuple with `Some(&value)` for the active variant and `None` elsewhere.
+            // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
+            // FUTURE: make the `()` types not wrapped in option.
+            pub fn as_tuple_ref_options(&self) -> ($(Option<&$T>),+) { $crate::paste! {
+                ( $(
+                    if $nth - 1 == self.variant_index() {
+                        self.[<as_ref_ $T:lower>]()
+                    } else {
+                        None::<&$T>
+                    }
+                ),+ )
+            }}
         }
     };
     (
@@ -253,5 +282,17 @@ mod tests {
         assert_eq![u.variant_name(), "A"];
         assert_eq![u.is_variant_name("A"), true];
         assert_eq![u.is_variant_name("B"), false];
+    }
+    #[test]
+    fn tuple() {
+        let u = Unums::C(32);
+        assert_eq![
+            u.as_tuple_ref_options(),
+            (None, None, Some(&32), None, None, None, None, None, None, None, None, None)
+        ];
+        assert_eq![
+            u.into_tuple_options(),
+            (None, None, Some(32), None, None, None, None, None, None, None, None, None)
+        ];
     }
 }
