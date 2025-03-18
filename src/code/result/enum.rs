@@ -3,7 +3,7 @@
 //! Defines the [`Enum`] type.
 //
 
-use crate::{iif, ExtAny};
+use crate::{iif, ConstDefault, ExtAny};
 
 impl_enum!(A:1, B:2, C:3, D:4, E:5, F:6, G:7, H:8, I:9, J:10, K:11, L:12); // 12 variants
 
@@ -28,7 +28,7 @@ macro_rules! impl_enum {
         /// implementing [`Default`] when `A: Default`.
         #[non_exhaustive]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub enum Enum<$A, $B, $C=(), $($rest = ()),*> {
+        pub enum Enum<const LEN: usize, $A, $B, $C=(), $($rest = ()),*> {
             #[doc = "The 1st variant (default)."] $A($A),
             #[doc = "The 2nd variant."] $B($B),
             #[doc = "The 3rd variant."] $C($C),
@@ -37,56 +37,53 @@ macro_rules! impl_enum {
     }};
     (
     impl_default: $A:ident $(, $rest:ident)*) => {
-        impl<$A: Default, $($rest),*> Default for Enum<$A, $($rest),*> {
+        impl<const LEN: usize, $A: Default, $($rest),*> Default for Enum<LEN, $A, $($rest),*> {
             fn default() -> Self { Enum::$A($A::default()) }
+        }
+        impl<const LEN: usize, $A: ConstDefault, $($rest),*> ConstDefault
+            for Enum<LEN, $A, $($rest),*> {
+            const DEFAULT: Self = Enum::$A($A::DEFAULT);
         }
     };
     (
     // Implements:
-    // - len
-    // - is_empty
-    // - validate
-    // - first_non_unit
-    // - variants_count
-    // - eq_variant
+    // - LEN
+    // - MAX_ARITY
+    // - variant_index
+    // - is_variant_index
+    // - variant_name
+    // - is_variant_name
     methods_general: $($T:ident:$nth:literal),+) => {
-        /// # Positional methods.
-        impl< $($T),+ > Enum<$($T),+> {
+        /// # Structural methods.
+        impl<const LEN:usize,  $($T),+ > Enum<LEN, $($T),+> {
+            /// The number of active (non-`()` type) variants.
+            pub const LEN: usize = {
+                assert![LEN <= Self::MAX_ARITY, "LEN must be <= MAX_ARITY"];
+                LEN
+            };
             /// The maximum number of generic type parameters in this enum.
             pub const MAX_ARITY: usize = $crate::ident_total!($($T),+);
             // pub const MAX_ARITY: usize = $crate::capture_last![literal $($nth),+]; // BENCH
 
+            /// Returns the current variant index (0-based).
+            pub const fn variant_index(&self) -> usize {
+                match self { $( Enum::$T(_) => $nth - 1 ),+ }
+            }
             /// Checks whether the current variant is at `index` (0-based).
             pub const fn is_variant_index(&self, index: usize) -> bool {
                 self.variant_index() == index
+            }
+
+            /// Returns the current variant name.
+            pub const fn variant_name(&self) -> &'static str {
+                match self { $( Enum::$T(_) => stringify!($T) ),+ }
             }
             /// Checks whether the current variant has the given `name`.
             pub const fn is_variant_name(&self, name: &str) -> bool {
                 $crate::Slice::<&str>::eq(self.variant_name(), name)
             }
-            /// Returns the current variant index (0-based).
-            pub const fn variant_index(&self) -> usize {
-                match self { $( Enum::$T(_) => $nth - 1 ),+ }
-            }
-            /// Returns the current variant name.
-            pub const fn variant_name(&self) -> &'static str {
-                match self { $( Enum::$T(_) => stringify!($T) ),+ }
-            }
         }
-        /// # Structural methods.
-        /// These methods analyze or validate the type-level properties of the enum.
-        impl< $($T: 'static),+ > Enum<$($T),+> {
-            /// Returns the number of active (non-`()` type) variants.
-            // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
-            // WAIT: [variant_count](https://github.com/rust-lang/rust/issues/73662)
-            pub fn len() -> usize {
-                let mut count = 0;
-                $( if <$T>::type_id() != <()>::type_id() { count += 1} )+
-                count
-            }
-            /// Returns `true` if all the variants are `()`.
-            pub fn is_empty() -> bool { Self::len() == 0 }
-
+        impl<const LEN: usize, $($T: 'static),+ > Enum<LEN, $($T),+> {
             /// Returns the first non-unit variant name, if any.
             // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             pub fn first_non_unit() -> Option<&'static str> {
@@ -94,30 +91,53 @@ macro_rules! impl_enum {
                 None
             }
 
-            /// Validates that `()` variants only appear at the end.
+            /// Validates that inactive `()` variants only appear at the end,
+            /// and that `LEN` equals the number of active variants.
             #[allow(unused_assignments, reason = "wont be read in all cases")]
             pub fn validate() -> bool {
-                let mut u = false; // unit variant found
-                $( iif![<$T>::type_id() == <()>::type_id(); u = true; iif![u; return false]]; )+
-                true
+                let mut non_unit_count = 0;
+                let mut unit_found = false;
+                $(
+                    if <$T>::type_id() == <()>::type_id() {
+                        unit_found = true;
+                    } else {
+                        if unit_found { return false; }
+                        non_unit_count += 1;
+                    }
+                )+
+                LEN == non_unit_count
             }
         }
         /// # Conversion methods.
-        impl< $($T: Clone),+ > Enum<$($T),+> {
+        impl<const LEN: usize, $($T: Clone),+ > Enum<LEN, $($T),+> {
             /// Returns a tuple with `Some(value)` for the active variant and `None` elsewhere.
             // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             // FUTURE: IMPROVE make the `()` types not wrapped in option.
             pub fn into_tuple_options(self) -> ($(Option<$T>),+) { $crate::paste! {
+                let index = self.variant_index();
                 ( $(
-                    if $nth - 1 == self.variant_index() {
+                    if $nth - 1 == index {
                         self.clone().[<into_ $T:lower>]()
                     } else {
                         None::<$T>
                     }
                 ),+ )
             }}
+
+            /// Returns a tuple with the active variant’s inner value in its corresponding position
+            /// and `Default::default()` for all others.
+            pub fn into_tuple_defaults(self) -> ($($T),+) where $($T: Default),+ { $crate::paste! {
+                let index = self.variant_index();
+                ( $(
+                    if $nth - 1 == index {
+                        self.clone().[<into_ $T:lower>]().unwrap()
+                    } else {
+                        Default::default()
+                    }
+                ),+ )
+            }}
         }
-        impl< $($T),+ > Enum<$($T),+> {
+        impl<const LEN: usize, $($T),+ > Enum<LEN, $($T),+> {
             /// Returns a tuple with `Some(&value)` for the active variant and `None` elsewhere.
             // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             // FUTURE: make the `()` types not wrapped in option.
@@ -136,7 +156,7 @@ macro_rules! impl_enum {
     // Implements methods acting over individual fields.
     methods_individual: $($T:ident),+) => {
         /// # Variant-specific methods.
-        impl<$($T),+> Enum<$($T),+> {
+        impl<const LEN: usize, $($T),+> Enum<LEN, $($T),+> {
             impl_enum!(methods_field_access: $($T),+);
             impl_enum!(methods_map: $($T),+);
         }
@@ -189,7 +209,7 @@ macro_rules! impl_enum {
     @methods_map: $T:ident, ( $($before:ident),* ), ( $($after:ident),* )) => { $crate::paste! {
         #[doc = "Transforms the inner `" $T "` value using `f`, leaving other variants unchanged."]
         pub fn [<map_ $T:lower>]<NEW>(self, f: impl FnOnce($T) -> NEW)
-            -> Enum< $($before,)* NEW, $($after,)* > {
+            -> Enum<LEN, $($before,)* NEW, $($after,)* > {
             match self {
                 $( Self::$before(val) => Enum::$before(val), )*
                 Self::$T(val) => Enum::$T(f(val)),
@@ -224,31 +244,28 @@ use impl_enum;
 mod tests {
     use super::Enum;
 
-    type Bytes = Enum<u8, i8>;
-    type Unums = Enum<u8, u16, u32, u64>;
+    type Bytes = Enum<2, u8, i8>;
+    type Unums = Enum<4, u8, u16, u32, u64>;
 
-    #[test]
-    fn len() {
-        assert_eq![Bytes::len(), 2];
-        assert_eq![Unums::len(), 4];
-        assert![!Bytes::is_empty()];
-        assert![Enum::<(), ()>::is_empty()];
-    }
     #[test]
     fn validate() {
         assert![Bytes::validate()];
         assert![Unums::validate()];
-        assert![Enum::<i8, ()>::validate()];
-        assert![!Enum::<(), i8>::validate()];
-        assert![!Enum::<i32, (), i8>::validate()];
-        assert![!Enum::<(), (), i8, ()>::validate()];
+        assert![Enum::<0, (), (), ()>::validate()];
+        assert![Enum::<1, i8, (), ()>::validate()];
+        assert![!Enum::<0, i8, (), ()>::validate()];
+        assert![!Enum::<2, i8, (), ()>::validate()];
+        //
+        assert![!Enum::<1, (), i8, ()>::validate()];
+        assert![!Enum::<2, i32, (), i8>::validate()];
+        assert![!Enum::<1, (), (), i8, ()>::validate()];
     }
     #[test]
     fn map() {
-        let a: Enum<i32, f64> = Enum::A(10);
+        let a: Enum<2, i32, f64> = Enum::A(10);
         assert_eq![Enum::A(20), a.map_a(|v| v * 2)];
         assert_eq![Enum::A(10), a.map_b(|v| v * 2.0)];
-        let b: Enum<i32, f64> = Enum::B(3.14);
+        let b: Enum<2, i32, f64> = Enum::B(3.14);
         assert_eq![Enum::B(3.14), b.map_a(|v| v * 2)];
         assert_eq![Enum::B(6.28), b.map_b(|v| v * 2.0)];
     }
@@ -287,12 +304,16 @@ mod tests {
     fn tuple() {
         let u = Unums::C(32);
         assert_eq![
+            u.into_tuple_options(),
+            (None, None, Some(32), None, None, None, None, None, None, None, None, None)
+        ];
+        assert_eq![
             u.as_tuple_ref_options(),
             (None, None, Some(&32), None, None, None, None, None, None, None, None, None)
         ];
         assert_eq![
-            u.into_tuple_options(),
-            (None, None, Some(32), None, None, None, None, None, None, None, None, None)
+            u.into_tuple_defaults(),
+            (0, 0, 32, 0, (), (), (), (), (), (), (), ())
         ];
     }
 }
