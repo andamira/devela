@@ -9,13 +9,14 @@
 
 mod cycle; // Ćycle, CycleCount
 mod interval; // Interval
+mod ratio; // Ratio
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{cycle::*, interval::*};
+        pub use super::{cycle::*, interval::*, ratio::*};
         // WIPZONE
         // pub use super::counter::*;
         // pub use super::scale::*;

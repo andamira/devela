@@ -33,7 +33,7 @@
     - geom:
       - linear: `Matrix`.
       - metric: `Distance`, `Orientation`, `Position`, `Region`, `Stride`, `RegionStrided`.
-    - quant: `Cycle`, `CycleCount`.
+    - quant: `Cycle`, `CycleCount`, `Ratio`.
   - phys: `TimeDelta`.
   - sys:
     - env::app: `AppApple`, `AppConfig`, `AppWindows`, `AppUnix`, `AppXdg`,
