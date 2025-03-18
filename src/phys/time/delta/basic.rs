@@ -3,6 +3,7 @@
 // TOC
 // - basic methods
 // - additional methods
+// - impl_system_instant
 
 use super::*;
 
@@ -316,14 +317,6 @@ impl TimeDelta {
         TimeDelta::new_unchecked(self.secs.abs(), self.nanos.abs())
     }
 
-    /// Returns the absolute value of this time delta as a [`Duration`].
-    ///
-    /// This method cannot panic because the absolute value of `TimeDelta::MIN`
-    /// is always representable in a `Duration`.
-    pub const fn abs_duration(self) -> Duration {
-        Duration::new(self.secs.unsigned_abs(), self.nanos.unsigned_abs())
-    }
-
     /// Returns the negative absolute value of this time delta.
     ///
     /// If this duration is negative, then this returns the original duration unchanged.
@@ -363,4 +356,71 @@ impl TimeDelta {
     pub const fn is_positive(&self) -> bool { self.secs.is_positive() || self.nanos.is_positive() }
     /// Returns true when this duration is negative. That is, less than [`TimeDelta::ZERO`].
     pub const fn is_negative(&self) -> bool { self.secs.is_negative() || self.nanos.is_negative() }
+}
+
+#[cfg(feature = "std")]
+mod impl_system_instant {
+    use crate::{unwrap, Add, Duration, Sub, SystemInstant, TimeDelta};
+
+    /// Additional APIs involving `SystemInstant`.
+    impl TimeDelta {
+        /// Adds a `TimeDelta` to an instant, moving forward or backward in time.
+        ///
+        /// # Panics
+        /// Panics if the result is outside the valid range of `SystemInstant`.
+        pub fn after(&self, instant: SystemInstant) -> SystemInstant {
+            if self.is_positive() {
+                instant + Duration::new(self.secs as u64, self.nanos as u32)
+            } else {
+                instant - Duration::new((-self.secs) as u64, (-self.nanos) as u32)
+            }
+        }
+
+        /// Adds a `TimeDelta` to an instant
+        ///
+        /// Returns `None` if the result is outside the valid range.
+        pub fn checked_after(&self, instant: SystemInstant) -> Option<SystemInstant> {
+            if self.is_positive() {
+                instant.checked_add(Duration::new(self.secs as u64, self.nanos as u32))
+            } else {
+                let secs = unwrap![some? self.secs.checked_neg()] as u64;
+                let nanos = unwrap![some? self.nanos.checked_neg()] as u32;
+                instant.checked_sub(Duration::new(secs, nanos))
+            }
+        }
+    }
+
+    /// Shifts Instant forward or backward.
+    impl Add<TimeDelta> for SystemInstant {
+        type Output = SystemInstant;
+        fn add(self, rhs: TimeDelta) -> SystemInstant {
+            if rhs.is_positive() {
+                self + Duration::new(rhs.secs as u64, rhs.nanos as u32)
+            } else {
+                self - Duration::new((-rhs.secs) as u64, (-rhs.nanos) as u32)
+            }
+        }
+    }
+    /// Moves Instant backward or forward.
+    impl Sub<TimeDelta> for SystemInstant {
+        type Output = SystemInstant;
+        fn sub(self, rhs: TimeDelta) -> SystemInstant {
+            if rhs.is_positive() {
+                self - Duration::new(rhs.secs as u64, rhs.nanos as u32)
+            } else {
+                self + Duration::new((-rhs.secs) as u64, (-rhs.nanos) as u32)
+            }
+        }
+    }
+    /// Returns a signed TimeDelta.
+    impl Sub<SystemInstant> for TimeDelta {
+        type Output = SystemInstant;
+        fn sub(self, rhs: SystemInstant) -> SystemInstant {
+            if self.is_positive() {
+                rhs - Duration::new(self.secs as u64, self.nanos as u32)
+            } else {
+                rhs + Duration::new((-self.secs) as u64, (-self.nanos) as u32)
+            }
+        }
+    }
 }

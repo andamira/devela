@@ -5,13 +5,14 @@
 // TOC
 // - definitions
 // - conversions
-
-use crate::Duration;
-#[cfg(feature = "js")]
-use crate::JsInstant;
+//   - duration
+//   - system_instant
 
 mod basic;
 mod ops;
+
+#[cfg(test)]
+mod tests;
 
 #[doc = crate::TAG_TIME!()]
 /// A signed duration of time, stored as an `(i64, i32)` pair of secs and nanos.
@@ -34,55 +35,107 @@ const MINS_PER_HOUR: i64 = 60;
 
 /* conversions */
 
-impl TryFrom<Duration> for TimeDelta {
-    type Error = &'static str;
+#[rustfmt::skip]
+mod impl_duration {
+    use crate::{Duration, TimeDelta};
 
-    fn try_from(d: Duration) -> Result<TimeDelta, Self::Error> {
-        let secs = i64::try_from(d.as_secs())
-            .map_err(|_| "seconds in unsigned duration {d:?} overflowed i64")?;
-        // Guaranteed to succeed since 0<=nanos<=999,999,999.
-        let nanos = i32::try_from(d.subsec_nanos()).unwrap();
-        Ok(TimeDelta::new_unchecked(secs, nanos))
-    }
-}
-
-impl TryFrom<TimeDelta> for Duration {
-    type Error = &'static str;
-
-    fn try_from(sd: TimeDelta) -> Result<Duration, Self::Error> {
-        // This isn't needed, but improves error messages.
-        if sd.is_negative() {
-            return Err("cannot convert negative duration `{sd:?}` to \
-                 unsigned `std::time::Duration`");
+    /// # Additional APIs involving [`Duration`].
+    impl TimeDelta {
+        /// Converts a `Duration` to a `TimeDelta`.
+        pub const fn from_duration(duration: Duration) -> Self {
+            Self {
+                secs: duration.as_secs() as i64,
+                nanos: duration.subsec_nanos() as i32,
+            }
         }
-        let secs = u64::try_from(sd.as_secs())
-            .map_err(|_| "seconds in signed duration {sd:?} overflowed u64")?;
-        // Guaranteed to succeed because the above only succeeds
-        // when `sd` is non-negative. And when `sd` is non-negative,
-        // we are guaranteed that 0<=nanos<=999,999,999.
-        let nanos = u32::try_from(sd.subsec_nanos()).unwrap();
-        Ok(Duration::new(secs, nanos))
+
+        /// Converts a `TimeDelta` to a `Duration` if it is non-negative.
+        /// Returns `None` if the `TimeDelta` is negative.
+        pub const fn to_duration(&self) -> Option<Duration> {
+            if self.is_negative() { None }
+            else { Some(Duration::new(self.secs as u64, self.nanos as u32)) }
+        }
+
+        /// Returns the absolute value of this time delta as a [`Duration`].
+        ///
+        /// This method cannot panic because the absolute value of `TimeDelta::MIN`
+        /// is always representable in a `Duration`.
+        pub const fn abs_duration(self) -> Duration {
+            Duration::new(self.secs.unsigned_abs(), self.nanos.unsigned_abs())
+        }
+
+        /// Adds a `Duration` to this `TimeDelta`.
+        /// Returns `None` if the result overflows.
+        pub const fn checked_add_duration(&self, duration: Duration) -> Option<Self> {
+            let duration_delta = Self::from_duration(duration);
+            let Some(secs) = self.secs.checked_add(duration_delta.secs) else { return None; };
+            let nanos = self.nanos + duration_delta.nanos;
+            Some(Self::new(secs, nanos))
+        }
+
+        /// Subtracts a `Duration` from this `TimeDelta`.
+        /// Returns `None` if the result underflows.
+        pub const fn checked_sub_duration(&self, duration: Duration) -> Option<Self> {
+            let duration_delta = Self::from_duration(duration);
+            let Some(secs) = self.secs.checked_sub(duration_delta.secs) else { return None; };
+            let nanos = self.nanos - duration_delta.nanos;
+            Some(Self::new(secs, nanos))
+        }
+    }
+
+    impl TryFrom<Duration> for TimeDelta {
+        type Error = &'static str;
+
+        fn try_from(d: Duration) -> Result<TimeDelta, Self::Error> {
+            let secs = i64::try_from(d.as_secs())
+                .map_err(|_| "seconds in unsigned duration {d:?} overflowed i64")?;
+            // Guaranteed to succeed since 0<=nanos<=999,999,999.
+            let nanos = i32::try_from(d.subsec_nanos()).unwrap();
+            Ok(TimeDelta::new_unchecked(secs, nanos))
+        }
+    }
+    impl TryFrom<TimeDelta> for Duration {
+        type Error = &'static str;
+
+        fn try_from(sd: TimeDelta) -> Result<Duration, Self::Error> {
+            // This isn't needed, but improves error messages.
+            if sd.is_negative() {
+                return Err("cannot convert negative duration `{sd:?}` to \
+                     unsigned `std::time::Duration`");
+            }
+            let secs = u64::try_from(sd.as_secs())
+                .map_err(|_| "seconds in signed duration {sd:?} overflowed u64")?;
+            // Guaranteed to succeed because the above only succeeds
+            // when `sd` is non-negative. And when `sd` is non-negative,
+            // we are guaranteed that 0<=nanos<=999,999,999.
+            let nanos = u32::try_from(sd.subsec_nanos()).unwrap();
+            Ok(Duration::new(secs, nanos))
+        }
     }
 }
 
 #[rustfmt::skip]
 #[cfg(feature = "js")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
-impl TimeDelta {
-    /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
-    pub fn from_js(js: JsInstant) -> Self { Self::from_millis_f64(js.as_millis_f64()) }
-    /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
-    pub const fn const_from_js(js: JsInstant) -> Self {
-        Self::const_from_millis_f64(js.as_millis_f64())
+mod impl_js {
+    use crate::{JsInstant, TimeDelta};
+    impl TimeDelta {
+        /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
+        pub fn from_js(js: JsInstant) -> Self { Self::from_millis_f64(js.as_millis_f64()) }
+        /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
+        pub const fn const_from_js(js: JsInstant) -> Self {
+            Self::const_from_millis_f64(js.as_millis_f64())
+        }
+        /// Converts a `TimeDelta` into a `JsInstant`, interpreting it as an absolute timestamp.
+        pub const fn to_js(self) -> JsInstant { JsInstant::from_millis_f64(self.as_millis_f64()) }
     }
-    /// Converts a `TimeDelta` into a `JsInstant`, interpreting it as an absolute timestamp.
-    pub const fn to_js(self) -> JsInstant { JsInstant::from_millis_f64(self.as_millis_f64()) }
 }
+
 #[rustfmt::skip]
 #[cfg(feature = "dep_jiff")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_jiff")))]
 mod impl_jiff {
-    use {super::TimeDelta, ::jiff::SignedDuration};
+    use crate::{TimeDelta, _dep::jiff::SignedDuration};
     impl TimeDelta {
         /// Converts [`SignedDuration`] into [`TimeDelta`].
         pub const fn from_jiff(from: SignedDuration) -> TimeDelta {
