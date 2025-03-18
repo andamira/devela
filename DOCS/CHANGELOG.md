@@ -10,7 +10,7 @@
   - safety: `unsafe_ffi`.
 - new traits:
   - data:
-    - codec: `Encodable`, `EncodabeLen`.
+    - codec: `Decodable`, `Encodable`, `EncodabeLen`.
     - table: `DataValue[Copy]`, `DataType[Copy]`, `DataRaw[Copy]`.
   - num: `NumConst`.
   - sys: `AppEnv`, `ExtLog`.
@@ -23,10 +23,10 @@
 - new types:
   - code: `Enum`, `ScopeGuard`, `TimeError`, `Timeout`.
   - data: `NoData`.
-    - codec: `Base`, `EncodeBe`, `EncodeLe`, `EncodeIf`, `EncodeJoin`, `EncodeFlags`, `EncodeLen`, `EncodeLenValue`.
+    - codec: `CodecBe`, `CodecLe`, `CodecIf`, `CodecJoin`, `CodecFlags`, `CodecLen`, `CodecLenValue`.
+      - radix `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
     - key: `StaticMapEntry`.
     - table: `DataValue*`, `DataType*`, `DataRaw*`.
-    - xipher: `Crockford`, `Rfc4648`, `Rfc4648Hex`.
   - lang: `g_*`, `js_*`, `JsEventKind`, `JsEventMouse`, `JsEventPointer`, `JsInstant`, `JsKeyLocation`, `JsPermission`, `JsPermissionState`, `JsTextMetrics`, `JsTextMetricsFull`, `JsTimeout`, `JsWorker`, `JsWorkerError`, `JsWorkerJob`.
   - media: `BitmapFont`, `Sixel`, `Dither`, `PixelFormat`, `SixelError`, `SixelMean`, `SixelQuality`, `SixelSplit`.
   - num:
@@ -50,7 +50,7 @@
   - `define_panic_handler!`, `define_static_map!`.
   - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
 - new modules:
-  - data: `{codec::{self, radix}, list, key, table, uid, xipher}`.
+  - data: `{codec::{self, crypto, radix}, list, key, table, uid}`.
   - lang: `{dsl, ffi::{self, c, glsl}, i18n, ling::{art, nat}}`.
   - media: `{image::sixel, video}`.
   - num: `{geom::metric, ord, quant}`.
@@ -89,7 +89,7 @@
 - new example: `js_web_api`.
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features and for disabled dependencies.
-- add more doc tags: `TAG_FFI`, `TAG_FMT`, `TAG_GEOM`, `TAG_NO`, `TAG_NUM`, `TAG_QUANT`, `TAG_RAND`, `TAG_TEXT`, `TAG_TIME`.
+- add more doc tags: `TAG_FAKE`, `TAG_FFI`, `TAG_FMT`, `TAG_GEOM`, `TAG_NO`, `TAG_NUM`, `TAG_QUANT`, `TAG_RAND`, `TAG_TEXT`, `TAG_TIME`.
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.

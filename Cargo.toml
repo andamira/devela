@@ -186,6 +186,7 @@ phys = ["time", "wave"]
 	# chem
 	# mech
 	time = ["rustix?/time"]
+	# unit
 	wave = [] # wavelets
 sys = ["io", "mem"]
 	# arch

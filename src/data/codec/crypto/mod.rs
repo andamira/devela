@@ -1,4 +1,4 @@
-// devela::data::xipher
+// devela::data::codec::crypto
 //
 //! Cryptographic primitives for encryption, authentication, and hashing.
 //

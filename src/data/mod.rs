@@ -1,7 +1,7 @@
 // devela::data
 //
 //! Data handling and manipulation.
-#![doc = crate::doc_!(modules: crate; data: codec, iter, key, list, table, uid, xipher)]
+#![doc = crate::doc_!(modules: crate; data: codec, iter, key, list, table, uid)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
@@ -19,7 +19,6 @@ pub mod key;
 pub mod list;
 pub mod table;
 pub mod uid;
-pub mod xipher; // cryptography
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -37,8 +36,8 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            codec::_all::*, iter::_all::*, key::_all::*, list::_all::*,
-            table::_all::*, uid::_all::*, xipher::_all::*,
+            codec::_all::*, iter::_all::*, key::_all::*,
+            list::_all::*, table::_all::*, uid::_all::*,
         };
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
