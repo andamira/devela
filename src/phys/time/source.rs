@@ -23,20 +23,46 @@ pub trait TimeSource<const MONOTONIC: bool> {
     /// Returns the current timestamp in milliseconds.
     fn now_millis() -> u64;
 
+    /* non-required */
+
+    /// Returns the epoch offset in milliseconds.
+    ///
+    /// - For absolute sources (e.g. `SystemTime`), returns the absolute epoch (e.g. `UNIX_EPOCH`).
+    /// - For monotonic sources with a known meaningful reference (e.g. `JsInstant`),
+    ///   returns a meaningful offset.
+    /// - For monotonic sources without a meaningful absolute reference (e.g. `SystemInstant`),
+    ///   returns `0` (default).
+    fn epoch_millis() -> u64 { 0 }
+
     /// Returns the current timestamp in microseconds.
     ///
     /// Default: Uses `now_millis()`.
     fn now_micros() -> u64 { Self::now_millis() * 1_000 }
 
+    /// Returns the epoch offset in microseconds.
+    ///
+    /// Default: Uses `epoch_millis()`.
+    fn epoch_micros() -> u64 { Self::epoch_millis() * 1_000 }
+
     /// Returns the current timestamp in nanoseconds.
     ///
-    /// Default: Uses `now_micros()`.
-    fn now_nanos() -> u64 { Self::now_micros() * 1_000 }
+    /// Default: Uses `now_millis()`.
+    fn now_nanos() -> u64 { Self::now_millis() * 1_000_000 }
+
+    /// Returns the epoch offset in nanoseconds.
+    ///
+    /// Default: Uses `epoch_millis()`.
+    fn epoch_nanos() -> u64 { Self::epoch_millis() * 1_000_000 }
 
     /// Returns the current timestamp as an `f64` value in milliseconds.
     ///
     /// Default: Converts `now_millis()` to `f64`.
     fn now_millis_f64() -> f64 { Self::now_millis() as f64 }
+
+    /// Returns the current timestamp as an `f64` value in milliseconds.
+    ///
+    /// Default: Converts `now_millis()` to `f64`.
+    fn epoch_millis_f64() -> f64 { Self::epoch_millis() as f64 }
 }
 
 #[cfg(feature = "std")] #[rustfmt::skip]
@@ -48,6 +74,7 @@ impl TimeSource<false> for SystemTime {
     fn now_millis() -> u64 {
         SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_millis() as u64
     }
+    //
     fn now_micros() -> u64 {
         SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_micros() as u64
     }
@@ -62,6 +89,7 @@ impl TimeSource<true> for SystemInstant {
         Enum::A(TimeGranularity::Nanos)
     }
     fn now_millis() -> u64 { SystemInstant::now().elapsed().as_millis() as u64 }
+    //
     fn now_micros() -> u64 { SystemInstant::now().elapsed().as_micros() as u64 }
     fn now_nanos() -> u64 { SystemInstant::now().elapsed().as_nanos() as u64 }
 }
@@ -73,6 +101,8 @@ impl TimeSource<true> for JsInstant {
         Enum::A(TimeGranularity::Millis)
     }
     fn now_millis() -> u64 { JsInstant::now().as_millis_f64() as u64 }
+    fn epoch_millis() -> u64 { JsInstant::origin().as_millis_f64() as u64 }
+    //
     fn now_millis_f64() -> f64 { JsInstant::now().as_millis_f64() }
 }
 
