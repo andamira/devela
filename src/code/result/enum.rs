@@ -5,18 +5,24 @@
 
 use crate::{iif, ConstDefault, ExtAny};
 
-impl_enum!(A:1, B:2, C:3, D:4, E:5, F:6, G:7, H:8, I:9, J:10, K:11, L:12); // 12 variants
+// 12 variants by default
+impl_enum!(A:0+1, B:1+2, C:2+3, D:3+4, E:4+5, F:5+6, G:6+7, H:7+8, I:8+9, J:9+10, K:10+11, L:11+12);
 
 /// Defines [`Enum`] and implements all the methods.
 //
-// Supports >= 4 variants.
+//
+// Supports >= 3 variants.
 macro_rules! impl_enum {
-    ($A:ident:$a:literal, $B:ident:$b:literal, $C:ident:$c:literal,
-     $($T:ident:$nth:literal),+) => {
-        impl_enum!(define_enum: $A, $B, $C, $($T:$nth),+);
-        impl_enum!(impl_default: $A, $B, $C, $($T),+);
-        impl_enum!(methods_general: $A:$a, $B:$b, $C:$c, $($T:$nth),+);
-        impl_enum!(methods_individual: $A, $B, $C, $($T),+);
+    (
+    // var_name : var_idx(0-based) + var_nth(1-based)
+    $A:ident: $_a:literal + $a:literal,
+    $B:ident: $_b:literal + $b:literal,
+    $C:ident: $_c:literal + $c:literal,
+    $($T:ident : $idx:literal + $nth:literal),*) => {
+        impl_enum!(define_enum: $A, $B, $C $(, $T:$nth)*);
+        impl_enum!(impl_default: $A, $B, $C $(, $T)*);
+        impl_enum!(methods_general: $A:$_a+$a, $B:$_a+$b, $C:$_c+$c $(, $T:$idx+$nth)*);
+        impl_enum!(methods_individual: $A, $B, $C $(, $T)*);
     };
     (define_enum: $A:ident, $B:ident, $C:ident, $($rest:ident:$nth:literal),*) => { $crate::paste! {
         /// A generic, parameterized *enum* for expressing structured alternatives.
@@ -53,7 +59,13 @@ macro_rules! impl_enum {
     // - is_variant_index
     // - variant_name
     // - is_variant_name
-    methods_general: $($T:ident:$nth:literal),+) => {
+    //
+    // - first_non_unit
+    // - validate
+    //
+    // - into_tuple_options
+    // - into_tuple_defaults
+    methods_general: $($T:ident : $idx:literal + $nth:literal),+) => {
         /// # Structural methods.
         impl<const LEN:usize,  $($T),+ > Enum<LEN, $($T),+> {
             /// The number of active (non-`()` type) variants.
@@ -67,7 +79,7 @@ macro_rules! impl_enum {
 
             /// Returns the current variant index (0-based).
             pub const fn variant_index(&self) -> usize {
-                match self { $( Enum::$T(_) => $nth - 1 ),+ }
+                match self { $( Enum::$T(_) => $idx ),+ }
             }
             /// Checks whether the current variant is at `index` (0-based).
             pub const fn is_variant_index(&self, index: usize) -> bool {
@@ -111,12 +123,10 @@ macro_rules! impl_enum {
         /// # Conversion methods.
         impl<const LEN: usize, $($T: Clone),+ > Enum<LEN, $($T),+> {
             /// Returns a tuple with `Some(value)` for the active variant and `None` elsewhere.
-            // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
-            // FUTURE: IMPROVE make the `()` types not wrapped in option.
             pub fn into_tuple_options(self) -> ($(Option<$T>),+) { $crate::paste! {
                 let index = self.variant_index();
                 ( $(
-                    if $nth - 1 == index {
+                    if $idx == index {
                         self.clone().[<into_ $T:lower>]()
                     } else {
                         None::<$T>
@@ -129,7 +139,7 @@ macro_rules! impl_enum {
             pub fn into_tuple_defaults(self) -> ($($T),+) where $($T: Default),+ { $crate::paste! {
                 let index = self.variant_index();
                 ( $(
-                    if $nth - 1 == index {
+                    if $idx == index {
                         self.clone().[<into_ $T:lower>]().unwrap()
                     } else {
                         Default::default()
@@ -143,7 +153,7 @@ macro_rules! impl_enum {
             // FUTURE: make the `()` types not wrapped in option.
             pub fn as_tuple_ref_options(&self) -> ($(Option<&$T>),+) { $crate::paste! {
                 ( $(
-                    if $nth - 1 == self.variant_index() {
+                    if $idx == self.variant_index() {
                         self.[<as_ref_ $T:lower>]()
                     } else {
                         None::<&$T>
