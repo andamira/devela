@@ -18,7 +18,7 @@ crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _always::*;
 
-    mod _mods {
+    mod _mods { #![allow(unused)]
         #[cfg(feature = "std")]
         pub use super::{ext::*, reexports::*, sleep::*};
         // WIPZONE
