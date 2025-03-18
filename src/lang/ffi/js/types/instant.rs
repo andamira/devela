@@ -40,6 +40,9 @@ impl JsInstant {
 impl JsInstant {
     /// Returns the current instant using `performance.now()`.
     pub fn now() -> Self { Js::performance_now() }
+    /// Returns the time origin using `performance.timeOrigin()`.
+    pub fn origin() -> Self { Js::performance_time_origin() }
+
     /// Resets this instant to the current time.
     pub fn reset(&mut self) { *self = Js::performance_now(); }
     /// Returns the elapsed time since this instant.
