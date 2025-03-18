@@ -34,7 +34,7 @@
       - linear: `Matrix`.
       - metric: `Distance`, `Orientation`, `Position`, `Region`, `Stride`, `RegionStrided`.
     - quant: `Cycle`, `CycleCount`, `Ratio`.
-  - phys: `TimeDelta`, `TimeGranularity`, `TimeSource`.
+  - phys: `TimeDelta`, `TimeGranularity`, `TimeSource`, `TimeSourceFake`.
   - sys:
     - env::app: `AppApple`, `AppConfig`, `AppWindows`, `AppUnix`, `AppXdg`,
     - io: `IoEmpty`, `IoRepeat`.
