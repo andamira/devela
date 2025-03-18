@@ -11,11 +11,11 @@ impl_enum!(A:1, B:2, C:3, D:4, E:5, F:6, G:7, H:8, I:9, J:10, K:11, L:12); // 12
 //
 // Supports >= 4 variants.
 macro_rules! impl_enum {
-    ($A:ident:$_a:literal, $B:ident:$_b:literal, $C:ident:$_c:literal,
+    ($A:ident:$a:literal, $B:ident:$b:literal, $C:ident:$c:literal,
      $($T:ident:$nth:literal),+) => {
         impl_enum!(define_enum: $A, $B, $C, $($T:$nth),+);
         impl_enum!(impl_default: $A, $B, $C, $($T),+);
-        impl_enum!(methods_general: $A, $B, $C, $($T),+);
+        impl_enum!(methods_general: $A:$a, $B:$b, $C:$c, $($T:$nth),+);
         impl_enum!(methods_individual: $A, $B, $C, $($T),+);
     };
     (define_enum: $A:ident, $B:ident, $C:ident, $($rest:ident:$nth:literal),*) => { $crate::paste! {
@@ -49,8 +49,21 @@ macro_rules! impl_enum {
     // - first_non_unit
     // - variants_count
     // - eq_variant
-    methods_general: $($T:ident),+) => {
-        /// General methods.
+    methods_general: $($T:ident:$nth:literal),+) => {
+        /// # Positional methods.
+        impl< $($T),+ > Enum<$($T),+> {
+            /// The maximum number of generic type parameters in this enum.
+            pub const MAX_ARITY: usize = $crate::ident_total!($($T),+);
+            // pub const MAX_ARITY: usize = $crate::capture_last![literal $($nth),+]; // BENCH
+
+            /// Returns `true` if `self` is the variant at `index` (0-based).
+            pub const fn is_at(&self, index: usize) -> bool {
+                match self { $( Enum::$T(_) if index == $nth - 1 => true, )* _ => false }
+            }
+        }
+
+        /// # Structural methods.
+        /// These methods analyze or validate the type-level properties of the enum.
         impl< $($T: 'static),+ > Enum<$($T),+> {
             /// Returns the number of active (non-`()` type) variants.
             // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
@@ -60,7 +73,7 @@ macro_rules! impl_enum {
                 $( if <$T>::type_id() != <()>::type_id() { count += 1} )+
                 count
             }
-            /// Returns `true` if all the variants are of the unit type.
+            /// Returns `true` if all the variants are `()`.
             pub fn is_empty() -> bool { Self::len() == 0 }
 
             /// Returns the first non-unit variant name, if any.
@@ -82,7 +95,7 @@ macro_rules! impl_enum {
     (
     // Implements methods acting over individual fields.
     methods_individual: $($T:ident),+) => {
-        /// # Field-specific methods.
+        /// # Variant-specific methods.
         impl<$($T),+> Enum<$($T),+> {
             impl_enum!(methods_field_access: $($T),+);
             impl_enum!(methods_map: $($T),+);
@@ -203,10 +216,15 @@ mod tests {
     fn field_access() {
         let mut u = Unums::C(32);
         assert_eq![u.is_c(), true];
+        assert_eq![u.is_at(2), true];
+        //
         assert_eq![u.into_c(), Some(32)];
         assert_eq![u.as_ref_c(), Some(&32)];
         assert_eq![u.as_mut_c(), Some(&mut 32)];
+        //
         assert_eq![u.is_a(), false];
+        assert_eq![u.is_at(0), false];
+        //
         assert_eq![u.into_a(), None];
         assert_eq![u.as_ref_a(), None];
         assert_eq![u.as_mut_a(), None];
