@@ -40,6 +40,8 @@ See also
 # 1.87 will be stable on 2025-05-15 ([`nightly_stable_next2`](https://releases.rs/docs/1.87.0/))
 > - <https://github.com/rust-lang/rust/milestone/130>
 
+- 1.87: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
+- 1.87: `·`[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 - 1.87: `a`[box_uninit_write](https://github.com/rust-lang/rust/pull/137850)
 - 1.87: `·`[const_copy_from_slice](https://github.com/rust-lang/rust/pull/138098)
 - 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
@@ -67,8 +69,6 @@ See also
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
-- 1.??: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
-- 1.??: `·`[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)

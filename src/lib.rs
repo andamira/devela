@@ -60,6 +60,7 @@
 #![cfg_attr(
     nightly_stable_next2,
     feature(
+        asm_goto,
         const_copy_from_slice,
         const_slice_flatten,
         integer_sign_cast,
@@ -78,14 +79,13 @@
 )]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "std"),
-    feature(file_lock, hash_extract_if, os_str_display,)
+    feature(anonymous_pipe, file_lock, hash_extract_if, os_str_display,)
 )]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
     nightly_stable_later,
     feature(
-        asm_goto,
         assert_matches,
         cell_update,
         const_array_from_ref,
@@ -110,7 +110,7 @@
 #![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(anonymous_pipe, once_wait, os_string_pathbuf_leak,)
+    feature(once_wait, os_string_pathbuf_leak,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
