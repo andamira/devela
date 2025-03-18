@@ -8,7 +8,9 @@
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
 mod delta; // TimeDelta
-mod reexports;
+mod granularity; // TimeGranularity
+mod reexports; // std::time::*
+mod source; // TimeSource
 
 #[cfg(feature = "time")]
 crate::items! {
@@ -26,7 +28,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{delta::*, reexports::*};
+        pub use super::{delta::*, granularity::*, reexports::*, source::*};
 
         #[cfg(feature = "time")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
@@ -34,6 +36,10 @@ crate::items! { // structural access: _mods, _all, _always
         // WIPZONE
         // pub use super::drop::*;
         // pub use super::freq::*;
+        // #[cfg(feature = "_destaque_u16")]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_destaque_u16")))]
+        // pub use super::looper::*;
+        // pub use super::instant::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -46,3 +52,6 @@ crate::items! { // structural access: _mods, _all, _always
 // WIPZONE
 // mod drop;
 // mod freq;
+// #[cfg(feature = "_destaque_u16")]
+// mod looper;
+// mod instant;
