@@ -57,11 +57,22 @@ macro_rules! impl_enum {
             // pub const MAX_ARITY: usize = $crate::capture_last![literal $($nth),+]; // BENCH
 
             /// Returns `true` if `self` is the variant at `index` (0-based).
-            pub const fn is_at(&self, index: usize) -> bool {
-                match self { $( Enum::$T(_) if index == $nth - 1 => true, )* _ => false }
+            pub const fn is_variant_index(&self, index: usize) -> bool {
+                self.variant_index() == index
+            }
+            /// Returns `true` if `self` is the variant at `index` (0-based).
+            pub const fn is_variant_name(&self, name: &str) -> bool {
+                $crate::Slice::<&str>::eq(self.variant_name(), name)
+            }
+            /// Returns the current variant index (0-based).
+            pub const fn variant_index(&self) -> usize {
+                match self { $( Enum::$T(_) => $nth - 1 ),+ }
+            }
+            /// Returns the current variant name.
+            pub const fn variant_name(&self) -> &'static str {
+                match self { $( Enum::$T(_) => stringify!($T) ),+ }
             }
         }
-
         /// # Structural methods.
         /// These methods analyze or validate the type-level properties of the enum.
         impl< $($T: 'static),+ > Enum<$($T),+> {
@@ -112,7 +123,7 @@ macro_rules! impl_enum {
     };
     (@methods_field_access: $T:ident) => { $crate::paste! {
         #[doc = "Returns `true` if the value is of type [`" $T "`][Self::" $T "]"]
-        pub fn [<is_ $T:lower>](&self) -> bool { matches!(self, Enum::$T(_)) }
+        pub const fn [<is_ $T:lower>](&self) -> bool { matches!(self, Enum::$T(_)) }
 
         #[doc = "Returns the inner `" $T "` value, if present."]
         pub fn [<into_ $T:lower>](self) -> Option<$T> {
@@ -216,17 +227,31 @@ mod tests {
     fn field_access() {
         let mut u = Unums::C(32);
         assert_eq![u.is_c(), true];
-        assert_eq![u.is_at(2), true];
-        //
         assert_eq![u.into_c(), Some(32)];
         assert_eq![u.as_ref_c(), Some(&32)];
         assert_eq![u.as_mut_c(), Some(&mut 32)];
         //
         assert_eq![u.is_a(), false];
-        assert_eq![u.is_at(0), false];
-        //
         assert_eq![u.into_a(), None];
         assert_eq![u.as_ref_a(), None];
         assert_eq![u.as_mut_a(), None];
+    }
+    #[test]
+    fn positioning() {
+        let u = Unums::C(32);
+        assert_eq![u.variant_index(), 2];
+        assert_eq![u.is_variant_index(2), true];
+        assert_eq![u.is_variant_index(3), false];
+        assert_eq![u.variant_name(), "C"];
+        assert_eq![u.is_variant_name("C"), true];
+        assert_eq![u.is_variant_name("B"), false];
+
+        let u = Unums::A(32);
+        assert_eq![u.variant_index(), 0];
+        assert_eq![u.is_variant_index(0), true];
+        assert_eq![u.is_variant_index(1), false];
+        assert_eq![u.variant_name(), "A"];
+        assert_eq![u.is_variant_name("A"), true];
+        assert_eq![u.is_variant_name("B"), false];
     }
 }
