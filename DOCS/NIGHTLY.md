@@ -71,6 +71,7 @@ See also
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
+- 1.??: `·`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`

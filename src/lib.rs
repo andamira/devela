@@ -88,6 +88,7 @@
     feature(
         assert_matches,
         cell_update,
+        cfg_boolean_literals,
         const_array_from_ref,
         const_cell,
         const_char_classify,
