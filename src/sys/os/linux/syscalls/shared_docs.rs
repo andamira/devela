@@ -13,10 +13,9 @@ Terminate the process with an exit status.
 
 # Example
 ```
-use devela::linux_sys_exit;
-
+# use devela::Linux;
 # #[cfg(target_os = "linux")]
-unsafe { linux_sys_exit(0) };
+unsafe { Linux::sys_exit(0) };
 ```
 
 # Safety
@@ -32,10 +31,9 @@ Get process identification.
 
 # Example
 ```no_run
-use devela::linux_sys_getpid;
-
+# use devela::Linux;
 # #[cfg(target_os = "linux")]
-let pid: i32 = unsafe { linux_sys_getpid() };
+let pid: i32 = unsafe { Linux::sys_getpid() };
 ```
 
 # Safety
@@ -51,11 +49,10 @@ Obtain a series of random bytes.
 
 # Example
 ```no_run
-use devela::linux_sys_getrandom;
-
+# use devela::Linux;
 let mut r = 0u8;
 # #[cfg(target_os = "linux")]
-unsafe { linux_sys_getrandom(&mut r as *mut u8, 1, 0) };
+unsafe { Linux::sys_getrandom(&mut r as *mut u8, 1, 0) };
 ```
 
 # Flags
@@ -112,12 +109,11 @@ Returns the syscall return value.
 
 # Example
 ```
-use devela::{linux_sys_nanosleep, Duration, LinuxTimespec};
-
+# use devela::{Duration, Linux, LinuxTimespec};
 let mut req = LinuxTimespec::from(Duration::from_millis(99));
 let mut rem = LinuxTimespec::default();
 # #[cfg(target_os = "linux")]
-assert_eq![0, unsafe { linux_sys_nanosleep(&mut req, &mut rem) }];
+assert_eq![0, unsafe { Linux::sys_nanosleep(&mut req, &mut rem) }];
 ```
 
 # Safety
@@ -133,12 +129,11 @@ Read `count` bytes from a file descriptor `fd` into a buffer `buf`.
 
 # Example
 ```no_run
-use devela::{linux_sys_read, LINUX_FILENO};
-
+# use devela::{Linux, LINUX_FILENO};
 # #[cfg(target_os = "linux")] {
 let mut buf: [u8; 1024] = [0; 1024];
 let bytes_read: isize = unsafe {
-    linux_sys_read(LINUX_FILENO::STDIN, buf.as_mut_ptr(), buf.len())
+    Linux::sys_read(LINUX_FILENO::STDIN, buf.as_mut_ptr(), buf.len())
 };
 assert![bytes_read > 0];
 # }
@@ -172,12 +167,11 @@ Returns the syscall return value.
 
 # Example
 ```
-use devela::{LINUX_FILENO, linux_sys_write};
-
+# use devela::{Linux, LINUX_FILENO};
 # #[cfg(target_os = "linux")] {
 let buf = "Hello\n".as_bytes();
 let bytes_written: isize = unsafe {
-    linux_sys_write(LINUX_FILENO::STDOUT, buf.as_ptr(), buf.len())
+    Linux::sys_write(LINUX_FILENO::STDOUT, buf.as_ptr(), buf.len())
 };
 assert![bytes_written > 0];
 # }

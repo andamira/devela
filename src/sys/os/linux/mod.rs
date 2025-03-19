@@ -18,13 +18,22 @@
 //
 // This is so both for syscalls and safe syscall wrappers. And when more
 // platforms are supported they will all need to be updated accordingly.
+//
+// TOC
+// - private modules
+// - public modules
+//   - io
+//   - process
+//   - thread
+// - structural access
 
 mod consts;
+mod namespace;
 mod structs;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-mod fns;
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
+mod syscalls;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
@@ -49,14 +58,6 @@ pub mod io {
         ))]
         pub use super::super::{
             consts::termios::*,
-            fns::{
-                linux_eprint, linux_eprintln, linux_get_byte, linux_get_char, linux_get_dirty_char,
-                linux_get_line, linux_get_str, linux_get_utf8_bytes, linux_pause_until_char,
-                linux_print, linux_print_bytes, linux_println, linux_prompt, linux_random_bytes,
-                linux_random_u128, linux_random_u16, linux_random_u32, linux_random_u64,
-                linux_random_u8, linux_sys_getrandom, linux_sys_ioctl, linux_sys_read,
-                linux_sys_write,
-            },
             structs::{LinuxTerminalSize, LinuxTermios},
         };
     }
@@ -81,7 +82,6 @@ pub mod process {
         ))]
         pub use super::super::{
             consts::signal::*,
-            fns::{linux_sig_handler_no_return, linux_sys_exit, linux_sys_rt_sigaction},
             structs::{LinuxSigaction, LinuxSigset},
         };
     }
@@ -104,10 +104,7 @@ pub mod thread {
             feature = "unsafe_syscall",
             not(miri),
         ))]
-        pub use super::super::{
-            fns::{linux_getpid, linux_sleep, linux_sys_getpid, linux_sys_nanosleep},
-            structs::LinuxTimespec,
-        };
+        pub use super::super::structs::LinuxTimespec;
     }
 }
 
@@ -118,11 +115,14 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     pub use _pub_mods::*;
 
     mod _mods {
+        pub use super::namespace::*;
         #[cfg(all(feature = "unsafe_syscall", not(miri)))]
         pub use super::terminal::*;
     }
     mod _pub_mods { #![allow(unused)]
-        pub use super::{consts::_all::*, io::_all::*, process::_all::*, thread::_all::*};
+        pub use super::{
+            consts::_all::*, io::_all::*, process::_all::*, thread::_all::*,
+        };
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

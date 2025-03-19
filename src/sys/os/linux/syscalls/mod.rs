@@ -1,6 +1,6 @@
-// devela::sys::os::linux::fns::syscalls
+// devela::sys::os::linux::fns
 //
-//!
+//! Linux syscall functions.
 //
 // - https://doc.rust-lang.org/reference/inline-assembly.html
 // - https://doc.rust-lang.org/nightly/rust-by-example/unsafe/asm.html
@@ -24,7 +24,7 @@ crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
-    mod _mods {
+    mod _mods { #![allow(unused)]
         pub use super::sys::*;
     }
     pub(super) mod _all { #![allow(unused)]

@@ -4,7 +4,7 @@
 
 use crate::c_uint;
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-use crate::{iif, linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG};
+use crate::{iif, Linux, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG};
 
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.
@@ -82,25 +82,25 @@ impl LinuxTermios {
     /// Gets the current termios state into `state`.
     ///
     /// # Errors
-    /// In case of an error returns the [`LINUX_ERRNO`] value from [`linux_sys_ioctl`].
+    /// In case of an error returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
     #[cfg(all(feature = "unsafe_syscall", not(miri)))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub fn get_state() -> Result<LinuxTermios, isize> {
         let mut state = LinuxTermios::new();
         let res = unsafe {
-            linux_sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCGETS, state.as_mut_bytes_ptr())
+            Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCGETS, state.as_mut_bytes_ptr())
         };
         iif![res >= 0; Ok(state); Err(res)]
     }
 
     /// Sets the current termios `state`.
     ///
-    /// Returns the [`LINUX_ERRNO`] value from [`linux_sys_ioctl`].
+    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
     #[cfg(all(feature = "unsafe_syscall", not(miri)))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub fn set_state(mut state: LinuxTermios) -> Result<(), isize> {
         let res = unsafe {
-            linux_sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, state.as_mut_bytes_ptr())
+            Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, state.as_mut_bytes_ptr())
         };
         iif![res >= 0; Ok(()); Err(res)]
     }
@@ -136,7 +136,7 @@ impl LinuxTermios {
     pub fn get_winsize() -> Result<LinuxTerminalSize, isize> {
         let mut winsize = LinuxTerminalSize::default();
         let res = unsafe {
-            linux_sys_ioctl(
+            Linux::sys_ioctl(
                 LINUX_FILENO::STDIN,
                 LINUX_IOCTL::TIOCGWINSZ,
                 &mut winsize as *mut LinuxTerminalSize as *mut u8,

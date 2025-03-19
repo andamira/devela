@@ -45,7 +45,7 @@
     - `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
-  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Log`, `Panic`.
+  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
   - `define_panic_handler!`, `define_static_map!`.
   - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
@@ -96,6 +96,7 @@
 - remove standalone fns:
   - io: `io_*`.
   - panic: `panic_*`.
+  - sys::os::linux: `linux_*`.
   - text: `crate_root`, `crate_root_string`.
   - work: `future_block`, `future_pending`, `future_ready`.
 - remove methods:
