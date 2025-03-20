@@ -14,7 +14,7 @@ use crate::{
 /// System calls.
 impl Linux {
     #[doc = SYS_EXIT!()]
-    pub unsafe fn linux_sys_exit(status: c_int) -> ! {
+    pub unsafe fn sys_exit(status: c_int) -> ! {
         unsafe {
             asm!(
                 "mov rax, {EXIT}",
@@ -28,7 +28,7 @@ impl Linux {
 
     #[doc = SYS_READ!()]
     #[must_use]
-    pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
+    pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
         let result;
         unsafe {
             asm!(
@@ -47,7 +47,7 @@ impl Linux {
 
     #[doc = SYS_WRITE!()]
     #[must_use]
-    pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
+    pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
         let result;
         unsafe {
             asm!(
@@ -66,7 +66,7 @@ impl Linux {
 
     #[doc = SYS_NANOSLEEP!()]
     #[must_use]
-    pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
+    pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
         let result;
         unsafe {
             asm!(
@@ -85,7 +85,7 @@ impl Linux {
 
     #[doc = SYS_IOCTL!()]
     #[must_use]
-    pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
+    pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
         let result;
         unsafe {
             asm!(
@@ -104,7 +104,7 @@ impl Linux {
 
     #[doc = SYS_GETRANDOM!()]
     #[must_use]
-    pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
+    pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
         let result;
         unsafe {
             asm!(
@@ -123,7 +123,7 @@ impl Linux {
 
     #[doc = SYS_GETPID!()]
     #[must_use]
-    pub unsafe fn linux_sys_getpid() -> i32 {
+    pub unsafe fn sys_getpid() -> i32 {
         let result: isize;
         unsafe {
             asm!(
@@ -139,7 +139,7 @@ impl Linux {
 
     #[doc = SYS_RT_SIGACTION!()]
     #[must_use]
-    pub unsafe fn linux_sys_rt_sigaction(
+    pub unsafe fn sys_rt_sigaction(
         sig: c_int,
         act: *const LinuxSigaction,
         oact: *mut LinuxSigaction,

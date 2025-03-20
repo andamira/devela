@@ -8,7 +8,7 @@
 
 use crate::{Enum, Ratio, TimeGranularity};
 
-#[cfg(all(feature = "js", feature = "unsafe_ffi"))]
+#[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))]
 use crate::JsInstant;
 #[cfg(feature = "std")]
 use crate::{SystemInstant, SystemTime, UNIX_EPOCH};
@@ -97,7 +97,7 @@ impl TimeSource<true> for SystemInstant {
     fn now_nanos() -> u64 { SystemInstant::now().elapsed().as_nanos() as u64 }
 }
 
-#[cfg(all(feature = "js", feature = "unsafe_ffi"))] #[rustfmt::skip]
+#[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "js", feature = "unsafe_ffi"))))]
 impl TimeSource<true> for JsInstant {
     fn granularity() -> Enum<2, TimeGranularity, Ratio<u32, u32>> {

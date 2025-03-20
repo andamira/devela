@@ -5,12 +5,12 @@
 //! ```
 // devela::examples::term::linux
 
-use devela::all::*;
+use devela::{Linux, LinuxTerminal};
 
 fn main() {
     /* terminal */
 
-    linux_println("New linux terminal in raw mode...");
+    Linux::println("New linux terminal in raw mode...");
     let term = LinuxTerminal::new_raw().expect("linux terminal");
 
     println!("is_terminal: {}", term.is_terminal());
@@ -18,37 +18,37 @@ fn main() {
 
     /* read */
 
-    linux_println("\nGet 3 bytes.");
+    Linux::println("\nGet 3 bytes.");
     let mut counter = 0;
     while counter < 3 {
-        let b = linux_get_byte();
+        let b = Linux::get_byte();
         println!("byte {counter} = {b} ({})", char::from(b));
         counter += 1;
     }
 
-    linux_println("\nGet 3 chars.");
+    Linux::println("\nGet 3 chars.");
     let mut counter = 0;
     while counter < 3 {
-        let c = linux_get_char();
+        let c = Linux::get_char();
         println!("char {counter} = {c:?}");
         counter += 1;
     }
 
-    linux_println("\nPause until pressing any of: ('y', '€').");
-    linux_pause_until_char(&['y', '€']);
+    Linux::println("\nPause until pressing any of: ('y', '€').");
+    Linux::pause_until_char(&['y', '€']);
 
     /* write */
 
-    linux_print("\nthis is ");
-    linux_println("an stdout writing test.");
+    Linux::print("\nthis is ");
+    Linux::println("an stdout writing test.");
 
-    linux_eprint("and this is ");
-    linux_eprintln("an stderr writing test.");
+    Linux::eprint("and this is ");
+    Linux::eprintln("an stderr writing test.");
 
-    linux_eprint("and these are bytes: ");
-    linux_print_bytes(&[60, 61, 62, 107, 108, 109, 80, 81, 82, b'\n']);
+    Linux::eprint("and these are bytes: ");
+    Linux::print_bytes(&[60, 61, 62, 107, 108, 109, 80, 81, 82, b'\n']);
 
     /* rand */
 
-    println!("\nrandom u16: {}", linux_random_u16());
+    println!("\nrandom u16: {}", Linux::random_u16());
 }

@@ -321,9 +321,6 @@ mod tests {
             u.as_tuple_ref_options(),
             (None, None, Some(&32), None, None, None, None, None, None, None, None, None)
         ];
-        assert_eq![
-            u.into_tuple_defaults(),
-            (0, 0, 32, 0, (), (), (), (), (), (), (), ())
-        ];
+        assert_eq![u.into_tuple_defaults(), (0, 0, 32, 0, (), (), (), (), (), (), (), ())];
     }
 }
