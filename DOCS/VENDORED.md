@@ -101,6 +101,8 @@ See the linked modifications for detailed changes.
   as some items in the [`data::codec`] module ([*modifications*][M_encode]).
 - <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
   as the [`media::image::sixel`] module ([*modifications*][M_icy_sixel]).
+- <i id="musl"></i>[musl] by Rich Felker, et al.,
+  as part of the [`Linux`] signal restorer assembly code.
 - <i id="object-id"></i>[object-id] by *Altertech*,
   as part of the [`IdPinBox`] and [`IdPin`] structs ([*modifications*][M_object-id]).
 - <i id="rawbytes"></i>[rawbytes] by Frank Denis,
@@ -124,6 +126,8 @@ See the linked modifications for detailed changes.
 [libsixel]: https://github.com/saitoha/libsixel
   [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/_info/vendored/icy_sixel.md
   [`media::image::sixel`]: https://docs.rs/devela/latest/devela/media/image/sixel
+[musl]: https://git.musl-libc.org/cgit/musl/tag/?h=v1.2.5
+  [`Linux`]: https://docs.rs/devela/latest/devela/os/linux/struct.Linux.html
 [object-id]: https://crates.io/crates/object-id/0.1.4
   [M_object-id]: https://github.com/andamira/devela/blob/main/src/_info/vendored/object-id.md
   [`IdPin`]: https://docs.rs/devela/latest/devela/data/uid/struct.IdPin.html

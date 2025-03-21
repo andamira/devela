@@ -28,6 +28,7 @@ crate::doc_! { vendor_mod: "crunchy", crunchy }
 crate::doc_! { vendor_mod: "current", current }
 crate::doc_! { vendor_mod: "encode", encode }
 crate::doc_! { vendor_mod: "icy_sixel", icy_sixel }
+// crate::doc_! { vendor_mod: "musl", musl }
 crate::doc_! { vendor_mod: "object-id", object_id }
 // Other
 // crate::doc_! { vendor_mod: "blit-fonts", blit_fonts }

@@ -46,6 +46,8 @@
   [`data::codec`]: crate::data::codec
   [M_icy_sixel]: crate::_info::vendored::icy_sixel
   [`media::image::sixel`]: crate::media::image::sixel
+  <!-- [M_musl]: crate::_info::vendored::musl -->
+  [`Linux`]: crate::os::linux::Linux
   [M_object-id]: crate::_info::vendored::object_id
   [`IdPin`]: crate::data::uid::IdPin
   [`IdPinBox`]: crate::IdPinBox

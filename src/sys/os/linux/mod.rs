@@ -33,12 +33,13 @@ mod namespace;
 mod structs;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-mod syscalls;
-
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-mod terminal;
+crate::items! {
+    mod restorer;
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
+    mod syscalls;
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
+    mod terminal;
+}
 
 /// Linux-specific extensions to [`std::io`].
 pub mod io {
