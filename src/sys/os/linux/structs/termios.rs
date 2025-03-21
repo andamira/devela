@@ -4,7 +4,10 @@
 
 use crate::c_uint;
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-use crate::{iif, Linux, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG};
+use crate::{
+    iif, Linux, LinuxError, LinuxResult as Result, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL,
+    LINUX_TERMIOS_LFLAG,
+};
 
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.
@@ -80,29 +83,20 @@ impl LinuxTermios {
 ))]
 impl LinuxTermios {
     /// Gets the current termios state into `state`.
-    ///
-    /// # Errors
-    /// In case of an error returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
-    #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-    pub fn get_state() -> Result<LinuxTermios, isize> {
+    pub fn get_state() -> Result<LinuxTermios> {
         let mut state = LinuxTermios::new();
         let res = unsafe {
             Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCGETS, state.as_mut_bytes_ptr())
         };
-        iif![res >= 0; Ok(state); Err(res)]
+        iif![res >= 0; Ok(state); Err(LinuxError::Sys(res))]
     }
 
     /// Sets the current termios `state`.
-    ///
-    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
-    #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-    pub fn set_state(mut state: LinuxTermios) -> Result<(), isize> {
+    pub fn set_state(mut state: LinuxTermios) -> Result<()> {
         let res = unsafe {
             Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, state.as_mut_bytes_ptr())
         };
-        iif![res >= 0; Ok(()); Err(res)]
+        iif![res >= 0; Ok(()); Err(LinuxError::Sys(res))]
     }
 
     /// Returns `true` if we're in a terminal context.
@@ -110,12 +104,13 @@ impl LinuxTermios {
     pub fn is_terminal() -> bool {
         match Self::get_state() {
             Ok(_) => true,
-            Err(e) => e != -LINUX_ERRNO::ENOTTY && e != -LINUX_ERRNO::EINVAL,
+            Err(LinuxError::Sys(err)) => err != -LINUX_ERRNO::ENOTTY && err != -LINUX_ERRNO::EINVAL,
+            Err(_) => false, // Other errors are not related to terminal checks
         }
     }
 
     /// Disables raw mode.
-    pub fn disable_raw_mode() -> Result<(), isize> {
+    pub fn disable_raw_mode() -> Result<()> {
         let mut state = LinuxTermios::get_state()?;
         state.c_lflag |= LINUX_TERMIOS_LFLAG::ICANON;
         state.c_lflag |= LINUX_TERMIOS_LFLAG::ECHO;
@@ -123,7 +118,7 @@ impl LinuxTermios {
     }
 
     /// Enables raw mode.
-    pub fn enable_raw_mode() -> Result<(), isize> {
+    pub fn enable_raw_mode() -> Result<()> {
         let mut state = Self::get_state()?;
         state.c_lflag &= !LINUX_TERMIOS_LFLAG::ICANON;
         state.c_lflag &= !LINUX_TERMIOS_LFLAG::ECHO;
@@ -131,9 +126,7 @@ impl LinuxTermios {
     }
 
     /// Returns the size of the window, in cells and pixels.
-    #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-    pub fn get_winsize() -> Result<LinuxTerminalSize, isize> {
+    pub fn get_winsize() -> Result<LinuxTerminalSize> {
         let mut winsize = LinuxTerminalSize::default();
         let res = unsafe {
             Linux::sys_ioctl(
@@ -142,7 +135,7 @@ impl LinuxTermios {
                 &mut winsize as *mut LinuxTerminalSize as *mut u8,
             )
         };
-        iif![res >= 0; Ok(winsize); Err(res)]
+        iif![res >= 0; Ok(winsize); Err(LinuxError::Sys(res))]
     }
 }
 

@@ -5,10 +5,13 @@
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
-    c_uint, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxSigaction, LinuxSigset,
-    LinuxTimespec, Ordering, Ptr, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
-    LINUX_FILENO as FILENO, LINUX_SIGACTION as SIGACTION,
+    c_uint, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError, LinuxResult as Result,
+    LinuxSigaction, LinuxSigset, LinuxTerminalSize, LinuxTermios, LinuxTimespec, Ordering, Ptr,
+    ScopeGuard, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO,
+    LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
 };
+#[cfg(feature = "alloc")]
+use crate::{vec_ as vec, Vec};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Linux-related operations.
@@ -19,6 +22,7 @@ use crate::{
 /// # Methods
 /// - [read](#read-related-methods)
 /// - [write](#write-related-methods)
+/// - [term](#terminal-related-methods)
 /// - [thread](#thread-related-methods)
 /// - [signal](#signaling-related-methods)
 /// - [random](#randomness-related-methods)
@@ -29,80 +33,105 @@ pub struct Linux;
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
+    /// Checks if there is input available to read from stdin.
+    pub fn has_input() -> bool { Self::available_bytes().unwrap_or(0) > 0 }
+
+    /// Returns the number of bytes available to be read from *stdin*.
+    pub fn available_bytes() -> Result<usize> {
+        let mut n = 0;
+        let result = unsafe {
+            Linux::sys_ioctl(FILENO::STDIN, IOCTL::FIONREAD, &mut n as *mut i32 as *mut u8)
+        };
+        if result < 0 { Err(LinuxError::Sys(result)) } else { Ok(n as usize) }
+    }
+
     /// Gets a single byte from *stdin*.
-    ///
-    /// This function makes use of the [`Linux::sys_read`] syscall to read a byte.
-    ///
-    /// # Error Handling
-    /// If the read fails, it prints an error message and exits with status code 11.
-    pub fn get_byte() -> u8 {
+    pub fn get_byte() -> Result<u8> {
         let mut c = 0;
         loop {
             let n = unsafe { Linux::sys_read(FILENO::STDIN, &mut c as *mut u8, 1) };
-            if n < 0 { Linux::print("read failed"); unsafe { Linux::sys_exit(11) }; }
+            if n < 0 { return Err(LinuxError::Sys(n)); }
             if n == 1 { break; }
         }
-        c
+        Ok(c)
+    }
+
+    /// Attempts to get a single byte from stdin without blocking.
+    ///
+    /// Checks if there is input available using `has_input`,
+    /// and if so, reads a byte using `get_byte`.
+    ///
+    /// # Returns
+    /// - `Some(u8)` if a byte is successfully read.
+    /// - `None` if no data is available.
+    pub fn try_get_byte() -> Option<u8> {
+        if Linux::has_input() { Linux::get_byte().ok() } else { None }
     }
 
     /// Pauses execution until receiving from *stdin* any `char` in the `list`.
-    ///
-    /// # Error Handling
-    /// If the read fails, it prints an error message and exits with status code 11.
     pub fn pause_until_char(list: &[char]) {
         loop { if list.contains(&Linux::get_dirty_char()) { break; } }
     }
 
-    /// Gets a single `char` from *stdin*,
-    /// or `None` if the bytes are not valid UTF-8.
+    /// Gets a single `char` from *stdin*.
     ///
-    /// # Error Handling
-    /// If the read fails, it prints an error message and exits with status code 11.
-    pub fn get_char() -> Option<char> {
+    /// # Returns
+    /// - `Ok(char)` if a valid UTF-8 character is read.
+    /// - `Err(LinuxError::InvalidUtf8)` if the bytes are not valid UTF-8.
+    /// - `Err(LinuxError::NoInput)` if the UTF-8 sequence is valid but empty.
+    pub fn get_char() -> Result<char> {
         let bytes = Linux::get_utf8_bytes()?;
         let s = unsafe { from_utf8_unchecked(&bytes) };
-        Some(s.chars().next().unwrap())
+        s.chars().next().ok_or(LinuxError::NoInput)
     }
 
     /// Gets either a single `char` from *stdin*, or the replacement character.
     ///
     /// If the bytes received doesn't form a valid unicode scalar then the
     /// [replacement character (�)][char::REPLACEMENT_CHARACTER] will be returned.
-    ///
-    /// # Error Handling
-    /// If the read fails, it prints an error message and exits with status code 11.
     pub fn get_dirty_char() -> char {
         match Linux::get_utf8_bytes() {
-            Some(bytes) => {
+            Ok(bytes) => {
                 let s = unsafe { from_utf8_unchecked(&bytes) };
                 s.chars().next().unwrap()
             }
-            None => char::REPLACEMENT_CHARACTER,
+            Err(_) => char::REPLACEMENT_CHARACTER,
         }
     }
 
     /// Gets a UTF-8 encoded byte sequence from *stdin* representing a `char`.
-    ///
-    /// Returns `None` if the bytes does not form a valid unicode scalar.
-    ///
-    /// # Error Handling
-    /// If the read fails, it prints an error message and exits with status code 11.
-    pub fn get_utf8_bytes() -> Option<[u8; 4]> {
+    pub fn get_utf8_bytes() -> Result<[u8; 4]> {
         let mut bytes = [0u8; 4];
         let len;
         // read the first byte to determine the length of the character
-        bytes[0] = Linux::get_byte();
-        if bytes[0] & 0x80 == 0 { return Some([bytes[0], 0, 0, 0]); } // return ASCII immediately
+        bytes[0] = Linux::get_byte()?;
+        if bytes[0] & 0x80 == 0 { return Ok([bytes[0], 0, 0, 0]); } // ASCII char
+        // IMPROVE: use text module functionality
         else if bytes[0] & 0xE0 == 0xC0 { len = 2; }
         else if bytes[0] & 0xF0 == 0xE0 { len = 3; }
         else if bytes[0] & 0xF8 == 0xF0 { len = 4; }
-        else { return None; } // Not a valid first byte of a UTF-8 character
+        else { return Err(LinuxError::InvalidUtf8) }
         // read the remaining bytes of the character
         for i in 1..len {
-            bytes[i as usize] = Linux::get_byte();
-            if bytes[i as usize] & 0xC0 != 0x80 { return None; } // Not a valid continuation byte
+            bytes[i as usize] = Linux::get_byte()?;
+            if bytes[i as usize] & 0xC0 != 0x80 { return Err(LinuxError::InvalidUtf8); }
         }
-        Some(bytes)
+        Ok(bytes)
+    }
+
+    /// Reads all available bytes from stdin.
+    ///
+    /// # Returns
+    /// - `Ok(Vec<u8>)` containing the bytes read.
+    /// - `Err(isize)` if the read fails, returning the error code.
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    pub fn read_available_bytes() -> Result<Vec<u8>> {
+        let count = Linux::available_bytes()?;
+        if count == 0 { return Ok(Vec::new()); }
+        let mut buffer = vec![0u8; count];
+        let n = unsafe { Linux::sys_read(FILENO::STDIN, buffer.as_mut_ptr(), count) };
+        if n < 0 { Err(LinuxError::Sys(n)) } else { buffer.truncate(n as usize); Ok(buffer) }
     }
 
     /// Prompts the user for a string from *stdin*, backed by a `buffer`.
@@ -113,14 +142,9 @@ impl Linux {
     /// let mut name_buffer = [0_u8; 32];
     /// let name: &str = Linux::prompt::<32>("Enter your name: ", &mut name_buffer);
     /// ```
-    ///
-    /// # Error Handling
-    /// - If the write fails, it prints an error message and exits with status code 10.
-    /// - If the read fails, it prints an error message and exits with status code 11.
-    pub fn prompt<'input, const CAP: usize>(
-        text: &str,
-        buffer: &'input mut [u8; CAP],
-    ) -> &'input str { Linux::print(text); Linux::get_line(buffer) }
+    pub fn prompt<'i, const CAP: usize>(text: &str, buffer: &'i mut [u8; CAP]) -> Result<&'i str> {
+        Linux::print(text)?; Linux::get_line(buffer)
+    }
 
     /// Gets a string from *stdin* backed by a `buffer`, until a newline.
     ///
@@ -130,15 +154,11 @@ impl Linux {
     /// let mut buf = [0_u8; 32];
     /// let name: &str = Linux::get_line::<32>(&mut buf);
     /// ```
-    ///
-    /// # Error handling
-    /// If the read fails, it prints an error message and exits with status code 11.
-    pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
+    pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> Result<&str> {
         Linux::get_str(buffer, '\n')
     }
 
-    /// Gets a string from *stdin* backed by a `buffer`,
-    /// until the `stop` char is received.
+    /// Gets a string from *stdin* backed by a `buffer`, until the `stop` char is received.
     ///
     /// # Examples
     /// ```no_run
@@ -146,16 +166,16 @@ impl Linux {
     /// let mut buf = [0_u8; 32];
     /// let name: &str = Linux::get_str::<32>(&mut buf, '\n');
     /// ```
-    pub fn get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> &str {
+    pub fn get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> Result<&str> {
         let mut index = 0;
         loop {
-            if let Some(c) = Linux::get_char() {
+            if let Ok(c) = Linux::get_char() {
                 let mut c_buf = [0; 4];
                 let c_str = c.encode_utf8(&mut c_buf);
                 if c == stop {
                     break;
                 } else if index + c_str.len() <= CAP {
-                    Linux::print(c_str);
+                    Linux::print(c_str)?;
                     for &b in c_str.as_bytes() {
                         buffer[index] = b;
                         index += 1;
@@ -163,7 +183,7 @@ impl Linux {
                 }
             }
         }
-        unsafe { from_utf8_unchecked(&buffer[..index]) }
+        Ok(unsafe { from_utf8_unchecked(&buffer[..index]) })
     }
 }
 
@@ -172,104 +192,118 @@ impl Linux {
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
     /// Prints a string slice to standard output.
-    ///
-    /// This function makes use of [`Linux::sys_write`].
-    ///
-    /// # Error Handling
-    /// If the write fails, it prints an error message and exits with status code 10.
-    pub fn print(s: &str) {
+    pub fn print(s: &str) -> Result <()> {
         let mut s = s.as_bytes();
         while !s.is_empty() {
             let n = unsafe { Linux::sys_write(FILENO::STDOUT, s.as_ptr(), s.len()) };
-            if n < 0 || n as usize > s.len() {
-                Linux::print("write failed");
-                unsafe { Linux::sys_exit(10) };
-            }
+            if n < 0 || n as usize > s.len() { return Err(LinuxError::Sys(n)); }
             s = &s[n as usize..]; // update the byte slice to exclude the written bytes
         }
+        Ok(())
     }
 
     /// Prints a string slice to standard output, with a newline.
-    ///
-    /// This function makes use of [`Linux::sys_write`].
-    ///
-    /// # Error Handling
-    /// If the write fails, it prints an error message and exits with status code 10.
-    pub fn println(s: &str) { Linux::print(s); Linux::print("\n"); }
+    pub fn println(s: &str) -> Result<()> { Linux::print(s)?; Linux::print("\n") }
 
     /// Prints a string slice to standard error.
-    ///
-    /// This function makes use of [`Linux::sys_write`].
-    ///
-    /// # Error Handling
-    /// If the write fails, it prints an error message and exits with status code 10.
-    pub fn eprint(s: &str) {
+    pub fn eprint(s: &str) -> Result<()> {
         let mut s = s.as_bytes();
         while !s.is_empty() {
             let n = unsafe { Linux::sys_write(FILENO::STDERR, s.as_ptr(), s.len()) };
-            if n < 0 || n as usize > s.len() {
-                Linux::print("write failed");
-                unsafe { Linux::sys_exit(10) };
-            }
+            if n < 0 || n as usize > s.len() { return Err(LinuxError::Sys(n)); }
             s = &s[n as usize..]; // update the byte slice to exclude the written bytes
         }
+        Ok(())
     }
 
     /// Prints a string slice to standard error, with a newline.
-    ///
-    /// This function makes use of the [`Linux::sys_write`] syscall to print a string.
-    ///
-    /// # Error Handling
-    /// If the write fails, it prints an error message and exits with status code 10.
-    pub fn eprintln(s: &str) { Linux::eprint(s); Linux::eprint("\n"); }
+    pub fn eprintln(s: &str) -> Result<()> { Linux::eprint(s)?; Linux::eprint("\n") }
 
     /// Prints a byte slice to *stdout*.
-    ///
-    /// This function makes use of the [`Linux::sys_write`] syscall to print bytes.
-    ///
-    /// # Error Handling
-    /// If the write fails, it prints an error message and exits with status code 10.
-    pub fn print_bytes(b: &[u8]) {
+    pub fn print_bytes(b: &[u8]) -> Result<()> {
         let mut b = b;
         while !b.is_empty() {
             let n = unsafe { Linux::sys_write(FILENO::STDOUT, b.as_ptr(), b.len()) };
-            if n < 0 || n as usize > b.len() {
-                Linux::print("write failed");
-                unsafe { Linux::sys_exit(10) };
-            }
+            if n < 0 || n as usize > b.len() { return Err(LinuxError::Sys(n)); }
             b = &b[n as usize..]; // update the byte slice to exclude the written bytes
         }
+        Ok(())
     }
+}
+
+/// Terminal-related methods.
+#[rustfmt::skip]
+#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+impl Linux {
+    /// Returns `true` if we are in a terminal context.
+    #[must_use]
+    pub fn is_terminal() -> bool { LinuxTermios::is_terminal() }
+
+    /// Returns the terminal dimensions.
+    ///
+    /// # Errors
+    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
+    pub fn terminal_size() -> Result<LinuxTerminalSize> { LinuxTermios::get_winsize() }
+
+    /// Enables raw mode.
+    ///
+    /// Raw mode is a way to configure the terminal so that it does not process or
+    /// interpret any of the input but instead passes it directly to the program.
+    ///
+    /// # Errors
+    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
+    pub fn enable_raw_mode() -> Result<()> { LinuxTermios::enable_raw_mode() }
+
+    /// Disables raw mode.
+    ///
+    /// # Errors
+    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
+    pub fn disable_raw_mode() -> Result<()> { LinuxTermios::disable_raw_mode() }
+
+    /// Enables raw mode and returns a `ScopeGuard` that restores the original state on drop.
+    #[allow(clippy::type_complexity)]
+    pub fn scoped_raw_mode()
+        -> Result<ScopeGuard<LinuxTermios, impl FnOnce(LinuxTermios, &()), ()>> {
+        let initial_state = LinuxTermios::get_state()?;
+        LinuxTermios::enable_raw_mode()?;
+
+        Ok(ScopeGuard::with(initial_state, (), |state, ()| {
+            LinuxTermios::set_state(state).unwrap();
+        }))
+    }
+
+    // pub fn scoped_raw_mode() -> Result<ScopeGuard<LinuxTermios, impl FnOnce(LinuxTermios), &()>> {
+    //     let initial_state = LinuxTermios::get_state()?;
+    //     LinuxTermios::enable_raw_mode()?;
+    //     Ok(ScopeGuard::new(initial_state, |state| {
+    //         LinuxTermios::set_state(state).unwrap();
+    //     }))
+    //
+    //     // Ok(devela::ScopeGuard::new(move || {
+    //     //     LinuxTermios::set_state(initial_state).unwrap();
+    //     // }))
+    // }
 }
 
 /// Thread-related methods.
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-// IMPROVE: use a TAG
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
 impl Linux {
     /// Suspends execution of calling thread for `duration`.
-    ///
-    /// This function makes use of the [`Linux::sys_nanosleep`] syscall.
-    pub fn sleep(duration: Duration) {
+    pub fn sleep(duration: Duration) -> Result<()> {
         let mut req = LinuxTimespec::with(duration);
         let mut rem = LinuxTimespec::default();
         loop {
             let n = unsafe { Linux::sys_nanosleep(req.as_ptr(), rem.as_mut_ptr()) };
             match n.cmp(&0) {
-                Ordering::Less => {
-                    Linux::print("nanosleep failed");
-                    unsafe { Linux::sys_exit(13) };
-                }
-                Ordering::Equal => break,
+                Ordering::Less => return Err(LinuxError::Sys(n)),
+                Ordering::Equal => break Ok(()),
                 Ordering::Greater => req = rem,
             }
         }
     }
 
     /// Returns the current process number.
-    ///
-    /// This function makes use of the [`Linux::sys_getpid`] syscall.
     pub fn getpid() -> i32 {
         unsafe { Linux::sys_getpid() }
     }
@@ -348,9 +382,10 @@ macro_rules! impl_random_fns {
     // $len:  the length of the primitive in bytes
     ($($prim:ident : $len:literal),+) => { $crate::paste! { $(
         #[doc = "Generates a random `" $prim "` value that may not be criptographically secure."]
-        pub fn [<random_ $prim>]() -> $prim {
-            let mut r = [0; $len];
-            let mut attempts = 0;
+        pub fn [<random_ $prim>]() -> Result<$prim> {
+            #[cold] fn getrandom_failed_cold(n: isize) -> Result<$prim> { Err(LinuxError::Sys(n)) }
+
+            let (mut r, mut attempts) = ([0; $len], 0);
             loop {
                 let n = unsafe { Linux::sys_getrandom(r.as_mut_ptr(), $len, Linux::RAND_FLAGS) };
                 if n == $len {
@@ -359,17 +394,17 @@ macro_rules! impl_random_fns {
                 } else if n == -ERRNO::EAGAIN {
                     iif![!Linux::getrandom_try_again_cold(&mut attempts); break];
                 } else { // n < 0
-                    Linux::getrandom_failed_cold();
+                    return getrandom_failed_cold(n);
                 }
             }
-            $prim::from_ne_bytes(r)
+            Ok($prim::from_ne_bytes(r))
         }
     )+ }};
 }
 
 /// # Randomness-related methods.
 ///
-/// They makes use of the `GRND_NONBLOCK` and `GRND_INSECURE` flags. So when the randomness
+/// They make use of the `GRND_NONBLOCK` and `GRND_INSECURE` flags. So when the randomness
 /// source is not ready, instead of blocking it may return less secure data in linux >= 5.6
 /// or retry it a certain number of times, or even return 0 in some cases.
 #[rustfmt::skip]
@@ -381,7 +416,9 @@ impl Linux {
     ///
     /// # Panics
     /// Panics in debug if `buffer.len() > `[`isize::MAX`]
-    pub fn random_bytes(buffer: &mut [u8]) {
+    pub fn random_bytes(buffer: &mut [u8]) -> Result<()> {
+        #[cold] fn getrandom_failed_cold(n: isize) -> Result<()> { Err(LinuxError::Sys(n)) }
+
         debug_assert![buffer.len() <= isize::MAX as usize];
         let (mut attempts, mut offset) = (0, 0);
         while offset < buffer.len() {
@@ -392,12 +429,13 @@ impl Linux {
             if n == -ERRNO::EAGAIN {
                 iif![!Linux::getrandom_try_again_cold(&mut attempts); break];
             } else if n < 0 {
-                Linux::getrandom_failed_cold();
+                return getrandom_failed_cold(n);
             } else {
                 // hot path!
                 offset += n as usize;
             }
         }
+        Ok(())
     }
 
     // from `sys/random.h`
@@ -415,7 +453,4 @@ impl Linux {
         *attempts += 1;
         *attempts <= Linux::RAND_MAX_ATTEMPTS
     }
-    /// the cold path for some other error
-    #[cold]
-    fn getrandom_failed_cold() { Linux::print("getrandom failed"); unsafe { Linux::sys_exit(12); } }
 }

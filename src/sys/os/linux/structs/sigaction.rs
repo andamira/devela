@@ -66,10 +66,15 @@ impl LinuxSigset {
     // The size of the array is the number of signals divided by the bits of an usize.
     const LEN: usize = { Self::NSIG.div_ceil(Self::BITS_PER_USIZE) };
 
+    /// Returns an empty set of signals.
+    pub const fn empty() -> Self {
+        Self { sig: [0] }
+    }
+
     /// Returns the size in bytes of `LinuxSigset`.
     #[must_use]
     pub const fn size() -> usize {
-        core::mem::size_of::<Self>()
+        size_of::<Self>()
     }
 }
 impl LinuxSigset {

@@ -28,6 +28,7 @@
 // - structural access
 
 mod consts;
+mod error;
 mod namespace;
 mod structs;
 
@@ -121,7 +122,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            consts::_all::*, io::_all::*, process::_all::*, thread::_all::*,
+            consts::_all::*, error::*, io::_all::*, process::_all::*, thread::_all::*,
         };
     }
     pub(super) mod _all { #![allow(unused)]

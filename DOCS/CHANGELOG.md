@@ -40,6 +40,7 @@
     - io: `IoEmpty`, `IoRepeat`.
     - log: `LogConfig`.
     - mem: `Current`, `CurrentGuard`, `SpinLock`, `SpinLockGuard`.
+    - os: `LinuxError`, `LinuxResult`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`.
     - `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
