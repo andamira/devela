@@ -8,8 +8,4 @@ mod termios;
 mod timespec;
 
 #[allow(unused)]
-pub use {
-    sigaction::{LinuxSigaction, LinuxSigset},
-    termios::{LinuxTerminalSize, LinuxTermios},
-    timespec::LinuxTimespec,
-};
+pub use {sigaction::*, termios::*, timespec::*};

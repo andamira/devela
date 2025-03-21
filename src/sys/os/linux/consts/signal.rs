@@ -3,7 +3,7 @@
 
 #![allow(non_camel_case_types)]
 
-use core::ffi::c_int;
+use crate::c_int;
 
 /// Linux flag constants for [`LinuxSigaction`][crate::sys::os::linux::LinuxSigaction].
 #[allow(non_camel_case_types)]
@@ -30,12 +30,12 @@ pub struct LINUX_SIGACTION;
 #[allow(non_camel_case_types)]
 pub struct LINUX_SIGNAL;
 
-// 36 signals
+// 31 different signals
 impl LINUX_SIGNAL {
     /// Hangup detected on controlling terminal or death of controlling process.
     ///
     /// Default action: `Term`.
-    pub const SIGHUP: c_int = 1;
+    pub const SIGHUP: c_int = 1_i32;
 
     /// Interrupt from keyboard.
     ///
@@ -305,9 +305,8 @@ impl LINUX_SIGACTION {
 
     /// Not intended for application use.
     ///
-    /// This flag is used by C libraries to indicate that the `sa_restorer` field
-    /// contains the address of a "signal trampoline".  See [`sigreturn(2)`] for more
-    /// details.
+    /// This flag is used by C libraries to indicate that the `sa_restorer` field contains
+    /// the address of a "signal trampoline".  See [`sigreturn(2)`] for more details.
     ///
     /// [`sigreturn(2)`]: https://man7.org/linux/man-pages/man2/sigreturn.2.html
     pub const SA_RESTORER: usize = 0x0400_0000;

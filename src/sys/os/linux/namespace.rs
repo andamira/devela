@@ -231,7 +231,7 @@ impl Linux {
     }
 }
 
-/// Terminal-related methods.
+/// # Terminal-related methods.
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
@@ -240,24 +240,15 @@ impl Linux {
     pub fn is_terminal() -> bool { LinuxTermios::is_terminal() }
 
     /// Returns the terminal dimensions.
-    ///
-    /// # Errors
-    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
     pub fn terminal_size() -> Result<LinuxTerminalSize> { LinuxTermios::get_winsize() }
 
     /// Enables raw mode.
     ///
     /// Raw mode is a way to configure the terminal so that it does not process or
     /// interpret any of the input but instead passes it directly to the program.
-    ///
-    /// # Errors
-    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
     pub fn enable_raw_mode() -> Result<()> { LinuxTermios::enable_raw_mode() }
 
     /// Disables raw mode.
-    ///
-    /// # Errors
-    /// Returns the [`LINUX_ERRNO`] value from [`Linux::sys_ioctl`].
     pub fn disable_raw_mode() -> Result<()> { LinuxTermios::disable_raw_mode() }
 
     /// Enables raw mode and returns a `ScopeGuard` that restores the original state on drop.
@@ -285,7 +276,7 @@ impl Linux {
     // }
 }
 
-/// Thread-related methods.
+/// # Thread-related methods.
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
@@ -313,7 +304,102 @@ impl Linux {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
+    /// Registers multiple signals using a handler function.
+    ///
+    /// # Notes
+    /// - Unknown flags in the `flags` slice are ignored, and a warning is printed.
+    ///
+    /// # Arguments
+    /// - `handler`: A function that will be called when one of the specified signals is received.
+    ///   The function takes a single argument for the signal number.
+    /// - `signals`: A slice of [`LINUX_SIGNAL`] values specifying the signals to handle.
+    /// - `flags`: An optional slice of [`LINUX_SIGACTION`] flags.
+    ///   If `None`, only the `SA_RESTORER` flag is used.
+    ///
+    /// # Notes
+    /// - The `SA_RESTORER` flag is always included.
+    /// - The `SA_SIGINFO` flag is ignored. Use the [`sig_handler_siginfo`] method instead.
+    /// - Unknown flags in the `flags` slice are ignored, and a warning is printed.
+
+    /// # Examples
+    /// ```no_run
+    /// # #[cfg(feature = "std")] {
+    /// use devela::{Linux, LINUX_SIGNAL as LS, sleep4};
+    /// fn handler(sig: i32) {
+    ///    println!("\nsignal `{sig}` received! continuing. . .");
+    /// }
+    /// fn main() {
+    ///     println!("press Ctrl+C, or resize the terminal to catch the signals");
+    ///     Linux::sig_handler(handler, &[LS::SIGINT, LS::SIGSTOP, LS::SIGCONT, LS::SIGWINCH]);
+    ///     sleep4!(4);
+    ///     println!("bye");
+    /// }
+    /// # }
+    /// ```
+    // #[cfg(any(
+    //     target_arch = "aarch64", target_arch = "arm",
+    //     target_arch = "x86_64", target_arch = "x86",
+    //     target_arch = "riscv64", target_arch = "riscv32",
+    // ))]
+    // #[cfg_attr(nightly_doc, doc(cfg(any(
+    //     target_arch = "aarch64", target_arch = "arm",
+    //     target_arch = "x86_64", target_arch = "x86",
+    //     target_arch = "riscv64", target_arch = "riscv32",
+    // ))))]
+    pub fn sig_handler(handler: fn(i32), signals: &[i32], flags: Option<&[usize]>) {
+        // We store the given `handler` function in a static to be able to call it
+        // from the new extern function which can't capture its environment.
+        static HANDLER: AtomicPtr<fn(i32)> = AtomicPtr::new(Ptr::null_mut());
+        HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
+
+        extern "C" fn c_handler(sig: i32) {
+            let handler = HANDLER.load(AtomicOrdering::SeqCst);
+            if !handler.is_null() {
+                #[allow(clippy::crosspointer_transmute)]
+                // SAFETY: The non-null pointer is originally created from a `fn(i32)` pointer.
+                let handler = unsafe { transmute::<*mut fn(i32), fn(i32)>(handler) };
+                handler(sig);
+            }
+        }
+        // Use the restorer function defined in assembly.
+        unsafe extern "C" { safe fn __nc_restore_rt(); }
+
+        // Start with the SA_RESTORER flag, as it is always required.
+        let mut combined_flags = SIGACTION::SA_RESTORER;
+        // Add additional flags if provided.
+        if let Some(provided_flags) = flags {
+            for &flag in provided_flags {
+                match flag { // Validate the flag to ensure it is one of the known values.
+                    SIGACTION::SA_NOCLDSTOP
+                    | SIGACTION::SA_NOCLDWAIT
+                    | SIGACTION::SA_NODEFER
+                    | SIGACTION::SA_ONSTACK
+                    | SIGACTION::SA_RESETHAND
+                    | SIGACTION::SA_RESTART => {
+                        combined_flags |= flag;
+                    }
+                    _ => {
+                        #[cfg(feature = "std")]
+                        eprintln!("Warning: Ignoring unknown flag: {:#x}", flag);
+                    }
+                }
+            }
+        }
+        let mask = LinuxSigset::empty();
+        let sigaction = LinuxSigaction::new(c_handler, combined_flags, mask, Some(__nc_restore_rt));
+        for s in signals {
+            if (1..=31).contains(s) { // make sure the signal is a valid number
+                unsafe {
+                    let _ = Linux::sys_rt_sigaction(*s, &sigaction,
+                        Ptr::null_mut(), LinuxSigset::size());
+                }
+            }
+        }
+    }
+
     /// Registers multiple signals using a handler function that never returns.
+    ///
+    /// This is an alternative for platforms were returning is not supported.
     ///
     /// # Examples
     /// ```no_run
@@ -332,19 +418,6 @@ impl Linux {
     /// }
     /// # }
     /// ```
-    ///
-    /// # Rationale
-    /// It would be very nice to be able to register a signal handler that can return,
-    /// unfortunately I've been unable to make it work.
-    ///
-    /// Apparently the handler needs the [`SA_RESTORER`] flag to run, but doing so
-    /// without providing a restorer function produces a segmentation fault. The only
-    /// way to simply avoid that is to not return from the handler function.
-    ///
-    /// The `libc` library sets it up correctly but doing so manually seems a too
-    /// complex too low level task.
-    ///
-    /// [`SA_RESTORER`]: SIGACTION::SA_RESTORER
     pub fn sig_handler_no_return(handler: fn(i32) -> !, signals: &[i32]) {
         // We store the given `handler` function in a static to be able to call it
         // from the new extern function which can't capture its environment.
@@ -360,12 +433,11 @@ impl Linux {
                 handler(sig);
             }
         }
-        // Apparently Rust doesn't call the handler unless we set the SA_RESTORER flag.
         let flags = SIGACTION::SA_RESETHAND | SIGACTION::SA_RESTORER;
         let mask = LinuxSigset::default();
-        let sigaction = LinuxSigaction::new(c_handler, flags, mask);
+        let sigaction = LinuxSigaction::new(c_handler, flags, mask, None);
         for s in signals {
-            if (1..=36).contains(s) { // make sure the signal is a valid number
+            if (1..=31).contains(s) { // make sure the signal is a valid number
                 unsafe {
                     let _ = Linux::sys_rt_sigaction(*s, &sigaction,
                         Ptr::null_mut(), LinuxSigset::size());

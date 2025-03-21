@@ -77,6 +77,7 @@
   - `IoErrorKind:` `OutOfMemory`, `FilesystemLoop`, `FilesystemQuotaExceeded`, `CrossesDevices`, `InvalidFilename`, `InProgress`.
 - new re-exports:
   - core: `any::type_name` as `any_type_name`,
+  - lang: `c_void`.
   - std:
     - `alloc::System` as `SystemAlloc`.
     - env: `*`.
@@ -149,6 +150,8 @@
   - `ExtThread::parallelism` to `available_parallelism`.
 - deprecate fns/methods:
   - `Char`: `utf8_2bytes_len`, `utf8_3bytes_len`, `utf8_4bytes_len`.
+- modify methods:
+  - `LinuxSigaction`: `new` method has an additional `restorer` argument.
 - remove feature-gates:
   - `hash` for: `FxHasher`.
   - `io` for: `IoError`, `IoErrorKind`, `IoRead`, `IoWrite`, `IoBytes`, `IoChain`, `IoTake`.

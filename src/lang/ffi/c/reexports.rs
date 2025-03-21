@@ -18,6 +18,12 @@ reexport! { rust: core::ffi,
 }
 
 reexport! { rust: core::ffi,
+    tag: concat![TAG_PRIMITIVE!(), TAG_TEXT!()],
+    doc: "Equivalent to C’s void type when used as a [pointer].",
+    c_void
+}
+
+reexport! { rust: core::ffi,
     tag: TAG_TEXT!(),
     doc: "Representation of a borrowed C string (See [`CString`]).",
     CStr

@@ -28,11 +28,16 @@ pub struct LinuxSigaction {
 impl LinuxSigaction {
     /// Retuns a new `LinuxSigation`.
     #[must_use]
-    pub fn new(handler: extern "C" fn(i32), flags: usize, mask: LinuxSigset) -> Self {
+    pub fn new(
+        handler: extern "C" fn(i32),
+        flags: usize,
+        mask: LinuxSigset,
+        restorer: Option<extern "C" fn()>,
+    ) -> Self {
         Self {
             sa_handler: handler,
             sa_flags: flags,
-            sa_restorer: None,
+            sa_restorer: restorer,
             sa_mask: mask,
         }
     }
