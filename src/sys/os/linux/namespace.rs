@@ -318,7 +318,7 @@ impl Linux {
     ///
     /// # Notes
     /// - The `SA_RESTORER` flag is always included.
-    /// - The `SA_SIGINFO` flag is ignored. Use the [`sig_handler_siginfo`] method instead.
+    /// - The `SA_SIGINFO` flag is ignored. Use [`sig_handler_info`][Self::sig_handler_info] instead.
     /// - Unknown flags in the `flags` slice are ignored, and a warning is printed.
     ///
     /// # Examples
@@ -352,7 +352,7 @@ impl Linux {
             }
         }
         // Use the restorer function defined in assembly.
-        unsafe extern "C" { safe fn __nc_restore_rt(); }
+        unsafe extern "C" { safe fn __devela_linux_restore_rt(); }
 
         // Start with the SA_RESTORER flag, as it is always required.
         let mut combined_flags = SIGACTION::SA_RESTORER;
@@ -376,7 +376,8 @@ impl Linux {
             }
         }
         let mask = LinuxSigset::empty();
-        let sigaction = LinuxSigaction::new(c_handler, combined_flags, mask, Some(__nc_restore_rt));
+        let sigaction = LinuxSigaction::new(c_handler,
+            combined_flags, mask, Some(__devela_linux_restore_rt));
         for s in signals {
             if (1..=31).contains(s) { // make sure the signal is a valid number
                 unsafe {
@@ -427,7 +428,8 @@ impl Linux {
     ) {
         // We store the given `handler` function in a static to be able to call it
         // from the new extern function which can't capture its environment.
-        static HANDLER: AtomicPtr<fn(i32, LinuxSiginfo, *mut c_void)> = AtomicPtr::new(Ptr::null_mut());
+        static HANDLER: AtomicPtr<fn(i32, LinuxSiginfo, *mut c_void)>
+            = AtomicPtr::new(Ptr::null_mut());
         HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
 
         extern "C" fn c_handler_siginfo(sig: i32, info: LinuxSiginfo, context: *mut c_void) {
@@ -442,7 +444,7 @@ impl Linux {
             }
         }
         // Use the restorer function defined in assembly.
-        unsafe extern "C" { safe fn __nc_restore_rt(); }
+        unsafe extern "C" { safe fn __devela_linux_restore_rt(); }
 
         // Start with the SA_RESTORER and SA_SIGINFO flags, as they are always required.
         let mut combined_flags = SIGACTION::SA_RESTORER | SIGACTION::SA_SIGINFO;
@@ -470,7 +472,7 @@ impl Linux {
             c_handler_siginfo,
             combined_flags,
             mask,
-            Some(__nc_restore_rt),
+            Some(__devela_linux_restore_rt),
         );
         for s in signals {
             if (1..=31).contains(s) { // make sure the signal is a valid number

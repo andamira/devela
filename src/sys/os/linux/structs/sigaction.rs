@@ -2,7 +2,7 @@
 //
 //! Defines [`LinuxSigaction`], [`LinuxSiginfo`], [`LinuxSigset`].
 //!
-//! As well as the private items: `LinuxSigactionHandler` `LinuxSigval`.
+//! As well as the private items: `LinuxSigactionHandler`, `LinuxSigval`.
 //
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
@@ -123,14 +123,15 @@ pub struct LinuxSigset {
 }
 #[rustfmt::skip]
 impl LinuxSigset {
+    /// The number of bits in a `usize`.
     const BITS_PER_USIZE: usize = usize::BITS as usize;
     /// The hardcoded number of system signals defined in `LINUX_SIGNAL`.
-    const NSIG: usize = 36;
+    const NSIG: usize = 31;
     /// The size of the array is the number of signals divided by the bits of an usize.
     const LEN: usize = { Self::NSIG.div_ceil(Self::BITS_PER_USIZE) };
 
     /// Returns an empty set of signals.
-    pub const fn empty() -> Self { Self { sig: [0] } }
+    pub const fn empty() -> Self { Self { sig: [0; Self::LEN] } }
     /// Returns the size in bytes of `LinuxSigset`.
     #[must_use]
     pub const fn size() -> usize { size_of::<Self>() }
