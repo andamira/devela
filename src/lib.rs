@@ -79,7 +79,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_next2, feature = "std"),
-    feature(anonymous_pipe, file_lock, hash_extract_if, os_str_display,)
+    feature(anonymous_pipe, hash_extract_if, os_str_display,)
 )]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
@@ -111,7 +111,7 @@
 #![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(once_wait, os_string_pathbuf_leak,)
+    feature(file_lock, once_wait, os_string_pathbuf_leak,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
