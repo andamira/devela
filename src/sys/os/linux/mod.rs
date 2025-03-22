@@ -84,7 +84,7 @@ pub mod process {
         ))]
         pub use super::super::{
             consts::signal::*,
-            structs::{LinuxSigaction, LinuxSigset},
+            structs::{LinuxSigaction, LinuxSiginfo, LinuxSigset},
         };
     }
 }

@@ -5,10 +5,11 @@
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
-    c_uint, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError, LinuxResult as Result,
-    LinuxSigaction, LinuxSigset, LinuxTerminalSize, LinuxTermios, LinuxTimespec, Ordering, Ptr,
-    ScopeGuard, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO,
-    LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
+    c_uint, c_void, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
+    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTerminalSize,
+    LinuxTermios, LinuxTimespec, Ordering, Ptr, ScopeGuard, _core::str::from_utf8_unchecked,
+    LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL,
+    LINUX_SIGACTION as SIGACTION,
 };
 #[cfg(feature = "alloc")]
 use crate::{vec_ as vec, Vec};
@@ -252,7 +253,6 @@ impl Linux {
     pub fn disable_raw_mode() -> Result<()> { LinuxTermios::disable_raw_mode() }
 
     /// Enables raw mode and returns a `ScopeGuard` that restores the original state on drop.
-    #[allow(clippy::type_complexity)]
     pub fn scoped_raw_mode()
         -> Result<ScopeGuard<LinuxTermios, impl FnOnce(LinuxTermios, &()), ()>> {
         let initial_state = LinuxTermios::get_state()?;
@@ -320,32 +320,22 @@ impl Linux {
     /// - The `SA_RESTORER` flag is always included.
     /// - The `SA_SIGINFO` flag is ignored. Use the [`sig_handler_siginfo`] method instead.
     /// - Unknown flags in the `flags` slice are ignored, and a warning is printed.
-
+    ///
     /// # Examples
     /// ```no_run
     /// # #[cfg(feature = "std")] {
-    /// use devela::{Linux, LINUX_SIGNAL as LS, sleep4};
+    /// # use devela::{Linux, LINUX_SIGNAL, sleep4};
     /// fn handler(sig: i32) {
     ///    println!("\nsignal `{sig}` received! continuing. . .");
     /// }
     /// fn main() {
     ///     println!("press Ctrl+C, or resize the terminal to catch the signals");
-    ///     Linux::sig_handler(handler, &[LS::SIGINT, LS::SIGSTOP, LS::SIGCONT, LS::SIGWINCH]);
-    ///     sleep4!(4);
+    ///     Linux::sig_handler(handler, &[LINUX_SIGNAL::SIGINT, LINUX_SIGNAL::SIGWINCH]);
+    ///     sleep4!(5);
     ///     println!("bye");
     /// }
     /// # }
     /// ```
-    // #[cfg(any(
-    //     target_arch = "aarch64", target_arch = "arm",
-    //     target_arch = "x86_64", target_arch = "x86",
-    //     target_arch = "riscv64", target_arch = "riscv32",
-    // ))]
-    // #[cfg_attr(nightly_doc, doc(cfg(any(
-    //     target_arch = "aarch64", target_arch = "arm",
-    //     target_arch = "x86_64", target_arch = "x86",
-    //     target_arch = "riscv64", target_arch = "riscv32",
-    // ))))]
     pub fn sig_handler(handler: fn(i32), signals: &[i32], flags: Option<&[usize]>) {
         // We store the given `handler` function in a static to be able to call it
         // from the new extern function which can't capture its environment.
@@ -355,7 +345,7 @@ impl Linux {
         extern "C" fn c_handler(sig: i32) {
             let handler = HANDLER.load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
-                #[allow(clippy::crosspointer_transmute)]
+                #[expect(clippy::crosspointer_transmute)]
                 // SAFETY: The non-null pointer is originally created from a `fn(i32)` pointer.
                 let handler = unsafe { transmute::<*mut fn(i32), fn(i32)>(handler) };
                 handler(sig);
@@ -397,45 +387,91 @@ impl Linux {
         }
     }
 
-    /// Registers multiple signals using a handler function that never returns.
+    /// Registers multiple signals using a handler function accepting additional signal information.
     ///
-    /// This is an alternative for platforms were returning is not supported.
+    /// # Arguments
+    /// - `handler`: A function that will be called when one of the specified signals is received.
+    ///   The function takes three arguments:
+    ///   - `i32`: The signal number.
+    ///   - `LinuxSiginfo`: Additional information about the signal.
+    ///   - `*mut c_void`: A pointer to the signal context (ucontext_t).
+    /// - `signals`: A slice of [`LINUX_SIGNAL`] values specifying the signals to handle.
+    /// - `flags`: An optional slice of [`LINUX_SIGACTION`] flags.
+    ///   If `None`, only the `SA_RESTORER` and `SA_SIGINFO` flags are used.
+    ///
+    /// # Notes
+    /// - The `SA_RESTORER` and `SA_SIGINFO` flags are always included.
+    /// - Unknown flags in the `flags` slice are ignored, and a warning is printed.
     ///
     /// # Examples
     /// ```no_run
-    /// # #[cfg(feature = "std")] {
-    /// use devela::{Linux, LINUX_SIGNAL as LS, sleep4, ExtProcess, Process};
-    /// fn handler(sig: i32) -> ! {
-    ///    println!("\nsignal `{sig}` received! exiting. . .");
-    ///    Process::exit(1);
+    /// # use devela::{Linux, LINUX_SIGNAL, LINUX_SIGACTION};
+    /// fn handler(sig: i32, info: LinuxSiginfo, _context: *mut c_void) {
+    ///     println!("Signal {} received from PID {}!", sig, info.pid());
     /// }
     /// fn main() {
-    ///     // handle all the signals used to quit
-    ///     Linux::sig_handler_no_return(handler, &[LS::SIGINT, LS::SIGQUIT, LS::SIGSEGV, LS::SIGABRT]);
-    ///     // press Ctrl+C before the time expires to catch the SIGINT signal
-    ///     sleep4!(2);
-    ///     println!("bye");
+    ///     Linux::sig_handler_siginfo(handler, &[LINUX_SIGNAL::SIGINT],
+    ///         Some(&[LINUX_SIGACTION::SA_RESETHAND, LINUX_SIGACTION::SA_RESTART]),
+    ///     );
+    ///     println!("press Ctrl+C, to trigger SIGINT");
+    ///     loop {
+    ///         println!("Waiting for signal...");
+    ///         sleep4!(1);
+    ///     }
     /// }
-    /// # }
     /// ```
-    pub fn sig_handler_no_return(handler: fn(i32) -> !, signals: &[i32]) {
+    pub fn sig_handler_info(
+        handler: fn(i32, LinuxSiginfo, *mut c_void),
+        signals: &[i32],
+        flags: Option<&[usize]>,
+    ) {
         // We store the given `handler` function in a static to be able to call it
         // from the new extern function which can't capture its environment.
-        static HANDLER: AtomicPtr<fn(i32) -> !> = AtomicPtr::new(Ptr::null_mut());
+        static HANDLER: AtomicPtr<fn(i32, LinuxSiginfo, *mut c_void)> = AtomicPtr::new(Ptr::null_mut());
         HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
 
-        extern "C" fn c_handler(sig: i32) {
+        extern "C" fn c_handler_siginfo(sig: i32, info: LinuxSiginfo, context: *mut c_void) {
             let handler = HANDLER.load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
-                #[allow(clippy::crosspointer_transmute)]
-                // SAFETY: The non-null pointer is originally created from a `fn(i32) -> !` pointer.
-                let handler = unsafe { transmute::<*mut fn(i32) -> !, fn(i32) -> !>(handler) };
-                handler(sig);
+                #[expect(clippy::crosspointer_transmute)]
+                let handler = unsafe {
+                    transmute::<*mut fn(i32, LinuxSiginfo, *mut c_void),
+                        fn(i32, LinuxSiginfo, *mut c_void)>(handler)
+                };
+                handler(sig, info, context);
             }
         }
-        let flags = SIGACTION::SA_RESETHAND | SIGACTION::SA_RESTORER;
-        let mask = LinuxSigset::default();
-        let sigaction = LinuxSigaction::new(c_handler, flags, mask, None);
+        // Use the restorer function defined in assembly.
+        unsafe extern "C" { safe fn __nc_restore_rt(); }
+
+        // Start with the SA_RESTORER and SA_SIGINFO flags, as they are always required.
+        let mut combined_flags = SIGACTION::SA_RESTORER | SIGACTION::SA_SIGINFO;
+        // Add additional flags if provided.
+        if let Some(provided_flags) = flags {
+            for &flag in provided_flags {
+                match flag {
+                    SIGACTION::SA_NOCLDSTOP
+                    | SIGACTION::SA_NOCLDWAIT
+                    | SIGACTION::SA_NODEFER
+                    | SIGACTION::SA_ONSTACK
+                    | SIGACTION::SA_RESETHAND
+                    | SIGACTION::SA_RESTART => {
+                        combined_flags |= flag;
+                    }
+                    _ => {
+                        #[cfg(feature = "std")]
+                        eprintln!("Warning: Ignoring unknown flag: {:#x}", flag);
+                    }
+                }
+            }
+        }
+        let mask = LinuxSigset::empty();
+        let sigaction = LinuxSigaction::new_siginfo(
+            c_handler_siginfo,
+            combined_flags,
+            mask,
+            Some(__nc_restore_rt),
+        );
         for s in signals {
             if (1..=31).contains(s) { // make sure the signal is a valid number
                 unsafe {
@@ -460,14 +496,10 @@ macro_rules! impl_random_fns {
             let (mut r, mut attempts) = ([0; $len], 0);
             loop {
                 let n = unsafe { Linux::sys_getrandom(r.as_mut_ptr(), $len, Linux::RAND_FLAGS) };
-                if n == $len {
-                    // hot path!
-                    break;
-                } else if n == -ERRNO::EAGAIN {
+                if n == $len { break; } // ← hot path
+                else if n == -ERRNO::EAGAIN { // ←↓ cold paths
                     iif![!Linux::getrandom_try_again_cold(&mut attempts); break];
-                } else { // n < 0
-                    return getrandom_failed_cold(n);
-                }
+                } else { return getrandom_failed_cold(n); } // n < 0
             }
             Ok($prim::from_ne_bytes(r))
         }
@@ -494,18 +526,11 @@ impl Linux {
         debug_assert![buffer.len() <= isize::MAX as usize];
         let (mut attempts, mut offset) = (0, 0);
         while offset < buffer.len() {
-            let n = unsafe {
-                Linux::sys_getrandom(buffer[offset..].as_mut_ptr(),
-                    buffer.len() - offset, Linux::RAND_FLAGS)
-            };
-            if n == -ERRNO::EAGAIN {
-                iif![!Linux::getrandom_try_again_cold(&mut attempts); break];
-            } else if n < 0 {
-                return getrandom_failed_cold(n);
-            } else {
-                // hot path!
-                offset += n as usize;
-            }
+            let n = unsafe { Linux::sys_getrandom(buffer[offset..].as_mut_ptr(),
+                buffer.len() - offset, Linux::RAND_FLAGS) };
+            if n == -ERRNO::EAGAIN { iif![!Linux::getrandom_try_again_cold(&mut attempts); break]; }
+            else if n < 0 { return getrandom_failed_cold(n); } // ←↑ cold paths
+            else { offset += n as usize; } // ← hot path
         }
         Ok(())
     }

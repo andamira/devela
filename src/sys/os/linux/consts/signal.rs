@@ -1,5 +1,7 @@
 // devela::sys::os::linux::consts::signal
 //
+//! Defines [`LINUX_SIGACTION`], [`LINUX_SIGNAL`].
+//
 
 #![allow(non_camel_case_types)]
 
@@ -66,7 +68,7 @@ impl LINUX_SIGNAL {
 
     /// IOT trap. A synonym for [`SIGABRT`][Self::SIGABRT].
     ///
-    /// Default action:  
+    /// Default action: `Core`.
     pub const SIGIOT: c_int = Self::SIGABRT;
 
     /// Bus error (bad memory access)

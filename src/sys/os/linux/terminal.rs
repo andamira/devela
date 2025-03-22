@@ -3,7 +3,7 @@
 //! Linux terminal related items.
 //
 
-use super::{LinuxTerminalSize, LinuxTermios};
+use super::{LinuxResult as Result, LinuxTerminalSize, LinuxTermios};
 
 #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
 use crate::_dep::atomic::{Atomic, Ordering as AtomicOrdering};
@@ -55,7 +55,7 @@ impl LinuxTerminal {
     /// # Features
     /// With `atomic` and `bytemuck` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
-    pub fn new() -> Result<Self, isize> {
+    pub fn new() -> Result<Self> {
         #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
         Self::save_state()?;
         Ok(Self)
@@ -69,7 +69,7 @@ impl LinuxTerminal {
     /// # Features
     /// With `atomic` and `bytemuck` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
-    pub fn new_raw() -> Result<Self, isize> {
+    pub fn new_raw() -> Result<Self> {
         #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
         Self::save_state()?;
 
@@ -81,7 +81,7 @@ impl LinuxTerminal {
     /// Saves the current terminal state into [`LINUX_TERMINAL_STATE`].
     #[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic"))))]
     #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
-    pub fn save_state() -> Result<(), isize> {
+    pub fn save_state() -> Result<()> {
         LINUX_TERMINAL_STATE.store(LinuxTermios::get_state()?, AtomicOrdering::Relaxed);
         Ok(())
     }
@@ -89,7 +89,7 @@ impl LinuxTerminal {
     /// Restores the current terminal state into [`LINUX_TERMINAL_STATE`].
     #[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic"))))]
     #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
-    pub fn restore_saved_state() -> Result<(), isize> {
+    pub fn restore_saved_state() -> Result<()> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))
     }
 
@@ -100,7 +100,7 @@ impl LinuxTerminal {
     }
 
     /// Returns the terminal dimensions.
-    pub fn size(&self) -> Result<LinuxTerminalSize, isize> {
+    pub fn size(&self) -> Result<LinuxTerminalSize> {
         LinuxTermios::get_winsize()
     }
 
@@ -108,12 +108,12 @@ impl LinuxTerminal {
     ///
     /// Raw mode is a way to configure the terminal so that it does not process or
     /// interpret any of the input but instead passes it directly to the program.
-    pub fn enable_raw_mode(&self) -> Result<(), isize> {
+    pub fn enable_raw_mode(&self) -> Result<()> {
         LinuxTermios::enable_raw_mode()
     }
 
     /// Disables raw mode.
-    pub fn disable_raw_mode(&self) -> Result<(), isize> {
+    pub fn disable_raw_mode(&self) -> Result<()> {
         LinuxTermios::disable_raw_mode()
     }
 }
