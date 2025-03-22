@@ -141,7 +141,7 @@ impl Linux {
     /// ```no_run
     /// # use devela::Linux;
     /// let mut name_buffer = [0_u8; 32];
-    /// let name: &str = Linux::prompt::<32>("Enter your name: ", &mut name_buffer);
+    /// let name: &str = Linux::prompt::<32>("Enter your name: ", &mut name_buffer).unwrap();
     /// ```
     pub fn prompt<'i, const CAP: usize>(text: &str, buffer: &'i mut [u8; CAP]) -> Result<&'i str> {
         Linux::print(text)?; Linux::get_line(buffer)
@@ -153,7 +153,7 @@ impl Linux {
     /// ```no_run
     /// # use devela::Linux;
     /// let mut buf = [0_u8; 32];
-    /// let name: &str = Linux::get_line::<32>(&mut buf);
+    /// let name: &str = Linux::get_line::<32>(&mut buf).unwrap();
     /// ```
     pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> Result<&str> {
         Linux::get_str(buffer, '\n')
@@ -165,7 +165,7 @@ impl Linux {
     /// ```no_run
     /// # use devela::Linux;
     /// let mut buf = [0_u8; 32];
-    /// let name: &str = Linux::get_str::<32>(&mut buf, '\n');
+    /// let name: &str = Linux::get_str::<32>(&mut buf, '\n').unwrap();
     /// ```
     pub fn get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> Result<&str> {
         let mut index = 0;
@@ -318,7 +318,7 @@ impl Linux {
     ///
     /// # Notes
     /// - The `SA_RESTORER` flag is always included.
-    /// - The `SA_SIGINFO` flag is ignored. Use the [`sig_handler_siginfo`] method instead.
+    /// - The `SA_SIGINFO` flag is ignored. Use [`sig_handler_info`][Self::sig_handler_info] instead.
     /// - Unknown flags in the `flags` slice are ignored, and a warning is printed.
     ///
     /// # Examples
@@ -330,7 +330,7 @@ impl Linux {
     /// }
     /// fn main() {
     ///     println!("press Ctrl+C, or resize the terminal to catch the signals");
-    ///     Linux::sig_handler(handler, &[LINUX_SIGNAL::SIGINT, LINUX_SIGNAL::SIGWINCH]);
+    ///     Linux::sig_handler(handler, &[LINUX_SIGNAL::SIGINT, LINUX_SIGNAL::SIGWINCH], None);
     ///     sleep4!(5);
     ///     println!("bye");
     /// }
@@ -352,7 +352,7 @@ impl Linux {
             }
         }
         // Use the restorer function defined in assembly.
-        unsafe extern "C" { safe fn __nc_restore_rt(); }
+        unsafe extern "C" { safe fn __devela_linux_restore_rt(); }
 
         // Start with the SA_RESTORER flag, as it is always required.
         let mut combined_flags = SIGACTION::SA_RESTORER;
@@ -376,7 +376,8 @@ impl Linux {
             }
         }
         let mask = LinuxSigset::empty();
-        let sigaction = LinuxSigaction::new(c_handler, combined_flags, mask, Some(__nc_restore_rt));
+        let sigaction = LinuxSigaction::new(c_handler,
+            combined_flags, mask, Some(__devela_linux_restore_rt));
         for s in signals {
             if (1..=31).contains(s) { // make sure the signal is a valid number
                 unsafe {
@@ -405,12 +406,12 @@ impl Linux {
     ///
     /// # Examples
     /// ```no_run
-    /// # use devela::{Linux, LINUX_SIGNAL, LINUX_SIGACTION};
+    /// # use devela::{c_void, sleep4, Linux, LinuxSiginfo, LINUX_SIGNAL, LINUX_SIGACTION};
     /// fn handler(sig: i32, info: LinuxSiginfo, _context: *mut c_void) {
     ///     println!("Signal {} received from PID {}!", sig, info.pid());
     /// }
     /// fn main() {
-    ///     Linux::sig_handler_siginfo(handler, &[LINUX_SIGNAL::SIGINT],
+    ///     Linux::sig_handler_info(handler, &[LINUX_SIGNAL::SIGINT],
     ///         Some(&[LINUX_SIGACTION::SA_RESETHAND, LINUX_SIGACTION::SA_RESTART]),
     ///     );
     ///     println!("press Ctrl+C, to trigger SIGINT");
@@ -427,7 +428,8 @@ impl Linux {
     ) {
         // We store the given `handler` function in a static to be able to call it
         // from the new extern function which can't capture its environment.
-        static HANDLER: AtomicPtr<fn(i32, LinuxSiginfo, *mut c_void)> = AtomicPtr::new(Ptr::null_mut());
+        static HANDLER: AtomicPtr<fn(i32, LinuxSiginfo, *mut c_void)>
+            = AtomicPtr::new(Ptr::null_mut());
         HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
 
         extern "C" fn c_handler_siginfo(sig: i32, info: LinuxSiginfo, context: *mut c_void) {
@@ -442,7 +444,7 @@ impl Linux {
             }
         }
         // Use the restorer function defined in assembly.
-        unsafe extern "C" { safe fn __nc_restore_rt(); }
+        unsafe extern "C" { safe fn __devela_linux_restore_rt(); }
 
         // Start with the SA_RESTORER and SA_SIGINFO flags, as they are always required.
         let mut combined_flags = SIGACTION::SA_RESTORER | SIGACTION::SA_SIGINFO;
@@ -470,7 +472,7 @@ impl Linux {
             c_handler_siginfo,
             combined_flags,
             mask,
-            Some(__nc_restore_rt),
+            Some(__devela_linux_restore_rt),
         );
         for s in signals {
             if (1..=31).contains(s) { // make sure the signal is a valid number
