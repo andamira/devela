@@ -57,7 +57,7 @@
   - lang: `{dsl, ffi::{self, c, glsl}, i18n, ling::{art, nat}}`.
   - media: `{image::sixel, video}`.
   - num: `{geom::metric, ord, quant}`.
-  - phys: `{bio, chem, mech, unit}`.
+  - phys: `{bio, chem, elec, mech, unit}`.
   - sys: `{log, net, fs}`.
   - ui: `{back::{self, crossterm, miniquad}, front}`.
   - work: `sync::mpsc`.

@@ -75,7 +75,12 @@ Root modules & public sub-modules features:
   - [`rand`]: random number generators.
   - `unit`: unit prefixes.
 - [`phys`]:
+  - `bio`:
+  - `chem`:
+  - `elec`:
+  - `mech`:
   - [`time`]
+  - `unit`:
   - [`wave`][crate::phys::wave]: wavelets.
 - [`sys`]: enables all `sys` sub-features (except for `os`).
   - [`io`]: no_std `io` implementations.

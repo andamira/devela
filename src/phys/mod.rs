@@ -1,7 +1,7 @@
 // devela::phys
 //
 //! Physical units and measurements.
-#![doc = crate::doc_!(modules: crate; phys: bio, chem, mech, time, unit, wave)]
+#![doc = crate::doc_!(modules: crate; phys: bio, chem, elec, mech, time, unit, wave)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: time)]
@@ -11,6 +11,7 @@
 
 pub mod bio;
 pub mod chem;
+pub mod elec;
 pub mod mech;
 pub mod time;
 pub mod unit;
@@ -24,8 +25,9 @@ crate::items! { // structural access: _pub_mods, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _pub_mods { #![allow(unused)]
-        pub use super::{bio::_all::*, chem::_all::*, time::_all::*, mech::_all::*, unit::_all::*};
-
+        pub use super::{
+            bio::_all::*, chem::_all::*, elec::_all::*, time::_all::*, mech::_all::*, unit::_all::*,
+        };
         #[cfg(feature = "wave")]
         pub use super::wave::_all::*;
     }
