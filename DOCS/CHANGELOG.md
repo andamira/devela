@@ -165,6 +165,7 @@
 - make const methods:
   - `Float`: `clamp`, `copysign`, `div_euclid`, `max`, `min`, `min_total`, `round_ties_odd`, `signum`.
   - `Mem`: `swap`.
+  - `Ptr`: `copy`, `copy_nonoverlapping`, `replace`, `write`, `write_bytes`, `write_unaligned`.
 - change attributes:
   - mark `Float` and `Sign` as `must_use`.
 - derive Copy for `Lgc16`.

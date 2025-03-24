@@ -254,7 +254,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`copy`].
-    pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
+    pub const unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { copy(src, dst, count); }
     }
@@ -263,7 +263,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`copy_nonoverlapping`].
-    pub unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
+    pub const unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { copy_nonoverlapping(src, dst, count); }
     }
@@ -312,7 +312,7 @@ impl Ptr {
     /// # Safety
     /// See `core::ptr::`[`replace`].
     #[must_use]
-    pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
+    pub const unsafe fn replace<T>(dst: *mut T, src: T) -> T {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { replace(dst, src) }
     }
@@ -339,7 +339,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`write`][fn@write].
-    pub unsafe fn write<T>(dst: *mut T, src: T) {
+    pub const unsafe fn write<T>(dst: *mut T, src: T) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { write(dst, src); };
     }
@@ -348,7 +348,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`write_bytes`].
-    pub unsafe fn write_bytes<T>(dst: *mut T, val: u8, count: usize) {
+    pub const unsafe fn write_bytes<T>(dst: *mut T, val: u8, count: usize) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { write_bytes(dst, val, count); };
     }
@@ -357,7 +357,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`write_unaligned`].
-    pub unsafe fn write_unaligned<T>(dst: *mut T, src: T) {
+    pub const unsafe fn write_unaligned<T>(dst: *mut T, src: T) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { write_unaligned(dst, src); };
     }
