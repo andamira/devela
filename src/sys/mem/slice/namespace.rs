@@ -766,7 +766,7 @@ mod tests {
         assert_eq!(dest, [1, 2, 3, 4]);
         // Empty slices
         let mut empty_dest = [0u8; 0];
-        Slice::copy_from_slice(&mut empty_dest, &[]);
+        Slice::<u8>::copy_from_slice(&mut empty_dest, &[]);
         assert_eq!(empty_dest, []);
         // Const context (compile test)
         const fn _const_test() {

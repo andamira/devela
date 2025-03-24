@@ -105,10 +105,10 @@ impl Str {
     ///
     /// # Used by
     /// [`strjoin!`][crate:strjoin].
-    #[doc(hidden)]
+    #[doc(hidden)] #[rustfmt::skip]
     pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
         #[cfg(any(feature = "safe_text", not(unsafe··)))]
-        { crate::unwrap![ok ::core::str::from_utf8(bytes)] }
+        { crate::unwrap![ok::core::str::from_utf8(bytes)] }
         #[cfg(all(not(feature = "safe_text"), unsafe··))]
         unsafe { ::core::str::from_utf8_unchecked(bytes) }
     }
