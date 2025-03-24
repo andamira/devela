@@ -287,10 +287,13 @@ impl Linux {
         let mut rem = LinuxTimespec::default();
         loop {
             let n = unsafe { Linux::sys_nanosleep(req.as_ptr(), rem.as_mut_ptr()) };
-            match n.cmp(&0) {
-                Ordering::Less => return Err(LinuxError::Sys(n)),
-                Ordering::Equal => break Ok(()),
-                Ordering::Greater => req = rem,
+            if n == 0 {
+                break Ok(()); // Success
+            } else if n == -ERRNO::EINTR {
+                req = rem; // Retry with remaining time
+                continue;
+            } else { // Actual error
+                return Err(LinuxError::Sys(n));
             }
         }
     }
