@@ -55,9 +55,6 @@ reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
 reexport! { optional_crate (unsafe) "dep_ffmpeg", "ffmpeg-the-third", ffmpeg_the_third,
     doc: "FFmpeg bindings."
 }
-reexport! { optional_crate (unsafe) "dep_fltk", "fltk", fltk,
-    doc: "Rust bindings for the FLTK GUI library."
-}
 reexport! { optional_crate (safe) "dep_flume", "flume", flume,
     doc: "A blazingly fast multi-producer channel."
 }
@@ -99,9 +96,6 @@ reexport! { optional_crate (unsafe) "dep_midir", "midir", midir,
 reexport! { optional_crate (unsafe) "dep_miniquad", "miniquad", miniquad,
     doc: "Cross-platform window context and rendering library."
 }
-reexport! { optional_crate (unsafe) "dep_nc", "nc", nc,
-    doc: "Access system calls directly in: linux, android, freebsd, netbsd, macos."
-}
 reexport! { optional_crate (safe) "dep_orion", "orion", orion,
     doc: "Usable, easy and safe pure-Rust crypto."
 }
@@ -131,9 +125,6 @@ reexport! { optional_crate (safe) "dep_regex_lite", "regex-lite", regex_lite,
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,
     doc: "Audio playback library."
 }
-reexport! { optional_crate (unsafe) "dep_rustix", "rustix", rustix,
-    doc: "Safe Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls."
-}
 reexport! { optional_crate (unsafe) "dep_safe_arch", "safe_arch", safe_arch,
     doc: "Exposes arch-specific intrinsics as safe functions."
 }
@@ -158,20 +149,12 @@ reexport! { optional_crate (safe) "dep_symphonia", "symphonia", symphonia,
 reexport! { optional_crate (unsafe) "dep_sysinfo", "sysinfo", sysinfo,
     doc: "Get system information such as processes, CPUs, disks, and networks."
 }
-reexport! { optional_crate (unsafe) "dep_tinyaudio", "tinyaudio", tinyaudio,
-    doc: "A cross-platform, easy-to-use, low-level, audio output library.",
-    features: "alloc"
-}
 reexport! { optional_crate (safe) "dep_toml_edit", "toml_edit", toml_edit,
     doc: "TOML parsing and format-preserving editing."
 }
 reexport! { optional_crate (unsafe) "dep_tokio", "tokio", tokio,
     doc: "A runtime for writing reliable network applications without compromising speed.",
     features: "std"
-}
-reexport! { optional_crate (unsafe) "dep_tracing", "tracing", tracing,
-    doc: "A scoped, structured logging and diagnostics system.",
-    features: "alloc"
 }
 reexport! { optional_crate (safe)
     "dep_unicode_segmentation", "unicode-segmentation", unicode_segmentation,

@@ -83,7 +83,7 @@ publish = true
 bench = false
 
 
-[features] # 264/300 (36 remaining), 137 visible, 127 hidden
+[features] # 262/300 (38 remaining), 135 visible, 127 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -120,16 +120,15 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 alloc = [ # enables `alloc` functionality
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
 	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "portable-atomic-util?/alloc",
-	"rustix?/alloc", "serde?/alloc", "winnow?/alloc",
-	# DEP_DISABLED: "ring?/alloc", "rkyv?/alloc",
+	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
 	"itertools?/use_std", "jiff?/std", "log?/std",
-	"memchr?/std", "nc?/std", "orion?/safe_api", "portable-atomic-util?/std",
-	"raw-cpuid?/std", "regex-lite?/std", "rustix?/std",
-	"serde?/std", "simdutf8?/std", "tracing?/std",
+	"memchr?/std", "orion?/safe_api", "portable-atomic-util?/std",
+	"raw-cpuid?/std", "regex-lite?/std",
+	"serde?/std", "simdutf8?/std",
 	"wide?/std", "winnow?/std",
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
@@ -177,14 +176,14 @@ num = ["alg", "geom", "prim", "rand", "unit"]
 		cast = []  # PrimitiveCast
 		join = []  # PrimitiveJoin
 		split = [] # PrimitiveSplit
-	rand = ["rustix?/rand"] # random number generators
+	rand = [] # random number generators
 	# symb = []
 	unit = [] # unit prefixes
 phys = ["time", "wave"]
 	# bio
 	# chem
 	# mech
-	time = ["rustix?/time"]
+	time = []
 	# unit
 	wave = [] # wavelets
 sys = ["io", "mem"]
@@ -215,8 +214,8 @@ work = [
 	"bytemuck?/zeroable_atomics",
 ]
 	# async = ["flume?/async"]
-	process = ["rustix?/process", "tokio?/process"]
-	sync = ["rustix?/thread", "tokio?/sync"]
+	process = ["tokio?/process"]
+	sync = ["tokio?/sync"]
 	thread = ["tokio?/rt", "tokio?/rt-multi-thread"]
 
 
@@ -506,23 +505,23 @@ _str_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./config/dep_all.rs & ./src/_dep.rs
-dep_all = [ # enables all 49 optional dependencies:
+dep_all = [ # enables all 44 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
-	"dep_const_str", "dep_crossterm", "dep_fltk", "dep_flume", "dep_fontdue", "dep_ffmpeg",
+	"dep_const_str", "dep_crossterm", "dep_flume", "dep_fontdue", "dep_ffmpeg",
 	"dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff",
 	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
-	"dep_nc", "dep_orion", "dep_portable_atomic", "dep_portable_atomic_util", "dep_pyo3",
+	"dep_orion", "dep_portable_atomic", "dep_portable_atomic_util", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite",
-	"dep_rodio", "dep_rustix", "dep_safe_arch", "dep_sdl2", "dep_sdl3",
+	"dep_rodio", "dep_safe_arch", "dep_sdl2", "dep_sdl3",
 	"dep_serde", "dep_simdutf8", "dep_stringzilla", "dep_sysinfo", "dep_symphonia",
-	"dep_tinyaudio", "dep_toml_edit", "dep_tokio", "dep_tracing",
+	"dep_toml_edit", "dep_tokio",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
 	"dep_wide", "dep_winnow",
 ]
 
 # groups of dependencies, environment and modules
 alloc_deps = ["alloc", "dep_bumpalo", "dep_allocator_api2"]
-linux_deps = ["linux", "dep_atomic", "dep_bytemuck", "dep_nc", "dep_rustix"]
+linux_deps = ["linux", "dep_atomic", "dep_bytemuck"]
 text_deps  = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
 	"dep_stringzilla", "dep_unicode_segmentation", "dep_unicode_width"]
 work_deps  = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon", "dep_tokio"]
@@ -536,7 +535,6 @@ dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          
 dep_const_str = ["dep:const-str"]                                                 # text::str
 dep_crossterm = ["dep:crossterm", "std"]                                          # ui::back
 dep_ffmpeg = ["dep:ffmpeg-the-third"]                                             # media::video
-dep_fltk = ["dep:fltk"]                                                           # ui::back
 dep_flume = ["dep:flume"]                                                         # work::sync
 dep_fontdue = ["dep:fontdue"]                                                     # media::font
 dep_gilrs = ["dep:gilrs"]                                                         # ui::back
@@ -547,11 +545,10 @@ dep_itertools = ["dep:itertools"]                                               
 dep_jiff = ["dep:jiff", "alloc", "pyo3?/jiff-02"]                                 # phys::time
 dep_kira = ["dep:kira"]                                                           # sys::sound
 dep_libm = ["dep:libm"]                                                           # num::float
-dep_log = ["dep:log", "tracing?/log"]                                             # sys::log
+dep_log = ["dep:log"]                                                             # sys::log
 dep_memchr = ["dep:memchr", "winnow?/simd"]                                       # text:str
 dep_midir = ["dep:midir"]                                                         # media::midi
 dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                  # ui::back
-dep_nc = ["dep:nc"]                                                               # sys::os::linux
 dep_orion = ["dep:orion"]                                                         # data::xipher
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
 dep_portable_atomic_util = ["dep:portable-atomic-util"]                           # work::sync
@@ -562,21 +559,18 @@ dep_rayon = ["dep:rayon", "fontdue?/rayon", "image?/rayon",                     
 dep_raw_cpuid = ["dep:raw-cpuid"]                                                 # sys::arch
 dep_regex_lite = ["dep:regex-lite", "std"]                                        # text::parse
 dep_rodio = ["dep:rodio"]                                                         # sys::sound
-dep_rustix = ["dep:rustix"]                                                       # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
 dep_sdl2 = ["dep:sdl2"]                                                           # ui::back
 dep_sdl3 = ["dep:sdl3"]                                                           # ui::back
-dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::serde
+dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::codec::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde",
 	"portable-atomic?/serde", "pyo3?/serde", "toml_edit?/serde", "wide?/serde"]
 dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
 dep_stringzilla = ["dep:stringzilla"]                                             # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]          # sys::sound
 dep_sysinfo = ["dep:sysinfo", "std"]                                              # sys::
-dep_tinyaudio = ["dep:tinyaudio"]                                                 # sys::sound
 dep_toml_edit = ["dep:toml_edit"]                                                 # text::parse
 dep_tokio = ["dep:tokio"]                                                         # work::future
-dep_tracing = ["dep:tracing"]                                                     # sys::log
 dep_unicode_segmentation = ["dep:unicode-segmentation"]                           # text::
 dep_unicode_width = ["dep:unicode-width"]                                         # text::
 dep_ureq = ["dep:ureq"]                                                           # sys::net
@@ -584,7 +578,7 @@ dep_wide = ["dep:wide"]                                                         
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                   # text::parse
 
 
-[dependencies] # 51 (2 required, 49 optional)
+[dependencies] # 46 (2 required, 44 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -656,14 +650,6 @@ features = [
 ]
 # INSTALL: clang pkg-config
 # libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev
-
-[dependencies.fltk] # https://crates.io/crates/fltk
-version = "1.5" # ✓ https://github.com/fltk-rs/fltk-rs/blob/master/CHANGELOG.md
-optional = true # unsafe
-default-features = false # 23 https://docs.rs/crate/fltk/latest/features
-# https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md
-# features = ["fltk-bundled"] # IMPROVE: feature-gate
-# INSTALL: libpango1.0-dev libxft-dev
 
 [dependencies.flume] # https://crates.io/crates/flume
 version = "0.11" # ✓ https://github.com/zesterer/flume/blob/master/CHANGELOG.md
@@ -753,12 +739,6 @@ features = ["log-impl"]
 # WAIT: [update conf module to derive more traits](https://github.com/not-fl3/miniquad/pull/523)
 # WAIT: [use AtomicPtr in NATIVE_DISPLAY](https://github.com/not-fl3/miniquad/pull/525)
 
-[dependencies.nc] # https://crates.io/crates/nc
-version = "0.9.5" # ✗ https://github.com/XuShaohua/nc/commits/main/
-optional = true # unsafe
-default-features = false # 2 https://docs.rs/crate/nc/latest/features
-# WAIT: [rt_sigaction](https://github.com/XuShaohua/nc/issues/29)
-
 [dependencies.orion] # https://crates.io/crates/orion
 version = "0.17" #
 optional = true # safe (+some dependencies)
@@ -822,16 +802,6 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # WAIT: [minimal-versions](https://github.com/rust-num/num-rational/issues/133)
 # INSTALL: libasound2-dev
 
-[dependencies.rustix] # https://crates.io/crates/rustix
-version = "1.0" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
-optional = true # unsafe
-default-features = false # 39 https://docs.rs/crate/rustix/latest/features
-features = [
-    "event", "fs", "io_uring", "mm", "mount", "net", "param", "pipe",
-    "pty", "runtime", "shm", "stdio", "system", "termios",
-]
-# feature-gated:IMPROVE: process, rand, thread, time,
-
 [dependencies.safe_arch] # https://crates.io/crates/safe_arch
 version = "0.7.4" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
 optional = true # unsafe
@@ -885,12 +855,6 @@ optional = true # unsafe
 default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
 features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
 
-[dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
-version = "1.1" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
-optional = true # unsafe
-default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
-# INSTALL: libasound2-dev
-
 [dependencies.toml_edit] # https://crates.io/crates/toml_edit
 version = "0.22" # ✓ https://github.com/toml-rs/toml/blob/main/crates/toml_edit/CHANGELOG.md
 optional = true # unsafe
@@ -905,12 +869,6 @@ optional = true # unsafe
 default-features = false # 23 https://docs.rs/crate/tokio/latest/features
 features =  [] # https://docs.rs/tokio/#feature-flags
 # WAIT [no-std version](https://github.com/tokio-rs/tokio/issues/3544)
-
-[dependencies.tracing] # https://crates.io/crates/tracing
-version = "0.1.41" # ✗ https://github.com/tokio-rs/tracing/releases
-optional = true # unsafe
-default-features = false # 20 https://docs.rs/crate/tracing/latest/features
-features = [] # https://docs.rs/tracing/#crate-feature-flags
 
 [dependencies.unicode-segmentation] # https://crates.io/crates/unicode-segmentation
 version = "1.12" # ✓ https://github.com/unicode-rs/unicode-segmentation?tab=readme-ov-file#change-log

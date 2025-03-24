@@ -110,7 +110,7 @@
 - remove modules:
   - `data::collections`.
   - `num::alg`.
-- disable optional dependencies: `js-sys`, `ring`, `rkyv`, `wasm-bindgen`, `web-sys`.
+- disable optional dependencies: `fltk`, `js-sys`, `nc`, `ring`, `rustix`, `rkyv`, `tinyaudio`, `tracing`, `wasm-bindgen`, `web-sys`.
 - deprecate:
   - `Char::len_to_utf8`.
   - `Float::{const_[clamp|max|min|signum|copysign]}`.

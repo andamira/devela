@@ -1,31 +1,93 @@
-# DEP_DISABLED
+# DOCS/DEP_DISABLED.rs
 #
-# Disabled dependencies, that has been tested
+# disabled optional dependencies in: ../Cargo.toml
 
-std = [
-	"ring?/std", "rkyv?/std", "wasm-bindgen?/std", "js-sys?/std", "web-sys?/std",
+#* Environment features *#
+
+alloc = [
+	"ring?/alloc",
+	"rkyv?/alloc",
+	"rustix?/alloc",
 ]
+std = [
+	"nc?/std",
+	"ring?/std",
+	"rkyv?/std",
+	"rustix?/std",
+	"tracing?/std",
+	"wasm-bindgen?/std",
+	"js-sys?/std",
+	"web-sys?/std",
+]
+
+#* Module features *#
+
+	rand = ["rustix?/rand"]
+	time = ["rustix?/time"]
+	process = ["rustix?/process"]
+	sync = ["rustix?/thread"]
+
+#* Dependency features *#
 
 dep_all = [
-	"dep_js_sys", "dep_ring", "dep_rkyv", "dep_wasm_bindgen", "dep_web_sys"
+	"dep_js_sys",
+	"dep_ring",
+	"dep_rkyv",
+	"dep_wasm_bindgen",
+	"dep_web_sys"
+	"dep_fltk",
+	"dep_nc",
+	"dep_rustix",
+	"dep_tinyaudio",
+	"dep_tracing",
 ]
 
+# disabled features from enabled dependencies
 dep_hashbrown = [ "rkyv?/hashbrown-0_15" ]
+dep_log = ["tracing?/log"]
+
 # DEP_DISABLED:
-# dep_js_sys = ["dep:js-sys"]                                                       # lang::js
-# dep_ring = ["dep:ring"]                                                           # data::xipher
-# dep_rkyv = ["dep:rkyv"]                                                           # data::serde
-# dep_wasm_bindgen = ["dep:wasm-bindgen"]                                           # lang
-# dep_web_sys = ["dep:web-sys"]                                                     # ui::web
+dep_fltk = ["dep:fltk"]                                                           # ui::back
+dep_js_sys = ["dep:js-sys"]                                                       # lang::js
+dep_nc = ["dep:nc"]                                                               # sys::os::linux
+dep_nanoserde = ["dep:nanoserde"]                                                 # data::codec::serde
+dep_ring = ["dep:ring"]                                                           # data::xipher
+dep_rkyv = ["dep:rkyv"]                                                           # data::serde
+dep_rustix = ["dep:rustix"]                                                       # sys::os
+dep_tinyaudio = ["dep:tinyaudio"]                                                 # sys::sound
+dep_tracing = ["dep:tracing"]                                                     # sys::log
+dep_wasm_bindgen = ["dep:wasm-bindgen"]                                           # lang
+dep_web_sys = ["dep:web-sys"]                                                     # ui::web
 
 
 [dependencies]
+
+[dependencies.fltk] # https://crates.io/crates/fltk
+version = "1.5" # ✓ https://github.com/fltk-rs/fltk-rs/blob/master/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 23 https://docs.rs/crate/fltk/latest/features
+# https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md
+# features = ["fltk-bundled"] # IMPROVE: feature-gate
+# INSTALL: libpango1.0-dev libxft-dev
 
 [dependencies.js-sys] # https://crates.io/crates/js-sys
 version = "0.3.73" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/js-sys
 optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
 # deps: once-cell, wasm-bindgen/std
+
+[dependencies.nanoserde]
+# git = "https://github.com/not-fl3/nanoserde" # 0.2.0-beta.2 COMPILES
+version = "0.2.0-beta.0" # FIXME: needs nightly
+optional = true # unsafe
+default-features = false
+features = ["json", "binary", "ron", "toml"]
+
+[dependencies.nc] # https://crates.io/crates/nc
+version = "0.9.5" # ✗ https://github.com/XuShaohua/nc/commits/main/
+optional = true # unsafe
+default-features = false # 2 https://docs.rs/crate/nc/latest/features
+# WAIT: [rt_sigaction](https://github.com/XuShaohua/nc/issues/29)
 
 [dependencies.ring] # https://crates.io/crates/ring
 version = "0.17.8" # ✗ https://github.com/briansmith/ring/commits/main/
@@ -39,6 +101,28 @@ default-features = false # 23  https://docs.rs/crate/rkyv/latest/features
 features = ["bytecheck"] # https://docs.rs/rkyv/latest/rkyv/#features
 # *aligned|unaligned, big_endian|*little_endian, pointer_width[16|*32|64]
 # MAYBE: https://crates.io/crates/rkyv_dyn
+
+[dependencies.rustix] # https://crates.io/crates/rustix
+version = "1.0" # ✓ https://github.com/bytecodealliance/rustix/blob/main/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 39 https://docs.rs/crate/rustix/latest/features
+features = [
+    "event", "fs", "io_uring", "mm", "mount", "net", "param", "pipe",
+    "pty", "runtime", "shm", "stdio", "system", "termios",
+]
+# feature-gated:IMPROVE: process, rand, thread, time,
+
+[dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
+version = "1.1" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
+# INSTALL: libasound2-dev
+
+[dependencies.tracing] # https://crates.io/crates/tracing
+version = "0.1.41" # ✗ https://github.com/tokio-rs/tracing/releases
+optional = true # unsafe
+default-features = false # 20 https://docs.rs/crate/tracing/latest/features
+features = [] # https://docs.rs/tracing/#crate-feature-flags
 
 [dependencies.wasm-bindgen] # https://crates.io/crates/wasm-bindgen
 version = "0.2.96" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md

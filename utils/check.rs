@@ -111,13 +111,9 @@ const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // https://github.com/zmwangx/rust-ffmpeg/wiki/Notes-on-building#building-on-windows
     // https://github.com/shssoichiro/ffmpeg-the-third/blob/master/.github/workflows/build.yml#L132
     "dep_ffmpeg",
-    // (windows, linux, macos) https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md
-    "dep_fltk",
     // because of pkg-config & libudev-sys
     // SEE: https://gitlab.com/gilrs-project/gilrs/-/issues/86
     "dep_gilrs",
-    // - https://docs.rs/nc/latest/nc/#supported-operating-systems-and-architectures
-    "dep_nc",
     // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
     "dep_pyo3",
     // - https://docs.rs/safe_arch/latest/safe_arch/#current-support

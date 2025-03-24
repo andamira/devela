@@ -37,10 +37,6 @@ jobs:
           # for ffmpeg:
           # sudo apt install -y clang pkg-config libavcodec-dev libavdevice-dev \
           #   libavfilter-dev libavformat-dev libavutil-dev
-          # for fltk:
-          sudo apt install -y libpango1.0-dev libxft-dev # libxext-dev libxft-dev \
-            # libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev libpng-dev \
-            # libgl1-mesa-dev libglu1-mesa-dev
           # for sdl2:
           sudo apt install -y libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev \
             libsdl2-mixer-dev libsdl2-ttf-dev
