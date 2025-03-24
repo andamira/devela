@@ -7,7 +7,9 @@
 // - saturating subslicing.
 // - first_chunk_padded
 
-use crate::Compare;
+#[cfg(any(doc, unsafe··))]
+use crate::Ptr;
+use crate::{iif, Compare};
 use core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use core::slice::{from_raw_parts, from_raw_parts_mut};
@@ -28,6 +30,52 @@ pub struct Slice<T>(crate::PhantomData<T>);
 
 /// # `core::slice` namespaced methods
 impl<T> Slice<T> {
+    /// Copies all elements from `src` into `dest`.
+    ///
+    /// # Features
+    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed.
+    /// - Falls back to safe element-wise copy otherwise.
+    ///
+    /// # Panics
+    /// Panics if `src` and `dest` slices have different lengths.
+    // WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
+    #[rustfmt::skip]
+    pub const fn copy_from_slice(dest: &mut [T], src: &[T]) where T: Copy {
+        if dest.len() != src.len() { panic!("`src` and `dest` slices have different lengths"); }
+
+        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        // SAFETY: Lengths checked equal, T is Copy, and pointers are valid
+        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dest.as_mut_ptr(), src.len()); }
+
+        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        { let mut i = 0; while i < src.len() { dest[i] = src[i]; i += 1; } }
+    }
+
+    /// Copies all elements from `src` into a fixed-size array starting at `offset`.
+    ///
+    /// # Features
+    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed
+    /// - Falls back to safe element-wise copy otherwise
+    ///
+    /// # Panics
+    /// Panics if `src.len() + offset` exceeds `dest.len()`.
+    #[rustfmt::skip]
+    pub const fn copy_into_array<const LEN: usize>(dest: [u8; LEN], src: &[u8], offset: usize)
+        -> [u8; LEN] {
+        assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
+
+        let mut output = dest;
+        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        { let mut i = 0; while i < src.len() { output[offset + i] = src[i]; i += 1; } }
+
+        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
+        unsafe {
+            Ptr::copy_nonoverlapping(src.as_ptr(), output.as_mut_ptr().add(offset), src.len());
+        }
+        output
+    }
+
     /// Converts a reference to `T` into a slice of length 1 (without copying).
     ///
     /// See `core::slice::`[`from_ref`].
@@ -671,10 +719,10 @@ macro_rules! impl_prim {
             /// Checks the equality of two slices of primitives in compile-time.
             #[must_use]
             pub const fn eq(a: &[$t], b: &[$t]) -> bool {
-                if a.len() != b.len() { return false; }
+                iif! { a.len() != b.len(); return false }
                 let mut i = 0;
                 while i < a.len() {
-                    if a[i] != b[i] { return false; }
+                    iif! { a[i] != b[i]; return false }
                     i += 1;
                 }
                 true
@@ -684,6 +732,7 @@ macro_rules! impl_prim {
 }
 impl_prim!();
 
+/// # Methods for string slices.
 impl Slice<&str> {
     /// Checks the equality of two string slices in compile-time.
     #[must_use]
@@ -695,16 +744,67 @@ impl Slice<&[&str]> {
     /// Checks the equality of two slices of string slices in compile-time.
     #[must_use]
     pub const fn eq(a: &[&str], b: &[&str]) -> bool {
-        if a.len() != b.len() {
-            return false;
-        }
+        iif! { a.len() != b.len(); return false }
         let mut i = 0;
         while i < a.len() {
-            if !Slice::<&str>::eq(a[i], b[i]) {
-                return false;
-            }
+            iif! { !Slice::<&str>::eq(a[i], b[i]); return false }
             i += 1;
         }
         true
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Slice;
+
+    #[test]
+    fn copy_from_slice() {
+        // Basic copy
+        let mut dest = [0u8; 4];
+        Slice::copy_from_slice(&mut dest, &[1, 2, 3, 4]);
+        assert_eq!(dest, [1, 2, 3, 4]);
+        // Empty slices
+        let mut empty_dest = [0u8; 0];
+        Slice::copy_from_slice(&mut empty_dest, &[]);
+        assert_eq!(empty_dest, []);
+        // Const context (compile test)
+        const fn _const_test() {
+            let mut dest = [0u8; 2];
+            Slice::copy_from_slice(&mut dest, &[1, 2]);
+        }
+    }
+    #[test]
+    #[should_panic]
+    fn copy_from_slice_panic() {
+        let mut dest = [0u8; 3];
+        Slice::copy_from_slice(&mut dest, &[1, 2, 3, 4]); // length mismatch
+    }
+    #[test]
+    fn copy_into_array() {
+        // Offset copy
+        let dest = [0u8; 5];
+        let result = Slice::<u8>::copy_into_array(dest, &[1, 2], 2);
+        assert_eq!(result, [0, 0, 1, 2, 0]);
+        // Full copy
+        let result = Slice::<u8>::copy_into_array([0u8; 3], &[1, 2, 3], 0);
+        assert_eq!(result, [1, 2, 3]);
+        // Edge cases
+        assert_eq!(Slice::<u8>::copy_into_array([1u8; 3], &[], 1), [1, 1, 1]);
+        assert_eq!(Slice::<u8>::copy_into_array([0u8; 3], &[1, 2], 1), [0, 1, 2]);
+        // Const context (compile test)
+        const fn _const_test() -> [u8; 2] {
+            Slice::<u8>::copy_into_array([0u8; 2], &[1, 2], 0)
+        }
+    }
+    #[test]
+    #[should_panic]
+    fn copy_into_array_panic_overflow() {
+        Slice::<u8>::copy_into_array([0u8; 3], &[1, 2, 3, 4], 0); // overflow
+    }
+    #[test]
+    #[should_panic]
+    fn copy_into_array_panic_overflow_offset() {
+        Slice::<u8>::copy_into_array([0u8; 3], &[1, 2], 2); // offset overflow
     }
 }
