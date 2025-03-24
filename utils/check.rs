@@ -314,8 +314,8 @@ fn main() -> Result<()> {
 
         // linux
         for arch in LINUX_ARCHES {
-            sf! { headline(1, &format!("all,linux,linux_deps,unsafe_syscall: arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,linux,linux_deps,unsafe_syscall"])?;
+            sf! { headline(1, &format!("all,linux,unsafe_syscall: arch {a}/{atotal}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,linux,unsafe_syscall"])?;
             a += 1;
         }
 

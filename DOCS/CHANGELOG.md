@@ -106,7 +106,7 @@
 - remove methods:
   - `Float:` `const_round_ties_odd`.
 - remove private variant `IoErrorKind::Uncategorized`.
-- remove features: `unsafe_async`.
+- remove features: `linux_deps`, `unsafe_async`.
 - remove modules:
   - `data::collections`.
   - `num::alg`.
