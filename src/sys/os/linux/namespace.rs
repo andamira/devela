@@ -12,6 +12,7 @@ use crate::{
     LINUX_SIGACTION as SIGACTION,
 };
 #[cfg(feature = "alloc")]
+#[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{vec_ as vec, Vec};
 
 #[doc = crate::TAG_NAMESPACE!()]
@@ -293,11 +294,28 @@ impl Linux {
             }
         }
     }
+    /// Suspends execution of calling thread for the given `milliseconds`.
+    pub fn sleep_ms(milliseconds: u64) -> Result<()> {
+        Linux::sleep(Duration::from_millis(milliseconds))
+    }
 
     /// Returns the current process number.
     pub fn getpid() -> i32 {
         unsafe { Linux::sys_getpid() }
     }
+}
+
+/* signals */
+
+#[cfg(feature = "unsafe_syscall")]
+crate::items! {
+    /// Maximum number of signals.
+    const LINUX_SIG_MAX: usize = 30;
+    /// A static array to match signals with handlers.
+    static LINUX_SIG_HANDLERS: [AtomicPtr<fn(i32)>; LINUX_SIG_MAX] = {
+        const INIT: AtomicPtr<fn(i32)> = AtomicPtr::new(Ptr::null_mut());
+        [INIT; LINUX_SIG_MAX]
+    };
 }
 
 /// # Signaling-related methods.
@@ -337,18 +355,15 @@ impl Linux {
     /// # }
     /// ```
     pub fn sig_handler(handler: fn(i32), signals: &[i32], flags: Option<&[usize]>) {
-        // We store the given `handler` function in a static to be able to call it
-        // from the new extern function which can't capture its environment.
-        static HANDLER: AtomicPtr<fn(i32)> = AtomicPtr::new(Ptr::null_mut());
-        HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
-
         extern "C" fn c_handler(sig: i32) {
-            let handler = HANDLER.load(AtomicOrdering::SeqCst);
-            if !handler.is_null() {
-                #[expect(clippy::crosspointer_transmute)]
-                // SAFETY: The non-null pointer is originally created from a `fn(i32)` pointer.
-                let handler = unsafe { transmute::<*mut fn(i32), fn(i32)>(handler) };
-                handler(sig);
+            if sig >= 0 && (sig as usize) < LINUX_SIG_MAX {
+                let handler = LINUX_SIG_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
+                if !handler.is_null() {
+                    unsafe {
+                        let handler: fn(i32) = transmute(handler);
+                        handler(sig);
+                    }
+                }
             }
         }
         // Use the restorer function defined in assembly.
@@ -376,12 +391,16 @@ impl Linux {
             }
         }
         let mask = LinuxSigset::empty();
-        let sigaction = LinuxSigaction::new(c_handler,
-            combined_flags, mask, Some(__devela_linux_restore_rt));
-        for s in signals {
-            if (1..=31).contains(s) { // make sure the signal is a valid number
+        for &sig in signals {
+            if (1..=LINUX_SIG_MAX).contains(&(sig as usize)) { // make sure the signal is a valid number
+                // Store the handler in the appropriate slot
+                LINUX_SIG_HANDLERS[sig as usize].store(handler as *mut _, AtomicOrdering::SeqCst);
+                // Register the handler with the OS
+                let c_handler = c_handler as extern "C" fn(i32);
+                let sigaction = LinuxSigaction::new(c_handler,
+                    combined_flags, mask, Some(__devela_linux_restore_rt));
                 unsafe {
-                    let _ = Linux::sys_rt_sigaction(*s, &sigaction,
+                    let _ = Linux::sys_rt_sigaction(sig, &sigaction,
                         Ptr::null_mut(), LinuxSigset::size());
                 }
             }
@@ -542,9 +561,7 @@ impl Linux {
     // const GRND_RANDOM: isize = 0x0002;
     const GRND_INSECURE: c_uint = 0x0004;
     const RAND_FLAGS: c_uint = Linux::GRND_NONBLOCK | Linux::GRND_INSECURE;
-    ///
     const RAND_MAX_ATTEMPTS: usize = 15;
-
     /// the cold path for trying again
     #[cold] #[must_use]
     fn getrandom_try_again_cold(attempts: &mut usize) -> bool {
