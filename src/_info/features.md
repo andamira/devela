@@ -49,19 +49,23 @@ For example, `num··` will be set if any num submodule feature is enabled.
 
 - `all`: enables all the root modules and extra submodules.
 
-<!-- BUG: some links only work with inlined notation -->
+<!-- NOTE some links only work with inlined notation -->
 Root modules & public sub-modules features:
 - [`code`]
-  - [`error`]
+  - [`error`]:
 - [`data`]
-  - [`hash`]
-- [`lang`]
+  - [`hash`]:
+- [`lang`]:
+  - `dsl`:
+  - `ffi`: c, glsl, js.
+  - `i18n`:
+  - `ling`: Linguistics.
 - [`media`]
-  - [`audio`]
-  - [`color`]
-  - [`draw`]
-  - [`font`]
-  - [`image`]
+  - [`audio`]:
+  - [`color`]:
+  - [`draw`]:
+  - [`font`]:
+  - [`image`]:
 - [`num`]:
   - [`geom`][crate::num::geom]: geometry.
     - `linear`:
@@ -96,9 +100,9 @@ Root modules & public sub-modules features:
 - [`ui`]
   - [`layout`]
 - [`work`]
-  - `future`
-  - `process`
-  - `sync`
+  - `future`:
+  - `process`:
+  - `sync`:
 
 [`code`]:         crate::code
   [`error`]:      crate::code::error

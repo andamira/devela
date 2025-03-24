@@ -1,6 +1,8 @@
 // devela::lang::ling
 //
-//! Linguistics. Language structure, rules, and actual languages.
+//! Linguistics and languge theory.
+//!
+//! Structure, rules, analysis, and representation of natural and constructed languages.
 //
 
 pub mod art;

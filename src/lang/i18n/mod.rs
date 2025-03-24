@@ -1,6 +1,8 @@
 // devela::lang::i18n
 //
-//! Internationalization, translations.
+//! Internationalization and localization support.
+//!
+//! Utilities for translating and adapting software to different languages and regions.
 //
 
 crate::items! { // structural access: _mods, _all

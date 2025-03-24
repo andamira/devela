@@ -1,6 +1,8 @@
 // devela::lang::ffi
 //
-//! <abbr title = "Foreign Function Interface">FFI</abbr> bindings.
+//! <abbr title = "Foreign Function Interface">FFI</abbr> bindings and interoperability.
+//!
+//! Bridges to external languages and platforms.
 #![doc = crate::doc_!(modules: crate::lang; ffi: c, glsl, js)]
 #![doc = crate::doc_!(newline)]
 //!
