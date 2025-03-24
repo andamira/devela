@@ -90,6 +90,29 @@ impl Str {
         unsafe { from_utf8_unchecked_mut(v) }
     }
 
+    /// Converts a byte slice known to be valid UTF-8 to a string.
+    ///
+    /// # Features
+    /// It can use unsafe internally to skip checks.
+    ///
+    /// # Safety
+    /// `bytes` must contain valid utf-8.
+    ///
+    /// This is intended to be called by macros, where the feature-bounds
+    /// would be tested against the user code.
+    ///
+    /// This is why it is not marked as unsafe; the macro is the one to enforce safety.
+    ///
+    /// # Used by
+    /// [`strjoin!`][crate:strjoin].
+    #[doc(hidden)]
+    pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
+        #[cfg(any(feature = "safe_text", not(unsafe··)))]
+        { crate::unwrap![ok ::core::str::from_utf8(bytes)] }
+        #[cfg(all(not(feature = "safe_text"), unsafe··))]
+        unsafe { ::core::str::from_utf8_unchecked(bytes) }
+    }
+
     /// Converts a boxed slice of bytes to a boxed string slice without checking valid UTF-8.
     ///
     /// See [`from_boxed_utf8_unchecked`].
