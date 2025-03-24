@@ -28,8 +28,8 @@ impl LINUX_ERRNO {
 
     /// “Interrupted system call.”
     ///
-    /// An asynchronous signal occurred and prevented completion of the call. When
-    /// this happens, you should try the call again.
+    /// An asynchronous signal occurred and prevented completion of the call.
+    /// When this happens, you should try the call again.
     ///
     /// You can choose to have functions resume after a signal that is handled,
     /// rather than failing with `EINTR`.

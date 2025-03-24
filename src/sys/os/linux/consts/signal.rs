@@ -32,7 +32,7 @@ pub struct LINUX_SIGACTION;
 #[allow(non_camel_case_types)]
 pub struct LINUX_SIGNAL;
 
-// 31 different signals
+// 30 different signals
 impl LINUX_SIGNAL {
     /// Hangup detected on controlling terminal or death of controlling process.
     ///

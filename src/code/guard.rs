@@ -4,8 +4,11 @@
 
 use crate::{Deref, DerefMut};
 
-/// A guard that executes a callback on drop, using an associated state.
+/// A general-purpose RAII guard that executes a callback on drop.
 ///
+/// - The callback can take both a value and a state.
+/// - The state can be updated dynamically during the guard's lifetime.
+/// - The guard can be dismissed, preventing the callback from executing on drop.
 #[doc = crate::doc_!(vendor: "stated-scope-guard")]
 pub struct ScopeGuard<T, F: FnOnce(T, &S), S> {
     /// The guarded value,

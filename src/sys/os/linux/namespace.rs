@@ -280,7 +280,7 @@ impl Linux {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
-    /// Suspends execution of calling thread for `duration`.
+    /// Suspends execution of calling thread for the given `duration`.
     pub fn sleep(duration: Duration) -> Result<()> {
         let mut req = LinuxTimespec::with(duration);
         let mut rem = LinuxTimespec::default();
