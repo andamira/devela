@@ -240,10 +240,15 @@ mod reflection {
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         ref_flags: &["num··"],
-        features: &["num", "alg", "geom", "rand", "unit",
+        features: &["num", "alg", "rand", "unit",
+            "geom", "linear", "metric", "shape",
             "prim", "cast", "join", "split",
         ]
     };
+        pub const GEOM: FlagsFeatures = FlagsFeatures {
+            ref_flags: &["geom··"],
+            features: &["geom", "linear", "metric", "shape"]
+        };
         pub const PRIM: FlagsFeatures = FlagsFeatures {
             ref_flags: &["prim··"],
             features: &["prim", "cast", "join", "split"]
@@ -271,6 +276,7 @@ mod reflection {
         ref_flags: &["ui··"],
         features: &[
             "ui", "layout",
+            /* front: */ "desk", "term", "web",
             "dep_crossterm", "dep_fltk", "dep_girls", "dep_miniquad", "dep_sdl2", "dep_sdl3",
         ]
     };
@@ -392,7 +398,7 @@ mod reflection {
             DATA,
             LANG, FFI,
             MEDIA,
-            NUM, PRIM,
+            NUM, GEOM, PRIM,
             PHYS,
             SYS, MEM,
             TEXT,

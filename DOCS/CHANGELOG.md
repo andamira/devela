@@ -5,9 +5,11 @@
 ### Added
 - new features:
   - lang: `glsl`, `js`.
+  - num: `linear`, `metric`, `shape`.
   - ui: `desk`, `term`, `web`.
   - capability: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
   - safety: `unsafe_ffi`.
+- new flags: `ffi··`, `geom··`.
 - new traits:
   - data:
     - codec: `Decodable`, `Encodable`, `EncodabeLen`.

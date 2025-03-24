@@ -64,6 +64,9 @@ Root modules & public sub-modules features:
   - [`image`]
 - [`num`]:
   - [`geom`][crate::num::geom]: geometry.
+    - `linear`:
+    - `metric`:
+    - `shape`:
   - [`logic`]:
   - `prim`:
     - `cast`: `PrimitiveCast`.
