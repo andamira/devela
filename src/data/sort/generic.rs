@@ -301,6 +301,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
 mod helper {
     use crate::{iif, sf, Ordering};
 
+    // MAYBE WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
     #[cfg(feature = "alloc")]
     pub(super) fn sort_merge_internal<T: Ord + Copy>(slice: &mut [T], buffer: &mut [T]) {
         let len = slice.len();

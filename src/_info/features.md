@@ -96,7 +96,7 @@ Root modules & public sub-modules features:
 - [`text`]
   - `ascii`: `AsciiChar`.
   - [`fmt`][crate::text::fmt]: `NumToStr`.
-  - [`str`]: `Str`, `ExtStr`, `ExtString`.
+  - [`str`]: `ExtStr`, `ExtString`.
 - [`ui`]
   - [`layout`]
 - [`work`]

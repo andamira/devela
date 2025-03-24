@@ -6,11 +6,10 @@
 
 mod reexports;
 mod macros; // str!, strjoin!
+mod namespace; // Str
 
 #[cfg(feature = "str")]
 mod ext_str; // ExtStr
-#[cfg(feature = "str")]
-mod namespace; // Str
 
 #[cfg(all(feature = "str", feature = "alloc"))]
 mod ext_string;
@@ -29,10 +28,11 @@ crate::items! { // structural access: _mods, _all, _always
     mod _mods {
         pub use super::reexports::*;
         pub use super::macros::*;
+        pub use super::namespace::*;
 
         #[cfg(feature = "str")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
-        pub use super::{ext_str::*, namespace::*};
+        pub use super::ext_str::*;
         #[cfg(all(feature = "str", feature = "alloc"))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
         pub use super::ext_string::*;

@@ -33,7 +33,7 @@ impl Str {
     ///
     /// See `core::str::`[`from_utf8`].
     //
-    // WAIT:[const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
+    // WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
     // /// # Features
     // /// if the `dep_simdutf8` is enabled
     // /// then `simdutf8::compat::`[`from_utf8`] is called instead.
@@ -54,7 +54,7 @@ impl Str {
     /// Converts a mutable slice of bytes to a mutable string slice.
     ///
     /// See [`from_utf8_mut`].
-    // WAIT: [const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
+    // WAIT:1.87 [const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
     pub fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, InvalidUtf8> {
         match from_utf8_mut(v) {
             Ok(v) => Ok(v),
@@ -117,7 +117,7 @@ impl Str {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     ///
-    /// See also [`ExtStr::new_counter`], which should be faster,
+    /// See also [`ExtStr::repeat_into`], which should be faster,
     /// because it uses `copy_from_slice`.
     #[must_use]
     pub const fn repeat_into<'input, const CAP: usize>(
@@ -174,6 +174,8 @@ impl Str {
     /// See also [`ExtStr::new_counter`].
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
+    #[cfg(feature = "str")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
     pub const fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
         assert![buffer.len() >= length];
         assert![separator.is_ascii()];
@@ -198,6 +200,7 @@ impl Str {
                     buffer[index] = separator;
                 } else {
                     iif![index > 0; index -= num_len - 1];
+                    // WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
                     // buffer[index..(num_len + index)].copy_from_slice(&num_bytes[..num_len]);
                     // Slice::range_mut(buffer, index, num_len + index)
                     //     .copy_from_slice(Slice::range_to(num_bytes, num_len));

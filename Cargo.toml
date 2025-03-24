@@ -200,7 +200,7 @@ sys = ["io", "mem"]
 text = ["ascii", "fmt", "str"]
 	ascii = [] # AsciiChar
 	fmt = [] # NumStr
-	str = [] # Str, ExtStr, ExtString
+	str = [] # ExtStr, ExtString
 ui = ["layout", "desk", "term", "web"]
 	layout = []
 	# back

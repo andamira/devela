@@ -158,6 +158,7 @@
   - `hash` for: `FxHasher`.
   - `io` for: `IoError`, `IoErrorKind`, `IoRead`, `IoWrite`, `IoBytes`, `IoChain`, `IoTake`.
   - `rand` for: `Xorshift128p`.
+  - `str` for: `Str`.
 - auto-enable features:
   - `str`: when enabling `_str_u*`.
 - make customizable: `XorShift[16|32|64]`.

@@ -1126,6 +1126,7 @@ macro_rules! impl_destaque {
                 }
 
                 // Move elements from temp back into self.data, now in a contiguous order
+                // WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
                 // self.data[..self.len].copy_from_slice(&temp[..self.len]); // NOTE for Copy
                 for i in 0..self.len as usize {
                     self.data[i] = temp[i].clone();
