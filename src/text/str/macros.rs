@@ -14,6 +14,9 @@
 /// const PART2: &str = "/bar";
 /// const PATH: &str = strjoin!(BASE, PART1, PART2);
 /// const_assert![eq_str PATH, "path/to/foo/bar"];
+///
+/// const REPEATED: &str = strjoin!(repeat: PART1, 3);
+/// const_assert![eq_str REPEATED, "/foo/foo/foo"];
 /// ```
 /// # Features
 /// Makes use of the `unsafe_str` feature if available.
@@ -24,6 +27,7 @@
 //   - support the trivial cases.
 //   - suport more than 2 arguments.
 //   - simplify reassignments and loop.
+//   - add a new arm to repeat a string.
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
@@ -38,25 +42,33 @@ macro_rules! strjoin {
     ($A:expr, $B:expr) => {{
         const fn combined() -> [u8; LEN] {
             let mut out = [0u8; LEN];
-            out = copy_slice(A.as_bytes(), out, 0);
-            copy_slice(B.as_bytes(), out, A.len())
-        }
-        const fn copy_slice(input: &[u8], mut output: [u8; LEN], offset: usize) -> [u8; LEN] {
-            let mut index = 0;
-            while index < input.len() {
-                output[offset + index] = input[index];
-                index += 1;
-            }
-            output
+            out = $crate::Slice::<u8>::copy_into_array(out, A.as_bytes(), 0);
+            $crate::Slice::<u8>::copy_into_array(out, B.as_bytes(), A.len())
         }
         const A: &str = $A;
         const B: &str = $B;
         const LEN: usize = A.len() + B.len();
         const RESULT: &[u8] = &combined();
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        { $crate::unwrap!(ok::core::str::from_utf8(RESULT)) }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        unsafe { ::core::str::from_utf8_unchecked(RESULT) }
+        $crate::Str::__utf8_bytes_to_str(RESULT)
+        // $crate::unwrap![ok ::core::str::from_utf8(RESULT)]
+    }};
+    // Repeat a string slice a constant number of times:
+    (repeat: $A:expr, $count:expr) => {{
+        const fn repeated() -> [u8; LEN] {
+            let mut out = [0u8; LEN];
+            let mut i = 0;
+            while i < COUNT {
+                out = $crate::Slice::<u8>::copy_into_array(out, A.as_bytes(), i * A.len());
+                i += 1;
+            }
+            out
+        }
+        const A: &str = $A;
+        const COUNT: usize = $count;
+        const LEN: usize = A.len() * COUNT;
+        const RESULT: &[u8] = &repeated();
+        $crate::Str::__utf8_bytes_to_str(RESULT)
+        // $crate::unwrap![ok ::core::str::from_utf8(RESULT)]
     }};
 }
 #[doc(inline)]
