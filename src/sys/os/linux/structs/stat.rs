@@ -3,7 +3,7 @@
 //! Defines [`LinuxStat`].
 //
 
-use crate::{c_long, c_ulong, c_uint, LINUX_S_IFMT};
+use crate::{c_long, c_uint, c_ulong, LINUX_S_IFMT};
 
 /// File status structure matching libc's stat ([man 2 stat])
 ///

@@ -24,7 +24,7 @@ pub type LINUX_SYS = aarch64::LINUX_SYS_AARCH64;
 pub type LINUX_SYS = arm::LINUX_SYS_ARM;
 #[doc = SYS_DOC!()]
 #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
-pub type LINUX_SYS = rsicv::LINUX_SYS_RISCV;
+pub type LINUX_SYS = riscv::LINUX_SYS_RISCV;
 #[doc = SYS_DOC!()]
 #[cfg(target_arch = "x86")]
 pub type LINUX_SYS = x86::LINUX_SYS_X86;

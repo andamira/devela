@@ -58,7 +58,7 @@ pub mod io {
         ))]
         pub use super::super::{
             consts::termios::*,
-            structs::{LinuxTerminalSize, LinuxTermios},
+            structs::{LinuxStat, LinuxTerminalSize, LinuxTermios},
         };
     }
 }
@@ -118,9 +118,10 @@ crate::items! { // structural access: _mods, _pub_mods, _all
         pub use super::{error::*, namespace::*};
     }
     mod _pub_mods { #![allow(unused)]
-        pub use super::{
-            consts::_all::*, io::_all::*, process::_all::*, syscalls::_all::*, thread::_all::*,
-        };
+        pub use super::{consts::_all::*, io::_all::*, process::_all::*, thread::_all::*};
+
+        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+        pub use super::syscalls::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

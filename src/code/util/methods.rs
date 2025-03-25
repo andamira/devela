@@ -96,6 +96,8 @@ pub use methods_as_fns;
 #[cfg(test)]
 #[rustfmt::skip]
 mod tests {
+    #![allow(dead_code)]
+
     struct TestMethods;
 
     #[allow(dead_code)]

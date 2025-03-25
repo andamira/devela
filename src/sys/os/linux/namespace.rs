@@ -7,7 +7,7 @@
 use crate::{
     c_uint, c_void, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
     LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTerminalSize,
-    LinuxTermios, LinuxTimespec, Ordering, Ptr, ScopeGuard, _core::str::from_utf8_unchecked,
+    LinuxTermios, LinuxTimespec, Ptr, ScopeGuard, _core::str::from_utf8_unchecked,
     LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL,
     LINUX_SIGACTION as SIGACTION,
 };
