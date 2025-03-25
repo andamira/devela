@@ -42,7 +42,7 @@
     - io: `IoEmpty`, `IoRepeat`.
     - log: `LogConfig`.
     - mem: `Current`, `CurrentGuard`, `SpinLock`, `SpinLockGuard`.
-    - os: `LinuxError`, `LinuxResult`.
+    - os: `LinuxError`, `LinuxResult`, `LinuxSiginfo`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`.
     - `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
@@ -98,6 +98,8 @@
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
+- remove items:
+  - sys: `LinuxTerminal`.
 - remove standalone fns:
   - io: `io_*`.
   - panic: `panic_*`.

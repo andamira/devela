@@ -36,9 +36,7 @@ mod structs;
 crate::items! {
     mod restorer;
     // #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-    mod syscalls;
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-    mod terminal;
+    mod syscalls; // LINUX_SYS
 }
 
 /// Linux-specific extensions to [`std::io`].
@@ -118,12 +116,10 @@ crate::items! { // structural access: _mods, _pub_mods, _all
 
     mod _mods {
         pub use super::{error::*, namespace::*};
-        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-        pub use super::terminal::*;
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            consts::_all::*, io::_all::*, process::_all::*, thread::_all::*,
+            consts::_all::*, io::_all::*, process::_all::*, syscalls::_all::*, thread::_all::*,
         };
     }
     pub(super) mod _all { #![allow(unused)]

@@ -4,12 +4,11 @@
 //
 
 crate::CONST! {
-pub(super) SYS_EXIT = r#"Performs an `exit` syscall.
+pub(super) SYS_EXIT = r#"Performs an [exit] syscall.
 
 Terminate the process with an exit status.
 
-# Info
-- <https://www.man7.org/linux/man-pages/man2/exit.2.html>
+[exit]: https://www.man7.org/linux/man-pages/man2/exit.2.html
 
 # Example
 ```
@@ -22,12 +21,11 @@ unsafe { Linux::sys_exit(0) };
 TODO
 "#;
 
-pub(super) SYS_GETPID = r#"Performs a `getpid` syscall.
+pub(super) SYS_GETPID = r#"Performs a [getpid] syscall.
 
 Get process identification.
 
-# Info
-- <https://www.man7.org/linux/man-pages/man2/getpid.2.html>
+[getpid]: https://www.man7.org/linux/man-pages/man2/getpid.2.html
 
 # Example
 ```no_run
@@ -40,12 +38,11 @@ let pid: i32 = unsafe { Linux::sys_getpid() };
 TODO
 "#;
 
-pub(super) SYS_GETRANDOM = r#"Performs a `getrandom` syscall.
+pub(super) SYS_GETRANDOM = r#"Performs a [getrandom] syscall.
 
 Obtain a series of random bytes.
 
-# Info
-- <https://www.man7.org/linux/man-pages/man2/getrandom.2.html>
+[getrandom]: https://www.man7.org/linux/man-pages/man2/getrandom.2.html
 
 # Example
 ```no_run
@@ -73,13 +70,13 @@ unsafe { Linux::sys_getrandom(&mut r as *mut u8, 1, 0) };
 
 - `GRND_INSECURE` = 0x0004
 
-  Write random data that may not be cryptographically secure. 
+  Write random data that may not be cryptographically secure.
 
 # Safety
 TODO
 "#;
 
-pub(super) SYS_IOCTL = r#"Performs an `ioctl` syscall.
+pub(super) SYS_IOCTL = r#"Performs an [ioctl] syscall.
 
 Performs a generic I/O control operation (ioctl) on the given file descriptor.
 
@@ -87,14 +84,13 @@ The operation to perform and the data to use is determined by the `request`
 argument, which is a device-specific request code, and the `argp` argument,
 which is a pointer to the data.
 
-# Info
-- <https://www.man7.org/linux/man-pages/man2/ioctl.2.html>
+[ioctl]: https://www.man7.org/linux/man-pages/man2/ioctl.2.html
 
 # Safety
 TODO
 "#;
 
-pub(super) SYS_NANOSLEEP = r#"Performs a `nanosleep` syscall.
+pub(super) SYS_NANOSLEEP = r#"Performs a [nanosleep] syscall.
 
 Suspend execution of calling thread.
 
@@ -104,8 +100,7 @@ case the remaining time will be stored in `rem`.
 
 Returns the syscall return value.
 
-# Info
-- <https://www.man7.org/linux/man-pages/man2/nanosleep.2.html>
+[nanosleep]: https://www.man7.org/linux/man-pages/man2/nanosleep.2.html
 
 # Example
 ```
@@ -120,12 +115,11 @@ assert_eq![0, unsafe { Linux::sys_nanosleep(&mut req, &mut rem) }];
 TODO
 "#;
 
-pub(super) SYS_READ = r#"Performs a `read` syscall.
+pub(super) SYS_READ = r#"Performs a [read] syscall.
 
 Read `count` bytes from a file descriptor `fd` into a buffer `buf`.
 
-# Info
-- <https://www.man7.org/linux/man-pages/man2/read.2.html>
+[read]: https://www.man7.org/linux/man-pages/man2/read.2.html
 
 # Example
 ```no_run
@@ -143,12 +137,11 @@ assert![bytes_read > 0];
 TODO
 "#;
 
-pub(super) SYS_RT_SIGACTION = r#"Performs an `rt_sigaction` syscall.
+pub(super) SYS_RT_SIGACTION = r#"Performs an [rt_sigaction] syscall.
 
 Examine and change a signal action.
 
-# Info
-- <https://man7.org/linux/man-pages/man2/rt_sigaction.2.html>
+[rt_sigaction]: https://man7.org/linux/man-pages/man2/rt_sigaction.2.html
 
 # Flags
 
@@ -156,14 +149,16 @@ Examine and change a signal action.
 TODO
 "#;
 
-pub(super) SYS_WRITE = r#"Performs a `write` syscall.
+pub(super) SYS_WRITE = r#"Performs a [write] syscall.
 
 Writes `count` bytes from a buffer `buf` into a file descriptor `fd`.
 
-Returns the syscall return value.
+If a write() is interrupted by a signal handler before any bytes
+are written, then the call fails with the error EINTR; if it is
+interrupted after at least one byte has been written, the call
+succeeds, and returns the number of bytes written.
 
-# Info
-- <https://www.man7.org/linux/man-pages/man2/write.2.html>
+[write]: https://www.man7.org/linux/man-pages/man2/write.2.html
 
 # Example
 ```

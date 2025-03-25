@@ -4,9 +4,7 @@
 //
 
 use super::shared_docs::*;
-use crate::{
-    asm, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxTimespec, LINUX_SYS_RISCV as SYS,
-};
+use crate::{asm, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxTimespec, LINUX_SYS as SYS};
 
 /// System calls.
 impl Linux {

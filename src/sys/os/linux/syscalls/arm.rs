@@ -7,9 +7,7 @@
 // - WAIT: [can't use r7 register](https://github.com/rust-lang/rust/issues/85056)
 
 use super::shared_docs::*;
-use crate::{
-    asm, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxTimespec, LINUX_SYS_ARM as SYS,
-};
+use crate::{asm, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxTimespec, LINUX_SYS as SYS};
 
 /// System calls.
 impl Linux {
