@@ -2,6 +2,9 @@
 //
 //!
 //
+// - https://arm.syscall.sh/
+// - https://syscalls.mebeim.net/?table=arm/32/eabi/latest
+//
 
 /// Linux `sys/syscall.h` constants for `armv7`.
 #[allow(non_camel_case_types)]

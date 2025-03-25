@@ -2,6 +2,8 @@
 //
 //!
 //
+// - https://syscalls.mebeim.net/?table=riscv/32/rv32/latest
+// - https://syscalls.mebeim.net/?table=riscv/64/rv64/latest
 
 /// Linux `sys/syscall.h` constants for `riscv`.
 #[allow(non_camel_case_types)]
@@ -60,12 +62,14 @@ impl LINUX_SYS_RISCV {
     pub const FINIT_MODULE: isize = 273;
     pub const FLISTXATTR: isize = 13;
     pub const FLOCK: isize = 32;
+    pub const FCNTL: isize = 25; // NOTE: FCNTL64 in riscv32
     pub const FREMOVEXATTR: isize = 16;
     pub const FSCONFIG: isize = 431;
     pub const FSETXATTR: isize = 7;
     pub const FSMOUNT: isize = 432;
     pub const FSOPEN: isize = 430;
     pub const FSPICK: isize = 433;
+    pub const FSTAT: isize = 80; // NEWFSTAT?
     pub const FSYNC: isize = 82;
     pub const FUTEX: isize = 98;
     pub const GETCPU: isize = 168;
@@ -126,6 +130,7 @@ impl LINUX_SYS_RISCV {
     pub const LLISTXATTR: isize = 12;
     pub const LOOKUP_DCOOKIE: isize = 18;
     pub const LREMOVEXATTR: isize = 15;
+    pub const LSEEK: isize = 62; // LLSEEK in riscv32
     pub const LSETXATTR: isize = 6;
     pub const MADVISE: isize = 233;
     pub const MBIND: isize = 235;
@@ -162,6 +167,7 @@ impl LINUX_SYS_RISCV {
     pub const NAME_TO_HANDLE_AT: isize = 264;
     pub const NANOSLEEP: isize = 101;
     pub const NFSSERVCTL: isize = 42;
+    pub const NEWFSTATAT: isize = 79;
     pub const OPENAT2: isize = 437;
     pub const OPENAT: isize = 56;
     pub const OPEN_BY_HANDLE_AT: isize = 265;

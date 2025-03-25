@@ -3,6 +3,7 @@
 //!
 //
 // - https://arm64.syscall.sh/
+// - https://syscalls.mebeim.net/?table=arm64/64/aarch64/latest
 
 /// Linux `sys/syscall.h` constants for `aarch64`.
 #[allow(non_camel_case_types)]
@@ -56,6 +57,7 @@ impl LINUX_SYS_AARCH64 {
     pub const FCHMODAT: isize = 53;
     pub const FCHOWN: isize = 55;
     pub const FCHOWNAT: isize = 54;
+    pub const FCNTL: isize = 25;
     pub const FDATASYNC: isize = 83;
     pub const FGETXATTR: isize = 10;
     pub const FINIT_MODULE: isize = 273;
@@ -67,6 +69,7 @@ impl LINUX_SYS_AARCH64 {
     pub const FSMOUNT: isize = 432;
     pub const FSOPEN: isize = 430;
     pub const FSPICK: isize = 433;
+    pub const FSTAT: isize = 80;
     pub const FSYNC: isize = 82;
     pub const FUTEX: isize = 98;
     pub const GETCPU: isize = 168;
@@ -127,6 +130,7 @@ impl LINUX_SYS_AARCH64 {
     pub const LLISTXATTR: isize = 12;
     pub const LOOKUP_DCOOKIE: isize = 18;
     pub const LREMOVEXATTR: isize = 15;
+    pub const LSEEK: isize = 62;
     pub const LSETXATTR: isize = 6;
     pub const MADVISE: isize = 233;
     pub const MBIND: isize = 235;
@@ -162,6 +166,7 @@ impl LINUX_SYS_AARCH64 {
     pub const MUNMAP: isize = 215;
     pub const NAME_TO_HANDLE_AT: isize = 264;
     pub const NANOSLEEP: isize = 101;
+    pub const NEWFSTATAT: isize = 79;
     pub const NFSSERVCTL: isize = 42;
     pub const OPENAT2: isize = 437;
     pub const OPENAT: isize = 56;

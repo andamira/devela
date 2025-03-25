@@ -2,6 +2,9 @@
 //
 //!
 //
+// - https://x86.syscall.sh/
+// - https://syscalls.mebeim.net/?table=x86/32/ia32/latest
+//
 
 /// Linux `sys/syscall.h` constants for `x86`.
 #[allow(non_camel_case_types)]

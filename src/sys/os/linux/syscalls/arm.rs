@@ -3,140 +3,348 @@
 //! Implements linux syscalls for arm.
 //
 // - https://arm.syscall.sh/
+// - https://syscalls.mebeim.net/?table=arm/32/eabi/latest
 //
-// - WAIT: [can't use r7 register](https://github.com/rust-lang/rust/issues/85056)
+// - WAIT: [use of r7 register](https://github.com/rust-lang/rust/issues/85056)
 
-use super::shared_docs::*;
-use crate::{asm, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxTimespec, LINUX_SYS as SYS};
+use super::{shared_docs::*, LinuxOffset};
+use crate::{
+    asm, c_char, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxStat, LinuxTimespec,
+    LINUX_SYS as SYS,
+};
 
-/// System calls.
+/// # Syscalls: File descriptors.
+impl Linux {
+    #[must_use]
+    #[doc = SYS_READ!()]
+    pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov r7, {READ}",
+                "svc 0",
+                READ = const SYS::READ,
+                in("r0") fd,
+                in("r1") buf,
+                in("r2") count,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_WRITE!()]
+    pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov r7, {WRITE}",
+                "svc 0",
+                WRITE = const SYS::WRITE,
+                in("r0") fd,
+                in("r1") buf,
+                in("r2") count,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_OPEN!()]
+    pub unsafe fn sys_open(path: *const c_char, flags: c_int, mode: c_uint) -> c_int {
+        let result: c_int;
+        unsafe {
+            asm!(
+                "mov r7, {OPEN}",
+                "svc 0",
+                OPEN = const SYS::OPEN,
+                in("r0") path,
+                in("r1") flags,
+                in("r2") mode,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_CLOSE!()]
+    pub unsafe fn sys_close(fd: c_int) -> isize {
+        let result: isize;
+        unsafe {
+            asm!(
+                "mov r7, {CLOSE}",
+                "svc 0",
+                CLOSE = const SYS::CLOSE,
+                in("r0") fd,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_LSEEK!()]
+    pub unsafe fn sys_lseek(fd: c_int, offset: LinuxOffset, whence: c_int) -> LinuxOffset {
+        let result_lo: u32;
+        let result_hi: u32;
+        unsafe {
+            asm!(
+                "mov r7, {LSEEK}",
+                "svc 0",
+                LSEEK = const SYS::LSEEK as u32,
+                in("r0") fd,
+                in("r1") offset as u32,          // Low 32 bits
+                in("r2") (offset >> 32) as u32,  // High 32 bits
+                in("r3") whence,
+                lateout("r0") result_lo,
+                lateout("r1") result_hi,
+                options(nostack)
+            );
+        }
+        ((result_hi as i64) << 32) | (result_lo as i64)
+    }
+    #[must_use]
+    #[doc = SYS_DUP!()]
+    pub unsafe fn sys_dup(oldfd: c_int) -> c_int {
+        let result: c_int;
+        unsafe {
+            asm!(
+                "mov r7, {DUP}",
+                "svc 0",
+                DUP = const SYS::DUP,
+                in("r0") oldfd,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[doc = SYS_DUP2!()]
+    #[must_use]
+    pub unsafe fn sys_dup2(oldfd: c_int, newfd: c_int) -> c_int {
+        let result: c_int;
+        unsafe {
+            asm!(
+                "mov r7, {DUP2}",
+                "svc 0",
+                DUP2 = const SYS::DUP2,
+                in("r0") oldfd,
+                in("r1") newfd,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_FCNTL!()]
+    pub unsafe fn sys_fcntl(fd: c_int, cmd: c_int, arg: c_ulong) -> isize {
+        let result: isize;
+        unsafe {
+            asm!(
+                "mov r7, {FCNTL}",
+                "svc 0",
+                FCNTL = const SYS::FCNTL,
+                in("r0") fd,
+                in("r1") cmd,
+                in("r2") arg,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+}
+
+/// # Syscalls: Filesystem.
+impl Linux {
+    #[must_use]
+    #[doc = SYS_STAT!()]
+    pub unsafe fn sys_stat(path: *const c_char, statbuf: *mut LinuxStat) -> isize {
+        let result: isize;
+        unsafe {
+            asm!(
+                "mov r7, {STAT}",
+                "svc 0",
+                STAT = const SYS::STAT,
+                in("r0") path,
+                in("r1") statbuf,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_FSTAT!()]
+    pub unsafe fn sys_fstat(fd: c_int, statbuf: *mut LinuxStat) -> isize {
+        let result: isize;
+        unsafe {
+            asm!(
+                "mov r7, {FSTAT}",
+                "svc 0",
+                FSTAT = const SYS::FSTAT,
+                in("r0") fd,
+                in("r1") statbuf,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_GETDENTS!()]
+    pub unsafe fn sys_getdents(fd: c_int, dirp: *mut u8, count: usize) -> isize {
+        let result: isize;
+        unsafe {
+            asm!(
+                "mov r7, {GETDENTS64}",
+                "svc 0",
+                GETDENTS64 = const SYS::GETDENTS64,
+                in("r0") fd,
+                in("r1") dirp,
+                in("r2") count,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+}
+
+/// # Syscalls: Device and special I/O.
+impl Linux {
+    #[must_use]
+    #[doc = SYS_IOCTL!()]
+    pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov r7, {IOCTL}",
+                "svc 0",
+                IOCTL = const SYS::IOCTL,
+                in("r0") fd,
+                in("r1") request,
+                in("r2") argp,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+}
+
+/// # Syscalls: IPC.
+impl Linux {
+    #[must_use]
+    #[doc = SYS_PIPE!()]
+    pub unsafe fn sys_pipe(pipefd: *mut c_int) -> isize {
+        let result: isize;
+        unsafe {
+            asm!(
+                "mov r7, {PIPE}",
+                "svc 0",
+                PIPE = const SYS::PIPE,
+                in("r0") pipefd,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_PIPE2!()]
+    pub unsafe fn sys_pipe2(pipefd: *mut c_int, flags: c_int) -> isize {
+        let result: isize;
+        unsafe {
+            asm!(
+                "mov r7, {PIPE2}",
+                "svc 0",
+                PIPE2 = const SYS::PIPE2,
+                in("r0") pipefd,
+                in("r1") flags,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+}
+
+/// # Syscalls: Process control.
 impl Linux {
     #[doc = SYS_EXIT!()]
     pub unsafe fn sys_exit(status: c_int) -> ! {
         unsafe {
             asm!(
-                "mov rax, {EXIT}",
-                "swi 0",
+                "mov r7, {EXIT}",
+                "svc 0",
                 EXIT = const SYS::EXIT,
                 in("r0") status,
                 options(noreturn)
             );
         }
     }
-
-    #[doc = SYS_READ!()]
     #[must_use]
-    pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
-        let result;
-        unsafe {
-            asm!(
-                "mov rax, {READ}",
-                "swi 0",
-                READ = const SYS::READ,
-                in("r0") fd,
-                in("r1") buf,
-                in("r2") count,
-                lateout("r7") result,
-                options(nostack)
-            );
-        }
-        result
-    }
-
-    #[doc = SYS_WRITE!()]
-    #[must_use]
-    pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
-        let result;
-        unsafe {
-            asm!(
-                "mov rax, {WRITE}",
-                "swi 0",
-                WRITE = const SYS::WRITE,
-                in("r0") fd,
-                in("r1") buf,
-                in("r2") count,
-                lateout("r7") result,
-                options(nostack)
-            );
-        }
-        result
-    }
-
-    #[doc = SYS_NANOSLEEP!()]
-    #[must_use]
-    pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
-        let result;
-        unsafe {
-            asm!(
-                "mov rax, {NANOSLEEP}",
-                "swi 0",
-                NANOSLEEP = const SYS::NANOSLEEP,
-                in("r0") req,
-                in("r1") rem,
-                lateout("r2") _,
-                lateout("r7") result,
-                options(nostack)
-            );
-        }
-        result
-    }
-
-    #[doc = SYS_IOCTL!()]
-    #[must_use]
-    pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
-        let result;
-        unsafe {
-            asm!(
-                "mov rax, {IOCTL}",
-                "swi 0",
-                IOCTL = const SYS::IOCTL,
-                in("r0") fd,
-                in("r1") request,
-                in("r2") argp,
-                lateout("r7") result,
-                options(nostack)
-            );
-        }
-        result
-    }
-
-    #[doc = SYS_GETRANDOM!()]
-    #[must_use]
-    pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
-        let result;
-        unsafe {
-            asm!(
-                "mov rax, {GETRANDOM}",
-                "swi 0",
-                GETRANDOM = const SYS::GETRANDOM,
-                in("r0") buffer,
-                in("r1") size,
-                in("r2") flags,
-                lateout("r7") result,
-                options(nostack)
-            );
-        }
-        result
-    }
-
     #[doc = SYS_GETPID!()]
-    #[must_use]
     pub unsafe fn sys_getpid() -> i32 {
         let result: isize;
         unsafe {
             asm!(
-                "mov rax, {GETPID}",
-                "swi 0",
+                "mov r7, {GETPID}",
+                "svc 0",
                 GETPID = const SYS::GETPID,
-                lateout("r7") result,
+                lateout("r0") result,
                 options(nostack)
             );
         }
         result as i32
     }
-
-    #[doc = SYS_RT_SIGACTION!()]
     #[must_use]
+    #[doc = SYS_GETRANDOM!()]
+    pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov r7, {GETRANDOM}",
+                "svc 0",
+                GETRANDOM = const SYS::GETRANDOM,
+                in("r0") buffer,
+                in("r1") size,
+                in("r2") flags,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+}
+
+/// # Syscalls: Timing and signal handling.
+impl Linux {
+    #[must_use]
+    #[doc = SYS_NANOSLEEP!()]
+    pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov r7, {NANOSLEEP}",
+                "svc 0",
+                NANOSLEEP = const SYS::NANOSLEEP,
+                in("r0") req,
+                in("r1") rem,
+                lateout("r2") _,
+                lateout("r0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = SYS_RT_SIGACTION!()]
     pub unsafe fn sys_rt_sigaction(
         sig: c_int,
         act: *const LinuxSigaction,
@@ -146,14 +354,14 @@ impl Linux {
         let result;
         unsafe {
             asm!(
-                "mov rax, {RT_SIGACTION}",
-                "swi 0",
+                "mov r7, {RT_SIGACTION}",
+                "svc 0",
                 RT_SIGACTION = const SYS::RT_SIGACTION,
                 in("r0") sig,
                 in("r1") act,
                 in("r2") oact,
                 in("r3") sigsetsize,
-                lateout("r7") result,
+                lateout("r0") result,
                 options(nostack)
             );
         }
