@@ -1,4 +1,7 @@
 // devela::sys::os::linux::structs::termios
+//
+//! Defines [`LinuxTermios`]
+//
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
 

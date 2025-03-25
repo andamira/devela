@@ -1,12 +1,14 @@
 // devela::sys::os::linux::consts::errno
 //
-//! `errno.h` constants.
+//! Defines [`LINUX_ERRNO`].
 //
 
-/// Linux `sys/errno.h` constants.
-#[allow(non_camel_case_types)]
-pub struct LINUX_ERRNO;
+#![allow(non_camel_case_types)]
 
+/// [`Linux`][crate::Linux] `sys/errno.h` constants.
+//
+// - /usr/include/asm-generic/errno.h
+pub struct LINUX_ERRNO;
 #[allow(missing_docs)]
 impl LINUX_ERRNO {
     /// “Operation not permitted.”

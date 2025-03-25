@@ -4,8 +4,9 @@
 //
 
 mod sigaction;
+mod stat;
 mod termios;
 mod timespec;
 
 #[allow(unused)]
-pub use {sigaction::*, termios::*, timespec::*};
+pub use {sigaction::*, stat::*, termios::*, timespec::*};

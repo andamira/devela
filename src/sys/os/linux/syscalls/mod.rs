@@ -26,7 +26,7 @@ items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{consts::LINUX_SYS, sys::*};
+        pub use super::{consts::*, sys::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

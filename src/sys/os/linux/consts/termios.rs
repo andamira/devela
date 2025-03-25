@@ -12,16 +12,16 @@
 
 use core::ffi::c_uint;
 
-/// [`LinuxTermios`][super::super::LinuxTermios] input flags.
+/// [`LinuxTermios`][crate::LinuxTermios] input flags.
 pub struct LINUX_TERMIOS_IFLAG;
 
-/// [`LinuxTermios`][super::super::LinuxTermios] output flags.
+/// [`LinuxTermios`][crate::LinuxTermios] output flags.
 pub struct LINUX_TERMIOS_OFLAG;
 
-/// [`LinuxTermios`][super::super::LinuxTermios] control flags.
+/// [`LinuxTermios`][crate::LinuxTermios] control flags.
 pub struct LINUX_TERMIOS_CFLAG;
 
-/// [`LinuxTermios`][super::super::LinuxTermios] local flags.
+/// [`LinuxTermios`][crate::LinuxTermios] local flags.
 pub struct LINUX_TERMIOS_LFLAG;
 
 impl LINUX_TERMIOS_IFLAG {

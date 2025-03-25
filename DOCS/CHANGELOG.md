@@ -20,6 +20,7 @@
   - work: `ExtProcess`.
 - new consts:
   - media::font: `FONT_3_3`, `FONT_3_5`, `FONT_5_6`.
+  - sys::os::linux (namespaced): `LINUX_O_FLAGS`, `LINUX_S_IFMT`, `LINUX_SEEK`, `LINUX_F_CMD`.
   - `Float`|`FloatConst`: `EXPONENT_BIAS`, `EXPONENT_BITS`, `SIGNIFICANT_BITS`.
   - `AngleDirection::{CounterClockwise, CCW, RightHandRule, RHR, Clockwise, CW, LeftHandRule, LHR}`.
 - new types:
@@ -42,7 +43,7 @@
     - io: `IoEmpty`, `IoRepeat`.
     - log: `LogConfig`.
     - mem: `Current`, `CurrentGuard`, `SpinLock`, `SpinLockGuard`.
-    - os: `LinuxError`, `LinuxResult`, `LinuxSiginfo`.
+    - os::linux: `LinuxError`, `LinuxResult`, `LinuxSiginfo`, `LinuxStat`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
     - `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`.
     - `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
