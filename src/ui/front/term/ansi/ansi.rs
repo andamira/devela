@@ -1,4 +1,4 @@
-// devela::ui::front::term::ansi::codes
+// devela::ui::front::term::ansi::ansi
 //
 //! ANSI codes.
 //

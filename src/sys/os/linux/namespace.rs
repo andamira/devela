@@ -4,15 +4,18 @@
 //
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-use crate::{
-    c_uint, c_void, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
-    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTermios, LinuxTimespec,
-    Ptr, ScopeGuard, TermSize, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
-    LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
-};
-#[cfg(feature = "alloc")]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
-use crate::{vec_ as vec, Vec};
+crate::items! {
+    use crate::{
+        c_uint, c_void, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
+        LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
+        Ptr, ScopeGuard, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
+        LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
+    };
+    #[cfg(feature = "term")]
+    use crate::{LinuxTermios, TermSize};
+    #[cfg(feature = "alloc")]
+    use crate::Vec;
+}
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Linux-related operations.
@@ -130,7 +133,7 @@ impl Linux {
     pub fn read_available_bytes() -> Result<Vec<u8>> {
         let count = Linux::available_bytes()?;
         if count == 0 { return Ok(Vec::new()); }
-        let mut buffer = vec![0u8; count];
+        let mut buffer = crate::vec_![0u8; count];
         let n = unsafe { Linux::sys_read(FILENO::STDIN, buffer.as_mut_ptr(), count) };
         if n < 0 { Err(LinuxError::Sys(n)) } else { buffer.truncate(n as usize); Ok(buffer) }
     }
@@ -234,6 +237,7 @@ impl Linux {
 
 /// # Terminal-related methods.
 #[rustfmt::skip]
+#[cfg(feature = "term")]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
     /// Returns `true` if we are in a terminal context.

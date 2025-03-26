@@ -34,9 +34,9 @@ pub mod mem; // Mem,
 pub mod net; // Ip*, Socket*, Tcp*, Udp*
 pub mod os; // Linux,
 
-crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
+crate::items! { // structural access: _mods, _pub_mods, _hidden, _internals, _all, _always
     #[allow(unused)]
-    pub use {_mods::*, _hidden::*};
+    pub use {_mods::*, _hidden::*, _internals::*};
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
@@ -53,6 +53,9 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     }
     pub(super) mod _hidden {
         pub use super::mem::_hidden::*;
+    }
+    pub(super) mod _internals { #![allow(unused)]
+        pub(crate) use super::os::_internals::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

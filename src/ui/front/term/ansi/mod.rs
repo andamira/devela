@@ -5,15 +5,18 @@
 
 #![allow(non_snake_case)]
 
-mod codes;
+mod ansi;
 mod color;
 
-// re-export private sub-modules
-#[allow(unused_imports)]
-pub use {codes::*, color::*};
+crate::items! { // structural access: _mods, _all
+    #[allow(unused)]
+    pub use _mods::*;
 
-pub(super) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{codes::*, color::*};
+    mod _mods { #![allow(unused)]
+        pub use super::{ansi::*, color::*};
+    }
+    pub(super) mod _all { #![allow(unused)]
+        #[doc(inline)]
+        pub use super::_mods::*;
+    }
 }
