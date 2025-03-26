@@ -67,6 +67,7 @@
         num_midpoint_signed,
         const_ptr_sub_ptr,
         const_str_from_utf8,
+        precise_capturing_in_traits,
         ptr_sub_ptr,
         slice_take,
         unbounded_shifts,
@@ -103,7 +104,6 @@
         let_chains,
         macro_metavar_expr,
         naked_functions,
-        precise_capturing_in_traits,
         // repr128, // incomplete_features
         unsafe_cell_from_mut,
     )

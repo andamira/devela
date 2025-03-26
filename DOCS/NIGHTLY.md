@@ -52,6 +52,7 @@ See also
 - 1.87: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.87: `·`[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
 - 1.87: `s`[os_str_display](https://github.com/rust-lang/rust/pull/137336)
+- 1.87: `·`[precise_capturing_in_traits](https://github.com/rust-lang/rust/pull/138128)
 - 1.87: `·`[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
         `·` `const_ptr_sub_ptr`
 - 1.87: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
@@ -91,7 +92,6 @@ See also
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
-- 1.??: `·`[precise_capturing_in_traits](https://github.com/rust-lang/rust/pull/138128)
 - 1.??: `i`[repr128](https://github.com/rust-lang/rust/pull/138285)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
