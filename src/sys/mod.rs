@@ -49,13 +49,13 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _internals, _al
             log::_all::*, mem::_all::*, net::_all::*, os::_all::*,
         };
         // #[cfg(feature = "std")]
+        // pub use super::bench::*;
         // pub use super::bench::_all::*;
     }
     pub(super) mod _hidden {
         pub use super::mem::_hidden::*;
     }
     pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::os::_internals::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

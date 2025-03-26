@@ -34,12 +34,12 @@
 macro_rules! strjoin {
     // trivial cases:
     () => { "" };
-    ($A:expr) => { $A };
+    ($A:expr $(,)?) => { $A };
     // variadic case: Reduce to two-argument case:
-    ($A:expr, $B:expr, $($rest:expr),+) => {
+    ($A:expr, $B:expr, $($rest:expr),+ $(,)?) => {
         $crate::strjoin!($A, $crate::strjoin!($B, $($rest),+))
     };
-    ($A:expr, $B:expr) => {{
+    ($A:expr, $B:expr, $(,)?) => {{
         const fn combined() -> [u8; LEN] {
             let mut out = [0u8; LEN];
             out = $crate::Slice::<u8>::copy_into_array(out, A.as_bytes(), 0);
@@ -53,7 +53,7 @@ macro_rules! strjoin {
         // $crate::unwrap![ok ::core::str::from_utf8(RESULT)]
     }};
     // Repeat a string slice a constant number of times:
-    (repeat: $A:expr, $count:expr) => {{
+    (repeat: $A:expr, $count:expr, $(,)?) => {{
         const fn repeated() -> [u8; LEN] {
             let mut out = [0u8; LEN];
             let mut i = 0;

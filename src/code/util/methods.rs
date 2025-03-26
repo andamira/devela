@@ -39,8 +39,9 @@
 /// }
 /// assert_eq!(addition(5, 2), 7);
 /// ```
+#[doc(hidden)]
 #[macro_export]
-macro_rules! methods_as_fns {
+macro_rules! _methods_as_fns {
     (
     // same name for method and function
         $fn_vis:vis
@@ -91,12 +92,14 @@ macro_rules! methods_as_fns {
         )*
     };
 }
-pub use methods_as_fns;
+pub use _methods_as_fns as methods_as_fns;
 
 #[cfg(test)]
 #[rustfmt::skip]
 mod tests {
     #![allow(dead_code)]
+
+    use crate::methods_as_fns;
 
     struct TestMethods;
 
