@@ -45,11 +45,9 @@
     - mem: `Current`, `CurrentGuard`, `SpinLock`, `SpinLockGuard`.
     - os::linux: `LinuxError`, `LinuxResult`, `LinuxSiginfo`, `LinuxStat`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
-    - `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`.
-    - `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
-    - `CrosstermService`.
-    - `MiniquadPixels`, `MiniquadService`.
-    - `TermSize`.
+    - event: `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`, `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
+    - back: `CrosstermService`, `MiniquadPixels`, `MiniquadService`.
+    - front::term: `TermSize`.
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
   - `define_panic_handler!`, `define_static_map!`, `methods_as_fns!`.
