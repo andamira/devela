@@ -61,19 +61,15 @@ impl From<u8> for AnsiColor3b {
 /// ANSI 8-bit color codes, 256 colors.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct AnsiColor8b(pub u8);
-
+#[rustfmt::skip]
 impl AnsiColor8b {
     /// Creates a new `AnsiColor8b` from an `AnsiColor3b`.
     #[must_use]
-    pub const fn new(color: AnsiColor3b) -> Self {
-        Self(color as u8)
-    }
+    pub const fn new(color: AnsiColor3b) -> Self { Self(color as u8) }
 
     /// Creates a new `AnsiColor8b` from an `AnsiColor3b` treated as *bright*.
     #[must_use]
-    pub const fn bright(color: AnsiColor3b) -> Self {
-        Self(color as u8 + 8)
-    }
+    pub const fn bright(color: AnsiColor3b) -> Self { Self(color as u8 + 8) }
 
     /// Creates a new `AnsiColor8b` from a 216-color 6x6x6 RGB cube.
     /// The `r`, `g`, and `b` parameters should be in the range `0..=5`.
@@ -89,24 +85,25 @@ impl AnsiColor8b {
     /// Creates a new `AnsiColor8b` from a 216-color 6x6x6 RGB cube with
     /// `r`, `g`, `b` values between `0` and `5`.
     ///
-    /// Returns the `default` color if any parameter is `> 5`.
+    /// Returns the `fallback` color if any parameter is `> 5`.
     #[must_use]
-    pub const fn cube_or(r: u8, g: u8, b: u8, default: Self) -> Self {
+    pub const fn cube_or(r: u8, g: u8, b: u8, fallback: Self) -> Self {
         match (r, g, b) {
             (0..=5, 0..=5, 0..=5) => Self(16 + 36 * r + 6 * g + b),
-            _ => default,
+            _ => fallback,
         }
     }
-    /// Creates a new `AnsiColor8b` from a 216-color 6x6x6 RGB cube.
-    /// The `r`, `g`, and `b` parameters should be in the range `0..=5`.
+    /// Creates a new `AnsiColor8b` from a 216-color 6x6x6 RGB cube by wrapping values.
     ///
-    /// # Panics
-    /// Panics in debug if any parameter is `> 5`.
+    /// Out-of-bounds values wrap via `% 6` (e.g., `6` → `0`, `7` → `1`).
+    /// This is branchless and the fastest method.
     #[must_use]
-    pub const fn cube_unchecked(r: u8, g: u8, b: u8) -> Self {
-        assert!(r < 6 && g < 6 && b < 6);
-        Self(16 + 36 * r + 6 * g + b)
+    pub const fn cube_wrap(r: u8, g: u8, b: u8) -> Self {
+        Self(16 + 36 * (r % 6) + 6 * (g % 6) + (b % 6))
     }
+
+    /* Standard 24-color grayscale (faster, contiguous ANSI codes) */
+
     /// Creates a new `AnsiColor8b` from a 24-color grayscale `value`, between
     /// `0` (almost black) and `23` (almost white).
     ///
@@ -121,24 +118,24 @@ impl AnsiColor8b {
     /// Creates a new `AnsiColor8b` from a 24-color grayscale `value` between
     /// `0` (almost black) and `23` (almost white).
     ///
-    /// Returns the `default` color if `value > 23`.
+    /// Returns the `fallback` color if `value > 23`.
     #[must_use]
-    pub const fn gray_or(value: u8, default: Self) -> Self {
+    pub const fn gray_or(value: u8, fallback: Self) -> Self {
         match value {
             0..=23 => Self(value + 232),
-            _ => default,
+            _ => fallback,
         }
     }
-    /// Creates a new `AnsiColor8b` from a 24-color grayscale `value`, between
-    /// `0` (almost black) and `23` (almost white).
+    /// Creates a grayscale color by wrapping `value` via `% 24`.
     ///
-    /// # Panics
-    /// Panics in debug if `value > 23`.
+    /// Values map to ANSI codes 232..=255 (e.g., `24` → `0`, `25` → `1`).
+    ///
+    /// This is branchless and the fastest method.
     #[must_use]
-    pub const fn gray_unchecked(value: u8) -> Self {
-        debug_assert!(value < 24);
-        Self(value + 232)
-    }
+    pub const fn gray_wrap(value: u8) -> Self { Self(232 + (value % 24)) }
+
+    /* Extended 26-color grayscale with pure black/white (slower, non-contiguous)*/
+
     /// Creates a new `AnsiColor8b` from a 26-color grayscale `value`
     /// between `0` (pure black) and `25` (pure white).
     ///
@@ -155,35 +152,34 @@ impl AnsiColor8b {
     /// Creates a new `AnsiColor8b` from a 26-color grayscale `value`
     /// between `0` (pure black) and `25` (pure white).
     ///
-    /// Returns the `default` color if `value > 25`.
+    /// Returns the `fallback` color if `value > 25`.
     #[must_use]
-    pub const fn bw_or(value: u8, default: Self) -> Self {
+    pub const fn bw_or(value: u8, fallback: Self) -> Self {
         match value {
             0 => Self::new(AnsiColor3b::Black),
             1..=24 => Self(value - 1 + 232),
             25 => Self::new(AnsiColor3b::White),
-            _ => default,
+            _ => fallback,
         }
     }
-    /// Creates a new `AnsiColor8b` from a 26-color grayscale `value`
-    /// between `0` (pure black) and `25` (pure white).
+    /// Creates a grayscale color by wrapping `value` via `% 26`, with exact black/white.
     ///
-    /// # Panics
-    /// Panics in debug if `value > 25`.
+    /// - `0` → pure black (`AnsiColor3b::Black`).
+    /// - `25` → pure white (`AnsiColor3b::White`).
+    /// - Other values wrap (e.g., `26` → `0`, `27` → `1`).
     #[must_use]
-    pub const fn bw_unchecked(value: u8) -> Self {
-        debug_assert!(value < 26);
-        match value {
+    pub const fn bw_wrap(value: u8) -> Self {
+        let wrapped = value % 26;
+        match wrapped {
             0 => Self::new(AnsiColor3b::Black),
             25 => Self::new(AnsiColor3b::White),
-            _ => Self(value - 1 + 232),
+            _ => Self(wrapped - 1 + 232),
         }
     }
+
     /// Returns the ASCII byte representation of the 8-bit color number, with leading zeros.
     #[must_use]
-    pub const fn to_ascii(&self) -> [u8; 3] {
-        Ascii(self.0).digits()
-    }
+    pub const fn to_ascii(&self) -> [u8; 3] { Ascii(self.0).digits() }
 }
 impl From<AnsiColor3b> for AnsiColor8b {
     fn from(value: AnsiColor3b) -> Self {

@@ -15,7 +15,7 @@ use crate::Ascii;
 /// - [Color (3-bit)][Self#3-bit-color-escape-codes]
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
-/// - [Print method][Self#print-method]
+// - [Print method][Self#print-method]
 pub struct Ansi;
 
 impl Ansi {
@@ -27,14 +27,12 @@ impl Ansi {
     /* helper functions */
 
     // Writes an ansi code with a dynamic number of digits as an argument.
-    #[must_use]
+    #[must_use] #[rustfmt::skip]
     fn write_ansi_code_n(buffer: &mut [u8], n: u32, final_byte: u8) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
         let mut divisor = 1;
-        while n / divisor >= 10 {
-            divisor *= 10;
-        }
+        while n / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
         while divisor > 0 {
             buffer[index] = Ascii(n).calc_digit(divisor);
@@ -125,35 +123,27 @@ impl Ansi {
     ///
     /// # Panics
     /// Panics if the buffer is not big enough.
-    #[must_use]
+    #[must_use] #[rustfmt::skip]
     pub fn CURSOR_MOVE_N(buffer: &mut [u8], row: u32, col: u32) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
-
         let mut divisor = 1;
-        while row / divisor >= 10 {
-            divisor *= 10;
-        }
+        while row / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
         while divisor > 0 {
             buffer[index] = Ascii(row).calc_digit(divisor);
             divisor /= 10;
             index += 1;
         }
-
         buffer[index] = b';';
         index += 1;
-
         divisor = 1;
-        while col / divisor >= 10 {
-            divisor *= 10;
-        }
+        while col / divisor >= 10 { divisor *= 10; }
         while divisor > 0 {
             buffer[index] = Ascii(col).calc_digit(divisor);
             divisor /= 10;
             index += 1;
         }
-
         buffer[index] = b'H';
         &buffer[..=index]
     }
