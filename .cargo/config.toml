@@ -40,6 +40,28 @@ rustflags = [
 
 [alias]
 # ==============================================================================
+#
+## TARGETS
+# --------
+# Target specifiers are used in clippy and asm commands.
+#
+# They need the rust sources and desired targets installed. E.g.:
+# ```sh
+# rustup component add rust-src
+# rustup target add riscv64imac-unknown-none-elf
+# ```
+# Architecture prefixes:
+#   x: X86 (32/64)
+#   a: ARM (32/64)
+#   r: RISC-V (32/64)
+#   w: WASM (32)
+# Platform suffixes:
+#   l: Linux
+#   w: Windows
+#   d: Darwin
+#   a: Android
+#   i: Wasi
+#   (none): bare-metal/no_std
 
 # CHECK
 c = "check"
@@ -58,6 +80,18 @@ clr = "clippy --release"
 clu = "clippy -F=std,unsafe"
 cln = "clippy -F=no_std"
 clnu = "clippy -F=no_std,unsafe"
+# Linux targets:
+# $ cargo cl_x64l -F linux,unsafe_ffi
+cl_x32l = "cl --target i686-unknown-linux-gnu"
+cl_x64l = "cl --target x86_64-unknown-linux-gnu"
+cl_a32l = "cl --target armv7-unknown-linux-gnueabihf"
+cl_a64l = "cl --target aarch64-unknown-linux-gnu"
+#cl_r32l = "cl --target riscv32gc-unknown-linux-gnu" # tier-3
+cl_r32l = "cl --target riscv32imac-unknown-none-elf" # ~ temp replacement
+cl_r64l = "cl --target riscv64gc-unknown-linux-gnu"
+# Non-linux (no-std or bare-metal):
+cl_a32n = "cl --target thumbv7em-none-eabihf"
+cl_r64n = "cl --target riscv64gc-unknown-none-elf"
 
 # BUILD
 b = "build"
@@ -66,37 +100,14 @@ be = "build --example"
 br = "build --release"
 brb = "build --release --bin"
 bre = "build --release --example"
-bu = "build -F=std,unsafe"
-bn = "build -F=no_std"
-bnu = "build -F=no_std,unsafe"
 
 # RUN
 r = "run"
 rb = "run --bin"
 re = "run --example"
-#
 rr = "run --release"
 rrb = "run --release --bin"
 rre = "run --release --example"
-rrue = "run --release -F unsafe --example"
-#
-rrs = "run --release -F std"
-rrsb = "run --release -F std --bin"
-rrse = "run --release -F std --example"
-rrsue = "run --release -F std,unsafe --example"
-#
-ru = "run -F=unsafe"
-rub = "run -F=unsafe --bin"
-rue = "run -F=unsafe --example"
-#
-rsu = "run -F=std,unsafe"
-rsub = "run -F=std,unsafe --bin"
-rsue = "run -F=std,unsafe --example"
-#
-rn = "run -F=no_std"
-rnb = "run -F=no_std --bin"
-rne = "run -F=no_std --example"
-rnu = "run -F=no_std,unsafe"
 
 # TEST
 t = "test"
@@ -139,60 +150,94 @@ trr = "tr --format {p}:{r}" # with repository url
 # https://crates.io/crates/cargo-show-asm
 # https://github.com/pacak/cargo-show-asm/blob/master/Changelog.md
 #
-# NOTE:
+# NOTES:
 # - Has to be run from the root of the crate.
 # - Functions need not to be inlined. Defaults to release mode.
-# - Needs to have installed rust sources and desired targets. E.g.:
-# ```sh
-# rustup component add rust-src
-# rustup target add riscv64imac-unknown-none-elf
-# ```
+# - doesn't support -F syntax, has to use --features instead.
+#
+# USAGE EXAMPLE:
+# $ cargo A_x64l --features linux,unsafe_syscall --lib linux
+#
 A = "asm --simplify -p devela"
 Ar = "asm --simplify --rust -p devela" # print interleaved rust code
-# std targets:
-A_and_arm64    = "A  --target aarch64-linux-android"          # android
-Ar_and_arm64   = "Ar --target aarch64-linux-android"
-A_and_pc64     = "A  --target x86_64-linux-android"
-Ar_and_pc64    = "Ar --target x86_64-linux-android"
-A_lin_pc32     = "A  --target i686-unknown-linux-gnu"         # linux
-Ar_lin_pc32    = "Ar --target i686-unknown-linux-gnu"
-A_lin_pc64     = "A  --target x86_64-unknown-linux-gnu"
-Ar_lin_pc64    = "Ar --target x86_64-unknown-linux-gnu"
-A_lin_arm64    = "A  --target aarch64-unknown-linux-gnu"
-Ar_lin_arm64   = "Ar --target aarch64-unknown-linux-gnu"
-A_lin_riscv64  = "A  --target riscv64gc-unknown-linux-gnu"
-Ar_lin_riscv64 = "Ar --target riscv64gc-unknown-linux-gnu"
-A_mac64        = "A  --target x86_64-apple-darwin"            # apple
-Ar_mac64       = "Ar --target x86_64-apple-darwin"
-A_win64        = "A  --target x86_64-pc-windows-gnu"          # windows
-Ar_win64       = "Ar --target x86_64-pc-windows-gnu"
+# std targets: linux
+A_x32l    = "A  --target i686-unknown-linux-gnu"       # x86 32
+Ar_x32l   = "Ar --target i686-unknown-linux-gnu"
+A_x64l    = "A  --target x86_64-unknown-linux-gnu"     # x86 64
+Ar_x64l   = "Ar --target x86_64-unknown-linux-gnu"
+A_a32l    = "A --target armv7-unknown-linux-gnueabihf" # arm 32
+Ar_a32l   = "Ar --target armv7-unknown-linux-gnueabihf"
+A_a64l    = "A  --target aarch64-unknown-linux-gnu"    # arm 64
+Ar_a64l   = "Ar --target aarch64-unknown-linux-gnu"
+A_r32l    = "A --target riscv32imac-unknown-none-elf"  # riscv 32 (temp replacement)
+Ar_r32l   = "A --target riscv32imac-unknown-none-elf"
+#A_r32l    = "A --target riscv32gc-unknown-linux-gnu" # tier-3
+#Ar_r32l   = "Ar --target riscv32gc-unknown-linux-gnu"
+A_r64l    = "A  --target riscv64gc-unknown-linux-gnu"  # riscv 64
+Ar_r64l   = "Ar --target riscv64gc-unknown-linux-gnu"
+A_a64a    = "A  --target aarch64-linux-android"        # android arm 64
+Ar_a64a   = "Ar --target aarch64-linux-android"
+A_x64a    = "A  --target x86_64-linux-android"         # android x86 64
+Ar_x64a   = "Ar --target x86_64-linux-android"
+# std targets: apple darwin
+A_x64d    = "A  --target x86_64-apple-darwin"
+Ar_x64d   = "Ar --target x86_64-apple-darwin"
+# std targets: microsoft windows
+A_x64w    = "A  --target x86_64-pc-windows-gnu"
+Ar_x64w   = "Ar --target x86_64-pc-windows-gnu"
 # no_std targets:
-A_pc32         = "A  --target i686-unknown-uefi"
-Ar_pc32        = "Ar --target i686-unknown-uefi"
-A_pc64         = "A  --target x86_64-unknown-none"
-Ar_pc64        = "Ar --target x86_64-unknown-none"
-A_arm32        = "A  --target thumbv7m-none-eabi"
-Ar_arm32       = "Ar --target thumbv7m-none-eabi"
-A_arm64        = "A  --target aarch64-unknown-none"
-Ar_arm64       = "Ar --target aarch64-unknown-none"
-A_riscv64      = "A  --target riscv64imac-unknown-none-elf"
-Ar_riscv64     = "Ar --target riscv64imac-unknown-none-elf"
-A_wasi32       = "A  --target wasm32-wasip1"
-Ar_wasi32      = "Ar --target wasm32-wasip1"
-A_wasm32       = "A  --target wasm32-unknown-unknown"         # web
-Ar_wasm32      = "Ar --target wasm32-unknown-unknown"
+A_x32     = "A  --target i686-unknown-uefi"            # x86 32
+Ar_x32    = "Ar --target i686-unknown-uefi"
+A_x64     = "A  --target x86_64-unknown-none"          # x86 64
+Ar_x64    = "Ar --target x86_64-unknown-none"
+A_a32     = "A  --target thumbv7m-none-eabi"           # arm 32
+Ar_a32    = "Ar --target thumbv7m-none-eabi"
+A_a64     = "A  --target aarch64-unknown-none"         # arm 64
+Ar_a64    = "Ar --target aarch64-unknown-none"
+A_r32     = "A --target riscv32imac-unknown-none-elf"  # riscv 32
+Ar_r32    = "A --target riscv32imac-unknown-none-elf"
+A_r64     = "A  --target riscv64imac-unknown-none-elf" # riscv 64
+Ar_r64    = "Ar --target riscv64imac-unknown-none-elf"
+A_w32i    = "A  --target wasm32-wasip1"                # wasm 32 (wasi)
+Ar_w32i   = "Ar --target wasm32-wasip1"
+A_w32     = "A  --target wasm32-unknown-unknown"       # wasm 32 (web)
+Ar_w32    = "Ar --target wasm32-unknown-unknown"
 
 # $ cargo install -f cargo-expand
 # https://crates.io/crates/cargo-expand
 # https://github.com/dtolnay/cargo-expand/releases
 #
-# USAGE EXAMPLE:
+# USAGE EXAMPLES:
 # $ cargo Elt -F dep_const_str text::str::r#macro::tests
+# $ cargo E_a32l --lib -F linux,unsafe_syscall sys::os::linux::syscalls::arm
 E = "expand"
 Eb = "expand --bin"
 Ee = "expand --example"
 El = "expand --lib"
 Elt = "expand --lib --tests"
+# std targets: linux
+E_x32l    = "E  --target i686-unknown-linux-gnu"       # x86 32
+E_x64l    = "E  --target x86_64-unknown-linux-gnu"     # x86 64
+E_a32l    = "E --target armv7-unknown-linux-gnueabihf" # arm 32
+E_a64l    = "E  --target aarch64-unknown-linux-gnu"    # arm 64
+E_r32l    = "E --target riscv32imac-unknown-none-elf"  # riscv 32 (temp replacement)
+#E_r32l    = "E --target riscv32gc-unknown-linux-gnu" # tier-3
+E_r64l    = "E  --target riscv64gc-unknown-linux-gnu"  # riscv 64
+E_a64a    = "E  --target aarch64-linux-android"        # android arm 64
+E_x64a    = "E  --target x86_64-linux-android"         # android x86 64
+# std targets: apple darwin
+E_x64d    = "E  --target x86_64-apple-darwin"
+# std targets: microsoft windows
+E_x64w    = "E  --target x86_64-pc-windows-gnu"
+# no_std targets:
+E_x32     = "E  --target i686-unknown-uefi"            # x86 32
+E_x64     = "E  --target x86_64-unknown-none"          # x86 64
+E_a32     = "E  --target thumbv7m-none-eabi"           # arm 32
+E_a64     = "E  --target aarch64-unknown-none"         # arm 64
+E_r32     = "E --target riscv32imac-unknown-none-elf"  # riscv 32
+E_r64     = "E  --target riscv64imac-unknown-none-elf" # riscv 64
+E_w32i    = "E  --target wasm32-wasip1"                # wasm 32 (wasi)
+E_w32     = "E  --target wasm32-unknown-unknown"       # wasm 32 (web)
 
 # $ cargo install -f cargo-llvm-lines
 # https://crates.io/crates/cargo-llvm-lines
