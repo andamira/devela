@@ -56,10 +56,11 @@ pub mod io {
             feature = "unsafe_syscall",
             not(miri),
         ))]
-        pub use super::super::{
-            consts::termios::*,
-            structs::{LinuxStat, LinuxTerminalSize, LinuxTermios},
-        };
+        crate::items! {
+            pub use super::super::{consts::termios::*, structs::LinuxStat};
+            #[cfg(feature = "term")]
+            pub use super::super::structs::LinuxTermios;
+        }
     }
 }
 

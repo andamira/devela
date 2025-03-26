@@ -49,6 +49,7 @@
     - `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
     - `CrosstermService`.
     - `MiniquadPixels`, `MiniquadService`.
+    - `TermSize`.
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
   - `define_panic_handler!`, `define_static_map!`, `methods_as_fns!`.
@@ -101,7 +102,7 @@
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
 - remove items:
-  - sys: `LinuxTerminal`.
+  - sys::os::linux: `LinuxTerminal`, `LinuxTerminalSize`.
 - remove standalone fns:
   - io: `io_*`.
   - panic: `panic_*`.

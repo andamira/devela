@@ -8,12 +8,12 @@
 
 // IMPROVE: feature-gate some
 pub mod event; // Event[Button[State]|Key[State]|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
+pub mod front;
 
 #[cfg(ui··)]
 crate::items! {
     mod error;
     pub mod back; // UiService*, UiCap*
-    pub mod front;
 }
 #[cfg(feature = "layout")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "layout")))]
@@ -30,10 +30,10 @@ crate::items! { // structural access: _mods, _all,
         pub use super::error::*;
     }
     mod _pub_mods { #![allow(unused)]
-        pub use super::event::_all::*;
+        pub use super::{event::_all::*, front::_all::*};
 
         #[cfg(ui··)]
-        pub use super::{back::_all::*, front::_all::*};
+        pub use super::back::_all::*;
 
         #[cfg(feature = "layout")]
         pub use super::layout::_all::*;

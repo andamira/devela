@@ -3,7 +3,7 @@
 //! [`Str`] namespace.
 //
 
-#[cfg(doc)]
+#[cfg(all(doc, feature = "str"))]
 use crate::ExtStr;
 use crate::{iif, Ascii, InvalidUtf8, Slice};
 #[allow(unused_imports, reason = "unsafe")]

@@ -207,7 +207,7 @@ ui = ["layout", "desk", "term", "web"]
 	# front
 		desk = []
 		# mobi = []
-		term = []
+		term = [] # ui::front::term, LinuxTermios…
 		web = []
 work = [
 	"process", "sync", "thread",

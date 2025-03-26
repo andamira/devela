@@ -5,7 +5,7 @@
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
 
-use crate::c_uint;
+use crate::{c_uint, TermSize};
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
     iif, Linux, LinuxError, LinuxResult as Result, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL,
@@ -129,51 +129,15 @@ impl LinuxTermios {
     }
 
     /// Returns the size of the window, in cells and pixels.
-    pub fn get_winsize() -> Result<LinuxTerminalSize> {
-        let mut winsize = LinuxTerminalSize::default();
+    pub fn get_winsize() -> Result<TermSize> {
+        let mut winsize = TermSize::default();
         let res = unsafe {
             Linux::sys_ioctl(
                 LINUX_FILENO::STDIN,
                 LINUX_IOCTL::TIOCGWINSZ,
-                &mut winsize as *mut LinuxTerminalSize as *mut u8,
+                &mut winsize as *mut TermSize as *mut u8,
             )
         };
         iif![res >= 0; Ok(winsize); Err(LinuxError::Sys(res))]
-    }
-}
-
-/// The size of the terminal.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-#[repr(C)] // field order matters!
-pub struct LinuxTerminalSize {
-    /// Rows of cells.
-    pub rows: u16,
-
-    /// Columns of cells.
-    pub cols: u16,
-
-    /// Horizontal pixels.
-    pub x: u16,
-
-    /// Vertical pixels.
-    pub y: u16,
-}
-
-impl LinuxTerminalSize {
-    /// Returns the number of `[horizontal, vertical]` pixels.
-    #[must_use]
-    pub const fn pixels(self) -> [u16; 2] {
-        [self.x, self.y]
-    }
-    /// Returns the number of `[columns, rows]` of cells.
-    #[must_use]
-    pub const fn cells(self) -> [u16; 2] {
-        [self.cols, self.rows]
-    }
-
-    /// Returns the number of pixels per cell `[horizontal, vertical]`.
-    #[must_use]
-    pub const fn pixels_per_cell(self) -> [u16; 2] {
-        [self.x / self.cols, self.y / self.rows]
     }
 }

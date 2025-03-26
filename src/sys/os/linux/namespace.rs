@@ -6,10 +6,9 @@
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
     c_uint, c_void, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
-    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTerminalSize,
-    LinuxTermios, LinuxTimespec, Ptr, ScopeGuard, _core::str::from_utf8_unchecked,
-    LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL,
-    LINUX_SIGACTION as SIGACTION,
+    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTermios, LinuxTimespec,
+    Ptr, ScopeGuard, TermSize, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
+    LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
 };
 #[cfg(feature = "alloc")]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
@@ -242,7 +241,7 @@ impl Linux {
     pub fn is_terminal() -> bool { LinuxTermios::is_terminal() }
 
     /// Returns the terminal dimensions.
-    pub fn terminal_size() -> Result<LinuxTerminalSize> { LinuxTermios::get_winsize() }
+    pub fn terminal_size() -> Result<TermSize> { LinuxTermios::get_winsize() }
 
     /// Enables raw mode.
     ///
