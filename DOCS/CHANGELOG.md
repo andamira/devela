@@ -51,7 +51,7 @@
   - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
   - `define_panic_handler!`, `define_static_map!`, `methods_as_fns!`.
-  - `js_reexport`, `maybe!`, `miniquad!`, `strjoin!`, `xorshift_custom!`.
+  - `join!`, `js_reexport`, `maybe!`, `miniquad!`, `xorshift_custom!`.
   - `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
 - new modules:
   - data: `{codec::{self, crypto, radix}, list, key, table, uid}`.

@@ -111,7 +111,7 @@ impl Str {
     /// This is why it is not marked as unsafe; the macro is the one to enforce safety.
     ///
     /// # Used by
-    /// [`strjoin!`][crate:strjoin].
+    /// [`join!`][crate::join].
     #[doc(hidden)] #[rustfmt::skip]
     pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
         #[cfg(any(feature = "safe_text", not(unsafe··)))]
