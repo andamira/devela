@@ -24,8 +24,9 @@
 // - source: https://users.rust-lang.org/t/concatenate-const-strings/51712/7
 // - modifications:
 //   - make unsafe optional.
+//   - support trailing commas.
 //   - support the trivial cases.
-//   - suport more than 2 arguments.
+//   - support more than 2 arguments.
 //   - simplify reassignments and loop.
 //   - add a new arm to repeat a string.
 #[doc(hidden)]
@@ -37,9 +38,9 @@ macro_rules! strjoin {
     ($A:expr $(,)?) => { $A };
     // variadic case: Reduce to two-argument case:
     ($A:expr, $B:expr, $($rest:expr),+ $(,)?) => {
-        $crate::strjoin!($A, $crate::strjoin!($B, $($rest),+))
+        $crate::strjoin!($A, $crate::strjoin!($B $(, $rest)+))
     };
-    ($A:expr, $B:expr, $(,)?) => {{
+    ($A:expr, $B:expr $(,)?) => {{
         const fn combined() -> [u8; LEN] {
             let mut out = [0u8; LEN];
             out = $crate::Slice::<u8>::copy_into_array(out, A.as_bytes(), 0);
@@ -50,10 +51,9 @@ macro_rules! strjoin {
         const LEN: usize = A.len() + B.len();
         const RESULT: &[u8] = &combined();
         $crate::Str::__utf8_bytes_to_str(RESULT)
-        // $crate::unwrap![ok ::core::str::from_utf8(RESULT)]
     }};
     // Repeat a string slice a constant number of times:
-    (repeat: $A:expr, $count:expr, $(,)?) => {{
+    (repeat: $A:expr, $count:expr $(,)?) => {{
         const fn repeated() -> [u8; LEN] {
             let mut out = [0u8; LEN];
             let mut i = 0;
@@ -68,7 +68,6 @@ macro_rules! strjoin {
         const LEN: usize = A.len() * COUNT;
         const RESULT: &[u8] = &repeated();
         $crate::Str::__utf8_bytes_to_str(RESULT)
-        // $crate::unwrap![ok ::core::str::from_utf8(RESULT)]
     }};
 }
 #[doc(inline)]
