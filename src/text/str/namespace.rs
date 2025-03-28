@@ -3,17 +3,24 @@
 //! [`Str`] namespace.
 //
 
-#[cfg(all(doc, feature = "str"))]
-use crate::ExtStr;
-use crate::{iif, Ascii, InvalidUtf8, Slice};
-#[allow(unused_imports, reason = "unsafe")]
+use crate::{iif, InvalidUtf8, Slice};
+
+#[cfg(feature = "str")]
+crate::items! {
+    use crate::Ascii;
+    #[cfg(doc)]
+    use crate::ExtStr;
+}
+
 #[cfg(feature = "alloc")]
+#[allow(unused_imports, reason = "±unsafe")]
 use crate::{Box, _dep::_alloc::str::from_boxed_utf8_unchecked};
-#[allow(unused_imports, reason = "unsafe")]
+#[allow(unused_imports, reason = "±unsafe")]
 use crate::{
     _core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
     sf, unwrap,
 };
+
 // TODO: IMPROVE:
 // - one default, (simd == api if possible)
 // - other faster-simdversion if possible (no care about api, errors)
@@ -257,6 +264,7 @@ impl Str {
     /* private utilities */
 
     /// The cold path that returns an empty string slice.
+    #[cfg(feature = "str")]
     #[cold] #[rustfmt::skip]
     pub(crate) const fn new_cold_empty() -> &'static str { "" }
 }
