@@ -51,31 +51,6 @@ impl<T> Slice<T> {
         { let mut i = 0; while i < src.len() { dest[i] = src[i]; i += 1; } }
     }
 
-    /// Copies all elements from `src` into a fixed-size array starting at `offset`.
-    ///
-    /// # Features
-    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed
-    /// - Falls back to safe element-wise copy otherwise
-    ///
-    /// # Panics
-    /// Panics if `src.len() + offset` exceeds `dest.len()`.
-    #[rustfmt::skip]
-    pub const fn copy_into_array<const LEN: usize>(dest: [u8; LEN], src: &[u8], offset: usize)
-        -> [u8; LEN] {
-        assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
-
-        let mut output = dest;
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
-        { let mut i = 0; while i < src.len() { output[offset + i] = src[i]; i += 1; } }
-
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
-        // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
-        unsafe {
-            Ptr::copy_nonoverlapping(src.as_ptr(), output.as_mut_ptr().add(offset), src.len());
-        }
-        output
-    }
-
     /// Converts a reference to `T` into a slice of length 1 (without copying).
     ///
     /// See `core::slice::`[`from_ref`].
@@ -671,7 +646,7 @@ impl<T> Slice<T> {
     }
 }
 
-/// # Methods for slices of bytes.
+/// # Methods for byte slices.
 impl Slice<u8> {
     /// Copies the `src` slice into `dst` in compile-time.
     pub const fn const_copy<const N: usize>(src: &[u8; N], dst: &mut [u8; N]) {
@@ -681,6 +656,32 @@ impl Slice<u8> {
             i += 1;
         }
     }
+
+    /// Copies all elements from `src` into a fixed-size array starting at `offset`.
+    ///
+    /// # Features
+    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed
+    /// - Falls back to safe element-wise copy otherwise
+    ///
+    /// # Panics
+    /// Panics if `src.len() + offset` exceeds `dest.len()`.
+    #[rustfmt::skip]
+    pub const fn copy_into_array<const LEN: usize>(dest: [u8; LEN], src: &[u8], offset: usize)
+        -> [u8; LEN] {
+        assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
+
+        let mut output = dest;
+        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        { let mut i = 0; while i < src.len() { output[offset + i] = src[i]; i += 1; } }
+
+        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
+        unsafe {
+            Ptr::copy_nonoverlapping(src.as_ptr(), output.as_mut_ptr().add(offset), src.len());
+        }
+        output
+    }
+
     /// Returns a subslice without the given leading `byte`s.
     #[must_use]
     pub const fn trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
