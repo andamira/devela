@@ -88,6 +88,7 @@
     nightly_stable_later,
     feature(
         assert_matches,
+        avx512_target_feature,
         cell_update,
         cfg_boolean_literals,
         const_array_from_ref,

@@ -70,6 +70,7 @@ See also
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
+- 1.??: `·`[avx512_target_feature](https://github.com/rust-lang/rust/pull/138940)
 - 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: `·`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
@@ -132,7 +133,7 @@ See also
 - 1.?? `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
         = `nightly_simd` flag
 - 1.?? ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
-- 1.?? ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137)
+- 1.?? ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
 - 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:
