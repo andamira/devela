@@ -7,7 +7,7 @@
 #![doc = crate::doc_!(extends: os)]
 //
 
-// mod print; // os_[e]print[ln]!
+mod print; // os_[e]print[ln]!
 
 #[cfg(feature = "linux")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
@@ -20,7 +20,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
-        // pub use super::print::*;
+        pub use super::print::*;
     }
     mod _pub_mods {
         #[cfg(feature = "linux")]
