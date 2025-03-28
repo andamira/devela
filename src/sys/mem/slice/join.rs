@@ -67,8 +67,9 @@ macro_rules! _join {
     (bytes: $A:expr, $B:expr $(,)?) => {{
         const fn concat() -> [u8; LEN] {
             let mut out = [0u8; LEN];
-            out = $crate::Slice::<u8>::to_array_at(out, A, 0);
-            $crate::Slice::<u8>::to_array_at(out, B, A.len())
+            $crate::Slice::<u8>::copy_array_at(&mut out, A, 0);
+            $crate::Slice::<u8>::copy_array_at(&mut out, B, A.len());
+            out
         }
         const A: &[u8] = $A;
         const B: &[u8] = $B;
@@ -81,7 +82,7 @@ macro_rules! _join {
             let mut out = [0u8; LEN];
             let mut i = 0;
             while i < COUNT {
-                out = $crate::Slice::<u8>::to_array_at(out, A, i * A.len());
+                $crate::Slice::<u8>::copy_array_at(&mut out, A, i * A.len());
                 i += 1;
             }
             out
@@ -123,8 +124,9 @@ macro_rules! _join {
     (str: $A:expr, $B:expr $(,)?) => {{
         const fn combined() -> [u8; LEN] {
             let mut out = [0u8; LEN];
-            out = $crate::Slice::<u8>::to_array_at(out, A.as_bytes(), 0);
-            $crate::Slice::<u8>::to_array_at(out, B.as_bytes(), A.len())
+            $crate::Slice::<u8>::copy_array_at(&mut out, A.as_bytes(), 0);
+            $crate::Slice::<u8>::copy_array_at(&mut out, B.as_bytes(), A.len());
+            out
         }
         const A: &str = $A;
         const B: &str = $B;
@@ -138,7 +140,7 @@ macro_rules! _join {
             let mut out = [0u8; LEN];
             let mut i = 0;
             while i < COUNT {
-                out = $crate::Slice::<u8>::to_array_at(out, A.as_bytes(), i * A.len());
+                $crate::Slice::<u8>::copy_array_at(&mut out, A.as_bytes(), i * A.len());
                 i += 1;
             }
             out

@@ -30,25 +30,25 @@ pub struct Slice<T>(crate::PhantomData<T>);
 
 /// # `core::slice` namespaced methods
 impl<T> Slice<T> {
-    /// Copies all elements from `src` into `dest`.
+    /// Copies all elements from `src` into `dst`.
     ///
     /// # Features
     /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed.
     /// - Falls back to safe element-wise copy otherwise.
     ///
     /// # Panics
-    /// Panics if `src` and `dest` slices have different lengths.
+    /// Panics if `src` and `dst` slices have different lengths.
     // WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
     #[rustfmt::skip]
-    pub const fn copy_from_slice(dest: &mut [T], src: &[T]) where T: Copy {
-        if dest.len() != src.len() { panic!("`src` and `dest` slices have different lengths"); }
+    pub const fn copy_from_slice(dst: &mut [T], src: &[T]) where T: Copy {
+        if dst.len() != src.len() { panic!("`src` and `dst` slices have different lengths"); }
 
         #[cfg(all(not(feature = "safe_mem"), unsafe··))]
         // SAFETY: Lengths checked equal, T is Copy, and pointers are valid
-        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dest.as_mut_ptr(), src.len()); }
+        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), src.len()); }
 
         #[cfg(any(feature = "safe_mem", not(unsafe··)))]
-        { let mut i = 0; while i < src.len() { dest[i] = src[i]; i += 1; } }
+        { let mut i = 0; while i < src.len() { dst[i] = src[i]; i += 1; } }
     }
 
     /// Converts a reference to `T` into a slice of length 1 (without copying).
@@ -658,6 +658,41 @@ impl Slice<u8> {
         unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), N); }
     }
 
+    /// Copies all elements from `src` into a fixed-size array starting at `offset`.
+    ///
+    /// # Features
+    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed
+    /// - Falls back to safe element-wise copy otherwise
+    ///
+    /// # Panics
+    /// Panics if `src.len() + offset > LEN`.
+    pub const fn copy_array_at<const LEN: usize>(dst: &mut [u8; LEN], src: &[u8], offset: usize) {
+        assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
+
+        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        { let mut i = 0; while i < src.len() { dst[offset + i] = src[i]; i += 1; } }
+
+        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
+        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr().add(offset), src.len()); }
+    }
+
+    /// A convenience wrapper over [`Slice::copy_array_at`].
+    // #[inline(always)] // MAYBE
+    // // Auto-select best version
+    // macro_rules! copy_array { // IDEA
+    //     ($dst:expr, $src:expr, $at:expr) => {
+    //         if $dst.len() <= 32 { copied_array_at($dst, $src, $at) }
+    //         else { let mut tmp = $dst; copy_array_at(&mut tmp, $src, $at); tmp }
+    //     }
+    // }
+    pub const fn copied_array_at<const LEN: usize>(base: [u8; LEN], src: &[u8], offset: usize)
+        -> [u8; LEN] {
+        let mut new = base;
+        Slice::copy_array_at(&mut new, src, offset);
+        new
+    }
+
     /// Copies all elements from `src` into a new fixed-size array.
     ///
     /// # Features
@@ -678,31 +713,6 @@ impl Slice<u8> {
         unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), buf.as_mut_ptr(), src.len()); }
 
         buf
-    }
-
-    /// Copies all elements from `src` into a fixed-size array starting at `offset`.
-    ///
-    /// # Features
-    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed
-    /// - Falls back to safe element-wise copy otherwise
-    ///
-    /// # Panics
-    /// Panics if `src.len() + offset > LEN`.
-    #[rustfmt::skip]
-    pub const fn to_array_at<const LEN: usize>(dest: [u8; LEN], src: &[u8], offset: usize)
-        -> [u8; LEN] {
-        assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
-
-        let mut output = dest;
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
-        { let mut i = 0; while i < src.len() { output[offset + i] = src[i]; i += 1; } }
-
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
-        // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
-        unsafe {
-            Ptr::copy_nonoverlapping(src.as_ptr(), output.as_mut_ptr().add(offset), src.len());
-        }
-        output
     }
 
     /// Returns a subslice without the given leading `byte`s.
@@ -780,50 +790,60 @@ mod tests {
     #[test]
     fn copy_from_slice() {
         // Basic copy
-        let mut dest = [0u8; 4];
-        Slice::copy_from_slice(&mut dest, &[1, 2, 3, 4]);
-        assert_eq!(dest, [1, 2, 3, 4]);
+        let mut dst = [0u8; 4];
+        Slice::copy_from_slice(&mut dst, &[1, 2, 3, 4]);
+        assert_eq!(dst, [1, 2, 3, 4]);
         // Empty slices
         let mut empty_dest = [0u8; 0];
         Slice::<u8>::copy_from_slice(&mut empty_dest, &[]);
         assert_eq!(empty_dest, [0u8; 0]);
         // Const context (compile test)
         const fn _const_test() {
-            let mut dest = [0u8; 2];
-            Slice::copy_from_slice(&mut dest, &[1, 2]);
+            let mut dst = [0u8; 2];
+            Slice::copy_from_slice(&mut dst, &[1, 2]);
         }
     }
     #[test]
     #[should_panic]
     fn copy_from_slice_panic() {
-        let mut dest = [0u8; 3];
-        Slice::copy_from_slice(&mut dest, &[1, 2, 3, 4]); // length mismatch
+        let mut dst = [0u8; 3];
+        Slice::copy_from_slice(&mut dst, &[1, 2, 3, 4]); // length mismatch
     }
     #[test]
-    fn to_array_at() {
+    fn copy_array_at() {
         // Offset copy
-        let dest = [0u8; 5];
-        let result = Slice::<u8>::to_array_at(dest, &[1, 2], 2);
+        let mut dst = [0u8; 5];
+        Slice::<u8>::copy_array_at(&mut dst, &[1, 2], 2);
+        assert_eq!(dst, [0, 0, 1, 2, 0]);
+        // Full copy
+        let mut dst = [0u8; 3];
+        Slice::<u8>::copy_array_at(&mut dst, &[1, 2, 3], 0);
+        assert_eq!(dst, [1, 2, 3]);
+    }
+    #[test]
+    fn copied_array_at() {
+        // Offset copy
+        let result = Slice::<u8>::copied_array_at([0u8; 5], &[1, 2], 2);
         assert_eq!(result, [0, 0, 1, 2, 0]);
         // Full copy
-        let result = Slice::<u8>::to_array_at([0u8; 3], &[1, 2, 3], 0);
+        let result = Slice::<u8>::copied_array_at([0u8; 3], &[1, 2, 3], 0);
         assert_eq!(result, [1, 2, 3]);
         // Edge cases
-        assert_eq!(Slice::<u8>::to_array_at([1u8; 3], &[], 1), [1, 1, 1]);
-        assert_eq!(Slice::<u8>::to_array_at([0u8; 3], &[1, 2], 1), [0, 1, 2]);
+        assert_eq!(Slice::<u8>::copied_array_at([1u8; 3], &[], 1), [1, 1, 1]);
+        assert_eq!(Slice::<u8>::copied_array_at([0u8; 3], &[1, 2], 1), [0, 1, 2]);
         // Const context (compile test)
         const fn _const_test() -> [u8; 2] {
-            Slice::<u8>::to_array_at([0u8; 2], &[1, 2], 0)
+            Slice::<u8>::copied_array_at([0u8; 2], &[1, 2], 0)
         }
     }
     #[test]
     #[should_panic]
-    fn to_array_at_panic_overflow() {
-        Slice::<u8>::to_array_at([0u8; 3], &[1, 2, 3, 4], 0); // overflow
+    fn copied_array_at_panic_overflow() {
+        Slice::<u8>::copied_array_at([0u8; 3], &[1, 2, 3, 4], 0); // overflow
     }
     #[test]
     #[should_panic]
-    fn to_array_at_panic_overflow_offset() {
-        Slice::<u8>::to_array_at([0u8; 3], &[1, 2], 2); // offset overflow
+    fn copied_array_at_panic_overflow_offset() {
+        Slice::<u8>::copied_array_at([0u8; 3], &[1, 2], 2); // offset overflow
     }
 }
