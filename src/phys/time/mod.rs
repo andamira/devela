@@ -7,7 +7,6 @@
 // safety
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
-mod delta; // TimeDelta
 mod granularity; // TimeGranularity
 mod reexports; // std::time::*
 mod source; // TimeSource
@@ -15,6 +14,7 @@ mod source; // TimeSource
 #[cfg(feature = "time")]
 crate::items! {
     mod calendar; // Month, Weekday
+    mod delta; // TimeDelta
     mod fmt; // Timecode
     mod no; // NoTime
     mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
@@ -28,11 +28,11 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{delta::*, granularity::*, reexports::*, source::*};
+        pub use super::{granularity::*, reexports::*, source::*};
 
         #[cfg(feature = "time")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
-        pub use super::{calendar::*, fmt::*, no::*, split::*, unix::*};
+        pub use super::{calendar::*, delta::*, fmt::*, no::*, split::*, unix::*};
         // WIPZONE
         // pub use super::drop::*;
         // pub use super::freq::*;

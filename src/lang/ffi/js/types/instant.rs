@@ -1,8 +1,10 @@
 // devela::lang::ffi::js::types::instant
 
+#[cfg(feature = "time")]
+use crate::TimeDelta;
 use crate::{impl_trait, Display};
 #[allow(unused_imports)]
-use crate::{js_number, Js, TimeDelta};
+use crate::{js_number, Js};
 
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 ///
@@ -26,9 +28,14 @@ impl JsInstant {
 
     /// Returns the duration between this and an earlier `JsInstant`.
     pub const fn since(self, earlier: Self) -> Self { Self::from_millis_f64(self.ms - earlier.ms) }
+
     /// Returns the duration between this and an earlier instant as a `TimeDelta`.
+    #[cfg(feature = "time")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
     pub fn delta_since(self, earlier: Self) -> TimeDelta { TimeDelta::from_js(self.since(earlier)) }
     /// Returns the duration between this and an earlier instant as a `TimeDelta`.
+    #[cfg(feature = "time")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
     pub const fn const_delta_since(self, earlier: Self) -> TimeDelta {
         TimeDelta::const_from_js(self.since(earlier)) }
 }
