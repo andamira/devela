@@ -849,7 +849,7 @@ features = [] # adpcm, flac, mkv, ogg, pcm, vorbis, wav, symphonia-[bundle|codec
 # IMPROVE: feature-gate
 
 [dependencies.sysinfo] # https://crates.io/crates/sysinfo
-version = "0.33" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
+version = "0.34" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
 features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
