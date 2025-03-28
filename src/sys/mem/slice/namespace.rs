@@ -647,14 +647,37 @@ impl<T> Slice<T> {
 }
 
 /// # Methods for byte slices.
+#[rustfmt::skip]
 impl Slice<u8> {
-    /// Copies the `src` slice into `dst` in compile-time.
-    pub const fn const_copy<const N: usize>(src: &[u8; N], dst: &mut [u8; N]) {
-        let mut i = 0;
-        while i < N {
-            dst[i] = src[i];
-            i += 1;
-        }
+    /// Copies the `src` byte array into `dst` in compile-time.
+    pub const fn copy_array<const N: usize>(dst: &mut [u8; N], src: &[u8; N]) {
+        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        { let mut i = 0; while i < N { dst[i] = src[i]; i += 1; } }
+
+        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), N); }
+    }
+
+    /// Copies all elements from `src` into a new fixed-size array.
+    ///
+    /// # Features
+    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed
+    /// - Falls back to safe element-wise copy otherwise
+    ///
+    /// # Panics
+    /// Panics if `src.len() != LEN`.
+    pub const fn to_array<const LEN: usize>(src: &[u8]) -> [u8; LEN] {
+        assert!(src.len() == LEN, "source slice length must match destination array length");
+        let mut buf = [0; LEN];
+
+        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        { let mut i = 0; while i < src.len() { buf[i] = src[i]; i += 1; } }
+
+        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        // SAFETY: Lengths are equal (checked by assert), u8 is Copy, entire range is bounds-checked
+        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), buf.as_mut_ptr(), src.len()); }
+
+        buf
     }
 
     /// Copies all elements from `src` into a fixed-size array starting at `offset`.
@@ -664,9 +687,9 @@ impl Slice<u8> {
     /// - Falls back to safe element-wise copy otherwise
     ///
     /// # Panics
-    /// Panics if `src.len() + offset` exceeds `dest.len()`.
+    /// Panics if `src.len() + offset > LEN`.
     #[rustfmt::skip]
-    pub const fn copy_into_array<const LEN: usize>(dest: [u8; LEN], src: &[u8], offset: usize)
+    pub const fn to_array_at<const LEN: usize>(dest: [u8; LEN], src: &[u8], offset: usize)
         -> [u8; LEN] {
         assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
 
@@ -686,19 +709,14 @@ impl Slice<u8> {
     #[must_use]
     pub const fn trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
         let mut start = 0;
-        while start < slice.len() && slice[start] == byte {
-            start += 1;
-        }
+        while start < slice.len() && slice[start] == byte { start += 1; }
         slice.split_at(start).1 // == &slice[start..]
     }
 
     /// Replaces the `old` leading byte with a `new` byte.
     pub const fn replace_leading_bytes(slice: &mut [u8], old: u8, new: u8) {
         let mut start = 0;
-        while start < slice.len() && slice[start] == old {
-            slice[start] = new;
-            start += 1;
-        }
+        while start < slice.len() && slice[start] == old { slice[start] = new; start += 1; }
     }
 }
 
@@ -782,30 +800,30 @@ mod tests {
         Slice::copy_from_slice(&mut dest, &[1, 2, 3, 4]); // length mismatch
     }
     #[test]
-    fn copy_into_array() {
+    fn to_array_at() {
         // Offset copy
         let dest = [0u8; 5];
-        let result = Slice::<u8>::copy_into_array(dest, &[1, 2], 2);
+        let result = Slice::<u8>::to_array_at(dest, &[1, 2], 2);
         assert_eq!(result, [0, 0, 1, 2, 0]);
         // Full copy
-        let result = Slice::<u8>::copy_into_array([0u8; 3], &[1, 2, 3], 0);
+        let result = Slice::<u8>::to_array_at([0u8; 3], &[1, 2, 3], 0);
         assert_eq!(result, [1, 2, 3]);
         // Edge cases
-        assert_eq!(Slice::<u8>::copy_into_array([1u8; 3], &[], 1), [1, 1, 1]);
-        assert_eq!(Slice::<u8>::copy_into_array([0u8; 3], &[1, 2], 1), [0, 1, 2]);
+        assert_eq!(Slice::<u8>::to_array_at([1u8; 3], &[], 1), [1, 1, 1]);
+        assert_eq!(Slice::<u8>::to_array_at([0u8; 3], &[1, 2], 1), [0, 1, 2]);
         // Const context (compile test)
         const fn _const_test() -> [u8; 2] {
-            Slice::<u8>::copy_into_array([0u8; 2], &[1, 2], 0)
+            Slice::<u8>::to_array_at([0u8; 2], &[1, 2], 0)
         }
     }
     #[test]
     #[should_panic]
-    fn copy_into_array_panic_overflow() {
-        Slice::<u8>::copy_into_array([0u8; 3], &[1, 2, 3, 4], 0); // overflow
+    fn to_array_at_panic_overflow() {
+        Slice::<u8>::to_array_at([0u8; 3], &[1, 2, 3, 4], 0); // overflow
     }
     #[test]
     #[should_panic]
-    fn copy_into_array_panic_overflow_offset() {
-        Slice::<u8>::copy_into_array([0u8; 3], &[1, 2], 2); // offset overflow
+    fn to_array_at_panic_overflow_offset() {
+        Slice::<u8>::to_array_at([0u8; 3], &[1, 2], 2); // offset overflow
     }
 }

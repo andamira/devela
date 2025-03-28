@@ -36,7 +36,6 @@
 ///
 /// const BPARTS: &[u8] = join!(bytes_separated: b"/"; b"path", b"to", b"file");
 /// const_assert!(eq_buf BPARTS, b"path/to/file");
-
 /// ```
 ///
 /// # Features
@@ -68,8 +67,8 @@ macro_rules! _join {
     (bytes: $A:expr, $B:expr $(,)?) => {{
         const fn concat() -> [u8; LEN] {
             let mut out = [0u8; LEN];
-            out = $crate::Slice::<u8>::copy_into_array(out, A, 0);
-            $crate::Slice::<u8>::copy_into_array(out, B, A.len())
+            out = $crate::Slice::<u8>::to_array_at(out, A, 0);
+            $crate::Slice::<u8>::to_array_at(out, B, A.len())
         }
         const A: &[u8] = $A;
         const B: &[u8] = $B;
@@ -82,7 +81,7 @@ macro_rules! _join {
             let mut out = [0u8; LEN];
             let mut i = 0;
             while i < COUNT {
-                out = $crate::Slice::<u8>::copy_into_array(out, A, i * A.len());
+                out = $crate::Slice::<u8>::to_array_at(out, A, i * A.len());
                 i += 1;
             }
             out
@@ -124,8 +123,8 @@ macro_rules! _join {
     (str: $A:expr, $B:expr $(,)?) => {{
         const fn combined() -> [u8; LEN] {
             let mut out = [0u8; LEN];
-            out = $crate::Slice::<u8>::copy_into_array(out, A.as_bytes(), 0);
-            $crate::Slice::<u8>::copy_into_array(out, B.as_bytes(), A.len())
+            out = $crate::Slice::<u8>::to_array_at(out, A.as_bytes(), 0);
+            $crate::Slice::<u8>::to_array_at(out, B.as_bytes(), A.len())
         }
         const A: &str = $A;
         const B: &str = $B;
@@ -139,7 +138,7 @@ macro_rules! _join {
             let mut out = [0u8; LEN];
             let mut i = 0;
             while i < COUNT {
-                out = $crate::Slice::<u8>::copy_into_array(out, A.as_bytes(), i * A.len());
+                out = $crate::Slice::<u8>::to_array_at(out, A.as_bytes(), i * A.len());
                 i += 1;
             }
             out

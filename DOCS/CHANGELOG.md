@@ -75,7 +75,7 @@
   - `Float`: `midpoint`, `recip`, `to_degrees`, `to_radians`.
   - `HasherFx`: `hash_bytes_with_seed`.
   - `Linux` syscalls: `sys_[open|close|lseek|dup|dup2|fcntl|stat|fstat|getdents|pipe|pipe2]`.
-  - `Slice`: `<u8>::const_copy`, `copy_from_slice`, `copy_to_array`.
+  - `Slice`: `copy_from_slice`, `<u8>::copy_array`, `<u8>::to_array`, `<u8>::to_array_at`.
   - `Str`: `__utf8_bytes_to_str`.
   - prngs: `from_state`, `inner_state`.
 - new variants:
