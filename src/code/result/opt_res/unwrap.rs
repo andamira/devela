@@ -7,6 +7,31 @@
 /// An unwrapper macro that works in compile-time.
 ///
 /// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].
+///
+/// ### Naming Convention
+///
+/// #### Prefixes
+/// - **`some_`** - `Option<T>`
+/// - **`ok_`** - `Result<T, E>` (success case)
+/// - **`err_`** - `Result<T, E>` (error case)
+/// - **`sok_`** - `Option<Result<T, E>>` (`Some(Ok)`)
+/// - **`serr_`** - `Option<Result<T, E>>` (`Some(Err)`)
+///
+/// #### Suffixes
+/// | Suffix              | Behavior                              | Safety        |
+/// |---------------------|---------------------------------------|---------------|
+/// | `?`                 | Early return                          | Safe          |
+/// | (none)              | Panic                                 | Safe          |
+/// | `_expect`           | Panic with message                    | Safe          |
+/// | `_or`               | Return default                        | Safe          |
+/// | `_guaranteed_or_ub` | UB if failed (debug checks)           | **Unsafe** * |
+///
+/// * Requires `// SAFETY:` justification for impossible-failure invariants
+///
+/// ### Special Cases
+/// - `ok_err`: Only when `Ok(T)` and `Err(T)` are identical types.
+/// - `some_ok_or`: Converts to `Result` with provided error.
+/// - `[ok|err]_some`: Converts to `Option`.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! unwrap {
@@ -31,7 +56,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Some` value, or panics with the given message if it's `None`.
+      // Unwraps the contained `Some` value, or panics with a message if it's `None`.
       some_expect $value:expr, $message:literal) => {
         match $value {
             Some(v) => v,
@@ -39,13 +64,30 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Some` value, or the given default if it's `None`.
+      // Unwraps the contained `Some` value, or a default if it's `None`.
       some_or $value:expr, $default:expr) => {
         match $value {
             Some(v) => v,
             None => $default,
         }
     };
+    (
+      // Unwraps the contained `Some` value, or assumes (unsafely) that it cannot be `None`.
+      // Only use when the `None` case is statically impossible.
+      some_guaranteed_or_ub $value:expr $(,)?
+    ) => {
+        match $value {
+            Some(v) => v,
+            None => {
+                if cfg!(debug_assertions) {
+                    ::core::unreachable!("`None` encountered in `some_guaranteed_or_ub`")
+                } else {
+                    unsafe { ::core::hint::unreachable_unchecked() }
+                }
+            }
+        }
+    };
+
     (
       // Transforms the `Option` into a `Result`, mapping `Some(T)` to `Ok(T)`,
       // and `None` to `Err($err)`.
@@ -63,6 +105,7 @@ macro_rules! unwrap {
             None => return Err($err),
         }
     };
+
     (
 
       // Result<T, E>
@@ -84,7 +127,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Ok` value, or panics with the given message if it's `Err`.
+      // Unwraps the contained `Ok` value, or panics with a message if it's `Err`.
       ok_expect $value:expr, $message:literal) => {
         match $value {
             Ok(v) => v,
@@ -99,6 +142,23 @@ macro_rules! unwrap {
             Err(_) => $default,
         }
     };
+    (
+      // Unwraps the contained `Ok` value, or assumes (unsafely) that it cannot be `Err`.
+      // Only use when the `Err` case is statically impossible (e.g., `Infallible` or `!`).
+      ok_guaranteed_or_ub $value:expr $(,)?
+    ) => {
+        match $value {
+            Ok(v) => v,
+            Err(_) => {
+                if cfg!(debug_assertions) {
+                    ::core::unreachable!("`Err` encountered in `ok_guaranteed_or_ub`")
+                } else {
+                    unsafe { ::core::hint::unreachable_unchecked() }
+                }
+            }
+        }
+    };
+
     (
       // Transforms the `Result` into an `Option`, mapping `Ok(T)` to `Some(T)`,
       // and `Err(_)` to `None`.
@@ -118,7 +178,8 @@ macro_rules! unwrap {
     };
 
     (
-      // Unwraps the contained `Ok` value, or the `Err` value (must be the same type).
+      // Unwraps the contained `Ok` value, or the `Err` value.
+      // Only use when `Ok(T)` and `Err(T)` are the same type.
       ok_err $value:expr) => {
         match $value {
             Ok(v) => v,
@@ -135,7 +196,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Err` value, or panics the given message if it's `Ok`.
+      // Unwraps the contained `Err` value, or panics a message if it's `Ok`.
       err_expect $value:expr, $message:literal) => {
         match $value {
             Ok(_) => ::core::panic!["{}", $message],
@@ -194,7 +255,7 @@ macro_rules! unwrap {
 
     (
       // Unwraps the contained `Some(Ok)` value,
-      // or panics with the given message if it's `Some(Err)` or `None`.
+      // or panics with a message if it's `Some(Err)` or `None`.
       sok_expect $value:expr, $message:literal) => {
         match $value {
             Some(Ok(v)) => v,
@@ -213,6 +274,31 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps the contained `Some(Ok)` value,
+      // or assumes (unsafely) that it cannot be Some(Err)` or `None`.
+      // Only use when the `Some(Err)` or `None` cases are statically impossible.
+      sok_guaranteed_or_ub $value:expr $(,)?
+    ) => {
+        match $value {
+            Some(Ok(v)) => v,
+            Some(Err(_)) => {
+                if cfg!(debug_assertions) {
+                    ::core::unreachable!("`Some(Err)` encountered in `sok_guaranteed_or_ub`")
+                } else {
+                    unsafe { ::core::hint::unreachable_unchecked() }
+                }
+            }
+            None => {
+                if cfg!(debug_assertions) {
+                    ::core::unreachable!("`None` encountered in `sok_guaranteed_or_ub`")
+                } else {
+                    unsafe { ::core::hint::unreachable_unchecked() }
+                }
+            }
+        }
+    };
+
+    (
       // Unwraps the contained `Some(Err)` value,
       // or panics if it's `Some(Ok)` or `None`.
       serr $value:expr ) => {
@@ -224,7 +310,7 @@ macro_rules! unwrap {
     };
     (
       // Unwraps the contained `Some(Err)` value,
-      // or panics with the given message if it's `Some(Ok)` or `None`.
+      // or panics with a message if it's `Some(Ok)` or `None`.
       serr_expect $value:expr, $message:literal) => {
         match $value {
             Some(Ok(_)) => ::core::panic!["{}", $message],

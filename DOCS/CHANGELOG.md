@@ -65,7 +65,7 @@
 - new macro arms:
   - `format_buf!`: `?`.
   - `str!`: `ip_addr`.
-  - `unwrap!`: `ok_err`.
+  - `unwrap!`: `ok_err`, `*_guaranteed_or_ub`.
 - new methods:
   - `Char`: `len_utf8`, `code_len_utf8[_unchecked]`,`code_to_utf8_bytes[_unchecked]`, `[code_]to_ascii_str[_unchecked]`, `is_valid`, `to_ascii_fold[_unchecked]`, `utf8_bytes_to_code[_unchecked]`, `utf8_len[_checked]`.
   - `Env::*`.
