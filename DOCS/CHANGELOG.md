@@ -48,7 +48,7 @@
     - event: `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`, `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
     - back: `CrosstermService`, `MiniquadPixels`, `MiniquadService`.
     - front::term: `TermSize`.
-  - namespaces: `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
+  - namespaces: `Ansi`, `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
   - `define_panic_handler!`, `define_static_map!`, `methods_as_fns!`.
   - `join!`, `js_reexport`, `maybe!`, `miniquad!`, `xorshift_custom!`.
