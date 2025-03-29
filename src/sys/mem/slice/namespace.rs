@@ -1,4 +1,4 @@
-// devela::sys::mem::slice::wrapper
+// devela::sys::mem::slice::namespace
 //
 //! Defines the [`Slice`] namespace.
 //
@@ -661,8 +661,8 @@ impl Slice<u8> {
     /// Copies all elements from `src` into a fixed-size array starting at `offset`.
     ///
     /// # Features
-    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed
-    /// - Falls back to safe element-wise copy otherwise
+    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed.
+    /// - Falls back to safe element-wise copy otherwise.
     ///
     /// # Panics
     /// Panics if `src.len() + offset > LEN`.

@@ -11,6 +11,7 @@ mod adt; // DataArray
 mod d1; // 1-dimensional Array
 mod d2; // 2-dimensional Array2d
 mod ext; // ExtArray, ArrayFmt
+mod from; // ArrayFrom
 mod init; // array_init!
 mod reexports;
 
@@ -23,7 +24,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{adt::*, d1::_all::*, d2::_all::*, ext::*, init::*, reexports::*};
+        pub use super::{adt::*, d1::_all::*, d2::_all::*, ext::*, from::*, init::*, reexports::*};
 
         #[cfg(feature = "alloc")]
         pub use super::vec::_all::*;

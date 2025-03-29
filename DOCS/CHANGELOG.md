@@ -25,7 +25,7 @@
   - `AngleDirection::{CounterClockwise, CCW, RightHandRule, RHR, Clockwise, CW, LeftHandRule, LHR}`.
 - new types:
   - code: `Enum`, `ScopeGuard`, `TimeError`, `Timeout`.
-  - data: `NoData`.
+  - data: `ArrayFrom`, `NoData`.
     - codec: `CodecBe`, `CodecLe`, `CodecIf`, `CodecJoin`, `CodecFlags`, `CodecLen`, `CodecLenValue`.
       - radix `Base`, `Crockford`, `Rfc4648`, `Rfc4648Hex`.
     - key: `StaticMapEntry`.
