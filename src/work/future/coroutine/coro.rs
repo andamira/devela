@@ -1,4 +1,4 @@
-// devela::work::future::coroutine
+// devela::work::future::coroutine::coro
 //
 //! A minimal single-threaded coroutine implementation.
 //!

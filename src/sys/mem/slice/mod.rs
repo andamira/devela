@@ -9,6 +9,7 @@
 mod tests;
 
 mod ext; // ExtSlice
+mod join; // join!
 mod namespace; // Slice
 
 crate::items! { // structural access: _mods, _all
@@ -16,7 +17,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{ext::*, namespace::*};
+        pub use super::{ext::*, join::*, namespace::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

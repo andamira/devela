@@ -13,6 +13,7 @@
 ///
 /// # Example
 /// ```
+/// # use devela::ArrayFrom;
 /// let arr = ArrayFrom("hello").to_array::<5>();
 /// assert_eq!(arr, *b"hello");
 /// ```
@@ -117,11 +118,11 @@ mod tests {
     }
     #[test]
     fn from_array() {
-        assert_eq!(ArrayFrom([1,2,3]).to_array::<3>(), [1,2,3]);
+        assert_eq!(ArrayFrom([1, 2, 3]).to_array::<3>(), [1, 2, 3]);
     }
     #[test]
     fn from_array_ref() {
-        assert_eq!(ArrayFrom(&[1,2,3]).to_array::<3>(), [1,2,3]);
+        assert_eq!(ArrayFrom(&[1, 2, 3]).to_array::<3>(), [1, 2, 3]);
     }
     #[test]
     fn from_str() {
@@ -134,6 +135,6 @@ mod tests {
     #[test]
     #[should_panic]
     fn from_length_mismatch() {
-        let _ = ArrayFrom(&[1,2,3]).to_array::<2>();
+        let _ = ArrayFrom(&[1, 2, 3]).to_array::<2>();
     }
 }

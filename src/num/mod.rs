@@ -47,7 +47,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         // WIPZONE
         // pub use super::power::*;
     }
-    mod _pub_mods {
+    mod _pub_mods { #![allow(unused)]
         pub use super::{
             geom::_all::*, logic::_all::*, niche::_all::*,
             ord::_all::*, quant::_all::*,rand::_all::*,

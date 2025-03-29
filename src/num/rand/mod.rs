@@ -38,10 +38,12 @@ crate::items! { // structural access: _mods, _internals, _all
     #[allow(unused)]
     pub use {_mods::*, _internals::*};
 
-    mod _mods {
+    mod _mods { #![allow(unused)]
         pub use super::xorshift::*;
         #[cfg(feature = "rand")]
         pub use super::{lgc::*, xabc::*, xoroshiro::*, xyza8::*};
+        // WIPZONE
+        // pub use super::noise::*;
     }
     pub(super) mod _internals { #![allow(unused)]
         #[cfg(feature = "rand")]
@@ -52,3 +54,5 @@ crate::items! { // structural access: _mods, _internals, _all
         pub use super::_mods::*;
     }
 }
+// WIPZONE
+// mod noise;
