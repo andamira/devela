@@ -1,6 +1,6 @@
-// devela::text::str::macros::join
+// devela::sys::mem::slice::join
 //
-//! Defines the [`join_str!`] macro.
+//! Defines the [`join!`] macro.
 //
 
 #[doc = crate::TAG_TEXT!()]
@@ -17,7 +17,7 @@
 /// const SPATH: &str = join!(str: SBASE, SPART1, SPART2);
 /// const_assert![eq_str SPATH, "path/to/foo/bar"];
 ///
-/// const SREPEATED: &str = join!(str_repeat: SPART1, 3);
+/// const SREPEATED: &str = join!(str_repeated: SPART1, 3);
 /// const_assert![eq_str SREPEATED, "/foo/foo/foo"];
 ///
 /// const SPARTS: &str = join!(str_separated: "/"; "path", "to", "file");
@@ -31,7 +31,7 @@
 /// const BPATH: &[u8] = join!(bytes: BBASE, BPART1, BPART2);
 /// const_assert![eq_buf BPATH, b"path/to/foo/bar"];
 ///
-/// const BREPEATED: &[u8] = join!(bytes_repeat: BPART1, 3);
+/// const BREPEATED: &[u8] = join!(bytes_repeated: BPART1, 3);
 /// const_assert![eq_buf BREPEATED, b"/foo/foo/foo"];
 ///
 /// const BPARTS: &[u8] = join!(bytes_separated: b"/"; b"path", b"to", b"file");
@@ -40,56 +40,34 @@
 ///
 /// # Features
 /// Makes use of the `unsafe_str` feature if available.
-//
-// - based on: https://users.rust-lang.org/t/concatenate-const-strings/51712/7
-// - modifications:
-//   - make unsafe optional.
-//   - support trailing commas.
-//   - support the trivial cases.
-//   - support more than 2 arguments.
-//   - support repeating and separators.
-//   - support concatenating byte slices.
-//   - simplify the reassignments and loops.
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
 macro_rules! _join {
     /* bytes */
 
-    // trivial cases:
-    (bytes: ) => { &[] };
-    (bytes: $A:expr $(,)?) => { $A };
-    // variadic case (recursively reduce to pairs)
-    (bytes: $A:expr, $B:expr, $($rest:expr),+ $(,)?) => {
-        $crate::join!(bytes: $A, $crate::join!(bytes: $B, $($rest),+))
-    };
-    // two args (base case)
-    (bytes: $A:expr, $B:expr $(,)?) => {{
-        const fn concat() -> [u8; LEN] {
-            let mut out = [0u8; LEN];
-            $crate::Slice::<u8>::copy_array_at(&mut out, A, 0);
-            $crate::Slice::<u8>::copy_array_at(&mut out, B, A.len());
-            out
-        }
-        const A: &[u8] = $A;
-        const B: &[u8] = $B;
-        const LEN: usize = A.len() + B.len();
-        &concat()
+    // trivial cases
+    (bytes:) => { &[] };
+    (bytes: $bytes:expr $(,)?) => { $crate::join!(bytes_as_slice: $bytes) };
+    // main implementation
+    (bytes: $($bytes: expr),+ $(,)?) => {{
+        const SLICES: &[&[u8]] = &[$( $crate::join!(bytes_as_slice: $bytes) ),+];
+        const LEN: usize = $crate::ArrayFrom(SLICES).len();
+        &$crate::ArrayFrom(SLICES).to_array::<LEN>()
     }};
+
     // Repeat a byte slice a constant number of times:
-    (bytes_repeat: $A:expr, $count:expr $(,)?) => {{
+    (bytes_repeated: $bytes:expr, $num:expr $(,)?) => {{
+        const SLICE: &[u8] = $crate::join!(bytes_as_slice: $bytes);
+        const NUM: usize = $num;
+        const LEN: usize = SLICE.len() * NUM;
         const fn repeated() -> [u8; LEN] {
-            let mut out = [0u8; LEN];
-            let mut i = 0;
-            while i < COUNT {
-                $crate::Slice::<u8>::copy_array_at(&mut out, A, i * A.len());
-                i += 1;
+            let (mut out, mut i) = ([0u8; LEN], 0);
+            while i < NUM {
+                $crate::Slice::<u8>::copy_array_at(&mut out, SLICE, i * SLICE.len()); i += 1;
             }
             out
         }
-        const A: &[u8] = $A;
-        const COUNT: usize = $count;
-        const LEN: usize = A.len() * COUNT;
         &repeated()
     }};
     (bytes_separated: $sep:expr; $first:expr, $($rest:expr),+ $(,)?) => {{
@@ -110,13 +88,18 @@ macro_rules! _join {
         const LEN: usize = $first.len() $(+ SEP.len() + $rest.len())+;
         &join()
     }};
+    // input normalization
+    (bytes_as_slice: $bytes: expr) => {{
+        const LEN: usize = $crate::ArrayFrom($bytes).len();
+        &$crate::ArrayFrom($bytes).to_array::<LEN>()
+    }};
 
     /* strings */
 
-    // trivial cases:
+    // trivial cases
     (str: ) => { "" };
     (str: $A:expr $(,)?) => { $A };
-    // variadic case: Reduce to two-argument case:
+    // variadic case: Reduce to two-argument case
     (str: $A:expr, $B:expr, $($rest:expr),+ $(,)?) => {
         $crate::join!(str: $A, $crate::join!(str: $B $(, $rest)+))
     };
@@ -135,7 +118,7 @@ macro_rules! _join {
         $crate::Str::__utf8_bytes_to_str(RESULT)
     }};
     // Repeat a string slice a constant number of times:
-    (str_repeat: $A:expr, $count:expr $(,)?) => {{
+    (str_repeated: $A:expr, $count:expr $(,)?) => {{
         const fn repeated() -> [u8; LEN] {
             let mut out = [0u8; LEN];
             let mut i = 0;
@@ -192,12 +175,38 @@ mod tests {
         const PATH: &[u8] = join!(bytes: BASE, PART1, PART2);
         const_assert![eq_buf PATH, b"path/to/foo/bar"];
 
-        const REPEATED: &[u8] = join!(bytes_repeat: PART1, 3);
+        const REPEATED: &[u8] = join!(bytes_repeated: PART1, 3);
         const_assert![eq_buf REPEATED, b"/foo/foo/foo"];
 
         const PARTS: &[u8] = join!(bytes_separated: b"/"; b"path", b"to", b"file");
         const_assert!(eq_buf PARTS, b"path/to/file");
     }
+    #[test]
+    const fn join_bytes_mixed() {
+        // Array literals
+        const ARR_ARR: &[u8] = join!(bytes: [1, 2], [3, 4]);
+        const_assert!(eq_buf ARR_ARR, &[1,2,3,4]);
+
+        const ARR_SLI: &[u8] = join!(bytes: [1, 2], &[3, 4]);
+        const_assert!(eq_buf ARR_SLI, &[1,2,3,4]);
+
+        const ARR_LIT: &[u8] = join!(bytes: [1, 2, 3], 4);
+        const_assert!(eq_buf ARR_LIT, &[1,2,3,4]);
+
+        const STR_ARR_LIT_SLI: &[u8] = join!(bytes: "01", [1, 2], 3, &[4]);
+        const_assert!(eq_buf STR_ARR_LIT_SLI, &[48,49,1,2,3,4]);
+    }
+    #[test]
+    #[cfg(feature = "term")]
+    const fn join_bytes_ansi() {
+        use crate::Ansi;
+        const ANSI0: &[u8] = join!(bytes: Ansi::BOLD);
+        const_assert!(eq_buf & [27, 91, 49, 109], ANSI0);
+
+        const ANSI1: &[u8] = join!(bytes: Ansi::BOLD, Ansi::ITALIC);
+        const_assert![eq_buf & [27, 91, 49, 109, 27, 91, 51, 109], ANSI1];
+    }
+
     #[test]
     const fn join_str() {
         const BASE: &str = "path/to";
@@ -206,7 +215,7 @@ mod tests {
         const PATH: &str = join!(str: BASE, PART1, PART2);
         const_assert![eq_str PATH, "path/to/foo/bar"];
 
-        const REPEATED: &str = join!(str_repeat: PART1, 3);
+        const REPEATED: &str = join!(str_repeated: PART1, 3);
         const_assert![eq_str REPEATED, "/foo/foo/foo"];
 
         const PARTS: &str = join!(str_separated: "/"; "path", "to", "file");

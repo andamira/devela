@@ -52,15 +52,6 @@ mod impls {
         /// Converts to `[u8; N]` (must have N == len()).
         pub const fn to_array<const N: usize>(&self) -> [u8; N] { Slice::to_array(self.0) }
     }
-    // string slice
-    impl ArrayFrom<&str> {
-        /// Returns byte length.
-        pub const fn len(&self) -> usize { self.0.len() }
-        /// Converts to `[u8; N]` (must have N == len()).
-        pub const fn to_array<const N: usize>(&self) -> [u8; N] {
-            Slice::to_array(self.0.as_bytes())
-        }
-    }
     // slice of byte slices
     impl ArrayFrom<&[&[u8]]> {
         /// Returns total length of all slices.
@@ -82,6 +73,16 @@ mod impls {
             buf
         }
     }
+    // string slice
+    impl ArrayFrom<&str> {
+        /// Returns byte length.
+        pub const fn len(&self) -> usize { self.0.len() }
+        /// Converts to `[u8; N]` (must have N == len()).
+        pub const fn to_array<const N: usize>(&self) -> [u8; N] {
+            Slice::to_array(self.0.as_bytes())
+        }
+    }
+
     // slice of string slices
     impl ArrayFrom<&[&str]> {
         /// Returns total length of all string slices.
