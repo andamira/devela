@@ -12,7 +12,7 @@
 
 #![allow(non_camel_case_types)]
 
-use core::ffi::{c_int, c_uint};
+use crate::{c_int, c_uint};
 
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
 #[allow(non_camel_case_types)]

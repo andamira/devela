@@ -207,7 +207,7 @@ pub enum IoErrorKind {
     /// A filename was invalid.
     ///
     /// This error can also cause if it exceeded the filename length limit.
-    // WAIT:1.86 [io_error_more](https://github.com/rust-lang/rust/pull/134076)
+    // WAIT:1.87 [io_error_more](https://github.com/rust-lang/rust/pull/134076)
     InvalidFilename,
 
     /// Program argument list too long.
@@ -251,7 +251,7 @@ pub enum IoErrorKind {
 }
 
 impl IoErrorKind {
-    pub(crate) fn as_str(self) -> &'static str {
+    pub(crate) const fn as_str(self) -> &'static str {
         use IoErrorKind as E;
         // See: https://doc.rust-lang.org/src/std/io/error.rs.html
         match self {
@@ -313,16 +313,21 @@ impl From<IoErrorKind> for IoError {
 
 impl IoError {
     /// Creates a new I/O error from a known kind of error as well as an arbitrary error payload.
-    pub fn new(kind: IoErrorKind, error: &'static str) -> IoError {
+    ///
+    /// Compare with <https://doc.rust-lang.org/std/io/struct.Error.html#method.new>.
+    pub const fn new(kind: IoErrorKind, error: &'static str) -> IoError {
         IoError { repr: Repr::Custom(Custom { kind, error }) }
     }
 
-    // MAYBE
-    // pub fn other<E>(error: E) -> Error
-    // where E: Into<Box<dyn Error + Send + Sync>>,
+    /// Creates a new I/O error from a static string (no `alloc` needed).
+    pub const fn other(msg: &'static str) -> Self {
+        IoError {
+            repr: Repr::Custom(Custom { kind: IoErrorKind::Other, error: msg }),
+        }
+    }
 
     /// Returns a reference to the inner error wrapped by this error (if any).
-    pub fn get_ref(&self) -> Option<&&'static str> {
+    pub const fn get_ref(&self) -> Option<&&'static str> {
         match self.repr {
             Repr::Custom(ref c) => Some(&c.error),
             Repr::Simple(..) => None,
@@ -330,7 +335,7 @@ impl IoError {
     }
 
     /// Consumes the `IoError`, returning its inner error (if any).
-    pub fn into_inner(self) -> Option<&'static str> {
+    pub const fn into_inner(self) -> Option<&'static str> {
         match self.repr {
             Repr::Custom(c) => Some(c.error),
             Repr::Simple(..) => None,
@@ -338,7 +343,7 @@ impl IoError {
     }
 
     /// Returns the corresponding [`IoErrorKind`] for this error.
-    pub fn kind(&self) -> IoErrorKind {
+    pub const fn kind(&self) -> IoErrorKind {
         match self.repr {
             Repr::Custom(ref c) => c.kind,
             Repr::Simple(kind) => kind,
@@ -347,7 +352,7 @@ impl IoError {
 }
 
 // IMPROVE
-fn _assert_error_is_sync_send() {
-    fn _is_sync_send<T: Sync + Send>() {}
+const fn _assert_error_is_sync_send() {
+    const fn _is_sync_send<T: Sync + Send>() {}
     _is_sync_send::<IoError>();
 }

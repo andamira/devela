@@ -4,7 +4,7 @@
 //
 // https://man7.org/linux/man-pages/man4/tty_ioctl.4.html
 
-use core::ffi::{c_int, c_ulong};
+use crate::{c_int, c_ulong};
 
 /// Linux `ioctl` constants.
 #[allow(non_camel_case_types)]

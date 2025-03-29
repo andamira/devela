@@ -3,6 +3,12 @@
 //! Defines [`LinuxError`] and [`LinuxResult`].
 //
 
+use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO};
+
+#[doc = crate::TAG_RESULT!()]
+/// The return type for Linux-related functions that can fail.
+pub type LinuxResult<T> = crate::Result<T, LinuxError>;
+
 #[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// Represents a Linux-related error.
 ///
@@ -19,7 +25,66 @@ pub enum LinuxError {
     // /// A custom error with a static string message.
     // Other(&'static str),
 }
-
-#[doc = crate::TAG_RESULT!()]
-/// The return type for Linux-related functions that can fail.
-pub type LinuxResult<T> = crate::Result<T, LinuxError>;
+macro_rules! match_linux_to_io {
+    ($self:ident) => {
+        match $self {
+            LinuxError::Sys(errno) => {
+                let kind = match errno {
+                    ERRNO::EPERM => IoErrorKind::PermissionDenied,
+                    ERRNO::ENOENT => IoErrorKind::NotFound,
+                    ERRNO::EINTR => IoErrorKind::Interrupted,
+                    ERRNO::EIO => IoErrorKind::Other,
+                    ERRNO::ENXIO => IoErrorKind::NotFound,
+                    ERRNO::EAGAIN => IoErrorKind::WouldBlock,
+                    ERRNO::ENOMEM => IoErrorKind::OutOfMemory,
+                    ERRNO::EACCES => IoErrorKind::PermissionDenied,
+                    ERRNO::EFAULT => IoErrorKind::InvalidInput,
+                    ERRNO::EBUSY => IoErrorKind::ResourceBusy,
+                    ERRNO::EEXIST => IoErrorKind::AlreadyExists,
+                    ERRNO::ENOTDIR => IoErrorKind::NotADirectory,
+                    ERRNO::EISDIR => IoErrorKind::IsADirectory,
+                    ERRNO::EINVAL => IoErrorKind::InvalidInput,
+                    ERRNO::ENOSPC => IoErrorKind::StorageFull,
+                    ERRNO::EROFS => IoErrorKind::ReadOnlyFilesystem,
+                    ERRNO::EMLINK => IoErrorKind::TooManyLinks,
+                    ERRNO::EPIPE => IoErrorKind::BrokenPipe,
+                    ERRNO::EDOM => IoErrorKind::InvalidInput,
+                    ERRNO::ERANGE => IoErrorKind::InvalidInput,
+                    ERRNO::EDEADLK => IoErrorKind::Deadlock,
+                    // WAIT:1.87 [io_error_more](https://github.com/rust-lang/rust/pull/134076)
+                    // ERRNO::ENAMETOOLONG => IoErrorKind::InvalidFilename,
+                    ERRNO::ENOLCK => IoErrorKind::ResourceBusy,
+                    ERRNO::ENOSYS => IoErrorKind::Unsupported,
+                    ERRNO::ENOTEMPTY => IoErrorKind::DirectoryNotEmpty,
+                    // WAIT:1.?? [io_error_more](https://github.com/rust-lang/rust/issues/86442)
+                    // ERRNO::ELOOP => IoErrorKind::FilesystemLoop,
+                    ERRNO::ENODEV => IoErrorKind::NotFound,
+                    ERRNO::ETIMEDOUT => IoErrorKind::TimedOut,
+                    ERRNO::EXDEV => IoErrorKind::CrossesDevices,
+                    ERRNO::ETXTBSY => IoErrorKind::ExecutableFileBusy,
+                    _ => IoErrorKind::Other,
+                };
+                IoError::new(kind, "system call failed")
+            }
+            LinuxError::NoInput => IoError::new(IoErrorKind::UnexpectedEof, "no input available"),
+            LinuxError::InvalidUtf8 => IoError::new(IoErrorKind::InvalidData, "invalid UTF-8 data"),
+        }
+    };
+}
+#[rustfmt::skip]
+impl LinuxError {
+    /// Converts `LinuxError` to `IoError`.
+    ///
+    /// This will only be *const* if the `std` feature is **disabled**,
+    /// because `std::io::Error::new` is not *const*.
+    #[cfg(feature = "std")]
+    pub fn to_io(self) -> IoError { match_linux_to_io!(self) }
+    /// Converts `LinuxError` to `IoError`.
+    #[cfg(not(feature = "std"))]
+    pub const fn to_io(self) -> IoError { match_linux_to_io!(self) }
+}
+impl From<LinuxError> for IoError {
+    fn from(err: LinuxError) -> Self {
+        err.to_io()
+    }
+}

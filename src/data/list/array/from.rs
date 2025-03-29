@@ -82,7 +82,6 @@ mod impls {
             Slice::to_array(self.0.as_bytes())
         }
     }
-
     // slice of string slices
     impl ArrayFrom<&[&str]> {
         /// Returns total length of all string slices.
