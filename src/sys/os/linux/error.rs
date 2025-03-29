@@ -71,6 +71,23 @@ macro_rules! match_linux_to_io {
         }
     };
 }
+macro_rules! match_io_to_linux {
+    ($err:ident) => {
+        match $err.kind() {
+            IoErrorKind::PermissionDenied => LinuxError::Sys(ERRNO::EACCES),
+            IoErrorKind::NotFound => LinuxError::Sys(ERRNO::ENOENT),
+            IoErrorKind::Interrupted => LinuxError::Sys(ERRNO::EINTR),
+            IoErrorKind::WouldBlock => LinuxError::Sys(ERRNO::EAGAIN),
+            IoErrorKind::OutOfMemory => LinuxError::Sys(ERRNO::ENOMEM),
+            IoErrorKind::InvalidInput => LinuxError::Sys(ERRNO::EINVAL),
+            IoErrorKind::StorageFull => LinuxError::Sys(ERRNO::ENOSPC),
+            IoErrorKind::BrokenPipe => LinuxError::Sys(ERRNO::EPIPE),
+            IoErrorKind::UnexpectedEof => LinuxError::NoInput,
+            IoErrorKind::InvalidData => LinuxError::InvalidUtf8,
+            _ => LinuxError::Sys(ERRNO::EIO), // Default to "I/O error"
+        }
+    };
+}
 #[rustfmt::skip]
 impl LinuxError {
     /// Converts `LinuxError` to `IoError`.
@@ -82,9 +99,24 @@ impl LinuxError {
     /// Converts `LinuxError` to `IoError`.
     #[cfg(not(feature = "std"))]
     pub const fn to_io(self) -> IoError { match_linux_to_io!(self) }
+
+    /// Converts `IoError` to `LinuxError`.
+    ///
+    /// This will only be *const* if the `std` feature is **disabled**,
+    /// because `std::io::Error::kind` is not *const*.
+    #[cfg(feature = "std")]
+    pub fn from_io(err: IoError) -> LinuxError { match_io_to_linux!(err) }
+    /// Converts `IoError` to `LinuxError`.
+    #[cfg(not(feature = "std"))]
+    pub const fn from_io(err: IoError) -> LinuxError { match_io_to_linux!(err) }
 }
 impl From<LinuxError> for IoError {
     fn from(err: LinuxError) -> Self {
         err.to_io()
+    }
+}
+impl From<IoError> for LinuxError {
+    fn from(err: IoError) -> Self {
+        LinuxError::from_io(err)
     }
 }
