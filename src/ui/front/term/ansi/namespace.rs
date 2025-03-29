@@ -1,6 +1,6 @@
-// devela::ui::front::term::ansi::ansi
+// devela::ui::front::term::ansi::namespace
 //
-//! ANSI codes.
+//! Defines the [`Ansi`] namespace for emitting ANSI codes.
 //
 
 use crate::Ascii;
@@ -15,7 +15,7 @@ use crate::Ascii;
 /// - [Color (3-bit)][Self#3-bit-color-escape-codes]
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
-// - [Print method][Self#print-method]
+/// - [Print methods][Self#print-methods]
 pub struct Ansi;
 
 impl Ansi {

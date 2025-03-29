@@ -22,22 +22,25 @@ It abstracts away specific backend implementations.
 Ansi::print(&Ansi::ERASE_SCREEN);
 Ansi::print(&Ansi::CURSOR_MOVE3(120, 80));
 Ansi::print(&Ansi::COLORS_BRIGHT_BG(AnsiColor3b::Blue, AnsiColor3b::Black));
-```";
+```
+See also the [`ansi!`][crate::ansi] macro.
+
+";
 }
 
-/// # Print method
+/// # Print methods
 //
 // In sync with /src/sys/os/print/mod.rs:
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"),)))
-)]
+#[rustfmt::skip]
 impl super::Ansi {
-    // std version (even if linux)
+    // std version (overrides linux)
     #[doc = DOC_ANSI_PRINT!()]
+    #[cfg_attr(nightly_doc,
+        doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
+    )]
     #[cfg(feature = "std")]
     // #[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri),
-    //     any( // targets:
+    //     any(
     //         target_arch = "x86", target_arch = "x86_64",
     //         target_arch = "arm", target_arch = "aarch64",
     //         target_arch = "riscv32", target_arch = "riscv64"
@@ -49,9 +52,12 @@ impl super::Ansi {
 
     // linux version (only if not(std)) (because of the extra conversions)
     #[doc = DOC_ANSI_PRINT!()]
+    #[cfg_attr(nightly_doc,
+        doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
+    )]
     #[cfg(not(feature = "std"))]
     #[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri),
-        any( // targets:
+        any(
             target_arch = "x86", target_arch = "x86_64",
             target_arch = "arm", target_arch = "aarch64",
             target_arch = "riscv32", target_arch = "riscv64"
@@ -63,6 +69,7 @@ impl super::Ansi {
 
     /// The most efficient print method, exclusive for `std`.
     #[cfg(feature = "std")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub fn print_std(sequence: &[u8]) -> IoResult<()> {
         crate::Io::stdout().write_all(sequence)
     }
@@ -70,12 +77,14 @@ impl super::Ansi {
     /// The most efficient print method, exclusive for `linux`.
     ///
     /// This method avoids having to perform extra error conversions.
-    #[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri),
-        any( // targets:
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "linux", feature = "unsafe_syscall"))))]
+    #[cfg(all(
+        feature = "linux", feature = "unsafe_syscall", not(miri),
+        any(
             target_arch = "x86", target_arch = "x86_64",
             target_arch = "arm", target_arch = "aarch64",
             target_arch = "riscv32", target_arch = "riscv64"
-        ),
+        )
     ))]
     pub fn print_linux(sequence: &[u8]) -> crate::LinuxResult<()> {
         crate::Linux::print_bytes(sequence)
