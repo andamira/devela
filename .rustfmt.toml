@@ -1,83 +1,125 @@
 # rustfmt configuration file
 #
-# - only stable config settings are included.
+# - options are sorted alphabetically.
+# - all stable config settings are included.
 # - * indicates the default value of a setting.
 # - CHECK indicates the use of a non-default value.
 #
-# See: https://rust-lang.github.io/rustfmt/
+# Link: https://rust-lang.github.io/rustfmt/
 ################################################################################
 
-# Specifies which edition is used by the parser.
-edition = "2021" # *2015,2018,2021 CHECK
+#* stable options *#
 
-# Control the layout of arguments in a function.
-fn_params_layout = "Tall" # *"Tall", "Compressed", "Vertical"
-
-# Maximum width of each line.
-max_width = 100 # *100
-
-# Maximum width of an array literal before falling back to vertical formatting.
+## Maximum width of an array literal before falling back to vertical formatting.
+# - https://rust-lang.github.io/rustfmt/#array_width
 array_width = 88 # *60 CHECK
 
-# Max width of args of function-like attributes before falling back to vertical.
+## Max width of args of function-like attributes before falling back to vertical.
+# - https://rust-lang.github.io/rustfmt/#attr_fn_like_width
 attr_fn_like_width = 88 # *70 CHECK
 
-# Maximum width of a chain to fit on one line.
+## Maximum width of a chain to fit on one line.
+# - https://rust-lang.github.io/rustfmt/#chain_width
 chain_width = 88 # *60 CHECK
 
-# Maximum width of the args of a function call before falling back to vertical.
+## Don't reformat anything.
+# - https://rust-lang.github.io/rustfmt/#disable_all_formatting
+# - WAIT: [ignore](https://github.com/rust-lang/rustfmt/issues/3395)
+disable_all_formatting = false # *false true
+
+## Specifies which edition is used by the parser.
+# - https://rust-lang.github.io/rustfmt/#edition
+edition = "2024" # *2015,2018,2021,2024 CHECK
+
+## Maximum width of the args of a function call before falling back to vertical.
+# - https://rust-lang.github.io/rustfmt/#fn_call_width
 fn_call_width = 88 # *60 CHECK
 
-# Always print the abi for extern items.
+## Control the layout of arguments in a function.
+# - https://rust-lang.github.io/rustfmt/#fn_params_layout
+fn_params_layout = "Tall" # *Tall,Compressed,Vertical
+
+## Always print the abi for extern items.
+# - https://rust-lang.github.io/rustfmt/#force_explicit_abi
 force_explicit_abi = true # *true
 
-# Use tab characters for indentation, spaces for alignment.
+## Use tab characters for indentation, spaces for alignment.
+# - https://rust-lang.github.io/rustfmt/#hard_tabs
 hard_tabs = false # *false
 
-# Controls whether to include a leading pipe on match arms.
-match_arm_leading_pipes = "Never" # *Never, Always, Preserve
+## Controls whether to include a leading pipe on match arms.
+# - https://rust-lang.github.io/rustfmt/#match_arm_leading_pipes
+match_arm_leading_pipes = "Never" # *Never,Always,Preserve
 
-# Merge multiple derives into a single one.
+## Put a trailing comma after a block based match arm (non-block arms are not affected)
+# - https://rust-lang.github.io/rustfmt/#match_block_trailing_comma
+match_block_trailing_comma = false # *false,true
+
+## Maximum width of each line.
+# - https://rust-lang.github.io/rustfmt/#max_width
+max_width = 100 # *100
+
+## Merge multiple derives into a single one.
+# - https://rust-lang.github.io/rustfmt/#merge_derives
 merge_derives = true # *true
 
-# Unix or Windows line endings.
+## Unix or Windows line endings.
+# - https://rust-lang.github.io/rustfmt/#newline_style
 newline_style = "Unix" # *Auto,Native,Unix,Windows CHECK
 
-# Remove nested parens.
+## Remove nested parens.
+# - https://rust-lang.github.io/rustfmt/#remove_nested_parens
 remove_nested_parens = true # *true
 
-# Reorder import and extern crate statements alphabetically in groups (a group
-# is separated by a newline).
+## Reorder import and extern crate statements alphabetically in groups (separated by a newline).
+# - https://rust-lang.github.io/rustfmt/#reorder_imports
 reorder_imports = true # *true
 
-# Reorder mod declarations alphabetically in group.
+## Reorder mod declarations alphabetically in group.
+# - https://rust-lang.github.io/rustfmt/#reorder_modules
 reorder_modules = false # *true false CHECK
 
-# Maximum line length for single line if-else expressions. A value of 0 (zero)
-# results in if-else expressions always being broken into multiple lines. Note
-# this occurs when use_small_heuristics is set to Off.
+## The width threshold for an array element to be considered "short".
+# - https://rust-lang.github.io/rustfmt/#short_array_element_width_threshold
+short_array_element_width_threshold = 10 # *10
+
+## Maximum line length for single line if-else expressions.
+# - https://rust-lang.github.io/rustfmt/#single_line_if_else_max_width
 single_line_if_else_max_width = 80 # *50 CHECK
 
-# Maximum width in the body of a struct literal before falling back to vertical
-# formatting. A value of 0 (zero) results in struct literals always being broken
-# into multiple lines. Note this occurs when use_small_heuristics is set to Off.
+## Maximum line length for single line let-else statements.
+# - https://rust-lang.github.io/rustfmt/#single_line_let_else_max_width
+single_line_let_else_max_width = 80 # *50 CHECK
+
+## Maximum width in the body of a struct literal before falling back to vertical formatting.
+# - https://rust-lang.github.io/rustfmt/#struct_lit_width
 struct_lit_width = 50 # *18 CHECK
 
-# Maximum width in the body of a struct variant before falling back to vertical
-# formatting. A value of 0 (zero) results in struct literals always being broken
-# into multiple lines. Note this occurs when use_small_heuristics is set to Off.
+## Maximum width in the body of a struct variant before falling back to vertical formatting.
+# - https://rust-lang.github.io/rustfmt/#struct_variant_width
 struct_variant_width = 88 # *35 CHECK
 
-# Number of spaces per tab.
+## Number of spaces per tab.
+# - https://rust-lang.github.io/rustfmt/#tab_spaces
 tab_spaces = 4 # *4
 
-# Use field initialize shorthand if possible.
+## Use field initialize shorthand if possible.
+# - https://rust-lang.github.io/rustfmt/#use_field_init_shorthand
 use_field_init_shorthand = true # *false CHECK
 
-# This option can be used to simplify the management and bulk updates of the
-# granular width configuration settings, that respectively control when
-# formatted constructs are multi-lined/vertical based on width.
+## Simplify the management and bulk updates of the granular width configuration settings.
+# - https://rust-lang.github.io/rustfmt/#use_small_heuristics
 use_small_heuristics = "Default" # *Default,Off,Max
 
-# Replace uses of the try! macro by the ? shorthand.
+## Replace uses of the try! macro by the ? shorthand.
+# - https://rust-lang.github.io/rustfmt/#use_try_shorthand
 use_try_shorthand = false # *false
+
+
+#* unstable options *#
+
+## Brace style for control flow constructs
+# - https://rust-lang.github.io/rustfmt/#control_brace_style
+# - WAIT: [control_brace_style](https://github.com/rust-lang/rustfmt/issues/3377)
+# control_brace_style = "AlwaysSameLine" # *AlwaysSameLine,AlwaysNextLine,ClosingNextLine
+
