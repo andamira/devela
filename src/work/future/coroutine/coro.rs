@@ -12,9 +12,9 @@
 //! - <https://www.reddit.com/r/rust/comments/etqwhx/a_stackless_rust_coroutine_library_under_100_loc/>
 //
 
-use crate::{serr, sok, Debug, Future, OptRes, Pin, TaskContext, TaskPoll};
 #[cfg(feature = "alloc")]
 use crate::{Box, TaskWaker, VecDeque};
+use crate::{Debug, Future, OptRes, Pin, TaskContext, TaskPoll, serr, sok};
 
 /* coroutine */
 

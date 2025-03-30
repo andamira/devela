@@ -9,7 +9,7 @@
 // - [Lock-free and alloc-free implementation](https://github.com/zesterer/pollster/pull/9)
 // - [add benchmarks](https://github.com/zesterer/pollster/pull/20)
 
-use crate::{pin, Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWaker};
+use crate::{Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWaker, pin};
 
 /// Blocks the thread until the `future` is ready.
 ///

@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    any_type_name, spin_loop, AtomicBool, AtomicOrdering, Debug, Deref, DerefMut, FmtResult,
-    Formatter, UnsafeCell,
+    AtomicBool, AtomicOrdering, Debug, Deref, DerefMut, FmtResult, Formatter, UnsafeCell,
+    any_type_name, spin_loop,
 };
 #[cfg(feature = "std")]
 use crate::{ExtThread, Thread};

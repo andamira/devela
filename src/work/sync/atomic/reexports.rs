@@ -1,15 +1,12 @@
-// devela::work::sync::atomic
+// devela::work::sync::atomic::reexports
 //
-//! Atomic types.
-//!
-//! It also re-exports the [`Atomic`] type from the
-//! [`atomic`](https://docs.rs/atomic) crate,
-//! and some useful definitions from `core`.
+//! Re-exports items from core, [portable-atomic](https://docs.rs/portable-atomic),
+//! and the [`Atomic`] type from the [atomic](https://docs.rs/atomic) crate.
 //
 
 #[cfg(feature = "dep_portable_atomic")]
 use crate::DOC_ATOMIC_CORE_PORTABLE;
-use crate::{reexport, TAG_ATOMIC, TAG_ATOMIC_CORE_PORTABLE};
+use crate::{TAG_ATOMIC, TAG_ATOMIC_CORE_PORTABLE, reexport};
 
 /* from `core` */
 
@@ -65,14 +62,14 @@ reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
 #[doc = "A thread-safe signed integer type.\n\n"]
 #[doc = DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-pub use crate::_dep::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
+pub use crate::_dep::portable_atomic::{AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicIsize};
 
 #[doc = TAG_ATOMIC!()]
 #[doc = TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "A thread-safe unsigned integer type.\n\n"]
 #[doc = DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-pub use crate::_dep::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
+pub use crate::_dep::portable_atomic::{AtomicU8, AtomicU16, AtomicU32, AtomicU64, AtomicUsize};
 
 #[doc = TAG_ATOMIC!()]
 #[doc = TAG_ATOMIC_CORE_PORTABLE!()]
@@ -130,13 +127,13 @@ pub use core::sync::atomic::AtomicBool;
 #[cfg(feature = "dep_atomic")]
 mod impl_const_default_for_atomic {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
-    use crate::{impl_cdef, ConstDefault};
+    use crate::{ConstDefault, impl_cdef};
     impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => super::Atomic<T>];
 }
 #[cfg(feature = "dep_portable_atomic")]
 mod impl_const_default_for_portable_atomic {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
-    use crate::{impl_cdef, ConstDefault};
+    use crate::{ConstDefault, impl_cdef};
 
     // without core alternatives:
     impl_cdef![Self::new(f32::DEFAULT) => super::AtomicF32];
@@ -160,7 +157,7 @@ mod impl_const_default_for_portable_atomic {
 #[cfg(not(feature = "dep_portable_atomic"))]
 mod impl_const_default_for_core {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
-    use crate::{impl_cdef, ConstDefault};
+    use crate::{ConstDefault, impl_cdef};
 
     #[cfg(target_has_atomic = "8")]
     impl_cdef![Self::new(i8::DEFAULT) => super::AtomicI8];

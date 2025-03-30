@@ -4,7 +4,6 @@
 //
 
 mod coro; // CoroManager, CoroWork, CoroWorker
-
 #[cfg(nightly_coro)]
 #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
 mod reexports;
