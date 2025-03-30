@@ -24,6 +24,9 @@ jobs:
         with:
           components: rustfmt
 
+      - name: "rustfmt +stable --version"
+        run: rustfmt +stable --version
+
       - name: "./utils/rustfmt check all exclude"
         run: ./utils/rustfmt check all exclude
 

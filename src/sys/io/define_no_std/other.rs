@@ -13,9 +13,9 @@
 // - https://doc.rust-lang.org/std/io/struct.IoSlice.html
 // - https://doc.rust-lang.org/std/io/struct.IoSliceMut.html
 
-use crate::{impl_trait, sf, IoErrorKind, IoRead, IoResult, IoSeek, IoSeekFrom, IoWrite};
 #[cfg(feature = "alloc")]
 use crate::{IoError, Vec};
+use crate::{IoErrorKind, IoRead, IoResult, IoSeek, IoSeekFrom, IoWrite, impl_trait, sf};
 
 /// Copies the entire contents of a reader into a writer.
 ///

@@ -26,7 +26,7 @@
 //   - DataError
 //   - DataResult
 
-use crate::{define_error, Interval, Mismatch};
+use crate::{Interval, Mismatch, define_error};
 
 /* individual errors */
 
@@ -171,7 +171,7 @@ pub use full_composite::*;
 mod full_composite {
     use super::*;
     use crate::{
-        NotAvailable, NotImplemented, NotSupported, DOC_NOT_IMPLEMENTED, DOC_NOT_SUPPORTED,
+        DOC_NOT_IMPLEMENTED, DOC_NOT_SUPPORTED, NotAvailable, NotImplemented, NotSupported,
     };
 
     define_error! { composite: fmt(f)

@@ -129,7 +129,7 @@ pub(crate) use tests::*;
 mod tests {
     #![allow(dead_code, unused_variables)]
 
-    use crate::{AtomicOrdering, AtomicU64, Enum, Ratio, TimeGranularity, TimeSource, TAG_FAKE};
+    use crate::{AtomicOrdering, AtomicU64, Enum, Ratio, TAG_FAKE, TimeGranularity, TimeSource};
 
     /// Global test time source for convenience.
     #[doc = TAG_FAKE!()]

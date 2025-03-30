@@ -4,7 +4,7 @@
 #[test]
 fn api_coro() {
     use super::size_of_expr;
-    use crate::{vec_ as vec, Coroutine, String};
+    use crate::{Coroutine, String, vec_ as vec};
 
     pub(super) trait Foo<'a, 'b> {}
     impl<'a> Foo<'a, 'static> for () {}

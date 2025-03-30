@@ -6,7 +6,7 @@
 // - constructors
 // - methods
 
-use crate::{array_init, Array, Box, Boxed, Vec};
+use crate::{Array, Box, Boxed, Vec, array_init};
 
 /// # *Boxed* constructors
 impl<T, const CAP: usize> Array<T, CAP, Boxed> {

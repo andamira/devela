@@ -5,8 +5,9 @@
 
 #[cfg(_bit··)]
 use crate::{
-    iif, Bitwise,
+    Bitwise,
     MismatchedBounds::{self, DataOverflow, IndexOutOfBounds, MismatchedIndices},
+    iif,
 };
 
 macro_rules! impl_bits_wrapper {

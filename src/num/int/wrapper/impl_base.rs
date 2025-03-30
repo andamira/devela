@@ -10,7 +10,7 @@
 //   - digits_base_sign
 //   - digital_root
 //   - digital_root_base
-use crate::{iif, paste, Int};
+use crate::{Int, iif, paste};
 
 /// Implements base-related methods for [`Int`].
 ///

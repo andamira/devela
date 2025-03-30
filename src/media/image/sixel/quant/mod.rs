@@ -6,9 +6,9 @@ mod diffuse_fns;
 use diffuse_fns::*;
 
 use super::{
-    PixelFormat, SixelError, SixelMean, SixelQuality, SixelResult, SixelSplit, SIXEL_PALETTE_MAX,
+    PixelFormat, SIXEL_PALETTE_MAX, SixelError, SixelMean, SixelQuality, SixelResult, SixelSplit,
 };
-use crate::{vec_ as vec, Dither, HashMap, Ordering, Vec};
+use crate::{Dither, HashMap, Ordering, Vec, vec_ as vec};
 
 /// TODO
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

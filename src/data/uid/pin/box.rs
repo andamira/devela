@@ -3,7 +3,7 @@
 //! Pinned memory-based unique IDs.
 //
 
-use crate::{addr_of, Box, Pin};
+use crate::{Box, Pin, addr_of};
 
 /// A unique identifier based on a pinned heap-allocated memory address.
 ///

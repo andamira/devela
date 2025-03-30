@@ -6,8 +6,8 @@
 #[cfg(feature = "alloc")]
 use crate::Boxed;
 use crate::{
-    Array, Bare, ConstDefault, DataCollection, DataStack, NotAvailable, NotEnoughElements,
-    NotEnoughSpace, Ordering, Stack, StackIter, Storage, _core::fmt,
+    _core::fmt, Array, Bare, ConstDefault, DataCollection, DataStack, NotAvailable,
+    NotEnoughElements, NotEnoughSpace, Ordering, Stack, StackIter, Storage,
 };
 
 // helper macro for implementing traits for a Stack depending on the custom index size.

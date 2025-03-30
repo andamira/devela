@@ -9,7 +9,7 @@
 
 #[cfg(any(doc, unsafe··))]
 use crate::Ptr;
-use crate::{iif, Compare};
+use crate::{Compare, iif};
 use core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use core::slice::{from_raw_parts, from_raw_parts_mut};

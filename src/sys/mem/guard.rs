@@ -8,8 +8,8 @@
 //
 
 use ::devela::{
-    any_type_name, define_static_map, transmute, Any, Deref, DerefMut, Hash, Hasher, HasherFx, Mem,
-    PhantomData, PtrNonNull, RefCell,
+    Any, Deref, DerefMut, Hash, Hasher, HasherFx, Mem, PhantomData, PtrNonNull, RefCell,
+    any_type_name, define_static_map, transmute,
 };
 
 // Stores the current pointers for concrete types.

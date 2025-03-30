@@ -1,7 +1,7 @@
 // devela::examples::work::coro_manager
 //!
 
-use devela::{serr, sok, CoroManager};
+use devela::{CoroManager, serr, sok};
 
 fn main() {
     let mut cr = CoroManager::<char, String>::new();
@@ -26,11 +26,7 @@ fn main() {
 
             println!("  instance {i} BYE!");
 
-            if i == 2 {
-                serr(format!["instance {i} produced an error"])
-            } else {
-                sok('x')
-            }
+            if i == 2 { serr(format!["instance {i} produced an error"]) } else { sok('x') }
         });
     }
     cr.push(|mut c| async move {

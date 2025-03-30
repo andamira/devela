@@ -7,8 +7,8 @@
 use super::super::{check_fat_pointer, list_push_gen, make_fat_ptr};
 use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle};
 use crate::{
-    MemAligned,
     _core::{marker, ptr},
+    MemAligned,
 };
 
 impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {

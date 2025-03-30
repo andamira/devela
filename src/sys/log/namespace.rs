@@ -5,7 +5,7 @@ use super::{LogLevelFilter, Logger, LoggerSetError};
 use ::log::set_boxed_logger;
 #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
 use ::log::set_logger_racy;
-use ::log::{logger, max_level, set_logger, set_max_level, STATIC_MAX_LEVEL};
+use ::log::{STATIC_MAX_LEVEL, logger, max_level, set_logger, set_max_level};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Log-related operations.

@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    iif, Bound, ConstDefault, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo,
-    RangeToInclusive,
+    Bound, ConstDefault, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
+    iif,
 };
 
 #[doc = crate::TAG_QUANT!()]

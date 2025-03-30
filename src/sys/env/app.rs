@@ -3,7 +3,7 @@
 //! Defines [`AppConfig`], [`AppEnv`], [`AppApple`], [`AppUnix`], [`AppWindows`] and [`AppXdg`].
 //
 
-use crate::{iif, Env, Path, PathBuf};
+use crate::{Env, Path, PathBuf, iif};
 
 /// Application specific metadata.
 ///

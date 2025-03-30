@@ -19,12 +19,12 @@
 // - helpers
 
 use devela::{
-    js_bool, js_int32, js_number, js_reexport, js_uint32, transmute, Js, JsEventKind, JsEventMouse,
-    JsEventPointer, JsInstant, JsPermission, JsPermissionState, JsTextMetrics, JsTextMetricsFull,
-    JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
+    Js, JsEventKind, JsEventMouse, JsEventPointer, JsInstant, JsPermission, JsPermissionState,
+    JsTextMetrics, JsTextMetricsFull, JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
+    js_bool, js_int32, js_number, js_reexport, js_uint32, transmute,
 };
 #[cfg(feature = "alloc")]
-use devela::{vec_ as vec, String, Vec};
+use devela::{String, Vec, vec_ as vec};
 
 // helper for Web API doc links
 #[rustfmt::skip]

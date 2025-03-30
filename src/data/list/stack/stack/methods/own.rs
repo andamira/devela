@@ -11,8 +11,8 @@
 // - returning it.
 
 use crate::{
-    cswap, sf, Bare, DataNotEnough, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Own,
-    Stack,
+    Bare, DataNotEnough, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Own, Stack, cswap,
+    sf,
 };
 
 // helper macro to impl methods for a Stack with custom index size.

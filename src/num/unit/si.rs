@@ -9,7 +9,7 @@ use super::helpers::impl_try_from;
 use crate::ExtFloat;
 #[allow(unused_imports)]
 #[cfg(feature = "alloc")]
-use crate::{vec_ as vec, Vec};
+use crate::{Vec, vec_ as vec};
 
 /// SI (metric) unit prefixes.
 ///

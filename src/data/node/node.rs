@@ -6,10 +6,11 @@
 //
 
 use crate::{
-    num::niche::*,
-    paste, unwrap, ConstDefault,
+    ConstDefault,
     DataError::{IndexOutOfBounds, NodeLinkNotSet, NodeLinkNotUnique, NotEnoughSpace},
     DataResult as Result, Mem, Own,
+    num::niche::*,
+    paste, unwrap,
 };
 
 macro_rules! impl_node {

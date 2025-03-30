@@ -14,13 +14,13 @@
 // - root_round TODO
 
 use super::super::shared_docs::*;
+#[allow(unused_imports, reason = "various reasons")]
+use crate::NumError::{self, NonNegativeRequired, NonZeroRequired, Overflow};
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
-#[allow(unused_imports, reason = "various reasons")]
-use crate::NumError::{self, NonNegativeRequired, NonZeroRequired, Overflow};
-use crate::{iif, num::upcasted_op, paste, Int, NumResult as Result};
+use crate::{Int, NumResult as Result, iif, num::upcasted_op, paste};
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
 #[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int··)]

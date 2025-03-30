@@ -5,12 +5,12 @@
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
 
-use crate::{c_uint, TermSize};
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
-    iif, Linux, LinuxError, LinuxResult as Result, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL,
-    LINUX_TERMIOS_LFLAG,
+    LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG, Linux, LinuxError,
+    LinuxResult as Result, iif,
 };
+use crate::{TermSize, c_uint};
 
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.

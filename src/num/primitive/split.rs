@@ -7,7 +7,7 @@
 // - trait implementation
 // - wrapper implementations
 
-use crate::{paste, Cast};
+use crate::{Cast, paste};
 
 /// Offers methods to split a primitive into an array of smaller primitives.
 ///

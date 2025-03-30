@@ -21,12 +21,12 @@ use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
 use crate::{
-    cif, iif, paste, Int,
+    Int,
     NumError::{NonZeroRequired, Overflow},
-    NumResult as Result, ValueQuant,
+    NumResult as Result, ValueQuant, cif, iif, paste,
 };
 #[cfg(_int_i··)]
-use crate::{unwrap, NumError::NoInverse};
+use crate::{NumError::NoInverse, unwrap};
 
 // helper function to be called from the cold path branch when modulus == 0.
 #[cold] #[inline(never)] #[cfg(_int··)] #[rustfmt::skip]

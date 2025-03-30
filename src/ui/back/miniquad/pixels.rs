@@ -7,8 +7,8 @@
 // - mod shader
 
 use crate::{
-    format_buf, g_vec2, g_vertex2, iif, miniquad, vec_ as vec, Box, MiniquadEventHandlerExt,
-    MiniquadWindow, Vec,
+    Box, MiniquadEventHandlerExt, MiniquadWindow, Vec, format_buf, g_vec2, g_vertex2, iif,
+    miniquad, vec_ as vec,
 };
 use ::miniquad::{
     Bindings, BufferLayout, EventHandler, FilterMode, MipmapFilterMode, Pipeline, PipelineParams,
@@ -218,9 +218,9 @@ impl EventHandler for MiniquadPixels {
     }
 }
 
-use shader::{shader_meta, FRAGMENT, VERTEX};
+use shader::{FRAGMENT, VERTEX, shader_meta};
 mod shader {
-    use crate::{vec_ as vec, ToString};
+    use crate::{ToString, vec_ as vec};
     use ::miniquad::{ShaderMeta, UniformBlockLayout};
 
     // Returns the shader metadata, such as the names of the images and uniforms it uses.

@@ -123,7 +123,7 @@ pub use _str as str;
 mod tests_str {
     #![allow(unused)]
 
-    use crate::{const_assert, str, unwrap, CStr, Slice};
+    use crate::{CStr, Slice, const_assert, str, unwrap};
 
     const ONE: &str = "1";
     const TWO: &str = "2";

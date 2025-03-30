@@ -4,12 +4,12 @@
 //
 
 use crate::{
-    FileMetadata, FilePermissions, IoResult, IterDirRead, Path, PathBuf,
     _dep::_std::fs::{
         canonicalize, copy, create_dir, create_dir_all, exists, hard_link, metadata, read,
         read_dir, read_link, read_to_string, remove_dir, remove_dir_all, remove_file, rename,
         set_permissions, symlink_metadata, write,
     },
+    FileMetadata, FilePermissions, IoResult, IterDirRead, Path, PathBuf,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]

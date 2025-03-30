@@ -20,7 +20,7 @@ use crate::{iif, paste};
 use crate::Float;
 #[allow(unused_imports)]
 #[cfg(nightly_float)]
-use ::core::{f128, f16};
+use ::core::{f16, f128};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides comparing methods for `T`.

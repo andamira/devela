@@ -12,7 +12,7 @@
 use super::super::constants::{FloatConst, *};
 use crate::Float;
 #[cfg(nightly_float)]
-use ::core::{f128, f16};
+use ::core::{f16, f128};
 
 /// impl. floating-point technical constants
 macro_rules! float_technical_const_impls {

@@ -399,7 +399,7 @@ pub use id_seq;
 
 mod test {
     #[allow(unused_imports)] // BUG:compiler doesn't detect use of ExtAny::type_of
-    use crate::{assert_eq_all, id_seq, ExtAny};
+    use crate::{ExtAny, assert_eq_all, id_seq};
 
     #[test]
     fn id_seq_start_uniqueness_end() {

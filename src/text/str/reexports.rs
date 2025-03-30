@@ -6,7 +6,7 @@
 //! prefixed with `str_` and with a new first line of documentation.
 //
 
-use crate::{impl_cdef, reexport, TAG_TEXT};
+use crate::{TAG_TEXT, impl_cdef, reexport};
 
 /* core */
 

@@ -10,12 +10,12 @@ use crate::_core::ptr::{
     swap_nonoverlapping, write, write_bytes, write_unaligned, write_volatile,
 };
 use crate::{
-    iif, Hasher,
     _core::ptr::{
         addr_eq, dangling, dangling_mut, eq, from_mut, from_ref, hash, null, null_mut,
         slice_from_raw_parts, slice_from_raw_parts_mut, with_exposed_provenance,
         with_exposed_provenance_mut, without_provenance, without_provenance_mut,
     },
+    Hasher, iif,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]

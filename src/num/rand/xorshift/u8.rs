@@ -3,7 +3,7 @@
 //! 8-bit versions of XorShift.
 //
 
-use crate::{xorshift_basis, ConstDefault, Own};
+use crate::{ConstDefault, Own, xorshift_basis};
 
 #[doc = crate::TAG_RAND!()]
 /// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -44,11 +44,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
         debug_assert![A > 0 && A <= 7];
         debug_assert![B > 0 && A <= 7];
         debug_assert![C > 0 && A <= 7];
-        if seed == 0 {
-            Self::cold_path_default()
-        } else {
-            Self(seed)
-        }
+        if seed == 0 { Self::cold_path_default() } else { Self(seed) }
     }
 
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed,

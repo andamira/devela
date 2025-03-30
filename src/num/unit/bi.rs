@@ -9,7 +9,7 @@ use super::helpers::impl_try_from;
 use crate::ExtFloat;
 #[cfg(feature = "alloc")]
 #[allow(unused_imports)]
-use crate::{vec_ as vec, Vec};
+use crate::{Vec, vec_ as vec};
 
 /// Binary unit prefixes.
 ///
@@ -496,10 +496,10 @@ mod tests {
         UnitBi,
         UnitBi::{Exbi, Gibi, Kibi, Mebi, Yobi, Zebi},
     };
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
-    use crate::vec_ as vec;
     #[allow(unused_imports)]
     use crate::FloatConst;
+    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    use crate::vec_ as vec;
 
     /* reduce */
 

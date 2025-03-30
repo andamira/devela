@@ -7,9 +7,9 @@
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
 
-use crate::{c_void, Debug, FmtResult, Formatter};
+use crate::{Debug, FmtResult, Formatter, c_void};
 #[cfg(feature = "unsafe_syscall")]
-use crate::{impl_trait, LINUX_SIGACTION};
+use crate::{LINUX_SIGACTION, impl_trait};
 
 /// Examine and change a signal action.
 ///

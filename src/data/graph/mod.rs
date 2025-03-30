@@ -10,10 +10,11 @@ mod edge;
 use edge::impl_graph_edge;
 
 use crate::{
-    num::niche::*,
-    paste, unwrap, Array, Bare, ConstDefault,
+    Array, Bare, ConstDefault,
     DataError::{IndexOutOfBounds, KeyAlreadyExists, NodeEmpty, NotEnoughSpace},
     DataResult as Result, Storage,
+    num::niche::*,
+    paste, unwrap,
 };
 
 macro_rules! impl_graph {

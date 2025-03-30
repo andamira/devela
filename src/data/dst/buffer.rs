@@ -59,11 +59,7 @@ unsafe impl<T: MemPod, const CAP: usize> DstBuf for [MaybeUninit<T>; CAP] {
         self
     }
     fn extend(&mut self, len: usize) -> Result<(), ()> {
-        if len > CAP {
-            Err(())
-        } else {
-            Ok(())
-        }
+        if len > CAP { Err(()) } else { Ok(()) }
     }
 }
 

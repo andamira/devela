@@ -1,6 +1,6 @@
 // devela::data::codec::hash::fnv
 
-use crate::{concat as cc, stringify as fy, Cast, ConstDefault, Hasher, HasherBuildDefault};
+use crate::{Cast, ConstDefault, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 
 /// A builder for default Fnv hashers.
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;

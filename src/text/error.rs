@@ -11,8 +11,8 @@
 //   - TextError
 
 use crate::{
-    _core::str::Utf8Error, define_error, Interval, Mismatch, MismatchedCapacity,
-    DOC_MISMATCHED_CAPACITY,
+    _core::str::Utf8Error, DOC_MISMATCHED_CAPACITY, Interval, Mismatch, MismatchedCapacity,
+    define_error,
 };
 
 /* individual errors */
@@ -81,7 +81,7 @@ pub use full_composite::*;
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "error", text··))))]
 mod full_composite {
     use super::*;
-    use crate::{ElementNotFound, MismatchedCapacity, DOC_ELEMENT_NOT_FOUND};
+    use crate::{DOC_ELEMENT_NOT_FOUND, ElementNotFound, MismatchedCapacity};
 
     #[doc = crate::TAG_RESULT!()]
     /// A text-related result.

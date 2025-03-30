@@ -3,7 +3,7 @@
 //! Reexported items.
 //
 
-use crate::{reexport, TAG_DATA_STRUCTURE, TAG_ITERATOR};
+use crate::{TAG_DATA_STRUCTURE, TAG_ITERATOR, reexport};
 
 reexport! { rust: core::array,
     tag: TAG_ITERATOR!(),

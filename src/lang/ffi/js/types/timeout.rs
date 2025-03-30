@@ -4,7 +4,7 @@
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 use crate::web_api;
 #[allow(unused_imports)]
-use crate::{js_uint32, Js};
+use crate::{Js, js_uint32};
 
 /// A handle to a JavaScript timeout.
 ///

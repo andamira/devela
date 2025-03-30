@@ -4,9 +4,9 @@
 //
 
 use crate::{
-    array_init, Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign,
+    _core::fmt, Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign,
     BitXor, BitXorAssign, Borrow, BorrowMut, ConstDefault, Deref, DerefMut, Hash, Hasher, Not,
-    Ordering, Storage, _core::fmt,
+    Ordering, Storage, array_init,
 };
 
 impl<T, const CAP: usize, S: Storage> Drop for ArrayUninit<T, CAP, S> {

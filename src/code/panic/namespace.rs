@@ -6,8 +6,8 @@
 
 #[cfg(feature = "std")]
 use crate::{
-    Any, Box, PanicHookInfo, PanicUnwindSafe, ThreadResult,
     _dep::_std::panic::{catch_unwind, panic_any, resume_unwind, set_hook, take_hook},
+    Any, Box, PanicHookInfo, PanicUnwindSafe, ThreadResult,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]

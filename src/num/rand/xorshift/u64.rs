@@ -5,7 +5,7 @@
 
 #[cfg(feature = "join")]
 use crate::Cast;
-use crate::{xorshift_basis, ConstDefault, Own};
+use crate::{ConstDefault, Own, xorshift_basis};
 
 #[doc = crate::TAG_RAND!()]
 /// The `XorShift64` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -52,11 +52,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     ///
     /// If the seed is `0`, the default seed is used instead.
     pub const fn new(seed: u64) -> Self {
-        if seed == 0 {
-            Self::cold_path_default()
-        } else {
-            Self(seed)
-        }
+        if seed == 0 { Self::cold_path_default() } else { Self(seed) }
     }
 
     /// Returns a seeded `XorShift64` generator from the given 8-bit seed, unchecked.

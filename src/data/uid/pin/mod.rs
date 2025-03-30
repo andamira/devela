@@ -8,7 +8,7 @@ mod r#box;
 #[cfg(feature = "alloc")]
 pub use r#box::IdPinBox;
 
-use crate::{addr_of, Pin};
+use crate::{Pin, addr_of};
 
 /// A unique identifier based on a pinned stack-allocated reference.
 ///
@@ -48,7 +48,7 @@ impl<'a> IdPin<'a> {
 }
 
 mod impl_traits {
-    use crate::{impl_trait, IdPin, Ordering, Ptr};
+    use crate::{IdPin, Ordering, Ptr, impl_trait};
 
     impl_trait![fmt::Debug for IdPin<'a> |self, f| write!(f, "{}", self.as_usize())];
 

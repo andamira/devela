@@ -52,7 +52,7 @@ impl<V: Copy, Q: Copy> ValueQuant<V, Q> {
 }
 
 mod core_impls {
-    use crate::{impl_trait, Ordering, ValueQuant};
+    use crate::{Ordering, ValueQuant, impl_trait};
 
     impl<V: Clone, Q: Clone> Clone for ValueQuant<V, Q> {
         fn clone(&self) -> Self {

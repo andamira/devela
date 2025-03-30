@@ -4,7 +4,7 @@
 //
 // methods: 1 + 25 + 8 = 34
 
-use crate::{iif, Own};
+use crate::{Own, iif};
 
 /* constructors (2) */
 

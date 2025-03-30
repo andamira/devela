@@ -5,10 +5,10 @@
 // - https://arm64.syscall.sh/
 // - https://syscalls.mebeim.net/?table=arm64/64/aarch64/latest
 
-use super::{shared_docs::*, LinuxOffset};
+use super::{LinuxOffset, shared_docs::*};
 use crate::{
-    asm, c_char, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxStat, LinuxTimespec, AT_FDCWD,
-    LINUX_SYS as SYS,
+    AT_FDCWD, LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat, LinuxTimespec, asm, c_char,
+    c_int, c_uint, c_ulong,
 };
 
 /// # Syscalls: File descriptors.

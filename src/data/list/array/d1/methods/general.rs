@@ -9,7 +9,7 @@
 // - Option<T> methods
 
 use crate::{
-    array_from_fn, iif, Array, ElementNotFound, IndexOutOfBounds, MismatchedBounds, Storage,
+    Array, ElementNotFound, IndexOutOfBounds, MismatchedBounds, Storage, array_from_fn, iif,
 };
 
 /// # Constructors

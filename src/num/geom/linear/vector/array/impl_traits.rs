@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{array_init, ConstDefault, Hash, Hasher, Vector, _core::fmt};
+use crate::{_core::fmt, ConstDefault, Hash, Hasher, Vector, array_init};
 
 /* Clone, Copy */
 

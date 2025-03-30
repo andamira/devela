@@ -12,7 +12,7 @@
 pub struct Cast<T>(pub T);
 
 mod core_impls {
-    use crate::{Cast, ConstDefault, Ordering, _core::fmt};
+    use crate::{_core::fmt, Cast, ConstDefault, Ordering};
 
     impl<T: Clone> Clone for Cast<T> {
         fn clone(&self) -> Self {

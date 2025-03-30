@@ -9,7 +9,7 @@
 
 #[allow(unused_imports)]
 use super::super::shared_docs::*;
-use crate::{cfor, iif, paste, Float};
+use crate::{Float, cfor, iif, paste};
 
 /// Implements methods independently of any features
 ///

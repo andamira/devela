@@ -6,12 +6,12 @@
 use crate::iif;
 
 // imports for the `digits_str` method
-#[cfg(all(feature = "_str_u8", any(feature = "safe_text", not(feature = "unsafe_str"))))]
-use crate::unwrap;
 #[cfg(all(feature = "_str_u8", feature = "_cmp_u8"))]
 use crate::Compare;
 #[cfg(feature = "_str_u8")]
 use crate::StringU8;
+#[cfg(all(feature = "_str_u8", any(feature = "safe_text", not(feature = "unsafe_str"))))]
+use crate::unwrap;
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides ASCII operations on `T`, most of them *const*.

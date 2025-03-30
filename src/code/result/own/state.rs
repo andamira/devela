@@ -4,7 +4,7 @@
 //
 //
 
-use crate::{iif, Debug, Own};
+use crate::{Debug, Own, iif};
 
 /* Result<S, E> */
 

@@ -7,10 +7,10 @@
 use crate::iif;
 #[allow(unused_imports)]
 use crate::num::{
-    niche::*,
     Num,
     NumError::{self, Invalid, Unspecified},
     NumResult as Result,
+    niche::*,
 };
 use crate::paste;
 #[cfg(_float··)]

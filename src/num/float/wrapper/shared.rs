@@ -5,7 +5,7 @@
 
 #[allow(unused_imports)]
 use super::super::shared_docs::*;
-use crate::{concat as cc, iif, stringify as sfy, Float, Sign};
+use crate::{Float, Sign, concat as cc, iif, stringify as sfy};
 
 /// Implements methods independently of any features
 ///

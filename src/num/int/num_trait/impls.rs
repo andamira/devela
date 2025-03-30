@@ -3,12 +3,12 @@
 //! Implementations of `NumInt` for primitives.
 //
 
-#[cfg(feature = "_int_usize")]
-use crate::isize_up;
 #[allow(unused_imports)]
 use crate::GcdReturn;
 #[cfg(feature = "alloc")]
 use crate::Vec;
+#[cfg(feature = "_int_usize")]
+use crate::isize_up;
 use crate::{Int, NumInt, NumResult as Result, ValueQuant};
 
 /// $t:     the primitive type

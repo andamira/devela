@@ -104,7 +104,7 @@ pub use type_marker;
 
 #[cfg(test)]
 mod tests {
-    use crate::{type_marker, TypeId};
+    use crate::{TypeId, type_marker};
 
     #[test]
     fn type_marker_multiple() {

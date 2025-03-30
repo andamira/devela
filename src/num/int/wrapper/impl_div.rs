@@ -13,7 +13,7 @@
 //   - div_ties_odd
 
 use super::super::shared_docs::*;
-use crate::{iif, paste, Int};
+use crate::{Int, iif, paste};
 
 /// Implements division-related methods for [`Int`].
 ///

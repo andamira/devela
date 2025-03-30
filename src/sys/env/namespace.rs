@@ -13,12 +13,12 @@ use crate::_dep::_std::env::{remove_var, set_var};
 #[allow(deprecated, reason = "home_dir()")] // WAIT: 1.86?
 #[cfg(feature = "std")]
 use crate::{
-    IoResult, IterArgs, IterArgsOs, IterSplitPaths, IterVars, IterVarsOs, JoinPathsError, OsStr,
-    OsString, Path, PathBuf, VarError,
     _dep::_std::env::{
         args, args_os, current_dir, current_exe, home_dir, join_paths, set_current_dir,
         split_paths, temp_dir, var, var_os, vars, vars_os,
     },
+    IoResult, IterArgs, IterArgsOs, IterSplitPaths, IterVars, IterVarsOs, JoinPathsError, OsStr,
+    OsString, Path, PathBuf, VarError,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]

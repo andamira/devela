@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports)]
-use crate::code::{iif, paste, sf, CONST};
+use crate::code::{CONST, iif, paste, sf};
 
 #[cfg(all(_float··, not(feature = "std")))]
 #[allow(unused_imports, reason = "!std: powf, powi")]

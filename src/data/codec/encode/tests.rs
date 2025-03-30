@@ -6,7 +6,7 @@ use crate::IoRead;
 
 #[allow(unused_imports)]
 #[cfg(feature = "alloc")]
-use crate::{vec_ as vec, String, Vec};
+use crate::{String, Vec, vec_ as vec};
 
 #[test]
 fn option() {

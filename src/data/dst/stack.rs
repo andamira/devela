@@ -7,7 +7,7 @@
 // - private API
 // - core_impls
 
-use super::{check_fat_pointer, decompose_pointer, list_push_gen, DstArray, DstBuf};
+use super::{DstArray, DstBuf, check_fat_pointer, decompose_pointer, list_push_gen};
 use crate::{ConstDefault, MaybeUninit, MemAligned, PhantomData, Ptr};
 
 /* public API */

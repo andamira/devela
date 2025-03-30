@@ -24,7 +24,7 @@ crate::items! { // structural access: _mods, _all, _always
 }
 
 mod reexports {
-    use crate::{reexport, TAG_QUANT};
+    use crate::{TAG_QUANT, reexport};
 
     // enums
     reexport! { rust: core::ops, tag: TAG_QUANT!(),

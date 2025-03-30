@@ -336,7 +336,7 @@ pub use unwrap;
 mod tests {
     #[cfg(feature = "std")]
     use crate::Panic;
-    use crate::{serr, sok, unwrap, OptRes};
+    use crate::{OptRes, serr, sok, unwrap};
 
     const OPTION_SOME: Option<bool> = Some(true);
     const OPTION_NONE: Option<bool> = None;

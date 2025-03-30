@@ -49,9 +49,9 @@ impl crate::Error for UiError {}
 
 mod core_impls {
     use super::*;
-    use crate::impl_trait;
     #[cfg(feature = "layout")]
     use crate::LayoutError;
+    use crate::impl_trait;
 
     impl_trait! { fmt::Display for UiError |self, f| {
         use UiError as E;

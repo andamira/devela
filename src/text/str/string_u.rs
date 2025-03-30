@@ -10,14 +10,14 @@
 
 #[cfg(feature = "str")]
 use crate::Str;
-#[allow(unused, reason = "±unsafe | ±_cmp*")]
-use crate::{cfor, Compare};
 use crate::{
-    text::char::*, Deref, IterChars, _core::fmt, iif, paste, unwrap, ConstDefault, InvalidText,
-    InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements,
+    _core::fmt, ConstDefault, Deref, InvalidText, InvalidUtf8, IterChars, Mismatch,
+    MismatchedCapacity, NotEnoughElements, iif, paste, text::char::*, unwrap,
 };
 #[cfg(all(_str_u··, feature = "alloc"))]
 use crate::{CString, ToString};
+#[allow(unused, reason = "±unsafe | ±_cmp*")]
+use crate::{Compare, cfor};
 
 macro_rules! impl_str_u {
     () => {

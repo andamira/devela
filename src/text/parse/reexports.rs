@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{reexport, TAG_ERROR, TAG_NUM, TAG_TEXT};
+use crate::{TAG_ERROR, TAG_NUM, TAG_TEXT, reexport};
 
 reexport! { rust: core::num,
     tag: concat![TAG_TEXT!(), TAG_NUM!(), TAG_ERROR!()],

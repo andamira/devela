@@ -9,10 +9,10 @@
 
 #[cfg(all(not(feature = "std"), _float··))]
 use crate::ExtFloat;
+use crate::{Angle, AngleDirection, AngleKind};
 #[cfg(_float··)]
 #[allow(unused_imports)]
-use crate::{fsize, FloatConst};
-use crate::{Angle, AngleDirection, AngleKind};
+use crate::{FloatConst, fsize};
 
 /// impl `Angle` methods with an integer representation:
 ///

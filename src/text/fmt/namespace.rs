@@ -4,9 +4,9 @@
 //
 
 use super::WriteTo;
-use crate::{FmtArguments, FmtError, FmtWrite, _core::fmt::write};
+use crate::{_core::fmt::write, FmtArguments, FmtError, FmtWrite};
 #[cfg(feature = "alloc")]
-use crate::{String, _dep::_alloc::fmt::format};
+use crate::{_dep::_alloc::fmt::format, String};
 
 #[doc = crate::TAG_TEXT!()]
 #[doc = crate::TAG_NAMESPACE!()]
@@ -51,11 +51,7 @@ impl Fmt {
     pub fn format_buf<'a>(buf: &'a mut [u8], args: FmtArguments) -> Result<&'a str, &'a str> {
         let mut w = WriteTo::new(buf);
         let _ = Fmt::write(&mut w, args);
-        if w.truncated {
-            Err(w.as_str())
-        } else {
-            Ok(w.as_str())
-        }
+        if w.truncated { Err(w.as_str()) } else { Ok(w.as_str()) }
     }
 
     /// Takes an output stream and an `FmtArguments` struct

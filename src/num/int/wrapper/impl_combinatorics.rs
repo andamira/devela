@@ -16,9 +16,9 @@ use crate::Cast;
 #[cfg(_int_i··)]
 use crate::NumError::NonNegativeRequired;
 use crate::{
-    cfor, iif, paste, Int,
+    Int,
     NumError::{MismatchedSizes, Overflow},
-    NumResult as Result,
+    NumResult as Result, cfor, iif, paste,
 };
 
 /// Implements combinatorics-related methods for [`Int`].

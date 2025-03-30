@@ -12,7 +12,7 @@
 
 use super::super::utils::*;
 use std::{
-    fs::{create_dir_all, File},
+    fs::{File, create_dir_all},
     io::{BufWriter, Error, Write},
     write as w0, writeln as w,
 };

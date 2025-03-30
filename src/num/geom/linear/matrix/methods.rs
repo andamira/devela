@@ -3,7 +3,7 @@
 //! Methods for matrices.
 //
 
-use crate::{iif, Matrix, NumConst};
+use crate::{Matrix, NumConst, iif};
 
 impl<const R: usize, const C: usize, const LEN: usize, const MAX_LEN_DET: usize, T: Copy>
     Matrix<T, R, C, LEN, true, MAX_LEN_DET>

@@ -251,11 +251,7 @@ mod methods {
 
         /// Returns the metadata that *optionally* traverses symbolic links.
         pub fn metadata_ts(&self, traverse: bool) -> IoResult<FileMetadata> {
-            if traverse {
-                self.path.metadata()
-            } else {
-                self.path.symlink_metadata()
-            }
+            if traverse { self.path.metadata() } else { self.path.symlink_metadata() }
         }
 
         /// Returns the `FileType`.

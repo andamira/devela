@@ -13,8 +13,9 @@ pub use {
 };
 
 use crate::{
-    iif, BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
+    BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
     IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TryFromIntError,
+    iif,
 };
 crate::_use! {basic::from_utf8}
 

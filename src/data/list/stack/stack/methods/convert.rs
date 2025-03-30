@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{array_init, Array, Bare, ConstDefault, IndexOutOfBounds, NotEnoughSpace, Own, Stack};
+use crate::{Array, Bare, ConstDefault, IndexOutOfBounds, NotEnoughSpace, Own, Stack, array_init};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 

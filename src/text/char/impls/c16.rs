@@ -6,7 +6,7 @@
 use super::*;
 #[cfg(feature = "ascii")]
 use crate::AsciiChar;
-use crate::{text::char::NonSurrogateU16, Char, DataOverflow};
+use crate::{Char, DataOverflow, text::char::NonSurrogateU16};
 
 impl char16 {
     /* private helper fns */

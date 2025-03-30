@@ -42,11 +42,7 @@ impl XorShift128p {
     ///
     /// If the seed is `0`, the default seed is used instead.
     pub const fn new(seeds: [u64; 2]) -> Self {
-        if (seeds[0] | seeds[1]) == 0 {
-            Self::cold_path_default()
-        } else {
-            Self(seeds)
-        }
+        if (seeds[0] | seeds[1]) == 0 { Self::cold_path_default() } else { Self(seeds) }
     }
 
     /// Returns a seeded `XorShift128p` generator from the given 8-bit seed,

@@ -5,7 +5,7 @@
 
 #[cfg(_sort_float··)]
 use crate::Compare;
-use crate::{cfor, cswap, iif, paste, Sort};
+use crate::{Sort, cfor, cswap, iif, paste};
 
 /* impl Sort on primitives */
 

@@ -10,7 +10,7 @@
 use super::bitfield;
 
 #[cfg(feature = "std")]
-use std::panic::{catch_unwind, AssertUnwindSafe};
+use std::panic::{AssertUnwindSafe, catch_unwind};
 
 #[test]
 #[rustfmt::skip]

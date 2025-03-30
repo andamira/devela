@@ -8,10 +8,11 @@
 // - functions definitions
 
 use crate::{
-    iif, isize_down, isize_up, paste, usize_down, usize_up, Cast,
+    Cast,
     NumError::Overflow,
     NumResult as Result,
     Sign::{Negative, Positive},
+    iif, isize_down, isize_up, paste, usize_down, usize_up,
 };
 
 /// Offers methods for casting between primitives.

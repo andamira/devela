@@ -8,10 +8,10 @@
 //
 // Syscalls: 19
 
-use super::{shared_docs::*, LinuxOffset};
+use super::{LinuxOffset, shared_docs::*};
 use crate::{
-    asm, c_char, c_int, c_uint, c_ulong, Linux, LinuxSigaction, LinuxStat, LinuxTimespec,
-    LINUX_SYS as SYS,
+    LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat, LinuxTimespec, asm, c_char, c_int, c_uint,
+    c_ulong,
 };
 
 /// # Syscalls: File descriptors.

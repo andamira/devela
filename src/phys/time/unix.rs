@@ -10,8 +10,8 @@
 //
 
 use crate::{
-    is_leap_year, Debug, Display, FmtResult, Formatter, Month, TimeSplit, TimeSplitYearSec,
-    TryFromIntError,
+    Debug, Display, FmtResult, Formatter, Month, TimeSplit, TimeSplitYearSec, TryFromIntError,
+    is_leap_year,
 };
 
 #[doc = crate::TAG_TIME!()]

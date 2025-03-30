@@ -2,9 +2,9 @@
 
 #[cfg(feature = "time")]
 use crate::TimeDelta;
-use crate::{impl_trait, Display};
+use crate::{Display, impl_trait};
 #[allow(unused_imports)]
-use crate::{js_number, Js};
+use crate::{Js, js_number};
 
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 ///

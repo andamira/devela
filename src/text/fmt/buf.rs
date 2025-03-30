@@ -3,7 +3,7 @@
 //! Non-allocating formatting backed by a buffer.
 //
 
-use crate::{iif, FmtResult, FmtWrite, _core::cmp::min};
+use crate::{_core::cmp::min, FmtResult, FmtWrite, iif};
 crate::_use! {compat::from_utf8}
 
 #[doc = crate::TAG_FMT!()]

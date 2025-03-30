@@ -49,11 +49,7 @@ impl<'a, T: 'a> ConstList<'a, T> {
     #[must_use]
     pub const fn get(&self, index: usize) -> Option<&T> {
         if let Some(value) = &self.0 {
-            if index == 0 {
-                Some(&value.first)
-            } else {
-                value.rest.get(index - 1)
-            }
+            if index == 0 { Some(&value.first) } else { value.rest.get(index - 1) }
         } else {
             None
         }
@@ -62,11 +58,7 @@ impl<'a, T: 'a> ConstList<'a, T> {
     /// Determines the length of this list.
     #[must_use]
     pub const fn len(&self) -> usize {
-        if let Some(value) = &self.0 {
-            value.rest.len() + 1
-        } else {
-            0
-        }
+        if let Some(value) = &self.0 { value.rest.len() + 1 } else { 0 }
     }
 
     /// Whether the list is empty.

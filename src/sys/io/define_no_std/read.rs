@@ -17,7 +17,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{IoError, IoErrorKind, IoResult, _core::fmt, iif, sf, OptRes, Slice};
+use crate::{_core::fmt, IoError, IoErrorKind, IoResult, OptRes, Slice, iif, sf};
 use ::core::cmp;
 
 /// The `IoRead` trait allows for reading bytes from a source.

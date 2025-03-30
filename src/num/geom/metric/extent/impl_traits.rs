@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{array_init, ConstDefault, ExtArray, Extent, Hash, Hasher, Ordering};
+use crate::{ConstDefault, ExtArray, Extent, Hash, Hasher, Ordering, array_init};
 use core::fmt;
 
 impl<T: Clone, const D: usize> Clone for Extent<T, D> {

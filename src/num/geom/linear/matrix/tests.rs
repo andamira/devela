@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{const_assert, Matrix};
+use crate::{Matrix, const_assert};
 
 #[test]
 const fn const_methods() {

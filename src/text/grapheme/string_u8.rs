@@ -7,11 +7,11 @@
 // - trait impls
 
 use super::Grapheme;
-#[cfg(_char··)]
-use crate::text::char::*;
 #[cfg(feature = "alloc")]
 use crate::CString;
-use crate::{unwrap, ConstDefault, IterChars, MismatchedCapacity, StringU8};
+#[cfg(_char··)]
+use crate::text::char::*;
+use crate::{ConstDefault, IterChars, MismatchedCapacity, StringU8, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */

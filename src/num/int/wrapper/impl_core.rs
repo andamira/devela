@@ -16,14 +16,14 @@
 //   - midpoint
 
 use super::super::shared_docs::*;
+#[cfg(feature = "cast")]
+use crate::Cast;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
-#[cfg(feature = "cast")]
-use crate::Cast;
 #[allow(unused_imports)]
-use crate::{cswap, iif, paste, unwrap, GcdReturn, Int, NumError::Overflow, NumResult as Result};
+use crate::{GcdReturn, Int, NumError::Overflow, NumResult as Result, cswap, iif, paste, unwrap};
 
 /// Implements core methods for [`Int`].
 ///

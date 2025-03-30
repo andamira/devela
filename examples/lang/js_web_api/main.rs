@@ -8,7 +8,7 @@
 #![allow(static_mut_refs, reason = "safe in single-threaded")]
 devela::define_panic_handler! { web_api }
 
-use devela::{format_buf, Js, JsEventKind, Wasm};
+use devela::{Js, JsEventKind, Wasm, format_buf};
 
 /// Static string buffer for printing to the console.
 static mut BUF: [u8; 256] = [0; 256];

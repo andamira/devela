@@ -2,11 +2,11 @@
 
 #![allow(dead_code, reason = "unused DitherConf methods")]
 
-use crate::{vec_ as vec, Vec};
+use crate::{Vec, vec_ as vec};
 
 use super::super::{
-    sixel_quant_apply_palette, sixel_quant_make_palette, Dither, PixelFormat, SixelError,
-    SixelMean, SixelPalette, SixelQuality, SixelResult, SixelSplit, SIXEL_PALETTE_MAX,
+    Dither, PixelFormat, SIXEL_PALETTE_MAX, SixelError, SixelMean, SixelPalette, SixelQuality,
+    SixelResult, SixelSplit, sixel_quant_apply_palette, sixel_quant_make_palette,
 };
 
 /// Configuration for sixel dithering.
@@ -115,11 +115,7 @@ impl DitherConf {
     /// TODO
     pub fn set_quality_mode(&mut self, quality_mode: SixelQuality) {
         self.quality_mode = if matches!(quality_mode, SixelQuality::Auto) {
-            if self.ncolors <= 8 {
-                SixelQuality::High
-            } else {
-                SixelQuality::Low
-            }
+            if self.ncolors <= 8 { SixelQuality::High } else { SixelQuality::Low }
         } else {
             quality_mode
         };
@@ -181,11 +177,7 @@ impl DitherConf {
     /// Set diffusion method.
     pub fn set_diffusion_method(&mut self, method: Dither) {
         self.dither = if matches!(method, Dither::Auto) {
-            if self.ncolors > 16 {
-                Dither::FS
-            } else {
-                Dither::Atkinson
-            }
+            if self.ncolors > 16 { Dither::FS } else { Dither::Atkinson }
         } else {
             method
         };

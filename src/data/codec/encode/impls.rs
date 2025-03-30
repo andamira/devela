@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    sf, CStr, Char, Decodable, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite,
-    IoError, IoErrorKind, IoRead, IoResult, IoWrite, NoData, Slice,
+    CStr, Char, Decodable, Encodable, Fmt, FmtArguments, FmtError, FmtResult, FmtWrite, IoError,
+    IoErrorKind, IoRead, IoResult, IoWrite, NoData, Slice, sf,
 };
 crate::_use! {basic::from_utf8}
 

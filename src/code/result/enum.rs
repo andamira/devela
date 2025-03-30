@@ -3,7 +3,7 @@
 //! Defines the [`Enum`] type.
 //
 
-use crate::{iif, ConstDefault, ExtAny};
+use crate::{ConstDefault, ExtAny, iif};
 
 // 12 variants by default
 impl_enum!(A:0+1, B:1+2, C:2+3, D:3+4, E:4+5, F:5+6, G:6+7, H:7+8, I:8+9, J:9+10, K:10+11, L:11+12);

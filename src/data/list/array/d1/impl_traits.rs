@@ -8,9 +8,9 @@
 // - bitwise ops
 
 use crate::{
-    array_init, Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign,
-    BitXor, BitXorAssign, Borrow, BorrowMut, ConstDefault, Debug, Deref, DerefMut, FmtResult,
-    Formatter, Hash, Hasher, Not, Ordering, Storage,
+    Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor,
+    BitXorAssign, Borrow, BorrowMut, ConstDefault, Debug, Deref, DerefMut, FmtResult, Formatter,
+    Hash, Hasher, Not, Ordering, Storage, array_init,
 };
 
 #[cfg(feature = "alloc")]

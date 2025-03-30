@@ -8,7 +8,7 @@
 #[cfg(all(feature = "unsafe_ffi", feature = "alloc", not(windows)))]
 use crate::String;
 #[allow(unused_imports)]
-use crate::{js_uint32, Js, TaskPoll};
+use crate::{Js, TaskPoll, js_uint32};
 
 /// A handle to a JavaScript Web Worker.
 ///

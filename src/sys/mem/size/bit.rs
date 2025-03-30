@@ -11,8 +11,8 @@
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
 use crate::{
-    BareBox, ByteSized, Duration, Infallible, Mem, NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64,
-    NonZeroI8, NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8,
+    BareBox, ByteSized, Duration, Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64,
+    NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128,
     NonZeroUsize, Ordering, PhantomData, PhantomPinned,
 };
 
@@ -29,14 +29,14 @@ use crate::{GraphemeNonul, StringNonul};
 use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "work")]
 use crate::{AtomicBool, AtomicOrdering};
+#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "8")))]
+use crate::{AtomicI8, AtomicU8};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "16")))]
 use crate::{AtomicI16, AtomicU16};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "32")))]
 use crate::{AtomicI32, AtomicU32};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "64")))]
 use crate::{AtomicI64, AtomicU64};
-#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "8")))]
-use crate::{AtomicI8, AtomicU8};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "ptr")))]
 use crate::{AtomicIsize, AtomicPtr, AtomicUsize};
 

@@ -245,14 +245,8 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
 }
 
 // T: PartialEq, S
-impl<
-        T: PartialEq,
-        const C: usize,
-        const R: usize,
-        const CR: usize,
-        const RMAJ: bool,
-        S: Storage,
-    > Array2d<T, C, R, CR, RMAJ, S>
+impl<T: PartialEq, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage>
+    Array2d<T, C, R, CR, RMAJ, S>
 {
     /// Returns true if the array contains `element`.
     /// # Examples

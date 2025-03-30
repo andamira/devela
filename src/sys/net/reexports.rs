@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports)]
-use crate::{reexport, TAG_ERROR, TAG_ITERATOR};
+use crate::{TAG_ERROR, TAG_ITERATOR, reexport};
 
 /* core structs */
 

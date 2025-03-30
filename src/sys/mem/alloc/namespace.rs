@@ -6,8 +6,8 @@
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 #[cfg(feature = "alloc")]
 use crate::{
-    MemLayout,
     _dep::_alloc::alloc::{alloc, alloc_zeroed, dealloc, handle_alloc_error, realloc},
+    MemLayout,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]

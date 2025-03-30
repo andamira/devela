@@ -2,7 +2,7 @@
 
 #[cfg(all(doc, any(feature = "std", feature = "io")))]
 use crate::IoSeek;
-use crate::{impl_trait, Debug, From, Result};
+use crate::{Debug, From, Result, impl_trait};
 #[cfg(doc)]
 use crate::{IoRead, IoWrite};
 

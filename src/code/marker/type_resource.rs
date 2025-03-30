@@ -192,7 +192,7 @@ mod impls {
 
 #[cfg(test)]
 mod tests {
-    use crate::{type_resource, ExtAny};
+    use crate::{ExtAny, type_resource};
 
     type_resource![ClosureId: u64];
 

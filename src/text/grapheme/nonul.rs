@@ -8,11 +8,11 @@
 // - conversions
 
 use super::Grapheme;
-#[cfg(_char··)]
-use crate::text::char::*;
 #[cfg(feature = "alloc")]
 use crate::CString;
-use crate::{unwrap, ConstDefault, IterChars, MismatchedCapacity, StringNonul};
+#[cfg(_char··)]
+use crate::text::char::*;
+use crate::{ConstDefault, IterChars, MismatchedCapacity, StringNonul, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */

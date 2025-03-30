@@ -4,10 +4,10 @@
 
 #![allow(unused, reason = "WIP")]
 
-#[cfg(feature = "alloc")]
-use crate::text::String;
 #[cfg(doc)]
 use crate::ImageError::FmtError;
+#[cfg(feature = "alloc")]
+use crate::text::String;
 use crate::{
     FmtWrite, ImageError,
     ImageError::{InvalidImageSize, InvalidPixel},

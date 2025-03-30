@@ -3,9 +3,9 @@
 //! Implements sorting algorithms for exclusive generic arrays `[T: Ord; N]`.
 //
 
-use crate::{iif, Sort};
 #[cfg(feature = "alloc")]
 use crate::{BTreeMap, Vec};
+use crate::{Sort, iif};
 
 impl<T: Ord> Sort<&mut [T]> {
     /// Sorts a slice using bubble sort.
@@ -299,7 +299,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
 
 // private helper fns
 mod helper {
-    use crate::{iif, sf, Ordering};
+    use crate::{Ordering, iif, sf};
 
     // MAYBE WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
     #[cfg(feature = "alloc")]

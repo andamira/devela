@@ -14,7 +14,7 @@ use super::super::shared_docs::*;
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
-use crate::{iif, paste, Int, NumError::Overflow, NumResult as Result};
+use crate::{Int, NumError::Overflow, NumResult as Result, iif, paste};
 
 /// Implements prime-related methods for [`Int`].
 ///

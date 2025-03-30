@@ -1,6 +1,6 @@
 // devela::data::list::array::vec::chunk
 
-use crate::{vec_ as vec, FloatConst, String, Vec, VecChunk};
+use crate::{FloatConst, String, Vec, VecChunk, vec_ as vec};
 
 #[test]
 fn new() {

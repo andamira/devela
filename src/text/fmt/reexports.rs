@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{reexport, TAG_ERROR, TAG_FMT, TAG_RESULT};
+use crate::{TAG_ERROR, TAG_FMT, TAG_RESULT, reexport};
 
 /* macros */
 

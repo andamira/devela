@@ -3,12 +3,12 @@
 #![allow(clippy::identity_op, reason = "symmetry")]
 
 use super::super::{
-    DitherConf, PixelFormat, SixelColorModel, SixelEncodePolicy, SixelQuality, SIXEL_PALETTE_MAX,
+    DitherConf, PixelFormat, SIXEL_PALETTE_MAX, SixelColorModel, SixelEncodePolicy, SixelQuality,
 };
 use super::{SixelNode, SixelOutput};
 #[cfg(feature = "fmt")]
 use crate::NumToStr;
-use crate::{iif, sf, vec_ as vec, IoWrite, SixelError, SixelResult, Vec};
+use crate::{IoWrite, SixelError, SixelResult, Vec, iif, sf, vec_ as vec};
 
 impl<W: IoWrite> SixelOutput<W> {
     /* GNU Screen penetration */

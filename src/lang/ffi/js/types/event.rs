@@ -5,7 +5,7 @@
 
 #![allow(dead_code, reason = "feature-gated")]
 
-use crate::{js_int32, js_number, JsInstant};
+use crate::{JsInstant, js_int32, js_number};
 
 /// # A web API Event kind.
 ///

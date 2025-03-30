@@ -3,7 +3,7 @@
 //! Defines [`EventTimestamp`].
 //
 
-use crate::{impl_trait, NonZeroU32};
+use crate::{NonZeroU32, impl_trait};
 
 /// The time at which the event actually occurs, stored as single-precision milliseconds.
 ///

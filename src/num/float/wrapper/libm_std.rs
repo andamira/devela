@@ -12,7 +12,7 @@ use crate::Float;
 
 #[cfg(feature = "dep_libm")]
 mod _libm {
-    use super::{super::super::shared_docs::*, impl_fp, Float};
+    use super::{super::super::shared_docs::*, Float, impl_fp};
     use crate::{_dep::libm::Libm, iif};
 
     // custom implementations are commented out
@@ -188,7 +188,7 @@ mod _libm {
 
 #[cfg(all(not(feature = "dep_libm"), feature = "std"))]
 mod _std {
-    use super::{super::super::shared_docs::*, impl_fp, Float};
+    use super::{super::super::shared_docs::*, Float, impl_fp};
 
     // custom implementations are commented out:
     impl_fp![std:f*:

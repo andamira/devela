@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{iif, Debug, Own};
+use crate::{Debug, Own, iif};
 
 /// # Additional methods for when the `value` field is a `Result`.
 impl<S, V, E> Own<S, Result<V, E>> {

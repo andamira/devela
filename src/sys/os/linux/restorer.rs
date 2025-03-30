@@ -12,7 +12,7 @@
 //
 // source: [musl](https://git.musl-libc.org/cgit/musl/tree/src/signal)
 
-use crate::{global_asm, LINUX_SYS as SYS};
+use crate::{LINUX_SYS as SYS, global_asm};
 
 // https://git.musl-libc.org/cgit/musl/tree/src/signal/x86_64/restore.s
 #[cfg(target_arch = "x86_64")]

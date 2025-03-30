@@ -4,7 +4,7 @@
 //
 
 use crate::{IoResult, Path, PathBuf};
-use std::path::{absolute, is_separator, MAIN_SEPARATOR, MAIN_SEPARATOR_STR};
+use std::path::{MAIN_SEPARATOR, MAIN_SEPARATOR_STR, absolute, is_separator};
 
 /// Marker trait to prevent downstream implementations of the [`ExtPath`] trait.
 trait Sealed {}

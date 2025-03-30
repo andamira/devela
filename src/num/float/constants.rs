@@ -18,7 +18,7 @@
 use crate::Float; // because of float_technical_const_impls! consts
 
 #[cfg(nightly_float)]
-use ::core::{f128, f16};
+use ::core::{f16, f128};
 
 #[doc = crate::TAG_NUM!()]
 #[doc = crate::TAG_NAMESPACE!()]

@@ -5,12 +5,12 @@
 
 #[cfg(not(feature = "std"))]
 use super::{io_copy as copy, io_empty as empty, io_repeat as repeat};
-use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 #[cfg(feature = "std")]
 use crate::{
-    IoSink, Stderr, Stdin, Stdout, String,
     _dep::_std::io::{copy, empty, read_to_string, repeat, sink, stderr, stdin, stdout},
+    IoSink, Stderr, Stdin, Stdout, String,
 };
+use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// I/O-related operations.

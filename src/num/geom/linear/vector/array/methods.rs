@@ -7,9 +7,9 @@
 #[cfg(all(not(feature = "std"), _float··))]
 use crate::ExtFloat;
 use crate::Vector;
-use crate::{concat as cc, stringify as fy};
 #[cfg(_int··)]
-use crate::{unwrap, Int};
+use crate::{Int, unwrap};
+use crate::{concat as cc, stringify as fy};
 
 /* common methods */
 

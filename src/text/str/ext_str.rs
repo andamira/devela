@@ -6,9 +6,9 @@
 // WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
 // IMPROVE: use `NumToStr`
 
-use crate::{iif, Ascii, Slice, Str};
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
+use crate::{Ascii, Slice, Str, iif};
 crate::_use! {basic::from_utf8}
 
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.

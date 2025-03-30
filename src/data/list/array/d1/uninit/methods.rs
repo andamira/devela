@@ -1,9 +1,9 @@
 // devela::data::list:array::d1::uninit::methods
 
 use crate::{
-    iif, ArrayUninit, IndexOutOfBounds, MaybeUninit, Mem,
+    ArrayUninit, IndexOutOfBounds, MaybeUninit, Mem,
     PartialSpace::{self, NotEnoughSpace, PartiallyAdded},
-    Storage,
+    Storage, iif,
 };
 
 // T, S

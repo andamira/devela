@@ -360,7 +360,7 @@ impl TimeDelta {
 
 #[cfg(feature = "std")]
 mod impl_system_instant {
-    use crate::{unwrap, Add, Duration, Sub, SystemInstant, TimeDelta};
+    use crate::{Add, Duration, Sub, SystemInstant, TimeDelta, unwrap};
 
     /// Additional APIs involving `SystemInstant`.
     impl TimeDelta {

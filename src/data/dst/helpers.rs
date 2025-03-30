@@ -1,8 +1,8 @@
 // helper functions
 
 use crate::{
-    MaybeUninit, MemPod,
     _core::{ptr, slice},
+    MaybeUninit, MemPod,
 };
 
 type BufSlice<T> = [MaybeUninit<T>];

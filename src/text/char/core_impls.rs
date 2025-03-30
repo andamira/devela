@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports)]
-use crate::{DataOverflow, _core::fmt, paste, text::char::*, unwrap, ConstDefault};
+use crate::{_core::fmt, ConstDefault, DataOverflow, paste, text::char::*, unwrap};
 
 /* Default, Display, Debug */
 

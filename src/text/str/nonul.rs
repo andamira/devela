@@ -7,8 +7,8 @@
 // - trait impls
 
 use crate::{
-    cfor, iif, text::char::*, unwrap, ConstDefault, Deref, InvalidText, IterChars, Mismatch,
-    MismatchedCapacity, NotEnoughElements, _core::fmt,
+    _core::fmt, ConstDefault, Deref, InvalidText, IterChars, Mismatch, MismatchedCapacity,
+    NotEnoughElements, cfor, iif, text::char::*, unwrap,
 };
 #[cfg(feature = "alloc")]
 use crate::{CString, ToString};
@@ -204,11 +204,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// the string is empty.
     #[must_use]
     pub fn pop(&mut self) -> Option<char> {
-        if self.is_empty() {
-            None
-        } else {
-            Some(self.pop_unchecked())
-        }
+        if self.is_empty() { None } else { Some(self.pop_unchecked()) }
     }
 
     /// Tries to remove the last character and return it.

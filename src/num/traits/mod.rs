@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{sf, NumError as E, NumResult as Result};
+use crate::{NumError as E, NumResult as Result, sf};
 #[cfg(doc)]
 use E::{NotImplemented, NotSupported};
 

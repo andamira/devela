@@ -9,11 +9,11 @@ use crate::_core::{
     slice::{from_raw_parts, from_raw_parts_mut},
 };
 use crate::{
-    Discriminant,
     _core::mem::{
         align_of, align_of_val, discriminant, drop, forget, needs_drop, replace, size_of,
         size_of_val, swap, take,
     },
+    Discriminant,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]

@@ -3,7 +3,7 @@
 //! [`Str`] namespace.
 //
 
-use crate::{iif, InvalidUtf8, Slice};
+use crate::{InvalidUtf8, Slice, iif};
 
 #[cfg(feature = "str")]
 crate::items! {
@@ -12,14 +12,14 @@ crate::items! {
     use crate::ExtStr;
 }
 
-#[cfg(feature = "alloc")]
-#[allow(unused_imports, reason = "±unsafe")]
-use crate::{Box, _dep::_alloc::str::from_boxed_utf8_unchecked};
 #[allow(unused_imports, reason = "±unsafe")]
 use crate::{
     _core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
     sf, unwrap,
 };
+#[cfg(feature = "alloc")]
+#[allow(unused_imports, reason = "±unsafe")]
+use crate::{_dep::_alloc::str::from_boxed_utf8_unchecked, Box};
 
 // TODO: IMPROVE:
 // - one default, (simd == api if possible)

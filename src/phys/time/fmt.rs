@@ -10,11 +10,11 @@
 #[allow(unused_imports)]
 #[cfg(feature = "_float_f64")]
 use crate::ExtFloat;
-#[cfg(feature = "alloc")]
-use crate::{format, String};
 #[cfg(feature = "_str_u8")]
-use crate::{format_buf, Ascii, StringU8};
+use crate::{Ascii, StringU8, format_buf};
 use crate::{NoTime, TimeSplit, TimeSplitHourNano};
+#[cfg(feature = "alloc")]
+use crate::{String, format};
 
 #[doc = crate::TAG_TIME!()]
 /// Timecode splitting and formatting.

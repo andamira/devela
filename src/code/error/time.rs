@@ -52,7 +52,7 @@ pub use full_composite::*;
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "error", feature = "time"))))]
 mod full_composite {
     use super::*;
-    use crate::{DataOverflow, DOC_DATA_OVERFLOW};
+    use crate::{DOC_DATA_OVERFLOW, DataOverflow};
 
     define_error! { composite: fmt(f)
         #[doc = crate::TAG_TIME!()]

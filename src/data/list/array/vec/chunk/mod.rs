@@ -3,7 +3,7 @@
 //
 // IMPROVE: bring benchmarks
 
-use crate::{vec_ as vec, Rc, RefCell, Vec};
+use crate::{Rc, RefCell, Vec, vec_ as vec};
 
 #[cfg(test)]
 mod tests;
@@ -131,11 +131,7 @@ impl<A> VecChunk<A> {
     /// assert_eq!(chunk.as_vec(), vec![2, 1]);
     /// ```
     pub fn prepend(self, a: A) -> Self {
-        if self.is_null() {
-            VecChunk::new(a)
-        } else {
-            VecChunk::new(a).concat(self)
-        }
+        if self.is_null() { VecChunk::new(a) } else { VecChunk::new(a).concat(self) }
     }
 
     /// Concatenates this chunk with another chunk.

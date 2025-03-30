@@ -1,6 +1,6 @@
 // devela::lang::ffi::js::types::permission
 
-use crate::{js_int32, TAG_EXPERIMENTAL, TAG_NON_STANDARD};
+use crate::{TAG_EXPERIMENTAL, TAG_NON_STANDARD, js_int32};
 
 /// # Web API permissions
 ///

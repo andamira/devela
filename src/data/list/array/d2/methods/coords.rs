@@ -3,7 +3,7 @@
 //! 2-dimensional array coordinates and indexing methods
 //
 
-use crate::{iif, Array2d, IndexOutOfBounds, Storage};
+use crate::{Array2d, IndexOutOfBounds, Storage, iif};
 
 /// Helper macro for implementing common methods generic on storage order.
 macro_rules! impl_maj {

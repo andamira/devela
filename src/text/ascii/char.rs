@@ -8,7 +8,7 @@
 
 #[cfg(feature = "unsafe_str")]
 use crate::transmute;
-use crate::{ConstDefault, _core::fmt};
+use crate::{_core::fmt, ConstDefault};
 
 /// One of 128 Unicode characters (`U+0000` to `U+007F`), the ASCII subset.
 ///

@@ -25,9 +25,9 @@
 // 2 arrays (subdivide, first, last next, corresponding, etc. )
 // could be 2 mutable parts of the same array, with split_mut.
 
-use crate::{iif, paste, Int, NumError::MismatchedSizes, NumResult as Result};
 #[cfg(feature = "alloc")]
-use crate::{vec_ as vec, BTreeSet, Hook, Vec};
+use crate::{BTreeSet, Hook, Vec, vec_ as vec};
+use crate::{Int, NumError::MismatchedSizes, NumResult as Result, iif, paste};
 
 /// Implements factors-related methods for [`Int`].
 ///

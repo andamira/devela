@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    array_init, ConstDefault, Debug, Display, ExtArray, FmtResult, Formatter, Hash, Hasher,
-    Ordering, Point,
+    ConstDefault, Debug, Display, ExtArray, FmtResult, Formatter, Hash, Hasher, Ordering, Point,
+    array_init,
 };
 
 impl<T: Clone, const D: usize> Clone for Point<T, D> {

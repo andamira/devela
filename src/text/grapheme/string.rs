@@ -5,14 +5,14 @@
 
 use crate::Grapheme;
 
-#[cfg(feature = "alloc")]
-use crate::{IterChars, String};
 #[cfg(feature = "dep_unicode_segmentation")]
 use crate::{_dep::unicode_segmentation::UnicodeSegmentation, text::*};
+#[cfg(feature = "alloc")]
+use crate::{IterChars, String};
 crate::_use! {basic::from_utf8}
 
 #[allow(unused, reason = "feature-gated")]
-use crate::{Char, _core::str::from_utf8_unchecked};
+use crate::{_core::str::from_utf8_unchecked, Char};
 
 #[doc = crate::TAG_TEXT!()]
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].

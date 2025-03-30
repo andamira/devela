@@ -5,12 +5,12 @@
 // - private API
 // - core_impls
 
-use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstBuf};
+use super::{DstArray, DstBuf, check_fat_pointer, decompose_pointer, store_metadata};
 #[cfg(doc)]
 use crate::MaybeUninit;
 use crate::{
-    ManuallyDrop, Mem, MemAligned,
     _core::{marker, ptr},
+    ManuallyDrop, Mem, MemAligned,
 };
 
 /* public API */

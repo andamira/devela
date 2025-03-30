@@ -189,7 +189,7 @@ pub use cfor;
 #[cfg(all(test, feature = "alloc"))]
 mod tests {
     use super::cfor;
-    use crate::{vec_ as vec, Vec};
+    use crate::{Vec, vec_ as vec};
 
     macro_rules! validate_loop {
         (@impl $($loop:tt)*) => {
