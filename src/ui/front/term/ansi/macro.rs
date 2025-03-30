@@ -4,16 +4,21 @@
 //
 // NOTES:
 // - features are in sync with /src/sys/os/print/mod.rs.
-// - versions differ only on the Ansi print method called.
-//   Different macros are necessary to avoid evaluating the feature-bounds on user time.
+// - different macros are necessary to avoid evaluating the feature-bounds on user time.
+// - versions differ only in having support for printing, and in the Ansi print method called.
 
 crate::CONST! {
     DOC_ANSI = r#"Concatenates or prints [`Ansi` escape codes][0].
 
 - the `b:` arm accepts only static arguments to commands and returns [`&[u8]`](slice).
 - the `s:` arm accepts only static arguments to commands and returns [`&str`].
-- the `p:` arm accepts only static arguments to commands and prints to stdout.
-- the `@p:` arm accepts dynamic arguments to commands and prints to stdout.
+- the `p:` arm accepts only static arguments to commands and prints to stdout. `*`
+- the `@p:` arm accepts dynamic arguments to commands and prints to stdout. `*`
+
+## Features
+`*` Printing is supported only when any of the following set of features are enabled:
+- `linux`, `unsafe_syscall`. (takes preference)
+- `std`.
 
 ## Notes
 - commands are case-insensitive.
@@ -27,20 +32,20 @@ crate::CONST! {
 # Example
 ```
 # use devela::{ansi, const_assert};
-assert_eq!["\u{1b}[1m", ansi![s: bold]];
-assert_eq!["\u{1b}[1m\u{1b}[3m", ansi![s: bold, ITALIC]];
-assert_eq!["\u{1b}[2;3H", ansi![s: cursor_move1(2, 3)]];
-const_assert![eq_str
-    "\u{1b}[1m\u{1b}[33m\u{1b}[4;2H\u{1b}[0m",
-    ansi![: bold yElLoW, cursor_move1(4, 2) rEsEt]
-];
-
 assert_eq![&[27, 91, 49, 109], ansi![b: bold]];
 assert_eq![&[27, 91, 49, 109, 27, 91, 51, 109], ansi![b: bold, ITALIC]];
 assert_eq![&[27, 91, 50, 59, 51, 72], ansi![b: cursor_move1(2, 3)]];
 const_assert![eq_buf
     &[27, 91, 49, 109, 27, 91, 51, 51, 109, 27, 91, 52, 59, 50, 72, 27, 91, 48, 109],
     ansi![b: bold yElLoW, cursor_move1(4, 2) rEsEt]
+];
+
+assert_eq!["\u{1b}[1m", ansi![s: bold]];
+assert_eq!["\u{1b}[1m\u{1b}[3m", ansi![s: bold, ITALIC]];
+assert_eq!["\u{1b}[2;3H", ansi![s: cursor_move1(2, 3)]];
+const_assert![eq_str
+    "\u{1b}[1m\u{1b}[33m\u{1b}[4;2H\u{1b}[0m",
+    ansi![s: bold yElLoW, cursor_move1(4, 2) rEsEt]
 ];
 
 # #[cfg(feature = "std")] {
@@ -51,13 +56,43 @@ ansi![p: bold, ITALIC, cursor_move1(2, 3)].unwrap();
 [0]: super::Ansi#ansi-escape-codes"#;
 }
 
+// non-printing version fallback (not(std), not(linux))
+// -----------------------------------------------------------------------------
+#[doc = DOC_ANSI!()]
+#[cfg(not(any(
+    /* 1) */ feature = "std",
+    /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri),
+        any(
+            target_arch = "x86", target_arch = "x86_64",
+            target_arch = "arm", target_arch = "aarch64",
+            target_arch = "riscv32", target_arch = "riscv64"
+        ),
+))))]
+#[doc(hidden)]
+#[macro_export]
+macro_rules! ansi {
+    (
+    b: // outputs a static byte slice
+    $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
+        const BYTES: &'static [u8] = $crate::paste! {
+            $crate::join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
+        };
+        BYTES
+    }};
+    (
+    s: // outputs a static string slice
+    $($arg:tt)*) => { $crate::Str::__utf8_bytes_to_str($crate::ansi![b: $($arg)*]) };
+    (
+    p: // no-op (printing not supported)
+    $($arg:tt)*) => {};
+    (
+    @p: // no-op (printing not supported)
+    $($command:ident $(($($arg:expr),*))? $(,)?)+) => {};
+}
+
 // std version (not(linux))
 // -----------------------------------------------------------------------------
 #[doc = DOC_ANSI!()]
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"),)))
-)]
 #[cfg(feature = "std")]
 #[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri),
     any( // targets:
@@ -66,6 +101,7 @@ ansi![p: bold, ITALIC, cursor_move1(2, 3)].unwrap();
         target_arch = "riscv32", target_arch = "riscv64"
     ),
 )))]
+#[doc(hidden)]
 #[macro_export]
 macro_rules! ansi {
     (
@@ -103,10 +139,6 @@ macro_rules! ansi {
 // linux version (overrides std)
 // -----------------------------------------------------------------------------
 #[doc = DOC_ANSI!()]
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"),)))
-)]
 #[cfg(all(
     feature = "linux", feature = "unsafe_syscall", not(miri),
     any( // targets:
@@ -115,6 +147,7 @@ macro_rules! ansi {
         target_arch = "riscv32", target_arch = "riscv64"
     ),
 ))]
+#[doc(hidden)]
 #[macro_export]
 macro_rules! ansi {
     (
@@ -149,16 +182,6 @@ macro_rules! ansi {
     }};
 }
 
-#[cfg(any(
-    feature = "std",
-    all(feature = "linux", feature = "unsafe_syscall", not(miri),
-        any( // targets:
-            target_arch = "x86", target_arch = "x86_64",
-            target_arch = "arm", target_arch = "aarch64",
-            target_arch = "riscv32", target_arch = "riscv64"
-        ),
-    )
-))]
 #[doc(inline)]
 pub use ansi;
 
