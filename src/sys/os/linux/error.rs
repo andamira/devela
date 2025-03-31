@@ -3,7 +3,7 @@
 //! Defines [`LinuxError`] and [`LinuxResult`].
 //
 
-use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO};
+use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO, LINUX_EXIT as EXIT};
 
 #[doc = crate::TAG_RESULT!()]
 /// The return type for Linux-related functions that can fail.
@@ -118,5 +118,45 @@ impl From<LinuxError> for IoError {
 impl From<IoError> for LinuxError {
     fn from(err: IoError) -> Self {
         LinuxError::from_io(err)
+    }
+}
+
+impl LinuxError {
+    /// Convert the error to [`LINUX_EXIT`][EXIT] with guaranteed valid value (0..=255).
+    ///
+    /// Invalid values are converted to `INTERNAL_ERROR`.
+    pub const fn to_exit_code(self) -> i32 {
+        let code = self.to_raw_exit_code();
+        if code >= EXIT::SUCCESS && code <= EXIT::MAX { // >= 0 && <= 255
+            code
+        } else {
+            EXIT::INTERNAL_ERROR // 254
+        }
+    }
+
+    /// Convert the error to [`LINUX_EXIT`][EXIT] without validation.
+    pub const fn to_raw_exit_code(self) -> i32 {
+        match self {
+            LinuxError::Sys(errno) => {
+                match errno {
+                    ERRNO::EPERM => EXIT::NOPERM,
+                    ERRNO::ENOENT => EXIT::NOINPUT,
+                    ERRNO::EACCES => EXIT::NOPERM,
+                    ERRNO::EINVAL => EXIT::USAGE,
+                    ERRNO::ENOSYS => EXIT::SOFTWARE,
+                    ERRNO::ENOMEM => EXIT::OSERR,
+                    ERRNO::EIO => EXIT::IOERR,
+                    ERRNO::ENFILE | ERRNO::EMFILE => EXIT::OSFILE,
+                    ERRNO::EEXIST => EXIT::CANTCREAT,
+                    ERRNO::ENOTDIR => EXIT::DATAERR,
+                    ERRNO::EISDIR => EXIT::DATAERR,
+                    ERRNO::ETIMEDOUT => EXIT::TEMPFAIL,
+                    // Add other specific mappings as needed
+                    _ => EXIT::OSERR,
+                }
+            }
+            LinuxError::NoInput => EXIT::NOINPUT,
+            LinuxError::InvalidUtf8 => EXIT::DATAERR,
+        }
     }
 }

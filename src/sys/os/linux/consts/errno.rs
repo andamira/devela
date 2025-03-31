@@ -1,10 +1,139 @@
 // devela::sys::os::linux::consts::errno
 //
-//! Defines [`LINUX_ERRNO`].
+//! Defines [`LINUX_ERRNO`] and [`LINUX_EXIT`].
 //
 
 #![allow(non_camel_case_types)]
 
+use crate::c_int;
+
+#[doc = crate::TAG_RESULT!()]
+/// Standard exit codes for Linux processes
+//
+// - /usr/include/sysexits.h
+pub struct LINUX_EXIT;
+
+/// Standard success/failure codes (0-2)
+impl LINUX_EXIT {
+    /// Successful termination.
+    pub const SUCCESS: c_int = 0;
+    //
+    /// Alias of [`SUCCESS`][Self::SUCCESS].
+    pub const OK: c_int = Self::SUCCESS;
+
+    /// General error.
+    pub const FAILURE: c_int = 1;
+    //
+    /// Alias of [`FAILURE`][Self::FAILURE].
+    pub const ERR: c_int = Self::FAILURE;
+
+    /// Misuse of shell builtins.
+    pub const MISUSE: c_int = 2;
+}
+/// `sysexits.h` codes (64-78)
+impl LINUX_EXIT {
+    //  Error numbers begin at EX__BASE to reduce the possibility of clashing
+    //  with other exit statuses that random programs may already return.
+    // pub const BASE: c_int = 64;
+
+    /// The command was used incorrectly
+    ///
+    /// E.g., with the wrong number of arguments, a bad flag, a bad syntax in a parameter…
+    pub const USAGE: c_int = 64;
+
+    /// The input data was incorrect in some way.
+    ///
+    /// This should only be used for user's data & not system files.
+    pub const DATAERR: c_int = 65;
+
+    /// An input file (not a system file) did not exist or was not readable.
+    ///
+    /// This could also include errors like "No message" to a mailer (if it cared to catch it).
+    pub const NOINPUT: c_int = 66;
+
+    /// The user specified did not exist.
+    ///
+    /// This might be used for mail addresses or remote logins.
+    pub const NOUSER: c_int = 67;
+
+    /// The host specified did not exist.
+    ///
+    /// This is used in mail addresses or network requests.
+    pub const NOHOST: c_int = 68;
+
+    /// A service is unavailable.
+    ///
+    /// This can occur if a support program or file does not exist. This can also be used as a
+    /// catchall message when something you wanted to do doesn't work, but you don't know why.
+    pub const UNAVAILABLE: c_int = 69; // service unavailable
+
+    /// An internal software error has been detected.
+    ///
+    /// This should be limited to non-operating system related errors as possible.
+    pub const SOFTWARE: c_int = 70; // internal software error
+
+    /// An operating system error has been detected.
+    ///
+    /// This is intended to be used for such things as "cannot fork", "cannot create pipe"…
+    /// It includes things like getuid returning a user that does not exist in the passwd file.
+    pub const OSERR: c_int = 71; // system error
+
+    /// Some system file (e.g., /etc/passwd, /etc/utmp, etc.)
+    /// does not exist, cannot be opened, or has some sort of error (e.g., syntax error).
+    pub const OSFILE: c_int = 72; // critical OS file missing
+
+    /// A (user specified) output file cannot be created.
+    pub const CANTCREAT: c_int = 73;
+
+    /// An error occurred while doing I/O on some file.
+    pub const IOERR: c_int = 74; // input/output error
+
+    /// Temporary failure, indicating something that is not really an error.
+    ///
+    /// In sendmail, this means that a mailer (e.g.) could not create a connection,
+    /// and the request should be reattempted later.
+    pub const TEMPFAIL: c_int = 75; // temp failure; user is invited to retry
+
+    /// The remote system returned something that was "not possible" during a protocol exchange.
+    pub const PROTOCOL: c_int = 76; // remote error in protocol
+
+    /// You did not have sufficient permission to perform the operation.
+    ///
+    /// This is not intended for file system problems, which should use `NOINPUT` or `CANTCREAT`,
+    /// but rather for higher level permissions.
+    pub const NOPERM: c_int = 77; // permission denied
+
+    /// Configuration error.
+    pub const CONFIG: c_int = 78; // configuration error
+
+    /// Maximum valid exit code.
+    pub const MAX: c_int = 255; // maximum listed value (everything should be modulo 256 anyway)
+}
+/// Special shell codes (126-128+)
+impl LINUX_EXIT {
+    /// Command invoked cannot execute.
+    pub const CANNOT_EXEC: c_int = 126;
+
+    /// Command not found.
+    pub const NOT_FOUND: c_int = 127;
+
+    /// Invalid argument to exit.
+    pub const INVALID_ARG: c_int = 128;
+
+    /// Termination by signal N.
+    pub const fn signal(n: c_int) -> c_int {
+        128 + n
+    }
+}
+/// Custom error codes.
+impl LINUX_EXIT {
+    /// Used when an invalid exit code would have been generated.
+    ///
+    /// This helps distinguish between explicit failures and coding errors.
+    pub const INTERNAL_ERROR: c_int = Self::MAX - 1;
+}
+
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// [`Linux`][crate::Linux] `sys/errno.h` constants.
 //
 // - /usr/include/asm-generic/errno.h

@@ -18,7 +18,7 @@ reexport! { rust: core::ffi,
 }
 
 reexport! { rust: core::ffi,
-    tag: concat![TAG_PRIMITIVE!(), TAG_TEXT!()],
+    tag: TAG_PRIMITIVE!(),
     doc: "Equivalent to C’s void type when used as a [pointer].",
     c_void
 }
