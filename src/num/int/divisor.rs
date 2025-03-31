@@ -3,7 +3,7 @@
 #[allow(unused_imports)]
 use crate::{
     _core::{fmt, hash, ops},
-    compile, iif, isize_up, paste, usize_up,
+    compile, is, isize_up, paste, usize_up,
 };
 
 #[doc = crate::TAG_NUM!()]
@@ -91,7 +91,7 @@ macro_rules! impl_divisor {
             /// Returns the absolute value of the signed primitive as its unsigned equivalent.
             #[must_use]
             const fn abs(n: $t) -> $un {
-                iif![n < 0; ((-1i8) as $un).wrapping_mul(n as $un); n as $un]
+                is![n < 0; ((-1i8) as $un).wrapping_mul(n as $un); n as $un]
             }
 
             /// Creates a divisor which can be used for faster computation
@@ -112,7 +112,7 @@ macro_rules! impl_divisor {
                     let ud = Self::abs(d);
                     let shift = ud.ilog2() as u8;
                     let inner = if ud.is_power_of_two() {
-                        iif![d > 0; DivisorInner::Shift(d, shift); DivisorInner::ShiftAndNegate(d, shift)]
+                        is![d > 0; DivisorInner::Shift(d, shift); DivisorInner::ShiftAndNegate(d, shift)]
                     } else {
                         let (mut magic, rem) = Self::div_rem_wide_by_base(1 << (shift - 1), ud);
                         let e = ud - rem;
@@ -121,7 +121,7 @@ macro_rules! impl_divisor {
                         } else {
                             magic *= 2;
                             let (doubled_rem, overflowed) = rem.overflowing_mul(2);
-                            iif![doubled_rem >= ud || overflowed; magic += 1];
+                            is![doubled_rem >= ud || overflowed; magic += 1];
                             magic += 1;
                             if d > 0 {
                                 DivisorInner::MultiplyAddShift(d, magic as $t, shift)
@@ -215,17 +215,17 @@ macro_rules! impl_divisor {
                     },
                     DivisorInner::MultiplyShift(_, magic, shift) => {
                         let q = Self::mulh(magic, n) >> shift;
-                        iif![q < 0; q + 1; q]
+                        is![q < 0; q + 1; q]
                     },
                     DivisorInner::MultiplyAddShift(_, magic, shift) => {
                         let q = Self::mulh(magic, n);
                         let t = q.wrapping_add(n) >> shift;
-                        iif![t < 0; t + 1; t]
+                        is![t < 0; t + 1; t]
                     },
                     DivisorInner::MultiplyAddShiftNegate(_, magic, shift) => {
                         let q = Self::mulh(magic, n);
                         let t = q.wrapping_add(n.wrapping_mul(-1)) >> shift;
-                        iif![t < 0; t + 1; t]
+                        is![t < 0; t + 1; t]
                     }
                 }
             }
@@ -418,7 +418,7 @@ macro_rules! impl_divisor {
                 if q1 >= BASE || q1 * vn0 > (rhat << HALF_WORD_BITS) {
                     q1 -= 1;
                     rhat += vn1;
-                    iif![rhat < BASE; continue];
+                    is![rhat < BASE; continue];
                 }
                 break;
             }
@@ -429,7 +429,7 @@ macro_rules! impl_divisor {
                 if q0 >= BASE || q0 * vn0 > (rhat << HALF_WORD_BITS) {
                     q0 -= 1;
                     rhat += vn1;
-                    iif![rhat < BASE; continue];
+                    is![rhat < BASE; continue];
                 }
                 break;
             }

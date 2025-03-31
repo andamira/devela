@@ -128,7 +128,7 @@ pub struct EventWheel {
 #[cfg(feature = "js")] #[rustfmt::skip]
 mod impl_js {
     use super::*;
-    use crate::{iif, js_number, JsEventKind, JsEventMouse, JsInstant};
+    use crate::{is, js_number, JsEventKind, JsEventMouse, JsInstant};
 
     /* mouse */
 
@@ -152,10 +152,10 @@ mod impl_js {
             JsEventMouse {
                 x: self.x as js_number,
                 y: self.y as js_number,
-                button: iif![let Some(b) = self.button; b.to_js(); 255], // IMPROVE to_js
+                button: is![let Some(b) = self.button; b.to_js(); 255], // IMPROVE to_js
                 buttons: self.buttons, // Already a bitmask, directly compatible
                 etype: self.state.to_js_as_mouse(),
-                time_stamp: iif![let Some(t) = self.time_stamp; t.to_js(); JsInstant { ms: 0.0 }],
+                time_stamp: is![let Some(t) = self.time_stamp; t.to_js(); JsInstant { ms: 0.0 }],
             }
         }
     }

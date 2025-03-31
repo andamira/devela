@@ -12,7 +12,7 @@ use crate::{
     NumError::Overflow,
     NumResult as Result,
     Sign::{Negative, Positive},
-    iif, isize_down, isize_up, paste, usize_down, usize_up,
+    is, isize_down, isize_up, paste, usize_down, usize_up,
 };
 
 /// Offers methods for casting between primitives.
@@ -714,10 +714,10 @@ macro_rules! impl_cast_fns {
     (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_overflow $f:$t]; )+ };
     (@can_overflow $f:ty:$t:ty) => { paste! {
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
-            iif![p > <$t>::MAX as $f; Err(Overflow(Some(Positive))); Ok(p as $t)]
+            is![p > <$t>::MAX as $f; Err(Overflow(Some(Positive))); Ok(p as $t)]
         }
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
-            iif![p > <$t>::MAX as $f; <$t>::MAX; p as $t]
+            is![p > <$t>::MAX as $f; <$t>::MAX; p as $t]
         }
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             (p % (<$t>::MAX as $f + 1)) as $t
@@ -726,10 +726,10 @@ macro_rules! impl_cast_fns {
     (can_underflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_underflow $f:$t]; )+ };
     (@can_underflow $f:ty:$t:ty) => { paste! {
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
-            iif![p < 0; Err(Overflow(Some(Negative))); Ok(p as $t)]
+            is![p < 0; Err(Overflow(Some(Negative))); Ok(p as $t)]
         }
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
-            iif![p < 0; 0; p as $t]
+            is![p < 0; 0; p as $t]
         }
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t

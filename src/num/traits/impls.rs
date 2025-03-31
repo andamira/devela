@@ -4,7 +4,7 @@
 //
 
 #[cfg(all(_float··, not(feature = "std")))]
-use crate::iif;
+use crate::is;
 #[allow(unused_imports)]
 use crate::num::{
     Num,
@@ -265,13 +265,13 @@ macro_rules! impl_num {
                 #[cfg(feature = "std")]
                 return Ok($p::abs(self));
                 #[cfg(not(feature = "std"))]
-                Ok(iif![self >= 0.0; self; -self])
+                Ok(is![self >= 0.0; self; -self])
             }
             fn num_ref_abs(&self) -> Result<Self> {
                 #[cfg(feature = "std")]
                 return Ok($p::abs(*self));
                 #[cfg(not(feature = "std"))]
-                Ok(iif![*self >= 0.0; *self; -*self])
+                Ok(is![*self >= 0.0; *self; -*self])
             }
         }}
     };

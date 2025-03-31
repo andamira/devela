@@ -7,7 +7,7 @@
 use crate::{
     Bitwise,
     MismatchedBounds::{self, DataOverflow, IndexOutOfBounds, MismatchedIndices},
-    iif,
+    is,
 };
 
 macro_rules! impl_bits_wrapper {
@@ -47,9 +47,9 @@ macro_rules! impl_bits_wrapper {
             pub const fn mask_range(start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
                 // a mask with all bits set, from 0 to end:
-                let mask_end = iif![end == <$t>::BITS -1; !0; (1 << (end + 1)) - 1];
+                let mask_end = is![end == <$t>::BITS -1; !0; (1 << (end + 1)) - 1];
                 // a mask with all bits set from 0 to start - 1:
-                let mask_start = iif![start == 0; 0; (1 << start) - 1];
+                let mask_start = is![start == 0; 0; (1 << start) - 1];
                 Self(mask_end - mask_start)
             }
             /// Returns a new bitmask of ones from the `[start..=end]` checked range.
@@ -70,9 +70,9 @@ macro_rules! impl_bits_wrapper {
                     Err(MismatchedIndices)
                 } else {
                     // create a mask with all bits set, from 0 to end:
-                    let mask_end = iif![end == <$t>::BITS -1; !0; (1 << (end + 1)) - 1];
+                    let mask_end = is![end == <$t>::BITS -1; !0; (1 << (end + 1)) - 1];
                     // create a mask with all bits set from 0 to start - 1:
-                    let mask_start = iif![start == 0; 0; (1 << start) - 1];
+                    let mask_start = is![start == 0; 0; (1 << start) - 1];
                     Ok(Self(mask_end - mask_start))
                 }
             }
@@ -203,7 +203,7 @@ macro_rules! impl_bits_wrapper {
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
-                        iif![value >= (1 << (end - start));
+                        is![value >= (1 << (end - start));
                             return Err(DataOverflow(Some(value as usize)))];
                         let value_shifted = (value << start) & mask.0;
                         Ok(Self((self.0 & !mask.0) | value_shifted))
@@ -273,7 +273,7 @@ macro_rules! impl_bits_wrapper {
                 debug_assert![start <= end];
                 // If the entire range of bits is selected, simply reverse all bits
                 let range_bits = end - start + 1;
-                iif![range_bits == Self::BITS; return Self(self.0.reverse_bits())];
+                is![range_bits == Self::BITS; return Self(self.0.reverse_bits())];
                 // Create the mask for the range and reverse its bits
                 let mask = (((1 as $t) << range_bits) - 1) << start;
                 let bits_to_rev = (self.0 & mask) >> start;
@@ -301,7 +301,7 @@ macro_rules! impl_bits_wrapper {
                 } else {
                     // If the entire range of bits is selected, simply reverse all bits
                     let range_bits = end - start + 1;
-                    iif![range_bits == Self::BITS; return Ok(Self(self.0.reverse_bits()))];
+                    is![range_bits == Self::BITS; return Ok(Self(self.0.reverse_bits()))];
                     // Create the mask for the range and reverse its bits
                     let mask = (((1 as $t) << range_bits) - 1) << start;
                     let bits_to_rev = (self.0 & mask) >> start;
@@ -374,7 +374,7 @@ macro_rules! impl_bits_wrapper {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 let mut idx = start;
                 while idx <= end {
-                    iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
+                    is![(masked_bits & (1 << idx)) != 0; return Some(idx)];
                     idx += 1;
                 }
                 None
@@ -395,7 +395,7 @@ macro_rules! impl_bits_wrapper {
                         let masked_bits = self.0 & mask.0;
                         let mut idx = start;
                         while idx <= end {
-                            iif![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
+                            is![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
                             idx += 1;
                         }
                         Ok(None)
@@ -417,7 +417,7 @@ macro_rules! impl_bits_wrapper {
                 let masked_bits = !(self.0 & Self::mask_range(start, end).0);
                 let mut idx = start;
                 while idx <= end {
-                    iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
+                    is![(masked_bits & (1 << idx)) != 0; return Some(idx)];
                     idx += 1;
                 }
                 None
@@ -438,7 +438,7 @@ macro_rules! impl_bits_wrapper {
                         let masked_bits = !(self.0 & mask.0);
                         let mut idx = start;
                         while idx <= end {
-                            iif![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
+                            is![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
                             idx += 1;
                         }
                         Ok(None)
@@ -461,8 +461,8 @@ macro_rules! impl_bits_wrapper {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 let mut idx = end;
                 loop {
-                    iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
-                    iif![idx == start; break];
+                    is![(masked_bits & (1 << idx)) != 0; return Some(idx)];
+                    is![idx == start; break];
                     idx -= 1;
                 }
                 None
@@ -483,8 +483,8 @@ macro_rules! impl_bits_wrapper {
                         let masked_bits = self.0 & mask.0;
                         let mut idx = end;
                         loop {
-                            iif![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
-                            iif![idx == start; break];
+                            is![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
+                            is![idx == start; break];
                             idx -= 1;
                         }
                         Ok(None)
@@ -505,8 +505,8 @@ macro_rules! impl_bits_wrapper {
                 let masked_bits = !(self.0 & Self::mask_range(start, end).0);
                 let mut idx = end;
                 loop {
-                    iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
-                    iif![idx == start; break];
+                    is![(masked_bits & (1 << idx)) != 0; return Some(idx)];
+                    is![idx == start; break];
                     idx -= 1;
                 }
                 None
@@ -527,8 +527,8 @@ macro_rules! impl_bits_wrapper {
                         let masked_bits = !(self.0 & mask.0);
                         let mut idx = end;
                         loop {
-                            iif![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
-                            iif![idx == start; break];
+                            is![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
+                            is![idx == start; break];
                             idx -= 1;
                         }
                         Ok(None)

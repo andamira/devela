@@ -50,7 +50,7 @@
     - front::term: `TermSize`.
   - namespaces: `Ansi`, `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
-  - `define_panic_handler!`, `define_static_map!`, `methods_as_fns!`.
+  - `define_panic_handler!`, `define_static_map!`, `is`, `methods_as_fns!`.
   - `join!`, `js_reexport`, `maybe!`, `miniquad!`, `xorshift_custom!`.
   - `ansi!`, `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
 - new modules:
@@ -118,6 +118,7 @@
   - `num::alg`.
 - disable optional dependencies: `fltk`, `js-sys`, `nc`, `ring`, `rustix`, `rkyv`, `tinyaudio`, `tracing`, `wasm-bindgen`, `web-sys`.
 - deprecate:
+  - `iif!`.
   - `Char::len_to_utf8`.
   - `Float::{const_[clamp|max|min|signum|copysign]}`.
 

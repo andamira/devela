@@ -5,7 +5,7 @@
 
 #[allow(unused_imports)]
 use super::super::shared_docs::*;
-use crate::{Float, Sign, concat as cc, iif, stringify as sfy};
+use crate::{Float, Sign, concat as cc, is, stringify as sfy};
 
 /// Implements methods independently of any features
 ///
@@ -109,7 +109,7 @@ macro_rules! impl_float_shared {
                 #[allow(clippy::cast_possible_wrap)]
                 let exponent = (((bits >> SIG_BITS) & EXP_MASK) as $ie) - BIAS;
                 if exponent < 0 {
-                    iif![self.0.is_sign_positive(); Float(0.0); Float(-0.0)]
+                    is![self.0.is_sign_positive(); Float(0.0); Float(-0.0)]
                 } else if exponent < SIG_BITS {
                     let mask = !(((1 as $uf) << (SIG_BITS - exponent)) - 1);
                     let new_bits = bits & mask;
@@ -125,8 +125,8 @@ macro_rules! impl_float_shared {
             #[allow(clippy::float_cmp, reason = "RETHINK (self.0 - r.0).abs() == 0.5")]
             pub const fn round_ties_odd(self) -> Float<$f> {
                 let r = self.const_round_ties_away();
-                iif![r.0 % 2.0 != 0.0; r ;
-                    iif![(self.0 - r.0).abs() == 0.5; Float(r.0 + self.0.signum()); r]]
+                is![r.0 % 2.0 != 0.0; r ;
+                    is![(self.0 - r.0).abs() == 0.5; Float(r.0 + self.0.signum()); r]]
             }
 
             /// The fractional part.
@@ -219,7 +219,7 @@ macro_rules! impl_float_shared {
             pub const fn div_euclid(self, other: $f) -> Float<$f> {
                 let q = Float(self.0 / other).const_trunc().0;
                 if self.0 % other < 0.0 {
-                    iif![other > 0.0; Float(q - 1.0); Float(q + 1.0)]
+                    is![other > 0.0; Float(q - 1.0); Float(q + 1.0)]
                 } else {
                     Float(q)
                 }
@@ -229,7 +229,7 @@ macro_rules! impl_float_shared {
             // NOTE: [yield inconsistent results](https://github.com/rust-lang/rust/issues/111405)
             pub const fn rem_euclid(self, other: $f) -> Float<$f> {
                 let r = self.0 % other;
-                iif![r < 0.0; Float(r + Float(other).abs().0); Float(r)]
+                is![r < 0.0; Float(r + Float(other).abs().0); Float(r)]
             }
 
             /// Returns `self` between `[min..=max]` scaled to a new range `[u..=v]`.
@@ -321,7 +321,7 @@ macro_rules! impl_float_shared {
             /// $ \sqrt\[3\]{x} $ The cubic root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             pub const fn cbrt_nr(self) -> Float<$f> {
-                iif![self.0 == 0.0; return self];
+                is![self.0 == 0.0; return self];
                 let mut guess = self.0;
                 loop {
                     let next_guess = (2.0 * guess + self.0 / (guess * guess)) / 3.0;
@@ -483,7 +483,7 @@ macro_rules! impl_float_shared {
                 } else if self.0 < other {
                     Float(other)
                 } else if self.0 == other {
-                    iif![self.is_sign_positive() && other.is_sign_negative(); self; Float(other)]
+                    is![self.is_sign_positive() && other.is_sign_negative(); self; Float(other)]
                 } else {
                     // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
                     Float(self.0 + other)
@@ -507,7 +507,7 @@ macro_rules! impl_float_shared {
                 } else if self.0 > other {
                     Float(other)
                 } else if self.0 == other {
-                    iif![self.is_sign_negative() && other.is_sign_positive(); self; Float(other)]
+                    is![self.is_sign_negative() && other.is_sign_positive(); self; Float(other)]
                 } else {
                     // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
                     Float(self.0 + other)

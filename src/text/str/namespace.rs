@@ -3,7 +3,7 @@
 //! [`Str`] namespace.
 //
 
-use crate::{InvalidUtf8, Slice, iif};
+use crate::{InvalidUtf8, Slice, is};
 
 #[cfg(feature = "str")]
 crate::items! {
@@ -115,7 +115,7 @@ impl Str {
     #[doc(hidden)] #[rustfmt::skip]
     pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
         #[cfg(any(feature = "safe_text", not(unsafe··)))]
-        { crate::unwrap![ok::core::str::from_utf8(bytes)] }
+        { crate::unwrap![ok ::core::str::from_utf8(bytes)] }
         #[cfg(all(not(feature = "safe_text"), unsafe··))]
         unsafe { ::core::str::from_utf8_unchecked(bytes) }
     }
@@ -159,7 +159,7 @@ impl Str {
         let mut index = 0;
         // for _ in 0..n {
         //     for &b in s_bytes {
-        //         iif![index == CAP; break];
+        //         is![index == CAP; break];
         //         buffer[index] = b;
         //         index += 1;
         //     }
@@ -168,7 +168,7 @@ impl Str {
         while outer_count < n {
             let mut inner_index = 0;
             while inner_index < s_bytes.len() {
-                iif![index == CAP; break];
+                is![index == CAP; break];
                 buffer[index] = s_bytes[inner_index];
                 index += 1;
                 inner_index += 1;
@@ -229,7 +229,7 @@ impl Str {
                 if separator_turn {
                     buffer[index] = separator;
                 } else {
-                    iif![index > 0; index -= num_len - 1];
+                    is![index > 0; index -= num_len - 1];
                     // WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
                     // buffer[index..(num_len + index)].copy_from_slice(&num_bytes[..num_len]);
                     // Slice::range_mut(buffer, index, num_len + index)
@@ -249,7 +249,7 @@ impl Str {
 
                     num_len = num_bytes.len();
                 }
-                iif![index == 0; break; index -= 1];
+                is![index == 0; break; index -= 1];
                 separator_turn = !separator_turn;
             }
 

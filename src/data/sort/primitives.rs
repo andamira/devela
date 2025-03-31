@@ -5,7 +5,7 @@
 
 #[cfg(_sort_float··)]
 use crate::Compare;
-use crate::{Sort, cfor, cswap, iif, paste};
+use crate::{Sort, cfor, cswap, is, paste};
 
 /* impl Sort on primitives */
 
@@ -47,7 +47,7 @@ macro_rules! impl_sort {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
                     cfor![j in 0..N-i-1 => {
-                        iif![arr[j] > arr[j+1]; cswap!(xor arr[j], arr[j+1])];
+                        is![arr[j] > arr[j+1]; cswap!(xor arr[j], arr[j+1])];
                     }];
                 }];
                 arr
@@ -74,7 +74,7 @@ macro_rules! impl_sort {
                 cfor![i in 0..N-1 => {
                     let mut min_index = i;
                     cfor![j in (i+1)..N => {
-                        iif![arr[j] < arr[min_index]; min_index = j];
+                        is![arr[j] < arr[min_index]; min_index = j];
                     }];
                     cswap!(xor arr[min_index], arr[i]);
                 }];
@@ -93,7 +93,7 @@ macro_rules! impl_sort {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
                     cfor![j in 0..N-i-1 => {
-                        iif![arr[j] > arr[j+1]; cswap!(xor: arr[j], arr[j+1])];
+                        is![arr[j] > arr[j+1]; cswap!(xor: arr[j], arr[j+1])];
                     }];
                 }];
                 arr
@@ -120,7 +120,7 @@ macro_rules! impl_sort {
                 cfor![i in 0..N-1 => {
                     let mut min_index = i;
                     cfor![j in (i+1)..N => {
-                        iif![arr[j] < arr[min_index]; min_index = j];
+                        is![arr[j] < arr[min_index]; min_index = j];
                     }];
                     cswap!(xor: arr[min_index], arr[i]);
                 }];
@@ -139,7 +139,7 @@ macro_rules! impl_sort {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
                     cfor![j in 0..N-i-1 => {
-                        iif![Compare(arr[j]).gt(arr[j+1]); cswap!(tmp: arr[j], arr[j+1])];
+                        is![Compare(arr[j]).gt(arr[j+1]); cswap!(tmp: arr[j], arr[j+1])];
                     }];
                 }];
                 arr
@@ -166,7 +166,7 @@ macro_rules! impl_sort {
                 cfor![i in 0..N-1 => {
                     let mut min_index = i;
                     cfor![j in (i+1)..N => {
-                        iif![Compare(arr[j]).lt(arr[min_index]); min_index = j];
+                        is![Compare(arr[j]).lt(arr[min_index]); min_index = j];
                     }];
                     cswap!(tmp: arr[min_index], arr[i]);
                 }];

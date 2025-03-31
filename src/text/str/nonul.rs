@@ -8,7 +8,7 @@
 
 use crate::{
     _core::fmt, ConstDefault, Deref, InvalidText, IterChars, Mismatch, MismatchedCapacity,
-    NotEnoughElements, cfor, iif, text::char::*, unwrap,
+    NotEnoughElements, cfor, is, text::char::*, unwrap,
 };
 #[cfg(feature = "alloc")]
 use crate::{CString, ToString};
@@ -103,7 +103,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     pub const fn len(&self) -> usize {
         let mut position = 0;
         while position < CAP {
-            iif![self.arr[position] == 0; break];
+            is![self.arr[position] == 0; break];
             position += 1;
         }
         position
@@ -361,7 +361,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         if c != '\0' {
             let bytes = Char::to_utf8_bytes(c);
             let len = Char::utf8_len(bytes[0]) as usize;
-            iif![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
+            is![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
             if len > 2 { new.arr[2] = bytes[2]; }
@@ -406,7 +406,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char::utf8_len(bytes[0]) as usize;
-            iif![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
+            is![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
         }
@@ -430,7 +430,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char::utf8_len(bytes[0]) as usize;
-            iif![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
+            is![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
             if len > 2 { new.arr[2] = bytes[2]; }
@@ -450,7 +450,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         match ::core::str::from_utf8(&bytes) {
             Ok(_) => {
                 cfor![index in 0..CAP => {
-                    iif![bytes[index] == 0; return Err(InvalidText::Char('\0'))];
+                    is![bytes[index] == 0; return Err(InvalidText::Char('\0'))];
                 }];
                 Ok(Self { arr: bytes })
             }

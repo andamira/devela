@@ -13,7 +13,7 @@
 
 use crate::Ordering::{self, Equal, Greater, Less};
 #[allow(unused_imports)]
-use crate::{iif, paste};
+use crate::{is, paste};
 
 #[allow(unused_imports)]
 #[cfg(_float··)]
@@ -228,7 +228,7 @@ macro_rules! impl_comparing {
                 left ^= (((left >> $sh) as [<u $b>]) >> 1) as [<i $b>];
                 right ^= (((right >> $sh) as [<u $b>]) >> 1) as [<i $b>];
 
-                iif![left < right; Less; iif![left > right; Greater; Equal]]
+                is![left < right; Less; is![left > right; Greater; Equal]]
             }
 
             /// Compares and returns a clamped *total ordered* `self` between `min` and `max`.

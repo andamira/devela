@@ -7,7 +7,7 @@
 // - MiniquadService
 
 use crate::{Box, ToString};
-use crate::{UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService, iif};
+use crate::{UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService, is};
 #[cfg(doc)]
 use ::miniquad::FilterMode;
 use ::miniquad::{EventHandler, conf::Conf};
@@ -152,7 +152,7 @@ impl<T: MiniquadEventHandlerExt + 'static> MiniquadService<T> {
     ///
     /// If the `handler` has not been set, this does nothing.
     pub fn interpolation(mut self, linear: bool) -> Self {
-        iif![let Some(h) = self.handler.as_mut(); h.set_interpolation(linear)];
+        is![let Some(h) = self.handler.as_mut(); h.set_interpolation(linear)];
         self
     }
 
@@ -160,7 +160,7 @@ impl<T: MiniquadEventHandlerExt + 'static> MiniquadService<T> {
     ///
     /// If the `handler` has not been set, this does nothing.
     pub fn maintain_aspect_ratio(mut self, maintain: bool) -> Self {
-        iif![let Some(h) = self.handler.as_mut(); h.set_maintain_aspect_ratio(maintain)];
+        is![let Some(h) = self.handler.as_mut(); h.set_maintain_aspect_ratio(maintain)];
         self
     }
 }
@@ -173,7 +173,7 @@ impl<T: MiniquadEventHandlerExt + 'static> MiniquadService<T> {
     }
     /// Set whether to `maintain` the aspect ratio on window resize.
     pub fn set_interpolation(&mut self, interpolate: bool) {
-        iif![let Some(h) = self.handler.as_mut(); h.set_interpolation(interpolate)];
+        is![let Some(h) = self.handler.as_mut(); h.set_interpolation(interpolate)];
     }
 
     /// Whether the aspect ratio is maintained on window resize.
@@ -182,6 +182,6 @@ impl<T: MiniquadEventHandlerExt + 'static> MiniquadService<T> {
     }
     /// Set whether to `maintain` the aspect ratio on window resize.
     pub fn set_maintain_aspect_ratio(&mut self, maintain: bool) {
-        iif![let Some(h) = self.handler.as_mut(); h.set_maintain_aspect_ratio(maintain)];
+        is![let Some(h) = self.handler.as_mut(); h.set_maintain_aspect_ratio(maintain)];
     }
 }

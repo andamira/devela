@@ -9,7 +9,7 @@
 
 #[cfg(any(doc, unsafe··))]
 use crate::Ptr;
-use crate::{Compare, iif};
+use crate::{Compare, is};
 use core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use core::slice::{from_raw_parts, from_raw_parts_mut};
@@ -748,10 +748,10 @@ macro_rules! impl_prim {
             /// Checks the equality of two slices of primitives in compile-time.
             #[must_use]
             pub const fn eq(a: &[$t], b: &[$t]) -> bool {
-                iif! { a.len() != b.len(); return false }
+                is! { a.len() != b.len(); return false }
                 let mut i = 0;
                 while i < a.len() {
-                    iif! { a[i] != b[i]; return false }
+                    is! { a[i] != b[i]; return false }
                     i += 1;
                 }
                 true
@@ -773,10 +773,10 @@ impl Slice<&[&str]> {
     /// Checks the equality of two slices of string slices in compile-time.
     #[must_use]
     pub const fn eq(a: &[&str], b: &[&str]) -> bool {
-        iif! { a.len() != b.len(); return false }
+        is! { a.len() != b.len(); return false }
         let mut i = 0;
         while i < a.len() {
-            iif! { !Slice::<&str>::eq(a[i], b[i]); return false }
+            is! { !Slice::<&str>::eq(a[i], b[i]); return false }
             i += 1;
         }
         true

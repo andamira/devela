@@ -8,7 +8,7 @@
 // - indexing methods (panicking)
 // - Option<T> methods
 
-use crate::{Array, Bare, BareBox, array_init, iif};
+use crate::{Array, Bare, BareBox, Slice, array_init, is};
 
 /// # *Bare* constructors
 impl<T, const CAP: usize> Array<T, CAP, Bare> {
@@ -132,7 +132,7 @@ impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
     pub const fn is_bare_empty(&self) -> bool {
         let mut n = 0;
         while n <= CAP {
-            iif![self.as_bare_slice()[n].is_some(); return false];
+            is![self.as_bare_slice()[n].is_some(); return false];
             n += 1;
         }
         true
@@ -142,7 +142,7 @@ impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
     pub const fn is_bare_full(&self) -> bool {
         let mut n = 0;
         while n <= CAP {
-            iif![self.as_bare_slice()[n].is_none(); return false];
+            is![self.as_bare_slice()[n].is_none(); return false];
             n += 1;
         }
         true

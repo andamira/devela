@@ -89,7 +89,7 @@ macro_rules! impl_non_value {
             #[cfg(feature = "bit")]
             use $crate::{BitSized, ByteSized};
             use $crate::{
-                _core::num::*, iif, unwrap, ConstDefault, FromStr,
+                _core::num::*, is, unwrap, ConstDefault, FromStr,
                 NumError::{Invalid, Overflow}, NumResult, Debug, Display,
                 FmtResult, Formatter, Binary, Octal, LowerHex, UpperHex,
             };
@@ -253,7 +253,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V - 1`.
                 pub const fn saturating_add(&self, other: $IP) -> Self {
                     let res = self.get().saturating_add(other);
-                    unwrap![some Self::new(iif![res == V; res - 1; res])]
+                    unwrap![some Self::new(is![res == V; res - 1; res])]
                 }
                 /// Saturating integer substration. Computes `self - rhs`.
                 ///
@@ -261,7 +261,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V + 1`.
                 pub const fn saturating_sub(&self, other: $IP) -> Self {
                     let res = self.get().saturating_sub(other);
-                    unwrap![some Self::new(iif![res == V; res + 1; res])]
+                    unwrap![some Self::new(is![res == V; res + 1; res])]
                 }
 
                 /// Wraping integer addition. Computes `self + rhs`.
@@ -270,7 +270,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V + 1`.
                 pub const fn wrapping_add(&self, other: $IP) -> Self {
                     let res = self.get().wrapping_add(other);
-                    unwrap![some Self::new(iif![res == V; res + 1; res])]
+                    unwrap![some Self::new(is![res == V; res + 1; res])]
                 }
                 /// Wraping integer subtraction. Computes `self - rhs`.
                 ///
@@ -278,7 +278,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V - 1`.
                 pub const fn wrapping_sub(&self, other: $IP) -> Self {
                     let res = self.get().wrapping_sub(other);
-                    unwrap![some Self::new(iif![res == V; res - 1; res])]
+                    unwrap![some Self::new(is![res == V; res - 1; res])]
                 }
             }
 

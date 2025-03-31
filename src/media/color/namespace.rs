@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports)]
-use crate::code::{CONST, iif, paste, sf};
+use crate::code::{CONST, is, paste, sf};
 
 #[cfg(all(_float··, not(feature = "std")))]
 #[allow(unused_imports, reason = "!std: powf, powi")]
@@ -38,7 +38,7 @@ macro_rules! color_gamma_fns {
             #[cfg(any(feature = "std", feature = $cap))]
             #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $cap))))]
             pub fn [<gamma_apply_ $t>](c: $t, gamma: $t) -> $t {
-                iif![c <= 0.003_130_8; 12.92 * c; 1.055 * c.powf(1.0 / gamma) - 0.055]
+                is![c <= 0.003_130_8; 12.92 * c; 1.055 * c.powf(1.0 / gamma) - 0.055]
             }
 
             #[doc = "Removes the `gamma` *(γ)* from a non-linear `" $t "` channel to make it linear."]
@@ -56,7 +56,7 @@ macro_rules! color_gamma_fns {
             #[cfg(any(feature = "std", feature = $cap))]
             #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $cap))))]
             pub fn [<gamma_remove_ $t>](c: $t, gamma: $t) -> $t {
-                iif![c <= 0.040_45; c / 12.92; ((c + 0.055) / (1.055)).powf(gamma)]
+                is![c <= 0.040_45; c / 12.92; ((c + 0.055) / (1.055)).powf(gamma)]
             }
         }
     }};

@@ -8,7 +8,7 @@ use super::super::{
 use super::{SixelNode, SixelOutput};
 #[cfg(feature = "fmt")]
 use crate::NumToStr;
-use crate::{IoWrite, SixelError, SixelResult, Vec, iif, sf, vec_ as vec};
+use crate::{IoWrite, SixelError, SixelResult, Vec, is, sf, vec_ as vec};
 
 impl<W: IoWrite> SixelOutput<W> {
     /* GNU Screen penetration */
@@ -138,7 +138,7 @@ impl<W: IoWrite> SixelOutput<W> {
 
     /// Outputs a single pixel to the sixel stream.
     pub fn put_pixel(&mut self, mut pix: u8) -> SixelResult<()> {
-        iif![pix > b'?'; pix = b'\0'];
+        is![pix > b'?'; pix = b'\0'];
         pix += b'?';
         if pix == self.save_pixel {
             self.save_count += 1;
@@ -169,11 +169,11 @@ impl<W: IoWrite> SixelOutput<W> {
             }
         }
         while *x < np.sx {
-            iif![*x != keycolor; self.put_pixel(0)?];
+            is![*x != keycolor; self.put_pixel(0)?];
             *x += 1;
         }
         while *x < np.mx {
-            iif![*x != keycolor; self.put_pixel(np.map[*x as usize])?];
+            is![*x != keycolor; self.put_pixel(np.map[*x as usize])?];
             *x += 1;
         }
         self.put_flash()?;
@@ -200,7 +200,7 @@ impl<W: IoWrite> SixelOutput<W> {
             pcount -= 1;
             if p[1] == 0 {
                 pcount -= 1;
-                iif![p[0] == 0; pcount -= 1];
+                is![p[0] == 0; pcount -= 1];
             }
         }
         if pcount > 0 {
@@ -640,8 +640,8 @@ impl<W: IoWrite> SixelOutput<W> {
                             paletted_pixels[dst] = pp;
                             let pp = pp as usize;
                             marks[mptr] = true;
-                            iif![palstate[pp] != 0; palstate[pp] = Self::PALETTE_HIT];
-                            iif![palhitcount[pp] < 255; palhitcount[pp] += 1];
+                            is![palstate[pp] != 0; palstate[pp] = Self::PALETTE_HIT];
+                            is![palhitcount[pp] < 255; palhitcount[pp] += 1];
                         }
                     }
                     mptr += 1;
@@ -650,11 +650,11 @@ impl<W: IoWrite> SixelOutput<W> {
                 }
                 y += 1;
                 if y >= height {
-                    iif![dirty; mod_y = 5; { is_running = false; break; }];
+                    is![dirty; mod_y = 5; { is_running = false; break; }];
                 }
                 if dirty && (mod_y == 5 || y >= height) {
                     let orig_height = height;
-                    iif![output_count == 0; self.encode_header(width, height)?];
+                    is![output_count == 0; self.encode_header(width, height)?];
                     output_count += 1;
                     height = y;
                     self.encode_body(
@@ -685,7 +685,7 @@ impl<W: IoWrite> SixelOutput<W> {
                 }
             }
         }
-        iif![output_count == 0; self.encode_header(width, height)?];
+        is![output_count == 0; self.encode_header(width, height)?];
         let _ = self.encode_body(
             &paletted_pixels,
             width,
@@ -709,8 +709,8 @@ impl<W: IoWrite> SixelOutput<W> {
         _depth: i32, /* color depth */
         dither: &mut DitherConf,
     ) -> SixelResult<()> /* output context */ {
-        iif![width < 1; return Err(SixelError::BadInput)];
-        iif![height < 1; return Err(SixelError::BadInput)];
+        is![width < 1; return Err(SixelError::BadInput)];
+        is![height < 1; return Err(SixelError::BadInput)];
         match dither.quality_mode {
             SixelQuality::Auto | SixelQuality::High | SixelQuality::Low | SixelQuality::Full => {
                 self.encode_dither(pixels, width, height, dither)?;

@@ -12,7 +12,7 @@
 use crate::Str;
 use crate::{
     _core::fmt, ConstDefault, Deref, InvalidText, InvalidUtf8, IterChars, Mismatch,
-    MismatchedCapacity, NotEnoughElements, iif, paste, text::char::*, unwrap,
+    MismatchedCapacity, NotEnoughElements, is, paste, text::char::*, unwrap,
 };
 #[cfg(all(_str_u··, feature = "alloc"))]
 use crate::{CString, ToString};
@@ -298,7 +298,7 @@ macro_rules! impl_str_u {
             /// Returns [`MismatchedCapacity`] if the capacity is not enough
             /// to hold even the first character.
             pub fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
-                iif![string.is_empty(); return Ok(0)];
+                is![string.is_empty(); return Ok(0)];
                 let first_char_len = string.chars().next().unwrap().len_utf8();
                 if self.remaining_capacity() < first_char_len {
                     Err(MismatchedCapacity::closed(0, self.len() + first_char_len, CAP))

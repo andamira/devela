@@ -23,7 +23,7 @@ use crate::usize_up;
 use crate::{
     Int,
     NumError::{NonZeroRequired, Overflow},
-    NumResult as Result, ValueQuant, cif, iif, paste,
+    NumResult as Result, ValueQuant, cif, is, paste,
 };
 #[cfg(_int_i··)]
 use crate::{NumError::NoInverse, unwrap};
@@ -491,7 +491,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let rem = (self.0.rem_euclid(modulus));
-                    iif![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
+                    is![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
                 }
             }
 
@@ -508,7 +508,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`.
             pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let rem = (self.0.rem_euclid(modulus));
-                iif![rem == 0; Int(0); Int(modulus - rem)]
+                is![rem == 0; Int(0); Int(modulus - rem)]
             }
 
             /* modulo sub (signed) */
@@ -1160,7 +1160,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let rem = (self.0.rem_euclid(modulus));
-                    iif![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
+                    is![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
                 }
             }
 
@@ -1177,7 +1177,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`.
             pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let rem = (self.0.rem_euclid(modulus));
-                iif![rem == 0; Int(0); Int(modulus - rem)]
+                is![rem == 0; Int(0); Int(modulus - rem)]
             }
 
             /* modulo sub (unsigned) */

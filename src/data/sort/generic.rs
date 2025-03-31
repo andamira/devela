@@ -5,7 +5,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{BTreeMap, Vec};
-use crate::{Sort, iif};
+use crate::{Sort, is};
 
 impl<T: Ord> Sort<&mut [T]> {
     /// Sorts a slice using bubble sort.
@@ -20,7 +20,7 @@ impl<T: Ord> Sort<&mut [T]> {
     pub fn bubble(self) {
         for i in 0..self.0.len() {
             for j in 0..self.0.len() - i - 1 {
-                iif![self.0[j] > self.0[j + 1]; self.0.swap(j, j + 1)];
+                is![self.0[j] > self.0[j + 1]; self.0.swap(j, j + 1)];
             }
         }
     }
@@ -171,7 +171,7 @@ impl<T: Ord> Sort<&mut [T]> {
         for i in 0..len - 1 {
             let mut min_index = i;
             for j in (i + 1)..len {
-                iif![self.0[j] < self.0[min_index]; min_index = j];
+                is![self.0[j] < self.0[min_index]; min_index = j];
             }
             self.0.swap(min_index, i);
         }
@@ -196,13 +196,13 @@ impl<T: Ord> Sort<&mut [T]> {
         while swapped {
             swapped = false;
             for i in start..end - 1 {
-                iif![self.0[i] > self.0[i + 1]; { self.0.swap(i, i + 1); swapped = true; }];
+                is![self.0[i] > self.0[i + 1]; { self.0.swap(i, i + 1); swapped = true; }];
             }
-            iif![!swapped; break];
+            is![!swapped; break];
             swapped = false;
             end -= 1;
             for i in (start..end - 1).rev() {
-                iif![self.0[i] > self.0[i + 1]; { self.0.swap(i, i + 1); swapped = true; }];
+                is![self.0[i] > self.0[i + 1]; { self.0.swap(i, i + 1); swapped = true; }];
             }
             start += 1;
         }
@@ -223,14 +223,14 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
     pub fn quick_lomuto(slice: &mut [T]) {
-        iif![slice.len() < 2; return];
+        is![slice.len() < 2; return];
         let ipivot = helper::sort_quick_lomuto_partition(slice);
         Self::quick_lomuto(&mut slice[0..ipivot]);
         Self::quick_lomuto(&mut slice[ipivot + 1..]);
     }
     // NOTE: can't use self because of multiple mutable borrows
     // pub fn quick_lomuto(self) {
-    //     iif![self.0.len() < 2; return];
+    //     is![self.0.len() < 2; return];
     //     let ipivot = helper::sort_quick_lomuto_partition(self.0);
     //     Self(&mut self.0[0..ipivot]).quick_lomuto();
     //     Self(&mut self.0[ipivot + 1..]).quick_lomuto();
@@ -252,18 +252,18 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
         T: Clone,
     {
         let len = slice.len();
-        iif![len < 2; return];
+        is![len < 2; return];
         let (lt, gt) = helper::sort_quick_3way_partition(slice);
         Self::quick_3way(&mut slice[0..lt]);
-        iif![gt < len; Self::quick_3way(&mut slice[gt..])];
+        is![gt < len; Self::quick_3way(&mut slice[gt..])];
     }
     // NOTE: can't use self because of multiple mutable borrows
     // pub fn quick_3way(self) where T: Clone {
     //     let len = self.0.len();
-    //     iif![len < 2; return];
+    //     is![len < 2; return];
     //     let (lt, gt) = helper::sort_quick_3way_partition(self.0);
     //     Self(&mut self.0[0..lt]).quick_3way();
-    //     iif![gt < len; Self(&mut self.0[gt..]).quick_3way()];
+    //     is![gt < len; Self(&mut self.0[gt..]).quick_3way()];
     // }
 
     /// Sorts a `slice` using quick sort with the Hoare partition scheme.
@@ -282,30 +282,30 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
         T: Clone,
     {
         let len = slice.len();
-        iif![len < 2; return];
+        is![len < 2; return];
         let ipivot = helper::sort_quick_hoare_partition(slice);
-        iif![ipivot > 0; Self::quick_hoare(&mut slice[0..ipivot])];
-        iif![ipivot + 1 < len; Self::quick_hoare(&mut slice[ipivot + 1..])];
+        is![ipivot > 0; Self::quick_hoare(&mut slice[0..ipivot])];
+        is![ipivot + 1 < len; Self::quick_hoare(&mut slice[ipivot + 1..])];
     }
     // NOTE: can't use self because of multiple mutable borrows
     // pub fn quick_hoare(self) where T: Clone {
     //     let len = self.0.len();
-    //     iif![len < 2; return];
+    //     is![len < 2; return];
     //     let ipivot = helper::sort_quick_hoare_partition(self.0);
-    //     iif![ipivot > 0; Self(&mut self.0[0..ipivot]).quick_hoare()];
-    //     iif![ipivot + 1 < len; Self(&mut self.0[ipivot + 1..]).quick_hoare()];
+    //     is![ipivot > 0; Self(&mut self.0[0..ipivot]).quick_hoare()];
+    //     is![ipivot + 1 < len; Self(&mut self.0[ipivot + 1..]).quick_hoare()];
     // }
 }
 
 // private helper fns
 mod helper {
-    use crate::{Ordering, iif, sf};
+    use crate::{Ordering, is, sf};
 
     // MAYBE WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
     #[cfg(feature = "alloc")]
     pub(super) fn sort_merge_internal<T: Ord + Copy>(slice: &mut [T], buffer: &mut [T]) {
         let len = slice.len();
-        iif![len <= 1; return];
+        is![len <= 1; return];
         let mid = len / 2;
         sort_merge_internal(&mut slice[..mid], buffer);
         sort_merge_internal(&mut slice[mid..], buffer);
@@ -316,14 +316,14 @@ mod helper {
     pub(super) fn sort_merge_merge<T: Ord + Copy>(left: &[T], right: &[T], slice: &mut [T]) {
         let (mut i, mut j, mut k) = (0, 0, 0);
         while i < left.len() && j < right.len() {
-            iif![ left[i] < right[j] ;
+            is![ left[i] < right[j] ;
                 { slice[k] = left[i]; i += 1; } ;
                 { slice[k] = right[j]; j += 1; }
             ];
             k += 1;
         }
-        iif![i < left.len(); slice[k..].copy_from_slice(&left[i..])];
-        iif![j < right.len(); slice[k..].copy_from_slice(&right[j..])];
+        is![i < left.len(); slice[k..].copy_from_slice(&left[i..])];
+        is![j < right.len(); slice[k..].copy_from_slice(&right[j..])];
     }
     pub(super) fn sort_quick_lomuto_partition<T: Ord>(slice: &mut [T]) -> usize {
         let len = slice.len();
@@ -331,7 +331,7 @@ mod helper {
         slice.swap(ipivot, len - 1);
         let mut i = 0;
         for j in 0..len - 1 {
-            iif![slice[j] <= slice[len - 1]; { slice.swap(i, j); i += 1; }];
+            is![slice[j] <= slice[len - 1]; { slice.swap(i, j); i += 1; }];
         }
         slice.swap(i, len - 1);
         i
@@ -367,7 +367,7 @@ mod helper {
                 while slice[i] < pivot { i += 1; }
                 while slice[j] > pivot { j -= 1; }
             }
-            iif![i >= j; return j];
+            is![i >= j; return j];
             slice.swap(i, j);
         }
     }

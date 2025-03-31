@@ -3,7 +3,7 @@
 //! Defines the [`Enum`] type.
 //
 
-use crate::{ConstDefault, ExtAny, iif};
+use crate::{ConstDefault, ExtAny, is};
 
 // 12 variants by default
 impl_enum!(A:0+1, B:1+2, C:2+3, D:3+4, E:4+5, F:5+6, G:6+7, H:7+8, I:8+9, J:9+10, K:10+11, L:11+12);
@@ -186,15 +186,15 @@ macro_rules! impl_enum {
 
         #[doc = "Returns the inner `" $T "` value, if present."]
         pub fn [<into_ $T:lower>](self) -> Option<$T> {
-            iif![let Self::$T([<$T:lower>]) = self; Some([<$T:lower>]); None]
+            is![let Self::$T([<$T:lower>]) = self; Some([<$T:lower>]); None]
         }
         #[doc = "Returns a reference to the inner `" $T "` value, if present."]
         pub fn [<as_ref_ $T:lower>](&self) -> Option<&$T> {
-            iif![let Self::$T([<$T:lower>]) = self; Some([<$T:lower>]); None]
+            is![let Self::$T([<$T:lower>]) = self; Some([<$T:lower>]); None]
         }
         #[doc = "Returns a reference to the inner `" $T "` value, if present."]
         pub fn [<as_mut_ $T:lower>](&mut self) -> Option<&mut $T> {
-            iif![let Self::$T([<$T:lower>]) = self; Some([<$T:lower>]); None]
+            is![let Self::$T([<$T:lower>]) = self; Some([<$T:lower>]); None]
         }
     }};
     (

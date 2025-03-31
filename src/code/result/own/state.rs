@@ -4,7 +4,7 @@
 //
 //
 
-use crate::{Debug, Own, iif};
+use crate::{Debug, Own, is};
 
 /* Result<S, E> */
 
@@ -43,27 +43,27 @@ impl<S, E, V> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Err`.
     pub const fn s_assert_ok(self) -> Self {
-        iif![let Ok(_) = self.s; self; panic![]]
+        is![let Ok(_) = self.s; self; panic![]]
     }
 
     /// Asserts the `state` is [`Ok`] and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the `state` is `Err`.
     pub const fn s_assert_ok_or(self, message: &'static str) -> Self {
-        iif![let Ok(_) = self.s; self; panic!["{}", message]]
+        is![let Ok(_) = self.s; self; panic!["{}", message]]
     }
 
     /// Asserts the `state` is [`Err`] and returns `self`, otherwise panics.
     /// # Panics
     /// Panics if the `state` is `Ok`.
     pub const fn s_assert_err(self) -> Self {
-        iif![let Err(_) = self.s; self; panic![]]
+        is![let Err(_) = self.s; self; panic![]]
     }
     /// Asserts the `state` is [`Err`] and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the `state` is `Ok`.
     pub const fn s_assert_err_or(self, message: &'static str) -> Self {
-        iif![let Err(_) = self.s; self; panic!["{}", message]]
+        is![let Err(_) = self.s; self; panic!["{}", message]]
     }
 
     /* unwrap (3) */
@@ -73,7 +73,7 @@ impl<S, E, V> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Err`.
     pub fn s_unwrap(self) -> Own<S, V> {
-        iif![let Ok(s) = self.s; Own::new(s, self.v); panic![]]
+        is![let Ok(s) = self.s; Own::new(s, self.v); panic![]]
     }
 
     /// Unwraps the contained `Ok(state)` or provides a `default`.
@@ -102,19 +102,19 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Err`.
     pub const fn s_const_unwrap(self) -> Own<S, V> {
-        iif![let Ok(s) = self.s; Own::new(s, self.v); panic![]]
+        is![let Ok(s) = self.s; Own::new(s, self.v); panic![]]
     }
 
     /// Unwraps the contained `Ok(state)` or provides a `default`.
     pub const fn s_const_unwrap_or(self, default: S) -> Own<S, V> {
-        iif![let Ok(s) = self.s; Own::new(s, self.v); Own::new(default, self.v)]
+        is![let Ok(s) = self.s; Own::new(s, self.v); Own::new(default, self.v)]
     }
 
     /// Unwraps the contained `Ok(state)` or panics with the given `message`.
     /// # Panics
     /// Panics if the state is `Err`.
     pub const fn s_const_expect(self, message: &'static str) -> Own<S, V> {
-        iif![let Ok(s) = self.s; Own::new(s, self.v); panic!["{}", message]]
+        is![let Ok(s) = self.s; Own::new(s, self.v); panic!["{}", message]]
     }
 }
 
@@ -149,21 +149,21 @@ impl<S, V> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the state is `None`.
     pub const fn s_assert_some(self) -> Self {
-        iif![let Some(_) = self.s; self; panic![]]
+        is![let Some(_) = self.s; self; panic![]]
     }
 
     /// Asserts the state is [`Some`] and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the state is `None`.
     pub const fn s_assert_some_or(self, message: &'static str) -> Self {
-        iif![let Some(_) = self.s; self; panic!["{}", message]]
+        is![let Some(_) = self.s; self; panic!["{}", message]]
     }
 
     /// Asserts the state is [`None`] and returns `self`, otherwise panics.
     /// # Panics
     /// Panics if the state is `Some`.
     pub const fn s_assert_none(self) -> Self {
-        iif![let None = self.s; self; panic![]]
+        is![let None = self.s; self; panic![]]
     }
 
     /// Asserts the state is [`None`] and returns `self`, otherwise panics with `message`.
@@ -171,7 +171,7 @@ impl<S, V> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the state is `Some`.
     pub const fn s_assert_none_or(self, message: &'static str) -> Self {
-        iif![let None = self.s; self; panic!["{}", message]]
+        is![let None = self.s; self; panic!["{}", message]]
     }
 
     /* unwrap (3) */
@@ -204,18 +204,18 @@ impl<S: Copy, V: Copy> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the state is `None`.
     pub const fn s_const_unwrap(self) -> Own<S, V> {
-        iif![let Some(s) = self.s; Own::new(s, self.v); panic![]]
+        is![let Some(s) = self.s; Own::new(s, self.v); panic![]]
     }
 
     /// Unwraps the contained `Some(state)` or provides a `default`.
     pub const fn s_const_unwrap_or(self, default: S) -> Own<S, V> {
-        iif![let Some(s) = self.s; Own::new(s, self.v); Own::new(default, self.v)]
+        is![let Some(s) = self.s; Own::new(s, self.v); Own::new(default, self.v)]
     }
 
     /// Unwraps the contained `Some(state)` or panics with the given `message`.
     /// # Panics
     /// Panics if the state is `None`.
     pub const fn s_const_expect(self, message: &'static str) -> Own<S, V> {
-        iif![let Some(s) = self.s; Own::new(s, self.v); panic!["{}", message]]
+        is![let Some(s) = self.s; Own::new(s, self.v); panic!["{}", message]]
     }
 }

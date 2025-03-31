@@ -31,7 +31,7 @@ mod cfg_if; // cfg_if!
 mod cfor; // cfor!
 mod deprecate; // deprecate_feature!
 mod ident; // ident_const_index!
-mod iif; // iif!
+mod is; // is!
 mod impl_trait; // impl_trait!
 mod items; // items!, sf!
 mod include; // include_from!, mod_from!
@@ -55,7 +55,7 @@ crate::items! { // structural access: _mods, _internals, _all, _always
     mod _mods {
         pub use super::{
             asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
-            iif::*, impl_trait::*, include::*, items::*, maybe::*, methods::*, paste::*, r#const::*,
+            is::*, impl_trait::*, include::*, items::*, maybe::*, methods::*, paste::*, r#const::*,
             reexports::*,
         };
         #[cfg(_bit··)]

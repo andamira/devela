@@ -10,7 +10,7 @@
 //   - digits_base_sign
 //   - digital_root
 //   - digital_root_base
-use crate::{Int, iif, paste};
+use crate::{Int, is, paste};
 
 /// Implements base-related methods for [`Int`].
 ///
@@ -69,8 +69,8 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(-128_" $t ").digits()];"]
             /// ```
             pub const fn digits(self) -> Int<$t> {
-                let a = self.0; let n = iif![a == $t::MIN; $t::MAX; a.abs()];
-                iif![let Some(c) = n.checked_ilog10(); Int(c as $t + 1); Int(1)]
+                let a = self.0; let n = is![a == $t::MIN; $t::MAX; a.abs()];
+                is![let Some(c) = n.checked_ilog10(); Int(c as $t + 1); Int(1)]
             }
 
             /// Returns the number of digits in base 10, including the negative sign.
@@ -84,8 +84,8 @@ macro_rules! impl_base {
             /// ```
             pub const fn digits_sign(self) -> Int<$t> {
                 let a = self.0; let mut res = (a < 0) as $t;
-                let n = iif![a == $t::MIN; $t::MAX; a.abs()];
-                res += iif![let Some(c) = n.checked_ilog10(); c as $t + 1; 1];
+                let n = is![a == $t::MIN; $t::MAX; a.abs()];
+                res += is![let Some(c) = n.checked_ilog10(); c as $t + 1; 1];
                 Int(res)
             }
 
@@ -104,10 +104,10 @@ macro_rules! impl_base {
             /// ```
             pub const fn digits_base(self, mut base: $t) -> Int<$t> {
                 let mut a = self.0;
-                iif![base == 0; return Int(0)];
+                is![base == 0; return Int(0)];
                 base = base.abs();
-                a = iif![a == $t::MIN; $t::MAX; a.abs()];
-                iif![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
+                a = is![a == $t::MIN; $t::MAX; a.abs()];
+                is![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
             }
 
             /// Returns the number of digits in the given absolute `base`,
@@ -126,11 +126,11 @@ macro_rules! impl_base {
             /// ```
             pub const fn digits_base_sign(self, mut base: $t) -> Int<$t> {
                 let mut a = self.0;
-                iif![base == 0; return Int(0)];
+                is![base == 0; return Int(0)];
                 base = base.abs();
                 let mut res = (a < 0) as $t;
-                a = iif![a == $t::MIN; $t::MAX; a.abs()];
-                res += iif![let Some(c) = a.checked_ilog(base); c as $t + 1; 1];
+                a = is![a == $t::MIN; $t::MAX; a.abs()];
+                res += is![let Some(c) = a.checked_ilog(base); c as $t + 1; 1];
                 Int(res)
             }
 
@@ -150,7 +150,7 @@ macro_rules! impl_base {
                 while n > 0 {
                     sum += n % 10;
                     n /= 10;
-                    iif![n == 0 && sum >= 10; { n = sum; sum = 0; }];
+                    is![n == 0 && sum >= 10; { n = sum; sum = 0; }];
                 }
                 Int(sum)
             }
@@ -171,7 +171,7 @@ macro_rules! impl_base {
                 while n > 0 {
                     sum += n % base;
                     n /= base;
-                    iif![n == 0 && sum >= base; { n = sum; sum = 0; }];
+                    is![n == 0 && sum >= base; { n = sum; sum = 0; }];
                 }
                 Int(sum)
             }
@@ -202,7 +202,7 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits()];"]
             /// ```
             pub const fn digits(self) -> Int<$t> {
-                iif![let Some(c) = self.0.checked_ilog10(); Int(c as $t + 1); Int(1)]
+                is![let Some(c) = self.0.checked_ilog10(); Int(c as $t + 1); Int(1)]
             }
 
             /// An alias of [`digits`][Self#digits].
@@ -220,8 +220,8 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base(100)];"]
             /// ```
             pub const fn digits_base(self, base: $t) -> Int<$t> {
-                let a = self.0; iif![base == 0; return Int(0)];
-                iif![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
+                let a = self.0; is![base == 0; return Int(0)];
+                is![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
             }
 
             /// An alias of [`digits_base`][Self#digits_base].
@@ -241,7 +241,7 @@ macro_rules! impl_base {
                 while a > 0 {
                     sum += a % 10;
                     a /= 10;
-                    iif![a == 0 && sum >= 10; { a = sum; sum = 0; }];
+                    is![a == 0 && sum >= 10; { a = sum; sum = 0; }];
                 }
                 Int(sum)
             }
@@ -258,7 +258,7 @@ macro_rules! impl_base {
                 while a > 0 {
                     sum += a % base;
                     a /= base;
-                    iif![a == 0 && sum >= base; { a = sum; sum = 0; }];
+                    is![a == 0 && sum >= base; { a = sum; sum = 0; }];
                 }
                 Int(sum)
             }

@@ -20,7 +20,7 @@ use crate::NumError::{self, NonNegativeRequired, NonZeroRequired, Overflow};
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
-use crate::{Int, NumResult as Result, iif, num::upcasted_op, paste};
+use crate::{Int, NumResult as Result, is, num::upcasted_op, paste};
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
 #[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int··)]
@@ -101,13 +101,13 @@ macro_rules! impl_root {
             #[must_use]
             pub const fn is_square(self) -> bool {
                 let a = self.0;
-                iif![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
+                is![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
             }
             $( // $cmp
             #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
             pub fn is_square(self) -> bool {
                 let a = self.0;
-                iif![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
+                is![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
             }
             )?
 
@@ -134,7 +134,7 @@ macro_rules! impl_root {
             pub const fn sqrt_ceil(self) -> Result<Int<$t>> {
                 let a = self.0;
                 if let Ok(floor) = self.sqrt_floor() {
-                    iif![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))]
+                    is![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))]
                 } else {
                     Err(NonNegativeRequired)
                 }
@@ -144,7 +144,7 @@ macro_rules! impl_root {
             pub fn sqrt_ceil(self) -> Result<Int<$t>> {
                 let a = self.0;
                 if let Ok(floor) = self.sqrt_floor() {
-                    iif![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))]
+                    is![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))]
                 } else {
                     Err(NonNegativeRequired)
                 }
@@ -246,7 +246,7 @@ macro_rules! impl_root {
                     }
                     // do we have to round up?
                     let mul = upcasted_op![mul_err(x, x) $t => $up];
-                    iif![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
+                    is![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
                 }
             }
 
@@ -418,13 +418,13 @@ macro_rules! impl_root {
             )? // $cmp
             pub const fn sqrt_ceil(self) -> Int<$t> {
                 let a = self.0; let floor = self.sqrt_floor();
-                iif![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
+                is![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
             }
             $( // $cmp
             #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
             pub fn sqrt_ceil(self) -> Int<$t> {
                 let a = self.0; let floor = self.sqrt_floor();
-                iif![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
+                is![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
             }
             )?
 
@@ -514,7 +514,7 @@ macro_rules! impl_root {
                     }
                     // do we have to round up?
                     let mul = upcasted_op![mul_err(x, x) $t => $up];
-                    iif![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
+                    is![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
                 }
             }
 
@@ -587,7 +587,7 @@ macro_rules! impl_root {
                 } else {
                     let mut x = 1 as $t;
                     while let Some(val) = x.checked_pow(nth) {
-                        iif![val > self.0; break];
+                        is![val > self.0; break];
                         x += 1;
                     }
                     Ok(Int(x - 1))

@@ -9,7 +9,7 @@
 
 #[allow(unused_imports)]
 use super::super::shared_docs::*;
-use crate::{Float, cfor, iif, paste};
+use crate::{Float, cfor, is, paste};
 
 /// Implements methods independently of any features
 ///
@@ -50,13 +50,13 @@ macro_rules! impl_float_shared_series {
             pub const fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
                 let xabs = self.abs().0;
                 if xabs == 0.0 {
-                    iif![Float(y).abs().0 == 0.0; Self::ONE; Self::ZERO]
+                    is![Float(y).abs().0 == 0.0; Self::ONE; Self::ZERO]
                 } else {
                     let ln_x = Float(xabs).ln_series(ln_x_terms).0;
                     let power = Float(y * ln_x);
                     let exp_y_terms = power.exp_series_terms();
                     let result = power.exp_series(exp_y_terms);
-                    iif![self.is_sign_negative(); Float(-result.0); result]
+                    is![self.is_sign_negative(); Float(-result.0); result]
                 }
             }
 
@@ -67,7 +67,7 @@ macro_rules! impl_float_shared_series {
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
             pub const fn exp_series(self, terms: $ue) -> Float<$f> {
-                iif![self.0 < 0.0; return Float(1.0 / Float(-self.0).exp_series(terms).0)];
+                is![self.0 < 0.0; return Float(1.0 / Float(-self.0).exp_series(terms).0)];
                 let (mut result, mut term) = (1.0, 1.0);
                 let mut i = 1;
                 while i <= terms {
@@ -201,7 +201,7 @@ macro_rules! impl_float_shared_series {
                 } else if Float(base - 1.0).abs().0 < Self::MEDIUM_MARGIN.0 { // + robust
                 // } else if base == 1.0 { // good enough for direct input
                     #[expect(clippy::float_cmp, reason = "we've already checked it with a margin")]
-                    { iif![self.0 == 1.0; Self::NAN; Self::NEG_INFINITY] }
+                    { is![self.0 == 1.0; Self::NAN; Self::NEG_INFINITY] }
                 } else {
                     Float(self.ln_series(terms).0 / base).ln_series(terms)
                 }
@@ -297,7 +297,7 @@ macro_rules! impl_float_shared_series {
             pub const fn tan_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
                 let (sin, cos) = x.sin_cos_series(terms);
-                iif![cos.abs().0 < 0.0001; return Self::MAX];
+                is![cos.abs().0 < 0.0001; return Self::MAX];
                 Float(sin.0 / cos.0)
             }
 
@@ -315,7 +315,7 @@ macro_rules! impl_float_shared_series {
             ///
             /// See also [`asin_series_terms`][Self::asin_series_terms].
             pub const fn asin_series(self, terms: $ue) -> Float<$f> {
-                iif![self.abs().0 > 1.0; return Self::NAN];
+                is![self.abs().0 > 1.0; return Self::NAN];
                 let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
                 let mut i = 0;
                 while i < terms {
@@ -346,7 +346,7 @@ macro_rules! impl_float_shared_series {
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
             pub const fn acos_series(self, terms: $ue) -> Float<$f> {
-                iif![self.abs().0 > 1.0; return Self::NAN];
+                is![self.abs().0 > 1.0; return Self::NAN];
                 Float(Self::FRAC_PI_2.0 - self.asin_series(terms).0)
             }
 

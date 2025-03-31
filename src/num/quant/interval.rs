@@ -4,8 +4,7 @@
 //
 
 use crate::{
-    Bound, ConstDefault, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
-    iif,
+    Bound, ConstDefault, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is,
 };
 
 #[doc = crate::TAG_QUANT!()]
@@ -260,16 +259,16 @@ impl<T: PartialOrd> Interval<T> {
     {
         match (&self.lower, &self.upper) {
             (Bound::Included(a), Bound::Included(b)) => {
-                iif![a <= b; Some(b.clone() - a.clone()); None]
+                is![a <= b; Some(b.clone() - a.clone()); None]
             }
             (Bound::Included(a), Bound::Excluded(b)) => {
-                iif![a < b; Some(b.clone() - a.clone()); None]
+                is![a < b; Some(b.clone() - a.clone()); None]
             }
             (Bound::Excluded(a), Bound::Included(b)) => {
-                iif![a < b; Some(b.clone() - a.clone()); None]
+                is![a < b; Some(b.clone() - a.clone()); None]
             }
             (Bound::Excluded(a), Bound::Excluded(b)) => {
-                iif![a < b; Some(b.clone() - a.clone()); None]
+                is![a < b; Some(b.clone() - a.clone()); None]
             }
             _ => None, // Unbounded intervals don't have a finite size
         }

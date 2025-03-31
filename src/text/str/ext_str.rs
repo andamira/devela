@@ -8,7 +8,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
-use crate::{Ascii, Slice, Str, iif};
+use crate::{Ascii, Slice, Str, is};
 crate::_use! {basic::from_utf8}
 
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
@@ -112,7 +112,7 @@ impl ExtStr for str {
         let mut index = 0;
         for _ in 0..n {
             for &b in s_bytes {
-                iif![index == CAP; break];
+                is![index == CAP; break];
                 buffer[index] = b;
                 index += 1;
             }
@@ -148,7 +148,7 @@ impl ExtStr for str {
                 if separator_turn {
                     buffer[index] = separator;
                 } else {
-                    iif![index > 0; index -= num_len - 1];
+                    is![index > 0; index -= num_len - 1];
                     buffer[index..(num_len + index)].copy_from_slice(&num_bytes[..num_len]);
 
                     num = index;
@@ -160,7 +160,7 @@ impl ExtStr for str {
 
                     num_len = num_bytes.len();
                 }
-                iif![index == 0; break; index -= 1];
+                is![index == 0; break; index -= 1];
                 separator_turn = !separator_turn;
             }
 

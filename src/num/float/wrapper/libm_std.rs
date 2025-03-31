@@ -13,7 +13,7 @@ use crate::Float;
 #[cfg(feature = "dep_libm")]
 mod _libm {
     use super::{super::super::shared_docs::*, Float, impl_fp};
-    use crate::{_dep::libm::Libm, iif};
+    use crate::{_dep::libm::Libm, is};
 
     // custom implementations are commented out
     impl_fp![libm:f*:
@@ -149,8 +149,8 @@ mod _libm {
                 /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
                 pub fn round_ties_even(self) -> Float<$f> {
                     let r = self.round_ties_away();
-                    iif![r.0 % 2.0 == 0.0; r;
-                        iif![(self - r).abs() == 0.5; r - self.signum(); r]]
+                    is![r.0 % 2.0 == 0.0; r;
+                        is![(self - r).abs() == 0.5; r - self.signum(); r]]
                 }
 
                 /// Raises `x` to the `p` integer power.

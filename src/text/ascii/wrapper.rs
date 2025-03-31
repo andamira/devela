@@ -3,7 +3,7 @@
 //! Ascii functionality wrapper struct.
 //
 
-use crate::iif;
+use crate::is;
 
 // imports for the `digits_str` method
 #[cfg(all(feature = "_str_u8", feature = "_cmp_u8"))]
@@ -50,7 +50,7 @@ impl Ascii<usize> {
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
-        iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
+        is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
 
     /// Converts a `usize` into a byte array of `5` ascii digits with leading zeros.
@@ -155,7 +155,7 @@ impl Ascii<u8> {
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
-        iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
+        is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
 
     /// Converts a `u8` into a byte array of `3` ASCII digits with leading zeros.
@@ -262,7 +262,7 @@ impl Ascii<u16> {
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
-        iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
+        is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
 
     /// Converts a `u16` into a byte array of `5` ASCII digits with leading zeros.
@@ -371,7 +371,7 @@ impl Ascii<u32> {
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
-        iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
+        is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
 
     /// Converts a `u32` into a byte array of `10` ASCII digits with leading zeros.
@@ -466,7 +466,7 @@ impl Ascii<u64> {
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
-        iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
+        is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
 
     /// Converts a `u64` into a byte array of `20` ascii digits with leading zeros.
@@ -571,7 +571,7 @@ impl Ascii<u128> {
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
-        iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
+        is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
 
     /// Converts a `u128` into a byte array of `39` ascii digits with leading zeros.

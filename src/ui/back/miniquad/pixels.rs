@@ -7,8 +7,8 @@
 // - mod shader
 
 use crate::{
-    Box, MiniquadEventHandlerExt, MiniquadWindow, Vec, format_buf, g_vec2, g_vertex2, iif,
-    miniquad, vec_ as vec,
+    Box, MiniquadEventHandlerExt, MiniquadWindow, Vec, format_buf, g_vec2, g_vertex2, is, miniquad,
+    vec_ as vec,
 };
 use ::miniquad::{
     Bindings, BufferLayout, EventHandler, FilterMode, MipmapFilterMode, Pipeline, PipelineParams,
@@ -102,7 +102,7 @@ impl MiniquadPixels {
         let indices: [u16; 6] = [0, 1, 2, 0, 2, 3];
         let (vbuf, ibuf) = miniquad![new_vertices_indices(ctx, Immutable, &vertices, &indices)];
 
-        let interp = iif![self.interpolation; FilterMode::Linear; FilterMode::Nearest];
+        let interp = is![self.interpolation; FilterMode::Linear; FilterMode::Nearest];
 
         let texture = ctx.new_render_texture(TextureParams {
             width: self.width,
@@ -142,7 +142,7 @@ impl MiniquadEventHandlerExt for MiniquadPixels {
         self.interpolation = set;
         if let Some(ctx) = &mut self.ctx {
             if let Some(texture) = self.texture {
-                let f = iif![set; FilterMode::Linear; FilterMode::Nearest];
+                let f = is![set; FilterMode::Linear; FilterMode::Nearest];
                 ctx.texture_set_filter(texture, f,  MipmapFilterMode::None);
             }
         }

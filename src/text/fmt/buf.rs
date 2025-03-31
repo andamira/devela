@@ -3,7 +3,7 @@
 //! Non-allocating formatting backed by a buffer.
 //
 
-use crate::{_core::cmp::min, FmtResult, FmtWrite, iif};
+use crate::{_core::cmp::min, FmtResult, FmtWrite, is};
 crate::_use! {compat::from_utf8}
 
 #[doc = crate::TAG_FMT!()]
@@ -82,8 +82,8 @@ impl FmtWrite for WriteTo<'_> {
         let available = self.buf.len().saturating_sub(self.len);
         let s_bytes = s.as_bytes();
         let n = min(s_bytes.len(), available);
-        iif![n > 0; self.buf[self.len..self.len + n].copy_from_slice(&s_bytes[..n])];
-        iif![n < s_bytes.len(); self.truncated = true];
+        is![n > 0; self.buf[self.len..self.len + n].copy_from_slice(&s_bytes[..n])];
+        is![n < s_bytes.len(); self.truncated = true];
         self.len += n;
         Ok(())
     }

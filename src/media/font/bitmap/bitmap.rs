@@ -6,7 +6,7 @@
 // - wrapping.
 // - max width.
 
-use crate::{format_buf, iif};
+use crate::{format_buf, is};
 
 #[doc = crate::TAG_FONT!()]
 /// A simple bitmap font for rendering fixed-size glyphs.
@@ -160,7 +160,7 @@ impl<T: Copy + Into<u64>> BitmapFont<'_, T> {
                     let glyph: u64 = self.glyphs[glyph_index].into();
                     for row in 0..self.height {
                         let global_y = y + row as isize - self.baseline as isize;
-                        iif![global_y < 0; continue];
+                        is![global_y < 0; continue];
                         for col in 0..self.width {
                             let global_x = x_pos + col as isize;
                             let bit_pos = row * self.width + col;

@@ -4,7 +4,7 @@
 //
 
 use super::{Extent, Extent2d, Extent3d};
-use crate::{cfor, iif};
+use crate::{cfor, is};
 
 #[rustfmt::skip]
 impl<T, const D: usize> Extent<T, D> {
@@ -27,10 +27,10 @@ impl<T, const D: usize> Extent<T, D> {
     /// Returns `true` if all dimensions of the extent are equal.
     #[must_use]
     pub fn is_uniform_nd(&self) -> bool where T: PartialEq {
-        iif![D == 0; return true];
+        is![D == 0; return true];
         let mut i = 1;
         while i < D {
-            iif![self.size[i] != self.size[0]; return false];
+            is![self.size[i] != self.size[0]; return false];
             i += 1;
         }
         true
@@ -139,7 +139,7 @@ macro_rules! impl_extent {
                 cfor!(i in 0..D => {
                     let mut face_measure = 1;
                     cfor!(j in 0..D => {
-                        iif![i != j; face_measure *= self.size[j]];
+                        is![i != j; face_measure *= self.size[j]];
                     });
                     boundary += face_measure;
                 });
@@ -212,7 +212,7 @@ macro_rules! impl_extent {
                 cfor!(i in 0..D => {
                     let mut face_measure = 1.0;
                     cfor!(j in 0..D => {
-                        iif![i != j; face_measure *= self.size[j]];
+                        is![i != j; face_measure *= self.size[j]];
                     });
                     boundary += face_measure;
                 });

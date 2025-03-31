@@ -3,7 +3,7 @@
 //! 2-dimensional array coordinates and indexing methods
 //
 
-use crate::{Array2d, IndexOutOfBounds, Storage, iif};
+use crate::{Array2d, IndexOutOfBounds, Storage, is};
 
 /// Helper macro for implementing common methods generic on storage order.
 macro_rules! impl_maj {
@@ -242,7 +242,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// Returns [`IndexOutOfBounds`] if the resulting index is `>= CR`.
     pub const fn get_index(col_row: [usize; 2]) -> Result<usize, IndexOutOfBounds> {
         let idx = Self::get_index_unchecked(col_row);
-        iif![idx < CR; Ok(idx); Err(IndexOutOfBounds(Some(idx)))]
+        is![idx < CR; Ok(idx); Err(IndexOutOfBounds(Some(idx)))]
     }
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current row-major order.
@@ -260,7 +260,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `index` is `>= CR`.
     pub const fn get_coords(index: usize) -> Result<[usize; 2], IndexOutOfBounds> {
-        iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(IndexOutOfBounds(Some(index)))]
+        is![index < CR; Ok(Self::get_coords_unchecked(index)); Err(IndexOutOfBounds(Some(index)))]
     }
     /// Calculates the 2D coordinates from the given 1D array index
     /// in the current row-major order.
@@ -285,7 +285,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// Returns [`IndexOutOfBounds`] if the resulting index is `>= CR`.
     pub const fn get_index(col_row: [usize; 2]) -> Result<usize, IndexOutOfBounds> {
         let idx = Self::get_index_unchecked(col_row);
-        iif![idx < CR; Ok(idx); Err(IndexOutOfBounds(Some(idx)))]
+        is![idx < CR; Ok(idx); Err(IndexOutOfBounds(Some(idx)))]
     }
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current column-major order.
@@ -303,7 +303,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `index` is `>= CR`.
     pub const fn get_coords(index: usize) -> Result<[usize; 2], IndexOutOfBounds> {
-        iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(IndexOutOfBounds(Some(index)))]
+        is![index < CR; Ok(Self::get_coords_unchecked(index)); Err(IndexOutOfBounds(Some(index)))]
     }
     /// Calculates the 2D coordinates from the given 1D array index
     /// in the current column-major order.

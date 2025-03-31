@@ -11,7 +11,7 @@ crate::_use! {basic::from_utf8}
 
 #[cfg(feature = "alloc")]
 crate::items! {
-    use crate::{iif, Cow, CString, Box, String, ToOwned, Vec};
+    use crate::{is, Cow, CString, Box, String, ToOwned, Vec};
 
     impl<W: IoWrite> Encodable<W> for Vec<u8> {
         fn encode(&self, writer: &mut W) -> IoResult<usize> {
@@ -53,7 +53,7 @@ crate::items! {
             let mut byte = [0u8; 1];
             loop {
                 reader.read_exact(&mut byte)?;
-                iif![byte[0] == 0; break];
+                is![byte[0] == 0; break];
                 buf.push(byte[0]);
             }
             CString::new(buf).map_err(|_|

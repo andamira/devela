@@ -6,7 +6,7 @@
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 crate::items! {
     use crate::{
-        c_uint, c_void, iif, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
+        c_uint, c_void, is, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
         LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
         Ptr, ScopeGuard, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
         LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
@@ -525,7 +525,7 @@ macro_rules! impl_random_fns {
                 let n = unsafe { Linux::sys_getrandom(r.as_mut_ptr(), $len, Linux::RAND_FLAGS) };
                 if n == $len { break; } // ← hot path
                 else if n == -ERRNO::EAGAIN { // ←↓ cold paths
-                    iif![!Linux::getrandom_try_again_cold(&mut attempts); break];
+                    is![!Linux::getrandom_try_again_cold(&mut attempts); break];
                 } else { return getrandom_failed_cold(n); } // n < 0
             }
             Ok($prim::from_ne_bytes(r))
@@ -555,7 +555,7 @@ impl Linux {
         while offset < buffer.len() {
             let n = unsafe { Linux::sys_getrandom(buffer[offset..].as_mut_ptr(),
                 buffer.len() - offset, Linux::RAND_FLAGS) };
-            if n == -ERRNO::EAGAIN { iif![!Linux::getrandom_try_again_cold(&mut attempts); break]; }
+            if n == -ERRNO::EAGAIN { is![!Linux::getrandom_try_again_cold(&mut attempts); break]; }
             else if n < 0 { return getrandom_failed_cold(n); } // ←↑ cold paths
             else { offset += n as usize; } // ← hot path
         }

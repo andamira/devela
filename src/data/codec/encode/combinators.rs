@@ -15,7 +15,7 @@ pub use {
 use crate::{
     BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
     IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TryFromIntError,
-    iif,
+    is,
 };
 crate::_use! {basic::from_utf8}
 
@@ -352,7 +352,7 @@ mod join {
             if let Some(sep) = &self.separator {
                 let mut is_first = true;
                 for encodable in self.encodable_iter.clone() {
-                    iif![is_first; is_first = false; total += sep.encode(writer)?];
+                    is![is_first; is_first = false; total += sep.encode(writer)?];
                     total += encodable.encode(writer)?;
                 }
             } else {

@@ -8,7 +8,7 @@
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
     LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG, Linux, LinuxError,
-    LinuxResult as Result, iif,
+    LinuxResult as Result, is,
 };
 use crate::{TermSize, c_uint};
 
@@ -91,7 +91,7 @@ impl LinuxTermios {
         let res = unsafe {
             Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCGETS, state.as_mut_bytes_ptr())
         };
-        iif![res >= 0; Ok(state); Err(LinuxError::Sys(res))]
+        is![res >= 0; Ok(state); Err(LinuxError::Sys(res))]
     }
 
     /// Sets the current termios `state`.
@@ -99,7 +99,7 @@ impl LinuxTermios {
         let res = unsafe {
             Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, state.as_mut_bytes_ptr())
         };
-        iif![res >= 0; Ok(()); Err(LinuxError::Sys(res))]
+        is![res >= 0; Ok(()); Err(LinuxError::Sys(res))]
     }
 
     /// Returns `true` if we're in a terminal context.
@@ -138,6 +138,6 @@ impl LinuxTermios {
                 &mut winsize as *mut TermSize as *mut u8,
             )
         };
-        iif![res >= 0; Ok(winsize); Err(LinuxError::Sys(res))]
+        is![res >= 0; Ok(winsize); Err(LinuxError::Sys(res))]
     }
 }
