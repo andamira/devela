@@ -50,7 +50,7 @@
     - front::term: `TermSize`.
   - namespaces: `Ansi`, `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
-  - `define_panic_handler!`, `define_static_map!`, `is`, `methods_as_fns!`.
+  - `define_static_map!`, `is`, `methods_as_fns!`, `set_panic_handler!`.
   - `join!`, `js_reexport`, `maybe!`, `miniquad!`, `xorshift_custom!`.
   - `ansi!`, `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
 - new modules:
@@ -189,6 +189,7 @@
     - add new fn `run_cargo_with_env`, sharing most of the logic with `run_cargo`.
     - enable `__dbg` feature & `-Ctarget-cpu=native`.
   - `build/features.rs`: support cfg flags auto-enabling other flags. Improve docs.
+- improve the `.rustfmt.toml` config file.
 - improve the docs for vendored items.
 
 ### Fixed
