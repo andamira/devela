@@ -50,9 +50,10 @@
     - front::term: `TermSize`.
   - namespaces: `Ansi`, `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
 - new macros:
-  - `define_static_map!`, `is`, `methods_as_fns!`, `set_panic_handler!`.
+  - `define_static_map!`, `is`, `methods_as_fns!`.
   - `join!`, `js_reexport`, `maybe!`, `miniquad!`, `xorshift_custom!`.
   - `ansi!`, `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
+  - `linux_entry`, `set_panic_handler!`.
 - new modules:
   - data: `{codec::{self, crypto, radix}, list, key, table, uid}`.
   - lang: `{dsl, ffi::{self, c, glsl}, i18n, ling::{art, nat}}`.

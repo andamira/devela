@@ -34,6 +34,7 @@ mod structs;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 crate::items! {
+    mod point_entry; // linux_entry!
     mod restorer;
     // #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     mod syscalls; // LINUX_SYS
@@ -117,12 +118,12 @@ crate::items! { // structural access: _mods, _pub_mods, _all
 
     mod _mods {
         pub use super::{error::*, namespace::*};
+
+        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+        pub use super::{point_entry::*, syscalls::_all::*};
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{consts::_all::*, io::_all::*, process::_all::*, thread::_all::*};
-
-        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-        pub use super::syscalls::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

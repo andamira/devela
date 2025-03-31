@@ -16,7 +16,12 @@ pub type LinuxResult<T> = crate::Result<T, LinuxError>;
 /// performing Linux-specific operations.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum LinuxError {
-    /// A syscall error, wrapping the [`LINUX_ERRNO`][crate::LINUX_ERRNO] code.
+    /// An error reported by the system, containing a [`LINUX_ERRNO`][ERRNO] code.
+    ///
+    /// This wraps error codes from:
+    /// - Failed system calls (when they return -1 and set errno)
+    /// - Standard library functions that follow errno conventions
+    /// - Other OS interfaces using the same error numbering
     Sys(isize),
     /// No input was available (e.g., when reading from stdin).
     NoInput,
