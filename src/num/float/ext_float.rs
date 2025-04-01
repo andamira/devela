@@ -176,9 +176,14 @@ pub trait ExtFloat: FloatConst + Sized {
     /// The square root.
     ///
     /// With either `std` or `dep_libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`sqrt_nr`][Float::sqrt_nr].
+    /// otherwise it's equal to the hybrid approach [`sqrt`][Float::sqrt].
     #[must_use]
     fn sqrt(self) -> Self;
+
+    /// The square root calculated using the
+    /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
+    #[must_use]
+    fn sqrt_nr(self) -> Self;
 
     /// The square root calculated using the
     /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
@@ -534,8 +539,9 @@ macro_rules! impl_ext_float {
             #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sqrt(self) -> Self { Float(self).sqrt().0 }
             #[cfg(not(any(feature = "std", feature = "dep_libm")))]
-            fn sqrt(self) -> Self { Float(self).sqrt_nr().0 }
+            fn sqrt(self) -> Self { Float(self).sqrt_hybrid().0 }
 
+            fn sqrt_nr(self) -> Self { Float(self).sqrt_nr().0 }
             fn sqrt_fisr(self) -> Self { Float(self).sqrt_fisr().0 }
 
             fn fisr(self) -> Self { Float(self).fisr().0 }

@@ -71,9 +71,10 @@
   - `Char`: `len_utf8`, `code_len_utf8[_unchecked]`,`code_to_utf8_bytes[_unchecked]`, `[code_]to_ascii_str[_unchecked]`, `is_valid`, `to_ascii_fold[_unchecked]`, `utf8_bytes_to_code[_unchecked]`, `utf8_len[_checked]`.
   - `Env::*`.
   - `ExtAny`: `type_hash`, `type_hash_with`.
+  - `ExtFloat`: `sqrt_nr`.
   - `ExtFuture`: `pending`, `poll_fn`, `ready`.
   - `ExtThread`: `sleep_ms`, `sleep_us`, `sleep_ns`.
-  - `Float`: `midpoint`, `recip`, `to_degrees`, `to_radians`.
+  - `Float`: `midpoint`, `recip`, `sqrt_hybrid`, `to_degrees`, `to_radians`.
   - `HasherFx`: `hash_bytes_with_seed`.
   - `IoError`: `other`.
   - `Linux` syscalls: `sys_[open|close|lseek|dup|dup2|fcntl|stat|fstat|getdents|pipe|pipe2]`.
@@ -197,10 +198,10 @@
 - improve build script debug output.
 - make `array_init` use absolute paths internally.
 - enable nightly features depending on `alloc` and `std`.
+- fix and improve `Float` methods: `[cos|sin|tan]_series`.
 - feature-gate:
   - `ExtFuture::block`.
   - namespaced re-exported unsafe methods with `unsafe··`.
-- fix and improve `Float` methods: `[cos|sin|tan]_series`.
 - refactor `rustdoc-header.html` to be modular, more efficient and versatile.
 - compile in docs.rs with `cpu-native` flag.
 

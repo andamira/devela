@@ -482,7 +482,7 @@ macro_rules! impl_float_shared_series {
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             pub const fn asinh_series(self, terms: $ue) -> Float<$f> {
-                let sqrt = Float(self.0 * self.0 + 1.0).sqrt_nr().0;
+                let sqrt = Float(self.0 * self.0 + 1.0).sqrt_hybrid().0;
                 Float(self.0 + sqrt).ln_series(terms)
             }
 
@@ -496,7 +496,7 @@ macro_rules! impl_float_shared_series {
                 if self.0 < 1.0 {
                     Self::NAN
                 } else {
-                    let sqrt = Float(self.0 * self.0 - 1.0).sqrt_nr().0;
+                    let sqrt = Float(self.0 * self.0 - 1.0).sqrt_hybrid().0;
                     Float(self.0 + sqrt).ln_series(terms)
                 }
             }

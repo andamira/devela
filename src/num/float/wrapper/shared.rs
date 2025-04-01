@@ -278,6 +278,21 @@ macro_rules! impl_float_shared {
                 Float(y * (three_halfs - (x2 * y * y)))
             }
 
+            /// $ \sqrt{x} $ The square root calculated calling both [`sqrt_fisr`] and [`sqrt_nr`].
+            ///
+            /// [`sqrt_fisr`]: Self::sqrt_fisr
+            /// [`sqrt_nr`]: Self::sqrt_nr
+            pub const fn sqrt_hybrid(self) -> Float<$f> {
+                is![self.0 < 0.0; return Self::NAN; is![self.0 == 0.0; return Self::ZERO]];
+                let y = self.fisr().0; // fast path using fisr + newton refinement
+                let mut x = self.0 * y; // initial estimate: x ~= sqrt(n)
+                // 1 newton iteration some times can be enough:
+                // Float(0.5 * (x + self.0 / x))
+                // But 2 iterations gives much better precision:
+                let mut i = 0; while i < 2 { x = 0.5 * (x + self.0 / x); i += 1; }
+                Float(x)
+            }
+
             /// $ \sqrt{x} $ The square root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             pub const fn sqrt_nr(self) -> Float<$f> {
