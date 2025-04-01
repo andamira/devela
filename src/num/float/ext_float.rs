@@ -604,22 +604,22 @@ macro_rules! impl_ext_float {
             #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sin(self) -> Self { Float(self).sin().0 }
             #[cfg(not(any(feature = "std", feature = "dep_libm")))]
-            fn sin(self) -> Self { Float(self).sin_series(8).0 }
+            fn sin(self) -> Self { Float(self).sin_series(12).0 }
 
             #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn cos(self) -> Self { Float(self).cos().0 }
             #[cfg(not(any(feature = "std", feature = "dep_libm")))]
-            fn cos(self) -> Self { Float(self).cos_series(8).0 }
+            fn cos(self) -> Self { Float(self).cos_series(11).0 }
 
             #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sin_cos(self) -> (Self, Self) { let (s, c) = Float(self).sin_cos(); (s.0, c.0) }
             #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sin_cos(self) -> (Self, Self) {
-                let (s, c) = Float(self).sin_cos_series(8); (s.0, c.0) }
+                let (s, c) = Float(self).sin_cos_series(12); (s.0, c.0) }
             #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn tan(self) -> Self { Float(self).tan().0 }
             #[cfg(not(any(feature = "std", feature = "dep_libm")))]
-            fn tan(self) -> Self { Float(self).tan_series(8).0 }
+            fn tan(self) -> Self { Float(self).tan_series(12).0 }
 
             #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn asin(self) -> Self { Float(self).asin().0 }

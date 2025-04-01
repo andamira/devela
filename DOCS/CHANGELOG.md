@@ -200,6 +200,7 @@
 - feature-gate:
   - `ExtFuture::block`.
   - namespaced re-exported unsafe methods with `unsafe··`.
+- fix and improve `Float` methods: `[cos|sin|tan]_series`.
 - refactor `rustdoc-header.html` to be modular, more efficient and versatile.
 - compile in docs.rs with `cpu-native` flag.
 

@@ -243,13 +243,19 @@ macro_rules! impl_float_shared_series {
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
             #[doc = TABLE_SIN_SERIES_TERMS!()]
-            pub const fn sin_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
+            // NOTE: OPTIMIZED
+            pub const fn sin_series(self, terms: u32) -> Float<$f> {
+                const PI: $f = Float::<$f>::PI.0;
+                const TAU: $f = Float::<$f>::TAU.0;
+                if terms == 0 { return Self::ZERO; } // Early exit for trivial cases
+                let x = self.0 % TAU; // Reduce angle to [-π, π] while preserving sign
+                let x = is![x > PI; x - TAU; is![x < -PI; x + TAU; x ]];
+                let x_sq = x * x;
                 let (mut sin, mut term, mut factorial) = (x, x, 1.0);
                 let mut i = 1;
                 while i < terms {
-                    term *= -x * x;
-                    factorial *= ((2 * i + 1) * (2 * i)) as $f;
+                    term *= -x_sq;
+                    factorial *= ((2*i + 1) * (2*i)) as $f;  // (2n+1)! progression
                     sin += term / factorial;
                     i += 1;
                 }
@@ -264,13 +270,16 @@ macro_rules! impl_float_shared_series {
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
             #[doc = TABLE_COS_SERIES_TERMS!()]
+            // NOTE: OPTIMIZED
             pub const fn cos_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
+                if terms == 0 { return Float::<$f>::ONE; } // Early exit for trivial cases
+                let x = self.0.abs() % Float::<$f>::TAU.0;
+                let x_sq = x * x;
                 let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
                 let mut i = 1;
                 while i < terms {
-                    term *= -x * x;
-                    factorial *= ((2 * i - 1) * (2 * i)) as $f;
+                    term *= -x_sq;
+                    factorial *= ((2*i - 1) * (2*i)) as $f;
                     cos += term / factorial;
                     i += 1;
                 }
@@ -294,10 +303,17 @@ macro_rules! impl_float_shared_series {
             /// The Taylor series for sine and cosine converge relatively quickly
             /// and uniformly over the entire domain.
             #[doc = TABLE_TAN_SERIES_TERMS!()]
+            // NOTE: OPTIMIZED
             pub const fn tan_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp_nan(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
-                let (sin, cos) = x.sin_cos_series(terms);
-                is![cos.abs().0 < 0.0001; return Self::MAX];
+                const PI: $f = Float::<$f>::PI.0;
+                const HALF_PI: $f = Float::<$f>::FRAC_PI_2.0;
+                const THRESHOLD: $f = 1e-6;
+                let x = self.0 % PI; // Reduce angle to [-π/2, π/2]
+                let x = is![x > HALF_PI; x - PI; is![x < -HALF_PI; x + PI; x]];
+                // Handle near-asymptote cases using absolute difference
+                let dist_to_asymptote = (x.abs() - HALF_PI).abs();
+                is![dist_to_asymptote < THRESHOLD; return Float(<$f>::INFINITY.copysign(x))];
+                let (sin, cos) = Float(x).sin_cos_series(terms);
                 Float(sin.0 / cos.0)
             }
 

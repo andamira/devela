@@ -3,7 +3,7 @@
 //! All the examples use f32
 //
 
-use crate::num::{Float, Sign};
+use crate::{Float, Sign, assert_approx_eq_all};
 
 /* shared */
 
@@ -101,4 +101,74 @@ fn eval_poly() {
     assert_eq![Float(3.0_f32).eval_poly(&[0.]), 0.0];
     assert_eq![Float(3.0_f32).eval_poly(&[1.]), 1.0];
     assert_eq![Float(3.0_f32).eval_poly(&[2.0, -6.0, 2.0, -1.0]), 5.0];
+}
+
+/* shared series */
+
+#[test]
+fn sin() {
+    const PI: f32 = Float::<f32>::PI.0;
+    // (angle, expected sin)
+    let test_cases = [
+        (0.0, 0.0),
+        (PI / 6.0, 0.5),                   // 30°
+        (PI / 4.0, 2.0f32.sqrt() / 2.0),   // 45°
+        (PI / 3.0, 3.0f32.sqrt() / 2.0),   // 60°
+        (PI / 2.0, 1.0),                   // 90°
+        (PI, 0.0),                         // 180°
+        (3.0 * PI / 2.0, -1.0),            // 270°
+        (2.0 * PI, 0.0),                   // 360°
+        (1.0, 0.8414709848),               // Random value
+        (4.0, -0.7568024953),              // In Q3
+        (-PI / 4.0, -2.0f32.sqrt() / 2.0), // Negative
+    ];
+    for (angle, expected) in test_cases {
+        let result = Float(angle).sin_series(12).0;
+        assert_approx_eq_all![tolerance: 1e-6, result, expected];
+    }
+}
+#[test]
+fn cos() {
+    const PI: f32 = Float::<f32>::PI.0;
+    // (angle, expected cos)
+    let test_cases = [
+        (0.0, 1.0),
+        (PI / 3.0, 0.5),                  // 60°
+        (PI / 2.0, 0.0),                  // 90°
+        (2.0 * PI / 3.0, -0.5),           // 120°
+        (PI, -1.0),                       // 180°
+        (4.0, -0.6536436209),             // Random > π
+        (-PI / 4.0, 2.0f32.sqrt() / 2.0), // Negative
+    ];
+    for (angle, expected) in test_cases {
+        let result = Float(angle).cos_series(12).0;
+        assert_approx_eq_all![tolerance: 1e-6, result, expected];
+    }
+}
+#[test]
+fn tan() {
+    const PI: f32 = Float::<f32>::PI.0;
+    // (angle, expected tan)
+    let test_cases = [
+        // Special angles
+        (0.0, 0.0),
+        (PI / 6.0, 0.577350269), // 30°
+        (PI / 4.0, 1.0),         // 45°
+        (PI / 3.0, 1.732050808), // 60°
+        // Quadrant boundaries
+        // (PI / 2.0, f32::INFINITY), // 90° // TODO: IMPROVE assert_approx_eq_all
+        (PI, 0.0),              // 180°
+        (3.0 * PI / 4.0, -1.0), // 135°
+        // Random values
+        (0.5, 0.54630249),
+        (1.0, 1.55740772),
+        (1.5, 14.1014199),
+        // Negative angles
+        (-PI / 4.0, -1.0), // -45°
+        (-0.5, -0.54630249),
+    ];
+    for (angle, expected) in test_cases {
+        let result = Float(angle).tan_series(12).0;
+        assert_approx_eq_all![tolerance: 1e-6, result, expected];
+    }
 }
