@@ -8,11 +8,11 @@ crate::items! {
     use crate::{
         c_uint, c_void, is, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
         LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
-        Ptr, ScopeGuard, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
+        Ptr, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
         LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
     };
     #[cfg(feature = "term")]
-    use crate::{LinuxTermios, TermSize};
+    use crate::{LinuxTermios, ScopeGuard, TermSize};
     #[cfg(feature = "alloc")]
     use crate::Vec;
 }
@@ -179,7 +179,7 @@ impl Linux {
                 if c == stop {
                     break;
                 } else if index + c_str.len() <= CAP {
-                    Linux::print(c_str)?;
+                    // Linux::print(c_str)?;
                     for &b in c_str.as_bytes() {
                         buffer[index] = b;
                         index += 1;

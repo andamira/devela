@@ -3,7 +3,7 @@
 //! Defines [`LinuxError`] and [`LinuxResult`].
 //
 
-use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO, LINUX_EXIT as EXIT};
+use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO, LINUX_EXIT as EXIT, is};
 
 #[doc = crate::TAG_RESULT!()]
 /// The return type for Linux-related functions that can fail.
@@ -132,11 +132,7 @@ impl LinuxError {
     /// Invalid values are converted to `INTERNAL_ERROR`.
     pub const fn to_exit_code(self) -> i32 {
         let code = self.to_raw_exit_code();
-        if code >= EXIT::SUCCESS && code <= EXIT::MAX { // >= 0 && <= 255
-            code
-        } else {
-            EXIT::INTERNAL_ERROR // 254
-        }
+        is![code >= EXIT::SUCCESS && code <= EXIT::MAX; code; EXIT::INTERNAL_ERROR]
     }
 
     /// Convert the error to [`LINUX_EXIT`][EXIT] without validation.
