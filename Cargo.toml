@@ -70,7 +70,7 @@ include = [
 	"/examples/data/bitfield.rs",
 	"/examples/data/id_seq.rs",
 	"/examples/num/niche.rs",
-	"/examples/work/coro_run.rs",
+	"/examples/work/coro_manager.rs",
 ]
 autoexamples = false
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
@@ -1133,16 +1133,16 @@ name = "cargo_script"
 path = "examples/code/cargo_script.rs"
 required-features = ["__no_test"]
 [[example]]
-name = "enumint"
+name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"
 [[example]]
-name = "enumset"
+name = "enumset" # NOTE: in docs
 path = "examples/code/enumset.rs"
 required-features = ["_bit_u8"]
 
 # data
 [[example]]
-name = "bitfield"
+name = "bitfield" # NOTE: in docs
 path = "examples/data/bitfield.rs"
 required-features = ["_bit_u8"]
 [[example]]
@@ -1150,12 +1150,12 @@ name = "id_pin"
 path = "examples/data/id_pin.rs"
 required-features = [] # optional: "alloc"
 [[example]]
-name = "id_seq"
+name = "id_seq" # NOTE: in docs
 path = "examples/data/id_seq.rs"
 
 # num
 [[example]]
-name = "niche"
+name = "niche" # NOTE: in docs
 path = "examples/num/niche.rs"
 
 # term
@@ -1166,7 +1166,7 @@ required-features = ["linux", "unsafe_syscall"]
 
 # work
 [[example]]
-name = "coro_manager"
+name = "coro_manager" # in crate docs
 path = "examples/work/coro_manager.rs"
 required-features = ["alloc"]
 
