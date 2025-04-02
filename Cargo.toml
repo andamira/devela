@@ -47,7 +47,7 @@ members = [".", "macros", "examples/lang/js_web_api"]
 [package]
 name = "devela"
 description = "A development layer."
-version = "0.23.0-rc.1" # In sync with DOCS/CHANGELOG.md
+version = "0.23.0-rc.2" # In sync with DOCS/CHANGELOG.md
 rust-version = "1.85.0" # In sync with README.md & .github/workflows/check.yml
 edition = "2024"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -973,7 +973,7 @@ default-target = "x86_64-unknown-linux-gnu"
 targets = [ ## +std:
 	"x86_64-apple-darwin", "x86_64-pc-windows-msvc",
 	"armv7-unknown-linux-gnueabihf", "aarch64-unknown-linux-gnu",
-	"riscv32imac-unknown-none-el", "riscv64gc-unknown-linux-gnu",
+	"riscv32gc-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu",
 	# "wasm32-wasip1",
 	## no_std:
 	# "i686-unknown-uefi", "x86_64-unknown-none",
