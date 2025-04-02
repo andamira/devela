@@ -174,6 +174,9 @@
 - make customizable: `XorShift[16|32|64]`.
 - make const methods:
   - `Float`: `clamp`, `copysign`, `div_euclid`, `max`, `min`, `min_total`, `round_ties_odd`, `signum`.
+  - `IoBufReader`: `buffer`, `capacity`, `get_ref`, `get_mut`, `new`.
+  - `IoChain`: `get_ref`, `get_mut`, `new`.
+  - `IoCursor`: `get_ref`, `get_mut`, `new`, `position`, `set_position`.
   - `Mem`: `swap`.
   - `Ptr`: `copy`, `copy_nonoverlapping`, `replace`, `write`, `write_bytes`, `write_unaligned`.
 - change attributes:

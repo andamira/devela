@@ -61,17 +61,17 @@ pub struct IoCursor<T> {
 #[rustfmt::skip]
 impl<T> IoCursor<T> {
     /// Creates a new cursor wrapping the provided underlying in-memory buffer.
-    pub fn new(inner: T) -> IoCursor<T> { IoCursor { pos: 0, inner } }
+    pub const fn new(inner: T) -> IoCursor<T> { IoCursor { pos: 0, inner } }
     /// Consumes this cursor, returning the underlying value.
     pub fn into_inner(self) -> T { self.inner }
     /// Gets a reference to the underlying value in this cursor.
-    pub fn get_ref(&self) -> &T { &self.inner }
+    pub const fn get_ref(&self) -> &T { &self.inner }
     /// Gets a mutable reference to the underlying value in this cursor.
-    pub fn get_mut(&mut self) -> &mut T { &mut self.inner }
+    pub const fn get_mut(&mut self) -> &mut T { &mut self.inner }
     /// Returns the current position of this cursor.
-    pub fn position(&self) -> u64 { self.pos }
+    pub const fn position(&self) -> u64 { self.pos }
     /// Sets the position of this cursor.
-    pub fn set_position(&mut self, pos: u64) { self.pos = pos; }
+    pub const fn set_position(&mut self, pos: u64) { self.pos = pos; }
 }
 #[rustfmt::skip]
 impl<T: AsRef<[u8]>> IoSeek for IoCursor<T> {

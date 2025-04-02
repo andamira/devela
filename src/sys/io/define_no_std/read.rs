@@ -132,15 +132,15 @@ pub struct IoChain<T, U> {
 }
 #[rustfmt::skip]
 impl<T, U> IoChain<T, U> {
-    pub(super) fn new(first: T, second: U, done_first: bool) -> Self {
+    pub(super) const fn new(first: T, second: U, done_first: bool) -> Self {
         IoChain { first, second, done_first }
     }
     /// Consumes the `Chain`, returning the wrapped readers.
     pub fn into_inner(self) -> (T, U) { (self.first, self.second) }
     /// Gets references to the underlying readers in this `Chain`.
-    pub fn get_ref(&self) -> (&T, &U) { (&self.first, &self.second) }
+    pub const fn get_ref(&self) -> (&T, &U) { (&self.first, &self.second) }
     /// Gets mutable references to the underlying readers in this `Chain`.
-    pub fn get_mut(&mut self) -> (&mut T, &mut U) { (&mut self.first, &mut self.second) }
+    pub const fn get_mut(&mut self) -> (&mut T, &mut U) { (&mut self.first, &mut self.second) }
 }
 
 impl<T: fmt::Debug, U: fmt::Debug> fmt::Debug for IoChain<T, U> {

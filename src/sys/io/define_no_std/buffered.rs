@@ -24,7 +24,7 @@ impl<R: IoRead, const S: usize> IoBufReader<R, S> {
     /// Creates a new `IoBufReader<R, S>` with a default buffer capacity.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.new>.
-    pub fn new(inner: R) -> IoBufReader<R, S> {
+    pub const fn new(inner: R) -> IoBufReader<R, S> {
         IoBufReader { inner, buf: [0; S], pos: 0, cap: 0 }
     }
 }
@@ -33,22 +33,22 @@ impl<R, const S: usize> IoBufReader<R, S> {
     /// Gets a reference to the underlying reader.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.get_ref>.
-    pub fn get_ref(&self) -> &R { &self.inner }
+    pub const fn get_ref(&self) -> &R { &self.inner }
 
     /// Gets a mutable reference to the underlying reader.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.get_mut>.
-    pub fn get_mut(&mut self) -> &mut R { &mut self.inner }
+    pub const fn get_mut(&mut self) -> &mut R { &mut self.inner }
 
     /// Returns a reference to the internally buffered data.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.buffer>.
-    pub fn buffer(&self) -> &[u8] { &self.buf[self.pos..self.cap] }
+    pub const fn buffer(&self) -> &[u8] { crate::Slice::range(&self.buf, self.pos, self.cap) }
 
     /// Returns the number of bytes the internal buffer can hold at once.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.capacity>.
-    pub fn capacity(&self) -> usize { S }
+    pub const fn capacity(&self) -> usize { S }
 
     /// Unwraps this `IoBufReader<R, S>`, returning the underlying reader.
     ///
@@ -56,7 +56,7 @@ impl<R, const S: usize> IoBufReader<R, S> {
     pub fn into_inner(self) -> R { self.inner }
 
     /// Invalidates all data in the internal buffer.
-    fn discard_buffer(&mut self) { self.pos = 0; self.cap = 0; }
+    const fn discard_buffer(&mut self) { self.pos = 0; self.cap = 0; }
 }
 
 impl<R: IoRead, const S: usize> IoRead for IoBufReader<R, S> {
