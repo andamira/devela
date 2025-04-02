@@ -1,6 +1,7 @@
 # Changelog from 2025 on
 
-## [0.23.0-wip] *unreleased*
+[0.23.0] 2025-03-02
+===================
 
 ### Added
 - new features:
@@ -210,4 +211,4 @@
 - refactor `rustdoc-header.html` to be modular, more efficient and versatile.
 - compile in docs.rs with `cpu-native` flag.
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.23.0-wip...HEAD
+[0.23.0]: https://github.com/andamira/devela/releases/tag/v0.23.0
