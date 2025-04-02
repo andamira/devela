@@ -15,6 +15,7 @@
 #   $ cargo native re example_name
 #   $ cargo +nightly native nd -F _docsrs
 #
+# FIX:NOTE: this doesn't include any nightly flags
 
 # Default flags for the "native" profile
 #

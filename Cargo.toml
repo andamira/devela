@@ -960,11 +960,13 @@ strip = true         # Remove debug symbols for smaller binaries
 
 no-default-features = true
 features = ["_docsrs"]
-rustc-args = ["--cfg", "nightly"]
+rustc-args = [
+	"--cfg", "nightly",
+	"-Ctarget-cpu=native", # see ./utils/cargo-native for local docs
+	]
 rustdoc-args = [
 	"--generate-link-to-definition",
 	"--html-in-header", "./config/rustdoc-header.html",
-	"-Ctarget-cpu=native", # see ./utils/cargo-native for local docs
 	"--cfg", "nightly",
 ]
 default-target = "x86_64-unknown-linux-gnu"
