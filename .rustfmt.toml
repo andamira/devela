@@ -29,6 +29,7 @@ disable_all_formatting = false # *false true
 
 ## Specifies which edition is used by the parser.
 # - https://rust-lang.github.io/rustfmt/#edition
+# - https://doc.rust-lang.org/edition-guide/rust-2024/rustfmt-version-sorting.html
 edition = "2024" # *2015,2018,2021,2024 CHECK
 
 ## Maximum width of the args of a function call before falling back to vertical.

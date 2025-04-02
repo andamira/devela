@@ -45,6 +45,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         pub use super::{bit::_all::*, crypto::_all::*, encode::_all::*, radix::_all::*, types::*};
         // WIPZONE
         // pub use serde::_all::*;
+        // pub use serde::lempel_ziv::*;
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
@@ -65,3 +66,5 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
 // mod hex; // Hexadecimal literals and conversions.
 // mod rle; // Run-length encoding and similar techniques.
 // mod serde; // structured serialization/deserialization.
+// #[cfg(feature = "alloc")]
+// mod lempel_ziv;

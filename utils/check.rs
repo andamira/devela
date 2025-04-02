@@ -41,6 +41,7 @@
 // IMPROVE:
 // - filter-out cross-compiling only for no_std platforms.
 // - allow to associate a platform with features to be enabled.
+// - avoid downloading everything at the start make a separate command. use it in CI.
 
 use devela::all::{crate_root, iif, sf};
 use itertools::Itertools;

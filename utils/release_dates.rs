@@ -72,6 +72,6 @@ fn print_prev_next_n_releases(p: u32, n: u32) {
 }
 
 fn main() {
-    print_prev_next_n_releases(3, 3);
+    print_prev_next_n_releases(4, 4);
     println!();
 }

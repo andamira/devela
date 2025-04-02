@@ -122,7 +122,7 @@ fn sqrt_basic() {
 fn sqrt_hybrid() {
     let test_values = [0.0_f32, 0.5, 1.0, 2.0, 10.0, 1e-6, 1e6, f32::MIN_POSITIVE, f32::MAX / 2.0];
     for &x in &test_values {
-        let our = Float(x).sqrt().0;
+        let our = Float(x).sqrt_hybrid().0;
         let std = x.sqrt();
         assert_approx_eq_all!(tolerance: 1e-9, our, std);
     }

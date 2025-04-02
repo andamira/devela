@@ -25,6 +25,7 @@ crate::items! { // structural access: _mods, _all, _always
         #[cfg(feature = "std")]
         crate::items! {
             // pub use super::local::*;
+            // pub use super::manager_2::*; // WIP
             // pub use super::pool::*;
             // pub use super::semaphore::*;
         }
@@ -42,6 +43,7 @@ crate::items! { // structural access: _mods, _all, _always
 #[cfg(feature = "std")]
 crate::items! {
     // mod local; // ThreadLocal
+    // mod manager_2; // ThreadManager, ThreadWork
     // mod pool;
     // mod semaphore; // Semaphore
 }

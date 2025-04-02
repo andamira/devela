@@ -18,10 +18,10 @@
 //
 
 mod chain_hook; // Chain, Hook
+mod r#enum; // Enum
 mod mismatch; // Mismatch
 mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
 mod own; // Own
-mod r#enum; // Enum
 mod reexports; // code::result::Result
 mod value_quant; // ValueQuant
 
@@ -33,10 +33,11 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::{
-            chain_hook::*, mismatch::*, opt_res::_all::*,
-            own::*, r#enum::*, reexports::*, value_quant::*,
+            chain_hook::*, r#enum::*, mismatch::*,
+            opt_res::_all::*, own::*, reexports::*, value_quant::*,
         };
         // WIPZONE
+        // pub use super::enumatch::*;
         // #[cfg(feature = "_tuple")]
         // pub use super::menu::*;
     }
@@ -49,6 +50,7 @@ crate::items! { // structural access: _mods, _all, _always
     }
 }
 // WIPZONE
+// mod enumatch; // enumatch!
 // #[cfg(feature = "_tuple")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
 // mod menu;

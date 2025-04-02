@@ -657,7 +657,7 @@ to reach the most precise result for both `f32` and `f64`:
 impl Float<f32> {
     #[must_use]
     pub(super) const fn asin_acos_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.1 { 5
         } else if abs_a <= 0.3 { 7
         } else if abs_a <= 0.5 { 10
@@ -669,7 +669,7 @@ impl Float<f32> {
     }
     #[must_use]
     pub(super) const fn atan_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.1 { 5
         } else if abs_a <= 0.3 { 7
         } else if abs_a <= 0.5 { 12
@@ -681,7 +681,7 @@ impl Float<f32> {
     }
     #[must_use]
     pub(super) const fn exp_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.001 { 3
         } else if abs_a <= 0.1 { 6
         } else if abs_a <= 1.0 { 11
@@ -693,7 +693,7 @@ impl Float<f32> {
     }
     #[must_use]
     pub(super) const fn exp2_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.3 { 8
         } else if abs_a <= 3.0 { 15
         } else if abs_a <= 7.0 { 22
@@ -705,7 +705,7 @@ impl Float<f32> {
     }
     #[must_use]
     pub(super) const fn ln_series_terms_f32(x: f32) -> u32 {
-        let x = Float(x).abs().0;
+        let x = x.abs();
         let x = if x == 0.0 { return 0;
         } else if x <= 1. { 1. / x } else { x };
 
@@ -732,7 +732,7 @@ impl Float<f32> {
 impl Float<f64> {
     #[must_use]
     pub(super) const fn asin_acos_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.1 { 9
         } else if abs_a <= 0.3 { 15
         } else if abs_a <= 0.5 { 24
@@ -744,7 +744,7 @@ impl Float<f64> {
     }
     #[must_use]
     pub(super) const fn atan_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.1 { 9
         } else if abs_a <= 0.3 { 15
         } else if abs_a <= 0.5 { 26
@@ -756,7 +756,7 @@ impl Float<f64> {
     }
     #[must_use]
     pub(super) const fn exp_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.001 { 5
         } else if abs_a <= 0.1 { 10
         } else if abs_a <= 1.0 { 18
@@ -772,7 +772,7 @@ impl Float<f64> {
     }
     #[must_use]
     pub(super) const fn exp2_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Float(x).abs().0;
+        let abs_a = x.abs();
         if abs_a <= 0.3 { 13
         } else if abs_a <= 3.0 { 25
         } else if abs_a <= 7.0 { 34
@@ -787,7 +787,7 @@ impl Float<f64> {
     }
     #[must_use]
     pub(super) const fn ln_series_terms_f64(x: f64) -> u32 {
-        let x = Float(x).abs().0;
+        let x = x.abs();
         let x = if x == 0.0 { return 0;
         } else if x <= 1. { 1. / x } else { x };
 

@@ -24,6 +24,8 @@ crate::items! { // structural access: _mods, _all, _always
 
         #[cfg(_destaque··)]
         pub use super::destaque::_all::*;
+        // WIPZONE
+        // pub use super::destaque_define::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -33,3 +35,5 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::{adt::*, reexports::*};
     }
 }
+// WIPZONE
+// mod destaque_define; // WIP:

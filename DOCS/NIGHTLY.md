@@ -67,6 +67,14 @@ See also
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
 - 1.87: ` `[Update stdarch](https://github.com/rust-lang/rust/pull/136831) CHECK
 
+<!--
+# 1.88 will be stable on 2025-06-26 ([`nightly_stable_next2`](https://releases.rs/docs/1.88.0/))
+> - <https://github.com/rust-lang/rust/milestone/132>
+
+# 1.89 will be stable on 2025-08-07 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
+> - <https://github.com/rust-lang/rust/milestone/???>
+-->
+
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
@@ -76,7 +84,7 @@ See also
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
-- 1.??: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
+- 1.88: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
 - 1.??: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)

@@ -760,7 +760,7 @@ optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
-version = "0.24.0" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
+version = "0.24.1" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
 optional = true  # unsafe
 default-features = false # 37 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags

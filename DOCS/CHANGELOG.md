@@ -45,7 +45,8 @@
     - mem: `Current`, `CurrentGuard`, `SpinLock`, `SpinLockGuard`.
     - os::linux: `LinuxError`, `LinuxResult`, `LinuxSiginfo`, `LinuxStat`.
   - ui: `UiCap`, `UiCapImage`, `UiCapInput`, `UiCapSound`, `UiCapSystem`, `UiCapWindow`.
-    - event: `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`, `EventKey`, `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
+    - event: `EventButton`, `EventButtonState`, `EventMouse`, `EventPointer`, `EventPointerType`, `EventTimestamp`, `EventKey`,
+      - key: `KeyAlpha`, `KeyMedia`, `KeyMod`, `KeyMods`, `KeyPad`, `KeyState`.
     - back: `CrosstermService`, `MiniquadPixels`, `MiniquadService`.
     - front::term: `TermSize`.
   - namespaces: `Ansi`, `Fmt`, `Fs`, `FsPath`, `Io`, `Iter`, `Js`, `Linux`, `Log`, `Panic`.
@@ -99,7 +100,7 @@
 - new example: `js_web_api`.
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features and for disabled dependencies.
-- add more doc tags: `TAG_FAKE`, `TAG_FFI`, `TAG_FMT`, `TAG_GEOM`, `TAG_NO`, `TAG_NUM`, `TAG_QUANT`, `TAG_RAND`, `TAG_TEXT`, `TAG_TIME`.
+- add more doc tags: `TAG_[FAKE|FFI|FMT|GEOM|NO|NUM|QUANT|RAND|TEXT|TIME]`.
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
@@ -129,7 +130,7 @@
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`, `_string_*` to `_str_*`.
 - change features into cfg flags:
-  - `nightly`, `nightly_allocator`, `nightly_autodiff`, `nightly_bigint`, `nightly_coro`, `nightly_doc`, `nightly_float`, `nightly_simd`, `nightly_stable`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
+  - `nightly, [nightly_[allocator|autodiff|bigint|coro|doc|float|simd|stable|stable_[next1|next2|later]`.
 - rename flags:
   - `prim···` flag to `prim··`, `_str*` to `_str*`.
 - rename/move modules:

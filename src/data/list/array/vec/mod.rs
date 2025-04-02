@@ -23,6 +23,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::{chunk::*, ext::*, reexports::*};
         // WIPZONE
         // pub use super::d2::_all::*;
+        // pub use super::hvec::_all::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -34,3 +35,4 @@ crate::items! { // structural access: _mods, _all, _always
 }
 // WIPZONE
 // mod d2; // Vec2d
+// mod hvec; // HVec ?

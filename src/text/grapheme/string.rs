@@ -134,7 +134,6 @@ mod core_impls {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     impl From<&str> for GraphemeString {
-        #[must_use]
         fn from(s: &str) -> GraphemeString {
             GraphemeString(s.graphemes(true).take(1).collect())
         }
