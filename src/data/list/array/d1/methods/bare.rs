@@ -8,7 +8,7 @@
 // - indexing methods (panicking)
 // - Option<T> methods
 
-use crate::{Array, Bare, BareBox, Slice, array_init, is};
+use crate::{Array, Bare, BareBox, array_init, is};
 
 /// # *Bare* constructors
 impl<T, const CAP: usize> Array<T, CAP, Bare> {
