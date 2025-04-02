@@ -171,7 +171,7 @@ A_a64l    = "A  --target aarch64-unknown-linux-gnu"    # arm 64
 Ar_a64l   = "Ar --target aarch64-unknown-linux-gnu"
 A_r32l    = "A --target riscv32imac-unknown-none-elf"  # riscv 32 (temp replacement)
 Ar_r32l   = "A --target riscv32imac-unknown-none-elf"
-#A_r32l    = "A --target riscv32gc-unknown-linux-gnu" # tier-3
+#A_r32l    = "A --target riscv32gc-unknown-linux-gnu"   # tier-3
 #Ar_r32l   = "Ar --target riscv32gc-unknown-linux-gnu"
 A_r64l    = "A  --target riscv64gc-unknown-linux-gnu"  # riscv 64
 Ar_r64l   = "Ar --target riscv64gc-unknown-linux-gnu"
@@ -216,28 +216,28 @@ Ee = "expand --example"
 El = "expand --lib"
 Elt = "expand --lib --tests"
 # std targets: linux
-E_x32l    = "E  --target i686-unknown-linux-gnu"       # x86 32
-E_x64l    = "E  --target x86_64-unknown-linux-gnu"     # x86 64
+E_x32l    = "E --target i686-unknown-linux-gnu"        # x86 32
+E_x64l    = "E --target x86_64-unknown-linux-gnu"      # x86 64
 E_a32l    = "E --target armv7-unknown-linux-gnueabihf" # arm 32
-E_a64l    = "E  --target aarch64-unknown-linux-gnu"    # arm 64
+E_a64l    = "E --target aarch64-unknown-linux-gnu"     # arm 64
 E_r32l    = "E --target riscv32imac-unknown-none-elf"  # riscv 32 (temp replacement)
-#E_r32l    = "E --target riscv32gc-unknown-linux-gnu" # tier-3
-E_r64l    = "E  --target riscv64gc-unknown-linux-gnu"  # riscv 64
-E_a64a    = "E  --target aarch64-linux-android"        # android arm 64
-E_x64a    = "E  --target x86_64-linux-android"         # android x86 64
+#E_r32l    = "E --target riscv32gc-unknown-linux-gnu"   # tier-3
+E_r64l    = "E --target riscv64gc-unknown-linux-gnu"   # riscv 64
+E_a64a    = "E --target aarch64-linux-android"         # android arm 64
+E_x64a    = "E --target x86_64-linux-android"          # android x86 64
 # std targets: apple darwin
-E_x64d    = "E  --target x86_64-apple-darwin"
+E_x64d    = "E --target x86_64-apple-darwin"
 # std targets: microsoft windows
-E_x64w    = "E  --target x86_64-pc-windows-gnu"
+E_x64w    = "E --target x86_64-pc-windows-gnu"
 # no_std targets:
-E_x32     = "E  --target i686-unknown-uefi"            # x86 32
-E_x64     = "E  --target x86_64-unknown-none"          # x86 64
-E_a32     = "E  --target thumbv7m-none-eabi"           # arm 32
-E_a64     = "E  --target aarch64-unknown-none"         # arm 64
+E_x32     = "E --target i686-unknown-uefi"             # x86 32
+E_x64     = "E --target x86_64-unknown-none"           # x86 64
+E_a32     = "E --target thumbv7m-none-eabi"            # arm 32
+E_a64     = "E --target aarch64-unknown-none"          # arm 64
 E_r32     = "E --target riscv32imac-unknown-none-elf"  # riscv 32
-E_r64     = "E  --target riscv64imac-unknown-none-elf" # riscv 64
-E_w32i    = "E  --target wasm32-wasip1"                # wasm 32 (wasi)
-E_w32     = "E  --target wasm32-unknown-unknown"       # wasm 32 (web)
+E_r64     = "E --target riscv64imac-unknown-none-elf"  # riscv 64
+E_w32i    = "E --target wasm32-wasip1"                 # wasm 32 (wasi)
+E_w32     = "E --target wasm32-unknown-unknown"        # wasm 32 (web)
 
 # $ cargo install -f cargo-llvm-lines
 # https://crates.io/crates/cargo-llvm-lines

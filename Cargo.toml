@@ -968,6 +968,17 @@ rustdoc-args = [
 	"--cfg", "nightly",
 ]
 default-target = "x86_64-unknown-linux-gnu"
+targets = [ ## +std:
+	"x86_64-apple-darwin", "x86_64-pc-windows-msvc",
+	"armv7-unknown-linux-gnueabihf", "aarch64-unknown-linux-gnu",
+	"riscv32imac-unknown-none-el", "riscv64gc-unknown-linux-gnu",
+	# "wasm32-wasip1",
+	## no_std:
+	# "i686-unknown-uefi", "x86_64-unknown-none",
+	# "thumbv7m-none-eabi", "aarch64-unknown-unknown"
+	# "riscv32imac-unknown-none-elf", "riscv64imac-unknown-none-elf",
+	"wasm32-unknown-unknown",
+]
 
 [badges]
 # ==============================================================================

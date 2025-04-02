@@ -101,6 +101,7 @@
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features and for disabled dependencies.
 - add more doc tags: `TAG_[FAKE|FFI|FMT|GEOM|NO|NUM|QUANT|RAND|TEXT|TIME]`.
+- add more compile targets for docs.rs.
 
 ### Removed
 - remove standalone re-exported fns from `std::{fmt, iter}`.
