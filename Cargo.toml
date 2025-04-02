@@ -47,7 +47,7 @@ members = [".", "macros", "examples/lang/js_web_api"]
 [package]
 name = "devela"
 description = "A development layer."
-version = "0.23.0" # In sync with DOCS/CHANGELOG.md
+version = "0.24.0-wip" # In sync with DOCS/CHANGELOG.md
 rust-version = "1.85.0" # In sync with README.md & .github/workflows/check.yml
 edition = "2024"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
