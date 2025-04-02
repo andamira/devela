@@ -197,3 +197,27 @@ fn tan() {
         assert_approx_eq_all![tolerance: 1e-6, result, expected];
     }
 }
+#[test]
+fn asin() {
+    const PI: f32 = Float::<f32>::PI.0;
+    // (angle, expected tan)
+    let test_cases = [
+        // Exact values
+        (0.0_f32, 0.0),
+        (0.5, PI / 6.0),         // 30°
+        (0.707106781, PI / 4.0), // 45° (1/√2)
+        (0.866025404, PI / 3.0), // 60° (√3/2)
+        (1.0, PI / 2.0),         // 90°
+        // // Practical values
+        (0.258819045, 0.261799388), // sin(15°)
+        (-0.5, -PI / 6.0),          // -30°
+        // // Edge cases
+        (1.0001, PI / 2.0),   // Should clamp to pi/2
+        (-1.0001, -PI / 2.0), // Should clamp to -pi/2
+    ];
+    for (angle, expected) in test_cases {
+        let angle = Float(angle);
+        let result = angle.asin_series(angle.asin_series_terms()).0;
+        assert_approx_eq_all![tolerance: 1e-6, result, expected];
+    }
+}

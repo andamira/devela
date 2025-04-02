@@ -330,19 +330,36 @@ macro_rules! impl_float_shared_series {
             /// may be necessary.
             ///
             /// See also [`asin_series_terms`][Self::asin_series_terms].
+            // NOTE: OPTIMIZED
             pub const fn asin_series(self, terms: $ue) -> Float<$f> {
-                is![self.abs().0 > 1.0; return Self::NAN];
-                let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
-                let mut i = 0;
+                const HALF_PI: $f = Float::<$f>::FRAC_PI_2.0;
+                const THRESHOLD: $f = 1.0 + Float::<$f>::MEDIUM_MARGIN.0;
+                // Clamp inputs to [-1,1] range (matches std's behavior):
+                let x = is![self.0 >= THRESHOLD; 1.0; is![self.0 <= -THRESHOLD; -1.0; self.0]];
+                // Exact values for endpoints:
+                #[allow(clippy::float_cmp)] {
+                    if x == 1.0 { return Float(HALF_PI); }
+                    if x == -1.0 { return Float(-HALF_PI); }
+                }
+                // Use identity for better convergence near ±1:
+                if x.abs() > 0.9 {
+                    let sign = x.signum();
+                    let x = Float(1.0 - x.abs()).sqrt_hybrid().0;
+                    return Float(sign * (HALF_PI - Self::asin_small_angle(Float(x), terms).0));
+                }
+                // Standard Taylor series for central range
+                Self::asin_small_angle(self, terms)
+            }
+            // Helper for small-angle approximation (|x| ≤ 0.9)
+            const fn asin_small_angle(x: Float<$f>, terms: u32) -> Float<$f> {
+                let x_sq = x.0 * x.0;
+                let (mut result, mut term, mut i) = (x.0, x.0, 1);
                 while i < terms {
-                    if i != 0 {
-                        multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
-                        power_x *= self.0 * self.0;
-                    }
-                    asin_approx += multiplier * power_x / (2 * i + 1) as $f;
+                    term *= x_sq * ((2*i - 1) as $f) / ((2*i) as $f);
+                    result += term / (2*i + 1) as $f;
                     i += 1;
                 }
-                Float(asin_approx)
+                Float(result)
             }
 
             /// Determines the number of terms needed for [`asin_series`][Self::asin_series]
