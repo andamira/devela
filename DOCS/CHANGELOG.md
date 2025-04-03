@@ -3,18 +3,24 @@
 [0.24.0-wip] unreleased
 =======================
 
-## build & manifest
+## manifest
 - changed:
   - bump MSRV to 1.86.0.
 
 ## utils
 - change `check.rs`:
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
-  - behavior change: No longer install components automatically.
+  - behavior change: no longer installs components automatically.
 
 ## data
 - add:
   - re-exports: `IterFromCoroutine`.
+
+## game
+- add:
+  - module: `game`.
+  - features: `game`, `game_safe`.
+  - reflection flags: `game··`.
 
 ## num
 ### float

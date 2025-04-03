@@ -133,6 +133,7 @@ extern crate self as devela;
 
 pub mod code;
 pub mod data;
+pub mod game;
 pub mod lang;
 pub mod media;
 pub mod num;
@@ -168,6 +169,7 @@ pub mod all {
     pub use super::{
         code::_all::*,
         data::_all::*,
+        game::_all::*,
         lang::_all::*,
         media::_all::*,
         num::_all::*,
@@ -181,13 +183,14 @@ pub mod all {
     };
 }
 mod _always {
-    // public items, not as much feature-gated, bubbled up
+    // public items, less feature-gated, bubble up easy
     #[allow(unused_imports)]
     #[rustfmt::skip]
     pub use super::{
         code::_always::*,
         data::_always::*,
         lang::_always::*,
+        // game::_always::*,
         media::_always::*,
         num::_always::*,
         phys::_always::*,

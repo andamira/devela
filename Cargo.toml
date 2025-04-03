@@ -1,5 +1,6 @@
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/manifest.html
+# https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html
 #
 ## Table of Contents
 #
@@ -10,7 +11,7 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std,alloc,no_std)
-#   - Module            (all,code,data,lang,media,num,phys,sys,text,ui,work, …)
+#   - Module            (all,code,data,game,lang,media,num,phys,sys,text,ui,work, …)
 #   - Safety            (unsafe,safe,safest)
 #   - Capability        (_*)
 #     - doc             (_doc*)
@@ -83,7 +84,7 @@ publish = true
 bench = false
 
 
-[features] # 261/300 (39 remaining), 134 visible, 127 hidden
+[features] # 263/300 (37 remaining), 136 visible, 127 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -140,8 +141,8 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 # They set compile flags named `*··` (two interpuncts), for reflection.
 # For example, `num··` will be set if any num submodule feature is enabled.
 
-all = [ # enables all the modules and submodules
-	"code", "data", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
+all = [ # enables all the 11 modules (and their submodules)
+	"code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
 ]
 code = ["error"]
 	error = [] # AllError, DataError, NumError, TextError…
@@ -150,6 +151,8 @@ data = ["hash"]
 		hash = [] # HashFnv, HashFx, HashPengy
 	# list = []
 	# xipher = ["dep_orion"]
+game = []
+	# ...
 lang = ["glsl", "js"]
 	# dsl = []
 	# ffi = []
@@ -251,12 +254,13 @@ unsafe = [ # [11] enables all `unsafe` (as long as it isn't forbidden for that m
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-safe = [ # [10] forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_num",
-	"safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
+safe = [ # [11] forbids `unsafe` (and overrides unsafe features)
+	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game",
+	"safe_num", "safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ] # `safe··`
 	safe_code = []
 	safe_data = []
+	safe_game = []
 	safe_lang = []
 	safe_media = [ # [5]
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image"]
@@ -1014,6 +1018,7 @@ redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit
 
 [lints.clippy]
 # https://rust-lang.github.io/rust-clippy/master/index.html
+# https://github.com/rust-lang/rust-clippy/blob/master/CHANGELOG.md
 # ------------------------------------------------------------------------------
 enum_glob_use = "deny" # `use Enum::*`
 missing_safety_doc = "deny" # no `# Safety` section in public unsafe fns
@@ -1113,6 +1118,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(data··)',
 	'cfg(_bit··, _destaque··, _stack··)',
 	'cfg(_graph··, _node··)',
+	# game: (1)
+	'cfg(game··)',
 	# lang: (2)
 	'cfg(lang··, ffi··)',
 	# media: (1)

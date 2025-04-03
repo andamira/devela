@@ -55,6 +55,7 @@ Root modules & public sub-modules features:
   - [`error`]:
 - [`data`]
   - [`hash`]:
+- [`game`]:
 - [`lang`]:
   - `dsl`:
   - `ffi`: c, glsl, js.
@@ -108,6 +109,7 @@ Root modules & public sub-modules features:
   [`error`]:      crate::code::error
 [`data`]:         crate::data
   [`hash`]:       crate::data::codec::hash
+[`game`]:         crate::game
 [`lang`]:         crate::lang
 [`media`]:        crate::media
   [`audio`]:      crate::media::audio

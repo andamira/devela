@@ -226,6 +226,10 @@ mod reflection {
         ref_flags: &["data··"],
         features: &["data", "hash"]
     };
+    pub const GAME: FlagsFeatures = FlagsFeatures {
+        ref_flags: &["game··"],
+        features: &["game"]
+    };
     pub const LANG: FlagsFeatures = FlagsFeatures {
         ref_flags: &["lang··"],
         features: &["lang", "glsl", "js"]
@@ -396,6 +400,7 @@ mod reflection {
 
             CODE,
             DATA,
+            GAME,
             LANG, FFI,
             MEDIA,
             NUM, GEOM, PRIM,
