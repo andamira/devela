@@ -50,6 +50,9 @@ jobs:
 
       # https://twitter.com/jonhoo/status/1571290371124260865
 
+      - name: "./utils/check.rs --install-arches --install-nightly"
+        run: ./utils/check.rs --install-arches --install-nightly
+
       - name: "./utils/check.rs --tests"
         run: ./utils/check.rs --tests
 
