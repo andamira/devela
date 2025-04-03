@@ -12,6 +12,9 @@
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
   - behavior change: no longer installs components automatically.
 
+## code
+- relocate `code::result::Enum` → `data::list`.
+
 ## data
 - add:
   - re-exports: `IterFromCoroutine`.

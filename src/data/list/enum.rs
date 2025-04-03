@@ -1,4 +1,4 @@
-// devela::code::result::enum
+// devela::data::list::enum
 //
 //! Defines the [`Enum`] type.
 //

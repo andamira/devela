@@ -14,11 +14,10 @@
 //!
 //! It includes fundamental outcome types ([`Option`], [`Result`], [`OptRes`]),
 //! structured ownership ([`Own`]), quantified values ([`ValueQuant`]),
-//! mismatch-aware comparisons ([`Mismatch`]), and flexible sum types ([`Enum`]).
+//! and mismatch-aware comparisons ([`Mismatch`]).
 //
 
 mod chain_hook; // Chain, Hook
-mod r#enum; // Enum
 mod mismatch; // Mismatch
 mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
 mod own; // Own
@@ -33,8 +32,7 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::{
-            chain_hook::*, r#enum::*, mismatch::*,
-            opt_res::_all::*, own::*, reexports::*, value_quant::*,
+            chain_hook::*, mismatch::*, opt_res::_all::*, own::*, reexports::*, value_quant::*,
         };
         // WIPZONE
         // pub use super::enumatch::*;
