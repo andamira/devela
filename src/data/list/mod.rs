@@ -8,7 +8,7 @@
 //
 
 mod link; // ConstList[Item], LinkedList
-mod oneof; // Oneof
+mod of; // Oneof
 
 pub mod array;
 pub mod queue;
@@ -21,10 +21,10 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
     #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _pub_mods::*;
+    pub use {_pub_mods::*, _always::*};
 
     mod _mods {
-        pub use super::{link::_all::*, oneof::*};
+        pub use super::{link::_all::*, of::_all::*};
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{array::_all::*, queue::_all::*, stack::_all::*};

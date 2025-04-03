@@ -13,9 +13,9 @@
   - behavior change: no longer installs components automatically.
 
 ## data
-- add:
-  - re-exports: `IterFromCoroutine`.
-- relocate and rename `code::result::Enum` → `data::list::Oneof`.
+- add re-exports: `IterFromCoroutine`.
+- add modules: `data::list::of`.
+- relocate and rename `code::result::Enum` → `data::list::of::Oneof`.
 - rename `Oneof` methods to ordinals: `A` → `_0`, `B` → `_1`, ….
 
 ## game

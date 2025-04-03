@@ -184,7 +184,7 @@ macro_rules! impl_enum {
         $( impl_enum! { @methods_field_access: $T } )+
     };
     (@methods_field_access: $T:ident) => { $crate::paste! {
-        #[doc = "Returns `true` if the value is of type [`" $T "`][Self::" $T "]"]
+        #[doc = "Returns `true` if the value is of type [`" $T "`][Self::" $T "]."]
         pub const fn [<is $T>](&self) -> bool { matches!(self, Oneof::$T(_)) }
 
         #[doc = "Returns the inner `" $T "` value, if present."]
