@@ -20,6 +20,9 @@
 
 ### Changed
 - bump MSRV to v1.86.0.
+- Update `check.rs` script
+  - do not install components automatically.
+  - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
 
 ### Fixed
 

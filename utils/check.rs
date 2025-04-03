@@ -32,8 +32,8 @@
 //   - fn print_help
 //   - fn get_msrv
 //   - fn run_cargo
-//   - fn rust_setup_arches
-//   - fn rust_setup_nightly
+//   - fn rust_install_arches
+//   - fn rust_install_nightly
 //   - fn headline
 //   - fn is_current_host_compatible
 //   - fn filter_deps
@@ -51,7 +51,7 @@ use std::{
     fs::File,
     io::{BufRead, BufReader, Read},
     path::PathBuf,
-    process::{exit, Command, Stdio},
+    process::{Command, Stdio, exit},
     thread,
 };
 use toml_edit::ImDocument;
@@ -249,12 +249,16 @@ fn main() -> Result<()> {
 
     let cmd = "check";
 
+    if args.install_arches {
+        rust_install_arches(&msrv)?;
+    }
+    if args.install_nightly {
+        rust_install_nightly()?;
+    }
+
     /* tests */
 
     if args.tests {
-        rust_setup_arches(&msrv)?;
-        rust_setup_nightly()?;
-
         let cmd = "test";
         sf! { headline(0, &format!["`all` test checking [alloc|std] + [safe|unsafe]):"]); }
 
@@ -262,7 +266,7 @@ fn main() -> Result<()> {
 
         // nightly unsafe
         sf! { run_cargo_with_env("", "+nightly", &[cmd, "-F _docsrs", "--", "--color=always"],
-            &[("RUSTFLAGS", "--cfg nightly")])?; }
+        &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe (max capabilities)
         run_cargo(&msrv, cmd, &["-F all,std,safe,_docs,_max", "--", "--color=always"])?;
@@ -292,10 +296,9 @@ fn main() -> Result<()> {
     /* docs */
 
     if args.docs {
-        rust_setup_nightly()?;
         headline(0, &format!["`all` docs compilation:"]);
         sf! { run_cargo_with_env("", "+nightly", &["doc", "--no-deps", "-F _docsrs"],
-            &[("RUSTFLAGS", "--cfg nightly")])?; }
+        &[("RUSTFLAGS", "--cfg nightly")])?; }
     }
 
     /* arches */
@@ -310,8 +313,6 @@ fn main() -> Result<()> {
         let mut a = 1_usize;
 
         sf! { headline(0, &format!["`all` checking in each architecture ({atotal}):"]); }
-
-        rust_setup_arches(&msrv)?;
 
         // linux
         for arch in LINUX_ARCHES {
@@ -374,16 +375,13 @@ fn main() -> Result<()> {
 
         sf! { headline(0, &format!["miri testing in each architecture ({atotal}):"]); }
 
-        rust_setup_arches(&msrv)?;
-        rust_setup_nightly()?;
-
         // std
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env("", "+nightly",
-                &["miri", "test", "--target", arch, "-F", "all,std,unsafe"],
-                &[("RUSTFLAGS", "--cfg nightly")],)?; }
+            &["miri", "test", "--target", arch, "-F", "all,std,unsafe"],
+            &[("RUSTFLAGS", "--cfg nightly")],)?; }
             a += 1;
         }
 
@@ -395,8 +393,8 @@ fn main() -> Result<()> {
 
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
             sf! { run_cargo_with_env("", "+nightly",
-                &["miri", "test", "--target", arch, "-F", &feature_flags],
-                &[("RUSTFLAGS", "--cfg nightly")])?; }
+            &["miri", "test", "--target", arch, "-F", &feature_flags],
+            &[("RUSTFLAGS", "--cfg nightly")])?; }
 
             a += 1;
         }
@@ -406,8 +404,8 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env("", "+nightly",
-                &["miri", "test", "--target", arch, "-F", "all,no_std,unsafe"],
-                &[("RUSTFLAGS", "--cfg nightly")])?; }
+            &["miri", "test", "--target", arch, "-F", "all,no_std,unsafe"],
+            &[("RUSTFLAGS", "--cfg nightly")])?; }
             a += 1;
         }
         // WAITING for FIX: https://github.com/rust-lang/wg-cargo-std-aware/issues/69
@@ -417,7 +415,6 @@ fn main() -> Result<()> {
     /* minimal-versions */
 
     if args.minimal_versions {
-        rust_setup_nightly()?;
         headline(0, &format!["minimal versions:"]);
 
         run_cargo("", "+nightly", &["update", "-Z", "minimal-versions"])?; // set min versions
@@ -425,7 +422,7 @@ fn main() -> Result<()> {
         let deps = filter_deps(&DEP_ALL, &[&DEP_NO_MINIMAL_VERSIONS]);
         let feature_flags = format!("_docsrs_nodep,{}", deps.join(","));
         sf! { run_cargo_with_env( "", "+nightly", &["build", "-F", &feature_flags],
-            &[("RUSTFLAGS", "--cfg nightly")])?; }
+        &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         run_cargo("", "+nightly", &["update"])?; // set default max versions
     }
@@ -535,6 +532,8 @@ struct Args {
     all_modules_except: Option<String>,
     minimal_versions: bool,
     miri: bool,
+    install_arches: bool,
+    install_nightly: bool,
 }
 
 /// CLI arguments parser.
@@ -550,6 +549,8 @@ fn get_args() -> Result<Args> {
     let mut all_modules_except = None;
     let mut minimal_versions = false;
     let mut miri = false;
+    let mut install_arches = false;
+    let mut install_nightly = false;
 
     let mut parser = lexopt::Parser::from_env();
 
@@ -562,6 +563,7 @@ fn get_args() -> Result<Args> {
             Short('t') | Long("tests") => { tests = true; }
             Short('d') | Long("docs") => { docs = true; }
             Short('a') | Long("arches") => { arches = true; }
+            // Short('s') | Long("show-arches") => { show_arches = true; }
             Short('m') | Long("single-modules") => { single_modules = true; }
             Long("all-modules-except") => {
                 let exceptions: String = parser.value()?.parse()?;
@@ -571,6 +573,8 @@ fn get_args() -> Result<Args> {
             Long("miri") => { miri = true; }
             Long("minimal-versions") => { minimal_versions = true; }
             Long("no-msrv") => { no_msrv = true; }
+            Short('A') | Long("install-arches") => { install_arches = true; }
+            Short('N') | Long("install-nightly") => { install_nightly = true; }
             _ => { let err = arg.unexpected(); print_help(&parser); return Err(Box::new(err)); }
         }
     }}
@@ -585,6 +589,8 @@ fn get_args() -> Result<Args> {
         all_modules_except,
         minimal_versions,
         miri,
+        install_arches,
+        install_nightly,
         ..Default::default()
     })
 }
@@ -594,23 +600,34 @@ fn print_help(parser: &lexopt::Parser) {
     let msrv = get_msrv().unwrap_or("".into());
     let mods: usize = ROOT_MODULES.len();
     let mods_combs: usize = 2_usize.pow(mods as u32) - 1;
-    let arches: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
+    let arches: usize = STD_ARCHES.len()
+        + NO_STD_ARCHES.len()
+        + STD_ARCHES_NO_CROSS_COMPILE.len()
+        + LINUX_ARCHES.len();
 
     println!(
-        "Usage: {} [OPTIONS]
+        "Usage: {name} [OPTIONS]
 
   -t, --tests                      run the tests
   -d, --docs                       compile the documentation
-  -a, --arches                     check each architecture ({arches})
+  -a, --arches                     check all of the {arches} architectures
       --miri                       use `miri` to check each architecture
   -m, --single-modules             check root modules both individually and
                                    removed from the full module set ({mods} × 2).
       --all-modules-combinations   check all the modules combinations ({mods_combs})
       --all-modules-except m1,…    check all the modules together except the given list
       --no-msrv                    do not enforce using the configured MSRV ({msrv})
+  -A, --install-arches             install all of the {arches} architectures
+  -N, --install-nightly            install the nightly toolchain
   -h, --help                       display this help and exit
+
+Architectures:
+  std: {STD_ARCHES:?}
+  no_std: {NO_STD_ARCHES:?}
+  no cross-compile: {STD_ARCHES_NO_CROSS_COMPILE:?}
+  linux: {LINUX_ARCHES:?}
 ",
-        parser.bin_name().unwrap_or("check.rs")
+        name = parser.bin_name().unwrap_or("check.rs")
     );
 }
 
@@ -706,16 +723,12 @@ fn run_cargo_inner(
 
     let status = child.wait()?;
 
-    if !status.success() {
-        Err("ERROR".into())
-    } else {
-        Ok(())
-    }
+    if !status.success() { Err("ERROR".into()) } else { Ok(()) }
 }
 
 /// Makes sure to install all the architectures and components for the current MSRV and nightly.
-fn rust_setup_arches(msrv: &str) -> Result<()> {
-    println!("> rust_setup_arches() // for MSRV and nightly");
+fn rust_install_arches(msrv: &str) -> Result<()> {
+    println!("> rust_install_arches() // for MSRV and nightly");
 
     if !msrv.is_empty() {
         println!("rustup override set {msrv}");
@@ -739,7 +752,7 @@ fn rust_setup_arches(msrv: &str) -> Result<()> {
 }
 
 /// Setups nightly, and adds the miri component.
-fn rust_setup_nightly() -> Result<()> {
+fn rust_install_nightly() -> Result<()> {
     println!("rustup toolchain install nightly");
     sf! { let _ = Command::new("rustup").args(["toolchain", "install", "nightly"]).status()?; }
     println!("rustup component add miri --toolchain nightly");
