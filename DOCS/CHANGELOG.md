@@ -5,7 +5,8 @@
 
 ### Added
 - new methods:
-  - `Linux:` `print[ln]_unchecked[_fast]`, `eprint_bytes`.
+  - `Float`: `classify`, `next_down`, `next_up`.
+  - `Linux`: `print[ln]_unchecked[_fast]`, `eprint_bytes`.
 - new re-exports:
   - `IterFromCoroutine`.
 - new target arches: `amdgpu`.

@@ -5,7 +5,7 @@
 
 #[allow(unused_imports)]
 use super::super::shared_docs::*;
-use crate::{Float, Sign, cfor, concat as cc, is, stringify as sfy};
+use crate::{Float, FloatCategory, Sign, cfor, concat as cc, is, stringify as sfy};
 
 /// Implements methods independently of any features
 ///
@@ -129,12 +129,13 @@ macro_rules! impl_float_shared {
                     is![(self.0 - r.0).abs() == 0.5; Float(r.0 + self.0.signum()); r]]
             }
 
+            /// Returns the floating point category of the number.
+            pub const fn classify(self) -> FloatCategory { self.0.classify() }
+
             /// The fractional part.
             /// # Formulation
             #[doc = FORMULA_FRACT!()]
-            pub const fn const_fract(self) -> Float<$f> {
-                Float(self.0 - self.const_trunc().0)
-            }
+            pub const fn const_fract(self) -> Float<$f> { Float(self.0 - self.const_trunc().0) }
 
             /// The integral and fractional parts.
             /// # Formulation
@@ -148,23 +149,19 @@ macro_rules! impl_float_shared {
             pub const fn signum(self) -> Float<$f> { Float(self.0.signum()) }
             #[allow(missing_docs)]
             #[deprecated(since = "0.23.0", note = "use `signum()` instead")]
-            pub const fn const_signum(self) -> Float<$f> {
-                // if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.copysign(self.0) }
-                self.signum()
-            }
+            pub const fn const_signum(self) -> Float<$f> { self.signum() }
+            // if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.copysign(self.0) }
 
             /// A number composed of the magnitude of itself and the `sign` of other.
             pub const fn copysign(self, sign: $f) -> Float<$f> { Float(self.0.copysign(sign)) }
             #[allow(missing_docs)]
             #[deprecated(since = "0.23.0", note = "use `copysign()` instead")]
-            pub const fn const_copysign(self, sign: $f) -> Float<$f> {
-                // const SIGN_MASK: $uf = <$uf>::MAX / 2 + 1;
-                // const VALUE_MASK: $uf = <$uf>::MAX / 2;
-                // let sign_bit = sign.to_bits() & SIGN_MASK;
-                // let value_bits = self.0.to_bits() & VALUE_MASK;
-                // Float(<$f>::from_bits(value_bits | sign_bit))
-                self.copysign(sign)
-            }
+            pub const fn const_copysign(self, sign: $f) -> Float<$f> { self.copysign(sign) }
+            // const SIGN_MASK: $uf = <$uf>::MAX / 2 + 1;
+            // const VALUE_MASK: $uf = <$uf>::MAX / 2;
+            // let sign_bit = sign.to_bits() & SIGN_MASK;
+            // let value_bits = self.0.to_bits() & VALUE_MASK;
+            // Float(<$f>::from_bits(value_bits | sign_bit))
 
             /// Returns the [`Sign`].
             pub const fn sign(self) -> Sign {
@@ -377,20 +374,20 @@ macro_rules! impl_float_shared {
                 Float(<$f>::from_bits(self.0.to_bits() ^ sign_bit_mask))
             }
 
+            /// Returns the least number smaller than self.
+            pub const fn next_down(self) -> Float<$f> { Self(self.0.next_down()) }
+
+            /// Returns the least number greater than self.
+            pub const fn next_up(self) -> Float<$f> { Self(self.0.next_up()) }
+
             /// Takes the reciprocal (inverse), $1/x$.
-            pub const fn recip(self) -> Float<$f> {
-                Self(self.0.recip())
-            }
+            pub const fn recip(self) -> Float<$f> { Self(self.0.recip()) }
 
             /// Converts radians to degrees.
-            pub const fn to_degrees(self) -> Float<$f> {
-                Self(self.0.to_degrees())
-            }
+            pub const fn to_degrees(self) -> Float<$f> { Self(self.0.to_degrees()) }
 
             /// Converts degrees to radians.
-            pub const fn to_radians(self) -> Float<$f> {
-                Self(self.0.to_radians())
-            }
+            pub const fn to_radians(self) -> Float<$f> { Self(self.0.to_radians()) }
 
             /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
             ///
