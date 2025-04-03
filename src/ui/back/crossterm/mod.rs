@@ -4,7 +4,6 @@
 //
 
 mod service;
-// mod events;
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
@@ -12,9 +11,13 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::service::*;
+        // WIPZONE
+        // pub use super::events::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }
 }
+// WIPZONE
+// mod events;

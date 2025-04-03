@@ -72,8 +72,8 @@
 // ----------------------------
 // `nightly_stable_next2`: 1.88 core, alloc, std…
 #![cfg_attr(nightly_stable_next2, feature(const_cell,))]
-#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature(,))]
-#![cfg_attr(all(nightly_stable_next2, feature = "std"), feature(,))]
+#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_next2, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(

@@ -8,6 +8,7 @@ Legend:
 
 # 1.86 became stable on [2025-04-03](https://releases.rs/docs/1.86.0/)
 > - <https://blog.rust-lang.org/2025/04/03/Rust-1.86.0.html>
+> - <https://github.com/rust-lang/rust/releases/tag/1.86.0>
 > - <https://github.com/rust-lang/rust/milestone/128>
 
 - 1.86: `✓`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
@@ -25,6 +26,7 @@ Legend:
 
 # 1.85 became stable on [2025-02-20](https://releases.rs/docs/1.85.0/)
 > - <https://blog.rust-lang.org/2025/02/20/Rust-1.85.0.html>
+> - <https://github.com/rust-lang/rust/releases/tag/1.85.0>
 > - <https://github.com/rust-lang/rust/milestone/127>
 
 - 1.85: `✓`[2024 edition](https://github.com/rust-lang/rust/issues/117258)
@@ -48,6 +50,7 @@ Legend:
 
 # 1.84 became stable on [2024-01-09](https://releases.rs/docs/1.84.0/)
 > - <https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html>
+> - <https://github.com/rust-lang/rust/releases/tag/1.84.0>
 > - <https://github.com/rust-lang/rust/milestone/126>
 
 - 1.84: ` `[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
@@ -70,6 +73,7 @@ Legend:
 
 # 1.83 became stable on [2024-11-28](https://releases.rs/docs/1.83.0/)
 > - <https://blog.rust-lang.org/2024/11/28/Rust-1.83.0.html>
+> - <https://github.com/rust-lang/rust/releases/tag/1.83.0>
 > - <https://github.com/rust-lang/rust/milestone/125>
 
 - 1.83: `✓`[char::MIN](https://github.com/rust-lang/rust/pull/130154)
@@ -94,6 +98,7 @@ Legend:
 
 # 1.82 became stable on [2024-10-17](https://releases.rs/docs/1.82.0/)
 > - <https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html>
+> - <https://github.com/rust-lang/rust/releases/tag/1.82.0>
 > - <https://github.com/rust-lang/rust/milestone/123>
 
 - 1.82: ` `[asm_const](https://github.com/rust-lang/rust/pull/128570)
