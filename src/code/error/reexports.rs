@@ -69,9 +69,4 @@ pub(crate) mod crate_errors {
     #[doc(inline)]
     #[cfg(text··)]
     pub use crate::text::{TextError, TextResult};
-
-    /* ui */
-    #[doc(inline)]
-    #[cfg(feature = "layout")]
-    pub use crate::ui::layout::{LayoutError, LayoutResult};
 }

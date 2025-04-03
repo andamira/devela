@@ -8,6 +8,9 @@
   - `Linux:` `print[ln]_unchecked[_fast]`, `eprint_bytes`.
 
 ### Removed
+- remove types:
+  - ui:
+    - layout: `LayoutError`, `LayoutResult`.
 
 ### Changed
 
