@@ -6,7 +6,7 @@
 // - TimeSource
 // - TimeSourceFake
 
-use crate::{Enum, Ratio, TimeGranularity};
+use crate::{Oneof, Ratio, TimeGranularity};
 
 #[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))]
 use crate::JsInstant;
@@ -21,7 +21,7 @@ use crate::{SystemInstant, SystemTime, UNIX_EPOCH};
 /// abstracting over different time sources.
 pub trait TimeSource<const MONOTONIC: bool> {
     /// Returns the granularity of this time source.
-    fn granularity() -> Enum<2, TimeGranularity, Ratio<u32, u32>>;
+    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>>;
 
     /// Returns the current timestamp in milliseconds.
     fn now_millis() -> u64;
@@ -71,8 +71,8 @@ pub trait TimeSource<const MONOTONIC: bool> {
 #[cfg(feature = "std")] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl TimeSource<false> for SystemTime {
-    fn granularity() -> Enum<2, TimeGranularity, Ratio<u32, u32>> {
-        Enum::A(TimeGranularity::Nanos)
+    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
+        Oneof::A(TimeGranularity::Nanos)
     }
     fn now_millis() -> u64 {
         SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_millis() as u64
@@ -88,8 +88,8 @@ impl TimeSource<false> for SystemTime {
 #[cfg(feature = "std")] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl TimeSource<true> for SystemInstant {
-    fn granularity() -> Enum<2, TimeGranularity, Ratio<u32, u32>> {
-        Enum::A(TimeGranularity::Nanos)
+    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
+        Oneof::A(TimeGranularity::Nanos)
     }
     fn now_millis() -> u64 { SystemInstant::now().elapsed().as_millis() as u64 }
     //
@@ -100,8 +100,8 @@ impl TimeSource<true> for SystemInstant {
 #[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "js", feature = "unsafe_ffi"))))]
 impl TimeSource<true> for JsInstant {
-    fn granularity() -> Enum<2, TimeGranularity, Ratio<u32, u32>> {
-        Enum::A(TimeGranularity::Millis)
+    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
+        Oneof::A(TimeGranularity::Millis)
     }
     fn now_millis() -> u64 { JsInstant::now().as_millis_f64() as u64 }
     fn epoch_millis() -> u64 { JsInstant::origin().as_millis_f64() as u64 }
@@ -111,8 +111,8 @@ impl TimeSource<true> for JsInstant {
 
 // #[cfg(all(target_arch = "arm", feature = "dep_cortex_m"))]
 // impl TimeSource<true> for ::cortex_m::peripheral::DWT {
-//     fn granularity() -> Enum<TimeGranularity, Ratio<u32, u32>> {
-//         Enum::B(Ratio<1, 32_768>)
+//     fn granularity() -> Oneof<TimeGranularity, Ratio<u32, u32>> {
+//         Oneof::B(Ratio<1, 32_768>)
 //     }
 //     fn now_millis() -> u64 {
 //         unsafe { ::cortex_m::peripheral::DWT::cycle_count() as u64 / (SystemCoreClock / 1_000) }
@@ -129,7 +129,7 @@ pub(crate) use tests::*;
 mod tests {
     #![allow(dead_code, unused_variables)]
 
-    use crate::{AtomicOrdering, AtomicU64, Enum, Ratio, TAG_FAKE, TimeGranularity, TimeSource};
+    use crate::{AtomicOrdering, AtomicU64, Oneof, Ratio, TAG_FAKE, TimeGranularity, TimeSource};
 
     /// Global test time source for convenience.
     #[doc = TAG_FAKE!()]
@@ -177,8 +177,8 @@ mod tests {
         }
     }
     impl TimeSource<true> for TimeSourceFake {
-        fn granularity() -> Enum<2, TimeGranularity, Ratio<u32, u32>> {
-            Enum::A(TimeGranularity::Millis)
+        fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
+            Oneof::A(TimeGranularity::Millis)
         }
         fn now_millis() -> u64 {
             TIME_SOURCE_FAKE.now.load(AtomicOrdering::SeqCst)

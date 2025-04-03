@@ -1,6 +1,6 @@
 // devela::data::list::enum
 //
-//! Defines the [`Enum`] type.
+//! Defines the [`Oneof`] type.
 //
 
 use crate::{ConstDefault, ExtAny, is};
@@ -8,8 +8,7 @@ use crate::{ConstDefault, ExtAny, is};
 // 12 variants by default
 impl_enum!(A:0+1, B:1+2, C:2+3, D:3+4, E:4+5, F:5+6, G:6+7, H:7+8, I:8+9, J:9+10, K:10+11, L:11+12);
 
-/// Defines [`Enum`] and implements all the methods.
-//
+/// Defines [`Oneof`] and implements all the methods.
 //
 // Supports >= 3 variants.
 macro_rules! impl_enum {
@@ -34,7 +33,7 @@ macro_rules! impl_enum {
         /// implementing [`Default`] when `A: Default`.
         #[non_exhaustive]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub enum Enum<const LEN: usize, $A, $B, $C=(), $($rest = ()),*> {
+        pub enum Oneof<const LEN: usize, $A, $B, $C=(), $($rest = ()),*> {
             #[doc = "The 1st variant (default)."] $A($A),
             #[doc = "The 2nd variant."] $B($B),
             #[doc = "The 3rd variant."] $C($C),
@@ -43,12 +42,12 @@ macro_rules! impl_enum {
     }};
     (
     impl_default: $A:ident $(, $rest:ident)*) => {
-        impl<const LEN: usize, $A: Default, $($rest),*> Default for Enum<LEN, $A, $($rest),*> {
-            fn default() -> Self { Enum::$A($A::default()) }
+        impl<const LEN: usize, $A: Default, $($rest),*> Default for Oneof<LEN, $A, $($rest),*> {
+            fn default() -> Self { Oneof::$A($A::default()) }
         }
         impl<const LEN: usize, $A: ConstDefault, $($rest),*> ConstDefault
-            for Enum<LEN, $A, $($rest),*> {
-            const DEFAULT: Self = Enum::$A($A::DEFAULT);
+            for Oneof<LEN, $A, $($rest),*> {
+            const DEFAULT: Self = Oneof::$A($A::DEFAULT);
         }
     };
     (
@@ -67,7 +66,7 @@ macro_rules! impl_enum {
     // - into_tuple_defaults
     methods_general: $($T:ident : $idx:literal + $nth:literal),+) => {
         /// # Structural methods.
-        impl<const LEN:usize,  $($T),+ > Enum<LEN, $($T),+> {
+        impl<const LEN:usize,  $($T),+ > Oneof<LEN, $($T),+> {
             /// The number of active (non-`()` type) variants.
             pub const LEN: usize = {
                 assert![LEN <= Self::MAX_ARITY, "LEN must be <= MAX_ARITY"];
@@ -79,7 +78,7 @@ macro_rules! impl_enum {
 
             /// Returns the current variant index (0-based).
             pub const fn variant_index(&self) -> usize {
-                match self { $( Enum::$T(_) => $idx ),+ }
+                match self { $( Oneof::$T(_) => $idx ),+ }
             }
             /// Checks whether the current variant is at `index` (0-based).
             pub const fn is_variant_index(&self, index: usize) -> bool {
@@ -88,14 +87,14 @@ macro_rules! impl_enum {
 
             /// Returns the current variant name.
             pub const fn variant_name(&self) -> &'static str {
-                match self { $( Enum::$T(_) => stringify!($T) ),+ }
+                match self { $( Oneof::$T(_) => stringify!($T) ),+ }
             }
             /// Checks whether the current variant has the given `name`.
             pub const fn is_variant_name(&self, name: &str) -> bool {
                 $crate::Slice::<&str>::eq(self.variant_name(), name)
             }
         }
-        impl<const LEN: usize, $($T: 'static),+ > Enum<LEN, $($T),+> {
+        impl<const LEN: usize, $($T: 'static),+ > Oneof<LEN, $($T),+> {
             /// Returns the first non-unit variant name, if any.
             // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             pub fn first_non_unit() -> Option<&'static str> {
@@ -121,7 +120,7 @@ macro_rules! impl_enum {
             }
         }
         /// # Conversion methods.
-        impl<const LEN: usize, $($T: Clone),+ > Enum<LEN, $($T),+> {
+        impl<const LEN: usize, $($T: Clone),+ > Oneof<LEN, $($T),+> {
             /// Returns a tuple with `Some(value)` for the active variant and `None` elsewhere.
             pub fn into_tuple_options(self) -> ($(Option<$T>),+) { $crate::paste! {
                 let index = self.variant_index();
@@ -147,7 +146,7 @@ macro_rules! impl_enum {
                 ),+ )
             }}
         }
-        impl<const LEN: usize, $($T),+ > Enum<LEN, $($T),+> {
+        impl<const LEN: usize, $($T),+ > Oneof<LEN, $($T),+> {
             /// Returns a tuple with `Some(&value)` for the active variant and `None` elsewhere.
             // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             // FUTURE: make the `()` types not wrapped in option.
@@ -166,7 +165,7 @@ macro_rules! impl_enum {
     // Implements methods acting over individual fields.
     methods_individual: $($T:ident),+) => {
         /// # Variant-specific methods.
-        impl<const LEN: usize, $($T),+> Enum<LEN, $($T),+> {
+        impl<const LEN: usize, $($T),+> Oneof<LEN, $($T),+> {
             impl_enum!(methods_field_access: $($T),+);
             impl_enum!(methods_map: $($T),+);
         }
@@ -182,7 +181,7 @@ macro_rules! impl_enum {
     };
     (@methods_field_access: $T:ident) => { $crate::paste! {
         #[doc = "Returns `true` if the value is of type [`" $T "`][Self::" $T "]"]
-        pub const fn [<is_ $T:lower>](&self) -> bool { matches!(self, Enum::$T(_)) }
+        pub const fn [<is_ $T:lower>](&self) -> bool { matches!(self, Oneof::$T(_)) }
 
         #[doc = "Returns the inner `" $T "` value, if present."]
         pub fn [<into_ $T:lower>](self) -> Option<$T> {
@@ -219,23 +218,23 @@ macro_rules! impl_enum {
     @methods_map: $T:ident, ( $($before:ident),* ), ( $($after:ident),* )) => { $crate::paste! {
         #[doc = "Transforms the inner `" $T "` value using `f`, leaving other variants unchanged."]
         pub fn [<map_ $T:lower>]<NEW>(self, f: impl FnOnce($T) -> NEW)
-            -> Enum<LEN, $($before,)* NEW, $($after,)* > {
+            -> Oneof<LEN, $($before,)* NEW, $($after,)* > {
             match self {
-                $( Self::$before(val) => Enum::$before(val), )*
-                Self::$T(val) => Enum::$T(f(val)),
-                $( Self::$after(val) => Enum::$after(val), )*
+                $( Self::$before(val) => Oneof::$before(val), )*
+                Self::$T(val) => Oneof::$T(f(val)),
+                $( Self::$after(val) => Oneof::$after(val), )*
             }
         }
         // NOTE: Generates methods like the following (e.g. for variant C, of 6):
         //
-        // pub fn map_c<NEW>(self, f: impl FnOnce(C) -> NEW) -> Enum<A, B, NEW, D, E, F> {
+        // pub fn map_c<NEW>(self, f: impl FnOnce(C) -> NEW) -> Oneof<A, B, NEW, D, E, F> {
         //     match self {
-        //         Self::A(a) => Enum::A(a),    // $before
-        //         Self::B(b) => Enum::B(b),    // …
-        //         Self::C(c) => Enum::C(f(c)), // $T
-        //         Self::D(d) => Enum::D(d),    // $after
-        //         Self::E(e) => Enum::E(e),    // …
-        //         Self::F(f) => Enum::F(f),    // …
+        //         Self::A(a) => Oneof::A(a),    // $before
+        //         Self::B(b) => Oneof::B(b),    // …
+        //         Self::C(c) => Oneof::C(f(c)), // $T
+        //         Self::D(d) => Oneof::D(d),    // $after
+        //         Self::E(e) => Oneof::E(e),    // …
+        //         Self::F(f) => Oneof::F(f),    // …
         //     }
         // }
     }};
@@ -252,32 +251,32 @@ use impl_enum;
 
 #[cfg(test)]
 mod tests {
-    use super::Enum;
+    use super::Oneof;
 
-    type Bytes = Enum<2, u8, i8>;
-    type Unums = Enum<4, u8, u16, u32, u64>;
+    type Bytes = Oneof<2, u8, i8>;
+    type Unums = Oneof<4, u8, u16, u32, u64>;
 
     #[test]
     fn validate() {
         assert![Bytes::validate()];
         assert![Unums::validate()];
-        assert![Enum::<0, (), (), ()>::validate()];
-        assert![Enum::<1, i8, (), ()>::validate()];
-        assert![!Enum::<0, i8, (), ()>::validate()];
-        assert![!Enum::<2, i8, (), ()>::validate()];
+        assert![Oneof::<0, (), (), ()>::validate()];
+        assert![Oneof::<1, i8, (), ()>::validate()];
+        assert![!Oneof::<0, i8, (), ()>::validate()];
+        assert![!Oneof::<2, i8, (), ()>::validate()];
         //
-        assert![!Enum::<1, (), i8, ()>::validate()];
-        assert![!Enum::<2, i32, (), i8>::validate()];
-        assert![!Enum::<1, (), (), i8, ()>::validate()];
+        assert![!Oneof::<1, (), i8, ()>::validate()];
+        assert![!Oneof::<2, i32, (), i8>::validate()];
+        assert![!Oneof::<1, (), (), i8, ()>::validate()];
     }
     #[test]
     fn map() {
-        let a: Enum<2, i32, f64> = Enum::A(10);
-        assert_eq![Enum::A(20), a.map_a(|v| v * 2)];
-        assert_eq![Enum::A(10), a.map_b(|v| v * 2.0)];
-        let b: Enum<2, i32, f64> = Enum::B(3.14);
-        assert_eq![Enum::B(3.14), b.map_a(|v| v * 2)];
-        assert_eq![Enum::B(6.28), b.map_b(|v| v * 2.0)];
+        let a: Oneof<2, i32, f64> = Oneof::A(10);
+        assert_eq![Oneof::A(20), a.map_a(|v| v * 2)];
+        assert_eq![Oneof::A(10), a.map_b(|v| v * 2.0)];
+        let b: Oneof<2, i32, f64> = Oneof::B(3.14);
+        assert_eq![Oneof::B(3.14), b.map_a(|v| v * 2)];
+        assert_eq![Oneof::B(6.28), b.map_b(|v| v * 2.0)];
     }
     #[test]
     fn field_access() {

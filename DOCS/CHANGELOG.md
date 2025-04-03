@@ -13,7 +13,7 @@
   - behavior change: no longer installs components automatically.
 
 ## code
-- relocate `code::result::Enum` → `data::list`.
+- relocate and rename `code::result::Enum` → `data::list::Oneof`.
 
 ## data
 - add:

@@ -7,8 +7,8 @@
 #![doc = crate::doc_!(extends: array, collections, vec)]
 //
 
-mod r#enum; // Enum
 mod link; // ConstList[Item], LinkedList
+mod oneof; // Oneof
 
 pub mod array;
 pub mod queue;
@@ -24,7 +24,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     pub use _pub_mods::*;
 
     mod _mods {
-        pub use super::{r#enum::*, link::_all::*};
+        pub use super::{link::_all::*, oneof::*};
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{array::_all::*, queue::_all::*, stack::_all::*};
