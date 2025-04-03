@@ -5,7 +5,7 @@
 
 #[allow(unused_imports)]
 use super::super::shared_docs::*;
-use crate::{Float, Sign, concat as cc, is, stringify as sfy};
+use crate::{Float, Sign, cfor, concat as cc, is, stringify as sfy};
 
 /// Implements methods independently of any features
 ///
@@ -289,7 +289,7 @@ macro_rules! impl_float_shared {
                 // 1 newton iteration some times can be enough:
                 // Float(0.5 * (x + self.0 / x))
                 // But 2 iterations gives much better precision:
-                let mut i = 0; while i < 2 { x = 0.5 * (x + self.0 / x); i += 1; }
+                cfor! { _ in 0..2 => { x = 0.5 * (x + self.0 / x); }}
                 Float(x)
             }
 
@@ -355,12 +355,7 @@ macro_rules! impl_float_shared {
             /// Note that precision is poor for large values.
             pub const fn factorial(x: $ue) -> Float<$f> {
                 let mut result = Self::ONE.0;
-                // for i in 1..=x { result *= i as $f; }
-                let mut i = 1;
-                while i <= x {
-                    result *= i as $f;
-                    i += 1;
-                }
+                cfor! { i in 1..{x+1} => { result *= i as $f; }}
                 Float(result)
             }
 
@@ -543,21 +538,13 @@ macro_rules! impl_float_shared {
                     0 => Self::ONE,
                     1.. => {
                         let mut result = self.0;
-                        let mut i = 1;
-                        while i < p {
-                            result *= self.0;
-                            i += 1;
-                        }
+                        cfor! { _ in 1..p => { result *= self.0; }}
                         Float(result)
                     }
                     _ => {
                         let mut result = self.0;
-                        let mut i = 1;
                         let abs_p = p.abs();
-                        while i < abs_p {
-                            result /= self.0;
-                            i += 1;
-                        }
+                        cfor! { _ in 1..abs_p => { result /= self.0; }}
                         Float(result)
                     }
                 }
@@ -585,16 +572,8 @@ macro_rules! impl_float_shared {
                     1 => Float(coef[0]),
                     _ => {
                         let mut result = coef[0];
-                        // non-const version:
-                        // for &c in &coef[1..] {
-                        //     result = result * self.0 + c;
-                        // }
-                        // const version:
-                        let mut i = 1;
-                        while i < coef.len() {
-                            result = result * self.0 + coef[i];
-                            i += 1;
-                        }
+                        // for &c in &coef[1..] { result = result * self.0 + c; }
+                        cfor! { i in 1..coef.len() => { result = result * self.0 + coef[i]; }}
                         Float(result)
                     }
                 }
