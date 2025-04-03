@@ -12,12 +12,11 @@
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
   - behavior change: no longer installs components automatically.
 
-## code
-- relocate and rename `code::result::Enum` → `data::list::Oneof`.
-
 ## data
 - add:
   - re-exports: `IterFromCoroutine`.
+- relocate and rename `code::result::Enum` → `data::list::Oneof`.
+- rename `Oneof` methods to ordinals: `A` → `_0`, `B` → `_1`, ….
 
 ## game
 - add:

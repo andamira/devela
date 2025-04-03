@@ -72,7 +72,7 @@ pub trait TimeSource<const MONOTONIC: bool> {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl TimeSource<false> for SystemTime {
     fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-        Oneof::A(TimeGranularity::Nanos)
+        Oneof::_0(TimeGranularity::Nanos)
     }
     fn now_millis() -> u64 {
         SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_millis() as u64
@@ -89,7 +89,7 @@ impl TimeSource<false> for SystemTime {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl TimeSource<true> for SystemInstant {
     fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-        Oneof::A(TimeGranularity::Nanos)
+        Oneof::_0(TimeGranularity::Nanos)
     }
     fn now_millis() -> u64 { SystemInstant::now().elapsed().as_millis() as u64 }
     //
@@ -101,7 +101,7 @@ impl TimeSource<true> for SystemInstant {
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "js", feature = "unsafe_ffi"))))]
 impl TimeSource<true> for JsInstant {
     fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-        Oneof::A(TimeGranularity::Millis)
+        Oneof::_0(TimeGranularity::Millis)
     }
     fn now_millis() -> u64 { JsInstant::now().as_millis_f64() as u64 }
     fn epoch_millis() -> u64 { JsInstant::origin().as_millis_f64() as u64 }
@@ -178,7 +178,7 @@ mod tests {
     }
     impl TimeSource<true> for TimeSourceFake {
         fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-            Oneof::A(TimeGranularity::Millis)
+            Oneof::_0(TimeGranularity::Millis)
         }
         fn now_millis() -> u64 {
             TIME_SOURCE_FAKE.now.load(AtomicOrdering::SeqCst)
