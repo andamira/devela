@@ -43,20 +43,7 @@
 #![cfg_attr(nightly_simd, feature(portable_simd))]
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_next1`: 1.86 core, alloc, std…
-#![cfg_attr(nightly_stable_next1, feature(
-    const_black_box,
-    const_is_char_boundary,
-    float_next_up_down,
-    get_many_mut, //  get_disjoint_mut
-    non_zero_count_ones,
-    target_feature_11,
-    trait_upcasting,
-))]
-#![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature(vec_pop_if,))]
-#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature(const_mut_cursor, map_many_mut,))]
-// ----------------------------
-// `nightly_stable_next2`: 1.87 core, alloc, std…
+// `nightly_stable_next1`: 1.87 core, alloc, std…
 #![cfg_attr(
     nightly_stable_next2,
     feature(
@@ -75,13 +62,18 @@
     )
 )]
 #![cfg_attr(
-    all(nightly_stable_next2, feature = "alloc"),
+    all(nightly_stable_next1, feature = "alloc"),
     feature(box_uninit_write, const_vec_string_slice, extract_if, string_extend_from_within,)
 )]
 #![cfg_attr(
-    all(nightly_stable_next2, feature = "std"),
+    all(nightly_stable_next1, feature = "std"),
     feature(anonymous_pipe, hash_extract_if, os_str_display,)
 )]
+// ----------------------------
+// `nightly_stable_next2`: 1.88 core, alloc, std…
+#![cfg_attr(nightly_stable_next2, feature(const_cell,))]
+#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature(,))]
+#![cfg_attr(all(nightly_stable_next2, feature = "std"), feature(,))]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -92,7 +84,6 @@
         cell_update,
         cfg_boolean_literals,
         const_array_from_ref,
-        const_cell,
         const_char_classify,
         const_slice_from_ref,
         const_sockaddr_setters,

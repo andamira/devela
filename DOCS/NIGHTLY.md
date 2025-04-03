@@ -20,24 +20,7 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-# 1.86 will be stable on 2025-04-03 ([`nightly_stable_next1`](https://releases.rs/docs/1.86.0/))
-> - <https://github.com/rust-lang/rust/milestone/128>
-
-- 1.86: `·`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
-- 1.86: `·`[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
-       `·` `const_str_split_at`
-- 1.86: `s`[const_mut_cursor](https://github.com/rust-lang/rust/pull/136634)
-- 1.86: `·`[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
-- 1.86: ` `[get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
-        `·` `get_many_mut` (old name)
-- 1.86: `s`[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
-- 1.86: `·`[non_zero_count_ones](https://github.com/rust-lang/rust/pull/136663)
-- 1.86: `·`[target_feature_11](https://github.com/rust-lang/rust/pull/134090)
-- 1.86: `·`[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
-- 1.86: `a`[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
-- 1.86: ` `[iter::FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
-
-# 1.87 will be stable on 2025-05-15 ([`nightly_stable_next2`](https://releases.rs/docs/1.87.0/))
+# 1.87 will be stable on 2025-05-15 ([`nightly_stable_next1`](https://releases.rs/docs/1.87.0/))
 > - <https://github.com/rust-lang/rust/milestone/130>
 
 - 1.87: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
@@ -67,10 +50,12 @@ See also
 - 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
 - 1.87: ` `[Update stdarch](https://github.com/rust-lang/rust/pull/136831) CHECK
 
-<!--
 # 1.88 will be stable on 2025-06-26 ([`nightly_stable_next2`](https://releases.rs/docs/1.88.0/))
 > - <https://github.com/rust-lang/rust/milestone/132>
 
+- 1.88: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
+
+<!--
 # 1.89 will be stable on 2025-08-07 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
 > - <https://github.com/rust-lang/rust/milestone/???>
 -->
@@ -84,7 +69,6 @@ See also
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
-- 1.88: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
 - 1.??: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)

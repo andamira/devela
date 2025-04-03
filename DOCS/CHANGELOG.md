@@ -6,6 +6,11 @@
 ### Added
 - new methods:
   - `Linux:` `print[ln]_unchecked[_fast]`, `eprint_bytes`.
+- new re-exports:
+  - `IterFromCoroutine`.
+- new target arches: `amdgpu`.
+- new target oses: `amdhsa`, `cygwin`, `psx`.
+- new target vendors: `amd`, `mti`, `openwrt`.
 
 ### Removed
 - remove types:
@@ -13,6 +18,7 @@
     - layout: `LayoutError`, `LayoutResult`.
 
 ### Changed
+- bump MSRV to v1.86.0.
 
 ### Fixed
 

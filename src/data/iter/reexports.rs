@@ -8,7 +8,6 @@
 // - WAIT: [step_trait](https://github.com/rust-lang/rust/issues/42168)
 // - WAIT: [trusted_len](https://github.com/rust-lang/rust/issues/37572)
 // - WAIT: [trusted_step](https://github.com/rust-lang/rust/issues/85731)
-// - WAIT: [iter_from_coroutine](https://github.com/rust-lang/rust/issues/43122) TODO nightly
 
 use crate::code::reexport;
 
@@ -217,11 +216,16 @@ reexport! { rust: core::iter,
 
 // These are re-exported as methods of the Iter namespace.
 
-// WAIT:1.86 [re-export FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
 reexport! { rust: core::iter,
     extra_flags:(nightly_coro),
     doc: "Creates an iterator where each iteration calls the provided coroutine.",
     @from_coroutine as iter_from_coroutine
+}
+reexport! { rust: core::iter,
+    extra_flags:(nightly_coro),
+    tag: crate::TAG_ITERATOR!(),
+    doc: "Creates an iterator where each iteration calls the provided coroutine.",
+    @FromCoroutine as IterFromCoroutine
 }
 
 /* itertool items */

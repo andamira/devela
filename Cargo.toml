@@ -48,13 +48,13 @@ members = [".", "macros", "examples/lang/js_web_api"]
 name = "devela"
 description = "A development layer."
 version = "0.24.0-wip" # In sync with DOCS/CHANGELOG.md
-rust-version = "1.85.0" # In sync with README.md & .github/workflows/check.yml
+rust-version = "1.86.0" # In sync with README.md md & .github/workflows/check.yml
 edition = "2024"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
-readme = "DOCS/CRATES_README.md"
+readme = "DOCS/README_CRATE.md"
 include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
@@ -1051,6 +1051,7 @@ wrong_self_convention = "allow" # `is_` methods having an owned self
 
 [lints.rust.unexpected_cfgs]
 # https://dev-doc.rust-lang.org/nightly/unstable-book/compiler-flags/check-cfg.html
+# https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html
 # https://doc.rust-lang.org/rustc/check-cfg.html
 # ------------------------------------------------------------------------------
 level = "warn"
@@ -1063,6 +1064,9 @@ check-cfg = [ # Allowed configuration flags:
 	#
 	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
+	#
+	# Expect more target vendors. In sync with ./src/sys/env/namespace.rs:
+	'cfg(target_vendor, values("openwrt"))', # WAIT
 	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------
@@ -1096,9 +1100,9 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(nightly_simd)", # portable_simd
 		#
 		# nightly features that should become stable soon enough.
-		"cfg(nightly_stable)", # In sync with ./src/lib.rs and ./DOCS/NIGHTLY.md
-			"cfg(nightly_stable_next1)", # 1.86
-			"cfg(nightly_stable_next2)", # 1.87
+		"cfg(nightly_stable)", # In sync with ./DOCS/NIGHTLY.md and ./src/lib.rs:
+			"cfg(nightly_stable_next1)", # 1.87
+			"cfg(nightly_stable_next2)", # 1.88
 			"cfg(nightly_stable_later)", # 1.??
 	#
 	# Auto-enabled reflection flags from ./build/features.rs (36)

@@ -10,7 +10,6 @@
 
 #[cfg(all(feature = "std", feature = "unsafe_thread"))]
 use crate::_dep::_std::env::{remove_var, set_var};
-#[allow(deprecated, reason = "home_dir()")] // WAIT: 1.86?
 #[cfg(feature = "std")]
 use crate::{
     _dep::_std::env::{
@@ -27,7 +26,7 @@ pub struct Env;
 
 /// # Constants
 /*
-The lists of expected values for not(std) configuration flags can be copied from:
+NOTE: The lists of expected values for not(std) configuration flags can be copied from:
 <https://github.com/rust-lang/rust/blob/master/tests/ui/check-cfg/well-known-values.stderr>.
 Afterwards they can be procesed with vim commands similar to:
 s/`//g
@@ -40,15 +39,17 @@ impl Env {
     /// A string describing the architecture of the CPU that is currently in use.
     ///
     /// Expected values are:
-    /// `aarch64`, `arm`, `arm64ec`, `avr`, `bpf`, `csky`, `hexagon`, `loongarch64`, `m68k`, `mips`, `mips32r6`, `mips64`, `mips64r6`, `msp430`, `nvptx64`, `powerpc`, `powerpc64`, `riscv32`, `riscv64`, `s390x`, `sparc`, `sparc64`, `wasm32`, `wasm64`, `x86`, `x86_64`, and `xtensa`.
+    /// `aarch64`, `arm`, `arm64ec`, `avr`, `bpf`, `csky`, `hexagon`, `loongarch64`, `m68k`, `mips`, `mips32r6`, `mips64`, `mips64r6`, `msp430`, `nvptx64`, `powerpc`, `powerpc64`, `riscv32`, `riscv64`, `s390x`, `sparc`, `sparc64`, `unknown`, `wasm32`, `wasm64`, `x86`, `x86_64`, and `xtensa`.
     #[rustfmt::skip]
     pub const ARCH: &'static str = {
         #[cfg(feature = "std")]
-        { std::env::consts::ARCH }
+        { ::std::env::consts::ARCH }
         #[cfg(not(feature = "std"))]
-        { // 27 arches:
+        { // 28 arches:
             #[cfg(target_arch = "aarch64")]
             { "aarch64" }
+            #[cfg(target_arch = "amdgpu")]
+            { "amdgpu" }
             #[cfg(target_arch = "arm")]
             { "arm" }
             #[cfg(target_arch = "arm64ec")]
@@ -103,6 +104,7 @@ impl Env {
             { "xtensa" }
             #[cfg(not(any(
                 target_arch = "aarch64",
+                target_arch = "amdgpu",
                 target_arch = "arm",
                 target_arch = "arm64ec",
                 target_arch = "avr",
@@ -137,11 +139,11 @@ impl Env {
     #[doc = crate::TAG_MAYBE_STD!()]
     /// The family of the operating system.
     ///
-    /// The expected values are: `unix`, `wasm`, and `windows`
+    /// The expected values are: `unix`, `unknown`, `wasm` and `windows`.
     #[rustfmt::skip]
     pub const FAMILY: &'static str = {
         #[cfg(feature = "std")]
-        { std::env::consts::FAMILY }
+        { ::std::env::consts::FAMILY }
         #[cfg(not(feature = "std"))]
         {
             #[cfg(target_family = "unix")]
@@ -162,9 +164,11 @@ impl Env {
     /// A string describing the vendor of the CPU that is currently in use.
     ///
     /// Expected values are:
-    ///  `apple`, `espressif`, `fortanix`, `ibm`, `kmc`, `nintendo`, `nvidia`, `pc`, `risc0`, `sony`, `sun`, `unikraft`, `unknown`, `uwp`, `win7`, and `wrs`.
+    ///  `amd`, `apple`, `espressif`, `fortanix`, `ibm`, `kmc`, `mti`, `nintendo`, `nvidia`, `openwrt`, `pc`, `risc0`, `sony`, `sun`, `unikraft`, `unknown`, `uwp`, `win7`, and `wrs`.
     #[rustfmt::skip]
-    pub const VENDOR: &'static str = { // 15 vendors
+    pub const VENDOR: &'static str = { // 18 vendors
+        #[cfg(target_vendor = "amd")]
+        { "amd" }
         #[cfg(target_vendor = "apple")]
         { "apple" }
         #[cfg(target_vendor = "espressif")]
@@ -175,10 +179,14 @@ impl Env {
         { "ibm" }
         #[cfg(target_vendor = "kmc")]
         { "kmc" }
+        #[cfg(target_vendor = "mti")]
+        { "mti" }
         #[cfg(target_vendor = "nintendo")]
         { "nintendo" }
         #[cfg(target_vendor = "nvidia")]
         { "nvidia" }
+        #[cfg(target_vendor = "openwrt")]
+        { "openwrt" }
         #[cfg(target_vendor = "pc")]
         { "pc" }
         #[cfg(target_vendor = "risc0")]
@@ -196,13 +204,16 @@ impl Env {
         #[cfg(target_vendor = "wrs")]
         { "wrs" }
         #[cfg(not(any(
+            target_vendor = "amd",
             target_vendor = "apple",
             target_vendor = "espressif",
             target_vendor = "fortanix",
             target_vendor = "ibm",
             target_vendor = "kmc",
+            target_vendor = "mti",
             target_vendor = "nintendo",
             target_vendor = "nvidia",
+            target_vendor = "openwrt",
             target_vendor = "pc",
             target_vendor = "risc0",
             target_vendor = "sony",
@@ -219,19 +230,23 @@ impl Env {
     /// A string describing the specific operating system in use.
     ///
     /// The expected values are:
-    /// `aix`, `android`, `cuda`, `dragonfly`, `emscripten`, `espidf`, `freebsd`, `fuchsia`, `haiku`, `hermit`, `horizon`, `hurd`, `illumos`, `ios`, `l4re`, `linux`, `macos`, `netbsd`, `none`, `nto`, `nuttx`, `openbsd`, `psp`, `redox`, `rtems`, `solaris`, `solid_asp3`, `teeos`, `trusty`, `tvos`, `uefi`, `unknown`, `visionos`, `vita`, `vxworks`, `wasi`, `watchos`, `windows`, `xous`, and `zkvm`.
+    /// `aix`, `android`, `cuda`, `cygwin`, `dragonfly`, `emscripten`, `espidf`, `freebsd`, `fuchsia`, `haiku`, `hermit`, `horizon`, `hurd`, `illumos`, `ios`, `l4re`, `linux`, `macos`, `netbsd`, `none`, `nto`, `nuttx`, `openbsd`, `psp`, `psx`, `redox`, `rtems`, `solaris`, `solid_asp3`, `teeos`, `trusty`, `tvos`, `uefi`, `unknown`, `visionos`, `vita`, `vxworks`, `wasi`, `watchos`, `windows`, `xous`, and `zkvm`.
     #[rustfmt::skip]
     pub const OS: &'static str = {
         #[cfg(feature = "std")]
-        { std::env::consts::OS }
+        { ::std::env::consts::OS }
         #[cfg(not(feature = "std"))]
-        { // 40 oses:
+        { // 42 oses:
             #[cfg(target_os = "aix")]
             { "aix" }
+            #[cfg(target_os = "amdhsa")]
+            { "amdhsa" }
             #[cfg(target_os = "android")]
             { "android" }
             #[cfg(target_os = "cuda")]
             { "cuda" }
+            #[cfg(target_os = "cygwin")]
+            { "cygwin" }
             #[cfg(target_os = "dragonfly")]
             { "dragonfly" }
             #[cfg(target_os = "emscripten")]
@@ -272,9 +287,8 @@ impl Env {
             { "openbsd" }
             #[cfg(target_os = "psp")]
             { "psp" }
-            // WAIT: 1.84
-            // #[cfg(target_os = "psx")]
-            // { "psx" }
+            #[cfg(target_os = "psx")]
+            { "psx" }
             #[cfg(target_os = "redox")]
             { "redox" }
             #[cfg(target_os = "rtems")]
@@ -291,8 +305,6 @@ impl Env {
             { "tvos" }
             #[cfg(target_os = "uefi")]
             { "uefi" }
-            #[cfg(target_os = "unknown")]
-            { "unknown" }
             #[cfg(target_os = "visionos")]
             { "visionos" }
             #[cfg(target_os = "vita")]
@@ -311,8 +323,10 @@ impl Env {
             { "zkvm" }
             #[cfg(not(any(
                 target_os = "aix",
+                target_os = "amdhsa",
                 target_os = "android",
                 target_os = "cuda",
+                target_os = "cygwin",
                 target_os = "dragonfly",
                 target_os = "emscripten",
                 target_os = "espidf",
@@ -333,8 +347,7 @@ impl Env {
                 target_os = "nuttx",
                 target_os = "openbsd",
                 target_os = "psp",
-                // WAIT: 1.84
-                // target_os = "psx",
+                target_os = "psx",
                 target_os = "redox",
                 target_os = "rtems",
                 target_os = "solaris",
@@ -343,7 +356,6 @@ impl Env {
                 target_os = "trusty",
                 target_os = "tvos",
                 target_os = "uefi",
-                target_os = "unknown",
                 target_os = "visionos",
                 target_os = "vita",
                 target_os = "vxworks",
@@ -366,7 +378,7 @@ impl Env {
     /// - `dll`
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-    pub const DLL_EXTENSION: &'static str = std::env::consts::DLL_EXTENSION;
+    pub const DLL_EXTENSION: &'static str = ::std::env::consts::DLL_EXTENSION;
 
     /// Specifies the filename prefix used for shared libraries on this platform.
     ///
@@ -375,7 +387,7 @@ impl Env {
     /// - `` (an empty string)
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-    pub const DLL_PREFIX: &'static str = std::env::consts::DLL_PREFIX;
+    pub const DLL_PREFIX: &'static str = ::std::env::consts::DLL_PREFIX;
 
     /// Specifies the filename suffix used for shared libraries on this platform.
     ///
@@ -385,7 +397,7 @@ impl Env {
     /// - `.dll`
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-    pub const DLL_SUFFIX: &'static str = std::env::consts::DLL_SUFFIX;
+    pub const DLL_SUFFIX: &'static str = ::std::env::consts::DLL_SUFFIX;
 
     /// Specifies the file extension, if any, used for executable binaries on this platform.
     ///
@@ -394,7 +406,7 @@ impl Env {
     /// - `` (an empty string)
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-    pub const EXE_EXTENSION: &'static str = std::env::consts::EXE_EXTENSION;
+    pub const EXE_EXTENSION: &'static str = ::std::env::consts::EXE_EXTENSION;
 
     /// Specifies the filename suffix used for executable binaries on this platform.
     ///
@@ -405,7 +417,7 @@ impl Env {
     /// - `` (an empty string)
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-    pub const EXE_SUFFIX: &'static str = std::env::consts::EXE_SUFFIX;
+    pub const EXE_SUFFIX: &'static str = ::std::env::consts::EXE_SUFFIX;
 }
 
 /// # Command line arguments
@@ -510,8 +522,6 @@ impl Env {
     /// Returns the path of the current user’s home directory if known.
     ///
     /// See [home_dir].
-    // WAIT: 1.86? https://blog.rust-lang.org/2025/02/20/Rust-1.85.0.html#updates-to-stdenvhome_dir
-    #[allow(deprecated)]
     pub fn home_dir() -> Option<PathBuf> {
         home_dir()
     }

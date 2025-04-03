@@ -6,7 +6,24 @@ Legend:
 - `✓` = known to be explicitly used
 - `…` = intended to be used
 
-# 1.85 became be stable on [2025-02-20: ([`nightly_stable_next1`](https://releases.rs/docs/1.85.0/))
+# 1.86 became stable on [2025-04-03](https://releases.rs/docs/1.86.0/)
+> - <https://blog.rust-lang.org/2025/04/03/Rust-1.86.0.html>
+> - <https://github.com/rust-lang/rust/milestone/128>
+
+- 1.86: `✓`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
+- 1.86: `…`[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
+        `…` `const_str_split_at`
+- 1.86: `…`[const_mut_cursor](https://github.com/rust-lang/rust/pull/136634)
+- 1.86: ` `[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
+- 1.86: ` `[get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
+- 1.86: ` `[map_many_mut](https://github.com/rust-lang/rust/pull/136152)
+- 1.86: ` `[non_zero_count_ones](https://github.com/rust-lang/rust/pull/136663)
+- 1.86: ` `[target_feature_11](https://github.com/rust-lang/rust/pull/134090)
+- 1.86: `…`[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
+- 1.86: ` `[vec_pop_if](https://github.com/rust-lang/rust/pull/135488)
+- 1.86: `✓`[iter::FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
+
+# 1.85 became stable on [2025-02-20](https://releases.rs/docs/1.85.0/)
 > - <https://blog.rust-lang.org/2025/02/20/Rust-1.85.0.html>
 > - <https://github.com/rust-lang/rust/milestone/127>
 
