@@ -3,27 +3,39 @@
 [0.24.0-wip] unreleased
 =======================
 
-### Added
-- new methods:
-  - `Float`: `classify`, `next_down`, `next_up`.
-  - `Linux`: `print[ln]_unchecked[_fast]`, `eprint_bytes`.
-- new re-exports:
-  - `IterFromCoroutine`.
-- new target arches: `amdgpu`.
-- new target oses: `amdhsa`, `cygwin`, `psx`.
-- new target vendors: `amd`, `mti`, `openwrt`.
+## build & manifest
+- changed:
+  - bump MSRV to 1.86.0.
 
-### Removed
-- remove types:
-  - ui:
-    - layout: `LayoutError`, `LayoutResult`.
-
-### Changed
-- bump MSRV to v1.86.0.
-- Update `check.rs` script
-  - do not install components automatically.
+## utils
+- change `check.rs`:
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
+  - behavior change: No longer install components automatically.
 
-### Fixed
+## data
+- add:
+  - re-exports: `IterFromCoroutine`.
+
+## num
+### float
+- add:
+  - new `Float` methods: `classify`, `next_down`, `next_up`.
+
+## sys
+### os
+#### linux
+- add methods:
+  - `Linux`: `print[ln]_unchecked[_fast]`, `eprint_bytes`.
+
+### arch
+- add support for new:
+  - architectures: `amdgpu`.
+  - OS targets: `amdhsa`, `cygwin`, `psx`.
+  - vendor targets: `amd`, `mti`, `openwrt`.
+
+## ui
+### layout
+- delete:
+  - types: `LayoutError`, `LayoutResult`.
 
 [0.24.0-wip]: https://github.com/andamira/devela/releases/tag/v0.23.0...HEAD
