@@ -7,6 +7,9 @@
 - changed:
   - bump MSRV to 1.86.0.
 
+## documentation
+- improve rustdoc header loading, make loading more reliable.
+
 ## utils
 - change `check.rs`:
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`

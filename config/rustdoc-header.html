@@ -1,103 +1,107 @@
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", async function() {
     // Ensure this script runs only once per page load
-    if (window.scriptLoaderInitialized) { return; } window.scriptLoaderInitialized = true;
+    if (window.scriptLoaderInitialized) return;
+    window.scriptLoaderInitialized = true;
 
     /* settings */
 
     const crateName = "devela";
-
-    // Allowed path prefixes for loading resouces
-    const allowedKatex = [
-      "/all",
-      "/num/",
-      "/phys/",
-    ];
-    const allowedKatexChem = [
-      "/all/",
-      "/phys/",
-    ];
+    const allowedKatex = ["/all", "/num/", "/phys/"];
+    const allowedKatexChem = ["/all/", "/phys/"];
 
     // Extract the relative path after the crate name
     const pathSegments = window.location.pathname.split("/");
     const crateIndex = pathSegments.indexOf(crateName);
-    if (crateIndex === -1) { return; }
+    if (crateIndex === -1) return;
     const relativePath = "/" + pathSegments.slice(crateIndex + 1).join("/");
-    // console.log("Current path:", window.location.pathname);
-    // console.log("Relative path after crate:", relativePath);
 
     /* load resources */
 
-    if (allowedKatex.some(prefix => relativePath.startsWith(prefix))) { loadKatex(); }
-    if (allowedKatexChem.some(prefix => relativePath.startsWith(prefix))) { loadKatexChem(); }
+    try {
+      if (allowedKatex.some(prefix => relativePath.startsWith(prefix))) {
+        await loadKatex().catch(handleMathError);
+      }
+      if (allowedKatexChem.some(prefix => relativePath.startsWith(prefix))) {
+        await loadKatexChem().catch(handleMathError);
+      }
+    } catch (error) {
+      handleMathError(error);
+    }
 
-    /* define resources */
+    /* resource loading functions */
 
-    function loadKatex() {
+    // INFO: https://katex.org/docs/browser.html#starter-template
+    // INFO: https://github.com/KaTeX/KaTeX/tree/main/contrib/copy-tex
+    async function loadKatex() {
       console.log("Loading KaTeX for:", relativePath);
 
-      // INFO: https://katex.org/docs/browser.html#starter-template
-      const katexJS = document.createElement("script"); katexJS.defer = true;
-      // katexJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/katex.min.js";
-      // katexJS.integrity = "sha384-RdymN7NRJ+XoyeRY4185zXaxq9QWOOx3O7beyyrRK4KQZrPlCDQQpCu95FoCGPAE";
-      katexJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js";
-      katexJS.integrity = "sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh";
-      katexJS.crossOrigin = "anonymous";
-      document.head.appendChild(katexJS);
-      //
+      // Load CSS, and scripts sequentially
       const katexCSS = document.createElement("link");
       katexCSS.rel = "stylesheet";
-      // katexCSS.href = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/katex.min.css";
-      // katexCSS.integrity = "sha384-7lU0muIg/i1plk7MgygDUp3/bNRA65orrBub4/OSWHECgwEsY83HaS1x3bljA/XV";
       katexCSS.href = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css";
       katexCSS.integrity = "sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib";
       katexCSS.crossOrigin = "anonymous";
       document.head.appendChild(katexCSS);
 
-      // https://katex.org/docs/issues.html#css-customization
-      const katexStyle = document.createElement("style");
-      katexStyle.textContent = `
-        .katex-display { overflow: hidden; }
-        .docblock p { overflow-y: hidden; }
-      `;
-      document.head.appendChild(katexStyle);
+      await loadScript({
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js",
+        integrity: "sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh"
+      });
+      await loadScript({
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js",
+        integrity: "sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
+      });
+      await loadScript({
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/copy-tex.min.js",
+        integrity: "sha384-HORx6nWi8j5/mYA+y57/9/CZc5z8HnEw4WUZWy5yOn9ToKBv1l58vJaufFAn9Zzi"
+      });
 
-      // INFO: https://github.com/KaTeX/KaTeX/tree/main/contrib/copy-tex
-      const copytexJS = document.createElement("script"); copytexJS.defer = true;
-      // copytexJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/contrib/copy-tex.min.js";
-      copytexJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/copy-tex.min.js";
-      copytexJS.integrity = "sha384-HORx6nWi8j5/mYA+y57/9/CZc5z8HnEw4WUZWy5yOn9ToKBv1l58vJaufFAn9Zzi";
-      copytexJS.crossOrigin = "anonymous";
-      document.head.appendChild(copytexJS);
-
-      // INFO: https://katex.org/docs/autorender.html
-      const autoRenderJS = document.createElement("script"); autoRenderJS.defer = true;
-      // autoRenderJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/contrib/auto-render.min.js";
-      autoRenderJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js";
-      autoRenderJS.integrity = "sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh";
-      autoRenderJS.crossOrigin = "anonymous";
-      autoRenderJS.onload = () => renderMathInElement(document.body, {
+      // Initialize KaTeX
+      renderMathInElement(document.body, {
         delimiters: [
           {left: "$$", right: "$$", display: true},
           {left: "$", right: "$", display: false},
           {left: "\\(", right: "\\)", display: false},
           {left: "\\[", right: "\\]", display: true}
         ],
-        trust: (context) => context.command === "\\href",
+        trust: (context) => context.command === "\\href"
       });
-      document.head.appendChild(autoRenderJS);
-    } // loadKatex
+      // Add custom styles: https://katex.org/docs/issues.html#css-customization
+      const katexStyle = document.createElement("style");
+      katexStyle.textContent = `
+        .katex-display { overflow: hidden; }
+        .docblock p { overflow-y: hidden; }
+      `;
+      document.head.appendChild(katexStyle);
+    }
 
-    function loadKatexChem() {
+    // INFO: https://github.com/KaTeX/KaTeX/blob/main/contrib/mhchem/README.md
+    async function loadKatexChem() {
       console.log("Loading KaTeX MhChem plugin for:", relativePath);
+      await loadScript({
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/mhchem.min.js",
+        integrity: "sha384-F2ptQFZqNJuqfGGl28mIXyQ5kXH48spn7rcoS0Y9psqIKAcZPLd1NzwFlm/bl1mH"
+      });
+    }
 
-      // INFO: https://github.com/KaTeX/KaTeX/blob/main/contrib/mhchem/README.md
-      const mhchemJS = document.createElement("script"); mhchemJS.defer = true;
-      // mhchemJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/contrib/mhchem.min.js";
-      mhchemJS.src = "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/mhchem.min.js";
-      mhchemJS.integrity = "sha384-F2ptQFZqNJuqfGGl28mIXyQ5kXH48spn7rcoS0Y9psqIKAcZPLd1NzwFlm/bl1mH";
-      mhchemJS.crossOrigin = "anonymous";
-      document.head.appendChild(mhchemJS);
+    /* helper functions */
+
+    function loadScript(config) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = config.src;
+        if (config.integrity) {
+          script.integrity = config.integrity;
+          script.crossOrigin = "anonymous";
+        }
+        script.onload = resolve;
+        script.onerror = () => reject(new Error(`Failed to load script: ${config.src}`));
+        document.head.appendChild(script);
+      });
+    }
+    function handleMathError(error) {
+      console.error("Math rendering error:", error);
     }
   });
 </script>
