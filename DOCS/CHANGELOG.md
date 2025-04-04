@@ -9,6 +9,7 @@
 
 ## documentation
 - improve rustdoc header loading, make loading more reliable.
+- fix multiple katex warnings.
 
 ## utils
 - change `check.rs`:

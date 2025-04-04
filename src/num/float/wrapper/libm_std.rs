@@ -18,10 +18,10 @@ mod _libm {
     // custom implementations are commented out
     impl_fp![libm:f*:
         r"The largest integer less than or equal to `x`.
-        $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$ "
+        $$ \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$ "
         floor = floor: ;
         r"The smallest integer greater than or equal to `x`.
-        $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"
+        $$ \lceil x \rceil = \min \{ n \in ℤ \,|\, n \geq x \} $$"
         ceil = ceil: ;
         "The nearest integer to itself, rounding ties away from `0.0`."
         round = round_ties_away: ;
@@ -193,10 +193,10 @@ mod _std {
     // custom implementations are commented out:
     impl_fp![std:f*:
         r"The largest integer less than or equal to `x`.
-        $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$ "
+        $$ \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$ "
         floor = floor: ;
         r"The smallest integer greater than or equal to `x`.
-        $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"
+        $$ \lceil x \rceil = \min \{ n \in ℤ \,|\, n \geq x \} $$"
         ceil = ceil: ;
         "The nearest integer to `x`, rounding ties away from `0.0`."
         round = round_ties_away: ;
@@ -278,7 +278,6 @@ mod _std {
 
         /* not implemented */
         // exp10: https://internals.rust-lang.org/t/enh-add-exp10-and-expf-base-x-f64-f32-methods-to-stdlib-to-symmetrize-api
-        // WAIT:1.86: (next_up, next_down) [float_next_up_down](https://github.com/rust-lang/rust/issues/91399)
         // WAIT: (gamma, ln_gamma) [float_gamma](https://github.com/rust-lang/rust/issues/99842)
     ]; // IMPORTANT: do not end with `;`
 

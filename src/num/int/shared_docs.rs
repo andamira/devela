@@ -8,7 +8,7 @@
 crate::CONST! { pub(crate),
 /* core */
 
-FORMULA_SCALE = r#"$$ \large v' = (b - a) \frac{v - min}{max - min} + a $$"#; // & wrap
+FORMULA_SCALE = r#"$$ \large v^{\prime} = (b - a) \frac{v - min}{max - min} + a $$"#; // & wrap
 
 /* combinatorics */
 
@@ -121,7 +121,7 @@ PIECEWISE_ROOT_CEIL_SIGNED = r#"$$
 m & \text{if } m^n = |a|, \cr
 m+1 & \text{if } m^n < |a|.
 \end{cases} \cr
-\notag \text{Output: } m \cdot \text{sign}(a)
+\notag \text{Output: } m \cdot \text{sign}(a) &
 \end{align}
 $$"#;
 ALGORITHM_ROOT_CEIL_SIGNED = r#"
@@ -140,8 +140,8 @@ The process is as follows:
 
 FORMULA_ROOT_CEIL_UNSIGNED = r#"$$
 \large \left\lceil a^{\frac{1}{n}} \right\rceil = m $$"#;
-PIECEWISE_ROOT_CEIL_UNSIGNED = r#"
-$$ \large
+PIECEWISE_ROOT_CEIL_UNSIGNED = r#" $$
+\large
 \begin{align}
 \notag \text{If } n = 0, \text{ then error.} \cr
 \notag \text{If } n = 1, \text{ then output } a. \cr
@@ -151,7 +151,7 @@ $$ \large
 \begin{cases}
 m & \text{if } m^n = a, \cr
 m+1 & \text{if } m^n < a.
-\end{cases}
+\end{cases} &
 \end{align}
 $$"#;
 ALGORITHM_ROOT_CEIL_UNSIGNED = r#"
@@ -170,8 +170,8 @@ PIECEWISE_ROOT_FLOOR_SIGNED = r#"$$
 \notag \text{If } n = 0, \text{ then error.} \cr
 \notag \text{If } n = 1, \text{ then output } a. \cr
 \notag \text{If } a = 0, \text{ then output } 0. \cr
-\notag \text{If } a < 0 \text{ and } n \% 2 = 0, \text{ then error.} \cr
-\notag m = \max \{ k \in \Z \mid k^n \leq |a| \} \cr
+\notag \text{If } a < 0 \text{ and } n \\% 2 = 0, \text{ then error.} \cr
+\notag m = \max \{ k \in ℤ \mid k^n \leq |a| \} \cr
 \notag \text{Output: } m \cdot \text{sign}(a) &
 \end{align}
 $$"#;
@@ -181,7 +181,7 @@ $ \left\lfloor |a|^{\frac{1}{n}} \right\rfloor = m \cdot \text{sign}(a) $,
 where $ m $ is the largest integer such that:
 $$ \large m^n \leq |a|, $$
 subject to the condition:
-$$ \large a < 0 \quad \text{and} \quad n \% 2 = 0 \quad \text{is invalid.} $$
+$$ \large a < 0 \quad \text{and} \quad n \\% 2 = 0 \quad \text{is invalid.} $$
 The algorithm incrementally tests values starting from $ m = 1 $
 and continues until the next value $ m+1 $ satisfies:
 $$ \large (m+1)^n > |a|. $$
@@ -197,7 +197,7 @@ PIECEWISE_ROOT_FLOOR_UNSIGNED = r#"$$
 \notag \text{If } n = 0, \text{ then error.} \cr
 \notag \text{If } n = 1, \text{ then output } a. \cr
 \notag \text{If } a = 0, \text{ then output } 0. \cr
-\notag m = \max \{ k \in \Z_{\geq 0} \mid k^n \leq a \} \cr
+\notag m = \max \{ k \in ℤ_{\geq 0} \mid k^n \leq a \} \cr
 \notag \text{Output: } m &
 \end{align}
 $$"#;

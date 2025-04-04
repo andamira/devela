@@ -35,7 +35,7 @@ pub trait NumConst {
     /// The greatest representable negative value, if applicable.
     const NUM_MAX_NEGATIVE: Option<Self::Num>;
 
-    /// The maximum power of two within the type’s range.
+    /// The maximum power of two within the type's range.
     const NUM_MAX_POWER_OF_TWO: Option<Self::Num>;
 }
 

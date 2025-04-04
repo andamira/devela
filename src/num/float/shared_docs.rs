@@ -7,9 +7,9 @@ crate::CONST! { pub(crate),
 /* Rounding */
 
 FORMULA_FLOOR = r#"$$
-\large \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$"#;
+\large \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$"#;
 FORMULA_CEIL = r#"$$
-$$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"#;
+$$ \lceil x \rceil = \min \{ n \in ℤ \,|\, n \geq x \} $$"#;
 FORMULA_ROUND_TIES_AWAY = r#"$$
 \text{round\\_ties\\_away}(x) = \begin{cases}
 \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \text{ or }
@@ -105,7 +105,7 @@ FORMULA_ATANH_SERIES = r#"$$
 
 /* Calculus */
 
-FORMULA_DERIVATIVE = r#"$$ f'(x) \approx \frac{f(x + h) - f(x)}{h} $$"#;
+FORMULA_DERIVATIVE = r#"$$ f^{\prime}(x) \approx \frac{f(x + h) - f(x)}{h} $$"#;
 FORMULA_INTEGRATE = r#"$$
 \int_a^b f(x) \, dx \approx \sum_{i=0}^{n-1} f(x_i) \cdot \Delta x $$
 where $$ \Delta x = \frac{b-a}{n} $$"#;

@@ -283,23 +283,23 @@ crate::CONST! { pub(in crate::num::float),
     EXPONENT_BITS = r#"Number of bits used to represent the exponent."#;
 
     // pi
-    PI = r#"$ π = \frac{1}{2} τ = 180º $
+    PI = r#"$ π = \frac{1}{2} τ = 180\degree $
     ([A000796](https://oeis.org/A000796/constant))
     `≈ 3.14159265…`
     <p>*The ratio of the circumference to the diameter, a half-turn*.</p>"#;
-    FRAC_PI_2 = r#"$ π/2 = τ/4 = 90º $
+    FRAC_PI_2 = r#"$ π/2 = τ/4 = 90\degree $
     ([A019669](https://oeis.org/A019669/constant))
     `≈ 1.57079632…`"#;
-    FRAC_PI_3 = r#"$ π/3 = τ/6 = 60º $
+    FRAC_PI_3 = r#"$ π/3 = τ/6 = 60\degree $
     ([A019670](https://oeis.org/A019670/constant))
     `≈ 1.04719755…`"#;
-    FRAC_PI_4 = r#"$ π/4 = τ/8 = 45º $
+    FRAC_PI_4 = r#"$ π/4 = τ/8 = 45\degree $
     ([A003881](https://oeis.org/A003881/constant))
     `≈ 0.78539816…`"#;
-    FRAC_PI_6 = r#"$ π/6 = τ/12 = 30º $
+    FRAC_PI_6 = r#"$ π/6 = τ/12 = 30\degree $
     ([A019673](https://oeis.org/A019673/constant))
     `≈ 0.52359877…`"#;
-    FRAC_PI_8 = r#"$ π/8 = τ/16 = 22.5º $
+    FRAC_PI_8 = r#"$ π/8 = τ/16 = 22.5\degree $
     ([A019675](https://oeis.org/A019675/constant))
     `≈ 0.39269908…`"#;
     SQRT_PI = r#"$ \sqrt{π} = \sqrt{\frac{1}{2} τ} $
@@ -323,43 +323,43 @@ crate::CONST! { pub(in crate::num::float),
     `≈ 1.12837916…`"#;
 
     // tau
-    TAU = r#"$ τ = 2π = 360º $
+    TAU = r#"$ τ = 2π = 360\degree $
     ([A019692](https://oeis.org/A019692/constant))
     `≈ 6.28318530…`
     <p>*The ratio of the circumference to the radius, a full-turn*.</p>"#;
-    FRAC_TAU_2 = r#"$ τ/2 = π = 180º $
+    FRAC_TAU_2 = r#"$ τ/2 = π = 180\degree $
     ([A000796](https://oeis.org/A000796/constant))
     `≈ 3.14159265…`"#;
-    FRAC_TAU_3 = r#"$ τ/3  = 2π/3 = 120º $
+    FRAC_TAU_3 = r#"$ τ/3  = 2π/3 = 120\degree $
     ([A019693](https://oeis.org/A019693/constant))
     `≈ 2.09439510…`"#;
-    FRAC_TAU_4 = r#"$ τ/4 = π/2 = 90º $
+    FRAC_TAU_4 = r#"$ τ/4 = π/2 = 90\degree $
     ([A019693](https://oeis.org/A019693/constant))
     `≈ 1.57079632…`"#;
-    FRAC_TAU_5 = r#"$ τ/5 = 2π/5 = 72º $
+    FRAC_TAU_5 = r#"$ τ/5 = 2π/5 = 72\degree $
     ([A019694](https://oeis.org/A019694/constant))
     `≈ 1.25663706…`"#;
-    FRAC_TAU_6 = r#"$ τ/6 = π/3 = 60º $
+    FRAC_TAU_6 = r#"$ τ/6 = π/3 = 60\degree $
     ([A019670](https://oeis.org/A019670/constant))
     `≈ 1.04719755…`"#;
-    FRAC_TAU_8 = r#"$ τ/8 = π/4 = 45º $
+    FRAC_TAU_8 = r#"$ τ/8 = π/4 = 45\degree $
     ([A003881](https://oeis.org/A003881/constant))
     `≈ 0.78539816…`"#;
-    FRAC_TAU_9 = r#"$ τ/9 = 2π/9 = 40º $
+    FRAC_TAU_9 = r#"$ τ/9 = 2π/9 = 40\degree $
     ([A019696](https://oeis.org/A019696/constant))
     `≈ 0.69813170…`"#;
-    FRAC_TAU_12 = r#"$ τ/12 = π/6 = 30º $
+    FRAC_TAU_12 = r#"$ τ/12 = π/6 = 30\degree $
     ([A019673](https://oeis.org/A019673/constant))
     `≈ 0.52359877…`"#;
-    FRAC_TAU_16 = r#"$ τ/16 = π/8 = 22.5º $
+    FRAC_TAU_16 = r#"$ τ/16 = π/8 = 22.5\degree $
     ([A019675](https://oeis.org/A019675/constant))
     `≈ 0.39269908…`"#;
-    FRAC_TAU_24 = r#"$ τ/24 = π/12 = 15º $
+    FRAC_TAU_24 = r#"$ τ/24 = π/12 = 15\degree $
     ([A019679](https://oeis.org/A019679/constant))
     `≈ 0.26179938…`"#;
-    FRAC_TAU_72 = r#"$ τ/72 = π/36 = 5º $
+    FRAC_TAU_72 = r#"$ τ/72 = π/36 = 5\degree $
     `≈ 0.08726646…`"#;
-    FRAC_TAU_360 = r#"$ τ/360 = π/180 = 1º $ *arc degree*
+    FRAC_TAU_360 = r#"$ τ/360 = π/180 = 1\degree $ *arc degree*
     ([A019685](https://oeis.org/A019685),
     [wikipedia](https://en.wikipedia.org/wiki/Degree_(angle)))
     `≈ 0.01745329…`"#;
@@ -383,14 +383,14 @@ crate::CONST! { pub(in crate::num::float),
     `≈ 0.79788456…`"#;
 
     // arc degrees
-    ARC_DEGREE = r#"$ τ/360 = π/180 = 1º $ *arc degree*
+    ARC_DEGREE = r#"$ τ/360 = π/180 = 1\degree $ *arc degree*
     ([A019685](https://oeis.org/A019685),
     [wikipedia](https://en.wikipedia.org/wiki/Degree_(angle)))
     `≈ 0.01745329…`"#;
-    ARC_MINUTE = r#"$ τ/(360*60) = 1' $ *arc minute*
+    ARC_MINUTE = r#"$ τ/(360*60) = 1^{\prime} $ *arc minute*
     ([wikipedia](https://en.wikipedia.org/wiki/Minute_and_second_of_arc))
     `≈ 0.00029088…`"#;
-    ARC_SECOND = r#"$ τ/(360 * 60 * 60) = 1'' $ *arc second*
+    ARC_SECOND = r#"$ τ/(360 * 60 * 60) = 1^{\prime\prime} $ *arc second*
     ([wikipedia](https://en.wikipedia.org/wiki/Minute_and_second_of_arc))
     `≈ 0.00000484…`"#;
 
