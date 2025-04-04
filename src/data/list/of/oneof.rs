@@ -1,4 +1,4 @@
-// devela::data::list::enum
+// devela::data::list::oneof
 //
 //! Defines the [`Oneof`] type.
 //
@@ -6,28 +6,23 @@
 use crate::{ConstDefault, ExtAny, is};
 
 // 12 variants by default
-impl_enum!(
-    _0:0+1, _1:1+2, _2:2+3, _3:3+4, _4:4+5, _5:5+6,
-    _6:6+7, _7:7+8, _8:8+9, _9:9+10, _10:10+11, _11:11+12
+impl_oneof!(
+    _0:0+1:"st", _1:1+2:"nd", _2:2+3:"rd", _3:3+4:"th", _4:4+5:"th", _5:5+6:"th",
+    _6:6+7:"th", _7:7+8:"th", _8:8+9:"th", _9:9+10:"th", _10:10+11:"th", _11:11+12:"th",
 );
 
 /// Defines [`Oneof`] and implements all the methods.
-//
-// Supports >= 3 variants.
-macro_rules! impl_enum {
+macro_rules! impl_oneof {
     (
-    // var_name : var_idx(0-based) + var_nth(1-based)
-    $_0:ident: $_0a:literal + $_0b:literal,
-    $_1:ident: $_1a:literal + $_1b:literal,
-    $_2:ident: $_2a:literal + $_2b:literal,
-    $($T:ident : $idx:literal + $nth:literal),*) => {
-        impl_enum!(define_enum: $_0, $_1, $_2 $(, $T:$nth)*);
-        impl_enum!(impl_default: $_0, $_1, $_2 $(, $T)*);
-        impl_enum!(methods_general: $_0:$_0a+$_0b, $_1:$_0a+$_1b, $_2:$_2a+$_2b $(, $T:$idx+$nth)*);
-        impl_enum!(methods_individual: $_0, $_1, $_2 $(, $T)*);
+    // var_name : var_idx(0-based) + var_nth(1-based) : nth_suffix
+    $($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
+        impl_oneof!(define_enum: $($T:$nth:$suf),+);
+        impl_oneof!(impl_default: $($T),+);
+        impl_oneof!(methods_general: $($T:$idx+$nth:$suf),+);
+        impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
     };
-    (define_enum: $_0:ident, $_1:ident, $_2:ident, $($rest:ident:$nth:literal),*
-    ) => { $crate::paste! {
+    // (define_enum: $_0:ident, $_1:ident, $_2:ident, $($rest:ident:$nth:literal),*
+    (define_enum: $($variant:ident : $nth:literal : $suf:literal),+) => { $crate::paste! {
         /// A generic, parameterized *enum* for expressing structured alternatives.
         ///
         /// Variants are expected to be **contiguous**, meaning `()` (unit types)
@@ -37,11 +32,11 @@ macro_rules! impl_enum {
         /// implementing [`Default`] when `A: Default`.
         #[non_exhaustive]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub enum Oneof<const LEN: usize, $_0, $_1, $_2=(), $($rest = ()),*> {
-            #[doc = "The 1st variant (default)."] $_0($_0),
-            #[doc = "The 2nd variant."] $_1($_1),
-            #[doc = "The 3rd variant."] $_2($_2),
-            $( #[doc = "The " $nth "th variant."] $rest($rest), )*
+        pub enum Oneof<const LEN: usize, $($variant = ()),+> {
+            $(
+                #[doc = "The " $nth $suf " variant."]
+                $variant($variant)
+            ),+
         }
     }};
     (
@@ -68,7 +63,7 @@ macro_rules! impl_enum {
     //
     // - into_tuple_options
     // - into_tuple_defaults
-    methods_general: $($T:ident : $idx:literal + $nth:literal),+) => {
+    methods_general: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
         /// # Structural methods.
         impl<const LEN:usize,  $($T),+ > Oneof<LEN, $($T),+> {
             /// The number of active (non-`()` type) variants.
@@ -167,11 +162,13 @@ macro_rules! impl_enum {
     };
     (
     // Implements methods acting over individual fields.
-    methods_individual: $($T:ident),+) => {
+    methods_individ: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
         /// # Variant-specific methods.
         impl<const LEN: usize, $($T),+> Oneof<LEN, $($T),+> {
-            impl_enum!(methods_field_access: $($T),+);
-            impl_enum!(methods_map: $($T),+);
+            // impl_oneof!(methods_field_access: $($T),+);
+            impl_oneof!(methods_field_access: $($T:$idx+$nth:$suf),+);
+            impl_oneof!(methods_map: $($T),+);
+            // impl_oneof!(methods_map: $($T:$idx+$nth),+);
         }
     };
     (
@@ -180,22 +177,25 @@ macro_rules! impl_enum {
     // - into_*
     // - as_ref_*
     // - as_mut_*
-    methods_field_access: $($T:ident),+) => {
-        $( impl_enum! { @methods_field_access: $T } )+
+    methods_field_access: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
+        $( impl_oneof! { @methods_field_access: $T : $idx + $nth : $suf} )+
     };
-    (@methods_field_access: $T:ident) => { $crate::paste! {
-        #[doc = "Returns `true` if the value is of type [`" $T "`][Self::" $T "]."]
+    (@methods_field_access: $T:ident : $idx:literal + $nth:literal : $suf:literal
+    ) => { $crate::paste! {
+        #[doc = "Returns `true` if there's a value in variant [`"
+            $T "`](#variant." $T ") (The " $nth $suf ")."]
         pub const fn [<is $T>](&self) -> bool { matches!(self, Oneof::$T(_)) }
 
-        #[doc = "Returns the inner `" $T "` value, if present."]
+        #[doc = "Returns the owned value in variant `" $T "`, if present."]
         pub fn [<into $T>](self) -> Option<$T> {
             is![let Self::$T($T) = self; Some($T); None]
         }
-        #[doc = "Returns a reference to the inner `" $T "` value, if present."]
+        #[doc = "Returns a reference to the inner value in variant `" $T "`, if present."]
         pub fn [<as_ref $T>](&self) -> Option<&$T> {
             is![let Self::$T($T) = self; Some($T); None]
         }
-        #[doc = "Returns a reference to the inner `" $T "` value, if present."]
+        #[doc = "Returns a reference to the inner value in variant`" $T "`, if present."]
+        /// <hr/>
         pub fn [<as_mut $T>](&mut self) -> Option<&mut $T> {
             is![let Self::$T($T) = self; Some($T); None]
         }
@@ -205,9 +205,9 @@ macro_rules! impl_enum {
     // - map_*
     methods_map: $first:ident $(, $rest:ident)*) => {
         // For the first variant, the `$before` list is empty.
-        impl_enum!(@methods_map: $first, (), ($($rest),*));
+        impl_oneof!(@methods_map: $first, (), ($($rest),*));
         // Then, delegate to the helper macro with the first element as the accumulator.
-        impl_enum!(@methods_map_helper: ($first), ($($rest),*));
+        impl_oneof!(@methods_map_helper: ($first), ($($rest),*));
 
         // NOTE: generates something like the following (e.g. for 6 variants):
         //
@@ -220,7 +220,8 @@ macro_rules! impl_enum {
     };
     (
     @methods_map: $T:ident, ( $($before:ident),* ), ( $($after:ident),* )) => { $crate::paste! {
-        #[doc = "Transforms the inner `" $T "` value using `f`, leaving other variants unchanged."]
+        #[doc = "Transforms the inner value in variant`" $T
+        "` using `f`, leaving other variants unchanged."]
         pub fn [<map $T>]<NEW>(self, f: impl FnOnce($T) -> NEW)
             -> Oneof<LEN, $($before,)* NEW, $($after,)* > {
             match self {
@@ -246,12 +247,12 @@ macro_rules! impl_enum {
     (@methods_map_helper: ($($before:ident),*), ()) => {};
     // Recursively take the next type as the current one.
     (@methods_map_helper: ($($before:ident),*), ($first:ident $(, $rest:ident)*)) => {
-        impl_enum!(@methods_map: $first, ($($before),*), ($($rest),*));
+        impl_oneof!(@methods_map: $first, ($($before),*), ($($rest),*));
         // Append the current type to the "before" list and continue.
-        impl_enum!(@methods_map_helper: ($($before,)* $first), ($($rest),*));
+        impl_oneof!(@methods_map_helper: ($($before,)* $first), ($($rest),*));
     };
 }
-use impl_enum;
+use impl_oneof;
 
 #[cfg(test)]
 mod tests {
