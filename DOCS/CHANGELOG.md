@@ -10,6 +10,7 @@
 ## documentation
 - improve rustdoc header loading, make loading more reliable.
 - fix multiple katex warnings.
+- new doc tag: `TAG_NICHE`.
 
 ## utils
 - change `check.rs`:

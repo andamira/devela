@@ -245,6 +245,7 @@ mod tags {
         EMOJI_GEOM = "📐";
         EMOJI_ITERATOR = "🔄"; // 🔄,
         EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
+        EMOJI_NICHE = "⚗️"; // ⚗️,♟️,🧩,🧮,
         EMOJI_NON_STANDARD = "⚠️";
         EMOJI_NO = "∅"; // ∅, ⊘, ⬛
         EMOJI_NUM = "𝟙"; // 🔢, 🔟, ❶, ➀, 𝟙
@@ -261,7 +262,7 @@ mod tags {
         TAG_ATOMIC = concat!(crate::SPAN_OPEN!(), "'Atomic-related item'>",
             crate::EMOJI_ATOMIC!(), "</span>");
         TAG_DATA_STRUCTURE =
-            concat!(crate::SPAN_OPEN!(), "'A generic data structure'>",
+            concat!(crate::SPAN_OPEN!(), "'General-purpose data structure'>",
             crate::EMOJI_DATA_STRUCTURE!(), "</span>");
         TAG_ERROR = concat!(crate::SPAN_OPEN!(), "'Individual error type'>",
             crate::EMOJI_ERROR!(), "</span>");
@@ -283,20 +284,22 @@ mod tags {
         TAG_GEOM =
             concat!(crate::SPAN_OPEN!(), "'Geometric multi-dimensional item'>",
             crate::EMOJI_GEOM!(), "</span>");
-        TAG_ITERATOR = concat!(crate::SPAN_OPEN!(), "'Iterator-related item'>",
+        TAG_ITERATOR = concat!(crate::SPAN_OPEN!(), "'Iterator or iterator adapter'>",
             crate::EMOJI_ITERATOR!(), "</span>");
         TAG_NAMESPACE = concat!(crate::SPAN_OPEN!(), "'Namespaced functionality'>",
             crate::EMOJI_NAMESPACE!(), "</span>");
+        TAG_NICHE = concat!(crate::SPAN_OPEN!(), "'Type with niche-based memory optimizations'>",
+            crate::EMOJI_NICHE!(), "</span>");
         TAG_NON_STANDARD = concat!(
             "<span class='stab portability' title='Non-standard. Expect poor cross-compatibility'>",
             crate::EMOJI_NON_STANDARD!(), "</span>");
-        TAG_NO = concat!(crate::SPAN_OPEN!(), "'Absence or Empty effect item'>",
+        TAG_NO = concat!(crate::SPAN_OPEN!(), "'Absence, emptiness, or a no-op effect'>",
             crate::EMOJI_NO!(), "</span>");
         TAG_NUM = concat!(crate::SPAN_OPEN!(), "'Numeric value-related item'>",
             crate::EMOJI_NUM!(), "</span>");
         TAG_PRIMITIVE = concat!(crate::SPAN_OPEN!(), "'Rust primitive type'>",
             crate::EMOJI_PRIMITIVE!(), "</span>");
-        TAG_QUANT = concat!(crate::SPAN_OPEN!(), "'Quantification item (1D)'>",
+        TAG_QUANT = concat!(crate::SPAN_OPEN!(), "'1-dimensional measurement or quantity'>",
             crate::EMOJI_QUANT!(), "</span>");
         TAG_RAND = concat!(crate::SPAN_OPEN!(), "'Randomness-related item'>",
             crate::EMOJI_RAND!(), "</span>");
