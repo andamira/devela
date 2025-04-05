@@ -26,7 +26,7 @@ mod unit; // Unit, Unit[Bi|Si]
 
 pub mod geom;
 pub mod logic;
-pub mod niche; // NonZero*, NonValue*, NonRange*
+pub mod niche; // NonZero*, NonValue*|NonExtreme*, NonRange*
 pub mod ord; // Compare
 pub mod quant; // Cycle*, Interval, Ratio
 pub mod rand;

@@ -70,7 +70,6 @@ include = [
 	"/examples/code/enumset.rs",
 	"/examples/data/bitfield.rs",
 	"/examples/data/id_seq.rs",
-	"/examples/num/niche.rs",
 	"/examples/work/coro_manager.rs",
 ]
 autoexamples = false
@@ -1176,11 +1175,6 @@ required-features = [] # optional: "alloc"
 [[example]]
 name = "id_seq" # NOTE: in docs
 path = "examples/data/id_seq.rs"
-
-# num
-[[example]]
-name = "niche" # NOTE: in docs
-path = "examples/num/niche.rs"
 
 # term
 [[example]]

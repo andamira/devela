@@ -5,13 +5,16 @@
 //! Always available for internal use.
 //
 
-// Centralized automatic definitions based on enabled features & flags
-#[cfg(any(doc, test))]
-impl_non_value![I 8];
-#[cfg(feature = "_char7")]
 impl_non_value![U 8];
-#[cfg(feature = "_char16")]
 impl_non_value![U 16];
+impl_non_value![U 32];
+impl_non_value![U 64];
+impl_non_value![U 128];
+impl_non_value![I 8];
+impl_non_value![I 16];
+impl_non_value![I 32];
+impl_non_value![I 64];
+impl_non_value![I 128];
 
 /// Implements a `NonValue[I|U]B<V>`.
 ///
@@ -21,8 +24,7 @@ impl_non_value![U 16];
 ///
 /// # Example
 /// ```
-/// # use devela::impl_non_value;
-/// impl_non_value![I 8];
+/// # use devela::{NonValueI8, NonValueU8};
 ///
 /// assert![NonValueI8::<3>::new(2).is_some()];
 /// assert![NonValueI8::<3>::new(3).is_none()];
@@ -35,26 +37,24 @@ impl_non_value![U 16];
 /// See for example: [`NonValueI8`] and [`NonExtremeI8`].
 //
 // NOTE: can't use doc(cfg) attributes in generated methods.
-#[macro_export]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! impl_non_value {
     (
         // Defines a new signed non-value type. E.g.: impl_non_value![i 32]
         // would generate NonValueI32 and NonExtremeI32
         I $bits:literal) => {
-        $crate::impl_non_value![@MIN, "A signed", i, $bits];
+        impl_non_value![@MIN, "A signed", i, $bits];
     };
     (
-        // Defines a new signed non-value type. E.g.: impl_non_value![u 32]
+        // Defines a new unsigned non-value type. E.g.: impl_non_value![u 32]
         // would generate NonValueU32 and NonExtremeU32
         U $bits:literal) => {
-        $crate::impl_non_value![@MAX, "An unsigned", u, $bits];
+        impl_non_value![@MAX, "An unsigned", u, $bits];
     };
     (
      /* private arms */
      @$XTR:ident, $doc:literal, $s:ident, $b:literal) => {
         $crate::paste!{
-            $crate::impl_non_value![@
+            impl_non_value![@
                 [<NonValue $s:upper $b>],   // $name
                 [<NonZero $s:upper $b>],   // $n0
                 [<NonExtreme $s:upper $b>], // $ne
@@ -84,8 +84,9 @@ macro_rules! impl_non_value {
         mod [<__impls_ $name >] {
             #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
             use $crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
-            // #[cfg(feature = "unsafe_layout")]
-            // use $crate::MemPod;
+            #[cfg(feature = "unsafe_layout")]
+            use $crate::MemPod;
+
             #[cfg(feature = "bit")]
             use $crate::{BitSized, ByteSized};
             use $crate::{
@@ -96,6 +97,8 @@ macro_rules! impl_non_value {
 
             /* definition */
 
+            #[doc = $crate::TAG_NUM!()]
+            #[doc = $crate::TAG_NICHE!()]
             #[doc = $doc " integer that is known not to equal some specific value." ]
             ///
             #[doc = "It has the same memory layout optimization as [`" $n0 "`][core::num::" $n0 "],"]
@@ -113,6 +116,8 @@ macro_rules! impl_non_value {
 
             /* aliases */
 
+            #[doc = $crate::TAG_NUM!()]
+            #[doc = $crate::TAG_NICHE!()]
             #[doc = $doc " integer that is known not to equal its most extreme value ([`"
                 $XTR "`][" $IP "::" $XTR "])."]
             ///
@@ -335,9 +340,8 @@ macro_rules! impl_non_value {
             #[cfg(feature = "bit")]
             impl<const V: $IP> BitSized<{$IP::BYTE_SIZE * 8}> for $name<V> {}
 
-            // NOTE: due to the orphan rule we can't implement MemPod for Option<NonValue*>
-            // #[cfg(feature = "unsafe_layout")]
-            // unsafe impl<const V: $IP> MemPod for Option<$name<V>> {}
+            #[cfg(feature = "unsafe_layout")]
+            unsafe impl<const V: $IP> MemPod for Option<$name<V>> {}
 
             /* external impls*/
 
@@ -361,6 +365,4 @@ macro_rules! impl_non_value {
         }
     }};
 }
-#[doc = crate::TAG_NUM!()]
-#[doc(inline)]
-pub use impl_non_value;
+use impl_non_value;

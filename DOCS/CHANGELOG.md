@@ -12,6 +12,9 @@
 - fix multiple katex warnings.
 - new doc tag: `TAG_NICHE`.
 
+## examples
+- delete the `niche` example.
+
 ## utils
 - change `check.rs`:
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
@@ -39,6 +42,10 @@
 ### float
 - add:
   - new `Float` methods: `classify`, `next_down`, `next_up`.
+
+### niche
+- make `impl_non_value!` private.
+- pre-generate all `NonValue*` types.
 
 ## sys
 ### os
