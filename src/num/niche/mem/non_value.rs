@@ -187,9 +187,57 @@ macro_rules! impl_non_value {
                     " if it is not equal to `V`."]
                 #[must_use]
                 pub const fn new(value: $IP) -> Option<Self> {
-                    match $n0::new(value ^ V) {
-                        None => None,
-                        Some(v) => Some(Self(v)),
+                    if $IP::MIN == 0 && V == $IP::MAX { // unsigned::MAX optimization
+                        if value == V { return None; }
+                        is![let Some(nz) = $n0::new(!value); Some(Self(nz)); None]
+                    } else { // default case: XOR
+                        // NOTE: for signed::MIN asm is optimized to wrapping_sub(MIN)
+                        is![let Some(nz) = $n0::new(value ^ V); Some(Self(nz)); None]
+                    }
+                }
+                /// Creates a non-value integer, automatically converting the prohibited value `V`
+                /// to the closest valid number (`V-1` for most cases, `V+1` for `MIN`).
+                ///
+                /// # Guarantees
+                /// - For unsigned `MAX`: `V-1` → stored as `!(V-1)`
+                /// - For signed `MIN`: `V+1` → stored as `(V+1) ^ MIN`
+                /// - All others: `V-1` → stored as `(V-1) ^ V`
+                ///
+                /// # Features
+                /// - Can use the `unsafe_niche` feature internally.
+                ///
+                /// # Example
+                /// ```
+                /// # use devela::{NonValueI8, NonValueU8};
+                /// let x = assert_eq![NonValueU8::<255>::new_lossy(255).get(), 254];
+                /// let y = assert_eq![NonValueI8::<-128>::new_lossy(-128).get(), -127];
+                /// ```
+                #[must_use]
+                pub const fn new_lossy(value: $IP) -> Self {
+                    let transformed = if $IP::MIN == 0 && V == $IP::MAX { // unsigned MAX case
+                        let transformed = if value == V { V - 1 } else { value };
+                        !transformed
+                    } else { // For MIN: choose MIN+1, for others: V-1
+                        let transformed = is![value == V; is![V == $IP::MIN; V + 1; V - 1]; value];
+                        transformed ^ V
+                    };
+
+                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
+                    { Self(unwrap![some $n0::new(transformed)]) }
+
+                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
+                    // SAFETY: We make sure the transformed value != 0
+                    unsafe {
+                        const { // compile-time verification:
+                            if $IP::MIN == 0 && V == $IP::MAX {
+                                assert!(!(V - 1) != 0); // unsigned MAX case
+                            } else if V == $IP::MIN {
+                                assert!((V + 1) ^ V != 0); // signed MIN case
+                            } else {
+                                assert!((V - 1) ^ V != 0); // all others
+                            }
+                        }
+                        Self($n0::new_unchecked(transformed ^ V))
                     }
                 }
 
@@ -210,7 +258,13 @@ macro_rules! impl_non_value {
 
                 /// Returns the value as a primitive type.
                 #[must_use]
-                pub const fn get(&self) -> $IP { self.0.get() ^ V }
+                pub const fn get(&self) -> $IP {
+                    if $IP::MIN == 0 && V == $IP::MAX { // unsigned::MAX optimization
+                        !self.0.get()
+                    } else {
+                        self.0.get() ^ V
+                    }
+                }
 
                 /// Returns `true` if it is equal to the maximum value ([`MAX`][Self::MAX]).
                 #[must_use]

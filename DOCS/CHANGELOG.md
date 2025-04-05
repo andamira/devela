@@ -47,6 +47,8 @@
 - make `impl_non_value!` private.
 - pre-generate all `NonValue*` types.
 - add `Non[Extreme|Value][I|U]size` types.
+- add new method to `NonValue*`: `new_lossy`.
+- improve the efficiency of `NonValue*<MAX>`.
 
 ## sys
 ### os
