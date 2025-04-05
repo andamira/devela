@@ -5,16 +5,30 @@
 //! Always available for internal use.
 //
 
-impl_non_value![U 8];
-impl_non_value![U 16];
-impl_non_value![U 32];
-impl_non_value![U 64];
-impl_non_value![U 128];
-impl_non_value![I 8];
-impl_non_value![I 16];
-impl_non_value![I 32];
-impl_non_value![I 64];
-impl_non_value![I 128];
+use crate::items;
+
+impl_non_value![U 8, u8];
+impl_non_value![U 16, u16];
+impl_non_value![U 32, u32];
+impl_non_value![U 64, u64];
+impl_non_value![U 128, u128];
+
+impl_non_value![I 8, i8];
+impl_non_value![I 16, i16];
+impl_non_value![I 32, i32];
+impl_non_value![I 64, i64];
+impl_non_value![I 128, i128];
+
+#[cfg(target_pointer_width = "8")]
+items! { impl_non_value![U 8, usize]; impl_non_value![I 8, isize]; }
+#[cfg(target_pointer_width = "16")]
+items! { impl_non_value![U 16, usize]; impl_non_value![I 16, isize]; }
+#[cfg(target_pointer_width = "32")]
+items! { impl_non_value![U 32, usize]; impl_non_value![I 32, isize]; }
+#[cfg(target_pointer_width = "64")]
+items! { impl_non_value![U 64, usize]; impl_non_value![I 64, isize]; }
+#[cfg(target_pointer_width = "128")]
+items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
 
 /// Implements a `NonValue[I|U]B<V>`.
 ///
@@ -38,29 +52,19 @@ impl_non_value![I 128];
 //
 // NOTE: can't use doc(cfg) attributes in generated methods.
 macro_rules! impl_non_value {
-    (
-        // Defines a new signed non-value type. E.g.: impl_non_value![i 32]
-        // would generate NonValueI32 and NonExtremeI32
-        I $bits:literal) => {
-        impl_non_value![@MIN, "A signed", i, $bits];
-    };
-    (
-        // Defines a new unsigned non-value type. E.g.: impl_non_value![u 32]
-        // would generate NonValueU32 and NonExtremeU32
-        U $bits:literal) => {
-        impl_non_value![@MAX, "An unsigned", u, $bits];
-    };
-    (
-     /* private arms */
-     @$XTR:ident, $doc:literal, $s:ident, $b:literal) => {
+    // Defines a new unsigned non-value type.
+    // E.g.: impl_non_value![U 32, u32] would generate NonValueU32 and NonExtremeU32
+    (I $bits:literal, $IP:ty) => { impl_non_value![@MIN, "A signed", i, $bits, $IP]; };
+    (U $bits:literal, $IP:ty) => { impl_non_value![@MAX, "An unsigned", u, $bits, $IP]; };
+    (@$XTR:ident, $doc:literal, $s:ident, $b:literal, $IP:ty) => {
         $crate::paste!{
             impl_non_value![@
-                [<NonValue $s:upper $b>],   // $name
-                [<NonZero $s:upper $b>],   // $n0
-                [<NonExtreme $s:upper $b>], // $ne
+                [<NonValue $IP:camel>],   // $name
+                [<NonZero $IP:camel>],    // $n0
+                [<NonExtreme $IP:camel>], // $ne
                 $XTR,
                 $doc,
-                [<$s $b>], // $IP
+                $IP,
                 $s,
                 $b
             ];
@@ -110,7 +114,7 @@ macro_rules! impl_non_value {
             /// assert![NonValueI8::<13>::new(13).is_none()];
             /// assert![NonValueI8::<13>::new(12).unwrap().get() == 12];
             /// ```
-            #[doc = "See also [`NonExtreme" $s:upper $b "`]."]
+            #[doc = "See also [`" $ne "`]."]
             #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
             pub struct $name <const V: $IP>($n0);
 
@@ -123,22 +127,22 @@ macro_rules! impl_non_value {
             ///
             /// Unlike the `NonValue*` types in general, this type alias implements
             /// the [`Default`] and [`ConstDefault`][crate::code::ConstDefault] traits.
-            pub type [<NonExtreme $s:upper $b>] = $name <{$IP::$XTR}>;
+            pub type $ne = $name <{$IP::$XTR}>;
 
-            impl Default for [<NonExtreme $s:upper $b>] {
+            impl Default for $ne {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn default() -> Self {
                     #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
-                    return [<NonExtreme $s:upper $b>]::new($IP::default()).unwrap();
+                    return $ne::new($IP::default()).unwrap();
 
                     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                     // SAFETY: the default primitive value is always 0, and their MAX is never 0.
-                    unsafe { return [<NonExtreme $s:upper $b>]::new_unchecked($IP::default()); }
+                    unsafe { return $ne::new_unchecked($IP::default()); }
                 }
             }
 
-            impl ConstDefault for [<NonExtreme $s:upper $b>] {
+            impl ConstDefault for $ne {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 const DEFAULT: Self = {
@@ -147,7 +151,7 @@ macro_rules! impl_non_value {
 
                     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                     // SAFETY: the default primitive value is always 0, and their MAX is never 0.
-                    unsafe { [<NonExtreme $s:upper $b>]::new_unchecked($IP::DEFAULT) }
+                    unsafe { $ne::new_unchecked($IP::DEFAULT) }
                 };
             }
 
@@ -172,10 +176,10 @@ macro_rules! impl_non_value {
                 };
 
                 /// Returns the number of valid values.
-                pub const VALID_VALUES: [<u $b>] = [<u $b>]::MAX;
+                pub const VALID_VALUES: $IP = $IP::MAX;
 
                 /// Returns the number of invalid values.
-                pub const INVALID_VALUES: [<u $b>] = 1;
+                pub const INVALID_VALUES: $IP = 1;
 
                 /* methods */
 
@@ -183,7 +187,7 @@ macro_rules! impl_non_value {
                     " if it is not equal to `V`."]
                 #[must_use]
                 pub const fn new(value: $IP) -> Option<Self> {
-                    match [<NonZero $s:upper $b>]::new(value ^ V) {
+                    match $n0::new(value ^ V) {
                         None => None,
                         Some(v) => Some(Self(v)),
                     }
@@ -201,7 +205,7 @@ macro_rules! impl_non_value {
                     if value == V { panic!("The given value was specifically prohibited.") }
 
                     // SAFETY: caller must ensure safety
-                    Self(unsafe { [<NonZero $s:upper $b>]::new_unchecked(value ^ V) })
+                    Self(unsafe { $n0::new_unchecked(value ^ V) })
                 }
 
                 /// Returns the value as a primitive type.

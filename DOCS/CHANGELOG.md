@@ -46,6 +46,7 @@
 ### niche
 - make `impl_non_value!` private.
 - pre-generate all `NonValue*` types.
+- add `Non[Extreme|Value][I|U]size` types.
 
 ## sys
 ### os
