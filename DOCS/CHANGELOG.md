@@ -17,6 +17,12 @@
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
   - behavior change: no longer installs components automatically.
 
+---
+
+## code
+### result
+- add re-exports: `core::option::*`, `core::result::*`.
+
 ## data
 - add re-exports: `IterFromCoroutine`.
 - add modules: `data::list::of`.
