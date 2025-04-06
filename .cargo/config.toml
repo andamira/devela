@@ -150,13 +150,17 @@ trr = "tr --format {p}:{r}" # with repository url
 # https://crates.io/crates/cargo-show-asm
 # https://github.com/pacak/cargo-show-asm/blob/master/Changelog.md
 #
+# USAGE EXAMPLES:
+# $ cargo A_x64l --lib -F linux,unsafe_syscall linux
+# $ cargo A_x64l --lib --everything > assembly.s
+#
 # NOTES:
 # - Has to be run from the root of the crate.
 # - Functions need not to be inlined. Defaults to release mode.
-# - doesn't support -F syntax, has to use --features instead.
 #
-# USAGE EXAMPLE:
-# $ cargo A_x64l --features linux,unsafe_syscall --lib linux
+# MANUAL ALTERNATIVE:
+# $ RUSTFLAGS="--emit asm -C opt-level=3 -C llvm-args=-x86-asm-syntax=intel" cargo build --release
+# $ ls -l ./target/release/deps/*.s
 #
 A = "asm --simplify -p devela"
 Ar = "asm --simplify --rust -p devela" # print interleaved rust code
