@@ -1,11 +1,11 @@
-# Changelog from 2025 on
+# Changelog
 
 [0.24.0-wip] unreleased
 =======================
 
 ## manifest
-- changed:
-  - bump MSRV to 1.86.0.
+- bump MSRV to 1.86.0.
+- convert library to standalone, remove workspace config.
 
 ## documentation
 - improve rustdoc header loading, make loading more reliable.

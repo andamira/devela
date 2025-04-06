@@ -4,7 +4,6 @@
 #
 ## Table of Contents
 #
-# * [workspace]
 # * [package]
 # * [lib]
 #
@@ -41,16 +40,13 @@
 # * [[bench]]
 # * [[example]]
 
-[workspace]
-resolver = "3"
-members = [".", "macros", "examples/lang/js_web_api"]
-
 [package]
 name = "devela"
 description = "A development layer."
 version = "0.24.0-wip" # In sync with DOCS/CHANGELOG.md
 rust-version = "1.86.0" # In sync with README.md md & .github/workflows/check.yml
 edition = "2024"
+resolver = "3"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
