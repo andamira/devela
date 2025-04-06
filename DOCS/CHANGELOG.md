@@ -6,6 +6,8 @@
 ## manifest
 - bump MSRV to 1.86.0.
 - convert library to standalone, remove workspace config.
+- bump dependencies:
+  - crossterm → 0.29.
 
 ## documentation
 - improve rustdoc header loading, make loading more reliable.
