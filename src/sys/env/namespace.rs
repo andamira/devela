@@ -10,6 +10,7 @@
 
 #[cfg(all(feature = "std", feature = "unsafe_thread"))]
 use crate::_dep::_std::env::{remove_var, set_var};
+#[allow(deprecated, reason = "WAIT for official undeprecation of home_dir")]
 #[cfg(feature = "std")]
 use crate::{
     _dep::_std::env::{
@@ -522,6 +523,7 @@ impl Env {
     /// Returns the path of the current user’s home directory if known.
     ///
     /// See [home_dir].
+    #[allow(deprecated, reason = "WAIT for official undeprecation")]
     pub fn home_dir() -> Option<PathBuf> {
         home_dir()
     }
