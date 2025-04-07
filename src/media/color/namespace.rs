@@ -27,13 +27,10 @@ macro_rules! color_gamma_fns {
             ///
             /// # Algorithm
             /// $$
-            /// \begin{align}
-            /// \notag f_\text{apply}(c) = \begin{cases}
-            /// 12.92c,
-            ///   & \text{if } c <= 0.0031308 \cr
-            /// 1.055c^{1/\gamma} - 0.055,
-            ///   & \text{if } c > 0.0031308 \end{cases} \cr
-            /// \end{align}
+            /// f_\text{apply}(c) = \begin{cases}
+            /// 12.92c, & \text{if } c <= 0.0031308 \cr
+            /// 1.055c^{1/\gamma} - 0.055, & \text{if } c > 0.0031308
+            /// \end{cases}
             /// $$
             #[cfg(any(feature = "std", feature = $cap))]
             #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $cap))))]
@@ -45,13 +42,11 @@ macro_rules! color_gamma_fns {
             ///
             /// # Algorithm
             /// $$
-            /// \begin{align}
             /// \notag f_\text{remove}(c) = \begin{cases}
-            /// c / 12.92,
-            ///   & \normalsize\text{if } c <= 0.04045 \cr
+            /// c / 12.92, & \normalsize\text{if } c <= 0.04045 \cr
             /// \left(\Large\frac{c+0.055}{1.055} - \normalsize 0.055\right)^{\gamma},
-            ///   & \normalsize \text{if } c > 0.04045 \end{cases} \cr
-            /// \end{align}
+            ///   & \normalsize \text{if } c > 0.04045
+            /// \end{cases}
             /// $$
             #[cfg(any(feature = "std", feature = $cap))]
             #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $cap))))]

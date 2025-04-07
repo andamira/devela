@@ -1,0 +1,26 @@
+// devela::media::color::rgb::impls
+//
+//!
+//
+
+mod helpers; // helper fns
+// mod u8;
+// mod u8alpha;
+// mod u16;
+// #[cfg(feature = "_float_f32")]
+// mod f32;
+// #[cfg(feature = "_float_f64")]
+// mod f64;
+
+crate::items! { // structural access: _mods, _all
+    #[allow(unused)]
+    pub use _mods::*;
+
+    mod _mods { #![allow(unused)]
+        pub(crate) use super::helpers::*;
+    }
+    pub(super) mod _all { #![allow(unused)]
+        #[doc(inline)]
+        pub use super::_mods::*;
+    }
+}
