@@ -8,10 +8,21 @@ use crate::{ColorBase, Rgb8, Rgba8};
 use crate::{RgbF32, RgbaF32};
 use crate::{RgbF64, RgbaF64};
 
-/// # Constructors
+#[allow(missing_docs)]
+#[rustfmt::skip]
 impl RgbaF64 {
-    /// New RgbaF64.
-    pub const fn new(r: f64, g: f64, b: f64, a: f64) -> RgbaF64 {
-        Self { r, g, b, a }
-    }
+    /// New `RgbF64`.
+    pub const fn new(r: f64, g: f64, b: f64, a: f64) -> RgbaF64 { Self { c: [r, g, b, a] } }
+    /// The red component.
+    pub const fn red(self) -> f64 { self.c[0] }
+    pub const fn r(self) -> f64 { self.c[0] }
+    /// The green component.
+    pub const fn green(self) -> f64 { self.c[1] }
+    pub const fn g(self) -> f64 { self.c[1] }
+    /// The blue component.
+    pub const fn blue(self) -> f64 { self.c[2] }
+    pub const fn b(self) -> f64 { self.c[2] }
+    /// The alpha component.
+    pub const fn alpha(self) -> f64 { self.c[3] }
+    pub const fn a(self) -> f64 { self.c[3] }
 }
