@@ -1,7 +1,7 @@
 // devela::media::color::rgb::impls::u16
 
 use super::*;
-use crate::{ColorBase, Rgb16, Rgba16};
+use crate::{ColorBase, Rgb8, Rgb16, Rgba8, Rgba16};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};
@@ -162,53 +162,53 @@ impl Rgb16 {
 mod tests {
     use super::*;
 
-    const C: Rgb16 = Rgb16::new(1000, 2000, 3000);
-    const CA: Rgba16 = Rgba16::new(1000, 2000, 3000, 4000);
-    const H: u64 = 0x_03E8_07D0_0BB8;
-    const HA: u64 = 0x_03E8_07D0_0BB8_0FA0;
+    const C16: Rgb16 = Rgb16::new(2570, 5140, 7710);
+    const CA16: Rgba16 = Rgba16::new(2570, 5140, 7710, 10280);
+    const H16: u64 = 0x_0A0A_1414_1E1E;
+    const HA16: u64 = 0x_0A0A_1414_1E1E_2828;
 
     #[test]
     fn general_conversions() {
         // array/tuple
-        assert_eq![Rgb16::from_array([1000, 2000, 3000]), C];
-        assert_eq![C.as_array(), [1000, 2000, 3000]];
-        assert_eq![Rgb16::from_tuple((1000, 2000, 3000)), C];
-        assert_eq![C.to_tuple(), (1000, 2000, 3000)];
+        assert_eq![Rgb16::from_array([2570, 5140, 7710]), C16];
+        assert_eq![C16.as_array(), [2570, 5140, 7710]];
+        assert_eq![Rgb16::from_tuple((2570, 5140, 7710)), C16];
+        assert_eq![C16.to_tuple(), (2570, 5140, 7710)];
         // rgba
-        assert_eq![Rgb16::from_rgba16(CA), C];
-        assert_eq![C.to_rgba16(4000), CA];
+        assert_eq![Rgb16::from_rgba16(CA16), C16];
+        assert_eq![C16.to_rgba16(10280), CA16];
         // packed rgb
-        assert_eq![Rgb16::from_rgb16_packed(H), C];
-        assert_eq![C.to_rgb16_packed(), H];
+        assert_eq![Rgb16::from_rgb16_packed(H16), C16];
+        assert_eq![C16.to_rgb16_packed(), H16];
         // packed rgba
-        assert_eq![Rgb16::from_rgba16_packed(HA), C];
-        assert_eq![C.to_rgba16_packed(4000), HA];
+        assert_eq![Rgb16::from_rgba16_packed(HA16), C16];
+        assert_eq![C16.to_rgba16_packed(10280), HA16];
     }
 
     #[test]
     #[cfg(feature = "_float_f32")]
     fn f32_conversions() {
-        let f = RgbF32::new(0.015259022, 0.030518044, 0.045777068);
-        let fa = RgbaF32::new(0.015259022, 0.030518044, 0.045777068, 0.061036088);
-        assert_eq![Rgb16::from_rgb_f32(f), C];
-        assert_eq![C.to_rgb_f32(), f];
-        assert_eq![Rgb16::from_rgba_f32(fa), C];
-        assert_eq![C.to_rgba_f32(4000), fa];
+        let f = RgbF32::new(0.039215688, 0.078431375, 0.11764706);
+        let fa = RgbaF32::new(0.039215688, 0.078431375, 0.11764706, 0.15686275);
+        assert_eq![Rgb16::from_rgb_f32(f), C16];
+        assert_eq![C16.to_rgb_f32(), f];
+        assert_eq![Rgb16::from_rgba_f32(fa), C16];
+        assert_eq![C16.to_rgba_f32(10280), fa];
     }
 
     #[test]
     #[cfg(feature = "_float_f64")]
     fn f64_conversions() {
-        let f = RgbF64::new(0.015259021896696421, 0.030518043793392843, 0.04577706569008926);
+        let f = RgbF64::new(0.0392156862745098, 0.0784313725490196, 0.11764705882352941);
         let fa = RgbaF64::new(
-            0.015259021896696421,
-            0.030518043793392843,
-            0.04577706569008926,
-            0.061036087586785685,
+            0.0392156862745098,
+            0.0784313725490196,
+            0.11764705882352941,
+            0.1568627450980392,
         );
-        assert_eq![Rgb16::from_rgb_f64(f), C];
-        assert_eq![C.to_rgb_f64(), f];
-        assert_eq![Rgb16::from_rgba_f64(fa), C];
-        assert_eq![C.to_rgba_f64(4000), fa];
+        assert_eq![Rgb16::from_rgb_f64(f), C16];
+        assert_eq![C16.to_rgb_f64(), f];
+        assert_eq![Rgb16::from_rgba_f64(fa), C16];
+        assert_eq![C16.to_rgba_f64(10280), fa];
     }
 }

@@ -1,5 +1,7 @@
 // devela::media::color::rgb::impls::f32alpha
 
+#![expect(unused)]
+
 use super::*;
 use crate::{ColorBase, Rgb8, Rgba8};
 use crate::{RgbF32, RgbaF32};

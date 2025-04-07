@@ -1,7 +1,7 @@
 // devela::media::color::rgb::impls::u8
 
 use super::*;
-use crate::{ColorBase, Rgb8, Rgba8};
+use crate::{ColorBase, Rgb8, Rgb16, Rgba8, Rgba16};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};
@@ -90,9 +90,30 @@ impl Rgb8 {
             | ((self.b() as u32) << 8)
             | (alpha as u32)
     }
+
+    /* u16 */
+
+    /// Convert to `Rgba8` by scaling each component proportionally.
+    pub fn from_rgb16(from: Rgb16) -> Rgb8 {
+        Rgb8::new(
+            ((from.c[0] + 128) / 257) as u8, // Rounding via +128
+            ((from.c[1] + 128) / 257) as u8,
+            ((from.c[2] + 128) / 257) as u8,
+        )
+    }
+    /// Create from `Rgb16` by scaling each component proportionally.
+    pub fn to_rgb16(self) -> Rgb16 {
+        Rgb16::new(
+            (self.c[0] as u16) * 257, // 255 * 257 = 65535
+            (self.c[1] as u16) * 257,
+            (self.c[2] as u16) * 257,
+        )
+    }
 }
 #[rustfmt::skip]
 impl From<Rgba8> for Rgb8 { fn from(from: Rgba8) -> Rgb8 { Rgb8::from_rgba8(from) } }
+#[rustfmt::skip]
+impl From<Rgb16> for Rgb8 { fn from(from: Rgb16) -> Rgb8 { Rgb8::from_rgb16(from) } }
 
 /// # `f32` conversions
 #[cfg(feature = "_float_f32")]
@@ -162,27 +183,31 @@ impl Rgb8 {
 mod tests {
     use super::*;
 
-    const C: Rgb8 = Rgb8::new(10, 20, 30);
-    const CA: Rgba8 = Rgba8::new(10, 20, 30, 40);
-    const H: u32 = 0x_0A_14_1E;
-    const HA: u32 = 0x_0A_14_1E_28;
+    const C8: Rgb8 = Rgb8::new(10, 20, 30);
+    const CA8: Rgba8 = Rgba8::new(10, 20, 30, 40);
+    const C16: Rgb16 = Rgb16::new(2570, 5140, 7710);
+    const H8: u32 = 0x_0A_14_1E;
+    const HA8: u32 = 0x_0A_14_1E_28;
 
     #[test]
     fn general_conversions() {
         // array/tuple
-        assert_eq![Rgb8::from_array([10, 20, 30]), C];
-        assert_eq![C.as_array(), [10, 20, 30]];
-        assert_eq![Rgb8::from_tuple((10, 20, 30)), C];
-        assert_eq![C.to_tuple(), (10, 20, 30)];
+        assert_eq![Rgb8::from_array([10, 20, 30]), C8];
+        assert_eq![C8.as_array(), [10, 20, 30]];
+        assert_eq![Rgb8::from_tuple((10, 20, 30)), C8];
+        assert_eq![C8.to_tuple(), (10, 20, 30)];
         // rgba
-        assert_eq![Rgb8::from_rgba8(CA), C];
-        assert_eq![C.to_rgba8(40), CA];
+        assert_eq![Rgb8::from_rgba8(CA8), C8];
+        assert_eq![C8.to_rgba8(40), CA8];
         // packed rgb
-        assert_eq![Rgb8::from_rgb8_packed(H), C];
-        assert_eq![C.to_rgb8_packed(), H];
+        assert_eq![Rgb8::from_rgb8_packed(H8), C8];
+        assert_eq![C8.to_rgb8_packed(), H8];
         // packed rgba
-        assert_eq![Rgb8::from_rgba8_packed(HA), C];
-        assert_eq![C.to_rgba8_packed(40), HA];
+        assert_eq![Rgb8::from_rgba8_packed(HA8), C8];
+        assert_eq![C8.to_rgba8_packed(40), HA8];
+        // u16
+        assert_eq![Rgb8::from_rgb16(C16), C8];
+        assert_eq![C8.to_rgb16(), C16];
     }
 
     #[test]
@@ -190,10 +215,10 @@ mod tests {
     fn f32_conversions() {
         let f = RgbF32::new(0.039215688, 0.078431375, 0.11764706);
         let fa = RgbaF32::new(0.039215688, 0.078431375, 0.11764706, 0.15686275);
-        assert_eq![Rgb8::from_rgb_f32(f), C];
-        assert_eq![C.to_rgb_f32(), f];
-        assert_eq![Rgb8::from_rgba_f32(fa), C];
-        assert_eq![C.to_rgba_f32(40), fa];
+        assert_eq![Rgb8::from_rgb_f32(f), C8];
+        assert_eq![C8.to_rgb_f32(), f];
+        assert_eq![Rgb8::from_rgba_f32(fa), C8];
+        assert_eq![C8.to_rgba_f32(40), fa];
     }
 
     #[test]
@@ -206,9 +231,9 @@ mod tests {
             0.11764705882352941,
             0.1568627450980392,
         );
-        assert_eq![Rgb8::from_rgb_f64(f), C];
-        assert_eq![C.to_rgb_f64(), f];
-        assert_eq![Rgb8::from_rgba_f64(fa), C];
-        assert_eq![C.to_rgba_f64(40), fa];
+        assert_eq![Rgb8::from_rgb_f64(f), C8];
+        assert_eq![C8.to_rgb_f64(), f];
+        assert_eq![Rgb8::from_rgba_f64(fa), C8];
+        assert_eq![C8.to_rgba_f64(40), fa];
     }
 }

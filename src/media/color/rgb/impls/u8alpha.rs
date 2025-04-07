@@ -1,7 +1,7 @@
 // devela::media::color::rgb::impls::u8alpha
 
 use super::*;
-use crate::{ColorBase, Rgb8, Rgba8};
+use crate::{ColorBase, Rgb8, Rgb16, Rgba8, Rgba16};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};
@@ -96,9 +96,32 @@ impl Rgba8 {
             | ((self.b() as u32) << 8)
             | (self.a() as u32)
     }
+
+    /* u16 */
+
+    /// Create from `Rgba16` by scaling each component proportionally.
+    pub fn from_rgba16(from: Rgba16) -> Rgba8 {
+        Rgba8::new(
+            ((from.c[0] + 128) / 257) as u8, // Rounding via +128
+            ((from.c[1] + 128) / 257) as u8,
+            ((from.c[2] + 128) / 257) as u8,
+            ((from.c[3] + 128) / 257) as u8,
+        )
+    }
+    /// Convert to Rgba16 by scaling each component proportionally.
+    pub fn to_rgba16(self) -> Rgba16 {
+        Rgba16::new(
+            (self.c[0] as u16) * 257, // 255 * 257 = 65535
+            (self.c[1] as u16) * 257,
+            (self.c[2] as u16) * 257,
+            (self.c[3] as u16) * 257,
+        )
+    }
 }
 #[rustfmt::skip]
 impl From<Rgb8> for Rgba8 { fn from(from: Rgb8) -> Rgba8 { Rgba8::from_rgb8(from, u8::MAX) } }
+#[rustfmt::skip]
+impl From<Rgba16> for Rgba8 { fn from(from: Rgba16) -> Rgba8 { Rgba8::from_rgba16(from) } }
 
 /// # `f32` conversions
 #[cfg(feature = "_float_f32")]
@@ -168,27 +191,31 @@ impl Rgba8 {
 mod tests {
     use super::*;
 
-    const C: Rgb8 = Rgb8::new(10, 20, 30);
-    const CA: Rgba8 = Rgba8::new(10, 20, 30, 40);
-    const H: u32 = 0x_0A_14_1E;
-    const HA: u32 = 0x_0A_14_1E_28;
+    const C8: Rgb8 = Rgb8::new(10, 20, 30);
+    const CA8: Rgba8 = Rgba8::new(10, 20, 30, 40);
+    const CA16: Rgba16 = Rgba16::new(2570, 5140, 7710, 10280);
+    const H8: u32 = 0x_0A_14_1E;
+    const HA8: u32 = 0x_0A_14_1E_28;
 
     #[test]
     fn general_conversions() {
         // array/tuple
-        assert_eq![Rgba8::from_array([10, 20, 30, 40]), CA];
-        assert_eq![CA.as_array(), [10, 20, 30, 40]];
-        assert_eq![Rgba8::from_tuple((10, 20, 30, 40)), CA];
-        assert_eq![CA.to_tuple(), (10, 20, 30, 40)];
+        assert_eq![Rgba8::from_array([10, 20, 30, 40]), CA8];
+        assert_eq![CA8.as_array(), [10, 20, 30, 40]];
+        assert_eq![Rgba8::from_tuple((10, 20, 30, 40)), CA8];
+        assert_eq![CA8.to_tuple(), (10, 20, 30, 40)];
         // rgb
-        assert_eq![Rgba8::from_rgb8(C, 40), CA];
-        assert_eq![CA.to_rgb8(), C];
+        assert_eq![Rgba8::from_rgb8(C8, 40), CA8];
+        assert_eq![CA8.to_rgb8(), C8];
         // packed rgba
-        assert_eq![Rgba8::from_rgba8_packed(HA), CA];
-        assert_eq![CA.to_rgba8_packed(), HA];
+        assert_eq![Rgba8::from_rgba8_packed(HA8), CA8];
+        assert_eq![CA8.to_rgba8_packed(), HA8];
         // packed rgb
-        assert_eq![Rgba8::from_rgb8_packed(H, 40), CA];
-        assert_eq![CA.to_rgb8_packed(), H];
+        assert_eq![Rgba8::from_rgb8_packed(H8, 40), CA8];
+        assert_eq![CA8.to_rgb8_packed(), H8];
+        // u16
+        assert_eq![Rgba8::from_rgba16(CA16), CA8];
+        assert_eq![CA8.to_rgba16(), CA16];
     }
 
     #[test]
@@ -196,10 +223,10 @@ mod tests {
     fn f32_conversions() {
         let f = RgbF32::new(0.039215688, 0.078431375, 0.11764706);
         let fa = RgbaF32::new(0.039215688, 0.078431375, 0.11764706, 0.15686275);
-        assert_eq![Rgba8::from_rgb_f32(f, 0.156), CA];
-        assert_eq![CA.to_rgb_f32(), f];
-        assert_eq![Rgba8::from_rgba_f32(fa), CA];
-        assert_eq![CA.to_rgba_f32(), fa];
+        assert_eq![Rgba8::from_rgb_f32(f, 0.156), CA8];
+        assert_eq![CA8.to_rgb_f32(), f];
+        assert_eq![Rgba8::from_rgba_f32(fa), CA8];
+        assert_eq![CA8.to_rgba_f32(), fa];
     }
 
     #[test]
@@ -212,9 +239,9 @@ mod tests {
             0.11764705882352941,
             0.1568627450980392,
         );
-        assert_eq![Rgba8::from_rgb_f64(f, 0.156), CA];
-        assert_eq![CA.to_rgb_f64(), f];
-        assert_eq![Rgba8::from_rgba_f64(fa), CA];
-        assert_eq![CA.to_rgba_f64(), fa];
+        assert_eq![Rgba8::from_rgb_f64(f, 0.156), CA8];
+        assert_eq![CA8.to_rgb_f64(), f];
+        assert_eq![Rgba8::from_rgba_f64(fa), CA8];
+        assert_eq![CA8.to_rgba_f64(), fa];
     }
 }
