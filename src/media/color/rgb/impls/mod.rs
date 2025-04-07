@@ -7,10 +7,10 @@ mod helpers; // helper fns
 mod u8;
 mod u8alpha;
 // mod u16;
-// #[cfg(feature = "_float_f32")]
-// mod f32;
-// #[cfg(feature = "_float_f64")]
-// mod f64;
+#[cfg(feature = "_float_f32")]
+crate::items! { mod f32; mod f32alpha; }
+#[cfg(feature = "_float_f64")]
+crate::items! { mod f64; mod f64alpha; }
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]

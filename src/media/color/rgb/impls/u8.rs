@@ -198,4 +198,31 @@ mod tests {
         assert_eq![Rgb8::from_rgba8_packed(HA), C];
         assert_eq![C.to_rgba8_packed(40), HA];
     }
+
+    #[test]
+    #[cfg(feature = "_float_f32")]
+    fn f32_conversions() {
+        let f = RgbF32::new(0.039215688, 0.078431375, 0.11764706);
+        let fa = RgbaF32::new(0.039215688, 0.078431375, 0.11764706, 0.15686275);
+        assert_eq![Rgb8::from_rgb_f32(f), C];
+        assert_eq![C.to_rgb_f32(), f];
+        assert_eq![Rgb8::from_rgba_f32(fa), C];
+        assert_eq![C.to_rgba_f32(40), fa];
+    }
+
+    #[test]
+    #[cfg(feature = "_float_f64")]
+    fn f64_conversions() {
+        let f = RgbF64::new(0.0392156862745098, 0.0784313725490196, 0.11764705882352941);
+        let fa = RgbaF64::new(
+            0.0392156862745098,
+            0.0784313725490196,
+            0.11764705882352941,
+            0.1568627450980392,
+        );
+        assert_eq![Rgb8::from_rgb_f64(f), C];
+        assert_eq![C.to_rgb_f64(), f];
+        assert_eq![Rgb8::from_rgba_f64(fa), C];
+        assert_eq![C.to_rgba_f64(40), fa];
+    }
 }
