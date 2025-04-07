@@ -4,8 +4,8 @@
 //
 
 mod helpers; // helper fns
-// mod u8;
-// mod u8alpha;
+mod u8;
+mod u8alpha;
 // mod u16;
 // #[cfg(feature = "_float_f32")]
 // mod f32;
