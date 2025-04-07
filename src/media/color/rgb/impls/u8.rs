@@ -26,6 +26,12 @@ impl Rgb8 {
     pub const fn to_array(self) -> [u8; 3] {
         [self.r, self.g, self.b]
     }
+    /// Borrows the RGB bytes as an array reference.
+    #[cfg(feature = "unsafe_layout")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+    pub const fn as_array(&self) -> &[u8; 3] {
+        unsafe { &*(self as *const Self as *const [u8; 3]) }
+    }
 
     /// Create from a tuple.
     pub const fn from_tuple(c: (u8, u8, u8)) -> Rgb8 {
