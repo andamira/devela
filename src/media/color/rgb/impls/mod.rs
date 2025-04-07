@@ -7,8 +7,8 @@ mod helpers; // helper fns
 
 mod u8;
 mod u8alpha;
-// mod u16;
-// mod u16alpha;
+mod u16;
+mod u16alpha;
 
 #[cfg(feature = "_float_f32")]
 crate::items! { mod f32; mod f32alpha; }
