@@ -66,11 +66,6 @@ mod full_composite {
         #[cfg_attr(nightly_doc, doc(cfg(data··)))]
         Data(DataError),
 
-        /// A media-related error.
-        #[cfg(media··)]
-        #[cfg_attr(nightly_doc, doc(cfg(media··)))]
-        Media(MediaError),
-
         /// A numeric-related error.
         Num(NumError),
 
@@ -106,11 +101,6 @@ mod full_composite {
         #[cfg_attr(nightly_doc, doc(cfg(data··)))]
         Data(()), // TODO
 
-        /// A media-related error.
-        #[cfg(media··)]
-        #[cfg_attr(nightly_doc, doc(cfg(media··)))]
-        Media(()), // TODO
-        //
         /// A numeric-related error.
         Num(()), // TODO
 
@@ -149,8 +139,6 @@ mod full_composite {
                 match (self, other) {
                     #[cfg(data··)]
                     (E::Data(e1), E::Data(e2)) => e1.error_eq(e2),
-                    #[cfg(media··)]
-                    (E::Media(e1), E::Media(e2)) => e1.error_eq(e2),
                     (E::Num(e1), E::Num(e2)) => e1.error_eq(e2),
                     #[cfg(feature = "io")]
                     (E::Io(e1), E::Io(e2)) => e1.error_eq(e2),
@@ -169,8 +157,6 @@ mod full_composite {
                 match self {
                     #[cfg(data··)]
                     E::Data(e) => K::Data(e.error_kind()),
-                    #[cfg(media··)]
-                    E::Media(e) => K::Media(e.error_kind()),
                     E::Num(e) => K::Num(e.error_kind()),
                     #[cfg(feature = "io")]
                     E::Io(e) => K::Io(e.error_kind()),
@@ -188,8 +174,6 @@ mod full_composite {
             match self {
                 #[cfg(data··)]
                 E::Data(e) => write!(f, "{e:?}"),
-                #[cfg(media··)]
-                E::Media(e) => write!(f, "{e:?}"),
                 E::Num(e) => write!(f, "{e:?}"),
                 #[cfg(feature = "io")]
                 E::Io(e) => write!(f, "{e:?}"),

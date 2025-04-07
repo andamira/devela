@@ -40,6 +40,9 @@
   - features: `game`, `game_safe`.
   - reflection flags: `game··`.
 
+## media
+- delete: `[Audio|Color|Draw|Font|Media|Midi][Result|Error]`.
+
 ## num
 ### float
 - add:

@@ -5,9 +5,8 @@
 // safety
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
-mod base;
-mod error;
-mod namespace;
+mod base; // trait ColorBase
+mod namespace; // struct Color
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -16,10 +15,10 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{base::*, error::*, namespace::*};
+        pub use super::{base::*, namespace::*};
         // WIPZONE
         // pub use super::gray::*;
-        // pub use super::rgb::*;
+        // pub use super::rgb::_all::*;
         // pub use super::spectral::*;
     }
     pub(super) mod _all {

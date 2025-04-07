@@ -7,9 +7,6 @@
 // safety
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 
-#[cfg(media··)]
-#[cfg_attr(nightly_doc, doc(cfg(media··)))]
-mod error;
 #[cfg(feature = "audio")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "audio")))]
 pub mod audio;
@@ -37,7 +34,6 @@ crate::items! { // structural access: _pub_mods, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _pub_mods { #![allow(unused)]
-        #[cfg(media··)] pub use super::error::*;
         #[cfg(feature = "audio")] pub use super::audio::_all::*;
         #[cfg(feature = "color")] pub use super::color::_all::*;
         #[cfg(feature = "draw")]  pub use super::draw::_all::*;

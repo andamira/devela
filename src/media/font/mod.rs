@@ -6,7 +6,6 @@
 #![cfg_attr(feature = "safe_font", forbid(unsafe_code))]
 
 mod bitmap;
-mod error;
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -15,7 +14,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{bitmap::*, error::*};
+        pub use super::bitmap::*;
         // WIPZONE
         // #[cfg(feature = "std")]
         // pub use super::bdf::*;

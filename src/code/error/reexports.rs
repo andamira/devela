@@ -34,28 +34,9 @@ pub(crate) mod crate_errors {
     #[cfg(data··)]
     pub use crate::{DataError, DataResult};
 
-    /* media */
-    #[doc(inline)]
-    #[cfg(feature = "audio")]
-    pub use crate::media::audio::{AudioError, AudioResult};
-    #[doc(inline)]
-    #[cfg(feature = "color")]
-    pub use crate::media::color::{ColorError, ColorResult};
-    #[doc(inline)]
-    #[cfg(feature = "draw")]
-    pub use crate::media::draw::{DrawError, DrawResult};
-    #[doc(inline)]
-    #[cfg(feature = "font")]
-    pub use crate::media::font::{FontError, FontResult};
     #[doc(inline)]
     #[cfg(feature = "image")]
     pub use crate::media::image::{ImageError, ImageResult};
-    #[doc(inline)]
-    #[cfg(feature = "midi")]
-    pub use crate::media::midi::{MidiError, MidiResult};
-    #[doc(inline)]
-    #[cfg(media··)]
-    pub use crate::media::{MediaError, MediaResult};
 
     /* num */
     #[doc(inline)]

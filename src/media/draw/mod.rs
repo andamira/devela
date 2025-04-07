@@ -5,8 +5,6 @@
 // safety
 #![cfg_attr(feature = "safe_draw", forbid(unsafe_code))]
 
-mod error;
-
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
@@ -14,14 +12,13 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::error::*;
         // WIPZONE
         // pub use super::buffer::*;
         // pub use super::canvas::*;
         // pub use super::grid::*;
         // pub use super::line::*;
     }
-    pub(super) mod _all {
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }

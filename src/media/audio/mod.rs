@@ -5,8 +5,6 @@
 // safety
 #![cfg_attr(feature = "safe_audio", forbid(unsafe_code))]
 
-mod error;
-
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
@@ -14,12 +12,15 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::error::*;
+        // WIPZONE
+        // pub use super::drum_machine::*;
     }
-    pub(super) mod _all {
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
     }
 }
+// WIPZONE
+// mod drum_machine;

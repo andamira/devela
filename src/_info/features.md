@@ -67,6 +67,7 @@ Root modules & public sub-modules features:
   - [`draw`]:
   - [`font`]:
   - [`image`]:
+  - [`video`]:
 - [`num`]:
   - [`geom`][crate::num::geom]: geometry.
     - `linear`:
@@ -117,6 +118,7 @@ Root modules & public sub-modules features:
   [`draw`]:       crate::media::draw
   [`font`]:       crate::media::font
   [`image`]:      crate::media::image
+  [`video`]:      crate::media::video
 [`num`]:          crate::num
   [`logic`]:      crate::num::logic
   [`rand`]:       crate::num::rand
