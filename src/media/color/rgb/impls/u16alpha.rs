@@ -18,7 +18,7 @@ impl ColorBase for Rgba16 {
 #[allow(missing_docs)]
 #[rustfmt::skip]
 impl Rgba16 {
-    /// New `Rgba16`.
+    /// New `Rgba<u16>`.
     pub const fn new(r: u16, g: u16, b: u16, a: u16) -> Rgba16 { Self { c: [r, g, b, a] } }
     /// The red component.
     pub const fn red(self) -> u16 { self.c[0] }
@@ -56,13 +56,13 @@ impl Rgba16 {
 
     /* Rgb16 */
 
-    /// Create from [`Rgb16`].
+    /// Create from [`Rgb<u16>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn from_rgb16(c: Rgb16, alpha: u16) -> Rgba16 {
         Rgba16::new(c.r(), c.g(), c.b(), alpha)
     }
-    /// Convert to [`Rgb16`].
+    /// Convert to [`Rgb<u16>`].
     ///
     /// Loses the alpha channel.
     pub const fn to_rgb16(self) -> Rgb16 {
@@ -112,24 +112,24 @@ impl From<Rgb16> for Rgba16 {
 #[cfg(feature = "_float_f32")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
 impl Rgba16 {
-    /// Create from [`RgbF32`].
+    /// Create from [`Rgb<f32>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn from_rgb_f32(c: RgbF32, alpha: f32) -> Rgba16 {
         Rgba16::new(f32_to_u16(c.r()), f32_to_u16(c.g()), f32_to_u16(c.b()), f32_to_u16(alpha))
     }
-    /// Convert to [`RgbF32`].
+    /// Convert to [`Rgb<f32>`].
     ///
     /// Loses the alpha channel.
     pub const fn to_rgb_f32(self) -> RgbF32 {
         RgbF32::new(u16_to_f32(self.r()), u16_to_f32(self.g()), u16_to_f32(self.b()))
     }
 
-    /// Create from [`RgbaF32`].
+    /// Create from [`Rgba<f32>`].
     pub const fn from_rgba_f32(c: RgbaF32) -> Rgba16 {
         Rgba16::new(f32_to_u16(c.r()), f32_to_u16(c.g()), f32_to_u16(c.b()), f32_to_u16(c.a()))
     }
-    /// Convert to [`RgbaF32`].
+    /// Convert to [`Rgba<f32>`].
     pub const fn to_rgba_f32(self) -> RgbaF32 {
         RgbaF32::new(
             u16_to_f32(self.r()),
@@ -144,24 +144,24 @@ impl Rgba16 {
 #[cfg(feature = "_float_f64")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f64")))]
 impl Rgba16 {
-    /// Create from [`RgbF64`].
+    /// Create from [`Rgb<f64>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn from_rgb_f64(c: RgbF64, alpha: f64) -> Rgba16 {
         Rgba16::new(f64_to_u16(c.r()), f64_to_u16(c.g()), f64_to_u16(c.b()), f64_to_u16(alpha))
     }
-    /// Convert to [`RgbF64`].
+    /// Convert to [`Rgb<f64>`].
     ///
     /// Loses the alpha channel.
     pub const fn to_rgb_f64(self) -> RgbF64 {
         RgbF64::new(u16_to_f64(self.r()), u16_to_f64(self.g()), u16_to_f64(self.b()))
     }
 
-    /// Create from [`RgbaF64`].
+    /// Create from [`Rgba<f64>`].
     pub const fn from_rgba_f64(c: RgbaF64) -> Rgba16 {
         Rgba16::new(f64_to_u16(c.r()), f64_to_u16(c.g()), f64_to_u16(c.b()), f64_to_u16(c.a()))
     }
-    /// Convert to [`RgbaF64`].
+    /// Convert to [`Rgba<f64>`].
     pub const fn to_rgba_f64(self) -> RgbaF64 {
         RgbaF64::new(
             u16_to_f64(self.r()),

@@ -44,7 +44,8 @@
 - delete: `[Audio|Color|Draw|Font|Media|Midi][Result|Error]`.
 
 ### color
-- add types: `Rgb[a][8|16|F32|F64]`, `Rgb[a]Lin[F32|F64]`
+- add types: `Rgb`, `Rgba`.
+  - implement for `u8`, `u16`, `f32`, `f64`.
 - add module: `media::color::rgb`.
 
 ## num

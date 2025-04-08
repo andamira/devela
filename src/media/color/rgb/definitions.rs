@@ -1,184 +1,48 @@
 // devela::media::color::rgb::definitions
 //
-//!
+//! Defines the [`Rgb`] and [`Rgba`] types.
 //
 
-/* u8 */
-
-/// sRGB color (non-linear, gamma-encoded) with 3 [`u8`] components.
-/// - **Range**: `0` to `255` (integer).
-/// - **Use**: Display, storage (e.g., textures, framebuffers).
+/// RGB color with 3 components.
 #[repr(C)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Rgb8 {
+pub struct Rgb<T, const LINEAR: bool = false> {
     /// Color channels in order: [red, green, blue].
     ///
     /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=255).
-    pub c: [u8; 3],
+    pub c: [T; 3],
 }
-/// sRGB color (non-linear, gamma-encoded) with 4 [`u8`] components (RGB + linear alpha).
-/// - **Range**: `0` to `255` (integer).
-/// - **Use**: Display, storage (e.g., textures with blending).
+/// RGB+A color with 4 components.
 #[repr(C)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Rgba8 {
+pub struct Rgba<T, const LINEAR: bool = false> {
     /// Color channels in order: [red, green, blue, alpha].
     ///
     /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=255).
     /// - **Alpha**: Linear opacity (0 = transparent, 255 = opaque).
-    pub c: [u8; 4],
+    pub c: [T; 4],
 }
 
-/* u16 */
+/* aliases */
 
-/// sRGB color (non-linear, gamma-encoded) with 3 [`u16`] components.
-/// - **Range**: `0` to `65535` (higher precision than [`Rgb8`]).
-/// - **Use**: High-depth storage (e.g., 16-bit PNGs, HDR intermediates).
-#[repr(C)]
-#[must_use]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Rgb16 {
-    /// Color channels in order: [red, green, blue].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=65_535).
-    pub c: [u16; 3],
-}
-/// sRGB color (non-linear, gamma-encoded) with 4 [`u16`] components (RGB + linear alpha).
-/// - **Range**: `0` to `65535` (higher precision than [`Rgba8`]).
-/// - **Use**: High-depth storage (e.g., 16-bit PNGs, HDR intermediates).
-#[repr(C)]
-#[must_use]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Rgba16 {
-    /// Color channels in order: [red, green, blue, alpha].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=65_535).
-    /// - **Alpha**: Linear opacity (0 = transparent, 65_535 = opaque).
-    pub c: [u16; 4],
-}
+pub(crate) type Rgb8 = Rgb<u8>;
+pub(crate) type Rgba8 = Rgba<u8>;
+pub(crate) type Rgb16 = Rgb<u16>;
+pub(crate) type Rgba16 = Rgba<u16>;
 
-/* f32 */
-
-/// sRGB color (non-linear, gamma-encoded) with 3 [`f32`] components.
-/// - **Range**: 0.0 to 1.0 (clamped)
-/// - **Use**: Gamma-space workflows (e.g., color grading, UI colors)
-#[repr(C)]
-#[must_use]
 #[cfg(feature = "_float_f32")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbF32 {
-    /// Color channels in order: [red, green, blue].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=65_535).
-    pub c: [f32; 3],
+crate::items! {
+    pub(crate) type RgbF32 = Rgb<f32>;
+    pub(crate) type RgbaF32 = Rgba<f32>;
+    pub(crate) type RgbLinF32 = Rgb<f32, true>;
+    pub(crate) type RgbaLinF32 = Rgba<f32, true>;
 }
-/// sRGB color (non-linear, gamma-encoded) with 4 [`f32`] components (RGB + linear alpha).
-/// - **Range**: 0.0 to 1.0 (clamped)
-/// - **Use**: Gamma-space rendering with blending (e.g., transparent UI elements)
-#[repr(C)]
-#[must_use]
-#[cfg(feature = "_float_f32")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbaF32 {
-    /// Color channels in order: [red, green, blue, alpha].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=1.0).
-    /// - **Alpha**: Linear opacity (0 = transparent, 1.0 = opaque).
-    pub c: [f32; 4],
-}
-
-/// Linear RGB color with 3 [`f32`] components (no gamma encoding).
-/// - **Range**: 0.0 to ∞ (HDR-capable)
-/// - **Use**: Physical light calculations (e.g., shaders, ray tracing)
-#[repr(C)]
-#[must_use]
-#[cfg(feature = "_float_f32")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbLinF32 {
-    /// Color channels in order: [red, green, blue].
-    ///
-    /// - **Red/Green/Blue**: Physical light intensity (unbounded, HDR).
-    pub c: [f32; 3],
-}
-/// Linear RGB color with 4 [`f32`] components (RGB + linear alpha).
-/// - **Range**: 0.0 to ∞ (HDR-capable)
-/// - **Use**: Physical rendering (e.g., transparent materials, volumetrics)
-#[repr(C)]
-#[must_use]
-#[cfg(feature = "_float_f32")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbaLinF32 {
-    /// Color channels in order: [red, green, blue, alpha].
-    ///
-    /// - **Red/Green/Blue**: Physical light intensity (unbounded, HDR).
-    /// - **Alpha**: Linear opacity (0.0 = transparent, 1.0 = opaque).
-    pub c: [f32; 4],
-}
-
-/* f64 */
-
-/// sRGB color (non-linear, gamma-encoded) with 3 [`f64`] components.
-/// - **Range**: 0.0 to 1.0 (clamped)
-/// - **Use**: Gamma-space workflows (e.g., color grading, UI colors)
-#[repr(C)]
-#[must_use]
 #[cfg(feature = "_float_f64")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f64")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbF64 {
-    /// Color channels in order: [red, green, blue].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=65_535).
-    pub c: [f64; 3],
-}
-/// sRGB color (non-linear, gamma-encoded) with 4 [`f64`] components (RGB + linear alpha).
-/// - **Range**: 0.0 to 1.0 (clamped)
-/// - **Use**: Gamma-space rendering with blending (e.g., transparent UI elements)
-#[repr(C)]
-#[must_use]
-#[cfg(feature = "_float_f64")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f64")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbaF64 {
-    /// Color channels in order: [red, green, blue, alpha].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=1.0).
-    /// - **Alpha**: Linear opacity (0 = transparent, 1.0 = opaque).
-    pub c: [f64; 4],
-}
-
-/// Linear RGB color with 3 [`f64`] components (no gamma encoding).
-/// - **Range**: 0.0 to ∞ (HDR-capable)
-/// - **Use**: Physical light calculations (e.g., shaders, ray tracing)
-#[repr(C)]
-#[must_use]
-#[cfg(feature = "_float_f64")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f64")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbLinF64 {
-    /// Color channels in order: [red, green, blue].
-    ///
-    /// - **Red/Green/Blue**: Physical light intensity (unbounded, HDR).
-    pub c: [f64; 3],
-}
-/// Linear RGB color with 4 [`f64`] components (RGB + linear alpha).
-/// - **Range**: 0.0 to ∞ (HDR-capable)
-/// - **Use**: Physical rendering (e.g., transparent materials, volumetrics)
-#[repr(C)]
-#[must_use]
-#[cfg(feature = "_float_f64")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f64")))]
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct RgbaLinF64 {
-    /// Color channels in order: [red, green, blue, alpha].
-    ///
-    /// - **Red/Green/Blue**: Physical light intensity (unbounded, HDR).
-    /// - **Alpha**: Linear opacity (0.0 = transparent, 1.0 = opaque).
-    pub c: [f64; 4],
+crate::items! {
+    pub(crate) type RgbF64 = Rgb<f64>;
+    pub(crate) type RgbaF64 = Rgba<f64>;
+    pub(crate) type RgbLinF64 = Rgb<f64, true>;
+    pub(crate) type RgbaLinF64 = Rgba<f64, true>;
 }

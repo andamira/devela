@@ -18,7 +18,7 @@ impl ColorBase for Rgb8 {
 #[allow(missing_docs)]
 #[rustfmt::skip]
 impl Rgb8 {
-    /// New `Rgb8`.
+    /// New `Rgb<u8>`.
     pub const fn new(r: u8, g: u8, b: u8) -> Rgb8 { Self { c: [r, g, b] } }
     /// The red component.
     pub const fn red(self) -> u8 { self.c[0] }
@@ -52,13 +52,13 @@ impl Rgb8 {
 
     /* Rgba8 */
 
-    /// Create from [`Rgba8`].
+    /// Create from [`Rgba<u8>`].
     ///
     /// Loses the alpha channel.
     pub const fn from_rgba8(c: Rgba8) -> Rgb8 {
         Rgb8::new(c.r(), c.g(), c.b())
     }
-    /// Convert to [`Rgba8`].
+    /// Convert to [`Rgba<u8>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn to_rgba8(self, alpha: u8) -> Rgba8 {
@@ -100,7 +100,7 @@ impl Rgb8 {
 
     /* u16 */
 
-    /// Convert to `Rgba8` by scaling each component proportionally.
+    /// Convert to `Rgba<u8>` by scaling each component proportionally.
     pub fn from_rgb16(from: Rgb16) -> Rgb8 {
         Rgb8::new(
             ((from.c[0] + 128) / 257) as u8, // Rounding via +128
@@ -108,7 +108,7 @@ impl Rgb8 {
             ((from.c[2] + 128) / 257) as u8,
         )
     }
-    /// Create from `Rgb16` by scaling each component proportionally.
+    /// Create from `Rgb<u16>` by scaling each component proportionally.
     pub fn to_rgb16(self) -> Rgb16 {
         Rgb16::new(
             (self.c[0] as u16) * 257, // 255 * 257 = 65535
@@ -126,22 +126,22 @@ impl From<Rgb16> for Rgb8 { fn from(from: Rgb16) -> Rgb8 { Rgb8::from_rgb16(from
 #[cfg(feature = "_float_f32")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
 impl Rgb8 {
-    /// Create from [`RgbF32`].
+    /// Create from [`Rgb<f32>`].
     pub const fn from_rgb_f32(c: RgbF32) -> Rgb8 {
         Rgb8::new(f32_to_u8(c.r()), f32_to_u8(c.g()), f32_to_u8(c.b()))
     }
-    /// Convert to [`RgbF32`].
+    /// Convert to [`Rgb<f32>`].
     pub const fn to_rgb_f32(self) -> RgbF32 {
         RgbF32::new(u8_to_f32(self.r()), u8_to_f32(self.g()), u8_to_f32(self.b()))
     }
 
-    /// Create from [`RgbaF32`].
+    /// Create from [`Rgba<f32>`].
     ///
     /// Loses the alpha channel.
     pub const fn from_rgba_f32(c: RgbaF32) -> Rgb8 {
         Rgb8::new(f32_to_u8(c.r()), f32_to_u8(c.g()), f32_to_u8(c.b()))
     }
-    /// Convert to [`RgbaF32`].
+    /// Convert to [`Rgba<f32>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn to_rgba_f32(self, alpha: u8) -> RgbaF32 {
@@ -158,22 +158,22 @@ impl Rgb8 {
 #[cfg(feature = "_float_f64")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f64")))]
 impl Rgb8 {
-    /// Create from [`RgbF64`].
+    /// Create from [`Rgb<f64>`].
     pub const fn from_rgb_f64(c: RgbF64) -> Rgb8 {
         Rgb8::new(f64_to_u8(c.r()), f64_to_u8(c.g()), f64_to_u8(c.b()))
     }
-    /// Convert to [`RgbF64`].
+    /// Convert to [`Rgb<f64>`].
     pub const fn to_rgb_f64(self) -> RgbF64 {
         RgbF64::new(u8_to_f64(self.r()), u8_to_f64(self.g()), u8_to_f64(self.b()))
     }
 
-    /// Create from [`RgbaF64`].
+    /// Create from [`Rgba<f64>`].
     ///
     /// Loses the alpha channel.
     pub const fn from_rgba_f64(c: RgbaF64) -> Rgb8 {
         Rgb8::new(f64_to_u8(c.r()), f64_to_u8(c.g()), f64_to_u8(c.b()))
     }
-    /// Convert to [`RgbaF64`].
+    /// Convert to [`Rgba<f64>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn to_rgba_f64(self, alpha: u8) -> RgbaF64 {
