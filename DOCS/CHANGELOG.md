@@ -44,7 +44,7 @@
 - delete: `[Audio|Color|Draw|Font|Media|Midi][Result|Error]`.
 
 ### color
-- add types: `Rgb`, `Rgba`.
+- add types: `Luma`, `Luminance`, `Rgb`, `Rgba`.
   - implement for `u8`, `u16`, `f32`, `f64`.
 - add module: `media::color::rgb`.
 
