@@ -28,6 +28,8 @@ pub trait ColorBase {
     // TODO: Return Error
     fn color_components_write(&self, buffer: &mut [Self::Component]);
 
+    /* non-required */
+
     /// Returns a vector containing the color components.
     #[cfg(feature = "alloc")]
     fn color_components_vec(&self) -> Vec<Self::Component>

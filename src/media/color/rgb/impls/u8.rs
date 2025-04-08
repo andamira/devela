@@ -8,6 +8,13 @@ use crate::{RgbF32, RgbaF32};
 #[cfg(feature = "_float_f64")]
 use crate::{RgbF64, RgbaF64};
 
+#[rustfmt::skip]
+impl ColorBase for Rgb8 {
+    type Component = u8;
+    fn color_component_count(&self) -> usize { 3 }
+    fn color_components_write(&self, b: &mut[u8]) { b.copy_from_slice(&self.c); }
+}
+
 #[allow(missing_docs)]
 #[rustfmt::skip]
 impl Rgb8 {
