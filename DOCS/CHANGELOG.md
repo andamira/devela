@@ -53,10 +53,12 @@
   - new `Float` methods: `classify`, `next_down`, `next_up`.
 
 ### niche
+- add new:
+  - macros: `ne!`, `nz!`.
+  - types: `Non[Extreme|Value][I|U]size`.
+  - methods to `NonValue*`: `new_lossy`.
 - make `impl_non_value!` private.
 - pre-generate all `NonValue*` types.
-- add `Non[Extreme|Value][I|U]size` types.
-- add new method to `NonValue*`: `new_lossy`.
 - improve the efficiency of `NonValue*<MAX>`.
 
 ## sys

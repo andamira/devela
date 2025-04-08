@@ -48,6 +48,7 @@
 //
 
 mod mem;
+mod macros; // ne!, nz!
 mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -57,7 +58,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{mem::*, reexports::*};
+        pub use super::{mem::*, macros::*, reexports::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
