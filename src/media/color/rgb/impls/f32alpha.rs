@@ -3,13 +3,13 @@
 #![expect(unused)]
 
 use super::*;
-use crate::{ColorBase, Rgb8, Rgba8};
+use crate::{Color, Rgb8, Rgba8};
 use crate::{RgbF32, RgbaF32};
 #[cfg(feature = "_float_f64")]
 use crate::{RgbF64, RgbaF64};
 
 #[rustfmt::skip]
-impl ColorBase for RgbaF32 {
+impl Color for RgbaF32 {
     type Component = f32;
     fn color_component_count(&self) -> usize { 4 }
     fn color_components_write(&self, b: &mut[f32]) { b.copy_from_slice(&self.c); }

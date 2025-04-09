@@ -44,9 +44,13 @@
 - delete: `[Audio|Color|Draw|Font|Media|Midi][Result|Error]`.
 
 ### color
-- add types: `Luma`, `Luminance`, `Rgb`, `Rgba`.
+- add types: `Gamma`, `Lum`, `Rgb`, `Rgba`.
   - implement for `u8`, `u16`, `f32`, `f64`.
+- add `Lum` sub-type aliases: `Lightness`, `LinearLightness`, `Luma`, `Luminance`.
 - add module: `media::color::rgb`.
+- remove the `Color` namespace.
+  - move all its functionality to `Gamma`.
+- rename the `ColorBase` trait to `Color`.
 
 ## num
 ### float

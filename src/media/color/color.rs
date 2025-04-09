@@ -1,6 +1,6 @@
-// devela::media::color::base
+// devela::media::color::color
 //
-//!
+//! Defines the [`Color`] trait.
 //
 
 #[cfg(feature = "alloc")]
@@ -10,7 +10,7 @@ use crate::{Vec, vec_ as vec};
 ///
 /// Provides a core interface for working with color data across different
 /// formats and models, supporting both practical and scientific applications.
-pub trait ColorBase {
+pub trait Color {
     /// The type used for color components.
     type Component;
 

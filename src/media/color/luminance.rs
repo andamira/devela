@@ -1,107 +1,176 @@
 // devela::media::color::luminance
+//
+//! Defines the [`Lum`] type and aliases:
+//! [`Luminance`], [`Lightness`], [`Luma`], `LinearLightness`.
+//
 
 use super::*;
 use crate::NumConst;
+#[cfg(any(feature = "std", _float··))]
+use crate::is;
+#[cfg(_float··)]
+use crate::{ExtFloat, Float};
 
-/// Luminance representation.
+/// A generic luminance-like component.
 ///
-/// By default represents linear light.
+/// Represents either physical luminance, gamma-encoded luma, or perceptual lightness,
+/// depending on the `LINEAR` and `LIGHTNESS` flags.
+///
+/// Variants (in order of typical usage):
+/// - [`Luminance<T>`]:        linear, physical
+/// - [`Lightness<T>`]:        non-linear, perceptual
+/// - [`Luma<T>`]:             non-linear, technical
+/// - [`LinearLightness<T>`]:  linear, perceptual (experimental hybrid)
 #[must_use]
 #[repr(C)]
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Luminance<T, const LINEAR: bool = true> {
-    /// Luminosity channel.
+pub struct Lum<T, const LINEAR: bool = true, const LIGHTNESS: bool = false> {
+    /// The luminance-like channel value.
     pub c: [T; 1],
 }
-/// The weighted sum of gamma-compressed R'G'B' components.
-pub type Luma<T> = Luminance<T, false>;
 
-crate::CONST! {
-    DOC_709 = "Returns the [Rec. 709]  R'G'B' coefficients.\n
-[Rec. 709]; https://en.wikipedia.org/wiki/Rec._709";
-    DOC_601 = "Returns the [Rec. 601]  R'G'B' coefficients (SDTV).\n
-[Rec. 601]; https://en.wikipedia.org/wiki/Rec._601";
-}
+/* aliases*/
 
-impl<const LINEAR: bool> Luminance<f32, LINEAR> {
-    #[doc = DOC_709!()]
-    pub const fn rec_709() -> [f32; 3] { [0.212_639_f32, 0.715_169, 0.072_192] }
-    #[doc = DOC_601!()]
-    pub const fn rec_601() -> [f32; 3] { [0.299, 0.587, 0.114] }
+/// Physical [luminance].
+///
+/// Linear light intensity, measured in cd/m² or normalized to [0.0, 1.0].
+///
+/// [luminance]: https://en.wikipedia.org/wiki/Luminance
+pub type Luminance<T> = Lum<T, true, false>;
 
-}
-impl<const LINEAR: bool> Luminance<f64, LINEAR> {
-    #[doc = DOC_709!()]
-    pub const fn rec_709() -> [f64; 3] { [0.212_639_f64, 0.715_169, 0.072_192] }
-    #[doc = DOC_601!()]
-    pub const fn rec_601() -> [f64; 3] { [0.299, 0.587, 0.114] }
-}
+/// Perceptual [lightness] (L*).
+///
+/// Non-linear encoding of luminance,
+/// normalized to [0.0, 1.0] for floats or 0..=MAX for integers.
+///
+/// [lightness]: https://en.wikipedia.org/wiki/Lightness
+pub type Lightness<T> = Lum<T, false, true>;
 
-macro_rules! impl_luminance {
+/// Gamma-encoded [luma] (Y′).
+///
+/// A non-linear approximation of luminance, typically used in video systems.
+///
+/// [luma]: https://en.wikipedia.org/wiki/Luma_(video)
+pub type Luma<T> = Lum<T, false, false>;
+
+/// Linearized perceptual lightness (L* in linear space).
+///
+/// Use cases include:
+/// - Combining linear luminance (for precise computations)
+///   and perceptual lightness (for display scaling).
+/// - Tone mapping in HDR imaging, where linear data is scaled to a perceptual range.
+/// - Representing raw radiometric data (e.g., watts/sr/m²) prior to photometric weighting (CIE Y).
+pub type LinearLightness<T> = Lum<T, true, true>;
+
+/// ## Args
+/// `$T`: the type used to represent the main value. (u8, u16, f32, f64)
+/// `$f`: associated floating-point type for operations. (f32|f64)
+/// `$B`: float-related feature bound. ("_float_f32"|"_float_f64")
+macro_rules! impl_lum {
     () => {
-        impl_luminance![common u8, u16];
-        // TODO
-        // #[cfg(feature = "_float_f32")]
-        // impl_luminance![common f32];
-        // #[cfg(feature = "_float_f64")]
-        // impl_luminance![common f64];
+        impl_lum![common u8|f32, u16|f32];
+        #[cfg(feature = "_float_f32")] impl_lum![common f32|f32];
+        #[cfg(feature = "_float_f64")] impl_lum![common f64|f64];
 
-        // impl_luminance![non-linear u8, u16];
-        // #[cfg(feature = "_float_f32")]
-        // impl_luminance![non-linear f32];
-        // #[cfg(feature = "_float_f64")]
-        // impl_luminance![non-linear f64];
+        impl_lum![luminance u8|f32:"_float_f32", u16|f32:"_float_f32"];
+        #[cfg(feature = "_float_f32")]impl_lum![luminance f32|f32:"_float_f32"];
+        #[cfg(feature = "_float_f64")]impl_lum![luminance f64|f64:"_float_f64"];
 
-        // $( impl_luminance![linear u8, u16, f32, f64]; )+ // TODO
+        impl_lum![luma u8|f32:"_float_f32", u16|f32:"_float_f32"];
+        #[cfg(feature = "_float_f32")]impl_lum![luma f32|f32:"_float_f32"];
+        #[cfg(feature = "_float_f64")]impl_lum![luma f64|f64:"_float_f64"];
+
+        impl_lum![l_lightness u8|f32:"_float_f32", u16|f32:"_float_f32"];
+        #[cfg(feature = "_float_f32")]impl_lum![l_lightness f32|f32:"_float_f32"];
+        #[cfg(feature = "_float_f64")]impl_lum![l_lightness f64|f64:"_float_f64"];
     };
-    (common $( $T:ty ),+) => { $( impl_luminance![@common $T]; )+ };
-    (@common $T:ty) => {
-        impl<const LINEAR: bool> ColorBase for Luminance<$T, LINEAR> {
+    ( // Methods common to all types.
+      common  $( $T:ty | $f:ty ),+) => { $( impl_lum![@common $T|$f]; )+ };
+    (@common     $T:ty | $f:ty    ) => {
+        impl<const LINEAR: bool, const LIGHTNESS: bool> Color for Lum<$T, LINEAR, LIGHTNESS> {
             type Component = $T;
             fn color_component_count(&self) -> usize { 1 }
             fn color_components_write(&self, b: &mut[$T]) { b[0] = self.c[0]; }
         }
-        impl<const LINEAR: bool> Luminance<$T, LINEAR> {
+        impl<const LINEAR: bool, const LIGHTNESS: bool> Lum<$T, LINEAR, LIGHTNESS> {
             /// New `Luminance` with the given channel.
             pub const fn new(c: $T) -> Self { Self { c: [c] } }
+
+            /// Returns the raw channel value, regardless of interpretation.
+            ///
+            /// Prefer type-specific methods like [`luminance()`](Luminance::luminance) or
+            /// [`lightness()`](Lightness::lightness) where possible.
+            pub const fn l(self) -> $T { self.c[0] }
+
+            /// Returns a mutable reference to the raw channel value.
+            pub const fn l_mut(&mut self) -> &mut $T { &mut self.c[0] }
 
             /// Converts an `Rgb` into unweighted brightness by averaging the R'G'B' components.
             ///
             /// May be useful for quick approximations.
             /// Not correct for perceptual brightness (luma) or physical light (luminance).
             pub const fn brightness_from_rgb(rgb: Rgb<$T>) -> Self {
-                todo![]
-                // Self::new((rgb.r() + rgb.g() + rgb.b()) / <$T as NumConst>::NUM_THREE)
+                Self::new((rgb.r() + rgb.g() + rgb.b()) / <$T as NumConst>::NUM_THREE)
             }
         }
     };
-    (non-linear $( $T:ty ),+) => { $( impl_luminance![@non-linear $T]; )+ };
-    (@non-linear $T:ty) => {
-        impl Luminance<$T, true> {
-            /// The luminosity component.
-            pub const fn luminosity(self) -> $T { self.c[0] }
-            #[allow(missing_docs)]
-            pub const fn l(self) -> $T { self.c[0] }
+    ( // Methods for Luminance: (linear non-lightness)
+      luminance $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@luminance $T|$f:$B]; )+ };
+    (@luminance    $T:ty | $f:ty : $B:literal    ) => {
+        impl Luminance<$T> {
+            /// Returns the **linear luminance** (physical light intensity, Y).
+            ///
+            /// Measured in cd/m² (floats) or normalized (integers).
+            pub const fn luminance(self) -> $T { self.c[0] }
+            /// Returns a mutable reference to the **linear luminance**.
+            pub const fn luminance_mut(&mut self) -> &mut $T { &mut self.c[0] }
 
-            /// Convert this `Luminance` into an `Rgb` representation.
-            pub const fn to_rgb(self) -> Rgb<$T> { Rgb::<$T>::new(self.l(), self.l(), self.l()) }
-
-            /// Converts a linear `Rgb` into linear `Luminance`.
-            pub const fn from_rgb(rgb: Rgb<$T, true>) -> Self {
-                let [kr, kg, kb] = Self::rgb_luminance_coeffs();
-                Self::new(kr * rgb.r() + kg * rgb.g() + kb * rgb.b())
-            }
+            /* gamma conversion */
         }
     };
-    (@linear $T:ty) => {
+    ( // Methods for Lightness: (non-linear, lightness)
+      lightness $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@lightness $T|$f:$B]; )+ };
+    (@lightness    $T:ty | $f:ty : $B:literal    ) => {
+        impl Lightness<$T> {
+            /// Returns the **perceptual lightness** (CIE L\*).
+            ///
+            /// Normalized to `0.0..=1.0` (floats) or `0..=MAX` (integers).
+            pub const fn lightness(self) -> $T { self.c[0] }
+            /// Returns a mutable reference to the **perceptual lightness**.
+            pub const fn lightness_mut(&mut self) -> &mut $T { &mut self.c[0] }
+
+            /* gamma conversion */
+        }
+    };
+    ( // Methods for Luma: (non-linear, non-lightness)
+      luma $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@luma $T|$f:$B]; )+ };
+    (@luma    $T:ty | $f:ty : $B:literal    ) => {
         impl Luma<$T> {
-            /// Converts a gamma-encoded `Rgb` into perceptual `Luma`.
-            pub const fn from_rgb(rgb: Rgb<$T, false>) -> Self {
-                let [kr, kg, kb] = Self::rec_709();
-                Self::new(kr * rgb.r() + kg * rgb.g() + kb * rgb.b())
-            }
+            /// Returns the **gamma-encoded luma** (non-linear Y′).
+            ///
+            /// Compatible with sRGB/Rec. 709 for display.
+            pub const fn lightness(self) -> $T { self.c[0] }
+            /// Returns a mutable reference to the **gamma-encoded luma**.
+            pub const fn lightness_mut(&mut self) -> &mut $T { &mut self.c[0] }
+
+            /* gamma conversion */
+
+        }
+    };
+    ( // Methods for LinearLuminance: (linear, lightness)
+      l_lightness $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@l_lightness $T|$f:$B]; )+ };
+    (@l_lightness    $T:ty | $f:ty : $B:literal    ) => {
+        impl LinearLightness<$T> {
+            /// Returns the **linear-light perceptual** value (experimental).
+            ///
+            /// Used for hybrid workflows like HDR tonemapping.
+            pub const fn linear_lightness(self) -> $T { self.c[0] }
+            /// Returns a mutable reference to the **linear-light perceptual** value.
+            pub const fn linear_lightness_mut(&mut self) -> &mut $T { &mut self.c[0] }
+
+            /* gamma conversion */
         }
     };
 }
-use impl_luminance;
-impl_luminance!();
+use impl_lum;
+impl_lum!();

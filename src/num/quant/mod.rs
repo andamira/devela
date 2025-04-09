@@ -7,7 +7,7 @@
 //! to specific interpretations.
 //
 
-mod cycle; // Ćycle, CycleCount
+mod cycle; // Cycle, CycleCount
 mod interval; // Interval
 mod ratio; // Ratio
 

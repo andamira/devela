@@ -1,7 +1,7 @@
 // devela::media::color::rgb::impls::u16alpha
 
 use super::*;
-use crate::{ColorBase, Rgb16, Rgba16};
+use crate::{Color, Rgb16, Rgba16};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};
@@ -9,7 +9,7 @@ use crate::{RgbF32, RgbaF32};
 use crate::{RgbF64, RgbaF64};
 
 #[rustfmt::skip]
-impl ColorBase for Rgba16 {
+impl Color for Rgba16 {
     type Component = u16;
     fn color_component_count(&self) -> usize { 4 }
     fn color_components_write(&self, b: &mut[u16]) { b.copy_from_slice(&self.c); }
