@@ -4,8 +4,7 @@
 //
 
 use super::definitions::*;
-
-mod helpers; // helper fns
+use crate::impl_color;
 
 // methods:
 mod u8;
@@ -35,17 +34,4 @@ crate::items! {
     impl_color![rgb: RgbaF64, f64, false];
     impl_color![rgb: RgbLinF64, f64, true];
     impl_color![rgb: RgbaLinF64, f64, true];
-}
-
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
-        pub(crate) use super::helpers::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }

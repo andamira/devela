@@ -1,7 +1,7 @@
 // devela::media::color::rgb::impls::u16
 
 use super::*;
-use crate::{Rgb8, Rgb16, Rgba8, Rgba16};
+use crate::{Norm, Rgb8, Rgb16, Rgba8, Rgba16};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};
@@ -100,28 +100,32 @@ impl From<Rgba16> for Rgb16 { fn from(from: Rgba16) -> Rgb16 { Rgb16::from_rgba1
 impl Rgb16 {
     /// Create from [`Rgb<f32>`].
     pub const fn from_rgb_f32(c: RgbF32) -> Rgb16 {
-        Rgb16::new(f32_to_u16(c.r()), f32_to_u16(c.g()), f32_to_u16(c.b()))
+        Rgb16::new(Norm::f32_to_u16(c.r()), Norm::f32_to_u16(c.g()), Norm::f32_to_u16(c.b()))
     }
     /// Convert to [`Rgb<f32>`].
     pub const fn to_rgb_f32(self) -> RgbF32 {
-        RgbF32::new(u16_to_f32(self.r()), u16_to_f32(self.g()), u16_to_f32(self.b()))
+        RgbF32::new(
+            Norm::u16_to_f32(self.r()),
+            Norm::u16_to_f32(self.g()),
+            Norm::u16_to_f32(self.b()),
+        )
     }
 
     /// Create from [`Rgba<f32>`].
     ///
     /// Loses the alpha channel.
     pub const fn from_rgba_f32(c: RgbaF32) -> Rgb16 {
-        Rgb16::new(f32_to_u16(c.r()), f32_to_u16(c.g()), f32_to_u16(c.b()))
+        Rgb16::new(Norm::f32_to_u16(c.r()), Norm::f32_to_u16(c.g()), Norm::f32_to_u16(c.b()))
     }
     /// Convert to [`Rgba<f32>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn to_rgba_f32(self, alpha: u16) -> RgbaF32 {
         RgbaF32::new(
-            u16_to_f32(self.r()),
-            u16_to_f32(self.g()),
-            u16_to_f32(self.b()),
-            u16_to_f32(alpha),
+            Norm::u16_to_f32(self.r()),
+            Norm::u16_to_f32(self.g()),
+            Norm::u16_to_f32(self.b()),
+            Norm::u16_to_f32(alpha),
         )
     }
 }
@@ -132,28 +136,32 @@ impl Rgb16 {
 impl Rgb16 {
     /// Create from [`Rgb<f64>`].
     pub const fn from_rgb_f64(c: RgbF64) -> Rgb16 {
-        Rgb16::new(f64_to_u16(c.r()), f64_to_u16(c.g()), f64_to_u16(c.b()))
+        Rgb16::new(Norm::f64_to_u16(c.r()), Norm::f64_to_u16(c.g()), Norm::f64_to_u16(c.b()))
     }
     /// Convert to [`Rgb<f64>`].
     pub const fn to_rgb_f64(self) -> RgbF64 {
-        RgbF64::new(u16_to_f64(self.r()), u16_to_f64(self.g()), u16_to_f64(self.b()))
+        RgbF64::new(
+            Norm::u16_to_f64(self.r()),
+            Norm::u16_to_f64(self.g()),
+            Norm::u16_to_f64(self.b()),
+        )
     }
 
     /// Create from [`Rgba<f64>`].
     ///
     /// Loses the alpha channel.
     pub const fn from_rgba_f64(c: RgbaF64) -> Rgb16 {
-        Rgb16::new(f64_to_u16(c.r()), f64_to_u16(c.g()), f64_to_u16(c.b()))
+        Rgb16::new(Norm::f64_to_u16(c.r()), Norm::f64_to_u16(c.g()), Norm::f64_to_u16(c.b()))
     }
     /// Convert to [`Rgba<f64>`].
     ///
     /// Adds the given `alpha` channel.
     pub const fn to_rgba_f64(self, alpha: u16) -> RgbaF64 {
         RgbaF64::new(
-            u16_to_f64(self.r()),
-            u16_to_f64(self.g()),
-            u16_to_f64(self.b()),
-            u16_to_f64(alpha),
+            Norm::u16_to_f64(self.r()),
+            Norm::u16_to_f64(self.g()),
+            Norm::u16_to_f64(self.b()),
+            Norm::u16_to_f64(alpha),
         )
     }
 }

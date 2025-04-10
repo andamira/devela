@@ -51,6 +51,9 @@
 - remove the `Color` namespace.
   - move all its functionality to `Gamma`.
 - rename the `ColorBase` trait to `Color`.
+- add new constants to the `Color` trait:
+  - add constants: `COLOR_COUNT`, `COLOR_IS_LINEAR`.
+  - add methods: `color_is_linear`.
 
 ## num
 ### float

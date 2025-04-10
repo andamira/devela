@@ -216,6 +216,7 @@ mod _internals {
         code::_internals::*,
         data::_internals::*,
         lang::_internals::*,
+        media::_internals::*,
         num::_internals::*,
         sys::_internals::*,
     };

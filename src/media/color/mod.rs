@@ -5,14 +5,16 @@
 // safety
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
+mod helpers;
+
 mod color; // Color
 mod gamma; // Gamma
 mod luminance; // Luma, Luminance
 mod rgb; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
 
-crate::items! { // structural access: _mods, _all, _always
+crate::items! { // structural access: _mods, _internals, _all, _always
     #[allow(unused)]
-    pub use _mods::*;
+    pub use {_mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _always::*;
 
@@ -22,6 +24,9 @@ crate::items! { // structural access: _mods, _all, _always
         // pub use super::spectral::*;
         // #[cfg(feature = "linear")]
         // pub use super::xyz::*;
+    }
+    pub(super) mod _internals {
+        pub(crate) use super::helpers::*;
     }
     pub(super) mod _all {
         #[doc(inline)]

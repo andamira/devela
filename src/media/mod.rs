@@ -29,7 +29,7 @@ pub mod midi;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "video")))]
 pub mod video;
 
-crate::items! { // structural access: _pub_mods, _all, _always
+crate::items! { // structural access: _pub_mods, _internals, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
@@ -41,6 +41,9 @@ crate::items! { // structural access: _pub_mods, _all, _always
         #[cfg(feature = "image")] pub use super::image::_all::*;
         #[cfg(feature = "midi")]  pub use super::midi::_all::*;
         #[cfg(feature = "video")] pub use super::video::_all::*;
+    }
+    pub(super) mod _internals { #![allow(unused)]
+        pub(crate) use super::color::_internals::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
