@@ -46,7 +46,7 @@ Legend:
 - 1.85: `✓`[home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
 - 1.85: `✓`[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 - 1.85: `…`[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
-- 1.85: ` `[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
+- 1.85: `✓`[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
 
 # 1.84 became stable on [2024-01-09](https://releases.rs/docs/1.84.0/)
 > - <https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html>
@@ -113,7 +113,7 @@ Legend:
 - 1.82: ` `[min_exhaustive_patterns](https://github.com/rust-lang/rust/pull/122792)
 - 1.82: ` `[new_uninit](https://github.com/rust-lang/rust/pull/129401)
 - 1.82: ` `[offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
-- 1.82: ` `[raw_ref_op](https://github.com/rust-lang/rust/pull/127679)
+- 1.82: ` `[raw_ref_op](https://github.com/rust-lang/rust/pull/127679) (&raw const, &raw mut)
 - 1.82: ` `[ready_into_inner](https://github.com/rust-lang/rust/pull/116528)
 - 1.82: ` `[thread_spawn_unchecked](https://github.com/rust-lang/rust/pull/129161)
 - 1.82: `✓`[unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)

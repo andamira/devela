@@ -48,6 +48,7 @@ impl Ptr {
 
     // WAIT: `fn_ptr_trait`: FnPtr requires nightly. Until then can't name FnPtr.
     // https://github.com/rust-lang/rust/issues/129322#issuecomment-2418860738
+    //
     // /// Compares the *addresses* of the two function pointers for equality.
     // ///
     // /// See `core::ptr::`[`fn_addr_eq`].
