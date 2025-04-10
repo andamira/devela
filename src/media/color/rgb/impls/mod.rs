@@ -18,23 +18,23 @@ crate::items! { mod f32; mod f32alpha; }
 crate::items! { mod f64; mod f64alpha; }
 
 // impl Color trait
-impl_color![Rgb8, u8, 3];
-impl_color![Rgba8, u8, 3];
-impl_color![Rgb16, u16, 3];
-impl_color![Rgba16, u16, 3];
+impl_color![rgb: Rgb8, u8, false];
+impl_color![rgb: Rgba8, u8, false];
+impl_color![rgb: Rgb16, u16, false];
+impl_color![rgb: Rgba16, u16, false];
 #[cfg(feature = "_float_f32")]
 crate::items! {
-    impl_color![RgbF32, f32, 3];
-    impl_color![RgbaF32, f32, 3];
-    impl_color![RgbLinF32, f32, 3];
-    impl_color![RgbaLinF32, f32, 3];
+    impl_color![rgb: RgbF32, f32, false];
+    impl_color![rgb: RgbaF32, f32, false];
+    impl_color![rgb: RgbLinF32, f32, true];
+    impl_color![rgb: RgbaLinF32, f32, true];
 }
 #[cfg(feature = "_float_f64")]
 crate::items! {
-    impl_color![RgbF64, f64, 3];
-    impl_color![RgbaF64, f64, 3];
-    impl_color![RgbLinF64, f64, 3];
-    impl_color![RgbaLinF64, f64, 3];
+    impl_color![rgb: RgbF64, f64, false];
+    impl_color![rgb: RgbaF64, f64, false];
+    impl_color![rgb: RgbLinF64, f64, true];
+    impl_color![rgb: RgbaLinF64, f64, true];
 }
 
 crate::items! { // structural access: _mods, _all

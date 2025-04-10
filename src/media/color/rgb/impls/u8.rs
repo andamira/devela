@@ -1,7 +1,7 @@
 // devela::media::color::rgb::impls::u8
 
 use super::*; // helpers
-use crate::{Color, Rgb8, Rgb16, Rgba8, Rgba16};
+use crate::{Rgb8, Rgb16, Rgba8, Rgba16};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};

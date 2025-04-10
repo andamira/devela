@@ -6,7 +6,7 @@
 #![expect(unused)]
 
 use super::*;
-use crate::{Color, Rgb8, Rgba8};
+use crate::{Rgb8, Rgba8};
 use crate::{RgbF32, RgbaF32};
 #[cfg(feature = "_float_f64")]
 use crate::{RgbF64, RgbaF64};

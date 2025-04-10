@@ -4,14 +4,26 @@
 /// - `$C` the number of components in the inner c array.
 /// - `$C` the numberof
 macro_rules! impl_color {
-    ($Name:ty, $C:ty, $count:expr) => {
+    (
+    // rgb colors (3 components)
+    // - $Name   : the name of the rgb color type
+    // - $C      : the type of the component
+    // - $LINEAR : a boolean indicating whether it's linear
+    rgb: $Name:ty, $C:ty, $LINEAR:literal) => {
         impl $crate::Color for $Name {
             type Component = $C;
 
             const COLOR_COUNT: usize = 3;
+            const COLOR_IS_LINEAR: bool = $LINEAR;
 
-            fn color_components_write(&self, b: &mut [$C]) {
-                b.copy_from_slice(&self.c);
+            fn color_components_write(&self, buf: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
+                let needed = Self::COLOR_COUNT;
+                if buf.len() < needed {
+                    Err($crate::NotEnoughSpace(Some(Self::COLOR_COUNT)))
+                } else { // Create temporary exact-size slice:
+                    buf[..Self::COLOR_COUNT].copy_from_slice(&self.c[..needed]);
+                    Ok(())
+                }
             }
         }
     };
