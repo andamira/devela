@@ -14,7 +14,12 @@
 #[macro_export]
 #[doc(hidden)]
 macro_rules! ne {
-    ($num:expr) => {{ $crate::NewNicheHelper($num).to_non_extreme() }};
+    (
+    // Only the value (needs the type suffix to aid inference)
+    $num:expr) => {{ $crate::NewNicheHelper($num).to_non_extreme() }};
+    (
+    // Specify the type separately.
+    $num:expr, $T:ty) => {{ $crate::NewNicheHelper::<$T>($num).to_non_extreme() }};
 }
 #[doc(inline)]
 pub use ne;
@@ -30,7 +35,12 @@ pub use ne;
 #[macro_export]
 #[doc(hidden)]
 macro_rules! nz {
-    ($num:expr) => {{ $crate::NewNicheHelper($num).to_non_zero() }};
+    (
+    // Only the value (needs the type suffix to aid inference)
+    $num:expr) => {{ $crate::NewNicheHelper($num).to_non_zero() }};
+    (
+    // Specify the type separately
+    $num:expr, $T:ty) => {{ $crate::NewNicheHelper::<$T>($num).to_non_zero() }};
 }
 #[doc(inline)]
 pub use nz;
@@ -84,6 +94,9 @@ crate::items! {
         const NZI8: crate::NonZeroI8 = nz![23i8];
         assert_eq![nz![20i32], crate::NonZeroI32::new(20).unwrap()];
         assert_eq![nz![20u8], crate::NonZeroU8::new(20).unwrap()];
+        // alternative syntax
+        assert_eq![nz![20, i32], crate::NonZeroI32::new(20).unwrap()];
+        assert_eq![nz![20, u8], crate::NonZeroU8::new(20).unwrap()];
     }
     #[test]
     #[should_panic(expected = "value must not be 0")]
@@ -95,6 +108,9 @@ crate::items! {
         const NEI8: crate::NonExtremeI8 = ne![23i8];
         assert_eq![ne![20i8], crate::NonExtremeI8::new(20).unwrap()];
         assert_eq![ne![20u8], crate::NonExtremeU8::new(20).unwrap()];
+        // alternative syntax
+        assert_eq![ne![20, i8], crate::NonExtremeI8::new(20).unwrap()];
+        assert_eq![ne![20, u8], crate::NonExtremeU8::new(20).unwrap()];
     }
     #[test]
     #[should_panic(expected = "value must not be MIN")]
