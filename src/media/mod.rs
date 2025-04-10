@@ -43,7 +43,7 @@ crate::items! { // structural access: _pub_mods, _internals, _all, _always
         #[cfg(feature = "video")] pub use super::video::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::color::_internals::*;
+        #[cfg(feature = "color")] pub use super::color::_internals::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

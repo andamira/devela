@@ -72,26 +72,25 @@ macro_rules! impl_lum {
         #[cfg(feature = "_float_f32")] impl_lum![common f32|f32];
         #[cfg(feature = "_float_f64")] impl_lum![common f64|f64];
 
-        impl_lum![luminance u8|f32:"_float_f32", u16|f32:"_float_f32"];
-        #[cfg(feature = "_float_f32")]impl_lum![luminance f32|f32:"_float_f32"];
-        #[cfg(feature = "_float_f64")]impl_lum![luminance f64|f64:"_float_f64"];
+        impl_lum![lumina u8|f32:"_float_f32", u16|f32:"_float_f32"];
+        #[cfg(feature = "_float_f32")]impl_lum![lumina f32|f32:"_float_f32"];
+        #[cfg(feature = "_float_f64")]impl_lum![lumina f64|f64:"_float_f64"];
+
+        impl_lum![light u8|f32:"_float_f32", u16|f32:"_float_f32"];
+        #[cfg(feature = "_float_f32")]impl_lum![light f32|f32:"_float_f32"];
+        #[cfg(feature = "_float_f64")]impl_lum![light f64|f64:"_float_f64"];
 
         impl_lum![luma u8|f32:"_float_f32", u16|f32:"_float_f32"];
         #[cfg(feature = "_float_f32")]impl_lum![luma f32|f32:"_float_f32"];
         #[cfg(feature = "_float_f64")]impl_lum![luma f64|f64:"_float_f64"];
 
-        impl_lum![l_lightness u8|f32:"_float_f32", u16|f32:"_float_f32"];
-        #[cfg(feature = "_float_f32")]impl_lum![l_lightness f32|f32:"_float_f32"];
-        #[cfg(feature = "_float_f64")]impl_lum![l_lightness f64|f64:"_float_f64"];
+        impl_lum![lumi_light u8|f32:"_float_f32", u16|f32:"_float_f32"];
+        #[cfg(feature = "_float_f32")]impl_lum![lumi_light f32|f32:"_float_f32"];
+        #[cfg(feature = "_float_f64")]impl_lum![lumi_light f64|f64:"_float_f64"];
     };
     ( // Methods common to all types.
       common  $( $T:ty | $f:ty ),+) => { $( impl_lum![@common $T|$f]; )+ };
     (@common     $T:ty | $f:ty    ) => {
-        impl<const LINEAR: bool, const LIGHTNESS: bool> Color for Lum<$T, LINEAR, LIGHTNESS> {
-            type Component = $T;
-            fn color_component_count(&self) -> usize { 1 }
-            fn color_components_write(&self, b: &mut[$T]) { b[0] = self.c[0]; }
-        }
         impl<const LINEAR: bool, const LIGHTNESS: bool> Lum<$T, LINEAR, LIGHTNESS> {
             /// New `Luminance` with the given channel.
             pub const fn new(c: $T) -> Self { Self { c: [c] } }
@@ -115,8 +114,10 @@ macro_rules! impl_lum {
         }
     };
     ( // Methods for Luminance: (linear non-lightness)
-      luminance $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@luminance $T|$f:$B]; )+ };
-    (@luminance    $T:ty | $f:ty : $B:literal    ) => {
+      lumina $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@lumina $T|$f:$B]; )+ };
+    (@lumina    $T:ty | $f:ty : $B:literal    ) => {
+        impl_color![lum: $T, true, false];
+
         impl Luminance<$T> {
             /// Returns the **linear luminance** (physical light intensity, Y).
             ///
@@ -129,8 +130,10 @@ macro_rules! impl_lum {
         }
     };
     ( // Methods for Lightness: (non-linear, lightness)
-      lightness $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@lightness $T|$f:$B]; )+ };
-    (@lightness    $T:ty | $f:ty : $B:literal    ) => {
+      light $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@light $T|$f:$B]; )+ };
+    (@light    $T:ty | $f:ty : $B:literal    ) => {
+        impl_color![lum: $T, false, true];
+
         impl Lightness<$T> {
             /// Returns the **perceptual lightness** (CIE L\*).
             ///
@@ -145,6 +148,8 @@ macro_rules! impl_lum {
     ( // Methods for Luma: (non-linear, non-lightness)
       luma $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@luma $T|$f:$B]; )+ };
     (@luma    $T:ty | $f:ty : $B:literal    ) => {
+        impl_color![lum: $T, false, false];
+
         impl Luma<$T> {
             /// Returns the **gamma-encoded luma** (non-linear Y′).
             ///
@@ -158,8 +163,10 @@ macro_rules! impl_lum {
         }
     };
     ( // Methods for LinearLuminance: (linear, lightness)
-      l_lightness $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@l_lightness $T|$f:$B]; )+ };
-    (@l_lightness    $T:ty | $f:ty : $B:literal    ) => {
+      lumi_light $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@lumi_light $T|$f:$B]; )+ };
+    (@lumi_light    $T:ty | $f:ty : $B:literal    ) => {
+        impl_color![lum: $T, true, true];
+
         impl LinearLightness<$T> {
             /// Returns the **linear-light perceptual** value (experimental).
             ///
