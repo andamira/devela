@@ -1,19 +1,12 @@
 // devela::media::color::rgb::impls::u8
 
-use super::*;
+use super::*; // helpers
 use crate::{Color, Rgb8, Rgb16, Rgba8, Rgba16};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};
 #[cfg(feature = "_float_f64")]
 use crate::{RgbF64, RgbaF64};
-
-#[rustfmt::skip]
-impl Color for Rgb8 {
-    type Component = u8;
-    fn color_component_count(&self) -> usize { 3 }
-    fn color_components_write(&self, b: &mut[u8]) { b.copy_from_slice(&self.c); }
-}
 
 #[allow(missing_docs)]
 #[rustfmt::skip]

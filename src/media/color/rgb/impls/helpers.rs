@@ -1,5 +1,23 @@
 // devela::media::color::rgb::impl::helpers
 
+/// Args
+/// - `$C` the number of components in the inner c array.
+/// - `$C` the numberof
+macro_rules! impl_color {
+    ($Name:ty, $C:ty, $count:expr) => {
+        impl $crate::Color for $Name {
+            type Component = $C;
+
+            const COLOR_COUNT: usize = 3;
+
+            fn color_components_write(&self, b: &mut [$C]) {
+                b.copy_from_slice(&self.c);
+            }
+        }
+    };
+}
+pub(crate) use impl_color;
+
 #[cfg(feature = "_float_f32")]
 crate::items! {
     /// Convert u8 to normalized f32 (0.0..=1.0)

@@ -14,12 +14,12 @@ pub trait Color {
     /// The type used for color components.
     type Component;
 
-    /// Returns the number of color components.
+    /// The number of color components.
     ///
     /// For example:
     /// - RGB returns `3`
     /// - Spectral data may return `n`
-    fn color_component_count(&self) -> usize;
+    const COLOR_COUNT: usize;
 
     /// Writes the color components to a pre-allocated buffer.
     ///
@@ -29,6 +29,11 @@ pub trait Color {
     fn color_components_write(&self, buffer: &mut [Self::Component]);
 
     /* non-required */
+
+    /// Returns the number of color components.
+    fn color_component_count(&self) -> usize {
+        Self::COLOR_COUNT
+    }
 
     /// Returns a vector containing the color components.
     #[cfg(feature = "alloc")]
