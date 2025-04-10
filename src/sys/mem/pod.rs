@@ -4,7 +4,7 @@
 //
 // See also: <https://docs.rs/bytemuck/latest/bytemuck/trait.Pod.html>
 
-use core::{mem::MaybeUninit, num::*};
+use ::core::{mem::MaybeUninit, num::*};
 
 /// Indicates a type is Plain Old Data, and meets specific memory layout guarantees.
 ///
@@ -71,7 +71,7 @@ pub unsafe trait MemPod: Copy + 'static {
     #[must_use]
     fn zeroed() -> Self {
         // SAFETY. An all-zero value of `T: MemPod` is always valid.
-        unsafe { core::mem::zeroed() }
+        unsafe { ::core::mem::zeroed() }
     }
 
     /// Returns a new instance constructed from the given bytes.
@@ -80,21 +80,21 @@ pub unsafe trait MemPod: Copy + 'static {
     #[must_use]
     fn from_bytes(bytes: &[u8]) -> Self {
         let size = size_of::<Self>();
-        let bytes_to_copy = core::cmp::min(bytes.len(), size);
+        let bytes_to_copy = ::core::cmp::min(bytes.len(), size);
 
         let mut new_self = MaybeUninit::<Self>::uninit();
 
         // SAFETY: We're only copying valid byte data into the uninitialized memory
         unsafe {
             // Copy the provided bytes into the memory
-            core::ptr::copy_nonoverlapping(
+            ::core::ptr::copy_nonoverlapping(
                 bytes.as_ptr(),
                 new_self.as_mut_ptr() as *mut u8,
                 bytes_to_copy,
             );
             // If there are remaining bytes, fill them with zeros
             if bytes_to_copy < size {
-                core::ptr::write_bytes(
+                ::core::ptr::write_bytes(
                     (new_self.as_mut_ptr() as *mut u8).add(bytes_to_copy),
                     0,
                     size - bytes_to_copy,
@@ -109,7 +109,7 @@ pub unsafe trait MemPod: Copy + 'static {
     fn as_bytes(&self) -> &[u8] {
         let ptr = self as *const Self as *const u8;
         let len = size_of::<Self>();
-        unsafe { core::slice::from_raw_parts(ptr, len) }
+        unsafe { ::core::slice::from_raw_parts(ptr, len) }
     }
 
     /// Returns the instance's data as a mutable slice of bytes.
@@ -117,7 +117,7 @@ pub unsafe trait MemPod: Copy + 'static {
     fn as_bytes_mut(&mut self) -> &mut [u8] {
         let ptr = self as *mut Self as *mut u8;
         let len = size_of::<Self>();
-        unsafe { core::slice::from_raw_parts_mut(ptr, len) }
+        unsafe { ::core::slice::from_raw_parts_mut(ptr, len) }
     }
 }
 
@@ -139,9 +139,9 @@ mem_pod![(), u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize, f32
 
 unsafe impl<T: MemPod, const N: usize> MemPod for [T; N] {}
 unsafe impl<T: MemPod> MemPod for MaybeUninit<T> {}
-unsafe impl<T: MemPod> MemPod for core::mem::ManuallyDrop<T> {}
-unsafe impl<T: MemPod> MemPod for core::num::Wrapping<T> {}
-unsafe impl<T: ?Sized + 'static> MemPod for core::marker::PhantomData<T> {}
+unsafe impl<T: MemPod> MemPod for ::core::mem::ManuallyDrop<T> {}
+unsafe impl<T: MemPod> MemPod for ::core::num::Wrapping<T> {}
+unsafe impl<T: ?Sized + 'static> MemPod for ::core::marker::PhantomData<T> {}
 
 unsafe impl<T: MemPod> MemPod for Option<T> {}
 mem_pod![option:

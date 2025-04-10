@@ -36,7 +36,8 @@ FORMULA_DIV_CEIL = r#"$$
 \large
 \text{div\\_ceil}(a, b) =
 \begin{cases}
-\left\lfloor \frac{a}{b} \right\rfloor + 1 & \text{if } (r > 0 \land b > 0) \lor (r < 0 \land b < 0), \cr
+\left\lfloor \frac{a}{b} \right\rfloor + 1 &
+    \text{if } (r > 0 \land b > 0) \lor (r < 0 \land b < 0), \cr
 \left\lfloor \frac{a}{b} \right\rfloor & \text{otherwise.}
 \end{cases}
 $$"#;

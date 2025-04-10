@@ -3,6 +3,8 @@
 //! Integer functionality.
 //
 
+pub(crate) mod shared_docs; // FORMULA_*!()
+
 mod alias; // [i|u]size_[down|up]
 mod fns; // prime_number_teorem
 mod gcd; // GcdReturn
@@ -11,7 +13,6 @@ mod gcd; // GcdReturn
 crate::items! {
     mod divisor;
     mod num_trait; // NumInt, NumRefInt
-    mod shared_docs; // FORMULA_*!()
     mod wrapper; // Int
 }
 

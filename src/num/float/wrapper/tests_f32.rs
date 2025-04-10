@@ -104,6 +104,7 @@ fn eval_poly() {
 }
 
 #[test]
+#[cfg(feature = "std")]
 fn sqrt_basic() {
     let test_values = [
         0.0_f32, 0.5, 1.0, 2.0, 10.0,
@@ -131,7 +132,7 @@ fn sqrt_hybrid() {
 /* shared series */
 
 #[test]
-fn sin() {
+fn sin_series() {
     const PI: f32 = Float::<f32>::PI.0;
     // (angle, expected sin)
     let test_cases = [

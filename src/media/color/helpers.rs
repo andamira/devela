@@ -23,8 +23,14 @@ macro_rules! impl_color {
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
                 let needed = Self::COLOR_COUNT;
-                if b.len() < needed { Err($crate::NotEnoughSpace(Some(Self::COLOR_COUNT))) }
-                else { b[0] = c[0]; b[1] = c[1]; b[2] = c[2]; Ok(()) }
+                if b.len() < needed {
+                    Err($crate::NotEnoughSpace(Some(Self::COLOR_COUNT)))
+                } else {
+                    b[0] = c[0];
+                    b[1] = c[1];
+                    b[2] = c[2];
+                    Ok(())
+                }
             }
         }
     };
@@ -42,8 +48,15 @@ macro_rules! impl_color {
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
                 let needed = Self::COLOR_COUNT;
-                if b.len() < needed { Err($crate::NotEnoughSpace(Some(Self::COLOR_COUNT))) }
-                else { b[0] = c[0]; b[1] = c[1]; b[2] = c[2]; b[3] = c[3]; Ok(()) }
+                if b.len() < needed {
+                    Err($crate::NotEnoughSpace(Some(Self::COLOR_COUNT)))
+                } else {
+                    b[0] = c[0];
+                    b[1] = c[1];
+                    b[2] = c[2];
+                    b[3] = c[3];
+                    Ok(())
+                }
             }
         }
     };
@@ -60,8 +73,12 @@ macro_rules! impl_color {
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let needed = Self::COLOR_COUNT;
-                if b.len() < needed { Err($crate::NotEnoughSpace(Some(Self::COLOR_COUNT))) }
-                else { b[0] = self.l(); Ok(()) }
+                if b.len() < needed {
+                    Err($crate::NotEnoughSpace(Some(Self::COLOR_COUNT)))
+                } else {
+                    b[0] = self.l();
+                    Ok(())
+                }
             }
         }
     };
