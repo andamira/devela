@@ -148,7 +148,7 @@ mod tests {
     fn test_u8_to_f32() {
         assert_eq![Norm::u8_to_f32(0), 0.0];
         assert_eq![Norm::u8_to_f32(255), 1.0];
-        assert_approx_eq_all![tolerance: 0.01, u8_to_f32(u8::MAX/2+1), 0.5];
+        assert_approx_eq_all![tolerance: 0.01, Norm::u8_to_f32(u8::MAX/2+1), 0.5];
     }
     #[test]
     #[cfg(feature = "_float_f32")]
@@ -165,7 +165,7 @@ mod tests {
     fn test_u16_to_f32() {
         assert_eq![Norm::u16_to_f32(0), 0.0];
         assert_eq![Norm::u16_to_f32(u16::MAX), 1.0];
-        assert_approx_eq_all![tolerance: 0.000_01, u16_to_f32(u16::MAX/2+1), 0.5];
+        assert_approx_eq_all![tolerance: 0.000_01, Norm::u16_to_f32(u16::MAX/2+1), 0.5];
     }
     #[test]
     #[cfg(feature = "_float_f32")]

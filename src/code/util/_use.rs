@@ -11,6 +11,7 @@
 /// - `basic` mode is faster but has no error information.
 /// - `both` mode imports all sets of fns prefixed with `compat_` and `basic_`.
 macro_rules! _use {
+    /* to be used as imports */
     // (dep_simdutf8::compat::from_utf8) => { // MAYBE alternative syntax
     (compat::from_utf8) => {
         #[allow(unused_imports)]
