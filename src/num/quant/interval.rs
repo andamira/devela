@@ -64,10 +64,10 @@ use crate::{
 /// interval![..=10];   // (-∞, 10]
 /// interval![1..];     // [1, ∞)
 /// ```
+#[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! interval {
+macro_rules! _interval {
     (
     /* expressions */
 
@@ -116,7 +116,7 @@ macro_rules! interval {
     };
 }
 #[doc(inline)]
-pub use interval;
+pub use _interval as interval;
 
 #[doc = crate::TAG_QUANT!()]
 /// A range of values with `lower` and `upper` [`Bound`]s.
