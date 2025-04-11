@@ -28,7 +28,7 @@ pub mod geom;
 pub mod logic;
 pub mod niche; // NonZero*, NonValue*|NonExtreme*, NonRange*
 pub mod ord; // Compare
-pub mod quant; // Cycle*, Interval, Ratio
+pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always

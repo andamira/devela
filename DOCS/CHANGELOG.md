@@ -60,6 +60,9 @@
 - add:
   - new `Float` methods: `classify`, `next_down`, `next_up`.
 
+### quant
+- new macro: `interval!`.
+
 ### niche
 - add new:
   - macros: `ne!`, `nz!`.

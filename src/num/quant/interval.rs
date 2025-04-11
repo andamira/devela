@@ -2,10 +2,121 @@
 //
 //! Defines the [`Interval`] wrapper type.
 //
+// TOC
+// - macro interval!
+// - struct Interval
+//   - impls
+//   - impl traits
+// - tests
 
 use crate::{
     Bound, ConstDefault, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is,
 };
+
+#[doc = crate::TAG_QUANT!()]
+/// Creates an [`Interval`] using extended range notation.
+///
+/// # Syntax
+///
+/// ## Closed Lower Bound `[l, …`
+/// ```text
+/// [l, u]    interval![l, ..= u]    // closed-closed
+/// [l, u)    interval![l, .. u]     // closed-open
+/// [l, ∞)    interval![l, ..]       // closed-unbounded
+/// ```
+///
+/// ## Open Lower Bound `(l, …` *extension syntax*
+/// ```text
+/// (l, u)    interval![l <.. u]     // open-open
+/// (l, u]    interval![l <..= u]    // open-closed
+/// (l, ∞)    interval![l <..]       // open-unbounded
+/// ```
+///
+/// ## Unbounded Lower Bound `(-∞, …`
+/// ```text
+/// (-∞, u]   interval![..= u]       // unbounded-closed
+/// (-∞, u)   interval![.. u]        // unbounded-open
+/// (-∞, ∞)   interval![..]          // fully unbounded (inferred type)
+/// (-∞, ∞)   interval![.., T]       // fully unbounded (explicit type) (e.g., `.., i32`)
+/// ```
+///
+/// # Notes
+/// - Commas required for expressions: `interval![a(), ..= b()]`
+/// - Optional for literals/blocks: `interval![1..=3]` ≡ `interval![1, ..=3]`
+/// - `<..` indicates open-left bounds (non-standard Rust extension)
+///
+/// # Example
+/// ```
+/// # use devela::interval;
+/// # let (x, y) = (10, 20);
+/// # fn calc() -> i32 { 10 }
+/// # fn other() -> i32 { 20 }
+/// // Literals
+/// interval![1 ..=3];    // [1, 3]
+/// interval![1<.. 3];    // (1, 3)
+///
+/// // Expressions
+/// interval![(x+1), ..= (y*2)];
+/// interval![{ calc() }, <.. { other() }];
+///
+/// // Unbounded
+/// interval![.., i32]; // (-∞, ∞) as i32
+/// interval![..=10];   // (-∞, 10]
+/// interval![1..];     // [1, ∞)
+/// ```
+#[macro_export]
+#[rustfmt::skip]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+macro_rules! interval {
+    (
+    /* expressions */
+
+     $l:expr,  ..= $u:expr) => { $crate::Interval::closed($l, $u) }; // lower closed
+    ($l:expr,  ..  $u:expr) => { $crate::Interval::closed_open($l, $u) };
+    ($l:expr,  ..         ) => { $crate::Interval::closed_unbounded($l) };
+    ($l:expr, <..  $u:expr) => { $crate::Interval::open($l, $u) }; // lower open
+    ($l:expr, <..= $u:expr) => { $crate::Interval::open_closed($l, $u) };
+    ($l:expr, <..         ) => { $crate::Interval::open_unbounded($l) };
+    (          ..= $u:expr) => { $crate::Interval::unbounded_closed($u) }; // lower unbounded
+    (          ..  $u:expr) => { $crate::Interval::unbounded_open($u) };
+    (
+    /* blocks */
+
+     $l:block  ..= $u:block) => { $crate::Interval::closed($l, $u) }; // lower closed
+    ($l:block  ..  $u:block) => { $crate::Interval::closed_open($l, $u) };
+    ($l:block  ..          ) => { $crate::Interval::closed_unbounded($l) };
+    ($l:block <..  $u:block) => { $crate::Interval::open($l, $u) }; // lower open
+    ($l:block <..= $u:block) => { $crate::Interval::open_closed($l, $u) };
+    ($l:block <..          ) => { $crate::Interval::open_unbounded($l) };
+    (          ..= $u:block) => { $crate::Interval::unbounded_closed($u) }; // lower unbounded
+    (          ..  $u:block) => { $crate::Interval::unbounded_open($u) };
+    (
+    /* literals */
+
+     $l:literal  ..= $u:literal) => { $crate::Interval::closed($l, $u) }; // lower closed
+    ($l:literal  ..  $u:literal) => { $crate::Interval::closed_open($l, $u) };
+    ($l:literal  ..            ) => { $crate::Interval::closed_unbounded($l) };
+    ($l:literal <..  $u:literal) => { $crate::Interval::open($l, $u) }; // lower open
+    ($l:literal <..= $u:literal) => { $crate::Interval::open_closed($l, $u) };
+    ($l:literal <..            ) => { $crate::Interval::open_unbounded($l) };
+    (            ..= $u:literal) => { $crate::Interval::unbounded_closed($u) }; // lower unbounded
+    (            ..  $u:literal) => { $crate::Interval::unbounded_open($u) };
+    (
+    /* fully unbounded variants (explicit and inferred type) */
+
+     .., $T:ty) => { $crate::Interval::<$T>::unbounded() }; // has to come first
+    (..       ) => { $crate::Interval::unbounded() };
+
+    (
+    /* syntax error msg */
+
+    $($t:tt)*) => {
+        compile_error! { "Invalid interval syntax. Expected forms like: \
+                      l..u, l..=u, l<..u, l<..=u, ..x, ..=x, ..,Type" }
+    };
+}
+#[doc(inline)]
+pub use interval;
 
 #[doc = crate::TAG_QUANT!()]
 /// A range of values with `lower` and `upper` [`Bound`]s.
@@ -13,6 +124,8 @@ use crate::{
 /// The `Interval` type allows modeling ranges of values with optional inclusion
 /// or exclusion at each bound. This is useful for mathematical operations,
 /// range checks, and interval arithmetic.
+///
+/// See also the [`interval!`] macro.
 #[doc(alias = "Range")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Interval<T> {
@@ -44,19 +157,19 @@ impl<T> Interval<T> {
 
     // lower-open
 
-    /// Creates an open interval $(l, u)$.
+    /// Creates an open interval $(l, u)$ *`lower..<upper`*.
     #[must_use]
     pub const fn open(lower: T, upper: T) -> Self {
         Self::new(Bound::Excluded(lower), Bound::Excluded(upper))
     }
 
-    /// Creates a half-open interval $(a, b]$.
+    /// Creates a half-open interval $(l, u]$ *`lower..<=upper`*.
     #[must_use]
     pub const fn open_closed(lower: T, upper: T) -> Self {
         Self::new(Bound::Excluded(lower), Bound::Included(upper))
     }
 
-    /// Creates an interval $(l, ∞)$.
+    /// Creates an interval $(l, ∞)$ *`lower..<`*.
     #[must_use]
     pub const fn open_unbounded(lower: T) -> Self {
         Self::new(Bound::Excluded(lower), Bound::Unbounded)
@@ -206,10 +319,10 @@ impl<T: PartialOrd> Interval<T> {
     pub fn is_empty(&self) -> bool {
         match (&self.lower, &self.upper) {
             (Bound::Unbounded, _) | (_, Bound::Unbounded) => false,
-            (Bound::Included(a), Bound::Included(b)) => a > b,
-            (Bound::Included(a), Bound::Excluded(b)) => a >= b,
-            (Bound::Excluded(a), Bound::Included(b)) => a >= b,
-            (Bound::Excluded(a), Bound::Excluded(b)) => a >= b,
+            (Bound::Included(l), Bound::Included(u)) => l > u,
+            (Bound::Included(l), Bound::Excluded(u)) => l >= u,
+            (Bound::Excluded(l), Bound::Included(u)) => l >= u,
+            (Bound::Excluded(l), Bound::Excluded(u)) => l >= u,
         }
     }
 
@@ -221,10 +334,10 @@ impl<T: PartialOrd> Interval<T> {
     pub fn is_well_ordered(&self) -> bool {
         match (&self.lower, &self.upper) {
             (Bound::Unbounded, _) | (_, Bound::Unbounded) => true,
-            (Bound::Included(a), Bound::Included(b)) => a <= b,
-            (Bound::Included(a), Bound::Excluded(b)) => a < b,
-            (Bound::Excluded(a), Bound::Included(b)) => a < b,
-            (Bound::Excluded(a), Bound::Excluded(b)) => a < b,
+            (Bound::Included(l), Bound::Included(u)) => l <= u,
+            (Bound::Included(l), Bound::Excluded(u)) => l < u,
+            (Bound::Excluded(l), Bound::Included(u)) => l < u,
+            (Bound::Excluded(l), Bound::Excluded(u)) => l < u,
         }
     }
 
@@ -258,17 +371,17 @@ impl<T: PartialOrd> Interval<T> {
         T: Clone + core::ops::Sub<Output = T>,
     {
         match (&self.lower, &self.upper) {
-            (Bound::Included(a), Bound::Included(b)) => {
-                is![a <= b; Some(b.clone() - a.clone()); None]
+            (Bound::Included(l), Bound::Included(u)) => {
+                is![l <= u; Some(u.clone() - l.clone()); None]
             }
-            (Bound::Included(a), Bound::Excluded(b)) => {
-                is![a < b; Some(b.clone() - a.clone()); None]
+            (Bound::Included(l), Bound::Excluded(u)) => {
+                is![l < u; Some(u.clone() - l.clone()); None]
             }
-            (Bound::Excluded(a), Bound::Included(b)) => {
-                is![a < b; Some(b.clone() - a.clone()); None]
+            (Bound::Excluded(l), Bound::Included(u)) => {
+                is![l < u; Some(u.clone() - l.clone()); None]
             }
-            (Bound::Excluded(a), Bound::Excluded(b)) => {
-                is![a < b; Some(b.clone() - a.clone()); None]
+            (Bound::Excluded(l), Bound::Excluded(u)) => {
+                is![l < u; Some(u.clone() - l.clone()); None]
             }
             _ => None, // Unbounded intervals don't have a finite size
         }
@@ -442,7 +555,7 @@ mod impl_traits {
     /// - We compare the lower bounds first.
     /// - If the lower bounds are equal, we compare the upper bounds.
     /// - We define Unbounded as less than any bounded value.
-    /// - We define that Included(a) < Excluded(a) at same point a.
+    /// - We define that Included(l) < Excluded(l) at same point l.
     impl<T: PartialOrd> PartialOrd for Interval<T> {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             match compare_bounds(&self.lower, &other.lower) {
@@ -455,7 +568,7 @@ mod impl_traits {
     /// - We compare the lower bounds first.
     /// - If the lower bounds are equal, we compare the upper bounds.
     /// - We define Unbounded as less than any bounded value.
-    /// - We define that Included(a) < Excluded(a) at same point a.
+    /// - We define that Included(l) < Excluded(l) at same point l.
     impl<T: Ord> Ord for Interval<T> {
         fn cmp(&self, other: &Self) -> Ordering {
             match compare_bounds_ord(&self.lower, &other.lower) {
@@ -467,9 +580,9 @@ mod impl_traits {
 
     /* helpers */
 
-    fn compare_bounds<T: PartialOrd>(a: &Bound<T>, b: &Bound<T>) -> Option<Ordering> {
+    fn compare_bounds<T: PartialOrd>(l: &Bound<T>, u: &Bound<T>) -> Option<Ordering> {
         use Bound::{Excluded, Included, Unbounded};
-        match (a, b) {
+        match (l, u) {
             (Unbounded, Unbounded) => Some(Ordering::Equal),
             (Unbounded, _) => Some(Ordering::Less),
             (_, Unbounded) => Some(Ordering::Greater),
@@ -489,9 +602,9 @@ mod impl_traits {
             }
         }
     }
-    fn compare_bounds_ord<T: Ord>(a: &Bound<T>, b: &Bound<T>) -> Ordering {
+    fn compare_bounds_ord<T: Ord>(l: &Bound<T>, u: &Bound<T>) -> Ordering {
         use Bound::{Excluded, Included, Unbounded};
-        match (a, b) {
+        match (l, u) {
             (Unbounded, Unbounded) => Ordering::Equal,
             (Unbounded, _) => Ordering::Less,
             (_, Unbounded) => Ordering::Greater,
@@ -511,4 +624,57 @@ mod impl_traits {
             }
         }
     }
+}
+
+#[cfg(test)]
+#[rustfmt::skip]
+mod tests {
+    use super::{Interval, interval};
+
+    #[test]
+    #[allow(unused_parens, reason = "testing expressions")]
+    fn interval_macro_expr() {
+        assert_eq![interval![(5+5), ..= (10+10)], Interval::closed(10, 20)];
+        assert_eq![interval![(5+5), ..  (10+10)], Interval::closed_open(10, 20)];
+        assert_eq![interval![(5+5), ..         ], Interval::closed_unbounded(10)];
+        //
+        assert_eq![interval![(5+5), <..  (10+10)], Interval::open(10, 20)];
+        assert_eq![interval![(5+5), <..= (10+10)], Interval::open_closed(10, 20)];
+        assert_eq![interval![(5+5), <..         ], Interval::open_unbounded(10)];
+        //
+        assert_eq![interval![.., i32    ], Interval::<i32>::unbounded()]; // explicit type
+        assert_eq![interval![..= (10+10)], Interval::unbounded_closed(20)];
+        assert_eq![interval![..  (10+10)], Interval::unbounded_open(20)];
+    }
+    #[test]
+    #[allow(unused_braces, reason = "testing blocks")]
+    fn interval_macro_block() {
+        assert_eq![interval![{2*5} ..= {2*10}], Interval::closed(10, 20)];
+        assert_eq![interval![{2*5} ..  {2*10}], Interval::closed_open(10, 20)];
+        assert_eq![interval![{2*5} ..        ], Interval::closed_unbounded(10)];
+        //
+        assert_eq![interval![{2*5} <..  {2*10}], Interval::open(10, 20)];
+        assert_eq![interval![{2*5} <..= {2*10}], Interval::open_closed(10, 20)];
+        assert_eq![interval![{2*5} <..        ], Interval::open_unbounded(10)];
+        //
+        // assert_eq![interval![..        ], Interval::<i32>::unbounded()]; // =↓ type inference
+        assert_eq![interval![..= {2*10}], Interval::unbounded_closed(20)];
+        assert_eq![interval![..  {2*10}], Interval::unbounded_open(20)];
+    }
+    #[test]
+    fn interval_macro_literal() {
+        assert_eq![interval![10 ..= 20], Interval::closed(10, 20)];
+        assert_eq![interval![10 ..  20], Interval::closed_open(10, 20)];
+        assert_eq![interval![10 ..    ], Interval::closed_unbounded(10)];
+        //
+        assert_eq![interval![10 <..  20], Interval::open(10, 20)];
+        assert_eq![interval![10 <..= 20], Interval::open_closed(10, 20)];
+        assert_eq![interval![10 <..    ], Interval::open_unbounded(10)];
+        //
+        assert_eq![interval![..    ], Interval::<i32>::unbounded()]; // type inference
+        assert_eq![interval![..= 20], Interval::unbounded_closed(20)];
+        assert_eq![interval![..  20], Interval::unbounded_open(20)];
+    }
+    // #[test] #[should_panic]
+    // fn interval_macro_error() { let e = interval![10 => 20]; }
 }

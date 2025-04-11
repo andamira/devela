@@ -8,7 +8,7 @@
 //
 
 mod cycle; // Cycle, CycleCount
-mod interval; // Interval
+mod interval; // Interval, interval!
 mod ratio; // Ratio
 
 crate::items! { // structural access: _mods, _all
