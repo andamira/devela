@@ -97,6 +97,7 @@
         macro_metavar_expr,
         naked_functions,
         // repr128, // incomplete_features
+        slice_as_chunks,
         unsafe_cell_from_mut,
     )
 )]
