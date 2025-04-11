@@ -244,9 +244,13 @@ mod reflection {
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         ref_flags: &["num··"],
-        features: &["num", "alg", "rand", "unit",
-            "geom", "linear", "metric", "shape",
-            "prim", "cast", "join", "split",
+        features: &["num",
+            "geom",
+                "linear", "metric", "shape",
+            "prim",
+                "cast", "join", "split",
+            "rand",
+            "unit",
         ]
     };
         pub const GEOM: FlagsFeatures = FlagsFeatures {

@@ -79,7 +79,7 @@ publish = true
 bench = false
 
 
-[features] # 263/300 (37 remaining), 136 visible, 127 hidden
+[features] # 262/300 (38 remaining), 135 visible, 127 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -135,6 +135,8 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 # They set compile flags named `*··` (two interpuncts), for reflection.
 # For example, `num··` will be set if any num submodule feature is enabled.
+#
+# In sync with ./utils/check.rs::SUB_MODULES
 
 all = [ # enables all the 11 modules (and their submodules)
 	"code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
@@ -164,10 +166,9 @@ media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	image = ["sdl2?/image"]
 	midi = []
 	video = []
-num = ["alg", "geom", "prim", "rand", "unit"]
-	alg  = [] # algebra (linear & symbolic)
+num = ["geom", "prim", "rand", "unit"]
 	geom = ["linear", "metric", "shape"] # geometry
-		linear = []
+		linear = [] # linear algebra
 		metric = []
 		shape = []
 	prim = ["cast", "join", "split"]

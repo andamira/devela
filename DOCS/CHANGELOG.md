@@ -57,8 +57,8 @@
 
 ## num
 ### float
-- add:
-  - new `Float` methods: `classify`, `next_down`, `next_up`.
+- add new `Float` methods: `classify`, `next_down`, `next_up`.
+- delete the `alg` feature.
 
 ### quant
 - new macro: `interval!`.

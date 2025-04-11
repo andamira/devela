@@ -59,8 +59,8 @@ use toml_edit::ImDocument;
 /* config */
 
 #[rustfmt::skip]
-const ROOT_MODULES: [&str; 10 + 1] = [
-    "code", "lang", "data", "media", "num", "phys", "sys", "text", "ui", "work",
+const ROOT_MODULES: [&str; 11 + 1] = [
+    "code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
 
     // sys::os submodules (platforms)
     "linux", // "windows",
@@ -71,14 +71,21 @@ const SUB_MODULES: &[&str] = &[
     "error",
     // data
     "hash",
+    // game
+    // lang
+    "glsl", "js",
     // media
-    "audio", "draw", "color", "font", "image",
+    "audio", "color", "draw", "font", "image", "midi", "video",
     // num
-    "alg", "geom", "rand", "unit", "wave",
+    "geom",
+        "linear", "metric", "shape",
     "prim",
         "cast", "join", "split",
+    "rand",
+    "unit",
     // phys
     "time",
+    "wave",
     // sys
     "io",
     "mem",
@@ -87,6 +94,8 @@ const SUB_MODULES: &[&str] = &[
     "ascii", "fmt", "str",
     // ui
     "layout",
+    /* front */
+        "desk", "term", "web",
     // work
     "process", "sync", "thread",
 ];
