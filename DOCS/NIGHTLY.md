@@ -83,6 +83,7 @@ See also
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
+- 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
 - 1.??: `i`[repr128](https://github.com/rust-lang/rust/pull/138285)

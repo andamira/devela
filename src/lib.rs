@@ -96,6 +96,7 @@
         let_chains,
         macro_metavar_expr,
         naked_functions,
+        offset_of_slice,
         // repr128, // incomplete_features
         slice_as_chunks,
         unsafe_cell_from_mut,
