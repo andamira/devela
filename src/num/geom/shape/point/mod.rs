@@ -34,6 +34,9 @@ pub struct Points<T, const D: usize, const N: usize> {
     /// The array of points.
     pub array: [Point<T, D>; N],
 }
+#[doc = crate::TAG_GEOM!()]
+/// A static sequence of 2-dimensional [`Point`]s.
+pub type Points2d<T, const N: usize> = Points<T, 2, N>;
 
 #[doc = crate::TAG_GEOM!()]
 /// A dynamic sequence of `D`-dimensional [`Point`]s.

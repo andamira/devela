@@ -60,6 +60,12 @@
 - add new `Float` methods: `classify`, `next_down`, `next_up`.
 - delete the `alg` feature.
 
+### geom
+#### shape
+- update `Point:` make mut accesors *const*.
+- add new alias: `Points2d`.
+- add new method: `Points::new`.
+
 ### quant
 - new macro: `interval!`.
 
