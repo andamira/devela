@@ -53,7 +53,9 @@ See also
 # 1.88 will be stable on 2025-06-26 ([`nightly_stable_next2`](https://releases.rs/docs/1.88.0/))
 > - <https://github.com/rust-lang/rust/milestone/132>
 
+- 1.88: `·`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
 - 1.88: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
+- 1.88: ` `[exact_div](https://github.com/rust-lang/rust/pull/139163)
 
 <!--
 # 1.89 will be stable on 2025-08-07 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
@@ -65,7 +67,6 @@ See also
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[avx512_target_feature](https://github.com/rust-lang/rust/pull/138940)
 - 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
-- 1.??: `·`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`

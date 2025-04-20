@@ -71,7 +71,7 @@
 )]
 // ----------------------------
 // `nightly_stable_next2`: 1.88 core, alloc, std…
-#![cfg_attr(nightly_stable_next2, feature(const_cell,))]
+#![cfg_attr(nightly_stable_next2, feature(cfg_boolean_literals,const_cell,))]
 #![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
 #![cfg_attr(all(nightly_stable_next2, feature = "std"), feature())]
 // ----------------------------
@@ -82,7 +82,6 @@
         assert_matches,
         avx512_target_feature,
         cell_update,
-        cfg_boolean_literals,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
