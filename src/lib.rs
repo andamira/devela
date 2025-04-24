@@ -71,7 +71,16 @@
 )]
 // ----------------------------
 // `nightly_stable_next2`: 1.88 core, alloc, std…
-#![cfg_attr(nightly_stable_next2, feature(cfg_boolean_literals,const_cell,))]
+#![cfg_attr(
+    nightly_stable_next2,
+    feature(
+        cfg_boolean_literals,
+        cell_update,
+        const_cell,
+        let_chains,
+        naked_functions,
+    )
+)]
 #![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
 #![cfg_attr(all(nightly_stable_next2, feature = "std"), feature())]
 // ----------------------------
@@ -81,7 +90,6 @@
     feature(
         assert_matches,
         avx512_target_feature,
-        cell_update,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
@@ -92,9 +100,7 @@
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
         isqrt,
-        let_chains,
         macro_metavar_expr,
-        naked_functions,
         offset_of_slice,
         // repr128, // incomplete_features
         slice_as_chunks,

@@ -54,8 +54,11 @@ See also
 > - <https://github.com/rust-lang/rust/milestone/132>
 
 - 1.88: `·`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
+- 1.88: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.88: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
 - 1.88: ` `[exact_div](https://github.com/rust-lang/rust/pull/139163)
+- 1.88: `·`[let_chains](https://github.com/rust-lang/rust/pull/132833)
+- 1.88: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 
 <!--
 # 1.89 will be stable on 2025-08-07 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
@@ -66,7 +69,6 @@ See also
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[avx512_target_feature](https://github.com/rust-lang/rust/pull/138940)
-- 1.??: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
@@ -80,9 +82,7 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
-- 1.??: `·`[let_chains](https://github.com/rust-lang/rust/pull/132833)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
-- 1.??: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
@@ -129,6 +129,8 @@ See also
         = `nightly_simd` flag
 - 1.?? ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
 - 1.?? ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
+- 1.?? ` `[±proc_macro_span](https://github.com/rust-lang/rust/pull/139865)
+- 1.?? ` `[const as_mut_slice](https://github.com/rust-lang/rust/pull/140066)
 - 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:
