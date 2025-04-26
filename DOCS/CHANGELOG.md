@@ -26,6 +26,8 @@
 ---
 
 ## code
+- new trait `Introspect`.
+
 ### result
 - add re-exports: `core::option::*`, `core::result::*`.
 

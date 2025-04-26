@@ -16,6 +16,7 @@ mod guard; // ScopeGuard
 mod reexports; // re-exported items
 
 pub mod error; // AllError, modular errors
+pub mod intro; // Introspect
 pub mod marker; // core::marker, type_marker!, type_resource!, TypeResource, TypeResourced
 pub mod ops; // ::core::ops::*
 pub mod panic; // Panic, define_panic_handler!
@@ -33,7 +34,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods {
         pub use super::{
-            error::_all::*, marker::_all::*, ops::_all::*,
+            error::_all::*, intro::*, marker::_all::*, ops::_all::*,
             panic::_all::*, result::_all::*, util::_all::*,
         };
     }
