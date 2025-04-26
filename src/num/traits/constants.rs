@@ -2,6 +2,9 @@
 //
 //! Defines [`NumConst`] and implements it for primitives.
 //
+// TODO:RETHINK: implement for NonValue*
+// - we would need to implement Num for it.
+// - we also have to make ONE, TWO and THREE optional. (not a problem for NonExtreme)
 
 use crate::{
     FloatConst, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
@@ -13,6 +16,28 @@ use crate::{
 pub trait NumConst {
     /// The underlying numeric type implementing this trait.
     type Num;
+
+    /* introspection */
+
+    /// Whether the number can represent big quantities.
+    const NUM_IS_BIG: bool;
+
+    /// Whether the number uses an integer representation.
+    const NUM_IS_INT: bool;
+
+    /// Whether the number uses a floating-point representation.
+    const NUM_IS_FLOAT: bool;
+
+    /// Whether the number uses a fixed-point representation.
+    const NUM_IS_FIXED: bool;
+
+    /// Whether the number includes the sign.
+    const NUM_IS_SIGNED: bool;
+
+    /// Whether the number has a memory niche optimization.
+    const NUM_IS_NICHE: bool;
+
+    /* constant values */
 
     /// The additive identity (`0`), if applicable.
     const NUM_ZERO: Option<Self::Num>;
@@ -29,8 +54,14 @@ pub trait NumConst {
     /// The additive inverse of `ONE` (`-1`), if applicable.
     const NUM_NEG_ONE: Option<Self::Num>;
 
+    /// The smallest representable value.
+    const NUM_MIN: Self::Num;
+
     /// The smallest representable positive value.
     const NUM_MIN_POSITIVE: Option<Self::Num>;
+
+    /// The greatest representable value.
+    const NUM_MAX: Self::Num;
 
     /// The greatest representable negative value, if applicable.
     const NUM_MAX_NEGATIVE: Option<Self::Num>;
@@ -51,20 +82,35 @@ macro_rules! impl_ext_num_const {
             NonZeroU64|u64, NonZeroU128|u128, NonZeroUsize|usize];
     };
     ($T:ty | $U:ty: $ZERO:expr, $ONE:expr, $TWO:expr, $THREE:expr,
-     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr) => {
+     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr,
+     $IS_BIG:literal, $IS_INT:literal, $IS_FLOAT:literal, $IS_FIXED:literal,
+     $IS_SIGNED:literal, $IS_NICHE:literal) => {
         impl_ext_num_const![@$T|$U: $ZERO, $ONE, $TWO, $THREE,
-        $NEG_ONE, $MIN_POS, $MAX_NEG, $MAX_POW2];
+        $NEG_ONE, $MIN_POS, $MAX_NEG, $MAX_POW2,
+        $IS_BIG, $IS_INT, $IS_FLOAT, $IS_FIXED, $IS_SIGNED, $IS_NICHE];
     };
     (@$T:ty | $U:ty: $ZERO:expr, $ONE:expr, $TWO:expr, $THREE:expr,
-     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr) => {
+     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr,
+     $IS_BIG:literal, $IS_INT:literal, $IS_FLOAT:literal, $IS_FIXED:literal,
+     $IS_SIGNED:literal, $IS_NICHE:literal) => {
         impl NumConst for $T {
             type Num = $T;
+            // introspection
+            const NUM_IS_BIG: bool = $IS_BIG;
+            const NUM_IS_INT: bool = $IS_INT;
+            const NUM_IS_FLOAT: bool = $IS_FLOAT;
+            const NUM_IS_FIXED: bool = $IS_FIXED;
+            const NUM_IS_SIGNED: bool = $IS_SIGNED;
+            const NUM_IS_NICHE: bool = $IS_NICHE;
+            // constant values
             const NUM_ZERO: Option<$T> = $ZERO;
             const NUM_ONE: $T = $ONE;
             const NUM_TWO: $T = $TWO;
             const NUM_THREE: $T = $THREE;
             const NUM_NEG_ONE: Option<$T> = $NEG_ONE;
+            const NUM_MIN: $T = <$T>::MIN;
             const NUM_MIN_POSITIVE: Option<$T> = $MIN_POS;
+            const NUM_MAX: $T = <$T>::MAX;
             const NUM_MAX_NEGATIVE: Option<$T> = $MAX_NEG;
             const NUM_MAX_POWER_OF_TWO: Option<$T> = $MAX_POW2;
         }
@@ -78,7 +124,13 @@ macro_rules! impl_ext_num_const {
             Some(-1.0),               // NEG_ONE
             Some(<$T>::MIN_POSITIVE), // MIN_POS
             Some(-0.0),               // MAX_NEG // ↓ MAX_POW2
-            Some(<$T>::from_bits(((<$T>::EXPONENT_BIAS as $U << 1) << (<$T>::SIGNIFICAND_BITS))))
+            Some(<$T>::from_bits(((<$T>::EXPONENT_BIAS as $U << 1) << (<$T>::SIGNIFICAND_BITS)))),
+            false, // IS_BIG
+            false, // IS_INT
+            true,  // IS_FLOAT
+            false, // IS_FIXED
+            true,  // IS_SIGNED
+            false  // IS_NICHE
         ];
     )+};
     (int: $( $T:ty | $U:ty ),+) => { $(
@@ -87,7 +139,13 @@ macro_rules! impl_ext_num_const {
             Some(-1),   // NEG_ONE
             Some(1),    // MIN_POS
             Some(-1),   // MAX_NEG
-            Some(<$T>::MAX - (<$T>::MAX >> 1)) // MAX_POW2
+            Some(<$T>::MAX - (<$T>::MAX >> 1)), // MAX_POW2
+            false, // IS_BIG
+            true,  // IS_INT
+            false, // IS_FLOAT
+            false, // IS_FIXED
+            true,  // IS_SIGNED
+            false  // IS_NICHE
         ];
     )+};
     (uint: $( $T:ty | $U:ty ),+) => { $(
@@ -96,7 +154,13 @@ macro_rules! impl_ext_num_const {
             None,    // NEG_ONE
             Some(1), // MIN_POS
             None,    // MAX_NEG
-            Some(<$T>::MAX ^ (<$T>::MAX >> 1)) // MAX_POW2
+            Some(<$T>::MAX ^ (<$T>::MAX >> 1)), // MAX_POW2
+            false, // IS_BIG
+            true,  // IS_INT
+            false, // IS_FLOAT
+            false, // IS_FIXED
+            false, // IS_SIGNED
+            false  // IS_NICHE
           ];
     )+};
     (non0int: $( $T:ty | $U:ty ),+) => { $(
@@ -108,7 +172,13 @@ macro_rules! impl_ext_num_const {
             <$T>::new(-1), // NEG_ONE
             <$T>::new(1),  // MIN_POS
             <$T>::new(-1), // MAX_NEG
-            <$T>::new(<$T>::MAX.get() - (<$T>::MAX.get() >> 1)) // MAX_POW2
+            <$T>::new(<$T>::MAX.get() - (<$T>::MAX.get() >> 1)), // MAX_POW2
+            false, // IS_BIG
+            true,  // IS_INT
+            false, // IS_FLOAT
+            false, // IS_FIXED
+            true,  // IS_SIGNED
+            true   // IS_NICHE
         ];
     )+};
     (non0uint: $( $T:ty | $U:ty ),+) => { $(
@@ -120,7 +190,13 @@ macro_rules! impl_ext_num_const {
             None,          // NEG_ONE
             <$T>::new(1),  // MIN_POS
             None,          // MAX_NEG
-            <$T>::new(<$T>::MAX.get() ^ (<$T>::MAX.get() >> 1)) // MAX_POW2
+            <$T>::new(<$T>::MAX.get() ^ (<$T>::MAX.get() >> 1)), // MAX_POW2
+            false, // IS_BIG
+            true,  // IS_INT
+            false, // IS_FLOAT
+            false, // IS_FIXED
+            false, // IS_SIGNED
+            true   // IS_NICHE
         ];
     )+};
 }

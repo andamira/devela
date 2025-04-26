@@ -59,6 +59,9 @@
   - add methods: `color_is_linear`.
 
 ## num
+- update the `NumConst` trait.
+- add consts: `NUM_[MAX|MIN]`, `NUM_IS_[BIG|INT|FLOAT|FIXED|SIGNED|NICHE]`.
+
 ### float
 - add new `Float` methods: `classify`, `next_down`, `next_up`.
 - delete the `alg` feature.
