@@ -146,8 +146,8 @@ code = ["error"]
 data = ["hash"]
 	# codec
 		hash = [] # HashFnv, HashFx, HashPengy
+		# crypto = ["dep_orion"]
 	# list = []
-	# xipher = ["dep_orion"]
 game = []
 	# ...
 lang = ["glsl", "js"]
@@ -548,7 +548,7 @@ dep_log = ["dep:log"]                                                           
 dep_memchr = ["dep:memchr", "winnow?/simd"]                                       # text:str
 dep_midir = ["dep:midir"]                                                         # media::midi
 dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                  # ui::back
-dep_orion = ["dep:orion"]                                                         # data::xipher
+dep_orion = ["dep:orion", "std"] # WAIT:TEMP                                      # data::codec::crypto
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
 dep_portable_atomic_util = ["dep:portable-atomic-util"]                           # work::sync
 dep_pyo3 = ["dep:pyo3"]                                                           # lang::py
@@ -562,7 +562,7 @@ dep_safe_arch = ["dep:safe_arch"]                                               
 dep_sdl2 = ["dep:sdl2"]                                                           # ui::back
 dep_sdl3 = ["dep:sdl3"]                                                           # ui::back
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::codec::serde
-	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde",
+	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde","orion?/alloc",
 	"portable-atomic?/serde", "pyo3?/serde", "toml_edit?/serde", "wide?/serde"]
 dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
 dep_stringzilla = ["dep:stringzilla"]                                             # text::str
@@ -744,6 +744,7 @@ optional = true # safe (+some dependencies)
 default-features = false # 7 https://docs.rs/crate/orion/latest/features
 # features = [] # https://github.com/orion-rs/orion/wiki/Crate-features
 # feature-gated: alloc, safe_api, serde
+# WAIT: [make alloc and serde compilation more robust](https://github.com/orion-rs/orion/pull/473)
 
 [dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
 version = "1.11" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
