@@ -13,12 +13,16 @@ macro_rules! impl_color {
     // rgb colors (3 components)
     // - $Name   : the name of the rgb color type
     // - $C      : the type of the inner component
+    // - $BITS   : the number of bits of each inner component
+    // - $INT    : a boolean indicating whether the components are integers
     // - $LINEAR : a boolean indicating whether it's linear
-    rgb: $Name:ty, $C:ty, $LINEAR:literal) => {
+    rgb: $Name:ty, $C:ty, $BITS:literal, $INT:literal, $LINEAR:literal) => {
         impl $crate::Color for $Name {
             type Component = $C;
+            const COLOR_BITS: usize = $BITS;
             const COLOR_COUNT: usize = 3;
             const COLOR_IS_LINEAR: bool = $LINEAR;
+            const COLOR_IS_INT: bool = $INT;
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
@@ -38,12 +42,16 @@ macro_rules! impl_color {
     // rgba colors (4 components)
     // - $Name   : the name of the rgba color type
     // - $C      : the type of the inner component
+    // - $BITS   : the number of bits of each inner component
+    // - $INT    : a boolean indicating whether the components are integers
     // - $LINEAR : a boolean indicating whether it's linear
-    rgba: $Name:ty, $C:ty, $LINEAR:literal) => {
+    rgba: $Name:ty, $C:ty, $BITS:literal, $INT:literal, $LINEAR:literal) => {
         impl $crate::Color for $Name {
             type Component = $C;
+            const COLOR_BITS: usize = $BITS;
             const COLOR_COUNT: usize = 4;
             const COLOR_IS_LINEAR: bool = $LINEAR;
+            const COLOR_IS_INT: bool = $INT;
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
@@ -63,13 +71,17 @@ macro_rules! impl_color {
     (
     // lum colors (1 component)
     // - $C      : the type of the inner component
+    // - $BITS   : the number of bits of each inner component
+    // - $INT    : a boolean indicating whether the components are integers
     // - $LINEAR : a boolean indicating whether it's linear
     // - $LIGHT  : a boolean indicating whether it's lightness
-    lum: $C:ty, $LINEAR:literal, $LIGHT:literal) => {
+    lum: $C:ty, $BITS:literal, $INT:expr, $LINEAR:literal, $LIGHT:literal) => {
         impl $crate::Color for Lum<$C, $LINEAR, $LIGHT> {
             type Component = $C;
+            const COLOR_BITS: usize = $BITS;
             const COLOR_COUNT: usize = 1;
             const COLOR_IS_LINEAR: bool = $LINEAR;
+            const COLOR_IS_INT: bool = $INT;
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let needed = Self::COLOR_COUNT;

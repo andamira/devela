@@ -63,30 +63,32 @@ pub type Luma<T> = Lum<T, false, false>;
 pub type LinearLightness<T> = Lum<T, true, true>;
 
 /// ## Args
-/// `$T`: the type used to represent the main value. (u8, u16, f32, f64)
-/// `$f`: associated floating-point type for operations. (f32|f64)
-/// `$B`: float-related feature bound. ("_float_f32"|"_float_f64")
+/// `$T`   : the type used to represent the main value. (u8, u16, f32, f64)
+/// `$f`   : associated floating-point type for operations. (f32|f64)
+/// `$B`   : float-related feature bound. ("_float_f32"|"_float_f64")
+/// `$BITS`: the number of bits of each inner component.
+/// `$INT` : a boolean indicating whether the components are integers.
 macro_rules! impl_lum {
     () => {
         impl_lum![common u8|f32, u16|f32];
         #[cfg(feature = "_float_f32")] impl_lum![common f32|f32];
         #[cfg(feature = "_float_f64")] impl_lum![common f64|f64];
 
-        impl_lum![lumina u8|f32:"_float_f32", u16|f32:"_float_f32"];
-        #[cfg(feature = "_float_f32")]impl_lum![lumina f32|f32:"_float_f32"];
-        #[cfg(feature = "_float_f64")]impl_lum![lumina f64|f64:"_float_f64"];
+        impl_lum![lumina u8|f32:"_float_f32":8+true, u16|f32:"_float_f32":16+true];
+        #[cfg(feature = "_float_f32")]impl_lum![lumina f32|f32:"_float_f32":32+false];
+        #[cfg(feature = "_float_f64")]impl_lum![lumina f64|f64:"_float_f64":64+false];
 
-        impl_lum![light u8|f32:"_float_f32", u16|f32:"_float_f32"];
-        #[cfg(feature = "_float_f32")]impl_lum![light f32|f32:"_float_f32"];
-        #[cfg(feature = "_float_f64")]impl_lum![light f64|f64:"_float_f64"];
+        impl_lum![light u8|f32:"_float_f32":8+true, u16|f32:"_float_f32":16+true];
+        #[cfg(feature = "_float_f32")]impl_lum![light f32|f32:"_float_f32":32+false];
+        #[cfg(feature = "_float_f64")]impl_lum![light f64|f64:"_float_f64":64+false];
 
-        impl_lum![luma u8|f32:"_float_f32", u16|f32:"_float_f32"];
-        #[cfg(feature = "_float_f32")]impl_lum![luma f32|f32:"_float_f32"];
-        #[cfg(feature = "_float_f64")]impl_lum![luma f64|f64:"_float_f64"];
+        impl_lum![luma u8|f32:"_float_f32":8+true, u16|f32:"_float_f32":16+true];
+        #[cfg(feature = "_float_f32")]impl_lum![luma f32|f32:"_float_f32":32+false];
+        #[cfg(feature = "_float_f64")]impl_lum![luma f64|f64:"_float_f64":64+false];
 
-        impl_lum![lumi_light u8|f32:"_float_f32", u16|f32:"_float_f32"];
-        #[cfg(feature = "_float_f32")]impl_lum![lumi_light f32|f32:"_float_f32"];
-        #[cfg(feature = "_float_f64")]impl_lum![lumi_light f64|f64:"_float_f64"];
+        impl_lum![lumi_light u8|f32:"_float_f32":8+true, u16|f32:"_float_f32":16+true];
+        #[cfg(feature = "_float_f32")]impl_lum![lumi_light f32|f32:"_float_f32":32+false];
+        #[cfg(feature = "_float_f64")]impl_lum![lumi_light f64|f64:"_float_f64":64+false];
     };
     ( // Methods common to all types.
       common  $( $T:ty | $f:ty ),+) => { $( impl_lum![@common $T|$f]; )+ };
@@ -114,9 +116,11 @@ macro_rules! impl_lum {
         }
     };
     ( // Methods for Luminance: (linear non-lightness)
-      lumina $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@lumina $T|$f:$B]; )+ };
-    (@lumina    $T:ty | $f:ty : $B:literal    ) => {
-        impl_color![lum: $T, true, false];
+      lumina $( $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal),+) => {
+        $( impl_lum![@lumina $T|$f:$B : $BITS+$INT]; )+
+    };
+    (@lumina    $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal   ) => {
+        impl_color![lum: $T, $BITS, $INT, true, false];
 
         impl Luminance<$T> {
             /// Returns the **linear luminance** (physical light intensity, Y).
@@ -130,9 +134,11 @@ macro_rules! impl_lum {
         }
     };
     ( // Methods for Lightness: (non-linear, lightness)
-      light $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@light $T|$f:$B]; )+ };
-    (@light    $T:ty | $f:ty : $B:literal    ) => {
-        impl_color![lum: $T, false, true];
+      light $( $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal),+) => {
+        $( impl_lum![@light $T|$f:$B : $BITS+$INT]; )+
+    };
+    (@light    $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal   ) => {
+        impl_color![lum: $T, $BITS, $INT, false, true];
 
         impl Lightness<$T> {
             /// Returns the **perceptual lightness** (CIE L\*).
@@ -146,9 +152,11 @@ macro_rules! impl_lum {
         }
     };
     ( // Methods for Luma: (non-linear, non-lightness)
-      luma $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@luma $T|$f:$B]; )+ };
-    (@luma    $T:ty | $f:ty : $B:literal    ) => {
-        impl_color![lum: $T, false, false];
+      luma $( $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal),+) => {
+        $( impl_lum![@luma $T|$f:$B : $BITS+$INT]; )+
+    };
+    (@luma    $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal    ) => {
+        impl_color![lum: $T, $BITS, $INT, false, false];
 
         impl Luma<$T> {
             /// Returns the **gamma-encoded luma** (non-linear Y′).
@@ -163,9 +171,11 @@ macro_rules! impl_lum {
         }
     };
     ( // Methods for LinearLuminance: (linear, lightness)
-      lumi_light $( $T:ty | $f:ty : $B:literal),+) => { $( impl_lum![@lumi_light $T|$f:$B]; )+ };
-    (@lumi_light    $T:ty | $f:ty : $B:literal    ) => {
-        impl_color![lum: $T, true, true];
+      lumi_light $( $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal),+) => {
+          $( impl_lum![@lumi_light $T|$f:$B : $BITS+$INT]; )+
+    };
+    (@lumi_light    $T:ty | $f:ty : $B:literal : $BITS:literal + $INT:literal   ) => {
+        impl_color![lum: $T, $BITS, $INT, true, true];
 
         impl LinearLightness<$T> {
             /// Returns the **linear-light perceptual** value (experimental).

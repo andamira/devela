@@ -16,6 +16,9 @@ pub trait Color {
     /// The type used for color components.
     type Component;
 
+    /// The number of bits of each color component.
+    const COLOR_BITS: usize;
+
     /// The number of color components.
     ///
     /// For example:
@@ -23,8 +26,11 @@ pub trait Color {
     /// - Spectral data may return `n`
     const COLOR_COUNT: usize;
 
-    /// Whether the color representation is linear or not.
+    /// Whether the color representation is linear.
     const COLOR_IS_LINEAR: bool;
+
+    /// Whether the color components are represented with integers.
+    const COLOR_IS_INT: bool;
 
     /// Writes the color components to a pre-allocated `buffer`.
     ///
@@ -34,14 +40,21 @@ pub trait Color {
 
     /* non-required */
 
-    /// Whether the color representation is linear or not.
-    fn color_is_linear(&self) -> bool { Self::COLOR_IS_LINEAR }
+    /// Returns the bits of each color component.
+    fn color_bits(&self) -> usize { Self::COLOR_BITS }
 
     /// Returns the number of color components.
-    fn color_component_count(&self) -> usize { Self::COLOR_COUNT }
+    fn color_count(&self) -> usize { Self::COLOR_COUNT }
+
+    /// Whether the color representation is linear.
+    fn color_is_linear(&self) -> bool { Self::COLOR_IS_LINEAR }
+
+    /// Whether the color components are represented with integers.
+    fn color_is_int(&self) -> bool { Self::COLOR_IS_INT }
 
     /// Returns a vector containing the color components.
     #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn color_components_vec(&self) -> Vec<Self::Component> where Self::Component: Default + Clone {
         let mut buffer = vec![Self::Component::default(); self.color_component_count()];
         self.color_components_write(&mut buffer);
