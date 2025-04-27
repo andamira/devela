@@ -13,11 +13,11 @@ use crate::{
 
 #[doc = crate::TAG_NUM!()]
 /// Fundamental numeric constants for both integer and floating-point types.
-pub trait NumConst {
+pub trait NumConst: PartialEq<Self::Num> {
     /// The underlying numeric type implementing this trait.
     type Num;
 
-    /* introspection */
+    /* numeric type introspection */
 
     /// Whether the number can represent big quantities.
     const NUM_IS_BIG: bool;
@@ -37,7 +37,7 @@ pub trait NumConst {
     /// Whether the number has a memory niche optimization.
     const NUM_IS_NICHE: bool;
 
-    /* constant values */
+    /* numeric constant values */
 
     /// The additive identity (`0`), if applicable.
     const NUM_ZERO: Option<Self::Num>;
@@ -74,6 +74,68 @@ pub trait NumConst {
 
     /// The maximum power of two within the type's range.
     const NUM_MAX_POWER_OF_TWO: Option<Self::Num>;
+
+    /* auto-implemented convenience methods */
+
+    /// Whether `self` is equal to [`NUM_ZERO`][`Self::NUM_ZERO`].
+    fn is_num_zero(&self) -> bool {
+        Self::NUM_ZERO.is_some_and(|n| self == &n)
+    }
+
+    /// Whether `self` is equal to [`NUM_ONE`][`Self::NUM_ONE`].
+    fn is_num_one(&self) -> bool {
+        self == &Self::NUM_ONE
+    }
+
+    /// Whether `self` is equal to [`NUM_TWO`][`Self::NUM_TWO`].
+    fn is_num_two(&self) -> bool {
+        self == &Self::NUM_TWO
+    }
+
+    /// Whether `self` is equal to [`NUM_THREE`][`Self::NUM_THREE`].
+    fn is_num_three(&self) -> bool {
+        self == &Self::NUM_THREE
+    }
+
+    /// Whether `self` is equal to [`NUM_NEG_ONE`][`Self::NUM_NEG_ONE`].
+    fn is_num_neg_one(&self) -> bool {
+        Self::NUM_NEG_ONE.is_some_and(|n| self == &n)
+    }
+
+    /// Whether `self` is equal to [`NUM_MIN`][`Self::NUM_MIN`].
+    fn is_num_min(&self) -> bool {
+        self == &Self::NUM_MIN
+    }
+
+    /// Whether `self` is equal to [`NUM_MAX`][`Self::NUM_MAX`].
+    fn is_num_max(&self) -> bool {
+        self == &Self::NUM_MAX
+    }
+
+    /// Whether `self` is equal to `Some(`[`NUM_MIN_POSITIVE`][`Self::NUM_MIN_POSITIVE`]`)`.
+    fn is_num_min_positive(&self) -> bool {
+        Self::NUM_MIN_POSITIVE.is_some_and(|n| self == &n)
+    }
+
+    /// Whether `self` is equal to [`NUM_MAX_NEGATIVE`][`Self::NUM_MAX_NEGATIVE`].
+    fn is_num_max_negative(&self) -> bool {
+        Self::NUM_MAX_NEGATIVE.is_some_and(|n| self == &n)
+    }
+
+    /// Whether `self` is equal to [`NUM_MIN_NORM`][`Self::NUM_MIN_NORM`].
+    fn is_num_min_norm(&self) -> bool {
+        self == &Self::NUM_MIN_NORM
+    }
+
+    /// Whether `self` is equal to [`NUM_MAX_NORM`][`Self::NUM_MAX_NORM`].
+    fn is_num_max_norm(&self) -> bool {
+        self == &Self::NUM_MAX_NORM
+    }
+
+    /// Whether `self` is equal to [`NUM_MAX_POWER_OF_TWO`][`Self::NUM_MAX_POWER_OF_TWO`].
+    fn is_num_max_power_of_two(&self) -> bool {
+        Self::NUM_MAX_POWER_OF_TWO.is_some_and(|n| self == &n)
+    }
 }
 
 ///
@@ -228,6 +290,8 @@ mod tests {
         assert_eq!(f32::NUM_NEG_ONE, Some(-1.0));
         assert_eq!(f32::NUM_MIN_POSITIVE, Some(f32::MIN_POSITIVE));
         assert_eq!(f32::NUM_MAX_NEGATIVE, Some(-0.0));
+        assert_eq!(f32::NUM_MIN_NORM, 0.0);
+        assert_eq!(f32::NUM_MAX_NORM, 1.0);
         assert_eq!(f32::NUM_MAX_POWER_OF_TWO, Some(2.0_f32.powi(f32::EXPONENT_BIAS as i32)));
         assert_eq!(f64::NUM_MAX_POWER_OF_TWO, Some(2.0_f64.powi(f64::EXPONENT_BIAS as i32)));
     }
@@ -240,6 +304,8 @@ mod tests {
         assert_eq!(i8::NUM_NEG_ONE, Some(-1));
         assert_eq!(i8::NUM_MIN_POSITIVE, Some(1));
         assert_eq!(i8::NUM_MAX_NEGATIVE, Some(-1));
+        assert_eq!(i8::NUM_MIN_NORM, i8::MIN);
+        assert_eq!(i8::NUM_MAX_NORM, i8::MAX);
         assert_eq!(i8::NUM_MAX_POWER_OF_TWO, Some(64));
     }
     #[test]
@@ -251,6 +317,8 @@ mod tests {
         assert_eq!(u8::NUM_NEG_ONE, None);
         assert_eq!(u8::NUM_MIN_POSITIVE, Some(1));
         assert_eq!(u8::NUM_MAX_NEGATIVE, None);
+        assert_eq!(u8::NUM_MIN_NORM, u8::MIN);
+        assert_eq!(u8::NUM_MAX_NORM, u8::MAX);
         assert_eq!(u8::NUM_MAX_POWER_OF_TWO, Some(128));
     }
     #[test]
@@ -262,6 +330,8 @@ mod tests {
         assert_eq!(NonZeroI8::NUM_NEG_ONE, NonZeroI8::new(-1));
         assert_eq!(NonZeroI8::NUM_MIN_POSITIVE, NonZeroI8::new(1));
         assert_eq!(NonZeroI8::NUM_MAX_NEGATIVE, NonZeroI8::new(-1));
+        assert_eq!(NonZeroI8::NUM_MIN_NORM, NonZeroI8::MIN);
+        assert_eq!(NonZeroI8::NUM_MAX_NORM, NonZeroI8::MAX);
         assert_eq!(NonZeroI8::NUM_MAX_POWER_OF_TWO, NonZeroI8::new(64));
     }
     #[test]
@@ -273,6 +343,8 @@ mod tests {
         assert_eq!(NonZeroU8::NUM_NEG_ONE, None);
         assert_eq!(NonZeroU8::NUM_MIN_POSITIVE, NonZeroU8::new(1));
         assert_eq!(NonZeroU8::NUM_MAX_NEGATIVE, None);
+        assert_eq!(NonZeroU8::NUM_MIN_NORM, NonZeroU8::MIN);
+        assert_eq!(NonZeroU8::NUM_MAX_NORM, NonZeroU8::MAX);
         assert_eq!(NonZeroU8::NUM_MAX_POWER_OF_TWO, NonZeroU8::new(128));
     }
 }

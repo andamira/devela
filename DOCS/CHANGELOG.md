@@ -62,7 +62,9 @@
 
 ## num
 - update the `NumConst` trait.
+- require the trait bound `PartialEq<Self::Num>`.
 - add consts: `NUM_[MAX|MIN][_NORM]`, `NUM_IS_[BIG|INT|FLOAT|FIXED|SIGNED|NICHE]`.
+- add auto-implemented methods over `&self`, to query the associated constant values.
 
 ### float
 - add new `Float` methods: `classify`, `next_down`, `next_up`.
