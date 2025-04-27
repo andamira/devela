@@ -17,6 +17,7 @@ macro_rules! impl_color {
     // - $INT    : a boolean indicating whether the components are integers
     // - $LINEAR : a boolean indicating whether it's linear
     rgb: $Name:ty, $C:ty, $BITS:literal, $INT:literal, $LINEAR:literal) => {
+        #[rustfmt::skip]
         impl $crate::Color for $Name {
             type Component = $C;
             const COLOR_BITS: usize = $BITS;
@@ -57,6 +58,7 @@ macro_rules! impl_color {
     // - $LINEAR : a boolean indicating whether it's linear
     // - $PREMUL : a boolean indicating whether the alpha is premultiplied
     rgba: $Name:ty, $C:ty, $BITS:literal, $INT:literal, $LINEAR:literal, $PREMUL:literal) => {
+        #[rustfmt::skip]
         impl $crate::Color for $Name {
             type Component = $C;
             const COLOR_BITS: usize = $BITS;
@@ -94,6 +96,7 @@ macro_rules! impl_color {
     // - $LINEAR : a boolean indicating whether it's linear
     // - $LIGHT  : a boolean indicating whether it's lightness
     lum: $C:ty, $BITS:literal, $INT:expr, $LINEAR:literal, $LIGHT:literal) => {
+        #[rustfmt::skip]
         impl $crate::Color for Lum<$C, $LINEAR, $LIGHT> {
             type Component = $C;
             const COLOR_BITS: usize = $BITS;

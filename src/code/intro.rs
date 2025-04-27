@@ -6,7 +6,7 @@
 /// Minimal introspection interface.
 ///
 /// ```
-/// # devela::Introspect;
+/// # use devela::Introspect;
 /// enum MyKind { A, B, C }
 ///
 /// struct MyTypeA;
