@@ -57,14 +57,20 @@ pub trait NumConst {
     /// The smallest representable value.
     const NUM_MIN: Self::Num;
 
-    /// The smallest representable positive value.
-    const NUM_MIN_POSITIVE: Option<Self::Num>;
-
     /// The greatest representable value.
     const NUM_MAX: Self::Num;
 
+    /// The smallest representable positive value.
+    const NUM_MIN_POSITIVE: Option<Self::Num>;
+
     /// The greatest representable negative value, if applicable.
     const NUM_MAX_NEGATIVE: Option<Self::Num>;
+
+    /// The smallest normalized value (e.g. 0.0 for float, `MIN` for integers).
+    const NUM_MIN_NORM: Self::Num;
+
+    /// The greatest normalized value (e.g. 1.0 for float, `MAX` for integers).
+    const NUM_MAX_NORM: Self::Num;
 
     /// The maximum power of two within the type's range.
     const NUM_MAX_POWER_OF_TWO: Option<Self::Num>;
@@ -82,15 +88,15 @@ macro_rules! impl_ext_num_const {
             NonZeroU64|u64, NonZeroU128|u128, NonZeroUsize|usize];
     };
     ($T:ty | $U:ty: $ZERO:expr, $ONE:expr, $TWO:expr, $THREE:expr,
-     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr,
+     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr, $MIN_NORM:expr, $MAX_NORM:expr,
      $IS_BIG:literal, $IS_INT:literal, $IS_FLOAT:literal, $IS_FIXED:literal,
      $IS_SIGNED:literal, $IS_NICHE:literal) => {
         impl_ext_num_const![@$T|$U: $ZERO, $ONE, $TWO, $THREE,
-        $NEG_ONE, $MIN_POS, $MAX_NEG, $MAX_POW2,
+        $NEG_ONE, $MIN_POS, $MAX_NEG, $MAX_POW2, $MIN_NORM, $MAX_NORM,
         $IS_BIG, $IS_INT, $IS_FLOAT, $IS_FIXED, $IS_SIGNED, $IS_NICHE];
     };
     (@$T:ty | $U:ty: $ZERO:expr, $ONE:expr, $TWO:expr, $THREE:expr,
-     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr,
+     $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr, $MIN_NORM:expr, $MAX_NORM:expr,
      $IS_BIG:literal, $IS_INT:literal, $IS_FLOAT:literal, $IS_FIXED:literal,
      $IS_SIGNED:literal, $IS_NICHE:literal) => {
         impl NumConst for $T {
@@ -109,9 +115,11 @@ macro_rules! impl_ext_num_const {
             const NUM_THREE: $T = $THREE;
             const NUM_NEG_ONE: Option<$T> = $NEG_ONE;
             const NUM_MIN: $T = <$T>::MIN;
-            const NUM_MIN_POSITIVE: Option<$T> = $MIN_POS;
             const NUM_MAX: $T = <$T>::MAX;
+            const NUM_MIN_POSITIVE: Option<$T> = $MIN_POS;
             const NUM_MAX_NEGATIVE: Option<$T> = $MAX_NEG;
+            const NUM_MIN_NORM: $T = $MIN_NORM;
+            const NUM_MAX_NORM: $T = $MAX_NORM;
             const NUM_MAX_POWER_OF_TWO: Option<$T> = $MAX_POW2;
         }
     };
@@ -125,6 +133,7 @@ macro_rules! impl_ext_num_const {
             Some(<$T>::MIN_POSITIVE), // MIN_POS
             Some(-0.0),               // MAX_NEG // ↓ MAX_POW2
             Some(<$T>::from_bits(((<$T>::EXPONENT_BIAS as $U << 1) << (<$T>::SIGNIFICAND_BITS)))),
+            0.0, 1.0, // MIN_NORM, MAX_NORM
             false, // IS_BIG
             false, // IS_INT
             true,  // IS_FLOAT
@@ -140,6 +149,7 @@ macro_rules! impl_ext_num_const {
             Some(1),    // MIN_POS
             Some(-1),   // MAX_NEG
             Some(<$T>::MAX - (<$T>::MAX >> 1)), // MAX_POW2
+            <$T>::MIN, <$T>::MAX, // MIN_NORM, MAX_NORM
             false, // IS_BIG
             true,  // IS_INT
             false, // IS_FLOAT
@@ -155,6 +165,7 @@ macro_rules! impl_ext_num_const {
             Some(1), // MIN_POS
             None,    // MAX_NEG
             Some(<$T>::MAX ^ (<$T>::MAX >> 1)), // MAX_POW2
+            <$T>::MIN, <$T>::MAX, // MIN_NORM, MAX_NORM
             false, // IS_BIG
             true,  // IS_INT
             false, // IS_FLOAT
@@ -173,6 +184,7 @@ macro_rules! impl_ext_num_const {
             <$T>::new(1),  // MIN_POS
             <$T>::new(-1), // MAX_NEG
             <$T>::new(<$T>::MAX.get() - (<$T>::MAX.get() >> 1)), // MAX_POW2
+            <$T>::MIN, <$T>::MAX, // MIN_NORM, MAX_NORM
             false, // IS_BIG
             true,  // IS_INT
             false, // IS_FLOAT
@@ -191,6 +203,7 @@ macro_rules! impl_ext_num_const {
             <$T>::new(1),  // MIN_POS
             None,          // MAX_NEG
             <$T>::new(<$T>::MAX.get() ^ (<$T>::MAX.get() >> 1)), // MAX_POW2
+            <$T>::MIN, <$T>::MAX, // MIN_NORM, MAX_NORM
             false, // IS_BIG
             true,  // IS_INT
             false, // IS_FLOAT
