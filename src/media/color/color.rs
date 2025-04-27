@@ -27,6 +27,9 @@ pub trait Color {
     /// - Spectral data: Arbitrary `n` (e.g., `31` for 400..=700nm in 10nm steps)
     const COLOR_COUNT: usize;
 
+    /// Whether the color has an alpha component are integer types (e.g., `u8`, `u16`).
+    const COLOR_HAS_ALPHA: bool;
+
     /// Whether the color components are integer types (e.g., `u8`, `u16`).
     ///
     /// If `false`, the components are floating-point (e.g., `f32`, `f64`).
@@ -61,6 +64,10 @@ pub trait Color {
     #[inline(always)]
     /// Returns the number of color components (channels).
     fn color_count(&self) -> usize { Self::COLOR_COUNT }
+
+    #[inline(always)]
+    /// Returns `true` if the color has an alpha component.
+    fn color_has_alpha(&self) -> bool { Self::COLOR_HAS_ALPHA }
 
     #[inline(always)]
     /// Returns `true` if the color uses integer components (e.g., `u8`, `u16`).

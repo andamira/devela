@@ -56,8 +56,8 @@
   - move all its functionality to `Gamma`.
 - rename the `ColorBase` trait to `Color`.
 - update the `Color` trait:
-  - add constants: `COLOR_[BITS|COUNT]`, `COLOR_IS_[INT|LINEAR|PREMUL]`.
-  - add methods: `color_bits`, `color_is_[int|linear|premul]`.
+  - add constants: `COLOR_[BITS|COUNT|HAS_ALPHA]`, `COLOR_IS_[INT|LINEAR|PREMUL]`.
+  - add methods: `color_[bits|has_alpha]`, `color_is_[int|linear|premul]`.
 
 ## num
 - update the `NumConst` trait.

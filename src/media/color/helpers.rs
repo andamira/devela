@@ -21,6 +21,7 @@ macro_rules! impl_color {
             type Component = $C;
             const COLOR_BITS: usize = $BITS;
             const COLOR_COUNT: usize = 3;
+            const COLOR_HAS_ALPHA: bool = false;
             const COLOR_IS_LINEAR: bool = $LINEAR;
             const COLOR_IS_INT: bool = $INT;
             const COLOR_IS_PREMUL: bool = false;
@@ -52,6 +53,7 @@ macro_rules! impl_color {
             type Component = $C;
             const COLOR_BITS: usize = $BITS;
             const COLOR_COUNT: usize = 4;
+            const COLOR_HAS_ALPHA: bool = true;
             const COLOR_IS_LINEAR: bool = $LINEAR;
             const COLOR_IS_INT: bool = $INT;
             const COLOR_IS_PREMUL: bool = $PREMUL;
@@ -83,6 +85,7 @@ macro_rules! impl_color {
             type Component = $C;
             const COLOR_BITS: usize = $BITS;
             const COLOR_COUNT: usize = 1;
+            const COLOR_HAS_ALPHA: bool = false;
             const COLOR_IS_LINEAR: bool = $LINEAR;
             const COLOR_IS_INT: bool = $INT;
             const COLOR_IS_PREMUL: bool = false;
