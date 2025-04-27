@@ -3,7 +3,7 @@
 //! Defines the [`Color`] trait.
 //
 
-use crate::NotEnoughSpace;
+use crate::{NotEnoughSpace, NumConst};
 #[cfg(feature = "alloc")]
 use crate::{Vec, vec_ as vec};
 
@@ -14,7 +14,7 @@ use crate::{Vec, vec_ as vec};
 #[rustfmt::skip]
 pub trait Color {
     /// The type of a single color component (e.g., `u8`, `f32`).
-    type Component;
+    type Component: NumConst;
 
     /// The bit depth of each color component (e.g., `8` for `u8`, `32` for `f32`).
     const COLOR_BITS: usize;
@@ -55,6 +55,21 @@ pub trait Color {
     /// Returns [`NotEnoughSpace`] if the buffer size is less than `COLOR_COUNT`.
     fn color_components_write(&self, buffer: &mut [Self::Component]) -> Result<(), NotEnoughSpace>;
 
+    /// Get the red component.
+    fn color_red(&self) -> Self::Component;
+
+    /// Get the green component.
+    fn color_green(&self) -> Self::Component;
+
+    /// Get the blue component.
+    fn color_blue(&self) -> Self::Component;
+
+    /// Get the alpha component.
+    ///
+    /// When the color has no alpha component, it should return the maximum normalized value.
+    /// (e.g. 1.0 for floats, and `MAX` value for integers).
+    fn color_alpha(&self) -> Self::Component;
+
     /* non-required */
 
     #[inline(always)]
@@ -85,7 +100,7 @@ pub trait Color {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     /// Returns a vector containing the color components.
     fn color_components_vec(&self) -> Vec<Self::Component> where Self::Component: Default + Clone {
-        let mut buffer = vec![Self::Component::default(); self.color_component_count()];
+        let mut buffer = vec![Self::Component::default(); self.color_count()];
         self.color_components_write(&mut buffer);
         buffer
     }

@@ -26,6 +26,14 @@ macro_rules! impl_color {
             const COLOR_IS_INT: bool = $INT;
             const COLOR_IS_PREMUL: bool = false;
 
+            fn color_red(&self) -> Self::Component { self.c[0] }
+            fn color_green(&self) -> Self::Component { self.c[1] }
+            fn color_blue(&self) -> Self::Component { self.c[2] }
+            /// Since the color has no alpha, the maximum normalized value is returned.
+            fn color_alpha(&self) -> Self::Component {
+                <Self::Component as $crate::NumConst>::NUM_MAX_NORM
+            }
+
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
                 let needed = Self::COLOR_COUNT;
@@ -58,6 +66,11 @@ macro_rules! impl_color {
             const COLOR_IS_INT: bool = $INT;
             const COLOR_IS_PREMUL: bool = $PREMUL;
 
+            fn color_red(&self) -> Self::Component { self.c[0] }
+            fn color_green(&self) -> Self::Component { self.c[1] }
+            fn color_blue(&self) -> Self::Component { self.c[2] }
+            fn color_alpha(&self) -> Self::Component { self.c[3] }
+
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
                 let needed = Self::COLOR_COUNT;
@@ -89,6 +102,15 @@ macro_rules! impl_color {
             const COLOR_IS_LINEAR: bool = $LINEAR;
             const COLOR_IS_INT: bool = $INT;
             const COLOR_IS_PREMUL: bool = false;
+
+            /// Since the color has no red, the luminosity is returned.
+            fn color_red(&self) -> Self::Component { self.c[0] }
+            /// Since the color has no red, the luminosity is returned.
+            fn color_green(&self) -> Self::Component { self.c[0] }
+            /// Since the color has no red, the luminosity is returned.
+            fn color_blue(&self) -> Self::Component { self.c[0] }
+            /// Since the color has no alpha, the maximum normalized value is returned.
+            fn color_alpha(&self) -> Self::Component { self.c[0] }
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let needed = Self::COLOR_COUNT;
