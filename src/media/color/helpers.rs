@@ -23,6 +23,7 @@ macro_rules! impl_color {
             const COLOR_COUNT: usize = 3;
             const COLOR_IS_LINEAR: bool = $LINEAR;
             const COLOR_IS_INT: bool = $INT;
+            const COLOR_IS_PREMUL: bool = false;
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
@@ -45,13 +46,15 @@ macro_rules! impl_color {
     // - $BITS   : the number of bits of each inner component
     // - $INT    : a boolean indicating whether the components are integers
     // - $LINEAR : a boolean indicating whether it's linear
-    rgba: $Name:ty, $C:ty, $BITS:literal, $INT:literal, $LINEAR:literal) => {
+    // - $PREMUL : a boolean indicating whether the alpha is premultiplied
+    rgba: $Name:ty, $C:ty, $BITS:literal, $INT:literal, $LINEAR:literal, $PREMUL:literal) => {
         impl $crate::Color for $Name {
             type Component = $C;
             const COLOR_BITS: usize = $BITS;
             const COLOR_COUNT: usize = 4;
             const COLOR_IS_LINEAR: bool = $LINEAR;
             const COLOR_IS_INT: bool = $INT;
+            const COLOR_IS_PREMUL: bool = $PREMUL;
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let c = self.c;
@@ -82,6 +85,7 @@ macro_rules! impl_color {
             const COLOR_COUNT: usize = 1;
             const COLOR_IS_LINEAR: bool = $LINEAR;
             const COLOR_IS_INT: bool = $INT;
+            const COLOR_IS_PREMUL: bool = false;
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {
                 let needed = Self::COLOR_COUNT;
