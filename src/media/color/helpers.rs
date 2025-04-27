@@ -32,7 +32,8 @@ macro_rules! impl_color {
             fn color_blue(&self) -> Self::Component { self.c[2] }
             /// Since the color has no alpha, the maximum normalized value is returned.
             fn color_alpha(&self) -> Self::Component {
-                <Self::Component as $crate::NumConst>::NUM_MAX_NORM
+                // NOTE: there's a NUM_MAX_NORM for all supported primitive types
+                <Self::Component as $crate::NumConst>::NUM_MAX_NORM.unwrap()
             }
 
             fn color_components_write(&self, b: &mut [$C]) -> Result<(), $crate::NotEnoughSpace> {

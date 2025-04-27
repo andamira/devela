@@ -111,7 +111,7 @@ macro_rules! impl_lum {
             /// May be useful for quick approximations.
             /// Not correct for perceptual brightness (luma) or physical light (luminance).
             pub const fn brightness_from_rgb(rgb: Rgb<$T>) -> Self {
-                Self::new((rgb.r() + rgb.g() + rgb.b()) / <$T as NumConst>::NUM_THREE)
+                Self::new((rgb.r() + rgb.g() + rgb.b()) / <$T as NumConst>::NUM_THREE.unwrap())
             }
         }
     };

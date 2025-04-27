@@ -63,6 +63,7 @@
 ## num
 - update the `NumConst` trait.
 - require the trait bound `PartialEq<Self::Num>`.
+- make all its associated constant values be `Option`al.
 - add consts: `NUM_[MAX|MIN][_NORM]`, `NUM_IS_[BIG|INT|FLOAT|FIXED|SIGNED|NICHE]`.
 - add auto-implemented methods over `&self`, to query the associated constant values.
 

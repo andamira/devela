@@ -61,7 +61,7 @@ macro_rules! impl_matrix {
                 let mut matrix = Matrix { data };
                 let mut i = 0;
                 while i < R {
-                    *matrix.at_mut(i, i) = <$T>::NUM_ONE;
+                    *matrix.at_mut(i, i) = <$T>::NUM_ONE.unwrap();
                     i += 1;
                 }
                 matrix
@@ -241,7 +241,7 @@ macro_rules! impl_matrix {
             /// Returns `1` for even indices, and `-1` for odd indices.
             #[inline(always)]
             const fn parity_sign(i: usize) -> $T {
-                is![i % 2 == 0; <$T>::NUM_ONE; <$T>::NUM_NEG_ONE.unwrap()]
+                is![i % 2 == 0; <$T>::NUM_ONE.unwrap(); <$T>::NUM_NEG_ONE.unwrap()]
             }
         }
     };
