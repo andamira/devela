@@ -27,22 +27,37 @@ pub struct Rgba<T, const LINEAR: bool = false> {
 
 /* aliases */
 
-pub(crate) type Rgb8 = Rgb<u8>;
-pub(crate) type Rgba8 = Rgba<u8>;
-pub(crate) type Rgb16 = Rgb<u16>;
-pub(crate) type Rgba16 = Rgba<u16>;
+/// RGB color with 8-bit integer components (sRGB gamma space).
+pub type Rgb8 = Rgb<u8>;
+/// RGB+A color with 8-bit integer components (sRGB gamma space, straight alpha).
+pub type Rgba8 = Rgba<u8>;
+
+/// RGB color with 16-bit integer components (sRGB gamma space).
+pub type Rgb16 = Rgb<u16>;
+/// RGB+A color with 16-bit integer components (sRGB gamma space, straight alpha).
+pub type Rgba16 = Rgba<u16>;
 
 #[cfg(feature = "_float_f32")]
 crate::items! {
-    pub(crate) type RgbF32 = Rgb<f32>;
-    pub(crate) type RgbaF32 = Rgba<f32>;
-    pub(crate) type RgbLinF32 = Rgb<f32, true>;
-    pub(crate) type RgbaLinF32 = Rgba<f32, true>;
+    /// RGB color with 32-bit float components (sRGB gamma space).
+    pub type RgbF32 = Rgb<f32>;
+    /// RGB+A color with 32-bit float components (sRGB gamma space, straight alpha).
+    pub type RgbaF32 = Rgba<f32>;
+
+    /// RGB color with 32-bit float components (linear space).
+    pub type RgbLinF32 = Rgb<f32, true>;
+    /// RGB+A color with 32-bit float components (linear space, straight alpha).
+    pub type RgbaLinF32 = Rgba<f32, true>;
 }
 #[cfg(feature = "_float_f64")]
 crate::items! {
-    pub(crate) type RgbF64 = Rgb<f64>;
-    pub(crate) type RgbaF64 = Rgba<f64>;
-    pub(crate) type RgbLinF64 = Rgb<f64, true>;
-    pub(crate) type RgbaLinF64 = Rgba<f64, true>;
+    /// RGB color with 64-bit float components (sRGB gamma space).
+    pub type RgbF64 = Rgb<f64>;
+    /// RGB+A color with 64-bit float components (sRGB gamma space, straight alpha).
+    pub type RgbaF64 = Rgba<f64>;
+
+    /// RGB color with 64-bit float components (linear space).
+    pub type RgbLinF64 = Rgb<f64, true>;
+    /// RGB+A color with 64-bit float components (linear space, straight alpha).
+    pub type RgbaLinF64 = Rgba<f64, true>;
 }

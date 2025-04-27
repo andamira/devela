@@ -49,6 +49,7 @@
 ### color
 - add types: `Gamma`, `Lum`, `Rgb`, `Rgba`.
   - implement for `u8`, `u16`, `f32`, `f64`.
+- add aliases for different `Rgb` color types.
 - add `Lum` sub-type aliases: `Lightness`, `LinearLightness`, `Luma`, `Luminance`.
 - add module: `media::color::rgb`.
 - remove the `Color` namespace.
