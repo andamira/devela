@@ -53,12 +53,14 @@ See also
 # 1.88 will be stable on 2025-06-26 ([`nightly_stable_next2`](https://releases.rs/docs/1.88.0/))
 > - <https://github.com/rust-lang/rust/milestone/132>
 
+- 1.88: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
 - 1.88: `·`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
 - 1.88: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.88: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
 - 1.88: ` `[exact_div](https://github.com/rust-lang/rust/pull/139163)
 - 1.88: `·`[let_chains](https://github.com/rust-lang/rust/pull/132833)
 - 1.88: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
+- 1.88: ` `[±proc_macro_span](https://github.com/rust-lang/rust/pull/139865)
 
 <!--
 # 1.89 will be stable on 2025-08-07 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
@@ -75,7 +77,6 @@ See also
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
 - 1.??: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
-- 1.??: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `s`[file_lock](https://github.com/rust-lang/rust/pull/136794) (de-stabilize: 138822)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
@@ -119,6 +120,7 @@ See also
         = `nightly_doc` flag
 - 1.?? `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
         = `nightly_float` flag
+- 1.?? ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.?? ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
@@ -129,7 +131,6 @@ See also
         = `nightly_simd` flag
 - 1.?? ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
 - 1.?? ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
-- 1.?? ` `[±proc_macro_span](https://github.com/rust-lang/rust/pull/139865)
 - 1.?? ` `[const as_mut_slice](https://github.com/rust-lang/rust/pull/140066)
 - 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 

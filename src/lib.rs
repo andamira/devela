@@ -74,6 +74,7 @@
 #![cfg_attr(
     nightly_stable_next2,
     feature(
+        c_str_module,
         cfg_boolean_literals,
         cell_update,
         const_cell,
@@ -96,7 +97,6 @@
         const_sockaddr_setters,
         const_str_split_at,
         const_swap_nonoverlapping,
-        c_str_module,
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
         isqrt,
