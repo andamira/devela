@@ -78,8 +78,10 @@
         cfg_boolean_literals,
         cell_update,
         const_cell,
+        const_swap_nonoverlapping,
         let_chains,
         naked_functions,
+        slice_as_chunks,
     )
 )]
 #![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
@@ -96,14 +98,12 @@
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
-        const_swap_nonoverlapping,
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
         isqrt,
         macro_metavar_expr,
         offset_of_slice,
         // repr128, // incomplete_features
-        slice_as_chunks,
         unsafe_cell_from_mut,
     )
 )]
