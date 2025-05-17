@@ -4,7 +4,7 @@
 =======================
 
 ## manifest
-- bump MSRV to 1.86.0.
+- bump MSRV to 1.87.0.
 - convert library to standalone, remove workspace config.
 - bump dependencies:
   - `crossterm` → 0.29.
