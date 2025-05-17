@@ -101,7 +101,7 @@ pub trait Color {
     /// Returns a vector containing the color components.
     fn color_components_vec(&self) -> Vec<Self::Component> where Self::Component: Default + Clone {
         let mut buffer = vec![Self::Component::default(); self.color_count()];
-        self.color_components_write(&mut buffer);
+        let _ = self.color_components_write(&mut buffer); // CHECK
         buffer
     }
 }

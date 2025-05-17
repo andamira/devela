@@ -57,7 +57,7 @@ impl Pnm {
             return Err(InvalidImageSize(Some((width, height))));
         }
         let mut result = String::new();
-        writeln!(result, "P1\n{} {}", width, height)?;
+        writeln!(result, "P1\n{width} {height}")?;
 
         // Convert each byte in `bitmap` to '0' (white) or '1' (black) ASCII
         for row in 0..height {
@@ -98,7 +98,7 @@ impl Pnm {
             return Err(InvalidImageSize(Some((width, height))));
         }
         let mut result = String::new();
-        writeln!(result, "P1\n{} {}", width, height)?;
+        writeln!(result, "P1\n{width} {height}")?;
 
         // Convert each bit in `bitmap` to '0' (white) or '1' (black) ASCII
         for row in 0..height {

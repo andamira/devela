@@ -90,8 +90,8 @@ pub(crate) fn generate() -> Result<(), Error> {
 
     // index fields
     for i in 0..MAX_ARITY {
-        w!(f, "{TAB1}/// The type of the element at index {}.", i)?;
-        w!(f, "{TAB1}type _{};", i)?;
+        w!(f, "{TAB1}/// The type of the element at index {i}.")?;
+        w!(f, "{TAB1}type _{i};")?;
     }
 
     w!(f, r#"
@@ -876,7 +876,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     // --------------------------------------------------------------------------
 
     if let Err(e) = f.flush() {
-        eprintln!("Failed to write to file: {}", e);
+        eprintln!("Failed to write to file: {e}");
         std::process::exit(1);
     }
 

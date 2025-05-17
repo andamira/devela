@@ -80,11 +80,8 @@ macro_rules! assert_approx_eq_all {
         $(
             let rest_val = $rest;
             // Calculate the absolute difference without relying on `abs`:
-            let difference = if first_val > rest_val {
-                first_val - rest_val
-            } else {
-                rest_val - first_val
-            };
+            let difference =
+                if first_val > rest_val { first_val - rest_val } else { rest_val - first_val };
             assert!(
                 difference <= $tolerance,
                 "Assertion failed: ({}) is not approximately equal to ({})

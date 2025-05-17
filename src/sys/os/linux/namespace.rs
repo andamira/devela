@@ -213,7 +213,7 @@ impl Linux {
     fn write_all_unchecked(fd: c_int, mut buf: &[u8]) {
         while !buf.is_empty() {
             let n = unsafe { Linux::sys_write(fd, buf.as_ptr(), buf.len()) };
-            if n <= 0 { panic!("write failed with return value {}", n); }
+            if n <= 0 { panic!("write failed with return value {n}"); }
             buf = &buf[n as usize..];
         }
     }
@@ -259,7 +259,7 @@ impl Linux {
         let bytes = s.as_bytes();
         let n = unsafe { Linux::sys_write(FILENO::STDOUT, bytes.as_ptr(), bytes.len()) };
         if n != bytes.len() as isize {
-            panic!("write failed with return value {}", n);
+            panic!("write failed with return value {n}");
         }
     }
     /// Ultra-fast stdout write with newline. Panics if write isn't atomic.
@@ -273,7 +273,7 @@ impl Linux {
             core::ptr::copy_nonoverlapping(bytes.as_ptr(), buf_ptr, bytes.len());
             *buf_ptr.add(bytes.len()) = b'\n'; // Add newline
             let n = Linux::sys_write(FILENO::STDOUT, buf_ptr, bytes.len() + 1); // single syscall
-            if n != (bytes.len() + 1) as isize { panic!("write failed with return value {}", n); }
+            if n != (bytes.len() + 1) as isize { panic!("write failed with return value {n}"); }
         }
     }
     /// Writes bytes to stdout. Returns error on syscall failure.
@@ -458,7 +458,7 @@ impl Linux {
                     }
                     _ => {
                         #[cfg(feature = "std")]
-                        eprintln!("Warning: Ignoring unknown flag: {:#x}", flag);
+                        eprintln!("Warning: Ignoring unknown flag: {flag:#x}");
                     }
                 }
             }
@@ -554,7 +554,7 @@ impl Linux {
                     }
                     _ => {
                         #[cfg(feature = "std")]
-                        eprintln!("Warning: Ignoring unknown flag: {:#x}", flag);
+                        eprintln!("Warning: Ignoring unknown flag: {flag:#x}");
                     }
                 }
             }

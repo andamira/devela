@@ -6,6 +6,8 @@
 // - `unroll!` macro definition.
 // - tests.
 
+#![allow(clippy::uninlined_format_args, reason = "consistency")]
+
 use super::super::utils::*;
 use std::{
     fs::{File, create_dir_all},
@@ -66,7 +68,7 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// # Vendored
 /// This is adapted work from [crunchy][crate::_info::vendored#crunchy]"#;
 // In sync with code::utils::_doc::doc_!(vendor:)
-    w!(f, "{0}", macro_code1)?;
+    w!(f, "{macro_code1}")?;
     let macro_code2 = r#"#[doc(hidden)]
 #[macro_export]
 macro_rules! _unroll {
@@ -132,7 +134,7 @@ macro_rules! _unroll {
         { const $v: usize = $a; $c }
     };
 "#;
-    w!(f, "{0}", macro_code2)?;
+    w!(f, "{macro_code2}")?;
 
     for i in 1..MAX_RECURSION + 1 {
         w!(f, "    (@$v:ident, $a:expr, {0}, $c:block) => {{", i)?;

@@ -440,7 +440,7 @@ mod reflection {
         let is_enabled = features.iter().any(|&f| ENABLED_CARGO_FEATURES.get().unwrap().contains(f));
         if is_enabled {
             for flag in ref_flags {
-                println!("cargo:rustc-cfg={}", flag);
+                println!("cargo:rustc-cfg={flag}");
                 enabled.push(flag.to_string());
             }
         }
@@ -466,7 +466,7 @@ mod reflection {
         let is_enabled = cfg_flags.iter().any(|&f| ENABLED_CFG_FLAGS.get().unwrap().contains(f));
         if is_enabled {
             for flag in ref_flags {
-                println!("cargo:rustc-cfg={}", flag);
+                println!("cargo:rustc-cfg={flag}");
                 enabled.push(flag.to_string());
             }
         }

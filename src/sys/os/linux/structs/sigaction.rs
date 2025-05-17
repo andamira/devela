@@ -45,7 +45,7 @@ impl Debug for LinuxSigaction {
         }
         write!(f, "sa_flags: {:#x}, ", self.sa_flags)?;
         match self.sa_restorer {
-            Some(ptr) => write!(f, "sa_restorer: {:p}, ", ptr)?,
+            Some(ptr) => write!(f, "sa_restorer: {ptr:p}, ")?,
             None => write!(f, "sa_restorer: None, ")?,
         }
         write!(f, "sa_mask: {:?}", self.sa_mask)?;

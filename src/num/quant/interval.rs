@@ -537,16 +537,16 @@ mod impl_traits {
             /// - `[1, 3)` for a closed lower bound and open upper bound.
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 let lower = match &self.lower {
-                    Bound::Included(value) => format!("[{}", value),
-                    Bound::Excluded(value) => format!("({}", value),
+                    Bound::Included(value) => format!("[{value}"),
+                    Bound::Excluded(value) => format!("({value}"),
                     Bound::Unbounded => String::from("(-∞"),
                 };
                 let upper = match &self.upper {
-                    Bound::Included(value) => format!("{}, {}]", lower, value),
-                    Bound::Excluded(value) => format!("{}, {})", lower, value),
-                    Bound::Unbounded => format!("{}, ∞)", lower),
+                    Bound::Included(value) => format!("{lower}, {value}]"),
+                    Bound::Excluded(value) => format!("{lower}, {value})"),
+                    Bound::Unbounded => format!("{lower}, ∞)"),
                 };
-                write!(f, "{}", upper)
+                write!(f, "{upper}")
             }
         }
     }
