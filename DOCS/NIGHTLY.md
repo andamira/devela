@@ -20,38 +20,10 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-# 1.87 will be stable on 2025-05-15 ([`nightly_stable_next1`](https://releases.rs/docs/1.87.0/))
-> - <https://github.com/rust-lang/rust/milestone/130>
-
-- 1.87: `s`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
-- 1.87: `·`[asm_goto](https://github.com/rust-lang/rust/pull/133870)
-- 1.87: `a`[box_uninit_write](https://github.com/rust-lang/rust/pull/137850)
-- 1.87: `·`[const_copy_from_slice](https://github.com/rust-lang/rust/pull/138098)
-- 1.87: `·`[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
-- 1.87: `·`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
-- 1.87: `a`[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
-- 1.87: `a`[extract_if](https://github.com/rust-lang/rust/pull/137109)
-- 1.87: `s`[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
-- 1.87: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
-- 1.87: `·`[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
-- 1.87: `s`[os_str_display](https://github.com/rust-lang/rust/pull/137336)
-- 1.87: `·`[precise_capturing_in_traits](https://github.com/rust-lang/rust/pull/138128)
-- 1.87: `·`[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
-        `·` `const_ptr_sub_ptr`
-- 1.87: `·`[slice_take](https://github.com/rust-lang/rust/pull/137829)
-        ` ` `split_off` (new name)
-- 1.87: `a`[string_extend_from_within](https://github.com/rust-lang/rust/pull/137569)
-- 1.87: `·`[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
-- 1.87: `·`[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
-- 1.87: ` `[Allow `*const W<dyn A>` -> `*const dyn A` ptr cast](https://github.com/rust-lang/rust/pull/136127)
-- 1.87: ` `[IoErrorKind::InvalidFilename](https://github.com/rust-lang/rust/pull/134076)
-- 1.87: ` `[Reduce fmt width & precision to 16 bits](https://github.com/rust-lang/rust/pull/136932)
-- 1.87: `✓`[Undeprecate env::home_dir](https://github.com/rust-lang/rust/pull/137327)
-- 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
-- 1.87: ` `[Update stdarch](https://github.com/rust-lang/rust/pull/136831) CHECK
-
 # 1.88 will be stable on 2025-06-26 ([`nightly_stable_next2`](https://releases.rs/docs/1.88.0/))
 > - <https://github.com/rust-lang/rust/milestone/132>
+<!-- > - <https://blog.rust-lang.org/2025/06/26/Rust-1.88.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.88.0> -->
 
 - 1.88: ` `[async_drop](https://github.com/rust-lang/rust/pull/123948)
 - 1.88: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
@@ -67,6 +39,8 @@ See also
 
 # 1.89 will be stable on 2025-08-07 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
 > - <https://github.com/rust-lang/rust/milestone/133>
+<!-- > - <https://blog.rust-lang.org/2025/08/07/Rust-1.89.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.89.0> -->
 
 - 1.89: ` `[±LoongArch features](https://github.com/rust-lang/rust/pull/135015)
 
@@ -85,12 +59,15 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
+- 1.??: `·`[keylocker_x86](https://github.com/rust-lang/rust/pull/140766)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
 - 1.??: `i`[repr128](https://github.com/rust-lang/rust/pull/138285)
+- 1.??: `·`[result_flattening](https://github.com/rust-lang/rust/pull/141072)
+- 1.??: `·`[sha512_sm_x86](https://github.com/rust-lang/rust/pull/140767)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
@@ -126,6 +103,7 @@ See also
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
 - 1.?? ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
+- 1.?? ` `[non_null_from_ref](https://github.com/rust-lang/rust/pull/140511)
 - 1.?? ` `[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
 - 1.?? ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.?? `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)

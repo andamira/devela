@@ -6,8 +6,40 @@ Legend:
 - `✓` = known to be explicitly used
 - `…` = intended to be used
 
+# 1.87 became stable on [2025-05-15](https://releases.rs/docs/1.87.0/))
+> - <https://github.com/rust-lang/rust/milestone/130>
+> - <https://blog.rust-lang.org/2025/05/15/Rust-1.87.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.87.0>
+
+- 1.87: `…`[anonymous_pipe](https://github.com/rust-lang/rust/pull/135822)
+- 1.87: ` `[asm_goto](https://github.com/rust-lang/rust/pull/133870)
+- 1.87: ` `[box_uninit_write](https://github.com/rust-lang/rust/pull/137850)
+- 1.87: ` `[const_copy_from_slice](https://github.com/rust-lang/rust/pull/138098)
+- 1.87: ` `[const_slice_flatten](https://github.com/rust-lang/rust/pull/134995)
+- 1.87: `…`[const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
+- 1.87: ` `[const_vec_string_slice](https://github.com/rust-lang/rust/pull/137319)
+- 1.87: ` `[extract_if](https://github.com/rust-lang/rust/pull/137109)
+- 1.87: ` `[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
+- 1.87: ` `[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
+- 1.87: `…`[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
+- 1.87: ` `[os_str_display](https://github.com/rust-lang/rust/pull/137336)
+- 1.87: ` `[precise_capturing_in_traits](https://github.com/rust-lang/rust/pull/138128)
+- 1.87: ` `[ptr_sub_ptr](https://github.com/rust-lang/rust/pull/137121)
+        ` ` `const_ptr_sub_ptr`
+- 1.87: ` `[slice_take](https://github.com/rust-lang/rust/pull/137829)
+        ` ` `split_off` (new name)
+- 1.87: ` `[string_extend_from_within](https://github.com/rust-lang/rust/pull/137569)
+- 1.87: ` `[unbounded_shifts](https://github.com/rust-lang/rust/pull/137393)
+- 1.87: ` `[unsigned_is_multiple_of](https://github.com/rust-lang/rust/pull/137383)
+- 1.87: ` `[Allow `*const W<dyn A>` -> `*const dyn A` ptr cast](https://github.com/rust-lang/rust/pull/136127)
+- 1.87: ` `[IoErrorKind::InvalidFilename](https://github.com/rust-lang/rust/pull/134076)
+- 1.87: ` `[Reduce fmt width & precision to 16 bits](https://github.com/rust-lang/rust/pull/136932)
+- 1.87: `→`[Undeprecate env::home_dir](https://github.com/rust-lang/rust/pull/137327)
+- 1.87: ` `[Update to LLVM 20](https://github.com/rust-lang/rust/pull/135763)
+- 1.87: ` `[Update stdarch](https://github.com/rust-lang/rust/pull/136831) CHECK
+
 # 1.86 became stable on [2025-04-03](https://releases.rs/docs/1.86.0/)
-> - <https://blog.rust-lang.org/2025/04/03/Rust-1.86.0.html>
+> - <https://blog.rust-lang.org/2025/04/03/Rust-1.86.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.86.0>
 > - <https://github.com/rust-lang/rust/milestone/128>
 
@@ -25,7 +57,7 @@ Legend:
 - 1.86: `✓`[iter::FromCoroutine](https://github.com/rust-lang/rust/pull/135687)
 
 # 1.85 became stable on [2025-02-20](https://releases.rs/docs/1.85.0/)
-> - <https://blog.rust-lang.org/2025/02/20/Rust-1.85.0.html>
+> - <https://blog.rust-lang.org/2025/02/20/Rust-1.85.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.85.0>
 > - <https://github.com/rust-lang/rust/milestone/127>
 
@@ -49,7 +81,7 @@ Legend:
 - 1.85: `✓`[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
 
 # 1.84 became stable on [2024-01-09](https://releases.rs/docs/1.84.0/)
-> - <https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html>
+> - <https://blog.rust-lang.org/2025/01/09/Rust-1.84.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.84.0>
 > - <https://github.com/rust-lang/rust/milestone/126>
 
@@ -72,7 +104,7 @@ Legend:
 - 1.84: ` `[wasm:multivalue,reference-types,tail-call](https://github.com/rust-lang/rust/pull/131080)
 
 # 1.83 became stable on [2024-11-28](https://releases.rs/docs/1.83.0/)
-> - <https://blog.rust-lang.org/2024/11/28/Rust-1.83.0.html>
+> - <https://blog.rust-lang.org/2024/11/28/Rust-1.83.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.83.0>
 > - <https://github.com/rust-lang/rust/milestone/125>
 
@@ -97,7 +129,7 @@ Legend:
 - 1.83: `✓`[waker_getters](https://github.com/rust-lang/rust/pull/129919)
 
 # 1.82 became stable on [2024-10-17](https://releases.rs/docs/1.82.0/)
-> - <https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html>
+> - <https://blog.rust-lang.org/2024/10/17/Rust-1.82.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.82.0>
 > - <https://github.com/rust-lang/rust/milestone/123>
 

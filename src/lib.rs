@@ -31,6 +31,11 @@
 //
 // nightly (flags)
 //
+// ```
+// RUSTFLAGS="--cfg nightly_stable" cargo +nightly build
+// RUSTDOCFLAGS="--cfg nightly_stable" cargo +nightly doc
+// ```
+//
 // (In sync with ../Cargo.toml::[lints.rust.unexpected_cfgs] & ../build/features.rs::FLAGS_NIGHTLY)
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 #![cfg_attr(nightly_autodiff, feature(autodiff))]
@@ -41,38 +46,12 @@
 #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
 #![cfg_attr(nightly_float, feature(f16, f128))]
 #![cfg_attr(nightly_simd, feature(portable_simd))]
+//
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_next1`: 1.87 core, alloc, std…
+// `nightly_stable_next1`: 1.88 core, alloc, std…
 #![cfg_attr(
-    nightly_stable_next2,
-    feature(
-        asm_goto,
-        const_copy_from_slice,
-        const_slice_flatten,
-        integer_sign_cast,
-        num_midpoint_signed,
-        const_ptr_sub_ptr,
-        const_str_from_utf8,
-        precise_capturing_in_traits,
-        ptr_sub_ptr,
-        slice_take,
-        unbounded_shifts,
-        unsigned_is_multiple_of,
-    )
-)]
-#![cfg_attr(
-    all(nightly_stable_next1, feature = "alloc"),
-    feature(box_uninit_write, const_vec_string_slice, extract_if, string_extend_from_within,)
-)]
-#![cfg_attr(
-    all(nightly_stable_next1, feature = "std"),
-    feature(anonymous_pipe, hash_extract_if, os_str_display,)
-)]
-// ----------------------------
-// `nightly_stable_next2`: 1.88 core, alloc, std…
-#![cfg_attr(
-    nightly_stable_next2,
+    nightly_stable_next1,
     feature(
         c_str_module,
         cfg_boolean_literals,
@@ -84,8 +63,13 @@
         slice_as_chunks,
     )
 )]
-#![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_next2, feature = "std"), feature())]
+#![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
+// ----------------------------
+// `nightly_stable_next2`: 1.89 core, alloc, std…
+// #![cfg_attr(nightly_stable_next2, feature())]
+// #![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_next2, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -101,9 +85,13 @@
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
         isqrt,
+        keylocker_x86,
         macro_metavar_expr,
+        non_null_from_ref,
         offset_of_slice,
         // repr128, // incomplete_features
+        result_flattening,
+        sha512_sm_x86,
         unsafe_cell_from_mut,
     )
 )]

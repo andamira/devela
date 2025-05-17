@@ -1103,8 +1103,8 @@ check-cfg = [ # Allowed configuration flags:
 		#
 		# nightly features that should become stable soon enough.
 		"cfg(nightly_stable)", # In sync with ./DOCS/NIGHTLY.md and ./src/lib.rs:
-			"cfg(nightly_stable_next1)", # 1.87
-			"cfg(nightly_stable_next2)", # 1.88
+			"cfg(nightly_stable_next1)", # 1.88
+			"cfg(nightly_stable_next2)", # 1.89
 			"cfg(nightly_stable_later)", # 1.??
 	#
 	# Auto-enabled reflection flags from ./build/features.rs (36)
