@@ -76,7 +76,7 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
     ///
     /// ## Compile-Time Optimization
     /// Unnecessary branches are removed at compile time if their respective constant is set to 0.
-    pub fn lock(&self) -> SpinLockGuard<T, SPIN, YIELD, SLEEP> {
+    pub fn lock(&self) -> SpinLockGuard<'_, T, SPIN, YIELD, SLEEP> {
         #[cfg(feature = "std")]
         let mut spin = 0usize;
         while self.lock.compare_exchange_weak(false, true,
@@ -97,7 +97,7 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
     /// Attempts to acquire the lock without blocking.
     ///
     /// Returns `Some(SpinLockGuard<T>)` if successful, otherwise `None`.
-    pub fn try_lock(&self) -> Option<SpinLockGuard<T, SPIN, YIELD, SLEEP>> {
+    pub fn try_lock(&self) -> Option<SpinLockGuard<'_, T, SPIN, YIELD, SLEEP>> {
         self.lock.compare_exchange(false, true, AtomicOrdering::Acquire, AtomicOrdering::Acquire)
             .is_ok().then(|| SpinLockGuard(self))
     }

@@ -27,7 +27,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     pub(super) unsafe fn push_inner(
         &mut self,
         fat_ptr: &DST,
-    ) -> Result<PushInnerInfo<BUF::Inner>, ()> {
+    ) -> Result<PushInnerInfo<'_, BUF::Inner>, ()> {
         let bytes = size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
         // SAFETY: caller must ensure safety
@@ -39,7 +39,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         &mut self,
         bytes: usize,
         metadata: &[usize],
-    ) -> Result<PushInnerInfo<BUF::Inner>, ()> {
+    ) -> Result<PushInnerInfo<'_, BUF::Inner>, ()> {
         let words = BUF::round_to_words(bytes) + Self::meta_words();
 
         // 1. Check if there's space for the item

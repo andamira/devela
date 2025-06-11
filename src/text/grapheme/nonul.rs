@@ -165,7 +165,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[rustfmt::skip]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn chars(&self) -> IterChars { self.0.chars() }
+    pub fn chars(&self) -> IterChars<'_> { self.0.chars() }
 
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[must_use] #[rustfmt::skip]

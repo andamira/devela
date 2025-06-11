@@ -182,7 +182,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    pub fn chars(&self) -> IterChars {
+    pub fn chars(&self) -> IterChars<'_> {
         self.as_str().chars()
     }
 

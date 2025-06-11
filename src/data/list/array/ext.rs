@@ -53,7 +53,7 @@ pub trait ExtArray: Sealed {
 
     /// Wraps the array in an [`ArrayFmt`] for formatting purposes.
     #[rustfmt::skip]
-    fn fmt(&self) -> ArrayFmt<Self> where Self: Sized { ArrayFmt(self) }
+    fn fmt(&self) -> ArrayFmt<'_, Self> where Self: Sized { ArrayFmt(self) }
 }
 
 impl<T, const LEN: usize> ExtArray for [T; LEN] {

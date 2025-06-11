@@ -157,14 +157,14 @@ pub(crate) fn generate() -> Result<(), Error> {
     w!(f, "{TAB1}/// Returns a shared reference to the `nth` element,
     /// or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
-    fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
+    fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">>;")?;
 
     w!(f, "{TAB1}/// Returns an exclusive reference to the `nth` element,
     /// or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
-    fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
+    fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">>;")?;
 
@@ -192,7 +192,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     fn arity(&self) -> usize {{ Self::ARITY }}")?;
 
     w!(f, "{TAB1}/// Wraps the tuple in a [`TupleFmt`] for formatting purposes.
-    fn fmt(&self) -> TupleFmt<Self> where Self: Sized {{ TupleFmt(self) }}")?;
+    fn fmt(&self) -> TupleFmt<'_, Self> where Self: Sized {{ TupleFmt(self) }}")?;
 
     w!(f, "}}")?; // end define Tuple
 
@@ -243,11 +243,11 @@ pub(crate) fn generate() -> Result<(), Error> {
             w!(f, "{{")?;
                 w!(f, "{TAB2}None")?;
         w!(f, "{TAB1}}}")?;
-        w!(f, "{TAB1}fn nth_ref(&self, _nth: usize) -> Option<TupleElementRef<")?;
+        w!(f, "{TAB1}fn nth_ref(&self, _nth: usize) -> Option<TupleElementRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "{TAB2}None")?;
         w!(f, "{TAB1}}}")?;
-        w!(f, "{TAB1}fn nth_mut(&mut self, _nth: usize) -> Option<TupleElementMut<")?;
+        w!(f, "{TAB1}fn nth_mut(&mut self, _nth: usize) -> Option<TupleElementMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "{TAB2}None")?;
             w!(f, "{TAB1}}}")?;
@@ -262,7 +262,7 @@ pub(crate) fn generate() -> Result<(), Error> {
             back_index: 0,
         }}
     }}")?;
-        w0!(f, "{TAB1}fn iter_ref(&self) -> TupleIterRef<")?;
+        w0!(f, "{TAB1}fn iter_ref(&self) -> TupleIterRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w0!(f, "> {{
         TupleIterRef {{
@@ -271,7 +271,7 @@ pub(crate) fn generate() -> Result<(), Error> {
             back_index: 0,
         }}
     }}")?;
-        w0!(f, "{TAB1}fn iter_mut(&mut self) -> TupleIterMut<")?;
+        w0!(f, "{TAB1}fn iter_mut(&mut self) -> TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w0!(f, "> {{
         TupleIterMut {{
@@ -345,14 +345,14 @@ impl TupleDisplay for () {{
                 w!(f, "{TAB3}_ => None,")?;
             w!(f, "{TAB2}}}")?;
         w!(f, "{TAB1}}}")?;
-        w0!(f, "{TAB1}fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
+        w0!(f, "{TAB1}fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "{TAB2}match nth {{")?;
                 w!(f, "{TAB3}0 => Some(TupleElementRef::_0(&self.0)),")?;
                 w!(f, "{TAB3}_ => None,")?;
             w!(f, "{TAB2}}}")?;
         w!(f, "{TAB1}}}")?;
-        w0!(f, "{TAB1}fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
+        w0!(f, "{TAB1}fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "{TAB2}match nth {{")?;
                 w!(f, "{TAB3}0 => Some(TupleElementMut::_0(&mut self.0)),")?;
@@ -372,7 +372,7 @@ impl TupleDisplay for () {{
             back_index: 0,
         }}
     }}")?;
-        w0!(f, "{TAB1}fn iter_ref(&self) -> TupleIterRef<")?;
+        w0!(f, "{TAB1}fn iter_ref(&self) -> TupleIterRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w0!(f, "> {{
         TupleIterRef {{
@@ -383,7 +383,7 @@ impl TupleDisplay for () {{
             back_index: 0,
         }}
     }}")?;
-        w0!(f, "{TAB1}fn iter_mut(&mut self) -> TupleIterMut<")?;
+        w0!(f, "{TAB1}fn iter_mut(&mut self) -> TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w0!(f, "> {{
         TupleIterMut {{
@@ -503,7 +503,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
                 w!(f, "{TAB3}_ => None")?;
             w!(f, "{TAB2}}}")?;
         w!(f, "{TAB1}}}")?;
-        w0!(f, "{TAB1}fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
+        w0!(f, "{TAB1}fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">> {{")?;
             w!(f, "{TAB2}match nth {{")?;
@@ -512,7 +512,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
                 w!(f, "{TAB3}_ => None")?;
             w!(f, "{TAB2}}}")?;
         w!(f, "{TAB1}}}")?;
-        w0!(f, "{TAB1}fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
+        w0!(f, "{TAB1}fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">> {{")?;
             w!(f, "{TAB2}match nth {{")?;
@@ -536,7 +536,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
             back_index,
         }}
     }}")?;
-        w0!(f, "{TAB1}fn iter_ref(&self) -> TupleIterRef<")?;
+        w0!(f, "{TAB1}fn iter_ref(&self) -> TupleIterRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w0!(f, "> {{
         let back_index = self.arity() - 1;
@@ -549,7 +549,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
             back_index,
         }}
     }}")?;
-        w0!(f, "{TAB1}fn iter_mut(&mut self) -> TupleIterMut<")?;
+        w0!(f, "{TAB1}fn iter_mut(&mut self) -> TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w0!(f, "> {{
         let back_index = self.arity() - 1;

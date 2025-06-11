@@ -167,7 +167,7 @@ mod methods {
         /// Any non-Unicode sequences are replaced with [`U+FFFD REPLACEMENT CHARACTER`][0].
         ///
         /// [0]: https://doc.rust-lang.org/1.62.1/std/char/constant.REPLACEMENT_CHARACTER.html
-        pub fn to_string_lossy(&self) -> Cow<str> { self.path.to_string_lossy() }
+        pub fn to_string_lossy(&self) -> Cow<'_, str> { self.path.to_string_lossy() }
 
         /// Returns the inner [`PathBuf`].
         pub fn into_inner(self) -> PathBuf { self.into() }

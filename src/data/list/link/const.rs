@@ -84,7 +84,7 @@ impl<'a, T: 'a> ConstList<'a, T> {
     }
 
     /// Creates an iterator over the contents of the list.
-    pub const fn iter(&self) -> ConstListIterator<T> {
+    pub const fn iter(&self) -> ConstListIterator<'_, T> {
         ConstListIterator { target: self }
     }
 }

@@ -211,7 +211,7 @@ macro_rules! define_static_map {
             }
 
             /// Retrieves an entry for a given key.
-            pub const fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<V> {
+            pub const fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<'_, V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 let mut i = 0;
@@ -552,7 +552,7 @@ macro_rules! define_static_map {
             }
 
             /// Retrieves an entry for a given key.
-            pub fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<V> {
+            pub fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<'_, V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 let mut i = 0;

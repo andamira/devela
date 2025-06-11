@@ -145,7 +145,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    pub const fn iter(&self) -> DstStackIter<DST, BUF> {
+    pub const fn iter(&self) -> DstStackIter<'_, DST, BUF> {
         DstStackIter(self, self.next_ofs)
     }
 
@@ -166,7 +166,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    pub fn iter_mut(&mut self) -> DstStackIterMut<DST, BUF> {
+    pub fn iter_mut(&mut self) -> DstStackIterMut<'_, DST, BUF> {
         DstStackIterMut(self, self.next_ofs)
     }
 }
@@ -330,7 +330,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     }
 
     // See `push_inner_raw`.
-    unsafe fn push_inner(&mut self, fat_ptr: &DST) -> Result<PushInnerInfo<BUF::Inner>, ()> {
+    unsafe fn push_inner(&mut self, fat_ptr: &DST) -> Result<PushInnerInfo<'_, BUF::Inner>, ()> {
         let bytes = size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
         // SAFETY: caller must ensure safety
@@ -345,7 +345,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
         &mut self,
         bytes: usize,
         metadata: &[usize],
-    ) -> Result<PushInnerInfo<BUF::Inner>, ()> {
+    ) -> Result<PushInnerInfo<'_, BUF::Inner>, ()> {
         assert!(BUF::round_to_words(size_of_val(metadata)) == Self::meta_words());
         let words = BUF::round_to_words(bytes) + Self::meta_words();
 

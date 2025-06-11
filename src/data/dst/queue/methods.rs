@@ -59,7 +59,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
 
     /// Removes an item from the front of the queue.
     #[must_use]
-    pub fn pop_front(&mut self) -> Option<DstQueuePopHandle<DST, BUF>> {
+    pub fn pop_front(&mut self) -> Option<DstQueuePopHandle<'_, DST, BUF>> {
         if self.read_pos == self.write_pos {
             None
         } else {
@@ -104,7 +104,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    pub const fn iter(&self) -> DstQueueIter<DST, BUF> {
+    pub const fn iter(&self) -> DstQueueIter<'_, DST, BUF> {
         DstQueueIter(self, self.read_pos)
     }
 
@@ -125,7 +125,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    pub fn iter_mut(&mut self) -> DstQueueIterMut<DST, BUF> {
+    pub fn iter_mut(&mut self) -> DstQueueIterMut<'_, DST, BUF> {
         DstQueueIterMut(self, self.read_pos)
     }
     // NOTE: No into_iter, not possible due to unsized types.

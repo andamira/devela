@@ -48,7 +48,7 @@ impl<T: Any> CurrentGuard<'_, T> {
     /// let mut my_value = MyType::new();
     /// let guard = CurrentGuard::new(&mut my_value);
     /// ```
-    pub fn new(current: &mut T) -> CurrentGuard<T> {
+    pub fn new(current: &mut T) -> CurrentGuard<'_, T> {
         let ptr = PtrNonNull::from(&mut *current).cast::<u8>();
         let prev_ptr = CURRENT_PTR_MAP.with(|current| {
             let mut map = current.borrow_mut();

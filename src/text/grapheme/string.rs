@@ -92,7 +92,7 @@ impl GraphemeString {
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[cfg(feature = "alloc")]
-    pub fn chars(&self) -> IterChars {
+    pub fn chars(&self) -> IterChars<'_> {
         self.0.chars()
     }
 }

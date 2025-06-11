@@ -188,7 +188,7 @@ macro_rules! impl_str_u {
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
             #[rustfmt::skip]
-            pub fn chars(&self) -> IterChars { self.as_str().chars() }
+            pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() }
 
             /// Returns a new allocated C-compatible, nul-terminanted string.
             #[must_use] #[rustfmt::skip]

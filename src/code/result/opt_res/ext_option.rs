@@ -118,15 +118,15 @@ impl<T> ExtOption<T> for Option<T> {
         }
     }
 
-    fn fmt_or_empty(&self) -> OptionFmt<T> {
+    fn fmt_or_empty(&self) -> OptionFmt<'_, T> {
         OptionFmt(self)
     }
 
-    fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<T, U> {
+    fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<'_, T, U> {
         OptionFmtOr(self, u)
     }
 
-    fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<T, F> {
+    fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<'_, T, F> {
         OptionFmtOrElse(self, f)
     }
 }
