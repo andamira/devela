@@ -613,13 +613,13 @@ default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
 
 [dependencies.bumpalo] # https://crates.io/crates/bumpalo
-version = "3.16.0" # ✓ https://github.com/fitzgen/bumpalo/blob/main/CHANGELOG.md
+version = "3.18.0" # ✓ https://github.com/fitzgen/bumpalo/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/bumpalo/latest/features
 features = ["boxed", "collections"]
 
 [dependencies.bytemuck] # https://crates.io/crates/bytemuck
-version = "1.22.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
+version = "1.23" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
 optional = true # unsafe
 default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
@@ -708,7 +708,7 @@ features = ["cpal"] # symphonia, flac, mp3, ogg, wav
 # INSTALL: libasound2-dev
 
 [dependencies.libm] # https://crates.io/crates/libm
-version = "0.2.11" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
+version = "0.2.15" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/libm/latest/features
 
@@ -864,7 +864,7 @@ features = ["display"] #
 # WAIT: [Dotted key ordering](https://github.com/toml-rs/toml/issues/163)
 
 [dependencies.tokio] # https://crates.io/crates/tokio
-version = "1.44" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
+version = "1.45" # ✓ https://github.com/tokio-rs/tokio/blob/master/tokio/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 23 https://docs.rs/crate/tokio/latest/features
 features =  [] # https://docs.rs/tokio/#feature-flags
