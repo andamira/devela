@@ -70,7 +70,10 @@ pub trait NumConst: PartialEq<Self::Num> {
     /// The greatest normalized value (e.g. 1.0 for float, `MAX` for integers).
     const NUM_MAX_NORM: Option<Self::Num>;
 
-    /// The maximum power of two within the type's range.
+    /// The maximum representable power of two within the type's range.
+    ///
+    /// This is constructed using exact bit manipulation rather than arithmetic
+    /// operations to ensure consistent results across all platforms.
     const NUM_MAX_POWER_OF_TWO: Option<Self::Num>;
 
     /* auto-implemented convenience methods */
@@ -288,8 +291,22 @@ mod tests {
         assert_eq!(f32::NUM_MAX_NEGATIVE, Some(-0.0));
         assert_eq!(f32::NUM_MIN_NORM, Some(0.0));
         assert_eq!(f32::NUM_MAX_NORM, Some(1.0));
-        assert_eq!(f32::NUM_MAX_POWER_OF_TWO, Some(2.0_f32.powi(f32::EXPONENT_BIAS as i32)));
-        assert_eq!(f64::NUM_MAX_POWER_OF_TWO, Some(2.0_f64.powi(f64::EXPONENT_BIAS as i32)));
+
+        // NOTE: The powi floating-point operation is non-deterministic.
+        // 1.70141183e38_f32, 8.98846567431158e307_f64, …
+        //
+        // #[cfg(all(target_arch = "x86_64", not(miri)))]
+        // {
+        //     assert_eq!(f32::NUM_MAX_POWER_OF_TWO, Some(2.0_f32.powi(f32::EXPONENT_BIAS as i32)));
+        //     assert_eq!(f64::NUM_MAX_POWER_OF_TWO, Some(2.0_f64.powi(f64::EXPONENT_BIAS as i32)));
+        // }
+        let expected_bits = (((f32::EXPONENT_BIAS as u32) << 1) << f32::SIGNIFICAND_BITS);
+        let actual_bits = f32::NUM_MAX_POWER_OF_TWO.unwrap().to_bits();
+        assert_eq!(actual_bits, expected_bits);
+        //
+        let expected_bits = (((f64::EXPONENT_BIAS as u64) << 1) << f64::SIGNIFICAND_BITS);
+        let actual_bits = f64::NUM_MAX_POWER_OF_TWO.unwrap().to_bits();
+        assert_eq!(actual_bits, expected_bits);
     }
     #[test]
     fn int() {
