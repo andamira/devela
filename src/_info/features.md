@@ -321,7 +321,7 @@ RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly build
 
 - `nightly`: enables the nightly cfg flags:
   - `nightly_allocator`: enables [`allocator_api`].
-  - `nightly_autodiff`: enables [`autodiff`].
+  <!-- - `nightly_autodiff`: enables [`autodiff`]. FEATURE_DISABLED:nightly_autodiff -->
   - `nightly_bigint`: enables [`bigint_helper_methods`].
   - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].

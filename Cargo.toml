@@ -1081,13 +1081,14 @@ check-cfg = [ # Allowed configuration flags:
 	# - https://releases.rs/
 	# - ./utils/release_dates.rs
 	# - ./DOCS/NIGHTLY.md
-	"cfg(nightly)", # [7] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
 		# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
 		# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
 		# NOTE:dep features: "allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
 		"cfg(nightly_allocator)", # allocator_api
 		# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
-		"cfg(nightly_autodiff)", # autodiff
+		# https://rust-lang.zulipchat.com/#narrow/channel/390790-wg-autodiff
+		# "cfg(nightly_autodiff)", # autodiff FEATURE_DISABLED:nightly_autodiff
 		# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
 		"cfg(nightly_bigint)", # bigint_helper_methods
 		# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)

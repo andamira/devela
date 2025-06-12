@@ -419,10 +419,11 @@ pub trait ExtFloat: FloatConst + Sized {
     ///
     /// Uses the [finite difference method].
     ///
-    /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` cfg flag.
-    ///
-    /// [finite difference method]: https://en.wikipedia.org/wiki/Finite_difference_method
-    /// [`autodiff`]: crate::autodiff
+    // FEATURE_DISABLED:nightly_autodiff
+    // See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` cfg flag.
+    //
+    // [finite difference method]: https://en.wikipedia.org/wiki/Finite_difference_method
+    // [`autodiff`]: crate::autodiff
     fn derivative<F>(f: F, x: Self, h: Self) -> Self
     where
         F: Fn(Self) -> Self;

@@ -7,6 +7,7 @@ Legend:
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
 - `F` = enabled by some specific cfg flag, shown afterwards.
+- `D` = disabled, feature previously enabled as `F`
 - `✓` = enabled already
 
 Usage example:
@@ -75,7 +76,7 @@ See also
 
 - 1.?? `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
         = `nightly_allocator` flag
-- 1.?? `F`[autodiff](https://github.com/rust-lang/rust/issues/124509)
+- 1.?? `D`[autodiff](https://github.com/rust-lang/rust/issues/124509)
           `nightly_autodiff` flag
 - 1.?? `F`[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
         = `nightly_bigint` flag
