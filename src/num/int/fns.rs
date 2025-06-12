@@ -20,6 +20,7 @@ use crate::ExtFloat;
 /// assert_eq![pi(u16::MAX.into()), 5909]; // 9.67% < 6542
 ///
 /// #[cfg(feature = "std")] // too slow otherwise
+/// # #[cfg(not(miri))] // ln() is non-deterministic
 /// {
 ///     assert_eq![pi(u32::MAX.into()), 193635251]; // 4.74% < 203280221
 ///     assert_eq![pi(u64::MAX.into()), 415828534307635072]; // 2.30% < 425656284035217743
