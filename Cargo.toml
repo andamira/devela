@@ -1088,7 +1088,7 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(nightly_allocator)", # allocator_api
 		# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 		# https://rust-lang.zulipchat.com/#narrow/channel/390790-wg-autodiff
-		# "cfg(nightly_autodiff)", # autodiff FEATURE_DISABLED:nightly_autodiff
+		# "cfg(nightly_autodiff)", # autodiff FLAG_DISABLED:nightly_autodiff
 		# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
 		"cfg(nightly_bigint)", # bigint_helper_methods
 		# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)

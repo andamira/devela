@@ -38,7 +38,7 @@
 //
 // (In sync with ../Cargo.toml::[lints.rust.unexpected_cfgs] & ../build/features.rs::FLAGS_NIGHTLY)
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
-// #![cfg_attr(nightly_autodiff, feature(autodiff))] // FEATURE_DISABLED:nightly_autodiff
+// #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 #![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
 #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
