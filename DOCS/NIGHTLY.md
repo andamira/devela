@@ -44,11 +44,21 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.89.0> -->
 
 - 1.89: ` `[±LoongArch features](https://github.com/rust-lang/rust/pull/135015)
+- 1.89: `·`[avx512_target_feature](https://github.com/rust-lang/rust/pull/138940)
+- 1.89: `·`[const_array_as_mut_slice](https://github.com/rust-lang/rust/pull/140066)
+- 1.89: `·`[keylocker_x86](https://github.com/rust-lang/rust/pull/140766)
+- 1.89: `·`[non_null_from_ref](https://github.com/rust-lang/rust/pull/140511)
+- 1.89: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
+- 1.89: `·`[repr128](https://github.com/rust-lang/rust/pull/138285)
+- 1.89: ` `[resolve_const_param_in_non_trivial_anon_const](https://github.com/rust-lang/rust/pull/142157)
+- 1.89: `·`[result_flattening](https://github.com/rust-lang/rust/pull/141072)
+- 1.89: `·`[sha512_sm_x86](https://github.com/rust-lang/rust/pull/140767)
+- 1.89: ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
+- 1.89: ` `[unstable: iter_macro](https://github.com/rust-lang/stdarch/pull/1819)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
-- 1.??: `·`[avx512_target_feature](https://github.com/rust-lang/rust/pull/138940)
 - 1.??: `·`[cfg_match](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
@@ -60,15 +70,10 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
-- 1.??: `·`[keylocker_x86](https://github.com/rust-lang/rust/pull/140766)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
-- 1.??: `i`[repr128](https://github.com/rust-lang/rust/pull/138285)
-- 1.??: `·`[result_flattening](https://github.com/rust-lang/rust/pull/141072)
-- 1.??: `·`[sha512_sm_x86](https://github.com/rust-lang/rust/pull/140767)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
@@ -104,14 +109,11 @@ See also
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
 - 1.?? ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
-- 1.?? ` `[non_null_from_ref](https://github.com/rust-lang/rust/pull/140511)
 - 1.?? ` `[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
 - 1.?? ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.?? `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
         = `nightly_simd` flag
 - 1.?? ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
-- 1.?? ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
-- 1.?? ` `[const as_mut_slice](https://github.com/rust-lang/rust/pull/140066)
 - 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:

@@ -63,20 +63,31 @@
         slice_as_chunks,
     )
 )]
-#![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
+// #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_next2`: 1.89 core, alloc, std…
-// #![cfg_attr(nightly_stable_next2, feature())]
+#![cfg_attr(
+    nightly_stable_next2,
+    feature(
+        avx512_target_feature,
+        const_array_as_mut_slice,
+        keylocker_x86,
+        non_null_from_ref,
+        repr128,
+        result_flattening,
+        sha512_sm_x86,
+        stdarch_x86_avx512,
+    )
+)]
 // #![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
-// #![cfg_attr(all(nightly_stable_next2, feature = "std"), feature())]
+#![cfg_attr(all(nightly_stable_next2, feature = "std"), feature(os_string_pathbuf_leak))]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
     nightly_stable_later,
     feature(
         assert_matches,
-        avx512_target_feature,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
@@ -85,20 +96,15 @@
         derive_coerce_pointee,
         impl_trait_in_assoc_type,
         isqrt,
-        keylocker_x86,
         macro_metavar_expr,
-        non_null_from_ref,
         offset_of_slice,
-        // repr128, // incomplete_features
-        result_flattening,
-        sha512_sm_x86,
         unsafe_cell_from_mut,
     )
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(file_lock, once_wait, os_string_pathbuf_leak,)
+    feature(file_lock, once_wait,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
