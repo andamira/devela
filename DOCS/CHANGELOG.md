@@ -7,7 +7,12 @@
 - bump MSRV to 1.87.0.
 - convert library to standalone, remove workspace config.
 - bump dependencies:
+  - `bumpalo` → 3.18.
+  - `bytemuck` → 1.23.
   - `crossterm` → 0.29.
+  - `libm` → 2.15.
+  - `tokio` → 1.45.
+- disable `nightly_autodiff` flag.
 - remove `std` requirement for optional dependencies: `crossterm`, `pyo3`, `regex_lite`, `sysinfo`.
 
 ## documentation

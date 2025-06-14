@@ -102,10 +102,7 @@
     )
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
-#![cfg_attr(
-    all(nightly_stable_later, feature = "std"),
-    feature(file_lock, once_wait,)
-)]
+#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(file_lock, once_wait,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
 /* global safeguards */
