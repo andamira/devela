@@ -114,7 +114,7 @@ impl MiniquadPixels {
         });
 
         let bindings = miniquad![bindings(vec![vbuf], ibuf, vec![texture])];
-        let shader = miniquad![new_shader_glsl(ctx, VERTEX, FRAGMENT, shader_meta())].unwrap();
+        let shader = miniquad![new_shader(ctx, VERTEX, FRAGMENT, METAL, shader_meta())].unwrap();
 
         let pipeline = ctx.new_pipeline(
             &[BufferLayout::default()],
@@ -218,7 +218,7 @@ impl EventHandler for MiniquadPixels {
     }
 }
 
-use shader::{FRAGMENT, VERTEX, shader_meta};
+use shader::{FRAGMENT, METAL, VERTEX, shader_meta};
 mod shader {
     use crate::{ToString, vec_ as vec};
     use ::miniquad::{ShaderMeta, UniformBlockLayout};
@@ -251,4 +251,40 @@ mod shader {
     void main() {
         gl_FragColor = texture2D(tex, texcoord);
     }"#;
+
+    // Define the Metal shader, translated from VERTEX and FRAGMENT.
+    pub const METAL: &str = r#"#include <metal_stdlib>
+    using namespace metal;
+
+    struct VertexIn {
+        float2 in_pos [[attribute(0)]];
+        float2 in_uv  [[attribute(1)]];
+    };
+    struct Uniforms {
+        float2 offset;
+    };
+    struct VertexOut {
+        float4 position [[position]];
+        float2 texcoord;
+    };
+
+    vertex VertexOut vertex_main(VertexIn in [[stage_in]],
+                                 constant Uniforms &uniforms [[buffer(1)]])
+    {
+        VertexOut out;
+        float2 pos = in.in_pos + uniforms.offset;
+        out.position = float4(pos, 0.0, 1.0);
+        // Flip y axis: convert texture coordinates from bottom-left to top-left origin
+        out.texcoord = float2(in.in_uv.x, 1.0 - in.in_uv.y);
+        // out.texcoord = in.in_uv; // no flipping
+        return out;
+    }
+
+    fragment float4 fragment_main(VertexOut in [[stage_in]],
+                                  texture2d<float> tex [[texture(0)]],
+                                  sampler samp [[sampler(0)]])
+    {
+        return tex.sample(samp, in.texcoord);
+    }
+    "#;
 }
