@@ -5,8 +5,26 @@ Legend:
 - ` ` = not known to be explicitly used
 - `✓` = known to be explicitly used
 - `…` = intended to be used
+- `u` = unstable feature
 
-# 1.87 became stable on [2025-05-15](https://releases.rs/docs/1.87.0/))
+# 1.88 became stable on [2025-06-26](https://releases.rs/docs/1.87.0/)
+> - <https://github.com/rust-lang/rust/milestone/132>
+> - <https://blog.rust-lang.org/2025/06/26/Rust-1.88.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.88.0>
+
+- 1.88: `u`[async_drop](https://github.com/rust-lang/rust/pull/123948)
+- 1.88: ` `[c_str_module](https://github.com/rust-lang/rust/pull/137439)
+- 1.88: `…`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
+- 1.88: `…`[cell_update](https://github.com/rust-lang/rust/pull/134446)
+- 1.88: `…`[const_cell](https://github.com/rust-lang/rust/pull/137928)
+- 1.88: `…`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
+- 1.88: `u`[exact_div](https://github.com/rust-lang/rust/pull/139163)
+- 1.88: `…`[let_chains](https://github.com/rust-lang/rust/pull/132833)
+- 1.88: ` `[naked_functions](https://github.com/rust-lang/rust/pull/134213)
+- 1.88: ` `[±proc_macro_span](https://github.com/rust-lang/rust/pull/139865)
+- 1.88: `…`[slice_as_chunks](https://github.com/rust-lang/rust/pull/139656)
+
+# 1.87 became stable on [2025-05-15](https://releases.rs/docs/1.87.0/)
 > - <https://github.com/rust-lang/rust/milestone/130>
 > - <https://blog.rust-lang.org/2025/05/15/Rust-1.87.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.87.0>

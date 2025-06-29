@@ -49,26 +49,9 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_next1`: 1.88 core, alloc, std…
+// `nightly_stable_next1`: 1.89 core, alloc, std…
 #![cfg_attr(
     nightly_stable_next1,
-    feature(
-        c_str_module,
-        cfg_boolean_literals,
-        cell_update,
-        const_cell,
-        const_swap_nonoverlapping,
-        let_chains,
-        naked_functions,
-        slice_as_chunks,
-    )
-)]
-// #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
-// #![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
-// ----------------------------
-// `nightly_stable_next2`: 1.89 core, alloc, std…
-#![cfg_attr(
-    nightly_stable_next2,
     feature(
         avx512_target_feature,
         const_array_as_mut_slice,
@@ -80,8 +63,13 @@
         stdarch_x86_avx512,
     )
 )]
-// #![cfg_attr(all(nightly_stable_next2, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_next2, feature = "std"), feature(os_string_pathbuf_leak))]
+// #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature(os_string_pathbuf_leak))]
+// ----------------------------
+// `nightly_stable_next2`: 1.90 core, alloc, std…
+// #![cfg_attr(nightly_stable_next2, feature())]
+// #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(

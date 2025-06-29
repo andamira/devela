@@ -21,29 +21,14 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-# 1.88 will be stable on 2025-06-26 ([`nightly_stable_next2`](https://releases.rs/docs/1.88.0/))
-> - <https://github.com/rust-lang/rust/milestone/132>
-<!-- > - <https://blog.rust-lang.org/2025/06/26/Rust-1.88.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.88.0> -->
 
-- 1.88: ` `[async_drop](https://github.com/rust-lang/rust/pull/123948)
-- 1.88: `·`[c_str_module](https://github.com/rust-lang/rust/pull/137439)
-- 1.88: `·`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
-- 1.88: `·`[cell_update](https://github.com/rust-lang/rust/pull/134446)
-- 1.88: `·`[const_cell](https://github.com/rust-lang/rust/pull/137928)
-- 1.88: `·`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
-- 1.88: ` `[exact_div](https://github.com/rust-lang/rust/pull/139163)
-- 1.88: `·`[let_chains](https://github.com/rust-lang/rust/pull/132833)
-- 1.88: `·`[naked_functions](https://github.com/rust-lang/rust/pull/134213)
-- 1.88: ` `[±proc_macro_span](https://github.com/rust-lang/rust/pull/139865)
-- 1.88: `·`[slice_as_chunks](https://github.com/rust-lang/rust/pull/139656)
-
-# 1.89 will be stable on 2025-08-07 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
+# 1.89 will be stable on 2025-08-07 ([`nightly_stable_next1`](https://releases.rs/docs/1.89.0/))
 > - <https://github.com/rust-lang/rust/milestone/133>
 <!-- > - <https://blog.rust-lang.org/2025/08/07/Rust-1.89.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.89.0> -->
 
 - 1.89: ` `[±LoongArch features](https://github.com/rust-lang/rust/pull/135015)
+- 1.89: ` `[Allow storing format_args! in variable](https://github.com/rust-lang/rust/pull/140748)
 - 1.89: `·`[avx512_target_feature](https://github.com/rust-lang/rust/pull/138940)
 - 1.89: `·`[const_array_as_mut_slice](https://github.com/rust-lang/rust/pull/140066)
 - 1.89: `·`[keylocker_x86](https://github.com/rust-lang/rust/pull/140766)
@@ -55,6 +40,13 @@ See also
 - 1.89: `·`[sha512_sm_x86](https://github.com/rust-lang/rust/pull/140767)
 - 1.89: ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
 - 1.89: ` `[unstable: iter_macro](https://github.com/rust-lang/stdarch/pull/1819)
+
+# 1.90 will be stable on 2025-09-18 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
+> - <https://github.com/rust-lang/rust/milestone/134>
+<!-- > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.90.0> -->
+
+- 1.90: ` `[]()
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
