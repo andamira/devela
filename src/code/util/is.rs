@@ -83,8 +83,10 @@
 /// }
 /// ```
 ///
-/// Otherwise it fails with `E0716: temporary value dropped while borrowed`.
-/// ```compile_fail,E0716
+/// Otherwise it fails with `E0716: temporary value dropped while borrowed` (in stable):
+// WAIT:1.89 [Allow storing format_args! in variable](https://github.com/rust-lang/rust/pull/140748)
+// ```compile_fail,E0716
+/// ```ignore
 /// # use devela::{format_args, FmtWrite};
 /// let mut s = String::new();
 /// let (a, b) = (1, 2);
