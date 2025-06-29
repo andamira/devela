@@ -17,7 +17,7 @@ Legend:
 - 1.88: `…`[cfg_boolean_literals](https://github.com/rust-lang/rust/pull/138632)
 - 1.88: `…`[cell_update](https://github.com/rust-lang/rust/pull/134446)
 - 1.88: `…`[const_cell](https://github.com/rust-lang/rust/pull/137928)
-- 1.88: `…`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
+- 1.88: `✓`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
 - 1.88: `u`[exact_div](https://github.com/rust-lang/rust/pull/139163)
 - 1.88: `…`[let_chains](https://github.com/rust-lang/rust/pull/132833)
 - 1.88: ` `[naked_functions](https://github.com/rust-lang/rust/pull/134213)

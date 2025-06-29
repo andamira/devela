@@ -331,7 +331,7 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`swap_nonoverlapping`].
-    pub unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
+    pub const unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { swap_nonoverlapping(x, y, count) };
     }
