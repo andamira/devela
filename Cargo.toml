@@ -607,13 +607,13 @@ features = [] # ["fresh-rust"] WAIT:FIX: https://github.com/zakarumych/allocator
 # WAIT: [nightly impl for unsize_box](https://github.com/zakarumych/allocator-api2/pull/23)
 
 [dependencies.atomic] # https://crates.io/crates/atomic
-version = "0.6.0" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
+version = "0.6.1" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
 optional = true # unsafe
 default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
 
 [dependencies.bumpalo] # https://crates.io/crates/bumpalo
-version = "3.18.0" # ✓ https://github.com/fitzgen/bumpalo/blob/main/CHANGELOG.md
+version = "3.19.0" # ✓ https://github.com/fitzgen/bumpalo/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/bumpalo/latest/features
 features = ["boxed", "collections"]
@@ -882,7 +882,7 @@ default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
 
 [dependencies.ureq] # https://crates.io/crates/ureq
-version = "3.0.7" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
+version = "3.0.12" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
 optional = true # safe
 default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # features = []
@@ -890,7 +890,7 @@ default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # WAIT: [wasm,no_std](https://github.com/algesten/ureq/issues/667)
 
 [dependencies.wide] # https://crates.io/crates/wide
-version = "0.7.32" # ✗ https://github.com/Lokathor/wide/commits/main/
+version = "0.7.33" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
