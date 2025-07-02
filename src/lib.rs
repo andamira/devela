@@ -64,7 +64,10 @@
     )
 )]
 // #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature(os_string_pathbuf_leak))]
+#![cfg_attr(
+    all(nightly_stable_next1, feature = "std"),
+    feature(file_lock, os_string_pathbuf_leak,)
+)]
 // ----------------------------
 // `nightly_stable_next2`: 1.90 core, alloc, std…
 // #![cfg_attr(nightly_stable_next2, feature())]
@@ -76,21 +79,33 @@
     nightly_stable_later,
     feature(
         assert_matches,
+        breakpoint,
+        cfg_select,
+        cfg_version,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
         derive_coerce_pointee,
+        fn_align,
+        if_let_guard,
         impl_trait_in_assoc_type,
+        ip_from,
         isqrt,
         macro_metavar_expr,
+        mixed_integer_ops_unsigned_sub,
+        more_qualified_paths,
         offset_of_slice,
+        substr_range,
         unsafe_cell_from_mut,
     )
 )]
-#![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
-#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(file_lock, once_wait,))]
+#![cfg_attr(
+    all(nightly_stable_later, feature = "alloc"),
+    feature(new_zeroed_alloc, path_file_prefix, rwlock_downgrade,)
+)]
+#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
 /* global safeguards */
