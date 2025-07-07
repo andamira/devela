@@ -47,7 +47,8 @@ See also
 <!-- > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.90.0> -->
 
-- 1.90: ` `[]()
+- 1.90: `·`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
+- 1.90: ` `[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -55,10 +56,12 @@ See also
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
+- 1.??: `·`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
+- 1.??: `·`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
@@ -68,7 +71,6 @@ See also
 - 1.??: `·`[ip_from](https://github.com/rust-lang/rust/pull/141744)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
-- 1.??: `·`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)

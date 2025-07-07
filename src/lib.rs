@@ -70,7 +70,7 @@
 )]
 // ----------------------------
 // `nightly_stable_next2`: 1.90 core, alloc, std…
-// #![cfg_attr(nightly_stable_next2, feature())]
+#![cfg_attr(nightly_stable_next2, feature(mixed_integer_ops_unsigned_sub,))]
 // #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
 // ----------------------------
@@ -82,9 +82,11 @@
         breakpoint,
         cfg_select,
         cfg_version,
+        const_array_each_ref,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
+        const_slice_reverse,
         const_sockaddr_setters,
         const_str_split_at,
         derive_coerce_pointee,
@@ -94,7 +96,6 @@
         ip_from,
         isqrt,
         macro_metavar_expr,
-        mixed_integer_ops_unsigned_sub,
         more_qualified_paths,
         offset_of_slice,
         substr_range,
