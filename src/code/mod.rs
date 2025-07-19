@@ -19,7 +19,7 @@ pub mod error; // AllError, modular errors
 pub mod intro; // Introspect
 pub mod marker; // core::marker, type_marker!, type_resource!, TypeResource, TypeResourced
 pub mod ops; // ::core::ops::*
-pub mod panic; // Panic, define_panic_handler!
+pub mod panic; // Panic, set_panic_handler!
 pub mod result; // AllError, serr, sok, Mismatch, OptRes, ValueQuant…
 pub mod util; // utility macros and functions
 

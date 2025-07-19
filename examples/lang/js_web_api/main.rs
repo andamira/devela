@@ -6,7 +6,7 @@
 // global config
 #![no_std]
 #![allow(static_mut_refs, reason = "safe in single-threaded")]
-devela::define_panic_handler! { web_api }
+devela::set_panic_handler! { web_api }
 
 use devela::{Js, JsEventKind, Wasm, format_buf};
 
