@@ -17,8 +17,11 @@ JS_LIB_NAME="web_api.js"
 # JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/ffi/js/${JS_LIB_NAME}"
 PROFILE="wasm"
 WEB_DIR="./web/"
-RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
-BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown"
+# WAIT:https://blog.rust-lang.org/2025/04/04/c-abi-changes-for-wasm32-unknown-unknown/
+# RUSTFLAGS="-C target-feature=+bulk-memory,+simd128" # WAIT:stable-wasm-c-abi
+RUSTFLAGS="-C target-feature=+bulk-memory,+simd128 -Zwasm-c-abi=spec" # TEMP
+# BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown" WAIT:stable-wasm-c-abi
+BUILD_CMD="cargo +nightly build --profile $PROFILE --target wasm32-unknown-unknown" # TEMP
 
 
 # BUILD

@@ -8,5 +8,14 @@ crate-type = ["cdylib"]
 path = "main.rs"
 
 [dependencies]
-devela = { path = "../../..", features = ["js", "unsafe_ffi"] }
+devela = { path = "../../..", features = ["js", "time", "unsafe_ffi"] }
 # devela = { git = "https://github.com/andamira/devela", features = ["js", "unsafe_ffi"] }
+
+[profile.wasm]
+inherits = "release"
+# https://rustwasm.github.io/docs/book/reference/code-size.html
+opt-level = "s"      # Optimize for size
+lto = true           # Enable link-time optimizations
+codegen-units = 1    # Improve optimization at the cost of compile time
+panic = "abort"      # Reduce binary size (no unwinding)
+strip = true         # Remove debug symbols for smaller binaries
