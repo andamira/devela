@@ -70,7 +70,7 @@
 )]
 // ----------------------------
 // `nightly_stable_next2`: 1.90 core, alloc, std…
-#![cfg_attr(nightly_stable_next2, feature(mixed_integer_ops_unsigned_sub,))]
+#![cfg_attr(nightly_stable_next2, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]
 // #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
 // ----------------------------
@@ -78,6 +78,7 @@
 #![cfg_attr(
     nightly_stable_later,
     feature(
+        as_array_of_cells,
         assert_matches,
         breakpoint,
         cfg_select,
@@ -85,10 +86,11 @@
         const_array_each_ref,
         const_array_from_ref,
         const_char_classify,
+        const_float_round_methods,
         const_slice_from_ref,
-        const_slice_reverse,
         const_sockaddr_setters,
         const_str_split_at,
+        const_type_id,
         derive_coerce_pointee,
         fn_align,
         if_let_guard,
@@ -97,6 +99,7 @@
         isqrt,
         macro_metavar_expr,
         more_qualified_paths,
+        offset_of_enum,
         offset_of_slice,
         substr_range,
         unsafe_cell_from_mut,
