@@ -33,9 +33,9 @@ export async function initWasm(wasmPath, imports = {}) {
 	// Sets the active canvas.
 	function set_canvas(selector) {
 		const newCanvas = document.querySelector(selector);
-		if (!newCanvas) { console.error(`Canvas with ID "${canvasId}" not found`); return; }
+		if (!newCanvas) { console.error(`Canvas with selector "${selector}" not found`); return; }
 		const newCtx = newCanvas.getContext("2d");
-		if (!newCtx) { console.error(`Failed to get 2D context for canvas "${canvasId}"`); return; }
+		if (!newCtx) { console.error(`Failed to get 2D context for canvas "${selector}"`); return; }
 		canvas = newCanvas;
 		ctx = newCtx;
 	}

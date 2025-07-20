@@ -29,7 +29,7 @@ pub use {event::*, instant::*, permission::*, primitives::*, text::*, timeout::*
 /// - core APis
 ///   - [console](#web-api-console)
 ///   - [events](#web-api-events)
-///   - [history](#web-api-history--navigation)
+///   - [history](#web-api-history--location)
 ///   - [permissions](#web-api-permissions)
 /// - extended APis
 ///   - media & graphics

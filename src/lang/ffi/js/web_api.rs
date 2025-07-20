@@ -2,9 +2,11 @@
 // (in sync with ./web_api.js)
 //
 //! Implements Web API methods for [`Js`].
+// NOTE: the `Js` namespace is defined in ./types/mod.rs
 //
 //
 // TOC
+// - helpers
 // - core APis
 //   - console
 //   - events
@@ -13,10 +15,8 @@
 //   - window
 // - extended APis
 //   - canvas
-//   - system
 //   - performance
 //   - workers
-// - helpers
 
 use devela::{
     Js, JsEventKind, JsEventMouse, JsEventPointer, JsInstant, JsPermission, JsPermissionState,
@@ -26,7 +26,23 @@ use devela::{
 #[cfg(feature = "alloc")]
 use devela::{String, Vec, vec_ as vec};
 
-// helper for Web API doc links
+/* helpers */
+
+/// Reads a UTF-8 string from JavaScript's memory using a pointer.
+///
+/// # Safety
+/// - `ptr` must be a valid UTF-8 string stored in WebAssembly memory.
+/// - Assumes the string is **null-terminated** or has a known length stored elsewhere.
+#[cfg(feature = "alloc")] #[rustfmt::skip]
+unsafe fn read_js_string(ptr: *const u8) -> String {
+    if ptr.is_null() { return String::new(); }
+    let mut len = 0;
+    while unsafe { *ptr.add(len) } != 0 { len += 1; }
+    let slice = unsafe { ::core::slice::from_raw_parts(ptr, len) };
+    String::from_utf8_lossy(slice).into_owned()
+}
+
+/// helper for Web API doc links
 #[rustfmt::skip]
 macro_rules! web_api {
     ($path_with_end_bar:literal, $method:literal) => { concat!["([", $method,
@@ -289,17 +305,17 @@ impl Js {
 }
 js_reexport! {
     [ module: "api_history_location" ]
-    unsafe fn "history_back" history_back();
-    unsafe fn "history_forward" history_forward();
-    unsafe fn "history_go" history_go(delta: js_int32);
+    unsafe fn history_back();
+    unsafe fn history_forward();
+    unsafe fn history_go(delta: js_int32);
     unsafe fn "history_pushState" history_push_state(state_ptr: *const u8, state_len: usize,
         title_ptr: *const u8, title_len: usize, url_ptr: *const u8, url_len: usize);
     unsafe fn "history_replaceState" history_replace_state(state_ptr: *const u8, state_len: usize,
         title_ptr: *const u8, title_len: usize, url_ptr: *const u8, url_len: usize);
     //
-    unsafe fn "location_reload" location_reload();
-    unsafe fn "location_assign" location_assign(url_ptr: *const u8, url_len: usize);
-    unsafe fn "location_replace" location_replace(url_ptr: *const u8, url_len: usize);
+    unsafe fn location_reload();
+    unsafe fn location_assign(url_ptr: *const u8, url_len: usize);
+    unsafe fn location_replace(url_ptr: *const u8, url_len: usize);
 }
 
 /// # Web API permissions
@@ -318,8 +334,7 @@ impl Js {
 }
 js_reexport! {
     [ module: "api_permissions" ]
-    unsafe fn "permissions_query" permissions_query(name_ptr: *const u8, name_len: usize)
-        -> js_int32;
+    unsafe fn permissions_query(name_ptr: *const u8, name_len: usize) -> js_int32;
 }
 
 /// # Web API window
@@ -584,20 +599,4 @@ js_reexport! {
     unsafe fn worker_poll_buf(job_id: js_uint32, buffer_ptr: *mut u8, buffer_len: usize)
         -> js_uint32;
     safe fn worker_cancel_eval(job_id: js_uint32);
-}
-
-/* helpers */
-
-/// Reads a UTF-8 string from JavaScript's memory using a pointer.
-///
-/// # Safety
-/// - `ptr` must be a valid UTF-8 string stored in WebAssembly memory.
-/// - Assumes the string is **null-terminated** or has a known length stored elsewhere.
-#[cfg(feature = "alloc")] #[rustfmt::skip]
-unsafe fn read_js_string(ptr: *const u8) -> String {
-    if ptr.is_null() { return String::new(); }
-    let mut len = 0;
-    while unsafe { *ptr.add(len) } != 0 { len += 1; }
-    let slice = unsafe { ::core::slice::from_raw_parts(ptr, len) };
-    String::from_utf8_lossy(slice).into_owned()
 }

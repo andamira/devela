@@ -55,6 +55,8 @@ impl JsInstant {
     /// Returns the elapsed time since this instant.
     pub fn elapsed(self) -> Self { Self::from_millis_f64(Js::performance_now().ms - self.ms) }
     /// Returns the elapsed time since this instant as a `TimeDelta`.
+    #[cfg(feature = "time")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
     pub fn delta_elapsed(self) -> TimeDelta { TimeDelta::from_js(self.elapsed()) }
 }
 
