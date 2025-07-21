@@ -70,7 +70,11 @@
 )]
 // ----------------------------
 // `nightly_stable_next2`: 1.90 core, alloc, std…
-#![cfg_attr(nightly_stable_next2, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]
+#![cfg_attr(nightly_stable_next2, feature(
+    const_float_round_methods,
+    const_slice_reverse,
+    mixed_integer_ops_unsigned_sub,
+))]
 // #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
 // ----------------------------
@@ -86,7 +90,6 @@
         const_array_each_ref,
         const_array_from_ref,
         const_char_classify,
-        const_float_round_methods,
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,

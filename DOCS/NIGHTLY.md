@@ -47,6 +47,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.90.0> -->
 
+- 1.90: `·`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
 - 1.??: `·`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
 - 1.90: `·`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
 - 1.90: ` `[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
@@ -58,7 +59,6 @@ See also
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
-- 1.??: `·`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
 - 1.??: `·`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
