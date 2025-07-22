@@ -593,9 +593,19 @@ impl Js {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn worker_poll(job: JsWorkerJob) -> TaskPoll<Result<String, JsWorkerError>> {
         if !job.worker().is_active() { return TaskPoll::Ready(Err(JsWorkerError::WorkerNotFound)); }
-        let result_ptr = unsafe { worker_poll(job.id()) };
-        if result_ptr.is_null() { TaskPoll::Pending }
-        else { TaskPoll::Ready(Ok(unsafe { read_js_string(result_ptr) })) }
+        let mut first_check = true;
+        let result = js_string_with_capacity(128, false, |ptr, cap| {
+            let res = unsafe { worker_poll_buf(job.id(), ptr, cap as usize) as js_int32 };
+            if first_check {
+                first_check = false; // Intercept status codes before bothering with decoding
+                if res == 0 { return 0; } else if res == -1 { return -1; } // pending or not found
+            }
+            res
+        });
+        match result.as_str() {
+            "" => TaskPoll::Pending, // Covers 0 and -1 (mapped above)
+            _ => TaskPoll::Ready(Ok(result)),
+        }
     }
     /// Polls for the result of a JavaScript execution in a worker, and writes it into `buffer`.
     ///
@@ -624,8 +634,6 @@ js_reexport! {
     unsafe fn worker_send_message(worker_id: js_uint32, msg_ptr: *const u8, msg_len: usize);
     unsafe fn worker_eval(worker_id: js_uint32, js_code_ptr: *const u8, js_code_len: usize)
         -> js_uint32;
-    #[cfg(feature = "alloc")]
-    unsafe fn worker_poll(job_id: js_uint32) -> *const u8;
     unsafe fn worker_poll_buf(job_id: js_uint32, buffer_ptr: *mut u8, buffer_len: usize)
         -> js_uint32;
     safe fn worker_cancel_eval(job_id: js_uint32);

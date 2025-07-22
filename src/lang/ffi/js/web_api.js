@@ -361,16 +361,6 @@ export async function initWasm(wasmPath, imports = {}) {
 				worker.postMessage({ type: "eval", jobId, jsCode });
 				return jobId; // Return the generated job ID
 			},
-			// Polls for the evaluation result and returns a pointer to the stored string.
-			worker_poll: (jobId) => {
-				if (wasmApi.api_workers._evalResults.has(jobId)) {
-					const result = wasmApi.api_workers._evalResults.get(jobId);
-					if (result === null) { return 0; } // Still pending
-					wasmApi.api_workers._evalResults.delete(jobId);
-					return str_store(result); // Store in WASM memory and return pointer
-				}
-				return 0; // Job does not exist
-			},
 			// Polls for the evaluation result and writes it into a buffer.
 			worker_poll_buf: (jobId, bufPtr, bufLen) => {
 				if (!wasmApi.api_workers._evalResults.has(jobId)) { return -1; } // not found
