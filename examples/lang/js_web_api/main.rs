@@ -8,7 +8,7 @@
 #![allow(static_mut_refs, reason = "safe in single-threaded")]
 devela::set_panic_handler! { web_api }
 
-use devela::{Js, JsEventKind, Wasm, format_buf};
+use devela::{Js, JsEventKind, JsEventMouse, JsEventPointer, Wasm, format_buf};
 
 /// Static string buffer for printing to the console.
 static mut BUF: [u8; 256] = [0; 256];
@@ -67,7 +67,13 @@ pub extern "C" fn main() {
     Js::fill_style(0, 0, 0);
     Js::fill_text("Click the canvas!", 60.0, 30.0);
 
-    panic!("let's trigger a panic");
+    // mouse
+    Js::event_add_listener_mouse("window", JsEventKind::MouseDown, my_mouse_callback);
+
+    // pointer
+    Js::event_add_listener_pointer("window", JsEventKind::PointerDown, my_pointer_callback);
+
+    // panic!("let's trigger a panic");
 }
 
 /// Called when clicking on the canvas.
@@ -88,4 +94,15 @@ pub extern "C" fn canvas_click() {
     Js::console_log(format_buf![?buf, "Canvas clicked at: {time}ms"]);
     Js::fill_style(50, 50, 200);
     Js::fill_text(format_buf![?buf, "time: {time}ms"], 60.0, 100.0);
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn my_mouse_callback(event: JsEventMouse) {
+    let buf: &mut [u8] = unsafe { &mut BUF };
+    Js::console_log(&format_buf![?buf, "MOUSE: {event:?}"]);
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn my_pointer_callback(event: JsEventPointer) {
+    let buf: &mut [u8] = unsafe { &mut BUF };
+    Js::console_log(&format_buf![?buf, "POINT: {event:?}"]);
 }

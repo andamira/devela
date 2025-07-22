@@ -1,4 +1,5 @@
 #!/bin/sh
+# devela::examples::lang::js_web_api::build-web.sh
 #
 ## install required tools
 # $ apt install jq
@@ -15,7 +16,7 @@ WASM_NAME="${CRATE_NAME}.wasm"
 JS_LIB_DIR="../../../src/lang/ffi/js/"
 JS_LIB_NAME="web_api.js"
 # JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/ffi/js/${JS_LIB_NAME}"
-PROFILE="wasm"
+PROFILE="release"
 WEB_DIR="./web/"
 # WAIT:https://blog.rust-lang.org/2025/04/04/c-abi-changes-for-wasm32-unknown-unknown/
 # RUSTFLAGS="-C target-feature=+bulk-memory,+simd128" # WAIT:stable-wasm-c-abi
