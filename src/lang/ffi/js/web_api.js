@@ -25,11 +25,25 @@ export async function initWasm(wasmPath, imports = {}) {
 
 	/* Helpers */
 
-	// Decode UTF-8 strings from WASM memory
+	// Decodes a UTF-8 string from WASM memory starting at `ptr`, with `len` bytes.
 	function str_decode(ptr, len) {
 		const memory = new Uint8Array(wasm.exports.memory.buffer, ptr, len);
 		return new TextDecoder("utf-8").decode(memory);
 	}
+	// Encodes a JS `string` into UTF-8 bytes in WASM memory at `ptr`.
+	//
+	// - Writes up to `maxLen` bytes to the memory starting at `ptr`.
+	// - Returns the number of bytes written as a `js_int32` type.
+	// - If the buffer is too small, returns the negated number.
+	function str_encode(string, ptr, maxLen) {
+		const encoded = new TextEncoder().encode(string);
+		const required = encoded.length | 0;
+		if (maxLen < required) return -required | 0; // signal insufficient capacity
+		const memory = new Uint8Array(wasm.exports.memory.buffer, ptr, required);
+		memory.set(encoded);
+		return required;
+	}
+
 	// Sets the active canvas.
 	function set_canvas(selector) {
 		const newCanvas = document.querySelector(selector);

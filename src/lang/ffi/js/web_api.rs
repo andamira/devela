@@ -2,7 +2,7 @@
 // (in sync with ./web_api.js)
 //
 //! Implements Web API methods for [`Js`].
-// NOTE: the `Js` namespace is defined in ./types/mod.rs
+// NOTE: the `Js` namespace struct is defined in ./types/mod.rs
 //
 //
 // TOC
@@ -20,26 +20,56 @@
 
 use devela::{
     Js, JsEventKind, JsEventMouse, JsEventPointer, JsInstant, JsPermission, JsPermissionState,
-    JsTextMetrics, JsTextMetricsFull, JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, TaskPoll,
-    js_bool, js_int32, js_number, js_reexport, js_uint32, transmute,
+    JsTextMetrics, JsTextMetricsFull, JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, Str,
+    TaskPoll, js_bool, js_int32, js_number, js_reexport, js_uint32, transmute,
 };
 #[cfg(feature = "alloc")]
-use devela::{String, Vec, vec_ as vec};
+use devela::{String, ToString, Vec, vec_ as vec};
 
 /* helpers */
 
-/// Reads a UTF-8 string from JavaScript's memory using a pointer.
+/// Calls a JS-backed FFI function to fill the given buffer, returning a valid UTF-8 `&str`.
 ///
-/// # Safety
-/// - `ptr` must be a valid UTF-8 string stored in WebAssembly memory.
-/// - Assumes the string is **null-terminated** or has a known length stored elsewhere.
+/// - Truncates if the buffer is too small.
+/// - Panics if the result is not valid UTF-8.
+#[inline]
+fn js_str(buffer: &mut [u8], mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> &str {
+    let ptr = buffer.as_mut_ptr();
+    let cap = buffer.len() as js_uint32;
+    let len = write_fn(ptr, cap) as usize;
+    Str::from_utf8(&buffer[..len]).expect("Valid UTF-8")
+}
+
+/// Allocates a `String` by calling a JS-backed FFI fn that writes a UTF-8 string into WASM memory.
+///
+/// - Uses a dynamic buffer, starting with 128 bytes of `capacity`.
+/// - Retries with exact required capacity if truncation is detected.
+#[cfg(feature = "alloc")]
+fn js_string(mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
+    js_string_with_capacity(128, false, write_fn)
+}
+
+/// Allocates a `String` by calling a JS-backed FFI fn that writes a UTF-8 string into WASM memory.
+///
+/// - Uses a dynamic buffer, starting with the given `capacity`.
+/// - Retries with exact required capacity if truncation is detected (unless `truncate = true`).
+/// - Assumes the FFI fn returns `js_int32`: positive = bytes written, negative = required size.
 #[cfg(feature = "alloc")] #[rustfmt::skip]
-unsafe fn read_js_string(ptr: *const u8) -> String {
-    if ptr.is_null() { return String::new(); }
-    let mut len = 0;
-    while unsafe { *ptr.add(len) } != 0 { len += 1; }
-    let slice = unsafe { ::core::slice::from_raw_parts(ptr, len) };
-    String::from_utf8_lossy(slice).into_owned()
+fn js_string_with_capacity(mut cap: js_uint32, truncate: bool,
+    mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
+    loop {
+        let mut vec = Vec::with_capacity(cap as usize);
+        let ptr = vec.as_mut_ptr();
+        let result = write_fn(ptr, cap);
+        if !truncate && result < 0 {
+            cap = (-result) as js_uint32;
+            continue;
+        }
+        unsafe {
+            vec.set_len(result as usize);
+            return String::from_utf8_unchecked(vec);
+        }
+    }
 }
 
 /// helper for Web API doc links
