@@ -626,7 +626,7 @@ features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
 
 [dependencies.const-str] # https://crates.io/crates/const-str
-version = "0.6.2" # ✗ https://github.com/Nugine/const-str/commits/main/
+version = "0.6.3" # ✗ https://github.com/Nugine/const-str/commits/main/
 optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
@@ -850,7 +850,7 @@ features = [] # adpcm, flac, mkv, ogg, pcm, vorbis, wav, symphonia-[bundle|codec
 # IMPROVE: feature-gate
 
 [dependencies.sysinfo] # https://crates.io/crates/sysinfo
-version = "0.34" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
+version = "0.36" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
 features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
