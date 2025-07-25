@@ -95,6 +95,10 @@
 - improve the efficiency of `NonValue*<MAX>`.
 
 ## sys
+
+### mem
+- remove macros: `addr_of!`, `addr_of_mut!`.
+
 ### os
 #### linux
 - add methods:
