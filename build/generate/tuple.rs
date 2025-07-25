@@ -176,12 +176,12 @@ pub(crate) fn generate() -> Result<(), Error> {
         w!(f, ">;")?;
     w0!(f, "{TAB1}/// Returns an iterator over shared references to elements of the tuple.
     #[allow(clippy::type_complexity)]
-    fn iter_ref(&self) -> TupleIterRef<")?;
+    fn iter_ref(&self) -> TupleIterRef<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">;")?;
     w!(f, "{TAB1}/// Returns an iterator over exclusive reference to elements of the tuple.
     #[allow(clippy::type_complexity)]
-    fn iter_mut(&mut self) -> TupleIterMut<")?;
+    fn iter_mut(&mut self) -> TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">;")?;
 

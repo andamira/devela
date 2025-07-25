@@ -146,7 +146,7 @@ macro_rules! _unroll {
         } else {
             let half = i / 2;
 
-            if i % 2 == 0 {
+            if i.is_multiple_of(2) {
                 w!(f, "        $crate::unroll![@$v, $a, {0}, $c];", half)?;
                 w!(f, "        $crate::unroll![@$v, $a + {0}, {0}, $c];", half)?;
             } else {

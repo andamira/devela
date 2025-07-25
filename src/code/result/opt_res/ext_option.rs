@@ -73,7 +73,7 @@ pub trait ExtOption<T>: Sealed {
     /// ```
     #[doc = crate::doc_!(vendor: "fmtor")]
     #[must_use]
-    fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<T, U>;
+    fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<'_, T, U>;
 
     /// Format some value, or run an alternative closure if it's `None`.
     ///
@@ -91,7 +91,7 @@ pub trait ExtOption<T>: Sealed {
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or_else(|| "Nothing")));
     /// ```
     #[must_use]
-    fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<T, F>;
+    fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<'_, T, F>;
 
     /// Format some value, or display an empty string if it's `None`.
     ///
@@ -102,7 +102,7 @@ pub trait ExtOption<T>: Sealed {
     /// assert_eq!("", format!("{:#x}", None::<u8>.fmt_or_empty()));
     /// ```
     #[must_use]
-    fn fmt_or_empty(&self) -> OptionFmt<T>;
+    fn fmt_or_empty(&self) -> OptionFmt<'_, T>;
 }
 
 impl<T> ExtOption<T> for Option<T> {

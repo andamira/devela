@@ -17,8 +17,8 @@ pub(crate) fn decompose_pointer<T: ?Sized>(mut ptr: *const T) -> (*const (), usi
 }
 
 pub(crate) const fn mem_as_slice<T>(ptr: &mut T) -> &mut [usize] {
-    assert!(size_of::<T>() % size_of::<usize>() == 0);
-    assert!(align_of::<T>() % align_of::<usize>() == 0);
+    assert!(size_of::<T>().is_multiple_of(size_of::<usize>()));
+    assert!(align_of::<T>().is_multiple_of(align_of::<usize>()));
     let words = size_of::<T>() / size_of::<usize>();
     // SAFETY: Points to valid memory (a raw pointer)
     unsafe { slice::from_raw_parts_mut(ptr as *mut _ as *mut usize, words) }
@@ -41,7 +41,7 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: MemPod>(
         raw: Raw,
     }
     let mut rv = Inner { raw: Raw { ptr: data_ptr, meta: [0; 4] } };
-    assert!(meta_vals.len() * size_of::<W>() % size_of::<usize>() == 0);
+    assert!((meta_vals.len() * size_of::<W>()).is_multiple_of(size_of::<usize>()));
     assert!(meta_vals.len() * size_of::<W>() <= 4 * size_of::<usize>());
     // SAFETY: caller must ensure safety
     unsafe {

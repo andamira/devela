@@ -1036,6 +1036,7 @@ unreadable_literal = "warn" #  long integral or float does not contain underscor
 # WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 # redundant_else = "warn" // else blocks that can be removed without changing semantics
 #
+collapsible_if = "allow" # nested if statements
 empty_docs = "allow" # empty documentation
 doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
 mixed_attributes_style = "allow" # items with mixed (inner/outer) attributes
