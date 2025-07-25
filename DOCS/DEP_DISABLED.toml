@@ -22,8 +22,13 @@ std = [
 
 #* Module features *#
 
+# media
+	draw = [] # "sdl3?/gfx"
+# num
 	rand = ["rustix?/rand"]
+# phys
 	time = ["rustix?/time"]
+# work
 	process = ["rustix?/process"]
 	sync = ["rustix?/thread"]
 
@@ -38,6 +43,7 @@ dep_all = [
 	"dep_fltk",
 	"dep_nc",
 	"dep_rustix",
+	"dep_sdl3",
 	"dep_tinyaudio",
 	"dep_tracing",
 ]
@@ -54,6 +60,7 @@ dep_nanoserde = ["dep:nanoserde"]                                               
 dep_ring = ["dep:ring"]                                                           # data::xipher
 dep_rkyv = ["dep:rkyv"]                                                           # data::serde
 dep_rustix = ["dep:rustix"]                                                       # sys::os
+dep_sdl3 = ["dep:sdl3"]                                                           # ui::back
 dep_tinyaudio = ["dep:tinyaudio"]                                                 # sys::sound
 dep_tracing = ["dep:tracing"]                                                     # sys::log
 dep_wasm_bindgen = ["dep:wasm-bindgen"]                                           # lang
@@ -111,6 +118,13 @@ features = [
     "pty", "runtime", "shm", "stdio", "system", "termios",
 ]
 # feature-gated:IMPROVE: process, rand, thread, time,
+
+[dependencies.sdl3] # https://crates.io/crates/sdl3
+version = "0.14" # ✗ https://github.com/vhspace/sdl3-rs/commits/master/
+optional = true # unsafe
+default-features = false # 15 https://docs.rs/crate/sdl3/latest/features
+features = ["build-from-source"] #
+# feature-gated: gfx
 
 [dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
 version = "1.1" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md

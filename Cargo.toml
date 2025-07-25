@@ -160,7 +160,7 @@ lang = ["glsl", "js"]
 	# ling = []
 media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	audio = ["sdl2?/mixer"]
-	draw = ["sdl2?/gfx"] # "sdl3?/gfx"
+	draw = ["sdl2?/gfx"]
 	color = []
 	font = ["sdl2?/ttf"]
 	image = ["sdl2?/image"]
@@ -512,7 +512,7 @@ dep_all = [ # enables all 44 optional dependencies:
 	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
 	"dep_orion", "dep_portable_atomic", "dep_portable_atomic_util", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite",
-	"dep_rodio", "dep_safe_arch", "dep_sdl2", "dep_sdl3",
+	"dep_rodio", "dep_safe_arch", "dep_sdl2",
 	"dep_serde", "dep_simdutf8", "dep_stringzilla", "dep_sysinfo", "dep_symphonia",
 	"dep_toml_edit", "dep_tokio",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_ureq",
@@ -560,7 +560,6 @@ dep_regex_lite = ["dep:regex-lite"]                                             
 dep_rodio = ["dep:rodio"]                                                         # sys::sound
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
 dep_sdl2 = ["dep:sdl2"]                                                           # ui::back
-dep_sdl3 = ["dep:sdl3"]                                                           # ui::back
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::codec::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde","orion?/alloc",
 	"portable-atomic?/serde", "pyo3?/serde", "toml_edit?/serde", "wide?/serde"]
@@ -814,13 +813,6 @@ default-features = false # 15 https://docs.rs/crate/sdl2/latest/features
 # features = [] # https://crates.io/crates/sdl2#user-content-available-rust-features
 # feature-gated: image, gfx, mixer, ttf
 # INSTALL: libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
-
-[dependencies.sdl3] # https://crates.io/crates/sdl3
-version = "0.14" # ✗ https://github.com/vhspace/sdl3-rs/commits/master/
-optional = true # unsafe
-default-features = false # 15 https://docs.rs/crate/sdl3/latest/features
-features = ["build-from-source"] #
-# feature-gated: gfx
 
 [dependencies.serde] # https://crates.io/crates/serde
 version = "1.0" # ✗ https://github.com/serde-rs/serde/releases

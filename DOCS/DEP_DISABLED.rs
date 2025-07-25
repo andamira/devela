@@ -30,6 +30,9 @@ reexport! { optional_crate (unsafe) "dep_rkyv", "rkyv", rkyv,
 reexport! { optional_crate (unsafe) "dep_rustix", "rustix", rustix,
     doc: "Safe Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls."
 }
+reexport! { optional_crate (unsafe) "dep_sdl3", "sdl3", sdl3,
+    doc: "SDL3 bindings for Rust."
+}
 reexport! { optional_crate (unsafe) "dep_tinyaudio", "tinyaudio", tinyaudio,
     doc: "A cross-platform, easy-to-use, low-level, audio output library.",
     features: "alloc"
@@ -44,5 +47,3 @@ reexport! { optional_crate (unsafe) "dep_wasm_bindgen", "wasm-bindgen", wasm_bin
 reexport! { optional_crate (unsafe) "dep_web_sys", "web-sys", web_sys,
     doc: "Bindings for all Web APIs."
 }
-
-
