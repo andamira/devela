@@ -8,7 +8,7 @@ mod r#box;
 #[cfg(feature = "alloc")]
 pub use r#box::IdPinBox;
 
-use crate::{Pin, addr_of};
+use crate::Pin;
 
 /// A unique identifier based on a pinned stack-allocated reference.
 ///
@@ -36,14 +36,14 @@ impl<'a> IdPin<'a> {
     /// Creates a new `IdPin` with a unique stack memory address.
     ///
     /// Expects a mutable reference to a `u8` `data` that will be pinned.
-    pub fn new(data: &'a mut u8) -> Self {
+    pub /* !const */ fn new(data: &'a mut u8) -> Self {
         let inner = Pin::new(data);
         Self { inner }
     }
 
     /// Returns the unique ID as a `usize`, derived from the stack memory address.
     pub fn as_usize(&self) -> usize {
-        addr_of!(*self.inner) as usize
+        (&raw const *self.inner).addr()
     }
 }
 
@@ -63,7 +63,7 @@ mod impl_traits {
 
     impl PartialOrd for IdPin<'_> {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-            Some(self.as_usize().cmp(&other.as_usize()))
+            Some(self.cmp(other))
         }
     }
     impl Ord for IdPin<'_> {

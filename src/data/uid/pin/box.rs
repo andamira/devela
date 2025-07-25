@@ -3,7 +3,7 @@
 //! Pinned memory-based unique IDs.
 //
 
-use crate::{Box, Pin, addr_of};
+use crate::{Box, Pin};
 
 /// A unique identifier based on a pinned heap-allocated memory address.
 ///
@@ -26,7 +26,7 @@ impl IdPinBox {
 
     /// Returns the unique ID as a `usize`, derived from the memory address.
     pub fn as_usize(&self) -> usize {
-        addr_of!(*self.inner) as usize
+        (&raw const *self.inner).addr()
     }
 }
 
@@ -59,7 +59,7 @@ mod impl_traits {
 
     impl PartialOrd for IdPinBox {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-            Some(self.as_usize().cmp(&other.as_usize()))
+            Some(self.cmp(other))
         }
     }
     impl Ord for IdPinBox {
