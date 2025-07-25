@@ -70,12 +70,9 @@
 )]
 // ----------------------------
 // `nightly_stable_next2`: 1.90 core, alloc, std…
-#![cfg_attr(
-    nightly_stable_next2,
-    feature(const_float_round_methods, const_slice_reverse, mixed_integer_ops_unsigned_sub,)
-)]
+#![cfg_attr(nightly_stable_next2, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]
 // #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
-// #![cfg_attr(all(nightly_stable_next1, feature = "std"), feature())]
+#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature(const_float_round_methods,))]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -107,11 +104,11 @@
         unsafe_cell_from_mut,
     )
 )]
+#![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
 #![cfg_attr(
-    all(nightly_stable_later, feature = "alloc"),
-    feature(new_zeroed_alloc, path_file_prefix, rwlock_downgrade,)
+    all(nightly_stable_later, feature = "std"),
+    feature(once_wait, path_file_prefix, rwlock_downgrade,)
 )]
-#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
 /* global safeguards */

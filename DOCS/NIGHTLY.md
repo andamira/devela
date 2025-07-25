@@ -42,13 +42,13 @@ See also
 - 1.89: ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
 - 1.89: ` `[unstable: iter_macro](https://github.com/rust-lang/stdarch/pull/1819)
 
-# 1.90 will be stable on 2025-09-18 ([`nightly_stable_next2`](https://releases.rs/docs/1.89.0/))
+# 1.90 will be stable on 2025-09-18 ([`nightly_stable_next2`](https://releases.rs/docs/1.90.0/))
 > - <https://github.com/rust-lang/rust/milestone/134>
 <!-- > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.90.0> -->
 
-- 1.90: `·`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
-- 1.??: `·`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
+- 1.90: `s`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
+- 1.90: `·`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
 - 1.90: `·`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
 - 1.90: ` `[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
 
@@ -79,8 +79,8 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `a`[path_file_prefix](https://github.com/rust-lang/rust/pull/129114)
-- 1.??: `a`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
+- 1.??: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/129114)
+- 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
