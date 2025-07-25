@@ -7,11 +7,18 @@
 - bump MSRV to 1.88.0.
 - convert library to standalone, remove workspace config.
 - bump dependencies:
+  - `allocator-api2` → 0.3.
   - `bumpalo` → 3.18.
   - `bytemuck` → 1.23.
   - `crossterm` → 0.29.
   - `libm` → 2.15.
+  - `pyo3` → 0.25.1.
+  - `rodio` → 0.21.1.
+  - `sdl2` → 0.38.
+  - `sysinfo` → 0.36.
+  - `toml_edit` → 0.23.
   - `tokio` → 1.45.
+- disable dependencies: `sdl3`.
 - disable `nightly_autodiff` flag.
 - remove `std` requirement for optional dependencies: `crossterm`, `pyo3`, `regex_lite`, `sysinfo`.
 

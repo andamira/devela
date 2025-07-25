@@ -599,7 +599,7 @@ package = "paste" # safe, ARCHIVED
 #* optional dependencies *#
 
 [dependencies.allocator-api2] # https://crates.io/crates/allocator-api2
-version = "0.2.21" # ✗ https://github.com/zakarumych/allocator-api2/commits/main/
+version = "0.3" # ✗ https://github.com/zakarumych/allocator-api2/commits/main/
 optional = true # unsafe
 default-features = false # 6 https://docs.rs/crate/allocator-api2/latest/features
 features = [] # ["fresh-rust"] WAIT:FIX: https://github.com/zakarumych/allocator-api2/issues/26
@@ -760,7 +760,7 @@ optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
-version = "0.24.1" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
+version = "0.25.1" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
 optional = true  # unsafe
 default-features = false # 37 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
@@ -792,7 +792,7 @@ features = ["string"]
 # WAIT: [no_std](https://github.com/rust-lang/regex/issues/1122)
 
 [dependencies.rodio] # https://crates.io/crates/rodio
-version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md
+version = "0.21" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"] # IMPROVE: feature-gate
@@ -807,7 +807,7 @@ optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
 [dependencies.sdl2] # https://crates.io/crates/sdl2
-version = "0.37.0" # ✓ https://github.com/Rust-SDL2/rust-sdl2/blob/HEAD/changelog.md
+version = "0.38.0" # ✓ https://github.com/Rust-SDL2/rust-sdl2/blob/HEAD/changelog.md
 optional = true # unsafe
 default-features = false # 15 https://docs.rs/crate/sdl2/latest/features
 # features = [] # https://crates.io/crates/sdl2#user-content-available-rust-features
@@ -848,7 +848,7 @@ default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
 features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
 
 [dependencies.toml_edit] # https://crates.io/crates/toml_edit
-version = "0.22" # ✓ https://github.com/toml-rs/toml/blob/main/crates/toml_edit/CHANGELOG.md
+version = "0.23" # ✓ https://github.com/toml-rs/toml/blob/main/crates/toml_edit/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 6 https://docs.rs/crate/toml_edit/latest/features
 features = ["display"] #
