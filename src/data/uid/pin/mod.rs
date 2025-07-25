@@ -36,7 +36,7 @@ impl<'a> IdPin<'a> {
     /// Creates a new `IdPin` with a unique stack memory address.
     ///
     /// Expects a mutable reference to a `u8` `data` that will be pinned.
-    pub /* !const */ fn new(data: &'a mut u8) -> Self {
+    pub fn new(data: &'a mut u8) -> Self {
         let inner = Pin::new(data);
         Self { inner }
     }

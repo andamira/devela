@@ -7,6 +7,9 @@
 //!
 #![doc = crate::doc_!(extends: ffi)]
 //
+// LINKS
+// - https://en.wikipedia.org/wiki/Language | https://es.wikipedia.org/wiki/Lenguaje
+//
 // safety
 #![cfg_attr(feature = "safe_lang", forbid(unsafe_code))]
 
