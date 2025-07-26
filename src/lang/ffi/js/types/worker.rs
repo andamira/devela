@@ -81,7 +81,7 @@ impl JsWorkerJob {
 impl JsWorkerJob {
     /// Polls the result of this job.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(target_arch = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn poll(self) -> TaskPoll<Result<String, JsWorkerError>> { Js::worker_poll(self) }
     /// Polls the result of this job and writes it into `buffer`.
     ///

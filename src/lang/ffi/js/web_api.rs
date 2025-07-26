@@ -24,7 +24,7 @@ use devela::{
     TaskPoll, js_bool, js_int32, js_number, js_reexport, js_uint32, transmute,
 };
 #[cfg(feature = "alloc")]
-use devela::{String, ToString, Vec, vec_ as vec};
+use devela::{String, Vec, vec_ as vec};
 
 /* helpers */
 
@@ -45,7 +45,7 @@ fn js_str(buffer: &mut [u8], mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_
 /// - Uses a dynamic buffer, starting with 128 bytes of `capacity`.
 /// - Retries with exact required capacity if truncation is detected.
 #[cfg(feature = "alloc")]
-fn js_string(mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
+fn js_string(write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
     js_string_with_capacity(128, false, write_fn)
 }
 
@@ -72,12 +72,11 @@ fn js_string_with_capacity(mut cap: js_uint32, truncate: bool,
     }
 }
 
-/// helper for Web API doc links
+/// Helper for Web API doc links.
 #[rustfmt::skip]
 macro_rules! web_api {
-    ($path_with_end_bar:literal, $method:literal) => { concat!["([", $method,
-        "](https://developer.mozilla.org/en-US/docs/Web/API/",
-        $path_with_end_bar, $method, "))" ]
+    ($path:literal, $method:literal) => { concat!["([", $method,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/", $path, "/", $method, "))" ]
     };
     (canvas $method:literal) => { concat!["([", $method,
         "](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/",
@@ -145,7 +144,7 @@ js_reexport! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventListener>
 #[rustfmt::skip]
 impl Js {
-    #[doc = web_api!("EventTarget/", "addEventListener")]
+    #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a Rust function `event` listener from an `element`.
     pub fn event_add_listener(element: &str, event: JsEventKind, rust_fn: extern "C" fn()) {
         unsafe {
@@ -153,7 +152,7 @@ impl Js {
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
         }
     }
-    #[doc = web_api!("EventTarget/", "removeEventListener")]
+    #[doc = web_api!("EventTarget", "removeEventListener")]
     /// Removes a a Rust function `event` listener from an `element`.
     pub fn event_remove_listener(element: &str, event: JsEventKind, rust_fn: extern "C" fn()) {
         unsafe {
@@ -161,7 +160,7 @@ impl Js {
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
         }
     }
-    #[doc = web_api!("EventTarget/", "addEventListener")]
+    #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a JavaScript function `event` listener on an `element`.
     pub fn event_add_listener_js(element: &str, event: JsEventKind, js_fn_name: &str) {
         unsafe {
@@ -169,7 +168,7 @@ impl Js {
             event.as_str().as_ptr(), event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
         }
     }
-    #[doc = web_api!("EventTarget/", "removeEventListener")]
+    #[doc = web_api!("EventTarget", "removeEventListener")]
     /// Removes a JavaScript function `event` listener from an `element`.
     pub fn event_remove_listener_js(element: &str, event: JsEventKind, js_fn_name: &str) {
         unsafe {
@@ -178,7 +177,7 @@ impl Js {
         }
     }
     //
-    #[doc = web_api!("EventTarget/", "addEventListener")]
+    #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `mouse event` listener on an `element`.
     ///
     /// The callback receives `JsEventMouse` with button, buttons mask, and coordinates.
@@ -191,7 +190,7 @@ impl Js {
                 event.as_str().as_ptr(), event.as_str().len(), callback as usize);
         }
     }
-    #[doc = web_api!("EventTarget/", "addEventListener")]
+    #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `pointer event` listener on an `element`.
     ///
     /// The callback receives `JsEventPointer` with id, coordinates, and pressure.
@@ -293,42 +292,42 @@ js_reexport! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Location>
 #[rustfmt::skip]
 impl Js {
-    #[doc = web_api!("History/", "back")]
+    #[doc = web_api!("History", "back")]
     /// Moves the browser back one step in the session history.
     pub fn history_back() { unsafe { history_back(); } }
 
-    #[doc = web_api!("History/", "forward")]
+    #[doc = web_api!("History", "forward")]
     /// Moves the browser forward one step in the session history.
     pub fn history_forward() { unsafe { history_forward(); } }
 
-    #[doc = web_api!("History/", "go")]
+    #[doc = web_api!("History", "go")]
     /// Moves the browser to a specific point in the session history.
     /// Use negative values to go back, positive to go forward.
     pub fn history_go(delta: js_int32) { unsafe { history_go(delta); } }
 
-    #[doc = web_api!("History/", "pushState")]
+    #[doc = web_api!("History", "pushState")]
     /// Adds an entry to the session history stack.
     pub fn history_push_state(state: &str, title: &str, url: &str) {
         unsafe { history_push_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
             url.as_ptr(), url.len()); }
     }
 
-    #[doc = web_api!("History/", "replaceState")]
+    #[doc = web_api!("History", "replaceState")]
     /// Modifies the current history entry without creating a new one.
     pub fn history_replace_state(state: &str, title: &str, url: &str) {
         unsafe { history_replace_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
             url.as_ptr(), url.len()); }
     }
 
-    #[doc = web_api!("Location/", "reload")]
+    #[doc = web_api!("Location", "reload")]
     /// Reloads the current document.
     pub fn location_reload() { unsafe { location_reload(); } }
 
-    #[doc = web_api!("Location/", "assign")]
+    #[doc = web_api!("Location", "assign")]
     /// Loads the specified URL.
     pub fn location_assign(url: &str) { unsafe { location_assign(url.as_ptr(), url.len()); } }
 
-    #[doc = web_api!("Location/", "replace")]
+    #[doc = web_api!("Location", "replace")]
     /// Replaces the current document with the given URL,
     /// without creating a new entry in the history.
     pub fn location_replace(url: &str) { unsafe { location_replace(url.as_ptr(), url.len()); } }
@@ -353,7 +352,7 @@ js_reexport! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
 #[rustfmt::skip]
 impl Js {
-    #[doc = web_api!("Permissions/", "query")]
+    #[doc = web_api!("Permissions", "query")]
     /// Queries the status of a given permission.
     ///
     /// Returns `Granted`, `Denied`, `Prompt`, or `Unknown` if unsupported.
@@ -372,18 +371,23 @@ js_reexport! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Window>
 #[rustfmt::skip]
 impl Js {
-    #[doc = web_api!("Window/", "setTimeout")]
+    // TODO
+    // #[doc = web_api!("Window", "document")]
+    // /// Returns a reference to the document contained in the window.
+    // pub fn window_document() -> JsDocument { JsDocument::get() }
+
+    #[doc = web_api!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
     pub fn window_set_timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> JsTimeout {
         JsTimeout { id: unsafe { window_set_timeout(callback as usize, delay_ms) } }
     }
-    #[doc = web_api!("Window/", "setInterval")]
+    #[doc = web_api!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
     pub fn window_set_interval(callback: extern "C" fn(), interval_ms: js_uint32) -> JsTimeout {
         JsTimeout { id: unsafe { window_set_interval(callback as usize, interval_ms) } }
     }
-    #[doc = web_api!("Window/", "clearTimeout")]
-    #[doc = web_api!("Window/", "clearInterval")]
+    #[doc = web_api!("Window", "clearTimeout")]
+    #[doc = web_api!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
     pub fn window_clear_timeout(id: JsTimeout) { window_clear_timeout(id.id); }
 
@@ -392,16 +396,16 @@ impl Js {
     /// - Avoid passing untrusted input, as this executes arbitrary JS.
     /// - Ensure all evaluated code is **safe and controlled**.
     pub fn window_eval(js_code: &str) { unsafe { window_eval(js_code.as_ptr(), js_code.len()); } }
-    #[doc = web_api!("Window/", "setTimeout")]
+    #[doc = web_api!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
     pub fn window_eval_timeout(js_code: &str, delay_ms: js_uint32) -> JsTimeout { JsTimeout {
         id: unsafe { window_eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } } }
-    #[doc = web_api!("Window/", "setInterval")]
+    #[doc = web_api!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
     pub fn window_eval_interval(js_code: &str, interval_ms: js_uint32) -> JsTimeout { JsTimeout {
         id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
 
-    #[doc = web_api!("Window/", "requestAnimationFrame")]
+    #[doc = web_api!("Window", "requestAnimationFrame")]
     /// Requests an animation frame, executing the given `callback`.
     pub fn window_request_animation_frame(callback: extern "C" fn()) -> js_uint32 {
         unsafe { window_request_animation_frame(callback as usize) } }
@@ -524,14 +528,14 @@ js_reexport! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Performance>
 #[rustfmt::skip]
 impl Js {
-    #[doc = web_api!("Performance/", "now")]
+    #[doc = web_api!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.
     pub fn performance_now() -> JsInstant { JsInstant::from_millis_f64(performance_now()) }
-    #[doc = web_api!("Performance/", "timeOrigin")]
+    #[doc = web_api!("Performance", "timeOrigin")]
     /// Retrieves the time origin in milliseconds.
     pub fn performance_time_origin() -> JsInstant {
         JsInstant::from_millis_f64(performance_time_origin()) }
-    #[doc = web_api!("Performance/", "eventCounts")]
+    #[doc = web_api!("Performance", "eventCounts")]
     /// Retrieves the count of recorded events.
     pub fn performance_event_count(event: JsEventKind) -> js_uint32 {
         let name = event.as_str();

@@ -26,7 +26,7 @@ pub trait TimeSource<const MONOTONIC: bool> {
     /// Returns the current timestamp in milliseconds.
     fn now_millis() -> u64;
 
-    /* non-required */
+    /* provided methods */
 
     /// Returns the epoch offset in milliseconds.
     ///
