@@ -17,7 +17,7 @@
   - `sdl2` → 0.38.
   - `sysinfo` → 0.36.
   - `toml_edit` → 0.23.
-  - `tokio` → 1.45.
+  - `tokio` → 1.47.
 - disable dependencies: `sdl3`.
 - disable `nightly_autodiff` flag.
 - remove `std` requirement for optional dependencies: `crossterm`, `pyo3`, `regex_lite`, `sysinfo`.
