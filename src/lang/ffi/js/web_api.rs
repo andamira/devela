@@ -95,6 +95,9 @@ pub(crate) use web_api;
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/console>
 #[rustfmt::skip]
 impl Js {
+    #[doc = web_api!(console "clear")]
+    /// Clears the console if possible.
+    pub fn console_clear() { console_clear() }
     #[doc = web_api!(console "debug")]
     /// Outputs a message to the console with the debug log level.
     pub fn console_debug(text: &str) { unsafe { console_debug(text.as_ptr(), text.len()); } }
@@ -109,7 +112,7 @@ impl Js {
     pub fn console_log(text: &str) { unsafe { console_log(text.as_ptr(), text.len()); } }
     #[doc = web_api!(console "trace")]
     /// Outputs a stack trace.
-    pub fn console_trace() { unsafe { console_trace(); } }
+    pub fn console_trace() { console_trace(); }
     #[doc = web_api!(console "warn")]
     /// Outputs a message to the console with the warning log level.
     pub fn console_warn(text: &str) { unsafe { console_warn(text.as_ptr(), text.len()); } }
@@ -117,21 +120,41 @@ impl Js {
     #[doc = web_api!(console "group")]
     /// Creates a new inline group, indenting all following output by another level.
     pub fn console_group(text: &str) { unsafe { console_group(text.as_ptr(), text.len()); } }
+    #[doc = web_api!(console "groupCollapsed")]
+    /// Like [`console_group`][Self::console_group] but starts with the inline group collapsed.
+    pub fn console_group_collapsed(text: &str) {
+        unsafe { console_group_collapsed(text.as_ptr(), text.len()); } }
     #[doc = web_api!(console "groupEnd")]
     /// Exits the current inline group.
-    pub fn console_group_end() { unsafe { console_group_end(); } }
+    pub fn console_group_end() { console_group_end(); }
+    //
+    #[doc = web_api!(console "time")]
+    /// Starts a timer with the given `name`.
+    pub fn console_time(name: &str) { unsafe { console_time(name.as_ptr(), name.len()); } }
+    #[doc = web_api!(console "timeEnd")]
+    /// Stops a timer with the given name, started with [`console_time_end`][Self::console_time_end].
+    pub fn console_time_end(name: &str) { unsafe { console_time_end(name.as_ptr(), name.len()); } }
+    #[doc = web_api!(console "timeLog")]
+    /// Logs a timer with the given name, started with [`console_time_log`][Self::console_time_log].
+    pub fn console_time_log(name: &str) { unsafe { console_time_log(name.as_ptr(), name.len()); } }
 }
 js_reexport! {
     [ module: "api_console" ]
-    unsafe fn "console_debug" console_debug(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_error" console_error(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_info" console_info(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_log" console_log(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_trace" console_trace();
-    unsafe fn "console_warn" console_warn(str_ptr: *const u8, str_len: usize);
+    safe fn console_clear();
+    unsafe fn console_debug(str_ptr: *const u8, str_len: usize);
+    unsafe fn console_error(str_ptr: *const u8, str_len: usize);
+    unsafe fn console_info(str_ptr: *const u8, str_len: usize);
+    unsafe fn console_log(str_ptr: *const u8, str_len: usize);
+    safe fn console_trace();
+    unsafe fn console_warn(str_ptr: *const u8, str_len: usize);
     //
-    unsafe fn "console_group" console_group(str_ptr: *const u8, str_len: usize);
-    unsafe fn "console_groupEnd" console_group_end();
+    unsafe fn console_group(str_ptr: *const u8, str_len: usize);
+    unsafe fn console_group_collapsed(str_ptr: *const u8, str_len: usize);
+    safe fn console_group_end();
+    //
+    unsafe fn console_time(str_ptr: *const u8, str_len: usize);
+    unsafe fn console_time_end(str_ptr: *const u8, str_len: usize);
+    unsafe fn console_time_log(str_ptr: *const u8, str_len: usize);
 }
 
 /// # Web API Events

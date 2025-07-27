@@ -83,6 +83,7 @@ export async function initWasm(wasmPath, imports = {}) {
 	const wasmApi = {
 		/* Core APIs */
 		api_console: { // Console API
+			console_clear: () => console.clear(),
 			console_debug: (ptr, len) => console.debug(str_decode(ptr, len)),
 			console_error: (ptr, len) => console.error(str_decode(ptr, len)),
 			console_info: (ptr, len) => console.info(str_decode(ptr, len)),
@@ -91,7 +92,12 @@ export async function initWasm(wasmPath, imports = {}) {
 			console_warn: (ptr, len) => console.warn(str_decode(ptr, len)),
 			//
 			console_group: (ptr, len) => console.group(str_decode(ptr, len)),
-			console_groupEnd: () => console.groupEnd(),
+			console_group_collapsed: (ptr, len) => console.group_collapsed(str_decode(ptr, len)),
+			console_group_end: () => console.groupEnd(),
+			//
+			console_time: (ptr, len) => console.time(str_decode(ptr, len)),
+			console_time_end: (ptr, len) => console.timeEnd(str_decode(ptr, len)),
+			console_time_log: (ptr, len) => console.timeLog(str_decode(ptr, len)),
 		},
 		api_events: { // Events API
 			_callbacks: new Map(),
