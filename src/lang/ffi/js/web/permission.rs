@@ -8,7 +8,7 @@ use crate::{TAG_EXPERIMENTAL, TAG_NON_STANDARD, js_int32};
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions#browser_compatibility>
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(u8)]
-pub enum JsPermission {
+pub enum WebPermission {
     #[doc = TAG_EXPERIMENTAL!()]
     /// Access to accelerometer sensor data.
     Accelerometer,
@@ -50,10 +50,10 @@ pub enum JsPermission {
     /// Allows a site to access storage without top-level navigation.
     TopLevelStorageAccess,
 }
-impl JsPermission {
+impl WebPermission {
     /// Returns the permission name as a string.
     pub fn as_str(self) -> &'static str {
-        use JsPermission as P;
+        use WebPermission as P;
         match self {
             P::Accelerometer => "accelerometer",
             P::BackgroundSync => "background-sync",
@@ -78,7 +78,7 @@ impl JsPermission {
 /// # Permission query result state.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(i8)]
-pub enum JsPermissionState {
+pub enum WebPermissionState {
     /// The permission has been granted by the user.
     Granted = 1,
     /// The user has not yet granted or denied the permission.
@@ -91,9 +91,9 @@ pub enum JsPermissionState {
     Error = -3,
 }
 
-impl From<js_int32> for JsPermissionState {
+impl From<js_int32> for WebPermissionState {
     fn from(from: js_int32) -> Self {
-        use JsPermissionState as S;
+        use WebPermissionState as S;
         match from {
             1 => S::Granted,
             0 => S::Prompt,

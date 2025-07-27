@@ -39,6 +39,7 @@
 
 ## code
 - new trait `Introspect`.
+- rename `set_panic_handler!`'s macro `web_api` arm to `web`.
 
 ### result
 - add re-exports: `core::option::*`, `core::result::*`.
@@ -48,6 +49,14 @@
 - add modules: `data::list::of`.
 - relocate and rename `code::result::Enum` → `data::list::of::Oneof`.
 - rename `Oneof` methods to ordinals: `A` → `_0`, `B` → `_1`, ….
+
+## lang
+- rename types:
+  - `Js` to `Web`.
+  - `JsEvent*` to `WebEvent*`.
+  - `JsPermission*` to `WebPermission*`.
+  - `JsTimeout*` to `WebTimeout*`.
+  - `JsWorker*` to `WebWorker*`.
 
 ## game
 - add:

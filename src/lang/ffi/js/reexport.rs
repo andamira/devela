@@ -1,6 +1,6 @@
 // devela::lang::ffi::js::reexport
 //
-//! Defines the [`js_reexport`] macro.
+//! Defines the internal [`js_reexport`] macro.
 //
 
 /// Helps re-exporting javascript functions.
@@ -69,7 +69,8 @@ macro_rules! _js_reexport {
     };
 }
 // dummy safe fallback
-#[doc(hidden)] #[macro_export] #[rustfmt::skip] #[cfg(not(feature = "unsafe_ffi"))]
+#[doc(hidden)] #[macro_export] #[rustfmt::skip]
+#[cfg(not(feature = "unsafe_ffi"))]
 macro_rules! _js_reexport { ($($tt:tt)*) => {}; }
 
 #[doc(inline)]

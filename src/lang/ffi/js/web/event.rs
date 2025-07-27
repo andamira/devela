@@ -1,6 +1,6 @@
-// devela::lang::ffi::js::types::event
+// devela::lang::ffi::js::web::event
 //
-//! Defines [`JsEventKind`], [`JsEventMouse`], [`JsEventPointer`], [`JsKeyLocation`].
+//! Defines [`WebEventKind`], [`WebEventMouse`], [`WebEventPointer`], [`WebKeyLocation`].
 //
 
 #![allow(dead_code, reason = "feature-gated")]
@@ -13,7 +13,7 @@ use crate::{JsInstant, js_int32, js_number};
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum JsEventKind {
+pub enum WebEventKind {
     /// Unknown event. Default case.
     #[default]
     Unknown = 0,
@@ -46,10 +46,10 @@ pub enum JsEventKind {
     /// Fires when the window is resized.
     Resize = 11,
 }
-impl JsEventKind {
-    /// Constructs a `JsEventKind` from its representation.
+impl WebEventKind {
+    /// Constructs a `WebEventKind` from its representation.
     pub const fn from_repr(from: u8) -> Self {
-        use JsEventKind as E;
+        use WebEventKind as E;
         match from {
             1 => E::Click,
             2 => E::KeyDown,
@@ -67,7 +67,7 @@ impl JsEventKind {
     }
     /// Returns the event name as a string.
     pub const fn as_str(self) -> &'static str {
-        use JsEventKind as E;
+        use WebEventKind as E;
         match self {
             E::Click => "click",
             E::KeyDown => "keydown",
@@ -92,7 +92,7 @@ impl JsEventKind {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent>
 #[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub struct JsEventMouse {
+pub struct WebEventMouse {
     /// The X-coordinate of the mouse event relative to the viewport.
     pub x: js_number,
     /// The Y-coordinate of the mouse event relative to the viewport.
@@ -103,17 +103,17 @@ pub struct JsEventMouse {
     /// A bitmask of buttons currently being held down (`1`: left, `2`: right, `4`: middle).
     pub buttons: u8,
     /// The type of mouse event (Click, MouseDown, MouseMove, etc.).
-    pub etype: JsEventKind,
+    pub etype: WebEventKind,
     /// The JavaScript event timestamp.
     pub time_stamp: JsInstant,
 }
-impl JsEventMouse {
+impl WebEventMouse {
     pub(crate) fn new(
         x: js_number,
         y: js_number,
         button: u8,
         buttons: u8,
-        etype: JsEventKind,
+        etype: WebEventKind,
         time_stamp: JsInstant,
     ) -> Self {
         Self { x, y, button, buttons, etype, time_stamp }
@@ -127,7 +127,7 @@ impl JsEventMouse {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent>
 #[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub struct JsEventPointer {
+pub struct WebEventPointer {
     /// The X-coordinate of the pointer event relative to the viewport.
     pub x: js_number,
     /// The Y-coordinate of the pointer event relative to the viewport.
@@ -143,11 +143,11 @@ pub struct JsEventPointer {
     /// The rotation of the stylus around its own axis (0° to 359°).
     pub twist: u16,
     /// The type of pointer event (PointerDown, PointerMove, etc.).
-    pub etype: JsEventKind,
+    pub etype: WebEventKind,
     /// The JavaScript event timestamp.
     pub time_stamp: JsInstant,
 }
-impl JsEventPointer {
+impl WebEventPointer {
     #[allow(clippy::too_many_arguments)] #[rustfmt::skip]
     pub(crate) fn new(
         x: js_number,
@@ -157,7 +157,7 @@ impl JsEventPointer {
         tilt_x: i8,
         tilt_y: i8,
         twist: u16,
-        etype: JsEventKind,
+        etype: WebEventKind,
         time_stamp: JsInstant,
     ) -> Self {
         Self { x, y, pressure, id, tilt_x, tilt_y, twist, etype, time_stamp }
@@ -168,7 +168,7 @@ impl JsEventPointer {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#keyboard_locations>
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum JsKeyLocation {
+pub enum WebKeyLocation {
     /// The key is not identified as being located in a particular area of the keyboard. (Default)
     #[default]
     Standard = 0,
@@ -179,10 +179,10 @@ pub enum JsKeyLocation {
     /// On the numeric keypad.
     NumPad = 3,
 }
-impl JsKeyLocation {
+impl WebKeyLocation {
     /// Constructs a keyboard location from the numeric value of its representation.
     pub const fn from_repr(from: u8) -> Self {
-        use JsKeyLocation as L;
+        use WebKeyLocation as L;
         match from {
             0 => L::Standard,
             1 => L::Left,
@@ -199,15 +199,15 @@ mod tests {
 
     #[test] #[rustfmt::skip]
     fn sizes_of() {
-        assert_eq![ 4, size_of::<JsEventKind>()];    // 32
-        assert_eq![32, size_of::<JsEventMouse>()];   // 256
-        assert_eq![48, size_of::<JsEventPointer>()]; // 384
-        assert_eq![ 1, size_of::<JsKeyLocation>()];  // 8
+        assert_eq![ 4, size_of::<WebEventKind>()];    // 32
+        assert_eq![32, size_of::<WebEventMouse>()];   // 256
+        assert_eq![48, size_of::<WebEventPointer>()]; // 384
+        assert_eq![ 1, size_of::<WebKeyLocation>()];  // 8
     }
     #[test]
     fn js_event_conversions() {
-        assert_eq!(JsEventKind::from_repr(2), JsEventKind::KeyDown);
-        assert_eq!(JsEventKind::from_repr(3), JsEventKind::KeyUp);
-        assert_eq!(JsEventKind::from_repr(99), JsEventKind::Unknown);
+        assert_eq!(WebEventKind::from_repr(2), WebEventKind::KeyDown);
+        assert_eq!(WebEventKind::from_repr(3), WebEventKind::KeyUp);
+        assert_eq!(WebEventKind::from_repr(99), WebEventKind::Unknown);
     }
 }

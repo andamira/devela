@@ -1,11 +1,11 @@
 // devela::lang::ffi::js::types::text
 
 #[cfg(doc)]
-use crate::Js;
+use crate::Web;
 
 /// Text Metrics.
 ///
-/// Represents the size of rendered text, measured by [`Js::measure_text`].
+/// Represents the size of rendered text, measured by [`Web::measure_text`].
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics>
 #[repr(C)]
@@ -21,7 +21,7 @@ pub struct JsTextMetrics {
 
 /// Full Text Metrics.
 ///
-/// Represents the size of rendered text, measured by [`Js::measure_text_full`].
+/// Represents the size of rendered text, measured by [`Web::measure_text_full`].
 ///
 /// Includes all available text measurement properties.
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics>

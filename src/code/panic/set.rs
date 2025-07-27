@@ -13,7 +13,7 @@
 ///   - `riscv64`: Uses `wfi` (wait-for-interrupt) to idle the core.
 ///   - **Fallback:** Uses an infinite loop.
 ///   - (It uses `unsafe`, except for `wasm32` and the fallback.
-/// - `web_api`: Logs panic info to the Web console. It requires the `js` feature.
+/// - `web`: Logs panic info to the Web console. It requires the `js` feature.
 ///   - Accepts the size of the log buffer size in bytes. Defaults to `1024` bytes.
 /// - `custom`: Uses a user-provided function (returning -> !) as the panic handler.
 #[macro_export]
@@ -80,10 +80,10 @@ macro_rules! set_panic_handler {
             loop {} // Always fallback to avoid UB if nothing else applies
         }
     };
-    (web_api) => {
-        $crate::set_panic_handler!(web_api: 1024);
+    (web) => {
+        $crate::set_panic_handler!(web: 1024);
     };
-    (web_api: $buffer_bytes:literal) => {
+    (web: $buffer_bytes:literal) => {
         #[panic_handler]
         fn panic(info: &::core::panic::PanicInfo) -> ! {
             #[cfg(target_arch = "wasm32")]
@@ -91,12 +91,12 @@ macro_rules! set_panic_handler {
                 let mut buf = [0u8; $buffer_bytes];
 
                 // Extract and log the panic message
-                $crate::Js::console_group("#[panic_handler]");
+                $crate::Web::console_group("#[panic_handler]");
                 match $crate::format_buf![&mut buf, "{}", info.message()] {
-                    Ok(msg_str) => $crate::Js::console_debug(msg_str),
+                    Ok(msg_str) => $crate::Web::console_debug(msg_str),
                     Err(truncated) => {
-                        $crate::Js::console_debug(truncated);
-                        $crate::Js::console_warn("Panic message was truncated!");
+                        $crate::Web::console_debug(truncated);
+                        $crate::Web::console_warn("Panic message was truncated!");
                     }
                 }
 
@@ -106,13 +106,13 @@ macro_rules! set_panic_handler {
                         loc.file(), loc.line(), loc.column()])
                     .unwrap_or(Ok("<panic location unknown>".into()))
                 {
-                    Ok(loc_str) => $crate::Js::console_debug(loc_str),
+                    Ok(loc_str) => $crate::Web::console_debug(loc_str),
                     Err(truncated) => {
-                        $crate::Js::console_debug(truncated);
-                        $crate::Js::console_warn("Panic location was truncated!");
+                        $crate::Web::console_debug(truncated);
+                        $crate::Web::console_warn("Panic location was truncated!");
                     }
                 }
-                $crate::Js::console_group_end();
+                $crate::Web::console_group_end();
 
                 ::core::arch::wasm32::unreachable();
             }
@@ -122,7 +122,7 @@ macro_rules! set_panic_handler {
                 loop {}
             }
             // #[cfg(not(target_arch = "wasm32"))] // MAYBE
-            // compile_error!("`web_api` strategy is only supported on `wasm32` targets.");
+            // compile_error!("`web` strategy is only supported on `wasm32` targets.");
         }
     };
     (custom, $func:path) => {

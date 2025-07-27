@@ -128,13 +128,13 @@ pub struct EventWheel {
 #[cfg(feature = "js")] #[rustfmt::skip]
 mod impl_js {
     use super::*;
-    use crate::{is, js_number, JsEventKind, JsEventMouse, JsInstant};
+    use crate::{is, js_number, WebEventKind, WebEventMouse, JsInstant};
 
     /* mouse */
 
     impl EventMouse {
-        /// Converts `JsEventMouse` to `EventMouse`.
-        pub const fn from_js(js: JsEventMouse) -> EventMouse {
+        /// Converts `WebEventMouse` to `EventMouse`.
+        pub const fn from_js(js: WebEventMouse) -> EventMouse {
             EventMouse {
                 x: js.x as i32,
                 y: js.y as i32,
@@ -147,9 +147,9 @@ mod impl_js {
     }
 
     impl EventMouse {
-        /// Converts `EventMouse` to `JsEventMouse`.
-        pub const fn to_js(self) -> JsEventMouse {
-            JsEventMouse {
+        /// Converts `EventMouse` to `WebEventMouse`.
+        pub const fn to_js(self) -> WebEventMouse {
+            WebEventMouse {
                 x: self.x as js_number,
                 y: self.y as js_number,
                 button: is![let Some(b) = self.button; b.to_js(); 255], // IMPROVE to_js
@@ -160,17 +160,17 @@ mod impl_js {
         }
     }
 
-    impl From<JsEventMouse> for EventMouse {
-        fn from(from: JsEventMouse) -> Self { Self::from_js(from) }
+    impl From<WebEventMouse> for EventMouse {
+        fn from(from: WebEventMouse) -> Self { Self::from_js(from) }
     }
-    impl From<EventMouse> for JsEventMouse {
+    impl From<EventMouse> for WebEventMouse {
         fn from(from: EventMouse) -> Self { from.to_js() }
     }
 
     /* button */
 
     impl EventButton {
-        /// Converts a JavaScript button index in [`JsEventMouse`] into `EventButton`.
+        /// Converts a JavaScript button index in [`WebEventMouse`] into `EventButton`.
         pub const fn from_js(js_button: u8) -> Option<Self> {
             match js_button {
                 0 => Some(EventButton::Left),
@@ -180,7 +180,7 @@ mod impl_js {
                 n => Some(EventButton::Other(NonZeroU8::new(n).unwrap())),
             }
         }
-        /// Converts an EventButton to a JavaScript button index in [`JsEventMouse`].
+        /// Converts an EventButton to a JavaScript button index in [`WebEventMouse`].
         pub const fn to_js(self) -> u8 {
             match self {
                 EventButton::Left => 0,
@@ -193,27 +193,27 @@ mod impl_js {
 
     // IMPROVE: MAYBE impl try_ methods
     impl EventButtonState {
-        /// Converts a `JsEventKind` into `EventButtonState`.
-        pub const fn from_js(js_event: JsEventKind) -> Self {
-            use {JsEventKind as J, EventButtonState as E};
+        /// Converts a `WebEventKind` into `EventButtonState`.
+        pub const fn from_js(js_event: WebEventKind) -> Self {
+            use {WebEventKind as J, EventButtonState as E};
             match js_event {
                 J::Click | J::MouseDown | J::PointerDown => E::Pressed,
                 J::MouseUp | J::PointerUp => E::Released,
                 _ => E::Moved,
             }
         }
-        /// Converts a `EventButtonState` into a `JsEventKind`.
-        pub const fn to_js_as_mouse(self) -> JsEventKind {
-            use {JsEventKind as J, EventButtonState as E};
+        /// Converts a `EventButtonState` into a `WebEventKind`.
+        pub const fn to_js_as_mouse(self) -> WebEventKind {
+            use {WebEventKind as J, EventButtonState as E};
             match self {
                 E::Pressed => J::MouseDown,
                 E::Released => J::MouseUp,
                 E::Moved => J::MouseMove,
             }
         }
-        /// Converts a `EventButtonState` into a `JsEventKind`.
-        pub const fn to_js_as_pointer(self) -> JsEventKind {
-            use {JsEventKind as J, EventButtonState as E};
+        /// Converts a `EventButtonState` into a `WebEventKind`.
+        pub const fn to_js_as_pointer(self) -> WebEventKind {
+            use {WebEventKind as J, EventButtonState as E};
             match self {
                 E::Pressed => J::PointerDown,
                 E::Released => J::PointerUp,

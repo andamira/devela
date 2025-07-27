@@ -11,7 +11,7 @@
 //   - js
 
 #[cfg(feature = "js")]
-use crate::JsKeyLocation;
+use crate::WebKeyLocation;
 
 /* definitions */
 
@@ -356,8 +356,8 @@ impl KeyMod {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn from_js_code(code: &str, location: JsKeyLocation) -> Option<Self> {
-        use {KeyMod as K, JsKeyLocation as L};
+    pub const fn from_js_code(code: &str, location: WebKeyLocation) -> Option<Self> {
+        use {KeyMod as K, WebKeyLocation as L};
         match (code.as_bytes(), location) {
             (b"ShiftLeft", L::Left) => Some(K::LeftShift),
             (b"ControlLeft", L::Left) => Some(K::LeftControl),
@@ -380,8 +380,8 @@ impl KeyMod {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_code(self) -> (&'static str, JsKeyLocation) {
-        use {KeyMod as K, JsKeyLocation as L};
+    pub const fn to_js_code(self) -> (&'static str, WebKeyLocation) {
+        use {KeyMod as K, WebKeyLocation as L};
         match self {
             K::LeftShift => ("ShiftLeft", L::Left),
             K::LeftControl => ("ControlLeft", L::Left),
@@ -404,8 +404,8 @@ impl KeyMod {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn from_js_key(key: &str, location: JsKeyLocation) -> Option<Self> {
-        use {KeyMod as K, JsKeyLocation as L};
+    pub const fn from_js_key(key: &str, location: WebKeyLocation) -> Option<Self> {
+        use {KeyMod as K, WebKeyLocation as L};
         match (key.as_bytes(), location) {
             (b"Shift", L::Left) => Some(K::LeftShift),
             (b"Control", L::Left) => Some(K::LeftControl),
@@ -428,8 +428,8 @@ impl KeyMod {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_key(self) -> (&'static str, JsKeyLocation) {
-        use {KeyMod as K, JsKeyLocation as L};
+    pub const fn to_js_key(self) -> (&'static str, WebKeyLocation) {
+        use {KeyMod as K, WebKeyLocation as L};
         match self {
             K::LeftShift => ("Shift", L::Left),
             K::LeftControl => ("Control", L::Left),

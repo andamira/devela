@@ -12,7 +12,7 @@ use super::*;
 use crate::unwrap;
 #[cfg(feature = "js")]
 crate::items! {
-    use crate::{Char, JsKeyLocation, Slice};
+    use crate::{Char, WebKeyLocation, Slice};
     crate::_use! {basic::from_utf8}
 }
 
@@ -216,7 +216,7 @@ impl KeyFfi {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn from_js_code(code: &str, location: JsKeyLocation) -> Option<Self> {
+    pub const fn from_js_code(code: &str, location: WebKeyLocation) -> Option<Self> {
         use KeyFfi as K;
         match code.as_bytes() {
             b"Backspace" => Some(K::Backspace),
@@ -276,9 +276,9 @@ impl KeyFfi {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_code(self) -> (&'static str, JsKeyLocation) {
+    pub const fn to_js_code(self) -> (&'static str, WebKeyLocation) {
         use KeyFfi as K;
-        use JsKeyLocation as L;
+        use WebKeyLocation as L;
         match self {
             K::Backspace => ("Backspace", L::Standard),
             K::Enter => ("Enter", L::Standard),
@@ -330,7 +330,7 @@ impl KeyFfi {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn from_js_key(key: &str, location: JsKeyLocation) -> Option<Self> {
+    pub const fn from_js_key(key: &str, location: WebKeyLocation) -> Option<Self> {
         use KeyFfi as K;
         match key.as_bytes() {
             b"Backspace" => Some(K::Backspace),
@@ -385,9 +385,9 @@ impl KeyFfi {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_key(self) -> (&'static str, JsKeyLocation) {
+    pub const fn to_js_key(self) -> (&'static str, WebKeyLocation) {
         use KeyFfi as K;
-        use JsKeyLocation as L;
+        use WebKeyLocation as L;
         match self {
             K::Backspace => ("Backspace", L::Standard),
             K::Enter => ("Enter", L::Standard),
@@ -440,7 +440,7 @@ impl KeyFfi {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use JsKeyLocation as L;
+    use WebKeyLocation as L;
 
     /* physical */
     #[test]

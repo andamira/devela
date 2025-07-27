@@ -43,10 +43,11 @@
 //! While Web Workers enable concurrency, they communicate via message passing
 //! and do not share memory except through `SharedArrayBuffer`.
 
-mod reexport;
+pub mod web; // Web, ...
 
-mod types; // js_number, js_int32, js_unit32, js_bool…
-mod web; // Js, ...
+mod reexport; // js_reexport!
+mod str; // js_str, js_string, js_string_with_capacity
+mod types; // js_number, js_int32, js_unit32, js_bool… JsInstant, JsTextMetrics, …
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all
     #[allow(unused)]
@@ -61,7 +62,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all
         pub use super::web::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::reexport::*;
+        pub(crate) use super::{reexport::*, str::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

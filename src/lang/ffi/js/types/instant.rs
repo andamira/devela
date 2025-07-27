@@ -4,7 +4,7 @@
 use crate::TimeDelta;
 use crate::{Display, impl_trait};
 #[allow(unused_imports)]
-use crate::{Js, js_number};
+use crate::{Web, js_number};
 
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 ///
@@ -46,14 +46,14 @@ impl JsInstant {
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl JsInstant {
     /// Returns the current instant using `performance.now()`.
-    pub fn now() -> Self { Js::performance_now() }
+    pub fn now() -> Self { Web::performance_now() }
     /// Returns the time origin using `performance.timeOrigin()`.
-    pub fn origin() -> Self { Js::performance_time_origin() }
+    pub fn origin() -> Self { Web::performance_time_origin() }
 
     /// Resets this instant to the current time.
-    pub fn reset(&mut self) { *self = Js::performance_now(); }
+    pub fn reset(&mut self) { *self = Web::performance_now(); }
     /// Returns the elapsed time since this instant.
-    pub fn elapsed(self) -> Self { Self::from_millis_f64(Js::performance_now().ms - self.ms) }
+    pub fn elapsed(self) -> Self { Self::from_millis_f64(Web::performance_now().ms - self.ms) }
     /// Returns the elapsed time since this instant as a `TimeDelta`.
     #[cfg(feature = "time")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]

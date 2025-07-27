@@ -1,7 +1,7 @@
-// devela::lang::ffi::js::web::methods
+// devela::lang::ffi::js::web::api
 // (in sync with ./api.js)
 //
-//! Defines [`Js`] and implements Web API methods.
+//! Defines [`Web`] and implements Web API methods.
 //
 //
 // TOC
@@ -10,17 +10,19 @@
 // - methods
 
 use devela::{
-    JsEventKind, JsEventMouse, JsEventPointer, JsInstant, JsPermission, JsPermissionState,
-    JsTextMetrics, JsTextMetricsFull, JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, Str,
-    TaskPoll, js_bool, js_int32, js_number, js_reexport, js_uint32, transmute,
+    JsInstant, JsTextMetrics, JsTextMetricsFull, Str, TaskPoll, WebEventKind, WebEventMouse,
+    WebEventPointer, WebPermission, WebPermissionState, WebTimeout, WebWorker, WebWorkerError,
+    WebWorkerJob, js_bool, js_int32, js_number, js_reexport, js_str, js_uint32, transmute,
 };
 #[cfg(feature = "alloc")]
 use devela::{String, Vec, vec_ as vec};
+#[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
+use devela::{js_string, js_string_with_capacity};
 
 /* definition */
 
 #[doc = crate::TAG_NAMESPACE!()]
-/// A Javascript namespace.
+/// A Web API namespace.
 ///
 /// # Features
 /// All methods depend on the `unsafe_ffi` feature and the `wasm32` architecture.
@@ -41,68 +43,23 @@ use devela::{String, Vec, vec_ as vec};
 ///    - [performance](#web-api-performance)
 ///  - advanced & experimental
 ///    - [workers](#web-api-workers)
-pub struct Js;
+pub struct Web;
 
 /* helpers */
 
-/// Calls a JS-backed FFI function to fill the given buffer, returning a valid UTF-8 `&str`.
-///
-/// - Truncates if the buffer is too small.
-/// - Panics if the result is not valid UTF-8.
-#[inline]
-fn js_str(buffer: &mut [u8], mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> &str {
-    let ptr = buffer.as_mut_ptr();
-    let cap = buffer.len() as js_uint32;
-    let len = write_fn(ptr, cap) as usize;
-    Str::from_utf8(&buffer[..len]).expect("Valid UTF-8")
-}
-
-/// Allocates a `String` by calling a JS-backed FFI fn that writes a UTF-8 string into WASM memory.
-///
-/// - Uses a dynamic buffer, starting with 128 bytes of `capacity`.
-/// - Retries with exact required capacity if truncation is detected.
-#[cfg(feature = "alloc")]
-fn js_string(write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
-    js_string_with_capacity(128, false, write_fn)
-}
-
-/// Allocates a `String` by calling a JS-backed FFI fn that writes a UTF-8 string into WASM memory.
-///
-/// - Uses a dynamic buffer, starting with the given `capacity`.
-/// - Retries with exact required capacity if truncation is detected (unless `truncate = true`).
-/// - Assumes the FFI fn returns `js_int32`: positive = bytes written, negative = required size.
-#[cfg(feature = "alloc")] #[rustfmt::skip]
-fn js_string_with_capacity(mut cap: js_uint32, truncate: bool,
-    mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
-    loop {
-        let mut vec = Vec::with_capacity(cap as usize);
-        let ptr = vec.as_mut_ptr();
-        let result = write_fn(ptr, cap);
-        if !truncate && result < 0 {
-            cap = (-result) as js_uint32;
-            continue;
-        }
-        unsafe {
-            vec.set_len(result as usize);
-            return String::from_utf8_unchecked(vec);
-        }
-    }
-}
-
 /// Helper for Web API doc links.
-#[rustfmt::skip]
+#[allow(unused)] #[rustfmt::skip]
 macro_rules! web_api {
     ($path:literal, $method:literal) => { concat!["([", $method,
-        "](https://developer.mozilla.org/en-US/docs/Web/API/", $path, "/", $method, "))" ]
-    };
+            "](https://developer.mozilla.org/en-US/docs/Web/API/", $path, "/", $method, "))"] };
     (canvas $method:literal) => { concat!["([", $method,
         "](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/",
-        $method, "))" ]
-    };
+        $method, "))"] };
     (console $method:literal) => { concat!["([", $method,
         "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
-        $method, "_static))" ] };
+        $method, "_static))"] };
 }
+#[allow(unused)]
 pub(crate) use web_api;
 
 /* methods: core APIs */
@@ -113,7 +70,7 @@ pub(crate) use web_api;
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     #[doc = web_api!(console "clear")]
     /// Clears the console if possible.
     pub fn console_clear() { console_clear() }
@@ -187,10 +144,10 @@ js_reexport! {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a Rust function `event` listener from an `element`.
-    pub fn event_add_listener(element: &str, event: JsEventKind, rust_fn: extern "C" fn()) {
+    pub fn event_add_listener(element: &str, event: WebEventKind, rust_fn: extern "C" fn()) {
         unsafe {
             event_add_listener(element.as_ptr(), element.len(),
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
@@ -198,7 +155,7 @@ impl Js {
     }
     #[doc = web_api!("EventTarget", "removeEventListener")]
     /// Removes a a Rust function `event` listener from an `element`.
-    pub fn event_remove_listener(element: &str, event: JsEventKind, rust_fn: extern "C" fn()) {
+    pub fn event_remove_listener(element: &str, event: WebEventKind, rust_fn: extern "C" fn()) {
         unsafe {
             event_remove_listener(element.as_ptr(), element.len(),
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
@@ -206,7 +163,7 @@ impl Js {
     }
     #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a JavaScript function `event` listener on an `element`.
-    pub fn event_add_listener_js(element: &str, event: JsEventKind, js_fn_name: &str) {
+    pub fn event_add_listener_js(element: &str, event: WebEventKind, js_fn_name: &str) {
         unsafe {
             event_add_listener_js(element.as_ptr(), element.len(),
             event.as_str().as_ptr(), event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
@@ -214,7 +171,7 @@ impl Js {
     }
     #[doc = web_api!("EventTarget", "removeEventListener")]
     /// Removes a JavaScript function `event` listener from an `element`.
-    pub fn event_remove_listener_js(element: &str, event: JsEventKind, js_fn_name: &str) {
+    pub fn event_remove_listener_js(element: &str, event: WebEventKind, js_fn_name: &str) {
         unsafe {
             event_remove_listener_js(element.as_ptr(), element.len(), event.as_str().as_ptr(),
             event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
@@ -224,11 +181,11 @@ impl Js {
     #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `mouse event` listener on an `element`.
     ///
-    /// The callback receives `JsEventMouse` with button, buttons mask, and coordinates.
+    /// The callback receives `WebEventMouse` with button, buttons mask, and coordinates.
     ///
     /// This will trigger on pointer events as well.
-    pub fn event_add_listener_mouse(element: &str, event: JsEventKind,
-        callback: extern "C" fn(JsEventMouse)) {
+    pub fn event_add_listener_mouse(element: &str, event: WebEventKind,
+        callback: extern "C" fn(WebEventMouse)) {
         unsafe {
             event_add_listener_mouse(element.as_ptr(), element.len(),
                 event.as_str().as_ptr(), event.as_str().len(), callback as usize);
@@ -237,9 +194,9 @@ impl Js {
     #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `pointer event` listener on an `element`.
     ///
-    /// The callback receives `JsEventPointer` with id, coordinates, and pressure.
-    pub fn event_add_listener_pointer(element: &str, event: JsEventKind,
-        callback: extern "C" fn(JsEventPointer)) {
+    /// The callback receives `WebEventPointer` with id, coordinates, and pressure.
+    pub fn event_add_listener_pointer(element: &str, event: WebEventKind,
+        callback: extern "C" fn(WebEventPointer)) {
         unsafe {
             event_add_listener_pointer(element.as_ptr(), element.len(),
                 event.as_str().as_ptr(), event.as_str().len(), callback as usize);
@@ -261,8 +218,8 @@ impl Js {
     /// # Example
     /// ```ignore
     /// #[unsafe(no_mangle)]
-    /// pub extern "C" fn my_callback() { Js::console_log("Button clicked!"); }
-    /// Js::event_add_listener("#my_button", JsEventKind::Click, my_callback);
+    /// pub extern "C" fn my_callback() { Web::console_log("Button clicked!"); }
+    /// Web::event_add_listener("#my_button", WebEventKind::Click, my_callback);
     /// ```
     #[unsafe(no_mangle)]
     pub unsafe extern "C" fn wasm_callback(callback_ptr: usize) {
@@ -273,7 +230,7 @@ impl Js {
     /// WebAssembly mouse event callback dispatcher.
     ///
     /// - Called from JavaScript when a mouse event is fired.
-    /// - Passes the `JsEventMouse` struct to the Rust callback.
+    /// - Passes the `WebEventMouse` struct to the Rust callback.
     ///
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
@@ -281,15 +238,15 @@ impl Js {
     pub unsafe extern "C" fn wasm_callback_mouse(callback_ptr: usize, button: js_int32,
         buttons: js_int32, x: js_number, y: js_number, etype: js_int32, time_stamp: js_number) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn(JsEventMouse) = unsafe { transmute(callback) };
-        let etype = JsEventKind::from_repr(etype as u8);
+        let callback: extern "C" fn(WebEventMouse) = unsafe { transmute(callback) };
+        let etype = WebEventKind::from_repr(etype as u8);
         let time_stamp = JsInstant::from_millis_f64(time_stamp);
-        callback(JsEventMouse::new(x, y, button as u8, buttons as u8, etype, time_stamp));
+        callback(WebEventMouse::new(x, y, button as u8, buttons as u8, etype, time_stamp));
     }
     /// WebAssembly mouse event callback dispatcher.
     ///
     /// - Called from JavaScript when a pointer event is fired.
-    /// - Passes the `JsEventPointer` struct to the Rust callback.
+    /// - Passes the `WebEventPointer` struct to the Rust callback.
     ///
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
@@ -302,10 +259,10 @@ impl Js {
         x: js_number, y: js_number, pressure: js_number, tilt_x: js_int32, tilt_y: js_int32,
         twist: js_int32, etype: js_int32, time_stamp: js_number) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn(JsEventPointer) = unsafe { transmute(callback) };
-        let etype = JsEventKind::from_repr(etype as u8);
+        let callback: extern "C" fn(WebEventPointer) = unsafe { transmute(callback) };
+        let etype = WebEventKind::from_repr(etype as u8);
         let time_stamp = JsInstant::from_millis_f64(time_stamp);
-        callback(JsEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16,
+        callback(WebEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16,
             etype, time_stamp));
     }
 }
@@ -337,7 +294,7 @@ js_reexport! {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     #[doc = web_api!("History", "back")]
     /// Moves the browser back one step in the session history.
     pub fn history_back() { unsafe { history_back(); } }
@@ -399,12 +356,12 @@ js_reexport! {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     #[doc = web_api!("Permissions", "query")]
     /// Queries the status of a given permission.
     ///
     /// Returns `Granted`, `Denied`, `Prompt`, or `Unknown` if unsupported.
-    pub fn permissions_query(permission: JsPermission) -> JsPermissionState {
+    pub fn permissions_query(permission: WebPermission) -> WebPermissionState {
         unsafe { permissions_query(permission.as_str().as_ptr(), permission.as_str().len()) }
         .into()
     }
@@ -420,26 +377,26 @@ js_reexport! {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     // TODO
     // #[doc = web_api!("Window", "document")]
     // /// Returns a reference to the document contained in the window.
-    // pub fn window_document() -> JsDocument { JsDocument::get() }
+    // pub fn window_document() -> WebDocument { WebDocument::get() }
 
     #[doc = web_api!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
-    pub fn window_set_timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> JsTimeout {
-        JsTimeout { id: unsafe { window_set_timeout(callback as usize, delay_ms) } }
+    pub fn window_set_timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> WebTimeout {
+        WebTimeout { id: unsafe { window_set_timeout(callback as usize, delay_ms) } }
     }
     #[doc = web_api!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
-    pub fn window_set_interval(callback: extern "C" fn(), interval_ms: js_uint32) -> JsTimeout {
-        JsTimeout { id: unsafe { window_set_interval(callback as usize, interval_ms) } }
+    pub fn window_set_interval(callback: extern "C" fn(), interval_ms: js_uint32) -> WebTimeout {
+        WebTimeout { id: unsafe { window_set_interval(callback as usize, interval_ms) } }
     }
     #[doc = web_api!("Window", "clearTimeout")]
     #[doc = web_api!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
-    pub fn window_clear_timeout(id: JsTimeout) { window_clear_timeout(id.id); }
+    pub fn window_clear_timeout(id: WebTimeout) { window_clear_timeout(id.id); }
 
     /// Executes JavaScript code immediately.
     /// ## Security Warning
@@ -448,11 +405,11 @@ impl Js {
     pub fn window_eval(js_code: &str) { unsafe { window_eval(js_code.as_ptr(), js_code.len()); } }
     #[doc = web_api!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
-    pub fn window_eval_timeout(js_code: &str, delay_ms: js_uint32) -> JsTimeout { JsTimeout {
+    pub fn window_eval_timeout(js_code: &str, delay_ms: js_uint32) -> WebTimeout { WebTimeout {
         id: unsafe { window_eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } } }
     #[doc = web_api!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
-    pub fn window_eval_interval(js_code: &str, interval_ms: js_uint32) -> JsTimeout { JsTimeout {
+    pub fn window_eval_interval(js_code: &str, interval_ms: js_uint32) -> WebTimeout { WebTimeout {
         id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
 
     #[doc = web_api!("Window", "requestAnimationFrame")]
@@ -487,7 +444,7 @@ js_reexport! {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     /* misc. */
     /// Sets the active canvas using a CSS `selector`.
     pub fn set_canvas(selector: &str) { unsafe { set_canvas(selector.as_ptr(), selector.len()); } }
@@ -581,7 +538,7 @@ js_reexport! {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     #[doc = web_api!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.
     pub fn performance_now() -> JsInstant { JsInstant::from_millis_f64(performance_now()) }
@@ -591,7 +548,7 @@ impl Js {
         JsInstant::from_millis_f64(performance_time_origin()) }
     #[doc = web_api!("Performance", "eventCounts")]
     /// Retrieves the count of recorded events.
-    pub fn performance_event_count(event: JsEventKind) -> js_uint32 {
+    pub fn performance_event_count(event: WebEventKind) -> js_uint32 {
         let name = event.as_str();
         unsafe { performance_event_count(name.as_ptr(), name.len()) }
     }
@@ -608,16 +565,16 @@ js_reexport! {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Js {
+impl Web {
     /// Spawns a Web Worker and returns its ID.
-    pub fn worker_spawn(script: &str) -> Result<JsWorker, JsWorkerError> {
+    pub fn worker_spawn(script: &str) -> Result<WebWorker, WebWorkerError> {
         let id = unsafe { worker_spawn(script.as_ptr(), script.len()) };
-        if id == 0 { Err(JsWorkerError::InvalidScript) } else { Ok(JsWorker { id }) }
+        if id == 0 { Err(WebWorkerError::InvalidScript) } else { Ok(WebWorker { id }) }
     }
     /// Checks if this worker is still active by querying JavaScript.
-    pub fn worker_is_active(worker: JsWorker) -> js_bool { worker_is_active(worker.id()) }
+    pub fn worker_is_active(worker: WebWorker) -> js_bool { worker_is_active(worker.id()) }
     /// Stops a specific Web Worker by ID.
-    pub fn worker_stop(worker: JsWorker) { worker_stop(worker.id()); }
+    pub fn worker_stop(worker: WebWorker) { worker_stop(worker.id()); }
     /// Stops all Web Workers.
     pub fn worker_stop_all() { worker_stop_all(); }
     /// Returns the number of active workers.
@@ -625,34 +582,34 @@ impl Js {
     /// Returns the list of active worker IDs.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn worker_list() -> Vec<JsWorker> {
+    pub fn worker_list() -> Vec<WebWorker> {
         let len = worker_list_len() as usize;
-        let mut workers = vec![JsWorker::default(); len];
-        let count = Js::worker_list_buf(&mut workers);
+        let mut workers = vec![WebWorker::default(); len];
+        let count = Web::worker_list_buf(&mut workers);
         workers.truncate(count);
         workers
     }
     /// Writes active worker handles into a buffer and returns the number written.
-    pub fn worker_list_buf(buffer: &mut [JsWorker]) -> usize {
+    pub fn worker_list_buf(buffer: &mut [WebWorker]) -> usize {
         let len = worker_list_len() as usize;
         let count = len.min(buffer.len());
         unsafe { worker_list(buffer.as_mut_ptr() as *mut js_uint32, count as js_uint32); }
         count
     }
     /// Sends a message to a specific Web Worker.
-    pub fn worker_send_message(worker: JsWorker, msg: &str) {
+    pub fn worker_send_message(worker: WebWorker, msg: &str) {
         unsafe { worker_send_message(worker.id(), msg.as_ptr(), msg.len()); }
     }
     /// Requests execution of JavaScript inside a worker.
-    pub fn worker_eval(worker: JsWorker, js_code: &str) -> JsWorkerJob {
+    pub fn worker_eval(worker: WebWorker, js_code: &str) -> WebWorkerJob {
         let id = unsafe { worker_eval(worker.id(), js_code.as_ptr(), js_code.len()) };
-        JsWorkerJob { worker, id }
+        WebWorkerJob { worker, id }
     }
     /// Polls for the result of a JavaScript execution in a worker.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn worker_poll(job: JsWorkerJob) -> TaskPoll<Result<String, JsWorkerError>> {
-        if !job.worker().is_active() { return TaskPoll::Ready(Err(JsWorkerError::WorkerNotFound)); }
+    pub fn worker_poll(job: WebWorkerJob) -> TaskPoll<Result<String, WebWorkerError>> {
+        if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
         let mut first_check = true;
         let result = js_string_with_capacity(128, false, |ptr, cap| {
             let res = unsafe { worker_poll_buf(job.id(), ptr, cap as usize) as js_int32 };
@@ -670,18 +627,18 @@ impl Js {
     /// Polls for the result of a JavaScript execution in a worker, and writes it into `buffer`.
     ///
     /// If ready, returns the number of bytes written to the buffer.
-    pub fn worker_poll_buf(job: JsWorkerJob, buffer: &mut [u8])
-        -> TaskPoll<Result<usize, JsWorkerError>> {
-        if !job.worker().is_active() { return TaskPoll::Ready(Err(JsWorkerError::WorkerNotFound)); }
+    pub fn worker_poll_buf(job: WebWorkerJob, buffer: &mut [u8])
+        -> TaskPoll<Result<usize, WebWorkerError>> {
+        if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
         let written = unsafe { worker_poll_buf(job.id(), buffer.as_mut_ptr(), buffer.len()) };
         match written {
             0 => TaskPoll::Pending,
-            js_uint32::MAX => TaskPoll::Ready(Err(JsWorkerError::JobNotFound)),
+            js_uint32::MAX => TaskPoll::Ready(Err(WebWorkerError::JobNotFound)),
             _ => TaskPoll::Ready(Ok(written as usize)),
         }
     }
     /// Cancels an ongoing JavaScript evaluation.
-    pub fn worker_eval_cancel(job: JsWorkerJob) { worker_cancel_eval(job.id()); }
+    pub fn worker_eval_cancel(job: WebWorkerJob) { worker_cancel_eval(job.id()); }
 }
 js_reexport! {
     [module: "api_workers"]

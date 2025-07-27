@@ -11,7 +11,7 @@
 
 use crate::EventTimestamp;
 #[cfg(feature = "js")]
-use crate::JsEventKind;
+use crate::WebEventKind;
 
 mod alpha_pad; // KeyAlpha, KeyPad
 mod key; // Key
@@ -56,21 +56,21 @@ pub enum KeyState {
 #[cfg(feature = "js")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 impl KeyState {
-    /// Converts a `JsEventKind` to `KeyState`, if applicable.
+    /// Converts a `WebEventKind` to `KeyState`, if applicable.
     #[must_use]
-    pub const fn from_js(from: JsEventKind) -> Option<KeyState> {
+    pub const fn from_js(from: WebEventKind) -> Option<KeyState> {
         match from {
-            JsEventKind::KeyDown => Some(KeyState::Press),
-            JsEventKind::KeyUp => Some(KeyState::Release),
+            WebEventKind::KeyDown => Some(KeyState::Press),
+            WebEventKind::KeyUp => Some(KeyState::Release),
             _ => None,
         }
     }
-    /// Converts a `KeyState` to `JsEventKind`.
+    /// Converts a `KeyState` to `WebEventKind`.
     #[must_use]
-    pub const fn to_js(self) -> JsEventKind {
+    pub const fn to_js(self) -> WebEventKind {
         match self {
-            KeyState::Press => JsEventKind::KeyDown,
-            KeyState::Release => JsEventKind::KeyUp,
+            KeyState::Press => WebEventKind::KeyDown,
+            KeyState::Release => WebEventKind::KeyUp,
         }
     }
 }
@@ -97,13 +97,13 @@ mod tests {
 
     #[test]
     fn key_state_to_js_event() {
-        assert_eq!(KeyState::Press.to_js(), JsEventKind::KeyDown);
-        assert_eq!(KeyState::Release.to_js(), JsEventKind::KeyUp);
+        assert_eq!(KeyState::Press.to_js(), WebEventKind::KeyDown);
+        assert_eq!(KeyState::Release.to_js(), WebEventKind::KeyUp);
     }
     #[test]
     fn js_event_to_key_state() {
-        assert_eq!(KeyState::from_js(JsEventKind::KeyDown), Some(KeyState::Press));
-        assert_eq!(KeyState::from_js(JsEventKind::KeyUp), Some(KeyState::Release));
-        assert_eq!(KeyState::from_js(JsEventKind::Click), None);
+        assert_eq!(KeyState::from_js(WebEventKind::KeyDown), Some(KeyState::Press));
+        assert_eq!(KeyState::from_js(WebEventKind::KeyUp), Some(KeyState::Release));
+        assert_eq!(KeyState::from_js(WebEventKind::Click), None);
     }
 }
