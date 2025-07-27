@@ -24,8 +24,8 @@
 /// - The function can mutate raw memory (e.g., passing buffers, pointers).
 /// - It performs DOM manipulations that might trigger undefined behavior.
 /// - It can throw exceptions that Rust cannot catch.
-#[doc(hidden)]
-#[macro_export]
+#[doc(hidden)] #[macro_export] #[rustfmt::skip]
+#[cfg(feature = "unsafe_ffi")]
 macro_rules! _js_reexport {
     (
         // # Args
@@ -68,6 +68,10 @@ macro_rules! _js_reexport {
         */
     };
 }
+// dummy safe fallback
+#[doc(hidden)] #[macro_export] #[rustfmt::skip] #[cfg(not(feature = "unsafe_ffi"))]
+macro_rules! _js_reexport { ($($tt:tt)*) => {}; }
+
 #[doc(inline)]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 pub use _js_reexport as js_reexport;

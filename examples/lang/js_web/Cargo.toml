@@ -1,5 +1,5 @@
 [package]
-name = "js_web_api"
+name = "js_web"
 version = "0.1.0"
 edition = "2024"
 

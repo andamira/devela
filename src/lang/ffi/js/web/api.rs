@@ -1,30 +1,47 @@
-// devela::lang::ffi::js::web_api
-// (in sync with ./web_api.js)
+// devela::lang::ffi::js::web::methods
+// (in sync with ./api.js)
 //
-//! Implements Web API methods for [`Js`].
-// NOTE: the `Js` namespace struct is defined in ./types/mod.rs
+//! Defines [`Js`] and implements Web API methods.
 //
 //
 // TOC
+// - definition
 // - helpers
-// - core APis
-//   - console
-//   - events
-//   - history_location
-//   - permissions
-//   - window
-// - extended APis
-//   - canvas
-//   - performance
-//   - workers
+// - methods
 
 use devela::{
-    Js, JsEventKind, JsEventMouse, JsEventPointer, JsInstant, JsPermission, JsPermissionState,
+    JsEventKind, JsEventMouse, JsEventPointer, JsInstant, JsPermission, JsPermissionState,
     JsTextMetrics, JsTextMetricsFull, JsTimeout, JsWorker, JsWorkerError, JsWorkerJob, Str,
     TaskPoll, js_bool, js_int32, js_number, js_reexport, js_uint32, transmute,
 };
 #[cfg(feature = "alloc")]
 use devela::{String, Vec, vec_ as vec};
+
+/* definition */
+
+#[doc = crate::TAG_NAMESPACE!()]
+/// A Javascript namespace.
+///
+/// # Features
+/// All methods depend on the `unsafe_ffi` feature and the `wasm32` architecture.
+///
+/// # Methods
+/// - core APis
+///   - [console](#web-api-console)
+//    - document
+///   - [events](#web-api-events)
+///   - [history & location](#web-api-history--location)
+///   - [permissions](#web-api-permissions)
+//   - [url](#web-api-url--urlsearchparams)
+///   - [window](#web-api-window)
+/// - extended APis
+///   - media & graphics
+///     - [canvas](#web-api-canvas)
+///  - performance & optimization
+///    - [performance](#web-api-performance)
+///  - advanced & experimental
+///    - [workers](#web-api-workers)
+pub struct Js;
 
 /* helpers */
 
@@ -88,12 +105,14 @@ macro_rules! web_api {
 }
 pub(crate) use web_api;
 
-/* core APIs */
+/* methods: core APIs */
 
 /// # Web API console
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/console>
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     #[doc = web_api!(console "clear")]
     /// Clears the console if possible.
@@ -166,6 +185,8 @@ js_reexport! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventListener>
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     #[doc = web_api!("EventTarget", "addEventListener")]
     /// Attaches a Rust function `event` listener from an `element`.
@@ -314,6 +335,8 @@ js_reexport! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/History>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Location>
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     #[doc = web_api!("History", "back")]
     /// Moves the browser back one step in the session history.
@@ -374,6 +397,8 @@ js_reexport! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     #[doc = web_api!("Permissions", "query")]
     /// Queries the status of a given permission.
@@ -393,6 +418,8 @@ js_reexport! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Window>
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     // TODO
     // #[doc = web_api!("Window", "document")]
@@ -451,13 +478,15 @@ js_reexport! {
     safe fn window_cancel_animation_frame(requestId: js_uint32);
 }
 
-/* extended APIs */
+/* methods: extended APIs */
 
 /// # Web API canvas
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D>
 /// - <https://html.spec.whatwg.org/multipage/canvas.html>
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     /* misc. */
     /// Sets the active canvas using a CSS `selector`.
@@ -550,6 +579,8 @@ js_reexport! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Performance>
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     #[doc = web_api!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.
@@ -575,6 +606,8 @@ js_reexport! {
 
 /// Web API workers
 #[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Js {
     /// Spawns a Web Worker and returns its ID.
     pub fn worker_spawn(script: &str) -> Result<JsWorker, JsWorkerError> {

@@ -1,5 +1,5 @@
-// devela::lang::ffi::js::web_api.js
-// (in sync with ./web_api.rs)
+// devela::lang::ffi::js::web::api.js
+// (in sync with ./api.rs)
 //
 // TOC
 // - config

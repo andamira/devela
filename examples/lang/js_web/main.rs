@@ -1,6 +1,6 @@
-// devela::examples::lang::js_web_api
+// devela::examples::lang::js_web
 //
-//! A Web API canvas example.
+//! A Javascript Web API canvas example.
 //
 
 // global config

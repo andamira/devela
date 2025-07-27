@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela::examples::lang::js_web_api::build-web.sh
+# devela::examples::lang::js_web::build-web.sh
 #
 ## install required tools
 # $ apt install jq
@@ -11,13 +11,13 @@
 set -e
 
 # CONFIG
-CRATE_NAME="js_web_api"
+CRATE_NAME="js_web"
 WASM_NAME="${CRATE_NAME}.wasm"
-JS_LIB_DIR="../../../src/lang/ffi/js/"
-JS_LIB_NAME="web_api.js"
-# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/ffi/js/${JS_LIB_NAME}"
+JS_LIB_DIR="../../../src/lang/ffi/js/web/"
+JS_LIB_NAME="api.js"
+# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/ffi/js/web/${JS_LIB_NAME}"
 PROFILE="release"
-WEB_DIR="./web/"
+WEB_DIR="./public_html/"
 # WAIT:https://blog.rust-lang.org/2025/04/04/c-abi-changes-for-wasm32-unknown-unknown/
 # RUSTFLAGS="-C target-feature=+bulk-memory,+simd128" # WAIT:stable-wasm-c-abi
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128 -Zwasm-c-abi=spec" # TEMP
@@ -62,4 +62,5 @@ chmod -x "${WEB_DIR}${WASM_NAME}"
 
 
 echo "Done."
-echo "start a server in the ./web directory to run the example"
+echo "start a server in the ./web directory to see the result. E.g.:"
+echo "python3 -m http.server --directory public_html"

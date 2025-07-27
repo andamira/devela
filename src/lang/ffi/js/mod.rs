@@ -42,32 +42,29 @@
 //!
 //! While Web Workers enable concurrency, they communicate via message passing
 //! and do not share memory except through `SharedArrayBuffer`.
-mod types; // Js, JsEventKind, JsPermission*, JsWorker...
 
-#[cfg(feature = "unsafe_ffi")]
-crate::items! {
-    mod reexport; // js_reexport!
+mod reexport;
 
-    #[cfg(not(windows))] // NOTE: compiles in unix, which is good for docs
-    mod web_api;
-}
+mod types; // js_number, js_int32, js_unit32, js_bool…
+mod web; // Js, ...
 
-crate::items! { // structural access: _mods, _internals, _all
+crate::items! { // structural access: _mods, _pub_mods, _internals, _all
     #[allow(unused)]
-    pub use {_mods::*, _internals::*};
+    pub use _mods::*;
+    #[allow(unused)] #[doc(hidden, no_inline)]
+    pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
         pub use super::types::*;
-
-        #[cfg(feature = "unsafe_ffi")]
-        pub use super::reexport::*;
     }
-    pub(super) mod _internals {
-        #[cfg(all(feature = "unsafe_ffi", not(windows)))]
-        pub(crate) use super::web_api::web_api;
+    mod _pub_mods { #![allow(unused)]
+        pub use super::web::_all::*;
+    }
+    pub(super) mod _internals { #![allow(unused)]
+        pub(crate) use super::reexport::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::_mods::*;
+        pub use super::{_mods::*, _pub_mods::*};
     }
 }
