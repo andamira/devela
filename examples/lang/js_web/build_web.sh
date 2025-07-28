@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela::examples::lang::js_web::build-web.sh
+# devela::examples::lang::js_web::build_web.sh
 #
 ## install required tools
 # $ apt install jq
@@ -14,7 +14,7 @@ set -e
 CRATE_NAME="js_web"
 WASM_NAME="${CRATE_NAME}.wasm"
 JS_LIB_DIR="../../../src/lang/ffi/js/web/"
-JS_LIB_NAME="api.js"
+JS_LIB_NAME="web_api.js"
 # JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/ffi/js/web/${JS_LIB_NAME}"
 PROFILE="release"
 WEB_DIR="./public_html/"

@@ -2,10 +2,10 @@
 //
 //! <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web APIs</a> interfacing.
 
-mod api; // Web
 mod event; // WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation
 mod permission; // WebPermission, WebPermissionState
 mod timeout; // WebTimeout
+mod web_api; // Web
 mod worker; // WebWorker, WebWorkerError, WebWorkerJob
 
 crate::items! { // structural access: _mods, _all
@@ -13,7 +13,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{api::*, event::*, permission::*, timeout::*, worker::*};
+        pub use super::{event::*, permission::*, timeout::*, web_api::*, worker::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

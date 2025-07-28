@@ -1,5 +1,5 @@
-// devela::lang::ffi::js::web::api.js
-// (in sync with ./api.rs)
+// devela::lang::ffi::js::web::web_api.js
+// (in sync with ./web_api.rs)
 //
 // TOC
 // - config
@@ -90,6 +90,9 @@ export async function initWasm(wasmPath, imports = {}) {
 			console_log: (ptr, len) => console.log(str_decode(ptr, len)),
 			console_trace: () => console.trace(),
 			console_warn: (ptr, len) => console.warn(str_decode(ptr, len)),
+			//
+			console_count: (ptr, len) => console.count(str_decode(ptr, len)),
+			console_count_reset: (ptr, len) => console.count_reset(str_decode(ptr, len)),
 			//
 			console_group: (ptr, len) => console.group(str_decode(ptr, len)),
 			console_group_collapsed: (ptr, len) => console.group_collapsed(str_decode(ptr, len)),

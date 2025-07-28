@@ -2,7 +2,7 @@
 //
 
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
-use crate::web_api;
+use crate::docweb;
 #[allow(unused_imports)]
 use crate::{Web, js_uint32};
 
@@ -28,11 +28,11 @@ impl WebTimeout {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebTimeout {
-    #[doc = web_api!("Window", "setTimeout")]
+    #[doc = docweb!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
     pub fn timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> Self {
         Web::window_set_timeout(callback, delay_ms) }
-    #[doc = web_api!("Window", "setInterval")]
+    #[doc = docweb!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
     pub fn interval(callback: extern "C" fn(), interval_ms: js_uint32) -> Self {
         Web::window_set_timeout(callback, interval_ms) }
@@ -42,17 +42,17 @@ impl WebTimeout {
     /// - Avoid passing untrusted input, as this executes arbitrary JS.
     /// - Ensure all evaluated code is **safe and controlled**.
     pub fn eval(js_code: &str) { Web::window_eval(js_code) }
-    #[doc = web_api!("Window", "setTimeout")]
+    #[doc = docweb!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
     pub fn eval_timeout(js_code: &str, delay_ms: js_uint32) -> Self {
         Web::window_eval_timeout(js_code, delay_ms) }
-    #[doc = web_api!("Window", "setInterval")]
+    #[doc = docweb!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
     pub fn eval_interval(js_code: &str, interval_ms: js_uint32) -> Self {
         Web::window_eval_interval(js_code, interval_ms) }
 
-    #[doc = web_api!("Window", "clearTimeout")]
-    #[doc = web_api!("Window", "clearInterval")]
+    #[doc = docweb!("Window", "clearTimeout")]
+    #[doc = docweb!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
     pub fn clear(self) { Web::window_clear_timeout(self); }
 }

@@ -1,23 +1,22 @@
-// devela::lang::ffi::js::web::api
-// (in sync with ./api.js)
+// devela::lang::ffi::js::web::web_api
+// (in sync with ./web_api.js)
 //
 //! Defines [`Web`] and implements Web API methods.
-//
 //
 // TOC
 // - definition
 // - helpers
 // - methods
 
-use devela::{
-    JsInstant, JsTextMetrics, JsTextMetricsFull, Str, TaskPoll, WebEventKind, WebEventMouse,
-    WebEventPointer, WebPermission, WebPermissionState, WebTimeout, WebWorker, WebWorkerError,
-    WebWorkerJob, js_bool, js_int32, js_number, js_reexport, js_str, js_uint32, transmute,
-};
-#[cfg(feature = "alloc")]
-use devela::{String, Vec, vec_ as vec};
+use devela::js_reexport;
 #[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
-use devela::{js_string, js_string_with_capacity};
+use devela::{String, Vec, vec_ as vec};
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+use devela::{
+    Js, JsInstant, JsTextMetrics, JsTextMetricsFull, Str, TaskPoll, WebEventKind, WebEventMouse,
+    WebEventPointer, WebPermission, WebPermissionState, WebTimeout, WebWorker, WebWorkerError,
+    WebWorkerJob, js_bool, js_int32, js_number, js_uint32, transmute,
+};
 
 /* definition */
 
@@ -48,8 +47,8 @@ pub struct Web;
 /* helpers */
 
 /// Helper for Web API doc links.
-#[allow(unused)] #[rustfmt::skip]
-macro_rules! web_api {
+#[cfg(all(feature = "unsafe_ffi", not(windows)))] #[rustfmt::skip]
+macro_rules! docweb {
     ($path:literal, $method:literal) => { concat!["([", $method,
             "](https://developer.mozilla.org/en-US/docs/Web/API/", $path, "/", $method, "))"] };
     (canvas $method:literal) => { concat!["([", $method,
@@ -59,8 +58,8 @@ macro_rules! web_api {
         "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
         $method, "_static))"] };
 }
-#[allow(unused)]
-pub(crate) use web_api;
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+pub(crate) use docweb;
 
 /* methods: core APIs */
 
@@ -71,51 +70,58 @@ pub(crate) use web_api;
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = web_api!(console "clear")]
+    #[doc = docweb!(console "clear")]
     /// Clears the console if possible.
     pub fn console_clear() { console_clear() }
-    #[doc = web_api!(console "debug")]
+    #[doc = docweb!(console "debug")]
     /// Outputs a message to the console with the debug log level.
     pub fn console_debug(text: &str) { unsafe { console_debug(text.as_ptr(), text.len()); } }
-    #[doc = web_api!(console "error")]
+    #[doc = docweb!(console "error")]
     /// Outputs a message to the console with the error log level.
     pub fn console_error(text: &str) { unsafe { console_error(text.as_ptr(), text.len()); } }
-    #[doc = web_api!(console "info")]
+    #[doc = docweb!(console "info")]
     /// Outputs a message to the console with the info log level.
     pub fn console_info(text: &str) { unsafe { console_info(text.as_ptr(), text.len()); } }
-    #[doc = web_api!(console "log")]
+    #[doc = docweb!(console "log")]
     /// Outputs a message to the console.
     pub fn console_log(text: &str) { unsafe { console_log(text.as_ptr(), text.len()); } }
-    #[doc = web_api!(console "trace")]
+    #[doc = docweb!(console "trace")]
     /// Outputs a stack trace.
     pub fn console_trace() { console_trace(); }
-    #[doc = web_api!(console "warn")]
+    #[doc = docweb!(console "warn")]
     /// Outputs a message to the console with the warning log level.
     pub fn console_warn(text: &str) { unsafe { console_warn(text.as_ptr(), text.len()); } }
     //
-    #[doc = web_api!(console "group")]
+    #[doc = docweb!(console "count")]
+    /// Logs the number of times that this particular call to count has been called.
+    pub fn console_count(label: &str) { unsafe { console_count(label.as_ptr(), label.len()); } }
+    #[doc = docweb!(console "countReset")]
+    /// Resets the counter used with [`console_count`][Self::console_count].
+    pub fn console_count_reset(label: &str) {
+        unsafe { console_count_reset(label.as_ptr(), label.len()); } }
+    //
+    #[doc = docweb!(console "group")]
     /// Creates a new inline group, indenting all following output by another level.
     pub fn console_group(text: &str) { unsafe { console_group(text.as_ptr(), text.len()); } }
-    #[doc = web_api!(console "groupCollapsed")]
+    #[doc = docweb!(console "groupCollapsed")]
     /// Like [`console_group`][Self::console_group] but starts with the inline group collapsed.
     pub fn console_group_collapsed(text: &str) {
         unsafe { console_group_collapsed(text.as_ptr(), text.len()); } }
-    #[doc = web_api!(console "groupEnd")]
+    #[doc = docweb!(console "groupEnd")]
     /// Exits the current inline group.
     pub fn console_group_end() { console_group_end(); }
     //
-    #[doc = web_api!(console "time")]
+    #[doc = docweb!(console "time")]
     /// Starts a timer with the given `name`.
     pub fn console_time(name: &str) { unsafe { console_time(name.as_ptr(), name.len()); } }
-    #[doc = web_api!(console "timeEnd")]
+    #[doc = docweb!(console "timeEnd")]
     /// Stops a timer with the given name, started with [`console_time_end`][Self::console_time_end].
     pub fn console_time_end(name: &str) { unsafe { console_time_end(name.as_ptr(), name.len()); } }
-    #[doc = web_api!(console "timeLog")]
+    #[doc = docweb!(console "timeLog")]
     /// Logs a timer with the given name, started with [`console_time_log`][Self::console_time_log].
     pub fn console_time_log(name: &str) { unsafe { console_time_log(name.as_ptr(), name.len()); } }
 }
-js_reexport! {
-    [ module: "api_console" ]
+js_reexport! { [ module: "api_console" ]
     safe fn console_clear();
     unsafe fn console_debug(str_ptr: *const u8, str_len: usize);
     unsafe fn console_error(str_ptr: *const u8, str_len: usize);
@@ -123,6 +129,9 @@ js_reexport! {
     unsafe fn console_log(str_ptr: *const u8, str_len: usize);
     safe fn console_trace();
     unsafe fn console_warn(str_ptr: *const u8, str_len: usize);
+    //
+    unsafe fn console_count(str_ptr: *const u8, str_len: usize);
+    unsafe fn console_count_reset(str_ptr: *const u8, str_len: usize);
     //
     unsafe fn console_group(str_ptr: *const u8, str_len: usize);
     unsafe fn console_group_collapsed(str_ptr: *const u8, str_len: usize);
@@ -145,7 +154,7 @@ js_reexport! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = web_api!("EventTarget", "addEventListener")]
+    #[doc = docweb!("EventTarget", "addEventListener")]
     /// Attaches a Rust function `event` listener from an `element`.
     pub fn event_add_listener(element: &str, event: WebEventKind, rust_fn: extern "C" fn()) {
         unsafe {
@@ -153,7 +162,7 @@ impl Web {
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
         }
     }
-    #[doc = web_api!("EventTarget", "removeEventListener")]
+    #[doc = docweb!("EventTarget", "removeEventListener")]
     /// Removes a a Rust function `event` listener from an `element`.
     pub fn event_remove_listener(element: &str, event: WebEventKind, rust_fn: extern "C" fn()) {
         unsafe {
@@ -161,7 +170,7 @@ impl Web {
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
         }
     }
-    #[doc = web_api!("EventTarget", "addEventListener")]
+    #[doc = docweb!("EventTarget", "addEventListener")]
     /// Attaches a JavaScript function `event` listener on an `element`.
     pub fn event_add_listener_js(element: &str, event: WebEventKind, js_fn_name: &str) {
         unsafe {
@@ -169,7 +178,7 @@ impl Web {
             event.as_str().as_ptr(), event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
         }
     }
-    #[doc = web_api!("EventTarget", "removeEventListener")]
+    #[doc = docweb!("EventTarget", "removeEventListener")]
     /// Removes a JavaScript function `event` listener from an `element`.
     pub fn event_remove_listener_js(element: &str, event: WebEventKind, js_fn_name: &str) {
         unsafe {
@@ -178,7 +187,7 @@ impl Web {
         }
     }
     //
-    #[doc = web_api!("EventTarget", "addEventListener")]
+    #[doc = docweb!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `mouse event` listener on an `element`.
     ///
     /// The callback receives `WebEventMouse` with button, buttons mask, and coordinates.
@@ -191,7 +200,7 @@ impl Web {
                 event.as_str().as_ptr(), event.as_str().len(), callback as usize);
         }
     }
-    #[doc = web_api!("EventTarget", "addEventListener")]
+    #[doc = docweb!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `pointer event` listener on an `element`.
     ///
     /// The callback receives `WebEventPointer` with id, coordinates, and pressure.
@@ -266,8 +275,7 @@ impl Web {
             etype, time_stamp));
     }
 }
-js_reexport! {
-    [ module: "api_events" ]
+js_reexport! { [ module: "api_events" ]
     unsafe fn "event_addListener" event_add_listener(element_ptr: *const u8,
         element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
     unsafe fn "event_removeListener" event_remove_listener(element_ptr: *const u8,
@@ -295,48 +303,47 @@ js_reexport! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = web_api!("History", "back")]
+    #[doc = docweb!("History", "back")]
     /// Moves the browser back one step in the session history.
     pub fn history_back() { unsafe { history_back(); } }
 
-    #[doc = web_api!("History", "forward")]
+    #[doc = docweb!("History", "forward")]
     /// Moves the browser forward one step in the session history.
     pub fn history_forward() { unsafe { history_forward(); } }
 
-    #[doc = web_api!("History", "go")]
+    #[doc = docweb!("History", "go")]
     /// Moves the browser to a specific point in the session history.
     /// Use negative values to go back, positive to go forward.
     pub fn history_go(delta: js_int32) { unsafe { history_go(delta); } }
 
-    #[doc = web_api!("History", "pushState")]
+    #[doc = docweb!("History", "pushState")]
     /// Adds an entry to the session history stack.
     pub fn history_push_state(state: &str, title: &str, url: &str) {
         unsafe { history_push_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
             url.as_ptr(), url.len()); }
     }
 
-    #[doc = web_api!("History", "replaceState")]
+    #[doc = docweb!("History", "replaceState")]
     /// Modifies the current history entry without creating a new one.
     pub fn history_replace_state(state: &str, title: &str, url: &str) {
         unsafe { history_replace_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
             url.as_ptr(), url.len()); }
     }
 
-    #[doc = web_api!("Location", "reload")]
+    #[doc = docweb!("Location", "reload")]
     /// Reloads the current document.
     pub fn location_reload() { unsafe { location_reload(); } }
 
-    #[doc = web_api!("Location", "assign")]
+    #[doc = docweb!("Location", "assign")]
     /// Loads the specified URL.
     pub fn location_assign(url: &str) { unsafe { location_assign(url.as_ptr(), url.len()); } }
 
-    #[doc = web_api!("Location", "replace")]
+    #[doc = docweb!("Location", "replace")]
     /// Replaces the current document with the given URL,
     /// without creating a new entry in the history.
     pub fn location_replace(url: &str) { unsafe { location_replace(url.as_ptr(), url.len()); } }
 }
-js_reexport! {
-    [ module: "api_history_location" ]
+js_reexport! { [ module: "api_history_location" ]
     unsafe fn history_back();
     unsafe fn history_forward();
     unsafe fn history_go(delta: js_int32);
@@ -357,7 +364,7 @@ js_reexport! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = web_api!("Permissions", "query")]
+    #[doc = docweb!("Permissions", "query")]
     /// Queries the status of a given permission.
     ///
     /// Returns `Granted`, `Denied`, `Prompt`, or `Unknown` if unsupported.
@@ -366,8 +373,7 @@ impl Web {
         .into()
     }
 }
-js_reexport! {
-    [ module: "api_permissions" ]
+js_reexport! { [ module: "api_permissions" ]
     unsafe fn permissions_query(name_ptr: *const u8, name_len: usize) -> js_int32;
 }
 
@@ -379,22 +385,22 @@ js_reexport! {
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
     // TODO
-    // #[doc = web_api!("Window", "document")]
+    // #[doc = docweb!("Window", "document")]
     // /// Returns a reference to the document contained in the window.
     // pub fn window_document() -> WebDocument { WebDocument::get() }
 
-    #[doc = web_api!("Window", "setTimeout")]
+    #[doc = docweb!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
     pub fn window_set_timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> WebTimeout {
         WebTimeout { id: unsafe { window_set_timeout(callback as usize, delay_ms) } }
     }
-    #[doc = web_api!("Window", "setInterval")]
+    #[doc = docweb!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
     pub fn window_set_interval(callback: extern "C" fn(), interval_ms: js_uint32) -> WebTimeout {
         WebTimeout { id: unsafe { window_set_interval(callback as usize, interval_ms) } }
     }
-    #[doc = web_api!("Window", "clearTimeout")]
-    #[doc = web_api!("Window", "clearInterval")]
+    #[doc = docweb!("Window", "clearTimeout")]
+    #[doc = docweb!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
     pub fn window_clear_timeout(id: WebTimeout) { window_clear_timeout(id.id); }
 
@@ -403,24 +409,23 @@ impl Web {
     /// - Avoid passing untrusted input, as this executes arbitrary JS.
     /// - Ensure all evaluated code is **safe and controlled**.
     pub fn window_eval(js_code: &str) { unsafe { window_eval(js_code.as_ptr(), js_code.len()); } }
-    #[doc = web_api!("Window", "setTimeout")]
+    #[doc = docweb!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
     pub fn window_eval_timeout(js_code: &str, delay_ms: js_uint32) -> WebTimeout { WebTimeout {
         id: unsafe { window_eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } } }
-    #[doc = web_api!("Window", "setInterval")]
+    #[doc = docweb!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
     pub fn window_eval_interval(js_code: &str, interval_ms: js_uint32) -> WebTimeout { WebTimeout {
         id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
 
-    #[doc = web_api!("Window", "requestAnimationFrame")]
+    #[doc = docweb!("Window", "requestAnimationFrame")]
     /// Requests an animation frame, executing the given `callback`.
     pub fn window_request_animation_frame(callback: extern "C" fn()) -> js_uint32 {
         unsafe { window_request_animation_frame(callback as usize) } }
     /// Cancels a request for an animation frame.
     pub fn window_cancel_animation_frame(id: js_uint32) { window_cancel_animation_frame(id); }
 }
-js_reexport! {
-    [module: "api_window"]
+js_reexport! { [module: "api_window"]
     unsafe fn window_set_timeout(callback_ptr: usize, delay_ms: js_uint32) -> js_uint32;
     unsafe fn window_set_interval(callback_ptr: usize, interval_ms: js_uint32) -> js_uint32;
     safe fn window_clear_timeout(timeout_id: js_uint32);
@@ -450,23 +455,23 @@ impl Web {
     pub fn set_canvas(selector: &str) { unsafe { set_canvas(selector.as_ptr(), selector.len()); } }
 
     /* color settings */
-    #[doc = web_api!(canvas "fillStyle")]
+    #[doc = docweb!(canvas "fillStyle")]
     /// Sets the color or style for filling shapes.
     pub fn fill_style(r: u8, g: u8, b: u8) { fill_style(r, g, b); }
-    #[doc = web_api!(canvas "strokeStyle")]
+    #[doc = docweb!(canvas "strokeStyle")]
     /// Sets the color or style for lines.
     pub fn stroke_style(r: u8, g: u8, b: u8) { stroke_style(r, g, b); }
 
     /* drawing rectangles */
-    #[doc = web_api!(canvas "fillRect")]
+    #[doc = docweb!(canvas "fillRect")]
     /// Draws a filled rectangle.
     pub fn fill_rect(x: js_number, y: js_number, w: js_number, h: js_number)
         { fill_rect(x, y, w, h); }
-    #[doc = web_api!(canvas "strokeRect")]
+    #[doc = docweb!(canvas "strokeRect")]
     /// Draws a rectangular outline.
     pub fn stroke_rect(x: js_number, y: js_number, w: js_number, h: js_number)
         { stroke_rect(x, y, w, h); }
-    #[doc = web_api!(canvas "clearRect")]
+    #[doc = docweb!(canvas "clearRect")]
     /// Clears the specified rectangular area, making it fully transparent.
     pub fn clear_rect(x: js_number, y: js_number, w: js_number, h: js_number)
         { clear_rect(x, y, w, h); }
@@ -480,24 +485,24 @@ impl Web {
         { draw_circle(x, y, radius); }
 
     /* drawing text */
-    #[doc = web_api!(canvas "fillText")]
+    #[doc = docweb!(canvas "fillText")]
     /// Draws filled text at the specified position.
     pub fn fill_text(text: &str, x: js_number, y: js_number) {
         unsafe { fill_text(text.as_ptr(), text.len(), x, y); }
     }
-    #[doc = web_api!(canvas "strokeText")]
+    #[doc = docweb!(canvas "strokeText")]
     /// Draws text outline at the specified position.
     pub fn stroke_text(text: &str, x: js_number, y: js_number) {
         unsafe { stroke_text(text.as_ptr(), text.len(), x, y); }
     }
-    #[doc = web_api!(canvas "measureText")]
+    #[doc = docweb!(canvas "measureText")]
     /// Measures the essential properties of text.
     pub fn measure_text(text: &str) -> JsTextMetrics {
         let (mut metrics, ptr, len) = (JsTextMetrics::default(), text.as_ptr(), text.len());
         unsafe { measure_text(ptr, len, &mut metrics as *mut JsTextMetrics); }
         metrics
     }
-    #[doc = web_api!(canvas "measureTextFull")]
+    #[doc = docweb!(canvas "measureTextFull")]
     /// Measures all available text metrics.
     pub fn measure_text_full(text: &str) -> JsTextMetricsFull {
         let (mut metrics, ptr, len) = (JsTextMetricsFull::default(), text.as_ptr(), text.len());
@@ -505,8 +510,7 @@ impl Web {
         metrics
     }
 }
-js_reexport! {
-    [ module: "api_canvas" ]
+js_reexport! { [ module: "api_canvas" ]
     /* misc. */
     unsafe fn set_canvas(str_ptr: *const u8, str_len: usize);
     /* color settings */
@@ -539,22 +543,21 @@ js_reexport! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = web_api!("Performance", "now")]
+    #[doc = docweb!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.
     pub fn performance_now() -> JsInstant { JsInstant::from_millis_f64(performance_now()) }
-    #[doc = web_api!("Performance", "timeOrigin")]
+    #[doc = docweb!("Performance", "timeOrigin")]
     /// Retrieves the time origin in milliseconds.
     pub fn performance_time_origin() -> JsInstant {
         JsInstant::from_millis_f64(performance_time_origin()) }
-    #[doc = web_api!("Performance", "eventCounts")]
+    #[doc = docweb!("Performance", "eventCounts")]
     /// Retrieves the count of recorded events.
     pub fn performance_event_count(event: WebEventKind) -> js_uint32 {
         let name = event.as_str();
         unsafe { performance_event_count(name.as_ptr(), name.len()) }
     }
 }
-js_reexport! {
-    [ module: "api_performance" ]
+js_reexport! { [ module: "api_performance" ]
     safe fn "now" performance_now() -> js_number;
     safe fn "timeOrigin" performance_time_origin() -> js_number;
     unsafe fn "eventCounts" performance_event_count(event_ptr: *const u8, event_len: usize)
@@ -611,7 +614,7 @@ impl Web {
     pub fn worker_poll(job: WebWorkerJob) -> TaskPoll<Result<String, WebWorkerError>> {
         if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
         let mut first_check = true;
-        let result = js_string_with_capacity(128, false, |ptr, cap| {
+        let result = Js::read_string_capped(128, false, |ptr, cap| {
             let res = unsafe { worker_poll_buf(job.id(), ptr, cap as usize) as js_int32 };
             if first_check {
                 first_check = false; // Intercept status codes before bothering with decoding
@@ -640,8 +643,7 @@ impl Web {
     /// Cancels an ongoing JavaScript evaluation.
     pub fn worker_eval_cancel(job: WebWorkerJob) { worker_cancel_eval(job.id()); }
 }
-js_reexport! {
-    [module: "api_workers"]
+js_reexport! { [module: "api_workers"]
     unsafe fn worker_spawn(script_ptr: *const u8, script_len: usize) -> js_uint32;
     safe fn worker_is_active(worker_id: js_uint32) -> js_bool;
     safe fn worker_stop(worker_id: js_uint32);

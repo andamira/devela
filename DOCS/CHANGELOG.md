@@ -51,6 +51,10 @@
 - rename `Oneof` methods to ordinals: `A` → `_0`, `B` → `_1`, ….
 
 ## lang
+- new namespace: `Js`.
+- move and rename the `js_str*` fns as public `Js` `read_str*` methods.
+- new `Web` methods:
+  - `console_count[_reset]`.
 - rename types:
   - `Js` to `Web`.
   - `JsEvent*` to `WebEvent*`.

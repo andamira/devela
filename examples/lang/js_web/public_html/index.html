@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <title>Rust Js Web API example</title>
     <script type="module">
-      import { initWasm } from "./api.js";
+      import { initWasm } from "./web_api.js";
       window.addEventListener("DOMContentLoaded", async () => {
           window.wasmInstance = await initWasm("js_web.wasm");
       });
