@@ -300,11 +300,11 @@ mod tests {
         //     assert_eq!(f32::NUM_MAX_POWER_OF_TWO, Some(2.0_f32.powi(f32::EXPONENT_BIAS as i32)));
         //     assert_eq!(f64::NUM_MAX_POWER_OF_TWO, Some(2.0_f64.powi(f64::EXPONENT_BIAS as i32)));
         // }
-        let expected_bits = (((f32::EXPONENT_BIAS as u32) << 1) << f32::SIGNIFICAND_BITS);
+        let expected_bits = ((f32::EXPONENT_BIAS as u32) << 1) << f32::SIGNIFICAND_BITS;
         let actual_bits = f32::NUM_MAX_POWER_OF_TWO.unwrap().to_bits();
         assert_eq!(actual_bits, expected_bits);
         //
-        let expected_bits = (((f64::EXPONENT_BIAS as u64) << 1) << f64::SIGNIFICAND_BITS);
+        let expected_bits = ((f64::EXPONENT_BIAS as u64) << 1) << f64::SIGNIFICAND_BITS;
         let actual_bits = f64::NUM_MAX_POWER_OF_TWO.unwrap().to_bits();
         assert_eq!(actual_bits, expected_bits);
     }

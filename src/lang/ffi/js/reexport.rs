@@ -6,7 +6,7 @@
 /// Helps re-exporting javascript functions.
 ///
 /// # Example
-/// ```
+/// ```ignore
 /// # use devela::js_reexport;
 /// js_reexport! {
 ///     [ module: "env" ]
@@ -14,6 +14,18 @@
 ///     pub(crate) safe fn "js_fn_name" rust_fn_name(x: f64, y: f64, w: f64, h: f64);
 ///     unsafe fn "js_fn" rs_fn(ptr: *const u8, len: usize, x: f64, y: f64);
 /// }
+/// // The previous code generates:
+///
+/// // #[link(wasm_import_module = "env")]
+/// // unsafe extern "C" {
+/// //     pub safe fn same_fn_name(x: f64, y: f64, w: f64, h: f64);
+/// //
+/// //     #[link_name = "js_fn_name"]
+/// //     pub(cate) safe fn rust_fn_name(x: f64, y: f64, w: f64, h: f64);
+/// //
+/// //     #[link_name = "js_fn"]
+/// //     unsafe fn rs_fn(ptr: *const u8, len: usize, x: f64, y: f64);
+/// // }
 /// ```
 ///
 /// Use *safe* fn when:
@@ -38,9 +50,7 @@ macro_rules! _js_reexport {
         // $js_fn:      optional link_name (different javascript function name)
         // $fn:         imported rust function name (default same js name)
 
-        [
-        $(module: $module:literal)? $(,)?
-        ]
+        [ $(module: $module:literal)? $(,)? ]
         $(
             $(#[$fn_attrs:meta])*
             $vis:vis $(safe$($_s:block)?)? $(unsafe$($_u:block)?)?
@@ -57,15 +67,6 @@ macro_rules! _js_reexport {
             $vis $(safe$($_s)?)? $(unsafe$($_u)?)?
             fn $fn($($param: $param_ty),*) $(-> $fn_return)?;
         )* }
-
-        /* // how it's manually done:
-        #[link(wasm_import_module = "api_canvas")]
-        unsafe extern "C" {
-            #[link_name = "fill_rect"]
-            pub safe fn fill_rect(x: f64, y: f64, w: f64, h: f64);
-            pub safe fn set_color(r: u8, g: u8, b: u8);
-        }
-        */
     };
 }
 // dummy safe fallback
@@ -75,4 +76,4 @@ macro_rules! _js_reexport { ($($tt:tt)*) => {}; }
 
 #[doc(inline)]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
-pub use _js_reexport as js_reexport;
+pub(crate) use _js_reexport as js_reexport;
