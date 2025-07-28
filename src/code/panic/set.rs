@@ -91,12 +91,12 @@ macro_rules! set_panic_handler {
                 let mut buf = [0u8; $buffer_bytes];
 
                 // Extract and log the panic message
-                $crate::Web::console_group("#[panic_handler]");
+                $crate::JsConsole::group("#[panic_handler]");
                 match $crate::format_buf![&mut buf, "{}", info.message()] {
-                    Ok(msg_str) => $crate::Web::console_debug(msg_str),
+                    Ok(msg_str) => $crate::JsConsole::debug(msg_str),
                     Err(truncated) => {
-                        $crate::Web::console_debug(truncated);
-                        $crate::Web::console_warn("Panic message was truncated!");
+                        $crate::JsConsole::debug(truncated);
+                        $crate::JsConsole::warn("Panic message was truncated!");
                     }
                 }
 
@@ -106,13 +106,13 @@ macro_rules! set_panic_handler {
                         loc.file(), loc.line(), loc.column()])
                     .unwrap_or(Ok("<panic location unknown>".into()))
                 {
-                    Ok(loc_str) => $crate::Web::console_debug(loc_str),
+                    Ok(loc_str) => $crate::JsConsole::debug(loc_str),
                     Err(truncated) => {
-                        $crate::Web::console_debug(truncated);
-                        $crate::Web::console_warn("Panic location was truncated!");
+                        $crate::JsConsole::debug(truncated);
+                        $crate::JsConsole::warn("Panic location was truncated!");
                     }
                 }
-                $crate::Web::console_group_end();
+                $crate::JsConsole::group_end();
 
                 ::core::arch::wasm32::unreachable();
             }

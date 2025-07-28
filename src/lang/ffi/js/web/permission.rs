@@ -1,4 +1,4 @@
-// devela::lang::ffi::js::types::permission
+// devela::lang::ffi::js::web::permission
 
 use crate::{TAG_EXPERIMENTAL, TAG_NON_STANDARD, js_int32};
 

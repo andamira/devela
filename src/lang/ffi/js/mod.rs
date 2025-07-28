@@ -45,9 +45,13 @@
 
 pub mod web; // Web, ...
 
+mod console; // JsConsole
 mod namespace; // Js
-mod reexport; // js_reexport!
-mod types; // js_number, js_int32, js_unit32, js_bool… JsInstant, JsTextMetrics, …
+mod primitives; // js_number, js_int32, js_unit32, js_bool…
+mod text; // JsTextMetrics, JsTextMetricsFull
+mod time; // JsInstant, JsTimeout
+
+mod helpers; // js_doc, js_reexport!
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all
     #[allow(unused)]
@@ -56,13 +60,13 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all
     pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{namespace::*, types::*};
+        pub use super::{console::*, namespace::*, primitives::*, text::*, time::*};
     }
     mod _pub_mods { #![allow(unused)]
-        pub use super::web::_all::*;
+       pub use super::web::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::reexport::*;
+        pub(crate) use super::helpers::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

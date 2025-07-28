@@ -8,7 +8,9 @@
 #![allow(static_mut_refs, reason = "safe in single-threaded")]
 devela::set_panic_handler![web];
 
-use devela::{Wasm, Web, WebEventKind, WebEventMouse, WebEventPointer, format_buf};
+use devela::{
+    JsConsole as console, Wasm, Web, WebEventKind, WebEventMouse, WebEventPointer, format_buf,
+};
 
 /// Static string buffer for printing to the console.
 static mut BUF: [u8; 256] = [0; 256];
@@ -23,19 +25,19 @@ pub extern "C" fn main() {
 
     let wasm_pages = Wasm::memory_pages();
     let wasm_bytes = Wasm::memory_bytes();
-    Web::console_log(&format_buf![?buf, "Wasm memory pages: {wasm_pages}, bytes: {wasm_bytes}"]);
-    Web::console_log(&format_buf![?buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
-    Web::console_log(&format_buf![?buf, "Wasm::simd128: {}", Wasm::has_simd()]);
-    Web::console_log(&format_buf![?buf, "Wasm::mutable-globals: {}", Wasm::has_mutable_globals()]);
+    console::log(&format_buf![?buf, "Wasm memory pages: {wasm_pages}, bytes: {wasm_bytes}"]);
+    console::log(&format_buf![?buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
+    console::log(&format_buf![?buf, "Wasm::simd128: {}", Wasm::has_simd()]);
+    console::log(&format_buf![?buf, "Wasm::mutable-globals: {}", Wasm::has_mutable_globals()]);
 
     /* console */
 
-    Web::console_log(format_buf![?buf, "example log at: {}ms", Web::performance_now()]);
-    Web::console_info("example info");
-    Web::console_debug("example debug");
-    Web::console_warn("example warn");
-    Web::console_error("example error");
-    Web::console_trace();
+    console::log(format_buf![?buf, "example log at: {}ms", Web::performance_now()]);
+    console::info("example info");
+    console::debug("example debug");
+    console::warn("example warn");
+    console::error("example error");
+    console::trace();
 
     /* window */
 
@@ -58,7 +60,7 @@ pub extern "C" fn main() {
     /* text */
 
     let metrics = Web::measure_text_full("Hello, world!");
-    Web::console_log(&format_buf![?buf, "{metrics:?}"]);
+    console::log(&format_buf![?buf, "{metrics:?}"]);
 
     /* events */
 
@@ -83,15 +85,15 @@ pub extern "C" fn canvas_click() {
     let time = Web::performance_now();
 
     let times = Web::performance_event_count(WebEventKind::Click) + 1;
-    Web::console_log(format_buf![?buf, "Canvas clicked {times} times"]);
+    console::log(format_buf![?buf, "Canvas clicked {times} times"]);
 
     let origin = Web::performance_time_origin();
-    Web::console_log(format_buf![?buf, "origin {origin}ms"]);
+    console::log(format_buf![?buf, "origin {origin}ms"]);
 
     Web::fill_style(200, 0, 50);
     Web::fill_rect(50.0, 50.0, 100.0, 100.0);
 
-    Web::console_log(format_buf![?buf, "Canvas clicked at: {time}ms"]);
+    console::log(format_buf![?buf, "Canvas clicked at: {time}ms"]);
     Web::fill_style(50, 50, 200);
     Web::fill_text(format_buf![?buf, "time: {time}ms"], 60.0, 100.0);
 }
@@ -99,10 +101,10 @@ pub extern "C" fn canvas_click() {
 #[unsafe(no_mangle)]
 pub extern "C" fn my_mouse_callback(event: WebEventMouse) {
     let buf: &mut [u8] = unsafe { &mut BUF };
-    Web::console_log(&format_buf![?buf, "MOUSE: {event:?}"]);
+    console::log(&format_buf![?buf, "MOUSE: {event:?}"]);
 }
 #[unsafe(no_mangle)]
 pub extern "C" fn my_pointer_callback(event: WebEventPointer) {
     let buf: &mut [u8] = unsafe { &mut BUF };
-    Web::console_log(&format_buf![?buf, "POINT: {event:?}"]);
+    console::log(&format_buf![?buf, "POINT: {event:?}"]);
 }

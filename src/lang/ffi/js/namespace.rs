@@ -3,7 +3,7 @@
 //! Defines the [`Js`] namespace.
 //
 
-use devela::{Str, js_int32, js_uint32};
+use devela::{JsConsole, Str, js_int32, js_uint32};
 #[cfg(all(feature = "alloc", unsafe··))]
 use devela::{String, Vec};
 
@@ -13,6 +13,13 @@ use devela::{String, Vec};
 /// See also: [`Web`][crate::Web].
 pub struct Js;
 
+#[rustfmt::skip]
+impl Js {
+    /// Returns the [`JsConsole`] namespace struct.
+    pub fn console() -> JsConsole { JsConsole }
+}
+
+/// Strings
 impl Js {
     /// Reads a JS string into a Rust `&str` backed by the given `buffer`,
     /// truncating if the buffer is too small.

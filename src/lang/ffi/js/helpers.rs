@@ -1,7 +1,25 @@
-// devela::lang::ffi::js::reexport
+// devela::lang::ffi::js::helpers
 //
-//! Defines the internal [`js_reexport`] macro.
+//! Defines internal JS helpers: [`js_doc!`], [`js_reexport!`].
 //
+// TOC
+// - js_doc!
+// - js_reexport!
+
+/// Helper for Web API doc links.
+#[cfg(all(feature = "unsafe_ffi", not(windows)))] #[rustfmt::skip]
+macro_rules! _js_doc {
+    ($path:literal, $method:literal) => { concat!["([", $method,
+            "](https://developer.mozilla.org/en-US/docs/Web/API/", $path, "/", $method, "))"] };
+    (canvas $method:literal) => { concat!["([", $method,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/",
+        $method, "))"] };
+    (console $method:literal) => { concat!["([", $method,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
+        $method, "_static))"] };
+}
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+pub(crate) use _js_doc as js_doc;
 
 /// Helps re-exporting javascript functions.
 ///
