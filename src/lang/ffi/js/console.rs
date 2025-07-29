@@ -3,6 +3,7 @@
 //! Defines [`JsConsole`].
 //
 
+#[allow(unused_imports)]
 use devela::{js_doc, js_reexport};
 
 #[doc = crate::TAG_NAMESPACE!()]

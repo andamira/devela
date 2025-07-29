@@ -1,6 +1,7 @@
 // devela::code::guard
 //
-//! defines the [`ScopeGuard`] struct.
+//! Defines [`ScopeGuard`].
+//
 
 use crate::{Deref, DerefMut};
 

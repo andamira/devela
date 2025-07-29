@@ -7,7 +7,7 @@
 // - js_reexport!
 
 /// Helper for Web API doc links.
-#[cfg(all(feature = "unsafe_ffi", not(windows)))] #[rustfmt::skip]
+#[rustfmt::skip]
 macro_rules! _js_doc {
     ($path:literal, $method:literal) => { concat!["([", $method,
             "](https://developer.mozilla.org/en-US/docs/Web/API/", $path, "/", $method, "))"] };
@@ -18,7 +18,6 @@ macro_rules! _js_doc {
         "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
         $method, "_static))"] };
 }
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
 pub(crate) use _js_doc as js_doc;
 
 /// Helps re-exporting javascript functions.
@@ -54,7 +53,7 @@ pub(crate) use _js_doc as js_doc;
 /// - The function can mutate raw memory (e.g., passing buffers, pointers).
 /// - It performs DOM manipulations that might trigger undefined behavior.
 /// - It can throw exceptions that Rust cannot catch.
-#[doc(hidden)] #[macro_export] #[rustfmt::skip]
+#[rustfmt::skip]
 #[cfg(feature = "unsafe_ffi")]
 macro_rules! _js_reexport {
     (
@@ -87,11 +86,9 @@ macro_rules! _js_reexport {
         )* }
     };
 }
-// dummy safe fallback
-#[doc(hidden)] #[macro_export] #[rustfmt::skip]
-#[cfg(not(feature = "unsafe_ffi"))]
+/// Dummy safe fallback of the real `_js_reexport!` macro.
+#[cfg(not(feature = "unsafe_ffi"))] #[rustfmt::skip]
 macro_rules! _js_reexport { ($($tt:tt)*) => {}; }
 
-#[doc(inline)]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 pub(crate) use _js_reexport as js_reexport;

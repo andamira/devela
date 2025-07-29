@@ -9,7 +9,8 @@
 // - methods
 
 use devela::js_reexport;
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg(feature = "unsafe_ffi")]
+#[allow(unused_imports, reason = "not(windows)")]
 use devela::{
     Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebEventKind,
     WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWorker, WebWorkerError,
