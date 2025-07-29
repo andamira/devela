@@ -5,6 +5,7 @@
 mod event; // WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation
 mod permission; // WebPermission, WebPermissionState
 mod web_api; // Web
+mod window; // WebWindow
 mod worker; // WebWorker, WebWorkerError, WebWorkerJob
 
 crate::items! { // structural access: _mods, _all
@@ -12,7 +13,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{event::*, permission::*, web_api::*, worker::*};
+        pub use super::{event::*, permission::*, web_api::*, window::*, worker::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

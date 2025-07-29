@@ -3,23 +3,17 @@
 //
 //! Defines [`Web`] and implements Web API methods.
 //
-// TOC
-// - definition
-// - helpers
-// - methods
 
 use devela::js_reexport;
 #[cfg(feature = "unsafe_ffi")]
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
     Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebEventKind,
-    WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWorker, WebWorkerError,
-    WebWorkerJob, js_bool, js_doc, js_int32, js_number, js_uint32, transmute,
+    WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWindow, WebWorker,
+    WebWorkerError, WebWorkerJob, js_bool, js_doc, js_int32, js_number, js_uint32, transmute,
 };
 #[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
 use devela::{String, Vec, vec_ as vec};
-
-/* definition */
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// A Web API namespace.
@@ -44,8 +38,6 @@ use devela::{String, Vec, vec_ as vec};
 ///  - advanced & experimental
 ///    - [workers](#web-api-workers)
 pub struct Web;
-
-/* methods: core APIs */
 
 /// # Web API Events
 ///
@@ -292,60 +284,9 @@ js_reexport! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    // TODO
-    // #[doc = js_doc!("Window", "document")]
-    // /// Returns a reference to the document contained in the window.
-    // pub fn window_document() -> WebDocument { WebDocument::get() }
-
-    #[doc = js_doc!("Window", "setTimeout")]
-    /// Calls a function after a delay in milliseconds.
-    pub fn window_set_timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> JsTimeout {
-        JsTimeout { id: unsafe { window_set_timeout(callback as usize, delay_ms) } }
-    }
-    #[doc = js_doc!("Window", "setInterval")]
-    /// Calls a function repeatedly at a fixed interval in milliseconds.
-    pub fn window_set_interval(callback: extern "C" fn(), interval_ms: js_uint32) -> JsTimeout {
-        JsTimeout { id: unsafe { window_set_interval(callback as usize, interval_ms) } }
-    }
-    #[doc = js_doc!("Window", "clearTimeout")]
-    #[doc = js_doc!("Window", "clearInterval")]
-    /// Cancels a timeout or interval.
-    pub fn window_clear_timeout(id: JsTimeout) { window_clear_timeout(id.id); }
-
-    /// Executes JavaScript code immediately.
-    /// ## Security Warning
-    /// - Avoid passing untrusted input, as this executes arbitrary JS.
-    /// - Ensure all evaluated code is **safe and controlled**.
-    pub fn window_eval(js_code: &str) { unsafe { window_eval(js_code.as_ptr(), js_code.len()); } }
-    #[doc = js_doc!("Window", "setTimeout")]
-    /// Executes JavaScript code after a delay in milliseconds.
-    pub fn window_eval_timeout(js_code: &str, delay_ms: js_uint32) -> JsTimeout { JsTimeout {
-        id: unsafe { window_eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } } }
-    #[doc = js_doc!("Window", "setInterval")]
-    /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
-    pub fn window_eval_interval(js_code: &str, interval_ms: js_uint32) -> JsTimeout { JsTimeout {
-        id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
-
-    #[doc = js_doc!("Window", "requestAnimationFrame")]
-    /// Requests an animation frame, executing the given `callback`.
-    pub fn window_request_animation_frame(callback: extern "C" fn()) -> js_uint32 {
-        unsafe { window_request_animation_frame(callback as usize) } }
-    /// Cancels a request for an animation frame.
-    pub fn window_cancel_animation_frame(id: js_uint32) { window_cancel_animation_frame(id); }
-}
-js_reexport! { [module: "api_window"]
-    unsafe fn window_set_timeout(callback_ptr: usize, delay_ms: js_uint32) -> js_uint32;
-    unsafe fn window_set_interval(callback_ptr: usize, interval_ms: js_uint32) -> js_uint32;
-    safe fn window_clear_timeout(timeout_id: js_uint32);
-    //
-    unsafe fn window_eval(js_code_ptr: *const u8, js_code_len: usize);
-    unsafe fn window_eval_timeout(js_code_ptr: *const u8, js_code_len: usize, delay_ms: js_uint32)
-        -> js_uint32;
-    unsafe fn window_eval_interval(js_code_ptr: *const u8, js_code_len: usize,
-        interval_ms: js_uint32) -> js_uint32;
-    //
-    unsafe fn window_request_animation_frame(callback_ptr: usize) -> js_uint32;
-    safe fn window_cancel_animation_frame(requestId: js_uint32);
+    #[doc = js_doc!("Window", "window")]
+    /// Returns the Web API window singleton.
+    pub fn window() -> WebWindow { WebWindow }
 }
 
 /* methods: extended APIs */

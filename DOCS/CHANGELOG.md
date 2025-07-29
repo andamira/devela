@@ -51,7 +51,7 @@
 - rename `Oneof` methods to ordinals: `A` → `_0`, `B` → `_1`, ….
 
 ## lang
-- new types: `Js`, `JsConsole`.
+- new types: `Js`, `JsConsole`, `WebWindow`.
 - move and rename the `js_str*` fns as public `Js` `read_str*` methods.
 - new `Web` methods:
   - `console_count[_reset]`.

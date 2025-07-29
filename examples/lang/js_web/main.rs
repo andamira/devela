@@ -9,7 +9,8 @@
 devela::set_panic_handler![web];
 
 use devela::{
-    JsConsole as console, Wasm, Web, WebEventKind, WebEventMouse, WebEventPointer, format_buf,
+    JsConsole as console, Wasm, Web, WebEventKind, WebEventMouse, WebEventPointer,
+    WebWindow as window, format_buf,
 };
 
 /// Static string buffer for printing to the console.
@@ -42,11 +43,11 @@ pub extern "C" fn main() {
     /* window */
 
     // eval
-    Web::window_eval("console.log('Hello from Rust!');");
-    Web::window_eval_timeout("console.log('Delayed!');", 1000);
-    Web::window_eval_interval("console.log('Repeating!');", 2000);
-    let cleared = Web::window_eval_timeout("console.error('This should not run!');", 1500);
-    Web::window_clear_timeout(cleared);
+    window::eval("console.log('Hello from Rust!');");
+    window::eval_timeout("console.log('Delayed!');", 1000);
+    window::eval_interval("console.log('Repeating!');", 2000);
+    let cleared = window::eval_timeout("console.error('This should not run!');", 1500);
+    window::clear_timeout(cleared);
 
     /* draw shapes */
 
