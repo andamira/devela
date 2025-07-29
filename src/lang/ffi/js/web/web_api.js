@@ -209,18 +209,44 @@ export async function initWasm(wasmPath, imports = {}) {
 			window_is_closed: () => { return window.closed; },
 			window_is_cross_origin_isolated: () => { return window.crossOriginIsolated; },
 			window_is_secure_context: () => { return window.isSecureContext; },
+			window_is_popup: () => !window.menubar.visible,
 			// text
 			window_name: (ptr, maxLen) => str_encode(window.name, ptr, maxLen),
 			window_set_name: (ptr, len) => { window.name = str_decode(ptr, len) },
 			// metrics
 			window_device_pixel_ratio: () => { return window.devicePixelRatio; },
+			window_screen_color_depth: () => { return window.screen.colorDepth; },
 			window_inner_size: (dataPtr) => {
-				const size = new Float64Array(wasm.exports.memory.buffer, dataPtr, 2);
-				size[0] = window.innerWidth;
-				size[1] = window.innerHeight;
+				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
+				size[0] = window.innerWidth >>> 0;
+				size[1] = window.innerHeight >>> 0;
 			},
-			window_inner_width: () => { return window.innerWidth; },
-			window_inner_height: () => { return window.innerHeight },
+			window_outer_size: (dataPtr) => {
+				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
+				size[0] = window.outerWidth >>> 0;
+				size[1] = window.outerHeight >>> 0;
+			},
+			window_screen_offset: (dataPtr) => {
+				const offset = new Int32Array(wasm.exports.memory.buffer, dataPtr, 2);
+				offset[0] = window.screenLeft | 0;
+				offset[1] = window.screenTop | 0;
+			},
+			window_screen_size: (dataPtr) => {
+				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
+				size[0] = window.screen.width >>> 0;
+				size[1] = window.screen.height >>> 0;
+			},
+			window_screen_usable_size: (dataPtr) => {
+				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
+				size[0] = window.screen.availWidth >>> 0;
+				size[1] = window.screen.availHeight >>> 0;
+			},
+			window_scroll_offset: (dataPtr) => {
+				const offset = new Int32Array(wasm.exports.memory.buffer, dataPtr, 2);
+				offset[0] = window.scrollX | 0;
+				offset[1] = window.scrollY | 0;
+			},
+
 			// timeout
 			window_set_timeout: (callback_ptr, delayMs) => {
 				return setTimeout(() => { wasm.exports.wasm_callback(callback_ptr); }, delayMs);

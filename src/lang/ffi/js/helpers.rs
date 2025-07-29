@@ -54,7 +54,7 @@ pub(crate) use _js_doc as js_doc;
 /// - It performs DOM manipulations that might trigger undefined behavior.
 /// - It can throw exceptions that Rust cannot catch.
 #[rustfmt::skip]
-#[cfg(feature = "unsafe_ffi")]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
 macro_rules! _js_reexport {
     (
         // # Args
@@ -87,7 +87,8 @@ macro_rules! _js_reexport {
     };
 }
 /// Dummy safe fallback of the real `_js_reexport!` macro.
-#[cfg(not(feature = "unsafe_ffi"))] #[rustfmt::skip]
+#[rustfmt::skip]
+#[cfg(any(not(feature = "unsafe_ffi"), windows))]
 macro_rules! _js_reexport { ($($tt:tt)*) => {}; }
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]

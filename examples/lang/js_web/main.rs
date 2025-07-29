@@ -13,7 +13,7 @@ use devela::{
     WebWindow as window, format_buf as fmt,
 };
 
-/// Static string buffer for printing to the console.
+/// Static string buffer for printing to the console without allocation.
 static mut BUF: [u8; 256] = [0; 256];
 
 #[unsafe(no_mangle)]
@@ -38,10 +38,10 @@ pub extern "C" fn main() {
 
     let wasm_pages = Wasm::memory_pages();
     let wasm_bytes = Wasm::memory_bytes();
-    console::log(&fmt![?buf, "Wasm memory pages: {wasm_pages}, bytes: {wasm_bytes}"]);
-    console::log(&fmt![?buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
-    console::log(&fmt![?buf, "Wasm::simd128: {}", Wasm::has_simd()]);
-    console::log(&fmt![?buf, "Wasm::mutable-globals: {}", Wasm::has_mutable_globals()]);
+    console::log(fmt![?buf, "Wasm memory pages: {wasm_pages}, bytes: {wasm_bytes}"]);
+    console::log(fmt![?buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
+    console::log(fmt![?buf, "Wasm::simd128: {}", Wasm::has_simd()]);
+    console::log(fmt![?buf, "Wasm::mutable-globals: {}", Wasm::has_mutable_globals()]);
 
     /* window */
 
@@ -56,8 +56,15 @@ pub extern "C" fn main() {
         window::is_cross_origin_isolated()
     ]);
     console::log(fmt![?buf, "  is_secure_context: {:?}", window::is_secure_context()]);
+    console::log(fmt![?buf, "  is_popup: {:?}", window::is_popup()]);
     console::log(fmt![?buf, "  device_pixel_ratio: {:?}", window::device_pixel_ratio()]);
+    console::log(fmt![?buf, "  screen_color_depth: {:?}", window::screen_color_depth()]);
     console::log(fmt![?buf, "  inner_size: {:?}", window::inner_size()]);
+    console::log(fmt![?buf, "  outer_size: {:?}", window::outer_size()]);
+    console::log(fmt![?buf, "  screen_offset: {:?}", window::screen_offset()]);
+    console::log(fmt![?buf, "  screen_size: {:?}", window::screen_size()]);
+    console::log(fmt![?buf, "  screen_usable_size: {:?}", window::screen_usable_size()]);
+    console::log(fmt![?buf, "  scroll_offset: {:?}", window::scroll_offset()]);
 
     // eval
     window::eval("console.log('Hello from Rust!');");
@@ -84,7 +91,7 @@ pub extern "C" fn main() {
     Web::fill_text(text_click, 60.0, 30.0);
 
     let metrics = Web::measure_text_full(text_click);
-    console::log(&fmt![?buf, "{metrics:?}"]);
+    console::log(fmt![?buf, "{metrics:?}"]);
 
     /* events */
 
@@ -125,10 +132,10 @@ pub extern "C" fn canvas_click() {
 #[unsafe(no_mangle)]
 pub extern "C" fn my_mouse_callback(event: WebEventMouse) {
     let buf: &mut [u8] = unsafe { &mut BUF };
-    console::log(&fmt![?buf, "MOUSE: {event:?}"]);
+    console::log(fmt![?buf, "MOUSE: {event:?}"]);
 }
 #[unsafe(no_mangle)]
 pub extern "C" fn my_pointer_callback(event: WebEventPointer) {
     let buf: &mut [u8] = unsafe { &mut BUF };
-    console::log(&fmt![?buf, "POINT: {event:?}"]);
+    console::log(fmt![?buf, "POINT: {event:?}"]);
 }
