@@ -3,10 +3,10 @@
 //! Defines [`WebWindow`].
 //
 
-#[cfg(feature = "metric")]
-use crate::{Distance, Extent};
 #[cfg(feature = "unsafe_ffi")]
 use crate::js_doc;
+#[cfg(feature = "metric")]
+use crate::{Distance, Extent};
 #[allow(unused_imports, reason = "not(windows)")]
 use crate::{Js, JsTimeout, js_bool, js_int32, js_number, js_reexport, js_uint32};
 #[cfg(feature = "alloc")]

@@ -17,7 +17,7 @@ pub mod c;
 #[cfg(feature = "glsl")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "glsl")))]
 pub mod glsl;
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 pub mod js; // javascript
 
@@ -29,7 +29,7 @@ crate::items! { // structural access: _pub_mods, _internals, _all
         pub use super::c::_all::*;
         #[cfg(feature = "glsl")]
         pub use super::glsl::_all::*;
-        #[cfg(feature = "js")]
+        #[cfg(all(feature = "js", not(windows)))]
         pub use super::js::_all::*;
         // WIPZONE:
         // pub use super::aos::_all::*;
@@ -37,7 +37,7 @@ crate::items! { // structural access: _pub_mods, _internals, _all
         // pub use super::tg::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
-        #[cfg(feature = "js")]
+        #[cfg(all(feature = "js", not(windows)))]
         pub(crate) use super::js::_internals::*;
     }
     pub(super) mod _all { #![allow(unused)]

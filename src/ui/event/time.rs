@@ -84,7 +84,8 @@ impl Default for EventTimestamp {
 }
 impl_trait! { fmt::Display for EventTimestamp |self, f| self.as_millis_f32().fmt(f) }
 
-#[cfg(feature = "js")] #[rustfmt::skip]
+#[rustfmt::skip]
+#[cfg(all(feature = "js", not(windows)))]
 mod impl_js {
     pub use super::*;
     pub use crate::JsInstant;

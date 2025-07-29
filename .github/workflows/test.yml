@@ -106,10 +106,10 @@ jobs:
         run: cargo generate-lockfile
 
       - name: "cargo test --locked -F all,std,unsafe,__dbg"
-        run: cargo test --locked -F all,std,unsafe,__dbg
+        run: cargo test --locked -F all,std,unsafe,__dbg -v
 
       - name: "cargo test --locked -F all,safe,__dbg"
-        run: cargo test --locked -F all,safe,__dbg
+        run: cargo test --locked -F all,safe,__dbg -v
 
   # 4.
   # coverage:

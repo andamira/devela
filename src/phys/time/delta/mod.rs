@@ -115,7 +115,7 @@ mod impl_duration {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 mod impl_js {
     use crate::{JsInstant, TimeDelta};

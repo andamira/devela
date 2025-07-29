@@ -1,6 +1,6 @@
 // devela::ui::event::key::key
 //
-//! Defines [`Key`], [`KeyFfi`].
+//! Defines [`EventKeyFfi`], [`KeyFfi`].
 //
 // TOC
 // - struct EventKeyFfi
@@ -10,7 +10,7 @@
 
 use super::*;
 use crate::unwrap;
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 crate::items! {
     use crate::{Char, WebKeyLocation, Slice};
     crate::_use! {basic::from_utf8}
@@ -172,7 +172,7 @@ crate::items! {
     impl From<KeyFfi> for Key { fn from(k: KeyFfi) -> Self { Key::from_ffi(k) } }
 }
 
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 pub(crate) static F_KEYS: [&str; 48] = [
     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15",
     "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24", "F25", "F26", "F27", "F28",
@@ -181,7 +181,7 @@ pub(crate) static F_KEYS: [&str; 48] = [
 ];
 
 #[rustfmt::skip]
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 impl KeyFfi {
     // IMPROVE generalize and move to some namespace
@@ -438,6 +438,7 @@ impl KeyFfi {
 }
 
 #[cfg(test)]
+#[cfg(all(feature = "js", not(windows)))]
 mod tests {
     use super::*;
     use WebKeyLocation as L;

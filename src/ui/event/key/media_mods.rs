@@ -10,7 +10,7 @@
 // - impls
 //   - js
 
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 use crate::WebKeyLocation;
 
 /* definitions */
@@ -348,7 +348,7 @@ impl KeyMedia {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 impl KeyMod {
     /// Atempts to construct a `KeyMod` from a JavaScript `KeyboardEvent`

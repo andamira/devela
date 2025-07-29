@@ -125,7 +125,8 @@ pub struct EventWheel {
 
 /* impls */
 
-#[cfg(feature = "js")] #[rustfmt::skip]
+#[rustfmt::skip]
+#[cfg(all(feature = "js", not(windows)))]
 mod impl_js {
     use super::*;
     use crate::{is, js_number, WebEventKind, WebEventMouse, JsInstant};

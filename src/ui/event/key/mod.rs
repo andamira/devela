@@ -10,7 +10,7 @@
 // - tests
 
 use crate::EventTimestamp;
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 use crate::WebEventKind;
 
 mod alpha_pad; // KeyAlpha, KeyPad
@@ -53,7 +53,7 @@ pub enum KeyState {
     Release,
 }
 
-#[cfg(feature = "js")]
+#[cfg(all(feature = "js", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 impl KeyState {
     /// Converts a `WebEventKind` to `KeyState`, if applicable.
@@ -96,11 +96,13 @@ mod tests {
     }
 
     #[test]
+    #[cfg(all(feature = "js", not(windows)))]
     fn key_state_to_js_event() {
         assert_eq!(KeyState::Press.to_js(), WebEventKind::KeyDown);
         assert_eq!(KeyState::Release.to_js(), WebEventKind::KeyUp);
     }
     #[test]
+    #[cfg(all(feature = "js", not(windows)))]
     fn js_event_to_key_state() {
         assert_eq!(KeyState::from_js(WebEventKind::KeyDown), Some(KeyState::Press));
         assert_eq!(KeyState::from_js(WebEventKind::KeyUp), Some(KeyState::Release));
