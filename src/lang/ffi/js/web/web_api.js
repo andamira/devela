@@ -25,12 +25,12 @@ export async function initWasm(wasmPath, imports = {}) {
 
 	/* Helpers */
 
-	// Decodes a UTF-8 string from WASM memory starting at `ptr`, with `len` bytes.
+	// Decodes a UTF-8 string from WASM memory starting at `ptr`, with `len` bytes. (rust → js)
 	function str_decode(ptr, len) {
 		const memory = new Uint8Array(wasm.exports.memory.buffer, ptr, len);
 		return new TextDecoder("utf-8").decode(memory);
 	}
-	// Encodes a JS `string` into UTF-8 bytes in WASM memory at `ptr`.
+	// Encodes a JS `string` into UTF-8 bytes in WASM memory at `ptr`. (js → rust)
 	//
 	// - Writes up to `maxLen` bytes to the memory starting at `ptr`.
 	// - Returns the number of bytes written as a `js_int32` type.
@@ -206,6 +206,22 @@ export async function initWasm(wasmPath, imports = {}) {
 			},
 		},
 		api_window: { // Window API
+			window_is_closed: () => { return window.closed; },
+			window_is_cross_origin_isolated: () => { return window.crossOriginIsolated; },
+			window_is_secure_context: () => { return window.isSecureContext; },
+			// text
+			window_name: (ptr, maxLen) => str_encode(window.name, ptr, maxLen),
+			window_set_name: (ptr, len) => { window.name = str_decode(ptr, len) },
+			// metrics
+			window_device_pixel_ratio: () => { return window.devicePixelRatio; },
+			window_inner_size: (dataPtr) => {
+				const size = new Float64Array(wasm.exports.memory.buffer, dataPtr, 2);
+				size[0] = window.innerWidth;
+				size[1] = window.innerHeight;
+			},
+			window_inner_width: () => { return window.innerWidth; },
+			window_inner_height: () => { return window.innerHeight },
+			// timeout
 			window_set_timeout: (callback_ptr, delayMs) => {
 				return setTimeout(() => { wasm.exports.wasm_callback(callback_ptr); }, delayMs);
 			},
@@ -213,6 +229,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				return setInterval(() => { wasm.exports.wasm_callback(callback_ptr); }, intervalMs);
 			},
 			window_clear_timeout: (timeoutId) => { clearTimeout(timeoutId); },
+			// eval
 			window_eval: (jsCodePtr, jsCodeLen) => {
 				const jsCode = str_decode(jsCodePtr, jsCodeLen);
 				try { eval(jsCode); }
@@ -226,6 +243,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				const jsCode = str_decode(jsCodePtr, jsCodeLen);
 				return setInterval(() => eval(jsCode), intervalMs);
 			},
+			// animation
 			window_request_animation_frame: (callback_ptr) => {
 				return requestAnimationFrame(() => { wasm.exports.wasm_callback(callback_ptr); });
 			},

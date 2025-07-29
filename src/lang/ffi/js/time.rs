@@ -5,11 +5,11 @@
 
 #[cfg(feature = "time")]
 use crate::TimeDelta;
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-use crate::{js_doc, WebWindow};
 use crate::{Display, impl_trait};
 #[allow(unused_imports)]
 use crate::{Web, js_number, js_uint32};
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+use crate::{WebWindow, js_doc};
 
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 ///

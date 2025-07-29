@@ -157,7 +157,7 @@ impl Web {
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
     // WAIT: In firefox + linux + X11 needs the env variable `MOZ_USE_XINPUT2=1`
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=1606832
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1606832 (closed)
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1207700
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1822714
     #[unsafe(no_mangle)]

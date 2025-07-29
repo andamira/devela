@@ -7,9 +7,10 @@ edition = "2024"
 crate-type = ["cdylib"]
 path = "main.rs"
 
-[dependencies]
-devela = { path = "../../..", features = ["js", "time", "unsafe_ffi"] }
-# devela = { git = "https://github.com/andamira/devela", features = ["js", "unsafe_ffi"] }
+[dependencies.devela]
+# git = "https://github.com/andamira/devela"
+path = "../../.."
+features = [ "js", "metric", "time", "unsafe_ffi"]
 
 [profile.release]
 # https://rustwasm.github.io/docs/book/reference/code-size.html
