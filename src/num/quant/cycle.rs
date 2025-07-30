@@ -9,7 +9,7 @@
 /// A `Cycle` encapsulates the basic unit over which any phenomenon repeats,
 /// whether in time, space, or any abstract domain. It is the foundation for
 /// constructing more complex periodic behaviors.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Cycle<T> {
     /// The fundamental period of the cycle.
     pub period: T,
@@ -22,7 +22,7 @@ pub struct Cycle<T> {
 ///
 /// This is useful when the number of repetitions is significant.
 /// For example, when an animation should loop a specified number of times.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct CycleCount<T, N> {
     /// The underlying repeating cycle.
     pub cycle: Cycle<T>,

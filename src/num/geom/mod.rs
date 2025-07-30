@@ -13,9 +13,9 @@ pub mod linear; // Vector*, Matrix*
 #[cfg_attr(nightly_doc, doc(cfg(feature = "shape")))]
 pub mod shape; // Point, …
 
-crate::items! { // structural access: _mods, _all
-    // #[allow(unused)]
-    // pub use _mods::*;
+crate::items! { // structural access: _pub_mods, _internals, _all
+    #[allow(unused)]
+    pub use _internals::*;
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _pub_mods::*;
 
@@ -27,6 +27,9 @@ crate::items! { // structural access: _mods, _all
         pub use super::linear::_all::*;
         #[cfg(feature = "shape")]
         pub use super::shape::_all::*;
+    }
+    pub(super) mod _internals { #![allow(unused)]
+        pub(crate) use super::metric::_internals::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

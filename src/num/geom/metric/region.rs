@@ -8,7 +8,7 @@ use crate::{Extent, Position, Stride};
 #[doc = crate::TAG_GEOM!()]
 /// A [`Position`]ed [`Extent`].
 #[must_use]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Region<T, const D: usize> {
     ///
     pub pos: Position<T, D>,
@@ -25,7 +25,7 @@ pub struct Region<T, const D: usize> {
 /// - Used in **grids, datasets, and memory layouts**.
 /// - Supports **efficient structured stepping** (e.g. row-major iteration).
 #[must_use]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct RegionStrided<T, const D: usize> {
     /// The positioned extent.
     pub region: Region<T, D>,
@@ -35,17 +35,14 @@ pub struct RegionStrided<T, const D: usize> {
 
 /* impls */
 
+#[rustfmt::skip]
 impl<T, const D: usize> Region<T, D> {
     /// Returns a new `Region` from a `pos`ition and a `size`.
-    pub const fn new(pos: Position<T, D>, size: Extent<T, D>) -> Self {
-        Self { pos, size }
-    }
+    pub const fn new(pos: Position<T, D>, size: Extent<T, D>) -> Self { Self { pos, size } }
 
     ///
-    #[must_use] #[rustfmt::skip]
     pub fn position(&self) -> Position<T, D> where T: Clone { self.pos.clone() }
     ///
-    #[rustfmt::skip]
     pub fn extent(&self) -> Extent<T, D> where T: Clone { self.size.clone() }
 }
 impl<T, const D: usize> From<(Position<T, D>, Extent<T, D>)> for Region<T, D> {

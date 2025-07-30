@@ -7,6 +7,8 @@
 //! and measurement in geometric spaces.
 //
 
+mod helpers; // _impl_metric!
+
 mod distance; // Distance
 mod extent; // Extent
 mod position; // Position
@@ -23,9 +25,9 @@ crate::items! {
     mod stride; // Stride
 }
 
-crate::items! { // structural access: _mods, _all
+crate::items! { // structural access: _mods, _internals, _all
     #[allow(unused)]
-    pub use _mods::*;
+    pub use {_internals::*, _mods::*};
 
     mod _mods {
         pub use super::{distance::*, extent::*, position::*};
@@ -36,6 +38,9 @@ crate::items! { // structural access: _mods, _all
         // WIPZONE
         // pub use super::cycle::*;
         // pub use super::radial_sectors::*;
+    }
+    pub(super) mod _internals { #![allow(unused)]
+        pub(crate) use super::helpers::*;
     }
     pub(super) mod _all {
         #[doc(inline)]

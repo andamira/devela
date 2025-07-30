@@ -101,7 +101,7 @@
 - add missing attributes `must_use` and `repr(transparent)`.
 - remove type aliases: `Extent2d`, `Extent3d`, `Region2d`, `Region3d`.
 - remove `metric` feature-gate for `Distance`, `Extent` and `Position`.
-- impl `From` arrays and tuples for `Distance`, `Extent`, `Orientation` and `Position`.
+- impl `From` arrays and tuples for `Distance`, `Extent`, `Orientation`, `Position` and `Stride`.
 
 #### shape
 - update `Point:` make mut accesors *const*.

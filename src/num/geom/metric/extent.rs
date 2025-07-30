@@ -1,40 +1,25 @@
-// devela::num::geom::metric::extent::methods
+// devela::num::geom::metric::extent
 //
-//!
+//! A geometrical extent.
 //
 
-use crate::{Extent, cfor, is};
+use crate::{_impl_metric, cfor, is};
 
-#[rustfmt::skip]
-impl<T, const D: usize> Extent<T, D> {
-    /// Constructs a new `Extent` from the given dimensions.
-    pub const fn new(dimensions: [T; D]) -> Self {
-        Self { dim: dimensions }
-    }
-
-    /// Returns a shared reference to the extent as a slice.
-    #[must_use]
-    pub const fn as_slice(&self) -> &[T] {
-        &self.dim
-    }
-    /// Returns an exclusive reference to the extent as a slice.
-    #[must_use]
-    pub fn as_slice_mut(&mut self) -> &mut [T] {
-        &mut self.dim
-    }
-
-    /// Returns `true` if all dimensions of the extent are equal.
-    #[must_use]
-    pub fn is_uniform_nd(&self) -> bool where T: PartialEq {
-        is![D == 0; return true];
-        let mut i = 1;
-        while i < D {
-            is![self.dim[i] != self.dim[0]; return false];
-            i += 1;
-        }
-        true
-    }
+#[doc = crate::TAG_GEOM!()]
+/// An orthogonal extension in `D`-space without a coordinate position.
+///
+/// Represents the lengths of each dimension in a multi-dimensional space,
+/// providing an origin-agnostic shape with the implied form of an orthotope
+/// (generalized rectangle or box).
+#[must_use]
+#[repr(transparent)]
+pub struct Extent<T, const D: usize> {
+    /// The size values in `D`-dimensional space.
+    pub dim: [T; D],
 }
+
+_impl_metric![common_methods: Extent];
+_impl_metric![common_traits: Extent];
 
 /* manual impls for specific dimensionalities */
 
@@ -107,7 +92,7 @@ impl<T> Extent<T, 3> {
     }
 }
 
-/// Implement `Extent`.
+/// Implement `Extent` methods for all primitives.
 macro_rules! impl_extent {
     () => {
         impl_extent![sint i8, i16, i32, i64, i128, isize];

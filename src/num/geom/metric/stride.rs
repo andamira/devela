@@ -18,8 +18,9 @@
 /// - **Geometric traversal** (lattices, grids, fractal stepping)
 #[must_use]
 #[repr(transparent)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Stride<T, const D: usize> {
-    /// Step sizes per dimension.
-    pub step: [T; D],
+    /// The step sizes per dimension.
+    pub dim: [T; D],
 }
+crate::_impl_metric![common_methods: Stride];
+crate::_impl_metric![common_traits: Stride];
