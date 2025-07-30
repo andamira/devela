@@ -96,6 +96,13 @@
 - delete the `alg` feature.
 
 ### geom
+#### metric
+- rename `Extent` field `size` to `dim` for consitency.
+- add missing attributes `must_use` and `repr(transparent)`.
+- remove type aliases: `Extent2d`, `Extent3d`, `Region2d`, `Region3d`.
+- remove `metric` feature-gate for `Distance`, `Extent` and `Position`.
+- impl `From` arrays and tuples for `Distance`, `Extent`, `Orientation` and `Position`.
+
 #### shape
 - update `Point:` make mut accesors *const*.
 - add new alias: `Points2d`.

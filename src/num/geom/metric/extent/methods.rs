@@ -3,25 +3,24 @@
 //!
 //
 
-use super::{Extent, Extent2d, Extent3d};
-use crate::{cfor, is};
+use crate::{Extent, cfor, is};
 
 #[rustfmt::skip]
 impl<T, const D: usize> Extent<T, D> {
     /// Constructs a new `Extent` from the given dimensions.
     pub const fn new(dimensions: [T; D]) -> Self {
-        Self { size: dimensions }
+        Self { dim: dimensions }
     }
 
     /// Returns a shared reference to the extent as a slice.
     #[must_use]
     pub const fn as_slice(&self) -> &[T] {
-        &self.size
+        &self.dim
     }
     /// Returns an exclusive reference to the extent as a slice.
     #[must_use]
     pub fn as_slice_mut(&mut self) -> &mut [T] {
-        &mut self.size
+        &mut self.dim
     }
 
     /// Returns `true` if all dimensions of the extent are equal.
@@ -30,7 +29,7 @@ impl<T, const D: usize> Extent<T, D> {
         is![D == 0; return true];
         let mut i = 1;
         while i < D {
-            is![self.size[i] != self.size[0]; return false];
+            is![self.dim[i] != self.dim[0]; return false];
             i += 1;
         }
         true
@@ -40,71 +39,71 @@ impl<T, const D: usize> Extent<T, D> {
 /* manual impls for specific dimensionalities */
 
 #[rustfmt::skip]
-impl<T> Extent2d<T> {
+impl<T> Extent<T, 2> {
     /// Returns a copy of the first dimension `x`.
     #[must_use]
-    pub const fn x(self) -> T where T: Copy { self.size[0] }
+    pub const fn x(self) -> T where T: Copy { self.dim[0] }
     /// Returns a copy of the second dimension `y`.
     #[must_use]
-    pub const fn y(self) -> T where T: Copy { self.size[1] }
+    pub const fn y(self) -> T where T: Copy { self.dim[1] }
 
     /// Returns a shared reference to the first dimension `x`.
     #[must_use]
-    pub const fn x_ref(&self) -> &T { &self.size[0] }
+    pub const fn x_ref(&self) -> &T { &self.dim[0] }
     /// Returns a shared reference to the second dimension `y`.
     #[must_use]
-    pub const fn y_ref(&self) -> &T { &self.size[1] }
+    pub const fn y_ref(&self) -> &T { &self.dim[1] }
 
     /// Returns an exclusive reference to the first dimension `x`.
     #[must_use]
-    pub fn x_mut(&mut self) -> &mut T { &mut self.size[0] }
+    pub fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
     /// Returns an exclusive reference to the second dimension `y`.
     #[must_use]
-    pub fn y_mut(&mut self) -> &mut T { &mut self.size[1] }
+    pub fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
 
     /// Returns `true` if the 2 dimensions of the extent are equal.
     #[must_use]
     pub fn is_uniform(&self) -> bool where T: PartialEq {
-        self.size[0] == self.size[1]
+        self.dim[0] == self.dim[1]
     }
 }
 
 #[rustfmt::skip]
-impl<T> Extent3d<T> {
+impl<T> Extent<T, 3> {
     /// Returns a copy of the first dimension `x`.
     #[must_use]
-    pub const fn x(self) -> T where T: Copy { self.size[0] }
+    pub const fn x(self) -> T where T: Copy { self.dim[0] }
     /// Returns a copy of the second dimension `y`.
     #[must_use]
-    pub const fn y(self) -> T where T: Copy { self.size[1] }
+    pub const fn y(self) -> T where T: Copy { self.dim[1] }
     /// Returns a copy of the third dimension `z`.
     #[must_use]
-    pub const fn z(self) -> T where T: Copy { self.size[2] }
+    pub const fn z(self) -> T where T: Copy { self.dim[2] }
 
     /// Returns a shared reference to the first dimension `x`.
     #[must_use]
-    pub const fn x_ref(&self) -> &T { &self.size[0] }
+    pub const fn x_ref(&self) -> &T { &self.dim[0] }
     /// Returns a shared reference to the second dimension `y`.
     #[must_use]
-    pub const fn y_ref(&self) -> &T { &self.size[1] }
+    pub const fn y_ref(&self) -> &T { &self.dim[1] }
     /// Returns a shared reference to the third dimension `z`.
     #[must_use]
-    pub const fn z_ref(&self) -> &T { &self.size[2] }
+    pub const fn z_ref(&self) -> &T { &self.dim[2] }
 
     /// Returns an exclusive reference to the first dimension `x`.
     #[must_use]
-    pub fn x_mut(&mut self) -> &mut T { &mut self.size[0] }
+    pub fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
     /// Returns an exclusive reference to the second dimension `y`.
     #[must_use]
-    pub fn y_mut(&mut self) -> &mut T { &mut self.size[1] }
+    pub fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
     /// Returns an exclusive reference to the third dimension `z`.
     #[must_use]
-    pub fn z_mut(&mut self) -> &mut T { &mut self.size[2] }
+    pub fn z_mut(&mut self) -> &mut T { &mut self.dim[2] }
 
     /// Returns `true` if the 3 dimensions of the extent are equal.
     #[must_use]
     pub fn is_uniform_3d(&self) -> bool where T: PartialEq {
-        self.size[0] == self.size[1] && self.size[0] == self.size[2]
+        self.dim[0] == self.dim[1] && self.dim[0] == self.dim[2]
     }
 }
 
@@ -127,7 +126,7 @@ macro_rules! impl_extent {
             pub const fn c_measure(self) -> $t {
                 let mut measure = 1;
                 cfor!(i in 0..D => {
-                    measure *= self.size[i];
+                    measure *= self.dim[i];
                 });
                 measure
             }
@@ -139,7 +138,7 @@ macro_rules! impl_extent {
                 cfor!(i in 0..D => {
                     let mut face_measure = 1;
                     cfor!(j in 0..D => {
-                        is![i != j; face_measure *= self.size[j]];
+                        is![i != j; face_measure *= self.dim[j]];
                     });
                     boundary += face_measure;
                 });
@@ -150,31 +149,31 @@ macro_rules! impl_extent {
         impl Extent<$t, 1> {
             /// The length of the 1d extent.
             #[must_use]
-            pub const fn c_length(self) -> $t { self.size[0] }
+            pub const fn c_length(self) -> $t { self.dim[0] }
         }
-        impl Extent2d<$t> {
+        impl Extent<$t, 2> {
             /// The area of the 2d extent.
             #[must_use]
-            pub const fn c_area(self) -> $t { self.size[0] * self.size[1] }
+            pub const fn c_area(self) -> $t { self.dim[0] * self.dim[1] }
 
             /// The perimeter of the 2d extent.
             #[must_use]
-            pub const fn c_perimeter(self) -> $t { 2 * (self.size[0] + self.size[1]) }
+            pub const fn c_perimeter(self) -> $t { 2 * (self.dim[0] + self.dim[1]) }
 
         }
-        impl Extent3d<$t> {
+        impl Extent<$t, 3> {
             /// The volume of the 3d extent.
             #[must_use]
             pub const fn c_volume(self) -> $t {
-                self.size[0] * self.size[1] * self.size[2]
+                self.dim[0] * self.dim[1] * self.dim[2]
             }
 
             /// The surface area of the 3d extent.
             #[must_use]
             pub const fn c_surface_area(self) -> $t {
-                2 * (self.size[0] * self.size[1]
-                    + self.size[1] * self.size[2]
-                    + self.size[2] * self.size[0])
+                2 * (self.dim[0] * self.dim[1]
+                    + self.dim[1] * self.dim[2]
+                    + self.dim[2] * self.dim[0])
             }
         }
     };
@@ -199,7 +198,7 @@ macro_rules! impl_extent {
             pub const fn measure(self) -> $f {
                 let mut measure = 1.0;
                 cfor!(i in 0..D => {
-                    measure *= self.size[i];
+                    measure *= self.dim[i];
                 });
                 measure
             }
@@ -212,7 +211,7 @@ macro_rules! impl_extent {
                 cfor!(i in 0..D => {
                     let mut face_measure = 1.0;
                     cfor!(j in 0..D => {
-                        is![i != j; face_measure *= self.size[j]];
+                        is![i != j; face_measure *= self.dim[j]];
                     });
                     boundary += face_measure;
                 });
@@ -223,31 +222,31 @@ macro_rules! impl_extent {
         impl Extent<$f, 1> {
             /// The length of the 1d extent.
             #[must_use]
-            pub const fn length(self) -> $f { self.size[0] }
+            pub const fn length(self) -> $f { self.dim[0] }
         }
-        impl Extent2d<$f> {
+        impl Extent<$f, 2> {
             /// The area of the 2d extent.
             #[must_use]
-            pub const fn area(self) -> $f { self.size[0] * self.size[1] }
+            pub const fn area(self) -> $f { self.dim[0] * self.dim[1] }
 
             /// The perimeter of the 2d extent.
             #[must_use]
-            pub const fn perimeter(self) -> $f { 2.0 * (self.size[0] + self.size[1]) }
+            pub const fn perimeter(self) -> $f { 2.0 * (self.dim[0] + self.dim[1]) }
 
         }
-        impl Extent3d<$f> {
+        impl Extent<$f, 3> {
             /// The volume of the 3d extent.
             #[must_use]
             pub const fn volume(self) -> $f {
-                self.size[0] * self.size[1] * self.size[2]
+                self.dim[0] * self.dim[1] * self.dim[2]
             }
 
             /// The surface area of the 3d extent.
             #[must_use]
             pub const fn surface_area(self) -> $f {
-                2.0 * (self.size[0] * self.size[1]
-                    + self.size[1] * self.size[2]
-                    + self.size[2] * self.size[0])
+                2.0 * (self.dim[0] * self.dim[1]
+                    + self.dim[1] * self.dim[2]
+                    + self.dim[2] * self.dim[0])
             }
         }
     };

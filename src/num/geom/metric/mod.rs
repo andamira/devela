@@ -7,24 +7,35 @@
 //! and measurement in geometric spaces.
 //
 
-mod angle; // Angle, AngleDirection, AngleKind
 mod distance; // Distance
-mod extent; // Extent, Extent2d, Extent3d
-mod orientation; // Orientation
+mod extent; // Extent
 mod position; // Position
-mod region; // Region
-mod stride; // Stride
+
+#[cfg(feature = "metric")]
+crate::items! {
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
+    mod angle; // Angle, AngleDirection, AngleKind
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
+    mod orientation; // Orientation
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
+    mod region; // Region
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
+    mod stride; // Stride
+}
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{
-            angle::*, distance::*, extent::*, orientation::*, position::*, region::*, stride::*,
-        };
+        pub use super::{distance::*, extent::*, position::*};
+
+        #[cfg(feature = "metric")]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
+        pub use super::{angle::*, orientation::*, region::*, stride::*};
         // WIPZONE
         // pub use super::cycle::*;
+        // pub use super::radial_sectors::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -33,3 +44,4 @@ crate::items! { // structural access: _mods, _all
 }
 // WIPZONE
 // mod cycle;
+// mod radial_sectors;

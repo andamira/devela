@@ -5,7 +5,6 @@
 
 #[cfg(feature = "unsafe_ffi")]
 use crate::js_doc;
-#[cfg(feature = "metric")]
 use crate::{Distance, Extent};
 #[allow(unused_imports, reason = "not(windows)")]
 use crate::{Js, JsTimeout, js_bool, js_int32, js_number, js_reexport, js_uint32};
@@ -69,30 +68,24 @@ impl WebWindow {
     #[doc = js_doc!("Window", "innerWidth")]
     #[doc = js_doc!("Window", "innerHeight")]
     /// The extent in pixels of the content of the browser window including any rendered scrollbars.
-    #[cfg(feature = "metric")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
     pub fn inner_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { size: [0; 2] };
-        unsafe { window_inner_size(extent.size.as_mut_ptr()) };
+        let mut extent = Extent { dim: [0; 2] };
+        unsafe { window_inner_size(extent.dim.as_mut_ptr()) };
         extent
     }
 
     #[doc = js_doc!("Window", "outerWidth")]
     #[doc = js_doc!("Window", "outerHeight")]
     /// The extent in pixels of the outside of the browser window.
-    #[cfg(feature = "metric")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
     pub fn outer_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { size: [0; 2] };
-        unsafe { window_outer_size(extent.size.as_mut_ptr()) };
+        let mut extent = Extent { dim: [0; 2] };
+        unsafe { window_outer_size(extent.dim.as_mut_ptr()) };
         extent
     }
 
     #[doc = js_doc!("Window", "screenX")]
     #[doc = js_doc!("Window", "screenY")]
     /// Returns the window's offset in pixels from the screen's top-left origin.
-    #[cfg(feature = "metric")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
     pub fn screen_offset() -> Distance<js_int32, 2> {
         let mut distance = Distance { dim: [0; 2] };
         unsafe { window_screen_offset(distance.dim.as_mut_ptr()) };
@@ -102,30 +95,24 @@ impl WebWindow {
     #[doc = js_doc!("Screen", "width")]
     #[doc = js_doc!("Screen", "height")]
     /// The extent of the screen in pixels.
-    #[cfg(feature = "metric")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
     pub fn screen_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { size: [0; 2] };
-        unsafe { window_screen_size(extent.size.as_mut_ptr()) };
+        let mut extent = Extent { dim: [0; 2] };
+        unsafe { window_screen_size(extent.dim.as_mut_ptr()) };
         extent
     }
 
     #[doc = js_doc!("Screen", "availWidth")]
     #[doc = js_doc!("Screen", "availHeight")]
     /// The extent of the screen in pixels, minus (semi)permanent user interface features displayed.
-    #[cfg(feature = "metric")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
     pub fn screen_usable_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { size: [0; 2] };
-        unsafe { window_screen_usable_size(extent.size.as_mut_ptr()) };
+        let mut extent = Extent { dim: [0; 2] };
+        unsafe { window_screen_usable_size(extent.dim.as_mut_ptr()) };
         extent
     }
 
     #[doc = js_doc!("Window", "scrollX")]
     #[doc = js_doc!("Window", "scrollY")]
     /// The distance in pixels the document has already been scrolled horizontally and vertically.
-    #[cfg(feature = "metric")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
     pub fn scroll_offset() -> Distance<js_int32, 2> {
         let mut distance = Distance { dim: [0; 2] };
         unsafe { window_scroll_offset(distance.dim.as_mut_ptr()) };
@@ -189,17 +176,11 @@ js_reexport! {
     // metrics
     safe fn window_device_pixel_ratio() -> js_number;
     safe fn window_screen_color_depth() -> js_uint32;
-    #[cfg(feature = "metric")]
     unsafe fn window_inner_size(data: *mut js_uint32);
-    #[cfg(feature = "metric")]
     unsafe fn window_outer_size(data: *mut js_uint32);
-    #[cfg(feature = "metric")]
     unsafe fn window_screen_offset(data: *mut js_int32);
-    #[cfg(feature = "metric")]
     unsafe fn window_screen_size(data: *mut js_uint32);
-    #[cfg(feature = "metric")]
     unsafe fn window_screen_usable_size(data: *mut js_uint32);
-    #[cfg(feature = "metric")]
     unsafe fn window_scroll_offset(data: *mut js_int32);
     // timeout
     unsafe fn window_set_timeout(callback_ptr: usize, delay_ms: js_uint32) -> js_uint32;

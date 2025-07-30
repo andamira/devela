@@ -17,6 +17,7 @@
 /// - **Memory layouts** (pixel buffers, structured arrays)
 /// - **Geometric traversal** (lattices, grids, fractal stepping)
 #[must_use]
+#[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Stride<T, const D: usize> {
     /// Step sizes per dimension.

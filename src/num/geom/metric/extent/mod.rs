@@ -15,14 +15,6 @@ mod methods;
 #[must_use]
 #[repr(transparent)]
 pub struct Extent<T, const D: usize> {
-    /// The D-dimensional size.
-    pub size: [T; D],
+    /// The size values in `D`-dimensional space.
+    pub dim: [T; D],
 }
-
-#[doc = crate::TAG_GEOM!()]
-/// A 2-dimensional [`Extent`].
-pub type Extent2d<T> = Extent<T, 2>;
-
-#[doc = crate::TAG_GEOM!()]
-/// A 3-dimensional [`Extent`].
-pub type Extent3d<T> = Extent<T, 3>;

@@ -17,13 +17,6 @@ pub struct Region<T, const D: usize> {
 }
 
 #[doc = crate::TAG_GEOM!()]
-/// A 2-dimensional [`Region`].
-pub type Region2d<T> = Region<T, 2>;
-#[doc = crate::TAG_GEOM!()]
-/// A 3-dimensional [`Region`].
-pub type Region3d<T> = Region<T, 3>;
-
-#[doc = crate::TAG_GEOM!()]
 /// A [`Stride`]d [`Region`] defining structured traversal.
 ///
 /// `RegionStrided` extends `Region` by adding a stride, allowing
