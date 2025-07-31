@@ -206,45 +206,35 @@ export async function initWasm(wasmPath, imports = {}) {
 			},
 		},
 		api_window: { // Window API
-			window_is_closed: () => { return window.closed; },
-			window_is_cross_origin_isolated: () => { return window.crossOriginIsolated; },
-			window_is_secure_context: () => { return window.isSecureContext; },
+			window_is_closed: () => window.closed,
+			window_is_coi: () => window.crossOriginIsolated,
+			window_is_secure: () => window.isSecureContext,
 			window_is_popup: () => !window.menubar.visible,
 			// text
 			window_name: (ptr, maxLen) => str_encode(window.name, ptr, maxLen),
 			window_set_name: (ptr, len) => { window.name = str_decode(ptr, len) },
-			// metrics
-			window_device_pixel_ratio: () => { return window.devicePixelRatio; },
-			window_screen_color_depth: () => { return window.screen.colorDepth; },
-			window_inner_size: (dataPtr) => {
-				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
-				size[0] = window.innerWidth >>> 0;
-				size[1] = window.innerHeight >>> 0;
-			},
-			window_outer_size: (dataPtr) => {
-				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
-				size[0] = window.outerWidth >>> 0;
-				size[1] = window.outerHeight >>> 0;
-			},
-			window_screen_offset: (dataPtr) => {
-				const offset = new Int32Array(wasm.exports.memory.buffer, dataPtr, 2);
-				offset[0] = window.screenLeft | 0;
-				offset[1] = window.screenTop | 0;
-			},
-			window_screen_size: (dataPtr) => {
-				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
-				size[0] = window.screen.width >>> 0;
-				size[1] = window.screen.height >>> 0;
-			},
-			window_screen_usable_size: (dataPtr) => {
-				const size = new Uint32Array(wasm.exports.memory.buffer, dataPtr, 2);
-				size[0] = window.screen.availWidth >>> 0;
-				size[1] = window.screen.availHeight >>> 0;
-			},
-			window_scroll_offset: (dataPtr) => {
-				const offset = new Int32Array(wasm.exports.memory.buffer, dataPtr, 2);
-				offset[0] = window.scrollX | 0;
-				offset[1] = window.scrollY | 0;
+			window_location: (ptr, maxLen) => str_encode(window.location, ptr, maxLen),
+			window_set_location: (ptr, len) => { window.location = str_decode(ptr, len) },
+			// state
+			window_state(dataPtr) {
+				const view = new DataView(wasm.exports.memory.buffer);
+				let off = dataPtr; // in sync witn WebWindowState::__ASSERT_FIELD_OFFSETS
+				// window (16 bytes)
+				view.setUint32(off, window.innerWidth, true); off += 4;  // inner_size.w
+				view.setUint32(off, window.innerHeight, true); off += 4; // inner_size.h
+				view.setUint32(off, window.outerWidth, true); off += 4;  // outer_size.w
+				view.setUint32(off, window.outerHeight, true); off += 4; // outer_size.h
+				// screen (28 bytes)
+				view.setInt32(off, window.screenLeft, true); off += 4;          // screen_offset.x
+				view.setInt32(off, window.screenTop, true); off += 4;           // screen_offset.y
+				view.setUint32(off, window.screen.width, true); off += 4;       // screen_size.w
+				view.setUint32(off, window.screen.height, true); off += 4;      // screen_size.w
+				view.setUint32(off, window.screen.availWidth, true); off += 4;  // *_usable_size.w
+				view.setUint32(off, window.screen.availHeight, true); off += 4; // *_usable_size.w
+				// Misc. (8 bytes)
+				view.setFloat32(off, Math.fround(window.devicePixelRatio), true); off += 4; // dpr
+				view.setUint8(off, window.screen.colorDepth); off += 1; // bpp
+				// _pad remaining 3 bytes to ensure alignment
 			},
 
 			// timeout

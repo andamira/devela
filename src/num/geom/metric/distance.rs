@@ -4,7 +4,9 @@
 //
 
 #[cfg(doc)]
-use crate::{Orientation, Position};
+use crate::Position;
+#[cfg(all(doc, feature = "metric"))]
+use crate::Orientation;
 
 #[doc = crate::TAG_GEOM!()]
 /// A separation between two locations in `D`-dimensional space.

@@ -4,7 +4,9 @@
 //
 
 #[cfg(doc)]
-use crate::{Distance, Extent, Orientation, Position, Stride};
+use crate::{Distance, Extent, Position};
+#[cfg(all(doc, feature = "metric"))]
+use crate::{Orientation, Stride};
 
 /// Helps implementing common methods on metric types of the shape of `Name<T, D> { dim: [T; D] }`.
 ///

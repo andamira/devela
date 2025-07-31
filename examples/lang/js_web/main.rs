@@ -14,17 +14,18 @@ use devela::{
 };
 
 /// Static string buffer for printing to the console without allocation.
-static mut BUF: [u8; 256] = [0; 256];
+static mut BUF: [u8; 1024] = [0; 1024];
+/// Secondary buffer for when `BUF` is already busy.
+static mut BUF2: [u8; 1024] = [0; 1024];
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
+    let (buf, buf2): (&mut [u8], &mut [u8]) = unsafe { (&mut BUF, &mut BUF2) };
     let start_time = Web::performance_now();
 
     /* log */
 
     console::info("# log");
-
-    let buf: &mut [u8] = unsafe { &mut BUF };
 
     console::log(fmt![?buf, "example log at: {start_time}ms"]);
     console::debug("example debug");
@@ -48,23 +49,15 @@ pub extern "C" fn main() {
     console::info("# window");
 
     window::set_name("sopanum1");
-    // console::log(fmt![? &mut buf, "  name: {:?}", window::name()]);
+    console::log(fmt![?buf, "  name: {:?}", window::name_buf(buf2)]);
+
+    let window_state = window::state();
+    console::debug(fmt![?buf, "  {window_state:#?}"]);
+
     console::log(fmt![?buf, "  is_closed: {:?}", window::is_closed()]);
-    console::log(fmt![
-        ?buf,
-        "  is_cross_origin_isolated: {:?}",
-        window::is_cross_origin_isolated()
-    ]);
-    console::log(fmt![?buf, "  is_secure_context: {:?}", window::is_secure_context()]);
+    console::log(fmt![?buf, "  is_coi: {:?}", window::is_coi()]);
+    console::log(fmt![?buf, "  is_secure: {:?}", window::is_secure()]);
     console::log(fmt![?buf, "  is_popup: {:?}", window::is_popup()]);
-    console::log(fmt![?buf, "  device_pixel_ratio: {:?}", window::device_pixel_ratio()]);
-    console::log(fmt![?buf, "  screen_color_depth: {:?}", window::screen_color_depth()]);
-    console::log(fmt![?buf, "  inner_size: {:?}", window::inner_size()]);
-    console::log(fmt![?buf, "  outer_size: {:?}", window::outer_size()]);
-    console::log(fmt![?buf, "  screen_offset: {:?}", window::screen_offset()]);
-    console::log(fmt![?buf, "  screen_size: {:?}", window::screen_size()]);
-    console::log(fmt![?buf, "  screen_usable_size: {:?}", window::screen_usable_size()]);
-    console::log(fmt![?buf, "  scroll_offset: {:?}", window::scroll_offset()]);
 
     // eval
     window::eval("console.log('Hello from Rust!');");
@@ -90,8 +83,8 @@ pub extern "C" fn main() {
     Web::fill_style(0, 0, 0);
     Web::fill_text(text_click, 60.0, 30.0);
 
-    let metrics = Web::measure_text_full(text_click);
-    console::log(fmt![?buf, "{metrics:?}"]);
+    let text_metrics = Web::measure_text_full(text_click);
+    console::log(fmt![?buf, "{text_metrics:?}"]);
 
     /* events */
 

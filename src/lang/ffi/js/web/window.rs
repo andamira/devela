@@ -1,8 +1,10 @@
 // devela::lang::ffi::js::web::window
 //
-//! Defines [`WebWindow`].
+//! Defines [`WebWindow`], [`WebWindowState`].
 //
 
+#[cfg(feature = "_float_f32")]
+use crate::Float;
 #[cfg(feature = "unsafe_ffi")]
 use crate::js_doc;
 use crate::{Distance, Extent};
@@ -10,6 +12,7 @@ use crate::{Distance, Extent};
 use crate::{Js, JsTimeout, js_bool, js_int32, js_number, js_reexport, js_uint32};
 #[cfg(feature = "alloc")]
 use devela::String;
+use devela::offset_of;
 
 /// Handle to the global `window` object (singleton).
 #[repr(C)]
@@ -21,19 +24,22 @@ pub struct WebWindow;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWindow {
+    /// Returns a new up-to-date `WebWindowState`.
+    pub fn state() -> WebWindowState { WebWindowState::new() }
+
     #[doc = js_doc!("Window", "closed")]
     /// Whether the current window is closed or not.
     pub fn is_closed() -> js_bool { window_is_closed() }
 
     #[doc = js_doc!("Window", "crossOriginIsolated")]
     /// Whether the website is in a cross-origin isolation state.
-    pub fn is_cross_origin_isolated() -> js_bool { window_is_cross_origin_isolated() }
+    pub fn is_coi() -> js_bool { window_is_coi() }
 
     #[doc = js_doc!("Window", "isSecureContext")]
     /// Whether the current [context is secure][0].
     ///
     /// [0]: https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts
-    pub fn is_secure_context() -> js_bool { window_is_secure_context() }
+    pub fn is_secure() -> js_bool { window_is_secure() }
 
     #[doc = js_doc!("Window", "locationbar")]
     /// Whether the window is a popup or not.
@@ -54,70 +60,6 @@ impl WebWindow {
     #[doc = js_doc!("Window", "name")]
     /// Sets the current window `name`.
     pub fn set_name(name: &str) { unsafe { window_set_name(name.as_ptr(), name.len() as u32); } }
-
-    /* metrics */
-
-    #[doc = js_doc!("Screen", "colorDepth")]
-    /// Returns the color depth of the screen in bits.
-    pub fn screen_color_depth() -> js_uint32 { window_screen_color_depth() }
-
-    #[doc = js_doc!("Window", "devicePixelRatio")]
-    /// Returns the ratio of the resolution in physical pixels to the resolution in CSS pixels.
-    pub fn device_pixel_ratio() -> js_number { window_device_pixel_ratio() }
-
-    #[doc = js_doc!("Window", "innerWidth")]
-    #[doc = js_doc!("Window", "innerHeight")]
-    /// The extent in pixels of the content of the browser window including any rendered scrollbars.
-    pub fn inner_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { dim: [0; 2] };
-        unsafe { window_inner_size(extent.dim.as_mut_ptr()) };
-        extent
-    }
-
-    #[doc = js_doc!("Window", "outerWidth")]
-    #[doc = js_doc!("Window", "outerHeight")]
-    /// The extent in pixels of the outside of the browser window.
-    pub fn outer_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { dim: [0; 2] };
-        unsafe { window_outer_size(extent.dim.as_mut_ptr()) };
-        extent
-    }
-
-    #[doc = js_doc!("Window", "screenX")]
-    #[doc = js_doc!("Window", "screenY")]
-    /// Returns the window's offset in pixels from the screen's top-left origin.
-    pub fn screen_offset() -> Distance<js_int32, 2> {
-        let mut distance = Distance { dim: [0; 2] };
-        unsafe { window_screen_offset(distance.dim.as_mut_ptr()) };
-        distance
-    }
-
-    #[doc = js_doc!("Screen", "width")]
-    #[doc = js_doc!("Screen", "height")]
-    /// The extent of the screen in pixels.
-    pub fn screen_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { dim: [0; 2] };
-        unsafe { window_screen_size(extent.dim.as_mut_ptr()) };
-        extent
-    }
-
-    #[doc = js_doc!("Screen", "availWidth")]
-    #[doc = js_doc!("Screen", "availHeight")]
-    /// The extent of the screen in pixels, minus (semi)permanent user interface features displayed.
-    pub fn screen_usable_size() -> Extent<js_uint32, 2> {
-        let mut extent = Extent { dim: [0; 2] };
-        unsafe { window_screen_usable_size(extent.dim.as_mut_ptr()) };
-        extent
-    }
-
-    #[doc = js_doc!("Window", "scrollX")]
-    #[doc = js_doc!("Window", "scrollY")]
-    /// The distance in pixels the document has already been scrolled horizontally and vertically.
-    pub fn scroll_offset() -> Distance<js_int32, 2> {
-        let mut distance = Distance { dim: [0; 2] };
-        unsafe { window_scroll_offset(distance.dim.as_mut_ptr()) };
-        distance
-    }
 
     /* timeout */
 
@@ -165,23 +107,14 @@ impl WebWindow {
 }
 js_reexport! {
     [module: "api_window"]
-    // misc
+    unsafe fn window_state(data: *mut u8);
     safe fn window_is_closed() -> js_bool;
-    safe fn window_is_cross_origin_isolated() -> js_bool;
-    safe fn window_is_secure_context() -> js_bool;
+    safe fn window_is_coi() -> js_bool;
+    safe fn window_is_secure() -> js_bool;
     safe fn window_is_popup() -> js_bool;
     // texts
     unsafe fn window_name(buf_ptr: *mut u8, max_len: js_uint32) -> js_int32;
     unsafe fn window_set_name(str_ptr: *const u8, str_len: js_uint32);
-    // metrics
-    safe fn window_device_pixel_ratio() -> js_number;
-    safe fn window_screen_color_depth() -> js_uint32;
-    unsafe fn window_inner_size(data: *mut js_uint32);
-    unsafe fn window_outer_size(data: *mut js_uint32);
-    unsafe fn window_screen_offset(data: *mut js_int32);
-    unsafe fn window_screen_size(data: *mut js_uint32);
-    unsafe fn window_screen_usable_size(data: *mut js_uint32);
-    unsafe fn window_scroll_offset(data: *mut js_int32);
     // timeout
     unsafe fn window_set_timeout(callback_ptr: usize, delay_ms: js_uint32) -> js_uint32;
     unsafe fn window_set_interval(callback_ptr: usize, interval_ms: js_uint32) -> js_uint32;
@@ -195,4 +128,190 @@ js_reexport! {
     // animation
     unsafe fn window_request_animation_frame(callback_ptr: usize) -> js_uint32;
     safe fn window_cancel_animation_frame(requestId: js_uint32);
+}
+
+/// Aggregates the live state of a [`WebWindow`], including its geometry and screen context.
+///
+/// It has a size of 52 Bytes.
+///
+/// ### Performance
+/// All fields are fetched in a single JS→Rust call.
+#[repr(C)]
+#[derive(Clone, Debug, Default, PartialEq, PartialOrd)]
+pub struct WebWindowState {
+    /* window */
+    #[doc = js_doc!("Window", "innerWidth")]
+    #[doc = js_doc!("Window", "innerHeight")]
+    /// The extent in pixels of the content of the browser window including any rendered scrollbars.
+    pub inner_size: Extent<u32, 2>,
+
+    #[doc = js_doc!("Window", "outerWidth")]
+    #[doc = js_doc!("Window", "outerHeight")]
+    /// The extent in pixels of the outside of the browser window.
+    pub outer_size: Extent<u32, 2>,
+
+    /* screen */
+    #[doc = js_doc!("Window", "screenLeft")]
+    #[doc = js_doc!("Window", "screenTop")]
+    /// The window's offset in pixels from the screen's top-left origin.
+    pub screen_offset: Distance<i32, 2>,
+
+    #[doc = js_doc!("Screen", "width")]
+    #[doc = js_doc!("Screen", "height")]
+    /// The extent of the screen in pixels.
+    pub screen_size: Extent<u32, 2>,
+
+    #[doc = js_doc!("Screen", "availWidth")]
+    #[doc = js_doc!("Screen", "availHeight")]
+    /// The extent of the screen in pixels, minus user interface features displayed.
+    pub screen_usable_size: Extent<u32, 2>,
+
+    /* misc. */
+    #[doc = js_doc!("Window", "devicePixelRatio")]
+    /// The device pixel ratio of the resolution in physical pixels to the resolution in CSS pixels.
+    ///
+    /// The value changes with the zoom on desktops yet remains static on mobile devices.
+    pub dpr: f32,
+
+    #[doc = js_doc!("Screen", "colorDepth")]
+    /// The screen color depth, in bits per single pixel. It can be 8, 16, 24 or 32.
+    pub bpp: u8,
+
+    /// Explicit padding to align
+    _pad: [u8; 3],
+    // TODO: Bitpacked flags (is_popup, is_secure, etc.)
+}
+impl WebWindowState {
+    const __ASSERT_FIELD_OFFSETS: () = const {
+        assert!(offset_of!(Self, inner_size) == 0);
+        assert!(offset_of!(Self, outer_size) == 8);
+        assert!(offset_of!(Self, screen_offset) == 16);
+        assert!(offset_of!(Self, screen_size) == 24);
+        assert!(offset_of!(Self, screen_usable_size) == 32);
+        assert!(offset_of!(Self, dpr) == 40);
+        assert!(offset_of!(Self, bpp) == 44);
+    };
+
+    /// Returns a new up-to-date `WebWindowState`.
+    ///
+    /// # Safety
+    /// - JavaScript must write all non-padding fields at correct offsets.
+    #[cfg(feature = "unsafe_ffi")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+    pub fn new() -> WebWindowState {
+        let mut state = WebWindowState::default();
+        unsafe {
+            window_state(&mut state as *mut WebWindowState as *mut u8);
+        }
+        state
+    }
+
+    /// Overwrites this `WebWindowState` with the latest live metrics.
+    #[cfg(feature = "unsafe_ffi")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+    pub fn update(&mut self) {
+        unsafe { window_state(self as *mut Self as *mut u8) };
+    }
+
+    /// Validates the internal consistency of window metrics.
+    ///
+    /// Returns `true` if all these conditions hold:
+    /// - No dimensions are zero (invalid window state)
+    /// - Inner size ≤ outer size (logical constraint)
+    /// - Outer size ≤ screen size (unless multi-monitor)
+    /// - Device pixel ratio is sane (0.5 ≤ dpr ≤ 10.0)
+    /// - Screen color depth is plausible (8 ≤ depth ≤ 64)
+    // - Popup flags don't contradict window dimensions
+    pub const fn validate(&self) -> bool {
+        // 1. Non-zero dimensions
+        let non_zero = self.inner_size.dim[0] > 0
+            && self.inner_size.dim[1] > 0
+            && self.outer_size.dim[0] > 0
+            && self.outer_size.dim[1] > 0;
+
+        // 2. Inner <= Outer
+        let inner_le_outer = self.inner_size.dim[0] <= self.outer_size.dim[0]
+            && self.inner_size.dim[1] <= self.outer_size.dim[1];
+
+        // 3. Outer <= Screen (with 10px tolerance for window chrome)
+        let outer_le_screen = (self.outer_size.dim[0] <= self.screen_size.dim[0] + 10)
+            && (self.outer_size.dim[1] <= self.screen_size.dim[1] + 10);
+
+        // 4. Sane DPR range
+        let sane_dpr = self.dpr >= 0.3 && self.dpr <= 10.0;
+
+        // 5. Plausible color depth
+        let sane_bpp = self.bpp >= 8 && self.bpp <= 64;
+
+        // // 6. Popup consistency
+        // let valid_popup = !self.is_popup() || (
+        //     // Popups shouldn't fill the screen
+        //     self.outer_size.dim[0] < self.screen_usable_size.dim[0] - 10 &&
+        //     self.outer_size.dim[1] < self.screen_usable_size.dim[1] - 10
+        // );
+
+        non_zero && inner_le_outer && outer_le_screen && sane_dpr && sane_bpp // && valid_popup
+    }
+
+    /* derived metrics */
+
+    /// Returns the thickness of the window chrome (frame, scrollbars, etc.) in logical pixels.
+    ///
+    /// This is the difference between the outer and inner window sizes.
+    pub const fn chrome_size(&self) -> Extent<u32, 2> {
+        Extent::new([
+            self.outer_size.x() - self.inner_size.x(),
+            self.outer_size.y() - self.inner_size.y(),
+        ])
+    }
+    /// Checks if the window is approximately maximized (fills the available screen space).
+    ///
+    /// Tolerance: The window must be within 1 pixel of the screen's usable size.
+    pub const fn is_maximized(&self) -> bool {
+        self.outer_size.x() >= self.screen_usable_size.x()
+            && self.outer_size.y() >= self.screen_usable_size.y()
+    }
+    /// Checks if the window is in a portrait orientation (height > width).
+    pub const fn is_portrait(&self) -> bool {
+        self.inner_size.y() > self.inner_size.x()
+    }
+
+    /// Returns the physical size of the window in hardware pixels, truncating fractional values.
+    ///
+    /// Computed as `(inner_size * device_pixel_ratio)`.
+    ///
+    /// For rounded values, use [`physical_size_rounded()`][Self::physical_size_rounded]`.
+    pub const fn physical_size(&self) -> Extent<u32, 2> {
+        Extent::new([
+            (self.inner_size.x() as f32 * self.dpr) as u32,
+            (self.inner_size.y() as f32 * self.dpr) as u32,
+        ])
+    }
+    /// Returns the physical size of the window in hardware pixels, rounded to the nearest integer.
+    ///
+    /// Computed as `(inner_size * device_pixel_ratio).round()`.
+    ///
+    /// It's more accurate and expensive than [`physical_size()`][Self::physical_size].
+    #[cfg(feature = "_float_f32")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
+    pub const fn physical_size_rounded(&self) -> Extent<u32, 2> {
+        Extent::new([
+            Float(self.inner_size.x() as f32 * self.dpr).const_round().0 as u32,
+            Float(self.inner_size.y() as f32 * self.dpr).const_round().0 as u32,
+        ])
+    }
+
+    /// Returns the window's distance to each screen edge in logical pixels.
+    ///
+    /// Order: `[left, top, right, bottom]`. Negative values mean the window is outside the screen.
+    pub const fn screen_margins(&self) -> [i32; 4] {
+        [
+            self.screen_offset.dim[0],
+            self.screen_offset.dim[1],
+            (self.screen_size.x() as i32)
+                - (self.screen_offset.dim[0] + self.outer_size.x() as i32),
+            (self.screen_size.y() as i32)
+                - (self.screen_offset.dim[1] + self.outer_size.y() as i32),
+        ]
+    }
 }

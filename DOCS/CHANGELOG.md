@@ -50,8 +50,15 @@
 - relocate and rename `code::result::Enum` → `data::list::of::Oneof`.
 - rename `Oneof` methods to ordinals: `A` → `_0`, `B` → `_1`, ….
 
+## game
+- add:
+  - module: `game`.
+  - features: `game`, `game_safe`.
+  - reflection flags: `game··`.
+
 ## lang
-- new types: `Js`, `JsConsole`, `WebWindow`.
+### ffi
+- new types: `Js`, `JsConsole`, `WebWindow`, `WebWindowState`.
 - move and rename the `js_str*` fns as public `Js` `read_str*` methods.
 - new `Web` methods:
   - `console_count[_reset]`.
@@ -60,12 +67,6 @@
   - `JsEvent*` to `WebEvent*`.
   - `JsPermission*` to `WebPermission*`.
   - `JsWorker*` to `WebWorker*`.
-
-## game
-- add:
-  - module: `game`.
-  - features: `game`, `game_safe`.
-  - reflection flags: `game··`.
 
 ## media
 - delete: `[Audio|Color|Draw|Font|Media|Midi][Result|Error]`.
