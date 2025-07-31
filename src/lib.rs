@@ -100,6 +100,7 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
+        strict_overflow_ops,
         substr_range,
         unsafe_cell_from_mut,
     )

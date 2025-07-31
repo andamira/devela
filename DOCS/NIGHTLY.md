@@ -35,6 +35,7 @@ See also
 - 1.89: `·`[keylocker_x86](https://github.com/rust-lang/rust/pull/140766)
 - 1.89: `·`[non_null_from_ref](https://github.com/rust-lang/rust/pull/140511)
 - 1.89: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
+- 1.89: ` `[remove wasm legacy abi](https://github.com/rust-lang/rust/pull/133952)
 - 1.89: `·`[repr128](https://github.com/rust-lang/rust/pull/138285)
 - 1.89: ` `[resolve_const_param_in_non_trivial_anon_const](https://github.com/rust-lang/rust/pull/142157)
 - 1.89: `·`[result_flattening](https://github.com/rust-lang/rust/pull/141072)
@@ -82,6 +83,7 @@ See also
 - 1.??: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/129114)
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
+- 1.??: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
@@ -112,6 +114,7 @@ See also
         = `nightly_doc` flag
 - 1.?? `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
         = `nightly_float` flag
+- 1.?? ` `[float_algebraic](https://github.com/rust-lang/rust/issues/136469)
 - 1.?? ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
@@ -148,6 +151,7 @@ See also
 
 # Rust project Goals:
 - <https://rust-lang.github.io/rust-project-goals/>
+  - <https://rust-lang.github.io/rust-project-goals/2025h2/>
 - [const traits](https://github.com/rust-lang/rust-project-goals/issues/106)
 - [expanded const generics](https://github.com/rust-lang/rust-project-goals/issues/100)
 - [Linux building on stable](https://github.com/rust-lang/rust-project-goals/issues/116)
