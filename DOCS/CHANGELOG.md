@@ -140,6 +140,9 @@
 - new types: `BumpAlloc`, `WasmAlloc`.
 - vendor `mini-alloc` as `WasmAlloc`.
 
+#### borrow
+- new type: `MaybeOwned`.
+
 ### os
 #### linux
 - add methods:

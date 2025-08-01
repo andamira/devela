@@ -15,6 +15,7 @@
 
 mod aligned; // MemAligned
 mod alloc; // Alloc, ::alloc::alloc::*
+mod borrow; // Mow
 mod cache_align; // CacheAlign
 mod cswap; // cswap!
 mod ext; // ExtMem
@@ -45,7 +46,7 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
 
     mod _mods { #![allow(unused)]
         pub use super::{
-            aligned::*, alloc::_all::*, cache_align::*, cswap::*, ext::*, namespace::*,
+            aligned::*, alloc::_all::*, borrow::*, cache_align::*, cswap::*, ext::*, namespace::*,
             pin::_all::*, ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,
         };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
@@ -53,8 +54,6 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         #[cfg(feature = "std")]
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::guard::{Current, CurrentGuard};
-        // WIPZONE
-        // pub use super::borrow::*;
     }
     mod _pub_mods {
         pub use super::cell::_all::*;
@@ -70,5 +69,3 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         pub use super::{cell::_always::*, pin::_always::*, ptr::_always::*, reexports::*};
     }
 }
-// WIPZONE
-// mod borrow;

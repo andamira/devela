@@ -13,25 +13,6 @@ crate::impl_cdef![<T: ConstDefault> Self::new() => RcWeak<T>];
 #[doc(inline)]
 pub use crate::Sized;
 
-/* borrow */
-
-reexport! { rust: core::borrow,
-    doc: "A trait for borrowing data.",
-    Borrow
-}
-reexport! { rust: core::borrow,
-    doc: "A trait for mutably borrowing data.",
-    BorrowMut
-}
-reexport! { rust: alloc::borrow,
-    doc: "A clone-on-write smart pointer.",
-    Cow
-}
-reexport! { rust: alloc::borrow,
-    doc: "A generalization of Clone to borrowed data.",
-    ToOwned
-}
-
 /* box */
 
 reexport! { rust: alloc::boxed,
