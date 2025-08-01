@@ -142,6 +142,7 @@
 
 #### borrow
 - new type: `MaybeOwned`.
+- new trait: `Ownership`.
 
 ### os
 #### linux

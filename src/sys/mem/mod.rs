@@ -46,8 +46,9 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
 
     mod _mods { #![allow(unused)]
         pub use super::{
-            aligned::*, alloc::_all::*, borrow::*, cache_align::*, cswap::*, ext::*, namespace::*,
-            pin::_all::*, ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,
+            aligned::*, alloc::_all::*, borrow::_all::*, cache_align::*, cswap::*, ext::*,
+            namespace::*, pin::_all::*, ptr::_all::*, reexports::*, size::_all::*, slice::_all::*,
+            storage::*,
         };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::pod::MemPod;
