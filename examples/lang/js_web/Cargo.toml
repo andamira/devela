@@ -10,7 +10,10 @@ path = "main.rs"
 [dependencies.devela]
 # git = "https://github.com/andamira/devela"
 path = "../../.."
-features = ["js", "time", "unsafe_ffi"]
+features = [
+	"js", "time", "unsafe_ffi",
+	"alloc", "unsafe_layout", # TEMP
+]
 
 [profile.release]
 # https://rustwasm.github.io/docs/book/reference/code-size.html

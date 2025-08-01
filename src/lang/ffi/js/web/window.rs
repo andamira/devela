@@ -5,14 +5,12 @@
 //
 
 #[cfg(feature = "_float_f32")]
-use crate::Float;
-use crate::js_doc;
-use crate::{Distance, Extent};
-#[allow(unused_imports, reason = "not(windows)")]
-use crate::{Js, JsTimeout, js_bool, js_int32, js_number, js_reexport, js_uint32};
+use devela::Float;
 #[cfg(feature = "alloc")]
 use devela::String;
-use devela::offset_of;
+use devela::{Distance, Extent, js_doc, offset_of};
+#[allow(unused_imports, reason = "not(windows)")]
+use devela::{Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexport, js_uint32};
 
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
 ///
@@ -27,6 +25,10 @@ pub struct WebWindow;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWindow {
+    #[doc = js_doc!("Window", "document")]
+    /// Returns the `document` object.
+    pub fn document(&self) -> WebDocument { WebDocument }
+
     /// Returns a new up-to-date `WebWindowState`.
     pub fn state() -> WebWindowState { WebWindowState::new() }
 

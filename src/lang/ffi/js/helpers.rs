@@ -9,8 +9,15 @@
 /// Helper for Web API doc links.
 #[rustfmt::skip]
 macro_rules! _js_doc {
-    ($path:literal, $method:literal) => { concat!["([", $method,
-            "](https://developer.mozilla.org/en-US/docs/Web/API/", $path, "/", $method, "))"] };
+    ( // Link to an API Object
+        $API:literal) => { concat!["([", $API,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/", $API, "))"] };
+    ( // Link to a method of an API Object
+        $API:literal, $method:literal) => { concat![ "([", $method,
+        "](https://developer.mozilla.org/en-US/docs/Web/API/", $API, "/", $method, "))"] };
+
+    /* special cases */
+
     (canvas $method:literal) => { concat!["([", $method,
         "](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/",
         $method, "))"] };

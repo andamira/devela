@@ -8,9 +8,10 @@ use devela::js_reexport;
 #[cfg(feature = "unsafe_ffi")]
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
-    Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebEventKind,
-    WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWindow, WebWorker,
-    WebWorkerError, WebWorkerJob, js_bool, js_doc, js_int32, js_number, js_uint32, transmute,
+    Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebDocument,
+    WebEventKind, WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWindow,
+    WebWorker, WebWorkerError, WebWorkerJob, js_bool, js_doc, js_int32, js_number, js_uint32,
+    transmute,
 };
 #[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
 use devela::{String, Vec, vec_ as vec};
@@ -37,7 +38,27 @@ use devela::{String, Vec, vec_ as vec};
 ///    - [performance](#web-api-performance)
 ///  - advanced & experimental
 ///    - [workers](#web-api-workers)
+#[derive(Clone, Copy)]
 pub struct Web;
+
+#[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
+impl Web {
+    #[doc = js_doc!("Window")]
+    #[doc = js_doc!("Screen")]
+    /// Returns the handle to the browser's global [Window] and [Screen] associated APIs.
+    ///
+    /// [Window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
+    /// [Screen]: https://developer.mozilla.org/en-US/docs/Web/API/Window/screen
+    pub fn window() -> WebWindow { WebWindow }
+
+    #[doc = js_doc!("Document")]
+    /// Handle to the brower's global [Document] associated APIs.
+    ///
+    /// [Document]: https://developer.mozilla.org/en-US/docs/Web/API/Document
+    pub fn document() -> WebDocument { WebDocument }
+}
 
 /// # Web API Events
 ///
@@ -275,18 +296,6 @@ impl Web {
 js_reexport! {
     [ module: "api_permissions" ]
     unsafe fn permissions_query(name_ptr: *const u8, name_len: usize) -> js_int32;
-}
-
-/// # Web API window
-///
-/// - <https://developer.mozilla.org/en-US/docs/Web/API/Window>
-#[rustfmt::skip]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-impl Web {
-    #[doc = js_doc!("Window", "window")]
-    /// Returns the Web API window singleton.
-    pub fn window() -> WebWindow { WebWindow }
 }
 
 /* methods: extended APIs */

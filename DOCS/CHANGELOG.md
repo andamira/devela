@@ -58,7 +58,7 @@
 
 ## lang
 ### ffi
-- new types: `Js`, `JsConsole`, `WebWindow`, `WebWindowState`.
+- new types: `Js`, `JsConsole`, `WebDocument`, `WebWindow`, `WebWindowState`.
 - move and rename the `js_str*` fns as public `Js` `read_str*` methods.
 - new `Web` methods:
   - `console_count[_reset]`.

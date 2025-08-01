@@ -9,8 +9,8 @@
 devela::set_panic_handler![web];
 
 use devela::{
-    JsConsole as console, Wasm, Web, WebEventKind, WebEventMouse, WebEventPointer,
-    WebWindow as window, format_buf as fmt,
+    JsConsole as console, Wasm, Web, WebDocument as document, WebEventKind, WebEventMouse,
+    WebEventPointer, WebWindow as window, format_buf as fmt,
 };
 
 /// Static string buffer for printing to the console without allocation.
@@ -65,6 +65,14 @@ pub extern "C" fn main() {
     window::eval_interval("console.log('Repeating!');", 2000);
     let cleared = window::eval_timeout("console.error('This should not run!');", 1500);
     window::clear_timeout(cleared);
+
+    /* document */
+
+    console::info("# document");
+
+    console::log(fmt![?buf, "  is_compat_mode: {:?}", document::is_compat_mode()]);
+    console::log(fmt![?buf, "  is_hidden: {:?}", document::is_hidden()]);
+    console::log(fmt![?buf, "  content_type: {:?}", document::content_type_buf(buf2)]);
 
     /* canvas */
 

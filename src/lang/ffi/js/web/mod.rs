@@ -2,6 +2,7 @@
 //
 //! <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web APIs</a> interfacing.
 
+mod document; // WebDocument, WebElement
 mod event; // WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation
 mod permission; // WebPermission, WebPermissionState
 mod web_api; // Web
@@ -13,7 +14,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{event::*, permission::*, web_api::*, window::*, worker::*};
+        pub use super::{document::*, event::*, permission::*, web_api::*, window::*, worker::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -21,6 +22,4 @@ crate::items! { // structural access: _mods, _all
     }
 }
 // WIPZONE
-// mod document; // WebDocument, WebElement
 // mod url; // WebUrl, WebUrlSearchParams
-// mod window; // WebWindow

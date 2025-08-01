@@ -7,6 +7,7 @@
 // - bindings
 //   - core
 //     - console
+//     - document
 //     - events
 //     - history_location
 //     - permissions
@@ -101,6 +102,13 @@ export async function initWasm(wasmPath, imports = {}) {
 			console_time: (ptr, len) => console.time(str_decode(ptr, len)),
 			console_time_end: (ptr, len) => console.timeEnd(str_decode(ptr, len)),
 			console_time_log: (ptr, len) => console.timeLog(str_decode(ptr, len)),
+		},
+		api_document: { // Document API
+			// flags
+			document_is_compat_mode: () => document.compatMode === "CSS1Compat" ? true : false,
+			document_is_hidden: () => document.hidden,
+			//
+			document_content_type: (ptr, maxLen) => str_encode(document.contentType, ptr, maxLen),
 		},
 		api_events: { // Events API
 			_callbacks: new Map(),
