@@ -124,6 +124,7 @@
 ## sys
 
 ### mem
+- new type: `BumpAlloc`.
 - remove macros: `addr_of!`, `addr_of_mut!`.
 
 ### os
