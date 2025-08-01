@@ -5,6 +5,7 @@
 
 use crate::{GlobalAlloc, Mem, MemLayout, NonZero, NonZeroUsize, Ptr, Wasm};
 
+#[doc = crate::TAG_ALLOCATOR!()]
 /// A WebAssembly global memory allocator that uses a bump allocation strategy.
 ///
 /// This allocator manages memory starting from `__heap_base` (the WASM heap start)
@@ -15,6 +16,12 @@ use crate::{GlobalAlloc, Mem, MemLayout, NonZero, NonZeroUsize, Ptr, Wasm};
 /// - This allocator is not thread-safe. The unsafe `Sync` implementation is only
 ///   valid in single-threaded WASM environments.
 ///
+/// # Example
+/// ```ignore
+/// # use devela::WasmAlloc;
+/// #[global_allocator]
+/// static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
+/// ```
 #[doc = crate::doc_!(vendor: "mini-alloc")]
 pub struct WasmAlloc;
 impl WasmAlloc {

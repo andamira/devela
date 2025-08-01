@@ -39,6 +39,7 @@
 
 ## code
 - new trait `Introspect`.
+- new doc tag: `TAG_ALLOCATOR`.
 - rename `set_panic_handler!`'s macro `web_api` arm to `web`.
 
 ### result

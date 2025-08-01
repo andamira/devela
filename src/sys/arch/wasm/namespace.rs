@@ -76,6 +76,8 @@ impl Wasm {
     /// # Safety
     /// - On non-WASM targets, this always returns 0.
     /// - On WASM targets, the value comes from linker-defined symbol.
+    #[cfg(feature = "unsafe_layout")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
     pub fn heap_base() -> usize {
         #[cfg(target_family = "wasm")]
         return &raw const __heap_base as usize;
@@ -152,6 +154,7 @@ impl Wasm {
     }
 }
 
+#[cfg(feature = "unsafe_layout")]
 unsafe extern "C" {
     /// Reference to the start of the WASM heap (&__heap_base).
     ///

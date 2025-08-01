@@ -233,6 +233,7 @@ pub(crate) use std_core;
 mod tags {
     #![allow(unused)]
     crate::CONST! { pub(crate),
+        EMOJI_ALLOCATOR = "🧺"; // 🧮, (basket, abacus)
         EMOJI_ATOMIC = "⚛️"; // ⚛️,🔬,🌐
         EMOJI_DATA_STRUCTURE = "📦"; // 📦,🧩,🗂️,
         EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
@@ -259,6 +260,8 @@ mod tags {
         SPAN_OPEN = "<span class='stab portability' title=";
         // SPAN_OPEN = "<span class='tag-emoji' title=";
         //
+        TAG_ALLOCATOR = concat!(crate::SPAN_OPEN!(), "'Allocator-related item'>",
+            crate::EMOJI_ALLOCATOR!(), "</span>");
         TAG_ATOMIC = concat!(crate::SPAN_OPEN!(), "'Atomic-related item'>",
             crate::EMOJI_ATOMIC!(), "</span>");
         TAG_DATA_STRUCTURE =
