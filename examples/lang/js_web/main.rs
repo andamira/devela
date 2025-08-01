@@ -52,7 +52,7 @@ pub extern "C" fn main() {
     console::log(fmt![?buf, "  name: {:?}", window::name_buf(buf2)]);
 
     let window_state = window::state();
-    console::debug(fmt![?buf, "  {window_state:#?}"]);
+    console::debug(fmt![?buf, "  {window_state:?}"]);
 
     console::log(fmt![?buf, "  is_closed: {:?}", window::is_closed()]);
     console::log(fmt![?buf, "  is_coi: {:?}", window::is_coi()]);

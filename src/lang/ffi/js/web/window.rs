@@ -1,11 +1,11 @@
 // devela::lang::ffi::js::web::window
 //
 //! Defines [`WebWindow`], [`WebWindowState`].
+//!
 //
 
 #[cfg(feature = "_float_f32")]
 use crate::Float;
-#[cfg(feature = "unsafe_ffi")]
 use crate::js_doc;
 use crate::{Distance, Extent};
 #[allow(unused_imports, reason = "not(windows)")]
@@ -14,9 +14,12 @@ use crate::{Js, JsTimeout, js_bool, js_int32, js_number, js_reexport, js_uint32}
 use devela::String;
 use devela::offset_of;
 
-/// Handle to the global `window` object (singleton).
+/// Handle to the browser's global [Window] and [Screen] associated APIs.
+///
+/// [Window](https://developer.mozilla.org/en-US/docs/Web/API/Window)
+/// [Screen](https://developer.mozilla.org/en-US/docs/Web/API/Window/screen)
 #[repr(C)]
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Copy, Clone)]
 pub struct WebWindow;
 
 #[rustfmt::skip]
@@ -137,7 +140,7 @@ js_reexport! {
 /// ### Performance
 /// All fields are fetched in a single JS→Rust call.
 #[repr(C)]
-#[derive(Clone, Debug, Default, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Default, PartialEq)] // manual: Debug
 pub struct WebWindowState {
     /* window */
     #[doc = js_doc!("Window", "innerWidth")]
@@ -174,12 +177,13 @@ pub struct WebWindowState {
     pub dpr: f32,
 
     #[doc = js_doc!("Screen", "colorDepth")]
-    /// The screen color depth, in bits per single pixel. It can be 8, 16, 24 or 32.
+    /// The screen color depth, in bits per single pixel. It could be 8, 16, 24, 32 or 64.
     pub bpp: u8,
 
-    /// Explicit padding to align
+    // TODO: add bitpacked flags (is_popup, is_secure, etc.)
+    //
+    /// Explicit padding to align.
     _pad: [u8; 3],
-    // TODO: Bitpacked flags (is_popup, is_secure, etc.)
 }
 impl WebWindowState {
     const __ASSERT_FIELD_OFFSETS: () = const {
@@ -219,15 +223,15 @@ impl WebWindowState {
     /// - No dimensions are zero (invalid window state)
     /// - Inner size ≤ outer size (logical constraint)
     /// - Outer size ≤ screen size (unless multi-monitor)
-    /// - Device pixel ratio is sane (0.5 ≤ dpr ≤ 10.0)
-    /// - Screen color depth is plausible (8 ≤ depth ≤ 64)
+    /// - Device pixel ratio is sane (0.2 <= dpr <= 10.0)
+    /// - Screen color depth is plausible (8 <= depth <= 64)
     // - Popup flags don't contradict window dimensions
-    pub const fn validate(&self) -> bool {
+    pub const fn is_valid(&self) -> bool {
         // 1. Non-zero dimensions
-        let non_zero = self.inner_size.dim[0] > 0
-            && self.inner_size.dim[1] > 0
-            && self.outer_size.dim[0] > 0
-            && self.outer_size.dim[1] > 0;
+        let non_zero = self.inner_size.x() > 0
+            && self.inner_size.y() > 0
+            && self.outer_size.x() > 0
+            && self.outer_size.y() > 0;
 
         // 2. Inner <= Outer
         let inner_le_outer = self.inner_size.dim[0] <= self.outer_size.dim[0]
@@ -238,7 +242,7 @@ impl WebWindowState {
             && (self.outer_size.dim[1] <= self.screen_size.dim[1] + 10);
 
         // 4. Sane DPR range
-        let sane_dpr = self.dpr >= 0.3 && self.dpr <= 10.0;
+        let sane_dpr = self.dpr >= 0.2 && self.dpr <= 10.0;
 
         // 5. Plausible color depth
         let sane_bpp = self.bpp >= 8 && self.bpp <= 64;
@@ -313,5 +317,29 @@ impl WebWindowState {
             (self.screen_size.y() as i32)
                 - (self.screen_offset.dim[1] + self.outer_size.y() as i32),
         ]
+    }
+}
+
+impl crate::Debug for WebWindowState {
+    fn fmt(&self, f: &mut crate::Formatter<'_>) -> crate::FmtResult<()> {
+        let mut state = f.debug_struct("WebWindowState");
+        /* fields */
+        state
+            .field("inner_size", &self.inner_size)
+            .field("outer_size", &self.outer_size)
+            .field("screen_offset", &self.screen_offset)
+            .field("screen_size", &self.screen_size)
+            .field("screen_usable_size", &self.screen_usable_size)
+            .field("dpr", &self.dpr)
+            .field("bpp", &self.bpp)
+            /* derived */
+            .field("chrome_size()", &self.chrome_size())
+            .field("is_maximized()", &self.is_maximized())
+            .field("is_portrait()", &self.is_portrait())
+            .field("is_valid()", &self.is_valid())
+            .field("physical_size()", &self.physical_size());
+        #[cfg(feature = "_float_f32")]
+        state.field("physical_size_rounded()", &self.physical_size_rounded());
+        state.field("screen_margins()", &self.screen_margins()).finish_non_exhaustive() // .finish()
     }
 }
