@@ -141,7 +141,7 @@
 - vendor `mini-alloc` as `WasmAlloc`.
 
 #### borrow
-- new type: `MaybeOwned`.
+- new types: `AllocMode`, `MaybeOwned`.
 - new trait: `Ownership`.
 
 ### os
