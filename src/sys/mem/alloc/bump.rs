@@ -56,9 +56,9 @@ unsafe impl GlobalAlloc for BumpAlloc {
             // Attempt to atomically reserve the space by advancing the pointer
             match self.current.compare_exchange_weak(current, next, SeqCst, Relaxed) {
                 Ok(_) => return aligned as *mut u8, // Success: return aligned pointer
-                Err(updated) => current = updated, // Fail: retry with updated `current`
+                Err(updated) => current = updated,  // Fail: retry with updated `current`
             }
         }
     }
-    unsafe fn dealloc(&self, _ptr: *mut u8, _layout: MemLayout) { /* FUTURE */ }
+    unsafe fn dealloc(&self, _ptr: *mut u8, _layout: MemLayout) {} // IMPROVE
 }

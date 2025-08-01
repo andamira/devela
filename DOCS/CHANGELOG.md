@@ -123,20 +123,26 @@
 
 ## sys
 
+### arch
+- new `Wasm` methods: `heap_base`, `remaining_memory`.
+- change `Wasm::memory_grow` to have the same signature as `core::arch::wasm32::memory_grow`.
+- add support for new:
+  - architectures: `amdgpu`.
+  - OS targets: `amdhsa`, `cygwin`, `psx`.
+  - vendor targets: `amd`, `mti`, `openwrt`.
+
 ### mem
-- new type: `BumpAlloc`.
+- new `Mem` methods: `align_down`, `align_up`, `is_aligned`, `is_aligned_to`.
 - remove macros: `addr_of!`, `addr_of_mut!`.
+
+#### alloc
+- new types: `BumpAlloc`, `WasmAlloc`.
+- vendor `mini-alloc` as `WasmAlloc`.
 
 ### os
 #### linux
 - add methods:
   - `Linux`: `print[ln]_unchecked[_fast]`, `eprint_bytes`.
-
-### arch
-- add support for new:
-  - architectures: `amdgpu`.
-  - OS targets: `amdhsa`, `cygwin`, `psx`.
-  - vendor targets: `amd`, `mti`, `openwrt`.
 
 ## ui
 ### layout

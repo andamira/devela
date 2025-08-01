@@ -14,6 +14,7 @@ crate::doc_! { vendor_mod: "bytehound-preload", bytehound_preload }
 crate::doc_! { vendor_mod: "crossbeam-utils", crossbeam_utils }
 crate::doc_! { vendor_mod: "etcetera", etcetera}
 crate::doc_! { vendor_mod: "fxhash", fxhash }
+crate::doc_! { vendor_mod: "mini-alloc", mini_alloc }
 crate::doc_! { vendor_mod: "no_std_io", no_std_io }
 crate::doc_! { vendor_mod: "numtoa", numtoa }
 crate::doc_! { vendor_mod: "pollster", pollster }

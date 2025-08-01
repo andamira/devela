@@ -12,6 +12,8 @@ impl<Candidate, Requirement> Sealed for (Candidate, Requirement) {}
 /// This trait ensures that a value of the `Candidate` type can be safely placed
 /// into a storage medium designed for the `Requirement` type, adhering to
 /// alignment requirements.
+///
+/// For runtime alignment adjustments, see [`Mem::align_down`] and [`Mem::align_up`].
 //
 // WAIT:DONE:1.79 [ptr.is_aligned](https://github.com/rust-lang/rust/pull/121948)
 // WAIT: [pointer_is_aligned_to](https://github.com/rust-lang/rust/issues/96284)

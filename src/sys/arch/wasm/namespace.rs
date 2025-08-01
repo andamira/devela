@@ -71,6 +71,18 @@ impl Wasm {
         cfg!(target_feature = "simd128")
     }
 
+    /// Returns the starting address of the WASM heap (`__heap_base`).
+    ///
+    /// # Safety
+    /// - On non-WASM targets, this always returns 0.
+    /// - On WASM targets, the value comes from linker-defined symbol.
+    pub fn heap_base() -> usize {
+        #[cfg(target_family = "wasm")]
+        return &raw const __heap_base as usize;
+        #[cfg(not(target_family = "wasm"))]
+        0
+    }
+
     /// Returns the current memory size in units of pages.
     ///
     /// On non-WASM platforms, always returns `0`.
@@ -93,18 +105,34 @@ impl Wasm {
 
     /// Attempts to grow the default linear memory by the specified `delta` of pages.
     ///
-    /// Returns `true` on success.
-    /// On non-WASM platforms it always returns `false`.
+    /// If memory is successfully grown then the previous size of memory, in pages,
+    /// is returned. If memory cannot be grown then `usize::MAX` is returned.
+    ///
+    /// On non-WASM platforms it always returns `usize::MAX`.
+    ///
+    /// See `core::arch::wasm32::`[`memory_grow`].
+    #[inline(always)]
     #[allow(unused_variables, rustdoc::broken_intra_doc_links, reason = "cross-platform")]
-    pub fn memory_grow(delta: usize) -> bool {
+    pub fn memory_grow(delta: usize) -> usize {
+        #[cfg(target_family = "wasm")]
+        return memory_grow(0, delta);
+        #[cfg(not(target_family = "wasm"))]
+        usize::MAX
+    }
+
+    /// Attempts to grow the default linear memory by the specified `delta` of pages.
+    ///
+    /// - Returns the previous size of memory on success, or `None` otherwise.
+    /// - On non-WASM platforms it always returns `None`.
+    #[allow(unused_variables, rustdoc::broken_intra_doc_links, reason = "cross-platform")]
+    pub fn memory_grow_checked(delta: usize) -> Option<usize> {
         #[cfg(target_family = "wasm")]
         {
-            let previous = Self::memory_pages();
             let result = memory_grow(0, delta);
-            previous != result
+            return if result == usize::MAX { None } else { Some(result) };
         }
         #[cfg(not(target_family = "wasm"))]
-        false
+        None
     }
 
     /// Returns `true` if memory can still grow.
@@ -116,4 +144,17 @@ impl Wasm {
         #[cfg(not(target_family = "wasm"))]
         false
     }
+
+    /// Returns the remaining available memory.
+    #[inline(always)]
+    pub fn remaining_memory() -> usize {
+        Self::MAX_MEMORY.saturating_sub(Self::memory_bytes())
+    }
+}
+
+unsafe extern "C" {
+    /// Reference to the start of the WASM heap (&__heap_base).
+    ///
+    /// This symbol is provided by the LLVM linker and marks where dynamic memory begins.
+    pub static __heap_base: u8;
 }

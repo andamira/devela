@@ -15,6 +15,8 @@
   [`fmt_or_empty`]: crate::code::result::ExtOption::fmt_or_empty
   [M_fxhash]: crate::_info::vendored::fxhash
   [`HasherFx`]: crate::data::codec::hash::HasherFx
+  [M_mini-alloc]: crate::_info::vendored::mini_alloc
+  [`WasmAlloc`]: crate::sys::mem::WasmAlloc
   [M_no_std_io]: crate::_info::vendored::no_std_io
   [`io`]: crate::sys::io
   [M_numtoa]: crate::_info::vendored::numtoa

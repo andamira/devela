@@ -19,11 +19,54 @@ use crate::{
 #[doc = crate::TAG_NAMESPACE!()]
 /// Memory-related operations.
 ///
-/// See also: [`ExtMem`][crate::ExtMem], [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
+/// See also: [`ExtMem`][crate::ExtMem], [`MemAligned`][crate::MemAligned]
+/// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
 pub struct Mem;
 
 /// # Safe methods.
 impl Mem {
+    /// Aligns `value` downward to the nearest multiple of `align`.
+    ///
+    /// This is equivalent to `value & !(align - 1)` but uses `wrapping_neg()`
+    /// which may generate better code on some architectures.
+    ///
+    /// # Requirements
+    /// - `align` must be a power of two (guaranteed when using [`MemLayout`][crate::MemLayout])
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::Mem;
+    /// assert_eq!(Mem::align_down(13, 8), 8);
+    /// assert_eq!(Mem::align_down(16, 8), 16);
+    /// ```
+    #[doc = crate::doc_!(vendor: "mini-alloc")]
+    #[must_use]
+    #[inline(always)]
+    pub const fn align_down(value: usize, align: usize) -> usize {
+        value & align.wrapping_neg()
+    }
+
+    /// Aligns `value` upward to the nearest multiple of `align`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn align_up(value: usize, align: usize) -> usize {
+        (value + align - 1) & !(align - 1)
+    }
+
+    /// Checks if `value` is aligned to `align`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_aligned(value: usize, align: usize) -> bool {
+        value & (align - 1) == 0
+    }
+
+    /// Runtime version of [`MemAligned::is_compatible`] for raw pointers.
+    #[inline(always)]
+    pub fn is_aligned_to<T>(ptr: *const T, requirement: usize) -> bool {
+        let align = Mem::align_of::<T>();
+        requirement >= align && Mem::is_aligned(ptr as usize, align)
+    }
+
     /// Returns the minimum alignment of the type in bytes.
     ///
     /// See `core::mem::`[`align_of`].

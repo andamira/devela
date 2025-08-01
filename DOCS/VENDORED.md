@@ -19,6 +19,8 @@ See the linked modifications for detailed changes.
   as `ExtOption`'s [`fmt_or`], [`fmt_or_else`] and [`fmt_or_empty`] methods.
 - <i id="fxhash"></i>[fxhash] by Christopher Breeden,
   as the [`HasherFx`] struct ([*modifications*][M_fxhash]).
+- <i id="mini-alloc"></i>[mini-alloc] by Offchain Labs Inc.,
+  as the [`WasmAlloc`] struct ([*modifications*][M_mini-alloc]).
 - <i id="no_std_io"></i>[no_std_io]|[core2] by Brendan Molloy,
   as part of the [`sys::io`] module ([*modifications*][M_no_std_io]).
 - <i id="numtoa"></i>[numtoa] by Michael Murphy,
@@ -60,6 +62,8 @@ See the linked modifications for detailed changes.
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
   [M_fxhash]: https://github.com/andamira/devela/blob/main/src/_info/vendored/fxhash.md
   [`HasherFx`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherFx.html
+[mini-alloc]: https://crates.io/crates/mini-alloc/0.9.0
+  [M_mini-alloc]: https://github.com/andamira/devela/blob/main/src/_info/vendored/mini-alloc.md
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
   [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/_info/vendored/no_std_io.md
