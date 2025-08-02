@@ -60,7 +60,7 @@
         repr128,
         result_flattening,
         sha512_sm_x86,
-        stdarch_x86_avx512,
+        // stdarch_x86_avx512, // conflicts when compiling to wasm
     )
 )]
 // #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]

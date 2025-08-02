@@ -40,7 +40,7 @@ See also
 - 1.89: ` `[resolve_const_param_in_non_trivial_anon_const](https://github.com/rust-lang/rust/pull/142157)
 - 1.89: `·`[result_flattening](https://github.com/rust-lang/rust/pull/141072)
 - 1.89: `·`[sha512_sm_x86](https://github.com/rust-lang/rust/pull/140767)
-- 1.89: ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137) WAIT: 138940
+- 1.89: ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/138940)
 - 1.89: ` `[unstable: iter_macro](https://github.com/rust-lang/stdarch/pull/1819)
 
 # 1.90 will be stable on 2025-09-18 ([`nightly_stable_next2`](https://releases.rs/docs/1.90.0/))
