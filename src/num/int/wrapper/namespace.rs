@@ -12,15 +12,15 @@
 ///
 /// Specific implementations can vary between signed and signed numeric types,
 /// but documentation is the same for all bit sizes:
-/// - `i32` methods documentation related to:
-/// [base][Self#integer-base-related-methods-for-i32],
-/// [core][Self#integer-core-methods-for-i32],
-/// [combinatorics][Self#integer-combinatorics-related-methods-for-i32],
-/// [division][Self#integer-division-related-methods-for-i32],
-/// [factors][Self#integer-factors-related-methods-for-i32],
-/// [modulo][Self#integer-modulo-related-methods-for-i32],
-/// [primes][Self#integer-prime-related-methods-for-i32],
-/// [root][Self#integer-root-related-methods-for-i32].
+/// - `i64` methods documentation related to:
+/// [base][Self#integer-base-related-methods-for-i64],
+/// [core][Self#integer-core-methods-for-i64],
+/// [combinatorics][Self#integer-combinatorics-related-methods-for-i64],
+/// [division][Self#integer-division-related-methods-for-i64],
+/// [factors][Self#integer-factors-related-methods-for-i64],
+/// [modulo][Self#integer-modulo-related-methods-for-i64],
+/// [primes][Self#integer-prime-related-methods-for-i64],
+/// [root][Self#integer-root-related-methods-for-i64].
 /// - `u32` methods documentation related to:
 /// [base][Self#integer-base-related-methods-for-u32],
 /// [core][Self#integer-core-methods-for-u32],

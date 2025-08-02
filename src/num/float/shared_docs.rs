@@ -9,7 +9,7 @@ crate::CONST! { pub(crate),
 FORMULA_FLOOR = r#"$$
 \large \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$"#;
 FORMULA_CEIL = r#"$$
-$$ \lceil x \rceil = \min \{ n \in ℤ \,|\, n \geq x \} $$"#;
+\lceil x \rceil = \min \{ n \in ℤ \,|\, n \geq x \} $$"#;
 FORMULA_ROUND_TIES_AWAY = r#"$$
 \text{round\\_ties\\_away}(x) = \begin{cases}
 \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \text{ or }
