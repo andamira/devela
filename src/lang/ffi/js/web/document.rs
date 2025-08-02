@@ -4,10 +4,11 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::String;
-use crate::js_doc;
+use devela::String;
+use devela::js_doc;
+use devela::{AllocMode, MaybeOwned, Ownership};
 #[allow(unused_imports, reason = "not(windows)")]
-use crate::{Js, js_bool, js_int32, js_reexport, js_uint32};
+use devela::{Js, js_bool, js_int32, js_reexport, js_uint32};
 
 /// Handle to the brower's global [Document] associated APIs.
 ///
@@ -36,16 +37,18 @@ impl WebDocument {
 
     #[doc = js_doc!("Document", "contentType")]
     /// Returns the document's content type.
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn content_type() -> String {
-        Js::read_string(|ptr, len| unsafe { document_content_type(ptr, len) })
-    }
-
-    #[doc = js_doc!("Document", "contentType")]
-    /// Returns the document's content type using the provided buffer.
-    pub fn content_type_buf(buffer: &mut [u8]) -> &str {
-        Js::read_str(buffer, |ptr, len| unsafe { document_content_type(ptr, len) })
+    pub fn content_type<'a>(buffer: impl Into<AllocMode<'a>>) -> MaybeOwned<'a, str> {
+        match buffer.into() {
+            AllocMode::Borrowed(buf) => {
+                let s = Js::read_str(buf, |ptr, len| unsafe { document_content_type(ptr, len) });
+                MaybeOwned::Borrowed(s)
+            }
+            #[cfg(feature = "alloc")]
+            AllocMode::Heap => {
+                let s = Js::read_string(|ptr, len| unsafe { document_content_type(ptr, len)});
+                MaybeOwned::Owned(s)
+            }
+        }
     }
 }
 js_reexport! {
