@@ -4,11 +4,12 @@
 //! [`Luminance`], [`Lightness`], [`Luma`], `LinearLightness`.
 //
 
-use super::*;
+use super::*; // IMPROVE: specify
 use crate::NumConst;
 #[cfg(any(feature = "std", _float··))]
 use crate::is;
 #[cfg(_float··)]
+#[allow(unused_imports)]
 use crate::{ExtFloat, Float};
 
 /// A generic luminance-like component.

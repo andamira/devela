@@ -6,6 +6,7 @@
 #[cfg(any(feature = "std", _float··))]
 use crate::is;
 #[cfg(_float··)]
+#[allow(unused_imports)]
 use crate::{ExtFloat, Float};
 
 /// Gamma correction curves.

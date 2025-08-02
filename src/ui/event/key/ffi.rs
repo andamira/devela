@@ -38,7 +38,7 @@ pub struct EventKeyFfi {
 }
 
 impl EventKey {
-    /// Converts `EventKey` to `EventKeyFFi`.
+    /// Converts `EventKey` to `EventKeyFfi`.
     pub const fn to_ffi(&self) -> EventKeyFfi {
         EventKeyFfi {
             semantic: self.semantic.to_ffi(),
@@ -97,7 +97,7 @@ pub enum KeyFfi {
 }
 
 impl Key {
-    /// Converts `Key` to `KeyFFi`.
+    /// Converts `Key` to `KeyFfi`.
     pub const fn to_ffi(self) -> KeyFfi {
         use {Key as K, KeyFfi as F};
         match self {

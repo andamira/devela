@@ -405,7 +405,7 @@ macro_rules! impl_destaque {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
             pub fn pop_front(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -425,7 +425,7 @@ macro_rules! impl_destaque {
             ///
             /// This is the habitual *dequeue* operation for a single-ended **queue**.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
             pub fn dequeue(&mut self) -> Result<T, NotEnoughElements> {
                 self.pop_front()
             }
@@ -449,7 +449,7 @@ macro_rules! impl_destaque {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
             pub fn pop_back(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))

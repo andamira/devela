@@ -11,7 +11,7 @@ use crate::{Js, js_bool, js_int32, js_reexport, js_uint32};
 
 /// Handle to the brower's global [Document] associated APIs.
 ///
-/// [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document)
+/// [Document]: https://developer.mozilla.org/en-US/docs/Web/API/Document
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct WebDocument;

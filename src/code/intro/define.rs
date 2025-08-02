@@ -1,11 +1,16 @@
-// devela::code::intro
+// devela::code::intro::define
 //
-//! defines the [`Introspect`] struct.
+//! Defines the [`Introspect`] trait.
 //
 
-/// Minimal introspection interface.
+/// Introspection core trait
 ///
-/// ```
+/// Provides structural metadata about types and values.
+/// Implement for any type to describe its fundamental properties.
+///
+// Minimal introspection interface.
+///
+/// ```ignore
 /// # use devela::Introspect;
 /// enum MyKind { A, B, C }
 ///

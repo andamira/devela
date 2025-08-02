@@ -17,6 +17,7 @@
 #[cfg(target_family = "wasm")]
 use ::core::arch::wasm32::{memory_grow, memory_size};
 
+#[doc = crate::TAG_NAMESPACE!()]
 /// A Wasm namespace.
 pub struct Wasm;
 
@@ -159,5 +160,5 @@ unsafe extern "C" {
     /// Reference to the start of the WASM heap (&__heap_base).
     ///
     /// This symbol is provided by the LLVM linker and marks where dynamic memory begins.
-    pub static __heap_base: u8;
+    static __heap_base: u8;
 }

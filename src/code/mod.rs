@@ -34,7 +34,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods {
         pub use super::{
-            error::_all::*, intro::*, marker::_all::*, ops::_all::*,
+            error::_all::*, intro::_all::*, marker::_all::*, ops::_all::*,
             panic::_all::*, result::_all::*, util::_all::*,
         };
     }

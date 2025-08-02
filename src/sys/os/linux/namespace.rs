@@ -403,8 +403,8 @@ impl Linux {
     /// # Arguments
     /// - `handler`: A function that will be called when one of the specified signals is received.
     ///   The function takes a single argument for the signal number.
-    /// - `signals`: A slice of [`LINUX_SIGNAL`] values specifying the signals to handle.
-    /// - `flags`: An optional slice of [`LINUX_SIGACTION`] flags.
+    /// - `signals`: A slice of [`LINUX_SIGNAL`][super::LINUX_SIGNAL] values specifying the signals to handle.
+    /// - `flags`: An optional slice of [`LINUX_SIGACTION`][super::LINUX_SIGACTION] flags.
     ///   If `None`, only the `SA_RESTORER` flag is used.
     ///
     /// # Notes
@@ -488,8 +488,8 @@ impl Linux {
     ///   - `i32`: The signal number.
     ///   - `LinuxSiginfo`: Additional information about the signal.
     ///   - `*mut c_void`: A pointer to the signal context (ucontext_t).
-    /// - `signals`: A slice of [`LINUX_SIGNAL`] values specifying the signals to handle.
-    /// - `flags`: An optional slice of [`LINUX_SIGACTION`] flags.
+    /// - `signals`: A slice of [`LINUX_SIGNAL`][super::LINUX_SIGNAL] values specifying the signals to handle.
+    /// - `flags`: An optional slice of [`LINUX_SIGACTION`][super::LINUX_SIGACTION] flags.
     ///   If `None`, only the `SA_RESTORER` and `SA_SIGINFO` flags are used.
     ///
     /// # Notes

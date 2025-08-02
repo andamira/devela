@@ -3,7 +3,9 @@
 //! Defines [`WasmAlloc`].
 //
 
-use crate::{GlobalAlloc, Mem, MemLayout, NonZero, NonZeroUsize, Ptr, Wasm};
+use crate::{GlobalAlloc, MemLayout, Ptr};
+#[cfg(target_arch = "wasm32")]
+use crate::{Mem, NonZero, NonZeroUsize, Wasm};
 
 #[doc = crate::TAG_ALLOCATOR!()]
 /// A WebAssembly global memory allocator that uses a bump allocation strategy.
@@ -60,6 +62,7 @@ unsafe impl GlobalAlloc for WasmAlloc {
 /// The tuple contains:
 /// - `.0`: Negative of the current bump pointer offset from `__heap_base`
 /// - `.1`: Negative of the current memory boundary (total available memory)
+#[cfg(target_arch = "wasm32")]
 static mut WASM_ALLOC_STATE: Option<(NonZeroUsize, usize)> = None;
 
 /// Internal allocation implementation using bump allocation strategy.

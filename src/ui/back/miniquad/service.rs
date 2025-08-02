@@ -148,7 +148,7 @@ impl<T: MiniquadEventHandlerExt + 'static> MiniquadService<T> {
         self.height = height;
         self
     }
-    /// If `linear == true` uses [`FilterMode:Linear`], otherwise [`FilterMode::Nearest`].
+    /// If `linear == true` uses [`FilterMode::Linear`], otherwise [`FilterMode::Nearest`].
     ///
     /// If the `handler` has not been set, this does nothing.
     pub fn interpolation(mut self, linear: bool) -> Self {

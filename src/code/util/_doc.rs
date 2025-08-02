@@ -306,7 +306,7 @@ mod tags {
             crate::EMOJI_QUANT!(), "</span>");
         TAG_RAND = concat!(crate::SPAN_OPEN!(), "'Randomness-related item'>",
             crate::EMOJI_RAND!(), "</span>");
-        TAG_RESULT = concat!(crate::SPAN_OPEN!(), "'Result type'>",
+        TAG_RESULT = concat!(crate::SPAN_OPEN!(), "'Resolution or outcome-related item'>",
             crate::EMOJI_RESULT!() ,"</span>");
         TAG_TEXT = concat!(crate::SPAN_OPEN!(), "'Text-related type'>",
             crate::EMOJI_TEXT!() ,"</span>");

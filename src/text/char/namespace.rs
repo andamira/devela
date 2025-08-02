@@ -105,7 +105,8 @@ impl Char {
     /// Converts a character to its closest ASCII equivalent,
     /// or returns the input character if no mapping exists.
     ///
-    /// This function is similar to [`to_ascii_fold`], but **never returns `None`**.
+    /// This function is similar to
+    /// [`to_ascii_fold`][Self::to_ascii_fold], but **never returns `None`**.
     /// If no ASCII equivalent exists, the input character is returned unchanged.
     #[must_use]
     pub const fn to_ascii_fold_unchecked(c: char) -> char {
@@ -138,7 +139,8 @@ impl Char {
     }
     /// Returns the UTF-8 byte length of `code` **without validation**.
     ///
-    /// Assumes `code` is a valid Unicode scalar.  Use [`code_len_utf8`] for a checked version.
+    /// Assumes `code` is a valid Unicode scalar.
+    /// Use [`code_len_utf8`][Self::code_len_utf8] for a checked version.
     #[must_use]
     pub const fn code_len_utf8_unchecked(code: u32) -> usize {
         match code {

@@ -1,13 +1,13 @@
 // devela::ui::event::key::key
 //
-//! Defines [`Key`], [`KeyFfi`].
+//! Defines [`Key`].
 //
 
 use crate::{KeyAlpha, KeyMedia, KeyMod, KeyPad};
 
 /// Keyboard codes, used in [`EventKey`][crate::EventKey].
 ///
-#[doc = "See also [`KeyFfi`]."]
+#[doc = "See also [`KeyFfi`][super::KeyFfi]."]
 //
 // - https://docs.rs/crossterm/latest/crossterm/event/enum.Code.html
 // - https://docs.rs/notcurses/latest/notcurses/struct.Code.html

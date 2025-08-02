@@ -60,7 +60,8 @@ impl Mem {
         value & (align - 1) == 0
     }
 
-    /// Runtime version of [`MemAligned::is_compatible`] for raw pointers.
+    /// Runtime version of
+    /// [`MemAligned::is_compatible`][super::MemAligned::is_compatible] for raw pointers.
     #[inline(always)]
     pub fn is_aligned_to<T>(ptr: *const T, requirement: usize) -> bool {
         let align = Mem::align_of::<T>();

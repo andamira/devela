@@ -14,8 +14,8 @@ use devela::{Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexpo
 
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
 ///
-/// [Window](https://developer.mozilla.org/en-US/docs/Web/API/Window)
-/// [Screen](https://developer.mozilla.org/en-US/docs/Web/API/Window/screen)
+/// [Window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
+/// [Screen]: https://developer.mozilla.org/en-US/docs/Web/API/Window/screen
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct WebWindow;
@@ -286,7 +286,8 @@ impl WebWindowState {
     ///
     /// Computed as `(inner_size * device_pixel_ratio)`.
     ///
-    /// For rounded values, use [`physical_size_rounded()`][Self::physical_size_rounded]`.
+    /// For rounded values, use [`physical_size_rounded()`][Self::physical_size_rounded].
+    #[allow(rustdoc::broken_intra_doc_links, reason = "_float_f32")]
     pub const fn physical_size(&self) -> Extent<u32, 2> {
         Extent::new([
             (self.inner_size.x() as f32 * self.dpr) as u32,

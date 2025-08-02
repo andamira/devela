@@ -8,8 +8,8 @@
 ///
 /// - The name of each operation links to the official macro documentation.
 /// - Each operation is prefixed to document their const-compatibility:
-///   - ƒ&nbsp; means const-fn compatible (can use runtime-context arguments).
-///   - ≡ means const-context only compatible (restricted to const-context arguments).
+///   - ƒ&nbsp; means const-fn compatible (can **also** use runtime-context arguments).
+///   - ≡ means const-context only compatible (can **only** use const-context arguments).
 ///
 /// # Operations
 // /// - ƒ &nbsp;[`chain`][::const_str::chain]

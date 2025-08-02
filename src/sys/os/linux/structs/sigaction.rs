@@ -165,7 +165,7 @@ impl LinuxSigset {
 
 /// Additional information about a signal.
 ///
-/// Represents the [siginfo_t`] structure from libc.
+/// Represents the [`siginfo_t`] structure from libc.
 ///
 /// [`siginfo_t`]: https://man7.org/linux/man-pages/man2/sigaction.2.html
 #[repr(C)]

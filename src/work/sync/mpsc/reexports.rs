@@ -20,8 +20,8 @@ reexport! { rust: std::sync::mpsc,
     @Iter as MpscIter
 }
 reexport! { rust: std::sync::mpsc,
-    doc: "The receiving half of a [`Mpsc`] [`channel`][Mpsc::channel]
-or [`sync_channel`][Mpsc::sync_channel].",
+    doc: "The receiving half of an [`Mpsc`][crate::Mpsc]
+    [`channel`][crate::Mpsc::channel] or [`sync_channel`][crate::Mpsc::sync_channel].",
     @Receiver as MpscReceiver
 }
 reexport! { rust: std::sync::mpsc,

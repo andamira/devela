@@ -31,7 +31,7 @@ impl MiniquadWindow {
     /// `::miniquad::`[`blocking_event_loop`][blocking_event_loop].
     ///
     /// [`schedule_update`]: Self::schedule_update
-    /// [`set_blocking_event_loop()`]: crate::MiniquadService::set_blocking_event_loop
+    /// [`blocking_event_loop()`]: crate::MiniquadService::blocking_event_loop
     pub fn blocking_event_loop() -> bool { blocking_event_loop() }
 
     /// Requests an immediate update, ensuring `update()` and `draw()` are called without waiting.

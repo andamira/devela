@@ -7,6 +7,7 @@
 // - WAIT: [linux resize](https://github.com/not-fl3/miniquad/issues/193)
 
 mod namespace; // miniquad!
+mod reexports;
 mod service; // MiniquadEventHandlerExt, MiniquadService
 mod window; // MiniquadWindow
 
@@ -19,7 +20,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{namespace::*, service::*, window::*};
+        pub use super::{namespace::*, reexports::*, service::*, window::*};
         #[cfg(feature = "alloc")]
         pub use super::pixels::*;
     }

@@ -1,6 +1,8 @@
 // devela::media::color::rgb::impls::u8
 
 use crate::{Norm, Rgb8, Rgb16, Rgba8, Rgba16};
+#[cfg(doc)]
+use crate::{Rgb, Rgba};
 
 #[cfg(feature = "_float_f32")]
 use crate::{RgbF32, RgbaF32};

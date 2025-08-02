@@ -7,7 +7,8 @@ use devela::RangeFull;
 
 /// Controls how values should be acquired, between borrowing and allocation.
 ///
-/// Complements [`MaybeOwned`] by controlling the *acquisition strategy* for values.
+/// Complements [`MaybeOwned`][super::MaybeOwned]
+/// by controlling the *acquisition strategy* for values.
 ///
 /// # Philosophy
 /// Like Rust's `Cow` but for acquisition rather than storage. Enables APIs to:

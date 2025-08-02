@@ -290,7 +290,7 @@ macro_rules! impl_stack {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
             pub fn pop(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -656,7 +656,7 @@ macro_rules! impl_stack {
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
             // safe-only version that depends on T: Clone
             pub fn pop(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
