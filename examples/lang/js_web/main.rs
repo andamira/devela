@@ -5,22 +5,32 @@
 
 // global config
 #![no_std]
-#![allow(static_mut_refs, reason = "safe in single-threaded")]
-devela::set_panic_handler![web];
+#![allow(clippy::deref_addrof, reason = "safe references to static mut")]
+// https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-references.html#safe-references
 
 use devela::{
-    JsConsole as console, Wasm, Web, WebDocument as document, WebEventKind, WebEventMouse,
-    WebEventPointer, WebWindow as window, format_buf as fmt,
+    Backing::{Alloc, Buf},
+    JsConsole as console, Wasm, WasmAlloc, Web, WebDocument as document, WebEventKind,
+    WebEventMouse, WebEventPointer, WebWindow as window, format, format_buf as fmt,
+    set_panic_handler,
 };
 
-/// Static string buffer for printing to the console without allocation.
+set_panic_handler![web];
+
+#[global_allocator]
+static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
+
+/// Global string buffer for printing to the console without allocation.
 static mut BUF: [u8; 1024] = [0; 1024];
-/// Secondary buffer for when `BUF` is already busy.
-static mut BUF2: [u8; 1024] = [0; 1024];
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
-    let (buf, buf2): (&mut [u8], &mut [u8]) = unsafe { (&mut BUF, &mut BUF2) };
+    let buf = unsafe { &mut *&raw mut BUF };
+
+    // secondary buffer
+    let mut buffer2 = [0; 1024];
+    let buf2 = &mut buffer2;
+
     let start_time = Web::performance_now();
 
     /* log */
@@ -43,13 +53,23 @@ pub extern "C" fn main() {
     console::log(fmt![?buf, "Wasm::bulk-memory: {}", Wasm::has_bulk_memory()]);
     console::log(fmt![?buf, "Wasm::simd128: {}", Wasm::has_simd()]);
     console::log(fmt![?buf, "Wasm::mutable-globals: {}", Wasm::has_mutable_globals()]);
+    // allocation
+    console::log(fmt![?buf, "Wasm::heap_base():: {}", Wasm::heap_base()]);
+    let rem1 = Wasm::remaining_memory();
+    console::log(fmt![?buf, "Wasm remaining memory: {rem1}. Allocating 20 pages…"]);
+    let _v = devela::Vec::<u8>::with_capacity(20 * Wasm::PAGE_BYTES);
+    let rem2 = Wasm::remaining_memory();
+    let diff = rem1 - rem2;
+    console::log(fmt![?buf, "Wasm remaining memory: {rem2} ({diff} difference)"]);
+    assert_eq![20 * Wasm::PAGE_BYTES, diff];
 
     /* window */
 
     console::info("# window");
 
     window::set_name("sopanum1");
-    console::log(fmt![?buf, "  name: {:?}", window::name_buf(buf2)]);
+    console::log(fmt![?buf, "  name (borrowed): {:?}", window::name(Buf(buf2))]);
+    console::log(fmt![?buf, "  name (owned):    {:?}", window::name(Alloc)]);
 
     let window_state = window::state();
     console::debug(fmt![?buf, "  {window_state:?}"]);
@@ -72,7 +92,7 @@ pub extern "C" fn main() {
 
     console::log(fmt![?buf, "  is_compat_mode: {:?}", document::is_compat_mode()]);
     console::log(fmt![?buf, "  is_hidden: {:?}", document::is_hidden()]);
-    console::log(fmt![?buf, "  content_type: {:?}", document::content_type_buf(buf2)]);
+    console::log(fmt![?buf, "  content_type: {:?}", document::content_type(Buf(buf2))]);
 
     /* canvas */
 
@@ -113,7 +133,8 @@ pub extern "C" fn main() {
 /// Called when clicking on the canvas.
 #[unsafe(no_mangle)]
 pub extern "C" fn canvas_click() {
-    let buf: &mut [u8] = unsafe { &mut BUF };
+    let buf = unsafe { &mut *&raw mut BUF };
+
     let time = Web::performance_now();
 
     let times = Web::performance_event_count(WebEventKind::Click) + 1;
@@ -132,11 +153,13 @@ pub extern "C" fn canvas_click() {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn my_mouse_callback(event: WebEventMouse) {
-    let buf: &mut [u8] = unsafe { &mut BUF };
+    let buf = unsafe { &mut *&raw mut BUF };
+
     console::log(fmt![?buf, "MOUSE: {event:?}"]);
 }
 #[unsafe(no_mangle)]
 pub extern "C" fn my_pointer_callback(event: WebEventPointer) {
-    let buf: &mut [u8] = unsafe { &mut BUF };
+    let buf = unsafe { &mut *&raw mut BUF };
+
     console::log(fmt![?buf, "POINT: {event:?}"]);
 }
