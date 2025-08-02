@@ -8,7 +8,7 @@
 use devela::Float;
 #[cfg(feature = "alloc")]
 use devela::String;
-use devela::{AllocMode, Distance, Extent, MaybeOwned, js_doc, offset_of};
+use devela::{Backing, Distance, Extent, MaybeOwned, js_doc, offset_of};
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexport, js_uint32};
 
@@ -54,14 +54,14 @@ impl WebWindow {
 
     #[doc = js_doc!("Window", "name")]
     /// Returns the window name.
-    pub fn name<'a>(buffer: impl Into<AllocMode<'a>>) -> MaybeOwned<'a, str> {
-        match buffer.into() {
-            AllocMode::Borrowed(buf) => {
-                let s = Js::read_str(buf, |ptr, len| unsafe { window_name(ptr, len) });
+    pub fn name<'a>(buffer: Backing<'a>) -> MaybeOwned<'a, str> {
+        match buffer {
+            Backing::Buf(b) => {
+                let s = Js::read_str(b, |ptr, len| unsafe { window_name(ptr, len) });
                 MaybeOwned::Borrowed(s)
             }
             #[cfg(feature = "alloc")]
-            AllocMode::Heap => {
+            Backing::Alloc => {
                 let s = Js::read_string(|ptr, len| unsafe { window_name(ptr, len)});
                 MaybeOwned::Owned(s)
             }

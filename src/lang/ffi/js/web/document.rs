@@ -6,7 +6,7 @@
 #[cfg(feature = "alloc")]
 use devela::String;
 use devela::js_doc;
-use devela::{AllocMode, MaybeOwned, Ownership};
+use devela::{Backing, MaybeOwned, Ownership};
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{Js, js_bool, js_int32, js_reexport, js_uint32};
 
@@ -37,14 +37,14 @@ impl WebDocument {
 
     #[doc = js_doc!("Document", "contentType")]
     /// Returns the document's content type.
-    pub fn content_type<'a>(buffer: impl Into<AllocMode<'a>>) -> MaybeOwned<'a, str> {
-        match buffer.into() {
-            AllocMode::Borrowed(buf) => {
-                let s = Js::read_str(buf, |ptr, len| unsafe { document_content_type(ptr, len) });
+    pub fn content_type<'a>(buffer: Backing<'a>) -> MaybeOwned<'a, str> {
+        match buffer {
+            Backing::Buf(b) => {
+                let s = Js::read_str(b, |ptr, len| unsafe { document_content_type(ptr, len) });
                 MaybeOwned::Borrowed(s)
             }
             #[cfg(feature = "alloc")]
-            AllocMode::Heap => {
+            Backing::Alloc => {
                 let s = Js::read_string(|ptr, len| unsafe { document_content_type(ptr, len)});
                 MaybeOwned::Owned(s)
             }
