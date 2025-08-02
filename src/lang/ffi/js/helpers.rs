@@ -27,6 +27,61 @@ macro_rules! _js_doc {
 }
 pub(crate) use _js_doc as js_doc;
 
+/// Generates dual JS method variants: one allocating (`-> String`) and one buffer-based (`-> &str`).
+///
+/// Creates two methods from one declaration:
+/// - `$method()` - Allocates and returns a `String` (requires `alloc`)
+/// - `$method_buf(&mut [u8])` - Uses provided buffer, returns `&str`
+///
+/// # Example:
+/// The following code
+/// ```ignore
+/// js_method_buf_string! {
+///     #[doc = js_doc!("Window", "name")]
+///     /// Returns the window name.
+///     name, window_name
+/// }
+/// ```
+/// would produce:
+/// ```ignore
+/// #[doc = js_doc!("Window", "name")]
+/// /// Returns the window name.
+/// #[cfg(feature = "alloc")]
+/// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+/// pub fn name() -> String { Js::read_string(|ptr, len| unsafe { window_name(ptr, len) }) }
+///
+/// #[doc = js_doc!("Window", "name")]
+/// /// Returns the window name.
+/// pub fn name_buf(buffer: &mut [u8]) -> &str {
+///     Js::read_str(buffer, |ptr, len| unsafe { window_name(ptr, len) })
+/// }
+/// ```
+#[rustfmt::skip]
+macro_rules! _js_method_buf_string {
+    (
+    $(#[$fn_attrs:meta])*
+    $method:ident,
+    $call_fn:ident $(,)?
+    ) => { $crate::paste! {
+        /* allocating version */
+
+        $(#[$fn_attrs])*
+        #[cfg(feature = "alloc")]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+        pub fn $method() -> String {
+            $crate::Js::read_string(|ptr, len| unsafe { $call_fn(ptr, len) })
+        }
+
+        /* non-allocating version */
+
+        $(#[$fn_attrs])*
+        pub fn [<$method _buf>](buffer: &mut [u8]) -> &str {
+            $crate::Js::read_str(buffer, |ptr, len| unsafe { $call_fn(ptr, len) })
+        }
+    }};
+}
+pub(crate) use _js_method_buf_string;
+
 /// Helps re-exporting javascript functions.
 ///
 /// # Example
