@@ -7,22 +7,27 @@
 <br/>
 [![Repository](https://flat.badgen.net/badge/github/v0.23.0/blue?icon=git)](https://github.com/andamira/devela)
 [![MSRV ahead 1.88.0](https://flat.badgen.net/badge/MSRV/1.88.0/blue)](https://releases.rs/docs/1.88.0/)
-[![Documentation ahead](https://flat.badgen.net/badge/docs/250302/blue)](https://andamira.github.io/libera/doc/devela/)
+[![Documentation ahead](https://flat.badgen.net/badge/docs/250802/blue)](https://andamira.github.io/libera/doc/devela/)
 &nbsp;<sup>←unpublished</sup>
 
 ---
 
-> A development layer
+> A cohesive development layer
 
-*devela* is a modular, cohesive foundation for development across diverse domains,
-aiming to reduce cognitive burden, and to foster clarity in creative explorations.
-At its heart is a quiet dedication to learning, discovery, and thoughtful sharing.
-
+> A cohesive development layer<br/>
+> A growing toolkit for creative coding<br/>
+> Light enough to adapt, solid enough to build on<br/>
+```poetry
+the soil I return to, where ideas take root and grow
+friction dissolved, leaving only the working flow
+a quiet dedication to learn, discover and share
+where code and craft fuse to a circled square
+```
 
 ## Features
 
-Features are grouped into categories, enabling modular and orthogonal development.
-For a full list of features and their categories, see the [Features Documentation].
+Features are grouped into categories, enabling modular, orthogonal development.
+See the [Features Documentation].
 
 [Features Documentation]: https://docs.rs/devela/latest/devela/_info/features/index.html
 
@@ -31,7 +36,7 @@ For a full list of features and their categories, see the [Features Documentatio
 
 *devela* integrates [optional dependencies] to support specific capabilities and
 domains, ensuring you only enable what you need. Over time, these dependencies
-may evolve as its core functionality expands.
+will evolve as its core functionality expands.
 
 
 [optional dependencies]: https://docs.rs/devela/latest/devela/_dep/index.html
