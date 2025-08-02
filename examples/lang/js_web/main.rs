@@ -9,7 +9,6 @@
 // https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-references.html#safe-references
 
 use devela::{
-    Backing::{Alloc, Buf},
     JsConsole as console, Wasm, WasmAlloc, Web, WebDocument as document, WebEventKind,
     WebEventMouse, WebEventPointer, WebWindow as window, format, format_buf as fmt,
     set_panic_handler,
@@ -68,8 +67,10 @@ pub extern "C" fn main() {
     console::info("# window");
 
     window::set_name("sopanum1");
-    console::log(fmt![?buf, "  name (borrowed): {:?}", window::name(Buf(buf2))]);
-    console::log(fmt![?buf, "  name (owned):    {:?}", window::name(Alloc)]);
+
+    // Alternative methods when getting a string.
+    console::log(fmt![?buf, "  name (buffer): {:?}", window::name_buf(buf2)]);
+    console::log(fmt![?buf, "  name (alloc):  {:?}", window::name()]);
 
     let window_state = window::state();
     console::debug(fmt![?buf, "  {window_state:?}"]);
@@ -92,7 +93,7 @@ pub extern "C" fn main() {
 
     console::log(fmt![?buf, "  is_compat_mode: {:?}", document::is_compat_mode()]);
     console::log(fmt![?buf, "  is_hidden: {:?}", document::is_hidden()]);
-    console::log(fmt![?buf, "  content_type: {:?}", document::content_type(Buf(buf2))]);
+    console::log(fmt![?buf, "  content_type: {:?}", document::content_type_buf(buf2)]);
 
     /* canvas */
 

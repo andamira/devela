@@ -8,9 +8,12 @@
 use devela::Float;
 #[cfg(feature = "alloc")]
 use devela::String;
-use devela::{Backing, Distance, Extent, MaybeOwned, js_doc, offset_of};
 #[allow(unused_imports, reason = "not(windows)")]
-use devela::{Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexport, js_uint32};
+use devela::{
+    _js_method_buf_string, Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexport,
+    js_uint32,
+};
+use devela::{Distance, Extent, js_doc, offset_of};
 
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
 ///
@@ -52,20 +55,10 @@ impl WebWindow {
 
     /* texts */
 
-    #[doc = js_doc!("Window", "name")]
-    /// Returns the window name.
-    pub fn name<'a>(buffer: Backing<'a>) -> MaybeOwned<'a, str> {
-        match buffer {
-            Backing::Buf(b) => {
-                let s = Js::read_str(b, |ptr, len| unsafe { window_name(ptr, len) });
-                MaybeOwned::Borrowed(s)
-            }
-            #[cfg(feature = "alloc")]
-            Backing::Alloc => {
-                let s = Js::read_string(|ptr, len| unsafe { window_name(ptr, len)});
-                MaybeOwned::Owned(s)
-            }
-        }
+    _js_method_buf_string! {
+        #[doc = js_doc!("Window", "name")]
+        /// Gets the window name.
+        name, window_name
     }
 
     #[doc = js_doc!("Window", "name")]
