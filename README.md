@@ -5,14 +5,12 @@
 [![Documentation](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 &nbsp;<sup>←published</sup>
 <br/>
-[![Repository](https://flat.badgen.net/badge/github/v0.23.0/blue?icon=git)](https://github.com/andamira/devela)
+[![Repository](https://flat.badgen.net/badge/github/v0.24.0/blue?icon=git)](https://github.com/andamira/devela)
 [![MSRV ahead 1.88.0](https://flat.badgen.net/badge/MSRV/1.88.0/blue)](https://releases.rs/docs/1.88.0/)
 [![Documentation ahead](https://flat.badgen.net/badge/docs/250802/blue)](https://andamira.github.io/libera/doc/devela/)
 &nbsp;<sup>←unpublished</sup>
 
 ---
-
-> A cohesive development layer
 
 > A cohesive development layer<br/>
 > A growing toolkit for creative coding<br/>
@@ -26,10 +24,9 @@ where code and craft fuse to a circled square
 
 ## Features
 
-Features are grouped into categories, enabling modular, orthogonal development.
-See the [Features Documentation].
+[Features] are grouped into categories, enabling modular and orthogonal development.
 
-[Features Documentation]: https://docs.rs/devela/latest/devela/_info/features/index.html
+[Features]: https://docs.rs/devela/latest/devela/_info/features/index.html
 
 
 ### Dependencies
