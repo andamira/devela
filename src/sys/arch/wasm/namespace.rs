@@ -132,7 +132,7 @@ impl Wasm {
         #[cfg(target_family = "wasm")]
         {
             let result = memory_grow(0, delta);
-            return if result == usize::MAX { None } else { Some(result) };
+            if result == usize::MAX { None } else { Some(result) }
         }
         #[cfg(not(target_family = "wasm"))]
         None

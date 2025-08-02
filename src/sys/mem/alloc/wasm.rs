@@ -5,7 +5,7 @@
 
 use crate::{GlobalAlloc, MemLayout, Ptr};
 #[cfg(target_arch = "wasm32")]
-use crate::{Mem, NonZero, NonZeroUsize, Wasm};
+use crate::{Mem, NonZeroUsize, Wasm};
 
 #[doc = crate::TAG_ALLOCATOR!()]
 /// A WebAssembly global memory allocator that uses a bump allocation strategy.
@@ -73,6 +73,7 @@ static mut WASM_ALLOC_STATE: Option<(NonZeroUsize, usize)> = None;
 ///
 /// Returns `None` if allocation fails (cannot grow memory or layout is invalid).
 #[cfg(target_arch = "wasm32")]
+#[allow(clippy::deref_addrof, reason = "safe reference to static mut")]
 unsafe fn alloc_impl(layout: MemLayout) -> Option<*mut u8> {
     // SAFETY: Single-threaded WASM, the static is only referenced here, the function not reentrant.
     // https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-references.html#safe-references
@@ -80,7 +81,7 @@ unsafe fn alloc_impl(layout: MemLayout) -> Option<*mut u8> {
     let (neg_offset, neg_bound) = state_ref.get_or_insert_with(|| {
         let bound = Wasm::PAGE_BYTES * Wasm::memory_pages() - 1;
         (
-            unsafe { NonZero::new_unchecked(Wasm::heap_base().wrapping_neg()) },
+            unsafe { NonZeroUsize::new_unchecked(Wasm::heap_base().wrapping_neg()) },
             bound.wrapping_neg(),
         )
     });
@@ -92,10 +93,10 @@ unsafe fn alloc_impl(layout: MemLayout) -> Option<*mut u8> {
     let bytes_needed = neg_bound.saturating_sub(next_neg_offset + 1);
     if bytes_needed != 0 {
         let pages_needed = 1 + (bytes_needed - 1) / Wasm::PAGE_BYTES;
-        Wasm::memory_grow_checked(pages_needed - 1)?;
+        Wasm::memory_grow_checked(pages_needed)?;
         *neg_bound -= Wasm::PAGE_BYTES * pages_needed;
     }
     // Update state and return the allocated pointer
-    *neg_offset = unsafe { NonZero::new_unchecked(next_neg_offset) };
+    *neg_offset = unsafe { NonZeroUsize::new_unchecked(next_neg_offset) };
     Some(neg_aligned.wrapping_neg() as *mut u8)
 }
