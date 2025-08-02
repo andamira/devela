@@ -8,8 +8,12 @@
 
 # In sync with .cargo/config.toml & utils/cargo-native
 rustdocflags = [
-	"--cfg", "nightly_doc",
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./config/rustdoc-header.html",
 	"-Zunstable-options", "--generate-link-to-definition",
+]
+rustflags = [
+	# "--cfg", "nightly_doc",
+	"--cfg", "nightly",
+	"-Ctarget-cpu=native", # see also: ../utils/cargo-native
 ]
