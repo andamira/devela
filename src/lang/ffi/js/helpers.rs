@@ -1,9 +1,9 @@
 // devela::lang::ffi::js::helpers
 //
-//! Defines internal JS helpers: [`js_doc!`], [`_js_extern!`], [`_js_method_str_alloc!`].
+//! Defines internal JS helpers: [`_js_doc!`], [`_js_extern!`], [`_js_method_str_alloc!`].
 //
 // TOC
-// - js_doc!
+// - _js_doc!
 // - _js_method_str_alloc!
 // - _js_extern!
 
@@ -26,7 +26,7 @@ macro_rules! _js_doc {
         "](https://developer.mozilla.org/en-US/docs/Web/API/console/",
         $method, "_static))"] };
 }
-pub(crate) use _js_doc as js_doc;
+pub(crate) use _js_doc;
 
 /// Helps re-exporting javascript functions.
 ///
@@ -98,6 +98,7 @@ macro_rules! _js_extern {
 #[rustfmt::skip]
 #[cfg(any(not(feature = "unsafe_ffi"), windows))]
 macro_rules! _js_extern { ($($tt:tt)*) => {}; }
+
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 pub(crate) use _js_extern;
 
@@ -111,19 +112,19 @@ pub(crate) use _js_extern;
 /// The following code
 /// ```ignore
 /// _js_method_buf_string! {
-///     #[doc = js_doc!("Window", "name")]
+///     #[doc = _js_doc!("Window", "name")]
 ///     /// Returns the window name.
 ///     name, window_name
 /// }
 /// ```
 /// would produce:
 /// ```ignore
-/// #[doc = js_doc!("Window", "name")]
+/// #[doc = _js_doc!("Window", "name")]
 /// /// Returns the window name.
 /// pub fn name(buffer: &mut [u8]) -> &str {
 ///     Js::read_str(buffer, |ptr, len| unsafe { window_name(ptr, len) }) }
 ///
-/// #[doc = js_doc!("Window", "name")]
+/// #[doc = _js_doc!("Window", "name")]
 /// /// Returns the window name.
 /// #[cfg(feature = "alloc")]
 /// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]

@@ -3,9 +3,9 @@
 //! Defines [`WebDocument`], [`WebElement`], [`WebElementIter`].
 //
 
+use devela::_js_doc;
 #[cfg(feature = "alloc")]
 use devela::String;
-use devela::js_doc;
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{_js_extern, _js_method_str_alloc, Js, js_bool, js_int32, js_uint32};
 
@@ -22,20 +22,20 @@ pub struct WebDocument;
 impl WebDocument {
     /* flags */
 
-    #[doc = js_doc!("Document", "compatMode")]
+    #[doc = _js_doc!("Document", "compatMode")]
     /// Returns `true` if the browser is in no-quirks mode, ("CSS1Compat") or `false` otherwise.
     ///
     /// - <https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Quirks_mode_and_standards_mode>
     pub fn is_compat_mode() -> js_bool { document_is_compat_mode() }
 
-    #[doc = js_doc!("Document", "hidden")]
+    #[doc = _js_doc!("Document", "hidden")]
     /// Whether the current document is hidden.
     pub fn is_hidden() -> js_bool { document_is_hidden() }
 
     /* */
 
     _js_method_str_alloc! {
-        #[doc = js_doc!("Document", "contentType")]
+        #[doc = _js_doc!("Document", "contentType")]
         /// Returns the document's content type.
         content_type, document_content_type
     }

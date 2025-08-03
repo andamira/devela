@@ -8,10 +8,9 @@ use devela::_js_extern;
 #[cfg(feature = "unsafe_ffi")]
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
-    Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebDocument,
+    _js_doc, Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebDocument,
     WebEventKind, WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWindow,
-    WebWorker, WebWorkerError, WebWorkerJob, js_bool, js_doc, js_int32, js_number, js_uint32,
-    transmute,
+    WebWorker, WebWorkerError, WebWorkerJob, js_bool, js_int32, js_number, js_uint32, transmute,
 };
 #[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
 use devela::{String, Vec, vec_ as vec};
@@ -45,15 +44,15 @@ pub struct Web;
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = js_doc!("Window")]
-    #[doc = js_doc!("Screen")]
+    #[doc = _js_doc!("Window")]
+    #[doc = _js_doc!("Screen")]
     /// Returns the handle to the browser's global [Window] and [Screen] associated APIs.
     ///
     /// [Window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
     /// [Screen]: https://developer.mozilla.org/en-US/docs/Web/API/Window/screen
     pub fn window() -> WebWindow { WebWindow }
 
-    #[doc = js_doc!("Document")]
+    #[doc = _js_doc!("Document")]
     /// Handle to the brower's global [Document] associated APIs.
     ///
     /// [Document]: https://developer.mozilla.org/en-US/docs/Web/API/Document
@@ -72,7 +71,7 @@ impl Web {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = js_doc!("EventTarget", "addEventListener")]
+    #[doc = _js_doc!("EventTarget", "addEventListener")]
     /// Attaches a Rust function `event` listener from an `element`.
     pub fn event_add_listener(element: &str, event: WebEventKind, rust_fn: extern "C" fn()) {
         unsafe {
@@ -80,7 +79,7 @@ impl Web {
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
         }
     }
-    #[doc = js_doc!("EventTarget", "removeEventListener")]
+    #[doc = _js_doc!("EventTarget", "removeEventListener")]
     /// Removes a a Rust function `event` listener from an `element`.
     pub fn event_remove_listener(element: &str, event: WebEventKind, rust_fn: extern "C" fn()) {
         unsafe {
@@ -88,7 +87,7 @@ impl Web {
             event.as_str().as_ptr(), event.as_str().len(), rust_fn as usize);
         }
     }
-    #[doc = js_doc!("EventTarget", "addEventListener")]
+    #[doc = _js_doc!("EventTarget", "addEventListener")]
     /// Attaches a JavaScript function `event` listener on an `element`.
     pub fn event_add_listener_js(element: &str, event: WebEventKind, js_fn_name: &str) {
         unsafe {
@@ -96,7 +95,7 @@ impl Web {
             event.as_str().as_ptr(), event.as_str().len(), js_fn_name.as_ptr(), js_fn_name.len());
         }
     }
-    #[doc = js_doc!("EventTarget", "removeEventListener")]
+    #[doc = _js_doc!("EventTarget", "removeEventListener")]
     /// Removes a JavaScript function `event` listener from an `element`.
     pub fn event_remove_listener_js(element: &str, event: WebEventKind, js_fn_name: &str) {
         unsafe {
@@ -105,7 +104,7 @@ impl Web {
         }
     }
     //
-    #[doc = js_doc!("EventTarget", "addEventListener")]
+    #[doc = _js_doc!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `mouse event` listener on an `element`.
     ///
     /// The callback receives `WebEventMouse` with button, buttons mask, and coordinates.
@@ -118,7 +117,7 @@ impl Web {
                 event.as_str().as_ptr(), event.as_str().len(), callback as usize);
         }
     }
-    #[doc = js_doc!("EventTarget", "addEventListener")]
+    #[doc = _js_doc!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `pointer event` listener on an `element`.
     ///
     /// The callback receives `WebEventPointer` with id, coordinates, and pressure.
@@ -222,42 +221,42 @@ _js_extern! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = js_doc!("History", "back")]
+    #[doc = _js_doc!("History", "back")]
     /// Moves the browser back one step in the session history.
     pub fn history_back() { unsafe { history_back(); } }
 
-    #[doc = js_doc!("History", "forward")]
+    #[doc = _js_doc!("History", "forward")]
     /// Moves the browser forward one step in the session history.
     pub fn history_forward() { unsafe { history_forward(); } }
 
-    #[doc = js_doc!("History", "go")]
+    #[doc = _js_doc!("History", "go")]
     /// Moves the browser to a specific point in the session history.
     /// Use negative values to go back, positive to go forward.
     pub fn history_go(delta: js_int32) { unsafe { history_go(delta); } }
 
-    #[doc = js_doc!("History", "pushState")]
+    #[doc = _js_doc!("History", "pushState")]
     /// Adds an entry to the session history stack.
     pub fn history_push_state(state: &str, title: &str, url: &str) {
         unsafe { history_push_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
             url.as_ptr(), url.len()); }
     }
 
-    #[doc = js_doc!("History", "replaceState")]
+    #[doc = _js_doc!("History", "replaceState")]
     /// Modifies the current history entry without creating a new one.
     pub fn history_replace_state(state: &str, title: &str, url: &str) {
         unsafe { history_replace_state(state.as_ptr(), state.len(), title.as_ptr(), title.len(),
             url.as_ptr(), url.len()); }
     }
 
-    #[doc = js_doc!("Location", "reload")]
+    #[doc = _js_doc!("Location", "reload")]
     /// Reloads the current document.
     pub fn location_reload() { unsafe { location_reload(); } }
 
-    #[doc = js_doc!("Location", "assign")]
+    #[doc = _js_doc!("Location", "assign")]
     /// Loads the specified URL.
     pub fn location_assign(url: &str) { unsafe { location_assign(url.as_ptr(), url.len()); } }
 
-    #[doc = js_doc!("Location", "replace")]
+    #[doc = _js_doc!("Location", "replace")]
     /// Replaces the current document with the given URL,
     /// without creating a new entry in the history.
     pub fn location_replace(url: &str) { unsafe { location_replace(url.as_ptr(), url.len()); } }
@@ -284,7 +283,7 @@ _js_extern! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = js_doc!("Permissions", "query")]
+    #[doc = _js_doc!("Permissions", "query")]
     /// Queries the status of a given permission.
     ///
     /// Returns `Granted`, `Denied`, `Prompt`, or `Unknown` if unsupported.
@@ -313,23 +312,23 @@ impl Web {
     pub fn set_canvas(selector: &str) { unsafe { set_canvas(selector.as_ptr(), selector.len()); } }
 
     /* color settings */
-    #[doc = js_doc!(canvas "fillStyle")]
+    #[doc = _js_doc!(canvas "fillStyle")]
     /// Sets the color or style for filling shapes.
     pub fn fill_style(r: u8, g: u8, b: u8) { fill_style(r, g, b); }
-    #[doc = js_doc!(canvas "strokeStyle")]
+    #[doc = _js_doc!(canvas "strokeStyle")]
     /// Sets the color or style for lines.
     pub fn stroke_style(r: u8, g: u8, b: u8) { stroke_style(r, g, b); }
 
     /* drawing rectangles */
-    #[doc = js_doc!(canvas "fillRect")]
+    #[doc = _js_doc!(canvas "fillRect")]
     /// Draws a filled rectangle.
     pub fn fill_rect(x: js_number, y: js_number, w: js_number, h: js_number)
         { fill_rect(x, y, w, h); }
-    #[doc = js_doc!(canvas "strokeRect")]
+    #[doc = _js_doc!(canvas "strokeRect")]
     /// Draws a rectangular outline.
     pub fn stroke_rect(x: js_number, y: js_number, w: js_number, h: js_number)
         { stroke_rect(x, y, w, h); }
-    #[doc = js_doc!(canvas "clearRect")]
+    #[doc = _js_doc!(canvas "clearRect")]
     /// Clears the specified rectangular area, making it fully transparent.
     pub fn clear_rect(x: js_number, y: js_number, w: js_number, h: js_number)
         { clear_rect(x, y, w, h); }
@@ -343,24 +342,24 @@ impl Web {
         { draw_circle(x, y, radius); }
 
     /* drawing text */
-    #[doc = js_doc!(canvas "fillText")]
+    #[doc = _js_doc!(canvas "fillText")]
     /// Draws filled text at the specified position.
     pub fn fill_text(text: &str, x: js_number, y: js_number) {
         unsafe { fill_text(text.as_ptr(), text.len(), x, y); }
     }
-    #[doc = js_doc!(canvas "strokeText")]
+    #[doc = _js_doc!(canvas "strokeText")]
     /// Draws text outline at the specified position.
     pub fn stroke_text(text: &str, x: js_number, y: js_number) {
         unsafe { stroke_text(text.as_ptr(), text.len(), x, y); }
     }
-    #[doc = js_doc!(canvas "measureText")]
+    #[doc = _js_doc!(canvas "measureText")]
     /// Measures the essential properties of text.
     pub fn measure_text(text: &str) -> JsTextMetrics {
         let (mut metrics, ptr, len) = (JsTextMetrics::default(), text.as_ptr(), text.len());
         unsafe { measure_text(ptr, len, &mut metrics as *mut JsTextMetrics); }
         metrics
     }
-    #[doc = js_doc!(canvas "measureTextFull")]
+    #[doc = _js_doc!(canvas "measureTextFull")]
     /// Measures all available text metrics.
     pub fn measure_text_full(text: &str) -> JsTextMetricsFull {
         let (mut metrics, ptr, len) = (JsTextMetricsFull::default(), text.as_ptr(), text.len());
@@ -402,14 +401,14 @@ _js_extern! {
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
-    #[doc = js_doc!("Performance", "now")]
+    #[doc = _js_doc!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.
     pub fn performance_now() -> JsInstant { JsInstant::from_millis_f64(performance_now()) }
-    #[doc = js_doc!("Performance", "timeOrigin")]
+    #[doc = _js_doc!("Performance", "timeOrigin")]
     /// Retrieves the time origin in milliseconds.
     pub fn performance_time_origin() -> JsInstant {
         JsInstant::from_millis_f64(performance_time_origin()) }
-    #[doc = js_doc!("Performance", "eventCounts")]
+    #[doc = _js_doc!("Performance", "eventCounts")]
     /// Retrieves the count of recorded events.
     pub fn performance_event_count(event: WebEventKind) -> js_uint32 {
         let name = event.as_str();

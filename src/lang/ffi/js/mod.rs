@@ -51,7 +51,7 @@ mod primitives; // js_number, js_int32, js_unit32, js_bool…
 mod text; // JsTextMetrics, JsTextMetricsFull
 mod time; // JsInstant, JsTimeout
 
-mod helpers; // js_doc, js_reexport!
+mod helpers; // _js_doc!, _js_extern!, js_method_str_alloc!
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all
     #[allow(unused)]

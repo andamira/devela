@@ -5,11 +5,11 @@
 
 #[cfg(feature = "time")]
 use crate::TimeDelta;
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+use crate::{_js_doc, WebWindow};
 use crate::{Display, impl_trait};
 #[allow(unused_imports)]
 use crate::{Web, js_number, js_uint32};
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-use crate::{WebWindow, js_doc};
 
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 ///
@@ -89,11 +89,11 @@ impl JsTimeout {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl JsTimeout {
-    #[doc = js_doc!("Window", "setTimeout")]
+    #[doc = _js_doc!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
     pub fn timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> Self {
         WebWindow::set_timeout(callback, delay_ms) }
-    #[doc = js_doc!("Window", "setInterval")]
+    #[doc = _js_doc!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
     pub fn interval(callback: extern "C" fn(), interval_ms: js_uint32) -> Self {
         WebWindow::set_timeout(callback, interval_ms) }
@@ -103,17 +103,17 @@ impl JsTimeout {
     /// - Avoid passing untrusted input, as this executes arbitrary JS.
     /// - Ensure all evaluated code is **safe and controlled**.
     pub fn eval(js_code: &str) { WebWindow::eval(js_code) }
-    #[doc = js_doc!("Window", "setTimeout")]
+    #[doc = _js_doc!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
     pub fn eval_timeout(js_code: &str, delay_ms: js_uint32) -> Self {
         WebWindow::eval_timeout(js_code, delay_ms) }
-    #[doc = js_doc!("Window", "setInterval")]
+    #[doc = _js_doc!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
     pub fn eval_interval(js_code: &str, interval_ms: js_uint32) -> Self {
         WebWindow::eval_interval(js_code, interval_ms) }
 
-    #[doc = js_doc!("Window", "clearTimeout")]
-    #[doc = js_doc!("Window", "clearInterval")]
+    #[doc = _js_doc!("Window", "clearTimeout")]
+    #[doc = _js_doc!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
     pub fn clear(self) { WebWindow::clear_timeout(self); }
 }

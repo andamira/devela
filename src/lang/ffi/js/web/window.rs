@@ -8,12 +8,12 @@
 use devela::Float;
 #[cfg(feature = "alloc")]
 use devela::String;
+use devela::{_js_doc, Distance, Extent, offset_of};
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
     _js_extern, _js_method_str_alloc, Js, JsTimeout, WebDocument, js_bool, js_int32, js_number,
     js_uint32,
 };
-use devela::{Distance, Extent, js_doc, offset_of};
 
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
 ///
@@ -28,57 +28,57 @@ pub struct WebWindow;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWindow {
-    #[doc = js_doc!("Window", "document")]
+    #[doc = _js_doc!("Window", "document")]
     /// Returns the `document` object.
     pub fn document(&self) -> WebDocument { WebDocument }
 
     /// Returns a new up-to-date `WebWindowState`.
     pub fn state() -> WebWindowState { WebWindowState::new() }
 
-    #[doc = js_doc!("Window", "closed")]
+    #[doc = _js_doc!("Window", "closed")]
     /// Whether the current window is closed or not.
     pub fn is_closed() -> js_bool { window_is_closed() }
 
-    #[doc = js_doc!("Window", "crossOriginIsolated")]
+    #[doc = _js_doc!("Window", "crossOriginIsolated")]
     /// Whether the website is in a cross-origin isolation state.
     pub fn is_coi() -> js_bool { window_is_coi() }
 
-    #[doc = js_doc!("Window", "isSecureContext")]
+    #[doc = _js_doc!("Window", "isSecureContext")]
     /// Whether the current [context is secure][0].
     ///
     /// [0]: https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts
     pub fn is_secure() -> js_bool { window_is_secure() }
 
-    #[doc = js_doc!("Window", "locationbar")]
+    #[doc = _js_doc!("Window", "locationbar")]
     /// Whether the window is a popup or not.
     pub fn is_popup() -> js_bool { window_is_popup() }
 
     /* texts */
 
     _js_method_str_alloc! {
-        #[doc = js_doc!("Window", "name")]
+        #[doc = _js_doc!("Window", "name")]
         /// Gets the window name.
         name, window_name
     }
 
-    #[doc = js_doc!("Window", "name")]
+    #[doc = _js_doc!("Window", "name")]
     /// Sets the current window `name`.
     pub fn set_name(name: &str) { unsafe { window_set_name(name.as_ptr(), name.len() as u32); } }
 
     /* timeout */
 
-    #[doc = js_doc!("Window", "setTimeout")]
+    #[doc = _js_doc!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.
     pub fn set_timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> JsTimeout {
         JsTimeout { id: unsafe { window_set_timeout(callback as usize, delay_ms) } } }
 
-    #[doc = js_doc!("Window", "setInterval")]
+    #[doc = _js_doc!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
     pub fn set_interval(callback: extern "C" fn(), interval_ms: js_uint32) -> JsTimeout {
         JsTimeout { id: unsafe { window_set_interval(callback as usize, interval_ms) } } }
 
-    #[doc = js_doc!("Window", "clearTimeout")]
-    #[doc = js_doc!("Window", "clearInterval")]
+    #[doc = _js_doc!("Window", "clearTimeout")]
+    #[doc = _js_doc!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
     pub fn clear_timeout(id: JsTimeout) { window_clear_timeout(id.id); }
 
@@ -90,19 +90,19 @@ impl WebWindow {
     /// - Ensure all evaluated code is **safe and controlled**.
     pub fn eval(js_code: &str) { unsafe { window_eval(js_code.as_ptr(), js_code.len()); } }
 
-    #[doc = js_doc!("Window", "setTimeout")]
+    #[doc = _js_doc!("Window", "setTimeout")]
     /// Executes JavaScript code after a delay in milliseconds.
     pub fn eval_timeout(js_code: &str, delay_ms: js_uint32) -> JsTimeout { JsTimeout {
         id: unsafe { window_eval_timeout(js_code.as_ptr(), js_code.len(), delay_ms) } } }
 
-    #[doc = js_doc!("Window", "setInterval")]
+    #[doc = _js_doc!("Window", "setInterval")]
     /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
     pub fn eval_interval(js_code: &str, interval_ms: js_uint32) -> JsTimeout { JsTimeout {
         id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
 
     /* animation */
 
-    #[doc = js_doc!("Window", "requestAnimationFrame")]
+    #[doc = _js_doc!("Window", "requestAnimationFrame")]
     /// Requests an animation frame, executing the given `callback`.
     pub fn request_animation_frame(callback: extern "C" fn()) -> js_uint32 {
         unsafe { window_request_animation_frame(callback as usize) } }
@@ -144,40 +144,40 @@ _js_extern! {
 #[derive(Clone, Copy, Default, PartialEq)] // manual: Debug
 pub struct WebWindowState {
     /* window */
-    #[doc = js_doc!("Window", "innerWidth")]
-    #[doc = js_doc!("Window", "innerHeight")]
+    #[doc = _js_doc!("Window", "innerWidth")]
+    #[doc = _js_doc!("Window", "innerHeight")]
     /// The extent in pixels of the content of the browser window including any rendered scrollbars.
     pub inner_size: Extent<u32, 2>,
 
-    #[doc = js_doc!("Window", "outerWidth")]
-    #[doc = js_doc!("Window", "outerHeight")]
+    #[doc = _js_doc!("Window", "outerWidth")]
+    #[doc = _js_doc!("Window", "outerHeight")]
     /// The extent in pixels of the outside of the browser window.
     pub outer_size: Extent<u32, 2>,
 
     /* screen */
-    #[doc = js_doc!("Window", "screenLeft")]
-    #[doc = js_doc!("Window", "screenTop")]
+    #[doc = _js_doc!("Window", "screenLeft")]
+    #[doc = _js_doc!("Window", "screenTop")]
     /// The window's offset in pixels from the screen's top-left origin.
     pub screen_offset: Distance<i32, 2>,
 
-    #[doc = js_doc!("Screen", "width")]
-    #[doc = js_doc!("Screen", "height")]
+    #[doc = _js_doc!("Screen", "width")]
+    #[doc = _js_doc!("Screen", "height")]
     /// The extent of the screen in pixels.
     pub screen_size: Extent<u32, 2>,
 
-    #[doc = js_doc!("Screen", "availWidth")]
-    #[doc = js_doc!("Screen", "availHeight")]
+    #[doc = _js_doc!("Screen", "availWidth")]
+    #[doc = _js_doc!("Screen", "availHeight")]
     /// The extent of the screen in pixels, minus user interface features displayed.
     pub screen_usable_size: Extent<u32, 2>,
 
     /* misc. */
-    #[doc = js_doc!("Window", "devicePixelRatio")]
+    #[doc = _js_doc!("Window", "devicePixelRatio")]
     /// The device pixel ratio of the resolution in physical pixels to the resolution in CSS pixels.
     ///
     /// The value changes with the zoom on desktops yet remains static on mobile devices.
     pub dpr: f32,
 
-    #[doc = js_doc!("Screen", "colorDepth")]
+    #[doc = _js_doc!("Screen", "colorDepth")]
     /// The screen color depth, in bits per single pixel. It could be 8, 16, 24, 32 or 64.
     pub bpp: u8,
 
