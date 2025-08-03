@@ -69,8 +69,8 @@ pub extern "C" fn main() {
     window::set_name("sopanum1");
 
     // Alternative methods when getting a string.
-    console::log(fmt![?buf, "  name (buffer): {:?}", window::name_buf(buf2)]);
-    console::log(fmt![?buf, "  name (alloc):  {:?}", window::name()]);
+    console::log(fmt![?buf, "  name:       {:?}", window::name(buf2)]);
+    console::log(fmt![?buf, "  name_alloc: {:?}", window::name_alloc()]);
 
     let window_state = window::state();
     console::debug(fmt![?buf, "  {window_state:?}"]);
@@ -93,7 +93,7 @@ pub extern "C" fn main() {
 
     console::log(fmt![?buf, "  is_compat_mode: {:?}", document::is_compat_mode()]);
     console::log(fmt![?buf, "  is_hidden: {:?}", document::is_hidden()]);
-    console::log(fmt![?buf, "  content_type: {:?}", document::content_type_buf(buf2)]);
+    console::log(fmt![?buf, "  content_type: {:?}", document::content_type(buf2)]);
 
     /* canvas */
 

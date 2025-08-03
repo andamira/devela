@@ -7,7 +7,7 @@
 use devela::String;
 use devela::js_doc;
 #[allow(unused_imports, reason = "not(windows)")]
-use devela::{_js_method_buf_string, Js, js_bool, js_int32, js_reexport, js_uint32};
+use devela::{_js_method_str_alloc, Js, js_bool, js_int32, js_reexport, js_uint32};
 
 /// Handle to the brower's global [Document] associated APIs.
 ///
@@ -34,7 +34,7 @@ impl WebDocument {
 
     /* */
 
-    _js_method_buf_string! {
+    _js_method_str_alloc! {
         #[doc = js_doc!("Document", "contentType")]
         /// Returns the document's content type.
         content_type, document_content_type

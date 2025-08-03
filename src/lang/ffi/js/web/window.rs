@@ -10,7 +10,7 @@ use devela::Float;
 use devela::String;
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
-    _js_method_buf_string, Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexport,
+    _js_method_str_alloc, Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexport,
     js_uint32,
 };
 use devela::{Distance, Extent, js_doc, offset_of};
@@ -55,7 +55,7 @@ impl WebWindow {
 
     /* texts */
 
-    _js_method_buf_string! {
+    _js_method_str_alloc! {
         #[doc = js_doc!("Window", "name")]
         /// Gets the window name.
         name, window_name
