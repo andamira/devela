@@ -28,6 +28,7 @@
 - new doc tag: `TAG_NICHE`.
 
 ## examples
+- new `js_web_worker` example.
 - delete the `niche` example.
 
 ## utils

@@ -52,7 +52,7 @@ impl WebWorker {
 }
 
 /// Errors that can occur when working with JavaScript Web Workers.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum WebWorkerError {
     /// The worker script provided was invalid.
     InvalidScript,

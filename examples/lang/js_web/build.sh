@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela::examples::lang::js_web::build_web.sh
+# devela::examples::lang::js_web::build.sh
 #
 ## install required tools
 # $ apt install jq
@@ -62,5 +62,5 @@ chmod -x "${WEB_DIR}${WASM_NAME}"
 
 
 echo "Done."
-echo "start a server in the ./web directory to see the result. E.g.:"
+echo "start a server in the ./public_html directory to see the result. E.g.:"
 echo "python3 -m http.server --directory public_html"

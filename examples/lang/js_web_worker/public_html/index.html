@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-    <title>Rust Js Web API example</title>
+    <title>Rust Js Web API Workers example</title>
     <script type="module">
       import { initWasm } from "./web_api.js";
-      window.addEventListener("DOMContentLoaded", async () => {
-          window.wasmInstance = await initWasm("js_web.wasm");
-      });
+        window.addEventListener("DOMContentLoaded", async () => {
+            window.wasmInstance = await initWasm("js_web_worker.wasm");
+            console.log("WASM initialized:", window.wasmInstance);
+        });
     </script>
     <style>
       body {background-color: lightgray;}
     </style>
   </head>
   <body>
-    <title>Rust Js Web API example</title>
+    <h1>Rust Js Web API Workers example</h1>
     <p>Please open the browser console (F12 or Ctrl+Shift+I) to see the example output.</p>
-    <canvas id="example_canvas_1" width="500" height="500"></canvas>
   </body>
 </html>
