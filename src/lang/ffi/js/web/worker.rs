@@ -1,6 +1,6 @@
 // devela::lang::ffi::js::web::worker
 //
-//! Defines WebWorker, WebWorkerError, WebWorkerJob.
+//! Defines [`WebWorker`], [`WebWorkerError`], [`WebWorkerJob`].
 //
 // TOC
 // - struct WebWorker
@@ -15,6 +15,7 @@ use crate::{TaskPoll, Web, js_uint32};
 /// A handle to a JavaScript Web Worker.
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
+#[repr(transparent)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WebWorker {
     pub(in crate::lang::ffi::js) id: js_uint32,
@@ -81,15 +82,17 @@ impl WebWorkerJob {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWorkerJob {
-    /// Polls the result of this job.
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn poll(self) -> TaskPoll<Result<String, WebWorkerError>> { Web::worker_poll(self) }
     /// Polls the result of this job and writes it into `buffer`.
     ///
     /// Returns the number of bytes written to the buffer.
-    pub fn poll_buf(self, buffer: &mut [u8]) -> TaskPoll<Result<usize, WebWorkerError>> {
-        Web::worker_poll_buf(self, buffer)
+    pub fn poll(self, buffer: &mut [u8]) -> TaskPoll<Result<usize, WebWorkerError>> {
+        Web::worker_poll(self, buffer)
+    }
+    /// Polls the result of this job.
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    pub fn poll_alloc(self) -> TaskPoll<Result<String, WebWorkerError>> {
+        Web::worker_poll_alloc(self)
     }
     /// Cancels this job.
     pub fn cancel(self) { Web::worker_eval_cancel(self); }

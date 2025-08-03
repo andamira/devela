@@ -413,7 +413,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				return jobId; // Return the generated job ID
 			},
 			// Polls for the evaluation result and writes it into a buffer.
-			worker_poll_buf: (jobId, bufPtr, bufLen) => {
+			worker_poll: (jobId, bufPtr, bufLen) => {
 				if (!wasmApi.api_workers._evalResults.has(jobId)) { return -1; } // not found
 				const result = wasmApi.api_workers._evalResults.get(jobId);
 				if (result === null) { return 0; } // not ready

@@ -467,14 +467,27 @@ impl Web {
         let id = unsafe { worker_eval(worker.id(), js_code.as_ptr(), js_code.len()) };
         WebWorkerJob { worker, id }
     }
+    /// Polls for the result of a JavaScript execution in a worker, and writes it into `buffer`.
+    ///
+    /// If ready, returns the number of bytes written to the buffer.
+    pub fn worker_poll(job: WebWorkerJob, buffer: &mut [u8])
+        -> TaskPoll<Result<usize, WebWorkerError>> {
+        if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
+        let written = unsafe { worker_poll(job.id(), buffer.as_mut_ptr(), buffer.len()) };
+        match written {
+            0 => TaskPoll::Pending,
+            js_uint32::MAX => TaskPoll::Ready(Err(WebWorkerError::JobNotFound)),
+            _ => TaskPoll::Ready(Ok(written as usize)),
+        }
+    }
     /// Polls for the result of a JavaScript execution in a worker.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn worker_poll(job: WebWorkerJob) -> TaskPoll<Result<String, WebWorkerError>> {
+    pub fn worker_poll_alloc(job: WebWorkerJob) -> TaskPoll<Result<String, WebWorkerError>> {
         if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
         let mut first_check = true;
         let result = Js::read_string_capped(128, false, |ptr, cap| {
-            let res = unsafe { worker_poll_buf(job.id(), ptr, cap as usize) as js_int32 };
+            let res = unsafe { worker_poll(job.id(), ptr, cap as usize) as js_int32 };
             if first_check {
                 first_check = false; // Intercept status codes before bothering with decoding
                 if res == 0 { return 0; } else if res == -1 { return -1; } // pending or not found
@@ -484,19 +497,6 @@ impl Web {
         match result.as_str() {
             "" => TaskPoll::Pending, // Covers 0 and -1 (mapped above)
             _ => TaskPoll::Ready(Ok(result)),
-        }
-    }
-    /// Polls for the result of a JavaScript execution in a worker, and writes it into `buffer`.
-    ///
-    /// If ready, returns the number of bytes written to the buffer.
-    pub fn worker_poll_buf(job: WebWorkerJob, buffer: &mut [u8])
-        -> TaskPoll<Result<usize, WebWorkerError>> {
-        if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
-        let written = unsafe { worker_poll_buf(job.id(), buffer.as_mut_ptr(), buffer.len()) };
-        match written {
-            0 => TaskPoll::Pending,
-            js_uint32::MAX => TaskPoll::Ready(Err(WebWorkerError::JobNotFound)),
-            _ => TaskPoll::Ready(Ok(written as usize)),
         }
     }
     /// Cancels an ongoing JavaScript evaluation.
@@ -513,7 +513,7 @@ _js_extern! {
     unsafe fn worker_send_message(worker_id: js_uint32, msg_ptr: *const u8, msg_len: usize);
     unsafe fn worker_eval(worker_id: js_uint32, js_code_ptr: *const u8, js_code_len: usize)
         -> js_uint32;
-    unsafe fn worker_poll_buf(job_id: js_uint32, buffer_ptr: *mut u8, buffer_len: usize)
+    unsafe fn worker_poll(job_id: js_uint32, buffer_ptr: *mut u8, buffer_len: usize)
         -> js_uint32;
     safe fn worker_cancel_eval(job_id: js_uint32);
 }
