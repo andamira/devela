@@ -1,11 +1,11 @@
 // devela::lang::ffi::js::helpers
 //
-//! Defines internal JS helpers: [`js_doc!`], [`js_reexport!`].
+//! Defines internal JS helpers: [`js_doc!`], [`_js_extern!`], [`_js_method_str_alloc!`].
 //
 // TOC
 // - js_doc!
 // - _js_method_str_alloc!
-// - js_reexport!
+// - _js_extern!
 
 /// Helper for Web API doc links.
 #[rustfmt::skip]
@@ -27,6 +27,79 @@ macro_rules! _js_doc {
         $method, "_static))"] };
 }
 pub(crate) use _js_doc as js_doc;
+
+/// Helps re-exporting javascript functions.
+///
+/// # Example
+/// ```ignore
+/// # use devela::_js_extern;
+/// _js_extern! {
+///     [ module: "env" ]
+///     pub safe fn same_fn_name(x: f64, y: f64, w: f64, h: f64);
+///     pub(crate) safe fn "js_fn_name" rust_fn_name(x: f64, y: f64, w: f64, h: f64);
+///     unsafe fn "js_fn" rs_fn(ptr: *const u8, len: usize, x: f64, y: f64);
+/// }
+/// // The previous code generates:
+///
+/// // #[link(wasm_import_module = "env")]
+/// // unsafe extern "C" {
+/// //     pub safe fn same_fn_name(x: f64, y: f64, w: f64, h: f64);
+/// //
+/// //     #[link_name = "js_fn_name"]
+/// //     pub(cate) safe fn rust_fn_name(x: f64, y: f64, w: f64, h: f64);
+/// //
+/// //     #[link_name = "js_fn"]
+/// //     unsafe fn rs_fn(ptr: *const u8, len: usize, x: f64, y: f64);
+/// // }
+/// ```
+///
+/// Use *safe* fn when:
+/// - The function does not perform pointer dereferencing or other memory-unsafe operations.
+/// - It always behaves safely (e.g., a function that just draws to the Canvas API).
+///
+/// Use *unsafe* fn if:
+/// - The function can mutate raw memory (e.g., passing buffers, pointers).
+/// - It performs DOM manipulations that might trigger undefined behavior.
+/// - It can throw exceptions that Rust cannot catch.
+#[rustfmt::skip]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+macro_rules! _js_extern {
+    (
+        // # Args
+        // [            header section
+        // $module:     optional js module name (defaults to "env")
+        // ]
+        // $fn_attrs:   optional attributes and doc comments
+        // $vis:        visibility of the extern function (defaults to private)
+        // safe|unsafe  optional safety specifier (defaults to unsafe)
+        // $js_fn:      optional link_name (different javascript function name)
+        // $fn:         imported rust function name (default same js name)
+
+        [ $(module: $module:literal)? $(,)? ]
+        $(
+            $(#[$fn_attrs:meta])*
+            $vis:vis $(safe$($_s:block)?)? $(unsafe$($_u:block)?)?
+            fn
+            $($js_fn:literal)?
+            $fn:ident
+            ($($param:ident: $param_ty:ty),* $(,)?) $(-> $fn_return:ty)?;
+        )*
+    ) => {
+        $( #[link(wasm_import_module = $module)] )?
+        unsafe extern "C" { $(
+            $(#[$fn_attrs])*
+            $( #[link_name = $js_fn] )?
+            $vis $(safe$($_s)?)? $(unsafe$($_u)?)?
+            fn $fn($($param: $param_ty),*) $(-> $fn_return)?;
+        )* }
+    };
+}
+/// Dummy safe fallback of the real `_js_extern!` macro.
+#[rustfmt::skip]
+#[cfg(any(not(feature = "unsafe_ffi"), windows))]
+macro_rules! _js_extern { ($($tt:tt)*) => {}; }
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+pub(crate) use _js_extern;
 
 /// Helper macro to generate JS methods that return strings.
 ///
@@ -83,77 +156,3 @@ macro_rules! _js_method_str_alloc {
     }};
 }
 pub(crate) use _js_method_str_alloc;
-
-/// Helps re-exporting javascript functions.
-///
-/// # Example
-/// ```ignore
-/// # use devela::js_reexport;
-/// js_reexport! {
-///     [ module: "env" ]
-///     pub safe fn same_fn_name(x: f64, y: f64, w: f64, h: f64);
-///     pub(crate) safe fn "js_fn_name" rust_fn_name(x: f64, y: f64, w: f64, h: f64);
-///     unsafe fn "js_fn" rs_fn(ptr: *const u8, len: usize, x: f64, y: f64);
-/// }
-/// // The previous code generates:
-///
-/// // #[link(wasm_import_module = "env")]
-/// // unsafe extern "C" {
-/// //     pub safe fn same_fn_name(x: f64, y: f64, w: f64, h: f64);
-/// //
-/// //     #[link_name = "js_fn_name"]
-/// //     pub(cate) safe fn rust_fn_name(x: f64, y: f64, w: f64, h: f64);
-/// //
-/// //     #[link_name = "js_fn"]
-/// //     unsafe fn rs_fn(ptr: *const u8, len: usize, x: f64, y: f64);
-/// // }
-/// ```
-///
-/// Use *safe* fn when:
-/// - The function does not perform pointer dereferencing or other memory-unsafe operations.
-/// - It always behaves safely (e.g., a function that just draws to the Canvas API).
-///
-/// Use *unsafe* fn if:
-/// - The function can mutate raw memory (e.g., passing buffers, pointers).
-/// - It performs DOM manipulations that might trigger undefined behavior.
-/// - It can throw exceptions that Rust cannot catch.
-#[rustfmt::skip]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-macro_rules! _js_reexport {
-    (
-        // # Args
-        // [            header section
-        // $module:     optional js module name (defaults to "env")
-        // ]
-        // $fn_attrs:   optional attributes and doc comments
-        // $vis:        visibility of the extern function (defaults to private)
-        // safe|unsafe  optional safety specifier (defaults to unsafe)
-        // $js_fn:      optional link_name (different javascript function name)
-        // $fn:         imported rust function name (default same js name)
-
-        [ $(module: $module:literal)? $(,)? ]
-        $(
-            $(#[$fn_attrs:meta])*
-            $vis:vis $(safe$($_s:block)?)? $(unsafe$($_u:block)?)?
-            fn
-            $($js_fn:literal)?
-            $fn:ident
-            ($($param:ident: $param_ty:ty),* $(,)?) $(-> $fn_return:ty)?;
-        )*
-    ) => {
-        $( #[link(wasm_import_module = $module)] )?
-        unsafe extern "C" { $(
-            $(#[$fn_attrs])*
-            $( #[link_name = $js_fn] )?
-            $vis $(safe$($_s)?)? $(unsafe$($_u)?)?
-            fn $fn($($param: $param_ty),*) $(-> $fn_return)?;
-        )* }
-    };
-}
-/// Dummy safe fallback of the real `_js_reexport!` macro.
-#[rustfmt::skip]
-#[cfg(any(not(feature = "unsafe_ffi"), windows))]
-macro_rules! _js_reexport { ($($tt:tt)*) => {}; }
-
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
-pub(crate) use _js_reexport as js_reexport;

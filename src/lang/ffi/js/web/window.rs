@@ -10,7 +10,7 @@ use devela::Float;
 use devela::String;
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
-    _js_method_str_alloc, Js, JsTimeout, WebDocument, js_bool, js_int32, js_number, js_reexport,
+    _js_extern, _js_method_str_alloc, Js, JsTimeout, WebDocument, js_bool, js_int32, js_number,
     js_uint32,
 };
 use devela::{Distance, Extent, js_doc, offset_of};
@@ -109,7 +109,7 @@ impl WebWindow {
     /// Cancels a request for an animation frame.
     pub fn cancel_animation_frame(id: js_uint32) { window_cancel_animation_frame(id); }
 }
-js_reexport! {
+_js_extern! {
     [module: "api_window"]
     unsafe fn window_state(data: *mut u8);
     safe fn window_is_closed() -> js_bool;

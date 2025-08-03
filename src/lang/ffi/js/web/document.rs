@@ -7,7 +7,7 @@
 use devela::String;
 use devela::js_doc;
 #[allow(unused_imports, reason = "not(windows)")]
-use devela::{_js_method_str_alloc, Js, js_bool, js_int32, js_reexport, js_uint32};
+use devela::{_js_extern, _js_method_str_alloc, Js, js_bool, js_int32, js_uint32};
 
 /// Handle to the brower's global [Document] associated APIs.
 ///
@@ -40,7 +40,7 @@ impl WebDocument {
         content_type, document_content_type
     }
 }
-js_reexport! {
+_js_extern! {
     [module: "api_document"]
     safe fn document_is_compat_mode() -> js_bool;
     safe fn document_is_hidden() -> js_bool;

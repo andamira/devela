@@ -4,7 +4,7 @@
 //! Defines [`Web`] and implements Web API methods.
 //
 
-use devela::js_reexport;
+use devela::_js_extern;
 #[cfg(feature = "unsafe_ffi")]
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
@@ -193,7 +193,7 @@ impl Web {
             etype, time_stamp));
     }
 }
-js_reexport! {
+_js_extern! {
     [ module: "api_events" ]
     unsafe fn "event_addListener" event_add_listener(element_ptr: *const u8,
         element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
@@ -262,7 +262,7 @@ impl Web {
     /// without creating a new entry in the history.
     pub fn location_replace(url: &str) { unsafe { location_replace(url.as_ptr(), url.len()); } }
 }
-js_reexport! {
+_js_extern! {
     [ module: "api_history_location" ]
     unsafe fn history_back();
     unsafe fn history_forward();
@@ -293,7 +293,7 @@ impl Web {
         .into()
     }
 }
-js_reexport! {
+_js_extern! {
     [ module: "api_permissions" ]
     unsafe fn permissions_query(name_ptr: *const u8, name_len: usize) -> js_int32;
 }
@@ -368,7 +368,7 @@ impl Web {
         metrics
     }
 }
-js_reexport! {
+_js_extern! {
     [ module: "api_canvas" ]
     /* misc. */
     unsafe fn set_canvas(str_ptr: *const u8, str_len: usize);
@@ -416,7 +416,7 @@ impl Web {
         unsafe { performance_event_count(name.as_ptr(), name.len()) }
     }
 }
-js_reexport! {
+_js_extern! {
     [ module: "api_performance" ]
     safe fn "now" performance_now() -> js_number;
     safe fn "timeOrigin" performance_time_origin() -> js_number;
@@ -503,7 +503,8 @@ impl Web {
     /// Cancels an ongoing JavaScript evaluation.
     pub fn worker_eval_cancel(job: WebWorkerJob) { worker_cancel_eval(job.id()); }
 }
-js_reexport! { [module: "api_workers"]
+_js_extern! {
+    [module: "api_workers"]
     unsafe fn worker_spawn(script_ptr: *const u8, script_len: usize) -> js_uint32;
     safe fn worker_is_active(worker_id: js_uint32) -> js_bool;
     safe fn worker_stop(worker_id: js_uint32);

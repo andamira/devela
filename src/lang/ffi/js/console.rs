@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports)]
-use devela::{js_doc, js_reexport};
+use devela::{_js_extern, js_doc};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Javascript Console.
@@ -86,8 +86,7 @@ impl JsConsole {
     /// Logs a timer with the given name, started with [`time_log`][Self::time_log].
     pub fn time_log(name: &str) { unsafe { console_time_log(name.as_ptr(), name.len()); } }
 }
-
-js_reexport! {
+_js_extern! {
     [ module: "api_console" ]
     safe fn console_clear();
     unsafe fn console_debug(str_ptr: *const u8, str_len: usize);
