@@ -4,8 +4,8 @@
 //
 // TOC
 // - _js_doc!
-// - _js_method_str_alloc!
 // - _js_extern!
+// - _js_method_str_alloc!
 
 /// Helper for Web API doc links.
 #[rustfmt::skip]

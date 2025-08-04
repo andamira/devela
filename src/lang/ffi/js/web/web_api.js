@@ -5,17 +5,22 @@
 // - config
 // - helpers
 // - bindings
-//   - core
+//   - jsApi:
 //     - console
-//     - document
-//     - events
-//     - history_location
-//     - permissions
-//     - window
-//   - extended
-//     - canvas
-//     - performance
-//     - workers
+//     - object TODO
+//   - webApi:
+//     - core
+//       - document
+//       - element TODO
+//       - events
+//       - history_location
+//       - permissions
+//       - url TODO
+//       - window
+//     - extended
+//       - canvas
+//       - performance
+//       - workers
 
 export async function initWasm(wasmPath, imports = {}) {
 	/* Config */
@@ -81,9 +86,8 @@ export async function initWasm(wasmPath, imports = {}) {
 
 	/* Bindings */
 
-	const wasmApi = {
-		/* Core APIs */
-		api_console: { // Console API
+	const jsApi = {
+		api_console: {
 			console_clear: () => console.clear(),
 			console_debug: (ptr, len) => console.debug(str_decode(ptr, len)),
 			console_error: (ptr, len) => console.error(str_decode(ptr, len)),
@@ -103,14 +107,25 @@ export async function initWasm(wasmPath, imports = {}) {
 			console_time_end: (ptr, len) => console.timeEnd(str_decode(ptr, len)),
 			console_time_log: (ptr, len) => console.timeLog(str_decode(ptr, len)),
 		},
-		api_document: { // Document API
+		api_object: {
+			// TODO
+		},
+	}; // jsApi
+
+	const webApi = {
+		/* Core APIs */
+		api_document: {
 			// flags
 			document_is_compat_mode: () => document.compatMode === "CSS1Compat" ? true : false,
 			document_is_hidden: () => document.hidden,
 			//
 			document_content_type: (ptr, maxLen) => str_encode(document.contentType, ptr, maxLen),
+			// document_create_element: (ptr, len) => document.createElement(str_decode(ptr, len)),
 		},
-		api_events: { // Events API
+		api_element: {
+			// TODO
+		},
+		api_events: {
 			_callbacks: new Map(),
 			// Generic event listener registration
 			event_addListener: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
@@ -274,7 +289,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			window_cancel_animation_frame: (requestId) => { cancelAnimationFrame(requestId); },
 		}, // api_window
 		/* Extended APIs*/
-		api_canvas: { // Canvas API
+		api_canvas: {
 			/* misc. */
 			set_canvas: (ptr, len) => { set_canvas(str_decode(ptr, len)); },
 			/* color settings */
@@ -335,7 +350,7 @@ export async function initWasm(wasmPath, imports = {}) {
 				return performance.eventCounts?.get([eventName]) ?? 0;
 			}
 		},
-		api_workers: { // Workers API
+		api_workers: {
 			_workers: new Map(),      // Map of worker_id -> Worker instance
 			_nextWorkerId: 1,         // Tracks worker IDs
 			_nextJobId: 1,            // Tracks job IDs
@@ -353,32 +368,32 @@ export async function initWasm(wasmPath, imports = {}) {
 					try { worker = new Worker(script); }
 					catch (error) { return 0; }
 				}
-				const wid = wasmApi.api_workers._nextWorkerId++;
-				worker.onmessage = (event) => wasmApi.api_workers._handleMessage(wid, event);
+				const wid = webApi.api_workers._nextWorkerId++;
+				worker.onmessage = (event) => webApi.api_workers._handleMessage(wid, event);
 				worker.onerror = (error) => console.error(`Worker ${wid} error:`, error);
-				wasmApi.api_workers._workers.set(wid, worker);
+				webApi.api_workers._workers.set(wid, worker);
 				return wid;
 			},
 			// Returns `true` if the given worker is active.
-			worker_is_active: (wid) => { return wasmApi.api_workers._workers.has(wid); },
+			worker_is_active: (wid) => { return webApi.api_workers._workers.has(wid); },
 			// Stops a specific worker by ID.
 			worker_stop: (worker_id) => {
-				const worker = wasmApi.api_workers._workers.get(worker_id);
+				const worker = webApi.api_workers._workers.get(worker_id);
 				if (worker) {
 					worker.terminate();
-					wasmApi.api_workers._workers.delete(worker_id);
+					webApi.api_workers._workers.delete(worker_id);
 				}
 			},
 			// Stops all active workers.
 			worker_stop_all: () => {
-				wasmApi.api_workers._workers.forEach(worker => worker.terminate());
-				wasmApi.api_workers._workers.clear();
+				webApi.api_workers._workers.forEach(worker => worker.terminate());
+				webApi.api_workers._workers.clear();
 			},
 			// Returns the number of active workers.
-			worker_list_len: () => { return wasmApi.api_workers._workers.size; },
+			worker_list_len: () => { return webApi.api_workers._workers.size; },
 			// Write worker IDs into the Rust buffer and returns the number of IDs written
 			worker_list: (buf_ptr, buf_len) => {
-				const workers = Array.from(wasmApi.api_workers._workers.keys());
+				const workers = Array.from(webApi.api_workers._workers.keys());
 				const count = Math.min(workers.length, buf_len);
 				const buffer = new Uint32Array(wasm.exports.memory.buffer, buf_ptr, buf_len);
 				for (let i = 0; i < count; i++) {
@@ -389,7 +404,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			// Sends a message to a worker.
 			worker_send_message: (worker_id, msg_ptr, msg_len) => {
 				const message = str_decode(msg_ptr, msg_len);
-				const worker = wasmApi.api_workers._workers.get(worker_id);
+				const worker = webApi.api_workers._workers.get(worker_id);
 				if (!worker) { console.error(`Worker ${worker_id} not found.`); return; }
 				worker.postMessage({ type: "message", message });
 			},
@@ -397,7 +412,7 @@ export async function initWasm(wasmPath, imports = {}) {
 			_handleMessage: (worker_id, event) => {
 				if (event.data.type === "eval_result") {
 					const { jobId, result } = event.data;
-					wasmApi.api_workers._evalResults.set(jobId, result);
+					webApi.api_workers._evalResults.set(jobId, result);
 				} else if (event.data.type === "message_response") {
 					console.log(`Worker ${worker_id} response: ${event.data.message}`); // IMPROVE
 				}
@@ -405,20 +420,20 @@ export async function initWasm(wasmPath, imports = {}) {
 			// Runs JavaScript inside a worker, and returns the JobId or 0 to indicate failure.
 			worker_eval: (worker_id, jsCodePtr, jsCodeLen) => {
 				const jsCode = str_decode(jsCodePtr, jsCodeLen);
-				const worker = wasmApi.api_workers._workers.get(worker_id);
+				const worker = webApi.api_workers._workers.get(worker_id);
 				if (!worker) { console.error(`Worker ${worker_id} not found.`); return 0; }
-				const jobId = wasmApi.api_workers._nextJobId++;
-				wasmApi.api_workers._evalResults.set(jobId, null); // Mark as pending
+				const jobId = webApi.api_workers._nextJobId++;
+				webApi.api_workers._evalResults.set(jobId, null); // Mark as pending
 				worker.postMessage({ type: "eval", jobId, jsCode });
 				return jobId; // Return the generated job ID
 			},
 			// Polls for the evaluation result and writes it into a buffer.
 			worker_poll: (jobId, bufPtr, bufLen) => {
-				if (!wasmApi.api_workers._evalResults.has(jobId)) { return -1; } // not found
-				const result = wasmApi.api_workers._evalResults.get(jobId);
+				if (!webApi.api_workers._evalResults.has(jobId)) { return -1; } // not found
+				const result = webApi.api_workers._evalResults.get(jobId);
 				if (result === null) { return 0; } // not ready
 				console.log(`~~~ Writing result for job ${jobId} to buffer.`);
-				wasmApi.api_workers._evalResults.delete(jobId);
+				webApi.api_workers._evalResults.delete(jobId);
 				const buf = new Uint8Array(wasm.exports.memory.buffer, bufPtr, bufLen);
 				const encoded = new TextEncoder().encode(result);
 				const bytesWritten = Math.min(encoded.length, bufLen);
@@ -426,18 +441,18 @@ export async function initWasm(wasmPath, imports = {}) {
 				return bytesWritten;
 			},
 		},
-	};
+	}; // webApi
 
 	/* Global Namespace Setup */
 
 	// Make Web API modules globally accessible from Rust
-	window.api_events = wasmApi.api_events;
-	window.api_workers = wasmApi.api_workers;
+	window.api_events = webApi.api_events;
+	window.api_workers = webApi.api_workers;
 
 	/* WASM Instantiation */
 
 	// Combine default bindings with additional imports from Rust
-	const finalImports = { ...wasmApi, ...imports };
+	const finalImports = { ...jsApi, ...webApi, ...imports };
 
 	try { // Fetch and instantiate the WebAssembly binary
 		const response = await fetch(wasmPath);

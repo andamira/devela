@@ -7,7 +7,7 @@ use devela::_js_doc;
 #[cfg(feature = "alloc")]
 use devela::String;
 // #[allow(unused_imports, reason = "not(windows)")]
-use devela::{_js_extern, _js_method_str_alloc, Js, WebElement, js_bool, js_int32, js_uint32};
+use devela::{_js_extern, _js_method_str_alloc, WebElement, js_bool, js_int32, js_uint32};
 
 /// Handle to the brower's global [Document] associated APIs.
 ///
