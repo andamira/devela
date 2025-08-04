@@ -43,13 +43,14 @@
 //! While Web Workers enable concurrency, they communicate via message passing
 //! and do not share memory except through `SharedArrayBuffer`.
 
-pub mod web; // Web, ...
+pub mod web; // Web*
 
 mod console; // JsConsole
 mod namespace; // Js
 mod primitives; // js_number, js_int32, js_unit32, js_bool…
 mod text; // JsTextMetrics, JsTextMetricsFull
 mod time; // JsInstant, JsTimeout
+mod value; // JsInstant, JsTimeout
 
 mod helpers; // _js_doc!, _js_extern!, js_method_str_alloc!
 
@@ -60,7 +61,9 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all
     pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{console::*, namespace::*, primitives::*, text::*, time::*};
+        pub use super::{
+            console::*, namespace::*, primitives::*, text::*, time::*, value::*,
+        };
     }
     mod _pub_mods { #![allow(unused)]
        pub use super::web::_all::*;
