@@ -58,6 +58,7 @@ See also
 - 1.??: `·`[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
+- 1.??: `·`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `·`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
@@ -80,7 +81,7 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/129114)
+- 1.??: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) & 129114
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
