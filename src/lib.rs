@@ -64,10 +64,7 @@
     )
 )]
 // #![cfg_attr(all(nightly_stable_1_89, feature = "alloc"), feature())]
-#![cfg_attr(
-    all(nightly_stable_1_89, feature = "std"),
-    feature(file_lock, os_string_pathbuf_leak,)
-)]
+#![cfg_attr(all(nightly_stable_1_89, feature = "std"), feature(file_lock, os_string_pathbuf_leak,))]
 // ----------------------------
 // `nightly_stable_1_90`: core, alloc, std…
 #![cfg_attr(nightly_stable_1_90, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]

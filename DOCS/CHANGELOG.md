@@ -4,7 +4,7 @@
 =======================
 
 ## manifest
-- bump MSRV to 1.88.0.
+- bump MSRV to 1.89.0.
 - convert library to standalone, remove workspace config.
 - bump dependencies:
   - `allocator-api2` → 0.3.
