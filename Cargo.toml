@@ -1100,10 +1100,11 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(nightly_simd)", # portable_simd
 		#
 		# nightly features that should become stable soon enough.
-		"cfg(nightly_stable)", # In sync with ./DOCS/NIGHTLY.md and ./src/lib.rs:
-			"cfg(nightly_stable_1_89)", # 1.89
-			"cfg(nightly_stable_1_90)", # 1.90
-			"cfg(nightly_stable_later)", # 1.??
+		# In sync with: ./src/lib.rs, ./build/features.rs && ./DOCS/NIGHTLY.md.
+		"cfg(nightly_stable)",
+			"cfg(nightly_stable_1_90)",
+			"cfg(nightly_stable_1_91)",
+			"cfg(nightly_stable_later)",
 	#
 	# Auto-enabled reflection flags from ./build/features.rs (36)
 	# --------------------------------------------------------------------------

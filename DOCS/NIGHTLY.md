@@ -21,28 +21,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-
-# 1.89 will be stable on 2025-08-07 ([`nightly_stable_1_89`](https://releases.rs/docs/1.89.0/))
-> - <https://github.com/rust-lang/rust/milestone/133>
-<!-- > - <https://blog.rust-lang.org/2025/08/07/Rust-1.89.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.89.0> -->
-
-- 1.89: ` `[±LoongArch features](https://github.com/rust-lang/rust/pull/135015)
-- 1.89: ` `[Allow storing format_args! in variable](https://github.com/rust-lang/rust/pull/140748)
-- 1.89: `·`[avx512_target_feature](https://github.com/rust-lang/rust/pull/138940)
-- 1.89: `·`[const_array_as_mut_slice](https://github.com/rust-lang/rust/pull/140066)
-- 1.89: `s`[file_lock](https://github.com/rust-lang/rust/pull/136794)
-- 1.89: `·`[keylocker_x86](https://github.com/rust-lang/rust/pull/140766)
-- 1.89: `·`[non_null_from_ref](https://github.com/rust-lang/rust/pull/140511)
-- 1.89: `s`[os_string_pathbuf_leak](https://github.com/rust-lang/rust/pull/137992)
-- 1.89: ` `[remove wasm legacy abi](https://github.com/rust-lang/rust/pull/133952)
-- 1.89: `·`[repr128](https://github.com/rust-lang/rust/pull/138285)
-- 1.89: ` `[resolve_const_param_in_non_trivial_anon_const](https://github.com/rust-lang/rust/pull/142157)
-- 1.89: `·`[result_flattening](https://github.com/rust-lang/rust/pull/141072)
-- 1.89: `·`[sha512_sm_x86](https://github.com/rust-lang/rust/pull/140767)
-- 1.89: ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/138940)
-- 1.89: ` `[unstable: iter_macro](https://github.com/rust-lang/stdarch/pull/1819)
-
 # 1.90 will be stable on 2025-09-18 ([`nightly_stable_1_90`](https://releases.rs/docs/1.90.0/))
 > - <https://github.com/rust-lang/rust/milestone/134>
 <!-- > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0> -->
@@ -52,6 +30,30 @@ See also
 - 1.90: `·`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
 - 1.90: `·`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
 - 1.90: ` `[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
+
+# 1.91 will be stable on 2025-10-30 ([`nightly_stable_1_91`](https://releases.rs/docs/1.91.0/))
+> - <https://github.com/rust-lang/rust/milestone/134>
+<!-- > - <https://blog.rust-lang.org/2025/10/30/Rust-1.91.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.91.0> -->
+
+- 1.91: `·`[const_type_id](https://github.com/rust-lang/rust/pull/144133)
+- 1.91: `s`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
+- 1.91: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
+- 1.91: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
+
+<!--
+
+# 1.92 will be stable on 2025-12-11 ([`nightly_stable_1_92`](https://releases.rs/docs/1.92.0/))
+> - <https://github.com/rust-lang/rust/milestone/134>
+<!-- > - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
+
+# 1.93 will be stable on 2026-01-22 ([`nightly_stable_1_93`](https://releases.rs/docs/1.93.0/))
+> - <https://github.com/rust-lang/rust/milestone/134>
+<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
+
+-->
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -66,7 +68,6 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
-- 1.??: `·`[const_type_id](https://github.com/rust-lang/rust/pull/144133)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
@@ -85,49 +86,46 @@ See also
 - 1.??: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) & 129114
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
-- 1.??: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
-- 1.??: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
 # … may be stable even later
 
-- 1.?? `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
+- 1.??: `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
         = `nightly_allocator` flag
-- 1.?? `D`[autodiff](https://github.com/rust-lang/rust/issues/124509)
+- 1.??: `D`[autodiff](https://github.com/rust-lang/rust/issues/124509)
           `nightly_autodiff` flag
-- 1.?? `F`[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
+- 1.??: `F`[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
         = `nightly_bigint` flag
-- 1.?? ` `[box_into_inner](https://github.com/rust-lang/rust/issues/80437)
-- 1.?? ` `[cfg(accessible(::path::to::thing))](https://github.com/rust-lang/rust/issues/64797)
-- 1.?? ` `[cfg(version(..))](https://github.com/rust-lang/rust/issues/64796)
-- 1.?? ` `[concat_bytes](https://github.com/rust-lang/rust/issues/87555)
-- 1.?? ` `[concat_idents](https://github.com/rust-lang/rust/issues/29599)
-- 1.?? ` `[const_async_blocks](https://github.com/rust-lang/rust/issues/85368)
-- 1.?? ` `[const_closures](https://github.com/rust-lang/rust/issues/106003)
-- 1.?? ` `[const_for](https://github.com/rust-lang/rust/issues/87575)
+- 1.??: ` `[box_into_inner](https://github.com/rust-lang/rust/issues/80437)
+- 1.??: ` `[cfg(accessible(::path::to::thing))](https://github.com/rust-lang/rust/issues/64797)
+- 1.??: ` `[cfg(version(..))](https://github.com/rust-lang/rust/issues/64796)
+- 1.??: ` `[concat_bytes](https://github.com/rust-lang/rust/issues/87555)
+- 1.??: ` `[concat_idents](https://github.com/rust-lang/rust/issues/29599)
+- 1.??: ` `[const_async_blocks](https://github.com/rust-lang/rust/issues/85368)
+- 1.??: ` `[const_closures](https://github.com/rust-lang/rust/issues/106003)
+- 1.??: ` `[const_for](https://github.com/rust-lang/rust/issues/87575)
           (depends on const_trait_impl)
-- 1.?? ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
-- 1.?? ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
-- 1.?? `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
+- 1.??: ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
+- 1.??: ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
+- 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
         = `nightly_coro` flag
-- 1.?? `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
+- 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
         = `nightly_doc` flag
-- 1.?? `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
+- 1.??: `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
         = `nightly_doc` flag
-- 1.?? `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
+- 1.??: `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
         = `nightly_float` flag
-- 1.?? ` `[float_algebraic](https://github.com/rust-lang/rust/issues/136469)
-- 1.?? ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
-- 1.?? ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
-- 1.?? ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
-- 1.?? ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
-- 1.?? ` `[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
-- 1.?? ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
-- 1.?? `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
+- 1.??: ` `[float_algebraic](https://github.com/rust-lang/rust/issues/136469)
+- 1.??: ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
+- 1.??: ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
+- 1.??: ` `[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
+- 1.??: ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
+- 1.??: ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
+- 1.??: `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
         = `nightly_simd` flag
-- 1.?? ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
-- 1.?? ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
+- 1.??: ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
+- 1.??: ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:
 - [local_waker](https://github.com/rust-lang/rust/issues/118959)

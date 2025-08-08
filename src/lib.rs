@@ -49,27 +49,19 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_89`: core, alloc, std…
-#![cfg_attr(
-    nightly_stable_1_89,
-    feature(
-        avx512_target_feature,
-        const_array_as_mut_slice,
-        keylocker_x86,
-        non_null_from_ref,
-        repr128,
-        result_flattening,
-        sha512_sm_x86,
-        // stdarch_x86_avx512, // conflicts when compiling to wasm
-    )
-)]
-// #![cfg_attr(all(nightly_stable_1_89, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_1_89, feature = "std"), feature(file_lock, os_string_pathbuf_leak,))]
-// ----------------------------
 // `nightly_stable_1_90`: core, alloc, std…
 #![cfg_attr(nightly_stable_1_90, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]
 // #![cfg_attr(all(nightly_stable_1_90, feature = "alloc"), feature())]
 #![cfg_attr(all(nightly_stable_1_90, feature = "std"), feature(const_float_round_methods,))]
+// ----------------------------
+// `nightly_stable_1_91`: core, alloc, std…
+#![cfg_attr(
+    nightly_stable_1_91,
+    feature(const_type_id, strict_overflow_ops, unsigned_signed_diff,)
+)]
+// #![cfg_attr(all(nightly_stable_1_91, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_91, feature = "std"), feature(panic_payload_as_str))]
+
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -86,7 +78,6 @@
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
-        const_type_id,
         derive_coerce_pointee,
         fn_align,
         if_let_guard,
@@ -98,10 +89,8 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
-        strict_overflow_ops,
         substr_range,
         unsafe_cell_from_mut,
-        unsigned_signed_diff,
     )
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
