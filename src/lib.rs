@@ -49,9 +49,9 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_next1`: 1.89 core, alloc, std…
+// `nightly_stable_1_89`: core, alloc, std…
 #![cfg_attr(
-    nightly_stable_next1,
+    nightly_stable_1_89,
     feature(
         avx512_target_feature,
         const_array_as_mut_slice,
@@ -63,16 +63,16 @@
         // stdarch_x86_avx512, // conflicts when compiling to wasm
     )
 )]
-// #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_89, feature = "alloc"), feature())]
 #![cfg_attr(
-    all(nightly_stable_next1, feature = "std"),
+    all(nightly_stable_1_89, feature = "std"),
     feature(file_lock, os_string_pathbuf_leak,)
 )]
 // ----------------------------
-// `nightly_stable_next2`: 1.90 core, alloc, std…
-#![cfg_attr(nightly_stable_next2, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]
-// #![cfg_attr(all(nightly_stable_next1, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_next1, feature = "std"), feature(const_float_round_methods,))]
+// `nightly_stable_1_90`: core, alloc, std…
+#![cfg_attr(nightly_stable_1_90, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]
+// #![cfg_attr(all(nightly_stable_1_90, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_1_90, feature = "std"), feature(const_float_round_methods,))]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -96,6 +96,7 @@
         impl_trait_in_assoc_type,
         ip_from,
         isqrt,
+        iter_chain,
         macro_metavar_expr,
         more_qualified_paths,
         offset_of_enum,
@@ -103,6 +104,7 @@
         strict_overflow_ops,
         substr_range,
         unsafe_cell_from_mut,
+        unsigned_signed_diff,
     )
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]

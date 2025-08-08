@@ -3,7 +3,7 @@
 Legend:
 - ` ` = not enabled / can't be enabled
 - `i` = not enabled (incomplete_features).
-- `·` = enabled by non-specific cfg flag (`nightly_[next1|next2|later`)
+- `·` = enabled by non-specific cfg flag (`nightly_stable_[1_89|1_90|later]`)
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
 - `F` = enabled by some specific cfg flag, shown afterwards.
@@ -12,7 +12,7 @@ Legend:
 
 Usage example:
 ```sh
-RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly b
+RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_later" cargo +nightly b
 ```
 
 See also
@@ -22,7 +22,7 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 
-# 1.89 will be stable on 2025-08-07 ([`nightly_stable_next1`](https://releases.rs/docs/1.89.0/))
+# 1.89 will be stable on 2025-08-07 ([`nightly_stable_1_89`](https://releases.rs/docs/1.89.0/))
 > - <https://github.com/rust-lang/rust/milestone/133>
 <!-- > - <https://blog.rust-lang.org/2025/08/07/Rust-1.89.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.89.0> -->
@@ -43,7 +43,7 @@ See also
 - 1.89: ` `[stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/138940)
 - 1.89: ` `[unstable: iter_macro](https://github.com/rust-lang/stdarch/pull/1819)
 
-# 1.90 will be stable on 2025-09-18 ([`nightly_stable_next2`](https://releases.rs/docs/1.90.0/))
+# 1.90 will be stable on 2025-09-18 ([`nightly_stable_1_90`](https://releases.rs/docs/1.90.0/))
 > - <https://github.com/rust-lang/rust/milestone/134>
 <!-- > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.90.0> -->
@@ -75,6 +75,7 @@ See also
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[ip_from](https://github.com/rust-lang/rust/pull/141744)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
+- 1.??: `·`[iter_chain](https://github.com/rust-lang/rust/pull/144963)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
@@ -86,6 +87,7 @@ See also
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
+- 1.??: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
 # … may be stable even later

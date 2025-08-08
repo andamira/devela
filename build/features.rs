@@ -112,6 +112,8 @@ mod reflection {
         cfg_flags: &'a [&'a str],
     }
 
+    // In sync with ./Cargo.toml::lints, ./build/features.rs::flags,
+    // ./src/lib.rs::nightly && ./DOCS/NIGHTLY.md
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
         auto_flags: &[
             // "nightly_autodiff", // FLAG_DISABLED
@@ -119,12 +121,12 @@ mod reflection {
             "nightly_doc", "nightly_float", "nightly_simd",
             //
             "nightly_stable",
-                "nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later",
+                "nightly_stable_1_89", "nightly_stable_1_90", "nightly_stable_later",
         ],
         cfg_flags: &["nightly"],
     };
         pub const FLAGS_NIGHTLY_STABLE: FlagsFlags = FlagsFlags {
-            auto_flags: &["nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"],
+            auto_flags: &["nightly_stable_1_89", "nightly_stable_1_90", "nightly_stable_later"],
             cfg_flags: &["nightly_stable"],
         };
         pub const FLAGS_NIGHTLY_REFLECT: FlagsFlags = FlagsFlags {
@@ -135,7 +137,7 @@ mod reflection {
                 "nightly_doc", "nightly_float", "nightly_simd",
                 //
                 "nightly_stable",
-                    "nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later",
+                    "nightly_stable_1_89", "nightly_stable_1_90", "nightly_stable_later",
             ],
         };
 

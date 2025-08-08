@@ -19,8 +19,11 @@
   - `toml_edit` → 0.23.
   - `tokio` → 1.47.
 - disable dependencies: `sdl3`.
-- disable `nightly_autodiff` flag.
 - remove `std` requirement for optional dependencies: `crossterm`, `pyo3`, `regex_lite`, `sysinfo`.
+
+### cfg flags
+- rename flags: `nightly_stable_next*` to `nightly_stable_1_**` to indicate the exact versions.
+- disable `nightly_autodiff` flag.
 
 ## documentation
 - improve rustdoc header loading, make loading more reliable.

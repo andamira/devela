@@ -68,14 +68,14 @@ include = [
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
 ]
-autoexamples = false
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
 build = "build/mod.rs"
+autoexamples = false
 publish = true
 
 [lib]
-# path = "./src/lib.rs"
+path = "./src/lib.rs"
 bench = false
 
 
@@ -1037,6 +1037,7 @@ unreadable_literal = "warn" #  long integral or float does not contain underscor
 # WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 # redundant_else = "warn" // else blocks that can be removed without changing semantics
 #
+approx_constant = "allow" # floating-point approximating constants
 collapsible_if = "allow" # nested if statements
 empty_docs = "allow" # empty documentation
 doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
@@ -1100,8 +1101,8 @@ check-cfg = [ # Allowed configuration flags:
 		#
 		# nightly features that should become stable soon enough.
 		"cfg(nightly_stable)", # In sync with ./DOCS/NIGHTLY.md and ./src/lib.rs:
-			"cfg(nightly_stable_next1)", # 1.88
-			"cfg(nightly_stable_next2)", # 1.89
+			"cfg(nightly_stable_1_89)", # 1.89
+			"cfg(nightly_stable_1_90)", # 1.90
 			"cfg(nightly_stable_later)", # 1.??
 	#
 	# Auto-enabled reflection flags from ./build/features.rs (36)

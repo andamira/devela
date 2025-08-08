@@ -11,9 +11,10 @@ rustdocflags = [
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./config/rustdoc-header.html",
 	"-Zunstable-options", "--generate-link-to-definition",
+	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
 ]
 rustflags = [
-	# "--cfg", "nightly_doc",
-	"--cfg", "nightly",
-	"-Ctarget-cpu=native", # see also: ../utils/cargo-native
+	"--cfg", "nightly_doc",
+	# "--cfg", "nightly",    # enables all nightly flags
+	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
 ]
