@@ -1,6 +1,6 @@
 // devela::code::result::ext
 //
-//!
+//! Defines the [`ExtResult`] trait.
 //
 
 /// Marker trait to prevent downstream implementations of the [`ExtResult`] trait.

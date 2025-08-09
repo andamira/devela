@@ -1,6 +1,6 @@
 // devela::code::result::option::ext
 //
-//!
+//! Defines the [`ExtOption`] trait.
 //
 
 use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};

@@ -16,9 +16,7 @@ echo -e '#include <sys/syscall.h>' | cpp -dM \
 	| grep '#define __NR_.*[0-9])\?$' \
 	| sed 's/(__NR_SYSCALL_BASE + //' | sed 's/)//' \
 	| cut -d' ' -f 2,3 | cut -d_ -f 4- \
-	| sort -k 1,1 \
+	| sort -k 1,1 # sort by number instead: | sort -g -k 2,1 \
 	| awk '{print "pub const " toupper($1) ": isize = " $2 ";"}' \
 	> "syscall_${TARGET}.rs"
 
-# sort by number instead:
-# | sort -g -k 2,1 \

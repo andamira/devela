@@ -32,7 +32,7 @@ See also
 - 1.90: ` `[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
 
 # 1.91 will be stable on 2025-10-30 ([`nightly_stable_1_91`](https://releases.rs/docs/1.91.0/))
-> - <https://github.com/rust-lang/rust/milestone/134>
+> - <https://github.com/rust-lang/rust/milestone/135>
 <!-- > - <https://blog.rust-lang.org/2025/10/30/Rust-1.91.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.91.0> -->
 
@@ -41,19 +41,16 @@ See also
 - 1.91: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
 - 1.91: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
 
-<!--
-
 # 1.92 will be stable on 2025-12-11 ([`nightly_stable_1_92`](https://releases.rs/docs/1.92.0/))
-> - <https://github.com/rust-lang/rust/milestone/134>
+<!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
 <!-- > - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
 
+
 # 1.93 will be stable on 2026-01-22 ([`nightly_stable_1_93`](https://releases.rs/docs/1.93.0/))
-> - <https://github.com/rust-lang/rust/milestone/134>
+<!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
-
--->
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -86,6 +83,7 @@ See also
 - 1.??: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) & 129114
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
+- 1.??: `·`[duration_constructors_lite](https://github.com/rust-lang/rust/pull/145135)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 

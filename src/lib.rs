@@ -90,6 +90,7 @@
         offset_of_enum,
         offset_of_slice,
         substr_range,
+        duration_constructors_lite,
         unsafe_cell_from_mut,
     )
 )]
