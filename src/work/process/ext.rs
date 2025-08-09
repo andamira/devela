@@ -3,7 +3,7 @@
 //! Defines the [`ExtProcess`] trait.
 //
 
-use crate::Process;
+use crate::{OsStr, Process, ProcessCommand};
 use std::process::{abort, exit, id};
 
 /// Marker trait to prevent downstream implementations of the [`ExtThread`] trait.
@@ -18,6 +18,13 @@ impl Sealed for Process {}
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtProcess: Sealed {
+    /// Constructs a new `ProcessCommand` for launching the `program`.
+    ///
+    /// See `ProcessCommand::`[new][ProcessCommand::new].
+    fn command<S: AsRef<OsStr>>(program: S) -> ProcessCommand {
+        ProcessCommand::new(program)
+    }
+
     /// Terminates the current process in an abnormal fashion.
     ///
     /// See `std::process::`[abort].

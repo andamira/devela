@@ -44,7 +44,7 @@ reexport! { rust: std::sync,
 }
 reexport! { rust: std::sync,
     tag: crate::TAG_RESULT!(),
-    doc: "Returned by [`Barrier::wait()`] when all threads in the Barrier have rendezvoused.",
+    doc: "Returned by [`Barrier::wait()`] when all threads in it have rendezvoused.",
     BarrierWaitResult
 }
 reexport! { rust: std::sync,

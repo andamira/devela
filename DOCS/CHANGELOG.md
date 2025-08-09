@@ -159,4 +159,9 @@
 - delete:
   - types: `LayoutError`, `LayoutResult`.
 
+## work
+### process
+- new `ExtProcess` method `command`.
+
+
 [0.24.0-wip]: https://github.com/andamira/devela/releases/tag/v0.23.0...HEAD
