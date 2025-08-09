@@ -138,6 +138,7 @@
 
 ### mem
 - new `Mem` methods: `align_down`, `align_up`, `is_aligned`, `is_aligned_to`.
+- new `Ptr` methods `nn_*` to construct `PtrNonNull`.
 - remove macros: `addr_of!`, `addr_of_mut!`.
 
 #### alloc

@@ -15,7 +15,7 @@ use crate::{
         slice_from_raw_parts, slice_from_raw_parts_mut, with_exposed_provenance,
         with_exposed_provenance_mut, without_provenance, without_provenance_mut,
     },
-    Hasher, is,
+    Hasher, NonZero, PtrNonNull, is,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]
@@ -370,5 +370,37 @@ impl Ptr {
     pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { write_volatile(dst, src); };
+    }
+}
+
+/// # [`PtrNonNull`] methods
+impl Ptr {
+    /// Creates a new `PtrNonNull` if `ptr` is non-null.
+    #[inline(always)]
+    pub const fn nn_new<T: ?Sized>(ptr: *mut T) -> Option<PtrNonNull<T>> {
+        PtrNonNull::new(ptr)
+    }
+
+    /// Converts a reference to a `PtrNonNull`.
+    #[inline(always)]
+    pub const fn nn_from_ref<T: ?Sized>(r: &T) -> PtrNonNull<T> {
+        PtrNonNull::from_ref(r)
+    }
+
+    /// Converts a mutable reference to a `PtrNonNull`.
+    #[inline(always)]
+    pub const fn nn_from_mut<T: ?Sized>(r: &mut T) -> PtrNonNull<T> {
+        PtrNonNull::from_mut(r)
+    }
+
+    /// Creates a `PtrNonNull` with the given address and no provenance.
+    pub const fn nn_without_provenance<T>(addr: NonZero<usize>) -> PtrNonNull<T> {
+        PtrNonNull::without_provenance(addr)
+    }
+
+    /// Creates a new `PtrNonNull` that is dangling, but well-aligned.
+    #[inline(always)]
+    pub const fn nn_dangling<T>() -> PtrNonNull<T> {
+        PtrNonNull::dangling()
     }
 }
