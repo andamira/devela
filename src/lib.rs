@@ -57,7 +57,7 @@
 // `nightly_stable_1_91`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_91,
-    feature(const_type_id, strict_overflow_ops, unsigned_signed_diff,)
+    feature(const_type_id, duration_constructors_lite, strict_overflow_ops, unsigned_signed_diff,)
 )]
 // #![cfg_attr(all(nightly_stable_1_91, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_91, feature = "std"), feature(panic_payload_as_str))]
@@ -90,7 +90,6 @@
         offset_of_enum,
         offset_of_slice,
         substr_range,
-        duration_constructors_lite,
         unsafe_cell_from_mut,
     )
 )]
