@@ -5,6 +5,7 @@
 =======================
 
 ## manifest
+- bump MSRV to 1.89.0.
 - bump dependencies:
   - `proc-macro2` → 1.0.95
   - `quote` → 1.0.40

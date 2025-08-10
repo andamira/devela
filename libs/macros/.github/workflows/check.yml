@@ -82,7 +82,7 @@ jobs:
     # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
     strategy:
       matrix:
-        msrv: [1.72.1] # sync with ../../{README.md, Cargo.toml, check.sh}
+        msrv: [1.89.0] # sync with ../../{check.sh, Cargo.toml, README.md}
     steps:
       - name: "checkout"
         uses: actions/checkout@v3

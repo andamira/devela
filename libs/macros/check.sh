@@ -4,7 +4,7 @@
 
 set -e # stops on error
 
-MSRV="1.72.1" # in sync with ./Cargo.toml & .github/workflows/check.yml
+MSRV="1.89.0" # in sync with .github/workflows/check.yml, Cargo.toml, README.md
 RCMD="rustup -v run $MSRV"
 
 rustup override set $MSRV
