@@ -16,4 +16,4 @@ cmd="$RCMD cargo c"; echo "check\n$ " $cmd; $cmd
 cmd="$RCMD cargo t"; echo "tests\n$" $cmd; $cmd
 
 # docs
-cmd="cargo +nightly nd"; echo "docs\n$" $cmd; $cmd
+cmd="cargo +nightly d"; echo "docs\n$" $cmd; $cmd

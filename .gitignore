@@ -1,6 +1,3 @@
 /target
-/Cargo.lock
-/macros
-/tools/*.rs
-/tools/*.txt
-/examples/lang/js_web_api/web/*
+Cargo.lock
+/examples/lang/*/public_html/*

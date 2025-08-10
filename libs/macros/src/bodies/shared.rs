@@ -13,7 +13,7 @@ use alloc::{
     string::{String, ToString},
     vec::Vec,
 };
-use core::iter::{once, Peekable};
+use core::iter::{Peekable, once};
 use proc_macro2::{TokenStream as TokenStream2, TokenTree};
 
 /// Argument parser that correctly deals with nested arguments with commas.
@@ -21,7 +21,7 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
     let mut args = Vec::new();
     let (mut start, mut level) = (0, 0);
 
-    for (i, ch) in arg.chars().enumerate() {
+    for (i, ch) in arg.char_indices() {
         match ch {
             '(' => level += 1,
             ')' => level -= 1,
@@ -299,11 +299,7 @@ pub(crate) fn parse_int(iter: &mut Peekable<impl Iterator<Item = TokenTree>>) ->
         other => panic!("Expected integer literal, found {:?}", other),
     };
 
-    if is_negative {
-        -value
-    } else {
-        value
-    }
+    if is_negative { -value } else { value }
 }
 
 /// Parses visibility.

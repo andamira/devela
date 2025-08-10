@@ -23,11 +23,7 @@ pub(crate) fn body_cif(input: TokenStream) -> TokenStream {
 }
 
 pub(crate) fn body_compile(args: TokenStream, input: TokenStream) -> TokenStream {
-    if compile_eval(args.to_string()) {
-        input
-    } else {
-        TokenStream::new()
-    }
+    if compile_eval(args.to_string()) { input } else { TokenStream::new() }
 }
 
 pub(crate) fn body_compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {

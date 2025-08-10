@@ -1,18 +1,16 @@
-# ==============================================================================
-# https://doc.rust-lang.org/cargo/reference/manifest.html
-#
-## TOC
+## Table of Contents
 #
 # * [package]
 # * [lib]
 #
 # * [features]
-#   - miscellaneous
-#   - environment          (std,alloc,no_std)
-#   - safety               (safe,unsafe,safest)
-#   - nightly
-#   - capability
-#   - dependencies
+#   - Environment       (std,alloc,no_std)
+#   - Safety            (safe,unsafe,safest)
+#   - Nightly
+#   - Capability
+#     - default
+#     - docs
+#   - Dependency
 #
 # * [dependencies]
 #
@@ -30,11 +28,12 @@
 [package]
 name = "devela_macros"
 description = "procedural macros for devela"
-version = "0.12.1"
-edition = "2021"
+version = "0.13.0-wip"
 rust-version = "1.89.0" # sync with .github/workflows/check.yml, check.sh, README.md
+edition = "2021"
+resolver = "3"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
-repository = "https://github.com/andamira/devela_macros"
+repository = "https://github.com/andamira/devela/tree/main/libs/macros"
 documentation = "https://docs.rs/devela_macros"
 license = "MIT OR Apache-2.0"
 include = [
@@ -46,9 +45,11 @@ include = [
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
+autopublish = false
 publish = true
 
 [lib]
+path = "./src/lib.rs"
 proc-macro = true
 
 
@@ -57,18 +58,21 @@ proc-macro = true
 
 #* Environment features *#
 # ------------------------------------------------------------------------------
-std = ["alloc"]
 alloc = []
+std = ["alloc"]
+
 
 #* Safety features *#
 # ------------------------------------------------------------------------------
 unsafe = [] # enables unsafe features in this crate (unused)
 safe = [] # forbids `unsafe` in this crate
 
+
 #* Nightly features *#
 # ------------------------------------------------------------------------------
 nightly = ["nightly_doc"]
 	nightly_doc = [] # doc_cfg
+
 
 #* Capability features *#
 # ------------------------------------------------------------------------------
@@ -76,6 +80,7 @@ default = ["std", "safe"]
 
 #* docs capabilities *#
 _docsrs = ["nightly", "std", "unsafe", "dep_hashbrown"] # complete documentation
+
 
 #* Dependency features *#
 # ------------------------------------------------------------------------------
