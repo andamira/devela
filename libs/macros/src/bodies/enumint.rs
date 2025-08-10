@@ -1,9 +1,7 @@
-// devela_macros::bodies::niche
+// devela_macros::bodies::enumint
 //
-//! Bodies related to niche optimizations.
+//! The body of [`enumint!`][crate::enumint].
 //
-// TOC
-// - enumint
 
 use super::shared::{expect_punct, parse_int, parse_visibility};
 use alloc::{format, string::ToString, vec::Vec};

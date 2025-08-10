@@ -1,20 +1,21 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog], and this project adheres to
-[Semantic Versioning].
+[0.13.0-wip] unreleased
+=======================
 
-## [0.13.0] - (TBD)
 
-## [0.12.1] - 2025-01-07
+[0.12.1] - 2025-01-07
+=====================
 
 - new macro `field_of`.
 - make `std` a default feature.
 - remove `hashbrown` from default features.
 - remove inline attributes.
 
-## [0.12.0] - 2024-12-01
+
+[0.12.0] - 2024-12-01
+=====================
 
 - add `hashbrown` optional dependency.
 - replace `std` with `dep_hashbrown` in `default` feature.
@@ -23,7 +24,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - improve parsing resiliency of `enumint`.
 - remove feature `__lints`.
 
-## [0.11.0] - 2024-10-14
+
+[0.11.0] - 2024-10-14
+=====================
 
 ### Changed
 - rename feature `docsrs` to `_docsrs`.
@@ -42,7 +45,9 @@ The format is based on [Keep a Changelog], and this project adheres to
   - reformat crate.
 - update CI.
 
-## [0.10.0] - 2024-04-16
+
+[0.10.0] - 2024-04-16
+=====================
 
 ### Changed
 - conditional compilation macros now panic when encountering an unrecognized compilation predicate, instead of returning `false`.
@@ -55,7 +60,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Fixed
 - add missing `alloc` feature gate attribute.
 
-## [0.9.0] - 2024-02-26
+
+[0.9.0] - 2024-02-26
+====================
 
 ### Added
 - add macros: `ident_total`, `ident_unique`, `ident_total_unique`.
@@ -67,7 +74,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Removed
 - remove features: `safest`, `unsafest`.
 
-## [0.8.0] - 2024-01-15
+
+[0.8.0] - 2024-01-15
+====================
 
 ### Added
 - new `compile_doc` attribute macro.
@@ -83,7 +92,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Fixed
 - fixed warnings.
 
-## [0.7.1] - 2023-12-11
+
+[0.7.1] - 2023-12-11
+====================
 
 ### Added
 - new `coalesce` macro.
@@ -91,7 +102,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 - make `cif` example standalone.
 
-## [0.7.0] - 2023-10-07
+
+[0.7.0] - 2023-10-07
+====================
 
 ### Changed
 - update MSRV to `1.72.1`.
@@ -102,12 +115,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update keywords.
 - update docs.
 
-## [0.6.1] - 2023-09-02
+
+[0.6.1] - 2023-09-02
+====================
 
 ### Added
 - add binary number comparisons: `ge`, `gt`, `le`, `lt`
 
-## [0.6.0] - 2023-08-29
+
+[0.6.0] - 2023-08-29
+====================
 
 ### Added
 - new features `alloc`, `std`, `safe`, `safest`, `unsafe`, `unsafest` and `nightly`.
@@ -125,7 +142,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update CI and readme.
 - improve docs and tests.
 
-## [0.5.0] - 2023-08-23
+
+[0.5.0] - 2023-08-23
+====================
 
 ### Added
 - add category `depevelopment-tools::procedural-macro-helpers`.
@@ -139,7 +158,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update documentation.
 - new feature `nightly_docs`.
 
-## [0.4.0] - 2023-08-20
+
+[0.4.0] - 2023-08-20
+====================
 
 ### Added
 - new argument wrapper modifiers for the `compile` macro:
@@ -155,7 +176,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Fixed
 - update manifest repository key.
 
-## [0.3.1] - 2023-08-06
+
+[0.3.1] - 2023-08-06
+====================
 
 ### Added
 - add MSRV to readme.
@@ -164,13 +187,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Fixed
 - update manifest repository key.
 
-## [0.3.0] - 2023-05-09
+
+[0.3.0] - 2023-05-09
+====================
 
 ### Added
 - add add the `not()` argument wrapper modifier to the `compile` macro.
 - update docs, examples and licenses.
 
-## [0.2.0] - 2023-05-07
+
+[0.2.0] - 2023-05-07
+====================
 
 ### Added
 - add docs and examples.
@@ -178,7 +205,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 - rename `include_block` macro to `compile`.
 
-## [0.1.0] - 2023-05-07
+
+[0.1.0] - 2023-05-07
+====================
 
 ### Added
 - new attribute macro `include_block`.

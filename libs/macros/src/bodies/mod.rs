@@ -10,8 +10,8 @@ crate::items! {
 
     mod shared;
 
-    mod compile;
+    mod compile; // cif, compile[_attr|_doc]
+    mod enumint; // enumint
     mod ident;
-    mod niche;
-    pub(crate) use {compile::*, ident::*, niche::*};
+    pub(crate) use {compile::*, enumint::*, ident::*};
 }

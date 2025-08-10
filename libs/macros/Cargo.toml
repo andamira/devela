@@ -52,12 +52,8 @@ publish = true
 proc-macro = true
 
 
-[features] # # 9/300 (291 remaining), 8 visible, 1 hidden
+[features] # 9/300 (291 remaining), 8 visible, 1 hidden
 # ==============================================================================
-
-#* Miscellaneous features *#
-# ------------------------------------------------------------------------------
-default = ["std", "safe"]
 
 #* Environment features *#
 # ------------------------------------------------------------------------------
@@ -76,10 +72,13 @@ nightly = ["nightly_doc"]
 
 #* Capability features *#
 # ------------------------------------------------------------------------------
-# The most complete version of the documentation:
-_docsrs = ["nightly", "std", "unsafe", "dep_hashbrown"]
+default = ["std", "safe"]
 
-# dependencies
+#* docs capabilities *#
+_docsrs = ["nightly", "std", "unsafe", "dep_hashbrown"] # complete documentation
+
+#* Dependency features *#
+# ------------------------------------------------------------------------------
 dep_hashbrown = ["dep:hashbrown", "alloc"]
 
 
@@ -105,6 +104,7 @@ features = ["_docsrs"]
 [badges]
 # ==============================================================================
 maintenance = { status = "experimental" }
+
 
 # examples
 # ==============================================================================

@@ -31,7 +31,7 @@ extern crate alloc;
 
 extern crate proc_macro;
 #[cfg(feature = "alloc")]
-use proc_macro::TokenStream;
+use proc_macro::TokenStream as TS;
 
 #[cfg(feature = "dep_hashbrown")]
 use hashbrown::HashSet;
@@ -45,68 +45,43 @@ use bodies::*;
 /* inner helpers */
 
 // Allows a group of items to share the same cfg options.
-#[allow(unused_macros)]
-macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
-#[allow(unused_imports)]
-use items;
+#[allow(unused_macros)] #[rustfmt::skip] macro_rules! items { ($($item:item)*) => { $($item)* }; }
+items! { #[allow(unused_imports)] use items; }
 
 /* macros: compile */
 
 /// Evaluates to either a `true` of `false` literal based on the
 /// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
-/// # Examples
-/// ```
-#[doc = include_str!("../examples/cif.rs")]
-/// ```
-#[proc_macro]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub fn cif(input: TokenStream) -> TokenStream {
-    body_cif(input)
-}
+#[doc = concat!("# Example\n```\n", include_str!("../examples/cif.rs"), "\n```")]
+#[proc_macro] #[rustfmt::skip]
+#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn cif(input: TS) -> TS { body_cif(input) }
 
 /// Conditionally compiles the thing it is attached to based on the
 /// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
-/// # Examples
-/// ```
-#[doc = include_str!("../examples/compile.rs")]
-/// ```
-#[proc_macro_attribute]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub fn compile(args: TokenStream, input: TokenStream) -> TokenStream {
-    body_compile(args, input)
-}
+#[doc = concat!("# Example\n```\n", include_str!("../examples/compile.rs"), "\n```")]
+#[proc_macro_attribute] #[rustfmt::skip]
+#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn compile(args: TS, input: TS) -> TS { body_compile(args, input) }
 
 /// Conditionally compiles the given attributes based on the
 /// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
-/// # Examples
-/// ```
-#[doc = include_str!("../examples/compile_attr.rs")]
-/// ```
-#[proc_macro_attribute]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
-    body_compile_attr(args, input)
-}
+#[doc = concat!("# Example\n```\n", include_str!("../examples/compile_attr.rs"), "\n```")]
+#[proc_macro_attribute] #[rustfmt::skip]
+#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) }
 
 /// Conditionally compiles each doc comment based on the
 /// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
-/// # Examples
-/// ```
-#[doc = include_str!("../examples/compile_doc.rs")]
-/// ```
-#[proc_macro_attribute]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+///
+#[doc = concat!("# Example\n```\n", include_str!("../examples/compile_doc.rs"), "\n```")]
 #[doc(hidden)]
-pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
-    body_compile_doc(args, input)
-}
+#[proc_macro_attribute] #[rustfmt::skip]
+#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
 
 /* macros: ident */
 
@@ -117,16 +92,10 @@ pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
 /// This macro is inspired by the SQL `COALESCE` function, which returns the first
 /// non-null value from a list of arguments, or null if all the arguments are null.
 ///
-/// # Examples
-/// ```
-#[doc = include_str!("../examples/coalesce.rs")]
-/// ```
-#[proc_macro]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub fn coalesce(input: TokenStream) -> TokenStream {
-    body_coalesce(input)
-}
+#[doc = concat!("# Example\n```\n", include_str!("../examples/coalesce.rs"), "\n```")]
+#[proc_macro] #[rustfmt::skip]
+#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 
 /// Returns the total number of [identifiers] in its input.
 ///
@@ -138,16 +107,14 @@ pub fn coalesce(input: TokenStream) -> TokenStream {
 ///
 /// See also [`ident_unique!`], [`ident_total_unique!`].
 ///
-/// # Examples
+/// # Example
 /// ```
 /// # use devela_macros::ident_total;
 /// assert_eq![ident_total!(a, a 東 r#true; a3 != 3a), 5];
 /// ```
-#[proc_macro]
+#[proc_macro] #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-pub fn ident_total(input: TokenStream) -> TokenStream {
-    body_ident_total(input)
-}
+pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 
 /// Returns the numbers of both *total* and *unique* [identifiers] in its input.
 ///
@@ -159,17 +126,15 @@ pub fn ident_total(input: TokenStream) -> TokenStream {
 ///
 /// See also [`ident_total!`], [`ident_unique!`].
 ///
-/// # Examples
+/// # Example
 /// ```
 /// # use devela_macros::ident_total_unique;
 /// assert_eq![ident_total_unique!(a, a 東 r#true; a3 != 3a), [5, 4]];
 /// ```
-#[proc_macro]
+#[proc_macro] #[rustfmt::skip]
 #[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
-pub fn ident_total_unique(input: TokenStream) -> TokenStream {
-    body_ident_total_unique(input)
-}
+pub fn ident_total_unique(input: TS) -> TS { body_ident_total_unique(input) }
 
 /// Returns the number of *unique* [identifiers] in its input.
 ///
@@ -181,17 +146,15 @@ pub fn ident_total_unique(input: TokenStream) -> TokenStream {
 ///
 /// See also [`ident_total!`], [`ident_total_unique!`].
 ///
-/// # Examples
+/// # Example
 /// ```
 /// # use devela_macros::ident_unique;
 /// assert_eq![ident_unique!(a, a 東 r#true; a3 != 3a), 4];
 /// ```
-#[proc_macro]
+#[proc_macro] #[rustfmt::skip]
 #[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
-pub fn ident_unique(input: TokenStream) -> TokenStream {
-    body_ident_unique(input)
-}
+pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 
 /// Generates an expression for accessing a field of a tuple or struct.
 ///
@@ -211,12 +174,9 @@ pub fn ident_unique(input: TokenStream) -> TokenStream {
 /// let value = field_of!(my_struct, y); // expands to `my_struct.y`
 /// assert_eq!(value, 20);
 /// ```
-#[proc_macro]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub fn field_of(input: TokenStream) -> TokenStream {
-    body_field_of(input)
-}
+#[proc_macro] #[rustfmt::skip]
+#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn field_of(input: TS) -> TS { body_field_of(input) }
 
 /* macros: niche */
 
@@ -250,13 +210,7 @@ pub fn field_of(input: TokenStream) -> TokenStream {
 /// - Panics if `start` or `end` are outside the `repr` representable range.
 /// - Panics if `start` is greater than `end`.
 ///
-/// # Example
-/// ```
-#[doc = include_str!("../examples/enumint.rs")]
-/// ```
-#[proc_macro]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub fn enumint(input: TokenStream) -> TokenStream {
-    body_enumint(input)
-}
+#[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
+#[proc_macro] #[rustfmt::skip]
+#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+pub fn enumint(input: TS) -> TS { body_enumint(input) }
