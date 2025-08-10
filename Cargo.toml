@@ -591,7 +591,7 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 #* required dependencies *#
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version  = "0.12.1" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
-# path = "./macros" # safe
+# path = "./libs/macros" # safe
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED
