@@ -1,0 +1,83 @@
+# rustfmt configuration file
+#
+# - only stable config settings are included.
+# - * indicates the default value of a setting.
+# - CHECK indicates the use of a non-default value.
+#
+# See: https://rust-lang.github.io/rustfmt/
+################################################################################
+
+# Specifies which edition is used by the parser.
+edition = "2021" # *2015,2018,2021 CHECK
+
+# Control the layout of arguments in a function.
+fn_params_layout = "Tall" # *"Tall", "Compressed", "Vertical"
+
+# Maximum width of each line.
+max_width = 100 # *100
+
+# Maximum width of an array literal before falling back to vertical formatting.
+array_width = 88 # *60 CHECK
+
+# Max width of args of function-like attributes before falling back to vertical.
+attr_fn_like_width = 88 # *70 CHECK
+
+# Maximum width of a chain to fit on one line.
+chain_width = 88 # *60 CHECK
+
+# Maximum width of the args of a function call before falling back to vertical.
+fn_call_width = 88 # *60 CHECK
+
+# Always print the abi for extern items.
+force_explicit_abi = true # *true
+
+# Use tab characters for indentation, spaces for alignment.
+hard_tabs = false # *false
+
+# Controls whether to include a leading pipe on match arms.
+match_arm_leading_pipes = "Never" # *Never, Always, Preserve
+
+# Merge multiple derives into a single one.
+merge_derives = true # *true
+
+# Unix or Windows line endings.
+newline_style = "Unix" # *Auto,Native,Unix,Windows CHECK
+
+# Remove nested parens.
+remove_nested_parens = true # *true
+
+# Reorder import and extern crate statements alphabetically in groups (a group
+# is separated by a newline).
+reorder_imports = true # *true
+
+# Reorder mod declarations alphabetically in group.
+reorder_modules = false # *true false CHECK
+
+# Maximum line length for single line if-else expressions. A value of 0 (zero)
+# results in if-else expressions always being broken into multiple lines. Note
+# this occurs when use_small_heuristics is set to Off.
+single_line_if_else_max_width = 80 # *50 CHECK
+
+# Maximum width in the body of a struct literal before falling back to vertical
+# formatting. A value of 0 (zero) results in struct literals always being broken
+# into multiple lines. Note this occurs when use_small_heuristics is set to Off.
+struct_lit_width = 50 # *18 CHECK
+
+# Maximum width in the body of a struct variant before falling back to vertical
+# formatting. A value of 0 (zero) results in struct literals always being broken
+# into multiple lines. Note this occurs when use_small_heuristics is set to Off.
+struct_variant_width = 88 # *35 CHECK
+
+# Number of spaces per tab.
+tab_spaces = 4 # *4
+
+# Use field initialize shorthand if possible.
+use_field_init_shorthand = true # *false CHECK
+
+# This option can be used to simplify the management and bulk updates of the
+# granular width configuration settings, that respectively control when
+# formatted constructs are multi-lined/vertical based on width.
+use_small_heuristics = "Default" # *Default,Off,Max
+
+# Replace uses of the try! macro by the ? shorthand.
+use_try_shorthand = false # *false
