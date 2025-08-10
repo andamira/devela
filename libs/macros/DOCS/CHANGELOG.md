@@ -4,6 +4,11 @@
 [0.13.0-wip] unreleased
 =======================
 
+## manifest
+- bump dependencies:
+  - `proc-macro2` → 1.0.95
+  - `quote` → 1.0.40
+
 
 [0.12.1] - 2025-01-07
 =====================

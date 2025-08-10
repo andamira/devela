@@ -85,8 +85,8 @@ dep_hashbrown = ["dep:hashbrown", "alloc"]
 [dependencies] # 3 (2 required, 1 optional)
 # ==============================================================================
 # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
-proc-macro2 = "1.0.88"
-quote = "1.0.37"
+proc-macro2 = "1.0.95"
+quote = "1.0.40"
 
 [dependencies.hashbrown]
 version = "0.15.1"
