@@ -45,6 +45,7 @@
 - change `check.rs`:
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
   - behavior change: no longer installs components automatically.
+  - bump dependencies; fix warnings; refactor.
 
 -----------
 **Modules**

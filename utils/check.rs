@@ -1,12 +1,14 @@
 #!/usr/bin/env -S rust-script -c
 //! ```cargo
 //! [dependencies]
-//! devela = { version = "0.22.1", features = ["std"] }
+//! devela = { version = "0.23.0", features = ["std"] }
 //! lexopt = "0.3"
 //! itertools = "0.14"
-//! toml_edit = "0.22"
+//! toml_edit = "0.23"
 //! ```
 // NOTE: needs [rust-script](https://crates.io/crates/rust-script) to run.
+// NOTE: run clippy as follow:
+// cargo clippy --manifest-path (rust-script --package utils/check.rs)/Cargo.toml
 //
 // TOC
 // - config:
@@ -43,18 +45,19 @@
 // - allow to associate a platform with features to be enabled.
 // - avoid downloading everything at the start make a separate command. use it in CI.
 
-use devela::all::{crate_root, iif, sf};
+#![allow(clippy::useless_format)]
+
+use devela::all::{FsPath, is, sf};
 use itertools::Itertools;
 use std::{
     collections::HashSet,
     env,
     fs::File,
     io::{BufRead, BufReader, Read},
-    path::PathBuf,
     process::{Command, Stdio, exit},
     thread,
 };
-use toml_edit::ImDocument;
+use toml_edit::Document;
 
 /* config */
 
@@ -254,7 +257,7 @@ type Result<T> = core::result::Result<T, Box<dyn core::error::Error>>;
 /// Main logic.
 fn main() -> Result<()> {
     let args = get_args()?;
-    let msrv = iif![args.no_msrv; "".into(); get_msrv().unwrap_or("".into())];
+    let msrv = is![args.no_msrv; "".into(); get_msrv().unwrap_or("".into())];
 
     let cmd = "check";
 
@@ -351,7 +354,7 @@ fn main() -> Result<()> {
 
         // std, all dependencies (except DEP_NO_CROSS_COMPILE_EVER)
         for arch in STD_ARCHES {
-            let deps = filter_deps(&DEP_ALL, &[&DEP_NO_CROSS_COMPILE_EVER]);
+            let deps = filter_deps(DEP_ALL, &[DEP_NO_CROSS_COMPILE_EVER]);
             let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever): arch {a}/{atotal}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
@@ -367,7 +370,7 @@ fn main() -> Result<()> {
                 a += 1;
             } else {
                 let deps =
-                    filter_deps(&DEP_ALL, &[&DEP_NO_CROSS_COMPILE_EVER, &DEP_NO_CROSS_COMPILE_STD]);
+                    filter_deps(DEP_ALL, &[DEP_NO_CROSS_COMPILE_EVER, DEP_NO_CROSS_COMPILE_STD]);
                 let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
                 sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever,_std): arch {a}/{atotal}")); }
                 run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
@@ -397,7 +400,7 @@ fn main() -> Result<()> {
         // std + dep_all (except DEP_*_EVER)
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
-            let deps = filter_deps(&DEP_ALL, &[&DEP_NO_CROSS_COMPILE_EVER]);
+            let deps = filter_deps(DEP_ALL, &[DEP_NO_CROSS_COMPILE_EVER]);
             let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
 
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
@@ -428,7 +431,7 @@ fn main() -> Result<()> {
 
         run_cargo("", "+nightly", &["update", "-Z", "minimal-versions"])?; // set min versions
 
-        let deps = filter_deps(&DEP_ALL, &[&DEP_NO_MINIMAL_VERSIONS]);
+        let deps = filter_deps(DEP_ALL, &[DEP_NO_MINIMAL_VERSIONS]);
         let feature_flags = format!("_docsrs_nodep,{}", deps.join(","));
         sf! { run_cargo_with_env( "", "+nightly", &["build", "-F", &feature_flags],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
@@ -448,13 +451,13 @@ fn main() -> Result<()> {
 
         for module in ROOT_MODULES {
             headline(1, &format!("root-module `{module}` {mod_count}/{mod_total}"));
-            run_cargo(&msrv, cmd, &["-F", &module])?;
+            run_cargo(&msrv, cmd, &["-F", module])?;
             mod_count += 1;
         }
 
         for module in SUB_MODULES {
             headline(1, &format!("sub-module `{module}` {mod_count}/{mod_total}"));
-            run_cargo(&msrv, cmd, &["-F", &module])?;
+            run_cargo(&msrv, cmd, &["-F", module])?;
             mod_count += 1;
         }
 
@@ -516,7 +519,7 @@ fn main() -> Result<()> {
             for combination in ROOT_MODULES.iter().combinations(i) {
                 sf! { headline(1,
                 &format!("modules combination {comb_count}/{mod_comb_total}")); }
-                let deref_combination: Vec<_> = combination.into_iter().map(|&s| s).collect();
+                let deref_combination: Vec<_> = combination.into_iter().copied().collect();
                 let combined = deref_combination.join(",");
                 run_cargo(&msrv, cmd, &["-F", &combined])?;
                 comb_count += 1;
@@ -564,7 +567,7 @@ fn get_args() -> Result<Args> {
     let mut parser = lexopt::Parser::from_env();
 
     // if there are no arguments, print help an exit
-    iif![env::args_os().len() == 1; {print_help(&parser); exit(0); }];
+    is![env::args_os().len() == 1; {print_help(&parser); exit(0); }];
 
     sf! { while let Some(arg) = parser.next()? {
         match arg {
@@ -600,7 +603,7 @@ fn get_args() -> Result<Args> {
         miri,
         install_arches,
         install_nightly,
-        ..Default::default()
+        // ..Default::default()
     })
 }
 
@@ -643,13 +646,13 @@ Architectures:
 /// Returns the `rust-version` field from Cargo.toml
 fn get_msrv() -> Result<String> {
     // read the Cargo.toml file
-    let cargo = PathBuf::from(crate_root("Cargo.toml")?);
+    let cargo = FsPath::from_crate_root("Cargo.toml")?.into_inner();
     let mut file = File::open(cargo)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
 
     // Parse the contents as TOML and return the `rust`-version field
-    let cargo_toml: ImDocument<_> = contents.parse()?;
+    let cargo_toml: Document<_> = contents.parse()?;
     cargo_toml
         .as_table()
         .get("workspace")
@@ -750,10 +753,10 @@ fn rust_install_arches(msrv: &str) -> Result<()> {
         sf! { let _ = Command::new("rustup").args(["component", "add", "rustfmt"]).status()?; }
     }
     for ref arch in STD_ARCHES
-        .into_iter()
-        .chain(LINUX_ARCHES.into_iter())
-        .chain(NO_STD_ARCHES.into_iter())
-        .chain(STD_ARCHES_NO_CROSS_COMPILE.into_iter())
+        .iter()
+        .chain(LINUX_ARCHES.iter())
+        .chain(NO_STD_ARCHES.iter())
+        .chain(STD_ARCHES_NO_CROSS_COMPILE.iter())
     {
         println!("rustup target add {arch}");
         sf! { let _ = Command::new("rustup").args(["target", "add", arch]).status()?; }
