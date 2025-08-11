@@ -1,4 +1,4 @@
-# DOCS/DEP_DISABLED.rs
+# docs/dep_disabled.yml
 #
 # disabled optional dependencies in: ../.github/workflows/*.yml
 # (search for: `apt install`)

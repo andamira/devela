@@ -163,6 +163,7 @@ See the linked modifications for detailed changes.
 [8bit_rng]: https://github.com/edrosten/8bit_rng
   [`Xyza8a`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8a.html
   [`Xyza8b`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8b.html
+[agg]: https://crates.io/crates/agg/0.1.0
 [apply]: https://crates.io/crates/apply/0.3.0
   [`Chain`]: https://docs.rs/devela/latest/devela/code/result/trait.Chain.html
   [`Hook`]: https://docs.rs/devela/latest/devela/code/result/trait.Hook.html
@@ -181,3 +182,8 @@ See the linked modifications for detailed changes.
 [Xabc]: https://web.archive.org/web/20140328221846/https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
   [`Xabc`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xabc.html
 [Graphics Gems]: https://www.realtimerendering.com/resources/GraphicsGems/
+
+<!-- WIPZONE -->
+<!-- - <i id="agg"></i>[agg] by Brian Savage, (BSD-2), (TODO WIP) -->
+<!--   as the [`Pixels`], [`Raster`] and [`Render`] structs. -->
+<!-- - [bdf] by *meh* (WTFPL) as part of the [`Bdf`] struct. -->

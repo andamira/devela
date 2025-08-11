@@ -27,4 +27,4 @@ It is dual-licensed under either [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APAC
 
 ## Contributing
 While *devela* is a personal project, contributions are welcome and appreciated.
-See [CONTRIBUTING](../../DOCS/CONTRIBUTING.md).
+See [CONTRIBUTING](../../docs/contributing.md).

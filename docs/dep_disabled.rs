@@ -1,4 +1,4 @@
-// DOCS/DEP_DISABLED.rs
+// docs/dep_disabled.rs
 
 /* disabled optional dependencies in: ../util/check.rs */
 

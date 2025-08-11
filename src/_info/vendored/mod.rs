@@ -1,8 +1,8 @@
 //
 //!
 // In sync with:
-#![doc = include_str!("../../../DOCS/VENDORED_rustdoc.md")] // has to come before
-#![doc = include_str!("../../../DOCS/VENDORED.md")]
+#![doc = include_str!("../../../docs/vendored_rustdoc.md")] // has to come before
+#![doc = include_str!("../../../docs/vendored.md")]
 //
 //!
 //

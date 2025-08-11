@@ -8,6 +8,7 @@
 
 ## documentation
 - improve rustdoc header loading, make loading more reliable.
+- rename `DOCS/` to `docs/` and make its contents lowercase.
 - fix multiple katex warnings.
 - new doc tag: `TAG_NICHE`.
 

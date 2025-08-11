@@ -1,6 +1,6 @@
-# DOCS/DEP_DISABLED.rs
+# docs/dep_disabled.toml
 #
-# disabled optional dependencies in: ../Cargo.toml
+## disabled optional dependencies in: ../Cargo.toml
 
 #* Environment features *#
 

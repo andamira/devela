@@ -45,9 +45,9 @@ It is in active development, with breaking changes expected during `0.*` version
 
 ## License
 It is dual-licensed under either [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE),
-with additional [vendored works](DOCS/VENDORED.md).
+with additional [vendored works](docs/vendored.md).
 
 
 ## Contributing
 While *devela* is a personal project, contributions are welcome and appreciated.
-See [CONTRIBUTING](DOCS/CONTRIBUTING.md).
+See [contributing](docs/contributing.md).

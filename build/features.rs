@@ -112,7 +112,7 @@ mod reflection {
         cfg_flags: &'a [&'a str],
     }
 
-    // In sync with ./Cargo.toml, ./src/lib.rs && ./DOCS/NIGHTLY.md
+    // In sync with ./Cargo.toml, ./docs/nightly.md && ./src/lib.rs
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
         auto_flags: &[
             // "nightly_autodiff", // FLAG_DISABLED

@@ -1,3 +1,4 @@
+# devela manifest
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/manifest.html
 # https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html
@@ -43,7 +44,7 @@
 [package]
 name = "devela"
 description = "A development layer."
-version = "0.24.0-wip" # In sync with DOCS/CHANGELOG.md
+version = "0.24.0-wip" # In sync with docs/changelog.md
 rust-version = "1.89.0" # In sync with README.md md & .github/workflows/check.yml
 edition = "2024"
 resolver = "3"
@@ -51,7 +52,7 @@ authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
-readme = "DOCS/README_CRATE.md"
+readme = "docs/readme_crate.md"
 include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
@@ -59,7 +60,7 @@ include = [
 	"/build/**/*.rs", "/src/**/*.rs",
 	# documentation:
 	"/build/**/*.md", "/src/**/*.md",
-	"/DOCS/NIGHTLY.md", "/DOCS/VENDORED*.md",
+	"/docs/nightly.md", "/docs/vendored*.md",
 	"/LICENSE*",
 	# examples in documentation:
 	"/examples/code/enumint.rs",
@@ -590,7 +591,7 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 
 #* required dependencies *#
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
-version  = "0.12.1" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
+version  = "0.12.1" # ✓ https://github.com/andamira/devela/blob/main/libs/macros/docs/changelog.md
 # path = "./libs/macros" # safe
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
@@ -1076,7 +1077,7 @@ check-cfg = [ # Allowed configuration flags:
 	# - https://doc.rust-lang.org/unstable-book/library-features.html
 	# - https://releases.rs/
 	# - ./utils/release_dates.rs
-	# - ./DOCS/NIGHTLY.md
+	# - ./docs/nightly.md
 	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
 		# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
 		# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
@@ -1100,7 +1101,7 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(nightly_simd)", # portable_simd
 		#
 		# nightly features that should become stable soon enough.
-		# In sync with: ./src/lib.rs, ./build/features.rs && ./DOCS/NIGHTLY.md.
+		# In sync with: ./src/lib.rs, ./build/features.rs && ./docs/nightly.md.
 		"cfg(nightly_stable)",
 			"cfg(nightly_stable_1_90)",
 			"cfg(nightly_stable_1_91)",
