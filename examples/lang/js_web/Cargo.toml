@@ -1,3 +1,4 @@
+[workspace]
 [package]
 name = "js_web"
 version = "0.1.0"

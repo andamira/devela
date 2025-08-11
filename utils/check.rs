@@ -652,9 +652,11 @@ fn get_msrv() -> Result<String> {
     let cargo_toml: ImDocument<_> = contents.parse()?;
     cargo_toml
         .as_table()
-        .get("package")
-        .and_then(|package| package.as_table())
-        .and_then(|package| package.get("rust-version"))
+        .get("workspace")
+        .and_then(|ws| ws.as_table())
+        .and_then(|ws| ws.get("package"))
+        .and_then(|pkg| pkg.as_table())
+        .and_then(|pkg| pkg.get("rust-version"))
         .map(|msrv| msrv.as_str().unwrap().to_owned())
         .ok_or("error".into())
 }

@@ -1,3 +1,6 @@
+# devela_macros manifest
+# ==============================================================================
+#
 ## Table of Contents
 #
 # * [package]
@@ -8,34 +11,26 @@
 #   - Safety            (safe,unsafe,safest)
 #   - Nightly
 #   - Capability
-#     - default
-#     - docs
 #   - Dependency
 #
 # * [dependencies]
 #
-# - [package.metadata.*]
-# - [badges]
+# * [package.metadata.*]
+# * [badges]
+# * [lints]
 #
-# - lints
-#   - [lints.rust]
-#   - [lints.rustdoc]
-#   - [lints.clippy]
-#   - [lints.rust.unexpected_cfgs]
-#
-# - [[example]]
+# * [[example]]
 
 [package]
 name = "devela_macros"
 description = "procedural macros for devela"
 version = "0.13.0-wip"
-rust-version = "1.89.0" # sync with .github/workflows/check.yml, check.sh, README.md
-edition = "2021"
-resolver = "3"
-authors = ["José Luis Cruz <joseluis@andamira.net>"]
+rust-version = { workspace = true } # sync with README.md
+edition = { workspace = true }
+authors = { workspace = true }
+license = { workspace = true }
 repository = "https://github.com/andamira/devela/tree/main/libs/macros"
 documentation = "https://docs.rs/devela_macros"
-license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
 	"/LICENSE*",
@@ -45,7 +40,6 @@ include = [
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
-autopublish = false
 publish = true
 
 [lib]
@@ -109,6 +103,11 @@ features = ["_docsrs"]
 [badges]
 # ==============================================================================
 maintenance = { status = "experimental" }
+
+
+[lints]
+# ==============================================================================
+workspace = true
 
 
 # examples
