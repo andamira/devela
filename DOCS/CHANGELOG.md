@@ -1,7 +1,22 @@
-# Changelog
+# devela changelog
 
 [0.24.0-wip] unreleased
 =======================
+
+-----------
+**Project**
+
+## documentation
+- improve rustdoc header loading, make loading more reliable.
+- fix multiple katex warnings.
+- new doc tag: `TAG_NICHE`.
+
+## examples
+- new `js_web_worker` example.
+- delete the `niche` example.
+
+## libs
+- move `devela_macros` code to `devela/libs/macros`.
 
 ## manifest
 - bump MSRV to 1.89.0.
@@ -23,23 +38,16 @@
 
 ### cfg flags
 - rename flags: `nightly_stable_next*` to `nightly_stable_1_**` to indicate the exact versions.
+- add flag: `nightly_become` enabling `explicit_tail_calls` feature.
 - disable `nightly_autodiff` flag.
-
-## documentation
-- improve rustdoc header loading, make loading more reliable.
-- fix multiple katex warnings.
-- new doc tag: `TAG_NICHE`.
-
-## examples
-- new `js_web_worker` example.
-- delete the `niche` example.
 
 ## utils
 - change `check.rs`:
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
   - behavior change: no longer installs components automatically.
 
----
+-----------
+**Modules**
 
 ## code
 - new trait `Introspect`.
@@ -164,4 +172,4 @@
 - new `ExtProcess` method `command`.
 
 
-[0.24.0-wip]: https://github.com/andamira/devela/releases/tag/v0.23.0...HEAD
+<!-- [0.24.0]: https://github.com/andamira/devela/releases/tag/v0.24.0 -->

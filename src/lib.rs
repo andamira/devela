@@ -96,7 +96,7 @@
 #![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(once_wait, path_file_prefix, rwlock_downgrade,)
+    feature(once_wait, path_add_extension, path_file_prefix, rwlock_downgrade,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
