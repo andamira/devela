@@ -163,6 +163,9 @@ check-cfg = [ # Allowed configuration flags:
 		# NOTE:dep features: "allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
 		"cfg(nightly_allocator)", # allocator_api
 		#
+		# WAIT: [explicit_tail_calls](https://github.com/rust-lang/rust/issues/112788)
+		"cfg(nightly_become)", # explicit_tail_calls
+		#
 		# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 		# https://rust-lang.zulipchat.com/#narrow/channel/390790-wg-autodiff
 		# "cfg(nightly_autodiff)", # autodiff FLAG_DISABLED:nightly_autodiff

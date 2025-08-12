@@ -117,7 +117,7 @@ mod reflection {
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
         auto_flags: &[
             // "nightly_autodiff", // FLAG_DISABLED
-            "nightly_allocator", "nightly_bigint", "nightly_coro",
+            "nightly_allocator", "nightly_become", "nightly_bigint", "nightly_coro",
             "nightly_doc", "nightly_float", "nightly_simd",
             //
             "nightly_stable",

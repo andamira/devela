@@ -40,6 +40,7 @@
 //  ../meta/build/features.rs::FLAGS_NIGHTLY)
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
+#![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
 #![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
 #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
