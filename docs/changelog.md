@@ -35,7 +35,9 @@
 
 ## flags
 - rename flags: `nightly_stable_next*` → `nightly_stable_1_**` to indicate the exact versions.
-- add flag: `nightly_become` enabling `explicit_tail_calls` feature.
+- add flags:
+  - `nightly_become` enabling `explicit_tail_calls` feature.
+  - `nightly_unstable` to group the non-`nightly_stable` features.
 - disable `nightly_autodiff` flag.
 
 ## libs

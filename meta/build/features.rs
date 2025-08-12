@@ -116,15 +116,24 @@ mod reflection {
     // In sync with ./Cargo.toml, ./docs/nightly.md && ./src/lib.rs
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
         auto_flags: &[
-            // "nightly_autodiff", // FLAG_DISABLED
-            "nightly_allocator", "nightly_become", "nightly_bigint", "nightly_coro",
-            "nightly_doc", "nightly_float", "nightly_simd",
+            "nightly_unstable",
+                // "nightly_autodiff", // FLAG_DISABLED
+                "nightly_allocator", "nightly_become", "nightly_bigint", "nightly_coro",
+                "nightly_doc", "nightly_float", "nightly_simd",
             //
             "nightly_stable",
                 "nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_later",
         ],
         cfg_flags: &["nightly"],
     };
+        pub const FLAGS_NIGHTLY_UNSTABLE: FlagsFlags = FlagsFlags {
+            auto_flags: &[
+                // "nightly_autodiff", // FLAG_DISABLED
+                "nightly_allocator", "nightly_become", "nightly_bigint", "nightly_coro",
+                "nightly_doc", "nightly_float", "nightly_simd",
+            ],
+            cfg_flags: &["nightly_stable"],
+        };
         pub const FLAGS_NIGHTLY_STABLE: FlagsFlags = FlagsFlags {
             auto_flags: &["nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_later"],
             cfg_flags: &["nightly_stable"],
@@ -132,9 +141,10 @@ mod reflection {
         pub const FLAGS_NIGHTLY_REFLECT: FlagsFlags = FlagsFlags {
             auto_flags: &["nightly··"],
             cfg_flags: &[ "nightly",
-                // "nightly_autodiff", // FLAG_DISABLED
-                "nightly_allocator", "nightly_bigint", "nightly_coro",
-                "nightly_doc", "nightly_float", "nightly_simd",
+                "nightly_unstable",
+                    // "nightly_autodiff", // FLAG_DISABLED
+                    "nightly_allocator", "nightly_bigint", "nightly_coro",
+                    "nightly_doc", "nightly_float", "nightly_simd",
                 //
                 "nightly_stable",
                     "nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_later",
@@ -456,7 +466,7 @@ mod reflection {
     pub(super) fn set_ref_flags_from_cfg_flags() -> Vec<String> {
         let mut enabled_ref_flags = Vec::new();
         for ff in [
-            FLAGS_NIGHTLY, FLAGS_NIGHTLY_STABLE, FLAGS_NIGHTLY_REFLECT,
+            FLAGS_NIGHTLY, FLAGS_NIGHTLY_UNSTABLE, FLAGS_NIGHTLY_STABLE, FLAGS_NIGHTLY_REFLECT,
         ] {
             set_flags_dbg_flags(ff.auto_flags, ff.cfg_flags, &mut enabled_ref_flags);
         }
