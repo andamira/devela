@@ -1,4 +1,4 @@
-// devela::build::utils
+// devela::meta::build::utils
 //
 //! build script utility functions
 //

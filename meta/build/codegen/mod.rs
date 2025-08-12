@@ -1,4 +1,4 @@
-// devela::build::generate
+// devela::meta::build::codegen
 //
 //! Code generation during the build process.
 //

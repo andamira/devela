@@ -255,7 +255,7 @@ include = [
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
-build = "build/mod.rs"
+build = "meta/build/mod.rs"
 autoexamples = false
 publish = true
 
@@ -282,7 +282,7 @@ bench = false
 # - ["__name"]: Development & maintenance features.
 #
 # Notes:
-# - Features are in sync with ./build/features.rs & ./src/_doc/features.md.
+# - Features are in sync with ./meta/build/features.rs & ./src/_doc/features.md.
 # - List and count features with `./utils/manifest.sh features`.
 
 
@@ -415,7 +415,7 @@ work = [
 # The `safest` feature forbids unsafe transitively in dependencies
 # (except for Rust's `core`, `alloc` and `std`).
 #
-# In sync with ./build/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
+# In sync with ./meta/build/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
 
 unsafe = [ # [11] enables all `unsafe` (as long as it isn't forbidden for that module)
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
@@ -474,7 +474,7 @@ safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
 #
 # They set automatic compile flags named `_*··`, used for reflection.
 # For example, `_stack··` will be set if any _stack* feature is enabled.
-# Which is done in ./build/features.rs
+# Which is done in ./meta/build/features.rs
 #
 # TOC
 # - default

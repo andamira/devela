@@ -1,4 +1,4 @@
-// devela::build::utils
+// devela::meta::build::environment
 //
 //! Build script environment variables.
 //

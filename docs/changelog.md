@@ -6,20 +6,7 @@
 -----------
 **Project**
 
-## documentation
-- improve rustdoc header loading, make loading more reliable.
-- rename `DOCS/` to `docs/` and make its contents lowercase.
-- fix multiple katex warnings.
-- new doc tag: `TAG_NICHE`.
-
-## examples
-- new `js_web_worker` example.
-- delete the `niche` example.
-
-## libs
-- move `devela_macros` code to `devela/libs/macros`.
-
-## manifest
+## crate
 - bump MSRV to 1.89.0.
 - bump dependencies:
   - `allocator-api2` → 0.3.
@@ -36,10 +23,27 @@
 - disable dependencies: `sdl3`.
 - remove `std` requirement for optional dependencies: `crossterm`, `pyo3`, `regex_lite`, `sysinfo`.
 
-### cfg flags
+## documentation
+- improve rustdoc header loading, make loading more reliable.
+- rename `DOCS/` to `docs/` and make its contents lowercase.
+- fix multiple katex warnings.
+- new doc tag: `TAG_NICHE`.
+
+## examples
+- new `js_web_worker` example.
+- delete the `niche` example.
+
+## flags
 - rename flags: `nightly_stable_next*` to `nightly_stable_1_**` to indicate the exact versions.
 - add flag: `nightly_become` enabling `explicit_tail_calls` feature.
 - disable `nightly_autodiff` flag.
+
+## libs
+- move `devela_macros` code to `devela/libs/macros`.
+
+## meta
+- rename `/build/` to `/meta/`.
+- rename `/build/generate/` to `/meta/codegen/`.
 
 ## utils
 - change `check.rs`:

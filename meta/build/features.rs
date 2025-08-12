@@ -1,4 +1,4 @@
-// devela build::features
+// devela::meta::build::features
 //
 //! Features debugging and compile flags enabling for reflexion.
 //
@@ -62,8 +62,9 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     });
     #[cfg(feature = "__dbg")]
     if let Some(f) = ENABLED_CFG_FLAGS.get() {
-        // IMPROVE
+        // IMPROVE FIXME always shows as ""
         let filtered_flags: Vec<_> = f.iter().filter(|&f| f != "--cfg" && f != "-C").collect();
+        // let filtered_flags: Vec<_> = f.iter().collect(); // SAME FOR THIS (TEMP)
         println(&format!(
             "Active compiler cfg flags ({}): {:?}",
             filtered_flags.len(),
@@ -216,7 +217,7 @@ mod reflection {
     // In sync with ../Cargo.toml::dep_all & ../src/_dep.rs
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["dep··"],
-        features: &include!{"../config/dep_all.rs"},
+        features: &include!{"../../config/dep_all.rs"},
     };
 
     /* # modules */

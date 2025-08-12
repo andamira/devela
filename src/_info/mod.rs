@@ -6,10 +6,15 @@
 #![cfg(any(doc, test))]
 #![cfg_attr(nightly_doc, doc(cfg(any(doc, test))))]
 
-/// Build functionality.
+//! Build-time metaprogramming and code generation utilities.
+//!
+//! Contains logic executed during `cargo build`, including:
+//! - Feature flag management
+//! - Compile-time environment inspection
+//! - Procedural code generation
 #[cfg(feature = "std")]
-#[path = "../../build/mod.rs"]
-mod build;
+#[path = "../../meta/mod.rs"]
+mod meta;
 
 /// Documented examples.
 pub mod examples;
