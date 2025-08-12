@@ -50,11 +50,11 @@ jobs:
 
       # https://twitter.com/jonhoo/status/1571290371124260865
 
-      - name: "./utils/check.rs --install-arches --install-nightly"
-        run: ./utils/check.rs --install-arches --install-nightly
+      - name: "./tools/check.rs --install-arches --install-nightly"
+        run: ./tools/check.rs --install-arches --install-nightly
 
-      - name: "./utils/check.rs --arches"
-        run: ./utils/check.rs --arches
+      - name: "./tools/check.rs --arches"
+        run: ./tools/check.rs --arches
 
-      - name: "./utils/check.rs --miri"
-        run: ./utils/check.rs --miri
+      - name: "./tools/check.rs --miri"
+        run: ./tools/check.rs --miri

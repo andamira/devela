@@ -34,7 +34,7 @@ jobs:
         run: |
             docker run --rm -v $PWD:/workdir -w /workdir ${{ matrix.config.docker_image }} /bin/bash -c "
               apt-get update && apt-get install -y apt-utils && apt-get install -y gcc && \
-              ./utils/get_errno.sh ${{ matrix.config.target }}
+              ./tools/get_errno.sh ${{ matrix.config.target }}
             "
       - name: "Upload errno files"
         uses: actions/upload-artifact@v4

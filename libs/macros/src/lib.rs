@@ -1,4 +1,4 @@
-// devela_macros
+// devela_macros::lib
 //
 //!
 #![doc = include_str!("./Lib.md")]
@@ -16,9 +16,9 @@
 //   - ident_unique
 // - niche:
 //   - enumint
+//
+// WAIT: [non-inline modules in proc-macros](https://github.com/rust-lang/rust/issues/54727)
 
-// warnings
-#![warn(clippy::all)]
 // environment
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
@@ -29,7 +29,7 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
-extern crate proc_macro;
+extern crate self as devela_macros;
 #[cfg(feature = "alloc")]
 use proc_macro::TokenStream as TS;
 

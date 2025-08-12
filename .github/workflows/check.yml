@@ -27,8 +27,8 @@ jobs:
       - name: "rustfmt +stable --version"
         run: rustfmt +stable --version
 
-      - name: "./utils/rustfmt check all exclude"
-        run: ./utils/rustfmt check all exclude
+      - name: "./tools/rustfmt check all exclude"
+        run: ./tools/rustfmt check all exclude
 
   # 2. clippy lints
   clippy:

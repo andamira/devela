@@ -309,19 +309,13 @@ pub(crate) fn parse_visibility(
     if let Some(TokenTree::Ident(ident)) = iter.peek() {
         if *ident == "pub" {
             let mut vis_stream = TokenStream2::new();
-            let ident = match iter.next() {
-                Some(TokenTree::Ident(ident)) => ident,
-                _ => unreachable!(),
-            };
+            let Some(TokenTree::Ident(ident)) = iter.next() else { unreachable!() };
             vis_stream.extend(once(TokenTree::Ident(ident.clone())));
 
             // Check for optional group (e.g., (crate), (super), (self), (in path))
             if let Some(TokenTree::Group(group)) = iter.peek() {
                 if group.delimiter() == proc_macro2::Delimiter::Parenthesis {
-                    let group = match iter.next() {
-                        Some(TokenTree::Group(group)) => group,
-                        _ => unreachable!(),
-                    };
+                    let Some(TokenTree::Group(group)) = iter.next() else { unreachable!() };
                     vis_stream.extend(once(TokenTree::Group(group)));
                 }
             }

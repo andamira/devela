@@ -1,6 +1,6 @@
 // devela::code::intro::define
 //
-//! Defines the [`Introspect`] trait.
+//! Defines the [`Introspect`] struct.
 //
 
 /// Introspection core trait
