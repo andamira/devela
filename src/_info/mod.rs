@@ -13,7 +13,7 @@
 //! - Compile-time environment inspection
 //! - Procedural code generation
 #[cfg(feature = "std")]
-#[path = "../../meta/mod.rs"]
+#[path = "../../meta/build/mod.rs"]
 mod meta;
 
 /// Documented examples.

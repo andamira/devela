@@ -155,7 +155,7 @@ check-cfg = [ # Allowed configuration flags:
 	## Links
 	# - https://doc.rust-lang.org/unstable-book/library-features.html
 	# - https://releases.rs/
-	# - ./utils/release_dates.rs
+	# - ./tools/release_dates.rs
 	# - ./docs/nightly.md
 	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
 		# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
@@ -283,7 +283,7 @@ bench = false
 #
 # Notes:
 # - Features are in sync with ./meta/build/features.rs & ./src/_doc/features.md.
-# - List and count features with `./utils/manifest.sh features`.
+# - List and count features with `./tools/manifest.sh features`.
 
 
 #* Development features *#
@@ -321,7 +321,7 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 # They set compile flags named `*··` (two interpuncts), for reflection.
 # For example, `num··` will be set if any num submodule feature is enabled.
 #
-# In sync with ./utils/check.rs::SUB_MODULES
+# In sync with ./tools/check.rs::SUB_MODULES
 
 all = [ # enables all the 11 modules (and their submodules)
 	"code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
@@ -767,7 +767,7 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 #
 ## notes
 # - dependencies are sorted alfabetically, with links and comments.
-# - use `./utils/manifest.sh dependencies` to see the numbers.
+# - use `./tools/manifest.sh dependencies` to see the numbers.
 #
 ## when adding a new optional dependency
 # 1. Update `dep_all` above and ./config/dep_all.rs.
@@ -1141,7 +1141,7 @@ no-default-features = true
 features = ["_docsrs"]
 rustc-args = [
 	"--cfg", "nightly",
-	"-Ctarget-cpu=native", # see ./utils/cargo-native for local docs
+	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
 	]
 rustdoc-args = [
 	"--generate-link-to-definition",

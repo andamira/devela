@@ -6,9 +6,13 @@
 //! itertools = "0.14"
 //! toml_edit = "0.23"
 //! ```
+// devela::tools::check
+//
+//!
+//
 // NOTE: needs [rust-script](https://crates.io/crates/rust-script) to run.
 // NOTE: run clippy as follow:
-// cargo clippy --manifest-path (rust-script --package utils/check.rs)/Cargo.toml
+// cargo clippy --manifest-path (rust-script --package tools/check.rs)/Cargo.toml
 //
 // TOC
 // - config:

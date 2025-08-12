@@ -9,9 +9,9 @@
 // NOTE In order to show in the docs all possible feature-gated functionality,
 // they have to be compiled with `RUSTDOCFLAGS="-Ctarget-cpu=native"`.
 // See:
-// - Cargo.toml::[package.metadata.docs.rs]
-// - .cargo/config.toml
-// - utils/check.rs
+// - /Cargo.toml::[package.metadata.docs.rs]
+// - /.cargo/config.toml
+// - /tools/check.rs
 //
 
 mod namespace;

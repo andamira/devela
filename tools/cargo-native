@@ -4,7 +4,7 @@
 #
 # # Install
 #   Copy this script to a directory in your PATH. For example:
-#   $ cp utils/cargo-native ~/.cargo/bin/cargo-native
+#   $ cp ./tools/cargo-native ~/.cargo/bin/cargo-native
 #
 # # Usage
 #   $ cargo native <cargo-command> [args...]

@@ -25,7 +25,7 @@
 
 ## documentation
 - improve rustdoc header loading, make loading more reliable.
-- rename `DOCS/` to `docs/` and make its contents lowercase.
+- rename `DOCS/` → `docs/` and make its contents lowercase.
 - fix multiple katex warnings.
 - new doc tag: `TAG_NICHE`.
 
@@ -34,7 +34,7 @@
 - delete the `niche` example.
 
 ## flags
-- rename flags: `nightly_stable_next*` to `nightly_stable_1_**` to indicate the exact versions.
+- rename flags: `nightly_stable_next*` → `nightly_stable_1_**` to indicate the exact versions.
 - add flag: `nightly_become` enabling `explicit_tail_calls` feature.
 - disable `nightly_autodiff` flag.
 
@@ -42,10 +42,11 @@
 - move `devela_macros` code to `devela/libs/macros`.
 
 ## meta
-- rename `/build/` to `/meta/`.
-- rename `/build/generate/` to `/meta/codegen/`.
+- rename `/build/` → `/meta/`.
+- rename `/build/generate/` → `/meta/codegen/`.
 
-## utils
+## tools
+- rename `utils` → `tools`.
 - change `check.rs`:
   - add new args: `-A` | `--install-arches`, `-N` | `--install-nightly`
   - behavior change: no longer installs components automatically.
@@ -57,7 +58,7 @@
 ## code
 - new trait `Introspect`.
 - new doc tag: `TAG_ALLOCATOR`.
-- rename `set_panic_handler!`'s macro `web_api` arm to `web`.
+- rename `set_panic_handler!`'s macro `web_api` arm → `web`.
 
 ### result
 - add re-exports: `core::option::*`, `core::result::*`.
@@ -66,7 +67,7 @@
 - add re-exports: `IterFromCoroutine`.
 - add modules: `data::list::of`.
 - relocate and rename `code::result::Enum` → `data::list::of::Oneof`.
-- rename `Oneof` methods to ordinals: `A` → `_0`, `B` → `_1`, ….
+- rename `Oneof` methods → ordinals: `A` → `_0`, `B` → `_1`, ….
 
 ## game
 - add:
@@ -81,10 +82,10 @@
 - new `Web` methods:
   - `console_count[_reset]`.
 - rename types:
-  - `Js` to `Web`.
-  - `JsEvent*` to `WebEvent*`.
-  - `JsPermission*` to `WebPermission*`.
-  - `JsWorker*` to `WebWorker*`.
+  - `Js` → `Web`.
+  - `JsEvent*` → `WebEvent*`.
+  - `JsPermission*` → `WebPermission*`.
+  - `JsWorker*` → `WebWorker*`.
 
 ## media
 - delete: `[Audio|Color|Draw|Font|Media|Midi][Result|Error]`.
@@ -97,7 +98,7 @@
 - add module: `media::color::rgb`.
 - remove the `Color` namespace.
   - move all its functionality to `Gamma`.
-- rename the `ColorBase` trait to `Color`.
+- rename the `ColorBase` trait → `Color`.
 - update the `Color` trait:
   - make type `Component` bound on `NumConst`.
   - add constants: `COLOR_[BITS|COUNT|HAS_ALPHA]`, `COLOR_IS_[INT|LINEAR|PREMUL]`.
@@ -116,7 +117,7 @@
 
 ### geom
 #### metric
-- rename `Extent` field `size` to `dim` for consitency.
+- rename `Extent` field `size` → `dim` for consitency.
 - add missing attributes `must_use` and `repr(transparent)`.
 - remove type aliases: `Extent2d`, `Extent3d`, `Region2d`, `Region3d`.
 - remove `metric` feature-gate for `Distance`, `Extent` and `Position`.

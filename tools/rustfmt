@@ -5,13 +5,13 @@
 # # Usage examples
 #
 # To check the changed Rust files excluding files from $EXCLUDE_FILES:
-# $ ./utils/rustfmt check changed exclude
+# $ ./tools/rustfmt check changed exclude
 #
 # To check all the Rust files without excluding any, and stopping on first error:
-# $ ./utils/rustfmt check all no-exclude stop
+# $ ./tools/rustfmt check all no-exclude stop
 #
 # To format the changed Rust files without excluding any:
-# $ ./utils/rustfmt format changed
+# $ ./tools/rustfmt format changed
 
 
 #* CONFIGURATION *#
@@ -31,7 +31,7 @@ ARG_STOP_ON_ERROR=false # Do not stop on first error by default
 # paths
 SCRIPT_DIR=$(dirname "$0")
 CRATE_ROOT=$(readlink -f "$SCRIPT_DIR/..")
-EXCLUDE_FILES="utils/rustfmt_excluded_files"
+EXCLUDE_FILES="tools/rustfmt_excluded_files"
 
 
 #* PARSE *#

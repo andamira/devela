@@ -27,14 +27,14 @@ unstable-options = true
 [build]
 # ==============================================================================
 
-# In sync with .cargo/nightly.toml & utils/cargo-native
+# In sync with ./nightly.toml & ../tools/cargo-native
 rustdocflags = [
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./config/rustdoc-header.html",
-	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
+	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
 rustflags = [
-	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
+	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
 
 

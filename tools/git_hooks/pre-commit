@@ -1,9 +1,10 @@
 #!/bin/bash
+# devela::tools::git_hooks::pre-commit
 #
 # Runs rustfmt and clippy before a git commit.
 #
 # To configure git locally to use these hooks:
-# $ git config core.hooksPath "./utils/git_hooks"
+# $ git config core.hooksPath "./tools/git_hooks"
 
 #* CONFIG *#
 
@@ -18,7 +19,7 @@ CRATE_ROOT=$(readlink -f "$SCRIPT_DIR/../..") # absolute path to the root
 
 #* RUSTFMT *#
 
-RUSTFMT_CHECK_SCRIPT="$CRATE_ROOT/utils/rustfmt"
+RUSTFMT_CHECK_SCRIPT="$CRATE_ROOT/tools/rustfmt"
 "$RUSTFMT_CHECK_SCRIPT" check changed exclude || exit $?
 
 

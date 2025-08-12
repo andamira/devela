@@ -6,15 +6,15 @@
 [build]
 # ==============================================================================
 
-# In sync with .cargo/config.toml & utils/cargo-native
+# In sync with ./config.toml & ../tools/cargo-native
 rustdocflags = [
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./config/rustdoc-header.html",
 	"-Zunstable-options", "--generate-link-to-definition",
-	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
+	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
 rustflags = [
 	"--cfg", "nightly_doc",
 	# "--cfg", "nightly",    # enables all nightly flags
-	# "-Ctarget-cpu=native", # see instead: ../utils/cargo-native
+	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]

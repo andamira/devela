@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# devela/utils/get_syscall.sh
+# devela/tools/get_syscall.sh
 #
 # Generates a rust file with consts from syscall.h on the current target.
 # It is called by the `.github/workflows/get_syscall.yml` manual CI action.

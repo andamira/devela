@@ -1,7 +1,7 @@
 // In sync with ../Cargo.toml::dep_all, ../build/features.rs::DEPENDENCY & ../src/_dep.rs
-// Used from: ../build/features.rs::DEPENDENCY.features & ../utils/check.rs::DEP_ALL.
+// Used from: ../build/features.rs::DEPENDENCY.features & ../tools/check.rs::DEP_ALL.
 //
-// NOTE: make sure to recompile `../utils/check.rs` after modifying this file.
+// NOTE: make sure to recompile `../tools/check.rs` after modifying this file.
 // 44 optional dependencies:
 [
     "dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
