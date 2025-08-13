@@ -12,10 +12,8 @@
 #     * [lints.rustdoc]
 #     * [lints.clippy]
 #     * [lints.rust.unexpected_cfgs]
-#       - configuration
-#         - nightly                    (nightly_*)
+#       - configuration                (nightly_*)
 #       - reflection                   (*··)
-#
 # * [package]
 # * [lib]
 #
@@ -143,9 +141,9 @@ check-cfg = [ # Allowed configuration flags:
 	#
 	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
-	#
 	# Expect more target vendors. In sync with ./src/sys/env/namespace.rs:
-	'cfg(target_vendor, values("openwrt"))', # WAIT
+	'cfg(target_vendor, values("vex"))', # WAIT
+
 	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------

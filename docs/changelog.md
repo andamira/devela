@@ -150,7 +150,7 @@
 - add support for new:
   - architectures: `amdgpu`.
   - OS targets: `amdhsa`, `cygwin`, `psx`.
-  - vendor targets: `amd`, `mti`, `openwrt`.
+  - vendor targets: `amd`, `mti`, `openwrt`, `vex`.
 
 ### mem
 - new `Mem` methods: `align_down`, `align_up`, `is_aligned`, `is_aligned_to`.

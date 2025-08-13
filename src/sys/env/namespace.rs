@@ -165,9 +165,9 @@ impl Env {
     /// A string describing the vendor of the CPU that is currently in use.
     ///
     /// Expected values are:
-    ///  `amd`, `apple`, `espressif`, `fortanix`, `ibm`, `kmc`, `mti`, `nintendo`, `nvidia`, `openwrt`, `pc`, `risc0`, `sony`, `sun`, `unikraft`, `unknown`, `uwp`, `win7`, and `wrs`.
+    ///  `amd`, `apple`, `espressif`, `fortanix`, `ibm`, `kmc`, `mti`, `nintendo`, `nvidia`, `openwrt`, `pc`, `risc0`, `sony`, `sun`, `unikraft`, `unknown`, `uwp`, `vex`, `win7`, and `wrs`.
     #[rustfmt::skip]
-    pub const VENDOR: &'static str = { // 18 vendors
+    pub const VENDOR: &'static str = { // 19 vendors + unknown
         #[cfg(target_vendor = "amd")]
         { "amd" }
         #[cfg(target_vendor = "apple")]
@@ -200,6 +200,8 @@ impl Env {
         { "unikraft" }
         #[cfg(target_vendor = "uwp")]
         { "uwp" }
+        #[cfg(target_vendor = "vex")]
+        { "vex" } // armv7a-vex-v5
         #[cfg(target_vendor = "win7")]
         { "win7" }
         #[cfg(target_vendor = "wrs")]
@@ -221,6 +223,7 @@ impl Env {
             target_vendor = "sun",
             target_vendor = "unikraft",
             target_vendor = "uwp",
+            target_vendor = "vex",
             target_vendor = "win7",
             target_vendor = "wrs",
         )))]
