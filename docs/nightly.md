@@ -40,6 +40,7 @@ See also
 - 1.91: `·`[duration_constructors_lite](https://github.com/rust-lang/rust/pull/145135)
 - 1.91: ` `[loongarch32 inline asm](https://github.com/rust-lang/rust/pull/144402)
 - 1.91: `s`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
+- 1.91: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) & 129114
 - 1.91: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
 - 1.91: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
 
@@ -83,7 +84,6 @@ See also
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
-- 1.??: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) & 129114
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
