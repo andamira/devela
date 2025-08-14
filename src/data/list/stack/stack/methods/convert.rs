@@ -46,7 +46,7 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`IndexOutOfBounds(Some(NEW_CAP))`] if `NEW_CAP < self.len()`,
+            /// Returns [`IndexOutOfBounds`]`(Some(NEW_CAP))` if `NEW_CAP < self.len()`,
             #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
@@ -131,7 +131,7 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`IndexOutOfBounds(Some(NEW_CAP))`] if `NEW_CAP < self.len()`,
+            /// Returns [`IndexOutOfBounds`]`(Some(NEW_CAP))` if `NEW_CAP < self.len()`,
             #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
@@ -228,7 +228,7 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`IndexOutOfBounds(Some(NEW_CAP))`] if `NEW_CAP < self.len()`,
+            /// Returns [`IndexOutOfBounds`]`(Some(NEW_CAP))` if `NEW_CAP < self.len()`,
             #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///

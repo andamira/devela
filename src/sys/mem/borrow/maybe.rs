@@ -16,7 +16,7 @@ use devela::{Deref, Hash, Hasher, Ordering, Ownership};
 /// - Supports any `?Sized` type.
 /// - Has cleaner feature gating.
 ///
-/// See also: [`AllocMode`][crate::AllocMode].
+/// See also: [`Backing`][crate::Backing].
 ///
 /// # Features
 /// If the `alloc` feature is disabled it can only contain borrowed values.

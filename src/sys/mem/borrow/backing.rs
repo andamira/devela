@@ -3,6 +3,7 @@
 //! Defines the [`Backing`] enum.
 //
 
+#[cfg(feature = "alloc")]
 use devela::RangeFull;
 
 /// Controls how memory is provided for a value.

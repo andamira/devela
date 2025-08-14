@@ -6,8 +6,8 @@
 
 use super::*; // IMPROVE: specify
 use crate::NumConst;
-#[cfg(any(feature = "std", _float··))]
-use crate::is;
+// #[cfg(any(feature = "std", _float··))]
+// use crate::is;
 #[cfg(_float··)]
 #[allow(unused_imports)]
 use crate::{ExtFloat, Float};

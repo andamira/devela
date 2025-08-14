@@ -159,7 +159,6 @@ impl_point!();
 
 #[rustfmt::skip]
 impl<T, const D: usize, const N: usize> Points<T, D, N> {
-    #[must_use]
     /// Returns new `Points` from the given `coords` array.
     pub const fn new(points: [Point<T, D>; N]) -> Self { Self { array: points } }
 }

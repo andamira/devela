@@ -1,6 +1,6 @@
 # devela changelog
 
-[0.24.0-wip] unreleased
+[0.24.0]
 =======================
 
 -----------
@@ -24,8 +24,10 @@
 - remove `std` requirement for optional dependencies: `crossterm`, `pyo3`, `regex_lite`, `sysinfo`.
 
 ## documentation
+- change documentation URL to repository's custom build to avoid docs.rs surprise bugs.
 - improve rustdoc header loading, make loading more reliable.
 - rename `DOCS/` → `docs/` and make its contents lowercase.
+- add the `no-deps` key to docs.rs package metadata.
 - fix multiple katex warnings.
 - new doc tag: `TAG_NICHE`.
 
@@ -36,7 +38,7 @@
 ## flags
 - rename flags: `nightly_stable_next*` → `nightly_stable_1_**` to indicate the exact versions.
 - add flags:
-  - `nightly_become` enabling `explicit_tail_calls` feature.
+  - `nightly_become` enabling `explicit_tail_calls` feature (commented out).
   - `nightly_unstable` to group the non-`nightly_stable` features.
 - disable `nightly_autodiff` flag.
 

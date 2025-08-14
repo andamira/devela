@@ -20,6 +20,7 @@ use devela::{js_bool, js_number, js_uint32};
 /// - `Number(f64)`: JS number (always 64-bit float)
 #[non_exhaustive]
 #[derive(Clone, Debug, PartialEq)]
+#[allow(missing_docs)]
 pub enum JsValue {
     /* misc. */
     Null,

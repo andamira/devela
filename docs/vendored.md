@@ -153,7 +153,7 @@ See the linked modifications for detailed changes.
   as the [`TimeDelta`] struct ([*modifications*][M_jiff]).
 - <i id="pengyhash"></i>[pengyhash] by Alberto Fajardo (BSD-2),
   as the [`HasherPengy`] struct algorithm ([*modifications*][M_pengyhash]).
-- <i id="size_of_trait"></i>[size_of_trait] byt Joshua Nelson (BSD-3),
+- <i id="size_of_trait"></i>[size_of_trait] by Joshua Nelson (BSD-3),
   as the [`size_of_expr!`] macro.
 - <i id="Xabc"></i>[Xabc] by *EternityForest* (openly shared),
   as the [`Xabc`] struct algorithm.
@@ -175,7 +175,7 @@ See the linked modifications for detailed changes.
   [M_jiff]: https://github.com/andamira/devela/blob/main/src/_info/vendored/jiff.md
   [`TimeDelta`]: https://docs.rs/devela/latest/devela/phys/time/struct.TimeDelta.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
-  [M_pengy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/pengy.md
+  [M_pengyhash]: https://github.com/andamira/devela/blob/main/src/_info/vendored/pengy.md
   [`HasherPengy`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherPengy.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
   [`size_of_expr!`]: https://docs.rs/devela/latest/devela/sys/mem/macro.size_of_expr.html

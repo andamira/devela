@@ -7,14 +7,9 @@
 #
 # * [workspace]
 #   * [package]
-#   * [lints]
-#     * [lints.rust]
-#     * [lints.rustdoc]
-#     * [lints.clippy]
-#     * [lints.rust.unexpected_cfgs]
-#       - configuration                (nightly_*)
-#       - reflection                   (*··)
+#
 # * [package]
+#   - [metadata.docs.rs]
 # * [lib]
 #
 # * [features]
@@ -37,9 +32,15 @@
 #
 # * [patch]
 # * [profile.*]
-# * [package.metadata.*]
 # * [badges]
-# * [lints]
+# * [workspace.lints]
+#   * [lints.rust]
+#   * [lints.rustdoc]
+#   * [lints.clippy]
+#   * [lints.rust.unexpected_cfgs]
+#     - configuration                (nightly_*)
+#     - reflection                   (*··)
+#
 # * [[bench]]
 # * [[example]]
 
@@ -57,195 +58,25 @@ rust-version = "1.89.0" # in sync with README.md && .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
 
-[workspace.lints]
-# ==============================================================================
-# https://doc.rust-lang.org/cargo/reference/manifest.html#the-lints-section
-# WAIT: [override lints](https://github.com/rust-lang/cargo/issues/13157) (can't customize)
-
-[workspace.lints.rust]
-# https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
-# ------------------------------------------------------------------------------
-# WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
-type_alias_bounds = "deny" # detects bounds in type aliases
-unsafe_op_in_unsafe_fn = "deny" # unsafe use inside unsafe fn without unsafe block
-#
-missing_docs = "warn" # missing docs for public items
-#
-stable_features = "allow" # a feature attribute that has since been made stable
-unknown_lints = "allow" # unrecognized lint attributes
-
-[workspace.lints.rustdoc]
-# https://doc.rust-lang.org/rustdoc/lints.html
-# ------------------------------------------------------------------------------
-
-# missing_crate_level_docs = "deny" # no documentation at the crate root (or any binary)
-#
-# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
-redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
-
-[workspace.lints.clippy]
-# https://rust-lang.github.io/rust-clippy/master/index.html
-# https://github.com/rust-lang/rust-clippy/blob/master/CHANGELOG.md
-# ------------------------------------------------------------------------------
-enum_glob_use = "deny" # `use Enum::*`
-missing_safety_doc = "deny" # no `# Safety` section in public unsafe fns
-#
-all = { level = "warn", priority = -1 } # (the default set of clippy lints)
-# a selection from pedantic:
-bool_to_int_with_if = "warn" # using an if statement to convert a bool to an int
-cloned_instead_of_copied = "warn" # usage of cloned() where copied() could be used
-default_union_representation = "warn" # union declared without #[repr(C)]
-empty_structs_with_brackets = "warn" # structs without fields, with brackets
-if_then_some_else_none = "warn" # if-else that could be written using bool::then[_some]
-ignored_unit_patterns = "warn" # Checks for usage of _ in patterns of type ()
-float_cmp = "warn" # (in-)equality comparisons on floating-point values
-float_cmp_const = "warn" # (in-)equality comparisons on const floating-point values
-manual_let_else = "warn" # cases where let...else could be used
-manual_string_new = "warn" # usage of "" to create a String
-map_unwrap_or = "warn" # usage of result|option.map(_).unwrap_or[_else](_)
-ptr_cast_constness = "warn" # as casts between raw pointers that change their constness
-same_functions_in_if_condition = "warn" # consecutive ifs with the same function call
-semicolon_if_nothing_returned = "warn" # expr returns () but it's not followed by ;
-single_match_else = "warn" # 2 arms in match where an if let else will usually suffice
-trivially_copy_pass_by_ref = "warn" # fns with ref args that could be passed by value
-unnested_or_patterns = "warn" # unnested or-patterns, (Some(a)|Some(b) vs Some(a|b))
-unreadable_literal = "warn" #  long integral or float does not contain underscores
-# NOTE: not compatible with the iif! macro w/o being able to ignore it in an expr:
-# WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
-# redundant_else = "warn" // else blocks that can be removed without changing semantics
-#
-approx_constant = "allow" # floating-point approximating constants
-collapsible_if = "allow" # nested if statements
-empty_docs = "allow" # empty documentation
-doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
-mixed_attributes_style = "allow" # items with mixed (inner/outer) attributes
-module_inception = "allow" # modules with the same name as its parent
-needless_doctest_main = "allow" # doctests with a main fn (imported from examples)
-too_long_first_doc_paragraph = "allow" # reason: root modules doc_extends!
-uninlined_format_args = "allow" # reason: consistency, ergonomics
-wrong_self_convention = "allow" # `is_` methods having an owned self
-
-[workspace.lints.rust.unexpected_cfgs]
-# WAIT: [override lints](https://github.com/rust-lang/cargo/issues/13157) (move down to [lints])
-# https://dev-doc.rust-lang.org/nightly/unstable-book/compiler-flags/check-cfg.html
-# https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html
-# https://doc.rust-lang.org/rustc/check-cfg.html
-# ------------------------------------------------------------------------------
-level = "warn"
-check-cfg = [ # Allowed configuration flags:
-	# Defined if the library is compiled as the primary package (not a dependency).
-	'cfg(cargo_primary_package)',
-	#
-	# Allows excluding tests from being run, more concisely:
-	'cfg(__no_test)',
-	#
-	# Expect more pointer widths.
-	'cfg(target_pointer_width, values("8", "128"))',
-	# Expect more target vendors. In sync with ./src/sys/env/namespace.rs:
-	'cfg(target_vendor, values("vex"))', # WAIT
-
-	#
-	# Nightly flags hierarchy (gating unstable functionality):
-	# --------------------------------------------------------------------------
-	# They are prefixed with `nightly_`.
-	# Enabling any of these will set the `nightly··` reflection flag.
-	# In sync with: ./src/lib.rs, ./build/features.rs && ./docs/nightly.md.
-	#
-	## Links
-	# - https://doc.rust-lang.org/unstable-book/library-features.html
-	# - https://releases.rs/
-	# - ./tools/release_dates.rs
-	# - ./docs/nightly.md
-	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
-		#
-		# Unstable nightly features without clear stabilization timeline
-		"cfg(nightly_unstable)",
-			# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
-			# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
-			# NOTE:dep features: "allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
-			"cfg(nightly_allocator)", # allocator_api
-			#
-			# WAIT: [explicit_tail_calls](https://github.com/rust-lang/rust/issues/112788)
-			"cfg(nightly_become)", # explicit_tail_calls WARN:incomplete_features
-			#
-			# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
-			# https://rust-lang.zulipchat.com/#narrow/channel/390790-wg-autodiff
-			# "cfg(nightly_autodiff)", # autodiff FLAG_DISABLED:nightly_autodiff
-			#
-			# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
-			"cfg(nightly_bigint)", # bigint_helper_methods
-			#
-			# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
-			"cfg(nightly_coro)", # coroutines, coroutine_trait, iter_from_coroutine
-			#
-			# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
-			# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-			"cfg(nightly_doc)", # not(doc_auto_cfg)
-			#
-			# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
-			# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
-			# NOTE: dep features: ["bytemuck?/nightly_float"]
-			"cfg(nightly_float)", # f16, f128
-			#
-			# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
-			"cfg(nightly_simd)", # portable_simd
-		#
-		# nightly features expected to stabilize soon:
-		"cfg(nightly_stable)",
-			"cfg(nightly_stable_1_90)",
-			"cfg(nightly_stable_1_91)",
-			"cfg(nightly_stable_later)",
-	#
-	# Auto-enabled reflection flags from ./build/features.rs (36)
-	# --------------------------------------------------------------------------
-	# general: (4)
-	"cfg(unsafe··, safe··, nightly··, dep··)",
-	# data: (6)
-	'cfg(data··)',
-	'cfg(_bit··, _destaque··, _stack··)',
-	'cfg(_graph··, _node··)',
-	# game: (1)
-	'cfg(game··)',
-	# lang: (2)
-	'cfg(lang··, ffi··)',
-	# media: (1)
-	'cfg(media··)',
-	# num: (14)
-	'cfg(num··, prim··)',
-	'cfg(_sort··, _sort_int··, _sort_float··)',
-	'cfg(_nums··, _cmp··, _float··, _int··, _int_i··, _int_u··)',
-	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
-	# phys: (1)
-	'cfg(phys··)',
-	# sys: (2)
-	'cfg(sys··, mem··)',
-	# text: (4)
-	'cfg(text··)',
-	'cfg(_char··, _str··, _str_u··)',
-	# ui: (1)
-	'cfg(ui··)',
-	# work: (1)
-	'cfg(work··)',
-]
-
 
 [package]
 # ==============================================================================
 name = "devela"
-description = "A development layer."
-version = "0.24.0-wip" # In sync with docs/changelog.md
+description = "A cohesive development layer."
+version = "0.24.0" # In sync with docs/changelog.md
 rust-version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
 license = { workspace = true }
 repository = "https://github.com/andamira/devela"
-documentation = "https://docs.rs/devela"
+documentation = "https://andamira.github.io/devela/0.24.0/devela/"
+# documentation = "https://docs.rs/devela"
 readme = "docs/readme_crate.md"
 include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
 	# source code:
-	"/build/**/*.rs", "/src/**/*.rs",
+	"/meta/build/**/*.rs", "/src/**/*.rs",
 	# documentation:
 	"/build/**/*.md", "/src/**/*.md",
 	"/docs/nightly.md", "/docs/vendored*.md",
@@ -262,6 +93,39 @@ keywords = ["dev", "helper", "library", "std", "extension"]
 build = "meta/build/mod.rs"
 autoexamples = false
 publish = true
+
+[package.metadata.docs.rs]
+# ==============================================================================
+# https://docs.rs/about/metadata
+# https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
+#
+# Maximum build limits (https://docs.rs/crate/devela/latest/builds)
+# 6.44 GB RAM, 15 minutes, 102.4 kB log, no-network, 10 targets.
+
+no-default-features = true
+no-deps = true # WAIT: https://github.com/rust-lang/rust/issues/126638
+features = ["_docsrs"]
+rustc-args = [
+	"--cfg", "nightly",
+	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
+	]
+rustdoc-args = [
+	"--generate-link-to-definition",
+	"--html-in-header", "./config/rustdoc-header.html",
+	"--cfg", "nightly",
+]
+default-target = "x86_64-unknown-linux-gnu"
+targets = [ ## +std:
+	"x86_64-apple-darwin", "x86_64-pc-windows-msvc",
+	"armv7-unknown-linux-gnueabihf", "aarch64-unknown-linux-gnu",
+	"riscv32gc-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu",
+	# "wasm32-wasip1",
+	## no_std:
+	# "i686-unknown-uefi", "x86_64-unknown-none",
+	# "thumbv7m-none-eabi", "aarch64-unknown-unknown"
+	# "riscv32imac-unknown-none-elf", "riscv64imac-unknown-none-elf",
+	"wasm32-unknown-unknown",
+]
 
 [lib]
 path = "./src/lib.rs"
@@ -512,8 +376,8 @@ _docs = [ # the minimum capabilities to document everything
 	# text:
 	"_str_u8", "_str_nonul", "_char_all",
 ]
-_docsrs_nodep = ["_docs", "std", "unsafe"]   # + std + unsafe
-_docsrs       = ["_docsrs_nodep", "dep_all"] # + dependencies
+_docsrs_nodep = ["_docs", "std", "unsafe", "__dbg"]  # + std + unsafe
+_docsrs       = ["_docsrs_nodep", "dep_all"]         # + dependencies
 
 #* code capabilities *#
 # ---------------------
@@ -780,7 +644,8 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 #* required dependencies *#
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version  = "0.12.1" # ✓ https://github.com/andamira/devela/blob/main/libs/macros/docs/changelog.md
-# path = "./libs/macros" # safe
+# path = "./libs/macros" # *safe
+
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED
@@ -1133,38 +998,6 @@ panic = "abort"      # Reduce binary size (no unwinding)
 strip = true         # Remove debug symbols for smaller binaries
 
 
-[package.metadata.docs.rs]
-# ==============================================================================
-# https://docs.rs/about/metadata
-# https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
-#
-# Maximum build limits (https://docs.rs/crate/devela/latest/builds)
-# 6.44 GB RAM, 15 minutes, 102.4 kB log, no-network, 10 targets.
-
-no-default-features = true
-features = ["_docsrs"]
-rustc-args = [
-	"--cfg", "nightly",
-	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
-	]
-rustdoc-args = [
-	"--generate-link-to-definition",
-	"--html-in-header", "./config/rustdoc-header.html",
-	"--cfg", "nightly",
-]
-default-target = "x86_64-unknown-linux-gnu"
-targets = [ ## +std:
-	"x86_64-apple-darwin", "x86_64-pc-windows-msvc",
-	"armv7-unknown-linux-gnueabihf", "aarch64-unknown-linux-gnu",
-	"riscv32gc-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu",
-	# "wasm32-wasip1",
-	## no_std:
-	# "i686-unknown-uefi", "x86_64-unknown-none",
-	# "thumbv7m-none-eabi", "aarch64-unknown-unknown"
-	# "riscv32imac-unknown-none-elf", "riscv64imac-unknown-none-elf",
-	"wasm32-unknown-unknown",
-]
-
 [badges]
 # ==============================================================================
 maintenance = { status = "experimental" }
@@ -1173,6 +1006,176 @@ maintenance = { status = "experimental" }
 [lints]
 # ==============================================================================
 workspace = true
+
+[workspace.lints]
+# https://doc.rust-lang.org/cargo/reference/manifest.html#the-lints-section
+# WAIT: [override lints](https://github.com/rust-lang/cargo/issues/13157) (can't customize)
+
+[workspace.lints.rust]
+# https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
+# ------------------------------------------------------------------------------
+# WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
+type_alias_bounds = "deny" # detects bounds in type aliases
+unsafe_op_in_unsafe_fn = "deny" # unsafe use inside unsafe fn without unsafe block
+#
+missing_docs = "warn" # missing docs for public items
+#
+stable_features = "allow" # a feature attribute that has since been made stable
+unknown_lints = "allow" # unrecognized lint attributes
+
+[workspace.lints.rustdoc]
+# https://doc.rust-lang.org/rustdoc/lints.html
+# ------------------------------------------------------------------------------
+
+# missing_crate_level_docs = "deny" # no documentation at the crate root (or any binary)
+#
+# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
+redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
+
+[workspace.lints.clippy]
+# https://rust-lang.github.io/rust-clippy/master/index.html
+# https://github.com/rust-lang/rust-clippy/blob/master/CHANGELOG.md
+# ------------------------------------------------------------------------------
+enum_glob_use = "deny" # `use Enum::*`
+missing_safety_doc = "deny" # no `# Safety` section in public unsafe fns
+#
+all = { level = "warn", priority = -1 } # (the default set of clippy lints)
+# a selection from pedantic:
+bool_to_int_with_if = "warn" # using an if statement to convert a bool to an int
+cloned_instead_of_copied = "warn" # usage of cloned() where copied() could be used
+default_union_representation = "warn" # union declared without #[repr(C)]
+empty_structs_with_brackets = "warn" # structs without fields, with brackets
+if_then_some_else_none = "warn" # if-else that could be written using bool::then[_some]
+ignored_unit_patterns = "warn" # Checks for usage of _ in patterns of type ()
+float_cmp = "warn" # (in-)equality comparisons on floating-point values
+float_cmp_const = "warn" # (in-)equality comparisons on const floating-point values
+manual_let_else = "warn" # cases where let...else could be used
+manual_string_new = "warn" # usage of "" to create a String
+map_unwrap_or = "warn" # usage of result|option.map(_).unwrap_or[_else](_)
+ptr_cast_constness = "warn" # as casts between raw pointers that change their constness
+same_functions_in_if_condition = "warn" # consecutive ifs with the same function call
+semicolon_if_nothing_returned = "warn" # expr returns () but it's not followed by ;
+single_match_else = "warn" # 2 arms in match where an if let else will usually suffice
+trivially_copy_pass_by_ref = "warn" # fns with ref args that could be passed by value
+unnested_or_patterns = "warn" # unnested or-patterns, (Some(a)|Some(b) vs Some(a|b))
+unreadable_literal = "warn" #  long integral or float does not contain underscores
+# NOTE: not compatible with the iif! macro w/o being able to ignore it in an expr:
+# WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
+# redundant_else = "warn" // else blocks that can be removed without changing semantics
+#
+approx_constant = "allow" # floating-point approximating constants
+collapsible_if = "allow" # nested if statements
+empty_docs = "allow" # empty documentation
+doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
+mixed_attributes_style = "allow" # items with mixed (inner/outer) attributes
+module_inception = "allow" # modules with the same name as its parent
+needless_doctest_main = "allow" # doctests with a main fn (imported from examples)
+too_long_first_doc_paragraph = "allow" # reason: root modules doc_extends!
+uninlined_format_args = "allow" # reason: consistency, ergonomics
+wrong_self_convention = "allow" # `is_` methods having an owned self
+
+[workspace.lints.rust.unexpected_cfgs]
+# WAIT: [override lints](https://github.com/rust-lang/cargo/issues/13157) (move down to [lints])
+# https://dev-doc.rust-lang.org/nightly/unstable-book/compiler-flags/check-cfg.html
+# https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html
+# https://doc.rust-lang.org/rustc/check-cfg.html
+# ------------------------------------------------------------------------------
+level = "warn"
+check-cfg = [ # Allowed configuration flags:
+	# Defined if the library is compiled as the primary package (not a dependency).
+	'cfg(cargo_primary_package)',
+	#
+	# Allows excluding tests from being run, more concisely:
+	'cfg(__no_test)',
+	#
+	# Expect more pointer widths.
+	'cfg(target_pointer_width, values("8", "128"))',
+	# Expect more target vendors. In sync with ./src/sys/env/namespace.rs:
+	'cfg(target_vendor, values("vex"))', # WAIT
+
+	#
+	# Nightly flags hierarchy (gating unstable functionality):
+	# --------------------------------------------------------------------------
+	# They are prefixed with `nightly_`.
+	# Enabling any of these will set the `nightly··` reflection flag.
+	# In sync with: ./src/lib.rs, ./build/features.rs && ./docs/nightly.md.
+	#
+	## Links
+	# - https://doc.rust-lang.org/unstable-book/library-features.html
+	# - https://releases.rs/
+	# - ./tools/release_dates.rs
+	# - ./docs/nightly.md
+	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+		#
+		# Unstable nightly features without clear stabilization timeline
+		"cfg(nightly_unstable)",
+			# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
+			# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
+			# NOTE:dep features: "allocator-api2?/nightly", "bumpalo?/allocator_api", "hashbrown?/nightly"]
+			"cfg(nightly_allocator)", # allocator_api
+			#
+			# WAIT: [explicit_tail_calls](https://github.com/rust-lang/rust/issues/112788)
+			"cfg(nightly_become)", # explicit_tail_calls WARN:incomplete_features (commented out)
+			#
+			# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
+			# https://rust-lang.zulipchat.com/#narrow/channel/390790-wg-autodiff
+			# "cfg(nightly_autodiff)", # autodiff FLAG_DISABLED:nightly_autodiff
+			#
+			# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
+			"cfg(nightly_bigint)", # bigint_helper_methods
+			#
+			# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
+			"cfg(nightly_coro)", # coroutines, coroutine_trait, iter_from_coroutine
+			#
+			# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
+			# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
+			"cfg(nightly_doc)", # not(doc_auto_cfg)
+			#
+			# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
+			# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
+			# NOTE: dep features: ["bytemuck?/nightly_float"]
+			"cfg(nightly_float)", # f16, f128
+			#
+			# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
+			"cfg(nightly_simd)", # portable_simd
+		#
+		# nightly features expected to stabilize soon:
+		"cfg(nightly_stable)",
+			"cfg(nightly_stable_1_90)",
+			"cfg(nightly_stable_1_91)",
+			"cfg(nightly_stable_later)",
+	#
+	# Auto-enabled reflection flags from ./build/features.rs (36)
+	# --------------------------------------------------------------------------
+	# general: (4)
+	"cfg(unsafe··, safe··, nightly··, dep··)",
+	# data: (6)
+	'cfg(data··)',
+	'cfg(_bit··, _destaque··, _stack··)',
+	'cfg(_graph··, _node··)',
+	# game: (1)
+	'cfg(game··)',
+	# lang: (2)
+	'cfg(lang··, ffi··)',
+	# media: (1)
+	'cfg(media··)',
+	# num: (14)
+	'cfg(num··, prim··)',
+	'cfg(_sort··, _sort_int··, _sort_float··)',
+	'cfg(_nums··, _cmp··, _float··, _int··, _int_i··, _int_u··)',
+	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
+	# phys: (1)
+	'cfg(phys··)',
+	# sys: (2)
+	'cfg(sys··, mem··)',
+	# text: (4)
+	'cfg(text··)',
+	'cfg(_char··, _str··, _str_u··)',
+	# ui: (1)
+	'cfg(ui··)',
+	# work: (1)
+	'cfg(work··)',
+]
 
 
 # benches

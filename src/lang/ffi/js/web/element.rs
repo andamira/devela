@@ -3,13 +3,13 @@
 //! Defines [`WebElement`], [`WebElementIter`].
 //
 
-use devela::_js_doc;
-#[cfg(feature = "alloc")]
-use devela::String;
+// use devela::_js_doc;
+// #[cfg(feature = "alloc")]
+// use devela::String;
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{_js_extern, _js_method_str_alloc, Js, WebDocument, js_bool, js_int32, js_uint32};
 
-/// Handle to a DOM [`Element`].
+/// Handle to a DOM [Element].
 ///
 /// [Element]: https://developer.mozilla.org/en-US/docs/Web/API/Element
 #[repr(transparent)]

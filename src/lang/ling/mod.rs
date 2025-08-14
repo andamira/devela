@@ -6,8 +6,8 @@
 //! Structure, rules, analysis, and representation of natural and constructed languages.
 //
 
-// pub mod grammar;
 pub mod art;
+pub mod grammar;
 pub mod nat;
 
 crate::items! { // structural access: _pub_mods, _mods, _all

@@ -10,11 +10,12 @@
     const allowedKatex = ["/all", "/media/color", "/num/", "/phys/"];
     const allowedKatexChem = ["/all/", "/phys/"];
 
-    // Extract the relative path after the crate name
-    const pathSegments = window.location.pathname.split("/");
-    const crateIndex = pathSegments.indexOf(crateName);
-    if (crateIndex === -1) return;
-    const relativePath = "/" + pathSegments.slice(crateIndex + 1).join("/");
+    // Find the LAST occurrence of `/devela/` in the path
+    const path = window.location.pathname;
+    const lastCrateIndex = path.lastIndexOf(`/${crateName}/`);
+    if (lastCrateIndex === -1) return;
+    // Extract everything after the last `/devela/`
+    const relativePath = path.slice(lastCrateIndex + crateName.length + 1);
 
     /* load resources */
 
