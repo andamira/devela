@@ -16,7 +16,8 @@
 
 ## tools & misc. files
 - new file `config/lib_all`.
-- update `tools/check.rs`
+- update `tools/check.rs`:
+  - configure the exact nightly version to install and use.
 
 
 -----------

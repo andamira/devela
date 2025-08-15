@@ -65,6 +65,10 @@ use toml_edit::Document;
 
 /* config */
 
+// const NIGHTLY_VERSION: &str = "+nightly";
+const NIGHTLY_VERSION: &str = "nightly-2025-08-14"; // NOTE: 2025-08-15 fails
+const NIGHTLY_TOOLCHAIN: &str = "+nightly-2025-08-14"; // IMPROVE: use const concat
+
 #[rustfmt::skip]
 const ROOT_MODULES: [&str; 11 + 1] = [
     "code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
@@ -114,6 +118,7 @@ const SUB_MODULES: &[&str] = &[
 const DEP_ALL: &[&str] = &include!["../config/dep_all.rs"];
 
 /// All the optional library-modular dependencies.
+#[expect(unused, reason = "TODO")]
 const LIB_ALL: &[&str] = &include!["../config/lib_all.rs"];
 
 #[rustfmt::skip]
@@ -284,7 +289,7 @@ fn main() -> Result<()> {
         // WAIT: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
         // nightly unsafe
-        sf! { run_cargo_with_env("", "+nightly", &[cmd, "-F _docsrs", "--", "--color=always"],
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docsrs", "--", "--color=always"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe (max capabilities)
@@ -316,7 +321,7 @@ fn main() -> Result<()> {
 
     if args.docs {
         headline(0, &format!["`all` docs compilation:"]);
-        sf! { run_cargo_with_env("", "+nightly", &["doc", "--no-deps", "-F _docsrs"],
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &["doc", "--no-deps", "-F _docsrs"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
     }
 
@@ -398,7 +403,7 @@ fn main() -> Result<()> {
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
-            sf! { run_cargo_with_env("", "+nightly",
+            sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
             &["miri", "test", "--target", arch, "-F", "all,std,unsafe"],
             &[("RUSTFLAGS", "--cfg nightly")],)?; }
             a += 1;
@@ -411,7 +416,7 @@ fn main() -> Result<()> {
             let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
 
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
-            sf! { run_cargo_with_env("", "+nightly",
+            sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
             &["miri", "test", "--target", arch, "-F", &feature_flags],
             &[("RUSTFLAGS", "--cfg nightly")])?; }
 
@@ -422,7 +427,7 @@ fn main() -> Result<()> {
         env::remove_var("MIRIFLAGS");
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
-            sf! { run_cargo_with_env("", "+nightly",
+            sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
             &["miri", "test", "--target", arch, "-F", "all,no_std,unsafe"],
             &[("RUSTFLAGS", "--cfg nightly")])?; }
             a += 1;
@@ -436,14 +441,14 @@ fn main() -> Result<()> {
     if args.minimal_versions {
         headline(0, &format!["minimal versions:"]);
 
-        run_cargo("", "+nightly", &["update", "-Z", "minimal-versions"])?; // set min versions
+        run_cargo("", NIGHTLY_TOOLCHAIN, &["update", "-Z", "minimal-versions"])?; // set min versions
 
         let deps = filter_deps(DEP_ALL, &[DEP_NO_MINIMAL_VERSIONS]);
         let feature_flags = format!("_docsrs_nodep,{}", deps.join(","));
-        sf! { run_cargo_with_env( "", "+nightly", &["build", "-F", &feature_flags],
+        sf! { run_cargo_with_env( "", NIGHTLY_TOOLCHAIN, &["build", "-F", &feature_flags],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
-        run_cargo("", "+nightly", &["update"])?; // set default max versions
+        run_cargo("", NIGHTLY_TOOLCHAIN, &["update"])?; // set default max versions
     }
 
     /* modules */
@@ -767,18 +772,18 @@ fn rust_install_arches(msrv: &str) -> Result<()> {
     {
         println!("rustup target add {arch}");
         sf! { let _ = Command::new("rustup").args(["target", "add", arch]).status()?; }
-        sf! { let _ = Command::new("rustup").args(["+nightly", "target", "add", arch]).status()?; }
+        sf! { let _ = Command::new("rustup").args([NIGHTLY_TOOLCHAIN, "target", "add", arch]).status()?; }
     }
     Ok(())
 }
 
 /// Setups nightly, and adds the miri component.
 fn rust_install_nightly() -> Result<()> {
-    println!("rustup toolchain install nightly");
-    sf! { let _ = Command::new("rustup").args(["toolchain", "install", "nightly"]).status()?; }
-    println!("rustup component add miri --toolchain nightly");
+    println!("rustup toolchain install {NIGHTLY_VERSION}");
+    sf! { let _ = Command::new("rustup").args(["toolchain", "install", NIGHTLY_VERSION]).status()?; }
+    println!("rustup component add miri --toolchain {NIGHTLY_VERSION}");
     let _ = Command::new("rustup")
-        .args(["component", "add", "miri", "--toolchain", "nightly"])
+        .args(["component", "add", "miri", "--toolchain", NIGHTLY_VERSION])
         .status()?;
     Ok(())
 }
