@@ -6,6 +6,7 @@ Features are grouped in the following categories:
 - [*Module*](#module-features) (`all`, `code`, `data`, `lang`, `media`, `num`, …)
 - [*Safety*](#safety-features) (`safe*`, `unsafe*`)
 - [*Capability*](#capability-features)  (`_*`)
+- [*Library*](#library) (`lib_*`)
 - [*Dependency*](#dependency-features) (`dep_*`)
 
 Flags are grouped in the following categories:
@@ -295,9 +296,17 @@ They also set the corresponding flags:
 [`StringNonul`]: crate::text::StringNonul
 
 
+### Library features
+
+- Optional library's module dependencies.
+- Re-exported cohesively from the corresponding modules.
+- Can be enabled with the `lib_module_name` feature in snake_case.
+- Enabling any of them sets the `_lib··` flag.
+
 ### Dependency features
 
-- Optional dependencies are re-exported from the [`_dep`][crate::_dep] root module.
+- Optional external dependencies.
+- Re-exported from the [`_dep`][crate::_dep] root module.
 - Can be enabled with the `dep_crate_name` feature in snake_case.
 - Enabling any of them sets the `_dep··` flag.
 

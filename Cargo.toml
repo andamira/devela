@@ -24,6 +24,7 @@
 #     - data            (_data*, _bit*, _sort*, _tuple*, _value*, …)
 #     - num             (_num*, _cmp*, _int_*, _float_*, …)
 #     - text            (_text*, _char*, _str_*)
+#   - Library           (lib_*)
 #   - Dependency        (dep_*)
 #
 # * [dependencies] (required|optional)
@@ -168,12 +169,16 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
+	"devela_base/alloc", # "devela_num?/alloc",
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
 	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "portable-atomic-util?/alloc",
 	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc", "allocator-api2?/std", "atomic?/std",
+	"alloc",
+	"devela_base/std", # "devela_num?/std",
+	#
+	"allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
 	"itertools?/use_std", "jiff?/std", "log?/std",
 	"memchr?/std", "orion?/safe_api", "portable-atomic-util?/std",
@@ -304,12 +309,13 @@ unsafe = [ # [11] enables all `unsafe` (as long as it isn't forbidden for that m
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-safe = [ # [11] forbids `unsafe` (and overrides unsafe features)
+safe = [ # [12] forbids `unsafe` (and overrides unsafe features)
+	"devela_base/safe",
 	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game",
 	"safe_num", "safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ] # `safe··`
 	safe_code = []
-	safe_data = []
+	safe_data = [] # ["devela_data?/safe"]
 	safe_game = []
 	safe_lang = []
 	safe_media = [ # [5]
@@ -319,13 +325,13 @@ safe = [ # [11] forbids `unsafe` (and overrides unsafe features)
 		safe_draw = []
 		safe_font = []
 		safe_image = []
-	safe_num = []
+	safe_num = [] # ["devela_num?/safe"]
 	safe_phys = ["safe_time"] # [1]
 		safe_time = []
 	safe_sys = ["safe_io", "safe_mem"] # [2]
 		safe_io = []
 		safe_mem = []
-	safe_text = []
+	safe_text = [] # ["devela_text?/safe"]
 	safe_ui = ["safe_layout"] # [1]
 		safe_layout = []
 	safe_work = []
@@ -549,9 +555,25 @@ _str_all = [
 	_str_nonul = []
 
 
-#* Dependency features *#
+#* Library features (modular root dependencies) *#
 # ------------------------------------------------------------------------------
-# The names are prefixed with `dep_`, using underscores in place of dashes.
+# Names are prefixed with `lib_` and most correspond to library's root modules.
+# They enable extra monomorphization and compile-time heavy functionality.
+# Enabling any of these will set the `lib··` reflection flag.
+
+lib_all = [
+	# "lib_data",
+	# "lib_num",
+	# "lib_text",
+]
+# lib_data = ["dep:devela_data"]
+# lib_num = ["dep:devela_num"]
+# lib_text = ["dep:devela_text"]
+
+
+#* Dependency features (optional external dependencies) *#
+# ------------------------------------------------------------------------------
+# Names are prefixed with `dep_`, and use underscores in place of dashes.
 # They are associated to optional dependencies and groups of modules.
 # Enabling any of these will set the `dep··` reflection flag.
 #
@@ -643,6 +665,13 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 # 2. Add a new entry below and in ./src/_deps.rs.
 
 #* required dependencies *#
+
+[workspace.dependencies.devela_base] # https://crates.io/crates/devela_base
+version = "0.0.0" # ✓ https://github.com/andamira/devela/blob/main/libs/base/docs/changelog.md
+path = "./libs/base" # *safe
+[dependencies.devela_base]
+workspace = true
+
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version  = "0.12.1" # ✓ https://github.com/andamira/devela/blob/main/libs/macros/docs/changelog.md
 # path = "./libs/macros" # *safe
@@ -652,7 +681,24 @@ version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED
 # alternative: https://crates.io/crates/pastey
 
-#* optional dependencies *#
+#* optional library dependencies *#
+
+# [dependencies.devela_data] # https://crates.io/crates/devela_data
+# version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/data/docs/changelog.md
+# optional = true # *safe
+# path = "./libs/data" #
+
+# [dependencies.devela_num] # https://crates.io/crates/devela_num
+# version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/num/docs/changelog.md
+# optional = true # *safe
+# path = "./libs/num" #
+
+# [dependencies.devela_text] # https://crates.io/crates/devela_text
+# version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/text/docs/changelog.md
+# optional = true # *safe
+# path = "./libs/text" #
+
+#* optional external dependencies *#
 
 [dependencies.allocator-api2] # https://crates.io/crates/allocator-api2
 version = "0.3" # ✗ https://github.com/zakarumych/allocator-api2/commits/main/
@@ -1004,13 +1050,12 @@ strip = true         # Remove debug symbols for smaller binaries
 maintenance = { status = "experimental" }
 
 
-[lints]
-# ==============================================================================
-workspace = true
-
 [workspace.lints]
+# ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/manifest.html#the-lints-section
 # WAIT: [override lints](https://github.com/rust-lang/cargo/issues/13157) (can't customize)
+[lints]
+workspace = true
 
 [workspace.lints.rust]
 # https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants

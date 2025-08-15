@@ -7,6 +7,16 @@
 > *Project* :
 -----------
 
+## features & flags
+- new `_lib··` flag
+- new features = `lib_all``, `lib_base`.
+
+## dependencies
+- new workspace library dependency: `devela_base`.
+
+## tools & misc. files
+- new file `config/lib_all`.
+- update `tools/check.rs`
 
 
 -----------

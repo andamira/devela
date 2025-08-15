@@ -224,6 +224,12 @@ mod reflection {
         ]
     };
 
+    // In sync with ../Cargo.toml::lib_all
+    pub const LIBRARY: FlagsFeatures = FlagsFeatures {
+        ref_flags: &["lib··"],
+        features: &include!{"../../config/lib_all.rs"},
+    };
+
     // In sync with ../Cargo.toml::dep_all & ../src/_dep.rs
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["dep··"],
@@ -412,6 +418,7 @@ mod reflection {
             DEVELOPMENT,
             ENVIRONMENT,
             SAFE, SAFEST, UNSAFE,
+            LIBRARY,
             DEPENDENCY,
 
             /* modules */

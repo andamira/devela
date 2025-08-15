@@ -110,8 +110,11 @@ const SUB_MODULES: &[&str] = &[
 //* dependencies *//
 
 #[rustfmt::skip]
-/// All the optional dependencies.
+/// All the optional external dependencies.
 const DEP_ALL: &[&str] = &include!["../config/dep_all.rs"];
+
+/// All the optional library-modular dependencies.
+const LIB_ALL: &[&str] = &include!["../config/lib_all.rs"];
 
 #[rustfmt::skip]
 /// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.

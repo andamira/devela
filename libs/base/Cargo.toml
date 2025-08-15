@@ -1,0 +1,88 @@
+# devela_base manifest
+# ==============================================================================
+#
+## Table of Contents
+#
+# * [package]
+#   - [metadata.*]
+#
+# * [features]
+#   - Environment       (std,alloc,no_std)
+#   - Safety            (safe,unsafe,safest)
+#   - Capability
+#   - Dependency
+#
+# * [dependencies]
+#
+# * [badges]
+# * [lints]
+#
+# * [[example]]
+
+[package]
+name = "devela_base"
+description = "base shared functionality for devela"
+version = "0.0.0"
+rust-version = { workspace = true } # sync with README.md
+edition = { workspace = true }
+authors = { workspace = true }
+license = { workspace = true }
+repository = "https://github.com/andamira/devela/tree/main/libs/base"
+documentation = "https://docs.rs/devela_macros"
+include = [
+	"/Cargo.toml",
+	"/LICENSE*",
+	"/src/**/*.rs", "/src/**/*.md",
+]
+categories = ["rust-patterns", "development-tools"]
+keywords = ["dev", "extension"]
+publish = true
+[package.metadata.docs.rs]
+no-default-features = true
+features = ["_docsrs"]
+
+
+[features] # 8/300 (292 remaining), 7 visible, 1 hidden
+# ==============================================================================
+
+#* Environment features *#
+# ------------------------------------------------------------------------------
+alloc = []
+std = ["alloc"]
+
+
+#* Safety features *#
+# ------------------------------------------------------------------------------
+unsafe = [] # enables unsafe features in this crate (unused)
+safe = [] # forbids `unsafe` in this crate
+
+
+
+#* Capability features *#
+# ------------------------------------------------------------------------------
+# default = []
+
+#* docs capabilities *#
+_docsrs = ["std", "unsafe"] # complete documentation
+
+
+#* Dependency features *#
+# ------------------------------------------------------------------------------
+
+
+[dependencies] # 0 (0 required, 0 optional)
+# ==============================================================================
+
+
+
+[badges]
+maintenance = { status = "experimental" }
+
+
+[lints]
+workspace = true
+
+
+# examples
+# ==============================================================================
+
