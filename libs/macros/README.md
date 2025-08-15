@@ -8,7 +8,6 @@
 [![Repository](https://flat.badgen.net/badge/github/v0.13.0/blue?icon=git)](https://github.com/andamira/devela/tree/main/libs/macros)
 [![MSRV ahead 1.89.0](https://flat.badgen.net/badge/MSRV/1.89.0/blue)](https://releases.rs/docs/1.89.0/)
 &nbsp;<sup>←unpublished</sup>
-<!-- [![Documentation ahead](https://flat.badgen.net/badge/docs/250802/blue)](https://andamira.github.io/libera/doc/devela_macros/) -->
 
 ---
 
