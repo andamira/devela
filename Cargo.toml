@@ -62,7 +62,7 @@ license = "MIT OR Apache-2.0"
 [package]
 # ==============================================================================
 name = "devela"
-description = "A cohesive development layer."
+description = "A development layer."
 version = "0.24.0" # In sync with docs/changelog.md
 rust-version = { workspace = true }
 edition = { workspace = true }

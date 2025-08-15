@@ -182,4 +182,4 @@
 - new `ExtProcess` method `command`.
 
 
-<!-- [0.24.0]: https://github.com/andamira/devela/releases/tag/v0.24.0 -->
+[0.24.0]: https://github.com/andamira/devela/releases/tag/v0.24.0
