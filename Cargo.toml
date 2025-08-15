@@ -103,13 +103,14 @@ publish = true
 # 6.44 GB RAM, 15 minutes, 102.4 kB log, no-network, 10 targets.
 
 no-default-features = true
-no-deps = true # WAIT: https://github.com/rust-lang/rust/issues/126638
 features = ["_docsrs"]
 rustc-args = [
 	"--cfg", "nightly",
 	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
-	]
+]
 rustdoc-args = [
+	"--no-deps", # WAIT: https://github.com/rust-lang/rust/issues/126638
+	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
 	"--generate-link-to-definition",
 	"--html-in-header", "./config/rustdoc-header.html",
 	"--cfg", "nightly",
