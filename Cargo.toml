@@ -63,13 +63,13 @@ license = "MIT OR Apache-2.0"
 # ==============================================================================
 name = "devela"
 description = "A development layer."
-version = "0.24.0" # In sync with docs/changelog.md
+version = "0.25.0-wip" # In sync with docs/changelog.md
 rust-version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
 license = { workspace = true }
 repository = "https://github.com/andamira/devela"
-documentation = "https://andamira.github.io/devela/0.24.0/devela/"
+documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
 # documentation = "https://docs.rs/devela"
 readme = "docs/readme_crate.md"
 include = [
