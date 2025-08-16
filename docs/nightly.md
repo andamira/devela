@@ -36,8 +36,10 @@ See also
 <!-- > - <https://blog.rust-lang.org/2025/10/30/Rust-1.91.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.91.0> -->
 
+- 1.91: `·`[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
 - 1.91: `·`[const_type_id](https://github.com/rust-lang/rust/pull/144133)
 - 1.91: `·`[duration_constructors_lite](https://github.com/rust-lang/rust/pull/145135)
+- 1.91: `·`[iter_chain](https://github.com/rust-lang/rust/pull/144963)
 - 1.91: ` `[loongarch32 inline asm](https://github.com/rust-lang/rust/pull/144402)
 - 1.91: `s`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
 - 1.91: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) & 129114
@@ -57,10 +59,11 @@ See also
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
-- 1.??: `·`[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
+- 1.??: `·`[array_repeat](https://github.com/rust-lang/rust/issues/126695)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
-- 1.??: `·`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
+- 1.??: `a`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
+- 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `·`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
@@ -68,6 +71,7 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
+- 1.??: `s`[const_pathbuf_osstring_new](https://github.com/rust-lang/rust/pull/145464)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
@@ -76,7 +80,6 @@ See also
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[ip_from](https://github.com/rust-lang/rust/pull/141744)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
-- 1.??: `·`[iter_chain](https://github.com/rust-lang/rust/pull/144963)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
@@ -85,6 +88,7 @@ See also
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
+- 1.??: `·`[strict_provenance_atomic_ptr](https://github.com/rust-lang/rust/issues/99108)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)

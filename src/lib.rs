@@ -59,7 +59,14 @@
 // `nightly_stable_1_91`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_91,
-    feature(const_type_id, duration_constructors_lite, strict_overflow_ops, unsigned_signed_diff,)
+    feature(
+        as_array_of_cells,
+        const_type_id,
+        duration_constructors_lite,
+        iter_chain,
+        strict_overflow_ops,
+        unsigned_signed_diff,
+    )
 )]
 // #![cfg_attr(all(nightly_stable_1_91, feature = "alloc"), feature())]
 #![cfg_attr(
@@ -71,7 +78,7 @@
 #![cfg_attr(
     nightly_stable_later,
     feature(
-        as_array_of_cells,
+        array_repeat,
         assert_matches,
         breakpoint,
         cfg_select,
@@ -88,19 +95,22 @@
         impl_trait_in_assoc_type,
         ip_from,
         isqrt,
-        iter_chain,
         macro_metavar_expr,
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
         substr_range,
+        strict_provenance_atomic_ptr,
         unsafe_cell_from_mut,
     )
 )]
-#![cfg_attr(all(nightly_stable_later, feature = "alloc"), feature(new_zeroed_alloc,))]
+#![cfg_attr(
+    all(nightly_stable_later, feature = "alloc"),
+    feature(btree_entry_insert, btree_extract_if, new_zeroed_alloc,)
+)]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(once_wait, path_add_extension, rwlock_downgrade,)
+    feature(once_wait, path_add_extension, rwlock_downgrade, const_pathbuf_osstring_new,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
