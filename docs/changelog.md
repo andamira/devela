@@ -26,6 +26,12 @@
   - add build script.
     - add `cargo_primary_package` flag.
 
+## manifest
+- add *binaries* and *metrics* sections.
+
+## metrics
+- rename directory `/benches` → `/metrics`.
+
 ## tools & misc. files
 - new file `config/lib_all`.
 - update `tools/check.rs`:

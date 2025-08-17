@@ -42,8 +42,9 @@
 #     - configuration                (nightly_*)
 #     - reflection                   (*··)
 #
-# * [[bench]]
-# * [[example]]
+# * [[bench]]           metrics
+# * [[bin]]             binaries
+# * [[example]]         examples
 
 
 [workspace]
@@ -995,7 +996,7 @@ default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 
 
 [dev-dependencies]
-# Used for benchmarks, examples and tests. They inherit from [dependencies].
+# Used for examples, metrics and tests. They inherit from [dependencies].
 # ------------------------------------------------------------------------------
 
 devela = { path = ".", features = ["all"] }
@@ -1224,9 +1225,30 @@ check-cfg = [ # Allowed configuration flags:
 ]
 
 
-# benches
+# metrics
 # ==============================================================================
 
+# [[bench]]
+# name = "static_map"
+# path = "metrics/static_map.rs"
+# harness = false
+
+
+# binaries
+# ==============================================================================
+# To install a binary:
+# cargo install --path . --bin NAME -F std
+
+# bin
+# [[bin]]
+# name = "some-binary"
+# required-features = ["std"]
+
+# num
+# [[bin]]
+# name = "xoro"
+# path = "src/num/rand/xorshift/xoro.rs"
+# required-features = ["std", "rand"]
 
 
 # examples
