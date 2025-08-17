@@ -976,7 +976,7 @@ default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
 
 [dependencies.ureq] # https://crates.io/crates/ureq
-version = "3.0.12" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
+version = "3.1" # ✓ https://github.com/algesten/ureq/blob/main/CHANGELOG.md
 optional = true # safe
 default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # features = []

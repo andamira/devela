@@ -13,6 +13,9 @@
 
 ## dependencies
 - new workspace library dependency: `devela_base`.
+- bump dependencies:
+  - `ureq` → 3.1.
+  - [macros] `proc-macro2` → 1.0.101.
 
 ## tools & misc. files
 - new file `config/lib_all`.
