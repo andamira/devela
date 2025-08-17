@@ -7,15 +7,18 @@
 > *Project* :
 -----------
 
-## features & flags
-- new `_lib··` flag
-- new features = `lib_all``, `lib_base`.
+## build
+- move `/meta/build` back to `/build`.
 
 ## dependencies
 - new workspace library dependency: `devela_base`.
 - bump dependencies:
   - `ureq` → 3.1.
   - [macros] `proc-macro2` → 1.0.101.
+
+## features & flags
+- new `_lib··` flag
+- new features = `lib_all``, `lib_base`.
 
 ## libs
 - [base]:

@@ -1,4 +1,4 @@
-// devela::meta::build::codegen::tuple
+// devela::build::codegen::tuple
 //
 //! Code generator for the [`Tuple`] trait, `TupleElement*` enums and `TupleIter*` structs.
 //

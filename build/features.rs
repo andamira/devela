@@ -1,4 +1,4 @@
-// devela::meta::build::features
+// devela::build::features
 //
 //! Features debugging and compile flags enabling for reflexion.
 //
@@ -227,13 +227,13 @@ mod reflection {
     // In sync with ../Cargo.toml::lib_all
     pub const LIBRARY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["lib··"],
-        features: &include!{"../../config/lib_all.rs"},
+        features: &include!{"../config/lib_all.rs"},
     };
 
     // In sync with ../Cargo.toml::dep_all & ../src/_dep.rs
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["dep··"],
-        features: &include!{"../../config/dep_all.rs"},
+        features: &include!{"../config/dep_all.rs"},
     };
 
     /* # modules */
