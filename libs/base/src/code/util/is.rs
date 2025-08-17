@@ -8,7 +8,6 @@
 /// Combines:
 /// 1. `if`/`else` conditions
 /// 2. `if let` pattern matching
-/// 3. Temporary value binding
 ///
 /// # Examples
 ///
@@ -60,45 +59,6 @@
 ///     }
 /// }
 /// ```
-///
-/// 3. Temporary value binding:
-/// ```
-/// # #[cfg(feature = "alloc")] {
-/// # use devela_base::{alloc::{fmt::Write, string::String}, is};
-/// # use core::format_args;
-/// let mut s = String::new();
-/// let (a, b) = (1, 2);
-///
-/// // This
-/// is![
-///     tmp A = format_args!("A{a}");
-///     tmp B = format_args!("B{b}");
-///     write!(s, "{A}+{B},");
-/// ];
-/// assert_eq![&s, "A1+B2,"];
-///
-/// // Would be equivalent to
-/// match format_args!("A{a}") {
-///     A => match format_args!("B{b}") {
-///         B => { write!(s, "{A}+{B},"); }
-///     }
-/// }
-/// # }
-/// ```
-///
-/// Otherwise it fails with `E0716: temporary value dropped while borrowed` (in stable):
-/// ```
-/// # #[cfg(feature = "alloc")] {
-/// # use devela_base::alloc::{fmt::Write, string::String};
-/// # use core::format_args;
-/// let mut s = String::new();
-/// let (a, b) = (1, 2);
-///
-/// let A = format_args!("A{a}"); // ← freed here
-/// let B = format_args!("B{b}"); // ← freed here
-/// write!(s, "{A}+{B},");
-/// # }
-/// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! is {
@@ -130,28 +90,9 @@ macro_rules! is {
             $( $else )?
         }
     };
-
-    // Temporary value binding helper that:
-    // 1. Binds short-lived expressions to names
-    // 2. Enables expression chaining while maintaining temporary lifetimes
-    //
-    // source: https://github.com/rust-lang/rust/issues/92698#issuecomment-1680155957
-    (tmp $name:pat = $val:expr; $($rest:tt)+) => {
-        match $val { $name => $crate::is!($($rest)*) }
-    };
-    ($($rest:tt)+) => {{ $($rest)+ }}
 }
 #[doc(inline)]
 pub use is;
-
-/// Renamed to [`is`].
-#[macro_export]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
-#[deprecated(since = "0.23.0", note = "Use the 'is!' macro instead.")]
-macro_rules! iif { ($($tt:tt)*) => { $crate::is![$($tt)*] }; }
-#[allow(deprecated, reason = "re-exported")]
-#[doc(inline)]
-pub use iif;
 
 #[cfg(test)]
 mod test_is {
