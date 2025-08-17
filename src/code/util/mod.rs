@@ -31,13 +31,11 @@ mod cfg_if; // cfg_if!
 mod cfor; // cfor!
 mod deprecate; // deprecate_feature!
 mod ident; // ident_const_index!
-mod is; // is!
 mod impl_trait; // impl_trait!
 mod include; // include_from!, mod_from!
 mod maybe; // maybe!
 mod methods; // methods_as_fns
 mod paste; // paste! wrapped for docs
-mod r#const; // CONST!
 mod reexports; // re-exported items
 
 #[cfg(_bit··)]
@@ -54,8 +52,7 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
     mod _mods {
         pub use super::{
             asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
-            is::*, impl_trait::*, include::*, maybe::*, methods::*, paste::*, r#const::*,
-            reexports::*,
+            impl_trait::*, include::*, maybe::*, methods::*, paste::*, reexports::*,
         };
         #[cfg(_bit··)]
         pub use super::enumset::*;

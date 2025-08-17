@@ -4,6 +4,8 @@
 //
 
 mod items; // items!, sf!
+mod is; // is!
+mod r#const; // CONST!
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
@@ -11,7 +13,7 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::{
-            items::*,
+            items::*, is::*, r#const::*,
         };
     }
     pub(super) mod _all {

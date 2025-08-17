@@ -19,7 +19,7 @@
 
 ## libs
 - move to [base]:
-  - macros: `items!`, `sf!`.
+  - macros: `CONST!`, `is!`, `items!`, `sf!`.
 
 ## tools & misc. files
 - new file `config/lib_all`.
