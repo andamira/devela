@@ -1,6 +1,6 @@
-// devela::code::util::const
+// devela_base::code::util::const
 //
-//! Defines the CONST! macro.
+//! Defines the [CONST!] macro.
 //
 
 /// A helper for constructing macro constants.
@@ -9,7 +9,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::CONST;
+/// # use devela_base::CONST;
+///
 /// CONST!{ /* Supports empty declarations */ }
 ///
 /// // Supports any expresion

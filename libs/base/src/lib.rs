@@ -9,15 +9,16 @@
 
 /* imports */
 
-#[cfg(feature = "alloc")]
-extern crate alloc;
-
 extern crate self as devela_base;
+
+#[doc(hidden)]
+#[cfg(feature = "alloc")]
+pub extern crate alloc;
 
 /* root modules */
 
-mod code;
-// mod num;
+pub mod code;
+// pub mod num;
 
 #[doc(hidden)]
 pub use all::*;

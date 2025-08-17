@@ -14,7 +14,7 @@
 /// # Examples
 /// ```
 /// # use devela_base::items;
-/// #[cfg(feature = "std")]
+/// #[cfg(feature = "alloc")]
 /// items! {
 ///     mod something {
 ///         pub struct SomeThing;

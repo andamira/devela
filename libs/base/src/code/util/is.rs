@@ -1,6 +1,6 @@
-// devela::code::util::is
+// devela_base::code::util::is
 //
-//! inline if macro.
+//! Defines inline if macro [`is!`].
 //
 
 /// Conditional evaluation.
@@ -14,7 +14,7 @@
 ///
 /// 1. Replacing `if`:
 /// ```
-/// # use devela::is;
+/// # use devela_base::is;
 /// is![true; print!("true")];
 ///
 /// // This
@@ -30,7 +30,7 @@
 ///
 /// 2. Replacing `if let`:
 /// ```
-/// # use devela::is;
+/// # use devela_base::is;
 /// let num = Some(123);
 ///
 /// // This
@@ -46,7 +46,7 @@
 ///
 /// Nested:
 /// ```
-/// # use devela::is;
+/// # use devela_base::is;
 /// let mut s = String::new();
 /// let is_premium = Some(true);
 ///
@@ -63,7 +63,9 @@
 ///
 /// 3. Temporary value binding:
 /// ```
-/// # use devela::{format_args, is, FmtWrite};
+/// # #[cfg(feature = "alloc")] {
+/// # use devela_base::{alloc::{fmt::Write, string::String}, is};
+/// # use core::format_args;
 /// let mut s = String::new();
 /// let (a, b) = (1, 2);
 ///
@@ -81,19 +83,21 @@
 ///         B => { write!(s, "{A}+{B},"); }
 ///     }
 /// }
+/// # }
 /// ```
 ///
 /// Otherwise it fails with `E0716: temporary value dropped while borrowed` (in stable):
-// WAIT:1.89 [Allow storing format_args! in variable](https://github.com/rust-lang/rust/pull/140748)
-// ```compile_fail,E0716
-/// ```ignore
-/// # use devela::{format_args, FmtWrite};
+/// ```
+/// # #[cfg(feature = "alloc")] {
+/// # use devela_base::alloc::{fmt::Write, string::String};
+/// # use core::format_args;
 /// let mut s = String::new();
 /// let (a, b) = (1, 2);
 ///
 /// let A = format_args!("A{a}"); // ← freed here
 /// let B = format_args!("B{b}"); // ← freed here
 /// write!(s, "{A}+{B},");
+/// # }
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -129,7 +133,7 @@ macro_rules! is {
 
     // Temporary value binding helper that:
     // 1. Binds short-lived expressions to names
-    // 3. Enables expression chaining while maintaining temporary lifetimes
+    // 2. Enables expression chaining while maintaining temporary lifetimes
     //
     // source: https://github.com/rust-lang/rust/issues/92698#issuecomment-1680155957
     (tmp $name:pat = $val:expr; $($rest:tt)+) => {
