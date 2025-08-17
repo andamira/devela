@@ -17,6 +17,10 @@
   - `ureq` → 3.1.
   - [macros] `proc-macro2` → 1.0.101.
 
+## libs
+- move to [base]:
+  - macros: `items!`, `sf!`.
+
 ## tools & misc. files
 - new file `config/lib_all`.
 - update `tools/check.rs`:

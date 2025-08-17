@@ -7,6 +7,8 @@
 
 use crate::reexport;
 
+pub use devela_base::{items, sf};
+
 /// <span class="stab portability" title="re-exported from the `devela_macros`
 /// crate">`devela_macros`</span>
 pub use devela_macros::{

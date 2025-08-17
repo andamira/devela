@@ -33,7 +33,6 @@ mod deprecate; // deprecate_feature!
 mod ident; // ident_const_index!
 mod is; // is!
 mod impl_trait; // impl_trait!
-mod items; // items!, sf!
 mod include; // include_from!, mod_from!
 mod maybe; // maybe!
 mod methods; // methods_as_fns
@@ -46,7 +45,7 @@ mod enumset; // enumset!
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
 
-crate::items! { // structural access: _mods, _internals, _all, _always
+reexports::items! { // structural access: _mods, _internals, _all, _always
     #[allow(unused)]
     pub use {_mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden, no_inline)]
@@ -55,13 +54,17 @@ crate::items! { // structural access: _mods, _internals, _all, _always
     mod _mods {
         pub use super::{
             asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
-            is::*, impl_trait::*, include::*, items::*, maybe::*, methods::*, paste::*, r#const::*,
+            is::*, impl_trait::*, include::*, maybe::*, methods::*, paste::*, r#const::*,
             reexports::*,
         };
         #[cfg(_bit··)]
         pub use super::enumset::*;
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
+        // WIPZONE
+        // #[cfg(all(feature = "std", feature = "dep_image"))]
+        // pub use super::docima::*;
+        // pub use super::structural::*;
     }
     pub(super) mod _internals {
         pub(crate) use super::{_doc::*, _reexport::*, _use::*, error::*};
@@ -74,3 +77,8 @@ crate::items! { // structural access: _mods, _internals, _all, _always
         pub use super::{_internals::*, reexports::*, error::*};
     }
 }
+// WIPZONE
+// #[cfg(all(feature = "std", feature = "dep_image"))]
+// #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "std", feature = "dep_image"))))]
+// mod docima; // DocImage
+// mod structural; // structural_mods!

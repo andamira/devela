@@ -57,7 +57,6 @@ unsafe = [] # enables unsafe features in this crate (unused)
 safe = [] # forbids `unsafe` in this crate
 
 
-
 #* Capability features *#
 # ------------------------------------------------------------------------------
 # default = []
@@ -72,7 +71,6 @@ _docsrs = ["std", "unsafe"] # complete documentation
 
 [dependencies] # 0 (0 required, 0 optional)
 # ==============================================================================
-
 
 
 [badges]

@@ -23,7 +23,7 @@ pub mod panic; // Panic, set_panic_handler!
 pub mod result; // AllError, serr, sok, Mismatch, OptRes, ValueQuant…
 pub mod util; // utility macros and functions
 
-crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
+util::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
     pub use {_mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden, no_inline)]
