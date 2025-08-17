@@ -3,6 +3,17 @@
 //!
 //
 
+/* global configuration */
+//
+// lints
+//
+// (Most lints are defined in ::devela::Cargo.toml::lints)
+#![deny(rustdoc::missing_debug_implementations)]
+#![cfg_attr(
+    not(all(doc, feature = "_docsrs")), // if features are incomplete…
+    allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
+)]
+
 // environment
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
