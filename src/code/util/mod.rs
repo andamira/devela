@@ -21,9 +21,6 @@ mod _reexport; // reexport! // RENAME _reexport!
 mod _use; // _use!
 mod error; // define_error!
 
-#[doc(hidden)]
-pub use paste::__paste;
-
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail]!
 mod cdbg; // cdbg!
@@ -35,7 +32,6 @@ mod impl_trait; // impl_trait!
 mod include; // include_from!, mod_from!
 mod maybe; // maybe!
 mod methods; // methods_as_fns
-mod paste; // paste! wrapped for docs
 mod reexports; // re-exported items
 
 #[cfg(_bit··)]
@@ -52,7 +48,7 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
     mod _mods {
         pub use super::{
             asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
-            impl_trait::*, include::*, maybe::*, methods::*, paste::*, reexports::*,
+            impl_trait::*, include::*, maybe::*, methods::*, reexports::*,
         };
         #[cfg(_bit··)]
         pub use super::enumset::*;

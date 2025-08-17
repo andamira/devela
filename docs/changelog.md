@@ -23,6 +23,7 @@
 ## libs
 - [base]:
   - move devela macros: `CONST!`, `is!`, `items!`, `sf!`.
+  - move `paste` dependency.
   - add build script.
     - add `cargo_primary_package` flag.
 

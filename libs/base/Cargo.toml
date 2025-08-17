@@ -73,8 +73,13 @@ _docsrs = ["std", "unsafe"] # complete documentation
 # ------------------------------------------------------------------------------
 
 
-[dependencies] # 0 (0 required, 0 optional)
+[dependencies] # 1 (1 required, 0 optional)
 # ==============================================================================
+
+[dependencies.paste_crate] # https://crates.io/crates/paste
+version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
+package = "paste" # safe, ARCHIVED
+# alternative: https://crates.io/crates/pastey
 
 
 [badges]

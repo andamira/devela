@@ -5,7 +5,11 @@
 
 mod items; // items!, sf!
 mod is; // is!
+mod paste; // paste! (wrapped for docs)
 mod r#const; // CONST!
+
+#[doc(hidden)]
+pub use paste::__paste; // (called from paste!)
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
@@ -13,7 +17,7 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::{
-            items::*, is::*, r#const::*,
+            items::*, is::*, paste::*, r#const::*,
         };
     }
     pub(super) mod _all {

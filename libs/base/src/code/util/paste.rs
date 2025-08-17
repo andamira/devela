@@ -1,4 +1,6 @@
-// devela::code::util::paste
+// devela_base::code::util::paste
+//
+//! Re-exports the [`paste!`] macro with associated docs.
 //
 
 /// <span class="stab portability" title="re-exported from the `paste` crate">`paste`</span>
