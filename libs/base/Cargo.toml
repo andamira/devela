@@ -23,7 +23,7 @@
 name = "devela_base"
 description = "base shared functionality for devela"
 version = "0.0.0"
-rust-version = { workspace = true } # sync with README.md
+rust-version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
 license = { workspace = true }
@@ -32,11 +32,15 @@ documentation = "https://docs.rs/devela_macros"
 include = [
 	"/Cargo.toml",
 	"/LICENSE*",
-	"/src/**/*.rs", "/src/**/*.md",
+	"/build/**/*.rs", "/src/**/*.rs",
+	"/build/**/*.md", "/src/**/*.md",
 ]
 categories = ["rust-patterns", "development-tools"]
 keywords = ["dev", "extension"]
+build = "build/mod.rs"
+autoexamples = false
 publish = true
+
 [package.metadata.docs.rs]
 no-default-features = true
 features = ["_docsrs"]

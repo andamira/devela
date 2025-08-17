@@ -18,8 +18,10 @@
   - [macros] `proc-macro2` → 1.0.101.
 
 ## libs
-- move to [base]:
-  - macros: `CONST!`, `is!`, `items!`, `sf!`.
+- [base]:
+  - move devela macros: `CONST!`, `is!`, `items!`, `sf!`.
+  - add build script.
+    - add `cargo_primary_package` flag.
 
 ## tools & misc. files
 - new file `config/lib_all`.

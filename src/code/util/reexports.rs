@@ -7,6 +7,7 @@
 
 use crate::reexport;
 
+#[doc(inline)]
 pub use devela_base::{CONST, is, items, sf};
 
 /// <span class="stab portability" title="re-exported from the `devela_macros`

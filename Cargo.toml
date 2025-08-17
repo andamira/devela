@@ -79,7 +79,7 @@ include = [
 	# source code:
 	"/meta/build/**/*.rs", "/src/**/*.rs",
 	# documentation:
-	"/build/**/*.md", "/src/**/*.md",
+	"/meta/build/**/*.md", "/src/**/*.md",
 	"/docs/nightly.md", "/docs/vendored*.md",
 	"/LICENSE*",
 	# examples in documentation:

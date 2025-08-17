@@ -84,8 +84,8 @@
 /// ```
 // Related links
 // - https://doc.rust-lang.org/reference/items/external-blocks.html#functions
-#[doc(hidden)]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _CONST {
     (
     // Either multiple `const fn`
