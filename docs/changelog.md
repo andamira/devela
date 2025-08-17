@@ -10,6 +10,9 @@
 ## build
 - move `/meta/build` back to `/build`.
 
+## cargo
+- add new cargo doc workspace aliases: `dw*`.
+
 ## dependencies
 - new workspace library dependency: `devela_base`.
 - bump dependencies:

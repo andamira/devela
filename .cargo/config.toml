@@ -137,6 +137,10 @@ d = "doc --no-deps"
 do = "doc --no-deps --open"
 dp = "doc --no-deps --document-private-items"
 dpo = "doc --no-deps --open --document-private-items"
+dw = "doc --no-deps --workspace"
+dwo = "doc --no-deps --open --workspace"
+dwp = "doc --no-deps --workspace --document-private-items "
+dwpo = "doc --no-deps --open --workspace --document-private-items"
 
 # TREE
 tr = "tree --no-dedupe"
