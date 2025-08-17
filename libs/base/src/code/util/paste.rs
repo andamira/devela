@@ -13,7 +13,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::paste;
+/// # use devela_base::paste;
 /// paste! {
 ///     // Defines a const called `QRST`.
 ///     const [<Q R S T>]: &str = "success!";
@@ -50,7 +50,7 @@
 /// implicitly concatenated together to form a coherent documentation string.
 ///
 /// ```
-/// # use devela::paste;
+/// # use devela_base::paste;
 /// macro_rules! method_new {
 ///     ($ret:ident) => {
 ///         paste! {

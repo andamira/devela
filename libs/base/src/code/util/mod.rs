@@ -3,6 +3,9 @@
 //! Utility macros and hint functions.
 //
 
+mod cdbg; // cdbg!
+mod deprecate; // deprecate_feature!
+mod include; // include_from!, mod_from!
 mod items; // items!, sf!
 mod is; // is!
 mod paste; // paste! (wrapped for docs)
@@ -17,7 +20,7 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::{
-            items::*, is::*, paste::*, r#const::*,
+            cdbg::*, deprecate::*, include::*, items::*, is::*, paste::*, r#const::*,
         };
     }
     pub(super) mod _all {

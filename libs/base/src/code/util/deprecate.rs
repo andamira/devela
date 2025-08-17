@@ -1,4 +1,4 @@
-// devela::code::util::deprecate
+// devela_base::code::util::deprecate
 
 /// Configures a feature as deprecated, warning if it is enabled.
 ///
@@ -6,7 +6,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::deprecate_feature;
+/// # use devela_base::deprecate_feature;
 /// deprecate_feature![old: "old-feature-1"];
 /// deprecate_feature![old: "old-feature-2", since: "2.0.0"];
 /// deprecate_feature![old: "old-feature-3", new: "new_feature_3"];

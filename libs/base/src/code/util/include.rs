@@ -1,6 +1,6 @@
-// devela::code::util::include
+// devela_base::code::util::include
 //
-//! include code macros
+//! Defines the [`include_from!`] and [`mod_from!`] macros.
 //
 
 /// Includes a Rust source file relative to the project's directory.
@@ -29,8 +29,8 @@
 /// [`cargo-script`]: https://github.com/rust-lang/cargo/issues/12207
 ///
 /// See also [`mod_from!`].
-#[doc(hidden)]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _include_from {
     ($module_name:ident) => {
         include!(concat!(std::env!("CARGO_MANIFEST_DIR"), "/", stringify!($module_name), ".rs"));
@@ -63,8 +63,8 @@ pub use _include_from as include_from;
 /// ```
 ///
 /// See also [`include_from!`].
-#[doc(hidden)]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _mod_from {
     ($vis:vis $module_name:ident) => {
         $vis mod $module_name { $crate::include_from!($module_name); }

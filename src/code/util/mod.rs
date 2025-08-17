@@ -23,13 +23,10 @@ mod error; // define_error!
 
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail]!
-mod cdbg; // cdbg!
 mod cfg_if; // cfg_if!
 mod cfor; // cfor!
-mod deprecate; // deprecate_feature!
 mod ident; // ident_const_index!
 mod impl_trait; // impl_trait!
-mod include; // include_from!, mod_from!
 mod maybe; // maybe!
 mod methods; // methods_as_fns
 mod reexports; // re-exported items
@@ -47,8 +44,8 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
 
     mod _mods {
         pub use super::{
-            asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
-            impl_trait::*, include::*, maybe::*, methods::*, reexports::*,
+            asserts::_all::*, capture::*, cfg_if::*, cfor::*, ident::*, impl_trait::*, maybe::*,
+            methods::*, reexports::*,
         };
         #[cfg(_bit··)]
         pub use super::enumset::*;

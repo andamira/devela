@@ -22,7 +22,7 @@
 
 ## libs
 - [base]:
-  - move devela macros: `CONST!`, `is!`, `items!`, `sf!`.
+  - move devela macros: `CONST!`, `cdbg`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
   - move `paste` dependency.
   - add build script.
     - add `cargo_primary_package` flag.

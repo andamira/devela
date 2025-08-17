@@ -1,6 +1,6 @@
-// devela::code::util::cdbg
+// devela_base::code::util::cdbg
 //
-//! Custom debug macro.
+//! Defines the custom debug macro [`cdbg!`].
 //
 
 /// *`c`ustomizable [`dbg!`]* macro.

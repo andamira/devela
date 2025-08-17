@@ -7,8 +7,16 @@
 
 use crate::reexport;
 
-#[doc(inline)]
-pub use devela_base::{CONST, is, items, paste, sf};
+#[doc(inline)] #[rustfmt::skip]
+pub use devela_base::{
+    CONST,
+    cdbg,
+    deprecate_feature,
+    include_from, mod_from,
+    is,
+    items, sf,
+    paste,
+};
 
 /// <span class="stab portability" title="re-exported from the `devela_macros`
 /// crate">`devela_macros`</span>
