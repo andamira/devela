@@ -51,7 +51,7 @@
 
 #![allow(clippy::useless_format)]
 
-use devela::all::{FsPath, is, sf};
+use devela::all::{CONST, FsPath, is, sf};
 use itertools::Itertools;
 use std::{
     collections::HashSet,
@@ -65,9 +65,9 @@ use toml_edit::Document;
 
 /* config */
 
-// const NIGHTLY_VERSION: &str = "+nightly";
-const NIGHTLY_VERSION: &str = "nightly-2025-08-14"; // NOTE: 2025-08-15 fails
-const NIGHTLY_TOOLCHAIN: &str = "+nightly-2025-08-14"; // IMPROVE: use const concat
+CONST![NIGHTLY = "nightly-2025-08-14"]; // NOTE: 2025-08-15 fails
+const NIGHTLY_VERSION: &str = NIGHTLY![];
+const NIGHTLY_TOOLCHAIN: &str = concat!["+", NIGHTLY![]];
 
 #[rustfmt::skip]
 const ROOT_MODULES: [&str; 11 + 1] = [
