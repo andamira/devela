@@ -14,6 +14,9 @@ crate::items! { // structural access: _pub_mods, _all
             util::_all::*,
         };
     }
+    pub(super) mod _internals { #[allow(unused_imports)]
+        pub/*workspace*/ use super::util::_internals::*;
+    }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_pub_mods::*;

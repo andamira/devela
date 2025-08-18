@@ -26,6 +26,7 @@
 ## libs
 - [base]:
   - move devela macros: `CONST!`, `cdbg`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
+  - move internal (for the workspace) devela macros: `EMOJI_*`, `TAG_*`.
   - move `paste` dependency.
   - add build script.
     - add `cargo_primary_package` flag.

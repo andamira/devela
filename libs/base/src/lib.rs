@@ -13,7 +13,6 @@
     not(all(doc, feature = "_docsrs")), // if features are incomplete…
     allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
 )]
-
 // environment
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
@@ -47,5 +46,16 @@ pub mod all {
     pub use super::{
         code::_all::*,
         // num::_all::*,
+    };
+}
+
+#[doc(hidden)]
+#[allow(unused_imports)]
+pub(crate) use _internals::*;
+#[doc(hidden)] #[rustfmt::skip]
+pub/*workspace*/ mod _internals {
+    #[allow(unused_imports)]
+    pub/*workspace*/ use super::{
+        code::_internals::*,
     };
 }

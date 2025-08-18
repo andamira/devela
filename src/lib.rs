@@ -216,6 +216,9 @@ mod _hidden {
 #[allow(unused_imports)]
 pub(crate) use _internals::*;
 mod _internals {
+    // workspace internal items
+    pub(crate) use devela_base::_internals::*;
+
     // private, internal items
     #[allow(unused_imports)]
     #[rustfmt::skip]
