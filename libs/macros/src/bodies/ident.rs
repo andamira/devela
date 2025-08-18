@@ -10,7 +10,6 @@
 // - ident_unique
 
 use super::shared::split_args;
-use alloc::{format, string::ToString};
 use proc_macro::{TokenStream, TokenTree};
 
 pub(crate) fn body_coalesce(input: TokenStream) -> TokenStream {
@@ -45,7 +44,6 @@ pub(crate) fn body_ident_total(input: TokenStream) -> TokenStream {
     result.parse().unwrap()
 }
 
-#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
     let mut unique = crate::HashSet::new();
     let mut total = 0;
@@ -63,7 +61,6 @@ pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
     result.parse().unwrap()
 }
 
-#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 pub(crate) fn body_ident_unique(input: TokenStream) -> TokenStream {
     let mut unique = crate::HashSet::new();
     for token in input {

@@ -7,9 +7,7 @@
 # * [lib]
 #
 # * [features]
-#   - Environment       (std,alloc,no_std)
-#   - Safety            (safe,unsafe,safest)
-#   - Nightly
+#   - Safety            (safe,unsafe)
 #   - Capability
 #   - Dependency
 #
@@ -47,14 +45,8 @@ path = "./src/lib.rs"
 proc-macro = true
 
 
-[features] # 9/300 (291 remaining), 8 visible, 1 hidden
+[features] # 4/300 (296 remaining), 3 visible, 1 hidden
 # ==============================================================================
-
-#* Environment features *#
-# ------------------------------------------------------------------------------
-alloc = []
-std = ["alloc"]
-
 
 #* Safety features *#
 # ------------------------------------------------------------------------------
@@ -62,36 +54,19 @@ unsafe = [] # enables unsafe features in this crate (unused)
 safe = [] # forbids `unsafe` in this crate
 
 
-#* Nightly features *#
-# ------------------------------------------------------------------------------
-nightly = ["nightly_doc"]
-	nightly_doc = [] # doc_cfg
-
-
 #* Capability features *#
 # ------------------------------------------------------------------------------
-default = ["std", "safe"]
+default = ["safe"]
 
 #* docs capabilities *#
-_docsrs = ["nightly", "std", "unsafe", "dep_hashbrown"] # complete documentation
+_docsrs = ["unsafe"] # complete documentation
 
 
-#* Dependency features *#
-# ------------------------------------------------------------------------------
-dep_hashbrown = ["dep:hashbrown", "alloc"]
-
-
-[dependencies] # 3 (2 required, 1 optional)
+[dependencies] # 2 (2 required, 0 optional)
 # ==============================================================================
 # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
 proc-macro2 = "1.0.101"
 quote = "1.0.40"
-
-[dependencies.hashbrown]
-version = "0.15.1"
-optional = true
-default-features = false
-features = ["default-hasher", "inline-more"]
 
 
 [package.metadata.docs.rs]
@@ -114,19 +89,13 @@ workspace = true
 # ==============================================================================
 [[example]]
 name = "cif"
-required-features = ["alloc"]
 [[example]]
 name = "coalesce"
-required-features = ["alloc"]
 [[example]]
 name = "compile_attr"
-required-features = ["alloc"]
 [[example]]
 name = "compile_doc"
-required-features = ["alloc"]
 [[example]]
 name = "compile"
-required-features = ["alloc"]
 [[example]]
 name = "enumint"
-required-features = ["alloc"]

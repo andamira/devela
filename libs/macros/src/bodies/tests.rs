@@ -2,8 +2,6 @@
 
 use super::shared::compile_eval;
 
-use alloc::string::ToString;
-
 #[test]
 fn test_compile_eval() {
     /* unary */

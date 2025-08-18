@@ -9,12 +9,8 @@
 // - compile_eval
 // - parse_vis_ident
 
-use alloc::{
-    string::{String, ToString},
-    vec::Vec,
-};
-use core::iter::{Peekable, once};
 use proc_macro2::{TokenStream as TokenStream2, TokenTree};
+use std::iter::{Peekable, once};
 
 /// Argument parser that correctly deals with nested arguments with commas.
 pub(crate) fn split_args(arg: &str) -> Vec<String> {

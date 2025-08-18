@@ -20,26 +20,19 @@
 // WAIT: [non-inline modules in proc-macros](https://github.com/rust-lang/rust/issues/54727)
 
 // environment
-#![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
-#![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
+
+// nightly (flags)
+#![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 /* imports */
 
-#[cfg(feature = "alloc")]
-extern crate alloc;
-
 extern crate self as devela_macros;
-#[cfg(feature = "alloc")]
 use proc_macro::TokenStream as TS;
 
-#[cfg(feature = "dep_hashbrown")]
-use hashbrown::HashSet;
-#[cfg(all(not(feature = "dep_hashbrown"), feature = "std"))]
 use std::collections::HashSet;
 
 mod bodies;
-#[cfg_attr(not(feature = "alloc"), allow(unused_imports))]
 use bodies::*;
 
 /* inner helpers */
@@ -55,7 +48,6 @@ items! { #[allow(unused_imports)] use items; }
 ///
 #[doc = concat!("# Example\n```\n", include_str!("../examples/cif.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]
-#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn cif(input: TS) -> TS { body_cif(input) }
 
 /// Conditionally compiles the thing it is attached to based on the
@@ -63,7 +55,6 @@ pub fn cif(input: TS) -> TS { body_cif(input) }
 ///
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile.rs"), "\n```")]
 #[proc_macro_attribute] #[rustfmt::skip]
-#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn compile(args: TS, input: TS) -> TS { body_compile(args, input) }
 
 /// Conditionally compiles the given attributes based on the
@@ -71,7 +62,6 @@ pub fn compile(args: TS, input: TS) -> TS { body_compile(args, input) }
 ///
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile_attr.rs"), "\n```")]
 #[proc_macro_attribute] #[rustfmt::skip]
-#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) }
 
 /// Conditionally compiles each doc comment based on the
@@ -80,7 +70,6 @@ pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) 
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile_doc.rs"), "\n```")]
 #[doc(hidden)]
 #[proc_macro_attribute] #[rustfmt::skip]
-#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
 
 /* macros: ident */
@@ -94,7 +83,6 @@ pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
 ///
 #[doc = concat!("# Example\n```\n", include_str!("../examples/coalesce.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]
-#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 
 /// Returns the total number of [identifiers] in its input.
@@ -113,7 +101,6 @@ pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 /// assert_eq![ident_total!(a, a 東 r#true; a3 != 3a), 5];
 /// ```
 #[proc_macro] #[rustfmt::skip]
-#[cfg(feature = "alloc")]
 pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 
 /// Returns the numbers of both *total* and *unique* [identifiers] in its input.
@@ -132,8 +119,6 @@ pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 /// assert_eq![ident_total_unique!(a, a 東 r#true; a3 != 3a), [5, 4]];
 /// ```
 #[proc_macro] #[rustfmt::skip]
-#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
 pub fn ident_total_unique(input: TS) -> TS { body_ident_total_unique(input) }
 
 /// Returns the number of *unique* [identifiers] in its input.
@@ -152,8 +137,6 @@ pub fn ident_total_unique(input: TS) -> TS { body_ident_total_unique(input) }
 /// assert_eq![ident_unique!(a, a 東 r#true; a3 != 3a), 4];
 /// ```
 #[proc_macro] #[rustfmt::skip]
-#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
 pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 
 /// Generates an expression for accessing a field of a tuple or struct.
@@ -175,7 +158,6 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 /// assert_eq!(value, 20);
 /// ```
 #[proc_macro] #[rustfmt::skip]
-#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn field_of(input: TS) -> TS { body_field_of(input) }
 
 /* macros: niche */
@@ -212,5 +194,4 @@ pub fn field_of(input: TS) -> TS { body_field_of(input) }
 ///
 #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]
-#[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn enumint(input: TS) -> TS { body_enumint(input) }

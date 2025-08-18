@@ -9,11 +9,6 @@
 // - compile_doc
 
 use super::shared::{compile_eval, deindent, split_args, split_compile_doc_tuple};
-
-use alloc::{
-    format,
-    string::{String, ToString},
-};
 use proc_macro::TokenStream;
 
 pub(crate) fn body_cif(input: TokenStream) -> TokenStream {

@@ -39,6 +39,9 @@
     - add `cargo_primary_package` flag.
 - [macros]:
   - use workspace's version.
+  - remove features: `alloc`, `std`, `nightly`, `nightly_doc`.
+  - remove dependency `hashbrown`.
+  - enable `doc_cfg` via `nightly_doc` flag.
 
 ## manifest
 - make keys parts of the workspace: edition, version, authors, license, documentation.

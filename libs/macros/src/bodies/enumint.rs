@@ -4,12 +4,10 @@
 //
 
 use super::shared::{expect_punct, parse_int, parse_visibility};
-use alloc::{format, string::ToString, vec::Vec};
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2, TokenTree};
 use quote::quote;
 
-#[cfg(feature = "alloc")]
 pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     let input: TokenStream2 = input.into();
     let tokens: Vec<TokenTree> = input.into_iter().collect();

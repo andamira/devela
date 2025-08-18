@@ -3,7 +3,6 @@
 //! The bodies of the proc_macro functions defined in `lib.rs`.
 //
 
-#[cfg(feature = "alloc")]
 crate::items! {
     #[cfg(test)]
     mod tests;
