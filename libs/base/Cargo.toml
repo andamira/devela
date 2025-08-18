@@ -22,9 +22,9 @@
 [package]
 name = "devela_base"
 description = "base shared functionality for devela"
-version = "0.0.0"
 rust-version = { workspace = true }
 edition = { workspace = true }
+version = { workspace = true }
 authors = { workspace = true }
 license = { workspace = true }
 repository = "https://github.com/andamira/devela/tree/main/libs/base"

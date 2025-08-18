@@ -624,7 +624,18 @@
 - fix `RcWeak` re-export.
 - fix `HashSetFx` alias.
 
+
+[macros/0.12.1] - 2025-01-07
+============================
+
+- new macro `field_of`.
+- make `std` a default feature.
+- remove `hashbrown` from default features.
+- remove inline attributes.
+
 [0.24.0]: https://github.com/andamira/devela/releases/tag/v0.24.0
 [0.23.0]: https://github.com/andamira/devela/releases/tag/v0.23.0
 [0.22.1]: https://github.com/andamira/devela/releases/tag/v0.22.1
 [0.22.0]: https://github.com/andamira/devela/releases/tag/v0.22.0
+
+[macros/0.12.1]: https://github.com/andamira/devela/releases/tag/macros/v0.12.1

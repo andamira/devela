@@ -17,13 +17,17 @@
 - new workspace library dependency: `devela_base`.
 - bump dependencies:
   - `ureq` → 3.1.
-  - [macros] `proc-macro2` → 1.0.101.
+  - [macros]
+    - `proc-macro2` → 1.0.101.
+    - `quote` → 1.0.40.
 
 ## features & flags
 - new `_lib··` flag
 - new features = `lib_all``, `lib_base`.
 
 ## libs
+- use a single version, changelog and readme for all workspace libs.
+  - move `devela_macros` changelog into `devela` archived changelog history.
 - [base]:
   - move devela macros: `CONST!`, `cdbg`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
   - move internal (for the workspace) devela macros: `EMOJI_*`, `TAG_*`.
