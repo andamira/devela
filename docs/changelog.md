@@ -3,6 +3,8 @@
 [0.25.0-wip] unreleased
 =======================
 
+> Refactor the project as a workspace.
+
 -----------
 > *Project* :
 -----------
@@ -26,6 +28,7 @@
 - new features = `lib_all``, `lib_base`.
 
 ## libs
+- new workspace library crates: `devela_[base]`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
 - [base]:
@@ -34,8 +37,11 @@
   - move `paste` dependency.
   - add build script.
     - add `cargo_primary_package` flag.
+- [macros]:
+  - use workspace's version.
 
 ## manifest
+- make keys parts of the workspace: edition, version, authors, license, documentation.
 - add *binaries* and *metrics* sections.
 
 ## metrics

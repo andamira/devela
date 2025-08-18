@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A cohesive development layer.
+//! A development layer in Rust.
 //!
 #![doc = include_str!("./Lib.md")]
 //

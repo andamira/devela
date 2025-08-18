@@ -22,13 +22,13 @@
 [package]
 name = "devela_base"
 description = "base shared functionality for devela"
-rust-version = { workspace = true }
-edition = { workspace = true }
-version = { workspace = true }
-authors = { workspace = true }
-license = { workspace = true }
+rust-version.workspace = true
+edition.workspace = true
+version.workspace = true
+documentation.workspace = true
+authors.workspace = true
+license.workspace = true
 repository = "https://github.com/andamira/devela/tree/main/libs/base"
-documentation = "https://docs.rs/devela_macros"
 include = [
 	"/Cargo.toml",
 	"/LICENSE*",
@@ -83,7 +83,7 @@ package = "paste" # safe, ARCHIVED
 
 
 [badges]
-maintenance = { status = "experimental" }
+maintenance.status = "experimental"
 
 
 [lints]

@@ -1,6 +1,5 @@
-# Note: The configuration file is unstable and may be deprecated in the future.
-#
 # https://doc.rust-lang.org/stable/clippy/lint_configuration.html
+# WAIT: [configure lints in clippy.toml](https://github.com/rust-lang/rust-clippy/issues/15128)
 
 # check-private-items = true # FIX: data::dst (13)
 upper-case-acronyms-aggressive = true

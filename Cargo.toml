@@ -58,6 +58,7 @@ members = [".", "libs/*"]
 rust-version = "1.89.0" # in sync with README.md && .github/workflows/check.yml
 edition = "2024"
 version = "0.25.0-wip" # in sync with docs/changelog.md
+documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
 
@@ -66,13 +67,13 @@ license = "MIT OR Apache-2.0"
 # ==============================================================================
 name = "devela"
 description = "A development layer."
-rust-version = { workspace = true }
-edition = { workspace = true }
-version = { workspace = true }
-authors = { workspace = true }
-license = { workspace = true }
+rust-version.workspace = true
+edition.workspace = true
+version.workspace = true
+documentation.workspace = true
+authors.workspace = true
+license.workspace = true
 repository = "https://github.com/andamira/devela"
-documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
 # documentation = "https://docs.rs/devela"
 readme = "docs/readme_crate.md"
 include = [
@@ -673,15 +674,15 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 
 #* required dependencies *#
 
-[workspace.dependencies.devela_base] # https://crates.io/crates/devela_base
-# version = "*" # ✓ https://github.com/andamira/devela/blob/main/libs/base/docs/changelog.md
-path = "./libs/base" # ?safe
-[dependencies.devela_base]
+[workspace.dependencies.devela_base]
+version = "0.25.0-wip"
+path = "./libs/base"
+[dependencies.devela_base] # https://crates.io/crates/devela_base
 workspace = true
 
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
-# version  = "*" # ✓ https://github.com/andamira/devela/blob/main/libs/macros/docs/changelog.md
-path = "./libs/macros" # ?safe
+version = "0.25.0-wip"
+path = "./libs/macros"
 
 #* optional library dependencies *#
 
@@ -1093,7 +1094,7 @@ bool_to_int_with_if = "warn" # using an if statement to convert a bool to an int
 cloned_instead_of_copied = "warn" # usage of cloned() where copied() could be used
 default_union_representation = "warn" # union declared without #[repr(C)]
 empty_structs_with_brackets = "warn" # structs without fields, with brackets
-if_then_some_else_none = "warn" # if-else that could be written using bool::then[_some]
+# if_then_some_else_none = "warn" # if-else that could be written using bool::then[_some]
 ignored_unit_patterns = "warn" # Checks for usage of _ in patterns of type ()
 float_cmp = "warn" # (in-)equality comparisons on floating-point values
 float_cmp_const = "warn" # (in-)equality comparisons on const floating-point values
