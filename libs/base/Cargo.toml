@@ -46,7 +46,7 @@ no-default-features = true
 features = ["_docsrs"]
 
 
-[features] # 8/300 (292 remaining), 7 visible, 1 hidden
+[features] # 5/300 (295 remaining), 4 visible, 1 hidden
 # ==============================================================================
 
 #* Environment features *#

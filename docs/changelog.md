@@ -28,6 +28,7 @@
 - new features = `lib_all``, `lib_base`.
 
 ## libs
+- enable `_docsrs` for workspace dependencies.
 - new workspace library crates: `devela_[base]`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.

@@ -386,8 +386,11 @@ _docs = [ # the minimum capabilities to document everything
 	# text:
 	"_str_u8", "_str_nonul", "_char_all",
 ]
-_docsrs_nodep = ["_docs", "std", "unsafe", "__dbg"]  # + std + unsafe
-_docsrs       = ["_docsrs_nodep", "dep_all"]         # + dependencies
+_docsrs_nodep = [                            # + std + unsafe
+	"_docs", "std", "unsafe", "__dbg",
+	"devela_base/_docsrs", "devela_macros/_docsrs",
+]
+_docsrs       = ["_docsrs_nodep", "dep_all"] # + dependencies
 
 #* code capabilities *#
 # ---------------------

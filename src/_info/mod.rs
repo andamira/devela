@@ -19,6 +19,11 @@ pub mod build;
 /// Documented examples.
 pub mod examples;
 
+/// Procedural macros.
+pub mod macros {
+    #![doc = include_str!("../../libs/macros/src/Lib.md")]
+}
+
 #[cfg(doc)]
 crate::items! {
     pub mod features {

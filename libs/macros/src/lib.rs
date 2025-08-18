@@ -43,29 +43,31 @@ items! { #[allow(unused_imports)] use items; }
 
 /* macros: compile */
 
-/// Evaluates to either a `true` of `false` literal based on the
-/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// Evaluates to either a `true` of `false` literal based on the [predicate].
 ///
+/// [predicate]: https://andamira.github.io/devela/latest/devela/_info/macros/#compilation-predicates
 #[doc = concat!("# Example\n```\n", include_str!("../examples/cif.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]
 pub fn cif(input: TS) -> TS { body_cif(input) }
 
-/// Conditionally compiles the thing it is attached to based on the
-/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// Conditionally compiles the thing it is attached to based on the [predicate].
 ///
+/// [predicate]: https://andamira.github.io/devela/latest/devela/_info/macros/#compilation-predicates
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile.rs"), "\n```")]
 #[proc_macro_attribute] #[rustfmt::skip]
 pub fn compile(args: TS, input: TS) -> TS { body_compile(args, input) }
 
-/// Conditionally compiles the given attributes based on the
-/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// Conditionally compiles the given attributes based on the [predicate].
+///
+/// [predicate]: https://andamira.github.io/devela/latest/devela/_info/macros/#compilation-predicates
 ///
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile_attr.rs"), "\n```")]
 #[proc_macro_attribute] #[rustfmt::skip]
 pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) }
 
-/// Conditionally compiles each doc comment based on the
-/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// Conditionally compiles each doc comment based on the [predicate].
+///
+/// [predicate]: https://andamira.github.io/devela/latest/devela/_info/macros/#compilation-predicates
 ///
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile_doc.rs"), "\n```")]
 #[doc(hidden)]

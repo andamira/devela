@@ -17,6 +17,9 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 
+// nightly (flags)
+#![cfg_attr(nightly_doc, feature(doc_cfg))]
+
 /* imports */
 
 extern crate self as devela_base;

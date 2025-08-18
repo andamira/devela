@@ -3,14 +3,16 @@
 Each form of conditional compilation takes a compilation predicate that
 evaluates to `true` or `false`.
 
-These are the [`#[compile]`][compile()] and [`#[compile_attr]`][compile_attr()]
-attributes and the [`cif!`][cif()] macro.
+These are the [`#[compile]`][crate::compile] and [`#[compile_attr]`][crate::compile_attr]
+attributes and the [`cif!`][crate::cif] macro.
 
 They are similar to the [`#[cfg]`][1] and [`#[cfg_attr]`][2] attributes and
 the [`cfg!`][3] macro, except they use *compilation predicates*.
 
+<!--
 There is also the [`#[compile_doc]`][compile_doc()] macro to conditionally
 compile documentation blocks depending on predicates.
+-->
 
 ### Panics
 Compilation macros will panic if they encounter an unrecognized predicate.
