@@ -7,6 +7,7 @@
 
 use crate::reexport;
 
+#[doc = crate::TAG_DEVELA_BASE!()]
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{
     CONST,
@@ -18,8 +19,7 @@ pub use devela_base::{
     paste,
 };
 
-/// <span class="stab portability" title="re-exported from the `devela_macros`
-/// crate">`devela_macros`</span>
+#[doc = crate::TAG_DEVELA_MACROS!()]
 pub use devela_macros::{
     cif, coalesce, compile, compile_attr, compile_doc, enumint, field_of, ident_total,
     ident_total_unique, ident_unique,

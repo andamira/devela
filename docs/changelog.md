@@ -50,6 +50,7 @@
 ## code
 - remove deprecated `iif!` macro.
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
+- add doc tags: `TAG_DEVELA_[BASE|DATA|MACROS|NUM]`.
 
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

@@ -113,6 +113,21 @@ crate::CONST! { pub/*workspace*/,
     TAG_MAYBE_STD = concat!($crate::SPAN_OPEN!(),
         "'re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>");
 
+    /* workspace libraries (small) */
+
+    #[macro_export] #[doc(hidden)]
+    TAG_DEVELA_BASE = concat!($crate::SPAN_OPEN!(),
+        "'defined in `devela_base` workspace library'>", "<small>base</small></span>");
+    #[macro_export] #[doc(hidden)]
+    TAG_DEVELA_DATA = concat!($crate::SPAN_OPEN!(),
+        "'defined in `devela_data` workspace library'>", "<small>data</small></span>");
+    #[macro_export] #[doc(hidden)]
+    TAG_DEVELA_MACROS = concat!($crate::SPAN_OPEN!(),
+        "'defined in `devela_macros` workspace library'>", "<small>macros</small></span>");
+    #[macro_export] #[doc(hidden)]
+    TAG_DEVELA_NUM = concat!($crate::SPAN_OPEN!(),
+        "'defined in `devela_num` workspace library'>", "<small>num</small></span>");
+
     /* optional dependencies */
 
     // used in: work::sync::atomic
