@@ -20,6 +20,8 @@ use crate::{
     IoResult, IterArgs, IterArgsOs, IterSplitPaths, IterVars, IterVarsOs, JoinPathsError, OsStr,
     OsString, Path, PathBuf, VarError,
 };
+#[cfg(all(feature = "std", feature = "unsafe_ffi"))]
+use crate::{IterArgsOsRef, args_os_ref_iter};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// A namespaced wrapper for `std::env` functions and constants.
@@ -431,13 +433,23 @@ impl Env {
     /// Returns the arguments that this program was started with.
     ///
     /// See [args].
+    #[inline(always)]
     pub fn args() -> IterArgs {
         args()
     }
 
     /// See [args_os].
+    #[inline(always)]
     pub fn args_os() -> IterArgsOs {
         args_os()
+    }
+
+    /// Command line arguments by reference: `Iterator<Item = &'static OsStr>`.
+    #[doc = crate::doc_!(vendor: "argv")]
+    #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "unsafe_ffi"))))]
+    pub fn args_os_ref() -> IterArgsOsRef {
+        args_os_ref_iter()
     }
 }
 

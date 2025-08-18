@@ -1,6 +1,9 @@
 <!-- Updated intra-doc links, to be loaded from: _doc::vendored -->
 
 <!-- license: Apache-2.0 OR MIT -->
+  [M_argv]: crate::_info::vendored::argv
+  [`IterArgsOsRef`]: crate::sys::env::IterArgsOsRef
+  [`Env`]: crate::sys::env::Env#method.args_os_ref
   [M_bytehound-preload]: crate::_info::vendored::bytehound_preload
   [`SpinLock`]: crate::work::sync::SpinLock
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard

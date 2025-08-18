@@ -5,6 +5,8 @@ See the linked modifications for detailed changes.
 
 ## MIT OR Apache-2.0 licenses
 
+- <i id="argv"></i>[argv] by David Tolnay,
+  as the [`IterArgsOsRef`] struct and the [`Env::args_os_ref`] method ([*modifications*][M_argv]).
 - <i id="bytehound-preload"></i>[bytehound-preload] by Jan Bujak,
   as the [`SpinLock`] and [`SpinLockGuard`] structs ([*modifications*][M_bytehound-preload]).
 - <i id="cfg-if"></i>[cfg-if] by Alex Crichton,
@@ -41,6 +43,10 @@ See the linked modifications for detailed changes.
 - <i id="tupl"></i>[tupl] by *Dragoteryx*,
   as part of the [`Tuple`] trait ([*modifications*][M_tupl]).
 
+[argv]: https://crates.io/crates/argv/1.1.2
+  [M_argv]: https://github.com/andamira/devela/blob/main/src/_info/vendored/argv.md
+  [`IterArgsOsRef`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.IterArgsOsRef.html
+  [`Env`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.Env.html#method.args_os_ref
 [bytehound-preload]: https://github.com/koute/bytehound/blob/77ea03c7ed90ad4f176c316cd837a77bc09aa6f3/preload/src/spin_lock.rs
   [M_bytehound-preload]: https://github.com/andamira/devela/blob/main/src/_info/vendored/bytehound-preload.md
   [`SpinLock`]: https://andamira.github.io/devela/latest/devela/work/sync/struct.SpinLock.html

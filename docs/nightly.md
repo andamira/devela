@@ -42,7 +42,7 @@ See also
 - 1.91: `·`[iter_chain](https://github.com/rust-lang/rust/pull/144963)
 - 1.91: ` `[loongarch32 inline asm](https://github.com/rust-lang/rust/pull/144402)
 - 1.91: `s`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
-- 1.91: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) & 129114
+- 1.91: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) <!-- & 129114 -->
 - 1.91: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
 - 1.91: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
 

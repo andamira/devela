@@ -66,5 +66,9 @@
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
 - add doc tags: `TAG_DEVELA_[BASE|DATA|MACROS|NUM]`.
 
+## sys
+### env
+- vendor `argv` as `IterArgSOsRef` struct and `Env` method `args_os_ref`.
+
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

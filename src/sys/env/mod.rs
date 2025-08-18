@@ -20,7 +20,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{arg::*, namespace::*, reexports::*};
+        pub use super::{arg::_all::*, namespace::*, reexports::*};
 
         #[cfg(feature = "std")]
         pub use super::app::*;
