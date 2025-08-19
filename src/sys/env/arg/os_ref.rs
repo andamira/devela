@@ -2,7 +2,6 @@
 //
 //! Defines [`IterArgsOsRef`] and [`args_os_ref_iter()`].
 //
-// WAIT: [miri detects UB](https://github.com/dtolnay/argv/issues/17)
 // WAIT: [macos build fails](https://github.com/dtolnay/argv/issues/1)
 
 use crate::OsStr;
@@ -39,7 +38,8 @@ impl ExactSizeIterator for IterArgsOsRef {
     }
 }
 
-#[cfg(all(target_os = "linux", not(target_env = "musl")))]
+// NOTE: miri https://github.com/dtolnay/argv/issues/17#issuecomment-3201054937
+#[cfg(all(target_os = "linux", not(target_env = "musl"), not(miri)))]
 mod r#impl {
     use crate::{CStr, OsStr, c_char, c_int};
     use std::os::unix::ffi::OsStrExt;
@@ -112,7 +112,7 @@ mod r#impl {
     unsafe impl Sync for IterArgsOsRef {}
 }
 
-#[cfg(any(not(target_os = "linux"), target_env = "musl"))]
+#[cfg(any(not(target_os = "linux"), target_env = "musl", miri))]
 mod r#impl {
     use crate::{Once, OsStr};
     use std::{env, iter, ptr, slice};
