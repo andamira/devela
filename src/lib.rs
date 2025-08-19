@@ -63,6 +63,7 @@
         as_array_of_cells,
         const_type_id,
         duration_constructors_lite,
+        ip_from,
         iter_chain,
         strict_overflow_ops,
         unsigned_signed_diff,
@@ -71,7 +72,7 @@
 // #![cfg_attr(all(nightly_stable_1_91, feature = "alloc"), feature())]
 #![cfg_attr(
     all(nightly_stable_1_91, feature = "std"),
-    feature(panic_payload_as_str, path_file_prefix)
+    feature(panic_payload_as_str, path_file_prefix,)
 )]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
@@ -93,7 +94,6 @@
         fn_align,
         if_let_guard,
         impl_trait_in_assoc_type,
-        ip_from,
         isqrt,
         macro_metavar_expr,
         more_qualified_paths,
