@@ -5,6 +5,7 @@
 //
 
 use devela::_js_extern;
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(feature = "unsafe_ffi")]
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
@@ -12,6 +13,7 @@ use devela::{
     WebEventKind, WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWindow,
     WebWorker, WebWorkerError, WebWorkerJob, js_bool, js_int32, js_number, js_uint32, transmute,
 };
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
 use devela::{String, Vec, vec_ as vec};
 
@@ -41,6 +43,7 @@ use devela::{String, Vec, vec_ as vec};
 pub struct Web;
 
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
@@ -68,6 +71,7 @@ impl Web {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventListener>
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
@@ -218,6 +222,7 @@ _js_extern! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/History>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Location>
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
@@ -280,6 +285,7 @@ _js_extern! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
@@ -304,6 +310,7 @@ _js_extern! {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D>
 /// - <https://html.spec.whatwg.org/multipage/canvas.html>
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
@@ -398,6 +405,7 @@ _js_extern! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Performance>
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {
@@ -425,6 +433,7 @@ _js_extern! {
 
 /// Web API workers
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl Web {

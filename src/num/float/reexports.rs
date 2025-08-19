@@ -18,7 +18,7 @@ reexport! { rust: core::num,
 // // TODO: minimal example and the search/make an ISSUE in rust-repo
 // #[allow(non_camel_case_types)]
 // #[cfg(feature = "nightly_float")]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_float")))]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "nightly_float")))]
 // pub type f16 = ::core::primitive::f16;
 // reexport! { rust: core::primitives, extra_features: "nightly_float",
 //     tag: crate::TAG_PRIMITIVE!(),

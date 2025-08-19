@@ -37,7 +37,7 @@ crate::items! { // structural access: _mods, _all, _always
         // pub use super::drop::*;
         // pub use super::freq::*;
         // #[cfg(feature = "_destaque_u16")]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_destaque_u16")))]
+        // #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u16")))]
         // pub use super::looper::*;
         // pub use super::instant::*;
     }

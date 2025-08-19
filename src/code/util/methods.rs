@@ -109,7 +109,7 @@ mod tests {
         pub fn sub(a: i32, b: i32) -> i32 { a - b }
         pub fn trim(name: &str) -> &str { name.trim() }
         pub async fn fetch(_url: &str) -> &str { "fetched" }
-        #[cfg(unsafe··)]
+        #[cfg(all(unsafe··, not(feature = "safe_code")))]
         pub const unsafe fn noop() {}
     }
 
@@ -121,7 +121,7 @@ mod tests {
         #[must_use] +async fetch(url: &str) -> &str,
         #[must_use] trim(name: &str) -> &str,
     }
-    #[cfg(unsafe··)]
+    #[cfg(all(unsafe··, not(feature = "safe_code")))]
     methods_as_fns! { pub TestMethods => +const +unsafe noop() }
 
     // Test different-name pattern with attributes
@@ -132,7 +132,7 @@ mod tests {
         +async fetch|fetch_data(url: &str) -> &str,
         #[must_use] trim|do_trim(name: &str) -> &str,
     }
-    #[cfg(unsafe··)]
+    #[cfg(all(unsafe··, not(feature = "safe_code")))]
     methods_as_fns! { pub TestMethods => +const +unsafe noop|do_nothing() }
 
     #[test]
@@ -141,13 +141,15 @@ mod tests {
         crate::const_assert!(eq add(2, 3), 5);
         assert_eq!(sub(5, 2), 3);
         assert_eq!(trim(" world "), "world");
-        #[cfg(unsafe··)] unsafe { noop(); }
+        #[cfg(all(unsafe··, not(feature = "safe_code")))]
+        unsafe { noop(); }
 
         // Test different-name functions
         crate::const_assert!(eq add_numbers(2, 3), 5);
         assert_eq!(subtract(5, 2), 3);
         assert_eq!(do_trim("   test   "), "test");
-        #[cfg(unsafe··)] unsafe { do_nothing(); }
+        #[cfg(all(unsafe··, not(feature = "safe_code")))]
+        unsafe { do_nothing(); }
     }
 
     #[test]

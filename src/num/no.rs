@@ -30,7 +30,7 @@ impl super::NumInt for NoNum {
 // mod geom {
 //     use crate::{NoNum, NumVector};
 //
-//     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "geom")))]
+//     #[cfg_attr(nightly_doc, doc(cfg(feature = "geom")))]
 //     impl NumVector for NoNum {
 //         type Scalar = ();
 //     }

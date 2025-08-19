@@ -114,14 +114,14 @@ pub trait DataValueCopy: DataValue + Copy {
 ///
 /// # Safety
 /// You have to know what you're doing.
-#[cfg(feature = "unsafe_layout")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_layout", not(feature = "safe_data")))))]
 pub unsafe trait DataRaw {}
 
 /// Common unsafe trait for enumerating `Copy`-constrained untagged *raw data values*.
 ///
 /// # Safety
 /// You have to know what you're doing.
-#[cfg(feature = "unsafe_layout")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_layout", not(feature = "safe_data")))))]
 pub unsafe trait DataRawCopy: DataRaw + Copy {}

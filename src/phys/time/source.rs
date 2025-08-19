@@ -97,6 +97,8 @@ impl TimeSource<true> for SystemInstant {
     fn now_nanos() -> u64 { SystemInstant::now().elapsed().as_nanos() as u64 }
 }
 
+#[cfg(not(feature = "safe_lang"))]
+#[cfg_attr(nightly_doc, doc(cfg(not(feature = "safe_lang"))))]
 #[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "js", feature = "unsafe_ffi"))))]
 impl TimeSource<true> for JsInstant {

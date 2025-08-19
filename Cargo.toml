@@ -321,6 +321,8 @@ safe = [ # [12] forbids `unsafe` (and overrides unsafe features)
 	safe_data = [] # ["devela_data?/safe"]
 	safe_game = []
 	safe_lang = []
+		# safe_ffi
+			# safe_js
 	safe_media = [ # [5]
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image"]
 		safe_audio = []

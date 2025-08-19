@@ -69,6 +69,6 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
 }
 // WIPZONE
 // #[cfg(all(feature = "std", feature = "dep_image"))]
-// #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "std", feature = "dep_image"))))]
+// #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "dep_image"))))]
 // mod docima; // DocImage
 // mod structural; // structural_mods!

@@ -17,6 +17,7 @@ use devela::{_js_extern, _js_method_str_alloc, WebElement, js_bool, js_int32, js
 pub struct WebDocument;
 
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl WebDocument {

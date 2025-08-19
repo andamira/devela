@@ -191,8 +191,8 @@ pub trait ExtAny: Any + Sealed {
     /// }
     /// ```
     #[must_use]
-    #[cfg(feature = "unsafe_layout")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+    #[cfg(all(not(feature = "safe_code"), feature = "unsafe_layout"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_layout", not(feature = "safe_code")))))]
     fn downcast_ref<T: 'static>(&self) -> Option<&T> {
         // SAFETY: We verify T is of the right type before downcasting
         unsafe { (*self).type_is::<T>().then(|| &*<*const _>::cast(self)) }
@@ -203,8 +203,8 @@ pub trait ExtAny: Any + Sealed {
     /// This method is only needed when not dealing directly with `dyn Any` trait objects,
     /// since it's [already implemented for `dyn Any`][Any#method.downcast_mut].
     #[must_use]
-    #[cfg(feature = "unsafe_layout")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+    #[cfg(all(not(feature = "safe_code"), feature = "unsafe_layout"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_layout", not(feature = "safe_code")))))]
     fn downcast_mut<T: 'static>(&mut self) -> Option<&mut T> {
         // SAFETY: We verify T is of the right type before downcasting
         unsafe { (*self).type_is::<T>().then(|| &mut *<*mut _>::cast(self)) }
@@ -215,6 +215,7 @@ pub trait ExtAny: Any + Sealed {
 mod tests {
     use crate::ExtAny;
 
+    // IMPROVE: WAIT:closure test Closure as well
     #[test]
     fn closure_type_ids() {
         let closure1 = || {};

@@ -177,7 +177,7 @@ macro_rules! impl_ext_slice {
 
             fn slice_into_array<U, const N: usize>(&self) -> [U; N] where T: Clone, U: From<T> {
                 if self.len() >= N {
-                    #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
+                    #[cfg(any(feature = "safe_mem", not(feature = "unsafe_array")))]
                     {
                         let mut array: [U; N] = crate::array_from_fn(|i| U::from(self[i].clone()));
                         for (i, item) in self.iter().take(N).enumerate() {
@@ -186,7 +186,7 @@ macro_rules! impl_ext_slice {
                         array
                     }
                     // SAFETY: we make sure of initializing every array element
-                    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
+                    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_array"))]
                     {
                         use crate::MaybeUninit;
                         let mut array: [MaybeUninit<U>; N] =

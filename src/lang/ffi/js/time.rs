@@ -5,6 +5,7 @@
 
 #[cfg(feature = "time")]
 use crate::TimeDelta;
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 use crate::{_js_doc, WebWindow};
 use crate::{Display, impl_trait};
@@ -46,6 +47,7 @@ impl JsInstant {
 }
 
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
@@ -85,6 +87,7 @@ impl JsTimeout {
 }
 
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]

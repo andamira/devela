@@ -224,7 +224,10 @@ impl Mem {
 }
 
 /// # Unsafe methods gated by `unsafe_slice`
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
+///
+/// ## Features
+/// They depend on enabling `unsafe_slice` feature, and not enabling `safe_mem`.
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
 impl Mem {
     /// View any `T: Sync + Unpin + ?Sized` as `&[u8]`.

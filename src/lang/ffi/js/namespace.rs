@@ -43,6 +43,7 @@ impl Js {
     /// - Uses a dynamic buffer, starting with 128 bytes of `capacity`.
     /// - Retries with exact required capacity if truncation is detected.
     #[inline(always)]
+    #[cfg(not(feature = "safe_lang"))]
     #[cfg(all(feature = "alloc", unsafe··))]
     #[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", unsafe··))))]
     pub fn read_string(write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
@@ -54,6 +55,7 @@ impl Js {
     /// - Uses a dynamic buffer, starting with the given `capacity`.
     /// - Retries with exact required capacity if truncation is detected (unless `truncate = true`).
     /// - Assumes the FFI fn returns `js_int32`: positive = bytes written, negative = required size.
+    #[cfg(not(feature = "safe_lang"))]
     #[cfg(all(feature = "alloc", unsafe··))]
     #[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", unsafe··))))]
     pub fn read_string_capped(

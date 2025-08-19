@@ -24,6 +24,7 @@ use devela::{
 pub struct WebWindow;
 
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
@@ -201,6 +202,7 @@ impl WebWindowState {
     ///
     /// # Safety
     /// - JavaScript must write all non-padding fields at correct offsets.
+    #[cfg(not(feature = "safe_lang"))]
     #[cfg(feature = "unsafe_ffi")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
     pub fn new() -> WebWindowState {
@@ -212,6 +214,7 @@ impl WebWindowState {
     }
 
     /// Overwrites this `WebWindowState` with the latest live metrics.
+    #[cfg(not(feature = "safe_lang"))]
     #[cfg(feature = "unsafe_ffi")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
     pub fn update(&mut self) {

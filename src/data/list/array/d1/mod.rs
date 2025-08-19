@@ -8,7 +8,7 @@ mod methods;
 
 mod definitions; // Array
 
-#[cfg(feature = "unsafe_array")]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 mod uninit; // ArrayUninit
 
@@ -18,7 +18,7 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::definitions::*;
-        #[cfg(feature = "unsafe_array")]
+        #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
         pub use super::uninit::*;
     }
     pub(super) mod _all {

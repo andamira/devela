@@ -88,7 +88,7 @@ macro_rules! impl_non_value {
         mod [<__impls_ $name >] {
             #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
             use $crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
-            #[cfg(feature = "unsafe_layout")]
+            #[cfg(all(feature = "unsafe_layout", not(feature = "safe_mem")))]
             use $crate::MemPod;
 
             #[cfg(feature = "bit")]
@@ -400,6 +400,10 @@ macro_rules! impl_non_value {
             impl<const V: $IP> BitSized<{$IP::BYTE_SIZE * 8}> for $name<V> {}
 
             #[cfg(feature = "unsafe_layout")]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+            #[cfg(not(any(feature = "safe_mem", feature = "safe_num")))]
+            #[cfg_attr(nightly_doc, doc(cfg(not(feature = "safe_mem"))))]
+            #[cfg_attr(nightly_doc, doc(cfg(not(feature = "safe_num"))))]
             unsafe impl<const V: $IP> MemPod for Option<$name<V>> {}
 
             /* external impls*/

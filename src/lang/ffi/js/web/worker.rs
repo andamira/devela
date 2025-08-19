@@ -7,6 +7,7 @@
 // - struct WebWorkerError
 // - struct WebWorkerJob
 
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", feature = "alloc", not(windows)))]
 use crate::String;
 #[allow(unused_imports)]
@@ -30,6 +31,7 @@ impl WebWorker {
 }
 
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
@@ -78,6 +80,7 @@ impl WebWorkerJob {
 }
 
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]

@@ -15,6 +15,7 @@ pub struct JsConsole;
 /// - <https://console.spec.whatwg.org/>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/console>
 #[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
 impl JsConsole {

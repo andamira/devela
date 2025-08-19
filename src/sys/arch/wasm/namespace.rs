@@ -155,6 +155,7 @@ impl Wasm {
     }
 }
 
+#[cfg(not(feature = "safe_sys"))]
 #[cfg(feature = "unsafe_layout")]
 unsafe extern "C" {
     /// Reference to the start of the WASM heap (&__heap_base).
