@@ -2,6 +2,7 @@
 //
 //! Defines [`IterArgsOsRef`] and [`args_os_ref_iter()`].
 //
+// WAIT: [miri detects UB](https://github.com/dtolnay/argv/issues/17)
 // WAIT: [macos build fails](https://github.com/dtolnay/argv/issues/1)
 
 use crate::OsStr;
@@ -12,6 +13,7 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 }
 
 #[doc = crate::TAG_ITERATOR!()]
+#[doc = crate::doc_miri_warn!(tag)]
 /// Iterator over references of command line arguments.
 ///
 /// See [`Env::args_os_ref()`][crate::Env#method.args_os_ref].

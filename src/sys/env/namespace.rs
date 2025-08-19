@@ -20,6 +20,7 @@ use crate::{
     IoResult, IterArgs, IterArgsOs, IterSplitPaths, IterVars, IterVarsOs, JoinPathsError, OsStr,
     OsString, Path, PathBuf, VarError,
 };
+#[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
 #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
 use crate::{IterArgsOsRef, args_os_ref_iter};
 
@@ -444,6 +445,8 @@ impl Env {
         args_os()
     }
 
+    #[doc = crate::doc_miri_warn!(tag)]
+    #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
     /// Command line arguments by reference: `Iterator<Item = &'static OsStr>`.
     #[doc = crate::doc_!(vendor: "argv")]
     #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
