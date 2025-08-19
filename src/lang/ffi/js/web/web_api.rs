@@ -152,6 +152,7 @@ impl Web {
     /// Web::event_add_listener("#my_button", WebEventKind::Click, my_callback);
     /// ```
     #[unsafe(no_mangle)]
+    #[cfg_attr(not(feature = "__force_test_no_mangle"), cfg(not(test)))]
     pub unsafe extern "C" fn wasm_callback(callback_ptr: usize) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn() = unsafe { transmute(callback) };
@@ -165,6 +166,7 @@ impl Web {
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
     #[unsafe(no_mangle)]
+    #[cfg_attr(not(feature = "__force_test_no_mangle"), cfg(not(test)))]
     pub unsafe extern "C" fn wasm_callback_mouse(callback_ptr: usize, button: js_int32,
         buttons: js_int32, x: js_number, y: js_number, etype: js_int32, time_stamp: js_number) {
         let callback = callback_ptr as *const ();
@@ -185,6 +187,7 @@ impl Web {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1207700
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1822714
     #[unsafe(no_mangle)]
+    #[cfg_attr(not(feature = "__force_test_no_mangle"), cfg(not(test)))]
     pub unsafe extern "C" fn wasm_callback_pointer(callback_ptr: usize, id: js_int32,
         x: js_number, y: js_number, pressure: js_number, tilt_x: js_int32, tilt_y: js_int32,
         twist: js_int32, etype: js_int32, time_stamp: js_number) {

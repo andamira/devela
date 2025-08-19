@@ -25,7 +25,8 @@
 
 ## features & flags
 - new `_lib··` flag
-- new features = `lib_all``, `lib_base`.
+- new features: `lib_all``, `lib_base`.
+- new debug feature: `__force_test_no_mangle`.
 
 ## libs
 - enable `_docsrs` for workspace dependencies.
