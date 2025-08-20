@@ -1,4 +1,4 @@
-use devela_macros::compile;
+use devela_base_macros::compile;
 
 /* unary */
 

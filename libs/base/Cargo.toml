@@ -69,6 +69,9 @@ _docsrs = ["unsafe"] # complete documentation
 [dependencies] # 1 (1 required, 0 optional)
 # ==============================================================================
 
+[dependencies.devela_base_macros]
+workspace = true
+
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED

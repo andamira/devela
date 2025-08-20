@@ -1,4 +1,4 @@
-# devela_macros manifest
+# devela_base_macros manifest
 # ==============================================================================
 #
 ## Table of Contents
@@ -12,16 +12,14 @@
 #   - Capability
 #   - Dependency
 #
-# * [dependencies]
-#
 # * [badges]
 # * [lints]
 #
 # * [[example]]
 
 [package]
-name = "devela_macros"
-description = "procedural macros for devela"
+name = "devela_base_macros"
+description = "procedural macros for devela_base"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
@@ -65,13 +63,6 @@ default = ["safe"]
 _docsrs = ["unsafe"] # complete documentation
 
 
-[dependencies] # 2 (2 required, 0 optional)
-# ==============================================================================
-# WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
-proc-macro2 = "1.0.101"
-quote = "1.0.40"
-
-
 [badges]
 # ==============================================================================
 maintenance.status = "experimental"
@@ -88,4 +79,12 @@ workspace = true
 # examples
 # ==============================================================================
 [[example]]
-name = "enumint"
+name = "cif"
+[[example]]
+name = "coalesce"
+[[example]]
+name = "compile_attr"
+[[example]]
+name = "compile_doc"
+[[example]]
+name = "compile"

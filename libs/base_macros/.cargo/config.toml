@@ -1,0 +1,4 @@
+
+[build]
+rustflags = ["--allow", "missing_docs"]
+rustdocflags = ["--allow", "missing_docs"]

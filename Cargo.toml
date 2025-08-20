@@ -70,7 +70,7 @@
 members = [
 	".",
 	"build/post",
-	"libs/base", # "libs/base_macros", "libs/base_alloc", "libs/base_std",
+	"libs/base", "libs/base_macros", # "libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	# "libs/data", "libs/num", # ...
 ]
@@ -705,11 +705,15 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 
 #* required dependencies *#
 
-[workspace.dependencies.devela_base]
+[workspace.dependencies.devela_base] # https://crates.io/crates/devela_base
 version = "0.25.0-wip"
 path = "./libs/base"
-[dependencies.devela_base] # https://crates.io/crates/devela_base
+[dependencies.devela_base]
 workspace = true
+
+[workspace.dependencies.devela_base_macros] # https://crates.io/crates/devela_base_macros
+version = "0.25.0-wip"
+path = "./libs/base_macros"
 
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version = "0.25.0-wip"

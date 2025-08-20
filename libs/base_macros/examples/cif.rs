@@ -1,4 +1,4 @@
-use devela_macros::cif;
+use devela_base_macros::cif;
 
 fn main() {
     let the_answer_is = if cif!(none(some)) {

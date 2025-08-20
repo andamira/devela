@@ -31,13 +31,15 @@
 
 ## libs
 - enable `_docsrs` for workspace dependencies.
-- new workspace library crates: `devela_[base]`.
+- new workspace library crates: `devela_base`, `devela_base_macros`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
 - [base]:
   - move devela macros: `CONST!`, `cdbg`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
   - move internal (for the workspace) devela macros: `EMOJI_*`, `TAG_*`.
   - move `paste` dependency.
+- [base_macros]:
+  - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
 - [macros]:
   - use workspace's version.
   - remove features: `alloc`, `std`, `nightly`, `nightly_doc`.

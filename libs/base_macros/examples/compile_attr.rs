@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use devela_macros::compile_attr;
+use devela_base_macros::compile_attr;
 
 #[compile_attr(xor(true, false), derive(Default, PartialEq), derive(Clone))]
 #[derive(Copy, Eq)] // compiles perfectly

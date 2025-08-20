@@ -5,6 +5,7 @@
 
 [build]
 # ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/config.html#build
 
 # In sync with ./config.toml & ../tools/cargo-native
 rustdocflags = [

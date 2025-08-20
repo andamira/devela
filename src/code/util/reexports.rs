@@ -17,12 +17,16 @@ pub use devela_base::{
     is,
     items, sf,
     paste,
+    // devela_code_macros:
+    cif, compile, compile_attr, compile_doc,
+    ident_total, ident_total_unique, ident_unique,
+    coalesce, field_of,
 };
 
 #[doc = crate::TAG_DEVELA_MACROS!()]
+#[doc(inline)] #[rustfmt::skip]
 pub use devela_macros::{
-    cif, coalesce, compile, compile_attr, compile_doc, enumint, field_of, ident_total,
-    ident_total_unique, ident_unique,
+    enumint,
 };
 
 /* `core::hint` functions re-exports */

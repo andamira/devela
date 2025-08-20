@@ -11,7 +11,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::cdbg;
+/// # use devela_base::cdbg;
 /// let a = vec![1, 2, 3];
 ///
 /// let _ = cdbg![&a];

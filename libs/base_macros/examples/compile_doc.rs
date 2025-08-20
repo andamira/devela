@@ -1,6 +1,4 @@
-#![allow(dead_code)]
-
-use devela_macros::compile_doc;
+use devela_base_macros::compile_doc;
 
 #[compile_doc(
     (true, "# Title\n"),

@@ -5,6 +5,8 @@
 
 mod _internal; // TAG_*
 
+mod reexports; // re-exported macros from devela_base_macros
+
 mod cdbg; // cdbg!
 mod deprecate; // deprecate_feature!
 mod include; // include_from!, mod_from!
@@ -22,7 +24,7 @@ crate::items! { // structural access: _mods, _internals, _all
 
     mod _mods {
         pub use super::{
-            cdbg::*, deprecate::*, include::*, items::*, is::*, paste::*, r#const::*,
+            cdbg::*, deprecate::*, include::*, items::*, is::*, paste::*, r#const::*, reexports::*,
         };
     }
     pub(super) mod _internals { #[allow(unused_imports)]
