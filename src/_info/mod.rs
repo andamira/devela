@@ -13,7 +13,7 @@
 /// - Compile-time environment inspection
 /// - Procedural code generation
 #[cfg(feature = "std")]
-#[path = "../../build/mod.rs"]
+#[path = "../../build/main/mod.rs"]
 pub mod build;
 
 /// Documented examples.

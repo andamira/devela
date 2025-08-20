@@ -37,7 +37,7 @@
 // ```
 //
 // (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs] &&
-//  ../meta/build/features.rs::FLAGS_NIGHTLY)
+//  ../build/main/features.rs::FLAGS_NIGHTLY)
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
@@ -122,7 +122,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 // safety
 #[cfg(all(
     feature = "safe",
-    // In sync with ../Cargo.toml::unsafe & ../meta/build/features.rs::UNSAFE
+    // In sync with ../Cargo.toml::unsafe & ../build/main/features.rs::UNSAFE
     any(feature = "unsafe", // includes all 11 specific purposes below:
         feature = "unsafe_array", feature = "unsafe_ffi", feature = "unsafe_hint",
         feature = "unsafe_layout", feature = "unsafe_niche", feature = "unsafe_ptr",

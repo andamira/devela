@@ -52,7 +52,11 @@
 # https://doc.rust-lang.org/cargo/reference/workspaces.html
 
 resolver = "3"
-members = [".", "libs/*"]
+members = [
+	".",
+	"libs/base",
+	"libs/macros",
+]
 
 [workspace.package]
 rust-version = "1.89.0" # in sync with README.md && .github/workflows/check.yml
@@ -80,9 +84,9 @@ include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
 	# source code:
-	"/build/**/*.rs", "/src/**/*.rs",
+	"/build/main/**/*.rs", "/src/**/*.rs",
 	# documentation:
-	"/build/**/*.md", "/src/**/*.md",
+	"/build/main/**/*.md", "/src/**/*.md",
 	"/docs/nightly.md", "/docs/vendored*.md",
 	"/LICENSE*",
 	# examples in documentation:
@@ -94,7 +98,7 @@ include = [
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
-build = "build/mod.rs"
+build = "build/main/mod.rs"
 autoexamples = false
 publish = true
 
@@ -155,7 +159,7 @@ bench = false
 # - ["__name"]: Development & maintenance features.
 #
 # Notes:
-# - Features are in sync with ./build/features.rs & ./src/_doc/features.md.
+# - Features are in sync with ./build/main/features.rs & ./src/_doc/features.md.
 # - List and count features with `./tools/manifest.sh features`.
 
 
@@ -298,7 +302,7 @@ work = [
 # The `safest` feature forbids unsafe transitively in dependencies
 # (except for Rust's `core`, `alloc` and `std`).
 #
-# In sync with ./build/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
+# In sync with ./build/main/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
 
 unsafe = [ # [11] enables all `unsafe` (as long as it isn't forbidden for that module)
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
@@ -360,7 +364,7 @@ safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
 #
 # They set automatic compile flags named `_*··`, used for reflection.
 # For example, `_stack··` will be set if any _stack* feature is enabled.
-# Which is done in ./build/features.rs
+# Which is done in ./build/main/features.rs
 #
 # TOC
 # - default
@@ -1010,13 +1014,13 @@ default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 [dev-dependencies]
 # Used for examples, metrics and tests. They inherit from [dependencies].
 # ------------------------------------------------------------------------------
-
 devela = { path = ".", features = ["all"] }
 
 
 [build-dependencies]
 # Used for the build scripts. They do not inherit from [dependencies].
 # ------------------------------------------------------------------------------
+devela_base.workspace = true
 
 
 # patches
@@ -1157,14 +1161,14 @@ check-cfg = [ # Allowed configuration flags:
 	# --------------------------------------------------------------------------
 	# They are prefixed with `nightly_`.
 	# Enabling any of these will set the `nightly··` reflection flag.
-	# In sync with: ./src/lib.rs, ./build/features.rs && ./docs/nightly.md.
+	# In sync with: ./src/lib.rs, ./build/main/features.rs && ./docs/nightly.md.
 	#
 	## Links
 	# - https://doc.rust-lang.org/unstable-book/library-features.html
 	# - https://releases.rs/
 	# - ./tools/release_dates.rs
 	# - ./docs/nightly.md
-	"cfg(nightly)", # [6] (in sync with ./build/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+	"cfg(nightly)", # [6] (in sync with ./build/main/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
 		#
 		# Unstable nightly features without clear stabilization timeline
 		"cfg(nightly_unstable)",
@@ -1204,7 +1208,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_stable_1_91)",
 			"cfg(nightly_stable_later)",
 	#
-	# Auto-enabled reflection flags from ./build/features.rs (36)
+	# Auto-enabled reflection flags from ./build/main/features.rs (36)
 	# --------------------------------------------------------------------------
 	# general: (4)
 	"cfg(unsafe··, safe··, nightly··, dep··)",

@@ -10,7 +10,7 @@
 -----------
 
 ## build
-- move `/meta/build` back to `/build`.
+- move `/meta/build` to `/build/main`.
 
 ## cargo
 - add new cargo doc workspace aliases: `dw*`.
