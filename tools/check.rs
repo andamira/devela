@@ -1,9 +1,8 @@
 #!/usr/bin/env -S rust-script -c
 //! ```cargo
 //! [dependencies]
-//! devela = { version = "0.23.0", features = ["std"] }
+//! devela = { version = "0.24.0", features = ["std", "dep_itertools"] }
 //! lexopt = "0.3"
-//! itertools = "0.14"
 //! toml_edit = "0.23"
 //! ```
 // devela::tools::check
@@ -46,13 +45,16 @@
 //
 // IMPROVE:
 // - filter-out cross-compiling only for no_std platforms.
+// - test libs/* crates independently.
+// - auto add:
+//   - rustup target add x86_64-unknown-linux-musl
+//   - rustup component add --toolchain nightly-2025-08-14-x86_64-unknown-linux-gnu miri
 // - allow to associate a platform with features to be enabled.
 // - avoid downloading everything at the start make a separate command. use it in CI.
 
 #![allow(clippy::useless_format)]
 
-use devela::all::{CONST, FsPath, is, sf};
-use itertools::Itertools;
+use devela::all::{CONST, FsPath, Itertools, is, sf};
 use std::{
     collections::HashSet,
     env,
@@ -65,7 +67,7 @@ use toml_edit::Document;
 
 /* config */
 
-CONST![NIGHTLY = "nightly-2025-08-14"]; // NOTE: 2025-08-15 fails
+CONST![NIGHTLY = "nightly"]; // … nightly-2025-08-14
 const NIGHTLY_VERSION: &str = NIGHTLY![];
 const NIGHTLY_TOOLCHAIN: &str = concat!["+", NIGHTLY![]];
 

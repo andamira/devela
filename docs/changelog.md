@@ -57,6 +57,8 @@
 ## tools & misc. files
 - new file `config/lib_all`.
 - update `tools/check.rs`:
+  - bump `devela` to 0.24.0.
+  - remove `itertools` direct dependency.
   - configure the exact nightly version to install and use.
 
 
