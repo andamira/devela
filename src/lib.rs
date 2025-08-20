@@ -61,6 +61,7 @@
     nightly_stable_1_91,
     feature(
         as_array_of_cells,
+        const_array_each_ref,
         const_type_id,
         duration_constructors_lite,
         ip_from,
@@ -84,7 +85,6 @@
         breakpoint,
         cfg_select,
         cfg_version,
-        const_array_each_ref,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
