@@ -63,8 +63,23 @@ rustflags = [
 #   i: Wasi
 #   (none): bare-metal/no_std
 
+
+# WORKSPACE variations
+wc = "check --workspace"
+wcl = "clippy --workspace"
+wb = "build --workspace"
+wr = "run --workspace"
+wt = "test --workspace"
+wtd = "test --doc --workspace"
+wm = "miri test --workspace"
+wd = "doc --no-deps --workspace"
+wdo = "doc --no-deps --open --workspace"
+wdp = "doc --no-deps --workspace --document-private-items "
+wdpo = "doc --no-deps --open --workspace --document-private-items"
+
+
 # CHECK
-c = "check"
+c = "check" #+w
 cb = "check --bin"
 ce = "check --example"
 cr = "check --release"
@@ -73,7 +88,7 @@ cn = "check -F=no_std,safe"
 cnu = "check -F=unsafe"
 
 # CLIPPY
-cl = "clippy"
+cl = "clippy" #+w
 clb = "clippy --bin"
 cle = "clippy --example"
 clr = "clippy --release"
@@ -94,7 +109,7 @@ cl_a32n = "cl --target thumbv7em-none-eabihf"
 cl_r64n = "cl --target riscv64gc-unknown-none-elf"
 
 # BUILD
-b = "build"
+b = "build" #+w
 bb = "build --bin"
 be = "build --example"
 br = "build --release"
@@ -102,22 +117,28 @@ brb = "build --release --bin"
 bre = "build --release --example"
 
 # RUN
-r = "run"
+r = "run" #+w
 rb = "run --bin"
 re = "run --example"
 rr = "run --release"
 rrb = "run --release --bin"
 rre = "run --release --example"
 
+# DOC
+d = "doc --no-deps" #+w
+do = "doc --no-deps --open" #+w
+dp = "doc --no-deps --document-private-items" #+w
+dpo = "doc --no-deps --open --document-private-items" #+w
+
 # TEST
-t = "test"
+t = "test" #+w
 tl = "test --lib"
 tl_ = "test --lib -- --nocapture"
 tl_1 = "test --lib -- --test-threads 1 --nocapture"
-td = "test --doc"
+td = "test --doc" #+w
 
 # MIRI
-m = "miri test"
+m = "miri test" #+w
 mu = "miri test -F=std,unsafe"
 mn = "miri test -F=no_std"
 mnu = "miri test -F=no_std,unsafe"
@@ -131,16 +152,6 @@ PUBLISHa = "publish --allow-dirty"
 # CLEAN PACKAGE
 Cp = "clean --package"
 Crp = "clean --release --package"
-
-# DOC
-d = "doc --no-deps"
-do = "doc --no-deps --open"
-dp = "doc --no-deps --document-private-items"
-dpo = "doc --no-deps --open --document-private-items"
-dw = "doc --no-deps --workspace"
-dwo = "doc --no-deps --open --workspace"
-dwp = "doc --no-deps --workspace --document-private-items "
-dwpo = "doc --no-deps --open --workspace --document-private-items"
 
 # TREE
 tr = "tree --no-dedupe"

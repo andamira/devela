@@ -14,7 +14,7 @@
 - add new `devela_postbuild` crate to `build/post`.
 
 ## cargo
-- add new cargo doc workspace aliases: `dw*`.
+- add new cargo doc workspace aliases `w*`.
 
 ## dependencies
 - new workspace library dependency: `devela_base`.
