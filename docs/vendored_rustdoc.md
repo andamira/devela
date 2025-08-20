@@ -7,6 +7,7 @@
   [M_bytehound-preload]: crate::_info::vendored::bytehound_preload
   [`SpinLock`]: crate::work::sync::SpinLock
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
+  [M_cfg-if]: crate::_info::vendored::cfg_if
   [`cfg-if!`]: crate::code::util::cfg_if
   [`ConstList`]: crate::data::list::ConstList
   [M_crossbeam-utils]: crate::_info::vendored::crossbeam_utils

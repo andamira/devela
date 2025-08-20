@@ -2,12 +2,6 @@
 //
 //! cfg_if macro.
 //
-// Original source:
-// https://github.com/rust-lang/cfg-if/blob/4edf32745bf5039868f1f258f7fa94603eec5cf5/src/lib.rs
-//
-// MODIFICATIONS
-// - support multiple conditions. (https://github.com/rust-lang/cfg-if/pull/78)
-// - update docs & misc. refactoring.
 
 /// A macro for defining `#[cfg]` if-else statements.
 ///
