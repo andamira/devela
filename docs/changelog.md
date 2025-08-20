@@ -49,6 +49,7 @@
 ## manifest
 - make keys parts of the workspace: edition, version, authors, license, documentation.
 - add *binaries* and *metrics* sections.
+- add workspace hiearchy diagram.
 
 ## metrics
 - rename directory `/benches` → `/metrics`.

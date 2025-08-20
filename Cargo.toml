@@ -50,14 +50,31 @@
 [workspace]
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/workspaces.html
-
-resolver = "3"
+#
+## Bottom-up hierarchical diagram (~ = feature-gated)
+# ---------------------------------------------------
+# devela_base_macros
+# └── devela_base
+#     ├─ ~devela_base_alloc
+#     ├──┴─ ~devela_base_std
+#     │
+#     ├─ ~devela_macros
+#     │
+#     ├─ ~devela_data
+#     ├─ ~devela_num
+#     ├─ ~devela_...
+#     │  │
+#     └──┴─ devela
+#           ├╌ build/main/                    → devela_base_std
+#           └─ build/post/ (devela_postbuild) → devela_base_std
 members = [
 	".",
 	"build/post",
-	"libs/base",
+	"libs/base", # "libs/base_macros", "libs/base_alloc", "libs/base_std",
 	"libs/macros",
+	# "libs/data", "libs/num", # ...
 ]
+resolver = "3"
 
 [workspace.package]
 rust-version = "1.89.0" # in sync with README.md && .github/workflows/check.yml
@@ -72,22 +89,25 @@ license = "MIT OR Apache-2.0"
 # ==============================================================================
 name = "devela"
 description = "A development layer."
+readme = "docs/readme_crate.md"
+build = "build/main/mod.rs"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
 documentation.workspace = true
 authors.workspace = true
 license.workspace = true
+categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
+keywords = ["dev", "helper", "library", "std", "extension"]
 repository = "https://github.com/andamira/devela"
-# documentation = "https://docs.rs/devela"
-readme = "docs/readme_crate.md"
+autoexamples = false
+publish = true
 include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
-	# source code:
-	"/build/main/**/*.rs", "/src/**/*.rs",
-	# documentation:
-	"/build/main/**/*.md", "/src/**/*.md",
+	# source code & documentation:
+	"/build/main/**/*.rs", "/build/main/**/*.md",
+	"/src/**/*.rs", "/src/**/*.md",
 	"/docs/nightly.md", "/docs/vendored*.md",
 	"/LICENSE*",
 	# examples in documentation:
@@ -97,11 +117,6 @@ include = [
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
 ]
-categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
-keywords = ["dev", "helper", "library", "std", "extension"]
-build = "build/main/mod.rs"
-autoexamples = false
-publish = true
 
 [package.metadata.docs.rs]
 # ==============================================================================
