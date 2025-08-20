@@ -198,14 +198,14 @@ __force_test_no_mangle = []
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
-	"devela_base/alloc", # "devela_num?/alloc",
+	# "devela_base_alloc", # "devela_num?/alloc",
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
 	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "portable-atomic-util?/alloc",
 	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"devela_base/std", # "devela_num?/std",
+	# "devela_base_std", # "devela_num?/std",
 	#
 	"allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",

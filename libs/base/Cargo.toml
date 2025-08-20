@@ -7,17 +7,13 @@
 #   - [metadata.*]
 #
 # * [features]
-#   - Environment       (std,alloc,no_std)
 #   - Safety            (safe,unsafe,safest)
 #   - Capability
 #   - Dependency
 #
 # * [dependencies]
-#
 # * [badges]
 # * [lints]
-#
-# * [[example]]
 
 [package]
 name = "devela_base"
@@ -30,14 +26,16 @@ authors.workspace = true
 license.workspace = true
 repository = "https://github.com/andamira/devela/tree/main/libs/base"
 include = [
-	"/Cargo.toml",
+	# configuration:
+	"/Cargo.toml", "/config/*",
+	# source code & documentation:
+	"/build/**/*.rs", "/build/**/*.md",
+	"/src/**/*.rs", "/src/**/*.md",
 	"/LICENSE*",
-	"/build/**/*.rs", "/src/**/*.rs",
-	"/build/**/*.md", "/src/**/*.md",
 ]
 categories = ["rust-patterns", "development-tools"]
 keywords = ["dev", "extension"]
-build = "build/mod.rs"
+# build = "build/mod.rs"
 autoexamples = false
 publish = true
 
@@ -46,13 +44,8 @@ no-default-features = true
 features = ["_docsrs"]
 
 
-[features] # 5/300 (295 remaining), 4 visible, 1 hidden
+[features]
 # ==============================================================================
-
-#* Environment features *#
-# ------------------------------------------------------------------------------
-alloc = []
-std = ["alloc"]
 
 
 #* Safety features *#
@@ -66,7 +59,7 @@ safe = [] # forbids `unsafe` in this crate
 # default = []
 
 #* docs capabilities *#
-_docsrs = ["std", "unsafe"] # complete documentation
+_docsrs = ["unsafe"] # complete documentation
 
 
 #* Dependency features *#
@@ -88,8 +81,3 @@ maintenance.status = "experimental"
 
 [lints]
 workspace = true
-
-
-# examples
-# ==============================================================================
-

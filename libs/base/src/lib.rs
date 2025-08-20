@@ -13,20 +13,19 @@
     not(all(doc, feature = "_docsrs")), // if features are incomplete…
     allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
 )]
+//
 // environment
-#![cfg_attr(not(feature = "std"), no_std)]
+#![no_std]
+//
+// safety
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
-
+//
 // nightly (flags)
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 /* imports */
 
 extern crate self as devela_base;
-
-#[doc(hidden)]
-#[cfg(feature = "alloc")]
-pub extern crate alloc;
 
 /* root modules */
 
