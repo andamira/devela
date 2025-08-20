@@ -1,0 +1,47 @@
+# devela_postbuild manifest
+# ==============================================================================
+#
+## Table of Contents
+# * [package]
+# * [features]
+# * [dependencies]
+# * [build-dependencies]
+# * [badges]
+# * [lints]
+
+[package]
+name = "devela_postbuild"
+description = "post-build orchestrator for devela"
+rust-version.workspace = true
+edition.workspace = true
+version.workspace = true
+documentation.workspace = true
+authors.workspace = true
+license.workspace = true
+repository = "https://github.com/andamira/devela/tree/main/postbuild"
+include = [
+	"/Cargo.toml",
+	"/LICENSE*",
+	"/build/**/*.rs", "/src/**/*.rs",
+	"/build/**/*.md", "/src/**/*.md",
+]
+categories = ["rust-patterns", "development-tools"]
+keywords = ["dev", "extension"]
+build = "build/mod.rs"
+autoexamples = false
+publish = true
+metadata.docs.rs.no-default-features = true
+
+[features]
+
+[dependencies]
+devela.path = "../.."
+
+[build-dependencies]
+devela_base.workspace = true
+
+[badges]
+maintenance.status = "experimental"
+
+[lints]
+workspace = true

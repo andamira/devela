@@ -54,6 +54,7 @@
 resolver = "3"
 members = [
 	".",
+	"build/post",
 	"libs/base",
 	"libs/macros",
 ]
@@ -1018,7 +1019,7 @@ devela = { path = ".", features = ["all"] }
 
 
 [build-dependencies]
-# Used for the build scripts. They do not inherit from [dependencies].
+# Used for the main build script. They do NOT inherit from [dependencies].
 # ------------------------------------------------------------------------------
 devela_base.workspace = true
 

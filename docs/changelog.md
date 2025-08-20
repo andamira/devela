@@ -11,6 +11,7 @@
 
 ## build
 - move `/meta/build` to `/build/main`.
+- add new `devela_postbuild` crate to `build/post`.
 
 ## cargo
 - add new cargo doc workspace aliases: `dw*`.
