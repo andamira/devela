@@ -37,6 +37,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.91.0> -->
 
 - 1.91: `·`[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
+- 1.91: `s`[const_pathbuf_osstring_new](https://github.com/rust-lang/rust/pull/145464)
 - 1.91: `·`[const_type_id](https://github.com/rust-lang/rust/pull/144133)
 - 1.91: `·`[duration_constructors_lite](https://github.com/rust-lang/rust/pull/145135)
 - 1.91: `·`[ip_from](https://github.com/rust-lang/rust/pull/141744)
@@ -67,12 +68,12 @@ See also
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
+- 1.??: `·`[char_max_len](https://github.com/rust-lang/rust/pull/145610)
 - 1.??: `·`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
-- 1.??: `s`[const_pathbuf_osstring_new](https://github.com/rust-lang/rust/pull/145464)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)

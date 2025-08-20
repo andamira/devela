@@ -72,7 +72,7 @@
 // #![cfg_attr(all(nightly_stable_1_91, feature = "alloc"), feature())]
 #![cfg_attr(
     all(nightly_stable_1_91, feature = "std"),
-    feature(panic_payload_as_str, path_file_prefix,)
+    feature(const_pathbuf_osstring_new, panic_payload_as_str, path_file_prefix,)
 )]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
@@ -110,7 +110,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(once_wait, path_add_extension, rwlock_downgrade, const_pathbuf_osstring_new,)
+    feature(once_wait, path_add_extension, rwlock_downgrade,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
