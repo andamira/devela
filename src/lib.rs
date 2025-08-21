@@ -169,14 +169,13 @@ pub mod _info;
 // public items, feature-gated, visible at their origin and in `all`:
 #[doc(hidden)]
 pub use all::*;
-pub mod all {
+#[rustfmt::skip]
+pub mod all { #![allow(unused_imports)]
     //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
     //! Note that these items are already re-exported (hidden) from the root,
     //! as is every other public module's contents from their parent.
-    #[allow(unused_imports)]
-    #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
         code::_all::*,
@@ -190,17 +189,9 @@ pub mod all {
         text::_all::*,
         ui::_all::*,
         work::_all::*,
-        //
-        _always::*,
     };
-}
-
-// public items, less feature-gated, bubble up easy:
-#[doc(hidden)]
-pub use _always::*;
-mod _always {
-    #[allow(unused_imports)]
-    #[rustfmt::skip]
+    // less feature-gated public items, bubbled up
+    #[doc(inline)]
     pub use super::{
         code::_always::*,
         data::_always::*,
