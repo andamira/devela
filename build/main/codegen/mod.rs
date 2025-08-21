@@ -12,7 +12,7 @@ mod unroll;
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
-    super::utils::println_heading("Code generation:");
+    super::Build::println_heading("Code generation:");
 
     #[cfg(feature = "_tuple")]
     tuple::generate()?;

@@ -8,7 +8,7 @@
 
 #![allow(clippy::uninlined_format_args, reason = "consistency")]
 
-use super::super::utils::*;
+use super::super::Build;
 use std::{
     fs::{File, create_dir_all},
     io::{BufWriter, Error, Write},
@@ -28,13 +28,13 @@ const LOWER_LIMIT: usize = 16;
 
 #[rustfmt::skip]
 pub(crate) fn generate() -> Result<(), Error> {
-    let build_out_dir = out_dir().join("build/");
+    let build_out_dir = Build::out_dir().join("build/");
     create_dir_all(&build_out_dir)?;
     let path = build_out_dir.join("unroll.rs");
 
     // the generated file will be imported from /src/code/util/unroll/mod.rs
     #[cfg(feature = "__dbg")]
-    println(&format!("generated: {}", path.display()));
+    Build::println(&format!("generated: {}", path.display()));
 
     let file = File::create(path)?;
     let mut f = BufWriter::new(file);

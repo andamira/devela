@@ -1,21 +1,20 @@
 // devela_base::build
 //
-//! Build utilities.
+//! Build-related utilities.
 //
 
-devela_base::items! { // structural access: _pub_mods, _all
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _pub_mods::*;
+mod namespace; // Build
+// mod _util;
 
-    mod _pub_mods { #![allow(unused_imports)]
-        // pub use super::{
-        //     util::_all::*,
-        // };
+devela_base::items! { // structural access: _mods, _all
+    #[allow(unused)]
+    pub use _mods::*;
+
+    mod _mods { #![allow(unused)]
+        pub use super::namespace::*;
     }
-    pub(super) mod _internals { #![allow(unused_imports)]
-    }
-    pub(super) mod _all { #![allow(unused_imports)]
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::_pub_mods::*;
+        pub use super::_mods::*;
     }
 }

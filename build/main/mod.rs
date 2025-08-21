@@ -20,14 +20,17 @@
 /* imports */
 
 extern crate devela_base as base;
+extern crate devela_base_std as base_std;
 extern crate self as build;
+
+#[allow(unused)]
+use base_std::Build;
 
 /* build modules */
 
 mod codegen; // tuple, unroll
 mod environment;
 mod features;
-mod utils; // out_dir, manifest_dir, manifest_path, println* , TAB*
 
 fn main() {
     if let Err(err) = try_main() {
@@ -37,13 +40,13 @@ fn main() {
 
 fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     #[cfg(feature = "__dbg")]
-    utils::println_start_end(true);
+    Build::println_start_end("main build script", true);
 
     environment::main()?;
     features::main()?;
     codegen::main()?;
 
     #[cfg(feature = "__dbg")]
-    utils::println_start_end(false);
+    Build::println_start_end("main build script", false);
     Ok(())
 }

@@ -1038,6 +1038,7 @@ default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 # Used for the main build script. They do NOT inherit from [dependencies].
 # ------------------------------------------------------------------------------
 devela_base.workspace = true
+devela_base_std.workspace = true
 
 
 # patches

@@ -12,6 +12,8 @@
 ## build
 - move `/meta/build` to `/build/main`.
 - add new `devela_postbuild` crate to `build/post`.
+- new `Build` namespace in `devela_base_std`.
+- move build fn utils as `Build` methods.
 
 ## cargo
 - add new cargo doc workspace aliases `w*`.
@@ -47,6 +49,8 @@
   - enable `doc_cfg` via `nightly_doc` flag.
   - remove dependency `hashbrown`.
   - remove features: `alloc`, `std`, `nightly`, `nightly_doc`.
+- [postbuild]
+  - add feature `__dbg`.
 
 ## manifest
 - make keys parts of the workspace: edition, version, authors, license, documentation.

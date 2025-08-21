@@ -10,12 +10,27 @@
 // - iterators definitions and implementations
 //
 
-use super::super::utils::*;
+use super::super::Build;
 use std::{
     fs::{File, create_dir_all},
     io::{BufWriter, Error, Write},
     write as w0, writeln as w,
 };
+
+use tabs::*;
+#[rustfmt::skip]
+#[allow(unused)]
+mod tabs {
+    #[doc = "0 tabs, 0 spaces."]  pub const TAB0: &str = "";
+    #[doc = "1 tabs, 4 spaces."]  pub const TAB1: &str = "    ";
+    #[doc = "2 tabs, 8 spaces."]  pub const TAB2: &str = "        ";
+    #[doc = "3 tabs, 12 spaces."] pub const TAB3: &str = "            ";
+    #[doc = "4 tabs, 16 spaces."] pub const TAB4: &str = "                ";
+    #[doc = "5 tabs, 20 spaces."] pub const TAB5: &str = "                    ";
+    #[doc = "6 tabs, 24 spaces."] pub const TAB6: &str = "                        ";
+    #[doc = "7 tabs, 28 spaces."] pub const TAB7: &str = "                            ";
+    #[doc = "8 tabs, 32 spaces."] pub const TAB8: &str = "                                ";
+}
 
 #[rustfmt::skip] const MAX_ARITY: usize = {
     if cfg!(not(feature = "_tuple_24")) { 12
@@ -27,13 +42,13 @@ use std::{
 
 #[rustfmt::skip]
 pub(crate) fn generate() -> Result<(), Error> {
-    let build_out_dir = out_dir().join("build/");
+    let build_out_dir = Build::out_dir().join("build/");
     create_dir_all(&build_out_dir)?;
     let path = build_out_dir.join("tuple.rs");
 
     // the generated file will be imported from /src/data/collections/tuple/mod.rs
     #[cfg(feature = "__dbg")]
-    println(&format!("generated: {}", path.display()));
+    Build::println(&format!("generated: {}", path.display()));
 
     let file = File::create(path)?;
     let mut f = BufWriter::new(file);

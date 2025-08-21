@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "__dbg")]
-use super::utils::println;
+use super::Build;
 use std::{collections::HashSet, env, sync::OnceLock};
 
 /// The set of enabled cargo features.
@@ -14,7 +14,7 @@ pub(crate) static ENABLED_CFG_FLAGS: OnceLock<HashSet<String>> = OnceLock::new()
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
-    super::utils::println_heading("Features & Configuration Flags:");
+    Build::println_heading("Features & Configuration Flags:");
 
     /* Collect enabled cargo features from CARGO_FEATURE_* environment variables */
 
@@ -29,19 +29,19 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     });
     #[cfg(feature = "__dbg")]
     if let Some(f) = ENABLED_CARGO_FEATURES.get() {
-        println(&format!("Active cargo features ({}): {:?}", f.len(), f));
-        println("");
+        Build::println(&format!("Active cargo features ({}): {:?}", f.len(), f));
+        Build::println("");
     };
     // Enable reflection flags based on cargo features
     let _enabled_flags_from_features = reflection::set_ref_flags_from_cargo_features();
     #[cfg(feature = "__dbg")]
     {
-        println(&format!(
+        Build::println(&format!(
             "Reflection flags auto-enabled by features ({}): {:?}",
             _enabled_flags_from_features.len(),
             _enabled_flags_from_features,
         ));
-        println("");
+        Build::println("");
     }
 
     /* Collect enabled cfg flags from both RUSTFLAGS and RUSTDOCFLAGS */
@@ -65,23 +65,23 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         // IMPROVE FIXME always shows as ""
         let filtered_flags: Vec<_> = f.iter().filter(|&f| f != "--cfg" && f != "-C").collect();
         // let filtered_flags: Vec<_> = f.iter().collect(); // SAME FOR THIS (TEMP)
-        println(&format!(
+        Build::println(&format!(
             "Active compiler cfg flags ({}): {:?}",
             filtered_flags.len(),
             filtered_flags
         ));
-        println("");
+        Build::println("");
     }
     // Enable reflection flags based on cfg flags (e.g., RUSTFLAGS)
     let _enabled_flags_from_cfg_flags = reflection::set_ref_flags_from_cfg_flags();
     #[cfg(feature = "__dbg")]
     {
-        println(&format!(
+        Build::println(&format!(
             "Flags auto-enabled by cfg flags ({}): {:?}",
             _enabled_flags_from_cfg_flags.len(),
             _enabled_flags_from_cfg_flags,
         ));
-        println("");
+        Build::println("");
     }
 
     Ok(())

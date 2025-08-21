@@ -6,10 +6,14 @@
 /* imports */
 
 extern crate devela_base as base;
+extern crate devela_base_std as base_std;
+
+#[allow(unused)]
+use base_std::Build;
 
 /* modules */
 
-// mod postbuild;
+// mod postbuild; // TODO
 
 fn main() {
     if let Err(err) = try_main() {
@@ -18,12 +22,12 @@ fn main() {
 }
 
 fn try_main() -> Result<(), Box<dyn core::error::Error>> {
-    // #[cfg(feature = "__dbg")]
-    // utils::println_start_end(true);
+    #[cfg(feature = "__dbg")]
+    Build::println_start_end("post-build script", true);
 
     // postbuild::main()?;
 
-    // #[cfg(feature = "__dbg")]
-    // utils::println_start_end(false);
+    #[cfg(feature = "__dbg")]
+    Build::println_start_end("post-build script", false);
     Ok(())
 }

@@ -33,12 +33,14 @@ publish = true
 metadata.docs.rs.no-default-features = true
 
 [features]
+__dbg = [] # shows extra debugging information.
 
 [dependencies]
 devela.path = "../.."
 
 [build-dependencies]
 devela_base.workspace = true
+devela_base_std.workspace = true
 
 [badges]
 maintenance.status = "experimental"

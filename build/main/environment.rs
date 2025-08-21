@@ -13,40 +13,40 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 
     #[cfg(feature = "__dbg")]
     {
-        use super::utils::{println, println_heading, println_var, println_var_encoded};
+        use super::Build;
 
         // https://doc.rust-lang.org/cargo/reference/environment-variables.html
-        println_heading("Environment variables:");
+        Build::println_heading("Environment variables:");
 
         if let Some(v) = cargo_primary_package {
-            println(&format!["· CARGO_PRIMARY_PACKAGE={v}"]);
+            Build::println(&format!["· CARGO_PRIMARY_PACKAGE={v}"]);
         } else {
-            println("x CARGO_PRIMARY_PACKAGE");
+            Build::println("x CARGO_PRIMARY_PACKAGE");
         }
 
-        println_var("CARGO_MANIFEST_DIR");
-        println_var("CARGO_MANIFEST_PATH");
-        println_var("OUT_DIR");
+        Build::println_var("CARGO_MANIFEST_DIR");
+        Build::println_var("CARGO_MANIFEST_PATH");
+        Build::println_var("OUT_DIR");
 
-        println_var("HOST");
-        println_var("TARGET");
-        println_var("PROFILE");
-        println_var("NUM_JOBS");
+        Build::println_var("HOST");
+        Build::println_var("TARGET");
+        Build::println_var("PROFILE");
+        Build::println_var("NUM_JOBS");
 
-        println_var("RUSTC");
-        // println_var("RUSTC_WRAPPER");
-        // println_var("RUSTC_LINKER");
-        // println_var("RUSTDOC");
-        // println_var("CARGO");
-        // println_var("CARGO_MAKEFLAGS");
-        // println_var("CARGO_ENCODED_RUSTFLAGS");
+        Build::println_var("RUSTC");
+        // Build::println_var("RUSTC_WRAPPER");
+        // Build::println_var("RUSTC_LINKER");
+        // Build::println_var("RUSTDOC");
+        // Build::println_var("CARGO");
+        // Build::println_var("CARGO_MAKEFLAGS");
+        // Build::println_var("CARGO_ENCODED_RUSTFLAGS");
 
         // for (key, value) in std::env::vars() {
-        //     super::utils::println(&format![">> {key}: {value}"]);
+        //     Build::println(&format![">> {key}: {value}"]);
         // }
 
-        println_var_encoded("CARGO_ENCODED_RUSTFLAGS", "RUSTFLAGS");
-        println_var("RUSTDOCFLAGS");
+        Build::println_var_encoded("CARGO_ENCODED_RUSTFLAGS", "RUSTFLAGS");
+        Build::println_var("RUSTDOCFLAGS");
     }
 
     Ok(())
