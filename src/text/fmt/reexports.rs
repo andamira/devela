@@ -23,6 +23,7 @@ reexport! { rust: core,
     writeln
 }
 
+// TODO: leave only this one, re-export the rest from devela_base
 reexport! { rust: alloc,
     tag: TAG_FMT!(),
     doc: "Creates a String using interpolation of runtime expressions.",

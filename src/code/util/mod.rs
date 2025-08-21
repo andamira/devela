@@ -18,7 +18,6 @@
 mod _doc; // doc_! // RENAME: _doc!
 mod _reexport; // reexport! // RENAME _reexport!
 mod _use; // _use!
-mod error; // define_error!
 
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail]!
@@ -56,14 +55,14 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
         // pub use super::structural::*;
     }
     pub(super) mod _internals {
-        pub(crate) use super::{_doc::*, _reexport::*, _use::*, error::*};
+        pub(crate) use super::{_doc::*, _reexport::*, _use::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{_internals::*, reexports::*, error::*};
+        pub use super::{_internals::*, reexports::*};
     }
 }
 // WIPZONE

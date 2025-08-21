@@ -69,13 +69,6 @@ mod core_impls {
     use crate::{Display, FmtResult, Formatter, NumError, Sign};
 
     impl crate::Error for NumError {}
-    impl crate::ExtError for NumError {
-        type Kind = ();
-        fn error_eq(&self, other: &Self) -> bool {
-            self == other
-        }
-        fn error_kind(&self) -> Self::Kind {}
-    }
 
     impl Display for NumError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

@@ -22,3 +22,10 @@ pub use core::marker::Sized;
 pub use core::marker::Sync;
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::marker::Unpin;
+
+// /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+// See also:
+// - https://dev-doc.rust-lang.org/stable/unstable-book/library-features/fn-ptr-trait.html
+// - [implement FnPtr for all fn pointers](https://github.com/rust-lang/rust/pull/108080)
+// #[cfg(nightly_fn)]
+// pub use core::marker::FnPtr;

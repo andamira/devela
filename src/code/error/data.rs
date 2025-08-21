@@ -22,9 +22,6 @@
 //   - DataNotEnough:    NotEnoughElements, NotEnoughSpace
 //   - MismatchedBounds: DataOverflow, IndexOutOfBounds, MismatchedIndices, MismatchedCapacity
 //   - PartialSpace:     NotEnoughSpace, PartiallyAdded
-// - full composite errors:
-//   - DataError
-//   - DataResult
 
 use crate::{Interval, Mismatch, define_error};
 
@@ -162,75 +159,4 @@ define_error! { composite: fmt(f)
         DOC_NOT_ENOUGH_SPACE:   NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
         DOC_PARTIALLY_ADDED:    PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
     }
-}
-
-#[cfg(all(feature = "error", data··))]
-pub use full_composite::*;
-#[cfg(all(feature = "error", data··))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "error", data··))))]
-mod full_composite {
-    use super::*;
-    use crate::{
-        DOC_NOT_IMPLEMENTED, DOC_NOT_SUPPORTED, NotAvailable, NotImplemented, NotSupported,
-    };
-
-    define_error! { composite: fmt(f)
-        /// A data-related composite error.
-        #[non_exhaustive]
-        pub enum DataError {
-            DOC_NOT_IMPLEMENTED: NotImplemented => NotImplemented,
-            DOC_NOT_SUPPORTED: NotSupported => NotSupported,
-            //
-            DOC_DATA_OVERFLOW:
-                DataOverflow(i|0: Option<usize>) => DataOverflow(*i),
-            DOC_ELEMENT_NOT_FOUND:
-                ElementNotFound => ElementNotFound,
-            DOC_INDEX_OUT_OF_BOUNDS:
-                IndexOutOfBounds(i|0: Option<usize>) => IndexOutOfBounds(*i),
-            DOC_INVALID_AXIS_LENGTH:
-                InvalidAxisLength(i|0: Option<usize>) => InvalidAxisLength(*i),
-            DOC_KEY_ALREADY_EXISTS:
-                KeyAlreadyExists => KeyAlreadyExists,
-            DOC_MISMATCHED_CAPACITY:
-                MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
-            DOC_MISMATCHED_DIMENSIONS:
-                MismatchedDimensions(d|0: Mismatch<usize, usize>) => MismatchedDimensions(*d),
-            DOC_MISMATCHED_INDICES:
-                MismatchedIndices => MismatchedIndices,
-            DOC_NODE_EMPTY:
-                NodeEmpty(i|0: Option<usize>) => NodeEmpty(*i),
-            DOC_NODE_LINK_NOT_SET:
-                NodeLinkNotSet(i|0: Option<usize>) => NodeLinkNotSet(*i),
-            DOC_NODE_LINK_NOT_UNIQUE:
-                NodeLinkNotUnique(i|0: Option<usize>) => NodeLinkNotUnique(*i),
-            DOC_NOT_ENOUGH_ELEMENTS:
-                NotEnoughElements(i|0: Option<usize>) => NotEnoughElements(*i),
-            DOC_NOT_ENOUGH_SPACE:
-                NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
-            DOC_PARTIALLY_ADDED:
-                PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
-        }
-    }
-    define_error! { composite: from(f): NotAvailable, for: DataError {
-        NotImplemented => NotImplemented,
-        NotSupported => NotSupported,
-    }}
-    define_error! { composite: from(f): DataNotEnough, for: DataError {
-        Elements(i) => NotEnoughElements(i),
-        Space(i) => NotEnoughSpace(i),
-    }}
-    define_error! { composite: from(f): PartialSpace, for: DataError {
-        NotEnoughSpace(i) => NotEnoughSpace(i),
-        PartiallyAdded(i) => PartiallyAdded(i),
-    }}
-    define_error! { composite: from(f): MismatchedBounds, for: DataError {
-        DataOverflow(i) => DataOverflow(i),
-        IndexOutOfBounds(i) => IndexOutOfBounds(i),
-        MismatchedCapacity(i) => MismatchedCapacity(i),
-        MismatchedIndices => MismatchedIndices,
-    }}
-
-    #[doc = crate::TAG_RESULT!()]
-    /// A data-related result.
-    pub type DataResult<T> = crate::Result<T, DataError>;
 }

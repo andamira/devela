@@ -64,7 +64,7 @@ mod full_composite {
 
             // FIXME
             #[cfg(feature = "std")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
             DOC_SYSTEM_TIME_ERROR:
                 SystemTime(d|0: Duration) => SystemTimeError(*d),
         }

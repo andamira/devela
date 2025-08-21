@@ -164,6 +164,42 @@ macro_rules! _CONST {
             $shared_vis use $CONST_NAME;
         )*
     };
+    (
+    /* */
+
+    hidden macro_export,
+    $(
+        $(#[$CONST_ATTRS:meta])*
+        $CONST_NAME:ident = $expr:expr
+     );* $(;)?) => { $crate::paste! {
+        $(
+            $(#[$CONST_ATTRS])*
+            #[allow(unused_macro)]
+            #[macro_export]
+            #[doc(hidden)]
+            macro_rules! [< _ $CONST_NAME >] { () => { $expr } }
+
+            #[doc(hidden)]
+            pub use [< _ $CONST_NAME >] as $CONST_NAME;
+        )*
+    }};
+    (
+    inline macro_export,
+    $(
+        $(#[$CONST_ATTRS:meta])*
+        $CONST_NAME:ident = $expr:expr
+     );* $(;)?) => { $crate::paste! {
+        $(
+            $(#[$CONST_ATTRS])*
+            #[allow(unused_macro)]
+            #[macro_export]
+            #[cfg_attr(cargo_primary_package, doc(hidden))]
+            macro_rules! [< _ $CONST_NAME >] { () => { $expr } }
+
+            #[doc(inline)]
+            pub use [< _ $CONST_NAME >] as $CONST_NAME;
+        )*
+    }};
 }
 #[doc(inline)]
 pub use _CONST as CONST;

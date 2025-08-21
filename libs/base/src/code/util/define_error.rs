@@ -1,7 +1,10 @@
-// devela::code::util::error
+// devela_base::code::util::define_error
 //
-//! Defines [`define_error!`]
+//! Defines [`define_error!`].
 //
+// TOC
+// - define_error!
+// - tests
 
 /// Helper to define individual and composite error types.
 ///
@@ -11,7 +14,9 @@
 // - alternative sections for tuple-struct and field-struct variants are indicated in the margin.
 // - we are employing the trick `$(;$($_a:lifetime)?` for the optional semicolon terminator,
 //   where the never expected lifetime allows to refer to the non-identifier `;` later on.
-macro_rules! define_error {
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+macro_rules! _define_error {
     (
     // Defines a standalone error tuple-struct with elements.
     //
@@ -46,7 +51,7 @@ macro_rules! define_error {
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
         $(#[doc = $tag])?
-        #[doc = crate::TAG_ERROR!()]
+        #[doc = $crate::TAG_ERROR!()]
         $(#[$attributes])*
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
@@ -55,23 +60,23 @@ macro_rules! define_error {
         $({ $( $(#[$f_attr])* $f_vis $f_name: $f_ty),+ })?                        // field-struct↑
 
         $(#[$attributes])*
+        impl $crate::Error for $struct_name {}
+        $(#[$attributes])*
         impl $crate::Display for $struct_name {
             fn fmt(&$self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 $display_expr
             }
         }
-        $(#[$attributes])*
-        impl $crate::Error for $struct_name {}
-        $(#[$attributes])*
-        impl $crate::ExtError for $struct_name {
-            type Kind = ();
-            fn error_eq(&self, other: &Self) -> bool { self == other }
-            fn error_kind(&self) -> Self::Kind {}
-        }
+        // $(#[$attributes])*
+        // impl $crate::ExtError for $struct_name { DISABLED
+        //     type Kind = ();
+        //     fn error_eq(&self, other: &Self) -> bool { self == other }
+        //     fn error_kind(&self) -> Self::Kind {}
+        // }
     };
     (
     // Defines a composite Error enum, as well as:
-    // - implements Error, ExtError and Display.
+    // - implements Error and Display.
     // - implements From and TryFrom in reverse.
     composite: fmt($fmt:ident)
         $(#[$enum_attr:meta])*
@@ -86,7 +91,7 @@ macro_rules! define_error {
                     $({ $($f_display_name:ident: $f_display_exp:expr),+ })?       // field-struct↑
         ),+ $(,)? }
     ) => {
-        #[doc = crate::TAG_ERROR_COMPOSITE!()]
+        #[doc = $crate::TAG_ERROR_COMPOSITE!()]
         $(#[$enum_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
@@ -97,13 +102,13 @@ macro_rules! define_error {
                 $({ $($(#[$f_attr])* $f_name: $f_ty),+ })?                        // field-struct↑
         ),+ }
 
-        // implements Error, ExtError & Display:
+        // implements Error, & Display:
         impl $crate::Error for $composite_error_name {}
-        impl $crate::ExtError for $composite_error_name {
-            type Kind = ();
-            fn error_eq(&self, other: &Self) -> bool { self == other }
-            fn error_kind(&self) -> Self::Kind {}
-        }
+        // impl $crate::ExtError for $composite_error_name { // DISABLED
+        //     type Kind = ();
+        //     fn error_eq(&self, other: &Self) -> bool { self == other }
+        //     fn error_kind(&self) -> Self::Kind {}
+        // }
         impl $crate::Display for $composite_error_name  {
             fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 match self { $(
@@ -176,7 +181,7 @@ macro_rules! define_error {
             }
         } */
         impl TryFrom<$for_composite> for $from_individual {
-            type Error = crate::FailedErrorConversion;
+            type Error = $crate::FailedErrorConversion;
             fn try_from($fn_arg: $for_composite) -> Result<$from_individual, Self::Error> {
                 match $fn_arg {
                     $for_composite::$variant_name
@@ -187,7 +192,7 @@ macro_rules! define_error {
                             $({ $($f_name),+ })?                                  // field-struct↑
                         ),
                         #[allow(unreachable_patterns)]
-                        _ => Err(crate::FailedErrorConversion)
+                        _ => Err($crate::FailedErrorConversion)
                 }
             }
         }
@@ -216,9 +221,9 @@ macro_rules! define_error {
             ),+ } }
         }
         impl TryFrom<$for_superset> for $from_subset {
-            type Error = crate::FailedErrorConversion;
+            type Error = $crate::FailedErrorConversion;
             fn try_from($fn_arg: $for_superset)
-                -> Result<$from_subset, crate::FailedErrorConversion> { match $fn_arg { $(
+                -> Result<$from_subset, $crate::FailedErrorConversion> { match $fn_arg { $(
                     $for_superset::$for_variant
                         $(( $($for_elem),+ ))?                                    // tuple-struct↓
                         $({ $($for_field),+ })?                                   // field-struct↑
@@ -226,13 +231,13 @@ macro_rules! define_error {
                                 $(( $($from_elem),+ ))?                           // tuple-struct↓
                                 $({ $($from_field),+ })?                          // field-struct↑
                     ),)+
-                    _ => Err(crate::FailedErrorConversion)
+                    _ => Err($crate::FailedErrorConversion)
                 }
             }
         }
     };
 }
-pub(crate) use define_error;
+pub use _define_error as define_error;
 
 #[cfg(test)]
 mod tests {

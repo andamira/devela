@@ -160,11 +160,10 @@ pub mod _info;
 
 /* structural re-exports */
 
+// public items, feature-gated, visible at their origin and in `all`:
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
-    // public items, feature-gated, visible at their origin and here in `all`
-    //
     //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
@@ -189,8 +188,11 @@ pub mod all {
         _always::*,
     };
 }
+
+// public items, less feature-gated, bubble up easy:
+#[doc(hidden)]
+pub use _always::*;
 mod _always {
-    // public items, less feature-gated, bubble up easy
     #[allow(unused_imports)]
     #[rustfmt::skip]
     pub use super::{
@@ -207,19 +209,20 @@ mod _always {
         work::_always::*,
     };
 }
+
+// public, hidden items
 #[doc(hidden)]
 pub use _hidden::*;
 mod _hidden {
-    // public, hidden items
     pub use super::sys::_hidden::*;
 }
+
+// private, internal items
 #[allow(unused_imports)]
 pub(crate) use _internals::*;
 mod _internals {
-    // workspace internal items
-    pub(crate) use devela_base::_internals::*;
+    pub(crate) use devela_base::_workspace_private::*;
 
-    // private, internal items
     #[allow(unused_imports)]
     #[rustfmt::skip]
     pub(crate) use super::{

@@ -12,6 +12,7 @@ use crate::reexport;
 pub use devela_base::{
     CONST,
     cdbg,
+    define_error,
     deprecate_feature,
     include_from, mod_from,
     is,

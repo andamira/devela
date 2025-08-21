@@ -7,8 +7,6 @@
 #![doc = crate::doc_!(extends: backtrace, error)]
 //
 
-mod ext; // ExtError
-mod all_error; // AllError, modular errors
 mod reexports;
 
 mod data; // data-related errors
@@ -20,18 +18,17 @@ crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _always::*;
 
-    mod _mods {
-        pub use super::{all_error::*, ext::*, reexports::*};
-        pub use super::{data::*, time::*};
+    mod _mods { #![allow(unused)]
+        pub use super::{data::*, reexports::*, time::*};
         // WIPZONE
         // pub use super::num::*;
     }
-    pub(super) mod _all {
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{all_error::*, data::*, ext::*, reexports::*};
+        pub use super::{data::*, reexports::*};
         // WIPZONE
         // pub use super::num::*;
     }

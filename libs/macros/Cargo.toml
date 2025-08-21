@@ -67,9 +67,11 @@ _docsrs = ["unsafe"] # complete documentation
 
 [dependencies] # 2 (2 required, 0 optional)
 # ==============================================================================
+devela_base.workspace = true
 # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
 proc-macro2 = "1.0.101"
 quote = "1.0.40"
+
 
 
 [badges]

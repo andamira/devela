@@ -31,6 +31,7 @@ extern crate self as devela_base;
 
 pub mod code;
 // pub mod num;
+pub mod text;
 
 #[doc(hidden)]
 pub use all::*;
@@ -48,16 +49,17 @@ pub mod all {
     pub use super::{
         code::_all::*,
         // num::_all::*,
+        text::_all::*,
     };
 }
 
 #[doc(hidden)]
 #[allow(unused_imports)]
-pub(crate) use _internals::*;
+pub use _workspace_private::*;
 #[doc(hidden)] #[rustfmt::skip]
-pub/*workspace*/ mod _internals {
+pub/*workspace*/ mod _workspace_private {
     #[allow(unused_imports)]
     pub/*workspace*/ use super::{
-        code::_internals::*,
+        code::_workspace_private::*,
     };
 }
