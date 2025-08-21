@@ -110,7 +110,13 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(once_wait, path_add_extension, rwlock_downgrade,)
+    feature(
+        file_with_nul,
+        once_wait,
+        path_add_extension,
+        rwlock_downgrade,
+        stdarch_s390x_feature_detection,
+    )
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 

@@ -76,6 +76,7 @@ See also
         `·` `const_sockaddr_setters`
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
+- 1.??: `a`[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
@@ -89,6 +90,7 @@ See also
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
+- 1.??: `a`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 - 1.??: `·`[strict_provenance_atomic_ptr](https://github.com/rust-lang/rust/issues/99108)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
