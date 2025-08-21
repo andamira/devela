@@ -1,4 +1,4 @@
-// devela_base::build
+// devela_base_std::build
 //
 //! Build-time code generation and configuration.
 //

@@ -1,15 +1,15 @@
-# devela_base manifest
+# devela_base_std manifest
 
 [package]
-name = "devela_base"
-description = "base shared functionality for devela"
+name = "devela_base_std"
+description = "base std shared functionality for devela"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
 documentation.workspace = true
 authors.workspace = true
 license.workspace = true
-repository = "https://github.com/andamira/devela/tree/main/libs/base"
+repository = "https://github.com/andamira/devela/tree/main/libs/base_std"
 include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
@@ -36,13 +36,8 @@ safe = [] # forbids `unsafe` in this crate
 _docsrs = ["unsafe"] # complete documentation
 
 
-[dependencies] # 2 (2 required, 0 optional)
-devela_base_macros = { workspace = true }
-
-[dependencies.paste_crate] # https://crates.io/crates/paste
-version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
-package = "paste" # safe, ARCHIVED
-# alternative: https://crates.io/crates/pastey
+[dependencies] # 1 (1 required, 0 optional)
+devela_base = { workspace = true }
 
 
 [badges]

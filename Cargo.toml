@@ -6,7 +6,8 @@
 ## Table of Contents
 #
 # * [workspace]
-#   * [package]
+#   - [dependencies]
+#   - [package]
 #
 # * [package]
 #   - [metadata.docs.rs]
@@ -50,9 +51,11 @@
 [workspace]
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/workspaces.html
-#
-## Bottom-up hierarchical diagram (~ = feature-gated)
-# ---------------------------------------------------
+
+resolver = "3"
+
+## Bottom-up hierarchical diagram (~ = feature-gated, → = required dependency)
+# ----------------------------------------------------------------------------
 # devela_base_macros
 # └── devela_base
 #     ├─ ~devela_base_alloc
@@ -65,32 +68,37 @@
 #     ├─ ~devela_...
 #     │  │
 #     └──┴─ devela
-#           ├╌ build/main/                    → devela_base_std
+#           ├╌ build/main/ (devela build)     → devela_base_std
 #           └─ build/post/ (devela_postbuild) → devela_base_std
 members = [
-	".",
-	"build/post",
-	"libs/base", "libs/base_macros", # "libs/base_alloc", "libs/base_std",
+	"libs/base_macros", "libs/base", "libs/base_std", # "libs/base_alloc",
 	"libs/macros",
 	# "libs/data", "libs/num", # ...
+	".",
+	"build/post",
 ]
-resolver = "3"
+[workspace.dependencies] # https://crates.io/crates/devela_base_macros
+devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } # dependency of [base]
+devela_base =        { version = "0.25.0-wip", path = "./libs/base" }     # required for all
+devela_base_alloc =  { version = "0.25.0-wip", path = "./libs/base_std" } # optional for all
+devela_base_std =    { version = "0.25.0-wip", path = "./libs/base_std" } # optional for all
+devela_macros =      { version = "0.25.0-wip", path = "./libs/macros" }   # optional for all
 
 [workspace.package]
-rust-version = "1.89.0" # in sync with README.md && .github/workflows/check.yml
-edition = "2024"
 version = "0.25.0-wip" # in sync with docs/changelog.md
+rust-version = "1.89.0" # in sync with README.md && .github/workflows/check.yml
 documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
+edition = "2024"
 
 
 [package]
 # ==============================================================================
 name = "devela"
+build = "build/main/mod.rs"
 description = "A development layer."
 readme = "docs/readme_crate.md"
-build = "build/main/mod.rs"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
@@ -198,14 +206,14 @@ __force_test_no_mangle = []
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
-	# "devela_base_alloc", # "devela_num?/alloc",
+	# "dep:devela_base_alloc", # "devela_num?/alloc",
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
 	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "portable-atomic-util?/alloc",
 	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	# "devela_base_std", # "devela_num?/std",
+	"dep:devela_base_std", # "dep:devela_num?/std",
 	#
 	"allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
@@ -596,14 +604,15 @@ _str_all = [
 # Enabling any of these will set the `lib··` reflection flag.
 
 lib_all = [
+	"lib_macros",
 	# "lib_data",
 	# "lib_num",
 	# "lib_text",
 ]
+lib_macros = ["dep:devela_macros"]
 # lib_data = ["dep:devela_data"]
 # lib_num = ["dep:devela_num"]
 # lib_text = ["dep:devela_text"]
-
 
 #* Dependency features (optional external dependencies) *#
 # ------------------------------------------------------------------------------
@@ -698,42 +707,30 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 # 1. Update `dep_all` above and ./config/dep_all.rs.
 # 2. Add a new entry below and in ./src/_deps.rs.
 
-# WIPZONE
-# swash = { version = "0.2.0", optional = true, default-features = false }
-# reqwest = { version = "0.12.12", optional = true }
-# rustybuzz = { version = "0.20.1", optional = true }
-
 #* required dependencies *#
 
-[workspace.dependencies.devela_base] # https://crates.io/crates/devela_base
-version = "0.25.0-wip"
-path = "./libs/base"
-[dependencies.devela_base]
-workspace = true
-
-[workspace.dependencies.devela_base_macros] # https://crates.io/crates/devela_base_macros
-version = "0.25.0-wip"
-path = "./libs/base_macros"
-
-[dependencies.devela_macros] # https://crates.io/crates/devela_macros
-version = "0.25.0-wip"
-path = "./libs/macros"
+devela_base = { workspace = true }
+devela_macros = { workspace = true, optional = true }
 
 #* optional library dependencies *#
 
+[dependencies.devela_base_std]
+workspace = true
+optional = true
+
 # [dependencies.devela_data] # https://crates.io/crates/devela_data
 # version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/data/docs/changelog.md
-# optional = true # *safe
+# optional = true
 # path = "./libs/data" #
 
 # [dependencies.devela_num] # https://crates.io/crates/devela_num
 # version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/num/docs/changelog.md
-# optional = true # *safe
+# optional = true
 # path = "./libs/num" #
 
 # [dependencies.devela_text] # https://crates.io/crates/devela_text
 # version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/text/docs/changelog.md
-# optional = true # *safe
+# optional = true
 # path = "./libs/text" #
 
 #* optional external dependencies *#
@@ -1034,7 +1031,7 @@ default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 [dev-dependencies]
 # Used for examples, metrics and tests. They inherit from [dependencies].
 # ------------------------------------------------------------------------------
-devela = { path = ".", features = ["all"] }
+# devela = { path = ".", features = ["all"] }
 
 
 [build-dependencies]
@@ -1298,6 +1295,7 @@ required-features = ["__no_test"]
 [[example]]
 name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"
+required-features = ["lib_macros"]
 [[example]]
 name = "enumset" # NOTE: in docs
 path = "examples/code/enumset.rs"

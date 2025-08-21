@@ -26,12 +26,12 @@
 
 ## features & flags
 - new `_lib··` flag
-- new features: `lib_all``, `lib_base`.
+- new features: `lib_all``, `lib_macros`.
 - new debug feature: `__force_test_no_mangle`.
 
 ## libs
 - enable `_docsrs` for workspace dependencies.
-- new workspace library crates: `devela_base`, `devela_base_macros`.
+- new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
   - move `paste` dependency to [base].
@@ -42,6 +42,7 @@
   - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
 - [macros]:
   - use workspace's crate version.
+  - make it an optional dependency.
   - add `devela_base` as a dependency.
   - enable `doc_cfg` via `nightly_doc` flag.
   - remove dependency `hashbrown`.

@@ -1,3 +1,4 @@
 /target
 Cargo.lock
 /examples/lang/*/public_html/*
+/_info

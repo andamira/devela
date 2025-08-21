@@ -1,4 +1,4 @@
-// devela_base::build::environment
+// devela_base_std::build::environment
 //
 //! Build script environment variables.
 //
