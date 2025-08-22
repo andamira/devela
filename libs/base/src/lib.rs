@@ -3,31 +3,11 @@
 //!
 //
 
-/* global configuration */
-//
-// lints
-//
-// (Most lints are defined in ::devela::Cargo.toml::lints)
-#![deny(rustdoc::missing_debug_implementations)]
-#![cfg_attr(
-    not(all(doc, feature = "_docsrs")), // if features are incomplete…
-    allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
-)]
-//
-// environment
 #![no_std]
-//
-// safety
-#![cfg_attr(feature = "safe", forbid(unsafe_code))]
-//
-// nightly (flags)
+#![forbid(unsafe_code)]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
-/* imports */
-
 extern crate self as devela_base;
-
-/* root modules */
 
 pub mod code;
 // pub mod num;

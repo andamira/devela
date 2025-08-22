@@ -1,15 +1,13 @@
-# devela_base manifest
-
 [package]
-name = "devela_base"
-description = "base shared functionality for devela"
+name = "devela_base_alloc"
+description = "base alloc shared functionality for devela"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
 documentation.workspace = true
 authors.workspace = true
 license.workspace = true
-repository = "https://github.com/andamira/devela/tree/main/libs/base"
+repository = "https://github.com/andamira/devela/tree/main/libs/base_alloc"
 include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
@@ -20,21 +18,17 @@ include = [
 ]
 categories = ["rust-patterns", "development-tools"]
 keywords = ["dev", "extension"]
-build = "build/mod.rs"
 autoexamples = false
 publish = true
 metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
 
 [features]
-_docsrs = []
+unsafe = []
+safe = []
+_docsrs = ["unsafe"]
 
-[dependencies] # 2 (2 required, 0 optional)
-devela_base_macros = { workspace = true }
-
-[dependencies.paste_crate] # https://crates.io/crates/paste
-version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
-package = "paste" # safe, ARCHIVED
-# alternative: https://crates.io/crates/pastey
+[dependencies] # 1 required
+devela_base = { workspace = true }
 
 [badges]
 maintenance.status = "experimental"

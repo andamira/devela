@@ -27,13 +27,11 @@
     - `quote` → 1.0.40.
 
 ## features & flags
-- new `_lib··` flag
-- new features: `lib_all``, `lib_macros`.
 - new debug feature: `__force_test_no_mangle`.
 
-## libs
+## workspace libs
 - enable `_docsrs` for workspace dependencies.
-- new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`.
+- new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`, `devela_base_alloc`, `devela_code`, `devela_data`, `devela_media` `devela_num`, `devela_text`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
   - move `paste` dependency to [base].

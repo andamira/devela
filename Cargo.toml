@@ -16,7 +16,8 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std,alloc,no_std)
-#   - Module            (all,code,data,game,lang,media,num,phys,sys,text,ui,work, …)
+#   - Workspace         (devela_*)
+#   - Module            (all,code,data,game,lang,media,num,phys,sys,text,ui,work)
 #   - Safety            (unsafe,safe,safest)
 #   - Capability        (_*)
 #     - default         (_default, _max, _maxest)
@@ -25,7 +26,6 @@
 #     - data            (_data*, _bit*, _sort*, _tuple*, _value*, …)
 #     - num             (_num*, _cmp*, _int_*, _float_*, …)
 #     - text            (_text*, _char*, _str_*)
-#   - Library           (lib_*)
 #   - Dependency        (dep_*)
 #
 # * [dependencies] (required|optional)
@@ -51,38 +51,58 @@
 [workspace]
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/workspaces.html
-
 resolver = "3"
 
-## Bottom-up hierarchical diagram (~ = feature-gated, → = required dependency)
-# ----------------------------------------------------------------------------
-# devela_base_macros
-# └── devela_base
-#     ├─ ~devela_base_alloc
-#     ├──┴─ ~devela_base_std
-#     │
-#     ├─ ~devela_macros
-#     │
-#     ├─ ~devela_data
-#     ├─ ~devela_num
-#     ├─ ~devela_...
-#     │  │
-#     └──┴─ devela
-#           ├╌ build/main/ (devela build)     → devela_base_std
-#           └─ build/post/ (devela_postbuild) → devela_base_std
+## Bottom-up hierarchical dependency flow of units of compilation (? = optional)
+# ·------------------------------------------------------------------------------
+#                                                           .-------------------.
+# ┌╼devela_base_macros          lean proc macros, zero-deps | stable interfaces |
+# └╥╼devela_base                core items, zero-deps       | primitive focused |
+#  ╟─┴╼devela_base_alloc?       alloc-dependent types       | monomorphizations |
+#  ╟───┴╼devela_base_std?       std-dependent types         | & infrastructures |
+#  ╚╗                                                       ·-------------------·
+#   ╟╼devela_macros?            heavy proc macros           |                   |
+#   ╚╗                                                      ·-------------------.
+#    ╟╼devela_code              code reflective synthesis   | trait definitions |
+#    ╚╦┼╼devela_data?           data structures & formats   | & implementations |
+#     ╟┼╼devela_game?           game & app development      | for foreign types |
+#     ╟┼╼devela_lang?           language functionality      | & domain-specific |
+#     ╟┼╼devela_media?          multimedia functionality    | custom constructs |
+#     ╟┼╼devela_num?            numeric systems & math      | corresponding to  |
+#     ╟┼╼devela_phys?           physical units & measures   | devela's modules  |
+#     ╟┼╼devela_sys             system & hardware interface |                   |
+#     ╟┼╼devela_text            text processing & unicode   |                   |
+#     ╟┼╼devela_ui?             user interfaces & visuals   |                   |
+#     ╟┴╼devela_work?           concurrency management      ··------------------·
+#     ╚═╦╼devela                unified front facade        | integration layer |
+#       ║ ├╼build/main          build, codegen, debug       | public interfaces |
+#       ║ └╼devela_postbuild    post-build processing       | development tools |
+#       ╏                                                   ·-------------------·
 members = [
-	"libs/base_macros", "libs/base", "libs/base_std", # "libs/base_alloc",
+	"libs/base_macros", "libs/base", "libs/base_alloc", "libs/base_std",
 	"libs/macros",
-	# "libs/data", "libs/num", # ...
-	".",
-	"build/post",
+	"libs/code", "libs/data", "libs/media", "libs/num",
+	# "libs/game", "libs/lang", "libs/phys", "libs/sys",
+	# "libs/text", "libs/ui", "libs/work",
+	".", "build/post",
 ]
-[workspace.dependencies] # https://crates.io/crates/devela_base_macros
-devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } # dependency of [base]
-devela_base =        { version = "0.25.0-wip", path = "./libs/base" }     # required for all
-devela_base_alloc =  { version = "0.25.0-wip", path = "./libs/base_std" } # optional for all
-devela_base_std =    { version = "0.25.0-wip", path = "./libs/base_std" } # optional for all
-devela_macros =      { version = "0.25.0-wip", path = "./libs/macros" }   # optional for all
+[workspace.dependencies]
+devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
+devela_base        = { version = "0.25.0-wip", path = "./libs/base" }
+devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" }
+devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" } #------
+devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
+devela_code        = { version = "0.25.0-wip", path = "./libs/code" } #----------
+devela_data        = { version = "0.25.0-wip", path = "./libs/data" }
+# devela_game      = { version = "0.25.0-wip", path = "./libs/lang" }
+# devela_lang      = { version = "0.25.0-wip", path = "./libs/lang" }
+devela_media       = { version = "0.25.0-wip", path = "./libs/media" }
+devela_num         = { version = "0.25.0-wip", path = "./libs/num" }
+# devela_phys      = { version = "0.25.0-wip", path = "./libs/phys" }
+# devela_sys       = { version = "0.25.0-wip", path = "./libs/sys" }
+# devela_text      = { version = "0.25.0-wip", path = "./libs/text" }
+# devela_ui        = { version = "0.25.0-wip", path = "./libs/ui" }
+# devela_work      = { version = "0.25.0-wip", path = "./libs/work" }
 
 [workspace.package]
 version = "0.25.0-wip" # in sync with docs/changelog.md
@@ -130,10 +150,7 @@ include = [
 # ==============================================================================
 # https://docs.rs/about/metadata
 # https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
-#
-# Maximum build limits (https://docs.rs/crate/devela/latest/builds)
-# 6.44 GB RAM, 15 minutes, 102.4 kB log, no-network, 10 targets.
-
+# [maximum build limits](https://docs.rs/crate/devela/latest/builds)
 no-default-features = true
 features = ["_docsrs"]
 rustc-args = [
@@ -165,7 +182,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 262/300 (38 remaining), 134 visible, 128 hidden
+[features] # 268/300 (32 remaining), 140 visible, 128 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -206,14 +223,20 @@ __force_test_no_mangle = []
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
-	# "dep:devela_base_alloc", # "devela_num?/alloc",
+	"devela_base_alloc", "devela_code/alloc",
+	"devela_data?/alloc", "devela_media?/alloc", "devela_num?/alloc",
+	# "devela_lang?/alloc", "devela_phys?/alloc", "devela_sys?/alloc",
+	# "devela_text?/alloc", "devela_ui?/alloc", "devela_work?/alloc",
+	#
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
 	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "portable-atomic-util?/alloc",
 	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc",
-	"dep:devela_base_std", # "dep:devela_num?/std",
+	"alloc", "devela_base_std", "devela_code/std",
+	"devela_data?/std", "devela_media?/std", "devela_num?/std",
+	# "devela_lang?/std", "devela_phys?/std", "devela_sys?/std",
+	# "devela_text?/std", "devela_ui?/std", "devela_work?/std",
 	#
 	"allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
@@ -223,9 +246,18 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 	"serde?/std", "simdutf8?/std",
 	"wide?/std", "winnow?/std",
 ]
-no_std = [ # enables functionality incompatible with or substitute of `std`
-]
+no_std = [] # enables functionality incompatible with or substitute of `std`
 
+
+#* Workspace features *#
+# ------------------------------------------------------------------------------
+
+devela_macros = [ "dep:devela_macros",
+	"devela_code/macros",
+	"devela_data?/macros", "devela_media?/macros", "devela_num?/macros",
+	# "devela_lang?/macros", "devela_phys?/macros", "devela_sys?/macros",
+	# "devela_text?/macros", "devela_ui?/macros", "devela_work?/macros",
+]
 
 #* Module features *#
 # ------------------------------------------------------------------------------
@@ -238,7 +270,7 @@ all = [ # enables all the 11 modules (and their submodules)
 	"code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
 ]
 code = ["error"]
-	error = [] # AllError, DataError, NumError, TextError…
+	error = []
 data = ["hash"]
 	# codec
 		hash = [] # HashFnv, HashFx, HashPengy
@@ -328,52 +360,68 @@ work = [
 #
 # In sync with ./build/main/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
 
-unsafe = [ # [11] enables all `unsafe` (as long as it isn't forbidden for that module)
+unsafe = [ # enables all `unsafe` (as long as it isn't forbidden on a module)
+	"devela_macros?/unsafe",
+
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
-] # `unsafe··`
-	unsafe_array   = [] # faster array initialization, UninitArray.
+] # `unsafe··`	[11]
+	# faster array initialization, UninitArray:
+	unsafe_array   = []
+	# unsafe foreign function calls (WASM, OS, external C):
+	unsafe_ffi     = []
+	# unreachable_unchecked, unchecked arithmetic:
+	unsafe_hint    = []
+	# MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*:
+	unsafe_layout  = []
+	# unchecked niche constructors:
+	unsafe_niche   = []
+	# Pinned, pop methods without Clone, Ptr::*:
+	unsafe_ptr     = []
+	# extra slice methods, avoid bound checks:
+	unsafe_slice   = []
+	# unchecked utf-8 char and &str conversions:
+	unsafe_str     = []
+	# SpinLock, Send and Sync impls:
+	unsafe_sync    = []
+	# os syscalls
+	unsafe_syscall = []
+	# Logging::set_logger_racy, Env::{remove_var, set_var}:
+	unsafe_thread  = []
+	# WIPZONE
 	# unsafe_async   = [] #
-	unsafe_ffi     = [] # unsafe foreign function calls (WASM, OS, external C)
-	unsafe_hint    = [] # unreachable_unchecked, unchecked arithmetic.
-	unsafe_layout  = [] # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*.
-	unsafe_niche   = [] # unchecked niche constructors.
-	unsafe_ptr     = [] # Pinned, pop methods without Clone, Ptr::*.
-	unsafe_slice   = [] # extra slice methods, avoid bound checks.
-	unsafe_str     = [] # unchecked utf-8 char and &str conversions.
-	unsafe_sync    = [] # SpinLock, Send and Sync impls.
-	unsafe_syscall = [] # os syscalls.
-	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-safe = [ # [12] forbids `unsafe` (and overrides unsafe features)
-	"devela_base/safe",
+safe = [ # forbids `unsafe` (and overrides unsafe features)
+	"devela_macros?/safe",
 	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game",
 	"safe_num", "safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
-] # `safe··`
-	safe_code = []
-	safe_data = [] # ["devela_data?/safe"]
-	safe_game = []
-	safe_lang = []
+] # `safe··` [12]
+	safe_code = ["devela_code/safe"]
+	safe_data = ["devela_data?/safe"]
+	safe_game = [] # "devela_game?/safe"
+	safe_lang = [] # "devela_lang?/safe"
 		# safe_ffi
 			# safe_js
-	safe_media = [ # [5]
-		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image"]
+	safe_media = [ # "devela_game?/safe"
+		"devela_media/safe",
+		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
+		]
 		safe_audio = []
 		safe_color = []
 		safe_draw = []
 		safe_font = []
 		safe_image = []
-	safe_num = [] # ["devela_num?/safe"]
-	safe_phys = ["safe_time"] # [1]
+	safe_num = ["devela_num?/safe"]
+	safe_phys = ["safe_time"] # "devela_phys?/safe"
 		safe_time = []
-	safe_sys = ["safe_io", "safe_mem"] # [2]
+	safe_sys = ["safe_io", "safe_mem"] # "devela_sys?/safe"
 		safe_io = []
 		safe_mem = []
-	safe_text = [] # ["devela_text?/safe"]
-	safe_ui = ["safe_layout"] # [1]
+	safe_text = [] # "devela_text?/safe"
+	safe_ui = ["safe_layout"] # "devela_ui?/safe"
 		safe_layout = []
-	safe_work = []
+	safe_work = [] # ["devela_work?/safe"]
 		# safe_async
 
 safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
@@ -597,28 +645,12 @@ _str_all = [
 	_str_nonul = []
 
 
-#* Library features (modular root dependencies) *#
-# ------------------------------------------------------------------------------
-# Names are prefixed with `lib_` and most correspond to library's root modules.
-# They enable extra monomorphization and compile-time heavy functionality.
-# Enabling any of these will set the `lib··` reflection flag.
-
-lib_all = [
-	"lib_macros",
-	# "lib_data",
-	# "lib_num",
-	# "lib_text",
-]
-lib_macros = ["dep:devela_macros"]
-# lib_data = ["dep:devela_data"]
-# lib_num = ["dep:devela_num"]
-# lib_text = ["dep:devela_text"]
-
 #* Dependency features (optional external dependencies) *#
 # ------------------------------------------------------------------------------
-# Names are prefixed with `dep_`, and use underscores in place of dashes.
 # They are associated to optional dependencies and groups of modules.
 # Enabling any of these will set the `dep··` reflection flag.
+#
+# Names are prefixed with `dep_`, and use underscores in place of dashes.
 #
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
@@ -695,7 +727,7 @@ dep_wide = ["dep:wide"]                                                         
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                   # text::parse
 
 
-[dependencies] # 45 (2 required, 43 optional)
+[dependencies] # 51 (5 required, 46 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -707,31 +739,23 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 # 1. Update `dep_all` above and ./config/dep_all.rs.
 # 2. Add a new entry below and in ./src/_deps.rs.
 
-#* required dependencies *#
+#* workspace library dependencies *#
 
-devela_base = { workspace = true }
-devela_macros = { workspace = true, optional = true }
-
-#* optional library dependencies *#
-
-[dependencies.devela_base_std]
-workspace = true
-optional = true
-
-# [dependencies.devela_data] # https://crates.io/crates/devela_data
-# version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/data/docs/changelog.md
-# optional = true
-# path = "./libs/data" #
-
-# [dependencies.devela_num] # https://crates.io/crates/devela_num
-# version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/num/docs/changelog.md
-# optional = true
-# path = "./libs/num" #
-
-# [dependencies.devela_text] # https://crates.io/crates/devela_text
-# version = "0.1.0" # ✓ https://github.com/andamira/devela/blob/main/libs/text/docs/changelog.md
-# optional = true
-# path = "./libs/text" #
+devela_base       = { workspace = true }
+devela_base_alloc = { workspace = true, optional = true }
+devela_base_std   = { workspace = true, optional = true }
+devela_macros     = { workspace = true, optional = true }
+devela_code       = { workspace = true }
+devela_data       = { workspace = true, optional = true }
+# devela_game     = { workspace = true, optional = true }
+# devela_lang     = { workspace = true, optional = true }
+devela_media      = { workspace = true, optional = true }
+devela_num        = { workspace = true, optional = true }
+# devela_phys     = { workspace = true, optional = true }
+# devela_sys      = { workspace = true, optional = true }
+# devela_text     = { workspace = true, optional = true }
+# devela_ui       = { workspace = true, optional = true }
+# devela_work     = { workspace = true, optional = true }
 
 #* optional external dependencies *#
 
@@ -1296,7 +1320,7 @@ required-features = ["__no_test"]
 [[example]]
 name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"
-required-features = ["lib_macros"]
+required-features = ["devela_macros"]
 [[example]]
 name = "enumset" # NOTE: in docs
 path = "examples/code/enumset.rs"

@@ -1,17 +1,15 @@
 [package]
-name = "devela_base_std"
-description = "base std shared functionality for devela"
+name = "devela_num"
+description = "extra numeric functionality for devela"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
 documentation.workspace = true
 authors.workspace = true
 license.workspace = true
-repository = "https://github.com/andamira/devela/tree/main/libs/base_std"
+repository = "https://github.com/andamira/devela/tree/main/libs/code"
 include = [
-	# configuration:
 	"/Cargo.toml", "/config/*",
-	# source code & documentation:
 	"/src/**/*.rs", "/src/**/*.md",
 	"/LICENSE*",
 ]
@@ -22,13 +20,20 @@ publish = true
 metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
 
 [features]
+alloc = ["devela_base_alloc"]
+std = ["alloc", "devela_base_std"]
 unsafe = []
 safe = []
 _docsrs = ["unsafe"]
 
-[dependencies] # 2 required
-devela_base = { workspace = true }
-devela_base_alloc = { workspace = true }
+macros = ["dep:devela_macros"]
+
+[dependencies]
+devela_base       = { workspace = true }
+devela_base_alloc = { workspace = true, optional = true }
+devela_base_std   = { workspace = true, optional = true }
+devela_macros     = { workspace = true, optional = true }
+devela_code     = { workspace = true, optional = true }
 
 [badges]
 maintenance.status = "experimental"

@@ -24,8 +24,8 @@ pub use devela_base::{
     coalesce, field_of,
 };
 
-#[cfg(feature = "lib_macros")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "lib_macros")))]
+#[cfg(feature = "devela_macros")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "devela_macros")))]
 #[doc = crate::TAG_DEVELA_MACROS!()]
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_macros::{

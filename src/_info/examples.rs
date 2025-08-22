@@ -13,7 +13,7 @@
 #[cfg(all(feature = "bit", feature = "_bit_u8"))]
 #[path = "../../examples/code/enumset.rs"]
 pub mod enumset;
-#[cfg(feature = "lib_macros")]
+#[cfg(feature = "devela_macros")]
 #[path = "../../examples/code/enumint.rs"]
 pub mod enumint;
 

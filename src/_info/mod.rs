@@ -21,7 +21,7 @@ pub mod examples;
 
 /// Procedural macros.
 pub mod macros {
-    #![doc = include_str!("../../libs/macros/src/Lib.md")]
+    #![doc = include_str!("../../libs/base_macros/src/Lib.md")]
 }
 
 #[cfg(doc)]

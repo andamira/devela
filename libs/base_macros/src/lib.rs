@@ -20,14 +20,8 @@
 //
 // WAIT: [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727#issuecomment-485181171)
 
-/* global config */
-//
-// safety
 #![forbid(unsafe_code)]
-// nightly
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
-
-/* imports */
 
 extern crate self as devela_base_macros;
 use proc_macro::TokenStream as TS;
@@ -36,7 +30,7 @@ use std::collections::HashSet;
 mod bodies;
 use bodies::*;
 
-/* inner helpers */
+/* helpers */
 
 // Allows a group of items to share the same cfg options.
 #[allow(unused_macros)] #[rustfmt::skip] macro_rules! items { ($($item:item)*) => { $($item)* }; }

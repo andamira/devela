@@ -1,31 +1,27 @@
-// devela_base_std::lib
+// devela_data::lib
 //
 //!
 //
 
-#![deny(rustdoc::missing_debug_implementations)]
+#![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
-extern crate self as devela_base_std;
-
-pub mod build;
-// pub mod sys;
+extern crate self as devela_data;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub use all::*;
 pub mod all {
+    #![allow(unused_imports)]
     //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
     //! Note that these items are already re-exported (hidden) from the root,
     //! as is every other public module's contents from their parent.
-    #[allow(unused_imports)]
-    #[rustfmt::skip]
-    #[doc(inline)]
-    pub use super::{
-        build::_all::*,
-        // sys::_all::*,
-    };
+    // #[allow(unused_imports)]
+    // #[rustfmt::skip]
+    // #[doc(inline)]
+    // pub use super::{
+    // };
 }

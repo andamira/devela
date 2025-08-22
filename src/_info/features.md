@@ -3,10 +3,10 @@
 Features are grouped in the following categories:
 - [*Development*](#development-features) (`__*`)
 - [*Environment*](#environment-features) (`alloc`, `std`, `no_std`)
+- [*Workspace*](#workspace) (`devela_*`)
 - [*Module*](#module-features) (`all`, `code`, `data`, `lang`, `media`, `num`, …)
 - [*Safety*](#safety-features) (`safe*`, `unsafe*`)
 - [*Capability*](#capability-features)  (`_*`)
-- [*Library*](#library) (`lib_*`)
 - [*Dependency*](#dependency-features) (`dep_*`)
 
 Flags are grouped in the following categories:
@@ -38,6 +38,13 @@ By default the crate is `no_std` compatible without allocation.
 - `std`: disables `no_std` compatibility and enables `std` functionality.
 - `alloc`: enables `alloc` functionality.
 - `no_std`: enables functionality incompatible with or substitute of `std`.
+
+
+### Workspace features
+
+Enables optional workspace libraries.
+
+- `devela_macros`
 
 
 ### Module features
@@ -295,13 +302,6 @@ They also set the corresponding flags:
 [`StringU*`]: crate::text::StringU8
 [`StringNonul`]: crate::text::StringNonul
 
-
-### Library features
-
-- Optional library's module dependencies.
-- Re-exported cohesively from the corresponding modules.
-- Can be enabled with the `lib_module_name` feature in snake_case.
-- Enabling any of them sets the `_lib··` flag.
 
 ### Dependency features
 
