@@ -59,4 +59,5 @@
 ///
 /// [`cswap`]: crate::cswap
 #[repr(transparent)]
+#[derive(Debug)]
 pub struct Sort<T>(pub T);

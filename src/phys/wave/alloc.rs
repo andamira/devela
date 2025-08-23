@@ -36,6 +36,7 @@ pub trait WaveletTransformVec {
 }
 
 /// A single unit of the wavelet decomposition at a specific level and position.
+#[derive(Debug)]
 pub struct WaveletUnitVec {
     /// The type of the wavelet component (scaling or wavelet).
     pub component_type: WaveletUnitRole,

@@ -12,6 +12,7 @@ use crate::{
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Panic-related operations.
+#[derive(Debug)]
 pub struct Panic;
 
 #[cfg(feature = "std")]

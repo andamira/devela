@@ -28,7 +28,7 @@ use crate::{ConstDefault, PhantomData};
 /// - `PAD`: Whether to use padding (`=`) for encoding output (used in Base32/Base64).
 /// - `CASE`: Whether decoding should be case-insensitive (e.g., `true` for Crockford Base32).
 /// - `CODE`: A marker type defining the specific encoding scheme (e.g., [`Rfc4648`], [`Crockford`]).
-#[derive(Clone, Debug, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Base<
     const RADIX: usize, // The numeric radix (16, 32, 58, 64, 85)
     const LUT: bool,    // Whether to use a lookup table for fast decoding.
@@ -86,23 +86,23 @@ pub type Base64Padded = Base<64, true, true, false, Rfc4648>;
 /* encoding schemes */
 
 /// The `RFC 4648` standard encoding, used in [`Base16`], [`Base32`], and [`Base64`].
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Rfc4648;
 
 /// The `RFC 4648` hexadecimal-variant encoding, used in [`Base32`].
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Rfc4648Hex;
 
 /// The `Crockford` [`Base32`] encoding, case-insensitive, remaps certain characters.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Crockford;
 
 // /// The Bitcoin [`Base58`] encoding, which removes easily confused characters (0OIl).
-// #[derive(Clone, Copy)]
+// #[derive(Clone, Copy, Debug)]
 // pub struct Base58Std;
 
 // ///
-// #[derive(Clone, Copy)]
+// #[derive(Clone, Copy, Debug)]
 // pub struct Ascii85;
 
 /* implementations */

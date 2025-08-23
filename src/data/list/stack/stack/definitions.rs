@@ -128,7 +128,7 @@ use crate::{Array, Bare, Storage};
 ///     [`own_tuck`][Self::own_tuck]*([uc][Self::own_tuck_unchecked])*,
 ///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
 #[must_use]
-//  #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
+// #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 pub struct Stack<T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) data: Array<T, CAP, S>,
     pub(super) len: IDX,
@@ -163,6 +163,7 @@ pub type StackUsize<T, const CAP: usize, S = Bare> = Stack<T, CAP, usize, S>;
 #[doc = crate::TAG_ITERATOR!()]
 /// An iterator over [`Stack`] elements.
 #[must_use]
+#[allow(missing_debug_implementations, reason = "unsatisfied trait bounds")]
 pub struct StackIter<'s, T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) stack: &'s Stack<T, CAP, IDX, S>,
     pub(super) idx: usize,

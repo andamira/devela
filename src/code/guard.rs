@@ -11,6 +11,7 @@ use crate::{Deref, DerefMut};
 /// - The state can be updated dynamically during the guard's lifetime.
 /// - The guard can be dismissed, preventing the callback from executing on drop.
 #[doc = crate::doc_!(vendor: "stated-scope-guard")]
+#[derive(Debug)]
 pub struct ScopeGuard<T, F: FnOnce(T, &S), S> {
     /// The guarded value,
     /// wrapped in an Option to allow taking ownership during drop.

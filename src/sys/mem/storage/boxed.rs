@@ -13,7 +13,7 @@ use crate::{Box, ConstDefault, Storage};
 ///
 /// Equivalent to the [`Bare`] marker struct which uses a [`BareBox`] for the underlying storage.
 // #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
-#[derive(Clone, Copy, Default, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct Boxed;
 
 /// This implementation is equivalent to the one for [`Bare`] which uses [`BareBox`] for storage.

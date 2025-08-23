@@ -648,7 +648,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     // into
     w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over elements of a [`Tuple`].")?;
-    w!(f, "#[derive(Clone)]")?;
+    w!(f, "#[derive(Clone, Debug)]")?;
     w0!(f, "pub struct TupleIter<")?;
         for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
         // fields
@@ -668,7 +668,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     // ref
     w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over shared references to elements of a [`Tuple`].")?;
-    w!(f, "#[derive(Clone)]")?;
+    w!(f, "#[derive(Clone, Debug)]")?;
     w!(f, "pub struct TupleIterRef<'a, ")?;
         for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
         // fields
@@ -688,6 +688,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     // mut
     w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over exclusive references to elements of a [`Tuple`].")?;
+    w!(f, "#[derive(Debug)]")?;
     w!(f, "pub struct TupleIterMut<'a, ")?;
         for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
         // fields

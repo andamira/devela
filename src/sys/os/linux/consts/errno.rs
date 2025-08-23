@@ -11,6 +11,7 @@ use crate::c_int;
 /// Standard exit codes for Linux processes
 //
 // - /usr/include/sysexits.h
+#[derive(Debug)]
 pub struct LINUX_EXIT;
 
 /// Standard success/failure codes (0-2)
@@ -137,6 +138,7 @@ impl LINUX_EXIT {
 /// [`Linux`][crate::Linux] `sys/errno.h` constants.
 //
 // - /usr/include/asm-generic/errno.h
+#[derive(Debug)]
 pub struct LINUX_ERRNO;
 #[allow(missing_docs)]
 impl LINUX_ERRNO {

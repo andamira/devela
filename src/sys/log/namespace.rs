@@ -12,6 +12,7 @@ use ::log::{STATIC_MAX_LEVEL, logger, max_level, set_logger, set_max_level};
 ///
 /// It is a namespace for the `log` crate standalone functions.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]
+#[derive(Debug)]
 pub struct Log;
 
 impl Log {

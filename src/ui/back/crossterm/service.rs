@@ -21,6 +21,7 @@ use crate::{
 /// `crossterm`'s UI backend service.
 //
 // https://docs.rs/crossterm/latest/crossterm/terminal/index.html
+#[derive(Debug)]
 pub struct CrosstermService;
 // { raw_mode: bool, }
 

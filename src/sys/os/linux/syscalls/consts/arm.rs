@@ -8,6 +8,7 @@
 
 /// Linux `sys/syscall.h` constants for `armv7`.
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_SYS_ARM;
 
 #[allow(missing_docs)]

@@ -25,6 +25,7 @@ use crate::{
 /// #[global_allocator]
 /// static ALLOCATOR: BumpAlloc = BumpAlloc::new(0x10000, 0x20000);
 /// ```
+#[derive(Debug)]
 pub struct BumpAlloc {
     current: AtomicUsize,
     end: usize,

@@ -47,6 +47,7 @@ mod tests;
 #[doc = crate::doc_!(vendor: "tailcall-chunk")]
 #[must_use]
 #[derive(Clone)]
+#[allow(missing_debug_implementations, reason = "unsatisfied trait bounds")]
 pub enum VecChunk<A> {
     /// Represents an empty chunk with no elements
     Empty,

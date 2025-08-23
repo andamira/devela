@@ -11,6 +11,7 @@ use devela::{String, Vec};
 /// Javascript-related operations.
 ///
 /// See also: [`Web`][crate::Web].
+#[derive(Debug)]
 pub struct Js;
 
 #[rustfmt::skip]

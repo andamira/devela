@@ -25,6 +25,7 @@ thread_local! {
 ///
 /// This is useful for tracking the current instance of a type within a thread.
 #[cfg_attr(doc, doc = ::devela::doc_!(vendor: "current"))]
+#[derive(Debug)]
 pub struct CurrentGuard<'a, T: Any> {
     /// The active instance of `T` for the duration of this guard.
     _current: &'a mut T,
@@ -85,6 +86,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 ///
 /// Not a smart pointer; instead, it acts as a reference handle for thread-local state.
 #[cfg_attr(doc, doc = ::devela::doc_!(vendor: "current"))]
+#[derive(Debug)]
 pub struct Current<T>(PhantomData<T>);
 
 impl<T: Any> Current<T> {

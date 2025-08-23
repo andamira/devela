@@ -43,16 +43,19 @@ pub type DstQueueUsize<DST /*: ?Sized*/, const CAP: usize> = DstQueue<DST, DstAr
 
 /// Handle returned by [`DstQueue::pop`][DstQueue#method.pop]
 /// (does the actual pop on drop).
+#[derive(Debug)]
 pub struct DstQueuePopHandle<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> {
     parent: &'a mut DstQueue<DST, BUF>,
 }
 
 #[doc = crate::TAG_ITERATOR!()]
 /// An iterator over the elements of a [`DstQueue`].
+#[derive(Debug)]
 pub struct DstQueueIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstQueue<DST, BUF>, usize);
 
 #[doc = crate::TAG_ITERATOR!()]
 /// A mutable iterator over the elements of a [`DstQueue`].
+#[derive(Debug)]
 pub struct DstQueueIterMut<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(
     &'a mut DstQueue<DST, BUF>,
     usize,

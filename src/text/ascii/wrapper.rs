@@ -15,7 +15,7 @@ use crate::unwrap;
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides ASCII operations on `T`, most of them *const*.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 #[repr(transparent)]
 pub struct Ascii<T: Copy>(pub T);
 

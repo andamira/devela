@@ -39,7 +39,7 @@ use devela::{String, Vec, vec_ as vec};
 ///    - [performance](#web-api-performance)
 ///  - advanced & experimental
 ///    - [workers](#web-api-workers)
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Web;
 
 #[rustfmt::skip]

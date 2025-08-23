@@ -11,6 +11,7 @@ mod methods;
 
 #[doc = crate::TAG_GEOM!()]
 /// A coordinate position in `D`-space without extent.
+#[must_use]
 pub struct Point<T, const D: usize> {
     /// The D-dimensional coordinates.
     pub coords: [T; D],
@@ -30,6 +31,7 @@ pub type Point3d<T> = Point<T, 3>;
 /// A static sequence of `N` `D`-dimensional [`Point`]s.
 #[must_use]
 #[repr(transparent)]
+#[derive(Debug)]
 pub struct Points<T, const D: usize, const N: usize> {
     /// The array of points.
     pub array: [Point<T, D>; N],
@@ -42,6 +44,7 @@ pub type Points2d<T, const N: usize> = Points<T, 2, N>;
 /// A dynamic sequence of `D`-dimensional [`Point`]s.
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+#[derive(Debug)]
 pub struct VecPoints<T, const D: usize> {
     /// The vec of points.
     pub vec: Vec<Point<T, D>>,

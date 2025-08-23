@@ -13,15 +13,19 @@
 use core::ffi::c_uint;
 
 /// [`LinuxTermios`][crate::LinuxTermios] input flags.
+#[derive(Debug)]
 pub struct LINUX_TERMIOS_IFLAG;
 
 /// [`LinuxTermios`][crate::LinuxTermios] output flags.
+#[derive(Debug)]
 pub struct LINUX_TERMIOS_OFLAG;
 
 /// [`LinuxTermios`][crate::LinuxTermios] control flags.
+#[derive(Debug)]
 pub struct LINUX_TERMIOS_CFLAG;
 
 /// [`LinuxTermios`][crate::LinuxTermios] local flags.
+#[derive(Debug)]
 pub struct LINUX_TERMIOS_LFLAG;
 
 impl LINUX_TERMIOS_IFLAG {

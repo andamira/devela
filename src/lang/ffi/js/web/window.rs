@@ -20,7 +20,7 @@ use devela::{
 /// [Window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
 /// [Screen]: https://developer.mozilla.org/en-US/docs/Web/API/Window/screen
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct WebWindow;
 
 #[rustfmt::skip]

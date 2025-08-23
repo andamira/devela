@@ -8,6 +8,7 @@ use crate::{c_int, c_ulong};
 
 /// Linux `ioctl` constants.
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_IOCTL;
 
 /// # Get and set terminal attributes

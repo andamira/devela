@@ -12,6 +12,7 @@
 /// - `RMAJ` indicates if the storage is row-major (`true`) or column-major (`false`).
 /// - `MAX_LEN_DET` is the maximum matrix length for calculating the determinant for
 ///   square matrices of dimension > 3.
+#[derive(Debug)]
 pub struct Matrix<
     T,
     const R: usize,

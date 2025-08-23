@@ -15,6 +15,7 @@ use crate::is;
 /// # Features
 /// - Supports efficient search for bytes with `dep_memchr` enabled.
 /// - Provides fallback naive implementations otherwise.
+#[derive(Debug)]
 pub struct ByteSearch;
 
 impl ByteSearch {

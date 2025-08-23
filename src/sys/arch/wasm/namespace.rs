@@ -19,6 +19,7 @@ use ::core::arch::wasm32::{memory_grow, memory_size};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// A Wasm namespace.
+#[derive(Debug)]
 pub struct Wasm;
 
 impl Wasm {

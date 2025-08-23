@@ -16,4 +16,5 @@ pub enum WaveletUnitRole {
 /// It is ideal for basic signal decomposition and testing.
 ///
 /// - <https://en.wikipedia.org/wiki/Haar_wavelet>.
+#[derive(Debug)]
 pub struct WaveletHaar;

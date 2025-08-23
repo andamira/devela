@@ -8,6 +8,7 @@
 
 /// Linux `sys/syscall.h` constants for `x86`.
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_SYS_X86;
 
 #[allow(missing_docs)]

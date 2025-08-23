@@ -7,6 +7,7 @@
 // - https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
 
 /// Linux `sys/syscall.h` constants for `x86_64`.
+#[derive(Debug)]
 pub struct LINUX_SYS_X86_64;
 
 impl LINUX_SYS_X86_64 {

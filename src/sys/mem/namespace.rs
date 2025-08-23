@@ -21,6 +21,7 @@ use crate::{
 ///
 /// See also: [`ExtMem`][crate::ExtMem], [`MemAligned`][crate::MemAligned]
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
+#[derive(Debug)]
 pub struct Mem;
 
 /// # Safe methods.

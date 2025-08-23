@@ -135,6 +135,7 @@ pub type DestaqueUsize<T, const CAP: usize, S = Bare> = Destaque<T, CAP, usize, 
 
 #[doc = crate::TAG_ITERATOR!()]
 /// An iterator over [`Destaque`] elements.
+#[allow(missing_debug_implementations, reason = "unsatisfied trait bounds")]
 pub struct DestaqueIter<'s, T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) destaque: &'s Destaque<T, CAP, IDX, S>,
     pub(super) idx: usize,

@@ -14,6 +14,7 @@ use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// I/O-related operations.
+#[derive(Debug)]
 pub struct Io;
 
 /// # Methods available in `no_std`.

@@ -16,6 +16,7 @@ use crate::{c_int, c_uint};
 
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_FILENO;
 impl LINUX_FILENO {
     /// Standard input.
@@ -32,6 +33,7 @@ impl LINUX_FILENO {
 //
 // - /usr/include/asm-generic/fcntl.h
 // - /usr/include/linux/fcntl.h
+#[derive(Debug)]
 pub struct LINUX_O_FLAGS;
 impl LINUX_O_FLAGS {
     /* basic access */
@@ -110,6 +112,7 @@ impl LINUX_O_FLAGS {
 // - /usr/include/linux/stat.h
 // - /usr/include/bits/stat.h (glibc)
 //
+#[derive(Debug)]
 pub struct LINUX_S_IFMT;
 impl LINUX_S_IFMT {
     /// File type mask (S_IFMT in POSIX).
@@ -170,6 +173,7 @@ impl LINUX_S_IFMT {
 // Architecture independent
 // - /usr/include/unistd.h
 // - /usr/include/bits/fcntl-linux.h
+#[derive(Debug)]
 pub struct LINUX_SEEK;
 impl LINUX_SEEK {
     /// Seek from start of file.
@@ -195,6 +199,7 @@ impl LINUX_SEEK {
 //
 // Possible arch-specific variations (F_GETLK, F_SETLK, F_SETLKW may have different numeric values)
 // - /usr/include/asm/fcntl.h
+#[derive(Debug)]
 pub struct LINUX_F_CMD;
 impl LINUX_F_CMD {
     /// Duplicate file descriptor.

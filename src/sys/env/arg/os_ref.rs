@@ -17,6 +17,7 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 ///
 /// See [`Env::args_os_ref()`][crate::Env#method.args_os_ref].
 #[doc = crate::doc_!(vendor: "argv")]
+#[derive(Debug)]
 pub struct IterArgsOsRef {
     platform_specific: r#impl::IterArgsOsRef,
 }
@@ -76,6 +77,7 @@ mod r#impl {
         IterArgsOsRef { next: argv, end }
     }
 
+    #[derive(Debug)]
     pub(crate) struct IterArgsOsRef {
         next: *const *const c_char,
         end: *const *const c_char,

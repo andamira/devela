@@ -16,6 +16,7 @@ use crate::Ascii;
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
 /// - [Print methods][Self#print-methods]
+#[derive(Debug)]
 pub struct Ansi;
 
 impl Ansi {

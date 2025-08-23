@@ -14,6 +14,7 @@ use ::miniquad::window::{
 use ::miniquad::{CursorIcon, RenderingBackend};
 
 /// A wrapper namespace over [`miniquad::window`] functions.
+#[derive(Debug)]
 pub struct MiniquadWindow;
 
 #[rustfmt::skip]

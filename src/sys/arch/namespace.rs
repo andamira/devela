@@ -39,6 +39,7 @@ use crate::_dep::safe_arch::*;
 /// - [`sse4.1`](#functions-requiring-the-sse41-target-feature).
 /// - [`sse4.2`](#functions-requiring-the-sse42-target-feature).
 /// - [`ssse3`](#functions-requiring-the-ssse3-target-feature).
+#[derive(Debug)]
 pub struct Arch;
 
 impl_arch! {

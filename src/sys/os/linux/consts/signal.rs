@@ -9,6 +9,7 @@ use crate::c_int;
 
 /// Linux flag constants for [`LinuxSigaction`][crate::sys::os::linux::LinuxSigaction].
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_SIGACTION;
 
 /// Linux standard signals constants.
@@ -30,6 +31,7 @@ pub struct LINUX_SIGACTION;
 /// [`SIGKILL`]: Self::SIGKILL
 /// [`SIGSTOP`]: Self::SIGSTOP
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_SIGNAL;
 
 // 30 different signals

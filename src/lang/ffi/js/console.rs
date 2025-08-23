@@ -8,6 +8,7 @@ use devela::{_js_doc, _js_extern};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Javascript Console.
+#[derive(Debug)]
 pub struct JsConsole;
 
 /// # Javascript API console

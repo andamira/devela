@@ -60,6 +60,7 @@ impl<T, E> CoroWorker<T, E> {
 /// [`Pending`][TaskPoll::Pending] status each time it's polled.
 ///
 /// This allows the coroutine to yield control back and be resumed later.
+#[derive(Debug)]
 pub struct CoroWork<'a, T, E> {
     cor: &'a mut CoroWorker<T, E>,
 }
@@ -140,6 +141,7 @@ impl<T, E> Future for CoroWork<'_, T, E> {
 #[derive(Default)]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+#[allow(missing_debug_implementations, reason = "unsatisified trait bounds")]
 pub struct CoroManager<T, E> {
     #[allow(clippy::type_complexity)]
     coros: VecDeque<Pin<Box<dyn Future<Output = OptRes<T, E>>>>>,

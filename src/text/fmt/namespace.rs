@@ -13,6 +13,7 @@ use crate::{_dep::_alloc::fmt::format, String};
 /// A string formatting namespace.
 ///
 /// See also the [`std::fmt`] module.
+#[derive(Debug)]
 pub struct Fmt;
 
 ///

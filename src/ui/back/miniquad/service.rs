@@ -45,6 +45,7 @@ impl<T: MiniquadEventHandlerExt + 'static> UiService for MiniquadService<T> {
 }
 
 /// `miniquad`'s UI Service.
+#[derive(Debug)]
 pub struct MiniquadService<T: MiniquadEventHandlerExt + 'static> {
     handler: Option<T>,
     conf: Conf,

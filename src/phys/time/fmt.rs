@@ -29,6 +29,7 @@ use crate::{String, format};
 /// #[cfg(feature = "_str_u8")]
 /// assert_eq!(Timecode::nanos_u64(1_002_003_004), "001s 002ms 003µs 004ns");
 /// ```
+#[derive(Debug)]
 pub struct Timecode;
 
 impl Timecode {

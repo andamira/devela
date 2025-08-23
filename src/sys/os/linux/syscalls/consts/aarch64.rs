@@ -7,6 +7,7 @@
 
 /// Linux `sys/syscall.h` constants for `aarch64`.
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_SYS_AARCH64;
 
 #[allow(missing_docs)]

@@ -33,6 +33,7 @@ use ::core::str::from_utf8_mut;
 /// A string slice namespace.
 ///
 /// See also the [`std::str`] module.
+#[derive(Debug)]
 pub struct Str;
 
 impl Str {

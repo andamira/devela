@@ -49,6 +49,7 @@ pub use nz;
 
 /// Private helper to construct niche types.
 #[doc(hidden)]
+#[derive(Debug)]
 pub struct NewNicheHelper<T>(pub T);
 macro_rules! impl_niche {
     () => {

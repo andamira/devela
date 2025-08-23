@@ -9,6 +9,7 @@ use crate::Pin;
 ///
 /// Up to 8 generics can be supplied for 8 structurally pinned fields.
 #[rustfmt::skip]
+#[derive(Debug)]
 pub struct Pinned<A, B = (), C = (), D = (), E = (), F = (), G = (), H = ()> {
     a: A, b: B, c: C, d: D, e: E, f: F, g: G, h: H
 }

@@ -5,11 +5,12 @@
 
 use crate::{Bare, MaybeUninit, Storage};
 
+// mod impl_traits; // TODO: FIXME
 mod methods;
 
 #[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A static array allowing uninitialized elements.
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct ArrayUninit<T, const CAP: usize, S: Storage = Bare> {
     data: S::Stored<[MaybeUninit<T>; CAP]>,
 

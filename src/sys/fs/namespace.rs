@@ -16,6 +16,7 @@ use crate::{
 /// Filesystem-related operations.
 ///
 /// See also: [`ExtPath`][crate::ExtPath], [`fsPath`][crate::FsPath].
+#[derive(Debug)]
 pub struct Fs;
 
 /// # Safe methods.

@@ -10,6 +10,7 @@ use std::sync::mpsc::{channel, sync_channel};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Multi-producer, single-consumer channel operations.
+#[derive(Debug)]
 pub struct Mpsc;
 
 #[cfg(feature = "std")]

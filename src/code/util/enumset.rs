@@ -18,6 +18,7 @@
 /// ```
 /// # use devela::enumset;
 /// enumset! {
+///     #[derive(Debug)]
 ///     pub enum MyEnum(pub MyEnumSet: u8) {
 ///         Variant1,
 ///         Variant2(bool),
@@ -62,6 +63,7 @@ macro_rules! _enumset {
 
         $( #[$enum_attr] )*
         // #[doc = "\n\nSee also the associated type set of variants [`" $set_name "`]."]
+        #[allow(missing_debug_implementations, reason = "custom impl")]
         $enum_vis enum $enum_name $( < $($gen),* > )? $(where $($where)+)? {
             $(
                 $( #[$variant_attr] )*

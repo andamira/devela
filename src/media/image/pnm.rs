@@ -39,6 +39,7 @@ const fn invalid_pixel<T>() -> crate::Result<T, ImageError> { Err(InvalidPixel) 
 /// - PPM (Portable Pixmap Format): Used for color images. Similar to PGM,
 /// it supports ASCII (P3) and binary (P6) formats. Each pixel is represented by
 /// three values (red, green, and blue), each in the range of 0 to 255 for 8-bit images.
+#[derive(Debug)]
 pub struct Pnm;
 
 impl Pnm {

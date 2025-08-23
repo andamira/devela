@@ -98,6 +98,7 @@ unsafe impl<T: MemPod> DstBuf for crate::Vec<MaybeUninit<T>> {
 
 #[doc = crate::TAG_DATA_STRUCTURE!()]
 /// A static array for storing <abbr title="Dynamically sized type">DST</abbr>s.
+#[derive(Debug)]
 pub struct DstArray<T, const CAP: usize> {
     inner: Array<MaybeUninit<T>, CAP>,
 }

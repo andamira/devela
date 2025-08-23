@@ -17,6 +17,7 @@
 /// let arr = ArrayFrom("hello").to_array::<5>();
 /// assert_eq!(arr, *b"hello");
 /// ```
+#[derive(Debug)]
 pub struct ArrayFrom<T>(pub T);
 
 #[rustfmt::skip]

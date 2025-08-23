@@ -13,6 +13,7 @@ use crate::unwrap;
 /// Unicode scalars-related operations.
 ///
 /// See also [`Str`][crate::Str], [`ExtMem`][crate::ExtMem],
+#[derive(Debug)]
 pub struct Char;
 
 /// Global ASCII lookup table for fast UTF-8 encoding.

@@ -26,6 +26,7 @@ use core::slice::{from_raw_parts, from_raw_parts_mut};
 // - exclusive subslicing.
 // - splitting.
 /// See also: [`ExtSlice`][crate::ExtSlice], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
+#[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);
 
 /// # `core::slice` namespaced methods

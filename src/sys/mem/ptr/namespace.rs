@@ -22,6 +22,7 @@ use crate::{
 /// Pointer-related operations.
 ///
 /// See also [`Mem`][crate::Mem], [`Slice`][crate::Slice].
+#[derive(Debug)]
 pub struct Ptr;
 
 /// # Safe methods

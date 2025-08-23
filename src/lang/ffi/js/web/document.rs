@@ -13,7 +13,7 @@ use devela::{_js_extern, _js_method_str_alloc, WebElement, js_bool, js_int32, js
 ///
 /// [Document]: https://developer.mozilla.org/en-US/docs/Web/API/Document
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct WebDocument;
 
 #[rustfmt::skip]

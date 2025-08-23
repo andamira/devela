@@ -32,6 +32,7 @@ crate::items! {
 /// - [signal](#signaling-related-methods)
 /// - [random](#randomness-related-methods)
 /// - [syscalls](#system-calls)
+#[derive(Debug)]
 pub struct Linux;
 
 /// # Read-related methods.

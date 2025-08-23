@@ -7,6 +7,7 @@
 
 /// Linux `sys/syscall.h` constants for `riscv`.
 #[allow(non_camel_case_types)]
+#[derive(Debug)]
 pub struct LINUX_SYS_RISCV;
 
 #[allow(missing_docs)]

@@ -15,6 +15,7 @@ use crate::{
 ///
 /// See also: [`Mem`][crate::Mem], [`ExtMem`][crate::ExtMem],
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
+#[derive(Debug)]
 pub struct Alloc;
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
