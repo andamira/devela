@@ -1,4 +1,4 @@
-// devela::num::float::alias
+// devela_base::num::float::alias
 
 #![allow(non_camel_case_types)]
 

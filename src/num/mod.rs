@@ -64,7 +64,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            ord::_always::*, float::_always::*, int::_always::*, niche::_always::*,
+            ord::_always::*, float::_always::*, niche::_always::*,
         };
     }
 }

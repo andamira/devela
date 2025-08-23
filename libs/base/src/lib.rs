@@ -10,7 +10,7 @@
 extern crate self as devela_base;
 
 pub mod code;
-// pub mod num;
+pub mod num;
 pub mod text;
 
 #[doc(hidden)]
@@ -28,7 +28,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         code::_all::*,
-        // num::_all::*,
+        num::_all::*,
         text::_all::*,
     };
 }

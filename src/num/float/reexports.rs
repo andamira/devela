@@ -5,12 +5,15 @@
 
 use crate::reexport;
 
+#[doc = crate::TAG_DEVELA_BASE!()]
+pub use devela_base::fsize;
+
 reexport! { rust: core::num,
     doc: "A classification of floating point numbers.",
     @FpCategory as FloatCategory
 }
 
-// FIXME WAIT https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840
+// FIXME WAIT [f16|f128](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
 // #[doc = crate::TAG_PRIMITIVE!()]
 // /// <span class="stab portability" title="re-exported from rust's `core`">`core`</span>
 // /// A 16-bit floating-point type.

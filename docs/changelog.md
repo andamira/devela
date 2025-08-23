@@ -83,6 +83,10 @@
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
 - remove deprecated `iif!` macro.
 
+## num
+- move to [base]:
+  - `fsize` and `[iu]size_*` aliases.
+
 ## sys
 ### env
 - vendor `argv` as `IterArgSOsRef` struct and `Env` method `args_os_ref`.

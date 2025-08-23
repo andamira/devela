@@ -5,9 +5,9 @@
 
 pub(crate) mod shared_docs; // FORMULA_*!()
 
-mod alias; // [i|u]size_[down|up]
 mod fns; // prime_number_teorem
 mod gcd; // GcdReturn
+mod reexports;
 
 #[cfg(_int··)]
 crate::items! {
@@ -16,15 +16,12 @@ crate::items! {
     mod wrapper; // Int
 }
 
-crate::items! { // structural access: _mods, _all, _always
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
 
-    mod _mods {
-        #[allow(unused, reason = "fns")]
-        pub use super::{alias::*, fns::*, gcd::*};
+    mod _mods { #![allow(unused)]
+        pub use super::{fns::*, gcd::*, reexports::*};
 
         #[cfg(_int··)]
         pub use super::{divisor::*, num_trait::*, wrapper::_all::*};
@@ -32,8 +29,5 @@ crate::items! { // structural access: _mods, _all, _always
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        pub use super::alias::*;
     }
 }

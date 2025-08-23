@@ -3,7 +3,6 @@
 //! Floating point functionality.
 //
 
-mod alias; // fsize
 mod constants; // FloatConst
 mod reexports; // core::num::FloatCategory
 mod wrapper; // Float
@@ -21,7 +20,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{alias::*, constants::*, reexports::*, wrapper::*};
+        pub use super::{constants::*, reexports::*, wrapper::*};
 
         #[cfg(_float··)] #[allow(unused, reason = "feature-gated")]
         pub use super::{ext_float::*, wrapper::*, shared_docs::*};
@@ -30,6 +29,6 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{alias::*, reexports::*};
+        pub use super::{reexports::*};
     }
 }
