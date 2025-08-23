@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::{TAG_ERROR, TAG_TIME, _reexport};
+use crate::{_reexport, TAG_ERROR, TAG_TIME};
 
 /* core */
 

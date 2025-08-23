@@ -451,9 +451,10 @@ _max = ["_data_all", "_num_all", "_text_all"]
 _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 
 #* _docs capabilities *#
-# ---------------------
+# ----------------------
 # WAIT [\href does not work in display mode](https://github.com/KaTeX/KaTeX/issues/3571)
 # WAIT [support \SI and \si from siunitx](https://github.com/KaTeX/KaTeX/issues/817)
+# WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 # WAIT [link to downstream crates](https://github.com/rust-lang/rust/issues/74481)
 # WAIT [typeless canonical url](https://github.com/rust-lang/rust/issues/55160)
 # WAIT [odd canonical path](https://github.com/rust-lang/rust/issues/124608)

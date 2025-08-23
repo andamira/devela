@@ -3,7 +3,7 @@
 //! Reexported result-related items.
 //
 
-use crate::{TAG_ITERATOR, TAG_NICHE, TAG_RESULT, _reexport};
+use crate::{_reexport, TAG_ITERATOR, TAG_NICHE, TAG_RESULT};
 
 /* `core::option` re-exports */
 

@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::{TAG_ERROR, TAG_NICHE, TAG_NUM, _reexport};
+use crate::{_reexport, TAG_ERROR, TAG_NICHE, TAG_NUM};
 
 _reexport! { rust: core::num,
     tag: TAG_ERROR!(),

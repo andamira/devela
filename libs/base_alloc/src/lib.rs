@@ -7,8 +7,8 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
-extern crate self as devela_base_alloc;
 extern crate alloc;
+extern crate self as devela_base_alloc;
 
 pub mod text;
 

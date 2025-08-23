@@ -6,7 +6,7 @@
 //! prefixed with `str_` and with a new first line of documentation.
 //
 
-use crate::{TAG_TEXT, impl_cdef, _reexport};
+use crate::{_reexport, TAG_TEXT, impl_cdef, items};
 
 /* core */
 
@@ -21,15 +21,10 @@ _reexport! { rust: core::str,
 // WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 // #[cfg(feature = "alloc")] #[doc(inline)] #[rustfmt::skip]
 // pub use devela_base_alloc::{String, ToString};
-_reexport! { rust: alloc::string,
-    tag: TAG_TEXT!(),
-    doc: "A UTF-8–encoded, growable string.",
-    String
-}
-_reexport! { rust: alloc::string,
-    tag: TAG_TEXT!(),
-    doc: "A trait for converting a value to a [`String`].",
-    ToString
+#[cfg(feature = "alloc")]
+items! {
+    #[path = "../../../libs/base_alloc/src/text/str/reexports.rs"]
+    mod _include_alloc; pub use _include_alloc::*;
 }
 
 /* std */

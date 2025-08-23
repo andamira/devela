@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::{TAG_NUM, TAG_PRIMITIVE, TAG_TEXT, _reexport};
+use crate::{_reexport, TAG_NUM, TAG_PRIMITIVE, TAG_TEXT};
 
 _reexport! { rust: core::ffi,
     tag: concat![TAG_PRIMITIVE!(), TAG_TEXT!()],
