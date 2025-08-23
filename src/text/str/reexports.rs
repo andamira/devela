@@ -1,44 +1,14 @@
 // devela::text::str:reexports
 //
 //! String related re-exports.
-//!
-//! Reexport the *const-str* crate macros related to string slices,
-//! prefixed with `str_` and with a new first line of documentation.
 //
 
-use crate::{_reexport, TAG_TEXT, impl_cdef, items};
+use crate::{_reexport_from, impl_cdef};
 
-/* core */
-
-_reexport! { rust: core::str,
-    tag: TAG_TEXT!(),
-    doc: "Parse a value from a string.",
-    FromStr
-}
-
-/* alloc */
-
-// WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
-// #[cfg(feature = "alloc")] #[doc(inline)] #[rustfmt::skip]
-// pub use devela_base_alloc::{String, ToString};
-#[cfg(feature = "alloc")]
-items! {
-    #[path = "../../../libs/base_alloc/src/text/str/reexports.rs"]
-    mod _include_alloc; pub use _include_alloc::*;
-}
-
-/* std */
-
-_reexport! { rust: std::ffi,
-    tag: TAG_TEXT!(),
-    doc: "Borrowed reference to an OS string (See [`OsString`]).",
-    OsStr
-}
-_reexport! { rust: std::ffi,
-    tag: TAG_TEXT!(),
-    doc: "A type for owned, mutable native strings, interconvertible with Rust strings.",
-    OsString
-}
+// from workspace base
+_reexport_from!("../../../libs/base/src/text/str/reexports.rs", _ic);
+_reexport_from!(alloc "../../../libs/base_alloc/src/text/str/reexports.rs", _ia);
+_reexport_from!(std "../../../libs/base_std/src/text/str/reexports.rs", _is);
 
 /* from other modules */
 

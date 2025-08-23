@@ -78,9 +78,10 @@
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 
 ### utils
+- new private macro `_reexport_from!`.
 - move to [base]:
   - public macros `CONST!`, `cdbg`, `define_error!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
-  - hidden macros: `EMOJI_*`, `TAG_*`, `_reexport!`.
+  - private macros: `EMOJI_*`, `TAG_*`, `_reexport!`.
 - add doc tags: `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`.
 - rename `reexport!` private macro to `_reexport!`.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.

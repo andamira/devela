@@ -9,6 +9,7 @@
 extern crate self as devela_base_std;
 
 pub mod build;
+pub mod text;
 // pub mod sys;
 
 #[doc(hidden)]
@@ -26,13 +27,16 @@ pub mod all {
     pub use super::{
         build::_all::*,
         // sys::_all::*,
+        text::_all::*,
     };
 }
+
 #[allow(unused_imports)]
 #[doc(hidden)] #[rustfmt::skip]
 pub use _workspace_private::*;
 #[doc(hidden)] #[rustfmt::skip]
 pub mod _workspace_private {
     #![allow(unused_imports)]
+    pub use devela_base_alloc::all::*;
     pub use devela_base_alloc::_workspace_private::*;
 }

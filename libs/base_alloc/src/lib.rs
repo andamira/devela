@@ -35,6 +35,6 @@ pub use _workspace_private::*;
 #[doc(hidden)] #[rustfmt::skip]
 pub mod _workspace_private {
     #![allow(unused_imports)]
-    pub use devela_base::all::*; // re-exported hidden
+    pub use devela_base::all::*;
     pub use devela_base::_workspace_private::*;
 }

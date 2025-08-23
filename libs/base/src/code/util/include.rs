@@ -3,6 +3,8 @@
 //! Defines the [`include_from!`] and [`mod_from!`] macros.
 //
 // WAIT [include! fails with top-level attributes](https://github.com/rust-lang/rfcs/issues/752)
+// WAIT [include! should allow inner attributes](https://github.com/rust-lang/rust/issues/66920)
+// WAIT [inner attributes with include!](https://github.com/rust-lang/rust/issues/117464)
 
 /// Includes a Rust source file relative to the project's directory.
 ///

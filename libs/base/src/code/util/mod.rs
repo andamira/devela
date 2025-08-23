@@ -5,7 +5,7 @@
 
 crate::items! {
     #[doc(hidden)] pub mod _tags; // EMOJI_*! TAG_*!
-    #[doc(hidden)] pub mod _reexport; // reexport!
+    #[doc(hidden)] pub mod _reexport; // reexport!, reexport_from!
 }
 
 mod reexports; // re-exported macros from devela_base_macros
