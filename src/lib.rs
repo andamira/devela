@@ -13,7 +13,6 @@
 // https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attribute.html
 //
 // WAIT: [Per-crate-type lint configuration](https://github.com/rust-lang/cargo/issues/15046)
-#![deny(rustdoc::missing_crate_level_docs, rustdoc::missing_debug_implementations)]
 #![cfg_attr(
     not(all(doc, feature = "_docsrs")), // if features are incomplete…
     // not(all(doc, feature = "_docs", feature = "std")),

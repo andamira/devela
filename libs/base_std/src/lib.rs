@@ -3,7 +3,6 @@
 //!
 //
 
-#![deny(rustdoc::missing_debug_implementations)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 

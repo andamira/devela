@@ -1119,12 +1119,16 @@ workspace = true
 [workspace.lints.rust]
 # https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
 # ------------------------------------------------------------------------------
+# https://doc.rust-lang.org/rustc/lints/listing/deny-by-default.html
 # WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
 type_alias_bounds = "deny" # detects bounds in type aliases
 unsafe_op_in_unsafe_fn = "deny" # unsafe use inside unsafe fn without unsafe block
 #
+# https://doc.rust-lang.org/rustc/lints/listing/warn-by-default.html
 missing_docs = "warn" # missing docs for public items
+missing_debug_implementations = "warn" # missing Debug impls for public items
 #
+# https://doc.rust-lang.org/rustc/lints/listing/allowed-by-default.html
 stable_features = "allow" # a feature attribute that has since been made stable
 unknown_lints = "allow" # unrecognized lint attributes
 
@@ -1132,9 +1136,9 @@ unknown_lints = "allow" # unrecognized lint attributes
 # https://doc.rust-lang.org/rustdoc/lints.html
 # ------------------------------------------------------------------------------
 
-# missing_crate_level_docs = "deny" # no documentation at the crate root (or any binary)
+missing_crate_level_docs = "deny" # no documentation at the crate root (or any binary)
 #
-# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
+# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs & other places
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
 
 [workspace.lints.clippy]
