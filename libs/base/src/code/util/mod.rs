@@ -3,8 +3,10 @@
 //! Utility macros and hint functions.
 //
 
-#[doc(hidden)]
-pub mod _tags; // TAG_*
+crate::items! {
+    #[doc(hidden)] pub mod _tags; // EMOJI_*! TAG_*!
+    #[doc(hidden)] pub mod _reexport; // reexport!
+}
 
 mod reexports; // re-exported macros from devela_base_macros
 
@@ -33,7 +35,7 @@ crate::items! { // structural access: _mods, _workspace_private, _all
         };
     }
     pub(super) mod _workspace_private { #[allow(unused_imports)]
-        pub use super::_tags::*;
+        pub use super::{_tags::*, _reexport::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

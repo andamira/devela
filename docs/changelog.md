@@ -19,7 +19,7 @@
 - add new cargo doc workspace aliases `w*`.
 
 ## dependencies
-- new workspace library dependency: `devela_base`.
+- re-export `alloc` crate from devela and [base_alloc].
 - bump dependencies:
   - `ureq` → 3.1.
   - [macros]
@@ -28,8 +28,10 @@
 
 ## features & flags
 - new debug feature: `__force_test_no_mangle`.
+- add default feature `alloc` to [base_alloc].
+- add default feature `std` to [base_std].
 
-## workspace libs
+## workspace libraries
 - enable `_docsrs` for workspace dependencies.
 - new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`, `devela_base_alloc`, `devela_code`, `devela_data`, `devela_media` `devela_num`, `devela_text`.
 - use a single version, changelog and readme for all workspace libs.
@@ -51,6 +53,7 @@
   - add feature `__dbg`.
 
 ## manifest
+- add lint `missing_debug_implementations`.
 - make keys parts of the workspace: edition, version, authors, license, documentation.
 - add *binaries* and *metrics* sections.
 - add workspace hiearchy diagram.
@@ -77,8 +80,9 @@
 ### utils
 - move to [base]:
   - public macros `CONST!`, `cdbg`, `define_error!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
-  - hidden macros: `EMOJI_*`, `TAG_*`.
+  - hidden macros: `EMOJI_*`, `TAG_*`, `_reexport!`.
 - add doc tags: `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`.
+- rename `reexport!` private macro to `_reexport!`.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
 - remove deprecated `iif!` macro.

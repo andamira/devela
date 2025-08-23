@@ -3,35 +3,35 @@
 //! Reexported items.
 //
 
-use crate::reexport;
+use crate::_reexport;
 
 /* structs */
 
-reexport! { rust: core::panic,
+_reexport! { rust: core::panic,
     doc: "Passed to `#[panic_handler]` in `no_std`, always carrying a formatted message.",
     PanicInfo
 }
-reexport! { rust: std::panic,
+_reexport! { rust: std::panic,
     doc: "Passed to `std::panic::set_hook` in `std`, where panics can have arbitrary payloads.",
     PanicHookInfo
 }
-reexport! { rust: core::panic,
+_reexport! { rust: core::panic,
     doc: "A struct containing information about the location of a panic.",
     @Location as PanicLocation
 }
-reexport! { rust: core::panic,
+_reexport! { rust: core::panic,
     doc: "A simple wrapper around a type to assert that it is unwind safe.",
     @AssertUnwindSafe as PanicAssertUnwindSafe
 }
 
 /* traits */
 
-reexport! { rust: core::panic,
+_reexport! { rust: core::panic,
     doc: "A marker trait which represents a shared reference considered unwind safe.",
     @RefUnwindSafe as PanicRefUnwindSafe
     // RefUnwindSafe
 }
-reexport! { rust: core::panic,
+_reexport! { rust: core::panic,
     doc: "A marker trait which represents “panic safe” types in Rust.",
     @UnwindSafe as PanicUnwindSafe
     // UnwindSafe
@@ -39,9 +39,9 @@ reexport! { rust: core::panic,
 
 /* macros */
 
-reexport! { rust: core, doc: "Indicates unfinished code.", todo }
-reexport! { rust: core, doc: "Indicates unreachable code.", unreachable }
-reexport! { rust: core, doc: "Indicates unimplemented code.", unimplemented }
+_reexport! { rust: core, doc: "Indicates unfinished code.", todo }
+_reexport! { rust: core, doc: "Indicates unreachable code.", unreachable }
+_reexport! { rust: core, doc: "Indicates unimplemented code.", unimplemented }
 
 // NOTE: the macro and the module have the same name
 //

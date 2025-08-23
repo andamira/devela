@@ -33,13 +33,13 @@ pub mod all {
     };
 }
 
-#[doc(hidden)]
 #[allow(unused_imports)]
+#[doc(hidden)] #[rustfmt::skip]
 pub use _workspace_private::*;
 #[doc(hidden)] #[rustfmt::skip]
-pub/*workspace*/ mod _workspace_private {
-    #[allow(unused_imports)]
-    pub/*workspace*/ use super::{
+pub mod _workspace_private {
+    #![allow(unused_imports)]
+    pub use super::{
         code::_workspace_private::*,
     };
 }

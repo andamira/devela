@@ -14,6 +14,7 @@ use std::{env, path::PathBuf};
 ///
 /// See also: [`ExtMem`][crate::ExtMem], [`MemAligned`][crate::MemAligned]
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
+#[derive(Debug)]
 pub struct Build;
 
 impl Build {

@@ -16,7 +16,6 @@
 
 // private modules
 mod _doc; // doc_! // RENAME: _doc!
-mod _reexport; // reexport! // RENAME _reexport!
 mod _use; // _use!
 
 mod asserts; // assertion macros
@@ -55,14 +54,14 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
         // pub use super::structural::*;
     }
     pub(super) mod _internals {
-        pub(crate) use super::{_doc::*, _reexport::*, _use::*};
+        pub(crate) use super::{_doc::*, _use::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{_internals::*, reexports::*};
+        pub use super::_internals::*;
     }
 }
 // WIPZONE

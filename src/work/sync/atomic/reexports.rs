@@ -6,24 +6,24 @@
 
 #[cfg(feature = "dep_portable_atomic")]
 use crate::DOC_ATOMIC_CORE_PORTABLE;
-use crate::{TAG_ATOMIC, TAG_ATOMIC_CORE_PORTABLE, reexport};
+use crate::{_reexport, TAG_ATOMIC, TAG_ATOMIC_CORE_PORTABLE};
 
 /* from `core` */
 
 // enums
-reexport! { rust: core::sync::atomic,
+_reexport! { rust: core::sync::atomic,
     tag: TAG_ATOMIC!(),
     doc: "Atomic memory ordering.",
     @Ordering as AtomicOrdering
 }
 
 // functions
-reexport! { rust: core::sync::atomic,
+_reexport! { rust: core::sync::atomic,
     tag: TAG_ATOMIC!(),
     doc: "An atomic fence.",
     @fence as atomic_fence
 }
-reexport! { rust: core::sync::atomic,
+_reexport! { rust: core::sync::atomic,
     tag: TAG_ATOMIC!(),
     doc: "A compiler memory fence.",
     @compiler_fence as atomic_compiler_fence
@@ -31,7 +31,7 @@ reexport! { rust: core::sync::atomic,
 
 /* from the `atomic` crate */
 
-reexport! { "dep_atomic", "atomic", atomic,
+_reexport! { "dep_atomic", "atomic", atomic,
     tag: TAG_ATOMIC!(),
     doc: "A generic atomic wrapper type.",
     Atomic
@@ -39,17 +39,17 @@ reexport! { "dep_atomic", "atomic", atomic,
 
 /* from `portable-atomic` */
 
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+_reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     tag: TAG_ATOMIC!(),
     doc: "A thread-safe floating-point type.",
     AtomicF32, AtomicF64
 }
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+_reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     tag: TAG_ATOMIC!(),
     doc: "A thread-safe signed integer type.",
     AtomicI128
 }
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+_reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     tag: TAG_ATOMIC!(),
     doc: "A thread-safe unsigned integer type.",
     AtomicU128

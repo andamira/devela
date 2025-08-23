@@ -1,4 +1,4 @@
-// devela::code::util::_reexport
+// devela_base::code::util::_reexport
 //
 //! private reexport meta helper
 //
@@ -12,7 +12,12 @@
 // - Re-exported from [alloc]::boxed:: .
 // - Re-exported from core::array:: IntoIter→ArrayIntoIter.
 // MAYBE: new branch for: either a crate or core (for portable-atomic types).
-macro_rules! reexport {
+// WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
+//       the solution is to re-export from core/alloc/std items on each crate.
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[allow(clippy::crate_in_macro_def, reason = "_dep relative to macro call")]
+macro_rules! __reexport {
     /* re-exports from normal modules */
 
     // the following 4 arms allows reexporting items from:
@@ -71,7 +76,7 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        #[allow(rustdoc::broken_intra_doc_links)] // TEMP FIX unresolved link to alloc
+        // #[allow(rustdoc::broken_intra_doc_links)] // TEMP CHECK unresolved link to alloc
         $( #[doc = $tag] )?
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
@@ -90,7 +95,7 @@ macro_rules! reexport {
         )]
 
         #[cfg(feature = "alloc")]
-        pub use crate::_dep::_alloc :: $($( $alloc_path :: )+)? {
+        pub use alloc :: $($( $alloc_path :: )+)? {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };
@@ -331,4 +336,4 @@ macro_rules! reexport {
         };
     }};
 }
-pub(crate) use reexport;
+pub use __reexport as _reexport;

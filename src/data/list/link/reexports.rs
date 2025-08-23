@@ -6,7 +6,7 @@
 #[cfg(feature = "alloc")]
 crate::impl_cdef![<T> Self::new() => LinkedList<T>]; // impl ConstDefault
 
-crate::reexport! { rust: alloc::collections,
+crate::_reexport! { rust: alloc::collections,
     tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "A doubly-linked list with owned nodes.",
     LinkedList

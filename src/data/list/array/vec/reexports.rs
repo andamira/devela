@@ -3,11 +3,11 @@
 //! Reexported items.
 //
 
-use crate::reexport;
+use crate::_reexport;
 
 crate::impl_cdef![<T> Self::new() => Vec<T>]; // impl ConstDefault
 
-reexport! { rust: alloc::vec,
+_reexport! { rust: alloc::vec,
     tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "A contiguous growable array.",
     Vec

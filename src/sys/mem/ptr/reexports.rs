@@ -3,16 +3,16 @@
 //! Reexported items from `core`.
 //
 
-use crate::code::reexport;
+use crate::_reexport;
 
 // structs
-reexport! { rust: core::ptr,
+_reexport! { rust: core::ptr,
     doc: "`*mut T` but non-zero and *covariant*.",
     @NonNull as PtrNonNull
 }
 
 // functions
-reexport! { rust: core::ptr,
+_reexport! { rust: core::ptr,
     doc: "Compares the addresses of the two function pointers for equality.",
     fn_addr_eq // NOTE: Can't be namespaced yet in Ptr::fn_addr_eq because of WAIT:fn_ptr_trait
 }

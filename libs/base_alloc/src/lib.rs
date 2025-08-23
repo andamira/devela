@@ -1,6 +1,6 @@
 // devela_base_alloc::lib
 //
-//!
+//! …
 //
 
 #![no_std]
@@ -8,6 +8,9 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 extern crate self as devela_base_alloc;
+extern crate alloc;
+
+pub mod text;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
@@ -18,9 +21,20 @@ pub mod all {
     //!
     //! Note that these items are already re-exported (hidden) from the root,
     //! as is every other public module's contents from their parent.
-    // #[allow(unused_imports)]
-    // #[rustfmt::skip]
-    // #[doc(inline)]
-    // pub use super::{
-    // };
+    #[allow(unused_imports)]
+    #[rustfmt::skip]
+    #[doc(inline)]
+    pub use super::{
+        text::_all::*,
+    };
+}
+
+#[allow(unused_imports)]
+#[doc(hidden)] #[rustfmt::skip]
+pub use _workspace_private::*;
+#[doc(hidden)] #[rustfmt::skip]
+pub mod _workspace_private {
+    #![allow(unused_imports)]
+    pub use devela_base::all::*; // re-exported hidden
+    pub use devela_base::_workspace_private::*;
 }

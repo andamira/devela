@@ -5,6 +5,7 @@
 //
 // WAIT: [for-loops in constants](https://github.com/rust-lang/rust/issues/87575)
 // IMPROVE: doesn't work in certain circumstances.
+// IMPROVE: remove the need for alloc in tests and examples.
 
 /// A for loop that is usable in *compile-time* contexts.
 ///

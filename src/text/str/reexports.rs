@@ -6,11 +6,11 @@
 //! prefixed with `str_` and with a new first line of documentation.
 //
 
-use crate::{TAG_TEXT, impl_cdef, reexport};
+use crate::{TAG_TEXT, impl_cdef, _reexport};
 
 /* core */
 
-reexport! { rust: core::str,
+_reexport! { rust: core::str,
     tag: TAG_TEXT!(),
     doc: "Parse a value from a string.",
     FromStr
@@ -18,12 +18,15 @@ reexport! { rust: core::str,
 
 /* alloc */
 
-reexport! { rust: alloc::string,
+// WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
+// #[cfg(feature = "alloc")] #[doc(inline)] #[rustfmt::skip]
+// pub use devela_base_alloc::{String, ToString};
+_reexport! { rust: alloc::string,
     tag: TAG_TEXT!(),
     doc: "A UTF-8–encoded, growable string.",
     String
 }
-reexport! { rust: alloc::string,
+_reexport! { rust: alloc::string,
     tag: TAG_TEXT!(),
     doc: "A trait for converting a value to a [`String`].",
     ToString
@@ -31,12 +34,12 @@ reexport! { rust: alloc::string,
 
 /* std */
 
-reexport! { rust: std::ffi,
+_reexport! { rust: std::ffi,
     tag: TAG_TEXT!(),
     doc: "Borrowed reference to an OS string (See [`OsString`]).",
     OsStr
 }
-reexport! { rust: std::ffi,
+_reexport! { rust: std::ffi,
     tag: TAG_TEXT!(),
     doc: "A type for owned, mutable native strings, interconvertible with Rust strings.",
     OsString

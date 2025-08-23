@@ -23,6 +23,8 @@ publish = true
 metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
 
 [features]
+default = ["alloc"]
+alloc = [] # always enabled
 unsafe = []
 safe = []
 _docsrs = ["unsafe"]

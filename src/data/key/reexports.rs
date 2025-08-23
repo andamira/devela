@@ -3,7 +3,7 @@
 //! Reexported items.
 //
 
-use crate::reexport;
+use crate::_reexport;
 
 #[cfg(feature = "alloc")]
 mod impls_alloc {
@@ -17,16 +17,16 @@ mod impls_alloc {
 
 /* from `alloc` */
 
-reexport! { rust: alloc::collections,
+_reexport! { rust: alloc::collections,
     tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "An ordered map based on a B-Tree.",
     BTreeMap
 }
-reexport! { rust: alloc::collections::btree_map,
+_reexport! { rust: alloc::collections::btree_map,
     doc: "An ordered map based on a B-Tree.",
     @Entry as BTreeMapEntry
 }
-reexport! { rust: alloc::collections,
+_reexport! { rust: alloc::collections,
     tag: crate::TAG_DATA_STRUCTURE!(),
     doc: "An ordered set based on a B-Tree.",
     BTreeSet

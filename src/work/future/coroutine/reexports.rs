@@ -3,14 +3,14 @@
 //! Reexported items.
 //
 
-use crate::reexport;
+use crate::_reexport;
 
-reexport! { rust: core::ops,
+_reexport! { rust: core::ops,
     extra_flags:(nightly_coro),
     doc: "The trait implemented by builtin coroutine types.",
     Coroutine
 }
-reexport! { rust: core::ops,
+_reexport! { rust: core::ops,
     extra_flags:(nightly_coro),
     doc: "The result of a coroutine resumption.",
     CoroutineState

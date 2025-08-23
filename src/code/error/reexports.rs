@@ -5,7 +5,7 @@
 
 #![allow(unused_imports)]
 
-use crate::reexport;
+use crate::_reexport;
 
 #[doc = crate::TAG_DEVELA_BASE!()]
 #[doc(inline)] #[rustfmt::skip]
@@ -18,20 +18,20 @@ pub use devela_base::{
     code::util::_tags::*, // _workspace_private
 };
 
-reexport! { rust: core::error,
+_reexport! { rust: core::error,
     doc: "A trait representing the basic expectations for error values.",
     Error
 }
-reexport! { rust: core,
+_reexport! { rust: core,
     doc: "Causes compilation to fail with the given error message when encountered.",
     compile_error
 }
 
-reexport! { rust: std::backtrace,
+_reexport! { rust: std::backtrace,
     doc: "A captured OS thread stack backtrace.",
     Backtrace
 }
-reexport! { rust: std::backtrace,
+_reexport! { rust: std::backtrace,
     doc: "The current status of a backtrace.",
     BacktraceStatus
 }

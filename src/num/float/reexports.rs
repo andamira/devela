@@ -3,12 +3,12 @@
 //! Reexported items from `core`.
 //
 
-use crate::reexport;
+use crate::_reexport;
 
 #[doc = crate::TAG_DEVELA_BASE!()]
 pub use devela_base::fsize;
 
-reexport! { rust: core::num,
+_reexport! { rust: core::num,
     doc: "A classification of floating point numbers.",
     @FpCategory as FloatCategory
 }
@@ -23,7 +23,7 @@ reexport! { rust: core::num,
 // #[cfg(feature = "nightly_float")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "nightly_float")))]
 // pub type f16 = ::core::primitive::f16;
-// reexport! { rust: core::primitives, extra_features: "nightly_float",
+// _reexport! { rust: core::primitives, extra_features: "nightly_float",
 //     tag: crate::TAG_PRIMITIVE!(),
 //     doc: "A 16-bit floating-point type.",
 //     f16
