@@ -460,6 +460,8 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 
 _docs = [ # the minimum capabilities to document everything
+	# workspace
+	"devela_macros",
 	# modules:
 	"all", "linux",
 	# data:
@@ -472,7 +474,10 @@ _docs = [ # the minimum capabilities to document everything
 ]
 _docsrs_nodep = [                            # + std + unsafe
 	"_docs", "std", "unsafe", "__dbg",
-	"devela_base/_docsrs", "devela_macros/_docsrs",
+	"devela_base/_docsrs", "devela_macros?/_docsrs", "devela_code/_docsrs",
+	"devela_data?/_docsrs", "devela_media/_docsrs", "devela_num?/_docsrs",
+	# "devela_lang?/macros", "devela_phys?/macros", "devela_sys?/macros",
+	# "devela_text?/macros", "devela_ui?/macros", "devela_work?/macros",
 ]
 _docsrs       = ["_docsrs_nodep", "dep_all"] # + dependencies
 
