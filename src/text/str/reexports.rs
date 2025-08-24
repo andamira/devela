@@ -6,9 +6,9 @@
 use crate::{_reexport_from, impl_cdef};
 
 // from workspace base
-_reexport_from!("../../../libs/base/src/text/str/reexports.rs", _ic);
-_reexport_from!(alloc "../../../libs/base_alloc/src/text/str/reexports.rs", _ia);
-_reexport_from!(std "../../../libs/base_std/src/text/str/reexports.rs", _is);
+_reexport_from!("../../../libs/base/src/text/str/reexports.rs", _c);
+_reexport_from!(alloc "../../../libs/base_alloc/src/text/str/reexports.rs", _a);
+_reexport_from!(std "../../../libs/base_std/src/text/str/reexports.rs", _s);
 
 /* from other modules */
 

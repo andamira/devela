@@ -14,6 +14,9 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::{byte_search::*, reexports::*};
+        // WIPZONE
+        // pub use super::eval::*;
+        // pub use super::int::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -23,3 +26,6 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::reexports::*;
     }
 }
+// WIPZONE
+// mod eval; // eval!, Eval
+// mod int; // int_to_str

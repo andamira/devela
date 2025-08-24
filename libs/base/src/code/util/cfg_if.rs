@@ -10,7 +10,7 @@
 ///
 /// # Example
 /// ```
-/// # use devela::cfg_if;
+/// # use devela_base::cfg_if;
 /// cfg_if! {
 ///     if #[cfg(unix)] {
 ///         fn foo() { /* unix specific functionality */ }

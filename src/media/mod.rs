@@ -1,6 +1,6 @@
 // devela::media
 //
-//! Multimedia functionality.
+#![doc = crate::_DOC_MEDIA!()]
 #![doc = crate::doc_!(modules: crate; media: audio, color, draw, font, image, video)]
 #![doc = crate::doc_!(newline)]
 //

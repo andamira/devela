@@ -1,6 +1,6 @@
 // devela::game
 //
-//! Game-development and interactive applications.
+#![doc = crate::_DOC_GAME!()]
 #![doc = crate::doc_!(modules: crate; game: loop, map, state)] // map
 #![doc = crate::doc_!(newline)]
 //

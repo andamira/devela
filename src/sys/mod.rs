@@ -1,6 +1,6 @@
 // devela::sys
 //
-//! System interfaces and hardware abstractions.
+#![doc = crate::_DOC_SYS!()]
 #![doc = crate::doc_!(modules: crate; sys: arch, env, fs, io, log, mem, net, os)]
 #![doc = crate::doc_!(newline)]
 //!

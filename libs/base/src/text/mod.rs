@@ -1,6 +1,6 @@
 // devela_base::text
 //
-//! Text types and operations, text processing.
+#![doc = crate::_DOC_TEXT!()]
 // #![doc = crate::doc_!(modules: crate; text: fmt, parse, str)]
 // #![doc = crate::doc_!(newline)]
 // //!

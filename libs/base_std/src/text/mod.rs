@@ -1,6 +1,6 @@
 // devela_base_std::text
 //
-//! Text types and operations, text processing.
+#![doc = crate::_DOC_TEXT!()]
 //
 
 pub mod str;

@@ -1,6 +1,6 @@
 // devela::lang::ffi::c
 //
-//! <a href="https://en.wikipedia.org/wiki/C_(programming_language)">C</a> interfacing.
+#![doc = crate::_DOC_LANG_FFI_C!()]
 //
 
 mod reexports;

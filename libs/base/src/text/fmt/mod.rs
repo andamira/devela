@@ -1,7 +1,6 @@
 // devela_base::text::fmt
 //
-//! Strings formatting.
-//!
+#![doc = crate::_DOC_TEXT_FMT!()]
 // #![doc = crate::doc_!(extends: fmt)]
 //
 

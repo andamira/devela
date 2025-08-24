@@ -1,7 +1,6 @@
 // devela::lang
 //
-//! Language functionality, <abbr title = "Domain Specific Language">DSL</abbr>s
-//! and <abbr title = "Foreign Function Interface">FFI</abbr>s.
+#![doc = crate::_DOC_LANG!()]
 #![doc = crate::doc_!(modules: crate; lang: dsl, ffi, i18n, ling)]
 #![doc = crate::doc_!(newline)]
 //!

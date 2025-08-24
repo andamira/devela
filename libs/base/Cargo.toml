@@ -28,7 +28,7 @@ metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
 [features]
 _docsrs = []
 
-[dependencies] # 2 (2 required, 0 optional)
+[dependencies] # 2 required
 devela_base_macros = { workspace = true }
 
 [dependencies.paste_crate] # https://crates.io/crates/paste

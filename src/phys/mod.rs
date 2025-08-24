@@ -1,6 +1,6 @@
 // devela::phys
 //
-//! Physical units and measurements.
+#![doc = crate::_DOC_PHYS!()]
 #![doc = crate::doc_!(modules: crate; phys: bio, chem, elec, mech, time, unit, wave)]
 #![doc = crate::doc_!(newline)]
 //!

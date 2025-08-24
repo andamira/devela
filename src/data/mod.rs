@@ -1,6 +1,6 @@
 // devela::data
 //
-//! Data handling and manipulation.
+#![doc = crate::_DOC_DATA!()]
 #![doc = crate::doc_!(modules: crate; data: codec, iter, key, list, table, uid)]
 #![doc = crate::doc_!(newline)]
 //!
@@ -53,7 +53,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         // #[cfg(_graph··)]
         // pub use super::graph::*;
         // #[cfg(_node··)]
-        // pub use super::node::*;
+        // pub use super::node::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
         pub(crate) use super::table::_internals::*;

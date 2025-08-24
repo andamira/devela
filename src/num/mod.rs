@@ -1,6 +1,6 @@
 // devela::num
 //
-//! Numerical types and math operations.
+#![doc = crate::_DOC_NUM!()]
 #![doc = crate::doc_!(modules: crate; num: geom, logic, niche, ord, quant, rand)]
 #![doc = crate::doc_!(newline)]
 //!

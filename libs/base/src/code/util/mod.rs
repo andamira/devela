@@ -4,6 +4,7 @@
 //
 
 crate::items! {
+    #[doc(hidden)] pub mod _docs; // _DOC_*!
     #[doc(hidden)] pub mod _tags; // EMOJI_*! TAG_*!
     #[doc(hidden)] pub mod _reexport; // reexport!, reexport_from!
 }
@@ -36,7 +37,7 @@ crate::items! { // structural access: _mods, _workspace_private, _all
         };
     }
     pub(super) mod _workspace_private { #[allow(unused_imports)]
-        pub use super::{_tags::*, _reexport::*};
+        pub use super::{_docs::*, _tags::*, _reexport::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

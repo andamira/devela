@@ -1,6 +1,6 @@
 // devela::phys::time
 //
-//! Time and calendar types and operations.
+#![doc = crate::_DOC_PHYS_TIME!()]
 //!
 #![doc = crate::doc_!(extends: time)]
 //

@@ -7,7 +7,6 @@
 // - doc_availability!
 // - doc_miri_warn!
 // - std_core!
-// - EMOJI_*!, TAG_*!
 //
 // TODO: try to use paste! instead of concat!, since it's faster.
 

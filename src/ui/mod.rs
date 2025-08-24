@@ -1,6 +1,6 @@
 // devela::ui
 //
-//! User interface functionality.
+#![doc = crate::_DOC_UI!()]
 #![doc = crate::doc_!(modules: crate; ui: back, front, layout)]
 //
 // safety

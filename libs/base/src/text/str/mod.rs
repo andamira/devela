@@ -1,6 +1,6 @@
 // devela_base::text::str
 //
-//! String types and related functionality.
+#![doc = crate::_DOC_TEXT_STR!()]
 //
 
 mod reexports;

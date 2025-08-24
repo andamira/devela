@@ -10,6 +10,7 @@
 extern crate self as devela_base;
 
 pub mod code;
+pub mod lang;
 pub mod num;
 pub mod text;
 
@@ -28,6 +29,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         code::_all::*,
+        lang::_all::*,
         num::_all::*,
         text::_all::*,
     };
