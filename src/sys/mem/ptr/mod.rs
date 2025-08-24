@@ -1,6 +1,6 @@
 // devela::sys::mem::ptr
 //
-//! Manually manage memory through raw pointers.
+#![doc = crate::_DOC_SYS_MEM_PTR!()]
 //!
 // #![doc = crate::doc_!(extends: ptr)]
 //

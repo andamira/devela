@@ -1,6 +1,7 @@
 // devela::sys::mem::alloc
 //
-//! Memory allocation.
+#![doc = crate::_DOC_SYS_MEM_ALLOC!()]
+//!
 // #![doc = crate::doc_!(extends: alloc)]
 
 mod reexports;

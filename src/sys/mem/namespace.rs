@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports, reason = "unsafe feature-gated")]
-use crate::_core::{
+use ::core::{
     mem::{transmute_copy, zeroed},
     slice::{from_raw_parts, from_raw_parts_mut},
 };

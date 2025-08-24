@@ -1,6 +1,6 @@
 // devela::sys::fs::path
 //
-//! Cross-platform path manipulation.
+#![doc = crate::_DOC_SYS_FS_PATH!()]
 //!
 #![doc = crate::doc_!(extends: path)]
 #![doc = crate::doc_!(newline)]

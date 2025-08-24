@@ -1,6 +1,6 @@
 // devela::sys::log::reexports
 //
-//! Reexported items from `core`.
+//!
 //
 
 use crate::_reexport;

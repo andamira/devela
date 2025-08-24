@@ -12,7 +12,7 @@ pub mod build;
 pub mod code;
 pub mod data;
 pub mod phys;
-// pub mod sys;
+pub mod sys;
 pub mod text;
 pub mod work;
 
@@ -33,7 +33,7 @@ pub mod all {
         code::_all::*,
         data::_all::*,
         phys::_all::*,
-        // sys::_all::*,
+        sys::_all::*,
         text::_all::*,
         work::_all::*,
     };

@@ -57,13 +57,19 @@ crate::CONST! { hidden macro_export,
     _DOC_PHYS       = "Physical units and measurements.";
     _DOC_PHYS_TIME  = "Time and calendar types and operations.";
 
-    _DOC_SYS        = "System interfaces and hardware abstractions.";
-    _DOC_SYS_ARCH   = "Architecture-specific intrinsics.";
-    _DOC_SYS_ENV    = "Inspection and manipulation of the process’s environment.";
-    _DOC_SYS_FS     = "Filesystem abstractions.";
-    _DOC_SYS_LOG    = "Logging functionality.";
-    _DOC_SYS_MEM    = "Memory management.";
-    _DOC_SYS_NET    = "Networking functionality.";
+    _DOC_SYS            = "System interfaces and hardware abstractions.";
+    _DOC_SYS_ARCH       = "Architecture-specific intrinsics.";
+    _DOC_SYS_ENV        = "Inspection and manipulation of the process’s environment.";
+    _DOC_SYS_FS         = "Filesystem abstractions.";
+    _DOC_SYS_FS_PATH    = "Cross-platform path manipulation.";
+    _DOC_SYS_LOG        = "Logging functionality.";
+    _DOC_SYS_MEM        = "Memory management.";
+    _DOC_SYS_MEM_ALLOC  = "Memory allocation.";
+    _DOC_SYS_MEM_BORROW = "Borrowed data.";
+    _DOC_SYS_MEM_CELL   = "Shareable mutable containers.";
+    _DOC_SYS_MEM_PIN    = "Types that pin data to a location in memory.";
+    _DOC_SYS_MEM_PTR    = "Manually manage memory through raw pointers.";
+    _DOC_SYS_NET        = "Networking functionality.";
 
     _DOC_TEXT       = "Text types and operations, text processing.";
     _DOC_TEXT_ASCII = "ASCII strings and characters.";

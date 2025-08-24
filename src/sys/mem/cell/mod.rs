@@ -1,6 +1,6 @@
 // devela::sys::mem::cell
 //
-//! Shareable mutable containers.
+#![doc = crate::_DOC_SYS_MEM_CELL!()]
 //!
 #![doc = crate::doc_!(extends: cell)]
 //

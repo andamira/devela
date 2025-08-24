@@ -1,6 +1,6 @@
 // devela::sys::mem::pin
 //
-//! Types that pin data to a location in memory.
+#![doc = crate::_DOC_SYS_MEM_PIN!()]
 //!
 #![doc = crate::doc_!(extends: pin)]
 //

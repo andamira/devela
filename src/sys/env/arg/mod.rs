@@ -15,7 +15,7 @@ crate::items! { // structural access: _mods, _all
         #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
         pub use super::os_ref::*;
     }
-    pub(super) mod _all {
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
     }

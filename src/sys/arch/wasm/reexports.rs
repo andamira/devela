@@ -1,11 +1,6 @@
-// devela::lang::wasm::reexports
+// devela::sys::arch::wasm::reexports
 //
-//! Reexported items from `core`.
+//!
 //
 
-use crate::_reexport;
-
-_reexport! { rust: core::arch::wasm32,
-    doc: "WASM-specific 128-bit wide SIMD vector type.",
-    @v128 as w_v128
-}
+crate::_reexport_from!("../../../../libs/base/src/sys/arch/wasm/reexports.rs", _c);

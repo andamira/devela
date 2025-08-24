@@ -1,6 +1,6 @@
 // devela::sys::fs::path::reexports
 //
-//! Reexported items from `core`.
+//!
 //
 
 #[allow(unused_imports)]

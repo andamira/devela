@@ -1,6 +1,6 @@
 // devela::sys::mem::borrow
 //
-//! Borrowed data.
+#![doc = crate::_DOC_SYS_MEM_BORROW!()]
 //
 
 mod backing; // Backing

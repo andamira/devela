@@ -23,7 +23,7 @@ mod ext; // ExtMem
 mod namespace; // Mem
 mod pin; // Pinned, ::core::pin::*
 mod ptr; // Ptr, ::core::ptr::*
-mod reexports; // ::core::mem::*
+mod reexports;
 mod size; // size_of_expr!, BitSized, ByteSized,
 mod slice; // Slice, ExtSlice
 mod storage; // Bare, BareBox, Boxed, Storage
