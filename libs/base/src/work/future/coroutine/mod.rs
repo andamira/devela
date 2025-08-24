@@ -1,10 +1,9 @@
-// devela_base::text
+// devela_base::work::future::coroutine
 //
-#![doc = crate::_DOC_TEXT!()]
+//!
 //
 
-pub mod fmt;
-pub mod str;
+mod reexports;
 
 crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
@@ -13,11 +12,9 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
+        pub use super::reexports::*;
     }
     mod _pub_mods { #![allow(unused)]
-        pub use super::{
-            fmt::_all::*, str::_all::*,
-        };
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

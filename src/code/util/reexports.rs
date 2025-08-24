@@ -3,10 +3,8 @@
 //! Reexported macros and hints.
 //
 
-use crate::_reexport_from;
-
 // from workspace base
-_reexport_from!("../../../libs/base/src/code/util/reexports.rs", _c);
+crate::_reexport_from!("../../../libs/base/src/code/util/reexports.rs", _c);
 
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{

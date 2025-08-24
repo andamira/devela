@@ -1,17 +1,6 @@
 // devela::work::future::coroutine::reexports
-//
-//! Reexported items.
-//
 
-use crate::_reexport;
+use crate::_reexport_from;
 
-_reexport! { rust: core::ops,
-    extra_flags:(nightly_coro),
-    doc: "The trait implemented by builtin coroutine types.",
-    Coroutine
-}
-_reexport! { rust: core::ops,
-    extra_flags:(nightly_coro),
-    doc: "The result of a coroutine resumption.",
-    CoroutineState
-}
+// from workspace base
+_reexport_from!("../../../../libs/base/src/work/future/coroutine/reexports.rs", _c);

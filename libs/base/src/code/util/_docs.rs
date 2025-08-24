@@ -74,5 +74,11 @@ crate::CONST! { hidden macro_export,
 
     _DOC_UI         = "User interface functionality.";
 
-    _DOC_WORK       = "Work management, concurrency handling.";
+    _DOC_WORK             = "Work management, concurrency handling.";
+    _DOC_WORK_FUTURE      = "Asynchronous functionality.";
+    _DOC_WORK_PROCESS     = "Native processes.";
+    _DOC_WORK_SYNC        = "Synchronization primitives.";
+    _DOC_WORK_SYNC_ATOMIC = "Atomic types.";
+    _DOC_WORK_SYNC_MPSC   = "Multi-producer, single-consumer channel.";
+    _DOC_WORK_THREAD      = "Native threads.";
 }

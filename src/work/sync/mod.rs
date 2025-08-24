@@ -1,13 +1,12 @@
 // devela::work::sync
 //
-//! Synchronization primitives.
+#![doc = crate::_DOC_WORK_SYNC!()]
 // #![doc = crate::doc_!(modules: crate::work; sync)]
 // #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: sync)]
 //
 
-#[cfg(feature = "alloc")]
 mod reexports;
 
 #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
@@ -23,8 +22,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use {_always::*, _pub_mods::*};
 
-    mod _mods {
-        #[cfg(feature = "alloc")]
+    mod _mods { #![allow(unused)]
         pub use super::reexports::*;
 
         #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]

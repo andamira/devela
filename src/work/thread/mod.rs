@@ -1,14 +1,15 @@
 // devela::work::thread
 //
-//! Native threads.
+#![doc = crate::_DOC_WORK_THREAD!()]
 //!
 #![doc = crate::doc_!(extends: thread)]
 //
 
+mod reexports;
+
 #[cfg(feature = "std")]
 crate::items! {
     mod ext; // ExtThread
-    mod reexports;
     mod sleep; // sleep4!
 }
 
@@ -19,8 +20,10 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
+        pub use super::reexports::*;
+
         #[cfg(feature = "std")]
-        pub use super::{ext::*, reexports::*, sleep::*};
+        pub use super::{ext::*, sleep::*};
         // WIPZONE
         #[cfg(feature = "std")]
         crate::items! {

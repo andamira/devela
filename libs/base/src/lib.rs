@@ -14,6 +14,7 @@ pub mod data;
 pub mod lang;
 pub mod num;
 pub mod text;
+pub mod work;
 
 #[doc(hidden)]
 pub use all::*;
@@ -34,6 +35,7 @@ pub mod all {
         lang::_all::*,
         num::_all::*,
         text::_all::*,
+        work::_all::*,
     };
 }
 

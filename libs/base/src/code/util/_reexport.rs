@@ -369,8 +369,8 @@ pub use __reexport as _reexport;
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! __reexport_from {
     ( /* most common cases */
-     alloc $path:literal, $mod:ident) => { _reexport_from![["alloc"] $path, $mod]; };
-    (std $path:literal, $mod:ident) => { _reexport_from![["std"] $path, $mod]; };
+     alloc $path:literal, $mod:ident) => { $crate::_reexport_from![["alloc"] $path, $mod]; };
+    (std $path:literal, $mod:ident) => { $crate::_reexport_from![["std"] $path, $mod]; };
     (
     // an optional feature gate
     $([$feature:literal])? $path:literal, $mod:ident) => {

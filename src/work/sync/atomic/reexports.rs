@@ -8,26 +8,8 @@
 use crate::DOC_ATOMIC_CORE_PORTABLE;
 use crate::{_reexport, TAG_ATOMIC, TAG_ATOMIC_CORE_PORTABLE};
 
-/* from `core` */
-
-// enums
-_reexport! { rust: core::sync::atomic,
-    tag: TAG_ATOMIC!(),
-    doc: "Atomic memory ordering.",
-    @Ordering as AtomicOrdering
-}
-
-// functions
-_reexport! { rust: core::sync::atomic,
-    tag: TAG_ATOMIC!(),
-    doc: "An atomic fence.",
-    @fence as atomic_fence
-}
-_reexport! { rust: core::sync::atomic,
-    tag: TAG_ATOMIC!(),
-    doc: "A compiler memory fence.",
-    @compiler_fence as atomic_compiler_fence
-}
+// from workspace base
+crate::_reexport_from!("../../../../libs/base/src/work/sync/atomic/reexports.rs", _c);
 
 /* from the `atomic` crate */
 

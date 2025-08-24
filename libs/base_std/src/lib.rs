@@ -14,6 +14,7 @@ pub mod data;
 pub mod phys;
 // pub mod sys;
 pub mod text;
+pub mod work;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
@@ -34,6 +35,7 @@ pub mod all {
         phys::_all::*,
         // sys::_all::*,
         text::_all::*,
+        work::_all::*,
     };
 }
 

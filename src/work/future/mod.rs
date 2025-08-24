@@ -1,6 +1,6 @@
 // devela::work::future
 //
-//! Asynchronous functionality.
+#![doc = crate::_DOC_WORK_FUTURE!()]
 // #![doc = crate::doc_!(modules: crate::work; future)]
 // #![doc = crate::doc_!(newline)]
 //!

@@ -1,6 +1,6 @@
 // devela::work::sync::atomic
 //
-//! Atomic types.
+#![doc = crate::_DOC_WORK_SYNC_ATOMIC!()]
 //!
 #![doc = crate::doc_!(extends: sync)]
 //

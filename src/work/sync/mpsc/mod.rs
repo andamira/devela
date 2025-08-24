@@ -1,6 +1,6 @@
 // devela::work::sync::mpsc
 //
-//! Multi-producer, single-consumer channel.
+#![doc = crate::_DOC_WORK_SYNC_MPSC!()]
 // #![doc = crate::doc_!(extends: mpsc)] // IMPROVE
 
 mod namespace; // Mpsc
