@@ -56,27 +56,28 @@ resolver = "3"
 ## Bottom-up hierarchical dependency flow of units of compilation (? = optional)
 # ·------------------------------------------------------------------------------
 #                                                           .-------------------.
-# ┌╼devela_base_macros          lean proc macros, zero-deps | stable interfaces |
-# └╥╼devela_base                core items, zero-deps       | primitive focused |
-#  ╟─┴╼devela_base_alloc?       alloc-dependent types       | monomorphizations |
-#  ╟───┴╼devela_base_std?       std-dependent types         | & infrastructures |
-#  ╚╗                                                       ·-------------------·
-#   ╟╼devela_macros?            heavy proc macros           |                   |
-#   ╚╗                                                      ·-------------------.
-#    ╟╼devela_code              code reflective synthesis   | trait definitions |
-#    ╚╦┼╼devela_data?           data structures & formats   | & implementations |
-#     ╟┼╼devela_game?           game & app development      | for foreign types |
-#     ╟┼╼devela_lang?           language functionality      | & domain-specific |
-#     ╟┼╼devela_media?          multimedia functionality    | custom constructs |
-#     ╟┼╼devela_num?            numeric systems & math      | corresponding to  |
-#     ╟┼╼devela_phys?           physical units & measures   | devela's modules  |
-#     ╟┼╼devela_sys             system & hardware interface |                   |
-#     ╟┼╼devela_text            text processing & unicode   |                   |
-#     ╟┼╼devela_ui?             user interfaces & visuals   |                   |
-#     ╟┴╼devela_work?           concurrency management      ··------------------·
-#     ╚═╦╼devela                unified front facade        | integration layer |
-#       ║ ├╼build/main          build, codegen, debug       | public interfaces |
-#       ║ └╼devela_postbuild    post-build processing       | development tools |
+# ┌╼devela_base_macros        : base proc macros, zero-deps | stable interfaces |
+# └╥╼devela_base              : base core items, zero-deps  | primitive focused |
+#  ╟─┴╼devela_base_alloc?     : base alloc-dependent types  | monomorphizations |
+#  ╟───┴╼devela_base_std?╾───┐: base std-dependent types    | & infrastructures |
+#  ╚╗                        │                              ·-------------------·
+#   ╟╼devela_macros?         │: heavy proc macros           |                   |
+#   ╚╗                       │                              ·-------------------.
+#    ╟╼devela_code?          │: code reflective synthesis   | trait definitions |
+#    ╚╦┼╼devela_data?        │: data structures & formats   | & implementations |
+#     ╟┼╼devela_game?        │: game & app development      | for foreign types |
+#     ╟┼╼devela_lang?        │: language functionality      | & domain-specific |
+#     ╟┼╼devela_media?       │: multimedia functionality    | custom constructs |
+#     ╟┼╼devela_num?         │: numeric systems & math      | corresponding to  |
+#     ╟┼╼devela_phys?        │: physical units & measures   | devela's modules  |
+#     ╟┼╼devela_sys          │: system & hardware interface |                   |
+#     ╟┼╼devela_text         │: text processing & unicode   |                   |
+#     ╟┼╼devela_ui?          │: user interfaces & visuals   |                   |
+#     ╟┴╼devela_work?        │: concurrency management      |                   |
+#     ║                      │                              ··------------------·
+#     ╚═╦╼devela             │: unified front facade        | integration layer |
+#       ║ ├╼build/main───────┤: build, codegen, debug       | public interfaces |
+#       ║ └╼devela_postbuild─┘: post-build processing       | development tools |
 #       ╏                                                   ·-------------------·
 members = [
 	"libs/base_macros", "libs/base", "libs/base_alloc", "libs/base_std",
@@ -223,7 +224,7 @@ __force_test_no_mangle = []
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
-	"devela_base_alloc", "devela_code/alloc",
+	"devela_base_alloc", "devela_code?/alloc",
 	"devela_data?/alloc", "devela_media?/alloc", "devela_num?/alloc",
 	# "devela_lang?/alloc", "devela_phys?/alloc", "devela_sys?/alloc",
 	# "devela_text?/alloc", "devela_ui?/alloc", "devela_work?/alloc",
@@ -233,7 +234,7 @@ alloc = [ # enables `alloc` functionality
 	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc", "devela_base_std", "devela_code/std",
+	"alloc", "devela_base_std", "devela_code?/std",
 	"devela_data?/std", "devela_media?/std", "devela_num?/std",
 	# "devela_lang?/std", "devela_phys?/std", "devela_sys?/std",
 	# "devela_text?/std", "devela_ui?/std", "devela_work?/std",
@@ -253,7 +254,7 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 devela_macros = [ "dep:devela_macros",
-	"devela_code/macros",
+	"devela_code?/macros",
 	"devela_data?/macros", "devela_media?/macros", "devela_num?/macros",
 	# "devela_lang?/macros", "devela_phys?/macros", "devela_sys?/macros",
 	# "devela_text?/macros", "devela_ui?/macros", "devela_work?/macros",
@@ -397,7 +398,7 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game",
 	"safe_num", "safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ] # `safe··` [12]
-	safe_code = ["devela_code/safe"]
+	safe_code = ["devela_code?/safe"]
 	safe_data = ["devela_data?/safe"]
 	safe_game = [] # "devela_game?/safe"
 	safe_lang = [] # "devela_lang?/safe"
@@ -475,7 +476,7 @@ _docs = [ # the minimum capabilities to document everything
 ]
 _docsrs_nodep = [                            # + std + unsafe
 	"_docs", "std", "unsafe", "__dbg",
-	"devela_base/_docsrs", "devela_macros?/_docsrs", "devela_code/_docsrs",
+	"devela_base/_docsrs", "devela_macros?/_docsrs", "devela_code?/_docsrs",
 	"devela_data?/_docsrs", "devela_media/_docsrs", "devela_num?/_docsrs",
 	# "devela_lang?/macros", "devela_phys?/macros", "devela_sys?/macros",
 	# "devela_text?/macros", "devela_ui?/macros", "devela_work?/macros",
@@ -751,7 +752,7 @@ devela_base       = { workspace = true }
 devela_base_alloc = { workspace = true, optional = true }
 devela_base_std   = { workspace = true, optional = true }
 devela_macros     = { workspace = true, optional = true }
-devela_code       = { workspace = true }
+devela_code       = { workspace = true, optional = true }
 devela_data       = { workspace = true, optional = true }
 # devela_game     = { workspace = true, optional = true }
 # devela_lang     = { workspace = true, optional = true }
