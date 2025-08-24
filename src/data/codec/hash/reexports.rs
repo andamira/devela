@@ -1,28 +1,7 @@
 // devela::data::codec::hash::reexports
-//
-//! Reexported items from `core`.
-//
 
-use crate::_reexport;
+use crate::_reexport_from;
 
-_reexport! { rust: core::hash,
-    doc: "A trait for creating instances of [`Hasher`].",
-    @BuildHasher as HasherBuild
-}
-_reexport! { rust: core::hash,
-    doc: "Create a default [`HasherBuild`] instance for `T:`[`Hasher`]` + `[`Default`] types.",
-    @BuildHasherDefault as HasherBuildDefault
-}
-_reexport! { rust: core::hash,
-    doc: "A trait for hashing an arbitrary stream of bytes.",
-    Hasher
-}
-_reexport! { rust: std::hash,
-    doc: "The default state for [`HashMapStd`][crate::HashMapStd].",
-    RandomState
-}
-
-// NOTE: the trait and the derive macro have the same name:
-// _reexport! { rust: core::hash, doc: "A hashable type.", Hash }
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use crate::_core::hash::Hash;
+// from workspace base
+_reexport_from!("../../../../libs/base/src/data/codec/hash/reexports.rs", _c);
+_reexport_from!(std "../../../../libs/base_std/src/data/codec/hash/reexports.rs", _s);

@@ -1,20 +1,9 @@
 // devela::data::list::queue::reexports
-//
-//! Reexported items.
-//
 
-use crate::_reexport;
+use crate::{_reexport_from, impl_cdef};
+
+// from workspace base
+_reexport_from!(alloc "../../../../libs/base_alloc/src/data/list/queue/reexports.rs", _c);
 
 #[cfg(feature = "alloc")]
-crate::impl_cdef![<T> Self::new() => VecDeque<T>]; // impl ConstDefault
-
-_reexport! { rust: alloc::collections,
-    tag: crate::TAG_DATA_STRUCTURE!(),
-    doc: "A priority queue implemented with a binary heap.",
-    BinaryHeap
-}
-_reexport! { rust: alloc::collections,
-    tag: crate::TAG_DATA_STRUCTURE!(),
-    doc: "A double-ended growable queue.",
-    VecDeque
-}
+impl_cdef![<T> Self::new() => VecDeque<T>]; // impl ConstDefault

@@ -1,4 +1,4 @@
-// devela::text::fmt::reexports
+// devela_base::text::fmt::reexports
 //
 //!
 //

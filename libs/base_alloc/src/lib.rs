@@ -10,6 +10,7 @@
 extern crate alloc;
 extern crate self as devela_base_alloc;
 
+pub mod data;
 pub mod lang;
 pub mod text;
 
@@ -26,6 +27,7 @@ pub mod all {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
+        data::_all::*,
         lang::_all::*,
         text::_all::*,
     };

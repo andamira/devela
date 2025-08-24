@@ -1,9 +1,12 @@
 // devela::data::key::reexports
 //
-//! Reexported items.
+//!
 //
 
-use crate::_reexport;
+use crate::_reexport_from;
+
+// from workspace base
+_reexport_from!(alloc "../../../libs/base_alloc/src/data/key/reexports.rs", _c);
 
 #[cfg(feature = "alloc")]
 mod impls_alloc {
@@ -13,23 +16,6 @@ mod impls_alloc {
     // impl ConstDefault
     impl_cdef![<T> Self::new() => BTreeSet<T>];
     impl_cdef![<K, V> Self::new() => BTreeMap<K, V>];
-}
-
-/* from `alloc` */
-
-_reexport! { rust: alloc::collections,
-    tag: crate::TAG_DATA_STRUCTURE!(),
-    doc: "An ordered map based on a B-Tree.",
-    BTreeMap
-}
-_reexport! { rust: alloc::collections::btree_map,
-    doc: "An ordered map based on a B-Tree.",
-    @Entry as BTreeMapEntry
-}
-_reexport! { rust: alloc::collections,
-    tag: crate::TAG_DATA_STRUCTURE!(),
-    doc: "An ordered set based on a B-Tree.",
-    BTreeSet
 }
 
 /* from `hashbrown` or `std` */

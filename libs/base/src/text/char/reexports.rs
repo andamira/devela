@@ -1,4 +1,4 @@
-// devela::text::char::reexports
+// devela_base::text::char::reexports
 
 use crate::_reexport;
 
