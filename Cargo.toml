@@ -85,7 +85,8 @@ members = [
 	"libs/code", "libs/data", "libs/media", "libs/num",
 	# "libs/game", "libs/lang", "libs/phys", "libs/sys",
 	# "libs/text", "libs/ui", "libs/work",
-	".", "build/post",
+	".", # ← root package
+	"build/post",
 ]
 [workspace.dependencies]
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
@@ -183,7 +184,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 268/300 (32 remaining), 140 visible, 128 hidden
+[features] # 270/300 (30 remaining), 141 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -208,8 +209,9 @@ bench = false
 #* Development features *#
 # ------------------------------------------------------------------------------
 
-__dbg = [] # shows extra debugging information.
-__no_test = [] # exclude examples from being tested.
+__build = ["devela_base_std"] # full build dependencies
+__dbg = ["__build"] # shows extra debugging information
+__no_test = []      # exclude examples from being tested
 
 __force_miri_dst = [] # inhibits disabling miri on several modules
 
@@ -487,7 +489,7 @@ _docsrs       = ["_docsrs_nodep", "dep_all"] # + dependencies
 # ---------------------
 
 # `unroll!` macro and maximum recursion supported
-_unroll = [] # recursion 64
+_unroll = ["__build"] # recursion 64
 _unroll_128 = ["_unroll"]
 _unroll_256 = ["_unroll_128"]
 _unroll_512 = ["_unroll_256"]
@@ -560,11 +562,11 @@ _sort_all = [
 	_sort_f64 = ["_cmp_f64"]
 
 # `Tuple` trait and maximum arity supported (example relative compilation times)
-_tuple = [] # arity 12    # time:  3.3s, codegen:  96K  (for >=2nd compilations)
-_tuple_24 = ["_tuple"]    # time:  4.0s, codegen: 279K
-_tuple_36 = ["_tuple_24"] # time:  4.6s, codegen: 561K
-_tuple_48 = ["_tuple_36"] # time:  6.3s, codegen: 942K
-_tuple_72 = ["_tuple_48"] # time: 10.3s, codegen: 2.0M
+_tuple = ["__build"] # arity 12 # time:  3.3s, codegen: 96K (for >=2nd compil.)
+_tuple_24 = ["_tuple"]          # time:  4.0s, codegen: 279K
+_tuple_36 = ["_tuple_24"]       # time:  4.6s, codegen: 561K
+_tuple_48 = ["_tuple_36"]       # time:  6.3s, codegen: 942K
+_tuple_72 = ["_tuple_48"]       # time: 10.3s, codegen: 2.0M
 
 # `DataValue*, DataType*, DataRaw*`:
 _value_all = [
@@ -1068,8 +1070,8 @@ default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 [build-dependencies]
 # Used for the main build script. They do NOT inherit from [dependencies].
 # ------------------------------------------------------------------------------
-devela_base.workspace = true
-devela_base_std.workspace = true
+devela_base     = { workspace = true }
+devela_base_std = { workspace = true, optional = true }
 
 
 # patches

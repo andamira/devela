@@ -20,17 +20,21 @@
 /* imports */
 
 extern crate devela_base as base;
+#[cfg(feature = "__build")]
 extern crate devela_base_std as base_std;
 extern crate self as build;
 
 #[allow(unused)]
+#[cfg(feature = "__build")]
 use base_std::Build;
 
 /* build modules */
 
-mod codegen; // tuple, unroll
 mod environment;
 mod features;
+
+#[cfg(feature = "__build")]
+mod codegen; // tuple, unroll
 
 fn main() {
     if let Err(err) = try_main() {
@@ -44,6 +48,8 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
 
     environment::main()?;
     features::main()?;
+
+    #[cfg(feature = "__build")]
     codegen::main()?;
 
     #[cfg(feature = "__dbg")]

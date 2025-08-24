@@ -6,9 +6,11 @@
 /* imports */
 
 extern crate devela_base as base;
+#[cfg(feature = "__build")]
 extern crate devela_base_std as base_std;
 
 #[allow(unused)]
+#[cfg(feature = "__build")]
 use base_std::Build;
 
 /* modules */

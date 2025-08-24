@@ -14,6 +14,7 @@
 - add new `devela_postbuild` crate to `build/post`.
 - new `Build` namespace in `devela_base_std`.
 - move build fn utils as `Build` methods.
+- make `devela_base_std` optional for builds.
 
 ## cargo
 - add new cargo doc workspace aliases `w*`.
@@ -27,7 +28,7 @@
     - `quote` → 1.0.40.
 
 ## features & flags
-- new debug feature: `__force_test_no_mangle`.
+- new features: `__build`, `__force_test_no_mangle`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
 
