@@ -1,6 +1,6 @@
 // devela::code::error
 //
-//! Errors, backtraces, structured handling.
+#![doc = crate::_DOC_CODE_ERROR!()]
 //!
 //! It re-exports the error and result types defined in other modules.
 //!

@@ -1,6 +1,7 @@
 // devela::sys::mem
 //
-//! Memory management.
+#![doc = crate::_DOC_SYS_MEM!()]
+//!
 #![doc = crate::doc_!(modules: crate::sys; mem: cell)]
 #![doc = crate::doc_!(newline)]
 //!

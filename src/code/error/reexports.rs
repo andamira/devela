@@ -1,13 +1,14 @@
 // devela::code::error::reexports
 //
-//! Reexported error-related items.
+//!
 //
 
-#![allow(unused_imports)]
+use crate::_reexport_from;
 
-use crate::_reexport;
+// from workspace base
+_reexport_from!("../../../libs/base/src/code/error/reexports.rs", _c);
+_reexport_from!(std "../../../libs/base_std/src/code/error/reexports.rs", _s);
 
-#[doc = crate::TAG_DEVELA_BASE!()]
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{
     FailedErrorConversion,
@@ -17,24 +18,6 @@ pub use devela_base::{
 
     code::util::_tags::*, // _workspace_private
 };
-
-_reexport! { rust: core::error,
-    doc: "A trait representing the basic expectations for error values.",
-    Error
-}
-_reexport! { rust: core,
-    doc: "Causes compilation to fail with the given error message when encountered.",
-    compile_error
-}
-
-_reexport! { rust: std::backtrace,
-    doc: "A captured OS thread stack backtrace.",
-    Backtrace
-}
-_reexport! { rust: std::backtrace,
-    doc: "The current status of a backtrace.",
-    BacktraceStatus
-}
 
 #[cfg(feature = "error")]
 pub use crate_errors::*;

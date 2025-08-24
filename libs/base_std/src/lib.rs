@@ -9,6 +9,7 @@
 extern crate self as devela_base_std;
 
 pub mod build;
+pub mod code;
 pub mod phys;
 // pub mod sys;
 pub mod text;
@@ -27,6 +28,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         build::_all::*,
+        code::_all::*,
         phys::_all::*,
         // sys::_all::*,
         text::_all::*,

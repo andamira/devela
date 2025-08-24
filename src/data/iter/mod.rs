@@ -1,6 +1,6 @@
 // devela::data::iter
 //
-//! Composable external iteration.
+#![doc = crate::_DOC_DATA_ITER!()]
 //!
 #![doc = crate::doc_!(extends: iter)]
 //

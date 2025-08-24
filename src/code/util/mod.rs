@@ -1,6 +1,6 @@
 // devela::code::util
 //
-//! Utility macros and hint functions.
+#![doc = crate::_DOC_CODE_UTIL!()]
 //!
 #![doc = crate::doc_!(extends: hint)]
 //

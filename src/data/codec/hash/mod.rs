@@ -1,6 +1,6 @@
 // devela::data::codec::hash
 //
-//! Generic hashing support.
+#![doc = crate::_DOC_DATA_CODEC_HASH!()]
 //!
 #![doc = crate::doc_!(extends: hash)]
 //!

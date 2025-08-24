@@ -1,15 +1,22 @@
 // devela_base::code
 //
-//! Code reflective synthesis.
+#![doc = crate::_DOC_CODE!()]
 //
+
+mod reexports;
 
 pub mod error; // ExtError, errors definitions
 pub mod util; // utility macros and functions
 
-crate::items! { // structural access: _pub_mods, _workspace_private, _all
+crate::items! { // structural access: _mods, _pub_mods, _workspace_private, _all
+    #[allow(unused)]
+    pub use _mods::*;
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _pub_mods::*;
 
+    mod _mods {
+        pub use super::reexports::*;
+    }
     mod _pub_mods {
         pub use super::{
             error::_all::*, util::_all::*,
@@ -20,6 +27,6 @@ crate::items! { // structural access: _pub_mods, _workspace_private, _all
     }
     pub(super) mod _all {
         #[doc(inline)]
-        pub use super::_pub_mods::*;
+        pub use super::{_mods::*, _pub_mods::*};
     }
 }

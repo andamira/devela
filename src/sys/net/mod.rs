@@ -1,6 +1,6 @@
 // devela::sys::net
 //
-//! Networking functionality.
+#![doc = crate::_DOC_SYS_NET!()]
 //!
 #![doc = crate::doc_!(extends: net)]
 //

@@ -1,41 +1,9 @@
 // devela::num::niche::reexports
 //
-//! Reexported items from `core`.
+//!
 //
 
-use crate::{_reexport, TAG_ERROR, TAG_NICHE, TAG_NUM};
+use crate::_reexport_from;
 
-_reexport! { rust: core::num,
-    tag: TAG_ERROR!(),
-    doc: "The error type returned when a checked integral type conversion fails.",
-    TryFromIntError // IMPROVE: recreate
-}
-
-/* niche behaviors */
-
-_reexport! { rust: core::num,
-    doc: "Provides intentionally-saturating arithmetic on `T`.",
-    Saturating
-}
-_reexport! { rust: core::num,
-    doc: "Provides intentionally-wrapped arithmetic on `T`.",
-    Wrapping
-}
-
-/* memory-optimization */
-
-_reexport! { rust: core::num,
-    tag: concat!(TAG_NUM!(), TAG_NICHE!()),
-    doc: "A signed integer that is known not to equal zero.",
-    NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize
-}
-_reexport! { rust: core::num,
-    tag: concat!(TAG_NUM!(), TAG_NICHE!()),
-    doc: "An unsigned integer that is known not to equal zero.",
-    NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize
-}
-_reexport! { rust: core::num,
-    tag: concat!(TAG_NUM!(), TAG_NICHE!()),
-    doc: "A value that is known not to equal zero.",
-    NonZero
-}
+// from workspace base
+_reexport_from!("../../../libs/base/src/num/niche/reexports.rs", _c);

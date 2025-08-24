@@ -1,7 +1,6 @@
 // devela::data::list::queue
 //
-//! Homogeneous data structures that process elements in
-//! <abbr title="First-In, First-Out">FIFO</abbr> order.
+#![doc = crate::_DOC_DATA_LIST_QUEUE!()]
 //!
 //! Elements are typically added at one end (the "tail" or "back")
 //! and removed from the other (the "head" or "front").

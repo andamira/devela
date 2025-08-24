@@ -1,6 +1,6 @@
 // devela::num::int
 //
-//! Integer functionality.
+#![doc = crate::_DOC_NUM_INT!()]
 //
 
 pub(crate) mod shared_docs; // FORMULA_*!()

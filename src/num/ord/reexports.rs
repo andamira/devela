@@ -1,6 +1,6 @@
 // devela::num::ord::reexports
 //
-//! Reexported items from `core`.
+//!
 //
 
 use crate::_reexport;

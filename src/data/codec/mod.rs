@@ -1,6 +1,6 @@
 // devela::data::codec
 //
-//! Abstractions for encoding and decoding data.
+#![doc = crate::_DOC_DATA_CODEC!()]
 #![doc = crate::doc_!(modules: crate::data; codec: hash)]
 #![doc = crate::doc_!(newline)]
 //!

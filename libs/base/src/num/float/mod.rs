@@ -1,6 +1,6 @@
 // devela_base::num::float
 //
-//! Floating-point functionality.
+#![doc = crate::_DOC_NUM_FLOAT!()]
 //
 
 mod alias; // fsize

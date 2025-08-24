@@ -1,6 +1,6 @@
 // devela::num::ord
 //
-//! Comparing and ordering values.
+#![doc = crate::_DOC_NUM_ORD!()]
 // #![doc = crate::doc_!(extends: cmp)]
 // #![doc = crate::doc_!(modules: crate::num; cmp)]
 // #![doc = crate::doc_!(newline)]

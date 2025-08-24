@@ -1,8 +1,6 @@
 // devela::data::list::link
 //
-//! Linked lists.
-//!
-//! Linked lists are sequentially accessed, homogeneous data structures.
+#![doc = crate::_DOC_DATA_LIST_LINK!()]
 //!
 //! They enable efficient insertion and deletion at any position,
 //! storing a sequence of elements of the same type, each pointing to the next.

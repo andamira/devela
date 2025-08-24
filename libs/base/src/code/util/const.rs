@@ -165,8 +165,8 @@ macro_rules! _CONST {
         )*
     };
     (
-    /* */
 
+    // Either multiple hidden macros exported
     hidden macro_export,
     $(
         $(#[$CONST_ATTRS:meta])*
@@ -184,6 +184,8 @@ macro_rules! _CONST {
         )*
     }};
     (
+
+    // Either multiple visible macros exported
     inline macro_export,
     $(
         $(#[$CONST_ATTRS:meta])*

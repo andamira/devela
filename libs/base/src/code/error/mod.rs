@@ -1,7 +1,6 @@
 // devela_base::code::error
 //
-//! Error related functionality.
-// #![doc = crate::doc_!(extends: backtrace, error)] // TEMP
+#![doc = crate::_DOC_CODE_ERROR!()]
 //
 
 mod definitions; // modular errors

@@ -1,6 +1,6 @@
 // devela_base::num::int
 //
-//! Integer functionality.
+#![doc = crate::_DOC_NUM_INT!()]
 //
 
 mod alias; // [i|u]size_[down|up]

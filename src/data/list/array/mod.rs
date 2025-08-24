@@ -1,6 +1,6 @@
 // devela::data::list::array
 //
-//! Homogeneous data structures, random-access and sequentially allocated.
+#![doc = crate::_DOC_DATA_LIST_ARRAY!()]
 //!
 #![doc = crate::doc_!(extends: array, vec)]
 //!

@@ -1,9 +1,8 @@
 // devela::sys::arch
 //
-//! Architecture-specific intrinsics.
+#![doc = crate::_DOC_SYS_ARCH!()]
 //!
-//! LINKS
-//! - <https://github.com/rust-lang/stdarch>
+//! See <https://github.com/rust-lang/stdarch>.
 #![doc = crate::doc_!(extends: arch)]
 //
 // NOTE In order to show in the docs all possible feature-gated functionality,

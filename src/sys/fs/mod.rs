@@ -1,6 +1,6 @@
 // devela::sys::fs
 //
-//! Filesystem abstractions.
+#![doc = crate::_DOC_SYS_FS!()]
 //!
 #![doc = crate::doc_!(extends: fs, path)]
 #![doc = crate::doc_!(newline)]

@@ -750,21 +750,22 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 
 #* workspace library dependencies *#
 
-devela_base       = { workspace = true }
-devela_base_alloc = { workspace = true, optional = true }
-devela_base_std   = { workspace = true, optional = true }
-devela_macros     = { workspace = true, optional = true }
-devela_code       = { workspace = true, optional = true }
-devela_data       = { workspace = true, optional = true }
-# devela_game     = { workspace = true, optional = true }
-# devela_lang     = { workspace = true, optional = true }
-devela_media      = { workspace = true, optional = true }
-devela_num        = { workspace = true, optional = true }
-# devela_phys     = { workspace = true, optional = true }
-# devela_sys      = { workspace = true, optional = true }
-# devela_text     = { workspace = true, optional = true }
-# devela_ui       = { workspace = true, optional = true }
-# devela_work     = { workspace = true, optional = true }
+devela_base        = { workspace = true }
+devela_base_macros = { workspace = true }
+devela_base_alloc  = { workspace = true, optional = true }
+devela_base_std    = { workspace = true, optional = true }
+devela_macros      = { workspace = true, optional = true }
+devela_code        = { workspace = true, optional = true }
+devela_data        = { workspace = true, optional = true }
+# devela_game      = { workspace = true, optional = true }
+# devela_lang      = { workspace = true, optional = true }
+devela_media       = { workspace = true, optional = true }
+devela_num         = { workspace = true, optional = true }
+# devela_phys      = { workspace = true, optional = true }
+# devela_sys       = { workspace = true, optional = true }
+# devela_text      = { workspace = true, optional = true }
+# devela_ui        = { workspace = true, optional = true }
+# devela_work      = { workspace = true, optional = true }
 
 #* optional external dependencies *#
 

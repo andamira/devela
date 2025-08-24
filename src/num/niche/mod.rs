@@ -1,6 +1,6 @@
 // devela::num::niche
 //
-//! Specialized numeric types and behaviors.
+#![doc = crate::_DOC_NUM_NICHE!()]
 //!
 //! Prohibit specific values with zero-cost optimizations,
 //! enabling memory-efficient data structures and domain modeling.

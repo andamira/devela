@@ -1,6 +1,6 @@
 // devela::code::marker
 //
-//! Marker types, traits and macros.
+#![doc = crate::_DOC_CODE_MARKER!()]
 //!
 #![doc = crate::doc_!(extends: marker)]
 //

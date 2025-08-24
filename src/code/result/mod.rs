@@ -1,6 +1,6 @@
 // devela::code::result
 //
-//! Structured resolution and parameterized outcome-based types.
+#![doc = crate::_DOC_CODE_RESULT!()]
 //!
 // #![doc = crate::doc_!(modules: crate::code; result)]
 // #![doc = crate::doc_!(newline)]

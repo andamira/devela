@@ -1,6 +1,6 @@
 // devela::sys::log
 //
-//! Logging functionality.
+#![doc = crate::_DOC_SYS_LOG!()]
 //
 
 #[cfg(feature = "dep_log")]

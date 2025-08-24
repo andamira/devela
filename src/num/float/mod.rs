@@ -1,6 +1,6 @@
 // devela::num::float
 //
-//! Floating point functionality.
+#![doc = crate::_DOC_NUM_FLOAT!()]
 //
 
 mod constants; // FloatConst

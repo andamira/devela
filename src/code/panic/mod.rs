@@ -1,6 +1,6 @@
 // devela::code::panic
 //
-//! Panic hooks, unwinding, abort strategies.
+#![doc = crate::_DOC_CODE_PANIC!()]
 //!
 #![doc = crate::doc_!(extends: panic)]
 //

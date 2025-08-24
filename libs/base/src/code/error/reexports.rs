@@ -1,6 +1,6 @@
-// devela::code::error::reexports
+// devela_base::code::error::reexports
 //
-//! Reexported error-related items.
+//!
 //
 
 use crate::_reexport;

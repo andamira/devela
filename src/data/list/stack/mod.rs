@@ -1,7 +1,6 @@
 // devela::data::list::stack
 //
-//! Homogeneous data structures that process elements in
-//! <abbr title="Last-In, First-Out">LIFO</abbr> order.
+#![doc = crate::_DOC_DATA_LIST_STACK!()]
 //!
 //! Elements are added and removed from the same end,
 //! commonly referred to as the "top" of the stack.
