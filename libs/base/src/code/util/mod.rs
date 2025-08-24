@@ -11,6 +11,7 @@ crate::items! {
 mod reexports; // re-exported macros from devela_base_macros
 
 mod cdbg; // cdbg!
+mod cfg_if; // cfg_if!
 mod define_error; // define_error!
 mod deprecate; // deprecate_feature!
 mod include; // include_from!, mod_from!
@@ -30,8 +31,8 @@ crate::items! { // structural access: _mods, _workspace_private, _all
 
     mod _mods {
         pub use super::{
-            cdbg::*, define_error::*, deprecate::*, include::*, items::*, is::*, paste::*,
-            r#const::*, reexports::*,
+            cdbg::*, cfg_if::*, define_error::*, deprecate::*, include::*, items::*, is::*,
+            paste::*, r#const::*, reexports::*,
         };
     }
     pub(super) mod _workspace_private { #[allow(unused_imports)]

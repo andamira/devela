@@ -80,7 +80,7 @@
 ### utils
 - new private macro `_reexport_from!`.
 - move to [base]:
-  - public macros `CONST!`, `cdbg`, `define_error!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
+  - public macros `CONST!`, `cdbg!`, `cfg_if!`, `define_error!`, `deprecate!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
   - private macros: `EMOJI_*`, `TAG_*`, `_reexport!`.
 - add doc tags: `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`.
 - rename `reexport!` private macro to `_reexport!`.

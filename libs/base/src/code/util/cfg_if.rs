@@ -1,6 +1,6 @@
-// devela::code::util::cfg_if
+// devela_base::code::util::cfg_if
 //
-//! cfg_if macro.
+//! Defines the [`cfg_if!`] macro.
 //
 
 /// A macro for defining `#[cfg]` if-else statements.
@@ -26,7 +26,7 @@
 ///     }
 /// }
 /// ```
-#[doc = crate::doc_!(vendor: "cfg-if")]
+// #[doc = crate::doc_!(vendor: "cfg-if")] // TODO IMPROVE
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cfg_if {
