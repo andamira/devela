@@ -237,8 +237,15 @@ mod impl_std {
 mod impl_devela {
     use super::ConstDefault;
     use crate::{
+        // TODO: Cycle, CycleCount
+        Interval,
         Sign,
     };
+
+    /// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
+    ///
+    /// See the [`default`][Self::default] implementation for more information.
+    impl<T> ConstDefault for Interval<T> { const DEFAULT: Self = Self::unbounded(); }
 
     impl ConstDefault for Sign { #[doc = "No sign."] const DEFAULT: Self = Sign::None; }
 }

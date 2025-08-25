@@ -6,9 +6,10 @@
 // mod cast; // Cast
 mod float;
 mod int;
-mod sign; // Sign
+mod ord;
 
 pub mod error; // error types
+pub mod quant; // Cycle*, Interval, interval!, Ratio
 
 crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
@@ -16,14 +17,14 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)] #[doc(hidden, no_inline)]
     pub use _pub_mods::*;
 
+    mod _mods { #![allow(unused)]
+        pub use super::{float::_all::*, int::_all::*, ord::_all::*};
+        // pub use super::cast::_all::*;
+    }
     mod _pub_mods {
         pub use super::{
-            error::*,
+            error::*, quant::_all::*,
         };
-    }
-    mod _mods { #![allow(unused)]
-        pub use super::{float::_all::*, int::_all::*, sign::*};
-        // pub use super::cast::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

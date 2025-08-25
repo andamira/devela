@@ -1,4 +1,4 @@
-// devela_base::num::sign
+// devela_base::num::quant::sign
 //
 //! Defines the [`Sign`] of a number.
 //

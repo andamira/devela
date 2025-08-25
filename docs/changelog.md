@@ -94,8 +94,9 @@
 - move to [base]:
   - aliases: `fsize` and `[iu]size_*`.
   - error types: `IncompatibleBounds`, `MismatchedSizes`, `NoInverse`, `NonNegativeRequired`, `NonZeroRequired`, `Overflow`, `PositiveRequired`.
-  - other types: `Sign`.
+  - modules: `quant`.
 - update `Interval` to use individual `IncompatibleBounds` error.
+- make `Sign` part of `quant`.
 
 ## sys
 ### env

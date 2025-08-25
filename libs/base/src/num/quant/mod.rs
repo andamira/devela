@@ -1,4 +1,4 @@
-// devela::num::quant
+// devela_base::num::quant
 //
 #![doc = crate::_DOC_NUM!()]
 //!
@@ -15,16 +15,22 @@
 // - Discrete counting and increments: [`Count`].
 //
 
-mod ratio; // Ratio
-mod reexports;
+mod cycle; // Cycle, CycleCount
+mod interval; // Interval, interval!
+// mod ratio; // Ratio
+mod sign; // Sign
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods {
-        pub use super::{ratio::*, reexports::*};
+        pub use super::{cycle::*, interval::*, sign::*};
         // WIPZONE
+        // pub use super::counter::*;
+        // pub use super::norm::*;
+        // pub use super::ratio::*;
+        // pub use super::scale::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -32,3 +38,6 @@ crate::items! { // structural access: _mods, _all
     }
 }
 // WIPZONE
+// mod counter;
+// mod norm;
+// mod scale;

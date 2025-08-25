@@ -34,6 +34,7 @@ define_error![individual: pub struct IncompatibleBounds;
     \nE.g. lower bound exceeds upper bound.",
     self+f => write!(f, "The given bounds are incompatible."),
 ];
+
 define_error![individual: pub struct NonNegativeRequired;
     +tag: TAG_NUM!(),
     DOC_NON_NEGATIVE_REQUIRED = "A non-negative value is required.",
@@ -49,6 +50,7 @@ define_error![individual: pub struct NonZeroRequired;
     DOC_NON_ZERO_REQUIRED = "A non-zero value is required.",
     self+f => write!(f, "A non-zero value is required."),
 ];
+
 define_error![individual: pub struct Overflow(pub Option<Sign>);
     +tag: TAG_NUM!(),
     DOC_OVERFLOW = "An arithmetic overflow error, with an optional associated sign.",

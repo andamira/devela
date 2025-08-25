@@ -32,6 +32,7 @@ _reexport! { rust: core::mem,
 /* mem functions */
 
 // NOTE: can't namespace this in `Mem`.
+// NOTE: it shows a wrong deprecation message when re-exported. Ignore it.
 _reexport! { rust: core::mem,
     doc: "Reinterprets the bits of a value of one type as another type.",
     transmute

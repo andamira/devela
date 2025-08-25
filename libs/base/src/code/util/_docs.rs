@@ -53,6 +53,7 @@ crate::CONST! { hidden macro_export,
     _DOC_NUM_INT    = "Integer functionality.";
     _DOC_NUM_NICHE  = "Specialized numeric types and behaviors.";
     _DOC_NUM_ORD    = "Comparing and ordering values.";
+    _DOC_NUM_QUANT  = "Quantification, measurement and numerical relationships.";
 
     _DOC_PHYS       = "Physical units and measurements.";
     _DOC_PHYS_TIME  = "Time and calendar types and operations.";

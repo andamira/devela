@@ -6,6 +6,7 @@
 mod reexports;
 
 pub mod error; // ExtError, errors definitions
+pub mod ops; // ::core::ops::*
 pub mod util; // utility macros and functions
 
 crate::items! { // structural access: _mods, _pub_mods, _workspace_private, _all
@@ -19,7 +20,7 @@ crate::items! { // structural access: _mods, _pub_mods, _workspace_private, _all
     }
     mod _pub_mods {
         pub use super::{
-            error::_all::*, util::_all::*,
+            error::_all::*, ops::*, util::_all::*,
         };
     }
     pub(super) mod _workspace_private { #[allow(unused_imports)]

@@ -1,4 +1,4 @@
-// devela::num::ord::reexports
+// devela::num::reexports
 //
 //!
 //

@@ -10,7 +10,7 @@
 // - tests
 
 use crate::{
-    Bound, ConstDefault, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is,
+    Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is,
 };
 
 #[doc = crate::TAG_QUANT!()]
@@ -215,12 +215,12 @@ impl<T> Interval<T> {
     pub fn empty() -> Self where T: Default {
         Self::open(T::default(), T::default())
     }
-    /// Creates a canonical empty interval,
-    /// equivalent to [`open`][Interval::open]`(T::default(), T::default())`.
-    #[must_use] #[rustfmt::skip]
-    pub const fn empty_const() -> Self where T: ConstDefault {
-        Self::open(T::DEFAULT, T::DEFAULT)
-    }
+    // /// Creates a canonical empty interval,
+    // /// equivalent to [`open`][Interval::open]`(T::DEFAULT, T::DEFAULT)`.
+    // #[must_use] #[rustfmt::skip]
+    // pub const fn empty_const() -> Self where T: ConstDefault {
+    //     Self::open(T::DEFAULT, T::DEFAULT)
+    // }
 
     /// Creates a canonical empty interval,
     /// equivalent to [`open`][Interval::open]`(value, value)`.
@@ -391,9 +391,7 @@ impl<T: PartialOrd> Interval<T> {
 #[rustfmt::skip]
 mod impl_traits {
     use super::*;
-    use crate::{
-        ConstDefault, IncompatibleBounds, Ordering, RangeBounds,
-    };
+    use crate::{IncompatibleBounds, Ordering, RangeBounds};
 
     /// Provides a default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
     ///
@@ -406,14 +404,6 @@ mod impl_traits {
         fn default() -> Self {
             Self::unbounded()
         }
-    }
-    /// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
-    ///
-    /// See the [`Default`][Self::default] implementation for more information.
-    ///
-    /// See [`Default`] for more information.
-    impl<T> ConstDefault for Interval<T> {
-        const DEFAULT: Self = Self::unbounded();
     }
 
     /* infallible conversions */
@@ -524,32 +514,33 @@ mod impl_traits {
         }
     }
 
-    #[cfg(feature = "alloc")]
-    crate::items! {
-        use crate::{format, String};
-        use core::fmt;
-
-        impl<T: fmt::Display> fmt::Display for Interval<T> {
-            /// Formats the interval as a human-readable string.
-            ///
-            /// Examples:
-            /// - `(-∞, 5]` for an unbounded lower bound and inclusive upper bound.
-            /// - `[1, 3)` for a closed lower bound and open upper bound.
-            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                let lower = match &self.lower {
-                    Bound::Included(value) => format!("[{value}"),
-                    Bound::Excluded(value) => format!("({value}"),
-                    Bound::Unbounded => String::from("(-∞"),
-                };
-                let upper = match &self.upper {
-                    Bound::Included(value) => format!("{lower}, {value}]"),
-                    Bound::Excluded(value) => format!("{lower}, {value})"),
-                    Bound::Unbounded => format!("{lower}, ∞)"),
-                };
-                write!(f, "{upper}")
-            }
-        }
-    }
+    // TODO IMPROVE use non-allocation
+    // #[cfg(feature = "alloc")]
+    // crate::items! {
+    //     use crate::{format, String};
+    //     use core::fmt;
+    //
+    //     impl<T: fmt::Display> fmt::Display for Interval<T> {
+    //         /// Formats the interval as a human-readable string.
+    //         ///
+    //         /// Examples:
+    //         /// - `(-∞, 5]` for an unbounded lower bound and inclusive upper bound.
+    //         /// - `[1, 3)` for a closed lower bound and open upper bound.
+    //         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    //             let lower = match &self.lower {
+    //                 Bound::Included(value) => format!("[{value}"),
+    //                 Bound::Excluded(value) => format!("({value}"),
+    //                 Bound::Unbounded => String::from("(-∞"),
+    //             };
+    //             let upper = match &self.upper {
+    //                 Bound::Included(value) => format!("{lower}, {value}]"),
+    //                 Bound::Excluded(value) => format!("{lower}, {value})"),
+    //                 Bound::Unbounded => format!("{lower}, ∞)"),
+    //             };
+    //             write!(f, "{upper}")
+    //         }
+    //     }
+    // }
 
     /// Comparison Logic:
     /// - We compare the lower bounds first.
