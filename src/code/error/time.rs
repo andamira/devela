@@ -21,10 +21,10 @@ use {
 /* individual errors */
 
 define_error! { individual:
-    +tag: crate::TAG_TIME!(),
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub struct SystemTimeError(Duration);
+    +tag: crate::TAG_TIME!(),
     DOC_SYSTEM_TIME_ERROR =
     "Returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",

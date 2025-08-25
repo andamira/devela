@@ -5,8 +5,14 @@
 
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{
+    // errors:
+    IncompatibleBounds,
+    NoInverse,
+    MismatchedSizes,
+    NonNegativeRequired,
+    PositiveRequired,
+    NonZeroRequired,
+    Overflow,
+    // other:
     Sign,
 };
-
-// // from workspace base
-// crate::_reexport_from!("../../libs/base/src/num/reexports.rs", _c);

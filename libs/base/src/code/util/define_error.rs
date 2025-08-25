@@ -38,11 +38,11 @@ macro_rules! _define_error {
     // $doc_str
     //
     individual:
-        $(+tag: $tag:expr ,)?
         $(#[$attributes:meta])*
         $struct_vis:vis struct $struct_name:ident
         $(( $($e_vis:vis $e_ty:ty),+ $(,)? ))? $(;$($_a:lifetime)?)?              // tuple-struct↓
         $({ $($(#[$f_attr:meta])* $f_vis:vis $f_name:ident: $f_ty:ty),+ $(,)? })? // field-struct↑
+        $(+tag: $tag:expr ,)?
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?

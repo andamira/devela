@@ -1,6 +1,6 @@
 // devela_base::code::error::definitions
 //
-//! Defines the [`AllError`] enum.
+//! Defines the most general error types.
 //
 // TOC
 // - individual error types:
@@ -17,7 +17,7 @@ use crate::define_error;
 
 define_error![individual: pub struct FailedErrorConversion;
     DOC_FAILED_CONVERSION = "A failed conversion between two error types.",
-    self+f => write!(f, "Failed to convert between error types"),
+    self+f => write!(f, "Failed to convert between error types."),
 ];
 define_error![individual: pub struct NotImplemented;
     DOC_NOT_IMPLEMENTED = "The requested functionality is not implemented.",

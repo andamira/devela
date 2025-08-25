@@ -2,24 +2,31 @@
 //
 #![doc = crate::_DOC_NUM!()]
 //
-// safety
-// #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
-// mod cast; // Cast // TODO: Needs Overflow error
+// mod cast; // Cast
 mod float;
 mod int;
 mod sign; // Sign
 
-crate::items! { // structural access: _mods, _all
+pub mod error; // error types
+
+crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
     pub use _mods::*;
+    #[allow(unused)] #[doc(hidden, no_inline)]
+    pub use _pub_mods::*;
 
+    mod _pub_mods {
+        pub use super::{
+            error::*,
+        };
+    }
     mod _mods { #![allow(unused)]
         pub use super::{float::_all::*, int::_all::*, sign::*};
         // pub use super::cast::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::_mods::*;
+        pub use super::{_mods::*, _pub_mods::*};
     }
 }

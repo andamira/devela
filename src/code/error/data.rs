@@ -28,6 +28,7 @@ use crate::{Interval, Mismatch, define_error};
 /* individual errors */
 
 define_error! { individual: pub struct DataOverflow(pub Option<usize>);
+    // +tag: TAG_DATA!(), // MAYBE
     DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.",
     self+f => if let Some(v) = self.0 {
         write!(f, "The value {v} has surpassed the bounds of the representable data space.")

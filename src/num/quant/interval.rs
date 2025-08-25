@@ -392,7 +392,7 @@ impl<T: PartialOrd> Interval<T> {
 mod impl_traits {
     use super::*;
     use crate::{
-        ConstDefault, NumError, NumError::IncompatibleBounds, NumResult, Ordering, RangeBounds,
+        ConstDefault, IncompatibleBounds, Ordering, RangeBounds,
     };
 
     /// Provides a default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
@@ -448,8 +448,8 @@ mod impl_traits {
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
     impl<T> TryFrom<Interval<T>> for RangeInclusive<T> {
-        type Error = NumError;
-        fn try_from(interval: Interval<T>) -> NumResult<Self> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
                 (Bound::Included(start), Bound::Included(end)) => Ok(start..=end),
                 _ => Err(IncompatibleBounds),
@@ -459,8 +459,8 @@ mod impl_traits {
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
     impl<T> TryFrom<Interval<T>> for Range<T> {
-        type Error = NumError;
-        fn try_from(interval: Interval<T>) -> NumResult<Self> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
                 (Bound::Included(start), Bound::Excluded(end)) => Ok(start..end),
                 _ => Err(IncompatibleBounds),
@@ -470,8 +470,8 @@ mod impl_traits {
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
     impl<T> TryFrom<Interval<T>> for RangeFrom<T> {
-        type Error = NumError;
-        fn try_from(interval: Interval<T>) -> NumResult<Self> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
                 (Bound::Included(start), Bound::Unbounded) => Ok(start..),
                 _ => Err(IncompatibleBounds),
@@ -482,8 +482,8 @@ mod impl_traits {
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
     impl<T> TryFrom<Interval<T>> for RangeFull {
-        type Error = NumError;
-        fn try_from(interval: Interval<T>) -> NumResult<Self> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
                 (Bound::Unbounded, Bound::Unbounded) => Ok(..),
                 _ => Err(IncompatibleBounds),
@@ -493,8 +493,8 @@ mod impl_traits {
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
     impl<T> TryFrom<Interval<T>> for RangeTo<T> {
-        type Error = NumError;
-        fn try_from(interval: Interval<T>) -> NumResult<Self> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
                 (Bound::Unbounded, Bound::Excluded(end)) => Ok(..end),
                 _ => Err(IncompatibleBounds),
@@ -504,8 +504,8 @@ mod impl_traits {
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
     impl<T> TryFrom<Interval<T>> for RangeToInclusive<T> {
-        type Error = NumError;
-        fn try_from(interval: Interval<T>) -> NumResult<Self> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
                 (Bound::Unbounded, Bound::Included(end)) => Ok(..=end),
                 _ => Err(IncompatibleBounds),

@@ -347,15 +347,18 @@ pub use __reexport as _reexport;
 /// This is used to include files re-exported by lower-level workspace crates,
 /// which add documentation on top of the original one. But there's an [issue][0]
 /// where cross-crate import chains mises docs from middle crates.
+///
 // WAIT: missing cross-crate docs:
 /// [0]: https://github.com/rust-lang/rust/issues/120927
 ///
 /// There's another [issue][1] with the `include!` macro not supporting module-level attributes.
+///
 // WAIT: include! fails with top-level attributes:
 /// [1]: https://github.com/rust-lang/rfcs/issues/752
 ///
 /// so we have to resort to hardcoding the `path` attribute for the module.
-/// (hardcoding is necessary since it only supports a whole literal. See
+/// (hardcoding is necessary since it only supports a whole literal. See [issue][2].
+///
 // WAIT: Module path attribute override with nested macros doesn't work:
 /// [2]: https://github.com/rust-lang/rust/issues/87681
 //
