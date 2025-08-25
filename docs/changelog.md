@@ -92,7 +92,8 @@
 
 ## num
 - move to [base]:
-  - `fsize` and `[iu]size_*` aliases.
+  - aliases: `fsize` and `[iu]size_*`.
+  - types: `Sign`.
 
 ## sys
 ### env

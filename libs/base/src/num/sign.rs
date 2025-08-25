@@ -1,17 +1,13 @@
-// devela::num::sign
+// devela_base::num::sign
 //
-//! the sign of a number.
+//! Defines the [`Sign`] of a number.
 //
 // TOC
-// - definition
-// - impl Into Sign
-// - impl (Try)From Sign
+// - enum Sign
+// - impl Into<Sign>
+// - impl From<Sign> TryFrom<Sign>
 
-use crate::{
-    ConstDefault,
-    NumError::{self, Invalid},
-    NumResult as Result,
-};
+use crate::InvalidValue;
 
 /// Represents the sign of a number.
 #[must_use]
@@ -28,12 +24,7 @@ pub enum Sign {
     Positive = 1,
 }
 
-impl ConstDefault for Sign {
-    /// No sign.
-    const DEFAULT: Self = Sign::None;
-}
-
-/* Into Sign */
+/* Into<Sign> */
 
 // helper macro to implement conversion from numbers to Sign
 macro_rules! impl_into_sign {
@@ -83,7 +74,7 @@ impl_into_sign![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, is
 impl_into_sign![float: f32, f64];
 impl_into_sign![bool];
 
-/* (Try)From Sign */
+/* impl From<Sign> TryFrom<Sign> */
 
 // helper macro to implement conversion from Sign to numbers (1, 0, -1)
 macro_rules! impl_from_sign {
@@ -105,17 +96,17 @@ macro_rules! impl_from_sign {
     (uint: $($uint:ty),+) => { $( impl_from_sign![@uint: $uint]; )+ };
     (@uint: $uint:ty) => {
         impl TryFrom<Sign> for $uint {
-            type Error = NumError;
+            type Error = InvalidValue;
 
             /// Returns 0 if `None` and 1 if `Positive`.
             ///
             /// # Errors
-            /// Returns [`Invalid`] if the sign is `Negative`.
-            fn try_from(s: Sign) -> Result<$uint> {
+            /// Returns [`InvalidValue`] if the sign is `Negative`.
+            fn try_from(s: Sign) -> Result<$uint, InvalidValue> {
                 match s {
                     Sign::None => Ok(0),
                     Sign::Positive => Ok(1),
-                    Sign::Negative => Err(Invalid),
+                    Sign::Negative => Err(InvalidValue),
                 }
             }
         }
@@ -137,17 +128,17 @@ macro_rules! impl_from_sign {
     // boolean primitive
     (bool) => {
         impl TryFrom<Sign> for bool {
-            type Error = NumError;
+            type Error = InvalidValue;
 
             /// Returns `true` if `None` and `false` if `Negative`.
             ///
             /// # Errors
-            /// Returns [`Invalid`] if the sign is `None`.
-            fn try_from(s: Sign) -> Result<bool> {
+            /// Returns [`InvalidValue`] if the sign is `None`.
+            fn try_from(s: Sign) -> Result<bool, InvalidValue> {
                 match s {
                     Sign::Positive => Ok(true),
                     Sign::Negative => Ok(false),
-                    Sign::None => Err(Invalid),
+                    Sign::None => Err(InvalidValue),
                 }
             }
         }

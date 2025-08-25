@@ -17,7 +17,7 @@ mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
 mod no; // NoNum
 mod primitive; // Cast, Primitive[Cast|Join|Split]
-mod sign; // Sign
+mod reexports;
 mod traits; // Num, NumConst, NumRef
 
 #[cfg(feature = "unit")]
@@ -40,7 +40,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     mod _mods { #![allow(unused)]
         pub use super::{
             error::*, float::_all::*, frac::_all::*, int::_all::*,
-            no::*, primitive::_all::*, sign::*, traits::*,
+            no::*, primitive::_all::*, reexports::*, traits::*,
         };
         #[cfg(feature = "unit")]
         pub use super::unit::_all::*;

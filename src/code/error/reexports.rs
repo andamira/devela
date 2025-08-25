@@ -11,12 +11,13 @@ _reexport_from!(std "../../../libs/base_std/src/code/error/reexports.rs", _s);
 
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{
+    // individual:
     FailedErrorConversion,
+    InvalidValue,
+    NotImplemented,
+    NotSupported,
+    // composite:
     NotAvailable,
-        NotImplemented,
-        NotSupported,
-
-    code::util::_tags::*, // _workspace_private
 };
 
 #[cfg(feature = "error")]

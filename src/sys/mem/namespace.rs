@@ -3,17 +3,17 @@
 //! Defines the [`Mem`] namespace.
 //
 
-#[allow(unused_imports, reason = "unsafe feature-gated")]
-use ::core::{
-    mem::{transmute_copy, zeroed},
-    slice::{from_raw_parts, from_raw_parts_mut},
-};
 use crate::{
     _core::mem::{
         align_of, align_of_val, discriminant, drop, forget, needs_drop, replace, size_of,
         size_of_val, swap, take,
     },
     Discriminant,
+};
+#[allow(unused_imports, reason = "unsafe feature-gated")]
+use ::core::{
+    mem::{transmute_copy, zeroed},
+    slice::{from_raw_parts, from_raw_parts_mut},
 };
 
 #[doc = crate::TAG_NAMESPACE!()]

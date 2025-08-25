@@ -3,12 +3,13 @@
 //! Defines the [`AllError`] enum.
 //
 // TOC
-// - individual errors:
+// - individual error types:
 //   - InvalidErrorConversion
 //   - NotImplemented
 //   - NotSupported
-// - composite errors:
-//   - NotAvailable
+//   - InvalidValue
+// - composite error types:
+//   - NotAvailable: NotImplemented + NotSupported
 
 use crate::define_error;
 
@@ -25,6 +26,11 @@ define_error![individual: pub struct NotImplemented;
 define_error![individual: pub struct NotSupported;
     DOC_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
+];
+
+define_error![individual: pub struct InvalidValue;
+    DOC_INVALID_VALUE = "An invalid value was received for the given type or operation.",
+    self+f => write!(f, "An invalid value was received for the given type or operation."),
 ];
 
 /* composite errors */

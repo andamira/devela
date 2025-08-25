@@ -1,7 +1,15 @@
 // devela::code::default
 //
-//!
+//! Defines the [`ConstDefault`] trait and implements it for many types.
 //
+// TOC
+// - definitions:
+//   - trait ConstDefault
+//   - macro impl_cdef!
+// - implementations:
+//   - mod impl_core
+//   - mod impl_std
+//   - mod impl_devela
 
 /* definitions */
 
@@ -12,7 +20,7 @@ pub trait ConstDefault {
     const DEFAULT: Self;
 }
 
-// macro helper to impl ConstDefault. Supports generics.
+/// A macro helper to implement [`ConstDefault`]. Supports generics.
 macro_rules! impl_cdef {
     // <A>
     (<$A:ident> $def:expr => $($t:ty),+) => { $( $crate::impl_cdef![@<$A> $def => $t]; )+ };
@@ -121,7 +129,7 @@ macro_rules! impl_cdef {
 }
 pub(crate) use impl_cdef;
 
-/* standard library types */
+/* implementations */
 
 #[rustfmt::skip]
 mod impl_core {
@@ -223,4 +231,14 @@ mod impl_std {
     // impl_cdef![<K, V> Self::with_hasher(DefaulHashher) => BTreeMap<K, V>];
     // WAIT: [const_io_structs](https://github.com/rust-lang/rust/issues/78812)
     // impl_cdef![Self => Cursor, Empty, Sink];
+}
+
+#[rustfmt::skip]
+mod impl_devela {
+    use super::ConstDefault;
+    use crate::{
+        Sign,
+    };
+
+    impl ConstDefault for Sign { #[doc = "No sign."] const DEFAULT: Self = Sign::None; }
 }
