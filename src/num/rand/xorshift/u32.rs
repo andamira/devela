@@ -117,8 +117,6 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     /// Returns a seeded `XorShift32` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[cfg(feature = "join")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new2_u16(seeds: [u16; 2]) -> Self {
         Self::new(crate::Cast::<u32>::from_u16_le(seeds))
     }
@@ -131,8 +129,8 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     }
 }
 
-#[cfg(all(feature = "dep_rand_core", feature = "join"))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
+#[cfg(feature = "dep_rand_core")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use crate::_dep::rand_core::{RngCore, SeedableRng};
     use crate::{Cast, XorShift32};

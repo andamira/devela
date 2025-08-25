@@ -3,9 +3,7 @@
 //! 64-bit version of XorShift.
 //
 
-#[cfg(feature = "join")]
-use crate::Cast;
-use crate::{ConstDefault, Own, xorshift_basis};
+use crate::{Cast, ConstDefault, Own, xorshift_basis};
 
 #[doc = crate::TAG_RAND!()]
 /// The `XorShift64` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -117,8 +115,6 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     /// Returns a seeded `XorShift64` generator from the given 2 × 32-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[cfg(feature = "join")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new2_u32(seeds: [u32; 2]) -> Self {
         Self::new(Cast::<u64>::from_u32_le(seeds))
     }
@@ -126,8 +122,6 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     /// Returns a seeded `XorShift64` generator from the given 4 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[cfg(feature = "join")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new4_u16(seeds: [u16; 4]) -> Self {
         Self::new(Cast::<u64>::from_u16_le(seeds))
     }

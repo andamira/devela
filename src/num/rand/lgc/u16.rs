@@ -103,8 +103,8 @@ impl Lgc16 {
     }
 }
 
-#[cfg(all(feature = "dep_rand_core", feature = "join"))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
+#[cfg(feature = "dep_rand_core")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use crate::_dep::rand_core::{RngCore, SeedableRng};
     use crate::{Cast, Lgc16};

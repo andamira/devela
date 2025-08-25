@@ -11,12 +11,10 @@
 //   - permute_rep
 
 use super::super::shared_docs::*;
-#[cfg(feature = "cast")]
-use crate::Cast;
 #[cfg(_int_i··)]
 use crate::NumError::NonNegativeRequired;
 use crate::{
-    Int,
+    Cast, Int,
     NumError::{MismatchedSizes, Overflow},
     NumResult as Result, cfor, is, paste,
 };
@@ -308,8 +306,6 @@ macro_rules! impl_combinatorics {
             #[doc = "assert![Int(-3_" $t ").permute_rep(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").permute_rep(-2).is_err()];"]
             /// ```
-            #[cfg(feature = "cast")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 is![n < 0 || r < 0; return Err(NonNegativeRequired)];
@@ -561,8 +557,6 @@ macro_rules! impl_combinatorics {
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]
             #[doc = "assert![Int(" $t "::MAX).permute_rep(" $t "::MAX).is_err()];"]
             /// ```
-            #[cfg(feature = "cast")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 let Ok(r_u32) = Cast(r).checked_cast_to_u32() else {

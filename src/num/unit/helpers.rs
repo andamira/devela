@@ -7,12 +7,10 @@ macro_rules! impl_try_from {
     };
 
     (@$unit:ty, $from_prim:ty => $to_prim:ty) => {
-        #[cfg(feature = "cast")]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
         impl TryFrom<$unit> for $to_prim {
-            type Error = $crate::num::NumError;
+            type Error = $crate::Overflow;
             fn try_from(from: $unit) -> Result<$to_prim, Self::Error> { crate::paste! {
-                $crate::num::Cast($from_prim::from(from)).[< checked_cast_to_ $to_prim>]()
+                $crate::Cast($from_prim::from(from)).[< checked_cast_to_ $to_prim>]()
             }}
         }
     };

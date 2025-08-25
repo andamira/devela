@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_NUM!()]
 //
 
-// mod cast; // Cast
+mod cast; // Cast
 mod float;
 mod int;
 mod ord;
@@ -18,8 +18,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{float::_all::*, int::_all::*, ord::_all::*};
-        // pub use super::cast::_all::*;
+        pub use super::{cast::_all::*, float::_all::*, int::_all::*, ord::_all::*};
     }
     mod _pub_mods {
         pub use super::{

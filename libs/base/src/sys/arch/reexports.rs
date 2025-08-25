@@ -1,4 +1,4 @@
-// devela::sys::arch::reexports
+// devela_base::sys::arch::reexports
 //
 //!
 //

@@ -184,7 +184,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 270/300 (30 remaining), 141 visible, 129 hidden
+[features] # 266/300 (34 remaining), 137 visible, 129 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -297,15 +297,11 @@ media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	image = ["sdl2?/image"]
 	midi = []
 	video = []
-num = ["geom", "prim", "rand", "unit"]
+num = ["geom", "rand", "unit"]
 	geom = ["linear", "metric", "shape"] # geometry
 		linear = [] # linear algebra
 		metric = []
 		shape = []
-	prim = ["cast", "join", "split"]
-		cast = []  # PrimitiveCast
-		join = []  # PrimitiveJoin
-		split = [] # PrimitiveSplit
 	rand = [] # random number generators
 	# symb = []
 	unit = [] # unit prefixes
@@ -1278,8 +1274,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(lang··, ffi··)',
 	# media: (1)
 	'cfg(media··)',
-	# num: (14)
-	'cfg(num··, prim··)',
+	# num: (13)
+	'cfg(num··)',
 	'cfg(_sort··, _sort_int··, _sort_float··)',
 	'cfg(_nums··, _cmp··, _float··, _int··, _int_i··, _int_u··)',
 	'cfg(_non_value··, _non_value_i··, _non_value_u··)',

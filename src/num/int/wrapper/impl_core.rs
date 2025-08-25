@@ -16,7 +16,6 @@
 //   - midpoint
 
 use super::super::shared_docs::*;
-#[cfg(feature = "cast")]
 use crate::Cast;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::isize_up;
@@ -289,9 +288,8 @@ macro_rules! impl_core {
             /// # #[cfg(feature = "_int_i8")]
             /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
-            #[cfg(feature = "cast")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
+                // MAYBE use the Scale::scale implementation.
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
                 let b_a = is![let Some(n) = b.checked_sub(a); n; return Err(Overflow(None))];
@@ -302,7 +300,7 @@ macro_rules! impl_core {
                 let sum = is![let Some(n) = div.checked_add(a); n; return Err(Overflow(None))];
                 match Cast(sum).[<checked_cast_to_ $t>]() {
                     Ok(n) => Ok(Int(n)),
-                    Err(e) => Err(e),
+                    Err(_) => Err(Overflow(None)), // Err(e) => Err(e), // TEMP FIX
                 }
             }
 
@@ -470,14 +468,18 @@ macro_rules! impl_core {
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg(all(feature = $icap))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn gcd_ext(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 if self.0 == 0 { return Ok(GcdReturn::new(Int(b), Int(0), Int(1))); }
                 if b == 0 { return Ok(GcdReturn::new(self, Int(1), Int(0))); }
 
-                let mut a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
-                let mut b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
+                // TEMP FIX (for now panics)
+                // let mut a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
+                // let mut b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
+                let mut a = unwrap![ok Cast(self.0).[<checked_cast_to_ $iup>]()];
+                let mut b = unwrap![ok Cast(b).[<checked_cast_to_ $iup>]()];
+
 
                 let mut k = 0;
                 while ((a | b) & 1) == 0 {
@@ -540,11 +542,14 @@ macro_rules! impl_core {
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg(feature = $icap)]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
-                let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
-                let b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
+                // TEMP FIX (for now panics)
+                // let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
+                // let b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
+                let a = unwrap![ok Cast(self.0).[<checked_cast_to_ $iup>]()];
+                let b = unwrap![ok Cast(b).[<checked_cast_to_ $iup>]()];
 
                 if a == 0 {
                     Ok(GcdReturn::new(Int(b as $t), Int(0), Int(1)))
@@ -593,8 +598,6 @@ macro_rules! impl_core {
             /// # #[cfg(feature = "_int_u8")]
             /// assert![Int(200_u8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
-            #[cfg(feature = "cast")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "cast")))]
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
@@ -606,7 +609,7 @@ macro_rules! impl_core {
                 let sum = is![let Some(n) = div.checked_add(a); n; return Err(Overflow(None))];
                 match Cast(sum).[<checked_cast_to_ $t>]() {
                     Ok(n) => Ok(Int(n)),
-                    Err(e) => Err(e),
+                    Err(_) => Err(Overflow(None)), // Err(e) => Err(e), // TEMP FIX
                 }
             }
 

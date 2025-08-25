@@ -1,4 +1,4 @@
-// devela::num::primitive::namespace
+// devela_base::num::primitive::namespace
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides *const* casting, joining and splitting operations between primitives.
@@ -12,7 +12,8 @@
 pub struct Cast<T>(pub T);
 
 mod core_impls {
-    use crate::{_core::fmt, Cast, ConstDefault, Ordering};
+    use crate::{Cast, Ordering};
+    use core::fmt;
 
     impl<T: Clone> Clone for Cast<T> {
         fn clone(&self) -> Self {
@@ -25,10 +26,6 @@ mod core_impls {
         fn default() -> Self {
             Cast(T::default())
         }
-    }
-
-    impl<T: ConstDefault> ConstDefault for Cast<T> {
-        const DEFAULT: Self = Cast(T::DEFAULT);
     }
 
     impl<T: PartialEq> PartialEq for Cast<T> {

@@ -261,8 +261,6 @@ mod reflection {
         features: &["num",
             "geom",
                 "linear", "metric", "shape",
-            "prim",
-                "cast", "join", "split",
             "rand",
             "unit",
         ]
@@ -270,10 +268,6 @@ mod reflection {
         pub const GEOM: FlagsFeatures = FlagsFeatures {
             ref_flags: &["geom··"],
             features: &["geom", "linear", "metric", "shape"]
-        };
-        pub const PRIM: FlagsFeatures = FlagsFeatures {
-            ref_flags: &["prim··"],
-            features: &["prim", "cast", "join", "split"]
         };
     pub const PHYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["phys··"],
@@ -421,7 +415,7 @@ mod reflection {
             GAME,
             LANG, FFI,
             MEDIA,
-            NUM, GEOM, PRIM,
+            NUM, GEOM,
             PHYS,
             SYS, MEM,
             TEXT,

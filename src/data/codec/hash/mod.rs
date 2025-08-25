@@ -5,8 +5,8 @@
 #![doc = crate::doc_!(extends: hash)]
 //!
 #![cfg_attr(
-    any(not(feature = "hash"), not(feature = "cast")),
-    doc = "## Features\nTo compile the missing items, enable the `hash` and `cast` features."
+    not(feature = "hash"),
+    doc = "## Features\nTo compile the missing items, enable the `hash` feature."
 )]
 //
 
@@ -16,8 +16,6 @@ mod reexports;
 #[cfg(feature = "hash")]
 crate::items! {
     mod pengy; // hash_pengy
-
-    #[cfg(feature = "cast")]
     mod fnv; // HasherBuildFnv, HasherFnv
 }
 
@@ -32,11 +30,7 @@ crate::items! { // structural access: _mods, _all, _always
 
         #[cfg(feature = "hash")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "hash")))]
-        pub use super::pengy::*;
-
-        #[cfg(all(feature = "hash", feature = "cast"))]
-        #[cfg_attr(nightly_doc, doc(cfg(all(feature = "hash", feature = "cast"))))]
-        pub use super::fnv::*;
+        pub use super::{fnv::*, pengy::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

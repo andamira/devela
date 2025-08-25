@@ -1,4 +1,4 @@
-// devela::data::conversion::cast::tests
+// devela_base::num::cast::tests
 //
 // TOC
 // - split_join_le
@@ -7,7 +7,6 @@
 use super::Cast;
 
 #[test]
-#[cfg(all(feature = "join", feature = "split"))]
 fn split_join_le() {
     let v = u16::MAX / 2;
     let split = Cast(v).into_u8_le();
@@ -39,7 +38,6 @@ fn split_join_le() {
 }
 
 #[test]
-#[cfg(all(feature = "join", feature = "split"))]
 fn split_join_be() {
     let v = u16::MAX / 2;
     let split = Cast(v).into_u8_be();

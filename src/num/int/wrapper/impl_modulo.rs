@@ -1416,8 +1416,8 @@ macro_rules! impl_modulo {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_inv(m)?, 4];"]
             /// # Ok(()) }
             /// ```
-            #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg(feature = $icap)]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1446,8 +1446,8 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`, if there's no inverse,
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
-            #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg(feature = $icap)]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let (gcd, x, _) = unwrap![ok self.gcd_ext(modulus)].as_tuple_copy();
                 if gcd.0 != 1 {
@@ -1484,8 +1484,8 @@ macro_rules! impl_modulo {
             #[doc = "assert_eq![Int(4_" $t ").modulo_div(2, m)?, 2];"]
             /// # Ok(()) }
             /// ```
-            #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg(feature = $icap)]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_div(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1505,8 +1505,8 @@ macro_rules! impl_modulo {
             /// if there's no multiplicative inverse of `other`.
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
-            #[cfg(all(feature = $icap, feature = "cast"))]
-            #[cfg_attr(nightly_doc, doc(cfg(all(feature = $icap, feature = "cast"))))]
+            #[cfg(feature = $icap)]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_div_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let inverse = Int(other).modulo_mul_inv_unchecked(modulus);
                 self.modulo_mul_unchecked(inverse.0, modulus)

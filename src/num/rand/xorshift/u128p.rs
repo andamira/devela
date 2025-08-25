@@ -3,9 +3,11 @@
 //! 128-bit + version of XorShift.
 //
 
-#[cfg(any(feature = "join", feature = "split"))]
-use crate::Cast;
-use crate::{ConstDefault, Own};
+#[cfg(feature = "alloc")]
+use crate::Box;
+use crate::{Cast, ConstDefault, Own};
+#[cfg(feature = "std")]
+use crate::{Hasher, HasherBuild, RandomState};
 
 #[doc = crate::TAG_RAND!()]
 /// The `XorShift128+` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -111,8 +113,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 128-bit seed.
     ///
     /// The seeds will be split in little endian order.
-    #[cfg(feature = "split")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
     pub const fn new1_u128(seed: u128) -> Self {
         Self::new(Cast(seed).into_u64_le())
     }
@@ -127,8 +127,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 4 × 32-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[cfg(feature = "join")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new4_u32(seeds: [u32; 4]) -> Self {
         Self::new([
             Cast::<u64>::from_u32_le([seeds[0], seeds[1]]),
@@ -139,8 +137,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 8 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[cfg(feature = "join")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "join")))]
     pub const fn new8_u16(seeds: [u16; 8]) -> Self {
         Self::new([
             Cast::<u64>::from_u16_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
