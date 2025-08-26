@@ -5,11 +5,70 @@
 // TOC
 // - define_error!
 // - tests
-
-/// Helper to define individual and composite error types.
-///
-/// It also helps implementing `From` and `TryFrom` between them.
 //
+// IMPROVE:
+// - do not depend on included types being Copy.
+// - make the error tag optional.
+
+/// Helper for defining individual and composite error types.
+///
+/// It can also implement `From` and `TryFrom` traits between them.
+///
+/** # Example
+```
+# use devela_base::define_error;
+// Define simple individual error types
+define_error! {
+    individual:
+    /// A basic error with a code
+    pub struct ErrorCode(pub u32);
+    DOC_ERROR_CODE = "An error with a numeric code",
+    self + f => write!(f, "Error code: {}", self.0)
+}
+define_error! {
+    individual:
+    /// An error with message details
+    pub struct ErrorDetails {
+        pub code: u32,
+        pub message: &'static str,
+    }
+    DOC_ERROR_DETAILS = "An error with code and message details",
+    self + f => write!(f, "Error {}: {}", self.code, self.message)
+}
+
+// Define a composite error
+define_error! {
+    composite: fmt(f)
+    /// Container for multiple error types
+    pub enum CompositeError {
+        DOC_ERROR_CODE: +const CodeVariant(code|0: u32) => ErrorCode(*code),
+        DOC_ERROR_DETAILS: // ← this variant won't have const conversion
+            DetailsVariant { code: u32, message: &'static str } =>
+                ErrorDetails { code: *code, message: *message }
+    }
+}
+
+// Create individual errors
+let code_error = ErrorCode(42);
+let details_error = ErrorDetails {
+    code: 100,
+    message: "Example error",
+};
+
+// Automatic conversion to composite error
+let composite_from_code: CompositeError = code_error.into();
+let composite_from_details: CompositeError = details_error.into();
+
+// Try to convert back (only works for matching variants)
+match ErrorCode::try_from(composite_from_code) {
+    Ok(original) => println!("Successfully converted back: {}", original),
+    Err(_) => println!("Conversion failed - wrong variant"),
+}
+
+// Const conversion available for +const variants
+const CONST_ERROR: CompositeError = CompositeError::from_error_code(ErrorCode(99));
+```
+**/
 // NOTES:
 // - alternative sections for tuple-struct and field-struct variants are indicated in the margin.
 // - we are employing the trick `$(;$($_a:lifetime)?` for the optional semicolon terminator,
@@ -19,25 +78,27 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _define_error {
     (
-    // Defines a standalone error tuple-struct with elements.
+    // Defines a standalone error struct with optional tuple or field variants.
     //
-    // # Args
-    // $tag:          optional additional doc tag.
-    // $attributes:   attributes for the const & struct declarations, and its implementations.
-    // $struct_name:  the name of the individual error struct.
-    // $struct_vis:   its visibility.
+    // # Arguments
+    // - `attributes`  :   Optional attributes applied to struct and implementations
+    // - `struct_vis`  :   Struct visibility (e.g., `pub`, `pub(crate)`)
+    // - `struct_name` :   Name of the error struct
     //
-    //  $e_vis
-    //  $e_ty:
+    // ## Struct Body (choose one):
+    // - Unit variant  :  No body (just struct name)
+    // - Tuple variant : `(vis1 Type1, vis2 Type2, ...)`
+    // - Field variant : `{ #[attr] vis1 field1: Type1, #[attr] vis2 field2: Type2, ... }`
     //
-    //  $f_attr
-    //  $f_vis
-    //  $f_name
-    //  $f_ty
+    // ## Documentation:
+    // - `+tag: "tag text",`              : Optional additional doc tag
+    // - `DOC_CONST_NAME = "doc string",` : Constant name and documentation string
     //
-    // $DOC_NAME
-    // $doc_str
-    //
+    // ## Display Implementation:
+    // - `self_var + fmt_var => expression`: Display implementation where:
+    //   - `self_var`   : Name for self reference in display method
+    //   - `fmt_var`    : Name for formatter in display method
+    //   - `expression` : Expression writing to formatter
     individual:
         $(#[$attributes:meta])*
         $struct_vis:vis struct $struct_name:ident
@@ -70,12 +131,43 @@ macro_rules! _define_error {
         }
     };
     (
-    // Defines a composite Error enum, as well as:
-    // - implements Error and Display.
-    // - implements From and TryFrom in reverse.
+    // Defines a composite error enum that aggregates multiple individual error types.
+    //
+    // # Arguments
+    // - `fmt($fmt:ident)`      : Display formatter variable name for the Display implementation
+    // - `enum_attr`            : Optional attributes applied to the enum declaration
+    // - `vis`                  : Enum visibility (e.g., `pub`, `pub(crate)`)
+    // - `composite_error_name` : Name of the composite error enum
+    //
+    // ## Variant Definitions (one or more):
+    // For each variant:
+    // - `+tag: "tag text",` : Optional additional doc tag for the variant
+    // - `variant_attr`      : Optional attributes for the variant
+    // - `DOC_VARIANT`       : Constant name for variant documentation
+    // - `+const`            : Optional flag to generate const conversion methods
+    // - `variant_name`      : Name of the variant
+    //
+    // ## Variant Data (choose one per variant):
+    // - Unit variant  : No data (just the variant name)
+    // - Tuple variant : `(field_name|index: field_type, ...)`
+    // - Field variant : `{ #[attr] field_name: field_type, ... }`
+    //
+    // ## Conversion Mapping:
+    // - `=> individual_error_name`: Individual error type this variant maps to
+    // - Display expression mapping (matches variant data structure):
+    //   - Unit  : No mapping needed
+    //   - Tuple : `(expression_for_field1, expression_for_field2, ...)`
+    //   - Field : `{ field_name: expression_for_field, ... }`
+    //
+    // # Generates:
+    // - Composite enum with specified variants (unit, tuple or field)
+    // - Error and Display implementations
+    // - From/TryFrom implementations for each individual error type
+    // - Optional const conversion methods for variants marked with +const
     composite: fmt($fmt:ident)
         $(#[$enum_attr:meta])*
         $vis:vis enum $composite_error_name:ident { $(
+            $(+tag: $tag:expr ,)?
             $(#[$variant_attr:meta])*
             $DOC_VARIANT:ident:
             $(+const$($_c:lifetime)?)?
@@ -91,6 +183,8 @@ macro_rules! _define_error {
         $(#[$enum_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
+            $(#[doc = $tag])?
+            #[doc = $crate::TAG_ERROR!()]
             $(#[$variant_attr])*
             #[doc = $DOC_VARIANT!()]
             $variant_name
@@ -129,7 +223,7 @@ macro_rules! _define_error {
     };
     (
     // Implements `From` an individual error type to a composite error containing it, and
-    // implements `TryFrom` in reverse. Optionally implements a const fn from_ind_to_comp method.
+    // implements `TryFrom` in reverse. Optionally implements a `const fn from_individual` method.
     $(+const$($_c:lifetime)?)?
     from($fn_arg:ident): $from_individual:ident, for: $for_composite:ident
     => $variant_name:ident
@@ -242,6 +336,7 @@ mod tests {
         /* define individual errors */
 
         define_error! { individual: pub struct UnitStruct;
+            +tag: "tag",
             DOC_UNIT_STRUCT = "docstring", self+f => write!(f, "display"),
         }
         define_error! { individual: pub struct SingleElement(pub(crate) Option<u8>);
@@ -264,6 +359,7 @@ mod tests {
         define_error! { composite: fmt(f)
             /// A composite error superset.
             pub enum CompositeSuperset {
+                +tag: "tag",
                 DOC_UNIT_STRUCT: +const SuperUnit => UnitStruct,
                 DOC_SINGLE_ELEMENT: SuperSingle(i|0: Option<u8>) => SingleElement(*i),
                 DOC_MULTI_ELEMENT: SuperMultiple(i|0: i32, j|1: u32) => MultipleElements(*i, *j),
