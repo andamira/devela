@@ -55,12 +55,14 @@ define_error! { composite: fmt(f)
     /// Used in methods of:
     /// [`StringNonul`][crate::StringNonul], and `StringU*`.
     pub enum InvalidText {
-        DOC_INVALID_CHAR: Char(c|0: char) => InvalidChar(*c),
-        DOC_INVALID_UTF8: Utf8 {
-            #[doc = ""] valid_up_to: usize,
-            #[doc = ""] error_len: Option<usize>
-        } => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
-        DOC_MISMATCHED_CAPACITY:
+        DOC_INVALID_CHAR: +const
+            Char(c|0: char) => InvalidChar(*c),
+        DOC_INVALID_UTF8: +const
+            Utf8 {
+                #[doc = ""] valid_up_to: usize,
+                #[doc = ""] error_len: Option<usize>
+            } => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
+        DOC_MISMATCHED_CAPACITY: +const
             Capacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
     }
 }
@@ -91,22 +93,22 @@ mod full_composite {
         /// A text-related composite error.
         #[non_exhaustive]
         pub enum TextError {
-            DOC_ELEMENT_NOT_FOUND:
+            DOC_ELEMENT_NOT_FOUND: +const
                 ElementNotFound => ElementNotFound,
 
-            DOC_INVALID_CHAR:
+            DOC_INVALID_CHAR: +const
                 InvalidChar(c|0: char) => InvalidChar(*c),
 
-            DOC_INVALID_UTF8:
-            InvalidUtf8 {
-                /// The index in the given string up to which valid UTF-8 was verified.
-                valid_up_to: usize,
-                /// The length of the error in bytes, if known.
-                error_len: Option<usize>
-            }
-            => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
+            DOC_INVALID_UTF8: +const
+                InvalidUtf8 {
+                    /// The index in the given string up to which valid UTF-8 was verified.
+                    valid_up_to: usize,
+                    /// The length of the error in bytes, if known.
+                    error_len: Option<usize>
+                }
+                => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
 
-            DOC_MISMATCHED_CAPACITY:
+            DOC_MISMATCHED_CAPACITY: +const
                 MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
         }
     }

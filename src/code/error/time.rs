@@ -59,13 +59,12 @@ mod full_composite {
         /// A time-related composite error.
         #[non_exhaustive]
         pub enum TimeError {
-            DOC_DATA_OVERFLOW:
+            DOC_DATA_OVERFLOW: +const
                 DataOverflow(o|0: Option<usize>) => DataOverflow(*o),
 
-            // FIXME
             #[cfg(feature = "std")]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-            DOC_SYSTEM_TIME_ERROR:
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
+            DOC_SYSTEM_TIME_ERROR: +const
                 SystemTime(d|0: Duration) => SystemTimeError(*d),
         }
     }

@@ -124,8 +124,8 @@ define_error! { composite: fmt(f)
     /// [`Destaque`][crate::Destaque],
     /// [`Stack`][crate::Stack].
     pub enum DataNotEnough {
-        DOC_NOT_ENOUGH_ELEMENTS:    Elements(i|0: Option<usize>)  => NotEnoughElements(*i),
-        DOC_NOT_ENOUGH_SPACE:       Space(i|0: Option<usize>)     => NotEnoughSpace(*i),
+        DOC_NOT_ENOUGH_ELEMENTS: +const Elements(i|0: Option<usize>)  => NotEnoughElements(*i),
+        DOC_NOT_ENOUGH_SPACE:    +const Space(i|0: Option<usize>)     => NotEnoughSpace(*i),
     }
 }
 define_error! { composite: fmt(f)
@@ -140,13 +140,13 @@ define_error! { composite: fmt(f)
     /// [`BitOps`][crate::BitOps],
     /// [`Bitwise`][crate::Bitwise].
     pub enum MismatchedBounds {
-        DOC_DATA_OVERFLOW:
+        DOC_DATA_OVERFLOW: +const
             DataOverflow(i|0: Option<usize>) => DataOverflow(*i),
-        DOC_INDEX_OUT_OF_BOUNDS:
+        DOC_INDEX_OUT_OF_BOUNDS: +const
             IndexOutOfBounds(i|0: Option<usize>) => IndexOutOfBounds(*i),
-        DOC_MISMATCHED_CAPACITY:
+        DOC_MISMATCHED_CAPACITY: +const
             MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
-        DOC_MISMATCHED_INDICES:
+        DOC_MISMATCHED_INDICES: +const
             MismatchedIndices => MismatchedIndices,
     }
 }
@@ -157,7 +157,7 @@ define_error! { composite: fmt(f)
     /// Used in methods of:
     /// [`ArrayUninit`][crate::ArrayUninit].
     pub enum PartialSpace {
-        DOC_NOT_ENOUGH_SPACE:   NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
-        DOC_PARTIALLY_ADDED:    PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
+        DOC_NOT_ENOUGH_SPACE: +const NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
+        DOC_PARTIALLY_ADDED:  +const PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
     }
 }

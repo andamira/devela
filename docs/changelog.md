@@ -79,6 +79,10 @@
 
 ## code
 ### error
+- update `define_error!` macro.
+  - move to `code::error`.
+  - update docs, add example.
+  - make conversion method optional const.
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 
 ### utils

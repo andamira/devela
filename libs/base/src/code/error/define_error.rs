@@ -1,4 +1,4 @@
-// devela_base::code::util::define_error
+// devela_base::code::error::define_error
 //
 //! Defines [`define_error!`].
 //
@@ -13,7 +13,8 @@
 // NOTES:
 // - alternative sections for tuple-struct and field-struct variants are indicated in the margin.
 // - we are employing the trick `$(;$($_a:lifetime)?` for the optional semicolon terminator,
-//   where the never expected lifetime allows to refer to the non-identifier `;` later on.
+//   where the never expected lifetime allows to refer to the non-identifier `;` later on;
+//   the same with `$(+const$($_c:lifetime)?)?` for the optional const fn implementation.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _define_error {
@@ -67,12 +68,6 @@ macro_rules! _define_error {
                 $display_expr
             }
         }
-        // $(#[$attributes])*
-        // impl $crate::ExtError for $struct_name { DISABLED
-        //     type Kind = ();
-        //     fn error_eq(&self, other: &Self) -> bool { self == other }
-        //     fn error_kind(&self) -> Self::Kind {}
-        // }
     };
     (
     // Defines a composite Error enum, as well as:
@@ -83,6 +78,7 @@ macro_rules! _define_error {
         $vis:vis enum $composite_error_name:ident { $(
             $(#[$variant_attr:meta])*
             $DOC_VARIANT:ident:
+            $(+const$($_c:lifetime)?)?
             $variant_name:ident
                 $(( $($e_name:ident| $e_numb:literal: $e_ty:ty),+ ))?             // tuple-struct↓
                 $({ $($(#[$f_attr:meta])* $f_name:ident: $f_ty:ty),+ })?          // field-struct↑
@@ -104,15 +100,11 @@ macro_rules! _define_error {
 
         // implements Error, & Display:
         impl $crate::Error for $composite_error_name {}
-        // impl $crate::ExtError for $composite_error_name { // DISABLED
-        //     type Kind = ();
-        //     fn error_eq(&self, other: &Self) -> bool { self == other }
-        //     fn error_kind(&self) -> Self::Kind {}
-        // }
         impl $crate::Display for $composite_error_name  {
             fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 match self { $(
                     $(#[$variant_attr])*
+                    #[allow(unused_doc_comments, reason = "repeated here for feature-gating")]
                     $composite_error_name::$variant_name
                     $(( $($e_name),+ ))?                                          // tuple-struct↓
                     $({ $($f_name),+ })?                                          // field-struct↑
@@ -128,16 +120,17 @@ macro_rules! _define_error {
         // and implements TryFrom in reverse:
         $(
             $(#[$variant_attr])*
-            $crate::define_error! { from(_f): $individual_error_name, for: $composite_error_name
-                => $variant_name
+            $crate::define_error! { $(+const$($_c)?)?
+                from(_f): $individual_error_name, for: $composite_error_name => $variant_name
                 $(( $($e_name, $crate::field_of![_f, $e_numb] ),+ ))?             // tuple-struct↓
                 $({ $($f_name, $crate::field_of![_f, $f_name] ),+ })?             // field-struct↑
             }
         )+
     };
     (
-    // Implements `From` an individual error type to a composite error containing it,
-    // as well as implementing `TryFrom` in reverse.
+    // Implements `From` an individual error type to a composite error containing it, and
+    // implements `TryFrom` in reverse. Optionally implements a const fn from_ind_to_comp method.
+    $(+const$($_c:lifetime)?)?
     from($fn_arg:ident): $from_individual:ident, for: $for_composite:ident
     => $variant_name:ident
         $(( $($e_name:ident, $e_expr:expr),+ ))?                                  // tuple-struct↓
@@ -145,15 +138,16 @@ macro_rules! _define_error {
     $(,)? ) => {
         $crate::paste! {
             impl $for_composite {
-                #[doc = "*const* version of `From<" $from_individual "> for " $for_composite "`."]
+                $( #[doc = "*const*"] $($_c)?)?
+                #[doc = "method equivalent to `From<" $from_individual "> for " $for_composite "`."]
                 #[allow(dead_code, reason = "seldomly used")]
-                // EXPERIMENTAL:IMPROVE make sure to only make it const if the type allows it
-                pub const fn [<from_ $from_individual:snake:lower>]($fn_arg: $from_individual)
-                -> $for_composite {
-                    $for_composite::$variant_name
-                        $(( $($e_expr),+ ))?                                      // tuple-struct↓
-                        $({ $($f_name: $f_expr),+ })?                             // field-struct↑
-                }
+                pub $(const$($_c)?)? fn
+                    [<from_ $from_individual:snake:lower>]($fn_arg: $from_individual)
+                    -> $for_composite {
+                        $for_composite::$variant_name
+                            $(( $($e_expr),+ ))?                                  // tuple-struct↓
+                            $({ $($f_name: $f_expr),+ })?                         // field-struct↑
+                    }
             }
         }
 
@@ -264,25 +258,26 @@ mod tests {
         }
 
         /* define composite errors
-         * (includes conversions between variants and indidual errors) */
+         * (includes conversions between variants and indidual errors)
+         * (also enables some const conversion method implementations) */
 
         define_error! { composite: fmt(f)
             /// A composite error superset.
             pub enum CompositeSuperset {
-                DOC_UNIT_STRUCT: SuperUnit => UnitStruct,
+                DOC_UNIT_STRUCT: +const SuperUnit => UnitStruct,
                 DOC_SINGLE_ELEMENT: SuperSingle(i|0: Option<u8>) => SingleElement(*i),
                 DOC_MULTI_ELEMENT: SuperMultiple(i|0: i32, j|1: u32) => MultipleElements(*i, *j),
-                DOC_STRUCT_FIELDS: SuperStruct { f1: bool, f2: Option<char> }
+                DOC_STRUCT_FIELDS: +const SuperStruct { f1: bool, f2: Option<char> }
                     => StructFields { f1: *f1, f2: *f2 },
             }
         }
         define_error! { composite: fmt(f)
             /// A composite error subset.
-            // removed the unit struct variant (the most trivial case)
+            // NOTE: removed the unit struct variant (the most trivial case)
             pub enum CompositeSubset {
                 DOC_SINGLE_ELEMENT: SubSingle(i|0: Option<u8>) => SingleElement(*i),
                 DOC_MULTI_ELEMENT: SubMultiple(i|0: i32, j|1: u32) => MultipleElements(*i, *j),
-                DOC_STRUCT_FIELDS: SubStruct { f1: bool, f2: Option<char> }
+                DOC_STRUCT_FIELDS: +const SubStruct { f1: bool, f2: Option<char> }
                     => StructFields { f1: *f1, f2: *f2 },
             }
         }
@@ -343,5 +338,7 @@ mod tests {
             CompositeSubset::try_from(CompositeSuperset::SuperStruct { f1: true, f2: None }),
             Ok(CompositeSubset::SubStruct { f1: true, f2: None })
         ];
+
+        assert![CompositeSubset::try_from(CompositeSuperset::SuperUnit).is_err()];
     }
 }

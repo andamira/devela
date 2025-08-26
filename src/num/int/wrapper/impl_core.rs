@@ -22,7 +22,8 @@ use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
 #[allow(unused_imports)]
-use crate::{GcdReturn, Int, NumError::Overflow, NumResult as Result, cswap, is, paste, unwrap};
+use crate::{GcdReturn, Int, cswap, is, paste, unwrap};
+use crate::{NumError::Overflow, NumResult as Result};
 
 /// Implements core methods for [`Int`].
 ///

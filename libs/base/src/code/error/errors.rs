@@ -1,4 +1,4 @@
-// devela_base::code::error::definitions
+// devela_base::code::error::errors
 //
 //! Defines the most general error types.
 //
