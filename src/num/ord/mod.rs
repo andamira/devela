@@ -6,7 +6,6 @@
 // #![doc = crate::doc_!(newline)]
 //
 
-mod compare; // `Compare`
 mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -16,13 +15,13 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{compare::*, reexports::*};
+        pub use super::reexports::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{reexports::*, compare::*};
+        pub use super::reexports::*;
     }
 }

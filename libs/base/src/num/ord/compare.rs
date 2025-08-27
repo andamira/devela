@@ -1,4 +1,4 @@
-// devela::num::ord::compare
+// devela_base::num::ord::compare
 //
 //! Helper wrapper for comparing.
 //
@@ -74,7 +74,7 @@ impl<T: PartialOrd> Compare<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Compare;
+    /// # use devela_base::Compare;
     /// assert_eq![Some(0.4), Compare(1.0).pclamp(0.2, 0.4)];
     /// assert_eq![Some(0.2), Compare(0.0).pclamp(0.2, 0.4)];
     /// //
@@ -102,7 +102,7 @@ impl<T: PartialOrd> Compare<T> {
     /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires [`Ord`]
     /// # Examples
     /// ```
-    /// # use devela::Compare;
+    /// # use devela_base::Compare;
     /// assert_eq![Some(0.4), Compare(0.2).pmax(0.4)];
     /// //
     /// assert_eq![None, Compare(0.2).pmax(f32::NAN)];
@@ -124,7 +124,7 @@ impl<T: PartialOrd> Compare<T> {
     /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires [`Ord`]
     /// # Example
     /// ```
-    /// # use devela::Compare;
+    /// # use devela_base::Compare;
     /// assert_eq![Some(0.2), Compare(0.2).pmin(0.4)];
     /// //
     /// assert_eq![None, Compare(0.2).pmin(f32::NAN)];
@@ -143,34 +143,16 @@ impl<T: PartialOrd> Compare<T> {
 /// Implement [`Comparing`] for primitives.
 macro_rules! impl_comparing {
     () => {
-        impl_comparing![int:
-            u8:"_cmp_u8",
-            u16:"_cmp_u16",
-            u32:"_cmp_u32",
-            u64:"_cmp_u64",
-            u128:"_cmp_u128",
-            usize, // always compiled
-            i8:"_cmp_i8",
-            i16:"_cmp_i16",
-            i32:"_cmp_i32",
-            i64:"_cmp_i64",
-            i128:"_cmp_i128",
-            isize:"_cmp_isize"
-        ];
-        impl_comparing![float:
-            f32:"_cmp_f32":32:31,
-            f64:"_cmp_f64":64:63
-        ];
+        impl_comparing![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+        impl_comparing![float: f32:32:31, f64:64:63];
         #[cfg(nightly_float)]
-        impl_comparing![float:
-            f16:"_cmp_f16":16:15,
-            f128:"_cmp_f128":128:127
-        ];
+        // impl_comparing![float: f16:16:15:"_cmp_f16", f128:128:127:"_cmp_f128"];
+        impl_comparing![float: f16:16:15, f128:128:127];
     };
     (
     // $p: the integer type
-    // $cap: the capability feature associated with the `$f` type. E.g "_cmp_u8".
-    int: $($p:ty $(: $cap:literal)? ),+) => { $( impl_comparing![@int: $p $(:$cap)? ]; )+ };
+    // $cap: the optional capability feature associated with the `$p` type. E.g "_cmp_u8".
+    int: $($p:ty $(: $cap:literal)? ),+ $(,)?) => { $( impl_comparing![@int: $p $(:$cap)? ]; )+ };
     (@int: $p:ty $(: $cap:literal)? ) => {
         $( #[cfg(feature = $cap)] )?
         impl Compare<$p> {
@@ -213,11 +195,16 @@ macro_rules! impl_comparing {
     // $fcap: the capability feature associated with the `$f` type. E.g "_cmp_f32".
     // $b:    the bits of the floating-point primitive
     // $sh:   the shift amount for the given bits ($b - 1)
-    float: $($f:ty:$fcap:literal:$b:literal:$sh:literal),+) => {
-        $( impl_comparing![@float: $f:$fcap:$b:$sh]; )+
+
+    // int: $($p:ty $(: $cap:literal)? ),+) => { $( impl_comparing![@int: $p $(:$cap)? ]; )+ };
+    // (@int: $p:ty $(: $cap:literal)? ) => {
+    //     $( #[cfg(feature = $cap)] )?
+
+    float: $($f:ty:$b:literal:$sh:literal $(:$fcap:literal )? ),+ $(,)?) => {
+        $( impl_comparing![@float: $f:$b:$sh $(:$fcap)?]; )+
     };
-    (@float: $f:ty:$fcap:literal:$b:literal:$sh:literal) => { paste! {
-        #[cfg(feature = $fcap)]
+    (@float: $f:ty:$b:literal:$sh:literal $( :$fcap:literal )?) => { paste! {
+        $( #[cfg(feature = $fcap)] )?
         impl Compare<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
             #[must_use]
@@ -236,7 +223,7 @@ macro_rules! impl_comparing {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela::Compare;
+            /// # use devela_base::Compare;
             #[doc = "assert_eq![2.0, Compare(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Compare(-5.0" $f ").clamp(-1.0, 2.0)];"]
             /// ```
@@ -248,7 +235,7 @@ macro_rules! impl_comparing {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela::Compare;
+            /// # use devela_base::Compare;
             #[doc = "assert_eq![2.0, Compare(2.0" $f ").max(-1.0)];"]
             #[doc = "assert_eq![2.0, Compare(1.0" $f ").max(2.0)];"]
             #[doc = "assert_eq![0.0, Compare(-0.0" $f ").max(0.0)];"]
@@ -263,7 +250,7 @@ macro_rules! impl_comparing {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela::Compare;
+            /// # use devela_base::Compare;
             #[doc = "assert_eq![-1.0, Compare(2.0" $f ").min(-1.0)];"]
             #[doc = "assert_eq![1.0, Compare(1.0" $f ").min(2.0)];"]
             #[doc = "assert_eq![-0.0, Compare(-0.0" $f ").min(0.0)];"]

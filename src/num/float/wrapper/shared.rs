@@ -14,19 +14,23 @@ use crate::{Float, FloatCategory, Sign, cfor, concat as cc, is, stringify as sfy
 /// $ie:  signed int type used for integer exponentiation.
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
 /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
-/// $cmp: the feature that enables some methods depending on Compare. E.g "_cmp_f32".
 macro_rules! impl_float_shared {
     () => {
         impl_float_shared![
-            (f32:u32, i32, u32):"_float_f32":"_cmp_f32",
-            (f64:u64, i32, u32):"_float_f64":"_cmp_f64"
+            (f32:u32, i32, u32):"_float_f32",
+            (f64:u64, i32, u32):"_float_f64"
         ];
+        // #[cfg(feature = "nightly_float")] // TODO
+        // impl_float_shared![
+        //     (f16:u16, u32):"_float_f16",
+        //     (f128:u128, u32):"_float_f128"
+        // ];
     };
 
-    ($( ($f:ty:$uf:ty, $ie:ty, $ue:ty) : $cap:literal : $cmp:literal ),+) => {
-        $( impl_float_shared![@$f:$uf, $ie, $ue, $cap:$cmp]; )+
+    ($( ($f:ty:$uf:ty, $ie:ty, $ue:ty) : $cap:literal),+) => {
+        $( impl_float_shared![@$f:$uf, $ie, $ue, $cap]; )+
     };
-    (@$f:ty:$uf:ty, $ie:ty, $ue:ty, $cap:literal : $cmp:literal) => {
+    (@$f:ty:$uf:ty, $ie:ty, $ue:ty, $cap:literal) => {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         /// # *Common implementations with or without `std` or `libm`*.
@@ -435,8 +439,6 @@ macro_rules! impl_float_shared {
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp_total(40., 80.), 40.];"]]
             /// ```
             /// See also: [`clamp`][Self::clamp], [`clamp_nan`][Self::clamp_nan].
-            #[cfg(feature = $cmp)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $cmp)))]
             pub const fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
                 Float(crate::Compare(self.0).clamp(min, max))
             }
@@ -444,8 +446,6 @@ macro_rules! impl_float_shared {
             /// Returns the maximum between itself and `other`, using total order.
             ///
             /// See also: [`max_nan`][Self::max_nan].
-            #[cfg(feature = $cmp)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $cmp)))]
             pub const fn max_total(self, other: $f) -> Float<$f> {
                 Float(crate::Compare(self.0).max(other))
             }
@@ -453,8 +453,6 @@ macro_rules! impl_float_shared {
             /// Returns the minimum between itself and `other`, using total order.
             ///
             /// See also: [`min_nan`][Self::min_nan].
-            #[cfg(feature = $cmp)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $cmp)))]
             pub const fn min_total(self, other: $f) -> Float<$f> {
                 Float(crate::Compare(self.0).min(other))
             }

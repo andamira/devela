@@ -16,33 +16,32 @@ use crate::{
 };
 #[cfg(all(_str_u··, feature = "alloc"))]
 use crate::{CString, ToString};
-#[allow(unused, reason = "±unsafe | ±_cmp*")]
+#[allow(unused, reason = "±unsafe")]
 use crate::{Compare, cfor};
 
 macro_rules! impl_str_u {
     () => {
         impl_str_u![
-            u8:"_str_u8":"_cmp_u8",
-            u16:"_str_u16":"_cmp_u16",
-            u32:"_str_u32":"_cmp_u32",
-            usize:"_str_usize"
+            u8:"_str_u8",
+            u16:"_str_u16",
+            u32:"_str_u32",
+            usize:"_str_usize",
         ];
     };
 
     (
     // $t:    the length type. E.g.: u8.
     // $cap:  the capability that enables the implementation. E.g. _str_u8.
-    // $cmp:  the optional capability associated to optional const methods. E.g. _cmp_u8.
     //
     // $name: the name of the type. E.g.: StringU8.
-    $( $t:ty : $cap:literal $(: $cmp:literal)? ),+) => {
+    $( $t:ty : $cap:literal),+ $(,)?) => {
         $(
             #[cfg(feature = $cap)]
-            paste! { impl_str_u![@[<String $t:camel>], $t:$cap $(:$cmp)? ]; }
+            paste! { impl_str_u![@[<String $t:camel>], $t:$cap]; }
         )+
     };
 
-    (@$name:ty, $t:ty : $cap:literal $(: $cmp:literal)? ) => { paste! {
+    (@$name:ty, $t:ty : $cap:literal) => { paste! {
         /* definitions */
 
         #[doc = crate::TAG_TEXT!()]
@@ -432,11 +431,6 @@ macro_rules! impl_str_u {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            $(
-            /// # Features
-            #[doc = "This method will only be *const* if the `" $cmp "` feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
                 let length = Compare(length).min(CAP as $t);
@@ -445,17 +439,6 @@ macro_rules! impl_str_u {
                     Err(e) => Err(e),
                 }
             }
-            $( // $cmp
-            #[allow(missing_docs)]
-            #[cfg(not(feature = $cmp))]
-            pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self, InvalidUtf8> {
-                let length = length.min(CAP as $t);
-                match Str::from_utf8(bytes.split_at(length as usize).0) {
-                    Ok(_) => Ok(Self { arr: bytes, len: length }),
-                    Err(e) => Err(e),
-                }
-            }
-            )?
 
             /// Returns a string from an array of `bytes`,
             /// truncated to `n` bytes counting from the left,
@@ -467,24 +450,11 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            $(
-            /// # Features
-            #[doc = "This method will only be *const* if the `" $cmp "` feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
                 Self { arr: bytes, len: Compare(length).min(CAP as $t) }
             }
-            $( // $cmp
-            #[allow(missing_docs, clippy::missing_safety_doc)]
-            #[cfg(not(feature = $cmp))]
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            pub unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
-                Self { arr: bytes, len: length.min(CAP as $t) }
-            }
-            )?
 
             /// Returns a string from an array of `bytes`,
             /// truncated to `n` bytes counting from the right.
@@ -495,11 +465,6 @@ macro_rules! impl_str_u {
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             ///
-            $(
-            /// # Features
-            #[doc = "This method will only be *const* if the `" $cmp "` feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
                 let length = Compare(length).min(CAP as $t);
@@ -513,23 +478,6 @@ macro_rules! impl_str_u {
                     Err(e) => Err(e),
                 }
             }
-            $( // $cmp
-            #[allow(missing_docs)]
-            #[cfg(not(feature = $cmp))]
-            pub fn from_bytes_nright(mut bytes: [u8; CAP], length: $t)
-            -> Result<Self, InvalidUtf8> {
-                let length = length.min(CAP as $t);
-                let ulen = length as usize;
-                let start = CAP - ulen;
-                for i in 0..ulen {
-                    bytes[i] = bytes[start + i];
-                }
-                match Str::from_utf8(bytes.split_at(ulen).0) {
-                    Ok(_) => Ok(Self { arr: bytes, len: length }),
-                    Err(e) => Err(e),
-                }
-            }
-            )?
 
             /// Returns a string from an array of `bytes`,
             /// truncated to `n` bytes counting from the right,
@@ -542,11 +490,6 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            $(
-            /// # Features
-            #[doc = "This method will only be *const* if the `" $cmp "` feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
@@ -559,21 +502,6 @@ macro_rules! impl_str_u {
                 }];
                 Self { arr: bytes, len: length }
             }
-            $( // $cmp
-            #[allow(missing_docs, clippy::missing_safety_doc)]
-            #[cfg(not(feature = $cmp))]
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            pub unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
-                -> Self {
-                let length = length.min(CAP as $t);
-                let ulen = length as usize;
-                let start = CAP - ulen;
-                for i in 0..ulen {
-                    bytes[i] = bytes[start + i];
-                }
-                Self { arr: bytes, len: length }
-            }
-            )?
         }
 
         /* traits implementations */

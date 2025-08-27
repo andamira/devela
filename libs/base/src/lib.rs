@@ -3,9 +3,13 @@
 //!
 //
 
+// environment
 #![no_std]
+// safety
 #![forbid(unsafe_code)]
+// nightly
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
+#![cfg_attr(nightly_float, feature(f16, f128))]
 
 extern crate self as devela_base;
 

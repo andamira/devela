@@ -29,8 +29,8 @@
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`.
-- remove features: `prim`, `cast`, `join`, `split`.
-- remove flag `prim··`.
+- remove features: `cast`, `_cmp*`, `join`, `prim`, `split`.
+- remove flags: `cmp··`, `prim··`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
 
@@ -102,8 +102,9 @@
 - move to [base]:
   - aliases: `fsize` and `[iu]size_*`.
   - error types: `IncompatibleBounds`, `MismatchedSizes`, `NoInverse`, `NonNegativeRequired`, `NonZeroRequired`, `Overflow`, `PositiveRequired`.
-  - types: `Cast`, `Cycle`, `CycleCount`, `Interval`, `Sign`.
+  - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `Interval`, `Sign`.
 - update `Interval` to use individual `IncompatibleBounds` error.
+- un-gate `Compare` impls and many dependent const methods.
 - make `Sign` part of `quant`.
 
 ## sys

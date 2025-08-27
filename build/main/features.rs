@@ -357,15 +357,6 @@ mod reflection {
 
     /* ## num */
 
-    pub const CMP: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_cmp··"],
-        features: &[
-            "_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
-            "_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128",
-            "_cmp_f32", "_cmp_f64",
-        ]
-    };
-
     // ### numbers
     pub const FLOAT: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_float··", "_nums··"],
@@ -433,7 +424,6 @@ mod reflection {
             // text
             CHAR, STRING, STRING_U,
             // num
-            CMP,
             FLOAT, INT, UINT, // numbers
 
         ] { set_flags_dbg_features(ff.ref_flags, ff.features, &mut enabled_ref_flags); }

@@ -3,9 +3,7 @@
 //! ANSI codes related to color.
 //
 
-#[cfg(feature = "_cmp_u8")]
-use crate::Compare;
-use crate::{Ansi, Ascii};
+use crate::{Ansi, Ascii, Compare};
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]
@@ -410,8 +408,6 @@ impl Ansi {
 
 /// # 8-bit Grey escape codes
 #[rustfmt::skip]
-#[cfg(feature = "_cmp_u8")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_cmp_u8")))]
 impl Ansi {
     /// Code to set the foreground and background to 24-point grayscale.
     ///

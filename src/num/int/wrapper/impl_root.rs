@@ -35,37 +35,36 @@ const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 /// $t:   the input/output type. E.g. i8.
 /// $up:  the upcasted input/output type. E.g. i16.
 /// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-/// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
 ///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_root {
     () => {
         impl_root![signed
-            i8    |i16      :"_int_i8"    :"_cmp_i8"     |"",
-            i16   |i32      :"_int_i16"   :"_cmp_i16"    |"-1",
-            i32   |i64      :"_int_i32"   :"_cmp_i32"    |"-2",
-            i64   |i128     :"_int_i64"   :"_cmp_i64"    |"-3",
-            i128  |i128     :"_int_i128"  :"_cmp_i128"   |"-4",
-            isize |isize_up :"_int_isize" :"_cmp_isize"  |"-5"
+            i8    |i16      :"_int_i8"    | "",
+            i16   |i32      :"_int_i16"   | "-1",
+            i32   |i64      :"_int_i32"   | "-2",
+            i64   |i128     :"_int_i64"   | "-3",
+            i128  |i128     :"_int_i128"  | "-4",
+            isize |isize_up :"_int_isize" | "-5"
         ];
         impl_root![unsigned
-            u8    |u16      :"_int_u8"    :"_cmp_u8"     |"-6",
-            u16   |u32      :"_int_u16"   :"_cmp_u16"    | "-7",
-            u32   |u64      :"_int_u32"   :"_cmp_u32"    | "-8",
-            u64   |u128     :"_int_u64"   :"_cmp_u64"    | "-9",
-            u128  |u128     :"_int_u128"  :"_cmp_u128"   | "-10",
-            usize |usize_up :"_int_usize" /*_cmp_usize*/ | "-11" // always available
+            u8    |u16      :"_int_u8"    | "-6",
+            u16   |u32      :"_int_u16"   | "-7",
+            u32   |u64      :"_int_u32"   | "-8",
+            u64   |u128     :"_int_u64"   | "-9",
+            u128  |u128     :"_int_u128"  | "-10",
+            usize |usize_up :"_int_usize" | "-11"
         ];
     };
-    (signed $( $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal ),+) => {
-        $( impl_root![@signed $t|$up:$cap $(:$cmp)? | $d]; )+
+    (signed $( $t:ty | $up:ty : $cap:literal | $d:literal ),+) => {
+        $( impl_root![@signed $t|$up:$cap | $d]; )+
     };
-    (unsigned $( $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal ),+) => {
-        $( impl_root![@unsigned $t|$up:$cap $(:$cmp)? | $d]; )+
+    (unsigned $( $t:ty | $up:ty : $cap:literal | $d:literal ),+) => {
+        $( impl_root![@unsigned $t|$up:$cap | $d]; )+
     };
     (
     // implements signed ops
-    @signed $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal) => { paste! {
+    @signed $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
         /* sqrt (signed) */
 
         #[doc = crate::doc_availability!(feature = $cap)]
@@ -93,23 +92,11 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(21_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(-16_" $t ").is_square(), false];"]
             /// ```
-            $(
-            /// # Features
-            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             #[must_use]
             pub const fn is_square(self) -> bool {
                 let a = self.0;
                 is![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
             }
-            $( // $cmp
-            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
-            pub fn is_square(self) -> bool {
-                let a = self.0;
-                is![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
-            }
-            )?
 
             /// Returns the ceiled integer square root.
             /// # Errors
@@ -126,11 +113,6 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(21_" $t ").sqrt_ceil(), Ok(Int(5))];"]
             #[doc="assert_eq![Int(-4_" $t ").sqrt_ceil(), Err(NonNegativeRequired)];"]
             /// ```
-            $(
-            /// # Features
-            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             pub const fn sqrt_ceil(self) -> Result<Int<$t>> {
                 let a = self.0;
                 if let Ok(floor) = self.sqrt_floor() {
@@ -139,17 +121,6 @@ macro_rules! impl_root {
                     Err(NonNegativeRequired)
                 }
             }
-            $( // $ cmp
-            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
-            pub fn sqrt_ceil(self) -> Result<Int<$t>> {
-                let a = self.0;
-                if let Ok(floor) = self.sqrt_floor() {
-                    is![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))]
-                } else {
-                    Err(NonNegativeRequired)
-                }
-            }
-            )?
 
             /// Returns the floored integer square root.
             ///
@@ -168,11 +139,6 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(21_" $t ").sqrt_floor(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(-4_" $t ").sqrt_floor(), Err(NonNegativeRequired)];"]
             /// ```
-            $(
-            /// # Features
-            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             pub const fn sqrt_floor(self) -> Result<Int<$t>> {
                 let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a.is_negative() {
@@ -188,24 +154,6 @@ macro_rules! impl_root {
                     Ok(Int(x))
                 }
             }
-            $( // $cmp
-            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
-            pub fn sqrt_floor(self) -> Result<Int<$t>> {
-                let a = self.0.min(<$t>::MAX - 1); // avoid overflow on MAX
-                if a.is_negative() {
-                    Err(NonNegativeRequired)
-                } else if a < 2 {
-                    Ok(self)
-                } else {
-                    let (mut x, mut y) = (a, (a + a / a) / 2);
-                    while y < x {
-                        x = y;
-                        y = (x + a / x) / 2;
-                    }
-                    Ok(Int(x))
-                }
-            }
-            )?
 
             /// Returns the rounded integer square root.
             ///
@@ -351,7 +299,7 @@ macro_rules! impl_root {
     }};
     (
     // implements unsigned ops
-    @unsigned $t:ty | $up:ty : $cap:literal $(: $cmp:literal)? | $d:literal) => { paste! {
+    @unsigned $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
@@ -377,25 +325,12 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(20_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(21_" $t ").is_square(), false];"]
             /// ```
-            $(
-            /// # Features
-            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             #[must_use]
             pub const fn is_square(self) -> bool {
                 let a = self.0;
                 let sqrt = self.sqrt_floor();
                 sqrt.0 * sqrt.0 == a
             }
-            $( // $cmp
-            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
-            pub fn is_square(self) -> bool {
-                let a = self.0;
-                let sqrt = self.sqrt_floor();
-                sqrt.0 * sqrt.0 == a
-            }
-            )?
 
             /// Returns the ceiled integer square root.
             ///
@@ -411,22 +346,10 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(20_" $t ").sqrt_ceil(), Int(5)];"]
             #[doc="assert_eq![Int(21_" $t ").sqrt_ceil(), Int(5)];"]
             /// ```
-            $(
-            /// # Features
-            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             pub const fn sqrt_ceil(self) -> Int<$t> {
                 let a = self.0; let floor = self.sqrt_floor();
                 is![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
             }
-            $( // $cmp
-            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
-            pub fn sqrt_ceil(self) -> Int<$t> {
-                let a = self.0; let floor = self.sqrt_floor();
-                is![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
-            }
-            )?
 
             /// Returns the floored integer square root.
             ///
@@ -442,11 +365,6 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(20_" $t ").sqrt_floor(), Int(4)];"]
             #[doc="assert_eq![Int(21_" $t ").sqrt_floor(), Int(4)];"]
             /// ```
-            $(
-            /// # Features
-            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[cfg(feature = $cmp)]
-            )? // $cmp
             pub const fn sqrt_floor(self) -> Int<$t> {
                 let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a < 2 {
@@ -460,22 +378,6 @@ macro_rules! impl_root {
                     Int(x)
                 }
             }
-            $( // $cmp
-            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
-            pub fn sqrt_floor(self) -> Int<$t> {
-                let a = self.0.min(<$t>::MAX - 1); // avoid overflow on MAX
-                if a < 2 {
-                    self
-                } else {
-                    let (mut x, mut y) = (a, (a + a / a) / 2);
-                    while y < x {
-                        x = y;
-                        y = (x + a / x) / 2;
-                    }
-                    Int(x)
-                }
-            }
-            )?
 
             /// Returns the rounded integer square root.
             ///

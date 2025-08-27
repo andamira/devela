@@ -17,19 +17,18 @@ use crate::{Float, cfor, is, paste};
 /// $uf:  unsigned int type with the same bit-size.
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
 /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
-/// $cmp: the feature that enables some methods depending on Compare. E.g "_cmp_f32".
 macro_rules! impl_float_shared_series {
     () => {
         impl_float_shared_series![
-            (f32:u32, u32):"_float_f32":"_cmp_f32",
-            (f64:u64, u32):"_float_f64":"_cmp_f64"
+            (f32:u32, u32):"_float_f32",
+            (f64:u64, u32):"_float_f64",
         ];
     };
 
-    ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal : $cmp:literal ),+) => {
-        $( impl_float_shared_series![@$f:$uf, $ue, $cap:$cmp]; )+
+    ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal),+ $(,)?) => {
+        $( impl_float_shared_series![@$f:$uf, $ue, $cap]; )+
     };
-    (@$f:ty:$uf:ty, $ue:ty, $cap:literal : $cmp:literal) => {
+    (@$f:ty:$uf:ty, $ue:ty, $cap:literal) => {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         /// # *Common methods with or without `std` or `libm`*.
