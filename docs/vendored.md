@@ -43,7 +43,7 @@ See the linked modifications for detailed changes.
 - <i id="tupl"></i>[tupl] by *Dragoteryx*,
   as part of the [`Tuple`] trait ([*modifications*][M_tupl]).
 
-[argv]: https://crates.io/crates/argv/1.1.13
+[argv]: https://crates.io/crates/argv/0.1.13
   [M_argv]: https://github.com/andamira/devela/blob/main/src/_info/vendored/argv.md
   [`IterArgsOsRef`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.IterArgsOsRef.html
   [`Env`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.Env.html#method.args_os_ref

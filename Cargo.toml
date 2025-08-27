@@ -24,7 +24,7 @@
 #     - docs            (_doc*)
 #     . code            (_unroll*)
 #     - data            (_data*, _bit*, _sort*, _tuple*, _value*, …)
-#     - num             (_num*, _cmp*, _int_*, _float_*, …)
+#     - num             (_num*, _int_*, _float_*, …)
 #     - text            (_text*, _char*, _str_*)
 #   - Dependency        (dep_*)
 #
@@ -184,7 +184,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 266/300 (34 remaining), 137 visible, 129 hidden
+[features] # 250/300 (50 remaining), 137 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -467,7 +467,6 @@ _docs = [ # the minimum capabilities to document everything
 	# data:
 	"_bit_u8", "_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 	# num:
-	"_cmp_f64", "_cmp_u32", "_cmp_i64",
 	"_float_f64", "_int_u32", "_int_i64",
 	# text:
 	"_str_u8", "_str_nonul", "_char_all",
@@ -554,8 +553,8 @@ _sort_all = [
 	_sort_u64 = []
 	_sort_u128 = []
 	_sort_usize = []
-	_sort_f32 = ["_cmp_f32"]
-	_sort_f64 = ["_cmp_f64"]
+	_sort_f32 = []
+	_sort_f64 = []
 
 # `Tuple` trait and maximum arity supported (example relative compilation times)
 _tuple = ["__build"] # arity 12 # time:  3.3s, codegen: 96K (for >=2nd compil.)
@@ -581,28 +580,7 @@ _value_all = [
 #* num capabilities *#
 # ---------------------
 
-_num_all = ["_cmp_all", "_nums_all"]
-
-# `Compare`:
-_cmp_all = [
-	"_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
-	"_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128",
-	"_cmp_f16", "_cmp_f32", "_cmp_f64", "_cmp_f128"]
-	_cmp_i8 = []
-	_cmp_i16 = []
-	_cmp_i32 = []
-	_cmp_i64 = []
-	_cmp_i128 = []
-	_cmp_isize = []
-	_cmp_u8 = []
-	_cmp_u16 = []
-	_cmp_u32 = []
-	_cmp_u64 = []
-	_cmp_u128 = []
-	_cmp_f16 = ["_float_f16"]
-	_cmp_f32 = ["_float_f32"]
-	_cmp_f64 = ["_float_f64"]
-	_cmp_f128 = ["_float_f128"]
+_num_all = ["_nums_all"]
 
 # `[Num]Int`, `[Num]Float`, `[Num]Frac`, `Point`, `Angle`, `Vector`:
 _nums_all = ["_float_all", "_int_all"]
@@ -1048,7 +1026,7 @@ default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # WAIT: [wasm,no_std](https://github.com/algesten/ureq/issues/667)
 
 [dependencies.wide] # https://crates.io/crates/wide
-version = "0.7.33" # ✗ https://github.com/Lokathor/wide/commits/main/
+version = "0.7" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
@@ -1075,8 +1053,8 @@ devela_base_std = { workspace = true, optional = true }
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/overriding-dependencies.html#the-patch-section
 
-[patch.crates-io]
-devela = { path = './' }
+# [patch.crates-io]
+# devela = { path = './' } # make devela also a dependency of itself
 
 
 # profiles
@@ -1142,7 +1120,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 # https://doc.rust-lang.org/rustdoc/lints.html
 # ------------------------------------------------------------------------------
 
-missing_crate_level_docs = "warn" # no documentation at the crate root (or any binary)
+# missing_crate_level_docs = "warn" # no documentation at the crate root (or any binary)
 #
 # broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs & other places
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
@@ -1277,7 +1255,7 @@ check-cfg = [ # Allowed configuration flags:
 	# num: (13)
 	'cfg(num··)',
 	'cfg(_sort··, _sort_int··, _sort_float··)',
-	'cfg(_nums··, _cmp··, _float··, _int··, _int_i··, _int_u··)',
+	'cfg(_nums··, _float··, _int··, _int_i··, _int_u··)',
 	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
 	# phys: (1)
 	'cfg(phys··)',
