@@ -35,6 +35,7 @@
 - add default feature `std` to [base_std].
 
 ## workspace libraries
+- declare the std external crate.
 - enable `_docsrs` for workspace dependencies.
 - new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`, `devela_base_alloc`, `devela_code`, `devela_data`, `devela_media` `devela_num`, `devela_text`.
 - move `core`, `alloc` & `std` re-exports to [base*] libs.
@@ -88,7 +89,7 @@
 ### utils
 - new private macro `_reexport_from!`.
 - move to [base]:
-  - public macros `CONST!`, `cdbg!`, `cfg_if!`, `define_error!`, `deprecate!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
+  - public macros `CONST!`, `cfg_if!`, `define_error!`, `deprecate!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
   - private macros: `EMOJI_*`, `TAG_*`, `_reexport!`.
 - add doc tags: `_DOC_*`, `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`.
 - rename `reexport!` private macro to `_reexport!`.

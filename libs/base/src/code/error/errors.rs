@@ -37,9 +37,6 @@ define_error![individual: pub struct InvalidValue;
 
 define_error! { composite: fmt(f)
     /// An error composite of [`NotImplemented`] + [`NotSupported`].
-    ///
-    /// Used in methods of:
-    /// - [`DataCollection`][crate::DataCollection].
     pub enum NotAvailable {
         DOC_NOT_IMPLEMENTED: NotImplemented => NotImplemented,
         DOC_NOT_SUPPORTED: NotSupported => NotSupported,

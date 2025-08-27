@@ -28,7 +28,7 @@ pub extern crate alloc as _alloc;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[cfg(feature = "std")]
 #[doc(inline)]
-pub use ::std as _std;
+pub extern crate std as _std;
 
 /* 49 optional dependencies */
 // In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs

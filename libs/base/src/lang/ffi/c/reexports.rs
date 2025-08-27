@@ -25,6 +25,6 @@ _reexport! { rust: core::ffi,
 
 _reexport! { rust: core::ffi,
     tag: TAG_TEXT!(),
-    doc: "Representation of a borrowed C string (See [`CString`]).",
+    doc: "Representation of a borrowed C string (See `CString`).",
     CStr
 }

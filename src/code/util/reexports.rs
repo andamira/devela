@@ -9,7 +9,6 @@ crate::_reexport_from!("../../../libs/base/src/code/util/reexports.rs", _c);
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{
     CONST,
-    cdbg,
     cfg_if,
     define_error,
     deprecate_feature,

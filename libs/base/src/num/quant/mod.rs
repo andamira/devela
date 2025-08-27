@@ -9,7 +9,7 @@
 //! More specifically it defines foundational types for:
 //! - Periodic phenomena [`Cycle`], [`CycleCount`].
 //! - Range and interval mathematics: [`Interval`], [`interval!`].
-//! - Proportional relationships and ratios: [`Ratio`].
+// - Proportional relationships and ratios: [`Ratio`].
 // - Scaling transformations: [`Scale`].
 //! - Numerical classification and properties: [`Sign`].
 // - Discrete counting and increments: [`Count`].

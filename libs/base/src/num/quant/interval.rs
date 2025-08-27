@@ -9,9 +9,7 @@
 //   - impl traits
 // - tests
 
-use crate::{
-    Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is,
-};
+use crate::{Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is};
 
 #[doc = crate::TAG_QUANT!()]
 /// Creates an [`Interval`] using extended range notation.

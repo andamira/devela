@@ -1,4 +1,4 @@
-// devela_base::code::util::cdbg
+// devela::code::util::cdbg
 //
 //! Defines the custom debug macro [`cdbg!`].
 //
@@ -11,7 +11,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela_base::cdbg;
+/// # use devela::cdbg;
 /// let a = vec![1, 2, 3];
 ///
 /// let _ = cdbg![&a];

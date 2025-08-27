@@ -141,6 +141,9 @@ compile_error!("You can't enable `safe` and any `unsafe*` features at the same t
 // https://doc.rust-lang.org/nightly/reference/names/preludes.html#extern-prelude
 #[cfg(feature = "alloc")]
 extern crate alloc;
+#[cfg(feature = "std")]
+extern crate std;
+
 extern crate self as devela;
 
 /* root modules */

@@ -325,6 +325,7 @@ macro_rules! _define_error {
         }
     };
 }
+#[doc(inline)]
 pub use _define_error as define_error;
 
 #[cfg(test)]

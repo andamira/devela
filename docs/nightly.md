@@ -77,6 +77,7 @@ See also
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `a`[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
+- 1.??: ` `[fmt::from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)

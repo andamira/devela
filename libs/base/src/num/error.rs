@@ -11,8 +11,6 @@
 //   - PositiveRequired
 //   - NonZeroRequired
 //   - Overflow
-//
-// MAYBE: DivisionByZero
 
 use crate::{Sign, TAG_NUM, define_error};
 

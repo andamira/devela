@@ -19,6 +19,7 @@ mod _doc; // doc_! // RENAME: _doc!
 mod _use; // _use!
 
 mod asserts; // assertion macros
+mod cdbg; // cdbg!
 mod capture; // capture_[first|last|tail]!
 mod cfor; // cfor!
 mod ident; // ident_const_index!
@@ -40,7 +41,7 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
 
     mod _mods {
         pub use super::{
-            asserts::_all::*, capture::*, cfor::*, ident::*, impl_trait::*, maybe::*,
+            asserts::_all::*, cdbg::*, capture::*, cfor::*, ident::*, impl_trait::*, maybe::*,
             methods::*, reexports::*,
         };
         #[cfg(_bit··)]

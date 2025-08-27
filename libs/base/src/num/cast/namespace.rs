@@ -2,12 +2,12 @@
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides *const* casting, joining and splitting operations between primitives.
-///
-/// See also the related traits: [`PrimitiveCast`], [`PrimitiveJoin`] and [`PrimitiveSplit`].
-///
-/// [`PrimitiveCast`]: crate::PrimitiveCast
-/// [`PrimitiveJoin`]: crate::PrimitiveJoin
-/// [`PrimitiveSplit`]: crate::PrimitiveSplit
+//
+// See also the related traits: [`PrimitiveCast`], [`PrimitiveJoin`] and [`PrimitiveSplit`].
+//
+// [`PrimitiveCast`]: crate::PrimitiveCast
+// [`PrimitiveJoin`]: crate::PrimitiveJoin
+// [`PrimitiveSplit`]: crate::PrimitiveSplit
 #[repr(transparent)]
 pub struct Cast<T>(pub T);
 
