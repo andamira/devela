@@ -1,10 +1,9 @@
-// devela::data::list::link:const
+// devela_base::data::list::link:const
 //
 // This is a modified version of:
 // [`const_list`](https://crates.io/crates/const_list/0.1.0)
 
-use crate::ConstDefault;
-
+#[doc = crate::TAG_DATA!()]
 /// A linked list node in a `ConstList`.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 struct ConstListItem<'a, T: 'a> {
@@ -30,14 +29,10 @@ struct ConstListItem<'a, T: 'a> {
 ///
 /// assert_eq!(8, *MY_LIST.pop().0.unwrap());
 /// ```
-#[doc = crate::doc_!(vendor: "const_list")]
+// #[doc = crate::doc_!(vendor: "const_list")] // TODO
 #[must_use]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ConstList<'a, T: 'a>(Option<ConstListItem<'a, T>>);
-
-impl<T> ConstDefault for ConstList<'_, T> {
-    const DEFAULT: Self = Self::new();
-}
 
 impl<'a, T: 'a> ConstList<'a, T> {
     /// Creates a new, empty list.

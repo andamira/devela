@@ -6,7 +6,6 @@
 //! storing a sequence of elements of the same type, each pointing to the next.
 //
 
-mod r#const;
 mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
@@ -14,7 +13,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{r#const::*, reexports::*};
+        pub use super::reexports::*;
         // WIPZONE
         // pub use super::l1::*;
         // pub use super::l2::*;
@@ -24,7 +23,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{r#const::*, reexports::*};
+        pub use super::reexports::*;
     }
 }
 // WIPZONE

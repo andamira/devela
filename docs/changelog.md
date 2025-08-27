@@ -98,6 +98,11 @@
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
 - remove deprecated `iif!` macro.
 
+## data
+### list
+- move to [base]:
+  - type `ConstList`.
+
 ## num
 - move to [base]:
   - aliases: `fsize` and `[iu]size_*`.
