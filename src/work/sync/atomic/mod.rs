@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_WORK_SYNC_ATOMIC!()]
 //!
-#![doc = crate::doc_!(extends: sync)]
+#![doc = crate::_doc!(extends: sync)]
 //
 
 mod reexports;

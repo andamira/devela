@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_SYS_ARCH!()]
 //!
 //! See <https://github.com/rust-lang/stdarch>.
-#![doc = crate::doc_!(extends: arch)]
+#![doc = crate::_doc!(extends: arch)]
 //
 // NOTE In order to show in the docs all possible feature-gated functionality,
 // they have to be compiled with `RUSTDOCFLAGS="-Ctarget-cpu=native"`.

@@ -1,10 +1,10 @@
 // devela::text
 //
 #![doc = crate::_DOC_TEXT!()]
-#![doc = crate::doc_!(modules: crate; text: fmt, parse, str)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate; text: fmt, parse, str)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: ascii, char, fmt, str, string)]
+#![doc = crate::_doc!(extends: ascii, char, fmt, str, string)]
 //
 // safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]

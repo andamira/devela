@@ -1,7 +1,7 @@
 // devela::work::sync::mpsc
 //
 #![doc = crate::_DOC_WORK_SYNC_MPSC!()]
-// #![doc = crate::doc_!(extends: mpsc)] // IMPROVE
+// #![doc = crate::_doc!(extends: mpsc)] // IMPROVE
 
 mod namespace; // Mpsc
 mod reexports; // std::sync::mpsc::*

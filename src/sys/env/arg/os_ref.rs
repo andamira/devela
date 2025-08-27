@@ -16,7 +16,7 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 /// Iterator over references of command line arguments.
 ///
 /// See [`Env::args_os_ref()`][crate::Env#method.args_os_ref].
-#[doc = crate::doc_!(vendor: "argv")]
+#[doc = crate::_doc!(vendor: "argv")]
 #[derive(Debug)]
 pub struct IterArgsOsRef {
     platform_specific: r#impl::IterArgsOsRef,

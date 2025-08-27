@@ -1,10 +1,10 @@
 // devela::data
 //
 #![doc = crate::_DOC_DATA!()]
-#![doc = crate::doc_!(modules: crate; data: codec, iter, key, list, table, uid)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate; data: codec, iter, key, list, table, uid)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
+#![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //
 // safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]

@@ -15,7 +15,7 @@ use crate::{Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWa
 ///
 /// See also the [`ExtFuture`][super::ExtFuture] trait.
 ///
-#[doc = crate::doc_!(vendor: "pollster")]
+#[doc = crate::_doc!(vendor: "pollster")]
 pub(crate) fn future_block<F: Future>(future: F) -> F::Output {
     // Pin the future so that it can be polled.
     let mut future = pin!(future);

@@ -2,9 +2,9 @@
 //
 //! I/O functionality.
 //!
-#![doc = crate::doc_!(extends: io)]
+#![doc = crate::_doc!(extends: io)]
 //!
-#![doc = crate::doc_!(vendor: "no_std_io")]
+#![doc = crate::_doc!(vendor: "no_std_io")]
 //
 // safety
 #![cfg_attr(feature = "safe_io", forbid(unsafe_code))]

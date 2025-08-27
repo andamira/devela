@@ -1,7 +1,7 @@
 // devela::lang::ling
 //
 //! Linguistics and languge theory.
-#![doc = crate::doc_!(modules: crate::lang; ling: art, grammar, nat)]
+#![doc = crate::_doc!(modules: crate::lang; ling: art, grammar, nat)]
 //!
 //! Structure, rules, analysis, and representation of natural and constructed languages.
 //

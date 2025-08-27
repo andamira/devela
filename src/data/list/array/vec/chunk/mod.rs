@@ -44,7 +44,7 @@ mod tests;
 /// - [Persistent Data Structures](https://en.wikipedia.org/wiki/Persistent_data_structure)
 /// - [Structural Sharing](https://hypirion.com/musings/understanding-persistent-vector-pt-1)
 ///
-#[doc = crate::doc_!(vendor: "tailcall-chunk")]
+#[doc = crate::_doc!(vendor: "tailcall-chunk")]
 #[must_use]
 #[derive(Clone)]
 #[allow(missing_debug_implementations, reason = "unsatisfied trait bounds")]

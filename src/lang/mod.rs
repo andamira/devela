@@ -1,10 +1,10 @@
 // devela::lang
 //
 #![doc = crate::_DOC_LANG!()]
-#![doc = crate::doc_!(modules: crate; lang: dsl, ffi, i18n, ling)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate; lang: dsl, ffi, i18n, ling)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: ffi)]
+#![doc = crate::_doc!(extends: ffi)]
 //
 // LINKS
 // - https://en.wikipedia.org/wiki/Language | https://es.wikipedia.org/wiki/Lenguaje

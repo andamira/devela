@@ -2,10 +2,10 @@
 //
 #![doc = crate::_DOC_CODE_RESULT!()]
 //!
-// #![doc = crate::doc_!(modules: crate::code; result)]
-// #![doc = crate::doc_!(newline)]
+// #![doc = crate::_doc!(modules: crate::code; result)]
+// #![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: option, result)]
+#![doc = crate::_doc!(extends: option, result)]
 //!
 //! Computation doesn’t just yield values, it organizes outcomes.
 //! This module refines how results, selections, and structured alternatives

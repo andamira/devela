@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_DATA_LIST_ARRAY!()]
 //!
-#![doc = crate::doc_!(extends: array, vec)]
+#![doc = crate::_doc!(extends: array, vec)]
 //!
 //! They enable efficient iterable storage over a sequence of the same type.
 //

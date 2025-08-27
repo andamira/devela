@@ -1,10 +1,10 @@
 // devela::lang::ffi
 //
 #![doc = crate::_DOC_LANG_FFI!()]
-#![doc = crate::doc_!(modules: crate::lang; ffi: c, glsl, js)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate::lang; ffi: c, glsl, js)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: ffi)]
+#![doc = crate::_doc!(extends: ffi)]
 //
 // - Use repr(u8) for small, FFI-safe enums (C-like, no fields).
 // - Use repr(C) for structs that contain repr(u8) enums.

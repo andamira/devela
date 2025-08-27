@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_SYS_ENV!()]
 //!
-#![doc = crate::doc_!(extends: env)]
+#![doc = crate::_doc!(extends: env)]
 //
 
 mod arg;

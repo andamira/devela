@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_CODE_MARKER!()]
 //!
-#![doc = crate::doc_!(extends: marker)]
+#![doc = crate::_doc!(extends: marker)]
 //
 
 mod reexports; // core::marker re-exports

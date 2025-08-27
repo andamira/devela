@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_PHYS_TIME!()]
 //!
-#![doc = crate::doc_!(extends: time)]
+#![doc = crate::_doc!(extends: time)]
 //
 // safety
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]

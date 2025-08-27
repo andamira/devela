@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_SYS_MEM_PTR!()]
 //!
-// #![doc = crate::doc_!(extends: ptr)]
+// #![doc = crate::_doc!(extends: ptr)]
 //
 
 mod namespace; // Ptr

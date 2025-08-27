@@ -3,7 +3,7 @@
 //! Defines private doc meta helpers.
 //
 // TOC
-// - doc_!
+// - _doc!
 // - _doc_availability!
 // - _doc_miri_warn!
 // - _std_core!
@@ -14,7 +14,7 @@
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[expect(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
-macro_rules! __doc_ {
+macro_rules! __doc {
     (@meta_start) => {
         "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"
     };
@@ -35,18 +35,18 @@ macro_rules! __doc_ {
     ( // no submodules:
         modules: $path:path; $self:ident) => {
         concat!(
-            $crate::doc_!(@meta_start),
+            $crate::_doc!(@meta_start),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
-            $crate::doc_!(@meta_end),
+            $crate::_doc!(@meta_end),
         )
     };
     ( // with submodules:
         modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
         concat!(
-            $crate::doc_!(@meta_start),
+            $crate::_doc!(@meta_start),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]::{",
-            $crate::doc_!(@modules: $path; $self: $($mod),+), "}",
-            $crate::doc_!(@meta_end),
+            $crate::_doc!(@modules: $path; $self: $($mod),+), "}",
+            $crate::_doc!(@meta_end),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
@@ -67,9 +67,9 @@ macro_rules! __doc_ {
     // NOTE: it needs `_std_core!` to be defined in the crate where this is invoked.
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
-            $crate::doc_!(@meta_start_nobr), "Extends: ",
-            crate::_std_core!(), "::{", $crate::doc_!(@extends: $($mod),+), "}",
-            $crate::doc_!(@meta_end_hr),
+            $crate::_doc!(@meta_start_nobr), "Extends: ",
+            crate::_std_core!(), "::{", $crate::_doc!(@extends: $($mod),+), "}",
+            $crate::_doc!(@meta_end_hr),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
@@ -122,7 +122,7 @@ macro_rules! __doc_ {
     // )};
 }
 #[doc(hidden)]
-pub use __doc_ as doc_;
+pub use __doc as _doc;
 
 /// Generates a formatted documentation string for conditional availability.
 ///
@@ -136,26 +136,26 @@ pub use __doc_ as doc_;
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! __doc_availability {
     (feature = $feat:literal) => {
-        $crate::doc_availability!{@wrap
+        $crate::_doc_availability!{@wrap
             "Available on <strong>crate feature ",
-            $crate::doc_availability!{@code $feat},
+            $crate::_doc_availability!{@code $feat},
             "</strong> only."
         }
     };
 
     // Handle one or more required features
     ( all( $(feature = $feat:literal),+ ) ) => {
-        $crate::doc_availability!{@wrap
+        $crate::_doc_availability!{@wrap
             "Available on <strong>crate features ",
-            $crate::doc_availability!{@join_features_and $($feat),+},
+            $crate::_doc_availability!{@join_features_and $($feat),+},
             "</strong> only."
         }
     };
     // Handle one or more alternative features
     ( any( $(feature = $feat:literal),+ ) ) => {
-        $crate::doc_availability!{@wrap
+        $crate::_doc_availability!{@wrap
             "Available on <strong>crate features ",
-            $crate::doc_availability!{@join_features_or $($feat),+},
+            $crate::_doc_availability!{@join_features_or $($feat),+},
             "</strong> only."
         }
     };
@@ -180,18 +180,18 @@ macro_rules! __doc_availability {
     // single arm for joining features with "and"
     (@join_features_and $first:literal $(, $rest:literal)*) => {
         concat!(
-            $crate::doc_availability!{@code $first}
+            $crate::_doc_availability!{@code $first}
             $(
-                , " and ", $crate::doc_availability!{@code $rest}
+                , " and ", $crate::_doc_availability!{@code $rest}
             )*
         )
     };
     // single arm for joining features with "or"
     (@join_features_or $first:literal $(, $rest:literal)*) => {
         concat!(
-            $crate::doc_availability!{@code $first}
+            $crate::_doc_availability!{@code $first}
             $(
-                , " or ", $crate::doc_availability!{@code $rest}
+                , " or ", $crate::_doc_availability!{@code $rest}
             )*
         )
     };

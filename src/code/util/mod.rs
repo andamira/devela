@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_CODE_UTIL!()]
 //!
-#![doc = crate::doc_!(extends: hint)]
+#![doc = crate::_doc!(extends: hint)]
 //
 // # Implementation notes
 // Several macros are defined hidden, prefixed with `_`, an publicly re-exported unprefixed.

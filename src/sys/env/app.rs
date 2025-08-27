@@ -100,7 +100,7 @@ impl AppConfig {
 
 /// Manages directory paths in an environment-aware manner.
 ///
-#[doc = crate::doc_!(vendor: "etcetera")]
+#[doc = crate::_doc!(vendor: "etcetera")]
 #[rustfmt::skip]
 pub trait AppEnv {
     /// Gets the home directory.

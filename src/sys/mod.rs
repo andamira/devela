@@ -1,10 +1,10 @@
 // devela::sys
 //
 #![doc = crate::_DOC_SYS!()]
-#![doc = crate::doc_!(modules: crate; sys: arch, env, fs, io, log, mem, net, os)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate; sys: arch, env, fs, io, log, mem, net, os)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
+#![doc = crate::_doc!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
     io, net, os, path, pin, ptr, rc, slice, simd)]
 //
 //

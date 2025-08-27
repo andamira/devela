@@ -2,10 +2,10 @@
 //
 #![doc = crate::_DOC_DATA_LIST!()]
 //!
-#![doc = crate::doc_!(modules: crate::data; list: array, queue, stack)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate::data; list: array, queue, stack)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: array, collections, vec)]
+#![doc = crate::_doc!(extends: array, collections, vec)]
 //
 
 mod link; // ConstList[Item], LinkedList

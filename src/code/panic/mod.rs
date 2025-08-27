@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_CODE_PANIC!()]
 //!
-#![doc = crate::doc_!(extends: panic)]
+#![doc = crate::_doc!(extends: panic)]
 //
 
 mod namespace; // Panic

@@ -2,8 +2,8 @@
 //
 #![doc = crate::_DOC_SYS_FS!()]
 //!
-#![doc = crate::doc_!(extends: fs, path)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(extends: fs, path)]
+#![doc = crate::_doc!(newline)]
 //
 
 mod path; // ExtPath, Path*, sys::path::*

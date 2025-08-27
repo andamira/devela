@@ -2,7 +2,7 @@
 //
 //! String types and related functionality.
 //!
-#![doc = crate::doc_!(extends: str, string)]
+#![doc = crate::_doc!(extends: str, string)]
 
 mod reexports;
 mod macros; // join!, str!

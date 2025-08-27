@@ -113,7 +113,7 @@
 ///    unsafe_function()
 /// });
 /// ```
-#[doc = crate::doc_!(vendor: "const_for")]
+#[doc = crate::_doc!(vendor: "const_for")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cfor {

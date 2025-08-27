@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_DATA_CODEC_HASH!()]
 //!
-#![doc = crate::doc_!(extends: hash)]
+#![doc = crate::_doc!(extends: hash)]
 //!
 #![cfg_attr(
     not(feature = "hash"),

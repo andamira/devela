@@ -3,7 +3,7 @@
 //! [Sixel] encoding functionality.
 //!
 //! [Sixel]: https://en.wikipedia.org/wiki/Sixel
-#![doc = crate::doc_!(vendor: "icy_sixel")]
+#![doc = crate::_doc!(vendor: "icy_sixel")]
 //
 
 mod builder; // Sixel

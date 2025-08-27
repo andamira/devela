@@ -1,7 +1,7 @@
 // devela::ui
 //
 #![doc = crate::_DOC_UI!()]
-#![doc = crate::doc_!(modules: crate; ui: back, front, layout)]
+#![doc = crate::_doc!(modules: crate; ui: back, front, layout)]
 //
 // safety
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]

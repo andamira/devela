@@ -2,10 +2,10 @@
 //
 #![doc = crate::_DOC_SYS_MEM!()]
 //!
-#![doc = crate::doc_!(modules: crate::sys; mem: cell)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate::sys; mem: cell)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
+#![doc = crate::_doc!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
 #![cfg_attr(
     any(not(feature = "bit")),
     doc = "## Features\nTo compile the missing items, enable the `bit` feature."

@@ -1,9 +1,9 @@
 // devela::text::char
 //
 #![doc = crate::_DOC_TEXT_CHAR!()]
-// #![doc = crate::doc_!(extends: char)]
-// #![doc = crate::doc_!(modules: crate::text; char)]
-// #![doc = crate::doc_!(newline)]
+// #![doc = crate::_doc!(extends: char)]
+// #![doc = crate::_doc!(modules: crate::text; char)]
+// #![doc = crate::_doc!(newline)]
 //
 
 // without re-exports

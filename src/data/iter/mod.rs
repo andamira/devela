@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_DATA_ITER!()]
 //!
-#![doc = crate::doc_!(extends: iter)]
+#![doc = crate::_doc!(extends: iter)]
 //
 
 mod namespace;

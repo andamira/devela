@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_SYS_MEM_CELL!()]
 //!
-#![doc = crate::doc_!(extends: cell)]
+#![doc = crate::_doc!(extends: cell)]
 //
 
 mod option; // ExtCellOption

@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_WORK_THREAD!()]
 //!
-#![doc = crate::doc_!(extends: thread)]
+#![doc = crate::_doc!(extends: thread)]
 //
 
 mod reexports;

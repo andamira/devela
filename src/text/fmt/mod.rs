@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_TEXT_FMT!()]
 //!
-#![doc = crate::doc_!(extends: fmt)]
+#![doc = crate::_doc!(extends: fmt)]
 //
 
 mod buf;

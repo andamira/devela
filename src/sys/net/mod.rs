@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_SYS_NET!()]
 //!
-#![doc = crate::doc_!(extends: net)]
+#![doc = crate::_doc!(extends: net)]
 //
 
 mod reexports;

@@ -25,7 +25,7 @@ use crate::{
 /// [`_int_u128`][Self#impl-Divisor<u128>],
 /// [`_int_usize`][Self#impl-Divisor<usize>].
 ///
-#[doc = crate::doc_!(vendor: "quickdiv")]
+#[doc = crate::_doc!(vendor: "quickdiv")]
 #[must_use]
 #[derive(Clone, Copy)]
 pub struct Divisor<T> {

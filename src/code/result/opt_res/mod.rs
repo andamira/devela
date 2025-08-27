@@ -2,7 +2,7 @@
 //
 //! Optional values.
 //!
-#![doc = crate::doc_!(extends: option, result)]
+#![doc = crate::_doc!(extends: option, result)]
 //
 
 mod ext_option; // ExtOption

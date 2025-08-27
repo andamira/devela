@@ -2,7 +2,7 @@
 //
 //! Overloadable operators.
 //!
-#![doc = crate::doc_!(extends: ops)]
+#![doc = crate::_doc!(extends: ops)]
 //
 
 mod reexports;

@@ -1,7 +1,7 @@
 // devela::num::geom
 //
 //! Geometric types and operations, spatial constructs and analysis.
-#![doc = crate::doc_!(modules: crate::num; geom: linear, metric, shape)]
+#![doc = crate::_doc!(modules: crate::num; geom: linear, metric, shape)]
 //
 
 pub mod metric; // Position, Distance, Extent, Stride...

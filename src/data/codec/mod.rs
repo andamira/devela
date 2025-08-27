@@ -1,10 +1,10 @@
 // devela::data::codec
 //
 #![doc = crate::_DOC_DATA_CODEC!()]
-#![doc = crate::doc_!(modules: crate::data; codec: hash)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate::data; codec: hash)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: hash)]
+#![doc = crate::_doc!(extends: hash)]
 //!
 //! ## Determinism & Side Effects
 //! Encoding and decoding should be **deterministic**.

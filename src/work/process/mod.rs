@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_WORK_PROCESS!()]
 //!
-#![doc = crate::doc_!(extends: process)]
+#![doc = crate::_doc!(extends: process)]
 //
 
 mod reexports;

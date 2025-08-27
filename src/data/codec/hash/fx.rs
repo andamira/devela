@@ -17,7 +17,7 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 /// This hashing algorithm should not be used for cryptographic,
 /// or in scenarios where DoS attacks are a concern.
 ///
-#[doc = crate::doc_!(vendor: "fxhash")]
+#[doc = crate::_doc!(vendor: "fxhash")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct HasherFx<T> {

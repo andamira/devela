@@ -1,10 +1,10 @@
 // devela::work
 //
 #![doc = crate::_DOC_WORK!()]
-#![doc = crate::doc_!(modules: crate; work: future, process, sync, thread)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate; work: future, process, sync, thread)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: future, process, sync, task, thread)]
+#![doc = crate::_doc!(extends: future, process, sync, task, thread)]
 //
 // safety
 #![cfg_attr(feature = "safe_work", forbid(unsafe_code))]

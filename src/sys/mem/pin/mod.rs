@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_SYS_MEM_PIN!()]
 //!
-#![doc = crate::doc_!(extends: pin)]
+#![doc = crate::_doc!(extends: pin)]
 //
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]

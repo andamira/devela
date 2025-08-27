@@ -24,7 +24,7 @@ use crate::{Mem, NonZeroUsize, Wasm};
 /// #[global_allocator]
 /// static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
 /// ```
-#[doc = crate::doc_!(vendor: "mini-alloc")]
+#[doc = crate::_doc!(vendor: "mini-alloc")]
 #[derive(Debug)]
 pub struct WasmAlloc;
 impl WasmAlloc {

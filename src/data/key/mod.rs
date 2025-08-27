@@ -5,7 +5,7 @@
 //! Provides tools for mapping, indexing, and efficiently organizing data
 //! through unique keys, including maps, sets, and other key-value structures.
 //!
-#![doc = crate::doc_!(extends: collections)]
+#![doc = crate::_doc!(extends: collections)]
 //
 
 mod reexports;

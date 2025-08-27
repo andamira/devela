@@ -24,7 +24,7 @@ pub trait Decodable<R: IoRead>: Sized {
 /// A type that can be encoded into an I/O writer.
 ///
 /// See also [`Decodable`].
-#[doc = crate::doc_!(vendor: "encode")]
+#[doc = crate::_doc!(vendor: "encode")]
 pub trait Encodable<W: IoWrite> {
     /// Encodes `self` into the given `writer`, returning the bytes written.
     ///
@@ -40,7 +40,7 @@ pub trait Encodable<W: IoWrite> {
 /// [`Encodable`] with [`CodecLen`].
 ///
 /// See [`CodecLen`] for details on length-based encoding.
-#[doc = crate::doc_!(vendor: "encode")]
+#[doc = crate::_doc!(vendor: "encode")]
 pub trait EncodableLen: Encodable<CodecLen> {
     /// Computes the size of `self` when encoded.
     ///

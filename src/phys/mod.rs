@@ -1,10 +1,10 @@
 // devela::phys
 //
 #![doc = crate::_DOC_PHYS!()]
-#![doc = crate::doc_!(modules: crate; phys: bio, chem, elec, mech, time, unit, wave)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate; phys: bio, chem, elec, mech, time, unit, wave)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: time)]
+#![doc = crate::_doc!(extends: time)]
 //
 // safety
 #![cfg_attr(feature = "safe_phys", forbid(unsafe_code))]

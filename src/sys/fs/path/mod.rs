@@ -2,8 +2,8 @@
 //
 #![doc = crate::_DOC_SYS_FS_PATH!()]
 //!
-#![doc = crate::doc_!(extends: path)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(extends: path)]
+#![doc = crate::_doc!(newline)]
 //
 
 mod reexports;

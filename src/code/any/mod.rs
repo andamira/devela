@@ -1,9 +1,9 @@
 // devela::code::any
 //
 #![doc = crate::_DOC_CODE_ANY!()]
-// #![doc = crate::doc_!(extends: any)]
-// #![doc = crate::doc_!(modules: crate::code; any)]
-// #![doc = crate::doc_!(newline)]
+// #![doc = crate::_doc!(extends: any)]
+// #![doc = crate::_doc!(modules: crate::code; any)]
+// #![doc = crate::_doc!(newline)]
 //
 
 mod ext;

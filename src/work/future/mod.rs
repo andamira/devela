@@ -1,10 +1,10 @@
 // devela::work::future
 //
 #![doc = crate::_DOC_WORK_FUTURE!()]
-// #![doc = crate::doc_!(modules: crate::work; future)]
-// #![doc = crate::doc_!(newline)]
+// #![doc = crate::_doc!(modules: crate::work; future)]
+// #![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: future, task)]
+#![doc = crate::_doc!(extends: future, task)]
 //!
 //! See also the fundamental [`async`] and [`await`] keywords and the
 //! [async book](https://rust-lang.github.io/async-book/).

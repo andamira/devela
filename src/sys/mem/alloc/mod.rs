@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_SYS_MEM_ALLOC!()]
 //!
-// #![doc = crate::doc_!(extends: alloc)]
+// #![doc = crate::_doc!(extends: alloc)]
 
 mod reexports;
 mod namespace;

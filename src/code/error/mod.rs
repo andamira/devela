@@ -4,7 +4,7 @@
 //!
 //! It re-exports the error and result types defined in other modules.
 //!
-#![doc = crate::doc_!(extends: backtrace, error)]
+#![doc = crate::_doc!(extends: backtrace, error)]
 //
 
 mod reexports;

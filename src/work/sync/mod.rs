@@ -1,10 +1,10 @@
 // devela::work::sync
 //
 #![doc = crate::_DOC_WORK_SYNC!()]
-// #![doc = crate::doc_!(modules: crate::work; sync)]
-// #![doc = crate::doc_!(newline)]
+// #![doc = crate::_doc!(modules: crate::work; sync)]
+// #![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: sync)]
+#![doc = crate::_doc!(extends: sync)]
 //
 
 mod reexports;

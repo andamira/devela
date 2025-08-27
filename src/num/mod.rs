@@ -1,10 +1,10 @@
 // devela::num
 //
 #![doc = crate::_DOC_NUM!()]
-#![doc = crate::doc_!(modules: crate; num: geom, logic, niche, ord, quant, rand)]
-#![doc = crate::doc_!(newline)]
+#![doc = crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand)]
+#![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::doc_!(extends: cmp, num)]
+#![doc = crate::_doc!(extends: cmp, num)]
 //
 // safety
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]

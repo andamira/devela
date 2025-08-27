@@ -26,7 +26,7 @@
 ///     }
 /// }
 /// ```
-// #[doc = crate::doc_!(vendor: "cfg-if")] // TODO IMPROVE
+#[doc = crate::_doc!(vendor: "cfg-if")] // FIXME
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cfg_if {

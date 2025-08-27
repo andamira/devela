@@ -71,7 +71,7 @@ pub trait ExtOption<T>: Sealed {
     /// assert_eq!("42", format!("{}", Some(Box::new(42)).fmt_or("Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or("Nothing")));
     /// ```
-    #[doc = crate::doc_!(vendor: "fmtor")]
+    #[doc = crate::_doc!(vendor: "fmtor")]
     #[must_use]
     fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<'_, T, U>;
 

@@ -29,7 +29,7 @@
 /// ```
 /// See also the [`Hook`][crate::Hook] trait.
 ///
-#[doc = crate::doc_!(vendor: "apply")]
+#[doc = crate::_doc!(vendor: "apply")]
 pub trait Chain<R> {
     /// Chain a function which takes the parameter by value.
     #[must_use]
@@ -84,7 +84,7 @@ impl<T: ?Sized, R> Chain<R> for T {}
 /// ```
 /// See also the [`Chain`][crate::Chain] trait.
 ///
-#[doc = crate::doc_!(vendor: "apply")]
+#[doc = crate::_doc!(vendor: "apply")]
 pub trait Hook: Sized {
     /// Applies a function which takes the parameter by shared reference,
     /// and then returns the (possibly) modified owned value.

@@ -27,7 +27,7 @@ use crate::Pin;
 /// let id1 = IdPin::new(&mut data1);
 /// ```
 ///
-#[doc = crate::doc_!(vendor: "object-id")]
+#[doc = crate::_doc!(vendor: "object-id")]
 pub struct IdPin<'a> {
     inner: Pin<&'a mut u8>,
 }
