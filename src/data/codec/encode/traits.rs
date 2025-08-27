@@ -3,8 +3,9 @@
 //! Define `Encodable`, `EncodableLen`.
 //
 
-use crate::{CodecLen, IoRead, IoResult, IoWrite};
+use crate::{CodecLen, IoRead, IoResult, IoWrite, TAG_CODEC};
 
+#[doc = TAG_CODEC!()]
 /// A type that can be decoded from an I/O reader.
 ///
 /// See also [`Encodable`].
@@ -19,6 +20,7 @@ pub trait Decodable<R: IoRead>: Sized {
     fn decode(reader: &mut R) -> IoResult<Self::Output>;
 }
 
+#[doc = TAG_CODEC!()]
 /// A type that can be encoded into an I/O writer.
 ///
 /// See also [`Decodable`].
@@ -31,6 +33,7 @@ pub trait Encodable<W: IoWrite> {
     fn encode(&self, writer: &mut W) -> IoResult<usize>;
 }
 
+#[doc = TAG_CODEC!()]
 /// A type that can compute the size of its encoded form without actual encoding.
 ///
 /// This trait is automatically implemented for all types that implement

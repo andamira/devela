@@ -165,9 +165,10 @@ macro_rules! _define_error {
     // - From/TryFrom implementations for each individual error type
     // - Optional const conversion methods for variants marked with +const
     composite: fmt($fmt:ident)
+        $(+tag: $tag:expr ,)?
         $(#[$enum_attr:meta])*
         $vis:vis enum $composite_error_name:ident { $(
-            $(+tag: $tag:expr ,)?
+            $(+tag: $tag_variant:expr ,)?
             $(#[$variant_attr:meta])*
             $DOC_VARIANT:ident:
             $(+const$($_c:lifetime)?)?
@@ -179,11 +180,12 @@ macro_rules! _define_error {
                     $({ $($f_display_name:ident: $f_display_exp:expr),+ })?       // field-struct↑
         ),+ $(,)? }
     ) => {
+        $(#[doc = $tag])?
         #[doc = $crate::TAG_ERROR_COMPOSITE!()]
         $(#[$enum_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
-            $(#[doc = $tag])?
+            $(#[doc = $tag_variant])?
             #[doc = $crate::TAG_ERROR!()]
             $(#[$variant_attr])*
             #[doc = $DOC_VARIANT!()]

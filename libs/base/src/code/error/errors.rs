@@ -11,7 +11,7 @@
 // - composite error types:
 //   - NotAvailable: NotImplemented + NotSupported
 
-use crate::define_error;
+use crate::{TAG_NO, define_error};
 
 /* individual errors */
 
@@ -20,10 +20,12 @@ define_error![individual: pub struct FailedErrorConversion;
     self+f => write!(f, "Failed to convert between error types."),
 ];
 define_error![individual: pub struct NotImplemented;
+    +tag: TAG_NO!(),
     DOC_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
 ];
 define_error![individual: pub struct NotSupported;
+    +tag: TAG_NO!(),
     DOC_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
 ];
@@ -36,9 +38,12 @@ define_error![individual: pub struct InvalidValue;
 /* composite errors */
 
 define_error! { composite: fmt(f)
+    +tag: TAG_NO!(),
     /// An error composite of [`NotImplemented`] + [`NotSupported`].
     pub enum NotAvailable {
-        DOC_NOT_IMPLEMENTED: NotImplemented => NotImplemented,
-        DOC_NOT_SUPPORTED: NotSupported => NotSupported,
+        +tag: TAG_NO!(),
+        DOC_NOT_IMPLEMENTED: +const NotImplemented => NotImplemented,
+        +tag: TAG_NO!(),
+        DOC_NOT_SUPPORTED: +const NotSupported => NotSupported,
     }
 }

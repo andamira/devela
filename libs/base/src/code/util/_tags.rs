@@ -7,16 +7,21 @@
 
 crate::CONST! { hidden macro_export,
     EMOJI_ALLOCATOR = "🧺"; // 🧮, (basket, abacus)
-    EMOJI_ATOMIC = "⚛️"; // ⚛️,🔬,🌐
-    EMOJI_DATA_STRUCTURE = "📦"; // 📦,🧩,🗂️,
+    EMOJI_ATOMIC = "⚛️"; // ⚛️, 🔬, 🌐
+    EMOJI_CODEC = "🥡"; // 🥡, 🔏, ⇄, (takeout-box)
+    EMOJI_CONCURRENCY = "🧵"; // 🧵, 🪡, (thread, needle)
+    EMOJI_DATA = "🪪"; // 🪪, 🗂️, 🧩, (id-card)
+    EMOJI_DATA_STRUCTURE = "🗃️"; // 📇,🗃️,📦,🧩,🗂️,
     EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
     // EMOJI_ERROR_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
+    EMOJI_EVENT = "🎫"; // 🎫, 🎟️,
     EMOJI_EXPERIMENTAL = "🧪";
     EMOJI_FAKE = "🎭"; // 🎭, 👻, 🦄, 🐛
     EMOJI_FFI = "🛡️"; // 🛡️, ✅
     EMOJI_FONT = "🅵"; // 🅵,, 🅰, ℱ, 𝔉, 𝕱, 𝐅
     EMOJI_FMT = "🖹"; // 🖹, 📄, 📝, 🄵, ✎, ℱ, 𝔽
     EMOJI_GEOM = "📐";
+    EMOJI_HASH = "🔀"; // 🔀,
     EMOJI_ITERATOR = "🔄"; // 🔄,
     EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
     EMOJI_NICHE = "⚗️"; // ⚗️,♟️,🧩,🧮,
@@ -29,6 +34,7 @@ crate::CONST! { hidden macro_export,
     EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
     EMOJI_TEXT = "𝐓"; // 𝐓, 𝓣, 𝔸, 🄰
     EMOJI_TIME = "🕘"; // 🕘, ⏳, 📅
+    EMOJI_UID = "🫆"; // 🫆, 🆔, (fingerprint, id-button)
     //
     SPAN_OPEN = "<span class='stab portability' title=";
     // SPAN_OPEN = "<span class='tag-emoji' title=";
@@ -37,16 +43,21 @@ crate::CONST! { hidden macro_export,
         $crate::EMOJI_ALLOCATOR!(), "</span>");
     TAG_ATOMIC = concat!($crate::SPAN_OPEN!(), "'Atomic-related item'>",
         $crate::EMOJI_ATOMIC!(), "</span>");
-    TAG_DATA_STRUCTURE =
-        concat!($crate::SPAN_OPEN!(), "'General-purpose data structure'>",
+    TAG_CODEC = concat!($crate::SPAN_OPEN!(), "'Codec-related-related item'>",
+        $crate::EMOJI_CODEC!(), "</span>");
+    TAG_CONCURRENCY = concat!($crate::SPAN_OPEN!(), "'Concurrency-related-related item'>",
+        $crate::EMOJI_CONCURRENCY!(), "</span>");
+    TAG_DATA = concat!($crate::SPAN_OPEN!(), "'Data-related item'>",
+        $crate::EMOJI_DATA!(), "</span>");
+    TAG_DATA_STRUCTURE = concat!($crate::SPAN_OPEN!(), "'Data-structure (collection)'>",
         $crate::EMOJI_DATA_STRUCTURE!(), "</span>");
     TAG_ERROR = concat!($crate::SPAN_OPEN!(), "'Individual error type'>",
         $crate::EMOJI_ERROR!(), "</span>");
-    TAG_ERROR_COMPOSITE =
-        concat!($crate::SPAN_OPEN!(), "'Composite error type'>",
+    TAG_ERROR_COMPOSITE = concat!($crate::SPAN_OPEN!(), "'Composite error type'>",
         $crate::EMOJI_ERROR!(), "+</span>");
-    TAG_EXPERIMENTAL = concat!(
-        "<span class='stab portability' title='Experimental functionality'>",
+    TAG_EVENT = concat!($crate::SPAN_OPEN!(), "'Event-related item'>",
+        $crate::EMOJI_EVENT!(), "</span>");
+    TAG_EXPERIMENTAL = concat!($crate::SPAN_OPEN!(), "'Experimental functionality'>",
         $crate::EMOJI_EXPERIMENTAL!(), "</span>");
     TAG_FAKE = concat!($crate::SPAN_OPEN!(), "'A fake implementation for testing.'>",
         $crate::EMOJI_FAKE!() ,"</span>");
@@ -54,21 +65,20 @@ crate::CONST! { hidden macro_export,
         $crate::EMOJI_FFI!(), "</span>");
     TAG_FONT = concat!("<span class='stab portability' title='Font-related item'>",
         $crate::EMOJI_FONT!(), "</span>");
-    TAG_FMT =
-        concat!($crate::SPAN_OPEN!(), "'Text Formatting & Representation item'>",
+    TAG_FMT = concat!($crate::SPAN_OPEN!(), "'Text Formatting & Representation item'>",
         $crate::EMOJI_FMT!(), "</span>");
-    TAG_GEOM =
-        concat!($crate::SPAN_OPEN!(), "'Geometric multi-dimensional item'>",
+    TAG_GEOM = concat!($crate::SPAN_OPEN!(), "'Geometric multi-dimensional item'>",
         $crate::EMOJI_GEOM!(), "</span>");
+    TAG_HASH = concat!($crate::SPAN_OPEN!(), "'Hashing-related item'>",
+        $crate::EMOJI_HASH!(), "</span>");
     TAG_ITERATOR = concat!($crate::SPAN_OPEN!(), "'Iterator or iterator adapter'>",
         $crate::EMOJI_ITERATOR!(), "</span>");
     TAG_NAMESPACE = concat!($crate::SPAN_OPEN!(), "'Namespaced functionality'>",
         $crate::EMOJI_NAMESPACE!(), "</span>");
     TAG_NICHE = concat!($crate::SPAN_OPEN!(), "'Type with niche-based memory optimizations'>",
         $crate::EMOJI_NICHE!(), "</span>");
-    TAG_NON_STANDARD = concat!(
-        "<span class='stab portability' title='Non-standard. Expect poor cross-compatibility'>",
-        $crate::EMOJI_NON_STANDARD!(), "</span>");
+    TAG_NON_STANDARD = concat!($crate::SPAN_OPEN!(),
+    "'Non-standard. Expect poor cross-compatibility'>", $crate::EMOJI_NON_STANDARD!(), "</span>");
     TAG_NO = concat!($crate::SPAN_OPEN!(), "'Absence, emptiness, or a no-op effect'>",
         $crate::EMOJI_NO!(), "</span>");
     TAG_NUM = concat!($crate::SPAN_OPEN!(), "'Numeric value-related item'>",
@@ -85,6 +95,8 @@ crate::CONST! { hidden macro_export,
         $crate::EMOJI_TEXT!() ,"</span>");
     TAG_TIME = concat!($crate::SPAN_OPEN!(), "'Time-related type'>",
         $crate::EMOJI_TIME!() ,"</span>");
+    TAG_UID = concat!($crate::SPAN_OPEN!(), "'Unique-identification-related item'>",
+        $crate::EMOJI_UID!(), "</span>");
 
 
     TAG_MAYBE_STD = concat!($crate::SPAN_OPEN!(),

@@ -14,8 +14,8 @@ pub use {
 
 use crate::{
     BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
-    IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TryFromIntError,
-    is,
+    IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TAG_CODEC,
+    TryFromIntError, is,
 };
 crate::_use! {basic::from_utf8}
 
@@ -23,6 +23,7 @@ crate::_use! {basic::from_utf8}
 mod endian {
     use super::*;
 
+    #[doc = TAG_CODEC!()]
     /// Encodes and decodes a number in big-endian order.
     ///
     /// # Example
@@ -50,6 +51,7 @@ mod endian {
         pub const fn new(num: W) -> Self { Self { num } }
     }
 
+    #[doc = TAG_CODEC!()]
     /// Encodes and decodes a number in little-endian order.
     ///
     /// # Examples
@@ -177,6 +179,7 @@ mod endian {
 mod cond {
     use super::*;
 
+    #[doc = TAG_CODEC!()]
     /// Encodes and decodes conditionally.
     ///
     /// # Example
@@ -219,6 +222,7 @@ mod cond {
 mod flags {
     use super::*;
 
+    #[doc = TAG_CODEC!()]
     /// Encodes and decodes a sequence of flags as a single byte.
     ///
     /// # Examples
@@ -299,6 +303,7 @@ mod flags {
 mod join {
     use super::*;
 
+    #[doc = TAG_CODEC!()]
     /// Encodes and decodes an iterator as a sequence with an optional `separator`.
     ///
     /// # Example
@@ -368,6 +373,7 @@ mod join {
 mod len {
     use super::*;
 
+    #[doc = TAG_CODEC!()]
     /// A dummy writer that counts bytes instead of actually writing them.
     ///
     /// Note that this encoder runs all the same encoding logic as any other encoder,
@@ -404,6 +410,7 @@ mod len {
         fn flush(&mut self) -> IoResult<()> { Ok(()) }
     }
 
+    #[doc = TAG_CODEC!()]
     /// Encodes and decodes a length prefixed value
     /// (<abbr title = "Type-Length-Value">[TLV]</abbr>).
     ///
@@ -528,6 +535,7 @@ mod len {
         }
     }
 
+    #[doc = TAG_CODEC!()]
     /// A private helper trait to tie a length type to the endian codec.
     ///
     /// This trait ensures that `CodecLenValue` only accepts explicit endianness encoders
