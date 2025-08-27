@@ -90,7 +90,7 @@
 - new private macro `_reexport_from!`.
 - move to [base]:
   - public macros `CONST!`, `cfg_if!`, `define_error!`, `deprecate!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
-  - private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
+   private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
 - add tags: `_DOC_*`, `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`, `TAG_[CODEC|CONCURRENCY|DATA|EVENT|HASH|ID]`.
 - change the emoji for `TAG_DATA_STRUCTURE`.
 - rename `reexport!` private macro to `_reexport!`.

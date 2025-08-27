@@ -446,7 +446,7 @@ impl Env {
         args_os()
     }
 
-    #[doc = crate::doc_miri_warn!(tag)]
+    #[doc = crate::_doc_miri_warn!(tag)]
     #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
     /// Command line arguments by reference: `Iterator<Item = &'static OsStr>`.
     #[doc = crate::doc_!(vendor: "argv")]

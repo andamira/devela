@@ -136,7 +136,7 @@ macro_rules! impl_modulo {
     (
     // implements signed ops
     @signed ($t:ty : $cap:literal, $up:ty:$is_up:ident |$d:literal) ) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
@@ -884,7 +884,7 @@ macro_rules! impl_modulo {
     @unsigned
          ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident |$d:literal)
     ) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d

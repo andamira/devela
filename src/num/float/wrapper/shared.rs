@@ -31,7 +31,7 @@ macro_rules! impl_float_shared {
         $( impl_float_shared![@$f:$uf, $ie, $ue, $cap]; )+
     };
     (@$f:ty:$uf:ty, $ie:ty, $ue:ty, $cap:literal) => {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         /// # *Common implementations with or without `std` or `libm`*.
         #[cfg(feature = $cap )]

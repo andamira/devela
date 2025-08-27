@@ -4,9 +4,9 @@
 //
 // TOC
 // - doc_!
-// - doc_availability!
-// - doc_miri_warn!
-// - std_core!
+// - _doc_availability!
+// - _doc_miri_warn!
+// - _std_core!
 //
 // TODO: try to use paste! instead of concat!, since it's faster.
 
@@ -134,7 +134,7 @@ pub use __doc_ as doc_;
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _doc_availability {
+macro_rules! __doc_availability {
     (feature = $feat:literal) => {
         $crate::doc_availability!{@wrap
             "Available on <strong>crate feature ",
@@ -197,7 +197,7 @@ macro_rules! _doc_availability {
     };
 }
 #[doc(hidden)]
-pub use _doc_availability as doc_availability;
+pub use __doc_availability as _doc_availability;
 
 /// Generates a formatted documentation string for a miri warning.
 #[macro_export]
@@ -220,7 +220,7 @@ macro_rules! __doc_miri_warn {
     };
 }
 #[doc(hidden)]
-pub use __doc_miri_warn as doc_miri_warn;
+pub use __doc_miri_warn as _doc_miri_warn;
 
 crate::sf! {
     /// Should return the string literal "std" if `std` is enabled, or "core" otherwise.

@@ -43,7 +43,7 @@ macro_rules! impl_frac {
 
     // both for signed and unsigned
     (@array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Fraction related methods for `[" $i "; 2]`\n\n"]
         #[cfg(feature = $cap )]
@@ -126,7 +126,7 @@ macro_rules! impl_frac {
     }};
 
     (@int_array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Fraction related methods for `[Int<" $i ">; 2]`\n\n"]
         #[cfg(feature = $cap )]

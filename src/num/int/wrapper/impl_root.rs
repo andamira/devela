@@ -67,7 +67,7 @@ macro_rules! impl_root {
     @signed $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
         /* sqrt (signed) */
 
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
@@ -300,7 +300,7 @@ macro_rules! impl_root {
     (
     // implements unsigned ops
     @unsigned $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]

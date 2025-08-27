@@ -50,7 +50,7 @@ macro_rules! impl_div {
     (
     // implements signed ops
     @signed $t:ty : $cap:literal : $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]
@@ -242,7 +242,7 @@ macro_rules! impl_div {
     (
     // implements unsigned ops
     @unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]

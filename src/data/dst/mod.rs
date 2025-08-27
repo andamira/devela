@@ -1,9 +1,9 @@
 // devela::data::dst
 //
-#![doc = crate::doc_miri_warn!(tag)]
+#![doc = crate::_doc_miri_warn!(tag)]
 //! Dynamically-sized types stored without need of heap allocation.
 //!
-#![doc = crate::doc_miri_warn!(body,
+#![doc = crate::_doc_miri_warn!(body,
     url: "https://github.com/thepowersgang/stack_dst-rs/issues/14")]
 #![doc = include_str!("./Mod.md")]
 //!

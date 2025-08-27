@@ -54,7 +54,7 @@ macro_rules! impl_combinatorics {
     (
     // implements signed ops
     @signed $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]
@@ -323,7 +323,7 @@ macro_rules! impl_combinatorics {
     (
     // implements unsigned ops
     @unsigned $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]

@@ -29,7 +29,7 @@ macro_rules! impl_float_shared_series {
         $( impl_float_shared_series![@$f:$uf, $ue, $cap]; )+
     };
     (@$f:ty:$uf:ty, $ue:ty, $cap:literal) => {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         /// # *Common methods with or without `std` or `libm`*.
         ///   *Implemented using Taylor series.*

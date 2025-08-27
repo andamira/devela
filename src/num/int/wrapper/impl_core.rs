@@ -74,7 +74,7 @@ macro_rules! impl_core {
     (
     // implements signed ops
     @signed $t:ty : $cap:literal : $ut:ty : $ucap:literal : $up:ty |$d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
@@ -366,7 +366,7 @@ macro_rules! impl_core {
     (
     // implements unsigned ops
     @unsigned $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal |$d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]

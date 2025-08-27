@@ -52,7 +52,7 @@ macro_rules! impl_prime {
     (
     // implements signed ops
     @signed $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
@@ -187,7 +187,7 @@ macro_rules! impl_prime {
     (
     // implements unsigned ops
     @unsigned $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]

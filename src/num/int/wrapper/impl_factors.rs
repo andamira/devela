@@ -64,7 +64,7 @@ macro_rules! impl_factors {
     (
     // implements signed ops
     @signed $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
@@ -617,7 +617,7 @@ macro_rules! impl_factors {
     (
     // implements unsigned ops
     @unsigned $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::doc_availability!(feature = $cap)]
+        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
