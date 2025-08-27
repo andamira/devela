@@ -1,6 +1,6 @@
-// devela::code::util::_doc
+// devela_base::code::util::_doc
 //
-//! private doc meta helpers
+//! Defines private doc meta helpers.
 //
 // TOC
 // - doc_!
@@ -11,7 +11,10 @@
 // TODO: try to use paste! instead of concat!, since it's faster.
 
 /// Generates a formatted meta-documentation string.
-macro_rules! doc_ {
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[expect(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
+macro_rules! __doc_ {
     (@meta_start) => {
         "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"
     };
@@ -61,18 +64,21 @@ macro_rules! doc_ {
 
     /* list of std modules */
 
+    // NOTE: it needs `_std_core!` to be defined in the crate where this is invoked.
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
             $crate::doc_!(@meta_start_nobr), "Extends: ",
-            $crate::std_core!(), "::{", $crate::doc_!(@extends: $($mod),+), "}",
+            crate::_std_core!(), "::{", $crate::doc_!(@extends: $($mod),+), "}",
             $crate::doc_!(@meta_end_hr),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
     (@extends: $first:ident $(, $rest:ident)*) => {
         concat!(
-            "[", stringify!($first), "](mod@", $crate::std_core!(), "::", stringify!($first), ")",
-            $( ", [", stringify!($rest), "](mod@", $crate::std_core!(), "::", stringify!($rest), ")" ),*
+            "[", stringify!($first), "](mod@", crate::_std_core!(), "::", stringify!($first), ")",
+            $(
+            ", [", stringify!($rest), "](mod@", crate::_std_core!(), "::", stringify!($rest), ")"
+            ),*
         )
     };
     (
@@ -115,7 +121,8 @@ macro_rules! doc_ {
     //     include_str!($text_path),
     // )};
 }
-pub(crate) use doc_;
+#[doc(hidden)]
+pub use __doc_ as doc_;
 
 /// Generates a formatted documentation string for conditional availability.
 ///
@@ -125,8 +132,9 @@ pub(crate) use doc_;
 /// #[doc = crate::doc_availability!(all(feature = "one", feature = "two")]
 /// #[doc = crate::doc_availability!(any(feature = "one", feature = "two")]
 /// ```
-#[allow(unused_macros)]
-macro_rules! doc_availability {
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+macro_rules! _doc_availability {
     (feature = $feat:literal) => {
         $crate::doc_availability!{@wrap
             "Available on <strong>crate feature ",
@@ -188,12 +196,13 @@ macro_rules! doc_availability {
         )
     };
 }
-#[allow(unused_imports)]
-pub(crate) use doc_availability;
+#[doc(hidden)]
+pub use _doc_availability as doc_availability;
 
 /// Generates a formatted documentation string for a miri warning.
-#[allow(unused_macros)]
-macro_rules! doc_miri_warn {
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+macro_rules! __doc_miri_warn {
     (tag) => {
         concat!(
             "<span class='stab portability' ",
@@ -210,20 +219,11 @@ macro_rules! doc_miri_warn {
         )
     };
 }
-#[allow(unused_imports)]
-pub(crate) use doc_miri_warn;
+#[doc(hidden)]
+pub use __doc_miri_warn as doc_miri_warn;
 
-/// Returns the string literal "std" if `std` is enabled, or "core" otherwise.
-#[cfg(feature = "std")]
-macro_rules! std_core {
-    () => {
-        "std"
-    };
+crate::sf! {
+    /// Should return the string literal "std" if `std` is enabled, or "core" otherwise.
+    macro_rules! _std_core { () => { "core" }; }
+    #[allow(unused_imports)] pub(crate) use _std_core;
 }
-#[cfg(not(feature = "std"))]
-macro_rules! std_core {
-    () => {
-        "core"
-    };
-}
-pub(crate) use std_core;

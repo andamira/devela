@@ -15,7 +15,7 @@
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
 // private modules
-mod _doc; // doc_! // RENAME: _doc!
+mod _std_core; // _std_core!
 mod _use; // _use!
 
 mod asserts; // assertion macros
@@ -54,7 +54,7 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
         // pub use super::structural::*;
     }
     pub(super) mod _internals {
-        pub(crate) use super::{_doc::*, _use::*};
+        pub(crate) use super::{_std_core::*, _use::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

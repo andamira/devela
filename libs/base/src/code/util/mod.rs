@@ -3,11 +3,11 @@
 #![doc = crate::_DOC_CODE_UTIL!()]
 //
 
-crate::items! {
-    #[doc(hidden)] pub mod _docs; // _DOC_*!
-    #[doc(hidden)] pub mod _tags; // EMOJI_*! TAG_*!
-    #[doc(hidden)] pub mod _reexport; // reexport!, reexport_from!
-}
+/* private to the workspace */
+mod _doc; // doc_!, doc_availability! doc_miri_warn!, std_core!
+mod _mod_docs; // _DOC_*!
+mod _tags; // EMOJI_*! TAG_*!
+mod _reexport; // reexport!, reexport_from!
 
 mod reexports; // re-exported macros from devela_base_macros
 
@@ -35,7 +35,7 @@ crate::items! { // structural access: _mods, _workspace_private, _all
         };
     }
     pub(super) mod _workspace_private { #[allow(unused_imports)]
-        pub use super::{_docs::*, _tags::*, _reexport::*};
+        pub use super::{_doc::*, _mod_docs::*, _tags::*, _reexport::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
