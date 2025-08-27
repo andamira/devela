@@ -3,15 +3,16 @@
 //! WASM architecture functionality.
 //
 
+crate::mod_path!(_c "../../../../libs/base/src/sys/mem/cell/reexports.rs");
+
 mod namespace; // Wasm
-mod reexports;
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{namespace::*, reexports::*};
+        pub use super::{namespace::*, _c::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

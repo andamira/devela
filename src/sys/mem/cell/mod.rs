@@ -5,8 +5,9 @@
 #![doc = crate::_doc!(extends: cell)]
 //
 
+crate::mod_path!(_c "../../../../libs/base/src/sys/mem/cell/reexports.rs");
+
 mod option; // ExtCellOption
-mod reexports; // ::core::cell::*
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -15,7 +16,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{option::*, reexports::*};
+        pub use super::{option::*, _c::*};
         // WIPZONE
         // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
         // pub use super::scell::*;
@@ -27,7 +28,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
+        pub use super::_c::*;
     }
 }
 // WIPZONE

@@ -1,6 +1,6 @@
 // devela::data::list::link::reexports
 
-crate::_reexport_from!(alloc "../../../../libs/base_alloc/src/data/list/link/reexports.rs", _c);
+crate::mod_path!(alloc +pub _a "../../../../libs/base_alloc/src/data/list/link/reexports.rs");
 
 pub use devela_base::ConstList;
 

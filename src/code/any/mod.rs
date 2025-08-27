@@ -6,8 +6,9 @@
 // #![doc = crate::_doc!(newline)]
 //
 
+crate::mod_path!(_c "../../../libs/base/src/code/any/reexports.rs");
+
 mod ext;
-mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -16,13 +17,13 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{ext::*, reexports::*};
+        pub use super::{ext::*, _c::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{ext::*, reexports::*};
+        pub use super::{ext::*, _c::*};
     }
 }

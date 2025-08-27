@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: process)]
 //
 
-mod reexports;
+crate::mod_path!(std _s "../../../libs/base_std/src/work/process/reexports.rs");
 
 #[cfg(feature = "std")]
 mod ext; // ExtProcess
@@ -17,9 +17,8 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::reexports::*;
         #[cfg(feature = "std")]
-        pub use super::ext::*;
+        pub use super::{_s::*, ext::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
@@ -27,6 +26,6 @@ crate::items! { // structural access: _mods, _all, _always
     }
     pub(super) mod _always { #![allow(unused)]
         #[cfg(feature = "std")]
-        pub use super::{ext::*, reexports::*};
+        pub use super::{_s::*, ext::*};
     }
 }

@@ -1,9 +1,8 @@
 // devela::data::iter::reexports
 
-use crate::{_reexport, _reexport_from};
+use crate::_reexport;
 
-// from workspace base
-_reexport_from!("../../../libs/base/src/data/iter/reexports.rs", _c);
+crate::mod_path!(+pub _c "../../../libs/base/src/data/iter/reexports.rs");
 
 /* itertool items */
 

@@ -6,8 +6,9 @@
 #![doc = crate::_doc!(newline)]
 //
 
+crate::mod_path!(std _s "../../../libs/base_std/src/sys/fs/reexports.rs");
+
 mod path; // ExtPath, Path*, sys::path::*
-mod reexports; // sys::fs::*
 
 #[cfg(feature = "std")]
 crate::items! {
@@ -22,10 +23,10 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{path::_all::*, reexports::*};
+        pub use super::{path::_all::*};
 
         #[cfg(feature = "std")]
-        pub use super::{namespace::*, fs_path::*};
+        pub use super::{_s::*, namespace::*, fs_path::*};
         // WIPZONE
         // pub use super::ext::*;
     }

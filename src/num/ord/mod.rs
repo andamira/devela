@@ -6,22 +6,21 @@
 // #![doc = crate::_doc!(newline)]
 //
 
-mod reexports;
+// reexports
+crate::mod_path!(_c "../../../libs/base/src/num/ord/reexports.rs");
 
-crate::items! { // structural access: _mods, _all, _always
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
 
     mod _mods {
-        pub use super::reexports::*;
+        #[doc(inline)]
+        pub use devela_base::Compare;
+
+        pub use super::_c::*;
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
     }
 }

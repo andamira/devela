@@ -87,7 +87,7 @@
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 
 ### utils
-- new private macro `_reexport_from!`.
+- new macro `mod_path!`.
 - move to [base]:
   - public macros `CONST!`, `cfg_if!`, `define_error!`, `deprecate!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
    private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.

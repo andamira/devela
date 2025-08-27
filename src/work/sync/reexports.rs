@@ -4,9 +4,7 @@
 //
 // WAIT: [unique_rc_arc](https://github.com/rust-lang/rust/issues/112566)
 
-// from workspace base
-crate::_reexport_from!(std
-    "../../../libs/base_std/src/work/sync/reexports.rs", _s);
+crate::mod_path!(std +pub _s "../../../libs/base_std/src/work/sync/reexports.rs");
 
 /* from either `alloc` or `portable-atomic-util` */
 

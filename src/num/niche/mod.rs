@@ -47,9 +47,10 @@
 //! | Maximum flexibility       | Primitive types           | No constraints                    |
 //
 
+crate::mod_path!(_c "../../../libs/base/src/num/niche/reexports.rs");
+
 mod mem;
 mod macros; // ne!, nz!
-mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -58,13 +59,13 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{mem::*, macros::*, reexports::*};
+        pub use super::{_c::*, mem::*, macros::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
+        pub use super::_c::*;
     }
 }

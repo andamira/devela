@@ -5,9 +5,11 @@
 #![doc = crate::_doc!(extends: env)]
 //
 
+crate::mod_path!(_c "../../../libs/base/src/sys/env/reexports.rs");
+crate::mod_path!(std _s "../../../libs/base_std/src/sys/env/reexports.rs");
+
 mod arg;
 mod namespace;
-mod reexports;
 
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
@@ -20,16 +22,18 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{arg::_all::*, namespace::*, reexports::*};
+        pub use super::{_c::*, arg::_all::*, namespace::*};
 
         #[cfg(feature = "std")]
-        pub use super::app::*;
+        pub use super::{_s::*, app::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
+        pub use super::_c::*;
+        #[cfg(feature = "std")]
+        pub use super::_s::*;
     }
 }

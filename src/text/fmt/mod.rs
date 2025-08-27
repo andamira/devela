@@ -5,9 +5,11 @@
 #![doc = crate::_doc!(extends: fmt)]
 //
 
+crate::mod_path!(_c "../../../libs/base/src/text/fmt/reexports.rs");
+crate::mod_path!(alloc _a "../../../libs/base_alloc/src/text/fmt/reexports.rs");
+
 mod buf;
 mod namespace; // Fmt
-mod reexports;
 
 #[cfg(feature = "fmt")]
 mod num_to_str;
@@ -19,7 +21,9 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{buf::*, namespace::*, reexports::*};
+        pub use super::{_c::*, buf::*, namespace::*};
+        #[cfg(feature = "alloc")]
+        pub use super::_a::*;
 
         #[cfg(feature = "fmt")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "fmt")))]
@@ -32,7 +36,9 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
+        pub use super::_c::*;
+        #[cfg(feature = "alloc")]
+        pub use super::_a::*;
     }
 }
 // WIPZONE

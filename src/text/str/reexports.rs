@@ -3,12 +3,11 @@
 //! String related re-exports.
 //
 
-use crate::{_reexport_from, impl_cdef};
+use crate::impl_cdef;
 
-// from workspace base
-_reexport_from!("../../../libs/base/src/text/str/reexports.rs", _c);
-_reexport_from!(alloc "../../../libs/base_alloc/src/text/str/reexports.rs", _a);
-_reexport_from!(std "../../../libs/base_std/src/text/str/reexports.rs", _s);
+crate::mod_path!(+pub _c "../../../libs/base/src/text/str/reexports.rs");
+crate::mod_path!(alloc +pub _a "../../../libs/base_alloc/src/text/str/reexports.rs");
+crate::mod_path!(std +pub _s "../../../libs/base_std/src/text/str/reexports.rs");
 
 /* from other modules */
 

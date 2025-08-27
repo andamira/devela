@@ -3,11 +3,8 @@
 //!
 //
 
-use crate::_reexport_from;
+crate::mod_path!(+pub _c "../../../libs/base/src/num/float/reexports.rs");
 
 // aliases
 #[doc = crate::TAG_DEVELA_BASE!()]
 pub use devela_base::fsize;
-
-// from workspace base
-_reexport_from!("../../../libs/base/src/num/float/reexports.rs", _c);

@@ -3,8 +3,5 @@
 //!
 //
 
-// from workspace base
-crate::_reexport_from!(alloc
-    "../../../../libs/base_alloc/src/sys/mem/alloc/reexports.rs", _a);
-crate::_reexport_from!(std
-    "../../../../libs/base_std/src/sys/mem/alloc/reexports.rs", _s);
+crate::mod_path!(alloc +pub _a "../../../../libs/base_alloc/src/sys/mem/alloc/reexports.rs");
+crate::mod_path!(std +pub _s "../../../../libs/base_std/src/sys/mem/alloc/reexports.rs");

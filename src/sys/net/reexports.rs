@@ -3,6 +3,5 @@
 //!
 //
 
-// from workspace base
-crate::_reexport_from!("../../../libs/base/src/sys/net/reexports.rs", _c);
-crate::_reexport_from!(std "../../../libs/base_std/src/sys/net/reexports.rs", _s);
+crate::mod_path!(+pub _c "../../../libs/base/src/sys/net/reexports.rs");
+crate::mod_path!(std +pub _s "../../../libs/base_std/src/sys/net/reexports.rs");

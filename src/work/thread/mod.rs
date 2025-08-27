@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: thread)]
 //
 
-mod reexports;
+crate::mod_path!(std _s "../../../libs/base_std/src/work/thread/reexports.rs");
 
 #[cfg(feature = "std")]
 crate::items! {
@@ -20,10 +20,8 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::reexports::*;
-
         #[cfg(feature = "std")]
-        pub use super::{ext::*, sleep::*};
+        pub use super::{_s::*, ext::*, sleep::*};
         // WIPZONE
         #[cfg(feature = "std")]
         crate::items! {
@@ -39,7 +37,7 @@ crate::items! { // structural access: _mods, _all, _always
     }
     pub(super) mod _always { #![allow(unused)]
         #[cfg(feature = "std")]
-        pub use super::reexports::*;
+        pub use super::_s::*;
     }
 }
 // WIPZONE

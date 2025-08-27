@@ -5,14 +5,14 @@
 #![doc = crate::_doc!(extends: ops)]
 //
 
-mod reexports;
+crate::mod_path!(_c "../../../libs/base/src/code/ops/reexports.rs");
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods {
-        pub use super::reexports::*;
+        pub use super::_c::*;
         // WIPZONE
         // pub use super::closure::*;
     }

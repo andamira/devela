@@ -1,12 +1,6 @@
 // devela::data::key::reexports
-//
-//!
-//
 
-use crate::_reexport_from;
-
-// from workspace base
-_reexport_from!(alloc "../../../libs/base_alloc/src/data/key/reexports.rs", _c);
+crate::mod_path!(alloc +pub _c  "../../../libs/base_alloc/src/data/key/reexports.rs");
 
 #[cfg(feature = "alloc")]
 mod impls_alloc {

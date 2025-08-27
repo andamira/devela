@@ -5,10 +5,11 @@
 #![doc = crate::_doc!(extends: pin)]
 //
 
+crate::mod_path!(_c "../../../../libs/base/src/sys/mem/pin/reexports.rs");
+
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
 mod pinned; // Pinned
-mod reexports; // ::core::pin::*
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -17,7 +18,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::reexports::*;
+        pub use super::_c::*;
 
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
         pub use super::pinned::*;
@@ -27,6 +28,6 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
+        pub use super::_c::*;
     }
 }

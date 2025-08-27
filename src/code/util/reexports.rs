@@ -3,8 +3,7 @@
 //! Reexported macros and hints.
 //
 
-// from workspace base
-crate::_reexport_from!("../../../libs/base/src/code/util/reexports.rs", _c);
+crate::mod_path!(+pub _c "../../../libs/base/src/code/util/reexports.rs");
 
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{
@@ -12,7 +11,7 @@ pub use devela_base::{
     cfg_if,
     define_error,
     deprecate_feature,
-    include_from, mod_from,
+    include_from, mod_from, mod_path,
     is,
     items, sf,
     paste,

@@ -3,9 +3,8 @@
 //!
 //
 
-// from workspace base
-crate::_reexport_from!("../../../libs/base/src/sys/mem/reexports.rs", _c);
-crate::_reexport_from!(alloc "../../../libs/base_alloc/src/sys/mem/reexports.rs", _a);
+crate::mod_path!(+pub _c "../../../libs/base/src/sys/mem/reexports.rs");
+crate::mod_path!(alloc +pub _a "../../../libs/base_alloc/src/sys/mem/reexports.rs");
 
 #[cfg(feature = "alloc")]
 crate::impl_cdef![<T: ConstDefault> Self::new() => RcWeak<T>];

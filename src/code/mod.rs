@@ -10,10 +10,11 @@
 // safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
+crate::mod_path!(_c "../../libs/base/src/code/reexports.rs");
+
 mod any; // dynamic typing and reflection
 mod default; // ConstDefault, Default
 mod guard; // ScopeGuard
-mod reexports; // re-exported items
 
 pub mod error; // AllError, modular errors
 pub mod intro; // Introspect
@@ -30,7 +31,7 @@ util::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _mods {
-        pub use super::{any::_all::*, default::*, guard::*, reexports::*};
+        pub use super::{_c::*, any::_all::*, default::*, guard::*};
     }
     mod _pub_mods {
         pub use super::{
@@ -47,7 +48,7 @@ util::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            error::_always::*, marker::_always::*, panic::_always::*,
-            reexports::*, result::_always::*, util::_always::*, };
+            _c::*, error::_always::*, marker::_always::*, panic::_always::*,
+            result::_always::*, util::_always::*, };
     }
 }

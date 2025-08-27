@@ -3,8 +3,5 @@
 //!
 //
 
-use crate::_reexport_from;
-
-// from workspace base
-_reexport_from!("../../../libs/base/src/phys/time/reexports.rs", _c);
-_reexport_from!(std "../../../libs/base_std/src/phys/time/reexports.rs", _s);
+crate::mod_path!(+pub _c "../../../libs/base/src/phys/time/reexports.rs");
+crate::mod_path!(std +pub _s "../../../libs/base_std/src/phys/time/reexports.rs");

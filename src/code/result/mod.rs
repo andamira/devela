@@ -17,11 +17,12 @@
 //! and mismatch-aware comparisons ([`Mismatch`]).
 //
 
+crate::mod_path!(_c "../../../libs/base/src/code/result/reexports.rs");
+
 mod chain_hook; // Chain, Hook
 mod mismatch; // Mismatch
 mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
 mod own; // Own
-mod reexports; // code::result::Result
 mod value_quant; // ValueQuant
 
 crate::items! { // structural access: _mods, _all, _always
@@ -32,7 +33,7 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         pub use super::{
-            chain_hook::*, mismatch::*, opt_res::_all::*, own::*, reexports::*, value_quant::*,
+            _c::*, chain_hook::*, mismatch::*, opt_res::_all::*, own::*, value_quant::*,
         };
         // WIPZONE
         // pub use super::enumatch::*;
@@ -44,7 +45,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
+        pub use super::_c::*;
     }
 }
 // WIPZONE

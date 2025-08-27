@@ -3,10 +3,7 @@
 //!
 //
 
-use crate::_reexport_from;
-
-// from workspace base
-_reexport_from!("../../../libs/base/src/work/future/reexports.rs", _c);
+crate::mod_path!(+pub _c "../../../libs/base/src/work/future/reexports.rs");
 
 /* from either `alloc` or `portable-atomic-util` and `alloc` */
 

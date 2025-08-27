@@ -8,6 +8,10 @@ mod coro; // CoroManager, CoroWork, CoroWorker
 #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
 mod reexports;
 
+// #[cfg(test)]
+// #[cfg(feature = "alloc")]
+// mod tests;
+
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
