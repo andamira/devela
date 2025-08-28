@@ -27,7 +27,6 @@ mod maybe; // maybe!
 mod methods; // methods_as_fns
 mod reexports; // re-exported items
 
-#[cfg(_bit··)]
 mod enumset; // enumset!
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
@@ -43,7 +42,6 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
             asserts::_all::*, cdbg::*, capture::*, ident::*, impl_trait::*, maybe::*,
             methods::*, reexports::*,
         };
-        #[cfg(_bit··)]
         pub use super::enumset::*;
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;

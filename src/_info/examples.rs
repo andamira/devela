@@ -10,15 +10,12 @@
 
 /* in-crate integrated examples */
 
-#[cfg(all(feature = "bit", feature = "_bit_u8"))]
 #[path = "../../examples/code/enumset.rs"]
 pub mod enumset;
 #[cfg(feature = "devela_macros")]
 #[path = "../../examples/code/enumint.rs"]
 pub mod enumint;
 
-#[cfg(feature = "_bit_u8")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_bit_u8")))]
 #[path = "../../examples/data/bitfield.rs"]
 pub mod bitfield;
 #[path = "../../examples/data/id_seq.rs"]

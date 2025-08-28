@@ -1,11 +1,11 @@
-// devela::data::codec::bit::wrapper
+// devela::data::bit::wrapper
 //
 //!
 //
 
 mod primitives;
 
-#[cfg(all(test, feature = "_bit_u8"))]
+#[cfg(test)]
 mod tests;
 
 #[doc = crate::TAG_NAMESPACE!()]
@@ -31,7 +31,6 @@ mod tests;
 /// [`usize`]: Self#implementation-for-usize
 #[must_use]
 #[repr(transparent)]
-#[cfg_attr(nightly_doc, doc(cfg(_bit··)))]
 pub struct Bitwise<T>(pub T);
 
 #[rustfmt::skip]

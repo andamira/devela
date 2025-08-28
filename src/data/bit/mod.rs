@@ -1,15 +1,12 @@
-// devela::data::codec::bit
+// devela::data::bit
 //
-//! Bit-focused types and traits.
+//! Bit-focused items.
 //
 
 mod r#trait; // BitOps
 
-#[cfg(_bit··)]
-crate::items! {
-    mod field; // bitfield
-    mod wrapper; // Bitwise
-}
+mod field; // bitfield
+mod wrapper; // Bitwise
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
@@ -17,18 +14,11 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::r#trait::*;
-        #[cfg(_bit··)]
         pub use super::{field::_all::*, wrapper::*};
-
-        // WIPZONE
-        // #[cfg(feature = "alloc")]
-        // pub use super::vec::*;
+        // pub use devela_base::{Bitwise, bitfield}; // TODO
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
 }
-// WIPZONE
-// #[cfg(feature = "alloc")]
-// mod vec;

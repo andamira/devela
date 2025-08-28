@@ -1,9 +1,8 @@
-// devela::data::codec::bit::ops::wrapper::primitives
+// devela::data::bit::ops::wrapper::primitives
 //
 //! Implements `Bitwise` for the integer primitives.
 //
 
-#[cfg(_bit··)]
 use crate::{
     Bitwise,
     MismatchedBounds::{self, DataOverflow, IndexOutOfBounds, MismatchedIndices},
@@ -11,24 +10,14 @@ use crate::{
 };
 
 macro_rules! impl_bits_wrapper {
-    () => {
-        impl_bits_wrapper![
-            i8:"_bit_i8", i16:"_bit_i16", i32:"_bit_i32",
-            i64:"_bit_i64", i128:"_bit_i128", isize:"_bit_isize",
-            u8:"_bit_u8", u16:"_bit_u16", u32:"_bit_u32",
-            u64:"_bit_u64", u128:"_bit_u128", usize:"_bit_usize"
-        ];
-    };
-    ( $( $t:ty : $cap:literal ),+ ) => { $( impl_bits_wrapper![@$t : $cap]; )+ };
+    () => { impl_bits_wrapper![i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize]; };
+    ( $( $t:ty),+ ) => { $( impl_bits_wrapper![@$t]; )+ };
 
     // `$t`: the primitive type
-    // $cap: the capability feature that enables the given implementation. E.g "_bit_u8".
-    (@$t:ty : $cap:literal) => {
+    (@$t:ty) => {
         /* impl traits */
 
         #[doc = concat!["# Implementation for `", stringify!($t), "`."]]
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Bitwise::<$t> {
             /* constants */
 

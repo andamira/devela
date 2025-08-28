@@ -10,8 +10,9 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 mod absence; // NoData
-mod collection;
+mod bit; // bitfield handling and binary transformations.
 
+mod collection;
 pub mod codec;
 pub mod iter;
 pub mod key;
@@ -31,7 +32,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{absence::*, collection::*};
+        pub use super::{absence::*, bit::_all::*, collection::*};
 
         pub use devela_base::Sort;
         // #[cfg(feature = "alloc")]

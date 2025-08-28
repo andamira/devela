@@ -27,7 +27,6 @@
 //! ```
 //
 
-mod bit; // bitfield handling and binary transformations.
 mod encode; // encoders and decoders.
 mod radix; // radix-based encodings (Base32, Base64, Base58…).
 mod types;
@@ -42,7 +41,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
-        pub use super::{bit::_all::*, crypto::_all::*, encode::_all::*, radix::_all::*, types::*};
+        pub use super::{crypto::_all::*, encode::_all::*, radix::_all::*, types::*};
         // WIPZONE
         // pub use serde::_all::*;
         // pub use serde::lempel_ziv::*;

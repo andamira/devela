@@ -1,10 +1,11 @@
-// devela::data::codec::bit::trait
+// devela::data::bit::trait
+//
+//! Defines the [`BitOps`] trait.
 //
 // TOC
 // - definition
 // - impls
 
-#[cfg(_bit··)]
 use super::Bitwise;
 use crate::MismatchedBounds;
 #[cfg(doc)]
@@ -325,20 +326,12 @@ where
 
 macro_rules! impl_bit_ops {
     () => {
-        impl_bit_ops![
-            i8:"_bit_i8", i16:"_bit_i16", i32:"_bit_i32",
-            i64:"_bit_i64", i128:"_bit_i128", isize:"_bit_isize",
-            u8:"_bit_u8", u16:"_bit_u16", u32:"_bit_u32",
-            u64:"_bit_u64", u128:"_bit_u128", usize:"_bit_usize"
-        ];
+        impl_bit_ops![i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
     };
 
     // `$t`: the type to implement the trait for.
-    // $cap: the capability feature that enables the given implementation. E.g "_bit_u8".
-    ($($t:ty : $cap:literal),+) => { $( impl_bit_ops![@$t:$cap]; )+ };
-    (@$t:ty : $cap:literal) => {
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
+    ($($t:ty),+) => { $( impl_bit_ops![@$t]; )+ };
+    (@$t:ty) => {
         impl BitOps for $t {
             type Inner = $t;
 

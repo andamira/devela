@@ -314,13 +314,6 @@ mod reflection {
 
     /* ## data */
 
-    pub const BIT: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_bit··"],
-        features: &[
-            "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
-            "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
-        ]
-    };
     pub const TUPLE: FlagsFeatures = FlagsFeatures {
         ref_flags: &[],
         features: &["_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72"]
@@ -406,7 +399,7 @@ mod reflection {
             // code
             UNROLL,
             // data
-            BIT, TUPLE,
+            TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections
             // text
             CHAR, STRING, STRING_U,

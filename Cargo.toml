@@ -23,7 +23,7 @@
 #     - default         (_default, _max, _maxest)
 #     - docs            (_doc*)
 #     . code            (_unroll*)
-#     - data            (_data*, _bit*, _tuple*, _value*, …)
+#     - data            (_data*, _tuple*, _value*, …)
 #     - num             (_num*, _int_*, _float_*, …)
 #     - text            (_text*, _char*, _str_*)
 #   - Dependency        (dep_*)
@@ -186,7 +186,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 235/300 (65 remaining), 137 visible, 98 hidden
+[features] # 222/300 (78 remaining), 137 visible, 85 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -467,7 +467,7 @@ _docs = [ # the minimum capabilities to document everything
 	# modules:
 	"all", "linux",
 	# data:
-	"_bit_u8", "_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
+	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 	# num:
 	"_float_f64", "_int_u32", "_int_i64",
 	# text:
@@ -496,24 +496,7 @@ _unroll_2048 = ["_unroll_1024"]
 #* data capabilities *#
 # ---------------------
 
-_data_all = ["_bit_all", "_collections_all", "_tuple", "_value_all"]
-
-# `Bitwise`, `bitfield`, `enumset`:
-_bit_all = [
-	"_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
-	"_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize"]
-	_bit_i8 = []
-	_bit_i16 = []
-	_bit_i32 = []
-	_bit_i64 = []
-	_bit_i128 = []
-	_bit_isize = []
-	_bit_u8 = []
-	_bit_u16 = []
-	_bit_u32 = []
-	_bit_u64 = []
-	_bit_u128 = []
-	_bit_usize = []
+_data_all = ["_collections_all", "_tuple", "_value_all"]
 
 # `Destaque*`, `Graph*`, `Node*`, `Stack*`, `Tuple`:
 _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "_tuple" ]
@@ -1226,7 +1209,7 @@ check-cfg = [ # Allowed configuration flags:
 	"cfg(unsafe··, safe··, nightly··, dep··)",
 	# data: (6)
 	'cfg(data··)',
-	'cfg(_bit··, _destaque··, _stack··)',
+	'cfg(_destaque··, _stack··)',
 	'cfg(_graph··, _node··)',
 	# game: (1)
 	'cfg(game··)',
@@ -1293,13 +1276,11 @@ required-features = ["devela_macros"]
 [[example]]
 name = "enumset" # NOTE: in docs
 path = "examples/code/enumset.rs"
-required-features = ["_bit_u8"]
 
 # data
 [[example]]
 name = "bitfield" # NOTE: in docs
 path = "examples/data/bitfield.rs"
-required-features = ["_bit_u8"]
 [[example]]
 name = "id_pin"
 path = "examples/data/id_pin.rs"

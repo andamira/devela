@@ -1,11 +1,11 @@
-// devela::data::codec::bit::field
+// devela::data::bit::field
 //
 //!
 //
 
 mod bitfield;
 
-#[cfg(all(test, feature = "_bit_u8"))]
+#[cfg(test)]
 mod tests;
 
 crate::items! { // structural access: _mods, _all

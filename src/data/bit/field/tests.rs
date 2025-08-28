@@ -1,4 +1,4 @@
-// devela::data::codec::bit::field::tests
+// devela::data::bit::field::tests
 //
 //!
 //

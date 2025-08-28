@@ -1,6 +1,6 @@
-// devela::data::codec::bit::field::bit_field
+// devela::data::bit::field::bit_field
 //
-//! the bitfield! macro.
+//! Defines the [`bitfield!`] macro.
 //
 
 #![allow(
@@ -16,9 +16,6 @@
 ///
 /// The new struct already derives
 /// `Clone`, `Copy`, `Debug`, `Default`, `PartialEq`, `Eq` and `Hash`.
-///
-/// # Features
-/// This macro depends on enabling any of the `_bit_*` features. E.g. `_bit_u8`.
 ///
 /// # Examples
 /// See also the [bitfield][crate::_info::examples::bitfield] example.
@@ -890,5 +887,4 @@ macro_rules! _bitfield {
         $($tt:tt)+ } => { $crate::bitfield![ (custom:pub, extra:pub) $($tt)+ ]; };
 }
 #[doc(inline)]
-#[cfg_attr(nightly_doc, doc(cfg(_bit··)))]
 pub use _bitfield as bitfield; // see crate::code::utils::mod.rs
