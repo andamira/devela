@@ -12,6 +12,7 @@ pub use devela_base::{
     cfor,
     define_error,
     deprecate_feature,
+    impl_trait,
     include_from, mod_from, mod_path,
     is,
     items, sf,

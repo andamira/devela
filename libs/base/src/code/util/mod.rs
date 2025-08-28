@@ -14,6 +14,7 @@ mod reexports; // re-exported macros from devela_base_macros
 mod cfg_if; // cfg_if!
 mod cfor; // cfor!
 mod deprecate; // deprecate_feature!
+mod impl_trait; // impl_trait!
 mod include; // include_from!, mod_from!
 mod items; // items!, sf!
 mod is; // is!
@@ -31,7 +32,7 @@ crate::items! { // structural access: _mods, _workspace_private, _all
 
     mod _mods {
         pub use super::{
-            cfg_if::*, cfor::*, deprecate::*, include::*, items::*, is::*,
+            cfg_if::*, cfor::*, deprecate::*, impl_trait::*, include::*, items::*, is::*,
             paste::*, r#const::*, reexports::*,
         };
     }

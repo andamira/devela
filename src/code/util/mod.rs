@@ -22,7 +22,6 @@ mod asserts; // assertion macros
 mod cdbg; // cdbg!
 mod capture; // capture_[first|last|tail]!
 mod ident; // ident_const_index!
-mod impl_trait; // impl_trait!
 mod maybe; // maybe!
 mod methods; // methods_as_fns
 mod reexports; // re-exported items
@@ -39,7 +38,7 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
 
     mod _mods {
         pub use super::{
-            asserts::_all::*, cdbg::*, capture::*, ident::*, impl_trait::*, maybe::*,
+            asserts::_all::*, cdbg::*, capture::*, ident::*, maybe::*,
             methods::*, reexports::*,
         };
         pub use super::enumset::*;
