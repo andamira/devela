@@ -3,6 +3,8 @@
 #![doc = crate::_DOC_DATA!()]
 //
 
+mod sort;
+
 pub mod list;
 pub mod key;
 
@@ -13,12 +15,10 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
+        pub use super::sort::_all::*;
     }
     mod _pub_mods { #![allow(unused)]
-        pub use super::{
-            list::_all::*,
-            key::_all::*,
-        };
+        pub use super::{list::_all::*, key::_all::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

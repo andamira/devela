@@ -1,11 +1,10 @@
-// devela::code::util::cfor
+// devela_base::code::util::cfor
 //
 // Original source code by Joachim Enggård Nebel, licensed as MIT,
 // https://crates.io/crates/const_for/0.1.4
 //
 // WAIT: [for-loops in constants](https://github.com/rust-lang/rust/issues/87575)
 // IMPROVE: doesn't work in certain circumstances.
-// IMPROVE: remove the need for alloc in tests and examples.
 
 /// A for loop that is usable in *compile-time* contexts.
 ///
@@ -18,7 +17,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::cfor;
+/// # use devela_base::cfor;
 /// let mut a = 0;
 /// cfor!(i in 0..5 => {
 ///     a += i
@@ -38,7 +37,7 @@
 /// ## Custom step size
 /// A custom step size can be set:
 /// ```
-/// # use devela::cfor;
+/// # use devela_base::cfor;
 /// let mut v = Vec::new();
 /// cfor!(i in (0..5).step_by(2) => {
 ///     v.push(i)
@@ -51,7 +50,7 @@
 /// ## Reversed
 /// Iteration can be reversed:
 /// ```
-/// # use devela::cfor;
+/// # use devela_base::cfor;
 /// let mut v = Vec::new();
 /// cfor!(i in (0..5).rev() => {
 ///     v.push(i)
@@ -64,7 +63,7 @@
 /// It is possible to combine rev and step_by, but each can only be appended once.
 /// So the following two examples are the only legal combinations.
 /// ```
-/// # use devela::cfor;
+/// # use devela_base::cfor;
 /// // Reverse, then change step size
 /// let mut v = Vec::new();
 /// cfor!(i in (0..10).rev().step_by(4) => {
@@ -85,7 +84,7 @@
 ///
 /// ```
 /// // Mutable variable
-/// # use devela::cfor;
+/// # use devela_base::cfor;
 /// let mut v = Vec::new();
 /// cfor!(mut i in (0..4) => {
 ///     i *= 2;
@@ -104,7 +103,7 @@
 /// The body of the loop can be any statement. This means that the following is legal,
 /// even though it is not in a regular for loop.
 /// ```
-/// # use devela::cfor;
+/// # use devela_base::cfor;
 /// let mut a = 0;
 /// cfor!(_ in 0..5 => a += 1);
 ///
@@ -168,24 +167,27 @@ macro_rules! cfor {
 #[doc(inline)]
 pub use cfor;
 
-#[cfg(all(test, feature = "alloc"))]
+#[cfg(test)]
 mod tests {
     use super::cfor;
-    use crate::{Vec, vec_ as vec};
 
     macro_rules! validate_loop {
         (@impl $($loop:tt)*) => {
-            let mut c_values_hit = Vec::new();
+            let mut c_values_hit = [0; 100];
+            let mut c_index = 0;
             cfor!(i in $($loop)* => {
-                c_values_hit.push(i);
+                c_values_hit[c_index] = i;
+                c_index += 1;
             });
 
-            let mut r_values_hit = Vec::new();
+            let mut r_values_hit = [0; 100];
+            let mut r_index = 0;
             for i in $($loop)* {
-                r_values_hit.push(i);
+                r_values_hit[r_index] = i;
+                r_index += 1;
             };
 
-            assert!(c_values_hit == r_values_hit);
+            assert_eq!(&c_values_hit[..c_index], &r_values_hit[..r_index]);
         };
 
         ($step: expr, $($loop:tt)*) => {
@@ -287,8 +289,12 @@ mod tests {
 
     #[test]
     fn signed_can_go_negative() {
-        let mut actual = Vec::new();
-        cfor!(i in (-10..11).rev().step_by(5) => actual.push(i));
-        assert_eq!(actual, vec![10, 5, 0, -5, -10]);
+        let mut actual = [0; 5];
+        let mut index = 0;
+        cfor!(i in (-10..11).rev().step_by(5) => {
+            actual[index] = i;
+            index += 1;
+        });
+        assert_eq!(actual, [10, 5, 0, -5, -10]);
     }
 }

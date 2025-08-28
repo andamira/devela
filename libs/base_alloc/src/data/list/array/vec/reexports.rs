@@ -13,7 +13,7 @@ _reexport! { rust: alloc::vec,
 /// <span class='stab portability' title='re-exported from rust&#39;s `alloc`'>`alloc`</span>
 /// Creates a [`Vec`] containing the arguments.
 ///
-#[doc = "*Re-exported from [`alloc::vec`][macro@crate::_dep::_alloc::vec]*."]
+#[doc = "*Re-exported from [`alloc::vec`][macro@alloc::vec]*."]
 #[doc = "\n\n---"]
 ///
 /// The reason of the `_` suffix is to avoid conflicting with Rust's prelude

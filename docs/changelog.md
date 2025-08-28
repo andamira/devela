@@ -29,8 +29,8 @@
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`.
-- remove features: `cast`, `_cmp*`, `join`, `prim`, `split`.
-- remove flags: `cmp··`, `prim··`.
+- remove features: `cast`, `_cmp*`, `join`, `prim`, `_sort*`, `split`.
+- remove flags: `cmp··`, `prim··`, `sort··`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
 
@@ -89,7 +89,7 @@
 ### utils
 - new macro `mod_path!`.
 - move to [base]:
-  - public macros `CONST!`, `cfg_if!`, `define_error!`, `deprecate!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
+  - public macros `CONST!`, `cfg_if!`, `cfor!`, `define_error!`, `deprecate!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
    private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
 - add tags: `_DOC_*`, `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`, `TAG_[CODEC|CONCURRENCY|DATA|EVENT|HASH|ID]`.
 - change the emoji for `TAG_DATA_STRUCTURE`.
@@ -100,6 +100,12 @@
 - remove deprecated `iif!` macro.
 
 ## data
+- move `Sort` to [base].
+- new `SortAlloc` wrapper for `Sort`.
+- new `SortAlloc` wrapper for `Sort`.
+- make `Sort` methods take `&mut self` instead of `self`.
+- make `Sort` public `quick_*` methods take `&mut self` as well.
+
 ### list
 - move to [base]:
   - type `ConstList`.
@@ -116,5 +122,9 @@
 ## sys
 ### env
 - vendor `argv` as `IterArgSOsRef` struct and `Env` method `args_os_ref`.
+
+### mem
+- move to [base]:
+  - macro `cswap!`.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

@@ -96,7 +96,7 @@ macro_rules! _mod_from {
 #[doc(inline)]
 pub use _mod_from as mod_from;
 
-/// A handy helper to include a rust source file keeping the intermediary docs.
+/// A macro helper to define a module name and path.
 ///
 /// This is used to include files re-exported by lower-level workspace crates,
 /// which add documentation on top of the original one. But there's an [issue][0]

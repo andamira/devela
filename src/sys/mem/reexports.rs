@@ -6,6 +6,8 @@
 crate::mod_path!(+pub _c "../../../libs/base/src/sys/mem/reexports.rs");
 crate::mod_path!(alloc +pub _a "../../../libs/base_alloc/src/sys/mem/reexports.rs");
 
+pub use devela_base::cswap;
+
 #[cfg(feature = "alloc")]
 crate::impl_cdef![<T: ConstDefault> Self::new() => RcWeak<T>];
 

@@ -343,18 +343,6 @@ mod reflection {
         ref_flags: &["_stack··"],
         features: &["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"] };
 
-    pub const SORT_INT: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_sort··", "_sort_int··"],
-        features: &[
-            "_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
-            "_sort_u8", "_sort_u16", "_sort_u32", "_sort_u64", "_sort_u128", "_sort_usize",
-        ]
-    };
-    pub const SORT_FLOAT: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_sort··", "_sort_float··"],
-        features: &["_sort_f32", "_sort_f64"]
-    };
-
     /* ## num */
 
     // ### numbers
@@ -420,7 +408,6 @@ mod reflection {
             // data
             BIT, TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections
-            SORT_INT, SORT_FLOAT,
             // text
             CHAR, STRING, STRING_U,
             // num

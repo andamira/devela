@@ -1,4 +1,4 @@
-// devela::sys::mem::cswap
+// devela_base::sys::mem::cswap
 //
 //! Defines the [`cswap!`] macro.
 //
@@ -24,7 +24,8 @@ macro_rules! cswap {
         $a:expr, $b:expr) => {{ let tmp = $a; $a = $b; $b = tmp; }};
     (mut:
         // swaps two values by calling core's `swap` over their mut references.
-        $a:expr, $b:expr) => {{ $crate::Mem::swap(&mut $a, &mut $b); }};
+        // $a:expr, $b:expr) => {{ $crate::Mem::swap(&mut $a, &mut $b); }}; // TODO
+        $a:expr, $b:expr) => {{ ::core::mem::swap(&mut $a, &mut $b); }}; // TEMP
     (xor:
         // swaps two `T: PartialEq + BitXorAssign` values without a temporary variable.
         $a:expr, $b:expr) => {{ if $a != $b { $a ^= $b; $b ^= $a; $a ^= $b; } }};

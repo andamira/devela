@@ -9,6 +9,7 @@ crate::mod_path!(+pub _c "../../../libs/base/src/code/util/reexports.rs");
 pub use devela_base::{
     CONST,
     cfg_if,
+    cfor,
     define_error,
     deprecate_feature,
     include_from, mod_from, mod_path,

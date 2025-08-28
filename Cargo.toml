@@ -23,7 +23,7 @@
 #     - default         (_default, _max, _maxest)
 #     - docs            (_doc*)
 #     . code            (_unroll*)
-#     - data            (_data*, _bit*, _sort*, _tuple*, _value*, …)
+#     - data            (_data*, _bit*, _tuple*, _value*, …)
 #     - num             (_num*, _int_*, _float_*, …)
 #     - text            (_text*, _char*, _str_*)
 #   - Dependency        (dep_*)
@@ -184,7 +184,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 250/300 (50 remaining), 137 visible, 113 hidden
+[features] # 235/300 (65 remaining), 137 visible, 98 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -494,7 +494,7 @@ _unroll_2048 = ["_unroll_1024"]
 #* data capabilities *#
 # ---------------------
 
-_data_all = ["_bit_all", "_collections_all", "_tuple", "_sort_all", "_value_all"]
+_data_all = ["_bit_all", "_collections_all", "_tuple", "_value_all"]
 
 # `Bitwise`, `bitfield`, `enumset`:
 _bit_all = [
@@ -535,26 +535,6 @@ _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "
 		_stack_u16 = []
 		_stack_u32 = []
 		_stack_usize = []
-
-# `Sort`:
-_sort_all = [
-	"_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
-	"_sort_u8", "_sort_u16", "_sort_u32", "_sort_u64", "_sort_u128", "_sort_usize",
-	"_sort_f32", "_sort_f64"]
-	_sort_i8 = []
-	_sort_i16 = []
-	_sort_i32 = []
-	_sort_i64 = []
-	_sort_i128 = []
-	_sort_isize = []
-	_sort_u8 = []
-	_sort_u16 = []
-	_sort_u32 = []
-	_sort_u64 = []
-	_sort_u128 = []
-	_sort_usize = []
-	_sort_f32 = []
-	_sort_f64 = []
 
 # `Tuple` trait and maximum arity supported (example relative compilation times)
 _tuple = ["__build"] # arity 12 # time:  3.3s, codegen: 96K (for >=2nd compil.)
@@ -1254,7 +1234,6 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(media··)',
 	# num: (13)
 	'cfg(num··)',
-	'cfg(_sort··, _sort_int··, _sort_float··)',
 	'cfg(_nums··, _float··, _int··, _int_i··, _int_u··)',
 	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
 	# phys: (1)

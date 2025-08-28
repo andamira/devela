@@ -1,14 +1,13 @@
-// devela::data::sort
+// devela_base::data::sort
 //
 //! Sorting functionality.
 //
 
 // no items defined
 mod generic;
-#[cfg(_sort··)]
 mod primitives;
 
-mod definition;
+mod definition; // Sort
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]

@@ -4,6 +4,7 @@
 //
 
 mod borrow;
+mod cswap; // cswap!
 mod pin;
 mod ptr;
 mod reexports;
@@ -18,6 +19,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     mod _mods { #![allow(unused)]
         pub use super::{
             borrow::_all::*,
+            cswap::*,
             pin::_all::*,
             ptr::_all::*,
             reexports::*,
