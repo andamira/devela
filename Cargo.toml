@@ -186,7 +186,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 222/300 (78 remaining), 137 visible, 85 hidden
+[features] # 221/300 (79 remaining), 136 visible, 85 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -274,8 +274,7 @@ devela_macros = [ "dep:devela_macros",
 all = [ # enables all the 11 modules (and their submodules)
 	"code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
 ]
-code = ["error"]
-	error = []
+code = []
 data = ["hash"]
 	# codec
 		hash = [] # HashFnv, HashFx, HashPengy

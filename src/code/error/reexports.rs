@@ -17,9 +17,7 @@ pub use devela_base::{
     NotAvailable,
 };
 
-#[cfg(feature = "error")]
 pub use crate_errors::*;
-#[cfg(feature = "error")]
 pub(crate) mod crate_errors {
     #[doc(inline)]
     #[cfg(feature = "image")]

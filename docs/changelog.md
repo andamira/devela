@@ -29,7 +29,7 @@
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`.
-- remove features: `_bit*`, `_cmp*`, `_sort*`, `cast`, `join`, `prim`, `split`.
+- remove features: `_bit*`, `_cmp*`, `_sort*`, `cast`, `error`, `join`, `prim`, `split`.
 - remove flags: `bit··`, `cmp··`, `prim··`, `sort··`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].

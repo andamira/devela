@@ -314,7 +314,6 @@ impl TryFrom<UnixTimeI64> for UnixTimeU32 {
 
 #[cfg(feature = "std")]
 mod std_impls {
-    #[cfg(feature = "error")]
     use crate::{Cast, DataOverflow, UnixTimeU32};
     use crate::{SystemTime, SystemTimeError, UnixTimeI64};
 
@@ -329,8 +328,6 @@ mod std_impls {
         }
     }
 
-    #[cfg(feature = "error")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "error")))]
     impl TryFrom<SystemTime> for UnixTimeU32 {
         type Error = crate::TimeError;
 

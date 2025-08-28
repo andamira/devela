@@ -234,7 +234,7 @@ mod reflection {
 
     pub const CODE: FlagsFeatures = FlagsFeatures {
         ref_flags: &["code··"],
-        features: &["code", "error"]
+        features: &["code"]
     };
     pub const DATA: FlagsFeatures = FlagsFeatures {
         ref_flags: &["data··"],
