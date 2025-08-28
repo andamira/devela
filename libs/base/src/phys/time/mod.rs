@@ -3,6 +3,7 @@
 #![doc = crate::_DOC_PHYS_TIME!()]
 //
 
+mod errors;
 mod reexports;
 
 crate::items! { // structural access: _mods, _all
@@ -11,7 +12,7 @@ crate::items! { // structural access: _mods, _all
 
     mod _mods {
         pub use super::{
-            reexports::*,
+            errors::*, reexports::*,
         };
     }
     pub(super) mod _all {

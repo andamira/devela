@@ -3,6 +3,7 @@
 #![doc = crate::_DOC_TEXT!()]
 //
 
+pub mod errors;
 pub mod fmt;
 pub mod str;
 
@@ -16,7 +17,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            fmt::_all::*, str::_all::*,
+            errors::*, fmt::_all::*, str::_all::*,
         };
     }
     pub(super) mod _all { #![allow(unused)]

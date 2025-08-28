@@ -20,7 +20,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            mpsc::*,
+            mpsc::_all::*,
         };
     }
     pub(super) mod _all { #![allow(unused)]

@@ -14,6 +14,10 @@ mod bit; // bitfield handling and binary transformations.
 
 mod collection;
 pub mod codec;
+pub mod errors {
+    //! Data-related errors.
+    pub use devela_base::data::errors::*;
+}
 pub mod iter;
 pub mod key;
 pub mod list;
@@ -40,7 +44,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     mod _pub_mods { #![allow(unused)]
         pub use super::{
-            codec::_all::*, iter::_all::*, key::_all::*,
+            codec::_all::*, errors::*, iter::_all::*, key::_all::*,
             list::_all::*, table::_all::*, uid::_all::*,
         };
 

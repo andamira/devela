@@ -2,6 +2,7 @@
 //
 //! Defines the [CONST!] macro.
 //
+// IMPROVE: the examples showing the last two arms [hidden|inline] macro_export
 
 /// A helper for constructing macro constants.
 ///

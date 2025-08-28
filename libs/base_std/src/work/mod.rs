@@ -4,8 +4,8 @@
 //
 
 pub mod process;
-// pub mod sync;
-// pub mod thread;
+pub mod sync;
+pub mod thread;
 
 crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
@@ -18,8 +18,8 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     mod _pub_mods { #![allow(unused)]
         pub use super::{
             process::_all::*,
-            // sync::_all::*,
-            // thread::_all::*,
+            sync::_all::*,
+            thread::_all::*,
         };
     }
     pub(super) mod _all { #![allow(unused)]

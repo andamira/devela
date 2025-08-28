@@ -7,8 +7,9 @@
 // - tests
 //
 // IMPROVE:
+// - make the automatic error tag optional.
 // - do not depend on included types being Copy.
-// - make the error tag optional.
+// - make it possibe to share publicly (conditional compilation, macro_export arms).
 
 /// Helper for defining individual and composite error types.
 ///
@@ -110,6 +111,7 @@ macro_rules! _define_error {
         $(,)?
     ) => {
         $(#[$attributes])*
+        // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms)
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
         $(#[doc = $tag])?

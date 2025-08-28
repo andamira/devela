@@ -12,7 +12,10 @@
 mod ascii;
 #[allow(hidden_glob_reexports, reason = "re-exported char")]
 mod char;
-mod error;
+pub mod errors {
+    //! Text-related errors.
+    pub use devela_base::text::errors::*;
+}
 mod grapheme; // Grapheme
 
 pub mod fmt;
@@ -26,13 +29,13 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     pub use {_always::*, _pub_mods::*};
 
     mod _mods {
-        pub use super::{ascii::_all::*, char::_all::*, error::*, grapheme::_all::*};
+        pub use super::{ascii::_all::*, char::_all::*, grapheme::_all::*};
         // WIPZONE
         // pub use super::bytes::*;
         // pub use super::cell::*;
     }
     mod _pub_mods {
-        pub use super::{fmt::_all::*, parse::_all::*, str::_all::*};
+        pub use super::{errors::*, fmt::_all::*, parse::_all::*, str::_all::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
@@ -40,7 +43,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            fmt::_always::*, char::_always::*, parse::_always::*, str::_always::*,
+            errors::*, fmt::_always::*, char::_always::*, parse::_always::*, str::_always::*,
         };
     }
 }

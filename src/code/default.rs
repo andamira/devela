@@ -1,6 +1,7 @@
 // devela::code::default
 //
 //! Defines the [`ConstDefault`] trait and implements it for many types.
+// NOTE: many implementations are scattered around the codebase.
 //
 // TOC
 // - definitions:

@@ -1,4 +1,4 @@
-// devela::code::error::data
+// devela_base::data::errors
 //
 //! Data-related errors.
 //

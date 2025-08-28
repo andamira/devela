@@ -17,6 +17,7 @@ pub mod code;
 pub mod data;
 pub mod lang;
 pub mod num;
+pub mod phys;
 pub mod sys;
 pub mod text;
 pub mod work;
@@ -39,6 +40,7 @@ pub mod all {
         data::_all::*,
         lang::_all::*,
         num::_all::*,
+        phys::_all::*,
         sys::_all::*,
         text::_all::*,
         work::_all::*,

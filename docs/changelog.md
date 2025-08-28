@@ -80,6 +80,7 @@
 
 ## code
 ### error
+- move to [base]: `Mismatch`.
 - update `define_error!` macro.
   - move to `code::error`.
   - update docs, add example.
@@ -89,7 +90,7 @@
 ### utils
 - new macro `mod_path!`.
 - move to [base]:
-  - public macros `CONST!`, `cfg_if!`, `cfor!`, `define_error!`, `deprecate!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
+  - public macros: `CONST!`, `cfg_if!`, `cfor!`, `define_error!`, `deprecate!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
    private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
 - add tags: `_DOC_*`, `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`, `TAG_[CODEC|CONCURRENCY|DATA|EVENT|HASH|ID]`.
 - change the emoji for `TAG_DATA_STRUCTURE`.
@@ -113,11 +114,15 @@
 ## num
 - move to [base]:
   - aliases: `fsize` and `[iu]size_*`.
-  - error types: `IncompatibleBounds`, `MismatchedSizes`, `NoInverse`, `NonNegativeRequired`, `NonZeroRequired`, `Overflow`, `PositiveRequired`.
+  - all data, numeric, text & time error types.
   - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `Interval`, `Sign`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
 - make `Sign` part of `quant`.
+
+## phys
+### time
+- remove `TimeError` alias.
 
 ## sys
 ### env

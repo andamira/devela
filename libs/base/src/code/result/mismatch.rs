@@ -53,6 +53,7 @@ impl<N, H> Mismatch<Interval<N>, H> {
     pub fn in_empty_interval(have: H, info: &'static str) -> Self where N: Default {
         Self { need: Interval::empty(), have, info }
     }
+    // NOTE: Can't implement this here because ConstDefault is defined in devela.
     // /// Creates a mismatch where `need` is an [`Interval::empty_const`],
     // /// but `have` was provided.
     // #[must_use] #[rustfmt::skip]
@@ -95,7 +96,7 @@ impl<N, H> Mismatch<Interval<N>, H> {
 
 mod core_impls {
     use crate::{
-        ConstDefault, Debug, Display, FmtResult, Formatter, Hash, Hasher, Mismatch, Ordering,
+        Debug, Display, FmtResult, Formatter, Hash, Hasher, Mismatch, Ordering,
     };
 
     impl<N: Clone, H: Clone> Clone for Mismatch<N, H> {
@@ -118,10 +119,6 @@ mod core_impls {
                 info: "",
             }
         }
-    }
-    impl<N: ConstDefault, H: ConstDefault> ConstDefault for Mismatch<N, H> {
-        /// Returns a *const* default `Mismatch`.
-        const DEFAULT: Self = Self { need: N::DEFAULT, have: H::DEFAULT, info: "" };
     }
 
     impl<N: Debug, H: Debug> Debug for Mismatch<N, H> {

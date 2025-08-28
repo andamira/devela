@@ -9,9 +9,6 @@
 
 mod reexports;
 
-mod data; // data-related errors
-mod time; // time-related errors
-
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
     pub use _mods::*;
@@ -19,7 +16,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::{data::*, reexports::*, time::*};
+        pub use super::reexports::*;
         // WIPZONE
         // pub use super::num::*;
     }
@@ -28,7 +25,7 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{data::*, reexports::*};
+        pub use super::reexports::*;
         // WIPZONE
         // pub use super::num::*;
     }
