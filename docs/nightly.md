@@ -83,7 +83,9 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
-- 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
+- 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
+  - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
+  - [[RFC] Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
@@ -115,7 +117,7 @@ See also
 - 1.??: ` `[const_for](https://github.com/rust-lang/rust/issues/87575)
           (depends on const_trait_impl)
 - 1.??: ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
-- 1.??: ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
+- 1.??: ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/143874)
 - 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
         = `nightly_coro` flag
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
