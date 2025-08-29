@@ -1,6 +1,6 @@
-// devela::code::util::maybe
+// devela_base::code::util::maybe
 //
-//! [`maybe!`] macro helper.
+//! Defines the [`maybe!`] macro helper.
 //
 // MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
 
@@ -10,7 +10,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{assert_eq_all, maybe, NonZeroU8};
+/// # use devela_base::{assert_eq_all, maybe, NonZeroU8};
 /// assert_eq![maybe![default:true, u8], Some(0)];
 /// assert_eq![maybe![default:true, &str], Some("")];
 /// assert_eq![maybe![default:false, u8], None];
@@ -22,7 +22,7 @@
 /// assert_eq_all![&s1, &s2, &s3];
 /// ```
 /// ```compile_fail
-/// # use devela::{maybe, NonZeroU8};
+/// # use devela_base::{maybe, NonZeroU8};
 /// let _ = maybe![default:true, NonZeroU8];
 /// ```
 #[macro_export]

@@ -94,7 +94,7 @@
 - new macros: `mod_path!`.
 - new private macros: `_doclink`.
 - move to [base]:
-  - public macros: `CONST!`, `cfg_if!`, `cfor!`, `define_error!`, `deprecate!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
+  - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `cfg_if!`, `cfor!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, `type_marker!`.
    private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
 - add tags: `_DOC_*`, `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`, `TAG_[CODEC|CONCURRENCY|DATA|EVENT|HASH|ID]`.
 - change the emoji for `TAG_DATA_STRUCTURE`.

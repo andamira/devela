@@ -9,6 +9,7 @@ mod int;
 mod ord;
 
 pub mod error; // error types
+pub mod niche; // NonZero*
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 
 crate::items! { // structural access: _mods, _pub_mods, _all
@@ -22,7 +23,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     }
     mod _pub_mods {
         #[doc(inline)]
-        pub use super::{error::*, quant::_all::*};
+        pub use super::{error::*, niche::_all::*, quant::_all::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

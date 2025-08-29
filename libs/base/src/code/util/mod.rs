@@ -11,13 +11,18 @@ mod _reexport; // reexport!, reexport_from!
 
 mod reexports; // re-exported macros from devela_base_macros
 
+mod asserts; // assertion macros
 mod cfg_if; // cfg_if!
 mod cfor; // cfor!
 mod deprecate; // deprecate_feature!
+mod enumset; // enumset!
+mod ident; // ident_const_index!
 mod impl_trait; // impl_trait!
 mod include; // include_from!, mod_from!
 mod items; // items!, sf!
 mod is; // is!
+mod maybe; // maybe!
+mod methods; // methods_as_fns
 mod paste; // paste! (wrapped for docs)
 mod r#const; // CONST!
 
@@ -32,8 +37,8 @@ crate::items! { // structural access: _mods, _workspace_private, _all
 
     mod _mods {
         pub use super::{
-            cfg_if::*, cfor::*, deprecate::*, impl_trait::*, include::*, items::*, is::*,
-            paste::*, r#const::*, reexports::*,
+            asserts::_all::*, cfg_if::*, cfor::*, deprecate::*, enumset::*, ident::*, impl_trait::*,
+            include::*, items::*, is::*, maybe::*, methods::*, paste::*, r#const::*, reexports::*,
         };
     }
     pub(super) mod _workspace_private { #[allow(unused_imports)]

@@ -1,4 +1,4 @@
-// devela::code::util::enumset
+// devela_base::code::util::enumset
 //
 //! An enum with an associated bitfield.
 //
@@ -6,8 +6,7 @@
 /// Defines an enum and an associated type set of its variants.
 ///
 /// It uses the [`bitfield!`] macro to create the associated set.
-// #[doc = "\n\n[bitfield]: data::bitfield"] // why doesn't this link, but Bitwise does?
-#[doc = crate::_doclink!("[`bitfield!`]" devela "data/macro.bitfield.html")]
+#[doc = "\n\n[`bitfield!`]: crate::bitfield"]
 ///
 /// You have to give unique names both to the enum and to the associated set.
 ///
@@ -15,7 +14,7 @@
 /// See also the [enumset][crate::_info::examples::enumset] example.
 ///
 /// ```
-/// # use devela::enumset;
+/// # use devela_base::enumset;
 /// enumset! {
 ///     #[derive(Debug)]
 ///     pub enum MyEnum(pub MyEnumSet: u8) {

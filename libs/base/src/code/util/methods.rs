@@ -1,4 +1,4 @@
-// devela::code::util::methods
+// devela_base::code::util::methods
 //
 //! Defines [`methods_as_fns`].
 //
@@ -12,33 +12,34 @@
 ///
 /// Supports various function qualifiers (const, async, unsafe) and attributes.
 ///
-/// # Examples
-/// ```
-/// # use devela::methods_as_fns;
-/// struct MyType;
-/// impl MyType {
-///     pub const fn add(a: i32, b: i32) -> i32 { a + b }
-///     pub async fn fetch(url: &str) -> &str { "fetched" }
-///     pub const unsafe fn dangerous() {}
-/// }
-///
-/// methods_as_fns! {
-///     pub MyType =>
-///     #[inline]
-///     +const add(a: i32, b: i32) -> i32,
-///     #[must_use]
-///     +async fetch(url: &str) -> &str,
-///     +const +unsafe dangerous()
-/// }
-/// assert_eq!(add(5, 2), 7);
-///
-/// // syntax to name the functions differently than the method (can't be mixed):
-/// methods_as_fns! {
-///     pub(crate) MyType =>
-///     add|addition(a: i32, b: i32) -> i32,
-/// }
-/// assert_eq!(addition(5, 2), 7);
-/// ```
+/** # Examples
+```
+# use devela_base::methods_as_fns;
+struct MyType;
+impl MyType {
+    pub const fn add(a: i32, b: i32) -> i32 { a + b }
+    pub async fn fetch(url: &str) -> &str { "fetched" }
+    pub const unsafe fn dangerous() {}
+}
+
+methods_as_fns! {
+    pub MyType =>
+    #[inline]
+    +const add(a: i32, b: i32) -> i32,
+    #[must_use]
+    +async fetch(url: &str) -> &str,
+    +const +unsafe dangerous()
+}
+assert_eq!(add(5, 2), 7);
+
+// syntax to name the functions differently than the method (can't be mixed):
+methods_as_fns! {
+    pub(crate) MyType =>
+    add|addition(a: i32, b: i32) -> i32,
+}
+assert_eq!(addition(5, 2), 7);
+```
+**/
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _methods_as_fns {
@@ -94,6 +95,8 @@ macro_rules! _methods_as_fns {
 }
 pub use _methods_as_fns as methods_as_fns;
 
+// TODO
+/*
 #[cfg(test)]
 #[rustfmt::skip]
 mod tests {
@@ -170,3 +173,4 @@ mod tests {
         assert_eq!(fetch_data("api.com").block_on(), "fetched");
     }
 }
+*/

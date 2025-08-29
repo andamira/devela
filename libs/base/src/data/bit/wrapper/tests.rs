@@ -18,13 +18,8 @@ fn bit_mask_range() {
     debug_assert![Bitwise::<u8>::mask_checked_range(8, 8).is_err()];
     debug_assert![Bitwise::<u8>::mask_checked_range(0, 8).is_err()];
     debug_assert![Bitwise::<u8>::mask_checked_range(4, 1).is_err()];
-    #[cfg(feature = "std")]
-    {
-        use std::panic::catch_unwind;
-        debug_assert![catch_unwind(|| { let _ = Bitwise::<u8>::mask_range(8, 8); }).is_err()];
-        debug_assert![catch_unwind(|| { let _ = Bitwise::<u8>::mask_range(0, 8); }).is_err()];
-        debug_assert![catch_unwind(|| { let _ = Bitwise::<u8>::mask_range(4, 1); }).is_err()];
-    }
+
+    // NOTE: panics are tested in devela::data::bit::tests
 }
 #[test] #[rustfmt::skip]
 fn bit_ops() {

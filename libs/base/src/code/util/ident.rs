@@ -1,4 +1,4 @@
-// devela::code::util::ident
+// devela_base::code::util::ident
 //
 //! identifier related macro functionality
 //
@@ -6,7 +6,7 @@
 /// Defines a constant for every given identifier with a value of its index in the list.
 /// # Examples
 /// ```
-/// # use devela::ident_const_index;
+/// # use devela_base::ident_const_index;
 /// ident_const_index![pub, 3; first, second, third]; // with commas
 /// assert![0 == first && 1 == second && 2 == third];
 ///

@@ -95,9 +95,7 @@ impl<N, H> Mismatch<Interval<N>, H> {
 }
 
 mod core_impls {
-    use crate::{
-        Debug, Display, FmtResult, Formatter, Hash, Hasher, Mismatch, Ordering,
-    };
+    use crate::{Debug, Display, FmtResult, Formatter, Hash, Hasher, Mismatch, Ordering};
 
     impl<N: Clone, H: Clone> Clone for Mismatch<N, H> {
         fn clone(&self) -> Self {

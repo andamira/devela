@@ -1,4 +1,4 @@
-// devela::code::marker::type_marker
+// devela_base::code::marker::type_marker
 //
 //! Zero-cost generic marker IDs.
 //
@@ -16,12 +16,13 @@
 /// (e.g., `Clone`, `Copy`, `Default`, `Debug`, `Display`, `PartialEq`, `Eq`,
 /// `PartialOrd`, `Ord`, `Hash`), and supports defining multiple types at once.
 ///
-/// Unlike [`type_resource!`][crate::type_resource], which ties types to an inner ID,
+/// Unlike [`type_resource!`], which ties types to an inner ID,
 /// `type_marker!` generates purely zero-sized marker types.
+#[doc = crate::_doclink!("[`type_resource!`]" devela "code/marker/macro.type_resource.html")]
 ///
 /// # Example
 /// ```
-/// # use devela::type_marker;
+/// # use devela_base::type_marker;
 /// type_marker![Id0];
 /// type_marker![Id1<A>];
 /// type_marker![Id2<A, B>; Id3<A>; Id4];

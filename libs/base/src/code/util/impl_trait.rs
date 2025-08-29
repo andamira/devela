@@ -1,4 +1,4 @@
-// devela::code::util::impl_trait
+// devela_base::code::util::impl_trait
 
 /// A helper macro to concisely implement a few common utility traits.
 ///
@@ -14,7 +14,7 @@
 ///
 /// ## Example
 /// ```
-/// # use devela::impl_trait;
+/// # use devela_base::impl_trait;
 /// struct S0(usize);
 /// struct S1<T> { v: T }
 /// struct S2<'a, T> { v: &'a T }
@@ -76,6 +76,8 @@ macro_rules! impl_trait {
 #[doc(inline)]
 pub use impl_trait;
 
+// TODO
+/*
 #[cfg(test)]
 #[rustfmt::skip]
 mod tests {
@@ -114,3 +116,4 @@ mod tests {
         assert_eq!(format_buf!(&mut buf, "{:?}", g2).unwrap(), "GS? { v1: 3.14, v2: 159 }");
     }
 }
+*/

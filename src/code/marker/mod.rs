@@ -7,23 +7,19 @@
 
 crate::mod_path!(_c "../../../libs/base/src/code/marker/reexports.rs");
 
-mod type_marker; // zero-cost generic type markers
 mod type_resource; // zero-cost type-safe resource markers
 
-crate::items! { // structural access: _mods, _all, _always
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
 
     mod _mods {
-        pub use super::{_c::*, type_marker::*, type_resource::*};
+        pub use super::{_c::*, type_resource::*};
+
+        pub use devela_base::code::marker::type_marker;
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
         pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        pub use super::{_c::*, type_marker::*, type_resource::*};
     }
 }

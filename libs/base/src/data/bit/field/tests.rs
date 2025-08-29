@@ -115,7 +115,7 @@ fn bits() {
     assert![b0.mut_unset_checked_bit(9).is_err()];
     assert![b0.mut_flip_checked_bit(9).is_err()];
 
-    // unchecked panics in debug mode tested in devela
+    // NOTE: unchecked panics are tested in devela::data::bit::tests
 }
 
 // #[test]

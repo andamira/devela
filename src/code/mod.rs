@@ -48,7 +48,7 @@ util::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            _c::*, error::_always::*, marker::_always::*, panic::_always::*,
-            result::_always::*, util::_always::*, };
+            _c::*, error::_always::*, panic::_always::*, result::_always::*, util::_always::*,
+        };
     }
 }

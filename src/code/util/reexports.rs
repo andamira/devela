@@ -8,14 +8,19 @@ crate::mod_path!(+pub _c "../../../libs/base/src/code/util/reexports.rs");
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base::{
     CONST,
+    assert_eq_all, assert_approx_eq_all,
     cfg_if,
     cfor,
     define_error,
     deprecate_feature,
+    enumset,
+    ident_const_index,
     impl_trait,
     include_from, mod_from, mod_path,
     is,
     items, sf,
+    maybe,
+    methods_as_fns,
     paste,
     // devela_code_macros:
     // cif, compile, compile_attr, compile_doc,

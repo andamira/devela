@@ -21,12 +21,8 @@ mod _use; // _use!
 mod asserts; // assertion macros
 mod cdbg; // cdbg!
 mod capture; // capture_[first|last|tail]!
-mod ident; // ident_const_index!
-mod maybe; // maybe!
-mod methods; // methods_as_fns
 mod reexports; // re-exported items
 
-mod enumset; // enumset!
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
 
@@ -37,11 +33,7 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{
-            asserts::_all::*, cdbg::*, capture::*, ident::*, maybe::*,
-            methods::*, reexports::*,
-        };
-        pub use super::enumset::*;
+        pub use super::{asserts::_all::*, cdbg::*, capture::*, reexports::*};
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
         // WIPZONE
