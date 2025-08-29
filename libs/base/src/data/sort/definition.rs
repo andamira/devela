@@ -46,7 +46,7 @@
 /// The `_array` suffixed methods calls the [`cswap!`] macro using the xor swap
 /// algorithm, except for the floting-point version which uses a temporary variable.
 ///
-/// [`cswap`]: crate::cswap
+/// [`cswap!`]: crate::cswap
 #[repr(transparent)]
 #[derive(Debug)]
 pub struct Sort<T>(pub T);

@@ -1,4 +1,4 @@
-// devela_base::data::bit::field::bit_field
+// devela_base::data::bit::field::bitfield
 //
 //! Defines the [`bitfield!`] macro.
 //
@@ -19,7 +19,8 @@
 ///
 /// # Examples
 /// See also the [bitfield] example.
-#[doc = "\n\n[bitfield]: devela::_info::examples::bitfield"] // FIXME
+// #[doc = "\n\n[bitfield]: _info::examples::bitfield"]
+#[doc = crate::_doclink!("[bitfield]" devela "_info/examples/bitfield" @mod)]
 /// ```
 /// # use devela_base::bitfield;
 /// bitfield! {
@@ -39,7 +40,8 @@
 /// ```
 ///
 /// See also the [`enumset!`] macro.
-#[doc = "\n\n[`enumset!`]: devela::code::enumset"] // FIXME
+// #[doc = "\n\n[`enumset!`]: crate::enumset"]
+#[doc = crate::_doclink!("[`enumset!`]" devela "code/util/macro.enumset.html")]
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _bitfield {

@@ -4,7 +4,7 @@
 //
 
 /* private to the workspace */
-mod _doc; // doc_!, doc_availability! doc_miri_warn!, std_core!
+mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!, std_core!
 mod _mod_docs; // _DOC_*!
 mod _tags; // EMOJI_*! TAG_*!
 mod _reexport; // reexport!, reexport_from!

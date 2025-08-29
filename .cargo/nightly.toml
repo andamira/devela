@@ -9,9 +9,10 @@
 
 # In sync with ./config.toml & ../tools/cargo-native
 rustdocflags = [
+	"-Zunstable-options",
+	"--generate-link-to-definition",
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./config/rustdoc-header.html",
-	"-Zunstable-options", "--generate-link-to-definition",
 	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
 rustflags = [

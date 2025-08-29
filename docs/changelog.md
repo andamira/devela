@@ -15,9 +15,12 @@
 - new `Build` namespace in `devela_base_std`.
 - move build fn utils as `Build` methods.
 - make `devela_base_std` optional for builds.
+- add rerun instructions for changed env vars.
+- make sure `CARGO_TARGET_DIR` is always defined.
 
 ## cargo
 - add new cargo doc workspace aliases `w*`.
+- add new cargo env var `CARGO_WORKSPACE_DIR`.
 
 ## dependencies
 - re-export `alloc` crate from devela and [base_alloc].
@@ -88,7 +91,8 @@
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 
 ### utils
-- new macro `mod_path!`.
+- new macros: `mod_path!`.
+- new private macros: `_doclink`.
 - move to [base]:
   - public macros: `CONST!`, `cfg_if!`, `cfor!`, `define_error!`, `deprecate!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `mod_from!`, `sf!`.
    private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.

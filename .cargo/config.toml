@@ -5,6 +5,14 @@
 # WAIT: [multiple cargo config files](https://github.com/rust-lang/cargo/issues/9306)
 # WAIT: [pass config in nested aliases](https://github.com/rust-lang/cargo/issues/13822)
 # WAIT: [jump to definition](https://github.com/rust-lang/rust/issues/89095)
+#
+# TOC
+#
+# - include
+# * unstable
+# * build
+# * env
+# * alias
 
 
 # NOTE: this is a temporary fix to be able to pass unstable flags only in nightly
@@ -37,6 +45,12 @@ rustdocflags = [
 rustflags = [
 	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
+
+[env]
+# ==============================================================================
+# WAIT: https://github.com/rust-lang/cargo/issues/3946#issuecomment-973132993
+# NOTE: In sync with ../libs/base/build/environment.rs
+CARGO_WORKSPACE_DIR = { value = "", relative = true }
 
 
 [alias]
@@ -75,7 +89,7 @@ wtd = "test --doc --workspace"
 wm = "miri test --workspace"
 wd = "doc --no-deps --workspace"
 wdo = "doc --no-deps --open --workspace"
-wdp = "doc --no-deps --workspace --document-private-items "
+wdp = "doc --no-deps --workspace --document-private-items"
 wdpo = "doc --no-deps --open --workspace --document-private-items"
 
 

@@ -150,8 +150,9 @@ define_error! { composite: fmt(f)
     /// [`Array`][crate::Array],
     /// [`Array2d`][crate::Array2d],
     /// [`bitfield!`][crate::bitfield],
-    /// [`BitOps`][crate::BitOps],
+    /// [`BitOps`],
     /// [`Bitwise`][crate::Bitwise].
+    #[doc = crate::_doclink!("[`BitOps`]" devela "data::BitOps")]
     pub enum MismatchedBounds {
         DOC_DATA_OVERFLOW: +const
             DataOverflow(i|0: Option<usize>) => DataOverflow(*i),

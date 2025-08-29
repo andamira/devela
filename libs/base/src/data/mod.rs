@@ -15,11 +15,14 @@ pub mod list;
 crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
     pub use _mods::*;
+    #[allow(unused)] #[doc(hidden, no_inline)]
+    pub use _pub_mods::*;
 
     mod _mods { #![allow(unused)]
         pub use super::{bit::_all::*, sort::_all::*};
     }
     mod _pub_mods {
+        #[doc(inline)]
         pub use super::{
             codec::_all::*,
             errors::*,

@@ -5,7 +5,9 @@
 
 /// Defines an enum and an associated type set of its variants.
 ///
-/// It uses the [`bitfield!`][crate::data::bitfield] macro to create the associated set.
+/// It uses the [`bitfield!`] macro to create the associated set.
+// #[doc = "\n\n[bitfield]: data::bitfield"] // why doesn't this link, but Bitwise does?
+#[doc = crate::_doclink!("[`bitfield!`]" devela "data/macro.bitfield.html")]
 ///
 /// You have to give unique names both to the enum and to the associated set.
 ///

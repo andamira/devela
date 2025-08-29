@@ -41,10 +41,10 @@
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 macro_rules! _include_from {
     ($module_name:ident) => {
-        include!(concat!(std::env!("CARGO_MANIFEST_DIR"), "/", stringify!($module_name), ".rs"));
+        include!(concat!(env!("CARGO_MANIFEST_DIR"), "/", stringify!($module_name), ".rs"));
     };
     ($module_path_str:literal) => {
-        include!(concat!(std::env!("CARGO_MANIFEST_DIR"), "/", $module_path_str));
+        include!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $module_path_str));
     };
 }
 #[doc(inline)]
@@ -70,21 +70,13 @@ pub use _include_from as include_from;
 /// mod_from!(helper, "src/helper.rs");
 /// ```
 ///
-/// See also [`include_from!`].
+/// See also [`include_from!`], [`mod_path!`]
 ///
 /// # Issues
 /// The `include!` macro fails if included file has top-level inner attributes.
 /// See [#752](https://github.com/rust-lang/rfcs/issues/752).
-///
-/// # Environment
-/// The `no_std` alternative would be to use the `path` attribute on the module.
-/// ```ignore
-/// #[path = "src/helper.rs"]
-/// mod helper;
-/// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 macro_rules! _mod_from {
     ($vis:vis $module_name:ident) => {
         $vis mod $module_name { $crate::include_from!($module_name); }
@@ -122,6 +114,8 @@ pub use _mod_from as mod_from;
 // Could be replaced with this:
 // #[cfg(feature = "alloc")] #[doc(inline)] #[rustfmt::skip]
 // pub use devela_base_alloc::{String, ToString};
+///
+/// See also [`mod_from!`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _mod_path {
@@ -150,5 +144,5 @@ macro_rules! _mod_path {
         $vis use $mod::*;
     };
 }
-#[doc(hidden)]
+#[doc(inline)]
 pub use _mod_path as mod_path;
