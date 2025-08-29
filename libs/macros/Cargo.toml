@@ -24,8 +24,14 @@ metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
 proc-macro = true
 
 [features]
+#* Development features *#
+__publish = []
+
+#* Safety features *#
 safe = []
 unsafe = []
+
+#* Capability features *#
 _docsrs = []
 
 [dependencies] # 3 required

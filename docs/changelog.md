@@ -28,7 +28,7 @@
     - `quote` → 1.0.40.
 
 ## features & flags
-- new features: `__build`, `__force_test_no_mangle`.
+- new features: `__build`, `__force_test_no_mangle`, `__publish`.
 - remove features: `_bit*`, `_cmp*`, `_sort*`, `cast`, `error`, `join`, `prim`, `split`.
 - remove flags: `bit··`, `cmp··`, `prim··`, `sort··`.
 - add default feature `alloc` to [base_alloc].

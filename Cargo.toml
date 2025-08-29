@@ -6,8 +6,8 @@
 ## Table of Contents
 #
 # * [workspace]
-#   - [dependencies]
-#   - [package]
+#   * [dependencies]
+#   * [package]
 #
 # * [package]
 #   - [metadata.docs.rs]
@@ -16,7 +16,6 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std,alloc,no_std)
-#   - Workspace         (devela_*)
 #   - Module            (all,code,data,game,lang,media,num,phys,sys,text,ui,work)
 #   - Safety            (unsafe,safe,safest)
 #   - Capability        (_*)
@@ -27,6 +26,7 @@
 #     - num             (_num*, _int_*, _float_*, …)
 #     - text            (_text*, _char*, _str_*)
 #   - Dependency        (dep_*)
+#   - Workspace         (devela_*)
 #
 # * [dependencies] (required|optional)
 #   * [dev-dependencies]
@@ -58,8 +58,8 @@ resolver = "3"
 #                                                           .-------------------.
 # ┌╼devela_base_macros        : base proc macros, zero-deps | stable interfaces |
 # └╥╼devela_base              : base core items, zero-deps  | primitive focused |
-#  ╟─┴╼devela_base_alloc?     : base alloc-dependent types  | monomorphizations |
-#  ╟───┴╼devela_base_std?╾───┐: base std-dependent types    | & infrastructures |
+#  ╟─┴╼devela_base_alloc?     : base alloc-dependent items  | monomorphizations |
+#  ╟───┴╼devela_base_std?╾───┐: base std-dependent items    | & infrastructures |
 #  ╚╗                        │                              ·-------------------·
 #   ╟╼devela_macros?         │: heavy proc macros           |                   |
 #   ╚╗                       │                              ·-------------------.
@@ -75,7 +75,7 @@ resolver = "3"
 #     ╟┼╼devela_ui?          │: user interfaces & visuals   |                   |
 #     ╟┴╼devela_work?        │: concurrency management      |                   |
 #     ║                      │                              ··------------------·
-#     ╚═╦╼devela             │: unified front facade        | integration layer |
+#     ╚═╦╼devela             │: unified front, traits       | integration layer |
 #       ║ ├╼build/main───────┤: build, codegen, debug       | public interfaces |
 #       ║ └╼devela_postbuild─┘: post-build processing       | development tools |
 #       ╏                                                   ·-------------------·
@@ -156,7 +156,7 @@ include = [
 # https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
 # [maximum build limits](https://docs.rs/crate/devela/latest/builds)
 no-default-features = true
-features = ["_docsrs"]
+features = ["_docsrs", "__publish"] # IMPROVE
 rustc-args = [
 	"--cfg", "nightly",
 	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
@@ -186,7 +186,7 @@ path = "./src/lib.rs"
 bench = false
 
 
-[features] # 221/300 (79 remaining), 136 visible, 85 hidden
+[features] # 222/300 (78 remaining), 136 visible, 86 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -214,6 +214,16 @@ bench = false
 __build = ["devela_base_std"] # full build dependencies
 __dbg = ["__build"] # shows extra debugging information
 __no_test = []      # exclude examples from being tested
+
+# enabled when publishing to crates.io or building online docs
+__publish = [
+	"devela_base/__publish", "devela_base_alloc?/__publish", "devela_base_std?/__publish",
+	"devela_macros?/__publish",
+	"devela_code?/__publish", "devela_data?/__publish", "devela_media?/__publish",
+	"devela_num?/__publish", # "devela_game?/__publish", "devela_lang?/__publish",
+	# "devela_phys?/__publish", "devela_sys?/__publish", "devela_text?/__publish",
+	# "devela_ui?/__publish", "devela_work?/__publish",
+]
 
 __force_miri_dst = [] # inhibits disabling miri on several modules
 
@@ -253,16 +263,6 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
-
-#* Workspace features *#
-# ------------------------------------------------------------------------------
-
-devela_macros = [ "dep:devela_macros",
-	"devela_code?/macros",
-	"devela_data?/macros", "devela_media?/macros", "devela_num?/macros",
-	# "devela_lang?/macros", "devela_phys?/macros", "devela_sys?/macros",
-	# "devela_text?/macros", "devela_ui?/macros", "devela_work?/macros",
-]
 
 #* Module features *#
 # ------------------------------------------------------------------------------
@@ -672,9 +672,26 @@ dep_unicode_width = ["dep:unicode-width"]                                       
 dep_ureq = ["dep:ureq"]                                                           # sys::net
 dep_wide = ["dep:wide"]                                                           # ...
 dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                   # text::parse
+#
+# WIPZONE:
+# dep_reqwest = ["dep:reqwest"]
+#   __tls, charset, default-tls, h2, http2, macos-system
+# dep_rustybuzz = ["dep:rustybuzz"]
+# dep_swash = ["dep:swash"]
+# dep_hyper = ["dep:hyper"]                                                         # sys::net
 
 
-[dependencies] # 51 (5 required, 46 optional)
+#* Workspace features *#
+# ------------------------------------------------------------------------------
+
+devela_macros = [ "dep:devela_macros",
+	"devela_code?/macros", "devela_data?/macros", "devela_media?/macros", "devela_num?/macros",
+	# "devela_game?/macros", "devela_lang?/macros", "devela_phys?/macros", "devela_sys?/macros",
+	# "devela_text?/macros", "devela_ui?/macros", "devela_work?/macros",
+]
+
+
+[dependencies] # 52 (2 required, 50 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #

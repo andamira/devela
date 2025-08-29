@@ -26,6 +26,15 @@ publish = true
 metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
 
 [features]
+
+#* Development features *#
+__publish = []
+
+#* Safety features *#
+unsafe = []
+safe = []
+
+#* Capability features *#
 _docsrs = []
 
 [dependencies] # 2 required

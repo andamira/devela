@@ -145,10 +145,10 @@ mn = "miri test -F=no_std"
 mnu = "miri test -F=no_std,unsafe"
 
 # PUBLISH
-p = "publish --dry-run"
-pa = "publish --dry-run --allow-dirty"
-PUBLISH = "publish"
-PUBLISHa = "publish --allow-dirty"
+p = "publish --dry-run -F __publish"
+pa = "publish --dry-run -F __publish --allow-dirty"
+PUBLISH = "publish -F __publish"
+PUBLISHa = "publish -F __publish --allow-dirty"
 
 # CLEAN PACKAGE
 Cp = "clean --package"
