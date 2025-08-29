@@ -1,10 +1,10 @@
-// devela::data::bit::wrapper::tests
+// devela_base::data::bit::wrapper::tests
 //
 // TOC
 // - bit_mask_range
 // - bit_ops
 
-use super::{Bitwise, Bitwise as Bg};
+use crate::{Bitwise, Bitwise as Bg};
 
 #[test] #[rustfmt::skip]
 fn bit_mask_range() {

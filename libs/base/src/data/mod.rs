@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA!()]
 //
 
-// mod bit; // Bitwise, bitfield!
+mod bit; // Bitwise, bitfield!
 mod sort; // Sort
 
 pub mod codec;
@@ -17,8 +17,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all
     pub use _mods::*;
 
     mod _mods { #![allow(unused)]
-        // pub use super::bit::_all::*; // TODO
-        pub use super::sort::_all::*;
+        pub use super::{bit::_all::*, sort::_all::*};
     }
     mod _pub_mods {
         pub use super::{

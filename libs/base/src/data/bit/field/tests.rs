@@ -1,4 +1,4 @@
-// devela::data::bit::field::tests
+// devela_base::data::bit::field::tests
 //
 //!
 //
@@ -8,9 +8,6 @@
 // - bitrange TODO
 
 use super::bitfield;
-
-#[cfg(feature = "std")]
-use std::panic::{AssertUnwindSafe, catch_unwind};
 
 #[test]
 #[rustfmt::skip]
@@ -118,18 +115,7 @@ fn bits() {
     assert![b0.mut_unset_checked_bit(9).is_err()];
     assert![b0.mut_flip_checked_bit(9).is_err()];
 
-    // unchecked panics in debug mode
-    #[cfg(feature = "std")]
-    {
-        // immutable:
-        debug_assert![catch_unwind(|| { let _ = b0.set_bit(9); }).is_err()];
-        debug_assert![catch_unwind(|| { let _ = b0.unset_bit(9); }).is_err()];
-        debug_assert![catch_unwind(|| { let _ = b0.flip_bit(9); }).is_err()];
-        // mutable:
-        debug_assert![catch_unwind(AssertUnwindSafe(|| { b0.mut_set_bit(9); })).is_err()];
-        debug_assert![catch_unwind(AssertUnwindSafe(|| { b0.mut_unset_bit(9); })).is_err()];
-        debug_assert![catch_unwind(AssertUnwindSafe(|| { b0.mut_flip_bit(9); })).is_err()];
-    }
+    // unchecked panics in debug mode tested in devela
 }
 
 // #[test]

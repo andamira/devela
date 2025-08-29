@@ -1,4 +1,4 @@
-// devela::data::bit::field::bit_field
+// devela_base::data::bit::field::bit_field
 //
 //! Defines the [`bitfield!`] macro.
 //
@@ -18,10 +18,10 @@
 /// `Clone`, `Copy`, `Debug`, `Default`, `PartialEq`, `Eq` and `Hash`.
 ///
 /// # Examples
-/// See also the [bitfield][crate::_info::examples::bitfield] example.
-///
+/// See also the [bitfield] example.
+#[doc = "\n\n[bitfield]: devela::_info::examples::bitfield"] // FIXME
 /// ```
-/// # use devela::bitfield;
+/// # use devela_base::bitfield;
 /// bitfield! {
 ///     /// My custom bit field struct.
 ///     struct MyBf(u8) {
@@ -38,7 +38,8 @@
 /// assert![b.is_empty()];
 /// ```
 ///
-/// See also the [`enumset!`][crate::code::enumset] macro.
+/// See also the [`enumset!`] macro.
+#[doc = "\n\n[`enumset!`]: devela::code::enumset"] // FIXME
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _bitfield {

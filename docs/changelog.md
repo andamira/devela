@@ -101,8 +101,8 @@
 - remove deprecated `iif!` macro.
 
 ## data
-- move `Sort` to [base].
-- new `SortAlloc` wrapper for `Sort`.
+- move to [base]:
+  - `Bitwise`, `bitfield!`, `Sort`.
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.

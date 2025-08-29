@@ -1,20 +1,17 @@
-// devela::data::bit
+// devela_base::data::codec::bit
 //
 //! Bit-focused items.
 //
 
-#[cfg(test)]
-mod tests;
-
-mod ops; // BitOps
+mod field; // bitfield
+mod wrapper; // Bitwise
 
 crate::items! { // structural access: _mods, _all
     #[allow(unused)]
     pub use _mods::*;
 
     mod _mods {
-        pub use super::ops::*;
-        pub use devela_base::{Bitwise, bitfield};
+        pub use super::{field::_all::*, wrapper::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
