@@ -43,6 +43,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         // pub use devela_base_alloc::SortAlloc;
     }
     mod _pub_mods { #![allow(unused)]
+        #[doc(inline)]
         pub use super::{
             codec::_all::*, errors::*, iter::_all::*, key::_all::*,
             list::_all::*, table::_all::*, uid::_all::*,

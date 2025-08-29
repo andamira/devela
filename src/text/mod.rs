@@ -35,6 +35,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         // pub use super::cell::*;
     }
     mod _pub_mods {
+        #[doc(inline)]
         pub use super::{errors::*, fmt::_all::*, parse::_all::*, str::_all::*};
     }
     pub(super) mod _all {
@@ -42,6 +43,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         pub use super::{_mods::*, _pub_mods::*};
     }
     pub(super) mod _always { #![allow(unused)]
+        #[doc(inline)]
         pub use super::{
             errors::*, fmt::_always::*, char::_always::*, parse::_always::*, str::_always::*,
         };

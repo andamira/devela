@@ -3,7 +3,7 @@
 //! WASM architecture functionality.
 //
 
-crate::mod_path!(_c "../../../../libs/base/src/sys/mem/cell/reexports.rs");
+crate::mod_path!(_c "../../../../libs/base/src/sys/arch/wasm/reexports.rs");
 
 mod namespace; // Wasm
 

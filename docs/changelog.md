@@ -25,6 +25,8 @@
 ## dependencies
 - re-export `alloc` crate from devela and [base_alloc].
 - bump dependencies:
+  - `hashbrown` → 0.16.
+  - `pyo3` → 0.26.
   - `ureq` → 3.1.
   - [macros]
     - `proc-macro2` → 1.0.101.
