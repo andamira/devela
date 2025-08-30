@@ -48,7 +48,7 @@
   - move `devela_macros` changelog into `devela` archived changelog history.
   - move `paste` dependency to [base].
 - [base]
-  - add `_workspace_private` structural module (replacing `_internal`).
+  - add `_workspace_internal` structural module (replacing `_internal`).
   - remove `_always` structural modules.
 - [base_macros]:
   - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
@@ -94,13 +94,13 @@
 
 ### utils
 - new macros: `mod_path!`.
-- new private macros: `_doclink`.
+- new internal macros: `_doclink`, `structural_mods!`.
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `cfg_if!`, `cfor!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, `type_marker!`.
-   private macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
+  - internal macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
 - add tags: `_DOC_*`, `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`, `TAG_[CODEC|CONCURRENCY|DATA|EVENT|HASH|ID]`.
 - change the emoji for `TAG_DATA_STRUCTURE`.
-- rename `reexport!` private macro to `_reexport!`.
+- rename `reexport!` internal macro to `_reexport!`.
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
