@@ -107,7 +107,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_entry_insert, btree_extract_if, new_zeroed_alloc,vec_deque_pop_if,)
+    feature(btree_entry_insert, btree_extract_if, new_zeroed_alloc, vec_deque_pop_if,)
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),

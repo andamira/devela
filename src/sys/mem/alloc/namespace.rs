@@ -24,7 +24,7 @@ impl Alloc {
     /// Signals a memory allocation error.
     ///
     /// # Safety
-    /// See `std::alloc::`[`handle_alloc_error`].
+    /// See `std::alloc::`[`handle_alloc_error()`].
     pub fn handle_alloc_error(layout: MemLayout) -> ! {
         handle_alloc_error(layout)
     }
@@ -43,7 +43,7 @@ impl Alloc {
     /// Allocates memory with the global allocator.
     ///
     /// # Safety
-    /// See `std::alloc::`[`alloc`].
+    /// See `std::alloc::`[`alloc()`].
     #[must_use]
     pub unsafe fn alloc(layout: MemLayout) -> *mut u8 {
         // SAFETY: Caller must uphold the safety contract.
@@ -52,7 +52,7 @@ impl Alloc {
     /// Allocates zero-initialized memory with the global allocator.
     ///
     /// # Safety
-    /// See `std::alloc::`[`alloc_zeroed`].
+    /// See `std::alloc::`[`alloc_zeroed()`].
     #[must_use]
     pub unsafe fn alloc_zeroed(layout: MemLayout) -> *mut u8 {
         // SAFETY: Caller must uphold the safety contract.
@@ -61,7 +61,7 @@ impl Alloc {
     /// Deallocates memory with the global allocator.
     ///
     /// # Safety
-    /// See `std::alloc::`[`dealloc`].
+    /// See `std::alloc::`[`dealloc()`].
     pub unsafe fn dealloc(ptr: *mut u8, layout: MemLayout) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { dealloc(ptr, layout) }
@@ -69,7 +69,7 @@ impl Alloc {
     /// Reallocates memory with the global allocator.
     ///
     /// # Safety
-    /// See `std::alloc::`[`realloc`].
+    /// See `std::alloc::`[`realloc()`].
     pub unsafe fn realloc(ptr: *mut u8, layout: MemLayout, new_size: usize) -> *mut u8 {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { realloc(ptr, layout, new_size) }

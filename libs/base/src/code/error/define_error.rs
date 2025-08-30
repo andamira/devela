@@ -72,7 +72,7 @@ const CONST_ERROR: CompositeError = CompositeError::from_error_code(ErrorCode(99
 **/
 // NOTES:
 // - alternative sections for tuple-struct and field-struct variants are indicated in the margin.
-// - we are employing the trick `$(;$($_a:lifetime)?` for the optional semicolon terminator,
+// - we are employing the trick `$(;$($_a:lifetime)?)?` for the optional semicolon terminator,
 //   where the never expected lifetime allows to refer to the non-identifier `;` later on;
 //   the same with `$(+const$($_c:lifetime)?)?` for the optional const fn implementation.
 #[macro_export]

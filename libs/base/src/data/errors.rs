@@ -169,7 +169,9 @@ define_error! { composite: fmt(f)
     /// An error composite of [`NotEnoughSpace`] + [`PartiallyAdded`].
     ///
     /// Used in methods of:
-    /// [`ArrayUninit`][crate::ArrayUninit].
+    /// [`ArrayUninit`].
+    // TEMP
+    #[doc = crate::_doclink!("[`ArrayUninit`]" devela "data/list/array/struct.ArrayUninit.html")]
     pub enum PartialSpace {
         DOC_NOT_ENOUGH_SPACE: +const NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
         DOC_PARTIALLY_ADDED:  +const PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
