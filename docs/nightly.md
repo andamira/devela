@@ -46,8 +46,11 @@ See also
 - 1.91: ` `[loongarch32 inline asm](https://github.com/rust-lang/rust/pull/144402)
 - 1.91: `s`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
 - 1.91: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) <!-- & 129114 -->
+- 1.91: `·`[round_char_boundary](https://github.com/rust-lang/rust/issues/93743)
 - 1.91: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
+- 1.91: `·`[strict_provenance_atomic_ptr](https://github.com/rust-lang/rust/issues/99108)
 - 1.91: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
+- 1.91: ` `[unsigned_bigint_helpers](https://github.com/rust-lang/rust/pull/144494)
 
 # 1.92 will be stable on 2025-12-11 ([`nightly_stable_1_92`](https://releases.rs/docs/1.92.0/))
 <!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
@@ -74,8 +77,10 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
+- 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
+- 1.??: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
 - 1.??: `a`[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
 - 1.??: ` `[fmt::from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
@@ -94,10 +99,11 @@ See also
 - 1.??: `s`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `a`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
-- 1.??: `·`[strict_provenance_atomic_ptr](https://github.com/rust-lang/rust/issues/99108)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
+- 1.??: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
+- 1.??: ` `[-Zjump-tables=](https://github.com/rust-lang/rust/issues/116592)
 
 # … may be stable even later
 

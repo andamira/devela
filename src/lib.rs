@@ -65,8 +65,11 @@
         duration_constructors_lite,
         ip_from,
         iter_chain,
+        round_char_boundary,
         strict_overflow_ops,
+        strict_provenance_atomic_ptr,
         unsigned_signed_diff,
+        // unsigned_bigint_helpers, // (bigint_helper_methods),
     )
 )]
 // #![cfg_attr(all(nightly_stable_1_91, feature = "alloc"), feature())]
@@ -99,13 +102,12 @@
         offset_of_enum,
         offset_of_slice,
         substr_range,
-        strict_provenance_atomic_ptr,
         unsafe_cell_from_mut,
     )
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_entry_insert, btree_extract_if, new_zeroed_alloc,)
+    feature(btree_entry_insert, btree_extract_if, new_zeroed_alloc,vec_deque_pop_if,)
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
