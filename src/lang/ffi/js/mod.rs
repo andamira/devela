@@ -54,25 +54,27 @@ mod value; // JsInstant, JsTimeout
 
 mod helpers; // _js_doc!, _js_extern!, js_method_str_alloc!
 
-crate::items! { // structural access: _mods, _pub_mods, _internals, _all
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _pub_mods::*;
+// WIPZONE
+// mod error; // JsError
+// mod object; // JsObject
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+    _mods {
         pub use super::{
-            console::*, namespace::*, primitives::*, text::*, time::*, value::*,
+            console::*,
+            // error::*,
+            namespace::*,
+            // object::*,
+            primitives::*,
+            text::*,
+            time::*,
+            value::*,
         };
     }
-    mod _pub_mods { #![allow(unused)]
+    _pub_mods {
        pub use super::web::_all::*;
     }
-    pub(super) mod _internals { #![allow(unused)]
+    _crate_internals {
         pub(crate) use super::helpers::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
     }
 }

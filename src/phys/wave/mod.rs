@@ -13,19 +13,12 @@ mod shared; // WaveletHaar, WaveletUnitRole
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod alloc;
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods {
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::shared::*;
 
         #[cfg(feature = "alloc")]
         #[cfg(any(feature = "std", feature = "_float_f64"))]
         pub use super::alloc::*;
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

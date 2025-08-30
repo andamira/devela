@@ -29,11 +29,8 @@ pub mod midi;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "video")))]
 pub mod video;
 
-crate::items! { // structural access: _pub_mods, _internals, _all, _always
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
-
-    mod _pub_mods { #![allow(unused)]
+crate::structural_mods! { // _pub_mods, _internals
+    _pub_mods {
         #[cfg(feature = "audio")] pub use super::audio::_all::*;
         #[cfg(feature = "color")] pub use super::color::_all::*;
         #[cfg(feature = "draw")]  pub use super::draw::_all::*;
@@ -42,20 +39,7 @@ crate::items! { // structural access: _pub_mods, _internals, _all, _always
         #[cfg(feature = "midi")]  pub use super::midi::_all::*;
         #[cfg(feature = "video")] pub use super::video::_all::*;
     }
-    pub(super) mod _internals { #![allow(unused)]
-        #[cfg(feature = "color")] pub use super::color::_internals::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_pub_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        #[cfg(feature = "audio")] pub use super::audio::_always::*;
-        #[cfg(feature = "color")] pub use super::color::_always::*;
-        #[cfg(feature = "draw")]  pub use super::draw::_always::*;
-        #[cfg(feature = "font")]  pub use super::font::_always::*;
-        #[cfg(feature = "image")] pub use super::image::_always::*;
-        #[cfg(feature = "midi")]  pub use super::midi::_always::*;
-        #[cfg(feature = "video")] pub use super::video::_always::*;
+    _crate_internals {
+        #[cfg(feature = "color")] pub use super::color::_crate_internals::*;
     }
 }

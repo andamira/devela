@@ -8,16 +8,10 @@ mod tests;
 
 mod ops; // BitOps
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods {
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::ops::*;
-        pub use devela_base::{Bitwise, bitfield};
-    }
-    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::_mods::*;
+        pub use devela_base::{Bitwise, bitfield};
     }
 }

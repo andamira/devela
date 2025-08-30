@@ -15,23 +15,14 @@ mod namespace;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod app;
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _always
+    _mods {
         pub use super::{_c::*, arg::_all::*, namespace::*};
 
         #[cfg(feature = "std")]
         pub use super::{_s::*, app::*};
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::_c::*;
         #[cfg(feature = "std")]
         pub use super::_s::*;

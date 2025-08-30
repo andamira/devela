@@ -8,26 +8,20 @@
 
 mod reexports;
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
-        pub use super::reexports::*;
-        // WIPZONE
-        // pub use super::l1::*;
-        // pub use super::l2::*;
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        pub use super::reexports::*;
-    }
-}
 // WIPZONE
 // #[cfg(_list1··)]
 // mod l1;
 // #[cfg(_list2··)]
 // mod l2;
+
+crate::structural_mods! { // _mods, _always
+    _mods {
+        pub use super::reexports::*;
+        // WIPZONE
+        // pub use super::l1::*;
+        // pub use super::l2::*;
+    }
+    _always {
+        pub use super::reexports::*;
+    }
+}

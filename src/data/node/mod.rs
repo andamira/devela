@@ -6,20 +6,14 @@
 //! in data systems. These abstractions are designed to work together.
 //
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
+// mod index;
+// mod node;
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         // WIPZONE
         // pub use super::index::*;
         // pub use super::node::*;
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIPZONE
-// mod index;
-// mod node;

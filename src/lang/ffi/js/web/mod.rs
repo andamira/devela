@@ -1,6 +1,7 @@
 // devela::lang::ffi::js::web
 //
 //! <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web APIs</a> interfacing.
+//
 
 mod document; // WebDocument
 mod element; // WebElement
@@ -10,19 +11,13 @@ mod web_api; // Web
 mod window; // WebWindow
 mod worker; // WebWorker, WebWorkerError, WebWorkerJob
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
+// mod url; // WebUrl, WebUrlSearchParams
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{
             document::*, element::*, event::*, permission::*, web_api::*, window::*, worker::*,
         };
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIPZONE
-// mod url; // WebUrl, WebUrlSearchParams

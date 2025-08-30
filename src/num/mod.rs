@@ -31,13 +31,12 @@ pub mod ord; // Compare
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
 
-crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
-    #[allow(unused)]
-    pub use {_internals::*, _mods::*};
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
+// WIPZONE
+// pub mod symb;
+// mod power; // Tp
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
+    _mods {
         pub use super::{
             error::*, float::_all::*, frac::_all::*, int::_all::*,
             no::*, primitive::_all::*, reexports::*, traits::*,
@@ -47,7 +46,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         // WIPZONE
         // pub use super::power::*;
     }
-    mod _pub_mods { #![allow(unused)]
+    _pub_mods {
         pub use super::{
             geom::_all::*, logic::_all::*, niche::_all::*,
             ord::_all::*, quant::_all::*,rand::_all::*,
@@ -55,19 +54,16 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         // WIPZONE
         // pub use super::symb::_all::*;
     }
-    pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::{_private::*, geom::_internals::*, rand::_internals::*};
+    _crate_internals {
+        pub(crate) use super::{
+            _private::*,
+            geom::_crate_internals::*,
+            rand::_crate_internals::*,
+        };
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::{
             float::_always::*, niche::_always::*,
         };
     }
 }
-// WIPZONE
-// pub mod symb;
-// mod power; // Tp

@@ -25,11 +25,12 @@ crate::items! {
     mod stride; // Stride
 }
 
-crate::items! { // structural access: _mods, _internals, _all
-    #[allow(unused)]
-    pub use {_internals::*, _mods::*};
+// WIPZONE
+// mod cycle;
+// mod radial_sectors;
 
-    mod _mods {
+crate::structural_mods! { // _mods, _crate_internals
+    _mods {
         pub use super::{distance::*, extent::*, position::*};
 
         #[cfg(feature = "metric")]
@@ -39,14 +40,7 @@ crate::items! { // structural access: _mods, _internals, _all
         // pub use super::cycle::*;
         // pub use super::radial_sectors::*;
     }
-    pub(super) mod _internals { #![allow(unused)]
+    _crate_internals {
         pub(crate) use super::helpers::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIPZONE
-// mod cycle;
-// mod radial_sectors;

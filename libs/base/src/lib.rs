@@ -49,11 +49,11 @@ pub mod all {
 
 #[allow(unused_imports)]
 #[doc(hidden)] #[rustfmt::skip]
-pub use _workspace_private::*;
+pub use _workspace_internals::*;
 #[doc(hidden)] #[rustfmt::skip]
-pub mod _workspace_private {
+pub mod _workspace_internals {
     #![allow(unused_imports)]
     pub use super::{
-        code::_workspace_private::*,
+        code::_workspace_internals::*,
     };
 }

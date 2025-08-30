@@ -16,18 +16,11 @@ crate::items! {
     mod wrapper; // Int
 }
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{fns::*, gcd::*, reexports::*};
 
         #[cfg(_int··)]
         pub use super::{divisor::*, num_trait::*, wrapper::_all::*};
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

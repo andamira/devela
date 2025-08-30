@@ -9,21 +9,15 @@
 mod pin; // pinned memory-based ids
 mod seq; // static sequential ids
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused_imports)]
-    pub use _mods::*;
+// WIPZONE
+// #[cfg(feature = "std")]
+// mod snowflake;
 
-    mod _mods {
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{pin::*, seq::*};
         // WIPZONE
         // #[cfg(feature = "std")]
         // pub use super::snowflake::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIPZONE
-// #[cfg(feature = "std")]
-// mod snowflake;

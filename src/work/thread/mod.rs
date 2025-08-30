@@ -13,13 +13,17 @@ crate::items! {
     mod sleep; // sleep4!
 }
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
+// WIPZONE
+#[cfg(feature = "std")]
+crate::items! {
+    // mod local; // ThreadLocal
+    // mod manager_2; // ThreadManager, ThreadWork
+    // mod pool;
+    // mod semaphore; // Semaphore
+}
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _always
+    _mods {
         #[cfg(feature = "std")]
         pub use super::{_s::*, ext::*, sleep::*};
         // WIPZONE
@@ -31,20 +35,8 @@ crate::items! { // structural access: _mods, _all, _always
             // pub use super::semaphore::*;
         }
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         #[cfg(feature = "std")]
         pub use super::_s::*;
     }
-}
-// WIPZONE
-#[cfg(feature = "std")]
-crate::items! {
-    // mod local; // ThreadLocal
-    // mod manager_2; // ThreadManager, ThreadWork
-    // mod pool;
-    // mod semaphore; // Semaphore
 }

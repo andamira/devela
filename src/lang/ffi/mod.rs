@@ -19,11 +19,13 @@ pub mod glsl;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
 pub mod js; // javascript
 
-crate::items! { // structural access: _pub_mods, _internals, _all
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _pub_mods::*;
+// WIPZONE
+// pub mod aos; // android
+// pub mod py; // python
+// pub mod tg; // telegram
 
-    mod _pub_mods { #![allow(unused)]
+crate::structural_mods! { // _pub_mods, _crate_internals
+    _pub_mods {
         pub use super::c::_all::*;
         #[cfg(feature = "glsl")]
         pub use super::glsl::_all::*;
@@ -34,16 +36,8 @@ crate::items! { // structural access: _pub_mods, _internals, _all
         // pub use super::py::_all::*;
         // pub use super::tg::_all::*;
     }
-    pub(super) mod _internals { #![allow(unused)]
+    _crate_internals {
         #[cfg(all(feature = "js", not(windows)))]
-        pub(crate) use super::js::_internals::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_pub_mods::*;
+        pub(crate) use super::js::_crate_internals::*;
     }
 }
-// WIPZONE
-// pub mod aos; // android
-// pub mod py; // python
-// pub mod tg; // telegram

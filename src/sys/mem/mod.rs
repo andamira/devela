@@ -38,13 +38,8 @@ mod guard; // Current, CurrrentGuard
 
 pub mod cell; // ExtCellOption, ::core::cell::*
 
-crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
-    #[allow(unused)]
-    pub use {_mods::*, _hidden::*};
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _pub_mods, _hidden, _always
+    _mods {
         pub use super::{
             aligned::*, alloc::_all::*, borrow::_all::*, cache_align::*, ext::*, namespace::*,
             pin::_all::*, ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,
@@ -55,17 +50,13 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::guard::{Current, CurrentGuard};
     }
-    mod _pub_mods {
+    _pub_mods {
         pub use super::cell::_all::*;
     }
-    pub(super) mod _hidden {
-        pub use super::size::_hidden::*;
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::{cell::_always::*, pin::_always::*, ptr::_always::*, reexports::*};
+    }
+    _hidden {
+        pub use super::size::_hidden::*;
     }
 }

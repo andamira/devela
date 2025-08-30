@@ -11,15 +11,9 @@ crate::items! {
     mod reexports; // ::log::*
 }
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         #[cfg(feature = "dep_log")]
         pub use super::{config::*, ext::*, namespace::*, reexports::*};
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)] pub use super::_mods::*;
     }
 }

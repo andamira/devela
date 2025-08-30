@@ -20,22 +20,15 @@ pub mod unit;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
 pub mod wave;
 
-crate::items! { // structural access: _pub_mods, _all, _always
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
-
-    mod _pub_mods { #![allow(unused)]
+crate::structural_mods! { // _pub_mods, _always
+    _pub_mods {
         pub use super::{
             bio::_all::*, chem::_all::*, elec::_all::*, time::_all::*, mech::_all::*, unit::_all::*,
         };
         #[cfg(feature = "wave")]
         pub use super::wave::_all::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_pub_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::time::_always::*;
     }
 }

@@ -201,14 +201,10 @@ pub mod all { #![allow(unused_imports)]
     pub use super::{
         code::_always::*,
         data::_always::*,
-        lang::_always::*,
-        // game::_always::*,
-        media::_always::*,
         num::_always::*,
         phys::_always::*,
         sys::_always::*,
         text::_always::*,
-        // ui::_always::*,
         work::_always::*,
     };
 }
@@ -222,18 +218,18 @@ mod _hidden {
 
 // private, internal items
 #[allow(unused_imports)]
-pub(crate) use _internals::*;
-mod _internals {
-    pub(crate) use devela_base::_workspace_private::*;
+pub(crate) use _crate_internals::*;
+mod _crate_internals {
+    pub(crate) use devela_base::_workspace_internals::*;
 
     #[allow(unused_imports)]
     #[rustfmt::skip]
     pub(crate) use super::{
-        code::_internals::*,
-        data::_internals::*,
-        lang::_internals::*,
-        media::_internals::*,
-        num::_internals::*,
-        sys::_internals::*,
+        code::_crate_internals::*,
+        data::_crate_internals::*,
+        lang::_crate_internals::*,
+        media::_crate_internals::*,
+        num::_crate_internals::*,
+        sys::_crate_internals::*,
     };
 }

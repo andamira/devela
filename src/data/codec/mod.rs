@@ -34,36 +34,29 @@ mod types;
 pub mod crypto; // cryptography
 pub mod hash; // hashing algorithms (Fnv, Fx, MD5).
 
-crate::items! { // structural access: _mods, _pub_mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
-
-    mod _mods { #![allow(unused)]
-        pub use super::{crypto::_all::*, encode::_all::*, radix::_all::*, types::*};
-        // WIPZONE
-        // pub use serde::_all::*;
-        // pub use serde::lempel_ziv::*;
-    }
-    mod _pub_mods { #![allow(unused)]
-        pub use super::{
-            hash::_all::*,
-        };
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        pub use super::{_mods::*, _pub_mods::*};
-        pub use super::hash::_always::*;
-    }
-}
 // WIP ZONE
 // mod compress; // compression algorithms
+// mod _wip_crc;
 // mod hex; // Hexadecimal literals and conversions.
 // mod rle; // Run-length encoding and similar techniques.
 // mod serde; // structured serialization/deserialization.
 // #[cfg(feature = "alloc")]
 // mod lempel_ziv;
+
+crate::structural_mods! { // _mods, _pub_mods, _always
+    _mods {
+        pub use super::{crypto::_all::*, encode::_all::*, radix::_all::*, types::*};
+        // WIPZONE
+        // pub use serde::_all::*;
+        // pub use serde::lempel_ziv::*;
+    }
+    _pub_mods {
+        pub use super::{
+            hash::_all::*,
+        };
+    }
+    _always {
+        pub use super::{_mods::*, _pub_mods::*};
+        pub use super::hash::_always::*;
+    }
+}

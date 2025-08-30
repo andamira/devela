@@ -17,11 +17,8 @@ mod string_u8;
 #[cfg(feature = "alloc")]
 mod string;
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods {
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::r#trait::*;
 
         #[cfg(feature = "_str_nonul")]
@@ -30,9 +27,5 @@ crate::items! { // structural access: _mods, _all
         pub use super::string_u8::*;
         #[cfg(feature = "alloc")]
         pub use super::string::*;
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

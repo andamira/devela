@@ -11,26 +11,16 @@
 mod reexports;
 mod static_map; // define_static_map!
 
-crate::items! { // structural access: _mods, _pub_mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _pub_mods::*;
+// WIPZONE
+// mod set;
+// mod trie;
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::reexports::*;
         pub use super::static_map::*;
         // WIPZONE
         // pub use set::*;
         // pub use trie::*;
     }
-    mod _pub_mods { #![allow(unused)]
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
-    }
 }
-// WIPZONE
-// mod set;
-// mod trie;

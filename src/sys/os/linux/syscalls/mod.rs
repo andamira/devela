@@ -21,15 +21,8 @@ items! { mod aarch64; use aarch64 as sys; }
 #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
 items! { mod riscv; use riscv as sys; }
 
-items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
+structural_mods! { // _mods
+    _mods {
         pub use super::{consts::*, sys::*};
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

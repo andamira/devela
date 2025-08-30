@@ -18,17 +18,10 @@ mod bump;
 )]
 mod wasm;
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{namespace::*, reexports::*};
         #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
         pub use super::{bump::*, wasm::*};
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

@@ -17,26 +17,20 @@ pub mod ffi; // c, glsl, js, …
 pub mod i18n; // gettext, fluent, …
 pub mod ling; // art, nat, … (linguistics)
 
-crate::items! { // structural access:: _pub_mods, _internals, _all, _always
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
+// WIPZONE
+// mod script;
 
-    mod _pub_mods { #![allow(unused)]
+crate::structural_mods! { // _pub_mods, _crate_internals
+    _pub_mods {
         pub use super::ffi::_all::*;
         pub use super::dsl::_all::*;
         pub use super::i18n::_all::*;
         pub use super::ling::_all::*;
+
         // WIPZONE
         // pub use super::script::*;
     }
-    pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::ffi::_internals::*;
+    _crate_internals {
+        pub(crate) use super::ffi::_crate_internals::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_pub_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)] }
 }
-// WIPZONE
-// mod script;

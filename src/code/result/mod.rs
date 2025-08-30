@@ -23,13 +23,14 @@ mod own; // Own
 mod reexports;
 mod value_quant; // ValueQuant
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
+// WIPZONE
+// mod enumatch; // enumatch!
+// #[cfg(feature = "_tuple")]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
+// mod menu;
 
-    mod _mods {
+crate::structural_mods! { // _mods, _always
+    _mods {
         pub use super::{
             chain_hook::*, opt_res::_all::*, own::*, reexports::*, value_quant::*,
         };
@@ -38,16 +39,7 @@ crate::items! { // structural access: _mods, _all, _always
         // #[cfg(feature = "_tuple")]
         // pub use super::menu::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::reexports::*;
     }
 }
-// WIPZONE
-// mod enumatch; // enumatch!
-// #[cfg(feature = "_tuple")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
-// mod menu;

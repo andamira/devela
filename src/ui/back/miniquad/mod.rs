@@ -5,6 +5,8 @@
 // ISSUES
 // - WAIT: [precise input](https://github.com/not-fl3/miniquad/issues/117)
 // - WAIT: [linux resize](https://github.com/not-fl3/miniquad/issues/193)
+//
+// TODO ::miniquad::data::now (secs since SystemTime::UNIX_EPOCH) or Date.now() / 1000.0 in wasm
 
 mod namespace; // miniquad!
 mod reexports;
@@ -15,17 +17,18 @@ mod window; // MiniquadWindow
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod pixels; // MiniquadPixels
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
+// mod events;
+// mod text;
 
-    mod _mods {
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{namespace::*, reexports::*, service::*, window::*};
         #[cfg(feature = "alloc")]
         pub use super::pixels::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
+
+        // WIPZONE
+        // pub use super::events::*;
+        // pub use super::text::*;
     }
 }

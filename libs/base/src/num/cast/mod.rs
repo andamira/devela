@@ -11,15 +11,6 @@ mod split;
 #[cfg(test)]
 mod tests;
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods {
-        pub use super::namespace::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
+crate::structural_mods! { // _mods, _all
+    _mods { pub use super::namespace::*; }
 }

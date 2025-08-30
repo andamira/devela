@@ -5,16 +5,11 @@
 // safety
 #![cfg_attr(feature = "safe_layout", forbid(unsafe_code))]
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
+
         // WIPZONE
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIPZONE

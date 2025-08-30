@@ -14,11 +14,12 @@ pub mod process;
 pub mod sync;
 pub mod thread;
 
-crate::items! { // structural access: _pub_mods, _all, _always
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
+// WIPZONE
+// pub mod actor;
+// pub mod fiber;
 
-    mod _pub_mods { #![allow(unused)]
+crate::structural_mods! { // _pub_mods, _always
+    _pub_mods {
         pub use super::future::_all::*;
         #[allow(unused, reason = "feature-gated")]
         pub use super::{process::_all::*, sync::_all::*, thread::_all::*};
@@ -26,16 +27,9 @@ crate::items! { // structural access: _pub_mods, _all, _always
         // pub use super::actor::*;
         // pub use super::fiber::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_pub_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::{
             future::_always::*, process::_always::*, sync::_always::*, thread::_always::*,
         };
     }
 }
-// WIPZONE
-// pub mod actor;
-// pub mod fiber;

@@ -21,13 +21,15 @@ crate::items! {
     mod unix; // UnixTime[I64|U32]
 }
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
+// WIPZONE
+// mod drop;
+// mod freq;
+// #[cfg(feature = "_destaque_u16")]
+// mod looper;
+// mod instant;
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _always
+    _mods {
         pub use super::{granularity::*, reexports::*, source::*};
 
         #[cfg(feature = "time")]
@@ -41,17 +43,7 @@ crate::items! { // structural access: _mods, _all, _always
         // pub use super::looper::*;
         // pub use super::instant::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::reexports::*;
     }
 }
-// WIPZONE
-// mod drop;
-// mod freq;
-// #[cfg(feature = "_destaque_u16")]
-// mod looper;
-// mod instant;

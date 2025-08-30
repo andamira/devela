@@ -12,17 +12,10 @@ mod definitions; // Array
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 mod uninit; // ArrayUninit
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods {
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::definitions::*;
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
         pub use super::uninit::*;
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

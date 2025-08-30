@@ -13,21 +13,12 @@ mod print; // os_[e]print[ln]!
 #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
 pub mod linux;
 
-crate::items! { // structural access: _mods, _pub_mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _pub_mods::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _pub_mods
+    _mods {
         pub use super::print::*;
     }
-    mod _pub_mods {
+    _pub_mods {
         #[cfg(feature = "linux")]
         pub use super::linux::_all::*;
-    }
-    pub(super) mod _all { #[allow(unused)]
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
     }
 }

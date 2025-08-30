@@ -18,11 +18,11 @@ crate::items! {
     mod fs_path; // FsPath
 }
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIP ZONE
+// mod ext; // ExtFile
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{path::_all::*};
 
         #[cfg(feature = "std")]
@@ -30,10 +30,4 @@ crate::items! { // structural access: _mods, _all
         // WIPZONE
         // pub use super::ext::*;
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIP ZONE
-// mod ext; // ExtFile

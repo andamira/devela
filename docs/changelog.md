@@ -41,6 +41,7 @@
 
 ## workspace libraries
 - declare the `std` external crate.
+- refactor all structural access modules.
 - enable `_docsrs` for workspace dependencies.
 - new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`, `devela_base_alloc`, `devela_code`, `devela_data`, `devela_media` `devela_num`, `devela_text`.
 - move `core`, `alloc` & `std` re-exports to [base*] libs.

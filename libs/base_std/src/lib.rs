@@ -6,6 +6,8 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
+extern crate std;
+
 extern crate self as devela_base_std;
 
 pub mod build;
@@ -41,10 +43,10 @@ pub mod all {
 
 #[allow(unused_imports)]
 #[doc(hidden)] #[rustfmt::skip]
-pub use _workspace_private::*;
+pub use _workspace_internals::*;
 #[doc(hidden)] #[rustfmt::skip]
-pub mod _workspace_private {
+pub mod _workspace_internals {
     #![allow(unused_imports)]
     pub use devela_base_alloc::all::*;
-    pub use devela_base_alloc::_workspace_private::*;
+    pub use devela_base_alloc::_workspace_internals::*;
 }

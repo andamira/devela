@@ -14,11 +14,11 @@ mod adt;
 mod destaque;
 mod reexports;
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
+// mod destaque_define; // MAYBE
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _always
+    _mods {
         pub use super::{adt::*, reexports::*};
 
         #[cfg(_destaque··)]
@@ -26,13 +26,7 @@ crate::items! { // structural access: _mods, _all, _always
         // WIPZONE
         // pub use super::destaque_define::_all::*;
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::{adt::*, reexports::*};
     }
 }
-// WIPZONE
-// mod destaque_define; // WIP:

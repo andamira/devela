@@ -16,13 +16,11 @@ mod spin_lock; // SpinLock, SpinLockGuard
 pub mod atomic; // core::sync::atomic::*
 pub mod mpsc; // Mpsc, std::sync::mpsc::*
 
-crate::items! { // structural access: _mods, _pub_mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
+// WIPZONE
+// mod counter;
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _pub_mods, _always
+    _mods {
         pub use super::reexports::*;
 
         #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
@@ -31,18 +29,12 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         // WIPZONE
         // pub use super::counter::*;
     }
-    mod _pub_mods { #![allow(unused)]
+    _pub_mods {
         pub use super::{atomic::_all::*, mpsc::_all::*};
     }
-    pub(super) mod _all { #[allow(unused)]
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::atomic::_all::*;
         #[cfg(feature = "alloc")]
         pub use super::reexports::*;
     }
 }
-// WIPZONE
-// mod counter;

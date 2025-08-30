@@ -14,13 +14,11 @@ mod namespace; // Fmt
 #[cfg(feature = "fmt")]
 mod num_to_str;
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
+// WIPZONE
+// mod table;
 
-    mod _mods {
+crate::structural_mods! { // _mods, _always
+    _mods {
         pub use super::{_c::*, buf::*, namespace::*};
         #[cfg(feature = "alloc")]
         pub use super::_a::*;
@@ -31,15 +29,9 @@ crate::items! { // structural access: _mods, _all, _always
         // WIPZONE
         // pub use super::table::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::_c::*;
         #[cfg(feature = "alloc")]
         pub use super::_a::*;
     }
 }
-// WIPZONE
-// mod table;

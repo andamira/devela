@@ -29,20 +29,23 @@ pub mod uid;
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 pub mod dst;
 
-crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
-    #[allow(unused)]
-    pub use {_mods::*, _internals::*};
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
+// WIPZONE
+// mod pool;
+// mod view;
+// #[cfg(_graph··)]
+// pub mod graph;
+// #[cfg(_node··)]
+// pub mod node;
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
+    _mods {
         pub use super::{absence::*, bit::_all::*, collection::*};
 
         pub use devela_base::Sort;
         // #[cfg(feature = "alloc")]
         // pub use devela_base_alloc::SortAlloc;
     }
-    mod _pub_mods { #![allow(unused)]
+    _pub_mods {
         #[doc(inline)]
         pub use super::{
             codec::_all::*, errors::*, iter::_all::*, key::_all::*,
@@ -64,23 +67,18 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         // #[cfg(_node··)]
         // pub use super::node::_all::*;
     }
-    pub(super) mod _internals { #![allow(unused)]
-        pub(crate) use super::table::_internals::*;
+    _crate_internals {
+        pub(crate) use super::table::_crate_internals::*;
+        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+        #[cfg(all(
+            not(any(feature = "safe_data", feature = "safe_mem")),
+            feature = "unsafe_layout"
+        ))]
+        pub(crate) use super::dst::_crate_internals::*;
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::{_pub_mods::*, _mods::*};
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::{
             codec::_always::*, collection::*, iter::_always::*, list::_always::*,
         };
     }
 }
-// WIPZONE
-// mod pool;
-// mod view;
-// #[cfg(_graph··)]
-// pub mod graph;
-// #[cfg(_node··)]
-// pub mod node;

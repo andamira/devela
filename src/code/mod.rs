@@ -24,29 +24,20 @@ pub mod panic; // Panic, set_panic_handler!
 pub mod result; // AllError, serr, sok, Mismatch, OptRes, ValueQuant…
 pub mod util; // utility macros and functions
 
-util::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
-    #[allow(unused)]
-    pub use {_mods::*, _internals::*};
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
-
-    mod _mods {
+devela_base::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
+    _mods {
         pub use super::{_c::*, any::_all::*, default::*, guard::*};
     }
-    mod _pub_mods {
+    _pub_mods {
         pub use super::{
             error::_all::*, intro::_all::*, marker::_all::*, ops::_all::*,
             panic::_all::*, result::_all::*, util::_all::*,
         };
     }
-    pub(super) mod _internals {
-        pub(crate) use super::util::_internals::*;
+    _crate_internals {
+        pub(crate) use super::util::_crate_internals::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::{_pub_mods::*, _mods::*};
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::{
             _c::*, error::_always::*, panic::_always::*, result::_always::*, util::_always::*,
         };

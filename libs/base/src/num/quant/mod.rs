@@ -20,11 +20,13 @@ mod interval; // Interval, interval!
 // mod ratio; // Ratio
 mod sign; // Sign
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
+// mod counter;
+// mod norm;
+// mod scale;
 
-    mod _mods {
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{cycle::*, interval::*, sign::*};
         // WIPZONE
         // pub use super::counter::*;
@@ -32,12 +34,4 @@ crate::items! { // structural access: _mods, _all
         // pub use super::ratio::*;
         // pub use super::scale::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIPZONE
-// mod counter;
-// mod norm;
-// mod scale;

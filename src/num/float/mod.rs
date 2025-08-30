@@ -13,22 +13,24 @@ crate::items! {
     mod shared_docs; // FORMULA_*!()
 }
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
-
-    mod _mods {
-        pub use super::{constants::*, reexports::*, wrapper::*};
+crate::structural_mods! { // _mods, _always
+    _mods {
+        pub use super::{
+            constants::*,
+            reexports::*,
+            wrapper::*,
+        };
 
         #[cfg(_float··)] #[allow(unused, reason = "feature-gated")]
-        pub use super::{ext_float::*, wrapper::*, shared_docs::*};
+        pub use super::{
+            ext_float::*,
+            wrapper::*,
+            shared_docs::*,
+        };
     }
-    pub(super) mod _all { #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        pub use super::{reexports::*};
+    _always {
+        pub use super::{
+            reexports::*,
+        };
     }
 }

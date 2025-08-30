@@ -34,16 +34,15 @@ pub mod mem; // Mem,
 pub mod net; // Ip*, Socket*, Tcp*, Udp*
 pub mod os; // Linux,
 
-crate::items! { // structural access: _mods, _pub_mods, _hidden, _internals, _all, _always
-    #[allow(unused)]
-    pub use {_mods::*, _hidden::*, _internals::*};
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
+// WIPZONE
+// #[cfg(feature = "std")]
+// mod bench;
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _pub_mods, _hidden, _crate_internals, _always
+    _mods {
         pub use super::sound::_all::*;
     }
-    mod _pub_mods { #![allow(unused)]
+    _pub_mods {
         pub use super::{
             arch::_all::*, env::_all::*, fs::_all::*, io::_all::*,
             log::_all::*, mem::_all::*, net::_all::*, os::_all::*,
@@ -53,21 +52,13 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _internals, _al
         // pub use super::bench::*;
         // pub use super::bench::_all::*;
     }
-    pub(super) mod _hidden {
-        pub use super::mem::_hidden::*;
-    }
-    pub(super) mod _internals { #![allow(unused)]
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _crate_internals {}
+    _always {
         pub use super::{
             arch::_always::*, env::_always::*, io::_always::*, mem::_always::*,
         };
     }
+    _hidden {
+        pub use super::mem::_hidden::*;
+    }
 }
-// WIPZONE
-// #[cfg(feature = "std")]
-// mod bench;

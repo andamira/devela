@@ -127,7 +127,10 @@ macro_rules! _structural_mods {
             }
         )?
         $(
-            pub(super) mod workspace_internals { #![allow(unused_imports)]
+            #[allow(unused_imports)]
+            #[doc(hidden, no_inline)]
+            pub use _workspace_internals::*;
+            pub(crate) mod _workspace_internals { #![allow(unused_imports)]
                 $($block_workspace_internals)*
             }
         )?

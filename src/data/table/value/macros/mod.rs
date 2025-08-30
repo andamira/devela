@@ -11,11 +11,8 @@ mod impl_traits; // impl_data_value!, impl_data_type!, impl_data_raw!
 // #[cfg(test)]
 // mod tests;
 
-crate::items! { // structural access: _internals
-    #[allow(unused)]
-    pub use _internals::*;
-
-    pub(super) mod _internals { #![allow(unused)]
+crate::structural_mods! { // _crate_internals
+    _crate_internals {
         pub(crate) use super::{ define_all::*, define_each::*, impl_traits::*};
     }
 }

@@ -7,16 +7,21 @@
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "unsafe_ffi"))))]
 mod os_ref; // ArgsOsRefIter + TEMP args_os_ref_iter (make impl for Env
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
+// mod args; // with docs, multi-file
+// mod getargs; // single file
+// #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
+// mod getargs_os; // single file
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
         pub use super::os_ref::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
+
+        // WIPZONE
+        // pub use super::args::*;
+        // pub use super::getargs::*;
+        // #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
+        // pub use super::getargs_os::*;
     }
 }

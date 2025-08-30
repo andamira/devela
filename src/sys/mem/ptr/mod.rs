@@ -12,22 +12,13 @@ mod namespace; // Ptr
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 mod fat;
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
-
-    mod _mods {
+crate::structural_mods! { // _mods, _always
+    _mods {
         pub use super::{namespace::Ptr, _c::*};
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::fat::FatPtr;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::_c::*;
     }
 }

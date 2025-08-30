@@ -26,13 +26,14 @@ mod reexports; // re-exported items
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
 
-reexports::items! { // structural access: _mods, _internals, _all, _always
-    #[allow(unused)]
-    pub use {_mods::*, _internals::*};
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
+// WIPZONE
+// #[cfg(all(feature = "std", feature = "dep_image"))]
+// #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "dep_image"))))]
+// mod docima; // DocImage
+// mod structural; // structural_mods!
 
-    mod _mods {
+devela_base::structural_mods! { // _mods, _crate_internals, _always
+    _mods {
         pub use super::{asserts::_all::*, cdbg::*, capture::*, reexports::*};
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
@@ -41,19 +42,10 @@ reexports::items! { // structural access: _mods, _internals, _all, _always
         // pub use super::docima::*;
         // pub use super::structural::*;
     }
-    pub(super) mod _internals {
+    _crate_internals {
         pub(crate) use super::{_std_core::*, _use::*};
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
-        pub use super::_internals::*;
+    _always { // RETHINK
+        pub use super::_crate_internals::*;
     }
 }
-// WIPZONE
-// #[cfg(all(feature = "std", feature = "dep_image"))]
-// #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "dep_image"))))]
-// mod docima; // DocImage
-// mod structural; // structural_mods!

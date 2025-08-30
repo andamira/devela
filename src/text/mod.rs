@@ -22,33 +22,27 @@ pub mod fmt;
 pub mod parse;
 pub mod str;
 
-crate::items! { // structural access: _mods, _pub_mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use {_always::*, _pub_mods::*};
+// WIPZONE
+// mod bytes; // Utf8Byte
+// mod cell; // TextCell
 
-    mod _mods {
+crate::structural_mods! { // _mods, _pub_mods, _always
+    _mods {
         pub use super::{ascii::_all::*, char::_all::*, grapheme::_all::*};
+
         // WIPZONE
         // pub use super::bytes::*;
         // pub use super::cell::*;
     }
-    mod _pub_mods {
+    _pub_mods {
         #[doc(inline)]
-        pub use super::{errors::*, fmt::_all::*, parse::_all::*, str::_all::*};
+        pub use super::errors::*;
+        pub use super::{fmt::_all::*, parse::_all::*, str::_all::*};
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::{_mods::*, _pub_mods::*};
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         #[doc(inline)]
         pub use super::{
             errors::*, fmt::_always::*, char::_always::*, parse::_always::*, str::_always::*,
         };
     }
 }
-// WIPZONE
-// mod bytes; // Utf8Byte
-// mod cell; // TextCell

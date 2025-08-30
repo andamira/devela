@@ -15,15 +15,8 @@ mod output; // Sixel, SixelMean, SixelQuality, SixelSplit
 ///
 const SIXEL_PALETTE_MAX: usize = 256;
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::{builder::*, dither::*, error::*, output::*, quant::*};
-    }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

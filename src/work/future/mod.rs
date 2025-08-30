@@ -21,24 +21,15 @@ mod reexports;
 #[cfg(not(feature = "dep_portable_atomic_util"))]
 mod block;
 
-crate::items! { // structural access: _mods, _all, _always
-    #[allow(unused)]
-    pub use _mods::*;
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _always::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods, _always
+    _mods {
         pub use super::{coroutine::_all::*, ext::*, reexports::*};
 
         #[cfg(feature = "std")]
         #[cfg(not(feature = "dep_portable_atomic_util"))]
         pub use super::block::*;
     }
-    pub(super) mod _all {
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
-    pub(super) mod _always { #![allow(unused)]
+    _always {
         pub use super::{coroutine::_always::*, reexports::*};
     }
 }

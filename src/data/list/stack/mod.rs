@@ -12,17 +12,10 @@ mod adt;
 #[cfg(_stack··)]
 mod stack;
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
-
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         pub use super::adt::*;
         #[cfg(_stack··)]
         pub use super::stack::_all::*;
-    }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
     }
 }

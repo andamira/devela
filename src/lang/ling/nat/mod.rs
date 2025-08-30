@@ -3,20 +3,14 @@
 //! Natural languages.
 //
 
-crate::items! { // structural access: _mods, _all
-    #[allow(unused)]
-    pub use _mods::*;
+// WIPZONE
+// pub mod en;
+// pub mod es;
 
-    mod _mods { #![allow(unused)]
+crate::structural_mods! { // _mods
+    _mods {
         // WIPZONE:
         // pub use super::en::_all::*;
         // pub use super::es::_all::*;
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_mods::*;
-    }
 }
-// WIPZONE
-// pub mod en;
-// pub mod es;

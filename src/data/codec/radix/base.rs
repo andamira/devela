@@ -11,8 +11,9 @@
 // - helpers
 // - tests
 
-use crate::{ConstDefault, PhantomData};
+use crate::{ConstDefault, PhantomData, TAG_CODEC};
 
+#[doc = TAG_CODEC!()]
 /// A compile-time configurable radix-based encoding scheme.
 ///
 /// This struct defines the core behavior for various base encodings,
@@ -41,27 +42,32 @@ pub struct Base<
 
 /* type aliases */
 
+#[doc = TAG_CODEC!()]
 /// `Base16` standard encoding (hex), with linear search. Case-insensitive.
 ///
 /// RFC 4648 describes Base16 as "the standard case-insensitive hex encoding".
 pub type Base16 = Base<16, false, false, false, Rfc4648>;
 
+#[doc = TAG_CODEC!()]
 /// `Base32` standard encoding, using LUT decoding. Case-sensitive.
 ///
 /// RFC 4648 specifies Base32 as case-insensitive in decoding,
 /// but encoded output is uppercase.
 pub type Base32 = Base<32, true, false, false, Rfc4648>;
 
+#[doc = TAG_CODEC!()]
 /// `Base32` encoding with padding (`=`) enabled, using LUT decoding.
 ///
 /// Padding ensures the encoded length is always a multiple of 8 characters
 pub type Base32Padded = Base<32, true, true, false, Rfc4648>;
 
+#[doc = TAG_CODEC!()]
 /// `Base32` `Crockford` encoding. Case-insensitive, remaps `O → 0`, `I/L → 1`.
 ///
 /// This variant is human-friendly and eliminates ambiguity in certain characters.
 pub type Base32Crockford = Base<32, true, false, true, Crockford>;
 
+#[doc = TAG_CODEC!()]
 /// `Base32Hex` uses RFC 4648 hex-encoding (`0-9 A-V` instead of `A-Z 2-7`).
 ///
 /// Encoded data maintains its sort order when compared bit-wise.
@@ -70,11 +76,13 @@ pub type Base32Hex = Base<32, true, false, false, Rfc4648Hex>;
 // /// Base58 standard, with LUT decoding.
 // pub type Base58 = Base<58, true, false, false, false, Base58Std>;
 
+#[doc = TAG_CODEC!()]
 /// `Base64` standard encoding, using LUT decoding. Case-sensitive.
 ///
 /// RFC 4648 specifies that Base64 preserves case distinctions in encoding and decoding.
 pub type Base64 = Base<64, true, false, false, Rfc4648>;
 
+#[doc = TAG_CODEC!()]
 /// `Base64` encoding with padding (`=`) enabled, using LUT decoding.
 ///
 /// Ensures encoded output length is always a multiple of 4 characters.
@@ -85,14 +93,17 @@ pub type Base64Padded = Base<64, true, true, false, Rfc4648>;
 
 /* encoding schemes */
 
+#[doc = TAG_CODEC!()]
 /// The `RFC 4648` standard encoding, used in [`Base16`], [`Base32`], and [`Base64`].
 #[derive(Clone, Copy, Debug)]
 pub struct Rfc4648;
 
+#[doc = TAG_CODEC!()]
 /// The `RFC 4648` hexadecimal-variant encoding, used in [`Base32`].
 #[derive(Clone, Copy, Debug)]
 pub struct Rfc4648Hex;
 
+#[doc = TAG_CODEC!()]
 /// The `Crockford` [`Base32`] encoding, case-insensitive, remaps certain characters.
 #[derive(Clone, Copy, Debug)]
 pub struct Crockford;

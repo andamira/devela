@@ -11,17 +11,12 @@ pub mod r#loop;
 pub mod map;
 pub mod state;
 
-crate::items! { // structural access: _pub_mods, _all
-    #[allow(unused)] #[doc(hidden, no_inline)]
-    pub use _pub_mods::*;
+// WIPZONE
 
-    mod _pub_mods { #![allow(unused)]
+crate::structural_mods! { // _pub_mods
+    _pub_mods {
         pub use super::{r#loop::_all::*, map::_all::*, state::_all::*};
+
         // WIPZONE
     }
-    pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)]
-        pub use super::_pub_mods::*;
-    }
 }
-// WIPZONE
