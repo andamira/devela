@@ -6,6 +6,7 @@
 mod cast; // Cast
 mod float;
 mod int;
+mod logic; // ConstBool, False, True, const_bool!
 mod ord;
 
 pub mod error; // error types
@@ -14,7 +15,9 @@ pub mod quant; // Cycle*, Interval, interval!, Ratio
 
 crate::structural_mods! { //_mods, _pub_mods
     _mods {
-        pub use super::{cast::_all::*, float::_all::*, int::_all::*, ord::_all::*};
+        pub use super::{
+            cast::_all::*, float::_all::*, int::_all::*, logic::_all::*, ord::_all::*,
+        };
     }
     _pub_mods {
         #[doc(inline)]
