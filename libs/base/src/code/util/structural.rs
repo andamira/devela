@@ -92,7 +92,7 @@ macro_rules! _structural_mods {
         // They are re-exported from the root of the crate.
         $( _crate_internals { $($block_crate_internals:tt)* } )?
         //
-        // Items inside should be pub and doc(hidden).
+        // Items inside should be pub & doc(hidden).
         // They are publicly re-exported from the root of the crate except for the top crate.
         $( _workspace_internals { $($block_workspace_internals:tt)* } )?
         //

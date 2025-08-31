@@ -17,6 +17,8 @@ crate::structural_mods! { //_mods, _pub_mods
         pub use super::{cast::_all::*, float::_all::*, int::_all::*, ord::_all::*};
     }
     _pub_mods {
-        pub use super::{error::*, niche::_all::*, quant::_all::*};
+        #[doc(inline)]
+        pub use super::error::*;
+        pub use super::{niche::_all::*, quant::_all::*};
     }
 }

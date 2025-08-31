@@ -59,6 +59,7 @@
 #![cfg_attr(
     nightly_stable_1_91,
     feature(
+        array_repeat,
         as_array_of_cells,
         const_array_each_ref,
         const_type_id,
@@ -82,7 +83,6 @@
 #![cfg_attr(
     nightly_stable_later,
     feature(
-        array_repeat,
         assert_matches,
         breakpoint,
         cfg_select,

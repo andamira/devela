@@ -9,7 +9,7 @@ mod service;
 // mod events;
 
 crate::structural_mods! { // _mods
-    mod _mods {
+    _mods {
         pub use super::service::*;
 
         // WIPZONE

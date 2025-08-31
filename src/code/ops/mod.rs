@@ -8,12 +8,12 @@
 crate::mod_path!(_c "../../../libs/base/src/code/ops/reexports.rs");
 
 // WIPZONE
-// mod closure;
+// mod wip_closure;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::_c::*;
         // WIPZONE
-        // pub use super::closure::*;
+        // pub use super::wip_closure::*;
     }
 }

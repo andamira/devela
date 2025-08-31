@@ -106,21 +106,21 @@ crate::CONST! { hidden macro_export,
 
 
     TAG_DEVELA_BASE = concat!($crate::SPAN_OPEN!(),
-        "'defined in `devela_base` workspace library'>", "<small>base</small></span>");
+        "'provided by `devela_base` workspace library'>", "<small>base</small></span>");
     TAG_DEVELA_BASE_MACROS = concat!($crate::SPAN_OPEN!(),
-        "'defined in `devela_base_macros` workspace library'>", "<small>base_macros</small></span>");
+        "'provided by `devela_base_macros` workspace library'>", "<small>base_macros</small></span>");
     TAG_DEVELA_BASE_ALLOC = concat!($crate::SPAN_OPEN!(),
-        "'defined in `devela_base_alloc` workspace library'>", "<small>base_alloc</small></span>");
+        "'provided by `devela_base_alloc` workspace library'>", "<small>base_alloc</small></span>");
     TAG_DEVELA_BASE_STD = concat!($crate::SPAN_OPEN!(),
-        "'defined in `devela_base_std` workspace library'>", "<small>base_std</small></span>");
+        "'provided by `devela_base_std` workspace library'>", "<small>base_std</small></span>");
 
     TAG_DEVELA_MACROS = concat!($crate::SPAN_OPEN!(),
-        "'defined in `devela_macros` workspace library'>", "<small>macros</small></span>");
+        "'provided by `devela_macros` workspace library'>", "<small>macros</small></span>");
 
     TAG_DEVELA_DATA = concat!($crate::SPAN_OPEN!(),
-        "'defined in `devela_data` workspace library'>", "<small>data</small></span>");
+        "'provided by `devela_data` workspace library'>", "<small>data</small></span>");
     TAG_DEVELA_NUM = concat!($crate::SPAN_OPEN!(),
-        "'defined in `devela_num` workspace library'>", "<small>num</small></span>");
+        "'provided by `devela_num` workspace library'>", "<small>num</small></span>");
 
     /* optional dependencies */
 

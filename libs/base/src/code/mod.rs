@@ -12,7 +12,7 @@ pub mod ops; // ::core::ops::*
 pub mod result; // utility macros and functions
 pub mod util; // utility macros and functions
 
-util::_structural::structural_mods! { // _mods, _pub_mods, _workspace_internals
+util::structural_mods! { // _mods, _pub_mods, _workspace_internals
     _mods {
         pub use super::{any::*, reexports::*};
     }

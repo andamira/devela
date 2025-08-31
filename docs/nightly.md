@@ -36,6 +36,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2025/10/30/Rust-1.91.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.91.0> -->
 
+- 1.91: `·`[array_repeat](https://github.com/rust-lang/rust/issues/126695)
 - 1.91: `·`[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
 - 1.91: `·`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
 - 1.91: `s`[const_pathbuf_osstring_new](https://github.com/rust-lang/rust/pull/145464)
@@ -65,7 +66,6 @@ See also
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
-- 1.??: `·`[array_repeat](https://github.com/rust-lang/rust/issues/126695)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)

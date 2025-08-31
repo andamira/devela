@@ -8,7 +8,6 @@ mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!, std_core!
 mod _mod_docs; // _DOC_*!
 mod _tags; // EMOJI_*! TAG_*!
 mod _reexport; // reexport!, reexport_from!
-pub(crate) mod _structural; // _structural_mods!
 
 mod reexports; // re-exported macros from devela_base_macros
 
@@ -26,18 +25,20 @@ mod maybe; // maybe!
 mod methods; // methods_as_fns
 mod paste; // paste! (wrapped for docs)
 mod r#const; // CONST!
+mod structural; // structural_mods!
 
 #[doc(hidden)]
 pub use paste::__paste; // (called from paste!)
 
-_structural::structural_mods! { // _mods, _workspace_internals
+structural::structural_mods! { // _mods, _workspace_internals
     _mods {
         pub use super::{
             asserts::_all::*, cfg_if::*, cfor::*, deprecate::*, enumset::*, ident::*, impl_trait::*,
             include::*, items::*, is::*, maybe::*, methods::*, paste::*, r#const::*, reexports::*,
+            structural::*,
         };
     }
     _workspace_internals {
-        pub use super::{_doc::*, _mod_docs::*, _tags::*, _reexport::*, _structural::*};
+        pub use super::{_doc::*, _mod_docs::*, _tags::*, _reexport::*};
     }
 }
