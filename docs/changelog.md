@@ -104,6 +104,9 @@
 - rename `reexport!` internal macro to `_reexport!`.
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
+- update `const_assert!` macro
+  - add new arms: `ne_buf`, `ne_str`.
+  - add support for comparing slices of primitives and slices of slices of primitives.
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
 - remove deprecated `iif!` macro.
 
@@ -138,5 +141,6 @@
 ### mem
 - move to [base]:
   - macro `cswap!`.
+- update `Slice` with new `eq` methods for slices of slices of primitives and string slices.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

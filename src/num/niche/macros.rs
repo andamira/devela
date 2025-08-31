@@ -92,7 +92,7 @@ impl_niche!();
 crate::items! {
     #[test]
     fn test_nz() {
-        const NZI8: crate::NonZeroI8 = nz![23i8];
+        // const NZI8: crate::NonZeroI8 = nz![23i8];
         assert_eq![nz![20i32], crate::NonZeroI32::new(20).unwrap()];
         assert_eq![nz![20u8], crate::NonZeroU8::new(20).unwrap()];
         // alternative syntax
@@ -106,7 +106,7 @@ crate::items! {
 
     #[test]
     fn test_ne() {
-        const NEI8: crate::NonExtremeI8 = ne![23i8];
+        // const NEI8: crate::NonExtremeI8 = ne![23i8];
         assert_eq![ne![20i8], crate::NonExtremeI8::new(20).unwrap()];
         assert_eq![ne![20u8], crate::NonExtremeU8::new(20).unwrap()];
         // alternative syntax

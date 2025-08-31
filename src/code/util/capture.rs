@@ -16,7 +16,7 @@
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! capture_first {
+macro_rules! _capture_first {
     (block $first:block $(, $tail:block)* $(,)?) => { $first };
     (expr $first:expr $(, $tail:expr)* $(,)?) => { $first };
     (ident $first:ident $(, $tail:ident)* $(,)?) => { $first };
@@ -28,13 +28,13 @@ macro_rules! capture_first {
     (tt $first:tt $(, $tail:tt)* $(,)?) => { $first };
 }
 #[doc(inline)]
-pub use capture_first;
+pub use _capture_first as capture_first;
 
 /// Captures all the tokens except the first one, as a tuple.
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! capture_tail_tuple {
+macro_rules! _capture_tail_tuple {
     (block $first:block, $($tail:block),* $(,)?) => { ($($tail),*) };
     (expr $first:expr, $($tail:expr),* $(,)?) => { ($($tail),*) };
     (ident $first:ident, $($tail:ident),* $(,)?) => { ($($tail),*) };
@@ -49,7 +49,7 @@ macro_rules! capture_tail_tuple {
     ($cat:tt $first:tt) => { () };
 }
 #[doc(inline)]
-pub use capture_tail_tuple;
+pub use _capture_tail_tuple as capture_tail_tuple;
 
 // /// Captures all the tokens except the first one.
 // #[macro_export]

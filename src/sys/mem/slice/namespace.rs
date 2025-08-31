@@ -758,6 +758,19 @@ macro_rules! impl_prim {
                 true
             }
         }
+        impl Slice<&[$t]> {
+            /// Checks the equality of two slices of slices of primitives in compile-time.
+            #[must_use]
+            pub const fn eq(a: &[&[$t]], b: &[&[$t]]) -> bool {
+                is! { a.len() != b.len(); return false }
+                let mut i = 0;
+                while i < a.len() {
+                    is! { !Slice::<$t>::eq(a[i], b[i]); return false }
+                    i += 1;
+                }
+                true
+            }
+        }
     };
 }
 impl_prim!();
@@ -846,5 +859,20 @@ mod tests {
     #[should_panic]
     fn copied_array_at_panic_overflow_offset() {
         Slice::<u8>::copied_array_at([0u8; 3], &[1, 2], 2); // offset overflow
+    }
+
+    #[test]
+    fn eq_slices() {
+        assert![Slice::<u8>::eq(&[1, 2], &[1, 2])];
+        assert![Slice::<&[u8]>::eq(&[&[1, 2], &[3, 4]], &[&[1, 2], &[3, 4]])];
+
+        assert![Slice::<u8>::eq(&[1, 2], &[1, 2])];
+        assert![Slice::<&[u8]>::eq(&[&[1, 2], &[3, 4]], &[&[1, 2], &[3, 4]])];
+
+        assert![Slice::<char>::eq(&['a', 'b'], &['a', 'b'])];
+        assert![Slice::<&[char]>::eq(&[&['a', 'b'], &['c', 'd']], &[&['a', 'b'], &['c', 'd']])];
+
+        assert![Slice::<&str>::eq(&"ab", "ab")];
+        assert![Slice::<&[&str]>::eq(&["ab", "cd"], &["ab", "cd"])];
     }
 }
