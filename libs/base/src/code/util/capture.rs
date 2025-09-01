@@ -1,6 +1,6 @@
-// devela::code::util::capture
+// devela_base::code::util::capture
 //
-//! capture tokens macro functionality
+//! Defines [`capture_first!`], [`capture_last!`] and [`capture_tail_tuple!`].
 //
 
 /// Captures the first token from a list of inputs.
@@ -9,7 +9,7 @@
 ///
 /// # Example
 /// ```
-/// # use devela::capture_first;
+/// # use devela_base::capture_first;
 /// assert_eq![5, capture_first!(expr 5, 6, 7)];
 /// assert_eq![42, capture_first!(literal 42, "hello", true)];
 /// ```
@@ -68,9 +68,9 @@ pub use _capture_tail_tuple as capture_tail_tuple;
 // pub use capture_tail;
 
 /// Captures the last token from a list of inputs.
-#[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _capture_last {
     // Base case: when there is only one item left, return it
     (block $first:block) => { $first };

@@ -12,6 +12,7 @@ mod _reexport; // reexport!, reexport_from!
 mod reexports; // re-exported macros from devela_base_macros
 
 mod asserts; // assertion macros
+mod capture; // capture_[first|last|tail_tuple]!
 mod cfg_if; // cfg_if!
 mod cfor; // cfor!
 mod deprecate; // deprecate_feature!
@@ -33,9 +34,9 @@ pub use paste::__paste; // (called from paste!)
 structural::structural_mods! { // _mods, _workspace_internals
     _mods {
         pub use super::{
-            asserts::_all::*, cfg_if::*, cfor::*, deprecate::*, enumset::*, ident::*, impl_trait::*,
-            include::*, items::*, is::*, maybe::*, methods::*, paste::*, r#const::*, reexports::*,
-            structural::*,
+            asserts::_all::*, capture::*, cfg_if::*, cfor::*, deprecate::*, enumset::*, ident::*,
+            impl_trait::*, include::*, items::*, is::*, maybe::*, methods::*, paste::*, r#const::*,
+            reexports::*, structural::*,
         };
     }
     _workspace_internals {

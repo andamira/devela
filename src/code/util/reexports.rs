@@ -9,6 +9,7 @@ crate::mod_path!(+pub _c "../../../libs/base/src/code/util/reexports.rs");
 pub use devela_base::{
     CONST,
     assert_eq_all, assert_approx_eq_all,
+    capture_first, capture_last, capture_tail_tuple,
     cfg_if,
     cfor,
     define_error,
