@@ -2,6 +2,10 @@
 //
 //! Features debugging and compile flags enabling for reflexion.
 //
+// NOTE: this file is shared between the build scripts in:
+// - devela/build/main/
+// - devela_base/build/
+//
 
 #[cfg(feature = "__dbg")]
 use super::Build;
@@ -228,7 +232,7 @@ mod reflection {
     // In sync with ../Cargo.toml::dep_all & ../src/_dep.rs
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["dep··"],
-        features: &include!{"../../config/dep_all.rs"},
+        features: &include!{concat!(env!("CARGO_WORKSPACE_DIR"), "/config/dep_all.rs")},
     };
 
     /* # modules */

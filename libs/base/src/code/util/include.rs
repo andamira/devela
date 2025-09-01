@@ -1,6 +1,6 @@
 // devela_base::code::util::include
 //
-//! Defines the [`include_from!`] and [`mod_from!`] macros.
+//! Defines the [`include_from!`], [`mod_from!`] and [`mod_path!`] macros.
 //
 // WAIT [include! fails with top-level attributes](https://github.com/rust-lang/rfcs/issues/752)
 // WAIT [include! should allow inner attributes](https://github.com/rust-lang/rust/issues/66920)

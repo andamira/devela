@@ -48,9 +48,11 @@ rustflags = [
 
 [env]
 # ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/config.html#env
 # WAIT: https://github.com/rust-lang/cargo/issues/3946#issuecomment-973132993
-# NOTE: In sync with ../libs/base/build/environment.rs
-CARGO_WORKSPACE_DIR = { value = "", relative = true }
+
+# In sync with ../libs/base/build/environment.rs
+CARGO_WORKSPACE_DIR = { value = "", relative = true, force = true }
 
 
 [alias]

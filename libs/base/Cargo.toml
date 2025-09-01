@@ -26,6 +26,7 @@ metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = tru
 [features]
 
 #* Development features *#
+__dbg = []
 __publish = []
 
 #* Safety features *#

@@ -15,6 +15,7 @@
 - new `Build` namespace in `devela_base_std`.
 - move build fn utils as `Build` methods.
 - make `devela_base_std` optional for builds.
+- symlink devela/main/features.rs from devela_base/build/.
 - add rerun instructions for changed env vars.
 - make sure `CARGO_TARGET_DIR` is always defined.
 

@@ -211,7 +211,8 @@ bench = false
 # ------------------------------------------------------------------------------
 
 __build = ["devela_base_std"] # full build dependencies
-__dbg = ["__build"] # shows extra debugging information
+# shows extra debugging information
+__dbg = ["__build", "devela_base/__dbg"]
 __no_test = []      # exclude examples from being tested
 
 # enabled when publishing to crates.io or building online docs
@@ -420,22 +421,22 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	# unsafe_async   = [] # MAYBE
 	unsafe_ffi     = [ # unsafe foreign function calls (WASM, OS, external C)
-		# "devela_base/unsafe_ffi",
+		"devela_base/unsafe_ffi",
 		# "devela_base_alloc?/unsafe_ffi", "devela_base_std?/unsafe_ffi",
 		# "devela_macros?/unsafe_ffi",
 	]
 	unsafe_hint    = [ # unreachable_unchecked, unchecked arithmetic
-		# "devela_base/unsafe_hint",
+		"devela_base/unsafe_hint",
 		# "devela_base_alloc?/unsafe_hint", "devela_base_std?/unsafe_hint",
 		# "devela_macros?/unsafe_hint",
 	]
 	unsafe_layout  = [ # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*
-		# "devela_base/unsafe_layout",
+		"devela_base/unsafe_layout",
 		# "devela_base_alloc?/unsafe_layout", "devela_base_std?/unsafe_layout",
 		# "devela_macros?/unsafe_layout",
 	]
 	unsafe_niche   = [ # unchecked niche constructors
-		# "devela_base/unsafe_niche",
+		"devela_base/unsafe_niche",
 		# "devela_base_alloc?/unsafe_niche", "devela_base_std?/unsafe_niche",
 		# "devela_macros?/unsafe_niche",
 	]
@@ -455,17 +456,17 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 		# "devela_macros?/unsafe_str",
 	]
 	unsafe_sync    = [ # SpinLock, Send and Sync impls
-		# "devela_base/unsafe_sync",
+		"devela_base/unsafe_sync",
 		# "devela_base_alloc?/unsafe_sync", "devela_base_std?/unsafe_sync",
 		# "devela_macros?/unsafe_sync",
 	]
 	unsafe_syscall = [ # os syscalls
-		# "devela_base/unsafe_syscall",
+		"devela_base/unsafe_syscall",
 		# "devela_base_alloc?/unsafe_syscall", "devela_base_std?/unsafe_syscall",
 		# "devela_macros?/unsafe_syscall",
 	]
 	unsafe_thread  = [ # Logging::set_logger_racy, Env::{remove_var, set_var}
-		# "devela_base/unsafe_thread",
+		"devela_base/unsafe_thread",
 		# "devela_base_alloc?/unsafe_thread", "devela_base_std?/unsafe_thread",
 		# "devela_macros?/unsafe_thread",
 	]

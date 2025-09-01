@@ -1,14 +1,12 @@
-// devela::sys::mem::namespace
+// devela_base::sys::mem::namespace
 //
 //! Defines the [`Mem`] namespace.
 //
 
-use crate::{
-    _core::mem::{
-        align_of, align_of_val, discriminant, drop, forget, needs_drop, replace, size_of,
-        size_of_val, swap, take,
-    },
-    Discriminant,
+use crate::Discriminant;
+use ::core::mem::{
+    align_of, align_of_val, discriminant, drop, forget, needs_drop, replace, size_of, size_of_val,
+    swap, take,
 };
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use ::core::{
@@ -36,7 +34,7 @@ impl Mem {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// # use devela_base::Mem;
     /// assert_eq!(Mem::align_down(13, 8), 8);
     /// assert_eq!(Mem::align_down(16, 8), 16);
     /// ```
@@ -92,7 +90,7 @@ impl Mem {
     ///
     /// # Example
     /// ```
-    /// # use devela::Mem;
+    /// # use devela_base::Mem;
     /// let result_from_ffi_fn: Result<(), &i32> = Err(&1);
     /// let result_copied: Result<(), i32> = result_from_ffi_fn.map_err(Mem::copy);
     /// ```
@@ -191,7 +189,7 @@ impl Mem {
 /// ## Features
 /// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
 #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-#[cfg(all(not(feature = "safe_mem"), unsafe··))]
+#[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
 impl Mem {
     // NOTE: can't compile, errors with: error[E0512]:
     // cannot transmute between types of different sizes, or dependently-sized types
@@ -228,7 +226,7 @@ impl Mem {
 ///
 /// ## Features
 /// They depend on enabling `unsafe_slice` feature, and not enabling `safe_mem`.
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+#[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), feature = "unsafe_slice"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
 impl Mem {
     /// View any `T: Sync + Unpin + ?Sized` as `&[u8]`.
@@ -236,7 +234,7 @@ impl Mem {
     /// This is a safer interface to `core::slice::`[`from_raw_parts`].
     /// # Example
     /// ```
-    /// # use devela::Mem;
+    /// # use devela_base::Mem;
     /// #[repr(C)]
     /// struct Data(u32);
     ///
@@ -261,7 +259,7 @@ impl Mem {
     /// This is a safer interface to `core::slice::`[`from_raw_parts_mut`].
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// # use devela_base::Mem;
     /// #[repr(C)]
     /// struct Data(u32);
     ///
@@ -289,7 +287,7 @@ impl Mem {
     /// This is a safer interface to `core::slice::`[`from_raw_parts`], for `Sized` types.
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// # use devela_base::Mem;
     /// const DATA: u32 = 1234;
     /// const BYTES: &[u8] = Mem::as_bytes_sized(&DATA);
     ///

@@ -3,13 +3,42 @@
 //!
 //
 
+/* crate configuration */
+
 // environment
 #![no_std]
 // safety
 #![cfg_attr(all(feature = "base_safe", feature = "safe"), forbid(unsafe_code))]
-// nightly
-#![cfg_attr(nightly_doc, feature(doc_cfg))]
+//
+// nightly (uncomment as used)
+// #![cfg_attr(nightly_allocator, feature(allocator_api))]
+// #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
+// #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
+// #![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
+#![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
+#![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
+#![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
 #![cfg_attr(nightly_float, feature(f16, f128))]
+// #![cfg_attr(nightly_simd, feature(portable_simd))]
+
+/* crate safeguards */
+
+// safety
+#[cfg(all(
+    feature = "safe",
+    feature = "base_safe", // activates safe enforcement in the [base] crates.
+    // In sync with ../Cargo.toml::unsafe & /build/main/features.rs::UNSAFE
+    any(feature = "unsafe", // includes all 11 specific purposes below:
+        feature = "unsafe_array", feature = "unsafe_ffi", feature = "unsafe_hint",
+        feature = "unsafe_layout", feature = "unsafe_niche", feature = "unsafe_ptr",
+        feature = "unsafe_slice", feature = "unsafe_str", feature = "unsafe_sync",
+        feature = "unsafe_syscall", feature = "unsafe_thread",
+    )
+))]
+compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
+// (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
+
 
 extern crate self as devela_base;
 

@@ -5,7 +5,7 @@
 #![doc = include_str!("./Lib.md")]
 //
 
-/* global configuration */
+/* crate configuration */
 //
 // lints
 //
@@ -35,8 +35,8 @@
 // RUSTDOCFLAGS="--cfg nightly_stable" cargo +nightly doc
 // ```
 //
-// (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs] &&
-//  ../build/main/features.rs::FLAGS_NIGHTLY)
+// (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs],
+//  ../build/main/features.rs::FLAGS_NIGHTLY) && ../libs/base/src/lib.rs
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
@@ -121,7 +121,7 @@
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
-/* global safeguards */
+/* crate safeguards */
 
 // environment
 #[cfg(all(feature = "std", feature = "no_std"))]
