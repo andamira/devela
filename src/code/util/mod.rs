@@ -18,7 +18,6 @@
 mod _std_core; // _std_core!
 mod _use; // _use!
 
-mod asserts; // assertion macros
 mod cdbg; // cdbg!
 mod reexports; // re-exported items
 
@@ -33,7 +32,7 @@ mod unroll; // unroll!
 
 devela_base::structural_mods! { // _mods, _crate_internals, _always
     _mods {
-        pub use super::{asserts::_all::*, cdbg::*, reexports::*};
+        pub use super::{cdbg::*, reexports::*};
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
         // WIPZONE

@@ -12,6 +12,7 @@ pub use devela_base::{
     capture_first, capture_last, capture_tail_tuple,
     cfg_if,
     cfor,
+    const_assert,
     define_error,
     deprecate_feature,
     enumset,
