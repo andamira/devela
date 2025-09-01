@@ -174,14 +174,15 @@ mod reflection {
     pub const DEVELOPMENT: FlagsFeatures = FlagsFeatures {
         ref_flags: &[],
         features: &[
+            "__build",
             "__dbg",
             "__no_test",
             "__force_miri_dst",
+            "__force_test_no_mangle",
             // "default",
             // "_default",
-            "_docsrs", "_docsrs_min",
-            "_docsrs_stable", "_docsrs_stable_min",
-            "_docs_max", "_docs_min",
+            "_docs", "_docs_nodeps", "_docs_min",
+            "_max", "_maxest",
         ]
     };
 

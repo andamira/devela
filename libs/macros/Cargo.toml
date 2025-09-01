@@ -12,18 +12,18 @@ include = [
 	"/Cargo.toml",
 	"/LICENSE*",
 	"/src/**/*.rs", "/src/**/*.md",
-	# examples used in docs:
-	"/examples/*.rs",
+	"/examples/*.rs", # used in docs
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
 publish = true
-metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
+metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
 
 [lib]
 proc-macro = true
 
 [features]
+
 #* Development features *#
 __publish = []
 
@@ -32,12 +32,14 @@ safe = []
 unsafe = []
 
 #* Capability features *#
-_docsrs = []
+_docs_nodep = ["unsafe"]
+_docs = ["_docs_nodep"]
 
-[dependencies] # 3 required
+[dependencies]
+devela_base_std   = { workspace = true }
+
 devela_base.workspace = true
-# WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
-proc-macro2 = "1.0.101"
+proc-macro2 = "1.0.101" # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
 quote = "1.0.40"
 
 [badges]

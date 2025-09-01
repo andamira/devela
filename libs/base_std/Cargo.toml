@@ -19,9 +19,10 @@ categories = ["rust-patterns", "development-tools"]
 keywords = ["dev", "extension"]
 autoexamples = false
 publish = true
-metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
+metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
 
 [features]
+
 #* Development features *#
 __publish = []
 
@@ -29,12 +30,12 @@ __publish = []
 std = [] # always enabled
 
 #* Safety features *#
-unsafe = []
-safe = []
+safe = ["devela_base/safe", "devela_base_alloc/safe"]
+unsafe = ["devela_base/unsafe", "devela_base_alloc/unsafe"]
 
 #* Capability features *#
 default = ["std"]
-_docsrs = ["unsafe"]
+_docs = ["unsafe"]
 
 [dependencies] # 2 required
 devela_base = { workspace = true }

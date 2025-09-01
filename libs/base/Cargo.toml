@@ -1,5 +1,3 @@
-# devela_base manifest
-
 [package]
 name = "devela_base"
 description = "base shared functionality for devela"
@@ -23,7 +21,7 @@ keywords = ["dev", "extension"]
 build = "build/mod.rs"
 autoexamples = false
 publish = true
-metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
+metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
 
 [features]
 
@@ -31,11 +29,11 @@ metadata.docs.rs = { features = ["_docsrs"], no-default-features = true }
 __publish = []
 
 #* Safety features *#
-unsafe = []
-safe = []
+safe = ["devela_base_macros/safe"]
+unsafe = ["devela_base_macros/unsafe"]
 
 #* Capability features *#
-_docsrs = []
+_docs = []
 
 [dependencies] # 2 required
 devela_base_macros = { workspace = true }

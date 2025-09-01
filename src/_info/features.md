@@ -27,8 +27,9 @@ nor `safe` and `unsafe`.
 
 Intended for development and internal purposes, like debugging and maintenance.
 
-- `__dbg`: for debugging purposes, shows enabled features and reflection flags.
-- `__no_test`: allows excluding examples from being tested.
+- `__dbg`    : for debugging purposes, shows enabled features and reflection flags.
+- `__no_test`: its purpose is to exclude certain examples from being tested.
+- `__publish`: for when publishing to crates.io or building online docs.
 
 
 ### Environment features
@@ -205,9 +206,7 @@ These semi-hidden features allows to fine-tune extra capabilities.
 Enabling them will likely worsen compilation times.
 
 Documentation capabilities:
-- `_docsrs[_stable][_min|_nodep]`: enables the most complete (or custom) version
-  of the documentation, for [docs.rs](https://docs.rs).
-- …
+- `_docs[_min|_nodep]`: enables the most complete (or custom) version of the documentation.
 
 #### `data` capabilities
 

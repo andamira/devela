@@ -13,7 +13,7 @@
 #   $ cargo native build
 #   $ cargo native test --release
 #   $ cargo native re example_name
-#   $ cargo +nightly native nd -F _docsrs
+#   $ cargo +nightly native nd -F _docs
 #
 # FIX:NOTE: this doesn't include any nightly flags
 

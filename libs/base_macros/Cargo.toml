@@ -1,22 +1,3 @@
-# devela_base_macros manifest
-# ==============================================================================
-#
-## Table of Contents
-#
-# * [package]
-#   - [metadata.docs.rs]
-# * [lib]
-#
-# * [features]
-#   - Safety            (safe,unsafe)
-#   - Capability
-#   - Dependency
-#
-# * [badges]
-# * [lints]
-#
-# * [[example]]
-
 [package]
 name = "devela_base_macros"
 description = "procedural macros for devela_base"
@@ -31,53 +12,34 @@ include = [
 	"/Cargo.toml",
 	"/LICENSE*",
 	"/src/**/*.rs", "/src/**/*.md",
-	# examples used in docs:
-	"/examples/*.rs",
+	"/examples/*.rs", # used in docs
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
 publish = true
-[package.metadata.docs.rs]
-no-default-features = true
-features = ["_docsrs"]
+metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
 
 [lib]
-path = "./src/lib.rs"
 proc-macro = true
 
+[features]
 
-[features] # 4/300 (296 remaining), 3 visible, 1 hidden
-# ==============================================================================
+#* Development features *#
+__publish = []
 
 #* Safety features *#
-# ------------------------------------------------------------------------------
-unsafe = [] # enables unsafe features in this crate (unused)
-safe = [] # forbids `unsafe` in this crate
-
+unsafe = []
+safe = []
 
 #* Capability features *#
-# ------------------------------------------------------------------------------
-default = ["safe"]
-
-#* docs capabilities *#
-_docsrs = ["unsafe"] # complete documentation
-
+_docs = ["unsafe"]
 
 [badges]
-# ==============================================================================
 maintenance.status = "experimental"
 
-
 [lints]
-# ==============================================================================
 workspace = true
-# WAIT: [override lints](https://github.com/rust-lang/cargo/issues/13157)
-# [lints.rust]
-# missing_docs = "allow" # missing docs for public items, reason: documented examples
 
-
-# examples
-# ==============================================================================
 [[example]]
 name = "cif"
 [[example]]

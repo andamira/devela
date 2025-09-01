@@ -35,9 +35,9 @@ and crate-private items (if compiled with --document-private-items)",
     Ok(())
 }
 
-/// Compiles documentation running this command: `cargo +nightly nd -F _docsrs`
+/// Compiles documentation running this command: `cargo +nightly nd -F _docs`
 fn compile_docs() -> Result<(), Box<dyn Error>> {
-    let status = Command::new("cargo").args(["+nightly", "nd", "-F", "_docsrs"]).status()?;
+    let status = Command::new("cargo").args(["+nightly", "nd", "-F", "_docs"]).status()?;
     if !status.success() {
         eprintln!("Failed to compile documentation.");
         return Err("Documentation compilation failed".into());

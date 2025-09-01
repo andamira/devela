@@ -156,7 +156,7 @@ include = [
 # https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
 # [maximum build limits](https://docs.rs/crate/devela/latest/builds)
 no-default-features = true
-features = ["_docsrs", "__publish"] # IMPROVE
+features = ["_docs", "__publish"]
 rustc-args = [
 	"--cfg", "nightly",
 	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
@@ -428,7 +428,6 @@ safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
 	"safe"
 ]
 
-
 #* Capability features *#
 # ------------------------------------------------------------------------------
 # Most of these features are prefixed with an underscore (_) to be semi-hidden.
@@ -461,7 +460,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
-_docs = [ # the minimum capabilities to document everything
+_docs_min = [ # the minimum capabilities to document every item
 	# workspace
 	"devela_macros",
 	# modules:
@@ -473,14 +472,22 @@ _docs = [ # the minimum capabilities to document everything
 	# text:
 	"_str_u8", "_str_nonul", "_char_all",
 ]
-_docsrs_nodep = [                            # + std + unsafe
-	"_docs", "std", "unsafe", "__dbg",
-	"devela_base/_docsrs", "devela_macros?/_docsrs", "devela_code?/_docsrs",
-	"devela_data?/_docsrs", "devela_media/_docsrs", "devela_num?/_docsrs",
-	# "devela_lang?/macros", "devela_phys?/macros", "devela_sys?/macros",
-	# "devela_text?/macros", "devela_ui?/macros", "devela_work?/macros",
+_docs_nodep = [ # + std + unsafe
+	"_docs_min", "std", "unsafe", "__dbg",
+	"devela_base/_docs", "devela_base_alloc?/_docs", "devela_base_std?/_docs", # ← always no deps
+	#
+	"devela_macros?/_docs_nodep", "devela_code?/_docs_nodep",
+	"devela_data?/_docs_nodep", "devela_media/_docs_nodep", "devela_num?/_docs_nodep",
+	# "devela_lang?/_docs_nodep", "devela_phys?/_docs_nodep", "devela_sys?/_docs_nodep",
+	# "devela_text?/_docs_nodep", "devela_ui?/_docs_nodep", "devela_work?/_docs_nodep",
 ]
-_docsrs       = ["_docsrs_nodep", "dep_all"] # + dependencies
+_docs = [ # + dependencies
+	"_docs_nodep", "dep_all",
+	"devela_macros?/_docs", "devela_code?/_docs",
+	"devela_data?/_docs", "devela_media/_docs", "devela_num?/_docs",
+	# "devela_lang?/_docs", "devela_phys?/_docs", "devela_sys?/_docs",
+	# "devela_text?/_docs", "devela_ui?/_docs", "devela_work?/_docs",
+]
 
 #* code capabilities *#
 # ---------------------

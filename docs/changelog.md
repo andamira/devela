@@ -25,17 +25,18 @@
 ## dependencies
 - re-export `alloc` crate from devela and [base_alloc].
 - bump dependencies:
-  - `hashbrown` → 0.16.
-  - `pyo3` → 0.26.
-  - `ureq` → 3.1.
+  - `hashbrown` to 0.16.
+  - `pyo3` to 0.26.
+  - `ureq` to 3.1.
   - [macros]
-    - `proc-macro2` → 1.0.101.
-    - `quote` → 1.0.40.
+    - `proc-macro2` to 1.0.101.
+    - `quote` to 1.0.40.
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`, `__publish`.
 - remove features: `_bit*`, `_cmp*`, `_sort*`, `cast`, `error`, `join`, `prim`, `split`.
 - remove flags: `bit··`, `cmp··`, `prim··`, `sort··`.
+- rename `_docs` to _`docs_min`, `_docsrs` to `_docs`, `_docsrs_nodep` to `_docs_nodep`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
 
@@ -70,7 +71,7 @@
 - add workspace hiearchy diagram.
 
 ## metrics
-- rename directory `/benches` → `/metrics`.
+- rename directory `/benches` to `/metrics`.
 
 ## tools & misc. files
 - new file `config/lib_all`.

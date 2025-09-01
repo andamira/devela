@@ -85,10 +85,10 @@ jobs:
       - name: "Install nightly"
         uses: dtolnay/rust-toolchain@nightly
 
-      - name: "cargo +nightly doc -F _docsrs,__dbg"
+      - name: "cargo +nightly doc -F _docs,__dbg"
         run: |
           echo "Running nightly docs with RUSTFLAGS: $RUSTFLAGS"
-          cargo doc -F _docsrs,__dbg
+          cargo doc -F _docs,__dbg
         env:
           RUSTFLAGS: "--cfg nightly -Ctarget-cpu=native"
           RUSTDOCFLAGS: "--cfg nightly -Ctarget-cpu=native"

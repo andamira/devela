@@ -6,6 +6,8 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
+extern crate devela_base_std as base;
+
 extern crate self as devela_macros;
 use proc_macro::TokenStream as TS;
 

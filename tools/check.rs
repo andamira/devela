@@ -287,12 +287,12 @@ fn main() -> Result<()> {
         // WAIT: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
         // nightly unsafe
-        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docsrs", "--", "--color=always"],
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docs", "--", "--color=always"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe (max capabilities)
-        run_cargo(&msrv, cmd, &["-F all,std,safe,_docs,_max", "--", "--color=always"])?;
-        run_cargo(&msrv, cmd, &["-F all,std,unsafe,_docs,_max", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F all,std,safe,_docs_min,_max", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F all,std,unsafe,_docs_min,_max", "--", "--color=always"])?;
 
         // std (un)safe + dep_all
         sf! { run_cargo(&msrv, cmd, &["-F all,std,safe,dep_all", "--", "--color=always"])?; }
@@ -319,7 +319,7 @@ fn main() -> Result<()> {
 
     if args.docs {
         headline(0, &format!["`all` docs compilation:"]);
-        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &["doc", "--no-deps", "-F _docsrs"],
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &["doc", "--no-deps", "-F _docs"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
     }
 
@@ -442,7 +442,7 @@ fn main() -> Result<()> {
         run_cargo("", NIGHTLY_TOOLCHAIN, &["update", "-Z", "minimal-versions"])?; // set min versions
 
         let deps = filter_deps(DEP_ALL, &[DEP_NO_MINIMAL_VERSIONS]);
-        let feature_flags = format!("_docsrs_nodep,{}", deps.join(","));
+        let feature_flags = format!("_docs_nodep,{}", deps.join(","));
         sf! { run_cargo_with_env( "", NIGHTLY_TOOLCHAIN, &["build", "-F", &feature_flags],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
