@@ -3,7 +3,7 @@
 //! …
 //
 
-#![cfg_attr(feature = "safe", forbid(unsafe_code))]
+#![cfg_attr(all(feature = "base_safe", feature = "safe"), forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 extern crate std;

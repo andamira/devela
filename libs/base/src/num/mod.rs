@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_NUM!()]
 //
+// safety
+#![cfg_attr(all(feature = "base_safe", feature = "safe_num"), forbid(unsafe_code))]
 
 mod cast; // Cast
 mod float;

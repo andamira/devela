@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_LANG!()]
 //
+// safety
+#![cfg_attr(all(feature = "base_safe", feature = "safe_lang"), forbid(unsafe_code))]
 
 pub mod ffi;
 

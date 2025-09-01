@@ -30,8 +30,41 @@ __publish = []
 alloc = [] # always enabled
 
 #* Safety features *#
-safe = ["devela_base/safe"]
-unsafe = ["devela_base/unsafe"]
+base_safe = ["devela_base/base_safe"]
+safe = [
+	"devela_base/safe",
+	"safe_code", "safe_data", "safe_game", "safe_lang", "safe_media", "safe_num",
+	"safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
+]
+	safe_code = ["devela_base/safe_code"]
+	safe_data = ["devela_base/safe_data"]
+	safe_game = ["devela_base/safe_game"]
+	safe_lang = ["devela_base/safe_lang"]
+	safe_media = ["devela_base/safe_media"]
+	safe_num = ["devela_base/safe_num"]
+	safe_phys = ["devela_base/safe_phys"]
+	safe_sys = ["devela_base/safe_sys"]
+	safe_text = ["devela_base/safe_text"]
+	safe_ui = ["devela_base/safe_ui"]
+	safe_work = ["devela_base/safe_work"]
+
+unsafe = [
+	"devela_base/unsafe",
+	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
+	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
+	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
+]
+	unsafe_array   = []
+	unsafe_ffi     = []
+	unsafe_hint    = []
+	unsafe_layout  = []
+	unsafe_niche   = []
+	unsafe_ptr     = []
+	unsafe_slice   = []
+	unsafe_str     = []
+	unsafe_sync    = []
+	unsafe_syscall = []
+	unsafe_thread  = []
 
 #* Capability features *#
 default = ["alloc"]

@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_SYS!()]
 //
+// safety
+#![cfg_attr(all(feature = "base_safe", feature = "safe_sys"), forbid(unsafe_code))]
 
 pub mod mem;
 

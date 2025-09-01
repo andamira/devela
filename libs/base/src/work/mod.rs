@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_WORK!()]
 //
+// safety
+#![cfg_attr(all(feature = "base_safe", feature = "safe_work"), forbid(unsafe_code))]
 
 pub mod future;
 pub mod sync;

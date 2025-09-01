@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_DATA!()]
 //
+// safety
+#![cfg_attr(all(feature = "base_safe", feature = "safe_data"), forbid(unsafe_code))]
 
 pub mod codec;
 

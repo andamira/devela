@@ -195,7 +195,10 @@ mod reflection {
     pub const SAFE: FlagsFeatures = FlagsFeatures {
         ref_flags: &["safe··"],
         features: &[
+            "safest",
             "safe",
+            "safe_base",
+            "safe_build",
             "safe_code",
             "safe_data",
             "safe_lang",
@@ -207,13 +210,10 @@ mod reflection {
             "safe_sys",
                 "safe_io", "safe_mem",
             "safe_text",
-            "safe_ui", "safe_layout",
+            "safe_ui",
+                "safe_layout",
             "safe_work",
         ]
-    };
-    pub const SAFEST: FlagsFeatures = FlagsFeatures {
-        ref_flags: &[],
-        features: &["safest"],
     };
     pub const UNSAFE: FlagsFeatures = FlagsFeatures {
         ref_flags: &["unsafe··"],
@@ -378,7 +378,7 @@ mod reflection {
 
             DEVELOPMENT,
             ENVIRONMENT,
-            SAFE, SAFEST, UNSAFE,
+            SAFE, UNSAFE,
             DEPENDENCY,
 
             /* modules */

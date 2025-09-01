@@ -159,7 +159,7 @@ no-default-features = true
 features = ["_docs", "__publish"]
 rustc-args = [
 	"--cfg", "nightly",
-	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
+	"-Ctarget-cpu=native", # see also ./tools/cargo-native
 ]
 rustdoc-args = [
 	"--no-deps", # WAIT: https://github.com/rust-lang/rust/issues/126638
@@ -182,11 +182,10 @@ targets = [ ## +std:
 ]
 
 [lib]
-path = "./src/lib.rs"
 bench = false
 
 
-[features] # 222/300 (78 remaining), 136 visible, 86 hidden
+[features] # 224/300 (76 remaining), 138 visible, 86 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -360,51 +359,28 @@ work = [
 #
 # In sync with ./build/main/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
 
-unsafe = [ # enables all `unsafe` (as long as it isn't forbidden on a module)
-	"devela_macros?/unsafe",
+safest = ["safe", "base_safe"] # forbids `unsafe` completely in all workspace crates.
 
-	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
-	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
-	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
-] # `unsafe··`	[11]
-	# faster array initialization, UninitArray:
-	unsafe_array   = []
-	# unsafe foreign function calls (WASM, OS, external C):
-	unsafe_ffi     = []
-	# unreachable_unchecked, unchecked arithmetic:
-	unsafe_hint    = []
-	# MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*:
-	unsafe_layout  = []
-	# unchecked niche constructors:
-	unsafe_niche   = []
-	# Pinned, pop methods without Clone, Ptr::*:
-	unsafe_ptr     = []
-	# extra slice methods, avoid bound checks:
-	unsafe_slice   = []
-	# unchecked utf-8 char and &str conversions:
-	unsafe_str     = []
-	# SpinLock, Send and Sync impls:
-	unsafe_sync    = []
-	# os syscalls
-	unsafe_syscall = []
-	# Logging::set_logger_racy, Env::{remove_var, set_var}:
-	unsafe_thread  = []
-	# WIPZONE
-	# unsafe_async   = [] #
-
-safe = [ # forbids `unsafe` (and overrides unsafe features)
+safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
 	"devela_macros?/safe",
 	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game",
 	"safe_num", "safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
-] # `safe··` [12]
-	safe_code = ["devela_code?/safe"]
-	safe_data = ["devela_data?/safe"]
-	safe_game = [] # "devela_game?/safe"
+]
+
+# master switch that activates safe enforcement in the [base] crates.
+base_safe = ["devela_base/base_safe", "devela_base_alloc?/base_safe", "devela_base_std?/base_safe"]
+
+	# List of safe thematic modules (orthogonal to unsafe purposes):
+
+	# thematic [22]
+	safe_build = ["devela_base_std?/safe_build"]
+	safe_code = ["devela_code?/safe"] # "devela_base/safe_code",
+	safe_data = ["devela_data?/safe"] # "devela_base/safe_data",
+	safe_game = [] # "devela_base/safe_game", "devela_game?/safe"
 	safe_lang = [] # "devela_lang?/safe"
 		# safe_ffi
 			# safe_js
-	safe_media = [ # "devela_game?/safe"
-		"devela_media/safe",
+	safe_media = [ # "devela_base/safe_media", "devela_media?/safe"
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
 		]
 		safe_audio = []
@@ -415,18 +391,83 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_num = ["devela_num?/safe"]
 	safe_phys = ["safe_time"] # "devela_phys?/safe"
 		safe_time = []
-	safe_sys = ["safe_io", "safe_mem"] # "devela_sys?/safe"
-		safe_io = []
-		safe_mem = []
-	safe_text = [] # "devela_text?/safe"
+	safe_sys = ["safe_io", "safe_mem"] # "devela_base/safe_sys", "devela_sys?/safe"
+		safe_io = [] # "devela_base/safe_io"
+		safe_mem = [] # "devela_base/safe_mem"
+	safe_text = [] # "devela_base/safe_text", "devela_text?/safe"
 	safe_ui = ["safe_layout"] # "devela_ui?/safe"
 		safe_layout = []
-	safe_work = [] # ["devela_work?/safe"]
+	safe_work = [] # "devela_base/safe_work", "devela_work?/safe"
 		# safe_async
 
-safest = [ # forbids `unsafe` also in dependencies (except for alloc, core, std)
-	"safe"
-]
+unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
+	"devela_macros?/unsafe",
+	"devela_base/unsafe", "devela_base_alloc?/unsafe", "devela_base_std?/unsafe",
+	#
+	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
+	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
+	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
+] # `unsafe··`	[11]
+
+	# List of unsafe purposes (orthogonal to safe modules):
+
+	unsafe_array   = [ # faster array initialization, UninitArray
+		# "devela_base/unsafe_array",
+		# "devela_base_alloc?/unsafe_array", "devela_base_std?/unsafe_array",
+		# "devela_macros?/unsafe_array",
+	]
+	# unsafe_async   = [] # MAYBE
+	unsafe_ffi     = [ # unsafe foreign function calls (WASM, OS, external C)
+		# "devela_base/unsafe_ffi",
+		# "devela_base_alloc?/unsafe_ffi", "devela_base_std?/unsafe_ffi",
+		# "devela_macros?/unsafe_ffi",
+	]
+	unsafe_hint    = [ # unreachable_unchecked, unchecked arithmetic
+		# "devela_base/unsafe_hing",
+		# "devela_base_alloc?/unsafe_hing", "devela_base_std?/unsafe_hing",
+		# "devela_macros?/unsafe_hint",
+	]
+	unsafe_layout  = [ # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*
+		# "devela_base/unsafe_layout",
+		# "devela_base_alloc?/unsafe_layout", "devela_base_std?/unsafe_layout",
+		# "devela_macros?/unsafe_layout",
+	]
+	unsafe_niche   = [ # unchecked niche constructors
+		# "devela_base/unsafe_niche",
+		# "devela_base_alloc?/unsafe_niche", "devela_base_std?/unsafe_niche",
+		# "devela_macros?/unsafe_niche",
+	]
+	unsafe_ptr     = [ # Pinned, pop methods without Clone, Ptr::*
+		# "devela_base/unsafe_ptr",
+		# "devela_base_alloc?/unsafe_ptr", "devela_base_std?/unsafe_ptr",
+		# "devela_macros?/unsafe_ptr",
+	]
+	unsafe_slice   = [ # extra slice methods, avoid bound checks
+		# "devela_base/unsafe_slice",
+		# "devela_base_alloc?/unsafe_slice", "devela_base_std?/unsafe_slice",
+		# "devela_macros?/unsafe_slice",
+	]
+	unsafe_str     = [ # unchecked utf-8 char and &str conversions
+		# "devela_base/unsafe_str",
+		# "devela_base_alloc?/unsafe_str", "devela_base_std?/unsafe_str",
+		# "devela_macros?/unsafe_str",
+	]
+	unsafe_sync    = [ # SpinLock, Send and Sync impls
+		# "devela_base/unsafe_sync",
+		# "devela_base_alloc?/unsafe_sync", "devela_base_std?/unsafe_sync",
+		# "devela_macros?/unsafe_sync",
+	]
+	unsafe_syscall = [ # os syscalls
+		# "devela_base/unsafe_syscall",
+		# "devela_base_alloc?/unsafe_syscall", "devela_base_std?/unsafe_syscall",
+		# "devela_macros?/unsafe_syscall",
+	]
+	unsafe_thread  = [ # Logging::set_logger_racy, Env::{remove_var, set_var}
+		# "devela_base/unsafe_thread",
+		# "devela_base_alloc?/unsafe_thread", "devela_base_std?/unsafe_thread",
+		# "devela_macros?/unsafe_thread",
+	]
+
 
 #* Capability features *#
 # ------------------------------------------------------------------------------
