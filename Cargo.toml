@@ -15,9 +15,9 @@
 #
 # * [features]
 #   - Development       (__*)
-#   - Environment       (std,alloc,no_std)
-#   - Module            (all,code,data,game,lang,media,num,phys,sys,text,ui,work)
-#   - Safety            (unsafe,safe,safest)
+#   - Environment       (std, alloc, no_std)
+#   - Module            (all, code, data, game, lang, media, num, phys, sys, text, ui, work)
+#   - Safety            (safest, safe, unsafe, …)
 #   - Capability        (_*)
 #     - default         (_default, _max, _maxest)
 #     - docs            (_doc*)
@@ -357,9 +357,11 @@ work = [
 # The `safest` feature forbids unsafe transitively in dependencies
 # (except for Rust's `core`, `alloc` and `std`).
 #
-# In sync with ./build/main/features.rs::[UN]SAFE[ST] & ./src/lib.rs::safety)
+# The `safe_*` features are only enforced in [base] crates when the `base_safe` feature is enabled.
+#
+# In sync with ./build/main/features.rs::[UN]SAFE & ./src/lib.rs::safety)
 
-safest = ["safe", "base_safe"] # forbids `unsafe` completely in all workspace crates.
+safest = ["safe", "base_safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
 
 safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
 	"devela_macros?/safe",
@@ -367,14 +369,14 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 	"safe_num", "safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ]
 
-# master switch that activates safe enforcement in the [base] crates.
+# activates safe enforcement in the [base] crates.
 base_safe = ["devela_base/base_safe", "devela_base_alloc?/base_safe", "devela_base_std?/base_safe"]
 
 	# List of safe thematic modules (orthogonal to unsafe purposes):
 
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
-	safe_code = ["devela_code?/safe"] # "devela_base/safe_code",
+	safe_code = ["devela_base/safe_code", "devela_code?/safe"]
 	safe_data = ["devela_data?/safe"] # "devela_base/safe_data",
 	safe_game = [] # "devela_base/safe_game", "devela_game?/safe"
 	safe_lang = [] # "devela_lang?/safe"
@@ -392,8 +394,8 @@ base_safe = ["devela_base/base_safe", "devela_base_alloc?/base_safe", "devela_ba
 	safe_phys = ["safe_time"] # "devela_phys?/safe"
 		safe_time = []
 	safe_sys = ["safe_io", "safe_mem"] # "devela_base/safe_sys", "devela_sys?/safe"
-		safe_io = [] # "devela_base/safe_io"
-		safe_mem = [] # "devela_base/safe_mem"
+		safe_io = ["devela_base/safe_io"]
+		safe_mem = ["devela_base/safe_mem"]
 	safe_text = [] # "devela_base/safe_text", "devela_text?/safe"
 	safe_ui = ["safe_layout"] # "devela_ui?/safe"
 		safe_layout = []
@@ -412,7 +414,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	# List of unsafe purposes (orthogonal to safe modules):
 
 	unsafe_array   = [ # faster array initialization, UninitArray
-		# "devela_base/unsafe_array",
+		"devela_base/unsafe_array",
 		# "devela_base_alloc?/unsafe_array", "devela_base_std?/unsafe_array",
 		# "devela_macros?/unsafe_array",
 	]
@@ -423,8 +425,8 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 		# "devela_macros?/unsafe_ffi",
 	]
 	unsafe_hint    = [ # unreachable_unchecked, unchecked arithmetic
-		# "devela_base/unsafe_hing",
-		# "devela_base_alloc?/unsafe_hing", "devela_base_std?/unsafe_hing",
+		# "devela_base/unsafe_hint",
+		# "devela_base_alloc?/unsafe_hint", "devela_base_std?/unsafe_hint",
 		# "devela_macros?/unsafe_hint",
 	]
 	unsafe_layout  = [ # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*
@@ -438,17 +440,17 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 		# "devela_macros?/unsafe_niche",
 	]
 	unsafe_ptr     = [ # Pinned, pop methods without Clone, Ptr::*
-		# "devela_base/unsafe_ptr",
+		"devela_base/unsafe_ptr",
 		# "devela_base_alloc?/unsafe_ptr", "devela_base_std?/unsafe_ptr",
 		# "devela_macros?/unsafe_ptr",
 	]
 	unsafe_slice   = [ # extra slice methods, avoid bound checks
-		# "devela_base/unsafe_slice",
+		"devela_base/unsafe_slice",
 		# "devela_base_alloc?/unsafe_slice", "devela_base_std?/unsafe_slice",
 		# "devela_macros?/unsafe_slice",
 	]
 	unsafe_str     = [ # unchecked utf-8 char and &str conversions
-		# "devela_base/unsafe_str",
+		"devela_base/unsafe_str",
 		# "devela_base_alloc?/unsafe_str", "devela_base_std?/unsafe_str",
 		# "devela_macros?/unsafe_str",
 	]

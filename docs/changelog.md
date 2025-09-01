@@ -144,6 +144,7 @@
 ### mem
 - move to [base]:
   - macro `cswap!`.
+  - types: `Mem`, `Ptr`.
 - update `Slice` with new `eq` methods for slices of slices of primitives and string slices.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

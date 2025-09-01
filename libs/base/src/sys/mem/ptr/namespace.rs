@@ -1,21 +1,19 @@
-// devela::sys::mem::ptr::namespace
+// devela_base::sys::mem::ptr::namespace
 //
 //! Defines the [`Ptr`] namespace.
 //
 // WAIT: [intra-doc links to pointers](https://github.com/rust-lang/rust/issues/80896)
 
+use crate::{Hasher, NonZero, PtrNonNull, is};
+use ::core::ptr::{
+    addr_eq, dangling, dangling_mut, eq, from_mut, from_ref, hash, null, null_mut,
+    slice_from_raw_parts, slice_from_raw_parts_mut, with_exposed_provenance,
+    with_exposed_provenance_mut, without_provenance, without_provenance_mut,
+};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
-use crate::_core::ptr::{
+use ::core::ptr::{
     copy, copy_nonoverlapping, drop_in_place, read, read_unaligned, read_volatile, replace, swap,
     swap_nonoverlapping, write, write_bytes, write_unaligned, write_volatile,
-};
-use crate::{
-    _core::ptr::{
-        addr_eq, dangling, dangling_mut, eq, from_mut, from_ref, hash, null, null_mut,
-        slice_from_raw_parts, slice_from_raw_parts_mut, with_exposed_provenance,
-        with_exposed_provenance_mut, without_provenance, without_provenance_mut,
-    },
-    Hasher, NonZero, PtrNonNull, is,
 };
 
 #[doc = crate::TAG_NAMESPACE!()]
@@ -95,7 +93,7 @@ impl Ptr {
     ///
     /// # Example
     /// ```
-    /// # use devela::Ptr;
+    /// # use devela_base::Ptr;
     /// const STACK_SIZE: usize = 2 << 20; // assume a 2 MB stack size
     ///
     /// let in_stack: [i32; 10] = [0; 10];
@@ -166,7 +164,7 @@ impl Ptr {
     ///
     /// # Examples
     /// ```
-    /// use devela::Ptr;
+    /// use devela_base::Ptr;
     ///
     /// assert_eq![Ptr::size_ratio(0), [1, 0]];
     /// assert_eq![Ptr::size_ratio(size_of::<usize>()), [1, 1]];
@@ -250,7 +248,7 @@ impl Ptr {
 /// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
 #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-#[cfg(all(not(feature = "safe_mem"), unsafe··))]
+#[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
 impl Ptr {
     /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Can overlap.
     ///

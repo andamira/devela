@@ -19,7 +19,6 @@ mod alloc; // Alloc, ::alloc::alloc::*
 mod borrow; // Mow
 mod cache_align; // CacheAlign
 mod ext; // ExtMem
-mod namespace; // Mem
 mod pin; // Pinned, ::core::pin::*
 mod ptr; // Ptr, ::core::ptr::*
 mod reexports;
@@ -41,7 +40,7 @@ pub mod cell; // ExtCellOption, ::core::cell::*
 crate::structural_mods! { // _mods, _pub_mods, _hidden, _always
     _mods {
         pub use super::{
-            aligned::*, alloc::_all::*, borrow::_all::*, cache_align::*, ext::*, namespace::*,
+            aligned::*, alloc::_all::*, borrow::_all::*, cache_align::*, ext::*,
             pin::_all::*, ptr::_all::*, reexports::*, size::_all::*, slice::_all::*, storage::*,
         };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]

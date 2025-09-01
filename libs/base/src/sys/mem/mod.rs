@@ -5,6 +5,7 @@
 
 mod borrow;
 mod cswap; // cswap!
+mod namespace; // Mem
 mod pin;
 mod ptr;
 mod reexports;
@@ -15,6 +16,7 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             borrow::_all::*,
             cswap::*,
+            namespace::*,
             pin::_all::*,
             ptr::_all::*,
             reexports::*,

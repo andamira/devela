@@ -9,10 +9,6 @@ mod expr;
 #[cfg(feature = "bit")]
 mod bit; // BitSized
 
-// WIPZONE
-// #[cfg(feature = "alloc")]
-// mod heap;
-
 crate::structural_mods! { // _mods, _hidden
     _mods {
         #[doc(inline)]
@@ -21,10 +17,6 @@ crate::structural_mods! { // _mods, _hidden
         #[doc(inline)]
         #[cfg(feature = "bit")]
         pub use super::bit::*;
-
-        // WIPZONE
-        // #[cfg(feature = "alloc")]
-        // pub use super::heap::*;
     }
     _hidden {
         #[doc(hidden)]
