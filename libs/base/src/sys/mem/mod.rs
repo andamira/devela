@@ -9,6 +9,8 @@ mod namespace; // Mem
 mod pin;
 mod ptr;
 mod reexports;
+mod slice; // Slice
+
 pub mod cell;
 
 crate::structural_mods! { // _mods, _pub_mods
@@ -20,6 +22,7 @@ crate::structural_mods! { // _mods, _pub_mods
             pin::_all::*,
             ptr::_all::*,
             reexports::*,
+            slice::_all::*,
         };
     }
     _pub_mods {

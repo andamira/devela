@@ -10,10 +10,11 @@ mod tests;
 
 mod ext; // ExtSlice
 mod join; // join!
-mod namespace; // Slice
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{ext::*, join::*, namespace::*};
+        pub use devela_base::sys::mem::Slice;
+
+        pub use super::{ext::*, join::*};
     }
 }
