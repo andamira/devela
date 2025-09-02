@@ -91,7 +91,6 @@
 
 ## code
 ### error
-- move to [base]: `Mismatch`.
 - update `define_error!` macro.
   - move to `code::error`.
   - update docs, add example.
@@ -101,7 +100,7 @@
 ### result
 - move to [base]:
   - traits: `Chain`, `Hook`.
-  - types: `ValueQuant`.
+  - types: `Mismatch`, `Own`, `ValueQuant`.
 
 ### utils
 - new macros: `mod_path!`.

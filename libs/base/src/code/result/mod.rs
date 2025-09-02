@@ -5,11 +5,12 @@
 
 mod chain_hook; // Chain, Hook
 mod mismatch; // Mismatch
+mod own; // Own
 mod reexports;
 mod value_quant; // ValueQuant
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{chain_hook::*, mismatch::*, reexports::*, value_quant::*};
+        pub use super::{chain_hook::*, mismatch::*, own::*, reexports::*, value_quant::*};
     }
 }

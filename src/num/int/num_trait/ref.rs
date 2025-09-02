@@ -181,7 +181,7 @@ macro_rules! impl_int_ref {
             $self.deref().$fn($($arg),*) }
     }};
     (
-    // >=0 Num::Rhs args, returns Valuequant<Self::Out, Self::Out>
+    // >=0 Num::Rhs args, returns ValueQuant<Self::Out, Self::Out>
     $fn:ident(&$self:ident $(, $arg:ident: &Rhs)*)
     -> ValueQuant<Out, Out>) => { $crate::paste! {
         #[doc = own_fn![$fn]]

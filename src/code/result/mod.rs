@@ -18,7 +18,6 @@
 //
 
 mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
-mod own; // Own
 mod reexports;
 
 // WIPZONE
@@ -29,9 +28,7 @@ mod reexports;
 
 crate::structural_mods! { // _mods, _always
     _mods {
-        pub use super::{
-            opt_res::_all::*, own::*, reexports::*,
-        };
+        pub use super::{opt_res::_all::*, reexports::*};
         // WIPZONE
         // pub use super::enumatch::*;
         // #[cfg(feature = "_tuple")]

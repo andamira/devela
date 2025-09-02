@@ -1,7 +1,6 @@
-// devela::code::result::own::state
+// devela_base::code::result::own::state
 //
-//! Methods .
-//
+//!
 //
 
 use crate::{Debug, Own, is};
