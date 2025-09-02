@@ -131,7 +131,7 @@
   - aliases: `fsize` and `[iu]size_*`.
   - all data, numeric, text & time error types.
   - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Interval`, `Sign`, `True`.
-  - traits: `ConstBool`.
+  - traits: `ConstBool`, `NumToStr`.
   - macros: `const_bool!`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.

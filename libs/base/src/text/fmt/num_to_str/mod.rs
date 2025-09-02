@@ -3,9 +3,9 @@
 //! Defines the [`NumToStr`] trait.
 //
 
-crate::_use! {basic::from_utf8}
+crate::_use! {basic::from_utf8} // either from core or dep_simdutf8
 #[allow(unused_imports, reason = "±unsafe")]
-use crate::_core::str::from_utf8_unchecked;
+use ::core::str::from_utf8_unchecked;
 
 #[cfg(test)]
 mod tests;
@@ -17,7 +17,6 @@ mod tests;
 /// # Features
 /// It makes use of the `unsafe_str` feature for faster unchecked conversion of
 /// the resulting bytes to a string slice, and of the `dep_simdutf8` dependency.
-///
 #[doc = crate::_doc!(vendor: "numtoa")]
 pub trait NumToStr<T> {
     /// Given a base for encoding and a mutable byte slice, write the number
@@ -33,21 +32,8 @@ pub trait NumToStr<T> {
     ///
     /// # Example
     /// ```
-    /// use devela::NumToStr;
-    /// use std::io::{self, Write};
-    ///
-    /// let stdout = io::stdout();
-    /// let stdout = &mut io::stdout();
-    ///
-    /// // Allocate a buffer that will be reused in each iteration.
+    /// # use devela_base::NumToStr;
     /// let mut buffer = [0u8; 20];
-    ///
-    /// let number = 15325;
-    /// let _ = stdout.write(number.to_bytes_base(10, &mut buffer));
-    ///
-    /// let number = 1241;
-    /// let _ = stdout.write(number.to_bytes_base(10, &mut buffer));
-    ///
     /// assert_eq!(12345.to_bytes_base(10, &mut buffer), b"12345");
     /// ```
     fn to_bytes_base(self, base: T, string: &mut [u8]) -> &[u8];
@@ -161,10 +147,10 @@ macro_rules! impl_primitive {
                 &string[index.wrapping_add(1)..]
             }
             fn to_str_base(self, base: $t, buf: &mut [u8]) -> &str {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+                #[cfg(any(all(feature = "base_safe", feature = "safe_text"), not(feature = "unsafe_str")))]
                 return from_utf8(self.to_bytes_base(base, buf)).unwrap();
 
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+                #[cfg(all(not(all(feature = "base_safe",feature = "safe_text")), feature = "unsafe_str"))]
                 // SAFETY: the bytes are valid utf-8
                 unsafe { from_utf8_unchecked(self.to_bytes_base(base, buf)) }
             }
@@ -206,10 +192,10 @@ macro_rules! impl_primitive {
                 &string[index.wrapping_add(1)..]
             }
             fn to_str_base(self, base: $t, buf: &mut [u8]) -> &str {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+                #[cfg(any(all(feature = "base_safe", feature = "safe_text"), not(feature = "unsafe_str")))]
                 return from_utf8(self.to_bytes_base(base, buf)).unwrap();
 
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+                #[cfg(all(not(all(feature = "base_safe",feature = "safe_text")), feature = "unsafe_str"))]
                 // SAFETY: the bytes are valid utf-8
                 unsafe { from_utf8_unchecked(self.to_bytes_base(base, buf)) }
             }
@@ -273,10 +259,10 @@ impl NumToStr<i8> for i8 {
     }
 
     fn to_str_base(self, base: Self, buf: &mut [u8]) -> &str {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(all(feature = "base_safe", feature = "safe_text"), not(feature = "unsafe_str")))]
         return from_utf8(self.to_bytes_base(base, buf)).unwrap();
 
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe",feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             from_utf8_unchecked(self.to_bytes_base(base, buf))
@@ -322,9 +308,9 @@ impl NumToStr<u8> for u8 {
     }
 
     fn to_str_base(self, base: Self, buf: &mut [u8]) -> &str {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(all(feature = "base_safe", feature = "safe_text"), not(feature = "unsafe_str")))]
         return from_utf8(self.to_bytes_base(base, buf)).unwrap();
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe",feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             from_utf8_unchecked(self.to_bytes_base(base, buf))

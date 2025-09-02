@@ -11,9 +11,6 @@ crate::mod_path!(alloc _a "../../../libs/base_alloc/src/text/fmt/reexports.rs");
 mod buf;
 mod namespace; // Fmt
 
-#[cfg(feature = "fmt")]
-mod num_to_str;
-
 // WIPZONE
 // mod table;
 
@@ -23,9 +20,8 @@ crate::structural_mods! { // _mods, _always
         #[cfg(feature = "alloc")]
         pub use super::_a::*;
 
-        #[cfg(feature = "fmt")]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = "fmt")))]
-        pub use super::num_to_str::*;
+        pub use devela_base::text::fmt::NumToStr;
+
         // WIPZONE
         // pub use super::table::*;
     }
