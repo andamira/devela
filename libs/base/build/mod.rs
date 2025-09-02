@@ -8,9 +8,9 @@
 #[cfg(feature = "__dbg")]
 macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
 
-/* manual includes */
+/* imports */
 
-// NOTE: the Build namespace from devela_base_std for the environment script
+// NOTE: manually imports the Build namespace from devela_base_std
 #[cfg(feature = "__dbg")]
 items! {
     macro_rules! TAG_NAMESPACE {()=>{""}} use TAG_NAMESPACE;
@@ -20,8 +20,9 @@ items! {
 
 /* build modules */
 
-mod environment; // NOTE: a symlink to /devela/build/main/environment.rs
-mod features;
+mod environment; // NOTE: symlink to /devela/build/main/environment.rs
+mod features; // NOTE: symlink to /devela/build/main/features.rs
+
 
 fn main() {
     if let Err(err) = try_main() {
@@ -30,13 +31,13 @@ fn main() {
 }
 
 fn try_main() -> Result<(), Box<dyn core::error::Error>> {
-    // #[cfg(feature = "__dbg")]
-    // utils::println_start_end(true);
+    #[cfg(feature = "__dbg")]
+    Build::println_start_end("base build script", true);
 
     environment::main()?;
     features::main()?;
 
-    // #[cfg(feature = "__dbg")]
-    // utils::println_start_end(false);
+    #[cfg(feature = "__dbg")]
+    Build::println_start_end("base build script", false);
     Ok(())
 }

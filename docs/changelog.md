@@ -15,9 +15,10 @@
 - new `Build` namespace in `devela_base_std`.
 - move build fn utils as `Build` methods.
 - make `devela_base_std` optional for builds.
-- symlink devela/main/features.rs from devela_base/build/.
+- add symlinks: devela/main/[environment|features].rs to devela_base/build/.
 - add rerun instructions for changed env vars.
 - make sure `CARGO_TARGET_DIR` is always defined.
+- define `CRATE_NAME` static from `crate_name` files.
 
 ## cargo
 - add new cargo doc workspace aliases `w*`.

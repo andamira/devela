@@ -2,7 +2,19 @@
 //
 //! Build script environment variables.
 //
-// https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
+// NOTE: this file is shared between the build scripts in:
+// - devela/build/main/
+// - devela_base/build/
+//
+// https://doc.rust-lang.org/cargo/reference/environment-variables.html
+// #environment-variables-cargo-sets-for-build-scripts
+
+#[cfg(feature = "__dbg")]
+use ::std::sync::LazyLock;
+
+#[cfg(feature = "__dbg")]
+/// The crate name to compiled after running the current build script.
+pub(crate) static CRATE_NAME: LazyLock<&str> = LazyLock::new(|| include_str!("crate_name").trim());
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
     // https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
@@ -29,6 +41,8 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     {
         use super::Build;
 
+        Build::println(&format!["CRATE_NAME = {CRATE_NAME:?}"]);
+
         // https://doc.rust-lang.org/cargo/reference/environment-variables.html
         Build::println_heading("Environment variables:");
 
@@ -38,28 +52,32 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
             Build::println("x CARGO_PRIMARY_PACKAGE");
         }
 
-        Build::println_var("CARGO_WORKSPACE_DIR");
-        Build::println_var("CARGO_TARGET_DIR");
-        Build::println_var("CARGO_MANIFEST_DIR");
-        Build::println_var("CARGO_MANIFEST_PATH");
-        Build::println_var("OUT_DIR");
+        // Only show these env vars for the root package
+        // if cargo_primary_package.is_some() { // FIXME: not set for deps
+        if *CRATE_NAME == "devela" {
+            Build::println_var("CARGO_WORKSPACE_DIR");
+            Build::println_var("CARGO_TARGET_DIR");
+            Build::println_var("CARGO_MANIFEST_DIR");
+            Build::println_var("CARGO_MANIFEST_PATH");
+            Build::println_var("OUT_DIR");
 
-        Build::println_var("HOST");
-        Build::println_var("TARGET");
-        Build::println_var("PROFILE");
-        Build::println_var("NUM_JOBS");
+            Build::println_var("HOST");
+            Build::println_var("TARGET");
+            Build::println_var("PROFILE");
+            Build::println_var("NUM_JOBS");
 
-        Build::println_var("RUSTC");
-        // Build::println_var("RUSTC_WRAPPER");
-        // Build::println_var("RUSTC_LINKER");
-        // Build::println_var("RUSTDOC");
-        // Build::println_var("CARGO");
-        // Build::println_var("CARGO_MAKEFLAGS");
-        // Build::println_var("CARGO_ENCODED_RUSTFLAGS");
+            Build::println_var("RUSTC");
+            // Build::println_var("RUSTC_WRAPPER");
+            // Build::println_var("RUSTC_LINKER");
+            // Build::println_var("RUSTDOC");
+            // Build::println_var("CARGO");
+            // Build::println_var("CARGO_MAKEFLAGS");
+            // Build::println_var("CARGO_ENCODED_RUSTFLAGS");
+        }
 
-        // for (key, value) in std::env::vars() {
-        //     Build::println(&format![">> {key}: {value}"]);
-        // }
+        for (key, value) in std::env::vars() {
+            Build::println(&format![">> {key}: {value}"]);
+        }
 
         Build::println_var_encoded("CARGO_ENCODED_RUSTFLAGS", "RUSTFLAGS");
         Build::println_var("RUSTDOCFLAGS");

@@ -1,5 +1,7 @@
 # https://doc.rust-lang.org/cargo/reference/config.html
 #
+# NOTE: Cargo uses this configuration file for the entire build process, including dependencies.
+#
 # WAIT: [build.warnings](https://github.com/rust-lang/cargo/issues/14802)
 # WAIT: [config-include](https://github.com/rust-lang/cargo/issues/7723)
 # WAIT: [multiple cargo config files](https://github.com/rust-lang/cargo/issues/9306)
@@ -7,7 +9,6 @@
 # WAIT: [jump to definition](https://github.com/rust-lang/rust/issues/89095)
 #
 # TOC
-#
 # - include
 # * unstable
 # * build

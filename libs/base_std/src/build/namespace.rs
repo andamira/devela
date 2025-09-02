@@ -18,6 +18,11 @@ use std::{env, path::PathBuf};
 pub struct Build;
 
 impl Build {
+    /// Returns the current crate's name.
+    pub fn crate_name() -> String {
+        env::var("CARGO_CRATE_NAME").expect("CARGO_CRATE_NAME not set")
+    }
+
     /* directories */
 
     /// Retuns the path of `OUT_DIR`.
@@ -54,7 +59,6 @@ impl Build {
         if let Ok(v) = env::var(var) {
             Self::println(&format!["· {var}: {v}"]);
         } else {
-            // Self::println(&format!["Environment variable `{var}` not set"]);
             Self::println(&format!["x {var}:"]);
         }
     }
@@ -67,7 +71,6 @@ impl Build {
             let v = ev.replace('\x1f', " ");
             Self::println(&format!["· {new_var_name}(*): {v}"]);
         } else {
-            // Self::println(&format!["Environment variable `{var}` not set"]);
             Self::println(&format!["x {new_var_name}:"]);
         }
     }

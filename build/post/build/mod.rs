@@ -2,6 +2,8 @@
 //
 //! Post-build-time orchestrator.
 //
+// `$ cargo wc -F __dbg`
+//
 
 /* imports */
 
