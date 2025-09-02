@@ -98,6 +98,11 @@
   - make conversion method optional const.
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 
+### result
+- move to [base]:
+  - traits: `Chain`, `Hook`.
+  - types: `ValueQuant`.
+
 ### utils
 - new macros: `mod_path!`.
 - new internal macros: `_doclink`.
@@ -131,7 +136,7 @@
   - aliases: `fsize` and `[iu]size_*`.
   - all data, numeric, text & time error types.
   - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Interval`, `Sign`, `True`.
-  - traits: `ConstBool`, `NumToStr`.
+  - traits: `ConstBool`.
   - macros: `const_bool!`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
@@ -150,5 +155,8 @@
   - macro `cswap!`.
   - types: `Mem`, `Ptr`, `Slice`.
 - update `Slice` with new `eq` methods for slices of slices of primitives and string slices.
+
+## text
+- move to [base]: `NumToStr`.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

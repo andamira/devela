@@ -4,7 +4,7 @@ use crate::{ConstDefault, mod_path};
 
 mod_path!(+pub _c "../../../libs/base/src/code/result/reexports.rs");
 
-pub use devela_base::code::result::Mismatch;
+pub use devela_base::code::result::{Chain, Hook, Mismatch, ValueQuant};
 
 impl<N: ConstDefault, H: ConstDefault> ConstDefault for Mismatch<N, H> {
     /// Returns a *const* default `Mismatch`.

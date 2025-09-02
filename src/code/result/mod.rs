@@ -17,11 +17,9 @@
 //! and mismatch-aware comparisons ([`Mismatch`]).
 //
 
-mod chain_hook; // Chain, Hook
 mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
 mod own; // Own
 mod reexports;
-mod value_quant; // ValueQuant
 
 // WIPZONE
 // mod enumatch; // enumatch!
@@ -32,7 +30,7 @@ mod value_quant; // ValueQuant
 crate::structural_mods! { // _mods, _always
     _mods {
         pub use super::{
-            chain_hook::*, opt_res::_all::*, own::*, reexports::*, value_quant::*,
+            opt_res::_all::*, own::*, reexports::*,
         };
         // WIPZONE
         // pub use super::enumatch::*;

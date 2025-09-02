@@ -1,4 +1,4 @@
-// devela::code::result::traits
+// devela_base::code::result::traits
 //
 //! Free function chaining traits helpers.
 //
@@ -12,6 +12,7 @@
 ///
 /// # Examples
 /// ```
+/// # extern crate devela_base as devela;
 /// use devela::Chain;
 ///
 /// let x = 1
@@ -22,6 +23,7 @@
 /// ```
 ///
 /// ```compile_fail
+/// # extern crate devela_base as devela;
 /// use devela::Chain;
 ///
 /// // We can sort it, but we don't receive the new vec.
@@ -74,6 +76,7 @@ impl<T: ?Sized, R> Chain<R> for T {}
 ///
 /// # Examples
 /// ```
+/// # extern crate devela_base as devela;
 /// use devela::Hook;
 ///
 /// let v = vec![3, 2, 1, 5]
