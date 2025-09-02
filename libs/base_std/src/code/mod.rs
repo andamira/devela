@@ -5,6 +5,8 @@
 // safety
 #![cfg_attr(all(feature = "base_safe", feature = "safe_code"), forbid(unsafe_code))]
 
+mod result; // only tests for now
+
 pub mod error;
 pub mod panic;
 

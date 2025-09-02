@@ -1,6 +1,6 @@
-// devela::code::result::option::optres
+// devela_base::code::result::option::optres
 //
-//!
+//! Defines [`ExtOptRes`], [`OptRes`], [`serr`], [`sok`].
 //
 // TOC
 // - type OptRes
@@ -23,6 +23,7 @@
 ///
 /// # Examples
 /// ```
+/// # extern crate devela_base as devela;
 /// use devela::{sok, serr, OptRes};
 ///
 /// #[derive(Debug, PartialEq)]
@@ -113,6 +114,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
+    /// # extern crate devela_base as devela;
     /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
@@ -133,6 +135,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
+    /// # extern crate devela_base as devela;
     /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
@@ -153,6 +156,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
+    /// # extern crate devela_base as devela;
     /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
@@ -173,6 +177,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
+    /// # extern crate devela_base as devela;
     /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
@@ -193,6 +198,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
+    /// # extern crate devela_base as devela;
     /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;

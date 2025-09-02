@@ -99,8 +99,10 @@
 
 ### result
 - move to [base]:
-  - traits: `Chain`, `Hook`.
-  - types: `Mismatch`, `Own`, `ValueQuant`.
+  - functions: `serr`, `sok`.
+  - macros: `unwrap!`.
+  - traits: `Chain`, `ExtOptRes`, `Hook`.
+  - types: `Mismatch`, `OptRes`, `Own`, `ValueQuant`.
 
 ### utils
 - new macros: `mod_path!`.

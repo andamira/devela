@@ -17,22 +17,12 @@
 //! and mismatch-aware comparisons ([`Mismatch`]).
 //
 
-mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
+mod opt_res; // ExtOption, ExtResult, OptionFmt[Or[Else]]
 mod reexports;
-
-// WIPZONE
-// mod enumatch; // enumatch!
-// #[cfg(feature = "_tuple")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
-// mod menu;
 
 crate::structural_mods! { // _mods, _always
     _mods {
         pub use super::{opt_res::_all::*, reexports::*};
-        // WIPZONE
-        // pub use super::enumatch::*;
-        // #[cfg(feature = "_tuple")]
-        // pub use super::menu::*;
     }
     _always {
         pub use super::reexports::*;
