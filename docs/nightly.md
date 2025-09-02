@@ -78,6 +78,7 @@ See also
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
+- 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)

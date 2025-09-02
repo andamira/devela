@@ -108,7 +108,7 @@ if [[ "$ARG_USE_EXCLUSION" == "exclude" ]]; then
         mapfile -t EXCLUDED_FILES < <(grep -vE "^\s*(#|\$)" "$EXCLUDE_FILES_FULL_PATH")
     fi
 fi
-# echo "> EXCLUDED_FILES: ${EXCLUDED_FILES[@]}"; # DEBUG
+echo "> EXCLUDED_FILES: ${EXCLUDED_FILES[@]}"; # DEBUG
 
 
 #* RUN *#
