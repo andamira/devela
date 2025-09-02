@@ -30,7 +30,8 @@ __dbg = []
 __publish = []
 
 #* Safety features *#
-base_safe = []
+base_safe = [] # activates safe enforcement of thematic safe_* features
+safest = ["safe", "base_safe"] # for completion
 safe = [
 	"devela_base_macros/safe",
 	"safe_code", "safe_data", "safe_game", "safe_lang", "safe_media", "safe_num",
@@ -71,13 +72,40 @@ unsafe = [
 #* Capability features *#
 _docs = []
 
-[dependencies] # 2 required
+#* Dependency features (optional external dependencies) *#
+# ------------------------------------------------------------------------------
+# They are associated to optional dependencies and groups of modules.
+# Enabling any of these will set the `dep··` reflection flag.
+#
+# Names are prefixed with `dep_`, and use underscores in place of dashes.
+
+# In sync with ./config/dep_all.rs & ./src/_dep.rs
+dep_all = [ # enables all 1 optional dependencies:
+	"dep_simdutf8",
+]
+
+# individual dependencies features
+dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
+
+
+[dependencies] # 3 (2 required, 1 optional)
 devela_base_macros = { workspace = true }
+
+#* required external dependencies *#
 
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED
 # alternative: https://crates.io/crates/pastey
+
+#* optional external dependencies *#
+
+[dependencies.simdutf8] # https://crates.io/crates/simdutf8 (2024-09-22)
+version = "0.1" # ✓ https://github.com/rusticstuff/simdutf8/blob/main/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
+# features = [] # https://github.com/rusticstuff/simdutf8/blob/main/Cargo.toml
+# WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [badges]
 maintenance.status = "experimental"

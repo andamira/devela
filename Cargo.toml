@@ -713,7 +713,7 @@ dep_sdl2 = ["dep:sdl2"]                                                         
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::codec::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde","orion?/alloc",
 	"portable-atomic?/serde", "pyo3?/serde", "toml_edit?/serde", "wide?/serde"]
-dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
+dep_simdutf8 = ["dep:simdutf8", "devela_base/dep_simdutf8"]                       # text::str
 dep_stringzilla = ["dep:stringzilla"]                                             # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]          # sys::sound
 dep_sysinfo = ["dep:sysinfo"]                                                     # sys::

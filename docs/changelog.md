@@ -33,6 +33,7 @@
   - [macros]
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.40.
+- add optional dependency to [base]: `simdutf8`.
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`, `__publish`, `base_safe`, `safe_build`.
@@ -46,6 +47,7 @@
 - declare the `std` external crate.
 - refactor all structural access modules.
 - enable `_docsrs` for workspace dependencies.
+- support having external optional dependencies.
 - new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`, `devela_base_alloc`, `devela_code`, `devela_data`, `devela_media` `devela_num`, `devela_text`.
 - move `core`, `alloc` & `std` re-exports to [base*] libs.
 - use a single version, changelog and readme for all workspace libs.

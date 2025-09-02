@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub extern crate std as _std;
 
-/* 49 optional dependencies */
+/* 44 optional dependencies */
 // In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
 
 _reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,

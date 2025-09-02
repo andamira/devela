@@ -51,6 +51,8 @@ pub mod sys;
 pub mod text;
 pub mod work;
 
+pub mod _dep;
+
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
