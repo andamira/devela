@@ -1,6 +1,6 @@
-// devela::code::util::_use
+// devela_base::code::util::_use
 //
-//! private `use` meta helpers
+//! Defines the [`_use`] internal meta helper.
 //
 
 /// Imports `from_utf8` and `from_utf8_mut` with a SIMD version, if available.
@@ -10,7 +10,9 @@
 /// - `compat` mode is an exact replacement of core's API.
 /// - `basic` mode is faster but has no error information.
 /// - `both` mode imports all sets of fns prefixed with `compat_` and `basic_`.
-macro_rules! _use {
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+macro_rules! __use {
     /* to be used as imports */
     // (dep_simdutf8::compat::from_utf8) => { // MAYBE alternative syntax
     (compat::from_utf8) => {
@@ -49,4 +51,4 @@ macro_rules! _use {
         };
     };
 }
-pub(crate) use _use;
+pub use __use as _use;

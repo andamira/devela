@@ -16,7 +16,6 @@
 
 // private modules
 mod _std_core; // _std_core!
-mod _use; // _use!
 
 mod cdbg; // cdbg!
 mod reexports; // re-exported items
@@ -41,7 +40,7 @@ devela_base::structural_mods! { // _mods, _crate_internals, _always
         // pub use super::structural::*;
     }
     _crate_internals {
-        pub(crate) use super::{_std_core::*, _use::*};
+        pub(crate) use super::_std_core::*;
     }
     _always { // RETHINK
         pub use super::_crate_internals::*;

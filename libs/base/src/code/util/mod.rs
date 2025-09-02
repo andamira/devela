@@ -8,6 +8,7 @@ mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!, std_core!
 mod _mod_docs; // _DOC_*!
 mod _tags; // EMOJI_*! TAG_*!
 mod _reexport; // reexport!, reexport_from!
+mod _use; // _use!
 
 mod reexports; // re-exported macros from devela_base_macros
 
@@ -40,6 +41,6 @@ structural::structural_mods! { // _mods, _workspace_internals
         };
     }
     _workspace_internals {
-        pub use super::{_doc::*, _mod_docs::*, _tags::*, _reexport::*};
+        pub use super::{_doc::*, _mod_docs::*, _tags::*, _reexport::*, _use::*};
     }
 }

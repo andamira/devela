@@ -103,7 +103,7 @@
 - new internal macros: `_doclink`.
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `cfor!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
-  - internal macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`.
+  - internal macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_use!`.
 - add tags: `_DOC_*`, `TAG_DEVELA_[BASE[_MACROS|ALLOC|STD]|DATA|MACROS|NUM]`, `TAG_[CODEC|CONCURRENCY|DATA|EVENT|HASH|ID]`.
 - change the emoji for `TAG_DATA_STRUCTURE`.
 - rename `reexport!` internal macro to `_reexport!`.
