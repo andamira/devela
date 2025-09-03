@@ -49,14 +49,17 @@
 
 crate::mod_path!(_c "../../../libs/base/src/num/niche/reexports.rs");
 
-mod mem;
-mod macros; // ne!, nz!
+mod impls; // impl ConstDefault, BitSized
 
 crate::structural_mods! { // _mods, _always
     _mods {
-        pub use super::{_c::*, mem::*, macros::*};
-    }
-    _always {
+        pub use devela_base::num::niche::{
+            NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
+            NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize,
+            NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128, NonExtremeUsize,
+            NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128, NonExtremeIsize,
+            ne, nz,
+        };
         pub use super::_c::*;
     }
 }

@@ -11,6 +11,8 @@
 //   - mod impl_core
 //   - mod impl_std
 //   - mod impl_devela
+//
+// TODO: organize in thematic modules
 
 /* definitions */
 
@@ -196,17 +198,33 @@ mod impl_core {
     // impl_cdef![<T> Self::new(|| T::DEFAULT) => SyncUnsafeCell<T>];
     // WAIT: [ptr_alignment_type](https://github.com/rust-lang/rust/issues/102070)
     // impl_cdef![<T> Self::MIN => Alignment];
+
+    /* text */
+
+    impl_cdef!["" => &str];
+
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    impl crate::ConstDefault for &mut str {
+        // SAFETY: The empty string is valid UTF-8.
+        const DEFAULT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) };
+    }
 }
 
-// #[cfg(feature = "alloc")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-// mod impl_alloc {
-//     // TODO: fxhash, fnv, ahash
-//     // #[cfg(feature = "dep_hashbrown")]
-//     // impl_cdef![<K, V> Self::with_hasher(TODO) => HashMap<K, V>];
-//     // #[cfg(feature = "dep_hashbrown")]
-//     // impl_cdef![<K> Self::with_hasher(TODO) => HashSet<K>];
-// }
+#[cfg(feature = "alloc")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+mod impl_alloc {
+    use crate::String;
+
+    #[cfg(feature = "alloc")]
+    impl_cdef![Self::new() => String];
+
+    // TODO: fxhash, fnv, ahash
+    // #[cfg(feature = "dep_hashbrown")]
+    // impl_cdef![<K, V> Self::with_hasher(TODO) => HashMap<K, V>];
+    // #[cfg(feature = "dep_hashbrown")]
+    // impl_cdef![<K> Self::with_hasher(TODO) => HashSet<K>];
+}
 
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
@@ -236,20 +254,23 @@ mod impl_std {
 
 #[rustfmt::skip]
 mod impl_devela {
-    use super::ConstDefault;
+    use crate::{ConstDefault, paste, unwrap};
     use crate::{
         AsciiChar,
         Cast,
         // TODO: Cycle, CycleCount
         Interval,
         Sign,
+        StringU8, StringU16, StringU32, StringUsize,
     };
-    impl ConstDefault for AsciiChar {
-        const DEFAULT: Self = AsciiChar::Null;
-    }
+
+    /* data */
+
     impl<T: ConstDefault> ConstDefault for Cast<T> {
         const DEFAULT: Self = Cast(T::DEFAULT);
     }
+
+    /* num */
 
     /// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
     ///
@@ -257,4 +278,26 @@ mod impl_devela {
     impl<T> ConstDefault for Interval<T> { const DEFAULT: Self = Self::unbounded(); }
 
     impl ConstDefault for Sign { #[doc = "No sign."] const DEFAULT: Self = Sign::None; }
+
+    // NOTE: NonExtreme* types have their implementation in num/niche/impls.rs
+
+    /* text */
+
+    impl ConstDefault for AsciiChar {
+        const DEFAULT: Self = AsciiChar::Null;
+    }
+
+    macro_rules! impl_cdef_for_string_u { // impl ConstDefault for StringU*
+        () => { impl_cdef_for_string_u![u8, u16, u32, usize]; };
+        ($($t:ty),+ $(,)?) => {
+            $( paste! { impl_cdef_for_string_u![@[<String $t:camel>], $t]; } )+
+        };
+        (@$name:ty, $t:ty) => { paste! {
+            impl<const CAP: usize> ConstDefault for $name<CAP> {
+                #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`" $t "::MAX`]."]
+                const DEFAULT: Self = unwrap![ok Self::new()];
+            }
+        }};
+    }
+    impl_cdef_for_string_u!();
 }

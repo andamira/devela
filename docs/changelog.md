@@ -136,9 +136,10 @@
 - move to [base]:
   - aliases: `fsize` and `[iu]size_*`.
   - all data, numeric, text & time error types.
-  - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Interval`, `Sign`, `True`.
+  - macros: `const_bool!`, `ne!`, `nz!`.
+  - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Interval`,  `NonExtreme*`, `NonValue*`, `Sign`, `True`.
   - traits: `ConstBool`.
-  - macros: `const_bool!`.
+- new types: `NicheValueError`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
 - make `Sign` part of `quant`.

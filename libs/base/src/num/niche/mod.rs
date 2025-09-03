@@ -3,8 +3,19 @@
 #![doc = crate::_DOC_NUM_NICHE!()]
 //
 
+mod mem; // NonExtreme*, NonValue*
+mod macros; // ne!, nz! (NewNicheHelper)
 mod reexports;
 
 crate::structural_mods! { // _mods
-    _mods { pub use super::reexports::*; }
+    _mods {
+        pub use super::{
+            mem::*,
+            macros::{ne, nz},
+            reexports::*,
+        };
+    }
+    _workspace_internals {
+        pub use super::macros::NewNicheHelper;
+    }
 }

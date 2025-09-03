@@ -1,4 +1,4 @@
-// devela::num::niche::non_value
+// devela_base::num::niche::mem::non_value
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //!
@@ -38,7 +38,7 @@ items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
 ///
 /// # Example
 /// ```
-/// # use devela::{NonValueI8, NonValueU8, NonExtremeI8};
+/// # use devela_base::{NonValueI8, NonValueU8, NonExtremeI8};
 ///
 /// assert![NonValueI8::<3>::new(2).is_some()];
 /// assert![NonValueI8::<3>::new(3).is_none()];
@@ -86,17 +86,13 @@ macro_rules! impl_non_value {
         pub use [<__impls_ $name >]::*;
         #[allow(non_snake_case)]
         mod [<__impls_ $name >] {
-            #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
-            use $crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
-            #[cfg(all(feature = "unsafe_layout", not(feature = "safe_mem")))]
-            use $crate::MemPod;
+            // #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche",
+            // not(all(feature = "base_safe", feature = "safe_num"))))]
+            // use $crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
-            #[cfg(feature = "bit")]
-            use $crate::{BitSized, ByteSized};
-            use $crate::{
-                _core::num::*, is, unwrap, ConstDefault, FromStr,
-                NumError::{Invalid, Overflow}, NumResult, Debug, Display,
-                FmtResult, Formatter, Binary, Octal, LowerHex, UpperHex,
+            use ::core::num::*;
+            use $crate::{is, unwrap, FromStr, NicheValueError::{self, InvalidValue, Overflow},
+                Debug, Display, FmtResult, Formatter, Binary, Octal, LowerHex, UpperHex,
             };
 
             /* definition */
@@ -110,7 +106,7 @@ macro_rules! impl_non_value {
             ///
             /// # Examples
             /// ```ignore
-            /// # use devela::NonValueI8;
+            /// # use devela_base::NonValueI8;
             /// assert![NonValueI8::<13>::new(13).is_none()];
             /// assert![NonValueI8::<13>::new(12).unwrap().get() == 12];
             /// ```
@@ -126,33 +122,20 @@ macro_rules! impl_non_value {
                 $XTR "`][" $IP "::" $XTR "])."]
             ///
             /// Unlike the `NonValue*` types in general, this type alias implements
-            /// the [`Default`] and [`ConstDefault`][crate::code::ConstDefault] traits.
+            /// the [`Default`] and [`ConstDefault`] traits.
             pub type $ne = $name <{$IP::$XTR}>;
 
             impl Default for $ne {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn default() -> Self {
-                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
+                    #[cfg(any(all(feature = "base_safe", feature = "safe_num"), not(feature = "unsafe_niche")))]
                     return $ne::new($IP::default()).unwrap();
 
-                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
+                    #[cfg(all(not(all(feature = "base_safe", feature = "safe_num")), feature = "unsafe_niche"))]
                     // SAFETY: the default primitive value is always 0, and their MAX is never 0.
                     unsafe { return $ne::new_unchecked($IP::default()); }
                 }
-            }
-
-            impl ConstDefault for $ne {
-                /// # Features
-                /// Makes use of the `unsafe_niche` feature if enabled.
-                const DEFAULT: Self = {
-                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
-                    if let Some(v) = Self::new($IP::DEFAULT) { v } else { unreachable![] }
-
-                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                    // SAFETY: the default primitive value is always 0, and their MAX is never 0.
-                    unsafe { $ne::new_unchecked($IP::DEFAULT) }
-                };
             }
 
             impl<const V: $IP> $name<V> {
@@ -209,7 +192,7 @@ macro_rules! impl_non_value {
                 ///
                 /// # Example
                 /// ```
-                /// # use devela::{NonValueI8, NonValueU8};
+                /// # use devela_base::{NonValueI8, NonValueU8};
                 /// let x = assert_eq![NonValueU8::<255>::new_lossy(255).get(), 254];
                 /// let y = assert_eq![NonValueI8::<-128>::new_lossy(-128).get(), -127];
                 /// ```
@@ -223,10 +206,12 @@ macro_rules! impl_non_value {
                         transformed ^ V
                     };
 
-                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
+                    #[cfg(any(all(feature = "base_safe", feature = "safe_num"),
+                        not(feature = "unsafe_niche")))]
                     { Self(unwrap![some $n0::new(transformed)]) }
 
-                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
+                    #[cfg(all(not(all(feature = "base_safe", feature = "safe_num")),
+                        feature = "unsafe_niche"))]
                     // SAFETY: We make sure the transformed value != 0
                     unsafe {
                         const { // compile-time verification:
@@ -248,7 +233,7 @@ macro_rules! impl_non_value {
                 /// Panics in debug if the given `value` is equal to `V`.
                 /// # Safety
                 /// The given `value` must never be equal to `V`.
-                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
+                #[cfg(all(not(all(feature = "base_safe", feature = "safe_num")), feature = "unsafe_niche"))]
                 pub const unsafe fn new_unchecked(value: $IP) -> Self {
                     #[cfg(debug_assertions)]
                     if value == V { panic!("The given value was specifically prohibited.") }
@@ -279,19 +264,19 @@ macro_rules! impl_non_value {
                 ///
                 /// # Errors
                 /// Returns [`Overflow`] if the operations overflows, or
-                /// [`Invalid`] if the result equals the forbidden value `V`.
-                pub const fn checked_add(&self, other: $IP) -> NumResult<Self> {
+                /// [`InvalidValue`] if the result equals the forbidden value `V`.
+                pub const fn checked_add(&self, other: $IP) -> Result<Self, NicheValueError> {
                     let res = unwrap![some_ok_or? self.get().checked_add(other), Overflow(None)];
-                    unwrap![some_ok_or Self::new(res), Invalid]
+                    unwrap![some_ok_or Self::new(res), InvalidValue]
                 }
                 /// Checked integer substration. Computes `self - rhs`.
                 ///
                 /// # Errors
                 /// Returns [`Overflow`] if the operations overflows, or
-                /// [`Invalid`] if the result equals the forbidden value `V`.
-                pub const fn checked_sub(&self, other: $IP) -> NumResult<Self> {
+                /// [`InvalidValue`] if the result equals the forbidden value `V`.
+                pub const fn checked_sub(&self, other: $IP) -> Result<Self, NicheValueError> {
                     let res = unwrap![some_ok_or? self.get().checked_sub(other), Overflow(None)];
-                    unwrap![some_ok_or Self::new(res), Invalid]
+                    unwrap![some_ok_or Self::new(res), InvalidValue]
                 }
 
                 /// Strict integer addition. Computes `self + rhs`.
@@ -384,45 +369,14 @@ macro_rules! impl_non_value {
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn try_from(value: $IP) -> Result<Self, Self::Error> {
                     // We generate a TryFromIntError by intentionally causing a failed conversion.
-                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
+                    #[cfg(any(all(feature = "base_safe", feature = "safe_num"),
+                        not(feature = "unsafe_niche")))]
                     return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
 
-                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
+                    #[cfg(all(not(all(feature = "base_safe", feature = "safe_num")),
+                        feature = "unsafe_niche"))]
                     return Self::new(value)
                         .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });
-                }
-            }
-
-            /* internal impls */
-
-            // BitSized
-            #[cfg(feature = "bit")]
-            impl<const V: $IP> BitSized<{$IP::BYTE_SIZE * 8}> for $name<V> {}
-
-            #[cfg(feature = "unsafe_layout")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
-            #[cfg(not(any(feature = "safe_mem", feature = "safe_num")))]
-            #[cfg_attr(nightly_doc, doc(cfg(not(feature = "safe_mem"))))]
-            #[cfg_attr(nightly_doc, doc(cfg(not(feature = "safe_num"))))]
-            unsafe impl<const V: $IP> MemPod for Option<$name<V>> {}
-
-            /* external impls*/
-
-            #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
-            #[allow(non_snake_case)]
-            mod [<$name $s $b>] {
-                use super::*;
-
-                unsafe impl<const V: $IP> ZeroableInOption for $name<V> {}
-                unsafe impl<const V: $IP> PodInOption for $name<V> {}
-                unsafe impl<const V: $IP> NoUninit for $name<V> {}
-                unsafe impl<const V: $IP> CheckedBitPattern for $name<V> {
-                    type Bits = $IP;
-
-                    fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
-                        // Since inner repr is NonZero, 0 is the only invalid bit pattern
-                        *bits != 0
-                    }
                 }
             }
         }

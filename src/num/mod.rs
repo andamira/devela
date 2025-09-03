@@ -26,7 +26,7 @@ mod unit; // Unit, Unit[Bi|Si]
 
 pub mod geom;
 pub mod logic;
-pub mod niche; // NonZero*, NonValue*|NonExtreme*, NonRange*
+pub mod niche; // NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod ord; // Compare
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
@@ -63,7 +63,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
     }
     _always {
         pub use super::{
-            float::_always::*, niche::_always::*,
+            float::_always::*,
         };
     }
 }

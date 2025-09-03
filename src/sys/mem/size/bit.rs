@@ -195,6 +195,8 @@ bit_sized![= 32; for NonZeroI32, NonZeroU32];
 bit_sized![= 64; for NonZeroI64, NonZeroU64];
 bit_sized![= 128; for NonZeroI128, NonZeroU128];
 
+// NOTE: NonValue* types have their implementation in num/niche/impls.rs
+
 #[cfg(feature = "work")]
 bit_sized![= 1; for AtomicBool];
 #[cfg(feature = "work")]

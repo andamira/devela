@@ -12,7 +12,7 @@
 //   - NonZeroRequired
 //   - Overflow
 
-use crate::{Sign, TAG_NUM, define_error};
+use crate::{DOC_INVALID_VALUE, InvalidValue, Sign, TAG_NUM, define_error};
 
 /* individual errors */
 
@@ -62,3 +62,14 @@ define_error![individual: pub struct Overflow(pub Option<Sign>);
         write!(f, "Overflow.")
     },
 ];
+
+/* composite errors */
+
+define_error! { composite: fmt(f)
+    /// Invalid or problematic values for niche types.
+    pub enum NicheValueError {
+        +tag: TAG_NUM!(),
+        DOC_OVERFLOW: Overflow(s|0: Option<Sign>) => Overflow(*s),
+        DOC_INVALID_VALUE: InvalidValue => InvalidValue,
+    }
+}

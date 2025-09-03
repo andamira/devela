@@ -12,7 +12,7 @@ mod logic; // ConstBool, False, True, const_bool!
 mod ord;
 
 pub mod error; // error types
-pub mod niche; // NonZero*
+pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 
 crate::structural_mods! { //_mods, _pub_mods

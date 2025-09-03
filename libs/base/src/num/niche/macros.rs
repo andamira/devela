@@ -1,13 +1,13 @@
-// devela::num::niche::macros
+// devela_base::num::niche::macros
 //
-//! Defines the `ne!` and `nz!` macros.
+//! Defines the [`ne!`] and [`nz!`] macros, and the hidden [`NewNicheHelper`].
 //
 
 /// Creates a `NonExtreme*` [`niche`][crate::num::niche] value with compile-time checking.
 ///
 /// # Example
 /// ```
-/// # use devela::ne;
+/// # use devela_base::ne;
 /// let x = ne!(42u32); // NonExtremeU32
 /// // let y: NonExtremeI32 = ne!(20); // Would fail to compile (needs type suffix)
 /// ```
@@ -28,7 +28,7 @@ pub use ne;
 ///
 /// # Example
 /// ```
-/// # use devela::nz;
+/// # use devela_base::nz;
 /// let x = nz!(42u32); // NonZeroU32
 /// // let y: NonZeroI32 = nz!(20); // Would fail to compile (needs type suffix)
 /// ```
