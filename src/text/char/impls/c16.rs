@@ -4,9 +4,7 @@
 //
 
 use super::*;
-#[cfg(feature = "ascii")]
-use crate::AsciiChar;
-use crate::{Char, DataOverflow, text::char::NonSurrogateU16};
+use crate::{AsciiChar, Char, DataOverflow, text::char::NonSurrogateU16};
 
 impl char16 {
     /* private helper fns */
@@ -51,23 +49,17 @@ impl char16 {
 
     /// Converts an `AsciiChar` to `char16`.
     #[must_use]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> char16 {
         char16::new_unchecked(c as u8 as u16)
     }
 
     /// Converts a `char7` to `char16`.
     #[must_use]
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn from_char7(c: char7) -> char16 {
         char16::new_unchecked(c.0.get() as u16)
     }
     /// Converts a `char8` to `char16`.
     #[must_use]
-    #[cfg(feature = "_char8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn from_char8(c: char8) -> char16 {
         char16::new_unchecked(c.0 as u16)
     }
@@ -92,8 +84,6 @@ impl char16 {
     ///
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
         if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
@@ -114,8 +104,6 @@ impl char16 {
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
         char7::try_from_char16(self)
     }
@@ -123,8 +111,6 @@ impl char16 {
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
-    #[cfg(feature = "_char8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
         char8::try_from_char16(self)
     }

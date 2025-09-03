@@ -12,11 +12,8 @@ use super::*; // char*
 /* specific implementations */
 
 mod c;
-#[cfg(feature = "_char16")]
 mod c16;
-#[cfg(feature = "_char7")]
 mod c7;
-#[cfg(feature = "_char8")]
 mod c8;
 
 /* common implementations */
@@ -24,13 +21,10 @@ mod c8;
 /// implements `UnicodeScalar` for custom char types.
 macro_rules! impl_char {
     () => {
-        impl_char![7|"_char7", 8|"_char8", 16|"_char16"];
+        impl_char![7, 8, 16];
     };
-    ($( $bits:literal | $feature:literal ),+ ) => { $crate::paste! {
-        $(
-            #[cfg(feature = $feature)]
-            impl_char!(@[<char $bits>]);
-        )+
+    ($( $bits:literal),+ ) => { $crate::paste! {
+        $( impl_char!(@[<char $bits>]); )+
     }};
     (@$name:ident) => {
 

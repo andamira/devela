@@ -1,4 +1,4 @@
-// devela::text::ascii::char
+// devela_base::text::ascii::char
 //
 //!
 //
@@ -8,7 +8,7 @@
 
 #[cfg(feature = "unsafe_str")]
 use crate::transmute;
-use crate::{_core::fmt, ConstDefault};
+use ::core::fmt;
 
 /// One of 128 Unicode characters (`U+0000` to `U+007F`), the ASCII subset.
 ///
@@ -587,10 +587,3 @@ impl fmt::Display for AsciiChar {
         fmt::Display::fmt(&self.as_char(), f)
     }
 }
-
-impl ConstDefault for AsciiChar {
-    const DEFAULT: Self = AsciiChar::Null;
-}
-
-#[cfg(feature = "bit")]
-crate::bit_sized![= 7; for AsciiChar];

@@ -291,7 +291,7 @@ mod reflection {
         };
     pub const TEXT: FlagsFeatures = FlagsFeatures {
         ref_flags: &["text··"],
-        features: &["text", "ascii", "fmt", "str"]
+        features: &["text", "fmt", "str"]
     };
     pub const UI: FlagsFeatures = FlagsFeatures {
         ref_flags: &["ui··"],
@@ -359,9 +359,6 @@ mod reflection {
     pub const STRING: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_str··"],
         features: &["_str_nonul"] };
-    pub const CHAR: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_char··"],
-        features: &["_char7", "_char8", "_char16", "_char24", "_char32"] };
 
     // function helpers
     // -------------------------------------------------------------------------
@@ -404,7 +401,7 @@ mod reflection {
             TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections
             // text
-            CHAR, STRING,
+            STRING,
             // num
             FLOAT, INT, UINT, // numbers
 

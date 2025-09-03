@@ -3,11 +3,9 @@
 //! These fns tests all the character types
 //
 
-#[cfg(feature = "_char_all")]
 use {super::*, size_of_val as size};
 
 #[test]
-#[cfg(feature = "_char_all")]
 fn char_encodings() {
     let c1 = '\u{000061}'; // a
     let c2 = '\u{0000B1}'; // ±
@@ -71,7 +69,6 @@ fn char_encodings() {
 }
 
 #[test]
-#[cfg(feature = "_char_all")]
 fn char_to_utf8_bytes() {
     // Test characters from different ranges.
     let test_chars = ['a', 'ß', 'あ', '😀'];

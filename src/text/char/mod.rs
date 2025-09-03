@@ -9,7 +9,6 @@
 // with re-exports
 crate::mod_path!(_c "../../../libs/base/src/text/char/reexports.rs");
 mod definitions;
-mod namespace;
 
 // without re-exports
 mod core_impls;
@@ -19,7 +18,8 @@ mod tests;
 
 crate::structural_mods! { // _mods, _always
     _mods {
-        pub use super::{_c::*, definitions::*, namespace::*};
+        pub use devela_base::text::Char;
+        pub use super::{_c::*, definitions::*};
     }
     _always {
         pub use super::_c::*;

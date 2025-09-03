@@ -11,13 +11,9 @@
 #![allow(non_camel_case_types)]
 
 // In sync with devela::num::niche::non_value
-#[cfg(feature = "_char7")]
-pub(super) use crate::NonExtremeU8;
-#[cfg(feature = "_char16")]
-pub(super) use crate::NonValueU16;
+pub(super) use crate::{NonExtremeU8, NonValueU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a unicode scalar.
-#[cfg(feature = "_char16")]
 pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
 /* public types */
@@ -33,8 +29,6 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 #[repr(transparent)]
-#[cfg(feature = "_char7")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char7(pub(super) NonExtremeU8);
 
@@ -52,8 +46,6 @@ pub struct char7(pub(super) NonExtremeU8);
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 /// [1w]: https://en.wikipedia.org/wiki/Latin-1_Supplement
 #[repr(transparent)]
-#[cfg(feature = "_char8")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char8(pub(super) u8);
 
@@ -72,8 +64,6 @@ pub struct char8(pub(super) u8);
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
 #[repr(transparent)]
-#[cfg(feature = "_char16")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
 

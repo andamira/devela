@@ -330,8 +330,6 @@ macro_rules! impl_str_u {
             // /// or if `CAP < 1.
             // ///
             // #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
-            // #[cfg(feature = "_char7")]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
             // pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
             //     let mut new = unwrap![ok? Self::new()];
             //     new.arr[0] = c.to_utf8_bytes()[0];
@@ -347,8 +345,6 @@ macro_rules! impl_str_u {
             // ///
             // #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             // #[rustfmt::skip]
-            // #[cfg(feature = "_char8")]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
             // pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
             //     let mut new = unwrap![ok? Self::new()];
             //     let bytes = c.to_utf8_bytes();
@@ -366,8 +362,6 @@ macro_rules! impl_str_u {
             // ///
             // #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             // #[rustfmt::skip]
-            // #[cfg(feature = "_char16")]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
             // pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
             //     let mut new = unwrap![ok? Self::new()];
             //     let bytes = c.to_utf8_bytes();

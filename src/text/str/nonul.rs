@@ -7,8 +7,8 @@
 // - trait impls
 
 use crate::{
-    _core::fmt, ConstDefault, Deref, InvalidText, IterChars, Mismatch, MismatchedCapacity,
-    NotEnoughElements, cfor, is, text::char::*, unwrap,
+    _core::fmt, Char, ConstDefault, Deref, InvalidText, IterChars, Mismatch, MismatchedCapacity,
+    NotEnoughElements, cfor, char7, char8, char16, is, unwrap,
 };
 #[cfg(feature = "alloc")]
 use crate::{CString, ToString};
@@ -379,8 +379,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
@@ -399,8 +397,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 2.
     #[rustfmt::skip]
-    #[cfg(feature = "_char8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
@@ -423,8 +419,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 3.
     #[rustfmt::skip]
-    #[cfg(feature = "_char16")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {

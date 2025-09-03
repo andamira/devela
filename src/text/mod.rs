@@ -9,7 +9,6 @@
 // safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
-mod ascii;
 #[allow(hidden_glob_reexports, reason = "re-exported char")]
 mod char;
 pub mod errors {
@@ -28,7 +27,9 @@ pub mod str;
 
 crate::structural_mods! { // _mods, _pub_mods, _always
     _mods {
-        pub use super::{ascii::_all::*, char::_all::*, grapheme::_all::*};
+        pub use devela_base::text::{Ascii, AsciiChar};
+
+        pub use super::{char::_all::*, grapheme::_all::*};
 
         // WIPZONE
         // pub use super::bytes::*;

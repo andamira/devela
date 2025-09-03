@@ -30,8 +30,6 @@ impl GraphemeString {
 
     /// Creates a new `GraphemeString` from a `char7`.
     #[must_use]
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char7(c: char7) -> GraphemeString {
@@ -40,8 +38,6 @@ impl GraphemeString {
 
     /// Creates a new `GraphemeString` from a `char8`.
     #[must_use]
-    #[cfg(feature = "_char8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char8(c: char8) -> GraphemeString {
@@ -50,8 +46,6 @@ impl GraphemeString {
 
     /// Creates a new `GraphemeString` from a `char16`.
     #[must_use]
-    #[cfg(feature = "_char16")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char16(c: char16) -> GraphemeString {

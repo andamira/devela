@@ -238,14 +238,18 @@ mod impl_std {
 mod impl_devela {
     use super::ConstDefault;
     use crate::{
-        // TODO: Cast, Cycle, CycleCount
+        AsciiChar,
+        Cast,
+        // TODO: Cycle, CycleCount
         Interval,
         Sign,
     };
-
-    impl<T: ConstDefault> ConstDefault for crate::Cast<T> {
-        const DEFAULT: Self = crate::Cast(T::DEFAULT);
-}
+    impl ConstDefault for AsciiChar {
+        const DEFAULT: Self = AsciiChar::Null;
+    }
+    impl<T: ConstDefault> ConstDefault for Cast<T> {
+        const DEFAULT: Self = Cast(T::DEFAULT);
+    }
 
     /// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
     ///

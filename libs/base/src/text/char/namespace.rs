@@ -1,4 +1,4 @@
-// devela::text::char::namespace
+// devela_base::text::char::namespace
 //
 //! Defines the [`Char`] namespace.
 //
@@ -336,7 +336,7 @@ impl Char {
     ///
     /// # Example
     /// ```
-    /// # use devela::Char;
+    /// # use devela_base::Char;
     /// assert_eq!(Char::utf8_bytes_to_code("Ħ".as_bytes(), 0), Some((u32::from('Ħ'), 2)));
     ///
     /// let invalid = b"\x80"; // Invalid leading byte

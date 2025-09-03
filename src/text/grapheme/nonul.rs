@@ -10,9 +10,9 @@
 use super::Grapheme;
 #[cfg(feature = "alloc")]
 use crate::CString;
-#[cfg(_char··)]
-use crate::text::char::*;
-use crate::{ConstDefault, IterChars, MismatchedCapacity, StringNonul, unwrap};
+use crate::{
+    ConstDefault, IterChars, MismatchedCapacity, StringNonul, char7, char8, char16, unwrap,
+};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -44,8 +44,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
@@ -59,8 +57,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
-    #[cfg(feature = "_char8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
@@ -74,8 +70,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
-    #[cfg(feature = "_char16")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }

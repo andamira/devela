@@ -11,9 +11,9 @@
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
 use crate::{
-    BareBox, ByteSized, Duration, Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64,
-    NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128,
-    NonZeroUsize, Ordering, PhantomData, PhantomPinned,
+    AsciiChar, BareBox, ByteSized, Duration, Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32,
+    NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64,
+    NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned,
 };
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
@@ -185,11 +185,8 @@ bit_sized![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
 bit_sized![= 128; for SystemInstant, SystemTime];
 
-#[cfg(feature = "_char7")]
 bit_sized![= 7; for crate::char7];
-#[cfg(feature = "_char8")]
 bit_sized![= 8; for crate::char8];
-#[cfg(feature = "_char16")]
 bit_sized![= 16; for crate::char16];
 
 bit_sized![= 8; for NonZeroI8, NonZeroU8];
@@ -217,6 +214,7 @@ bit_sized![= 64; for AtomicF64];
 #[cfg(feature = "dep_portable_atomic")]
 bit_sized![= 128; for AtomicI128, AtomicU128];
 
+bit_sized![= 7; for AsciiChar];
 #[cfg(feature = "_str_nonul")]
 bit_sized![<const LEN: usize> = LEN; for GraphemeNonul<LEN>, StringNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)

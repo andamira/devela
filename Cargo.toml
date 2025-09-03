@@ -24,7 +24,7 @@
 #     . code            (_unroll*)
 #     - data            (_data*, _tuple*, _value*, …)
 #     - num             (_num*, _int_*, _float_*, …)
-#     - text            (_text*, _char*, _str_*)
+#     - text            (_text*, _str_*)
 #   - Dependency        (dep_*)
 #   - Workspace         (devela_*)
 #
@@ -185,7 +185,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 220/300 (80 remaining), 138 visible, 82 hidden
+[features] # 215/300 (75 remaining), 137 visible, 78 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -324,8 +324,7 @@ sys = ["io", "mem"]
 	# os
 		linux = []
 		windows = ["crossterm?/windows", "midir?/winrt"]
-text = ["ascii", "fmt", "str"]
-	ascii = [] # AsciiChar
+text = ["fmt", "str"]
 	fmt = [] # NumStr
 	str = [] # ExtStr, ExtString
 ui = ["layout", "desk", "term", "web"]
@@ -514,7 +513,7 @@ _docs_min = [ # the minimum capabilities to document every item
 	# num:
 	"_float_f64", "_int_u32", "_int_i64",
 	# text:
-	"_str_nonul", "_char_all",
+	"_str_nonul",
 ]
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
@@ -624,13 +623,7 @@ _nums_all = ["_float_all", "_int_all"]
 #* text capabilities *#
 # ---------------------
 
-_text_all = ["_char_all", "_str_all"]
-
-# char*
-_char_all = ["_char7", "_char8", "_char16"]
-	_char7 = []
-	_char8 = []
-	_char16 = []
+_text_all = ["_str_all"]
 
 # StringU*, StringNonul:
 _str_all = ["_str_nonul"]
@@ -1289,7 +1282,7 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(sys··, mem··)',
 	# text: (4)
 	'cfg(text··)',
-	'cfg(_char··, _str··)',
+	'cfg(_str··)',
 	# ui: (1)
 	'cfg(ui··)',
 	# work: (1)

@@ -7,10 +7,14 @@
 //!
 //
 
-mod wrapper;
+mod char; // AsciiChar
+mod wrapper; // Ascii
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::wrapper::Ascii;
+        pub use super::{
+            char::AsciiChar,
+            wrapper::Ascii,
+        };
     }
 }

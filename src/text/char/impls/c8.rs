@@ -1,9 +1,7 @@
 // devela::text::char::impls::char8
 
 use super::*;
-#[cfg(feature = "ascii")]
-use crate::AsciiChar;
-use crate::{Char, DataOverflow};
+use crate::{AsciiChar, Char, DataOverflow};
 
 impl char8 {
     /* private helper fns */
@@ -27,16 +25,12 @@ impl char8 {
 
     /// Converts an `AsciiChar` to `char8`.
     #[must_use]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> char8 {
         char8(c as u8)
     }
 
     /// Converts a `char7` to `char8`.
     #[must_use]
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn from_char7(c: char7) -> char8 {
         char8(c.0.get())
     }
@@ -44,8 +38,6 @@ impl char8 {
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
-    #[cfg(feature = "_char16")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn try_from_char16(c: char16) -> Result<char8, DataOverflow> {
         if Char::byte_len(c.to_u32()) == 1 {
             Ok(char8(c.to_u32() as u8))
@@ -74,8 +66,6 @@ impl char8 {
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
         if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -96,15 +86,11 @@ impl char8 {
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
     pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
         char7::try_from_char8(self)
     }
     /// Converts this `char8` to `char16`.
     #[must_use]
-    #[cfg(feature = "_char16")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
     pub const fn to_char16(self) -> char16 {
         char16::from_char8(self)
     }
@@ -190,6 +176,5 @@ impl char8 {
     }
 }
 
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
 unsafe impl crate::MemPod for char8 {}
