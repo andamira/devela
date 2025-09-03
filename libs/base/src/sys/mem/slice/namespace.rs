@@ -44,11 +44,11 @@ impl<T> Slice<T> {
     pub const fn copy_from_slice(dst: &mut [T], src: &[T]) where T: Copy {
         if dst.len() != src.len() { panic!("`src` and `dst` slices have different lengths"); }
 
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
         // SAFETY: Lengths checked equal, T is Copy, and pointers are valid
         unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), src.len()); }
 
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        #[cfg(any(all(feature = "base_safe", feature = "safe_mem"), not(unsafe··)))]
         { let mut i = 0; while i < src.len() { dst[i] = src[i]; i += 1; } }
     }
 
@@ -75,7 +75,7 @@ impl<T> Slice<T> {
     ///
     /// See also `Ptr::`[`slice_from_raw_parts`][crate::Ptr::slice_from_raw_parts].
     #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-    #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+    #[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
     pub const unsafe fn from_raw_parts<'a>(data: *const T, len: usize) -> &'a [T] {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_raw_parts(data, len) }
@@ -88,7 +88,7 @@ impl<T> Slice<T> {
     ///
     /// See also `Ptr::`[`slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
     #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-    #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+    #[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
     pub const unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_raw_parts_mut(data, len) }
@@ -198,9 +198,15 @@ impl<T> Slice<T> {
     #[must_use]
     pub const fn range_checked(slice: &[T], start: usize, end: usize) -> Option<&[T]> {
         if start <= end && end <= slice.len() {
-            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+            #[cfg(any(
+                all(feature = "base_safe", feature = "safe_mem"),
+                not(feature = "unsafe_slice")
+            ))]
             return Some(slice.split_at(start).1.split_at(end - start).0);
-            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+            #[cfg(all(
+                not(all(feature = "base_safe", feature = "safe_mem")),
+                feature = "unsafe_slice"
+            ))]
             // SAFETY: `start` and `end` are checked to be within bounds and valid
             Some(unsafe { slice.split_at_unchecked(start).1.split_at_unchecked(end - start).0 })
         } else {
@@ -232,9 +238,15 @@ impl<T> Slice<T> {
     pub const fn take_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                #[cfg(any(
+                    all(feature = "base_safe", feature = "safe_mem"),
+                    not(feature = "unsafe_slice")
+                ))]
                 return Some(slice.split_at(index).1);
-                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                #[cfg(all(
+                    not(all(feature = "base_safe", feature = "safe_mem")),
+                    feature = "unsafe_slice"
+                ))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_unchecked(index).1 });
             }
@@ -253,9 +265,15 @@ impl<T> Slice<T> {
     pub const fn take_omit_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                #[cfg(any(
+                    all(feature = "base_safe", feature = "safe_mem"),
+                    not(feature = "unsafe_slice")
+                ))]
                 return Some(slice.split_at(index).0);
-                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                #[cfg(all(
+                    not(all(feature = "base_safe", feature = "safe_mem")),
+                    feature = "unsafe_slice"
+                ))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_unchecked(index).0 });
             }
@@ -367,9 +385,15 @@ impl<T> Slice<T> {
     #[must_use]
     pub const fn range_mut_checked(slice: &mut [T], start: usize, end: usize) -> Option<&mut [T]> {
         if start <= end && end <= slice.len() {
-            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+            #[cfg(any(
+                all(feature = "base_safe", feature = "safe_mem"),
+                not(feature = "unsafe_slice")
+            ))]
             return Some(slice.split_at_mut(start).1.split_at_mut(end - start).0);
-            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+            #[cfg(all(
+                not(all(feature = "base_safe", feature = "safe_mem")),
+                feature = "unsafe_slice"
+            ))]
             // SAFETY: `start` and `end` are checked to be within bounds and valid
             Some(unsafe {
                 slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start).0
@@ -403,9 +427,15 @@ impl<T> Slice<T> {
     pub const fn take_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                #[cfg(any(
+                    all(feature = "base_safe", feature = "safe_mem"),
+                    not(feature = "unsafe_slice")
+                ))]
                 return Some(slice.split_at_mut(index).1);
-                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                #[cfg(all(
+                    not(all(feature = "base_safe", feature = "safe_mem")),
+                    feature = "unsafe_slice"
+                ))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_mut_unchecked(index).1 });
             }
@@ -424,9 +454,15 @@ impl<T> Slice<T> {
     pub const fn take_omit_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                #[cfg(any(
+                    all(feature = "base_safe", feature = "safe_mem"),
+                    not(feature = "unsafe_slice")
+                ))]
                 return Some(slice.split_at_mut(index).0);
-                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                #[cfg(all(
+                    not(all(feature = "base_safe", feature = "safe_mem")),
+                    feature = "unsafe_slice"
+                ))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_mut_unchecked(index).0 });
             }
@@ -652,10 +688,10 @@ impl<T> Slice<T> {
 impl Slice<u8> {
     /// Copies the `src` byte array into `dst` in compile-time.
     pub const fn copy_array<const N: usize>(dst: &mut [u8; N], src: &[u8; N]) {
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        #[cfg(any(all(feature = "base_safe", feature = "safe_mem"), not(unsafe··)))]
         { let mut i = 0; while i < N { dst[i] = src[i]; i += 1; } }
 
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
         unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), N); }
     }
 
@@ -670,10 +706,10 @@ impl Slice<u8> {
     pub const fn copy_array_at<const LEN: usize>(dst: &mut [u8; LEN], src: &[u8], offset: usize) {
         assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
 
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        #[cfg(any(all(feature = "base_safe", feature = "safe_mem"), not(unsafe··)))]
         { let mut i = 0; while i < src.len() { dst[offset + i] = src[i]; i += 1; } }
 
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
         // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
         unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr().add(offset), src.len()); }
     }
@@ -706,10 +742,10 @@ impl Slice<u8> {
         assert!(src.len() == LEN, "source slice length must match destination array length");
         let mut buf = [0; LEN];
 
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
+        #[cfg(any(all(feature = "base_safe", feature = "safe_mem"), not(unsafe··)))]
         { let mut i = 0; while i < src.len() { buf[i] = src[i]; i += 1; } }
 
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_mem")), unsafe··))]
         // SAFETY: Lengths are equal (checked by assert), u8 is Copy, entire range is bounds-checked
         unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), buf.as_mut_ptr(), src.len()); }
 

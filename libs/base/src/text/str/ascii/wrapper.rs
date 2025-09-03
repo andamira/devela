@@ -93,9 +93,12 @@ impl Ascii<usize> {
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
         let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(
+            all(feature = "base_safe", feature = "safe_text"),
+            not(feature = "unsafe_str")
+        ))]
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
@@ -162,9 +165,12 @@ impl Ascii<u8> {
     pub const fn digits_str(self, width: u8) -> StringU8<3> {
         let width = Compare(width).clamp(self.count_digits(), 3);
 
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(
+            all(feature = "base_safe", feature = "safe_text"),
+            not(feature = "unsafe_str")
+        ))]
         return unwrap![ok StringU8::<3>::from_bytes_nright(self.digits(), width)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             StringU8::<3>::from_bytes_nright_unchecked(self.digits(), width)
@@ -254,9 +260,12 @@ impl Ascii<u16> {
     pub const fn digits_str(self, width: u8) -> StringU8<5> {
         let width = Compare(width).clamp(self.count_digits(), 5);
 
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(
+            all(feature = "base_safe", feature = "safe_text"),
+            not(feature = "unsafe_str")
+        ))]
         return unwrap![ok StringU8::<5>::from_bytes_nright(self.digits(), width)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             StringU8::<5>::from_bytes_nright_unchecked(self.digits(), width)
@@ -351,9 +360,12 @@ impl Ascii<u32> {
     pub const fn digits_str(self, width: u8) -> StringU8<10> {
         let width = Compare(width).clamp(self.count_digits(), 10);
 
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(
+            all(feature = "base_safe", feature = "safe_text"),
+            not(feature = "unsafe_str")
+        ))]
         return unwrap![ok StringU8::<10>::from_bytes_nright(self.digits(), width)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             StringU8::<10>::from_bytes_nright_unchecked(self.digits(), width)
@@ -438,9 +450,12 @@ impl Ascii<u64> {
     pub const fn digits_str(self, width: u8) -> StringU8<20> {
         let width = Compare(width).clamp(self.count_digits(), 20);
 
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(
+            all(feature = "base_safe", feature = "safe_text"),
+            not(feature = "unsafe_str")
+        ))]
         return unwrap![ok StringU8::<20>::from_bytes_nright(self.digits(), width)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             StringU8::<20>::from_bytes_nright_unchecked(self.digits(), width)
@@ -544,9 +559,12 @@ impl Ascii<u128> {
     pub const fn digits_str(self, width: u8) -> StringU8<39> {
         let width = Compare(width).clamp(self.count_digits(), 39);
 
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(
+            all(feature = "base_safe", feature = "safe_text"),
+            not(feature = "unsafe_str")
+        ))]
         return unwrap![ok StringU8::<39>::from_bytes_nright(self.digits(), width)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             StringU8::<39>::from_bytes_nright_unchecked(self.digits(), width)

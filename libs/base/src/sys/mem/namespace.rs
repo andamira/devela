@@ -8,7 +8,7 @@ use ::core::mem::{
     align_of, align_of_val, discriminant, drop, forget, needs_drop, replace, size_of, size_of_val,
     swap, take,
 };
-#[allow(unused_imports, reason = "unsafe feature-gated")]
+#[allow(unused_imports, reason = "±unsafe")]
 use ::core::{
     mem::{transmute_copy, zeroed},
     slice::{from_raw_parts, from_raw_parts_mut},

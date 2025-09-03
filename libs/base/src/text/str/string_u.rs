@@ -8,13 +8,13 @@
 //   - trait impls
 // - tests
 
-use ::core::fmt;
-use crate::{
-    Deref, InvalidText, InvalidUtf8, IterChars, Mismatch,
-    MismatchedCapacity, NotEnoughElements, Str, is, paste, text::char::*, unwrap,
-};
 #[allow(unused, reason = "±unsafe")]
-use crate::{Compare, cfor};
+use crate::{Compare, cfor, unwrap};
+use crate::{
+    Deref, InvalidText, InvalidUtf8, IterChars, Mismatch, MismatchedCapacity, NotEnoughElements,
+    Str, is, paste, text::char::*,
+};
+use ::core::fmt;
 
 macro_rules! impl_str_u {
     () => { impl_str_u![u8, u16, u32, usize]; };
@@ -141,11 +141,12 @@ macro_rules! impl_str_u {
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[must_use]
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_slice"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-            pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
+            pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] { // IMPROVE: make const
                 // SAFETY: caller must ensure safety
                 unsafe { self.arr.get_unchecked_mut(0..self.len as usize) }
+                // self.arr.split_at_mut(self.len as usize).0
             }
 
             /// Returns the inner string slice.
@@ -154,10 +155,10 @@ macro_rules! impl_str_u {
             /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
             pub const fn as_str(&self) -> &str {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+                #[cfg(any(all(feature = "base_safe", feature = "safe_text"), not(feature = "unsafe_str")))]
                 return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+                #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
                 // SAFETY: we ensure to contain only valid UTF-8
                 unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
             }
@@ -165,7 +166,7 @@ macro_rules! impl_str_u {
             /// Returns the exclusive inner string slice.
             /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_slice"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
             pub fn as_mut_str(&mut self) -> &mut str {
                 unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
@@ -398,7 +399,7 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
                 Self { arr: bytes, len: CAP as $t }
@@ -430,7 +431,7 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
                 Self { arr: bytes, len: Compare(length).min(CAP as $t) }
@@ -470,7 +471,7 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
                 -> Self {
@@ -494,13 +495,6 @@ macro_rules! impl_str_u {
             #[rustfmt::skip]
             fn default() -> Self { Self::new().unwrap() }
         }
-        // impl<const CAP: usize> ConstDefault for $name<CAP> {
-        //     /// Returns an empty string.
-        //     ///
-        //     /// # Panics
-        //     #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
-        //     const DEFAULT: Self = unwrap![ok Self::new()];
-        // }
 
         impl<const CAP: usize> fmt::Display for $name<CAP> {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
