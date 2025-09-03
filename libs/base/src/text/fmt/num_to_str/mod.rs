@@ -1,4 +1,4 @@
-// devela::text::fmt::num_to_str
+// devela_base::text::fmt::num_to_str
 //
 //! Defines the [`NumToStr`] trait.
 //

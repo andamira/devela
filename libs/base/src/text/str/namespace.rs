@@ -1,25 +1,17 @@
-// devela::text::str::namespace
+// devela_base::text::str::namespace
 //
 //! [`Str`] namespace.
 //
 
 use crate::{InvalidUtf8, Slice, is};
 
-#[cfg(feature = "str")]
-crate::items! {
-    use crate::Ascii;
-    #[cfg(doc)]
-    use crate::ExtStr;
-}
+use crate::Ascii;
 
 #[allow(unused_imports, reason = "±unsafe")]
-use crate::{
-    _core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
-    sf, unwrap,
+use {
+    crate::{sf, unwrap},
+    ::core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
 };
-#[cfg(feature = "alloc")]
-#[allow(unused_imports, reason = "±unsafe")]
-use crate::{_dep::_alloc::str::from_boxed_utf8_unchecked, Box};
 
 // TODO: IMPROVE:
 // - one default, (simd == api if possible)
@@ -62,8 +54,7 @@ impl Str {
     /// Converts a mutable slice of bytes to a mutable string slice.
     ///
     /// See [`from_utf8_mut`].
-    // WAIT:1.87 [const_str_from_utf8](https://github.com/rust-lang/rust/pull/136668)
-    pub fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, InvalidUtf8> {
+    pub const fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, InvalidUtf8> {
         match from_utf8_mut(v) {
             Ok(v) => Ok(v),
             Err(e) => Err(InvalidUtf8::from_utf8_error(e)),
@@ -121,26 +112,11 @@ impl Str {
         unsafe { ::core::str::from_utf8_unchecked(bytes) }
     }
 
-    /// Converts a boxed slice of bytes to a boxed string slice without checking valid UTF-8.
-    ///
-    /// See [`from_boxed_utf8_unchecked`].
-    ///
-    /// # Safety
-    /// The bytes passed in must be valid UTF-8.
-    #[must_use]
-    #[cfg(feature = "alloc")]
-    #[cfg(all(not(feature = "safe_text"), unsafe··))]
-    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", unsafe··))))]
-    pub unsafe fn from_boxed_utf8_unchecked(v: Box<[u8]>) -> Box<str> {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe { from_boxed_utf8_unchecked(v) }
-    }
-
     /// Repeats a `string` a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// # use devela_base::Str;
     /// let mut buf = [0_u8; 12];
     /// let repeated = Str::repeat_into("ay", 3, &mut buf);
     /// assert_eq![repeated, "ayayay"];
@@ -191,7 +167,7 @@ impl Str {
     /// with a `separator` positioned after the immediately preceding number.
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// # use devela_base::Str;
     /// let mut buf = [0; 15];
     /// assert_eq!("2*4*6*8*11*14*", Str::new_counter(&mut buf, 14, '*'));
     /// assert_eq!("_3_5_7_9_12_15_", Str::new_counter(&mut buf, 15, '_'));
@@ -205,8 +181,6 @@ impl Str {
     /// See also [`ExtStr::new_counter`].
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
-    #[cfg(feature = "str")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
     pub const fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
         assert![buffer.len() >= length];
         assert![separator.is_ascii()];
@@ -231,7 +205,7 @@ impl Str {
                     buffer[index] = separator;
                 } else {
                     is![index > 0; index -= num_len - 1];
-                    // WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
+                    // WAIT:DONE:1.87 const_copy_from_slice
                     // buffer[index..(num_len + index)].copy_from_slice(&num_bytes[..num_len]);
                     // Slice::range_mut(buffer, index, num_len + index)
                     //     .copy_from_slice(Slice::range_to(num_bytes, num_len));
@@ -264,8 +238,8 @@ impl Str {
 
     /* private utilities */
 
+    #[doc(hidden)]
     /// The cold path that returns an empty string slice.
-    #[cfg(feature = "str")]
     #[cold] #[rustfmt::skip]
-    pub(crate) const fn new_cold_empty() -> &'static str { "" }
+    pub const fn new_cold_empty() -> &'static str { "" }
 }

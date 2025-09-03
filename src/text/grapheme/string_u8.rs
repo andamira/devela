@@ -7,10 +7,10 @@
 // - trait impls
 
 use super::Grapheme;
-#[cfg(feature = "alloc")]
-use crate::CString;
-#[cfg(_char··)]
-use crate::text::char::*;
+// #[cfg(feature = "alloc")]
+// use crate::CString;
+// #[cfg(_char··)]
+// use crate::text::char::*;
 use crate::{ConstDefault, IterChars, MismatchedCapacity, StringU8, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
@@ -32,53 +32,54 @@ impl<const CAP: usize> GraphemeU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::new()]))
     }
 
-    /// Creates a new `GraphemeU8` from a `char7`.
-    ///
-    /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP > 255.
-    ///
-    /// Will always succeed if `CAP` >= 1 and <= 255.
-    #[cfg(feature = "_char7")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
-    pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
-    }
-
-    /// Creates a new `GraphemeU8` from a `char8`.
-    ///
-    /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
-    /// or < `c.`[`len_utf8()`][char8#method.len_utf8].
-    ///
-    /// Will always succeed if `CAP` >= 2 and <= 255.
-    #[cfg(feature = "_char8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
-    pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
-    }
-
-    /// Creates a new `GraphemeU8` from a `char16`.
-    ///
-    /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
-    /// or < `c.`[`len_utf8()`][char16#method.len_utf8].
-    ///
-    /// Will always succeed if `CAP` >= 3 and <= 255.
-    #[cfg(feature = "_char16")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
-    pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
-    }
-
-    /// Creates a new `GraphemeU8` from a `char`.
-    /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
-    /// or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
-    ///
-    /// Will never panic if `CAP` >= 4 and <= 255.
-    pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringU8::from_char(c)]))
-    }
+    // TEMP
+    // /// Creates a new `GraphemeU8` from a `char7`.
+    // ///
+    // /// # Errors
+    // /// Returns [`MismatchedCapacity`] if `CAP > 255.
+    // ///
+    // /// Will always succeed if `CAP` >= 1 and <= 255.
+    // #[cfg(feature = "_char7")]
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
+    // pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+    //     Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
+    // }
+    //
+    // /// Creates a new `GraphemeU8` from a `char8`.
+    // ///
+    // /// # Errors
+    // /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    // /// or < `c.`[`len_utf8()`][char8#method.len_utf8].
+    // ///
+    // /// Will always succeed if `CAP` >= 2 and <= 255.
+    // #[cfg(feature = "_char8")]
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
+    // pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
+    //     Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
+    // }
+    //
+    // /// Creates a new `GraphemeU8` from a `char16`.
+    // ///
+    // /// # Errors
+    // /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    // /// or < `c.`[`len_utf8()`][char16#method.len_utf8].
+    // ///
+    // /// Will always succeed if `CAP` >= 3 and <= 255.
+    // #[cfg(feature = "_char16")]
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
+    // pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
+    //     Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
+    // }
+    //
+    // /// Creates a new `GraphemeU8` from a `char`.
+    // /// # Errors
+    // /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    // /// or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
+    // ///
+    // /// Will never panic if `CAP` >= 4 and <= 255.
+    // pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
+    //     Ok(Self(unwrap![ok? StringU8::from_char(c)]))
+    // }
 
     //
 
@@ -152,11 +153,11 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     #[rustfmt::skip]
     pub fn chars(&self) -> IterChars<'_> { self.0.chars() }
 
-    /// Returns a new allocated C-compatible, nul-terminanted string.
-    #[rustfmt::skip]
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn to_cstring(&self) -> CString { self.0.to_cstring() }
+    // /// Returns a new allocated C-compatible, nul-terminanted string.
+    // #[rustfmt::skip]
+    // #[cfg(feature = "alloc")]
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    // pub fn to_cstring(&self) -> CString { self.0.to_cstring() }
 }
 
 /* traits */

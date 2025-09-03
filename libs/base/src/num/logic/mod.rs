@@ -1,4 +1,4 @@
-// devela::num::logic
+// devela_base::num::logic
 //
 //! Logic related types and functionality.
 //

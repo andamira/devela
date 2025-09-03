@@ -1,14 +1,12 @@
-// devela::text::ascii::wrapper
+// devela_base::text::ascii::wrapper
 //
 //! Ascii functionality wrapper struct.
 //
 
 use crate::is;
 
-// imports for the `digits_str` method
-#[cfg(all(feature = "_str_u8", any(feature = "safe_text", not(feature = "unsafe_str"))))]
+#[allow(unused, reason = "±unsafe in digits_str methods")]
 use crate::unwrap;
-#[cfg(feature = "_str_u8")]
 use crate::{Compare, StringU8};
 
 #[doc = crate::TAG_NAMESPACE!()]
@@ -26,9 +24,9 @@ impl Ascii<usize> {
     /// # Arguments
     /// * `divisor`: A power of 10 used to determine which digit to extract.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq!(Ascii(12345_usize).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_usize).calc_digit(1000), b'2');
     /// ```
@@ -40,9 +38,10 @@ impl Ascii<usize> {
     /// Counts the number of decimal digits.
     ///
     /// For more complex needs check the [`Int`][crate::Int] *base* methods.
-    /// # Examples
+    ///
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq![1, Ascii(0_usize).count_digits()];
     /// assert_eq![4, Ascii(9876_usize).count_digits()];
     /// ```
@@ -91,8 +90,6 @@ impl Ascii<usize> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
         let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
@@ -115,9 +112,9 @@ impl Ascii<u8> {
     /// # Arguments
     /// * `divisor`: A power of 10 used to determine which digit to extract.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq!(Ascii(123_u8).calc_digit(10), b'2');
     /// assert_eq!(Ascii(123_u8).calc_digit(100), b'1');
     /// ```
@@ -129,9 +126,9 @@ impl Ascii<u8> {
     /// Counts the number of decimal digits.
     ///
     /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq![1, Ascii(0_u8).count_digits()];
     /// assert_eq![3, Ascii(123_u8).count_digits()];
     /// ```
@@ -162,8 +159,6 @@ impl Ascii<u8> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<3> {
         let width = Compare(width).clamp(self.count_digits(), 3);
 
@@ -206,9 +201,9 @@ impl Ascii<u16> {
     /// # Arguments
     /// * `divisor`: A power of 10 used to determine which digit to extract.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq!(Ascii(12345_u16).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u16).calc_digit(1000), b'2');
     /// ```
@@ -220,9 +215,10 @@ impl Ascii<u16> {
     /// Counts the number of decimal digits.
     ///
     /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
-    /// # Examples
+    ///
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq![1, Ascii(0_u16).count_digits()];
     /// assert_eq![4, Ascii(9876_u16).count_digits()];
     /// ```
@@ -255,8 +251,6 @@ impl Ascii<u16> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<5> {
         let width = Compare(width).clamp(self.count_digits(), 5);
 
@@ -299,9 +293,9 @@ impl Ascii<u32> {
     /// # Arguments
     /// * `divisor`: A power of 10 used to determine which digit to extract.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq!(Ascii(12345_u32).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u32).calc_digit(1000), b'2');
     /// ```
@@ -313,9 +307,9 @@ impl Ascii<u32> {
     /// Counts the number of decimal digits.
     ///
     /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq![1, Ascii(0_u32).count_digits()];
     /// assert_eq![4, Ascii(9876_u32).count_digits()];
     /// ```
@@ -354,8 +348,6 @@ impl Ascii<u32> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<10> {
         let width = Compare(width).clamp(self.count_digits(), 10);
 
@@ -378,9 +370,9 @@ impl Ascii<u64> {
     /// # Arguments
     /// * `divisor`: A power of 10 used to determine which digit to extract.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq!(Ascii(12345_u64).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u64).calc_digit(1000), b'2');
     /// ```
@@ -392,9 +384,9 @@ impl Ascii<u64> {
     /// Counts the number of decimal digits.
     ///
     /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq![1, Ascii(0_u64).count_digits()];
     /// assert_eq![4, Ascii(9876_u64).count_digits()];
     /// ```
@@ -443,8 +435,6 @@ impl Ascii<u64> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<20> {
         let width = Compare(width).clamp(self.count_digits(), 20);
 
@@ -467,9 +457,9 @@ impl Ascii<u128> {
     /// # Arguments
     /// * `divisor`: A power of 10 used to determine which digit to extract.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq!(Ascii(12345_u128).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u128).calc_digit(1000), b'2');
     /// ```
@@ -481,9 +471,9 @@ impl Ascii<u128> {
     /// Counts the number of decimal digits.
     ///
     /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
-    /// # Examples
+    /// # Example
     /// ```
-    /// # use devela::text::Ascii;
+    /// # use devela_base::text::Ascii;
     /// assert_eq![1, Ascii(0_u128).count_digits()];
     /// assert_eq![19, Ascii(9876543210987654321_u128).count_digits()];
     /// ```
@@ -551,8 +541,6 @@ impl Ascii<u128> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<39> {
         let width = Compare(width).clamp(self.count_digits(), 39);
 

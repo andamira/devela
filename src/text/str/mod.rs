@@ -6,7 +6,6 @@
 
 mod reexports;
 mod macros; // join!, str!
-mod namespace; // Str
 
 #[cfg(feature = "str")]
 mod ext_str; // ExtStr
@@ -16,14 +15,11 @@ mod ext_string;
 #[cfg(feature = "_str_nonul")] // RETHINK
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_nonul")))]
 mod nonul;
-#[cfg(_str_u··)]
-mod string_u;
 
 crate::structural_mods! { // _mods, _always
     _mods {
         pub use super::reexports::*;
         pub use super::macros::*;
-        pub use super::namespace::*;
 
         #[cfg(feature = "str")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
@@ -34,8 +30,6 @@ crate::structural_mods! { // _mods, _always
 
         #[cfg(feature = "_str_nonul")] // RETHINK
         pub use super::nonul::*;
-        #[cfg(_str_u··)]
-        pub use super::string_u::*;
     }
     _always {
         pub use super::reexports::*;

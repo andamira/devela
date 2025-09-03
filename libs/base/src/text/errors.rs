@@ -1,4 +1,4 @@
-// devela::text::error
+// devela_base::text::error
 //
 //!
 //

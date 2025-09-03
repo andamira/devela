@@ -185,7 +185,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 224/300 (76 remaining), 138 visible, 86 hidden
+[features] # 220/300 (80 remaining), 138 visible, 82 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -514,7 +514,7 @@ _docs_min = [ # the minimum capabilities to document every item
 	# num:
 	"_float_f64", "_int_u32", "_int_i64",
 	# text:
-	"_str_u8", "_str_nonul", "_char_all",
+	"_str_nonul", "_char_all",
 ]
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
@@ -633,13 +633,7 @@ _char_all = ["_char7", "_char8", "_char16"]
 	_char16 = []
 
 # StringU*, StringNonul:
-_str_all = [
-	"_str_u8", "_str_u16", "_str_u32", "_str_usize",
-	"_str_nonul"]
-	_str_u8 = ["str"]
-	_str_u16 = ["str"]
-	_str_u32 = ["str"]
-	_str_usize = ["str"]
+_str_all = ["_str_nonul"]
 	#
 	_str_nonul = []
 
@@ -1295,7 +1289,7 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(sys··, mem··)',
 	# text: (4)
 	'cfg(text··)',
-	'cfg(_char··, _str··, _str_u··)',
+	'cfg(_char··, _str··)',
 	# ui: (1)
 	'cfg(ui··)',
 	# work: (1)

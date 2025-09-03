@@ -7,14 +7,12 @@
 //!
 //
 
-mod wrapper;
-
 #[cfg(feature = "ascii")]
 mod char;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::wrapper::Ascii;
+        pub use devela_base::text::str::Ascii;
 
         #[cfg(feature = "ascii")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "ascii")))]

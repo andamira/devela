@@ -1,4 +1,4 @@
-// devela::text::string_u
+// devela_base::text::string_u
 //
 //! `String` backed by an array.
 //
@@ -8,40 +8,27 @@
 //   - trait impls
 // - tests
 
-#[cfg(feature = "str")]
-use crate::Str;
+use ::core::fmt;
 use crate::{
-    _core::fmt, ConstDefault, Deref, InvalidText, InvalidUtf8, IterChars, Mismatch,
-    MismatchedCapacity, NotEnoughElements, is, paste, text::char::*, unwrap,
+    Deref, InvalidText, InvalidUtf8, IterChars, Mismatch,
+    MismatchedCapacity, NotEnoughElements, Str, is, paste, text::char::*, unwrap,
 };
-#[cfg(all(_str_u··, feature = "alloc"))]
-use crate::{CString, ToString};
 #[allow(unused, reason = "±unsafe")]
 use crate::{Compare, cfor};
 
 macro_rules! impl_str_u {
-    () => {
-        impl_str_u![
-            u8:"_str_u8",
-            u16:"_str_u16",
-            u32:"_str_u32",
-            usize:"_str_usize",
-        ];
-    };
+    () => { impl_str_u![u8, u16, u32, usize]; };
 
     (
-    // $t:    the length type. E.g.: u8.
-    // $cap:  the capability that enables the implementation. E.g. _str_u8.
-    //
-    // $name: the name of the type. E.g.: StringU8.
-    $( $t:ty : $cap:literal),+ $(,)?) => {
+    // $t: the length type. E.g.: u8.
+    $($t:ty),+ $(,)?) => {
         $(
-            #[cfg(feature = $cap)]
-            paste! { impl_str_u![@[<String $t:camel>], $t:$cap]; }
+            paste! { impl_str_u![@[<String $t:camel>], $t]; }
         )+
     };
-
-    (@$name:ty, $t:ty : $cap:literal) => { paste! {
+    (
+    // $name: the name of the type. E.g.: StringU8.
+    @$name:ty, $t:ty) => { paste! {
         /* definitions */
 
         #[doc = crate::TAG_TEXT!()]
@@ -84,7 +71,6 @@ macro_rules! impl_str_u {
         ///   [`try_push_str_complete`][Self::try_push_str_complete].
         #[must_use]
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         pub struct $name<const CAP: usize> {
             // WAIT: for when we can use CAP: u8 for panic-less const boundary check.
             arr: [u8; CAP],
@@ -188,12 +174,6 @@ macro_rules! impl_str_u {
             /// Returns an iterator over the `chars` of this grapheme cluster.
             #[rustfmt::skip]
             pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() }
-
-            /// Returns a new allocated C-compatible, nul-terminanted string.
-            #[must_use] #[rustfmt::skip]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn to_cstring(&self) -> CString { CString::new(self.to_string()).unwrap() }
 
             /* operations */
 
@@ -321,81 +301,81 @@ macro_rules! impl_str_u {
                 }
             }
 
-            /* from char  */
+            /* from char  */ // TEMP
 
-            #[doc = "Creates a new `String" $t:camel "` from a `char`."]
-            ///
-            /// # Errors
-            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
-            ///
-            #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
-            pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
-                let mut new = unwrap![ok? Self::new()];
-                let bytes = Char::to_utf8_bytes(c);
-                new.len = Char::utf8_len(bytes[0]) as $t;
-                new.arr[0] = bytes[0];
-                if new.len > 1 { new.arr[1] = bytes[1]; }
-                if new.len > 2 { new.arr[2] = bytes[2]; }
-                if new.len > 3 { new.arr[3] = bytes[3]; }
-                Ok(new)
-            }
+            // #[doc = "Creates a new `String" $t:camel "` from a `char`."]
+            // ///
+            // /// # Errors
+            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            // /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
+            // ///
+            // #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            // #[rustfmt::skip]
+            // pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
+            //     let mut new = unwrap![ok? Self::new()];
+            //     let bytes = Char::to_utf8_bytes(c);
+            //     new.len = Char::utf8_len(bytes[0]) as $t;
+            //     new.arr[0] = bytes[0];
+            //     if new.len > 1 { new.arr[1] = bytes[1]; }
+            //     if new.len > 2 { new.arr[2] = bytes[2]; }
+            //     if new.len > 3 { new.arr[3] = bytes[3]; }
+            //     Ok(new)
+            // }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `char7`."]
-            ///
-            /// # Errors
-            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            /// or if `CAP < 1.
-            ///
-            #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
-            #[cfg(feature = "_char7")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
-            pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
-                let mut new = unwrap![ok? Self::new()];
-                new.arr[0] = c.to_utf8_bytes()[0];
-                new.len = 1;
-                Ok(new)
-            }
-
-            #[doc = "Creates a new `String" $t:camel "` from a `char8`."]
-            ///
-            /// # Errors
-            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            /// or if `CAP < 2.
-            ///
-            #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
-            #[cfg(feature = "_char8")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
-            pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
-                let mut new = unwrap![ok? Self::new()];
-                let bytes = c.to_utf8_bytes();
-                new.len = Char::utf8_len(bytes[0]) as $t;
-                new.arr[0] = bytes[0];
-                if new.len > 1 { new.arr[1] = bytes[1]; }
-                Ok(new)
-            }
-
-            #[doc = "Creates a new `String" $t:camel "` from a `char16`."]
-            ///
-            /// # Errors
-            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
-            ///
-            #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
-            #[cfg(feature = "_char16")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
-            pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
-                let mut new = unwrap![ok? Self::new()];
-                let bytes = c.to_utf8_bytes();
-                new.len = Char::utf8_len(bytes[0]) as $t;
-                new.arr[0] = bytes[0];
-                if new.len > 1 { new.arr[1] = bytes[1]; }
-                if new.len > 2 { new.arr[2] = bytes[2]; }
-                Ok(new)
-            }
+            // #[doc = "Creates a new `String" $t:camel "` from a `char7`."]
+            // ///
+            // /// # Errors
+            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            // /// or if `CAP < 1.
+            // ///
+            // #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
+            // #[cfg(feature = "_char7")]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char7")))]
+            // pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+            //     let mut new = unwrap![ok? Self::new()];
+            //     new.arr[0] = c.to_utf8_bytes()[0];
+            //     new.len = 1;
+            //     Ok(new)
+            // }
+            //
+            // #[doc = "Creates a new `String" $t:camel "` from a `char8`."]
+            // ///
+            // /// # Errors
+            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            // /// or if `CAP < 2.
+            // ///
+            // #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
+            // #[rustfmt::skip]
+            // #[cfg(feature = "_char8")]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char8")))]
+            // pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
+            //     let mut new = unwrap![ok? Self::new()];
+            //     let bytes = c.to_utf8_bytes();
+            //     new.len = Char::utf8_len(bytes[0]) as $t;
+            //     new.arr[0] = bytes[0];
+            //     if new.len > 1 { new.arr[1] = bytes[1]; }
+            //     Ok(new)
+            // }
+            //
+            // #[doc = "Creates a new `String" $t:camel "` from a `char16`."]
+            // ///
+            // /// # Errors
+            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
+            //     "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
+            // ///
+            // #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
+            // #[rustfmt::skip]
+            // #[cfg(feature = "_char16")]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "_char16")))]
+            // pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
+            //     let mut new = unwrap![ok? Self::new()];
+            //     let bytes = c.to_utf8_bytes();
+            //     new.len = Char::utf8_len(bytes[0]) as $t;
+            //     new.arr[0] = bytes[0];
+            //     if new.len > 1 { new.arr[1] = bytes[1]; }
+            //     if new.len > 2 { new.arr[2] = bytes[2]; }
+            //     Ok(new)
+            // }
 
             /* from bytes */
 
@@ -514,13 +494,13 @@ macro_rules! impl_str_u {
             #[rustfmt::skip]
             fn default() -> Self { Self::new().unwrap() }
         }
-        impl<const CAP: usize> ConstDefault for $name<CAP> {
-            /// Returns an empty string.
-            ///
-            /// # Panics
-            #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
-            const DEFAULT: Self = unwrap![ok Self::new()];
-        }
+        // impl<const CAP: usize> ConstDefault for $name<CAP> {
+        //     /// Returns an empty string.
+        //     ///
+        //     /// # Panics
+        //     #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
+        //     const DEFAULT: Self = unwrap![ok Self::new()];
+        // }
 
         impl<const CAP: usize> fmt::Display for $name<CAP> {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -608,26 +588,6 @@ macro_rules! impl_str_u {
                 }
             }
         }
-
-        #[cfg(all(feature = "std", any(unix, target_os = "wasi")))]
-        mod [< std_impls_ $t >] {
-            use super::$name;
-            use std::ffi::OsStr;
-
-            #[cfg(unix)]
-            use std::os::unix::ffi::OsStrExt;
-            #[cfg(target_os = "wasi")]
-            use std::os::wasi::ffi::OsStrExt;
-
-            #[cfg_attr(nightly_doc, doc(cfg(
-                all(feature = "std", any(unix, target_os = "wasi"))
-            )))]
-            impl<const CAP: usize> AsRef<OsStr> for $name<CAP> {
-                fn as_ref(&self) -> &OsStr {
-                    OsStr::from_bytes(self.as_bytes())
-                }
-            }
-        }
     }};
 }
 impl_str_u!();
@@ -638,7 +598,6 @@ mod tests {
     use super::*;
 
     #[test]
-    #[cfg(feature = "_str_u8")]
     fn push() {
         let mut s = StringU8::<3>::new().unwrap();
         assert![s.try_push('ñ').is_ok()];
@@ -650,7 +609,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "_str_u8")]
     fn pop() {
         let mut s = StringU8::<3>::new().unwrap();
         s.push('ñ');

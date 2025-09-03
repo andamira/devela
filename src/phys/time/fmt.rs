@@ -10,7 +10,6 @@
 #[allow(unused_imports)]
 #[cfg(feature = "_float_f64")]
 use crate::ExtFloat;
-#[cfg(feature = "_str_u8")]
 use crate::{Ascii, StringU8, format_buf};
 use crate::{NoTime, TimeSplit, TimeSplitHourNano};
 #[cfg(feature = "alloc")]
@@ -22,11 +21,9 @@ use crate::{String, format};
 /// # Examples
 /// ```
 /// # use devela::Timecode;
-/// #[cfg(feature = "_str_u8")]
 /// #[cfg(any(feature = "std", feature = "_float_f64"))]
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");
 ///
-/// #[cfg(feature = "_str_u8")]
 /// assert_eq!(Timecode::nanos_u64(1_002_003_004), "001s 002ms 003µs 004ns");
 /// ```
 #[derive(Debug)]
@@ -93,8 +90,6 @@ impl Timecode {
     // -> 96 bits
     #[cfg(any(feature = "std", feature = "_float_f64"))]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub fn secs_f64(seconds: f64) -> StringU8<12> {
         let TimeSplitHourNano { h, m, s, ms, .. } = Self::split_secs_f64(seconds);
         let m = Ascii(m as u32).digits_str(2);
@@ -149,8 +144,6 @@ impl Timecode {
     ///
     /// The seconds are clamped to 999 (more than 16 minutes).
     // -> 208 bits
-    #[cfg(feature = "_str_u8")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_str_u8")))]
     pub fn nanos_u64(nanos: u64) -> StringU8<23> {
         let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
         let s_str = Ascii(s.min(999)).digits_str(3);
@@ -212,7 +205,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "_str_u8")]
     #[cfg(any(feature = "std", feature = "_float_f64"))]
     fn timecode_secs_f64() {
         let formatted = Timecode::secs_f64(3661.5);
@@ -227,7 +219,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "_str_u8")]
     fn timecode_nanos_u64() {
         let formatted = Timecode::nanos_u64(1_002_003_004);
         assert_eq!(formatted, "001s 002ms 003µs 004ns");

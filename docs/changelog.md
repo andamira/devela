@@ -158,6 +158,10 @@
 - update `Slice` with new `eq` methods for slices of slices of primitives and string slices.
 
 ## text
-- move to [base]: `NumToStr`.
+- move to [base]:
+  - traits: `NumToStr`.
+  - types: `Ascii`, `Str`, `StringU*`.
+- remove methods: `to_cstring`, from `StringU*` & `GraphemeU8`.
+- remove `Str::from_boxed_utf8_unchecked` method.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

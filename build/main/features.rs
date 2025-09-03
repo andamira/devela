@@ -356,9 +356,6 @@ mod reflection {
 
     /* ## text */
 
-    pub const STRING_U: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_str··", "_str_u··"],
-        features: &["_str_u8", "_str_u16", "_str_u32", "_str_usize"] };
     pub const STRING: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_str··"],
         features: &["_str_nonul"] };
@@ -407,7 +404,7 @@ mod reflection {
             TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections
             // text
-            CHAR, STRING, STRING_U,
+            CHAR, STRING,
             // num
             FLOAT, INT, UINT, // numbers
 
