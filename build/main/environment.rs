@@ -73,10 +73,11 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
             // Build::println_var("CARGO");
             // Build::println_var("CARGO_MAKEFLAGS");
             // Build::println_var("CARGO_ENCODED_RUSTFLAGS");
-        }
 
-        for (key, value) in std::env::vars() {
-            Build::println(&format![">> {key}: {value}"]);
+            // DEBUG
+            // for (key, value) in std::env::vars() {
+            //     Build::println(&format![">> {key}: {value}"]);
+            // }
         }
 
         Build::println_var_encoded("CARGO_ENCODED_RUSTFLAGS", "RUSTFLAGS");

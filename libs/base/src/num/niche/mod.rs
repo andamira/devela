@@ -4,7 +4,7 @@
 //
 
 mod mem; // NonExtreme*, NonValue*
-mod macros; // ne!, nz! (NewNicheHelper)
+mod macros; // ne!, nz! (NicheNew)
 mod reexports;
 
 crate::structural_mods! { // _mods
@@ -16,6 +16,6 @@ crate::structural_mods! { // _mods
         };
     }
     _workspace_internals {
-        pub use super::macros::NewNicheHelper;
+        pub use super::macros::NicheNew;
     }
 }

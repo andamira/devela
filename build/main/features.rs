@@ -5,7 +5,6 @@
 // NOTE: this file is shared between the build scripts in:
 // - devela/build/main/
 // - devela_base/build/
-//
 
 #[cfg(feature = "__dbg")]
 use super::Build;

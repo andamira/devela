@@ -39,7 +39,7 @@ dep_all = [
 	"dep_ring",
 	"dep_rkyv",
 	"dep_wasm_bindgen",
-	"dep_web_sys"
+	"dep_web_sys",
 	"dep_fltk",
 	"dep_nc",
 	"dep_rustix",

@@ -26,4 +26,7 @@ crate::structural_mods! { //_mods, _pub_mods
         pub use super::error::*;
         pub use super::{niche::_all::*, quant::_all::*};
     }
+    _workspace_internals {
+        pub use super::niche::_workspace_internals::*;
+    }
 }

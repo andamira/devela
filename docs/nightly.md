@@ -46,6 +46,7 @@ See also
 - 1.91: `·`[iter_chain](https://github.com/rust-lang/rust/pull/144963)
 - 1.91: ` `[loongarch32 inline asm](https://github.com/rust-lang/rust/pull/144402)
 - 1.91: `s`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
+- 1.91: `s`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
 - 1.91: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) <!-- & 129114 -->
 - 1.91: `·`[round_char_boundary](https://github.com/rust-lang/rust/issues/93743)
 - 1.91: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
@@ -97,7 +98,6 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `s`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `a`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
@@ -121,6 +121,7 @@ See also
 - 1.??: ` `[concat_idents](https://github.com/rust-lang/rust/issues/29599)
 - 1.??: ` `[const_async_blocks](https://github.com/rust-lang/rust/issues/85368)
 - 1.??: ` `[const_closures](https://github.com/rust-lang/rust/issues/106003)
+- 1.??: ` `[const_convert](https://github.com/rust-lang/rust/issues/143773)
 - 1.??: ` `[const_for](https://github.com/rust-lang/rust/issues/87575)
           (depends on const_trait_impl)
 - 1.??: ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)

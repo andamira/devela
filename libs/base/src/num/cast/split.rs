@@ -6,7 +6,6 @@
 use crate::Cast;
 
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u16> {
     #[must_use]
     #[inline(always)]
@@ -25,7 +24,6 @@ impl Cast<u16> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u32> {
     #[must_use]
     /// Splits a `u32` into an array of `[u16; 2]` in big-endian order.
@@ -71,7 +69,6 @@ impl Cast<u32> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u64> {
     #[must_use]
     /// Splits a `u64` into an array of `[u32; 2]` in big-endian order.
@@ -154,7 +151,6 @@ impl Cast<u64> {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "split")))]
 impl Cast<u128> {
     #[must_use]
     /// Splits a `u128` into an array of `[u64; 2]` in big-endian order.

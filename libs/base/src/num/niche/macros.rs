@@ -1,7 +1,12 @@
 // devela_base::num::niche::macros
 //
-//! Defines the [`ne!`] and [`nz!`] macros, and the hidden [`NewNicheHelper`].
+//! Defines the [`ne!`] and [`nz!`] macros, and the hidden [`NicheNew`].
 //
+// TOC
+// - macro ne!
+// - macro nz!
+// - struct NicheNew
+// - tests
 
 /// Creates a `NonExtreme*` [`niche`][crate::num::niche] value with compile-time checking.
 ///
@@ -16,10 +21,10 @@
 macro_rules! ne {
     (
     // Only the value (needs the type suffix to aid inference)
-    $num:expr) => {{ $crate::NewNicheHelper($num).to_non_extreme() }};
+    $num:expr) => {{ $crate::NicheNew($num).to_non_extreme() }};
     (
     // Specify the type separately.
-    $num:expr, $T:ty) => {{ $crate::NewNicheHelper::<$T>($num).to_non_extreme() }};
+    $num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_non_extreme() }};
 }
 #[doc(inline)]
 pub use ne;
@@ -37,10 +42,10 @@ pub use ne;
 macro_rules! nz {
     (
     // Only the value (needs the type suffix to aid inference)
-    $num:expr) => {{ $crate::NewNicheHelper($num).to_non_zero() }};
+    $num:expr) => {{ $crate::NicheNew($num).to_non_zero() }};
     (
     // Specify the type separately
-    $num:expr, $T:ty) => {{ $crate::NewNicheHelper::<$T>($num).to_non_zero() }};
+    $num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_non_zero() }};
 }
 #[doc(inline)]
 pub use nz;
@@ -50,7 +55,7 @@ pub use nz;
 /// Private helper to construct niche types.
 #[doc(hidden)]
 #[derive(Debug)]
-pub struct NewNicheHelper<T>(pub T);
+pub struct NicheNew<T>(pub T);
 macro_rules! impl_niche {
     () => {
         impl_niche!(U: u8, u16, u32, u64, u128, usize);
@@ -61,7 +66,7 @@ macro_rules! impl_niche {
         $( impl_niche!(@$SIGN [<NonExtreme $prim:camel>], $prim); )+
     }};
     (@ALL $nz:ident, $prim:ty) => {
-        impl NewNicheHelper<$prim> {
+        impl NicheNew<$prim> {
             pub const fn to_non_zero(self) -> $crate::$nz {
                 if self.0 == 0 { panic!["value must not be 0"]; }
                 else { $crate::$nz::new(self.0).unwrap() }
@@ -69,7 +74,7 @@ macro_rules! impl_niche {
         }
     };
     (@I $ne:ident, $prim:ty) => {
-        impl NewNicheHelper<$prim> {
+        impl NicheNew<$prim> {
             pub const fn to_non_extreme(self) -> $crate::$ne {
                 if self.0 == <$prim>::MIN { panic!["value must not be MIN"]; }
                 else { $crate::$ne::new(self.0).unwrap() }
@@ -77,7 +82,7 @@ macro_rules! impl_niche {
         }
     };
     (@U $ne:ident, $prim:ty) => {
-        impl NewNicheHelper<$prim> {
+        impl NicheNew<$prim> {
             pub const fn to_non_extreme(self) -> $crate::$ne {
                 if self.0 == <$prim>::MAX { panic!["value must not be MAX"]; }
                 else { $crate::$ne::new(self.0).unwrap() }

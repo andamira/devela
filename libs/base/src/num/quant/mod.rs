@@ -21,17 +21,16 @@ mod interval; // Interval, interval!
 mod sign; // Sign
 
 // WIPZONE
-// mod counter;
-// mod norm;
-// mod scale;
+// mod _wip_counter;
+// mod _wip_norm;
+// mod _wip_scale;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{cycle::*, interval::*, sign::*};
         // WIPZONE
-        // pub use super::counter::*;
-        // pub use super::norm::*;
-        // pub use super::ratio::*;
-        // pub use super::scale::*;
+        // pub use super::_wip_counter::*;
+        // pub use super::_wip_norm::*;
+        // pub use super::_wip_scale::*;
     }
 }

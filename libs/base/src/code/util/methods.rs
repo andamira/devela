@@ -5,8 +5,8 @@
 // NOTE:
 // keyword order for functions declaration is `pub`, `default`, `const`, `async`, `unsafe`, `extern`
 //
-// IMPROVE
-// - support generics, other use cases...
+// - IMPROVE: support generics, other use cases.
+// - TODO: make corresponding fns_as_methods.
 
 /// Defines standalone functions that call associated methods.
 ///

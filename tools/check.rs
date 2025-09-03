@@ -286,13 +286,17 @@ fn main() -> Result<()> {
 
         // WAIT: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
-        // nightly unsafe
-        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docs", "--", "--color=always"],
+        // nightly unsafe without dependencies
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docs_nodep", "--", "--color=always"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe (max capabilities)
         run_cargo(&msrv, cmd, &["-F all,std,safe,_docs_min,_max", "--", "--color=always"])?;
         run_cargo(&msrv, cmd, &["-F all,std,unsafe,_docs_min,_max", "--", "--color=always"])?;
+
+        // nightly unsafe with dependencies
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docs", "--", "--color=always"],
+        &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe + dep_all
         sf! { run_cargo(&msrv, cmd, &["-F all,std,safe,dep_all", "--", "--color=always"])?; }
