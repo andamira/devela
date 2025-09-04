@@ -161,8 +161,8 @@
 
 ## text
 - move to [base]:
-  - traits: `NumToStr`.
-  - types: `Ascii`, `Str`, `StringU*`.
+  - traits: `NumToStr`, [`UnicodeScalar`].
+  - types: `Ascii`, `Str`, `StringU*`, `char7`, `char8`, `char16`.
 - remove methods: `to_cstring`, from `StringU*` & `GraphemeU8`.
 - remove `Str::from_boxed_utf8_unchecked` method.
 

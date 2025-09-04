@@ -18,13 +18,13 @@ impl char7 {
     // by this module for a few selected operations.
     #[must_use]
     const fn new_unchecked(value: u8) -> char7 {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         if let Some(c) = NonExtremeU8::new(value) {
             char7(c)
         } else {
             unreachable![]
         }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
         unsafe {
             char7(NonExtremeU8::new_unchecked(value))
         }
@@ -85,10 +85,10 @@ impl char7 {
     /// Converts a `char7` to `AsciiChar`.
     #[must_use]
     pub const fn to_ascii_char(c: char7) -> AsciiChar {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         return if let Some(c) = AsciiChar::from_u8(c.0.get()) { c } else { unreachable!() };
 
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
         unsafe {
             AsciiChar::from_u8_unchecked(c.0.get())
         }

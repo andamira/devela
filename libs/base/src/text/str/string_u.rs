@@ -302,75 +302,75 @@ macro_rules! impl_str_u {
                 }
             }
 
-            /* from char  */ // TEMP
+            /* from char  */
 
-            // #[doc = "Creates a new `String" $t:camel "` from a `char`."]
-            // ///
-            // /// # Errors
-            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            // /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
-            // ///
-            // #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            // #[rustfmt::skip]
-            // pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
-            //     let mut new = unwrap![ok? Self::new()];
-            //     let bytes = Char::to_utf8_bytes(c);
-            //     new.len = Char::utf8_len(bytes[0]) as $t;
-            //     new.arr[0] = bytes[0];
-            //     if new.len > 1 { new.arr[1] = bytes[1]; }
-            //     if new.len > 2 { new.arr[2] = bytes[2]; }
-            //     if new.len > 3 { new.arr[3] = bytes[3]; }
-            //     Ok(new)
-            // }
+            #[doc = "Creates a new `String" $t:camel "` from a `char`."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
+            ///
+            #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            #[rustfmt::skip]
+            pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
+                let mut new = unwrap![ok? Self::new()];
+                let bytes = Char::to_utf8_bytes(c);
+                new.len = Char::utf8_len(bytes[0]) as $t;
+                new.arr[0] = bytes[0];
+                if new.len > 1 { new.arr[1] = bytes[1]; }
+                if new.len > 2 { new.arr[2] = bytes[2]; }
+                if new.len > 3 { new.arr[3] = bytes[3]; }
+                Ok(new)
+            }
 
-            // #[doc = "Creates a new `String" $t:camel "` from a `char7`."]
-            // ///
-            // /// # Errors
-            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            // /// or if `CAP < 1.
-            // ///
-            // #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
-            // pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
-            //     let mut new = unwrap![ok? Self::new()];
-            //     new.arr[0] = c.to_utf8_bytes()[0];
-            //     new.len = 1;
-            //     Ok(new)
-            // }
-            //
-            // #[doc = "Creates a new `String" $t:camel "` from a `char8`."]
-            // ///
-            // /// # Errors
-            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            // /// or if `CAP < 2.
-            // ///
-            // #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
-            // #[rustfmt::skip]
-            // pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
-            //     let mut new = unwrap![ok? Self::new()];
-            //     let bytes = c.to_utf8_bytes();
-            //     new.len = Char::utf8_len(bytes[0]) as $t;
-            //     new.arr[0] = bytes[0];
-            //     if new.len > 1 { new.arr[1] = bytes[1]; }
-            //     Ok(new)
-            // }
-            //
-            // #[doc = "Creates a new `String" $t:camel "` from a `char16`."]
-            // ///
-            // /// # Errors
-            // #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
-            //     "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
-            // ///
-            // #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
-            // #[rustfmt::skip]
-            // pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
-            //     let mut new = unwrap![ok? Self::new()];
-            //     let bytes = c.to_utf8_bytes();
-            //     new.len = Char::utf8_len(bytes[0]) as $t;
-            //     new.arr[0] = bytes[0];
-            //     if new.len > 1 { new.arr[1] = bytes[1]; }
-            //     if new.len > 2 { new.arr[2] = bytes[2]; }
-            //     Ok(new)
-            // }
+            #[doc = "Creates a new `String" $t:camel "` from a `char7`."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            /// or if `CAP < 1.
+            ///
+            #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
+            pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+                let mut new = unwrap![ok? Self::new()];
+                new.arr[0] = c.to_utf8_bytes()[0];
+                new.len = 1;
+                Ok(new)
+            }
+
+            #[doc = "Creates a new `String" $t:camel "` from a `char8`."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            /// or if `CAP < 2.
+            ///
+            #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
+            #[rustfmt::skip]
+            pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
+                let mut new = unwrap![ok? Self::new()];
+                let bytes = c.to_utf8_bytes();
+                new.len = Char::utf8_len(bytes[0]) as $t;
+                new.arr[0] = bytes[0];
+                if new.len > 1 { new.arr[1] = bytes[1]; }
+                Ok(new)
+            }
+
+            #[doc = "Creates a new `String" $t:camel "` from a `char16`."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
+                "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
+            ///
+            #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
+            #[rustfmt::skip]
+            pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
+                let mut new = unwrap![ok? Self::new()];
+                let bytes = c.to_utf8_bytes();
+                new.len = Char::utf8_len(bytes[0]) as $t;
+                new.arr[0] = bytes[0];
+                if new.len > 1 { new.arr[1] = bytes[1]; }
+                if new.len > 2 { new.arr[2] = bytes[2]; }
+                Ok(new)
+            }
 
             /* from bytes */
 

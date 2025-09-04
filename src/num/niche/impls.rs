@@ -6,14 +6,13 @@
 #[cfg(all(feature = "unsafe_layout", not(feature = "safe_mem")))]
 use crate::MemPod;
 #[cfg(feature = "bit")]
-use crate::{
-    BitSized, ByteSized, NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128,
-    NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
-};
+use crate::{BitSized, ByteSized};
 use crate::{
     ConstDefault, NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128,
     NonExtremeIsize, NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128,
-    NonExtremeUsize, paste,
+    NonExtremeUsize, NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128,
+    NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
+    paste,
 };
 
 macro_rules! impl_for_non_value {

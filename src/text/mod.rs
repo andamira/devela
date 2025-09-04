@@ -27,7 +27,7 @@ pub mod str;
 
 crate::structural_mods! { // _mods, _pub_mods, _always
     _mods {
-        pub use devela_base::text::{Ascii, AsciiChar};
+        pub use devela_base::text::{Ascii, AsciiChar}; // ascii
 
         pub use super::{char::_all::*, grapheme::_all::*};
 
@@ -43,7 +43,7 @@ crate::structural_mods! { // _mods, _pub_mods, _always
     _always {
         #[doc(inline)]
         pub use super::{
-            errors::*, fmt::_always::*, char::_always::*, parse::_always::*, str::_always::*,
+            errors::*, fmt::_always::*, parse::_always::*, str::_always::*,
         };
     }
 }

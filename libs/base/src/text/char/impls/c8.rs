@@ -68,14 +68,14 @@ impl char8 {
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
         if Char::is_7bit(self.to_u32()) {
-            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0) {
                 return Ok(c);
             } else {
                 unreachable![]
             }
 
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0) });
         }
@@ -175,6 +175,3 @@ impl char8 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }
 }
-
-#[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
-unsafe impl crate::MemPod for char8 {}

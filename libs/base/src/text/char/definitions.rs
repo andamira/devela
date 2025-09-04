@@ -1,4 +1,4 @@
-// devela::text::char::definitions
+// devela_base::text::char::definitions
 //
 //! Define Char* structs and UnicodeScalar trait.
 //
@@ -10,7 +10,6 @@
 
 #![allow(non_camel_case_types)]
 
-// In sync with devela::num::niche::non_value
 pub(super) use crate::{NonExtremeU8, NonValueU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a unicode scalar.

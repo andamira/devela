@@ -19,13 +19,13 @@ impl char16 {
     // useful because Option::<T>::unwrap is not yet stable as const fn
     #[must_use]
     const fn new_unchecked(value: u16) -> char16 {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         if let Some(c) = NonSurrogateU16::new(value) {
             char16(c)
         } else {
             unreachable![]
         }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
         unsafe {
             char16(NonSurrogateU16::new_unchecked(value))
         }
@@ -86,14 +86,14 @@ impl char16 {
     /// Makes use of the `unsafe_niche` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
         if Char::is_7bit(self.to_u32()) {
-            #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
+            #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
             if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
                 return Ok(c);
             } else {
                 unreachable![]
             }
 
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
         }
@@ -118,11 +118,11 @@ impl char16 {
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
-        // #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
+        // #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         if let Some(c) = char::from_u32(self.0.get() as u32) { c } else { unreachable![] }
 
         // WAIT: [stable const](https://github.com/rust-lang/rust/issues/89259)
-        // #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
+        // #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
         // SAFETY: we've already checked we contain a valid char.
         // return unsafe { char::from_u32_unchecked(self.0 as u32) };
     }
