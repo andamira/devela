@@ -33,7 +33,7 @@
   - [macros]
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.40.
-- add optional dependency to [base]: `simdutf8`.
+- add optional dependencies to [base]: `memchr`, `simdutf8`.
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`, `__publish`, `base_safe`, `safe_build`.
@@ -162,7 +162,7 @@
 ## text
 - move to [base]:
   - traits: `NumToStr`, [`UnicodeScalar`].
-  - types: `Ascii`, `Str`, `StringU*`, `char7`, `char8`, `char16`.
+  - types: `Ascii`, `ByteSearch`, `Str`, `StringU*`, `char7`, `char8`, `char16`.
 - remove methods: `to_cstring`, from `StringU*` & `GraphemeU8`.
 - remove `Str::from_boxed_utf8_unchecked` method.
 

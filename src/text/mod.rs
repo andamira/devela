@@ -29,7 +29,10 @@ crate::structural_mods! { // _mods, _pub_mods, _always
     _mods {
         pub use devela_base::text::{Ascii, AsciiChar}; // ascii
 
-        pub use super::{char::_all::*, grapheme::_all::*};
+        pub use super::{
+            char::_all::*,
+            grapheme::_all::*,
+        };
 
         // WIPZONE
         // pub use super::bytes::*;
@@ -38,12 +41,16 @@ crate::structural_mods! { // _mods, _pub_mods, _always
     _pub_mods {
         #[doc(inline)]
         pub use super::errors::*;
-        pub use super::{fmt::_all::*, parse::_all::*, str::_all::*};
+        pub use super::{
+            fmt::_all::*,
+            parse::_all::*,
+            str::_all::*,
+        };
     }
     _always {
         #[doc(inline)]
         pub use super::{
-            errors::*, fmt::_always::*, parse::_always::*, str::_always::*,
+            errors::*, fmt::_always::*, str::_always::*,
         };
     }
 }

@@ -11,6 +11,7 @@ mod char; // Char
 
 pub mod errors;
 pub mod fmt;
+pub mod parse;
 pub mod str;
 
 crate::structural_mods! { // mods, _pub_mods
@@ -25,6 +26,7 @@ crate::structural_mods! { // mods, _pub_mods
         pub use super::errors::*;
         pub use super::{
             fmt::_all::*,
+            parse::_all::*,
             str::_all::*,
         };
     }

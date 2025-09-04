@@ -10,9 +10,12 @@ use crate::{BitSized, ByteSized};
 use crate::{
     ConstDefault, NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128,
     NonExtremeIsize, NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128,
-    NonExtremeUsize, NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128,
-    NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
-    paste,
+    NonExtremeUsize, paste,
+};
+#[allow(unused, reason = "±unsafe")]
+use crate::{
+    NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize, NonValueU8,
+    NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
 };
 
 macro_rules! impl_for_non_value {

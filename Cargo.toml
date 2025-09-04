@@ -881,6 +881,7 @@ optional = true # safe (optional unsafe)
 default-features = false # 25 https://docs.rs/crate/log/latest/features
 # features = ["kv"]
 
+# NOTE: also in base
 [dependencies.memchr] # https://crates.io/crates/memchr
 version = "2.7" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 optional = true # unsafe
@@ -984,6 +985,7 @@ optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/serde/latest/features
 # WAIT [Const generics support](https://github.com/serde-rs/serde/issues/1937)
 
+# NOTE: also in base
 [dependencies.simdutf8] # https://crates.io/crates/simdutf8
 version = "0.1" # ✓ https://github.com/rusticstuff/simdutf8/blob/main/CHANGELOG.md
 optional = true # unsafe

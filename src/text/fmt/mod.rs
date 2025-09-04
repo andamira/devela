@@ -12,6 +12,7 @@ mod buf;
 mod namespace; // Fmt
 
 // WIPZONE
+// mod case;
 // mod table;
 
 crate::structural_mods! { // _mods, _always
@@ -23,6 +24,7 @@ crate::structural_mods! { // _mods, _always
         pub use devela_base::text::fmt::NumToStr;
 
         // WIPZONE
+        // pub use super::case::*;
         // pub use super::table::*;
     }
     _always {
