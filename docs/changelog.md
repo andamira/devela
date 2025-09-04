@@ -165,5 +165,6 @@
   - types: `Ascii`, `ByteSearch`, `Str`, `StringU*`, `char7`, `char8`, `char16`.
 - remove methods: `to_cstring`, from `StringU*` & `GraphemeU8`.
 - remove `Str::from_boxed_utf8_unchecked` method.
+- make more `Str` methods const.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

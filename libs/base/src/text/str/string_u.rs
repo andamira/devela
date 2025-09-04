@@ -12,7 +12,7 @@
 use crate::{Compare, cfor, unwrap};
 use crate::{
     Deref, InvalidText, InvalidUtf8, IterChars, Mismatch, MismatchedCapacity, NotEnoughElements,
-    Str, is, paste, text::char::*,
+    Slice, Str, is, paste, text::char::*,
 };
 use ::core::fmt;
 
@@ -174,17 +174,17 @@ macro_rules! impl_str_u {
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
             #[rustfmt::skip]
-            pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() }
+            pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() } // non-const
 
             /* operations */
 
             /// Sets the length to 0.
-            pub fn clear(&mut self) {
+            pub const fn clear(&mut self) {
                 self.len = 0;
             }
 
             /// Sets the length to 0, and resets all the bytes to 0.
-            pub fn reset(&mut self) {
+            pub const fn reset(&mut self) {
                 self.arr = [0; CAP];
                 self.len = 0;
             }
@@ -193,7 +193,8 @@ macro_rules! impl_str_u {
             /// the string is empty.
             #[must_use] #[rustfmt::skip]
             pub fn pop(&mut self) -> Option<char> {
-                self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
+                self.as_str().chars() // non-const
+                    .last().map(|c| { self.len -= c.len_utf8() as $t; c })
             }
 
             /// Tries to remove the last character and returns it, or `None` if
@@ -203,10 +204,9 @@ macro_rules! impl_str_u {
             /// Returns a [`NotEnoughElements`] error
             /// if the capacity is not enough to hold the `character`.
             pub fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
-                self.as_str().chars().last().map(|c| {
-                    self.len -= c.len_utf8() as $t; c
-                })
-                .ok_or(NotEnoughElements(Some(1)))
+                self.as_str().chars() // non-const
+                    .last().map(|c| { self.len -= c.len_utf8() as $t; c })
+                    .ok_or(NotEnoughElements(Some(1)))
             }
 
             /// Appends to the end of the string the given `character`.
@@ -215,12 +215,13 @@ macro_rules! impl_str_u {
             ///
             /// It will return 0 bytes if the given `character` doesn't fit in
             /// the remaining capacity.
-            pub fn push(&mut self, character: char) -> usize {
+            pub const fn push(&mut self, character: char) -> usize {
                 let char_len = character.len_utf8();
                 if self.remaining_capacity() >= char_len {
                     let beg = self.len as usize;
                     let end = beg + char_len;
-                    let _ = character.encode_utf8(&mut self.arr[beg..end]);
+                    // let _ = character.encode_utf8(&mut self.arr[beg..end]);
+                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
                     self.len += char_len as $t;
                     char_len
                 } else {
@@ -235,12 +236,13 @@ macro_rules! impl_str_u {
             /// # Errors
             /// Returns a [`MismatchedCapacity`] error
             /// if the capacity is not enough to hold the `character`.
-            pub fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
+            pub const fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
                 let char_len = character.len_utf8();
                 if self.remaining_capacity() >= char_len {
                     let beg = self.len as usize;
                     let end = beg + char_len;
-                    let _ = character.encode_utf8(&mut self.arr[beg..end]);
+                    // let _ = character.encode_utf8(&mut self.arr[beg..end]);
+                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
                     self.len += char_len as $t;
                     Ok(char_len)
                 } else {
@@ -256,11 +258,12 @@ macro_rules! impl_str_u {
             /// if not even the first non-nul character can fit.
             pub fn push_str(&mut self, string: &str) -> usize {
                 let mut bytes_written = 0;
-                for character in string.chars() {
+                for character in string.chars() { // non-const
                     let char_len = character.len_utf8();
                     if self.len as usize + char_len <= CAP {
                         let start_pos = self.len as usize;
                         character.encode_utf8(&mut self.arr[start_pos..]);
+                        // character.encode_utf8(Slice::range_from_mut(&mut self.arr, start_pos));
                         self.len += char_len as $t;
                         bytes_written += char_len;
                     } else {
@@ -279,7 +282,7 @@ macro_rules! impl_str_u {
             /// to hold even the first character.
             pub fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
                 is![string.is_empty(); return Ok(0)];
-                let first_char_len = string.chars().next().unwrap().len_utf8();
+                let first_char_len = string.chars().next().unwrap().len_utf8(); // non-const
                 if self.remaining_capacity() < first_char_len {
                     Err(MismatchedCapacity::closed(0, self.len() + first_char_len, CAP))
                 } else {
@@ -296,7 +299,7 @@ macro_rules! impl_str_u {
             pub fn try_push_str_complete(&mut self, string: &str)
             -> Result<usize, MismatchedCapacity> {
                 if self.remaining_capacity() >= string.len() {
-                    Ok(self.push_str(string))
+                    Ok(self.push_str(string)) // non-const
                 } else {
                     Err(MismatchedCapacity::closed(0, self.len() + string.len(), CAP))
                 }
