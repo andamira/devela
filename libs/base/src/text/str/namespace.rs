@@ -68,7 +68,7 @@ impl Str {
     /// # Safety
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
-    #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), unsafe··))]
+    #[cfg(all(not(base_safe_text), unsafe··))]
     #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
     pub const unsafe fn from_utf8_unchecked(v: &[u8]) -> &str {
         // SAFETY: Caller must uphold the safety contract.
@@ -82,7 +82,7 @@ impl Str {
     /// # Safety
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
-    #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), unsafe··))]
+    #[cfg(all(not(base_safe_text), unsafe··))]
     #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
     pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
         // SAFETY: Caller must uphold the safety contract.
@@ -106,9 +106,9 @@ impl Str {
     /// [`join!`][crate::join].
     #[doc(hidden)] #[rustfmt::skip]
     pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
-        #[cfg(any(all(feature = "base_safe", feature = "safe_text"), not(unsafe··)))]
+        #[cfg(any(base_safe_text, not(unsafe··)))]
         { crate::unwrap![ok ::core::str::from_utf8(bytes)] }
-        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), unsafe··))]
+        #[cfg(all(not(base_safe_text), unsafe··))]
         unsafe { ::core::str::from_utf8_unchecked(bytes) }
     }
 
@@ -153,12 +153,9 @@ impl Str {
             outer_count += 1;
         }
 
-        #[cfg(any(
-            all(feature = "base_safe", feature = "safe_text"),
-            not(feature = "unsafe_str")
-        ))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok Str::from_utf8(Slice::range_to(buffer, index))];
-        #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: since `string` is a valid &str, checks are unneeded.
         sf! { unsafe { Str::from_utf8_unchecked(Slice::range_to(buffer, index)) }}
     }
@@ -231,15 +228,9 @@ impl Str {
                 separator_turn = !separator_turn;
             }
 
-            #[cfg(any(
-                all(feature = "base_safe", feature = "safe_text"),
-                not(feature = "unsafe_str")
-            ))]
+            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             return unwrap![ok Str::from_utf8(Slice::range_to(buffer, length))];
-            #[cfg(all(
-                not(all(feature = "base_safe", feature = "safe_text")),
-                feature = "unsafe_str"
-            ))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             // SAFETY: TODO: since `string` is a valid &str, checks are unneeded.
             sf! { unsafe { Str::from_utf8_unchecked(Slice::range_to(buffer, length)) }}
         }

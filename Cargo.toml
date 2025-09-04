@@ -212,7 +212,7 @@ bench = false
 
 __build = ["devela_base_std"] # full build dependencies
 # shows extra debugging information
-__dbg = ["__build", "devela_base/__dbg"]
+__dbg = ["__build", "devela_base/__dbg", "devela_base_alloc?/__dbg", "devela_base_std?/__dbg"]
 __no_test = []      # exclude examples from being tested
 
 # enabled when publishing to crates.io or building online docs
@@ -1206,6 +1206,23 @@ check-cfg = [ # Allowed configuration flags:
 	# Expect more target vendors. In sync with ./src/sys/env/namespace.rs:
 	'cfg(target_vendor, values("vex"))', # WAIT
 
+	# Safety flags
+	# --------------------------------------------------------------------------
+	# for [base] crates:
+	"cfg(base_safe)",           # base_safe + safe
+		"cfg(base_safe_build)", # base_safe + safe_build
+		"cfg(base_safe_code)",  # base_safe + safe_code
+		"cfg(base_safe_data)",  # ...
+		"cfg(base_safe_game)",
+		"cfg(base_safe_lang)",
+		"cfg(base_safe_media)",
+		"cfg(base_safe_num)",
+		"cfg(base_safe_phys)",
+		"cfg(base_safe_sys)",
+			"cfg(base_safe_mem)",
+		"cfg(base_safe_text)",
+		"cfg(base_safe_ui)",
+		"cfg(base_safe_work)",
 	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------
@@ -1218,7 +1235,7 @@ check-cfg = [ # Allowed configuration flags:
 	# - https://releases.rs/
 	# - ./tools/release_dates.rs
 	# - ./docs/nightly.md
-	"cfg(nightly)", # [6] (in sync with ./build/main/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+	"cfg(nightly)", # [12] (in sync with ./build/main/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
 		#
 		# Unstable nightly features without clear stabilization timeline
 		"cfg(nightly_unstable)",
@@ -1275,7 +1292,6 @@ check-cfg = [ # Allowed configuration flags:
 	# num: (13)
 	'cfg(num··)',
 	'cfg(_nums··, _float··, _int··, _int_i··, _int_u··)',
-	'cfg(_non_value··, _non_value_i··, _non_value_u··)',
 	# phys: (1)
 	'cfg(phys··)',
 	# sys: (2)

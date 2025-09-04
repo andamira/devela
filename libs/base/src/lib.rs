@@ -4,11 +4,10 @@
 //
 
 /* crate configuration */
-
 // environment
 #![no_std]
 // safety
-#![cfg_attr(all(feature = "base_safe", feature = "safe"), forbid(unsafe_code))]
+#![cfg_attr(base_safe, forbid(unsafe_code))]
 //
 // nightly (uncomment as used)
 // #![cfg_attr(nightly_allocator, feature(allocator_api))]
@@ -26,8 +25,7 @@
 
 // safety
 #[cfg(all(
-    feature = "safe",
-    feature = "base_safe", // activates safe enforcement in the [base] crates.
+    base_safe, // alias: all(feature = "base_safe", feature = "safe")
     // In sync with ../Cargo.toml::unsafe & /build/main/features.rs::UNSAFE
     any(feature = "unsafe", // includes all 11 specific purposes below:
         feature = "unsafe_array", feature = "unsafe_ffi", feature = "unsafe_hint",
@@ -38,7 +36,6 @@
 ))]
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 // (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
-
 
 extern crate self as devela_base;
 

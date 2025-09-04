@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_CODE!()]
 //
 // safety
-#![cfg_attr(all(feature = "base_safe", feature = "safe_code"), forbid(unsafe_code))]
+#![cfg_attr(base_safe_code, forbid(unsafe_code))]
 
 mod any; // dynamic typing and reflection
 mod reexports;

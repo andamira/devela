@@ -33,10 +33,11 @@ __publish = []
 base_safe = [] # activates safe enforcement of thematic safe_* features
 safest = ["safe", "base_safe"] # for completion
 safe = [
-	"devela_base_macros/safe",
+	"devela_base_macros/safe", "safe_build",
 	"safe_code", "safe_data", "safe_game", "safe_lang", "safe_media", "safe_num",
 	"safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ]
+	safe_build = []
 	safe_code = []
 	safe_data = []
 	safe_game = []

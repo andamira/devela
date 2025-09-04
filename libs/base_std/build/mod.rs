@@ -1,4 +1,4 @@
-// devela_base::build
+// devela_base_std::build
 //
 //! Build-time code generation and configuration.
 //
@@ -11,7 +11,7 @@ macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
 /* globals */
 
 #[allow(unused)]
-const CRATE_NAME: &str = "devela_base";
+const CRATE_NAME: &str = "devela_base_std";
 
 /* imports */
 
@@ -25,7 +25,8 @@ items! {
 
 /* build modules */
 
-mod alias;
+mod alias; // NOTE: symlink to ../base/build/alias.rs
+
 mod environment; // NOTE: symlink to /devela/build/main/environment.rs
 mod features; // NOTE: symlink to /devela/build/main/features.rs
 
@@ -37,7 +38,7 @@ fn main() {
 
 fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     #[cfg(feature = "__dbg")]
-    Build::println_start_end("base build script", true);
+    Build::println_start_end("base_std build script", true);
 
     alias::main()?;
 
@@ -45,6 +46,6 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     features::main()?;
 
     #[cfg(feature = "__dbg")]
-    Build::println_start_end("base build script", false);
+    Build::println_start_end("base_std build script", false);
     Ok(())
 }

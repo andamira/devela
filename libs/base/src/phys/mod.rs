@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_PHYS!()]
 //
 // safety
-#![cfg_attr(all(feature = "base_safe", feature = "safe_phys"), forbid(unsafe_code))]
+#![cfg_attr(base_safe_phys, forbid(unsafe_code))]
 
 mod time;
 

@@ -10,7 +10,7 @@
 //   - TimeError
 //   - TimeResult
 
-use crate::{Duration, define_error, StdSystemTimeError};
+use crate::{Duration, StdSystemTimeError, define_error};
 // use ::std::time::SystemTimeError as StdSystemTimeError;
 
 /* individual errors */

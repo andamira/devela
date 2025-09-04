@@ -141,7 +141,7 @@ macro_rules! impl_str_u {
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[must_use]
-            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_slice"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
             pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] { // IMPROVE: make const
                 // SAFETY: caller must ensure safety
@@ -155,10 +155,10 @@ macro_rules! impl_str_u {
             /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
             pub const fn as_str(&self) -> &str {
-                #[cfg(any(all(feature = "base_safe", feature = "safe_text"), not(feature = "unsafe_str")))]
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
                 return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
-                #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
                 // SAFETY: we ensure to contain only valid UTF-8
                 unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
             }
@@ -166,7 +166,7 @@ macro_rules! impl_str_u {
             /// Returns the exclusive inner string slice.
             /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
-            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_slice"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
             pub fn as_mut_str(&mut self) -> &mut str {
                 unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
@@ -393,7 +393,7 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
                 Self { arr: bytes, len: CAP as $t }
@@ -425,7 +425,7 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
                 Self { arr: bytes, len: Compare(length).min(CAP as $t) }
@@ -465,7 +465,7 @@ macro_rules! impl_str_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
                 -> Self {

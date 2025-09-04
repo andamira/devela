@@ -3,7 +3,7 @@
 //! Build-related utilities.
 //
 // safety
-#![cfg_attr(all(feature = "base_safe", feature = "safe_build"), forbid(unsafe_code))]
+#![cfg_attr(base_safe_build, forbid(unsafe_code))]
 
 mod namespace; // Build
 // mod _util;

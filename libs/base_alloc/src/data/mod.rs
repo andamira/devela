@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA!()]
 //
 // safety
-#![cfg_attr(all(feature = "base_safe", feature = "safe_work"), forbid(unsafe_code))]
+#![cfg_attr(base_safe_data, forbid(unsafe_code))]
 
 // mod bit; // TODO
 mod sort;

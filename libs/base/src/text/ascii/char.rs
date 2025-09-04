@@ -459,7 +459,7 @@ impl AsciiChar {
     /// # Safety
     /// `b` must be in `0..=127`, or else this is UB.
     #[must_use]
-    #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
         // SAFETY: Our safety precondition is that `b` is in-range.
@@ -477,17 +477,11 @@ impl AsciiChar {
     pub const fn digit(d: u8) -> Option<Self> {
         if d < 10 {
             let sum = {
-                #[cfg(any(
-                    all(feature = "base_safe", feature = "safe_text"),
-                    not(feature = "unsafe_hint")
-                ))]
+                #[cfg(any(base_safe_text, not(feature = "unsafe_hint")))]
                 {
                     b'0' + d
                 }
-                #[cfg(all(
-                    not(all(feature = "base_safe", feature = "safe_text")),
-                    feature = "unsafe_hint"
-                ))]
+                #[cfg(all(not(base_safe_text), feature = "unsafe_hint"))]
                 // SAFETY: we've checked d < 10
                 unsafe {
                     b'0'.unchecked_add(d)
@@ -514,7 +508,7 @@ impl AsciiChar {
     /// need something really specific, not to make those other arguments do
     /// something useful. It might be tightened before stabilization.)
     #[must_use]
-    #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn digit_unchecked(d: u8) -> Self {
         debug_assert!(d < 10);
@@ -542,7 +536,7 @@ impl AsciiChar {
 
     /// Views this ASCII character as a one-code-unit UTF-8 `str`.
     #[must_use]
-    #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const fn as_str(&self) -> &str {
         Self::slice_as_str(core::slice::from_ref(self))
@@ -552,7 +546,7 @@ impl AsciiChar {
 impl AsciiChar {
     /// Views a slice of ASCII characters as a UTF-8 `str`.
     #[must_use]
-    #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_str(slice: &[AsciiChar]) -> &str {
         let ascii_ptr: *const [AsciiChar] = slice;
@@ -564,7 +558,7 @@ impl AsciiChar {
 
     /// Views a slice of ASCII characters as a slice of `u8` bytes.
     #[must_use]
-    #[cfg(all(not(all(feature = "base_safe", feature = "safe_text")), feature = "unsafe_str"))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_bytes(slice: &[AsciiChar]) -> &[u8] {
         AsciiChar::slice_as_str(slice).as_bytes()

@@ -17,6 +17,11 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(test, allow(dead_code))]
 
+/* globals */
+
+#[allow(unused)]
+const CRATE_NAME: &str = "devela";
+
 /* imports */
 
 extern crate devela_base as base;
