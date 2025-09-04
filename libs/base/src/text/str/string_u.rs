@@ -36,10 +36,6 @@ macro_rules! impl_str_u {
         ///
         #[doc = "Internally, the current length is stored as a [`" $t "`]."]
         ///
-        /// # Features
-        /// It will be implemented if the corresponding feature is enabled:
-        /// `_str_u[8|16|32|size]`.
-        ///
         /// ## Methods
         /// - Construct:
         ///   [`new`][Self::new],
@@ -96,22 +92,27 @@ macro_rules! impl_str_u {
 
             /// Returns the current string length in bytes.
             #[must_use] #[rustfmt::skip]
+            #[inline(always)]
             pub const fn len(&self) -> usize { self.len as usize }
 
             /// Returns `true` if the current length is 0.
             #[must_use] #[rustfmt::skip]
+            #[inline(always)]
             pub const fn is_empty(&self) -> bool { self.len == 0 }
 
             /// Returns `true` if the current remaining capacity is 0.
             #[must_use] #[rustfmt::skip]
+            #[inline(always)]
             pub const fn is_full(&self) -> bool { self.len == CAP as $t }
 
             /// Returns the total capacity in bytes.
             #[must_use] #[rustfmt::skip]
+            #[inline(always)]
             pub const fn capacity() -> usize { CAP }
 
             /// Returns the remaining capacity in bytes.
             #[must_use] #[rustfmt::skip]
+            #[inline(always)]
             pub const fn remaining_capacity(&self) -> usize { CAP - self.len as usize }
 
             /* deconstruct */
@@ -120,33 +121,36 @@ macro_rules! impl_str_u {
             ///
             /// The array contains all the bytes, including those outside the current length.
             #[must_use] #[rustfmt::skip]
+            #[inline(always)]
             pub const fn into_array(self) -> [u8; CAP] { self.arr }
 
             /// Returns a copy of the inner array with the full contents.
             ///
             /// The array contains all the bytes, including those outside the current length.
             #[must_use] #[rustfmt::skip]
+            #[inline(always)]
             pub const fn as_array(&self) -> [u8; CAP] { self.arr }
 
             /// Returns a byte slice of the inner string slice.
-            // WAIT: [split_at_unchecked](https://github.com/rust-lang/rust/issues/76014)
             #[must_use] #[rustfmt::skip]
-            pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len as usize).0 }
+            #[inline(always)]
+            pub const fn as_bytes(&self) -> &[u8] {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return Slice::take_first(&self.arr, self.len as usize);
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                unsafe { Slice::take_first_unchecked(&self.arr, self.len as usize) }
+            }
 
             /// Returns an exclusive byte slice of the inner string slice.
-            ///
-            /// # Safety
-            /// The caller must ensure that the content of the slice is valid UTF-8
-            /// before the borrow ends and the underlying `str` is used.
-            ///
-            /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[must_use]
-            #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-            pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] { // IMPROVE: make const
-                // SAFETY: caller must ensure safety
-                unsafe { self.arr.get_unchecked_mut(0..self.len as usize) }
-                // self.arr.split_at_mut(self.len as usize).0
+            #[must_use] #[rustfmt::skip]
+            #[inline(always)]
+            pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return Slice::take_first_mut(&mut self.arr, self.len as usize);
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                unsafe { Slice::take_first_mut_unchecked(&mut self.arr, self.len as usize) }
             }
 
             /// Returns the inner string slice.
@@ -154,6 +158,7 @@ macro_rules! impl_str_u {
             /// # Features
             /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
+            #[inline(always)]
             pub const fn as_str(&self) -> &str {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
                 return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
@@ -166,27 +171,32 @@ macro_rules! impl_str_u {
             /// Returns the exclusive inner string slice.
             /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
+            #[inline(always)]
             #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-            pub fn as_mut_str(&mut self) -> &mut str {
+            pub const fn as_mut_str(&mut self) -> &mut str {
                 unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
             }
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
             #[rustfmt::skip]
+            #[inline(always)]
             pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() } // non-const
 
             /* operations */
 
             /// Sets the length to 0.
-            pub const fn clear(&mut self) {
-                self.len = 0;
-            }
+            #[inline(always)]
+            pub const fn clear(&mut self) { self.len = 0; }
 
             /// Sets the length to 0, and resets all the bytes to 0.
-            pub const fn reset(&mut self) {
-                self.arr = [0; CAP];
-                self.len = 0;
+            #[inline(always)]
+            pub const fn reset(&mut self) { self.arr = [0; CAP]; self.len = 0; }
+
+            /// Zeros all unused bytes while maintaining the current length.
+            #[inline(always)]
+            pub const fn sanitize(&mut self) {
+                cfor![i in (self.len as usize)..CAP => { self.arr[i] = 0; }];
             }
 
             /// Removes the last character and returns it, or `None` if
@@ -412,7 +422,7 @@ macro_rules! impl_str_u {
             pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
                 let length = Compare(length).min(CAP as $t);
-                match Str::from_utf8(bytes.split_at(length as usize).0) {
+                match Str::from_utf8(Slice::take_first(&bytes, length as usize)) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(e),
                 }
@@ -442,7 +452,6 @@ macro_rules! impl_str_u {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            ///
             pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
                 let length = Compare(length).min(CAP as $t);
@@ -451,7 +460,7 @@ macro_rules! impl_str_u {
                 cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
                 }];
-                match Str::from_utf8(bytes.split_at(ulen).0) {
+                match Str::from_utf8(Slice::take_first(&bytes, ulen)) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(e),
                 }

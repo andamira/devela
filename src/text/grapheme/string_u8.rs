@@ -105,15 +105,8 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     pub const fn as_bytes(&self) -> &[u8] { self.0.as_bytes() }
 
     /// Returns a mutable byte slice of the inner string slice.
-    /// # Safety
-    /// The content must be valid UTF-8.
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
-        // SAFETY: caller must ensure safety
-        unsafe { self.0.as_bytes_mut() }
-    }
+    pub fn as_bytes_mut(&mut self) -> &mut [u8] { self.0.as_bytes_mut() }
 
     /// Returns a copy of the inner array with the full contents.
     ///
@@ -143,12 +136,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[rustfmt::skip]
     pub fn chars(&self) -> IterChars<'_> { self.0.chars() }
-
-    // /// Returns a new allocated C-compatible, nul-terminanted string.
-    // #[rustfmt::skip]
-    // #[cfg(feature = "alloc")]
-    // #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    // pub fn to_cstring(&self) -> CString { self.0.to_cstring() }
 }
 
 /* traits */
@@ -183,20 +170,4 @@ mod core_impls {
         #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{:?}", self.0) }
     }
-
-    // impl From<String> for GraphemeU8 {
-    //     fn from(s: String) -> GraphemeU8 {
-    //         GraphemeU8(s.graphemes(true).take(1).collect())
-    //     }
-    // }
-    // impl From<&str> for GraphemeU8 {
-    //     fn from(s: &str) -> GraphemeU8 {
-    //         GraphemeU8(s.graphemes(true).take(1).collect())
-    //     }
-    // }
-    // impl From<char> for GraphemeU8 {
-    //     fn from(s: char) -> GraphemeU8 {
-    //         GraphemeU8(s.into())
-    //     }
-    // }
 }
