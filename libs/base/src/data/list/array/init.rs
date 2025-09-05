@@ -1,4 +1,4 @@
-// devela::data::list::array::init
+// devela_base::data::list::array::init
 //
 //! Defines the [`array_init!`] macro.
 //
@@ -19,28 +19,34 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::array_init;
+/// # use devela_base::array_init;
+/// # #[cfg(feature = "alloc")]
+/// # use devela::{Vec, ConstDefault};
 /// assert_eq![[2,4,6], array_init![safe_init [i32; 3], |n| (n as i32 + 1) * 2]];
 /// #[cfg(feature = "unsafe_array")]
 /// assert_eq![[3,6,9], array_init![unsafe_init [i32; 3], |n| (n as i32 + 1) * 3]];
 ///
 /// assert_eq![[2,4,6], array_init![init [i32; 3], "safe", "unsafe_array",
 ///     |n| (n as i32 + 1) * 2]];
-/// #[cfg(feature = "alloc")]
+/// # #[cfg(feature = "alloc")]
 /// assert_eq![Box::new([2,4,6]), array_init![init_heap [i32; 3], "safe", "unsafe_array",
 ///     |n| (n as i32 + 1) * 2]];
 ///
 /// assert_eq![[7,7,7], array_init![clone [i32; 3], "safe", "unsafe_array", 7]];
 /// assert_eq![[0,0,0], array_init![default [i32; 3], "safe", "unsafe_array"]];
+/// # #[cfg(feature = "alloc")] {
 /// assert_eq![[4,5,6], array_init![iter [i32; 3], "safe", "unsafe_array", vec![4,5,6,7,8]]];
 /// assert_eq![[4,0,0], array_init![iter [i32; 3], "safe", "unsafe_array", vec![4]]];
+/// # }
 ///
 /// const fn init(n: usize) -> i32 { (n as i32 + 1) * 4 }
 /// const ARRAY1: [i32; 3] = array_init![const_init [i32; 3], "safe", "unsafe_array", init, 0];
 /// assert_eq![[4, 8, 12], ARRAY1];
 ///
+/// # #[cfg(feature = "alloc")] {
 /// const ARRAY2: [i32; 3] = array_init![const_default [i32; 3]];
 /// assert_eq![[0, 0, 0], ARRAY2];
+/// # }
 /// ```
 ///
 /// # Features
@@ -50,6 +56,10 @@
 /// For the `const_init`, `clone`, `default` and `iter` versions, if the given
 /// `$funsafe` is enabled and the given `$fsafe` is disabled, it will use unsafe
 /// initialization.
+///
+/// # Notes
+/// For the heap-related arms needs to have `Vec` in scope. And for the
+/// `const_default` arm needs `ConstDefault` in scope.
 // WAIT [array_repeat](https://github.com/rust-lang/rust/issues/126695)
 // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 #[macro_export]
@@ -78,7 +88,7 @@ macro_rules! array_init {
     (
     // safe array initialization in the heap
     safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
-        let mut v = $crate::Vec::<$T>::with_capacity($LEN);
+        let mut v = Vec::<$T>::with_capacity($LEN);
         for i in 0..$LEN {
             #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
             v.push($init(i));
@@ -125,7 +135,7 @@ macro_rules! array_init {
     (
     // unsafe array initialization in the heap
     unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
-        let mut v = $crate::Vec::<$T>::with_capacity($LEN);
+        let mut v = Vec::<$T>::with_capacity($LEN);
         #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
         for i in 0..$LEN { v.push($init(i)); }
         let slice = v.into_boxed_slice();
@@ -180,7 +190,6 @@ macro_rules! array_init {
         { $crate::array_init![unsafe_init_heap [$T; $LEN], |_| $clonable.clone()] }
     }};
     (
-
     // initialize an array in the stack with $T: Default::default()
     default [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
 
@@ -192,7 +201,7 @@ macro_rules! array_init {
     (
     // initialize an array in the stack with $T: ConstDefault::DEFAULT
     const_default [$T:ty; $LEN:expr]) => {{
-        [<$T as $crate::ConstDefault>::DEFAULT; $LEN]
+        [<$T as ConstDefault>::DEFAULT; $LEN]
     }};
     (
     // initialize an array in the heap, with $T: Default::default()

@@ -14,7 +14,7 @@ use crate::{
 };
 
 #[cfg(feature = "alloc")]
-use crate::{Box, Boxed};
+use crate::{Box, Boxed, Vec};
 
 /* utility traits */
 

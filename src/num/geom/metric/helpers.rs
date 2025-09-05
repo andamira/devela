@@ -43,7 +43,10 @@ macro_rules! _impl_metric {
             }
         }
         impl<T: $crate::ConstDefault, const D: usize> $crate::ConstDefault for $Name<T, D> {
-            const DEFAULT: Self = Self::new($crate::array_init![const_default [T; D]]);
+            const DEFAULT: Self = {
+                use crate::ConstDefault;
+                Self::new($crate::array_init![const_default [T; D]])
+            };
         }
 
         /* Clone, Copy, Hash */

@@ -1,4 +1,4 @@
-// devela::data::list::array::from
+// devela_data::data::list::array::from
 //
 //! Defines [`ArrayFrom`].
 //
@@ -13,7 +13,7 @@
 ///
 /// # Example
 /// ```
-/// # use devela::ArrayFrom;
+/// # use devela_base::ArrayFrom;
 /// let arr = ArrayFrom("hello").to_array::<5>();
 /// assert_eq!(arr, *b"hello");
 /// ```

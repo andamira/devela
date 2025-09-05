@@ -124,10 +124,12 @@
 
 ## data
 - move to [base]:
-  - `Bitwise`, `bitfield!`, `Sort`.
+  - macros: `array_init!`, `bitfield!`.
+  - types: `ArrayFrom`, `Bitwise`, `Sort`.
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
+- update `array_init!` to require `ConstDefault` and `Vec` in scope if needed.
 
 ### list
 - move to [base]:
@@ -155,7 +157,7 @@
 
 ### mem
 - move to [base]:
-  - macro `cswap!`.
+  - macros: `cswap!`, `join!`.
   - types: `Mem`, `Ptr`, `Slice`.
 - update `Slice` with new `eq` methods for slices of slices of primitives and string slices.
 

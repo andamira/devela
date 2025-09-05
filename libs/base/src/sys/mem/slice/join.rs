@@ -1,4 +1,4 @@
-// devela::sys::mem::slice::join
+// devela_base::sys::mem::slice::join
 //
 //! Defines the [`join!`] macro.
 //
@@ -8,7 +8,7 @@
 ///
 /// # Example
 /// ```
-/// # use devela::{const_assert, join};
+/// # use devela_base::{const_assert, join};
 /// /* string slices */
 ///
 /// const SBASE: &str = "path/to";
