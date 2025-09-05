@@ -9,6 +9,7 @@ mod reexports;
 
 crate::structural_mods! { // _mods
     _mods {
+        #[doc(inline)]
         pub use super::{
             mem::*,
             macros::{ne, nz},

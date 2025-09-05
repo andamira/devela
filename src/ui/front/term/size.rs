@@ -3,6 +3,7 @@
 //! Defines [`TermSize`].
 //
 
+#[doc = crate::TAG_FFI!()]
 /// The size of the terminal.
 ///
 /// ## Used by
@@ -22,7 +23,7 @@ pub struct TermSize {
 }
 
 impl TermSize {
-    /// WIP
+    /// Returns a new `TermSize`.
     pub const fn new(rows_cols: (u16, u16), xy: (u16, u16)) -> Self {
         TermSize {
             rows: rows_cols.0,

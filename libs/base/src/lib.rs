@@ -41,11 +41,14 @@ extern crate self as devela_base;
 
 pub mod code;
 pub mod data;
+pub mod game;
 pub mod lang;
+pub mod media;
 pub mod num;
 pub mod phys;
 pub mod sys;
 pub mod text;
+pub mod ui;
 pub mod work;
 
 pub mod _dep;
@@ -66,11 +69,13 @@ pub mod all {
     pub use super::{
         code::_all::*,
         data::_all::*,
+        game::_all::*,
         lang::_all::*,
         num::_all::*,
         phys::_all::*,
         sys::_all::*,
         text::_all::*,
+        ui::_all::*,
         work::_all::*,
     };
 }

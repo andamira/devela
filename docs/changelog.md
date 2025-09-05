@@ -3,22 +3,26 @@
 [0.25.0-wip] unreleased
 =======================
 
-> Refactor the project as a workspace.
+> A place for everything, and everything in its place.
+
+This release changes the library's structure from a single crate to multiple crates,
+in order to improve compile times while maintaining most of the gained cohesiveness.
 
 -----------
 > *Project* :
 -----------
 
 ## build
+- define `CRATE_NAME` constant.
 - move `/meta/build` to `/build/main`.
-- add new `devela_postbuild` crate to `build/post`.
-- new `Build` namespace in `devela_base_std`.
 - move build fn utils as `Build` methods.
+- new `Build` namespace in `devela_base_std`.
 - make `devela_base_std` optional for builds.
-- add symlinks: devela/main/[environment|features].rs to devela_base/build/.
 - add rerun instructions for changed env vars.
 - make sure `CARGO_TARGET_DIR` is always defined.
-- define `CRATE_NAME` static from `crate_name` files.
+- add new `devela_postbuild` crate to `build/post`.
+- add build config flag aliases: `any_supported_arch`, `base_safe*`.
+- add [base] symlinks to `devela/main/[alias|environment|features].rs`.
 
 ## cargo
 - add new cargo doc workspace aliases `w*`.

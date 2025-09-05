@@ -1,1 +1,1 @@
-../../base/build/alias.rs
+../../../build/main/alias.rs

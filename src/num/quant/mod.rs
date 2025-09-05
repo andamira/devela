@@ -1,6 +1,6 @@
 // devela::num::quant
 //
-#![doc = crate::_DOC_NUM!()]
+#![doc = crate::_DOC_NUM_QUANT!()]
 //!
 //! This module provides general concepts for measuring and quantifying values,
 //! including both discrete and continuous representations, without being tied

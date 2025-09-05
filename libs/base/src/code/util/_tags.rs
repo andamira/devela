@@ -75,7 +75,7 @@ crate::CONST! { hidden macro_export,
         $crate::EMOJI_ITERATOR!(), "</span>");
     TAG_NAMESPACE = concat!($crate::SPAN_OPEN!(), "'Namespaced functionality'>",
         $crate::EMOJI_NAMESPACE!(), "</span>");
-    TAG_NICHE = concat!($crate::SPAN_OPEN!(), "'Type with niche-based memory optimizations'>",
+    TAG_NICHE = concat!($crate::SPAN_OPEN!(), "'Niche-based memory optimizations'>",
         $crate::EMOJI_NICHE!(), "</span>");
     TAG_NON_STANDARD = concat!($crate::SPAN_OPEN!(),
     "'Non-standard. Expect poor cross-compatibility'>", $crate::EMOJI_NON_STANDARD!(), "</span>");
