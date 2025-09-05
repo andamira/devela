@@ -37,8 +37,8 @@
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`, `__publish`, `base_safe`, `safe_build`.
-- remove features: `_bit*`, `_char*`, `_cmp*`, `_sort*`, `_str_u*`, `ascii`, `cast`, `error`, `join`, `prim`, `split`.
-- remove flags: `bit··`, `char··`, `cmp··`, `prim··`, `sort··`,` str_u··`.
+- remove features: `_bit*`, `_char*`, `_cmp*`, `_sort*`, `_str_all`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `join`, `prim`, `split`.
+- remove flags: `bit··`, `char··`, `cmp··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - rename `_docs` to _`docs_min`, `_docsrs` to `_docs`, `_docsrs_nodep` to `_docs_nodep`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
@@ -162,8 +162,8 @@
 ## text
 - move to [base]:
   - traits: `NumToStr`, [`UnicodeScalar`].
-  - types: `Ascii`, `ByteSearch`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
-- remove methods: `to_cstring`, from `StringU*` & `GraphemeU8`.
+  - types: `Ascii`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
+- remove methods: `to_cstring`, from `String*` & `Grapheme*`.
 - remove `Str::from_boxed_utf8_unchecked` method.
 - new `StringU*` method: `sanitize`.
 - make more methods *const* in `GraphemeU8` and `StringU8`.

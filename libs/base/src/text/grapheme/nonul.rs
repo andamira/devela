@@ -1,4 +1,4 @@
-// devela::text::grapheme::nonul
+// devela_base::text::grapheme::nonul
 //
 //!
 //
@@ -7,12 +7,7 @@
 // - trait impls
 // - conversions
 
-use super::Grapheme;
-#[cfg(feature = "alloc")]
-use crate::CString;
-use crate::{
-    ConstDefault, IterChars, MismatchedCapacity, StringNonul, char7, char8, char16, unwrap,
-};
+use crate::{IterChars, MismatchedCapacity, StringNonul, char7, char8, char16, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -111,7 +106,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 
     /// Sets the length to 0, by resetting all bytes to 0.
     #[rustfmt::skip]
-    pub fn clear(&mut self) { self.0.clear(); }
+    pub const fn clear(&mut self) { self.0.clear(); }
 
     //
 
@@ -120,13 +115,8 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     pub const fn as_bytes(&self) -> &[u8] { self.0.as_bytes() }
 
     /// Returns a mutable byte slice of the inner string slice.
-    /// # Safety
-    /// The content must be valid UTF-8.
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
-        // SAFETY: unsafe fn
-        unsafe { self.0.as_bytes_mut() }
+    pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
+        self.0.as_bytes_mut()
     }
 
     /// Returns a copy of the inner array with the full contents.
@@ -151,26 +141,17 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     #[must_use] #[rustfmt::skip]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_mut_str(&mut self) -> &mut str {
+    pub const unsafe fn as_mut_str(&mut self) -> &mut str {
         // SAFETY: caller must ensure safety
         unsafe { self.0.as_mut_str() }
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[rustfmt::skip]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn chars(&self) -> IterChars<'_> { self.0.chars() }
-
-    /// Returns a new allocated C-compatible, nul-terminanted string.
-    #[must_use] #[rustfmt::skip]
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn to_cstring(&self) -> CString { self.0.to_cstring() }
 }
 
 /* traits */
-
-impl<const CAP: usize> Grapheme for GraphemeNonul<CAP> {}
 
 mod core_impls {
     use super::*;
@@ -181,14 +162,6 @@ mod core_impls {
         #[rustfmt::skip]
         fn default() -> Self { Self::new().unwrap() }
     }
-    impl<const CAP: usize> ConstDefault for GraphemeNonul<CAP> {
-        /// Returns an empty string.
-        ///
-        /// # Panics
-        /// Panics if `CAP > 255`.
-        const DEFAULT: Self = unwrap![ok Self::new()];
-    }
-
     impl<const CAP: usize> fmt::Display for GraphemeNonul<CAP> {
         #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{}", self.0) }

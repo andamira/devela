@@ -264,9 +264,11 @@ mod impl_devela {
         Sign,
         // text //
         AsciiChar,
-        GraphemeU8,
-        StringU8, StringU16, StringU32, StringUsize,
+        GraphemeNonul, GraphemeU8,
+        StringNonul, StringU8, StringU16, StringU32, StringUsize,
     };
+    #[cfg(feature = "alloc")]
+    pub use crate::GraphemeString;
 
     /* data */
 
@@ -291,11 +293,23 @@ mod impl_devela {
         const DEFAULT: Self = AsciiChar::Null;
     }
 
+    impl<const CAP: usize> ConstDefault for GraphemeNonul<CAP> {
+        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
+        const DEFAULT: Self = unwrap![ok Self::new()];
+    }
+    #[cfg(feature = "alloc")]
+    impl ConstDefault for GraphemeString {
+        const DEFAULT: Self = Self::new();
+    }
     impl<const CAP: usize> ConstDefault for GraphemeU8<CAP> {
-        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > 255`."]
+        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
         const DEFAULT: Self = unwrap![ok Self::new()];
     }
 
+    impl<const CAP: usize> ConstDefault for StringNonul<CAP> {
+        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
+        const DEFAULT: Self = unwrap![ok Self::new()];
+    }
     macro_rules! impl_cdef_for_string_u { // impl ConstDefault for StringU*
         () => { impl_cdef_for_string_u![u8, u16, u32, usize]; };
         ($($t:ty),+ $(,)?) => {

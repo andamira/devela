@@ -1,4 +1,4 @@
-// devela::text::nonul
+// devela_base::text::nonul
 //
 //! Non-nul `String` backed by an array.
 //
@@ -7,11 +7,10 @@
 // - trait impls
 
 use crate::{
-    _core::fmt, Char, ConstDefault, Deref, InvalidText, IterChars, Mismatch, MismatchedCapacity,
-    NotEnoughElements, cfor, char7, char8, char16, is, unwrap,
+    Char, Deref, InvalidText, IterChars, Mismatch, MismatchedCapacity, NotEnoughElements, Slice,
+    cfor, char7, char8, char16, is, unwrap,
 };
-#[cfg(feature = "alloc")]
-use crate::{CString, ToString};
+use ::core::fmt;
 crate::_use! {basic::from_utf8}
 
 /* definitions */
@@ -41,7 +40,6 @@ const NUL_CHAR: char = '\0';
 ///   [`as_str`][Self::as_str]
 ///     *([mut][Self::as_mut_str]<sup title="unsafe function">⚠</sup>)*,
 ///   [`chars`][Self::chars],
-///   [`to_cstring`][Self::to_cstring](`alloc`).
 /// - Query:
 ///   [`len`][Self::len],
 ///   [`is_empty`][Self::is_empty],
@@ -87,7 +85,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, MismatchedCapacity};
+    /// # use devela_base::{StringNonul, MismatchedCapacity};
     /// # fn main() -> Result<(), MismatchedCapacity> {
     /// let mut s = StringNonul::<4>::new()?;
     /// assert_eq![0, s.len()];
@@ -145,13 +143,20 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// before the borrow ends and the underlying `str` is used.
     ///
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
+    ///
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
+    pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
-        // SAFETY: caller must ensure safety
-        unsafe { self.arr.get_unchecked_mut(0..len) }
+
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        return Slice::take_first_mut(&mut self.arr, len);
+
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        unsafe {
+            Slice::take_first_mut_unchecked(&mut self.arr, len)
+        }
     }
 
     /// Returns the inner string slice.
@@ -174,10 +179,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and that it doesn't contain any `NUL` characters before the borrow
     /// ends and the underlying `str` is used.
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_mut_str(&mut self) -> &mut str {
-        // SAFETY: caller must ensure safety
+    pub const unsafe fn as_mut_str(&mut self) -> &mut str {
         unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
     }
 
@@ -186,19 +188,11 @@ impl<const CAP: usize> StringNonul<CAP> {
         self.as_str().chars()
     }
 
-    /// Returns a new allocated C-compatible, nul-terminanted string.
-    #[must_use]
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn to_cstring(&self) -> CString {
-        CString::new(self.to_string()).unwrap()
-    }
-
     /* operations */
 
     /// Sets the length to 0, by resetting all bytes to 0.
     #[rustfmt::skip]
-    pub fn clear(&mut self) { self.arr = [0; CAP]; }
+    pub const fn clear(&mut self) { self.arr = [0; CAP]; }
 
     /// Removes the last character and returns it, or `None` if
     /// the string is empty.
@@ -473,16 +467,10 @@ impl<const CAP: usize> Default for StringNonul<CAP> {
     ///
     /// # Panics
     /// Panics if `CAP > [`u8::MAX`]`.
+    #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
     fn default() -> Self {
         Self::new().unwrap()
     }
-}
-impl<const CAP: usize> ConstDefault for StringNonul<CAP> {
-    /// Returns an empty string.
-    ///
-    /// # Panics
-    /// Panics if `CAP > [`u8::MAX`]`.
-    const DEFAULT: Self = unwrap![ok Self::new()];
 }
 
 impl<const CAP: usize> fmt::Display for StringNonul<CAP> {

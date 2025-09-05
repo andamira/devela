@@ -52,7 +52,6 @@ macro_rules! impl_str_u {
         ///   [`as_str`][Self::as_str]
         ///     *([mut][Self::as_mut_str]<sup title="unsafe function">⚠</sup>)*,
         ///   [`chars`][Self::chars],
-        ///   [`to_cstring`][Self::to_cstring](`alloc`).
         /// - Query:
         ///   [`len`][Self::len],
         ///   [`is_empty`][Self::is_empty],
@@ -143,6 +142,9 @@ macro_rules! impl_str_u {
             }
 
             /// Returns an exclusive byte slice of the inner string slice.
+            ///
+            /// # Features
+            /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use] #[rustfmt::skip]
             #[inline(always)]
             pub const fn as_bytes_mut(&mut self) -> &mut [u8] {

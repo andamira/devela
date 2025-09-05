@@ -10,20 +10,12 @@
 
 mod r#trait; // Grapheme
 
-#[cfg(feature = "_str_nonul")]
-mod nonul;
-#[cfg(feature = "alloc")]
-mod string;
-
 crate::structural_mods! { // _mods
     _mods {
-        pub use devela_base::text::GraphemeU8;
+        pub use devela_base::text::{GraphemeNonul, GraphemeU8};
+        #[cfg(feature = "alloc")]
+        pub use devela_base_alloc::text::GraphemeString;
 
         pub use super::r#trait::*;
-
-        #[cfg(feature = "_str_nonul")]
-        pub use super::nonul::*;
-        #[cfg(feature = "alloc")]
-        pub use super::string::*;
     }
 }

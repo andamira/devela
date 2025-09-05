@@ -185,7 +185,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 215/300 (75 remaining), 137 visible, 78 hidden
+[features] # 212/300 (78 remaining), 137 visible, 75 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -489,7 +489,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 # - text
 
 # default = []
-_max = ["_data_all", "_num_all", "_text_all"]
+_max = ["_data_all", "_num_all"]
 _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 
 #* _docs capabilities *#
@@ -512,8 +512,6 @@ _docs_min = [ # the minimum capabilities to document every item
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 	# num:
 	"_float_f64", "_int_u32", "_int_i64",
-	# text:
-	"_str_nonul",
 ]
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
@@ -619,16 +617,6 @@ _nums_all = ["_float_all", "_int_all"]
 			_int_u64 = []
 			_int_u128 = []
 			_int_usize = []
-
-#* text capabilities *#
-# ---------------------
-
-_text_all = ["_str_all"]
-
-# StringU*, StringNonul:
-_str_all = ["_str_nonul"]
-	#
-	_str_nonul = []
 
 
 #* Dependency features (optional external dependencies) *#
@@ -1277,11 +1265,11 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_stable_1_91)",
 			"cfg(nightly_stable_later)",
 	#
-	# Auto-enabled reflection flags from ./build/main/features.rs (36)
+	# Auto-enabled reflection flags from ./build/main/features.rs (25)
 	# --------------------------------------------------------------------------
 	# general: (4)
 	"cfg(unsafe··, safe··, nightly··, dep··)",
-	# data: (6)
+	# data: (5)
 	'cfg(data··)',
 	'cfg(_destaque··, _stack··)',
 	'cfg(_graph··, _node··)',
@@ -1291,16 +1279,15 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(lang··, ffi··)',
 	# media: (1)
 	'cfg(media··)',
-	# num: (13)
+	# num: (6)
 	'cfg(num··)',
 	'cfg(_nums··, _float··, _int··, _int_i··, _int_u··)',
 	# phys: (1)
 	'cfg(phys··)',
 	# sys: (2)
 	'cfg(sys··, mem··)',
-	# text: (4)
-	'cfg(text··)',
-	'cfg(_str··)',
+    # text: (1)
+    'cfg(text··)',
 	# ui: (1)
 	'cfg(ui··)',
 	# work: (1)
