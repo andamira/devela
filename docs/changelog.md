@@ -110,8 +110,7 @@ in order to improve compile times while maintaining most of the gained cohesiven
   - types: `Mismatch`, `OptRes`, `Own`, `ValueQuant`.
 
 ### utils
-- new macros: `mod_path!`.
-- new internal macros: `_doclink`.
+- new macros: `doclink!`, `mod_path!`.
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `cfor!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
   - internal macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_use!`.

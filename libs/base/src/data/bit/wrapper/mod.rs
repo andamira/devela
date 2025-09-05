@@ -16,7 +16,7 @@ mod tests;
 /// [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
 ///
 /// See also [`BitOps`] for the related trait.
-#[doc = crate::_doclink!("[`BitOps`]" devela "data/trait.BitOps.html")]
+#[doc = crate::doclink!(devela "[`BitOps`]" "data/trait.BitOps.html")]
 ///
 /// [`i8`]: Self#implementation-for-i8
 /// [`i16`]: Self#implementation-for-i16

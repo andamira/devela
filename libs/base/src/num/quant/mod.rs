@@ -7,12 +7,14 @@
 //! to specific interpretations.
 //!
 //! More specifically it defines foundational types for:
+// - Discrete counting and increments: [`Count`].
 //! - Periodic phenomena [`Cycle`], [`CycleCount`].
-//! - Range and interval mathematics: [`Interval`], [`interval!`].
 // - Proportional relationships and ratios: [`Ratio`].
+//! - Range and interval mathematics: [`Interval`], [`interval!`].
 // - Scaling transformations: [`Scale`].
 //! - Numerical classification and properties: [`Sign`].
-// - Discrete counting and increments: [`Count`].
+//!
+#![doc = crate::doclink!(devela "[`interval!`]" "num/quant/macro.interval.html")]
 //
 
 mod cycle; // Cycle, CycleCount

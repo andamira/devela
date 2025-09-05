@@ -215,7 +215,7 @@ __build = ["devela_base_std"] # full build dependencies
 __dbg = ["__build", "devela_base/__dbg", "devela_base_alloc?/__dbg", "devela_base_std?/__dbg"]
 __no_test = []      # exclude examples from being tested
 
-# enabled when publishing to crates.io or building online docs
+# enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
 	"devela_base/__publish", "devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",

@@ -199,48 +199,6 @@ macro_rules! __doc_availability {
 #[doc(hidden)]
 pub use __doc_availability as _doc_availability;
 
-// WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
-// IMPROVE: further differentiate between publish with docs.rs docs or alternative.
-/// Helps doc-linking to items in downstream crates. (local version)
-///
-/// Returns the constructed URL to the
-///
-/// # Features
-/// If the `__publish` feature is enabled it links to the published documentation,
-/// otherwise it links to the local path.
-///
-// Usage examples:
-// - devela_base::data::bit::field::bitfield
-// - devela::code::util::enumset
-#[doc(hidden)] #[macro_export] #[cfg(not(feature = "__publish"))] #[rustfmt::skip]
-macro_rules! __doclink {
-    ( // [anchor]: file://…/crate_name/item_path/index.html
-     $anchor:literal $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ", $crate::_doclink![$crate_name $item_path $(@mod$($_m)?)?]]
-    };
-    ( // file://…/crate_name/item_path/index.html
-     $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        // NOTE: in sync with ../../../build/environment.rs & /.cargo/config.toml#[env]
-        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?]
-    };
-}
-/// Helps doc-linking to items in downstream crates. (internet version)
-#[doc(hidden)] #[macro_export] #[cfg(feature = "__publish")] #[rustfmt::skip]
-macro_rules! __doclink {
-    ( // [anchor]: https://…/crate_name/item_path
-     $anchor:literal $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ", $crate::_doclink![$crate_name $item_path $(@mod$($_m)?)?]]
-    };
-    ( // https://…/crate_name/item_path
-     $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["https://andamira.github.io/", stringify!($crate_name),
-        "/latest/", stringify!($crate_name), "/", $item_path]
-    };
-}
-#[doc(hidden)]
-pub use __doclink as _doclink;
-
 /// Generates a formatted documentation string for a miri warning.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

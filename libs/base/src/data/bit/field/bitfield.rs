@@ -20,7 +20,7 @@
 /// # Examples
 /// See also the [bitfield] example.
 // #[doc = "\n\n[bitfield]: _info::examples::bitfield"]
-#[doc = crate::_doclink!("[bitfield]" devela "_info/examples/bitfield" @mod)]
+#[doc = crate::doclink!(devela "[bitfield]" "_info/examples/bitfield" @mod)]
 /// ```
 /// # use devela_base::bitfield;
 /// bitfield! {
@@ -41,7 +41,7 @@
 ///
 /// See also the [`enumset!`] macro.
 // #[doc = "\n\n[`enumset!`]: crate::enumset"]
-#[doc = crate::_doclink!("[`enumset!`]" devela "code/util/macro.enumset.html")]
+#[doc = crate::doclink!(devela "[`enumset!`]" "code/util/macro.enumset.html")]
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _bitfield {

@@ -6,14 +6,13 @@
 /// Defines an enum and an associated type set of its variants.
 ///
 /// It uses the [`bitfield!`] macro to create the associated set.
-// #[doc = "\n\n[`bitfield!`]: crate::bitfield"] // fails in devela
-// #[doc = crate::_doclink!("[`bitfield!`]" devela "_info/examples/enumset" @mod)]
+#[doc = crate::doclink!(devela "[`bitfield!`]" "data/bit/macro.bitfield.html")]
 ///
 /// You have to give unique names both to the enum and to the associated set.
 ///
 /// # Examples
 /// See also the [enumset] example.
-#[doc = crate::_doclink!("[enumset]" devela "_info/examples/enumset" @mod)]
+#[doc = crate::doclink!(devela "[enumset]" "_info/examples/enumset" @mod)]
 ///
 /// ```
 /// # use devela_base::enumset;

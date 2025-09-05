@@ -30,6 +30,7 @@ macro_rules! impl_str_u {
     @$name:ty, $t:ty) => { paste! {
         /* definitions */
 
+        #[allow(rustdoc::broken_intra_doc_links, reason = "±unsafe")]
         #[doc = crate::TAG_TEXT!()]
         #[doc = "A UTF-8–encoded string, backed by an array with [`" $t "::MAX`] bytes of capacity."]
         ///
@@ -89,27 +90,27 @@ macro_rules! impl_str_u {
             /* query */
 
             /// Returns the current string length in bytes.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn len(&self) -> usize { self.len as usize }
 
             /// Returns `true` if the current length is 0.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn is_empty(&self) -> bool { self.len == 0 }
 
             /// Returns `true` if the current remaining capacity is 0.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn is_full(&self) -> bool { self.len == CAP as $t }
 
             /// Returns the total capacity in bytes.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn capacity() -> usize { CAP }
 
             /// Returns the remaining capacity in bytes.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn remaining_capacity(&self) -> usize { CAP - self.len as usize }
 
@@ -118,19 +119,19 @@ macro_rules! impl_str_u {
             /// Returns the inner array with the full contents.
             ///
             /// The array contains all the bytes, including those outside the current length.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn into_array(self) -> [u8; CAP] { self.arr }
 
             /// Returns a copy of the inner array with the full contents.
             ///
             /// The array contains all the bytes, including those outside the current length.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn as_array(&self) -> [u8; CAP] { self.arr }
 
             /// Returns a byte slice of the inner string slice.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn as_bytes(&self) -> &[u8] {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
@@ -144,7 +145,7 @@ macro_rules! impl_str_u {
             ///
             /// # Features
             /// Makes use of the `unsafe_str` feature if enabled.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             #[inline(always)]
             pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
@@ -171,16 +172,18 @@ macro_rules! impl_str_u {
 
             /// Returns the exclusive inner string slice.
             /// Makes use of the `unsafe_str` feature if enabled.
+            ///
+            /// # Safety
+            /// The content must be valid UTF-8.
             #[must_use]
             #[inline(always)]
             #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-            pub const fn as_mut_str(&mut self) -> &mut str {
+            pub const unsafe fn as_mut_str(&mut self) -> &mut str {
                 unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
             }
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
-            #[rustfmt::skip]
             #[inline(always)]
             pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() } // non-const
 
@@ -202,7 +205,7 @@ macro_rules! impl_str_u {
 
             /// Removes the last character and returns it, or `None` if
             /// the string is empty.
-            #[must_use] #[rustfmt::skip]
+            #[must_use]
             pub fn pop(&mut self) -> Option<char> {
                 self.as_str().chars() // non-const
                     .last().map(|c| { self.len -= c.len_utf8() as $t; c })
@@ -325,7 +328,6 @@ macro_rules! impl_str_u {
             /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
             ///
             #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
                 let bytes = Char::to_utf8_bytes(c);
@@ -358,7 +360,6 @@ macro_rules! impl_str_u {
             /// or if `CAP < 2.
             ///
             #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
                 let bytes = c.to_utf8_bytes();
@@ -375,7 +376,6 @@ macro_rules! impl_str_u {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
             ///
             #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new()];
                 let bytes = c.to_utf8_bytes();
@@ -499,7 +499,6 @@ macro_rules! impl_str_u {
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
             fn default() -> Self { Self::new().unwrap() }
         }
 
@@ -516,28 +515,23 @@ macro_rules! impl_str_u {
         }
 
         impl<const CAP: usize> PartialEq<&str> for $name<CAP> {
-            #[rustfmt::skip]
             fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
         }
         // and for when &str is on the left-hand side of the comparison
         impl<const CAP: usize> PartialEq<$name<CAP>> for &str {
-            #[rustfmt::skip]
             fn eq(&self, string: & $name<CAP>) -> bool { *self == string.as_str() }
         }
 
         impl<const CAP: usize> Deref for $name<CAP> {
             type Target = str;
-            #[rustfmt::skip]
             fn deref(&self) -> &Self::Target { self.as_str() }
         }
 
         impl<const CAP: usize> AsRef<str> for $name<CAP> {
-            #[rustfmt::skip]
             fn as_ref(&self) -> &str { self.as_str() }
         }
 
         impl<const CAP: usize> AsRef<[u8]> for $name<CAP> {
-            #[rustfmt::skip]
             fn as_ref(&self) -> &[u8] { self.as_bytes() }
         }
 

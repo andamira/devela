@@ -56,6 +56,7 @@ pub struct StringNonul<const CAP: usize> {
     arr: [u8; CAP],
 }
 
+#[rustfmt::skip]
 impl<const CAP: usize> StringNonul<CAP> {
     /// Creates a new empty `StringNonul`.
     ///
@@ -72,11 +73,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     /* query */
 
     /// Returns the total capacity in bytes.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn capacity() -> usize { CAP }
 
     /// Returns the remaining capacity.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns the current length.
@@ -106,11 +107,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 
     /// Returns `true` if the current length is 0.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn is_empty(&self) -> bool { self.len() == 0 }
 
     /// Returns `true` if the current remaining capacity is 0.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /* deconstruct */
@@ -118,20 +119,20 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn into_array(self) -> [u8; CAP] { self.arr }
 
     /// Returns a copy of the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn as_array(&self) -> [u8; CAP] { self.arr }
 
     /// Returns a byte slice of the inner string slice.
     ///
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len()).0 }
 
     /// Returns a mutable byte slice of the inner string slice.
@@ -160,12 +161,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns the inner string slice.
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
-    #[must_use] #[rustfmt::skip]
+    #[must_use]
     pub const fn as_str(&self) -> &str {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
         return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
         // SAFETY: we ensure to contain only valid UTF-8
         unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
     }
@@ -177,6 +178,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and that it doesn't contain any `NUL` characters before the borrow
     /// ends and the underlying `str` is used.
     #[must_use]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
         unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
     }
@@ -189,7 +192,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /* operations */
 
     /// Sets the length to 0, by resetting all bytes to 0.
-    #[rustfmt::skip]
     pub const fn clear(&mut self) { self.arr = [0; CAP]; }
 
     /// Removes the last character and returns it, or `None` if
@@ -347,7 +349,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or  if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    #[rustfmt::skip]
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if c != '\0' {
@@ -388,7 +389,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
-    #[rustfmt::skip]
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
@@ -410,7 +410,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
-    #[rustfmt::skip]
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
@@ -451,7 +450,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and that it doesn't contain nul characters.
     ///
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
         Self { arr: bytes }

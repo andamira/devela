@@ -5,6 +5,7 @@
 
 #[cfg(feature = "dep_memchr")]
 use crate::_dep::memchr::*;
+
 #[cfg(not(feature = "dep_memchr"))]
 use crate::is;
 

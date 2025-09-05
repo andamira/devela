@@ -7,7 +7,7 @@
 // - trait impls
 // - conversions
 
-use crate::{IterChars, MismatchedCapacity, StringNonul, char7, char8, char16, unwrap};
+use crate::{IterChars, MismatchedCapacity, StringNonul, char7, char8, char16, doclink, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -71,13 +71,15 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 
     /// Creates a new `GraphemeNonul` from a `char`.
     ///
-    /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty grapheme will be returned.
+    /// If `c`.[`is_nul()`] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > 255,
-    /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
+    /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`].
     ///
     /// Will always succeed if `CAP` >= 4.
+    #[doc = doclink!(devela "[`is_nul()`]" "text/trait.UnicodeScalar.html#method.is_nul")]
+    #[doc = doclink!(devela "[`len_utf8()`]" "text/trait.UnicodeScalar.html#method.len_utf8")]
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char(c)]))
     }
@@ -139,7 +141,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// # Safety
     /// The content must be valid UTF-8.
     #[must_use] #[rustfmt::skip]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
         // SAFETY: caller must ensure safety
