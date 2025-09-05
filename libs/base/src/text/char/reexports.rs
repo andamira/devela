@@ -1,6 +1,6 @@
 // devela_base::text::char::reexports
 
-use crate::_reexport;
+use crate::{_reexport, TAG_TEXT};
 
 #[doc = crate::TAG_PRIMITIVE!()]
 #[doc = crate::TAG_TEXT!()]
@@ -21,7 +21,7 @@ use crate::_reexport;
 pub type char = ::core::primitive::char;
 
 _reexport! { rust: core::str,
-    tag: crate::TAG_ITERATOR!(),
+    tag: concat![TAG_TEXT!(), crate::TAG_ITERATOR!()],
     doc: "An iterator over the [`char`][prim@char]s of a string slice.",
     @Chars as IterChars
 }

@@ -7,11 +7,9 @@
 // - trait impls
 
 use crate::{
-    Char, Deref, InvalidText, IterChars, Mismatch, MismatchedCapacity, NotEnoughElements, Slice,
-    cfor, char7, char8, char16, is, unwrap,
+    Char, Debug, Deref, Display, FmtResult, Formatter, InvalidText, IterChars, Mismatch,
+    MismatchedCapacity, NotEnoughElements, Slice, Str, cfor, char7, char8, char16, is, unwrap,
 };
-use ::core::fmt;
-crate::_use! {basic::from_utf8}
 
 /* definitions */
 
@@ -165,11 +163,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[must_use] #[rustfmt::skip]
     pub const fn as_str(&self) -> &str {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
-        return unwrap![ok_expect from_utf8(self.as_bytes()), "Invalid UTF-8"];
+        return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
         // SAFETY: we ensure to contain only valid UTF-8
-        unsafe { ::core::str::from_utf8_unchecked(self.as_bytes()) }
+        unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
     }
 
     /// Returns the mutable inner string slice.
@@ -434,7 +432,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns [`InvalidText::Utf8`] if the bytes are not valid UTF-8,
     /// and [`InvalidText::Char`] if the bytes contains a NUL character.
     pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
-        // WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
+        // IMPROVE: use Str
         match ::core::str::from_utf8(&bytes) {
             Ok(_) => {
                 cfor![index in 0..CAP => {
@@ -473,13 +471,13 @@ impl<const CAP: usize> Default for StringNonul<CAP> {
     }
 }
 
-impl<const CAP: usize> fmt::Display for StringNonul<CAP> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl<const CAP: usize> Display for StringNonul<CAP> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         write!(f, "{}", self.as_str())
     }
 }
-impl<const CAP: usize> fmt::Debug for StringNonul<CAP> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl<const CAP: usize> Debug for StringNonul<CAP> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         write!(f, "{:?}", self.as_str())
     }
 }
@@ -539,13 +537,13 @@ impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
     /// # Errors
     /// Returns [`InvalidText::Capacity`] if `CAP > `[u8::MAX`] or if `CAP < bytes.len()`
     /// or [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
-    // WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
     fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
         if bytes.len() >= CAP {
             #[rustfmt::skip]
             return Err(InvalidText::Capacity(
                 Mismatch::in_closed_interval(0, bytes.len(), CAP, "")));
         }
+        // IMPROVE: use Str
         match ::core::str::from_utf8(bytes) {
             Ok(_) => {
                 let mut arr = [0; CAP];

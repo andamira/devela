@@ -11,10 +11,9 @@
 #[allow(unused, reason = "±unsafe")]
 use crate::{Compare, cfor, unwrap};
 use crate::{
-    Deref, InvalidText, InvalidUtf8, IterChars, Mismatch, MismatchedCapacity, NotEnoughElements,
-    Slice, Str, is, paste, text::char::*,
+    Debug, Deref, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars, Mismatch,
+    MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, text::char::*,
 };
-use ::core::fmt;
 
 macro_rules! impl_str_u {
     () => { impl_str_u![u8, u16, u32, usize]; };
@@ -504,14 +503,14 @@ macro_rules! impl_str_u {
             fn default() -> Self { Self::new().unwrap() }
         }
 
-        impl<const CAP: usize> fmt::Display for $name<CAP> {
-            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        impl<const CAP: usize> Display for $name<CAP> {
+            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
                 write!(f, "{}", self.as_str())
             }
         }
 
-        impl<const CAP: usize> fmt::Debug for $name<CAP> {
-            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        impl<const CAP: usize> Debug for $name<CAP> {
+            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
                 write!(f, "{:?}", self.as_str())
             }
         }

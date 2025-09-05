@@ -11,8 +11,8 @@ use crate::{IterChars, MismatchedCapacity, StringU8, char7, char8, char16, unwra
 
 /* definitions */
 
-/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by an
-/// [`StringU8`].
+#[doc = crate::TAG_TEXT!()]
+/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`StringU8`].
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, PartialEq, Eq, Hash)]

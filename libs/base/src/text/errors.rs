@@ -1,6 +1,6 @@
 // devela_base::text::error
 //
-//!
+//! Text-related errors.
 //
 // TOC
 // - individual text-related error types:

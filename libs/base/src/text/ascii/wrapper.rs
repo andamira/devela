@@ -9,6 +9,7 @@ use crate::is;
 use crate::unwrap;
 use crate::{Compare, StringU8};
 
+#[doc = crate::TAG_TEXT!()]
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides ASCII operations on `T`, most of them *const*.
 #[derive(Clone, Copy, Debug)]

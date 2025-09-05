@@ -10,6 +10,7 @@
 use crate::transmute;
 use ::core::fmt;
 
+#[doc = crate::TAG_TEXT!()]
 /// One of 128 Unicode characters (`U+0000` to `U+007F`), the ASCII subset.
 ///
 /// Officially, this is the first [block] in Unicode, _Basic Latin_.

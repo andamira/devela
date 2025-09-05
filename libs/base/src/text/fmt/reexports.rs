@@ -127,7 +127,7 @@ _reexport! { rust: core::fmt,
     DebugTuple
 }
 _reexport! { rust: core::fmt,
-    tag: concat![TAG_ERROR!(), TAG_FMT!()],
+    tag: concat![TAG_FMT!(), TAG_ERROR!()],
     doc: "The error type which is returned from formatting a message into a stream.",
     @Error as FmtError
 }

@@ -9,6 +9,7 @@
 
 use crate::unwrap;
 
+#[doc = crate::TAG_TEXT!()]
 #[doc = crate::TAG_NAMESPACE!()]
 /// Unicode scalars-related operations.
 ///
