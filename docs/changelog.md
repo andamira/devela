@@ -162,10 +162,10 @@
 ## text
 - move to [base]:
   - traits: `NumToStr`, [`UnicodeScalar`].
-  - types: `Ascii`, `ByteSearch`, `Str`, `StringU*`, `char7`, `char8`, `char16`.
+  - types: `Ascii`, `ByteSearch`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 - remove methods: `to_cstring`, from `StringU*` & `GraphemeU8`.
 - remove `Str::from_boxed_utf8_unchecked` method.
 - new `StringU*` method: `sanitize`.
-- make more `Str` methods const.
+- make more methods *const* in `GraphemeU8` and `StringU8`.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

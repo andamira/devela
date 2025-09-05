@@ -9,7 +9,7 @@
 // safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
-#[allow(hidden_glob_reexports, reason = "re-exported char")]
+#[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 mod char;
 pub mod errors {
     //! Text-related errors.

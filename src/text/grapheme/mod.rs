@@ -12,17 +12,17 @@ mod r#trait; // Grapheme
 
 #[cfg(feature = "_str_nonul")]
 mod nonul;
-mod string_u8;
 #[cfg(feature = "alloc")]
 mod string;
 
 crate::structural_mods! { // _mods
     _mods {
+        pub use devela_base::text::GraphemeU8;
+
         pub use super::r#trait::*;
 
         #[cfg(feature = "_str_nonul")]
         pub use super::nonul::*;
-        pub use super::string_u8::*;
         #[cfg(feature = "alloc")]
         pub use super::string::*;
     }

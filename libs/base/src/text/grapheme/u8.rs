@@ -1,4 +1,4 @@
-// devela::text::grapheme::string_u8
+// devela_base::text::grapheme::u8
 //
 //!
 //
@@ -6,19 +6,16 @@
 // - definitions
 // - trait impls
 
-use super::Grapheme;
-// #[cfg(feature = "alloc")]
-// use crate::CString;
-use crate::{ConstDefault, IterChars, MismatchedCapacity, StringU8, char7, char8, char16, unwrap};
+use crate::{IterChars, MismatchedCapacity, StringU8, char7, char8, char16, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
 
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by an
 /// [`StringU8`].
-#[derive(Clone, PartialEq, Eq, Hash)]
-#[repr(transparent)]
 #[must_use]
+#[repr(transparent)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct GraphemeU8<const CAP: usize>(StringU8<CAP>);
 
 impl<const CAP: usize> GraphemeU8<CAP> {
@@ -96,7 +93,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
 
     /// Sets the length to 0, by resetting all bytes to 0.
     #[rustfmt::skip]
-    pub fn clear(&mut self) { self.0.clear(); }
+    pub const fn clear(&mut self) { self.0.clear(); }
 
     //
 
@@ -106,7 +103,9 @@ impl<const CAP: usize> GraphemeU8<CAP> {
 
     /// Returns a mutable byte slice of the inner string slice.
     #[must_use]
-    pub fn as_bytes_mut(&mut self) -> &mut [u8] { self.0.as_bytes_mut() }
+    pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
+        self.0.as_bytes_mut()
+    }
 
     /// Returns a copy of the inner array with the full contents.
     ///
@@ -140,8 +139,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
 
 /* traits */
 
-impl<const CAP: usize> Grapheme for GraphemeU8<CAP> {}
-
 mod core_impls {
     use super::*;
     use core::fmt;
@@ -154,14 +151,6 @@ mod core_impls {
         #[rustfmt::skip]
         fn default() -> Self { unwrap![ok Self::new()] }
     }
-    impl<const CAP: usize> ConstDefault for GraphemeU8<CAP> {
-        /// Returns an empty string.
-        ///
-        /// # Panics
-        /// Panics if `CAP > 255`.
-        const DEFAULT: Self = unwrap![ok Self::new()];
-    }
-
     impl<const CAP: usize> fmt::Display for GraphemeU8<CAP> {
         #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{}", self.0) }

@@ -6,8 +6,9 @@
 #![cfg_attr(base_safe_text, forbid(unsafe_code))]
 
 mod ascii; // Ascii, AsciiChar
-#[allow(hidden_glob_reexports, reason = "re-exported char")]
+#[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 mod char; // Char
+mod grapheme; // GraphemeU8
 
 pub mod errors;
 pub mod fmt;
@@ -19,6 +20,7 @@ crate::structural_mods! { // mods, _pub_mods
         pub use super::{
             ascii::_all::*,
             char::_all::*,
+            grapheme::_all::*,
         };
     }
     _pub_mods {

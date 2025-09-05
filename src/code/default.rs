@@ -256,11 +256,15 @@ mod impl_std {
 mod impl_devela {
     use crate::{ConstDefault, paste, unwrap};
     use crate::{
-        AsciiChar,
+        // data //
         Cast,
+        // num //
         // TODO: Cycle, CycleCount
         Interval,
         Sign,
+        // text //
+        AsciiChar,
+        GraphemeU8,
         StringU8, StringU16, StringU32, StringUsize,
     };
 
@@ -285,6 +289,11 @@ mod impl_devela {
 
     impl ConstDefault for AsciiChar {
         const DEFAULT: Self = AsciiChar::Null;
+    }
+
+    impl<const CAP: usize> ConstDefault for GraphemeU8<CAP> {
+        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > 255`."]
+        const DEFAULT: Self = unwrap![ok Self::new()];
     }
 
     macro_rules! impl_cdef_for_string_u { // impl ConstDefault for StringU*
