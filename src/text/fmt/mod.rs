@@ -21,6 +21,7 @@ crate::structural_mods! { // _mods, _always
         #[cfg(feature = "alloc")]
         pub use super::_a::*;
 
+        #[doc(inline)]
         pub use devela_base::text::fmt::NumToStr;
 
         // WIPZONE

@@ -26,7 +26,7 @@ crate::CONST! {
 - commands without parenthesis refer to [`Ansi`][crate::Ansi] associated constants.
 - commands with parenthesis refers to `Ansi` associated functions.
 - only commands that return an array are supported (not `*_N` versions).
-- the static arms make use of the [`join!`][crate::join] macro for concatenation.
+- the static arms make use of the [`const_join!`][crate::const_join] macro for concatenation.
 - the print arms calls the apropriate `Ansi` [`print`][crate::Ansi::print] method variant.
 
 # Example
@@ -75,7 +75,7 @@ macro_rules! ansi {
     b: // outputs a static byte slice
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         const BYTES: &'static [u8] = $crate::paste! {
-            $crate::join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
+            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
         };
         BYTES
     }};
@@ -108,7 +108,7 @@ macro_rules! ansi {
     b: // outputs a static byte slice
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         const BYTES: &'static [u8] = $crate::paste! {
-            $crate::join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
+            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
         };
         BYTES
     }};
@@ -154,7 +154,7 @@ macro_rules! ansi {
     b: // outputs a static byte slice
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         const BYTES: &'static [u8] = $crate::paste! {
-            $crate::join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
+            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
         };
         BYTES
     }};

@@ -12,8 +12,10 @@ mod ext; // ExtSlice
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use devela_base::sys::mem::{Slice, join};
-
         pub use super::ext::*;
+
+        // re-exports
+        #[doc(inline)]
+        pub use devela_base::sys::mem::{Slice, const_join};
     }
 }

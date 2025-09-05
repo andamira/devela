@@ -11,6 +11,7 @@ mod ops; // BitOps
 crate::structural_mods! { // _mods
     _mods {
         pub use super::ops::*;
+
         #[doc(inline)]
         pub use devela_base::{Bitwise, bitfield};
     }

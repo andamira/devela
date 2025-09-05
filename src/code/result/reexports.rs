@@ -4,8 +4,10 @@ use crate::{ConstDefault, mod_path};
 
 mod_path!(+pub _c "../../../libs/base/src/code/result/reexports.rs");
 
-pub use devela_base::code::result::{Chain, Hook, Mismatch, Own, ValueQuant};
-pub use devela_base::code::result::{ExtOptRes, OptRes, serr, sok, unwrap};
+#[doc(inline)]
+pub use devela_base::code::result::{
+    Chain, ExtOptRes, Hook, Mismatch, OptRes, Own, ValueQuant, serr, sok, unwrap,
+};
 
 impl<N: ConstDefault, H: ConstDefault> ConstDefault for Mismatch<N, H> {
     /// Returns a *const* default `Mismatch`.

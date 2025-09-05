@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: str, string)]
 
 mod reexports;
-mod macros; // join!, str!
+mod macros; // str!
 
 #[cfg(feature = "str")]
 mod ext_str; // ExtStr

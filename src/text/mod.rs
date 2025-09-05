@@ -13,6 +13,7 @@
 mod char;
 pub mod errors {
     //! Text-related errors.
+    #[doc(inline)]
     pub use devela_base::text::errors::*;
 }
 mod grapheme; // Grapheme
@@ -27,12 +28,13 @@ pub mod str;
 
 crate::structural_mods! { // _mods, _pub_mods, _always
     _mods {
-        pub use devela_base::text::{Ascii, AsciiChar}; // ascii
-
         pub use super::{
             char::_all::*,
             grapheme::_all::*,
         };
+
+        #[doc(inline)]
+        pub use devela_base::text::{Ascii, AsciiChar}; // ascii
 
         // WIPZONE
         // pub use super::bytes::*;

@@ -58,7 +58,7 @@ macro_rules! generate_os_linux_print_macros {
         $crate::paste! {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`Linux::" $name "`][crate::Linux::" $name "]"]
-            #[doc = ", [`format_buf`][crate::format_buf] and [`join`][crate::join]."]
+            #[doc = ", [`format_buf`][crate::format_buf] and [`const_join!`][crate::const_join]."]
             ///
             #[doc = "Usage is similar but not equal to `std::`[`" $name "!`]."]
             ///
@@ -106,7 +106,7 @@ macro_rules! generate_os_linux_print_macros {
 
                 // 3) print concatenated literals
                 ($d($d str:literal),+ $d(,)?) => {
-                    $crate::Linux::$name($crate::join!(str: $d($d str,)+));
+                    $crate::Linux::$name($crate::const_join!(str: $d($d str,)+));
                 };
 
                 // 4) create a buffer of the given length

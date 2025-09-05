@@ -2,6 +2,7 @@
 
 crate::mod_path!(alloc +pub _a "../../../../libs/base_alloc/src/data/list/link/reexports.rs");
 
+#[doc(inline)]
 pub use devela_base::ConstList;
 
 /* ConstDefault impls */

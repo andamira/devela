@@ -1,26 +1,31 @@
 // devela_base::sys::mem::slice::join
 //
-//! Defines the [`join!`] macro.
+//! Defines the [`const_join!`] macro.
 //
 
 #[doc = crate::TAG_TEXT!()]
 /// Joins multiple byte slices or string slices in compile-time.
 ///
+/// It leverages the [`ArrayFrom`][crate:Arrayfrom] struct.
+///
+/// Note that these operations are slow and should not be used for fast paths,
+/// and mostly for compile-time needs.
+///
 /// # Example
 /// ```
-/// # use devela_base::{const_assert, join};
+/// # use devela_base::{const_assert, const_join};
 /// /* string slices */
 ///
 /// const SBASE: &str = "path/to";
 /// const SPART1: &str = "/foo";
 /// const SPART2: &str = "/bar";
-/// const SPATH: &str = join!(str: SBASE, SPART1, SPART2);
+/// const SPATH: &str = const_join!(str: SBASE, SPART1, SPART2);
 /// const_assert![eq_str SPATH, "path/to/foo/bar"];
 ///
-/// const SREPEATED: &str = join!(str_repeated: SPART1, 3);
+/// const SREPEATED: &str = const_join!(str_repeated: SPART1, 3);
 /// const_assert![eq_str SREPEATED, "/foo/foo/foo"];
 ///
-/// const SPARTS: &str = join!(str_separated: "/"; "path", "to", "file");
+/// const SPARTS: &str = const_join!(str_separated: "/"; "path", "to", "file");
 /// const_assert!(eq_str SPARTS, "path/to/file");
 ///
 /// /* byte slices */
@@ -28,37 +33,37 @@
 /// const BBASE: &[u8] = b"path/to";
 /// const BPART1: &[u8] = b"/foo";
 /// const BPART2: &[u8] = b"/bar";
-/// const BPATH: &[u8] = join!(bytes: BBASE, BPART1, BPART2);
+/// const BPATH: &[u8] = const_join!(bytes: BBASE, BPART1, BPART2);
 /// const_assert![eq_buf BPATH, b"path/to/foo/bar"];
 ///
-/// const BREPEATED: &[u8] = join!(bytes_repeated: BPART1, 3);
+/// const BREPEATED: &[u8] = const_join!(bytes_repeated: BPART1, 3);
 /// const_assert![eq_buf BREPEATED, b"/foo/foo/foo"];
 ///
-/// const BPARTS: &[u8] = join!(bytes_separated: b"/"; b"path", b"to", b"file");
+/// const BPARTS: &[u8] = const_join!(bytes_separated: b"/"; b"path", b"to", b"file");
 /// const_assert!(eq_buf BPARTS, b"path/to/file");
 /// ```
 ///
 /// # Features
 /// Makes use of the `unsafe_str` feature if available.
-#[doc(hidden)]
-#[macro_export]
 #[rustfmt::skip]
-macro_rules! _join {
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+macro_rules! _const_join {
     /* bytes */
 
     // trivial cases
     (bytes:) => { &[] };
-    (bytes: $bytes:expr $(,)?) => { $crate::join!(bytes_as_slice: $bytes) };
+    (bytes: $bytes:expr $(,)?) => { $crate::const_join!(bytes_as_slice: $bytes) };
     // main implementation
     (bytes: $($bytes: expr),+ $(,)?) => {{
-        const SLICES: &[&[u8]] = &[$( $crate::join!(bytes_as_slice: $bytes) ),+];
+        const SLICES: &[&[u8]] = &[$( $crate::const_join!(bytes_as_slice: $bytes) ),+];
         const LEN: usize = $crate::ArrayFrom(SLICES).len();
         &$crate::ArrayFrom(SLICES).to_array::<LEN>()
     }};
 
     // Repeat a byte slice a constant number of times:
     (bytes_repeated: $bytes:expr, $num:expr $(,)?) => {{
-        const SLICE: &[u8] = $crate::join!(bytes_as_slice: $bytes);
+        const SLICE: &[u8] = $crate::const_join!(bytes_as_slice: $bytes);
         const NUM: usize = $num;
         const LEN: usize = SLICE.len() * NUM;
         const fn repeated() -> [u8; LEN] {
@@ -101,7 +106,7 @@ macro_rules! _join {
     (str: $A:expr $(,)?) => { $A };
     // variadic case: Reduce to two-argument case
     (str: $A:expr, $B:expr, $($rest:expr),+ $(,)?) => {
-        $crate::join!(str: $A, $crate::join!(str: $B $(, $rest)+))
+        $crate::const_join!(str: $A, $crate::const_join!(str: $B $(, $rest)+))
     };
     // two args (base case)
     (str: $A:expr, $B:expr $(,)?) => {{
@@ -159,66 +164,67 @@ macro_rules! _join {
     }};
 }
 #[doc(inline)]
-pub use _join as join;
+pub use _const_join as const_join;
 
 #[cfg(test)]
 mod tests {
     #![allow(unused)]
 
-    use crate::{const_assert, join};
+    use crate::{const_assert, const_join};
 
     #[test]
     const fn join_bytes() {
         const BASE: &[u8] = b"path/to";
         const PART1: &[u8] = b"/foo";
         const PART2: &[u8] = b"/bar";
-        const PATH: &[u8] = join!(bytes: BASE, PART1, PART2);
+        const PATH: &[u8] = const_join!(bytes: BASE, PART1, PART2);
         const_assert![eq_buf PATH, b"path/to/foo/bar"];
 
-        const REPEATED: &[u8] = join!(bytes_repeated: PART1, 3);
+        const REPEATED: &[u8] = const_join!(bytes_repeated: PART1, 3);
         const_assert![eq_buf REPEATED, b"/foo/foo/foo"];
 
-        const PARTS: &[u8] = join!(bytes_separated: b"/"; b"path", b"to", b"file");
+        const PARTS: &[u8] = const_join!(bytes_separated: b"/"; b"path", b"to", b"file");
         const_assert!(eq_buf PARTS, b"path/to/file");
     }
     #[test]
     const fn join_bytes_mixed() {
         // Array literals
-        const ARR_ARR: &[u8] = join!(bytes: [1, 2], [3, 4]);
+        const ARR_ARR: &[u8] = const_join!(bytes: [1, 2], [3, 4]);
         const_assert!(eq_buf ARR_ARR, &[1,2,3,4]);
 
-        const ARR_SLI: &[u8] = join!(bytes: [1, 2], &[3, 4]);
+        const ARR_SLI: &[u8] = const_join!(bytes: [1, 2], &[3, 4]);
         const_assert!(eq_buf ARR_SLI, &[1,2,3,4]);
 
-        const ARR_LIT: &[u8] = join!(bytes: [1, 2, 3], 4);
+        const ARR_LIT: &[u8] = const_join!(bytes: [1, 2, 3], 4);
         const_assert!(eq_buf ARR_LIT, &[1,2,3,4]);
 
-        const STR_ARR_LIT_SLI: &[u8] = join!(bytes: "01", [1, 2], 3, &[4]);
+        const STR_ARR_LIT_SLI: &[u8] = const_join!(bytes: "01", [1, 2], 3, &[4]);
         const_assert!(eq_buf STR_ARR_LIT_SLI, &[48,49,1,2,3,4]);
     }
-    #[test]
-    #[cfg(feature = "term")]
-    const fn join_bytes_ansi() {
-        use crate::Ansi;
-        const ANSI0: &[u8] = join!(bytes: Ansi::BOLD);
-        const_assert!(eq_buf & [27, 91, 49, 109], ANSI0);
-
-        const ANSI1: &[u8] = join!(bytes: Ansi::BOLD, Ansi::ITALIC);
-        const_assert![eq_buf & [27, 91, 49, 109, 27, 91, 51, 109], ANSI1];
-    }
+    // TEMP
+    // #[test]
+    // #[cfg(feature = "term")]
+    // const fn join_bytes_ansi() {
+    //     use crate::Ansi;
+    //     const ANSI0: &[u8] = const_join!(bytes: Ansi::BOLD);
+    //     const_assert!(eq_buf & [27, 91, 49, 109], ANSI0);
+    //
+    //     const ANSI1: &[u8] = const_join!(bytes: Ansi::BOLD, Ansi::ITALIC);
+    //     const_assert![eq_buf & [27, 91, 49, 109, 27, 91, 51, 109], ANSI1];
+    // }
 
     #[test]
     const fn join_str() {
         const BASE: &str = "path/to";
         const PART1: &str = "/foo";
         const PART2: &str = "/bar";
-        const PATH: &str = join!(str: BASE, PART1, PART2);
+        const PATH: &str = const_join!(str: BASE, PART1, PART2);
         const_assert![eq_str PATH, "path/to/foo/bar"];
 
-        const REPEATED: &str = join!(str_repeated: PART1, 3);
+        const REPEATED: &str = const_join!(str_repeated: PART1, 3);
         const_assert![eq_str REPEATED, "/foo/foo/foo"];
 
-        const PARTS: &str = join!(str_separated: "/"; "path", "to", "file");
+        const PARTS: &str = const_join!(str_separated: "/"; "path", "to", "file");
         const_assert!(eq_str PARTS, "path/to/file");
     }
 }

@@ -4,5 +4,5 @@
 //
 
 // aliases
-#[doc = crate::TAG_DEVELA_BASE!()]
+#[doc(inline)]
 pub use devela_base::{isize_down, isize_up, usize_down, usize_up};

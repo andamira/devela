@@ -157,8 +157,9 @@
 
 ### mem
 - move to [base]:
-  - macros: `cswap!`, `join!`.
+  - macros: `cswap!`, `const_join!`.
   - types: `Mem`, `Ptr`, `Slice`.
+- rename `join!` macro to `const_join!`.
 - update `Slice` with new `eq` methods for slices of slices of primitives and string slices.
 
 ## text

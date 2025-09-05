@@ -53,7 +53,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden, _always
         pub use super::cell::_all::*;
     }
     _always {
-        pub use super::{cell::_always::*, pin::_always::*, ptr::_always::*, reexports::*};
+        pub use super::{cell::_always::*, pin::_always::*, reexports::*};
     }
     _hidden {
         pub use super::size::_hidden::*;

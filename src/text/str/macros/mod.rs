@@ -1,6 +1,6 @@
 // devela::text::str::macros
 //
-//! Defines the [`join!`] and [`str!`] macros.
+//! Defines the [`str!`] macro.
 //
 
 #[cfg(feature = "dep_const_str")]
