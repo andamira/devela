@@ -26,35 +26,35 @@ metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = tru
 [features]
 
 #* Development features *#
-__dbg = ["devela_base/__dbg"]
+__dbg = ["devela_base_core/__dbg"]
 __publish = []
 
 #* Environment features *#
 alloc = [] # always enabled
 
 #* Safety features *#
-base_safe = ["devela_base/base_safe"]
+base_safe = ["devela_base_core/base_safe"]
 safe = [
-	"devela_base/safe", "safe_build",
+	"devela_base_core/safe", "safe_build",
 	"safe_code", "safe_data", "safe_game", "safe_lang", "safe_media", "safe_num",
 	"safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ]
 	safe_build = []
-	safe_code = ["devela_base/safe_code"]
-	safe_data = ["devela_base/safe_data"]
-	safe_game = ["devela_base/safe_game"]
-	safe_lang = ["devela_base/safe_lang"]
-	safe_media = ["devela_base/safe_media"]
-	safe_num = ["devela_base/safe_num"]
-	safe_phys = ["devela_base/safe_phys"]
-	safe_sys = ["devela_base/safe_sys", "safe_mem"]
-		safe_mem = ["devela_base/safe_mem"]
-	safe_text = ["devela_base/safe_text"]
-	safe_ui = ["devela_base/safe_ui"]
-	safe_work = ["devela_base/safe_work"]
+	safe_code = ["devela_base_core/safe_code"]
+	safe_data = ["devela_base_core/safe_data"]
+	safe_game = ["devela_base_core/safe_game"]
+	safe_lang = ["devela_base_core/safe_lang"]
+	safe_media = ["devela_base_core/safe_media"]
+	safe_num = ["devela_base_core/safe_num"]
+	safe_phys = ["devela_base_core/safe_phys"]
+	safe_sys = ["devela_base_core/safe_sys", "safe_mem"]
+		safe_mem = ["devela_base_core/safe_mem"]
+	safe_text = ["devela_base_core/safe_text"]
+	safe_ui = ["devela_base_core/safe_ui"]
+	safe_work = ["devela_base_core/safe_work"]
 
 unsafe = [
-	"devela_base/unsafe",
+	"devela_base_core/unsafe",
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
@@ -76,7 +76,7 @@ default = ["alloc"]
 _docs = ["unsafe"]
 
 [dependencies] # 1 required
-devela_base = { workspace = true }
+devela_base_core = { workspace = true }
 
 [badges]
 maintenance.status = "experimental"

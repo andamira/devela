@@ -52,7 +52,7 @@ in order to improve compile times while maintaining most of the gained cohesiven
 - refactor all structural access modules.
 - enable `_docsrs` for workspace dependencies.
 - support having external optional dependencies.
-- new workspace library crates: `devela_base`, `devela_base_macros`, `devela_base_std`, `devela_base_alloc`, `devela_code`, `devela_data`, `devela_media` `devela_num`, `devela_text`.
+- new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_std`, `devela_code`, `devela_data`, `devela_media` `devela_num`, `devela_text`.
 - move `core`, `alloc` & `std` re-exports to [base*] libs.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
@@ -65,7 +65,7 @@ in order to improve compile times while maintaining most of the gained cohesiven
 - [macros]:
   - use workspace's crate version.
   - make it an optional dependency.
-  - add `devela_base` as a dependency.
+  - add `devela_base_core` as a dependency.
   - enable `doc_cfg` via `nightly_doc` flag.
   - remove dependency `hashbrown`.
   - remove features: `alloc`, `std`, `nightly`, `nightly_doc`.

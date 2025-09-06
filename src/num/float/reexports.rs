@@ -3,8 +3,8 @@
 //!
 //
 
-crate::mod_path!(+pub _c "../../../libs/base/src/num/float/reexports.rs");
+crate::mod_path!(+pub _c "../../../libs/base_core/src/num/float/reexports.rs");
 
 // aliases
 #[doc(inline)]
-pub use devela_base::fsize;
+pub use devela_base_core::fsize;

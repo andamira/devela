@@ -47,14 +47,14 @@
 //! | Maximum flexibility       | Primitive types           | No constraints                    |
 //
 
-crate::mod_path!(_c "../../../libs/base/src/num/niche/reexports.rs");
+crate::mod_path!(_c "../../../libs/base_core/src/num/niche/reexports.rs");
 
 mod impls; // impl ConstDefault, BitSized
 
 crate::structural_mods! { // _mods, _always
     _mods {
         #[doc(inline)]
-        pub use devela_base::num::niche::{
+        pub use devela_base_core::num::niche::{
             NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
             NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize,
             NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128, NonExtremeUsize,

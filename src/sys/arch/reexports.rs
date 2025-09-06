@@ -4,7 +4,7 @@
 
 use crate::_reexport;
 
-crate::mod_path!(+pub _c "../../../libs/base/src/sys/arch/reexports.rs");
+crate::mod_path!(+pub _c "../../../libs/base_core/src/sys/arch/reexports.rs");
 crate::mod_path!(std +pub _s "../../../libs/base_std/src/sys/arch/reexports.rs");
 
 /* `safe_arch` re-exports */

@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: ops)]
 //
 
-crate::mod_path!(_c "../../../libs/base/src/code/ops/reexports.rs");
+crate::mod_path!(_c "../../../libs/base_core/src/code/ops/reexports.rs");
 
 // WIPZONE
 // mod wip_closure;

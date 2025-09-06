@@ -1,6 +1,6 @@
 [package]
 name = "devela_base_macros"
-description = "procedural macros for devela_base"
+description = "procedural macros for `devela_base_core`"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true

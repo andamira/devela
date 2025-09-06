@@ -57,7 +57,7 @@ resolver = "3"
 # ·------------------------------------------------------------------------------
 #                                                           .-------------------.
 # ┌╼devela_base_macros        : base proc macros, zero-deps | stable interfaces |
-# └╥╼devela_base              : base core items, zero-deps  | primitive focused |
+# └╥╼devela_base_core         : base core items, zero-deps  | primitive focused |
 #  ╟─┴╼devela_base_alloc?     : base alloc-dependent items  | monomorphizations |
 #  ╟───┴╼devela_base_std?╾───┐: base std-dependent items    | & infrastructures |
 #  ╚╗                        │                              ·-------------------·
@@ -80,7 +80,7 @@ resolver = "3"
 #       ║ └╼devela_postbuild─┘: post-build processing       | development tools |
 #       ╏                                                   ·-------------------·
 members = [
-	"libs/base_macros", "libs/base", "libs/base_alloc", "libs/base_std",
+	"libs/base_macros", "libs/base_core", "libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	"libs/code", "libs/data", "libs/media", "libs/num",
 	# "libs/game", "libs/lang", "libs/phys", "libs/sys",
@@ -90,7 +90,7 @@ members = [
 ]
 [workspace.dependencies]
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
-devela_base        = { version = "0.25.0-wip", path = "./libs/base" }
+devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" }
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" } #------
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
@@ -212,12 +212,12 @@ bench = false
 
 __build = ["devela_base_std"] # full build dependencies
 # shows extra debugging information
-__dbg = ["__build", "devela_base/__dbg", "devela_base_alloc?/__dbg", "devela_base_std?/__dbg"]
+__dbg = ["__build", "devela_base_core/__dbg", "devela_base_alloc?/__dbg", "devela_base_std?/__dbg"]
 __no_test = []      # exclude examples from being tested
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
-	"devela_base/__publish", "devela_base_alloc?/__publish", "devela_base_std?/__publish",
+	"devela_base_core/__publish", "devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
 	"devela_code?/__publish", "devela_data?/__publish", "devela_media?/__publish",
 	"devela_num?/__publish", # "devela_game?/__publish", "devela_lang?/__publish",
@@ -370,19 +370,21 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 ]
 
 # activates safe enforcement in the [base] crates.
-base_safe = ["devela_base/base_safe", "devela_base_alloc?/base_safe", "devela_base_std?/base_safe"]
+base_safe = [
+	"devela_base_core/base_safe", "devela_base_alloc?/base_safe", "devela_base_std?/base_safe",
+]
 
 	# List of safe thematic modules (orthogonal to unsafe purposes):
 
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
-	safe_code = ["devela_base/safe_code", "devela_code?/safe"]
-	safe_data = ["devela_data?/safe"] # "devela_base/safe_data",
-	safe_game = [] # "devela_base/safe_game", "devela_game?/safe"
+	safe_code = ["devela_base_core/safe_code", "devela_code?/safe"]
+	safe_data = ["devela_data?/safe"] # "devela_base_core/safe_data",
+	safe_game = [] # "devela_base_core/safe_game", "devela_game?/safe"
 	safe_lang = [] # "devela_lang?/safe"
 		# safe_ffi
 			# safe_js
-	safe_media = [ # "devela_base/safe_media", "devela_media?/safe"
+	safe_media = [ # "devela_base_core/safe_media", "devela_media?/safe"
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
 		]
 		safe_audio = []
@@ -393,18 +395,18 @@ base_safe = ["devela_base/base_safe", "devela_base_alloc?/base_safe", "devela_ba
 	safe_num = ["devela_num?/safe"]
 	safe_phys = ["safe_time"] # "devela_phys?/safe"
 		safe_time = []
-	safe_sys = ["safe_io", "safe_mem"] # "devela_base/safe_sys", "devela_sys?/safe"
-		safe_io = ["devela_base/safe_io"]
-		safe_mem = ["devela_base/safe_mem"]
-	safe_text = [] # "devela_base/safe_text", "devela_text?/safe"
+	safe_sys = ["safe_io", "safe_mem"] # "devela_base_core/safe_sys", "devela_sys?/safe"
+		safe_io = ["devela_base_core/safe_io"]
+		safe_mem = ["devela_base_core/safe_mem"]
+	safe_text = [] # "devela_base_core/safe_text", "devela_text?/safe"
 	safe_ui = ["safe_layout"] # "devela_ui?/safe"
 		safe_layout = []
-	safe_work = [] # "devela_base/safe_work", "devela_work?/safe"
+	safe_work = [] # "devela_base_core/safe_work", "devela_work?/safe"
 		# safe_async
 
 unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	"devela_macros?/unsafe",
-	"devela_base/unsafe", "devela_base_alloc?/unsafe", "devela_base_std?/unsafe",
+	"devela_base_core/unsafe", "devela_base_alloc?/unsafe", "devela_base_std?/unsafe",
 	#
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
@@ -414,58 +416,58 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	# List of unsafe purposes (orthogonal to safe modules):
 
 	unsafe_array   = [ # faster array initialization, UninitArray
-		"devela_base/unsafe_array",
+		"devela_base_core/unsafe_array",
 		# "devela_base_alloc?/unsafe_array", "devela_base_std?/unsafe_array",
 		# "devela_macros?/unsafe_array",
 	]
 	# unsafe_async   = [] # MAYBE
 	unsafe_ffi     = [ # unsafe foreign function calls (WASM, OS, external C)
-		"devela_base/unsafe_ffi",
+		"devela_base_core/unsafe_ffi",
 		# "devela_base_alloc?/unsafe_ffi", "devela_base_std?/unsafe_ffi",
 		# "devela_macros?/unsafe_ffi",
 	]
 	unsafe_hint    = [ # unreachable_unchecked, unchecked arithmetic
-		"devela_base/unsafe_hint",
+		"devela_base_core/unsafe_hint",
 		# "devela_base_alloc?/unsafe_hint", "devela_base_std?/unsafe_hint",
 		# "devela_macros?/unsafe_hint",
 	]
 	unsafe_layout  = [ # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*
-		"devela_base/unsafe_layout",
+		"devela_base_core/unsafe_layout",
 		# "devela_base_alloc?/unsafe_layout", "devela_base_std?/unsafe_layout",
 		# "devela_macros?/unsafe_layout",
 	]
 	unsafe_niche   = [ # unchecked niche constructors
-		"devela_base/unsafe_niche",
+		"devela_base_core/unsafe_niche",
 		# "devela_base_alloc?/unsafe_niche", "devela_base_std?/unsafe_niche",
 		# "devela_macros?/unsafe_niche",
 	]
 	unsafe_ptr     = [ # Pinned, pop methods without Clone, Ptr::*
-		"devela_base/unsafe_ptr",
+		"devela_base_core/unsafe_ptr",
 		# "devela_base_alloc?/unsafe_ptr", "devela_base_std?/unsafe_ptr",
 		# "devela_macros?/unsafe_ptr",
 	]
 	unsafe_slice   = [ # extra slice methods, avoid bound checks
-		"devela_base/unsafe_slice",
+		"devela_base_core/unsafe_slice",
 		# "devela_base_alloc?/unsafe_slice", "devela_base_std?/unsafe_slice",
 		# "devela_macros?/unsafe_slice",
 	]
 	unsafe_str     = [ # unchecked utf-8 char and &str conversions
-		"devela_base/unsafe_str",
+		"devela_base_core/unsafe_str",
 		# "devela_base_alloc?/unsafe_str", "devela_base_std?/unsafe_str",
 		# "devela_macros?/unsafe_str",
 	]
 	unsafe_sync    = [ # SpinLock, Send and Sync impls
-		"devela_base/unsafe_sync",
+		"devela_base_core/unsafe_sync",
 		# "devela_base_alloc?/unsafe_sync", "devela_base_std?/unsafe_sync",
 		# "devela_macros?/unsafe_sync",
 	]
 	unsafe_syscall = [ # os syscalls
-		"devela_base/unsafe_syscall",
+		"devela_base_core/unsafe_syscall",
 		# "devela_base_alloc?/unsafe_syscall", "devela_base_std?/unsafe_syscall",
 		# "devela_macros?/unsafe_syscall",
 	]
 	unsafe_thread  = [ # Logging::set_logger_racy, Env::{remove_var, set_var}
-		"devela_base/unsafe_thread",
+		"devela_base_core/unsafe_thread",
 		# "devela_base_alloc?/unsafe_thread", "devela_base_std?/unsafe_thread",
 		# "devela_macros?/unsafe_thread",
 	]
@@ -515,7 +517,7 @@ _docs_min = [ # the minimum capabilities to document every item
 ]
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
-	"devela_base/_docs", "devela_base_alloc?/_docs", "devela_base_std?/_docs", # ← always no deps
+	"devela_base_core/_docs", "devela_base_alloc?/_docs", "devela_base_std?/_docs",
 	#
 	"devela_macros?/_docs_nodep", "devela_code?/_docs_nodep",
 	"devela_data?/_docs_nodep", "devela_media/_docs_nodep", "devela_num?/_docs_nodep",
@@ -688,7 +690,7 @@ dep_sdl2 = ["dep:sdl2"]                                                         
 dep_serde = ["dep:serde", "allocator-api2?/serde", "bumpalo?/serde",              # data::codec::serde
 	"gilrs?/serde-serialize", "kira?/serde", "orion?/serde","orion?/alloc",
 	"portable-atomic?/serde", "pyo3?/serde", "toml_edit?/serde", "wide?/serde"]
-dep_simdutf8 = ["dep:simdutf8", "devela_base/dep_simdutf8"]                       # text::str
+dep_simdutf8 = ["dep:simdutf8", "devela_base_core/dep_simdutf8"]                  # text::str
 dep_stringzilla = ["dep:stringzilla"]                                             # text::str
 dep_symphonia = ["dep:symphonia", "kira?/symphonia", "rodio?/symphonia"]          # sys::sound
 dep_sysinfo = ["dep:sysinfo"]                                                     # sys::
@@ -732,8 +734,8 @@ devela_macros = [ "dep:devela_macros",
 
 #* workspace library dependencies *#
 
-devela_base        = { workspace = true }
 devela_base_macros = { workspace = true }
+devela_base_core   = { workspace = true }
 devela_base_alloc  = { workspace = true, optional = true }
 devela_base_std    = { workspace = true, optional = true }
 devela_macros      = { workspace = true, optional = true }
@@ -1055,8 +1057,8 @@ default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 [build-dependencies]
 # Used for the main build script. They do NOT inherit from [dependencies].
 # ------------------------------------------------------------------------------
-devela_base     = { workspace = true }
-devela_base_std = { workspace = true, optional = true }
+devela_base_core = { workspace = true }
+devela_base_std  = { workspace = true, optional = true }
 
 
 # patches

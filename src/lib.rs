@@ -36,7 +36,7 @@
 // ```
 //
 // (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs],
-//  ../build/main/features.rs::FLAGS_NIGHTLY) && ../libs/base/src/lib.rs
+//  ../build/main/features.rs::FLAGS_NIGHTLY) && ../libs/base_core/src/lib.rs
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
@@ -220,7 +220,7 @@ mod _hidden {
 #[allow(unused_imports)]
 pub(crate) use _crate_internals::*;
 mod _crate_internals {
-    pub(crate) use devela_base::_workspace_internals::*;
+    pub(crate) use devela_base_core::_workspace_internals::*;
 
     #[allow(unused_imports)]
     #[rustfmt::skip]

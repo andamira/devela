@@ -1,4 +1,4 @@
-// devela_base::build
+// devela_base_std::build
 //
 //! Build-related utilities.
 //
@@ -8,7 +8,7 @@
 mod namespace; // Build
 // mod _util;
 
-devela_base::structural_mods! { // _mods
+devela_base_core::structural_mods! { // _mods
     _mods {
         pub use super::namespace::*;
     }

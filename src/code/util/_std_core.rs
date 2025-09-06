@@ -7,7 +7,7 @@
 ///
 /// This macro must be defined on each crate where [`_doc!`] is invoked.
 ///
-/// Used by: from [`devela_base::_doc!`],
+/// Used by: from [`devela_base_core::_doc!`],
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(feature = "std")]
 macro_rules! _std_core {

@@ -14,7 +14,7 @@ mod char;
 pub mod errors {
     //! Text-related errors.
     #[doc(inline)]
-    pub use devela_base::text::errors::*;
+    pub use devela_base_core::text::errors::*;
 }
 mod grapheme; // Grapheme
 
@@ -34,7 +34,7 @@ crate::structural_mods! { // _mods, _pub_mods, _always
         };
 
         #[doc(inline)]
-        pub use devela_base::text::{Ascii, AsciiChar}; // ascii
+        pub use devela_base_core::text::{Ascii, AsciiChar}; // ascii
 
         // WIPZONE
         // pub use super::bytes::*;

@@ -41,6 +41,6 @@ pub use _workspace_internals::*;
 #[doc(hidden)] #[rustfmt::skip]
 pub mod _workspace_internals {
     #![allow(unused_imports)]
-    pub use devela_base::all::*;
-    pub use devela_base::_workspace_internals::*;
+    pub use devela_base_core::all::*;
+    pub use devela_base_core::_workspace_internals::*;
 }

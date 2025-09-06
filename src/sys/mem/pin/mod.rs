@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: pin)]
 //
 
-crate::mod_path!(_c "../../../../libs/base/src/sys/mem/pin/reexports.rs");
+crate::mod_path!(_c "../../../../libs/base_core/src/sys/mem/pin/reexports.rs");
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]

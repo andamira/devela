@@ -3,7 +3,7 @@
 //! String parsing without structured semantics.
 //
 
-crate::mod_path!(_c "../../libs/base/src/text/parse/reexports.rs");
+crate::mod_path!(_c "../../libs/base_core/src/text/parse/reexports.rs");
 
 crate::structural_mods! { // _mods
     _mods {
@@ -11,6 +11,6 @@ crate::structural_mods! { // _mods
         pub use super::_c::*;
 
         #[doc(inline)]
-        pub use devela_base::text::ByteSearch;
+        pub use devela_base_core::text::ByteSearch;
     }
 }

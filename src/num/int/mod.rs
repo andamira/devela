@@ -7,7 +7,6 @@ pub(crate) mod shared_docs; // FORMULA_*!()
 
 mod fns; // prime_number_teorem
 mod gcd; // GcdReturn
-mod reexports;
 
 #[cfg(_int··)]
 crate::items! {
@@ -18,9 +17,12 @@ crate::items! {
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{fns::*, gcd::*, reexports::*};
+        pub use super::{fns::*, gcd::*};
 
         #[cfg(_int··)]
         pub use super::{divisor::*, num_trait::*, wrapper::_all::*};
+
+        #[doc(inline)]
+        pub use devela_base_core::{isize_down, isize_up, usize_down, usize_up};
     }
 }

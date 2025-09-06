@@ -4,7 +4,7 @@
 //
 // NOTE: this file is shared between the build scripts in:
 // - devela/build/main/
-// - devela_base/build/
+// - devela_base_core/build/
 //
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html
 // #environment-variables-cargo-sets-for-build-scripts
@@ -24,7 +24,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     // Makes sure CARGO_TARGET_DIR is always defined, with trailing slash.
     //
     // Used in: _doclink!
-    // In sync with: /.cargo/config.toml#[env] & /libs/base/build/environment.rs
+    // In sync with: /.cargo/config.toml#[env] & /libs/base_core/build/environment.rs
     let ctd =
         option_env!("CARGO_TARGET_DIR").unwrap_or(concat![env!("CARGO_WORKSPACE_DIR"), "target/"]);
     let cargo_target_dir = if ctd.ends_with('/') { ctd.to_string() } else { format!("{}/", ctd) };

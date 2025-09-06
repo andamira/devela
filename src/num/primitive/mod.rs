@@ -12,6 +12,6 @@ crate::structural_mods! { // _mods
         pub use super::{cast::*, join::*, split::*};
 
         #[doc(inline)]
-        pub use devela_base::Cast;
+        pub use devela_base_core::Cast;
     }
 }

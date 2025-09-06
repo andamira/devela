@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: cell)]
 //
 
-crate::mod_path!(_c "../../../../libs/base/src/sys/mem/cell/reexports.rs");
+crate::mod_path!(_c "../../../../libs/base_core/src/sys/mem/cell/reexports.rs");
 
 mod option; // ExtCellOption
 

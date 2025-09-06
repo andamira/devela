@@ -15,7 +15,7 @@ crate::structural_mods! { // _mods
         pub use super::r#trait::*;
 
         #[doc(inline)]
-        pub use devela_base::text::{GraphemeNonul, GraphemeU8};
+        pub use devela_base_core::text::{GraphemeNonul, GraphemeU8};
         #[doc(inline)]
         #[cfg(feature = "alloc")]
         pub use devela_base_alloc::text::GraphemeString;

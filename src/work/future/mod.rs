@@ -21,15 +21,12 @@ mod reexports;
 #[cfg(not(feature = "dep_portable_atomic_util"))]
 mod block;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{coroutine::_all::*, ext::*, reexports::*};
 
         #[cfg(feature = "std")]
         #[cfg(not(feature = "dep_portable_atomic_util"))]
         pub use super::block::*;
-    }
-    _always {
-        pub use super::{coroutine::_always::*, reexports::*};
     }
 }

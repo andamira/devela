@@ -4,7 +4,7 @@
 //
 
 #[doc(inline)] #[rustfmt::skip]
-pub use devela_base::{
+pub use devela_base_core::{
     // errors:
     IncompatibleBounds,
     NoInverse,

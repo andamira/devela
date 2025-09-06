@@ -5,7 +5,7 @@
 // safety
 #![cfg_attr(base_safe_data, forbid(unsafe_code))]
 
-// mod bit; // TODO
+mod bit;
 mod sort;
 
 pub mod list;
@@ -13,7 +13,10 @@ pub mod key;
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
-        pub use super::sort::_all::*;
+        pub use super::{
+            bit::_all::*,
+            sort::_all::*,
+        };
     }
     _pub_mods {
         pub use super::{list::_all::*, key::_all::*};

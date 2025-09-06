@@ -7,14 +7,14 @@
 //
 
 // with re-exports
-crate::mod_path!(_c "../../libs/base/src/text/char/reexports.rs");
+crate::mod_path!(_c "../../libs/base_core/src/text/char/reexports.rs");
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::_c::*; // IterChars, char
 
         #[doc(inline)]
-        pub use devela_base::text::{Char, char7, char8, char16};
+        pub use devela_base_core::text::{Char, char7, char8, char16};
     }
 }
 

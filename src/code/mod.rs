@@ -10,7 +10,7 @@
 // safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
-crate::mod_path!(_c "../../libs/base/src/code/reexports.rs");
+crate::mod_path!(_c "../../libs/base_core/src/code/reexports.rs");
 
 mod any; // dynamic typing and reflection
 mod default; // ConstDefault, Default
@@ -24,7 +24,7 @@ pub mod panic; // Panic, set_panic_handler!
 pub mod result; // AllError, serr, sok, Mismatch, OptRes, ValueQuant…
 pub mod util; // utility macros and functions
 
-devela_base::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
+devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
     _mods {
         pub use super::{_c::*, any::_all::*, default::*, guard::*};
     }

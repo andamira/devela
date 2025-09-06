@@ -24,7 +24,7 @@ const CRATE_NAME: &str = "devela";
 
 /* imports */
 
-extern crate devela_base as base;
+extern crate devela_base_core as base_core;
 #[cfg(feature = "__build")]
 extern crate devela_base_std as base_std;
 extern crate self as build;

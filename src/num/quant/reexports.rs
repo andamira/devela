@@ -4,7 +4,7 @@
 //
 
 #[doc(inline)] #[rustfmt::skip]
-pub use devela_base::{
+pub use devela_base_core::{
     Cycle, CycleCount,
     Interval, interval,
     Sign,

@@ -2,10 +2,10 @@
 
 use crate::{ConstDefault, mod_path};
 
-mod_path!(+pub _c "../../../libs/base/src/code/result/reexports.rs");
+mod_path!(+pub _c "../../../libs/base_core/src/code/result/reexports.rs");
 
 #[doc(inline)]
-pub use devela_base::code::result::{
+pub use devela_base_core::code::result::{
     Chain, ExtOptRes, Hook, Mismatch, OptRes, Own, ValueQuant, serr, sok, unwrap,
 };
 

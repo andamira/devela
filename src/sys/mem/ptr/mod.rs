@@ -9,7 +9,7 @@
 mod fat;
 
 // re-exports
-crate::mod_path!(_c "../../../../libs/base/src/sys/mem/ptr/reexports.rs");
+crate::mod_path!(_c "../../../../libs/base_core/src/sys/mem/ptr/reexports.rs");
 
 crate::structural_mods! { // _mods, _always
     _mods {
@@ -19,6 +19,6 @@ crate::structural_mods! { // _mods, _always
         // re-exports
         pub use super::_c::*;
         #[doc(inline)]
-        pub use devela_base::sys::mem::Ptr;
+        pub use devela_base_core::sys::mem::Ptr;
     }
 }

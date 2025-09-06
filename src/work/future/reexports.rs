@@ -3,7 +3,7 @@
 //!
 //
 
-crate::mod_path!(+pub _c "../../../libs/base/src/work/future/reexports.rs");
+crate::mod_path!(+pub _c "../../../libs/base_core/src/work/future/reexports.rs");
 
 /* from either `alloc` or `portable-atomic-util` and `alloc` */
 

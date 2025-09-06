@@ -40,8 +40,8 @@ __dbg = ["__build"] # shows extra debugging information
 devela.path = "../.."
 
 [build-dependencies]
-devela_base     = { workspace = true }
-devela_base_std = { workspace = true, optional = true }
+devela_base_core = { workspace = true }
+devela_base_std  = { workspace = true, optional = true }
 
 [badges]
 maintenance.status = "experimental"

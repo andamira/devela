@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: env)]
 //
 
-crate::mod_path!(_c "../../../libs/base/src/sys/env/reexports.rs");
+crate::mod_path!(_c "../../../libs/base_core/src/sys/env/reexports.rs");
 crate::mod_path!(std _s "../../../libs/base_std/src/sys/env/reexports.rs");
 
 mod arg;

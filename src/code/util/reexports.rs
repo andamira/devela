@@ -3,10 +3,10 @@
 //! Reexported macros and hints.
 //
 
-crate::mod_path!(+pub _c "../../../libs/base/src/code/util/reexports.rs");
+crate::mod_path!(+pub _c "../../../libs/base_core/src/code/util/reexports.rs");
 
 #[doc(inline)] #[rustfmt::skip]
-pub use devela_base::{
+pub use devela_base_core::{
     CONST,
     assert_eq_all, assert_approx_eq_all,
     capture_first, capture_last, capture_tail_tuple,

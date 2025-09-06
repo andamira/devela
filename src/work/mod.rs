@@ -29,7 +29,7 @@ crate::structural_mods! { // _pub_mods, _always
     }
     _always {
         pub use super::{
-            future::_always::*, process::_always::*, sync::_always::*, thread::_always::*,
+            process::_always::*, sync::_always::*, thread::_always::*,
         };
     }
 }

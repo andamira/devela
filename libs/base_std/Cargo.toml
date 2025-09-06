@@ -76,7 +76,7 @@ default = ["std"]
 _docs = ["unsafe"]
 
 [dependencies] # 2 required
-devela_base = { workspace = true }
+devela_base_core = { workspace = true }
 devela_base_alloc = { workspace = true }
 
 [badges]

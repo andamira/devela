@@ -29,7 +29,7 @@ mod unroll; // unroll!
 // mod docima; // DocImage
 // mod structural; // structural_mods!
 
-devela_base::structural_mods! { // _mods, _crate_internals, _always
+devela_base_core::structural_mods! { // _mods, _crate_internals, _always
     _mods {
         pub use super::{cdbg::*, reexports::*};
         #[cfg(feature = "_unroll")]

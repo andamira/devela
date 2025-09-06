@@ -8,7 +8,7 @@
 use crate::DOC_ATOMIC_CORE_PORTABLE;
 use crate::{_reexport, TAG_ATOMIC, TAG_ATOMIC_CORE_PORTABLE};
 
-crate::mod_path!(+pub _c "../../../../libs/base/src/work/sync/atomic/reexports.rs");
+crate::mod_path!(+pub _c "../../../../libs/base_core/src/work/sync/atomic/reexports.rs");
 
 /* from the `atomic` crate */
 

@@ -1,4 +1,4 @@
-// devela_base::data::sort::definition
+// devela_base_alloc::data::sort::definition
 //
 //! Defines and documents [`SortAlloc`].
 //
@@ -8,7 +8,7 @@ use crate::Sort;
 #[doc = crate::TAG_NAMESPACE!()]
 /// Provides allocating sorting methods for arrays and slices of `T`, extending [`Sort`].
 ///
-/// [`Sort`]: devela_base::Sort
+/// [`Sort`]: devela_base_core::Sort
 ///
 /// # Examples
 /// Using allocating methods:

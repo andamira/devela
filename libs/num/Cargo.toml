@@ -40,11 +40,11 @@ _docs = ["_docs_nodep"]
 macros = ["dep:devela_macros"]
 
 [dependencies]
-devela_base       = { workspace = true }
+devela_base_core  = { workspace = true }
 devela_base_alloc = { workspace = true, optional = true }
 devela_base_std   = { workspace = true, optional = true }
 devela_macros     = { workspace = true, optional = true }
-devela_code     = { workspace = true, optional = true }
+devela_code       = { workspace = true, optional = true }
 
 [badges]
 maintenance.status = "experimental"

@@ -29,7 +29,7 @@ where
     ///
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
-    #[doc = include_str!("../../../libs/base/src/data/bit/benches/mask_range.md")]
+    #[doc = include_str!("../../../libs/base_core/src/data/bit/benches/mask_range.md")]
     #[must_use]
     fn bit_mask_range(start: u32, end: u32) -> Self;
 
@@ -40,7 +40,7 @@ where
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`] if `start > end`.
-    #[doc = include_str!("../../../libs/base/src/data/bit/benches/mask_checked_range.md")]
+    #[doc = include_str!("../../../libs/base_core/src/data/bit/benches/mask_checked_range.md")]
     fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     /* get */

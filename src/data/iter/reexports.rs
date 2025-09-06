@@ -2,7 +2,7 @@
 
 use crate::_reexport;
 
-crate::mod_path!(+pub _c "../../../libs/base/src/data/iter/reexports.rs");
+crate::mod_path!(+pub _c "../../../libs/base_core/src/data/iter/reexports.rs");
 
 /* itertool items */
 

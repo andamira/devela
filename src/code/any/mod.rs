@@ -6,7 +6,7 @@
 // #![doc = crate::_doc!(newline)]
 //
 
-crate::mod_path!(_c "../../../libs/base/src/code/any/reexports.rs");
+crate::mod_path!(_c "../../../libs/base_core/src/code/any/reexports.rs");
 
 mod ext;
 

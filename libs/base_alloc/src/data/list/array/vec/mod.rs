@@ -1,4 +1,4 @@
-// devela_base::data::list::array::vec
+// devela_base_alloc::data::list::array::vec
 //
 //! Dynamic arrays.
 //

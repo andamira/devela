@@ -17,7 +17,7 @@ pub mod codec;
 pub mod errors {
     //! Data-related errors.
     #[doc(inline)]
-    pub use devela_base::data::errors::*;
+    pub use devela_base_core::data::errors::*;
 }
 pub mod iter;
 pub mod key;
@@ -43,7 +43,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
         pub use super::{absence::*, bit::_all::*, collection::*};
 
         #[doc(inline)]
-        pub use devela_base::Sort;
+        pub use devela_base_core::Sort;
         // #[doc(inline)]
         // #[cfg(feature = "alloc")]
         // pub use devela_base_alloc::SortAlloc;
