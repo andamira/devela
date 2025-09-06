@@ -17,7 +17,7 @@ pub(crate) static ENABLED_CFG_FLAGS: OnceLock<HashSet<String>> = OnceLock::new()
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
-    Build::println_heading("Features & Configuration Flags:");
+    Build::println_heading("Features:");
 
     /* Collect enabled cargo features from CARGO_FEATURE_* environment variables */
 
@@ -33,7 +33,6 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
     if let Some(f) = ENABLED_CARGO_FEATURES.get() {
         Build::println(&format!("Active cargo features ({}): {:?}", f.len(), f));
-        Build::println("");
     };
     // Enable reflection flags based on cargo features
     let _enabled_flags_from_features = reflection::set_ref_flags_from_cargo_features();
@@ -44,7 +43,6 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
             _enabled_flags_from_features.len(),
             _enabled_flags_from_features,
         ));
-        Build::println("");
     }
 
     /* Collect enabled cfg flags from both RUSTFLAGS and RUSTDOCFLAGS */
@@ -73,7 +71,6 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
             filtered_flags.len(),
             filtered_flags
         ));
-        Build::println("");
     }
     // Enable reflection flags based on cfg flags (e.g., RUSTFLAGS)
     let _enabled_flags_from_cfg_flags = reflection::set_ref_flags_from_cfg_flags();
@@ -84,7 +81,6 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
             _enabled_flags_from_cfg_flags.len(),
             _enabled_flags_from_cfg_flags,
         ));
-        Build::println("");
     }
 
     Ok(())

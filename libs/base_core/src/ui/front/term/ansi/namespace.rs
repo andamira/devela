@@ -22,7 +22,7 @@ pub struct Ansi;
 impl Ansi {
     /// Control Sequence Introducer (CSI).
     ///
-    /// <https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_(Control_Sequence_Introducer)_sequences>
+    /// <https://en.wikipedia.org/wiki/ANSI_escape_code#Control_Sequence_Introducer_commands>
     pub const CSI: [u8; 2] = *b"\x1b[";
 
     /* helper functions */

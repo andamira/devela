@@ -174,4 +174,13 @@ in order to improve compile times while maintaining most of the gained cohesiven
 - new `StringU*` method: `sanitize`.
 - make more methods *const* in `GraphemeU8` and `StringU8`.
 
+## ui
+### front
+#### term
+- move to [base]:
+  - types: `Ansi`, `AnsiColor3b`, `AnsiColor8b`, `TermSize`.
+- change `Ansi::print*` methods to `ansi_print*` functions.
+- fix visibility of `ansi!` macro.
+
+
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

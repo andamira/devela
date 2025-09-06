@@ -1,18 +1,18 @@
 // devela::ui::front::term::ansi
 //
-//! ANSI codes.
+//! ANSI escape codes.
+//!
+//! See <https://en.wikipedia.org/wiki/ANSI_escape_code>.
 //
 
-#![allow(non_snake_case)]
-
-mod color; // AnsiColor3b, AnsiColor8b
-mod namespace; // Ansi
+mod print; // ansi_print, ansi_print_linux, ansi_print_std
 mod r#macro; // ansi!
-
-mod print;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{color::*, namespace::*, r#macro::*};
+        pub use super::{
+            print::*,
+            r#macro::*,
+        };
     }
 }

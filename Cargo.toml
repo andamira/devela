@@ -1198,6 +1198,9 @@ check-cfg = [ # Allowed configuration flags:
 	# Expect more target vendors. In sync with ./src/sys/env/namespace.rs:
 	'cfg(target_vendor, values("vex"))', # WAIT
 
+	# Arch flags
+	"cfg(any_supported_arch)",
+
 	# Safety flags
 	# --------------------------------------------------------------------------
 	# for [base] crates:

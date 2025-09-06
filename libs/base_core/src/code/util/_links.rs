@@ -3,7 +3,7 @@
 //! Private common intra-doc links definitions built using the [`_doclink`] macro
 //
 
-// #![allow(missing_docs, reason = "hidden internals for the workspace")]
+#![allow(clippy::crate_in_macro_def, reason = "can't work with $crate")]
 
 use crate::CONST;
 

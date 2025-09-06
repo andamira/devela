@@ -17,8 +17,8 @@ crate::CONST! {
 
 ## Features
 `*` Printing is supported only when any of the following set of features are enabled:
-- `linux`, `unsafe_syscall`. (takes preference)
-- `std`.
+- `std` (takes preference)
+- `linux`, `unsafe_syscall`
 
 ## Notes
 - commands are case-insensitive.
@@ -27,7 +27,7 @@ crate::CONST! {
 - commands with parenthesis refers to `Ansi` associated functions.
 - only commands that return an array are supported (not `*_N` versions).
 - the static arms make use of the [`const_join!`][crate::const_join] macro for concatenation.
-- the print arms calls the apropriate `Ansi` [`print`][crate::Ansi::print] method variant.
+- the print arms calls the apropriate [`ansi_print`][crate::ansi_print] fn variant.
 
 # Example
 ```
@@ -59,17 +59,12 @@ ansi![p: bold, ITALIC, cursor_move1(2, 3)].unwrap();
 // non-printing version fallback (not(std), not(linux))
 // -----------------------------------------------------------------------------
 #[doc = DOC_ANSI!()]
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(not(any(
     /* 1) */ feature = "std",
-    /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri),
-        any(
-            target_arch = "x86", target_arch = "x86_64",
-            target_arch = "arm", target_arch = "aarch64",
-            target_arch = "riscv32", target_arch = "riscv64"
-        ),
-))))]
-#[doc(hidden)]
-#[macro_export]
+    /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch)
+)))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -93,16 +88,10 @@ macro_rules! ansi {
 // std version (not(linux))
 // -----------------------------------------------------------------------------
 #[doc = DOC_ANSI!()]
-#[cfg(feature = "std")]
-#[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri),
-    any( // targets:
-        target_arch = "x86", target_arch = "x86_64",
-        target_arch = "arm", target_arch = "aarch64",
-        target_arch = "riscv32", target_arch = "riscv64"
-    ),
-)))]
-#[doc(hidden)]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg(feature = "std")]
+#[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch)))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -117,14 +106,14 @@ macro_rules! ansi {
     $($arg:tt)*) => { $crate::Str::__utf8_bytes_to_str($crate::ansi![b: $($arg)*]) };
     (
     p: // print static commands (prints all commands concatenated)
-    $($arg:tt)*) => { $crate::Ansi::print_std( $crate::ansi![b: $($arg)*] ) };
+    $($arg:tt)*) => { $crate::ansi_print_std( $crate::ansi![b: $($arg)*] ) };
     (
     @p: // print dynamic commands (prints each command immediately)
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         let mut some_error = None;
         $(
             if some_error.is_none() {
-                match $crate::Ansi::print_std( $crate::paste! {
+                match $crate::ansi_print_std( $crate::paste! {
                     &$crate::Ansi::[<$command:upper>] $(($($arg),*))?
                 }) {
                     Ok(_) => (),
@@ -139,16 +128,9 @@ macro_rules! ansi {
 // linux version (overrides std)
 // -----------------------------------------------------------------------------
 #[doc = DOC_ANSI!()]
-#[cfg(all(
-    feature = "linux", feature = "unsafe_syscall", not(miri),
-    any( // targets:
-        target_arch = "x86", target_arch = "x86_64",
-        target_arch = "arm", target_arch = "aarch64",
-        target_arch = "riscv32", target_arch = "riscv64"
-    ),
-))]
-#[doc(hidden)]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -163,14 +145,14 @@ macro_rules! ansi {
     $($arg:tt)*) => { $crate::Str::__utf8_bytes_to_str($crate::ansi![b: $($arg)*]) };
     (
     p: // print static commands (prints all commands concatenated)
-    $($arg:tt)*) => { $crate::Ansi::print_linux( $crate::ansi![b: $($arg)*] ) };
+    $($arg:tt)*) => { $crate::ansi_print_linux( $crate::ansi![b: $($arg)*] ) };
     (
     @p: // print dynamic commands (prints each command immediately)
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         let mut some_error = None;
         $(
             if some_error.is_none() {
-                match $crate::Ansi::print_linux( $crate::paste! {
+                match $crate::ansi_print_linux( $crate::paste! {
                     &$crate::Ansi::[<$command:upper>] $(($($arg),*))?
                 }) {
                     Ok(_) => (),
@@ -181,7 +163,6 @@ macro_rules! ansi {
         if let Some(e) = some_error { Err(e) } else { Ok(()) }
     }};
 }
-
 #[doc(inline)]
 pub use ansi;
 
@@ -216,13 +197,8 @@ mod tests {
     #[test]
     #[cfg(any(
         /* 1) */ feature = "std",
-        /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri),
-            any(
-                target_arch = "x86", target_arch = "x86_64",
-                target_arch = "arm", target_arch = "aarch64",
-                target_arch = "riscv32", target_arch = "riscv64"
-            ),
-    )))]
+        /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch)
+    ))]
     fn print_non_const() {
         fn dyn_args(x: u8, y: u8) {
             let _ = ansi![@p: cursor_save cursor_move1(x, y) cursor_restore];

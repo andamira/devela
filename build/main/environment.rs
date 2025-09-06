@@ -34,10 +34,11 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     {
         use super::{Build, CRATE_NAME};
 
-        Build::println(&format!["CRATE_NAME = {CRATE_NAME}"]);
-
         // https://doc.rust-lang.org/cargo/reference/environment-variables.html
-        Build::println_heading("Environment variables:");
+        Build::println_heading("Environment:");
+
+        // using the global constant because if not, from here we can only get "build_script_mod"
+        Build::println(&format!["· CARGO_CRATE_NAME={CRATE_NAME}"]);
 
         if let Some(v) = cargo_primary_package {
             Build::println(&format!["· CARGO_PRIMARY_PACKAGE={v}"]);

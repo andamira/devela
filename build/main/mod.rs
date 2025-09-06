@@ -17,6 +17,11 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(test, allow(dead_code))]
 
+/* helpers */
+
+#[allow(unused)]
+macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
+
 /* globals */
 
 #[allow(unused)]
@@ -29,12 +34,21 @@ extern crate devela_base_core as base_core;
 extern crate devela_base_std as base_std;
 extern crate self as build;
 
-#[allow(unused)]
-#[cfg(feature = "__build")]
-use base_std::Build;
+// #[allow(unused)]
+// #[cfg(feature = "__dbg")]
+// use base_std::Build;
+
+// NOTE: manually imports the Build namespace from devela_base_std
+#[cfg(any(feature = "__build", feature = "__dbg"))]
+items! {
+    macro_rules! TAG_NAMESPACE {()=>{""}} use TAG_NAMESPACE;
+    #[path = "../../libs/base_std/src/build/namespace.rs"] #[allow(unused)]
+    mod imports; use imports::Build;
+}
 
 /* build modules */
 
+mod alias;
 mod environment;
 mod features;
 
@@ -51,6 +65,7 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     #[cfg(feature = "__dbg")]
     Build::println_start_end("main build script", true);
 
+    alias::main()?;
     environment::main()?;
     features::main()?;
 

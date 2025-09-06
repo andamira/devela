@@ -46,18 +46,7 @@ pub mod io {
     #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
-        #[cfg(all(
-            any(
-                target_arch = "x86_64",
-                target_arch = "x86",
-                target_arch = "arm",
-                target_arch = "aarch64",
-                target_arch = "riscv32",
-                target_arch = "riscv64"
-            ),
-            feature = "unsafe_syscall",
-            not(miri),
-        ))]
+        #[cfg(all(any_supported_arch, feature = "unsafe_syscall", not(miri)))]
         crate::items! {
             pub use super::super::{consts::termios::*, structs::LinuxStat};
             #[cfg(feature = "term")]
@@ -71,18 +60,7 @@ pub mod process {
     #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
-        #[cfg(all(
-            any(
-                target_arch = "x86_64",
-                target_arch = "x86",
-                target_arch = "arm",
-                target_arch = "aarch64",
-                target_arch = "riscv32",
-                target_arch = "riscv64"
-            ),
-            feature = "unsafe_syscall",
-            not(miri),
-        ))]
+        #[cfg(all(any_supported_arch, feature = "unsafe_syscall", not(miri)))]
         pub use super::super::{
             consts::signal::*,
             structs::{LinuxSigaction, LinuxSiginfo, LinuxSigset},
@@ -95,18 +73,7 @@ pub mod thread {
     #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
-        #[cfg(all(
-            any(
-                target_arch = "x86_64",
-                target_arch = "x86",
-                target_arch = "arm",
-                target_arch = "aarch64",
-                target_arch = "riscv32",
-                target_arch = "riscv64"
-            ),
-            feature = "unsafe_syscall",
-            not(miri),
-        ))]
+        #[cfg(all(any_supported_arch, feature = "unsafe_syscall", not(miri)))]
         pub use super::super::structs::LinuxTimespec;
     }
 }

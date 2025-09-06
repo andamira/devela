@@ -5,9 +5,12 @@
 // safety
 #![cfg_attr(base_safe_ui, forbid(unsafe_code))]
 
+pub mod front;
+
 crate::structural_mods! { // _pub_mods
     _pub_mods {
-        // pub use super::{
-        // };
+        pub use super::{
+            front::_all::*,
+        };
     }
 }
