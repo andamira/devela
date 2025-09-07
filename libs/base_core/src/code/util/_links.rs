@@ -10,6 +10,6 @@ use crate::CONST;
 // intradoc links
 
 CONST! { hidden macro_export,
-    DOCLINK_CONST_DEFAULT =
+    _DOCLINK_CONST_DEFAULT =
         crate::doclink!(devela "[`ConstDefault`]" "code/trait.ConstDefault.html");
 }

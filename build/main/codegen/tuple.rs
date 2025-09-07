@@ -58,6 +58,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     // --------------------------------------------------------------------------
 
     w!(f, r#"
+#[doc = crate::TAG_CODEGEN_BUILD!()]
 #[doc = crate::TAG_DATA_STRUCTURE!()]
 /// Extension trait providing convenience methods for [tuples][tuple].
 ///
@@ -646,6 +647,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     // --------------------------------------------------------------------------
 
     // into
+    w!(f, r"#[doc = crate::TAG_CODEGEN_BUILD!()]")?;
     w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over elements of a [`Tuple`].")?;
     w!(f, "#[derive(Clone, Debug)]")?;
@@ -666,6 +668,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
 }}")?;
 
     // ref
+    w!(f, r"#[doc = crate::TAG_CODEGEN_BUILD!()]")?;
     w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over shared references to elements of a [`Tuple`].")?;
     w!(f, "#[derive(Clone, Debug)]")?;
@@ -686,6 +689,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     }}")?;
 
     // mut
+    w!(f, r"#[doc = crate::TAG_CODEGEN_BUILD!()]")?;
     w!(f, r"#[doc = crate::TAG_ITERATOR!()]")?;
     w!(f, "/// An iterator over exclusive references to elements of a [`Tuple`].")?;
     w!(f, "#[derive(Debug)]")?;

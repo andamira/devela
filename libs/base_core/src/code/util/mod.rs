@@ -5,7 +5,7 @@
 
 /* private to the workspace */
 mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!, std_core!
-mod _links; // DOCLINK_*!
+mod _links; // _DOCLINK_*!
 mod _mod_docs; // _DOC_*!
 mod _tags; // EMOJI_*! TAG_*!
 mod _reexport; // reexport!, reexport_from!
@@ -22,7 +22,7 @@ mod doclink; // doclink!
 mod enumset; // enumset!
 mod ident; // ident_const_index!
 mod impl_trait; // impl_trait!
-mod include; // include_from!, mod_from!
+mod include; // include_from!, mod_from!, mod_path!
 mod items; // items!, sf!
 mod is; // is!
 mod maybe; // maybe!
@@ -31,22 +31,41 @@ mod paste; // paste! (wrapped for docs)
 mod r#const; // CONST!
 mod structural; // structural_mods!
 
-#[doc(hidden)]
-pub use paste::__paste; // (called from paste!)
-
 structural::structural_mods! { // _mods, _workspace_internals
     _mods {
         #[doc(inline)]
         pub use super::{
-            asserts::_all::*, capture::*, cfg_if::*, cfor::*, deprecate::*, doclink::doclink,
-            enumset::*, ident::*, impl_trait::*, include::*, items::*, is::*, maybe::*, methods::*,
-            paste::*, r#const::*, reexports::*, structural::*,
+            asserts::_all::*,
+            capture::{capture_first, capture_last, capture_tail_tuple},
+            cfg_if::cfg_if,
+            cfor::cfor,
+            r#const::CONST,
+            deprecate::deprecate_feature,
+            doclink::doclink,
+            enumset::enumset,
+            ident::ident_const_index,
+            impl_trait::impl_trait,
+            include::{include_from, mod_from, mod_path},
+            items::{items, sf},
+            is::is,
+            maybe::maybe,
+            methods::methods_as_fns,
+            paste::paste,
+            reexports::*,
+            structural::structural_mods,
         };
+    }
+    _crate_internals {
+        pub(crate) use super::_doc::_std_core;
     }
     _workspace_internals {
         pub use super::{
-            _doc::*, _links::*, _mod_docs::*, _tags::*, _reexport::*, _use::*,
+            _doc::{_doc, _doc_availability, _doc_miri_warn},
+            _links::*, _mod_docs::*, _tags::*,
+            _reexport::_reexport,
+            _use::_use,
             doclink::DOCLINK_DOMAIN,
+            paste::__paste,
         };
     }
 }

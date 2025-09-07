@@ -40,7 +40,9 @@ pub(crate) fn generate() -> Result<(), Error> {
     let mut f = BufWriter::new(file);
     // let mut f = BufWriter::with_capacity(100 * 1024, file);
 
-    let macro_code1 = r#"/// Unrolls the given for loop.
+    let macro_code1 = r#"
+#[doc = crate::TAG_CODEGEN_BUILD!()]
+/// Unrolls the given for loop.
 ///
 /// # Example
 /// ```ignore
@@ -61,7 +63,7 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// ```
 ///
 /// # Features
-/// By default it's implemented for a maximum recusion of 64 iterations.
+/// By default it is implemented for a maximum recursion of 64 iterations.
 /// It supports increased limits of 128, 256, 512, 1024 and 2048 by enabling the
 /// corresponding capability feature: `_unroll_[128|256|512|1024|2048]`.
 ///

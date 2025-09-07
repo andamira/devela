@@ -69,12 +69,9 @@
 /// ---
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! paste {
-    ($($tt:tt)*) => {
-        $crate::code::__paste!{ $($tt)* }
-    }
-}
+macro_rules! paste { ($($tt:tt)*) => { $crate::__paste!{ $($tt)* } } }
 #[doc(inline)]
 pub use paste;
-#[doc(hidden)] // dont export this
+
+#[doc(hidden)] // original macro re-exported hidden
 pub use paste_crate::paste as __paste;

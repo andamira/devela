@@ -23,6 +23,9 @@ util::structural_mods! { // _mods, _pub_mods, _workspace_internals
             error::_all::*, marker::_all::*, ops::_all::*, result::_all::*, util::_all::*,
         };
     }
+    _crate_internals {
+        pub(crate) use super::util::_crate_internals::*;
+    }
     _workspace_internals {
         pub/*workspace*/ use super::util::_workspace_internals::*;
     }
