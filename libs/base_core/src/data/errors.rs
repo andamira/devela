@@ -152,7 +152,7 @@ define_error! { composite: fmt(f)
     /// [`bitfield!`][crate::bitfield],
     /// [`BitOps`],
     /// [`Bitwise`][crate::Bitwise].
-    #[doc = crate::doclink!(devela "[`BitOps`]" "data::BitOps")]
+    #[doc = crate::doclink!(custom devela "[`BitOps`]" "data::BitOps")]
     pub enum MismatchedBounds {
         DOC_DATA_OVERFLOW: +const
             DataOverflow(i|0: Option<usize>) => DataOverflow(*i),
@@ -171,7 +171,8 @@ define_error! { composite: fmt(f)
     /// Used in methods of:
     /// [`ArrayUninit`].
     // TEMP
-    #[doc = crate::doclink!(devela "[`ArrayUninit`]" "data/list/array/struct.ArrayUninit.html")]
+    #[doc = crate::doclink!(custom devela "[`ArrayUninit`]"
+        "data/list/array/struct.ArrayUninit.html")]
     pub enum PartialSpace {
         DOC_NOT_ENOUGH_SPACE: +const NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
         DOC_PARTIALLY_ADDED:  +const PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),

@@ -5,16 +5,16 @@
 
 crate::mod_path!(+pub _c "../../../libs/base_core/src/code/util/reexports.rs");
 
+// NOTE: in sync with /libs/base_core/src/code/util/mod.rs:
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base_core::{
-    CONST,
-    assert_eq_all, assert_approx_eq_all,
+    assert_eq_all, assert_approx_eq_all, const_assert,
     capture_first, capture_last, capture_tail_tuple,
     cfg_if,
     cfor,
-    const_assert,
-    define_error,
+    CONST,
     deprecate_feature,
+    doclink,
     enumset,
     ident_const_index,
     impl_trait,
@@ -33,7 +33,6 @@ pub use devela_base_core::{
 
 #[cfg(feature = "devela_macros")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "devela_macros")))]
-#[doc = crate::TAG_DEVELA_MACROS!()]
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_macros::{
     enumint,

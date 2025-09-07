@@ -11,7 +11,7 @@ mod _tags; // EMOJI_*! TAG_*!
 mod _reexport; // reexport!, reexport_from!
 mod _use; // _use!
 
-mod reexports; // re-exported macros from devela_base_macros
+mod reexports;
 
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail_tuple]!
@@ -33,8 +33,11 @@ mod structural; // structural_mods!
 
 structural::structural_mods! { // _mods, _workspace_internals
     _mods {
+        // NOTE: in sync with /devela/code/util/reexports.rs:
         #[doc(inline)]
         pub use super::{
+            reexports::*,
+            //
             asserts::_all::*,
             capture::{capture_first, capture_last, capture_tail_tuple},
             cfg_if::cfg_if,
@@ -46,12 +49,11 @@ structural::structural_mods! { // _mods, _workspace_internals
             ident::ident_const_index,
             impl_trait::impl_trait,
             include::{include_from, mod_from, mod_path},
-            items::{items, sf},
             is::is,
+            items::{items, sf},
             maybe::maybe,
             methods::methods_as_fns,
             paste::paste,
-            reexports::*,
             structural::structural_mods,
         };
     }
@@ -64,7 +66,7 @@ structural::structural_mods! { // _mods, _workspace_internals
             _links::*, _mod_docs::*, _tags::*,
             _reexport::_reexport,
             _use::_use,
-            doclink::DOCLINK_DOMAIN,
+            doclink::DOCLINK_CUSTOM_DOMAIN,
             paste::__paste,
         };
     }

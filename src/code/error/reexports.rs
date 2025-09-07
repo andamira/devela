@@ -8,6 +8,7 @@ crate::mod_path!(std +pub _s "../../../libs/base_std/src/code/error/reexports.rs
 
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base_core::{
+    define_error,
     // individual:
     FailedErrorConversion,
     InvalidValue,

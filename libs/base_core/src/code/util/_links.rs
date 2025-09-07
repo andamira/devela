@@ -11,5 +11,5 @@ use crate::CONST;
 
 CONST! { hidden macro_export,
     _DOCLINK_CONST_DEFAULT =
-        crate::doclink!(devela "[`ConstDefault`]" "code/trait.ConstDefault.html");
+        crate::doclink!(custom devela "[`ConstDefault`]" "code/trait.ConstDefault.html");
 }

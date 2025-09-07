@@ -14,7 +14,7 @@
 // - Scaling transformations: [`Scale`].
 //! - Numerical classification and properties: [`Sign`].
 //!
-#![doc = crate::doclink!(devela "[`interval!`]" "num/quant/macro.interval.html")]
+#![doc = crate::doclink!(custom devela "[`interval!`]" "num/quant/macro.interval.html")]
 //
 
 mod cycle; // Cycle, CycleCount
