@@ -1200,6 +1200,7 @@ check-cfg = [ # Allowed configuration flags:
 
 	# Arch flags
 	"cfg(any_supported_arch)",
+	"cfg(any_target_riscv)",
 
 	# Safety flags
 	# --------------------------------------------------------------------------

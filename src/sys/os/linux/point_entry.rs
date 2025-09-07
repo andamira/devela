@@ -88,7 +88,7 @@ macro_rules! linux_entry {
                 main = sym $main,
                 EXIT = const $crate::LINUX_SYS::EXIT,
         );
-        #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
+        #[cfg(any_target_riscv)]
         $crate::global_asm!(
             ".global _start",
             ".hidden _start",

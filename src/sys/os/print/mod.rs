@@ -11,13 +11,7 @@
 
 // std, not(linux)
 #[cfg(feature = "std")]
-#[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri),
-    any( // targets:
-        target_arch = "x86", target_arch = "x86_64",
-        target_arch = "arm", target_arch = "aarch64",
-        target_arch = "riscv32", target_arch = "riscv64"
-    ),
-)))]
+#[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch)))]
 crate::items! {
     mod std;
     use std::generate_os_std_print_macros;
@@ -26,13 +20,7 @@ crate::items! {
 
 // *linux, not(std)
 // #[cfg(not(feature = "std"))]
-#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri),
-    any( // targets:
-        target_arch = "x86", target_arch = "x86_64",
-        target_arch = "arm", target_arch = "aarch64",
-        target_arch = "riscv32", target_arch = "riscv64"
-    ),
-))]
+#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch))]
 crate::items! {
     mod linux;
     use linux::generate_os_linux_print_macros;

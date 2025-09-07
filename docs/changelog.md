@@ -21,7 +21,7 @@ in order to improve compile times while maintaining most of the gained cohesiven
 - add rerun instructions for changed env vars.
 - make sure `CARGO_TARGET_DIR` is always defined.
 - add new `devela_postbuild` crate to `build/post`.
-- add build config flag aliases: `any_supported_arch`, `base_safe*`.
+- add build config flag aliases: `any_supported_arch`, `any_target_riscv`, `base_safe*`.
 - add [base] symlinks to `devela/main/[alias|environment|features].rs`.
 
 ## cargo

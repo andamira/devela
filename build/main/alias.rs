@@ -19,7 +19,10 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     let mut aliases = Vec::with_capacity(20);
 
     /* arch */
-    // 1
+    // 2
+
+    #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
+    new_alias(&mut aliases, "any_target_riscv");
 
     #[cfg(any(
         target_arch = "x86",
