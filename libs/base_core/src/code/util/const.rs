@@ -3,6 +3,7 @@
 //! Defines the [CONST!] macro.
 //
 // IMPROVE: the examples showing the last two arms [hidden|inline] macro_export
+// IMPROVE: support constants with macro metavariables
 
 /// A helper for constructing macro constants.
 ///

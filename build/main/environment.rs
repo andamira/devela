@@ -23,7 +23,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 
     // Makes sure CARGO_TARGET_DIR is always defined, with trailing slash.
     //
-    // Used in: _doclink!
+    // Used in: doclink! (/libs/base_core/src/code/util/doclink
     // In sync with: /.cargo/config.toml#[env] & /libs/base_core/build/environment.rs
     let ctd =
         option_env!("CARGO_TARGET_DIR").unwrap_or(concat![env!("CARGO_WORKSPACE_DIR"), "target/"]);

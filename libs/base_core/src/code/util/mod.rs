@@ -36,13 +36,17 @@ pub use paste::__paste; // (called from paste!)
 
 structural::structural_mods! { // _mods, _workspace_internals
     _mods {
+        #[doc(inline)]
         pub use super::{
-            asserts::_all::*, capture::*, cfg_if::*, cfor::*, deprecate::*, doclink::*, enumset::*,
-            ident::*, impl_trait::*, include::*, items::*, is::*, maybe::*, methods::*, paste::*,
-            r#const::*, reexports::*, structural::*,
+            asserts::_all::*, capture::*, cfg_if::*, cfor::*, deprecate::*, doclink::doclink,
+            enumset::*, ident::*, impl_trait::*, include::*, items::*, is::*, maybe::*, methods::*,
+            paste::*, r#const::*, reexports::*, structural::*,
         };
     }
     _workspace_internals {
-        pub use super::{_doc::*, _links::*, _mod_docs::*, _tags::*, _reexport::*, _use::*};
+        pub use super::{
+            _doc::*, _links::*, _mod_docs::*, _tags::*, _reexport::*, _use::*,
+            doclink::DOCLINK_DOMAIN,
+        };
     }
 }
