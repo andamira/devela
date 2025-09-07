@@ -98,29 +98,12 @@ crate::CONST! { hidden macro_export,
     TAG_UID = concat!($crate::SPAN_OPEN!(), "'Unique-identification-related item'>",
         $crate::EMOJI_UID!(), "</span>");
 
+    /* misc. */
 
     TAG_MAYBE_STD = concat!($crate::SPAN_OPEN!(),
         "'re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>");
-
-    /* workspace libraries (small) */
-
-
-    TAG_DEVELA_BASE_CORE = concat!($crate::SPAN_OPEN!(),
-        "'provided by `devela_base_core` workspace library'>", "<small>base</small></span>");
-    TAG_DEVELA_BASE_MACROS = concat!($crate::SPAN_OPEN!(),
-        "'provided by `devela_base_macros` workspace library'>", "<small>base_macros</small></span>");
-    TAG_DEVELA_BASE_ALLOC = concat!($crate::SPAN_OPEN!(),
-        "'provided by `devela_base_alloc` workspace library'>", "<small>base_alloc</small></span>");
-    TAG_DEVELA_BASE_STD = concat!($crate::SPAN_OPEN!(),
-        "'provided by `devela_base_std` workspace library'>", "<small>base_std</small></span>");
-
-    TAG_DEVELA_MACROS = concat!($crate::SPAN_OPEN!(),
-        "'provided by `devela_macros` workspace library'>", "<small>macros</small></span>");
-
-    TAG_DEVELA_DATA = concat!($crate::SPAN_OPEN!(),
-        "'provided by `devela_data` workspace library'>", "<small>data</small></span>");
-    TAG_DEVELA_NUM = concat!($crate::SPAN_OPEN!(),
-        "'provided by `devela_num` workspace library'>", "<small>num</small></span>");
+    TAG_PROCEDURAL_MACRO = concat!($crate::SPAN_OPEN!(),
+    "'procedural macro'>", "<small>proc</small></span>");
 
     /* optional dependencies */
 

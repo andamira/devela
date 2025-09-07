@@ -3,6 +3,7 @@
 //! Re-exports the [`paste!`] macro with associated docs.
 //
 
+#[doc = crate::TAG_PROCEDURAL_MACRO!()]
 /// <span class="stab portability" title="re-exported from the `paste` crate">`paste`</span>
 /// Allows to paste identifiers together.
 ///

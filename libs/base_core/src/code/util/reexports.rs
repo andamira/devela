@@ -5,10 +5,13 @@
 
 use crate::_reexport;
 
-// #[doc = crate::TAG_DEVELA_BASE_MACROS!()]
+#[doc = crate::TAG_PROCEDURAL_MACRO!()] #[rustfmt::skip]
 pub use devela_base_macros::{
-    cif, coalesce, compile, compile_attr, compile_doc, field_of, ident_total, ident_total_unique,
-    ident_unique,
+    cif, compile, compile_attr,
+    ident_total, ident_total_unique, ident_unique,
+    coalesce, field_of,
+    //
+    compile_doc,
 };
 
 /* `core::hint` functions re-exports */
