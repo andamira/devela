@@ -6,7 +6,7 @@
 
 /// Custom domain used for the [`doclink!`] macro.
 #[doc(hidden)] #[macro_export] #[rustfmt::skip]
-macro_rules! _DOCLINK_CUSTOM_DOMAIN { () => { "https://andamira.github.io" }; }
+macro_rules! _DOCLINK_CUSTOM_DOMAIN { () => { "https://andamira.github.io/" }; }
 #[doc(hidden)] #[rustfmt::skip] pub use _DOCLINK_CUSTOM_DOMAIN as DOCLINK_CUSTOM_DOMAIN;
 
 crate::CONST! { hidden macro_export,
@@ -19,7 +19,7 @@ The `custom` arms depend on defining a macro that returns a string literal
 containing the custom domain to use for the docs, following the same structure as docs.rs. E.g.:
 ```
 #[macro_export] #[doc(hidden)]
-macro_rules! DOCLINK_CUSTOM_DOMAIN { () => { \"https://docs.rs/\" } }
+macro_rules! DOCLINK_CUSTOM_DOMAIN { () => { \"https://docs.rs/\" } } // it must end in `/`
 ```
 
 # Features
@@ -54,11 +54,13 @@ macro_rules! _doclink {
      /* links to either a custom domain or a local URL */
 
      // [anchor]: https://…/crate/item_path
+     // [anchor]: file://…/current_crate/item_path/index.html
      custom crate $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat!["\n\n", $anchor, ": ",
         $crate::doclink![custom crate $item_path $(@mod$($_m)?)?]]
     };
     ( // https://…/crate/item_path
+      // file://…/current_crate/item_path/index.html
      custom crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
         stringify!($crate_name),env! ("CARGO_CRATE_NAME"),
@@ -66,11 +68,13 @@ macro_rules! _doclink {
     };
     (
      // [anchor]: https://…/crate_name/item_path
+     // [anchor]: file://…/crate_name/item_path/index.html
      custom $crate_name:ident $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat!["\n\n", $anchor, ": ",
         $crate::doclink![custom $crate_name $item_path $(@mod$($_m)?)?]]
     };
     ( // https://…/crate_name/item_path
+      // file://…/crate_name/item_path/index.html
      custom $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
         stringify!($crate_name), "/latest/", stringify!($crate_name), "/", $item_path]
@@ -79,10 +83,12 @@ macro_rules! _doclink {
      /* links to either docs.rs or a local URL */
 
      // [anchor]: https://…/crate/item_path
+     // [anchor]: file://…/current_crate/item_path/index.html
      crate $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat!["\n\n", $anchor, ": ", $crate::doclink![crate $item_path $(@mod$($_m)?)?]]
     };
     ( // https://…/crate/item_path
+      // file://…/current_crate/item_path/index.html
      crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat!["https://docs.rs/",
         stringify!($crate_name),env! ("CARGO_CRATE_NAME"),
@@ -90,10 +96,12 @@ macro_rules! _doclink {
     };
     (
      // [anchor]: https://…/crate_name/item_path
+     // [anchor]: file://…/crate_name/item_path/index.html
      $crate_name:ident $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat!["\n\n", $anchor, ": ", $crate::doclink![$crate_name $item_path $(@mod$($_m)?)?]]
     };
     ( // https://…/crate_name/item_path
+      // file://…/crate_name/item_path/index.html
      $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat!["https://docs.rs/",
         stringify!($crate_name), "/latest/", stringify!($crate_name), "/", $item_path]

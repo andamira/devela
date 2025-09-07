@@ -24,19 +24,19 @@ use core::slice::{from_raw_parts, from_raw_parts_mut};
 /// - [methods namespaced from `core::slice`](#coreslice-namespaced-methods)
 ///
 /// - [`range*` API methods](#range-api-methods-for-subslicing):</br>
-///   [**range_to**](#method.range_to)
+///   - [**range_to**](#method.range_to)
 ///    ([*c*](#method.range_to_checked),
 ///     [*uc*](#method.range_to_unchecked),
 ///     [_**mut**_](#method.range_to_mut),
 ///     [*mut_c*](#method.range_to_mut_checked),
 ///     [*mut_uc*](#method.range_to_mut_unchecked)),
-///   [**range_from**](#method.range_from),
+///   - [**range_from**](#method.range_from),
 ///    ([*c*](#method.range_from_checked),
 ///     [*uc*](#method.range_from_unchecked),
 ///     [_**mut**_](#method.range_from_mut),
 ///     [*mut_c*](#method.range_from_mut_checked),
 ///     [*mut_uc*](#method.range_from_mut_unchecked)),
-///   [**range**](#method.range)
+///   - [**range**](#method.range)
 ///    ([*c*](#method.range_checked),
 ///     [*uc*](#method.range_unchecked),
 ///     [_**mut**_](#method.range_mut),
@@ -44,19 +44,19 @@ use core::slice::{from_raw_parts, from_raw_parts_mut};
 ///     [*mut_uc*](#method.range_mut_unchecked)).
 ///
 /// - [`take*` API methods](#take-api-methods-for-subslicing):</br>
-///   [**take_first**](#method.take_first)
+///   - [**take_first**](#method.take_first)
 ///    ([*c*](#method.take_first_checked),
 ///     [*uc*](#method.take_first_unchecked),
 ///     [_**mut**_](#method.take_first_mut),
 ///     [*mut_c*](#method.take_first_mut_checked),
 ///     [*mut_uc*](#method.take_first_mut_unchecked)),
-///   [**take_last**](#method.take_last)
+///   - [**take_last**](#method.take_last)
 ///    ([*c*](#method.take_last_checked),
 ///     [*uc*](#method.take_last_unchecked),
 ///     [_**mut**_](#method.take_last_mut),
 ///     [*mut_c*](#method.take_last_mut_checked),
 ///     [*mut_uc*](#method.take_last_mut_unchecked)),
-///   [**take_omit_last**](#method.take_omit_last)
+///   - [**take_omit_last**](#method.take_omit_last)
 ///    ([*c*](#method.take_omit_last_checked),
 ///     [*uc*](#method.take_omit_last_unchecked),
 ///     [_**mut**_](#method.take_omit_last_mut),
@@ -64,20 +64,21 @@ use core::slice::{from_raw_parts, from_raw_parts_mut};
 ///     [*mut_uc*](#method.take_omit_last_mut_unchecked)).
 ///
 /// - [`*split*` API methods](#split-api-methods-for-subslicing):</br>
-///   [**lsplit**](#method.lsplit)
+///   - [**lsplit**](#method.lsplit)
 ///    ([*mut*](#method.lsplit_mut)),
-///   [**rsplit**](#method.rsplit)
+///   - [**rsplit**](#method.rsplit)
 ///    ([*mut*](#method.rsplit_mut)),
-///   [**msplit_left**](#method.msplit_left)
+///   - [**msplit_left**](#method.msplit_left)
 ///    ([*mut*](#method.msplit_left_mut)),
-///   [**msplit_right**](#method.msplit_right)
+///   - [**msplit_right**](#method.msplit_right)
 ///    ([*mut*](#method.msplit_right_mut)).
 ///
 /// - [methods for byte slices](#methods-for-byte-slices)
 ///
 /// Additionally implements `eq()` methods for comparing primitives and slices of primitives.
 ///
-/// See also: [`ExtSlice`][crate::ExtSlice], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
+/// See also: [`ExtSlice`], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
+#[doc = crate::doclink!(custom devela "[`ExtSlice`]" "sys/mem/trait.ExtSlice.html")]
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);
 

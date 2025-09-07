@@ -85,16 +85,20 @@ macro_rules! __doc {
     // Shows the `Vendored` doc section and links to the info line.
     //
     // $crate_id: the crate's name and html id anchor on the docs.
-    vendor: $crate_id:literal) => { concat!(
-        "\n\n# Vendored\n\nThis is adapted work from [",
-        $crate_id, "][crate::_info::vendored#", $crate_id, "].\n\n"
-    )};
-    (
-    // Shows the `Vendored` doc section and links to the *modifications* module.
-    vendor: $crate_id:literal, module:$mod_id:ident) => { concat!(
-        "\n\n# Vendored\n\nThis is adapted work from [",
-        $crate_id, "][crate::_info::vendored::", $mod_id, "].\n\n"
-    )};
+    vendor: $crate_id:literal) => {
+        concat!("\n\n# Vendored\n\nThis is adapted work from [", $crate_id, "](",
+            $crate::doclink![custom devela "_info/vendored" @mod],
+            "#", $crate_id, ").\n\n"
+        )
+    };
+    // MAYBE
+    // (
+    // // Shows the `Vendored` doc section and links to the *modifications* module.
+    // vendor: $crate_id:literal, module:$mod_id:ident) => { concat!(
+    //     "\n\n# Vendored\n\nThis is adapted work from [",
+    //     $crate_id, "][crate::_info::vendored::", $mod_id, "].\n\n"
+    // )};
+
     (
     // Assumes the path is in current directory. Used in `_info/vendored`.
     //
