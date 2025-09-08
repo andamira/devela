@@ -3,18 +3,18 @@
 //! Functionality related to memory bit size.
 //
 // TOC
-// - imports
-// - fn definitions
-// - trait definition
+// - trait BitSized
+// - macro bit_sized!
 // - trait impls
 
+use crate::{
+    Ansi, AnsiColor3b, AnsiColor8b, AsciiChar, BareBox, ByteSized, Duration, GraphemeNonul,
+    Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
+    NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize, Ordering,
+    PhantomData, PhantomPinned, StringNonul,
+};
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
-use crate::{
-    AsciiChar, BareBox, ByteSized, Duration, GraphemeNonul, Infallible, Mem, NonZeroI8, NonZeroI16,
-    NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32,
-    NonZeroU64, NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, StringNonul,
-};
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // use crate::{StringU16, StringU32, GraphemeU8, StringU8};
@@ -95,7 +95,7 @@ pub trait BitSized<const LEN: usize>: ByteSized {
     }
 }
 
-// Implement BitSized
+/// Helper macro to implement [`BitSized`].
 macro_rules! bit_sized {
     /* primitives */
 
@@ -165,7 +165,6 @@ macro_rules! bit_sized {
         )+
     };
 }
-#[allow(unused_imports)] // TEMP
 pub(crate) use bit_sized;
 
 /* impl BitSized */
@@ -249,3 +248,7 @@ bit_sized![array = 104 * len for T: 104 * len: 1, 2, 4, 8, 16]; // *
 bit_sized![array = 112 * len for T: 112 * len: 1, 2, 4, 8, 16]; // *
 bit_sized![array = 120 * len for T: 120 * len: 1, 2, 4, 8, 16]; // *
 bit_sized![array = 128 * len for T: 128 * len: 1, 2, 4, 8, 16];
+
+bit_sized![= 0; for Ansi];
+bit_sized![= 3; for AnsiColor3b];
+bit_sized![= 8; for AnsiColor8b];

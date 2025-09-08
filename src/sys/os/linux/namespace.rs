@@ -10,10 +10,8 @@ crate::items! {
         LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
         Ptr, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
         LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
-        MaybeUninit, c_int,
+        MaybeUninit, c_int,LinuxTermios, ScopeGuard, TermSize,
     };
-    #[cfg(feature = "term")]
-    use crate::{LinuxTermios, ScopeGuard, TermSize};
     #[cfg(feature = "alloc")]
     use crate::Vec;
 }
@@ -305,7 +303,6 @@ impl Linux {
 
 /// # Terminal-related methods.
 #[rustfmt::skip]
-#[cfg(feature = "term")]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
     /// Returns `true` if we are in a terminal context.

@@ -201,17 +201,15 @@ mod tests {
         const STR_ARR_LIT_SLI: &[u8] = const_join!(bytes: "01", [1, 2], 3, &[4]);
         const_assert!(eq_buf STR_ARR_LIT_SLI, &[48,49,1,2,3,4]);
     }
-    // TEMP
-    // #[test]
-    // #[cfg(feature = "term")]
-    // const fn join_bytes_ansi() {
-    //     use crate::Ansi;
-    //     const ANSI0: &[u8] = const_join!(bytes: Ansi::BOLD);
-    //     const_assert!(eq_buf & [27, 91, 49, 109], ANSI0);
-    //
-    //     const ANSI1: &[u8] = const_join!(bytes: Ansi::BOLD, Ansi::ITALIC);
-    //     const_assert![eq_buf & [27, 91, 49, 109, 27, 91, 51, 109], ANSI1];
-    // }
+    #[test]
+    const fn join_bytes_ansi() {
+        use crate::Ansi;
+        const ANSI0: &[u8] = const_join!(bytes: Ansi::BOLD);
+        const_assert!(eq_buf & [27, 91, 49, 109], ANSI0);
+
+        const ANSI1: &[u8] = const_join!(bytes: Ansi::BOLD, Ansi::ITALIC);
+        const_assert![eq_buf & [27, 91, 49, 109, 27, 91, 51, 109], ANSI1];
+    }
 
     #[test]
     const fn join_str() {

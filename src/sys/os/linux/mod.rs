@@ -48,9 +48,7 @@ pub mod io {
     pub(super) mod _all {
         #[cfg(all(any_target_arch_linux, feature = "unsafe_syscall", not(miri)))]
         crate::items! {
-            pub use super::super::{consts::termios::*, structs::LinuxStat};
-            #[cfg(feature = "term")]
-            pub use super::super::structs::LinuxTermios;
+            pub use super::super::{consts::termios::*, structs::{LinuxStat, LinuxTermios}};
         }
     }
 }
