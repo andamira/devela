@@ -1199,8 +1199,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(target_vendor, values("vex"))', # WAIT
 
 	# Arch flags
-	"cfg(any_supported_arch)",
-	"cfg(any_target_riscv)",
+	"cfg(any_target_arch_linux)", # x86_64, x86, arm, aarch64, riscv32, riscv64
+	"cfg(any_target_arch_riscv)", # riscv32, riscv64
 
 	# Safety flags
 	# --------------------------------------------------------------------------

@@ -18,7 +18,7 @@ items! { mod x86; use x86 as sys; }
 items! { mod arm; use arm as sys; }
 #[cfg(target_arch = "aarch64")]
 items! { mod aarch64; use aarch64 as sys; }
-#[cfg(any_target_riscv)]
+#[cfg(any_target_arch_riscv)]
 items! { mod riscv; use riscv as sys; }
 
 crate::structural_mods! { // _mods

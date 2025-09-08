@@ -63,7 +63,7 @@ ansi![p: bold, ITALIC, cursor_move1(2, 3)].unwrap();
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(not(any(
     /* 1) */ feature = "std",
-    /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch)
+    /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
 )))]
 macro_rules! ansi {
     (
@@ -91,7 +91,7 @@ macro_rules! ansi {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(feature = "std")]
-#[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch)))]
+#[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -130,7 +130,7 @@ macro_rules! ansi {
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch))]
+#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -197,7 +197,7 @@ mod tests {
     #[test]
     #[cfg(any(
         /* 1) */ feature = "std",
-        /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_supported_arch)
+        /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
     ))]
     fn print_non_const() {
         fn dyn_args(x: u8, y: u8) {

@@ -69,7 +69,7 @@ macro_rules! set_panic_handler {
                 $crate::asm!("udf #0"); // Force crash
             }
 
-            #[cfg(any_target_riscv)]
+            #[cfg(any_target_arch_riscv)]
             unsafe {
                 $crate::asm!("wfi"); // Low-power sleep
                 $crate::asm!("ebreak"); // Debugger trap

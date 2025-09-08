@@ -93,7 +93,7 @@ global_asm!(
 
 // https://git.musl-libc.org/cgit/musl/tree/src/signal/riscv32/restore.s
 // https://git.musl-libc.org/cgit/musl/tree/src/signal/riscv64/restore.s
-#[cfg(any_target_riscv)]
+#[cfg(any_target_arch_riscv)]
 global_asm!(
     ".global __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt, %function",

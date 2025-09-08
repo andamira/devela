@@ -5,6 +5,7 @@
 
 #[cfg(feature = "__dbg")]
 use super::Build;
+use ::std::{env::var, io::Error as IoError};
 
 /// Defines a cfg flag `alias` and saves its name in a `list`.
 fn new_alias(list: &mut Vec<&'static str>, alias: &'static str) {
@@ -12,7 +13,7 @@ fn new_alias(list: &mut Vec<&'static str>, alias: &'static str) {
     list.push(alias);
 }
 
-pub(crate) fn main() -> Result<(), std::io::Error> {
+pub(crate) fn main() -> Result<(), IoError> {
     #[cfg(feature = "__dbg")]
     Build::println_heading("Aliases:");
 
@@ -20,19 +21,23 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 
     /* arch */
     // 2
+    // - any_target_arch_linux
+    // - any_target_arch_riscv
 
-    #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
-    new_alias(&mut aliases, "any_target_riscv");
+    let target_arch = var("CARGO_CFG_TARGET_ARCH").unwrap();
 
-    #[cfg(any(
-        target_arch = "x86",
-        target_arch = "x86_64",
-        target_arch = "arm",
-        target_arch = "aarch64",
-        target_arch = "riscv32",
-        target_arch = "riscv64"
-    ))]
-    new_alias(&mut aliases, "any_supported_arch");
+    if target_arch == "x86"
+        || target_arch == "x86_64"
+        || target_arch == "arm"
+        || target_arch == "aarch64"
+        || target_arch == "riscv32"
+        || target_arch == "riscv64"
+    {
+        new_alias(&mut aliases, "any_target_arch_linux");
+    }
+    if target_arch == "riscv32" || target_arch == "riscv64" {
+        new_alias(&mut aliases, "any_target_arch_riscv");
+    }
 
     /* base */
     // 14
