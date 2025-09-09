@@ -16,65 +16,57 @@
 //   - midpoint
 
 use super::super::shared_docs::*;
-use crate::Cast;
-#[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
-use crate::isize_up;
-#[cfg(feature = "_int_usize")]
-use crate::usize_up;
+use crate::{Cast, isize_up, usize_up};
 #[allow(unused_imports)]
 use crate::{GcdReturn, Int, cswap, is, paste, unwrap};
-use crate::{NumError::Overflow, NumResult as Result};
+use crate::{IntError::Overflow, IntResult as Result};
 
 /// Implements core methods for [`Int`].
 ///
 /// # Args
 /// $t:    the input/output type
-/// $cap:  the capability feature enabling the given implementation. E.g "_int_u8"
 ///
 /// $ut:   the unsigned type of the same size as $t (only for signed)
-/// $ucap: the feature enabling some methods related to `$ut` (signed midpoint)
 ///
 /// $up:   the upcasted type to do the operations on (for lcm). E.g u8
 ///
 /// $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16 (only for unsigned)
-/// $icap: the feature enabling some methods related to `$iup`. E.g "_int_i16" (only for unsigned)
 ///
 /// $d:    the doclink suffix for the method name
 macro_rules! impl_core {
     () => {
         impl_core![signed
-            // $t :$cap         :$ut   :$ucap        |$up      |$d
-            i8    :"_int_i8"    :u8    :"_int_u8"    |i16      |"",
-            i16   :"_int_i16"   :u16   :"_int_u16"   |i32      |"-1",
-            i32   :"_int_i32"   :u32   :"_int_u32"   |i64      |"-2",
-            i64   :"_int_i64"   :u64   :"_int_u64"   |i128     |"-3",
-            i128  :"_int_i128"  :u128  :"_int_u128"  |i128     |"-4",
-            isize :"_int_isize" :usize :"_int_usize" |isize_up |"-5"
+            // $t :$ut   |$up      |$d
+            i8    :u8    |i16      |"",
+            i16   :u16   |i32      |"-1",
+            i32   :u32   |i64      |"-2",
+            i64   :u64   |i128     |"-3",
+            i128  :u128  |i128     |"-4",
+            isize :usize |isize_up |"-5"
         ];
         impl_core![unsigned
-            // $t :$cap         :$up      |$iup     :$iucap          |$d
-            u8    :"_int_u8"    :u16      |i16      :"_int_i16"      |"-6",
-            u16   :"_int_u16"   :u32      |i32      :"_int_i32"      |"-7",
-            u32   :"_int_u32"   :u64      |i64      :"_int_i64"      |"-8",
-            u64   :"_int_u64"   :u128     |i128     :"_int_i128"     |"-9",
-            u128  :"_int_u128"  :u128     |i128     :"_int_i128"     |"-10"
-          //usize :"_int_usize" :usize_up |isize_up :"_int_isize_up" |"-11"]; // MAYBE
+            // $t :$up      |$iup     |$d
+            u8    :u16      |i16      |"-6",
+            u16   :u32      |i32      |"-7",
+            u32   :u64      |i64      |"-8",
+            u64   :u128     |i128     |"-9",
+            u128  :u128     |i128     |"-10"
+          //usize :usize_up |isize_up |"-11"]; // MAYBE
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_core![unsigned usize :"_int_usize" :usize_up |isize_up :"_int_i64"  |"-11"];
+        impl_core![unsigned usize  :usize_up |isize_up |"-11"];
         #[cfg(target_pointer_width = "64")]
-        impl_core![unsigned usize :"_int_usize" :usize_up |isize_up :"_int_i128" |"-11"];
+        impl_core![unsigned usize  :usize_up |isize_up |"-11"];
     };
-    (signed $( $t:ty : $cap:literal : $ut:ty : $ucap:literal | $up:ty |$d:literal ),+) => {
-        $( impl_core![@signed   $t :$cap :$ut :$ucap :$up |$d]; )+
+    (signed $( $t:ty : $ut:ty | $up:ty |$d:literal ),+) => {
+        $( impl_core![@signed   $t :$ut :$up |$d]; )+
     };
-    (unsigned $( $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal |$d:literal ),+) => {
-        $( impl_core![@unsigned $t :$cap :$up |$iup :$icap |$d]; )+
+    (unsigned $( $t:ty : $up:ty | $iup:ty |$d:literal ),+) => {
+        $( impl_core![@unsigned $t :$up |$iup |$d]; )+
     };
     (
     // implements signed ops
-    @signed $t:ty : $cap:literal : $ut:ty : $ucap:literal : $up:ty |$d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @signed $t:ty : $ut:ty : $up:ty |$d:literal) => { paste! {
         ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
@@ -88,7 +80,6 @@ macro_rules! impl_core {
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
         #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns the absolute value of `self`.
             pub const fn abs(self) -> Int<$t> { Int(self.0.abs()) }
@@ -286,7 +277,6 @@ macro_rules! impl_core {
             /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
-            /// # #[cfg(feature = "_int_i8")]
             /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
@@ -323,7 +313,6 @@ macro_rules! impl_core {
             /// # use devela::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
-            /// # #[cfg(feature = "_int_i8")]
             /// assert_eq![Int(-76), Int(100_i8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap
             /// ```
             pub const fn scale_wrap(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {
@@ -346,8 +335,6 @@ macro_rules! impl_core {
             /// ```
             // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
             // NOTE: based on Rust's std implementation.
-            #[cfg(feature = $ucap )]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $ucap)))]
             pub const fn midpoint(self, other: $t) -> Int<$t> {
                 const U: $ut = <$t>::MIN.unsigned_abs();
 
@@ -365,8 +352,7 @@ macro_rules! impl_core {
     }};
     (
     // implements unsigned ops
-    @unsigned $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal |$d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @unsigned $t:ty : $up:ty | $iup:ty |$d:literal) => { paste! {
         ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
@@ -380,7 +366,6 @@ macro_rules! impl_core {
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
         #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
             pub const fn abs(self) -> Int<$t> { self }
@@ -469,8 +454,6 @@ macro_rules! impl_core {
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[cfg(all(feature = $icap))]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn gcd_ext(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 if self.0 == 0 { return Ok(GcdReturn::new(Int(b), Int(0), Int(1))); }
                 if b == 0 { return Ok(GcdReturn::new(self, Int(1), Int(0))); }
@@ -543,8 +526,6 @@ macro_rules! impl_core {
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[cfg(feature = $icap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 // TEMP FIX (for now panics)
                 // let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
@@ -596,7 +577,6 @@ macro_rules! impl_core {
             /// # use devela::Int;
             #[doc ="assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc ="assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
-            /// # #[cfg(feature = "_int_u8")]
             /// assert![Int(200_u8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
@@ -632,7 +612,6 @@ macro_rules! impl_core {
             /// # use devela::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
-            /// # #[cfg(feature = "_int_u8")]
             /// assert_eq![Int(104), Int(200_u8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap
             /// ```
             pub const fn scale_wrap(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {

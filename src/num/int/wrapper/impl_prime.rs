@@ -10,49 +10,43 @@
 //   - totient
 
 use super::super::shared_docs::*;
-#[cfg(feature = "_int_isize")]
-use crate::isize_up;
-#[cfg(feature = "_int_usize")]
-use crate::usize_up;
-use crate::{Int, NumError::Overflow, NumResult as Result, is, paste};
+use crate::{Int, IntError::Overflow, IntResult as Result, is, isize_up, paste, usize_up};
 
 /// Implements prime-related methods for [`Int`].
 ///
 /// # Args
 /// $t:   the input/output type
 /// $up:  the upcasted type to do the operations on (for prime_pi)
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 ///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_prime {
     () => {
         impl_prime![signed
-            i8    |i16      :"_int_i8"    | "",
-            i16   |i32      :"_int_i16"   | "-1",
-            i32   |i64      :"_int_i32"   | "-2",
-            i64   |i128     :"_int_i64"   | "-3",
-            i128  |i128     :"_int_i128"  | "-4",
-            isize |isize_up :"_int_isize" | "-5",
+            i8    |i16      | "",
+            i16   |i32      | "-1",
+            i32   |i64      | "-2",
+            i64   |i128     | "-3",
+            i128  |i128     | "-4",
+            isize |isize_up | "-5",
         ];
         impl_prime![unsigned
-            u8    |u16      :"_int_u8"    | "-6",
-            u16   |u32      :"_int_u16"   | "-7",
-            u32   |u64      :"_int_u32"   | "-8",
-            u64   |u128     :"_int_u64"   | "-9",
-            u128  |u128     :"_int_u128"  | "-10",
-            usize |usize_up :"_int_usize" | "-11",
+            u8    |u16      | "-6",
+            u16   |u32      | "-7",
+            u32   |u64      | "-8",
+            u64   |u128     | "-9",
+            u128  |u128     | "-10",
+            usize |usize_up | "-11",
         ];
     };
-    (signed $( $t:ty | $up:ty : $cap:literal | $d:literal ),+ $(,)?) => {
-        $( impl_prime![@signed $t|$up:$cap | $d]; )+
+    (signed $( $t:ty | $up:ty | $d:literal ),+ $(,)?) => {
+        $( impl_prime![@signed $t|$up | $d]; )+
     };
-    (unsigned $( $t:ty | $up:ty : $cap:literal | $d:literal ),+ $(,)?) => {
-        $( impl_prime![@unsigned $t|$up:$cap | $d]; )+
+    (unsigned $( $t:ty | $up:ty | $d:literal ),+ $(,)?) => {
+        $( impl_prime![@unsigned $t|$up | $d]; )+
     };
     (
     // implements signed ops
-    @signed $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @signed $t:ty | $up:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
@@ -60,7 +54,6 @@ macro_rules! impl_prime {
         #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
         #[doc = "- [totient](#method.totient" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///
@@ -186,8 +179,7 @@ macro_rules! impl_prime {
     }};
     (
     // implements unsigned ops
-    @unsigned $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @unsigned $t:ty | $up:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
@@ -195,7 +187,6 @@ macro_rules! impl_prime {
         #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
         #[doc = "- [totient](#method.totient" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///

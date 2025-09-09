@@ -342,12 +342,6 @@ mod reflection {
     pub const FLOAT: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_float··", "_nums··"],
         features: &["_float_f32", "_float_f64"] };
-    pub const INT: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_int_i··", "_int··", "_nums··"],
-        features: &["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"] };
-    pub const UINT: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_int_u··", "_int··", "_nums··"],
-        features: &["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"] };
 
     // function helpers
     // -------------------------------------------------------------------------
@@ -390,7 +384,7 @@ mod reflection {
             TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections
             // num
-            FLOAT, INT, UINT, // numbers
+            FLOAT, // numbers
 
         ] { set_flags_dbg_features(ff.ref_flags, ff.features, &mut enabled_ref_flags); }
 

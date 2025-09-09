@@ -5,7 +5,7 @@
 
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base_core::{
-    // errors:
+    // individual errors:
     IncompatibleBounds,
     NoInverse,
     MismatchedSizes,
@@ -13,4 +13,7 @@ pub use devela_base_core::{
     PositiveRequired,
     NonZeroRequired,
     Overflow,
+    // composite errors:
+    IntError, IntResult,
+    NicheValueError,
 };

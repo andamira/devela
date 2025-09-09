@@ -9,22 +9,7 @@ use crate::{
 #[doc = crate::TAG_NUM!()]
 /// Faster divisor for division and modulo operations.
 ///
-/// # Features
-/// It's implemented for the integer primitives enabled by the corresponding
-/// [capability features][crate::_info::features#capability-features]:
-/// [`_int_i8`][Self#impl-Divisor<i8>],
-/// [`_int_i16`][Self#impl-Divisor<i16>],
-/// [`_int_i32`][Self#impl-Divisor<i32>],
-/// [`_int_i64`][Self#impl-Divisor<i64>],
-/// [`_int_i128`][Self#impl-Divisor<i128>],
-/// [`_int_isize`][Self#impl-Divisor<isize>],
-/// [`_int_u8`][Self#impl-Divisor<u8>],
-/// [`_int_u16`][Self#impl-Divisor<u16>],
-/// [`_int_u32`][Self#impl-Divisor<u32>],
-/// [`_int_u64`][Self#impl-Divisor<u64>],
-/// [`_int_u128`][Self#impl-Divisor<u128>],
-/// [`_int_usize`][Self#impl-Divisor<usize>].
-///
+/// It's implemented for the integer primitives.
 #[doc = crate::_doc!(vendor: "quickdiv")]
 #[must_use]
 #[derive(Clone, Copy)]
@@ -50,13 +35,13 @@ enum DivisorInner<T> {
 macro_rules! impl_divisor {
     () => {
         impl_divisor![signed
-            i8|u8|i16|u16:Y:"_int_i8", i16|u16|i32|u32:Y:"_int_i16", i32|u32|i64|u64:Y:"_int_i32",
-            i64|u64|i128|u128:PW:"_int_i64", i128|u128|i128|u128:N:"_int_i128",
-            isize|usize|isize_up|usize_up:Y:"_int_isize"
+            i8|u8|i16|u16:Y, i16|u16|i32|u32:Y, i32|u32|i64|u64:Y,
+            i64|u64|i128|u128:PW, i128|u128|i128|u128:N,
+            isize|usize|isize_up|usize_up:Y
         ];
         impl_divisor![unsigned
-            u8|u16:Y:"_int_u8", u16|u32:Y:"_int_u16", u32|u64:Y:"_int_u32",
-            u64|u128:PW:"_int_u64", u128|u128:N:"_int_u128", usize|usize_up:Y:"_int_usize"
+            u8|u16:Y, u16|u32:Y, u32|u64:Y,
+            u64|u128:PW, u128|u128:N, usize|usize_up:Y
         ];
     };
 
@@ -69,24 +54,19 @@ macro_rules! impl_divisor {
     // $up:    the upcasted type. E.g. i16.
     // $unup:  the unsigned upcasted type. E.g. u16. (only for signed)
     // $is_up: upcasted behavior. Y:upcasted | N:not upcasted | PW depends on pointer width == 64
-    // $cap:   the capability feature that enables the current implementation.
-     signed $( $t:ty | $un:ty | $up:ty | $unup:ty : $is_up:ident : $cap:literal),+) => {
-        $( impl_divisor![@signed $t|$un|$up|$unup:$is_up:$cap]; )+
+     signed $( $t:ty | $un:ty | $up:ty | $unup:ty : $is_up:ident),+) => {
+        $( impl_divisor![@signed $t|$un|$up|$unup:$is_up]; )+
     };
-    (unsigned $( $t:ty | $up:ty : $is_up:ident : $cap:literal),+) => {
-        $( impl_divisor![@unsigned $t|$up:$is_up:$cap]; )+
+    (unsigned $( $t:ty | $up:ty : $is_up:ident),+) => {
+        $( impl_divisor![@unsigned $t|$up:$is_up]; )+
     };
     (
     /* inner arms */
-     @signed $t:ty | $un:ty | $up:ty | $unup:ty : $is_up:ident : $cap:literal) => {
-        #[cfg(feature = $cap )]
+     @signed $t:ty | $un:ty | $up:ty | $unup:ty : $is_up:ident) => {
         impl_divisor![@traits $t];
 
-        #[cfg(feature = $cap )]
-        #[doc = crate::_doc_availability!(feature = $cap)]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Divisor<$t> {
-            impl_divisor![@shared $t|$un|$up|$unup:$is_up:$cap]; // shared methods
+            impl_divisor![@shared $t|$un|$up|$unup:$is_up]; // shared methods
 
             /// Returns the absolute value of the signed primitive as its unsigned equivalent.
             #[must_use]
@@ -232,15 +212,11 @@ macro_rules! impl_divisor {
         }
     };
 
-    (@unsigned $t:ty | $up:ty : $is_up:ident : $cap:literal) => {
-        #[cfg(feature = $cap )]
+    (@unsigned $t:ty | $up:ty : $is_up:ident) => {
         impl_divisor![@traits $t];
 
-        #[cfg(feature = $cap )]
-        #[doc = crate::_doc_availability!(feature = $cap)]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Divisor<$t> {
-            impl_divisor![@shared $t|$t|$up|$up:$is_up:$cap]; // shared methods
+            impl_divisor![@shared $t|$t|$up|$up:$is_up]; // shared methods
 
             /// Creates a divisor which can be used for faster computation
             /// of division and modulo by `d`.
@@ -348,7 +324,7 @@ macro_rules! impl_divisor {
         }
     };
 
-    (@shared $t:ty | $un:ty | $up:ty | $unup:ty : $is_up:ident : $cap:literal) => {
+    (@shared $t:ty | $un:ty | $up:ty | $unup:ty : $is_up:ident) => {
         paste!{
             /// Alias of [`new`][Self::new] with a unique name that helps type inference.
             pub const fn [<new_ $t>](d: $t) -> Option<Divisor<$t>> { Self::new(d) }

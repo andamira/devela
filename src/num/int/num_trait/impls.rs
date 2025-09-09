@@ -3,54 +3,31 @@
 //! Implementations of `NumInt` for primitives.
 //
 
-#[allow(unused_imports)]
-use crate::GcdReturn;
 #[cfg(feature = "alloc")]
 use crate::Vec;
-#[cfg(feature = "_int_usize")]
-use crate::isize_up;
-use crate::{Int, NumInt, NumResult as Result, ValueQuant};
+use crate::{GcdReturn, Int, IntResult as Result, NumInt, ValueQuant, isize_up};
 
 /// $t:     the primitive type
-/// $cap:   the capability feature that enables the given implementation. E.g "_int_i8".
 ///
 /// $ut:    the unsigned type of the same size as $t, only for signed (used for midpoint).
-/// $ucap:  the feature that enables some methods related to `$ut`. E.g "_int_i8". (only for signed)
 ///
 /// $io:    the signed output primitive type (upcasted for unsigned, same as $t for signed).
-/// $iocap: the capability feature that enables some ops with signed output primitive type.
-///         also corresponds to $iup in impl_modulo, for example.
 macro_rules! impl_int {
     () => {
-        impl_int![signed
-            i8:"_int_i8"|u8:"_int_u8",
-            i16:"_int_i16"|u16:"_int_u16",
-            i32:"_int_i32"|u32:"_int_u32",
-            i64:"_int_i64"|u64:"_int_u64",
-            i128:"_int_i128"|u128:"_int_u128",
-            isize:"_int_isize"|usize:"_int_usize"
-        ];
-        impl_int![unsigned
-            u8:"_int_u8"|i16:"_int_i16",
-            u16:"_int_u16"|i32:"_int_i32",
-            u32:"_int_u32"|i64:"_int_i64",
-            u64:"_int_u64"|i128:"_int_i128",
-            u128:"_int_u128"|i128:"_int_i128"
-        ];
+        impl_int![signed i8|u8, i16|u16, i32|u32, i64|u64, i128|u128, isize|usize];
+        impl_int![unsigned u8|i16, u16|i32, u32|i64, u64|i128, u128|i128];
         #[cfg(target_pointer_width = "32")]
-        impl_int![unsigned usize:"_int_usize"|isize_up:"_int_i64"];
+        impl_int![unsigned usize|isize_up];
         #[cfg(target_pointer_width = "64")]
-        impl_int![unsigned usize:"_int_usize"|isize_up:"_int_i128"];
+        impl_int![unsigned usize|isize_up];
     };
 
     // Implements `NumInt` for signed integer types
     // --------------------------------------------------------------------------------------------
-    (signed $($t:ident : $cap:literal | $ut:ident : $ucap:literal),+) => {
-        $( impl_int![@signed $t:$cap | $ut:$ucap]; )+
+    (signed $($t:ident | $ut:ident),+) => {
+        $( impl_int![@signed $t| $ut]; )+
     };
-    (@signed $t:ident : $cap:literal | $ut:ident:$ucap:literal) => { $crate::paste! {
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
+    (@signed $t:ident | $ut:ident) => { $crate::paste! {
         impl NumInt for $t {
             type OutI = $t;
 
@@ -67,12 +44,8 @@ macro_rules! impl_int {
                 match Int(*self).gcd_ext(*other) {
                     GcdReturn { gcd, x, y } => Ok(GcdReturn { gcd: gcd.0, x: x.0, y: y.0 }) }}
 
-            #[cfg(feature = $ucap )]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $ucap)))]
             fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(self).midpoint(other).0) }
-            #[cfg(feature = $ucap )]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $ucap)))]
             fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(*self).midpoint(*other).0) }
 
@@ -109,12 +82,10 @@ macro_rules! impl_int {
 
     // Implements `Num` for unsigned integer types
     // --------------------------------------------------------------------------------------------
-    (unsigned $($t:ident : $cap:literal | $io:ident : $iocap:literal),+) => {
-        $( impl_int![@unsigned $t:$cap | $io:$iocap]; )+
+    (unsigned $($t:ident | $io:ident),+) => {
+        $( impl_int![@unsigned $t| $io]; )+
     };
-    (@unsigned $t:ident : $cap:literal | $io:ident : $iocap:literal) => { $crate::paste! {
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
+    (@unsigned $t:ident | $io:ident) => { $crate::paste! {
         impl NumInt for $t {
             type OutI = $io;
 
@@ -122,14 +93,10 @@ macro_rules! impl_int {
 
             /* core */
 
-            #[cfg(feature = $iocap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $iocap)))]
             fn int_gcd_ext(self, other: Self::Rhs)
                 -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 Int(self).gcd_ext(other)
                     .map(|res| GcdReturn { gcd: res.gcd.0, x: res.x.0, y: res.y.0 }) }
-            #[cfg(feature = $iocap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $iocap)))]
             fn int_ref_gcd_ext(&self, other: &Self::Rhs)
                 -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 Int(*self).gcd_ext(*other)
@@ -142,21 +109,13 @@ macro_rules! impl_int {
 
             /* modulo */
 
-            #[cfg(feature = $iocap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $iocap)))]
             fn int_modulo_mul_inv(self, modulus: Self) -> Result<Self> {
                 Int(self).modulo_mul_inv(modulus).map(|n|n.0) }
-            #[cfg(feature = $iocap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $iocap)))]
             fn int_ref_modulo_mul_inv(&self, modulus: &Self) -> Result<Self> {
                 Int(*self).modulo_mul_inv(*modulus).map(|n|n.0) }
 
-            #[cfg(feature = $iocap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $iocap)))]
             fn int_modulo_div(self, other: Self, modulus: Self) -> Result<Self> {
                 Int(self).modulo_div(other, modulus).map(|n|n.0) }
-            #[cfg(feature = $iocap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $iocap)))]
             fn int_ref_modulo_div(&self, other: &Self, modulus: &Self) -> Result<Self> {
                 Int(*self).modulo_div(*other, *modulus).map(|n|n.0) }
 

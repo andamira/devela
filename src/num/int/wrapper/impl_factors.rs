@@ -27,44 +27,42 @@
 
 #[cfg(feature = "alloc")]
 use crate::{BTreeSet, Hook, Vec, vec_ as vec};
-use crate::{Int, NumError::MismatchedSizes, NumResult as Result, is, paste};
+use crate::{Int, IntError::MismatchedSizes, IntResult as Result, is, paste};
 
 /// Implements factors-related methods for [`Int`].
 ///
 /// # Args.
 /// $t:   the input/output type
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8"
 ///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_factors {
     () => {
         impl_factors![signed
-            i8    :"_int_i8"    |"",
-            i16   :"_int_i16"   |"-1",
-            i32   :"_int_i32"   |"-2",
-            i64   :"_int_i64"   |"-3",
-            i128  :"_int_i128"  |"-4",
-            isize :"_int_isize" |"-5"
+            i8    |"",
+            i16   |"-1",
+            i32   |"-2",
+            i64   |"-3",
+            i128  |"-4",
+            isize |"-5"
         ];
         impl_factors![unsigned
-            u8    :"_int_u8"    |"-6",
-            u16   :"_int_u16"   |"-7",
-            u32   :"_int_u32"   |"-8",
-            u64   :"_int_u64"   |"-9",
-            u128  :"_int_u128"  |"-10",
-            usize :"_int_usize" |"-11"
+            u8    |"-6",
+            u16   |"-7",
+            u32   |"-8",
+            u64   |"-9",
+            u128  |"-10",
+            usize |"-11"
         ];
     };
-    (signed $( $t:ty : $cap:literal | $d:literal ),+) => {
-        $( impl_factors![@signed $t:$cap |$d]; )+
+    (signed $( $t:ty | $d:literal ),+) => {
+        $( impl_factors![@signed $t|$d]; )+
     };
-    (unsigned $( $t:ty : $cap:literal | $d:literal ),+) => {
-        $( impl_factors![@unsigned $t:$cap |$d]; )+
+    (unsigned $( $t:ty | $d:literal ),+) => {
+        $( impl_factors![@unsigned $t|$d]; )+
     };
     (
     // implements signed ops
-    @signed $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @signed $t:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
@@ -78,7 +76,6 @@ macro_rules! impl_factors {
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /* signed factors alloc */
 
@@ -616,8 +613,7 @@ macro_rules! impl_factors {
     }};
     (
     // implements unsigned ops
-    @unsigned $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @unsigned $t:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
@@ -631,7 +627,6 @@ macro_rules! impl_factors {
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /* unsigned factors alloc */
 

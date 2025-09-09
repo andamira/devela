@@ -17,30 +17,22 @@ use crate::paste;
 use crate::{Add, Div, Mul, Neg, Rem, Sub};
 
 // $p:   the primitive type
-// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_num {
     [] => {
-        impl_num![i i8:"_int_i8", i16:"_int_i16", i32:"_int_i32",
-            i64:"_int_i64", i128:"_int_i128", isize:"_int_isize"];
-        impl_num![u u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
-            u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"];
+        impl_num![i i8, i16, i32, i64, i128, isize];
+        impl_num![u u8, u16, u32, u64, u128, usize];
         impl_num![f f32:"_float_f32", f64:"_float_f64"];
 
         // niche types
-        // impl_num![non_value i i8:"_non_value_i8", i16:"_non_value_i16", i32:"_non_value_i32",
-        //     i64:"_non_value_i64", i128:"_non_value_i128", isize:"_non_value_isize"];
-        //
-        // impl_num![non_value u u8:"_non_value_u8", u16:"_non_value_u16", u32:"_non_value_u32",
-        //     u64:"_non_value_u64", u128:"_non_value_u128", usize:"_non_value_usize"];
+        // impl_num![non_value i i8, i16, i32, i64, i128, isize];
+        // impl_num![non_value u u8, u16, u32, u64, u128, usize];
     };
 
     // Implements `Num` for signed integer types
     // --------------------------------------------------------------------------------------------
-    (i $($p:ident : $cap:literal),+) => { $( impl_num![@i $p : $cap]; )+ };
-    (@i $p:ident : $cap:literal) => { paste! {
+    (i $($p:ident),+) => { $( impl_num![@i $p]; )+ };
+    (@i $p:ident) => { paste! {
         // i*
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for $p {
             type Inner = $p;
             type Out = $p;
@@ -69,8 +61,6 @@ macro_rules! impl_num {
         }
 
         // NonZeroI*
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type Out = [<NonZero $p:camel>];
@@ -114,11 +104,9 @@ macro_rules! impl_num {
 
     // Implements `Num` for signed integer niche types
     // --------------------------------------------------------------------------------------------
-    (non_value i $($p:ident : $cap:literal),+) => { $( impl_num![@non_value i $p : $cap]; )+ };
-    (@non_value i $p:ident : $cap:literal) => { paste! {
+    (non_value i $($p:ident),+) => { $( impl_num![@non_value i $p]; )+ };
+    (@non_value i $p:ident) => { paste! {
         // NonValueI*
-        #[cfg(feature = $cap)]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
             type Inner = $p;
             type Out =  [<NonValue $p:camel>]<V>;
@@ -129,11 +117,9 @@ macro_rules! impl_num {
 
     // Implements `Num` for unsigned integer types
     // --------------------------------------------------------------------------------------------
-    (u $($p:ident : $cap:literal),+) => { $( impl_num![@u $p : $cap]; )+ };
-    (@u $p:ident : $cap:literal) => { paste! {
+    (u $($p:ident),+) => { $( impl_num![@u $p]; )+ };
+    (@u $p:ident) => { paste! {
         // u*
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for $p {
             type Inner = $p;
             type Out = $p;
@@ -164,8 +150,6 @@ macro_rules! impl_num {
         }
 
         // NonZeroU*
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type Out = [<NonZero $p:camel>];
@@ -210,11 +194,9 @@ macro_rules! impl_num {
 
     // Implements `Num` for unsigned integer types
     // --------------------------------------------------------------------------------------------
-    (non_value u $($p:ident : $cap:literal),+) => { $( impl_num![@non_value u $p : $cap]; )+ };
-    (@non_value u $p:ident : $cap:literal) => { paste! {
+    (non_value u $($p:ident),+) => { $( impl_num![@non_value u $p]; )+ };
+    (@non_value u $p:ident) => { paste! {
         // NonValueU*
-        #[cfg(feature = $cap)]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
             type Inner = $p;
             type Out = [<NonValue $p:camel>]<V>;

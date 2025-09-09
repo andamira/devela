@@ -3,7 +3,6 @@
 //! Fractional functionality.
 //
 
-#[cfg(_int··)]
 mod wrapper;
 
 // WIPZONE
@@ -11,7 +10,6 @@ mod wrapper;
 
 crate::structural_mods! { // _mods
     _mods {
-        #[cfg(_int··)]
         pub use super::wrapper::*;
 
         // WIPZONE

@@ -18,14 +18,13 @@
 use super::shared_docs::*;
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{GcdReturn, Num, NumError as E, NumResult as Result, ValueQuant};
+use crate::{GcdReturn, IntError as E, IntResult as Result, Num, ValueQuant};
 #[cfg(doc)]
 use E::{
     MismatchedSizes, NoInverse, NonNegativeRequired, NonZeroRequired, NotImplemented, NotSupported,
     Overflow,
 };
 
-#[cfg(_int··)]
 mod impls;
 mod r#ref;
 pub use r#ref::NumRefInt;

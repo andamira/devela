@@ -3,7 +3,7 @@
 //! Defines numeric-related error types.
 //
 // TOC
-// - individual error types:
+// - individual errors:
 //   - NoInverse
 //   - MismatchedSizes
 //   - IncompatibleBounds
@@ -11,8 +11,13 @@
 //   - PositiveRequired
 //   - NonZeroRequired
 //   - Overflow
+// - composite errors:
+//   - NicheValueError
 
-use crate::{DOC_INVALID_VALUE, InvalidValue, Sign, TAG_NUM, define_error};
+use crate::{
+    DOC_INVALID_VALUE, DOC_NOT_IMPLEMENTED, DOC_NOT_SUPPORTED, InvalidValue, NotImplemented,
+    NotSupported, Sign, TAG_NO, TAG_NUM, define_error,
+};
 
 /* individual errors */
 
@@ -64,6 +69,44 @@ define_error![individual: pub struct Overflow(pub Option<Sign>);
 ];
 
 /* composite errors */
+
+define_error! { composite: fmt(f)
+    /// All possible integer operation errors.
+    pub enum IntError {
+        +tag: TAG_NO!(),
+        DOC_NOT_IMPLEMENTED: +const NotImplemented => NotImplemented,
+        +tag: TAG_NO!(),
+        DOC_NOT_SUPPORTED: +const NotSupported => NotSupported,
+
+        // used by ops: core, combinatoric, modulo, prime, root:
+        DOC_OVERFLOW: Overflow(s|0: Option<Sign>) => Overflow(*s),
+        // used by ops: modulo:
+        DOC_NO_INVERSE: NoInverse => NoInverse,
+        // used by ops: combinatoric, root:
+        DOC_NON_NEGATIVE_REQUIRED: NonNegativeRequired => NonNegativeRequired,
+        // used by ops: division, modulo, root:
+        DOC_NON_ZERO_REQUIRED: NonZeroRequired => NonZeroRequired,
+        // used by ops: combinatoric, factor:
+        DOC_MISMATCHED_SIZES: MismatchedSizes => MismatchedSizes,
+
+        // DOC_POSITIVE_REQUIRED: PositiveRequired => PositiveRequired,
+        // DOC_INCOMPATIBLE_BOUNDS: IncompatibleBounds => IncompatibleBounds,
+    }
+}
+// MAYBE TEMP
+#[allow(dead_code)]
+impl IntError {
+    #[doc(hidden)]
+    pub const fn ni<T>() -> IntResult<T> {
+        Err(IntError::NotImplemented)
+    }
+    // #[doc(hidden)]
+    // pub const fn ns<T>() -> IntResult<T> {
+    //     Err(IntError::NotSupported)
+    // }
+}
+///
+pub type IntResult<T> = crate::Result<T, IntError>;
 
 define_error! { composite: fmt(f)
     /// Invalid or problematic values for niche types.

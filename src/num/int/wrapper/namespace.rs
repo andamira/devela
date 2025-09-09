@@ -36,21 +36,8 @@
 #[repr(transparent)]
 pub struct Int<T>(pub T);
 
-crate::num::impl_ops![Int:
-    i8:"_int_i8",
-    i16:"_int_i16",
-    i32:"_int_i32",
-    i64:"_int_i64",
-    i128:"_int_i128",
-    isize:"_int_isize"];
-crate::num::impl_ops![Int: (no_neg)
-    u8:"_int_i8",
-    u16:"_int_u16",
-    u32:"_int_u32",
-    u64:"_int_u64",
-    u128:"_int_u128",
-    usize:"_int_usize"];
-
+crate::num::impl_ops![Int: i8, i16, i32, i64, i128, isize];
+crate::num::impl_ops![Int: (no_neg) u8, u16, u32, u64, u128, usize];
 #[rustfmt::skip]
 mod core_impls {
     use crate::{impl_trait, Int, Ordering, ValueQuant};

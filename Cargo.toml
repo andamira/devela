@@ -23,8 +23,8 @@
 #     - docs            (_doc*)
 #     . code            (_unroll*)
 #     - data            (_data*, _tuple*, _value*, …)
-#     - num             (_num*, _int_*, _float_*, …)
-#     - text            (_text*, _str_*)
+#     - num             (_num*, _float_*)
+#     - text            (_text*)
 #   - Dependency        (dep_*)
 #   - Workspace         (devela_*)
 #
@@ -185,7 +185,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 212/300 (78 remaining), 137 visible, 75 hidden
+[features] # 197/300 (103 remaining), 137 visible, 60 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -513,7 +513,7 @@ _docs_min = [ # the minimum capabilities to document every item
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 	# num:
-	"_float_f64", "_int_u32", "_int_i64",
+	"_float_f64",
 ]
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
@@ -597,28 +597,13 @@ _value_all = [
 
 _num_all = ["_nums_all"]
 
-# `[Num]Int`, `[Num]Float`, `[Num]Frac`, `Point`, `Angle`, `Vector`:
-_nums_all = ["_float_all", "_int_all"]
+# `[Num]Float`, `[Num]Frac`, `Point`, `Angle`, `Vector`:
+_nums_all = ["_float_all"]
 	_float_all = ["_float_f16", "_float_f32", "_float_f64", "_float_f128"]
 		_float_f16 = []
 		_float_f32 = []
 		_float_f64 = []
 		_float_f128 = []
-	_int_all = ["_int_iall", "_int_uall"]
-		_int_iall = ["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"]
-			_int_i8 = []
-			_int_i16 = []
-			_int_i32 = []
-			_int_i64 = []
-			_int_i128 = []
-			_int_isize = []
-		_int_uall = ["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"]
-			_int_u8 = []
-			_int_u16 = []
-			_int_u32 = []
-			_int_u64 = []
-			_int_u128 = []
-			_int_usize = []
 
 
 #* Dependency features (optional external dependencies) *#
@@ -1287,7 +1272,7 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(media··)',
 	# num: (6)
 	'cfg(num··)',
-	'cfg(_nums··, _float··, _int··, _int_i··, _int_u··)',
+	'cfg(_nums··, _float··)',
 	# phys: (1)
 	'cfg(phys··)',
 	# sys: (2)

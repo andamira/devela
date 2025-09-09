@@ -16,38 +16,36 @@ use crate::{Int, is, paste};
 ///
 /// # Args
 /// $t:   the integer primitive input/output type, and the niche inner type
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8"
 ///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_base {
     () => {
         impl_base![signed
-            i8    :"_int_i8"    |"",
-            i16   :"_int_i16"   |"-1",
-            i32   :"_int_i32"   |"-2",
-            i64   :"_int_i64"   |"-3",
-            i128  :"_int_i128"  |"-4",
-            isize :"_int_isize" |"-5"
+            i8    |"",
+            i16   |"-1",
+            i32   |"-2",
+            i64   |"-3",
+            i128  |"-4",
+            isize |"-5"
         ];
         impl_base![unsigned
-            u8    :"_int_u8"    |"-6",
-            u16   :"_int_u16"   |"-7",
-            u32   :"_int_u32"   |"-8",
-            u64   :"_int_u64"   |"-9",
-            u128  :"_int_u128"  |"-10",
-            usize :"_int_usize" |"-11"
+            u8    |"-6",
+            u16   |"-7",
+            u32   |"-8",
+            u64   |"-9",
+            u128  |"-10",
+            usize |"-11"
         ];
     };
-    (signed $( $t:ty : $cap:literal | $d:literal ),+) => {
-        $( impl_base![@signed $t:$cap | $d]; )+
+    (signed $( $t:ty | $d:literal ),+) => {
+        $( impl_base![@signed $t| $d]; )+
     };
-    (unsigned $( $t:ty : $cap:literal | $d:literal ),+) => {
-        $( impl_base![@unsigned $t:$cap | $d]; )+
+    (unsigned $( $t:ty | $d:literal ),+) => {
+        $( impl_base![@unsigned $t| $d]; )+
     };
     (
     // implements ops on signed primitives
-    @signed $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @signed $t:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
@@ -57,7 +55,6 @@ macro_rules! impl_base {
         #[doc = "- [digital_root](#method.digital_root" $d ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns the number of digits in base 10.
             /// # Examples
@@ -179,8 +176,7 @@ macro_rules! impl_base {
     }};
     (
     // implements ops on unsigned primitives
-    @unsigned $t:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @unsigned $t:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
@@ -190,7 +186,6 @@ macro_rules! impl_base {
         #[doc = "- [digital_root](#method.digital_root" $d ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /* unsigned digits */
 

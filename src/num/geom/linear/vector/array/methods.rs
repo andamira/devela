@@ -6,10 +6,7 @@
 #[allow(unused_imports)]
 #[cfg(all(not(feature = "std"), _float··))]
 use crate::ExtFloat;
-use crate::Vector;
-#[cfg(_int··)]
-use crate::{Int, unwrap};
-use crate::{concat as cc, stringify as fy};
+use crate::{Int, Vector, concat as cc, stringify as fy, unwrap};
 
 /* common methods */
 
@@ -28,22 +25,8 @@ impl<T, const D: usize> Vector<T, D> {
 /// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_vector {
     () => {
-        impl_vector![sint
-            i8:"_int_i8",
-            i16:"_int_i16",
-            i32:"_int_i32",
-            i64:"_int_i64",
-            i128:"_int_i128",
-            isize:"_int_isize",
-        ];
-        impl_vector![uint
-            u8:"_int_u8",
-            u16:"_int_u16",
-            u32:"_int_u32",
-            u64:"_int_u64",
-            u128:"_int_u128",
-            usize:"_int_usize",
-        ];
+        impl_vector![sint i8, i16, i32, i64, i128, isize];
+        impl_vector![uint u8, u16, u32, u64, u128, usize];
         impl_vector![float
             f32:"_float_f32",
             f64:"_float_f64",
@@ -51,13 +34,11 @@ macro_rules! impl_vector {
     };
 
     // integers common methods
-    (int $($t:ty : $cap:literal ),+ $(,)?) => {
-        $( impl_vector![@int $t:$cap]; )+
+    (int $($t:ty),+ $(,)?) => {
+        $( impl_vector![@int $t]; )+
     };
-    (@int $t:ty : $cap:literal) => {
+    (@int $t:ty) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`.")]
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// A `Vector` with all ones.
             pub const ONE: Self = Self::new([1; D]);
@@ -184,15 +165,13 @@ macro_rules! impl_vector {
     };
 
     // signed integers specific methods
-    (sint $($t:ty : $cap:literal),+ $(,)?) => {
-        $( impl_vector![@sint $t:$cap]; )+
+    (sint $($t:ty),+ $(,)?) => {
+        $( impl_vector![@sint $t]; )+
     };
-    (@sint $t:ty : $cap:literal) => {
-        impl_vector![int $t:$cap];
+    (@sint $t:ty) => {
+        impl_vector![int $t];
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, signed.")]
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// A `Vector` with all negative ones.
             pub const NEG_ONE: Self = Self::new([-1; D]);
@@ -221,15 +200,13 @@ macro_rules! impl_vector {
     };
 
     // unsigned integers specific methods
-    (uint $($t:ty : $cap:literal),+ $(,)?) => {
-        $( impl_vector![@uint $t:$cap]; )+
+    (uint $($t:ty),+ $(,)?) => {
+        $( impl_vector![@uint $t]; )+
     };
-    (@uint $t:ty : $cap:literal) => {
-        impl_vector![int $t:$cap];
+    (@uint $t:ty) => {
+        impl_vector![int $t];
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, unsigned.")]
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// Calculates the floored magnitude of the vector.
             ///

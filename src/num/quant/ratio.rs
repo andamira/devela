@@ -7,7 +7,6 @@
 
 use crate::{NumConst, Rem};
 
-// #[cfg(_int··)]
 // use crate::Frac;
 
 #[doc = crate::TAG_QUANT!()]
@@ -74,7 +73,6 @@ impl<N: Clone, D: Clone> Ratio<N, D> {
     }
 
     // /// Attempts to reduce the ratio into a simplified `Frac<N>`, if `N == D`.
-    // #[cfg(_int··)]
     // pub fn reduce(self) -> Option<Frac<N>>
     // where
     //     N: NumConst<Num = N> + Rem<D, Output = N> + PartialEq,

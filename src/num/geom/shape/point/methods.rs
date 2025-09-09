@@ -80,23 +80,16 @@ impl<T> Point3d<T> {
 /// helper for implementing methods on `Point`.
 ///
 /// $t: the inner integer primitive type
-/// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_point {
     () => {
-        impl_point![sint
-            i8:"_int_i8", i16:"_int_i16", i32:"_int_i32",
-            i64:"_int_i64", i128:"_int_i128", isize:"_int_isize"];
-        impl_point![uint
-            u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
-            u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"];
+        impl_point![sint i8, i16, i32, i64, i128, isize];
+        impl_point![uint u8, u16, u32, u64, u128, usize];
         impl_point![float f32:"_float_f32", f64:"_float_f64"];
     };
 
     // integers common methods
-    (int $($t:ty : $cap:literal),+) => { $( impl_point![@int $t:$cap]; )+ };
-    (@int $t:ty : $cap:literal) => {
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
+    (int $($t:ty),+) => { $( impl_point![@int $t]; )+ };
+    (@int $t:ty) => {
         impl<const D: usize> Point<$t, D> {
             /// Adds the given vector.
             #[must_use]
@@ -114,26 +107,18 @@ macro_rules! impl_point {
             // }
         }
     };
-    (sint $($t:ty : $cap:literal),+) => { $( impl_point![@sint $t:$cap]; )+ };
-    (@sint $t:ty : $cap:literal ) => {
-        impl_point![int $t:$cap];
-
-        // #[cfg(feature = $cap )]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
+    (sint $($t:ty),+) => { $( impl_point![@sint $t]; )+ };
+    (@sint $t:ty) => {
+        impl_point![int $t];
     };
-    (uint $($t:ty : $cap:literal),+) => { $( impl_point![@uint $t:$cap]; )+ };
-    (@uint $t:ty : $cap:literal) => {
-        impl_point![int $t:$cap];
-
-        // #[cfg(feature = $cap )]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
+    (uint $($t:ty),+) => { $( impl_point![@uint $t]; )+ };
+    (@uint $t:ty) => {
+        impl_point![int $t];
     };
 
     // $f: the inner floating-point primitive type
     (float $( $f:ty : $cap:literal ),+) => { $( impl_point![@float $f:$cap]; )+ };
     (@float $f:ty : $cap:literal) => {
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$f, D> {
             // TODO
             //

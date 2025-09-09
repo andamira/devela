@@ -5,7 +5,7 @@
 
 mod core_traits;
 
-#[cfg(all(_int··, _float··))]
+#[cfg(_float··)]
 crate::items! {
     mod int;
     #[cfg(test)]

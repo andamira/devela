@@ -16,38 +16,28 @@
 
 #[cfg(doc)]
 use crate::NumError::{self, Overflow};
-#[cfg(_int··)]
-use crate::{Frac, Int, NumResult as Result};
+use crate::{Frac, Int, IntResult as Result};
 
 // $i:    the integer type.
 // $self: the fractional self type.
 // $fout: the fractionsl output type.
-// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_frac {
     [] => {
-        impl_frac![
-            i8:"_int_i8", i16:"_int_i16", i32:"_int_i32",
-            i64:"_int_i64", i128:"_int_i128", isize:"_int_isize",
-            u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
-            u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"
-        ];
+        impl_frac![i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
     };
 
-    ($( $i:ty : $cap:literal ),+ ) => {
+    ($( $i:ty),+ ) => {
         $(
-            impl_frac![@array $i:$cap, [$i; 2], Frac<[$i; 2]>];
-            impl_frac![@int_array $i:$cap, [Int<$i>; 2], Frac<[Int<$i>; 2]>];
-            // impl_frac![@slice $i:$cap, &[$i], [$i; 2]]; // MAYBE
+            impl_frac![@array $i, [$i; 2], Frac<[$i; 2]>];
+            impl_frac![@int_array $i, [Int<$i>; 2], Frac<[Int<$i>; 2]>];
+            // impl_frac![@slice $i, &[$i], [$i; 2]]; // MAYBE
         )+
     };
 
     // both for signed and unsigned
-    (@array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    (@array $i:ty, $self:ty, $fout:ty) => { $crate::paste! {
         ///
         #[doc = "# Fraction related methods for `[" $i "; 2]`\n\n"]
-        #[cfg(feature = $cap )]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use]
@@ -125,12 +115,9 @@ macro_rules! impl_frac {
         }
     }};
 
-    (@int_array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    (@int_array $i:ty, $self:ty, $fout:ty) => { $crate::paste! {
         ///
         #[doc = "# Fraction related methods for `[Int<" $i ">; 2]`\n\n"]
-        #[cfg(feature = $cap )]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             pub const fn numerator(self) -> Int<$i> { self.0[0] }

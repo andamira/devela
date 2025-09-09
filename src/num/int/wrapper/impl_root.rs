@@ -14,19 +14,15 @@
 // - root_round TODO
 
 use super::super::shared_docs::*;
-#[allow(unused_imports, reason = "various reasons")]
-use crate::NumError::{self, NonNegativeRequired, NonZeroRequired, Overflow};
-#[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
-use crate::isize_up;
-#[cfg(feature = "_int_usize")]
-use crate::usize_up;
-use crate::{Int, NumResult as Result, is, num::upcasted_op, paste};
+#[allow(unused_imports, reason = "doc for Overflow")]
+use crate::IntError::{NonNegativeRequired, NonZeroRequired, Overflow};
+use crate::{Int, IntResult as Result, is, isize_up, num::upcasted_op, paste, usize_up};
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
-#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int··)]
+#[cold] #[inline(never)] #[rustfmt::skip]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branches with an ok result.
-#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int··)]
+#[cold] #[inline(never)] #[rustfmt::skip]
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
 /// Implements root related methods for [`Int`].
@@ -34,40 +30,38 @@ const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 /// # Args
 /// $t:   the input/output type. E.g. i8.
 /// $up:  the upcasted input/output type. E.g. i16.
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 ///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_root {
     () => {
         impl_root![signed
-            i8    |i16      :"_int_i8"    | "",
-            i16   |i32      :"_int_i16"   | "-1",
-            i32   |i64      :"_int_i32"   | "-2",
-            i64   |i128     :"_int_i64"   | "-3",
-            i128  |i128     :"_int_i128"  | "-4",
-            isize |isize_up :"_int_isize" | "-5"
+            i8    |i16      | "",
+            i16   |i32      | "-1",
+            i32   |i64      | "-2",
+            i64   |i128     | "-3",
+            i128  |i128     | "-4",
+            isize |isize_up | "-5"
         ];
         impl_root![unsigned
-            u8    |u16      :"_int_u8"    | "-6",
-            u16   |u32      :"_int_u16"   | "-7",
-            u32   |u64      :"_int_u32"   | "-8",
-            u64   |u128     :"_int_u64"   | "-9",
-            u128  |u128     :"_int_u128"  | "-10",
-            usize |usize_up :"_int_usize" | "-11"
+            u8    |u16      | "-6",
+            u16   |u32      | "-7",
+            u32   |u64      | "-8",
+            u64   |u128     | "-9",
+            u128  |u128     | "-10",
+            usize |usize_up | "-11"
         ];
     };
-    (signed $( $t:ty | $up:ty : $cap:literal | $d:literal ),+) => {
-        $( impl_root![@signed $t|$up:$cap | $d]; )+
+    (signed $( $t:ty | $up:ty | $d:literal ),+) => {
+        $( impl_root![@signed $t|$up| $d]; )+
     };
-    (unsigned $( $t:ty | $up:ty : $cap:literal | $d:literal ),+) => {
-        $( impl_root![@unsigned $t|$up:$cap | $d]; )+
+    (unsigned $( $t:ty | $up:ty | $d:literal ),+) => {
+        $( impl_root![@unsigned $t|$up| $d]; )+
     };
     (
     // implements signed ops
-    @signed $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
+    @signed $t:ty | $up:ty | $d:literal) => { paste! {
         /* sqrt (signed) */
 
-        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
@@ -76,7 +70,6 @@ macro_rules! impl_root {
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
         #[doc = "- [root_ceil](#method.root_ceil" $d ")"]
         #[doc = "- [root_floor](#method.root_floor" $d ")"]
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /// Returns `true` if it's a perfect square.
             ///
@@ -105,7 +98,7 @@ macro_rules! impl_root {
             #[doc = ALGORITHM_SQRT_CEIL!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Ok(Int(4))];"]
@@ -131,7 +124,7 @@ macro_rules! impl_root {
             #[doc = ALGORITHM_SQRT_FLOOR!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Ok(Int(4))];"]
@@ -169,7 +162,7 @@ macro_rules! impl_root {
             #[doc = ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
@@ -210,7 +203,7 @@ macro_rules! impl_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -260,7 +253,7 @@ macro_rules! impl_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
@@ -299,8 +292,7 @@ macro_rules! impl_root {
     }};
     (
     // implements unsigned ops
-    @unsigned $t:ty | $up:ty : $cap:literal | $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @unsigned $t:ty | $up:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
@@ -309,7 +301,6 @@ macro_rules! impl_root {
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
         #[doc = "- [root_ceil](#method.root_ceil" $d ")"]
         #[doc = "- [root_floor](#method.root_floor" $d ")"]
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /* sqrt (unsigned) */
 

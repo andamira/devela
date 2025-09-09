@@ -19,38 +19,36 @@ use crate::{Int, is, paste};
 ///
 /// # Args
 /// $t:   the input/output type
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8"
 ///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_div {
     () => {
         impl_div![signed
-            i8    :"_int_i8":"",
-            i16   :"_int_i16":"-1",
-            i32   :"_int_i32":"-2",
-            i64   :"_int_i64":"-3",
-            i128  :"_int_i128":"-4",
-            isize :"_int_isize":"-5"
+            i8    :"",
+            i16   :"-1",
+            i32   :"-2",
+            i64   :"-3",
+            i128  :"-4",
+            isize :"-5"
         ];
         impl_div![unsigned
-            u8    :"_int_u8"    :"-6",
-            u16   :"_int_u16"   :"-7",
-            u32   :"_int_u32"   :"-8",
-            u64   :"_int_u64"   :"-9",
-            u128  :"_int_u128"  :"-10",
-            usize :"_int_usize" :"-11"
+            u8    :"-6",
+            u16   :"-7",
+            u32   :"-8",
+            u64   :"-9",
+            u128  :"-10",
+            usize :"-11"
         ];
     };
-    (signed $( $t:ty : $cap:literal : $d:literal ),+) => {
-        $( impl_div![@signed $t:$cap:$d]; )+
+    (signed $( $t:ty : $d:literal ),+) => {
+        $( impl_div![@signed $t:$d]; )+
     };
-    (unsigned $( $t:ty : $cap:literal : $d:literal ),+) => {
-        $( impl_div![@unsigned $t:$cap:$d]; )+
+    (unsigned $( $t:ty : $d:literal ),+) => {
+        $( impl_div![@unsigned $t:$d]; )+
     };
     (
     // implements signed ops
-    @signed $t:ty : $cap:literal : $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @signed $t:ty : $d:literal) => { paste! {
         ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]
@@ -61,8 +59,6 @@ macro_rules! impl_div {
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         ///
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the truncated quotient and the remainder.
             pub const fn div_rem(self, b: $t) -> [Int<$t>; 2] {
@@ -241,8 +237,7 @@ macro_rules! impl_div {
     }};
     (
     // implements unsigned ops
-    @unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @unsigned $t:ty : $d:literal) => { paste! {
         ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]
@@ -253,8 +248,6 @@ macro_rules! impl_div {
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         ///
-        #[cfg(feature = $cap )]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned division */
 

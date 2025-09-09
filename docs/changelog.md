@@ -7,6 +7,7 @@
 
 This release changes the library's structure from a single crate to multiple crates,
 in order to improve compile times while maintaining most of the gained cohesiveness.
+Many feature gates are removed in order to make most features make always available.
 
 -----------
 > *Project* :
@@ -41,8 +42,8 @@ in order to improve compile times while maintaining most of the gained cohesiven
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`, `__publish`, `base_safe`, `safe_build`.
-- remove features: `_bit*`, `_char*`, `_cmp*`, `_sort*`, `_str_all`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `join`, `prim`, `split`.
-- remove flags: `bit··`, `char··`, `cmp··`, `prim··`, `sort··`, `str··`, `str_u··`.
+- remove features: `_bit*`, `_char*`, `_cmp*`, `_int_*`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `join`, `prim`, `split`.
+- remove flags: `bit··`, `char··`, `cmp··`, `_int*··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - rename `_docs` to _`docs_min`, `_docsrs` to `_docs`, `_docsrs_nodep` to `_docs_nodep`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
@@ -145,7 +146,7 @@ in order to improve compile times while maintaining most of the gained cohesiven
   - macros: `const_bool!`, `ne!`, `nz!`.
   - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Interval`,  `NonExtreme*`, `NonValue*`, `Sign`, `True`.
   - traits: `ConstBool`.
-- new types: `NicheValueError`.
+- new types: `IntError`, `IntResult`, `NicheValueError`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
 - make `Sign` part of `quant`.

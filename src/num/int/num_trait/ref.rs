@@ -18,7 +18,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{Deref, GcdReturn, Num, NumInt, NumRef, NumResult as Result, ValueQuant};
+use crate::{Deref, GcdReturn, IntResult as Result, Num, NumInt, NumRef, ValueQuant};
 
 #[doc = crate::TAG_NUM!()]
 /// Common auto-trait for referenced integer types.

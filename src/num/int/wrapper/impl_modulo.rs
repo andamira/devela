@@ -16,23 +16,17 @@
 //   - modulo_mul_inv (uc)
 //   - modulo_div (uc)
 
-#[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
-use crate::isize_up;
-#[cfg(feature = "_int_usize")]
-use crate::usize_up;
 use crate::{
     Int,
-    NumError::{NonZeroRequired, Overflow},
-    NumResult as Result, ValueQuant, cif, is, paste,
+    IntError::{NoInverse, NonZeroRequired, Overflow},
+    IntResult as Result, ValueQuant, cif, is, isize_up, paste, unwrap, usize_up,
 };
-#[cfg(_int_i··)]
-use crate::{NumError::NoInverse, unwrap};
 
 // helper function to be called from the cold path branch when modulus == 0.
-#[cold] #[inline(never)] #[cfg(_int··)] #[rustfmt::skip]
+#[cold] #[inline(never)] #[rustfmt::skip]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branch for rare i128 overflow.
-#[cold] #[inline(never)] #[cfg(_int_i··)] #[rustfmt::skip]
+#[cold] #[inline(never)] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
 /// Helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
@@ -96,47 +90,44 @@ macro_rules! upcastop {
 ///
 /// # Args
 /// $t:     the input/output type
-/// $cap:   the capability feature that enables the given implementation. E.g "_int_u8"
 /// $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16
 /// $iup:   the signed upcasted type for some methods. E.g. i16
-/// $icap:  the feature that enables some methods related to `$iup`. E.g "_int_i16"
 /// $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t
 ///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_modulo {
     () => {
         impl_modulo![signed
-            (i8    :"_int_i8",    i16      :Y |""),
-            (i16   :"_int_i16",   i32      :Y |"-1"),
-            (i32   :"_int_i32",   i64      :Y |"-2"),
-            (i64   :"_int_i64",   i128     :Y |"-3"),
-            (i128  :"_int_i128",  i128     :N |"-4"),
-            (isize :"_int_isize", isize_up :Y |"-5")
+            (i8,    i16      :Y |""),
+            (i16,   i32      :Y |"-1"),
+            (i32,   i64      :Y |"-2"),
+            (i64 ,  i128     :Y |"-3"),
+            (i128,  i128     :N |"-4"),
+            (isize, isize_up :Y |"-5")
         ];
         impl_modulo![unsigned
-            (u8   :"_int_u8",   u16|i16   :"_int_i16"  :Y |"-6"),
-            (u16  :"_int_u16",  u32|i32   :"_int_i32"  :Y |"-7"),
-            (u32  :"_int_u32",  u64|i64   :"_int_i64"  :Y |"-8"),
-            (u64  :"_int_u64",  u128|i128 :"_int_i128" :Y |"-9"),
-            (u128 :"_int_u128", u128|i128 :"_int_i128" :N |"-10")
+            (u8,   u16|i16   :Y |"-6"),
+            (u16,  u32|i32   :Y |"-7"),
+            (u32,  u64|i64   :Y |"-8"),
+            (u64,  u128|i128 :Y |"-9"),
+            (u128, u128|i128 :N |"-10")
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_modulo![unsigned (usize :"_int_usize", usize_up|isize_up :"_int_i64"  :Y |"-11")];
+        impl_modulo![unsigned (usize, usize_up|isize_up :Y |"-11")];
         #[cfg(target_pointer_width = "64")]
-        impl_modulo![unsigned (usize :"_int_usize", usize_up|isize_up :"_int_i128" :Y |"-11")];
+        impl_modulo![unsigned (usize, usize_up|isize_up :Y |"-11")];
     };
-    (signed $( ($t:ty : $cap:literal, $up:ty:$is_up:ident |$d:literal) ),+) => {
-        $( impl_modulo![@signed ($t:$cap, $up:$is_up |$d)]; )+
+    (signed $( ($t:ty, $up:ty:$is_up:ident |$d:literal) ),+) => {
+        $( impl_modulo![@signed ($t, $up:$is_up |$d)]; )+
     };
     (unsigned $(
-        ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident |$d:literal)
+        ($t:ty, $up:ty | $iup:ty : $is_up:ident |$d:literal)
     ),+ ) => {
-        $( impl_modulo![@unsigned ($t:$cap, $up|$iup:$icap :$is_up |$d)]; )+
+        $( impl_modulo![@unsigned ($t, $up|$iup :$is_up |$d)]; )+
     };
     (
     // implements signed ops
-    @signed ($t:ty : $cap:literal, $up:ty:$is_up:ident |$d:literal) ) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    @signed ($t:ty, $up:ty:$is_up:ident |$d:literal) ) => { paste! {
         ///
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
@@ -166,7 +157,6 @@ macro_rules! impl_modulo {
         #[doc = "- [modulo_div](#method.modulo_div" $d
             ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /* modulo (signed) */
 
@@ -183,8 +173,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(-4_" $t ").modulo(m)?, 2];"]
             #[doc = "assert_eq![Int(-3_" $t ").modulo(m)?, 0];"]
@@ -199,12 +189,10 @@ macro_rules! impl_modulo {
             #[doc = "assert_eq![Int(" $t "::MAX).modulo(" $t "::MIN)?, " $t "::MAX];"]
             #[doc = "assert_eq![Int(" $t "::MIN).modulo(" $t "::MAX)?, " $t "::MAX - 1];"]
             #[doc = "assert_eq![Int(" $t "::MIN).modulo(" $t "::MIN)?, 0];"]
-            /// # #[cfg(feature = "_int_i64")]
             #[doc = "assert![Int(i64::MIN).modulo(-1).is_ok()];"]
             ///
-            #[doc = "assert_eq![Int(1_" $t ").modulo(0), Err(NumError::NonZeroRequired)];"]
-            /// # #[cfg(feature = "_int_i128")]
-            #[doc = "assert_eq![Int(i128::MIN).modulo(-1), Err(NumError::Overflow(None))];"]
+            #[doc = "assert_eq![Int(1_" $t ").modulo(0), Err(IntError::NonZeroRequired)];"]
+            #[doc = "assert_eq![Int(i128::MIN).modulo(-1), Err(IntError::Overflow(None))];"]
             /// # Ok(()) }
             /// ```
             pub const fn modulo(self, modulus: $t) -> Result<Int<$t>> {
@@ -251,12 +239,10 @@ macro_rules! impl_modulo {
             #[doc = "assert_eq![Int(" $t "::MIN).modulo_unchecked(" $t "::MAX), " $t "::MAX - 1];"]
             #[doc = "assert_eq![Int(" $t "::MIN).modulo_unchecked(" $t "::MIN), 0];"]
             ///
-            /// # #[cfg(feature = "_int_i64")]
             #[doc = "assert_eq![Int(i64::MIN).modulo_unchecked(-1), 0];"]
             /// ```
             /// ```should_panic
             /// # use devela::Int;
-            #[cfg(feature = "_int_i128")]
             #[doc = "let _ = Int(i128::MIN).modulo_unchecked(-1); // i128 could overflow"]
             /// ```
             /// ```should_panic
@@ -281,8 +267,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(-3_" $t ").modulo_cycles(m)?, (0, 1)];"]
@@ -340,8 +326,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_add(-4, m)?, 0];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_add(-3, m)?, 1];"]
@@ -402,8 +388,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(-4, m)?, (0, 0)];"]
@@ -475,8 +461,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(-4_" $t ").modulo_add_inv(m)?, 1];"]
             #[doc = "assert_eq![Int(-3_" $t ").modulo_add_inv(m)?, 0];"]
@@ -527,8 +513,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub(-4, m)?, 2];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub(-3, m)?, 1];"]
@@ -584,8 +570,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(-4, m)?, (2, 2)];"]
@@ -650,8 +636,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-4, m)?, 2];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-3, m)?, 0];"]
@@ -712,8 +698,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-4, m)?, (2, 5)];"]
@@ -783,14 +769,14 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 5;
             #[doc = "assert_eq![Int(-4_" $t ").modulo_mul_inv(m)?, 4];"]
             #[doc = "assert_eq![Int(-3_" $t ").modulo_mul_inv(m)?, 2];"]
             #[doc = "assert_eq![Int(-2_" $t ").modulo_mul_inv(m)?, 3];"]
             #[doc = "assert_eq![Int(-1_" $t ").modulo_mul_inv(m)?, 1];"]
-            #[doc = "assert_eq![Int( 0_" $t ").modulo_mul_inv(m), Err(NumError::NoInverse)];"]
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_mul_inv(m), Err(IntError::NoInverse)];"]
             #[doc = "assert_eq![Int( 1_" $t ").modulo_mul_inv(m)?, 1];"]
             #[doc = "assert_eq![Int( 2_" $t ").modulo_mul_inv(m)?, 3];"]
             #[doc = "assert_eq![Int( 3_" $t ").modulo_mul_inv(m)?, 2];"]
@@ -846,8 +832,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(-4_" $t ").modulo_div(2, m)?, 1];"]
             #[doc = "assert_eq![Int(-3_" $t ").modulo_div(2, m)?, 0];"]
@@ -886,9 +872,8 @@ macro_rules! impl_modulo {
     (
     // implements unsigned ops
     @unsigned
-         ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident |$d:literal)
+         ($t:ty, $up:ty | $iup:ty : $is_up:ident |$d:literal)
     ) => { paste! {
-        #[doc = crate::_doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
@@ -918,7 +903,6 @@ macro_rules! impl_modulo {
         #[doc = "- [modulo_div](#method.modulo_div" $d
             ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
-        #[cfg(feature = $cap )]
         impl Int<$t> {
             /* modulo (unsigned) */
 
@@ -932,8 +916,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo(m)?, 0];"]
             #[doc = "assert_eq![Int(1_" $t ").modulo(m)?, 1];"]
@@ -982,8 +966,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(0_" $t ").modulo_cycles(m)?, (0, 0)];"]
@@ -1037,8 +1021,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_add(0, m)?, 1];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_add(1, m)?, 2];"]
@@ -1091,8 +1075,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(0, m)?, (1, 1)];"]
@@ -1153,8 +1137,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo_add_inv(m)?, 0];"]
             #[doc = "assert_eq![Int(1_" $t ").modulo_add_inv(m)?, 2];"]
@@ -1197,8 +1181,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub(0, m)?, 1];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub(1, m)?, 0];"]
@@ -1239,8 +1223,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(0, m)?, (1, 1)];"]
@@ -1294,8 +1278,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(0, m)?, 0];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(1, m)?, 1];"]
@@ -1348,8 +1332,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             // TEMP
             // #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(0, m)?, (0, 0)];"]
@@ -1415,18 +1399,16 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 5;
-            #[doc = "assert_eq![Int(0_" $t ").modulo_mul_inv(m), Err(NumError::NoInverse)];"]
+            #[doc = "assert_eq![Int(0_" $t ").modulo_mul_inv(m), Err(IntError::NoInverse)];"]
             #[doc = "assert_eq![Int(1_" $t ").modulo_mul_inv(m)?, 1];"]
             #[doc = "assert_eq![Int(2_" $t ").modulo_mul_inv(m)?, 3];"]
             #[doc = "assert_eq![Int(3_" $t ").modulo_mul_inv(m)?, 2];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_inv(m)?, 4];"]
             /// # Ok(()) }
             /// ```
-            #[cfg(feature = $icap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1455,8 +1437,6 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`, if there's no inverse,
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
-            #[cfg(feature = $icap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let (gcd, x, _) = unwrap![ok self.gcd_ext(modulus)].as_tuple_copy();
                 if gcd.0 != 1 {
@@ -1483,8 +1463,8 @@ macro_rules! impl_modulo {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumResult, NumError};
-            /// # fn main() -> NumResult<()> {
+            /// # use devela::{Int, IntResult, IntError};
+            /// # fn main() -> IntResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo_div(2, m)?, 0];"]
             #[doc = "assert_eq![Int(1_" $t ").modulo_div(2, m)?, 2];"]
@@ -1493,8 +1473,6 @@ macro_rules! impl_modulo {
             #[doc = "assert_eq![Int(4_" $t ").modulo_div(2, m)?, 2];"]
             /// # Ok(()) }
             /// ```
-            #[cfg(feature = $icap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_div(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1514,8 +1492,6 @@ macro_rules! impl_modulo {
             /// if there's no multiplicative inverse of `other`.
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
-            #[cfg(feature = $icap)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $icap)))]
             pub const fn modulo_div_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let inverse = Int(other).modulo_mul_inv_unchecked(modulus);
                 self.modulo_mul_unchecked(inverse.0, modulus)

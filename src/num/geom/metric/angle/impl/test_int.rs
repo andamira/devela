@@ -1,9 +1,7 @@
 // devela::num::geom::metric:angle::impl::test_int
 
-#[allow(unused, reason = "±_int_*")]
 use crate::{Angle, AngleDirection, AngleKind, assert_approx_eq_all};
 
-#[cfg(feature = "_int_i16")]
 mod angle_i16 {
     use super::*;
 
@@ -105,7 +103,6 @@ mod angle_i16 {
     }
 }
 
-#[cfg(feature = "_int_u16")]
 mod angle_u16 {
     use super::*;
 
