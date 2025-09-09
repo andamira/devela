@@ -4,9 +4,15 @@
 //
 
 mod alias; // [i|u]size_[down|up]
+mod divisor; // Divisor
+mod gcd; // GcdReturn
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::alias::*;
+        pub use super::{
+            alias::*,
+            divisor::*,
+            gcd::*,
+        };
     }
 }

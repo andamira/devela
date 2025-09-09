@@ -144,9 +144,10 @@ Many feature gates are removed in order to make most features make always availa
   - aliases: `fsize` and `[iu]size_*`.
   - all data, numeric, text & time error types.
   - macros: `const_bool!`, `ne!`, `nz!`.
-  - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Interval`,  `NonExtreme*`, `NonValue*`, `Sign`, `True`.
+  - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Int`, `Interval`,  `NonExtreme*`, `NonValue*`, `Sign`, `True`.
   - traits: `ConstBool`.
-- new types: `IntError`, `IntResult`, `NicheValueError`.
+- new types: `IntAlloc`, `IntError`, `IntResult`, `NicheValueError`.
+- move int shared docs to `devela_base_num` prefixed with `_INT_`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
 - make `Sign` part of `quant`.

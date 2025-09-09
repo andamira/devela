@@ -221,6 +221,7 @@ mod _hidden {
 pub(crate) use _crate_internals::*;
 mod _crate_internals {
     pub(crate) use devela_base_core::_workspace_internals::*;
+    pub(crate) use devela_base_num::_workspace_internals::*;
 
     #[allow(unused_imports)]
     #[rustfmt::skip]

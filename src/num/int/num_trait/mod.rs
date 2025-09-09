@@ -15,7 +15,6 @@
 //   - link_impls
 //   - ref_fn
 
-use super::shared_docs::*;
 #[cfg(feature = "alloc")]
 use crate::Vec;
 use crate::{GcdReturn, IntError as E, IntResult as Result, Num, ValueQuant};
@@ -219,7 +218,7 @@ pub trait NumInt: Num {
     /// and for overflowing arithmetic operations in the following formula:
     ///
     /// # Formulation
-    #[doc = FORMULA_SCALE!()]
+    #[doc = crate::_INT_FORMULA_SCALE!()]
     #[doc = link_impls!["scale"]]
     fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -236,7 +235,7 @@ pub trait NumInt: Num {
     /// Could panic for very large values on some implementations.
     ///
     /// # Formulation
-    #[doc = FORMULA_SCALE!()] // (same as scale)
+    #[doc = crate::_INT_FORMULA_SCALE!()] // (same as scale)
     #[doc = link_impls!["scale_wrap"]]
     fn int_scale_wrap(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -257,7 +256,7 @@ pub trait NumInt: Num {
     /// Permutations of *n* items, ordered, where $n = r$.
     ///
     /// # Formulation
-    #[doc = FORMULA_FACTORIAL!()]
+    #[doc = crate::_INT_FORMULA_FACTORIAL!()]
     ///
     /// These are the maximum numbers whose factorials can fit within
     /// standard signed integer types:
@@ -276,7 +275,7 @@ pub trait NumInt: Num {
     ///
     /// # Formulation
     /// The subfactorial $!n$ is defined recursively as:
-    #[doc = FORMULA_SUBFACTORIAL_RECURSIVE!()]
+    #[doc = crate::_INT_FORMULA_SUBFACTORIAL_RECURSIVE!()]
     ///
     /// These are the maximum numbers whose subfactorials can fit within
     /// standard signed integer types:
@@ -296,7 +295,7 @@ pub trait NumInt: Num {
     /// Returns the number of combinations of `n` items taken `r` at a time, unordered.
     ///
     /// # Formulation
-    #[doc = FORMULA_COMBINE_REP!()]
+    #[doc = crate::_INT_FORMULA_COMBINE_REP!()]
     ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
@@ -311,7 +310,7 @@ pub trait NumInt: Num {
     /// Also known as *multichoose*.
     ///
     /// # Formulation
-    #[doc = FORMULA_COMBINE_REP!()]
+    #[doc = crate::_INT_FORMULA_COMBINE_REP!()]
     ///
     /// # Errors
     /// Returns [`Overflow`] if the result cant't fit the type.
@@ -325,7 +324,7 @@ pub trait NumInt: Num {
     /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
     ///
     /// # Formulation
-    #[doc = FORMULA_PERMUTE!()]
+    #[doc = crate::_INT_FORMULA_PERMUTE!()]
     ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
@@ -338,7 +337,7 @@ pub trait NumInt: Num {
     /// ordered.
     ///
     /// # Formulation
-    #[doc = FORMULA_PERMUTE_REP!()]
+    #[doc = crate::_INT_FORMULA_PERMUTE_REP!()]
     ///
     /// # Errors
     /// Returns [`Overflow`] if the result cant't fit the type.
@@ -358,7 +357,7 @@ pub trait NumInt: Num {
     /// Returns the quotient, rounding the result towards positive infinity.
     ///
     /// # Formulation
-    #[doc = NOTATION_DIV_CEIL!()]
+    #[doc = crate::_INT_NOTATION_DIV_CEIL!()]
     #[doc = link_impls!["div_ceil"]]
     fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_div_ceil"]]
@@ -366,7 +365,7 @@ pub trait NumInt: Num {
 
     /// Returns the quotient, rounding the result towards negative infinity.
     ///
-    #[doc = NOTATION_DIV_FLOOR!()]
+    #[doc = crate::_INT_NOTATION_DIV_FLOOR!()]
     #[doc = link_impls!["div_floor"]]
     fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_div_floor"]]
@@ -616,7 +615,7 @@ pub trait NumInt: Num {
 
     /// Counts the number of primes upto and including `n`.
     ///
-    #[doc = NOTATION_PI!()]
+    #[doc = crate::_INT_NOTATION_PI!()]
     #[doc = link_impls!["prime_pi"]]
     fn int_prime_pi(self) -> Result<usize> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_prime_pi"]]
@@ -640,7 +639,7 @@ pub trait NumInt: Num {
     /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
     ///
     /// # Formulation
-    #[doc = FORMULA_IS_SQUARE!()]
+    #[doc = crate::_INT_FORMULA_IS_SQUARE!()]
     #[doc = link_impls!["is_square"]]
     fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_is_square"]]
@@ -652,7 +651,7 @@ pub trait NumInt: Num {
     /// Returns [`NonNegativeRequired`] if `self` is negative.
     ///
     /// # Formulation
-    #[doc = ALGORITHM_SQRT_CEIL!()]
+    #[doc = crate::_INT_ALGORITHM_SQRT_CEIL!()]
     #[doc = link_impls!["sqrt_ceil"]]
     fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_sqrt_ceil"]]
@@ -665,7 +664,7 @@ pub trait NumInt: Num {
     ///
     /// # Formulation
     /// ## Algorithm
-    #[doc = ALGORITHM_SQRT_FLOOR!()]
+    #[doc = crate::_INT_ALGORITHM_SQRT_FLOOR!()]
     #[doc = link_impls!["sqrt_floor"]]
     fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_sqrt_floor"]]
@@ -675,7 +674,7 @@ pub trait NumInt: Num {
     ///
     /// # Formulation
     /// ## Algorithm
-    #[doc = ALGORITHM_SQRT_ROUND!()]
+    #[doc = crate::_INT_ALGORITHM_SQRT_ROUND!()]
     #[doc = link_impls!["sqrt_round"]]
     fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_sqrt_round"]]
@@ -685,7 +684,7 @@ pub trait NumInt: Num {
 
     /// Returns the ceiled integer `nth` root.
     ///
-    #[doc = FORMULA_ROOT_CEIL_SIGNED!()]
+    #[doc = crate::_INT_FORMULA_ROOT_CEIL_SIGNED!()]
     ///
     /// # Errors
     /// Returns [`NonZeroRequired`] if `nth` is 0, or
@@ -697,7 +696,7 @@ pub trait NumInt: Num {
 
     /// Returns the floored integer `nth` root.
     ///
-    #[doc = FORMULA_ROOT_FLOOR_SIGNED!()]
+    #[doc = crate::_INT_FORMULA_ROOT_FLOOR_SIGNED!()]
     ///
     /// # Errors
     /// Returns [`NonZeroRequired`] if `nth` is 0, or

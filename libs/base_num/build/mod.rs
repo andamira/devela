@@ -1,4 +1,4 @@
-// devela_base_std::build
+// devela_base_num::build
 //
 //! Build-time code generation and configuration.
 //
@@ -11,7 +11,7 @@ macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
 /* globals */
 
 #[allow(unused)]
-const CRATE_NAME: &str = "devela_base_std";
+const CRATE_NAME: &str = "devela_base_num";
 
 /* imports */
 
@@ -37,7 +37,7 @@ fn main() {
 
 fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     #[cfg(feature = "__dbg")]
-    Build::println_start_end("base_std build script", true);
+    Build::println_start_end("base_num build script", true);
 
     alias::main()?;
 
@@ -45,6 +45,6 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     features::main()?;
 
     #[cfg(feature = "__dbg")]
-    Build::println_start_end("base_std build script", false);
+    Build::println_start_end("base_num build script", false);
     Ok(())
 }

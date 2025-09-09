@@ -1,4 +1,4 @@
-// devela::num::int::wrapper::impl_factors
+// devela_base_num::int::wrapper::impl_factors
 //
 //! Implements factors-related methods for [`Int`].
 //
@@ -10,23 +10,14 @@
 //     - factors_prime
 //     - factors_prime_unique
 //     - factors_prime_unique_exp
-//   - non_allocating:
-//     - factors_prime_count
-//     - factors_prime_unique_count
-//     - factors_buf
-//     - factors_proper_buf
-//     - factors_prime_buf
-//     - factors_prime_unique_buf
-//     - factors_prime_unique_exp_buf
-//     - factors_prime_unique_plus_buf
 //
 // TODO MAYBE BENCH implementing another factorization solution
 // - https://www.reddit.com/r/matheducation/comments/1iog8xg/covering_the_basics_how_to_find_factors_gcse_math/
 // 2 arrays (subdivide, first, last next, corresponding, etc. )
 // could be 2 mutable parts of the same array, with split_mut.
 
-#[cfg(feature = "alloc")]
-use crate::{BTreeSet, Hook, Vec, vec_ as vec};
+// #[cfg(feature = "alloc")]
+// use crate::{BTreeSet, Hook, Vec, vec_ as vec};
 use crate::{Int, IntError::MismatchedSizes, IntResult as Result, is, paste};
 
 /// Implements factors-related methods for [`Int`].
@@ -65,191 +56,23 @@ macro_rules! impl_factors {
     @signed $t:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
-        /// - Allocating:
-        #[doc = "   - [factors](#method.factors" $d ")"]
-        #[doc = "   - [factors_proper](#method.factors_proper" $d ")"]
-        #[doc = "   - [factors_prime](#method.factors_prime" $d ")"]
-        #[doc = "   - [factors_prime_unique](#method.factors_prime_unique" $d ")"]
-        /// - Not allocating:
+        // /// - Allocating:
+        // #[doc = "   - [factors](#method.factors" $d ")"]
+        // #[doc = "   - [factors_proper](#method.factors_proper" $d ")"]
+        // #[doc = "   - [factors_prime](#method.factors_prime" $d ")"]
+        // #[doc = "   - [factors_prime_unique](#method.factors_prime_unique" $d ")"]
+        // /// - Not allocating:
         #[doc = "   - [factors_buf](#method.factors_buf" $d ")"]
         #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         impl Int<$t> {
-            /* signed factors alloc */
-
-            /// Returns the factors (including 1 and self).
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
-            #[doc = "assert_eq![Int(-24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
-            #[doc = "assert![Int(0_" $t ").factors().is_empty()];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors(), vec![1]];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors(), vec![1, 7]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors(self) -> Vec<$t> {
-                let n = self.0.abs();
-                is![n == 0; return vec![];
-                is![n == 1; return vec![1]]];
-                let mut set = BTreeSet::new();
-                set.insert(1);
-                for p in self.factors_prime_unique() {
-                    let temp = set.clone();
-                    let mut x = p;
-                    while x <= n {
-                        for &num in &temp {
-                            let new_num = num * x;
-                            is!{n % new_num == 0; {set.insert(new_num);} }
-                        }
-                        x *= p;
-                    }
-                }
-                set.into_iter().collect()
-            }
-
-            /// Returns the proper factors.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
-            #[doc = "assert_eq![Int(-24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
-            #[doc = "assert![Int(0_" $t ").factors_proper().is_empty()];"]
-            #[doc = "assert![Int(1_" $t ").factors_proper().is_empty()];"]
-
-            #[doc = "assert![Int(7_" $t ").factors_proper().is_empty()];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_proper(self) -> Vec<$t> {
-                let n = self.0.abs();
-                is![n == 0; return vec![]];
-                let mut set = BTreeSet::new();
-                set.insert(1);
-                for p in self.factors_prime_unique() {
-                    let temp = set.clone();
-                    let mut x = p;
-                    while x <= n {
-                        for &num in &temp {
-                            let new_num = num * x;
-                            if n % new_num == 0 {
-                                set.insert(new_num);
-                            }
-                        }
-                        x *= p;
-                    }
-                }
-                set.remove(&1);
-                set.remove(&n);
-                set.into_iter().collect()
-            }
-
-            /// Returns the prime factors.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
-            #[doc = "assert_eq![Int(-24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
-            #[doc = "assert![Int(0_" $t ").factors_prime().is_empty()];"]
-            #[doc = "assert![Int(1_" $t ").factors_prime().is_empty()];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors_prime(), vec![7]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_prime(self) -> Vec<$t> {
-                let mut factors = Vec::new();
-                let mut n = self.0.abs();
-                is![n == 0; return factors];
-
-                // Divide by 2 until the number is odd
-                while n % 2 == 0 {
-                    factors.push(2);
-                    n /= 2;
-                }
-                // Divide by odd numbers starting from 3
-                let mut i = 3;
-                while i * i <= n {
-                    while n % i == 0 {
-                        factors.push(i);
-                        n /= i;
-                    }
-                    i += 2;
-                }
-                // If the remaining number is greater than 2, it's a prime factor
-                is![n > 2; factors.push(n)];
-                factors
-            }
-
-            /// Returns the unique prime factors.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
-            #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique(), vec![2, 3]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_prime_unique(self) -> Vec<$t> {
-                self.factors_prime().hook_mut(|v| v.dedup())
-            }
-
-            /// Returns the unique prime factors with its exponent.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
-            #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
-            #[doc = "assert![Int(0_" $t ").factors_prime_unique_exp().is_empty()];"]
-            #[doc = "assert![Int(1_" $t ").factors_prime_unique_exp().is_empty()];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
-                let mut factors = Vec::new();
-                let mut current = None;
-                let mut count = 0;
-
-                for prime in self.factors_prime() {
-                    match current {
-                        Some(f) if f == prime => {
-                            count += 1;
-                        },
-                        _ => {
-                            if let Some(f) = current {
-                                factors.push((f, count));
-                            }
-                            current = Some(prime);
-                            count = 1;
-                        },
-                    }
-                }
-                if let Some(f) = current {
-                    factors.push((f, count));
-                }
-                factors
-            }
-
-            /* signed factors non_alloc */
-
             /// Returns the count of prime factors.
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
@@ -284,7 +107,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
@@ -327,7 +150,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t ").factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];"]
             ///
@@ -366,7 +189,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];"]
@@ -404,7 +227,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let mut buf = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_buf(&mut buf), Ok(4)];"]
             ///
@@ -460,7 +283,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let mut uniq = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
@@ -499,7 +322,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let mut fbuf = [0; 4];
             /// let mut ebuf = [0; 2];
             #[doc = "assert_eq![Int(40_" $t
@@ -579,7 +402,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_prime_unique_plus_buf(&mut fac, &mut uniq), Ok((4, 2))];"]
@@ -616,186 +439,17 @@ macro_rules! impl_factors {
     @unsigned $t:ty | $d:literal) => { paste! {
         ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
-        /// - Allocating:
-        #[doc = "   - [factors](#method.factors" $d ")"]
-        #[doc = "   - [factors_proper](#method.factors_proper" $d ")"]
-        #[doc = "   - [factors_prime](#method.factors_prime" $d ")"]
-        #[doc = "   - [factors_prime_unique](#method.factors_prime_unique" $d ")"]
-        /// - Not allocating:
         #[doc = "   - [factors_buf](#method.factors_buf" $d ")"]
         #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         impl Int<$t> {
-            /* unsigned factors alloc */
-
-            /// Returns the factors (including 1 and self).
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
-            #[doc = "assert![Int(0_" $t ").factors().is_empty()];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors(), vec![1]];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors(), vec![1, 7]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors(self) -> Vec<$t> {
-                let n = self.0;
-                is![n == 0; return vec![]; is![n == 1; return vec![1]]];
-                let mut set = BTreeSet::new();
-                set.insert(1);
-                for p in self.factors_prime_unique() {
-                    let temp = set.clone();
-                    let mut x = p;
-                    while x <= n {
-                        for &num in &temp {
-                            let new_num = num * x;
-                            if n % new_num == 0 {
-                                set.insert(new_num);
-                            }
-                        }
-                        x *= p;
-                    }
-                }
-                set.into_iter().collect()
-            }
-
-            /// Returns the proper factors.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
-            #[doc = "assert![Int(0_" $t ").factors_proper().is_empty()];"]
-            #[doc = "assert![Int(1_" $t ").factors_proper().is_empty()];"]
-            #[doc = "assert![Int(7_" $t ").factors_proper().is_empty()];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_proper(self) -> Vec<$t> {
-                let n = self.0;
-                is![n == 0; return vec![]];
-                let mut set = BTreeSet::new();
-                set.insert(1);
-                for p in self.factors_prime_unique() {
-                    let temp = set.clone();
-                    let mut x = p;
-                    while x <= n {
-                        for &num in &temp {
-                            let new_num = num * x;
-                            if n % new_num == 0 {
-                                set.insert(new_num);
-                            }
-                        }
-                        x *= p;
-                    }
-                }
-                set.remove(&1);
-                set.remove(&n);
-                set.into_iter().collect()
-            }
-
-            /// Returns the prime factors.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
-            #[doc = "assert![Int(0_" $t ").factors_prime().is_empty()];"]
-            #[doc = "assert![Int(1_" $t ").factors_prime().is_empty()];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors_prime(), vec![7]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_prime(self) -> Vec<$t> {
-                let mut factors = Vec::new();
-                let mut n = self.0;
-                is![n == 0; return factors];
-
-                // Divide by 2 until the number is odd
-                while n % 2 == 0 {
-                    factors.push(2);
-                    n /= 2;
-                }
-                // Divide by odd numbers starting from 3
-                let mut i = 3;
-                while i * i <= n {
-                    while n % i == 0 {
-                        factors.push(i);
-                        n /= i;
-                    }
-                    i += 2;
-                }
-                // If the remaining number is greater than 2, it's a prime factor
-                is![n > 2; factors.push(n)];
-                factors
-            }
-
-            /// Returns the unique prime factors.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_prime_unique(self) -> Vec<$t> {
-                self.factors_prime().hook_mut(|v| v.dedup())
-            }
-
-            /// Returns the unique prime factors with its exponent.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::Int;
-            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
-            #[doc = "assert![Int(0_" $t ").factors_prime_unique_exp().is_empty()];"]
-            #[doc = "assert![Int(1_" $t ").factors_prime_unique_exp().is_empty()];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
-            /// ```
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-            pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
-                let mut factors = Vec::new();
-                let mut current = None;
-                let mut count = 0;
-
-                for prime in self.factors_prime() {
-                    match current {
-                        Some(f) if f == prime => {
-                            count += 1;
-                        },
-                        _ => {
-                            if let Some(f) = current {
-                                factors.push((f, count));
-                            }
-                            current = Some(prime);
-                            count = 1;
-                        },
-                    }
-                }
-                if let Some(f) = current {
-                    factors.push((f, count));
-                }
-                factors
-            }
-
-            /* unsigned factors non_alloc */
-
             /// Returns the count of prime factors.
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_count(), 0];"]
@@ -829,7 +483,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
             #[must_use]
@@ -871,7 +525,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t ").factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];"]
             ///
@@ -908,7 +562,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];"]
@@ -946,7 +600,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let mut buf = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_buf(&mut buf), Ok(4)];"]
             ///
@@ -1003,7 +657,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let mut uniq = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
@@ -1042,7 +696,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let mut fbuf = [0; 4];
             /// let mut ebuf = [0; 2];
             #[doc = "assert_eq![Int(40_" $t
@@ -1122,7 +776,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_prime_unique_plus_buf(&mut fac, &mut uniq), Ok((4, 2))];"]

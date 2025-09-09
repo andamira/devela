@@ -1,4 +1,4 @@
-// devela::num::int::wrapper::namespace
+// devela_base_num::int::wrapper::namespace
 //
 //! Defines the [`Int`] namespace wrapper.
 //
@@ -36,11 +36,11 @@
 #[repr(transparent)]
 pub struct Int<T>(pub T);
 
-crate::num::impl_ops![Int: i8, i16, i32, i64, i128, isize];
-crate::num::impl_ops![Int: (no_neg) u8, u16, u32, u64, u128, usize];
+crate::impl_ops![Int: i8, i16, i32, i64, i128, isize];
+crate::impl_ops![Int: (no_neg) u8, u16, u32, u64, u128, usize];
 #[rustfmt::skip]
 mod core_impls {
-    use crate::{impl_trait, Int, Ordering, ValueQuant};
+    use crate::{impl_trait, Int, Ordering};
 
     impl<T: Clone> Clone for Int<T> {
         fn clone(&self) -> Self { Self(self.0.clone()) }
@@ -68,29 +68,6 @@ mod core_impls {
     impl<T: PartialEq> PartialEq<T> for Int<T> {
         fn eq(&self, other: &T) -> bool { self.0.eq(other) }
     }
-    // TODO: re-enable once moved to [base]
-    // with ValueQuant:
-    // impl<T: PartialEq> PartialEq<ValueQuant<T, T>> for ValueQuant<Int<T>, Int<T>> {
-    //     fn eq(&self, other: &ValueQuant<T, T>) -> bool {
-    //         self.v.eq(&other.v) && self.q.eq(&other.q)
-    //     }
-    // }
-    // impl<T: PartialEq> PartialEq<ValueQuant<Int<T>, Int<T>>> for ValueQuant<T, T> {
-    //     fn eq(&self, other: &ValueQuant<Int<T>, Int<T>>) -> bool {
-    //         self.v.eq(&other.v.0) && self.q.eq(&other.q.0)
-    //     }
-    // }
-    // // with ValueQuant and tuple:
-    // impl<T: PartialEq> PartialEq<(T, T)> for ValueQuant<Int<T>, Int<T>> {
-    //     fn eq(&self, other: &(T, T)) -> bool {
-    //         self.v.eq(&other.0) && self.q.eq(&other.1)
-    //     }
-    // }
-    // impl<T: PartialEq> PartialEq<(Int<T>, Int<T>)> for ValueQuant<T, T> {
-    //     fn eq(&self, other: &(Int<T>, Int<T>)) -> bool {
-    //         self.v.eq(&other.0.0) && self.q.eq(&other.1.0)
-    //     }
-    // }
 
     /* ord*/
 

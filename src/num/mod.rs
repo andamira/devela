@@ -9,8 +9,6 @@
 // safety
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
-mod _private; // upcasted_op!, impl_ops!
-
 mod error; // NumError, NumResult
 mod float; // fsize, ExtFloat, Float, FloatConst
 mod frac; // Frac
@@ -56,7 +54,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
     }
     _crate_internals {
         pub(crate) use super::{
-            _private::*,
             geom::_crate_internals::*,
             rand::_crate_internals::*,
         };

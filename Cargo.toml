@@ -55,32 +55,33 @@ resolver = "3"
 
 ## Bottom-up hierarchical dependency flow of units of compilation (? = optional)
 # ·------------------------------------------------------------------------------
-#                                                           .-------------------.
-# ┌╼devela_base_macros        : base proc macros, zero-deps | stable interfaces |
-# └╥╼devela_base_core         : base core items, zero-deps  | primitive focused |
-#  ╟─┴╼devela_base_alloc?     : base alloc-dependent items  | monomorphizations |
-#  ╟───┴╼devela_base_std?╾───┐: base std-dependent items    | & infrastructures |
-#  ╚╗                        │                              ·-------------------·
-#   ╟╼devela_macros?         │: heavy proc macros           |                   |
-#   ╚╗                       │                              ·-------------------.
-#    ╟╼devela_code?          │: code reflective synthesis   | trait definitions |
-#    ╚╦┼╼devela_data?        │: data structures & formats   | & implementations |
-#     ╟┼╼devela_game?        │: game & app development      | for foreign types |
-#     ╟┼╼devela_lang?        │: language functionality      | & domain-specific |
-#     ╟┼╼devela_media?       │: multimedia functionality    | custom constructs |
-#     ╟┼╼devela_num?         │: numeric systems & math      | corresponding to  |
-#     ╟┼╼devela_phys?        │: physical units & measures   | devela's modules  |
-#     ╟┼╼devela_sys          │: system & hardware interface |                   |
-#     ╟┼╼devela_text         │: text processing & unicode   |                   |
-#     ╟┼╼devela_ui?          │: user interfaces & visuals   |                   |
-#     ╟┴╼devela_work?        │: concurrency management      |                   |
-#     ║                      │                              ··------------------·
-#     ╚═╦╼devela             │: unified front, traits       | integration layer |
-#       ║ ├╼build/main───────┤: build, codegen, debug       | public interfaces |
-#       ║ └╼devela_postbuild─┘: post-build processing       | development tools |
-#       ╏                                                   ·-------------------·
+#                                                             .-------------------.
+# ┌╼devela_base_macros          : base proc macros, zero-deps | always available, |
+# └╥╼devela_base_core           : base core-dependent items   | primitive focused |
+#  ╟─┼╼devela_base_num          : base numeric ops            | monomorphizations |
+#  ╚╦┴╼devela_base_alloc?       : base alloc-dependent items  | stable interfaces |
+#   ╟──┴╼devela_base_std?╾─────┐: base std-dependent items    | & infrastructures |
+#    ╚╗╼devela_macros?         │: heavy proc macros           ·-------------------·
+#     ╚╗                       │                              ·-------------------.
+#      ╟╼devela_code?          │: code reflective synthesis   | trait definitions |
+#      ╚╦┼╼devela_data?        │: data structures & formats   | & implementations |
+#       ╟┼╼devela_game?        │: game & app development      | for foreign types |
+#       ╟┼╼devela_lang?        │: language functionality      | & domain-specific |
+#       ╟┼╼devela_media?       │: multimedia functionality    | custom constructs |
+#       ╟┼╼devela_num?         │: numeric systems & math ops  | corresponding to  |
+#       ╟┼╼devela_phys?        │: physical units & measures   | devela's modules  |
+#       ╟┼╼devela_sys          │: system & hardware interface |                   |
+#       ╟┼╼devela_text         │: text processing & unicode   |                   |
+#       ╟┼╼devela_ui?          │: user interfaces & visuals   |                   |
+#       ╟┴╼devela_work?        │: concurrency management      |                   |
+#       ║                      │                              ··------------------·
+#       ╚═╦╼devela             │: unified front, traits       | integration layer |
+#         ║ ├╼build/main───────┤: build, codegen, debug       | public interfaces |
+#         ║ └╼devela_postbuild─┘: post-build processing       | development tools |
+#         ╏                                                   ·-------------------·
 members = [
-	"libs/base_macros", "libs/base_core", "libs/base_alloc", "libs/base_std",
+	"libs/base_macros", "libs/base_num",
+	"libs/base_core", "libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	"libs/code", "libs/data", "libs/media", "libs/num",
 	# "libs/game", "libs/lang", "libs/phys", "libs/sys",
@@ -91,6 +92,7 @@ members = [
 [workspace.dependencies]
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
+devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" } #------
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" }
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" } #------
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
@@ -212,12 +214,18 @@ bench = false
 
 __build = ["devela_base_std"] # full build dependencies
 # shows extra debugging information
-__dbg = ["__build", "devela_base_core/__dbg", "devela_base_alloc?/__dbg", "devela_base_std?/__dbg"]
+__dbg = ["__build",
+	"devela_base_core/__dbg",
+		"devela_base_num/__dbg",
+	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
+]
 __no_test = []      # exclude examples from being tested
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
-	"devela_base_core/__publish", "devela_base_alloc?/__publish", "devela_base_std?/__publish",
+	"devela_base_core/__publish",
+		"devela_base_num/__publish",
+	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
 	"devela_code?/__publish", "devela_data?/__publish", "devela_media?/__publish",
 	"devela_num?/__publish", # "devela_game?/__publish", "devela_lang?/__publish",
@@ -392,7 +400,7 @@ base_safe = [
 		safe_draw = []
 		safe_font = []
 		safe_image = []
-	safe_num = ["devela_num?/safe"]
+	safe_num = ["devela_base_num/safe", "devela_num?/safe"]
 	safe_phys = ["safe_time"] # "devela_phys?/safe"
 		safe_time = []
 	safe_sys = ["safe_io", "safe_mem"] # "devela_base_core/safe_sys", "devela_sys?/safe"
@@ -721,6 +729,7 @@ devela_macros = [ "dep:devela_macros",
 
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
+devela_base_num    = { workspace = true }
 devela_base_alloc  = { workspace = true, optional = true }
 devela_base_std    = { workspace = true, optional = true }
 devela_macros      = { workspace = true, optional = true }

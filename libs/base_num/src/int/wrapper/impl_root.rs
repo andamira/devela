@@ -1,4 +1,4 @@
-// devela::num::int::wrapper::impl_root
+// devela_base_num::int::wrapper::impl_root
 //
 //! Implements root related methods for [`Int`].
 //
@@ -13,10 +13,10 @@
 // - root_floor
 // - root_round TODO
 
-use super::super::shared_docs::*;
+use super::super::_docs::*;
 #[allow(unused_imports, reason = "doc for Overflow")]
 use crate::IntError::{NonNegativeRequired, NonZeroRequired, Overflow};
-use crate::{Int, IntResult as Result, is, isize_up, num::upcasted_op, paste, usize_up};
+use crate::{Int, IntResult as Result, is, isize_up, paste, upcasted_op, usize_up};
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
 #[cold] #[inline(never)] #[rustfmt::skip]
@@ -74,10 +74,10 @@ macro_rules! impl_root {
             /// Returns `true` if it's a perfect square.
             ///
             /// Returns `false` otherwise, which includes all negative values.
-            #[doc = FORMULA_IS_SQUARE!()]
+            #[doc = _INT_FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc="assert_eq![Int(12_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(13_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(16_" $t ").is_square(), true];"]
@@ -95,10 +95,10 @@ macro_rules! impl_root {
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
             /// # Formulation
-            #[doc = ALGORITHM_SQRT_CEIL!()]
+            #[doc = _INT_ALGORITHM_SQRT_CEIL!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// # use devela_base_num::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Ok(Int(4))];"]
@@ -121,10 +121,10 @@ macro_rules! impl_root {
             /// Returns [`NonNegativeRequired`] if `self` is negative.
             ///
             /// # Formulation
-            #[doc = ALGORITHM_SQRT_FLOOR!()]
+            #[doc = _INT_ALGORITHM_SQRT_FLOOR!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// # use devela_base_num::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Ok(Int(4))];"]
@@ -159,10 +159,10 @@ macro_rules! impl_root {
             /// Returns [`NonNegativeRequired`] if `self` is negative, or possibly [`Overflow`]
             /// if there's no larger type to upcast and the value is close to its maximum.
             /// # Formulation
-            #[doc = ALGORITHM_SQRT_ROUND!()]
+            #[doc = _INT_ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// # use devela_base_num::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
@@ -195,7 +195,7 @@ macro_rules! impl_root {
 
             /// Returns the ceiled integer `nth` root.
             ///
-            #[doc = FORMULA_ROOT_CEIL_SIGNED!()]
+            #[doc = _INT_FORMULA_ROOT_CEIL_SIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
@@ -203,7 +203,7 @@ macro_rules! impl_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// # use devela_base_num::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -214,9 +214,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulation
             /// ## Piece-wise
-            #[doc = PIECEWISE_ROOT_CEIL_SIGNED!()]
+            #[doc = _INT_PIECEWISE_ROOT_CEIL_SIGNED!()]
             /// ## Algorithm
-            #[doc = ALGORITHM_ROOT_CEIL_SIGNED!()]
+            #[doc = _INT_ALGORITHM_ROOT_CEIL_SIGNED!()]
             pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()
@@ -245,7 +245,7 @@ macro_rules! impl_root {
 
             /// Returns the floored integer `nth` root.
             ///
-            #[doc = FORMULA_ROOT_FLOOR_SIGNED!()]
+            #[doc = _INT_FORMULA_ROOT_FLOOR_SIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
@@ -253,7 +253,7 @@ macro_rules! impl_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// # use devela_base_num::{Int, IntError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
@@ -264,9 +264,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulations
             /// ## Piece-wise
-            #[doc = PIECEWISE_ROOT_FLOOR_SIGNED!()]
+            #[doc = _INT_PIECEWISE_ROOT_FLOOR_SIGNED!()]
             /// ## Algorithm
-            #[doc = ALGORITHM_ROOT_FLOOR_SIGNED!()]
+            #[doc = _INT_ALGORITHM_ROOT_FLOOR_SIGNED!()]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()
@@ -306,10 +306,10 @@ macro_rules! impl_root {
 
             /// Returns `true` if it's a perfect square, false otherwise.
             /// # Formulation
-            #[doc = FORMULA_IS_SQUARE!()]
+            #[doc = _INT_FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc="assert_eq![Int(12_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(13_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(16_" $t ").is_square(), true];"]
@@ -326,11 +326,11 @@ macro_rules! impl_root {
             /// Returns the ceiled integer square root.
             ///
             /// # Formulation
-            #[doc = ALGORITHM_SQRT_CEIL!()]
+            #[doc = _INT_ALGORITHM_SQRT_CEIL!()]
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Int(4)];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Int(4)];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Int(4)];"]
@@ -345,11 +345,11 @@ macro_rules! impl_root {
             /// Returns the floored integer square root.
             ///
             /// # Formulation
-            #[doc = ALGORITHM_SQRT_FLOOR!()]
+            #[doc = _INT_ALGORITHM_SQRT_FLOOR!()]
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Int(3)];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Int(3)];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Int(4)];"]
@@ -382,10 +382,10 @@ macro_rules! impl_root {
             /// is close to its maximum.
             ///
             /// # Formulation
-            #[doc = ALGORITHM_SQRT_ROUND!()]
+            #[doc = _INT_ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
@@ -415,14 +415,14 @@ macro_rules! impl_root {
 
             /// Returns the ceiled integer `nth` root.
             ///
-            #[doc = FORMULA_ROOT_CEIL_UNSIGNED!()]
+            #[doc = _INT_FORMULA_ROOT_CEIL_UNSIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -432,9 +432,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulation
             /// ## Piece-wise
-            #[doc = PIECEWISE_ROOT_CEIL_UNSIGNED!()]
+            #[doc = _INT_PIECEWISE_ROOT_CEIL_UNSIGNED!()]
             /// ## Algorithm
-            #[doc = ALGORITHM_ROOT_CEIL_UNSIGNED!()]
+            #[doc = _INT_ALGORITHM_ROOT_CEIL_UNSIGNED!()]
             pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
                 match self.root_floor(nth) {
                     Ok(floor_root) => {
@@ -450,14 +450,14 @@ macro_rules! impl_root {
 
             /// Returns the floored integer `nth` root.
             ///
-            #[doc = FORMULA_ROOT_FLOOR_UNSIGNED!()]
+            #[doc = _INT_FORMULA_ROOT_FLOOR_UNSIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
@@ -467,9 +467,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulations
             /// ## Piece-wise
-            #[doc = PIECEWISE_ROOT_FLOOR_UNSIGNED!()]
+            #[doc = _INT_PIECEWISE_ROOT_FLOOR_UNSIGNED!()]
             /// ## Algorithm
-            #[doc = ALGORITHM_ROOT_FLOOR_UNSIGNED!()]
+            #[doc = _INT_ALGORITHM_ROOT_FLOOR_UNSIGNED!()]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()

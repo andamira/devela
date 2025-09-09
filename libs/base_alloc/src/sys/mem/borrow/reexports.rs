@@ -1,4 +1,4 @@
-// devela::sys::mem::borrow::reexports
+// devela_base_alloc::sys::mem::borrow::reexports
 //
 //!
 //

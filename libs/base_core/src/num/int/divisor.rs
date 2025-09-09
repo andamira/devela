@@ -1,10 +1,10 @@
-// devela::num::int::divisor
+// devela_base_core::num::int::divisor
+//
+//! Defines [`Divisor`].
+//
 
-#[allow(unused_imports)]
-use crate::{
-    _core::{fmt, hash, ops},
-    compile, is, isize_up, paste, usize_up,
-};
+use crate::{compile, is, isize_up, paste, usize_up};
+use ::core::{fmt, hash, ops};
 
 #[doc = crate::TAG_NUM!()]
 /// Faster divisor for division and modulo operations.
@@ -23,11 +23,9 @@ enum DivisorInner<T> {
     Shift(T, u8),
     MultiplyShift(T, T, u8),
     MultiplyAddShift(T, T, u8),
-    /// *Variant only used for signed numbers.*
-    #[allow(dead_code)]
+    #[allow(dead_code, reason = "only used for signed integers")]
     ShiftAndNegate(T, u8),
-    /// *Variant only used for signed numbers.*
-    #[allow(dead_code)]
+    #[allow(dead_code, reason = "only used for signed integers")]
     MultiplyAddShiftNegate(T, T, u8),
 }
 
@@ -81,7 +79,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(-21).unwrap();"]]
             /// ```
             #[must_use]
@@ -119,7 +117,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(-15).unwrap();"]]
             /// assert_eq!(d.get(), -15);
             /// ```
@@ -140,7 +138,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(-9).unwrap();"]]
             /// assert!(d.divides(27));
             /// ```
@@ -153,7 +151,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(21).unwrap();"]]
             /// let rem = d.rem_of(-30);
             /// assert_eq!(rem, -9);
@@ -174,7 +172,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(13).unwrap();"]]
             /// let div = d.div_of(-30);
             /// assert_eq!(div, -2);
@@ -225,7 +223,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let _d = Divisor::<", stringify![$t], ">::new(5);"]]
             /// ```
             #[must_use]
@@ -256,7 +254,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(7).unwrap();"]]
             /// assert_eq!(d.get(), 7);
             /// ```
@@ -276,7 +274,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(17).unwrap();"]]
             /// assert!(d.divides(34));
             /// ```
@@ -289,7 +287,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(11).unwrap();"]]
             /// let rem = d.rem_of(30);
             /// assert_eq!(rem, 8);
@@ -303,7 +301,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Divisor;
+            /// # use devela_base_core::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(17).unwrap();"]]
             /// let div = d.div_of(34);
             /// assert_eq!(div, 2);

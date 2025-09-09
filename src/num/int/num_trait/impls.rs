@@ -3,15 +3,13 @@
 //! Implementations of `NumInt` for primitives.
 //
 
-#[cfg(feature = "alloc")]
-use crate::Vec;
 use crate::{GcdReturn, Int, IntResult as Result, NumInt, ValueQuant, isize_up};
+#[cfg(feature = "alloc")]
+use crate::{IntAlloc, Vec};
 
-/// $t:     the primitive type
-///
-/// $ut:    the unsigned type of the same size as $t, only for signed (used for midpoint).
-///
-/// $io:    the signed output primitive type (upcasted for unsigned, same as $t for signed).
+// $t:     the primitive type
+// $ut:    the unsigned type of the same size as $t, only for signed (used for midpoint).
+// $io:    the signed output primitive type (upcasted for unsigned, same as $t for signed).
 macro_rules! impl_int {
     () => {
         impl_int![signed i8|u8, i16|u16, i32|u32, i64|u64, i128|u128, isize|usize];
@@ -250,32 +248,36 @@ macro_rules! impl_int {
 
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-        fn int_factors(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors()) }
+        fn int_factors(self) -> Result<Vec<Self::Out>> {
+            Ok(IntAlloc::new(self).factors()) }
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-        fn int_ref_factors(&self) -> Result<Vec<Self::Out>> { Ok(Int(*self).factors()) }
+        fn int_ref_factors(&self) -> Result<Vec<Self::Out>> {
+            Ok(IntAlloc::new(*self).factors()) }
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-        fn int_factors_proper(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_proper()) }
+        fn int_factors_proper(self) -> Result<Vec<Self::Out>> {
+            Ok(IntAlloc::new(self).factors_proper()) }
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_ref_factors_proper(&self) -> Result<Vec<Self::Out>> {
-            Ok(Int(*self).factors_proper()) }
+            Ok(IntAlloc::new(*self).factors_proper()) }
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-        fn int_factors_prime(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_prime()) }
+        fn int_factors_prime(self) -> Result<Vec<Self::Out>> {
+            Ok(IntAlloc::new(self).factors_prime()) }
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_ref_factors_prime(&self) -> Result<Vec<Self::Out>> {
-            Ok(Int(*self).factors_prime()) }
+            Ok(IntAlloc::new(*self).factors_prime()) }
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_factors_prime_unique(self) -> Result<Vec<Self::Out>> {
-            Ok(Int(self).factors_prime_unique()) }
+            Ok(IntAlloc::new(self).factors_prime_unique()) }
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         fn int_ref_factors_prime_unique(&self) -> Result<Vec<Self::Out>> {
-            Ok(Int(*self).factors_prime_unique()) }
+            Ok(IntAlloc::new(*self).factors_prime_unique()) }
 
         /* factors (non-allocating) */
 

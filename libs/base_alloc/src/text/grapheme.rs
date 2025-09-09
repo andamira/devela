@@ -1,4 +1,4 @@
-// devela::text::grapheme
+// devela_base_alloc::text::grapheme
 //
 //! Defines [`GraphemeString`].
 //

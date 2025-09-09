@@ -1,38 +1,39 @@
-// devela::num::int::shared_docs
+// devela_base_num::int::_docs
 //
 //! Defines constants for shared documentation on [`Int`] and [`NumInt`].
 //
+// notation: _INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*
 
 #![allow(unused, reason = "if only compiling either unsigned or signed…")]
 
-crate::CONST! { pub(crate),
+crate::CONST! { hidden macro_export,
 /* core */
 
-FORMULA_SCALE = r#"$$ \large v^{\prime} = (b - a) \frac{v - min}{max - min} + a $$"#; // & wrap
+_INT_FORMULA_SCALE = r#"$$ \large v^{\prime} = (b - a) \frac{v - min}{max - min} + a $$"#; // & wrap
 
 /* combinatorics */
 
-FORMULA_FACTORIAL = r#"$$ n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n-1) \cdot n $$"#;
-FORMULA_SUBFACTORIAL_RECURSIVE = r#"$$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$"#;
-FORMULA_SUBFACTORIAL_SUMMATION = r#"$$ \large !n = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} $$"#;
-FORMULA_SUBFACTORIAL_APPROXIMATION = r#" $$
+_INT_FORMULA_FACTORIAL = r#"$$ n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n-1) \cdot n $$"#;
+_INT_FORMULA_SUBFACTORIAL_RECURSIVE = r#"$$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$"#;
+_INT_FORMULA_SUBFACTORIAL_SUMMATION = r#"$$ \large !n = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} $$"#;
+_INT_FORMULA_SUBFACTORIAL_APPROXIMATION = r#" $$
 \large !n = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
 \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor $$"#;
-ALGORITHM_SUBFACTORIAL = r#"$$
+_INT_ALGORITHM_SUBFACTORIAL = r#"$$
 - Base cases: \( !0 = 1 \) and \( !1 = 0 \).
 - For \( n > 1 \), compute \( !(n - 1) \) and \( !(n - 2) \) recursively, and combine them:
   $$ \large !n = (n - 1) \cdot (!(n - 1) + !(n - 2)). $$
 "#;
-FORMULA_PERMUTE = r#"$$ \large P(n,r) = \frac{n!}{(n−r)!} $$"#;
-FORMULA_PERMUTE_REP = r#"$$ \large P_\text{rep}(n,r) = n_r $$"#;
-FORMULA_COMBINE = r#"$$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$"#;
-FORMULA_COMBINE_REP = r#"$$
+_INT_FORMULA_PERMUTE = r#"$$ \large P(n,r) = \frac{n!}{(n−r)!} $$"#;
+_INT_FORMULA_PERMUTE_REP = r#"$$ \large P_\text{rep}(n,r) = n_r $$"#;
+_INT_FORMULA_COMBINE = r#"$$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$"#;
+_INT_FORMULA_COMBINE_REP = r#"$$
 \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$"#;
 
 /* division */
 
-NOTATION_DIV_CEIL = r#"$$ \large \left\lceil \frac{x}{y} \right\rceil $$"#;
-FORMULA_DIV_CEIL = r#"$$
+_INT_NOTATION_DIV_CEIL = r#"$$ \large \left\lceil \frac{x}{y} \right\rceil $$"#;
+_INT_FORMULA_DIV_CEIL = r#"$$
 \large
 \text{div\\_ceil}(a, b) =
 \begin{cases}
@@ -41,12 +42,12 @@ FORMULA_DIV_CEIL = r#"$$
 \left\lfloor \frac{a}{b} \right\rfloor & \text{otherwise.}
 \end{cases}
 $$"#;
-NOTATION_DIV_FLOOR = r#"$$ \large \left\lfloor \frac{x}{y} \right\rfloor $$"#;
+_INT_NOTATION_DIV_FLOOR = r#"$$ \large \left\lfloor \frac{x}{y} \right\rfloor $$"#;
 
 /* primes */
 
-NOTATION_PI = r#"$$ \pi(x) $$"#;
-ALGORITHM_TOTIENT = r#"
+_INT_NOTATION_PI = r#"$$ \pi(x) $$"#;
+_INT_ALGORITHM_TOTIENT = r#"
 This function iterates through all numbers from 2 up to the square
 root of $|n|$. If it finds a divisor, it reduces `n` by its factors
 and adjusts result accordingly. If after the loop, $n > 1$, it
@@ -57,14 +58,14 @@ $$\large\varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right)$$
 
 /* roots (square) */
 
-FORMULA_IS_SQUARE = r#"$$
+_INT_FORMULA_IS_SQUARE = r#"$$
 \large
 \text{is\textunderscore square}(a) = \begin{cases}
 \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
 \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
 \end{cases}
 $$"#;
-ALGORITHM_SQRT_CEIL = r#"$$
+_INT_ALGORITHM_SQRT_CEIL = r#"$$
 \large
 \begin{align}
 \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
@@ -73,7 +74,7 @@ n+1 & \text{if } n^2 < a \end{cases} \cr
 \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
 \end{align}
 $$"#;
-ALGORITHM_SQRT_FLOOR = r#"
+_INT_ALGORITHM_SQRT_FLOOR = r#"
 $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
 
 Where $n_{k}$ is the result of a sequence of estimates that
@@ -96,7 +97,7 @@ Hence, the function continues updating the estimate until
 reaching $n_{k}$, which provides the largest integer less than
 or equal to the square root of `a`.
 "#;
-ALGORITHM_SQRT_ROUND = r#"$$
+_INT_ALGORITHM_SQRT_ROUND = r#"$$
 \begin{align}
 \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
 n & \text{if } a - n^2 < (n+1)^2 - a \cr
@@ -107,9 +108,9 @@ $$"#;
 
 /* roots */
 
-FORMULA_ROOT_CEIL_SIGNED = r#"$$
+_INT_FORMULA_ROOT_CEIL_SIGNED = r#"$$
 \large \left\lceil |a|^{\frac{1}{n}} \right\rceil \cdot \text{sign}(a) = m $$"#;
-PIECEWISE_ROOT_CEIL_SIGNED = r#"$$
+_INT_PIECEWISE_ROOT_CEIL_SIGNED = r#"$$
 \large
 \begin{align}
 \notag \text{If } n = 0, \text{ then error.} \cr
@@ -125,7 +126,7 @@ m+1 & \text{if } m^n < |a|.
 \notag \text{Output: } m \cdot \text{sign}(a) &
 \end{align}
 $$"#;
-ALGORITHM_ROOT_CEIL_SIGNED = r#"
+_INT_ALGORITHM_ROOT_CEIL_SIGNED = r#"
 The algorithm computes the smallest integer $ m $ such that:
 $$ \large m^n \geq |a|. $$
 Subject to the condition:
@@ -139,9 +140,9 @@ The process is as follows:
    - Otherwise, returns $ m \cdot \text{sign}(a) $,
    the smallest integer such that $ m^n \geq |a| $."#;
 
-FORMULA_ROOT_CEIL_UNSIGNED = r#"$$
+_INT_FORMULA_ROOT_CEIL_UNSIGNED = r#"$$
 \large \left\lceil a^{\frac{1}{n}} \right\rceil = m $$"#;
-PIECEWISE_ROOT_CEIL_UNSIGNED = r#" $$
+_INT_PIECEWISE_ROOT_CEIL_UNSIGNED = r#" $$
 \large
 \begin{align}
 \notag \text{If } n = 0, \text{ then error.} \cr
@@ -155,7 +156,7 @@ m+1 & \text{if } m^n < a.
 \end{cases} &
 \end{align}
 $$"#;
-ALGORITHM_ROOT_CEIL_UNSIGNED = r#"
+_INT_ALGORITHM_ROOT_CEIL_UNSIGNED = r#"
 The algorithm computes the smallest integer $ m $ such that:
 $$ \large m^n \geq a. $$
 It first computes the floored nth root $ \lfloor a^{\frac{1}{n}} \rfloor $ and then:
@@ -163,9 +164,9 @@ It first computes the floored nth root $ \lfloor a^{\frac{1}{n}} \rfloor $ and t
 2. If true, returns $ m = \lfloor a^{\frac{1}{n}} \rfloor $.
 3. Otherwise, returns $ m = \lfloor a^{\frac{1}{n}} \rfloor + 1 $."#;
 
-FORMULA_ROOT_FLOOR_SIGNED = r#"$$
+_INT_FORMULA_ROOT_FLOOR_SIGNED = r#"$$
 \large \left\lfloor |a|^{\frac{1}{n}} \right\rfloor = m \cdot \text{sign}(a) $$"#;
-PIECEWISE_ROOT_FLOOR_SIGNED = r#"$$
+_INT_PIECEWISE_ROOT_FLOOR_SIGNED = r#"$$
 \large
 \begin{align}
 \notag \text{If } n = 0, \text{ then error.} \cr
@@ -176,7 +177,7 @@ PIECEWISE_ROOT_FLOOR_SIGNED = r#"$$
 \notag \text{Output: } m \cdot \text{sign}(a) &
 \end{align}
 $$"#;
-ALGORITHM_ROOT_FLOOR_SIGNED = r#"
+_INT_ALGORITHM_ROOT_FLOOR_SIGNED = r#"
 The algorithm computes the floored nth root,
 $ \left\lfloor |a|^{\frac{1}{n}} \right\rfloor = m \cdot \text{sign}(a) $,
 where $ m $ is the largest integer such that:
@@ -190,9 +191,9 @@ The function then returns $ m \cdot \text{sign}(a) $,
 the largest integer such that $ m^n \leq |a| $,
 with the sign adjusted for signed integers."#;
 
-FORMULA_ROOT_FLOOR_UNSIGNED = r#"$$
+_INT_FORMULA_ROOT_FLOOR_UNSIGNED = r#"$$
 \large \left\lfloor a^{\frac{1}{n}} \right\rfloor = m $$"#;
-PIECEWISE_ROOT_FLOOR_UNSIGNED = r#"$$
+_INT_PIECEWISE_ROOT_FLOOR_UNSIGNED = r#"$$
 \large
 \begin{align}
 \notag \text{If } n = 0, \text{ then error.} \cr
@@ -202,7 +203,7 @@ PIECEWISE_ROOT_FLOOR_UNSIGNED = r#"$$
 \notag \text{Output: } m &
 \end{align}
 $$"#;
-ALGORITHM_ROOT_FLOOR_UNSIGNED = r#"
+_INT_ALGORITHM_ROOT_FLOOR_UNSIGNED = r#"
 The algorithm computes the floored nth root,
 $ \left\lfloor a^{\frac{1}{n}} \right\rfloor = m $,
 where $ m $ is the largest integer such that:

@@ -12,6 +12,7 @@ extern crate self as devela_base_alloc;
 
 pub mod data;
 pub mod lang;
+pub mod num;
 pub mod sys;
 pub mod text;
 
@@ -30,6 +31,7 @@ pub mod all {
     pub use super::{
         data::_all::*,
         lang::_all::*,
+        num::_all::*,
         sys::_all::*,
         text::_all::*,
     };
@@ -43,4 +45,7 @@ pub mod _workspace_internals {
     #![allow(unused_imports)]
     pub use devela_base_core::all::*;
     pub use devela_base_core::_workspace_internals::*;
+
+    pub use devela_base_num::all::*;
+    pub use devela_base_num::_workspace_internals::*;
 }

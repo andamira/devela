@@ -1,4 +1,4 @@
-// devela::num::int::wrapper::impl_core
+// devela_base_num::int::wrapper::impl_core
 //
 //! Implements core methods for [`Int`].
 //
@@ -15,7 +15,7 @@
 //   - scale_wrap
 //   - midpoint
 
-use super::super::shared_docs::*;
+use super::super::_docs::*;
 use crate::{Cast, isize_up, usize_up};
 #[allow(unused_imports)]
 use crate::{GcdReturn, Int, cswap, is, paste, unwrap};
@@ -88,7 +88,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert![Int(2_" $t ").is_even()];"]
             #[doc = "assert![Int(-2_" $t ").is_even()];"]
             #[doc = "assert![!Int(3_" $t ").is_even()];"]
@@ -101,7 +101,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert![Int(3_" $t ").is_odd()];"]
             #[doc = "assert![Int(-3_" $t ").is_odd()];"]
             #[doc = "assert![!Int(2_" $t ").is_odd()];"]
@@ -118,7 +118,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(4), Int(-64_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(-36)];"]
@@ -163,7 +163,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
@@ -224,7 +224,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
@@ -248,7 +248,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(12_" $t ").lcm(15), Ok(Int(60))];"]
             #[doc = "assert_eq![Int(-12_" $t ").lcm(15), Ok(Int(60))];"]
             #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Ok(Int(60))];"]
@@ -270,11 +270,11 @@ macro_rules! impl_core {
             /// and for overflowing arithmetic operations in the following formula:
             ///
             /// # Formula
-            #[doc = FORMULA_SCALE!()]
+            #[doc = _INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
             /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
@@ -306,11 +306,11 @@ macro_rules! impl_core {
             /// Could panic for large values of `i128` or `u128`.
             ///
             /// # Formula
-            #[doc = FORMULA_SCALE!()]
+            #[doc = _INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
             /// assert_eq![Int(-76), Int(100_i8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap
@@ -328,7 +328,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(-1), -1];")]
             #[doc = concat!("assert_eq![Int(-1_", stringify!($t), ").midpoint(0), -1];")]
@@ -374,7 +374,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert![Int(2_" $t ").is_even()];"]
             #[doc = "assert![!Int(3_" $t ").is_even()];"]
             #[doc = "assert![Int(0_" $t ").is_even()];"]
@@ -386,7 +386,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert![Int(3_" $t ").is_odd()];"]
             #[doc = "assert![!Int(2_" $t ").is_odd()];"]
             #[doc = "assert![!Int(0_" $t ").is_odd()];"]
@@ -402,7 +402,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(36), Int(0_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
@@ -449,7 +449,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, isize_up};
+            /// # use devela_base_num::{Int, isize_up};
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).unwrap().as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
@@ -521,7 +521,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, isize_up};
+            /// # use devela_base_num::{Int, isize_up};
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).unwrap().as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
@@ -550,7 +550,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(12_" $t ").lcm(15), Ok(Int(60))];"]
             /// ```
             pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
@@ -570,11 +570,11 @@ macro_rules! impl_core {
             /// and for overflowing arithmetic operations in the following formula:
             ///
             /// # Formula
-            #[doc = FORMULA_SCALE!()]
+            #[doc = _INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc ="assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc ="assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
             /// assert![Int(200_u8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
@@ -605,11 +605,11 @@ macro_rules! impl_core {
             /// Could panic for large values of `i128` or `u128`.
             ///
             /// # Formula
-            #[doc = FORMULA_SCALE!()]
+            #[doc = _INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
             /// assert_eq![Int(104), Int(200_u8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap
@@ -627,7 +627,7 @@ macro_rules! impl_core {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
             #[doc = concat!("assert_eq![Int(1_", stringify!($t), ").midpoint(4), 2];")]
             /// ```

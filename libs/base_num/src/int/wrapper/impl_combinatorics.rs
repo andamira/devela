@@ -1,4 +1,4 @@
-// devela::num::int::wrapper::impl_combinatorics
+// devela_base_num::int::wrapper::impl_combinatorics
 //
 //! Implements combinatorics-related methods for [`Int`].
 //
@@ -10,7 +10,7 @@
 //   - permute
 //   - permute_rep
 
-use super::super::shared_docs::*;
+use super::super::_docs::*;
 use crate::{
     Cast, Int,
     IntError::{MismatchedSizes, NonNegativeRequired, Overflow},
@@ -66,7 +66,7 @@ macro_rules! impl_combinatorics {
             /// Permutations of *n* items, ordered, where $n = r$.
             ///
             /// # Formula
-            #[doc = FORMULA_FACTORIAL!()]
+            #[doc = _INT_FORMULA_FACTORIAL!()]
             ///
             /// These are the maximum numbers whose factorials can fit within
             /// standard signed integer types:
@@ -79,7 +79,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
@@ -108,15 +108,15 @@ macro_rules! impl_combinatorics {
             /// # Formulation
             /// ## Algorithm
             /// The current implementation uses the recursive definition:
-            #[doc = ALGORITHM_SUBFACTORIAL!()]
+            #[doc = _INT_ALGORITHM_SUBFACTORIAL!()]
             ///
             /// ## Closed-Form Formulas
             /// Other equivalent formulas for \( !n \) include:
             ///
             /// 1. **Summation Formula**:
-            #[doc = FORMULA_SUBFACTORIAL_SUMMATION!()]
+            #[doc = _INT_FORMULA_SUBFACTORIAL_SUMMATION!()]
             /// 2. **Approximation Formula**:
-            #[doc = FORMULA_SUBFACTORIAL_APPROXIMATION!()]
+            #[doc = _INT_FORMULA_SUBFACTORIAL_APPROXIMATION!()]
             ///
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:
@@ -132,7 +132,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
@@ -169,7 +169,7 @@ macro_rules! impl_combinatorics {
             /// Combinations of `n` items taken `r` at a time, ordered.
             ///
             /// # Formula
-            #[doc = FORMULA_COMBINE!()]
+            #[doc = _INT_FORMULA_COMBINE!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -178,7 +178,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
@@ -210,7 +210,7 @@ macro_rules! impl_combinatorics {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            #[doc = FORMULA_COMBINE_REP!()]
+            #[doc = _INT_FORMULA_COMBINE_REP!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -218,7 +218,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
@@ -252,7 +252,7 @@ macro_rules! impl_combinatorics {
             /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
             ///
             /// # Formula
-            #[doc = FORMULA_PERMUTE!()]
+            #[doc = _INT_FORMULA_PERMUTE!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -261,7 +261,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
@@ -286,7 +286,7 @@ macro_rules! impl_combinatorics {
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
             ///
             /// # Formula
-            #[doc = FORMULA_PERMUTE_REP!()]
+            #[doc = _INT_FORMULA_PERMUTE_REP!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -294,7 +294,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, Num};
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]
@@ -333,7 +333,7 @@ macro_rules! impl_combinatorics {
             /// Permutations of *n* items, ordered, where $n = r$.
             ///
             /// # Formula
-            #[doc = FORMULA_FACTORIAL!()]
+            #[doc = _INT_FORMULA_FACTORIAL!()]
             ///
             /// These are the maximum numbers whose factorials can fit within
             /// standard signed integer types:
@@ -345,7 +345,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
@@ -371,15 +371,15 @@ macro_rules! impl_combinatorics {
             /// # Formulation
             /// ## Algorithm
             /// The current implementation uses the recursive definition:
-            #[doc = ALGORITHM_SUBFACTORIAL!()]
+            #[doc = _INT_ALGORITHM_SUBFACTORIAL!()]
             ///
             /// ## Closed-Form Formulas
             /// Other equivalent formulas for \( !n \) include:
             ///
             /// 1. **Summation Formula**:
-            #[doc = FORMULA_SUBFACTORIAL_SUMMATION!()]
+            #[doc = _INT_FORMULA_SUBFACTORIAL_SUMMATION!()]
             /// 2. **Approximation Formula**:
-            #[doc = FORMULA_SUBFACTORIAL_APPROXIMATION!()]
+            #[doc = _INT_FORMULA_SUBFACTORIAL_APPROXIMATION!()]
             ///
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:
@@ -394,7 +394,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
@@ -429,7 +429,7 @@ macro_rules! impl_combinatorics {
             /// Combinations of `n` items taken `r` at a time, unordered.
             ///
             /// # Formula
-            #[doc = FORMULA_COMBINE!()]
+            #[doc = _INT_FORMULA_COMBINE!()]
             ///
             /// # Errors
             /// Returns [`MismatchedSizes`] if $r > n$ and
@@ -437,7 +437,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
@@ -467,14 +467,14 @@ macro_rules! impl_combinatorics {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            #[doc = FORMULA_COMBINE_REP!()]
+            #[doc = _INT_FORMULA_COMBINE_REP!()]
             ///
             /// # Errors
             /// Returns [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
@@ -505,7 +505,7 @@ macro_rules! impl_combinatorics {
             /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
             ///
             /// # Formula
-            #[doc = FORMULA_PERMUTE!()]
+            #[doc = _INT_FORMULA_PERMUTE!()]
             ///
             /// # Errors
             /// Returns [`MismatchedSizes`] if $r > n$ and
@@ -513,7 +513,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
@@ -537,14 +537,14 @@ macro_rules! impl_combinatorics {
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
             ///
             /// # Formula
-            #[doc = FORMULA_PERMUTE_REP!()]
+            #[doc = _INT_FORMULA_PERMUTE_REP!()]
             ///
             /// # Errors
             /// Returns [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]

@@ -1,6 +1,6 @@
-// devela::num::_private
+// devela_base_num::_internals
 //
-//! private numeric helpers
+//! workspace-internal numeric helpers
 //
 // TOC
 // - upcasted_op
@@ -32,17 +32,19 @@
 /// It makes use of `unsafe_hint` to optimize arithmetic ops when able to upcast.
 //
 // TODO IMPROVE: try to unify with impl_modulo::upcastop
+#[doc(hidden)]
+#[macro_export]
 macro_rules! upcasted_op {
     (
     /* basic arithmetic ops */
     // if we've not upcasted, do checked operation and return err on overflow
     add_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
             {
                 $lhs + $rhs
             }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_add($rhs)
@@ -57,11 +59,11 @@ macro_rules! upcasted_op {
     };
     (mul_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
             {
                 $lhs * $rhs
             }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_mul($rhs)
@@ -81,11 +83,11 @@ macro_rules! upcasted_op {
     // then do checked operation and return err on overflow
     reduced_add_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
             {
                 $lhs + $rhs
             }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_add($rhs)
@@ -103,11 +105,11 @@ macro_rules! upcasted_op {
     // if we've not upcasted, just reduce the sumands with the given $modulus
     reduced_add($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
             {
                 $lhs + $rhs
             }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_add($rhs)
@@ -119,11 +121,11 @@ macro_rules! upcasted_op {
     };
     (reduced_mul_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
             {
                 $lhs * $rhs
             }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_mul($rhs)
@@ -139,11 +141,11 @@ macro_rules! upcasted_op {
     };
     (reduced_mul($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
             {
                 $lhs * $rhs
             }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_mul($rhs)
@@ -154,7 +156,8 @@ macro_rules! upcasted_op {
         }
     };
 }
-pub(crate) use upcasted_op;
+#[doc(hidden)]
+pub use upcasted_op;
 
 /// implement the arithmetic operators for a unit struct wrapper, based on the inner type
 ///
@@ -166,26 +169,29 @@ pub(crate) use upcasted_op;
 /// # Invoked from:
 /// - num/int/wrapper/mod.rs
 /// - num/float/wrapper/mod.rs
+#[doc(hidden)]
+#[macro_export]
+#[allow(clippy::crate_in_macro_def, reason = "paste! must be in the root of invoking crate")]
 macro_rules! impl_ops {
     ($W:ident: $($T:ty $( : $cap:literal)? ),+) => { $(
-        $crate::num::impl_ops![@common $W($T $(:$cap)? )];
-        $crate::num::impl_ops![@neg $W($T $(:$cap)? )];
+        $crate::impl_ops![@common $W($T $(:$cap)? )];
+        $crate::impl_ops![@neg $W($T $(:$cap)? )];
     )+ };
     ($W:ident: (no_neg) $($T:ty $(: $cap:literal)? ),+) => { $(
-        $crate::num::impl_ops![@common $W($T $(:$cap)? )];
+        $crate::impl_ops![@common $W($T $(:$cap)? )];
     )+ };
 
     (@common $W:ident($T:ty $(: $cap:literal)? )) => {
-        $crate::num::impl_ops![@op $W($T $(:$cap)? ), Add, add];
-        $crate::num::impl_ops![@op $W($T $(:$cap)? ), Sub, sub];
-        $crate::num::impl_ops![@op $W($T $(:$cap)? ), Mul, mul];
-        $crate::num::impl_ops![@op $W($T $(:$cap)? ), Div, div];
-        $crate::num::impl_ops![@op $W($T $(:$cap)? ), Rem, rem];
-        $crate::num::impl_ops![@op_assign $W($T $(:$cap)? ), AddAssign, add_assign];
-        $crate::num::impl_ops![@op_assign $W($T $(:$cap)? ), SubAssign, sub_assign];
-        $crate::num::impl_ops![@op_assign $W($T $(:$cap)? ), MulAssign, mul_assign];
-        $crate::num::impl_ops![@op_assign $W($T $(:$cap)? ), DivAssign, div_assign];
-        $crate::num::impl_ops![@op_assign $W($T $(:$cap)? ), RemAssign, rem_assign];
+        $crate::impl_ops![@op $W($T $(:$cap)? ), Add, add];
+        $crate::impl_ops![@op $W($T $(:$cap)? ), Sub, sub];
+        $crate::impl_ops![@op $W($T $(:$cap)? ), Mul, mul];
+        $crate::impl_ops![@op $W($T $(:$cap)? ), Div, div];
+        $crate::impl_ops![@op $W($T $(:$cap)? ), Rem, rem];
+        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), AddAssign, add_assign];
+        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), SubAssign, sub_assign];
+        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), MulAssign, mul_assign];
+        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), DivAssign, div_assign];
+        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), RemAssign, rem_assign];
     };
     (@neg $W:ident($T:ty $(: $cap:literal)? )) => {
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
@@ -204,36 +210,36 @@ macro_rules! impl_ops {
         /* $W<$T> op $W<$T> -> $W<$T> */
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl core::ops::$trait for $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
+            $crate::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s> core::ops::$trait<$W<$T>> for &'s $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
+            $crate::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'o> core::ops::$trait<&'o $W<$T>> for $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
+            $crate::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s, 'o> core::ops::$trait<&'o $W<$T>> for &'s $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
+            $crate::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
         }
         /* $W<$T> op $T -> $W<$T> */
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl core::ops::$trait<$T> for $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, $T];
+            $crate::impl_ops![@op_body $W($T), $fn, $T];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s> core::ops::$trait<$T> for &'s $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, $T];
+            $crate::impl_ops![@op_body $W($T), $fn, $T];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'o> core::ops::$trait<&'o $T> for $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $T];
+            $crate::impl_ops![@op_body $W($T), $fn, &'o $T];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s, 'o> core::ops::$trait<&'o $T> for &'s $W<$T> {
-            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $T];
+            $crate::impl_ops![@op_body $W($T), $fn, &'o $T];
         }
     };
     (@op_body $W:ident($T:ty), $fn:ident, $other:ty $(, $other_field:tt)?) => {
@@ -241,7 +247,7 @@ macro_rules! impl_ops {
         fn $fn(self, other: $other) -> $W<$T> { $W(self.0.$fn(other$(. $other_field)?)) }
     };
 
-    (@op_assign $W:ident($T:ty $(: $cap:literal)?), $trait:ident, $fn:ident) => { $crate::paste! {
+    (@op_assign $W:ident($T:ty $(: $cap:literal)?), $trait:ident, $fn:ident) => { crate::paste! {
         /* $W<$T> op_assign $W<$T> */
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl core::ops::$trait for $W<$T> {
@@ -262,4 +268,5 @@ macro_rules! impl_ops {
         }
     }};
 }
-pub(crate) use impl_ops;
+#[doc(hidden)]
+pub use impl_ops;

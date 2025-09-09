@@ -1,4 +1,4 @@
-// devela::num::int::wrapper::impl_base
+// devela_base_num::int::wrapper::impl_base
 //
 /// Implements base-related methods for [`Int`].
 //
@@ -59,7 +59,7 @@ macro_rules! impl_base {
             /// Returns the number of digits in base 10.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits()];"]
             #[doc = "assert_eq![Int(1), Int(-1_" $t ").digits()];"]
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits()];"]
@@ -73,7 +73,7 @@ macro_rules! impl_base {
             /// Returns the number of digits in base 10, including the negative sign.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_sign()];"]
             #[doc = "assert_eq![Int(2), Int(-1_" $t ").digits_sign()];"]
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits_sign()];"]
@@ -91,7 +91,7 @@ macro_rules! impl_base {
             /// If the base is 0, it returns 0.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(2), Int(3_" $t ").digits_base(2)];"]
             #[doc = "assert_eq![Int(2), Int(127_" $t ").digits_base(16)];"]
             #[doc = "assert_eq![Int(2), Int(-128_" $t ").digits_base(16)];"]
@@ -113,7 +113,7 @@ macro_rules! impl_base {
             /// If the base is 0, it returns 0.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(2), Int(3_" $t ").digits_base_sign(2)];"]
             #[doc = "assert_eq![Int(2), Int(127_" $t ").digits_base_sign(16)];"]
             #[doc = "assert_eq![Int(3), Int(-128_" $t ").digits_base_sign(16)];"]
@@ -136,7 +136,7 @@ macro_rules! impl_base {
             /// Returns the digital root in base 10.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(1), Int(127_" $t ").digital_root()];"]
             #[doc = "assert_eq![Int(1), Int(-127_" $t ").digital_root()];"]
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
@@ -155,7 +155,7 @@ macro_rules! impl_base {
             /// Returns the digital root in in the given absolute `base`.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(1), Int(127_" $t ").digital_root_base(10)];"]
             #[doc = "assert_eq![Int(1), Int(127_" $t ").digital_root_base(-10)];"]
             #[doc = "assert_eq![Int(1), Int(-127_" $t ").digital_root_base(-10)];"]
@@ -192,7 +192,7 @@ macro_rules! impl_base {
             /// Returns the number of digits in base 10.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits()];"]
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits()];"]
             /// ```
@@ -208,7 +208,7 @@ macro_rules! impl_base {
             /// If the base is 0, it returns 0.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(2), Int(3_" $t ").digits_base(2)];"]
             #[doc = "assert_eq![Int(2), Int(127_" $t ").digits_base(16)];"]
             #[doc = "assert_eq![Int(0), Int(100_" $t ").digits_base(0)];"]
@@ -227,7 +227,7 @@ macro_rules! impl_base {
             /// Returns the digital root in base 10.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(1), Int(127_" $t ").digital_root()];"]
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
             /// ```
@@ -244,7 +244,7 @@ macro_rules! impl_base {
             /// Returns the digital root in in the given absolute `base`.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(1), Int(127_" $t ").digital_root_base(10)];"]
             #[doc = "assert_eq![Int(3), Int(33_" $t ").digital_root_base(16)];"]
             /// ```

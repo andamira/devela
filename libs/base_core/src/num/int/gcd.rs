@@ -1,4 +1,4 @@
-// devela::num::gcd
+// devela_base_core::num::int::gcd
 //
 //! (Extended) Greatest Common Divisor return type.
 //

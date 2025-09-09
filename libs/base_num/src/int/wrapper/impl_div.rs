@@ -1,4 +1,4 @@
-// devela::num::int::wrapper::impl_div
+// devela_base_num::int::wrapper::impl_div
 //
 //! Implements division-related methods for [`Int`].
 //
@@ -12,7 +12,7 @@
 //   - div_ties_even
 //   - div_ties_odd
 
-use super::super::shared_docs::*;
+use super::super::_docs::*;
 use crate::{Int, is, paste};
 
 /// Implements division-related methods for [`Int`].
@@ -66,13 +66,13 @@ macro_rules! impl_div {
             }
 
             /// Returns the quotient, rounding the result towards positive infinity.
-            #[doc = NOTATION_DIV_CEIL!()]
+            #[doc = _INT_NOTATION_DIV_CEIL!()]
             ///
             /// # Formulation
-            #[doc = FORMULA_DIV_CEIL!()]
+            #[doc = _INT_FORMULA_DIV_CEIL!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ceil(3), Int(3)]; // == 2.33…"]
             #[doc = "assert_eq![Int(7_" $t ").div_ceil(-3), Int(-2)];"]
             #[doc = "assert_eq![Int(-7_" $t ").div_ceil(3), Int(-2)];"]
@@ -99,10 +99,10 @@ macro_rules! impl_div {
             // }
 
             /// Returns the quotient, rounding the result towards negative infinity.
-            #[doc = NOTATION_DIV_FLOOR!()]
+            #[doc = _INT_NOTATION_DIV_FLOOR!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_floor(3), Int(2)]; // == 2.33…"]
             #[doc = "assert_eq![Int(7_" $t ").div_floor(-3), Int(-3)];"]
             #[doc = "assert_eq![Int(-7_" $t ").div_floor(3), Int(-3)];"]
@@ -127,7 +127,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties away from zero.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_away(3), Int(2)]; // == 2.33…"]
             #[doc = "assert_eq![Int(7_" $t ").div_ties_away(-3), Int(-2)];"]
             #[doc = "assert_eq![Int(-7_" $t ").div_ties_away(3), Int(-2)];"]
@@ -151,7 +151,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties towards zero.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_towards(3), Int(2)]; // == 2.33…"]
             #[doc = "assert_eq![Int(7_" $t ").div_ties_towards(-3), Int(-2)];"]
             #[doc = "assert_eq![Int(-7_" $t ").div_ties_towards(3), Int(-2)];"]
@@ -175,7 +175,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties to the nearest even number.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_even(3), Int(2)]; // == 2.33…"]
             #[doc = "assert_eq![Int(7_" $t ").div_ties_even(-3), Int(-2)];"]
             #[doc = "assert_eq![Int(-7_" $t ").div_ties_even(3), Int(-2)];"]
@@ -206,7 +206,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties to the nearest odd number.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_odd(3), Int(2)]; // == 2.33…"]
             #[doc = "assert_eq![Int(7_" $t ").div_ties_odd(-3), Int(-2)];"]
             #[doc = "assert_eq![Int(-7_" $t ").div_ties_odd(3), Int(-2)];"]
@@ -257,10 +257,10 @@ macro_rules! impl_div {
             }
 
             /// Returns the quotient, rounding the result towards positive infinity.
-            #[doc = NOTATION_DIV_CEIL!()]
+            #[doc = _INT_NOTATION_DIV_CEIL!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ceil(3), Int(3)]; // == 2.33…"]
             ///
             #[doc = "assert_eq![Int(7_" $t ").div_ceil(5), Int(2)]; // == 1.4"]
@@ -280,10 +280,10 @@ macro_rules! impl_div {
             // }
 
             /// Returns the quotient, rounding the result towards negative infinity.
-            #[doc = NOTATION_DIV_FLOOR!()]
+            #[doc = _INT_NOTATION_DIV_FLOOR!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_floor(3), Int(2)]; // == 2.33…"]
             ///
             #[doc = "assert_eq![Int(7_" $t ").div_floor(5), Int(1)]; // == 1.4"]
@@ -300,7 +300,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties away from zero.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_away(3), Int(2)]; // == 2.33…"]
             ///
             #[doc = "assert_eq![Int(7_" $t ").div_ties_away(5), Int(1)]; // == 1.4"]
@@ -316,7 +316,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties towards zero.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_towards(3), Int(2)]; // == 2.33…"]
             ///
             #[doc = "assert_eq![Int(7_" $t ").div_ties_towards(5), Int(1)]; // == 1.4"]
@@ -332,7 +332,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties to the nearest even number.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_even(3), Int(2)]; // == 2.33…"]
             ///
             #[doc = "assert_eq![Int(7_" $t ").div_ties_even(5), Int(1)]; // == 1.4"]
@@ -353,7 +353,7 @@ macro_rules! impl_div {
             /// Returns the quotient, rounding ties to the nearest even number.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// # use devela_base_num::Int;
             #[doc = "assert_eq![Int(7_" $t ").div_ties_odd(3), Int(2)]; // == 2.33…"]
             ///
             #[doc = "assert_eq![Int(7_" $t ").div_ties_odd(5), Int(1)]; // == 1.4"]
