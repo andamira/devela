@@ -1,13 +1,13 @@
 [package]
-name = "devela_media"
-description = "extra multimedia functionality for devela"
+name = "devela_base_num"
+description = "extra numeric functionality for devela_base_core"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
 documentation.workspace = true
 authors.workspace = true
 license.workspace = true
-repository = "https://github.com/andamira/devela/tree/main/libs/media"
+repository = "https://github.com/andamira/devela/tree/main/libs/base_num"
 include = [
 	"/Cargo.toml", "/config/*",
 	"/src/**/*.rs", "/src/**/*.md",
@@ -24,10 +24,6 @@ metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = tru
 #* Development features *#
 __publish = []
 
-#* Environment features *#
-alloc = ["devela_base_alloc"]
-std = ["alloc", "devela_base_std"]
-
 #* Safety features *#
 unsafe = []
 safe = []
@@ -36,15 +32,8 @@ safe = []
 _docs_nodep = ["unsafe"]
 _docs = ["_docs_nodep"]
 
-#* Workspace features *#
-macros = ["dep:devela_macros"]
-
 [dependencies]
 devela_base_core  = { workspace = true }
-devela_base_alloc = { workspace = true, optional = true }
-devela_base_std   = { workspace = true, optional = true }
-devela_macros     = { workspace = true, optional = true }
-devela_code     = { workspace = true, optional = true }
 
 [badges]
 maintenance.status = "experimental"
