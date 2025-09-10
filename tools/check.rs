@@ -45,12 +45,10 @@
 //
 // IMPROVE:
 // - filter-out cross-compiling only for no_std platforms.
-// - test libs/* crates independently.
 // - auto add:
 //   - rustup target add x86_64-unknown-linux-musl
 //   - rustup component add --toolchain nightly-2025-08-14-x86_64-unknown-linux-gnu miri
 // - allow to associate a platform with features to be enabled.
-// - avoid downloading everything at the start make a separate command. use it in CI.
 
 #![allow(clippy::useless_format)]
 
@@ -287,28 +285,38 @@ fn main() -> Result<()> {
         // WAIT: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
         // nightly unsafe without dependencies
-        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docs_nodep", "--", "--color=always"],
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd,
+        "-F _docs_nodep", "--workspace", "--", "--color=always"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe (max capabilities)
-        run_cargo(&msrv, cmd, &["-F all,std,safe,_docs_min,_max", "--", "--color=always"])?;
-        run_cargo(&msrv, cmd, &["-F all,std,unsafe,_docs_min,_max", "--", "--color=always"])?;
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,std,safe,_docs_min,_max", "--workspace", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,std,unsafe,_docs_min,_max", "--workspace", "--", "--color=always"])?; }
 
         // nightly unsafe with dependencies
-        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd, "-F _docs", "--", "--color=always"],
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &[cmd,
+        "-F _docs", "--workspace", "--", "--color=always"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe + dep_all
-        sf! { run_cargo(&msrv, cmd, &["-F all,std,safe,dep_all", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F all,std,unsafe,dep_all", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,std,safe,dep_all", "--workspace", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,std,unsafe,dep_all", "--workspace", "--", "--color=always"])?; }
 
         // alloc (un)safe
-        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,safe", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,unsafe", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,alloc,safe", "--workspace", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,alloc,unsafe", "--workspace", "--", "--color=always"])?; }
 
         // alloc (un)safe + dep_all
-        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,safe,dep_all", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,unsafe,dep_all", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,alloc,safe,dep_all", "--workspace", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd,
+        &["-F all,alloc,unsafe,dep_all", "--workspace", "--", "--color=always"])?; }
 
         // no_std (un)safe
         // run_cargo(&msrv, cmd, &["-F all,no_std,safe"])?;
@@ -323,7 +331,8 @@ fn main() -> Result<()> {
 
     if args.docs {
         headline(0, &format!["`all` docs compilation:"]);
-        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN, &["doc", "--no-deps", "-F _docs"],
+        sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
+        &["doc", "--no-deps", "--workspace", "-F _docs"],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
     }
 
@@ -343,26 +352,27 @@ fn main() -> Result<()> {
         // linux
         for arch in LINUX_ARCHES {
             sf! { headline(1, &format!("all,linux,unsafe_syscall: arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,linux,unsafe_syscall"])?;
+            sf! { run_cargo(&msrv, cmd,
+            &["--target", arch, "--workspace", "-F all,linux,unsafe_syscall"])?; }
             a += 1;
         }
 
         // no-std
         for arch in NO_STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,no_std,unsafe"])?;
+            run_cargo(&msrv, cmd, &["--target", arch, "--workspace", "-F all,no_std,unsafe"])?;
             a += 1;
         }
 
         // std, no dependencies
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
+            run_cargo(&msrv, cmd, &["--target", arch, "--workspace", "-F all,std,unsafe"])?;
             a += 1;
         }
         for arch in STD_ARCHES_NO_CROSS_COMPILE {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
+            run_cargo(&msrv, cmd, &["--target", arch, "--workspace", "-F all,std,unsafe"])?;
             a += 1;
         }
 
@@ -371,7 +381,7 @@ fn main() -> Result<()> {
             let deps = filter_deps(DEP_ALL, &[DEP_NO_CROSS_COMPILE_EVER]);
             let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever): arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
+            run_cargo(&msrv, cmd, &["--target", arch, "--workspace", "-F", &feature_flags])?;
 
             a += 1;
         }
@@ -380,14 +390,16 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES_NO_CROSS_COMPILE {
             if is_current_host_compatible(arch) {
                 sf! { headline(1, &format!("std,unsafe,dep_all: arch {a}/{atotal}")); }
-                run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
+                sf! { run_cargo(&msrv, cmd,
+                &["--target", arch, "--workspace", "-F all,std,unsafe,dep_all"])?; }
                 a += 1;
             } else {
                 let deps =
                     filter_deps(DEP_ALL, &[DEP_NO_CROSS_COMPILE_EVER, DEP_NO_CROSS_COMPILE_STD]);
                 let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
-                sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever,_std): arch {a}/{atotal}")); }
-                run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
+                sf! { headline(1,
+                &format!("std,unsafe,dep_all(filtered:_ever,_std): arch {a}/{atotal}")); }
+                run_cargo(&msrv, cmd, &["--target", arch, "--workspace", "-F", &feature_flags])?;
                 a += 1;
             }
         }
@@ -406,7 +418,7 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
-            &["miri", "test", "--target", arch, "-F", "all,std,unsafe"],
+            &["miri", "test", "--target", arch, "--workspace", "-F", "all,std,unsafe"],
             &[("RUSTFLAGS", "--cfg nightly")],)?; }
             a += 1;
         }
@@ -419,7 +431,7 @@ fn main() -> Result<()> {
 
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
             sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
-            &["miri", "test", "--target", arch, "-F", &feature_flags],
+            &["miri", "test", "--target", arch, "--workspace", "-F", &feature_flags],
             &[("RUSTFLAGS", "--cfg nightly")])?; }
 
             a += 1;
@@ -430,7 +442,7 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
-            &["miri", "test", "--target", arch, "-F", "all,no_std,unsafe"],
+            &["miri", "test", "--target", arch, "--workspace", "-F", "all,no_std,unsafe"],
             &[("RUSTFLAGS", "--cfg nightly")])?; }
             a += 1;
         }
@@ -447,7 +459,8 @@ fn main() -> Result<()> {
 
         let deps = filter_deps(DEP_ALL, &[DEP_NO_MINIMAL_VERSIONS]);
         let feature_flags = format!("_docs_nodep,{}", deps.join(","));
-        sf! { run_cargo_with_env( "", NIGHTLY_TOOLCHAIN, &["build", "-F", &feature_flags],
+        sf! { run_cargo_with_env( "", NIGHTLY_TOOLCHAIN,
+        &["build", "--workspace", "-F", &feature_flags],
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         run_cargo("", NIGHTLY_TOOLCHAIN, &["update"])?; // set default max versions
@@ -465,13 +478,13 @@ fn main() -> Result<()> {
 
         for module in ROOT_MODULES {
             headline(1, &format!("root-module `{module}` {mod_count}/{mod_total}"));
-            run_cargo(&msrv, cmd, &["-F", module])?;
+            run_cargo(&msrv, cmd, &["--workspace", "-F", module])?;
             mod_count += 1;
         }
 
         for module in SUB_MODULES {
             headline(1, &format!("sub-module `{module}` {mod_count}/{mod_total}"));
-            run_cargo(&msrv, cmd, &["-F", module])?;
+            run_cargo(&msrv, cmd, &["--workspace", "-F", module])?;
             mod_count += 1;
         }
 
@@ -485,7 +498,7 @@ fn main() -> Result<()> {
                 .copied()
                 .collect::<Vec<_>>()
                 .join(",");
-            run_cargo(&msrv, cmd, &["-F", &modules])?;
+            run_cargo(&msrv, cmd, &["--workspace", "-F", &modules])?;
             mod_count += 1;
         }
         for module_to_filter in SUB_MODULES {
@@ -498,7 +511,7 @@ fn main() -> Result<()> {
                 .copied()
                 .collect::<Vec<_>>()
                 .join(",");
-            run_cargo(&msrv, cmd, &["-F", &modules])?;
+            run_cargo(&msrv, cmd, &["--workspace", "-F", &modules])?;
             mod_count += 1;
         }
     }
@@ -518,7 +531,7 @@ fn main() -> Result<()> {
             .copied()
             .collect::<Vec<_>>()
             .join(",");
-        run_cargo(&msrv, cmd, &["-F", &modules])?;
+        run_cargo(&msrv, cmd, &["--workspace", "-F", &modules])?;
     }
 
     // check all the combinations of individual modules
@@ -535,7 +548,7 @@ fn main() -> Result<()> {
                 &format!("modules combination {comb_count}/{mod_comb_total}")); }
                 let deref_combination: Vec<_> = combination.into_iter().copied().collect();
                 let combined = deref_combination.join(",");
-                run_cargo(&msrv, cmd, &["-F", &combined])?;
+                run_cargo(&msrv, cmd, &["--workspace", "-F", &combined])?;
                 comb_count += 1;
             }
         }

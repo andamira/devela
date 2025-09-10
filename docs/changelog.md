@@ -86,6 +86,7 @@ Many feature gates are removed in order to make most features make always availa
 - new file `config/lib_all`.
 - update `tools/check.rs`:
   - bump `devela` to 0.24.0.
+  - test all workspace crates.
   - start testing without dependencies.
   - remove `itertools` direct dependency.
   - configure the exact nightly version to install and use.
