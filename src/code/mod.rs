@@ -39,7 +39,7 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals, _alw
     }
     _always {
         pub use super::{
-            _c::*, error::_always::*, panic::_always::*, result::_always::*, util::_always::*,
+            _c::*, error::_always::*, result::_always::*, util::_always::*,
         };
     }
 }

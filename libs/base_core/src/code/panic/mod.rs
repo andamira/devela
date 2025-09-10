@@ -6,7 +6,7 @@
 mod reexports;
 
 crate::structural_mods! { // _mods
-    mod _mods {
+    _mods {
         pub use super::reexports::*;
     }
 }

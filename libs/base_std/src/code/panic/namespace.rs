@@ -1,14 +1,12 @@
-// devela::code::panic::namespace
+// devela_base_std::code::panic::namespace
 //
 //! Defines the [`Panic`] namespace.
 //
 // - https://doc.rust-lang.org/stable/std/panic/index.html
 
 #[cfg(feature = "std")]
-use crate::{
-    _dep::_std::panic::{catch_unwind, panic_any, resume_unwind, set_hook, take_hook},
-    Any, Box, PanicHookInfo, PanicUnwindSafe, ThreadResult,
-};
+use crate::{Any, Box, PanicHookInfo, PanicUnwindSafe, ThreadResult};
+use ::std::panic::{catch_unwind, panic_any, resume_unwind, set_hook, take_hook};
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Panic-related operations.

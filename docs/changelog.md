@@ -103,6 +103,9 @@ Many feature gates are removed in order to make most features make always availa
   - make conversion method optional const.
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 
+### panic
+- move to [base]: `Panic`.
+
 ### result
 - move to [base]:
   - functions: `serr`, `sok`.

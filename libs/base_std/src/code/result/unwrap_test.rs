@@ -2,7 +2,7 @@
 
 use crate::{OptRes, Panic, serr, sok, unwrap};
 
-const OPTION_SOME: Option<bool> = Some(true);
+// const OPTION_SOME: Option<bool> = Some(true);
 const OPTION_NONE: Option<bool> = None;
 
 const RESULT_OK: Result<bool, bool> = Ok(true);
