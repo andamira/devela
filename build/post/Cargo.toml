@@ -33,8 +33,13 @@ publish = true
 metadata.docs.rs.no-default-features = true
 
 [features]
-__build = ["devela_base_std"] # full build dependencies
+
+#* Development features *#
 __dbg = ["__build"] # shows extra debugging information
+__build = ["devela_base_std"] # full build dependencies
+
+#* Environment features *#
+std = ["devela_base_std?/std"] # to be disabled when testing workspace with no_std
 
 [dependencies]
 devela.path = "../.."

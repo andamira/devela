@@ -3,20 +3,22 @@
 //! …
 //
 
+#![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(base_safe, forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
-extern crate std;
-
 extern crate self as devela_base_std;
 
-pub mod build;
-pub mod code;
-pub mod data;
-pub mod phys;
-pub mod sys;
-pub mod text;
-pub mod work;
+#[cfg(feature = "std")]
+items! {
+    pub mod build;
+    pub mod code;
+    pub mod data;
+    pub mod phys;
+    pub mod sys;
+    pub mod text;
+    pub mod work;
+}
 
 #[doc(hidden)]
 #[allow(unused_imports)]
@@ -30,6 +32,7 @@ pub mod all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
     #[doc(inline)]
+    #[cfg(feature = "std")]
     pub use super::{
         build::_all::*,
         code::_all::*,

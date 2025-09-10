@@ -30,7 +30,7 @@ __dbg = ["devela_base_alloc/__dbg"]
 __publish = []
 
 #* Environment features *#
-std = [] # always enabled
+std = [] # to be disabled when testing workspace with no_std
 
 #* Safety features *#
 base_safe = ["devela_base_alloc/base_safe"]
@@ -72,7 +72,7 @@ unsafe = [
 	unsafe_thread  = []
 
 #* Capability features *#
-default = ["std"]
+# default = ["std"]
 _docs = ["unsafe"]
 
 [dependencies] # 2 required

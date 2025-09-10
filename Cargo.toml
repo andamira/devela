@@ -256,7 +256,7 @@ alloc = [ # enables `alloc` functionality
 	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc", "devela_base_std", "devela_code?/std",
+	"alloc", "devela_base_std/std", "devela_code?/std",
 	"devela_data?/std", "devela_media?/std", "devela_num?/std",
 	# "devela_lang?/std", "devela_phys?/std", "devela_sys?/std",
 	# "devela_text?/std", "devela_ui?/std", "devela_work?/std",

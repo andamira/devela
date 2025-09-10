@@ -3,13 +3,8 @@
 //!
 //
 
-/* global configuration */
-//
-// lints
-//
-// (Most lints are defined in ::devela::Cargo.toml::lints)
-#![deny(rustdoc::missing_debug_implementations)]
-// nightly (flags)
+// #![deny(rustdoc::missing_debug_implementations)]
+#![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 /* imports */
