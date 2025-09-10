@@ -357,10 +357,11 @@ fn main() -> Result<()> {
             a += 1;
         }
 
-        // no-std
+        // no_std
         for arch in NO_STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "--workspace", "-F all,no_std,unsafe"])?;
+            sf! { run_cargo( &msrv, cmd, &["--target", arch,
+            "--workspace", "--exclude", "devela_base_std", "-F all,no_std,unsafe"])?; }
             a += 1;
         }
 
@@ -442,7 +443,8 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env("", NIGHTLY_TOOLCHAIN,
-            &["miri", "test", "--target", arch, "--workspace", "-F", "all,no_std,unsafe"],
+            &["miri", "test", "--target", arch, "--workspace", "--exclude", "devela_base_std",
+            "-F", "all,no_std,unsafe"],
             &[("RUSTFLAGS", "--cfg nightly")])?; }
             a += 1;
         }
