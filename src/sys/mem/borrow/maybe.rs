@@ -2,6 +2,7 @@
 //
 //! Defines [`MaybeOwned`].
 //
+// MAYBE: impl Display, improve Debug, impl helper macro
 
 #[cfg(all(doc, feature = "alloc"))]
 use devela::Cow;

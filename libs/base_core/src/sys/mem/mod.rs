@@ -3,6 +3,7 @@
 #![doc = crate::_DOC_SYS_MEM!()]
 //
 
+mod aligned; // MemAligned
 mod borrow;
 mod cswap; // cswap!
 mod namespace; // Mem
@@ -16,6 +17,7 @@ pub mod cell;
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
+            aligned::*,
             borrow::_all::*,
             cswap::*,
             namespace::*,
