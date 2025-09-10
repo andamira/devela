@@ -1,3 +1,5 @@
+//!
+
 mod allocating {
     use core::mem::size_of;
     use devela_macros::enumint;

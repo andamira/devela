@@ -122,7 +122,7 @@ macro_rules! _structural_mods {
         $(
             #[allow(unused_imports)]
             pub(crate) use _crate_internals::*;
-            pub(super) mod _crate_internals { #![allow(unused_imports)]
+            pub(crate) mod _crate_internals { #![allow(unused_imports)]
                 $($block_crate_internals)*
             }
         )?
@@ -134,7 +134,7 @@ macro_rules! _structural_mods {
                 $($block_workspace_internals)*
             }
         )?
-        pub(super) mod _all { #![allow(unused_imports)]
+        pub(crate) mod _all { #![allow(unused_imports)]
             $($($($has_mods)?
                 #[doc(inline)]
                 pub use super::_mods::*;
@@ -148,14 +148,14 @@ macro_rules! _structural_mods {
             #[allow(unused_imports)]
             #[doc(hidden, no_inline)]
             pub use _always::*;
-            pub(super) mod _always { #![allow(unused_imports)]
+            pub(crate) mod _always { #![allow(unused_imports)]
                 $($block_always)*
             }
         )?
         $(
             #[allow(unused_imports)]
             pub use _hidden::*;
-            pub(super) mod _hidden { #![allow(unused_imports)]
+            pub(crate) mod _hidden { #![allow(unused_imports)]
                 $($block_hidden)*
             }
         )?

@@ -167,6 +167,7 @@ Many feature gates are removed in order to make most features make always availa
 ### mem
 - move to [base]:
   - macros: `cswap!`, `const_join!`.
+  - traits: `MemAligned`.
   - types: `Mem`, `Ptr`, `Slice`.
 - rename `join!` macro to `const_join!`.
 - update `Slice` with new `eq` methods for slices of slices of primitives and string slices.

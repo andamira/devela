@@ -38,7 +38,8 @@ impl Ascii<usize> {
 
     /// Counts the number of decimal digits.
     ///
-    /// For more complex needs check the [`Int`][crate::Int] *base* methods.
+    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     ///
     /// # Example
     /// ```
@@ -126,7 +127,8 @@ impl Ascii<u8> {
 
     /// Counts the number of decimal digits.
     ///
-    /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
+    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
     /// # use devela_base_core::text::Ascii;
@@ -215,7 +217,8 @@ impl Ascii<u16> {
 
     /// Counts the number of decimal digits.
     ///
-    /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
+    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     ///
     /// # Example
     /// ```
@@ -307,7 +310,8 @@ impl Ascii<u32> {
 
     /// Counts the number of decimal digits.
     ///
-    /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
+    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
     /// # use devela_base_core::text::Ascii;
@@ -384,7 +388,8 @@ impl Ascii<u64> {
 
     /// Counts the number of decimal digits.
     ///
-    /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
+    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
     /// # use devela_base_core::text::Ascii;
@@ -471,7 +476,8 @@ impl Ascii<u128> {
 
     /// Counts the number of decimal digits.
     ///
-    /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
+    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
     /// # use devela_base_core::text::Ascii;

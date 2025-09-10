@@ -1,3 +1,5 @@
+//!
+
 #![allow(dead_code)]
 
 use devela_base_macros::compile_attr;

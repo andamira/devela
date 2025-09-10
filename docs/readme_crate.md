@@ -1,18 +1,5 @@
 # devela
 
-## Features
-[Features] are grouped into categories, enabling modular and orthogonal development.
-
-[Features]: https://docs.rs/devela/latest/devela/_info/features/index.html
-[Features]: https://andamira.github.io/devela/latest/devela/_info/features/index.html
-
-
-### Dependencies
-It integrates [optional dependencies] for extra capabilities and to ensure compatibility.
-
-[optional dependencies]: https://docs.rs/devela/latest/devela/_dep/index.html
-[optional dependencies]: https://andamira.github.io/devela/latest/devela/_dep/index.html
-
 
 ## Status
 In active development, breaking changes expected during `0.*` versions.
