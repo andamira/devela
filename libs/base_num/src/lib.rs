@@ -20,23 +20,22 @@ structural_mods! { // _mods
     }
 }
 
-// MAYBE uncomment if crate becomes more complex
-// #[doc(hidden)]
-// pub use all::*;
-// pub mod all {
-//     #![allow(unused_imports)]
-//     //! All the crate's items flat re-exported.
-//     //! <br/><hr>
-//     //!
-//     //! Note that these items are already re-exported (hidden) from the root,
-//     //! as is every other public module's contents from their parent.
-//     #[allow(unused_imports)]
-//     #[rustfmt::skip]
-//     #[doc(inline)]
-//     pub use super::{
-//         int::_all::*,
-//     };
-// }
+#[doc(hidden)]
+pub use all::*;
+pub mod all {
+    #![allow(unused_imports)]
+    //! All the crate's items flat re-exported.
+    //! <br/><hr>
+    //!
+    //! Note that these items are already re-exported (hidden) from the root,
+    //! as is every other public module's contents from their parent.
+    #[allow(unused_imports)]
+    #[rustfmt::skip]
+    #[doc(inline)]
+    pub use super::{
+        int::_all::*,
+    };
+}
 
 #[doc(hidden)]
 #[allow(unused_imports)]

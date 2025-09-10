@@ -10,11 +10,13 @@ license.workspace = true
 repository = "https://github.com/andamira/devela/tree/main/libs/base_num"
 include = [
 	"/Cargo.toml", "/config/*",
+	"/build/**/*.rs", "/build/**/*.md",
 	"/src/**/*.rs", "/src/**/*.md",
 	"/LICENSE*",
 ]
 categories = ["rust-patterns", "development-tools"]
 keywords = ["dev", "extension"]
+build = "build/mod.rs"
 autoexamples = false
 publish = true
 metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
