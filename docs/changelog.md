@@ -154,6 +154,7 @@ Many feature gates are removed in order to make most features make always availa
 - move int shared docs to `devela_base_num` prefixed with `_INT_`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
+- make all `Int` methods *const*.
 - make `Sign` part of `quant`.
 
 ## phys

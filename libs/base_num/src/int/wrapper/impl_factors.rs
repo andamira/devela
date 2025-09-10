@@ -18,7 +18,7 @@
 
 // #[cfg(feature = "alloc")]
 // use crate::{BTreeSet, Hook, Vec, vec_ as vec};
-use crate::{Int, IntError::MismatchedSizes, IntResult as Result, is, paste};
+use crate::{Int, IntError::MismatchedSizes, IntResult as Result, cfor, is, paste, unwrap};
 
 /// Implements factors-related methods for [`Int`].
 ///
@@ -80,7 +80,7 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_count(), 1];"]
             /// ```
             #[must_use]
-            pub fn factors_prime_count(self) -> usize {
+            pub const fn factors_prime_count(self) -> usize {
                 let mut n = self.0.abs();
                 is![n == 0; return 0];
                 let mut count = 0;
@@ -112,7 +112,7 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
             #[must_use]
-            pub fn factors_prime_unique_count(self) -> usize {
+            pub const fn factors_prime_unique_count(self) -> usize {
                 let mut n = self.0.abs();
                 is![n == 0; return 0];
                 let mut count = 0;
@@ -157,7 +157,7 @@ macro_rules! impl_factors {
             /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            pub fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
+            pub const fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
                 let n = self.0.abs();
                 is![n == 0; return Ok((0, 0))];
@@ -165,8 +165,9 @@ macro_rules! impl_factors {
                 let mut f_count = 0;
                 fbuf[f_count] = 1;
                 f_count += 1;
-                let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..=n {
+                let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
+                let mut i = 2;
+                while i <= n {
                     if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
@@ -175,6 +176,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
+                    i += 1;
                 }
                 Ok((f_count, prime_factors_count))
             }
@@ -197,14 +199,14 @@ macro_rules! impl_factors {
             /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            pub fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
+            pub const fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
                 let n = self.0.abs();
                 is![n == 0; return Ok((0, 0))];
                 is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
-                let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..n {
+                let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
+                cfor! { i in 2..n => {
                     if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
@@ -213,7 +215,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
-                }
+                }}
                 Ok((f_count, prime_factors_count))
             }
 
@@ -240,7 +242,7 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_buf(&mut buf), Ok(1)];"]
             /// assert_eq![buf[..1], [7]];
             /// ```
-            pub fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
+            pub const fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
                 is![self.0 == 0; return Ok(0)];
                 let (mut n, mut idx) = (self.0.abs(), 0);
                 while n % 2 == 0 {
@@ -288,11 +290,11 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
             /// ```
-            pub fn factors_prime_unique_buf(self, buffer: &mut [$t]) -> Result<usize> {
-                let prime_factors_count = self.factors_prime_buf(buffer)?;
+            pub const fn factors_prime_unique_buf(self, buffer: &mut [$t]) -> Result<usize> {
+                let prime_factors_count = unwrap![ok? self.factors_prime_buf(buffer)];
                 let mut unique_count = 1;
                 let mut last_unique = buffer[0];
-                for i in 1..prime_factors_count {
+                cfor! { i in 1..prime_factors_count => {
                     if buffer[i] != last_unique {
                         if unique_count < buffer.len() {
                             buffer[unique_count] = buffer[i];
@@ -302,7 +304,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
-                }
+                }}
                 Ok(unique_count)
             }
 
@@ -356,16 +358,16 @@ macro_rules! impl_factors {
             /// assert_eq![ebuf[..], [3]];
             /// ```
             // IMPROVE: differenciate between both errors more clearly.
-            pub fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
+            pub const fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
             -> Result<usize> {
-                let prime_factors_count = self.factors_prime_buf(fbuffer)?;
+                let prime_factors_count = unwrap![ok? self.factors_prime_buf(fbuffer)];
                 is![prime_factors_count == 0; return Ok(0)];
 
                 let mut current_factor = fbuffer[0]; // current factor
                 let mut unique_idx = 0; // current unique factor index
                 let mut exp_count = 1; //
 
-                for i in 1..prime_factors_count {
+                cfor! { i in 1..prime_factors_count => {
                     // Same factor as before, increment the exponent count
                     if fbuffer[i] == current_factor {
                         exp_count += 1;
@@ -380,7 +382,7 @@ macro_rules! impl_factors {
                         current_factor = fbuffer[i];
                         exp_count = 1;
                     }
-                }
+                }}
                 // Store the last factor and its exponent count
                 if unique_idx < fbuffer.len() && unique_idx < ebuffer.len() {
                     fbuffer[unique_idx] = current_factor;
@@ -409,18 +411,18 @@ macro_rules! impl_factors {
             /// assert_eq![fac, [2, 2, 2, 3, 0]];
             /// assert_eq![uniq, [2, 3, 0, 0, 0]];
             /// ```
-            pub fn factors_prime_unique_plus_buf(self, pfbuf: &mut [$t], upfbuf: &mut [$t]
+            pub const fn factors_prime_unique_plus_buf(self, pfbuf: &mut [$t], upfbuf: &mut [$t]
             ) -> Result<(usize, usize)> {
-                let prime_factors_count = self.factors_prime_buf(pfbuf)?;
+                let prime_factors_count = unwrap![ok? self.factors_prime_buf(pfbuf)];
                 let mut unique_count = 0;
-                for i in 0..prime_factors_count {
+                cfor! { i in 0..prime_factors_count => {
                     let mut unique = true;
-                    for j in 0..unique_count {
+                    cfor! { j in 0..unique_count => {
                         if pfbuf[i] == upfbuf[j] {
                             unique = false;
                             break;
                         }
-                    }
+                    }}
                     if unique {
                         if unique_count < upfbuf.len() {
                             upfbuf[unique_count] = pfbuf[i];
@@ -429,7 +431,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
-                }
+                }}
                 Ok((prime_factors_count, unique_count))
             }
         }
@@ -456,7 +458,7 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_count(), 1];"]
             /// ```
             #[must_use]
-            pub fn factors_prime_count(self) -> usize {
+            pub const fn factors_prime_count(self) -> usize {
                 let mut n = self.0;
                 is![n == 0; return 0];
                 let mut count = 0;
@@ -487,7 +489,7 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
             #[must_use]
-            pub fn factors_prime_unique_count(self) -> usize {
+            pub const fn factors_prime_unique_count(self) -> usize {
                 let mut n = self.0;
                 is![n == 0; return 0];
                 let mut count = 0;
@@ -532,15 +534,16 @@ macro_rules! impl_factors {
             /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            pub fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]) -> Result<(usize, usize)> {
+            pub const fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]) -> Result<(usize, usize)> {
                 let n = self.0;
                 is![n == 0; return Ok((0, 0))];
                 is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 fbuf[f_count] = 1;
                 f_count += 1;
-                let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..=n {
+                let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
+                let mut i = 2;
+                while i <= n {
                     if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i; f_count += 1;
@@ -548,6 +551,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
+                    i += 1;
                 }
                 Ok((f_count, prime_factors_count))
             }
@@ -570,14 +574,14 @@ macro_rules! impl_factors {
             /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            pub fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]
+            pub const fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]
             ) -> Result<(usize, usize)> {
                 let n = self.0;
                 is![n == 0; return Ok((0, 0))];
                 is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
-                let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..n {
+                let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
+                cfor! { i in 2..n => {
                     if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
@@ -586,7 +590,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
-                }
+                }}
                 Ok((f_count, prime_factors_count))
             }
 
@@ -613,7 +617,7 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_buf(&mut buf), Ok(1)];"]
             /// assert_eq![buf[..1], [7]];
             /// ```
-            pub fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
+            pub const fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
                 let n = self.0;
                 is![n == 0; return Ok(0)];
                 let (mut n, mut idx) = (n, 0);
@@ -662,11 +666,11 @@ macro_rules! impl_factors {
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
             /// ```
-            pub fn factors_prime_unique_buf(self, buffer: &mut [$t]) -> Result<usize> {
-                let prime_factors_count = self.factors_prime_buf(buffer)?;
+            pub const fn factors_prime_unique_buf(self, buffer: &mut [$t]) -> Result<usize> {
+                let prime_factors_count = unwrap![ok? self.factors_prime_buf(buffer)];
                 let mut unique_count = 1;
                 let mut last_unique = buffer[0];
-                for i in 1..prime_factors_count {
+                cfor! { i in 1..prime_factors_count => {
                     if buffer[i] != last_unique {
                         if unique_count < buffer.len() {
                             buffer[unique_count] = buffer[i];
@@ -676,7 +680,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
-                }
+                }}
                 Ok(unique_count)
             }
 
@@ -730,16 +734,16 @@ macro_rules! impl_factors {
             /// assert_eq![ebuf[..], [3]];
             /// ```
             // IMPROVE: differenciate between both errors more clearly.
-            pub fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
+            pub const fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
             -> Result<usize> {
-                let prime_factors_count = self.factors_prime_buf(fbuffer)?;
+                let prime_factors_count = unwrap![ok? self.factors_prime_buf(fbuffer)];
                 is![prime_factors_count == 0; return Ok(0)];
 
                 let mut current_factor = fbuffer[0]; // current factor
                 let mut unique_idx = 0; // current unique factor index
                 let mut exp_count = 1; //
 
-                for i in 1..prime_factors_count {
+                cfor! { i in 1..prime_factors_count => {
                     // Same factor as before, increment the exponent count
                     if fbuffer[i] == current_factor {
                         exp_count += 1;
@@ -754,7 +758,7 @@ macro_rules! impl_factors {
                         current_factor = fbuffer[i];
                         exp_count = 1;
                     }
-                }
+                }}
                 // Store the last factor and its exponent count
                 if unique_idx < fbuffer.len() && unique_idx < ebuffer.len() {
                     fbuffer[unique_idx] = current_factor;
@@ -783,18 +787,18 @@ macro_rules! impl_factors {
             /// assert_eq![fac, [2, 2, 2, 3, 0]];
             /// assert_eq![uniq, [2, 3, 0, 0, 0]];
             /// ```
-            pub fn factors_prime_unique_plus_buf(self, pfbuf: &mut [$t], upfbuf: &mut [$t]
+            pub const fn factors_prime_unique_plus_buf(self, pfbuf: &mut [$t], upfbuf: &mut [$t]
                 ) -> Result<(usize, usize)> {
-                let prime_factors_count = self.factors_prime_buf(pfbuf)?;
+                let prime_factors_count = unwrap![ok? self.factors_prime_buf(pfbuf)];
                 let mut unique_count = 0;
-                for i in 0..prime_factors_count {
+                cfor! { i in 0..prime_factors_count => {
                     let mut unique = true;
-                    for j in 0..unique_count {
+                    cfor! { j in 0..unique_count => {
                         if pfbuf[i] == upfbuf[j] {
                             unique = false;
                             break;
                         }
-                    }
+                    }}
                     if unique {
                         if unique_count < upfbuf.len() {
                             upfbuf[unique_count] = pfbuf[i];
@@ -803,7 +807,7 @@ macro_rules! impl_factors {
                             return Err(MismatchedSizes);
                         }
                     }
-                }
+                }}
                 Ok((prime_factors_count, unique_count))
             }
         }
