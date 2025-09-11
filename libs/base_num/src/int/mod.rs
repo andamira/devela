@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_NUM_INT!()]
 //
 
-pub(crate) mod _docs; // FORMULA_*!()
+pub(crate) mod _docs; // _INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
 mod wrapper; // Int
 
 crate::structural_mods! { // _mods

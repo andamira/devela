@@ -3,8 +3,6 @@
 //! Defines all the shared, cross-platform public methods for `Float`.
 //
 
-#[allow(unused_imports)]
-use super::super::shared_docs::*;
 use crate::{Float, FloatCategory, Sign, cfor, concat as cc, is, stringify as sfy};
 
 /// Implements methods independently of any features
@@ -39,7 +37,7 @@ macro_rules! impl_float_shared {
         impl Float<$f> {
             /// The largest integer less than or equal to itself.
             /// # Formulation
-            #[doc = crate::FORMULA_FLOOR!()]
+            #[doc = crate::_FLOAT_FORMULA_FLOOR!()]
             pub const fn const_floor(self) -> Float<$f> {
                 let mut result = self.const_trunc().0;
                 if self.0.is_sign_negative() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
@@ -50,7 +48,7 @@ macro_rules! impl_float_shared {
 
             /// The smallest integer greater than or equal to itself.
             /// # Formulation
-            #[doc = FORMULA_CEIL!()]
+            #[doc = crate::_FLOAT_FORMULA_CEIL!()]
             pub const fn const_ceil(self) -> Float<$f> {
                 let mut result = self.const_trunc().0;
                 if self.0.is_sign_positive() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
@@ -70,7 +68,7 @@ macro_rules! impl_float_shared {
             /// without `std` nor `dep_libm`.
             ///
             /// # Formulation
-            #[doc = FORMULA_ROUND_TIES_AWAY!()]
+            #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_AWAY!()]
             pub const fn const_round_ties_away(self) -> Float<$f> {
                 Float(self.0 +
                     Float(0.5 - 0.25 * <$f>::EPSILON).copysign(self.0).0)
@@ -79,7 +77,7 @@ macro_rules! impl_float_shared {
 
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
             /// # Formulation
-            #[doc = FORMULA_ROUND_TIES_EVEN!()]
+            #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_EVEN!()]
             pub const fn const_round_ties_even(self) -> Float<$f> {
                 let r = self.const_round_ties_away();
                 if r.0 % 2.0 == 0.0 {
@@ -98,7 +96,7 @@ macro_rules! impl_float_shared {
             /// This means that non-integer numbers are always truncated towards zero.
             ///
             /// # Formulation
-            #[doc = FORMULA_TRUNC!()]
+            #[doc = crate::_FLOAT_FORMULA_TRUNC!()]
             ///
             /// This implementation uses bitwise manipulation to remove the fractional part
             /// of the floating-point number. The exponent is extracted, and a mask is
@@ -125,7 +123,7 @@ macro_rules! impl_float_shared {
 
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
             /// # Formulation
-            #[doc = FORMULA_ROUND_TIES_ODD!()]
+            #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_ODD!()]
             #[allow(clippy::float_cmp, reason = "RETHINK (self.0 - r.0).abs() == 0.5")]
             pub const fn round_ties_odd(self) -> Float<$f> {
                 let r = self.const_round_ties_away();
@@ -138,12 +136,12 @@ macro_rules! impl_float_shared {
 
             /// The fractional part.
             /// # Formulation
-            #[doc = FORMULA_FRACT!()]
+            #[doc = crate::_FLOAT_FORMULA_FRACT!()]
             pub const fn const_fract(self) -> Float<$f> { Float(self.0 - self.const_trunc().0) }
 
             /// The integral and fractional parts.
             /// # Formulation
-            #[doc = FORMULA_SPLIT!()]
+            #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
             pub const fn const_split(self) -> (Float<$f>, Float<$f>) {
                 let trunc = self.const_trunc();
                 (trunc, Float(self.0 - trunc.0))
@@ -235,11 +233,13 @@ macro_rules! impl_float_shared {
 
             /// Returns `self` between `[min..=max]` scaled to a new range `[u..=v]`.
             ///
+            /// Also known as *remap*.
+            ///
             /// Values of `self` outside of `[min..=max]` are not clamped
             /// and will result in extrapolation.
             ///
             /// # Formulation
-            #[doc = FORMULA_SCALE!()]
+            #[doc = crate::_FLOAT_FORMULA_SCALE!()]
             /// # Examples
             /// ```
             /// # use devela::Float;
@@ -259,7 +259,7 @@ macro_rules! impl_float_shared {
             /// and will result in extrapolation.
             ///
             /// # Formulation
-            #[doc = FORMULA_LERP!()]
+            #[doc = crate::_FLOAT_FORMULA_LERP!()]
             /// # Example
             /// ```
             /// # use devela::Float;
@@ -320,7 +320,7 @@ macro_rules! impl_float_shared {
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
             /// # Formulation
-            #[doc = FORMULA_HYPOT_FISR!()]
+            #[doc = crate::_FLOAT_FORMULA_HYPOT_FISR!()]
             pub const fn hypot_fisr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_fisr()
             }
@@ -329,7 +329,7 @@ macro_rules! impl_float_shared {
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
             /// # Formulation
-            #[doc = FORMULA_HYPOT_NR!()]
+            #[doc = crate::_FLOAT_FORMULA_HYPOT_NR!()]
             pub const fn hypot_nr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_nr()
             }
@@ -579,7 +579,7 @@ macro_rules! impl_float_shared {
             /// Uses the [finite difference method].
             ///
             /// # Formulation
-            #[doc = FORMULA_DERIVATIVE!()]
+            #[doc = crate::_FLOAT_FORMULA_DERIVATIVE!()]
             ///
             // FLAG_DISABLED:nightly_autodiff
             // See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` cfg flag.
@@ -599,7 +599,7 @@ macro_rules! impl_float_shared {
             /// Uses the [Riemann Sum](https://en.wikipedia.org/wiki/Riemann_sum).
             ///
             /// # Formulation
-            #[doc = FORMULA_INTEGRATE!()]
+            #[doc = crate::_FLOAT_FORMULA_INTEGRATE!()]
             pub fn integrate<F>(f: F, x: $f, y: $f, n: usize) -> Float<$f>
             where
                 F: Fn($f) -> $f,
@@ -616,7 +616,7 @@ macro_rules! impl_float_shared {
             /// with step size `h`, differentiating over `x`.
             ///
             /// # Formulation
-            #[doc = FORMULA_PARTIAL_DERIVATIVE_X!()]
+            #[doc = crate::_FLOAT_FORMULA_PARTIAL_DERIVATIVE_X!()]
             pub fn partial_derivative_x<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
             where
                 F: Fn($f, $f) -> $f,
@@ -628,7 +628,7 @@ macro_rules! impl_float_shared {
             /// with step size `h`, differentiating over `x`.
             ///
             /// # Formulation
-            #[doc = FORMULA_PARTIAL_DERIVATIVE_Y!()]
+            #[doc = crate::_FLOAT_FORMULA_PARTIAL_DERIVATIVE_Y!()]
             pub fn partial_derivative_y<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
             where
                 F: Fn($f, $f) -> $f,

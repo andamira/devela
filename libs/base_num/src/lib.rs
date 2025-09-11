@@ -13,10 +13,14 @@ extern crate self as devela_base_num;
 mod _internals; // upcasted_op!, impl_ops!
 
 mod int; // Int
+mod float; // Float, FloatConst
 
 structural_mods! { // _mods
     _mods {
-        pub use super::int::_all::*;
+        pub use super::{
+            float::_all::*,
+            int::_all::*,
+        };
     }
 }
 
@@ -60,6 +64,7 @@ pub mod _workspace_internals {
     #[allow(unused_imports)]
     pub use super::{
         _internals::*,
+        float::_workspace_internals::*,
         int::_workspace_internals::*,
     };
 }

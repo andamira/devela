@@ -10,7 +10,6 @@ mod wrapper; // Float
 #[cfg(_float··)]
 crate::items! {
     mod ext_float; // ExtFloat
-    mod shared_docs; // FORMULA_*!()
 }
 
 crate::structural_mods! { // _mods, _always
@@ -25,7 +24,6 @@ crate::structural_mods! { // _mods, _always
         pub use super::{
             ext_float::*,
             wrapper::*,
-            shared_docs::*,
         };
     }
     _always {

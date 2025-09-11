@@ -11,6 +11,8 @@
 //   - div_ties_towards
 //   - div_ties_even
 //   - div_ties_odd
+//
+// TODO: change panic for Result<T, NonZeroRequired>
 
 use super::super::_docs::*;
 use crate::{Int, is, paste};

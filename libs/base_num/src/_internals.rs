@@ -167,8 +167,8 @@ pub use upcasted_op;
 /// $cap: the (optional) capability feature that enables the given implementation. E.g "_int_i8".
 ///
 /// # Invoked from:
-/// - num/int/wrapper/mod.rs
-/// - num/float/wrapper/mod.rs
+/// - int/wrapper/mod.rs
+/// - float/wrapper/mod.rs
 #[doc(hidden)]
 #[macro_export]
 #[allow(clippy::crate_in_macro_def, reason = "paste! must be in the root of invoking crate")]

@@ -4,7 +4,6 @@
 //
 // IMPROVE: remove redundant methods implemented in `core`
 
-use super::shared_docs::*;
 #[cfg(_float··)]
 use crate::Float;
 use crate::{FloatConst, Sign};
@@ -26,14 +25,14 @@ pub trait ExtFloat: FloatConst + Sized {
     /// The largest integer less than or equal to `self`.
     ///
     /// # Formula
-    #[doc = FORMULA_FLOOR!()]
+    #[doc = crate::_FLOAT_FORMULA_FLOOR!()]
     #[must_use]
     fn floor(self) -> Self;
 
     /// The smallest integer greater than or equal to `self`.
     ///
     /// # Formula
-    #[doc = FORMULA_CEIL!()]
+    #[doc = crate::_FLOAT_FORMULA_CEIL!()]
     #[must_use]
     fn ceil(self) -> Self;
 
@@ -45,42 +44,42 @@ pub trait ExtFloat: FloatConst + Sized {
     /// The nearest integer to `self`, rounding ties away from `0.0`.
     ///
     /// # Formula
-    #[doc = FORMULA_ROUND_TIES_AWAY!()]
+    #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_AWAY!()]
     #[must_use]
     fn round_ties_away(self) -> Self;
 
     /// The nearest integer to `self`, rounding ties to the nearest even integer.
     ///
     /// # Formula
-    #[doc = FORMULA_ROUND_TIES_EVEN!()]
+    #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_EVEN!()]
     #[must_use]
     fn round_ties_even(self) -> Self;
 
     /// The nearest integer to `self`, rounding ties to the nearest odd integer.
     ///
     /// # Formula
-    #[doc = FORMULA_ROUND_TIES_ODD!()]
+    #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_ODD!()]
     #[must_use]
     fn round_ties_odd(self) -> Self;
 
     /// The integral part of `self`.
     ///
     /// # Formula
-    #[doc = FORMULA_TRUNC!()]
+    #[doc = crate::_FLOAT_FORMULA_TRUNC!()]
     #[must_use]
     fn trunc(self) -> Self;
 
     /// The fractional part of `self`.
     ///
     /// # Formula
-    #[doc = FORMULA_FRACT!()]
+    #[doc = crate::_FLOAT_FORMULA_FRACT!()]
     #[must_use]
     fn fract(self) -> Self;
 
     /// The integral and fractional parts ox `self`.
     ///
     /// # Formula
-    #[doc = FORMULA_SPLIT!()]
+    #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
     #[must_use]
     fn split(self) -> (Self, Self);
 
@@ -149,7 +148,7 @@ pub trait ExtFloat: FloatConst + Sized {
     ///
     /// Values of `self` outside `[min..=max]` are not clamped and will result in extrapolation.
     /// # Formula
-    #[doc = FORMULA_SCALE!()]
+    #[doc = crate::_FLOAT_FORMULA_SCALE!()]
     #[must_use]
     fn scale(self, min: Self, max: Self, u: Self, v: Self) -> Self;
 
@@ -158,7 +157,7 @@ pub trait ExtFloat: FloatConst + Sized {
     ///
     /// Values of `self` outside `[0..=1]` are not clamped and will result in extrapolation.
     /// # Formula
-    #[doc = FORMULA_LERP!()]
+    #[doc = crate::_FLOAT_FORMULA_LERP!()]
     #[must_use]
     fn lerp(self, u: Self, v: Self) -> Self;
 

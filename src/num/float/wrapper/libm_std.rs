@@ -135,12 +135,12 @@ mod _libm {
             impl Float<$f> {
                 /// The fractional part.
                 /// # Formulation
-                #[doc = FORMULA_FRACT!()]
+                #[doc = crate::_FLOAT_FORMULA_FRACT!()]
                 pub fn fract(self) -> Float<$f> { Float(self.0 - Libm::<$f>::trunc(self.0)) }
 
                 /// The integral and fractional parts.
                 /// # Formulation
-                #[doc = FORMULA_SPLIT!()]
+                #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
                     let (i, f) = Libm::<$f>::modf(self.0);
                     (Self(i), Self(f))
@@ -307,7 +307,7 @@ mod _std {
                 }
                 /// The integral and fractional parts of `x`.
                 /// # Formulation
-                #[doc = FORMULA_SPLIT!()]
+                #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
                     let trunc = self.trunc();
                     (trunc, Float(self.0 - trunc.0))
@@ -342,12 +342,12 @@ mod _no_std_no_libm {
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
                 /// # Formulation
-                #[doc = crate::FORMULA_FLOOR!()]
+                #[doc = crate::_FLOAT_FORMULA_FLOOR!()]
                 pub const fn floor(self) -> Float<$f> { self.const_floor() }
 
                 /// The smallest integer greater than or equal to itself.
                 /// # Formulation
-                #[doc = FORMULA_CEIL!()]
+                #[doc = crate::_FLOAT_FORMULA_CEIL!()]
                 pub const fn ceil(self) -> Float<$f> { self.const_ceil() }
 
                 /// The nearest integer to itself, default rounding
@@ -360,19 +360,19 @@ mod _no_std_no_libm {
                 /// This is the default [`round`] implementation.
                 ///
                 /// # Formulation
-                #[doc = FORMULA_ROUND_TIES_AWAY!()]
+                #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_AWAY!()]
                 pub const fn round_ties_away(self) -> Float<$f> {self.const_round_ties_away() }
 
                 /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
                 /// # Formulation
-                #[doc = FORMULA_ROUND_TIES_EVEN!()]
+                #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_EVEN!()]
                 pub const fn round_ties_even(self) -> Float<$f> { self.const_round_ties_even() }
 
                 /// The integral part.
                 /// This means that non-integer numbers are always truncated towards zero.
                 ///
                 /// # Formulation
-                #[doc = FORMULA_TRUNC!()]
+                #[doc = crate::_FLOAT_FORMULA_TRUNC!()]
                 ///
                 /// This implementation uses bitwise manipulation to remove the fractional part
                 /// of the floating-point number. The exponent is extracted, and a mask is
@@ -382,12 +382,12 @@ mod _no_std_no_libm {
 
                 /// The fractional part.
                 /// # Formulation
-                #[doc = FORMULA_FRACT!()]
+                #[doc = crate::_FLOAT_FORMULA_FRACT!()]
                 pub const fn fract(self) -> Float<$f> { self.const_fract() }
 
                 /// The integral and fractional parts.
                 /// # Formulation
-                #[doc = FORMULA_SPLIT!()]
+                #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
                 pub const fn split(self) -> (Float<$f>, Float<$f>) { self.const_split() }
 
                 /// Raises itself to the `p` integer power.

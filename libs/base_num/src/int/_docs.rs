@@ -1,9 +1,9 @@
 // devela_base_num::int::_docs
 //
 //! Defines constants for shared documentation on [`Int`] and [`NumInt`].
+#![doc = crate::doclink!(custom devela "[`NumInt`]" "num/trait.NumInt.html")]
 //
 // notation: _INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*
-
 #![allow(unused, reason = "if only compiling either unsigned or signed…")]
 
 crate::CONST! { hidden macro_export,
