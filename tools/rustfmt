@@ -20,7 +20,7 @@
 RUSTFMT="rustfmt +stable --edition 2024"
 
 # directories to include in the search for "all" Rust files, relative to $CRATE_ROOT
-INCLUDE_DIRS=("examples" "src")
+INCLUDE_DIRS=("build" "examples" "libs" "src")
 
 # initialize default argument values
 ARG_MODE="check" # Default rustfmt mode (check|format)

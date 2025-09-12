@@ -227,7 +227,7 @@ mod reflection {
     // In sync with ../Cargo.toml::dep_all & ../src/_dep.rs
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         ref_flags: &["dep··"],
-        features: &include!{concat!(env!("CARGO_WORKSPACE_DIR"), "/config/dep_all.rs")},
+        features: &include!["./dep_all"],
     };
 
     /* # modules */

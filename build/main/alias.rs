@@ -18,12 +18,20 @@ pub(crate) fn main() -> Result<(), IoError> {
     Build::println_heading("Aliases:");
 
     let mut aliases = Vec::with_capacity(20);
+    arch_aliases(&mut aliases);
+    base_aliases(&mut aliases);
 
-    /* arch */
-    // 2
-    // - any_target_arch_linux
-    // - any_target_arch_riscv
+    #[cfg(feature = "__dbg")]
+    Build::println(&format!("Active compiler cfg flag aliases ({}): {:?}", aliases.len(), aliases));
 
+    Ok(())
+}
+
+// 2
+// - any_target_arch_linux
+// - any_target_arch_riscv
+#[allow(unused_variables)]
+fn arch_aliases(aliases: &mut Vec<&'static str>) {
     let target_arch = var("CARGO_CFG_TARGET_ARCH").unwrap();
 
     if target_arch == "x86"
@@ -33,48 +41,44 @@ pub(crate) fn main() -> Result<(), IoError> {
         || target_arch == "riscv32"
         || target_arch == "riscv64"
     {
-        new_alias(&mut aliases, "any_target_arch_linux");
+        new_alias(aliases, "any_target_arch_linux");
     }
     if target_arch == "riscv32" || target_arch == "riscv64" {
-        new_alias(&mut aliases, "any_target_arch_riscv");
+        new_alias(aliases, "any_target_arch_riscv");
     }
+}
 
-    /* base */
-    // 14
-
+// 14
+#[allow(unexpected_cfgs, unused_variables)]
+fn base_aliases(aliases: &mut Vec<&'static str>) {
     #[cfg(all(feature = "base_safe", feature = "safe"))]
-    new_alias(&mut aliases, "base_safe");
+    new_alias(aliases, "base_safe");
 
     #[cfg(all(feature = "base_safe", feature = "safe_build"))]
-    new_alias(&mut aliases, "base_safe_build");
+    new_alias(aliases, "base_safe_build");
 
     #[cfg(all(feature = "base_safe", feature = "safe_code"))]
-    new_alias(&mut aliases, "base_safe_code");
+    new_alias(aliases, "base_safe_code");
     #[cfg(all(feature = "base_safe", feature = "safe_data"))]
-    new_alias(&mut aliases, "base_safe_data");
+    new_alias(aliases, "base_safe_data");
     #[cfg(all(feature = "base_safe", feature = "safe_game"))]
-    new_alias(&mut aliases, "base_safe_game");
+    new_alias(aliases, "base_safe_game");
     #[cfg(all(feature = "base_safe", feature = "safe_lang"))]
-    new_alias(&mut aliases, "base_safe_lang");
+    new_alias(aliases, "base_safe_lang");
     #[cfg(all(feature = "base_safe", feature = "safe_media"))]
-    new_alias(&mut aliases, "base_safe_media");
+    new_alias(aliases, "base_safe_media");
     #[cfg(all(feature = "base_safe", feature = "safe_mem"))]
-    new_alias(&mut aliases, "base_safe_mem");
+    new_alias(aliases, "base_safe_mem");
     #[cfg(all(feature = "base_safe", feature = "safe_num"))]
-    new_alias(&mut aliases, "base_safe_num");
+    new_alias(aliases, "base_safe_num");
     #[cfg(all(feature = "base_safe", feature = "safe_phys"))]
-    new_alias(&mut aliases, "base_safe_phys");
+    new_alias(aliases, "base_safe_phys");
     #[cfg(all(feature = "base_safe", feature = "safe_sys"))]
-    new_alias(&mut aliases, "base_safe_sys");
+    new_alias(aliases, "base_safe_sys");
     #[cfg(all(feature = "base_safe", feature = "safe_text"))]
-    new_alias(&mut aliases, "base_safe_text");
+    new_alias(aliases, "base_safe_text");
     #[cfg(all(feature = "base_safe", feature = "safe_ui"))]
-    new_alias(&mut aliases, "base_safe_ui");
+    new_alias(aliases, "base_safe_ui");
     #[cfg(all(feature = "base_safe", feature = "safe_work"))]
-    new_alias(&mut aliases, "base_safe_work");
-
-    #[cfg(feature = "__dbg")]
-    Build::println(&format!("Active compiler cfg flag aliases ({}): {:?}", aliases.len(), aliases));
-
-    Ok(())
+    new_alias(aliases, "base_safe_work");
 }

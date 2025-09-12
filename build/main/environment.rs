@@ -9,7 +9,9 @@
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html
 // #environment-variables-cargo-sets-for-build-scripts
 
-pub(crate) fn main() -> Result<(), std::io::Error> {
+use std::{io::Error as IoError, path::Path};
+
+pub(crate) fn main() -> Result<(), IoError> {
     // https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
     println!("cargo:rerun-if-env-changed=CARGO_PRIMARY_PACKAGE");
     println!("cargo:rerun-if-env-changed=CARGO_TARGET_DIR");
@@ -21,14 +23,14 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         println!("cargo:rustc-cfg=cargo_primary_package");
     }
 
-    // Makes sure CARGO_TARGET_DIR is always defined, with trailing slash.
+    // Makes sure `CARGO_TARGET_DIR` and `CARGO_WORKSPACE_DIR` are always defined.
     //
     // Used in: doclink! (/libs/base_core/src/code/util/doclink
     // In sync with: /.cargo/config.toml#[env] & /libs/base_core/build/environment.rs
-    let ctd =
-        option_env!("CARGO_TARGET_DIR").unwrap_or(concat![env!("CARGO_WORKSPACE_DIR"), "target/"]);
-    let cargo_target_dir = if ctd.ends_with('/') { ctd.to_string() } else { format!("{}/", ctd) };
-    println!("cargo:rustc-env=CARGO_TARGET_DIR={}", cargo_target_dir);
+    let cwd = get_workspace_dir();
+    let ctd = get_target_dir(&cwd);
+    println!("cargo:rustc-env=CARGO_WORKSPACE_DIR={}", cwd);
+    println!("cargo:rustc-env=CARGO_TARGET_DIR={}", ctd);
 
     #[cfg(feature = "__dbg")]
     {
@@ -79,4 +81,31 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     }
 
     Ok(())
+}
+
+fn get_workspace_dir() -> String {
+    option_env!("CARGO_WORKSPACE_DIR")
+        .map(|s| s.to_string())
+        .unwrap_or_else(|| {
+            option_env!("CARGO_MANIFEST_DIR")
+                .and_then(|manifest_dir| {
+                    let path = Path::new(manifest_dir);
+                    path.ancestors()
+                        .find(|p| p.join("Cargo.toml").exists())
+                        .and_then(|p| p.to_str())
+                        .map(|s| s.to_string())
+                })
+                .unwrap_or_else(|| ".".to_string())
+        })
+        .trim_end_matches('/')
+        .to_string()
+        + "/"
+}
+fn get_target_dir(workspace_dir: &str) -> String {
+    option_env!("CARGO_TARGET_DIR")
+        .map(|s| s.to_string())
+        .unwrap_or_else(|| format!("{}/target", workspace_dir))
+        .trim_end_matches('/')
+        .to_string()
+        + "/"
 }

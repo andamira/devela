@@ -18,4 +18,3 @@ _reexport! { rust: alloc::collections,
     doc: "An ordered set based on a B-Tree.",
     BTreeSet
 }
-

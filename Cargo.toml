@@ -624,7 +624,7 @@ _nums_all = ["_float_all"]
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-# In sync with ./config/dep_all.rs & ./src/_dep.rs
+# In sync with ./build/main/dep_all & ./src/_dep.rs
 dep_all = [ # enables all 44 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
 	"dep_const_str", "dep_crossterm", "dep_flume", "dep_fontdue", "dep_ffmpeg",
@@ -722,7 +722,7 @@ devela_macros = [ "dep:devela_macros",
 # - use `./tools/manifest.sh dependencies` to see the numbers.
 #
 ## when adding a new optional dependency
-# 1. Update `dep_all` above and ./config/dep_all.rs.
+# 1. Update `dep_all` above and /build/main/dep_all.
 # 2. Add a new entry below and in ./src/_deps.rs.
 
 #* workspace library dependencies *#

@@ -31,7 +31,7 @@ pub extern crate alloc as _alloc;
 pub extern crate std as _std;
 
 /* 44 optional dependencies */
-// In sync with ../Cargo.toml::dep_all & ../config/dep_all.rs
+// In sync with /Cargo.toml::dep_all & /build/main/dep_all
 
 _reexport! { optional_crate (unsafe) "dep_allocator_api2", "allocator-api2", allocator_api2,
     doc: "Mirror of Rust's allocator api for use on stable rust"

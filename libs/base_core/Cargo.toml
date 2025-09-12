@@ -80,7 +80,7 @@ _docs = []
 #
 # Names are prefixed with `dep_`, and use underscores in place of dashes.
 
-# In sync with ./config/dep_all.rs & ./src/_dep.rs
+# In sync with ./config/dep_all & ./src/_dep.rs
 dep_all = [ # enables all 1 optional dependencies:
 	"dep_simdutf8",
 ]
