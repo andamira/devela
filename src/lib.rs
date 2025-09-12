@@ -201,7 +201,6 @@ pub mod all { #![allow(unused_imports)]
     pub use super::{
         code::_always::*,
         data::_always::*,
-        num::_always::*,
         phys::_always::*,
         sys::_always::*,
         text::_always::*,

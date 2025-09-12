@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_NUM_FLOAT!()]
 //
 
-mod constants; // FloatConst
+mod float_const; // FloatConst
 mod reexports; // core::num::FloatCategory
 mod wrapper; // Float
 
@@ -12,10 +12,10 @@ crate::items! {
     mod ext_float; // ExtFloat
 }
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods, crate_internals
     _mods {
         pub use super::{
-            constants::*,
+            float_const::*,
             reexports::*,
             wrapper::*,
         };
@@ -24,11 +24,6 @@ crate::structural_mods! { // _mods, _always
         pub use super::{
             ext_float::*,
             wrapper::*,
-        };
-    }
-    _always {
-        pub use super::{
-            reexports::*,
         };
     }
 }

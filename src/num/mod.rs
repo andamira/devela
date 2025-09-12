@@ -33,7 +33,7 @@ pub mod rand;
 // pub mod symb;
 // mod power; // Tp
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             error::*, float::_all::*, frac::_all::*, int::_all::*,
@@ -56,11 +56,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
         pub(crate) use super::{
             geom::_crate_internals::*,
             rand::_crate_internals::*,
-        };
-    }
-    _always {
-        pub use super::{
-            float::_always::*,
         };
     }
 }

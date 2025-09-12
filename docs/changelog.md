@@ -90,6 +90,7 @@ Many feature gates are removed in order to make most features make always availa
   - remove `itertools` direct dependency.
   - configure the exact nightly version to install and use.
 - update `config/rustdoc-header.html` to support multiple crates with custom whitelists.
+- move `/config/dep_all.rs` to `/build/main/dep_all`.
 
 
 -----------
