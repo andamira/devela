@@ -47,19 +47,19 @@ crate::impl_ops![Float: f32, f64];
 
 #[rustfmt::skip]
 mod core_impls {
-    use crate::{_core::fmt, Float, Ordering};
+    use crate::{Float, Ordering, FmtResult, Formatter, Display, Debug};
 
     impl<T: Clone> Clone for Float<T> {
         fn clone(&self) -> Self { Self(self.0.clone()) }
     }
     impl<T: Copy> Copy for Float<T> {}
-    impl<T: fmt::Debug> fmt::Debug for Float<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    impl<T: Debug> Debug for Float<T> {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
             f.debug_tuple("Float").field(&self.0).finish()
         }
     }
-    impl<T: fmt::Display> fmt::Display for Float<T> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
+    impl<T: Display> Display for Float<T> {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> { Display::fmt(&self.0, f) }
     }
 
     impl<T: PartialEq> PartialEq for Float<T> {
@@ -79,4 +79,12 @@ mod core_impls {
             self.0.partial_cmp(other)
         }
     }
+    // MAYBE
+    // impl<T> crate::Deref for Float<T> {
+    //     type Target = T;
+    //     fn deref(&self) -> &Self::Target { &self.0 }
+    // }
+    // impl<T> crate::DerefMut for Float<T> {
+    //     fn deref_mut(&mut self) -> &mut Self::Target { &mut self.0 }
+    // }
 }

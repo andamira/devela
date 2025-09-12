@@ -15,7 +15,7 @@ use crate::{Point, Point2d, Point3d, Points};
 
 #[rustfmt::skip]
 impl<T, const D: usize> Point<T, D> {
-    #[must_use] /// Returns a new `Point` from the given `coords` array.
+    /// Returns a new `Point` from the given `coords` array.
     pub const fn new(coords: [T; D]) -> Self { Self { coords } }
 
     #[must_use] /// Consumes this `Point` and converts it into a `Vector`.
@@ -25,10 +25,10 @@ impl<T, const D: usize> Point<T, D> {
     #[cfg(feature = "linear")] #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
     pub const fn to_vector(self) -> Vector<T, D> where T: Copy { Vector::new(self.coords) }
 
-    #[must_use] /// Creates a `Point` from a `Vector`.
+    /// Creates a `Point` from a `Vector`.
     #[cfg(feature = "linear")] #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
     pub fn from_vector(v: Vector<T, D>) -> Self { Self::new(v.coords) }
-    #[must_use] /// Creates a `Point` from a constant `Vector`.
+    /// Creates a `Point` from a constant `Vector`.
     #[cfg(feature = "linear")] #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
     pub const fn from_vector_const(v: Vector<T, D>) -> Self where T: Copy { Self::new(v.coords) }
 }
@@ -92,7 +92,6 @@ macro_rules! impl_point {
     (@int $t:ty) => {
         impl<const D: usize> Point<$t, D> {
             /// Adds the given vector.
-            #[must_use]
             #[cfg(feature = "linear")]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
             pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {

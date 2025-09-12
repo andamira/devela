@@ -9,11 +9,11 @@
 // safety
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
+mod absence; // NoNum
 mod error; // NumError, NumResult
 mod float; // fsize, ExtFloat, Float, FloatConst
 mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
-mod no; // NoNum
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod reexports;
 mod traits; // Num, NumConst, NumRef
@@ -36,8 +36,8 @@ pub mod rand;
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
-            error::*, float::_all::*, frac::_all::*, int::_all::*,
-            no::*, primitive::_all::*, reexports::*, traits::*,
+            absence::*, error::*, float::_all::*, frac::_all::*, int::_all::*,
+            primitive::_all::*, reexports::*, traits::*,
         };
         #[cfg(feature = "unit")]
         pub use super::unit::_all::*;

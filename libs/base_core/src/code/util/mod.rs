@@ -26,7 +26,7 @@ mod include; // include_from!, mod_from!, mod_path!
 mod items; // items!, sf!
 mod is; // is!
 mod maybe; // maybe!
-mod methods; // methods_as_fns
+mod methods; // methods_as_fns!
 mod paste; // paste! (wrapped for docs)
 mod r#const; // CONST!
 mod structural; // structural_mods!

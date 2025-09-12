@@ -3,12 +3,69 @@
 //! Methods depending on libm, std, or their absence
 //
 // TOC
+// - macro impl_fp!
 // - impls for libm
 // - impls for std && not(libm)
 // - impls for not(std) && not(libm)
-// - macro helper: impl_fp!
 
 use crate::Float;
+
+/// Macro helper for implementing methods for `Float`, from either `libm` or `std`.
+///
+/// $lib: the library to use.
+/// $f: the floating-point type to support.
+/// $doc: an optional documentation string.
+/// $opfn: the original operation function name.
+/// $op: the new operation function name in Float.
+#[cfg(any(feature = "dep_libm", feature = "std"))]
+macro_rules! impl_fp {
+    (
+        // Matches a wildcard floating-point type (f*).
+        // Expands to specific floating-point types (f32, f64).
+        $lib:ident : f* : $($ops:tt)*
+    ) => {
+        impl_fp![$lib : f32 : $($ops)*];
+        impl_fp![$lib : f64 : $($ops)*];
+    };
+    (
+        // Matches a specific floating-point type and any number of operations.
+        // Generates the impl block for Float<$f> and calls the matching implementation.
+        $lib:ident : $f:ty : $($ops:tt)*
+    ) => { $crate::paste! {
+        #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
+        impl Float<$f> {
+            impl_fp![@$lib : $f : $($ops)*];
+        }
+    }};
+    (
+        // Matches multiple operations and uses recursion to process each one.
+        @$lib:ident : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*
+        ; $($rest:tt)*
+    ) => {
+        impl_fp![@$lib : $f : $($doc)? $opfn = $op : $($arg),*];
+        impl_fp![@$lib : $f : $($rest)*];
+    };
+    (
+        // Matches a single operation and implements it using the `libm` library.
+        @libm : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
+    ) => {
+        $(#[doc = $doc])?
+        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
+            Float($crate::_dep::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
+        }
+    };
+    (
+        // Matches a single operation and implements it using the `std` library.
+        @std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
+    ) => {
+        $(#[doc = $doc])?
+        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
+            Float(<$f>::$opfn(self.0, $($arg),*))
+        }
+    };
+}
+#[cfg(any(feature = "dep_libm", feature = "std"))]
+use impl_fp;
 
 #[cfg(feature = "dep_libm")]
 mod _libm {
@@ -382,60 +439,3 @@ mod _no_std_no_libm {
     }
     custom_impls!();
 }
-
-/// macro helper for implementing methods for `Float`, from either `libm` or `std`.
-///
-/// $lib: the library to use.
-/// $f: the floating-point type to support.
-/// $doc: an optional documentation string.
-/// $opfn: the original operation function name.
-/// $op: the new operation function name in Float.
-#[cfg(any(feature = "dep_libm", feature = "std"))]
-macro_rules! impl_fp {
-    (
-        // Matches a wildcard floating-point type (f*).
-        // Expands to specific floating-point types (f32, f64).
-        $lib:ident : f* : $($ops:tt)*
-    ) => {
-        impl_fp![$lib : f32 : $($ops)*];
-        impl_fp![$lib : f64 : $($ops)*];
-    };
-    (
-        // Matches a specific floating-point type and any number of operations.
-        // Generates the impl block for Float<$f> and calls the matching implementation.
-        $lib:ident : $f:ty : $($ops:tt)*
-    ) => { $crate::paste! {
-        #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
-        impl Float<$f> {
-            impl_fp![@$lib : $f : $($ops)*];
-        }
-    }};
-    (
-        // Matches multiple operations and uses recursion to process each one.
-        @$lib:ident : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*
-        ; $($rest:tt)*
-    ) => {
-        impl_fp![@$lib : $f : $($doc)? $opfn = $op : $($arg),*];
-        impl_fp![@$lib : $f : $($rest)*];
-    };
-    (
-        // Matches a single operation and implements it using the `libm` library.
-        @libm : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
-    ) => {
-        $(#[doc = $doc])?
-        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
-            Float($crate::_dep::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
-        }
-    };
-    (
-        // Matches a single operation and implements it using the `std` library.
-        @std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
-    ) => {
-        $(#[doc = $doc])?
-        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
-            Float(<$f>::$opfn(self.0, $($arg),*))
-        }
-    };
-}
-#[cfg(any(feature = "dep_libm", feature = "std"))]
-use impl_fp;

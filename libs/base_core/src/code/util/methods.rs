@@ -40,15 +40,18 @@ methods_as_fns! {
 assert_eq!(addition(5, 2), 7);
 ```
 **/
-#[doc(hidden)]
+// we are employing a trick, e.g. `$(+const$($_c:lifetime)?)?` for the optional fn modifiers,
+// where the never expected lifetime allows to refer to the non-identifier `+const` later on;
+// and the same for the async and unsafe fn modifiers.
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _methods_as_fns {
     (
     // same name for method and function
         $fn_vis:vis
         $item:path => $(
         $(#[$fn_attr:meta])*
-        $(+const$($_c:block)?)? $(+async$($_a:block)?)? $(+unsafe$($_u:block)?)?
+        $(+const$($_c:lifetime)?)? $(+async$($_a:lifetime)?)? $(+unsafe$($_u:lifetime)?)?
         $method:ident ($($arg_name:ident : $arg_ty:ty),*) $(-> $ret_ty:ty)?
     ),* $(,)?) => {
         $(
@@ -72,7 +75,7 @@ macro_rules! _methods_as_fns {
     // different name for method and function
         $fn_vis:vis $item:path => $(
         $(#[$fn_attr:meta])*
-        $(+const$($_c:block)?)? $(+async$($_a:block)?)? $(+unsafe$($_u:block)?)?
+        $(+const$($_c:lifetime)?)? $(+async$($_a:lifetime)?)? $(+unsafe$($_u:lifetime)?)?
         $method:ident|$fn:ident ($($arg_name:ident : $arg_ty:ty),*) $(-> $ret_ty:ty)?
     ),* $(,)?) => {
         $(

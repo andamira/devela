@@ -1,6 +1,6 @@
 // devela::num::float::wrapper::tests
 //
-//! All the examples use f32
+//! Tests for `Float<f32>`.
 //
 
 use crate::{Float, Sign, assert_approx_eq_all};
