@@ -84,7 +84,7 @@ macro_rules! impl_point {
     () => {
         impl_point![sint i8, i16, i32, i64, i128, isize];
         impl_point![uint u8, u16, u32, u64, u128, usize];
-        impl_point![float f32:"_float_f32", f64:"_float_f64"];
+        impl_point![float f32, f64];
     };
 
     // integers common methods
@@ -117,8 +117,8 @@ macro_rules! impl_point {
     };
 
     // $f: the inner floating-point primitive type
-    (float $( $f:ty : $cap:literal ),+) => { $( impl_point![@float $f:$cap]; )+ };
-    (@float $f:ty : $cap:literal) => {
+    (float $( $f:ty),+) => { $( impl_point![@float $f]; )+ };
+    (@float $f:ty) => {
         impl<const D: usize> Point<$f, D> {
             // TODO
             //

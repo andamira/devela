@@ -3,11 +3,8 @@
 //! Defines [`Gamma`].
 //
 
-#[cfg(any(feature = "std", _float··))]
-use crate::is;
-#[cfg(_float··)]
 #[allow(unused_imports)]
-use crate::{ExtFloat, Float};
+use crate::{ExtFloat, Float, is};
 
 /// Gamma correction curves.
 ///
@@ -28,9 +25,9 @@ impl<T> Gamma<T> {
 
 // Implement gamma-related low-level methods. Directly operate over floating-points.
 macro_rules! impl_gamma {
-    () => { impl_gamma![gamma f32:"_float_f32", f64:"_float_f64"]; };
-    ( gamma $( $T:ty : $bound:literal ),+) => { $( impl_gamma![@gamma $T:$bound]; )+ };
-    (@gamma    $T:ty : $bound:literal  ) => {
+    () => { impl_gamma![gamma f32, f64]; };
+    ( gamma $($T:ty),+) => { $( impl_gamma![@gamma $T]; )+ };
+    (@gamma   $T:ty) => {
         /// Gamma encoding, decoding, and sRGB transfer functions for floating-point values.
         impl Gamma<$T> {
             /* basic gamma */
@@ -38,12 +35,8 @@ macro_rules! impl_gamma {
             /// Encodes the given linear `v`alue using this gamma: $v^{(1/γ)}$.
             ///
             /// Performs basic gamma encoding (power-law).
-            #[cfg(any(feature = "std", feature = $bound))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $bound))))]
             pub fn encode(self, v: $T) -> $T { v.powf(self.exp.recip()) }
             /// Compile-time [`encode`](#method.encode).
-            #[cfg(feature = $bound)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $bound)))]
             pub const fn const_encode(self, v: $T) -> $T {
                 let terms = Float(v).exp_series_terms();
                 Float(v).powf_series(self.exp.recip(), terms).0
@@ -52,12 +45,8 @@ macro_rules! impl_gamma {
             /// Decodes the given gamma-encoded `v`alue using this gamma: $v^γ$ .
             ///
             /// Performs basic gamma decoding (power-law inverse).
-            #[cfg(any(feature = "std", feature = $bound))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $bound))))]
             pub fn decode(self, v: $T) -> $T { v.powf(self.exp) }
             /// Compile-time [`decode`](#method.decode).
-            #[cfg(feature = $bound)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $bound)))]
             pub const fn const_decode(self, v: $T) -> $T {
                 let terms = Float(v).exp_series_terms();
                 Float(v).powf_series(self.exp, terms).0
@@ -76,14 +65,10 @@ macro_rules! impl_gamma {
             /// 1.055c^{1/\gamma} - 0.055, & \text{if } c > 0.0031308
             /// \end{cases}
             /// $$
-            #[cfg(any(feature = "std", feature = $bound))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $bound))))]
             pub fn encode_srgb(self, v: $T) -> $T {
                 is![v <= 0.003_130_8; 12.92 * v; 1.055 * v.powf(self.exp.recip()) - 0.055]
             }
             /// Compile-time [`encode_srgb`](#method.encode_srgb).
-            #[cfg(feature = $bound)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $bound)))]
             pub const fn const_encode_srgb(self, v: $T) -> $T {
                 if v <= 0.003_130_8 { 12.92 * v }
                 else {
@@ -104,13 +89,9 @@ macro_rules! impl_gamma {
             ///   & \normalsize \text{if } c > 0.04045
             /// \end{cases}
             /// $$
-            #[cfg(any(feature = "std", feature = $bound))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $bound))))]
             pub fn decode_srgb(self, v: $T) -> $T {
                 is![v <= 0.040_45; v / 12.92; ((v + 0.055) / (1.055)).powf(self.exp)]
             }
-            #[cfg(feature = $bound)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $bound)))]
             /// Compile-time [`decode_srgb`](#method.decode_srgb).
             pub const fn const_decode_srgb(self, v: $T) -> $T {
                 if v <= 0.040_45 { v / 12.92 } else {
@@ -185,27 +166,19 @@ macro_rules! impl_gamma {
             /* ... */
 
             /// Converts linear luminance to CIE lightness (L*)
-            #[cfg(any(feature = "std", feature = $bound))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $bound))))]
             pub fn luminance_to_lightness(y: $T) -> $T {
                 is![y <= Self::CIE_E; Self::CIE_K * y; 116.0 * y.cbrt() - 16.0]
             }
             /// Compile-time [`luminance_to_lightness`](#method.luminance_to_lightness).
-            #[cfg(feature = $bound)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $bound)))]
             pub const fn const_luminance_to_lightness(y: $T) -> $T {
                 is![y <= Self::CIE_E; Self::CIE_K * y; 116.0 * Float(y).cbrt_nr().0 - 16.0]
             }
 
             /// Converts CIE lightness (L*) to linear luminance
-            #[cfg(any(feature = "std", feature = $bound))]
-            #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = $bound))))]
             pub fn lightness_to_luminance(l_star: $T) -> $T {
                 is![l_star <= 8.0; l_star / Self::CIE_K; ((l_star + 16.0) / 116.0).powi(3)]
             }
             /// Compile-time [`lightness_to_luminance`](#method.lightness_to_luminance).
-            #[cfg(feature = $bound)]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = $bound)))]
             pub const fn const_lightness_to_luminance(l_star: $T) -> $T {
                 if l_star <= 8.0 { l_star / Self::CIE_K }
                 else { Float((l_star + 16.0) / 116.0).const_powi(3).0 }

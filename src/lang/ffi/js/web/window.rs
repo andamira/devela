@@ -4,11 +4,9 @@
 //!
 //
 
-#[cfg(feature = "_float_f32")]
-use devela::Float;
 #[cfg(feature = "alloc")]
 use devela::String;
-use devela::{_js_doc, Distance, Extent, offset_of};
+use devela::{_js_doc, Distance, Extent, Float, offset_of};
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
     _js_extern, _js_method_str_alloc, Js, JsTimeout, WebDocument, js_bool, js_int32, js_number,
@@ -289,7 +287,6 @@ impl WebWindowState {
     /// Computed as `(inner_size * device_pixel_ratio)`.
     ///
     /// For rounded values, use [`physical_size_rounded()`][Self::physical_size_rounded].
-    #[allow(rustdoc::broken_intra_doc_links, reason = "_float_f32")]
     pub const fn physical_size(&self) -> Extent<u32, 2> {
         Extent::new([
             (self.inner_size.x() as f32 * self.dpr) as u32,
@@ -301,8 +298,6 @@ impl WebWindowState {
     /// Computed as `(inner_size * device_pixel_ratio).round()`.
     ///
     /// It's more accurate and expensive than [`physical_size()`][Self::physical_size].
-    #[cfg(feature = "_float_f32")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
     pub const fn physical_size_rounded(&self) -> Extent<u32, 2> {
         Extent::new([
             Float(self.inner_size.x() as f32 * self.dpr).const_round().0 as u32,
@@ -343,7 +338,6 @@ impl crate::Debug for WebWindowState {
             .field("is_portrait()", &self.is_portrait())
             .field("is_valid()", &self.is_valid())
             .field("physical_size()", &self.physical_size());
-        #[cfg(feature = "_float_f32")]
         state.field("physical_size_rounded()", &self.physical_size_rounded());
         state.field("screen_margins()", &self.screen_margins()).finish_non_exhaustive() // .finish()
     }

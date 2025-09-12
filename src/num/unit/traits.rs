@@ -69,7 +69,6 @@ pub trait Unit: Sized {
     /// This method simplifies large numerical values by scaling them down
     /// to the largest appropriate prefix (e.g., Kibi, Mebi, Gibi, etc.).
     #[must_use]
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
     fn reduce(value: f64) -> (f64, Self);
     /// Reduces the given value to the most appropriate prefix as a i64,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
@@ -95,7 +94,7 @@ pub trait Unit: Sized {
     /// Reduces the given value to a chain of appropriate prefixes as f64,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    #[cfg(feature = "alloc")]
     fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)>;
     /// Reduces the given value to a chain of appropriate prefixes as i64,
     /// stopping when the remainder is less than the given threshold.
@@ -139,12 +138,11 @@ macro_rules! impl_unit {
                 Self::convert_i128(value, from, to)
             }
 
-            #[cfg(any(feature = "std", feature = "_float_f64"))]
             fn reduce(value: f64) -> (f64, Self) { Self::reduce(value) }
             fn reduce_i64(value: i64) -> (i64, Self, i64) { Self::reduce_i64(value) }
             fn reduce_i128(value: i128) -> (i128, Self, i128){ Self::reduce_i128(value) }
 
-            #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+            #[cfg(feature = "alloc")]
             fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
                 Self::reduce_chain(value, threshold)
             }

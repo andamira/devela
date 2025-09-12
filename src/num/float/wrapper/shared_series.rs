@@ -14,25 +14,18 @@ use crate::{Float, cfor, is, paste};
 /// $f:   the floating-point type.
 /// $uf:  unsigned int type with the same bit-size.
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
-/// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
 macro_rules! impl_float_shared_series {
     () => {
-        impl_float_shared_series![
-            (f32:u32, u32):"_float_f32",
-            (f64:u64, u32):"_float_f64",
-        ];
+        impl_float_shared_series![(f32:u32, u32), (f64:u64, u32)];
     };
 
-    ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal),+ $(,)?) => {
-        $( impl_float_shared_series![@$f:$uf, $ue, $cap]; )+
+    ($( ($f:ty:$uf:ty, $ue:ty)),+ $(,)?) => {
+        $( impl_float_shared_series![@$f:$uf, $ue]; )+
     };
-    (@$f:ty:$uf:ty, $ue:ty, $cap:literal) => {
-        #[doc = crate::_doc_availability!(feature = $cap)]
+    (@$f:ty:$uf:ty, $ue:ty) => {
         ///
         /// # *Common methods with or without `std` or `libm`*.
         ///   *Implemented using Taylor series.*
-        #[cfg(feature = $cap )]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Float<$f> {
             /// Raises itself to the `y` floating point power using the Taylor series via the
             /// `exp` and `ln` functions.
@@ -667,7 +660,6 @@ to reach the most precise result for both `f32` and `f64`:
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "_float_f32")]
 impl Float<f32> {
     #[must_use]
     pub(super) const fn asin_acos_series_terms_f32(x: f32) -> u32 {
@@ -742,7 +734,6 @@ impl Float<f32> {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "_float_f64")]
 impl Float<f64> {
     #[must_use]
     pub(super) const fn asin_acos_series_terms_f64(x: f64) -> u32 {

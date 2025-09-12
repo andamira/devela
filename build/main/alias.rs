@@ -49,7 +49,7 @@ fn arch_aliases(aliases: &mut Vec<&'static str>) {
 }
 
 // 14
-#[allow(unexpected_cfgs, unused_variables)]
+#[allow(unexpected_cfgs, unused_variables, clippy::ptr_arg)]
 fn base_aliases(aliases: &mut Vec<&'static str>) {
     #[cfg(all(feature = "base_safe", feature = "safe"))]
     new_alias(aliases, "base_safe");

@@ -9,7 +9,6 @@
 use super::*;
 use crate::unwrap;
 #[allow(unused)]
-#[cfg(_float··)]
 use crate::{ExtFloat, Float};
 
 /// # Operations.
@@ -181,12 +180,13 @@ impl TimeDelta {
     ///
     /// If the given float overflows the minimum or maximum time delta values,
     /// then an error is returned.
-    ///
-    /// # Features
-    /// - Uses `std` or `_float_f64` when available, leveraging
-    ///   `trunc`, `fract`, and `round` for precise, bias-free conversion.
-    /// - In strict `no_std` mode, manually rounds using integer arithmetic,
-    ///   ensuring correctness while lacking exact fractional nanosecond precision.
+    //
+    // TODO: RETHINK
+    // # Features
+    // - Uses `std` or `_float_f64` when available, leveraging
+    //   `trunc`, `fract`, and `round` for precise, bias-free conversion.
+    // - In strict `no_std` mode, manually rounds using integer arithmetic,
+    //   ensuring correctness while lacking exact fractional nanosecond precision.
     #[rustfmt::skip]
     pub fn try_from_secs_f64(secs: f64) -> Result<TimeDelta, &'static str> {
         if !secs.is_finite() {
@@ -196,16 +196,16 @@ impl TimeDelta {
         if secs > (i64::MAX as f64) {
             return Err("floating point seconds {secs} overflows TimeDelta::MAX"); }
         let (isecs, nanos);
-        #[cfg(any(feature = "std", feature = "_float_f64"))] {
-            isecs = secs.trunc() as i64;
-            nanos = (secs.fract() * NANOS_PER_SEC as f64).round() as i32;
-        }
-        #[cfg(not(any(feature = "std", feature = "_float_f64")))] {
-            let secs_rounded = if secs >= 0.0 { secs + 0.5 }  // Round normally
-            else { secs - 0.5 };  // Round away from zero for negatives
-            isecs = secs_rounded as i64;
-            nanos = ((secs_rounded - isecs as f64) * NANOS_PER_SEC as f64) as i32;
-        }
+        // #[cfg(any(feature = "std", feature = "_float_f64"))] {
+        isecs = secs.trunc() as i64;
+        nanos = (secs.fract() * NANOS_PER_SEC as f64).round() as i32;
+        // }
+        // #[cfg(not(any(feature = "std", feature = "_float_f64")))] {
+        //     let secs_rounded = if secs >= 0.0 { secs + 0.5 }  // Round normally
+        //     else { secs - 0.5 };  // Round away from zero for negatives
+        //     isecs = secs_rounded as i64;
+        //     nanos = ((secs_rounded - isecs as f64) * NANOS_PER_SEC as f64) as i32;
+        // }
         Ok(TimeDelta::new_unchecked(isecs, nanos))
     }
 
@@ -224,16 +224,14 @@ impl TimeDelta {
         if secs > (i64::MAX as f32) {
             return Err("floating point seconds {secs} overflows TimeDelta::MAX"); }
         let (isecs, nanos);
-        #[cfg(any(feature = "std", feature = "_float_f32"))] {
-            isecs = secs.trunc() as i64;
-            nanos = (secs.fract() * NANOS_PER_SEC as f32).round() as i32;
-        }
-        #[cfg(not(any(feature = "std", feature = "_float_f32")))] {
-            let secs_rounded = if secs >= 0.0 { secs + 0.5 }  // Round normally
-            else { secs - 0.5 };  // Round away from zero for negatives
-            isecs = secs_rounded as i64;
-            nanos = ((secs_rounded - isecs as f32) * NANOS_PER_SEC as f32) as i32;
-        }
+        isecs = secs.trunc() as i64;
+        nanos = (secs.fract() * NANOS_PER_SEC as f32).round() as i32;
+        // #[cfg(not(any(feature = "std", feature = "_float_f32")))] {
+        //     let secs_rounded = if secs >= 0.0 { secs + 0.5 }  // Round normally
+        //     else { secs - 0.5 };  // Round away from zero for negatives
+        //     isecs = secs_rounded as i64;
+        //     nanos = ((secs_rounded - isecs as f32) * NANOS_PER_SEC as f32) as i32;
+        // }
         Ok(TimeDelta::new_unchecked(isecs, nanos))
     }
 
@@ -268,12 +266,13 @@ impl TimeDelta {
     ///
     /// If the given float overflows the minimum or maximum time delta
     /// values, then an error is returned.
-    ///
-    /// # Features
-    /// - Uses `std` or `_float_f64` when available, leveraging `round`, `div_euclid`,
-    ///   and `rem_euclid` for precise, bias-free conversion.
-    /// - In strict `no_std` mode, manually rounds using integer arithmetic, ensuring correctness
-    ///   while lacking exact Euclidean division for negatives.
+    //
+    // TODO: RETHINK
+    // # Features
+    // - Uses `std` or `_float_f64` when available, leveraging `round`, `div_euclid`,
+    //   and `rem_euclid` for precise, bias-free conversion.
+    // - In strict `no_std` mode, manually rounds using integer arithmetic, ensuring correctness
+    //   while lacking exact Euclidean division for negatives.
     #[rustfmt::skip]
     pub fn try_from_millis_f64(millis: f64) -> Result<TimeDelta, &'static str> {
         if !millis.is_finite() {
@@ -283,29 +282,30 @@ impl TimeDelta {
         if millis > (i64::MAX as f64) {
             return Err("floating point milliseconds {millis} overflows TimeDelta::MAX"); }
         let (millis_rounded, secs, nanos);
-        #[cfg(any(feature = "std", feature = "_float_f64"))]
-        {
-            millis_rounded = millis.round();
-            secs = millis_rounded.div_euclid(1_000.0) as i64;
-            nanos = (millis_rounded.rem_euclid(1_000.0) * 1_000_000.0) as i32;
-        }
-        #[cfg(not(any(feature = "std", feature = "_float_f64")))]
-        {
-            millis_rounded = if millis >= 0.0 { millis + 0.5 }  // Round normally
-            else { millis - 0.5 };  // Round away from zero for negatives
-            let millis_i64 = millis_rounded as i64;
-            secs = millis_i64 / MILLIS_PER_SEC;
-            nanos = ((millis_i64 % MILLIS_PER_SEC) * NANOS_PER_MILLI as i64) as i32;
-        }
+        // #[cfg(any(feature = "std", feature = "_float_f64"))]
+        // {
+        millis_rounded = millis.round();
+        secs = millis_rounded.div_euclid(1_000.0) as i64;
+        nanos = (millis_rounded.rem_euclid(1_000.0) * 1_000_000.0) as i32;
+        // }
+        // #[cfg(not(any(feature = "std", feature = "_float_f64")))]
+        // {
+        //     millis_rounded = if millis >= 0.0 { millis + 0.5 }  // Round normally
+        //     else { millis - 0.5 };  // Round away from zero for negatives
+        //     let millis_i64 = millis_rounded as i64;
+        //     secs = millis_i64 / MILLIS_PER_SEC;
+        //     nanos = ((millis_i64 % MILLIS_PER_SEC) * NANOS_PER_MILLI as i64) as i32;
+        // }
         Ok(TimeDelta::new_unchecked(secs, nanos))
     }
     /// Compile-time friendly version of `try_from_millis_f64`.
-    ///
-    /// # Features
-    /// - Uses `_float_f64` if enabled, leveraging [`Float`]'s `const_round`, `div_euclid`,
-    ///   and `rem_euclid` for precise, bias-free conversion.
-    /// - Without `_float_f64`, rounds manually using integer arithmetic, preventing
-    ///   systematic underestimation but lacking exact Euclidean division for negatives.
+    //
+    // TODO: RETHINK
+    // # Features
+    // - Uses `_float_f64` if enabled, leveraging [`Float`]'s `const_round`, `div_euclid`,
+    //   and `rem_euclid` for precise, bias-free conversion.
+    // - Without `_float_f64`, rounds manually using integer arithmetic, preventing
+    //   systematic underestimation but lacking exact Euclidean division for negatives.
     #[rustfmt::skip]
     pub const fn const_try_from_millis_f64(millis: f64) -> Result<TimeDelta, &'static str> {
         if !millis.is_finite() {
@@ -315,21 +315,18 @@ impl TimeDelta {
         if millis > (i64::MAX as f64) {
             return Err("floating point milliseconds {millis} overflows TimeDelta::MAX"); }
         let (millis_rounded, secs, nanos);
-        #[cfg(feature = "_float_f64")]
-        {
-            millis_rounded = Float(millis).const_round().0 as i64;
-            secs = Float(millis_rounded as f64).div_euclid(MILLIS_PER_SEC as f64).0 as i64;
-            nanos = Float(millis_rounded as f64).rem_euclid(MILLIS_PER_SEC as f64).0 as i64
+        millis_rounded = Float(millis).const_round().0 as i64;
+        secs = Float(millis_rounded as f64).div_euclid(MILLIS_PER_SEC as f64).0 as i64;
+        nanos = Float(millis_rounded as f64).rem_euclid(MILLIS_PER_SEC as f64).0 as i64
             * NANOS_PER_MILLI as i64;
-        }
-        #[cfg(not(feature = "_float_f64"))]
-        {
-            // millis_rounded = millis as i64; // slight systematic underestimation
-            millis_rounded = if millis >= 0.0 { (millis + 0.5) as i64 }  // Round normally
-            else { (millis - 0.5) as i64 };  // Round away from zero for negatives
-            secs = millis_rounded / MILLIS_PER_SEC;
-            nanos = (millis_rounded % MILLIS_PER_SEC) * NANOS_PER_MILLI as i64;
-        }
+        // #[cfg(not(feature = "_float_f64"))]
+        // {
+        //     // millis_rounded = millis as i64; // slight systematic underestimation
+        //     millis_rounded = if millis >= 0.0 { (millis + 0.5) as i64 }  // Round normally
+        //     else { (millis - 0.5) as i64 };  // Round away from zero for negatives
+        //     secs = millis_rounded / MILLIS_PER_SEC;
+        //     nanos = (millis_rounded % MILLIS_PER_SEC) * NANOS_PER_MILLI as i64;
+        // }
         Ok(TimeDelta::new_unchecked(secs, nanos as i32))
     }
 
@@ -339,8 +336,6 @@ impl TimeDelta {
     ///
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn mul_f64(self, rhs: f64) -> TimeDelta {
         TimeDelta::from_secs_f64(rhs * self.as_secs_f64())
     }
@@ -348,8 +343,6 @@ impl TimeDelta {
     ///
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
-    #[cfg(any(feature = "std", feature = "_float_f32"))]
-    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f32"))))]
     pub fn mul_f32(self, rhs: f32) -> TimeDelta {
         TimeDelta::from_secs_f32(rhs * self.as_secs_f32())
     }
@@ -358,8 +351,6 @@ impl TimeDelta {
     ///
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn div_f64(self, rhs: f64) -> TimeDelta {
         TimeDelta::from_secs_f64(self.as_secs_f64() / rhs)
     }
@@ -367,8 +358,6 @@ impl TimeDelta {
     ///
     /// # Panics
     /// This panics if the result is not finite or overflows a `TimeDelta`.
-    #[cfg(any(feature = "std", feature = "_float_f32"))]
-    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f32"))))]
     pub fn div_f32(self, rhs: f32) -> TimeDelta {
         TimeDelta::from_secs_f32(self.as_secs_f32() / rhs)
     }

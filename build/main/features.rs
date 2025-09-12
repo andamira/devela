@@ -336,12 +336,6 @@ mod reflection {
         ref_flags: &["_stack··"],
         features: &["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"] };
 
-    /* ## num */
-
-    // ### numbers
-    pub const FLOAT: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_float··", "_nums··"],
-        features: &["_float_f32", "_float_f64"] };
 
     // function helpers
     // -------------------------------------------------------------------------
@@ -383,8 +377,6 @@ mod reflection {
             // data
             TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections
-            // num
-            FLOAT, // numbers
 
         ] { set_flags_dbg_features(ff.ref_flags, ff.features, &mut enabled_ref_flags); }
 

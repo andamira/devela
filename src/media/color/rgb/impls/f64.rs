@@ -3,10 +3,7 @@
 #![expect(unused)]
 
 use super::*;
-use crate::{Rgb8, Rgba8};
-#[cfg(feature = "_float_f32")]
-use crate::{RgbF32, RgbaF32};
-use crate::{RgbF64, RgbaF64};
+use crate::{Rgb8, RgbF32, RgbF64, Rgba8, RgbaF32, RgbaF64};
 
 #[allow(missing_docs)]
 #[rustfmt::skip]

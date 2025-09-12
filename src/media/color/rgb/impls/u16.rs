@@ -3,10 +3,7 @@
 use super::*;
 use crate::{Norm, Rgb8, Rgb16, Rgba8, Rgba16};
 
-#[cfg(feature = "_float_f32")]
-use crate::{RgbF32, RgbaF32};
-#[cfg(feature = "_float_f64")]
-use crate::{RgbF64, RgbaF64};
+use crate::{RgbF32, RgbF64, RgbaF32, RgbaF64};
 
 #[allow(missing_docs)]
 #[rustfmt::skip]
@@ -95,8 +92,6 @@ impl Rgb16 {
 impl From<Rgba16> for Rgb16 { fn from(from: Rgba16) -> Rgb16 { Rgb16::from_rgba16(from) } }
 
 /// # `f32` conversions
-#[cfg(feature = "_float_f32")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f32")))]
 impl Rgb16 {
     /// Create from [`Rgb<f32>`].
     pub const fn from_rgb_f32(c: RgbF32) -> Rgb16 {
@@ -131,8 +126,6 @@ impl Rgb16 {
 }
 
 /// # `f64` conversions
-#[cfg(feature = "_float_f64")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "_float_f64")))]
 impl Rgb16 {
     /// Create from [`Rgb<f64>`].
     pub const fn from_rgb_f64(c: RgbF64) -> Rgb16 {
@@ -194,7 +187,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "_float_f32")]
     fn f32_conversions() {
         let f = RgbF32::new(0.039215688, 0.078431375, 0.11764706);
         let fa = RgbaF32::new(0.039215688, 0.078431375, 0.11764706, 0.15686275);
@@ -205,7 +197,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "_float_f64")]
     fn f64_conversions() {
         let f = RgbF64::new(0.0392156862745098, 0.0784313725490196, 0.11764705882352941);
         let fa = RgbaF64::new(

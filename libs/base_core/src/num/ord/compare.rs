@@ -16,9 +16,6 @@ use crate::Ordering::{self, Equal, Greater, Less};
 use crate::{is, paste};
 
 #[allow(unused_imports)]
-#[cfg(_float··)]
-use crate::Float;
-#[allow(unused_imports)]
 #[cfg(nightly_float)]
 use ::core::{f16, f128};
 

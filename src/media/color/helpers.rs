@@ -133,7 +133,6 @@ pub(crate) use impl_color;
 /// Temporary helper for color channel normalization.
 pub(crate) struct Norm;
 impl Norm {
-    #[cfg(feature = "_float_f32")]
     crate::items! {
         /// Convert u8 to normalized f32 (0.0..=1.0)
         ///
@@ -165,7 +164,6 @@ impl Norm {
         }
     }
 
-    #[cfg(feature = "_float_f64")]
     crate::items! {
         /// Convert u8 to normalized f64 (0.0..=1.0)
         pub(crate) const fn u8_to_f64(u: u8) -> f64 { u as f64 / u8::MAX as f64 }
@@ -189,14 +187,12 @@ mod tests {
     use crate::assert_approx_eq_all;
 
     #[test]
-    #[cfg(feature = "_float_f32")]
     fn test_u8_to_f32() {
         assert_eq![Norm::u8_to_f32(0), 0.0];
         assert_eq![Norm::u8_to_f32(255), 1.0];
         assert_approx_eq_all![tolerance: 0.01, Norm::u8_to_f32(u8::MAX/2+1), 0.5];
     }
     #[test]
-    #[cfg(feature = "_float_f32")]
     fn test_f32_to_u8() {
         assert_eq![Norm::f32_to_u8(0.0), 0];
         assert_eq![Norm::f32_to_u8(-500.), 0];
@@ -206,14 +202,12 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "_float_f32")]
     fn test_u16_to_f32() {
         assert_eq![Norm::u16_to_f32(0), 0.0];
         assert_eq![Norm::u16_to_f32(u16::MAX), 1.0];
         assert_approx_eq_all![tolerance: 0.000_01, Norm::u16_to_f32(u16::MAX/2+1), 0.5];
     }
     #[test]
-    #[cfg(feature = "_float_f32")]
     fn test_f32_to_u16() {
         assert_eq![Norm::f32_to_u16(0.0), 0];
         assert_eq![Norm::f32_to_u16(-500.), 0];

@@ -4,7 +4,6 @@
 //
 
 use super::helpers::impl_try_from;
-#[cfg(feature = "_float_f64")]
 #[allow(unused_imports)]
 use crate::ExtFloat;
 #[cfg(feature = "alloc")]
@@ -248,8 +247,6 @@ impl UnitBi {
     /// This method simplifies large numerical values by scaling them down
     /// to the largest appropriate binary prefix (e.g., Kibi, Mebi, Gibi, etc.).
     #[must_use]
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn reduce(value: f64) -> (f64, Self) {
         match value.abs() {
             value if value >= UnitBi::Yobi.factor() => {
@@ -349,11 +346,8 @@ impl UnitBi {
     /// Reduces the given value to a chain of appropriate binary prefixes as an `f64`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
-    #[cfg_attr(
-        nightly_doc,
-        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
-    )]
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
             return vec![(0.0, UnitBi::None)];
@@ -498,7 +492,7 @@ mod tests {
     };
     #[allow(unused_imports)]
     use crate::FloatConst;
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    #[cfg(feature = "alloc")]
     use crate::vec_ as vec;
 
     /* reduce */
@@ -542,11 +536,8 @@ mod tests {
     /* reduce_chain */
 
     #[test]
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
-    #[cfg_attr(
-        nightly_doc,
-        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
-    )]
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn unit_bi_reduce_chain() {
         let margin = f64::MEDIUM_MARGIN;
 

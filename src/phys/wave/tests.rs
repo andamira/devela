@@ -1,7 +1,6 @@
 // devela::phys::wave::tests
 
 #[cfg(feature = "alloc")]
-#[cfg(any(feature = "std", feature = "_float_f64"))]
 mod alloc {
     use super::super::*;
     use crate::vec_ as vec;

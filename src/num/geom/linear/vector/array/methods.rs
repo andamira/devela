@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports)]
-#[cfg(all(not(feature = "std"), _float··))]
+#[cfg(not(feature = "std"))]
 use crate::ExtFloat;
 use crate::{Int, Vector, concat as cc, stringify as fy, unwrap};
 
@@ -22,15 +22,11 @@ impl<T, const D: usize> Vector<T, D> {
 /// helper for implementing methods on `Vector`.
 ///
 /// $t: the inner integer primitive type
-/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_vector {
     () => {
         impl_vector![sint i8, i16, i32, i64, i128, isize];
         impl_vector![uint u8, u16, u32, u64, u128, usize];
-        impl_vector![float
-            f32:"_float_f32",
-            f64:"_float_f64",
-        ];
+        impl_vector![float f32, f64];
     };
 
     // integers common methods
@@ -232,13 +228,11 @@ macro_rules! impl_vector {
     };
 
     // $f: the inner floating-point primitive type
-    (float $($f:ty : $cap:literal),+ $(,)?) => {
-        $( impl_vector![@float $f:$cap]; )+
+    (float $($f:ty),+ $(,)?) => {
+        $( impl_vector![@float $f]; )+
     };
-    (@float $f:ty : $cap:literal) => {
+    (@float $f:ty) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($f), "`.")]
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$f, D> {
             /// A `Vector` with all ones.
             pub const ONE: Self = Self::new([1.0; D]);

@@ -4,9 +4,7 @@
 //
 // IMPROVE: remove redundant methods implemented in `core`
 
-#[cfg(_float··)]
-use crate::Float;
-use crate::{FloatConst, Sign};
+use crate::{Float, FloatConst, Sign};
 
 #[doc = crate::TAG_NUM!()]
 #[doc = crate::TAG_NAMESPACE!()]
@@ -14,9 +12,6 @@ use crate::{FloatConst, Sign};
 ///
 /// This trait can be more convenient to use than the [`Float`] struct,
 /// for non-const operations over primitive floating-point types.
-///
-/// # Features
-/// It depends on having any `_float_f[32|64]` features enabled.
 ///
 /// `Float` has a few more methods implemented if the `dep_libm` feature is enabled.
 #[rustfmt::skip]
@@ -439,20 +434,18 @@ pub trait ExtFloat: FloatConst + Sized {
 macro_rules! impl_ext_float {
     () => {
         impl_ext_float![
-            (f32, u32 | i32):"_float_f32",
-            (f64, u32 | i32):"_float_f64"];
+            (f32, u32 | i32),
+            (f64, u32 | i32),
+        ];
     };
 
     // $f:   the floating-point type.
     // $ue:  unsigned int type with the same bit-size.
     // $ie:  the integer type for integer exponentiation.
-    // $cap: the capability feature that enables the given implementation. E.g "_float_f32".
-    ($( ($f:ty, $ue:ty|$ie:ty): $cap:literal),+) => {
-        $( impl_ext_float![@$f, $ue|$ie, $cap]; )+
+    ($( ($f:ty, $ue:ty|$ie:ty)),+ $(,)?) => {
+        $( impl_ext_float![@$f, $ue|$ie]; )+
     };
-    (@$f:ty, $ue:ty|$ie:ty, $cap:literal) => {
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
+    (@$f:ty, $ue:ty|$ie:ty) => {
         impl ExtFloat for $f {
             fn floor(self) -> Self { Float(self).floor().0 }
 

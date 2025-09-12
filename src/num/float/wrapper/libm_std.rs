@@ -117,21 +117,16 @@ mod _libm {
 
     /// $f:   the floating-point type.
     /// $e:   the integer type for integer exponentiation.
-    /// $cap: the capability feature enables the given implementation. E.g "_float_f32".
     macro_rules! custom_impls {
         () => {
-            custom_impls![(f32, i32):"_float_f32", (f64, i32):"_float_f64"];
+            custom_impls![(f32, i32), (f64, i32)];
         };
 
-        ($( ($f:ty, $e:ty): $cap:literal ),+) => {
-            $( custom_impls![@$f, $e, $cap]; )+
+        ($( ($f:ty, $e:ty)),+) => {
+            $( custom_impls![@$f, $e]; )+
         };
-        (@$f:ty, $e:ty, $cap:literal) => {
-            #[doc = crate::_doc_availability!(feature = $cap)]
-            ///
+        (@$f:ty, $e:ty) => {
             /// # *Implementations using the `libm` feature*.
-            #[cfg(feature = $cap )]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The fractional part.
                 /// # Formulation
@@ -283,20 +278,15 @@ mod _std {
 
     /// $f:   the floating-point type.
     /// $e:   the integer type for integer exponentiation.
-    /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
     macro_rules! custom_impls {
         () => {
-            custom_impls![(f32, i32):"_float_f32", (f64, i32):"_float_f64"];
+            custom_impls![(f32, i32), (f64, i32)];
         };
-        ($( ($f:ty, $e:ty): $cap:literal ),+) => {
-            $( custom_impls![@$f, $e, $cap]; )+
+        ($( ($f:ty, $e:ty)),+) => {
+            $( custom_impls![@$f, $e]; )+
         };
-        (@$f:ty, $e:ty, $cap:literal) => {
-            #[doc = crate::_doc_availability!(feature = $cap)]
-            ///
+        (@$f:ty, $e:ty) => {
             /// # *Implementations using the `std` feature*.
-            #[cfg(feature = $cap )]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// Raises itself to the `p` integer power.
                 pub fn powi(self, p: $e) -> Float<$f> { Float(<$f>::powi(self.0, p)) }
@@ -325,20 +315,15 @@ mod _no_std_no_libm {
     /// $f:   the floating-point type.
     /// $uf:  unsigned int type with the same bit-size.
     /// $ie:  the integer type for integer exponentiation.
-    /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
     macro_rules! custom_impls {
         () => {
-            custom_impls![(f32, u32, i32):"_float_f32", (f64, u64, i32):"_float_f64"];
+            custom_impls![(f32, u32, i32), (f64, u64, i32)];
         };
-        ($( ($f:ty, $uf:ty, $ie:ty) : $cap:literal ),+) => {
-            $( custom_impls![@$f, $uf, $ie, $cap]; )+
+        ($( ($f:ty, $uf:ty, $ie:ty)),+) => {
+            $( custom_impls![@$f, $uf, $ie]; )+
         };
-        (@$f:ty, $uf:ty, $ie:ty, $cap:literal) => {
-            #[doc = crate::_doc_availability!(feature = $cap)]
-            ///
+        (@$f:ty, $uf:ty, $ie:ty) => {
             /// # *Implementations without `std` or `libm`*.
-            #[cfg(feature = $cap )]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
                 /// # Formulation

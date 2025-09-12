@@ -23,7 +23,7 @@
 #     - docs            (_doc*)
 #     . code            (_unroll*)
 #     - data            (_data*, _tuple*, _value*, …)
-#     - num             (_num*, _float_*)
+#     - num             (_num*)
 #     - text            (_text*)
 #   - Dependency        (dep_*)
 #   - Workspace         (devela_*)
@@ -187,7 +187,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 197/300 (103 remaining), 137 visible, 60 hidden
+[features] # 190/300 (110 remaining), 137 visible, 53 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -499,7 +499,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 # - text
 
 # default = []
-_max = ["_data_all", "_num_all"]
+_max = ["_data_all"]
 _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 
 #* _docs capabilities *#
@@ -520,8 +520,6 @@ _docs_min = [ # the minimum capabilities to document every item
 	"all", "linux",
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
-	# num:
-	"_float_f64",
 ]
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
@@ -599,19 +597,6 @@ _value_all = [
 	_value256 = []
 	_value512 = []
 	_value1024 = []
-
-#* num capabilities *#
-# ---------------------
-
-_num_all = ["_nums_all"]
-
-# `[Num]Float`, `[Num]Frac`, `Point`, `Angle`, `Vector`:
-_nums_all = ["_float_all"]
-	_float_all = ["_float_f16", "_float_f32", "_float_f64", "_float_f128"]
-		_float_f16 = []
-		_float_f32 = []
-		_float_f64 = []
-		_float_f128 = []
 
 
 #* Dependency features (optional external dependencies) *#
@@ -1265,7 +1250,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_stable_1_91)",
 			"cfg(nightly_stable_later)",
 	#
-	# Auto-enabled reflection flags from ./build/main/features.rs (25)
+	# Auto-enabled reflection flags from ./build/main/features.rs (20)
 	# --------------------------------------------------------------------------
 	# general: (4)
 	"cfg(unsafe··, safe··, nightly··, dep··)",
@@ -1279,9 +1264,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(lang··, ffi··)',
 	# media: (1)
 	'cfg(media··)',
-	# num: (6)
+	# num: (1)
 	'cfg(num··)',
-	'cfg(_nums··, _float··)',
 	# phys: (1)
 	'cfg(phys··)',
 	# sys: (2)

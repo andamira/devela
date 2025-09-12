@@ -3,7 +3,7 @@
 //!
 //
 
-#[cfg(all(_float··, not(feature = "std")))]
+#[cfg(not(feature = "std"))]
 use crate::is;
 #[allow(unused_imports)]
 use crate::num::{
@@ -12,16 +12,14 @@ use crate::num::{
     NumResult as Result,
     niche::*,
 };
-use crate::paste;
-#[cfg(_float··)]
-use crate::{Add, Div, Mul, Neg, Rem, Sub};
+use crate::{Add, Div, Mul, Neg, Rem, Sub, paste};
 
 // $p:   the primitive type
 macro_rules! impl_num {
     [] => {
         impl_num![i i8, i16, i32, i64, i128, isize];
         impl_num![u u8, u16, u32, u64, u128, usize];
-        impl_num![f f32:"_float_f32", f64:"_float_f64"];
+        impl_num![f f32, f64];
 
         // niche types
         // impl_num![non_value i i8, i16, i32, i64, i128, isize];
@@ -206,11 +204,9 @@ macro_rules! impl_num {
 
     // Implements `Num` for the floating-point types
     // --------------------------------------------------------------------------------------------
-    (f $($p:ident : $cap:literal),+) => { $( impl_num![@f $p : $cap]; )+ };
-    (@f $p:ident : $cap:literal) => {
+    (f $($p:ident),+) => { $( impl_num![@f $p]; )+ };
+    (@f $p:ident) => {
         // f*
-        #[cfg(feature = $cap )]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Num for $p { paste! {
             type Inner = $p;
             type Out = $p;

@@ -11,29 +11,18 @@ use crate::{Float, FloatCategory, Sign, cfor, concat as cc, is, stringify as sfy
 /// $uf:  unsigned int type with the same bit-size.
 /// $ie:  signed int type used for integer exponentiation.
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
-/// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
 macro_rules! impl_float_shared {
     () => {
-        impl_float_shared![
-            (f32:u32, i32, u32):"_float_f32",
-            (f64:u64, i32, u32):"_float_f64"
-        ];
+        impl_float_shared![ (f32:u32, i32, u32), (f64:u64, i32, u32)];
         // #[cfg(feature = "nightly_float")] // TODO
-        // impl_float_shared![
-        //     (f16:u16, u32):"_float_f16",
-        //     (f128:u128, u32):"_float_f128"
-        // ];
+        // impl_float_shared![ (f16:u16, u32), (f128:u128, u32)];
     };
 
-    ($( ($f:ty:$uf:ty, $ie:ty, $ue:ty) : $cap:literal),+) => {
-        $( impl_float_shared![@$f:$uf, $ie, $ue, $cap]; )+
+    ($( ($f:ty:$uf:ty, $ie:ty, $ue:ty)),+) => {
+        $( impl_float_shared![@$f:$uf, $ie, $ue]; )+
     };
-    (@$f:ty:$uf:ty, $ie:ty, $ue:ty, $cap:literal) => {
-        #[doc = crate::_doc_availability!(feature = $cap)]
-        ///
+    (@$f:ty:$uf:ty, $ie:ty, $ue:ty) => {
         /// # *Common implementations with or without `std` or `libm`*.
-        #[cfg(feature = $cap )]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
         impl Float<$f> {
             /// The largest integer less than or equal to itself.
             /// # Formulation

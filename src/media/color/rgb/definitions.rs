@@ -41,7 +41,6 @@ pub type Rgba16 = Rgba<u16>;
 /// RGB+A color with 16-bit integer components (sRGB gamma space, premultiplied alpha).
 pub type RgbaPre16 = Rgba<u16, false, true>;
 
-#[cfg(feature = "_float_f32")]
 crate::items! {
     /// RGB color with 32-bit float components (sRGB gamma space).
     pub type RgbF32 = Rgb<f32>;
@@ -57,7 +56,6 @@ crate::items! {
     /// RGB+A color with 32-bit float components (linear space, premultiplied alpha).
     pub type RgbaLinPreF32 = Rgba<f32, true, true>;
 }
-#[cfg(feature = "_float_f64")]
 crate::items! {
     /// RGB color with 64-bit float components (sRGB gamma space).
     pub type RgbF64 = Rgb<f64>;

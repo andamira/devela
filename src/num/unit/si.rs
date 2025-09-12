@@ -5,7 +5,6 @@
 
 use super::helpers::impl_try_from;
 #[allow(unused_imports)]
-#[cfg(feature = "_float_f64")]
 use crate::ExtFloat;
 #[allow(unused_imports)]
 #[cfg(feature = "alloc")]
@@ -402,8 +401,6 @@ impl UnitSi {
 
     /// Reduces the given value to the most appropriate SI prefix as an `f64`,
     /// returning a tuple of the reduced size and the prefix.
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn reduce(value: f64) -> (f64, Self) {
         match value.abs() {
             value if value >= UnitSi::Quetta.factor() => {
@@ -585,11 +582,8 @@ impl UnitSi {
     /// Reduces the given value to a chain of appropriate SI prefixes as an `f64`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
-    #[cfg_attr(
-        nightly_doc,
-        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
-    )]
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
             return vec![(0.0, UnitSi::None)];
@@ -768,7 +762,7 @@ mod tests {
             Yotta, Zetta,
         },
     };
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    #[cfg(feature = "alloc")]
     use crate::vec_ as vec;
     use crate::{code::sf, num::FloatConst};
 
@@ -819,11 +813,8 @@ mod tests {
     /* reduce_chain */
 
     #[test]
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
-    #[cfg_attr(
-        nightly_doc,
-        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
-    )]
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     fn unit_si_reduce_chain() {
         let margin = f64::MEDIUM_MARGIN;
 

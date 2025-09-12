@@ -3,7 +3,6 @@
 //!
 //
 
-#[cfg(_float··)]
 #[allow(unused_imports)]
 use crate::{Angle, AngleDirection, AngleKind, ExtFloat, Float, FloatConst};
 
@@ -11,18 +10,15 @@ use crate::{Angle, AngleDirection, AngleKind, ExtFloat, Float, FloatConst};
 ///
 /// # Macro arguments
 /// $f: the inner floating-point type
-/// $cap: the capability that enables the implementation. E.g "_float_f32".
 macro_rules! impl_angle {
     () => {
-        impl_angle![float f32:"_float_f32", f64:"_float_f64"];
+        impl_angle![float f32, f64];
     };
-    (float $($f:ty : $cap:literal),+ $(,)?) => {
-        $( impl_angle![@float $f:$cap]; )+
+    (float $($f:ty),+ $(,)?) => {
+        $( impl_angle![@float $f]; )+
     };
-    (@float $f:ty : $cap:literal) => {
+    (@float $f:ty) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($f), "`.")]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
-        #[cfg(feature = $cap )]
         impl Angle<$f> {
             /* construct */
 

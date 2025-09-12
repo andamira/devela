@@ -8,15 +8,12 @@ mod consts; // FloatConst
 // WIPZONE
 // mod namespace; // Float
 
-#[cfg(all(test, feature = "_float_f32"))]
+#[cfg(test)]
 mod tests_f32;
 
-#[cfg(_float··)]
-crate::items! {
-    mod libm_std; // for either or neither.
-    mod shared; // implements shared methods.
-    mod shared_series; // with Taylor Series.
-}
+mod libm_std; // for either or neither.
+mod shared; // implements shared methods.
+mod shared_series; // with Taylor Series.
 
 #[doc = crate::TAG_NUM!()]
 #[doc = crate::TAG_NAMESPACE!()]
@@ -26,9 +23,6 @@ crate::items! {
 ///
 /// # Methods
 /// TODO
-///
-/// # Features
-/// It depends on having any `_float_f[32|64]` features enabled.
 ///
 /// The wrapper leverages `std` or `libm` if enabled, otherwise implements fallbacks.
 /// It also favors `std` style for method's names, but changes a few like `minimum`
@@ -47,9 +41,9 @@ crate::items! {
 #[repr(transparent)]
 pub struct Float<T>(pub T);
 
-crate::impl_ops![Float: f32:"_float_f32", f64:"_float_f64"];
+crate::impl_ops![Float: f32, f64];
 // #[cfg(nightly_float)]
-// crate::impl_ops![Float: f16:"_float_f16", f128:"_float_f128"];
+// crate::impl_ops![Float: f16, f128];
 
 #[rustfmt::skip]
 mod core_impls {
