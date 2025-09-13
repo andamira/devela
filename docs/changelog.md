@@ -195,6 +195,7 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - types: `Ansi`, `AnsiColor3b`, `AnsiColor8b`, `TermSize`.
 - change `Ansi::print*` methods to `ansi_print*` functions.
+- make all `Ansi` escape-sequence methods *const*.
 - fix visibility of `ansi!` macro.
 
 

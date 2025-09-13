@@ -3,7 +3,7 @@
 //! Defines the [`Ansi`] namespace for emitting ANSI codes.
 //
 
-use crate::Ascii;
+use crate::{Ascii, Slice};
 
 /// ANSI escape codes.
 ///
@@ -29,7 +29,7 @@ impl Ansi {
 
     // Writes an ansi code with a dynamic number of digits as an argument.
     #[must_use] #[rustfmt::skip]
-    fn write_ansi_code_n(buffer: &mut [u8], n: u32, final_byte: u8) -> &[u8] {
+    const fn write_ansi_code_n(buffer: &mut [u8], n: u32, final_byte: u8) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
         let mut divisor = 1;
@@ -41,7 +41,7 @@ impl Ansi {
             index += 1;
         }
         buffer[index] = final_byte;
-        &buffer[..=index]
+        Slice::range_to_inclusive(buffer, index) // &buffer[..=index]
     }
 }
 
@@ -125,7 +125,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use] #[rustfmt::skip]
-    pub fn CURSOR_MOVE_N(buffer: &mut [u8], row: u32, col: u32) -> &[u8] {
+    pub const fn CURSOR_MOVE_N(buffer: &mut [u8], row: u32, col: u32) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
         let mut divisor = 1;
@@ -146,7 +146,7 @@ impl Ansi {
             index += 1;
         }
         buffer[index] = b'H';
-        &buffer[..=index]
+        Slice::range_to_inclusive(buffer, index) // &buffer[..=index]
     }
 
     /// Code to move the cursor up by one line.
@@ -189,7 +189,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub fn CURSOR_UP_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_UP_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'A')
     }
 
@@ -233,7 +233,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub fn CURSOR_DOWN_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_DOWN_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'B')
     }
 
@@ -277,7 +277,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub fn CURSOR_RIGHT_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_RIGHT_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'C')
     }
 
@@ -321,7 +321,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub fn CURSOR_LEFT_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_LEFT_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'D')
     }
 
@@ -365,7 +365,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub fn CURSOR_NEXT_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_NEXT_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'F')
     }
 
@@ -409,7 +409,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'E')
     }
 }
