@@ -8,7 +8,6 @@ mod mismatch; // Mismatch
 mod opt_res; // OptRes, sok, serr
 mod own; // Own
 mod reexports;
-mod value_quant; // ValueQuant
 
 // WIPZONE
 // mod enumatch; // enumatch!
@@ -19,7 +18,7 @@ mod value_quant; // ValueQuant
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            chain_hook::*, mismatch::*, opt_res::_all::*, own::*, reexports::*, value_quant::*,
+            chain_hook::*, mismatch::*, opt_res::_all::*, own::*, reexports::*,
         };
 
         // WIPZONE

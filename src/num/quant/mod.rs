@@ -16,10 +16,18 @@
 //
 
 mod ratio; // Ratio
-mod reexports;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{ratio::*, reexports::*};
+        pub use super::ratio::*;
+
+        #[doc(inline)]
+        #[rustfmt::skip]
+        pub use devela_base_core::num::{
+            Cycle, CycleCount,
+            Interval, interval,
+            Sign,
+        };
+        pub use devela_base_num::ValueQuant;
     }
 }

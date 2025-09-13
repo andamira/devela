@@ -116,7 +116,8 @@ Many feature gates are removed in order to make most features make always availa
   - functions: `serr`, `sok`.
   - macros: `unwrap!`.
   - traits: `Chain`, `ExtOptRes`, `Hook`.
-  - types: `Mismatch`, `OptRes`, `Own`, `ValueQuant`.
+  - types: `Mismatch`, `OptRes`, `Own`.
+- move to [base_num]: `ValueQuant`.
 
 ### utils
 - new macros: `doclink!`, `mod_path!`.
@@ -162,6 +163,7 @@ Many feature gates are removed in order to make most features make always availa
 - new types: `IntAlloc`, `IntError`, `IntResult`, `NicheValueError`.
 - move float shared docs to `devela_base_num` prefixed with `_FLOAT_`.
 - move int shared docs to `devela_base_num` prefixed with `_INT_`.
+- move `ValueQuant` from `code::result` to `num::quant`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
 - make all `Int` methods *const*.

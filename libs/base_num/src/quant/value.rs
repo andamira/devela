@@ -1,4 +1,4 @@
-// devela_base_core::code::result::value_quant
+// devela_base_num::quant::value
 //
 //! Defines [`ValueQuant`].
 //

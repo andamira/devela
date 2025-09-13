@@ -6,7 +6,7 @@ mod_path!(+pub _c "../../../libs/base_core/src/code/result/reexports.rs");
 
 #[doc(inline)]
 pub use devela_base_core::code::result::{
-    Chain, ExtOptRes, Hook, Mismatch, OptRes, Own, ValueQuant, serr, sok, unwrap,
+    Chain, ExtOptRes, Hook, Mismatch, OptRes, Own, serr, sok, unwrap,
 };
 
 impl<N: ConstDefault, H: ConstDefault> ConstDefault for Mismatch<N, H> {
