@@ -12,8 +12,10 @@ use crate::_reexport;
 
 /* standard libraries */
 
-#[doc(hidden)]
-pub use super::_core; // for completion
+/// <span class='stab portability' title='re-exported `core`'>`core`</span>
+/// *Re-exported Rust `core` library.*
+#[doc(inline)]
+pub use ::core as _core;
 
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
 /// *Re-exported Rust `alloc` library.*

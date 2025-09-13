@@ -9,7 +9,7 @@ use crate::{IterChars, String};
 // crate::_use! {basic::from_utf8}
 
 // #[allow(unused, reason = "feature-gated")]
-// use crate::{_core::str::from_utf8_unchecked, Char};
+// use {crate::Char, ::core::str::from_utf8_unchecked};
 
 #[doc = crate::TAG_TEXT!()]
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].

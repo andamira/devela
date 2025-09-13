@@ -1,13 +1,13 @@
 // devela::data::list::queue::destaque::methods::general
 
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
-use crate::_core::mem::{MaybeUninit, transmute_copy};
 use crate::{
     Array, Bare, Compare, DataNotEnough, Destaque, DestaqueIter, MismatchedCapacity,
     NotEnoughElements, NotEnoughSpace, Storage, array_from_fn,
 };
 #[cfg(feature = "alloc")]
 use crate::{Boxed, Vec, vec_ as vec};
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
+use crate::{MaybeUninit, Mem};
 
 // helper macro to impl methods for a Destque with custom index size.
 macro_rules! impl_destaque {
@@ -1210,7 +1210,7 @@ macro_rules! impl_destaque {
                             let _ = i.write(self.data[index].clone());
                         }
                         // SAFETY: we've initialized all the elements
-                        unsafe { transmute_copy::<_, [T; LEN]>(&unarr) }
+                        unsafe { Mem::transmute_copy::<_, [T; LEN]>(&unarr) }
                     };
 
                     #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]

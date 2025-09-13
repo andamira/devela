@@ -4,10 +4,11 @@
 //
 
 use crate::{
-    _core::fmt, Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign,
-    BitXor, BitXorAssign, Borrow, BorrowMut, ConstDefault, Deref, DerefMut, Hash, Hasher, Not,
-    Ordering, Storage, array_init,
+    Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor,
+    BitXorAssign, Borrow, BorrowMut, ConstDefault, Deref, DerefMut, Hash, Hasher, Not, Ordering,
+    Storage, array_init,
 };
+use ::core::fmt;
 
 impl<T, const CAP: usize, S: Storage> Drop for ArrayUninit<T, CAP, S> {
     fn drop(&mut self) {

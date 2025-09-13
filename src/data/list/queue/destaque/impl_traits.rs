@@ -6,10 +6,10 @@
 #[cfg(feature = "alloc")]
 use crate::Boxed;
 use crate::{
-    _core::fmt, Array, Bare, ConstDefault, DataCollection, DataDeque, DataDesta, DataQueue,
-    DataStack, Destaque, DestaqueIter, NotAvailable, NotEnoughElements, NotEnoughSpace, Ordering,
-    Storage,
+    Array, Bare, ConstDefault, DataCollection, DataDeque, DataDesta, DataQueue, DataStack,
+    Destaque, DestaqueIter, NotAvailable, NotEnoughElements, NotEnoughSpace, Ordering, Storage,
 };
+use ::core::fmt;
 
 // helper macro for implementing traits for a Stack depending on the custom index size.
 macro_rules! impl_destaque {

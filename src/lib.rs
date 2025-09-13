@@ -162,11 +162,7 @@ pub mod text;
 pub mod ui;
 pub mod work;
 
-/// <span class='stab portability' title='re-exported `core`'>`core`</span>
-/// *Re-exported Rust `core` library.*
-#[doc(inline)]
-pub use ::core as _core;
-
+#[doc(hidden)]
 pub mod _dep;
 pub mod _info;
 

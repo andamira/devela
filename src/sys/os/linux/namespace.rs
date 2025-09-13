@@ -8,9 +8,8 @@ crate::items! {
     use crate::{
         c_uint, c_void, is, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
         LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
-        Ptr, _core::str::from_utf8_unchecked, LINUX_ERRNO as ERRNO,
-        LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION,
-        MaybeUninit, c_int,LinuxTermios, ScopeGuard, TermSize,
+        Ptr, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL,
+        LINUX_SIGACTION as SIGACTION, MaybeUninit, c_int,LinuxTermios, ScopeGuard, Str, TermSize,
     };
     #[cfg(feature = "alloc")]
     use crate::Vec;
@@ -85,7 +84,7 @@ impl Linux {
     /// - `Err(LinuxError::NoInput)` if the UTF-8 sequence is valid but empty.
     pub fn get_char() -> Result<char> {
         let bytes = Linux::get_utf8_bytes()?;
-        let s = unsafe { from_utf8_unchecked(&bytes) };
+        let s = unsafe { Str::from_utf8_unchecked(&bytes) };
         s.chars().next().ok_or(LinuxError::NoInput)
     }
 
@@ -96,7 +95,7 @@ impl Linux {
     pub fn get_dirty_char() -> char {
         match Linux::get_utf8_bytes() {
             Ok(bytes) => {
-                let s = unsafe { from_utf8_unchecked(&bytes) };
+                let s = unsafe { Str::from_utf8_unchecked(&bytes) };
                 s.chars().next().unwrap()
             }
             Err(_) => char::REPLACEMENT_CHARACTER,
@@ -187,7 +186,7 @@ impl Linux {
                 }
             }
         }
-        Ok(unsafe { from_utf8_unchecked(&buffer[..index]) })
+        Ok(unsafe { Str::from_utf8_unchecked(&buffer[..index]) })
     }
 }
 

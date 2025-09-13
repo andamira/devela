@@ -3,7 +3,8 @@
 //!
 //
 
-use crate::{_core::fmt, ConstDefault, Hash, Hasher, Vector, array_init};
+use crate::{ConstDefault, Hash, Hasher, Vector, array_init};
+use ::core::fmt;
 
 /* Clone, Copy */
 

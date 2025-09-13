@@ -3,8 +3,8 @@
 //! Defines the [`IoWrite`] trait.
 //
 
-use crate::{_core::fmt, IoError, IoErrorKind, IoResult, Mem};
-use ::core::cmp;
+use crate::{IoError, IoErrorKind, IoResult, Mem};
+use ::core::{cmp, fmt};
 
 /// A trait for objects which are byte-oriented sinks.
 ///

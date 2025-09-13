@@ -4,9 +4,10 @@
 //
 
 use super::WriteTo;
-use crate::{_core::fmt::write, FmtArguments, FmtError, FmtWrite};
 #[cfg(feature = "alloc")]
 use crate::{_dep::_alloc::fmt::format, String};
+use crate::{FmtArguments, FmtError, FmtWrite};
+use ::core::fmt::write;
 
 #[doc = crate::TAG_TEXT!()]
 #[doc = crate::TAG_NAMESPACE!()]
@@ -75,6 +76,6 @@ impl Fmt {
     // where
     //     F: Fn(&mut Formatter<'_>) -> Result<(), Error>,
     // {
-    //     crate::_core::fmt::from_fn(f)
+    //     ::core::fmt::from_fn(f)
     // }
 }

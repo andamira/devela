@@ -3,7 +3,8 @@
 //! Splitting and decomposing time.
 //
 
-use crate::{_core::fmt, Duration, ExtAny};
+use crate::{Duration, ExtAny};
+use ::core::fmt;
 
 #[doc = crate::TAG_TIME!()]
 /// A full time split from years to nanoseconds.

@@ -8,10 +8,8 @@
 use super::{DstArray, DstBuf, check_fat_pointer, decompose_pointer, store_metadata};
 #[cfg(doc)]
 use crate::MaybeUninit;
-use crate::{
-    _core::{marker, ptr},
-    ManuallyDrop, Mem, MemAligned,
-};
+use crate::{ManuallyDrop, Mem, MemAligned};
+use ::core::{marker, ptr};
 
 /* public API */
 
