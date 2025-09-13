@@ -177,7 +177,6 @@ mod reflection {
             "__dbg",
             "__no_test",
             "__force_miri_dst",
-            "__force_test_no_mangle",
             // "default",
             // "_default",
             "_docs", "_docs_nodeps", "_docs_min",

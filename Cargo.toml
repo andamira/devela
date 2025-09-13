@@ -187,7 +187,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 190/300 (110 remaining), 137 visible, 53 hidden
+[features] # 189/300 (111 remaining), 137 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -234,12 +234,6 @@ __publish = [
 ]
 
 __force_miri_dst = [] # inhibits disabling miri on several modules
-
-# enables no_mangle attributes when testing,
-# which fails in nightly-2025-08-15+ with error: duplicate symbol
-# cargo +nightly test --no-run -F alloc,js,unsafe_ffi,__force_test_no_mangle
-# WAIT: [Regression: no_mangle](https://github.com/rust-lang/rust/issues/145616)
-__force_test_no_mangle = []
 
 
 #* Environment features *#

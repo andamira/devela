@@ -35,7 +35,6 @@ mod structs;
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 crate::items! {
     mod point_entry; // linux_entry!
-    #[cfg_attr(not(feature = "__force_test_no_mangle"), cfg(not(test)))]
     mod restorer;
     // #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     mod syscalls; // LINUX_SYS
