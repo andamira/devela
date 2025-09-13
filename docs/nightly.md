@@ -93,6 +93,7 @@ See also
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649)
+- 1.??: `·`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)

@@ -39,6 +39,7 @@ Many feature gates are removed in order to make most features make always availa
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.40.
 - add optional dependencies to [base]: `memchr`, `simdutf8`.
+- remove `_core` and `_dep` re-exports from the public docs.
 
 ## features & flags
 - new features: `__build`, `__force_test_no_mangle`, `__publish`, `base_safe`, `safe_build`.

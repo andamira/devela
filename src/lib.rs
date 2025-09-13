@@ -104,6 +104,7 @@
         impl_trait_in_assoc_type,
         isqrt,
         macro_metavar_expr,
+        macro_metavar_expr_concat,
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
