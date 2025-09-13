@@ -147,6 +147,11 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - type `ConstList`.
 
+## lang
+- rename `lang::ling` to `lang::hum`.
+- rename `lang::ling::grammar` to `lang::hum::gram`.
+- move `lang::i18n` to `lang::hum::i18n`.
+
 ## num
 - move to [base]:
   - aliases: `fsize` and `[iu]size_*`.

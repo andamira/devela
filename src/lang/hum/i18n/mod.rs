@@ -1,4 +1,4 @@
-// devela::lang::i18n
+// devela::hum::i18n
 //
 //! Internationalization and localization support.
 //!

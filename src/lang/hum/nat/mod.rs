@@ -1,6 +1,6 @@
-// devela::lang::ling::nat
+// devela::lang::hum::nat
 //
-//! Natural languages.
+//! Natural human languages.
 //
 
 // WIPZONE

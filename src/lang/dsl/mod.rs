@@ -1,7 +1,7 @@
 // devela::lang::dsl
 //
 //! Custom <abbr title = "Domain Specific Language">DSL</abbr>s,
-//! parsers, interpreters, and virtual machines.
+//! lexers, parsers, interpreters, and virtual machines.
 //
 
 // WIPZONE

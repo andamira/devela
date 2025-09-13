@@ -1,14 +1,15 @@
-// devela::lang::ling
+// devela::lang::hum
 //
-//! Linguistics and languge theory.
-#![doc = crate::_doc!(modules: crate::lang; ling: art, grammar, nat)]
+//! Human linguistics and language theory.
+#![doc = crate::_doc!(modules: crate::lang; hum: art, gram, i18n, nat)]
 //!
 //! Structure, rules, analysis, and representation of natural and constructed languages.
 //
 
-pub mod art;
-pub mod grammar;
-pub mod nat;
+pub mod art; // artificial languages
+pub mod gram; // grammar
+pub mod i18n; // gettext, fluent, …
+pub mod nat; // natural languages
 
 // WIPZONE
 // mod phonetics;
@@ -22,7 +23,10 @@ crate::structural_mods! { // _pub_mods, _mods
     }
     _pub_mods {
         pub use super::{
-            grammar::_all::*, art::_all::*, nat::_all::*,
+            art::_all::*,
+            gram::_all::*,
+            i18n::_all::*,
+            nat::_all::*,
         };
     }
 }

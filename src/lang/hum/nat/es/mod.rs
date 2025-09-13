@@ -1,9 +1,10 @@
-// devela::lang::ling::grammar
+// devela::lang::hum::nat::es
 //
-//! Grammar.
+//! Spanish language.
 //
 
 // WIPZONE
+
 crate::structural_mods! { // _mods
     _mods {
         // WIPZONE:

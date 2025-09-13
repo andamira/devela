@@ -1,4 +1,4 @@
-// devela::lang::ling::art
+// devela::lang::hum::art
 //
 //! Artificial languages.
 //
