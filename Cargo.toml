@@ -764,7 +764,7 @@ default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
 features = ["bracketed-paste", "events"]
 
 [dependencies.ffmpeg-the-third] # https://crates.io/crates/ffmpeg-the-third
-version = "3.0.1" # ✓ https://github.com/shssoichiro/ffmpeg-the-third/blob/master/CHANGELOG.md
+version = "4.0" # ✓ https://github.com/shssoichiro/ffmpeg-the-third/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 65 https://docs.rs/crate/ffmpeg-the-third/latest/features
 features = [
@@ -957,7 +957,7 @@ default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
-version = "3.12" # ✗ https://github.com/ashvardanian/StringZilla/releases
+version = "4.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
 optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 # WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)

@@ -32,8 +32,10 @@ Many feature gates are removed in order to make most features make always availa
 ## dependencies
 - re-export `alloc` crate from devela and [base_alloc].
 - bump dependencies:
+  - `ffmpeg-the-third` to 4.0.
   - `hashbrown` to 0.16.
   - `pyo3` to 0.26.
+  - `stringzilla` to 4.0.
   - `ureq` to 3.1.
   - [macros]
     - `proc-macro2` to 1.0.101.
