@@ -22,11 +22,3 @@ a quiet dedication to learn, discover and share
 where code and craft fuse to a circled square
 ```
 
-## Status
-In active development, breaking changes expected during `0.*` versions.
-
-
-## License
-Dual-licensed under either [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE),
-with additional [vendored works](docs/vendored.md).
-
