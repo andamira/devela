@@ -176,7 +176,9 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `MemAligned`.
   - types: `Mem`, `Ptr`, `Slice`.
 - rename `join!` macro to `const_join!`.
-- update `Slice` with new `eq` methods for slices of slices of primitives and string slices.
+- update `Slice`:
+  - add new methods for inclusive ranges `range_to_inclusive*`.
+  - add new `eq` methods for slices of slices of primitives and string slices.
 
 ## text
 - move to [base]:
