@@ -239,8 +239,9 @@ macro_rules! impl_cast_fns {
                 p as $t
             }
         }
+        #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
-            (p as $fun % (<$t>::MAX as $fun + 1)) as $t
+            p as $t
         }
     }};
     (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_overflow $f:$t]; )+ };
@@ -251,30 +252,37 @@ macro_rules! impl_cast_fns {
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             is![p > <$t>::MAX as $f; <$t>::MAX; p as $t]
         }
+        #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
-            (p % (<$t>::MAX as $f + 1)) as $t
+            p as $t
         }
     }};
     (can_underflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_underflow $f:$t]; )+ };
     (@can_underflow $f:ty:$t:ty) => { paste! {
+        #[inline(always)]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
             is![p < 0; Err(Overflow(Some(Negative))); Ok(p as $t)]
         }
+        #[inline(always)]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             is![p < 0; 0; p as $t]
         }
+        #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
     }};
     (cant_fail $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@cant_fail $f:$t]; )+ };
     (@cant_fail $f:ty:$t:ty) => { paste! {
+        #[inline(always)]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
             Ok(p as $t)
         }
+        #[inline(always)]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
+        #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
@@ -283,12 +291,15 @@ macro_rules! impl_cast_fns {
         $( impl_cast_fns![@cant_fail ptr:$ptr $f:$t]; )+
     };
     (@cant_fail ptr:$ptr:literal $f:ty:$t:ty) => { paste! {
+        #[inline(always)]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
             Ok(p as $t)
         }
+        #[inline(always)]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
+        #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
@@ -324,12 +335,15 @@ macro_rules! impl_cast_fns_alias {
     };
     (@to $a:ident|$t:ty : $($f:ty),+) => { $( impl_cast_fns_alias!(@impl $f, $a, $t);)+ };
     (@impl $f:ty, $a:ty, $t:ty) => { paste! {
+        #[inline(always)]
         const fn [<checked_cast_ $f _to_ $a>](p: $f) -> Result<$a, Overflow> {
             [<checked_cast_ $f _to_ $t>](p)
         }
+        #[inline(always)]
         const fn [<saturating_cast_ $f _to_ $a>](p: $f) -> $a {
             [<saturating_cast_ $f _to_ $t>](p)
         }
+        #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $a>](p: $f) -> $a {
             [<wrapping_cast_ $f _to_ $t>](p)
         }

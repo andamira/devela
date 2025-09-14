@@ -163,9 +163,10 @@ Many feature gates are removed in order to make most features make always availa
 - new types: `IntAlloc`, `IntError`, `IntResult`, `NicheValueError`.
 - move float shared docs to `devela_base_num` prefixed with `_FLOAT_`.
 - move int shared docs to `devela_base_num` prefixed with `_INT_`.
-- move `ValueQuant` from `code::result` to `num::quant`.
-- update `Interval` to use individual `IncompatibleBounds` error.
 - un-gate `Compare` impls and many dependent const methods.
+- update `Interval` to use individual `IncompatibleBounds` error.
+- fix `Cast` wrapping methods performance, and correctness for negative integers.
+- move `ValueQuant` from `code::result` to `num::quant`.
 - make all `Int` methods *const*.
 - make `Sign` part of `quant`.
 
