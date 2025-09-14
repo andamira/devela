@@ -36,7 +36,7 @@ impl Ansi {
         while n / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
         while divisor > 0 {
-            buffer[index] = AsciiDigits(n).calc_digit(divisor);
+            buffer[index] = AsciiDigits(n).digit_at_power(divisor);
             divisor /= 10;
             index += 1;
         }
@@ -132,7 +132,7 @@ impl Ansi {
         while row / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
         while divisor > 0 {
-            buffer[index] = AsciiDigits(row).calc_digit(divisor);
+            buffer[index] = AsciiDigits(row).digit_at_power(divisor);
             divisor /= 10;
             index += 1;
         }
@@ -141,7 +141,7 @@ impl Ansi {
         divisor = 1;
         while col / divisor >= 10 { divisor *= 10; }
         while divisor > 0 {
-            buffer[index] = AsciiDigits(col).calc_digit(divisor);
+            buffer[index] = AsciiDigits(col).digit_at_power(divisor);
             divisor /= 10;
             index += 1;
         }

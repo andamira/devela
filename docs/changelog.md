@@ -191,12 +191,13 @@ Many feature gates are removed in order to make most features make always availa
 ## text
 - move to [base]:
   - traits: `NumToStr`, [`UnicodeScalar`].
-  - types: `Ascii`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
+  - types: `AsciiDigits`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 - remove methods: `to_cstring`, from `String*` & `Grapheme*`.
 - remove `Str::from_boxed_utf8_unchecked` method.
 - make more methods *const* in `GraphemeU8` and `StringU8`.
 - new `StringU*` method: `sanitize`.
 - rename `Ascii` to `AsciiDigits`.
+  - rename method: `calc_digit` to `digit_at_power`.
 
 ## ui
 ### front

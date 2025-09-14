@@ -7,11 +7,35 @@ use crate::is;
 
 #[allow(unused, reason = "±unsafe in digits_str methods")]
 use crate::unwrap;
-use crate::{Compare, StringU8};
+use crate::{CONST, Compare, StringU8};
+
+CONST! {
+DOC_DIGIT_AT_POWER =
+"Extracts the ASCII byte for a specific digit position using a power-of-10 divisor.\n\n
+# Arguments\n\n
+* `divisor` - A power of 10 that selects the digit position (1, 10, 100, …)";
+DOC_COUNT_DIGITS = "Counts the number of decimal digits in the number.\n\n
+Returns 1 for zero, and the base-10 logarithm plus one for other numbers.\n\n
+For more advanced needs check the [`Int`] *base* methods.\n\n";
+}
 
 #[doc = crate::TAG_TEXT!()]
 #[doc = crate::TAG_NAMESPACE!()]
-/// Provides ASCII operations on `T`, most of them *const*.
+/// Provides ASCII digit operations and conversions for unsigned integer primitives.
+///
+/// Enables efficient ASCII digit extraction, counting, and conversion
+/// for unsigned integer types. All operations are `const` and designed for
+/// performance-critical scenarios like number formatting.
+///
+/// # Example
+/// ```
+/// # use devela_base_core::{AsciiDigits, Slice};
+/// let ascii_num = AsciiDigits(12345_u32);
+/// assert_eq!(ascii_num.digit_at_power(100), b'3');
+/// assert_eq!(ascii_num.count_digits(), 5);
+/// assert_eq!(ascii_num.digits(), *b"0000012345");
+/// assert_eq!(Slice::trim_leading_bytes(&ascii_num.digits(), b'0'), b"12345");
+/// ```
 #[derive(Clone, Copy, Debug)]
 #[repr(transparent)]
 pub struct AsciiDigits<T: Copy>(pub T);
@@ -20,27 +44,20 @@ impl AsciiDigits<usize> {
     /// The maximum number of decimal digits a `usize` can represent in the current platform.
     pub const MAX_DIGITS: usize = AsciiDigits(usize::MAX).count_digits() as usize;
 
-    /// Returns the ASCII byte of a specific digit in a `usize` number.
-    ///
-    /// # Arguments
-    /// * `divisor`: A power of 10 used to determine which digit to extract.
-    ///
+    #[doc = DOC_DIGIT_AT_POWER!()]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq!(AsciiDigits(12345_usize).calc_digit(10), b'4');
-    /// assert_eq!(AsciiDigits(12345_usize).calc_digit(1000), b'2');
+    /// assert_eq!(AsciiDigits(12345_usize).digit_at_power(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_usize).digit_at_power(1000), b'2');
     /// ```
     #[must_use]
-    pub const fn calc_digit(self, divisor: usize) -> u8 {
+    pub const fn digit_at_power(self, divisor: usize) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
     }
 
-    /// Counts the number of decimal digits.
-    ///
-    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = DOC_COUNT_DIGITS!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
-    ///
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
@@ -57,7 +74,7 @@ impl AsciiDigits<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         AsciiDigits(self.0 as u16).digits()
@@ -68,7 +85,7 @@ impl AsciiDigits<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         AsciiDigits(self.0 as u32).digits()
@@ -79,7 +96,7 @@ impl AsciiDigits<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         AsciiDigits(self.0 as u64).digits()
@@ -109,25 +126,19 @@ impl AsciiDigits<u8> {
     /// The maximum number of decimal digits a `u8` can represent.
     pub const MAX_DIGITS: usize = 3;
 
-    /// Returns the ASCII byte of a specific digit in a `u8` number.
-    ///
-    /// # Arguments
-    /// * `divisor`: A power of 10 used to determine which digit to extract.
-    ///
+    #[doc = DOC_DIGIT_AT_POWER!()]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq!(AsciiDigits(123_u8).calc_digit(10), b'2');
-    /// assert_eq!(AsciiDigits(123_u8).calc_digit(100), b'1');
+    /// assert_eq!(AsciiDigits(123_u8).digit_at_power(10), b'2');
+    /// assert_eq!(AsciiDigits(123_u8).digit_at_power(100), b'1');
     /// ```
     #[must_use]
-    pub const fn calc_digit(self, divisor: u8) -> u8 {
+    pub const fn digit_at_power(self, divisor: u8) -> u8 {
         (self.0 / divisor % 10) + b'0'
     }
 
-    /// Counts the number of decimal digits.
-    ///
-    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = DOC_COUNT_DIGITS!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
@@ -143,15 +154,15 @@ impl AsciiDigits<u8> {
     /// Converts a `u8` into a byte array of `3` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
-            //              321
-            //              255 u8::MAX
-            self.calc_digit(100),
-            self.calc_digit(10),
-            self.calc_digit(1),
+            //                  321
+            //                  255 u8::MAX
+            self.digit_at_power(100),
+            self.digit_at_power(10),
+            self.digit_at_power(1),
         ]
     }
 
@@ -191,7 +202,7 @@ impl AsciiDigits<u8> {
     #[must_use]
     pub const fn digits_2(self) -> [u8; 2] {
         debug_assert![self.0 <= 99];
-        [self.calc_digit(10), self.calc_digit(1)]
+        [self.digit_at_power(10), self.digit_at_power(1)]
     }
 }
 
@@ -199,27 +210,20 @@ impl AsciiDigits<u16> {
     /// The maximum number of decimal digits a `u16` can represent.
     pub const MAX_DIGITS: usize = 5;
 
-    /// Returns the ASCII byte of a specific digit in a `u16` number.
-    ///
-    /// # Arguments
-    /// * `divisor`: A power of 10 used to determine which digit to extract.
-    ///
+    #[doc = DOC_DIGIT_AT_POWER!()]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq!(AsciiDigits(12345_u16).calc_digit(10), b'4');
-    /// assert_eq!(AsciiDigits(12345_u16).calc_digit(1000), b'2');
+    /// assert_eq!(AsciiDigits(12345_u16).digit_at_power(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u16).digit_at_power(1000), b'2');
     /// ```
     #[must_use]
-    pub const fn calc_digit(self, divisor: u16) -> u8 {
+    pub const fn digit_at_power(self, divisor: u16) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
     }
 
-    /// Counts the number of decimal digits.
-    ///
-    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = DOC_COUNT_DIGITS!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
-    ///
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
@@ -234,17 +238,17 @@ impl AsciiDigits<u16> {
     /// Converts a `u16` into a byte array of `5` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
-            //              54321
-            //              65535    ← u16::MAX
-            self.calc_digit(10000), // 5 digits
-            self.calc_digit(1000),
-            self.calc_digit(100),
-            self.calc_digit(10),
-            self.calc_digit(1),
+            //                  54321
+            //                  65535    ← u16::MAX
+            self.digit_at_power(10000), // 5 digits
+            self.digit_at_power(1000),
+            self.digit_at_power(100),
+            self.digit_at_power(10),
+            self.digit_at_power(1),
         ]
     }
 
@@ -274,7 +278,7 @@ impl AsciiDigits<u16> {
     #[must_use]
     pub const fn digits_3(self) -> [u8; 3] {
         debug_assert![self.0 <= 999];
-        [self.calc_digit(100), self.calc_digit(10), self.calc_digit(1)]
+        [self.digit_at_power(100), self.digit_at_power(10), self.digit_at_power(1)]
     }
 
     /// Converts a four-digit number to the corresponding `4` ASCII digits.
@@ -284,7 +288,12 @@ impl AsciiDigits<u16> {
     #[must_use]
     pub const fn digits_4(self) -> [u8; 4] {
         debug_assert![self.0 <= 9999];
-        [self.calc_digit(1000), self.calc_digit(100), self.calc_digit(10), self.calc_digit(1)]
+        [
+            self.digit_at_power(1000),
+            self.digit_at_power(100),
+            self.digit_at_power(10),
+            self.digit_at_power(1),
+        ]
     }
 }
 
@@ -292,25 +301,19 @@ impl AsciiDigits<u32> {
     /// The maximum number of decimal digits a `u32` can represent.
     pub const MAX_DIGITS: usize = 10;
 
-    /// Returns the ASCII byte of a specific digit in a `u32` number.
-    ///
-    /// # Arguments
-    /// * `divisor`: A power of 10 used to determine which digit to extract.
-    ///
+    #[doc = DOC_DIGIT_AT_POWER!()]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq!(AsciiDigits(12345_u32).calc_digit(10), b'4');
-    /// assert_eq!(AsciiDigits(12345_u32).calc_digit(1000), b'2');
+    /// assert_eq!(AsciiDigits(12345_u32).digit_at_power(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u32).digit_at_power(1000), b'2');
     /// ```
     #[must_use]
-    pub const fn calc_digit(self, divisor: u32) -> u8 {
+    pub const fn digit_at_power(self, divisor: u32) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
     }
 
-    /// Counts the number of decimal digits.
-    ///
-    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = DOC_COUNT_DIGITS!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
@@ -326,23 +329,23 @@ impl AsciiDigits<u32> {
     /// Converts a `u32` into a byte array of `10` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
-            //              0987654321
-            //              4294967295    ← u32::MAX
-            self.calc_digit(1000000000), // 10 digits
-            self.calc_digit(100000000),
-            self.calc_digit(10000000),
-            self.calc_digit(1000000),
-            self.calc_digit(100000),
-            self.calc_digit(10000), // 5 digits
-            self.calc_digit(1000),
-            self.calc_digit(100),
-            self.calc_digit(10),
-            self.calc_digit(1),
+            //                  0987654321
+            //                  4294967295    ← u32::MAX
+            self.digit_at_power(1000000000), // 10 digits
+            self.digit_at_power(100000000),
+            self.digit_at_power(10000000),
+            self.digit_at_power(1000000),
+            self.digit_at_power(100000),
+            self.digit_at_power(10000), // 5 digits
+            self.digit_at_power(1000),
+            self.digit_at_power(100),
+            self.digit_at_power(10),
+            self.digit_at_power(1),
         ]
     }
 
@@ -370,25 +373,19 @@ impl AsciiDigits<u64> {
     /// The maximum number of decimal digits a `u64` can represent.
     pub const MAX_DIGITS: usize = 20;
 
-    /// Returns the ASCII byte of a specific digit in a `u64` number.
-    ///
-    /// # Arguments
-    /// * `divisor`: A power of 10 used to determine which digit to extract.
-    ///
+    #[doc = DOC_DIGIT_AT_POWER!()]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq!(AsciiDigits(12345_u64).calc_digit(10), b'4');
-    /// assert_eq!(AsciiDigits(12345_u64).calc_digit(1000), b'2');
+    /// assert_eq!(AsciiDigits(12345_u64).digit_at_power(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u64).digit_at_power(1000), b'2');
     /// ```
     #[must_use]
-    pub const fn calc_digit(self, divisor: u64) -> u8 {
+    pub const fn digit_at_power(self, divisor: u64) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
     }
 
-    /// Counts the number of decimal digits.
-    ///
-    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = DOC_COUNT_DIGITS!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
@@ -404,33 +401,33 @@ impl AsciiDigits<u64> {
     /// Converts a `u64` into a byte array of `20` ascii digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
-            //              0987654321_987654321
-            //              18446744073709551615    ← u64::MAX
-            self.calc_digit(10000000000000000000), // 20 digits
-            self.calc_digit(1000000000000000000),
-            self.calc_digit(100000000000000000),
-            self.calc_digit(10000000000000000),
-            self.calc_digit(1000000000000000),
-            self.calc_digit(100000000000000),
-            self.calc_digit(10000000000000),
-            self.calc_digit(1000000000000),
-            self.calc_digit(100000000000),
-            self.calc_digit(10000000000),
-            self.calc_digit(1000000000), // 10 digits
-            self.calc_digit(100000000),
-            self.calc_digit(10000000),
-            self.calc_digit(1000000),
-            self.calc_digit(100000),
-            self.calc_digit(10000),
-            self.calc_digit(1000),
-            self.calc_digit(100),
-            self.calc_digit(10),
-            self.calc_digit(1),
+            //                  0987654321_987654321
+            //                  18446744073709551615    ← u64::MAX
+            self.digit_at_power(10000000000000000000), // 20 digits
+            self.digit_at_power(1000000000000000000),
+            self.digit_at_power(100000000000000000),
+            self.digit_at_power(10000000000000000),
+            self.digit_at_power(1000000000000000),
+            self.digit_at_power(100000000000000),
+            self.digit_at_power(10000000000000),
+            self.digit_at_power(1000000000000),
+            self.digit_at_power(100000000000),
+            self.digit_at_power(10000000000),
+            self.digit_at_power(1000000000), // 10 digits
+            self.digit_at_power(100000000),
+            self.digit_at_power(10000000),
+            self.digit_at_power(1000000),
+            self.digit_at_power(100000),
+            self.digit_at_power(10000),
+            self.digit_at_power(1000),
+            self.digit_at_power(100),
+            self.digit_at_power(10),
+            self.digit_at_power(1),
         ]
     }
 
@@ -458,25 +455,19 @@ impl AsciiDigits<u128> {
     /// The maximum number of decimal digits a `u128` can represent.
     pub const MAX_DIGITS: usize = 39;
 
-    /// Returns the ASCII byte of a specific digit in a `u128` number.
-    ///
-    /// # Arguments
-    /// * `divisor`: A power of 10 used to determine which digit to extract.
-    ///
+    #[doc = DOC_DIGIT_AT_POWER!()]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq!(AsciiDigits(12345_u128).calc_digit(10), b'4');
-    /// assert_eq!(AsciiDigits(12345_u128).calc_digit(1000), b'2');
+    /// assert_eq!(AsciiDigits(12345_u128).digit_at_power(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u128).digit_at_power(1000), b'2');
     /// ```
     #[must_use]
-    pub const fn calc_digit(self, divisor: u128) -> u8 {
+    pub const fn digit_at_power(self, divisor: u128) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
     }
 
-    /// Counts the number of decimal digits.
-    ///
-    /// For more complex needs check the [`Int`] *base* methods.
+    #[doc = DOC_COUNT_DIGITS!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
@@ -492,52 +483,52 @@ impl AsciiDigits<u128> {
     /// Converts a `u128` into a byte array of `39` ascii digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
+    /// `Slice::`[`trim_leading_bytes()`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
-            //              987654321_987654321_987654321_987654321
-            //              340282366920938463463374607431768211455    ← u128::MAX
-            self.calc_digit(100000000000000000000000000000000000000), // 39 digits
-            self.calc_digit(10000000000000000000000000000000000000),
-            self.calc_digit(1000000000000000000000000000000000000),
-            self.calc_digit(100000000000000000000000000000000000),
-            self.calc_digit(10000000000000000000000000000000000),
-            self.calc_digit(1000000000000000000000000000000000),
-            self.calc_digit(100000000000000000000000000000000),
-            self.calc_digit(10000000000000000000000000000000),
-            self.calc_digit(1000000000000000000000000000000),
-            self.calc_digit(100000000000000000000000000000), // 30 digits
-            self.calc_digit(10000000000000000000000000000),
-            self.calc_digit(1000000000000000000000000000),
-            self.calc_digit(100000000000000000000000000),
-            self.calc_digit(10000000000000000000000000),
-            self.calc_digit(1000000000000000000000000),
-            self.calc_digit(100000000000000000000000),
-            self.calc_digit(10000000000000000000000),
-            self.calc_digit(1000000000000000000000),
-            self.calc_digit(100000000000000000000),
-            self.calc_digit(10000000000000000000), // 20 digits
-            self.calc_digit(1000000000000000000),
-            self.calc_digit(100000000000000000),
-            self.calc_digit(10000000000000000),
-            self.calc_digit(1000000000000000),
-            self.calc_digit(100000000000000),
-            self.calc_digit(10000000000000),
-            self.calc_digit(1000000000000),
-            self.calc_digit(100000000000),
-            self.calc_digit(10000000000),
-            self.calc_digit(1000000000), // 10 digits
-            self.calc_digit(100000000),
-            self.calc_digit(10000000),
-            self.calc_digit(1000000),
-            self.calc_digit(100000),
-            self.calc_digit(10000),
-            self.calc_digit(1000),
-            self.calc_digit(100),
-            self.calc_digit(10),
-            self.calc_digit(1),
+            //                  987654321_987654321_987654321_987654321
+            //                  340282366920938463463374607431768211455    ← u128::MAX
+            self.digit_at_power(100000000000000000000000000000000000000), // 39 digits
+            self.digit_at_power(10000000000000000000000000000000000000),
+            self.digit_at_power(1000000000000000000000000000000000000),
+            self.digit_at_power(100000000000000000000000000000000000),
+            self.digit_at_power(10000000000000000000000000000000000),
+            self.digit_at_power(1000000000000000000000000000000000),
+            self.digit_at_power(100000000000000000000000000000000),
+            self.digit_at_power(10000000000000000000000000000000),
+            self.digit_at_power(1000000000000000000000000000000),
+            self.digit_at_power(100000000000000000000000000000), // 30 digits
+            self.digit_at_power(10000000000000000000000000000),
+            self.digit_at_power(1000000000000000000000000000),
+            self.digit_at_power(100000000000000000000000000),
+            self.digit_at_power(10000000000000000000000000),
+            self.digit_at_power(1000000000000000000000000),
+            self.digit_at_power(100000000000000000000000),
+            self.digit_at_power(10000000000000000000000),
+            self.digit_at_power(1000000000000000000000),
+            self.digit_at_power(100000000000000000000),
+            self.digit_at_power(10000000000000000000), // 20 digits
+            self.digit_at_power(1000000000000000000),
+            self.digit_at_power(100000000000000000),
+            self.digit_at_power(10000000000000000),
+            self.digit_at_power(1000000000000000),
+            self.digit_at_power(100000000000000),
+            self.digit_at_power(10000000000000),
+            self.digit_at_power(1000000000000),
+            self.digit_at_power(100000000000),
+            self.digit_at_power(10000000000),
+            self.digit_at_power(1000000000), // 10 digits
+            self.digit_at_power(100000000),
+            self.digit_at_power(10000000),
+            self.digit_at_power(1000000),
+            self.digit_at_power(100000),
+            self.digit_at_power(10000),
+            self.digit_at_power(1000),
+            self.digit_at_power(100),
+            self.digit_at_power(10),
+            self.digit_at_power(1),
         ]
     }
 
