@@ -16,7 +16,6 @@ use crate::{
 /// Implements private, standalone casting functions between integer primitives
 ///
 /// `$f`:   the type to cast from
-/// `$fun`: the type to cast from (unsigned version, used for can_overunderflow)
 /// `$t`:   the type to cast to
 macro_rules! impl_cast_fns {
     () => {
@@ -24,15 +23,15 @@ macro_rules! impl_cast_fns {
 
         impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
-            i16|u16:u8, i32|u32:u8, i64|u64:u8, i128|u128:u8,
-            i32|u32:u16, i64|u64:u16, i128|u128:u16,
-            i64|u64:u32, i128|u128:u32,
-            i128|u128:u64,
+            i16:u8, i32:u8, i64:u8, i128:u8,
+            i32:u16, i64:u16, i128:u16,
+            i64:u32, i128:u32,
+            i128:u64,
             // from bigger signed to signed
-            i16|u16:i8, i32|u32:i8, i64|u64:i8, i128|u128:i8,
-            i32|u32:i16, i64|u64:i16, i128|u128:i16,
-            i64|u64:i32, i128|u128:i32,
-            i128|u128:i64
+            i16:i8, i32:i8, i64:i8, i128:i8,
+            i32:i16, i64:i16, i128:i16,
+            i64:i32, i128:i32,
+            i128:i64
         ];
         impl_cast_fns![can_overflow
             // from bigger unsigned to unsigned
@@ -84,29 +83,29 @@ macro_rules! impl_cast_fns {
         #[cfg(target_pointer_width = "16")]
         impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
-            isize|usize:u8,
-            i32|u32:usize, i64|u64:usize, i128|u128:usize,
+            isize:u8,
+            i32:usize, i64:usize, i128:usize,
             // from bigger signed to signed
-            isize|usize:i8,
-            i32|u32:isize, i64|u64:isize, i128|u128:isize
+            isize:i8,
+            i32:isize, i64:isize, i128:isize
         ];
         #[cfg(target_pointer_width = "32")]
         impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
-            isize|usize:u8, isize|usize:u16,
-            i64|u64:usize, i128|u128:usize,
+            isize:u8, isize:u16,
+            i64:usize, i128:usize,
             // from bigger signed to signed
-            isize|usize:i8, isize|usize:i16,
-            i64|u64:isize, i128|u128:isize
+            isize:i8, isize:i16,
+            i64:isize, i128:isize
         ];
         #[cfg(target_pointer_width = "64")]
         impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
-            isize|usize:u8, isize|usize:u16, isize|usize:u32,
-            i128|u128:usize,
+            isize:u8, isize:u16, isize:u32,
+            i128:usize,
             // from bigger signed to signed
-            isize|usize:i8, isize|usize:i16, isize|usize:i32,
-            i128|u128:isize
+            isize:i8, isize:i16, isize:i32,
+            i128:isize
         ];
 
         #[cfg(target_pointer_width = "16")]
@@ -217,10 +216,10 @@ macro_rules! impl_cast_fns {
             isize:i64, i64:isize
         ];
     };
-    (can_overunderflow $( $f:ty | $fun:ty : $t:ty ),+) => {
-        $( impl_cast_fns![@can_overunderflow $f|$fun:$t]; )+
+    (can_overunderflow $( $f:ty : $t:ty ),+) => {
+        $( impl_cast_fns![@can_overunderflow $f:$t]; )+
     };
-    (@can_overunderflow $f:ty | $fun:ty : $t:ty) => { paste! {
+    (@can_overunderflow $f:ty : $t:ty) => { paste! {
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
             if p < <$t>::MIN as $f {
                 Err(Overflow(Some(Negative)))
