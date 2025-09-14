@@ -9,7 +9,7 @@
 
 #[allow(unused_imports)]
 use crate::ExtFloat;
-use crate::{Ascii, StringU8, format_buf};
+use crate::{AsciiDigits, StringU8, format_buf};
 use crate::{NoTime, TimeSplit, TimeSplitHourNano};
 #[cfg(feature = "alloc")]
 use crate::{String, format};
@@ -85,15 +85,15 @@ impl Timecode {
     // -> 96 bits
     pub fn secs_f64(seconds: f64) -> StringU8<12> {
         let TimeSplitHourNano { h, m, s, ms, .. } = Self::split_secs_f64(seconds);
-        let m = Ascii(m as u32).digits_str(2);
-        let s = Ascii(s as u32).digits_str(2);
-        let ms = Ascii(ms as u32).digits_str(3);
+        let m = AsciiDigits(m as u32).digits_str(2);
+        let s = AsciiDigits(s as u32).digits_str(2);
+        let ms = AsciiDigits(ms as u32).digits_str(3);
 
         let mut buf = [0; 12];
         let mut buf_len = 12;
 
         if h > 0 {
-            let h = Ascii(h.min(99)).digits_str(2);
+            let h = AsciiDigits(h.min(99)).digits_str(2);
             let _str = format_buf![&mut buf, "{h}:{m}:{s}.{ms}"];
         } else {
             buf_len = 9;
@@ -139,10 +139,10 @@ impl Timecode {
     // -> 208 bits
     pub fn nanos_u64(nanos: u64) -> StringU8<23> {
         let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
-        let s_str = Ascii(s.min(999)).digits_str(3);
-        let ms_str = Ascii(ms as u32).digits_str(3);
-        let us_str = Ascii(us as u32).digits_str(3);
-        let ns_str = Ascii(ns as u32).digits_str(3);
+        let s_str = AsciiDigits(s.min(999)).digits_str(3);
+        let ms_str = AsciiDigits(ms as u32).digits_str(3);
+        let us_str = AsciiDigits(us as u32).digits_str(3);
+        let ns_str = AsciiDigits(ns as u32).digits_str(3);
 
         let mut buf = [0; 23];
         let mut buf_len = 23; // = 18 + 3digits + 1name(s) + 1space

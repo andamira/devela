@@ -194,8 +194,9 @@ Many feature gates are removed in order to make most features make always availa
   - types: `Ascii`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 - remove methods: `to_cstring`, from `String*` & `Grapheme*`.
 - remove `Str::from_boxed_utf8_unchecked` method.
-- new `StringU*` method: `sanitize`.
 - make more methods *const* in `GraphemeU8` and `StringU8`.
+- new `StringU*` method: `sanitize`.
+- rename `Ascii` to `AsciiDigits`.
 
 ## ui
 ### front

@@ -3,9 +3,7 @@
 //! [`Str`] namespace.
 //
 
-use crate::{InvalidUtf8, Slice, is};
-
-use crate::Ascii;
+use crate::{AsciiDigits, InvalidUtf8, Slice, is};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
@@ -192,7 +190,7 @@ impl Str {
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
 
-            let mut num_buf = Ascii(num).digits();
+            let mut num_buf = AsciiDigits(num).digits();
             let mut num_bytes = Slice::trim_leading_bytes(&num_buf, b'0');
             // IMPROVE:BENCH use NumToStr
             // let mut num_buf = [0u8; 22];
@@ -217,7 +215,7 @@ impl Str {
 
                     num = index;
 
-                    num_buf = Ascii(num).digits();
+                    num_buf = AsciiDigits(num).digits();
                     num_bytes = Slice::trim_leading_bytes(&num_buf, b'0');
                     // IMPROVE: use NumToStr
                     // num_bytes = num.to_bytes_base(10, &mut num_buf);

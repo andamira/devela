@@ -5,7 +5,7 @@
 // safety
 #![cfg_attr(base_safe_text, forbid(unsafe_code))]
 
-mod ascii; // Ascii, AsciiChar
+mod ascii; // AsciiChar, AsciiDigits
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 mod char; // Char
 mod grapheme; // GraphemeU8

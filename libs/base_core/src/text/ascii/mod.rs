@@ -8,13 +8,13 @@
 //
 
 mod char; // AsciiChar
-mod wrapper; // Ascii
+mod digits; // AsciiDigits
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             char::AsciiChar,
-            wrapper::Ascii,
+            digits::AsciiDigits,
         };
     }
 }

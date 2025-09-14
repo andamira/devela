@@ -34,7 +34,7 @@ crate::structural_mods! { // _mods, _pub_mods, _always
         };
 
         #[doc(inline)]
-        pub use devela_base_core::text::{Ascii, AsciiChar}; // ascii
+        pub use devela_base_core::text::{AsciiChar, AsciiDigits}; // ascii
 
         // WIPZONE
         // pub use super::bytes::*;

@@ -1,6 +1,6 @@
 // devela_base_core::text::ascii::wrapper
 //
-//! Ascii functionality wrapper struct.
+//! Defines [`AsciiDigits`].
 //
 
 use crate::is;
@@ -14,11 +14,11 @@ use crate::{Compare, StringU8};
 /// Provides ASCII operations on `T`, most of them *const*.
 #[derive(Clone, Copy, Debug)]
 #[repr(transparent)]
-pub struct Ascii<T: Copy>(pub T);
+pub struct AsciiDigits<T: Copy>(pub T);
 
-impl Ascii<usize> {
+impl AsciiDigits<usize> {
     /// The maximum number of decimal digits a `usize` can represent in the current platform.
-    pub const MAX_DIGITS: usize = Ascii(usize::MAX).count_digits() as usize;
+    pub const MAX_DIGITS: usize = AsciiDigits(usize::MAX).count_digits() as usize;
 
     /// Returns the ASCII byte of a specific digit in a `usize` number.
     ///
@@ -27,9 +27,9 @@ impl Ascii<usize> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq!(Ascii(12345_usize).calc_digit(10), b'4');
-    /// assert_eq!(Ascii(12345_usize).calc_digit(1000), b'2');
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq!(AsciiDigits(12345_usize).calc_digit(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_usize).calc_digit(1000), b'2');
     /// ```
     #[must_use]
     pub const fn calc_digit(self, divisor: usize) -> u8 {
@@ -43,9 +43,9 @@ impl Ascii<usize> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq![1, Ascii(0_usize).count_digits()];
-    /// assert_eq![4, Ascii(9876_usize).count_digits()];
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq![1, AsciiDigits(0_usize).count_digits()];
+    /// assert_eq![4, AsciiDigits(9876_usize).count_digits()];
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
@@ -60,7 +60,7 @@ impl Ascii<usize> {
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
-        Ascii(self.0 as u16).digits()
+        AsciiDigits(self.0 as u16).digits()
     }
 
     /// Converts a `usize` into a byte array of `10` ascii digits with leading zeros.
@@ -71,7 +71,7 @@ impl Ascii<usize> {
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
-        Ascii(self.0 as u32).digits()
+        AsciiDigits(self.0 as u32).digits()
     }
 
     /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
@@ -82,7 +82,7 @@ impl Ascii<usize> {
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
-        Ascii(self.0 as u64).digits()
+        AsciiDigits(self.0 as u64).digits()
     }
 
     /// Returns a static string with zero-padded digits with minimum `width`.
@@ -105,7 +105,7 @@ impl Ascii<usize> {
     }
 }
 
-impl Ascii<u8> {
+impl AsciiDigits<u8> {
     /// The maximum number of decimal digits a `u8` can represent.
     pub const MAX_DIGITS: usize = 3;
 
@@ -116,9 +116,9 @@ impl Ascii<u8> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq!(Ascii(123_u8).calc_digit(10), b'2');
-    /// assert_eq!(Ascii(123_u8).calc_digit(100), b'1');
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq!(AsciiDigits(123_u8).calc_digit(10), b'2');
+    /// assert_eq!(AsciiDigits(123_u8).calc_digit(100), b'1');
     /// ```
     #[must_use]
     pub const fn calc_digit(self, divisor: u8) -> u8 {
@@ -131,9 +131,9 @@ impl Ascii<u8> {
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq![1, Ascii(0_u8).count_digits()];
-    /// assert_eq![3, Ascii(123_u8).count_digits()];
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq![1, AsciiDigits(0_u8).count_digits()];
+    /// assert_eq![3, AsciiDigits(123_u8).count_digits()];
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
@@ -145,7 +145,7 @@ impl Ascii<u8> {
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
-    pub const fn digits(self) -> [u8; 3] {
+    pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
             //              321
             //              255 u8::MAX
@@ -162,15 +162,15 @@ impl Ascii<u8> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    pub const fn digits_str(self, width: u8) -> StringU8<3> {
-        let width = Compare(width).clamp(self.count_digits(), 3);
+    pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
+        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<3>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<3>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
 
@@ -195,7 +195,7 @@ impl Ascii<u8> {
     }
 }
 
-impl Ascii<u16> {
+impl AsciiDigits<u16> {
     /// The maximum number of decimal digits a `u16` can represent.
     pub const MAX_DIGITS: usize = 5;
 
@@ -206,9 +206,9 @@ impl Ascii<u16> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq!(Ascii(12345_u16).calc_digit(10), b'4');
-    /// assert_eq!(Ascii(12345_u16).calc_digit(1000), b'2');
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq!(AsciiDigits(12345_u16).calc_digit(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u16).calc_digit(1000), b'2');
     /// ```
     #[must_use]
     pub const fn calc_digit(self, divisor: u16) -> u8 {
@@ -222,9 +222,9 @@ impl Ascii<u16> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq![1, Ascii(0_u16).count_digits()];
-    /// assert_eq![4, Ascii(9876_u16).count_digits()];
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq![1, AsciiDigits(0_u16).count_digits()];
+    /// assert_eq![4, AsciiDigits(9876_u16).count_digits()];
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
@@ -236,7 +236,7 @@ impl Ascii<u16> {
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
-    pub const fn digits(self) -> [u8; 5] {
+    pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
             //              54321
             //              65535    ← u16::MAX
@@ -255,15 +255,15 @@ impl Ascii<u16> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    pub const fn digits_str(self, width: u8) -> StringU8<5> {
-        let width = Compare(width).clamp(self.count_digits(), 5);
+    pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
+        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<5>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<5>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
 
@@ -288,7 +288,7 @@ impl Ascii<u16> {
     }
 }
 
-impl Ascii<u32> {
+impl AsciiDigits<u32> {
     /// The maximum number of decimal digits a `u32` can represent.
     pub const MAX_DIGITS: usize = 10;
 
@@ -299,9 +299,9 @@ impl Ascii<u32> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq!(Ascii(12345_u32).calc_digit(10), b'4');
-    /// assert_eq!(Ascii(12345_u32).calc_digit(1000), b'2');
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq!(AsciiDigits(12345_u32).calc_digit(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u32).calc_digit(1000), b'2');
     /// ```
     #[must_use]
     pub const fn calc_digit(self, divisor: u32) -> u8 {
@@ -314,9 +314,9 @@ impl Ascii<u32> {
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq![1, Ascii(0_u32).count_digits()];
-    /// assert_eq![4, Ascii(9876_u32).count_digits()];
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq![1, AsciiDigits(0_u32).count_digits()];
+    /// assert_eq![4, AsciiDigits(9876_u32).count_digits()];
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
@@ -329,7 +329,7 @@ impl Ascii<u32> {
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits(self) -> [u8; 10] {
+    pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
             //              0987654321
             //              4294967295    ← u32::MAX
@@ -353,20 +353,20 @@ impl Ascii<u32> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    pub const fn digits_str(self, width: u8) -> StringU8<10> {
-        let width = Compare(width).clamp(self.count_digits(), 10);
+    pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
+        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<10>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<10>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
 }
 
-impl Ascii<u64> {
+impl AsciiDigits<u64> {
     /// The maximum number of decimal digits a `u64` can represent.
     pub const MAX_DIGITS: usize = 20;
 
@@ -377,9 +377,9 @@ impl Ascii<u64> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq!(Ascii(12345_u64).calc_digit(10), b'4');
-    /// assert_eq!(Ascii(12345_u64).calc_digit(1000), b'2');
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq!(AsciiDigits(12345_u64).calc_digit(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u64).calc_digit(1000), b'2');
     /// ```
     #[must_use]
     pub const fn calc_digit(self, divisor: u64) -> u8 {
@@ -392,9 +392,9 @@ impl Ascii<u64> {
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq![1, Ascii(0_u64).count_digits()];
-    /// assert_eq![4, Ascii(9876_u64).count_digits()];
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq![1, AsciiDigits(0_u64).count_digits()];
+    /// assert_eq![4, AsciiDigits(9876_u64).count_digits()];
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
@@ -407,7 +407,7 @@ impl Ascii<u64> {
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits(self) -> [u8; 20] {
+    pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
             //              0987654321_987654321
             //              18446744073709551615    ← u64::MAX
@@ -441,22 +441,22 @@ impl Ascii<u64> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    pub const fn digits_str(self, width: u8) -> StringU8<20> {
-        let width = Compare(width).clamp(self.count_digits(), 20);
+    pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
+        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<20>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<20>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
 }
 
-impl Ascii<u128> {
+impl AsciiDigits<u128> {
     /// The maximum number of decimal digits a `u128` can represent.
-    pub const MAX_DIGITS: usize = 30;
+    pub const MAX_DIGITS: usize = 39;
 
     /// Returns the ASCII byte of a specific digit in a `u128` number.
     ///
@@ -465,9 +465,9 @@ impl Ascii<u128> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq!(Ascii(12345_u128).calc_digit(10), b'4');
-    /// assert_eq!(Ascii(12345_u128).calc_digit(1000), b'2');
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq!(AsciiDigits(12345_u128).calc_digit(10), b'4');
+    /// assert_eq!(AsciiDigits(12345_u128).calc_digit(1000), b'2');
     /// ```
     #[must_use]
     pub const fn calc_digit(self, divisor: u128) -> u8 {
@@ -480,9 +480,9 @@ impl Ascii<u128> {
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
-    /// # use devela_base_core::text::Ascii;
-    /// assert_eq![1, Ascii(0_u128).count_digits()];
-    /// assert_eq![19, Ascii(9876543210987654321_u128).count_digits()];
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq![1, AsciiDigits(0_u128).count_digits()];
+    /// assert_eq![19, AsciiDigits(9876543210987654321_u128).count_digits()];
     /// ```
     #[must_use]
     pub const fn count_digits(self) -> u8 {
@@ -495,7 +495,7 @@ impl Ascii<u128> {
     /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits(self) -> [u8; 39] {
+    pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         [
             //              987654321_987654321_987654321_987654321
             //              340282366920938463463374607431768211455    ← u128::MAX
@@ -548,15 +548,15 @@ impl Ascii<u128> {
     ///
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
-    pub const fn digits_str(self, width: u8) -> StringU8<39> {
-        let width = Compare(width).clamp(self.count_digits(), 39);
+    pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
+        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<39>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<39>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
 }
