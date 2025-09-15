@@ -63,13 +63,14 @@ macro_rules! set_panic_handler {
                 // https://doc.rust-lang.org/core/arch/aarch64/fn.__wfe.html (experimental)
                 // ::core::arch::aarch64::__nop();
 
-                // WAIT: https://github.com/rust-lang/rust/issues/117218
+                // WAIT: [stdarch_arm_hints](https://github.com/rust-lang/rust/issues/117218)
                 // ::core::arch::aarch64::__wfe(); // better power efficiency
                 $crate::asm!("wfe"); // Low-power sleep (better for multi-core than wfi)
                 $crate::asm!("udf #0"); // Force crash
             }
 
-            #[cfg(any_target_arch_riscv)]
+            // NOTE: can't use `any_target_arch_riscv` because this is resolved in calling code
+            #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
             unsafe {
                 $crate::asm!("wfi"); // Low-power sleep
                 $crate::asm!("ebreak"); // Debugger trap
