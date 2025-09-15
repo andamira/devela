@@ -217,8 +217,8 @@ impl Linux {
 
 /// # Syscalls: Device and special I/O.
 impl Linux {
-    #[doc = SYS_IOCTL!()]
     #[must_use]
+    #[doc = SYS_IOCTL!()]
     pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
         let result;
         unsafe {
@@ -304,8 +304,8 @@ impl Linux {
         }
         result as i32
     }
-    #[doc = SYS_GETRANDOM!()]
     #[must_use]
+    #[doc = SYS_GETRANDOM!()]
     pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
         let result;
         unsafe {
@@ -327,6 +327,23 @@ impl Linux {
 
 /// # Syscalls: Timing and signal handling.
 impl Linux {
+    #[must_use]
+    #[doc = SYS_CLOCK_GETTIME!()]
+    pub unsafe fn sys_clock_gettime(clock_id: c_int, tp: *mut LinuxTimespec) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov x8, {CLOCK_GETTIME}",
+                "svc 0",
+                CLOCK_GETTIME = const SYS::CLOCK_GETTIME,
+                in("x0") clock_id,
+                in("x1") tp,
+                lateout("x0") result,
+                options(nostack)
+            );
+            result
+        }
+    }
     #[must_use]
     #[doc = SYS_NANOSLEEP!()]
     pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {

@@ -16,8 +16,8 @@ use crate::{
 
 /// # Syscalls: File descriptors.
 impl Linux {
-    #[doc = SYS_READ!()]
     #[must_use]
+    #[doc = SYS_READ!()]
     pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
         let result;
         unsafe {
@@ -36,8 +36,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_WRITE!()]
     #[must_use]
+    #[doc = SYS_WRITE!()]
     pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
         let result;
         unsafe {
@@ -56,8 +56,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_OPEN!()]
     #[must_use]
+    #[doc = SYS_OPEN!()]
     pub unsafe fn sys_open(path: *const c_char, flags: c_int, mode: c_uint) -> c_int {
         let result: c_int;
         unsafe {
@@ -74,8 +74,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_CLOSE!()]
     #[must_use]
+    #[doc = SYS_CLOSE!()]
     pub unsafe fn sys_close(fd: c_int) -> isize {
         let result;
         unsafe {
@@ -90,8 +90,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_LSEEK!()]
     #[must_use]
+    #[doc = SYS_LSEEK!()]
     pub unsafe fn sys_lseek(fd: c_int, offset: LinuxOffset, whence: c_int) -> LinuxOffset {
         let result;
         unsafe {
@@ -108,8 +108,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_DUP!()]
     #[must_use]
+    #[doc = SYS_DUP!()]
     pub unsafe fn sys_dup(oldfd: c_int) -> c_int {
         let result: c_int;
         unsafe {
@@ -124,8 +124,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_DUP2!()]
     #[must_use]
+    #[doc = SYS_DUP2!()]
     pub unsafe fn sys_dup2(oldfd: c_int, newfd: c_int) -> c_int {
         let result: c_int;
         unsafe {
@@ -141,8 +141,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_FCNTL!()]
     #[must_use]
+    #[doc = SYS_FCNTL!()]
     pub unsafe fn sys_fcntl(fd: c_int, cmd: c_int, arg: c_ulong) -> isize {
         let result;
         unsafe {
@@ -163,8 +163,8 @@ impl Linux {
 
 /// # Syscalls: Filesystem.
 impl Linux {
-    #[doc = SYS_STAT!()]
     #[must_use]
+    #[doc = SYS_STAT!()]
     pub unsafe fn sys_stat(path: *const c_char, statbuf: *mut LinuxStat) -> isize {
         let result;
         unsafe {
@@ -180,8 +180,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_FSTAT!()]
     #[must_use]
+    #[doc = SYS_FSTAT!()]
     pub unsafe fn sys_fstat(fd: c_int, statbuf: *mut LinuxStat) -> isize {
         let result;
         unsafe {
@@ -197,8 +197,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_GETDENTS!()]
     #[must_use]
+    #[doc = SYS_GETDENTS!()]
     pub unsafe fn sys_getdents(fd: c_int, dirp: *mut u8, count: usize) -> isize {
         let result;
         unsafe {
@@ -223,8 +223,8 @@ impl Linux {
 // - inotify
 // - signalfd
 impl Linux {
-    #[doc = SYS_IOCTL!()]
     #[must_use]
+    #[doc = SYS_IOCTL!()]
     pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
         let result;
         unsafe {
@@ -247,8 +247,8 @@ impl Linux {
 
 /// # Syscalls: IPC.
 impl Linux {
-    #[doc = SYS_PIPE!()]
     #[must_use]
+    #[doc = SYS_PIPE!()]
     pub unsafe fn sys_pipe(pipefd: *mut c_int) -> isize {
         let result;
         unsafe {
@@ -263,8 +263,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_PIPE2!()]
     #[must_use]
+    #[doc = SYS_PIPE2!()]
     pub unsafe fn sys_pipe2(pipefd: *mut c_int, flags: c_int) -> isize {
         let result;
         unsafe {
@@ -301,8 +301,8 @@ impl Linux {
             );
         }
     }
-    #[doc = SYS_GETPID!()]
     #[must_use]
+    #[doc = SYS_GETPID!()]
     pub unsafe fn sys_getpid() -> i32 {
         let result: isize;
         unsafe {
@@ -316,8 +316,8 @@ impl Linux {
         }
         result as i32
     }
-    #[doc = SYS_GETRANDOM!()]
     #[must_use]
+    #[doc = SYS_GETRANDOM!()]
     pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
         let result;
         unsafe {
@@ -340,8 +340,27 @@ impl Linux {
 
 /// # Syscalls: Timing and signal handling.
 impl Linux {
-    #[doc = SYS_NANOSLEEP!()]
     #[must_use]
+    #[doc = SYS_CLOCK_GETTIME!()]
+    pub unsafe fn sys_clock_gettime(clock_id: c_int, tp: *mut LinuxTimespec) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov rax, {CLOCK_GETTIME}",
+                "syscall",
+                CLOCK_GETTIME = const SYS::CLOCK_GETTIME,
+                in("rdi") clock_id,
+                in("rsi") tp,
+                lateout("rax") result,
+                lateout("rcx") _,
+                lateout("r11") _,
+                options(nostack)
+            );
+            result
+        }
+    }
+    #[must_use]
+    #[doc = SYS_NANOSLEEP!()]
     pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
         let result;
         unsafe {
@@ -359,8 +378,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_RT_SIGACTION!()]
     #[must_use]
+    #[doc = SYS_RT_SIGACTION!()]
     pub unsafe fn sys_rt_sigaction(
         sig: c_int,
         act: *const LinuxSigaction,

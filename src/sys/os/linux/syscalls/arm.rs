@@ -122,8 +122,8 @@ impl Linux {
         }
         result
     }
-    #[doc = SYS_DUP2!()]
     #[must_use]
+    #[doc = SYS_DUP2!()]
     pub unsafe fn sys_dup2(oldfd: c_int, newfd: c_int) -> c_int {
         let result: c_int;
         unsafe {
@@ -325,6 +325,23 @@ impl Linux {
 
 /// # Syscalls: Timing and signal handling.
 impl Linux {
+    #[must_use]
+    #[doc = SYS_CLOCK_GETTIME!()]
+    pub unsafe fn sys_clock_gettime(clock_id: c_int, tp: *mut LinuxTimespec) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov r7, {CLOCK_GETTIME}",
+                "svc 0",
+                CLOCK_GETTIME = const SYS::CLOCK_GETTIME,
+                in("r0") clock_id,
+                in("r1") tp,
+                lateout("r0") result,
+                options(nostack)
+            );
+            result
+        }
+    }
     #[must_use]
     #[doc = SYS_NANOSLEEP!()]
     pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {

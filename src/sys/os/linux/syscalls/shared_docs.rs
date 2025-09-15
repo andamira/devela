@@ -6,11 +6,11 @@
 // SYS_PIPE in aarch64,riscv64
 #![allow(unused_imports, unused_macros)]
 
-crate::CONST! {
+crate::CONST! { pub(super),
 
 /* File descriptors */// read, write, open, close, lseek, dup, dup2, fcntl
 
-pub(super) SYS_READ = r#"Performs a [read] syscall.
+SYS_READ = r#"Performs a [read] syscall.
 
 Read `count` bytes from a file descriptor `fd` into a buffer `buf`.
 
@@ -30,7 +30,7 @@ assert![bytes_read > 0];
 TODO
 "#;
 
-pub(super) SYS_WRITE = r#"Performs a [write] syscall.
+SYS_WRITE = r#"Performs a [write] syscall.
 
 Writes `count` bytes from a buffer `buf` into a file descriptor `fd`.
 
@@ -55,7 +55,7 @@ assert![bytes_written > 0];
 TODO
 "#;
 
-pub(super) SYS_OPEN = r#"Performs an [open] syscall.
+SYS_OPEN = r#"Performs an [open] syscall.
 
 Opens the file specified by `path` with given `flags` and `mode`.
 
@@ -76,7 +76,7 @@ assert!(fd > 0);
 - Caller must ensure proper file permissions
 "#;
 
-pub(super) SYS_CLOSE = r#"Performs a [close] syscall.
+SYS_CLOSE = r#"Performs a [close] syscall.
 
 Closes the file descriptor `fd`.
 
@@ -95,7 +95,7 @@ assert_eq!(result, 0);
 - No further operations should use `fd` after closing
 "#;
 
-pub(super) SYS_LSEEK = r#"Performs an [lseek] syscall.
+SYS_LSEEK = r#"Performs an [lseek] syscall.
 
 Repositions file offset for `fd` based on `whence`:
 - `SEEK_SET` - absolute `offset`
@@ -117,7 +117,7 @@ assert!(offset >= 0);
 - Invalid offsets may return EINVAL
 "#;
 
-pub(super) SYS_DUP = r#"Performs a [dup] syscall.
+SYS_DUP = r#"Performs a [dup] syscall.
 
 Duplicates file descriptor `oldfd` to lowest-numbered available fd.
 
@@ -134,7 +134,7 @@ assert!(new_fd > 0);
 - `oldfd` must be valid open file descriptor
 "#;
 
-pub(super) SYS_DUP2 = r#"Performs a [dup2] syscall.
+SYS_DUP2 = r#"Performs a [dup2] syscall.
 
 Duplicates `oldfd` to specific `newfd`, closing `newfd` first if open.
 
@@ -154,7 +154,7 @@ assert_eq!(new_fd, 10);
 - May unexpectedly close `newfd` if already open
 "#;
 
-pub(super) SYS_FCNTL = r#"Performs a [fcntl] syscall.
+SYS_FCNTL = r#"Performs a [fcntl] syscall.
 
 Manipulates file descriptor properties (duplication, flags, locks).
 
@@ -175,7 +175,7 @@ let flags = unsafe { Linux::sys_fcntl(fd, LINUX_F_CMD::GETFL, 0) };
 
 /* Filesystem */// stat, fstat, getdents
 
-pub(super) SYS_STAT = r#"Performs a [stat] syscall.
+SYS_STAT = r#"Performs a [stat] syscall.
 
 Gets file status for `path` into `statbuf` (follows symlinks).
 
@@ -195,7 +195,7 @@ assert!(stat.st_size > 0);
 - `statbuf` must have full struct alignment
 "#;
 
-pub(super) SYS_FSTAT = r#"Performs an [fstat] syscall.
+SYS_FSTAT = r#"Performs an [fstat] syscall.
 
 Gets file status for open descriptor `fd` into `statbuf`.
 
@@ -215,7 +215,7 @@ assert!(stat.st_mode & 0o777 > 0);
 - Same alignment requirements as `stat`
 "#;
 
-pub(super) SYS_GETDENTS = r#"Performs a [getdents] syscall.
+SYS_GETDENTS = r#"Performs a [getdents] syscall.
 
 Reads directory entries from `fd` into `dirp` buffer of size `count`.
 
@@ -239,7 +239,7 @@ assert!(entries > 0);
 
 /* Device and special I/O */// ioctl
 
-pub(super) SYS_IOCTL = r#"Performs an [ioctl] syscall.
+SYS_IOCTL = r#"Performs an [ioctl] syscall.
 
 Performs a generic I/O control operation (ioctl) on the given file descriptor.
 
@@ -255,7 +255,7 @@ TODO
 
 /* IPC */// pipe, pipe2
 
-pub(super) SYS_PIPE = r#"Performs a [pipe] syscall.
+SYS_PIPE = r#"Performs a [pipe] syscall.
 
 Creates unidirectional pipe channel. Writes to `pipefd[1]`, reads from `pipefd[0]`.
 
@@ -274,7 +274,7 @@ assert!(fds[0] > 0 && fds[1] > 0);
 - Must close both ends when done
 "#;
 
-pub(super) SYS_PIPE2 = r#"Performs a [pipe2] syscall.
+SYS_PIPE2 = r#"Performs a [pipe2] syscall.
 
 Creates pipe with flags (e.g. `LINUX_O_FLAGS::NONBLOCK`).
 
@@ -293,7 +293,7 @@ unsafe { Linux::sys_pipe2(fds.as_mut_ptr(), LINUX_O_FLAGS::NONBLOCK) };
 
 /* Process control */// exit, getpid, getrandom
 
-pub(super) SYS_EXIT = r#"Performs an [exit] syscall.
+SYS_EXIT = r#"Performs an [exit] syscall.
 
 Terminate the process with an exit status.
 
@@ -310,7 +310,7 @@ unsafe { Linux::sys_exit(0) };
 TODO
 "#;
 
-pub(super) SYS_GETPID = r#"Performs a [getpid] syscall.
+SYS_GETPID = r#"Performs a [getpid] syscall.
 
 Get process identification.
 
@@ -327,7 +327,7 @@ let pid: i32 = unsafe { Linux::sys_getpid() };
 TODO
 "#;
 
-pub(super) SYS_GETRANDOM = r#"Performs a [getrandom] syscall.
+SYS_GETRANDOM = r#"Performs a [getrandom] syscall.
 
 Obtain a series of random bytes.
 
@@ -365,9 +365,30 @@ unsafe { Linux::sys_getrandom(&mut r as *mut u8, 1, 0) };
 TODO
 "#;
 
-/* Timing and signal handling */// nanosleep, rt_sigaction
+/* Timing and signal handling */// clock_gettime, nanosleep, rt_sigaction
 
-pub(super) SYS_NANOSLEEP = r#"Performs a [nanosleep] syscall.
+SYS_CLOCK_GETTIME = r#"Performs a [clock_gettime] syscall.
+
+Retrieves the time of the specified clock `clock_id` and stores it in
+the timespec structure pointed to by `tp`.
+
+Returns the syscall return value (0 for success, -1 for error with errno set).
+
+[clock_gettime]: https://www.man7.org/linux/man-pages/man2/clock_gettime.2.html
+
+# Example
+```
+# use devela::{Linux, LinuxTimespec, LINUX_TIME};
+let mut tp = LinuxTimespec::default();
+# #[cfg(target_os = "linux")]
+assert_eq![0, unsafe { Linux::sys_clock_gettime(LINUX_TIME::REALTIME as i32, &mut tp) }];
+```
+
+# Safety
+TODO
+"#;
+
+SYS_NANOSLEEP = r#"Performs a [nanosleep] syscall.
 
 Suspend execution of calling thread.
 
@@ -392,7 +413,7 @@ assert_eq![0, unsafe { Linux::sys_nanosleep(&mut req, &mut rem) }];
 TODO
 "#;
 
-pub(super) SYS_RT_SIGACTION = r#"Performs an [rt_sigaction] syscall.
+SYS_RT_SIGACTION = r#"Performs an [rt_sigaction] syscall.
 
 Examine and change a signal action.
 

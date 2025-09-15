@@ -317,6 +317,23 @@ impl Linux {
 /// # Syscalls: Timing and signal handling.
 impl Linux {
     #[must_use]
+    #[doc = SYS_CLOCK_GETTIME!()]
+    pub unsafe fn sys_clock_gettime(clock_id: c_int, tp: *mut LinuxTimespec) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "mov eax, {CLOCK_GETTIME}",
+                "int 0x80",
+                CLOCK_GETTIME = const SYS::CLOCK_GETTIME,
+                in("ebx") clock_id,
+                in("ecx") tp,
+                lateout("eax") result,
+                options(nostack)
+            );
+            result
+        }
+    }
+    #[must_use]
     #[doc = SYS_NANOSLEEP!()]
     pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
         let result;
