@@ -194,6 +194,7 @@ Many feature gates are removed in order to make most features make always availa
 - new `Linux` methods: `clock_getres`, `clock_gettime`.
 - new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
 - fix `Linux`-related warnings & avoid use of `transmute`.
+- rename syscalls doc constants, prefix with `_DOC_`.
 
 ## text
 - move to [base]:

@@ -16,7 +16,7 @@ use crate::{
 /// # Syscalls: File descriptors.
 impl Linux {
     #[must_use]
-    #[doc = SYS_READ!()]
+    #[doc = _DOC_SYS_READ!()]
     pub unsafe fn sys_read(fd: c_int, buf: *mut c_uchar, count: usize) -> isize {
         let result;
         unsafe {
@@ -34,7 +34,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_WRITE!()]
+    #[doc = _DOC_SYS_WRITE!()]
     pub unsafe fn sys_write(fd: c_int, buf: *const c_uchar, count: usize) -> isize {
         let result;
         unsafe {
@@ -52,7 +52,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_OPEN!()]
+    #[doc = _DOC_SYS_OPEN!()]
     pub unsafe fn sys_open(path: *const c_char, flags: c_int, mode: c_uint) -> c_int {
         let result: c_int;
         unsafe {
@@ -70,7 +70,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_CLOSE!()]
+    #[doc = _DOC_SYS_CLOSE!()]
     pub unsafe fn sys_close(fd: c_int) -> isize {
         let result: isize;
         unsafe {
@@ -86,7 +86,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_LSEEK!()]
+    #[doc = _DOC_SYS_LSEEK!()]
     pub unsafe fn sys_lseek(fd: c_int, offset: LinuxOffset, whence: c_int) -> LinuxOffset {
         let result_lo: u32;
         let result_hi: u32;
@@ -107,7 +107,7 @@ impl Linux {
         ((result_hi as i64) << 32) | (result_lo as i64)
     }
     #[must_use]
-    #[doc = SYS_DUP!()]
+    #[doc = _DOC_SYS_DUP!()]
     pub unsafe fn sys_dup(oldfd: c_int) -> c_int {
         let result: c_int;
         unsafe {
@@ -123,7 +123,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_DUP2!()]
+    #[doc = _DOC_SYS_DUP2!()]
     pub unsafe fn sys_dup2(oldfd: c_int, newfd: c_int) -> c_int {
         let result: c_int;
         unsafe {
@@ -140,7 +140,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_FCNTL!()]
+    #[doc = _DOC_SYS_FCNTL!()]
     pub unsafe fn sys_fcntl(fd: c_int, cmd: c_int, arg: c_ulong) -> isize {
         let result: isize;
         unsafe {
@@ -162,7 +162,7 @@ impl Linux {
 /// # Syscalls: Filesystem.
 impl Linux {
     #[must_use]
-    #[doc = SYS_STAT!()]
+    #[doc = _DOC_SYS_STAT!()]
     pub unsafe fn sys_stat(path: *const c_char, statbuf: *mut LinuxStat) -> isize {
         let result: isize;
         unsafe {
@@ -179,7 +179,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_FSTAT!()]
+    #[doc = _DOC_SYS_FSTAT!()]
     pub unsafe fn sys_fstat(fd: c_int, statbuf: *mut LinuxStat) -> isize {
         let result: isize;
         unsafe {
@@ -196,7 +196,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_GETDENTS!()]
+    #[doc = _DOC_SYS_GETDENTS!()]
     pub unsafe fn sys_getdents(fd: c_int, dirp: *mut c_uchar, count: usize) -> isize {
         let result: isize;
         unsafe {
@@ -218,7 +218,7 @@ impl Linux {
 /// # Syscalls: Device and special I/O.
 impl Linux {
     #[must_use]
-    #[doc = SYS_IOCTL!()]
+    #[doc = _DOC_SYS_IOCTL!()]
     pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut c_uchar) -> isize {
         let result;
         unsafe {
@@ -240,7 +240,7 @@ impl Linux {
 /// # Syscalls: IPC.
 impl Linux {
     #[must_use]
-    #[doc = SYS_PIPE!()]
+    #[doc = _DOC_SYS_PIPE!()]
     pub unsafe fn sys_pipe(pipefd: *mut c_int) -> isize {
         let result: isize;
         unsafe {
@@ -256,7 +256,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_PIPE2!()]
+    #[doc = _DOC_SYS_PIPE2!()]
     pub unsafe fn sys_pipe2(pipefd: *mut c_int, flags: c_int) -> isize {
         let result: isize;
         unsafe {
@@ -276,7 +276,7 @@ impl Linux {
 
 /// # Syscalls: Process control.
 impl Linux {
-    #[doc = SYS_EXIT!()]
+    #[doc = _DOC_SYS_EXIT!()]
     pub unsafe fn sys_exit(status: c_int) -> ! {
         unsafe {
             asm!(
@@ -289,7 +289,7 @@ impl Linux {
         }
     }
     #[must_use]
-    #[doc = SYS_GETPID!()]
+    #[doc = _DOC_SYS_GETPID!()]
     pub unsafe fn sys_getpid() -> c_int {
         let result: isize;
         unsafe {
@@ -304,7 +304,7 @@ impl Linux {
         result as c_int
     }
     #[must_use]
-    #[doc = SYS_GETRANDOM!()]
+    #[doc = _DOC_SYS_GETRANDOM!()]
     pub unsafe fn sys_getrandom(buffer: *mut c_uchar, size: usize, flags: c_uint) -> isize {
         let result;
         unsafe {
@@ -326,7 +326,7 @@ impl Linux {
 /// # Syscalls: Timing and signal handling.
 impl Linux {
     #[must_use]
-    #[doc = SYS_CLOCK_GETRES!()]
+    #[doc = _DOC_SYS_CLOCK_GETRES!()]
     pub unsafe fn sys_clock_getres(clock_id: LinuxClock, res: *mut LinuxTimespec) -> isize {
         let result;
         unsafe {
@@ -344,7 +344,7 @@ impl Linux {
     }
 
     #[must_use]
-    #[doc = SYS_CLOCK_GETTIME!()]
+    #[doc = _DOC_SYS_CLOCK_GETTIME!()]
     pub unsafe fn sys_clock_gettime(clock_id: LinuxClock, tp: *mut LinuxTimespec) -> isize {
         let result;
         unsafe {
@@ -361,7 +361,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_NANOSLEEP!()]
+    #[doc = _DOC_SYS_NANOSLEEP!()]
     pub unsafe fn sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
         let result;
         unsafe {
@@ -379,7 +379,7 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = SYS_RT_SIGACTION!()]
+    #[doc = _DOC_SYS_RT_SIGACTION!()]
     pub unsafe fn sys_rt_sigaction(
         sig: c_int,
         act: *const LinuxSigaction,
