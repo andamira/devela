@@ -188,6 +188,11 @@ Many feature gates are removed in order to make most features make always availa
   - add new methods for inclusive ranges `range_to_inclusive*`.
   - add new `eq` methods for slices of slices of primitives and string slices.
 
+## os
+### linux
+
+- fix `Linux`-related warnings & avoid use of `transmute`.
+
 ## text
 - move to [base]:
   - traits: `NumToStr`, [`UnicodeScalar`].

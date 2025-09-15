@@ -6,7 +6,7 @@
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 crate::items! {
     use crate::{
-        c_uint, c_void, is, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
+        c_uint, c_void, is, AtomicOrdering, AtomicPtr, Duration, LinuxError,
         LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
         Ptr, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL,
         LINUX_SIGACTION as SIGACTION, MaybeUninit, c_int,LinuxTermios, ScopeGuard, Str, TermSize,
@@ -28,7 +28,13 @@ crate::items! {
 /// - [thread](#thread-related-methods)
 /// - [signal](#signaling-related-methods)
 /// - [random](#randomness-related-methods)
-/// - [syscalls](#system-calls)
+/// - syscalls:
+///   - [file-descriptors](#syscalls-file-descriptors)
+///   - [filesystem](#syscalls-filesystem)
+///   - [device and special I/O](#syscalls-device-and-special-io)
+///   - [IPC](#syscalls-ipc)
+///   - [process control](#syscalls-process-control)
+///   - [timing and signal handling](#syscalls-timing-and-signal-handling)
 #[derive(Debug)]
 pub struct Linux;
 
@@ -383,8 +389,7 @@ crate::items! {
     const LINUX_SIG_MAX: usize = 30;
     /// A static array to match signals with handlers.
     static LINUX_SIG_HANDLERS: [AtomicPtr<fn(i32)>; LINUX_SIG_MAX] = {
-        const INIT: AtomicPtr<fn(i32)> = AtomicPtr::new(Ptr::null_mut());
-        [INIT; LINUX_SIG_MAX]
+        [const {AtomicPtr::new(Ptr::null_mut()) }; LINUX_SIG_MAX]
     };
 }
 
@@ -429,10 +434,8 @@ impl Linux {
             if sig >= 0 && (sig as usize) < LINUX_SIG_MAX {
                 let handler = LINUX_SIG_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
                 if !handler.is_null() {
-                    unsafe {
-                        let handler: fn(i32) = transmute(handler);
-                        handler(sig);
-                    }
+                    let handler: fn(i32) = unsafe { *handler };
+                    handler(sig);
                 }
             }
         }
@@ -524,11 +527,7 @@ impl Linux {
         extern "C" fn c_handler_siginfo(sig: i32, info: LinuxSiginfo, context: *mut c_void) {
             let handler = HANDLER.load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
-                #[expect(clippy::crosspointer_transmute)]
-                let handler = unsafe {
-                    transmute::<*mut fn(i32, LinuxSiginfo, *mut c_void),
-                        fn(i32, LinuxSiginfo, *mut c_void)>(handler)
-                };
+                let handler: fn(i32, LinuxSiginfo, *mut c_void) = unsafe { *handler };
                 handler(sig, info, context);
             }
         }
@@ -573,6 +572,8 @@ impl Linux {
         }
     }
 }
+
+/* random */
 
 /// Generates a `random_*` function for each given integer primitive
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
@@ -640,3 +641,5 @@ impl Linux {
         *attempts <= Linux::RAND_MAX_ATTEMPTS
     }
 }
+
+/* syscalls (implemented under ./syscalls/) */
