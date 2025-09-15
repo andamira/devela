@@ -5,8 +5,8 @@
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
-    AtomicOrdering, AtomicPtr, Duration, Int, LINUX_CLOCK as CLOCK, LINUX_ERRNO as ERRNO,
-    LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxError,
+    AtomicOrdering, AtomicPtr, Duration, Int, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO,
+    LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxClock, LinuxError,
     LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTermios, LinuxTimespec,
     MaybeUninit, Ptr, ScopeGuard, Str, TermSize, c_int, c_uint, c_void, is, transmute,
 };
@@ -356,7 +356,7 @@ impl Linux {
     /// Gets clock resolution for the specified clock.
     ///
     /// It typically returns 1 ns even though the clock resolution may be coarser.
-    pub fn clock_getres(clock_id: c_int) -> Result<LinuxTimespec> {
+    pub fn clock_getres(clock_id: LinuxClock) -> Result<LinuxTimespec> {
         let mut res = LinuxTimespec::default();
         let ret = unsafe {
             Self::sys_clock_getres(clock_id, res.as_mut_ptr())
@@ -369,7 +369,7 @@ impl Linux {
     }
 
     /// Gets the current time from the specified clock
-    pub fn clock_gettime(clock_id: c_int) -> Result<LinuxTimespec> {
+    pub fn clock_gettime(clock_id: LinuxClock) -> Result<LinuxTimespec> {
         let mut tp = LinuxTimespec::default();
         let ret = unsafe { Self::sys_clock_gettime(clock_id, tp.as_mut_ptr()) };
         is![ret == 0; Ok(tp); Err(LinuxError::Sys(ret))]

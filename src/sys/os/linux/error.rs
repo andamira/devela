@@ -73,6 +73,7 @@ macro_rules! match_linux_to_io {
             }
             LinuxError::NoInput => IoError::new(IoErrorKind::UnexpectedEof, "no input available"),
             LinuxError::InvalidUtf8 => IoError::new(IoErrorKind::InvalidData, "invalid UTF-8 data"),
+            // LinuxError::Other(s) => IoError::new(IoErrorKind::Other, s),
         }
     };
 }
@@ -158,6 +159,7 @@ impl LinuxError {
             }
             LinuxError::NoInput => EXIT::NOINPUT,
             LinuxError::InvalidUtf8 => EXIT::DATAERR,
+            // LinuxError::Other(_s) => EXIT::FAILURE,
         }
     }
 }

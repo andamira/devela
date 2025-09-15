@@ -3,7 +3,7 @@
 //! Linux related constants.
 //
 
-pub(super) mod clock; // LINUX_CLOCK
+pub(super) mod clock; // LinuxClock
 pub(super) mod errno; // LINUX_[ERRNO|EXIT].
 pub(super) mod file; // LINUX_[FD|O_FLAGS].
 pub(super) mod ioctl; // LINUX_IOCTL.

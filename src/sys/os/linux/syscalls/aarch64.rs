@@ -7,8 +7,8 @@
 
 use super::{LinuxOffset, shared_docs::*};
 use crate::{
-    AT_FDCWD, LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat, LinuxTimespec, asm, c_char,
-    c_int, c_uchar, c_uint, c_ulong,
+    AT_FDCWD, LINUX_SYS as SYS, Linux, LinuxClock, LinuxSigaction, LinuxStat, LinuxTimespec, asm,
+    c_char, c_int, c_uchar, c_uint, c_ulong,
 };
 
 /// # Syscalls: File descriptors.
@@ -329,14 +329,14 @@ impl Linux {
 impl Linux {
     #[must_use]
     #[doc = SYS_CLOCK_GETRES!()]
-    pub unsafe fn sys_clock_getres(clock_id: c_int, res: *mut LinuxTimespec) -> isize {
+    pub unsafe fn sys_clock_getres(clock_id: LinuxClock, res: *mut LinuxTimespec) -> isize {
         let result;
         unsafe {
             asm!(
                 "mov x8, {CLOCK_GETRES}",
                 "svc 0",
                 CLOCK_GETRES = const SYS::CLOCK_GETRES,
-                in("x0") clock_id,
+                in("x0") clock_id.as_raw(),
                 in("x1") res,
                 lateout("x0") result,
                 options(nostack)
@@ -347,14 +347,14 @@ impl Linux {
 
     #[must_use]
     #[doc = SYS_CLOCK_GETTIME!()]
-    pub unsafe fn sys_clock_gettime(clock_id: c_int, tp: *mut LinuxTimespec) -> isize {
+    pub unsafe fn sys_clock_gettime(clock_id: LinuxClock, tp: *mut LinuxTimespec) -> isize {
         let result;
         unsafe {
             asm!(
                 "mov x8, {CLOCK_GETTIME}",
                 "svc 0",
                 CLOCK_GETTIME = const SYS::CLOCK_GETTIME,
-                in("x0") clock_id,
+                in("x0") clock_id.as_raw(),
                 in("x1") tp,
                 lateout("x0") result,
                 options(nostack)
