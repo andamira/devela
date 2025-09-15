@@ -4,12 +4,13 @@
 //
 // - https://doc.rust-lang.org/reference/inline-assembly.html
 // - https://doc.rust-lang.org/nightly/rust-by-example/unsafe/asm.html
+
 use crate::items;
 
 mod consts; // LINUX_SYS
 mod shared_docs;
 
-// re-export arch-specific module as sys:
+// re-export arch-specific module:
 #[cfg(target_arch = "x86_64")]
 items! { mod x86_64; use x86_64 as sys; }
 #[cfg(target_arch = "x86")]

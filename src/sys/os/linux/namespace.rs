@@ -6,7 +6,7 @@
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 crate::items! {
     use crate::{
-        c_uint, c_void, is, AtomicOrdering, AtomicPtr, Duration, LinuxError,
+        c_uint, c_void, is, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
         LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
         Ptr, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL,
         LINUX_SIGACTION as SIGACTION, MaybeUninit, c_int,LinuxTermios, ScopeGuard, Str, TermSize,
@@ -388,6 +388,8 @@ crate::items! {
     /// Maximum number of signals.
     const LINUX_SIG_MAX: usize = 30;
     /// A static array to match signals with handlers.
+    ///
+    /// NOTE: This stores the addresses of the functions, not pointers to them.
     static LINUX_SIG_HANDLERS: [AtomicPtr<fn(i32)>; LINUX_SIG_MAX] = {
         [const {AtomicPtr::new(Ptr::null_mut()) }; LINUX_SIG_MAX]
     };
@@ -431,12 +433,13 @@ impl Linux {
     /// ```
     pub fn sig_handler(handler: fn(i32), signals: &[i32], flags: Option<&[usize]>) {
         extern "C" fn c_handler(sig: i32) {
-            if sig >= 0 && (sig as usize) < LINUX_SIG_MAX {
-                let handler = LINUX_SIG_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
-                if !handler.is_null() {
-                    let handler: fn(i32) = unsafe { *handler };
-                    handler(sig);
-                }
+            is![sig < 1 || sig > LINUX_SIG_MAX as i32; return]; // Ignore invalid signals
+            let handler = LINUX_SIG_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
+            if !handler.is_null() {
+                #[expect(clippy::crosspointer_transmute, reason = "pointer to fn pointer")]
+                // SAFETY: we control both the storage and retrieval and ensure null checks.
+                let handler: fn(i32) = unsafe { transmute(handler) };
+                handler(sig);
             }
         }
         // Use the restorer function defined in assembly.
@@ -525,9 +528,15 @@ impl Linux {
         HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
 
         extern "C" fn c_handler_siginfo(sig: i32, info: LinuxSiginfo, context: *mut c_void) {
+            is![sig < 1 || sig > LINUX_SIG_MAX as i32; return]; // Ignore invalid signals
             let handler = HANDLER.load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
-                let handler: fn(i32, LinuxSiginfo, *mut c_void) = unsafe { *handler };
+                #[expect(clippy::crosspointer_transmute, reason = "pointer to fn pointer")]
+                // SAFETY: we control both the storage and retrieval and ensure null checks.
+                let handler = unsafe {
+                    transmute::<*mut fn(i32, LinuxSiginfo, *mut c_void),
+                        fn(i32, LinuxSiginfo, *mut c_void)>(handler)
+                };
                 handler(sig, info, context);
             }
         }

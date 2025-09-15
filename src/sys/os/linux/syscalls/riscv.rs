@@ -357,6 +357,7 @@ impl Linux {
     #[must_use]
     #[doc = SYS_CLOCK_GETTIME!()]
     pub unsafe fn sys_clock_gettime(clock_id: c_int, tp: *mut LinuxTimespec) -> isize {
+        let result;
         unsafe {
             asm!(
                 "li a7, {CLOCK_GETTIME}",

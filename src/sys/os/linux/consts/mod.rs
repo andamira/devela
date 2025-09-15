@@ -8,7 +8,7 @@ pub(super) mod file; // LINUX_[FD|O_FLAGS].
 pub(super) mod ioctl; // LINUX_IOCTL.
 pub(super) mod signal; // LINUX_[SIGACTION|SIGNAL].
 pub(super) mod termios; // LINUX_TERMIOS_[I|O|C|L]FLAG.
-pub(super) mod time; // LINUX_TIME
+pub(super) mod time; // LINUX_CLOCK
 
 crate::structural_mods! { // _mods
     _mods {

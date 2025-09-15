@@ -378,10 +378,10 @@ Returns the syscall return value (0 for success, -1 for error with errno set).
 
 # Example
 ```
-# use devela::{Linux, LinuxTimespec, LINUX_TIME};
+# use devela::{Linux, LinuxTimespec, LINUX_CLOCK};
 let mut tp = LinuxTimespec::default();
 # #[cfg(target_os = "linux")]
-assert_eq![0, unsafe { Linux::sys_clock_gettime(LINUX_TIME::REALTIME as i32, &mut tp) }];
+assert_eq![0, unsafe { Linux::sys_clock_gettime(LINUX_CLOCK::REALTIME as i32, &mut tp) }];
 ```
 
 # Safety
