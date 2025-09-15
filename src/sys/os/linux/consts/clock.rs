@@ -1,6 +1,6 @@
 // devela::sys::os::linux::consts::clock
 //
-//! Defines [`LINUX_CLOCK`].
+//! Defines [`LinuxClock`].
 //
 
 use crate::{LINUX_ERRNO, Linux, LinuxError, LinuxResult as Result, LinuxTimespec, c_int};

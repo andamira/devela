@@ -13,13 +13,17 @@
 // - /tools/check.rs
 //
 
-mod namespace;
+mod helpers; // ARCH!
+mod namespace; // Arch
 mod reexports;
-mod wasm;
+mod wasm; // Wasm
+
+#[cfg(all(not(feature = "safe_sys"), feature = "unsafe_hint"))]
+mod instructions; // architecture-specific instructions
 
 crate::structural_mods! { // _mods, _always
     _mods {
-        pub use super::{namespace::*, reexports::*, wasm::*};
+        pub use super::{helpers::*, namespace::*, reexports::*, wasm::*};
     }
     _always {
         pub use super::reexports::*;

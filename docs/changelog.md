@@ -175,6 +175,10 @@ Many feature gates are removed in order to make most features make always availa
 - remove `TimeError` alias.
 
 ## sys
+### arch
+- new `Arch` methods: `cntvct`, `cycles`, `rdcycle`, `rdtsc`, `rdtscp`.
+- new internal macro `ARCH!`.
+
 ### env
 - vendor `argv` as `IterArgSOsRef` struct and `Env` method `args_os_ref`.
 
