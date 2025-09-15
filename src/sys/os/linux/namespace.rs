@@ -4,16 +4,15 @@
 //
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-crate::items! {
-    use crate::{
-        c_uint, c_void, is, transmute, AtomicOrdering, AtomicPtr, Duration, LinuxError,
-        LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
-        Ptr, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL,
-        LINUX_SIGACTION as SIGACTION, MaybeUninit, c_int,LinuxTermios, ScopeGuard, Str, TermSize,
-    };
-    #[cfg(feature = "alloc")]
-    use crate::Vec;
-}
+use crate::{
+    AtomicOrdering, AtomicPtr, Duration, Int, LINUX_CLOCK as CLOCK, LINUX_ERRNO as ERRNO,
+    LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxError,
+    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTermios, LinuxTimespec,
+    MaybeUninit, Ptr, ScopeGuard, Str, TermSize, c_int, c_uint, c_void, is, transmute,
+};
+
+#[cfg(all(feature = "unsafe_syscall", feature = "alloc", not(miri)))]
+use crate::Vec;
 
 #[doc = crate::TAG_NAMESPACE!()]
 /// Linux-related operations.
@@ -354,6 +353,28 @@ impl Linux {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
+    /// Gets clock resolution for the specified clock.
+    ///
+    /// It typically returns 1 ns even though the clock resolution may be coarser.
+    pub fn clock_getres(clock_id: c_int) -> Result<LinuxTimespec> {
+        let mut res = LinuxTimespec::default();
+        let ret = unsafe {
+            Self::sys_clock_getres(clock_id, res.as_mut_ptr())
+        };
+        if ret == 0 {
+            Ok(res)
+        } else {
+            Err(LinuxError::Sys(ret))
+        }
+    }
+
+    /// Gets the current time from the specified clock
+    pub fn clock_gettime(clock_id: c_int) -> Result<LinuxTimespec> {
+        let mut tp = LinuxTimespec::default();
+        let ret = unsafe { Self::sys_clock_gettime(clock_id, tp.as_mut_ptr()) };
+        is![ret == 0; Ok(tp); Err(LinuxError::Sys(ret))]
+    }
+
     /// Suspends execution of calling thread for the given `duration`.
     pub fn sleep(duration: Duration) -> Result<()> {
         let mut req = LinuxTimespec::with(duration);

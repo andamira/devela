@@ -365,12 +365,23 @@ unsafe { Linux::sys_getrandom(&mut r as *mut u8, 1, 0) };
 TODO
 "#;
 
-/* Timing and signal handling */// clock_gettime, nanosleep, rt_sigaction
+/* Timing and signal handling */// clock_[getres|gettime|…], nanosleep, rt_sigaction
+
+SYS_CLOCK_GETRES = r#"Performs a [clock_getres] syscall.
+
+Finds the resolution (precision) of the specified clock `clock_id`
+and stores it in the timespec structure pointed to by `tp`.
+
+[clock_getres]: https://www.man7.org/linux/man-pages/man2/clock_getres.2.html
+
+# Safety
+TODO
+"#;
 
 SYS_CLOCK_GETTIME = r#"Performs a [clock_gettime] syscall.
 
-Retrieves the time of the specified clock `clock_id` and stores it in
-the timespec structure pointed to by `tp`.
+Retrieves the time of the specified clock `clock_id`
+and stores it in the timespec structure pointed to by `res`.
 
 Returns the syscall return value (0 for success, -1 for error with errno set).
 

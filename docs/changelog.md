@@ -191,7 +191,8 @@ Many feature gates are removed in order to make most features make always availa
 ## os
 ### linux
 - new const struct `LINUX_CLOCK`.
-- new `Linux` syscall `sys_clock_gettime`.
+- new `Linux` methods: `clock_getres`, `clock_gettime`.
+- new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
 - fix `Linux`-related warnings & avoid use of `transmute`.
 
 ## text

@@ -8,14 +8,14 @@
 use super::{LinuxOffset, shared_docs::*};
 use crate::{
     AT_FDCWD, LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat, LinuxTimespec, asm, c_char,
-    c_int, c_uint, c_ulong,
+    c_int, c_uchar, c_uint, c_ulong,
 };
 
 /// # Syscalls: File descriptors.
 impl Linux {
     #[must_use]
     #[doc = SYS_READ!()]
-    pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
+    pub unsafe fn sys_read(fd: c_int, buf: *mut c_uchar, count: usize) -> isize {
         let result;
         unsafe {
             asm!(
@@ -33,7 +33,7 @@ impl Linux {
     }
     #[must_use]
     #[doc = SYS_WRITE!()]
-    pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
+    pub unsafe fn sys_write(fd: c_int, buf: *const c_uchar, count: usize) -> isize {
         let result;
         unsafe {
             asm!(
@@ -226,7 +226,7 @@ impl Linux {
     }
     #[must_use]
     #[doc = SYS_GETDENTS!()]
-    pub unsafe fn sys_getdents(fd: c_int, dirp: *mut u8, count: usize) -> isize {
+    pub unsafe fn sys_getdents(fd: c_int, dirp: *mut c_uchar, count: usize) -> isize {
         let result: isize;
         unsafe {
             asm!(
@@ -248,7 +248,7 @@ impl Linux {
 impl Linux {
     #[must_use]
     #[doc = SYS_IOCTL!()]
-    pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
+    pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut c_uchar) -> isize {
         let result;
         unsafe {
             asm!(
@@ -319,7 +319,7 @@ impl Linux {
     }
     #[must_use]
     #[doc = SYS_GETRANDOM!()]
-    pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
+    pub unsafe fn sys_getrandom(buffer: *mut c_uchar, size: usize, flags: c_uint) -> isize {
         let result;
         unsafe {
             asm!(
@@ -337,7 +337,7 @@ impl Linux {
     }
     #[must_use]
     #[doc = SYS_GETPID!()]
-    pub unsafe fn sys_getpid() -> i32 {
+    pub unsafe fn sys_getpid() -> c_int {
         let result: isize;
         unsafe {
             asm!(
@@ -348,12 +348,29 @@ impl Linux {
                 options(nostack)
             );
         }
-        result as i32
+        result as c_int
     }
 }
 
 /// # Syscalls: Timing and signal handling.
 impl Linux {
+    #[must_use]
+    #[doc = SYS_CLOCK_GETRES!()]
+    pub unsafe fn sys_clock_getres(clock_id: c_int, res: *mut LinuxTimespec) -> isize {
+        let result;
+        unsafe {
+            asm!(
+                "li a7, {CLOCK_GETRES}",
+                "ecall",
+                CLOCK_GETRES = const SYS::CLOCK_GETRES,
+                in("a0") clock_id,
+                in("a1") res,
+                lateout("a0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
     #[must_use]
     #[doc = SYS_CLOCK_GETTIME!()]
     pub unsafe fn sys_clock_gettime(clock_id: c_int, tp: *mut LinuxTimespec) -> isize {
@@ -368,8 +385,8 @@ impl Linux {
                 lateout("a0") result,
                 options(nostack)
             );
-            result
         }
+        result
     }
     #[must_use]
     #[doc = SYS_NANOSLEEP!()]

@@ -1,6 +1,6 @@
-// devela::sys::os::linux::consts::time
+// devela::sys::os::linux::consts::clock
 //
-//! Linux time-related constants.
+//! Defines [`LINUX_CLOCK`].
 //
 
 use crate::c_int;
