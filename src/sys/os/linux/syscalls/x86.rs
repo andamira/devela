@@ -322,12 +322,12 @@ impl Linux {
         let result;
         unsafe {
             asm!(
-                "mov r7, {CLOCK_GETRES}",
-                "svc 0",
+                "mov eax, {CLOCK_GETRES}",
+                "int 0x80",
                 CLOCK_GETRES = const SYS::CLOCK_GETRES,
-                in("r0") clock_id.as_raw(),
-                in("r1") res,
-                lateout("r0") result,
+                in("ebx") clock_id.as_raw(),
+                in("ecx") res,
+                lateout("eax") result,
                 options(nostack)
             );
         }

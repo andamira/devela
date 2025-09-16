@@ -3,7 +3,9 @@
 //! Defines [`LinuxClock`].
 //
 
-use crate::{LINUX_ERRNO, Linux, LinuxError, LinuxResult as Result, LinuxTimespec, c_int};
+use crate::{LINUX_ERRNO, LinuxError, LinuxResult as Result, c_int};
+#[allow(unused, reason = "±unsafe")]
+use crate::{Linux, LinuxTimespec};
 
 /// [`Linux`][crate::Linux] clock identifiers for
 /// [`sys_clock_gettime`][crate::Linux::sys_clock_gettime] and related time functions.
@@ -71,6 +73,30 @@ impl From<LinuxClock> for c_int {
 }
 
 impl LinuxClock {
+    /// Converts to the raw integer value for syscalls.
+    pub const fn as_raw(self) -> c_int {
+        self as c_int
+    }
+    /// Converts from a raw integer (for FFI or error handling).
+    pub const fn from_raw(value: c_int) -> Option<Self> {
+        match value {
+            0 => Some(Self::Realtime),
+            1 => Some(Self::Monotonic),
+            2 => Some(Self::ProcessCpuTimeId),
+            3 => Some(Self::ThreadCpuTimeId),
+            4 => Some(Self::MonotonicRaw),
+            5 => Some(Self::RealtimeCoarse),
+            6 => Some(Self::MonotonicCoarse),
+            7 => Some(Self::Boottime),
+            8 => Some(Self::RealtimeAlarm),
+            9 => Some(Self::BoottimeAlarm),
+            11 => Some(Self::Tai),
+            _ => None,
+        }
+    }
+}
+
+impl LinuxClock {
     /// Is this clock adjusted by NTP or system time changes?
     pub fn is_ntp_adjusted(self) -> bool {
         matches!(self, Self::Realtime | Self::RealtimeCoarse)
@@ -125,6 +151,8 @@ impl LinuxClock {
     }
 }
 
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
+#[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl LinuxClock {
     /// Gets the current time for this clock
     pub fn get_time(self) -> Result<LinuxTimespec> {
@@ -134,28 +162,6 @@ impl LinuxClock {
     /// Gets the resolution for this clock
     pub fn get_resolution(self) -> Result<LinuxTimespec> {
         Linux::clock_getres(self)
-    }
-
-    /// Converts to the raw integer value for syscalls.
-    pub const fn as_raw(self) -> c_int {
-        self as c_int
-    }
-    /// Converts from a raw integer (for FFI or error handling).
-    pub const fn from_raw(value: c_int) -> Option<Self> {
-        match value {
-            0 => Some(Self::Realtime),
-            1 => Some(Self::Monotonic),
-            2 => Some(Self::ProcessCpuTimeId),
-            3 => Some(Self::ThreadCpuTimeId),
-            4 => Some(Self::MonotonicRaw),
-            5 => Some(Self::RealtimeCoarse),
-            6 => Some(Self::MonotonicCoarse),
-            7 => Some(Self::Boottime),
-            8 => Some(Self::RealtimeAlarm),
-            9 => Some(Self::BoottimeAlarm),
-            11 => Some(Self::Tai),
-            _ => None,
-        }
     }
 }
 

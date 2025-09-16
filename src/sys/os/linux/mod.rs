@@ -45,7 +45,6 @@ pub mod io {
     #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
-        #[cfg(all(any_target_arch_linux, feature = "unsafe_syscall", not(miri)))]
         crate::items! {
             pub use super::super::{consts::termios::*, structs::{LinuxStat, LinuxTermios}};
         }
@@ -70,8 +69,7 @@ pub mod thread {
     #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
-        #[cfg(all(any_target_arch_linux, feature = "unsafe_syscall", not(miri)))]
-        pub use super::super::structs::LinuxTimespec;
+        pub use super::super::{consts::LinuxClock, structs::LinuxTimespec};
     }
 }
 

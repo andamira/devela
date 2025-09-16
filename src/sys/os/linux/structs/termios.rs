@@ -5,12 +5,12 @@
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
 
+use crate::c_uint;
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
     LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG, Linux, LinuxError,
-    LinuxResult as Result, is,
+    LinuxResult as Result, TermSize, is,
 };
-use crate::{TermSize, c_uint};
 
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.
@@ -72,18 +72,7 @@ impl LinuxTermios {
     }
 }
 
-#[cfg(all(
-    any(
-        target_arch = "x86_64",
-        target_arch = "x86",
-        target_arch = "arm",
-        target_arch = "aarch64",
-        target_arch = "riscv32",
-        target_arch = "riscv64"
-    ),
-    feature = "unsafe_syscall",
-    not(miri),
-))]
+#[cfg(all(any_target_arch_linux, feature = "unsafe_syscall", not(miri)))]
 impl LinuxTermios {
     /// Gets the current termios state into `state`.
     pub fn get_state() -> Result<LinuxTermios> {
