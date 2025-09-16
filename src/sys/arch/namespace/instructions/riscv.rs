@@ -5,8 +5,7 @@
 
 use crate::{Arch, asm};
 
-/// # RISC-V cycle counter access.
-#[cfg_attr(nightly_doc, doc(cfg(any_target_arch_riscv)))]
+/// # RISC-V instructions
 impl Arch {
     /// Reads the cycle counter using the `rdcycle` pseudo-instruction.
     ///

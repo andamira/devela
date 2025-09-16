@@ -18,9 +18,6 @@ mod namespace; // Arch
 mod reexports;
 mod wasm; // Wasm
 
-#[cfg(all(not(feature = "safe_sys"), feature = "unsafe_hint"))]
-mod instructions; // architecture-specific instructions
-
 crate::structural_mods! { // _mods, _always
     _mods {
         pub use super::{helpers::*, namespace::*, reexports::*, wasm::*};

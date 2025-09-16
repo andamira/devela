@@ -5,8 +5,7 @@
 
 use crate::{Arch, asm};
 
-/// # AArch64 cycle counter access.
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "aarch64")))]
+/// # AArch64 instructions
 impl Arch {
     /// Reads the Virtual Count Register (CNTVCT_EL0) using `mrs cntvct_el0`.
     ///

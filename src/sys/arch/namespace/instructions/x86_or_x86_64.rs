@@ -1,4 +1,4 @@
-// devela::sys::arch::instructions:x86_x86_64
+// devela::sys::arch::instructions:x86_or_x86_64
 //
 //! Implements processor instructions for both x86 and x86_64.
 //
@@ -10,8 +10,7 @@ use ::core::arch::x86::{__rdtscp, _rdtsc};
 #[cfg(target_arch = "x86_64")]
 use ::core::arch::x86_64::{__rdtscp, _rdtsc};
 
-/// # X86 / X86_64 cycle counter access.
-#[cfg_attr(nightly_doc, doc(cfg(any(target_arch = "x86", target_arch = "x86_64"))))]
+/// # X86 or X86_64 instructions
 impl Arch {
     /// Reads the current value of the processor’s time-stamp counter.
     ///

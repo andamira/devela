@@ -1,85 +1,89 @@
-// devela::sys::arch::namespace
+// devela::sys::arch::namespace::dep_safe_arch
 //
-//! Defines the [`Arch`] namespace.
+//! Implements [`Arch`] methods depending on `dep_safe_arch`.
 //
 // TOC
-// - impl Arch blocks
 // - macro helpers
-//   - impl_arch
-//   - arch_fn
+//   - arch_fn!
+//   - impl_arch!
+// - implementations
 
 #![allow(clippy::too_many_arguments)]
 
-#[cfg(feature = "dep_safe_arch")]
-use crate::_dep::safe_arch::*;
+use crate::{_dep::safe_arch::*, Arch};
 
-#[doc = crate::TAG_NAMESPACE!()]
-/// Arch-related functionality.
-///
-/// ---
-/// Implementations that depend on: `dep_safe_arch`, (`x86` or `x86_64`)
-/// and the respective target feature:
-/// - [none](#functions-not-requiring-any-target-feature).
-/// - [`adx`](#functions-requiring-the-adx-target-feature).
-/// - [`aes`](#functions-requiring-the-aes-target-feature).
-/// - [`avx`](#functions-requiring-the-avx-target-feature).
-/// - [`avx2`](#functions-requiring-the-avx2-target-feature).
-/// - [`bmi1`](#functions-requiring-the-bmi1-target-feature).
-/// - [`bmi2`](#functions-requiring-the-bmi2-target-feature).
-/// - [`fma`](#functions-requiring-the-fma-target-feature).
-/// - [`lzcnt`](#functions-requiring-the-lzcnt-target-feature).
-/// - [`pclmulqdq`](#functions-requiring-the-pclmulqdq-target-feature).
-/// - [`popcnt`](#functions-requiring-the-popcnt-target-feature).
-/// - [`rdrand`](#functions-requiring-the-rdrand-target-feature).
-/// - [`rdseed`](#functions-requiring-the-rdseed-target-feature).
-/// - [`sse`](#functions-requiring-the-sse-target-feature)
-///   ([generic](#generic-functions-requiring-the-sse-target-feature)).
-/// - [`sse2`](#functions-requiring-the-sse2-target-feature).
-/// - [`sse3`](#functions-requiring-the-sse3-target-feature).
-/// - [`sse4.1`](#functions-requiring-the-sse41-target-feature).
-/// - [`sse4.2`](#functions-requiring-the-sse42-target-feature).
-/// - [`ssse3`](#functions-requiring-the-ssse3-target-feature).
-#[derive(Debug)]
-pub struct Arch;
+/* macro helpers */
 
-impl Arch {
-    /// A portable, best-effort cycle counter for performance measurement.
-    ///
-    /// # Notes and Warnings
-    /// - The behavior and availability is entirely architecture-dependent.
-    /// - On x86, this uses the TSC. Ensure an 'invariant TSC' exists.
-    /// - On ARM (32-bit and 64-bit), this uses the Virtual Count Register (CNTVCT).
-    /// - On RISC-V, this uses the `rdcycle` instruction.
-    /// - The value is only meaningful for measuring relative durations on the same core.
-    #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_hint"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_hint")))]
-    #[cfg_attr(
-        nightly_doc,
-        doc(cfg(any(
-            target_arch = "x86",
-            target_arch = "x86_64",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64",
-        )))
-    )]
-    pub fn cycles() -> u64 {
-        crate::cfg_if! {
-            if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
-                Arch::rdtsc()
-            } else if #[cfg(target_arch = "arm")] {
-                Arch::cntvct()
-            } else if #[cfg(target_arch = "aarch64")] {
-                Arch::cntvct()
-            } else if #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))] {
-                Arch::rdcycle()
-            } else {
-                compile_error!("Cycle counter not implemented for this architecture");
-            }
+/// Helps to re-export standalone functions as namespaced methods of a struct.
+macro_rules! arch_fn {
+    () => {};
+    (   // Function with return type
+        $doc:literal,
+        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
+        ($($param:ident: $ty:ty),* $(,)?) -> $ret:ty
+     ) => { $crate::paste! { // NOTE: compiles faster using paste! than concat! + stringify!
+        #[doc = $doc]
+        // #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."]
+        #[doc = "\n\nSee in docs.rs: [`"
+            $fn_name "`](https://docs.rs/safe_arch/latest/safe_arch/fn." $fn_name ".html)."]
+        #[must_use]
+        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) -> $ret {
+            $fn_name$(::<$($const_name),*>)?($($param),*)
         }
-    }
+    }};
+    (   // Function without return type
+        $doc:literal,
+        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
+        ($($param:ident: $ty:ty),* $(,)?)
+    ) => { $crate::paste! {
+        #[doc = $doc]
+        // #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."]
+        #[doc = "\n\nSee in docs.rs:[`"
+            $fn_name "`](https://docs.rs/safe_arch/latest/safe_arch/fn." $fn_name ".html)."]
+        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) {
+            $fn_name$(::<$($const_name),*>)?($($param),*)
+        }
+    }};
+    (   // List of functions
+        $($doc:literal,
+        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
+        ($($param:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?);+ $(;)?
+    ) => {
+        $( arch_fn![
+            $doc,
+            $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) $(-> $ret)?
+        ]; )+
+    };
 }
+
+/// Generates an impl Arch block with optional conditional configurations and documentation.
+macro_rules! impl_arch {
+    (
+        $( #[doc = $doc:literal] )*
+        $( features = $( $feature:literal ),+ $(,)? )? // all
+        $( any_target_arch = $( $target_arch:literal ),+ $(,)? )? // any
+        $( target_features = $( $target_feature:literal ),+ $(,)? )? // all
+        ;
+        $($item:item)*
+    ) => {
+        $( #[doc = $doc] )*
+        $(
+        #[cfg(any($(feature = $feature),+))]
+        #[cfg_attr(nightly_doc, doc(cfg(any($(feature = $feature),+))))]
+        )?
+        $(
+        #[cfg(any($(target_arch = $target_arch),+))]
+        #[cfg_attr(nightly_doc, doc(cfg(any($(target_arch = $target_arch),+))))]
+        )?
+        $(
+        #[cfg(any($(target_feature = $target_feature),+))]
+        #[cfg_attr(nightly_doc, doc(cfg(any($(target_feature = $target_feature),+))))]
+        )?
+        impl Arch { $($item)* }
+    };
+}
+
+/* implementations */
 
 impl_arch! {
     #[doc = "# Functions not requiring any target feature.\n\n---"]
@@ -1825,76 +1829,3 @@ impl_arch! {
         sub_horizontal_saturating_i16_m128i(a: m128i, b: m128i) -> m128i;
     }
 }
-
-/* macro helpers */
-
-/// Generates an impl Arch block with optional conditional configurations and documentation.
-macro_rules! impl_arch {
-    (
-        $( #[doc = $doc:literal] )*
-        $( features = $( $feature:literal ),+ $(,)? )? // all
-        $( any_target_arch = $( $target_arch:literal ),+ $(,)? )? // any
-        $( target_features = $( $target_feature:literal ),+ $(,)? )? // all
-        ;
-        $($item:item)*
-    ) => {
-        $( #[doc = $doc] )*
-        $(
-        #[cfg(any($(feature = $feature),+))]
-        #[cfg_attr(nightly_doc, doc(cfg(any($(feature = $feature),+))))]
-        )?
-        $(
-        #[cfg(any($(target_arch = $target_arch),+))]
-        #[cfg_attr(nightly_doc, doc(cfg(any($(target_arch = $target_arch),+))))]
-        )?
-        $(
-        #[cfg(any($(target_feature = $target_feature),+))]
-        #[cfg_attr(nightly_doc, doc(cfg(any($(target_feature = $target_feature),+))))]
-        )?
-        impl Arch { $($item)* }
-    };
-}
-use impl_arch;
-
-/// Helps to re-export standalone functions as namespaced methods of a struct.
-#[allow(unused_macros, reason = "feature-gated")]
-macro_rules! arch_fn {
-    () => {};
-    (   // Function with return type
-        $doc:literal,
-        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
-        ($($param:ident: $ty:ty),* $(,)?) -> $ret:ty
-     ) => { $crate::paste! { // NOTE: compiles faster using paste! than concat! + stringify!
-        #[doc = $doc]
-        #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."] // faster
-        // #[doc = concat!("\n\nSee: [`", stringify!($fn_name), "`][", stringify!($fn_name), "].")]
-        #[must_use]
-        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) -> $ret {
-            $fn_name$(::<$($const_name),*>)?($($param),*)
-        }
-    }};
-    (   // Function without return type
-        $doc:literal,
-        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
-        ($($param:ident: $ty:ty),* $(,)?)
-    ) => { $crate::paste! {
-        #[doc = $doc]
-        #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."] // faster
-        // #[doc = concat!("\n\nSee: [`", stringify!($fn_name), "`][", stringify!($fn_name), "].")]
-        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) {
-            $fn_name$(::<$($const_name),*>)?($($param),*)
-        }
-    }};
-    (   // List of functions
-        $($doc:literal,
-        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
-        ($($param:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?);+ $(;)?
-    ) => {
-        $( arch_fn![
-            $doc,
-            $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) $(-> $ret)?
-        ]; )+
-    };
-}
-#[allow(unused_imports, reason = "feature-gated")]
-use arch_fn;

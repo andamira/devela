@@ -5,8 +5,7 @@
 
 use crate::{Arch, asm};
 
-/// # ARM cycle counter access.
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "arm")))]
+/// # ARM instructions
 impl Arch {
     /// Reads the Virtual Count Register (CNTVCT) using the appropriate instruction.
     ///
