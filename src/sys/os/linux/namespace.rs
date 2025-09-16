@@ -377,7 +377,7 @@ impl Linux {
 
     /// Suspends execution of calling thread for the given `duration`.
     pub fn sleep(duration: Duration) -> Result<()> {
-        let mut req = LinuxTimespec::with(duration);
+        let mut req = LinuxTimespec::with_saturating_duration(duration);
         let mut rem = LinuxTimespec::default();
         loop {
             let n = unsafe { Linux::sys_nanosleep(req.as_ptr(), rem.as_mut_ptr()) };

@@ -199,6 +199,12 @@ Many feature gates are removed in order to make most features make always availa
 - new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
 - fix `Linux`-related warnings & avoid use of `transmute`.
 - rename syscalls doc constants, prefix with `_DOC_`.
+- improve `LinuxTimespec`.
+  - impl `Display` and `ConstDefault`
+  - rename method `with` to `try_with_duration` and make fallible.
+  - add corresponding method `try_to_duration`.
+  - add saturating methods to convert from/to `Duration`.
+  - add corresponding conversions and methods from/to `TimeDelta`.
 
 ## text
 - move to [base]:
