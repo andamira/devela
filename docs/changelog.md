@@ -91,6 +91,7 @@ Many feature gates are removed in order to make most features make always availa
   - test all workspace crates.
   - start testing without dependencies.
   - remove `itertools` direct dependency.
+  - simplify and homogeinize toolchain selection syntax.
   - configure the exact nightly version to install and use.
 - update `config/rustdoc-header.html` to support multiple crates with custom whitelists.
 - move `/config/dep_all.rs` to `/build/main/dep_all`.
