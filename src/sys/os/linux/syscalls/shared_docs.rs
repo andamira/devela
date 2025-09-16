@@ -414,7 +414,7 @@ Returns the syscall return value.
 # Example
 ```
 # use devela::{Duration, Linux, LinuxTimespec};
-let mut req = LinuxTimespec::from(Duration::from_millis(99));
+let mut req = LinuxTimespec::try_from(Duration::from_millis(99)).unwrap();
 let mut rem = LinuxTimespec::default();
 # #[cfg(target_os = "linux")]
 assert_eq![0, unsafe { Linux::sys_nanosleep(&mut req, &mut rem) }];

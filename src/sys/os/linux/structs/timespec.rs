@@ -134,12 +134,16 @@ impl TryFrom<LinuxTimespec> for Duration {
         timespec.try_to_duration()
     }
 }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl TryFrom<TimeDelta> for LinuxTimespec {
     type Error = Overflow;
     fn try_from(time_delta: TimeDelta) -> Result<Self, Self::Error> {
         Self::try_with_time_delta(time_delta)
     }
 }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl TryFrom<LinuxTimespec> for TimeDelta {
     type Error = Overflow;
     fn try_from(timespec: LinuxTimespec) -> Result<Self, Self::Error> {

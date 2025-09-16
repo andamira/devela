@@ -440,14 +440,14 @@ impl Linux {
     /// # Examples
     /// ```no_run
     /// # #[cfg(feature = "std")] {
-    /// # use devela::{Linux, LINUX_SIGNAL, sleep4};
+    /// # use devela::{Linux, LINUX_SIGNAL, Thread, ExtThread};
     /// fn handler(sig: i32) {
     ///    println!("\nsignal `{sig}` received! continuing. . .");
     /// }
     /// fn main() {
     ///     println!("press Ctrl+C, or resize the terminal to catch the signals");
     ///     Linux::sig_handler(handler, &[LINUX_SIGNAL::SIGINT, LINUX_SIGNAL::SIGWINCH], None);
-    ///     sleep4!(5);
+    ///     Thread::sleep_ms(4_000);
     ///     println!("bye");
     /// }
     /// # }
@@ -522,7 +522,9 @@ impl Linux {
     ///
     /// # Examples
     /// ```no_run
-    /// # use devela::{c_void, sleep4, Linux, LinuxSiginfo, LINUX_SIGNAL, LINUX_SIGACTION};
+    /// # #[cfg(feature = "std")]
+    /// # use devela::{Thread, ExtThread};
+    /// # use devela::{c_void, Linux, LinuxSiginfo, LINUX_SIGNAL, LINUX_SIGACTION};
     /// fn handler(sig: i32, info: LinuxSiginfo, _context: *mut c_void) {
     ///     println!("Signal {} received from PID {}!", sig, info.pid());
     /// }
@@ -533,7 +535,8 @@ impl Linux {
     ///     println!("press Ctrl+C, to trigger SIGINT");
     ///     loop {
     ///         println!("Waiting for signal...");
-    ///         sleep4!(1);
+    ///         #[cfg(feature = "std")]
+    ///         Thread::sleep_ms(1_000);
     ///     }
     /// }
     /// ```

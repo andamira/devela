@@ -18,17 +18,6 @@ impl Arch {
     #[must_use]
     pub fn rdtsc() -> u64 {
         unsafe { _rdtsc() }
-
-        // let [low, high]: [u32; 2];
-        // unsafe {
-        //     asm!(
-        //         "rdtsc",
-        //         out("eax") low,
-        //         out("edx") high,
-        //         options(nomem, nostack, preserves_flags)
-        //     );
-        // }
-        // ((high as u64) << 32) | (low as u64)
     }
 
     /// Reads the current value of the processor’s time-stamp counter and the processor ID.
@@ -43,17 +32,5 @@ impl Arch {
         let mut aux: u32 = 0;
         let res = unsafe { __rdtscp(&mut aux as *mut u32) };
         (res, aux)
-
-        // let [low, high, aux]: [u32; 3];
-        // unsafe {
-        //     asm!(
-        //         "rdtscp",
-        //         out("eax") low,
-        //         out("edx") high,
-        //         out("ecx") aux,
-        //         options(nomem, nostack)
-        //     );
-        // }
-        // (((high as u64) << 32) | (low as u64), aux)
     }
 }

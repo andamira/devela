@@ -3,9 +3,9 @@
 //! Defines [`LinuxClock`].
 //
 
-use crate::{LINUX_ERRNO, LinuxError, LinuxResult as Result, c_int};
 #[allow(unused, reason = "±unsafe")]
-use crate::{Linux, LinuxTimespec};
+use crate::{Duration, Linux, LinuxTimespec};
+use crate::{LINUX_ERRNO, LinuxError, LinuxResult as Result, c_int};
 
 /// [`Linux`][crate::Linux] clock identifiers for
 /// [`sys_clock_gettime`][crate::Linux::sys_clock_gettime] and related time functions.
@@ -157,6 +157,11 @@ impl LinuxClock {
     /// Gets the current time for this clock
     pub fn get_time(self) -> Result<LinuxTimespec> {
         Linux::clock_gettime(self)
+    }
+    /// Gets the current time for this clock
+    pub fn get_duration(self) -> Result<Duration> {
+        // MAYBE IMPROVE Return Overflow, add conversion to LinuxResult
+        Linux::clock_gettime(self).map(|ts| ts.to_saturating_duration())
     }
 
     /// Gets the resolution for this clock
