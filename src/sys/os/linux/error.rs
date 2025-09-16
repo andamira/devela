@@ -2,8 +2,14 @@
 //
 //! Defines [`LinuxError`] and [`LinuxResult`].
 //
+// TOC
+// - type LinuxResult
+// - enum LinuxError
+// - from/into IoError
+// - from Overflow
+// - to LINUX_EXIT
 
-use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO, LINUX_EXIT as EXIT, is};
+use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO, LINUX_EXIT as EXIT, Overflow, is};
 
 #[doc = crate::TAG_RESULT!()]
 /// The return type for Linux-related functions that can fail.
@@ -27,8 +33,8 @@ pub enum LinuxError {
     NoInput,
     /// The input was not a valid UTF-8 sequence.
     InvalidUtf8,
-    // /// A custom error with a static string message.
-    // Other(&'static str),
+    /// A custom error with a static string message.
+    Other(&'static str),
 }
 macro_rules! match_linux_to_io {
     ($self:ident) => {
@@ -73,7 +79,7 @@ macro_rules! match_linux_to_io {
             }
             LinuxError::NoInput => IoError::new(IoErrorKind::UnexpectedEof, "no input available"),
             LinuxError::InvalidUtf8 => IoError::new(IoErrorKind::InvalidData, "invalid UTF-8 data"),
-            // LinuxError::Other(s) => IoError::new(IoErrorKind::Other, s),
+            LinuxError::Other(s) => IoError::new(IoErrorKind::Other, s),
         }
     };
 }
@@ -127,6 +133,12 @@ impl From<IoError> for LinuxError {
     }
 }
 
+impl From<Overflow> for LinuxError {
+    fn from(_err: Overflow) -> Self {
+        LinuxError::Other("Overflow.")
+    }
+}
+
 impl LinuxError {
     /// Convert the error to [`LINUX_EXIT`][EXIT] with guaranteed valid value (0..=255).
     ///
@@ -159,7 +171,7 @@ impl LinuxError {
             }
             LinuxError::NoInput => EXIT::NOINPUT,
             LinuxError::InvalidUtf8 => EXIT::DATAERR,
-            // LinuxError::Other(_s) => EXIT::FAILURE,
+            LinuxError::Other(_s) => EXIT::FAILURE,
         }
     }
 }

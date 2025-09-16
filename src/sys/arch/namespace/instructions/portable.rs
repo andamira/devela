@@ -6,8 +6,6 @@
 use crate::{Arch, cfg_if};
 
 /// # Portable abstractions over architecture-dependent instructions.
-#[cfg(all(not(feature = "safe_sys"), feature = "unsafe_hint"))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_hint")))]
 #[cfg(any_target_arch_linux)]
 #[cfg_attr(
     nightly_doc,

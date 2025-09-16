@@ -5,7 +5,7 @@
 
 mod portable; // portable abstractions on top
 
-#[cfg(any(doc, any(target_arch = "x86_64", target_arch = "x86_64")))]
+#[cfg(any(doc, any(target_arch = "x86", target_arch = "x86_64")))]
 #[cfg_attr(nightly_doc, doc(cfg(any(target_arch = "x86", target_arch = "x86_64"))))]
 mod x86_or_x86_64;
 // #[cfg(any(doc, target_arch = "x86_64"))]

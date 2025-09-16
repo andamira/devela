@@ -3,6 +3,7 @@
 //! Defines the [`Arch`] namespace.
 //
 
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_hint")))]
 #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_hint"))]
 mod instructions; // architecture-specific instructions
 

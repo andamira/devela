@@ -16,6 +16,7 @@ impl Arch {
     ///
     #[doc = concat!("See `::core::arch::", ARCH!(), "::`[`_rdtsc()`].")]
     #[must_use]
+    #[inline(always)]
     pub fn rdtsc() -> u64 {
         unsafe { _rdtsc() }
     }
@@ -25,9 +26,9 @@ impl Arch {
     /// The processor ID:
     /// - is a CPU core identifier (logical/core number), not a process ID.
     /// - is tipically a small u32 (e.g., 0 to N-1 for N cores).
-    ///
     #[doc = concat!("See `::core::arch::", ARCH!(), "::`[`__rdtscp()`].")]
     #[must_use]
+    #[inline(always)]
     pub fn rdtscp() -> (u64, u32) {
         let mut aux: u32 = 0;
         let res = unsafe { __rdtscp(&mut aux as *mut u32) };

@@ -160,8 +160,7 @@ impl LinuxClock {
     }
     /// Gets the current time for this clock
     pub fn get_duration(self) -> Result<Duration> {
-        // MAYBE IMPROVE Return Overflow, add conversion to LinuxResult
-        Linux::clock_gettime(self).map(|ts| ts.to_saturating_duration())
+        Linux::clock_gettime(self).and_then(|ts| ts.try_to_duration().map_err(Into::into))
     }
 
     /// Gets the resolution for this clock

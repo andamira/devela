@@ -32,19 +32,19 @@ define_error! { individual: pub struct DataOverflow(pub Option<usize>);
     DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.",
     self+f => if let Some(v) = self.0 {
         write!(f, "The value {v} has surpassed the bounds of the representable data space.")
-    } else { write!(f, "The value has surpassed the bounds of the representable data space.") }
+    } else { f.write_str(DOC_DATA_OVERFLOW!()) }
 }
 define_error! { individual: pub struct ElementNotFound;
     +tag: TAG_DATA!(),
     DOC_ELEMENT_NOT_FOUND = "The requested element has not been found.",
-    self+f => write!(f, "The requested element has not been found."),
+    self+f => f.write_str(DOC_ELEMENT_NOT_FOUND!()),
 }
 define_error! { individual: pub struct IndexOutOfBounds(pub Option<usize>);
     +tag: TAG_DATA!(),
     DOC_INDEX_OUT_OF_BOUNDS = "The given index is out of bounds.\n\n
 Optionally contains the given index.",
     self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
-    } else { write!(f, "The given index is out of bounds.") }
+    } else { f.write_str("The given index is out of bounds.") }
 }
 define_error! { individual: pub struct InvalidAxisLength(pub Option<usize>);
     +tag: TAG_DATA!(),
@@ -52,12 +52,12 @@ define_error! { individual: pub struct InvalidAxisLength(pub Option<usize>);
 Optionally contains the given axis number.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Axis number {n} has 0 length, which is not allowed.")
-    } else { write!(f, "One ore more axis have 0 length, which is not allowed.") }
+    } else { f.write_str("One ore more axis have 0 length, which is not allowed.") }
 }
 define_error! { individual: pub struct KeyAlreadyExists;
     +tag: TAG_DATA!(),
     DOC_KEY_ALREADY_EXISTS = "The key already exists.",
-    self+f => write!(f, "The key already exists.")
+    self+f => f.write_str(DOC_KEY_ALREADY_EXISTS!())
 }
 define_error! { individual: pub struct MismatchedCapacity(pub Mismatch<Interval<usize>, usize>);
     +tag: TAG_DATA!(),
@@ -84,25 +84,25 @@ define_error! { individual: pub struct MismatchedDimensions(pub Mismatch<usize, 
 define_error! { individual: pub struct MismatchedIndices;
     +tag: TAG_DATA!(),
     DOC_MISMATCHED_INDICES = "The given indices does not match the expected order.",
-    self+f => write!(f, "The given indices does not match the expected order.")
+    self+f => f.write_str(DOC_MISMATCHED_INDICES!())
 }
 define_error! { individual: pub struct NodeEmpty(pub Option<usize>);
     +tag: TAG_DATA!(),
     DOC_NODE_EMPTY = "The node is empty.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node `{n}` is empty.")
-    } else { write!(f, "The node is empty.") }
+    } else { f.write_str(DOC_NODE_EMPTY!()) }
 }
 define_error! { individual: pub struct NodeLinkNotSet(pub Option<usize>);
     +tag: TAG_DATA!(),
-    DOC_NODE_LINK_NOT_SET = "The link is not set.",
+    DOC_NODE_LINK_NOT_SET = "The node link is not set.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not set.")
-    } else { write!(f, "The node link is not set.") }
+    } else { f.write_str(DOC_NODE_LINK_NOT_SET!()) }
 }
 define_error! { individual: pub struct NodeLinkNotUnique(pub Option<usize>);
     +tag: TAG_DATA!(),
-    DOC_NODE_LINK_NOT_UNIQUE = "The link is not unique.",
+    DOC_NODE_LINK_NOT_UNIQUE = "The node link is not unique.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
-    } else { write!(f, "The node link is not unique.") }
+    } else { f.write_str(DOC_NODE_LINK_NOT_UNIQUE!()) }
 }
 define_error! { individual: pub struct NotEnoughElements(pub Option<usize>);
     +tag: TAG_DATA!(),
@@ -110,7 +110,7 @@ define_error! { individual: pub struct NotEnoughElements(pub Option<usize>);
 Optionally contains the minimum number of elements needed.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough elements. Needs at least `{n}` elements.")
-    } else { write!(f, "Not enough elements.") }
+    } else { f.write_str("Not enough elements.") }
 }
 define_error! { individual: pub struct NotEnoughSpace(pub Option<usize>);
     +tag: TAG_DATA!(),
@@ -118,14 +118,14 @@ define_error! { individual: pub struct NotEnoughSpace(pub Option<usize>);
 Optionally contains the number of free spaces needed.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
-    } else { write!(f, "Not enough space.") }
+    } else { f.write_str("Not enough space.") }
 }
 define_error! { individual: pub struct PartiallyAdded(pub Option<usize>);
     +tag: TAG_DATA!(),
     DOC_PARTIALLY_ADDED = "The operation could only add a subset of the elements.\n\n
 Optionally contains the number of elements added.",
     self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements could be added.")
-    } else { write!(f, "Only a subset of elements could be added.") }
+    } else { f.write_str("Only a subset of elements could be added.") }
 }
 
 /* composite errors */

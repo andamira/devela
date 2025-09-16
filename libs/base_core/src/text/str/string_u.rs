@@ -504,7 +504,7 @@ macro_rules! impl_str_u {
 
         impl<const CAP: usize> Display for $name<CAP> {
             fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-                write!(f, "{}", self.as_str())
+                f.write_str(self.as_str())
             }
         }
 
