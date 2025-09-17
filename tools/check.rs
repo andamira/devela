@@ -77,7 +77,6 @@ const ROOT_MODULES: [&str; 11 + 1] = [
 #[rustfmt::skip]
 const SUB_MODULES: &[&str] = &[
     // code
-    "error",
     // data
     "hash",
     // game
@@ -88,8 +87,6 @@ const SUB_MODULES: &[&str] = &[
     // num
     "geom",
         "linear", "metric", "shape",
-    "prim",
-        "cast", "join", "split",
     "rand",
     "unit",
     // phys
@@ -100,7 +97,7 @@ const SUB_MODULES: &[&str] = &[
     "mem",
         "bit",
     // text
-    "ascii", "fmt", "str",
+    "str",
     // ui
     "layout",
     /* front */

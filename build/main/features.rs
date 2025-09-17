@@ -285,7 +285,7 @@ mod reflection {
         };
     pub const TEXT: FlagsFeatures = FlagsFeatures {
         ref_flags: &["text··"],
-        features: &["text", "fmt", "str"]
+        features: &["text", "str"]
     };
     pub const UI: FlagsFeatures = FlagsFeatures {
         ref_flags: &["ui··"],

@@ -6,9 +6,7 @@ use super::super::{
     DitherConf, PixelFormat, SIXEL_PALETTE_MAX, SixelColorModel, SixelEncodePolicy, SixelQuality,
 };
 use super::{SixelNode, SixelOutput};
-#[cfg(feature = "fmt")]
-use crate::NumToStr;
-use crate::{IoWrite, SixelError, SixelResult, Vec, is, sf, vec_ as vec};
+use crate::{IoWrite, NumToStr, SixelError, SixelResult, Vec, is, sf, vec_ as vec};
 
 impl<W: IoWrite> SixelOutput<W> {
     /* GNU Screen penetration */
@@ -67,13 +65,8 @@ impl<W: IoWrite> SixelOutput<W> {
     /// # Features
     /// Uses the `fmt` feature to use [`NumToStr`][crate::NumToStr]
     pub(crate) fn puti(&mut self, i: i32) {
-        #[cfg(not(feature = "fmt"))]
-        self.puts(crate::format!("{}", i).as_str());
-        #[cfg(feature = "fmt")]
-        {
-            let mut buf = [0u8; 11];
-            self.puts(i.to_str_base(10, &mut buf));
-        }
+        let mut buf = [0u8; 11];
+        self.puts(i.to_str_base(10, &mut buf));
     }
 
     /// Writes a byte value to the output as a string.
@@ -82,13 +75,8 @@ impl<W: IoWrite> SixelOutput<W> {
     /// Uses the `fmt` feature to use [`NumToStr`][crate::NumToStr]
     #[expect(unused, reason = "…")]
     pub(crate) fn putb(&mut self, b: u8) {
-        #[cfg(not(feature = "fmt"))]
-        self.puts(crate::format!("{}", b).as_str());
-        #[cfg(feature = "fmt")]
-        {
-            let mut buf = [0u8; 3];
-            self.puts(b.to_str_base(10, &mut buf));
-        }
+        let mut buf = [0u8; 3];
+        self.puts(b.to_str_base(10, &mut buf));
     }
 
     /// Returns the saved pixel as a character.

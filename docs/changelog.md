@@ -45,7 +45,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ## features & flags
 - new features: `__build`, `__publish`, `base_safe`, `safe_build`.
-- remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `join`, `prim`, `split`.
+- remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `fmt`, `join`, `prim`, `split`.
 - remove flags: `bit··`, `char··`, `cmp··`, `_float··`, `_int*··`, `_nums··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - rename `_docs` to _`docs_min`, `_docsrs` to `_docs`, `_docsrs_nodep` to `_docs_nodep`.
 - add default feature `alloc` to [base_alloc].
