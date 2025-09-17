@@ -76,8 +76,6 @@ macro_rules! impl_trait {
 #[doc(inline)]
 pub use impl_trait;
 
-// TODO
-/*
 #[cfg(test)]
 #[rustfmt::skip]
 mod tests {
@@ -116,4 +114,3 @@ mod tests {
         assert_eq!(format_buf!(&mut buf, "{:?}", g2).unwrap(), "GS? { v1: 3.14, v2: 159 }");
     }
 }
-*/

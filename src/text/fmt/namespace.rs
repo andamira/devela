@@ -52,7 +52,7 @@ impl Fmt {
     pub fn format_buf<'a>(buf: &'a mut [u8], args: FmtArguments) -> Result<&'a str, &'a str> {
         let mut w = FmtWriter::new(buf);
         let _ = Fmt::write(&mut w, args);
-        if w.is_truncated() { Err(w.as_str()) } else { Ok(w.as_str()) }
+        if w.is_truncated() { Err(w.into_str()) } else { Ok(w.into_str()) }
     }
 
     /// Takes an output stream and an `FmtArguments` struct
