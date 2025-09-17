@@ -149,6 +149,7 @@ Many feature gates are removed in order to make most features make always availa
 ### list
 - move to [base]:
   - type `ConstList`.
+- make all `bitfield!` methods consts.
 
 ## lang
 - rename `lang::ling` to `lang::hum`.
