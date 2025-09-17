@@ -8,7 +8,6 @@
 crate::mod_path!(_c "../../../libs/base_core/src/text/fmt/reexports.rs");
 crate::mod_path!(alloc _a "../../../libs/base_alloc/src/text/fmt/reexports.rs");
 
-mod buf;
 mod namespace; // Fmt
 
 // WIPZONE
@@ -17,12 +16,12 @@ mod namespace; // Fmt
 
 crate::structural_mods! { // _mods, _always
     _mods {
-        pub use super::{_c::*, buf::*, namespace::*};
+        pub use super::{_c::*, namespace::*};
         #[cfg(feature = "alloc")]
         pub use super::_a::*;
 
         #[doc(inline)]
-        pub use devela_base_core::text::fmt::NumToStr;
+        pub use devela_base_core::text::fmt::{FmtWriter, NumToStr, format_buf};
 
         // WIPZONE
         // pub use super::case::*;

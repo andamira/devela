@@ -218,6 +218,9 @@ Many feature gates are removed in order to make most features make always availa
   - rename method: `calc_digit` to `digit_at_power`.
 
 ### fmt
+- move to [base]:
+  - macros: `format_buf!`.
+  - types: `FmtWriter`.
 - new type: `FmtWriter`.
 
 ### str

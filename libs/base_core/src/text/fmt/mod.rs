@@ -4,12 +4,14 @@
 // #![doc = crate::doc_!(extends: fmt)]
 //
 
-mod num_to_str;
+mod buf; // FmtWriter, format_buf!
+mod num_to_str; // NumToStr
 mod reexports;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            buf::*,
             num_to_str::*,
             reexports::*,
         };
