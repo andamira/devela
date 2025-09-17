@@ -3,7 +3,7 @@
 //! Defines [`TermSize`].
 //
 
-#[doc = crate::TAG_FFI!()]
+#[doc = crate::_TAG_FFI!()]
 /// The size of the terminal.
 ///
 /// ## Used by

@@ -5,7 +5,7 @@
 
 use crate::_reexport;
 
-#[doc = crate::TAG_PROCEDURAL_MACRO!()] #[rustfmt::skip]
+#[doc = crate::_TAG_PROCEDURAL_MACRO!()] #[rustfmt::skip]
 pub use devela_base_macros::{
     cif, compile, compile_attr,
     ident_total, ident_total_unique, ident_unique,
@@ -64,7 +64,7 @@ _reexport! { rust: core,
 doc: "Parses a file as an expression or an item according to the context.", include }
 _reexport! { rust: core,
 doc: "Includes a file as a reference to a byte array.", include_bytes }
-_reexport! { rust: core, tag: crate::TAG_TEXT!(),
+_reexport! { rust: core, tag: crate::_TAG_TEXT!(),
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
 // concatenating

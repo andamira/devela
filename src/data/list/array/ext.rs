@@ -5,20 +5,20 @@
 
 use crate::{Debug, Display, FmtResult, Formatter};
 
-#[doc = crate::TAG_FMT!()]
+#[doc = crate::_TAG_FMT!()]
 /// A formatting wrapper for core [arrays][array], implementing [`Display`] and [`Debug`].
 ///
 /// It is created by the [`ExtArray::fmt`] method.
 #[repr(transparent)]
 pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
 
-#[doc = crate::TAG_FMT!()]
+#[doc = crate::_TAG_FMT!()]
 /// Private trait for arrays with elements that implement [`Display`].
 trait ArrayDisplay: ExtArray {
     fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()>;
 }
 
-#[doc = crate::TAG_FMT!()]
+#[doc = crate::_TAG_FMT!()]
 /// Private trait for arrays with elements that implement [`Debug`].
 ///
 /// This trait is a bit redundant since arrays of any size can impl `Debug`,
@@ -42,7 +42,7 @@ impl<T: ArrayDebug> Debug for ArrayFmt<'_, T> {
 trait Sealed {}
 impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Extension trait providing convenience methods for [`[T; N]`][array] arrays.
 ///
 /// This trait is sealed and cannot be implemented for any other type.

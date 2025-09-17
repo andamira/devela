@@ -44,7 +44,7 @@ _reexport! { rust: std::fs,
     DirEntry
 }
 _reexport! { rust: std::fs,
-    tag: crate::TAG_ITERATOR!(),
+    tag: crate::_TAG_ITERATOR!(),
     doc: "Iterator over the entries in a directory.",
     @ReadDir as IterDirRead
 }

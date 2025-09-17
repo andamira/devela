@@ -9,7 +9,7 @@ _reexport! { rust: core::cmp, doc: "A helper struct for reverse ordering.",
     Reverse
 }
 _reexport! { rust: core::cmp,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "The result of a comparison between two values.",
     Ordering
 }

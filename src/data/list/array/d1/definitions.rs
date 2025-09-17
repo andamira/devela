@@ -7,7 +7,7 @@ use crate::{Bare, Storage};
 // #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
 // use rkyv::{Archive, Deserialize, Serialize};
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A static 1-dimensional array backed by the core [array] primitive.
 ///
 /// It is generic in respect to its

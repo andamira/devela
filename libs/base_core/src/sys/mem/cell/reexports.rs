@@ -6,12 +6,12 @@
 use crate::_reexport;
 
 _reexport! { rust: core::cell,
-    tag: crate::TAG_ERROR!(),
+    tag: crate::_TAG_ERROR!(),
     doc: "An error returned by [`RefCell::try_borrow`].",
     @BorrowError as RefCellBorrowError
 }
 _reexport! { rust: core::cell,
-    tag: crate::TAG_ERROR!(),
+    tag: crate::_TAG_ERROR!(),
     doc: "An error returned by [`RefCell::try_borrow_mut`].",
     @BorrowMutError as RefCellBorrowMutError
 }

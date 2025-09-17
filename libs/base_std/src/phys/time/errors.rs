@@ -18,7 +18,7 @@ use crate::{Duration, StdSystemTimeError, define_error};
 define_error! { individual:
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub struct SystemTimeError(Duration);
-    +tag: crate::TAG_TIME!(),
+    +tag: crate::_TAG_TIME!(),
     DOC_SYSTEM_TIME_ERROR =
     "Returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
@@ -50,7 +50,7 @@ mod full_composite {
     }
 
     define_error! { composite: fmt(f)
-        #[doc = crate::TAG_TIME!()]
+        #[doc = crate::_TAG_TIME!()]
         /// A time-related composite error.
         #[non_exhaustive]
         pub enum TimeError {

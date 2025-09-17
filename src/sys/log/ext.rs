@@ -4,7 +4,7 @@ use super::{LogConfig, LogLevelFilter, Logger};
 #[cfg(feature = "alloc")]
 use crate::Box;
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Logger`]s.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]
 pub trait ExtLogger: Logger {

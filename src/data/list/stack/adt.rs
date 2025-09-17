@@ -11,7 +11,7 @@
 
 use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// An abstract *stack* data type.
 pub trait DataStack: DataCollection {
     /// Remove an element from the (back of the) stack.
@@ -23,7 +23,7 @@ pub trait DataStack: DataCollection {
     ) -> Result<(), NotEnoughSpace>;
 }
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// An abstract *double-ended stack* data type.
 pub trait DataDesta: DataStack {
     /// Remove an element from the front of the stack.

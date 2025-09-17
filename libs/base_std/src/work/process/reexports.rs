@@ -47,12 +47,12 @@ _reexport! { rust: std::process,
     @CommandEnvs as ProcessCommandEnvs
 }
 _reexport! { rust: std::process,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "The status code the process returns to its parent on normal termination.",
     @ExitCode as ProcessExitCode
 }
 _reexport! { rust: std::process,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "Describes the result of a process after it has terminated.",
     @ExitStatus as ProcessExitStatus
 }

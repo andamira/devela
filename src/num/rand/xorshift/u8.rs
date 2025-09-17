@@ -5,7 +5,7 @@
 
 use crate::{ConstDefault, Own, xorshift_basis};
 
-#[doc = crate::TAG_RAND!()]
+#[doc = crate::_TAG_RAND!()]
 /// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has an 8-bit state and generates 8-bit numbers.

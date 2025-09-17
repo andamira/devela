@@ -1,6 +1,6 @@
 // devela::lang::ffi::js::web::permission
 
-use crate::{TAG_EXPERIMENTAL, TAG_NON_STANDARD, js_int32};
+use crate::{_TAG_EXPERIMENTAL, _TAG_NON_STANDARD, js_int32};
 
 /// # Web API permissions
 ///
@@ -9,24 +9,24 @@ use crate::{TAG_EXPERIMENTAL, TAG_NON_STANDARD, js_int32};
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(u8)]
 pub enum WebPermission {
-    #[doc = TAG_EXPERIMENTAL!()]
+    #[doc = _TAG_EXPERIMENTAL!()]
     /// Access to accelerometer sensor data.
     Accelerometer,
-    #[doc = TAG_EXPERIMENTAL!()]
+    #[doc = _TAG_EXPERIMENTAL!()]
     /// Background sync capability for web applications.
     BackgroundSync,
     /// Access to the device camera.
     Camera,
-    #[doc = TAG_EXPERIMENTAL!()]
-    #[doc = TAG_NON_STANDARD!()]
+    #[doc = _TAG_EXPERIMENTAL!()]
+    #[doc = _TAG_NON_STANDARD!()]
     /// Read access to the system clipboard.
     ClipboardRead,
-    #[doc = TAG_EXPERIMENTAL!()]
+    #[doc = _TAG_EXPERIMENTAL!()]
     /// Write access to the system clipboard.
     ClipboardWrite,
     /// Access to device geolocation data.
     Geolocation,
-    #[doc = TAG_EXPERIMENTAL!()]
+    #[doc = _TAG_EXPERIMENTAL!()]
     /// Access to gyroscope sensor data.
     Gyroscope,
     /// Access to the device microphone.
@@ -35,7 +35,7 @@ pub enum WebPermission {
     Midi,
     /// Permission to display system notifications.
     Notifications,
-    #[doc = TAG_EXPERIMENTAL!()]
+    #[doc = _TAG_EXPERIMENTAL!()]
     /// Permission to use a payment handler.
     PaymentHandler,
     /// Persistent storage access to prevent data loss.
@@ -46,7 +46,7 @@ pub enum WebPermission {
     ScreenWakeLock,
     /// Access to storage that requires explicit user permission.
     StorageAccess,
-    #[doc = TAG_EXPERIMENTAL!()]
+    #[doc = _TAG_EXPERIMENTAL!()]
     /// Allows a site to access storage without top-level navigation.
     TopLevelStorageAccess,
 }

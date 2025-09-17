@@ -3,7 +3,7 @@
 
 #![allow(unused)]
 
-#[doc = crate::TAG_QUANT!()]
+#[doc = crate::_TAG_QUANT!()]
 ///
 pub struct Counter<T, S> {
     ///

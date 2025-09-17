@@ -5,8 +5,8 @@
 
 pub use crate::Int;
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// This is a wrapper over [`Int`] with additional allocating methods.
 #[must_use]
 #[repr(transparent)]

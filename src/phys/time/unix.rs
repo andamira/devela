@@ -14,7 +14,7 @@ use crate::{
     is_leap_year,
 };
 
-#[doc = crate::TAG_TIME!()]
+#[doc = crate::_TAG_TIME!()]
 /// 64-bit Unix time, supporting negative values.
 ///
 /// Stores the number of seconds relative to the Unix Epoch (`1970-01-01 00:00:00 UTC`).
@@ -24,7 +24,7 @@ pub struct UnixTimeI64 {
     pub seconds: i64,
 }
 
-#[doc = crate::TAG_TIME!()]
+#[doc = crate::_TAG_TIME!()]
 /// 32-bit Unix time, supporting only non-negative values.
 ///
 /// Stores the number of seconds since the Unix Epoch (`1970-01-01 00:00:00 UTC`).

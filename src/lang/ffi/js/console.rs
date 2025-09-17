@@ -6,7 +6,7 @@
 #[allow(unused_imports)]
 use devela::{_js_doc, _js_extern};
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Javascript Console.
 #[derive(Debug)]
 pub struct JsConsole;

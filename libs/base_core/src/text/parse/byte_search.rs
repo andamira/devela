@@ -9,9 +9,9 @@ use crate::_dep::memchr::*;
 #[cfg(not(feature = "dep_memchr"))]
 use crate::is;
 
-#[doc = crate::TAG_TEXT!()]
-#[doc = crate::TAG_NAMESPACE!()]
-// #[doc = crate::TAG_SEARCH!()] // TODO
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_NAMESPACE!()]
+// #[doc = crate::_TAG_SEARCH!()] // TODO
 /// A utility struct for searching bytes in slices.
 ///
 /// # Features

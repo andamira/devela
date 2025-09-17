@@ -8,7 +8,7 @@ mod primitives;
 #[cfg(test)]
 mod tests;
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Provides constant bitwise operations on `T`.
 ///
 /// It's implemented for:

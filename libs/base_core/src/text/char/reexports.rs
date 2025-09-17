@@ -1,9 +1,9 @@
 // devela_base_core::text::char::reexports
 
-use crate::{_reexport, TAG_TEXT};
+use crate::{_TAG_TEXT, _reexport};
 
-#[doc = crate::TAG_PRIMITIVE!()]
-#[doc = crate::TAG_TEXT!()]
+#[doc = crate::_TAG_PRIMITIVE!()]
+#[doc = crate::_TAG_TEXT!()]
 /// <span class="stab portability" title="re-exported from rust's `core`">`core`</span>
 /// A 32-bit [unicode scalar][scalar].
 ///
@@ -21,7 +21,7 @@ use crate::{_reexport, TAG_TEXT};
 pub type char = ::core::primitive::char;
 
 _reexport! { rust: core::str,
-    tag: concat![TAG_TEXT!(), crate::TAG_ITERATOR!()],
+    tag: concat![_TAG_TEXT!(), crate::_TAG_ITERATOR!()],
     doc: "An iterator over the [`char`][prim@char]s of a string slice.",
     @Chars as IterChars
 }

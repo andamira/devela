@@ -47,7 +47,7 @@ impl InvalidUtf8 {
 /* composite errors */
 
 define_error! { composite: fmt(f)
-    #[doc = crate::TAG_TEXT!()]
+    #[doc = crate::_TAG_TEXT!()]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
     ///
     /// Used in methods of:
@@ -81,7 +81,7 @@ mod full_composite {
     use super::*;
     use crate::{DOC_ELEMENT_NOT_FOUND, ElementNotFound, MismatchedCapacity};
 
-    #[doc = crate::TAG_RESULT!()]
+    #[doc = crate::_TAG_RESULT!()]
     /// A text-related result.
     pub type TextResult<T> = crate::Result<T, TextError>;
 

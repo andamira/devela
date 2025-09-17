@@ -5,15 +5,15 @@
 
 #![allow(unused_imports)]
 
-use crate::{_reexport, TAG_TEXT};
+use crate::{_TAG_TEXT, _reexport};
 
 _reexport! { rust: std::ffi,
-    tag: TAG_TEXT!(),
+    tag: _TAG_TEXT!(),
     doc: "Borrowed reference to an OS string (See [`OsString`]).",
     OsStr
 }
 _reexport! { rust: std::ffi,
-    tag: TAG_TEXT!(),
+    tag: _TAG_TEXT!(),
     doc: "A type for owned, mutable native strings, interconvertible with Rust strings.",
     OsString
 }

@@ -3,7 +3,7 @@
 //! Defines the [`const_join!`] macro.
 //
 
-#[doc = crate::TAG_TEXT!()]
+#[doc = crate::_TAG_TEXT!()]
 /// Joins multiple byte slices or string slices in compile-time.
 ///
 /// It leverages the [`ArrayFrom`][crate:Arrayfrom] struct.

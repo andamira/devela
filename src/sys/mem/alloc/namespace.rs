@@ -10,7 +10,7 @@ use crate::{
     MemLayout,
 };
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Memory-allocation-related operations.
 ///
 /// See also: [`Mem`][crate::Mem], [`ExtMem`][crate::ExtMem],

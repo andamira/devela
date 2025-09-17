@@ -7,7 +7,7 @@
 #[cfg(feature = "sys")]
 use crate::IoError;
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// A user-interface result.
 pub type UiResult<T> = core::result::Result<T, UiError>;
 

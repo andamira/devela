@@ -16,7 +16,7 @@ mod r#impl;
 mod kind;
 pub use kind::AngleKind;
 
-#[doc = crate::TAG_GEOM!()]
+#[doc = crate::_TAG_GEOM!()]
 /// An angle represents a fraction of a full rotation.
 ///
 /// It's unit-agnostic over radians or degrees, and respects directionality.
@@ -85,7 +85,7 @@ impl<T> Angle<T> {
     }
 }
 
-#[doc = crate::TAG_GEOM!()]
+#[doc = crate::_TAG_GEOM!()]
 /// The direction of rotation of an angle.
 ///
 /// In mathematics and most graphics programming contexts, the default direction

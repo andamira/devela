@@ -3,7 +3,7 @@
 //!
 //
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// An unwrapper macro that works in compile-time.
 ///
 /// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].

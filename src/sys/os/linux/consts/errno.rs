@@ -7,7 +7,7 @@
 
 use crate::c_int;
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// Standard exit codes for Linux processes
 //
 // - /usr/include/sysexits.h
@@ -134,7 +134,7 @@ impl LINUX_EXIT {
     pub const INTERNAL_ERROR: c_int = Self::MAX - 1;
 }
 
-#[doc = crate::TAG_ERROR_COMPOSITE!()]
+#[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// [`Linux`][crate::Linux] `sys/errno.h` constants.
 //
 // - /usr/include/asm-generic/errno.h

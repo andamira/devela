@@ -31,7 +31,7 @@ macro_rules! impl_str_u {
         /* definitions */
 
         #[allow(rustdoc::broken_intra_doc_links, reason = "±unsafe")]
-        #[doc = crate::TAG_TEXT!()]
+        #[doc = crate::_TAG_TEXT!()]
         #[doc = "A UTF-8–encoded string, backed by an array with [`" $t "::MAX`] bytes of capacity."]
         ///
         #[doc = "Internally, the current length is stored as a [`" $t "`]."]

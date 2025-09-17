@@ -16,23 +16,23 @@ crate::items! {
     crate::_use! {basic::from_utf8}
 }
 
-#[doc = crate::TAG_FFI!()]
+#[doc = crate::_TAG_FFI!()]
 /// An FFI-safe version of [`EventKey`].
 #[repr(C)]
 #[allow(missing_docs)]
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
 pub struct EventKeyFfi {
-    #[doc = crate::TAG_FFI!()]
+    #[doc = crate::_TAG_FFI!()]
     /// The key representing the human-readable code.
     pub semantic: KeyFfi,
-    #[doc = crate::TAG_FFI!()]
+    #[doc = crate::_TAG_FFI!()]
     /// The key representing the hardware scan code.
     pub physical: KeyFfi,
     /// The state of the key (pressed or released).
     pub state: KeyState,
     /// The active modifiers of the key (e.g., Shift, Ctrl).
     pub mods: KeyMods,
-    #[doc = crate::TAG_FFI!()]
+    #[doc = crate::_TAG_FFI!()]
     /// The time stamp of when the event occurred.
     pub time_stamp: f32,
 }
@@ -66,7 +66,7 @@ crate::items! {
     impl From<EventKeyFfi> for EventKey { fn from(e: EventKeyFfi) -> Self { Self::from_ffi(&e) } }
 }
 
-#[doc = crate::TAG_FFI!()]
+#[doc = crate::_TAG_FFI!()]
 /// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
 #[repr(C)]
 #[non_exhaustive]
@@ -83,7 +83,7 @@ pub enum KeyFfi {
     F(u8),
     /// An alphanumeric key (A-Z, 0-9).
     Alpha(KeyAlpha),
-    #[doc = crate::TAG_FFI!()]
+    #[doc = crate::_TAG_FFI!()]
     /// A unicode character (FFI-safe, stored as `u32`).
     Char(u32),
     /// A keypad key.

@@ -14,7 +14,7 @@ use crate::JsInstant;
 use crate::{SystemInstant, SystemTime, UNIX_EPOCH};
 
 #[rustfmt::skip]
-#[doc = crate::TAG_TIME!()]
+#[doc = crate::_TAG_TIME!()]
 /// A source of timestamps with a known granularity and monotonicity.
 ///
 /// Provides a consistent API for querying timestamps at various precisions,
@@ -131,13 +131,13 @@ pub(crate) use tests::*;
 mod tests {
     #![allow(dead_code, unused_variables)]
 
-    use crate::{AtomicOrdering, AtomicU64, Oneof, Ratio, TAG_FAKE, TimeGranularity, TimeSource};
+    use crate::{_TAG_FAKE, AtomicOrdering, AtomicU64, Oneof, Ratio, TimeGranularity, TimeSource};
 
     /// Global test time source for convenience.
-    #[doc = TAG_FAKE!()]
+    #[doc = _TAG_FAKE!()]
     pub(crate) static TIME_SOURCE_FAKE: TimeSourceFake = TimeSourceFake::new(1_700_000_000_000);
 
-    #[doc = TAG_FAKE!()]
+    #[doc = _TAG_FAKE!()]
     /// A test-friendly time source that allows manual control.
     ///
     /// `TimeSourceFake` provides a controlled, adjustable timestamp source for tests.

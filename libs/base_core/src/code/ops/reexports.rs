@@ -1,25 +1,25 @@
 // devela_base_core::code::ops::reexports
 
-use crate::{_reexport, TAG_QUANT};
+use crate::{_TAG_QUANT, _reexport};
 
 // enums
-_reexport! { rust: core::ops, tag: TAG_QUANT!(),
+_reexport! { rust: core::ops, tag: _TAG_QUANT!(),
     doc: "An endpoint of a range of keys.\n\n See also `num::`[`Interval`][crate::Interval].",
 Bound }
 _reexport! { rust: core::ops,
 doc: "Used to tell an operation whether it should exit early or go on as usual.", ControlFlow }
 
 // structs
-_reexport! { rust: core::ops, tag: TAG_QUANT!(),
+_reexport! { rust: core::ops, tag: _TAG_QUANT!(),
 doc: "A range bounded inclusively below and exclusively above (`start..end`).", Range }
-_reexport! { rust: core::ops, tag: TAG_QUANT!(),
+_reexport! { rust: core::ops, tag: _TAG_QUANT!(),
 doc: "A range only bounded inclusively below (`start..`).", RangeFrom }
-_reexport! { rust: core::ops, tag: TAG_QUANT!(), doc: "An unbounded range (`..`).", RangeFull }
-_reexport! { rust: core::ops, tag: TAG_QUANT!(),
+_reexport! { rust: core::ops, tag: _TAG_QUANT!(), doc: "An unbounded range (`..`).", RangeFull }
+_reexport! { rust: core::ops, tag: _TAG_QUANT!(),
 doc: "A range bounded inclusively below and above (`start..=end`).", RangeInclusive }
-_reexport! { rust: core::ops, tag: TAG_QUANT!(),
+_reexport! { rust: core::ops, tag: _TAG_QUANT!(),
 doc: "A range only bounded exclusively above (`..end`).", RangeTo }
-_reexport! { rust: core::ops, tag: TAG_QUANT!(),
+_reexport! { rust: core::ops, tag: _TAG_QUANT!(),
 doc: "A range only bounded inclusively above (`..=end`).", RangeToInclusive }
 
 // traits

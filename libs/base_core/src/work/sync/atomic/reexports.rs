@@ -4,25 +4,25 @@
 //! and the [`Atomic`] type from the [atomic](https://docs.rs/atomic) crate.
 //
 
-use crate::{_reexport, TAG_ATOMIC};
+use crate::{_TAG_ATOMIC, _reexport};
 
 /* from `core` */
 
 // enums
 _reexport! { rust: core::sync::atomic,
-    tag: TAG_ATOMIC!(),
+    tag: _TAG_ATOMIC!(),
     doc: "Atomic memory ordering.",
     @Ordering as AtomicOrdering
 }
 
 // functions
 _reexport! { rust: core::sync::atomic,
-    tag: TAG_ATOMIC!(),
+    tag: _TAG_ATOMIC!(),
     doc: "An atomic fence.",
     @fence as atomic_fence
 }
 _reexport! { rust: core::sync::atomic,
-    tag: TAG_ATOMIC!(),
+    tag: _TAG_ATOMIC!(),
     doc: "A compiler memory fence.",
     @compiler_fence as atomic_compiler_fence
 }

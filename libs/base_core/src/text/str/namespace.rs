@@ -18,8 +18,8 @@ use {
 use ::core::str::from_utf8_mut;
 // crate::_use! {basic::from_utf8} // MAYBE not needed
 
-#[doc = crate::TAG_TEXT!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// A string slice namespace.
 ///
 /// See also the [`std::str`] module.

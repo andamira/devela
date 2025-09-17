@@ -5,7 +5,7 @@
 
 use crate::{_impl_metric, cfor, is};
 
-#[doc = crate::TAG_GEOM!()]
+#[doc = crate::_TAG_GEOM!()]
 /// An orthogonal extension in `D`-space without a coordinate position.
 ///
 /// Represents the lengths of each dimension in a multi-dimensional space,

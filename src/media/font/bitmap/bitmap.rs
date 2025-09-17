@@ -8,7 +8,7 @@
 
 use crate::{format_buf, is};
 
-#[doc = crate::TAG_FONT!()]
+#[doc = crate::_TAG_FONT!()]
 /// A simple bitmap font for rendering fixed-size glyphs.
 ///
 /// Each glyph is stored as a bitfield in a generic type and is assumed to have

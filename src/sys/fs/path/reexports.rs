@@ -4,17 +4,17 @@
 //
 
 #[allow(unused_imports)]
-use crate::{_reexport, TAG_ERROR, TAG_ITERATOR};
+use crate::{_TAG_ERROR, _TAG_ITERATOR, _reexport};
 
 /* structs */
 
 _reexport! { rust: std::path,
-    tag: TAG_ITERATOR!(),
+    tag: _TAG_ITERATOR!(),
     doc: "An iterator over [`Path`] and its ancestors.",
     @Ancestors as IterPathAncestors
 }
 _reexport! { rust: std::path,
-    tag: TAG_ITERATOR!(),
+    tag: _TAG_ITERATOR!(),
     doc: "An iterator over the Components of a Path.",
     @Components as IterPathComponents
 }
@@ -23,7 +23,7 @@ _reexport! { rust: std::path,
     @Display as PathDisplay
 }
 _reexport! { rust: std::path,
-    tag: TAG_ITERATOR!(),
+    tag: _TAG_ITERATOR!(),
     doc: "An iterator over the [`IterPathComponents`]
 of a [`Path`], as [`OsStr`][crate::OsStr] slices.",
     @Iter as IterPath
@@ -41,7 +41,7 @@ _reexport! { rust: std::path,
     @PrefixComponent as PathPrefixComponent
 }
 _reexport! { rust: std::path,
-    tag: TAG_ERROR!(),
+    tag: _TAG_ERROR!(),
     doc: "An error returned from [`Path::strip_prefix`] if the prefix was not found.",
     @StripPrefixError as PathStripPrefixError
 }

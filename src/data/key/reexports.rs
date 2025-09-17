@@ -36,14 +36,14 @@ pub use hashbrown_reexports::*;
 mod hashbrown_reexports {
     use super::hashbrown_or_std;
 
-    #[doc = crate::TAG_DATA_STRUCTURE!()]
+    #[doc = crate::_TAG_DATA_STRUCTURE!()]
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
     #[doc = hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashMap;
 
-    #[doc = crate::TAG_DATA_STRUCTURE!()]
+    #[doc = crate::_TAG_DATA_STRUCTURE!()]
     #[doc = hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
     #[doc = hashbrown_or_std!(end)]

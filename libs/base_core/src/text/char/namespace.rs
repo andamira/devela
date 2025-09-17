@@ -9,8 +9,8 @@
 
 use crate::unwrap;
 
-#[doc = crate::TAG_TEXT!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Unicode scalars-related operations.
 ///
 /// See also [`Str`][crate::Str], [`ExtMem`][crate::ExtMem],

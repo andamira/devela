@@ -4,7 +4,7 @@
 
 use crate::{ConstDefault, Own};
 
-#[doc = crate::TAG_RAND!()]
+#[doc = crate::_TAG_RAND!()]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
 ///
@@ -119,7 +119,7 @@ impl Xyza8a {
 
 // -----------------------------------------------------------------------------
 
-#[doc = crate::TAG_RAND!()]
+#[doc = crate::_TAG_RAND!()]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
 ///

@@ -5,7 +5,7 @@
 
 use crate::Sort;
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Provides allocating sorting methods for arrays and slices of `T`, extending [`Sort`].
 ///
 /// [`Sort`]: devela_base_core::Sort

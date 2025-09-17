@@ -11,7 +11,7 @@
 
 use crate::{Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is};
 
-#[doc = crate::TAG_QUANT!()]
+#[doc = crate::_TAG_QUANT!()]
 /// Creates an [`Interval`] using extended range notation.
 ///
 /// # Syntax
@@ -116,7 +116,7 @@ macro_rules! _interval {
 #[doc(inline)]
 pub use _interval as interval;
 
-#[doc = crate::TAG_QUANT!()]
+#[doc = crate::_TAG_QUANT!()]
 /// A range of values with `lower` and `upper` [`Bound`]s.
 ///
 /// The `Interval` type allows modeling ranges of values with optional inclusion

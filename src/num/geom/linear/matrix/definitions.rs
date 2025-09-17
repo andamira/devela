@@ -3,7 +3,7 @@
 //! Defines [`Matrix`].
 //
 
-#[doc = crate::TAG_GEOM!()]
+#[doc = crate::_TAG_GEOM!()]
 /// A static `R×C` shaped matrix backed by an array.
 ///
 /// - `T` is the type of elements in the matrix.

@@ -3,7 +3,7 @@
 use crate::_reexport;
 
 _reexport! { rust: alloc::vec,
-    tag: crate::TAG_DATA_STRUCTURE!(),
+    tag: crate::_TAG_DATA_STRUCTURE!(),
     doc: "A contiguous growable array.",
     Vec
 }

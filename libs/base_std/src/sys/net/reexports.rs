@@ -4,12 +4,12 @@
 //
 
 #[allow(unused_imports)]
-use crate::{_reexport, TAG_ERROR, TAG_ITERATOR};
+use crate::{_TAG_ERROR, _TAG_ITERATOR, _reexport};
 
 /* std structs */
 
 _reexport! { rust: std::net,
-    tag: TAG_ITERATOR!(),
+    tag: _TAG_ITERATOR!(),
     doc: "An iterator that infinitely accepts connections on a [`TcpListener`].",
     @Incoming as TcpIncoming
 }

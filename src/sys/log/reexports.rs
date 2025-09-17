@@ -15,7 +15,7 @@ _reexport! { "dep_log", "log", log,
     @Log as Logger
 }
 _reexport! { "dep_log", "log", log,
-    tag: crate::TAG_ERROR!(),
+    tag: crate::_TAG_ERROR!(),
     doc: "Returned by [`set_logger`][crate::Log::set_logger] if it has already been called.",
     @SetLoggerError as LoggerSetError
 }

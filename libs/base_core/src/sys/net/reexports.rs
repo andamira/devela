@@ -4,12 +4,12 @@
 //
 
 #[allow(unused_imports)]
-use crate::{_reexport, TAG_ERROR, TAG_ITERATOR};
+use crate::{_TAG_ERROR, _TAG_ITERATOR, _reexport};
 
 /* core structs */
 
 _reexport! { rust: core::net,
-    tag: TAG_ERROR!(),
+    tag: _TAG_ERROR!(),
     doc: "An error which can be returned when parsing an IP address or a socket address.",
     AddrParseError
 }

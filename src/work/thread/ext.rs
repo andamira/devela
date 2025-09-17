@@ -12,7 +12,7 @@ use std::thread::{
 trait Sealed {}
 impl Sealed for Thread {}
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Thread`]s.
 ///
 /// It offers the standalone functions in `std::thread` as associated methods.

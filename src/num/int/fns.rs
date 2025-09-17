@@ -3,7 +3,7 @@
 #[cfg(not(feature = "std"))]
 use crate::ExtFloat;
 
-#[doc = crate::TAG_NUM!()]
+#[doc = crate::_TAG_NUM!()]
 /// The prime number theorem formula.
 ///
 /// Returns the approximate count of primes less than the given `n`.

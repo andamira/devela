@@ -5,7 +5,7 @@
 
 use crate::{Cast, ConstDefault, Own, xorshift_basis};
 
-#[doc = crate::TAG_RAND!()]
+#[doc = crate::_TAG_RAND!()]
 /// The `XorShift64` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has a 64-bit state and generates 64-bit numbers.

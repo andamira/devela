@@ -10,7 +10,7 @@ use std::process::{abort, exit, id};
 trait Sealed {}
 impl Sealed for Process {}
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Process`]es.
 ///
 /// It offers the standalone functions in `std::process` as associated methods.

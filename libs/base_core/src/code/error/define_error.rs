@@ -115,7 +115,7 @@ macro_rules! _define_error {
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
         $(#[doc = $tag])?
-        #[doc = $crate::TAG_ERROR!()]
+        #[doc = $crate::_TAG_ERROR!()]
         $(#[$attributes])*
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
@@ -183,12 +183,12 @@ macro_rules! _define_error {
         ),+ $(,)? }
     ) => {
         $(#[doc = $tag])?
-        #[doc = $crate::TAG_ERROR_COMPOSITE!()]
+        #[doc = $crate::_TAG_ERROR_COMPOSITE!()]
         $(#[$enum_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
             $(#[doc = $tag_variant])?
-            #[doc = $crate::TAG_ERROR!()]
+            #[doc = $crate::_TAG_ERROR!()]
             $(#[$variant_attr])*
             #[doc = $DOC_VARIANT!()]
             $variant_name

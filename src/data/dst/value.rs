@@ -13,7 +13,7 @@ use ::core::{marker, ptr};
 
 /* public API */
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr>
 /// value with pointer alignment.
 ///
@@ -25,7 +25,7 @@ use ::core::{marker, ptr};
 // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
 pub type DstValueUsize<DST /*: ?Sized*/, const CAP: usize> = DstValue<DST, DstArray<usize, CAP>>;
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr> value.
 ///
 /// `DST` is the unsized type contained.

@@ -12,7 +12,7 @@ use crate::{IterChars, MismatchedCapacity, StringNonul, char7, char8, char16, do
 
 /* definitions */
 
-#[doc = crate::TAG_TEXT!()]
+#[doc = crate::_TAG_TEXT!()]
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`StringNonul`].
 #[must_use]
 #[repr(transparent)]

@@ -9,7 +9,7 @@ use crate::{Cast, ConstDefault, Own};
 #[cfg(feature = "std")]
 use crate::{Hasher, HasherBuild, RandomState};
 
-#[doc = crate::TAG_RAND!()]
+#[doc = crate::_TAG_RAND!()]
 /// The `XorShift128+` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 ///
 /// It has a 128-bit state and generates 64-bit numbers.

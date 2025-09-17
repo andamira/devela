@@ -20,8 +20,8 @@ use crate::Float; // because of float_technical_const_impls! consts
 #[cfg(nightly_float)]
 use ::core::{f16, f128};
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait for floating-point types. Associated constants.
 ///
 /// # Constants

@@ -7,7 +7,7 @@
 mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!, std_core!
 mod _links; // _DOCLINK_*!
 mod _mod_docs; // _DOC_*!
-mod _tags; // EMOJI_*! TAG_*!
+mod _tags; // EMOJI_*! _TAG_*!
 mod _reexport; // reexport!, reexport_from!
 mod _use; // _use!
 

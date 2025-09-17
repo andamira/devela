@@ -5,13 +5,13 @@
 
 use crate::Sign;
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_RESULT!()]
 /// A numeric-related result.
 pub type NumResult<T> = crate::Result<T, NumError>;
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_ERROR_COMPOSITE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// A numeric-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

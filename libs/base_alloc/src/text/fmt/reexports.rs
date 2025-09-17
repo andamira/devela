@@ -3,10 +3,10 @@
 //!
 //
 
-use crate::{_reexport, TAG_FMT};
+use crate::{_TAG_FMT, _reexport};
 
 _reexport! { rust: alloc,
-    tag: TAG_FMT!(),
+    tag: _TAG_FMT!(),
     doc: "Creates a String using interpolation of runtime expressions.",
     format
 }

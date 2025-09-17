@@ -19,8 +19,8 @@ Returns 1 for zero, and the base-10 logarithm plus one for other numbers.\n\n
 For more advanced needs check the [`Int`] *base* methods.\n\n";
 }
 
-#[doc = crate::TAG_TEXT!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Provides ASCII digit operations and conversions for unsigned integer primitives.
 ///
 /// Enables efficient ASCII digit extraction, counting, and conversion

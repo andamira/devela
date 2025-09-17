@@ -12,7 +12,7 @@ use crate::{
 };
 use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// I/O-related operations.
 #[derive(Debug)]
 pub struct Io;

@@ -8,7 +8,7 @@
 /// Defaults to seconds.
 #[rustfmt::skip]
 #[allow(missing_docs)]
-#[doc = crate::TAG_TIME!()]
+#[doc = crate::_TAG_TIME!()]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TimeGranularity {
     Years,

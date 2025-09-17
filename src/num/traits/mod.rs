@@ -18,7 +18,7 @@ sf! {
     impl<T: Num> NumRef<'_> for &mut T { type Own = T; }
 }
 
-#[doc = crate::TAG_NUM!()]
+#[doc = crate::_TAG_NUM!()]
 /// Common trait for numeric types.
 ///
 /// # Notes

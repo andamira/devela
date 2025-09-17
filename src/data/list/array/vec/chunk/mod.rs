@@ -8,7 +8,7 @@ use crate::{Rc, RefCell, Vec, vec_ as vec};
 #[cfg(test)]
 mod tests;
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A persistent data structure with efficient append and concatenation operations.
 ///
 /// # Overview

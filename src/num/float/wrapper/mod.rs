@@ -15,8 +15,8 @@ mod libm_std; // for either or neither.
 mod shared; // implements shared methods.
 mod shared_series; // with Taylor Series.
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 ///
 /// See also the [`ExtFloat`][super::ExtFloat] and [`FloatConst`][super::FloatConst] traits.

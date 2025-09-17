@@ -7,7 +7,7 @@ mod general;
 mod state;
 mod value;
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// A return type encapsulating an owned **state** `S` and a **value** `V`.
 ///
 /// It is designed to be used by methods that take ownership of `self`,

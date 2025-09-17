@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::{Distance, Position};
 
-#[doc = crate::TAG_GEOM!()]
+#[doc = crate::_TAG_GEOM!()]
 /// A unitless directional vector in `D`-dimensional space.
 ///
 /// Represents **only the direction of movement**, without an absolute

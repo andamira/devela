@@ -37,7 +37,7 @@ mod auto_impls {
     impl<T: NumInt> NumRefInt<'_> for &mut T {}
 }
 
-#[doc = crate::TAG_NUM!()]
+#[doc = crate::_TAG_NUM!()]
 /// Common trait for integer types.
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.

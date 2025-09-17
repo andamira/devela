@@ -17,7 +17,7 @@
 
 use crate::{is, isize_up, nz, unwrap, usize_up};
 
-#[doc = crate::TAG_QUANT!()]
+#[doc = crate::_TAG_QUANT!()]
 /// Comprehensive scaling operations.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Scale<T>(T);

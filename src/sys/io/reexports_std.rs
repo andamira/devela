@@ -51,12 +51,12 @@ _reexport! { rust: std::io,
     @Empty as IoEmpty
 }
 _reexport! { rust: not(std)|std::io,
-    tag: crate::TAG_ERROR_COMPOSITE!(),
+    tag: crate::_TAG_ERROR_COMPOSITE!(),
     doc: "Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.",
     @Error as IoError
 }
 _reexport! { rust: std::io,
-    tag: crate::TAG_ERROR!(),
+    tag: crate::_TAG_ERROR!(),
     doc: "An error returned by [`IoBufWriter::into_inner`]",
     @IntoInnerError as IoIntoInnerError
 }
@@ -81,7 +81,7 @@ _reexport! { rust: std::io,
     @Repeat as IoRepeat
 }
 _reexport! { rust: not(std)|std::io,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "A specialized [`Result`] type for I/O operations.",
     @Result as IoResult
 }
@@ -126,7 +126,7 @@ _reexport! { rust: not(std)|std::io,
 /* io enums */
 
 _reexport! { rust: not(std)|std::io,
-    tag: crate::TAG_ERROR_COMPOSITE!(),
+    tag: crate::_TAG_ERROR_COMPOSITE!(),
     doc: "A list specifying general categories of I/O error.",
     @ErrorKind as IoErrorKind
 }

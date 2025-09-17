@@ -18,7 +18,7 @@ const CRATE_NAME: &str = "devela_base_num";
 // NOTE: manually imports the Build namespace from devela_base_std
 #[cfg(feature = "__dbg")]
 items! {
-    macro_rules! TAG_NAMESPACE {()=>{""}} use TAG_NAMESPACE;
+    macro_rules! _TAG_NAMESPACE {()=>{""}} use _TAG_NAMESPACE;
     #[path = "../../base_std/src/build/namespace.rs"] #[allow(unused)]
     mod imports; use imports::Build;
 }

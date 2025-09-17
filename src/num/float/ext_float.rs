@@ -6,8 +6,8 @@
 
 use crate::{Float, FloatConst, Sign};
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait for floating-point types. Associated methods.
 ///
 /// This trait can be more convenient to use than the [`Float`] struct,

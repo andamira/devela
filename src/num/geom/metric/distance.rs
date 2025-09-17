@@ -8,7 +8,7 @@ use crate::Orientation;
 #[cfg(doc)]
 use crate::Position;
 
-#[doc = crate::TAG_GEOM!()]
+#[doc = crate::_TAG_GEOM!()]
 /// A separation between two locations in `D`-dimensional space.
 ///
 /// Represents a displacement vector **without an absolute origin**.

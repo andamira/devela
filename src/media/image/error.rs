@@ -7,11 +7,11 @@
 #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
 use crate::IoErrorKind;
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// An image-related result.
 pub type ImageResult<T> = crate::Result<T, ImageError>;
 
-#[doc = crate::TAG_ERROR_COMPOSITE!()]
+#[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// An image-related error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ImageError {

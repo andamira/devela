@@ -13,7 +13,7 @@ _reexport! { rust: std::sync,
     Barrier
 }
 _reexport! { rust: std::sync,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "Returned by [`Barrier::wait()`] when all threads in it have rendezvoused.",
     BarrierWaitResult
 }
@@ -46,7 +46,7 @@ _reexport! { rust: std::sync,
     OnceState
 }
 _reexport! { rust: std::sync,
-    tag: crate::TAG_ERROR!(),
+    tag: crate::_TAG_ERROR!(),
     doc: "A type of error which can be returned whenever a lock is acquired.",
     PoisonError
 }
@@ -63,7 +63,7 @@ _reexport! { rust: std::sync,
     RwLockWriteGuard
 }
 _reexport! { rust: std::sync,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "Whether a timed wait on a condition variable returned due to a time out or not.",
     WaitTimeoutResult
 }
@@ -71,7 +71,7 @@ _reexport! { rust: std::sync,
 /* `std` enums */
 
 _reexport! { rust: std::sync,
-    tag: crate::TAG_ERROR_COMPOSITE!(),
+    tag: crate::_TAG_ERROR_COMPOSITE!(),
     doc: "An enumeration of possible errors associated with a [`TryLockResult`].",
     TryLockError
 }
@@ -79,12 +79,12 @@ _reexport! { rust: std::sync,
 /* `std` aliases */
 
 _reexport! { rust: std::sync,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "A type alias for the result of a lock method which can be poisoned.",
     LockResult
 }
 _reexport! { rust: std::sync,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "A type alias for the result of a nonblocking locking method.",
     TryLockResult
 }

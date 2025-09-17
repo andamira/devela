@@ -5,7 +5,7 @@
 
 use crate::{FloatConst, Interval};
 
-#[doc = crate::TAG_GEOM!()]
+#[doc = crate::_TAG_GEOM!()]
 /// The kind of [`Angle`][super::Angle], based on its normalized turn.
 ///
 /// The variant values are normalized to the full range of an u8.

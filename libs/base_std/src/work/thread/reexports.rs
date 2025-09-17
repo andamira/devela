@@ -9,7 +9,7 @@ use crate::_reexport;
 /* types */
 
 _reexport! { rust: std::thread,
-    tag: crate::TAG_ERROR!(),
+    tag: crate::_TAG_ERROR!(),
     doc: "An error returned by [`ThreadLocalKey::try_with`].",
     @AccessError as ThreadAccessError
 }
@@ -53,7 +53,7 @@ _reexport! { rust: std,
 /* aliases */
 
 _reexport! { rust: std::thread,
-    tag: crate::TAG_RESULT!(),
+    tag: crate::_TAG_RESULT!(),
     doc: "A specialized [`Result`] type for threads.",
     @Result as ThreadResult
 }

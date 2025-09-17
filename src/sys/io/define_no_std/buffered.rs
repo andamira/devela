@@ -147,7 +147,7 @@ pub struct IoBufWriter<W: IoWrite, const S: usize> {
     panicked: bool,
 }
 
-#[doc = crate::TAG_ERROR!()]
+#[doc = crate::_TAG_ERROR!()]
 /// An error returned by [`IoBufWriter::into_inner`]
 ///
 /// It combines an error that happened while writing out the buffer,

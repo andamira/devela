@@ -9,7 +9,7 @@
 
 use crate::InvalidValue;
 
-#[doc = crate::TAG_QUANT!()]
+#[doc = crate::_TAG_QUANT!()]
 /// Represents the sign of a number.
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

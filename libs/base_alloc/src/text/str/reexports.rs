@@ -8,15 +8,15 @@
 
 #![allow(unused_imports)]
 
-use crate::{_reexport, TAG_TEXT};
+use crate::{_TAG_TEXT, _reexport};
 
 _reexport! { rust: alloc::string,
-    tag: TAG_TEXT!(),
+    tag: _TAG_TEXT!(),
     doc: "A UTF-8–encoded, growable string.",
     String
 }
 _reexport! { rust: alloc::string,
-    tag: TAG_TEXT!(),
+    tag: _TAG_TEXT!(),
     doc: "A trait for converting a value to a [`String`].",
     ToString
 }

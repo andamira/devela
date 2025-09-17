@@ -5,7 +5,7 @@
 
 use crate::Interval;
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// Represents a mismatch between an expected `need` and an encountered `have`.
 ///
 /// With optional contextual information in the `info` field.

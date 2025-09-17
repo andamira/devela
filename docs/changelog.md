@@ -124,10 +124,11 @@ Many feature gates are removed in order to make most features make always availa
 - new macros: `doclink!`, `mod_path!`.
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `cfor!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
-  - internal macros: `EMOJI_*`, `TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_use!`.
-- add tags: `_DOC_*`, `TAG_[CODEC|CODEGEN_BUILD|CONCURRENCY|DATA|EVENT|HASH|ID|PROC_MACRO]`.
-- change the emoji for `TAG_DATA_STRUCTURE`.
+  - internal macros: `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_use!`.
+- add tags: `_DOC_*`, `_TAG_[CODEC|CODEGEN_BUILD|CONCURRENCY|DATA|EVENT|HASH|ID|PROC_MACRO]`.
+- change the emoji for `_TAG_DATA_STRUCTURE`.
 - rename `reexport!` internal macro to `_reexport!`.
+- prefix internal constants `TAG_*` & `EMOJI_*` with `_`
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
 - update `const_assert!` macro

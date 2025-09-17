@@ -8,8 +8,8 @@
 // - struct NicheNew
 // - tests
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NICHE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NICHE!()]
 /// Creates a `NonExtreme*` [`niche`][crate::num::niche] value with compile-time checking.
 ///
 /// # Example
@@ -31,8 +31,8 @@ macro_rules! ne {
 #[doc(inline)]
 pub use ne;
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NICHE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NICHE!()]
 /// Creates a `NonZero*` [`niche`][crate::num::niche] value with compile-time checking.
 ///
 /// # Example
@@ -56,8 +56,8 @@ pub use nz;
 
 /* helpers */
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NICHE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NICHE!()]
 /// Private helper to construct niche types.
 #[doc(hidden)]
 #[derive(Debug)]

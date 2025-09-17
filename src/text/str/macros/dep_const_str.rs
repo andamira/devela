@@ -3,7 +3,7 @@
 //! Defines the [`str!`] macro.
 //
 
-#[doc = crate::TAG_TEXT!()]
+#[doc = crate::_TAG_TEXT!()]
 /// [`&str`] compile-time operations, namespaced from the [const-str][::const_str] crate.
 ///
 /// - The name of each operation links to the official macro documentation.

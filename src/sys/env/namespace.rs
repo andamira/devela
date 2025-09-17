@@ -24,7 +24,7 @@ use crate::{
 #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
 use crate::{IterArgsOsRef, args_os_ref_iter};
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// A namespaced wrapper for `std::env` functions and constants.
 #[derive(Debug)]
 pub struct Env;
@@ -40,7 +40,7 @@ s/\([a-z0-9_.]\+\)/#[cfg(target_arch = "\1")]\r{ "\1" }/
 s/\([a-z0-9_.]\+\)/target_arch = "\1",/
 */
 impl Env {
-    #[doc = crate::TAG_MAYBE_STD!()]
+    #[doc = crate::_TAG_MAYBE_STD!()]
     /// A string describing the architecture of the CPU that is currently in use.
     ///
     /// Expected values are:
@@ -141,7 +141,7 @@ impl Env {
         }
     };
 
-    #[doc = crate::TAG_MAYBE_STD!()]
+    #[doc = crate::_TAG_MAYBE_STD!()]
     /// The family of the operating system.
     ///
     /// The expected values are: `unix`, `unknown`, `wasm` and `windows`.
@@ -234,7 +234,7 @@ impl Env {
         { "unknown" }
     };
 
-    #[doc = crate::TAG_MAYBE_STD!()]
+    #[doc = crate::_TAG_MAYBE_STD!()]
     /// A string describing the specific operating system in use.
     ///
     /// The expected values are:

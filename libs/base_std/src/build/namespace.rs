@@ -9,7 +9,7 @@
 
 use std::{env, path::PathBuf};
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Memory-related operations.
 ///
 /// See also: [`ExtMem`][crate::ExtMem], [`MemAligned`][crate::MemAligned]

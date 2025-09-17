@@ -11,11 +11,11 @@
 
 use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO, LINUX_EXIT as EXIT, Overflow, is};
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// The return type for Linux-related functions that can fail.
 pub type LinuxResult<T> = crate::Result<T, LinuxError>;
 
-#[doc = crate::TAG_ERROR_COMPOSITE!()]
+#[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// Represents a Linux-related error.
 ///
 /// Encapsulates errors that can occur when interacting with Linux syscalls or

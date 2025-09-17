@@ -97,8 +97,8 @@ macro_rules! impl_non_value {
 
             /* definition */
 
-            #[doc = $crate::TAG_NUM!()]
-            #[doc = $crate::TAG_NICHE!()]
+            #[doc = $crate::_TAG_NUM!()]
+            #[doc = $crate::_TAG_NICHE!()]
             #[doc = $doc " integer that is known not to equal some specific value." ]
             ///
             #[doc = "It has the same memory layout optimization as [`" $n0 "`][core::num::" $n0 "],"]
@@ -116,8 +116,8 @@ macro_rules! impl_non_value {
 
             /* aliases */
 
-            #[doc = $crate::TAG_NUM!()]
-            #[doc = $crate::TAG_NICHE!()]
+            #[doc = $crate::_TAG_NUM!()]
+            #[doc = $crate::_TAG_NICHE!()]
             #[doc = $doc " integer that is known not to equal its most extreme value ([`"
                 $XTR "`][" $IP "::" $XTR "])."]
             ///

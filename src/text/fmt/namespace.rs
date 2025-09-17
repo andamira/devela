@@ -8,8 +8,8 @@ use crate::{_dep::_alloc::fmt::format, String};
 use crate::{FmtArguments, FmtError, FmtWrite, FmtWriter};
 use ::core::fmt::write;
 
-#[doc = crate::TAG_TEXT!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// A string formatting namespace.
 ///
 /// See also the [`std::fmt`] module.

@@ -3,7 +3,7 @@
 //! Defines [`Cycle`], [`CycleCount`].
 //
 
-#[doc = crate::TAG_QUANT!()]
+#[doc = crate::_TAG_QUANT!()]
 /// A repeating cycle defined by a fundamental period.
 ///
 /// A `Cycle` encapsulates the basic unit over which any phenomenon repeats,
@@ -15,7 +15,7 @@ pub struct Cycle<T> {
     pub period: T,
 }
 
-#[doc = crate::TAG_QUANT!()]
+#[doc = crate::_TAG_QUANT!()]
 /// A cycle that repeats a fixed number of times.
 ///
 /// `CycleCount` couples a fundamental `Cycle` with a discrete repetition count.
@@ -32,7 +32,7 @@ pub struct CycleCount<T, N> {
 
 // WIPZONE
 
-// #[doc = crate::TAG_QUANT!()]
+// #[doc = crate::_TAG_QUANT!()]
 // /// Cyclic behavior.
 // ///
 // /// Defines operations common to periodic structures, such as retrieving

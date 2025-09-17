@@ -10,7 +10,7 @@ use crate::{Array, Bare, Storage};
 
 /* types */
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A static double-ended queue and stack backed by an [`Array`].
 ///
 /// It is generic in respect to its
@@ -107,25 +107,25 @@ pub struct Destaque<T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) back: IDX,
 }
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A [`Destaque`] with an 8-bit index size.
 #[cfg(feature = "_destaque_u8")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u8")))]
 pub type DestaqueU8<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u8, S>;
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A [`Destaque`] with a 16-bit index size.
 #[cfg(feature = "_destaque_u16")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u16")))]
 pub type DestaqueU16<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u16, S>;
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A [`Destaque`] with a 32-bit index size.
 #[cfg(feature = "_destaque_u32")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u32")))]
 pub type DestaqueU32<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u32, S>;
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A [`Destaque`] with a pointer-sized index size.
 #[cfg(feature = "_destaque_usize")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_usize")))]
@@ -133,7 +133,7 @@ pub type DestaqueUsize<T, const CAP: usize, S = Bare> = Destaque<T, CAP, usize, 
 
 /* iterators */
 
-#[doc = crate::TAG_ITERATOR!()]
+#[doc = crate::_TAG_ITERATOR!()]
 /// An iterator over [`Destaque`] elements.
 #[allow(missing_debug_implementations, reason = "unsatisfied trait bounds")]
 pub struct DestaqueIter<'s, T, const CAP: usize, IDX, S: Storage = Bare> {

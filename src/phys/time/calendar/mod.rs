@@ -9,7 +9,7 @@ mod weekday;
 pub use month::Month;
 pub use weekday::Weekday;
 
-#[doc = crate::TAG_TIME!()]
+#[doc = crate::_TAG_TIME!()]
 /// Returns `true` if the provided `year` is a leap year.
 ///
 /// A leap year occurs every four years to help synchronize the calendar year

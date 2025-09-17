@@ -15,7 +15,7 @@ pub use ::core::clone::Clone;
 
 // enums
 _reexport! { rust: core::convert,
-tag: crate::TAG_ERROR!(),
+tag: crate::_TAG_ERROR!(),
 doc: "The error type for errors that can never happen.", Infallible }
 
 // traits
@@ -34,7 +34,7 @@ doc: "An attempted conversion that consumes self, which may or may not be expens
     TryInto }
 
 // functions
-_reexport! { rust: core::convert, tag: crate::TAG_NO!(),
+_reexport! { rust: core::convert, tag: crate::_TAG_NO!(),
 doc: "The identity function. Just returns back its input.", identity }
 
 /* `core::default` re-exports */

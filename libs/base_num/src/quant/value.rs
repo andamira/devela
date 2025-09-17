@@ -3,7 +3,7 @@
 //! Defines [`ValueQuant`].
 //
 
-#[doc = crate::TAG_RESULT!()]
+#[doc = crate::_TAG_RESULT!()]
 /// A value with associated quantification.
 #[must_use]
 pub struct ValueQuant<V, Q> {

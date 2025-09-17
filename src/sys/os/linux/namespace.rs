@@ -14,7 +14,7 @@ use crate::{
 #[cfg(all(feature = "unsafe_syscall", feature = "alloc", not(miri)))]
 use crate::Vec;
 
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Linux-related operations.
 ///
 /// # Features

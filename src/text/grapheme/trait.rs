@@ -5,7 +5,7 @@
 
 use crate::{GraphemeNonul, GraphemeU8};
 
-#[doc = crate::TAG_TEXT!()]
+#[doc = crate::_TAG_TEXT!()]
 /// Common trait for <abbr title="Extended Grapheme Cluster">EGC</abbr> types.
 pub trait Grapheme {}
 

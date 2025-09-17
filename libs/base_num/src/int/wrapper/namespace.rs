@@ -3,8 +3,8 @@
 //! Defines the [`Int`] namespace wrapper.
 //
 
-#[doc = crate::TAG_NUM!()]
-#[doc = crate::TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Provides comprehensive integer operations on `T`, all of them *const*.
 ///
 /// It's implemented for:

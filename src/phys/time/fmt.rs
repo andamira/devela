@@ -14,7 +14,7 @@ use crate::{NoTime, TimeSplit, TimeSplitHourNano};
 #[cfg(feature = "alloc")]
 use crate::{String, format};
 
-#[doc = crate::TAG_TIME!()]
+#[doc = crate::_TAG_TIME!()]
 /// Timecode splitting and formatting.
 ///
 /// # Examples

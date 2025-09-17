@@ -3,7 +3,7 @@
 // This is a modified version of:
 // [`const_list`](https://crates.io/crates/const_list/0.1.0)
 
-#[doc = crate::TAG_DATA!()]
+#[doc = crate::_TAG_DATA!()]
 /// A linked list node in a `ConstList`.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 struct ConstListItem<'a, T: 'a> {
@@ -13,7 +13,7 @@ struct ConstListItem<'a, T: 'a> {
     rest: &'a ConstList<'a, T>,
 }
 
-#[doc = crate::TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// An immutable, append-only, linear, functional, non-contiguous, list.
 ///
 /// A safe, predictable, and lightweight structure, suitable where immutability
@@ -93,7 +93,7 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
     }
 }
 
-#[doc = crate::TAG_ITERATOR!()]
+#[doc = crate::_TAG_ITERATOR!()]
 /// Iterates over the contents of a [`ConstList`].
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
