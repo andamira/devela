@@ -84,6 +84,11 @@
     )
 )]
 // ----------------------------
+// `nightly_stable_1_92`: core, alloc, std…
+#![cfg_attr(nightly_stable_1_92, feature())]
+#![cfg_attr(all(nightly_stable_1_92, feature = "alloc"), feature(btree_entry_insert,))]
+#![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature())]
+// ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
     nightly_stable_later,
@@ -114,7 +119,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_entry_insert, btree_extract_if, new_zeroed_alloc, vec_deque_pop_if,)
+    feature(btree_extract_if, new_zeroed_alloc, vec_deque_pop_if,)
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),

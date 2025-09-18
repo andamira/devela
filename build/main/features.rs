@@ -121,7 +121,8 @@ mod reflection {
                 "nightly_doc", "nightly_float", "nightly_simd",
             //
             "nightly_stable",
-                "nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_later",
+                "nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_1_92",
+                "nightly_stable_later",
         ],
         cfg_flags: &["nightly"],
     };
@@ -134,7 +135,10 @@ mod reflection {
             cfg_flags: &["nightly_stable"],
         };
         pub const FLAGS_NIGHTLY_STABLE: FlagsFlags = FlagsFlags {
-            auto_flags: &["nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_later"],
+            auto_flags: &[
+                "nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_1_92",
+                "nightly_stable_later",
+            ],
             cfg_flags: &["nightly_stable"],
         };
         pub const FLAGS_NIGHTLY_REFLECT: FlagsFlags = FlagsFlags {
@@ -146,7 +150,8 @@ mod reflection {
                     "nightly_doc", "nightly_float", "nightly_simd",
                 //
                 "nightly_stable",
-                    "nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_later",
+                    "nightly_stable_1_90", "nightly_stable_1_91", "nightly_stable_1_92",
+                    "nightly_stable_later",
             ],
         };
 

@@ -1240,6 +1240,7 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(nightly_stable)",
 			"cfg(nightly_stable_1_90)",
 			"cfg(nightly_stable_1_91)",
+			"cfg(nightly_stable_1_92)",
 			"cfg(nightly_stable_later)",
 	#
 	# Auto-enabled reflection flags from ./build/main/features.rs (20)

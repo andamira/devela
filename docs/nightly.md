@@ -59,6 +59,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
 
+- 1.92: `a`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
 
 # 1.93 will be stable on 2026-01-22 ([`nightly_stable_1_93`](https://releases.rs/docs/1.93.0/))
 <!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
@@ -69,7 +70,6 @@ See also
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
-- 1.??: `a`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
