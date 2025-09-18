@@ -8,11 +8,10 @@
 /* imports */
 
 extern crate devela_base_core as base_core;
-#[cfg(feature = "__build")]
+#[cfg(feature = "__dbg")]
 extern crate devela_base_std as base_std;
 
-#[allow(unused)]
-#[cfg(feature = "__build")]
+#[cfg(feature = "__dbg")]
 use base_std::Build;
 
 /* modules */

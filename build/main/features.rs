@@ -173,7 +173,6 @@ mod reflection {
     pub const DEVELOPMENT: FlagsFeatures = FlagsFeatures {
         ref_flags: &[],
         features: &[
-            "__build",
             "__dbg",
             "__no_test",
             "__force_miri_dst",

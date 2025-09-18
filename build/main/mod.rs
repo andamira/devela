@@ -30,20 +30,14 @@ const CRATE_NAME: &str = "devela";
 /* imports */
 
 extern crate devela_base_core as base_core;
-#[cfg(feature = "__build")]
-extern crate devela_base_std as base_std;
+// extern crate devela_base_std as base_std; // MAYBE
 extern crate self as build;
 
-// #[allow(unused)]
-// #[cfg(feature = "__dbg")]
-// use base_std::Build;
-
 // NOTE: manually imports the Build namespace from devela_base_std
-#[cfg(any(feature = "__build", feature = "__dbg"))]
 items! {
     macro_rules! _TAG_NAMESPACE {()=>{""}} use _TAG_NAMESPACE;
     #[path = "../../libs/base_std/src/build/namespace.rs"] #[allow(unused)]
-    mod imports; use imports::Build;
+    mod imports; #[allow(unused_imports)] use imports::Build;
 }
 
 /* build modules */
@@ -52,7 +46,6 @@ mod alias;
 mod environment;
 mod features;
 
-#[cfg(feature = "__build")]
 mod codegen; // tuple, unroll
 
 fn main() {
@@ -69,7 +62,6 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     environment::main()?;
     features::main()?;
 
-    #[cfg(feature = "__build")]
     codegen::main()?;
 
     #[cfg(feature = "__dbg")]

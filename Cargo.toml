@@ -187,7 +187,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 189/300 (111 remaining), 137 visible, 52 hidden
+[features] # 187/300 (113 remaining), 136 visible, 51 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -212,9 +212,8 @@ bench = false
 #* Development features *#
 # ------------------------------------------------------------------------------
 
-__build = ["devela_base_std"] # full build dependencies
 # shows extra debugging information
-__dbg = ["__build",
+__dbg = [
 	"devela_base_core/__dbg",
 		"devela_base_num/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
@@ -535,7 +534,7 @@ _docs = [ # + dependencies
 # ---------------------
 
 # `unroll!` macro and maximum recursion supported
-_unroll = ["__build"] # recursion 64
+_unroll = [] # recursion 64
 _unroll_128 = ["_unroll"]
 _unroll_256 = ["_unroll_128"]
 _unroll_512 = ["_unroll_256"]
@@ -571,7 +570,7 @@ _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "
 		_stack_usize = []
 
 # `Tuple` trait and maximum arity supported (example relative compilation times)
-_tuple = ["__build"] # arity 12 # time:  3.3s, codegen: 96K (for >=2nd compil.)
+_tuple = [] # arity 12 # time:  3.3s, codegen: 96K (for >=2nd compil.)
 _tuple_24 = ["_tuple"]          # time:  4.0s, codegen: 279K
 _tuple_36 = ["_tuple_24"]       # time:  4.6s, codegen: 561K
 _tuple_48 = ["_tuple_36"]       # time:  6.3s, codegen: 942K
