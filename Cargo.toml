@@ -1342,5 +1342,3 @@ required-features = ["linux", "unsafe_syscall"]
 name = "coro_manager" # in crate docs
 path = "examples/work/coro_manager.rs"
 required-features = ["alloc"]
-
-# ==============================================================================
