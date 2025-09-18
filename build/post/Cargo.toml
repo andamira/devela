@@ -35,7 +35,7 @@ metadata.docs.rs.no-default-features = true
 [features]
 
 #* Development features *#
-__dbg = [] # shows extra debugging information
+__dbg = ["devela_base_std"] # shows extra debugging information
 
 #* Environment features *#
 std = ["devela_base_std?/std"] # to be disabled when testing workspace with no_std
