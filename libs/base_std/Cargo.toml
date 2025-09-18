@@ -12,8 +12,8 @@ include = [
 	# configuration:
 	"/Cargo.toml", "/config/*",
 	# source code & documentation:
-	"/build/**/*.rs", "/build/**/*.md",
 	"/src/**/*.rs", "/src/**/*.md",
+	"/build/**/*",
 	"/LICENSE*",
 ]
 categories = ["rust-patterns", "development-tools"]
@@ -21,7 +21,7 @@ keywords = ["dev", "extension"]
 build = "build/mod.rs"
 autoexamples = false
 publish = true
-metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
+metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
 
 [features]
 

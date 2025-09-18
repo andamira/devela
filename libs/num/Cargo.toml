@@ -17,7 +17,7 @@ categories = ["rust-patterns", "development-tools"]
 keywords = ["dev", "extension"]
 autoexamples = false
 publish = true
-metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
+metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
 
 [features]
 

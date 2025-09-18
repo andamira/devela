@@ -4,6 +4,7 @@ description = "procedural macros for `devela_base_core`"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
+# version = "0.25.0-wip.0" # published
 documentation.workspace = true
 authors.workspace = true
 license.workspace = true
@@ -17,7 +18,7 @@ include = [
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
 publish = true
-metadata.docs.rs = { features = ["_docs", "_publish"], no-default-features = true }
+metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
 
 [lib]
 proc-macro = true
