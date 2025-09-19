@@ -30,8 +30,8 @@ pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
 
 // WIPZONE
-// pub mod symb;
-// mod power; // Tp
+// pub mod wip_symb;
+// mod wip_power; // Tp
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
@@ -42,7 +42,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         #[cfg(feature = "unit")]
         pub use super::unit::_all::*;
         // WIPZONE
-        // pub use super::power::*;
+        // pub use super::wip_power::*;
     }
     _pub_mods {
         pub use super::{
@@ -50,7 +50,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             ord::_all::*, quant::_all::*,rand::_all::*,
         };
         // WIPZONE
-        // pub use super::symb::_all::*;
+        // pub use super::wip_symb::_all::*;
     }
     _crate_internals {
         pub(crate) use super::{

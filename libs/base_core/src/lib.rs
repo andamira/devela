@@ -51,6 +51,7 @@ pub mod text;
 pub mod ui;
 pub mod work;
 
+#[doc(hidden)]
 pub mod _dep;
 
 #[doc(hidden)]

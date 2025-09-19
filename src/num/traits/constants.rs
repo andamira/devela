@@ -2,10 +2,16 @@
 //
 //! Defines [`NumConst`] and implements it for primitives.
 //
-// TODO: implement for NonValue*
+// TODO:
+// - add NUM_FOUR
+// - implement for NonValue*
 
+#[rustfmt::skip]
 use crate::{
-    FloatConst, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
+    FloatConst,
+    // NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize,
+    // NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
+    NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
     NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
 };
 
@@ -149,6 +155,8 @@ macro_rules! impl_ext_num_const {
             NonZeroI64|u64, NonZeroI128|u128, NonZeroIsize|usize];
         impl_ext_num_const![non0uint: NonZeroU8|u8, NonZeroU16|u16, NonZeroU32|u32,
             NonZeroU64|u64, NonZeroU128|u128, NonZeroUsize|usize];
+        // impl_ext_num_const![nonval_int: NonValueI8|u8, NonValueI16|u16, NonValueI32|u32,
+        //     NonValueI64|u64, NonValueI128|u128, NonValueIsize|usize];
     };
     ($T:ty | $U:ty: $ZERO:expr, $ONE:expr, $TWO:expr, $THREE:expr,
      $NEG_ONE:expr, $MIN_POS:expr, $MAX_NEG:expr, $MAX_POW2:expr, $MIN_NORM:expr, $MAX_NORM:expr,
@@ -191,7 +199,7 @@ macro_rules! impl_ext_num_const {
 
     (float: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
-            Some(0.0), Some(1.0), Some(2.0), Some(3.0),
+            Some(0.0), Some(1.0), Some(2.0), Some(3.0), // 0, 1, 2, 3
             Some(-1.0),               // NEG_ONE
             Some(<$T>::MIN_POSITIVE), // MIN_POS
             Some(-0.0),               // MAX_NEG // ↓ MAX_POW2
@@ -207,7 +215,7 @@ macro_rules! impl_ext_num_const {
     )+};
     (int: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
-            Some(0), Some(1), Some(2), Some(3),
+            Some(0), Some(1), Some(2), Some(3), // 0, 1, 2, 3
             Some(-1),   // NEG_ONE
             Some(1),    // MIN_POS
             Some(-1),   // MAX_NEG
@@ -224,7 +232,7 @@ macro_rules! impl_ext_num_const {
     )+};
     (uint: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
-            Some(0), Some(1), Some(2), Some(3),
+            Some(0), Some(1), Some(2), Some(3), // 0, 1, 2, 3
             None,    // NEG_ONE
             Some(1), // MIN_POS
             None,    // MAX_NEG
@@ -239,9 +247,11 @@ macro_rules! impl_ext_num_const {
             false  // IS_NICHE
           ];
     )+};
+    // TODO: parameterize, for…
+    // RENAME: niche (the new constructor returns Option)
     (non0int: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
-            None, <$T>::new(1), <$T>::new(2), <$T>::new(3),
+            <$T>::new(0), <$T>::new(1), <$T>::new(2), <$T>::new(3), // 0, 1, 2, 3
             <$T>::new(-1), // NEG_ONE
             <$T>::new(1),  // MIN_POS
             <$T>::new(-1), // MAX_NEG
@@ -258,7 +268,43 @@ macro_rules! impl_ext_num_const {
     )+};
     (non0uint: $( $T:ty | $U:ty ),+) => { $(
         impl_ext_num_const![$T|$U:
-            None, <$T>::new(1), <$T>::new(2), <$T>::new(3),
+            <$T>::new(0), <$T>::new(1), <$T>::new(2), <$T>::new(3), // 0, 1, 2, 3
+            None,          // NEG_ONE
+            <$T>::new(1),  // MIN_POS
+            None,          // MAX_NEG
+            <$T>::new(<$T>::MAX.get() ^ (<$T>::MAX.get() >> 1)), // MAX_POW2
+            Some(<$T>::MIN), // MIN_NORM
+            Some(<$T>::MAX), // MAX_NORM
+            false, // IS_BIG
+            true,  // IS_INT
+            false, // IS_FLOAT
+            false, // IS_FIXED
+            false, // IS_SIGNED
+            true   // IS_NICHE
+        ];
+    )+};
+
+    // TODO
+    (nonval_int: $( $T:ty | $U:ty ),+) => { $(
+        impl_ext_num_const![$T|$U:
+            <$T>::new(0), <$T>::new(1), <$T>::new(2), <$T>::new(3), // 0, 1, 2, 3
+            <$T>::new(-1), // NEG_ONE
+            <$T>::new(1),  // MIN_POS
+            <$T>::new(-1), // MAX_NEG
+            <$T>::new(<$T>::MAX.get() - (<$T>::MAX.get() >> 1)), // MAX_POW2
+            Some(<$T>::MIN), // MIN_NORM
+            Some(<$T>::MAX), // MAX_NORM
+            false, // IS_BIG
+            true,  // IS_INT
+            false, // IS_FLOAT
+            false, // IS_FIXED
+            true,  // IS_SIGNED
+            true   // IS_NICHE
+        ];
+    )+};
+    (nonval_uint: $( $T:ty | $U:ty ),+) => { $(
+        impl_ext_num_const![$T|$U:
+            <$T>::new(0), <$T>::new(1), <$T>::new(2), <$T>::new(3), // 0, 1, 2, 3
             None,          // NEG_ONE
             <$T>::new(1),  // MIN_POS
             None,          // MAX_NEG

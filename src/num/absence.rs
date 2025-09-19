@@ -20,7 +20,6 @@ impl super::Num for NoNum {
     fn num_into(self) -> Self::Inner {}
 }
 
-#[cfg_attr(nightly_doc, doc(cfg(_int··)))]
 impl super::NumInt for NoNum {
     type OutI = ();
 }

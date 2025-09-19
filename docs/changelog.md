@@ -133,7 +133,7 @@ Many feature gates are removed in order to make most features make always availa
 - prefix internal constants `TAG_*` & `EMOJI_*` with `_`
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
-- update `const_assert!` macro
+- update `const_assert!` macro:
   - add new arms: `ne_buf`, `ne_str`.
   - add support for comparing slices of primitives and slices of slices of primitives.
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
