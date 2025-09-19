@@ -50,11 +50,6 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_90`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_90, feature(const_slice_reverse, mixed_integer_ops_unsigned_sub,))]
-// #![cfg_attr(all(nightly_stable_1_90, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_1_90, feature = "std"), feature(const_float_round_methods,))]
-// ----------------------------
 // `nightly_stable_1_91`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_91,
@@ -88,6 +83,11 @@
 #![cfg_attr(nightly_stable_1_92, feature())]
 #![cfg_attr(all(nightly_stable_1_92, feature = "alloc"), feature(btree_entry_insert,))]
 #![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature())]
+// ----------------------------
+// `nightly_stable_1_93`: core, alloc, std…
+// #![cfg_attr(nightly_stable_1_93, feature())]
+// #![cfg_attr(all(nightly_stable_1_93, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(

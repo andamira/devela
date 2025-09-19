@@ -26,6 +26,7 @@ Many feature gates are removed in order to make most features make always availa
 - add [base] symlinks to `devela/main/[alias|environment|features].rs`.
 
 ## cargo
+- bump MSRV to 1.90.0.
 - add new cargo doc workspace aliases `w*`.
 - add new cargo env var `CARGO_WORKSPACE_DIR`.
 

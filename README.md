@@ -6,7 +6,7 @@
 &nbsp;<sup>←published</sup>
 <br/>
 [![Repository](https://flat.badgen.net/badge/github/v0.25.0/blue?icon=git)](https://github.com/andamira/devela)
-[![MSRV ahead 1.89.0](https://flat.badgen.net/badge/MSRV/1.89.0/blue)](https://releases.rs/docs/1.89.0/)
+[![MSRV ahead 1.90.0](https://flat.badgen.net/badge/MSRV/1.90.0/blue)](https://releases.rs/docs/1.90.0/)
 [![Documentation ahead](https://flat.badgen.net/badge/docs/250914/blue)](https://andamira.github.io/devela/unpublished/devela/)
 &nbsp;<sup>←unpublished</sup>
 

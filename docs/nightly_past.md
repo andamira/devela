@@ -8,6 +8,16 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.90 became stable on [2025-09-18](https://releases.rs/docs/1.90.0/)
+> - <https://github.com/rust-lang/rust/milestone/134>
+> - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.90.0>
+
+- 1.90: `…`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
+- 1.90: `…`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
+- 1.90: `…`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
+- 1.90: `→`[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
+
 # 1.89 became stable on [2025-08-07](https://releases.rs/docs/1.89.0/))
 > - <https://github.com/rust-lang/rust/milestone/133>
 > - <https://blog.rust-lang.org/2025/08/07/Rust-1.89.0>

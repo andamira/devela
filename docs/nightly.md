@@ -3,7 +3,7 @@
 Legend:
 - ` ` = not enabled / can't be enabled
 - `i` = not enabled (incomplete_features).
-- `·` = enabled by non-specific cfg flag (`nightly_stable_[1_89|1_90|later]`)
+- `·` = enabled by non-specific cfg flag (`nightly_stable_[1_91|1_92|later]`)
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
 - `F` = enabled by some specific cfg flag, shown afterwards.
@@ -20,16 +20,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/core/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
-
-# 1.90 will be stable on 2025-09-18 ([`nightly_stable_1_90`](https://releases.rs/docs/1.90.0/))
-> - <https://github.com/rust-lang/rust/milestone/134>
-<!-- > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.90.0> -->
-
-- 1.90: `s`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
-- 1.90: `·`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
-- 1.90: `·`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
-- 1.90: ` `[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
 
 # 1.91 will be stable on 2025-10-30 ([`nightly_stable_1_91`](https://releases.rs/docs/1.91.0/))
 > - <https://github.com/rust-lang/rust/milestone/135>
@@ -65,6 +55,8 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
+
+-
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
