@@ -254,15 +254,8 @@ mod _std {
         round = round_ties_away: ;
         "The nearest integer to `x`, rounding ties to the nearest even integer."
         round_ties_even = round_ties_even: ;
-        r"The integral part.
-        $$ \text{trunc}(x) = \begin{cases}
-        \lfloor x \rfloor, & \text{if } x \geq 0 \\
-        \lceil x \rceil, & \text{if } x < 0
-        \end{cases} $$"
-        trunc = trunc: ;
-        r"The fractional part.
-        $$ \text{fract}(x) = x - \text{trunc}(x) $$"
-        fract = fract: ;
+        // trunc = trunc: ;
+        // fract = fract: ;
         // split == modf
         // abs
         // signum = signum: ;
@@ -352,10 +345,22 @@ mod _std {
                     let (sin, cos) = <$f>::sin_cos(self.0);
                     (Float(sin), Float(cos))
                 }
+                /// The integral part of `x`.
+                /// # Formulation
+                #[doc = crate::_FLOAT_FORMULA_TRUNC!()]
+                pub const fn trunc(self) -> Float<$f> {
+                    Float(self.0.trunc())
+                }
+                /// The fractional part of `x`.
+                /// # Formulation
+                #[doc = crate::_FLOAT_FORMULA_FRACT!()]
+                pub const fn fract(self) -> Float<$f> {
+                    Float(self.0.fract())
+                }
                 /// The integral and fractional parts of `x`.
                 /// # Formulation
                 #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
-                pub fn split(self) -> (Float<$f>, Float<$f>) {
+                pub const fn split(self) -> (Float<$f>, Float<$f>) {
                     let trunc = self.trunc();
                     (trunc, Float(self.0 - trunc.0))
                 }
