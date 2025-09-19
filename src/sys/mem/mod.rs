@@ -36,7 +36,7 @@ mod guard; // Current, CurrrentGuard
 
 pub mod cell; // ExtCellOption, ::core::cell::*
 
-crate::structural_mods! { // _mods, _pub_mods, _hidden, _always
+crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
         pub use super::{
             alloc::_all::*, borrow::_all::*, cache_align::*, ext::*, pin::_all::*,
@@ -50,9 +50,6 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden, _always
     }
     _pub_mods {
         pub use super::cell::_all::*;
-    }
-    _always {
-        pub use super::{cell::_always::*, pin::_always::*, reexports::*};
     }
     _hidden {
         pub use super::size::_hidden::*;

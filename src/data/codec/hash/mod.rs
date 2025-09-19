@@ -19,15 +19,12 @@ crate::items! {
     mod fnv; // HasherBuildFnv, HasherFnv
 }
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{fx::*, reexports::*};
 
         #[cfg(feature = "hash")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "hash")))]
         pub use super::{fnv::*, pengy::*};
-    }
-    _always {
-        pub use super::{fx::*, reexports::*};
     }
 }

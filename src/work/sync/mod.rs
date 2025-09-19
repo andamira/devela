@@ -19,7 +19,7 @@ pub mod mpsc; // Mpsc, std::sync::mpsc::*
 // WIPZONE
 // mod counter;
 
-crate::structural_mods! { // _mods, _pub_mods, _always
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::reexports::*;
 
@@ -31,10 +31,5 @@ crate::structural_mods! { // _mods, _pub_mods, _always
     }
     _pub_mods {
         pub use super::{atomic::_all::*, mpsc::_all::*};
-    }
-    _always {
-        pub use super::atomic::_all::*;
-        #[cfg(feature = "alloc")]
-        pub use super::reexports::*;
     }
 }

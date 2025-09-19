@@ -15,7 +15,7 @@ mod option; // ExtCellOption
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
 // mod ghost; // WIP
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{option::*, _c::*};
         // WIPZONE
@@ -23,8 +23,5 @@ crate::structural_mods! { // _mods, _always
         // pub use super::scell::*;
         // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
         // pub use super::ghost::*; // WIP
-    }
-    _always {
-        pub use super::_c::*;
     }
 }

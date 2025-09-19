@@ -4,16 +4,19 @@
 //
 
 // WIPZONE
+// #[cfg(feature = "alloc")]
+// mod _wip_usv;
+//
 // mod rle;
 // mod utils;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         // WIPZONE
+        // #[cfg(feature = "alloc")]
+        // pub use super::_wip_usv::*;
+        //
         // pub use super::rle::*;
         // pub use super::utils::_all::*;
-    }
-    _always {
-        pub use super::_mods::*;
     }
 }

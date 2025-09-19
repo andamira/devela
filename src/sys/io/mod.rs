@@ -18,17 +18,13 @@ mod define_no_std;
 #[cfg(feature = "std")]
 mod reexports_std;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
         pub use super::namespace::*;
 
         #[cfg(not(feature = "std"))]
         pub use super::define_no_std::*;
-        #[cfg(feature = "std")]
-        pub use super::reexports_std::*;
-    }
-    _always {
         #[cfg(feature = "std")]
         pub use super::reexports_std::*;
     }

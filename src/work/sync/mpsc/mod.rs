@@ -7,13 +7,9 @@ crate::mod_path!(std _s "../../../../libs/base_std/src/work/sync/mpsc/reexports.
 
 mod namespace; // Mpsc
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::namespace::*;
-        #[cfg(feature = "std")]
-        pub use super::_s::*;
-    }
-    _always {
         #[cfg(feature = "std")]
         pub use super::_s::*;
     }

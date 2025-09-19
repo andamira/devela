@@ -51,7 +51,7 @@ crate::mod_path!(_c "../../../libs/base_core/src/num/niche/reexports.rs");
 
 mod impls; // impl ConstDefault, BitSized
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use devela_base_core::num::niche::{

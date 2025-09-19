@@ -13,7 +13,7 @@ mod ext_str; // ExtStr
 #[cfg(all(feature = "str", feature = "alloc"))]
 mod ext_string;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::reexports::*;
         pub use super::macros::*;
@@ -24,8 +24,5 @@ crate::structural_mods! { // _mods, _always
         #[cfg(all(feature = "str", feature = "alloc"))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "str")))]
         pub use super::ext_string::*;
-    }
-    _always {
-        pub use super::reexports::*;
     }
 }

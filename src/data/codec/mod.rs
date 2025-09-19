@@ -39,24 +39,20 @@ pub mod hash; // hashing algorithms (Fnv, Fx, MD5).
 // mod _wip_crc;
 // mod hex; // Hexadecimal literals and conversions.
 // mod rle; // Run-length encoding and similar techniques.
-// mod serde; // structured serialization/deserialization.
+mod serde; // structured serialization/deserialization.
 // #[cfg(feature = "alloc")]
 // mod lempel_ziv;
 
-crate::structural_mods! { // _mods, _pub_mods, _always
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{crypto::_all::*, encode::_all::*, radix::_all::*, types::*};
         // WIPZONE
-        // pub use serde::_all::*;
+        pub use super::serde::_all::*;
         // pub use serde::lempel_ziv::*;
     }
     _pub_mods {
         pub use super::{
             hash::_all::*,
         };
-    }
-    _always {
-        pub use super::{_mods::*, _pub_mods::*};
-        pub use super::hash::_always::*;
     }
 }

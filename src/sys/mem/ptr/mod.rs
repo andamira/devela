@@ -11,7 +11,7 @@ mod fat;
 // re-exports
 crate::mod_path!(_c "../../../../libs/base_core/src/sys/mem/ptr/reexports.rs");
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::fat::FatPtr;

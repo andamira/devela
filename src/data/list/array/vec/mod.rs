@@ -17,14 +17,11 @@ mod reexports;
 // mod d2; // Vec2d
 // mod hvec; // HVec ?
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{chunk::*, ext::*, reexports::*};
         // WIPZONE
         // pub use super::d2::_all::*;
         // pub use super::hvec::_all::*;
-    }
-    _always {
-        pub use super::ext::*;
     }
 }

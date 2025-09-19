@@ -18,7 +18,7 @@ pub mod stack;
 #[cfg(feature = "_tuple")]
 pub mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
 
-crate::structural_mods! { // _mods, _pub_mods, _always
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{link::_all::*, of::_all::*};
     }
@@ -26,8 +26,5 @@ crate::structural_mods! { // _mods, _pub_mods, _always
         pub use super::{array::_all::*, queue::_all::*, stack::_all::*};
         #[cfg(feature = "_tuple")]
         pub use super::tuple::_all::*;
-    }
-    _always {
-        pub use super::{array::_always::*, link::_always::*, queue::_always::*};
     }
 }

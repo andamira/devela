@@ -31,8 +31,4 @@ crate::structural_mods! { // _mods
         #[doc(inline)]
         pub use devela_base_core::data::list::{ArrayFrom, array_init};
     }
-    _always {
-        #[cfg(feature = "alloc")]
-        pub use super::vec::_always::*;
-    }
 }

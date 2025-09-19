@@ -28,7 +28,7 @@ crate::items! {
 // mod looper;
 // mod instant;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{granularity::*, reexports::*, source::*};
 
@@ -42,8 +42,5 @@ crate::structural_mods! { // _mods, _always
         // #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u16")))]
         // pub use super::looper::*;
         // pub use super::instant::*;
-    }
-    _always {
-        pub use super::reexports::*;
     }
 }

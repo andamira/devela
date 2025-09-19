@@ -20,15 +20,13 @@ pub mod unit;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
 pub mod wave;
 
-crate::structural_mods! { // _pub_mods, _always
+crate::structural_mods! { // _pub_mods
     _pub_mods {
         pub use super::{
-            bio::_all::*, chem::_all::*, elec::_all::*, time::_all::*, mech::_all::*, unit::_all::*,
+            bio::_all::*, chem::_all::*, elec::_all::*,
+            time::_all::*, mech::_all::*, unit::_all::*,
         };
         #[cfg(feature = "wave")]
         pub use super::wave::_all::*;
-    }
-    _always {
-        pub use super::time::_always::*;
     }
 }

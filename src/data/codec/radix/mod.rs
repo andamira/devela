@@ -5,11 +5,8 @@
 
 mod base;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::base::*;
-    }
-    _always {
-        pub use super::_mods::*;
     }
 }

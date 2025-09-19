@@ -38,7 +38,7 @@ pub mod os; // Linux,
 // #[cfg(feature = "std")]
 // mod bench;
 
-crate::structural_mods! { // _mods, _pub_mods, _hidden, _crate_internals, _always
+crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
         pub use super::sound::_all::*;
     }
@@ -51,12 +51,6 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden, _crate_internals, _alway
         // #[cfg(feature = "std")]
         // pub use super::bench::*;
         // pub use super::bench::_all::*;
-    }
-    _crate_internals {}
-    _always {
-        pub use super::{
-            arch::_always::*, env::_always::*, io::_always::*, mem::_always::*,
-        };
     }
     _hidden {
         pub use super::mem::_hidden::*;

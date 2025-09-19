@@ -14,14 +14,11 @@ mod reexports;
 // #[cfg(_list2··)]
 // mod l2;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::reexports::*;
         // WIPZONE
         // pub use super::l1::*;
         // pub use super::l2::*;
-    }
-    _always {
-        pub use super::reexports::*;
     }
 }

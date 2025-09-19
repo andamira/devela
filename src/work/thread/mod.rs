@@ -22,7 +22,7 @@ crate::items! {
     // mod semaphore; // Semaphore
 }
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         #[cfg(feature = "std")]
         pub use super::{_s::*, ext::*, sleep::*};
@@ -34,9 +34,5 @@ crate::structural_mods! { // _mods, _always
             // pub use super::pool::*;
             // pub use super::semaphore::*;
         }
-    }
-    _always {
-        #[cfg(feature = "std")]
-        pub use super::_s::*;
     }
 }

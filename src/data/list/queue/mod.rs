@@ -17,7 +17,7 @@ mod reexports;
 // WIPZONE
 // mod destaque_define; // MAYBE
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{adt::*, reexports::*};
 
@@ -25,8 +25,5 @@ crate::structural_mods! { // _mods, _always
         pub use super::destaque::_all::*;
         // WIPZONE
         // pub use super::destaque_define::_all::*;
-    }
-    _always {
-        pub use super::{adt::*, reexports::*};
     }
 }

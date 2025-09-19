@@ -18,11 +18,8 @@ mod namespace; // Arch
 mod reexports;
 mod wasm; // Wasm
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{helpers::*, namespace::*, reexports::*, wasm::*};
-    }
-    _always {
-        pub use super::reexports::*;
     }
 }

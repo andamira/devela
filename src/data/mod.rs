@@ -38,7 +38,7 @@ pub mod dst;
 // #[cfg(_node··)]
 // pub mod node;
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{absence::*, bit::_all::*, collection::*};
 
@@ -78,10 +78,5 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
             feature = "unsafe_layout"
         ))]
         pub(crate) use super::dst::_crate_internals::*;
-    }
-    _always {
-        pub use super::{
-            codec::_always::*, collection::*, iter::_always::*, list::_always::*,
-        };
     }
 }

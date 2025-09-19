@@ -14,7 +14,7 @@ mod namespace; // Fmt
 // mod case;
 // mod table;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{_c::*, namespace::*};
         #[cfg(feature = "alloc")]
@@ -26,10 +26,5 @@ crate::structural_mods! { // _mods, _always
         // WIPZONE
         // pub use super::case::*;
         // pub use super::table::*;
-    }
-    _always {
-        pub use super::_c::*;
-        #[cfg(feature = "alloc")]
-        pub use super::_a::*;
     }
 }

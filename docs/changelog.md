@@ -55,6 +55,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ## workspace libraries
 - declare the `std` external crate.
+- remove `_always` structural modules.
 - refactor all structural access modules.
 - enable `_docsrs` for workspace dependencies.
 - support having external optional dependencies.
@@ -66,7 +67,6 @@ Many feature gates are removed in order to make most features make always availa
   - move `paste` dependency to [base].
 - [base]
   - add `_workspace_internal` structural module (replacing `_internal`).
-  - remove `_always` structural modules.
 - [base_macros]:
   - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
 - [macros]:

@@ -18,7 +18,7 @@ pub mod thread;
 // pub mod actor;
 // pub mod fiber;
 
-crate::structural_mods! { // _pub_mods, _always
+crate::structural_mods! { // _pub_mods
     _pub_mods {
         pub use super::future::_all::*;
         #[allow(unused, reason = "feature-gated")]
@@ -26,10 +26,5 @@ crate::structural_mods! { // _pub_mods, _always
         // WIPZONE:
         // pub use super::actor::*;
         // pub use super::fiber::*;
-    }
-    _always {
-        pub use super::{
-            process::_always::*, sync::_always::*, thread::_always::*,
-        };
     }
 }

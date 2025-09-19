@@ -24,7 +24,7 @@ pub mod panic; // Panic, set_panic_handler!
 pub mod result; // AllError, serr, sok, Mismatch, OptRes, ValueQuant…
 pub mod util; // utility macros and functions
 
-devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals, _always
+devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{_c::*, any::_all::*, default::*, guard::*};
     }
@@ -36,10 +36,5 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals, _alw
     }
     _crate_internals {
         pub(crate) use super::util::_crate_internals::*;
-    }
-    _always {
-        pub use super::{
-            _c::*, error::_always::*, result::_always::*, util::_always::*,
-        };
     }
 }

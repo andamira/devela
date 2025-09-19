@@ -20,11 +20,8 @@
 mod opt_res; // ExtOption, ExtResult, OptionFmt[Or[Else]]
 mod reexports;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{opt_res::_all::*, reexports::*};
-    }
-    _always {
-        pub use super::reexports::*;
     }
 }

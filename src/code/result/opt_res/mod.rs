@@ -9,11 +9,8 @@ mod ext_option; // ExtOption
 mod ext_result; // ExtResult
 mod fmt; // OptionFmt, OptionFmtOr, OptionFmtOrElse
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
-        pub use super::{ext_option::*, ext_result::*, fmt::*};
-    }
-    _always {
         pub use super::{ext_option::*, ext_result::*, fmt::*};
     }
 }

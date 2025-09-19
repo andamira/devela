@@ -15,16 +15,11 @@ mod namespace;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod app;
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{_c::*, arg::_all::*, namespace::*};
 
         #[cfg(feature = "std")]
         pub use super::{_s::*, app::*};
-    }
-    _always {
-        pub use super::_c::*;
-        #[cfg(feature = "std")]
-        pub use super::_s::*;
     }
 }

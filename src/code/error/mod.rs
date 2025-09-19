@@ -12,13 +12,8 @@ mod reexports;
 // WIPZONE
 // mod num; // numeric-related errors
 
-crate::structural_mods! { // _mods, _always
+crate::structural_mods! { // _mods
     _mods {
-        pub use super::reexports::*;
-        // WIPZONE
-        // pub use super::num::*;
-    }
-    _always {
         pub use super::reexports::*;
         // WIPZONE
         // pub use super::num::*;

@@ -29,7 +29,7 @@ mod unroll; // unroll!
 // mod docima; // DocImage
 // mod structural; // structural_mods!
 
-devela_base_core::structural_mods! { // _mods, _crate_internals, _always
+devela_base_core::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{cdbg::*, reexports::*};
         #[cfg(feature = "_unroll")]
@@ -41,8 +41,5 @@ devela_base_core::structural_mods! { // _mods, _crate_internals, _always
     }
     _crate_internals {
         pub(crate) use super::_std_core::*;
-    }
-    _always { // RETHINK
-        pub use super::_crate_internals::*;
     }
 }

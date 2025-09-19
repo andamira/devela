@@ -198,16 +198,6 @@ pub mod all { #![allow(unused_imports)]
         ui::_all::*,
         work::_all::*,
     };
-    // less feature-gated public items, bubbled up
-    #[doc(inline)]
-    pub use super::{
-        code::_always::*,
-        data::_always::*,
-        phys::_always::*,
-        sys::_always::*,
-        text::_always::*,
-        work::_always::*,
-    };
 }
 
 // public, hidden items
@@ -232,6 +222,5 @@ mod _crate_internals {
         lang::_crate_internals::*,
         media::_crate_internals::*,
         num::_crate_internals::*,
-        sys::_crate_internals::*,
     };
 }

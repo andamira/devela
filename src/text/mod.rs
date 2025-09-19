@@ -26,7 +26,7 @@ pub mod str;
 // mod bytes; // Utf8Byte
 // mod cell; // TextCell
 
-crate::structural_mods! { // _mods, _pub_mods, _always
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
             char::_all::*,
@@ -47,12 +47,6 @@ crate::structural_mods! { // _mods, _pub_mods, _always
             fmt::_all::*,
             parse::_all::*,
             str::_all::*,
-        };
-    }
-    _always {
-        #[doc(inline)]
-        pub use super::{
-            errors::*, fmt::_always::*, str::_always::*,
         };
     }
 }
