@@ -231,12 +231,15 @@ Many feature gates are removed in order to make most features make always availa
 
 ### str
 - remove methods: `to_cstring`, from `String*` & `Grapheme*`.
-- make more methods *const* in `GraphemeU8` and `StringU8`.
-- remove `Str::from_boxed_utf8_unchecked` method.
+- make more methods *const* in `GraphemeU8`.
+- update `Str:`
+  - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
+  - remove method `from_boxed_utf8_unchecked`.
 - update `StringU*`:
   - new methods: `sanitize`, `with`.
   - impl `AsMut<&str>`, `DerefMut`.
   - make `as_mut_str` method safe.
+  - make more methods *const*.
   - fix `TryFrom<&str>` impl.
 
 ## ui
