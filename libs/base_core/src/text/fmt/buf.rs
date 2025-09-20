@@ -124,7 +124,7 @@ impl<'a> FmtWriter<'a> {
         let n = Compare(s_bytes.len()).min(available);
         if n > 0 {
             Slice::range_mut(self.buf, self.len, self.len + n)
-                .copy_from_slice(Slice::range_to(&s_bytes, n));
+                .copy_from_slice(Slice::range_to(s_bytes, n));
         }
         is![n < s_bytes.len(); self.truncated = true];
         self.len += n;

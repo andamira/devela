@@ -851,7 +851,7 @@ impl<T> Slice<T> {
     #[inline(always)]
     #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-    pub const fn take_omit_last_uncheked(slice: &[T], n: usize) -> &[T] {
+    pub const fn take_omit_last_unchecked(slice: &[T], n: usize) -> &[T] {
         unsafe { slice.split_at_unchecked(slice.len() - n).0 }
     }
 
@@ -900,7 +900,7 @@ impl<T> Slice<T> {
     #[inline(always)]
     #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-    pub const fn take_omit_last_mut_uncheked(slice: &mut [T], n: usize) -> &mut [T] {
+    pub const fn take_omit_last_mut_unchecked(slice: &mut [T], n: usize) -> &mut [T] {
         unsafe { slice.split_at_mut_unchecked(slice.len() - n).0 }
     }
 }

@@ -220,6 +220,8 @@ Many feature gates are removed in order to make most features make always availa
   - types: `AsciiDigits`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 - rename `Ascii` to `AsciiDigits`.
   - rename method: `calc_digit` to `digit_at_power`.
+- new `char7` methods: `to_byte`, `to_str`.
+- make `ASCII_TABLE` public.
 
 ### fmt
 - move to [base]:

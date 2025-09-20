@@ -1,4 +1,4 @@
-// devela_base_core::text::ascii::wrapper
+// devela_base_core::text::ascii::digits
 //
 //! Defines [`AsciiDigits`].
 //

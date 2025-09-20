@@ -9,12 +9,14 @@
 
 mod char; // AsciiChar
 mod digits; // AsciiDigits
+mod table; // ASCII_TABLE
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             char::AsciiChar,
             digits::AsciiDigits,
+            table::ASCII_TABLE,
         };
     }
 }

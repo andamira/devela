@@ -1,8 +1,11 @@
 // devela::text::char::impls::char7
+//
+//!
+//
 
 use super::*;
 
-use crate::{AsciiChar, Char, DataOverflow, NonExtremeU8};
+use crate::{ASCII_TABLE, AsciiChar, Char, DataOverflow, NonExtremeU8};
 
 impl char7 {
     /* private helper fns */
@@ -81,6 +84,17 @@ impl char7 {
     }
 
     //
+
+    /// Returns the byte representation.
+    #[inline(always)]
+    pub const fn to_byte(&self) -> u8 {
+        self.0.get()
+    }
+    /// Returns the string slice representation.
+    #[inline(always)]
+    pub const fn to_str(&self) -> &'static str {
+        ASCII_TABLE[self.to_byte() as usize]
+    }
 
     /// Converts a `char7` to `AsciiChar`.
     #[must_use]
