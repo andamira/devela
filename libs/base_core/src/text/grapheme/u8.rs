@@ -129,7 +129,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_mut_str(&mut self) -> &mut str {
-        unsafe { self.0.as_mut_str() }
+        self.0.as_mut_str()
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.

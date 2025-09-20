@@ -991,8 +991,7 @@ impl<T> Slice<T> {
 
     /// Returns the middle sub-`slice` with the given maximum `len` and a left bias.
     ///
-    /// In case of a non-perfect middle split, it will have one character more
-    /// on the left.
+    /// In case of a non-perfect middle split, it will have one element more on the left.
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
@@ -1023,8 +1022,7 @@ impl<T> Slice<T> {
     /// Returns the middle exclusive sub-`slice` with the given maximum `len` and a
     /// left bias.
     ///
-    /// In case of a non-perfect middle split, it will have one character more
-    /// on the left.
+    /// In case of a non-perfect middle split, it will have one element more on the left.
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
@@ -1056,8 +1054,7 @@ impl<T> Slice<T> {
 
     /// Returns the middle sub-`slice` with the given maximum `len` and a right bias.
     ///
-    /// In case of a non-perfect middle split, it will have one character more
-    /// on the right.
+    /// In case of a non-perfect middle split, it will have one element more on the right.
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
@@ -1088,8 +1085,7 @@ impl<T> Slice<T> {
     /// Returns the middle exclusive sub-`slice` with the given maximum `len` and a
     /// right bias.
     ///
-    /// In case of a non-perfect middle split, it will have one character more
-    /// on the right.
+    /// In case of a non-perfect middle split, it will have one element more on the right.
     ///
     /// If `len > slice.len()` returns the full `slice`.
     /// # Example

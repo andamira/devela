@@ -11,8 +11,8 @@
 #[allow(unused, reason = "±unsafe")]
 use crate::{Compare, cfor, unwrap};
 use crate::{
-    Debug, Deref, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars, Mismatch,
-    MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, text::char::*,
+    Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
+    Mismatch, MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, text::char::*,
 };
 
 macro_rules! impl_str_u {
@@ -39,6 +39,7 @@ macro_rules! impl_str_u {
         /// ## Methods
         /// - Construct:
         ///   [`new`][Self::new],
+        ///   [`with`][Self::with],
         ///   [`from_char`][Self::from_char]*(
         ///     [`7`](Self::from_char7),
         ///     [`8`](Self::from_char8),
@@ -48,9 +49,9 @@ macro_rules! impl_str_u {
         ///   [`into_array`][Self::into_array],
         ///   [`as_array`][Self::as_array],
         ///   [`as_bytes`][Self::as_bytes]
-        ///     *([mut][Self::as_bytes_mut]<sup title="unsafe function">⚠</sup>)*,
+        ///     *([mut][Self::as_bytes_mut],
         ///   [`as_str`][Self::as_str]
-        ///     *([mut][Self::as_mut_str]<sup title="unsafe function">⚠</sup>)*,
+        ///     *([mut][Self::as_mut_str],
         ///   [`chars`][Self::chars],
         /// - Query:
         ///   [`len`][Self::len],
@@ -85,6 +86,33 @@ macro_rules! impl_str_u {
                 } else {
                     Err(MismatchedCapacity::closed(0, <$t>::MAX as usize, CAP))
                 }
+            }
+
+            #[doc = "Creates a new `String" $t:camel "` from a `&str`."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8]
+            /// or if `CAP < string.len()`.
+            ///
+            #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            /// # Example
+            /// ```
+            /// # use devela_base_core::StringU8;
+            /// let s = StringU8::<13>::with("Hello Wørld!").unwrap();
+            /// assert_eq![s.as_str(), "Hello Wørld!"];
+            /// ```
+            pub fn with(string: &str) -> Result<Self, MismatchedCapacity> {
+                if CAP < string.len() {
+                    Err(MismatchedCapacity::closed(0, CAP + string.len(), CAP))
+                } else {
+                    let mut new_string = unwrap![ok? Self::new()];
+                    let bytes = string.as_bytes();
+                    Slice::range_to_mut(&mut new_string.arr, bytes.len()).copy_from_slice(bytes);
+                    new_string.len = bytes.len() as $t;
+                    Ok(new_string)
+                }
+
             }
 
             /* query */
@@ -138,6 +166,7 @@ macro_rules! impl_str_u {
                 return Slice::take_first(&self.arr, self.len as usize);
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain a correct length
                 unsafe { Slice::take_first_unchecked(&self.arr, self.len as usize) }
             }
 
@@ -152,10 +181,11 @@ macro_rules! impl_str_u {
                 return Slice::take_first_mut(&mut self.arr, self.len as usize);
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain a correct length
                 unsafe { Slice::take_first_mut_unchecked(&mut self.arr, self.len as usize) }
             }
 
-            /// Returns the inner string slice.
+            /// Returns a reference to the inner string slice.
             ///
             /// # Features
             /// Makes use of the `unsafe_str` feature if enabled.
@@ -170,17 +200,19 @@ macro_rules! impl_str_u {
                 unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
             }
 
-            /// Returns the exclusive inner string slice.
-            /// Makes use of the `unsafe_str` feature if enabled.
+            /// Returns an exclusive reference to the inner string slice.
             ///
-            /// # Safety
-            /// The content must be valid UTF-8.
+            /// # Features
+            /// Makes use of the `unsafe_str` feature if enabled.
             #[must_use]
             #[inline(always)]
-            #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
-            pub const unsafe fn as_mut_str(&mut self) -> &mut str {
-                unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
+            pub const fn as_mut_str(&mut self) -> &mut str {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return unwrap![ok_expect Str::from_utf8_mut(self.as_bytes_mut()), "Invalid UTF-8"];
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain only valid UTF-8
+                unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
             }
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
@@ -526,9 +558,15 @@ macro_rules! impl_str_u {
             type Target = str;
             fn deref(&self) -> &Self::Target { self.as_str() }
         }
+        impl<const CAP: usize> DerefMut for $name<CAP> {
+            fn deref_mut(&mut self) -> &mut str { self.as_mut_str() }
+        }
 
         impl<const CAP: usize> AsRef<str> for $name<CAP> {
             fn as_ref(&self) -> &str { self.as_str() }
+        }
+        impl<const CAP: usize> AsMut<str> for $name<CAP> {
+            fn as_mut(&mut self) -> &mut str { self.as_mut_str() }
         }
 
         impl<const CAP: usize> AsRef<[u8]> for $name<CAP> {
@@ -550,6 +588,7 @@ macro_rules! impl_str_u {
                     let mut new_string = Self::new()?;
                     let bytes = string.as_bytes();
                     new_string.arr[..bytes.len()].copy_from_slice(bytes);
+                    new_string.len = bytes.len() as $t;
                     Ok(new_string)
                 }
             }
@@ -565,12 +604,7 @@ macro_rules! impl_str_u {
             /// `CAP < bytes.len()`, and [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
             fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
                 if CAP < bytes.len() {
-                    return Err(InvalidText::Capacity(Mismatch::in_closed_interval(
-                        0,
-                        bytes.len(),
-                        CAP,
-                        "",
-                    )));
+                    Err(InvalidText::Capacity(Mismatch::in_closed_interval(0, bytes.len(), CAP, "")))
                 } else {
                     match Str::from_utf8(bytes) {
                         Ok(_) => {

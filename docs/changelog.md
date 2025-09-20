@@ -233,8 +233,11 @@ Many feature gates are removed in order to make most features make always availa
 - remove methods: `to_cstring`, from `String*` & `Grapheme*`.
 - make more methods *const* in `GraphemeU8` and `StringU8`.
 - remove `Str::from_boxed_utf8_unchecked` method.
-- new `StringU*` method: `sanitize`.
-
+- update `StringU*`:
+  - new methods: `sanitize`, `with`.
+  - impl `AsMut<&str>`, `DerefMut`.
+  - make `as_mut_str` method safe.
+  - fix `TryFrom<&str>` impl.
 
 ## ui
 ### front
