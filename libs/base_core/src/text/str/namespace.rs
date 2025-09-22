@@ -3,7 +3,7 @@
 //! [`Str`] namespace.
 //
 
-use crate::{AsciiDigits, Compare, InvalidUtf8, Slice, is};
+use crate::{AsciiDigits, Cmp, InvalidUtf8, Slice, is};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
@@ -27,18 +27,6 @@ use ::core::str::from_utf8_mut;
 /// - [extra methods](#extra-methods)
 ///
 /// - [`range*` API methods](#range-api-methods-for-returning-substrings):</br>
-///   - [**range_to**](#method.range_to)
-///    ([*checked*](#method.range_to_checked),
-///     [_**mut**_](#method.range_to_mut),
-///     [*mut_checked*](#method.range_to_mut_checked),                  (`&str[..end]`)
-///   - [**range_to_inclusive**](#method.range_to_inclusive)
-///    ([*checked*](#method.range_to_inclusive_checked),
-///     [_**mut**_](#method.range_to_inclusive_mut),
-///     [*mut_checked*](#method.range_to_inclusive_mut_checked),        (`&str[..=end]`)
-///   - [**range_from**](#method.range_from),
-///    ([*checked*](#method.range_from_checked),
-///     [_**mut**_](#method.range_from_mut),
-///     [*mut_checked*](#method.range_from_mut_checked),                (`&str[start..]`)
 ///   - [**range**](#method.range)
 ///    ([*checked*](#method.range_checked),
 ///     [_**mut**_](#method.range_mut),
@@ -46,7 +34,19 @@ use ::core::str::from_utf8_mut;
 ///   - [**range_inclusive**](#method.range_inclusive)
 ///    ([*checked*](#method.range_inclusive_checked),
 ///     [_**mut**_](#method.range_inclusive_mut),
-///     [*mut_checked*](#method.range_inclusive_mut_checked).           (`&str[start..=end]`)
+///     [*mut_checked*](#method.range_inclusive_mut_checked),           (`&str[start..=end]`)
+///   - [**range_from**](#method.range_from),
+///    ([*checked*](#method.range_from_checked),
+///     [_**mut**_](#method.range_from_mut),
+///     [*mut_checked*](#method.range_from_mut_checked),                (`&str[start..]`)
+///   - [**range_to**](#method.range_to)
+///    ([*checked*](#method.range_to_checked),
+///     [_**mut**_](#method.range_to_mut),
+///     [*mut_checked*](#method.range_to_mut_checked),                  (`&str[..end]`)
+///   - [**range_to_inclusive**](#method.range_to_inclusive)
+///    ([*checked*](#method.range_to_inclusive_checked),
+///     [_**mut**_](#method.range_to_inclusive_mut),
+///     [*mut_checked*](#method.range_to_inclusive_mut_checked).        (`&str[..=end]`)
 ///
 /// - [`take*` API methods](#take-api-methods-for-subslicing):</br>
 ///   - [**take_first**](#method.take_first)
@@ -301,174 +301,6 @@ impl Str {
 ///
 /// Similar to `Slice::`[`range*` API methods](crate::Slice#range-api-methods-for-subslicing)
 impl Str {
-    // range_to
-
-    /// Returns a substring up to the given `end` index.
-    ///
-    /// Equivalent to `&string[..end]`.
-    ///
-    /// # Panics
-    /// Panics if `end` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to(string: &str, end: usize) -> &str {
-        string.split_at(end).0
-    }
-
-    /// Returns a substring up to the given `end` index.
-    ///
-    /// Equivalent to `&string[..end]`.
-    ///
-    /// Returns `None` if `end` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to_checked(string: &str, end: usize) -> Option<&str> {
-        match string.split_at_checked(end) {
-            Some((substring, _)) => Some(substring),
-            None => None,
-        }
-    }
-
-    /// Returns an exclusive substring up to the given `end` index.
-    ///
-    /// Equivalent to `&mut string[..end]`.
-    ///
-    /// # Panics
-    /// Panics if `end` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to_mut(string: &mut str, end: usize) -> &mut str {
-        string.split_at_mut(end).0
-    }
-
-    /// Returns an exclusive substring up to the given `end` index.
-    ///
-    /// Equivalent to `&mut string[..end]`.
-    ///
-    /// Returns `None` if `end` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to_mut_checked(string: &mut str, end: usize) -> Option<&mut str> {
-        match string.split_at_mut_checked(end) {
-            Some((substring, _)) => Some(substring),
-            None => None,
-        }
-    }
-
-    // range_to_inclusive
-
-    /// Returns a substring up to and including the given `end` index.
-    ///
-    /// Equivalent to `&string[..=end]`.
-    ///
-    /// # Panics
-    /// Panics if `end` >= `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to_inclusive(string: &str, end: usize) -> &str {
-        string.split_at(end + 1).0
-    }
-
-    /// Returns a substring up to and including the given `end` index.
-    ///
-    /// Equivalent to `&string[..=end]`.
-    ///
-    /// Returns `None` if `end` >= `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to_inclusive_checked(string: &str, end: usize) -> Option<&str> {
-        is![end < string.len(); Some(string.split_at(end + 1).0); None]
-    }
-
-    /// Returns an exclusive substring up to and including the given `end` index.
-    ///
-    /// Equivalent to `&string[..=end]`.
-    ///
-    /// # Panics
-    /// Panics if `end` >= `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to_inclusive_mut(string: &mut str, end: usize) -> &mut str {
-        string.split_at_mut(end + 1).0
-    }
-
-    /// Returns an exclusive substring up to and including the given `end` index.
-    ///
-    /// Equivalent to `&string[..=end]`.
-    ///
-    /// Returns `None` if `end` >= `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_to_inclusive_mut_checked(string: &mut str, end: usize) -> Option<&mut str> {
-        is![end < string.len(); Some(string.split_at_mut(end + 1).0); None]
-    }
-
-    // range_from
-
-    /// Returns a substring starting from the given `start` index.
-    ///
-    /// Equivalent to `&string[start..]`.
-    ///
-    /// # Panics
-    /// Panics if `start` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_from(string: &str, start: usize) -> &str {
-        string.split_at(start).1
-    }
-
-    /// Returns a substring starting from the given `start` index.
-    ///
-    /// Equivalent to `&string[start..]`.
-    ///
-    /// Returns `None` if `start` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_from_checked(string: &str, start: usize) -> Option<&str> {
-        match string.split_at_checked(start) {
-            Some((_, substring)) => Some(substring),
-            None => None,
-        }
-    }
-
-    /// Returns an exclusive substring starting from the given `start` index.
-    ///
-    /// Equivalent to `&mut string[start..]`.
-    ///
-    /// # Panics
-    /// Panics if `start` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_from_mut(string: &mut str, start: usize) -> &mut str {
-        string.split_at_mut(start).1
-    }
-
-    /// Returns an exclusive substring starting from the given `start` index.
-    ///
-    /// Equivalent to `&mut string[start..]`.
-    ///
-    /// Returns `None` if `start` > `string.len()`
-    /// or if the split point falls outside a UTF-8 code point boundary.
-    #[must_use]
-    #[inline(always)]
-    pub const fn range_from_mut_checked(string: &mut str, start: usize) -> Option<&mut str> {
-        match string.split_at_mut_checked(start) {
-            Some((_, substring)) => Some(substring),
-            None => None,
-        }
-    }
-
     // range
 
     /// Returns a substring from `start` (inclusive) to `end` (exclusive).
@@ -595,6 +427,174 @@ impl Str {
                     .split_at_mut_checked(end - start + 1)]
             .0,
         )
+    }
+
+    // range_from
+
+    /// Returns a substring starting from the given `start` index.
+    ///
+    /// Equivalent to `&string[start..]`.
+    ///
+    /// # Panics
+    /// Panics if `start` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_from(string: &str, start: usize) -> &str {
+        string.split_at(start).1
+    }
+
+    /// Returns a substring starting from the given `start` index.
+    ///
+    /// Equivalent to `&string[start..]`.
+    ///
+    /// Returns `None` if `start` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_from_checked(string: &str, start: usize) -> Option<&str> {
+        match string.split_at_checked(start) {
+            Some((_, substring)) => Some(substring),
+            None => None,
+        }
+    }
+
+    /// Returns an exclusive substring starting from the given `start` index.
+    ///
+    /// Equivalent to `&mut string[start..]`.
+    ///
+    /// # Panics
+    /// Panics if `start` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_from_mut(string: &mut str, start: usize) -> &mut str {
+        string.split_at_mut(start).1
+    }
+
+    /// Returns an exclusive substring starting from the given `start` index.
+    ///
+    /// Equivalent to `&mut string[start..]`.
+    ///
+    /// Returns `None` if `start` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_from_mut_checked(string: &mut str, start: usize) -> Option<&mut str> {
+        match string.split_at_mut_checked(start) {
+            Some((_, substring)) => Some(substring),
+            None => None,
+        }
+    }
+
+    // range_to
+
+    /// Returns a substring up to the given `end` index.
+    ///
+    /// Equivalent to `&string[..end]`.
+    ///
+    /// # Panics
+    /// Panics if `end` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to(string: &str, end: usize) -> &str {
+        string.split_at(end).0
+    }
+
+    /// Returns a substring up to the given `end` index.
+    ///
+    /// Equivalent to `&string[..end]`.
+    ///
+    /// Returns `None` if `end` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to_checked(string: &str, end: usize) -> Option<&str> {
+        match string.split_at_checked(end) {
+            Some((substring, _)) => Some(substring),
+            None => None,
+        }
+    }
+
+    /// Returns an exclusive substring up to the given `end` index.
+    ///
+    /// Equivalent to `&mut string[..end]`.
+    ///
+    /// # Panics
+    /// Panics if `end` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to_mut(string: &mut str, end: usize) -> &mut str {
+        string.split_at_mut(end).0
+    }
+
+    /// Returns an exclusive substring up to the given `end` index.
+    ///
+    /// Equivalent to `&mut string[..end]`.
+    ///
+    /// Returns `None` if `end` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to_mut_checked(string: &mut str, end: usize) -> Option<&mut str> {
+        match string.split_at_mut_checked(end) {
+            Some((substring, _)) => Some(substring),
+            None => None,
+        }
+    }
+
+    // range_to_inclusive
+
+    /// Returns a substring up to and including the given `end` index.
+    ///
+    /// Equivalent to `&string[..=end]`.
+    ///
+    /// # Panics
+    /// Panics if `end` >= `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to_inclusive(string: &str, end: usize) -> &str {
+        string.split_at(end + 1).0
+    }
+
+    /// Returns a substring up to and including the given `end` index.
+    ///
+    /// Equivalent to `&string[..=end]`.
+    ///
+    /// Returns `None` if `end` >= `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to_inclusive_checked(string: &str, end: usize) -> Option<&str> {
+        is![end < string.len(); Some(string.split_at(end + 1).0); None]
+    }
+
+    /// Returns an exclusive substring up to and including the given `end` index.
+    ///
+    /// Equivalent to `&string[..=end]`.
+    ///
+    /// # Panics
+    /// Panics if `end` >= `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to_inclusive_mut(string: &mut str, end: usize) -> &mut str {
+        string.split_at_mut(end + 1).0
+    }
+
+    /// Returns an exclusive substring up to and including the given `end` index.
+    ///
+    /// Equivalent to `&string[..=end]`.
+    ///
+    /// Returns `None` if `end` >= `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
+    #[must_use]
+    #[inline(always)]
+    pub const fn range_to_inclusive_mut_checked(string: &mut str, end: usize) -> Option<&mut str> {
+        is![end < string.len(); Some(string.split_at_mut(end + 1).0); None]
     }
 }
 
@@ -769,10 +769,9 @@ impl Str {
 
     /// Returns the leftmost sub-`string` with the given maximum `len`.
     ///
-    /// If `len > self.len()` it returns the full string.
-    ///
     /// # Panics
-    /// Panics if the split point falls outside a UTF-8 code point boundary.
+    /// Returns `None` if `end` > `string.len()`
+    /// or if the split point falls outside a UTF-8 code point boundary.
     ///
     /// # Example
     /// ```
@@ -780,12 +779,12 @@ impl Str {
     /// let s = "Hello world!";
     /// assert_eq!(Str::lsplit(s, 0), "");
     /// assert_eq!(Str::lsplit(s, 3), "Hel");
-    /// assert_eq!(Str::lsplit(s, 20), "Hello world!");
+    /// assert_eq!(Str::lsplit(s, 12), "Hello world!");
+    /// // assert_eq!(Str::lsplit(s, 13), "Hello world!"); // panics
     /// ```
     pub const fn lsplit(string: &str, len: usize) -> &str {
-        let end_idx = Compare(len).clamp(0, string.len());
-        let (left, _) = string.split_at(end_idx);
-        left
+        let end = Cmp(len).clamp(0, string.len());
+        Str::range_to(string, end)
     }
 
     /// Returns the leftmost exclusive sub-`string` with the given maximum `len`.
@@ -805,9 +804,8 @@ impl Str {
     /// ```
     /// See also [`string::lsplit_mut`].
     pub const fn lsplit_mut(string: &mut str, len: usize) -> &mut str {
-        let end_idx = Compare(len).clamp(0, string.len());
-        let (left, _) = string.split_at_mut(end_idx);
-        left
+        let end = Cmp(len).clamp(0, string.len());
+        Str::range_to_mut(string, end)
     }
 
     /* right split */
@@ -829,9 +827,8 @@ impl Str {
     /// ```
     #[must_use]
     pub const fn rsplit(string: &str, len: usize) -> &str {
-        let start_idx = string.len().saturating_sub(len);
-        let (_, right) = string.split_at(start_idx);
-        right
+        let start = string.len().saturating_sub(len);
+        Str::range_from(string, start)
     }
 
     /// Returns the rightmost exclusive sub-`string` with the given maximum `len`.
@@ -887,7 +884,7 @@ impl Str {
         let mid_idx = string.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = Compare(mid_idx + half_len).min(string.len());
+        let end_idx = Cmp(mid_idx + half_len).min(string.len());
         let (_, right) = string.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -921,7 +918,7 @@ impl Str {
         let mid_idx = string.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = Compare(mid_idx + half_len).min(string.len());
+        let end_idx = Cmp(mid_idx + half_len).min(string.len());
         let (_, right) = string.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle
@@ -956,7 +953,7 @@ impl Str {
         let mid_idx = string.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = Compare(mid_idx + half_len + (len % 2)).min(string.len());
+        let end_idx = Cmp(mid_idx + half_len + (len % 2)).min(string.len());
         let (_, right) = string.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -991,7 +988,7 @@ impl Str {
         let mid_idx = string.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = Compare(mid_idx + half_len + (len % 2)).min(string.len());
+        let end_idx = Cmp(mid_idx + half_len + (len % 2)).min(string.len());
         let (_, right) = string.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle

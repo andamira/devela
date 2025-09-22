@@ -202,7 +202,7 @@ macro_rules! impl_comparing {
     };
     (@float: $f:ty:$b:literal:$sh:literal $( :$fcap:literal )?) => { paste! {
         $( #[cfg(feature = $fcap)] )?
-        impl Compare<$f> {
+        impl Cmp<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
             #[must_use]
             pub const fn total_cmp(self, other: $f) -> Ordering {
