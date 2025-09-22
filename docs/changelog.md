@@ -98,6 +98,9 @@ Many feature gates are removed in order to make most features make always availa
   - configure the exact nightly version to install and use.
 - update `config/rustdoc-header.html` to support multiple crates with custom whitelists.
 - move `/config/dep_all.rs` to `/build/main/dep_all`.
+- update github CI workflows
+  - bump `actions/checkout` to v5.
+  - add more `no_std` targets, retry downloads and disable fail-fast.
 
 
 -----------

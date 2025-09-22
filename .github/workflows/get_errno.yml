@@ -25,7 +25,7 @@ jobs:
           - {target: riscv64gc-unknown-linux-gnu, docker_image: riscv64/ubuntu}
     steps:
       - name: "checkout repo"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Set up QEMU"
         uses: docker/setup-qemu-action@v3
