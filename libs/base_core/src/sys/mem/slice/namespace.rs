@@ -29,50 +29,50 @@ use core::slice::{from_raw_parts, from_raw_parts_mut};
 ///     [*unchecked*](#method.range_to_unchecked),
 ///     [_**mut**_](#method.range_to_mut),
 ///     [*mut_checked*](#method.range_to_mut_checked),
-///     [*mut_unchecked*](#method.range_to_mut_unchecked)),                  (`&slice[..end]`)
+///     [*mut_unchecked*](#method.range_to_mut_unchecked)),           ≈ `&slice[..end]`
 ///   - [**range_to_inclusive**](#method.range_to_inclusive)
 ///    ([*checked*](#method.range_to_inclusive_checked),
 ///     [*unchecked*](#method.range_to_inclusive_unchecked),
 ///     [_**mut**_](#method.range_to_inclusive_mut),
 ///     [*mut_checked*](#method.range_to_inclusive_mut_checked),
-///     [*mut_unchecked*](#method.range_to_inclusive_mut_unchecked)),        (`&slice[..=end]`)
+///     [*mut_unchecked*](#method.range_to_inclusive_mut_unchecked)), ≈ `&slice[..=end]`
 ///   - [**range_from**](#method.range_from),
 ///    ([*checked*](#method.range_from_checked),
 ///     [*unchecked*](#method.range_from_unchecked),
 ///     [_**mut**_](#method.range_from_mut),
 ///     [*mut_checked*](#method.range_from_mut_checked),
-///     [*mut_unchecked*](#method.range_from_mut_unchecked)),                (`&slice[start..]`)
+///     [*mut_unchecked*](#method.range_from_mut_unchecked)),         ≈ `&slice[start..]`
 ///   - [**range**](#method.range)
 ///    ([*checked*](#method.range_checked),
 ///     [*unchecked*](#method.range_unchecked),
 ///     [_**mut**_](#method.range_mut),
 ///     [*mut_checked*](#method.range_mut_checked),
-///     [*mut_unchecked*](#method.range_mut_unchecked)),                     (`&slice[start..end]`)
+///     [*mut_unchecked*](#method.range_mut_unchecked)),              ≈ `&slice[start..end]`
 ///   - [**range_inclusive**](#method.range_inclusive)
 ///    ([*checked*](#method.range_inclusive_checked),
 ///     [*unchecked*](#method.range_inclusive_unchecked),
 ///     [_**mut**_](#method.range_inclusive_mut),
 ///     [*mut_checked*](#method.range_inclusive_mut_checked),
-///     [*mut_unchecked*](#method.range_inclusive_mut_unchecked)).           (`&slice[start..=end]`)
+///     [*mut_unchecked*](#method.range_inclusive_mut_unchecked)).    ≈ `&slice[start..=end]`
 /// - [`take*` API methods](#take-api-methods-for-subslicing):</br>
 ///   - [**take_first**](#method.take_first)
 ///    ([*checked*](#method.take_first_checked),
 ///     [*unchecked*](#method.take_first_unchecked),
 ///     [_**mut**_](#method.take_first_mut),
 ///     [*mut_checked*](#method.take_first_mut_checked),
-///     [*mut_unchecked*](#method.take_first_mut_unchecked)),                (`&slice[..n]`)
+///     [*mut_unchecked*](#method.take_first_mut_unchecked)),         ≈ `&slice[..n]`
 ///   - [**take_last**](#method.take_last)
 ///    ([*checked*](#method.take_last_checked),
 ///     [*unchecked*](#method.take_last_unchecked),
 ///     [_**mut**_](#method.take_last_mut),
 ///     [*mut_checked*](#method.take_last_mut_checked),
-///     [*mut_unchecked*](#method.take_last_mut_unchecked)),                 (`&slice[slice.len() - n..]`)
+///     [*mut_unchecked*](#method.take_last_mut_unchecked)),          ≈ `&slice[len - n..]`
 ///   - [**take_omit_last**](#method.take_omit_last)
 ///    ([*checked*](#method.take_omit_last_checked),
 ///     [*unchecked*](#method.take_omit_last_unchecked),
 ///     [_**mut**_](#method.take_omit_last_mut),
 ///     [*mut_checked*](#method.take_omit_last_mut_checked),
-///     [*mut_unchecked*](#method.take_omit_last_mut_unchecked)).            (`&slice[..slice.len() - n]`)
+///     [*mut_unchecked*](#method.take_omit_last_mut_unchecked)).     ≈ `&slice[..len - n]`
 ///
 /// - [`*split*` API methods](#split-api-methods-for-subslicing):</br>
 ///   - [**lsplit**](#method.lsplit)
