@@ -9,7 +9,7 @@
 // - impl methods
 // - impl FmtWrite
 
-use crate::{CONST, Compare, FmtArguments, FmtResult, FmtWrite, Slice, Str, is};
+use crate::{CONST, Cmp, FmtArguments, FmtResult, FmtWrite, Slice, Str, is};
 crate::_use! {compat::from_utf8}
 
 #[doc = crate::_TAG_FMT!()]
@@ -121,7 +121,7 @@ impl<'a> FmtWriter<'a> {
     pub const fn write_str_truncate(&mut self, s: &str) {
         let available = self.buf.len().saturating_sub(self.len);
         let s_bytes = s.as_bytes();
-        let n = Compare(s_bytes.len()).min(available);
+        let n = Cmp(s_bytes.len()).min(available);
         if n > 0 {
             Slice::range_mut(self.buf, self.len, self.len + n)
                 .copy_from_slice(Slice::range_to(s_bytes, n));

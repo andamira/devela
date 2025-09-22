@@ -1,8 +1,8 @@
 // devela::data::list::queue::destaque::methods::general
 
 use crate::{
-    Array, Bare, Compare, DataNotEnough, Destaque, DestaqueIter, MismatchedCapacity,
-    NotEnoughElements, NotEnoughSpace, Storage, array_from_fn,
+    Array, Bare, Cmp, DataNotEnough, Destaque, DestaqueIter, MismatchedCapacity, NotEnoughElements,
+    NotEnoughSpace, Storage, array_from_fn,
 };
 #[cfg(feature = "alloc")]
 use crate::{Boxed, Vec, vec_ as vec};
@@ -49,7 +49,7 @@ macro_rules! impl_destaque {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
             pub fn new(element: T) -> Result<Self, MismatchedCapacity> {
-                let max = Compare($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
+                let max = Cmp($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
                 if CAP > max {
                     Err(MismatchedCapacity::closed(0, max, CAP))
                 } else {
@@ -79,7 +79,7 @@ macro_rules! impl_destaque {
                 "<i32, 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
             /// ```
             pub const fn new_copied(element: T) -> Result<Self, MismatchedCapacity> {
-                let max = Compare($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
+                let max = Cmp($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
                 if CAP > max {
                     Err(MismatchedCapacity::closed(0, max, CAP))
                 } else {

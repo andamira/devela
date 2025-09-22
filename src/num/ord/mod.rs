@@ -13,6 +13,6 @@ crate::structural_mods! { // _mods
         // re-exports
         pub use super::_c::*;
         #[doc(inline)]
-        pub use devela_base_core::Compare;
+        pub use devela_base_core::Cmp;
     }
 }

@@ -3,13 +3,13 @@
 #![doc = crate::_DOC_NUM_ORD!()]
 //
 
-mod compare; // `Compare`
+mod cmp; // Cmp
 mod reexports;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            compare::*,
+            cmp::*,
             reexports::*,
         };
     }

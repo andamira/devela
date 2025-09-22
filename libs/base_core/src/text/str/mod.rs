@@ -4,8 +4,8 @@
 //
 
 mod namespace; // Str
-mod nonul; // StringNonul
 mod reexports;
+mod string_nonul; // StringNonul
 mod string_u; // StringU8, StringU16, StringU32, StringUsize
 
 crate::structural_mods! { // _mods
@@ -13,7 +13,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             namespace::Str,
             reexports::*,
-            nonul::*,
+            string_nonul::*,
             string_u::*,
         };
     }

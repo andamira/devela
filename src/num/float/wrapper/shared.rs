@@ -3,7 +3,7 @@
 //! Defines all the shared, cross-platform public methods for `Float`.
 //
 
-use crate::{Float, FloatCategory, Sign, cfor, concat as cc, is, stringify as sfy};
+use crate::{Cmp, Float, FloatCategory, Sign, cfor, concat as cc, is, stringify as sfy};
 
 /// Implements methods independently of any features
 ///
@@ -429,21 +429,21 @@ macro_rules! impl_float_shared {
             /// ```
             /// See also: [`clamp`][Self::clamp], [`clamp_nan`][Self::clamp_nan].
             pub const fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
-                Float(crate::Compare(self.0).clamp(min, max))
+                Float(Cmp(self.0).clamp(min, max))
             }
 
             /// Returns the maximum between itself and `other`, using total order.
             ///
             /// See also: [`max_nan`][Self::max_nan].
             pub const fn max_total(self, other: $f) -> Float<$f> {
-                Float(crate::Compare(self.0).max(other))
+                Float(Cmp(self.0).max(other))
             }
 
             /// Returns the minimum between itself and `other`, using total order.
             ///
             /// See also: [`min_nan`][Self::min_nan].
             pub const fn min_total(self, other: $f) -> Float<$f> {
-                Float(crate::Compare(self.0).min(other))
+                Float(Cmp(self.0).min(other))
             }
 
             /// Returns itself clamped between `min` and `max`, propagating `NaN`.

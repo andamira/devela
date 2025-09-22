@@ -1,12 +1,12 @@
-// devela_base_core::num::ord::compare
+// devela_base_core::num::ord::cmp
 //
 //! Helper wrapper for comparing.
 //
 // TOC
-// - Compare definition
+// - Cmp definition
 // - impl core traits
-// - impl Compare for T: PartialOrd
-// - impl Compare for primitives
+// - impl Cmp for T: PartialOrd
+// - impl Cmp for primitives
 //   - int
 //   - float
 // - tests
@@ -33,51 +33,51 @@ use ::core::{f16, f128};
 /// - aditional methods are provided:
 ///  `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
 #[repr(transparent)]
-pub struct Compare<T>(pub T);
+pub struct Cmp<T>(pub T);
 
 #[rustfmt::skip]
 mod core_impls {
-    use {super::{Compare, Ordering}, core::fmt};
+    use {super::{Cmp, Ordering}, core::fmt};
 
-    impl<T: Clone> Clone for Compare<T> { fn clone(&self) -> Self { Self(self.0.clone()) } }
-    impl<T: Copy> Copy for Compare<T> {}
+    impl<T: Clone> Clone for Cmp<T> { fn clone(&self) -> Self { Self(self.0.clone()) } }
+    impl<T: Copy> Copy for Cmp<T> {}
 
-    impl<T: PartialEq> PartialEq for Compare<T> {
+    impl<T: PartialEq> PartialEq for Cmp<T> {
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
-    impl<T: Eq> Eq for Compare<T> {}
-    impl<T: PartialOrd> PartialOrd for Compare<T> {
+    impl<T: Eq> Eq for Cmp<T> {}
+    impl<T: PartialOrd> PartialOrd for Cmp<T> {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> { self.0.partial_cmp(&other.0) }
     }
-    impl<T: Ord> Ord for Compare<T> {
+    impl<T: Ord> Ord for Cmp<T> {
         fn cmp(&self, other: &Self) -> Ordering { self.0.cmp(&other.0) }
     }
 
-    impl<T: fmt::Display> fmt::Display for Compare<T> {
+    impl<T: fmt::Display> fmt::Display for Cmp<T> {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
     }
-    impl<T: fmt::Debug> fmt::Debug for Compare<T> {
+    impl<T: fmt::Debug> fmt::Debug for Cmp<T> {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            f.debug_tuple("Compare").field(&self.0).finish()
+            f.debug_tuple("Cmp").field(&self.0).finish()
         }
     }
 }
 
 #[rustfmt::skip]
-impl<T: PartialOrd> Compare<T> {
+impl<T: PartialOrd> Cmp<T> {
     /// Compares and returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
     ///
     /// Returns `None` if comparisons are indeterminate.
     ///
     /// # Examples
     /// ```
-    /// # use devela_base_core::Compare;
-    /// assert_eq![Some(0.4), Compare(1.0).pclamp(0.2, 0.4)];
-    /// assert_eq![Some(0.2), Compare(0.0).pclamp(0.2, 0.4)];
+    /// # use devela_base_core::Cmp;
+    /// assert_eq![Some(0.4), Cmp(1.0).pclamp(0.2, 0.4)];
+    /// assert_eq![Some(0.2), Cmp(0.0).pclamp(0.2, 0.4)];
     /// //
-    /// assert_eq![None, Compare(1.0).pclamp(f32::NAN, f32::NAN)];
-    /// assert_eq![None, Compare(1.0).pclamp(f32::NAN, 0.4)];
-    /// assert_eq![None, Compare(1.0).pclamp(0.2, f32::NAN)];
+    /// assert_eq![None, Cmp(1.0).pclamp(f32::NAN, f32::NAN)];
+    /// assert_eq![None, Cmp(1.0).pclamp(f32::NAN, 0.4)];
+    /// assert_eq![None, Cmp(1.0).pclamp(0.2, f32::NAN)];
     /// ```
     #[must_use]
     pub fn pclamp(self, min: T, max: T) -> Option<T> {
@@ -99,11 +99,11 @@ impl<T: PartialOrd> Compare<T> {
     /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires [`Ord`]
     /// # Examples
     /// ```
-    /// # use devela_base_core::Compare;
-    /// assert_eq![Some(0.4), Compare(0.2).pmax(0.4)];
+    /// # use devela_base_core::Cmp;
+    /// assert_eq![Some(0.4), Cmp(0.2).pmax(0.4)];
     /// //
-    /// assert_eq![None, Compare(0.2).pmax(f32::NAN)];
-    /// assert_eq![None, Compare(f32::NAN).pmax(0.4)];
+    /// assert_eq![None, Cmp(0.2).pmax(f32::NAN)];
+    /// assert_eq![None, Cmp(f32::NAN).pmax(0.4)];
     /// ```
     #[must_use]
     pub fn pmax(self, other: T) -> Option<T> {
@@ -121,11 +121,11 @@ impl<T: PartialOrd> Compare<T> {
     /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires [`Ord`]
     /// # Example
     /// ```
-    /// # use devela_base_core::Compare;
-    /// assert_eq![Some(0.2), Compare(0.2).pmin(0.4)];
+    /// # use devela_base_core::Cmp;
+    /// assert_eq![Some(0.2), Cmp(0.2).pmin(0.4)];
     /// //
-    /// assert_eq![None, Compare(0.2).pmin(f32::NAN)];
-    /// assert_eq![None, Compare(f32::NAN).pmin(0.4)];
+    /// assert_eq![None, Cmp(0.2).pmin(f32::NAN)];
+    /// assert_eq![None, Cmp(f32::NAN).pmin(0.4)];
     /// ```
     #[must_use]
     pub fn pmin(self, other: T) -> Option<T> {
@@ -152,7 +152,7 @@ macro_rules! impl_comparing {
     int: $($p:ty $(: $cap:literal)? ),+ $(,)?) => { $( impl_comparing![@int: $p $(:$cap)? ]; )+ };
     (@int: $p:ty $(: $cap:literal)? ) => {
         $( #[cfg(feature = $cap)] )?
-        impl Compare<$p> {
+        impl Cmp<$p> {
             /// Compares and returns `self` clamped between `min` and `max`.
             #[must_use]
             pub const fn clamp(self, min: $p, max: $p) -> $p {
@@ -220,9 +220,9 @@ macro_rules! impl_comparing {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela_base_core::Compare;
-            #[doc = "assert_eq![2.0, Compare(5.0" $f ").clamp(-1.0, 2.0)];"]
-            #[doc = "assert_eq![-1.0, Compare(-5.0" $f ").clamp(-1.0, 2.0)];"]
+            /// # use devela_base_core::Cmp;
+            #[doc = "assert_eq![2.0, Cmp(5.0" $f ").clamp(-1.0, 2.0)];"]
+            #[doc = "assert_eq![-1.0, Cmp(-5.0" $f ").clamp(-1.0, 2.0)];"]
             /// ```
             #[must_use]
             pub const fn clamp(self, min: $f, max: $f) -> $f { self.0.clamp(min, max) }
@@ -232,11 +232,11 @@ macro_rules! impl_comparing {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela_base_core::Compare;
-            #[doc = "assert_eq![2.0, Compare(2.0" $f ").max(-1.0)];"]
-            #[doc = "assert_eq![2.0, Compare(1.0" $f ").max(2.0)];"]
-            #[doc = "assert_eq![0.0, Compare(-0.0" $f ").max(0.0)];"]
-            #[doc = "assert_eq![" $f "::INFINITY, Compare(" $f "::INFINITY).max("
+            /// # use devela_base_core::Cmp;
+            #[doc = "assert_eq![2.0, Cmp(2.0" $f ").max(-1.0)];"]
+            #[doc = "assert_eq![2.0, Cmp(1.0" $f ").max(2.0)];"]
+            #[doc = "assert_eq![0.0, Cmp(-0.0" $f ").max(0.0)];"]
+            #[doc = "assert_eq![" $f "::INFINITY, Cmp(" $f "::INFINITY).max("
                 $f "::NEG_INFINITY)];"]
             /// ```
             #[must_use]
@@ -247,11 +247,11 @@ macro_rules! impl_comparing {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela_base_core::Compare;
-            #[doc = "assert_eq![-1.0, Compare(2.0" $f ").min(-1.0)];"]
-            #[doc = "assert_eq![1.0, Compare(1.0" $f ").min(2.0)];"]
-            #[doc = "assert_eq![-0.0, Compare(-0.0" $f ").min(0.0)];"]
-            #[doc = "assert_eq![" $f "::NEG_INFINITY, Compare(" $f "::INFINITY).min("
+            /// # use devela_base_core::Cmp;
+            #[doc = "assert_eq![-1.0, Cmp(2.0" $f ").min(-1.0)];"]
+            #[doc = "assert_eq![1.0, Cmp(1.0" $f ").min(2.0)];"]
+            #[doc = "assert_eq![-0.0, Cmp(-0.0" $f ").min(0.0)];"]
+            #[doc = "assert_eq![" $f "::NEG_INFINITY, Cmp(" $f "::INFINITY).min("
                 $f "::NEG_INFINITY)];"]
             /// ```
             #[must_use]
@@ -317,31 +317,32 @@ impl_comparing!();
 
 #[cfg(test)]
 mod test_min_max_clamp {
-    use super::Compare as C;
+    use super::Cmp;
 
     #[test]
     fn min_max_clamp() {
-        assert_eq![Some(2), C(2).pmin(5)];
-        assert_eq![Some(2), C(5).pmin(2)];
-        assert_eq![Some(2.), C(2.).pmin(5.)];
+        assert_eq![Some(2), Cmp(2).pmin(5)];
+        assert_eq![Some(2), Cmp(5).pmin(2)];
+        assert_eq![Some(2.), Cmp(2.).pmin(5.)];
 
-        assert_eq![Some(5), C(2).pmax(5)];
-        assert_eq![Some(5), C(5).pmax(2)];
-        assert_eq![Some(5.), C(2.).pmax(5.)];
+        assert_eq![Some(5), Cmp(2).pmax(5)];
+        assert_eq![Some(5), Cmp(5).pmax(2)];
+        assert_eq![Some(5.), Cmp(2.).pmax(5.)];
 
-        assert_eq![Some(3), C(3).pclamp(2, 5)];
-        assert_eq![Some(3.), C(3.).pclamp(2., 5.)];
-        assert_eq![Some(2), C(1).pclamp(2, 5)];
-        assert_eq![Some(5), C(7).pclamp(2, 5)];
+        assert_eq![Some(3), Cmp(3).pclamp(2, 5)];
+        assert_eq![Some(3.), Cmp(3.).pclamp(2., 5.)];
+        assert_eq![Some(2), Cmp(1).pclamp(2, 5)];
+        assert_eq![Some(5), Cmp(7).pclamp(2, 5)];
     }
 
     #[test]
     fn float() {
-        let (zero, negzero, one, negone) = (C(0.0_f32), C(-0.0_f32), C(1.0_f32), C(-1.0_f32));
-        let (nan1, nan2) = (C(f32::NAN), C(0.0_f32 / 0.0_f32));
-        let (inf, neginf) = (C(f32::INFINITY), C(f32::NEG_INFINITY));
-        let sub = C(1.401298464e-45_f32);
-        let (min, negmin) = (C(f32::MIN_POSITIVE), C(-f32::MIN_POSITIVE));
+        let (zero, negzero, one, negone) =
+            (Cmp(0.0_f32), Cmp(-0.0_f32), Cmp(1.0_f32), Cmp(-1.0_f32));
+        let (nan1, nan2) = (Cmp(f32::NAN), Cmp(0.0_f32 / 0.0_f32));
+        let (inf, neginf) = (Cmp(f32::INFINITY), Cmp(f32::NEG_INFINITY));
+        let sub = Cmp(1.401298464e-45_f32);
+        let (min, negmin) = (Cmp(f32::MIN_POSITIVE), Cmp(-f32::MIN_POSITIVE));
 
         assert![nan1.0.is_nan()];
         assert![nan2.0.is_nan()];

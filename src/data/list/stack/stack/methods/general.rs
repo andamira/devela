@@ -1,8 +1,8 @@
 // devela::data::collections::stack::methods::general
 
 use crate::{
-    Array, Bare, Compare, DataNotEnough, MismatchedCapacity, NotEnoughElements, NotEnoughSpace,
-    Stack, StackIter, Storage,
+    Array, Bare, Cmp, DataNotEnough, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Stack,
+    StackIter, Storage,
 };
 #[cfg(feature = "alloc")]
 use crate::{Boxed, Vec};
@@ -48,7 +48,7 @@ macro_rules! impl_stack {
             #[doc = "let s = Stack" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
             pub fn new(element: T) -> Result<Self, MismatchedCapacity> {
-                let max = Compare($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
+                let max = Cmp($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
                 if CAP > max {
                     Err(MismatchedCapacity::closed(0, max, CAP))
                 } else {
@@ -76,7 +76,7 @@ macro_rules! impl_stack {
                 "<i32, 16> = unwrap![ok Stack" $IDX:camel "::new_copied(0)];"]
             /// ```
             pub const fn new_copied(element: T) -> Result<Self, MismatchedCapacity> {
-                let max = Compare($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
+                let max = Cmp($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
                 if CAP > max {
                     Err(MismatchedCapacity::closed(0, max, CAP))
                 } else {

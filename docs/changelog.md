@@ -164,7 +164,7 @@ Many feature gates are removed in order to make most features make always availa
   - aliases: `fsize` and `[iu]size_*`.
   - all data, numeric, text & time error types.
   - macros: `const_bool!`, `ne!`, `nz!`.
-  - types: `Cast`, `Compare`, `Cycle`, `CycleCount`, `False`, `Int`, `Interval`,  `NonExtreme*`, `NonValue*`, `Sign`, `True`.
+  - types: `Cast`, `Cmp`, `Cycle`, `CycleCount`, `False`, `Int`, `Interval`,  `NonExtreme*`, `NonValue*`, `Sign`, `True`.
   - traits: `ConstBool`.
 - new types: `IntAlloc`, `IntError`, `IntResult`, `NicheValueError`.
 - move float shared docs to `devela_base_num` prefixed with `_FLOAT_`.
@@ -176,6 +176,7 @@ Many feature gates are removed in order to make most features make always availa
 - make std `Float` methods `trunc`, `fract` & `split` *const*.
 - make all `Int` methods *const*.
 - make `Sign` part of `quant`.
+- rename `Compare` to `Cmp`.
 
 ## phys
 ### time

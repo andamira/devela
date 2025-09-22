@@ -9,7 +9,7 @@
 
 #[cfg(any(doc, unsafe··))]
 use crate::Ptr;
-use crate::{Compare, is};
+use crate::{Cmp, is};
 use ::core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use core::slice::{from_raw_parts, from_raw_parts_mut};
@@ -922,7 +922,7 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::lsplit(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
     pub const fn lsplit(slice: &[T], len: usize) -> &[T] {
-        let end_idx = Compare(len).clamp(0, slice.len());
+        let end_idx = Cmp(len).clamp(0, slice.len());
         let (left, _) = slice.split_at(end_idx);
         left
     }
@@ -941,7 +941,7 @@ impl<T> Slice<T> {
     /// ```
     /// See also [`Slice::lsplit_mut`].
     pub const fn lsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
-        let end_idx = Compare(len).clamp(0, slice.len());
+        let end_idx = Cmp(len).clamp(0, slice.len());
         let (left, _) = slice.split_at_mut(end_idx);
         left
     }
@@ -1013,7 +1013,7 @@ impl<T> Slice<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = Compare(mid_idx + half_len).min(slice.len());
+        let end_idx = Cmp(mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -1044,7 +1044,7 @@ impl<T> Slice<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = Compare(mid_idx + half_len).min(slice.len());
+        let end_idx = Cmp(mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle
@@ -1076,7 +1076,7 @@ impl<T> Slice<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
+        let end_idx = Cmp(mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -1106,7 +1106,7 @@ impl<T> Slice<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
+        let end_idx = Cmp(mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle

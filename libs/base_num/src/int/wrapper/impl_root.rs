@@ -16,7 +16,7 @@
 use super::super::_docs::*;
 #[allow(unused_imports, reason = "doc for Overflow")]
 use crate::IntError::{NonNegativeRequired, NonZeroRequired, Overflow};
-use crate::{Int, IntResult as Result, is, isize_up, paste, upcasted_op, usize_up};
+use crate::{Cmp, Int, IntResult as Result, is, isize_up, paste, upcasted_op, usize_up};
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
 #[cold] #[inline(never)] #[rustfmt::skip]
@@ -133,7 +133,7 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(-4_" $t ").sqrt_floor(), Err(NonNegativeRequired)];"]
             /// ```
             pub const fn sqrt_floor(self) -> Result<Int<$t>> {
-                let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
+                let a = Cmp(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a.is_negative() {
                     Err(NonNegativeRequired)
                 } else if a < 2 {
@@ -357,7 +357,7 @@ macro_rules! impl_root {
             #[doc="assert_eq![Int(21_" $t ").sqrt_floor(), Int(4)];"]
             /// ```
             pub const fn sqrt_floor(self) -> Int<$t> {
-                let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
+                let a = Cmp(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a < 2 {
                     self
                 } else {

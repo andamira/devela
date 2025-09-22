@@ -3,8 +3,7 @@
 //!
 //
 
-#[allow(unused_imports)]
-use crate::{Angle, AngleDirection, AngleKind, ExtFloat, Float, FloatConst};
+use crate::{Angle, AngleDirection, AngleKind, Cmp, ExtFloat, Float, FloatConst};
 
 /// impl `Angle` methods with a floating-point representation.
 ///
@@ -60,7 +59,7 @@ macro_rules! impl_angle {
 
             /// Returns `true` if the angle is between -1 and 1 (non-inclusive).
             pub const fn is_normalized(self) -> bool {
-                crate::Compare(self.turn).gt(-1.0) && crate::Compare(self.turn).lt(1.0)
+                Cmp(self.turn).gt(-1.0) && Cmp(self.turn).lt(1.0)
             }
 
             /// Returns the angle normalized to the non-inclusive range -1 to 1.
@@ -135,7 +134,7 @@ macro_rules! impl_angle {
             /// Returns the kind of the normalized angle.
             // BLOCKED: const by normalize
             pub fn kind(self) -> AngleKind {
-                let angle = crate::Compare(self.normalize().positive().turn);
+                let angle = Cmp(self.normalize().positive().turn);
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
                 if angle.eq(0.0) { // 1 turn (0' or 360º)
                     Full
@@ -175,7 +174,7 @@ macro_rules! impl_angle {
             #[must_use]
             // BLOCKED: const by normalize
             pub fn is_kind(self, kind: AngleKind) -> bool {
-                let angle = crate::Compare(self.normalize().positive().turn);
+                let angle = Cmp(self.normalize().positive().turn);
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
                 match kind {
                     Full => angle.eq(0.0),

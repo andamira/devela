@@ -7,7 +7,7 @@ use crate::is;
 
 #[allow(unused, reason = "±unsafe in digits_str methods")]
 use crate::unwrap;
-use crate::{CONST, Compare, StringU8};
+use crate::{CONST, Cmp, StringU8};
 
 CONST! {
 DOC_DIGIT_AT_POWER =
@@ -110,7 +110,7 @@ impl AsciiDigits<usize> {
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
-        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
+        let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
@@ -174,7 +174,7 @@ impl AsciiDigits<u8> {
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
-        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
+        let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
@@ -260,7 +260,7 @@ impl AsciiDigits<u16> {
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
-        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
+        let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
@@ -357,7 +357,7 @@ impl AsciiDigits<u32> {
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
-        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
+        let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
@@ -439,7 +439,7 @@ impl AsciiDigits<u64> {
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
-        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
+        let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
@@ -540,7 +540,7 @@ impl AsciiDigits<u128> {
     /// # Features
     /// - Makes use of the `unsafe_str` feature if enabled.
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
-        let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
+        let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];

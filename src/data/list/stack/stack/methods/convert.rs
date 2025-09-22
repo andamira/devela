@@ -3,7 +3,9 @@
 //!
 //
 
-use crate::{Array, Bare, ConstDefault, IndexOutOfBounds, NotEnoughSpace, Own, Stack, array_init};
+use crate::{
+    Array, Bare, Cmp, ConstDefault, IndexOutOfBounds, NotEnoughSpace, Own, Stack, array_init,
+};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 
@@ -287,7 +289,7 @@ macro_rules! impl_stack {
                 } else {
                     0
                 };
-                let new_len = crate::num::Compare(NEW_CAP).min(self.len as usize);
+                let new_len = Cmp(NEW_CAP).min(self.len as usize);
                 let old_arr: [T; CAP] = self.data.into_array_copy();
                 let mut new_arr = array_init![const_default [T; NEW_CAP]];
 

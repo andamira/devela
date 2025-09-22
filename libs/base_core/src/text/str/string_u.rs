@@ -9,7 +9,7 @@
 // - tests
 
 #[allow(unused, reason = "±unsafe")]
-use crate::{Compare, cfor, unwrap};
+use crate::{Cmp, cfor, unwrap};
 use crate::{
     Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
     Mismatch, MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, text::char::*,
@@ -454,7 +454,7 @@ macro_rules! impl_str_u {
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
-                let length = Compare(length).min(CAP as $t);
+                let length = Cmp(length).min(CAP as $t);
                 match Str::from_utf8(Slice::take_first(&bytes, length as usize)) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(e),
@@ -474,7 +474,7 @@ macro_rules! impl_str_u {
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
-                Self { arr: bytes, len: Compare(length).min(CAP as $t) }
+                Self { arr: bytes, len: Cmp(length).min(CAP as $t) }
             }
 
             /// Returns a string from an array of `bytes`,
@@ -487,7 +487,7 @@ macro_rules! impl_str_u {
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
-                let length = Compare(length).min(CAP as $t);
+                let length = Cmp(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
                 cfor![i in 0..ulen => {
@@ -514,7 +514,7 @@ macro_rules! impl_str_u {
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
                 -> Self {
-                let length = Compare(length).min(CAP as $t);
+                let length = Cmp(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
                 cfor![i in 0..ulen => {

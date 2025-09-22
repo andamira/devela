@@ -3,7 +3,7 @@
 //! ANSI codes related to color.
 //
 
-use crate::{Ansi, AsciiDigits as AsciiD, Compare};
+use crate::{Ansi, AsciiDigits as AsciiD, Cmp};
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]
@@ -415,8 +415,8 @@ impl Ansi {
     #[must_use]
     pub const fn GRAY(fg: u8, bg: u8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
-        let cf = AsciiD(Compare(fg).min(23)).digits();
-        let cb = AsciiD(Compare(bg).min(23)).digits();
+        let cf = AsciiD(Cmp(fg).min(23)).digits();
+        let cb = AsciiD(Cmp(bg).min(23)).digits();
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3], cf[0], cf[1], cf[2],
