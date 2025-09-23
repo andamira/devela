@@ -235,6 +235,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `Char`:
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
   - make it a tuple struct with a single a generic parameter.
+  - add methods: `decode_surrogate_pair`, `is_surrogate*`.
   - modify all methods to take `self`.
   - return lenghts as usize.
 

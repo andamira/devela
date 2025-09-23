@@ -189,8 +189,9 @@ impl Str {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     ///
-    /// See also [`ExtStr::repeat_into`], which should be faster,
-    /// because it uses `copy_from_slice`.
+    /// See also [`ExtStr::repeat_into`], which should be faster, because it uses `copy_from_slice`.
+    #[doc = crate::doclink!(custom devela "[`ExtStr::repeat_into`]"
+        "text/str/trait.ExtStr.html#method.repeat_into")]
     #[must_use]
     pub const fn repeat_into<'input, const CAP: usize>(
         string: &str,
@@ -244,6 +245,8 @@ impl Str {
     /// Makes use of the `unsafe_str` feature if enabled.
     ///
     /// See also [`ExtStr::new_counter`].
+    #[doc = crate::doclink!(custom devela "[`ExtStr::new_counter`]"
+        "text/str/trait.ExtStr.html#method.new_counter")]
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     pub const fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
