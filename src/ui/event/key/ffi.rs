@@ -9,7 +9,7 @@
 // - impls `js`
 
 use super::*;
-use crate::unwrap;
+use crate::{is, unwrap};
 #[cfg(all(feature = "js", not(windows)))]
 crate::items! {
     use crate::{Char, WebKeyLocation, Slice};
@@ -318,7 +318,7 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                if Char::is_7bit(c) { return (Char::code_to_ascii_str_unchecked(c), L::Standard); }
+                is![Char(c).is_7bit(); return (Char(c).code_to_ascii_str_unchecked(), L::Standard)];
                 ("Unknown", L::Standard)
             },
             K::Unknown => ("Unknown", L::Standard),
@@ -374,7 +374,7 @@ impl KeyFfi {
                         }
                     }
                     // Handle single UTF-8 characters (only meaningful for semantic keys)
-                    let (code, _) = Char::utf8_bytes_to_code_unchecked(kbytes, 0);
+                    let (code, _) = Char(kbytes).utf8_bytes_to_code_unchecked(0);
                     return Some(K::Char(code));
                 }
                 None
@@ -427,10 +427,10 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                if Char::is_7bit(c) { return (Char::code_to_ascii_str_unchecked(c), L::Standard); }
+                is![Char(c).is_7bit(); return (Char(c).code_to_ascii_str_unchecked(), L::Standard)];
                 ("Unknown", L::Standard)
                 // IMPROVE using a static atomic buffer
-                // (Char::code_to_utf8_str_unchecked(c), L::Standard)
+                // (Char(c).code_to_utf8_str_unchecked(), L::Standard)
             },
             K::Unknown => ("Unknown", L::Standard),
         }

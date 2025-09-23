@@ -39,7 +39,7 @@ impl char8 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
     pub const fn try_from_char16(c: char16) -> Result<char8, DataOverflow> {
-        if Char::byte_len(c.to_u32()) == 1 {
+        if Char(c.to_u32()).byte_len() == 1 {
             Ok(char8(c.to_u32() as u8))
         } else {
             Err(DataOverflow(Some(c.to_u32() as usize)))
@@ -50,7 +50,7 @@ impl char8 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
     pub const fn try_from_char(c: char) -> Result<char8, DataOverflow> {
-        if Char::byte_len(c as u32) == 1 {
+        if Char(c as u32).byte_len() == 1 {
             Ok(char8(c as u32 as u8))
         } else {
             Err(DataOverflow(Some(c as u32 as usize)))
@@ -67,7 +67,7 @@ impl char8 {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
-        if Char::is_7bit(self.to_u32()) {
+        if Char(self.to_u32()).is_7bit() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0) {
                 return Ok(c);
@@ -140,7 +140,7 @@ impl char8 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
     pub const fn is_noncharacter(self) -> bool {
-        Char::is_noncharacter(self.0 as u32)
+        Char(self.0 as u32).is_noncharacter()
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].

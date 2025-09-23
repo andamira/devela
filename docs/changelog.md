@@ -234,6 +234,8 @@ Many feature gates are removed in order to make most features make always availa
 - new `char7` methods: `to_byte`, `to_str`.
 - update `Char`:
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
+  - make it a tuple struct with a single a generic parameter.
+  - modify all methods to take `self`.
   - return lenghts as usize.
 
 ### fmt

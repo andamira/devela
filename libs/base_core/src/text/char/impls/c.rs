@@ -13,7 +13,7 @@ impl UnicodeScalar for char {
     /* encode */
 
     fn byte_len(self) -> usize {
-        Char::byte_len(self as u32)
+        Char(self as u32).byte_len()
     }
     fn len_utf8(self) -> usize {
         self.len_utf8()
@@ -25,7 +25,7 @@ impl UnicodeScalar for char {
         self.encode_utf8(dst)
     }
     fn to_utf8_bytes(self) -> [u8; 4] {
-        Char::to_utf8_bytes(self)
+        Char(self).to_utf8_bytes()
     }
     fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] {
         self.encode_utf16(dst)
@@ -43,7 +43,7 @@ impl UnicodeScalar for char {
     /* queries */
 
     fn is_noncharacter(self) -> bool {
-        Char::is_noncharacter(self as u32)
+        Char(self as u32).is_noncharacter()
     }
     fn is_digit(self, radix: u32) -> bool {
         self.is_digit(radix)

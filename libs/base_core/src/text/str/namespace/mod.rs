@@ -7,11 +7,11 @@ mod range;
 mod take;
 mod split;
 
-use crate::{AsciiDigits, InvalidUtf8, Slice, is, unwrap};
+use crate::{AsciiDigits, InvalidUtf8, Slice, is};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
-    crate::sf,
+    crate::{sf, unwrap},
     ::core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
 };
 

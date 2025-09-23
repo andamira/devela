@@ -54,7 +54,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char8(c: char8) -> Result<char7, DataOverflow> {
-        if Char::is_7bit(c.to_u32()) {
+        if Char(c.to_u32()).is_7bit() {
             Ok(char7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(DataOverflow(Some(c.to_u32() as usize)))
@@ -65,7 +65,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char16(c: char16) -> Result<char7, DataOverflow> {
-        if Char::is_7bit(c.to_u32()) {
+        if Char(c.to_u32()).is_7bit() {
             Ok(char7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(DataOverflow(Some(c.to_u32() as usize)))
@@ -76,7 +76,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char(c: char) -> Result<char7, DataOverflow> {
-        if Char::is_7bit(c as u32) {
+        if Char(c as u32).is_7bit() {
             Ok(char7::new_unchecked(c as u32 as u8))
         } else {
             Err(DataOverflow(Some(c as u32 as usize)))

@@ -369,8 +369,8 @@ macro_rules! impl_str_u {
             #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
-                let bytes = Char::to_utf8_bytes(c);
-                new.len = Char::utf8_len(bytes[0]) as $t;
+                let bytes = Char(c).to_utf8_bytes();
+                new.len = Char(bytes[0]).utf8_len() as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
@@ -402,7 +402,7 @@ macro_rules! impl_str_u {
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
-                new.len = Char::utf8_len(bytes[0]) as $t;
+                new.len = Char(bytes[0]).utf8_len() as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 Ok(new)
@@ -418,7 +418,7 @@ macro_rules! impl_str_u {
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
-                new.len = Char::utf8_len(bytes[0]) as $t;
+                new.len = Char(bytes[0]).utf8_len() as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
@@ -682,7 +682,7 @@ mod tests {
 
     #[test]
     fn push() {
-        let mut s = StringU8::<3>::new().unwrap();
+        let mut s = StringU8::<3>::new();
         assert![s.try_push('ñ').is_ok()];
         assert_eq![2, s.len()];
         assert![s.try_push('ñ').is_err()];
@@ -693,7 +693,7 @@ mod tests {
 
     #[test]
     fn pop() {
-        let mut s = StringU8::<3>::new().unwrap();
+        let mut s = StringU8::<3>::new();
         s.push('ñ');
         s.push('a');
         assert_eq![Some('a'), s.pop()];

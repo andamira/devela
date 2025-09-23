@@ -308,7 +308,7 @@ mod impl_devela {
 
     impl<const CAP: usize> ConstDefault for StringNonul<CAP> {
         #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
-        const DEFAULT: Self = unwrap![ok Self::new()];
+        const DEFAULT: Self = Self::new();
     }
     macro_rules! impl_cdef_for_string_u { // impl ConstDefault for StringU*
         () => { impl_cdef_for_string_u![u8, u16, u32, usize]; };
@@ -318,7 +318,7 @@ mod impl_devela {
         (@$name:ty, $t:ty) => { paste! {
             impl<const CAP: usize> ConstDefault for $name<CAP> {
                 #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`" $t "::MAX`]."]
-                const DEFAULT: Self = unwrap![ok Self::new()];
+                const DEFAULT: Self = Self::new();
             }
         }};
     }

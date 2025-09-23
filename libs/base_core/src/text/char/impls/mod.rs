@@ -83,7 +83,7 @@ macro_rules! impl_char {
 
             /// Returns the number of bytes needed to represent the scalar value.
             #[must_use]
-            pub const fn byte_len(self) -> usize { Char::byte_len(self.to_u32()) }
+            pub const fn byte_len(self) -> usize { Char(self.to_u32()).byte_len() }
 
             /// Returns the number of bytes needed to encode in UTF-8.
             #[must_use]

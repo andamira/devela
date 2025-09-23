@@ -6,6 +6,7 @@
 // - methods over char
 // - methods over u32
 // - methods over u8
+// - methods over &[u8]
 
 use crate::{ASCII_TABLE, unwrap};
 
@@ -17,20 +18,21 @@ use crate::{ASCII_TABLE, unwrap};
 /// - [over `char`](#methods-over-char)
 /// - [over `u32`](#methods-over-u32)
 /// - [over `u8`](#methods-over-u8)
+/// - [over `&[u8]`](#methods-over-u8-slice)
 ///
 /// See also [`Str`][crate::Str], [`ExtMem`][crate::ExtMem],
-#[derive(Debug)]
-pub struct Char;
+#[derive(Clone, Copy, Debug)]
+pub struct Char<T>(pub T);
 
 /// # Methods over `char`
 #[rustfmt::skip]
-impl Char {
-    /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8.
+impl Char<char> {
+    /// Returns the number of bytes needed to encode the given `char` as UTF-8.
     ///
     /// See also [`Char::code_len_utf8`].
     #[must_use] #[rustfmt::skip]
-    pub const fn len_utf8(code: char) -> usize {
-        let code = code as u32;
+    pub const fn len_utf8(self) -> usize {
+        let code = self.0 as u32;
         if code < 0x80 { 1 } else if code < 0x800 { 2 } else if code < 0x10_000 { 3 } else { 4 }
     }
 
@@ -40,19 +42,21 @@ impl Char {
     ///
     /// See also [`char::encode_utf8`].
     #[must_use]
-    pub const fn to_utf8_bytes(c: char) -> [u8; 4] { Char::code_to_utf8_bytes_unchecked(c as u32) }
+    pub const fn to_utf8_bytes(self) -> [u8; 4] {
+        Char(self.0 as u32).code_to_utf8_bytes_unchecked()
+    }
 
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
-    pub const fn to_ascii_str(c: char) -> &'static str {
-        if c.is_ascii() { ASCII_TABLE[c as usize] } else { "" }
+    pub const fn to_ascii_str(self) -> &'static str {
+        if self.0.is_ascii() { ASCII_TABLE[self.0 as usize] } else { "" }
     }
     /// Returns the ASCII representation as a `&'static str`.
     ///
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use]
-    pub const fn to_ascii_str_unchecked(c: char) -> &'static str { ASCII_TABLE[c as usize] }
+    pub const fn to_ascii_str_unchecked(self) -> &'static str { ASCII_TABLE[self.0 as usize] }
 
     /// Converts a character to its closest ASCII equivalent, if possible.
     ///
@@ -60,10 +64,10 @@ impl Char {
     /// their ASCII counterparts. If a mapping exists, it returns `Some(char)`,
     /// otherwise, it returns `None`.
     #[must_use]
-    pub const fn to_ascii_fold(c: char) -> Option<char> {
-        match c {
+    pub const fn to_ascii_fold(self) -> Option<char> {
+        match self.0 {
             // ASCII already, return as-is
-            _ if c.is_ascii() => Some(c),
+            _ if self.0.is_ascii() => Some(self.0),
             // Latin-1 Supplement
             'À' | 'Á' | 'Â' | 'Ã' | 'Ä' | 'Å' => Some('A'),
             'à' | 'á' | 'â' | 'ã' | 'ä' | 'å' => Some('a'),
@@ -98,41 +102,41 @@ impl Char {
     /// [`to_ascii_fold`][Self::to_ascii_fold], but **never returns `None`**.
     /// If no ASCII equivalent exists, the input character is returned unchanged.
     #[must_use]
-    pub const fn to_ascii_fold_unchecked(c: char) -> char {
-        if let Some(m) = Self::to_ascii_fold(c) { m } else { c }
+    pub const fn to_ascii_fold_unchecked(self) -> char {
+        if let Some(m) = self.to_ascii_fold() { m } else { self.0 }
     }
 }
 /// # Methods over `u32`.
 #[rustfmt::skip]
-impl Char {
-    /// Returns the bytes required to store the given Unicode scalar `code` in a non-UTF encoding.
+impl Char<u32> {
+    /// Returns the bytes required to store the given Unicode scalar code in a non-UTF encoding.
     ///
     /// This function does **not** determine the UTF-8 byte length.
     /// It assumes a simple encoding where values up to `0xFF` use 1 byte,
     /// `0x100..=0xFFFF` use 2 bytes, and anything larger uses 3 bytes.
     #[must_use]
-    pub const fn byte_len(code: u32) -> usize {
-        match code {
+    pub const fn byte_len(self) -> usize {
+        match self.0 {
             0x0000..=0x00FF => 1,
             0x0100..=0xFFFF => 2,
             _ => 3,
         }
     }
 
-    /// Returns the number of bytes required to encode `code` as UTF-8.
+    /// Returns the number of bytes required to encode the given code as UTF-8.
     ///
-    /// Returns `None` if `code` is not a valid Unicode scalar.
+    /// Returns `None` if it's not a valid Unicode scalar.
     #[must_use]
-    pub const fn code_len_utf8(code: u32) -> Option<usize> {
-        if Char::is_valid(code) { Some(Char::code_len_utf8_unchecked(code)) } else { None }
+    pub const fn code_len_utf8(self) -> Option<usize> {
+        if self.is_valid() { Some(self.code_len_utf8_unchecked()) } else { None }
     }
-    /// Returns the UTF-8 byte length of `code` **without validation**.
+    /// Returns the UTF-8 byte length of the current code **without validation**.
     ///
-    /// Assumes `code` is a valid Unicode scalar.
+    /// Assumes the code is a valid Unicode scalar.
     /// Use [`code_len_utf8`][Self::code_len_utf8] for a checked version.
     #[must_use]
-    pub const fn code_len_utf8_unchecked(code: u32) -> usize {
-        match code {
+    pub const fn code_len_utf8_unchecked(self) -> usize {
+        match self.0 {
             0x00_0000..=0x00_007F => 1,
             0x00_0080..=0x00_07FF => 2,
             0x00_0800..=0x00_FFFF => 3,
@@ -140,66 +144,68 @@ impl Char {
         }
     }
 
-    /// Checks if `code` is a valid Unicode scalar (U+0000..=U+10FFFF, excluding surrogates).
+    /// Checks if the given code is a valid Unicode scalar
+    /// (`U+0000..=U+10FFFF`, excluding surrogates).
     #[must_use]
     #[inline(always)]
-    pub const fn is_valid(code: u32) -> bool {
-        (code <= 0xD7FF) || (code >= 0xE000 && code <= 0x10_FFFF)
+    pub const fn is_valid(self) -> bool {
+        (self.0 <= 0xD7FF) || (self.0 >= 0xE000 && self.0 <= 0x10_FFFF)
     }
 
-    /// Checks if `code` is a 7-bit ASCII character (U+0000..=U+007F).
+    /// Checks if the given code is a 7-bit ASCII character (U+0000..=U+007F).
     #[must_use]
     #[inline(always)]
-    pub const fn is_7bit(code: u32) -> bool { code <= 0x7F }
+    pub const fn is_7bit(self) -> bool { self.0 <= 0x7F }
 
-    /// Returns `true` if the given unicode scalar `code` is a [noncharacter][0].
+    /// Returns `true` if the given unicode scalar code is a [noncharacter][0].
     ///
     /// Note that this also checks against reserved, potential non-characters.
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
     // FIXME: make a version that checks for surrogates
-    pub const fn is_noncharacter(code: u32) -> bool {
+    pub const fn is_noncharacter(self) -> bool {
         // sub-block of 32 non-characters:
-        (code >= 0xFDD0 && code <= 0xFDEF)
+        (self.0 >= 0xFDD0 && self.0 <= 0xFDEF)
             // 2× non-characters at the end of each plane:
-            || (code >= 0xFFFE && (code & 0xFF) == 0xFE)
-            || (code >= 0xFFFE && (code & 0xFF) == 0xFF)
+            || (self.0 >= 0xFFFE && (self.0 & 0xFF) == 0xFE)
+            || (self.0 >= 0xFFFE && (self.0 & 0xFF) == 0xFF)
             // unallocated range (16 potential non-characters):
-            || (code >= 0x2FE0 && code <= 0x2FEF)
+            || (self.0 >= 0x2FE0 && self.0 <= 0x2FEF)
     }
 
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
-    pub const fn code_to_ascii_str(c: u32) -> &'static str {
-        if Char::is_7bit(c) { ASCII_TABLE[c as usize] } else { "" }
+    pub const fn code_to_ascii_str(self) -> &'static str {
+        if self.is_7bit() { ASCII_TABLE[self.0 as usize] } else { "" }
     }
     /// Returns the ASCII representation as a `&'static str`, or panics if non-ASCII.
     ///
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use]
-    pub const fn code_to_ascii_str_unchecked(c: u32) -> &'static str { ASCII_TABLE[c as usize] }
+    pub const fn code_to_ascii_str_unchecked(self) -> &'static str { ASCII_TABLE[self.0 as usize] }
 
-    /// Converts the Unicode scalar `code` to a UTF-8 encoded byte sequence.
+    /// Converts the Unicode scalar code to a UTF-8 encoded byte sequence.
     ///
-    /// Returns `None` if `code` is not a valid Unicode scalar.
+    /// Returns `None` if the code is not a valid Unicode scalar.
     /// The result is always a `[u8; 4]` array, with unused bytes set to `0`.
     ///
     /// See also [`char::encode_utf8`].
-    pub const fn code_to_utf8_bytes(code: u32) -> Option<[u8; 4]> {
-        if Char::is_valid(code) { Some(Char::code_to_utf8_bytes_unchecked(code)) } else { None }
+    pub const fn code_to_utf8_bytes(self) -> Option<[u8; 4]> {
+        if self.is_valid() { Some(self.code_to_utf8_bytes_unchecked()) } else { None }
     }
 
-    /// Converts the Unicode scalar `code` to a UTF-8 encoded byte sequence **without validation**.
+    /// Converts the Unicode scalar code to a UTF-8 encoded byte sequence **without validation**.
     ///
-    /// Assumes `code` is a valid Unicode scalar.
+    /// Assumes the code is a valid Unicode scalar.
     /// Always returns a `[u8; 4]` array, with unused bytes set to `0`.
     ///
     /// See also [`Char::code_to_utf8_bytes`] for a checked version.
     #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
-    pub const fn code_to_utf8_bytes_unchecked(code: u32) -> [u8; 4] {
+    pub const fn code_to_utf8_bytes_unchecked(self) -> [u8; 4] {
+        let code = self.0;
         match code {
             // From 0x0000 to 0x007F:
             // the UTF-8 encoding is the same as the scalar value.
@@ -238,8 +244,8 @@ impl Char {
 
 /// # Methods over `u8`.
 #[rustfmt::skip]
-impl Char {
-    /// Returns the expected UTF-8 byte length based on the first byte.
+impl Char<u8> {
+    /// Returns the expected UTF-8 byte length based on the given first byte.
     ///
     /// This function does **not** validate UTF-8 but determines how many bytes
     /// a valid sequence **should** occupy based on the leading byte.
@@ -254,8 +260,8 @@ impl Char {
     /// - Always use in conjunction with proper UTF-8 validation if handling untrusted input.
     ///
     /// For a stricter check, see [`utf8_len_checked`][Self::utf8_len_checked].
-    pub const fn utf8_len(first_byte: u8) -> usize {
-        match first_byte {
+    pub const fn utf8_len(self) -> usize {
+        match self.0 {
             0x00..=0x7F => 1, // ASCII (1 byte)
             0xC0..=0xDF => 2, // 2-byte sequence
             0xE0..=0xEF => 3, // 3-byte sequence
@@ -264,7 +270,7 @@ impl Char {
         }
     }
 
-    /// Returns the UTF-8 byte length or `None` if the first byte is invalid.
+    /// Returns the expected UTF-8 byte length based on the given first byte, or `None` if invalid.
     ///
     /// This function detects invalid UTF-8 leading bytes and ensures
     /// they fall within valid Unicode scalar boundaries.
@@ -279,8 +285,8 @@ impl Char {
     ///
     /// For a simpler length-only function, see [`utf8_len`][Self::utf8_len].
     #[must_use]
-    pub const fn utf8_len_checked(first_byte: u8) -> Option<usize> {
-        match first_byte {
+    pub const fn utf8_len_checked(self) -> Option<usize> {
+        match self.0 {
             0x00..=0x7F => Some(1),
             0xC2..=0xDF => Some(2),
             0xE0..=0xEF => Some(3),
@@ -288,8 +294,12 @@ impl Char {
             _ => None,
         }
     }
+}
 
-    /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
+/// # Methods over `u8` slice.
+#[rustfmt::skip]
+impl Char<&[u8]> {
+    /// Decodes a UTF-8 code point from the given byte slice, starting at `index`.
     ///
     /// Returns `Some((code, len))` if the input is a valid UTF-8 sequence
     /// and the decoded code point is a valid Unicode scalar.
@@ -302,19 +312,21 @@ impl Char {
     /// # Example
     /// ```
     /// # use devela_base_core::Char;
-    /// assert_eq!(Char::utf8_bytes_to_code("Ħ".as_bytes(), 0), Some((u32::from('Ħ'), 2)));
+    /// assert_eq!(Char("Ħ".as_bytes()).utf8_bytes_to_code(0), Some((u32::from('Ħ'), 2)));
     ///
     /// let invalid = b"\x80"; // Invalid leading byte
-    /// assert_eq!(Char::utf8_bytes_to_code(invalid, 0), None);
+    /// assert_eq!(Char(invalid).utf8_bytes_to_code(0), None);
     /// ```
     #[must_use]
-    pub const fn utf8_bytes_to_code(bytes: &[u8], index: usize) -> Option<(u32, usize)> {
+    pub const fn utf8_bytes_to_code(self, index: usize) -> Option<(u32, usize)> {
+        let bytes = self.0;
         if index >= bytes.len() { return None; } // out of bounds
         let first = bytes[index];
-        let len = unwrap![some? Char::utf8_len_checked(first)]; // invalid leading byte?
+        let len = unwrap![some? Char(first).utf8_len_checked()]; // invalid leading byte?
         if index + len > bytes.len() { return None; } // not enough bytes
-        Some(Char::utf8_bytes_to_code_unchecked(bytes, index))
+        Some(Char(bytes).utf8_bytes_to_code_unchecked(index))
     }
+
     /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
     ///
     /// Returns `(code, len)`, where `code` is the decoded Unicode scalar,
@@ -322,7 +334,8 @@ impl Char {
     ///
     /// Assumes `bytes[index..]` contains a valid UTF-8 sequence.
     #[must_use]
-    pub const fn utf8_bytes_to_code_unchecked(bytes: &[u8], index: usize) -> (u32, usize) {
+    pub const fn utf8_bytes_to_code_unchecked(self, index: usize) -> (u32, usize) {
+        let bytes = self.0;
         let first = bytes[index];
         match first {
             0x00..=0x7F => (first as u32, 1), // 1-byte ASCII
@@ -348,6 +361,15 @@ impl Char {
         }
     }
 }
+/// Methods over a byte array, referring to a byte slice.
+impl<const N: usize> Char<&[u8; N]> {
+    /// See [utf8_bytes_to_code()][Char::<&[u8]>::utf8_bytes_to_code].
+    pub const fn utf8_bytes_to_code(self, index: usize) -> Option<(u32, usize)> {
+        let bytes: &[u8] = self.0;
+        // reuse the same implementation by converting to slice
+        Char(bytes).utf8_bytes_to_code(index)
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -356,26 +378,26 @@ mod tests {
     #[test]
     fn utf8_bytes_to_code() {
         // Single ASCII character
-        assert_eq!(Char::utf8_bytes_to_code(b"a", 0), Some((97, 1))); // 'a' -> U+0061
+        assert_eq!(Char(b"a").utf8_bytes_to_code(0), Some((97, 1))); // 'a' -> U+0061
 
         // Multi-byte UTF-8 character
         let bytes = "Ħ".as_bytes(); // 'Ħ' (U+0126) -> [0xC4, 0xA6]
-        assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x0126, 2)));
+        assert_eq!(Char(bytes).utf8_bytes_to_code(0), Some((0x0126, 2)));
         assert_eq!(char::from_u32(0x0126), Some('Ħ'));
 
         // 3-byte UTF-8
         let bytes = "✓".as_bytes(); // '✓' (U+2713) -> [0xE2, 0x9C, 0x93]
-        assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x2713, 3)));
+        assert_eq!(Char(bytes).utf8_bytes_to_code(0), Some((0x2713, 3)));
 
         // 4-byte UTF-8
         let bytes = "🚀".as_bytes(); // '🚀' (U+1F680) -> [0xF0, 0x9F, 0x9A, 0x80]
-        assert_eq!(Char::utf8_bytes_to_code(bytes, 0), Some((0x1F680, 4)));
+        assert_eq!(Char(bytes).utf8_bytes_to_code(0), Some((0x1F680, 4)));
 
         // Invalid byte sequence
         let invalid = b"\x80"; // Invalid leading byte
-        assert_eq!(Char::utf8_bytes_to_code(invalid, 0), None);
+        assert_eq!(Char(invalid).utf8_bytes_to_code(0), None);
 
         let incomplete = b"\xE2\x9C"; // Incomplete 3-byte sequence
-        assert_eq!(Char::utf8_bytes_to_code(incomplete, 0), None);
+        assert_eq!(Char(incomplete).utf8_bytes_to_code(0), None);
     }
 }
