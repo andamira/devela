@@ -15,7 +15,7 @@ pub use ::core::clone::Clone;
 
 // enums
 _reexport! { rust: core::convert,
-tag: concat![_TAG_NO!(), _TAG_ERROR!()],
+tag: _TAG_NO!() _TAG_ERROR!(),
 doc: "The error type for errors that can never happen.", Infallible }
 
 // traits

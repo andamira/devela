@@ -11,7 +11,7 @@ _reexport! { rust: core::time,
     Duration
 }
 _reexport! { rust: core::time,
-    tag: concat![_TAG_TIME!(), _TAG_ERROR!()],
+    tag: _TAG_TIME!() _TAG_ERROR!(),
     doc: "Error returned from converting floating-point seconds into a [`Duration`].",
     @TryFromFloatSecsError as DurationErrorTryFromFloatSecs
 }

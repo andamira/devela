@@ -112,6 +112,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `define_error!` macro.
   - move to `code::error`.
   - update docs, add example.
+  - allow accepting multiple tags.
   - make conversion method optional const.
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 
@@ -134,6 +135,7 @@ Many feature gates are removed in order to make most features make always availa
 - add tags: `_DOC_*`, `_TAG_[CODEC|CODEGEN_BUILD|CONCURRENCY|DATA|EVENT|HASH|ID|PROC_MACRO]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - rename `reexport!` internal macro to `_reexport!`.
+  - allow accepting multiple tags.
 - prefix internal constants `TAG_*` & `EMOJI_*` with `_`
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.

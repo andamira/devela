@@ -17,7 +17,7 @@ _reexport! { rust: std::time,
 }
 // NOTE: replicated in phys::time:errors
 _reexport! { rust: std::time,
-    tag: concat![_TAG_TIME!(), _TAG_ERROR!()],
+    tag: _TAG_TIME!() _TAG_ERROR!(),
     doc: "Error returned from the `duration_since` and `elapsed` methods on [`SystemTime`].",
     @SystemTimeError as StdSystemTimeError
 }

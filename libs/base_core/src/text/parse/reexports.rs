@@ -6,17 +6,17 @@
 use crate::{_TAG_ERROR, _TAG_NUM, _TAG_TEXT, _reexport};
 
 _reexport! { rust: core::num,
-    tag: concat![_TAG_TEXT!(), _TAG_NUM!(), _TAG_ERROR!()],
+    tag: _TAG_TEXT!() _TAG_NUM!() _TAG_ERROR!(),
     doc: "An error which can be returned when parsing an integer.",
     ParseIntError
 }
 _reexport! { rust: core::num,
-    tag: concat![_TAG_TEXT!(), _TAG_NUM!(), _TAG_ERROR!()],
+    tag: _TAG_TEXT!() _TAG_NUM!() _TAG_ERROR!(),
     doc: "An error which can be returned when parsing an float.",
     ParseFloatError
 }
 _reexport! { rust: core::num,
-    tag: concat![_TAG_TEXT!(), _TAG_NUM!(), _TAG_ERROR!()],
+    tag: _TAG_TEXT!() _TAG_NUM!() _TAG_ERROR!(),
     doc: "Kinds of errors that can cause parsing an integer to fail.",
     @IntErrorKind as ParseIntErrorKind
 }

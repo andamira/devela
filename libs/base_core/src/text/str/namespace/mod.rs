@@ -82,7 +82,7 @@ use ::core::str::from_utf8_mut;
 ///   - [**msplit_right**](#method.msplit_right)
 ///    ([*checked*](#method.msplit_right_checked),
 ///    [*mut*](#method.msplit_right_mut).
-///    [*mut_checked*](#method.msplit_right_mut_checked)),
+///    [*mut_checked*](#method.msplit_right_mut_checked)).
 ///
 /// See also the [`std::str`] module.
 #[derive(Debug)]

@@ -6,10 +6,9 @@
 // - define_error!
 // - tests
 //
-// IMPROVE:
-// - make the automatic error tag optional.
-// - do not depend on included types being Copy.
-// - make it possibe to share publicly (conditional compilation, macro_export arms).
+// IMPROVE: make the automatic error tag optional.
+// IMPROVE: do not depend on included types being Copy.
+// IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms).
 
 /// Helper for defining individual and composite error types.
 ///
@@ -105,7 +104,7 @@ macro_rules! _define_error {
         $struct_vis:vis struct $struct_name:ident
         $(( $($e_vis:vis $e_ty:ty),+ $(,)? ))? $(;$($_a:lifetime)?)?              // tuple-struct↓
         $({ $($(#[$f_attr:meta])* $f_vis:vis $f_name:ident: $f_ty:ty),+ $(,)? })? // field-struct↑
-        $(+tag: $tag:expr ,)?
+        $(+tag: $($tag:expr)+ ,)?
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
@@ -114,7 +113,7 @@ macro_rules! _define_error {
         // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms)
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
-        $(#[doc = $tag])?
+        $( $(#[doc = $tag])+ )?
         #[doc = $crate::_TAG_ERROR!()] // IMPROVE: make optional
         $(#[$attributes])*
         #[doc = $DOC_NAME!()]

@@ -39,14 +39,14 @@ macro_rules! __reexport {
       $( local_module: $module_feature:literal, )?
       $( extra_features: $($extra_feat:literal),+ $(,)? )?
       $( extra_flags:($($extra_flag:ident),+) $(,)? )?
-      $( tag: $tag:expr, )?
+      $( tag: $($tag:expr)+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( #[doc = $tag] )?
+        $( $(#[doc = $tag])+ )?
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
         #[doc = $description]
@@ -72,7 +72,7 @@ macro_rules! __reexport {
     // when the item is available in `alloc`
     ( rust : alloc $( :: $( $alloc_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( tag: $tag:expr, )?
+      $( tag: $($tag:expr)+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -80,7 +80,7 @@ macro_rules! __reexport {
     ) => { $crate::paste! {
         #[doc(inline)]
         // #[allow(rustdoc::broken_intra_doc_links)] // TEMP CHECK unresolved link to alloc
-        $( #[doc = $tag] )?
+        $( $(#[doc = $tag])+ )?
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
         #[doc = $description]
@@ -106,14 +106,14 @@ macro_rules! __reexport {
     ( // when the item is available in `std`
       rust : std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( tag: $tag:expr, )?
+      $( tag: $($tag:expr)+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( #[doc = $tag] )?
+        $( $(#[doc = $tag])+ )?
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`std`'>`std`</span>"]
         #[doc = $description]
@@ -139,14 +139,14 @@ macro_rules! __reexport {
     ( // when the item is available in either `no_std` or `std`
       rust : no_std|std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( tag: $tag:expr, )?
+      $( tag: $($tag:expr)+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( #[doc = $tag] )?
+        $( $(#[doc = $tag])+ )?
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated for `no_std`'>`[no_]std`</span>
         #[doc = $description]
@@ -173,14 +173,14 @@ macro_rules! __reexport {
     ( // when the item is available in either `not(std)` or `std` (always, more transparent)
       rust : not(std)|std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( tag: $tag:expr, )?
+      $( tag: $($tag:expr)+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( #[doc = $tag] )?
+        $( $(#[doc = $tag])+ )?
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>
         #[doc = $description]
@@ -267,14 +267,14 @@ macro_rules! __reexport {
       // $item_renamed:
       $dep_feat:literal, $dep_name:literal, $dep_mod:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
-      $( tag: $tag:expr, )?
+      $( tag: $($tag:expr)+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( #[doc = $tag] )?
+        $( $(#[doc = $tag])+ )?
         #[doc = "<span class='stab portability' title='re-exported from the `"
             $dep_name "` crate'>`" $dep_name "`</span>"]
         #[doc = $description]
@@ -311,14 +311,14 @@ macro_rules! __reexport {
       non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       $( local_module: $module_feature:literal ,)?
-      $( tag: $tag:expr, )?
+      $( tag: $($tag:expr)+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( #[doc = $tag] )?
+        $( $(#[doc = $tag])+ )?
         #[doc = "<span class='stab portability' title='re-exported from the `" $dep_str
             "` crate'>`" $dep_str "`</span>"]
         #[doc = $description]
