@@ -92,7 +92,7 @@ pub struct Str;
 impl Str {
     /// Converts a slice of bytes to a string slice.
     ///
-    /// See `core::str::`[`from_utf8`].
+    /// See `core::str::`[`from_utf8`][::core::str::from_utf8].
     //
     // WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111)
     // /// # Features

@@ -289,7 +289,7 @@ mod reflection {
         };
     pub const TEXT: FlagsFeatures = FlagsFeatures {
         ref_flags: &["text··"],
-        features: &["text", "str"]
+        features: &["text"]
     };
     pub const UI: FlagsFeatures = FlagsFeatures {
         ref_flags: &["ui··"],

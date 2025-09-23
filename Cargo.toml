@@ -327,8 +327,7 @@ sys = ["io", "mem"]
 	# os
 		linux = []
 		windows = ["crossterm?/windows", "midir?/winrt"]
-text = ["str"]
-	str = [] # ExtStr, ExtString
+text = []
 ui = ["layout", "desk", "term", "web"]
 	layout = []
 	# back

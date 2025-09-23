@@ -61,15 +61,11 @@ For example, `num··` will be set if any num submodule feature is enabled.
 <!-- NOTE some links only work with inlined notation -->
 Root modules & public sub-modules features:
 - [`code`]
-  - [`error`]:
 - [`data`]
   - [`hash`]:
 - [`game`]:
 - [`lang`]:
-  - `dsl`:
-  - `ffi`: c, glsl, js.
-  - `i18n`:
-  - `ling`: Linguistics.
+  - `ffi`: glsl, js.
 - [`media`]
   - [`audio`]:
   - [`color`]:
@@ -84,10 +80,6 @@ Root modules & public sub-modules features:
     - `metric`:
     - `shape`:
   - [`logic`]:
-  - `prim`:
-    - `cast`: `PrimitiveCast`.
-    - `join`: `PrimitiveJoin`.
-    - `split`: `PrimitiveSplit`.
   - [`rand`]: random number generators.
   - `unit`: unit prefixes.
 - [`phys`]:
@@ -101,14 +93,10 @@ Root modules & public sub-modules features:
 - [`sys`]: enables all `sys` sub-features (except for `os`).
   - [`io`]: no_std `io` implementations.
   - [`mem`]
-    - `bit`: `BitSize`.
   - [`os`]:
     - [`linux`]
     - `windows`
 - [`text`]
-  - `ascii`: `AsciiChar`.
-  - [`fmt`][crate::text::fmt]: `NumToStr`.
-  - [`str`]: `ExtStr`, `ExtString`.
 - [`ui`]
   - [`layout`]
 - [`work`]
@@ -210,18 +198,6 @@ Documentation capabilities:
 
 #### `data` capabilities
 
-Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
-- `_bit_all`:
-    - `_bit_i8`, `_bit_i16`, `_bit_i32`, `_bit_i64`, `_bit_i128`, `_bit_isize`.
-    - `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
-
-They also set the corresponding flag:
-`_bit··`.
-
-[`Bitwise`]: crate::data::Bitwise
-[`bitfield`]: crate::data::bitfield
-[`enumset`]: crate::code::enumset
-
 Enable specific implementations of data collections
 [`Destaque`], [`Stack`]:
 - `_collections_all`:
@@ -233,15 +209,6 @@ Enable specific implementations of data collections
 They also set the corresponding flags:
 `_destaque··`, `_graph··`, `_node··`, `_stack··`.
 
-Enable specific implementations for [`Sort`].
-`_sort_all`:
-  `_sort_u8`, `_sort_u16`, `_sort_u32`, `_sort_u64`, `_sort_u128`, `_sort_usize`,
-  `_sort_i8`, `_sort_i16`, `_sort_i32`, `_sort_i64`, `_sort_i128`, `_sort_isize`,
-  `_sort_f32`, `_sort_f64`.
-
-They also set the corresponding flags:
-`_sort··`, `_sort_int··`, `_sort_float··`.
-
 Implement the [`Tuple`] trait for some maximum arity (12 by default).
 - `_tuple[_24|_36|_48|_72]`.
 
@@ -249,57 +216,6 @@ Implement the [`Tuple`] trait for some maximum arity (12 by default).
 [`Stack`]: crate::data::Stack
 [`Sort`]: crate::data::Sort
 [`Tuple`]: crate::data::Tuple
-
-#### `num` capabilities
-
-Enable specific implementations for [`Compare`]:
-- `_cmp_all`:
-  - `_cmp_f32`, `_cmp_f64`.
-  - `_cmp_f16`, `_cmp_f128`. ←(needs `nightly_float`)
-  - `_cmp_i8`, `_cmp_i16`, `_cmp_i32`, `_cmp_i64`, `_cmp_i128`, `_cmp_isize`.
-  - `_cmp_u8`, `_cmp_u16`, `_cmp_u32`, `_cmp_u64`, `_cmp_u128`,
-
-They also set the corresponding flag:
-`_cmp··`.
-
-Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [`Vector`]:
-- `_num_all`:
-  - `_float_all`:
-    - `_float_f32`, `_float_f64`.
-    - `_float_f16`, `_float_f128`. ←(needs `nightly_float`)
-  - `_int_all`:
-    - `_int_iall`:
-      - `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`.
-    - `_int_uall`:
-      - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
-
-They also set the corresponding flags:
-`_nums··`, `_float··`, `_int··`, `_int_i··`, `_int_u··`.
-
-[`Compare`]: crate::num::Compare
-[`Float`]: crate::num::Float
-[`Frac`]: crate::num::Frac
-[`Int`]: crate::num::Int
-[`Divisor`]: crate::num::Divisor
-[`Vector`]: crate::num::Vector
-
-#### `text` capabilities
-
-Enable specific implementations for [`char*`]:
-- `_char7`, `_char8`, `_char16`.
-
-Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
-- `_str_all`:
-  - `_str_uall`:
-    - `_str_u8`, `_str_u16`, `_str_u32`, `_str_usize`.
-  - `_str_nonul`.
-
-They also set the corresponding flags:
-`_char··`, `_str··`, `_str_u··`.
-
-[`char*`]: crate::text::char8
-[`StringU*`]: crate::text::StringU8
-[`StringNonul`]: crate::text::StringNonul
 
 
 ### Dependency features
@@ -336,8 +252,7 @@ RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly build
   - `nightly_float`: enables [`f16`, `f128`].
   - `nightly_simd`: enables [`portable_simd`].
   - `nightly_stable`: enables stabilized features marked to be released *soon*:
-    - `nightly_stable_next1`: in the next version.
-    - `nightly_stable_next2`: in the version after that.
+    - `nightly_stable_{MSRV +1 | +2}`: the next 2 versions
     - `nightly_stable_later`: later than that but *soon enough*.
 
 [`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
