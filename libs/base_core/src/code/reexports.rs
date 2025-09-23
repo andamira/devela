@@ -3,7 +3,7 @@
 //! General reexported items, except macros and overloadable operators.
 //
 
-use crate::_reexport;
+use crate::{_TAG_ERROR, _TAG_NO, _reexport};
 
 /* `core::clone` re-exports */
 
@@ -15,7 +15,7 @@ pub use ::core::clone::Clone;
 
 // enums
 _reexport! { rust: core::convert,
-tag: crate::_TAG_ERROR!(),
+tag: concat![_TAG_NO!(), _TAG_ERROR!()],
 doc: "The error type for errors that can never happen.", Infallible }
 
 // traits

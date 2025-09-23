@@ -68,20 +68,20 @@ use ::core::str::from_utf8_mut;
 ///
 /// - [`*split*` API methods](#split-api-methods-for-returning-substrings):</br>
 ///   - [**lsplit**](#method.lsplit)
-///    [*checked*](#method.lsplit_checked),
+///    ([*checked*](#method.lsplit_checked),
 ///    [**mut**](#method.lsplit_mut),
 ///    [*mut_checked*](#method.lsplit_mut_checked)),
 ///   - [**rsplit**](#method.rsplit)
-///    [*checked*](#method.rsplit_checked),
-///    ([*mut*](#method.rsplit_mut)),
+///    ([*checked*](#method.rsplit_checked),
+///    [*mut*](#method.rsplit_mut),
 ///    [*mut_checked*](#method.rsplit_mut_checked)),
 ///   - [**msplit_left**](#method.msplit_left)
-///    [*checked*](#method.msplit_left_checked),
-///    ([*mut*](#method.msplit_left_mut)),
+///    ([*checked*](#method.msplit_left_checked),
+///    [*mut*](#method.msplit_left_mut),
 ///    [*mut_checked*](#method.msplit_left_mut_checked)),
 ///   - [**msplit_right**](#method.msplit_right)
-///    [*checked*](#method.msplit_right_checked),
-///    ([*mut*](#method.msplit_right_mut)).
+///    ([*checked*](#method.msplit_right_checked),
+///    [*mut*](#method.msplit_right_mut).
 ///    [*mut_checked*](#method.msplit_right_mut_checked)),
 ///
 /// See also the [`std::str`] module.

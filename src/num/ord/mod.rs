@@ -1,9 +1,9 @@
 // devela::num::ord
 //
 #![doc = crate::_DOC_NUM_ORD!()]
-// #![doc = crate::_doc!(extends: cmp)]
-// #![doc = crate::_doc!(modules: crate::num; cmp)]
-// #![doc = crate::_doc!(newline)]
+//!
+#![doc = crate::_doc!(extends: cmp)]
+//
 
 // re-exports
 crate::mod_path!(_c "../../../libs/base_core/src/num/ord/reexports.rs");

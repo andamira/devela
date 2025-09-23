@@ -1,4 +1,4 @@
-// devela_base_core::text::error
+// devela_base_core::text::errors
 //
 //! Text-related errors.
 //
@@ -10,12 +10,16 @@
 //   - TextResult
 //   - TextError
 
-use crate::{DOC_MISMATCHED_CAPACITY, Interval, Mismatch, MismatchedCapacity, define_error};
+use crate::{
+    _TAG_RESULT, _TAG_TEXT, DOC_MISMATCHED_CAPACITY, Interval, Mismatch, MismatchedCapacity,
+    define_error,
+};
 use ::core::str::Utf8Error; // replaced with InvalidUtf8
 
 /* individual errors */
 
 define_error! { individual: pub struct InvalidChar(char);
+    +tag: _TAG_TEXT!(),
     DOC_INVALID_CHAR = "An invalid given character was found.",
     self+f => write!(f, "An invalid {:?} character was found.", self.0)
 }
@@ -27,6 +31,7 @@ define_error! { individual:
         /// The length of the error in bytes, if known.
         pub error_len: Option<usize>
     }
+    +tag: _TAG_TEXT!(),
     DOC_INVALID_UTF8 = "Invalid Utf-8 found while interpreting a byte sequence.\n\n
 This is basically a replication of `core::str::`[`Utf8Error`]`.",
     self+f => if let Some(len) = self.error_len {
@@ -47,12 +52,13 @@ impl InvalidUtf8 {
 /* composite errors */
 
 define_error! { composite: fmt(f)
-    #[doc = crate::_TAG_TEXT!()]
+    #[doc = _TAG_TEXT!()]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
     ///
     /// Used in methods of:
     /// [`StringNonul`][crate::StringNonul], and `StringU*`.
     pub enum InvalidText {
+        +tag: _TAG_TEXT!(),
         DOC_INVALID_CHAR: +const
             Char(c|0: char) => InvalidChar(*c),
         DOC_INVALID_UTF8: +const
@@ -81,11 +87,12 @@ mod full_composite {
     use super::*;
     use crate::{DOC_ELEMENT_NOT_FOUND, ElementNotFound, MismatchedCapacity};
 
-    #[doc = crate::_TAG_RESULT!()]
+    #[doc = _TAG_RESULT!()]
     /// A text-related result.
     pub type TextResult<T> = crate::Result<T, TextError>;
 
     define_error! { composite: fmt(f)
+        +tag: _TAG_TEXT!(),
         /// A text-related composite error.
         #[non_exhaustive]
         pub enum TextError {
