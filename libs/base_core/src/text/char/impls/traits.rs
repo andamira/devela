@@ -1,4 +1,4 @@
-// devela_base_core::text::char::core_impls
+// devela_base_core::text::char::impls::traits
 //
 //! implementations of core traits
 //

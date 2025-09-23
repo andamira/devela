@@ -8,7 +8,6 @@ mod namespace; // Char
 mod reexports;
 
 // without re-exports
-mod core_impls;
 mod impls;
 #[cfg(test)]
 mod tests;

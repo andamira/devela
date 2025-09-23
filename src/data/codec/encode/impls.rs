@@ -106,7 +106,7 @@ impl<R: IoRead> Decodable<R> for char {
     fn decode(reader: &mut R) -> IoResult<Self::Output> {
         let mut buf = [0u8; 4]; // UTF-8 can be up to 4 bytes
         reader.read_exact(&mut buf[..1])?;
-        let len = Char::utf8_len(buf[0]) as usize;
+        let len = Char::utf8_len(buf[0]);
         reader.read_exact(&mut buf[1..len])?;
         let utf8_str = from_utf8(&buf[..len])
             .map_err(|_| IoError::new(IoErrorKind::InvalidData, "Invalid UTF-8 sequence"))?;

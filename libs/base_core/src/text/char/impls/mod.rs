@@ -18,6 +18,8 @@ mod c8;
 
 /* common implementations */
 
+mod traits; // core traits
+
 /// implements `UnicodeScalar` for custom char types.
 macro_rules! impl_char {
     () => {
