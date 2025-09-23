@@ -25,7 +25,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP > 255.
     pub const fn new() -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringU8::new()]))
+        Ok(Self(unwrap![ok? StringU8::new_checked()]))
     }
 
     /// Creates a new `GraphemeU8` from a `char7`.

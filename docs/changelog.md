@@ -248,10 +248,15 @@ Many feature gates are removed in order to make most features make always availa
 - update `Str:`
   - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
   - remove method `from_boxed_utf8_unchecked`.
+- update `StringNonul`:
+  - new method `new_checked`.
+  - make `new` method panic.
+  - impl `Extend` & `FromIterator`.
 - update `StringU*`:
-  - new methods: `sanitize`, `with`.
-  - impl `AsMut<&str>`, `DerefMut`.
+  - new methods: `sanitize`, `with`, `new_checked`.
+  - impl `AsMut<&str>`, `DerefMut`, `Extend`, `FromIterator`.
   - make `as_mut_str` method safe.
+  - make `new` method panic.
   - make more methods *const*.
   - fix `TryFrom<&str>` impl.
 

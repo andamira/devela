@@ -27,7 +27,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > 255.
     pub const fn new() -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringNonul::new()]))
+        Ok(Self(unwrap![ok? StringNonul::new_checked()]))
     }
 
     /// Creates a new `GraphemeNonul` from a `char7`.

@@ -60,9 +60,18 @@ pub struct StringNonul<const CAP: usize> {
 impl<const CAP: usize> StringNonul<CAP> {
     /// Creates a new empty `StringNonul`.
     ///
+    /// # Panics
+    /// Panics if `CAP` > [`u8::MAX`].
+    pub const fn new() -> Self {
+        assert![CAP <= u8::MAX as usize, "Mismatched capacity, greater than u8::MAX"];
+        Self { arr: [0; CAP] }
+    }
+
+    /// Creates a new empty `StringNonul`.
+    ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
-    pub const fn new() -> Result<Self, MismatchedCapacity> {
+    pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
         if CAP <= u8::MAX as usize {
             Ok(Self { arr: [0; CAP] })
         } else {
@@ -86,7 +95,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// ```
     /// # use devela_base_core::{StringNonul, MismatchedCapacity};
     /// # fn main() -> Result<(), MismatchedCapacity> {
-    /// let mut s = StringNonul::<4>::new()?;
+    /// let mut s = StringNonul::<4>::new_checked()?;
     /// assert_eq![0, s.len()];
     ///
     /// assert_eq![1, s.push('a')];
@@ -350,7 +359,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4.
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
-        let mut new = unwrap![ok? Self::new()];
+        let mut new = unwrap![ok? Self::new_checked()];
         if c != '\0' {
             let bytes = Char::to_utf8_bytes(c);
             let len = Char::utf8_len(bytes[0]);
@@ -373,7 +382,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 1.
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
-        let mut new = unwrap![ok? Self::new()];
+        let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             new.arr[0] = c.to_utf8_bytes()[0];
         }
@@ -390,7 +399,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 2.
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
-        let mut new = unwrap![ok? Self::new()];
+        let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char::utf8_len(bytes[0]);
@@ -411,7 +420,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 3.
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
-        let mut new = unwrap![ok? Self::new()];
+        let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char::utf8_len(bytes[0]);
@@ -464,9 +473,8 @@ impl<const CAP: usize> Default for StringNonul<CAP> {
     ///
     /// # Panics
     /// Panics if `CAP > [`u8::MAX`]`.
-    #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
     fn default() -> Self {
-        Self::new().unwrap()
+        Self::new()
     }
 }
 
@@ -518,7 +526,7 @@ impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
         if CAP < non_nul_len {
             Err(MismatchedCapacity::closed_open(0, non_nul_len, CAP))
         } else {
-            let mut new_string = Self::new()?;
+            let mut new_string = Self::new_checked()?;
             let copied_bytes = new_string.push_str(string);
             debug_assert_eq![non_nul_len, copied_bytes];
             Ok(new_string)
@@ -558,5 +566,54 @@ impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
             }
             Err(e) => Err(InvalidText::from_utf8_error(e)),
         }
+    }
+}
+
+/* Extend & FromIterator */
+
+impl<const CAP: usize> Extend<char> for StringNonul<CAP> {
+    /// Creates an instance from an iterator of characters.
+    ///
+    /// Processes characters until it can fit no more, discarding the rest.
+    ///
+    /// # Panics
+    /// Panics if `CAP > `[`u8::MAX`].
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringU8;
+    /// let chars = ['a', 'b', 'c', '€', 'さ'];
+    /// let mut s = StringU8::<6>::new();
+    /// s.extend(chars);
+    /// assert_eq![s, "abc€"];
+    /// ```
+    fn extend<I: IntoIterator<Item = char>>(&mut self, iter: I) {
+        for i in iter {
+            is![self.push(i) == 0; break];
+        }
+    }
+}
+impl<const CAP: usize> FromIterator<char> for StringNonul<CAP> {
+    /// Creates an instance from an iterator of characters.
+    ///
+    /// Processes characters until it can fit no more, discarding the rest.
+    ///
+    /// # Panics
+    /// Panics if `CAP > `[`u8::MAX`].
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringU8;
+    /// let chars = ['a', 'b', 'c', '€', 'さ'];
+    /// assert_eq!(StringU8::<9>::from_iter(chars), "abc€さ");
+    /// assert_eq!(StringU8::<6>::from_iter(chars), "abc€");
+    /// assert_eq!(StringU8::<5>::from_iter(chars), "abc");
+    /// assert_eq!(StringU8::<2>::from_iter(chars), "ab");
+    /// assert_eq!(StringU8::<0>::from_iter(chars), "");
+    /// ```
+    fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> Self {
+        let mut string = StringNonul::new();
+        string.extend(iter);
+        string
     }
 }
