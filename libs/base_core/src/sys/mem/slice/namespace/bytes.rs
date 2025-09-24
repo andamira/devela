@@ -7,6 +7,8 @@ use crate::{Cmp, Slice};
 /// # Methods for byte slices.
 #[rustfmt::skip]
 impl Slice<u8> {
+    /* array */
+
     /// Copies the `src` byte array into `dst` in compile-time.
     ///
     /// # Features
@@ -76,7 +78,15 @@ impl Slice<u8> {
         buf
     }
 
-    /* trim */
+    /* replace */
+
+    /// Replaces the `old` leading byte with a `new` byte.
+    pub const fn replace_leading(slice: &mut [u8], old: u8, new: u8) {
+        let mut start = 0;
+        while start < slice.len() && slice[start] == old { slice[start] = new; start += 1; }
+    }
+
+    /* trim leading */
 
     /// Returns a subslice without the given leading `byte`s.
     ///
@@ -109,8 +119,8 @@ impl Slice<u8> {
         Slice::range_from(slice, first)
     }
 
-    /// Returns a subslice without the given leading `byte`s, but leaves enough
-    /// to ensure the result has at least `min_len` bytes (if possible).
+    /// Returns a subslice without the given leading `byte`s,
+    /// ensuring the result has at least `min_len` bytes (if possible).
     ///
     /// # Example
     /// ```
@@ -127,11 +137,146 @@ impl Slice<u8> {
         Slice::range_from(slice, first)
     }
 
-    /* replace */
+    /* trim trailing*/
 
-    /// Replaces the `old` leading byte with a `new` byte.
-    pub const fn replace_leading(slice: &mut [u8], old: u8, new: u8) {
-        let mut start = 0;
-        while start < slice.len() && slice[start] == old { slice[start] = new; start += 1; }
+    /// Returns a subslice without the given trailing `byte`s.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_trailing(b"123000", b'0'), b"123");
+    /// ```
+    #[must_use]
+    pub const fn trim_trailing(slice: &[u8], byte: u8) -> &[u8] {
+        let mut last = slice.len();
+        while last > 0 && slice[last - 1] == byte { last -= 1; }
+        Slice::range_to(slice, last)
+    }
+
+    /// Returns a subslice without the given trailing `byte`s, except of `keep` number of them.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_trailing_keep(b"123000", b'0', 0), b"123");
+    /// assert_eq!(Slice::trim_trailing_keep(b"123000", b'0', 2), b"12300");
+    /// assert_eq!(Slice::trim_trailing_keep(b"123000", b'0', 10), b"123000");
+    /// ```
+    #[must_use]
+    pub const fn trim_trailing_keep(slice: &[u8], byte: u8, keep: usize) -> &[u8] {
+        let mut last = slice.len();
+        while last > 0 && slice[last - 1] == byte { last -= 1; }
+        let last = slice.len() - (slice.len() - last).saturating_sub(keep);
+        Slice::range_to(slice, last)
+    }
+
+    /// Returns a subslice without the given trailing `byte`s,
+    /// ensuring the result has at least `min_len` bytes (if possible).
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_trailing_min_len(b"000000", b'0', 1), b"0");
+    /// assert_eq!(Slice::trim_trailing_min_len(b"123000", b'0', 0), b"123");
+    /// assert_eq!(Slice::trim_trailing_min_len(b"123000", b'0', 4), b"1230");
+    /// assert_eq!(Slice::trim_trailing_min_len(b"123000", b'0', 10), b"123000");
+    /// ```
+    pub const fn trim_trailing_min_len(slice: &[u8], byte: u8, min_len: usize) -> &[u8] {
+        let mut last = slice.len();
+        while last > 0 && slice[last - 1] == byte { last -= 1; }
+        let last = slice.len() - Cmp(slice.len() - last).min(slice.len().saturating_sub(min_len));
+        Slice::range_to(slice, last)
+    }
+
+    /* trim edges */
+
+    /// Returns a subslice without the given leading and trailing `byte`s.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_edges(b"000123000", b'0'), b"123");
+    /// ```
+    #[must_use] #[inline(always)]
+    pub const fn trim_edges(slice: &[u8], byte: u8) -> &[u8] {
+        Slice::trim_trailing(Slice::trim_leading(slice, byte), byte)
+    }
+
+    /// Returns a subslice without the given leading and trailing `byte`s,
+    /// except for `keep` number of them on each side.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 0), b"123");
+    /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 1), b"01230");
+    /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 2), b"0012300");
+    /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 10), b"000123000");
+    /// ```
+    #[must_use] #[inline(always)]
+    pub const fn trim_edges_keep(slice: &[u8], byte: u8, keep: usize) -> &[u8] {
+        Slice::trim_trailing_keep(Slice::trim_leading_keep(slice, byte, keep), byte, keep)
+    }
+
+    /// Returns a subslice without the given leading and edges `byte`s,
+    /// ensuring the result has at least `min_len` bytes (if possible), with a left bias.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 0), b"123");
+    /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 4), b"0123");
+    /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 5), b"01230");
+    /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 6), b"001230");
+    /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 7), b"0012300");
+    /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 20), b"000123000");
+    /// ```
+    pub const fn trim_edges_min_len_left(slice: &[u8], byte: u8, min_len: usize) -> &[u8] {
+        let leading_trimmed = Slice::trim_leading(slice, byte);
+        let leading_kept = slice.len() - leading_trimmed.len();
+
+        let trailing_trimmed = Slice::trim_trailing(leading_trimmed, byte);
+        let trailing_kept = leading_trimmed.len() - trailing_trimmed.len();
+
+        if trailing_trimmed.len() >= min_len { return trailing_trimmed; }
+        let bytes_needed = min_len - trailing_trimmed.len();
+
+        // Left bias: give the extra byte to the left side
+        let restore_leading = Cmp(leading_kept).min(bytes_needed / 2 + bytes_needed % 2);
+        let restore_trailing = Cmp(trailing_kept).min(bytes_needed - restore_leading);
+        let start = leading_kept.saturating_sub(restore_leading);
+        let end = slice.len() - trailing_kept + restore_trailing;
+        Slice::range(slice, start, end)
+    }
+
+    /// Returns a subslice without the given leading and edges `byte`s,
+    /// ensuring the result has at least `min_len` bytes (if possible), with a right bias.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 0), b"123");
+    /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 4), b"1230");
+    /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 5), b"01230");
+    /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 6), b"012300");
+    /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 7), b"0012300");
+    /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 20), b"000123000");
+    /// ```
+    pub const fn trim_edges_min_len_right(slice: &[u8], byte: u8, min_len: usize) -> &[u8] {
+        let leading_trimmed = Slice::trim_leading(slice, byte);
+        let leading_kept = slice.len() - leading_trimmed.len();
+
+        let trailing_trimmed = Slice::trim_trailing(leading_trimmed, byte);
+        let trailing_kept = leading_trimmed.len() - trailing_trimmed.len();
+
+        if trailing_trimmed.len() >= min_len { return trailing_trimmed; }
+        let bytes_needed = min_len - trailing_trimmed.len();
+
+        // Right bias: give the extra byte to the right side
+        let restore_trailing = Cmp(trailing_kept).min(bytes_needed / 2 + bytes_needed % 2);
+        let restore_leading = Cmp(leading_kept).min(bytes_needed - restore_trailing);
+        let start = leading_kept.saturating_sub(restore_leading);
+        let end = slice.len() - trailing_kept + restore_trailing;
+        Slice::range(slice, start, end)
     }
 }

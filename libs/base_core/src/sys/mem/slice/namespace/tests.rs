@@ -80,7 +80,7 @@ fn eq_slices() {
 /* byte slices */
 
 #[test]
-fn trim() {
+fn trim_leading() {
     let data = b"0000123";
 
     assert_eq!(Slice::trim_leading(data, b'0'), b"123");
@@ -92,6 +92,23 @@ fn trim() {
     assert_eq!(Slice::trim_leading_min_len(data, b'0', 5), b"00123");
     assert_eq!(Slice::trim_leading_min_len(data, b'0', 20), b"0000123"); // max
 }
+#[test]
+fn trim_edges() {
+    let data = b"000123000";
+
+    // left bias
+    assert_eq!(Slice::trim_edges_min_len_left(data, b'0', 4), b"0123");
+    assert_eq!(Slice::trim_edges_min_len_left(data, b'0', 5), b"01230");
+    assert_eq!(Slice::trim_edges_min_len_left(data, b'0', 6), b"001230");
+    assert_eq!(Slice::trim_edges_min_len_left(data, b'0', 7), b"0012300");
+
+    // right bias
+    assert_eq!(Slice::trim_edges_min_len_right(data, b'0', 4), b"1230");
+    assert_eq!(Slice::trim_edges_min_len_right(data, b'0', 5), b"01230");
+    assert_eq!(Slice::trim_edges_min_len_right(data, b'0', 6), b"012300");
+    assert_eq!(Slice::trim_edges_min_len_right(data, b'0', 7), b"0012300");
+}
+
 #[test]
 fn replace() {
     let mut data = [0, 0, 0, 0, 1, 2, 3];

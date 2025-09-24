@@ -207,7 +207,7 @@ Many feature gates are removed in order to make most features make always availa
     - `replace_leading_bytes` to `replace_leading`.
   - add new methods:
     - `range_to_inclusive*`.
-    - `trim_leading_keep`, `trim_leading_min_len`.
+    - `trim_leading_keep`, `trim_leading_min_len`, `trim_trailing`, `trim_trailing_keep`, `trim_trailing_min_len`, `trim_edges_keep`, `trim_edges_min_len_left`, `trim_edges_min_len_right`.
   - add new `eq` methods for slices of slices of primitives and string slices.
 
 ## os
