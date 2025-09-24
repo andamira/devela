@@ -202,7 +202,12 @@ Many feature gates are removed in order to make most features make always availa
   - types: `Mem`, `Ptr`, `Slice`.
 - rename `join!` macro to `const_join!`.
 - update `Slice`:
-  - add new methods for inclusive ranges `range_to_inclusive*`.
+  - rename methods:
+    - `trim_leading_bytes` to `trim_leading`
+    - `replace_leading_bytes` to `replace_leading`.
+  - add new methods:
+    - `range_to_inclusive*`.
+    - `trim_leading_keep`, `trim_leading_min_len`.
   - add new `eq` methods for slices of slices of primitives and string slices.
 
 ## os

@@ -1182,16 +1182,61 @@ impl Slice<u8> {
         buf
     }
 
+    /* trim */
+
     /// Returns a subslice without the given leading `byte`s.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_leading(b"000123", b'0'), b"123");
+    /// ```
     #[must_use]
-    pub const fn trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
-        let mut start = 0;
-        while start < slice.len() && slice[start] == byte { start += 1; }
-        slice.split_at(start).1 // == &slice[start..]
+    pub const fn trim_leading(slice: &[u8], byte: u8) -> &[u8] {
+        let mut first = 0;
+        while first < slice.len() && slice[first] == byte { first += 1; }
+        Slice::range_from(slice, first)
     }
 
+    /// Returns a subslice without the given leading `byte`s, except of `keep` number of them.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_leading_keep(b"000123", b'0', 0), b"123");
+    /// assert_eq!(Slice::trim_leading_keep(b"000123", b'0', 2), b"00123");
+    /// assert_eq!(Slice::trim_leading_keep(b"000123", b'0', 10), b"000123");
+    /// ```
+    #[must_use]
+    pub const fn trim_leading_keep(slice: &[u8], byte: u8, keep: usize) -> &[u8] {
+        let mut first = 0;
+        while first < slice.len() && slice[first] == byte { first += 1; }
+        let first = first.saturating_sub(keep);
+        Slice::range_from(slice, first)
+    }
+
+    /// Returns a subslice without the given leading `byte`s, but leaves enough
+    /// to ensure the result has at least `min_len` bytes (if possible).
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// assert_eq!(Slice::trim_leading_min_len(b"000000", b'0', 1), b"0");
+    /// assert_eq!(Slice::trim_leading_min_len(b"000123", b'0', 0), b"123");
+    /// assert_eq!(Slice::trim_leading_min_len(b"000123", b'0', 4), b"0123");
+    /// assert_eq!(Slice::trim_leading_min_len(b"000123", b'0', 10), b"000123");
+    /// ```
+    pub const fn trim_leading_min_len(slice: &[u8], byte: u8, min_len: usize) -> &[u8] {
+        let mut first = 0;
+        while first < slice.len() && slice[first] == byte { first += 1; }
+        let first = Cmp(first).min(slice.len().saturating_sub(min_len));
+        Slice::range_from(slice, first)
+    }
+
+    /* replace */
+
     /// Replaces the `old` leading byte with a `new` byte.
-    pub const fn replace_leading_bytes(slice: &mut [u8], old: u8, new: u8) {
+    pub const fn replace_leading(slice: &mut [u8], old: u8, new: u8) {
         let mut start = 0;
         while start < slice.len() && slice[start] == old { slice[start] = new; start += 1; }
     }
@@ -1340,5 +1385,28 @@ mod tests {
 
         assert![Slice::<&str>::eq(&"ab", "ab")];
         assert![Slice::<&[&str]>::eq(&["ab", "cd"], &["ab", "cd"])];
+    }
+
+    /* byte slices */
+
+    #[test]
+    fn trim() {
+        let data = b"0000123";
+
+        assert_eq!(Slice::trim_leading(data, b'0'), b"123");
+
+        assert_eq!(Slice::trim_leading_keep(data, b'0', 2), b"00123");
+
+        assert_eq!(Slice::trim_leading_min_len(b"000", b'0', 1), b"0");
+        assert_eq!(Slice::trim_leading_min_len(data, b'0', 0), b"123"); // min
+        assert_eq!(Slice::trim_leading_min_len(data, b'0', 5), b"00123");
+        assert_eq!(Slice::trim_leading_min_len(data, b'0', 20), b"0000123"); // max
+    }
+    #[test]
+    fn replace() {
+        let mut data = [0, 0, 0, 0, 1, 2, 3];
+
+        Slice::replace_leading(&mut data, 0, 48);
+        assert_eq!(&data, &[48, 48, 48, 48, 1, 2, 3]);
     }
 }
