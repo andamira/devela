@@ -262,12 +262,16 @@ Many feature gates are removed in order to make most features make always availa
   - make `new` method panic.
   - impl `Extend` & `FromIterator`.
 - update `StringU*`:
-  - new methods: `sanitize`, `with`, `new_checked`.
   - impl `AsMut<&str>`, `DerefMut`, `Extend`, `FromIterator`.
-  - make `as_mut_str` method safe.
+  - new methods: `from_str`, `from_str_truncate`, `new_checked`, `sanitize`.
+  - modify methods:
+  - `as_mut_str`: make safe.
+  - `push_str`, make const, improve efficiency, update docs & examples.
+  - `try_push_str*`, make const, return `Result<usize, usize>`, update docs & examples.
   - make `new` method panic.
   - make more methods *const*.
   - fix `TryFrom<&str>` impl.
+  - improve docs.
 
 ## ui
 ### front

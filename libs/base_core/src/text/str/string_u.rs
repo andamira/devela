@@ -17,14 +17,9 @@ use crate::{
 
 macro_rules! impl_str_u {
     () => { impl_str_u![u8, u16, u32, usize]; };
-
     (
     // $t: the length type. E.g.: u8.
-    $($t:ty),+ $(,)?) => {
-        $(
-            paste! { impl_str_u![@[<String $t:camel>], $t]; }
-        )+
-    };
+    $($t:ty),+ $(,)?) => { $( paste! { impl_str_u![@[<String $t:camel>], $t]; } )+ };
     (
     // $name: the name of the type. E.g.: StringU8.
     @$name:ty, $t:ty) => { paste! {
@@ -37,45 +32,55 @@ macro_rules! impl_str_u {
         #[doc = "Internally, the current length is stored as a [`" $t "`]."]
         ///
         /// ## Methods
-        /// - Construct:
+        /// - [Constructors](#constructors):
         ///   [`new`][Self::new],
-        ///   [`with`][Self::with],
-        ///   [`from_char`][Self::from_char]*(
-        ///     [`7`](Self::from_char7),
-        ///     [`8`](Self::from_char8),
-        ///     [`16`](Self::from_char16).
-        ///   )*.
-        /// - Deconstruct:
+        ///     *([_checked][Self::new_checked])*,
+        ///   [`from_str`][Self::from_str],
+        ///     *([_truncate][Self::from_str_truncate])*,
+        ///   [`from_char`][Self::from_char]
+        ///   *([7][Self::from_char7],
+        ///     [8][Self::from_char8],
+        ///     [16][Self::from_char16])*,
+        ///   [`from_bytes`][Self::from_bytes]
+        ///   *([_nleft][Self::from_bytes_nleft],
+        ///   [_nright][Self::from_bytes_nleft])*.
+        ///
+        /// - [Deconstructors](#deconstructors):
         ///   [`into_array`][Self::into_array],
         ///   [`as_array`][Self::as_array],
         ///   [`as_bytes`][Self::as_bytes]
-        ///     *([mut][Self::as_bytes_mut],
+        ///     *([_mut][Self::as_bytes_mut])*,
         ///   [`as_str`][Self::as_str]
-        ///     *([mut][Self::as_mut_str],
-        ///   [`chars`][Self::chars],
-        /// - Query:
+        ///     *([_mut][Self::as_mut_str])*,
+        ///   [`chars`][Self::chars].
+        ///
+        /// - [Queries](#queries):
         ///   [`len`][Self::len],
         ///   [`is_empty`][Self::is_empty],
         ///   [`is_full`][Self::is_full],
         ///   [`capacity`][Self::capacity],
         ///   [`remaining_capacity`][Self::remaining_capacity].
-        /// - Operations:
-        ///   [`clear`][Self::clear], [`reset`][Self::reset],
-        ///   [`pop`][Self::pop]*([try][Self::try_pop])*,
-        ///   [`push`][Self::push]*([try][Self::try_push])*.
-        ///   [`push_str`][Self::push]*([try][Self::try_push_str])*,
-        ///   [`try_push_str_complete`][Self::try_push_str_complete].
+        ///
+        /// - [Modifiers](#modifiers):
+        ///   [`clear`][Self::clear],
+        ///   [`reset`][Self::reset],
+        ///   [`sanitize`][Self::sanitize],
+        ///   [`pop`][Self::pop]
+        ///     *([try_][Self::try_pop])*,
+        ///   [`push`][Self::push]
+        ///     *([try_][Self::try_push])*.
+        ///   [`push_str`][Self::push]
+        ///     *([try_][Self::try_push_str],
+        ///     [try__complete][Self::try_push_str_complete])*.
         #[must_use]
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
         pub struct $name<const CAP: usize> {
-            // WAIT: for when we can use CAP: u8 for panic-less const boundary check.
-            arr: [u8; CAP],
+            arr: [u8; CAP], // WAIT: for when possible CAP:u8 for panic-less const boundary check.
             len: $t,
         }
 
+        /// # Constructors
         impl<const CAP: usize> $name<CAP> {
-            /* construct */
-
             #[doc = "Creates a new empty `String" $t:camel "` with a capacity of `CAP` bytes."]
             ///
             /// # Panics
@@ -98,267 +103,41 @@ macro_rules! impl_str_u {
                 }
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `&str`."]
+            /* from str */
+
+            #[doc = "Creates a new `String" $t:camel "` from a complete `&str`."]
             ///
             /// # Errors
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8]
             /// or if `CAP < string.len()`.
             ///
-            #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            /// It calls [`try_push_str_complete()`][Self::try_push_str_complete].
+            ///
             /// # Example
             /// ```
             /// # use devela_base_core::StringU8;
             /// let s = StringU8::<13>::with("Hello Wørld!").unwrap();
             /// assert_eq![s.as_str(), "Hello Wørld!"];
             /// ```
-            pub fn with(string: &str) -> Result<Self, MismatchedCapacity> {
-                if CAP < string.len() {
-                    Err(MismatchedCapacity::closed(0, CAP + string.len(), CAP))
-                } else {
-                    let mut new_string = unwrap![ok? Self::new_checked()];
-                    let bytes = string.as_bytes();
-                    Slice::range_to_mut(&mut new_string.arr, bytes.len()).copy_from_slice(bytes);
-                    new_string.len = bytes.len() as $t;
-                    Ok(new_string)
-                }
-
+            pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
+                let mut new_string = unwrap![ok? Self::new_checked()];
+                if let Ok(_) = new_string.try_push_str_complete(string) { Ok(new_string) }
+                else { Err(MismatchedCapacity::closed(0, string.len(), CAP)) }
             }
 
-            /* query */
-
-            /// Returns the current string length in bytes.
-            #[must_use]
-            #[inline(always)]
-            pub const fn len(&self) -> usize { self.len as usize }
-
-            /// Returns `true` if the current length is 0.
-            #[must_use]
-            #[inline(always)]
-            pub const fn is_empty(&self) -> bool { self.len == 0 }
-
-            /// Returns `true` if the current remaining capacity is 0.
-            #[must_use]
-            #[inline(always)]
-            pub const fn is_full(&self) -> bool { self.len == CAP as $t }
-
-            /// Returns the total capacity in bytes.
-            #[must_use]
-            #[inline(always)]
-            pub const fn capacity() -> usize { CAP }
-
-            /// Returns the remaining capacity in bytes.
-            #[must_use]
-            #[inline(always)]
-            pub const fn remaining_capacity(&self) -> usize { CAP - self.len as usize }
-
-            /* deconstruct */
-
-            /// Returns the inner array with the full contents.
+            #[doc = "Creates a new `String" $t:camel "` from a `&str`,"]
+            /// truncating if it does not fit.
             ///
-            /// The array contains all the bytes, including those outside the current length.
-            #[must_use]
-            #[inline(always)]
-            pub const fn into_array(self) -> [u8; CAP] { self.arr }
-
-            /// Returns a copy of the inner array with the full contents.
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]"]
             ///
-            /// The array contains all the bytes, including those outside the current length.
-            #[must_use]
-            #[inline(always)]
-            pub const fn as_array(&self) -> [u8; CAP] { self.arr }
-
-            /// Returns a byte slice of the inner string slice.
-            #[must_use]
-            #[inline(always)]
-            pub const fn as_bytes(&self) -> &[u8] {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return Slice::take_first(&self.arr, self.len as usize);
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: we ensure to contain a correct length
-                unsafe { Slice::take_first_unchecked(&self.arr, self.len as usize) }
+            /// It calls [`try_push_str_complete()`][Self::try_push_str_complete].
+            pub const fn from_str_truncate(string: &str) -> Result<Self, MismatchedCapacity> {
+                let mut new_string = unwrap![ok? Self::new_checked()];
+                let _ = new_string.push_str(string);
+                Ok(new_string)
             }
 
-            /// Returns an exclusive byte slice of the inner string slice.
-            ///
-            /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
-            #[must_use]
-            #[inline(always)]
-            pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return Slice::take_first_mut(&mut self.arr, self.len as usize);
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: we ensure to contain a correct length
-                unsafe { Slice::take_first_mut_unchecked(&mut self.arr, self.len as usize) }
-            }
-
-            /// Returns a reference to the inner string slice.
-            ///
-            /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
-            #[must_use]
-            #[inline(always)]
-            pub const fn as_str(&self) -> &str {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: we ensure to contain only valid UTF-8
-                unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
-            }
-
-            /// Returns an exclusive reference to the inner string slice.
-            ///
-            /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
-            #[must_use]
-            #[inline(always)]
-            pub const fn as_mut_str(&mut self) -> &mut str {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok_expect Str::from_utf8_mut(self.as_bytes_mut()), "Invalid UTF-8"];
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: we ensure to contain only valid UTF-8
-                unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
-            }
-
-            /// Returns an iterator over the `chars` of this grapheme cluster.
-            #[inline(always)]
-            pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() } // non-const
-
-            /* operations */
-
-            /// Sets the length to 0.
-            #[inline(always)]
-            pub const fn clear(&mut self) { self.len = 0; }
-
-            /// Sets the length to 0, and resets all the bytes to 0.
-            #[inline(always)]
-            pub const fn reset(&mut self) { self.arr = [0; CAP]; self.len = 0; }
-
-            /// Zeros all unused bytes while maintaining the current length.
-            #[inline(always)]
-            pub const fn sanitize(&mut self) {
-                cfor![i in (self.len as usize)..CAP => { self.arr[i] = 0; }];
-            }
-
-            /// Removes the last character and returns it, or `None` if
-            /// the string is empty.
-            #[must_use]
-            pub fn pop(&mut self) -> Option<char> {
-                self.as_str().chars() // non-const
-                    .last().map(|c| { self.len -= c.len_utf8() as $t; c })
-            }
-
-            /// Tries to remove the last character and returns it, or `None` if
-            /// the string is empty.
-            ///
-            /// # Errors
-            /// Returns a [`NotEnoughElements`] error
-            /// if the capacity is not enough to hold the `character`.
-            pub fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
-                self.as_str().chars() // non-const
-                    .last().map(|c| { self.len -= c.len_utf8() as $t; c })
-                    .ok_or(NotEnoughElements(Some(1)))
-            }
-
-            /// Appends to the end of the string the given `character`.
-            ///
-            /// Returns the number of bytes written.
-            ///
-            /// Returns 0 bytes if the given `character` doesn't fit in the remaining capacity.
-            pub const fn push(&mut self, character: char) -> usize {
-                let char_len = character.len_utf8();
-                if self.remaining_capacity() >= char_len {
-                    let beg = self.len as usize;
-                    let end = beg + char_len;
-                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
-                    self.len += char_len as $t;
-                    char_len
-                } else {
-                    0
-                }
-            }
-
-            /// Tries to append to the end of the string the given `character`.
-            ///
-            /// Returns the number of bytes written.
-            ///
-            /// # Errors
-            /// Returns a [`MismatchedCapacity`] error
-            /// if the capacity is not enough to hold the `character`.
-            pub const fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
-                let char_len = character.len_utf8();
-                if self.remaining_capacity() >= char_len {
-                    let beg = self.len as usize;
-                    let end = beg + char_len;
-                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
-                    self.len += char_len as $t;
-                    Ok(char_len)
-                } else {
-                    Err(MismatchedCapacity::closed(0, self.len() + character.len_utf8(), CAP))
-                }
-            }
-
-            /// Appends to the end the fitting characters from the given `string` slice.
-            ///
-            /// Nul characters will be stripped out.
-            ///
-            /// Returns the number of bytes written, which will be 0
-            /// if not even the first non-nul character can fit.
-            pub fn push_str(&mut self, string: &str) -> usize {
-                let mut bytes_written = 0;
-                for character in string.chars() { // non-const
-                    let char_len = character.len_utf8();
-                    if self.len as usize + char_len <= CAP {
-                        let start_pos = self.len as usize;
-                        character.encode_utf8(&mut self.arr[start_pos..]);
-                        // character.encode_utf8(Slice::range_from_mut(&mut self.arr, start_pos));
-                        self.len += char_len as $t;
-                        bytes_written += char_len;
-                    } else {
-                        break;
-                    }
-                }
-                bytes_written
-            }
-
-            /// Tries to append to the end the characters from the given `string` slice.
-            ///
-            /// Returns the number of bytes written.
-            ///
-            /// # Errors
-            /// Returns [`MismatchedCapacity`] if the capacity is not enough
-            /// to hold even the first character.
-            pub fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
-                is![string.is_empty(); return Ok(0)];
-                let first_char_len = string.chars().next().unwrap().len_utf8(); // non-const
-                if self.remaining_capacity() < first_char_len {
-                    Err(MismatchedCapacity::closed(0, self.len() + first_char_len, CAP))
-                } else {
-                    Ok(self.push_str(string))
-                }
-            }
-
-            /// Tries to append the complete `string` slice to the end.
-            ///
-            /// Returns the number of bytes written in success.
-            ///
-            /// # Errors
-            /// Returns [`MismatchedCapacity`] if the slice wont completely fit.
-            pub fn try_push_str_complete(&mut self, string: &str)
-            -> Result<usize, MismatchedCapacity> {
-                if self.remaining_capacity() >= string.len() {
-                    Ok(self.push_str(string)) // non-const
-                } else {
-                    Err(MismatchedCapacity::closed(0, self.len() + string.len(), CAP))
-                }
-            }
-
-            /* from char  */
+            /* from char */
 
             #[doc = "Creates a new `String" $t:camel "` from a `char`."]
             ///
@@ -433,9 +212,7 @@ macro_rules! impl_str_u {
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidUtf8> {
                 match Str::from_utf8(&bytes) {
-                    Ok(_) => {
-                        Ok(Self { arr: bytes, len: CAP as $t })
-                    },
+                    Ok(_) => { Ok(Self { arr: bytes, len: CAP as $t }) },
                     Err(e) => Err(e),
                 }
             }
@@ -531,7 +308,242 @@ macro_rules! impl_str_u {
             }
         }
 
-        /* traits implementations */
+        /// # Deconstructors
+        impl<const CAP: usize> $name<CAP> {
+            /// Returns the inner array with the full contents.
+            ///
+            /// The array contains all the bytes, including those outside the current length.
+            #[must_use] #[inline(always)]
+            pub const fn into_array(self) -> [u8; CAP] { self.arr }
+
+            /// Returns a copy of the inner array with the full contents.
+            ///
+            /// The array contains all the bytes, including those outside the current length.
+            #[must_use] #[inline(always)]
+            pub const fn as_array(&self) -> [u8; CAP] { self.arr }
+
+            /// Returns a byte slice of the inner string slice.
+            #[must_use] #[inline(always)]
+            pub const fn as_bytes(&self) -> &[u8] {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return Slice::take_first(&self.arr, self.len as usize);
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain a correct length
+                unsafe { Slice::take_first_unchecked(&self.arr, self.len as usize) }
+            }
+
+            /// Returns an exclusive byte slice of the inner string slice.
+            ///
+            /// # Features
+            /// Makes use of the `unsafe_str` feature if enabled.
+            #[must_use] #[inline(always)]
+            pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return Slice::take_first_mut(&mut self.arr, self.len as usize);
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain a correct length
+                unsafe { Slice::take_first_mut_unchecked(&mut self.arr, self.len as usize) }
+            }
+
+            /// Returns a reference to the inner string slice.
+            ///
+            /// # Features
+            /// Makes use of the `unsafe_str` feature if enabled.
+            #[must_use]
+            #[inline(always)]
+            pub const fn as_str(&self) -> &str {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain only valid UTF-8
+                unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
+            }
+
+            /// Returns an exclusive reference to the inner string slice.
+            ///
+            /// # Features
+            /// Makes use of the `unsafe_str` feature if enabled.
+            #[must_use] #[inline(always)]
+            pub const fn as_mut_str(&mut self) -> &mut str {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return unwrap![ok_expect Str::from_utf8_mut(self.as_bytes_mut()), "Invalid UTF-8"];
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain only valid UTF-8
+                unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
+            }
+
+            /// Returns an iterator over the `chars` of this grapheme cluster.
+            #[inline(always)]
+            pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() } // non-const
+        }
+
+        /// # Queries
+        impl<const CAP: usize> $name<CAP> {
+            /// Returns the current string length in bytes.
+            #[must_use]
+            #[inline(always)]
+            pub const fn len(&self) -> usize { self.len as usize }
+
+            /// Returns `true` if the current length is 0.
+            #[must_use]
+            #[inline(always)]
+            pub const fn is_empty(&self) -> bool { self.len == 0 }
+
+            /// Returns `true` if the current remaining capacity is 0.
+            #[must_use]
+            #[inline(always)]
+            pub const fn is_full(&self) -> bool { self.len == CAP as $t }
+
+            /// Returns the total capacity in bytes.
+            #[must_use]
+            #[inline(always)]
+            pub const fn capacity() -> usize { CAP }
+
+            /// Returns the remaining capacity in bytes.
+            #[must_use]
+            #[inline(always)]
+            pub const fn remaining_capacity(&self) -> usize { CAP - self.len as usize }
+        }
+
+        /// # Modifiers
+        impl<const CAP: usize> $name<CAP> {
+            /// Sets the length to 0.
+            #[inline(always)]
+            pub const fn clear(&mut self) { self.len = 0; }
+
+            /// Sets the length to 0, and resets all the bytes to 0.
+            #[inline(always)]
+            pub const fn reset(&mut self) { self.arr = [0; CAP]; self.len = 0; }
+
+            /// Zeros all unused bytes while maintaining the current length.
+            #[inline(always)]
+            pub const fn sanitize(&mut self) {
+                cfor![i in (self.len as usize)..CAP => { self.arr[i] = 0; }];
+            }
+
+            /// Removes the last character and returns it, or `None` if
+            /// the string is empty.
+            #[must_use]
+            pub fn pop(&mut self) -> Option<char> {
+                self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
+            }
+
+            /// Tries to remove the last character and returns it, or `None` if
+            /// the string is empty.
+            ///
+            /// # Errors
+            /// Returns a [`NotEnoughElements`] error
+            /// if the capacity is not enough to hold the `character`.
+            pub fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
+                self.as_str().chars() // non-const
+                    .last().map(|c| { self.len -= c.len_utf8() as $t; c })
+                    .ok_or(NotEnoughElements(Some(1)))
+            }
+
+            /// Appends to the end of the string the given `character`.
+            ///
+            /// Returns the number of bytes written.
+            ///
+            /// Returns 0 bytes if the given `character` doesn't fit in the remaining capacity.
+            pub const fn push(&mut self, character: char) -> usize {
+                let char_len = character.len_utf8();
+                if self.remaining_capacity() >= char_len {
+                    let beg = self.len as usize;
+                    let end = beg + char_len;
+                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
+                    self.len += char_len as $t;
+                    char_len
+                } else {
+                    0
+                }
+            }
+
+            /// Tries to append to the end of the string the given `character`.
+            ///
+            /// Returns the number of bytes written.
+            ///
+            /// # Errors
+            /// Returns a [`MismatchedCapacity`] error
+            /// if the capacity is not enough to hold the `character`.
+            pub const fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
+                let char_len = character.len_utf8();
+                if self.remaining_capacity() >= char_len {
+                    let beg = self.len as usize;
+                    let end = beg + char_len;
+                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
+                    self.len += char_len as $t;
+                    Ok(char_len)
+                } else {
+                    Err(MismatchedCapacity::closed(0, self.len() + character.len_utf8(), CAP))
+                }
+            }
+
+            /// Appends as many complete characters from `string` as will fit.
+            ///
+            /// Returns the number of bytes written. UTF-8 characters are never split.
+            ///
+            /// # Example
+            /// ```
+            /// # use devela_base_core::StringU8;
+            /// let mut s = StringU8::<5>::new();
+            /// assert_eq!(s.push_str("café"), 5);
+            /// assert_eq!(s, "café");
+            ///
+            /// let mut s = StringU8::<4>::new();
+            /// assert_eq!(s.push_str("café"), 3);
+            /// assert_eq!(s, "caf");
+            ///
+            /// let mut s = StringU8::<2>::new();
+            /// assert_eq!(s.push_str("サ"), 0);
+            /// assert_eq!(s, "");
+            /// ```
+            pub const fn push_str(&mut self, string: &str) -> usize {
+                let remaining_capacity = CAP - self.len as usize;
+                is! { remaining_capacity == 0; return 0 }
+                let string_len = string.len();
+                let bytes_to_write = if string_len <= remaining_capacity {
+                    string_len
+                } else {
+                    let mut amount = remaining_capacity;
+                    while amount > 0 && !string.is_char_boundary(amount) { amount -= 1; }
+                    amount
+                };
+                if bytes_to_write > 0 {
+                    let start_pos = self.len as usize;
+                    Slice::range_mut(&mut self.arr, start_pos, start_pos + bytes_to_write)
+                        .copy_from_slice(Slice::range_to(string.as_bytes(), bytes_to_write));
+                    self.len += bytes_to_write as $t;
+                    bytes_to_write
+                } else {
+                    0
+                }
+            }
+
+            /// Appends characters from `string`, returning `Ok` if all fit, `Err` if partial.
+            ///
+            /// - `Ok(bytes)`: Entire string was written successfully
+            /// - `Err(partial)`: Only `partial` bytes could be written (UTF-8 safe)
+            ///
+            /// In both cases, the bytes are appended to the buffer.
+            pub const fn try_push_str(&mut self, string: &str) -> Result<usize, usize> {
+                let bytes_written = self.push_str(string);
+                is![bytes_written == string.len(); Ok(bytes_written); Err(bytes_written)]
+            }
+
+            /// Appends the entire `string` or nothing at all.
+            ///
+            /// Returns `Ok(bytes)` if the string fits completely, or `Err(0)` if it doesn't.
+            /// No partial writes will occur to the buffer.
+            pub const fn try_push_str_complete(&mut self, string: &str) -> Result<usize, usize> {
+                is![self.remaining_capacity() >= string.len(); Ok(self.push_str(string)); Err(0)]
+            }
+        }
+
+        /* utility traits */
 
         impl<const CAP: usize> Default for $name<CAP> {
             /// Returns an empty string.
@@ -553,11 +565,10 @@ macro_rules! impl_str_u {
             }
         }
 
-        impl<const CAP: usize> PartialEq<&str> for $name<CAP> {
+        impl<const CAP: usize> PartialEq<&str> for $name<CAP> { // &str on the RHS
             fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
         }
-        // and for when &str is on the left-hand side of the comparison
-        impl<const CAP: usize> PartialEq<$name<CAP>> for &str {
+        impl<const CAP: usize> PartialEq<$name<CAP>> for &str { // &str on the LHS
             fn eq(&self, string: & $name<CAP>) -> bool { *self == string.as_str() }
         }
 
@@ -580,25 +591,18 @@ macro_rules! impl_str_u {
             fn as_ref(&self) -> &[u8] { self.as_bytes() }
         }
 
+        /* conversions */
+
         impl<const CAP: usize> TryFrom<&str> for $name<CAP> {
             type Error = MismatchedCapacity;
 
             #[doc = "Tries to create a new `String" $t:camel "` from the given `string` slice."]
             ///
+            /// It calls [`from_str()`][Self::from_str].
             /// # Errors
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]"]
             /// or if `CAP < string.len()`.
-            fn try_from(string: &str) -> Result<Self, MismatchedCapacity> {
-                if CAP < string.len() {
-                    Err(MismatchedCapacity::closed(0, CAP + string.len(), CAP))
-                } else {
-                    let mut new_string = Self::new_checked()?;
-                    let bytes = string.as_bytes();
-                    new_string.arr[..bytes.len()].copy_from_slice(bytes);
-                    new_string.len = bytes.len() as $t;
-                    Ok(new_string)
-                }
-            }
+            fn try_from(string: &str) -> Result<Self, MismatchedCapacity> { Self::from_str(string) }
         }
 
         impl<const CAP: usize> TryFrom<&[u8]> for $name<CAP> {
@@ -689,6 +693,33 @@ mod tests {
         assert_eq![2, s.len()];
         assert![s.try_push('a').is_ok()];
         assert_eq![3, s.len()];
+    }
+    #[test]
+    fn push_str() {
+        let mut s = StringU8::<5>::new();
+        assert_eq!(s.push_str("café"), 5);
+
+        let mut s = StringU8::<4>::new();
+        assert_eq!(s.push_str("café"), 3);
+        assert_eq!(s, "caf")
+    }
+    #[test]
+    fn try_push_str() {
+        let mut s = StringU8::<5>::new();
+        assert_eq!(s.try_push_str("café"), Ok(5));
+
+        let mut s = StringU8::<4>::new();
+        assert_eq!(s.try_push_str("café"), Err(3));
+        assert_eq!(s, "caf")
+    }
+    #[test]
+    fn try_push_str_complete() {
+        let mut s = StringU8::<5>::new();
+        assert_eq!(s.try_push_str_complete("café"), Ok(5));
+
+        let mut s = StringU8::<4>::new();
+        assert_eq!(s.try_push_str_complete("café"), Err(0));
+        assert_eq!(s, "")
     }
 
     #[test]

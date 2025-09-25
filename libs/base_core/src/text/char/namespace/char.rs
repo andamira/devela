@@ -1,17 +1,16 @@
 // devela_base_core::text::char::namespace::char
 
-use crate::{ASCII_TABLE, Char};
+use crate::{ASCII_TABLE, Char, is, unwrap};
 
 /// # Methods over `char`
 #[rustfmt::skip]
 impl Char<char> {
     /// Returns the number of bytes needed to encode the given `char` as UTF-8.
     ///
-    /// See also `Char::`[`code_len_utf8`][Char::code_len_utf8].
-    #[must_use] #[rustfmt::skip]
+    /// See also `Char::<u32>`[`code_len_utf8`][Char::<u32>::code_len_utf8].
+    #[must_use]
     pub const fn len_utf8(self) -> usize {
-        let code = self.0 as u32;
-        if code < 0x80 { 1 } else if code < 0x800 { 2 } else if code < 0x10_000 { 3 } else { 4 }
+        match self.0 as u32 { 0..0x80 => 1, 0x80..0x800 => 2, 0x800..0x10_000 => 3, _ => 4 }
     }
 
     /// Converts the given `char` to a UTF-8 encoded byte sequence.
@@ -27,14 +26,15 @@ impl Char<char> {
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
     pub const fn to_ascii_str(self) -> &'static str {
-        if self.0.is_ascii() { ASCII_TABLE[self.0 as usize] } else { "" }
+        is![self.0.is_ascii(); ASCII_TABLE[self.0 as usize]; ""]
     }
     /// Returns the ASCII representation as a `&'static str`.
-    ///
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use]
-    pub const fn to_ascii_str_unchecked(self) -> &'static str { ASCII_TABLE[self.0 as usize] }
+    pub const fn to_ascii_str_unchecked(self) -> &'static str {
+        ASCII_TABLE[self.0 as usize]
+    }
 
     /// Converts a character to its closest ASCII equivalent, if possible.
     ///
@@ -64,8 +64,8 @@ impl Char<char> {
             'Ñ' => Some('N'),
             'ñ' => Some('n'),
             // Ligatures & Special Cases
-            'Æ' => Some('A'), 'æ' => Some('a'),
-            'Œ' => Some('O'), 'œ' => Some('o'),
+            'Æ' | 'Œ' => Some('E'),
+            'æ' | 'œ' => Some('e'),
             // Symbols that could be mapped
             'ß' => Some('s'), // German sharp S → s
             'Ð' => Some('D'), 'ð' => Some('d'),
@@ -81,6 +81,6 @@ impl Char<char> {
     /// If no ASCII equivalent exists, the input character is returned unchanged.
     #[must_use]
     pub const fn to_ascii_fold_unchecked(self) -> char {
-        if let Some(m) = self.to_ascii_fold() { m } else { self.0 }
+        unwrap![some_or self.to_ascii_fold(), self.0]
     }
 }

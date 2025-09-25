@@ -25,18 +25,20 @@ const NUL_CHAR: char = '\0';
 ///
 /// - Construct:
 ///   [`new`][Self::new],
-///   [`from_char`][Self::from_char]*(
-///     [`7`](Self::from_char7),
+///   [`from_char`][Self::from_char]
+///   *([`7`](Self::from_char7),
 ///     [`8`](Self::from_char8),
-///     [`16`](Self::from_char16).
-///   )*.
+///     [`16`](Self::from_char16))*.
 /// - Deconstruct:
 ///   [`into_array`][Self::into_array],
 ///   [`as_array`][Self::as_array],
 ///   [`as_bytes`][Self::as_bytes]
-///     *([mut][Self::as_bytes_mut]<sup title="unsafe function">⚠</sup>)*,
+///     *([mut][Self::as_bytes_mut])*,
 ///   [`as_str`][Self::as_str]
-///     *([mut][Self::as_mut_str]<sup title="unsafe function">⚠</sup>)*,
+#[cfg_attr(
+    feature = "unsafe_slice",
+    doc = "*([mut][Self::as_mut_str]<sup title='unsafe function'>⚠</sup>)*,"
+)]
 ///   [`chars`][Self::chars],
 /// - Query:
 ///   [`len`][Self::len],
@@ -190,7 +192,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
-        unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        return unwrap![ok_expect Str::from_utf8_mut(self.as_bytes_mut()), "Invalid UTF-8"];
+
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        // SAFETY: we ensure to contain only valid UTF-8
+        unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.

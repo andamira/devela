@@ -84,7 +84,7 @@ use ::core::str::from_utf8_mut;
 ///    [*mut*](#method.msplit_right_mut).
 ///    [*mut_checked*](#method.msplit_right_mut_checked)).
 ///
-/// See also the [`std::str`] module.
+/// See also the [`core::str`] module.
 #[derive(Debug)]
 pub struct Str;
 
