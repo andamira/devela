@@ -26,7 +26,6 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 /// - The default hasher is [`HasherFx`][crate::HasherFx].
 ///
 /// # Examples
-///
 /// See the example type: [`ExampleStaticMapU16`].
 ///
 /// Basic usage

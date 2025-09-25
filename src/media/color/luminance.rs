@@ -146,6 +146,15 @@ macro_rules! impl_lum {
             pub const fn lightness_mut(&mut self) -> &mut $T { &mut self.c[0] }
 
             /* gamma conversion */
+
+            // /// TODO
+            // pub const fn to_luminance() -> Lightness<$T> {
+            //     todo![]
+            // }
+            // /// TODO
+            // pub const fn to_luma() -> Luma<$T> {
+            //     todo![]
+            // }
         }
     };
     ( // Methods for Luma: (non-linear, non-lightness)
@@ -191,6 +200,15 @@ macro_rules! impl_lum {
             pub const fn linear_lightness_mut(&mut self) -> &mut $T { &mut self.c[0] }
 
             /* gamma conversion */
+
+            // /// TODO
+            // pub const fn to_luminance() -> Lightness<$T> {
+            //     todo![]
+            // }
+            // /// TODO
+            // pub const fn to_luma() -> Luma<$T> {
+            //     todo![]
+            // }
         }
     };
 }

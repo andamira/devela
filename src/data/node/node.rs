@@ -15,7 +15,8 @@ use crate::{
 
 macro_rules! impl_node {
     () => {
-        impl_node!(u8:"_node_u8", u16:"_node_u16", u32:"_node_u32", usize:"_node_usize");
+        // TEMP WIP
+        // impl_node!(u8:"_node_u8", u16:"_node_u16", u32:"_node_u32", usize:"_node_usize");
     };
 
     // $IP:  the index primitive type. E.g. u8.
@@ -382,8 +383,7 @@ macro_rules! impl_node {
             pub const fn contains_link(&self, link: $IP) -> bool {
                 let mut i = 0;
                 while i < LCAP {
-                    // WAIT: [if-let-chains](https://github.com/rust-lang/rust/issues/53667)
-                    if let Some(idx) = self.links[i] { if idx.get() == link { return true } }
+                    if let Some(idx) = self.links[i] && idx.get() == link { return true }
                     i += 1;
                 }
                 false

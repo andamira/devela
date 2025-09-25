@@ -28,6 +28,8 @@ define_data_value_type_raw! {
         "1-Byte byte array", ByteArray1B, [u8; 1], [def:true],
         "Boolean value", Bool, bool, [def:true],
     copy@8_dep:
+        "8-bit signed angle", AngleI8, crate::Angle<i8>, "geom", "geom", [def:true],
+        "8-bit unsigned angle", AngleU8, crate::Angle<u8>, "geom", "geom", [def:true],
     copy@8_ptr:
         "8-bit isize", Isize, isize, target_pointer_width = "8", [def:true],
         "8-bit usize", Usize, usize, target_pointer_width = "8", [def:true],
@@ -47,6 +49,8 @@ define_data_value_type_raw! {
         // WAIT: FIX: use flag
         // "16-bit floating-point number", F16, ::core::primitive::f16,
         //     nightly_float, nightly_float, [def:true],
+        "16-bit signed angle", AngleI16, crate::Angle<i16>, "geom", "geom", [def:true],
+        "16-bit unsigned angle", AngleU16, crate::Angle<u16>, "geom", "geom", [def:true],
     copy@16_ptr:
         "16-bit isize", Isize, isize, target_pointer_width = "16", [def:true],
         "16-bit usize", Usize, usize, target_pointer_width = "16", [def:true],
@@ -65,6 +69,8 @@ define_data_value_type_raw! {
         "4-Byte byte array", ByteArray4B, [u8; 4], [def:true],
         "32-bit char ", Char, char, [def:true],
     copy@32_dep:
+        "32-bit signed angle", AngleI32, crate::Angle<i32>, "geom", "geom", [def:true],
+        "32-bit unsigned angle", AngleU32, crate::Angle<u32>, "geom", "geom", [def:true],
     copy@32_ptr:
         "32-bit isize", Isize, isize, target_pointer_width = "32", [def:true],
         "32-bit usize", Usize, usize, target_pointer_width = "32", [def:true],
@@ -82,6 +88,8 @@ define_data_value_type_raw! {
         "64-bit floating-point number", F64, f64, [def:true],
         "8-Byte byte array", ByteArray8B, [u8; 8], [def:true],
     copy@64_dep:
+        "64-bit signed angle", AngleI64, crate::Angle<i64>, "geom", "geom", [def:true],
+        "64-bit unsigned angle", AngleU64, crate::Angle<u64>, "geom", "geom", [def:true],
     copy@64_ptr:
         "64-bit isize", Isize, isize, target_pointer_width = "64", [def:true],
         "64-bit usize", Usize, usize, target_pointer_width = "64", [def:true],
@@ -104,6 +112,8 @@ define_data_value_type_raw! {
         // WAIT: FIX:use flag
         // "128-bit floating-point number", F128, ::core::primitive::f128,
         //     nightly_float, nightly_float, [def:true],
+        "128-bit signed angle", AngleI128, crate::Angle<i128>, "geom", "geom", [def:true],
+        "128-bit unsigned angle", AngleU128, crate::Angle<u128>, "geom", "geom", [def:true],
         "128-bit SystemInstant", SystemInstant, crate::SystemInstant, "std", "std", [def:false],
         "128-bit SystemTime", SystemTime, crate::SystemTime, "std", "std", [def:false],
     copy@128_ptr:

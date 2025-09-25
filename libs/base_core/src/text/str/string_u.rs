@@ -116,7 +116,7 @@ macro_rules! impl_str_u {
             /// # Example
             /// ```
             /// # use devela_base_core::StringU8;
-            /// let s = StringU8::<13>::with("Hello Wørld!").unwrap();
+            /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
             /// assert_eq![s.as_str(), "Hello Wørld!"];
             /// ```
             pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {

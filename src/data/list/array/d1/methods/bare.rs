@@ -62,6 +62,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns a slice containing the entire array in compile time.
     ///
     /// It allows to sidestep `Deref` coercion for indexing purposes.
+    /// It's composable with [`Slice`][crate::Slice] methods for *const* operations.
     #[must_use]
     pub const fn as_bare_mut_slice(&mut self) -> &mut [T] {
         self.data.as_mut() // const method on BareBox

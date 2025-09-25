@@ -31,8 +31,8 @@ pub mod uid;
 pub mod dst;
 
 // WIPZONE
-// mod pool;
-// mod view;
+// mod _wip_pool;
+// mod _wip_view;
 // #[cfg(_graph··)]
 // pub mod graph;
 // #[cfg(_node··)]
@@ -63,8 +63,8 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         pub use super::dst::_all::*;
 
         // WIPZONE
-        // pub use super::pool::*;
-        // pub use super::view::*;
+        // pub use super::_wip_pool::*;
+        // pub use super::_wip_view::*;
         // #[cfg(_graph··)]
         // pub use super::graph::*;
         // #[cfg(_node··)]

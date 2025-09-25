@@ -42,7 +42,7 @@ impl Str {
     /// let s = "Hellø wørld!";
     /// assert_eq!(Str::lsplit_checked(s, 0), Some(""));
     /// assert_eq!(Str::lsplit_checked(s, 3), Some("Hel"));
-    /// assert!(Str::lsplit_checked(s, 5).is_none()); // attempts to split `ø`
+    /// assert!(Str::lsplit_checked(s, 5).is_none()); // attempt to split `ø`
     /// assert_eq!(Str::lsplit_checked(s, 20), Some("Hellø wørld!"));
     /// ```
     #[must_use] #[inline(always)]
@@ -60,7 +60,7 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Str, StringU8};
-    /// let mut s = StringU8::<16>::with("Hello world!").unwrap();
+    /// let mut s = StringU8::<16>::from_str("Hello world!").unwrap();
     /// assert_eq!(&*Str::lsplit(&mut s, 0), "");
     /// assert_eq!(&*Str::lsplit(&mut s, 3), "Hel");
     /// assert_eq!(&*Str::lsplit(&mut s, 20), "Hello world!");
@@ -77,10 +77,10 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Cmp, Str, StringU8};
-    /// let mut s = StringU8::<16>::with("Hellø wørld!").unwrap();
+    /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
     /// assert!(Str::lsplit_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
     /// assert!(Str::lsplit_mut_checked(&mut s, 3).is_some_and(|s| &*s == "Hel"));
-    /// assert!(Str::lsplit_mut_checked(&mut s, 5).is_none()); // attempts to split `ø`
+    /// assert!(Str::lsplit_mut_checked(&mut s, 5).is_none()); // attempt to split `ø`
     /// assert!(Str::lsplit_mut_checked(&mut s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
     /// ```
     #[must_use] #[inline(always)]
@@ -120,7 +120,7 @@ impl Str {
     /// let s = "Hellø wørld!";
     /// assert_eq!(Str::rsplit_checked(s, 0), Some(""));
     /// assert_eq!(Str::rsplit_checked(s, 3), Some("ld!"));
-    /// assert!(Str::rsplit_checked(s, 5).is_none()); // attempts to split `ø`
+    /// assert!(Str::rsplit_checked(s, 5).is_none()); // attempt to split `ø`
     /// assert_eq!(Str::rsplit_checked(s, 20), Some("Hellø wørld!"));
     /// ```
     #[must_use] #[inline(always)]
@@ -138,7 +138,7 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Str, StringU8};
-    /// let mut s = StringU8::<12>::with("Hello world!").unwrap();
+    /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
     /// assert_eq!(&*Str::rsplit_mut(&mut s, 0), "");
     /// assert_eq!(&*Str::rsplit_mut(&mut s, 3), "ld!");
     /// assert_eq!(&*Str::rsplit_mut(&mut s, 20), "Hello world!");
@@ -155,10 +155,10 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Cmp, Str, StringU8};
-    /// let mut s = StringU8::<16>::with("Hellø wørld!").unwrap();
+    /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
     /// assert!(Str::rsplit_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
     /// assert!(Str::rsplit_mut_checked(&mut s, 3).is_some_and(|s| &*s == "ld!"));
-    /// assert!(Str::rsplit_mut_checked(&mut s, 5).is_none()); // attempts to split `ø`
+    /// assert!(Str::rsplit_mut_checked(&mut s, 5).is_none()); // attempt to split `ø`
     /// assert!(Str::rsplit_mut_checked(&mut s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
     /// ```
     #[must_use] #[inline(always)]
@@ -213,7 +213,7 @@ impl Str {
     /// assert_eq!(Str::msplit_left_checked(s, 0), Some(""));
     /// assert_eq!(Str::msplit_left_checked(s, 1), Some(" "));
     /// assert_eq!(Str::msplit_left_checked(s, 2), Some(" w"));
-    /// assert_eq!(Str::msplit_left_checked(s, 3), None); // attempts to split ø
+    /// assert_eq!(Str::msplit_left_checked(s, 3), None); // attempt to split ø
     /// assert_eq!(Str::msplit_left_checked(s, 4), None); // "
     /// assert_eq!(Str::msplit_left_checked(s, 5), None); // "
     /// assert_eq!(Str::msplit_left_checked(s, 6), Some("ø wø"));
@@ -241,7 +241,7 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Str, StringU8};
-    /// let mut s = StringU8::<12>::with("Hello world!").unwrap();
+    /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
     /// assert_eq!(&*Str::msplit_left_mut(&mut s, 0), "");
     /// assert_eq!(&*Str::msplit_left_mut(&mut s, 1), " ");
     /// assert_eq!(&*Str::msplit_left_mut(&mut s, 2), " w");
@@ -270,11 +270,11 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Str, StringU8};
-    /// let mut s = StringU8::<14>::with("Hellø wørld!").unwrap();
+    /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();
     /// assert!(Str::msplit_left_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
     /// assert!(Str::msplit_left_mut_checked(&mut s, 1).is_some_and(|s| &*s == " "));
     /// assert!(Str::msplit_left_mut_checked(&mut s, 2).is_some_and(|s| &*s == " w"));
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 3).is_none()); // attempts to split ø
+    /// assert!(Str::msplit_left_mut_checked(&mut s, 3).is_none()); // attempt to split ø
     /// assert!(Str::msplit_left_mut_checked(&mut s, 4).is_none()); // "
     /// assert!(Str::msplit_left_mut_checked(&mut s, 5).is_none()); // "
     /// assert!(Str::msplit_left_mut_checked(&mut s, 6).is_some_and(|s| &*s == "ø wø"));
@@ -337,7 +337,7 @@ impl Str {
     /// assert_eq!(Str::msplit_right_checked(s, 0), Some(""));
     /// assert_eq!(Str::msplit_right_checked(s, 1), Some("w"));
     /// assert_eq!(Str::msplit_right_checked(s, 2), Some(" w"));
-    /// assert_eq!(Str::msplit_right_checked(s, 3), None); // attempts to split ø
+    /// assert_eq!(Str::msplit_right_checked(s, 3), None); // attempt to split ø
     /// assert_eq!(Str::msplit_right_checked(s, 4), None); // "
     /// assert_eq!(Str::msplit_right_checked(s, 5), None); // "
     /// assert_eq!(Str::msplit_right_checked(s, 6), Some("ø wø"));
@@ -367,7 +367,7 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Str, StringU8};
-    /// let mut s = StringU8::<12>::with("Hello world!").unwrap();
+    /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
     /// assert_eq!(&*Str::msplit_right_mut(&mut s, 0), "");
     /// assert_eq!(&*Str::msplit_right_mut(&mut s, 1), "w");
     /// assert_eq!(&*Str::msplit_right_mut(&mut s, 2), " w");
@@ -396,11 +396,11 @@ impl Str {
     /// # Example
     /// ```
     /// # use devela_base_core::{Str, StringU8};
-    /// let mut s = StringU8::<14>::with("Hellø wørld!").unwrap();
+    /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();
     /// assert!(Str::msplit_right_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
     /// assert!(Str::msplit_right_mut_checked(&mut s, 1).is_some_and(|s| &*s == "w"));
     /// assert!(Str::msplit_right_mut_checked(&mut s, 2).is_some_and(|s| &*s == " w"));
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 3).is_none()); // attempts to split ø
+    /// assert!(Str::msplit_right_mut_checked(&mut s, 3).is_none()); // attempt to split ø
     /// assert!(Str::msplit_right_mut_checked(&mut s, 4).is_none()); // "
     /// assert!(Str::msplit_right_mut_checked(&mut s, 5).is_none()); // "
     /// assert!(Str::msplit_right_mut_checked(&mut s, 6).is_some_and(|s| &*s == "ø wø"));
