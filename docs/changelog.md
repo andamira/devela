@@ -238,6 +238,7 @@ Many feature gates are removed in order to make most features make always availa
 ### char
 - new `char7` methods: `to_byte`, `to_str`.
 - update `Char`:
+  - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
   - make it a tuple struct with a single a generic parameter.
   - add methods: `decode_surrogate_pair`, `is_surrogate*`.
