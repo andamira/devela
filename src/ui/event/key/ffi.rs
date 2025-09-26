@@ -318,7 +318,7 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                is![Char(c).is_7bit(); return (Char(c).code_to_ascii_str_unchecked(), L::Standard)];
+                is![Char(c).is_7bit(); return (Char(c).to_ascii_str_unchecked(), L::Standard)];
                 ("Unknown", L::Standard)
             },
             K::Unknown => ("Unknown", L::Standard),
@@ -374,7 +374,7 @@ impl KeyFfi {
                         }
                     }
                     // Handle single UTF-8 characters (only meaningful for semantic keys)
-                    let (code, _) = Char(kbytes).utf8_bytes_to_code_unchecked(0);
+                    let (code, _) = Char(kbytes).to_code_unchecked(0);
                     return Some(K::Char(code));
                 }
                 None
@@ -427,10 +427,10 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                is![Char(c).is_7bit(); return (Char(c).code_to_ascii_str_unchecked(), L::Standard)];
+                is![Char(c).is_7bit(); return (Char(c).to_ascii_str_unchecked(), L::Standard)];
                 ("Unknown", L::Standard)
                 // IMPROVE using a static atomic buffer
-                // (Char(c).code_to_utf8_str_unchecked(), L::Standard)
+                // (Char(c).to_utf8_str_unchecked(), L::Standard)
             },
             K::Unknown => ("Unknown", L::Standard),
         }

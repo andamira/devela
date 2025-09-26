@@ -149,7 +149,7 @@ macro_rules! impl_str_u {
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = Char(c).to_utf8_bytes();
-                new.len = Char(bytes[0]).utf8_len() as $t;
+                new.len = Char(bytes[0]).utf8_len_unchecked() as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
@@ -181,7 +181,7 @@ macro_rules! impl_str_u {
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
-                new.len = Char(bytes[0]).utf8_len() as $t;
+                new.len = Char(bytes[0]).utf8_len_unchecked() as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 Ok(new)
@@ -197,7 +197,7 @@ macro_rules! impl_str_u {
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
-                new.len = Char(bytes[0]).utf8_len() as $t;
+                new.len = Char(bytes[0]).utf8_len_unchecked() as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }

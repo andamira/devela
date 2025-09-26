@@ -7,7 +7,7 @@ use crate::{ASCII_TABLE, Char, is, unwrap};
 impl Char<char> {
     /// Returns the number of bytes needed to encode the given `char` as UTF-8.
     ///
-    /// See also `Char::<u32>`[`code_len_utf8`][Char::<u32>::code_len_utf8].
+    /// See also `Char::<u32>`[`len_utf8`][Char::<u32>::len_utf8].
     #[must_use]
     pub const fn len_utf8(self) -> usize {
         match self.0 as u32 { 0..0x80 => 1, 0x80..0x800 => 2, 0x800..0x10_000 => 3, _ => 4 }
@@ -20,7 +20,7 @@ impl Char<char> {
     /// See also [`char::encode_utf8`].
     #[must_use]
     pub const fn to_utf8_bytes(self) -> [u8; 4] {
-        Char(self.0 as u32).code_to_utf8_bytes_unchecked()
+        Char(self.0 as u32).to_utf8_bytes_unchecked()
     }
 
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.

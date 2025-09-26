@@ -23,15 +23,15 @@ impl Char<u32> {
     ///
     /// Returns `None` if it's not a valid Unicode scalar.
     #[must_use]
-    pub const fn code_len_utf8(self) -> Option<usize> {
-        if self.is_valid() { Some(self.code_len_utf8_unchecked()) } else { None }
+    pub const fn len_utf8(self) -> Option<usize> {
+        if self.is_valid() { Some(self.len_utf8_unchecked()) } else { None }
     }
     /// Returns the UTF-8 byte length of the current code **without validation**.
     ///
     /// Assumes the code is a valid Unicode scalar.
     /// Use [`code_len_utf8`][Self::code_len_utf8] for a checked version.
     #[must_use]
-    pub const fn code_len_utf8_unchecked(self) -> usize {
+    pub const fn len_utf8_unchecked(self) -> usize {
         match self.0 {
             0x00_0000..=0x00_007F => 1,
             0x00_0080..=0x00_07FF => 2,
@@ -90,7 +90,7 @@ impl Char<u32> {
 
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
-    pub const fn code_to_ascii_str(self) -> &'static str {
+    pub const fn to_ascii_str(self) -> &'static str {
         if self.is_7bit() { ASCII_TABLE[self.0 as usize] } else { "" }
     }
     /// Returns the ASCII representation as a `&'static str`, or panics if non-ASCII.
@@ -98,7 +98,7 @@ impl Char<u32> {
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use]
-    pub const fn code_to_ascii_str_unchecked(self) -> &'static str { ASCII_TABLE[self.0 as usize] }
+    pub const fn to_ascii_str_unchecked(self) -> &'static str { ASCII_TABLE[self.0 as usize] }
 
     /// Converts the Unicode scalar code to a UTF-8 encoded byte sequence.
     ///
@@ -106,8 +106,8 @@ impl Char<u32> {
     /// The result is always a `[u8; 4]` array, with unused bytes set to `0`.
     ///
     /// See also [`char::encode_utf8`].
-    pub const fn code_to_utf8_bytes(self) -> Option<[u8; 4]> {
-        if self.is_valid() { Some(self.code_to_utf8_bytes_unchecked()) } else { None }
+    pub const fn to_utf8_bytes(self) -> Option<[u8; 4]> {
+        if self.is_valid() { Some(self.to_utf8_bytes_unchecked()) } else { None }
     }
 
     /// Converts the Unicode scalar code to a UTF-8 encoded byte sequence **without validation**.
@@ -115,10 +115,10 @@ impl Char<u32> {
     /// Assumes the code is a valid Unicode scalar.
     /// Always returns a `[u8; 4]` array, with unused bytes set to `0`.
     ///
-    /// See also [`Char::code_to_utf8_bytes`] for a checked version.
+    /// See also [`Char::to_utf8_bytes`] for a checked version.
     #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
-    pub const fn code_to_utf8_bytes_unchecked(self) -> [u8; 4] {
+    pub const fn to_utf8_bytes_unchecked(self) -> [u8; 4] {
         let code = self.0;
         match code {
             // From 0x0000 to 0x007F:

@@ -5,6 +5,31 @@ use crate::{Char, unwrap};
 /// # Methods over `u8`.
 #[rustfmt::skip]
 impl Char<u8> {
+    /// Returns the expected UTF-8 byte length based on the given first byte, or `None` if invalid.
+    ///
+    /// This function detects invalid UTF-8 leading bytes and ensures
+    /// they fall within valid Unicode scalar boundaries.
+    ///
+    /// - Returns `Some(len)` for valid leading bytes.
+    /// - Returns `None` for invalid first bytes that cannot start a UTF-8 sequence.
+    ///
+    /// ### Stricter Handling
+    /// - Rejects overlong sequences (C0, C1).
+    /// - Enforces the valid UTF-8 upper bound (max `F4`).
+    /// - Safer for processing untrusted input where malformed UTF-8 must be detected.
+    ///
+    /// For a simpler, naive length-only function, see [`utf8_len`][Self::utf8_len].
+    #[must_use]
+    pub const fn utf8_len(self) -> Option<usize> {
+        match self.0 {
+            0x00..=0x7F => Some(1),
+            0xC2..=0xDF => Some(2),
+            0xE0..=0xEF => Some(3),
+            0xF0..=0xF4 => Some(4),
+            _ => None,
+        }
+    }
+
     /// Returns the expected UTF-8 byte length based on the given first byte.
     ///
     /// This function does **not** validate UTF-8 but determines how many bytes
@@ -19,39 +44,14 @@ impl Char<u8> {
     /// - If used on malformed UTF-8, it may suggest a length longer than the actual valid sequence.
     /// - Always use in conjunction with proper UTF-8 validation if handling untrusted input.
     ///
-    /// For a stricter check, see [`utf8_len_checked`][Self::utf8_len_checked].
-    pub const fn utf8_len(self) -> usize {
+    /// For a stricter check, see [`utf8_len`][Self::utf8_len].
+    pub const fn utf8_len_unchecked(self) -> usize {
         match self.0 {
             0x00..=0x7F => 1, // ASCII (1 byte)
             0xC0..=0xDF => 2, // 2-byte sequence
             0xE0..=0xEF => 3, // 3-byte sequence
             0xF0..=0xF7 => 4, // 4-byte sequence
             _ => 0,           // Invalid leading byte
-        }
-    }
-
-    /// Returns the expected UTF-8 byte length based on the given first byte, or `None` if invalid.
-    ///
-    /// This function detects invalid UTF-8 leading bytes and ensures
-    /// they fall within valid Unicode scalar boundaries.
-    ///
-    /// - Returns `Some(len)` for valid leading bytes.
-    /// - Returns `None` for invalid first bytes that cannot start a UTF-8 sequence.
-    ///
-    /// ### Stricter Handling
-    /// - Rejects overlong sequences (C0, C1).
-    /// - Enforces the valid UTF-8 upper bound (max `F4`).
-    /// - Safer for processing untrusted input where malformed UTF-8 must be detected.
-    ///
-    /// For a simpler length-only function, see [`utf8_len`][Self::utf8_len].
-    #[must_use]
-    pub const fn utf8_len_checked(self) -> Option<usize> {
-        match self.0 {
-            0x00..=0x7F => Some(1),
-            0xC2..=0xDF => Some(2),
-            0xE0..=0xEF => Some(3),
-            0xF0..=0xF4 => Some(4),
-            _ => None,
         }
     }
 }
@@ -72,19 +72,19 @@ impl Char<&[u8]> {
     /// # Example
     /// ```
     /// # use devela_base_core::Char;
-    /// assert_eq!(Char("Ħ".as_bytes()).utf8_bytes_to_code(0), Some((u32::from('Ħ'), 2)));
+    /// assert_eq!(Char("Ħ".as_bytes()).to_code(0), Some((u32::from('Ħ'), 2)));
     ///
     /// let invalid = b"\x80"; // Invalid leading byte
-    /// assert_eq!(Char(invalid).utf8_bytes_to_code(0), None);
+    /// assert_eq!(Char(invalid).to_code(0), None);
     /// ```
     #[must_use]
-    pub const fn utf8_bytes_to_code(self, index: usize) -> Option<(u32, usize)> {
+    pub const fn to_code(self, index: usize) -> Option<(u32, usize)> {
         let bytes = self.0;
         if index >= bytes.len() { return None; } // out of bounds
         let first = bytes[index];
-        let len = unwrap![some? Char(first).utf8_len_checked()]; // invalid leading byte?
+        let len = unwrap![some? Char(first).utf8_len()]; // invalid leading byte?
         if index + len > bytes.len() { return None; } // not enough bytes
-        Some(Char(bytes).utf8_bytes_to_code_unchecked(index))
+        Some(Char(bytes).to_code_unchecked(index))
     }
 
     /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
@@ -94,7 +94,7 @@ impl Char<&[u8]> {
     ///
     /// Assumes `bytes[index..]` contains a valid UTF-8 sequence.
     #[must_use]
-    pub const fn utf8_bytes_to_code_unchecked(self, index: usize) -> (u32, usize) {
+    pub const fn to_code_unchecked(self, index: usize) -> (u32, usize) {
         let bytes = self.0;
         let first = bytes[index];
         match first {
@@ -123,10 +123,10 @@ impl Char<&[u8]> {
 }
 /// Methods over a byte array, referring to a byte slice.
 impl<const N: usize> Char<&[u8; N]> {
-    /// See [utf8_bytes_to_code()][Char::<&[u8]>::utf8_bytes_to_code].
+    /// See [to_code()][Char::<&[u8]>::to_code].
     #[inline(always)] // eliminate the wrapper entirely
-    pub const fn utf8_bytes_to_code(self, index: usize) -> Option<(u32, usize)> {
+    pub const fn to_code(self, index: usize) -> Option<(u32, usize)> {
         let bytes: &[u8] = self.0;
-        Char(bytes).utf8_bytes_to_code(index)
+        Char(bytes).to_code(index)
     }
 }

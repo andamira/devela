@@ -242,6 +242,9 @@ Many feature gates are removed in order to make most features make always availa
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
   - make it a tuple struct with a single a generic parameter.
   - add methods: `decode_surrogate_pair`, `is_surrogate*`.
+  - rename `utf8_len` to `utf8_len_unchecked`, `utf8_len_checked` to `utf8_len`.
+  - remove `utf8_bytes_` prefix from `Char<&[u8]>` methods…
+  - remove `code_` prefix from `Char<u32>` methods…
   - modify all methods to take `self`.
   - return lenghts as usize.
 
