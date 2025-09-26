@@ -20,6 +20,8 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 /// A 7-bit [unicode scalar][scalar], limited to [basic latin][0w] subset
 /// (ASCII).
 ///
+#[doc = crate::_doc!(location: "text/char")]
+///
 /// `Option<char7>` is the same size as `char7` or `char8` (1 byte).
 ///
 /// See also: [`char8`], [`char16`], [`char`][crate::char].
@@ -33,6 +35,8 @@ pub struct char7(pub(super) NonExtremeU8);
 #[doc = crate::_TAG_TEXT!()]
 /// An 8-bit [unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
+///
+#[doc = crate::_doc!(location: "text/char")]
 ///
 /// This is the only scalar type without memory layout optimization
 /// because each possible value is a valid unicode scalar. Therefore
@@ -50,6 +54,8 @@ pub struct char8(pub(super) u8);
 #[doc = crate::_TAG_TEXT!()]
 /// A 16-bit [unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
+///
+#[doc = crate::_doc!(location: "text/char")]
 ///
 /// It can represent every scalar from the [Basic Multilingual Plane][0w] (BMP),
 /// the first and most important plane in the Unicode standard (also known as

@@ -6,6 +6,8 @@
 #[doc = crate::_TAG_TEXT!()]
 /// Common trait for unicode scalar types.
 ///
+#[doc = crate::_doc!(location: "text/char")]
+///
 /// It's implemented for: [`char7`], [`char8`], [`char16`],
 /// and [`char`][crate::char].
 pub trait UnicodeScalar {

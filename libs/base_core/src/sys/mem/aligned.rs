@@ -12,6 +12,8 @@ impl<Candidate, Requirement> Sealed for (Candidate, Requirement) {}
 
 /// Marker trait to verify memory alignment between two types.
 ///
+#[doc = crate::_doc!(location: "sys/mem")]
+///
 /// This trait ensures that a value of the `Candidate` type can be safely placed
 /// into a storage medium designed for the `Requirement` type, adhering to
 /// alignment requirements.

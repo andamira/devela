@@ -25,6 +25,8 @@ mod tests;
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Slice-related operations, all of them *const*.
 ///
+#[doc = crate::_doc!(location: "sys/mem")]
+///
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
 ///

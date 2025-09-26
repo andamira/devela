@@ -19,6 +19,8 @@ use ::core::ptr::{
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Pointer-related operations.
 ///
+#[doc = crate::_doc!(location: "sys/mem")]
+///
 /// See also [`Mem`][crate::Mem], [`Slice`][crate::Slice].
 #[derive(Debug)]
 pub struct Ptr;

@@ -5,6 +5,8 @@
 
 /// Swaps two mutable variables in a *compile-time* friendly manner.
 ///
+#[doc = crate::_doc!(location: "sys/mem")]
+///
 /// For that it uses either:
 /// 1. a temporary variable.
 /// 3. [`Mem::swap`][crate::Mem::swap] over their respective mutable references.

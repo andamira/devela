@@ -14,6 +14,8 @@ use crate::is;
 // #[doc = crate::_TAG_SEARCH!()] // TODO
 /// A utility struct for searching bytes in slices.
 ///
+#[doc = crate::_doc!(location: "text/parse")]
+///
 /// # Features
 /// - Supports efficient search for bytes with `dep_memchr` enabled.
 /// - Provides fallback naive implementations otherwise.

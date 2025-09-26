@@ -19,6 +19,8 @@ const NUL_CHAR: char = '\0';
 #[doc = crate::_TAG_TEXT!()]
 /// A UTF-8 string with up to [`u8::MAX`] bytes, excluding nul chars
 ///
+#[doc = crate::_doc!(location: "text/str")]
+///
 /// Internally, the first 0 byte in the array indicates the end of the string.
 ///
 /// ## Methods

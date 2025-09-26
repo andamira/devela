@@ -4,6 +4,8 @@
 //
 
 /// ASCII lookup table for fast UTF-8 encoding.
+///
+#[doc = crate::_doc!(location: "text")]
 #[rustfmt::skip]
 pub static ASCII_TABLE: [&str; 128] = [
     "\0", "\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07", "\x08", "\t", "\n",

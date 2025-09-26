@@ -14,6 +14,8 @@ mod tests;
 #[doc = crate::_TAG_NUM!()]
 /// Converts a number into a string representation, storing it into a byte slice.
 ///
+#[doc = crate::_doc!(location: "text/fmt")]
+///
 /// # Features
 /// It makes use of the `unsafe_str` feature for faster unchecked conversion of
 /// the resulting bytes to a string slice, and of the `dep_simdutf8` dependency.

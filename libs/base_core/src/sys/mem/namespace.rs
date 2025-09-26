@@ -17,6 +17,8 @@ use ::core::{
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Memory-related operations.
 ///
+#[doc = crate::_doc!(location: "sys/mem")]
+///
 /// See also: [`ExtMem`][crate::ExtMem], [`MemAligned`][crate::MemAligned]
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
 #[derive(Debug)]
