@@ -236,6 +236,7 @@ Many feature gates are removed in order to make most features make always availa
 - make `ASCII_TABLE` public.
 
 ### char
+- make `text::char` module public.
 - new `char7` methods: `to_byte`, `to_str`.
 - update `Char`:
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.

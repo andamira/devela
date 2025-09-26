@@ -9,8 +9,6 @@
 // safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
-#[allow(hidden_glob_reexports, reason = "re-exported `char`")]
-mod char;
 pub mod errors {
     //! Text-related errors.
     #[doc(inline)]
@@ -18,6 +16,8 @@ pub mod errors {
 }
 mod grapheme; // Grapheme
 
+#[allow(hidden_glob_reexports, reason = "re-exported `char`")]
+pub mod char;
 pub mod fmt;
 pub mod parse;
 pub mod str;
@@ -29,7 +29,6 @@ pub mod str;
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
-            char::_all::*,
             grapheme::_all::*,
         };
 
@@ -44,6 +43,7 @@ crate::structural_mods! { // _mods, _pub_mods
         #[doc(inline)]
         pub use super::errors::*;
         pub use super::{
+            char::_all::*,
             fmt::_all::*,
             parse::_all::*,
             str::_all::*,
