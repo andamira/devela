@@ -12,8 +12,8 @@ impl UnicodeScalar for char {
 
     /* encode */
 
-    fn byte_len(self) -> usize {
-        Char(self as u32).byte_len()
+    fn len_bytes(self) -> usize {
+        Char(self as u32).len_bytes()
     }
     fn len_utf8(self) -> usize {
         self.len_utf8()

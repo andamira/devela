@@ -16,15 +16,11 @@ impl char16 {
         char16::new_unchecked(c as u32 as u16)
     }
 
-    // useful because Option::<T>::unwrap is not yet stable as const fn
     #[must_use]
     const fn new_unchecked(value: u16) -> char16 {
         #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
-        if let Some(c) = NonSurrogateU16::new(value) {
-            char16(c)
-        } else {
-            unreachable![]
-        }
+        return Self(crate::unwrap![some NonSurrogateU16::new(value)]);
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
         unsafe {
             char16(NonSurrogateU16::new_unchecked(value))
@@ -68,7 +64,7 @@ impl char16 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 16 bits.
     pub const fn try_from_char(c: char) -> Result<char16, DataOverflow> {
-        if Char(c as u32).byte_len() <= 2 {
+        if Char(c as u32).len_bytes() <= 2 {
             Ok(char16::new_unchecked(c as u32 as u16))
         } else {
             Err(DataOverflow(Some(c as u32 as usize)))
@@ -151,7 +147,7 @@ impl char16 {
             // the UTF-8 encoding is 110xxxxx 10xxxxxx,
             // where xxxxx and xxxxxx are the bits of the scalar value.
             0x0080..=0x07FF => {
-                let y = 0b10_000000 | (0b0011_1111 & (c as u8));
+                let y = 0b10_000000 | (Char::<u8>::CONT_MASK & (c as u8));
                 let x = 0b110_00000 | ((c >> 6) as u8);
                 [x, y, 0]
             }
@@ -159,8 +155,8 @@ impl char16 {
             // From from 0x0800 to 0xFFFF:
             // the UTF-8 encoding is 1110xxxx 10xxxxxx 10xxxxxx.
             0x0800..=0xFFFF => {
-                let z = 0b10_000000 | (0b0011_1111 & (c as u8));
-                let y = 0b10_000000 | ((c >> 6) & 0b0011_1111) as u8;
+                let z = 0b10_000000 | (Char::<u8>::CONT_MASK & (c as u8));
+                let y = 0b10_000000 | ((c >> 6) & Char::<u16>::CONT_MASK) as u8;
                 let x = 0b1110_0000 | ((c >> 12) as u8);
                 [x, y, z]
             }

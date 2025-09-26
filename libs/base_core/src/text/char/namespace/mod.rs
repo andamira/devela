@@ -3,11 +3,8 @@
 //! Defines the [`Char`] namespace.
 //
 // TOC
-// - methods over char
-// - methods over u32
+// - struct Char
 // - methods over u16
-// - methods over u8
-// - methods over &[u8]
 
 #[cfg(test)]
 mod tests;
@@ -34,6 +31,13 @@ pub struct Char<T>(pub T);
 /// # Methods over `u16`.
 #[rustfmt::skip]
 impl Char<u16> {
+    /* private helpers */
+
+    /// Bitmask for extracting the 6-bit payload from a UTF-8 continuation byte (`10xxxxxx`).
+    pub(crate) const CONT_MASK: u16 = 0b0011_1111;
+
+    /* public methods */
+
     #[must_use] #[inline(always)]
     /// Returns `true` if the given unicode scalar code is a [surrogate code point][0].
     ///

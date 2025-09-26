@@ -1,4 +1,7 @@
 // devela_base_core::text::char::namespace::char
+//
+// TOC
+// - methods over char
 
 use crate::{ASCII_TABLE, Char, is, unwrap};
 

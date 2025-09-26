@@ -39,7 +39,7 @@ impl char8 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
     pub const fn try_from_char16(c: char16) -> Result<char8, DataOverflow> {
-        if Char(c.to_u32()).byte_len() == 1 {
+        if Char(c.to_u32()).len_bytes() == 1 {
             Ok(char8(c.to_u32() as u8))
         } else {
             Err(DataOverflow(Some(c.to_u32() as usize)))
@@ -50,7 +50,7 @@ impl char8 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
     pub const fn try_from_char(c: char) -> Result<char8, DataOverflow> {
-        if Char(c as u32).byte_len() == 1 {
+        if Char(c as u32).len_bytes() == 1 {
             Ok(char8(c as u32 as u8))
         } else {
             Err(DataOverflow(Some(c as u32 as usize)))
@@ -124,7 +124,7 @@ impl char8 {
             // the UTF-8 encoding is 110xxxxx 10xxxxxx,
             // where xxxxx and xxxxxx are the bits of the scalar value.
             0x0080.. => {
-                let y = 0b10_000000 | (0b0011_1111 & c);
+                let y = 0b10_000000 | (Char::<u8>::CONT_MASK & c);
                 let x = 0b110_00000 | (c >> 6);
                 [x, y]
             }

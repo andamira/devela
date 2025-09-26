@@ -18,7 +18,7 @@ pub trait UnicodeScalar {
 
     /// Returns the number of bytes needed to represent the scalar value.
     #[must_use]
-    fn byte_len(self) -> usize;
+    fn len_bytes(self) -> usize;
 
     /// Returns the number of bytes needed to encode in UTF-8.
     #[must_use]
@@ -143,7 +143,7 @@ pub trait UnicodeScalar {
     #[must_use]
     fn is_lowercase(self) -> bool;
 
-    /// Returns `true` if this unicode scalar has the `Lowercase` property.
+    /// Returns `true` if this unicode scalar has the `Uppercase` property.
     #[must_use]
     fn is_uppercase(self) -> bool;
 

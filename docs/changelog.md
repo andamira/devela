@@ -241,12 +241,16 @@ Many feature gates are removed in order to make most features make always availa
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
   - make it a tuple struct with a single a generic parameter.
-  - add methods: `decode_surrogate_pair`, `is_surrogate*`.
+  - add methods: `decode_surrogate_pair`, `is_surrogate*`, `has_valid_continuation`, `to_char`, `to_char_lenient`, `to_char_unchecked`, `utf8_len_match`, `utf8_len_match_naive`.
   - rename `utf8_len` to `utf8_len_unchecked`, `utf8_len_checked` to `utf8_len`.
   - remove `utf8_bytes_` prefix from `Char<&[u8]>` methods…
-  - remove `code_` prefix from `Char<u32>` methods…
+  - add private consts: `CONT_MASK` `UTF8_CHAR_LEN`.
+  - remove `code_` prefix from `Char<u32>` methods.
+  - rename method `byte_len` to `len_bytes`.
   - modify all methods to take `self`.
   - return lenghts as usize.
+- update `UnicodeScalar`:
+  - rename method `byte_len` to `len_bytes`.
 
 ### fmt
 - move to [base]:

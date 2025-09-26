@@ -38,7 +38,7 @@ macro_rules! impl_char {
 
             /* encode */
 
-            fn byte_len(self) -> usize { self.byte_len() }
+            fn len_bytes(self) -> usize { self.len_bytes() }
             fn len_utf8(self) -> usize { self.len_utf8() }
             fn len_utf16(self) -> usize { self.len_utf16() }
             fn encode_utf8(self, dst: &mut [u8]) -> &mut str {
@@ -83,7 +83,7 @@ macro_rules! impl_char {
 
             /// Returns the number of bytes needed to represent the scalar value.
             #[must_use]
-            pub const fn byte_len(self) -> usize { Char(self.to_u32()).byte_len() }
+            pub const fn len_bytes(self) -> usize { Char(self.to_u32()).len_bytes() }
 
             /// Returns the number of bytes needed to encode in UTF-8.
             #[must_use]

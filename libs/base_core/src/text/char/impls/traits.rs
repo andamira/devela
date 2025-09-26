@@ -17,10 +17,8 @@ macro_rules! char_core_impls {
             char16 + Self(unwrap![some NonSurrogateU16::new(0)])
         ];
     };
-    ($( $name:ident + $default:expr ),+ ) => {
-        $(
-            char_core_impls![@$name + $default];
-        )+
+    ($( $name:ident + $default:expr ),+ $(,)?) => {
+        $( char_core_impls![@$name + $default]; )+
     };
     (@$name:ident + $default:expr) => { paste! {
         impl Default for super::$name {

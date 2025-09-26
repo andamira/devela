@@ -12,10 +12,10 @@ fn char_encodings() {
     let c3 = '\u{0020AC}'; // €
     let c4 = '\u{01D160}'; // 𝅘𝅥𝅮
 
-    assert![c1.byte_len() == 1 && c1.len_utf8() == 1 && c1.len_utf16() == 1];
-    assert![c2.byte_len() == 1 && c2.len_utf8() == 2 && c2.len_utf16() == 1];
-    assert![c3.byte_len() == 2 && c3.len_utf8() == 3 && c3.len_utf16() == 1];
-    assert![c4.byte_len() == 3 && c4.len_utf8() == 4 && c4.len_utf16() == 2];
+    assert![c1.len_bytes() == 1 && c1.len_utf8() == 1 && c1.len_utf16() == 1];
+    assert![c2.len_bytes() == 1 && c2.len_utf8() == 2 && c2.len_utf16() == 1];
+    assert![c3.len_bytes() == 2 && c3.len_utf8() == 3 && c3.len_utf16() == 1];
+    assert![c4.len_bytes() == 3 && c4.len_utf8() == 4 && c4.len_utf16() == 2];
 
     assert![size(&c1) == 4 && size(&c2) == 4 && size(&c3) == 4 && size(&c4) == 4];
 
@@ -105,4 +105,22 @@ fn char_to_utf8_bytes() {
             );
         }
     }
+}
+
+#[test]
+fn bytes_to_code() {
+    // Invalid continuation bytes
+    let invalid_cont = b"\xE0\x41\x80"; // Second byte not continuation
+    assert_eq!(Char(invalid_cont).to_code(0), None); // fails validate_continuation_bytes()
+
+    // Overlong encodings (already blocked by LUT)
+    let overlong = b"\xC0\x80"; // overlong NULL
+    assert_eq!(Char(overlong).to_code(0), None); // LUT returns 0 width
+
+    // Surrogates
+    let surrogate = b"\xED\xA0\x80"; // U+D800
+    assert_eq!(Char(surrogate).to_code(0), None); // fails is_valid()
+
+    let out_of_range = b"\xF4\x90\x80\x80"; // U+110000 (above max)
+    assert_eq!(Char(out_of_range).to_code(0), None); // fails is_valid()
 }
