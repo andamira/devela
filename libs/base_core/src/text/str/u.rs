@@ -1,4 +1,4 @@
-// devela_base_core::text::string_u
+// devela_base_core::text::u
 //
 //! `String` backed by an array.
 //

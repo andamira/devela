@@ -1,4 +1,4 @@
-// devela_base_core::text::str::namespace::range
+// devela_base_core::text::str::str::range
 //
 //! Implements range methods for [`Str`].
 //

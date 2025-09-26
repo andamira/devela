@@ -1,4 +1,4 @@
-// devela_base_core::text::str::namespace::split
+// devela_base_core::text::str::str::split
 //
 //! Implements split methods for [`Str`].
 //

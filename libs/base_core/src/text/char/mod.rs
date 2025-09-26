@@ -3,9 +3,10 @@
 #![doc = crate::_DOC_TEXT_CHAR!()]
 //
 
-mod definitions; // UnicodeScalar, char7, char8, char16
+mod definitions; // char7, char8, char16
 mod namespace; // Char
 mod reexports;
+mod unicode_scalar; // UnicodeScalar
 
 // without re-exports
 mod impls;
@@ -18,6 +19,7 @@ crate::structural_mods! { // _mods
             definitions::*,
             namespace::*,
             reexports::*,
+            unicode_scalar::*,
         };
     }
 }

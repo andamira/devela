@@ -1,4 +1,4 @@
-// devela::text::char::impls::char7
+// devela::text::char::impls::c7
 //
 //!
 //

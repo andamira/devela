@@ -1,4 +1,4 @@
-// devela_base_core::text::str::namespace
+// devela_base_core::text::str::str
 //
 //! [`Str`] namespace.
 //

@@ -1,4 +1,4 @@
-// devela::text::char::impls::char
+// devela::text::char::impls::c
 //
 //!
 //

@@ -3,10 +3,10 @@
 #![doc = crate::_DOC_TEXT_STR!()]
 //
 
-mod namespace; // Str
 mod reexports;
-mod string_nonul; // StringNonul
-mod string_u; // StringU8, StringU16, StringU32, StringUsize
+mod nonul; // StringNonul
+mod str; // Str
+mod u; // StringU8, StringU16, StringU32, StringUsize
 
 // WIPZONE
 // mod _wip_sixbit;
@@ -14,10 +14,10 @@ mod string_u; // StringU8, StringU16, StringU32, StringUsize
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            namespace::Str,
             reexports::*,
-            string_nonul::*,
-            string_u::*,
+            nonul::*,
+            str::Str,
+            u::*,
         };
         // WIPZONE
         // pub use super::_wip_sixbit::*;
