@@ -87,6 +87,16 @@ impl Char<u8> {
             _ => 0,           // invalid leading byte
         }
     }
+
+    /// Returns `true` if this byte is a valid starting point for a UTF-8 sequence.
+    ///
+    /// This checks if the byte is not a UTF-8 continuation byte (i.e., it's either
+    /// an ASCII character or a valid leading byte of a multi-byte sequence).
+    #[inline]
+    pub const fn is_utf8_boundary(self) -> bool {
+        // Equivalent to: b < 128 || b >= 192 (== not a continuation byte (0b10xxxxxx))
+        (self.0 as i8) >= -0x40
+    }
 }
 
 /// # Methods over `u8` slice.
@@ -220,8 +230,9 @@ impl Char<&[u8]> {
         let len = unwrap![some? Char(bytes[index]).utf8_len()]; // invalid leading byte
         if index + len > bytes.len() { return None; } // not enough bytes
         if !self.has_valid_continuation(index, len) { return None; } // malformed utf-8
+        if self.has_overlong_encoding(index, len) { return None; } // overlong encoding
         let (code, len) = Char(bytes).to_code_unchecked(index);
-        is![Char(code).is_valid(); Some((code, len)); None] // invalid code point
+        is![Char(code).is_valid(); Some((code, len)); None] // invalid unicode scalar
     }
 
     /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
@@ -257,12 +268,44 @@ impl Char<&[u8]> {
         (code, len)
     }
 
+    /// Returns `true` if the UTF-8 sequence starting at `index` is overlong encoded.
+    ///
+    /// This method only checks for overlong encodings, but not other UTF-8 validity rules.
+    /// It does not verify continuation byte patterns nor invalid code points.
+    ///
+    /// Overlong encodings use more bytes than necessary to represent a character,
+    /// which is invalid in well-formed UTF-8.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Char;
+    /// assert!(Char(b"\xE0\x80\x80").has_overlong_encoding(0, 3)); // overlong encoding
+    /// assert!(!Char(b"\xE0\xA0\x80").has_overlong_encoding(0, 3)); // valid 3-byte sequence
+    /// ```
+    #[rustfmt::skip]
+    pub const fn has_overlong_encoding(self, index: usize, len: usize) -> bool {
+        let bytes = self.0;
+        if index + len > bytes.len() { return false; }
+        let first = bytes[index];
+        match len {
+            2 => { first == 0xC0 || first == 0xC1 } // should've been 1: C0, C1 are always overlong
+            3 => { // E0 80..9F are overlong (should be 1-2 bytes)
+                if first == 0xE0 { let second = bytes[index + 1]; second < 0xA0 } else { false } }
+            4 => { // F0 80..8F are overlong (should be 1-3 bytes)
+                if first == 0xF0 { let second = bytes[index + 1]; second < 0x90 } else { false } }
+            _ => false, // 1-byte sequences can't be overlong
+        }
+    }
+
     /// Verifies that the continuation bytes following a UTF-8 leading byte are properly formatted.
     ///
     /// Each continuation byte must match the pattern `10xxxxxx` (i.e., have the high bits `0b10`).
     /// This ensures the byte sequence follows proper UTF-8 encoding rules.
     ///
-    /// # Examples
+    /// This method only verifies correct syntax, but not correct semantics.
+    /// It does not check for overlong encodings nor invalid code points.
+    ///
+    /// # Example
     /// ```
     /// # use devela_base_core::Char;
     /// // euro sign €
@@ -282,43 +325,60 @@ impl Char<&[u8]> {
             _ => false, // invalid length
         }
     }
+
+    /// Returns `true` if the byte at `index` is a valid starting point for a UTF-8 sequence.
+    ///
+    /// This checks if the byte is not a UTF-8 continuation byte (i.e., it's either
+    /// an ASCII character or a valid leading byte of a multi-byte sequence).
+    ///
+    /// Useful for safely starting UTF-8 decoding from an arbitrary position in a byte slice.
+    pub const fn is_utf8_boundary(self, index: usize) -> bool {
+        is![index >= self.0.len(); false; Char(self.0[index]).is_utf8_boundary()]
+    }
 }
 
 /// Methods over a byte array, referring to a byte slice.
-// (all wrapper methods are inlined away)
+#[rustfmt::skip] // Note: all wrapper methods are inlined away
 impl<const N: usize> Char<&[u8; N]> {
     /// A wrapper over [to_char()](#method.to_char).
     #[inline(always)]
     pub const fn to_char(self, index: usize) -> Option<(char, usize)> {
-        let bytes: &[u8] = self.0;
-        Char(bytes).to_char(index)
+        let bytes: &[u8] = self.0; Char(bytes).to_char(index)
     }
 
     /// A wrapper over [to_char_lenient()](#method.to_char_lenient).
     #[inline(always)]
     pub const fn to_char_lenient(self, index: usize) -> (char, usize) {
-        let bytes: &[u8] = self.0;
-        Char(bytes).to_char_lenient(index)
+        let bytes: &[u8] = self.0; Char(bytes).to_char_lenient(index)
     }
 
     /// A wrapper over [to_code()](#method.to_code).
     #[inline(always)]
     pub const fn to_code(self, index: usize) -> Option<(u32, usize)> {
-        let bytes: &[u8] = self.0;
-        Char(bytes).to_code(index)
+        let bytes: &[u8] = self.0; Char(bytes).to_code(index)
     }
 
     /// A wrapper over [to_code_unchecked()](#method.to_code_unchecked).
     #[inline(always)]
     pub const fn to_code_unchecked(self, index: usize) -> (u32, usize) {
-        let bytes: &[u8] = self.0;
-        Char(bytes).to_code_unchecked(index)
+        let bytes: &[u8] = self.0; Char(bytes).to_code_unchecked(index)
+    }
+
+    /// A wrapper over [has_overlong_encoding()](#method.has_overlong_encoding).
+    #[inline(always)]
+    pub const fn has_overlong_encoding(self, index: usize, len: usize) -> bool {
+        let bytes: &[u8] = self.0; Char(bytes).has_overlong_encoding(index, len)
     }
 
     /// A wrapper over [has_valid_continuation()](#method.has_valid_continuation).
     #[inline(always)]
     pub const fn has_valid_continuation(self, index: usize, len: usize) -> bool {
-        let bytes: &[u8] = self.0;
-        Char(bytes).has_valid_continuation(index, len)
+        let bytes: &[u8] = self.0; Char(bytes).has_valid_continuation(index, len)
+    }
+
+    /// A wrapper over [is_utf8_boundary()](#method.is_utf8_boundary).
+    #[inline(always)]
+    pub const fn is_utf8_boundary(self, index: usize) -> bool {
+        let bytes: &[u8] = self.0; Char(bytes).is_utf8_boundary(index)
     }
 }
