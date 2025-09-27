@@ -2,18 +2,16 @@
 //
 //! Defines the [`Slice`] namespace.
 //
+// TOC
+// - struct Slice
+// - macro slice!
+//
 // TODO:
 // - unchecked subslicing. (split)
 // - saturating subslicing.
 // - first_chunk_padded
 
-#[cfg(any(doc, unsafe··))]
-use crate::Ptr;
-use crate::is;
-use ::core::slice::{from_mut, from_ref};
-#[allow(unused_imports, reason = "unsafe feature-gated")]
-use core::slice::{from_raw_parts, from_raw_parts_mut};
-
+mod core;
 mod range;
 mod take;
 mod split;
@@ -100,143 +98,223 @@ mod tests;
 ///
 /// Additionally implements `eq()` methods for comparing primitives and slices of primitives.
 ///
-/// See also: [`ExtSlice`], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
+/// See also: [`slice!`], [`ExtSlice`], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
 #[doc = crate::doclink!(custom devela "[`ExtSlice`]" "sys/mem/trait.ExtSlice.html")]
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);
 
-/// # `core::slice` namespaced methods.
-impl<T> Slice<T> {
-    /// Copies all elements from `src` into `dst`.
-    ///
-    /// # Features
-    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed.
-    /// - Falls back to safe element-wise copy otherwise.
-    ///
-    /// # Panics
-    /// Panics if `src` and `dst` slices have different lengths.
-    // WAIT:1.87 [const_copy_from_slice](https://github.com/rust-lang/rust/issues/131415)
-    #[rustfmt::skip]
-    pub const fn copy_from_slice(dst: &mut [T], src: &[T]) where T: Copy {
-        if dst.len() != src.len() { panic!("`src` and `dst` slices have different lengths"); }
+/// Invokes [`Slice`] [range methods][Slice#range-api-methods-for-subslicing] using short notation.
+///
+#[doc = crate::_doc!(location: "sys/mem")]
+///
+/// # Syntax
+/// ```text
+/// (s = slice, l = lower bound, u = upper bound)
+///
+/// slice![s, l, ..= u]                  // Slice::range_inclusive(s, l, u)
+/// slice![s, l, .. u]                   // Slice::range(s, l, u)
+/// slice![s, l, ..]                     // Slice::range_from(s, l, u)
+/// slice![s, ..= u]                     // Slice::range_to_inclusive(s, l, u)
+/// slice![s, .. u]                      // Slice::range_to(s, l, u)
+///
+/// slice![checked s, l, ..= u]          // Slice::range_inclusive_checked(s, l, u)
+/// slice![checked s, l, .. u]           // Slice::range_checked(s, l, u)
+/// slice![checked s, l, ..]             // Slice::range_from_checked(s, l, u)
+/// slice![checked s, ..= u]             // Slice::range_to_inclusive_checked(s, l, u)
+/// slice![checked s, .. u]              // Slice::range_to_checked(s, l, u)
+///
+/// slice![unchecked s, l, ..= u]        // Slice::range_inclusive_unchecked(s, l, u)
+/// slice![unchecked s, l, .. u]         // Slice::range_unchecked(s, l, u)
+/// slice![unchecked s, l, ..]           // Slice::range_from_unchecked(s, l, u)
+/// slice![unchecked s, ..= u]           // Slice::range_to_inclusive_unchecked(s, l, u)
+/// slice![unchecked s, .. u]            // Slice::range_to_unchecked(s, l, u)
+///
+/// slice![mut s, l, ..= u]              // Slice::range_inclusive_mut(s, l, u)
+/// slice![mut s, l, .. u]               // Slice::range_mut(s, l, u)
+/// slice![mut s, l, ..]                 // Slice::range_from_mut(s, l, u)
+/// slice![mut s, ..= u]                 // Slice::range_to_inclusive_mut(s, l, u)
+/// slice![mut s, .. u]                  // Slice::range_to_mut(s, l, u)
+///
+/// slice![mut_checked s, l, ..= u]      // Slice::range_inclusive_mut_checked(s, l, u)
+/// slice![mut_checked s, l, .. u]       // Slice::range_mut_checked(s, l, u)
+/// slice![mut_checked s, l, ..]         // Slice::range_from_mut_checked(s, l, u)
+/// slice![mut_checked s, ..= u]         // Slice::range_to_inclusive_mut_checked(s, l, u)
+/// slice![mut_checked s, .. u]          // Slice::range_to_mut_checked(s, l, u)
+///
+/// slice![mut_unchecked s, l, ..= u]    // Slice::range_inclusive_mut_unchecked(s, l, u)
+/// slice![mut_unchecked s, l, .. u]     // Slice::range_mut_unchecked(s, l, u)
+/// slice![mut_unchecked s, l, ..]       // Slice::range_from_mut_unchecked(s, l, u)
+/// slice![mut_unchecked s, ..= u]       // Slice::range_to_inclusive_mut_unchecked(s, l, u)
+/// slice![mut_unchecked s, .. u]        // Slice::range_to_mut_unchecked(s, l, u)
+/// ```
+///
+/// # Notes
+/// - Commas are always required to separate expressions: `slice![s, a(), ..= b()]`
+/// - But they are optional for ranges of literals/blocks: `slice![s, 1..=3]` ≡ `slice![s, 1, ..=3]`
+///
+/// # Example
+/// ```
+/// # use devela_base_core::slice;
+/*
+/// # let (x, y) = (10, 20);
+/// # fn calc() -> i32 { 10 }
+/// # fn other() -> i32 { 20 }
+/// // Literals
+/// slice![1 ..=3];    // [1, 3]
+/// slice![1<.. 3];    // (1, 3)
+///
+/// // Expressions
+/// slice![(x+1), ..= (y*2)];
+/// slicslice![{ calc() }, <.. { other() }];
+///
+/// // Unbounded
+/// interval![.., i32]; // (-∞, ∞) as i32
+/// slice![..=10];   // (-∞, 10]
+/// slice![1..];     // [1, ∞)
+*/
+/// ```
+#[doc(hidden)]
+#[macro_export]
+#[rustfmt::skip]
+macro_rules! _slice {
+    (
 
-        #[cfg(all(not(base_safe_mem), unsafe··))]
-        // SAFETY: Lengths checked equal, T is Copy, and pointers are valid
-        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), src.len()); }
+    /* mut_checked expressions */
+     mut_checked $s:expr, $l:expr,  ..= $u:expr) => { $crate::Slice::range_inclusive_mut_checked($s, $l, $u) };
+    (mut_checked $s:expr, $l:expr,  ..  $u:expr) => { $crate::Slice::range_mut_checked($s, $l, $u) };
+    (mut_checked $s:expr, $l:expr,  ..         ) => { $crate::Slice::range_from_mut_checked($s, $l) };
+    (mut_checked $s:expr,           ..= $u:expr) => { $crate::Slice::range_to_inclusive_mut_checked($s, $u) };
+    (mut_checked $s:expr,           ..  $u:expr) => { $crate::Slice::range_to_mut_checked($s, $u) };
+    (
+    /* mut_checked blocks */
+     mut_checked $s:expr, $l:block  ..= $u:block) => { $crate::Slice::range_inclusive_mut_checked($s, $l, $u) };
+    (mut_checked $s:expr, $l:block  ..  $u:block) => { $crate::Slice::range_mut_checked($s, $l, $u) };
+    (mut_checked $s:expr, $l:block  ..          ) => { $crate::Slice::range_from_mut_checked($s, $l) };
+    (mut_checked $s:expr,           ..= $u:block) => { $crate::Slice::range_to_inclusive_mut_checked($s, $u) };
+    (mut_checked $s:expr,           ..  $u:block) => { $crate::Slice::range_to_mut_checked($s, $u) };
+    (
+    /* mut_checked literals */
+     mut_checked $s:expr, $l:literal  ..= $u:literal) => { $crate::Slice::range_inclusive_mut_checked($s, $l, $u) };
+    (mut_checked $s:expr, $l:literal  ..  $u:literal) => { $crate::Slice::range_mut_checked($s, $l, $u) };
+    (mut_checked $s:expr, $l:literal  ..            ) => { $crate::Slice::range_from_mut_checked($s, $l) };
+    (mut_checked $s:expr,             ..= $u:literal) => { $crate::Slice::range_to_inclusive_mut_checked($s, $u) };
+    (mut_checked $s:expr,             ..  $u:literal) => { $crate::Slice::range_to_mut_checked($s, $u) };
+    (
 
-        #[cfg(any(base_safe_mem, not(unsafe··)))]
-        { let mut i = 0; while i < src.len() { dst[i] = src[i]; i += 1; } }
-    }
+    /* mut_unchecked expressions */
+     mut_unchecked $s:expr, $l:expr,  ..= $u:expr) => { $crate::Slice::range_inclusive_mut_unchecked($s, $l, $u) };
+    (mut_unchecked $s:expr, $l:expr,  ..  $u:expr) => { $crate::Slice::range_mut_unchecked($s, $l, $u) };
+    (mut_unchecked $s:expr, $l:expr,  ..         ) => { $crate::Slice::range_from_mut_unchecked($s, $l) };
+    (mut_unchecked $s:expr,           ..= $u:expr) => { $crate::Slice::range_to_inclusive_mut_unchecked($s, $u) };
+    (mut_unchecked $s:expr,           ..  $u:expr) => { $crate::Slice::range_to_mut_unchecked($s, $u) };
+    (
+    /* mut_unchecked blocks */
+     mut_unchecked $s:expr, $l:block  ..= $u:block) => { $crate::Slice::range_inclusive_mut_unchecked($s, $l, $u) };
+    (mut_unchecked $s:expr, $l:block  ..  $u:block) => { $crate::Slice::range_mut_unchecked($s, $l, $u) };
+    (mut_unchecked $s:expr, $l:block  ..          ) => { $crate::Slice::range_from_mut_unchecked($s, $l) };
+    (mut_unchecked $s:expr,           ..= $u:block) => { $crate::Slice::range_to_inclusive_mut_unchecked($s, $u) };
+    (mut_unchecked $s:expr,           ..  $u:block) => { $crate::Slice::range_to_mut_unchecked($s, $u) };
+    (
+    /* mut_unchecked literals */
+     mut_unchecked $s:expr, $l:literal  ..= $u:literal) => { $crate::Slice::range_inclusive_mut_unchecked($s, $l, $u) };
+    (mut_unchecked $s:expr, $l:literal  ..  $u:literal) => { $crate::Slice::range_mut_unchecked($s, $l, $u) };
+    (mut_unchecked $s:expr, $l:literal  ..            ) => { $crate::Slice::range_from_mut_unchecked($s, $l) };
+    (mut_unchecked $s:expr,             ..= $u:literal) => { $crate::Slice::range_to_inclusive_mut_unchecked($s, $u) };
+    (mut_unchecked $s:expr,             ..  $u:literal) => { $crate::Slice::range_to_mut_unchecked($s, $u) };
+    (
 
-    /// Converts a reference to `T` into a slice of length 1 (without copying).
-    ///
-    /// See `core::slice::`[`from_ref`].
-    #[must_use]
-    #[inline(always)]
-    pub const fn from_ref(s: &T) -> &[T] {
-        from_ref(s)
-    }
+    /* mut expressions */
+     mut $s:expr, $l:expr,  ..= $u:expr) => { $crate::Slice::range_inclusive_mut($s, $l, $u) };
+    (mut $s:expr, $l:expr,  ..  $u:expr) => { $crate::Slice::range_mut($s, $l, $u) };
+    (mut $s:expr, $l:expr,  ..         ) => { $crate::Slice::range_from_mut($s, $l) };
+    (mut $s:expr,           ..= $u:expr) => { $crate::Slice::range_to_inclusive_mut($s, $u) };
+    (mut $s:expr,           ..  $u:expr) => { $crate::Slice::range_to_mut($s, $u) };
+    (
+    /* mut blocks */
+     mut $s:expr, $l:block  ..= $u:block) => { $crate::Slice::range_inclusive_mut($s, $l, $u) };
+    (mut $s:expr, $l:block  ..  $u:block) => { $crate::Slice::range_mut($s, $l, $u) };
+    (mut $s:expr, $l:block  ..          ) => { $crate::Slice::range_from_mut($s, $l) };
+    (mut $s:expr,           ..= $u:block) => { $crate::Slice::range_to_inclusive_mut($s, $u) };
+    (mut $s:expr,           ..  $u:block) => { $crate::Slice::range_to_mut($s, $u) };
+    (
+    /* mut literals */
+     mut $s:expr, $l:literal  ..= $u:literal) => { $crate::Slice::range_inclusive_mut($s, $l, $u) };
+    (mut $s:expr, $l:literal  ..  $u:literal) => { $crate::Slice::range_mut($s, $l, $u) };
+    (mut $s:expr, $l:literal  ..            ) => { $crate::Slice::range_from_mut($s, $l) };
+    (mut $s:expr,             ..= $u:literal) => { $crate::Slice::range_to_inclusive_mut($s, $u) };
+    (mut $s:expr,             ..  $u:literal) => { $crate::Slice::range_to_mut($s, $u) };
+    (
 
-    /// Converts a reference to `T` into a slice of length 1 (without copying).
-    ///
-    /// See `core::slice::`[`from_mut`].
-    #[must_use]
-    #[inline(always)]
-    pub const fn from_mut(s: &mut T) -> &mut [T] {
-        from_mut(s)
-    }
+    /* checked expressions */
+     checked $s:expr, $l:expr,  ..= $u:expr) => { $crate::Slice::range_inclusive_checked($s, $l, $u) };
+    (checked $s:expr, $l:expr,  ..  $u:expr) => { $crate::Slice::range_checked($s, $l, $u) };
+    (checked $s:expr, $l:expr,  ..         ) => { $crate::Slice::range_from_checked($s, $l) };
+    (checked $s:expr,           ..= $u:expr) => { $crate::Slice::range_to_inclusive_checked($s, $u) };
+    (checked $s:expr,           ..  $u:expr) => { $crate::Slice::range_to_checked($s, $u) };
+    (
+    /* checked blocks */
+     checked $s:expr, $l:block  ..= $u:block) => { $crate::Slice::range_inclusive_checked($s, $l, $u) };
+    (checked $s:expr, $l:block  ..  $u:block) => { $crate::Slice::range_checked($s, $l, $u) };
+    (checked $s:expr, $l:block  ..          ) => { $crate::Slice::range_from_checked($s, $l) };
+    (checked $s:expr,           ..= $u:block) => { $crate::Slice::range_to_inclusive_checked($s, $u) };
+    (checked $s:expr,           ..  $u:block) => { $crate::Slice::range_to_checked($s, $u) };
+    (
+    /* checked literals */
+     checked $s:expr, $l:literal  ..= $u:literal) => { $crate::Slice::range_inclusive_checked($s, $l, $u) };
+    (checked $s:expr, $l:literal  ..  $u:literal) => { $crate::Slice::range_checked($s, $l, $u) };
+    (checked $s:expr, $l:literal  ..            ) => { $crate::Slice::range_from_checked($s, $l) };
+    (checked $s:expr,             ..= $u:literal) => { $crate::Slice::range_to_inclusive_checked($s, $u) };
+    (checked $s:expr,             ..  $u:literal) => { $crate::Slice::range_to_checked($s, $u) };
+    (
 
-    /// Forms a shared slice from a pointer and a length.
-    ///
-    /// # Safety
-    /// See `core::slice::`[`from_raw_parts`]
-    ///
-    /// See also `Ptr::`[`slice_from_raw_parts`][crate::Ptr::slice_from_raw_parts].
-    #[inline(always)]
-    #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-    #[cfg(all(not(base_safe_mem), unsafe··))]
-    pub const unsafe fn from_raw_parts<'a>(data: *const T, len: usize) -> &'a [T] {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe { from_raw_parts(data, len) }
-    }
+    /* unchecked expressions */
+     unchecked $s:expr, $l:expr,  ..= $u:expr) => { $crate::Slice::range_inclusive_unchecked($s, $l, $u) };
+    (unchecked $s:expr, $l:expr,  ..  $u:expr) => { $crate::Slice::range_unchecked($s, $l, $u) };
+    (unchecked $s:expr, $l:expr,  ..         ) => { $crate::Slice::range_from_unchecked($s, $l) };
+    (unchecked $s:expr,           ..= $u:expr) => { $crate::Slice::range_to_inclusive_unchecked($s, $u) };
+    (unchecked $s:expr,           ..  $u:expr) => { $crate::Slice::range_to_unchecked($s, $u) };
+    (
+    /* unchecked blocks */
+     unchecked $s:expr, $l:block  ..= $u:block) => { $crate::Slice::range_inclusive_unchecked($s, $l, $u) };
+    (unchecked $s:expr, $l:block  ..  $u:block) => { $crate::Slice::range_unchecked($s, $l, $u) };
+    (unchecked $s:expr, $l:block  ..          ) => { $crate::Slice::range_from_unchecked($s, $l) };
+    (unchecked $s:expr,           ..= $u:block) => { $crate::Slice::range_to_inclusive_unchecked($s, $u) };
+    (unchecked $s:expr,           ..  $u:block) => { $crate::Slice::range_to_unchecked($s, $u) };
+    (
+    /* unchecked literals */
+     unchecked $s:expr, $l:literal  ..= $u:literal) => { $crate::Slice::range_inclusive_unchecked($s, $l, $u) };
+    (unchecked $s:expr, $l:literal  ..  $u:literal) => { $crate::Slice::range_unchecked($s, $l, $u) };
+    (unchecked $s:expr, $l:literal  ..            ) => { $crate::Slice::range_from_unchecked($s, $l) };
+    (unchecked $s:expr,             ..= $u:literal) => { $crate::Slice::range_to_inclusive_unchecked($s, $u) };
+    (unchecked $s:expr,             ..  $u:literal) => { $crate::Slice::range_to_unchecked($s, $u) };
+    // NOTE: this one has to be the last
+    (
+    /* expressions */
+     $s:expr, $l:expr,  ..= $u:expr) => { $crate::Slice::range_inclusive($s, $l, $u) };
+    ($s:expr, $l:expr,  ..  $u:expr) => { $crate::Slice::range($s, $l, $u) };
+    ($s:expr, $l:expr,  ..         ) => { $crate::Slice::range_from($s, $l) };
+    ($s:expr,           ..= $u:expr) => { $crate::Slice::range_to_inclusive($s, $u) };
+    ($s:expr,           ..  $u:expr) => { $crate::Slice::range_to($s, $u) };
+    (
+    /* blocks */
+     $s:expr, $l:block  ..= $u:block) => { $crate::Slice::range_inclusive($s, $l, $u) };
+    ($s:expr, $l:block  ..  $u:block) => { $crate::Slice::range($s, $l, $u) };
+    ($s:expr, $l:block  ..          ) => { $crate::Slice::range_from($s, $l) };
+    ($s:expr,           ..= $u:block) => { $crate::Slice::range_to_inclusive($s, $u) };
+    ($s:expr,           ..  $u:block) => { $crate::Slice::range_to($s, $u) };
+    (
+    /* literals */
+     $s:expr, $l:literal  ..= $u:literal) => { $crate::Slice::range_inclusive($s, $l, $u) };
+    ($s:expr, $l:literal  ..  $u:literal) => { $crate::Slice::range($s, $l, $u) };
+    ($s:expr, $l:literal  ..            ) => { $crate::Slice::range_from($s, $l) };
+    ($s:expr,             ..= $u:literal) => { $crate::Slice::range_to_inclusive($s, $u) };
+    ($s:expr,             ..  $u:literal) => { $crate::Slice::range_to($s, $u) };
+    (
 
-    /// Forms an exclusive slice from a pointer and a length.
-    ///
-    /// # Safety
-    /// See `core::slice::`[`from_raw_parts_mut`].
-    ///
-    /// See also `Ptr::`[`slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
-    #[inline(always)]
-    #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-    #[cfg(all(not(base_safe_mem), unsafe··))]
-    pub const unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe { from_raw_parts_mut(data, len) }
-    }
-}
-
-/// Helper for implementing slice operations for primitives.
-macro_rules! impl_prim {
-    () => {
-        impl_prim![
-            u8, u16, u32, u64, u128, usize,
-            i8, i16, i32, i64, i128, isize,
-            f32, f64,
-            bool, char
-        ];
-        #[cfg(nightly_float)]
-        impl_prim![f16, f128];
+    /* syntax error msg */
+    $($t:tt)*) => {
+        compile_error! { "Invalid interval syntax. Expected forms like: l..u, l..=u, ..x, ..=x" }
     };
-    ($($t:ty),+) => { $( impl_prim![@$t]; )+ };
-    (@$t:ty) => {
-        impl Slice<$t> {
-            /// Checks the equality of two slices of primitives in compile-time.
-            #[must_use]
-            pub const fn eq(a: &[$t], b: &[$t]) -> bool {
-                is! { a.len() != b.len(); return false }
-                let mut i = 0;
-                while i < a.len() {
-                    is! { a[i] != b[i]; return false }
-                    i += 1;
-                }
-                true
-            }
-        }
-        impl Slice<&[$t]> {
-            /// Checks the equality of two slices of slices of primitives in compile-time.
-            #[must_use]
-            pub const fn eq(a: &[&[$t]], b: &[&[$t]]) -> bool {
-                is! { a.len() != b.len(); return false }
-                let mut i = 0;
-                while i < a.len() {
-                    is! { !Slice::<$t>::eq(a[i], b[i]); return false }
-                    i += 1;
-                }
-                true
-            }
-        }
-    };
 }
-impl_prim!();
-
-/// # Methods for string slices.
-impl Slice<&str> {
-    /// Checks the equality of two string slices in compile-time.
-    #[must_use]
-    pub const fn eq(a: &str, b: &str) -> bool {
-        Slice::<u8>::eq(a.as_bytes(), b.as_bytes())
-    }
-}
-impl Slice<&[&str]> {
-    /// Checks the equality of two slices of string slices in compile-time.
-    #[must_use]
-    pub const fn eq(a: &[&str], b: &[&str]) -> bool {
-        is! { a.len() != b.len(); return false }
-        let mut i = 0;
-        while i < a.len() {
-            is! { !Slice::<&str>::eq(a[i], b[i]); return false }
-            i += 1;
-        }
-        true
-    }
-}
+#[doc(inline)]
+pub use _slice as slice;

@@ -8,7 +8,7 @@
 
 use crate::{
     Char, Debug, Deref, Display, FmtResult, Formatter, InvalidText, IterChars, Mismatch,
-    MismatchedCapacity, NotEnoughElements, Slice, Str, cfor, char7, char8, char16, is, unwrap,
+    MismatchedCapacity, NotEnoughElements, Str, cfor, char7, char8, char16, is, slice, unwrap,
 };
 
 /* definitions */
@@ -163,12 +163,11 @@ impl<const CAP: usize> StringNonul<CAP> {
         let len = self.len();
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
-        return Slice::take_first_mut(&mut self.arr, len);
+        return slice![mut &mut self.arr, ..len];
 
         #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
-        unsafe {
-            Slice::take_first_mut_unchecked(&mut self.arr, len)
-        }
+        // SAFETY: we ensure to uphold a valid length
+        unsafe { slice![mut_unchecked &mut self.arr, ..len] }
     }
 
     /// Returns the inner string slice.

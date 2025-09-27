@@ -9,7 +9,7 @@
 // - impl methods
 // - impl FmtWrite
 
-use crate::{CONST, Cmp, FmtArguments, FmtResult, FmtWrite, Slice, Str, is};
+use crate::{CONST, Cmp, FmtArguments, FmtResult, FmtWrite, Str, is, slice};
 crate::_use! {compat::from_utf8}
 
 #[doc = crate::_TAG_FMT!()]
@@ -125,8 +125,7 @@ impl<'a> FmtWriter<'a> {
         let s_bytes = s.as_bytes();
         let n = Cmp(s_bytes.len()).min(available);
         if n > 0 {
-            Slice::range_mut(self.buf, self.len, self.len + n)
-                .copy_from_slice(Slice::range_to(s_bytes, n));
+            slice![mut self.buf, self.len, ..self.len + n].copy_from_slice(slice![s_bytes, ..n]);
         }
         is![n < s_bytes.len(); self.truncated = true];
         self.len += n;
@@ -166,7 +165,7 @@ impl<'a> FmtWriter<'a> {
     #[must_use]
     #[doc = _DOC_AS_INTO_STR_CONST!()]
     pub const fn as_str_const(&'a self) -> &'a str {
-        match Str::from_utf8(Slice::range_to(self.buf, self.len)) {
+        match Str::from_utf8(slice![self.buf, ..self.len]) {
             Ok(valid_str) => valid_str,
             Err(e) => Self::get_str_from_slice_const(self.buf, e.valid_up_to),
         }
@@ -174,7 +173,7 @@ impl<'a> FmtWriter<'a> {
     #[must_use]
     #[doc = _DOC_AS_INTO_STR_CONST!()]
     pub const fn into_str_const(self) -> &'a str {
-        match Str::from_utf8(Slice::range_to(self.buf, self.len)) {
+        match Str::from_utf8(slice![self.buf, ..self.len]) {
             Ok(valid_str) => valid_str,
             Err(e) => Self::get_str_from_slice_const(self.buf, e.valid_up_to)
         }
@@ -194,7 +193,7 @@ impl<'a> FmtWriter<'a> {
 
     #[inline(always)]
     const fn get_str_from_slice_const(slice: &[u8], valid_len: usize) -> &str {
-        let valid_range = Slice::range_to(slice, valid_len);
+        let valid_range = slice![slice, ..valid_len];
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         { crate::unwrap![ok Str::from_utf8(valid_range)] }
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]

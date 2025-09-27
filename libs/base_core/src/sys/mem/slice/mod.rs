@@ -4,7 +4,7 @@
 //
 
 mod join; // const_join!
-mod namespace; // Slice
+mod namespace; // Slice, slice!
 
 crate::structural_mods! { // _mods
     _mods {

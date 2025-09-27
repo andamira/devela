@@ -12,7 +12,7 @@
 use crate::{Cmp, cfor, unwrap};
 use crate::{
     Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
-    Mismatch, MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, text::char::*,
+    Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste, slice, text::char::*,
 };
 
 macro_rules! impl_str_u {
@@ -241,7 +241,7 @@ macro_rules! impl_str_u {
             pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
                 let length = Cmp(length).min(CAP as $t);
-                match Str::from_utf8(Slice::take_first(&bytes, length as usize)) {
+                match Str::from_utf8(slice![&bytes, ..length as usize]) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(e),
                 }
@@ -279,7 +279,7 @@ macro_rules! impl_str_u {
                 cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
                 }];
-                match Str::from_utf8(Slice::take_first(&bytes, ulen)) {
+                match Str::from_utf8(slice![&bytes, ..ulen]) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(e),
                 }
@@ -331,11 +331,11 @@ macro_rules! impl_str_u {
             #[must_use] #[inline(always)]
             pub const fn as_bytes(&self) -> &[u8] {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
-                return Slice::take_first(&self.arr, self.len as usize);
+                return slice![&self.arr, ..self.len as usize];
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
                 // SAFETY: we ensure to contain a correct length
-                unsafe { Slice::take_first_unchecked(&self.arr, self.len as usize) }
+                unsafe { slice![unchecked &self.arr, ..self.len as usize] }
             }
 
             /// Returns an exclusive byte slice of the inner string slice.
@@ -345,11 +345,11 @@ macro_rules! impl_str_u {
             #[must_use] #[inline(always)]
             pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
-                return Slice::take_first_mut(&mut self.arr, self.len as usize);
+                return slice![mut &mut self.arr, ..self.len as usize];
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
                 // SAFETY: we ensure to contain a correct length
-                unsafe { Slice::take_first_mut_unchecked(&mut self.arr, self.len as usize) }
+                unsafe { slice![mut_unchecked &mut self.arr, ..self.len as usize] }
             }
 
             /// Returns a reference to the inner string slice.
@@ -464,7 +464,7 @@ macro_rules! impl_str_u {
                 if self.remaining_capacity() >= char_len {
                     let beg = self.len as usize;
                     let end = beg + char_len;
-                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
+                    let _ = character.encode_utf8(slice![mut &mut self.arr, beg, ..end]);
                     self.len += char_len as $t;
                     char_len
                 } else {
@@ -484,7 +484,7 @@ macro_rules! impl_str_u {
                 if self.remaining_capacity() >= char_len {
                     let beg = self.len as usize;
                     let end = beg + char_len;
-                    let _ = character.encode_utf8(Slice::range_mut(&mut self.arr, beg, end));
+                    let _ = character.encode_utf8(slice![mut &mut self.arr, beg, ..end]);
                     self.len += char_len as $t;
                     Ok(char_len)
                 } else {
@@ -524,8 +524,8 @@ macro_rules! impl_str_u {
                 };
                 if bytes_to_write > 0 {
                     let start_pos = self.len as usize;
-                    Slice::range_mut(&mut self.arr, start_pos, start_pos + bytes_to_write)
-                        .copy_from_slice(Slice::range_to(string.as_bytes(), bytes_to_write));
+                    slice![mut &mut self.arr, start_pos, .. start_pos + bytes_to_write]
+                        .copy_from_slice(slice![string.as_bytes(), ..bytes_to_write]);
                     self.len += bytes_to_write as $t;
                     bytes_to_write
                 } else {

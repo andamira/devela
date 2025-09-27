@@ -3,7 +3,7 @@
 //! Defines the [`Ansi`] namespace for emitting ANSI codes.
 //
 
-use crate::{AsciiDigits, Slice};
+use crate::{AsciiDigits, slice};
 
 /// ANSI escape codes.
 ///
@@ -41,7 +41,7 @@ impl Ansi {
             index += 1;
         }
         buffer[index] = final_byte;
-        Slice::range_to_inclusive(buffer, index) // &buffer[..=index]
+        slice![buffer, ..=index]
     }
 }
 
@@ -146,7 +146,7 @@ impl Ansi {
             index += 1;
         }
         buffer[index] = b'H';
-        Slice::range_to_inclusive(buffer, index) // &buffer[..=index]
+        slice![buffer, ..=index]
     }
 
     /// Code to move the cursor up by one line.

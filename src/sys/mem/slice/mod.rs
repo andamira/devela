@@ -16,6 +16,6 @@ crate::structural_mods! { // _mods
 
         // re-exports
         #[doc(inline)]
-        pub use devela_base_core::sys::mem::{Slice, const_join};
+        pub use devela_base_core::sys::mem::{Slice, const_join, slice};
     }
 }

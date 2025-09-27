@@ -7,7 +7,7 @@ mod range;
 mod take;
 mod split;
 
-use crate::{AsciiDigits, InvalidUtf8, Slice, is};
+use crate::{AsciiDigits, InvalidUtf8, Slice, is, slice};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
@@ -220,12 +220,11 @@ impl Str {
             }
             outer_count += 1;
         }
-
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok Str::from_utf8(Slice::range_to(buffer, index))];
+        return unwrap![ok Str::from_utf8(slice![buffer, ..index])];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: since `string` is a valid &str, checks are unneeded.
-        sf! { unsafe { Str::from_utf8_unchecked(Slice::range_to(buffer, index)) }}
+        sf! { unsafe { Str::from_utf8_unchecked(slice![buffer, ..index]) }}
     }
 
     /// Returns a [`&str`] backed by a `buffer`, where you always know each
@@ -275,18 +274,9 @@ impl Str {
                     buffer[index] = separator;
                 } else {
                     is![index > 0; index -= num_len - 1];
-                    // WAIT:DONE:1.87 const_copy_from_slice
-                    // buffer[index..(num_len + index)].copy_from_slice(&num_bytes[..num_len]);
-                    // Slice::range_mut(buffer, index, num_len + index)
-                    //     .copy_from_slice(Slice::range_to(num_bytes, num_len));
-                    let mut i = 0;
-                    while i < num_len {
-                        buffer[index + i] = num_bytes[i];
-                        i += 1;
-                    }
-
+                    slice![mut buffer, index, ..num_len + index]
+                        .copy_from_slice(slice![num_bytes, ..num_len]);
                     num = index;
-
                     num_buf = AsciiDigits(num).digits();
                     num_bytes = Slice::trim_leading(&num_buf, b'0');
                     // IMPROVE: use NumToStr
@@ -299,10 +289,10 @@ impl Str {
             }
 
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-            return unwrap![ok Str::from_utf8(Slice::range_to(buffer, length))];
+            return unwrap![ok Str::from_utf8(slice![buffer, ..length])];
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             // SAFETY: TODO: since `string` is a valid &str, checks are unneeded.
-            sf! { unsafe { Str::from_utf8_unchecked(Slice::range_to(buffer, length)) }}
+            sf! { unsafe { Str::from_utf8_unchecked(slice![buffer, ..length]) }}
         }
     }
 

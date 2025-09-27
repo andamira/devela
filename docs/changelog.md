@@ -202,6 +202,7 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `MemAligned`.
   - types: `Mem`, `Ptr`, `Slice`.
 - rename `join!` macro to `const_join!`.
+- new macro `slice!`.
 - update `Slice`:
   - rename methods:
     - `trim_leading_bytes` to `trim_leading`
