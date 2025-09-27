@@ -7,7 +7,7 @@
 // - trait impls
 // - conversions
 
-use crate::{IterChars, MismatchedCapacity, StringNonul, char7, char8, char16, doclink, unwrap};
+use crate::{IterCharsStd, MismatchedCapacity, StringNonul, char7, char8, char16, doclink, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -152,7 +152,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[rustfmt::skip]
-    pub fn chars(&self) -> IterChars<'_> { self.0.chars() }
+    pub fn chars(&self) -> IterCharsStd<'_> { self.0.chars() }
 }
 
 /* traits */

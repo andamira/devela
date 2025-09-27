@@ -239,6 +239,7 @@ Many feature gates are removed in order to make most features make always availa
 ### char
 - make `text::char` module public.
 - new `char7` methods: `to_byte`, `to_str`.
+- rename re-exported `IterChars` to `IterCharsStd`.
 - update `Char`:
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.

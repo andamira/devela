@@ -11,7 +11,7 @@
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, cfor, unwrap};
 use crate::{
-    Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
+    Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterCharsStd,
     Mismatch, MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, text::char::*,
 };
 
@@ -383,7 +383,7 @@ macro_rules! impl_str_u {
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
             #[inline(always)]
-            pub fn chars(&self) -> IterChars<'_> { self.as_str().chars() } // non-const
+            pub fn chars(&self) -> IterCharsStd<'_> { self.as_str().chars() } // non-const
         }
 
         /// # Queries
