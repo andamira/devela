@@ -273,16 +273,18 @@ Many feature gates are removed in order to make most features make always availa
 - update `StringNonul`:
   - new method `new_checked`.
   - make `new` method panic.
+  - make most methods *const*.
   - impl `Extend` & `FromIterator`.
 - update `StringU*`:
   - impl `AsMut<&str>`, `DerefMut`, `Extend`, `FromIterator`.
-  - new methods: `from_str`, `from_str_truncate`, `new_checked`, `sanitize`.
+  - new methods: `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`, `pop_unchecked`, `sanitize`.
   - modify methods:
   - `as_mut_str`: make safe.
   - `push_str`, make const, improve efficiency, update docs & examples.
   - `try_push_str*`, make const, return `Result<usize, usize>`, update docs & examples.
   - make `new` method panic.
-  - make more methods *const*.
+  - make **all** methods *const*.
+  - impl `Extend` & `FromIterator`.
   - fix `TryFrom<&str>` impl.
   - improve docs.
 

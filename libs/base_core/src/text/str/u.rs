@@ -38,7 +38,8 @@ macro_rules! impl_str_u {
         ///   [`new`][Self::new],
         ///     *([_checked][Self::new_checked])*,
         ///   [`from_str`][Self::from_str],
-        ///     *([_truncate][Self::from_str_truncate])*,
+        ///     *([_truncate][Self::from_str_truncate],
+        ///     [_unchecked][Self::from_str_unchecked])*,
         ///   [`from_char`][Self::from_char]
         ///   *([7][Self::from_char7],
         ///     [8][Self::from_char8],
@@ -68,7 +69,8 @@ macro_rules! impl_str_u {
         ///   [`reset`][Self::reset],
         ///   [`sanitize`][Self::sanitize],
         ///   [`pop`][Self::pop]
-        ///     *([try_][Self::try_pop])*,
+        ///     *([try_][Self::try_pop],
+        ///     [_unchecked][Self::pop_unchecked])*,
         ///   [`push`][Self::push]
         ///     *([try_][Self::try_push])*.
         ///   [`push_str`][Self::push]
@@ -87,6 +89,13 @@ macro_rules! impl_str_u {
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
+            ///
+            /// # Example
+            /// ```
+            #[doc = "# use devela_base_core::" $name ";"]
+            #[doc = "let mut s = " $name "::<10>::new();"]
+            #[doc = "assert![size_of_val(&s) >= 10 + size_of::<" $t ">()]; // + padding"]
+            /// ```
             pub const fn new() -> Self {
                 assert![CAP <= $t::MAX as usize,
                     concat!["Mismatched capacity, greater than ", stringify![$t], "::MAX"]
@@ -137,6 +146,19 @@ macro_rules! impl_str_u {
                 let mut new_string = unwrap![ok? Self::new_checked()];
                 let _ = new_string.push_str(string);
                 Ok(new_string)
+            }
+
+            #[doc = "Creates a new `String" $t:camel "` from a `&str`,"]
+            /// truncating if it does not fit.
+            ///
+            /// # Panics
+            #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
+            ///
+            /// It calls [`push_str()`][Self::push_str].
+            pub const fn from_str_unchecked(string: &str) -> Self {
+                let mut new_string = Self::new();
+                let _ = new_string.push_str(string);
+                new_string
             }
 
             /* from char */
@@ -381,7 +403,7 @@ macro_rules! impl_str_u {
                 unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
             }
 
-            /// Returns an iterator over the `chars` of this grapheme cluster.
+            /// Returns an iterator over the `chars` of the string.
             ///
             /// # Features
             /// Uses the `unsafe_str` feature to skip validation checks.
@@ -435,23 +457,48 @@ macro_rules! impl_str_u {
                 cfor![i in (self.len as usize)..CAP => { self.arr[i] = 0; }];
             }
 
-            /// Removes the last character and returns it, or `None` if
-            /// the string is empty.
+            /// Removes the last character and returns it, or `None` if the string is empty.
             #[must_use]
-            pub fn pop(&mut self) -> Option<char> {
-                self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
+            pub const fn pop(&mut self) -> Option<char> {
+                if self.is_empty() { None } else { Some(self.pop_unchecked()) }
             }
 
-            /// Tries to remove the last character and returns it, or `None` if
-            /// the string is empty.
+            /// Tries to remove the last character and returns it.
             ///
             /// # Errors
             /// Returns a [`NotEnoughElements`] error
             /// if the capacity is not enough to hold the `character`.
-            pub fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
-                self.as_str().chars() // non-const
-                    .last().map(|c| { self.len -= c.len_utf8() as $t; c })
-                    .ok_or(NotEnoughElements(Some(1)))
+            pub const fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
+                is![self.is_empty(); Err(NotEnoughElements(Some(1))); Ok(self.pop_unchecked())]
+            }
+
+            /// Removes the last character and returns it.
+            ///
+            /// # Panics
+            /// Panics if the string is empty.
+            ///
+            /// # Example
+            /// ```
+            /// # use devela_base_core::StringU8;
+            /// let mut s = StringU8::<16>::new();
+            /// s.push_str("hello worlð!");
+            /// assert_eq![s.len(), 13];
+            ///
+            /// assert_eq![s.pop_unchecked(), '!'];
+            /// assert_eq![s.len(), 12];
+            ///
+            /// assert_eq![s.pop_unchecked(), 'ð'];
+            /// assert_eq![s.len(), 10];
+            /// ```
+            pub const fn pop_unchecked(&mut self) -> char {
+                let string = self.as_str();
+                let mut index = string.len();
+                while index > 0 && !string.is_char_boundary(index - 1) { index -= 1; }
+                let idx_last_char = index - 1;
+                let range = Str::range_from(string, idx_last_char);
+                let last_char = unwrap![some IterChars::<&str>::new(range).next_char()];
+                self.len -= last_char.len_utf8() as $t;
+                last_char
             }
 
             /// Appends to the end of the string the given `character`.
@@ -524,7 +571,7 @@ macro_rules! impl_str_u {
                 };
                 if bytes_to_write > 0 {
                     let start_pos = self.len as usize;
-                    slice![mut &mut self.arr, start_pos, .. start_pos + bytes_to_write]
+                    slice![mut &mut self.arr, start_pos, ..start_pos+bytes_to_write]
                         .copy_from_slice(slice![string.as_bytes(), ..bytes_to_write]);
                     self.len += bytes_to_write as $t;
                     bytes_to_write

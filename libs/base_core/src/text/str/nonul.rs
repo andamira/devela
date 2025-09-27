@@ -66,6 +66,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Panics
     /// Panics if `CAP` > [`u8::MAX`].
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringNonul;
+    /// let mut s = StringNonul::<10>::new();
+    /// assert_eq![size_of_val(&s), 10];
+    /// ```
     pub const fn new() -> Self {
         assert![CAP <= u8::MAX as usize, "Mismatched capacity, greater than u8::MAX"];
         Self { arr: [0; CAP] }
@@ -201,7 +208,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
     }
 
-    /// Returns an iterator over the `chars` of this grapheme cluster.
+    /// Returns an iterator over the `chars` of the string.
     #[inline(always)]
     pub const fn chars(&self) -> IterChars<'_, &str> { IterChars::<&str>::new(self.as_str()) }
 
@@ -210,10 +217,9 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Sets the length to 0, by resetting all bytes to 0.
     pub const fn clear(&mut self) { self.arr = [0; CAP]; }
 
-    /// Removes the last character and returns it, or `None` if
-    /// the string is empty.
+    /// Removes the last character and returns it, or `None` if the string is empty.
     #[must_use]
-    pub fn pop(&mut self) -> Option<char> {
+    pub const fn pop(&mut self) -> Option<char> {
         if self.is_empty() { None } else { Some(self.pop_unchecked()) }
     }
 
@@ -221,7 +227,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`NotEnoughElements`] if the string is empty.
-    pub fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
+    pub const fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
         if self.is_empty() {
             Err(NotEnoughElements(Some(1)))
         } else {
@@ -233,17 +239,30 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Panics
     /// Panics if the string is empty.
-    #[must_use]
-    pub fn pop_unchecked(&mut self) -> char {
-        let len = self.len();
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringNonul;
+    /// let mut s = StringNonul::<16>::new();
+    /// s.push_str("hello worlð!");
+    /// assert_eq![s.len(), 13];
+    ///
+    /// assert_eq![s.pop_unchecked(), '!'];
+    /// assert_eq![s.len(), 12];
+    ///
+    /// assert_eq![s.pop_unchecked(), 'ð'];
+    /// assert_eq![s.len(), 10];
+    /// ```
+    #[must_use] #[rustfmt::skip]
+    pub const fn pop_unchecked(&mut self) -> char {
+        let (len, string) = (self.len(), self.as_str());
         let mut idx_last_char = len - 1;
-        while idx_last_char > 0 && !self.as_str().is_char_boundary(idx_last_char) {
-            idx_last_char -= 1;
-        }
-        let last_char = self.as_str()[idx_last_char..len].chars().next().unwrap();
-        for i in idx_last_char..len {
-            self.arr[i] = 0;
-        }
+        while idx_last_char > 0 && !string.is_char_boundary(idx_last_char) { idx_last_char -= 1; }
+
+        let range = Str::range(string, idx_last_char, len);
+        let last_char = unwrap![some IterChars::<&str>::new(range).next_char()];
+
+        let mut i = idx_last_char; while i < len { self.arr[i] = 0; i += 1; } // clean char bytes
         last_char
     }
 
@@ -253,14 +272,24 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// It will return 0 bytes if the given `character` doesn't fit in
     /// the remaining capacity, or if it is the nul character.
-    pub fn push(&mut self, character: char) -> usize {
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringNonul;
+    /// let mut s = StringNonul::<16>::new();
+    /// s.push('h');
+    /// assert_eq![s.len(), 1];
+    ///
+    /// s.push('€');
+    /// assert_eq![s.len(), 4];
+    ///
+    /// assert_eq![s.as_str(), "h€"];
+    /// ```
+    pub const fn push(&mut self, character: char) -> usize {
         let char_len = character.len_utf8();
-
         if character != NUL_CHAR && self.remaining_capacity() >= char_len {
             let len = self.len();
-            let new_len = len + char_len;
-
-            let _ = character.encode_utf8(&mut self.arr[len..new_len]);
+            let _ = character.encode_utf8(slice![mut &mut self.arr, len, ..len + char_len]);
             char_len
         } else {
             0
@@ -276,16 +305,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Errors
     /// Returns [`MismatchedCapacity`]
     /// if the capacity is not enough to hold the given character.
-    pub fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
+    pub const fn try_push(&mut self, character: char) -> Result<usize, MismatchedCapacity> {
         let char_len = character.len_utf8();
-
         if character == NUL_CHAR {
             Ok(0)
         } else if self.remaining_capacity() >= char_len {
             let len = self.len();
-            let new_len = len + char_len;
-
-            let _ = character.encode_utf8(&mut self.arr[len..new_len]);
+            let _ = character.encode_utf8(slice![mut &mut self.arr, len, ..len + char_len]);
             Ok(char_len)
         } else {
             Err(MismatchedCapacity::closed(0, self.len() + character.len_utf8(), CAP))
@@ -298,14 +324,16 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Returns the number of bytes written, which will be 0
     /// if not even the first non-nul character can fit.
-    pub fn push_str(&mut self, string: &str) -> usize {
+    ///
+    /// # Features
+    /// Uses the `unsafe_str` feature to skip validation checks.
+    pub const fn push_str(&mut self, string: &str) -> usize {
         let mut rem_cap = self.remaining_capacity();
         let mut bytes_written = 0;
-
-        for character in string.chars() {
+        let mut chars = IterChars::<&str>::new(string);
+        while let Some(character) = chars.next_char() {
             if character != NUL_CHAR {
                 let char_len = character.len_utf8();
-
                 if char_len <= rem_cap {
                     self.push(character);
                     rem_cap -= char_len;
@@ -318,8 +346,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         bytes_written
     }
 
-    /// Tries to append to the end the fitting characters from the given `string`
-    /// slice.
+    /// Tries to append to the end the fitting characters from the given `string` slice.
     ///
     /// Nul characters will be stripped out.
     ///
@@ -345,8 +372,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if the slice wont completely fit.
-    pub fn try_push_str_complete(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
-        let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
+    ///
+    /// # Features
+    /// Uses the `unsafe_str` feature to skip validation checks.
+    pub const fn try_push_str_complete(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
+        let (mut non_nul_len, bytes, mut i) = (0, string.as_bytes(), 0);
+        while i < bytes.len() { is![bytes[i] != 0; non_nul_len += 1]; i += 1; } // count !0 bytes
         if self.remaining_capacity() >= non_nul_len {
             Ok(self.push_str(string))
         } else {
@@ -588,9 +619,9 @@ impl<const CAP: usize> Extend<char> for StringNonul<CAP> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::StringU8;
+    /// # use devela_base_core::StringNonul;
     /// let chars = ['a', 'b', 'c', '€', 'さ'];
-    /// let mut s = StringU8::<6>::new();
+    /// let mut s = StringNonul::<6>::new();
     /// s.extend(chars);
     /// assert_eq![s, "abc€"];
     /// ```
@@ -610,13 +641,13 @@ impl<const CAP: usize> FromIterator<char> for StringNonul<CAP> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::StringU8;
+    /// # use devela_base_core::StringNonul;
     /// let chars = ['a', 'b', 'c', '€', 'さ'];
-    /// assert_eq!(StringU8::<9>::from_iter(chars), "abc€さ");
-    /// assert_eq!(StringU8::<6>::from_iter(chars), "abc€");
-    /// assert_eq!(StringU8::<5>::from_iter(chars), "abc");
-    /// assert_eq!(StringU8::<2>::from_iter(chars), "ab");
-    /// assert_eq!(StringU8::<0>::from_iter(chars), "");
+    /// assert_eq!(StringNonul::<9>::from_iter(chars), "abc€さ");
+    /// assert_eq!(StringNonul::<6>::from_iter(chars), "abc€");
+    /// assert_eq!(StringNonul::<5>::from_iter(chars), "abc");
+    /// assert_eq!(StringNonul::<2>::from_iter(chars), "ab");
+    /// assert_eq!(StringNonul::<0>::from_iter(chars), "");
     /// ```
     fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> Self {
         let mut string = StringNonul::new();
