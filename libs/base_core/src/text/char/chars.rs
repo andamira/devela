@@ -44,7 +44,7 @@ impl<'a> IterChars<'a, &str> {
         }
     }
 
-    /* next_* methods */
+    /* next_char* methods */
 
     /// Returns the next unicode scalar.
     ///
@@ -114,6 +114,21 @@ impl<'a> IterChars<'a, &str> {
             None
         }
     }
+
+    /* next_code* methods */
+
+    /// Returns the next unicode scalar code.
+    ///
+    /// It calls `Char::`[`to_code_unchecked`][Char::to_code_unchecked].
+    ///
+    /// Returns `None` once there are no more characters left.
+    #[must_use] #[rustfmt::skip]
+    pub const fn next_code(&mut self) -> Option<u32> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (cp, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        self.pos += len;
+        Some(cp)
+    }
 }
 
 /// Methods available when constructed from a byte slice.
@@ -138,7 +153,7 @@ impl<'a> IterChars<'a, &[u8]> {
         }
     }
 
-    /* next_* methods */
+    /* next_char* methods */
 
     /// Returns the next unicode scalar.
     ///
@@ -287,6 +302,41 @@ impl<'a> IterChars<'a, &[u8]> {
         } else {
             None
         }
+    }
+
+    /* next_code* methods */
+
+    /// Returns the next unicode scalar code.
+    ///
+    /// It calls `Char::`[`to_code`][Char::to_code].
+    ///
+    /// # Features
+    /// Uses the `unsafe_niche` feature to skip duplicated validation checks.
+    #[must_use]
+    pub const fn next_code(&mut self) -> Option<u32> {
+        is![self.pos >= self.bytes.len(); return None];
+        let Some((ch, len)) = Char(self.bytes).to_code(self.pos) else { return None };
+        self.pos += len;
+        Some(ch)
+    }
+
+    /// Returns the next unicode scalar, without performing UTF-8 validation.
+    ///
+    /// It calls `Char::`[`to_code_unchecked`][Char::to_code_unchecked].
+    ///
+    /// It assumes `bytes[index..]` contains a valid UTF-8 sequence,
+    /// and it doesn't validate the resulting unicode scalar.
+    ///
+    /// If the leading byte is invalid it returns the replacement character (`�`).
+    ///
+    /// # Panics
+    /// It will panic if the index is out of bounds.
+    #[must_use]
+    pub const fn next_code_unchecked(&mut self) -> Option<u32> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (ch, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        self.pos += len;
+        Some(ch)
     }
 }
 
