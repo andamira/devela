@@ -157,15 +157,15 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
     ///
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled.
+    /// Makes use of the `unsafe_slice` feature if enabled.
     #[must_use]
     pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
 
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
         return Slice::take_first_mut(&mut self.arr, len);
 
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
         unsafe {
             Slice::take_first_mut_unchecked(&mut self.arr, len)
         }

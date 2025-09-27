@@ -325,12 +325,15 @@ macro_rules! impl_str_u {
             pub const fn as_array(&self) -> [u8; CAP] { self.arr }
 
             /// Returns a byte slice of the inner string slice.
+            ///
+            /// # Features
+            /// Makes use of the `unsafe_slice` feature if enabled.
             #[must_use] #[inline(always)]
             pub const fn as_bytes(&self) -> &[u8] {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
                 return Slice::take_first(&self.arr, self.len as usize);
 
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
                 // SAFETY: we ensure to contain a correct length
                 unsafe { Slice::take_first_unchecked(&self.arr, self.len as usize) }
             }
@@ -338,13 +341,13 @@ macro_rules! impl_str_u {
             /// Returns an exclusive byte slice of the inner string slice.
             ///
             /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
+            /// Makes use of the `unsafe_slice` feature if enabled.
             #[must_use] #[inline(always)]
             pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
                 return Slice::take_first_mut(&mut self.arr, self.len as usize);
 
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
                 // SAFETY: we ensure to contain a correct length
                 unsafe { Slice::take_first_mut_unchecked(&mut self.arr, self.len as usize) }
             }
