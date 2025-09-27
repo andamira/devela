@@ -14,7 +14,7 @@ crate::structural_mods! { // _mods
         pub use super::_c::*; // IterChars, char
 
         #[doc(inline)]
-        pub use devela_base_core::text::{Char, char7, char8, char16};
+        pub use devela_base_core::text::{Char, IterChars, char7, char8, char16};
     }
 }
 

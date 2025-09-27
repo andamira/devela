@@ -5,7 +5,7 @@
 
 // #[cfg(feature = "dep_unicode_segmentation")]
 // use crate::{_dep::unicode_segmentation::UnicodeSegmentation, text::*};
-use crate::{IterCharsStd, String};
+use crate::{IterChars, String};
 // crate::_use! {basic::from_utf8}
 
 // #[allow(unused, reason = "feature-gated")]
@@ -17,33 +17,26 @@ use crate::{IterCharsStd, String};
 #[repr(transparent)]
 pub struct GraphemeString(String);
 
+#[rustfmt::skip]
 impl GraphemeString {
     /// Creates a new empty extended grapheme cluster.
     #[must_use]
-    pub const fn new() -> GraphemeString {
-        Self(String::new())
-    }
+    pub const fn new() -> GraphemeString { Self(String::new()) }
 
     // /// Creates a new `GraphemeString` from a `char7`.
     // #[must_use]
-    // #[cfg(feature = "dep_unicode_segmentation")]
-    // #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     // pub fn from_char7(c: char7) -> GraphemeString {
     //     from_utf8(&c.to_utf8_bytes()).unwrap().into()
     // }
     //
     // /// Creates a new `GraphemeString` from a `char8`.
     // #[must_use]
-    // #[cfg(feature = "dep_unicode_segmentation")]
-    // #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     // pub fn from_char8(c: char8) -> GraphemeString {
     //     from_utf8(&c.to_utf8_bytes()).unwrap().into()
     // }
     //
     // /// Creates a new `GraphemeString` from a `char16`.
     // #[must_use]
-    // #[cfg(feature = "dep_unicode_segmentation")]
-    // #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     // pub fn from_char16(c: char16) -> GraphemeString {
     //     from_utf8(&c.to_utf8_bytes()).unwrap().into()
     // }
@@ -52,8 +45,6 @@ impl GraphemeString {
     // /// # Features
     // /// Makes use of the `unsafe_str` feature if enabled.
     // #[must_use]
-    // #[cfg(feature = "dep_unicode_segmentation")]
-    // #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_unicode_segmentation")))]
     // pub fn from_char(c: char) -> GraphemeString {
     //     #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
     //     return from_utf8(&crate::Char(c).to_utf8_bytes()).unwrap().into();
@@ -66,48 +57,48 @@ impl GraphemeString {
     //
 
     /// Returns the length in bytes.
-    pub const fn len(&self) -> usize {
-        self.0.len()
-    }
+    #[must_use]
+    #[inline(always)]
+    pub const fn len(&self) -> usize { self.0.len() }
 
     /// Returns `true` if the current length is 0.
-    pub const fn is_empty(&self) -> bool {
-        self.0.len() == 0
-    }
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool { self.0.len() == 0 }
 
     /// Sets the length to 0, by resetting all bytes to 0.
-    pub fn clear(&mut self) {
-        self.0.clear();
-    }
+    #[inline(always)]
+    pub fn clear(&mut self) { self.0.clear(); }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    pub fn chars(&self) -> IterCharsStd<'_> {
-        self.0.chars()
-    }
+    pub const fn chars(&self) -> IterChars<'_, &str> { IterChars::<&str>::new(self.0.as_str()) }
 }
 
 /* traits */
 
+#[rustfmt::skip]
 mod core_impls {
     use super::*;
-    use core::fmt;
+    use crate::{Formatter, FmtResult, Debug, Display};
 
     impl Default for GraphemeString {
         /// Returns a new empty extended grapheme cluster.
-        fn default() -> Self {
-            Self::new()
-        }
+        fn default() -> Self { Self::new() }
     }
 
-    impl fmt::Display for GraphemeString {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "{}", self.0)
-        }
+    impl Display for GraphemeString {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{}", self.0) }
     }
 
-    impl fmt::Debug for GraphemeString {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "{:?}", self.0)
+    impl Debug for GraphemeString {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{:?}", self.0) }
+    }
+
+    /* conversions */
+
+    impl From<char> for GraphemeString {
+        fn from(s: char) -> GraphemeString {
+            GraphemeString(s.into())
         }
     }
 
@@ -125,9 +116,4 @@ mod core_impls {
     //         GraphemeString(s.graphemes(true).take(1).collect())
     //     }
     // }
-    impl From<char> for GraphemeString {
-        fn from(s: char) -> GraphemeString {
-            GraphemeString(s.into())
-        }
-    }
 }
