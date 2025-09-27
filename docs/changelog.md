@@ -273,7 +273,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `StringNonul`:
   - new method `new_checked`.
   - make `new` method panic.
-  - make most methods *const*.
+  - make **all** methods *const*.
   - impl `Extend` & `FromIterator`.
 - update `StringU*`:
   - impl `AsMut<&str>`, `DerefMut`, `Extend`, `FromIterator`.

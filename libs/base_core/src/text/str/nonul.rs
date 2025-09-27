@@ -354,9 +354,32 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if the capacity is not enough
-    /// to hold even the first non-nul character.
-    pub fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
-        let first_char_len = string.chars().find(|&c| c != NUL_CHAR).map_or(0, |c| c.len_utf8());
+    /// to hold not even the first non-nul character.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringNonul;
+    /// let mut s = StringNonul::<8>::new();
+    /// s.push_str("hello");
+    ///
+    /// // successfully appends a string while removing NUL characters
+    /// let result = s.try_push_str("\0\0\0\0\0 world");
+    /// assert!(result.is_ok());
+    /// assert_eq!(s.as_str(), "hello wo"); // truncates if it can't fit all
+    /// assert!(s.try_push_str("!").is_err()); // fails if it can't fit 1 char
+    ///
+    /// // Insufficient capacity for the first non-NUL character
+    /// let mut small = StringNonul::<3>::new();
+    /// assert!(small.try_push_str("🚀").is_err()); // Needs 4 bytes for the rocket
+    /// ```
+    /// # Features
+    /// Uses the `unsafe_str` feature to skip validation checks.
+    pub const fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
+        let mut first_char_len = 0;
+        let mut chars = IterChars::<&str>::new(string);
+        while let Some(c) = chars.next_code() { // find the first non-zero length character:
+            if c != NUL_CHAR as u32 { first_char_len = Char(c).len_utf8_unchecked(); break; }
+        }
         if self.remaining_capacity() < first_char_len {
             Err(MismatchedCapacity::closed(0, self.len() + first_char_len, CAP))
         } else {
