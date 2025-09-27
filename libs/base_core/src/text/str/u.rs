@@ -11,7 +11,7 @@
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, cfor, unwrap};
 use crate::{
-    Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterCharsStd,
+    Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
     Mismatch, MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, text::char::*,
 };
 
@@ -327,7 +327,7 @@ macro_rules! impl_str_u {
             /// Returns a byte slice of the inner string slice.
             ///
             /// # Features
-            /// Makes use of the `unsafe_slice` feature if enabled.
+            /// Uses the `unsafe_slice` feature to skip validation checks.
             #[must_use] #[inline(always)]
             pub const fn as_bytes(&self) -> &[u8] {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
@@ -341,7 +341,7 @@ macro_rules! impl_str_u {
             /// Returns an exclusive byte slice of the inner string slice.
             ///
             /// # Features
-            /// Makes use of the `unsafe_slice` feature if enabled.
+            /// Uses the `unsafe_slice` feature to skip validation checks.
             #[must_use] #[inline(always)]
             pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
@@ -355,7 +355,7 @@ macro_rules! impl_str_u {
             /// Returns a reference to the inner string slice.
             ///
             /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
+            /// Uses the `unsafe_str` feature to skip validation checks.
             #[must_use]
             #[inline(always)]
             pub const fn as_str(&self) -> &str {
@@ -370,7 +370,7 @@ macro_rules! impl_str_u {
             /// Returns an exclusive reference to the inner string slice.
             ///
             /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
+            /// Uses the `unsafe_str` feature to skip validation checks.
             #[must_use] #[inline(always)]
             pub const fn as_mut_str(&mut self) -> &mut str {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
@@ -382,8 +382,13 @@ macro_rules! impl_str_u {
             }
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
+            ///
+            /// # Features
+            /// Uses the `unsafe_str` feature to skip validation checks.
             #[inline(always)]
-            pub fn chars(&self) -> IterCharsStd<'_> { self.as_str().chars() } // non-const
+            pub const fn chars(&self) -> IterChars<'_, &str> {
+                IterChars::<&str>::new(self.as_str())
+            }
         }
 
         /// # Queries

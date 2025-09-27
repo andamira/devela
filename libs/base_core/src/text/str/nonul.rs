@@ -7,7 +7,7 @@
 // - trait impls
 
 use crate::{
-    Char, Debug, Deref, Display, FmtResult, Formatter, InvalidText, IterCharsStd, Mismatch,
+    Char, Debug, Deref, Display, FmtResult, Formatter, InvalidText, IterChars, Mismatch,
     MismatchedCapacity, NotEnoughElements, Slice, Str, cfor, char7, char8, char16, is, unwrap,
 };
 
@@ -203,9 +203,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    pub fn chars(&self) -> IterCharsStd<'_> {
-        self.as_str().chars()
-    }
+    #[inline(always)]
+    pub const fn chars(&self) -> IterChars<'_, &str> { IterChars::<&str>::new(self.as_str()) }
 
     /* operations */
 

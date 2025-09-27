@@ -49,7 +49,7 @@ pub struct char7(pub(super) NonExtremeU8);
 /// [1w]: https://en.wikipedia.org/wiki/Latin-1_Supplement
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct char8(pub(super) u8);
+pub struct char8(pub(crate) u8);
 
 #[doc = crate::_TAG_TEXT!()]
 /// A 16-bit [unicode scalar][scalar], limited to the

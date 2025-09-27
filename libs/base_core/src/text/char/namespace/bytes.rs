@@ -138,7 +138,7 @@ impl Char<&[u8]> {
     /// assert_eq!(incomplete, None);
     /// ```
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled, to avoid double validation.
+    /// Uses the `unsafe_str` feature to skip duplicated validation checks.
     pub const fn to_char(self, index: usize) -> Option<(char, usize)> {
         let (cp, len) = unwrap![some? self.to_code(index)];
 
@@ -154,7 +154,8 @@ impl Char<&[u8]> {
     /// This method is forgiving of UTF-8 encoding errors but ensures the result
     /// is a valid Unicode scalar value.
     ///
-    /// Does not validate UTF-8 continuation bytes (may decode malformed sequences)
+    /// - Does not validate UTF-8 continuation bytes (may decode malformed sequences).
+    /// - If the leading byte is invalid it returns the replacement character (`�`).
     ///
     /// It calls [to_code_unchecked()][Self::to_code_unchecked].
     ///
@@ -182,7 +183,7 @@ impl Char<&[u8]> {
     /// ```
     pub const fn to_char_lenient(self, index: usize) -> (char, usize) {
         let (cp, len) = self.to_code_unchecked(index);
-        return (unwrap![some char::from_u32(cp)], len);
+        (unwrap![some char::from_u32(cp)], len)
     }
 
     /// Decodes a UTF-8 code point at `index` without any validation.

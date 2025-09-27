@@ -10,14 +10,16 @@ impl char16 {
     /* private helper fns */
 
     // SAFETY: this is not marked as unsafe because it's only used privately
-    // by this module for a few selected operations involving ASCII.
+    // for a few selected operations in this module involving ASCII.
     #[must_use]
     const fn from_char_unchecked(c: char) -> char16 {
         char16::new_unchecked(c as u32 as u16)
     }
 
+    // SAFETY: this is not marked as unsafe because it's only used privately
+    // for a few selected operations in this module and also by IterChars.
     #[must_use]
-    const fn new_unchecked(value: u16) -> char16 {
+    pub(crate) const fn new_unchecked(value: u16) -> char16 {
         #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         return Self(crate::unwrap![some NonSurrogateU16::new(value)]);
 

@@ -7,7 +7,7 @@ impl char8 {
     /* private helper fns */
 
     // SAFETY: this is not marked as unsafe because it's only used privately
-    // by this module for a few selected operations.
+    // a few selected operations in this module.
     #[must_use]
     const fn from_char_unchecked(c: char) -> char8 {
         char8(c as u32 as u8)

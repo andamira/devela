@@ -3,6 +3,7 @@
 #![doc = crate::_DOC_TEXT_CHAR!()]
 //
 
+mod chars; // IterChars
 mod definitions; // char7, char8, char16
 mod namespace; // Char
 mod reexports;
@@ -16,6 +17,7 @@ mod tests;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            chars::*,
             definitions::*,
             namespace::*,
             reexports::*,

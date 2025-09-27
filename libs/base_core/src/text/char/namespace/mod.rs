@@ -62,7 +62,7 @@ impl Char<u16> {
     /// Decodes the given surrogate pair.
     ///
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled to avoid double validation.
+    /// Uses the `unsafe_str` feature to skip duplicated validation checks.
     pub const fn decode_surrogate_pair(high: u16, low: u16) -> Option<char> {
         if Char(high).is_surrogate_high() && Char(low).is_surrogate_low() {
             let code = 0x10000 + (((high as u32 - 0xD800) << 10) | (low as u32 - 0xDC00));

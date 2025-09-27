@@ -1,6 +1,6 @@
 // devela_base_core::text::char::char
 //
-///! Define the [`UnicodeScalar`] trait.
+//! Define the [`UnicodeScalar`] trait.
 //
 
 #[doc = crate::_TAG_TEXT!()]

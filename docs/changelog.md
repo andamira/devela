@@ -237,9 +237,10 @@ Many feature gates are removed in order to make most features make always availa
 - make `ASCII_TABLE` public.
 
 ### char
+- new `IterChars` iterator.
 - make `text::char` module public.
 - new `char7` methods: `to_byte`, `to_str`.
-- rename re-exported `IterChars` to `IterCharsStd`.
+- rename previously re-exported `IterChars` to `IterCharsStd`.
 - update `Char`:
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
@@ -264,6 +265,7 @@ Many feature gates are removed in order to make most features make always availa
 ### str
 - remove methods: `to_cstring`, from `String*` & `Grapheme*`.
 - make more methods *const* in `GraphemeU8`.
+- make `chars` methods *const* when possible.
 - update `Str:`
   - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
   - remove method `from_boxed_utf8_unchecked`.

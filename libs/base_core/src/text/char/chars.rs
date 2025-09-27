@@ -1,0 +1,323 @@
+// devela::text::char::chars
+//
+//! Defines [`Chars`] iterator.
+//
+// - methods over &str
+// - methods over &[u8]
+// - impl Iterator*
+
+use crate::{Char, IteratorFused, PhantomData, char7, char8, char16, is};
+
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_ITERATOR!()]
+/// An iterator over unicode scalars.
+#[doc = crate::_doc!(location_item: "text/char/struct.IterChars.html")]
+///
+#[must_use]
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct IterChars<'a, T> {
+    bytes: &'a [u8],
+    pos: usize,
+    _source: PhantomData<T>,
+}
+
+/// Methods available when constructed from a string slice.
+impl<'a> IterChars<'a, &str> {
+    /* constructors */
+
+    /// Returns a new iterator over the unicode scalars of a `string` slice.
+    #[inline(always)] #[rustfmt::skip]
+    pub const fn new(string: &'a str) -> Self {
+        Self { bytes: string.as_bytes(), pos: 0, _source: PhantomData }
+    }
+
+    /// Returns a new iterator over the unicode scalars of a `string` slice,
+    /// starting at `index`.
+    ///
+    /// Returns `None` if the given index is not a valid character boundary.
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn new_at(string: &'a str, index: usize) -> Option<Self> {
+        if string.is_char_boundary(index) {
+            Some(Self { bytes: string.as_bytes(), pos: index, _source: PhantomData })
+        } else {
+            None
+        }
+    }
+
+    /* next_* methods */
+
+    /// Returns the next unicode scalar.
+    ///
+    /// Returns `None` once there are no more characters left.
+    ///
+    /// # Features
+    /// Uses the `unsafe_str` feature to skip validation checks.
+    #[must_use] #[rustfmt::skip]
+    pub const fn next_char(&mut self) -> Option<char> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (cp, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        let ch = {
+            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+            { crate::unwrap![some? char::from_u32(cp)] }
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            unsafe { char::from_u32_unchecked(cp) }
+        };
+        self.pos += len;
+        Some(ch)
+    }
+
+    /// Returns the next 7-bit unicode scalar.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character is not ASCII.
+    ///
+    /// # Features
+    /// Uses the `unsafe_niche` feature to skip validation checks.
+    #[must_use]
+    pub const fn next_char7(&mut self) -> Option<char7> {
+        is![self.pos >= self.bytes.len(); return None];
+        let byte = self.bytes[0];
+        is![byte.is_ascii(); { self.pos += 1; Some(char7::new_unchecked(byte)) }; None]
+    }
+
+    /// Returns the next 8-bit unicode scalar.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character can't fit in 1 byte.
+    #[must_use]
+    pub const fn next_char8(&mut self) -> Option<char8> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (cp, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        if Char(cp).len_bytes() == 1 {
+            self.pos += len;
+            Some(char8(cp as u8))
+        } else {
+            None
+        }
+    }
+
+    /// Returns the next 16-bit unicode scalar.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character can't fit in 2 bytes.
+    ///
+    /// # Features
+    /// Uses the `unsafe_niche` feature to skip validation checks.
+    #[must_use]
+    pub const fn next_char16(&mut self) -> Option<char16> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (cp, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        if Char(cp).len_bytes() <= 2 {
+            self.pos += len;
+            Some(char16::new_unchecked(cp as u16))
+        } else {
+            None
+        }
+    }
+}
+
+/// Methods available when constructed from a byte slice.
+impl<'a> IterChars<'a, &[u8]> {
+    /* constructors */
+
+    /// Returns a new iterator over the unicode scalars of a slice of `bytes`.
+    pub const fn new(bytes: &'a [u8]) -> Self {
+        Self { bytes, pos: 0, _source: PhantomData }
+    }
+
+    /// Returns a new iterator over the unicode scalars of a slice of `bytes`,
+    /// starting at `index`.
+    ///
+    /// Returns `None` if the given index is not a valid character boundary.
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn new_at(bytes: &'a [u8], index: usize) -> Option<Self> {
+        if Char(bytes).is_utf8_boundary(index) {
+            Some(Self { bytes, pos: index, _source: PhantomData })
+        } else {
+            None
+        }
+    }
+
+    /* next_* methods */
+
+    /// Returns the next unicode scalar.
+    ///
+    /// It calls `Char::`[`to_char`][Char::to_char].
+    ///
+    /// # Features
+    /// Uses the `unsafe_niche` feature to skip duplicated validation checks.
+    #[must_use]
+    pub const fn next_char(&mut self) -> Option<char> {
+        is![self.pos >= self.bytes.len(); return None];
+        let Some((ch, len)) = Char(self.bytes).to_char(self.pos) else { return None };
+        self.pos += len;
+        Some(ch)
+    }
+
+    /// Returns the next Unicode scalar, without performing full UTF-8 validation,
+    /// but mostly the final Unicode scalar.
+    ///
+    /// If the leading byte is invalid it returns the replacement character (`�`).
+    ///
+    /// It calls `Char::`[`to_char_lenient`][Char::to_char_lenient].
+    #[must_use]
+    pub const fn next_char_lenient(&mut self) -> Option<char> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (cp, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        is![let Some(ch) = char::from_u32(cp); { self.pos += len; Some(ch) }; None]
+    }
+
+    /// Returns the next unicode scalar, without performing UTF-8 validation.
+    ///
+    /// # Safety
+    /// The caller must ensure that:
+    /// - `index` is within bounds of `bytes`.
+    /// - `bytes[index..]` contains a valid UTF-8 sequence.
+    /// - The decoded code point is a valid Unicode scalar value.
+    ///
+    /// Violating these conditions may lead to undefined behavior.
+    #[must_use]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    pub const unsafe fn next_char_unchecked(&mut self) -> Option<char> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (ch, len) = unsafe { Char(self.bytes).to_char_unchecked(self.pos) };
+        self.pos += len;
+        Some(ch)
+    }
+
+    /// Returns the next 7-bit unicode scalar.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character is not ASCII.
+    ///
+    /// # Features
+    /// Uses the `unsafe_niche` feature to skip validation checks.
+    #[must_use]
+    pub const fn next_char7(&mut self) -> Option<char7> {
+        is![self.pos >= self.bytes.len(); return None];
+        let byte = self.bytes[0];
+        is![byte.is_ascii(); { self.pos += 1; Some(char7::new_unchecked(byte)) }; None]
+    }
+
+    /// Returns the next 8-bit unicode scalar.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character can't fit in 1 byte.
+    #[must_use]
+    pub const fn next_char8(&mut self) -> Option<char8> {
+        is![self.pos >= self.bytes.len(); return None];
+        let Some((cp, len)) = Char(self.bytes).to_code(self.pos) else { return None };
+        if Char(cp).len_bytes() == 1 {
+            self.pos += len;
+            Some(char8(cp as u8))
+        } else {
+            None
+        }
+    }
+
+    /// Returns the next 8-bit unicode scalar, without performing UTF-8 validation.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character can't fit in 1 byte.
+    ///
+    /// # Panics
+    /// It will panic if the index is out of bounds.
+    ///
+    /// # Safety
+    /// The caller must ensure that:
+    /// - `index` is within bounds of `bytes`.
+    /// - `bytes[index..]` contains a valid UTF-8 sequence.
+    /// - The decoded code point is a valid Unicode scalar value.
+    ///
+    /// Violating these conditions may lead to undefined behavior.
+    #[must_use]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    pub const unsafe fn next_char8_unchecked(&mut self) -> Option<char8> {
+        let (cp, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        is![Char(cp).len_bytes() == 1; { self.pos += len; Some(char8(cp as u8)) }; None]
+    }
+
+    /// Returns the next 16-bit unicode scalar.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character can't fit in 2 bytes.
+    ///
+    /// # Features
+    /// Uses the `unsafe_niche` feature to skip validation checks.
+    #[must_use]
+    pub const fn next_char16(&mut self) -> Option<char16> {
+        is![self.pos >= self.bytes.len(); return None];
+        let Some((cp, len)) = Char(self.bytes).to_code(self.pos) else { return None };
+        if Char(cp).len_bytes() <= 2 {
+            self.pos += len;
+            Some(char16::new_unchecked(cp as u16))
+        } else {
+            None
+        }
+    }
+
+    /// Returns the next 16-bit unicode scalar, without performing UTF-8 validation.
+    ///
+    /// Returns `None` once there are no more characters left,
+    /// or if the next character can't fit in 2 bytes.
+    ///
+    /// # Panics
+    /// It will panic if the index is out of bounds.
+    ///
+    /// # Safety
+    /// The caller must ensure that:
+    /// - `index` is within bounds of `bytes`.
+    /// - `bytes[index..]` contains a valid UTF-8 sequence.
+    /// - The decoded code point is a valid Unicode scalar value.
+    ///
+    /// Violating these conditions may lead to undefined behavior.
+    ///
+    /// # Features
+    /// Uses the `unsafe_niche` feature to skip validation checks.
+    #[must_use]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    pub const unsafe fn next_char16_unchecked(&mut self) -> Option<char16> {
+        let (cp, len) = Char(self.bytes).to_code_unchecked(self.pos);
+        if Char(cp).len_bytes() <= 2 {
+            self.pos += len;
+            Some(char16::new_unchecked(cp as u16))
+        } else {
+            None
+        }
+    }
+}
+
+/* impl Iterator* */
+
+impl<'a> Iterator for IterChars<'a, &'a str> {
+    type Item = char;
+
+    #[inline(always)]
+    fn next(&mut self) -> Option<char> {
+        self.next_char()
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let remaining = self.bytes.len() - self.pos;
+        (remaining.div_ceil(4), Some(remaining))
+    }
+}
+impl<'a> IteratorFused for IterChars<'a, &'a str> {}
+
+impl<'a> Iterator for IterChars<'a, &'a [u8]> {
+    type Item = char;
+
+    #[inline(always)]
+    fn next(&mut self) -> Option<char> {
+        self.next_char()
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let remaining = self.bytes.len() - self.pos;
+        (remaining.div_ceil(4), Some(remaining))
+    }
+}
+impl<'a> IteratorFused for IterChars<'a, &'a [u8]> {}
