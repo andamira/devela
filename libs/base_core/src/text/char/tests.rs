@@ -108,19 +108,19 @@ fn char_to_utf8_bytes() {
 }
 
 #[test]
-fn bytes_to_code() {
+fn utf8_bytes_to_scalar() {
     // Invalid continuation bytes
     let invalid_cont = b"\xE0\x41\x80"; // Second byte not continuation
-    assert_eq!(Char(invalid_cont).to_code(0), None); // fails validate_continuation_bytes()
+    assert_eq!(Char(invalid_cont).to_scalar(0), None); // fails validate_continuation_bytes()
 
     // Overlong encodings (already blocked by LUT)
     let overlong = b"\xC0\x80"; // overlong NULL
-    assert_eq!(Char(overlong).to_code(0), None); // LUT returns 0 width
+    assert_eq!(Char(overlong).to_scalar(0), None); // LUT returns 0 width
 
     // Surrogates
     let surrogate = b"\xED\xA0\x80"; // U+D800
-    assert_eq!(Char(surrogate).to_code(0), None); // fails is_valid()
+    assert_eq!(Char(surrogate).to_scalar(0), None); // fails is_valid()
 
     let out_of_range = b"\xF4\x90\x80\x80"; // U+110000 (above max)
-    assert_eq!(Char(out_of_range).to_code(0), None); // fails is_valid()
+    assert_eq!(Char(out_of_range).to_scalar(0), None); // fails is_valid()
 }

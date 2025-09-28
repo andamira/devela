@@ -114,7 +114,7 @@ macro_rules! impl_char {
             #[must_use]
             pub const fn is_nul(self) -> bool { self.to_u32() == 0 }
 
-            /// Checks if the unicode scalar is a digit in the given radix.
+            /// Checks if the Unicode scalar is a digit in the given radix.
             ///
             /// See also [`to_digit`][Self#method.to_digit].
             #[must_use]

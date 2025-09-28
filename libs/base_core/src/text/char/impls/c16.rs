@@ -31,10 +31,10 @@ impl char16 {
 
     /* constants */
 
-    /// The lowest unicode scalar a `char16` can represent, `'\u{00}'`.
+    /// The lowest Unicode scalar a `char16` can represent, `'\u{00}'`.
     pub const MIN: char16 = char16::new_unchecked(0x0000);
 
-    /// The highest unicode scalar a `char16` can represent, `'\u{FFFF}'`.
+    /// The highest Unicode scalar a `char16` can represent, `'\u{FFFF}'`.
     ///
     /// Note that `'\u{FFFF}'` is a *noncharacter*.
     pub const MAX: char16 = char16::new_unchecked(0xFFFF);
@@ -83,7 +83,7 @@ impl char16 {
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
-        if Char(self.to_u32()).is_7bit() {
+        if Char(self.to_u32()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
             if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
                 return Ok(c);
@@ -187,7 +187,7 @@ impl char16 {
 
     /* queries */
 
-    /// Returns `true` if this unicode scalar is a [noncharacter][0].
+    /// Returns `true` if this Unicode scalar is a [noncharacter][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
@@ -195,7 +195,7 @@ impl char16 {
         Char(self.0.get() as u32).is_noncharacter()
     }
 
-    /// Returns `true` if this unicode scalar is an [abstract character][0].
+    /// Returns `true` if this Unicode scalar is an [abstract character][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[must_use]

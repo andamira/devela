@@ -11,13 +11,13 @@
 
 pub(super) use crate::{NonExtremeU8, NonValueU16};
 
-// This is a surrogate UTF-16 code point that can't ever be a unicode scalar.
+// This is a surrogate UTF-16 code point that can't ever be a Unicode scalar.
 pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
 /* public types */
 
 #[doc = crate::_TAG_TEXT!()]
-/// A 7-bit [unicode scalar][scalar], limited to [basic latin][0w] subset
+/// A 7-bit [Unicode scalar][scalar], limited to [basic latin][0w] subset
 /// (ASCII).
 ///
 #[doc = crate::_doc!(location: "text/char")]
@@ -33,13 +33,13 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 pub struct char7(pub(super) NonExtremeU8);
 
 #[doc = crate::_TAG_TEXT!()]
-/// An 8-bit [unicode scalar][scalar], limited to [basic latin][0w]
+/// An 8-bit [Unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
 ///
 #[doc = crate::_doc!(location: "text/char")]
 ///
 /// This is the only scalar type without memory layout optimization
-/// because each possible value is a valid unicode scalar. Therefore
+/// because each possible value is a valid Unicode scalar. Therefore
 /// `Option<char8>` is the same size as `char16` or `Option<char16>` (2 bytes).
 ///
 /// See also: [`char7`], [`char16`], [`char`][crate::char].
@@ -52,7 +52,7 @@ pub struct char7(pub(super) NonExtremeU8);
 pub struct char8(pub(crate) u8);
 
 #[doc = crate::_TAG_TEXT!()]
-/// A 16-bit [unicode scalar][scalar], limited to the
+/// A 16-bit [Unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
 ///
 #[doc = crate::_doc!(location: "text/char")]

@@ -122,7 +122,7 @@ macro_rules! impl_str_u {
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < string.len()`.
             ///
-            /// It calls [`try_push_str_complete()`][Self::try_push_str_complete].
+            /// This is implemented via `Self::`[`try_push_str_complete()`][Self::try_push_str_complete].
             ///
             /// # Example
             /// ```
@@ -141,7 +141,7 @@ macro_rules! impl_str_u {
             ///
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]"]
             ///
-            /// It calls [`try_push_str_complete()`][Self::try_push_str_complete].
+            /// This is implemented via `Self::`[`push_str()`][Self::push_str].
             pub const fn from_str_truncate(string: &str) -> Result<Self, MismatchedCapacity> {
                 let mut new_string = unwrap![ok? Self::new_checked()];
                 let _ = new_string.push_str(string);
@@ -154,7 +154,7 @@ macro_rules! impl_str_u {
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
             ///
-            /// It calls [`push_str()`][Self::push_str].
+            /// This is implemented via `Self::`[`push_str()`][Self::push_str].
             pub const fn from_str_unchecked(string: &str) -> Self {
                 let mut new_string = Self::new();
                 let _ = new_string.push_str(string);
@@ -655,7 +655,7 @@ macro_rules! impl_str_u {
 
             #[doc = "Tries to create a new `String" $t:camel "` from the given `string` slice."]
             ///
-            /// It calls [`from_str()`][Self::from_str].
+            /// This is implemented via `Self::`[`from_str()`][Self::from_str].
             /// # Errors
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]"]
             /// or if `CAP < string.len()`.

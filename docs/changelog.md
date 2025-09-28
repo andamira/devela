@@ -246,8 +246,13 @@ Many feature gates are removed in order to make most features make always availa
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
   - make it a tuple struct with a single a generic parameter.
-  - add methods: `decode_surrogate_pair`, `has_overlong_encoding`, `has_valid_continuation`, `is_surrogate*`, `is_utf8_boundary`, `to_char`, `to_char_lenient`, `to_char_unchecked`, `utf8_len_match`, `utf8_len_match_naive`.
-  - rename `utf8_len` to `utf8_len_unchecked`, `utf8_len_checked` to `utf8_len`.
+  - add methods: `decode_surrogate_pair`, `has_overlong_encoding`, `has_valid_continuation`, `is_surrogate*`, `is_utf8_boundary`, `is_valid_code`, `to_char`, `to_char_lenient`, `to_char_unchecked`, `utf8_len_match`, `utf8_len_match_naive`.
+  - rename methods:
+    - `is_7bit` to `is_ascii`.
+    - `is_valid` to `is_valid_scalar`.
+    - `to_code*` to `to_scalar*`.
+    - `utf8_len` to `utf8_len_unchecked`.
+    - `utf8_len_checked` to `utf8_len`.
   - remove `utf8_bytes_` prefix from `Char<&[u8]>` methods…
   - add private consts: `CONT_MASK` `UTF8_CHAR_LEN`.
   - remove `code_` prefix from `Char<u32>` methods.

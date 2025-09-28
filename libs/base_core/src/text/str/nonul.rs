@@ -377,7 +377,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     pub const fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
         let mut first_char_len = 0;
         let mut chars = IterChars::<&str>::new(string);
-        while let Some(c) = chars.next_code() { // find the first non-zero length character:
+        while let Some(c) = chars.next_scalar() { // find the first non-zero length character:
             if c != NUL_CHAR as u32 { first_char_len = Char(c).len_utf8_unchecked(); break; }
         }
         if self.remaining_capacity() < first_char_len {

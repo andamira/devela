@@ -4,16 +4,16 @@
 //
 
 #[doc = crate::_TAG_TEXT!()]
-/// Common trait for unicode scalar types.
+/// Common trait for Unicode scalar types.
 ///
 #[doc = crate::_doc!(location: "text/char")]
 ///
 /// It's implemented for: [`char7`], [`char8`], [`char16`],
 /// and [`char`][crate::char].
 pub trait UnicodeScalar {
-    /// The lowest unicode scalar that can be represented.
+    /// The lowest Unicode scalar that can be represented.
     const MIN: Self;
-    /// The highest unicode scalar that can be represented.
+    /// The highest Unicode scalar that can be represented.
     const MAX: Self;
 
     /* encode */
@@ -90,13 +90,13 @@ pub trait UnicodeScalar {
 
     /* queries */
 
-    /// Returns `true` if this unicode scalar is a [noncharacter][0].
+    /// Returns `true` if this Unicode scalar is a [noncharacter][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
     fn is_noncharacter(self) -> bool;
 
-    /// Returns `true` if this unicode scalar is an [abstract character][0].
+    /// Returns `true` if this Unicode scalar is an [abstract character][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[must_use]
@@ -107,27 +107,25 @@ pub trait UnicodeScalar {
         !self.is_noncharacter()
     }
 
-    /// Checks if the unicode scalar is a digit in the given radix.
+    /// Checks if the Unicode scalar is a digit in the given radix.
     ///
     /// See also [`to_digit`][Self#method.to_digit].
     #[must_use]
     fn is_digit(self, radix: u32) -> bool;
 
-    /// Returns `true` if this unicode scalar has the general category for
-    /// control codes.
+    /// Returns `true` if this Unicode scalar has the general category for control codes.
     #[must_use]
     fn is_control(self) -> bool;
 
-    /// Returns `true` if this unicode scalar is the nul character (`0x00`).
+    /// Returns `true` if this Unicode scalar is the nul character (`0x00`).
     #[must_use]
     fn is_nul(self) -> bool;
 
-    /// Returns `true` if this unicode scalar has the `Alphabetic` property.
+    /// Returns `true` if this Unicode scalar has the `Alphabetic` property.
     #[must_use]
     fn is_alphabetic(self) -> bool;
 
-    /// Returns `true` if this unicode scalar has one of the general categories
-    /// for numbers.
+    /// Returns `true` if this Unicode scalar has one of the general categories for numbers.
     ///
     /// If you want to parse ASCII decimal digits (0-9) or ASCII base-N,
     /// use [`is_ascii_digit`][Self#method.is_ascii_digit] or
@@ -135,21 +133,21 @@ pub trait UnicodeScalar {
     #[must_use]
     fn is_numeric(self) -> bool;
 
-    /// Returns `true` if this unicode scalar satisfies either
+    /// Returns `true` if this Unicode scalar satisfies either
     /// [`is_alphabetic()`][Self#method.is_alphabetic] or
     /// [`is_numeric()`][Self#method.is_numeric].
     #[must_use]
     fn is_alphanumeric(self) -> bool;
 
-    /// Returns `true` if this unicode scalar has the `Lowercase` property.
+    /// Returns `true` if this Unicode scalar has the `Lowercase` property.
     #[must_use]
     fn is_lowercase(self) -> bool;
 
-    /// Returns `true` if this unicode scalar has the `Uppercase` property.
+    /// Returns `true` if this Unicode scalar has the `Uppercase` property.
     #[must_use]
     fn is_uppercase(self) -> bool;
 
-    /// Returns `true` if this unicode scalar has the `White_Space` property.
+    /// Returns `true` if this Unicode scalar has the `White_Space` property.
     #[must_use]
     fn is_whitespace(self) -> bool;
 

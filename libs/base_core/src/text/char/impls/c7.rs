@@ -35,10 +35,10 @@ impl char7 {
 
     /* constants */
 
-    /// The lowest unicode scalar a `char7` can represent, `'\u{00}'`.
+    /// The lowest Unicode scalar a `char7` can represent, `'\u{00}'`.
     pub const MIN: char7 = char7::new_unchecked(0x00);
 
-    /// The highest unicode scalar a `char7` can represent, `'\u{7F}'`.
+    /// The highest Unicode scalar a `char7` can represent, `'\u{7F}'`.
     pub const MAX: char7 = char7::new_unchecked(0x7F);
 
     /* conversions */
@@ -54,7 +54,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char8(c: char8) -> Result<char7, DataOverflow> {
-        if Char(c.to_u32()).is_7bit() {
+        if Char(c.to_u32()).is_ascii() {
             Ok(char7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(DataOverflow(Some(c.to_u32() as usize)))
@@ -65,7 +65,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char16(c: char16) -> Result<char7, DataOverflow> {
-        if Char(c.to_u32()).is_7bit() {
+        if Char(c.to_u32()).is_ascii() {
             Ok(char7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(DataOverflow(Some(c.to_u32() as usize)))
@@ -76,7 +76,7 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char(c: char) -> Result<char7, DataOverflow> {
-        if Char(c as u32).is_7bit() {
+        if Char(c as u32).is_ascii() {
             Ok(char7::new_unchecked(c as u32 as u8))
         } else {
             Err(DataOverflow(Some(c as u32 as usize)))
@@ -144,7 +144,7 @@ impl char7 {
 
     /* queries */
 
-    /// Returns `true` if this unicode scalar is a [noncharacter][0].
+    /// Returns `true` if this Unicode scalar is a [noncharacter][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
@@ -152,7 +152,7 @@ impl char7 {
         false
     }
 
-    /// Returns `true` if this unicode scalar is an [abstract character][0].
+    /// Returns `true` if this Unicode scalar is an [abstract character][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[must_use]

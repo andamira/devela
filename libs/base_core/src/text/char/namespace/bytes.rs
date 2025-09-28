@@ -102,17 +102,17 @@ impl Char<u8> {
 /// # Methods over `u8` slice.
 #[rustfmt::skip]
 impl Char<&[u8]> {
-    /// Decodes a UTF-8 code point at `index`.
+    /// Decodes a UTF-8 scalar at `index`.
     ///
-    /// Returns `Some((code, len))` if the input is a valid UTF-8 sequence
-    /// and the decoded code point is a valid Unicode scalar.
+    /// Returns `Some((char, len))` if the input is a valid UTF-8 sequence
+    /// and the decoded value is a valid Unicode scalar.
     ///
     /// Returns `None` if:
     /// - The index is out of bounds.
     /// - The bytes do not form a valid UTF-8 sequence.
     /// - The decoded value is not a valid Unicode scalar.
     ///
-    /// It calls [to_code()][Self::to_code].
+    /// This is implemented via `Char::`[`to_scalar()`][Self::to_scalar].
     ///
     /// # Example
     /// ```
@@ -140,7 +140,7 @@ impl Char<&[u8]> {
     /// # Features
     /// Uses the `unsafe_str` feature to skip duplicated validation checks.
     pub const fn to_char(self, index: usize) -> Option<(char, usize)> {
-        let (cp, len) = unwrap![some? self.to_code(index)];
+        let (cp, len) = unwrap![some? self.to_scalar(index)];
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return Some((unwrap![some? char::from_u32(cp)], len));
@@ -157,7 +157,7 @@ impl Char<&[u8]> {
     /// - Does not validate UTF-8 continuation bytes (may decode malformed sequences).
     /// - If the leading byte is invalid it returns the replacement character (`�`).
     ///
-    /// It calls [to_code_unchecked()][Self::to_code_unchecked].
+    /// This is implemented via `Char::`[to_scalar_unchecked()][Self::to_scalar_unchecked].
     ///
     /// # Panics
     /// Panics if the decoded code point is not a valid Unicode scalar value,
@@ -182,34 +182,34 @@ impl Char<&[u8]> {
     /// // let result = Char(b"hello").to_char_lenient(10); // PANIC: index out of bounds
     /// ```
     pub const fn to_char_lenient(self, index: usize) -> (char, usize) {
-        let (cp, len) = self.to_code_unchecked(index);
+        let (cp, len) = self.to_scalar_unchecked(index);
         (unwrap![some char::from_u32(cp)], len)
     }
 
-    /// Decodes a UTF-8 code point at `index` without any validation.
+    /// Decodes a UTF-8 scalar at `index` without any validation.
     ///
     /// If the leading byte is invalid it returns the replacement character (`�`).
     ///
-    /// It calls [`to_code_unchecked`][Self::to_code_unchecked].
+    /// This is implemented via `Char::`[`to_scalar_unchecked`][Self::to_scalar_unchecked].
     ///
     /// # Safety
     /// The caller must ensure that:
     /// - `index` is within bounds of `bytes`
     /// - `bytes[index..]` contains a valid UTF-8 sequence
-    /// - The decoded code point is a valid Unicode scalar value
+    /// - The decoded value is a valid Unicode scalar.
     ///
     /// Violating these conditions may lead to undefined behavior.
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
     pub const unsafe fn to_char_unchecked(self, index: usize) -> (char, usize) {
-        let (cp, len) = self.to_code_unchecked(index);
+        let (cp, len) = self.to_scalar_unchecked(index);
         (unsafe { char::from_u32_unchecked(cp) }, len)
     }
 
-    /// Decodes a UTF-8 code point from the given byte slice, starting at `index`.
+    /// Decodes a UTF-8 scalar from the given byte slice, starting at `index`.
     ///
     /// Returns `Some((code, len))` if the input is a valid UTF-8 sequence
-    /// and the decoded code point is a valid Unicode scalar.
+    /// and the decoded value is a valid Unicode scalar.
     ///
     /// Returns `None` if:
     /// - The index is out of bounds.
@@ -219,42 +219,42 @@ impl Char<&[u8]> {
     /// # Example
     /// ```
     /// # use devela_base_core::Char;
-    /// assert_eq!(Char("Ħ".as_bytes()).to_code(0), Some((u32::from('Ħ'), 2)));
+    /// assert_eq!(Char("Ħ".as_bytes()).to_scalar(0), Some((u32::from('Ħ'), 2)));
     ///
     /// let invalid = b"\x80"; // Invalid leading byte
-    /// assert_eq!(Char(invalid).to_code(0), None);
+    /// assert_eq!(Char(invalid).to_scalar(0), None);
     /// ```
     #[must_use]
-    pub const fn to_code(self, index: usize) -> Option<(u32, usize)> {
+    pub const fn to_scalar(self, index: usize) -> Option<(u32, usize)> {
         let bytes = self.0;
         if index >= bytes.len() { return None; } // out of bounds
         let len = unwrap![some? Char(bytes[index]).utf8_len()]; // invalid leading byte
         if index + len > bytes.len() { return None; } // not enough bytes
         if !self.has_valid_continuation(index, len) { return None; } // malformed utf-8
         if self.has_overlong_encoding(index, len) { return None; } // overlong encoding
-        let (code, len) = Char(bytes).to_code_unchecked(index);
-        is![Char(code).is_valid(); Some((code, len)); None] // invalid unicode scalar
+        let (code, len) = Char(bytes).to_scalar_unchecked(index);
+        is![Char(code).is_valid_scalar(); Some((code, len)); None] // invalid scalar
     }
 
-    /// Decodes a UTF-8 code point from `bytes`, starting at `index`.
+    /// Decodes a UTF-8 scalar from `bytes`, starting at `index`.
     ///
-    /// Returns `(code, len)`, where `code` is the decoded Unicode scalar,
+    /// Returns `(scalar, len)`, where `scalar` is the decoded Unicode scalar,
     /// and `len` is the number of bytes consumed.
     ///
     /// It assumes `bytes[index..]` contains a valid UTF-8 sequence,
-    /// and it doesn't validate the resulting unicode scalar.
+    /// and it doesn't validate the resulting Unicode scalar.
     ///
     /// If the leading byte is invalid it returns the replacement character (`�`).
     ///
     /// # Panics
     /// It will panic if the index is out of bounds.
     #[must_use]
-    pub const fn to_code_unchecked(self, index: usize) -> (u32, usize) {
+    pub const fn to_scalar_unchecked(self, index: usize) -> (u32, usize) {
         let bytes = self.0;
         let first = bytes[index];
         let len = Char(first).utf8_len_unchecked();
         if len == 0 { return (char::REPLACEMENT_CHARACTER as u32, 1); } // invalid leading byte
-        let code = match len {
+        let scalar = match len {
             1 => first as u32,
             2 => ((first as u32 & 0x1F) << 6) | (bytes[index + 1] as u32 & Char::<u32>::CONT_MASK),
             3 => ((first as u32 & 0x0F) << 12)
@@ -266,13 +266,13 @@ impl Char<&[u8]> {
                 | (bytes[index + 3] as u32 & Char::<u32>::CONT_MASK),
             _ => char::REPLACEMENT_CHARACTER as u32,
         };
-        (code, len)
+        (scalar, len)
     }
 
     /// Returns `true` if the UTF-8 sequence starting at `index` is overlong encoded.
     ///
     /// This method only checks for overlong encodings, but not other UTF-8 validity rules.
-    /// It does not verify continuation byte patterns nor invalid code points.
+    /// It does not verify continuation byte patterns nor invalid scalar values.
     ///
     /// Overlong encodings use more bytes than necessary to represent a character,
     /// which is invalid in well-formed UTF-8.
@@ -304,7 +304,7 @@ impl Char<&[u8]> {
     /// This ensures the byte sequence follows proper UTF-8 encoding rules.
     ///
     /// This method only verifies correct syntax, but not correct semantics.
-    /// It does not check for overlong encodings nor invalid code points.
+    /// It does not check for overlong encodings nor invalid scalar values.
     ///
     /// # Example
     /// ```
@@ -353,16 +353,16 @@ impl<const N: usize> Char<&[u8; N]> {
         let bytes: &[u8] = self.0; Char(bytes).to_char_lenient(index)
     }
 
-    /// A wrapper over [to_code()](#method.to_code).
+    /// A wrapper over [to_scalar()](#method.to_scalar).
     #[inline(always)]
-    pub const fn to_code(self, index: usize) -> Option<(u32, usize)> {
-        let bytes: &[u8] = self.0; Char(bytes).to_code(index)
+    pub const fn to_scalar(self, index: usize) -> Option<(u32, usize)> {
+        let bytes: &[u8] = self.0; Char(bytes).to_scalar(index)
     }
 
-    /// A wrapper over [to_code_unchecked()](#method.to_code_unchecked).
+    /// A wrapper over [to_scalar_unchecked()](#method.to_scalar_unchecked).
     #[inline(always)]
-    pub const fn to_code_unchecked(self, index: usize) -> (u32, usize) {
-        let bytes: &[u8] = self.0; Char(bytes).to_code_unchecked(index)
+    pub const fn to_scalar_unchecked(self, index: usize) -> (u32, usize) {
+        let bytes: &[u8] = self.0; Char(bytes).to_scalar_unchecked(index)
     }
 
     /// A wrapper over [has_overlong_encoding()](#method.has_overlong_encoding).

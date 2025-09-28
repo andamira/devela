@@ -8,7 +8,7 @@ use crate::{ASCII_TABLE, Char, is, unwrap};
 /// # Methods over `char`
 #[rustfmt::skip]
 impl Char<char> {
-    /// Returns the number of bytes needed to encode the given `char` as UTF-8.
+    /// Returns the number of bytes needed to encode the given Unicode scalar as UTF-8.
     ///
     /// See also `Char::<u32>`[`len_utf8`][Char::<u32>::len_utf8].
     #[must_use]
@@ -16,7 +16,7 @@ impl Char<char> {
         match self.0 as u32 { 0..0x80 => 1, 0x80..0x800 => 2, 0x800..0x10_000 => 3, _ => 4 }
     }
 
-    /// Converts the given `char` to a UTF-8 encoded byte sequence.
+    /// Converts the given Unicode scalar to a UTF-8 encoded byte sequence.
     ///
     /// Always returns a `[u8; 4]` array, with unused bytes set to `0`.
     ///
@@ -31,6 +31,7 @@ impl Char<char> {
     pub const fn to_ascii_str(self) -> &'static str {
         is![self.0.is_ascii(); ASCII_TABLE[self.0 as usize]; ""]
     }
+
     /// Returns the ASCII representation as a `&'static str`.
     /// # Panics
     /// Panics if the character is not ASCII.
@@ -82,7 +83,7 @@ impl Char<char> {
     /// This function is similar to
     /// [`to_ascii_fold`][Self::to_ascii_fold], but **never returns `None`**.
     /// If no ASCII equivalent exists, the input character is returned unchanged.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn to_ascii_fold_unchecked(self) -> char {
         unwrap![some_or self.to_ascii_fold(), self.0]
     }

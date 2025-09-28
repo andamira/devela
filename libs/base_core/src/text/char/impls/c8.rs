@@ -15,10 +15,10 @@ impl char8 {
 
     /* constants */
 
-    /// The lowest unicode scalar a `char8` can represent, `'\u{00}'`.
+    /// The lowest Unicode scalar a `char8` can represent, `'\u{00}'`.
     pub const MIN: char8 = char8(0x00);
 
-    /// The highest unicode scalar a `char8` can represent, `'\u{FF}'`.
+    /// The highest Unicode scalar a `char8` can represent, `'\u{FF}'`.
     pub const MAX: char8 = char8(0xFF);
 
     /* conversions */
@@ -67,7 +67,7 @@ impl char8 {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
-        if Char(self.to_u32()).is_7bit() {
+        if Char(self.to_u32()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0) {
                 return Ok(c);
@@ -135,7 +135,7 @@ impl char8 {
 
     /* queries */
 
-    /// Returns `true` if this unicode scalar is a [noncharacter][0].
+    /// Returns `true` if this Unicode scalar is a [noncharacter][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
@@ -143,7 +143,7 @@ impl char8 {
         Char(self.0 as u32).is_noncharacter()
     }
 
-    /// Returns `true` if this unicode scalar is an [abstract character][0].
+    /// Returns `true` if this Unicode scalar is an [abstract character][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[must_use]
