@@ -15,6 +15,7 @@ mod c;
 mod c16;
 mod c7;
 mod c8;
+mod utf8;
 
 /* common implementations */
 
@@ -24,6 +25,7 @@ mod traits; // core traits
 macro_rules! impl_char {
     () => {
         impl_char![7, 8, 16];
+        // impl_char![@char_utf8]; // TODO
     };
     ($( $bits:literal),+ ) => { $crate::paste! {
         $( impl_char!(@[<char $bits>]); )+
@@ -32,7 +34,7 @@ macro_rules! impl_char {
 
         /* impl traits */
 
-        impl UnicodeScalar for $name {
+        impl UnicodeScalar for $name { // TODO:IMPROVE avoid converting to char
             const MIN: Self = Self::MIN;
             const MAX: Self = Self::MAX;
 

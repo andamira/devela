@@ -1,6 +1,6 @@
 // devela_base_core::text::char::definitions
 //
-//! Define [`char7`], [`char8`], [`char16`].
+//! Define [`char7`], [`char8`], [`char16`], [`char_utf8`].
 //
 // TOC
 // - struct char7
@@ -9,7 +9,7 @@
 
 #![allow(non_camel_case_types)]
 
-pub(super) use crate::{NonExtremeU8, NonValueU16};
+pub(super) use crate::{NonExtremeU8, NonExtremeU32, NonValueU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a Unicode scalar.
 pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
@@ -70,3 +70,14 @@ pub struct char8(pub(crate) u8);
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
+
+/// A 32-bit [Unicode scalar][scalar], with UTF-8 representation.
+///
+#[doc = crate::_doc!(location: "text/char")]
+///
+/// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
+///
+/// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
+#[must_use]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub struct char_utf8(pub(super) NonExtremeU32);

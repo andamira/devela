@@ -4,7 +4,7 @@
 //
 
 mod chars; // IterChars
-mod definitions; // char7, char8, char16
+mod definitions; // char7, char8, char16, char_utf8
 mod namespace; // Char
 mod reexports;
 mod unicode_scalar; // UnicodeScalar

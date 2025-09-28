@@ -238,7 +238,7 @@ Many feature gates are removed in order to make most features make always availa
 - make `ASCII_TABLE` public.
 
 ### char
-- new `IterChars` iterator.
+- new types: `IterChars`, `char_utf8`.
 - make `text::char` module public.
 - new `char7` methods: `to_byte`, `to_str`.
 - rename `char*` methods: `to_u32` to `to_scalar`.
