@@ -43,7 +43,7 @@ impl char16 {
     pub const REPLACEMENT_CHARACTER: char16 =
         char16::new_unchecked(char::REPLACEMENT_CHARACTER as u32 as u16);
 
-    /* conversions */
+    /* from_* conversions */
 
     /// Converts an `AsciiChar` to `char16`.
     #[must_use]
@@ -83,7 +83,7 @@ impl char16 {
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
-        if Char(self.to_u32()).is_ascii() {
+        if Char(self.to_scalar()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
             if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
                 return Ok(c);
@@ -95,7 +95,7 @@ impl char16 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
         }
-        Err(DataOverflow(Some(self.to_u32() as usize)))
+        Err(DataOverflow(Some(self.to_scalar() as usize)))
     }
 
     /// Tries to convert this `char16` to `char7`.
@@ -113,20 +113,22 @@ impl char16 {
         char8::try_from_char16(self)
     }
     /// Converts this `char16` to `char`.
+    ///
+    /// # Features
+    /// Uses the `unsafe_str` feature to avoid duplicated validation.
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
-        // #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
-        if let Some(c) = char::from_u32(self.0.get() as u32) { c } else { unreachable![] }
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        if let Some(c) = char::from_u32(self.to_scalar()) { c } else { unreachable![] }
 
-        // WAIT: [stable const](https://github.com/rust-lang/rust/issues/89259)
-        // #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
-        // SAFETY: we've already checked we contain a valid char.
-        // return unsafe { char::from_u32_unchecked(self.0 as u32) };
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        // SAFETY: we guarantee we contain a valid scalar value
+        return unsafe { char::from_u32_unchecked(self.to_scalar()) };
     }
-    /// Converts this `char16` to `u32`.
+    /// Converts this `char16` to a `u32` Unicode scalar value.
     #[must_use]
-    pub const fn to_u32(self) -> u32 {
+    pub const fn to_scalar(self) -> u32 {
         self.0.get() as u32
     }
 
@@ -165,7 +167,7 @@ impl char16 {
         }
     }
 
-    //
+    /* to_* conversions */
 
     /// Makes a copy of the value in its ASCII upper case equivalent.
     ///

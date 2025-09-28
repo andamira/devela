@@ -42,22 +42,22 @@ macro_rules! char_core_impls {
         }
         impl fmt::Binary for super::$name {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Binary::fmt(&self.to_u32(), f)
+                fmt::Binary::fmt(&self.to_scalar(), f)
             }
         }
         impl fmt::LowerHex for super::$name {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::LowerHex::fmt(&self.to_u32(), f)
+                fmt::LowerHex::fmt(&self.to_scalar(), f)
             }
         }
         impl fmt::UpperHex for super::$name {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::UpperHex::fmt(&self.to_u32(), f)
+                fmt::UpperHex::fmt(&self.to_scalar(), f)
             }
         }
         impl fmt::Octal for super::$name {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                fmt::Octal::fmt(&self.to_u32(), f)
+                fmt::Octal::fmt(&self.to_scalar(), f)
             }
         }
     }};

@@ -83,7 +83,7 @@ macro_rules! impl_char {
 
             /// Returns the number of bytes needed to represent the scalar value.
             #[must_use]
-            pub const fn len_bytes(self) -> usize { Char(self.to_u32()).len_bytes() }
+            pub const fn len_bytes(self) -> usize { Char(self.to_scalar()).len_bytes() }
 
             /// Returns the number of bytes needed to encode in UTF-8.
             #[must_use]
@@ -112,7 +112,7 @@ macro_rules! impl_char {
 
             /// Returns `true` if this is the nul character (`0x00`).
             #[must_use]
-            pub const fn is_nul(self) -> bool { self.to_u32() == 0 }
+            pub const fn is_nul(self) -> bool { self.to_scalar() == 0 }
 
             /// Checks if the Unicode scalar is a digit in the given radix.
             ///

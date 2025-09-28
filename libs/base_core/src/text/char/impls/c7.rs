@@ -41,7 +41,7 @@ impl char7 {
     /// The highest Unicode scalar a `char7` can represent, `'\u{7F}'`.
     pub const MAX: char7 = char7::new_unchecked(0x7F);
 
-    /* conversions */
+    /* from_* conversions */
 
     /// Converts an `AsciiChar` to `char7`.
     #[must_use]
@@ -54,10 +54,10 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char8(c: char8) -> Result<char7, DataOverflow> {
-        if Char(c.to_u32()).is_ascii() {
-            Ok(char7::new_unchecked(c.to_u32() as u8))
+        if Char(c.to_scalar()).is_ascii() {
+            Ok(char7::new_unchecked(c.to_scalar() as u8))
         } else {
-            Err(DataOverflow(Some(c.to_u32() as usize)))
+            Err(DataOverflow(Some(c.to_scalar() as usize)))
         }
     }
     /// Tries to convert a `char16` to `char7`.
@@ -65,10 +65,10 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char16(c: char16) -> Result<char7, DataOverflow> {
-        if Char(c.to_u32()).is_ascii() {
-            Ok(char7::new_unchecked(c.to_u32() as u8))
+        if Char(c.to_scalar()).is_ascii() {
+            Ok(char7::new_unchecked(c.to_scalar() as u8))
         } else {
-            Err(DataOverflow(Some(c.to_u32() as usize)))
+            Err(DataOverflow(Some(c.to_scalar() as usize)))
         }
     }
     /// Tries to convert a `char` to `char7`.
@@ -83,7 +83,7 @@ impl char7 {
         }
     }
 
-    //
+    /* to_* conversions */
 
     /// Returns the byte representation.
     #[inline(always)]
@@ -123,9 +123,9 @@ impl char7 {
     pub const fn to_char(self) -> char {
         self.0.get() as char
     }
-    /// Converts this `char7` to `u32`.
+    /// Converts this `char7` to a `u32` Unicode scalar value.
     #[must_use]
-    pub const fn to_u32(self) -> u32 {
+    pub const fn to_scalar(self) -> u32 {
         self.0.get() as u32
     }
 

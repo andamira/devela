@@ -21,7 +21,7 @@ impl char8 {
     /// The highest Unicode scalar a `char8` can represent, `'\u{FF}'`.
     pub const MAX: char8 = char8(0xFF);
 
-    /* conversions */
+    /* from_* conversions */
 
     /// Converts an `AsciiChar` to `char8`.
     #[must_use]
@@ -39,10 +39,10 @@ impl char8 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
     pub const fn try_from_char16(c: char16) -> Result<char8, DataOverflow> {
-        if Char(c.to_u32()).len_bytes() == 1 {
-            Ok(char8(c.to_u32() as u8))
+        if Char(c.to_scalar()).len_bytes() == 1 {
+            Ok(char8(c.to_scalar() as u8))
         } else {
-            Err(DataOverflow(Some(c.to_u32() as usize)))
+            Err(DataOverflow(Some(c.to_scalar() as usize)))
         }
     }
     /// Tries to convert a `char` to `char8`.
@@ -57,7 +57,7 @@ impl char8 {
         }
     }
 
-    //
+    /* to_* conversions */
 
     /// Tries to convert this `char8` to `AsciiChar`.
     ///
@@ -67,7 +67,7 @@ impl char8 {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
-        if Char(self.to_u32()).is_ascii() {
+        if Char(self.to_scalar()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0) {
                 return Ok(c);
@@ -79,7 +79,7 @@ impl char8 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0) });
         }
-        Err(DataOverflow(Some(self.to_u32() as usize)))
+        Err(DataOverflow(Some(self.to_scalar() as usize)))
     }
 
     /// Tries to convert this `char8` to `char7`.
@@ -99,9 +99,9 @@ impl char8 {
     pub const fn to_char(self) -> char {
         self.0 as char
     }
-    /// Converts this `char8` to `u32`.
+    /// Converts this `char8` to a `u32` Unicode scalar value.
     #[must_use]
-    pub const fn to_u32(self) -> u32 {
+    pub const fn to_scalar(self) -> u32 {
         self.0 as u32
     }
 

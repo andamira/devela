@@ -42,6 +42,7 @@ impl Char<u8> {
     /// Returns the expected UTF-8 byte length based on the given first byte, or `None` if invalid.
     ///
     /// LUT based (256-byte array).
+    #[must_use]
     pub const fn utf8_len(self) -> Option<usize> {
         let width = self.utf8_len_unchecked();
         is![width == 0; None; Some(width)]
@@ -50,6 +51,7 @@ impl Char<u8> {
     /// Returns the expected UTF-8 byte length based on the given first byte, or `0` if invalid.
     ///
     /// LUT based (256-byte array).
+    #[must_use]
     pub const fn utf8_len_unchecked(self) -> usize {
         Self::UTF8_CHAR_LEN[self.0 as usize] as usize
     }
@@ -78,6 +80,7 @@ impl Char<u8> {
     /// ### Caveat
     /// - If used on malformed UTF-8, it may suggest a length longer than the actual valid sequence.
     /// - Always use in conjunction with proper UTF-8 validation if handling untrusted input.
+    #[must_use]
     pub const fn utf8_len_match_naive(self) -> usize {
         match self.0 {
             0x00..=0x7F => 1, // 1-byte ASCII
@@ -92,7 +95,7 @@ impl Char<u8> {
     ///
     /// This checks if the byte is not a UTF-8 continuation byte (i.e., it's either
     /// an ASCII character or a valid leading byte of a multi-byte sequence).
-    #[inline]
+    #[must_use] #[inline(always)]
     pub const fn is_utf8_boundary(self) -> bool {
         // Equivalent to: b < 128 || b >= 192 (== not a continuation byte (0b10xxxxxx))
         (self.0 as i8) >= -0x40
@@ -139,6 +142,7 @@ impl Char<&[u8]> {
     /// ```
     /// # Features
     /// Uses the `unsafe_str` feature to skip duplicated validation checks.
+    #[must_use]
     pub const fn to_char(self, index: usize) -> Option<(char, usize)> {
         let (cp, len) = unwrap![some? self.to_scalar(index)];
 
@@ -149,7 +153,7 @@ impl Char<&[u8]> {
         Some((unsafe { char::from_u32_unchecked(cp) }, len))
     }
 
-    /// Decodes a UTF-8 code point leniently at `index`, validating only the final Unicode scalar.
+    /// Decodes a UTF-8 scalar leniently at `index`, validating only the final Unicode scalar.
     ///
     /// This method is forgiving of UTF-8 encoding errors but ensures the result
     /// is a valid Unicode scalar value.
@@ -160,8 +164,8 @@ impl Char<&[u8]> {
     /// This is implemented via `Char::`[to_scalar_unchecked()][Self::to_scalar_unchecked].
     ///
     /// # Panics
-    /// Panics if the decoded code point is not a valid Unicode scalar value,
-    /// or if the index is out of bounds.
+    /// Panics if the decoded value is not a valid Unicode scalar value,
+    /// or if the `index` is out of bounds.
     ///
     /// # Example
     /// ```
@@ -181,6 +185,7 @@ impl Char<&[u8]> {
     /// // Out of bounds index - will panic
     /// // let result = Char(b"hello").to_char_lenient(10); // PANIC: index out of bounds
     /// ```
+    #[must_use]
     pub const fn to_char_lenient(self, index: usize) -> (char, usize) {
         let (cp, len) = self.to_scalar_unchecked(index);
         (unwrap![some char::from_u32(cp)], len)
@@ -199,6 +204,7 @@ impl Char<&[u8]> {
     /// - The decoded value is a valid Unicode scalar.
     ///
     /// Violating these conditions may lead to undefined behavior.
+    #[must_use]
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
     pub const unsafe fn to_char_unchecked(self, index: usize) -> (char, usize) {
@@ -208,8 +214,8 @@ impl Char<&[u8]> {
 
     /// Decodes a UTF-8 scalar from the given byte slice, starting at `index`.
     ///
-    /// Returns `Some((code, len))` if the input is a valid UTF-8 sequence
-    /// and the decoded value is a valid Unicode scalar.
+    /// Returns `(scalar, len)`, where `scalar` is the decoded Unicode scalar,
+    /// and `len` is the number of bytes consumed.
     ///
     /// Returns `None` if:
     /// - The index is out of bounds.
@@ -226,17 +232,18 @@ impl Char<&[u8]> {
     /// ```
     #[must_use]
     pub const fn to_scalar(self, index: usize) -> Option<(u32, usize)> {
-        let bytes = self.0;
-        if index >= bytes.len() { return None; } // out of bounds
-        let len = unwrap![some? Char(bytes[index]).utf8_len()]; // invalid leading byte
-        if index + len > bytes.len() { return None; } // not enough bytes
-        if !self.has_valid_continuation(index, len) { return None; } // malformed utf-8
-        if self.has_overlong_encoding(index, len) { return None; } // overlong encoding
-        let (code, len) = Char(bytes).to_scalar_unchecked(index);
-        is![Char(code).is_valid_scalar(); Some((code, len)); None] // invalid scalar
+        if index >= self.0.len() { return None; } // out of bounds
+        let (bytes, first) = (self.0, self.0[index]);
+        if first < 0x80 { return Some((first as u32, 1)); } // ASCII fast path
+        let len = unwrap![some? Char(bytes[index]).utf8_len()]; // invalid leading byte?
+        if index + len > bytes.len() { return None; } // not enough bytes?
+        if !self.has_valid_continuation(index, len) { return None; } // malformed utf-8?
+        if self.has_overlong_encoding(index, len) { return None; } // overlong encoding?
+        let scalar = self.decode_scalar(index, len);
+        is![Char(scalar).is_valid_scalar(); Some((scalar, len)); None] // invalid scalar?
     }
 
-    /// Decodes a UTF-8 scalar from `bytes`, starting at `index`.
+    /// Decodes a UTF-8 scalar from the given byte slice, starting at `index`, without validation.
     ///
     /// Returns `(scalar, len)`, where `scalar` is the decoded Unicode scalar,
     /// and `len` is the number of bytes consumed.
@@ -250,11 +257,17 @@ impl Char<&[u8]> {
     /// It will panic if the index is out of bounds.
     #[must_use]
     pub const fn to_scalar_unchecked(self, index: usize) -> (u32, usize) {
-        let bytes = self.0;
-        let first = bytes[index];
+        let first = self.0[index];
+        if first < 0x80 { return (first as u32, 1); } // ASCII fast path
         let len = Char(first).utf8_len_unchecked();
-        if len == 0 { return (char::REPLACEMENT_CHARACTER as u32, 1); } // invalid leading byte
-        let scalar = match len {
+        if len == 0 { return (char::REPLACEMENT_CHARACTER as u32, 1); } // invalid leading byte?
+        (self.decode_scalar(index, len), len)
+    }
+
+    #[inline(always)]
+    const fn decode_scalar(self, index: usize, len: usize) -> u32 {
+        let (bytes, first) = (self.0, self.0[index]);
+        match len {
             1 => first as u32,
             2 => ((first as u32 & 0x1F) << 6) | (bytes[index + 1] as u32 & Char::<u32>::CONT_MASK),
             3 => ((first as u32 & 0x0F) << 12)
@@ -265,8 +278,7 @@ impl Char<&[u8]> {
                 | ((bytes[index + 2] as u32 & Char::<u32>::CONT_MASK) << 6)
                 | (bytes[index + 3] as u32 & Char::<u32>::CONT_MASK),
             _ => char::REPLACEMENT_CHARACTER as u32,
-        };
-        (scalar, len)
+        }
     }
 
     /// Returns `true` if the UTF-8 sequence starting at `index` is overlong encoded.
@@ -283,7 +295,7 @@ impl Char<&[u8]> {
     /// assert!(Char(b"\xE0\x80\x80").has_overlong_encoding(0, 3)); // overlong encoding
     /// assert!(!Char(b"\xE0\xA0\x80").has_overlong_encoding(0, 3)); // valid 3-byte sequence
     /// ```
-    #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn has_overlong_encoding(self, index: usize, len: usize) -> bool {
         let bytes = self.0;
         if index + len > bytes.len() { return false; }
@@ -333,52 +345,53 @@ impl Char<&[u8]> {
     /// an ASCII character or a valid leading byte of a multi-byte sequence).
     ///
     /// Useful for safely starting UTF-8 decoding from an arbitrary position in a byte slice.
+    #[must_use]
     pub const fn is_utf8_boundary(self, index: usize) -> bool {
         is![index >= self.0.len(); false; Char(self.0[index]).is_utf8_boundary()]
     }
 }
 
-/// Methods over a byte array, referring to a byte slice.
+/// Method wrappers over a byte array reference.
 #[rustfmt::skip] // Note: all wrapper methods are inlined away
 impl<const N: usize> Char<&[u8; N]> {
     /// A wrapper over [to_char()](#method.to_char).
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn to_char(self, index: usize) -> Option<(char, usize)> {
         let bytes: &[u8] = self.0; Char(bytes).to_char(index)
     }
 
     /// A wrapper over [to_char_lenient()](#method.to_char_lenient).
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn to_char_lenient(self, index: usize) -> (char, usize) {
         let bytes: &[u8] = self.0; Char(bytes).to_char_lenient(index)
     }
 
     /// A wrapper over [to_scalar()](#method.to_scalar).
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn to_scalar(self, index: usize) -> Option<(u32, usize)> {
         let bytes: &[u8] = self.0; Char(bytes).to_scalar(index)
     }
 
     /// A wrapper over [to_scalar_unchecked()](#method.to_scalar_unchecked).
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn to_scalar_unchecked(self, index: usize) -> (u32, usize) {
         let bytes: &[u8] = self.0; Char(bytes).to_scalar_unchecked(index)
     }
 
     /// A wrapper over [has_overlong_encoding()](#method.has_overlong_encoding).
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn has_overlong_encoding(self, index: usize, len: usize) -> bool {
         let bytes: &[u8] = self.0; Char(bytes).has_overlong_encoding(index, len)
     }
 
     /// A wrapper over [has_valid_continuation()](#method.has_valid_continuation).
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn has_valid_continuation(self, index: usize, len: usize) -> bool {
         let bytes: &[u8] = self.0; Char(bytes).has_valid_continuation(index, len)
     }
 
     /// A wrapper over [is_utf8_boundary()](#method.is_utf8_boundary).
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn is_utf8_boundary(self, index: usize) -> bool {
         let bytes: &[u8] = self.0; Char(bytes).is_utf8_boundary(index)
     }
