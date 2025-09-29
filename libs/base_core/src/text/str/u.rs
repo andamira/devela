@@ -12,7 +12,7 @@
 use crate::{Cmp, cfor, unwrap};
 use crate::{
     Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
-    Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste, slice, text::char::*,
+    Mismatch, MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, slice, text::char::*,
 };
 
 macro_rules! impl_str_u {
@@ -77,7 +77,7 @@ macro_rules! impl_str_u {
         ///     *([try_][Self::try_push_str],
         ///     [try__complete][Self::try_push_str_complete])*.
         #[must_use]
-        #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
+        #[derive(Clone, Copy, Hash, Eq, PartialOrd, Ord)]
         pub struct $name<const CAP: usize> {
             arr: [u8; CAP], // WAIT: for when possible CAP:u8 for panic-less const boundary check.
             len: $t,
@@ -439,6 +439,32 @@ macro_rules! impl_str_u {
             #[must_use]
             #[inline(always)]
             pub const fn remaining_capacity(&self) -> usize { CAP - self.len as usize }
+
+            /// Checks the equality of two strings, with the same capacity and length.
+            ///
+            /// It only checks the first `self.len()` bytes.
+            /// # Example
+            /// ```
+            /// # use devela_base_core::StringU8;
+            /// let mut a = StringU8::<16>::from_str_unchecked("hello world!");
+            /// let mut b = StringU8::<16>::from_str_unchecked("hello world!!!");
+            /// assert![!a.eq(&b)];
+            /// b.pop();
+            /// b.pop();
+            /// assert![a.eq(&b)];
+            /// ```
+            #[must_use]
+            #[inline(always)]
+            pub const fn eq(&self, other: &Self) -> bool {
+                self.len == other.len && {
+                    let mut i = 0;
+                    while i < self.len() {
+                        is! { self.arr[i] != other.arr[i]; return false }
+                        i += 1;
+                    }
+                    true
+                }
+            }
         }
 
         /// # Modifiers
@@ -620,6 +646,10 @@ macro_rules! impl_str_u {
             fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
                 write!(f, "{:?}", self.as_str())
             }
+        }
+
+        impl<const CAP: usize> PartialEq for $name<CAP> {
+            fn eq(&self, other: &Self) -> bool { self.eq(&other) }
         }
 
         impl<const CAP: usize> PartialEq<&str> for $name<CAP> { // &str on the RHS

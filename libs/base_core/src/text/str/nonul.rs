@@ -27,6 +27,9 @@ const NUL_CHAR: char = '\0';
 ///
 /// - Construct:
 ///   [`new`][Self::new],
+///   [`from_str`][Self::from_str],
+///     *([_truncate][Self::from_str_truncate],
+///     [_unchecked][Self::from_str_unchecked])*,
 ///   [`from_char`][Self::from_char]
 ///   *([`7`](Self::from_char7),
 ///     [`8`](Self::from_char8),
@@ -55,7 +58,7 @@ const NUL_CHAR: char = '\0';
 ///   [`push_str`][Self::push]*([try][Self::try_push_str])*,
 ///   [`try_push_str_complete`][Self::try_push_str_complete].
 #[must_use]
-#[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Hash, Eq, PartialOrd, Ord)]
 pub struct StringNonul<const CAP: usize> {
     arr: [u8; CAP],
 }
@@ -90,7 +93,49 @@ impl<const CAP: usize> StringNonul<CAP> {
         }
     }
 
-    /* query */
+    /// Creates a new `StringNonul` from a complete `&str`.
+    ///
+    /// # Errors
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`] or if `CAP < string.len()`.
+    ///
+    /// This is implemented via `Self::`[`try_push_str_complete()`][Self::try_push_str_complete].
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringU8;
+    /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
+    /// assert_eq![s.as_str(), "Hello Wørld!"];
+    /// ```
+    pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
+        let mut new_string = unwrap![ok? Self::new_checked()];
+        if let Ok(_) = new_string.try_push_str_complete(string) { Ok(new_string) }
+        else { Err(MismatchedCapacity::closed(0, string.len(), CAP)) }
+    }
+
+    /// Creates a new `StringNonul` from a `&str`, truncating if it does not fit.
+    ///
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
+    ///
+    /// This is implemented via `Self::`[`push_str()`][Self::push_str].
+    pub const fn from_str_truncate(string: &str) -> Result<Self, MismatchedCapacity> {
+        let mut new_string = unwrap![ok? Self::new_checked()];
+        let _ = new_string.push_str(string);
+        Ok(new_string)
+    }
+
+    /// Creates a new `StringNonul` from a `&str`, truncating if it does not fit.
+    ///
+    /// # Panics
+    /// Panics if `CAP` > [`u8::MAX`].
+    ///
+    /// This is implemented via `Self::`[`push_str()`][Self::push_str].
+    pub const fn from_str_unchecked(string: &str) -> Self {
+        let mut new_string = Self::new();
+        let _ = new_string.push_str(string);
+        new_string
+    }
+
+    /* queries */
 
     /// Returns the total capacity in bytes.
     #[must_use]
@@ -133,6 +178,31 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns `true` if the current remaining capacity is 0.
     #[must_use]
     pub const fn is_full(&self) -> bool { self.len() == CAP }
+
+    /// Checks the equality of two strings, with the same capacity and length.
+    ///
+    /// It only checks the first `self.len()` bytes.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::StringNonul;
+    /// let mut a = StringNonul::<16>::from_str_unchecked("hello world!");
+    /// let mut b = StringNonul::<16>::from_str_unchecked("hello world!!!");
+    /// assert![!a.eq(&b)];
+    /// b.pop();
+    /// b.pop();
+    /// assert![a.eq(&b)];
+    /// ```
+    #[must_use]
+    #[inline(always)]
+    pub const fn eq(&self, other: &Self) -> bool {
+        let mut i = 0;
+        while i < CAP {
+            if self.arr[i] != other.arr[i] { return false; }
+            if self.arr[i] == 0 { return true; }
+            i += 1;
+        }
+        true
+    }
 
     /* deconstruct */
 
@@ -550,12 +620,17 @@ impl<const CAP: usize> Debug for StringNonul<CAP> {
     }
 }
 
-impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> {
-    #[rustfmt::skip]
+#[rustfmt::skip]
+impl<const CAP: usize> PartialEq for StringNonul<CAP> {
+    fn eq(&self, other: &Self) -> bool { self.eq(&other) }
+}
+
+#[rustfmt::skip]
+impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> { // &str on the RHS
     fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
 }
-impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str {
-    #[rustfmt::skip]
+#[rustfmt::skip]
+impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str { // &str on the LHS
     fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_str() }
 }
 
