@@ -1,7 +1,7 @@
 // devela::text::char::impls::utf8
 
 use super::*;
-use crate::{Char, CharAscii, NonExtremeU32, is, unwrap};
+use crate::{Char, CharAscii, DataOverflow, NonExtremeU32, is, unwrap};
 
 impl char_utf8 {
     /* private helper fns */
@@ -46,6 +46,11 @@ impl char_utf8 {
 
     /// Creates a `char_utf8` from an `char8`.
     pub const fn from_char8(c: char8) -> char_utf8 {
+        Self::new_unchecked(u32::from_be_bytes(Char(c.to_scalar()).to_utf8_bytes_unchecked()))
+    }
+
+    /// Creates a `char_utf16` from an `char16`.
+    pub const fn from_char16(c: char16) -> char_utf8 {
         Self::new_unchecked(u32::from_be_bytes(Char(c.to_scalar()).to_utf8_bytes_unchecked()))
     }
 
@@ -308,7 +313,37 @@ impl char_utf8 {
         return unsafe { char::from_u32_unchecked(self.to_scalar()) };
     }
 
+    /// Tries to convert this `char_utf8` to `char7`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
+        char7::try_from_char_utf8(self)
+    }
+    /// Tries to convert this `char_utf8` to `char8`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
+        char8::try_from_char_utf8(self)
+    }
+    /// Tries to convert this `char_utf8` to `char17`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if `self` can't fit in 16 bits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn try_to_char16(self) -> Result<char16, DataOverflow> {
+        char16::try_from_char_utf8(self)
+    }
+
     /// Converts this `char_utf8` to a `u32` Unicode scalar value.
+    //
+    // This step is also necessary for knowing the byte lenght of the scalar representation.
     #[must_use]
     #[inline(always)]
     pub const fn to_scalar(self) -> u32 {

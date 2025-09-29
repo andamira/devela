@@ -4,7 +4,6 @@
 //
 
 use super::*;
-
 use crate::{ASCII_LUT, Char, CharAscii, DataOverflow, NonExtremeU8};
 
 impl char7 {
@@ -54,10 +53,11 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char8(c: char8) -> Result<char7, DataOverflow> {
-        if Char(c.to_scalar()).is_ascii() {
-            Ok(char7::new_unchecked(c.to_scalar() as u8))
+        let scalar = c.to_scalar();
+        if Char(scalar).is_ascii() {
+            Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(DataOverflow(Some(c.to_scalar() as usize)))
+            Err(DataOverflow(Some(scalar as usize)))
         }
     }
     /// Tries to convert a `char16` to `char7`.
@@ -65,12 +65,26 @@ impl char7 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
     pub const fn try_from_char16(c: char16) -> Result<char7, DataOverflow> {
-        if Char(c.to_scalar()).is_ascii() {
-            Ok(char7::new_unchecked(c.to_scalar() as u8))
+        let scalar = c.to_scalar();
+        if Char(scalar).is_ascii() {
+            Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(DataOverflow(Some(c.to_scalar() as usize)))
+            Err(DataOverflow(Some(scalar as usize)))
         }
     }
+    /// Tries to convert a `char_utf8` to `char7`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
+    pub const fn try_from_char_utf8(c: char_utf8) -> Result<char7, DataOverflow> {
+        let scalar = c.to_scalar();
+        if Char(scalar).is_ascii() {
+            Ok(char7::new_unchecked(scalar as u8))
+        } else {
+            Err(DataOverflow(Some(scalar as usize)))
+        }
+    }
+
     /// Tries to convert a `char` to `char7`.
     ///
     /// # Errors
@@ -117,6 +131,11 @@ impl char7 {
     #[must_use]
     pub const fn to_char16(self) -> char16 {
         char16::from_char7(self)
+    }
+    /// Converts this `char7` to `char_utf8`.
+    #[must_use]
+    pub const fn to_char_utf8(self) -> char_utf8 {
+        char_utf8::from_char7(self)
     }
     /// Converts this `char7` to `char`.
     #[must_use]

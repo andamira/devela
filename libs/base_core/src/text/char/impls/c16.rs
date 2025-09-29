@@ -61,6 +61,18 @@ impl char16 {
     pub const fn from_char8(c: char8) -> char16 {
         char16::new_unchecked(c.0 as u16)
     }
+    /// Tries to convert a `char_utf8` to `char8`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
+    pub const fn try_from_char_utf8(c: char_utf8) -> Result<char16, DataOverflow> {
+        let scalar = c.to_scalar();
+        if Char(scalar).len_bytes() == 1 {
+            Ok(char16::new_unchecked(scalar as u16))
+        } else {
+            Err(DataOverflow(Some(scalar as usize)))
+        }
+    }
     /// Tries to convert a `char` to `char16`.
     ///
     /// # Errors
@@ -73,7 +85,7 @@ impl char16 {
         }
     }
 
-    //
+    /* to_* conversions */
 
     /// Tries to convert this `char16` to `CharAscii`.
     ///
@@ -111,6 +123,11 @@ impl char16 {
     /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
     pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
         char8::try_from_char16(self)
+    }
+    /// Converts this `char8` to `char_utf8`.
+    #[must_use]
+    pub const fn to_char_utf8(self) -> char_utf8 {
+        char_utf8::from_char16(self)
     }
     /// Converts this `char16` to `char`.
     ///
@@ -166,8 +183,6 @@ impl char16 {
             }
         }
     }
-
-    /* to_* conversions */
 
     /// Makes a copy of the value in its ASCII upper case equivalent.
     ///

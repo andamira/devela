@@ -22,10 +22,10 @@ mod utf8;
 mod traits; // core traits
 
 /// implements `UnicodeScalar` for custom char types.
+/// (`char_utf8` implementation is at ./utf8.rs)
 macro_rules! impl_char {
     () => {
         impl_char![7, 8, 16];
-        // impl_char![@char_utf8]; // TODO
     };
     ($( $bits:literal),+ ) => { $crate::paste! {
         $( impl_char!(@[<char $bits>]); )+

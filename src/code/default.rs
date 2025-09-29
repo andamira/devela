@@ -254,7 +254,7 @@ mod impl_std {
 
 #[rustfmt::skip]
 mod impl_devela {
-    use crate::{ConstDefault, paste, unwrap};
+    use crate::{ConstDefault, paste, sf, unwrap};
     use crate::{
         // data //
         Cast,
@@ -264,6 +264,7 @@ mod impl_devela {
         Sign,
         // text //
         CharAscii,
+        char7, char8, char16, char_utf8,
         GraphemeNonul, GraphemeU8,
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
     };
@@ -289,8 +290,12 @@ mod impl_devela {
 
     /* text */
 
-    impl ConstDefault for CharAscii {
-        const DEFAULT: Self = CharAscii::Null;
+    sf! {
+        impl ConstDefault for CharAscii { const DEFAULT: Self = CharAscii::Null; }
+        impl ConstDefault for char7 { const DEFAULT: Self = char7::MIN; }
+        impl ConstDefault for char8 { const DEFAULT: Self = char8::MIN; }
+        impl ConstDefault for char16 { const DEFAULT: Self = char16::MIN; }
+        impl ConstDefault for char_utf8 { const DEFAULT: Self = char_utf8::MIN; }
     }
 
     impl<const CAP: usize> ConstDefault for GraphemeNonul<CAP> {

@@ -79,5 +79,5 @@ pub struct char16(pub(super) NonSurrogateU16);
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[must_use]
-#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char_utf8(pub(super) NonExtremeU32);

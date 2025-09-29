@@ -39,10 +39,23 @@ impl char8 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
     pub const fn try_from_char16(c: char16) -> Result<char8, DataOverflow> {
-        if Char(c.to_scalar()).len_bytes() == 1 {
-            Ok(char8(c.to_scalar() as u8))
+        let scalar = c.to_scalar();
+        if Char(scalar).len_bytes() == 1 {
+            Ok(char8(scalar as u8))
         } else {
-            Err(DataOverflow(Some(c.to_scalar() as usize)))
+            Err(DataOverflow(Some(scalar as usize)))
+        }
+    }
+    /// Tries to convert a `char_utf8` to `char8`.
+    ///
+    /// # Errors
+    /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
+    pub const fn try_from_char_utf8(c: char_utf8) -> Result<char8, DataOverflow> {
+        let scalar = c.to_scalar();
+        if Char(scalar).len_bytes() == 1 {
+            Ok(char8(scalar as u8))
+        } else {
+            Err(DataOverflow(Some(scalar as usize)))
         }
     }
     /// Tries to convert a `char` to `char8`.
@@ -50,10 +63,11 @@ impl char8 {
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
     pub const fn try_from_char(c: char) -> Result<char8, DataOverflow> {
-        if Char(c as u32).len_bytes() == 1 {
-            Ok(char8(c as u32 as u8))
+        let scalar = c as u32;
+        if Char(scalar).len_bytes() == 1 {
+            Ok(char8(scalar as u8))
         } else {
-            Err(DataOverflow(Some(c as u32 as usize)))
+            Err(DataOverflow(Some(scalar as usize)))
         }
     }
 
@@ -93,6 +107,11 @@ impl char8 {
     #[must_use]
     pub const fn to_char16(self) -> char16 {
         char16::from_char8(self)
+    }
+    /// Converts this `char8` to `char_utf8`.
+    #[must_use]
+    pub const fn to_char_utf8(self) -> char_utf8 {
+        char_utf8::from_char8(self)
     }
     /// Converts this `char8` to `char`.
     #[must_use]

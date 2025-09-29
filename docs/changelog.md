@@ -240,6 +240,8 @@ Many feature gates are removed in order to make most features make always availa
 ### char
 - new types: `IterChars`, `char_utf8`.
 - new `char7` methods: `to_byte`, `to_str`.
+- new `char[7|8|16]` methods: `to_char_utf8`, `try_from_char_utf8`.
+- impl `ConstDefault` for `char*`.
 - rename `AsciiChar` to `CharAscii`.
 - rename `char*` methods:
   - `to_u32` to `to_scalar`.
