@@ -4,6 +4,7 @@
 ///
 /// ## Traits supported
 /// - Hash
+/// - PartialEq (where other == &Self)
 /// - fmt:: Debug, Display…
 ///
 /// ## Features:
@@ -21,8 +22,10 @@
 ///
 /// impl_trait![Hash for S0 |self, state| self.0.hash(state)];
 ///
-/// impl_trait![fmt::Binary for S1<T> where T |self, f| self.v.fmt(f)];
+/// // Note: assumes other == &Self
+/// impl_trait![PartialEq for S0 |self, other| self.0 == other.0];
 ///
+/// impl_trait![fmt::Binary for S1<T> where T |self, f| self.v.fmt(f)];
 /// impl_trait!{fmt::Debug for S1<T> where T; S2<'a, T> where T |self, f| {
 ///     write!(f, "S? {{ v: {:?} }}", self.v)
 /// }}
@@ -48,6 +51,26 @@ macro_rules! impl_trait {
         $(
             impl $crate::Hash for $type {
                 fn hash<__H: $crate::Hasher>(&$self, $state: &mut __H) { $expr }
+            }
+        )+
+    };
+
+    (PartialEq for
+     $(
+        $type:ident<$($lt:lifetime),* $(,)? $($generic:ident),*>
+        $(where $($bounded:ident),+ )?
+     );+ |$self:ident, $other:ident| $expr:expr) => {
+        $(
+            impl<$($lt,)* $($generic,)*> $crate::PartialEq for $type<$($lt,)* $($generic,)*>
+                $(where $($bounded: $crate::PartialEq,)+ )? {
+                fn eq(&$self, $other: &Self) { $expr }
+            }
+        )+
+    };
+    (PartialEq for $($type:ident),+ |$self:ident, $other:ident| $expr:expr) => {
+        $(
+            impl $crate::PartialEq for $type {
+                fn eq(&$self, $other: &Self) -> bool { $expr }
             }
         )+
     };
