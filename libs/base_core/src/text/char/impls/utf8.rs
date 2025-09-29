@@ -339,8 +339,6 @@ impl char_utf8 {
     }
 
     /// Converts this `char_utf8` to a `u32` Unicode scalar value.
-    //
-    // This step is also necessary for knowing the byte lenght of the scalar representation.
     #[must_use]
     #[inline(always)]
     pub const fn to_scalar(self) -> u32 {
@@ -456,6 +454,20 @@ impl char_utf8 {
         self.0.get() <= 0x7F
     }
 
+    /// Returns `true` if this is the nul character (`0x00`).
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_nul(self) -> bool {
+        self.0.get() == 0x00
+    }
+
+    /// Returns the length of the UTF-8 representation.
+    #[must_use]
+    #[inline(always)]
+    pub const fn len_bytes(self) -> usize {
+        Char(self.to_scalar()).len_bytes() // we need to convert to a scalar
+    }
+
     /// Returns the length of the UTF-8 representation.
     #[must_use]
     #[inline(always)]
@@ -471,7 +483,7 @@ impl UnicodeScalar for char_utf8 { // TODO:IMPROVE avoid converting to char
 
     /* encode */
 
-    fn len_bytes(self) -> usize { Char(self.to_scalar()).len_bytes() }
+    fn len_bytes(self) -> usize { self.len_bytes() }
     fn len_utf8(self) -> usize { self.len_utf8() }
     fn len_utf16(self) -> usize { self.to_char().len_utf16() }
     fn encode_utf8(self, dst: &mut [u8]) -> &mut str { self.to_char().encode_utf8(dst) }
