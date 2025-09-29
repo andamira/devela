@@ -6,7 +6,7 @@
 // - methods over &[u8]
 // - impl Iterator*
 
-use crate::{Char, IteratorFused, PhantomData, char7, char8, char16, is};
+use crate::{Char, IteratorFused, PhantomData, char_utf8, char7, char8, char16, is, unwrap};
 
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_ITERATOR!()]
@@ -113,6 +113,21 @@ impl<'a> IterChars<'a, &str> {
         } else {
             None
         }
+    }
+
+    /// Returns the next Unicode scalar using a UTF-8 representation.
+    ///
+    /// Returns `None` once there are no more characters left.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[must_use] #[rustfmt::skip]
+    pub const fn next_char_utf8(&mut self) -> Option<char_utf8> {
+        is![self.pos >= self.bytes.len(); return None];
+        let len = Char(self.bytes[0]).len_utf8_unchecked();
+        let ch = char_utf8::decode_utf8(self.bytes, len);
+        self.pos += len;
+        Some(ch)
     }
 
     /* next_scalar* methods */
@@ -302,6 +317,41 @@ impl<'a> IterChars<'a, &[u8]> {
         } else {
             None
         }
+    }
+    /// Returns the next Unicode scalar using a UTF-8 representation.
+    ///
+    /// Returns `None` once there are no more characters left.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[must_use] #[rustfmt::skip]
+    pub const fn next_char_utf8(&mut self) -> Option<char_utf8> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (ch, len) = unwrap![some? char_utf8::from_utf8_bytes_with_len(self.bytes)];
+        self.pos += len as usize;
+        Some(ch)
+    }
+
+    /// Returns the next Unicode scalar, without performing UTF-8 validation.
+    ///
+    /// # Safety
+    /// The caller must ensure that:
+    /// - `index` is within bounds of `bytes`.
+    /// - `bytes[index..]` contains a valid UTF-8 sequence.
+    /// - The decoded value is a valid Unicode scalar.
+    ///
+    /// Violating these conditions may lead to undefined behavior.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[must_use]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    pub const unsafe fn next_char_utf8_unchecked(&mut self) -> Option<char_utf8> {
+        is![self.pos >= self.bytes.len(); return None];
+        let (ch, len) = unsafe { char_utf8::from_utf8_bytes_with_len_unchecked(self.bytes) };
+        self.pos += len as usize;
+        Some(ch)
     }
 
     /* next_scalar* methods */

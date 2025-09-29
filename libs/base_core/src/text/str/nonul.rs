@@ -423,7 +423,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         let mut new = unwrap![ok? Self::new_checked()];
         if c != '\0' {
             let bytes = Char(c).to_utf8_bytes();
-            let len = Char(bytes[0]).utf8_len_unchecked();
+            let len = Char(bytes[0]).len_utf8_unchecked();
             is![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
@@ -463,7 +463,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
-            let len = Char(bytes[0]).utf8_len_unchecked();
+            let len = Char(bytes[0]).len_utf8_unchecked();
             is![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
@@ -484,7 +484,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
-            let len = Char(bytes[0]).utf8_len_unchecked();
+            let len = Char(bytes[0]).len_utf8_unchecked();
             is![CAP < len; return Err(MismatchedCapacity::closed(0, len, CAP))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }

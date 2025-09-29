@@ -17,7 +17,7 @@ impl Char<u8> {
 
     // https://tools.ietf.org/html/rfc3629
     // https://github.com/rust-lang/rust/blob/master/library/core/src/str/validations.rs
-    const UTF8_CHAR_LEN: &[u8; 256] = &[
+    pub(crate) const UTF8_CHAR_LEN: &[u8; 256] = &[
         // 1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // 0 0x00..=0x7F => 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // 1
@@ -43,8 +43,8 @@ impl Char<u8> {
     ///
     /// LUT based (256-byte array).
     #[must_use]
-    pub const fn utf8_len(self) -> Option<usize> {
-        let width = self.utf8_len_unchecked();
+    pub const fn len_utf8(self) -> Option<usize> {
+        let width = self.len_utf8_unchecked();
         is![width == 0; None; Some(width)]
     }
 
@@ -52,7 +52,7 @@ impl Char<u8> {
     ///
     /// LUT based (256-byte array).
     #[must_use]
-    pub const fn utf8_len_unchecked(self) -> usize {
+    pub const fn len_utf8_unchecked(self) -> usize {
         Self::UTF8_CHAR_LEN[self.0 as usize] as usize
     }
 
@@ -60,7 +60,7 @@ impl Char<u8> {
     ///
     /// Match based, for when memory accesses are more expensive than branches.
     #[must_use]
-    pub const fn utf8_len_match(self) -> Option<usize> {
+    pub const fn len_utf8_match(self) -> Option<usize> {
         match self.0 { // same logic as Self::UTF8_CHAR_LEN
             0x00..=0x7F => Some(1),
             0xC2..=0xDF => Some(2), // skips invalid C0, C1
@@ -81,7 +81,7 @@ impl Char<u8> {
     /// - If used on malformed UTF-8, it may suggest a length longer than the actual valid sequence.
     /// - Always use in conjunction with proper UTF-8 validation if handling untrusted input.
     #[must_use]
-    pub const fn utf8_len_match_naive(self) -> usize {
+    pub const fn len_utf8_match_naive(self) -> usize {
         match self.0 {
             0x00..=0x7F => 1, // 1-byte ASCII
             0xC0..=0xDF => 2, // 2-byte sequence
@@ -235,7 +235,7 @@ impl Char<&[u8]> {
         if index >= self.0.len() { return None; } // out of bounds
         let (bytes, first) = (self.0, self.0[index]);
         if first < 0x80 { return Some((first as u32, 1)); } // ASCII fast path
-        let len = unwrap![some? Char(bytes[index]).utf8_len()]; // invalid leading byte?
+        let len = unwrap![some? Char(bytes[index]).len_utf8()]; // invalid leading byte?
         if index + len > bytes.len() { return None; } // not enough bytes?
         if !self.has_valid_continuation(index, len) { return None; } // malformed utf-8?
         if self.has_overlong_encoding(index, len) { return None; } // overlong encoding?
@@ -259,11 +259,12 @@ impl Char<&[u8]> {
     pub const fn to_scalar_unchecked(self, index: usize) -> (u32, usize) {
         let first = self.0[index];
         if first < 0x80 { return (first as u32, 1); } // ASCII fast path
-        let len = Char(first).utf8_len_unchecked();
+        let len = Char(first).len_utf8_unchecked();
         if len == 0 { return (char::REPLACEMENT_CHARACTER as u32, 1); } // invalid leading byte?
         (self.decode_scalar(index, len), len)
     }
 
+    #[must_use]
     #[inline(always)]
     const fn decode_scalar(self, index: usize, len: usize) -> u32 {
         let (bytes, first) = (self.0, self.0[index]);
@@ -321,14 +322,13 @@ impl Char<&[u8]> {
     /// # Example
     /// ```
     /// # use devela_base_core::Char;
-    /// // euro sign €
-    /// assert!(Char(b"\xE2\x82\xAC").has_valid_continuation(0, 3));
-    ///
-    /// // second byte is ASCII 'A', not continuation
-    /// assert!(!Char(b"\xE2\x41\xAC").has_valid_continuation(0, 3));
+    /// assert!(Char(b"\xE2\x82\xAC").has_valid_continuation(0, 3)); // euro sign €
+    /// assert!(!Char(b"\xE2\x41\xAC").has_valid_continuation(0, 3)); // second byte is ASCII 'A'
+    /// assert!(!Char(b"\xC2").has_valid_continuation(0, 2)); // incomplete sequence
     /// ```
     pub const fn has_valid_continuation(self, index: usize, len: usize) -> bool {
         let bytes = self.0;
+        is![bytes.len() < index + len; return false]; // ensure sufficient len
         match len {
             1 => true, // no continuation bytes needed for ASCII
             2 => bytes[index + 1] & 0xC0 == 0x80,

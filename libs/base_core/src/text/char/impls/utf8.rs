@@ -31,41 +31,42 @@ impl char_utf8 {
 
     /// Creates a `char_utf8` from a `char`.
     pub const fn from_char(c: char) -> char_utf8 {
-        char_utf8::new_unchecked(u32::from_be_bytes(Char(c as u32).to_utf8_bytes_unchecked()))
+        Self::new_unchecked(u32::from_be_bytes(Char(c as u32).to_utf8_bytes_unchecked()))
     }
 
     /// Creates a `char_utf8` from an `AsciiChar`.
     pub const fn from_ascii_char(c: AsciiChar) -> char_utf8 {
-        char_utf8::new_unchecked(c as u8 as u32)
+        Self::new_unchecked(c as u8 as u32)
     }
 
     /// Creates a `char_utf8` from a `char7`.
     pub const fn from_char7(c: char7) -> char_utf8 {
-        char_utf8::new_unchecked(c.0.get() as u32)
+        Self::new_unchecked(c.0.get() as u32)
     }
 
     /// Creates a `char_utf8` from an `char8`.
     pub const fn from_char8(c: char8) -> char_utf8 {
-        char_utf8::new_unchecked(u32::from_be_bytes(Char(c.to_scalar()).to_utf8_bytes_unchecked()))
+        Self::new_unchecked(u32::from_be_bytes(Char(c.to_scalar()).to_utf8_bytes_unchecked()))
     }
 
     /// Creates a `char_utf8` from the first scalar value present in a string slice.
     ///
     /// Returns `None` if the string is empty.
     ///
-    /// This is implemented via [from_str_unchecked()][Self::from_str_unchecked].
-    ///
     /// # Example
     /// ```
     /// # use devela_base_core::char_utf8;
     /// let c = char_utf8::from_str("A").unwrap();
-    /// assert_eq!(c.to_bytes(), [b'A', 0, 0, 0]);
+    /// assert_eq!(c.to_utf8_bytes(), [b'A', 0, 0, 0]);
     ///
     /// let c = char_utf8::from_str("¢ rest").unwrap();
-    /// assert_eq!(c.to_bytes(), [0xC2, 0xA2, 0, 0]);
+    /// assert_eq!(c.to_utf8_bytes(), [0xC2, 0xA2, 0, 0]);
     ///
     /// assert!(char_utf8::from_str("").is_none());
     /// ```
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
     pub const fn from_str(string: &str) -> Option<char_utf8> {
         is![string.is_empty(); None; Some(char_utf8::from_str_unchecked(string))]
     }
@@ -76,12 +77,198 @@ impl char_utf8 {
     /// Panics if the string is empty.
     ///
     /// # Features
-    /// Uses the `unsafe_hint` feature to optimize unreachable branches.
-    #[rustfmt::skip]
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
     pub const fn from_str_unchecked(string: &str) -> char_utf8 {
+        debug_assert!(!string.is_empty(), "string must not be empty");
         let bytes = string.as_bytes();
-        // most efficient implementation with jump table, bit shifting and oring
-        let scalar = match Char(bytes[0]).utf8_len_unchecked() {
+        let len = Char(bytes[0]).len_utf8_unchecked();
+        Self::decode_utf8(bytes, len)
+    }
+
+    /// Creates a `char_utf8` from the first scalar value present in a string slice.
+    ///
+    /// Returns the scalar and the bytes consumed as a `u32`.
+    /// Returns `None` if the string is empty.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[must_use]
+    pub const fn from_str_with_len(string: &str) -> Option<(char_utf8, u32)> {
+        is![string.is_empty(); None; Some(char_utf8::from_str_with_len_unchecked(string))]
+    }
+
+    /// Creates a `char_utf8` from the first scalar value present in a string slice.
+    ///
+    /// Returns the scalar and the bytes consumed as a `u32`.
+    ///
+    /// # Panics
+    /// Panics if the string is empty.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    pub const fn from_str_with_len_unchecked(string: &str) -> (char_utf8, u32) {
+        debug_assert!(!string.is_empty(), "string must not be empty");
+        let bytes = string.as_bytes();
+        let len = Char(bytes[0]).len_utf8_unchecked();
+        (Self::decode_utf8(bytes, len), len as u32)
+    }
+
+    /// Creates a `char_utf8` from the first UTF-8 encoded scalar value in a byte slice.
+    ///
+    /// Returns `None` if the slice is empty or doesn't contain a valid UTF-8 sequence
+    /// at the beginning.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::char_utf8;
+    /// let ascii = char_utf8::from_utf8_bytes(b"A").unwrap();
+    /// assert_eq!(ascii.to_utf8_bytes(), [b'A', 0, 0, 0]);
+    ///
+    /// let multi_byte = char_utf8::from_utf8_bytes(b"\xC2\xA2 rest").unwrap(); // ¢
+    /// assert_eq!(multi_byte.to_utf8_bytes(), [0xC2, 0xA2, 0, 0]);
+    ///
+    /// assert!(char_utf8::from_utf8_bytes(b"").is_none());
+    /// assert!(char_utf8::from_utf8_bytes(b"\xC2").is_none()); // incomplete sequence
+    /// ```
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[must_use] #[rustfmt::skip]
+    pub const fn from_utf8_bytes(bytes: &[u8]) -> Option<char_utf8> {
+        is![bytes.is_empty(); return None];
+        let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
+        is![!Char(bytes).has_valid_continuation(0, len); return None]; // malformed utf-8?
+        is![Char(bytes).has_overlong_encoding(0, len); return None]; // overlong encoding?
+        is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0; return None]; // surrogate?
+        Some(Self::decode_utf8(bytes, len))
+    }
+
+    /// Creates a `char_utf8` from the first UTF-8 encoded scalar value in a byte slice,
+    /// without validation.
+    ///
+    /// # Safety
+    /// This function is unsafe because it does not check that:
+    /// - The slice is non-empty.
+    /// - The bytes form a valid UTF-8 sequence.
+    /// - The decoded value is a valid Unicode scalar value.
+    /// - The slice has enough bytes for the UTF-8 sequence.
+    ///
+    /// The caller must ensure the slice contains at least one complete, valid UTF-8
+    /// encoded scalar value at the beginning.
+    /// Violating these conditions may lead to undefined behavior.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    pub const unsafe fn from_utf8_bytes_unchecked(bytes: &[u8]) -> char_utf8 {
+        let len = Char(bytes[0]).len_utf8_unchecked();
+        Self::decode_utf8(bytes, len)
+    }
+
+    /// Creates a `char_utf8` from the first UTF-8 encoded scalar value in a byte slice.
+    ///
+    /// Returns the scalar and the consumed bytes.
+    /// Returns `None` if the slice is empty
+    /// or doesn't contain a valid UTF-8 sequence at the beginning.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::char_utf8;
+    /// let (c, len) = char_utf8::from_utf8_bytes_with_len(b"A").unwrap();
+    /// assert!(c.to_utf8_bytes() == [b'A', 0, 0, 0] && len == 1);
+    /// let (c, len) = char_utf8::from_utf8_bytes_with_len(b"\xC2\xA2 rest").unwrap(); // ¢
+    /// assert!(c.to_utf8_bytes() == [0xC2, 0xA2, 0, 0] && len == 2);
+    ///
+    /// assert!(char_utf8::from_utf8_bytes_with_len(b"").is_none());
+    /// assert!(char_utf8::from_utf8_bytes_with_len(b"\xC2").is_none()); // incomplete sequence
+    /// ```
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[must_use] #[rustfmt::skip]
+    pub const fn from_utf8_bytes_with_len(bytes: &[u8]) -> Option<(char_utf8, u32)> {
+        is![bytes.is_empty(); return None];
+        let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
+        is![!Char(bytes).has_valid_continuation(0, len); return None]; // malformed utf-8?
+        is![Char(bytes).has_overlong_encoding(0, len); return None]; // overlong encoding?
+        is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0; return None]; // surrogate?
+        Some((Self::decode_utf8(bytes, len), len as u32))
+    }
+
+    /// Creates a `char_utf8` from the first UTF-8 encoded scalar value in a byte slice,
+    /// without validation.
+    ///
+    /// # Safety
+    /// This function is unsafe because it does not check that:
+    /// - The slice is non-empty.
+    /// - The bytes form a valid UTF-8 sequence.
+    /// - The decoded value is a valid Unicode scalar value.
+    /// - The slice has enough bytes for the UTF-8 sequence.
+    ///
+    /// The caller must ensure the slice contains at least one complete, valid UTF-8
+    /// encoded scalar value at the beginning.
+    /// Violating these conditions may lead to undefined behavior.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    pub const unsafe fn from_utf8_bytes_with_len_unchecked(bytes: &[u8]) -> (char_utf8, u32) {
+        let len = Char(bytes[0]).len_utf8_unchecked();
+        (Self::decode_utf8(bytes, len), len as u32)
+    }
+
+    /// Creates a `char_utf8` from an array of UTF-8 bytes.
+    ///
+    /// This method validates that the bytes form a valid UTF-8 sequence.
+    /// represent a valid Unicode scalar value.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::char_utf8;
+    /// assert!(char_utf8::from_utf8_byte_array([b'A', 0, 0, 0]).is_some());    // Valid
+    /// assert!(char_utf8::from_utf8_byte_array([0xC2, 0xA2, 0, 0]).is_some()); // Valid (¢)
+    /// assert!(char_utf8::from_utf8_byte_array([0xC0, 0x80, 0, 0]).is_none()); // overlong enc.
+    /// assert!(char_utf8::from_utf8_byte_array([0xC2, 0x41, 0, 0]).is_none()); // malformed cont.
+    /// ```
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[rustfmt::skip]
+    pub const fn from_utf8_byte_array(bytes: [u8; 4]) -> Option<char_utf8> {
+        let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
+        is![!Char(&bytes).has_valid_continuation(0, len); return None]; // malformed utf-8?
+        is![Char(&bytes).has_overlong_encoding(0, len); return None]; // overlong encoding?
+        is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0; return None]; // surrogate?
+        Some(Self::decode_utf8(&bytes, len))
+    }
+
+    /// Creates a `char_utf8` from an array of UTF-8 bytes, without validation.
+    ///
+    /// # Safety
+    /// This function is unsafe because it does not check that the bytes form a valid:
+    /// UTF-8 sequence or represent a valid Unicode scalar value. The caller must ensure:
+    ///
+    /// 1. The bytes form a valid UTF-8 encoded character.
+    /// 2. The decoded value is a valid Unicode scalar (e.g. not a surrogate).
+    /// 3. The array contains no overlong encodings.
+    /// 4. For sequences shorter than 4 bytes, trailing bytes should be zero.
+    ///
+    /// Violating these conditions may lead to undefined behavior.
+    ///
+    /// # Features
+    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    pub const unsafe fn from_utf8_byte_array_unchecked(bytes: [u8; 4]) -> char_utf8 {
+        let len = Char(bytes[0]).len_utf8_unchecked();
+        Self::decode_utf8(&bytes, len)
+    }
+
+    // Private helper to create a `char_utf8` from the first scalar value in a UTF-8 byte slice.
+    // Most efficient implementation with jump table, bit shifting and oring.
+    // This doesn't perform any validation and should be used carefully.
+    #[inline(always)] #[rustfmt::skip]
+    pub(crate) const fn decode_utf8(bytes: &[u8], len: usize) -> char_utf8 {
+        let scalar = match len {
             1 =>  (bytes[0] as u32) << 24,
             2 => ((bytes[0] as u32) << 24)
                | ((bytes[1] as u32) << 16),
@@ -101,68 +288,7 @@ impl char_utf8 {
                 }
             }
         };
-        char_utf8::new_unchecked(scalar)
-    }
-
-    /// Creates a `char_utf8` from an array of UTF-8 bytes.
-    ///
-    /// This method validates that the bytes form a valid UTF-8 sequence and
-    /// represent a valid Unicode scalar value.
-    ///
-    /// # Example
-    /// ```
-    /// # use devela_base_core::char_utf8;
-    /// assert!(char_utf8::from_utf8_byte_array([b'A', 0, 0, 0]).is_some());    // Valid
-    /// assert!(char_utf8::from_utf8_byte_array([0xC2, 0xA2, 0, 0]).is_some()); // Valid (¢)
-    /// assert!(char_utf8::from_utf8_byte_array([0xC0, 0x80, 0, 0]).is_none()); // overlong enc.
-    /// assert!(char_utf8::from_utf8_byte_array([0xC2, 0x41, 0, 0]).is_none()); // malformed cont.
-    /// ```
-    pub const fn from_utf8_byte_array(bytes: [u8; 4]) -> Option<char_utf8> {
-        let len = unwrap![some? Char(bytes[0]).utf8_len()]; // invalid leading byte
-        is![!Char(&bytes).has_valid_continuation(0, len); return None]; // malformed utf-8
-        is![Char(&bytes).has_overlong_encoding(0, len); return None]; // overlong encoding
-        let (scalar, actual_len) = Char(&bytes).to_scalar_unchecked(0);
-        if actual_len == len && Char(scalar).is_valid_scalar() {
-            Some(char_utf8::new_unchecked(scalar))
-        } else {
-            None
-        }
-    }
-
-    /// Creates a `char_utf8` from an array of UTF-8 bytes, without validation.
-    ///
-    /// # Safety
-    /// This function is unsafe because it does not check that the bytes form a valid
-    /// UTF-8 sequence or represent a valid Unicode scalar value. The caller must ensure:
-    ///
-    /// 1. The bytes form a valid UTF-8 encoded character.
-    /// 2. The decoded value is a valid Unicode scalar (e.g. not a surrogate).
-    /// 3. The array contains no overlong encodings.
-    /// 4. For sequences shorter than 4 bytes, trailing bytes should be zero.
-    ///
-    /// Violating these conditions may lead to undefined behavior.
-    ///
-    /// # Example
-    /// ```
-    /// # use devela_base_core::char_utf8;
-    /// // Safe because we know these are valid UTF-8 sequences
-    /// unsafe {
-    ///     let ascii = char_utf8::from_utf8_byte_array_unchecked([b'A', 0, 0, 0]);
-    ///     let multi_byte = char_utf8::from_utf8_byte_array_unchecked([0xC2, 0xA2, 0, 0]);
-    ///     assert_eq!(ascii.to_bytes(), [b'A', 0, 0, 0]);
-    ///     assert_eq!(multi_byte.to_bytes(), [0xC2, 0xA2, 0, 0]);
-    /// }
-    /// ```
-    pub const unsafe fn from_utf8_byte_array_unchecked(bytes: [u8; 4]) -> char_utf8 {
-        char_utf8::new_unchecked(u32::from_be_bytes(bytes))
-    }
-
-    /// Converts
-    pub const fn from_utf8_bytes(_bytes: &[u8]) -> char_utf8 {
-        // char_utf8::new_unchecked(c.0 as u32)
-        // WIP
-        // char_utf8::new_unchecked(u32::from_be_bytes(Char(bytes).to_utf8_bytes_unchecked()))
-        todo![]
+        Self::new_unchecked(scalar)
     }
 
     /* to_* conversions */
@@ -171,6 +297,8 @@ impl char_utf8 {
     ///
     /// # Features
     /// Uses the `unsafe_str` feature to avoid duplicated validation.
+    #[must_use]
+    #[inline(always)]
     pub const fn to_char(self) -> char {
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![some char::from_u32(self.to_scalar())];
@@ -182,8 +310,9 @@ impl char_utf8 {
 
     /// Converts this `char_utf8` to a `u32` Unicode scalar value.
     #[must_use]
+    #[inline(always)]
     pub const fn to_scalar(self) -> u32 {
-        Char(&self.to_bytes()).to_scalar_unchecked(0).0
+        Char(&self.to_utf8_bytes()).to_scalar_unchecked(0).0
     }
 
     /// Returns the UTF-8 byte representation as a 4-byte array.
@@ -192,22 +321,42 @@ impl char_utf8 {
     /// exactly matching how UTF-8 is stored in `&str` and `[u8]`.
     /// Unused bytes in the sequence are set to 0.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// # use devela_base_core::char_utf8;
     /// let c = char_utf8::from_char('A');
-    /// assert_eq!(c.to_bytes(), [0x41, 0, 0, 0]);
+    /// assert_eq!(c.to_utf8_bytes(), [0x41, 0, 0, 0]);
     ///
     /// let c = char_utf8::from_char('¢');
-    /// assert_eq!(c.to_bytes(), [0xC2, 0xA2, 0, 0]);
+    /// assert_eq!(c.to_utf8_bytes(), [0xC2, 0xA2, 0, 0]);
     ///
     /// let c = char_utf8::from_char('€');
-    /// assert_eq!(c.to_bytes(), [0xE2, 0x82, 0xAC, 0]);
+    /// assert_eq!(c.to_utf8_bytes(), [0xE2, 0x82, 0xAC, 0]);
     /// ```
     #[must_use]
     #[inline(always)]
-    pub const fn to_bytes(self) -> [u8; 4] {
+    pub const fn to_utf8_bytes(self) -> [u8; 4] {
         self.0.get().to_be_bytes()
+    }
+
+    /// Returns the first byte of the UTF-8 representation.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::char_utf8;
+    /// let c = char_utf8::from_char('A');
+    /// assert_eq!(c.first_utf8_byte(), 0x41);
+    ///
+    /// let c = char_utf8::from_char('¢');
+    /// assert_eq!(c.first_utf8_byte(), 0xC2);
+    ///
+    /// let c = char_utf8::from_char('€');
+    /// assert_eq!(c.first_utf8_byte(), 0xE2);
+    /// ```
+    #[must_use]
+    #[inline(always)]
+    pub const fn first_utf8_byte(self) -> u8 {
+        (self.0.get() >> 24) as u8
     }
 
     /* queries */
@@ -216,6 +365,7 @@ impl char_utf8 {
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
+    #[inline(always)]
     pub const fn is_noncharacter(self) -> bool {
         Char(self.0.get()).is_noncharacter()
     }
@@ -224,6 +374,7 @@ impl char_utf8 {
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[must_use]
+    #[inline(always)]
     pub const fn is_character(self) -> bool {
         !self.is_noncharacter()
     }
@@ -235,11 +386,11 @@ impl char_utf8 {
         self.0.get() <= 0x7F
     }
 
-    /// Returns the length
+    /// Returns the length of the UTF-8 representation.
     #[must_use]
     #[inline(always)]
     pub const fn len_utf8(self) -> usize {
-        Char(self.to_scalar()).len_utf8_unchecked() // IMPROVE (we already are UTF-8 encoded)
+        Char::UTF8_CHAR_LEN[self.first_utf8_byte() as usize] as usize
     }
 }
 
@@ -254,7 +405,7 @@ impl UnicodeScalar for char_utf8 { // TODO:IMPROVE avoid converting to char
     fn len_utf8(self) -> usize { self.len_utf8() }
     fn len_utf16(self) -> usize { self.to_char().len_utf16() }
     fn encode_utf8(self, dst: &mut [u8]) -> &mut str { self.to_char().encode_utf8(dst) }
-    fn to_utf8_bytes(self) -> [u8; 4] { self.to_bytes() }
+    fn to_utf8_bytes(self) -> [u8; 4] { self.to_utf8_bytes() }
     fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] { self.to_char().encode_utf16(dst) }
     fn to_digit(self, radix: u32) -> Option<u32> { self.to_char().to_digit(radix) }
     fn to_ascii_uppercase(self) -> Self {
