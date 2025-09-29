@@ -8,7 +8,7 @@
 // - trait impls
 
 use crate::{
-    Ansi, AnsiColor3b, AnsiColor8b, AsciiChar, BareBox, ByteSized, Duration, GraphemeNonul,
+    Ansi, AnsiColor3b, AnsiColor8b, BareBox, ByteSized, CharAscii, Duration, GraphemeNonul,
     Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
     NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize, Ordering,
     PhantomData, PhantomPinned, StringNonul,
@@ -213,7 +213,7 @@ bit_sized![= 64; for AtomicF64];
 #[cfg(feature = "dep_portable_atomic")]
 bit_sized![= 128; for AtomicI128, AtomicU128];
 
-bit_sized![= 7; for AsciiChar];
+bit_sized![= 7; for CharAscii];
 bit_sized![<const LEN: usize> = LEN; for GraphemeNonul<LEN>, StringNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, GraphemeU8<LEN>];

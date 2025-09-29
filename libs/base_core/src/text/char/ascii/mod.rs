@@ -1,4 +1,4 @@
-// devela_base_core::text::ascii
+// devela_base_core::text::char::ascii
 //
 #![doc = crate::_DOC_TEXT_ASCII!()]
 #![doc = crate::_doc!(extends: ascii)]
@@ -7,16 +7,16 @@
 //!
 //
 
-mod char; // AsciiChar
+mod char; // CharAscii
 mod digits; // AsciiDigits
-mod table; // ASCII_TABLE
+mod lut; // ASCII_LUT
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            char::AsciiChar,
+            char::CharAscii,
             digits::AsciiDigits,
-            table::ASCII_TABLE,
+            lut::ASCII_LUT,
         };
     }
 }

@@ -3,6 +3,7 @@
 #![doc = crate::_DOC_TEXT_CHAR!()]
 //
 
+mod ascii; // AsciiDigits, CharAscii
 mod chars; // IterChars
 mod definitions; // char7, char8, char16, char_utf8
 mod namespace; // Char
@@ -17,6 +18,7 @@ mod tests;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            ascii::_all::*,
             chars::*,
             definitions::*,
             namespace::*,

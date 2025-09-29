@@ -235,13 +235,17 @@ Many feature gates are removed in order to make most features make always availa
 ### ascii
 - rename `Ascii` to `AsciiDigits`.
   - rename method: `calc_digit` to `digit_at_power`.
-- make `ASCII_TABLE` public.
+- rename `ASCII_TABLE` to `ASCII_LUT` and make it public.
 
 ### char
 - new types: `IterChars`, `char_utf8`.
-- make `text::char` module public.
 - new `char7` methods: `to_byte`, `to_str`.
-- rename `char*` methods: `to_u32` to `to_scalar`.
+- rename `AsciiChar` to `CharAscii`.
+- rename `char*` methods:
+  - `to_u32` to `to_scalar`.
+  - `*ascii_char*` to `*char_ascii*`.
+- make `text::char` module public.
+- move `text::ascii` to `text::char::ascii`.
 - remove previously re-exported `IterChars` (renamed to `IterCharsStd`).
 - update `Char`:
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.

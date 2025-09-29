@@ -1,7 +1,7 @@
 // devela::text::char::impls::c8
 
 use super::*;
-use crate::{AsciiChar, Char, DataOverflow};
+use crate::{Char, CharAscii, DataOverflow};
 
 impl char8 {
     /* private helper fns */
@@ -23,9 +23,9 @@ impl char8 {
 
     /* from_* conversions */
 
-    /// Converts an `AsciiChar` to `char8`.
+    /// Converts an `CharAscii` to `char8`.
     #[must_use]
-    pub const fn from_ascii_char(c: AsciiChar) -> char8 {
+    pub const fn from_char_ascii(c: CharAscii) -> char8 {
         char8(c as u8)
     }
 
@@ -59,17 +59,17 @@ impl char8 {
 
     /* to_* conversions */
 
-    /// Tries to convert this `char8` to `AsciiChar`.
+    /// Tries to convert this `char8` to `CharAscii`.
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
-    pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
+    pub const fn try_to_char_ascii(self) -> Result<CharAscii, DataOverflow> {
         if Char(self.to_scalar()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-            if let Some(c) = AsciiChar::from_u8(self.0) {
+            if let Some(c) = CharAscii::from_u8(self.0) {
                 return Ok(c);
             } else {
                 unreachable![]
@@ -77,7 +77,7 @@ impl char8 {
 
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
-            return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0) });
+            return Ok(unsafe { CharAscii::from_u8_unchecked(self.0) });
         }
         Err(DataOverflow(Some(self.to_scalar() as usize)))
     }

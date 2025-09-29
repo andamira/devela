@@ -22,22 +22,11 @@ pub mod fmt;
 pub mod parse;
 pub mod str;
 
-// WIPZONE
-// mod bytes; // Utf8Byte
-// mod cell; // TextCell
-
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
             grapheme::_all::*,
         };
-
-        #[doc(inline)]
-        pub use devela_base_core::text::{AsciiChar, AsciiDigits}; // ascii
-
-        // WIPZONE
-        // pub use super::bytes::*;
-        // pub use super::cell::*;
     }
     _pub_mods {
         #[doc(inline)]

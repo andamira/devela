@@ -263,7 +263,7 @@ mod impl_devela {
         Interval,
         Sign,
         // text //
-        AsciiChar,
+        CharAscii,
         GraphemeNonul, GraphemeU8,
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
     };
@@ -289,8 +289,8 @@ mod impl_devela {
 
     /* text */
 
-    impl ConstDefault for AsciiChar {
-        const DEFAULT: Self = AsciiChar::Null;
+    impl ConstDefault for CharAscii {
+        const DEFAULT: Self = CharAscii::Null;
     }
 
     impl<const CAP: usize> ConstDefault for GraphemeNonul<CAP> {

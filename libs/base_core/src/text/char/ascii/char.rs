@@ -1,4 +1,4 @@
-// devela_base_core::text::ascii::char
+// devela_base_core::text::char::ascii::char
 //
 //!
 //
@@ -23,20 +23,20 @@ use ::core::fmt;
 ///
 /// # When to use this
 /// The main advantage of this subset is that it's always valid UTF-8.  As such,
-/// the `&[ascii::AsciiChar]` -> `&str` conversion function (as well as other related
+/// the `&[CharAscii]` -> `&str` conversion function (as well as other related
 /// ones) are O(1): *no* runtime checks are needed.
 ///
 /// If you're consuming strings, you should usually handle Unicode and thus
-/// accept `str`s, not limit yourself to `ascii::AsciiChar`s.
+/// accept `str`s, not limit yourself to `CharAscii`s.
 ///
 /// However, certain formats are intentionally designed to produce ASCII-only
 /// output in order to be 8-bit-clean.  In those cases, it can be simpler and
-/// faster to generate `ascii::AsciiChar`s instead of dealing with the variable width
+/// faster to generate `CharAscii`s instead of dealing with the variable width
 /// properties of general UTF-8 encoded strings, while still allowing the result
 /// to be used freely with other Rust things that deal in general `str`s.
 ///
 /// For example, a UUID library might offer a way to produce the string
-/// representation of a UUID as an `[ascii::AsciiChar; 36]` to avoid memory
+/// representation of a UUID as an `[CharAscii; 36]` to avoid memory
 /// allocation yet still allow it to be used as UTF-8 via `as_str` without
 /// paying for validation (or needing `unsafe` code) the way it would if it
 /// were provided as a `[u8; 36]`.
@@ -59,7 +59,7 @@ use ::core::fmt;
 /// [NamesList]: https://www.unicode.org/Public/15.0.0/ucd/NamesList.txt
 #[derive(Debug, Copy, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[repr(u8)]
-pub enum AsciiChar {
+pub enum CharAscii {
     /// U+0000 (Default variant)
     #[default]
     Null = 0,
@@ -319,7 +319,7 @@ pub enum AsciiChar {
     Delete = 127,
 }
 
-impl AsciiChar {
+impl CharAscii {
     /// Creates an ascii character from the byte `b`,
     /// or returns `None` if it's too large.
     #[must_use]
@@ -546,13 +546,13 @@ impl AsciiChar {
     }
 }
 
-impl AsciiChar {
+impl CharAscii {
     /// Views a slice of ASCII characters as a UTF-8 `str`.
     #[must_use]
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    pub const fn slice_as_str(slice: &[AsciiChar]) -> &str {
-        let ascii_ptr: *const [AsciiChar] = slice;
+    pub const fn slice_as_str(slice: &[CharAscii]) -> &str {
+        let ascii_ptr: *const [CharAscii] = slice;
         let str_ptr = ascii_ptr as *const str;
         // SAFETY: Each ASCII codepoint in UTF-8 is encoded as one single-byte
         // code unit having the same value as the ASCII byte.
@@ -563,11 +563,11 @@ impl AsciiChar {
     #[must_use]
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    pub const fn slice_as_bytes(slice: &[AsciiChar]) -> &[u8] {
-        AsciiChar::slice_as_str(slice).as_bytes()
+    pub const fn slice_as_bytes(slice: &[CharAscii]) -> &[u8] {
+        CharAscii::slice_as_str(slice).as_bytes()
     }
 }
-// impl [AsciiChar] {
+// impl [CharAscii] {
 //     /// Views this slice of ASCII characters as a UTF-8 `str`.
 //     #[must_use]
 //     pub const fn as_str(&self) -> &str {
@@ -585,7 +585,7 @@ impl AsciiChar {
 //     }
 // }
 
-impl fmt::Display for AsciiChar {
+impl fmt::Display for CharAscii {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Display::fmt(&self.as_char(), f)
     }

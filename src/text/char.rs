@@ -11,10 +11,12 @@ crate::mod_path!(_c "../../libs/base_core/src/text/char/reexports.rs");
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::_c::*; // IterChars, char
+        pub use super::_c::*; // char
 
         #[doc(inline)]
-        pub use devela_base_core::text::{Char, IterChars, char7, char8, char16};
+        pub use devela_base_core::text::{
+            AsciiDigits, Char, CharAscii, IterChars, char7, char8, char16,
+        };
     }
 }
 

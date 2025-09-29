@@ -3,7 +3,7 @@
 // TOC
 // - methods over char
 
-use crate::{ASCII_TABLE, Char, is, unwrap};
+use crate::{ASCII_LUT, Char, is, unwrap};
 
 /// # Methods over `char`
 #[rustfmt::skip]
@@ -29,7 +29,7 @@ impl Char<char> {
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
     pub const fn to_ascii_str(self) -> &'static str {
-        is![self.0.is_ascii(); ASCII_TABLE[self.0 as usize]; ""]
+        is![self.0.is_ascii(); ASCII_LUT[self.0 as usize]; ""]
     }
 
     /// Returns the ASCII representation as a `&'static str`.
@@ -37,7 +37,7 @@ impl Char<char> {
     /// Panics if the character is not ASCII.
     #[must_use]
     pub const fn to_ascii_str_unchecked(self) -> &'static str {
-        ASCII_TABLE[self.0 as usize]
+        ASCII_LUT[self.0 as usize]
     }
 
     /// Converts a character to its closest ASCII equivalent, if possible.

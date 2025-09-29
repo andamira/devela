@@ -5,7 +5,7 @@
 
 use super::*;
 
-use crate::{ASCII_TABLE, AsciiChar, Char, DataOverflow, NonExtremeU8};
+use crate::{ASCII_LUT, Char, CharAscii, DataOverflow, NonExtremeU8};
 
 impl char7 {
     /* private helper fns */
@@ -43,9 +43,9 @@ impl char7 {
 
     /* from_* conversions */
 
-    /// Converts an `AsciiChar` to `char7`.
+    /// Converts an `CharAscii` to `char7`.
     #[must_use]
-    pub const fn from_ascii_char(c: AsciiChar) -> char7 {
+    pub const fn from_char_ascii(c: CharAscii) -> char7 {
         char7::new_unchecked(c as u8)
     }
 
@@ -93,18 +93,18 @@ impl char7 {
     /// Returns the string slice representation.
     #[inline(always)]
     pub const fn to_str(&self) -> &'static str {
-        ASCII_TABLE[self.to_byte() as usize]
+        ASCII_LUT[self.to_byte() as usize]
     }
 
-    /// Converts a `char7` to `AsciiChar`.
+    /// Converts a `char7` to `CharAscii`.
     #[must_use]
-    pub const fn to_ascii_char(c: char7) -> AsciiChar {
+    pub const fn to_char_ascii(c: char7) -> CharAscii {
         #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
-        return if let Some(c) = AsciiChar::from_u8(c.0.get()) { c } else { unreachable!() };
+        return if let Some(c) = CharAscii::from_u8(c.0.get()) { c } else { unreachable!() };
 
         #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
         unsafe {
-            AsciiChar::from_u8_unchecked(c.0.get())
+            CharAscii::from_u8_unchecked(c.0.get())
         }
     }
 

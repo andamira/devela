@@ -1,7 +1,7 @@
 // devela::text::char::impls::utf8
 
 use super::*;
-use crate::{AsciiChar, Char, NonExtremeU32, is, unwrap};
+use crate::{Char, CharAscii, NonExtremeU32, is, unwrap};
 
 impl char_utf8 {
     /* private helper fns */
@@ -34,8 +34,8 @@ impl char_utf8 {
         Self::new_unchecked(u32::from_be_bytes(Char(c as u32).to_utf8_bytes_unchecked()))
     }
 
-    /// Creates a `char_utf8` from an `AsciiChar`.
-    pub const fn from_ascii_char(c: AsciiChar) -> char_utf8 {
+    /// Creates a `char_utf8` from an `CharAscii`.
+    pub const fn from_char_ascii(c: CharAscii) -> char_utf8 {
         Self::new_unchecked(c as u8 as u32)
     }
 

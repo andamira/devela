@@ -4,7 +4,7 @@
 //
 
 use super::*;
-use crate::{AsciiChar, Char, DataOverflow, text::char::NonSurrogateU16};
+use crate::{Char, CharAscii, DataOverflow, text::char::NonSurrogateU16};
 
 impl char16 {
     /* private helper fns */
@@ -45,9 +45,9 @@ impl char16 {
 
     /* from_* conversions */
 
-    /// Converts an `AsciiChar` to `char16`.
+    /// Converts an `CharAscii` to `char16`.
     #[must_use]
-    pub const fn from_ascii_char(c: AsciiChar) -> char16 {
+    pub const fn from_char_ascii(c: CharAscii) -> char16 {
         char16::new_unchecked(c as u8 as u16)
     }
 
@@ -75,17 +75,17 @@ impl char16 {
 
     //
 
-    /// Tries to convert this `char16` to `AsciiChar`.
+    /// Tries to convert this `char16` to `CharAscii`.
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
     ///
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
-    pub const fn try_to_ascii_char(self) -> Result<AsciiChar, DataOverflow> {
+    pub const fn try_to_char_ascii(self) -> Result<CharAscii, DataOverflow> {
         if Char(self.to_scalar()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
-            if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
+            if let Some(c) = CharAscii::from_u8(self.0.get() as u8) {
                 return Ok(c);
             } else {
                 unreachable![]
@@ -93,7 +93,7 @@ impl char16 {
 
             #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
             // SAFETY: we've already checked it's in range.
-            return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
+            return Ok(unsafe { CharAscii::from_u8_unchecked(self.0.get() as u8) });
         }
         Err(DataOverflow(Some(self.to_scalar() as usize)))
     }
