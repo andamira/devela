@@ -1,7 +1,7 @@
 // devela::text::char::impls::utf8
 
 use super::*;
-use crate::{Char, CharAscii, DataOverflow, NonExtremeU32, is, unwrap};
+use crate::{Char, CharAscii, DataOverflow, NonExtremeU32, Str, is, slice, unwrap};
 
 impl char_utf8 {
     /* private helper fns */
@@ -345,6 +345,44 @@ impl char_utf8 {
     #[inline(always)]
     pub const fn to_scalar(self) -> u32 {
         Char(&self.to_utf8_bytes()).to_scalar_unchecked(0).0
+    }
+
+    /// Writes the UTF-8 representation to a buffer and returns it as a string slice.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::char_utf8;
+    /// let c = char_utf8::from_char('A');
+    /// let mut buf = [0u8; 4];
+    /// assert_eq!(c.as_str_into(&mut buf), "A");
+    ///
+    /// let c = char_utf8::from_char('¢');
+    /// let mut buf = [0u8; 4];
+    /// assert_eq!(c.as_str_into(&mut buf), "¢");
+    /// ```
+    /// # Features
+    /// Uses the `unsafe_str` feature to avoid duplicated validation.
+    #[must_use]
+    pub const fn as_str_into<'a>(&self, buf: &'a mut [u8; 4]) -> &'a str {
+        *buf = self.to_utf8_bytes();
+        let len = self.len_utf8();
+
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        return unwrap![ok Str::from_utf8(slice![mut buf, ..len])];
+
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        // SAFETY: char_utf8 always contains valid UTF-8
+        unsafe {
+            Str::from_utf8_unchecked(slice![mut buf, ..len])
+        }
+    }
+
+    /// Copy UTF-8 bytes into caller buffer and return a slice of the valid bytes.
+    #[must_use]
+    #[inline(always)]
+    pub const fn as_bytes_into<'a>(&self, buf: &'a mut [u8; 4]) -> &'a [u8] {
+        *buf = self.to_utf8_bytes();
+        slice![buf, ..self.len_utf8()]
     }
 
     /// Returns the UTF-8 byte representation as a 4-byte array.
