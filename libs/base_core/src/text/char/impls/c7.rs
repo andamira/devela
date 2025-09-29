@@ -11,14 +11,12 @@ impl char7 {
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // by this module for a few selected operations.
-    #[must_use]
     const fn from_char_unchecked(c: char) -> char7 {
         char7::new_unchecked(c as u32 as u8)
     }
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // for a few selected operations in this module and also by IterChars.
-    #[must_use]
     pub(crate) const fn new_unchecked(value: u8) -> char7 {
         #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         if let Some(c) = NonExtremeU8::new(value) {
@@ -43,7 +41,6 @@ impl char7 {
     /* from_* conversions */
 
     /// Converts an `CharAscii` to `char7`.
-    #[must_use]
     pub const fn from_char_ascii(c: CharAscii) -> char7 {
         char7::new_unchecked(c as u8)
     }
@@ -123,17 +120,14 @@ impl char7 {
     }
 
     /// Converts this `char7` to `char8`.
-    #[must_use]
     pub const fn to_char8(self) -> char8 {
         char8::from_char7(self)
     }
     /// Converts this `char7` to `char16`.
-    #[must_use]
     pub const fn to_char16(self) -> char16 {
         char16::from_char7(self)
     }
     /// Converts this `char7` to `char_utf8`.
-    #[must_use]
     pub const fn to_char_utf8(self) -> char_utf8 {
         char_utf8::from_char7(self)
     }
@@ -189,7 +183,6 @@ impl char7 {
     ///
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
-    #[must_use]
     pub const fn to_ascii_uppercase(self) -> char7 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
@@ -198,7 +191,6 @@ impl char7 {
     ///
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
-    #[must_use]
     pub const fn to_ascii_lowercase(self) -> char7 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }

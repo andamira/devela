@@ -241,6 +241,7 @@ Many feature gates are removed in order to make most features make always availa
 - new types: `IterChars`, `char_utf8`.
 - new `char7` methods: `to_byte`, `to_str`.
 - new `char[7|8|16]` methods: `to_char_utf8`, `try_from_char_utf8`.
+- mark `char[7|8|16]` as must_use.
 - impl `ConstDefault` for `char*`.
 - rename `AsciiChar` to `CharAscii`.
 - rename `char*` methods:

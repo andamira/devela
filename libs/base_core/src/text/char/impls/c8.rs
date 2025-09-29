@@ -8,7 +8,6 @@ impl char8 {
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // a few selected operations in this module.
-    #[must_use]
     const fn from_char_unchecked(c: char) -> char8 {
         char8(c as u32 as u8)
     }
@@ -24,13 +23,11 @@ impl char8 {
     /* from_* conversions */
 
     /// Converts an `CharAscii` to `char8`.
-    #[must_use]
     pub const fn from_char_ascii(c: CharAscii) -> char8 {
         char8(c as u8)
     }
 
     /// Converts a `char7` to `char8`.
-    #[must_use]
     pub const fn from_char7(c: char7) -> char8 {
         char8(c.0.get())
     }
@@ -104,12 +101,10 @@ impl char8 {
         char7::try_from_char8(self)
     }
     /// Converts this `char8` to `char16`.
-    #[must_use]
     pub const fn to_char16(self) -> char16 {
         char16::from_char8(self)
     }
     /// Converts this `char8` to `char_utf8`.
-    #[must_use]
     pub const fn to_char_utf8(self) -> char_utf8 {
         char_utf8::from_char8(self)
     }
@@ -180,7 +175,6 @@ impl char8 {
     ///
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
-    #[must_use]
     pub const fn to_ascii_uppercase(self) -> char8 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
@@ -189,7 +183,6 @@ impl char8 {
     ///
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
-    #[must_use]
     pub const fn to_ascii_lowercase(self) -> char8 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }

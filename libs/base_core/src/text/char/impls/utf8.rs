@@ -317,7 +317,6 @@ impl char_utf8 {
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
-    #[must_use]
     #[inline(always)]
     pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
         char7::try_from_char_utf8(self)
@@ -326,7 +325,6 @@ impl char_utf8 {
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
-    #[must_use]
     #[inline(always)]
     pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
         char8::try_from_char_utf8(self)
@@ -335,7 +333,6 @@ impl char_utf8 {
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if `self` can't fit in 16 bits.
-    #[must_use]
     #[inline(always)]
     pub const fn try_to_char16(self) -> Result<char16, DataOverflow> {
         char16::try_from_char_utf8(self)

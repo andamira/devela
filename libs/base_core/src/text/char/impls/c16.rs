@@ -11,14 +11,12 @@ impl char16 {
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // for a few selected operations in this module involving ASCII.
-    #[must_use]
     const fn from_char_unchecked(c: char) -> char16 {
         char16::new_unchecked(c as u32 as u16)
     }
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // for a few selected operations in this module and also by IterChars.
-    #[must_use]
     pub(crate) const fn new_unchecked(value: u16) -> char16 {
         #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         return Self(crate::unwrap![some NonSurrogateU16::new(value)]);
@@ -46,18 +44,15 @@ impl char16 {
     /* from_* conversions */
 
     /// Converts an `CharAscii` to `char16`.
-    #[must_use]
     pub const fn from_char_ascii(c: CharAscii) -> char16 {
         char16::new_unchecked(c as u8 as u16)
     }
 
     /// Converts a `char7` to `char16`.
-    #[must_use]
     pub const fn from_char7(c: char7) -> char16 {
         char16::new_unchecked(c.0.get() as u16)
     }
     /// Converts a `char8` to `char16`.
-    #[must_use]
     pub const fn from_char8(c: char8) -> char16 {
         char16::new_unchecked(c.0 as u16)
     }
@@ -125,7 +120,6 @@ impl char16 {
         char8::try_from_char16(self)
     }
     /// Converts this `char8` to `char_utf8`.
-    #[must_use]
     pub const fn to_char_utf8(self) -> char_utf8 {
         char_utf8::from_char16(self)
     }
@@ -188,7 +182,6 @@ impl char16 {
     ///
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
-    #[must_use]
     pub const fn to_ascii_uppercase(self) -> char16 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
@@ -197,7 +190,6 @@ impl char16 {
     ///
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
-    #[must_use]
     pub const fn to_ascii_lowercase(self) -> char16 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }

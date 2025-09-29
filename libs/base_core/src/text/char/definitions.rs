@@ -28,6 +28,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
+#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char7(pub(super) NonExtremeU8);
@@ -47,6 +48,7 @@ pub struct char7(pub(super) NonExtremeU8);
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 /// [1w]: https://en.wikipedia.org/wiki/Latin-1_Supplement
+#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char8(pub(crate) u8);
@@ -67,6 +69,7 @@ pub struct char8(pub(crate) u8);
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
+#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
