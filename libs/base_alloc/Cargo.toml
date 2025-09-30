@@ -29,6 +29,7 @@ metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = tr
 #* Development features *#
 __dbg = ["devela_base_core/__dbg"]
 __publish = []
+__std = [] # remove no_std
 
 #* Environment features *#
 alloc = [] # always enabled

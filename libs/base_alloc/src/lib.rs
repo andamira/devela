@@ -3,7 +3,7 @@
 //! …
 //
 
-#![no_std]
+#![cfg_attr(not(feature = "__std"), no_std)]
 #![cfg_attr(base_safe, forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 

@@ -179,8 +179,10 @@ mod reflection {
         ref_flags: &[],
         features: &[
             "__dbg",
-            "__no_test",
             "__force_miri_dst",
+            "__no_test",
+            "__publish",
+            "__std",
             // "default",
             // "_default",
             "_docs", "_docs_nodeps", "_docs_min",

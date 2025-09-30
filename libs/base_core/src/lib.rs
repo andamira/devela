@@ -5,7 +5,7 @@
 
 /* crate configuration */
 // environment
-#![no_std]
+#![cfg_attr(not(feature = "__std"), no_std)]
 // safety
 #![cfg_attr(base_safe, forbid(unsafe_code))]
 //

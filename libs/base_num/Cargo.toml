@@ -28,6 +28,7 @@ metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = tr
 
 __dbg = []
 __publish = []
+__std = [] # remove no_std
 
 #* Safety features *#
 
