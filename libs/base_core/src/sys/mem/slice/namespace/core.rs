@@ -9,24 +9,18 @@ use ::core::slice::{from_raw_parts, from_raw_parts_mut};
 
 /// # `core::slice` namespaced methods.
 impl<T> Slice<T> {
-    /// Copies all elements from `src` into `dst`.
-    ///
-    /// # Features
-    /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed.
-    /// - Falls back to safe element-wise copy otherwise.
+    /// Copies all elements from `src` into `dst` using a memcpy.
     ///
     /// # Panics
     /// Panics if `src` and `dst` slices have different lengths.
-    #[rustfmt::skip]
-    pub const fn copy_from_slice(dst: &mut [T], src: &[T]) where T: Copy {
-        if dst.len() != src.len() { panic!("`src` and `dst` slices have different lengths"); }
-
-        #[cfg(all(not(base_safe_mem), unsafe··))]
-        // SAFETY: Lengths checked equal, T is Copy, and pointers are valid
-        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), src.len()); }
-
-        #[cfg(any(base_safe_mem, not(unsafe··)))]
-        { let mut i = 0; while i < src.len() { dst[i] = src[i]; i += 1; } }
+    ///
+    /// See `core::slice::`[`copy_from_slice`][slice#method.copy_from_slice].
+    #[inline(always)]
+    pub const fn copy_from_slice(dst: &mut [T], src: &[T])
+    where
+        T: Copy,
+    {
+        dst.copy_from_slice(src)
     }
 
     /// Converts a reference to `T` into a slice of length 1 (without copying).
