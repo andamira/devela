@@ -101,12 +101,12 @@ impl Timecode {
         }
 
         #[cfg(any(feature = "safe_time", not(feature = "unsafe_str")))]
-        return StringU8::<12>::from_bytes_nleft(buf, buf_len).unwrap();
+        return StringU8::<12>::from_array_nleft(buf, buf_len).unwrap();
 
         #[cfg(all(not(feature = "safe_time"), feature = "unsafe_str"))]
         // SAFETY: the buffer contains only ASCII characters.
         unsafe {
-            StringU8::<12>::from_bytes_nleft_unchecked(buf, buf_len)
+            StringU8::<12>::from_array_nleft_unchecked(buf, buf_len)
         }
     }
 
@@ -161,12 +161,12 @@ impl Timecode {
         }
 
         #[cfg(any(feature = "safe_time", not(feature = "unsafe_str")))]
-        return StringU8::<23>::from_bytes_nleft(buf, buf_len).unwrap();
+        return StringU8::<23>::from_array_nleft(buf, buf_len).unwrap();
 
         #[cfg(all(not(feature = "safe_time"), feature = "unsafe_str"))]
         // SAFETY: the buffer contains only ASCII characters.
         unsafe {
-            StringU8::<23>::from_bytes_nleft_unchecked(buf, buf_len)
+            StringU8::<23>::from_array_nleft_unchecked(buf, buf_len)
         }
     }
 }

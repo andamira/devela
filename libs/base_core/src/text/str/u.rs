@@ -9,7 +9,7 @@
 // - tests
 
 use crate::{
-    CharIter, Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8,
+    CharIter, Debug, Deref, Display, FmtResult, Formatter, InvalidText, InvalidUtf8,
     Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste, slice, text::char::*,
 };
 #[allow(unused, reason = "±unsafe")]
@@ -34,27 +34,37 @@ macro_rules! impl_str_u {
         #[doc = "Internally, the current length is stored as a [`" $t "`]."]
         ///
         /// ## Methods
+        ///
         /// - [Constructors](#constructors):
         ///   [`new`][Self::new],
-        ///     *([_checked][Self::new_checked])*,
+        ///     *([_checked][Self::new_checked])*.
         ///   [`from_str`][Self::from_str],
         ///     *([_truncate][Self::from_str_truncate],
-        ///     [_unchecked][Self::from_str_unchecked])*,
+        ///       [_unchecked][Self::from_str_unchecked])*,
         ///   [`from_char`][Self::from_char]
-        ///   *([7][Self::from_char7],
-        ///     [8][Self::from_char8],
-        ///     [16][Self::from_char16])*,
-        ///   [`from_bytes`][Self::from_bytes]
-        ///   *([_nleft][Self::from_bytes_nleft],
-        ///   [_nright][Self::from_bytes_nleft])*.
+        ///     *([`7`][Self::from_char7],
+        ///       [`8`][Self::from_char8],
+        ///       [`16`](Self::from_char16)),
+        ///       [`utf8`](Self::from_char_utf8))*.
+        ///   [`from_array`][Self::from_array]
+        #[cfg_attr(feature = "unsafe_str", doc =
+            "*([_unchecked][Self::from_array_unchecked]<sup title='unsafe function'>⚠</sup>,")]
+        ///     [_nleft][Self::from_array_nleft],
+        #[cfg_attr(feature = "unsafe_str", doc =
+            "[_nleft_unchecked][Self::from_array_nleft_unchecked]<sup title='unsafe function'>⚠</sup>,")]
+        ///       [_nright][Self::from_array_nleft].
+        #[cfg_attr(feature = "unsafe_str", doc =
+            "[_nright_unchecked][Self::from_array_nright_unchecked]<sup title='unsafe function'>⚠</sup>)*.")]
         ///
         /// - [Deconstructors](#deconstructors):
         ///   [`into_array`][Self::into_array],
         ///   [`as_array`][Self::as_array],
         ///   [`as_bytes`][Self::as_bytes]
-        ///     *([_mut][Self::as_bytes_mut])*,
+        #[cfg_attr(feature = "unsafe_str", doc =
+            "*([mut][Self::as_bytes_mut]<sup title='unsafe function'>⚠</sup>)*.")]
         ///   [`as_str`][Self::as_str]
-        ///     *([_mut][Self::as_mut_str])*,
+        #[cfg_attr(feature = "unsafe_str", doc =
+            "*([mut][Self::as_mut_str]<sup title='unsafe function'>⚠</sup>)*.")]
         ///   [`chars`][Self::chars].
         ///
         /// - [Queries](#queries):
@@ -70,12 +80,12 @@ macro_rules! impl_str_u {
         ///   [`sanitize`][Self::sanitize],
         ///   [`pop`][Self::pop]
         ///     *([try_][Self::try_pop],
-        ///     [_unchecked][Self::pop_unchecked])*,
+        ///       [_unchecked][Self::pop_unchecked])*,
         ///   [`push`][Self::push]
         ///     *([try_][Self::try_push])*.
         ///   [`push_str`][Self::push]
         ///     *([try_][Self::try_push_str],
-        ///     [try__complete][Self::try_push_str_complete])*.
+        ///       [try__complete][Self::try_push_str_complete])*.
         #[must_use]
         #[derive(Clone, Copy, Hash, Eq, PartialOrd, Ord)]
         pub struct $name<const CAP: usize> {
@@ -114,7 +124,7 @@ macro_rules! impl_str_u {
                 }
             }
 
-            /* from str */
+            /* from_str* conversions */
 
             #[doc = "Creates a new `String" $t:camel "` from a complete `&str`."]
             ///
@@ -161,7 +171,7 @@ macro_rules! impl_str_u {
                 new_string
             }
 
-            /* from char */
+            /* from_char* conversions */
 
             #[doc = "Creates a new `String" $t:camel "` from a `char`."]
             ///
@@ -169,7 +179,7 @@ macro_rules! impl_str_u {
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
             ///
-            #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = Char(c).to_utf8_bytes();
@@ -187,7 +197,7 @@ macro_rules! impl_str_u {
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < 1.
             ///
-            #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
+            #[doc = "Will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
             pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.arr[0] = c.to_utf8_bytes()[0];
@@ -201,7 +211,7 @@ macro_rules! impl_str_u {
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < 2.
             ///
-            #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
+            #[doc = "Will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
@@ -217,7 +227,15 @@ macro_rules! impl_str_u {
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
             ///
-            #[doc = "It will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
+            #[doc = "Will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
+            /// # Example
+            /// ```
+            /// # use devela_base_core::{StringU8, char_utf8};
+            /// let s = StringU8::<3>::from_char_utf8(char_utf8::from_char('€')).unwrap();
+            /// assert_eq![s.as_str(), "€"];
+            ///
+            /// assert![StringU8::<2>::from_char_utf8(char_utf8::from_char('€')).is_err()];
+            /// ```
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
@@ -225,16 +243,69 @@ macro_rules! impl_str_u {
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
+                // slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
                 Ok(new)
             }
 
-            /* from bytes */
+            #[doc = "Creates a new `String" $t:camel "` from a `char_utf8`."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
+                "::MAX`]` || CAP < c.`[`len_utf8()`][char_utf8#method.len_utf8]."]
+            ///
+            #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            /// # Example
+            /// ```
+            /// # use devela_base_core::{StringU8, char_utf8};
+            /// let s = StringU8::<3>::from_char_utf8(char_utf8::from_char('€')).unwrap();
+            /// assert_eq![s.as_str(), "€"];
+            ///
+            /// assert![StringU8::<2>::from_char_utf8(char_utf8::from_char('€')).is_err()];
+            /// ```
+            pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
+                let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
+                if len <= CAP {
+                    let mut new = unwrap![ok? Self::new_checked()];
+                    slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
+                    new.len = len as $t;
+                    Ok(new)
+                } else {
+                    Err(MismatchedCapacity::closed(len, len, CAP))
+                }
+            }
+
+            #[doc = "Creates a new `String" $t:camel "` from a `char_utf8`."]
+            ///
+            /// # Panics
+            #[doc = "Panics if `CAP > `[`" $t
+                "::MAX`]` || CAP < c.`[`len_utf8()`][char_utf8#method.len_utf8]."]
+            ///
+            #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            /// # Examples
+            /// ```
+            /// # use devela_base_core::{StringU8, char_utf8};
+            /// let s = StringU8::<3>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+            /// assert_eq![s, "€"]
+            /// ```
+            /// ```should_panic
+            /// # use devela_base_core::{StringU8, char_utf8};
+            /// StringU8::<2>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+            /// ```
+            pub const fn from_char_utf8_unchecked(c: char_utf8) -> Self {
+                let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
+                let mut new = Self::new();
+                slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
+                new.len = len as $t;
+                new
+            }
+
+            /* from_array* conversions */
 
             /// Returns a string from a slice of `bytes`.
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidUtf8> {
+            pub const fn from_array(bytes: [u8; CAP]) -> Result<Self, InvalidUtf8> {
                 match Str::from_utf8(&bytes) {
                     Ok(_) => { Ok(Self { arr: bytes, len: CAP as $t }) },
                     Err(e) => Err(e),
@@ -249,7 +320,7 @@ macro_rules! impl_str_u {
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-            pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
+            pub const unsafe fn from_array_unchecked(bytes: [u8; CAP]) -> Self {
                 Self { arr: bytes, len: CAP as $t }
             }
 
@@ -260,7 +331,7 @@ macro_rules! impl_str_u {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t)
+            pub const fn from_array_nleft(bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
                 let length = Cmp(length).min(CAP as $t);
                 match Str::from_utf8(slice![&bytes, ..length as usize]) {
@@ -269,9 +340,8 @@ macro_rules! impl_str_u {
                 }
             }
 
-            /// Returns a string from an array of `bytes`,
-            /// truncated to `n` bytes counting from the left,
-            /// which must be valid UTF-8.
+            /// Returns a string from an array of `bytes`, which must be valid UTF-8,
+            /// truncated to `n` bytes counting from the left.
             ///
             /// The new `length` is maxed out at `CAP`.
             ///
@@ -281,7 +351,8 @@ macro_rules! impl_str_u {
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-            pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
+            pub const unsafe fn from_array_nleft_unchecked(bytes: [u8; CAP], length: $t)
+                -> Self {
                 Self { arr: bytes, len: Cmp(length).min(CAP as $t) }
             }
 
@@ -293,7 +364,7 @@ macro_rules! impl_str_u {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t)
+            pub const fn from_array_nright(mut bytes: [u8; CAP], length: $t)
             -> Result<Self, InvalidUtf8> {
                 let length = Cmp(length).min(CAP as $t);
                 let ulen = length as usize;
@@ -307,9 +378,8 @@ macro_rules! impl_str_u {
                 }
             }
 
-            /// Returns a string from an array of `bytes`,
-            /// truncated to `n` bytes counting from the right,
-            /// which must be valid UTF-8.
+            /// Returns a string from an array of `bytes`, which must be valid UTF-8,
+            /// truncated to `n` bytes counting from the right.
             ///
             /// The new `length` is maxed out at `CAP`.
             /// Bytes are shift-copied without allocating a new array.
@@ -320,7 +390,7 @@ macro_rules! impl_str_u {
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-            pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
+            pub const unsafe fn from_array_nright_unchecked(mut bytes: [u8; CAP], length: $t)
                 -> Self {
                 let length = Cmp(length).min(CAP as $t);
                 let ulen = length as usize;
@@ -362,10 +432,16 @@ macro_rules! impl_str_u {
 
             /// Returns an exclusive byte slice of the inner string slice.
             ///
+            /// # Safety
+            /// The caller must ensure that the content of the slice is valid UTF-8
+            /// before the borrow ends and the underlying `str` is used.
+            ///
             /// # Features
             /// Uses the `unsafe_slice` feature to skip validation checks.
             #[must_use] #[inline(always)]
-            pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+            pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
                 #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
                 return slice![mut &mut self.arr, ..self.len as usize];
 
@@ -391,14 +467,13 @@ macro_rules! impl_str_u {
 
             /// Returns an exclusive reference to the inner string slice.
             ///
-            /// # Features
-            /// Uses the `unsafe_str` feature to skip validation checks.
+            /// # Safety
+            /// The caller must ensure that the content of the slice is valid UTF-8
+            /// before the borrow ends and the underlying `str` is used.
             #[must_use] #[inline(always)]
-            pub const fn as_mut_str(&mut self) -> &mut str {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok_expect Str::from_utf8_mut(self.as_bytes_mut()), "Invalid UTF-8"];
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+            pub const unsafe fn as_mut_str(&mut self) -> &mut str {
                 // SAFETY: we ensure to contain only valid UTF-8
                 unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
             }
@@ -663,15 +738,9 @@ macro_rules! impl_str_u {
             type Target = str;
             fn deref(&self) -> &Self::Target { self.as_str() }
         }
-        impl<const CAP: usize> DerefMut for $name<CAP> {
-            fn deref_mut(&mut self) -> &mut str { self.as_mut_str() }
-        }
 
         impl<const CAP: usize> AsRef<str> for $name<CAP> {
             fn as_ref(&self) -> &str { self.as_str() }
-        }
-        impl<const CAP: usize> AsMut<str> for $name<CAP> {
-            fn as_mut(&mut self) -> &mut str { self.as_mut_str() }
         }
 
         impl<const CAP: usize> AsRef<[u8]> for $name<CAP> {

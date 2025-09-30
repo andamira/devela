@@ -61,9 +61,12 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Str, StringU8};
     /// let mut s = StringU8::<16>::from_str("Hello world!").unwrap();
-    /// assert_eq!(&*Str::lsplit(&mut s, 0), "");
-    /// assert_eq!(&*Str::lsplit(&mut s, 3), "Hel");
-    /// assert_eq!(&*Str::lsplit(&mut s, 20), "Hello world!");
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let s = unsafe { s.as_mut_str() };
+    /// assert_eq!(&*Str::lsplit(s, 0), "");
+    /// assert_eq!(&*Str::lsplit(s, 3), "Hel");
+    /// assert_eq!(&*Str::lsplit(s, 20), "Hello world!");
+    /// # }
     /// ```
     #[must_use] #[inline(always)]
     pub const fn lsplit_mut(string: &mut str, len: usize) -> &mut str {
@@ -78,10 +81,13 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Cmp, Str, StringU8};
     /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
-    /// assert!(Str::lsplit_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
-    /// assert!(Str::lsplit_mut_checked(&mut s, 3).is_some_and(|s| &*s == "Hel"));
-    /// assert!(Str::lsplit_mut_checked(&mut s, 5).is_none()); // attempt to split `ø`
-    /// assert!(Str::lsplit_mut_checked(&mut s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let s = unsafe { s.as_mut_str() };
+    /// assert!(Str::lsplit_mut_checked(s, 0).is_some_and(|s| &*s == ""));
+    /// assert!(Str::lsplit_mut_checked(s, 3).is_some_and(|s| &*s == "Hel"));
+    /// assert!(Str::lsplit_mut_checked(s, 5).is_none()); // attempt to split `ø`
+    /// assert!(Str::lsplit_mut_checked(s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # }
     /// ```
     #[must_use] #[inline(always)]
     pub const fn lsplit_mut_checked(string: &mut str, len: usize) -> Option<&mut str> {
@@ -139,9 +145,12 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Str, StringU8};
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
-    /// assert_eq!(&*Str::rsplit_mut(&mut s, 0), "");
-    /// assert_eq!(&*Str::rsplit_mut(&mut s, 3), "ld!");
-    /// assert_eq!(&*Str::rsplit_mut(&mut s, 20), "Hello world!");
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let s = unsafe { s.as_mut_str() };
+    /// assert_eq!(&*Str::rsplit_mut(s, 0), "");
+    /// assert_eq!(&*Str::rsplit_mut(s, 3), "ld!");
+    /// assert_eq!(&*Str::rsplit_mut(s, 20), "Hello world!");
+    /// # }
     /// ```
     #[must_use]
     pub const fn rsplit_mut(string: &mut str, len: usize) -> &mut str {
@@ -156,10 +165,13 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Cmp, Str, StringU8};
     /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
-    /// assert!(Str::rsplit_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
-    /// assert!(Str::rsplit_mut_checked(&mut s, 3).is_some_and(|s| &*s == "ld!"));
-    /// assert!(Str::rsplit_mut_checked(&mut s, 5).is_none()); // attempt to split `ø`
-    /// assert!(Str::rsplit_mut_checked(&mut s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let s = unsafe { s.as_mut_str() };
+    /// assert!(Str::rsplit_mut_checked(s, 0).is_some_and(|s| &*s == ""));
+    /// assert!(Str::rsplit_mut_checked(s, 3).is_some_and(|s| &*s == "ld!"));
+    /// assert!(Str::rsplit_mut_checked(s, 5).is_none()); // attempt to split `ø`
+    /// assert!(Str::rsplit_mut_checked(s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # }
     /// ```
     #[must_use] #[inline(always)]
     pub const fn rsplit_mut_checked(string: &mut str, len: usize) -> Option<&mut str> {
@@ -242,13 +254,16 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Str, StringU8};
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
-    /// assert_eq!(&*Str::msplit_left_mut(&mut s, 0), "");
-    /// assert_eq!(&*Str::msplit_left_mut(&mut s, 1), " ");
-    /// assert_eq!(&*Str::msplit_left_mut(&mut s, 2), " w");
-    /// assert_eq!(&*Str::msplit_left_mut(&mut s, 3), "o w");
-    /// assert_eq!(&*Str::msplit_left_mut(&mut s, 4), "o wo");
-    /// assert_eq!(&*Str::msplit_left_mut(&mut s, 5), "lo wo");
-    /// assert_eq!(&*Str::msplit_left_mut(&mut s, 20), "Hello world!");
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let ms = unsafe { s.as_mut_str() };
+    /// assert_eq!(&*Str::msplit_left_mut(ms, 0), "");
+    /// assert_eq!(&*Str::msplit_left_mut(ms, 1), " ");
+    /// assert_eq!(&*Str::msplit_left_mut(ms, 2), " w");
+    /// assert_eq!(&*Str::msplit_left_mut(ms, 3), "o w");
+    /// assert_eq!(&*Str::msplit_left_mut(ms, 4), "o wo");
+    /// assert_eq!(&*Str::msplit_left_mut(ms, 5), "lo wo");
+    /// assert_eq!(&*Str::msplit_left_mut(ms, 20), "Hello world!");
+    /// # }
     /// ```
     /// See also [`Str::msplit_right_mut`].
     #[must_use]
@@ -271,15 +286,18 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Str, StringU8};
     /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 1).is_some_and(|s| &*s == " "));
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 2).is_some_and(|s| &*s == " w"));
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 3).is_none()); // attempt to split ø
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 4).is_none()); // "
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 5).is_none()); // "
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 6).is_some_and(|s| &*s == "ø wø"));
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 7).is_some_and(|s| &*s == "lø wø"));
-    /// assert!(Str::msplit_left_mut_checked(&mut s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let ms = unsafe { s.as_mut_str() };
+    /// assert!(Str::msplit_left_mut_checked(ms, 0).is_some_and(|s| &*s == ""));
+    /// assert!(Str::msplit_left_mut_checked(ms, 1).is_some_and(|s| &*s == " "));
+    /// assert!(Str::msplit_left_mut_checked(ms, 2).is_some_and(|s| &*s == " w"));
+    /// assert!(Str::msplit_left_mut_checked(ms, 3).is_none()); // attempt to split ø
+    /// assert!(Str::msplit_left_mut_checked(ms, 4).is_none()); // "
+    /// assert!(Str::msplit_left_mut_checked(ms, 5).is_none()); // "
+    /// assert!(Str::msplit_left_mut_checked(ms, 6).is_some_and(|s| &*s == "ø wø"));
+    /// assert!(Str::msplit_left_mut_checked(ms, 7).is_some_and(|s| &*s == "lø wø"));
+    /// assert!(Str::msplit_left_mut_checked(ms, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # }
     /// ```
     /// See also [`Str::msplit_right_mut`].
     #[must_use]
@@ -368,13 +386,16 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Str, StringU8};
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
-    /// assert_eq!(&*Str::msplit_right_mut(&mut s, 0), "");
-    /// assert_eq!(&*Str::msplit_right_mut(&mut s, 1), "w");
-    /// assert_eq!(&*Str::msplit_right_mut(&mut s, 2), " w");
-    /// assert_eq!(&*Str::msplit_right_mut(&mut s, 3), " wo");
-    /// assert_eq!(&*Str::msplit_right_mut(&mut s, 4), "o wo");
-    /// assert_eq!(&*Str::msplit_right_mut(&mut s, 5), "o wor");
-    /// assert_eq!(&*Str::msplit_right_mut(&mut s, 20), "Hello world!");
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let s = unsafe { s.as_mut_str() };
+    /// assert_eq!(&*Str::msplit_right_mut(s, 0), "");
+    /// assert_eq!(&*Str::msplit_right_mut(s, 1), "w");
+    /// assert_eq!(&*Str::msplit_right_mut(s, 2), " w");
+    /// assert_eq!(&*Str::msplit_right_mut(s, 3), " wo");
+    /// assert_eq!(&*Str::msplit_right_mut(s, 4), "o wo");
+    /// assert_eq!(&*Str::msplit_right_mut(s, 5), "o wor");
+    /// assert_eq!(&*Str::msplit_right_mut(s, 20), "Hello world!");
+    /// # }
     /// ```
     /// See also [`Str::msplit_left_mut`].
     #[must_use]
@@ -397,15 +418,18 @@ impl Str {
     /// ```
     /// # use devela_base_core::{Str, StringU8};
     /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 0).is_some_and(|s| &*s == ""));
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 1).is_some_and(|s| &*s == "w"));
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 2).is_some_and(|s| &*s == " w"));
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 3).is_none()); // attempt to split ø
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 4).is_none()); // "
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 5).is_none()); // "
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 6).is_some_and(|s| &*s == "ø wø"));
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 7).is_some_and(|s| &*s == "ø wør"));
-    /// assert!(Str::msplit_right_mut_checked(&mut s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # #[cfg(feature = "unsafe_str")] {
+    /// let s = unsafe { s.as_mut_str() };
+    /// assert!(Str::msplit_right_mut_checked(s, 0).is_some_and(|s| &*s == ""));
+    /// assert!(Str::msplit_right_mut_checked(s, 1).is_some_and(|s| &*s == "w"));
+    /// assert!(Str::msplit_right_mut_checked(s, 2).is_some_and(|s| &*s == " w"));
+    /// assert!(Str::msplit_right_mut_checked(s, 3).is_none()); // attempt to split ø
+    /// assert!(Str::msplit_right_mut_checked(s, 4).is_none()); // "
+    /// assert!(Str::msplit_right_mut_checked(s, 5).is_none()); // "
+    /// assert!(Str::msplit_right_mut_checked(s, 6).is_some_and(|s| &*s == "ø wø"));
+    /// assert!(Str::msplit_right_mut_checked(s, 7).is_some_and(|s| &*s == "ø wør"));
+    /// assert!(Str::msplit_right_mut_checked(s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
+    /// # }
     /// ```
     /// See also [`Str::msplit_right_mut`].
     #[must_use]

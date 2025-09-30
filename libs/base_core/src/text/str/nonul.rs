@@ -8,7 +8,8 @@
 
 use crate::{
     Char, CharIter, Debug, Deref, Display, FmtResult, Formatter, InvalidText, Mismatch,
-    MismatchedCapacity, NotEnoughElements, Str, cfor, char7, char8, char16, is, slice, unwrap,
+    MismatchedCapacity, NotEnoughElements, Str, cfor, char_utf8, char7, char8, char16, is, slice,
+    unwrap,
 };
 
 /* definitions */
@@ -25,32 +26,41 @@ const NUL_CHAR: char = '\0';
 ///
 /// ## Methods
 ///
-/// - Construct:
+/// - [Constructors](#constructors):
 ///   [`new`][Self::new],
 ///   [`from_str`][Self::from_str],
 ///     *([_truncate][Self::from_str_truncate],
-///     [_unchecked][Self::from_str_unchecked])*,
+///       [_unchecked][Self::from_str_unchecked])*,
 ///   [`from_char`][Self::from_char]
-///   *([`7`](Self::from_char7),
-///     [`8`](Self::from_char8),
-///     [`16`](Self::from_char16))*.
-/// - Deconstruct:
+///     *([`7`](Self::from_char7),
+///       [`8`](Self::from_char8),
+///       [`16`](Self::from_char16)),
+///       [`utf8`](Self::from_char_utf8))*.
+///   [`from_byte_array`][Self::from_byte_array],
+///    *([_unchecked][Self::from_str_unchecked])*.
+///
+/// - [Deconstructors](#deconstructors):
 ///   [`into_array`][Self::into_array],
 ///   [`as_array`][Self::as_array],
 ///   [`as_bytes`][Self::as_bytes]
-///     *([mut][Self::as_bytes_mut])*,
+#[cfg_attr(
+    feature = "unsafe_str",
+    doc = "*([mut][Self::as_bytes_mut]<sup title='unsafe function'>⚠</sup>)*."
+)]
 ///   [`as_str`][Self::as_str]
 #[cfg_attr(
-    feature = "unsafe_slice",
-    doc = "*([mut][Self::as_mut_str]<sup title='unsafe function'>⚠</sup>)*,"
+    feature = "unsafe_str",
+    doc = "*([mut][Self::as_mut_str]<sup title='unsafe function'>⚠</sup>)*."
 )]
 ///   [`chars`][Self::chars],
-/// - Query:
+///
+/// - [Queries](#queries):
 ///   [`len`][Self::len],
 ///   [`is_empty`][Self::is_empty],
 ///   [`is_full`][Self::is_full],
 ///   [`capacity`][Self::capacity],
 ///   [`remaining_capacity`][Self::remaining_capacity].
+///
 /// - Operations:
 ///   [`clear`][Self::clear],
 ///   [`pop`][Self::pop]*([try][Self::try_pop])*,
@@ -129,6 +139,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Panics if `CAP` > [`u8::MAX`].
     ///
     /// This is implemented via `Self::`[`push_str()`][Self::push_str].
+    #[inline(always)]
     pub const fn from_str_unchecked(string: &str) -> Self {
         let mut new_string = Self::new();
         let _ = new_string.push_str(string);
@@ -138,11 +149,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     /* queries */
 
     /// Returns the total capacity in bytes.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn capacity() -> usize { CAP }
 
     /// Returns the remaining capacity.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns the current length.
@@ -172,11 +183,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 
     /// Returns `true` if the current length is 0.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn is_empty(&self) -> bool { self.len() == 0 }
 
     /// Returns `true` if the current remaining capacity is 0.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /// Checks the equality of two strings, with the same capacity and length.
@@ -192,8 +203,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// b.pop();
     /// assert![a.eq(&b)];
     /// ```
-    #[must_use]
-    #[inline(always)]
+    #[must_use] #[inline(always)]
     pub const fn eq(&self, other: &Self) -> bool {
         let mut i = 0;
         while i < CAP {
@@ -209,34 +219,35 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn into_array(self) -> [u8; CAP] { self.arr }
 
     /// Returns a copy of the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn as_array(&self) -> [u8; CAP] { self.arr }
 
     /// Returns a byte slice of the inner string slice.
     ///
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
-    #[must_use]
+    #[must_use] #[inline(always)]
     pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len()).0 }
 
     /// Returns a mutable byte slice of the inner string slice.
     ///
     /// # Safety
     /// The caller must ensure that the content of the slice is valid UTF-8
-    /// before the borrow ends and the underlying `str` is used.
-    ///
-    /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
+    /// and that it doesn't contain any `NUL` characters before the borrow
+    /// ends and the underlying `str` is used.
     ///
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
-    #[must_use]
-    pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
+    #[must_use] #[inline(always)]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
@@ -267,13 +278,9 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and that it doesn't contain any `NUL` characters before the borrow
     /// ends and the underlying `str` is used.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok_expect Str::from_utf8_mut(self.as_bytes_mut()), "Invalid UTF-8"];
-
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: we ensure to contain only valid UTF-8
         unsafe { Str::from_utf8_unchecked_mut(self.as_bytes_mut()) }
     }
@@ -563,14 +570,74 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /* from bytes */
+    /// Creates a new `StringNonul` from a `char_utf8`.
+    ///
+    /// If `c`.[`is_nul()`][char_utf8#method.is_nul] an empty string will be returned.
+    ///
+    /// # Errors
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
+    /// or if `CAP` < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::{StringNonul, char_utf8};
+    /// let s = StringNonul::<3>::from_char_utf8(char_utf8::from_char('€')).unwrap();
+    /// assert_eq![s.as_str(), "€"];
+    ///
+    /// assert![StringNonul::<2>::from_char_utf8(char_utf8::from_char('€')).is_err()];
+    /// ```
+    pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
+        let mut new = unwrap![ok? Self::new_checked()];
+        if !c.is_nul() {
+            let len = c.len_utf8();
+            if len <= CAP {
+                let bytes = c.to_utf8_bytes();
+                slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
+            } else {
+                return Err(MismatchedCapacity::closed(len, len, CAP));
+            }
+        }
+        Ok(new)
+    }
+
+    /// Creates a new `StringNonul` from a `char_utf8`.
+    ///
+    /// If `c`.[`is_nul()`][char_utf8#method.is_nul] an empty string will be returned.
+    ///
+    /// # Panics
+    /// Panics if `CAP` > [`u8::MAX`],
+    /// or if `CAP` < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4.
+    /// # Examples
+    /// ```
+    /// # use devela_base_core::{StringNonul, char_utf8};
+    /// let s = StringNonul::<3>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+    /// assert_eq![s, "€"]
+    /// ```
+    /// ```should_panic
+    /// # use devela_base_core::{StringNonul, char_utf8};
+    /// StringNonul::<2>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+    /// ```
+    pub const fn from_char_utf8_unchecked(c: char_utf8) -> Self {
+        let mut new = Self::new();
+        if !c.is_nul() {
+            let len = c.len_utf8();
+            let bytes = c.to_utf8_bytes();
+            slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
+        }
+        new
+    }
+
+    /* from_byte_array* conversions */
 
     /// Returns a string from an array of `bytes`.
     ///
     /// # Errors
     /// Returns [`InvalidText::Utf8`] if the bytes are not valid UTF-8,
     /// and [`InvalidText::Char`] if the bytes contains a NUL character.
-    pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
+    pub const fn from_byte_array(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
         // IMPROVE: use Str
         match ::core::str::from_utf8(&bytes) {
             Ok(_) => {
@@ -592,7 +659,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
+    pub const unsafe fn from_byte_array_unchecked(bytes: [u8; CAP]) -> Self {
         Self { arr: bytes }
     }
 }

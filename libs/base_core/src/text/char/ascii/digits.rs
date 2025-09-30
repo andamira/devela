@@ -115,11 +115,11 @@ impl AsciiDigits<usize> {
         let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_array_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_array_nright_unchecked(self.digits(), width)
         }
     }
 }
@@ -179,11 +179,11 @@ impl AsciiDigits<u8> {
         let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_array_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_array_nright_unchecked(self.digits(), width)
         }
     }
 
@@ -265,11 +265,11 @@ impl AsciiDigits<u16> {
         let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_array_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_array_nright_unchecked(self.digits(), width)
         }
     }
 
@@ -362,11 +362,11 @@ impl AsciiDigits<u32> {
         let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_array_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_array_nright_unchecked(self.digits(), width)
         }
     }
 }
@@ -444,11 +444,11 @@ impl AsciiDigits<u64> {
         let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_array_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_array_nright_unchecked(self.digits(), width)
         }
     }
 }
@@ -545,11 +545,11 @@ impl AsciiDigits<u128> {
         let width = Cmp(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_array_nright(self.digits(), width)];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+            StringU8::<{ Self::MAX_DIGITS }>::from_array_nright_unchecked(self.digits(), width)
         }
     }
 }

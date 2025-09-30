@@ -5,6 +5,8 @@
 // TOC
 // - definitions
 // - trait impls
+//
+// TODO: manual PartialEq impl (const eq)
 
 use crate::{CharIter, MismatchedCapacity, StringU8, char7, char8, char16, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
@@ -17,11 +19,13 @@ use crate::{CharIter, MismatchedCapacity, StringU8, char7, char8, char16, unwrap
 #[doc = crate::_doc!(location: "text")]
 #[must_use]
 #[repr(transparent)]
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct GraphemeU8<const CAP: usize>(StringU8<CAP>);
 
 #[rustfmt::skip]
 impl<const CAP: usize> GraphemeU8<CAP> {
+    /* constructors */
+
     /// Creates a new empty `GraphemeU8`.
     ///
     /// # Errors
@@ -29,6 +33,12 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     pub const fn new() -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::new_checked()]))
     }
+
+    /* from_str* conversions */
+
+    // TODO
+
+    /* from_char* conversions */
 
     /// Creates a new `GraphemeU8` from a `char7`.
     ///
@@ -72,7 +82,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }
 
-    //
+    /* queries */
 
     /// Returns the length in bytes.
     #[must_use]
@@ -105,8 +115,11 @@ impl<const CAP: usize> GraphemeU8<CAP> {
 
     /// Returns a mutable byte slice of the inner string slice.
     #[must_use]
-    pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
-        self.0.as_bytes_mut()
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
+        // SAFETY: caller must ensure safety
+        unsafe { self.0.as_bytes_mut() }
     }
 
     /// Returns a copy of the inner array with the full contents.
@@ -126,15 +139,20 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the mutable inner string slice.
+    ///
     /// # Safety
-    /// The content must be valid UTF-8.
-    #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
+    /// The caller must ensure that the content of the slice is valid UTF-8
+    /// and that it contains exactly one extended grapheme character,
+    /// before the borrow ends and the underlying `str` is used.
+    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub unsafe fn as_mut_str(&mut self) -> &mut str {
-        self.0.as_mut_str()
+        // SAFETY: caller must ensure safety
+        unsafe { self.0.as_mut_str() }
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
+    #[inline(always)]
     pub const fn chars(&self) -> CharIter<'_, &str> { self.0.chars() }
 }
 
