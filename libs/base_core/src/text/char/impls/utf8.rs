@@ -400,6 +400,9 @@ impl char_utf8 {
     ///
     /// let c = char_utf8::from_char('€');
     /// assert_eq!(c.to_utf8_bytes(), [0xE2, 0x82, 0xAC, 0]);
+    ///
+    /// let c = char_utf8::from_char('𝅘𝅥𝅮');
+    /// assert_eq!(c.to_utf8_bytes(), [0xF0, 0x9D, 0x85, 0xA0]);
     /// ```
     #[must_use]
     #[inline(always)]

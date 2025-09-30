@@ -12,7 +12,7 @@
 use crate::{Cmp, cfor, unwrap};
 use crate::{
     Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
-    Mismatch, MismatchedCapacity, NotEnoughElements, Slice, Str, is, paste, slice, text::char::*,
+    Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste, slice, text::char::*,
 };
 
 macro_rules! impl_str_u {

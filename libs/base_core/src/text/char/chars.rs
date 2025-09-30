@@ -6,7 +6,7 @@
 // - methods over &[u8]
 // - impl Iterator*
 
-use crate::{Char, IteratorFused, PhantomData, char_utf8, char7, char8, char16, is, unwrap};
+use crate::{Char, IteratorFused, PhantomData, char_utf8, char7, char8, char16, is, slice, unwrap};
 
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_ITERATOR!()]
@@ -76,7 +76,7 @@ impl<'a> IterChars<'a, &str> {
     #[must_use]
     pub const fn next_char7(&mut self) -> Option<char7> {
         is![self.pos >= self.bytes.len(); return None];
-        let byte = self.bytes[0];
+        let byte = self.bytes[self.pos];
         is![byte.is_ascii(); { self.pos += 1; Some(char7::new_unchecked(byte)) }; None]
     }
 
@@ -124,8 +124,8 @@ impl<'a> IterChars<'a, &str> {
     #[must_use] #[rustfmt::skip]
     pub const fn next_char_utf8(&mut self) -> Option<char_utf8> {
         is![self.pos >= self.bytes.len(); return None];
-        let len = Char(self.bytes[0]).len_utf8_unchecked();
-        let ch = char_utf8::decode_utf8(self.bytes, len);
+        let len = Char(self.bytes[self.pos]).len_utf8_unchecked();
+        let ch = char_utf8::decode_utf8(slice![self.bytes, self.pos,..], len);
         self.pos += len;
         Some(ch)
     }
