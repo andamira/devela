@@ -9,7 +9,7 @@
 mod grapheme; // GraphemeU8
 
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
-pub mod char; // Char, CharAscii, IterChars, UnicodeScalar, char[7|8|16|utf8]
+pub mod char; // Char, CharAscii, CharIter, UnicodeScalar, char[7|8|16|utf8]
 pub mod errors;
 pub mod fmt;
 pub mod parse;

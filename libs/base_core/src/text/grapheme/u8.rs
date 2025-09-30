@@ -6,7 +6,7 @@
 // - definitions
 // - trait impls
 
-use crate::{IterChars, MismatchedCapacity, StringU8, char7, char8, char16, unwrap};
+use crate::{CharIter, MismatchedCapacity, StringU8, char7, char8, char16, unwrap};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -135,7 +135,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    pub const fn chars(&self) -> IterChars<'_, &str> { self.0.chars() }
+    pub const fn chars(&self) -> CharIter<'_, &str> { self.0.chars() }
 }
 
 /* traits */

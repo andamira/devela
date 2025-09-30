@@ -8,12 +8,12 @@
 //   - trait impls
 // - tests
 
-#[allow(unused, reason = "±unsafe")]
-use crate::{Cmp, cfor, unwrap};
 use crate::{
-    Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8, IterChars,
+    CharIter, Debug, Deref, DerefMut, Display, FmtResult, Formatter, InvalidText, InvalidUtf8,
     Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste, slice, text::char::*,
 };
+#[allow(unused, reason = "±unsafe")]
+use crate::{Cmp, cfor, unwrap};
 
 macro_rules! impl_str_u {
     () => { impl_str_u![u8, u16, u32, usize]; };
@@ -408,8 +408,8 @@ macro_rules! impl_str_u {
             /// # Features
             /// Uses the `unsafe_str` feature to skip validation checks.
             #[inline(always)]
-            pub const fn chars(&self) -> IterChars<'_, &str> {
-                IterChars::<&str>::new(self.as_str())
+            pub const fn chars(&self) -> CharIter<'_, &str> {
+                CharIter::<&str>::new(self.as_str())
             }
         }
 
@@ -522,7 +522,7 @@ macro_rules! impl_str_u {
                 while index > 0 && !string.is_char_boundary(index - 1) { index -= 1; }
                 let idx_last_char = index - 1;
                 let range = Str::range_from(string, idx_last_char);
-                let last_char = unwrap![some IterChars::<&str>::new(range).next_char()];
+                let last_char = unwrap![some CharIter::<&str>::new(range).next_char()];
                 self.len -= last_char.len_utf8() as $t;
                 last_char
             }

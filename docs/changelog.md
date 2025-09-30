@@ -240,7 +240,7 @@ Many feature gates are removed in order to make most features make always availa
 - rename `ASCII_TABLE` to `ASCII_LUT` and make it public.
 
 ### char
-- new types: `IterChars`, `char_utf8`.
+- new types: `CharIter`, `char_utf8`.
 - new `char7` methods: `to_byte`, `to_str`.
 - new `char[7|8|16]` methods: `to_char_utf8`, `try_from_char_utf8`.
 - mark `char[7|8|16]` as must_use.
@@ -251,7 +251,7 @@ Many feature gates are removed in order to make most features make always availa
   - `*ascii_char*` to `*char_ascii*`.
 - make `text::char` module public.
 - move `text::ascii` to `text::char::ascii`.
-- remove previously re-exported `IterChars` (renamed to `IterCharsStd`).
+- remove previously re-exported `IterChars`.
 - update `Char`:
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.

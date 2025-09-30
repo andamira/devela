@@ -16,7 +16,7 @@ impl char16 {
     }
 
     // SAFETY: this is not marked as unsafe because it's only used privately
-    // for a few selected operations in this module and also by IterChars.
+    // for a few selected operations in this module and also by CharIter.
     pub(crate) const fn new_unchecked(value: u16) -> char16 {
         #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         return Self(crate::unwrap![some NonSurrogateU16::new(value)]);

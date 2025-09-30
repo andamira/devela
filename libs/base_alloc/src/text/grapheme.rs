@@ -5,7 +5,7 @@
 
 // #[cfg(feature = "dep_unicode_segmentation")]
 // use crate::{_dep::unicode_segmentation::UnicodeSegmentation, text::*};
-use crate::{IterChars, String};
+use crate::{CharIter, String};
 // crate::_use! {basic::from_utf8}
 
 // #[allow(unused, reason = "feature-gated")]
@@ -71,7 +71,7 @@ impl GraphemeString {
     pub fn clear(&mut self) { self.0.clear(); }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    pub const fn chars(&self) -> IterChars<'_, &str> { IterChars::<&str>::new(self.0.as_str()) }
+    pub const fn chars(&self) -> CharIter<'_, &str> { CharIter::<&str>::new(self.0.as_str()) }
 }
 
 /* traits */

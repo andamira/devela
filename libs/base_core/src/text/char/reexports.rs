@@ -18,9 +18,9 @@
 #[allow(non_camel_case_types)]
 pub type char = ::core::primitive::char;
 
-// Replaced by `IterChars`
+// Replaced by `CharIter`
 // _reexport! { rust: core::str,
 //     tag: _TAG_TEXT!() crate::_TAG_ITERATOR!(),
 //     doc: "An iterator over the [`char`][prim@char]s of a string slice.",
-//     @Chars as IterCharsStd
+//     @Chars as IterChars
 // }

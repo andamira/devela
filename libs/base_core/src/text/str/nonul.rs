@@ -7,7 +7,7 @@
 // - trait impls
 
 use crate::{
-    Char, Debug, Deref, Display, FmtResult, Formatter, InvalidText, IterChars, Mismatch,
+    Char, CharIter, Debug, Deref, Display, FmtResult, Formatter, InvalidText, Mismatch,
     MismatchedCapacity, NotEnoughElements, Str, cfor, char7, char8, char16, is, slice, unwrap,
 };
 
@@ -280,7 +280,7 @@ impl<const CAP: usize> StringNonul<CAP> {
 
     /// Returns an iterator over the `chars` of the string.
     #[inline(always)]
-    pub const fn chars(&self) -> IterChars<'_, &str> { IterChars::<&str>::new(self.as_str()) }
+    pub const fn chars(&self) -> CharIter<'_, &str> { CharIter::<&str>::new(self.as_str()) }
 
     /* operations */
 
@@ -330,7 +330,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         while idx_last_char > 0 && !string.is_char_boundary(idx_last_char) { idx_last_char -= 1; }
 
         let range = Str::range(string, idx_last_char, len);
-        let last_char = unwrap![some IterChars::<&str>::new(range).next_char()];
+        let last_char = unwrap![some CharIter::<&str>::new(range).next_char()];
 
         let mut i = idx_last_char; while i < len { self.arr[i] = 0; i += 1; } // clean char bytes
         last_char
@@ -400,7 +400,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     pub const fn push_str(&mut self, string: &str) -> usize {
         let mut rem_cap = self.remaining_capacity();
         let mut bytes_written = 0;
-        let mut chars = IterChars::<&str>::new(string);
+        let mut chars = CharIter::<&str>::new(string);
         while let Some(character) = chars.next_char() {
             if character != NUL_CHAR {
                 let char_len = character.len_utf8();
@@ -446,7 +446,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Uses the `unsafe_str` feature to skip validation checks.
     pub const fn try_push_str(&mut self, string: &str) -> Result<usize, MismatchedCapacity> {
         let mut first_char_len = 0;
-        let mut chars = IterChars::<&str>::new(string);
+        let mut chars = CharIter::<&str>::new(string);
         while let Some(c) = chars.next_scalar() { // find the first non-zero length character:
             if c != NUL_CHAR as u32 { first_char_len = Char(c).len_utf8_unchecked(); break; }
         }

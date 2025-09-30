@@ -4,7 +4,7 @@
 //
 
 mod ascii; // AsciiDigits, CharAscii
-mod chars; // IterChars
+mod chars; // CharIter
 mod definitions; // char7, char8, char16, char_utf8
 mod namespace; // Char
 mod reexports;

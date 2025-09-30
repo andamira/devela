@@ -11,18 +11,18 @@ use crate::{Char, IteratorFused, PhantomData, char_utf8, char7, char8, char16, i
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_ITERATOR!()]
 /// An iterator over Unicode scalars.
-#[doc = crate::_doc!(location_item: "text/char/struct.IterChars.html")]
+#[doc = crate::_doc!(location_item: "text/char/struct.CharIter.html")]
 ///
 #[must_use]
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct IterChars<'a, T> {
+pub struct CharIter<'a, T> {
     bytes: &'a [u8],
     pos: usize,
     _source: PhantomData<T>,
 }
 
 /// Methods available when constructed from a string slice.
-impl<'a> IterChars<'a, &str> {
+impl<'a> CharIter<'a, &str> {
     /* constructors */
 
     /// Returns a new iterator over the Unicode scalars of a `string` slice.
@@ -147,7 +147,7 @@ impl<'a> IterChars<'a, &str> {
 }
 
 /// Methods available when constructed from a byte slice.
-impl<'a> IterChars<'a, &[u8]> {
+impl<'a> CharIter<'a, &[u8]> {
     /* constructors */
 
     /// Returns a new iterator over the Unicode scalars of a slice of `bytes`.
@@ -392,7 +392,7 @@ impl<'a> IterChars<'a, &[u8]> {
 
 /* impl Iterator* */
 
-impl<'a> Iterator for IterChars<'a, &'a str> {
+impl<'a> Iterator for CharIter<'a, &'a str> {
     type Item = char;
 
     #[inline(always)]
@@ -405,9 +405,9 @@ impl<'a> Iterator for IterChars<'a, &'a str> {
         (remaining.div_ceil(4), Some(remaining))
     }
 }
-impl<'a> IteratorFused for IterChars<'a, &'a str> {}
+impl<'a> IteratorFused for CharIter<'a, &'a str> {}
 
-impl<'a> Iterator for IterChars<'a, &'a [u8]> {
+impl<'a> Iterator for CharIter<'a, &'a [u8]> {
     type Item = char;
 
     #[inline(always)]
@@ -420,4 +420,4 @@ impl<'a> Iterator for IterChars<'a, &'a [u8]> {
         (remaining.div_ceil(4), Some(remaining))
     }
 }
-impl<'a> IteratorFused for IterChars<'a, &'a [u8]> {}
+impl<'a> IteratorFused for CharIter<'a, &'a [u8]> {}

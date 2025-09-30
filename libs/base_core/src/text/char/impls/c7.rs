@@ -16,7 +16,7 @@ impl char7 {
     }
 
     // SAFETY: this is not marked as unsafe because it's only used privately
-    // for a few selected operations in this module and also by IterChars.
+    // for a few selected operations in this module and also by CharIter.
     pub(crate) const fn new_unchecked(value: u8) -> char7 {
         #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
         if let Some(c) = NonExtremeU8::new(value) {
