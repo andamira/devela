@@ -1,13 +1,13 @@
 // devela_base_core::text::char::ascii::lut
 //
-//! Defines [`ASCII_LUT`].
+//! Defines [`CHAR_ASCII`].
 //
 
 /// ASCII lookup table for fast UTF-8 encoding.
 ///
 #[doc = crate::_doc!(location: "text")]
 #[rustfmt::skip]
-pub static ASCII_LUT: [&str; 128] = [
+pub static CHAR_ASCII: [&str; 128] = [
     "\0", "\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07", "\x08", "\t", "\n",
     "\x0B", "\x0C", "\r", "\x0E", "\x0F", "\x10", "\x11", "\x12", "\x13", "\x14", "\x15",
     "\x16", "\x17", "\x18", "\x19", "\x1A", "\x1B", "\x1C", "\x1D", "\x1E", "\x1F",

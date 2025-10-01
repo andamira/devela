@@ -237,7 +237,7 @@ Many feature gates are removed in order to make most features make always availa
 ### ascii
 - rename `Ascii` to `AsciiDigits`.
   - rename method: `calc_digit` to `digit_at_power`.
-- rename `ASCII_TABLE` to `ASCII_LUT` and make it public.
+- rename `ASCII_TABLE` to `CHAR_ASCII` and make it public.
 
 ### char
 - new types: `CharIter`, `char_utf8`.

@@ -10,7 +10,7 @@
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 pub mod char; // Char, CharAscii, CharIter, UnicodeScalar, char[7|8|16|utf8]
 pub mod errors;
-pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Machine|Scanner]…
+pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 pub mod fmt;
 pub mod parse;
 pub mod str;
