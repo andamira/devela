@@ -48,23 +48,11 @@ impl GraphemeMachineState {
         )
     }
 
-    /// Given the previous category and the next category, returns whether
-    /// there is a grapheme cluster boundary between two characters of those
-    /// categories in the current state, and the state that should be used for
-    /// the next transition.
-    ///
-    /// Use [`GcProperties::Other`] to represent the absense of a character at
-    /// the start or end of input.
-    ///
-    /// Correct use requires that the `prev` of one call equals the `next`
-    /// of the previous call that generated the new state. If that is not
-    /// upheld then the results are unspecified.
-
-    /// Determines if there's a grapheme boundary between `prev` and `next` characters.
+    /// Determines if there's a grapheme boundary between `prev` and `next` code points.
     ///
     /// Returns `(has_boundary, new_state)` where:
-    /// - `has_boundary`: `true` if characters should be split into separate clusters.
-    /// - `new_state`: Updated state for processing the next character.
+    /// - `has_boundary`: `true` if code points should be split into separate clusters.
+    /// - `new_state`: Updated state for processing the next code point.
     ///
     /// # Correct Use
     /// - Pass `None` for `prev` at text start.
@@ -115,7 +103,7 @@ impl GraphemeMachineState {
             return (false, next_state);
         }
 
-        // GB9: Keep extending characters and ZWJ with previous
+        // GB9: Keep extending code points and ZWJ with previous
         if one_matches!(next, Extend | Zwj) {
             return (false, next_state);
         }
@@ -123,7 +111,7 @@ impl GraphemeMachineState {
         if one_matches!(next, SpacingMark) {
             return (false, next_state);
         }
-        // GB9b: Keep Prepend characters with next
+        // GB9b: Keep Prepend code points with next
         if one_matches!(prev, Prepend) {
             return (false, next_state);
         }
@@ -150,7 +138,7 @@ impl GraphemeMachineState {
         (true, next_state)
     }
 
-    /// Returns the next state after processing the given character.
+    /// Returns the next state after processing the given code point.
     const fn next_state(self, next: GraphemeProps) -> Self {
         use {GraphemeMachineState as S, GraphemePropCb as P};
 

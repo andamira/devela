@@ -14,7 +14,7 @@ use crate::{CharIter, MismatchedCapacity, StringNonul, char7, char8, char16, doc
 /* definitions */
 
 #[doc = crate::_TAG_TEXT!()]
-/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`StringNonul`].
+#[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonul`]."]]
 ///
 #[doc = crate::_doc!(location: "text")]
 #[must_use]

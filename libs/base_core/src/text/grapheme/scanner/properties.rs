@@ -4,14 +4,14 @@ use super::trie::graphemes_lookup;
 use crate::{Mem, char_utf8, impl_trait};
 
 #[doc = crate::_TAG_TEXT!()]
-/// Grapheme cluster break property values from Unicode Standard Annex #29.
+#[doc = concat![crate::_ABBR_EGC!(), "property values from Unicode Standard Annex #29."]]
 ///
 /// Used by the grapheme boundary detection algorithm to determine where
 /// grapheme cluster boundaries occur in text.
 ///
 /// Based on the **Grapheme_Cluster_Break** property from [UAX#29 Section 3.1][0].
 ///
-/// Note: `ExtendedPictographic` is derived from emoji character tables
+/// Note: `ExtendedPictographic` is derived from emoji code point tables
 /// but treated as mutually exclusive with other break properties.
 ///
 /// [0]: https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Break_Property_Values
@@ -25,11 +25,11 @@ pub enum GraphemePropCb {
     None = 0x00,
     /// Carriage Return (U+000D)
     CR = 0x01,
-    /// Control character (general category Cc, Cf, Zl, or Zp)
+    /// Control code point (general category Cc, Cf, Zl, or Zp)
     Control = 0x02,
     /// Grapheme extender (general category Me or Mn)
     Extend = 0x03,
-    /// Extended pictographic character (emoji)
+    /// Extended pictographic code point (emoji)
     ExtendedPictographic = 0x04,
     /// Hangul syllable L (leading consonant)
     L = 0x05,
@@ -39,7 +39,7 @@ pub enum GraphemePropCb {
     LV = 0x07,
     /// Hangul syllable LVT (trailing consonant)
     LVT = 0x08,
-    /// Prepend character
+    /// Prepend code point
     Prepend = 0x09,
     /// Regional indicator symbol (flag emojis)
     RegionalIndicator = 0x0a,
@@ -93,13 +93,13 @@ impl GraphemePropCb {
 #[allow(missing_docs)]
 #[derive(Debug, Clone, Copy, Eq)]
 pub enum GraphemePropInCb {
-    /// Character is not part of an Indic conjunct sequence
+    /// Code point is not part of an Indic conjunct sequence.
     None = 0x00,
-    /// An Indic consonant character
+    /// An Indic consonant code point.
     Consonant = 0x10,
-    /// An extending character in an Indic sequence
+    /// An extending code point in an Indic sequence.
     Extend = 0x20,
-    /// A linker character in an Indic sequence
+    /// A linker code point in an Indic sequence.
     Linker = 0x30,
 }
 
@@ -120,7 +120,7 @@ impl GraphemePropInCb {
 }
 
 #[doc = crate::_TAG_TEXT!()]
-/// Combined grapheme cluster break properties for a single character.
+#[doc = concat!["Combined ", crate::_ABBR_EGC!(), "break properties for a single code point."]]
 ///
 /// Packed representation of both [`GraphemePropCb`] and [`GraphemePropInCb`]
 /// properties used by Unicode grapheme cluster [boundary rules].
@@ -145,15 +145,15 @@ impl GraphemeProps {
         Self { raw: gcb as u8 | incb as u8 }
     }
 
-    /// Looks up grapheme properties for a character.
+    /// Looks up grapheme properties for a scalar.
     ///
     /// Uses an embedded trie to find the Grapheme_Cluster_Break and
-    /// Indic_Conjunct_Break properties for the character.
+    /// Indic_Conjunct_Break properties for the scalar.
     pub const fn for_char_utf8(c: char_utf8) -> Self {
         Self { raw: graphemes_lookup(c) }
     }
 
-    /// Looks up grapheme properties for a character.
+    /// Looks up grapheme properties for a scalar.
     ///
     /// Convenience method that converts to `char_utf8` internally.
     /// Prefer `for_char_utf8` if you already have a `char_utf8`.
@@ -214,7 +214,7 @@ impl GraphemeProps {
         }
     }
 
-    /// Returns `true` if this character is a control character.
+    /// Returns `true` if this code point is a control code point.
     ///
     /// Matches CR, LF, or Control categories for rules [GB4]/[GB5].
     ///

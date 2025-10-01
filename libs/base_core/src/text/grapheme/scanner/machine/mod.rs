@@ -15,13 +15,14 @@ use state::GraphemeMachineState;
 mod tests;
 
 #[doc = crate::_TAG_TEXT!()]
+#[doc = concat!["Streaming ", crate::_ABBR_EGC!(), "boundary detector."]]
 /// Streaming grapheme cluster boundary detector.
 ///
-/// Sequentially processes characters, returning whether each starts a new cluster
-/// or continues the current one.
+/// Sequentially processes Unicode code points,
+/// returning whether each starts a new cluster or continues the current one.
 ///
-/// Internally tracks only previous character properties and a small state machine
-/// for efficient segmentation.
+/// Internally tracks only previous code point properties
+/// and a small state machine for efficient segmentation.
 ///
 #[doc = crate::_doc!(vendor: "grapheme_machine")]
 #[derive(Clone, Copy, Debug, Default, Eq)]
@@ -41,12 +42,12 @@ impl GraphemeMachine {
         GraphemeMachine { state: GraphemeMachineState::Base, prev: None }
     }
 
-    /// Advances the state machine with the given character properties.
+    /// Advances the state machine with the given code point properties.
     ///
-    /// Returns [`GraphemeBoundary::Split`] if the character starts a new cluster,
+    /// Returns [`GraphemeBoundary::Split`] if the code point starts a new cluster,
     /// or [`GraphemeBoundary::Continue`] if it extends the current cluster.
     ///
-    /// At start of input (no previous character), always returns `Split`.
+    /// At start of input (no previous code point), always returns `Split`.
     pub const fn next_char_properties(&mut self, next: GraphemeProps) -> GraphemeBoundary {
         let (boundary, next_state) = self.state.transition(self.prev, next);
         self.state = next_state;
@@ -54,7 +55,7 @@ impl GraphemeMachine {
         if boundary { GraphemeBoundary::Split } else { GraphemeBoundary::Continue }
     }
 
-    /// Advances the state machine with a [`char_utf8`] character.
+    /// Advances the state machine with a [`char_utf8`] scalar.
     ///
     /// See [`Self::next_char_properties`] for result interpretation.
     pub const fn next_char_utf8(&mut self, c: char_utf8) -> GraphemeBoundary {
@@ -62,7 +63,7 @@ impl GraphemeMachine {
         self.next_char_properties(props)
     }
 
-    /// Advances the state machine with a [`char`] character.
+    /// Advances the state machine with a [`char`] scalar.
     ///
     /// See [`Self::next_char_properties`] for result interpretation.
     ///
@@ -73,9 +74,9 @@ impl GraphemeMachine {
         self.next_char_properties(props)
     }
 
-    /// Returns an iterator over [`char_utf8`] characters in `s` with their cluster actions.
+    /// Returns an iterator over [`char_utf8`] scalars in `s` with their cluster actions.
     ///
-    /// The iterator processes characters from `s` using [`Self::next_char_utf8`].
+    /// The iterator processes code points from `s` using [`Self::next_char_utf8`].
     /// For consistent state tracking, consume the entire iterator.
     ///
     /// Does not call [`Self::end_of_input`] automatically, supporting streaming across buffers.
@@ -113,23 +114,23 @@ impl GraphemeMachine {
 }
 
 #[doc = crate::_TAG_TEXT!()]
-/// Indicates how to handle a character when detecting grapheme cluster boundaries.
+/// Indicates how to handle a code point when detecting grapheme cluster boundaries.
 ///
-/// Returned by [`GraphemeMachine`] for each character processed, indicating
-/// whether the character continues the current grapheme cluster or starts a new one.
+/// Returned by [`GraphemeMachine`] for each code point processed, indicating
+/// whether the code point continues the current grapheme cluster or starts a new one.
 ///
 #[doc = crate::_doc!(vendor: "grapheme_machine")]
 #[derive(Debug, Clone, Copy, Eq)]
 pub enum GraphemeBoundary {
-    /// Add this character to the current grapheme cluster and continue.
+    /// Add this code point to the current grapheme cluster and continue.
     ///
-    /// The character extends the current cluster without creating a boundary.
+    /// The code point extends the current cluster without creating a boundary.
     Continue,
 
-    /// Finalize the current grapheme cluster and start a new one with this character.
+    /// Finalize the current grapheme cluster and start a new one with this code point.
     ///
-    /// The current cluster is complete before this character.
-    /// This character becomes the first character of the next cluster.
+    /// The current cluster is complete before this code point.
+    /// This code point becomes the first code point of the next cluster.
     Split,
 }
 

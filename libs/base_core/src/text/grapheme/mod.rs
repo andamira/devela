@@ -1,6 +1,6 @@
 // devela_base_core::text::grapheme
 //
-//! Extended Grapheme Clusters.
+#![doc = crate::_DOC_TEXT_EGC!()]
 //
 
 mod scanner; // Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]

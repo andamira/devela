@@ -31,7 +31,7 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
         GraphemeScanner::<char_utf8> { machine, remain, _char: PhantomData }
     }
 
-    /// Returns the next character and its grapheme boundary action.
+    /// Returns the next code point and its grapheme boundary action.
     pub const fn next(&mut self) -> Option<(GraphemeBoundary, char_utf8)> {
         let (next, len) = unwrap![some? char_utf8::from_str_with_len(self.remain)];
         let action = self.machine.next_char_utf8(next);
@@ -97,7 +97,7 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
             is![boundary.eq(GraphemeBoundary::Split) && has_content; return Some(g)];
             // add char to current grapheme, breaking if capacity is exceeded:
             is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(); break];
-            has_content = true; // we have now at least 1 character
+            has_content = true; // we have now at least 1 code point
             self.remain = slice![str self.remain, len as usize, ..];
         }
         is![has_content; Some(g); None]
@@ -118,7 +118,7 @@ impl<'a> GraphemeScanner<'a, char> {
         GraphemeScanner::<char> { machine, remain, _char: PhantomData }
     }
 
-    /// Returns the next character and its grapheme boundary action.
+    /// Returns the next code point and its grapheme boundary action.
     ///
     /// # Features
     /// Uses the `unsafe_str` feature to avoid duplicated validation.

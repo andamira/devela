@@ -6,11 +6,11 @@ use super::trie::UNICODE_GRAPHEME_CLUSTER_TESTS;
 use crate::{GraphemePropCb, GraphemeProps, char_utf8};
 
 #[test]
-fn character_categories() {
-    // This is a very non-exhaustive and mostly arbitrary set of characters
+fn code_point_categories() {
+    // This is a very non-exhaustive and mostly arbitrary set of code points
     // to test just as a signal that the property lookup code is generally
     // working. `unicode_test_table` is a more thorough test that covers
-    // both individual character categorization and the segmentation
+    // both individual code point categorization and the segmentation
     // state machine.
 
     use GraphemePropCb::*;
@@ -18,15 +18,61 @@ fn character_categories() {
         GraphemeProps::for_char_utf8(char_utf8::from_char(c)).gcb_property()
     }
 
+    // Control code points
     assert_eq!(prop(' '), None);
     assert_eq!(prop('\r'), CR);
     assert_eq!(prop('\n'), LF);
     assert_eq!(prop('\t'), Control);
-    assert_eq!(prop('\u{200D}'), Zwj);
-    assert_eq!(prop('\u{1F1E6}'), RegionalIndicator);
-    assert_eq!(prop('\u{1F9D1}'), ExtendedPictographic);
-    assert_eq!(prop('\u{1F33E}'), ExtendedPictographic);
+    assert_eq!(prop('\u{0001}'), Control); // SOH
+    assert_eq!(prop('\u{0085}'), Control); // NEL
+    assert_eq!(prop('\u{00AD}'), Control); // Soft hyphen
+
+    // Combining marks
+    assert_eq!(prop('\u{0301}'), Extend); // Combining acute
+    assert_eq!(prop('\u{0308}'), Extend); // Combining diaeresis
     assert_eq!(prop('\u{0C41}'), SpacingMark);
+    assert_eq!(prop('\u{0C42}'), SpacingMark);
+
+    // Special joiners
+    assert_eq!(prop('\u{200D}'), Zwj);
+    assert_eq!(prop('\u{200C}'), Extend); // ZWNJ
+
+    // Regional indicators
+    assert_eq!(prop('\u{1F1E6}'), RegionalIndicator); // A
+    assert_eq!(prop('\u{1F1FA}'), RegionalIndicator); // U
+    assert_eq!(prop('\u{1F1FF}'), RegionalIndicator); // Z
+
+    // Extended Pictographic (emoji)
+    assert_eq!(prop('\u{1F9D1}'), ExtendedPictographic); // Person
+    assert_eq!(prop('\u{1F33E}'), ExtendedPictographic); // Herb
+    assert_eq!(prop('\u{1F600}'), ExtendedPictographic); // Grinning face
+    assert_eq!(prop('\u{1F469}'), ExtendedPictographic); // Woman
+    assert_eq!(prop('\u{1F3FB}'), Extend); // Emoji modifier Fitzpatrick type-1-2
+    assert_eq!(prop('\u{1F3FF}'), Extend); // Emoji modifier Fitzpatrick type-6
+
+    // Hangul syllables
+    assert_eq!(prop('\u{1100}'), L); // Hangul Choseong Kiyeok
+    assert_eq!(prop('\u{1160}'), V); // Hangul Jungseong Filler
+    assert_eq!(prop('\u{11A8}'), T); // Hangul Jongseong Kiyeok
+    assert_eq!(prop('\u{AC00}'), LV); // Hangul syllable "ga"
+    assert_eq!(prop('\u{AC01}'), LVT); // Hangul syllable "gag"
+
+    // Other categories
+    assert_eq!(prop('a'), None); // Regular Latin
+    assert_eq!(prop('あ'), None); // Hiragana
+    assert_eq!(prop('क'), None); // Devanagari consonant
+    assert_eq!(prop('\u{0903}'), SpacingMark); // Devanagari sign visarga
+
+    // Prepend code points
+    assert_eq!(prop('\u{0600}'), Prepend); // Arabic number sign
+
+    // Extended categories for complex scripts
+    assert_eq!(prop('\u{0C4A}'), Extend); // Kannada vowel sign O
+    assert_eq!(prop('\u{05B0}'), Extend); // Hebrew point Sheva
+    assert_eq!(prop('\u{05B8}'), Extend); // Hebrew point Qamats
+
+    // Variation selectors
+    assert_eq!(prop('\u{FE0F}'), Extend); // Variation selector-16
 }
 
 #[test]

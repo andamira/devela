@@ -11,6 +11,7 @@ crate::CONST! { hidden macro_export,
     _DOC_ = "";
 */
     _ABBR_DSL  = "<abbr title='Domain Specific Language'>DSL</abbr>";
+    _ABBR_EGC  = "<abbr title='Extended Grapheme Cluster'>EGC</abbr>";
     _ABBR_FFI  = "<abbr title='Foreign Function Interface'>FFI</abbr>";
     _ABBR_FIFO = "<abbr title='First-In, First-Out'>FIFO</abbr>."; // queue
     _ABBR_LIFO = "<abbr title='Last-In, First-Out'>LIFO</abbr>."; // stack
@@ -75,6 +76,7 @@ crate::CONST! { hidden macro_export,
     _DOC_TEXT       = "Text types and operations, text processing.";
     _DOC_TEXT_ASCII = "ASCII strings and characters.";
     _DOC_TEXT_CHAR  = "Unicode scalars.";
+    _DOC_TEXT_EGC   = concat!["Unicode", $crate::_ABBR_EGC!(), "."];
     _DOC_TEXT_FMT   = "Strings formatting.";
     _DOC_TEXT_PARSE = "String parsing without structured semantics.";
     _DOC_TEXT_STR   = "String types and related functionality.";

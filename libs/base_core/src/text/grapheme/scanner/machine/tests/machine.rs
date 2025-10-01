@@ -29,11 +29,11 @@ fn t01_grapheme_cluster_logic_directly() {
         // }
 
         if boundary == GraphemeBoundary::Split && !grapheme.is_empty() {
-            // This is the key difference: we break WITHOUT including the split character
+            // This is the key difference: we break WITHOUT including the split code point
             break;
         }
 
-        // Add character AFTER checking split
+        // Add code point AFTER checking split
         grapheme.try_push_str(ch.as_str_into(&mut buf));
         remain = &remain[len as usize..];
     }
@@ -125,7 +125,7 @@ fn t02_multiple_graphemes_directly() {
 //     let input = "🧑‍🌾";
 //     let mut machine = GraphemeMachine::new();
 //
-//     // Process each character and print the machine state and boundaries
+//     // Process each code point and print the machine state and boundaries
 //     let mut buf = [0u8; 4];
 //
 //     println!("=== Processing ZWJ sequence: '🧑‍🌾' ===");
@@ -265,9 +265,9 @@ const fn const_iter() {
         let mut i = 0;
         while i < 9 {
             i += 1;
-            if let Some((cluster, character)) = iter.next() {
+            if let Some((cluster, scalar)) = iter.next() {
                 if cluster.eq(GraphemeBoundary::Split) {
-                    c = character;
+                    c = scalar;
                 }
             }
         }

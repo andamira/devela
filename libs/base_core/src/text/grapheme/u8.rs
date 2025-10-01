@@ -13,7 +13,7 @@ use crate::{CharIter, MismatchedCapacity, StringU8, char7, char8, char16, unwrap
 /* definitions */
 
 #[doc = crate::_TAG_TEXT!()]
-/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`StringU8`].
+#[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringU8`]."]]
 ///
 #[doc = crate::_doc!(location: "text")]
 #[must_use]
