@@ -9,7 +9,7 @@
 // - tests
 
 use crate::{
-    CharIter, Debug, Deref, Display, FmtResult, Formatter, InvalidText, InvalidUtf8,
+    CharIter, Debug, Deref, Display, FmtResult, Formatter, Hash, Hasher, InvalidText, InvalidUtf8,
     Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste, slice, text::char::*,
 };
 #[allow(unused, reason = "±unsafe")]
@@ -27,7 +27,10 @@ macro_rules! impl_str_u {
 
         #[allow(rustdoc::broken_intra_doc_links, reason = "±unsafe")]
         #[doc = crate::_TAG_TEXT!()]
-        #[doc = "A UTF-8–encoded string, backed by an array with [`" $t "::MAX`] bytes of capacity."]
+        /// A UTF-8 string with fixed capacity that stores length explicitly.
+        ///
+        /// Prioritizes speed over memory - O(1) length operations but uses extra space.
+        /// For the opposite trade-off see [`StringNonul`][crate::StringNonul].
         ///
         #[doc = crate::_doc!(location: "text/str")]
         ///
@@ -87,9 +90,9 @@ macro_rules! impl_str_u {
         ///     *([try_][Self::try_push_str],
         ///       [try__complete][Self::try_push_str_complete])*.
         #[must_use]
-        #[derive(Clone, Copy, Hash, Eq, PartialOrd, Ord)]
+        #[derive(Clone, Copy, Eq, PartialOrd, Ord)]
         pub struct $name<const CAP: usize> {
-            arr: [u8; CAP], // WAIT: for when possible CAP:u8 for panic-less const boundary check.
+            arr: [u8; CAP], // WAIT: for when possible CAP:u8|u16|u32 for panic-less boundary check.
             len: $t,
         }
 
@@ -727,11 +730,24 @@ macro_rules! impl_str_u {
             fn eq(&self, other: &Self) -> bool { self.eq(&other) }
         }
 
+        impl<const CAP: usize> PartialEq<str> for $name<CAP> { // str on the RHS
+            fn eq(&self, string: &str) -> bool { self.as_str() == string }
+        }
         impl<const CAP: usize> PartialEq<&str> for $name<CAP> { // &str on the RHS
-            fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
+            fn eq(&self, string: &&str) -> bool { self.as_str() == *string }
+        }
+        impl<const CAP: usize> PartialEq<$name<CAP>> for str { // str on the LHS
+            fn eq(&self, string: &$name<CAP>) -> bool { self == string.as_str() }
         }
         impl<const CAP: usize> PartialEq<$name<CAP>> for &str { // &str on the LHS
-            fn eq(&self, string: & $name<CAP>) -> bool { *self == string.as_str() }
+            fn eq(&self, string: &$name<CAP>) -> bool { *self == string.as_str() }
+        }
+
+        impl<const CAP: usize> Hash for $name<CAP> {
+            fn hash<H: Hasher>(&self, state: &mut H) {
+                self.len.hash(state);
+                self.arr[..self.len as usize].hash(state);
+            }
         }
 
         impl<const CAP: usize> Deref for $name<CAP> {

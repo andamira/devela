@@ -15,10 +15,10 @@ use crate::{Char, IteratorFused, PhantomData, char_utf8, char7, char8, char16, i
 ///
 #[must_use]
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct CharIter<'a, T> {
+pub struct CharIter<'a, Source> {
     bytes: &'a [u8],
     pos: usize,
-    _source: PhantomData<T>,
+    _source: PhantomData<Source>,
 }
 
 /// Methods available when constructed from a string slice.

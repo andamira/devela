@@ -7,9 +7,8 @@
 // - trait impls
 
 use crate::{
-    Char, CharIter, Debug, Deref, Display, FmtResult, Formatter, InvalidText, Mismatch,
-    MismatchedCapacity, NotEnoughElements, Str, cfor, char_utf8, char7, char8, char16, is, slice,
-    unwrap,
+    Char, CharIter, InvalidText, Mismatch, MismatchedCapacity, NotEnoughElements, Str, cfor,
+    char_utf8, char7, char8, char16, is, slice, unwrap,
 };
 
 /* definitions */
@@ -18,11 +17,12 @@ use crate::{
 const NUL_CHAR: char = '\0';
 
 #[doc = crate::_TAG_TEXT!()]
-/// A UTF-8 string with up to [`u8::MAX`] bytes, excluding nul chars
+/// A null-terminated UTF-8 string with up to `u8::MAX` bytes capacity.
 ///
 #[doc = crate::_doc!(location: "text/str")]
 ///
-/// Internally, the first 0 byte in the array indicates the end of the string.
+/// Prioritizes memory efficiency - uses 1 less byte but O(n) length operations.
+/// For the opposite trade-off see [`StringU8`][crate::StringU8].
 ///
 /// ## Methods
 ///
@@ -68,7 +68,7 @@ const NUL_CHAR: char = '\0';
 ///   [`push_str`][Self::push]*([try][Self::try_push_str])*,
 ///   [`try_push_str_complete`][Self::try_push_str_complete].
 #[must_use]
-#[derive(Clone, Copy, Hash, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Eq, PartialOrd, Ord)]
 pub struct StringNonul<const CAP: usize> {
     arr: [u8; CAP],
 }
@@ -157,6 +157,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns the current length.
+    ///
+    /// Time complexity: O(n) where n is the string length.
     ///
     /// # Examples
     /// ```
@@ -666,157 +668,167 @@ impl<const CAP: usize> StringNonul<CAP> {
 
 /* traits implementations */
 
-impl<const CAP: usize> Default for StringNonul<CAP> {
-    /// Returns an empty string.
-    ///
-    /// # Panics
-    /// Panics if `CAP > [`u8::MAX`]`.
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl<const CAP: usize> Display for StringNonul<CAP> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-        write!(f, "{}", self.as_str())
-    }
-}
-impl<const CAP: usize> Debug for StringNonul<CAP> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-        write!(f, "{:?}", self.as_str())
-    }
-}
-
 #[rustfmt::skip]
-impl<const CAP: usize> PartialEq for StringNonul<CAP> {
-    fn eq(&self, other: &Self) -> bool { self.eq(&other) }
-}
+mod impl_traits {
+    use crate::{Debug, Deref, Display, FmtResult, Formatter, Hash, Hasher};
+    use super::{StringNonul, InvalidText, Mismatch, MismatchedCapacity, is};
 
-#[rustfmt::skip]
-impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> { // &str on the RHS
-    fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
-}
-#[rustfmt::skip]
-impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str { // &str on the LHS
-    fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_str() }
-}
+    impl<const CAP: usize> Default for StringNonul<CAP> {
+        /// Returns an empty string.
+        ///
+        /// # Panics
+        /// Panics if `CAP > [`u8::MAX`]`.
+        fn default() -> Self { Self::new() }
+    }
 
-impl<const CAP: usize> Deref for StringNonul<CAP> {
-    type Target = str;
-    #[rustfmt::skip]
-    fn deref(&self) -> &Self::Target { self.as_str() }
-}
-
-impl<const CAP: usize> AsRef<str> for StringNonul<CAP> {
-    #[rustfmt::skip]
-    fn as_ref(&self) -> &str { self.as_str() }
-}
-
-impl<const CAP: usize> AsRef<[u8]> for StringNonul<CAP> {
-    #[rustfmt::skip]
-    fn as_ref(&self) -> &[u8] { self.as_bytes() }
-}
-
-impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
-    type Error = MismatchedCapacity;
-
-    /// Tries to create a new `StringNonul` from the given string slice.
-    ///
-    /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP > `[`u8::MAX`] or if `CAP < str.len()`.
-    fn try_from(string: &str) -> Result<Self, MismatchedCapacity> {
-        let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
-        if CAP < non_nul_len {
-            Err(MismatchedCapacity::closed_open(0, non_nul_len, CAP))
-        } else {
-            let mut new_string = Self::new_checked()?;
-            let copied_bytes = new_string.push_str(string);
-            debug_assert_eq![non_nul_len, copied_bytes];
-            Ok(new_string)
+    impl<const CAP: usize> Display for StringNonul<CAP> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            write!(f, "{}", self.as_str())
         }
     }
-}
-
-impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
-    type Error = InvalidText;
-
-    /// Tries to create a new `StringNonul` from the given slice of `bytes`.
-    ///
-    /// The string will stop before the first nul character or the end of the slice.
-    ///
-    /// # Errors
-    /// Returns [`InvalidText::Capacity`] if `CAP > `[u8::MAX`] or if `CAP < bytes.len()`
-    /// or [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
-    fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
-        if bytes.len() >= CAP {
-            #[rustfmt::skip]
-            return Err(InvalidText::Capacity(
-                Mismatch::in_closed_interval(0, bytes.len(), CAP, "")));
+    impl<const CAP: usize> Debug for StringNonul<CAP> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            write!(f, "{:?}", self.as_str())
         }
-        // IMPROVE: use Str
-        match ::core::str::from_utf8(bytes) {
-            Ok(_) => {
-                let mut arr = [0; CAP];
-                let mut idx = 0;
+    }
 
-                for &byte in bytes.iter() {
-                    if byte != 0 {
-                        arr[idx] = byte;
-                        idx += 1;
-                    }
-                }
-                Ok(Self { arr })
+    impl<const CAP: usize> PartialEq for StringNonul<CAP> {
+        fn eq(&self, other: &Self) -> bool { self.eq(other) }
+    }
+
+    impl<const CAP: usize> PartialEq<str> for StringNonul<CAP> { // str on the RHS
+        fn eq(&self, slice: &str) -> bool { self.as_str() == slice }
+    }
+    impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> { // &str on the RHS
+        fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
+    }
+    impl<const CAP: usize> PartialEq<StringNonul<CAP>> for str { // &str on the LHS
+        fn eq(&self, string: &StringNonul<CAP>) -> bool { self == string.as_str() }
+    }
+    impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str { // &str on the LHS
+        fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_str() }
+    }
+
+    impl<const CAP: usize> Hash for StringNonul<CAP> {
+        fn hash<H: Hasher>(&self, state: &mut H) {
+            let len = self.len();
+            self.arr[..len].hash(state);
+        }
+    }
+
+    impl<const CAP: usize> Deref for StringNonul<CAP> {
+        type Target = str;
+        fn deref(&self) -> &Self::Target { self.as_str() }
+    }
+
+    impl<const CAP: usize> AsRef<str> for StringNonul<CAP> {
+        fn as_ref(&self) -> &str { self.as_str() }
+    }
+
+    impl<const CAP: usize> AsRef<[u8]> for StringNonul<CAP> {
+        fn as_ref(&self) -> &[u8] { self.as_bytes() }
+    }
+
+    impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
+        type Error = MismatchedCapacity;
+
+        /// Tries to create a new `StringNonul` from the given string slice.
+        ///
+        /// # Errors
+        /// Returns [`MismatchedCapacity`] if `CAP > `[`u8::MAX`] or if `CAP < str.len()`.
+        fn try_from(string: &str) -> Result<Self, MismatchedCapacity> {
+            let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
+            if CAP < non_nul_len {
+                Err(MismatchedCapacity::closed_open(0, non_nul_len, CAP))
+            } else {
+                let mut new_string = Self::new_checked()?;
+                let copied_bytes = new_string.push_str(string);
+                debug_assert_eq![non_nul_len, copied_bytes];
+                Ok(new_string)
             }
-            Err(e) => Err(InvalidText::from_utf8_error(e)),
         }
     }
-}
 
-/* Extend & FromIterator */
+    impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
+        type Error = InvalidText;
 
-impl<const CAP: usize> Extend<char> for StringNonul<CAP> {
-    /// Creates an instance from an iterator of characters.
-    ///
-    /// Processes characters until it can fit no more, discarding the rest.
-    ///
-    /// # Panics
-    /// Panics if `CAP > `[`u8::MAX`].
-    ///
-    /// # Example
-    /// ```
-    /// # use devela_base_core::StringNonul;
-    /// let chars = ['a', 'b', 'c', '€', 'さ'];
-    /// let mut s = StringNonul::<6>::new();
-    /// s.extend(chars);
-    /// assert_eq![s, "abc€"];
-    /// ```
-    fn extend<I: IntoIterator<Item = char>>(&mut self, iter: I) {
-        for i in iter {
-            is![self.push(i) == 0; break];
+        /// Tries to create a new `StringNonul` from the given slice of `bytes`.
+        ///
+        /// The string will stop before the first nul character or the end of the slice.
+        ///
+        /// # Errors
+        /// Returns [`InvalidText::Capacity`] if `CAP > `[u8::MAX`] or if `CAP < bytes.len()`
+        /// or [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
+        fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
+            if bytes.len() >= CAP {
+                return Err(InvalidText::Capacity(
+                    Mismatch::in_closed_interval(0, bytes.len(), CAP, "")));
+            }
+            // IMPROVE: use Str
+            match ::core::str::from_utf8(bytes) {
+                Ok(_) => {
+                    let mut arr = [0; CAP];
+                    let mut idx = 0;
+
+                    for &byte in bytes.iter() {
+                        if byte != 0 {
+                            arr[idx] = byte;
+                            idx += 1;
+                        }
+                    }
+                    Ok(Self { arr })
+                }
+                Err(e) => Err(InvalidText::from_utf8_error(e)),
+            }
         }
     }
-}
-impl<const CAP: usize> FromIterator<char> for StringNonul<CAP> {
-    /// Creates an instance from an iterator of characters.
-    ///
-    /// Processes characters until it can fit no more, discarding the rest.
-    ///
-    /// # Panics
-    /// Panics if `CAP > `[`u8::MAX`].
-    ///
-    /// # Example
-    /// ```
-    /// # use devela_base_core::StringNonul;
-    /// let chars = ['a', 'b', 'c', '€', 'さ'];
-    /// assert_eq!(StringNonul::<9>::from_iter(chars), "abc€さ");
-    /// assert_eq!(StringNonul::<6>::from_iter(chars), "abc€");
-    /// assert_eq!(StringNonul::<5>::from_iter(chars), "abc");
-    /// assert_eq!(StringNonul::<2>::from_iter(chars), "ab");
-    /// assert_eq!(StringNonul::<0>::from_iter(chars), "");
-    /// ```
-    fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> Self {
-        let mut string = StringNonul::new();
-        string.extend(iter);
-        string
+
+    /* Extend & FromIterator */
+
+    impl<const CAP: usize> Extend<char> for StringNonul<CAP> {
+        /// Creates an instance from an iterator of characters.
+        ///
+        /// Processes characters until it can fit no more, discarding the rest.
+        ///
+        /// # Panics
+        /// Panics if `CAP > `[`u8::MAX`].
+        ///
+        /// # Example
+        /// ```
+        /// # use devela_base_core::StringNonul;
+        /// let chars = ['a', 'b', 'c', '€', 'さ'];
+        /// let mut s = StringNonul::<6>::new();
+        /// s.extend(chars);
+        /// assert_eq![s, "abc€"];
+        /// ```
+        fn extend<I: IntoIterator<Item = char>>(&mut self, iter: I) {
+            for i in iter {
+                is![self.push(i) == 0; break];
+            }
+        }
+    }
+    impl<const CAP: usize> FromIterator<char> for StringNonul<CAP> {
+        /// Creates an instance from an iterator of characters.
+        ///
+        /// Processes characters until it can fit no more, discarding the rest.
+        ///
+        /// # Panics
+        /// Panics if `CAP > `[`u8::MAX`].
+        ///
+        /// # Example
+        /// ```
+        /// # use devela_base_core::StringNonul;
+        /// let chars = ['a', 'b', 'c', '€', 'さ'];
+        /// assert_eq!(StringNonul::<9>::from_iter(chars), "abc€さ");
+        /// assert_eq!(StringNonul::<6>::from_iter(chars), "abc€");
+        /// assert_eq!(StringNonul::<5>::from_iter(chars), "abc");
+        /// assert_eq!(StringNonul::<2>::from_iter(chars), "ab");
+        /// assert_eq!(StringNonul::<0>::from_iter(chars), "");
+        /// ```
+        fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> Self {
+            let mut string = StringNonul::new();
+            string.extend(iter);
+            string
+        }
     }
 }

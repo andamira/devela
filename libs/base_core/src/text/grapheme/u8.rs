@@ -114,6 +114,11 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     pub const fn as_bytes(&self) -> &[u8] { self.0.as_bytes() }
 
     /// Returns a mutable byte slice of the inner string slice.
+    ///
+    /// # Safety
+    /// The caller must ensure that the content of the slice is valid UTF-8
+    /// and that it contains exactly one extended grapheme character,
+    /// before the borrow ends and the underlying `str` is used.
     #[must_use]
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]

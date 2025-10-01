@@ -20,7 +20,7 @@ impl<T> Slice<T> {
     where
         T: Copy,
     {
-        dst.copy_from_slice(src)
+        dst.copy_from_slice(src);
     }
 
     /// Converts a reference to `T` into a slice of length 1 (without copying).

@@ -282,6 +282,7 @@ Many feature gates are removed in order to make most features make always availa
 - remove methods: `to_cstring`, from `String*` & `Grapheme*`.
 - make more methods *const* in `GraphemeU8`.
 - make `chars` methods *const* when possible.
+- add more impls of `PartialEq` against string slices.
 - update `Str:`
   - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
   - remove method `from_boxed_utf8_unchecked`.
