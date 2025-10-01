@@ -9,7 +9,6 @@
 // TODO: manual PartialEq impl (const eq)
 
 use crate::{CharIter, MismatchedCapacity, StringU8, char7, char8, char16, unwrap};
-// use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
 
@@ -33,6 +32,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     pub const fn new() -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::new_checked()]))
     }
+    // TODO: new_checked
 
     /* from_str* conversions */
 

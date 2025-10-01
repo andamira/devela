@@ -197,16 +197,4 @@ mod core_impls {
         #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{:?}", self.0) }
     }
-
-    // TODO
-    // impl From<&str> for GraphemeNonul {
-    //     fn from(s: &str) -> GraphemeNonul {
-    //         GraphemeNonul(s.graphemes(true).take(1).collect())
-    //     }
-    // }
-    // impl From<char> for GraphemeNonul {
-    //     fn from(s: char) -> GraphemeNonul {
-    //         GraphemeNonul(s.into())
-    //     }
-    // }
 }

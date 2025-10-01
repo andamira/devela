@@ -50,6 +50,9 @@
   [`CurrentGuard`]: crate::sys::mem::CurrentGuard
   [M_encode]: crate::_info::vendored::encode
   [`data::codec`]: crate::data::codec
+  [M_grapheme_machine]: crate::_info::vendored::grapheme_machine
+  [`GraphemeMachine`]: crate::text::grapheme::GraphemeMachine
+  [`text::grapheme`]: crate::text::grapheme
   [M_icy_sixel]: crate::_info::vendored::icy_sixel
   [`media::image::sixel`]: crate::media::image::sixel
   <!-- [M_musl]: crate::_info::vendored::musl -->
@@ -61,7 +64,7 @@
   [`as_bytes_mut`]: crate::sys::mem::Mem::as_bytes_mut
   [`FatPtr`]: crate::sys::mem::FatPtr
 
-<!-- license: OTHER -->
+<!-- license: Other compatible -->
   [`Xyza8a`]: crate::num::rand::Xyza8a
   [`Xyza8b`]: crate::num::rand::Xyza8b
   [`Chain`]: crate::code::result::Chain

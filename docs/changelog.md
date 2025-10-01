@@ -278,9 +278,16 @@ Many feature gates are removed in order to make most features make always availa
   - types: `FmtWriter`.
 - new type: `FmtWriter`.
 
+### grapheme
+- new types: `GraphemeScanner`.
+- vendor `grapheme_machine` as items: `GraphemeBoundary`, `GraphemeMachine`, `GraphemePropCb`, `GraphemePropInCb`, `GraphemeProps`.
+- update `Grapheme[Nonul|U*]`:
+  - remove methods: `to_cstring`.
+  - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
+  - make more methods *const*.
+
 ### str
-- remove methods: `to_cstring`, from `String*` & `Grapheme*`.
-- make more methods *const* in `GraphemeU8`.
+- remove methods: `to_cstring`, from `String*`.
 - make `chars` methods *const* when possible.
 - add more impls of `PartialEq` against string slices.
 - update `Str:`
@@ -308,8 +315,6 @@ Many feature gates are removed in order to make most features make always availa
   - impl `Extend`, `FromIterator`, `PartialEq`.
   - fix `TryFrom<&str>` impl.
   - improve docs.
-- update `Grapheme[Nonul|U*]`:
-  - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
 
 ## ui
 ### front

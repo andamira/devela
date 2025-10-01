@@ -75,6 +75,7 @@ pub struct char8(pub(crate) u8);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
 
+#[doc = crate::_TAG_TEXT!()]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation.
 ///
 #[doc = crate::_doc!(location: "text/char")]

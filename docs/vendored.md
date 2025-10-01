@@ -110,6 +110,8 @@ See the linked modifications for detailed changes.
   as the structs [`Current`] and [`CurrentGuard`] ([*modifications*][M_current]).
 - <i id="encode"></i>[encode] by Altair Bueno,
   as some items in the [`data::codec`] module ([*modifications*][M_encode]).
+- <i id="grapheme_machine"></i>[grapheme_machine] by Martin Atkins,
+  as [`GraphemeMachine`] and related items in [`text::grapheme`] ([*modifications*][M_grapheme_machine]).
 - <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
   as the [`media::image::sixel`] module ([*modifications*][M_icy_sixel]).
 - <i id="musl"></i>[musl] by Rich Felker, et al.,
@@ -133,6 +135,10 @@ See the linked modifications for detailed changes.
 [encode]: https://crates.io/crates/encode/0.1.2
   [M_encode]: https://github.com/andamira/devela/blob/main/src/_info/vendored/encode.md
   [`data::codec`]: https://andamira.github.io/devela/latest/devela/data/codec/
+[grapheme_machine]: https://crates.io/crates/grapheme_machine/0.2.0
+  [M_grapheme_machine]: https://github.com/andamira/devela/blob/main/src/_info/vendored/grapheme_machine.md
+  [`GraphemeMachine`]: https://andamira.github.io/devela/latest/devela/text/grapheme/struct.GraphemeMachine.html
+  [`text::grapheme`]: https://andamira.github.io/devela/latest/devela/text/grapheme/
 [icy_sixel]: https://crates.io/crates/icy_sixel/0.1.3
 [libsixel]: https://github.com/saitoha/libsixel
   [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/_info/vendored/icy_sixel.md
@@ -149,7 +155,7 @@ See the linked modifications for detailed changes.
 [unsized-stack]: https://crates.io/crates/unsized-stack/0.2.0
   [`FatPtr`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.FatPtr.html
 
-## Other licenses
+## Other compatible licenses
 - <i id="8bit_rng"></i>[8bit_rng] by Edward Rosten, (BSD-2),
   as the [`Xyza8a`] and [`Xyza8b`] structs algorithms.
 - <i id="apply"></i>[apply] by GeorgeBurton (Unlicense),
