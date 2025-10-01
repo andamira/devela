@@ -6,6 +6,7 @@
 // - struct char7
 // - struct char8
 // - struct char16
+// - struct char_utf8
 
 #![allow(non_camel_case_types)]
 
