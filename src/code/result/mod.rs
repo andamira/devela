@@ -17,11 +17,10 @@
 //! and mismatch-aware comparisons ([`Mismatch`]).
 //
 
-mod opt_res; // ExtOption, ExtResult, OptionFmt[Or[Else]]
 mod reexports;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{opt_res::_all::*, reexports::*};
+        pub use super::reexports::*;
     }
 }

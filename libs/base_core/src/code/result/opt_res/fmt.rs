@@ -3,10 +3,9 @@
 //!
 //
 
-use super::ExtOption;
-use core::fmt::{
-    Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, Pointer, Result, UpperExp,
-    UpperHex,
+use crate::{
+    Binary, Debug, Display, ExtOption, FmtResult, Formatter, LowerExp, LowerHex, Octal, Pointer,
+    UpperExp, UpperHex,
 };
 
 #[doc = crate::_TAG_FMT!()]
@@ -28,14 +27,12 @@ impl<T> Clone for OptionFmt<'_, T> {
         *self
     }
 }
-
 impl<T, U: Copy> Copy for OptionFmtOr<'_, T, U> {}
 impl<T, U: Clone> Clone for OptionFmtOr<'_, T, U> {
     fn clone(&self) -> Self {
         Self(self.0, self.1.clone())
     }
 }
-
 impl<T, F: Copy> Copy for OptionFmtOrElse<'_, T, F> {}
 impl<T, F: Clone> Clone for OptionFmtOrElse<'_, T, F> {
     fn clone(&self) -> Self {
@@ -45,33 +42,18 @@ impl<T, F: Clone> Clone for OptionFmtOrElse<'_, T, F> {
 
 macro_rules! impl_option_fmt {
     ($($trait:ident),*$(,)?) => { $(
-
-        impl<T> $trait for OptionFmt<'_, T>
-        where
-            T: $trait,
-        {
-            fn fmt(&self, out: &mut Formatter<'_>) -> Result {
+        impl<T: $trait> $trait for OptionFmt<'_, T> {
+            fn fmt(&self, out: &mut Formatter<'_>) -> FmtResult<()> {
                 $trait::fmt(&self.0.fmt_or(""), out)
             }
         }
-
-        impl<'t, T, U> $trait for OptionFmtOr<'t, T, U>
-        where
-            T: $trait,
-            U: Display,
-        {
-            fn fmt(&self, out: &mut Formatter<'_>) -> Result {
+        impl<'t, T: $trait, U: Display> $trait for OptionFmtOr<'t, T, U> {
+            fn fmt(&self, out: &mut Formatter<'_>) -> FmtResult<()> {
                 $trait::fmt(&self.0.fmt_or_else(||&self.1), out)
             }
         }
-
-        impl<'t, T, F, U> $trait for OptionFmtOrElse<'t, T, F>
-        where
-            T: $trait,
-            F: Fn() -> U,
-            U: Display,
-        {
-            fn fmt(&self, out: &mut Formatter<'_>) -> Result {
+        impl<'t, T: $trait, U: Display, F: Fn() -> U> $trait for OptionFmtOrElse<'t, T, F> {
+            fn fmt(&self, out: &mut Formatter<'_>) -> FmtResult<()> {
                 if let Some(t) = self.0 {
                     <T as $trait>::fmt(t, out)
                 } else {

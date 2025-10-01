@@ -123,8 +123,8 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - functions: `serr`, `sok`.
   - macros: `unwrap!`.
-  - traits: `Chain`, `ExtOptRes`, `Hook`.
-  - types: `Mismatch`, `OptRes`, `Own`.
+  - traits: `Chain`, `ExtOption`, `ExtOptRes`, `ExtResult`, `Hook`.
+  - types: `Mismatch`, `OptRes`, `OptionFmt`, `OptionFmtOr`, `OptionFmtOrElse`, `Own`.
 - move to [base_num]: `ValueQuant`.
 
 ### utils
@@ -273,10 +273,9 @@ Many feature gates are removed in order to make most features make always availa
   - rename method `byte_len` to `len_bytes`.
 
 ### fmt
+- new type: `FmtWriter`.
 - move to [base]:
   - macros: `format_buf!`.
-  - types: `FmtWriter`.
-- new type: `FmtWriter`.
 
 ### grapheme
 - new types: `GraphemeScanner`.

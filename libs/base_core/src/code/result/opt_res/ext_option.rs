@@ -19,7 +19,7 @@ impl<T> Sealed for Option<T> {}
 /// [`ExtOptRes`][crate::ExtOptRes].
 ///
 /// Based on work from:
-/// - <https://github.com/rust-lang/rust/issues/62358> (contains).
+/// - <https://github.com/rust-lang/rust/issues/62358> (has).
 /// - <https://github.com/rust-lang/rust/pull/87036> (reduce).
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
@@ -29,12 +29,12 @@ pub trait ExtOption<T>: Sealed {
     /// # Example
     /// ```
     /// # use devela::ExtOption;
-    /// assert_eq!(Some(1).contains(&1), true);
-    /// assert_eq!(Some(1).contains(&2), false);
-    /// assert_eq!(None::<u8>.contains(&1), false);
+    /// assert_eq!(Some(1).has(&1), true);
+    /// assert_eq!(Some(1).has(&2), false);
+    /// assert_eq!(None::<u8>.has(&1), false);
     /// ```
     #[must_use]
-    fn contains<U: PartialEq<T>>(&self, x: &U) -> bool;
+    fn has<U: PartialEq<T>>(&self, x: &U) -> bool;
 
     /// Merges `self` with another `Option`.
     ///
@@ -106,7 +106,8 @@ pub trait ExtOption<T>: Sealed {
 }
 
 impl<T> ExtOption<T> for Option<T> {
-    fn contains<U: PartialEq<T>>(&self, x: &U) -> bool {
+    #[inline(always)]
+    fn has<U: PartialEq<T>>(&self, x: &U) -> bool {
         self.as_ref().is_some_and(|y| x == y)
     }
 
@@ -118,14 +119,17 @@ impl<T> ExtOption<T> for Option<T> {
         }
     }
 
+    #[inline(always)]
     fn fmt_or_empty(&self) -> OptionFmt<'_, T> {
         OptionFmt(self)
     }
 
+    #[inline(always)]
     fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<'_, T, U> {
         OptionFmtOr(self, u)
     }
 
+    #[inline(always)]
     fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<'_, T, F> {
         OptionFmtOrElse(self, f)
     }
