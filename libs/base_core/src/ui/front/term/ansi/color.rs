@@ -247,10 +247,21 @@ impl Ansi {
     pub const fn COLOR_FG(color: AnsiColor3b) -> [u8; 5] {
         [b'\x1b', b'[', C::FG, color.to_ascii(), b'm']
     }
+    /// Code to set the the foreground `color` bright.
+    #[must_use]
+    pub const fn COLOR_FG_BRIGHT(color: AnsiColor3b) -> [u8; 5] {
+        [b'\x1b', b'[', C::BRI_FG, color.to_ascii(), b'm']
+    }
+
     /// Code to set the the background `color`.
     #[must_use]
     pub const fn COLOR_BG(color: AnsiColor3b) -> [u8; 5] {
         [b'\x1b', b'[', C::BG, color.to_ascii(), b'm']
+    }
+    /// Code to set the the background `color` bright.
+    #[must_use]
+    pub const fn COLOR_BG_BRIGHT(color: AnsiColor3b) -> [u8; 6] {
+        [b'\x1b', b'[', C::BRI_BG[0], C::BRI_BG[1], color.to_ascii(), b'm']
     }
 
     /// Code to set the foreground color to `fg` and the background to `bg`.
@@ -258,7 +269,6 @@ impl Ansi {
     pub const fn COLORS(fg: AnsiColor3b, bg: AnsiColor3b) -> [u8; 8] {
         [ b'\x1b', b'[', C::FG, fg.to_ascii(), b';', C::BG, bg.to_ascii(), b'm' ]
     }
-
     /// Code to set the foreground color to bright `fg` and the background to bright `bg`.
     #[must_use]
     pub const fn COLORS_BRIGHT(fg: AnsiColor3b, bg: AnsiColor3b) -> [u8; 9] {

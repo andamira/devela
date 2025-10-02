@@ -339,6 +339,7 @@ Key changes:
 - change `Ansi::print*` methods to `ansi_print*` functions.
 - update `Ansi:`
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
+  - add methods: `COLOR_FG_BRIGHT`, `COLOR_BG_BRIGHT`.
   - make all escape-sequence methods *const*.
   - fix codes related to alternate screen.
 - update `ansi!`:
