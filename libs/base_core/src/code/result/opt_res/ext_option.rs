@@ -1,4 +1,4 @@
-// devela::code::result::option::ext
+// devela_base_core::code::result::option::ext
 //
 //! Defines the [`ExtOption`] trait.
 //
@@ -19,16 +19,17 @@ impl<T> Sealed for Option<T> {}
 /// [`ExtOptRes`][crate::ExtOptRes].
 ///
 /// Based on work from:
-/// - <https://github.com/rust-lang/rust/issues/62358> (has).
+/// - <https://github.com/rust-lang/rust/issues/62358> (contains→has).
 /// - <https://github.com/rust-lang/rust/pull/87036> (reduce).
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtOption<T>: Sealed {
-    /// Returns `true` if the option is a [`Some`] value containing the given value.
+    /// Returns `true` if the option is a [`Some`] value having the given value.
     ///
     /// # Example
     /// ```
-    /// # use devela::ExtOption;
+    /// # extern crate devela_base_core as devela;
+    /// use devela::ExtOption;
     /// assert_eq!(Some(1).has(&1), true);
     /// assert_eq!(Some(1).has(&2), false);
     /// assert_eq!(None::<u8>.has(&1), false);
@@ -45,8 +46,9 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// # use devela::ExtOption;
+    /// # extern crate devela_base_core as devela;
     /// # use core::{cmp::min, ops::Add};
+    /// use devela::ExtOption;
     /// let (x, y) = (Some(2), Some(4));
     ///
     /// assert_eq!(x.reduce(y, Add::add), Some(6));
@@ -67,7 +69,8 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// # use devela::ExtOption;
+    /// # extern crate devela_base_core as devela;
+    /// use devela::ExtOption;
     /// assert_eq!("42", format!("{}", Some(Box::new(42)).fmt_or("Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or("Nothing")));
     /// ```
@@ -86,7 +89,8 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// # use devela::ExtOption;
+    /// # extern crate devela_base_core as devela;
+    /// use devela::ExtOption;
     /// assert_eq!("42", format!("{}", Some(42).fmt_or_else(|| "Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or_else(|| "Nothing")));
     /// ```
@@ -97,7 +101,7 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// # use devela::ExtOption;
+    /// # use devela_base_core::ExtOption;
     /// assert_eq!("0x42", format!("{:#x}", Some(0x42).fmt_or_empty()));
     /// assert_eq!("", format!("{:#x}", None::<u8>.fmt_or_empty()));
     /// ```
