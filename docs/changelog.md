@@ -9,6 +9,16 @@ This release changes the library's structure from a single crate to multiple cra
 in order to improve compile times while maintaining most of the gained cohesiveness.
 Many feature gates are removed in order to make most features make always available.
 
+Key changes:
+- Workspace Restructuring: Split into multiple crates (devela_base_*) for better compile times.
+- Feature Consolidation: Removed numerous feature gates, making functionality always available.
+- Text System Overhaul: Major improvements to character, string, and grapheme handling.
+- Const Evolution: Many methods made const across numeric, text, and system modules.
+- MSRV Bump: Minimum Supported Rust Version increased to 1.90.0.
+- Build System Enhancements: Improved build configuration and post-build processing
+- Error System Refinement: Updated error macros and type organization.
+- Memory & System Improvements: Enhanced slice operations and system architecture support.
+
 -----------
 > *Project* :
 -----------
@@ -282,8 +292,12 @@ Many feature gates are removed in order to make most features make always availa
 - vendor `grapheme_machine` as items: `GraphemeBoundary`, `GraphemeMachine`, `GraphemePropCb`, `GraphemePropInCb`, `GraphemeProps`.
 - update `Grapheme[Nonul|U*]`:
   - remove methods: `to_cstring`.
+  - make `new` method panic
+  - add new methods: `eq`, `[as|into]_string_[nonul|u8]`, `from_char_utf8[_unchecked]`, `from_str`, `new_checked`.
   - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
-  - make more methods *const*.
+  - implement `PartialEq` and `Hash` manually.
+  - implement `PartialEq` between string and grapheme types.
+  - make all methods *const*.
 
 ### str
 - remove methods: `to_cstring`, from `String*`.

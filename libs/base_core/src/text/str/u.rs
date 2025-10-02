@@ -1,4 +1,4 @@
-// devela_base_core::text::u
+// devela_base_core::text::str::u
 //
 //! `String` backed by an array.
 //
@@ -45,19 +45,21 @@ macro_rules! impl_str_u {
         ///     *([_truncate][Self::from_str_truncate],
         ///       [_unchecked][Self::from_str_unchecked])*,
         ///   [`from_char`][Self::from_char]
-        ///     *([`7`][Self::from_char7],
-        ///       [`8`][Self::from_char8],
-        ///       [`16`](Self::from_char16)),
-        ///       [`utf8`](Self::from_char_utf8))*.
-        ///   [`from_array`][Self::from_array]
+        ///     *([7][Self::from_char7],
+        ///       [8][Self::from_char8],
+        ///       [16](Self::from_char16),
+        ///       [utf8](Self::from_char_utf8))*.
+        ///   [`from_array`][Self::from_array] *(
         #[cfg_attr(feature = "unsafe_str", doc =
-            "*([_unchecked][Self::from_array_unchecked]<sup title='unsafe function'>⚠</sup>,")]
+            "[_unchecked][Self::from_array_unchecked]<sup title='unsafe function'>⚠</sup>,")]
         ///     [_nleft][Self::from_array_nleft],
         #[cfg_attr(feature = "unsafe_str", doc =
             "[_nleft_unchecked][Self::from_array_nleft_unchecked]<sup title='unsafe function'>⚠</sup>,")]
-        ///       [_nright][Self::from_array_nleft].
+        ///       [_nright][Self::from_array_nleft]
+        // IMPROVE comma list, maybe _doc macro to concat method links with optional unsafe items
         #[cfg_attr(feature = "unsafe_str", doc =
-            "[_nright_unchecked][Self::from_array_nright_unchecked]<sup title='unsafe function'>⚠</sup>)*.")]
+            ", [_nright_unchecked][Self::from_array_nright_unchecked]<sup title='unsafe function'>⚠</sup>")]
+        /// )*.
         ///
         /// - [Deconstructors](#deconstructors):
         ///   [`into_array`][Self::into_array],
@@ -417,7 +419,7 @@ macro_rules! impl_str_u {
             ///
             /// The array contains all the bytes, including those outside the current length.
             #[must_use] #[inline(always)]
-            pub const fn as_array(&self) -> [u8; CAP] { self.arr }
+            pub const fn as_array(&self) -> &[u8; CAP] { &self.arr }
 
             /// Returns a byte slice of the inner string slice.
             ///

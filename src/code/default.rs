@@ -300,7 +300,7 @@ mod impl_devela {
 
     impl<const CAP: usize> ConstDefault for GraphemeNonul<CAP> {
         #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
-        const DEFAULT: Self = unwrap![ok Self::new()];
+        const DEFAULT: Self = Self::new();
     }
     #[cfg(feature = "alloc")]
     impl ConstDefault for GraphemeString {
@@ -308,7 +308,7 @@ mod impl_devela {
     }
     impl<const CAP: usize> ConstDefault for GraphemeU8<CAP> {
         #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
-        const DEFAULT: Self = unwrap![ok Self::new()];
+        const DEFAULT: Self = Self::new();
     }
 
     impl<const CAP: usize> ConstDefault for StringNonul<CAP> {

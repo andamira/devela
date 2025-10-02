@@ -7,8 +7,8 @@
 // - impl over char
 
 use crate::{
-    GraphemeBoundary, GraphemeMachine, IteratorFused, PhantomData, StringNonul, StringU8,
-    char_utf8, is, slice, unwrap,
+    GraphemeBoundary, GraphemeMachine, GraphemeNonul, GraphemeU8, IteratorFused, PhantomData,
+    StringNonul, StringU8, char_utf8, is, slice, unwrap,
 };
 
 #[doc = crate::_TAG_TEXT!()]
@@ -39,14 +39,17 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
         Some((action, next))
     }
 
-    /// Returns the next complete grapheme cluster as a `StringU8`.
+    /// Returns the next complete grapheme cluster as a `GraphemeU8`.
     ///
     /// Returns `None` when there are no more graphemes to process.
     /// The grapheme will be truncated if it exceeds the capacity `CAP`.
     ///
+    /// # Panics
+    /// Panics if `CAP > 255.
+    ///
     /// # Example
     /// ```
-    /// # use devela_base_core::{GraphemeMachine, GraphemeScanner, StringU8, char_utf8};
+    /// # use devela_base_core::{GraphemeMachine, GraphemeScanner, GraphemeU8, char_utf8};
     /// let input = "H€🧑‍🌾";
     /// let mut machine = GraphemeMachine::new();
     /// let mut scanner = GraphemeScanner::<char_utf8>::new(&mut machine, input);
@@ -56,21 +59,23 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     /// let g = scanner.next_grapheme_u8::<32>().unwrap(); assert_eq!(g.as_str(), "🧑‍🌾");
     /// assert!(scanner.next_grapheme_u8::<32>().is_none());
     /// ```
-    pub const fn next_grapheme_u8<const CAP: usize>(&mut self) -> Option<StringU8<CAP>> {
+    pub const fn next_grapheme_u8<const CAP: usize>(&mut self) -> Option<GraphemeU8<CAP>> {
         let mut g = StringU8::<CAP>::new();
         let mut buf = [0u8; 4];
         while let Some((ch, len)) = char_utf8::from_str_with_len(self.remain) {
             let boundary = self.machine.next_char_utf8(ch);
-            // if split occurs return the previous grapheme:
-            is![boundary.eq(GraphemeBoundary::Split) && !g.is_empty(); return Some(g)];
-            // add char to current grapheme, breaking if capacity is exceeded:
+            if boundary.eq(GraphemeBoundary::Split) && !g.is_empty() {
+                return Some(GraphemeU8(g)); // if split occurs return the previous grapheme
+            }
+            // add char to current grapheme, breaking if capacity is exceeded
             is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(); break];
             self.remain = slice![str self.remain, len as usize, ..];
         }
-        is![!g.is_empty(); Some(g); None]
+        is![!g.is_empty(); Some(GraphemeU8(g)); None]
     }
+    // TODO make another version exact non-truncating.
 
-    /// Returns the next complete grapheme cluster as a `StringNonul`.
+    /// Returns the next complete grapheme cluster as a `GraphemeNonul`.
     ///
     /// Returns `None` when there are no more graphemes to process.
     /// The grapheme will be truncated if it exceeds the capacity `CAP`.
@@ -87,20 +92,22 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     /// let g = scanner.next_grapheme_nonul::<32>().unwrap(); assert_eq!(g.as_str(), "🧑‍🌾");
     /// assert!(scanner.next_grapheme_nonul::<32>().is_none());
     /// ```
-    pub const fn next_grapheme_nonul<const CAP: usize>(&mut self) -> Option<StringNonul<CAP>> {
+    pub const fn next_grapheme_nonul<const CAP: usize>(&mut self) -> Option<GraphemeNonul<CAP>> {
         let mut g = StringNonul::<CAP>::new();
         let mut buf = [0u8; 4];
-        let mut has_content = false; // avoid costly is_empty() calls
+        let mut has_content = false; // to avoid costly is_empty() calls
         while let Some((ch, len)) = char_utf8::from_str_with_len(self.remain) {
             let boundary = self.machine.next_char_utf8(ch);
             // if split occurs return the previous grapheme:
-            is![boundary.eq(GraphemeBoundary::Split) && has_content; return Some(g)];
-            // add char to current grapheme, breaking if capacity is exceeded:
+            if boundary.eq(GraphemeBoundary::Split) && !g.is_empty() {
+                return Some(GraphemeNonul(g)); // if split occurs return the previous grapheme
+            }
+            // add char to current grapheme, breaking if capacity is exceeded
             is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(); break];
             has_content = true; // we have now at least 1 code point
             self.remain = slice![str self.remain, len as usize, ..];
         }
-        is![has_content; Some(g); None]
+        is![has_content; Some(GraphemeNonul(g)); None]
     }
 }
 

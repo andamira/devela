@@ -1,4 +1,4 @@
-// devela_base_core::text::nonul
+// devela_base_core::text::str::nonul
 //
 //! Non-nul `String` backed by an array.
 //
@@ -32,10 +32,10 @@ const NUL_CHAR: char = '\0';
 ///     *([_truncate][Self::from_str_truncate],
 ///       [_unchecked][Self::from_str_unchecked])*,
 ///   [`from_char`][Self::from_char]
-///     *([`7`](Self::from_char7),
-///       [`8`](Self::from_char8),
-///       [`16`](Self::from_char16)),
-///       [`utf8`](Self::from_char_utf8))*.
+///     *([7](Self::from_char7),
+///       [8](Self::from_char8),
+///       [16](Self::from_char16),
+///       [utf8](Self::from_char_utf8))*.
 ///   [`from_byte_array`][Self::from_byte_array],
 ///    *([_unchecked][Self::from_str_unchecked])*.
 ///
@@ -228,7 +228,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// The array contains all the bytes, including those outside the current length.
     #[must_use] #[inline(always)]
-    pub const fn as_array(&self) -> [u8; CAP] { self.arr }
+    pub const fn as_array(&self) -> &[u8; CAP] { &self.arr }
 
     /// Returns a byte slice of the inner string slice.
     ///
@@ -666,10 +666,10 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 }
 
-/* traits implementations */
+/* trait impls */
 
 #[rustfmt::skip]
-mod impl_traits {
+mod trait_impls {
     use crate::{Debug, Deref, Display, FmtResult, Formatter, Hash, Hasher};
     use super::{StringNonul, InvalidText, Mismatch, MismatchedCapacity, is};
 
