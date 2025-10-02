@@ -5,11 +5,15 @@
 // TOC
 // - type LinuxResult
 // - enum LinuxError
-// - from/into IoError
-// - from Overflow
+// - impl Error & Display
+// - impl From/Into IoError
+// - impl From Overflow
 // - to LINUX_EXIT
 
-use crate::{IoError, IoErrorKind, LINUX_ERRNO as ERRNO, LINUX_EXIT as EXIT, Overflow, is};
+use crate::{
+    Display, Error, FmtResult, Formatter, IoError, IoErrorKind, LINUX_ERRNO as ERRNO,
+    LINUX_EXIT as EXIT, Overflow, is,
+};
 
 #[doc = crate::_TAG_RESULT!()]
 /// The return type for Linux-related functions that can fail.
@@ -36,6 +40,19 @@ pub enum LinuxError {
     /// A custom error with a static string message.
     Other(&'static str),
 }
+
+impl Error for LinuxError {}
+impl Display for LinuxError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        match self {
+            LinuxError::Sys(errno) => write!(f, "System error ERRNO:{errno}."),
+            LinuxError::NoInput => f.write_str("No input available"),
+            LinuxError::InvalidUtf8 => f.write_str("Invalid UTF-8 data"),
+            LinuxError::Other(s) => f.write_str(s),
+        }
+    }
+}
+
 macro_rules! match_linux_to_io {
     ($self:ident) => {
         match $self {

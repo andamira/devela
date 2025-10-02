@@ -231,7 +231,9 @@ Key changes:
 - new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
 - fix `Linux`-related warnings & avoid use of `transmute`.
 - rename syscalls doc constants, prefix with `_DOC_`.
-- new `LinuxError::Other` variant.
+- update `LinuxError`:
+  - new `Other` variant.
+  - impl `Error`.
 - improve `LinuxTimespec`.
   - impl `Display` and `ConstDefault`
   - rename method `with` to `try_with_duration` and make fallible.
