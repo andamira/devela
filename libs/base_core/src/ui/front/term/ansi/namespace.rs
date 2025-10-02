@@ -16,6 +16,15 @@ use crate::{AsciiDigits, slice};
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
 /// - [Print methods][Self#print-methods]
+///
+/// ## Coordinate Order
+/// All cursor positioning functions use `(columns, rows)` order, equivalent to `(x, y)`.
+/// This follows graphics API conventions but is the **reverse** of the underlying
+/// ANSI sequence which uses `[row;column]` order in escape sequences.
+///
+/// # Related Items
+/// See also the [`ansi!`] macro.
+#[doc = crate::doclink!(custom devela "[`ansi!`]" "ui/front/term/macro.ansi.html")]
 #[derive(Debug)]
 pub struct Ansi;
 
@@ -48,9 +57,9 @@ impl Ansi {
 /// # Screen escape codes
 impl Ansi {
     /// Code to enable the alternative screen.
-    pub const ENABLE_ALT_SCREEN: [u8; 7] = *b"\x1b[1049h";
+    pub const ENABLE_ALT_SCREEN: [u8; 8] = *b"\x1b[?1049h";
     /// Code to disable the alternative screen.
-    pub const DISABLE_ALT_SCREEN: [u8; 7] = *b"\x1b[1049l";
+    pub const DISABLE_ALT_SCREEN: [u8; 8] = *b"\x1b[?1049l";
 }
 
 /// # Erase escape codes
@@ -84,48 +93,48 @@ impl Ansi {
     /// Code to move the cursor to the home position (1, 1).
     pub const CURSOR_HOME: [u8; 3] = *b"\x1b[H";
 
-    /// Code to move the cursor to the specified 1-digit position (row, col).
+    /// Code to move the cursor to the specified 1-digit position (col, row).
     /// # Panics
     /// Panics in debug if either `row` or `col` > 9.
     #[must_use] #[rustfmt::skip]
-    pub const fn CURSOR_MOVE1(row: u8, col: u8) -> [u8; 6] {
+    pub const fn CURSOR_MOVE1(col: u8, row: u8) -> [u8; 6] {
         [ b'\x1b', b'[', AsciiDigits(row).digits_1(), b';', AsciiDigits(col).digits_1(), b'H' ]
     }
-    /// Code to move the cursor to the specified 2-digit position (row, col).
+    /// Code to move the cursor to the specified 2-digit position (col, row).
     /// # Panics
     /// Panics in debug if either `row` or `col` > 99.
     #[must_use]
-    pub const fn CURSOR_MOVE2(row: u8, col: u8) -> [u8; 8] {
+    pub const fn CURSOR_MOVE2(col: u8, row: u8) -> [u8; 8] {
         let r: [u8; 2] = AsciiDigits(row).digits_2();
         let c: [u8; 2] = AsciiDigits(col).digits_2();
         [b'\x1b', b'[', r[0], r[1], b';', c[0], c[1], b'H']
     }
-    /// Code to move the cursor to the specified 3-digit position (row, col).
+    /// Code to move the cursor to the specified 3-digit position (col,row).
     /// # Panics
     /// Panics in debug if either `row` or `col` > 999.
     #[must_use]
-    pub const fn CURSOR_MOVE3(row: u16, col: u16) -> [u8; 10] {
+    pub const fn CURSOR_MOVE3(col: u16, row: u16) -> [u8; 10] {
         let r: [u8; 3] = AsciiDigits(row).digits_3();
         let c: [u8; 3] = AsciiDigits(col).digits_3();
         [b'\x1b', b'[', r[0], r[1], r[2], b';', c[0], c[1], c[2], b'H']
     }
-    /// Code to move the cursor to the specified 4-digit position (row, col).
+    /// Code to move the cursor to the specified 4-digit position (col, row).
     /// # Panics
     /// Panics in debug if either `row` or `col` > 9999.
     #[must_use]
-    pub const fn CURSOR_MOVE4(row: u16, col: u16) -> [u8; 12] {
+    pub const fn CURSOR_MOVE4(col: u16, row: u16) -> [u8; 12] {
         let r: [u8; 4] = AsciiDigits(row).digits_4();
         let c: [u8; 4] = AsciiDigits(col).digits_4();
         [b'\x1b', b'[', r[0], r[1], r[2], r[3], b';', c[0], c[1], c[2], c[3], b'H']
     }
-    /// Returns a slice with the code to move the cursor to the specified position (row, col).
+    /// Returns a slice with the code to move the cursor to the specified position (col, row).
     ///
     /// It needs a `buffer` where to store the bytes.
     ///
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use] #[rustfmt::skip]
-    pub const fn CURSOR_MOVE_N(buffer: &mut [u8], row: u32, col: u32) -> &[u8] {
+    pub const fn CURSOR_MOVE_N(buffer: &mut [u8], col: u32, row: u32) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
         let mut divisor = 1;

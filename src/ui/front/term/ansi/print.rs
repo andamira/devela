@@ -29,7 +29,7 @@ See also the [`ansi!`][crate::ansi] macro.
 }
 
 /* print methods */
-// In sync with /src/sys/os/print/mod.rs.
+// In sync with /src/sys/os/print/mod.rs
 
 // std version (overrides linux)
 #[doc = DOC_ANSI_PRINT!()]

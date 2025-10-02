@@ -34,23 +34,23 @@ crate::CONST! {
 # use devela::{ansi, const_assert};
 assert_eq![&[27, 91, 49, 109], ansi![b: bold]];
 assert_eq![&[27, 91, 49, 109, 27, 91, 51, 109], ansi![b: bold, ITALIC]];
-assert_eq![&[27, 91, 50, 59, 51, 72], ansi![b: cursor_move1(2, 3)]];
+assert_eq![&[27, 91, 50, 59, 51, 72], ansi![b: cursor_move1(3, 2)]];
 const_assert![eq_buf
     &[27, 91, 49, 109, 27, 91, 51, 51, 109, 27, 91, 52, 59, 50, 72, 27, 91, 48, 109],
-    ansi![b: bold yElLoW, cursor_move1(4, 2) rEsEt]
+    ansi![b: bold yElLoW, cursor_move1(2, 4) rEsEt]
 ];
 
 assert_eq!["\u{1b}[1m", ansi![s: bold]];
 assert_eq!["\u{1b}[1m\u{1b}[3m", ansi![s: bold, ITALIC]];
-assert_eq!["\u{1b}[2;3H", ansi![s: cursor_move1(2, 3)]];
+assert_eq!["\u{1b}[2;3H", ansi![s: cursor_move1(3, 2)]];
 const_assert![eq_str
     "\u{1b}[1m\u{1b}[33m\u{1b}[4;2H\u{1b}[0m",
-    ansi![s: bold yElLoW, cursor_move1(4, 2) rEsEt]
+    ansi![s: bold yElLoW, cursor_move1(2, 4) rEsEt]
 ];
 
 # #[cfg(feature = "std")] {
 // prints the codes to `stdout`
-ansi![p: bold, ITALIC, cursor_move1(2, 3)].unwrap();
+ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 # }
 ```
 [0]: super::Ansi#ansi-escape-codes"#;
@@ -78,11 +78,18 @@ macro_rules! ansi {
     s: // outputs a static string slice
     $($arg:tt)*) => { $crate::Str::__utf8_bytes_to_str($crate::ansi![b: $($arg)*]) };
     (
-    p: // no-op (printing not supported)
+    p: // prints static commands (prints all commands concatenated) *
     $($arg:tt)*) => {};
     (
-    @p: // no-op (printing not supported)
+    p! // + unwrap()
+    $($arg:tt)*) => {};
+    (
+    @p: // prints dynamic commands (prints each command immediately) *
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {};
+    (
+    @p! // + unwrap()
+    $($arg:tt)*) => {};
+
 }
 
 // std version (not(linux))
@@ -105,10 +112,13 @@ macro_rules! ansi {
     s: // outputs a static string slice
     $($arg:tt)*) => { $crate::Str::__utf8_bytes_to_str($crate::ansi![b: $($arg)*]) };
     (
-    p: // print static commands (prints all commands concatenated)
+    p: // prints static commands (prints all commands concatenated)
     $($arg:tt)*) => { $crate::ansi_print_std( $crate::ansi![b: $($arg)*] ) };
     (
-    @p: // print dynamic commands (prints each command immediately)
+    p! // + unwrap()
+    $($arg:tt)*) => { $crate::ansi![p: $($arg)*].unwrap() };
+    (
+    @p: // prints dynamic commands (prints each command immediately)
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         let mut some_error = None;
         $(
@@ -123,6 +133,9 @@ macro_rules! ansi {
         )+
         if let Some(e) = some_error { Err(e) } else { Ok(()) }
     }};
+    (
+    @p! // + unwrap()
+    $($arg:tt)*) => { $crate::ansi![@p: $($arg)*].unwrap() };
 }
 
 // linux version (overrides std)
@@ -144,10 +157,13 @@ macro_rules! ansi {
     s: // outputs a static string slice
     $($arg:tt)*) => { $crate::Str::__utf8_bytes_to_str($crate::ansi![b: $($arg)*]) };
     (
-    p: // print static commands (prints all commands concatenated)
+    p: // prints static commands (prints all commands concatenated)
     $($arg:tt)*) => { $crate::ansi_print_linux( $crate::ansi![b: $($arg)*] ) };
     (
-    @p: // print dynamic commands (prints each command immediately)
+    p! // + unwrap()
+    $($arg:tt)*) => { $crate::ansi![p: $($arg)*].unwrap() };
+    (
+    @p: // prints dynamic commands (prints each command immediately)
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         let mut some_error = None;
         $(
@@ -162,6 +178,9 @@ macro_rules! ansi {
         )+
         if let Some(e) = some_error { Err(e) } else { Ok(()) }
     }};
+    (
+    @p! // + unwrap()
+    $($arg:tt)*) => { $crate::ansi![@p: $($arg)*].unwrap() };
 }
 #[doc(inline)]
 pub use ansi;
@@ -176,22 +195,22 @@ mod tests {
     fn str() {
         assert_eq!["\u{1b}[1m", ansi![s: bold]];
         assert_eq!["\u{1b}[1m\u{1b}[3m", ansi![s: bold, ITALIC]];
-        assert_eq!["\u{1b}[2;3H", ansi![s: cursor_move1(2, 3)]];
+        assert_eq!["\u{1b}[2;3H", ansi![s: cursor_move1(3, 2)]];
 
         const_assert![eq_str "\u{1b}[1m", ansi![s: bold]];
         const_assert![eq_str "\u{1b}[1m\u{1b}[3m", ansi![s: bold, ITALIC]];
-        const_assert![eq_str "\u{1b}[2;3H", ansi![s: cursor_move1(2, 3)]];
+        const_assert![eq_str "\u{1b}[2;3H", ansi![s: cursor_move1(3, 2)]];
     }
 
     #[test]
     fn bytes() {
         assert_eq![&[27, 91, 49, 109], ansi![b: bold]];
         assert_eq![&[27, 91, 49, 109, 27, 91, 51, 109], ansi![b: bold, ITALIC]];
-        assert_eq![&[27, 91, 50, 59, 51, 72], ansi![b: cursor_MOve1(2, 3)]];
+        assert_eq![&[27, 91, 50, 59, 51, 72], ansi![b: cursor_MOve1(3, 2)]];
 
         const_assert![eq_buf & [27, 91, 49, 109], ansi![b: bold]];
         const_assert![eq_buf & [27, 91, 49, 109, 27, 91, 51, 109], ansi![b: bold, ITALIC]];
-        const_assert![eq_buf & [27, 91, 50, 59, 51, 72], ansi![b: cursor_MOve1(2, 3)]];
+        const_assert![eq_buf & [27, 91, 50, 59, 51, 72], ansi![b: cursor_MOve1(3, 2)]];
     }
 
     #[test]

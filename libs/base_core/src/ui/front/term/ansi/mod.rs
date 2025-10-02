@@ -7,11 +7,14 @@
 
 #![expect(non_snake_case, reason = "uppercase const fns as related constants")]
 
-mod color; // AnsiColor3b, AnsiColor8b
 mod namespace; // Ansi
+mod color; // AnsiColor3b, AnsiColor8b (+Ansi impls)
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{color::*, namespace::*};
+        pub use super::{
+            color::*,
+            namespace::*,
+        };
     }
 }

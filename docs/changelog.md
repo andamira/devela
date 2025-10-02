@@ -335,8 +335,13 @@ Key changes:
 - move to [base]:
   - types: `Ansi`, `AnsiColor3b`, `AnsiColor8b`, `TermSize`.
 - change `Ansi::print*` methods to `ansi_print*` functions.
-- make all `Ansi` escape-sequence methods *const*.
-- fix visibility of `ansi!` macro.
+- update `Ansi:`
+  - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
+  - make all escape-sequence methods *const*.
+  - fix codes related to alternate screen.
+- update `ansi!`:
+  - add new arms `p!` and `@p!` that auto-unwrap.
+  - fix macro visibility.
 
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

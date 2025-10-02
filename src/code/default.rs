@@ -254,7 +254,7 @@ mod impl_std {
 
 #[rustfmt::skip]
 mod impl_devela {
-    use crate::{ConstDefault, paste, sf, unwrap};
+    use crate::{ConstDefault, paste, sf};
     use crate::{
         // data //
         Cast,

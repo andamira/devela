@@ -8,6 +8,7 @@ mod namespace; // Slice, slice!
 
 crate::structural_mods! { // _mods
     _mods {
+        #[doc(inline)]
         pub use super::{
             namespace::*,
             join::*,
