@@ -1,13 +1,12 @@
 // devela_base_core::sys::mem::slice::namespace::core
 
-#[cfg(any(doc, unsafe··))]
-use crate::Ptr;
 use crate::{Slice, is};
 use ::core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use ::core::slice::{from_raw_parts, from_raw_parts_mut};
 
 /// # `core::slice` namespaced methods.
+#[rustfmt::skip]
 impl<T> Slice<T> {
     /// Copies all elements from `src` into `dst` using a memcpy.
     ///
@@ -16,30 +15,21 @@ impl<T> Slice<T> {
     ///
     /// See `core::slice::`[`copy_from_slice`][slice#method.copy_from_slice].
     #[inline(always)]
-    pub const fn copy_from_slice(dst: &mut [T], src: &[T])
-    where
-        T: Copy,
-    {
-        dst.copy_from_slice(src);
-    }
+    pub const fn copy(dst: &mut [T], src: &[T]) where T: Copy { dst.copy_from_slice(src); }
 
     /// Converts a reference to `T` into a slice of length 1 (without copying).
     ///
     /// See `core::slice::`[`from_ref`].
     #[must_use]
     #[inline(always)]
-    pub const fn from_ref(s: &T) -> &[T] {
-        from_ref(s)
-    }
+    pub const fn from_ref(s: &T) -> &[T] { from_ref(s) }
 
     /// Converts a reference to `T` into a slice of length 1 (without copying).
     ///
     /// See `core::slice::`[`from_mut`].
     #[must_use]
     #[inline(always)]
-    pub const fn from_mut(s: &mut T) -> &mut [T] {
-        from_mut(s)
-    }
+    pub const fn from_mut(s: &mut T) -> &mut [T] { from_mut(s) }
 
     /// Forms a shared slice from a pointer and a length.
     ///

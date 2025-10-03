@@ -221,6 +221,7 @@ Many feature gates are removed in order to make most features make always availa
 - new macro `slice!`.
 - update `Slice`:
   - rename methods:
+    - `copy_from_slice` to `copy`.
     - `trim_leading_bytes` to `trim_leading`
     - `replace_leading_bytes` to `replace_leading`.
   - add new methods:

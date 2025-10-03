@@ -3,26 +3,26 @@
 use crate::Slice;
 
 #[test]
-fn copy_from_slice() {
+fn copy() {
     // Basic copy
     let mut dst = [0u8; 4];
-    Slice::copy_from_slice(&mut dst, &[1, 2, 3, 4]);
+    Slice::copy(&mut dst, &[1, 2, 3, 4]);
     assert_eq!(dst, [1, 2, 3, 4]);
     // Empty slices
     let mut empty_dest = [0u8; 0];
-    Slice::<u8>::copy_from_slice(&mut empty_dest, &[]);
+    Slice::<u8>::copy(&mut empty_dest, &[]);
     assert_eq!(empty_dest, [0u8; 0]);
     // Const context (compile test)
     const fn _const_test() {
         let mut dst = [0u8; 2];
-        Slice::copy_from_slice(&mut dst, &[1, 2]);
+        Slice::copy(&mut dst, &[1, 2]);
     }
 }
 #[test]
 #[should_panic]
-fn copy_from_slice_panic() {
+fn copy_panic() {
     let mut dst = [0u8; 3];
-    Slice::copy_from_slice(&mut dst, &[1, 2, 3, 4]); // length mismatch
+    Slice::copy(&mut dst, &[1, 2, 3, 4]); // length mismatch
 }
 #[test]
 fn copy_array_at() {
