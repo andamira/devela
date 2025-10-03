@@ -5,19 +5,23 @@
 
 > A place for everything, and everything in its place.
 
+```
 This release changes the library's structure from a single crate to multiple crates,
 in order to improve compile times while maintaining most of the gained cohesiveness.
 Many feature gates are removed in order to make most features make always available.
+```
 
-Key changes:
-- Workspace Restructuring: Split into multiple crates (devela_base_*) for better compile times.
-- Feature Consolidation: Removed numerous feature gates, making functionality always available.
-- Text System Overhaul: Major improvements to character, string, and grapheme handling.
-- Const Evolution: Many methods made const across numeric, text, and system modules.
-- MSRV Bump: Minimum Supported Rust Version increased to 1.90.0.
-- Build System Enhancements: Improved build configuration and post-build processing
-- Error System Refinement: Updated error macros and type organization.
-- Memory & System Improvements: Enhanced slice operations and system architecture support.
+## Key changes:
+- workspace restructuring: split into multiple crates (devela_base_*).
+- feature consolidation: removed feature gates, make functionality always available.
+- text system overhaul: major improvements to scalar, string, and grapheme handling.
+- const evolution: many methods made const across numeric, text, and system modules.
+- build system enhancements: improved build configuration and post-build processing
+- memory & system improvements: enhanced slice operations and system arches support.
+- error system refinement: updated error macros and type organization.
+- msrv bump: minimum supported rust version increased to 1.90.0.
+
+<!-- **Legend:** ⚠️ Breaking Change | 🆕 New Addition | ✨ Enhancement | 🐛 Bug Fix -->
 
 -----------
 > *Project* :
