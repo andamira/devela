@@ -45,7 +45,7 @@ impl Ansi {
         while n / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
         while divisor > 0 {
-            buffer[index] = AsciiDigits(n).digit_at_power(divisor);
+            buffer[index] = AsciiDigits(n).digit_at_power10(divisor);
             divisor /= 10;
             index += 1;
         }
@@ -98,15 +98,15 @@ impl Ansi {
     /// Panics in debug if either `row` or `col` > 9.
     #[must_use] #[rustfmt::skip]
     pub const fn CURSOR_MOVE1(col: u8, row: u8) -> [u8; 6] {
-        [ b'\x1b', b'[', AsciiDigits(row).digits_1(), b';', AsciiDigits(col).digits_1(), b'H' ]
+        [ b'\x1b', b'[', AsciiDigits(row).digits10_1(), b';', AsciiDigits(col).digits10_1(), b'H' ]
     }
     /// Code to move the cursor to the specified 2-digit position (col, row).
     /// # Panics
     /// Panics in debug if either `row` or `col` > 99.
     #[must_use]
     pub const fn CURSOR_MOVE2(col: u8, row: u8) -> [u8; 8] {
-        let r: [u8; 2] = AsciiDigits(row).digits_2();
-        let c: [u8; 2] = AsciiDigits(col).digits_2();
+        let r: [u8; 2] = AsciiDigits(row).digits10_2();
+        let c: [u8; 2] = AsciiDigits(col).digits10_2();
         [b'\x1b', b'[', r[0], r[1], b';', c[0], c[1], b'H']
     }
     /// Code to move the cursor to the specified 3-digit position (col,row).
@@ -114,8 +114,8 @@ impl Ansi {
     /// Panics in debug if either `row` or `col` > 999.
     #[must_use]
     pub const fn CURSOR_MOVE3(col: u16, row: u16) -> [u8; 10] {
-        let r: [u8; 3] = AsciiDigits(row).digits_3();
-        let c: [u8; 3] = AsciiDigits(col).digits_3();
+        let r: [u8; 3] = AsciiDigits(row).digits10_3();
+        let c: [u8; 3] = AsciiDigits(col).digits10_3();
         [b'\x1b', b'[', r[0], r[1], r[2], b';', c[0], c[1], c[2], b'H']
     }
     /// Code to move the cursor to the specified 4-digit position (col, row).
@@ -123,8 +123,8 @@ impl Ansi {
     /// Panics in debug if either `row` or `col` > 9999.
     #[must_use]
     pub const fn CURSOR_MOVE4(col: u16, row: u16) -> [u8; 12] {
-        let r: [u8; 4] = AsciiDigits(row).digits_4();
-        let c: [u8; 4] = AsciiDigits(col).digits_4();
+        let r: [u8; 4] = AsciiDigits(row).digits10_4();
+        let c: [u8; 4] = AsciiDigits(col).digits10_4();
         [b'\x1b', b'[', r[0], r[1], r[2], r[3], b';', c[0], c[1], c[2], c[3], b'H']
     }
     /// Returns a slice with the code to move the cursor to the specified position (col, row).
@@ -141,7 +141,7 @@ impl Ansi {
         while row / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
         while divisor > 0 {
-            buffer[index] = AsciiDigits(row).digit_at_power(divisor);
+            buffer[index] = AsciiDigits(row).digit_at_power10(divisor);
             divisor /= 10;
             index += 1;
         }
@@ -150,7 +150,7 @@ impl Ansi {
         divisor = 1;
         while col / divisor >= 10 { divisor *= 10; }
         while divisor > 0 {
-            buffer[index] = AsciiDigits(col).digit_at_power(divisor);
+            buffer[index] = AsciiDigits(col).digit_at_power10(divisor);
             divisor /= 10;
             index += 1;
         }
@@ -165,14 +165,14 @@ impl Ansi {
     /// Panics in debug if `n` > 9.
     #[must_use]
     pub const fn CURSOR_UP1(n: u8) -> [u8; 4] {
-        [b'\x1b', b'[', AsciiDigits(n).digits_1(), b'A']
+        [b'\x1b', b'[', AsciiDigits(n).digits10_1(), b'A']
     }
     /// Code to move the cursor up by 2-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[must_use]
     pub const fn CURSOR_UP2(n: u8) -> [u8; 5] {
-        let n: [u8; 2] = AsciiDigits(n).digits_2();
+        let n: [u8; 2] = AsciiDigits(n).digits10_2();
         [b'\x1b', b'[', n[0], n[1], b'A']
     }
     /// Code to move the cursor up by 3-digit `n` lines.
@@ -180,7 +180,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_UP3(n: u16) -> [u8; 6] {
-        let n: [u8; 3] = AsciiDigits(n).digits_3();
+        let n: [u8; 3] = AsciiDigits(n).digits10_3();
         [b'\x1b', b'[', n[0], n[1], n[2], b'A']
     }
     /// Code to move the cursor up by 4-digit `n` lines.
@@ -188,7 +188,7 @@ impl Ansi {
     /// Panics in debug if `n` > 9999.
     #[must_use]
     pub const fn CURSOR_UP4(n: u16) -> [u8; 7] {
-        let n: [u8; 4] = AsciiDigits(n).digits_4();
+        let n: [u8; 4] = AsciiDigits(n).digits10_4();
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'A']
     }
     /// Returns a slice with the code to move the cursor up by `n` lines.
@@ -209,14 +209,14 @@ impl Ansi {
     /// Panics in debug if `n` > 9.
     #[must_use]
     pub const fn CURSOR_DOWN1(n: u8) -> [u8; 4] {
-        [b'\x1b', b'[', AsciiDigits(n).digits_1(), b'B']
+        [b'\x1b', b'[', AsciiDigits(n).digits10_1(), b'B']
     }
     /// Code to move the cursor down by 2-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[must_use]
     pub const fn CURSOR_DOWN2(n: u8) -> [u8; 5] {
-        let n: [u8; 2] = AsciiDigits(n).digits_2();
+        let n: [u8; 2] = AsciiDigits(n).digits10_2();
         [b'\x1b', b'[', n[0], n[1], b'B']
     }
     /// Code to move the cursor down by 3-digit `n` lines.
@@ -224,7 +224,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_DOWN3(n: u16) -> [u8; 6] {
-        let n: [u8; 3] = AsciiDigits(n).digits_3();
+        let n: [u8; 3] = AsciiDigits(n).digits10_3();
         [b'\x1b', b'[', n[0], n[1], n[2], b'B']
     }
     /// Code to move the cursor down by 4-digit `n` lines.
@@ -232,7 +232,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_DOWN4(n: u16) -> [u8; 7] {
-        let n: [u8; 4] = AsciiDigits(n).digits_4();
+        let n: [u8; 4] = AsciiDigits(n).digits10_4();
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'B']
     }
     /// Returns a slice with the code to move the cursor down by `n` lines.
@@ -253,14 +253,14 @@ impl Ansi {
     /// Panics in debug if `n` > 9.
     #[must_use]
     pub const fn CURSOR_RIGHT1(n: u8) -> [u8; 4] {
-        [b'\x1b', b'[', AsciiDigits(n).digits_1(), b'C']
+        [b'\x1b', b'[', AsciiDigits(n).digits10_1(), b'C']
     }
     /// Code to move the cursor right by 2-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[must_use]
     pub const fn CURSOR_RIGHT2(n: u8) -> [u8; 5] {
-        let n: [u8; 2] = AsciiDigits(n).digits_2();
+        let n: [u8; 2] = AsciiDigits(n).digits10_2();
         [b'\x1b', b'[', n[0], n[1], b'C']
     }
     /// Code to move the cursor right by 3-digit `n` lines.
@@ -268,7 +268,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_RIGHT3(n: u16) -> [u8; 6] {
-        let n: [u8; 3] = AsciiDigits(n).digits_3();
+        let n: [u8; 3] = AsciiDigits(n).digits10_3();
         [b'\x1b', b'[', n[0], n[1], n[2], b'C']
     }
     /// Code to move the cursor right by 4-digit `n` lines.
@@ -276,7 +276,7 @@ impl Ansi {
     /// Panics in debug if `n` > 9999.
     #[must_use]
     pub const fn CURSOR_RIGHT4(n: u16) -> [u8; 7] {
-        let n: [u8; 4] = AsciiDigits(n).digits_4();
+        let n: [u8; 4] = AsciiDigits(n).digits10_4();
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'C']
     }
     /// Returns a slice with the code to move the cursor right by `n` lines.
@@ -297,14 +297,14 @@ impl Ansi {
     /// Panics in debug if `n` > 9.
     #[must_use]
     pub const fn CURSOR_LEFT1(n: u8) -> [u8; 4] {
-        [b'\x1b', b'[', AsciiDigits(n).digits_1(), b'D']
+        [b'\x1b', b'[', AsciiDigits(n).digits10_1(), b'D']
     }
     /// Code to move the cursor left by 3-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[must_use]
     pub const fn CURSOR_LEFT2(n: u8) -> [u8; 5] {
-        let n: [u8; 2] = AsciiDigits(n).digits_2();
+        let n: [u8; 2] = AsciiDigits(n).digits10_2();
         [b'\x1b', b'[', n[0], n[1], b'D']
     }
     /// Code to move the cursor left by 3-digit `n` lines.
@@ -312,7 +312,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_LEFT3(n: u16) -> [u8; 6] {
-        let n: [u8; 3] = AsciiDigits(n).digits_3();
+        let n: [u8; 3] = AsciiDigits(n).digits10_3();
         [b'\x1b', b'[', n[0], n[1], n[2], b'D']
     }
     /// Code to move the cursor left by 4-digit `n` lines.
@@ -320,7 +320,7 @@ impl Ansi {
     /// Panics in debug if `n` > 9999.
     #[must_use]
     pub const fn CURSOR_LEFT4(n: u16) -> [u8; 7] {
-        let n: [u8; 4] = AsciiDigits(n).digits_4();
+        let n: [u8; 4] = AsciiDigits(n).digits10_4();
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'D']
     }
     /// Returns a slice with the code to move the cursor left by `n` lines.
@@ -341,14 +341,14 @@ impl Ansi {
     /// Panics in debug if `n` > 9.
     #[must_use]
     pub const fn CURSOR_NEXT_LINE1(n: u8) -> [u8; 4] {
-        [b'\x1b', b'[', AsciiDigits(n).digits_1(), b'E']
+        [b'\x1b', b'[', AsciiDigits(n).digits10_1(), b'E']
     }
     /// Code to move the cursor to the beginning of the next 2-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[must_use]
     pub const fn CURSOR_NEXT_LINE2(n: u8) -> [u8; 5] {
-        let n: [u8; 2] = AsciiDigits(n).digits_2();
+        let n: [u8; 2] = AsciiDigits(n).digits10_2();
         [b'\x1b', b'[', n[0], n[1], b'E']
     }
     /// Code to move the cursor to the beginning of the next 3-digit `n` lines.
@@ -356,7 +356,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_NEXT_LINE3(n: u16) -> [u8; 6] {
-        let n: [u8; 3] = AsciiDigits(n).digits_3();
+        let n: [u8; 3] = AsciiDigits(n).digits10_3();
         [b'\x1b', b'[', n[0], n[1], n[2], b'E']
     }
     /// Code to move the cursor to the beginning of the next 4-digit `n` lines.
@@ -364,7 +364,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_NEXT_LINE4(n: u16) -> [u8; 7] {
-        let n: [u8; 4] = AsciiDigits(n).digits_4();
+        let n: [u8; 4] = AsciiDigits(n).digits10_4();
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
     }
     /// Returns a slice with the code to move the cursor to the beginning of the next `n` lines.
@@ -385,14 +385,14 @@ impl Ansi {
     /// Panics in debug if `n` > 9.
     #[must_use]
     pub const fn CURSOR_PREV_LINE1(n: u8) -> [u8; 4] {
-        [b'\x1b', b'[', AsciiDigits(n).digits_1(), b'E']
+        [b'\x1b', b'[', AsciiDigits(n).digits10_1(), b'E']
     }
     /// Code to move the cursor to the beginning of the previous 2-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[must_use]
     pub const fn CURSOR_PREV_LINE2(n: u8) -> [u8; 5] {
-        let n: [u8; 2] = AsciiDigits(n).digits_2();
+        let n: [u8; 2] = AsciiDigits(n).digits10_2();
         [b'\x1b', b'[', n[0], n[1], b'E']
     }
     /// Code to move the cursor to the beginning of the previous 3-digit `n` lines.
@@ -400,7 +400,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_PREV_LINE3(n: u16) -> [u8; 6] {
-        let n: [u8; 3] = AsciiDigits(n).digits_3();
+        let n: [u8; 3] = AsciiDigits(n).digits10_3();
         [b'\x1b', b'[', n[0], n[1], n[2], b'E']
     }
     /// Code to move the cursor to the beginning of the previous 4-digit `n` lines.
@@ -408,7 +408,7 @@ impl Ansi {
     /// Panics in debug if `n` > 999.
     #[must_use]
     pub const fn CURSOR_PREV_LINE4(n: u16) -> [u8; 7] {
-        let n: [u8; 4] = AsciiDigits(n).digits_4();
+        let n: [u8; 4] = AsciiDigits(n).digits10_4();
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
     }
     /// Returns a slice with the code to move the cursor to the beginning of the previous `n` lines.

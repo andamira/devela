@@ -251,11 +251,6 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `NumToStr`, [`UnicodeScalar`].
   - types: `AsciiDigits`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 
-### ascii
-- rename `Ascii` to `AsciiDigits`.
-  - rename method: `calc_digit` to `digit_at_power`.
-- rename `ASCII_TABLE` to `CHAR_ASCII` and make it public.
-
 ### char
 - new types: `CharIter`, `char_utf8`.
 - new `char7` methods: `to_byte`, `to_str`.
@@ -288,6 +283,16 @@ Many feature gates are removed in order to make most features make always availa
   - return lenghts as usize.
 - update `UnicodeScalar`:
   - rename method `byte_len` to `len_bytes`.
+
+#### ascii
+- rename `Ascii` to `AsciiDigits`.
+  - rename const: `MAX_DIGITS` to `MAX_DIGITS_10`.
+  - rename methods:
+    - `calc_digit` to `digit_at_power10`.
+    - `count_digits` to `count_digits10`.
+    - `digits_*` to `digits10_*`.
+    - `digits` to `digits10`.
+- rename `ASCII_TABLE` to `CHAR_ASCII` and make it public.
 
 ### fmt
 - new type: `FmtWriter`.

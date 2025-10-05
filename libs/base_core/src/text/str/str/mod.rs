@@ -224,7 +224,7 @@ impl Str {
         return unwrap![ok Str::from_utf8(slice![buffer, ..index])];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: since `string` is a valid &str, checks are unneeded.
-        sf! { unsafe { Str::from_utf8_unchecked(slice![buffer, ..index]) }}
+        sf! { unsafe { str::from_utf8_unchecked(slice![buffer, ..index]) }}
     }
 
     /// Returns a [`&str`] backed by a `buffer`, where you always know each
@@ -261,7 +261,7 @@ impl Str {
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
 
-            let mut num_buf = AsciiDigits(num).digits();
+            let mut num_buf = AsciiDigits(num).digits10();
             let mut num_bytes = Slice::trim_leading(&num_buf, b'0');
             // IMPROVE:BENCH use NumToStr
             // let mut num_buf = [0u8; 22];
@@ -277,7 +277,7 @@ impl Str {
                     slice![mut buffer, index, ..num_len + index]
                         .copy_from_slice(slice![num_bytes, ..num_len]);
                     num = index;
-                    num_buf = AsciiDigits(num).digits();
+                    num_buf = AsciiDigits(num).digits10();
                     num_bytes = Slice::trim_leading(&num_buf, b'0');
                     // IMPROVE: use NumToStr
                     // num_bytes = num.to_bytes_base(10, &mut num_buf);
