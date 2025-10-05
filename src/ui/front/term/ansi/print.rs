@@ -18,10 +18,10 @@ It abstracts away specific backend implementations.
 
 # Example
 ```
-# use devela::{Ansi, AnsiColor3b, ansi_print};
+# use devela::{Ansi, AnsiColor3, ansi_print};
 ansi_print(&Ansi::ERASE_SCREEN);
 ansi_print(&Ansi::CURSOR_MOVE3(120, 80));
-ansi_print(&Ansi::COLORS_BRIGHT_BG(AnsiColor3b::Blue, AnsiColor3b::Black));
+ansi_print(&Ansi::COLORS_BRIGHT_BG(AnsiColor3::Blue, AnsiColor3::Black));
 ```
 See also the [`ansi!`][crate::ansi] macro.
 

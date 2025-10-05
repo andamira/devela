@@ -2,13 +2,21 @@
 //
 //! ANSI codes related to color.
 //
+// TOC
+// - enum AnsiColor3
+// - struct AnsiColor8
+// - impl Ansi:
+//   - 3-bit Color escape codes
+//   - 8-bit Color escape codes
+//   - 8-bit Grey escape codes
+//   - RGB Color escape codes
 
 use crate::{Ansi, AsciiDigits as AsciiD, Cmp};
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub enum AnsiColor3b {
+pub enum AnsiColor3 {
     /// 0 Black
     #[default]
     Black = 0,
@@ -27,14 +35,13 @@ pub enum AnsiColor3b {
     /// 7 White
     White = 7,
 }
-
-impl AnsiColor3b {
+impl AnsiColor3 {
     /// Returns the ASCII byte representation of the 8-bit color number, with padding zeros.
     #[must_use]
     pub const fn to_ascii(&self) -> u8 {
         AsciiD(*self as u8).digits_1()
     }
-    /// Returns an `AnsiColor3b` from an `u8` value.
+    /// Returns an `AnsiColor3` from an `u8` value.
     /// If `value` > 7 then returns Black.
     #[must_use]
     pub const fn from_u8(value: u8) -> Self {
@@ -50,26 +57,28 @@ impl AnsiColor3b {
         }
     }
 }
-impl From<u8> for AnsiColor3b {
+impl From<u8> for AnsiColor3 {
     fn from(value: u8) -> Self {
         Self::from_u8(value)
     }
 }
 
 /// ANSI 8-bit color codes, 256 colors.
+#[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct AnsiColor8b(pub u8);
+pub struct AnsiColor8(pub u8);
+
 #[rustfmt::skip]
-impl AnsiColor8b {
-    /// Creates a new `AnsiColor8b` from an `AnsiColor3b`.
+impl AnsiColor8 {
+    /// Creates a new `AnsiColor8` from an `AnsiColor3`.
     #[must_use]
-    pub const fn new(color: AnsiColor3b) -> Self { Self(color as u8) }
+    pub const fn new(color: AnsiColor3) -> Self { Self(color as u8) }
 
-    /// Creates a new `AnsiColor8b` from an `AnsiColor3b` treated as *bright*.
+    /// Creates a new `AnsiColor8` from an `AnsiColor3` treated as *bright*.
     #[must_use]
-    pub const fn bright(color: AnsiColor3b) -> Self { Self(color as u8 + 8) }
+    pub const fn bright(color: AnsiColor3) -> Self { Self(color as u8 + 8) }
 
-    /// Creates a new `AnsiColor8b` from a 216-color 6x6x6 RGB cube.
+    /// Creates a new `AnsiColor8` from a 216-color 6x6x6 RGB cube.
     /// The `r`, `g`, and `b` parameters should be in the range `0..=5`.
     ///
     /// Returns `None` if any parameter is `> 5`.
@@ -80,7 +89,7 @@ impl AnsiColor8b {
             _ => None,
         }
     }
-    /// Creates a new `AnsiColor8b` from a 216-color 6x6x6 RGB cube with
+    /// Creates a new `AnsiColor8` from a 216-color 6x6x6 RGB cube with
     /// `r`, `g`, `b` values between `0` and `5`.
     ///
     /// Returns the `fallback` color if any parameter is `> 5`.
@@ -91,7 +100,7 @@ impl AnsiColor8b {
             _ => fallback,
         }
     }
-    /// Creates a new `AnsiColor8b` from a 216-color 6x6x6 RGB cube by wrapping values.
+    /// Creates a new `AnsiColor8` from a 216-color 6x6x6 RGB cube by wrapping values.
     ///
     /// Out-of-bounds values wrap via `% 6` (e.g., `6` → `0`, `7` → `1`).
     /// This is branchless and the fastest method.
@@ -102,7 +111,7 @@ impl AnsiColor8b {
 
     /* Standard 24-color grayscale (faster, contiguous ANSI codes) */
 
-    /// Creates a new `AnsiColor8b` from a 24-color grayscale `value`, between
+    /// Creates a new `AnsiColor8` from a 24-color grayscale `value`, between
     /// `0` (almost black) and `23` (almost white).
     ///
     /// Returns `None` if `value > 23`.
@@ -113,7 +122,7 @@ impl AnsiColor8b {
             _ => None,
         }
     }
-    /// Creates a new `AnsiColor8b` from a 24-color grayscale `value` between
+    /// Creates a new `AnsiColor8` from a 24-color grayscale `value` between
     /// `0` (almost black) and `23` (almost white).
     ///
     /// Returns the `fallback` color if `value > 23`.
@@ -134,43 +143,43 @@ impl AnsiColor8b {
 
     /* Extended 26-color grayscale with pure black/white (slower, non-contiguous)*/
 
-    /// Creates a new `AnsiColor8b` from a 26-color grayscale `value`
+    /// Creates a new `AnsiColor8` from a 26-color grayscale `value`
     /// between `0` (pure black) and `25` (pure white).
     ///
     /// Returns `None` if `value > 23`.
     #[must_use]
     pub const fn bw(value: u8) -> Option<Self> {
         match value {
-            0 => Some(Self::new(AnsiColor3b::Black)),
+            0 => Some(Self::new(AnsiColor3::Black)),
             1..=24 => Some(Self(value - 1 + 232)),
-            25 => Some(Self::new(AnsiColor3b::White)),
+            25 => Some(Self::new(AnsiColor3::White)),
             _ => None,
         }
     }
-    /// Creates a new `AnsiColor8b` from a 26-color grayscale `value`
+    /// Creates a new `AnsiColor8` from a 26-color grayscale `value`
     /// between `0` (pure black) and `25` (pure white).
     ///
     /// Returns the `fallback` color if `value > 25`.
     #[must_use]
     pub const fn bw_or(value: u8, fallback: Self) -> Self {
         match value {
-            0 => Self::new(AnsiColor3b::Black),
+            0 => Self::new(AnsiColor3::Black),
             1..=24 => Self(value - 1 + 232),
-            25 => Self::new(AnsiColor3b::White),
+            25 => Self::new(AnsiColor3::White),
             _ => fallback,
         }
     }
     /// Creates a grayscale color by wrapping `value` via `% 26`, with exact black/white.
     ///
-    /// - `0` → pure black (`AnsiColor3b::Black`).
-    /// - `25` → pure white (`AnsiColor3b::White`).
+    /// - `0` → pure black (`AnsiColor3::Black`).
+    /// - `25` → pure white (`AnsiColor3::White`).
     /// - Other values wrap (e.g., `26` → `0`, `27` → `1`).
     #[must_use]
     pub const fn bw_wrap(value: u8) -> Self {
         let wrapped = value % 26;
         match wrapped {
-            0 => Self::new(AnsiColor3b::Black),
-            25 => Self::new(AnsiColor3b::White),
+            0 => Self::new(AnsiColor3::Black),
+            25 => Self::new(AnsiColor3::White),
             _ => Self(wrapped - 1 + 232),
         }
     }
@@ -179,12 +188,12 @@ impl AnsiColor8b {
     #[must_use]
     pub const fn to_ascii(&self) -> [u8; 3] { AsciiD(self.0).digits() }
 }
-impl From<AnsiColor3b> for AnsiColor8b {
-    fn from(value: AnsiColor3b) -> Self {
+impl From<AnsiColor3> for AnsiColor8 {
+    fn from(value: AnsiColor3) -> Self {
         Self::new(value)
     }
 }
-impl From<u8> for AnsiColor8b {
+impl From<u8> for AnsiColor8 {
     fn from(value: u8) -> Self {
         Self(value)
     }
@@ -192,7 +201,7 @@ impl From<u8> for AnsiColor8b {
 
 // the bare color escape codes (module private)
 mod C {
-    use super::AnsiColor3b as A8;
+    use super::AnsiColor3 as A8;
 
     pub(super) const FG: u8 = b'3';
     pub(super) const BG: u8 = b'4';
@@ -244,34 +253,34 @@ mod C {
 impl Ansi {
     /// Code to set the the foreground `color`.
     #[must_use]
-    pub const fn COLOR_FG(color: AnsiColor3b) -> [u8; 5] {
+    pub const fn COLOR_FG(color: AnsiColor3) -> [u8; 5] {
         [b'\x1b', b'[', C::FG, color.to_ascii(), b'm']
     }
     /// Code to set the the foreground `color` bright.
     #[must_use]
-    pub const fn COLOR_FG_BRIGHT(color: AnsiColor3b) -> [u8; 5] {
+    pub const fn COLOR_FG_BRIGHT(color: AnsiColor3) -> [u8; 5] {
         [b'\x1b', b'[', C::BRI_FG, color.to_ascii(), b'm']
     }
 
     /// Code to set the the background `color`.
     #[must_use]
-    pub const fn COLOR_BG(color: AnsiColor3b) -> [u8; 5] {
+    pub const fn COLOR_BG(color: AnsiColor3) -> [u8; 5] {
         [b'\x1b', b'[', C::BG, color.to_ascii(), b'm']
     }
     /// Code to set the the background `color` bright.
     #[must_use]
-    pub const fn COLOR_BG_BRIGHT(color: AnsiColor3b) -> [u8; 6] {
+    pub const fn COLOR_BG_BRIGHT(color: AnsiColor3) -> [u8; 6] {
         [b'\x1b', b'[', C::BRI_BG[0], C::BRI_BG[1], color.to_ascii(), b'm']
     }
 
     /// Code to set the foreground color to `fg` and the background to `bg`.
     #[must_use]
-    pub const fn COLORS(fg: AnsiColor3b, bg: AnsiColor3b) -> [u8; 8] {
+    pub const fn COLORS(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 8] {
         [ b'\x1b', b'[', C::FG, fg.to_ascii(), b';', C::BG, bg.to_ascii(), b'm' ]
     }
     /// Code to set the foreground color to bright `fg` and the background to bright `bg`.
     #[must_use]
-    pub const fn COLORS_BRIGHT(fg: AnsiColor3b, bg: AnsiColor3b) -> [u8; 9] {
+    pub const fn COLORS_BRIGHT(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 9] {
         [
             b'\x1b', b'[',
             C::BRI_FG, fg.to_ascii(), b';', C::BRI_BG[0], C::BRI_BG[1], bg.to_ascii(),
@@ -281,13 +290,13 @@ impl Ansi {
 
     /// Code to set the foreground color to bright `fg` and the background to `bg`.
     #[must_use]
-    pub const fn COLORS_BRIGHT_FG(fg: AnsiColor3b, bg: AnsiColor3b) -> [u8; 8] {
+    pub const fn COLORS_BRIGHT_FG(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 8] {
         [ b'\x1b', b'[', C::BRI_FG, fg.to_ascii(), b';', C::BG, bg.to_ascii(), b'm' ]
     }
 
     /// Code to set the foreground color to `fg` and the background to bright `bg`.
     #[must_use]
-    pub const fn COLORS_BRIGHT_BG(fg: AnsiColor3b, bg: AnsiColor3b) -> [u8; 9] {
+    pub const fn COLORS_BRIGHT_BG(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 9] {
         [
             b'\x1b', b'[',
             C::FG, fg.to_ascii(), b';', C::BRI_BG[0], C::BRI_BG[1], bg.to_ascii(),
@@ -387,7 +396,7 @@ impl Ansi {
 impl Ansi {
     /// Code to set the foreground color to `fg` and the background to `bg`.
     #[must_use]
-    pub const fn COLORS8(fg: AnsiColor8b, bg: AnsiColor8b) -> [u8; 19] {
+    pub const fn COLORS8(fg: AnsiColor8, bg: AnsiColor8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
         let cf = fg.to_ascii();
         let cb = bg.to_ascii();
@@ -401,7 +410,7 @@ impl Ansi {
 
     /// Code to set the foreground color to `fg`.
     #[must_use]
-    pub const fn COLOR8_FG(fg: AnsiColor8b) -> [u8; 11] {
+    pub const fn COLOR8_FG(fg: AnsiColor8) -> [u8; 11] {
         const X: [u8; 4] = C::C8;
         let c = fg.to_ascii();
         [ b'\x1b', b'[', C::FG, X[0], X[1], X[2], X[3], c[0], c[1], c[2], b'm' ]
@@ -409,7 +418,7 @@ impl Ansi {
 
     /// Code to set the background color to `bg`.
     #[must_use]
-    pub const fn COLOR8_BG(bg: AnsiColor8b) -> [u8; 11] {
+    pub const fn COLOR8_BG(bg: AnsiColor8) -> [u8; 11] {
         const X: [u8; 4] = C::C8;
         let c = bg.to_ascii();
         [ b'\x1b', b'[', C::BG, X[0], X[1], X[2], X[3], c[0], c[1], c[2], b'm' ]
@@ -436,102 +445,102 @@ impl Ansi {
     }
 
     /// ANSI gray foreground 0/23 8-bit color (4% white, 96% black).
-    pub const GRAY0: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(0));
+    pub const GRAY0: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(0));
     /// ANSI gray foreground 1/23 8-bit color (8% white, 92% black).
-    pub const GRAY1: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(1));
+    pub const GRAY1: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(1));
     /// ANSI gray foreground 2/23 8-bit color (12% white, 88% black).
-    pub const GRAY2: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(2));
+    pub const GRAY2: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(2));
     /// ANSI gray foreground 3/23 8-bit color (16% white, 84% black).
-    pub const GRAY3: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(3));
+    pub const GRAY3: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(3));
     /// ANSI gray foreground 4/23 8-bit color (20% white, 80% black).
-    pub const GRAY4: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(4));
+    pub const GRAY4: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(4));
     /// ANSI gray foreground 5/23 8-bit color (24% white, 76% black).
-    pub const GRAY5: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(5));
+    pub const GRAY5: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(5));
     /// ANSI gray foreground 6/23 8-bit color (28% white, 72% black).
-    pub const GRAY6: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(6));
+    pub const GRAY6: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(6));
     /// ANSI gray foreground 7/23 8-bit color (32% white, 68% black).
-    pub const GRAY7: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(7));
+    pub const GRAY7: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(7));
     /// ANSI gray foreground 8/23 8-bit color (36% white, 64% black).
-    pub const GRAY8: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(8));
+    pub const GRAY8: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(8));
     /// ANSI gray foreground 9/23 8-bit color (40% white, 60% black).
-    pub const GRAY9: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(9));
+    pub const GRAY9: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(9));
     /// ANSI gray foreground 10/23 8-bit color (44% white, 56% black).
-    pub const GRAY10: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(10));
+    pub const GRAY10: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(10));
     /// ANSI gray foreground 11/23 8-bit color (48% white, 52% black).
-    pub const GRAY11: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(11));
+    pub const GRAY11: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(11));
     /// ANSI gray foreground 12/23 8-bit color (52% white, 48% black).
-    pub const GRAY12: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(12));
+    pub const GRAY12: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(12));
     /// ANSI gray foreground 13/23 8-bit color (56% white, 44% black).
-    pub const GRAY13: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(13));
+    pub const GRAY13: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(13));
     /// ANSI gray foreground 14/23 8-bit color (60% white, 40% black).
-    pub const GRAY14: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(14));
+    pub const GRAY14: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(14));
     /// ANSI gray foreground 15/23 8-bit color (64% white, 36% black).
-    pub const GRAY15: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(15));
+    pub const GRAY15: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(15));
     /// ANSI gray foreground 16/23 8-bit color (68% white, 32% black).
-    pub const GRAY16: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(16));
+    pub const GRAY16: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(16));
     /// ANSI gray foreground 17/23 8-bit color (72% white, 28% black).
-    pub const GRAY17: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(17));
+    pub const GRAY17: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(17));
     /// ANSI gray foreground 18/23 8-bit color (76% white, 24% black).
-    pub const GRAY18: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(18));
+    pub const GRAY18: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(18));
     /// ANSI gray foreground 19/23 8-bit color (80% white, 20% black).
-    pub const GRAY19: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(19));
+    pub const GRAY19: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(19));
     /// ANSI gray foreground 20/23 8-bit color (84% white, 16% black).
-    pub const GRAY20: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(20));
+    pub const GRAY20: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(20));
     /// ANSI gray foreground 21/23 8-bit color (88% white, 12% black).
-    pub const GRAY21: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(21));
+    pub const GRAY21: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(21));
     /// ANSI gray foreground 22/23 8-bit color (92% white, 8% black).
-    pub const GRAY22: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(22));
+    pub const GRAY22: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(22));
     /// ANSI gray foreground 23/23 8-bit color (96% white, 4% black).
-    pub const GRAY23: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_wrap(23));
+    pub const GRAY23: [u8; 11] = Self::COLOR8_FG(AnsiColor8::gray_wrap(23));
 
     /// ANSI gray background 0/23 8-bit color (4% white, 96% black).
-    pub const GRAY0_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(0));
+    pub const GRAY0_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(0));
     /// ANSI gray background 1/23 8-bit color (8% white, 92% black).
-    pub const GRAY1_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(1));
+    pub const GRAY1_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(1));
     /// ANSI gray background 2/23 8-bit color (12% white, 88% black).
-    pub const GRAY2_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(2));
+    pub const GRAY2_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(2));
     /// ANSI gray background 3/23 8-bit color (16% white, 84% black).
-    pub const GRAY3_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(3));
+    pub const GRAY3_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(3));
     /// ANSI gray background 4/23 8-bit color (20% white, 80% black).
-    pub const GRAY4_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(4));
+    pub const GRAY4_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(4));
     /// ANSI gray background 5/23 8-bit color (24% white, 76% black).
-    pub const GRAY5_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(5));
+    pub const GRAY5_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(5));
     /// ANSI gray background 6/23 8-bit color (28% white, 72% black).
-    pub const GRAY6_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(6));
+    pub const GRAY6_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(6));
     /// ANSI gray background 7/23 8-bit color (32% white, 68% black).
-    pub const GRAY7_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(7));
+    pub const GRAY7_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(7));
     /// ANSI gray background 8/23 8-bit color (36% white, 64% black).
-    pub const GRAY8_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(8));
+    pub const GRAY8_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(8));
     /// ANSI gray background 9/23 8-bit color (40% white, 60% black).
-    pub const GRAY9_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(9));
+    pub const GRAY9_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(9));
     /// ANSI gray background 10/23 8-bit color (44% white, 56% black).
-    pub const GRAY10_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(10));
+    pub const GRAY10_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(10));
     /// ANSI gray background 11/23 8-bit color (48% white, 52% black).
-    pub const GRAY11_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(11));
+    pub const GRAY11_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(11));
     /// ANSI gray background 12/23 8-bit color (52% white, 48% black).
-    pub const GRAY12_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(12));
+    pub const GRAY12_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(12));
     /// ANSI gray background 13/23 8-bit color (56% white, 44% black).
-    pub const GRAY13_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(13));
+    pub const GRAY13_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(13));
     /// ANSI gray background 14/23 8-bit color (60% white, 40% black).
-    pub const GRAY14_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(14));
+    pub const GRAY14_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(14));
     /// ANSI gray background 15/23 8-bit color (64% white, 36% black).
-    pub const GRAY15_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(15));
+    pub const GRAY15_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(15));
     /// ANSI gray background 16/23 8-bit color (68% white, 32% black).
-    pub const GRAY16_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(16));
+    pub const GRAY16_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(16));
     /// ANSI gray background 17/23 8-bit color (72% white, 28% black).
-    pub const GRAY17_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(17));
+    pub const GRAY17_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(17));
     /// ANSI gray background 18/23 8-bit color (76% white, 24% black).
-    pub const GRAY18_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(18));
+    pub const GRAY18_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(18));
     /// ANSI gray background 19/23 8-bit color (80% white, 20% black).
-    pub const GRAY19_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(19));
+    pub const GRAY19_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(19));
     /// ANSI gray background 20/23 8-bit color (84% white, 16% black).
-    pub const GRAY20_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(20));
+    pub const GRAY20_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(20));
     /// ANSI gray background 21/23 8-bit color (88% white, 12% black).
-    pub const GRAY21_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(21));
+    pub const GRAY21_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(21));
     /// ANSI gray background 22/23 8-bit color (92% white, 8% black).
-    pub const GRAY22_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(22));
+    pub const GRAY22_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(22));
     /// ANSI gray background 23/23 8-bit color (96% white, 4% black).
-    pub const GRAY23_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_wrap(23));
+    pub const GRAY23_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8::gray_wrap(23));
 }
 
 /// # RGB Color escape codes

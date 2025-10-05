@@ -8,7 +8,7 @@
 // - trait impls
 
 use crate::{
-    Ansi, AnsiColor3b, AnsiColor8b, BareBox, ByteSized, CharAscii, Duration, GraphemeNonul,
+    Ansi, AnsiColor3, AnsiColor8, BareBox, ByteSized, CharAscii, Duration, GraphemeNonul,
     Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
     NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize, Ordering,
     PhantomData, PhantomPinned, StringNonul,
@@ -250,5 +250,5 @@ bit_sized![array = 120 * len for T: 120 * len: 1, 2, 4, 8, 16]; // *
 bit_sized![array = 128 * len for T: 128 * len: 1, 2, 4, 8, 16];
 
 bit_sized![= 0; for Ansi];
-bit_sized![= 3; for AnsiColor3b];
-bit_sized![= 8; for AnsiColor8b];
+bit_sized![= 3; for AnsiColor3];
+bit_sized![= 8; for AnsiColor8];

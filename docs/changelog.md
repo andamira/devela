@@ -339,8 +339,9 @@ Many feature gates are removed in order to make most features make always availa
 ## ui
 ### front
 #### term
+- rename `AnsiColor3b` to `AnsiColor3` and `AnsiColor8b` `AnsiColor8`.
 - move to [base]:
-  - types: `Ansi`, `AnsiColor3b`, `AnsiColor8b`, `TermSize`.
+  - types: `Ansi`, `AnsiColor3`, `AnsiColor8`, `TermSize`.
 - change `Ansi::print*` methods to `ansi_print*` functions.
 - update `Ansi:`
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.

@@ -4,7 +4,7 @@
 //
 
 mod size; // TermSize
-mod ansi; // Ansi, AnsiColor3b, AnsiColor8b
+mod ansi; // Ansi, AnsiColor3, AnsiColor8
 
 crate::structural_mods! { // _mods
     _mods {
