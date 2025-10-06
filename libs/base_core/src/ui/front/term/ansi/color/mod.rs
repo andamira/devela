@@ -150,20 +150,19 @@ mod C {
 impl Ansi {
     /// Code to set the foreground color to `fg: [r, g, b]` values,
     /// and the background to `bg: [r, g, b]`.
+    // \x1b[38;2;R;G;B;48;2;R;G;Bm
     #[must_use]
-    pub const fn RGB(fg: [u8; 3], bg: [u8; 3]) -> [u8; 35] {
+    pub const fn RGB(fg: [u8; 3], bg: [u8; 3]) -> [u8; 36] {
         const X: [u8; 4] = C::RGB;
-        let [fr, fg, fb] = fg;
-        let [br, bg, bb] = bg;
-        let [fr, fg, fb] = [AsciiD(fr).digits10(), AsciiD(fg).digits10(), AsciiD(fb).digits10()];
-        let [br, bg, bb] = [AsciiD(br).digits10(), AsciiD(bg).digits10(), AsciiD(bb).digits10()];
+        let [fR, fG, fB] = fg;
+        let [bR, bG, bB] = bg;
+        let [fR, fG, fB] = [AsciiD(fR).digits10(), AsciiD(fG).digits10(), AsciiD(fB).digits10()];
+        let [bR, bG, bB] = [AsciiD(bR).digits10(), AsciiD(bG).digits10(), AsciiD(bB).digits10()];
         [
-            b'\x1b', b'[',
-            C::FG, X[0], X[1], X[2], X[3],
-            fr[0], fr[1], fr[2], b';', fg[0], fg[1], fg[2], b';', fb[0], fb[1], fb[2],
-            C::BG, X[0], X[1], X[2], X[3],
-            br[0], br[1], br[2], b';', bg[0], bg[1], bg[2], b';', bb[0], bb[1], bb[2],
-            b'm',
+            b'\x1b', b'[', C::FG, X[0], X[1], X[2], X[3], // \x1b[38;2;
+            fR[0], fR[1], fR[2], b';', fG[0], fG[1], fG[2], b';', fB[0], fB[1], fB[2], b';',
+            C::BG, X[0], X[1], X[2], X[3], // 48;2;
+            bR[0], bR[1], bR[2], b';', bG[0], bG[1], bG[2], b';', bB[0], bB[1], bB[2], b'm',
         ]
     }
 
