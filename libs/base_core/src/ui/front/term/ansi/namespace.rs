@@ -14,6 +14,8 @@ use crate::{AsciiDigits, slice};
 /// - [Font effects][Self#font-effects-escape-codes]
 /// - [Color (3-bit)][Self#3-bit-color-escape-codes]
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
+/// - [Grey (8-bit) Palette][Self#8-bit-grey-escape-codes]
+/// - [Palette (8-bit)][Self#8-bit-palette-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
 /// - [Print methods][Self#print-methods]
 ///

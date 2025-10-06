@@ -11,6 +11,8 @@ crate::structural_mods! { // _mods
 
         // re-exports
         #[doc(inline)]
-        pub use devela_base_core::ui::front::term::{Ansi, AnsiColor3, AnsiColor8, TermSize};
+        pub use devela_base_core::ui::front::term::{
+            Ansi, AnsiColor, AnsiColor3, AnsiColor8, TermSize,
+        };
     }
 }

@@ -287,6 +287,7 @@ Many feature gates are removed in order to make most features make always availa
 #### ascii
 - rename `Ascii` to `AsciiDigits`.
 - update `AsciiDigits`:
+  - new type: `AnsiColor`.
   - new const: `MAX_DIGITS_16`.
   - new methods: `count_digits16`, `digits16`, `digit_at_power16`.
   - rename const: `MAX_DIGITS` to `MAX_DIGITS_10`.
@@ -296,6 +297,7 @@ Many feature gates are removed in order to make most features make always availa
     - `digits_*` to `digits10_*`.
     - `digits` to `digits10`.
 - rename `ASCII_TABLE` to `CHAR_ASCII` and make it public.
+- update derives for `AnsiColor*`.
 
 ### fmt
 - new type: `FmtWriter`.

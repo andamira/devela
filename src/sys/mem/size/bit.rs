@@ -8,10 +8,10 @@
 // - trait impls
 
 use crate::{
-    Ansi, AnsiColor3, AnsiColor8, BareBox, ByteSized, CharAscii, Duration, GraphemeNonul,
-    Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
-    NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize, Ordering,
-    PhantomData, PhantomPinned, StringNonul,
+    Ansi, AnsiColor, AnsiColor3, AnsiColor8, BareBox, ByteSized, CharAscii, Duration,
+    GraphemeNonul, Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128,
+    NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+    Ordering, PhantomData, PhantomPinned, StringNonul,
 };
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
@@ -252,3 +252,4 @@ bit_sized![array = 128 * len for T: 128 * len: 1, 2, 4, 8, 16];
 bit_sized![= 0; for Ansi];
 bit_sized![= 3; for AnsiColor3];
 bit_sized![= 8; for AnsiColor8];
+bit_sized![= 24; for AnsiColor]; // NOTE: 24 as union, 32 with discriminant
