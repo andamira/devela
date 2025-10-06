@@ -90,6 +90,7 @@ macro_rules! _impl_metric {
         }
     };
     ( // implement common methods
+      // NOTE: also calls common_methods_[2d|3d]
     common_methods: $Name:ident) => { $crate::paste! {
         impl<T, const D: usize> $Name<T, D> {
             #[doc = "Constructs a new " $Name " from the given dimensions."]
@@ -121,6 +122,83 @@ macro_rules! _impl_metric {
                 true
             }
         }
+
+        $crate::_impl_metric![common_methods_2d: $Name];
+        $crate::_impl_metric![common_methods_3d: $Name];
     }};
+
+    /* manual impls for specific dimensionalities */
+
+    ( // implement common methods for 2 dimensions
+    common_methods_2d: $Name:ident) => {
+        impl<T> $Name<T, 2> {
+            /// Returns a copy of the first dimension `x`.
+            #[must_use]
+            pub const fn x(self) -> T where T: Copy { self.dim[0] }
+            /// Returns a copy of the second dimension `y`.
+            #[must_use]
+            pub const fn y(self) -> T where T: Copy { self.dim[1] }
+
+            /// Returns a shared reference to the first dimension `x`.
+            #[must_use]
+            pub const fn x_ref(&self) -> &T { &self.dim[0] }
+            /// Returns a shared reference to the second dimension `y`.
+            #[must_use]
+            pub const fn y_ref(&self) -> &T { &self.dim[1] }
+
+            /// Returns an exclusive reference to the first dimension `x`.
+            #[must_use]
+            pub fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
+            /// Returns an exclusive reference to the second dimension `y`.
+            #[must_use]
+            pub fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
+
+            /// Returns `true` if the 2 dimensions are equal.
+            #[must_use]
+            pub fn is_uniform(&self) -> bool where T: PartialEq {
+                self.dim[0] == self.dim[1]
+            }
+        }
+    };
+    ( // implement common methods for 2 dimensions
+    common_methods_3d: $Name:ident) => {
+        impl<T> $Name<T, 3> {
+            /// Returns a copy of the first dimension `x`.
+            #[must_use]
+            pub const fn x(self) -> T where T: Copy { self.dim[0] }
+            /// Returns a copy of the second dimension `y`.
+            #[must_use]
+            pub const fn y(self) -> T where T: Copy { self.dim[1] }
+            /// Returns a copy of the third dimension `z`.
+            #[must_use]
+            pub const fn z(self) -> T where T: Copy { self.dim[2] }
+
+            /// Returns a shared reference to the first dimension `x`.
+            #[must_use]
+            pub const fn x_ref(&self) -> &T { &self.dim[0] }
+            /// Returns a shared reference to the second dimension `y`.
+            #[must_use]
+            pub const fn y_ref(&self) -> &T { &self.dim[1] }
+            /// Returns a shared reference to the third dimension `z`.
+            #[must_use]
+            pub const fn z_ref(&self) -> &T { &self.dim[2] }
+
+            /// Returns an exclusive reference to the first dimension `x`.
+            #[must_use]
+            pub fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
+            /// Returns an exclusive reference to the second dimension `y`.
+            #[must_use]
+            pub fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
+            /// Returns an exclusive reference to the third dimension `z`.
+            #[must_use]
+            pub fn z_mut(&mut self) -> &mut T { &mut self.dim[2] }
+
+            /// Returns `true` if the 3 dimensions are equal.
+            #[must_use]
+            pub fn is_uniform_3d(&self) -> bool where T: PartialEq {
+                self.dim[0] == self.dim[1] && self.dim[0] == self.dim[2]
+            }
+        }
+    };
 }
 pub(crate) use _impl_metric;

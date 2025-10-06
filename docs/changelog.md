@@ -200,6 +200,11 @@ Many feature gates are removed in order to make most features make always availa
 - make `Sign` part of `quant`.
 - rename `Compare` to `Cmp`.
 
+### geom
+
+- impl 2d|3d common methods for all `num::geom::metric` types.
+  - update `_impl_metric!` helper macro.
+
 ## phys
 ### time
 - remove `TimeError` alias.
