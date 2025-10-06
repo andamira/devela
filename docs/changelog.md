@@ -129,6 +129,7 @@ Many feature gates are removed in order to make most features make always availa
   - allow accepting multiple tags.
   - make conversion method optional const.
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
+- update `ArrayFmt` to support the rest of the core formatting traits.
 
 ### panic
 - move to [base]: `Panic`.

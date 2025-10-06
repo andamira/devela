@@ -1,9 +1,12 @@
 // devela::data::list::array::ext
 //
-//!
+//! Defines [`ArrayFmt`] and [`ExtArray`].
 //
 
-use crate::{Debug, Display, FmtResult, Formatter};
+use crate::{
+    Binary, Debug, Display, FmtResult, Formatter, LowerExp, LowerHex, Octal, Pointer, UpperExp,
+    UpperHex, is,
+};
 
 #[doc = crate::_TAG_FMT!()]
 /// A formatting wrapper for core [arrays][array], implementing [`Display`] and [`Debug`].
@@ -11,32 +14,6 @@ use crate::{Debug, Display, FmtResult, Formatter};
 /// It is created by the [`ExtArray::fmt`] method.
 #[repr(transparent)]
 pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
-
-#[doc = crate::_TAG_FMT!()]
-/// Private trait for arrays with elements that implement [`Display`].
-trait ArrayDisplay: ExtArray {
-    fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()>;
-}
-
-#[doc = crate::_TAG_FMT!()]
-/// Private trait for arrays with elements that implement [`Debug`].
-///
-/// This trait is a bit redundant since arrays of any size can impl `Debug`,
-/// nevertheless it's better if we can offer the same api in both cases.
-trait ArrayDebug: ExtArray {
-    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()>;
-}
-
-impl<T: ArrayDisplay> Display for ArrayFmt<'_, T> {
-    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-        self.0.fmt_display(f)
-    }
-}
-impl<T: ArrayDebug> Debug for ArrayFmt<'_, T> {
-    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-        self.0.fmt_debug(f)
-    }
-}
 
 /// Marker trait to prevent downstream implementations of the [`ExtArray`] trait.
 trait Sealed {}
@@ -60,16 +37,47 @@ impl<T, const LEN: usize> ExtArray for [T; LEN] {
     const LEN: usize = LEN;
 }
 
-impl<T: Display, const LEN: usize> ArrayDisplay for [T; LEN] {
-    fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {
-        write!(f, "[")?;
-        for (index, element) in self.iter().enumerate() {
-            if index > 0 {
-                write!(f, ", ")?;
-            }
-            Display::fmt(element, f)?;
+macro_rules! _impl_fmt {
+    ($fmt_trait:ident, $array_trait:ident, $array_method:ident) => {
+        // Private trait for arrays with elements that implement the given fmt trait.
+        trait $array_trait: ExtArray {
+            fn $array_method(&self, f: &mut Formatter) -> FmtResult<()>;
         }
-        write!(f, "]")
+        // Implement for
+        impl<T: $array_trait> $fmt_trait for ArrayFmt<'_, T> {
+            fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+                self.0.$array_method(f)
+            }
+        }
+        impl<T: $fmt_trait, const LEN: usize> $array_trait for [T; LEN] {
+            fn $array_method(&self, f: &mut Formatter) -> FmtResult<()> {
+                write!(f, "[")?;
+                for (index, element) in self.iter().enumerate() {
+                    is! { index > 0; write!(f, ", ")? }
+                    $fmt_trait::fmt(element, f)?;
+                }
+                write!(f, "]")
+            }
+        }
+    };
+}
+_impl_fmt![Display, ArrayDisplay, fmt_display];
+_impl_fmt![Pointer, ArrayPointer, fmt_pointer];
+_impl_fmt![Binary, ArrayBinary, fmt_binary];
+_impl_fmt![Octal, ArrayOctal, fmt_octal];
+_impl_fmt![LowerHex, ArrayLowerHex, fmt_lower_hex];
+_impl_fmt![UpperHex, ArrayUpperHex, fmt_upper_hex];
+_impl_fmt![LowerExp, ArrayLowerExp, fmt_lower_exp];
+_impl_fmt![UpperExp, ArrayUpperExp, fmt_upper_exp];
+
+/// Technically this trait is redundant since arrays of any size can impl `Debug`,
+/// nevertheless it's better if we can offer the same api in both cases.
+trait ArrayDebug: ExtArray {
+    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()>;
+}
+impl<T: ArrayDebug> Debug for ArrayFmt<'_, T> {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+        self.0.fmt_debug(f)
     }
 }
 impl<T: Debug, const LEN: usize> ArrayDebug for [T; LEN] {
