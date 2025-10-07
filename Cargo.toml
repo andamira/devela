@@ -220,26 +220,26 @@ bench = false
 # shows extra debugging information
 __dbg = [
 	"devela_base_core/__dbg",
-		"devela_base_data/__dbg",
+		"devela_base_data?/__dbg",
 		"devela_base_num/__dbg",
-		"devela_base_text/__dbg",
+		"devela_base_text?/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
 ]
 __no_test = [] # exclude examples from being tested
 __std = [      # disables `no_std` in base crates for testing
 	"devela_base_core/__std",
-		"devela_base_data/__std",
+		"devela_base_data?/__std",
 		"devela_base_num/__std",
-		"devela_base_text/__std",
+		"devela_base_text?/__std",
 	"devela_base_alloc?/__std",
 ]
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
 	"devela_base_core/__publish",
-		"devela_base_data/__publish",
+		"devela_base_data?/__publish",
 		"devela_base_num/__publish",
-		"devela_base_text/__publish",
+		"devela_base_text?/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
 	# "devela_code?/__publish", "devela_data?/__publish", "devela_game?/__publish",
@@ -294,7 +294,7 @@ all = [ # enables all the 11 modules (and their submodules)
 	"code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
 ]
 code = []
-data = ["hash"]
+data = ["devela_base_data", "hash"]
 	# codec
 		hash = [] # HashFnv, HashFx, HashPengy
 		# crypto = ["dep_orion"]
@@ -343,7 +343,7 @@ sys = ["io", "mem"]
 	# os
 		linux = []
 		windows = ["crossterm?/windows", "midir?/winrt"]
-text = []
+text = ["devela_base_text"]
 ui = ["layout", "desk", "term", "web"]
 	layout = []
 	# back
@@ -396,7 +396,7 @@ base_safe = [
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
 	safe_code = ["devela_base_core/safe_code"] # "devela_code?/safe"
-	safe_data = ["devela_base_data/safe"] # "devela_data?/safe", "devela_base_core/safe_data",
+	safe_data = ["devela_base_data?/safe"] # "devela_data?/safe", "devela_base_core/safe_data",
 	safe_game = [] # "devela_base_core/safe_game", "devela_game?/safe"
 	safe_lang = [] # "devela_lang?/safe"
 		# safe_ffi
@@ -415,7 +415,7 @@ base_safe = [
 	safe_sys = ["safe_io", "safe_mem"] # "devela_base_core/safe_sys", "devela_sys?/safe"
 		safe_io = ["devela_base_core/safe_io"]
 		safe_mem = ["devela_base_core/safe_mem"]
-	safe_text = ["devela_base_text/safe"] # "devela_base_core/safe_text", "devela_text?/safe"
+	safe_text = ["devela_base_text?/safe"] # "devela_base_core/safe_text", "devela_text?/safe"
 	safe_ui = ["safe_layout"] # "devela_ui?/safe"
 		safe_layout = []
 	safe_work = [] # "devela_base_core/safe_work", "devela_work?/safe"
@@ -725,16 +725,16 @@ devela_macros = [ "dep:devela_macros",
 # 1. Update `dep_all` above and /build/main/dep_all.
 # 2. Add a new entry below and in ./src/_deps.rs.
 
-#* workspace required internal libraries *#
+#* workspace internal libraries *#
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
-devela_base_data   = { workspace = true }
+devela_base_data   = { workspace = true, optional = true }
 devela_base_num    = { workspace = true }
-devela_base_text   = { workspace = true }
+devela_base_text   = { workspace = true, optional = true }
 #
-#* workspace optional internal libraries *#
 devela_base_alloc  = { workspace = true, optional = true }
 devela_base_std    = { workspace = true, optional = true }
+#
 devela_macros      = { workspace = true, optional = true }
 # devela_code      = { workspace = true, optional = true }
 # devela_data      = { workspace = true, optional = true }

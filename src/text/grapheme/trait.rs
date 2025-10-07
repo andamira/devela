@@ -3,14 +3,17 @@
 //!
 //
 
-use crate::{GraphemeNonul, GraphemeU8, char, char_utf8, char7, char8, char16};
+use crate::{char, char_utf8, char7, char8, char16};
 
 #[doc = crate::_TAG_TEXT!()]
 /// Common trait for <abbr title="Extended Grapheme Cluster">EGC</abbr> types.
 pub trait Grapheme {}
 
-impl<const CAP: usize> Grapheme for GraphemeNonul<CAP> {}
-impl<const CAP: usize> Grapheme for GraphemeU8<CAP> {}
+#[cfg(feature = "text")]
+crate::items! {
+    impl<const CAP: usize> Grapheme for crate::GraphemeNonul<CAP> {}
+    impl<const CAP: usize> Grapheme for crate::GraphemeU8<CAP> {}
+}
 
 impl Grapheme for char {}
 impl Grapheme for char7 {}
