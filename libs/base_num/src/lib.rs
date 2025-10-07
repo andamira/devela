@@ -38,7 +38,9 @@ pub mod all {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
+        float::_all::*,
         int::_all::*,
+        quant::_all::*,
     };
 }
 

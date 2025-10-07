@@ -1,6 +1,6 @@
 [package]
 name = "devela_base_num"
-description = "extra numeric functionality for devela_base_core"
+description = "additional base numeric functionality for devela"
 repository = "https://github.com/andamira/devela/tree/main/libs/base_num"
 # version = "0.25.0-wip" #
 version.workspace = true

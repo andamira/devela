@@ -429,6 +429,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_hint    = [ # arch instructions, unreachable_unchecked, unchecked arithmetic
 		"devela_base_core/unsafe_hint",
+		"devela_base_num/unsafe_hint",
 		# "devela_base_alloc?/unsafe_hint", "devela_base_std?/unsafe_hint",
 		# "devela_macros?/unsafe_hint",
 	]
