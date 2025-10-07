@@ -103,6 +103,7 @@ Many feature gates are removed in order to make most features make always availa
 - rename directory `/benches` to `/metrics`.
 
 ## tools & misc. files
+- add new binary: `croot`.
 - update `tools/check.rs`:
   - bump `devela` to 0.24.0.
   - test all workspace crates.
