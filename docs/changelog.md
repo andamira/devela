@@ -317,6 +317,7 @@ Many feature gates are removed in order to make most features make always availa
 ### grapheme
 - new types: `GraphemeScanner`.
 - vendor `grapheme_machine` as items: `GraphemeBoundary`, `GraphemeMachine`, `GraphemePropCb`, `GraphemePropInCb`, `GraphemeProps`.
+- impl `Grapheme` for scalar types.
 - update `Grapheme[Nonul|U*]`:
   - remove methods: `to_cstring`.
   - make `new` method panic
