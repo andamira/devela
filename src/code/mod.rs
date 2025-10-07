@@ -14,7 +14,6 @@ crate::mod_path!(_c "../../libs/base_core/src/code/reexports.rs");
 
 mod any; // dynamic typing and reflection
 mod default; // ConstDefault, Default
-mod guard; // ScopeGuard
 
 pub mod error; // AllError, modular errors
 pub mod intro; // Introspect
@@ -26,7 +25,10 @@ pub mod util; // utility macros and functions
 
 devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
-        pub use super::{_c::*, any::_all::*, default::*, guard::*};
+        pub use super::{_c::*, any::_all::*, default::*};
+
+        #[doc(inline)]
+        pub use devela_base_core::code::ScopeGuard;
     }
     _pub_mods {
         pub use super::{

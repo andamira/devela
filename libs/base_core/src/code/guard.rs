@@ -1,4 +1,4 @@
-// devela::code::guard
+// devela_base_core::code::guard
 //
 //! Defines [`ScopeGuard`].
 //
@@ -30,7 +30,7 @@ impl<T> ScopeGuard<T, fn(T, &bool), bool> {
     ///
     /// # Example
     /// ```
-    /// # use devela::{Cell, ScopeGuard};
+    /// # use devela_base_core::{Cell, ScopeGuard};
     /// let result = Cell::new(0);
     /// {
     ///     let _guard = ScopeGuard::new(10, |value| {
@@ -54,7 +54,7 @@ impl<T, F: FnOnce(T, &bool)> ScopeGuard<T, F, bool> {
     ///
     /// # Example
     /// ```
-    /// # use devela::{Cell, ScopeGuard};
+    /// # use devela_base_core::{Cell, ScopeGuard};
     /// let result = Cell::new(0);
     /// {
     ///     let mut guard = ScopeGuard::new(10, |value| {
@@ -75,7 +75,7 @@ impl<T, F: FnOnce(T, &S), S> ScopeGuard<T, F, S> {
     ///
     /// # Example
     /// ```
-    /// # use devela::{Cell, ScopeGuard};
+    /// # use devela_base_core::{Cell, ScopeGuard};
     /// // A simple resource that requires cleanup.
     /// struct Resource;
     /// impl Resource {
