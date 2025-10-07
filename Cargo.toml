@@ -58,7 +58,7 @@ resolver = "3"
 #                                                             .-------------------.
 # ┌╼devela_base_macros          : base proc macros, zero-deps | always available, |
 # └╥╼devela_base_core           : base core-dependent items   | primitive focused |
-#  ╟✗┼╼devela_base_data         : base data structures        | monomorphizations |
+#  ╟─┼╼devela_base_data         : base data structures        | monomorphizations |
 #  ╟─┼╼devela_base_num          : base numeric operations     | stable interfaces |
 #  ╟─┴╼devela_base_text         : base text functionality     | & infrastructures |
 #  ╚╦╼devela_base_alloc?        : base alloc-dependent items  |                   |
@@ -83,7 +83,7 @@ resolver = "3"
 #         ╏                                                   ·-------------------·
 members = [
 	"libs/base_macros",
-	"libs/base_core", "libs/base_num", "libs/base_text",
+	"libs/base_core", "libs/base_data", "libs/base_num", "libs/base_text",
 	"libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	# "libs/code", "libs/data", "libs/media", "libs/num",
@@ -95,7 +95,7 @@ members = [
 [workspace.dependencies]
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
-# devela_base_data  = { version = "0.25.0-wip", path = "./libs/base_data" } # -----
+devela_base_data   = { version = "0.25.0-wip", path = "./libs/base_data" } # ----
 devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
 devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #----
@@ -220,6 +220,7 @@ bench = false
 # shows extra debugging information
 __dbg = [
 	"devela_base_core/__dbg",
+		"devela_base_data/__dbg",
 		"devela_base_num/__dbg",
 		"devela_base_text/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
@@ -227,6 +228,7 @@ __dbg = [
 __no_test = [] # exclude examples from being tested
 __std = [      # disables `no_std` in base crates for testing
 	"devela_base_core/__std",
+		"devela_base_data/__std",
 		"devela_base_num/__std",
 		"devela_base_text/__std",
 	"devela_base_alloc?/__std",
@@ -235,6 +237,7 @@ __std = [      # disables `no_std` in base crates for testing
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
 	"devela_base_core/__publish",
+		"devela_base_data/__publish",
 		"devela_base_num/__publish",
 		"devela_base_text/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
@@ -393,7 +396,7 @@ base_safe = [
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
 	safe_code = ["devela_base_core/safe_code"] # "devela_code?/safe"
-	safe_data = [] # "devela_data?/safe", "devela_base_core/safe_data",
+	safe_data = ["devela_base_data/safe"] # "devela_data?/safe", "devela_base_core/safe_data",
 	safe_game = [] # "devela_base_core/safe_game", "devela_game?/safe"
 	safe_lang = [] # "devela_lang?/safe"
 		# safe_ffi
@@ -725,6 +728,7 @@ devela_macros = [ "dep:devela_macros",
 #* workspace required internal libraries *#
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
+devela_base_data   = { workspace = true }
 devela_base_num    = { workspace = true }
 devela_base_text   = { workspace = true }
 #
