@@ -73,7 +73,7 @@ Many feature gates are removed in order to make most features make always availa
 - refactor all structural access modules.
 - enable `_docsrs` for workspace dependencies.
 - support having external optional dependencies.
-- new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_num`, `devela_base_std`.
+- new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_num`, `devela_base_std`, `devela_base_text`.
 - prepare future workspace library crates related to root modules.
 - move `core`, `alloc` & `std` re-exports to [base*] libs.
 - use a single version, changelog and readme for all workspace libs.

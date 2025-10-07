@@ -58,9 +58,11 @@ resolver = "3"
 #                                                             .-------------------.
 # ┌╼devela_base_macros          : base proc macros, zero-deps | always available, |
 # └╥╼devela_base_core           : base core-dependent items   | primitive focused |
-#  ╟─┴╼devela_base_num          : base numeric ops            | monomorphizations |
-#  ╚╦╼devela_base_alloc?        : base alloc-dependent items  | stable interfaces |
-#   ╟─┴╼devela_base_std?╾──────┐: base std-dependent items    | & infrastructures |
+#  ╟✗┼╼devela_base_data         : base data structures        | monomorphizations |
+#  ╟─┼╼devela_base_num          : base numeric operations     | stable interfaces |
+#  ╟─┴╼devela_base_text         : base text functionality     | & infrastructures |
+#  ╚╦╼devela_base_alloc?        : base alloc-dependent items  |                   |
+#   ╟─┴╼devela_base_std?╾──────┐: base std-dependent items    |                   |
 #   ╚-╗╼devela_macros?         │: heavy proc macros           ·-------------------·
 #     ╚╗                       │                              ·-------------------.
 #      ╟✗devela_code?          │: code reflective synthesis   | trait definitions |
@@ -80,8 +82,9 @@ resolver = "3"
 #         ║ └╼devela_postbuild─┘: post-build processing       | development tools |
 #         ╏                                                   ·-------------------·
 members = [
-	"libs/base_macros", "libs/base_num",
-	"libs/base_core", "libs/base_alloc", "libs/base_std",
+	"libs/base_macros",
+	"libs/base_core", "libs/base_num", "libs/base_text",
+	"libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	# "libs/code", "libs/data", "libs/media", "libs/num",
 	# "libs/game", "libs/lang", "libs/phys", "libs/sys",
@@ -93,6 +96,7 @@ members = [
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
 devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" } #------
+devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" } #------
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" }
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" } #------
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
@@ -216,6 +220,7 @@ bench = false
 __dbg = [
 	"devela_base_core/__dbg",
 		"devela_base_num/__dbg",
+		"devela_base_text/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
 ]
 __no_test = []      # exclude examples from being tested
@@ -224,6 +229,7 @@ __no_test = []      # exclude examples from being tested
 __publish = [
 	"devela_base_core/__publish",
 		"devela_base_num/__publish",
+		"devela_base_text/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
 	# "devela_code?/__publish", "devela_data?/__publish", "devela_game?/__publish",
@@ -399,7 +405,7 @@ base_safe = [
 	safe_sys = ["safe_io", "safe_mem"] # "devela_base_core/safe_sys", "devela_sys?/safe"
 		safe_io = ["devela_base_core/safe_io"]
 		safe_mem = ["devela_base_core/safe_mem"]
-	safe_text = [] # "devela_base_core/safe_text", "devela_text?/safe"
+	safe_text = ["devela_base_text/safe"] # "devela_base_core/safe_text", "devela_text?/safe"
 	safe_ui = ["safe_layout"] # "devela_ui?/safe"
 		safe_layout = []
 	safe_work = [] # "devela_base_core/safe_work", "devela_work?/safe"
@@ -694,7 +700,7 @@ devela_macros = [ "dep:devela_macros",
 	# "devela_ui?/macros", "devela_work?/macros",
 ]
 
-[dependencies] # 49 (3 required, 46 optional)
+[dependencies] # 50 (4 required, 46 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -710,6 +716,7 @@ devela_macros = [ "dep:devela_macros",
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
 devela_base_num    = { workspace = true }
+devela_base_text   = { workspace = true }
 #
 #* workspace optional internal libraries *#
 devela_base_alloc  = { workspace = true, optional = true }

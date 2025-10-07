@@ -1,0 +1,51 @@
+[package]
+name = "devela_base_text"
+description = "additional base text functionality for devela"
+repository = "https://github.com/andamira/devela/tree/main/libs/base_text"
+# version = "0.25.0-wip" #
+version.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+documentation.workspace = true
+authors.workspace = true
+license.workspace = true
+include = [
+	"/Cargo.toml", "/config/*",
+	"/src/**/*.rs", "/src/**/*.md",
+	"/build/**/*",
+	"/LICENSE*",
+]
+categories = ["rust-patterns", "development-tools"]
+keywords = ["dev", "extension"]
+build = "build/mod.rs"
+autoexamples = false
+publish = true
+metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
+
+[features]
+
+#* Development features *#
+
+__dbg = []
+__publish = []
+__std = [] # remove no_std
+
+#* Safety features *#
+
+safe = []
+unsafe = ["unsafe_hint"]
+	unsafe_hint = []
+
+#* Capability features *#
+
+_docs_nodep = ["unsafe"]
+_docs = ["_docs_nodep"]
+
+[dependencies]
+devela_base_core  = { workspace = true }
+
+[badges]
+maintenance.status = "experimental"
+
+[lints]
+workspace = true

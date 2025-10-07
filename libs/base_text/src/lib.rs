@@ -1,4 +1,4 @@
-// devela_base_num::lib
+// devela_base_text::lib
 //
 //!
 //
@@ -7,21 +7,15 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
-extern crate self as devela_base_num;
+extern crate self as devela_base_text;
 
-mod _internals; // upcasted_op!, impl_ops!
-
-mod int; // Int
-mod float; // Float, FloatConst
-mod quant; // ValueQuant
+// mod grapheme;
 
 structural_mods! { // _mods
     _mods {
-        pub use super::{
-            float::_all::*,
-            int::_all::*,
-            quant::_all::*,
-        };
+        // pub use super::{
+        //     grapheme::_all::*,
+        // };
     }
 }
 
@@ -33,14 +27,12 @@ pub mod all {
     //!
     //! Note that these items are already re-exported (hidden) from the root,
     //! as is every other public module's contents from their parent.
-    #[allow(unused_imports)]
-    #[rustfmt::skip]
-    #[doc(inline)]
-    pub use super::{
-        float::_all::*,
-        int::_all::*,
-        quant::_all::*,
-    };
+    // #[allow(unused_imports)]
+    // #[rustfmt::skip]
+    // #[doc(inline)]
+    // pub use super::{
+    //     grapheme::_all::*,
+    // };
 }
 
 #[doc(hidden)]
@@ -61,12 +53,11 @@ mod _crate_internals {
 pub use _workspace_internals::*;
 #[doc(hidden)]
 pub mod _workspace_internals {
-    #[doc(hidden)]
-    #[rustfmt::skip]
-    #[allow(unused_imports)]
-    pub use super::{
-        _internals::*,
-        float::_workspace_internals::*,
-        int::_workspace_internals::*,
-    };
+    // #[doc(hidden)]
+    // #[rustfmt::skip]
+    // #[allow(unused_imports)]
+    // pub use super::{
+    //     _internals::*,
+    //     _?::_workspace_internals::*,
+    // };
 }
