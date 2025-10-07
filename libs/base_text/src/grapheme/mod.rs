@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme
+// devela_base_text::grapheme
 //
 #![doc = crate::_DOC_TEXT_EGC!()]
 //

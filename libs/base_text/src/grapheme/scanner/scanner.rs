@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::scanner::scanner
+// devela_base_text::grapheme::scanner::scanner
 //
 //!
 //
@@ -49,7 +49,7 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::{GraphemeMachine, GraphemeScanner, GraphemeU8, char_utf8};
+    /// # use devela_base_text::{GraphemeMachine, GraphemeScanner, GraphemeU8, char_utf8};
     /// let input = "H€🧑‍🌾";
     /// let mut machine = GraphemeMachine::new();
     /// let mut scanner = GraphemeScanner::<char_utf8>::new(&mut machine, input);
@@ -82,7 +82,7 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::{GraphemeMachine, GraphemeScanner, char_utf8};
+    /// # use devela_base_text::{GraphemeMachine, GraphemeScanner, char_utf8};
     /// let input = "H€🧑‍🌾";
     /// let mut machine = GraphemeMachine::new();
     /// let mut scanner = GraphemeScanner::<char_utf8>::new(&mut machine, input);

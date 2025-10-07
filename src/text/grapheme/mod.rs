@@ -15,7 +15,7 @@ crate::structural_mods! { // _mods
         pub use super::r#trait::*;
 
         #[doc(inline)]
-        pub use devela_base_core::text::{
+        pub use devela_base_text::{
             GraphemeNonul, GraphemeU8, GraphemeScanner,
             GraphemeBoundary, GraphemeMachine, GraphemePropCb, GraphemePropInCb, GraphemeProps,
         };

@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::scanner::machine
+// devela_base_text::grapheme::scanner::machine
 //
 //! Defines [`GraphemeMachine`].
 //

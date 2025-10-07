@@ -118,7 +118,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// ```
     pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
         let mut new_string = unwrap![ok? Self::new_checked()];
-        if let Ok(_) = new_string.try_push_str_complete(string) { Ok(new_string) }
+        if new_string.try_push_str_complete(string).is_ok() { Ok(new_string) }
         else { Err(MismatchedCapacity::closed(0, string.len(), CAP)) }
     }
 

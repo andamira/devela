@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::scanner::machine::tests::trie
+// devela_base_text::grapheme::scanner::machine::tests::trie
 
 pub(super) struct SegmentationTest {
     pub desc: &'static str,

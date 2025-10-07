@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::scanner::machine::tests::machine
+// devela_base_text::grapheme::scanner::machine::tests::machine
 
 use crate::{CharIter, GraphemeBoundary, GraphemeMachine, StringU8, array_init};
 

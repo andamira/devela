@@ -95,9 +95,10 @@ members = [
 [workspace.dependencies]
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
-devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" } #------
-devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" } #------
-devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" }
+# devela_base_data  = { version = "0.25.0-wip", path = "./libs/base_data" } # -----
+devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
+devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
+devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #----
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" } #------
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
 # devela_code        = { version = "0.25.0-wip", path = "./libs/code" } #----------
@@ -191,7 +192,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 183/300 (117 remaining), 132 visible, 51 hidden
+[features] # 183/300 (117 remaining), 131 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -223,7 +224,13 @@ __dbg = [
 		"devela_base_text/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
 ]
-__no_test = []      # exclude examples from being tested
+__no_test = [] # exclude examples from being tested
+__std = [      # disables `no_std` in base crates for testing
+	"devela_base_core/__std",
+		"devela_base_num/__std",
+		"devela_base_text/__std",
+	"devela_base_alloc?/__std",
+]
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
@@ -424,6 +431,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 
 	unsafe_array   = [ # faster array initialization, UninitArray
 		"devela_base_core/unsafe_array",
+		"devela_base_text/unsafe_array",
 		# "devela_base_alloc?/unsafe_array", "devela_base_std?/unsafe_array",
 		# "devela_macros?/unsafe_array",
 	]
@@ -441,6 +449,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_layout  = [ # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*
 		"devela_base_core/unsafe_layout",
+		"devela_base_text/unsafe_layout",
 		# "devela_base_alloc?/unsafe_layout", "devela_base_std?/unsafe_layout",
 		# "devela_macros?/unsafe_layout",
 	]
@@ -461,6 +470,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_str     = [ # unchecked utf-8 char and &str conversions
 		"devela_base_core/unsafe_str",
+		"devela_base_text/unsafe_str",
 		# "devela_base_alloc?/unsafe_str", "devela_base_std?/unsafe_str",
 		# "devela_macros?/unsafe_str",
 	]

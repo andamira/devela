@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::scanner::machine::tests::state
+// devela_base_text::grapheme::scanner::machine::tests::state
 
 use super::super::GraphemeMachineState;
 #[cfg(feature = "__std")]

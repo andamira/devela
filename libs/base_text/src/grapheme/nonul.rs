@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::nonul
+// devela_base_text::grapheme::nonul
 //
 //!
 //
@@ -53,7 +53,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP > 255.
-    #[must_use]
     pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::new_checked()]))
     }
@@ -92,7 +91,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
-    #[must_use]
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
@@ -106,7 +104,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
-    #[must_use]
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
@@ -120,7 +117,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
-    #[must_use]
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }
@@ -136,7 +132,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// Will always succeed if `CAP` >= 4.
     #[doc = doclink!(devela "[`is_nul()`]" "text/trait.UnicodeScalar.html#method.is_nul")]
     #[doc = doclink!(devela "[`len_utf8()`]" "text/trait.UnicodeScalar.html#method.len_utf8")]
-    #[must_use]
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char(c)]))
     }
@@ -148,7 +143,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// or < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[must_use]
     pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonul::from_char_utf8(c)]))
     }
@@ -232,11 +226,11 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the inner string type.
-    #[must_use] #[inline(always)]
+    #[inline(always)]
     pub const fn as_string_nonul(&self) -> &StringNonul::<CAP> { &self.0 }
 
     /// Returns the inner string type.
-    #[must_use] #[inline(always)]
+    #[inline(always)]
     pub const fn into_string_nonul(self) -> StringNonul::<CAP> { self.0 }
 
     /// Returns the mutable inner string slice.
@@ -275,7 +269,7 @@ mod trait_impls {
     }
 
     impl<const CAP: usize> PartialEq<StringNonul<CAP>> for GraphemeNonul<CAP> {
-        fn eq(&self, other: &StringNonul<CAP>) -> bool { self.0.eq(&other) }
+        fn eq(&self, other: &StringNonul<CAP>) -> bool { self.0.eq(other) }
     }
     impl<const CAP: usize> PartialEq<GraphemeNonul<CAP>> for StringNonul<CAP> {
         fn eq(&self, other: &GraphemeNonul<CAP>) -> bool { self.eq(&other.0) }

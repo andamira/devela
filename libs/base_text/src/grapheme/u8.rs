@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::u8
+// devela_base_text::grapheme::u8
 //
 //!
 //
@@ -53,7 +53,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP > 255.
-    #[must_use]
     pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::new_checked()]))
     }
@@ -89,7 +88,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns [`MismatchedCapacity`] if `CAP > 255.
     ///
     /// Will always succeed if `CAP` >= 1 and <= 255.
-    #[must_use]
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
     }
@@ -101,7 +99,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// or < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2 and <= 255.
-    #[must_use]
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
     }
@@ -113,7 +110,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// or < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3 and <= 255.
-    #[must_use]
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
@@ -125,7 +121,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[must_use]
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }
@@ -137,7 +132,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// or < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[must_use]
     pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char_utf8(c)]))
     }
@@ -218,11 +212,11 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the inner string type.
-    #[must_use] #[inline(always)]
+    #[inline(always)]
     pub const fn as_string_u8(&self) -> &StringU8::<CAP> { &self.0 }
 
     /// Returns the inner string type.
-    #[must_use] #[inline(always)]
+    #[inline(always)]
     pub const fn into_string_u8(self) -> StringU8::<CAP> { self.0 }
 
     /// Returns the mutable inner string slice.
@@ -262,7 +256,7 @@ mod trait_impls {
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<const CAP: usize> PartialEq<StringU8<CAP>> for GraphemeU8<CAP> {
-        fn eq(&self, other: &StringU8<CAP>) -> bool { self.0.eq(&other) }
+        fn eq(&self, other: &StringU8<CAP>) -> bool { self.0.eq(other) }
     }
     impl<const CAP: usize> PartialEq<GraphemeU8<CAP>> for StringU8<CAP> {
         fn eq(&self, other: &GraphemeU8<CAP>) -> bool { self.eq(&other.0) }

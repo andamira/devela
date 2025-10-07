@@ -33,8 +33,10 @@ __std = [] # remove no_std
 #* Safety features *#
 
 safe = []
-unsafe = ["unsafe_hint"]
-	unsafe_hint = []
+unsafe = ["unsafe_array", "unsafe_layout", "unsafe_str"]
+	unsafe_array = ["devela_base_core/unsafe_array"]
+	unsafe_layout = ["devela_base_core/unsafe_layout"]
+	unsafe_str = ["devela_base_core/unsafe_str"]
 
 #* Capability features *#
 

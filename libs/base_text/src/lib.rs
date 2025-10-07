@@ -9,15 +9,16 @@
 
 extern crate self as devela_base_text;
 
-// mod grapheme;
+pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 
-structural_mods! { // _mods
-    _mods {
-        // pub use super::{
-        //     grapheme::_all::*,
-        // };
-    }
-}
+// DELETE
+// structural_mods! { // _mods
+//     _pub_mods {
+//         pub use super::{
+//             grapheme::_all::*,
+//         };
+//     }
+// }
 
 #[doc(hidden)]
 pub use all::*;
@@ -27,12 +28,12 @@ pub mod all {
     //!
     //! Note that these items are already re-exported (hidden) from the root,
     //! as is every other public module's contents from their parent.
-    // #[allow(unused_imports)]
-    // #[rustfmt::skip]
-    // #[doc(inline)]
-    // pub use super::{
-    //     grapheme::_all::*,
-    // };
+    #[allow(unused_imports)]
+    #[rustfmt::skip]
+    #[doc(inline)]
+    pub use super::{
+        grapheme::_all::*,
+    };
 }
 
 #[doc(hidden)]

@@ -1,4 +1,4 @@
-// devela_base_core::text::grapheme::scanner::table
+// devela_base_text::grapheme::scanner::table
 
 use crate::char_utf8;
 
