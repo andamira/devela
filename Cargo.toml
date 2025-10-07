@@ -1046,6 +1046,8 @@ default-features = false # 7 https://docs.rs/crate/winnow/latest/features
 # ------------------------------------------------------------------------------
 # devela = { path = ".", features = ["all"] }
 
+# criterion = "*"
+
 
 [build-dependencies]
 # Used for the main build script. They do NOT inherit from [dependencies].
@@ -1082,6 +1084,12 @@ lto = "thin" # false, thin, fat, off
 [profile.release-lto]
 inherits = "release"
 lto = "thin"
+
+[profile.bench]
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1
 
 [profile.wasm]
 inherits = "release"
@@ -1296,11 +1304,21 @@ check-cfg = [ # Allowed configuration flags:
 
 # metrics
 # ==============================================================================
+# cargo bench --profile bench --bench NAME
 
 # [[bench]]
 # name = "static_map"
 # path = "metrics/static_map.rs"
 # harness = false
+
+[[bench]]
+name = "char_utf8"
+path = "metrics/char_utf8.rs"
+harness = false
+[[bench]]
+name = "char_utf8_custom"
+path = "metrics/char_utf8_custom.rs"
+harness = false
 
 
 # binaries
@@ -1308,10 +1326,9 @@ check-cfg = [ # Allowed configuration flags:
 # To install a binary:
 # cargo install --path . --bin NAME -F std
 
-# bin
-# [[bin]]
-# name = "some-binary"
-# required-features = ["std"]
+[[bin]]
+name = "croot" # Get the path to your Cargo project root
+required-features = ["std", "linux"]
 
 # num
 # [[bin]]

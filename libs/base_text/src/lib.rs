@@ -11,15 +11,6 @@ extern crate self as devela_base_text;
 
 pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 
-// DELETE
-// structural_mods! { // _mods
-//     _pub_mods {
-//         pub use super::{
-//             grapheme::_all::*,
-//         };
-//     }
-// }
-
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
