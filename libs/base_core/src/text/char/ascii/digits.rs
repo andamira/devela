@@ -51,6 +51,8 @@ and the maximum number of digits.
 /// for unsigned integer types. All operations are `const` and designed for
 /// performance-critical scenarios like number formatting.
 ///
+/// It converts **numbers → digits** for display/formatting.
+///
 /// # Example
 /// ```
 /// # use devela_base_core::{AsciiDigits, Slice};

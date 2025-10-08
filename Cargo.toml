@@ -58,9 +58,9 @@ resolver = "3"
 #                                                             .-------------------.
 # ┌╼devela_base_macros          : base proc macros, zero-deps | always available, |
 # └╥╼devela_base_core           : base core-dependent items   | primitive focused |
-#  ╟─┼╼devela_base_data         : base data structures        | monomorphizations |
+#  ╟─┼╼devela_base_data?        : base data structures        | monomorphizations |
 #  ╟─┼╼devela_base_num          : base numeric operations     | stable interfaces |
-#  ╟─┴╼devela_base_text         : base text functionality     | & infrastructures |
+#  ╟─┴╼devela_base_text?        : base text functionality     | & infrastructures |
 #  ╚╦╼devela_base_alloc?        : base alloc-dependent items  |                   |
 #   ╟─┴╼devela_base_std?╾──────┐: base std-dependent items    |                   |
 #   ╚-╗╼devela_macros?         │: heavy proc macros           ·-------------------·
@@ -1036,8 +1036,10 @@ default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 
 [dependencies.wide] # https://crates.io/crates/wide
 version = "0.7" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
+# WAIT:v0.8: https://github.com/Lokathor/wide/issues/220
+# TEST: cargo check --target riscv64gc-unknown-linux-gnu -F dep_wide
 optional = true # unsafe
-default-features = false # 3 https://docs.rs/crate/wide/latest/features
+default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
 [dependencies.winnow] # https://crates.io/crates/winnow
 version = "0.7" # ✓ https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md

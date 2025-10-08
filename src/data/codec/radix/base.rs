@@ -19,6 +19,8 @@ use crate::{_TAG_CODEC, ConstDefault, PhantomData};
 /// This struct defines the core behavior for various base encodings,
 /// including [`Base16`], [`Base32`] and [`Base64`].
 ///
+/// It converts **binary ↔ text** for data transmission/storage.
+///
 /// It is configurable via const generics to support different encoding
 /// behaviors, such as lookup tables, padding, and case insensitivity.
 ///
@@ -487,13 +489,11 @@ mod tests_no_std {
         let encoded_len = Base16::encode_to_slice(b"hello world", &mut encoded_buf);
         let encoded = &encoded_buf[..encoded_len];
         assert_eq![encoded, b"68656C6C6F20776F726C64"];
-        // assert_eq![core::str::from_utf8(encoded).unwrap(), "68656C6C6F20776F726C64"];
 
         let mut decoded_buf = [0u8; 11];
         let decoded_len = Base16::decode_from_slice(encoded, &mut decoded_buf).unwrap();
         let decoded = &decoded_buf[..decoded_len];
         assert_eq![decoded, b"hello world"];
-        // assert_eq![core::str::from_utf8(decoded).unwrap(), "hello world"];
     }
     #[test]
     fn base16_rfc4648_nolut() {

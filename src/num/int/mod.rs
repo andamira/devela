@@ -4,6 +4,7 @@
 //
 
 mod fns; // prime_number_teorem
+
 mod num_trait; // NumInt, NumRefInt
 
 crate::structural_mods! { // _mods
@@ -18,8 +19,10 @@ crate::structural_mods! { // _mods
             Divisor,
             GcdReturn,
         };
+
         #[doc(inline)]
         pub use devela_base_num::Int;
+
         #[doc(inline)]
         #[cfg(feature = "alloc")]
         pub use devela_base_alloc::IntAlloc;
