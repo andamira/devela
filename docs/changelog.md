@@ -52,6 +52,7 @@ Many feature gates are removed in order to make most features make always availa
   - `pyo3` to 0.26.
   - `stringzilla` to 4.0.
   - `ureq` to 3.1.
+  - `wide` to 0.8.
   - [macros]
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.40.

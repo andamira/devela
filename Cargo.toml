@@ -1035,8 +1035,7 @@ default-features = false # 12 https://docs.rs/crate/ureq/latest/features
 # WAIT: [wasm,no_std](https://github.com/algesten/ureq/issues/667)
 
 [dependencies.wide] # https://crates.io/crates/wide
-version = "0.7" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
-# WAIT:v0.8: https://github.com/Lokathor/wide/issues/220
+version = "0.8" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 # TEST: cargo check --target riscv64gc-unknown-linux-gnu -F dep_wide
 optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/wide/latest/features
