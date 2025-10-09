@@ -319,11 +319,12 @@ Many feature gates are removed in order to make most features make always availa
   - macros: `format_buf!`.
 
 ### grapheme
-- new types: `GraphemeScanner`.
+- new types: `GraphemeKind`, `GraphemeScanner`.
+- feature-bound all grapheme-related items.
 - vendor `grapheme_machine` as items: `GraphemeBoundary`, `GraphemeMachine`, `GraphemePropCb`, `GraphemePropInCb`, `GraphemeProps`.
 - impl `Grapheme` for scalar types.
-- update Grapheme trait:
-  - add new methods: `grapheme_chars`, `grapheme_len_bytes`, `grapheme_len_chars`.
+- update the `Grapheme` trait:
+  - add new methods: `grapheme_chars`, `grapheme_is_kind`, `grapheme_kind`, `grapheme_len_bytes`, `grapheme_len_chars`, `grapheme_len_utf8`.
 - update `Grapheme[Nonul|U*]`:
   - remove methods: `to_cstring`.
   - make `new` method panic

@@ -8,15 +8,20 @@
 //! [0]: https://www.unicode.org/reports/tr29/
 //
 
-mod r#trait; // Grapheme
+#[cfg(test)]
+mod tests;
+
+mod grapheme; // Grapheme
+mod kind; // GraphemeKind
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::r#trait::*;
+        pub use super::{
+            grapheme::*,
+            kind::*,
+        };
 
         #[doc(inline)]
-        #[cfg(feature = "grapheme")]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
         pub use devela_base_text::{
             GraphemeNonul, GraphemeU8, GraphemeScanner,
             GraphemeBoundary, GraphemeMachine, GraphemePropCb, GraphemePropInCb, GraphemeProps,

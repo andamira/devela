@@ -18,9 +18,12 @@ pub mod errors {
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 pub mod char;
 pub mod fmt;
-pub mod grapheme; // Grapheme
 pub mod parse;
 pub mod str;
+
+#[cfg(feature = "grapheme")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
+pub mod grapheme; // Grapheme
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {
@@ -29,9 +32,12 @@ crate::structural_mods! { // _pub_mods
             char::_all::*,
             errors::*,
             fmt::_all::*,
-            grapheme::_all::*,
             parse::_all::*,
             str::_all::*,
+        };
+        #[cfg(feature = "grapheme")]
+        pub use super::{
+            grapheme::_all::*,
         };
     }
 }
