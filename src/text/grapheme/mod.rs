@@ -15,8 +15,8 @@ crate::structural_mods! { // _mods
         pub use super::r#trait::*;
 
         #[doc(inline)]
-        #[cfg(feature = "text")]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = "text")))]
+        #[cfg(feature = "grapheme")]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
         pub use devela_base_text::{
             GraphemeNonul, GraphemeU8, GraphemeScanner,
             GraphemeBoundary, GraphemeMachine, GraphemePropCb, GraphemePropInCb, GraphemeProps,

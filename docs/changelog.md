@@ -60,7 +60,7 @@ Many feature gates are removed in order to make most features make always availa
 - remove `_core` and `_dep` re-exports from the public docs.
 
 ## features & flags
-- new features: `__publish`, `__std`, `base_safe`, `safe_build`.
+- new features: `__publish`, `__std`, `base_safe`, `grapheme`, `safe_build`.
 - remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `fmt`, `join`, `prim`, `split`, `str`.
 - remove flags: `bit··`, `char··`, `cmp··`, `_float··`, `_int*··`, `_nums··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - add an adittional `nightly_stable_1_??` flag for the 3rd next version.
@@ -322,6 +322,8 @@ Many feature gates are removed in order to make most features make always availa
 - new types: `GraphemeScanner`.
 - vendor `grapheme_machine` as items: `GraphemeBoundary`, `GraphemeMachine`, `GraphemePropCb`, `GraphemePropInCb`, `GraphemeProps`.
 - impl `Grapheme` for scalar types.
+- update Grapheme trait:
+  - add new methods: `grapheme_chars`, `grapheme_len_bytes`, `grapheme_len_chars`.
 - update `Grapheme[Nonul|U*]`:
   - remove methods: `to_cstring`.
   - make `new` method panic

@@ -192,7 +192,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 183/300 (117 remaining), 131 visible, 52 hidden
+[features] # 186/300 (114 remaining), 134 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -343,7 +343,8 @@ sys = ["io", "mem"]
 	# os
 		linux = []
 		windows = ["crossterm?/windows", "midir?/winrt"]
-text = ["devela_base_text"]
+text = ["grapheme"]
+	grapheme = ["devela_base_text"]
 ui = ["layout", "desk", "term", "web"]
 	layout = []
 	# back

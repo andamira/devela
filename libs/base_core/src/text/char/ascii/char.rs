@@ -13,7 +13,7 @@ use ::core::fmt;
 #[doc = crate::_TAG_TEXT!()]
 /// One of 128 Unicode characters (`U+0000` to `U+007F`), the ASCII subset.
 ///
-#[doc = crate::_doc!(location: "text")]
+#[doc = crate::_doc!(location: "text/char")]
 ///
 /// Officially, this is the first [block] in Unicode, _Basic Latin_.
 /// For details, see the [*C0 Controls and Basic Latin*][chart] code chart.

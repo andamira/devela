@@ -5,7 +5,7 @@
 
 /// ASCII lookup table for fast UTF-8 encoding.
 ///
-#[doc = crate::_doc!(location: "text")]
+#[doc = crate::_doc!(location: "text/char")]
 #[rustfmt::skip]
 pub static CHAR_ASCII: [&str; 128] = [
     "\0", "\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07", "\x08", "\t", "\n",

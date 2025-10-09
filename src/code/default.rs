@@ -267,7 +267,7 @@ mod impl_devela {
         char7, char8, char16, char_utf8,
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
     };
-    #[cfg(feature = "text")]
+    #[cfg(feature = "grapheme")]
     pub use crate::{GraphemeNonul, GraphemeU8};
     #[cfg(feature = "alloc")]
     pub use crate::GraphemeString;
@@ -299,12 +299,12 @@ mod impl_devela {
         impl ConstDefault for char_utf8 { const DEFAULT: Self = char_utf8::MIN; }
     }
 
-    #[cfg(feature = "text")]
+    #[cfg(feature = "grapheme")]
     impl<const CAP: usize> ConstDefault for GraphemeNonul<CAP> {
         #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
         const DEFAULT: Self = Self::new();
     }
-    #[cfg(feature = "text")]
+    #[cfg(feature = "grapheme")]
     impl<const CAP: usize> ConstDefault for GraphemeU8<CAP> {
         #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
         const DEFAULT: Self = Self::new();

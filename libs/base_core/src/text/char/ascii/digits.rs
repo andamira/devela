@@ -45,7 +45,7 @@ and the maximum number of digits.
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Provides ASCII digit operations and conversions for unsigned integer primitives.
 ///
-#[doc = crate::_doc!(location: "text")]
+#[doc = crate::_doc!(location: "text/char")]
 ///
 /// Enables efficient ASCII digit extraction, counting, and conversion
 /// for unsigned integer types. All operations are `const` and designed for
