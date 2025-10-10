@@ -75,6 +75,9 @@ macro_rules! impl_char {
             fn is_control(self) -> bool { self.to_char().is_control() }
             fn is_noncharacter(self) -> bool { self.is_noncharacter() }
             fn is_combining(self) -> bool { self.to_char().is_combining() }
+            fn is_combining_common(self) -> bool { self.to_char().is_combining_common() }
+            fn is_fullwidth(self) -> bool { self.to_char().is_fullwidth() }
+            fn is_fullwidth_common(self) -> bool { self.to_char().is_fullwidth_common() }
         }
 
         /* impl const fns */

@@ -163,4 +163,34 @@ pub trait UnicodeScalar {
     ///
     /// [0]: https://www.unicode.org/glossary/#combining_character
     fn is_combining(self) -> bool;
+
+    #[must_use]
+    /// Optional faster combining mark check for common text.
+    ///
+    /// By default, this calls `is_combining()`. Implementations may override
+    /// this with a faster version that only checks common ranges, but may
+    /// return false negatives for rare [combining characters][0].
+    ///
+    /// For complete Unicode compliance, use `is_combining()` instead.
+    ///
+    /// [0]: https://www.unicode.org/glossary/#combining_character
+    fn is_combining_common(self) -> bool where Self: Sized { self.is_combining() }
+
+    #[must_use]
+    /// Returns `true` if this Unicode scalar is a [fullwidth][0] character.
+    ///
+    /// [0]: https://www.unicode.org/glossary/#fullwidth
+    fn is_fullwidth(self) -> bool;
+
+    #[must_use]
+    /// Optional faster fullwidth check for common text.
+    ///
+    /// By default, this calls `is_fullwidth()`. Implementations may override
+    /// this with a faster version that only checks common ranges, but may
+    /// return false negatives for rare [fullwidth][0] characters.
+    ///
+    /// For complete Unicode compliance, use `is_fullwidth()` instead.
+    ///
+    /// [0]: https://www.unicode.org/glossary/#fullwidth
+    fn is_fullwidth_common(self) -> bool where Self: Sized { self.is_fullwidth() }
 }

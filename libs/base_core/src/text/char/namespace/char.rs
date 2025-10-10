@@ -28,6 +28,20 @@ impl Char<char> {
         Char(self.0 as u32).is_combining_common()
     }
 
+    /// Returns `true` for all Unicode fullwidth characters.
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_fullwidth(self) -> bool {
+        Char(self.0 as u32).is_fullwidth()
+    }
+
+    /// Returns `true` for common fullwidth characters (ASCII variants, basic CJK)
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_fullwidth_common(self) -> bool {
+        Char(self.0 as u32).is_fullwidth_common()
+    }
+
     /// Returns the number of bytes needed to encode the given Unicode scalar as UTF-8.
     ///
     /// See also `Char::<u32>`[`len_utf8`][Char::<u32>::len_utf8].
