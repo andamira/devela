@@ -34,7 +34,7 @@ __std = [] # remove no_std
 
 safe = []
 unsafe = ["unsafe_hint"]
-	unsafe_hint = []
+	unsafe_hint = ["devela_base_core/unsafe_hint"]
 
 #* Capability features *#
 

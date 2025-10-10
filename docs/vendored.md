@@ -120,6 +120,8 @@ See the linked modifications for detailed changes.
   as part of the [`IdPinBox`] and [`IdPin`] structs ([*modifications*][M_object-id]).
 - <i id="rawbytes"></i>[rawbytes] by Frank Denis,
   as `Mem`'s [`as_bytes`] and [`as_bytes_mut`] methods.
+- <i id="transliteration"></i>[transliteration] by *yf-hk*,
+  as the [`scalar_as_ascii_translit`] fn.
 - <i id="unsized-stack"></i>[unsized-stack] by *storycraft*,
   as the [`FatPtr`] struct.
 
@@ -152,6 +154,8 @@ See the linked modifications for detailed changes.
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
   [`as_bytes`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.Mem.html#method.as_bytes
   [`as_bytes_mut`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.Mem.html#method.as_bytes_mut
+[transliteration]: https://github.com/yf-hk/transliteration
+  [`scalar_as_ascii_translit`]: https://andamira.github.io/devela/latest/devela/text/char/fn.scalar_as_ascii_translit.html
 [unsized-stack]: https://crates.io/crates/unsized-stack/0.2.0
   [`FatPtr`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.FatPtr.html
 

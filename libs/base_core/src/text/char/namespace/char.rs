@@ -73,7 +73,7 @@ impl Char<char> {
 
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
-    pub const fn to_ascii_str(self) -> &'static str {
+    pub const fn as_ascii(self) -> &'static str {
         is![self.0.is_ascii(); CHAR_ASCII[self.0 as usize]; ""]
     }
 
@@ -81,7 +81,7 @@ impl Char<char> {
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use] #[inline(always)]
-    pub const fn to_ascii_str_unchecked(self) -> &'static str { CHAR_ASCII[self.0 as usize] }
+    pub const fn as_ascii_unchecked(self) -> &'static str { CHAR_ASCII[self.0 as usize] }
 
     /// Converts a character to its closest ASCII equivalent, if possible.
     ///

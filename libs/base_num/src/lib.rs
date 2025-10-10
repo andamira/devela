@@ -15,16 +15,6 @@ mod int; // Int
 mod float; // Float, FloatConst
 mod quant; // ValueQuant
 
-structural_mods! { // _mods
-    _mods {
-        pub use super::{
-            float::_all::*,
-            int::_all::*,
-            quant::_all::*,
-        };
-    }
-}
-
 #[doc(hidden)]
 pub use all::*;
 pub mod all {

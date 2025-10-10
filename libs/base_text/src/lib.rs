@@ -9,6 +9,8 @@
 
 extern crate self as devela_base_text;
 
+#[allow(hidden_glob_reexports, reason = "re-exported `char`")]
+mod char; // transliterate
 pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 
 #[doc(hidden)]
@@ -23,6 +25,7 @@ pub mod all {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
+        char::_all::*,
         grapheme::_all::*,
     };
 }
@@ -45,11 +48,10 @@ mod _crate_internals {
 pub use _workspace_internals::*;
 #[doc(hidden)]
 pub mod _workspace_internals {
-    // #[doc(hidden)]
-    // #[rustfmt::skip]
-    // #[allow(unused_imports)]
-    // pub use super::{
-    //     _internals::*,
-    //     _?::_workspace_internals::*,
-    // };
+    #[doc(hidden)]
+    #[rustfmt::skip]
+    #[allow(unused_imports)]
+    pub use super::{
+        char::_workspace_internals::*,
+    };
 }

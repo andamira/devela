@@ -266,6 +266,7 @@ Many feature gates are removed in order to make most features make always availa
   - types: `AsciiDigits`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 
 ### char
+- new fn: `scalar_as_ascii_translit`.
 - new types: `CharIter`, `char_utf8`.
 - new `char7` methods: `to_byte`, `to_str`.
 - new `char[7|8|16]` methods: `to_char_utf8`, `try_from_char_utf8`.
@@ -286,6 +287,8 @@ Many feature gates are removed in order to make most features make always availa
   - rename methods:
     - `is_7bit` to `is_ascii`.
     - `is_valid` to `is_valid_scalar`.
+    - `to_ascii_str` to `as_ascii`.
+    - `to_ascii_str_unchecked` to `as_ascii_unchecked`.
     - `to_code*` to `to_scalar*`.
     - `utf8_len` to `len_utf8_unchecked`.
     - `utf8_len_checked` to `len_utf8`.

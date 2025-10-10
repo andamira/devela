@@ -318,7 +318,7 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                is![Char(c).is_ascii(); return (Char(c).to_ascii_str_unchecked(), L::Standard)];
+                is![Char(c).is_ascii(); return (Char(c).as_ascii_unchecked(), L::Standard)];
                 ("Unknown", L::Standard)
             },
             K::Unknown => ("Unknown", L::Standard),
@@ -427,7 +427,7 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                is![Char(c).is_ascii(); return (Char(c).to_ascii_str_unchecked(), L::Standard)];
+                is![Char(c).is_ascii(); return (Char(c).as_ascii_unchecked(), L::Standard)];
                 ("Unknown", L::Standard)
                 // IMPROVE using a static atomic buffer
                 // (Char(c).to_utf8_str_unchecked(), L::Standard)

@@ -17,6 +17,11 @@ crate::structural_mods! { // _mods
         pub use devela_base_core::text::{
             CHAR_ASCII, AsciiDigits, Char, CharAscii, CharIter, char7, char8, char16, char_utf8,
         };
+
+        #[cfg(feature = "devela_base_text")]
+        pub use devela_base_text::{
+            scalar_as_ascii_translit,
+        };
     }
 }
 

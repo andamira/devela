@@ -62,6 +62,7 @@
   [`IdPinBox`]: crate::IdPinBox
   [`as_bytes`]: crate::sys::mem::Mem::as_bytes
   [`as_bytes_mut`]: crate::sys::mem::Mem::as_bytes_mut
+  [`scalar_as_ascii_translit`]: crate::text::char::scalar_as_ascii_translit
   [`FatPtr`]: crate::sys::mem::FatPtr
 
 <!-- license: Other compatible -->

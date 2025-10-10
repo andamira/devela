@@ -55,32 +55,21 @@ resolver = "3"
 
 ## Bottom-up hierarchical dependency flow of units of compilation (? = optional)
 # ·------------------------------------------------------------------------------
-#                                                             .-------------------.
-# ┌╼devela_base_macros          : base proc macros, zero-deps | always available, |
-# └╥╼devela_base_core           : base core-dependent items   | primitive focused |
-#  ╟─┼╼devela_base_data?        : base data structures        | monomorphizations |
-#  ╟─┼╼devela_base_num          : base numeric operations     | stable interfaces |
-#  ╟─┴╼devela_base_text?        : base text functionality     | & infrastructures |
-#  ╚╦╼devela_base_alloc?        : base alloc-dependent items  |                   |
-#   ╟─┴╼devela_base_std?╾──────┐: base std-dependent items    |                   |
-#   ╚-╗╼devela_macros?         │: heavy proc macros           ·-------------------·
-#     ╚╗                       │                              ·-------------------.
-#      ╟✗devela_code?          │: code reflective synthesis   | trait definitions |
-#      ╚╦┼✗devela_data?        │: data structures & formats   | & implementations |
-#       ╟┼✗devela_game?        │: game & app development      | for foreign types |
-#       ╟┼✗devela_lang?        │: language functionality      | & domain-specific |
-#       ╟┼✗devela_media?       │: multimedia functionality    | custom constructs |
-#       ╟┼✗devela_num?         │: numeric systems & math ops  | corresponding to  |
-#       ╟┼✗devela_phys?        │: physical units & measures   | devela's modules  |
-#       ╟┼✗devela_sys          │: system & hardware interface |                   |
-#       ╟┼✗devela_text         │: text processing & unicode   |                   |
-#       ╟┼✗devela_ui?          │: user interfaces & visuals   |                   |
-#       ╟┴✗devela_work?        │: concurrency management      |                   |
-#       ║                      │                              ··------------------·
-#       ╚═╦╼devela             │: unified front, traits       | integration layer |
-#         ║ ├╼build/main───────┤: build, codegen, debug       | public interfaces |
-#         ║ └╼devela_postbuild─┘: post-build processing       | development tools |
-#         ╏                                                   ·-------------------·
+#                                                            .-------------------.
+# ┌╼devela_base_macros         : base proc macros, zero-deps | always available, |
+# └╥╼devela_base_core          : base core-dependent items   | primitive focused |
+#  ╟─┼╼devela_base_data?       : base data structures        | monomorphizations |
+#  ╟─┼╼devela_base_num         : base numeric operations     | stable interfaces |
+#  ╟─┴╼devela_base_text?       : base text functionality     | & infrastructures |
+#  ║                                                         ·-------------------·
+#  ╚╦╼devela_base_alloc?       : base alloc-dependent items  |                   |
+#   ╟─┴╼devela_base_std?╾────┐ : base std-dependent items    |                   |
+#   ╚-╗╼devela_macros?       │ : heavy proc macros           |                   |
+#     ║                      │                               ··------------------·
+#     ╚═╦╼devela             │ : unified front, traits       | integration layer |
+#       ║ ├╼build/main───────┤ : build, codegen, debug       | public interfaces |
+#       ║ └╼devela_postbuild─┘ : post-build processing       | development tools |
+#       ╏                                                    ·-------------------·
 members = [
 	"libs/base_macros",
 	"libs/base_core", "libs/base_data", "libs/base_num", "libs/base_text",
@@ -93,26 +82,15 @@ members = [
 	"build/post",
 ]
 [workspace.dependencies]
-devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" }
+devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
-devela_base_data   = { version = "0.25.0-wip", path = "./libs/base_data" } # ----
+devela_base_data   = { version = "0.25.0-wip", path = "./libs/base_data" }
 devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
 devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
-devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #----
-devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" } #------
+devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
+devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
-# devela_code        = { version = "0.25.0-wip", path = "./libs/code" } #----------
-# devela_data        = { version = "0.25.0-wip", path = "./libs/data" }
-# devela_game      = { version = "0.25.0-wip", path = "./libs/lang" }
-# devela_lang      = { version = "0.25.0-wip", path = "./libs/lang" }
-# devela_media       = { version = "0.25.0-wip", path = "./libs/media" }
-# devela_num         = { version = "0.25.0-wip", path = "./libs/num" }
-# devela_phys      = { version = "0.25.0-wip", path = "./libs/phys" }
-# devela_sys       = { version = "0.25.0-wip", path = "./libs/sys" }
-# devela_text      = { version = "0.25.0-wip", path = "./libs/text" }
-# devela_ui        = { version = "0.25.0-wip", path = "./libs/ui" }
-# devela_work      = { version = "0.25.0-wip", path = "./libs/work" }
-devela             = { version = "0.25.0-wip", path = "./" } #------------------
+devela             = { version = "0.25.0-wip", path = "./" } #
 devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 
 [workspace.package]
@@ -242,10 +220,6 @@ __publish = [
 		"devela_base_text?/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
-	# "devela_code?/__publish", "devela_data?/__publish", "devela_game?/__publish",
-	# "devela_lang?/__publish", "devela_media?/__publish", "devela_num?/__publish",
-	# "devela_phys?/__publish", "devela_sys?/__publish", "devela_text?/__publish",
-	# "devela_ui?/__publish", "devela_work?/__publish",
 ]
 
 __force_miri_dst = [] # inhibits disabling miri on several modules
@@ -256,22 +230,12 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 
 alloc = [ # enables `alloc` functionality
 	"devela_base_alloc",
-	# "devela_code?/alloc", "devela_data?/alloc", "devela_game?/alloc",
-	# "devela_media?/alloc", "devela_num?/alloc", "devela_lang?/alloc",
-	# "devela_phys?/alloc", "devela_sys?/alloc", "devela_text?/alloc",
-	# "devela_ui?/alloc", "devela_work?/alloc",
-	#
 	"allocator-api2?/alloc", "bytemuck?/extern_crate_alloc", "itertools?/use_alloc",
 	"jiff?/alloc", "memchr?/alloc", "orion?/alloc", "portable-atomic-util?/alloc",
 	"serde?/alloc", "winnow?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "devela_base_std/std",
-	# "devela_code?/std", "devela_data?/std", "devela_game?/std",
-	# "devela_media?/std", "devela_num?/std", "devela_lang?/std",
-	# "devela_phys?/std", "devela_sys?/std", "devela_text?/std",
-	# "devela_ui?/std", "devela_work?/std",
-	#
 	"allocator-api2?/std", "atomic?/std",
 	"bumpalo?/std", "bytemuck?/extern_crate_std", "fontdue?/std",
 	"itertools?/use_std", "jiff?/std", "log?/std",
@@ -396,13 +360,13 @@ base_safe = [
 
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
-	safe_code = ["devela_base_core/safe_code"] # "devela_code?/safe"
-	safe_data = ["devela_base_data?/safe"] # "devela_data?/safe", "devela_base_core/safe_data",
-	safe_game = [] # "devela_base_core/safe_game", "devela_game?/safe"
-	safe_lang = [] # "devela_lang?/safe"
+	safe_code = ["devela_base_core/safe_code"]
+	safe_data = ["devela_base_core/safe_data", "devela_base_data?/safe"]
+	safe_game = ["devela_base_core/safe_game"]
+	safe_lang = []
 		# safe_ffi
 			# safe_js
-	safe_media = [ # "devela_base_core/safe_media", "devela_media?/safe"
+	safe_media = [ # "devela_base_core/safe_media",
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
 		]
 		safe_audio = []
@@ -410,16 +374,16 @@ base_safe = [
 		safe_draw = []
 		safe_font = []
 		safe_image = []
-	safe_num = ["devela_base_num/safe"] # "devela_num?/safe"
-	safe_phys = ["safe_time"] # "devela_phys?/safe"
+	safe_num = ["devela_base_num/safe"]
+	safe_phys = ["safe_time"]
 		safe_time = []
-	safe_sys = ["safe_io", "safe_mem"] # "devela_base_core/safe_sys", "devela_sys?/safe"
+	safe_sys = ["safe_io", "safe_mem", "devela_base_core/safe_sys"]
 		safe_io = ["devela_base_core/safe_io"]
 		safe_mem = ["devela_base_core/safe_mem"]
-	safe_text = ["devela_base_text?/safe"] # "devela_base_core/safe_text", "devela_text?/safe"
-	safe_ui = ["safe_layout"] # "devela_ui?/safe"
+	safe_text = ["devela_base_core/safe_text", "devela_base_text?/safe"]
+	safe_ui = ["safe_layout"]
 		safe_layout = []
-	safe_work = [] # "devela_base_core/safe_work", "devela_work?/safe"
+	safe_work = ["devela_base_core/safe_work"]
 		# safe_async
 
 unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
@@ -540,18 +504,10 @@ _docs_nodep = [ # + std + unsafe
 	"devela_base_core/_docs", "devela_base_alloc?/_docs", "devela_base_std?/_docs",
 	#
 	"devela_macros?/_docs_nodep",
-	# "devela_code?/_docs_nodep", "devela_data?/_docs_nodep", "devela_game?/_docs_nodep",
-	# "devela_lang?/_docs_nodep", "devela_media/_docs_nodep", "devela_num?/_docs_nodep",
-	# "devela_phys?/_docs_nodep", "devela_sys?/_docs_nodep", "devela_text?/_docs_nodep",
-	# "devela_ui?/_docs_nodep", "devela_work?/_docs_nodep",
 ]
 _docs = [ # + dependencies
 	"_docs_nodep", "dep_all",
 	"devela_macros?/_docs",
-	# "devela_code?/_docs", "devela_data?/_docs", "devela_game/_docs",
-	# "devela_lang?/_docs", "devela_media/_docs", "devela_num?/_docs",
-	# "devela_phys?/_docs", "devela_sys?/_docs", "devela_text?/_docs",
-	# "devela_ui?/_docs", "devela_work?/_docs",
 ]
 
 #* code capabilities *#
@@ -707,14 +663,11 @@ dep_winnow = ["dep:winnow", "toml_edit?/parse"]                                 
 #* Workspace features *#
 # ------------------------------------------------------------------------------
 
-devela_macros = [ "dep:devela_macros",
-	# "devela_code?/macros", "devela_data?/macros", "devela_game?/macros",
-	# "devela_lang?/macros", "devela_media?/macros", "devela_num?/macros",
-	# "devela_phys?/macros", # "devela_sys?/macros", "devela_text?/macros",
-	# "devela_ui?/macros", "devela_work?/macros",
-]
+devela_macros = [ "dep:devela_macros"]
+devela_base_data = ["dep:devela_base_data"] # MAYBE
+devela_base_text = ["dep:devela_base_text"] # MAYBE
 
-[dependencies] # 50 (4 required, 46 optional)
+[dependencies] # 51 (3 required, 48 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -730,24 +683,13 @@ devela_macros = [ "dep:devela_macros",
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
 devela_base_data   = { workspace = true, optional = true }
-devela_base_num    = { workspace = true }
+devela_base_num    = { workspace = true } # TODO: optional
 devela_base_text   = { workspace = true, optional = true }
 #
 devela_base_alloc  = { workspace = true, optional = true }
 devela_base_std    = { workspace = true, optional = true }
 #
 devela_macros      = { workspace = true, optional = true }
-# devela_code      = { workspace = true, optional = true }
-# devela_data      = { workspace = true, optional = true }
-# devela_game      = { workspace = true, optional = true }
-# devela_lang      = { workspace = true, optional = true }
-# devela_media     = { workspace = true, optional = true }
-# devela_num       = { workspace = true, optional = true }
-# devela_phys      = { workspace = true, optional = true }
-# devela_sys       = { workspace = true, optional = true }
-# devela_text      = { workspace = true, optional = true }
-# devela_ui        = { workspace = true, optional = true }
-# devela_work      = { workspace = true, optional = true }
 
 #* optional external dependencies *#
 

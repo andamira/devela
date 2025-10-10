@@ -317,7 +317,7 @@ impl Char<u32> {
 
     /// Returns the ASCII `&'static str` representation of the value, or `""` if non-ASCII.
     #[must_use]
-    pub const fn to_ascii_str(self) -> &'static str {
+    pub const fn as_ascii(self) -> &'static str {
         if self.is_ascii() { CHAR_ASCII[self.0 as usize] } else { "" }
     }
 
@@ -326,7 +326,7 @@ impl Char<u32> {
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use]
-    pub const fn to_ascii_str_unchecked(self) -> &'static str { CHAR_ASCII[self.0 as usize] }
+    pub const fn as_ascii_unchecked(self) -> &'static str { CHAR_ASCII[self.0 as usize] }
 
     /// Converts the Unicode scalar value to a UTF-8 encoded byte sequence array.
     ///
