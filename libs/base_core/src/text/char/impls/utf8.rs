@@ -502,18 +502,16 @@ impl UnicodeScalar for char_utf8 { // TODO:IMPROVE avoid converting to char
 
     /* queries */
 
-    fn is_noncharacter(self) -> bool { Char(self.to_scalar()).is_noncharacter() }
-    fn is_digit(self, radix: u32) -> bool { self.to_char().is_digit(radix) }
-    fn is_control(self) -> bool { self.to_char().is_control() }
+    fn is_ascii(self) -> bool { self.is_ascii() }
     fn is_nul(self) -> bool { self.0.get() == 0 }
     fn is_alphabetic(self) -> bool { self.to_char().is_alphabetic() }
     fn is_numeric(self) -> bool { self.to_char().is_numeric() }
     fn is_alphanumeric(self) -> bool { self.to_char().is_alphanumeric() }
+    fn is_digit(self, radix: u32) -> bool { self.to_char().is_digit(radix) }
     fn is_lowercase(self) -> bool { self.to_char().is_lowercase() }
     fn is_uppercase(self) -> bool { self.to_char().is_uppercase() }
     fn is_whitespace(self) -> bool { self.to_char().is_whitespace() }
-
-    /* ascii queries*/
-
-    fn is_ascii(self) -> bool { self.is_ascii() }
+    fn is_control(self) -> bool { self.to_char().is_control() }
+    fn is_noncharacter(self) -> bool { Char(self.to_scalar()).is_noncharacter() }
+    fn is_combining(self) -> bool { Char(self.to_scalar()).is_combining() }
 }

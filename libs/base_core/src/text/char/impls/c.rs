@@ -25,18 +25,16 @@ impl UnicodeScalar for char {
 
     /* queries */
 
-    fn is_noncharacter(self) -> bool { Char(self as u32).is_noncharacter() }
-    fn is_digit(self, radix: u32) -> bool { self.is_digit(radix) }
-    fn is_control(self) -> bool { self.is_control() }
+    fn is_ascii(self) -> bool { (self as u32) <= 0x7F }
     fn is_nul(self) -> bool { self as u32 == 0 }
     fn is_alphabetic(self) -> bool { self.is_alphabetic() }
     fn is_numeric(self) -> bool { self.is_numeric() }
     fn is_alphanumeric(self) -> bool { self.is_alphanumeric() }
+    fn is_digit(self, radix: u32) -> bool { self.is_digit(radix) }
     fn is_lowercase(self) -> bool { self.is_lowercase() }
     fn is_uppercase(self) -> bool { self.is_uppercase() }
     fn is_whitespace(self) -> bool { self.is_whitespace() }
-
-    /* ascii queries*/
-
-    fn is_ascii(self) -> bool { (self as u32) <= 0x7F }
+    fn is_control(self) -> bool { self.is_control() }
+    fn is_noncharacter(self) -> bool { Char(self as u32).is_noncharacter() }
+    fn is_combining(self) -> bool { Char(self).is_combining() }
 }

@@ -8,6 +8,26 @@ use crate::{CHAR_ASCII, Char, is, unwrap};
 /// # Methods over `char`
 #[rustfmt::skip]
 impl Char<char> {
+    /// Returns `true` for all Unicode combining characters.
+    ///
+    /// Includes musical notation, historic scripts, and obscure diacritics.
+    /// Comprehensive but slightly slower than `is_combining_common`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_combining(self) -> bool {
+        Char(self.0 as u32).is_combining()
+    }
+
+    /// Returns `true` for common combining marks used in modern text.
+    ///
+    /// Covers Latin, Greek, and most European language diacritics.
+    /// Fast and suitable for 95% of use cases.
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_combining_common(self) -> bool {
+        Char(self.0 as u32).is_combining_common()
+    }
+
     /// Returns the number of bytes needed to encode the given Unicode scalar as UTF-8.
     ///
     /// See also `Char::<u32>`[`len_utf8`][Char::<u32>::len_utf8].

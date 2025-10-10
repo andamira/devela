@@ -59,6 +59,48 @@ impl Char<u32> {
         }
     }
 
+    /// Returns `true` for all Unicode combining characters.
+    ///
+    /// Includes musical notation, historic scripts, and obscure diacritics.
+    /// Comprehensive but slightly slower than `is_combining_common`.
+    #[must_use]
+    pub const fn is_combining(self) -> bool {
+        matches![
+            self.0,
+            0x0300..=0x036F |   // Combining Diacritical Marks
+            0x1AB0..=0x1AFF |   // Combining Diacritical Marks Extended
+            0x1DC0..=0x1DFF |   // Combining Diacritical Marks Supplement
+            0x20D0..=0x20FF |   // Combining Diacritical Marks for Symbols
+            0xFE20..=0xFE2F |   // Combining Half Marks
+            0xFE00..=0xFE0F |   // Variation Selectors
+            0xE0100..=0xE01EF | // "
+            0x1D1A0..=0x1D1CD | // Musical Symbols
+            0x1D200..=0x1D245 | // Ancient Greek Musical Notation
+            0x1E000..=0x1E006 | // Glagolitic Combining Letters
+            0x1E130..=0x1E136 | // Nyiakeng Puachue Hmong
+            0x1E2AE..=0x1E2BF | // Toto
+            0x1E2EC..=0x1E2EF | // Wancho
+            0x1EC71..=0x1ECAB | // Kaktovik Numerals
+            0x1ED01..=0x1ED3D   // Ottoman Siyaq Numbers
+        ]
+    }
+
+    /// Returns `true` for common combining marks used in modern text.
+    ///
+    /// Covers Latin, Greek, and most European language diacritics.
+    /// Fast and suitable for 95% of use cases.
+    #[must_use]
+    pub const fn is_combining_common(self) -> bool {
+        matches![
+            self.0,
+            0x0300..=0x036F | // Combining Diacritical Marks
+            0x1DC0..=0x1DFF | // Combining Diacritical Marks Supplement
+            0x20D0..=0x20FF | // Combining Diacritical Marks for Symbols
+            0xFE20..=0xFE2F | // Combining Half Marks
+            0xFE00..=0xFE0F   // Variation Selectors
+        ]
+    }
+
     /// Checks if the value is a valid Unicode code point.
     ///
     /// A valid Unicode code point is any integer in the range:
