@@ -11,7 +11,6 @@ use super::*; // char*
 
 /* specific implementations */
 
-mod c;
 mod c16;
 mod c7;
 mod c8;
@@ -21,8 +20,7 @@ mod utf8;
 
 mod traits; // core traits
 
-/// implements `UnicodeScalar` for custom char types.
-/// (`char_utf8` implementation is at ./utf8.rs)
+/// Implements const fns for custom char types.
 macro_rules! impl_char {
     () => {
         impl_char![7, 8, 16];
@@ -31,58 +29,6 @@ macro_rules! impl_char {
         $( impl_char!(@[<char $bits>]); )+
     }};
     (@$name:ident) => {
-
-        /* impl traits */
-
-        impl UnicodeScalar for $name { // TODO:IMPROVE avoid converting to char
-            const MIN: Self = Self::MIN;
-            const MAX: Self = Self::MAX;
-
-            /* encode */
-
-            fn len_bytes(self) -> usize { self.len_bytes() }
-            fn len_utf8(self) -> usize { self.len_utf8() }
-            fn len_utf16(self) -> usize { self.len_utf16() }
-            fn encode_utf8(self, dst: &mut [u8]) -> &mut str {
-                self.to_char().encode_utf8(dst)
-            }
-            fn to_utf8_bytes(self) -> [u8; 4] {
-                let dyn_array = self.to_utf8_bytes();
-                let mut array = [0u8; 4];
-                for i in 0..dyn_array.len() {
-                    array[i] = dyn_array[i];
-                }
-                array
-            }
-            fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] {
-                self.to_char().encode_utf16(dst)
-            }
-            fn to_digit(self, radix: u32) -> Option<u32> { self.to_digit(radix) }
-            fn to_ascii_uppercase(self) -> Self { self.to_ascii_uppercase() }
-            fn to_ascii_lowercase(self) -> Self { self.to_ascii_lowercase() }
-
-            /* queries */
-
-            fn is_ascii(self) -> bool { self.is_ascii() }
-            fn is_nul(self) -> bool { self.is_nul() }
-            fn is_alphabetic(self) -> bool { self.to_char().is_alphabetic() }
-            fn is_numeric(self) -> bool { self.to_char().is_numeric() }
-            fn is_alphanumeric(self) -> bool { self.to_char().is_alphanumeric() }
-            fn is_digit(self, radix: u32) -> bool { self.is_digit(radix) }
-            fn is_lowercase(self) -> bool { self.to_char().is_lowercase() }
-            fn is_uppercase(self) -> bool { self.to_char().is_uppercase() }
-            fn is_whitespace(self) -> bool { self.to_char().is_whitespace() }
-            fn is_control(self) -> bool { self.to_char().is_control() }
-            fn is_control_common(self) -> bool { Char(self.to_scalar()).is_control_common() }
-            fn is_noncharacter(self) -> bool { self.is_noncharacter() }
-            fn is_combining(self) -> bool { Char(self.to_scalar()).is_combining() }
-            fn is_combining_common(self) -> bool { Char(self.to_scalar()).is_combining_common() }
-            fn is_fullwidth(self) -> bool { Char(self.to_scalar()).is_fullwidth() }
-            fn is_fullwidth_common(self) -> bool { Char(self.to_scalar()).is_fullwidth_common() }
-        }
-
-        /* impl const fns */
-
         impl $name {
             /* encode */
 

@@ -12,10 +12,10 @@ fn char_encodings() {
     let c3 = '\u{0020AC}'; // €
     let c4 = '\u{01D160}'; // 𝅘𝅥𝅮
 
-    assert![c1.len_bytes() == 1 && c1.len_utf8() == 1 && c1.len_utf16() == 1];
-    assert![c2.len_bytes() == 1 && c2.len_utf8() == 2 && c2.len_utf16() == 1];
-    assert![c3.len_bytes() == 2 && c3.len_utf8() == 3 && c3.len_utf16() == 1];
-    assert![c4.len_bytes() == 3 && c4.len_utf8() == 4 && c4.len_utf16() == 2];
+    assert![Char(c1 as u32).len_bytes() == 1 && c1.len_utf8() == 1 && c1.len_utf16() == 1];
+    assert![Char(c2 as u32).len_bytes() == 1 && c2.len_utf8() == 2 && c2.len_utf16() == 1];
+    assert![Char(c3 as u32).len_bytes() == 2 && c3.len_utf8() == 3 && c3.len_utf16() == 1];
+    assert![Char(c4 as u32).len_bytes() == 3 && c4.len_utf8() == 4 && c4.len_utf16() == 2];
 
     assert![size(&c1) == 4 && size(&c2) == 4 && size(&c3) == 4 && size(&c4) == 4];
 

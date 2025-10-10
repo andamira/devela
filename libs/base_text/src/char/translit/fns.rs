@@ -2,7 +2,7 @@
 
 use crate::ASCII_TRANSLIT_BLOCKS;
 
-/// Returns the ASCII transliteration of a Unicode scalar as a static string slice.
+/// Returns the ASCII transliteration of a Unicode scalar code point.
 ///
 /// Returns an empty string if unhandled.
 ///

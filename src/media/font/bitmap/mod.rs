@@ -1,4 +1,4 @@
-// devela::media::bitmap
+// devela::media::font::bitmap
 //
 //! Bitmap fonts
 //

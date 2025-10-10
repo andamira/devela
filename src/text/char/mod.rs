@@ -4,13 +4,16 @@
 // #![doc = crate::_doc!(extends: char)]
 // #![doc = crate::_doc!(modules: crate::text; char)]
 // #![doc = crate::_doc!(newline)]
-//
+
+mod unicode_scalar; // UnicodeScalar
 
 // with re-exports
-crate::mod_path!(_c "../../libs/base_core/src/text/char/reexports.rs");
+crate::mod_path!(_c "../../../libs/base_core/src/text/char/reexports.rs");
 
 crate::structural_mods! { // _mods
     _mods {
+        pub use super::unicode_scalar::*;
+
         pub use super::_c::*; // char
 
         #[doc(inline)]

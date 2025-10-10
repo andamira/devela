@@ -262,7 +262,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ## text
 - move to [base]:
-  - traits: `NumToStr`, [`UnicodeScalar`].
+  - traits: `NumToStr`.
   - types: `AsciiDigits`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 
 ### char
@@ -299,7 +299,7 @@ Many feature gates are removed in order to make most features make always availa
   - modify all methods to take `self`.
   - return lenghts as usize.
 - update `UnicodeScalar`:
-  - new methods: `is_combining`, `is_combining_common`, `is_control`, `is_control_common`, `is_fullwidth`, `is_fullwidth_common`.
+  - new methods: `as_ascii_translit`, `is_combining`, `is_combining_common`, `is_control`, `is_control_common`, `is_fullwidth`, `is_fullwidth_common`, `to_char`, `to_scalar`.
   - rename method `byte_len` to `len_bytes`.
   - reorder methods.
 
