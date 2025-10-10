@@ -59,6 +59,37 @@ impl Char<u32> {
         }
     }
 
+    /// Returns the monospace display width.
+    ///
+    /// - 0: Non-printing characters (controls, combining marks)
+    /// - 1: Regular characters (Latin, Greek, Cyrillic, etc.)
+    /// - 2: Wide characters (CJK, emoji, fullwidth forms)
+    #[must_use]
+    pub const fn width(self) -> usize {
+        if self.is_control() || self.is_combining() {
+            0
+        } else if self.is_fullwidth() {
+            2
+        } else {
+            1
+        }
+    }
+
+    /// Returns the monospace display width using faster calculation.
+    ///
+    /// Uses optimized checks that cover common cases but may incorrectly
+    /// report some obscure Unicode characters as 1 width instead of 2.
+    #[must_use]
+    pub const fn width_common(self) -> usize {
+        if self.is_control_common() || self.is_combining_common() {
+            0
+        } else if self.is_fullwidth_common() {
+            2
+        } else {
+            1
+        }
+    }
+
     /// Checks if the value is a valid Unicode code point.
     ///
     /// A valid Unicode code point is any integer in the range:
@@ -173,11 +204,43 @@ impl Char<u32> {
         ]
     }
 
-    /// Returns `true` for all fullwidth characters according to Unicode specification.
+    /// Returns `true` for all Unicode control characters.
+    pub const fn is_control(self) -> bool {
+        matches![self.0,
+            // ASCII and C1 controls
+            0x00..=0x1F | 0x7F | 0x80..=0x9F |
+            // Unicode control blocks
+            0x070F |            // Syriac Abbreviation Mark
+            0x180B..=0x180E |   // Mongolian controls
+            0x200B..=0x200F |   // Zero-width spaces, bidirectional
+            0x202A..=0x202E |   // Bidirectional formatting
+            0x2060..=0x206F |   // Word joiners, invisible operators
+            0xFEFF |            // Zero Width No-Break Space (BOM)
+            0xFFF9..=0xFFFB |   // Interlinear annotation controls
+            0x110B9 |           // Kaithi punctuation
+            0x1D173..=0x1D17A | // Musical symbols controls
+            0xE0000..=0xE007F   // Tags and variation selectors
+        ]
+    }
+
+    /// Returns `true` for common Unicode control characters.
+    ///
+    /// Just ASCII, zero-width spaces, bidi formatting, word joiners and invisible operators.
+    pub const fn is_control_common(self) -> bool {
+        matches![self.0,
+            // ASCII and C1 controls
+            0x00..=0x1F | 0x7F | 0x80..=0x9F |
+            // most common Unicode control blocks
+            0x200B..=0x200F | // Zero-width spaces, bidirectional
+            0x202A..=0x202E | // Bidirectional formatting
+            0x2060..=0x206F   // Word joiners, invisible operators
+        ]
+    }
+
+    /// Returns `true` for all Unicode fullwidth characters.
     #[must_use]
     pub const fn is_fullwidth(self) -> bool {
-        matches![
-            self.0,
+        matches![self.0,
             // fullwidth Forms block (FF00-FFEF)
             0xFF01..=0xFF5E | // Fullwidth ASCII
             0xFF5F..=0xFF60 | // Fullwidth brackets

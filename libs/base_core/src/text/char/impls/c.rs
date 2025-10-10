@@ -35,6 +35,7 @@ impl UnicodeScalar for char {
     fn is_uppercase(self) -> bool { self.is_uppercase() }
     fn is_whitespace(self) -> bool { self.is_whitespace() }
     fn is_control(self) -> bool { self.is_control() }
+    fn is_control_common(self) -> bool { Char(self as u32).is_control_common() }
     fn is_noncharacter(self) -> bool { Char(self as u32).is_noncharacter() }
     fn is_combining(self) -> bool { Char(self as u32).is_combining() }
     fn is_combining_common(self) -> bool { Char(self as u32).is_combining_common() }

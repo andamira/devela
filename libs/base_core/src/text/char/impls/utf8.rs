@@ -514,5 +514,7 @@ impl UnicodeScalar for char_utf8 { // TODO:IMPROVE avoid converting to char
     fn is_control(self) -> bool { self.to_char().is_control() }
     fn is_noncharacter(self) -> bool { Char(self.to_scalar()).is_noncharacter() }
     fn is_combining(self) -> bool { Char(self.to_scalar()).is_combining() }
+    fn is_combining_common(self) -> bool { Char(self.to_scalar()).is_combining_common() }
     fn is_fullwidth(self) -> bool { Char(self.to_scalar()).is_fullwidth() }
+    fn is_fullwidth_common(self) -> bool { Char(self.to_scalar()).is_fullwidth_common() }
 }

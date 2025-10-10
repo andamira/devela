@@ -282,7 +282,7 @@ Many feature gates are removed in order to make most features make always availa
   - change `to_ascii_fold` to convert `Æ|Œ` to `E` & `æ|œ` to `e`.
   - remove deprecated methods: `len_to_utf8`, `utf8_?bytes_len`.
   - make it a tuple struct with a single a generic parameter.
-  - add methods: `decode_surrogate_pair`, `has_overlong_encoding`, `has_valid_continuation`, `is_combining`, `is_combining_common`, `is_fullwidth`, `is_fullwidth_common`, `is_surrogate*`, `is_utf8_boundary`, `is_valid_code`, `to_char`, `to_char_lenient`, `to_char_unchecked`, `len_utf8_match`, `len_utf8_match_naive`.
+  - add methods: `decode_surrogate_pair`, `has_overlong_encoding`, `has_valid_continuation`, `is_combining`, `is_combining_common`, `is_control`, `is_control_common`, `is_fullwidth`, `is_fullwidth_common`, `is_surrogate*`, `is_utf8_boundary`, `is_valid_code`, `to_char`, `to_char_lenient`, `to_char_unchecked`, `len_utf8_match`, `len_utf8_match_naive`.
   - rename methods:
     - `is_7bit` to `is_ascii`.
     - `is_valid` to `is_valid_scalar`.
@@ -296,7 +296,7 @@ Many feature gates are removed in order to make most features make always availa
   - modify all methods to take `self`.
   - return lenghts as usize.
 - update `UnicodeScalar`:
-  - new methods: `is_combining`, `is_combining_common`, `is_fullwidth`, `is_fullwidth_common`.
+  - new methods: `is_combining`, `is_combining_common`, `is_control`, `is_control_common`, `is_fullwidth`, `is_fullwidth_common`.
   - rename method `byte_len` to `len_bytes`.
   - reorder methods.
 

@@ -142,7 +142,13 @@ pub trait UnicodeScalar {
 
     #[must_use]
     /// Returns `true` if this Unicode scalar has the general category for control codes.
+    ///
+    /// This crate's implementations leverage [`char::is_control()`],
+    /// instead of [`Char::is_control()`][crate::Char::is_control].
     fn is_control(self) -> bool;
+
+    /// Optional faster control mark check for common text.
+    fn is_control_common(self) -> bool where Self: Sized { self.is_control() }
 
     // special Unicode categories (edge cases, least common)
 
