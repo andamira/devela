@@ -117,6 +117,7 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
+        slice_as_array, // as_array, as_array_mut
         substr_range,
         unsafe_cell_from_mut,
     )

@@ -93,6 +93,7 @@ See also
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
+- 1.??: `·`[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
 - 1.??: `a`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
@@ -136,7 +137,7 @@ See also
 - 1.??: ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.??: `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
         = `nightly_simd` flag
-- 1.??: ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508)
+- 1.??: ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // into…
 - 1.??: ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:
