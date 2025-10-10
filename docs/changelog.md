@@ -347,7 +347,7 @@ Many feature gates are removed in order to make most features make always availa
   - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
   - remove method `from_boxed_utf8_unchecked`.
 - update `StringNonul`:
-  - new methods: `eq`, `from_char_utf8`, `from_char_utf8_unchecked`, `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`.
+  - new methods: `chars`, `char_count`, `eq`, `from_char_utf8`, `from_char_utf8_unchecked`, `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`.
   - rename methods `from_bytes*` to `from_array*`.
   - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
   - make **all** methods *const*.

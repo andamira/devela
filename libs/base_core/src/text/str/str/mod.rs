@@ -7,7 +7,7 @@ mod range;
 mod take;
 mod split;
 
-use crate::{AsciiDigits, InvalidUtf8, Slice, is, slice};
+use crate::{AsciiDigits, CharIter, InvalidUtf8, Slice, is, slice};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
@@ -179,6 +179,19 @@ impl Str {
 
 /// # extra methods.
 impl Str {
+    /// Returns an iterator over the Unicode scalars.
+    #[inline(always)]
+    pub const fn chars(string: &str) -> CharIter<'_, &str> {
+        CharIter::<&str>::new(string)
+    }
+
+    /// Returns the total number of Unicode scalars.
+    #[must_use]
+    #[inline(always)]
+    pub const fn char_count(string: &str) -> usize {
+        CharIter::<&str>::new(string).count()
+    }
+
     /// Repeats a `string` a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
     /// # Examples
