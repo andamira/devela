@@ -269,7 +269,7 @@ mod impl_devela {
     };
     #[cfg(feature = "grapheme")]
     pub use crate::{GraphemeNonul, GraphemeU8};
-    #[cfg(feature = "alloc")]
+    #[cfg(all(feature = "grapheme", feature = "alloc"))]
     pub use crate::GraphemeString;
 
     /* data */
@@ -309,7 +309,7 @@ mod impl_devela {
         #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
         const DEFAULT: Self = Self::new();
     }
-    #[cfg(feature = "alloc")]
+    #[cfg(all(feature = "grapheme", feature = "alloc"))]
     impl ConstDefault for GraphemeString {
         const DEFAULT: Self = Self::new();
     }
