@@ -315,7 +315,7 @@ Many feature gates are removed in order to make most features make always availa
     - `count_digits` to `count_digits10`.
     - `digits_*` to `digits10_*`.
     - `digits` to `digits10`.
-- rename `ASCII_TABLE` to `CHAR_ASCII` and make it public.
+- rename `ASCII_TABLE` to `CHAR_ASCII` and make it a public *const*.
 - update derives for `AnsiColor*`.
 
 ### fmt
