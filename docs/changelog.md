@@ -310,10 +310,11 @@ Many feature gates are removed in order to make most features make always availa
 - update `AsciiDigits`:
   - new type: `AnsiColor`.
   - new const: `MAX_DIGITS_16`.
-  - new methods: `count_digits16`, `digit_at_index10`, `digit_at_index16_checked`, `digit_at_index16`, `digit_at_index16_checked`, `digit_at_power16`, `digits16`.
-  - rename const: `MAX_DIGITS` to `MAX_DIGITS_10` and make them type `u8`;
+  - new methods: `count_digits16`, `digit_at_index10[_checked]`, `digit_at_index16[_checked]`, `digit_value_at_index10[_checked]`, `digit_value_at_index16[_checked]`, `digits16`.
+  - new private method: `digit_at_power16`.
+  - rename const: `MAX_DIGITS` to `MAX_DIGITS_10` and make them of type `u8`.
   - rename methods:
-    - `calc_digit` to `digit_at_power10`.
+    - `calc_digit` to `digit_at_power10` and make private.
     - `count_digits` to `count_digits10`.
     - `digits_*` to `digits10_*`.
     - `digits` to `digits10`.
@@ -380,6 +381,8 @@ Many feature gates are removed in order to make most features make always availa
 - update `Ansi:`
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
   - add methods: `COLOR_FG_BRIGHT`, `COLOR_BG_BRIGHT`.
+  - modify `CURSOR_MOVE_N` method to use `AsciiDigits::digit_at_index10`.
+  - modify `CURSOR_*` methods taking `u32` to take `u16`.
   - make all escape-sequence methods *const*.
   - fix codes related to alternate screen.
 - update `ansi!`:

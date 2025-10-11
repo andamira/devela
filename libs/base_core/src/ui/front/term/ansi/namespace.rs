@@ -39,17 +39,17 @@ impl Ansi {
     /* helper functions */
 
     // Writes an ansi code with a dynamic number of digits as an argument.
-    #[must_use] #[rustfmt::skip]
-    const fn write_ansi_code_n(buffer: &mut [u8], n: u32, final_byte: u8) -> &[u8] {
+    #[must_use]
+    const fn write_ansi_code_n(buffer: &mut [u8], n: u16, final_byte: u8) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
-        let mut divisor = 1;
-        while n / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
-        while divisor > 0 {
-            buffer[index] = AsciiDigits(n).digit_at_power10(divisor);
-            divisor /= 10;
+        let digit_count = AsciiDigits(n).count_digits10();
+        let mut i = 0;
+        while i < digit_count {
+            buffer[index] = AsciiDigits(n).digit_at_index10(digit_count - 1 - i);
             index += 1;
+            i += 1;
         }
         buffer[index] = final_byte;
         slice![buffer, ..=index]
@@ -136,25 +136,25 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use] #[rustfmt::skip]
-    pub const fn CURSOR_MOVE_N(buffer: &mut [u8], col: u32, row: u32) -> &[u8] {
+    pub const fn CURSOR_MOVE_N(buffer: &mut [u8], col: u16, row: u16) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
-        let mut divisor = 1;
-        while row / divisor >= 10 { divisor *= 10; }
         let mut index = 2;
-        while divisor > 0 {
-            buffer[index] = AsciiDigits(row).digit_at_power10(divisor);
-            divisor /= 10;
+        let mut i = 0;
+        let row_digits = AsciiDigits(row).count_digits10();
+        while i < row_digits {
+            buffer[index] = AsciiDigits(row).digit_at_index10(row_digits - 1 - i);
             index += 1;
+            i += 1;
         }
         buffer[index] = b';';
         index += 1;
-        divisor = 1;
-        while col / divisor >= 10 { divisor *= 10; }
-        while divisor > 0 {
-            buffer[index] = AsciiDigits(col).digit_at_power10(divisor);
-            divisor /= 10;
+        let col_digits = AsciiDigits(col).count_digits10();
+        let mut i = 0;
+        while i < col_digits {
+            buffer[index] = AsciiDigits(col).digit_at_index10(col_digits - 1 - i);
             index += 1;
+            i += 1;
         }
         buffer[index] = b'H';
         slice![buffer, ..=index]
@@ -200,7 +200,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub const fn CURSOR_UP_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_UP_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'A')
     }
 
@@ -244,7 +244,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub const fn CURSOR_DOWN_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_DOWN_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'B')
     }
 
@@ -288,7 +288,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub const fn CURSOR_RIGHT_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_RIGHT_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'C')
     }
 
@@ -332,7 +332,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub const fn CURSOR_LEFT_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_LEFT_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'D')
     }
 
@@ -376,7 +376,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub const fn CURSOR_NEXT_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_NEXT_LINE_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'F')
     }
 
@@ -420,7 +420,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[must_use]
-    pub const fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
+    pub const fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'E')
     }
 }
@@ -466,4 +466,37 @@ impl Ansi {
     pub const CROSSED: [u8; 4] = *b"\x1b[9m";
     /// Code to unset crossed effect.
     pub const CROSSED_OFF: [u8; 5] = *b"\x1b[29m";
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Ansi;
+
+    #[test]
+    fn write_ansi_code_n() {
+        let mut buffer = [0u8; 16];
+        let result = Ansi::write_ansi_code_n(&mut buffer, 0, b'J');
+        assert_eq!(result, b"\x1b[0J");
+        let result = Ansi::write_ansi_code_n(&mut buffer, 5, b'm');
+        assert_eq!(result, b"\x1b[5m");
+        let result = Ansi::write_ansi_code_n(&mut buffer, 255, b'B');
+        assert_eq!(result, b"\x1b[255B");
+        let result = Ansi::write_ansi_code_n(&mut buffer, 15000, b'C');
+        assert_eq!(result, b"\x1b[15000C");
+    }
+
+    #[test]
+    fn cursor_move_n() {
+        let mut buffer = [0u8; 32];
+        let result = Ansi::CURSOR_MOVE_N(&mut buffer, 0, 0);
+        assert_eq!(result, b"\x1b[0;0H");
+        let result = Ansi::CURSOR_MOVE_N(&mut buffer, 1, 2);
+        assert_eq!(result, b"\x1b[2;1H");
+        let result = Ansi::CURSOR_MOVE_N(&mut buffer, 5, 10);
+        assert_eq!(result, b"\x1b[10;5H");
+        let result = Ansi::CURSOR_MOVE_N(&mut buffer, 123, 456);
+        assert_eq!(result, b"\x1b[456;123H");
+        let result = Ansi::CURSOR_MOVE_N(&mut buffer, 1999, 10999);
+        assert_eq!(result, b"\x1b[10999;1999H");
+    }
 }

@@ -10,75 +10,6 @@ impl AsciiDigits<u16> {
     /// The maximum number of hexadecimal digits a `u16` can represent.
     pub const MAX_DIGITS_16: u8 = 4;
 
-    /// Returns the ASCII decimal digit at the specified index.
-    ///
-    /// Returns `b'0'` if the index is beyond the number's decimal digits.
-    #[must_use]
-    #[inline(always)]
-    pub const fn digit_at_index10(self, index: u8) -> u8 {
-        is![index >= Self::MAX_DIGITS_10; return b'0'];
-        let power = LUT_POWERS10[index as usize] as u16;
-        (self.0 / power % 10) as u8 + b'0'
-    }
-
-    /// Returns the ASCII decimal digit at the specified index.
-    ///
-    /// Returns `None` if the index is beyond the number's decimal digits.
-    #[must_use]
-    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
-        is![index >= Self::MAX_DIGITS_10; return None];
-        let power = LUT_POWERS10[index as usize] as u16;
-        Some((self.0 / power % 10) as u8 + b'0')
-    }
-
-    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
-    ///
-    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
-    #[must_use]
-    pub const fn digit_at_index16(self, index: u8) -> u8 {
-        let shift = index as u32 * 4;
-        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-        LUT_DIGITS_BASE36[digit]
-    }
-
-    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
-    ///
-    /// For indices beyond the number's hexadecimal digits, returns `None`.
-    #[must_use]
-    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
-        if index < self.count_digits16() {
-            let shift = index as u32 * 4;
-            let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-            Some(LUT_DIGITS_BASE36[digit])
-        } else {
-            None
-        }
-    }
-
-    #[doc = DOC_DIGIT_AT_POWER_10!()]
-    /// # Example
-    /// ```
-    /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq!(AsciiDigits(12345_u16).digit_at_power10(10), b'4');
-    /// assert_eq!(AsciiDigits(12345_u16).digit_at_power10(1000), b'2');
-    /// ```
-    #[must_use]
-    pub const fn digit_at_power10(self, divisor: u16) -> u8 {
-        (self.0 / divisor % 10) as u8 + b'0'
-    }
-    #[doc = DOC_DIGIT_AT_POWER_16!()]
-    #[must_use]
-    pub const fn digit_at_power16(self, divisor: u16) -> u8 {
-        let digit = match divisor {
-            0x1 => self.0 & 0xF,
-            0x10 => (self.0 >> 4) & 0xF,
-            0x100 => (self.0 >> 8) & 0xF,
-            0x1000 => (self.0 >> 12) & 0xF,
-            _ => (self.0 / divisor) % 16,
-        };
-        LUT_DIGITS_BASE36[digit as usize]
-    }
-
     #[doc = DOC_COUNT_DIGITS_10!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
@@ -102,6 +33,108 @@ impl AsciiDigits<u16> {
             0x100..=0xFFF => 3,
             _ => 4,
         }
+    }
+
+    /* digit_at_ */
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= self.count_digits10(); return b'0'];
+        let power = LUT_POWERS10[index as usize] as u16;
+        (self.0 / power % 10) as u8 + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= self.count_digits10(); return None];
+        let power = LUT_POWERS10[index as usize] as u16;
+        Some((self.0 / power % 10) as u8 + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+        LUT_DIGITS_BASE36[digit]
+    }
+
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        is![index >= self.count_digits16(); return None];
+        let shift = index as u32 * 4;
+        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+        Some(LUT_DIGITS_BASE36[digit])
+    }
+
+    /* digit_value_at_ */
+
+    /// Returns the numeric value (0-9) of the decimal digit at the specified index.
+    ///
+    /// Returns `0` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_value_at_index10(self, index: u8) -> u8 {
+        is![index >= self.count_digits10(); return 0];
+        let power = LUT_POWERS10[index as usize] as u16;
+        (self.0 / power % 10) as u8
+    }
+    /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= self.count_digits10(); return None];
+        let power = LUT_POWERS10[index as usize] as u16;
+        Some((self.0 / power % 10) as u8)
+    }
+
+    /// Returns the numeric value (0-15) of the hexadecimal digit at the specified index.
+    ///
+    /// Returns `0` if the index is beyond the number's hexadecimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_value_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        (self.0.unbounded_shr(shift) & 0xF) as u8
+    }
+    /// Returns `Some(numeric_value)` (0-15) if the index is within bounds.
+    ///
+    /// Returns `None` if the index is beyond the number's hexadecimal digits.
+    #[must_use]
+    pub const fn digit_value_at_index16_checked(self, index: u8) -> Option<u8> {
+        is![index < self.count_digits16(); Some(self.digit_value_at_index16(index)); None]
+    }
+
+    //
+
+    #[doc = DOC_DIGIT_AT_POWER_10!()]
+    #[must_use]
+    pub(crate) const fn digit_at_power10(self, divisor: u16) -> u8 {
+        (self.0 / divisor % 10) as u8 + b'0'
+    }
+    #[doc = DOC_DIGIT_AT_POWER_16!()]
+    #[must_use]
+    pub(crate) const fn digit_at_power16(self, divisor: u16) -> u8 {
+        let digit = match divisor {
+            0x1 => self.0 & 0xF,
+            0x10 => (self.0 >> 4) & 0xF,
+            0x100 => (self.0 >> 8) & 0xF,
+            0x1000 => (self.0 >> 12) & 0xF,
+            _ => (self.0 / divisor) % 16,
+        };
+        LUT_DIGITS_BASE36[digit as usize]
     }
 
     /// Converts a `u16` into a byte array of `5` ASCII decimal digits with leading zeros.
