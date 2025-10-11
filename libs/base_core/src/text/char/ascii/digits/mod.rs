@@ -17,6 +17,9 @@
 use crate::unwrap;
 use crate::{CONST, Cmp, StringU8, is};
 
+#[cfg(test)]
+mod tests;
+
 CONST! {
 DOC_DIGIT_AT_POWER_10 =
 "Extracts the ASCII byte for a specific digit position using a power-of-10 divisor.\n\n
@@ -73,10 +76,10 @@ impl<T: Copy> AsciiDigits<T> {
 
 impl AsciiDigits<usize> {
     /// The maximum number of decimal digits a `usize` can represent in the current platform.
-    pub const MAX_DIGITS_10: usize = AsciiDigits(usize::MAX).count_digits10() as usize;
+    pub const MAX_DIGITS_10: u8 = AsciiDigits(usize::MAX).count_digits10();
 
     /// The maximum number of hexadecimal digits a `usize` can represent in the current platform.
-    pub const MAX_DIGITS_16: usize = AsciiDigits(usize::MAX).count_digits16() as usize;
+    pub const MAX_DIGITS_16: u8 = AsciiDigits(usize::MAX).count_digits16();
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     /// # Example
@@ -88,6 +91,71 @@ impl AsciiDigits<usize> {
     #[must_use]
     pub const fn digit_at_power10(self, divisor: usize) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
+    }
+
+    #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
+    pub const fn digit_at_power16(self, divisor: usize) -> u8 {
+        AsciiDigits(self.0 as u16).digit_at_power16(divisor as u16)
+    }
+    #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
+    pub const fn digit_at_power16(self, divisor: usize) -> u8 {
+        AsciiDigits(self.0 as u32).digit_at_power16(divisor as u32)
+    }
+    #[doc = DOC_DIGIT_AT_POWER_16!()]
+    /// # Example
+    /// ```
+    /// # use devela_base_core::text::AsciiDigits;
+    /// assert_eq!(AsciiDigits(0xABCDE_usize).digit_at_power16(0x1), b'E');
+    /// assert_eq!(AsciiDigits(0xABCDE_usize).digit_at_power16(0x10), b'D');
+    /// ```
+    #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
+    pub const fn digit_at_power16(self, divisor: usize) -> u8 {
+        AsciiDigits(self.0 as u64).digit_at_power16(divisor as u64)
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= Self::MAX_DIGITS_10; return b'0'];
+        let power = POWERS10[index as usize] as usize;
+        (self.0 / power % 10) as u8 + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= Self::MAX_DIGITS_10; return None];
+        let power = POWERS10[index as usize] as usize;
+        Some((self.0 / power % 10) as u8 + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = self.0.unbounded_shr(shift) & 0xF;
+        Self::DIGITS[digit]
+    }
+
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        if index < self.count_digits16() {
+            let shift = index as u32 * 4;
+            let digit = self.0.unbounded_shr(shift) & 0xF;
+            Some(Self::DIGITS[digit])
+        } else {
+            None
+        }
     }
 
     #[doc = DOC_COUNT_DIGITS_10!()]
@@ -115,11 +183,11 @@ impl AsciiDigits<usize> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         AsciiDigits(self.0 as u16).digits10()
     }
     #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         AsciiDigits(self.0 as u16).digits16()
     }
 
@@ -129,11 +197,11 @@ impl AsciiDigits<usize> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         AsciiDigits(self.0 as u32).digits10()
     }
     #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         AsciiDigits(self.0 as u32).digits16()
     }
 
@@ -143,7 +211,7 @@ impl AsciiDigits<usize> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         AsciiDigits(self.0 as u64).digits10()
     }
     /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
@@ -152,37 +220,88 @@ impl AsciiDigits<usize> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         AsciiDigits(self.0 as u64).digits16()
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_10 }> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10 as u8);
+    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright(self.digits10(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright(self.digits10(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright_unchecked(self.digits10(), width) }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright_unchecked(self.digits10(), width) }
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_16 }> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16 as u8);
+    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright(self.digits16(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright(self.digits16(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright_unchecked(self.digits16(), width)
-        }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright_unchecked(self.digits16(), width) }
     }
 }
 
 impl AsciiDigits<u8> {
     /// The maximum number of decimal digits a `u8` can represent.
-    pub const MAX_DIGITS_10: usize = 3;
+    pub const MAX_DIGITS_10: u8 = 3;
 
     /// The maximum number of hexadecimal digits a `u8` can represent.
-    pub const MAX_DIGITS_16: usize = 2; // 0xFF
+    pub const MAX_DIGITS_16: u8 = 2; // 0xFF
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= Self::MAX_DIGITS_10; return b'0'];
+        let power = POWERS10[index as usize] as u8;
+        (self.0 / power % 10) + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= Self::MAX_DIGITS_10; return None];
+        let power = POWERS10[index as usize] as u8;
+        Some((self.0 / power % 10) + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+        Self::DIGITS[digit]
+    }
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        if index < self.count_digits16() {
+            let shift = index as u32 * 4;
+            let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+            Some(Self::DIGITS[digit])
+        } else {
+            None
+        }
+    }
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     /// # Example
@@ -241,7 +360,7 @@ impl AsciiDigits<u8> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         [
             //                    321
             //                    255    ← u8::MAX
@@ -253,7 +372,7 @@ impl AsciiDigits<u8> {
     /// Converts a `u8` into a byte array of `2` ASCII digits with leading zero.
     ///
     /// You can trim the leading zerowith `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         [
             //                      21
             //                      FF    ← u8::MAX
@@ -263,23 +382,30 @@ impl AsciiDigits<u8> {
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_10 }> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10 as u8);
+    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright(self.digits10(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright(self.digits10(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright_unchecked(self.digits10(), width) }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright_unchecked(self.digits10(), width) }
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_16 }> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16 as u8);
+    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright(self.digits16(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright(self.digits16(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright_unchecked(self.digits16(), width)
-        }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright_unchecked(self.digits16(), width) }
     }
 
     /// Converts a one-digit decimal number to the corresponding `1` ASCII digit.
@@ -313,10 +439,55 @@ impl AsciiDigits<u8> {
 
 impl AsciiDigits<u16> {
     /// The maximum number of decimal digits a `u16` can represent.
-    pub const MAX_DIGITS_10: usize = 5;
+    pub const MAX_DIGITS_10: u8 = 5;
 
     /// The maximum number of hexadecimal digits a `u16` can represent.
-    pub const MAX_DIGITS_16: usize = 4;
+    pub const MAX_DIGITS_16: u8 = 4;
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= Self::MAX_DIGITS_10; return b'0'];
+        let power = POWERS10[index as usize] as u16;
+        (self.0 / power % 10) as u8 + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= Self::MAX_DIGITS_10; return None];
+        let power = POWERS10[index as usize] as u16;
+        Some((self.0 / power % 10) as u8 + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+        Self::DIGITS[digit]
+    }
+
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        if index < self.count_digits16() {
+            let shift = index as u32 * 4;
+            let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+            Some(Self::DIGITS[digit])
+        } else {
+            None
+        }
+    }
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     /// # Example
@@ -371,7 +542,7 @@ impl AsciiDigits<u16> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         [
             //                    54321
             //                    65535    ← u16::MAX
@@ -385,7 +556,7 @@ impl AsciiDigits<u16> {
     /// Converts a `u16` into a byte array of `4` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         [
             //                      4321
             //                      FFFF    ← u16::MAX
@@ -397,22 +568,30 @@ impl AsciiDigits<u16> {
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_10 }> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10 as u8);
+    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright(self.digits10(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright(self.digits10(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright_unchecked(self.digits10(), width) }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright_unchecked(self.digits10(), width)}
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_16 }> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16 as u8);
+    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright(self.digits16(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright(self.digits16(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright_unchecked(self.digits16(), width)
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{ Self::MAX_DIGITS_16 as usize }>
+            ::from_array_nright_unchecked(self.digits16(), width)
         }
     }
 
@@ -444,10 +623,55 @@ impl AsciiDigits<u16> {
 
 impl AsciiDigits<u32> {
     /// The maximum number of decimal digits a `u32` can represent.
-    pub const MAX_DIGITS_10: usize = 10;
+    pub const MAX_DIGITS_10: u8 = 10;
 
     /// The maximum number of hexadecimal digits a `u32` can represent.
-    pub const MAX_DIGITS_16: usize = 8;
+    pub const MAX_DIGITS_16: u8 = 8;
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= Self::MAX_DIGITS_10; return b'0'];
+        let power = POWERS10[index as usize] as u32;
+        (self.0 / power % 10) as u8 + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= Self::MAX_DIGITS_10; return None];
+        let power = POWERS10[index as usize] as u32;
+        Some((self.0 / power % 10) as u8 + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+        Self::DIGITS[digit]
+    }
+
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        if index < self.count_digits16() {
+            let shift = index as u32 * 4;
+            let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+            Some(Self::DIGITS[digit])
+        } else {
+            None
+        }
+    }
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     /// # Example
@@ -503,7 +727,7 @@ impl AsciiDigits<u32> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         [
             //                    0987654321
             //                    4294967295    ← u32::MAX
@@ -524,7 +748,7 @@ impl AsciiDigits<u32> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         [
             //                      87654321
             //                      FFFFFFFF    ← u32::MAX
@@ -540,32 +764,40 @@ impl AsciiDigits<u32> {
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_10 }> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10 as u8);
+    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright(self.digits10(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright(self.digits10(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright_unchecked(self.digits10(), width) }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright_unchecked(self.digits10(), width) }
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_16 }> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16 as u8);
+    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright(self.digits16(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright(self.digits16(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright_unchecked(self.digits16(), width)
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright_unchecked(self.digits16(), width)
         }
     }
 }
 
 impl AsciiDigits<u64> {
     /// The maximum number of decimal digits a `u64` can represent.
-    pub const MAX_DIGITS_10: usize = 20;
+    pub const MAX_DIGITS_10: u8 = 20;
 
     /// The maximum number of hexadecimal digits a `u64` can represent.
-    pub const MAX_DIGITS_16: usize = 16;
+    pub const MAX_DIGITS_16: u8 = 16;
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     /// # Example
@@ -596,6 +828,51 @@ impl AsciiDigits<u64> {
         Self::DIGITS[digit as usize]
     }
 
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= Self::MAX_DIGITS_10; return b'0'];
+        let power = POWERS10[index as usize] as u64;
+        (self.0 / power % 10) as u8 + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= Self::MAX_DIGITS_10; return None];
+        let power = POWERS10[index as usize] as u64;
+        Some((self.0 / power % 10) as u8 + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+        Self::DIGITS[digit]
+    }
+
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        if index < self.count_digits16() {
+            let shift = index as u32 * 4;
+            let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+            Some(Self::DIGITS[digit])
+        } else {
+            None
+        }
+    }
+
     #[doc = DOC_COUNT_DIGITS_10!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
@@ -619,7 +896,7 @@ impl AsciiDigits<u64> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         [
             //                    0987654321_987654321
             //                    18446744073709551615    ← u64::MAX
@@ -649,7 +926,7 @@ impl AsciiDigits<u64> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         [
             //                      0FEDCBA987654321
             //                      FFFFFFFFFFFFFFFF    ← u64::MAX
@@ -673,32 +950,40 @@ impl AsciiDigits<u64> {
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_10 }> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10 as u8);
+    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright(self.digits10(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright(self.digits10(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright_unchecked(self.digits10(), width) }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright_unchecked(self.digits10(), width) }
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_16 }> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16 as u8);
+    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright(self.digits16(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright(self.digits16(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright_unchecked(self.digits16(), width)
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright_unchecked(self.digits16(), width)
         }
     }
 }
 
 impl AsciiDigits<u128> {
     /// The maximum number of decimal digits a `u128` can represent.
-    pub const MAX_DIGITS_10: usize = 39;
+    pub const MAX_DIGITS_10: u8 = 39;
 
     /// The maximum number of hexadecimal digits a `u128` can represent.
-    pub const MAX_DIGITS_16: usize = 32;
+    pub const MAX_DIGITS_16: u8 = 32;
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     /// # Example
@@ -730,6 +1015,51 @@ impl AsciiDigits<u128> {
         Self::DIGITS[digit as usize]
     }
 
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= Self::MAX_DIGITS_10; return b'0'];
+        let power = POWERS10[index as usize];
+        (self.0 / power % 10) as u8 + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= Self::MAX_DIGITS_10; return None];
+        let power = POWERS10[index as usize];
+        Some((self.0 / power % 10) as u8 + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+        Self::DIGITS[digit]
+    }
+
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        if index < self.count_digits16() {
+            let shift = index as u32 * 4;
+            let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
+            Some(Self::DIGITS[digit])
+        } else {
+            None
+        }
+    }
+
     #[doc = DOC_COUNT_DIGITS_10!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
@@ -754,7 +1084,7 @@ impl AsciiDigits<u128> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10] {
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         [
             //                    987654321_987654321_987654321_987654321
             //                    340282366920938463463374607431768211455    ← u128::MAX
@@ -803,7 +1133,7 @@ impl AsciiDigits<u128> {
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[allow(clippy::unreadable_literal)]
-    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16] {
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         [
             //                      0FEDCBA9876543210FEDCBA987654321
             //                      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF    ← u128::MAX
@@ -843,22 +1173,80 @@ impl AsciiDigits<u128> {
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_10 }> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10 as u8);
+    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright(self.digits10(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright(self.digits10(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_10}>::from_array_nright_unchecked(self.digits10(), width) }
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright_unchecked(self.digits10(), width) }
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS_16 }> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16 as u8);
+    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
+
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-        { unwrap![ok StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright(self.digits16(), width)] }
+        return unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright(self.digits16(), width)];
+
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-        unsafe { // SAFETY: the bytes are valid UTF-8
-            StringU8::<{Self::MAX_DIGITS_16}>::from_array_nright_unchecked(self.digits16(), width)
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright_unchecked(self.digits16(), width)
         }
     }
 }
+
+/// Precomputed powers of 10 for u128: `[10^0, 10^1, ..., 10^38]`.
+///
+/// Used for efficient digit extraction without runtime exponentiation.
+const POWERS10: [u128; 39] = [
+    1,
+    10,
+    100,
+    1_000,
+    10_000,
+    100_000,
+    1_000_000,
+    10_000_000,
+    100_000_000,
+    1_000_000_000,
+    10_000_000_000,
+    100_000_000_000,
+    1_000_000_000_000,
+    10_000_000_000_000,
+    100_000_000_000_000,
+    1_000_000_000_000_000,
+    10_000_000_000_000_000,
+    100_000_000_000_000_000,
+    1_000_000_000_000_000_000,
+    10_000_000_000_000_000_000,
+    100_000_000_000_000_000_000,
+    1_000_000_000_000_000_000_000,
+    10_000_000_000_000_000_000_000,
+    100_000_000_000_000_000_000_000,
+    1_000_000_000_000_000_000_000_000,
+    10_000_000_000_000_000_000_000_000,
+    100_000_000_000_000_000_000_000_000,
+    1_000_000_000_000_000_000_000_000_000,
+    10_000_000_000_000_000_000_000_000_000,
+    100_000_000_000_000_000_000_000_000_000,
+    1_000_000_000_000_000_000_000_000_000_000,
+    10_000_000_000_000_000_000_000_000_000_000,
+    100_000_000_000_000_000_000_000_000_000_000,
+    1_000_000_000_000_000_000_000_000_000_000_000,
+    10_000_000_000_000_000_000_000_000_000_000_000,
+    100_000_000_000_000_000_000_000_000_000_000_000,
+    1_000_000_000_000_000_000_000_000_000_000_000_000,
+    10_000_000_000_000_000_000_000_000_000_000_000_000,
+    100_000_000_000_000_000_000_000_000_000_000_000_000,
+];
+#[cfg(test)]
+const POWERS10_ASSERT: () = const {
+    assert![size_of_val(&POWERS10) == size_of::<u128>() * 39];
+    assert![size_of_val(&POWERS10) == 624];
+};

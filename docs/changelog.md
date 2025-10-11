@@ -308,8 +308,8 @@ Many feature gates are removed in order to make most features make always availa
 - update `AsciiDigits`:
   - new type: `AnsiColor`.
   - new const: `MAX_DIGITS_16`.
-  - new methods: `count_digits16`, `digits16`, `digit_at_power16`.
-  - rename const: `MAX_DIGITS` to `MAX_DIGITS_10`.
+  - new methods: `count_digits16`, `digit_at_index10`, `digit_at_index16_checked`, `digit_at_index16`, `digit_at_index16_checked`, `digit_at_power16`, `digits16`.
+  - rename const: `MAX_DIGITS` to `MAX_DIGITS_10` and make them type `u8`;
   - rename methods:
     - `calc_digit` to `digit_at_power10`.
     - `count_digits` to `count_digits10`.
