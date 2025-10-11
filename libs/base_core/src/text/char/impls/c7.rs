@@ -4,7 +4,7 @@
 //
 
 use super::*;
-use crate::{CHAR_ASCII, Char, CharAscii, DataOverflow, NonExtremeU8};
+use crate::{Char, CharAscii, DataOverflow, LUT_ASCII_CHARS, NonExtremeU8};
 
 impl char7 {
     /* private helper fns */
@@ -104,7 +104,7 @@ impl char7 {
     /// Returns the string slice representation.
     #[inline(always)]
     pub const fn to_str(&self) -> &'static str {
-        CHAR_ASCII[self.to_byte() as usize]
+        LUT_ASCII_CHARS[self.to_byte() as usize]
     }
 
     /// Converts a `char7` to `CharAscii`.

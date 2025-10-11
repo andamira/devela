@@ -304,6 +304,8 @@ Many feature gates are removed in order to make most features make always availa
   - reorder methods.
 
 #### ascii
+- new consts: `LUT_DIGITS_BASE36`, `LUT_POWERS10`.
+- rename `ASCII_TABLE` to `LUT_ASCII_CHARS` and make it a public *const*.
 - rename `Ascii` to `AsciiDigits`.
 - update `AsciiDigits`:
   - new type: `AnsiColor`.
@@ -315,7 +317,6 @@ Many feature gates are removed in order to make most features make always availa
     - `count_digits` to `count_digits10`.
     - `digits_*` to `digits10_*`.
     - `digits` to `digits10`.
-- rename `ASCII_TABLE` to `CHAR_ASCII` and make it a public *const*.
 - update derives for `AnsiColor*`.
 
 ### fmt

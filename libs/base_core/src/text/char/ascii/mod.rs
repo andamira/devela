@@ -9,14 +9,14 @@
 
 mod char; // CharAscii
 mod digits; // AsciiDigits
-mod lut; // CHAR_ASCII
+mod luts; // LUT_ASCII_CHARS, LUT_DIGITS_BASE36, LUT_POWERS10
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            char::CharAscii,
-            digits::AsciiDigits,
-            lut::CHAR_ASCII,
+            char::*,
+            digits::*,
+            luts::*,
         };
     }
 }
