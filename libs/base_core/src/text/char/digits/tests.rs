@@ -1,26 +1,26 @@
 // devela_base_core::text::char::digits::tests
 
-use super::AsciiDigits;
+use super::Digits;
 
 #[test]
 fn count_digits() {
-    assert_eq!(AsciiDigits(000_u32).count_digits10(), 1);
-    assert_eq!(AsciiDigits(001_u32).count_digits10(), 1);
-    assert_eq!(AsciiDigits(009_u32).count_digits10(), 1);
-    assert_eq!(AsciiDigits(099_u32).count_digits10(), 2);
-    assert_eq!(AsciiDigits(100_u32).count_digits10(), 3);
-    assert_eq!(AsciiDigits(999_u32).count_digits10(), 3);
+    assert_eq!(Digits(000_u32).count_digits10(), 1);
+    assert_eq!(Digits(001_u32).count_digits10(), 1);
+    assert_eq!(Digits(009_u32).count_digits10(), 1);
+    assert_eq!(Digits(099_u32).count_digits10(), 2);
+    assert_eq!(Digits(100_u32).count_digits10(), 3);
+    assert_eq!(Digits(999_u32).count_digits10(), 3);
 
-    assert_eq!(AsciiDigits(0x00_u32).count_digits16(), 1);
-    assert_eq!(AsciiDigits(0x01_u32).count_digits16(), 1);
-    assert_eq!(AsciiDigits(0x0F_u32).count_digits16(), 1);
-    assert_eq!(AsciiDigits(0x10_u32).count_digits16(), 2);
-    assert_eq!(AsciiDigits(0xFF_u32).count_digits16(), 2);
+    assert_eq!(Digits(0x00_u32).count_digits16(), 1);
+    assert_eq!(Digits(0x01_u32).count_digits16(), 1);
+    assert_eq!(Digits(0x0F_u32).count_digits16(), 1);
+    assert_eq!(Digits(0x10_u32).count_digits16(), 2);
+    assert_eq!(Digits(0xFF_u32).count_digits16(), 2);
 }
 
 #[test]
 fn digit_at_power10() {
-    let d = AsciiDigits(123_u32);
+    let d = Digits(123_u32);
 
     assert_eq!(d.digit_at_power10(1), b'3');
     assert_eq!(d.digit_at_power10(10), b'2');
@@ -46,7 +46,7 @@ fn digit_at_power10() {
 }
 #[test]
 fn digit_at_power16() {
-    let d = AsciiDigits(0x9AB_u32);
+    let d = Digits(0x9AB_u32);
 
     assert_eq!(d.digit_at_power16(0x1), b'B');
     assert_eq!(d.digit_at_power16(0x10), b'A');
@@ -78,15 +78,15 @@ fn digit_at_index10() {
 fn digit_at_index16() {
     let n = 0xAB_u8;
 
-    assert_eq!(AsciiDigits(n).digit_at_index16(0), b'B');
-    assert_eq!(AsciiDigits(n).digit_at_index16(1), b'A');
+    assert_eq!(Digits(n).digit_at_index16(0), b'B');
+    assert_eq!(Digits(n).digit_at_index16(1), b'A');
 
     // using an overflowing digit returns 0:
-    assert_eq!(AsciiDigits(n).digit_at_index16(2), b'0');
-    assert_eq!(AsciiDigits(n).digit_at_index16(200), b'0');
+    assert_eq!(Digits(n).digit_at_index16(2), b'0');
+    assert_eq!(Digits(n).digit_at_index16(200), b'0');
 
     // checked version returns None if requesting an implicit leading-0 digit.
-    assert_eq!(AsciiDigits(n).digit_at_index16_checked(0), Some(b'B'));
-    assert_eq!(AsciiDigits(n).digit_at_index16_checked(1), Some(b'A'));
-    assert_eq!(AsciiDigits(n).digit_at_index16_checked(2), None);
+    assert_eq!(Digits(n).digit_at_index16_checked(0), Some(b'B'));
+    assert_eq!(Digits(n).digit_at_index16_checked(1), Some(b'A'));
+    assert_eq!(Digits(n).digit_at_index16_checked(2), None);
 }

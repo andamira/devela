@@ -7,7 +7,7 @@ mod range;
 mod take;
 mod split;
 
-use crate::{AsciiDigits, CharIter, InvalidUtf8, Slice, is, slice};
+use crate::{CharIter, Digits, InvalidUtf8, Slice, is, slice};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
@@ -274,7 +274,7 @@ impl Str {
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
 
-            let mut num_buf = AsciiDigits(num).digits10();
+            let mut num_buf = Digits(num).digits10();
             let mut num_bytes = Slice::trim_leading(&num_buf, b'0');
             // IMPROVE:BENCH use NumToStr
             // let mut num_buf = [0u8; 22];
@@ -290,7 +290,7 @@ impl Str {
                     slice![mut buffer, index, ..num_len + index]
                         .copy_from_slice(slice![num_bytes, ..num_len]);
                     num = index;
-                    num_buf = AsciiDigits(num).digits10();
+                    num_buf = Digits(num).digits10();
                     num_bytes = Slice::trim_leading(&num_buf, b'0');
                     // IMPROVE: use NumToStr
                     // num_bytes = num.to_bytes_base(10, &mut num_buf);

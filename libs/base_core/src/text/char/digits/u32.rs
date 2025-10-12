@@ -3,7 +3,7 @@
 use super::*;
 use crate::{Cmp, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
 
-impl AsciiDigits<u32> {
+impl Digits<u32> {
     /// The maximum number of decimal digits a `u32` can represent.
     pub const MAX_DIGITS_10: u8 = 10;
 
@@ -14,9 +14,9 @@ impl AsciiDigits<u32> {
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
-    /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq![1, AsciiDigits(0_u32).count_digits10()];
-    /// assert_eq![4, AsciiDigits(9876_u32).count_digits10()];
+    /// # use devela_base_core::text::Digits;
+    /// assert_eq![1, Digits(0_u32).count_digits10()];
+    /// assert_eq![4, Digits(9876_u32).count_digits10()];
     /// ```
     #[must_use]
     pub const fn count_digits10(self) -> u8 {

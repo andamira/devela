@@ -8,7 +8,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
-use crate::{AsciiDigits, Slice, Str, is};
+use crate::{Digits, Slice, Str, is};
 crate::_use! {basic::from_utf8}
 
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
@@ -136,7 +136,7 @@ impl ExtStr for str {
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
 
-            let mut num_buf = AsciiDigits(num).digits10();
+            let mut num_buf = Digits(num).digits10();
             let mut num_bytes = Slice::trim_leading(&num_buf, b'0');
             // IMPROVE:BENCH use NumToStr
             // let mut num_buf = [0u8; 22];
@@ -153,7 +153,7 @@ impl ExtStr for str {
 
                     num = index;
 
-                    num_buf = AsciiDigits(num).digits10();
+                    num_buf = Digits(num).digits10();
                     num_bytes = Slice::trim_leading(&num_buf, b'0');
                     // IMPROVE: use NumToStr
                     // num_bytes = num.to_bytes_base(10, &mut num_buf);

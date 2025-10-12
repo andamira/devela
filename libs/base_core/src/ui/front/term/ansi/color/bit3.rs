@@ -4,7 +4,7 @@
 //
 
 use super::C;
-use crate::{Ansi, AsciiDigits as AsciiD};
+use crate::{Ansi, Digits};
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]
@@ -33,7 +33,7 @@ impl AnsiColor3 {
     /// Returns the ASCII byte representation of the 8-bit color number, with padding zeros.
     #[must_use]
     pub const fn to_ascii(&self) -> u8 {
-        AsciiD(*self as u8).digits10_1()
+        Digits(*self as u8).digits10_1()
     }
 
     /// Returns an `AnsiColor3` from an `u8` value.

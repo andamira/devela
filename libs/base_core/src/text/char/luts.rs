@@ -26,13 +26,13 @@ pub const LUT_ASCII_CHARS: [&str; 128] = [
 
 /// Lookup table for digit characters in bases 2 through 36.
 ///
-/// Used internally in [`AsciiDigits`][crate::AsciiDigits].
+/// Used internally in [`Digits`][crate::Digits].
 /// Exposed for advanced use cases.
 pub const LUT_DIGITS_BASE36: [u8; 36] = *b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 /// Precomputed powers of 10: `[10^0, 10^1, ..., 10^38]`
 ///
-/// Used internally in [`AsciiDigits`][crate::AsciiDigits].
+/// Used internally in [`Digits`][crate::Digits].
 /// Exposed for advanced use cases.
 pub const LUT_POWERS10: [u128; 39] = [
     1,

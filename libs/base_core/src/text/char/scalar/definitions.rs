@@ -10,10 +10,10 @@
 
 #![allow(non_camel_case_types)]
 
-pub(super) use crate::{NonExtremeU8, NonExtremeU32, NonValueU16};
+pub(crate) use crate::{NonExtremeU8, NonExtremeU32, NonValueU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a Unicode scalar.
-pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
+pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
 /* public types */
 

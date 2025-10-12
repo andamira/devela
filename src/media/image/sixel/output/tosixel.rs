@@ -19,7 +19,7 @@ impl<W: IoWrite> SixelOutput<W> {
         &mut self,
         nwrite: usize,   // output size
         dcs_start: &str, // DCS introducer
-        dcs_end: &str,   // DCS terminato
+        dcs_end: &str,   // DCS terminator
     ) {
         let splitsize = Self::SCREEN_PACKET_SIZE - dcs_start.len() - dcs_end.len();
         let mut pos = 0;

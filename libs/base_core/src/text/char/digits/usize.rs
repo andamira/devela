@@ -3,20 +3,20 @@
 use super::*;
 use crate::{Cmp, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
 
-impl AsciiDigits<usize> {
+impl Digits<usize> {
     /// The maximum number of decimal digits a `usize` can represent in the current platform.
-    pub const MAX_DIGITS_10: u8 = AsciiDigits(usize::MAX).count_digits10();
+    pub const MAX_DIGITS_10: u8 = Digits(usize::MAX).count_digits10();
 
     /// The maximum number of hexadecimal digits a `usize` can represent in the current platform.
-    pub const MAX_DIGITS_16: u8 = AsciiDigits(usize::MAX).count_digits16();
+    pub const MAX_DIGITS_16: u8 = Digits(usize::MAX).count_digits16();
 
     #[doc = DOC_COUNT_DIGITS_10!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
-    /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq![1, AsciiDigits(0_usize).count_digits10()];
-    /// assert_eq![4, AsciiDigits(9876_usize).count_digits10()];
+    /// # use devela_base_core::text::Digits;
+    /// assert_eq![1, Digits(0_usize).count_digits10()];
+    /// assert_eq![4, Digits(9876_usize).count_digits10()];
     /// ```
     #[must_use]
     pub const fn count_digits10(self) -> u8 {
@@ -122,19 +122,19 @@ impl AsciiDigits<usize> {
     #[must_use]
     #[cfg(target_pointer_width = "16")]
     pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
-        AsciiDigits(self.0 as u16).digit_at_power16(divisor as u16)
+        Digits(self.0 as u16).digit_at_power16(divisor as u16)
     }
     #[must_use]
     #[cfg(target_pointer_width = "32")]
     pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
-        AsciiDigits(self.0 as u32).digit_at_power16(divisor as u32)
+        Digits(self.0 as u32).digit_at_power16(divisor as u32)
     }
     #[doc = DOC_DIGIT_AT_POWER_16!()]
     #[must_use]
     #[allow(dead_code)]
     #[cfg(target_pointer_width = "64")]
     pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
-        AsciiDigits(self.0 as u64).digit_at_power16(divisor as u64)
+        Digits(self.0 as u64).digit_at_power16(divisor as u64)
     }
 
     /// Converts a `usize` into a byte array of `5` ascii digits with leading zeros.
@@ -144,11 +144,11 @@ impl AsciiDigits<usize> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
-        AsciiDigits(self.0 as u16).digits10()
+        Digits(self.0 as u16).digits10()
     }
     #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
-        AsciiDigits(self.0 as u16).digits16()
+        Digits(self.0 as u16).digits16()
     }
 
     /// Converts a `usize` into a byte array of `10` ascii digits with leading zeros.
@@ -158,11 +158,11 @@ impl AsciiDigits<usize> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
-        AsciiDigits(self.0 as u32).digits10()
+        Digits(self.0 as u32).digits10()
     }
     #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
-        AsciiDigits(self.0 as u32).digits16()
+        Digits(self.0 as u32).digits16()
     }
 
     /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
@@ -172,7 +172,7 @@ impl AsciiDigits<usize> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
-        AsciiDigits(self.0 as u64).digits10()
+        Digits(self.0 as u64).digits10()
     }
     /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
     ///
@@ -181,7 +181,7 @@ impl AsciiDigits<usize> {
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
-        AsciiDigits(self.0 as u64).digits16()
+        Digits(self.0 as u64).digits16()
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]

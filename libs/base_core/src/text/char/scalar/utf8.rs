@@ -1,4 +1,4 @@
-// devela::text::char::impls::utf8
+// devela_base_core::text::char::scalar::utf8
 
 use super::*;
 use crate::{Char, CharAscii, DataOverflow, NonExtremeU32, Str, is, slice, unwrap};

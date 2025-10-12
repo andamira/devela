@@ -1,6 +1,6 @@
 // devela_base_core::text::char::digits
 //
-//! Defines [`AsciiDigits`].
+//! Defines [`Digits`].
 //
 
 #[cfg(test)]
@@ -31,12 +31,12 @@ mod usize;
 /// # Methods
 ///
 /// Most methods are implemented for all the unsigned integer primitives:
-/// [u8](#impl-AsciiDigits<u8>),
-/// [u16](#impl-AsciiDigits<u16>),
-/// [u32](#impl-AsciiDigits<u32>),
-/// [u64](#impl-AsciiDigits<u64>),
-/// [u128](#impl-AsciiDigits<u128>),
-/// [usize](#impl-AsciiDigits<usize>).
+/// [u8](#impl-Digits<u8>),
+/// [u16](#impl-Digits<u16>),
+/// [u32](#impl-Digits<u32>),
+/// [u64](#impl-Digits<u64>),
+/// [u128](#impl-Digits<u128>),
+/// [usize](#impl-Digits<usize>).
 ///
 /// Common methods, `u8` version links:
 /// - [count_digits10](#method.count_digits10),
@@ -65,8 +65,8 @@ mod usize;
 ///
 /// # Example
 /// ```
-/// # use devela_base_core::{AsciiDigits, Slice};
-/// let dec = AsciiDigits(12345_u32);
+/// # use devela_base_core::{Digits, Slice};
+/// let dec = Digits(12345_u32);
 /// assert_eq!(dec.digit_at_index10(0), b'5');
 /// assert_eq!(dec.digit_at_index10(4), b'1');
 /// assert_eq!(dec.digit_value_at_index10(2), 3);
@@ -74,7 +74,7 @@ mod usize;
 /// assert_eq!(dec.digits10(), *b"0000012345");
 /// assert_eq!(Slice::trim_leading(&dec.digits10(), b'0'), b"12345");
 ///
-/// let hex = AsciiDigits(0x89ABC_u32);
+/// let hex = Digits(0x89ABC_u32);
 /// assert_eq!(hex.digit_at_index16(1), b'B');
 /// assert_eq!(hex.digit_value_at_index16(1), 11);
 /// assert_eq!(hex.count_digits16(), 5);
@@ -83,4 +83,4 @@ mod usize;
 /// ```
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct AsciiDigits<T: Copy>(pub T);
+pub struct Digits<T: Copy>(pub T);

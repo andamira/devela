@@ -263,7 +263,7 @@ Many feature gates are removed in order to make most features make always availa
 ## text
 - move to [base]:
   - traits: `NumToStr`.
-  - types: `AsciiDigits`, `ByteSearch`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
+  - types: `ByteSearch`, `Digits`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 
 ### char
 - new fn: `scalar_as_ascii_translit`.
@@ -306,8 +306,8 @@ Many feature gates are removed in order to make most features make always availa
 #### ascii
 - new consts: `LUT_DIGITS_BASE36`, `LUT_POWERS10`.
 - rename `ASCII_TABLE` to `LUT_ASCII_CHARS` and make it a public *const*.
-- rename `Ascii` to `AsciiDigits`.
-- update `AsciiDigits`:
+- rename `Ascii` to `Digits`.
+- update `Digits`:
   - new type: `AnsiColor`.
   - new const: `MAX_DIGITS_16`.
   - new methods: `count_digits16`, `digit_at_index10[_checked]`, `digit_at_index16[_checked]`, `digit_value_at_index10[_checked]`, `digit_value_at_index16[_checked]`, `digits16`.
@@ -381,7 +381,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `Ansi:`
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
   - add methods: `COLOR_FG_BRIGHT`, `COLOR_BG_BRIGHT`.
-  - modify `CURSOR_MOVE_N` method to use `AsciiDigits::digit_at_index10`.
+  - modify `CURSOR_MOVE_N` method to use `Digits::digit_at_index10`.
   - modify `CURSOR_*` methods taking `u32` to take `u16`.
   - make all escape-sequence methods *const*.
   - fix codes related to alternate screen.

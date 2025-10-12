@@ -13,7 +13,7 @@
 //   - 8-bit Palette escape codes
 //   - RGB Color escape codes
 
-use crate::{Ansi, AsciiDigits as AsciiD};
+use crate::{Ansi, Digits};
 
 mod bit3;
 mod bit8;
@@ -156,8 +156,8 @@ impl Ansi {
         const X: [u8; 4] = C::RGB;
         let [fR, fG, fB] = fg;
         let [bR, bG, bB] = bg;
-        let [fR, fG, fB] = [AsciiD(fR).digits10(), AsciiD(fG).digits10(), AsciiD(fB).digits10()];
-        let [bR, bG, bB] = [AsciiD(bR).digits10(), AsciiD(bG).digits10(), AsciiD(bB).digits10()];
+        let [fR, fG, fB] = [Digits(fR).digits10(), Digits(fG).digits10(), Digits(fB).digits10()];
+        let [bR, bG, bB] = [Digits(bR).digits10(), Digits(bG).digits10(), Digits(bB).digits10()];
         [
             b'\x1b', b'[', C::FG, X[0], X[1], X[2], X[3], // \x1b[38;2;
             fR[0], fR[1], fR[2], b';', fG[0], fG[1], fG[2], b';', fB[0], fB[1], fB[2], b';',
@@ -171,7 +171,7 @@ impl Ansi {
     pub const fn RGB_FG(fg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
         let [r, g, b] = fg;
-        let [r, g, b] = [AsciiD(r).digits10(), AsciiD(g).digits10(), AsciiD(b).digits10()];
+        let [r, g, b] = [Digits(r).digits10(), Digits(g).digits10(), Digits(b).digits10()];
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3],
@@ -185,7 +185,7 @@ impl Ansi {
     pub const fn RGB_BG(bg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
         let [r, g, b] = bg;
-        let [r, g, b] = [AsciiD(r).digits10(), AsciiD(g).digits10(), AsciiD(b).digits10()];
+        let [r, g, b] = [Digits(r).digits10(), Digits(g).digits10(), Digits(b).digits10()];
         [
             b'\x1b', b'[',
             C::BG, X[0], X[1], X[2], X[3],

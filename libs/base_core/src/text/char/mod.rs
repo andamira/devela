@@ -4,7 +4,7 @@
 //
 
 mod ascii; // CharAscii
-mod digits; // AsciiDigits
+mod digits; // Digits
 mod iter; // CharIter
 mod luts; // LUT_ASCII_CHARS, LUT_DIGITS_BASE36, LUT_POWERS10
 mod namespace; // Char

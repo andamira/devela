@@ -4,7 +4,7 @@
 //
 
 use super::C;
-use crate::{Ansi, AnsiColor3, AsciiDigits as AsciiD, Cmp};
+use crate::{Ansi, AnsiColor3, Cmp, Digits};
 
 /// ANSI 8-bit color codes, 256 colors.
 #[repr(transparent)]
@@ -129,7 +129,7 @@ impl AnsiColor8 {
 
     /// Returns the ASCII byte representation of the 8-bit color number, with leading zeros.
     #[must_use]
-    pub const fn to_ascii(&self) -> [u8; 3] { AsciiD(self.0).digits10() }
+    pub const fn to_ascii(&self) -> [u8; 3] { Digits(self.0).digits10() }
 }
 impl From<AnsiColor3> for AnsiColor8 {
     fn from(value: AnsiColor3) -> Self {
@@ -185,8 +185,8 @@ impl Ansi {
     #[must_use]
     pub const fn GRAY(fg: u8, bg: u8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
-        let cf = AsciiD(Cmp(fg).min(23)).digits10();
-        let cb = AsciiD(Cmp(bg).min(23)).digits10();
+        let cf = Digits(Cmp(fg).min(23)).digits10();
+        let cb = Digits(Cmp(bg).min(23)).digits10();
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3], cf[0], cf[1], cf[2],
@@ -303,9 +303,9 @@ impl Ansi {
     /// Sets the given palette color. (OSC 4)
     // \x1b]4;{index};rgb:{rr:02x}/{gg:02x}/{bb:02x}\x07
     pub const fn SET_PALETTE(index: u8, color: [u8; 3]) -> [u8; 21] {
-        let i = AsciiD(index).digits10();
+        let i = Digits(index).digits10();
         let [r, g, b] = color;
-        let [r, g, b] = [AsciiD(r).digits16(), AsciiD(g).digits16(), AsciiD(b).digits16()];
+        let [r, g, b] = [Digits(r).digits16(), Digits(g).digits16(), Digits(b).digits16()];
         [
             b'\x1b', b'[', b'4', b';', i[0], i[1], i[2], b';',
             b'r', b'g', b'b', b':',
@@ -314,7 +314,7 @@ impl Ansi {
     }
     /// Resets the given palette color to the default one. (OSC 104)
     pub const fn RESET_PALETTE(index: u8) -> [u8; 10] {
-        let i = AsciiD(index).digits10();
+        let i = Digits(index).digits10();
         [b'\x1b', b'[', b'1', b'0', b'4', b';', i[0], i[1], i[2], b'\x07']
     }
     /// Resets all the palette colors to the default ones. (OSC 104)

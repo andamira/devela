@@ -19,7 +19,7 @@ crate::structural_mods! { // _mods
         #[doc(inline)]
         pub use devela_base_core::text::{
             LUT_ASCII_CHARS, LUT_DIGITS_BASE36, LUT_POWERS10,
-            AsciiDigits, Char, CharAscii, CharIter, char7, char8, char16, char_utf8,
+            Char, CharAscii, CharIter, Digits, char7, char8, char16, char_utf8,
         };
 
         #[cfg(feature = "devela_base_text")]
