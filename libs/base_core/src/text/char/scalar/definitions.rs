@@ -1,4 +1,4 @@
-// devela_base_core::text::char::definitions
+// devela_base_core::text::char::scalar::definitions
 //
 //! Define [`char7`], [`char8`], [`char16`], [`char_utf8`].
 //

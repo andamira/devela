@@ -1,24 +1,9 @@
-// devela::text::char::impls
+// devela_base_core::text::char::scalar
 //
 //!
 //
-// TOC
-// - specific implementations
-// - common implementations
 
-#[allow(unused_imports)]
-use super::*; // char*
-
-/* specific implementations */
-
-mod c16;
-mod c7;
-mod c8;
-mod utf8;
-
-/* common implementations */
-
-mod traits; // core traits
+use crate::{Char, char7, char8, char16};
 
 /// Implements const fns for custom char types.
 macro_rules! impl_char {

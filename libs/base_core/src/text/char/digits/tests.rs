@@ -1,4 +1,4 @@
-// devela_base_core::text::char::ascii::digits::tests
+// devela_base_core::text::char::digits::tests
 
 use super::AsciiDigits;
 

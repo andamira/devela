@@ -1,4 +1,4 @@
-// devela_base_core::text::char::ascii::digits::docs
+// devela_base_core::text::char::digits::docs
 
 use crate::CONST;
 

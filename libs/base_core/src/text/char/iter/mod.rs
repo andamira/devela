@@ -1,4 +1,4 @@
-// devela::text::char::chars
+// devela_base_core::text::char::iter
 //
 //! Defines the [`CharIter`] iterator.
 //

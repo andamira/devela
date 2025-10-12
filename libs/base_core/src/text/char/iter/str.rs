@@ -1,4 +1,4 @@
-// devela::text::char::chars::str
+// devela_base_core::text::char::iter::str
 
 use crate::{Char, CharIter, PhantomData, char_utf8, char7, char8, char16, is, slice};
 

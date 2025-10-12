@@ -1,4 +1,4 @@
-// devela_base_core::text::char::ascii::digits::u128
+// devela_base_core::text::char::digits::u128
 
 use super::*;
 use crate::{Cmp, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};

@@ -1,4 +1,4 @@
-// devela::text::char::impls::c7
+// devela_base_core::text::char::scalar::c7
 //
 //!
 //

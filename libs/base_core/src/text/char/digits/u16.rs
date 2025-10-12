@@ -1,22 +1,22 @@
-// devela_base_core::text::char::ascii::digits::u8
+// devela_base_core::text::char::digits::u16
 
 use super::*;
 use crate::{Cmp, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
 
-impl AsciiDigits<u8> {
-    /// The maximum number of decimal digits a `u8` can represent.
-    pub const MAX_DIGITS_10: u8 = 3;
+impl AsciiDigits<u16> {
+    /// The maximum number of decimal digits a `u16` can represent.
+    pub const MAX_DIGITS_10: u8 = 5;
 
-    /// The maximum number of hexadecimal digits a `u8` can represent.
-    pub const MAX_DIGITS_16: u8 = 2; // 0xFF
+    /// The maximum number of hexadecimal digits a `u16` can represent.
+    pub const MAX_DIGITS_16: u8 = 4;
 
     #[doc = DOC_COUNT_DIGITS_10!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq![1, AsciiDigits(0_u8).count_digits10()];
-    /// assert_eq![3, AsciiDigits(123_u8).count_digits10()];
+    /// assert_eq![1, AsciiDigits(0_u16).count_digits10()];
+    /// assert_eq![4, AsciiDigits(9876_u16).count_digits10()];
     /// ```
     #[must_use]
     pub const fn count_digits10(self) -> u8 {
@@ -25,12 +25,13 @@ impl AsciiDigits<u8> {
 
     #[doc = DOC_COUNT_DIGITS_16!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
-    #[must_use]
     pub const fn count_digits16(self) -> u8 {
         match self.0 {
             0 => 1,
             0x1..=0xF => 1,
-            _ => 2,
+            0x10..=0xFF => 2,
+            0x100..=0xFFF => 3,
+            _ => 4,
         }
     }
 
@@ -43,8 +44,8 @@ impl AsciiDigits<u8> {
     #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return b'0'];
-        let power = LUT_POWERS10[index as usize] as u8;
-        (self.0 / power % 10) + b'0'
+        let power = LUT_POWERS10[index as usize] as u16;
+        (self.0 / power % 10) as u8 + b'0'
     }
 
     /// Returns the ASCII decimal digit at the specified index.
@@ -53,8 +54,8 @@ impl AsciiDigits<u8> {
     #[must_use]
     pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u8;
-        Some((self.0 / power % 10) + b'0')
+        let power = LUT_POWERS10[index as usize] as u16;
+        Some((self.0 / power % 10) as u8 + b'0')
     }
 
     /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
@@ -66,6 +67,7 @@ impl AsciiDigits<u8> {
         let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
         LUT_DIGITS_BASE36[digit]
     }
+
     /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
     ///
     /// For indices beyond the number's hexadecimal digits, returns `None`.
@@ -85,7 +87,7 @@ impl AsciiDigits<u8> {
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return 0];
-        let power = LUT_POWERS10[index as usize] as u8;
+        let power = LUT_POWERS10[index as usize] as u16;
         (self.0 / power % 10) as u8
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
@@ -94,7 +96,7 @@ impl AsciiDigits<u8> {
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u8;
+        let power = LUT_POWERS10[index as usize] as u16;
         Some((self.0 / power % 10) as u8)
     }
 
@@ -119,42 +121,47 @@ impl AsciiDigits<u8> {
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
-    pub(crate) const fn digit_at_power10(self, divisor: u8) -> u8 {
-        (self.0 / divisor % 10) + b'0'
+    pub(crate) const fn digit_at_power10(self, divisor: u16) -> u8 {
+        (self.0 / divisor % 10) as u8 + b'0'
     }
-
     #[doc = DOC_DIGIT_AT_POWER_16!()]
     #[must_use]
-    pub(crate) const fn digit_at_power16(self, divisor: u8) -> u8 {
+    pub(crate) const fn digit_at_power16(self, divisor: u16) -> u8 {
         let digit = match divisor {
             0x1 => self.0 & 0xF,
             0x10 => (self.0 >> 4) & 0xF,
+            0x100 => (self.0 >> 8) & 0xF,
+            0x1000 => (self.0 >> 12) & 0xF,
             _ => (self.0 / divisor) % 16,
         };
         LUT_DIGITS_BASE36[digit as usize]
     }
 
-    /// Converts a `u8` into a byte array of `3` ASCII decimal digits with leading zeros.
+    /// Converts a `u16` into a byte array of `5` ASCII decimal digits with leading zeros.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         [
-            //                    321
-            //                    255    ← u8::MAX
-            self.digit_at_power10(100), // 3 digits
+            //                    54321
+            //                    65535    ← u16::MAX
+            self.digit_at_power10(10000), // 5 digits
+            self.digit_at_power10(1000),
+            self.digit_at_power10(100),
             self.digit_at_power10(10),
             self.digit_at_power10(1),
         ]
     }
-    /// Converts a `u8` into a byte array of `2` ASCII digits with leading zero.
+    /// Converts a `u16` into a byte array of `4` ASCII digits with leading zeros.
     ///
-    /// You can trim the leading zerowith `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
+    /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         [
-            //                      21
-            //                      FF    ← u8::MAX
-            self.digit_at_power16(0x10), // 2 digits
+            //                      4321
+            //                      FFFF    ← u16::MAX
+            self.digit_at_power16(0x1000), // 4 digits
+            self.digit_at_power16(0x100),
+            self.digit_at_power16(0x10),
             self.digit_at_power16(0x1),
         ]
     }
@@ -170,7 +177,7 @@ impl AsciiDigits<u8> {
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid UTF-8
         unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
-            ::from_array_nright_unchecked(self.digits10(), width) }
+            ::from_array_nright_unchecked(self.digits10(), width)}
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
@@ -183,34 +190,32 @@ impl AsciiDigits<u8> {
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid UTF-8
         unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
-            ::from_array_nright_unchecked(self.digits16(), width) }
+            ::from_array_nright_unchecked(self.digits16(), width)
+        }
     }
 
-    /// Converts a one-digit decimal number to the corresponding `1` ASCII digit.
+    /// Converts a three-digit decimal number to the corresponding `3` ASCII digits.
     ///
     /// # Panics
-    /// This function panics in debug if the given number is > 9.
+    /// This function panics in debug if the given number is > 999.
     #[must_use]
-    pub const fn digits10_1(self) -> u8 {
-        debug_assert![self.0 <= 9];
-        self.0 + b'0'
-    }
-    /// Converts a two-digit decimal number to the corresponding `2` ASCII digits.
-    ///
-    /// # Panics
-    /// This function panics in debug if the given number is > 99.
-    #[must_use]
-    pub const fn digits10_2(self) -> [u8; 2] {
-        debug_assert![self.0 <= 99];
-        [self.digit_at_power10(10), self.digit_at_power10(1)]
+    pub const fn digits10_3(self) -> [u8; 3] {
+        debug_assert![self.0 <= 999];
+        [self.digit_at_power10(100), self.digit_at_power10(10), self.digit_at_power10(1)]
     }
 
-    /// Converts a one-digit hexadecimal number to the corresponding `1` ASCII digit.
+    /// Converts a four-digit decimal number to the corresponding `4` ASCII digits.
     ///
     /// # Panics
-    /// This function panics in debug if the given number is > `0xF`.
-    pub const fn digits16_1(self) -> u8 {
-        debug_assert![self.0 <= 0xF];
-        LUT_DIGITS_BASE36[self.0 as usize]
+    /// This function panics in debug if the given number is > 9999.
+    #[must_use]
+    pub const fn digits10_4(self) -> [u8; 4] {
+        debug_assert![self.0 <= 9999];
+        [
+            self.digit_at_power10(1000),
+            self.digit_at_power10(100),
+            self.digit_at_power10(10),
+            self.digit_at_power10(1),
+        ]
     }
 }

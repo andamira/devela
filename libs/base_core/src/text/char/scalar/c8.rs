@@ -1,4 +1,4 @@
-// devela::text::char::impls::c8
+// devela_base_core::text::char::scalar::c8
 
 use super::*;
 use crate::{Char, CharAscii, DataOverflow};

@@ -1,4 +1,4 @@
-// devela_base_core::text::char::ascii::lut
+// devela_base_core::text::char::lut
 //
 //! Defines several ASCII LUTs.
 //
@@ -8,7 +8,7 @@
 // - LUT_POWERS10
 
 #[rustfmt::skip]
-/// ASCII lookup table for fast UTF-8 encoding.
+/// Lookup table for fast ASCII code point to UTF-8 encoding.
 ///
 /// Used internally in [`Char`][crate::Char] and [`char7`][crate::char7].
 /// Exposed for advanced use cases.

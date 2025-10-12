@@ -3,25 +3,28 @@
 #![doc = crate::_DOC_TEXT_CHAR!()]
 //
 
-mod ascii; // AsciiDigits, CharAscii
-mod chars; // CharIter
-mod definitions; // char7, char8, char16, char_utf8
+mod ascii; // CharAscii
+mod digits; // AsciiDigits
+mod iter; // CharIter
+mod luts; // LUT_ASCII_CHARS, LUT_DIGITS_BASE36, LUT_POWERS10
 mod namespace; // Char
+mod scalar; // char7, char8, char16, char_utf8
+
 mod reexports;
 
-// without re-exports
-mod impls;
 #[cfg(test)]
 mod tests;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            ascii::_all::*,
-            chars::*,
-            definitions::*,
+            ascii::*,
+            digits::*,
+            iter::*,
+            luts::*,
             namespace::*,
             reexports::*,
+            scalar::*,
         };
     }
 }

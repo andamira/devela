@@ -1,32 +1,30 @@
-// devela_base_core::text::char::ascii::digits::u32
+// devela_base_core::text::char::digits::u64
 
 use super::*;
 use crate::{Cmp, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
 
-impl AsciiDigits<u32> {
-    /// The maximum number of decimal digits a `u32` can represent.
-    pub const MAX_DIGITS_10: u8 = 10;
+impl AsciiDigits<u64> {
+    /// The maximum number of decimal digits a `u64` can represent.
+    pub const MAX_DIGITS_10: u8 = 20;
 
-    /// The maximum number of hexadecimal digits a `u32` can represent.
-    pub const MAX_DIGITS_16: u8 = 8;
+    /// The maximum number of hexadecimal digits a `u64` can represent.
+    pub const MAX_DIGITS_16: u8 = 16;
 
     #[doc = DOC_COUNT_DIGITS_10!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
     /// # use devela_base_core::text::AsciiDigits;
-    /// assert_eq![1, AsciiDigits(0_u32).count_digits10()];
-    /// assert_eq![4, AsciiDigits(9876_u32).count_digits10()];
+    /// assert_eq![1, AsciiDigits(0_u64).count_digits10()];
+    /// assert_eq![4, AsciiDigits(9876_u64).count_digits10()];
     /// ```
     #[must_use]
     pub const fn count_digits10(self) -> u8 {
         is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
-
     #[doc = DOC_COUNT_DIGITS_16!()]
     #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     pub const fn count_digits16(self) -> u8 {
-        // from u32 and up, the match gets too large and this bit math is more efficient
         is![self.0 == 0; 1; ((self.0.ilog2() + 4) / 4) as u8]
     }
 
@@ -39,7 +37,7 @@ impl AsciiDigits<u32> {
     #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return b'0'];
-        let power = LUT_POWERS10[index as usize] as u32;
+        let power = LUT_POWERS10[index as usize] as u64;
         (self.0 / power % 10) as u8 + b'0'
     }
 
@@ -49,7 +47,7 @@ impl AsciiDigits<u32> {
     #[must_use]
     pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u32;
+        let power = LUT_POWERS10[index as usize] as u64;
         Some((self.0 / power % 10) as u8 + b'0')
     }
 
@@ -82,7 +80,7 @@ impl AsciiDigits<u32> {
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return 0];
-        let power = LUT_POWERS10[index as usize] as u32;
+        let power = LUT_POWERS10[index as usize] as u64;
         (self.0 / power % 10) as u8
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
@@ -91,7 +89,7 @@ impl AsciiDigits<u32> {
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u32;
+        let power = LUT_POWERS10[index as usize] as u64;
         Some((self.0 / power % 10) as u8)
     }
 
@@ -116,13 +114,13 @@ impl AsciiDigits<u32> {
 
     #[doc = DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
-    pub(crate) const fn digit_at_power10(self, divisor: u32) -> u8 {
+    pub(crate) const fn digit_at_power10(self, divisor: u64) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
     }
     #[doc = DOC_DIGIT_AT_POWER_16!()]
     #[must_use]
     #[allow(clippy::unreadable_literal)]
-    pub(crate) const fn digit_at_power16(self, divisor: u32) -> u8 {
+    pub(crate) const fn digit_at_power16(self, divisor: u64) -> u8 {
         let digit = match divisor {
             0x1 => self.0 & 0xF,
             0x10 => (self.0 >> 4) & 0xF,
@@ -137,37 +135,54 @@ impl AsciiDigits<u32> {
         LUT_DIGITS_BASE36[digit as usize]
     }
 
-    /// Converts a `u32` into a byte array of `10` ASCII decimal digits with leading zeros.
+    /// Converts a `u64` into a byte array of `20` ASCII decimal digits with leading zeros.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         [
-            //                    0987654321
-            //                    4294967295    ← u32::MAX
+            //                    0987654321_987654321
+            //                    18446744073709551615    ← u64::MAX
+            self.digit_at_power10(10000000000000000000), // 20 digits
+            self.digit_at_power10(1000000000000000000),
+            self.digit_at_power10(100000000000000000),
+            self.digit_at_power10(10000000000000000),
+            self.digit_at_power10(1000000000000000),
+            self.digit_at_power10(100000000000000),
+            self.digit_at_power10(10000000000000),
+            self.digit_at_power10(1000000000000),
+            self.digit_at_power10(100000000000),
+            self.digit_at_power10(10000000000),
             self.digit_at_power10(1000000000), // 10 digits
             self.digit_at_power10(100000000),
             self.digit_at_power10(10000000),
             self.digit_at_power10(1000000),
             self.digit_at_power10(100000),
-            self.digit_at_power10(10000), // 5 digits
+            self.digit_at_power10(10000),
             self.digit_at_power10(1000),
             self.digit_at_power10(100),
             self.digit_at_power10(10),
             self.digit_at_power10(1),
         ]
     }
-    /// Converts a `u32` into a byte array of `8` ASCII hexadecimal digits with leading zeros.
+    /// Converts a `u64` into a byte array of `16` ASCII hexadecimal digits with leading zeros.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
-    #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         [
-            //                      87654321
-            //                      FFFFFFFF    ← u32::MAX
-            self.digit_at_power16(0x10000000), // 8 digits
+            //                      0FEDCBA987654321
+            //                      FFFFFFFFFFFFFFFF    ← u64::MAX
+            self.digit_at_power16(0x1000000000000000), // 16 digits
+            self.digit_at_power16(0x100000000000000),
+            self.digit_at_power16(0x10000000000000),
+            self.digit_at_power16(0x1000000000000),
+            self.digit_at_power16(0x100000000000),
+            self.digit_at_power16(0x10000000000),
+            self.digit_at_power16(0x1000000000),
+            self.digit_at_power16(0x100000000),
+            self.digit_at_power16(0x10000000),
             self.digit_at_power16(0x1000000),
             self.digit_at_power16(0x100000),
             self.digit_at_power16(0x10000),
