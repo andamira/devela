@@ -86,7 +86,7 @@ impl Digits<u8> {
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return 0];
         let power = LUT_POWERS10[index as usize] as u8;
-        (self.0 / power % 10) as u8
+        self.0 / power % 10
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
     ///
@@ -95,7 +95,7 @@ impl Digits<u8> {
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
         let power = LUT_POWERS10[index as usize] as u8;
-        Some((self.0 / power % 10) as u8)
+        Some(self.0 / power % 10)
     }
 
     /// Returns the numeric value (0-15) of the hexadecimal digit at the specified index.
@@ -105,7 +105,7 @@ impl Digits<u8> {
     #[inline(always)]
     pub const fn digit_value_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
-        (self.0.unbounded_shr(shift) & 0xF) as u8
+        self.0.unbounded_shr(shift) & 0xF
     }
     /// Returns `Some(numeric_value)` (0-15) if the index is within bounds.
     ///

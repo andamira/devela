@@ -96,7 +96,6 @@ macro_rules! impl_niche {
         }
     };
 }
-use impl_niche;
 impl_niche!();
 
 #[cfg(test)]

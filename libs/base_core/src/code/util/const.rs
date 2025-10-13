@@ -111,6 +111,7 @@ macro_rules! _CONST {
                     fn $fn($($param: $param_ty),*) $(-> $fn_return)? $fn_body
                 }
             }
+            #[allow(unused_imports)]
             $item_vis use $CONST_NAME;
         )*
     };
@@ -136,6 +137,7 @@ macro_rules! _CONST {
                     fn $fn($($param: $param_ty),*) $(-> $fn_return)? $fn_body
                 }
             }
+            #[allow(unused_imports)]
             $shared_vis use $CONST_NAME;
         )*
     };
@@ -150,6 +152,7 @@ macro_rules! _CONST {
             $(#[$CONST_ATTRS])*
             #[allow(unused_macro)]
             macro_rules! $CONST_NAME { () => { $expr } }
+            #[allow(unused_imports)]
             $item_vis use $CONST_NAME;
         )*
     };
@@ -163,6 +166,7 @@ macro_rules! _CONST {
             $(#[$CONST_ATTRS])*
             #[allow(unused_macro)]
             macro_rules! $CONST_NAME { () => { $expr } }
+            #[allow(unused_imports)]
             $shared_vis use $CONST_NAME;
         )*
     };
@@ -182,6 +186,7 @@ macro_rules! _CONST {
             macro_rules! [< _ $CONST_NAME >] { () => { $expr } }
 
             #[doc(hidden)]
+            #[allow(unused_imports)]
             pub use [< _ $CONST_NAME >] as $CONST_NAME;
         )*
     }};
@@ -201,6 +206,7 @@ macro_rules! _CONST {
             macro_rules! [< _ $CONST_NAME >] { () => { $expr } }
 
             #[doc(inline)]
+            #[allow(unused_imports)]
             pub use [< _ $CONST_NAME >] as $CONST_NAME;
         )*
     }};

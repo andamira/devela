@@ -81,7 +81,7 @@ impl Digits<u128> {
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return 0];
-        let power = LUT_POWERS10[index as usize] as u128;
+        let power = LUT_POWERS10[index as usize];
         (self.0 / power % 10) as u8
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
@@ -90,7 +90,7 @@ impl Digits<u128> {
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u128;
+        let power = LUT_POWERS10[index as usize];
         Some((self.0 / power % 10) as u8)
     }
 

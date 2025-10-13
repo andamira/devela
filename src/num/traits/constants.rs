@@ -203,7 +203,7 @@ macro_rules! impl_ext_num_const {
             Some(-1.0),               // NEG_ONE
             Some(<$T>::MIN_POSITIVE), // MIN_POS
             Some(-0.0),               // MAX_NEG // ↓ MAX_POW2
-            Some(<$T>::from_bits(((<$T>::EXPONENT_BIAS as $U << 1) << (<$T>::SIGNIFICAND_BITS)))),
+            Some(<$T>::from_bits((<$T>::EXPONENT_BIAS as $U << 1) << (<$T>::SIGNIFICAND_BITS))),
             Some(0.0), Some(1.0), // MIN_NORM, MAX_NORM
             false, // IS_BIG
             false, // IS_INT

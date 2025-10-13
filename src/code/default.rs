@@ -136,7 +136,7 @@ pub(crate) use impl_cdef;
 
 #[rustfmt::skip]
 mod impl_core {
-    use super::{impl_cdef, ConstDefault};
+    use super::ConstDefault;
     use core::{
         cmp::Reverse,
         cell::{Cell, OnceCell, RefCell, UnsafeCell},

@@ -1031,7 +1031,7 @@ macro_rules! impl_modulo {
                 } else {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                     let sum = upcastop![reduce_err +add(a, b) % m, $is_up];
-                    Ok((Int((sum % m) as $t)))
+                    Ok(Int((sum % m) as $t))
                 }
             }
 
@@ -1202,7 +1202,7 @@ macro_rules! impl_modulo {
             /// # Panics
             /// Panics if `modulus == 0`, and if the result would be a negative value.
             pub const fn modulo_sub_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
-                Int(((self.0 - other) % modulus))
+                Int((self.0 - other) % modulus)
             }
 
             /* modulo sub cycles (unsigned) */
@@ -1286,7 +1286,7 @@ macro_rules! impl_modulo {
                 } else {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                     let sum = upcastop![reduce_err *mul(a, b) % m, $is_up];
-                    Ok((Int((sum % m) as $t)))
+                    Ok(Int((sum % m) as $t))
                 }
             }
 
@@ -1408,7 +1408,7 @@ macro_rules! impl_modulo {
                     if gcd.0 != 1 {
                         Err(NoInverse)
                     } else {
-                        Ok(Int((x.0.rem_euclid(modulus as $iup) as $t)))
+                        Ok(Int(x.0.rem_euclid(modulus as $iup) as $t))
                     }
                 }
             }
@@ -1433,7 +1433,7 @@ macro_rules! impl_modulo {
                 if gcd.0 != 1 {
                     panic!["no inverse"]; // CHECK without checking
                 } else {
-                    Int((x.0.rem_euclid(modulus as $iup) as $t))
+                    Int(x.0.rem_euclid(modulus as $iup) as $t)
                 }
             }
 
