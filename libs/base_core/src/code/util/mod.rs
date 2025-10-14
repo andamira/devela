@@ -17,19 +17,20 @@ mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail_tuple]!
 mod cfg_if; // cfg_if!
 mod cfor; // cfor!
+mod r#const; // CONST!
 mod deprecate; // deprecate_feature!
 mod doclink; // doclink!
 mod enumset; // enumset!
 mod ident; // ident_const_index!
 mod impl_trait; // impl_trait!
 mod include; // include_from!, mod_from!, mod_path!
-mod items; // items!, sf!
 mod is; // is!
+mod items; // items!, sf!
 mod maybe; // maybe!
 mod methods; // methods_as_fns!
 mod paste; // paste! (wrapped for docs)
-mod r#const; // CONST!
 mod structural; // structural_mods!
+mod write; // write_bytes!
 
 structural::structural_mods! { // _mods, _workspace_internals
     _mods {
@@ -55,6 +56,7 @@ structural::structural_mods! { // _mods, _workspace_internals
             methods::methods_as_fns,
             paste::paste,
             structural::structural_mods,
+            write::*,
         };
     }
     _crate_internals {
