@@ -8,11 +8,6 @@
 /// Efficiently writes a sequence of bytes to a buffer using individual assignments,
 /// avoiding slice operations while maintaining clean syntax.
 ///
-/// # Arguments
-/// * `$buf` - The buffer to write to (mutable reference to `[u8]`)
-/// * `$offset` - Current write position (mutable `usize` reference, updated after write)
-/// * `$bytes...` - Byte literals to write (`b'x'`, `0x1b`, etc.)
-///
 /// # Panics
 /// Panics if writing would exceed the buffer bounds.
 ///
@@ -22,14 +17,27 @@
 /// let mut buffer = [0u8; 8];
 /// let mut offset = 0;
 ///
-/// write_bytes!(buffer, offset, b'"', b'h', b'e', b'l', b'l', b'o', b'"', b'\0');
-///
+/// // It supports a mutable offset to update
+/// write_bytes!(buffer, offset, b'@', b'h', b'e', b'l', b'l', b'o', b'"', b'\0');
 /// assert_eq!(offset, 8);
-/// assert_eq!(&buffer[0..offset], b"\"hello\"\0");
+/// assert_eq!(&buffer[0..offset], b"@hello\"\0");
+///
+/// // It also supports a literal as the starting offset
+/// write_bytes!(buffer, 1, b'w', b'o', b'r', b'l', b'd', b'!');
+/// assert_eq!(&buffer[1..7], b"world!");
+///
+/// assert_eq!(&buffer[0..8], b"@world!\0");
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _write_bytes {
+    ($buf:ident, $offset:literal, $($byte:expr),* $(,)?) => {{
+        let mut offset = $offset;
+        $(
+            $buf[offset] = $byte;
+            offset += 1;
+        )*
+    }};
     ($buf:ident, $offset:ident, $($byte:expr),* $(,)?) => {{
         let mut offset = $offset;
         $(
