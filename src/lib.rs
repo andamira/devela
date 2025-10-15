@@ -80,7 +80,7 @@
 )]
 // ----------------------------
 // `nightly_stable_1_92`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_92, feature())]
+#![cfg_attr(nightly_stable_1_92, feature(const_slice_rotate,))]
 #![cfg_attr(
     all(nightly_stable_1_92, feature = "alloc"),
     feature(file_with_nul, btree_entry_insert,)
@@ -103,7 +103,6 @@
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
-        const_slice_rotate,
         const_sockaddr_setters,
         const_str_split_at,
         debug_closure_helpers,

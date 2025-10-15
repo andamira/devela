@@ -50,6 +50,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
 
 - 1.92: `a`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
+- 1.92: `·`[const_slice_rotate](https://github.com/rust-lang/rust/pull/146841)
 - 1.92: `a`[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
 
 # 1.93 will be stable on 2026-01-22 ([`nightly_stable_1_93`](https://releases.rs/docs/1.93.0/))
@@ -71,7 +72,6 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
-- 1.??: `·`[const_slice_rotate](https://github.com/rust-lang/rust/pull/146841)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
