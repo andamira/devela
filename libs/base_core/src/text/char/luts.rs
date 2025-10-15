@@ -4,6 +4,8 @@
 //
 // TOC
 // - LUT_LUT_ASCII_CHARS
+// - LUT_ASCII_BASE36_OFFSET
+// - LUT_DECIMAL_PAIRS
 // - LUT_DIGITS_BASE36
 // - LUT_POWERS10
 
@@ -23,6 +25,34 @@ pub const LUT_ASCII_CHARS: [&str; 128] = [
     "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
     "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", "\x7F",
 ];
+
+/// Lookup table for ASCII offsets in base36 encoding.
+///
+/// Maps digits 0-36 to their ASCII offset from '0':
+/// - Digits 0-9: offset 0 (yields '0'-'9')
+/// - Digits 10-36: offset 7 (yields 'A'-'Z')
+///
+/// Used internally in [`FontArt`].
+#[doc = crate::doclink!(custom devela "[`FontArt`]" "media/font/struct.FontArt.html")]
+///
+/// Exposed for advanced use cases.
+pub const LUT_ASCII_BASE36_OFFSET: [u8; 37] = [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0-9: offset 0
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, // 10-19: offset 7
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, // 20-29: offset 7
+    7, 7, 7, 7, 7, 7, 7, // 30-36: offset 7
+];
+
+/// Precomputed two-digit decimal number strings (00-99).
+///
+/// Used internally in [`Digits`][crate::Digits].
+/// Exposed for advanced use cases.
+pub const LUT_DECIMAL_PAIRS: &[u8; 200] = b"\
+    0001020304050607080910111213141516171819\
+    2021222324252627282930313233343536373839\
+    4041424344454647484950515253545556575859\
+    6061626364656667686970717273747576777879\
+    8081828384858687888990919293949596979899";
 
 /// Lookup table for digit characters in bases 2 through 36.
 ///

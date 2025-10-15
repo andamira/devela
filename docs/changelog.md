@@ -304,7 +304,7 @@ Many feature gates are removed in order to make most features make always availa
   - reorder methods.
 
 #### ascii
-- new consts: `LUT_DIGITS_BASE36`, `LUT_POWERS10`.
+- new consts: `LUT_ASCII_BASE36_OFFSET`, `LUT_DIGITS_BASE36`, `LUT_DECIMAL_PAIRS`, `LUT_POWERS10`.
 - rename `ASCII_TABLE` to `LUT_ASCII_CHARS` and make it a public *const*.
 - rename `Ascii` to `Digits`.
 - update `Digits`:
