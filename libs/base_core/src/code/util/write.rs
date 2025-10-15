@@ -18,20 +18,20 @@
 /// let mut offset = 0;
 ///
 /// // It supports a mutable offset to update
-/// write_bytes!(buffer, offset, b'@', b'h', b'e', b'l', b'l', b'o', b'"', b'\0');
+/// write_bytes!(buffer, offset, b'@', b'h', b'e', b'l', b'l', b'o', b'!', b'\0');
 /// assert_eq!(offset, 8);
-/// assert_eq!(&buffer[0..offset], b"@hello\"\0");
+/// assert_eq!(&buffer[0..offset], b"@hello!\0");
 ///
 /// // It also supports a literal as the starting offset
-/// write_bytes!(buffer, 1, b'w', b'o', b'r', b'l', b'd', b'!');
-/// assert_eq!(&buffer[1..7], b"world!");
+/// write_bytes!(buffer, 1, b'w', b'o', b'r', b'l', b'd', b'?');
+/// assert_eq!(&buffer[1..7], b"world?");
 ///
-/// assert_eq!(&buffer[0..8], b"@world!\0");
+/// assert_eq!(&buffer[0..8], b"@world?\0");
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _write_bytes {
-    ($buf:ident, $offset:literal, $($byte:expr),* $(,)?) => {{
+    ($buf:ident, $offset:literal, $($byte:expr),* $(,)?) => { #[allow(unused_assignments)] {
         let mut offset = $offset;
         $(
             $buf[offset] = $byte;
