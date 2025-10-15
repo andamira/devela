@@ -344,7 +344,7 @@ impl Char<u32> {
     /// Assumes the value is a valid Unicode scalar.
     /// Always returns a `[u8; 4]` array, with unused bytes set to `0`.
     ///
-    /// See also [`Char::to_utf8_byte`] for a checked version.
+    /// See also [`Char::to_utf8_bytes`] for a checked version.
     #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes_unchecked(self) -> [u8; 4] {

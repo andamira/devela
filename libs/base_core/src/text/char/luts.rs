@@ -106,7 +106,7 @@ pub const LUT_POWERS10: [u128; 39] = [
     100_000_000_000_000_000_000_000_000_000_000_000_000,
 ];
 #[cfg(test)]
-const LUT_POWERS10_ASSERT: () = {
+const _LUT_POWERS10_ASSERT: () = {
     assert![size_of_val(&LUT_POWERS10) == size_of::<u128>() * 39];
     assert![size_of_val(&LUT_POWERS10) == 624];
 };

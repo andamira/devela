@@ -38,13 +38,13 @@ macro_rules! _write_bytes {
             offset += 1;
         )*
     }};
-    ($buf:ident, $offset:ident, $($byte:expr),* $(,)?) => {{
+    ($buf:ident, $offset:ident, $($byte:expr),* $(,)?) => {#[allow(unused_assignments)] {
         let mut offset = $offset;
         $(
             $buf[offset] = $byte;
             offset += 1;
         )*
-        $offset = offset;
+        $offset = offset; // when given an identifier, update it
     }};
 }
 pub use _write_bytes as write_bytes;
