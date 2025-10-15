@@ -166,6 +166,41 @@ impl Digits<u16> {
         ]
     }
 
+    /// Writes 1..=5 decimal digits without leading zeros starting at `offset`,
+    /// returning the number of bytes written.
+    ///
+    /// Returns 0 and writes nothing if fewer than 5 bytes remain.
+    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+        let n = self.0;
+        is![offset + 5 > buf.len(); return 0];
+        if n < 10 {
+            buf[offset] = n as u8 + b'0';
+            1
+        } else if n < 100 {
+            buf[offset] = (n / 10) as u8 + b'0';
+            buf[offset + 1] = (n % 10) as u8 + b'0';
+            2
+        } else if n < 1000 {
+            buf[offset] = (n / 100) as u8 + b'0';
+            buf[offset + 1] = ((n / 10) % 10) as u8 + b'0';
+            buf[offset + 2] = (n % 10) as u8 + b'0';
+            3
+        } else if n < 10000 {
+            buf[offset] = (n / 1000) as u8 + b'0';
+            buf[offset + 1] = ((n / 100) % 10) as u8 + b'0';
+            buf[offset + 2] = ((n / 10) % 10) as u8 + b'0';
+            buf[offset + 3] = (n % 10) as u8 + b'0';
+            4
+        } else {
+            buf[offset] = (n / 10000) as u8 + b'0';
+            buf[offset + 1] = ((n / 1000) % 10) as u8 + b'0';
+            buf[offset + 2] = ((n / 100) % 10) as u8 + b'0';
+            buf[offset + 3] = ((n / 10) % 10) as u8 + b'0';
+            buf[offset + 4] = (n % 10) as u8 + b'0';
+            5
+        }
+    }
+
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
         let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);

@@ -25,3 +25,19 @@ and the maximum number of digits.
 # Features
 - Makes use of the `unsafe_str` feature if enabled.\n\n";
 }
+
+#[rustfmt::skip] macro_rules! DOC_WRITE_DIGITS_10 { ($MAX:literal) => { concat![
+"Writes 1..=", $MAX, " decimal digits without leading zeros starting at `offset`,
+returning the number of bytes written.\n\n
+This method calculates the exact digit count first, allowing it to work with
+buffers smaller than ", $MAX, " bytes. Returns 0 if insufficient space remains.\n\n"
+]}; }
+#[rustfmt::skip] macro_rules! DOC_WRITE_DIGITS_10_FAST { ($MAX:literal) => { concat![
+"Writes 1..=", $MAX, " decimal digits without leading zeros starting at `offset`,
+returning the number of bytes written.\n\n
+This method uses a faster algorithm that avoids digit counting but requires
+the buffer to have at least ", $MAX, " bytes available.
+# Panics
+Panics in debug mode if fewer than ", $MAX, " bytes remain starting at `offset`."
+] }; }
+pub(super) use {DOC_WRITE_DIGITS_10, DOC_WRITE_DIGITS_10_FAST};

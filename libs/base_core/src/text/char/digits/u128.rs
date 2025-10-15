@@ -1,7 +1,7 @@
 // devela_base_core::text::char::digits::u128
 
 use super::*;
-use crate::{Cmp, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
+use crate::{Cmp, LUT_DECIMAL_PAIRS, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
 
 impl Digits<u128> {
     /// The maximum number of decimal digits a `u128` can represent.
@@ -228,6 +228,64 @@ impl Digits<u128> {
             self.digit_at_power16(0x10),
             self.digit_at_power16(0x1),
         ]
+    }
+
+    #[doc = DOC_WRITE_DIGITS_10!(39)]
+    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+        let mut n = self.0;
+        if n == 0 {
+            is![offset < buf.len(); { buf[offset] = b'0'; return 1 }];
+            return 0;
+        }
+        let digits = n.ilog10() as usize + 1;
+        is![offset + digits > buf.len(); return 0];
+        // builds the digits in reverse using the LUT
+        let mut pos = offset + digits;
+        while n >= 100 {
+            pos -= 2;
+            let idx = ((n % 100) * 2) as usize;
+            buf[pos] = LUT_DECIMAL_PAIRS[idx];
+            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+            n /= 100;
+        }
+        if n < 10 {
+            pos -= 1;
+            buf[pos] = n as u8 + b'0';
+        } else {
+            pos -= 2;
+            let idx = (n * 2) as usize;
+            buf[pos] = LUT_DECIMAL_PAIRS[idx];
+            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+        }
+        digits
+    }
+
+    #[doc = DOC_WRITE_DIGITS_10_FAST!(39)]
+    pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+        const MAX: usize = Digits::<u128>::MAX_DIGITS_10 as usize;
+        debug_assert!(offset + MAX <= buf.len(), "buffer < 39 bytes");
+        let mut n = self.0;
+        is![n == 0; { buf[offset] = b'0'; return 1 }];
+        let mut pos = offset + MAX;
+        while n >= 100 {
+            pos -= 2;
+            let idx = ((n % 100) * 2) as usize;
+            buf[pos] = LUT_DECIMAL_PAIRS[idx];
+            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+            n /= 100;
+        }
+        if n < 10 {
+            pos -= 1;
+            buf[pos] = n as u8 + b'0';
+        } else {
+            pos -= 2;
+            let idx = (n * 2) as usize;
+            buf[pos] = LUT_DECIMAL_PAIRS[idx];
+            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+        }
+        let written_len = (offset + MAX) - pos;
+        buf.copy_within(pos..(offset + MAX), offset); // WAIT: non-const
+        written_len
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]

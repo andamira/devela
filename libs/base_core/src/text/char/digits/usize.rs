@@ -142,11 +142,13 @@ impl Digits<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
-    #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
+    #[must_use]
+    #[cfg(target_pointer_width = "16")]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         Digits(self.0 as u16).digits10()
     }
-    #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
+    #[must_use]
+    #[cfg(target_pointer_width = "16")]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         Digits(self.0 as u16).digits16()
     }
@@ -156,11 +158,13 @@ impl Digits<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
-    #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
+    #[must_use]
+    #[cfg(target_pointer_width = "32")]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         Digits(self.0 as u32).digits10()
     }
-    #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
+    #[must_use]
+    #[cfg(target_pointer_width = "32")]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         Digits(self.0 as u32).digits16()
     }
@@ -170,7 +174,8 @@ impl Digits<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
-    #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
+    #[must_use]
+    #[cfg(target_pointer_width = "64")]
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         Digits(self.0 as u64).digits10()
     }
@@ -179,9 +184,39 @@ impl Digits<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
-    #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
+    #[must_use]
+    #[cfg(target_pointer_width = "64")]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
         Digits(self.0 as u64).digits16()
+    }
+
+    #[doc = DOC_WRITE_DIGITS_10!(10)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "32")]
+    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u32).write_digits10(buf, offset)
+    }
+    #[doc = DOC_WRITE_DIGITS_10_FAST!(10)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "32")]
+    pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u32).write_digits10_fast(buf, offset)
+    }
+    #[doc = DOC_WRITE_DIGITS_10!(20)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "64")]
+    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u64).write_digits10(buf, offset)
+    }
+    #[doc = DOC_WRITE_DIGITS_10_FAST!(20)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "64")]
+    pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u64).write_digits10_fast(buf, offset)
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]

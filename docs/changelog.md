@@ -310,7 +310,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `Digits`:
   - new type: `AnsiColor`.
   - new const: `MAX_DIGITS_16`.
-  - new methods: `count_digits16`, `digit_at_index10[_checked]`, `digit_at_index16[_checked]`, `digit_value_at_index10[_checked]`, `digit_value_at_index16[_checked]`, `digits16`, `write_digits10`, `write_digits10_omit0`, `write_digits16`, `write_digits16_omit0`.
+  - new methods: `count_digits16`, `digit_at_index10[_checked]`, `digit_at_index16[_checked]`, `digit_value_at_index10[_checked]`, `digit_value_at_index16[_checked]`, `digits16`, `write_digits10`, `write_digits10_fast`, `write_digits10_omit0`, `write_digits16`, `write_digits16_omit0`.
   - new private method: `digit_at_power16`.
   - rename const: `MAX_DIGITS` to `MAX_DIGITS_10` and make them of type `u8`.
   - rename methods:
