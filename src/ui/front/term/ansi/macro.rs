@@ -70,7 +70,7 @@ macro_rules! ansi {
     b: // outputs a static byte slice
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         const BYTES: &'static [u8] = $crate::paste! {
-            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
+            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper _B>] $(($($arg),*))? ,)+ )
         };
         BYTES
     }};
@@ -104,7 +104,7 @@ macro_rules! ansi {
     b: // outputs a static byte slice
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         const BYTES: &'static [u8] = $crate::paste! {
-            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
+            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper _B>] $(($($arg),*))? ,)+ )
         };
         BYTES
     }};
@@ -124,7 +124,7 @@ macro_rules! ansi {
         $(
             if some_error.is_none() {
                 match $crate::ansi_print_std( $crate::paste! {
-                    &$crate::Ansi::[<$command:upper>] $(($($arg),*))?
+                    &$crate::Ansi::[<$command:upper _B>] $(($($arg),*))?
                 }) {
                     Ok(_) => (),
                     Err(e) => some_error = Some(e),
@@ -149,7 +149,7 @@ macro_rules! ansi {
     b: // outputs a static byte slice
     $($command:ident $(($($arg:expr),*))? $(,)?)+) => {{
         const BYTES: &'static [u8] = $crate::paste! {
-            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper>] $(($($arg),*))? ,)+ )
+            $crate::const_join!(bytes: $( $crate::Ansi::[<$command:upper _B>] $(($($arg),*))? ,)+ )
         };
         BYTES
     }};
@@ -169,7 +169,7 @@ macro_rules! ansi {
         $(
             if some_error.is_none() {
                 match $crate::ansi_print_linux( $crate::paste! {
-                    &$crate::Ansi::[<$command:upper>] $(($($arg),*))?
+                    &$crate::Ansi::[<$command:upper _B>] $(($($arg),*))?
                 }) {
                     Ok(_) => (),
                     Err(e) => some_error = Some(e),

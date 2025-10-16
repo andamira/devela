@@ -1,4 +1,4 @@
-// devela::ui::front::term::ansi::color
+// devela_base_core::ui::front::term::ansi::color
 //
 //! ANSI codes related to color.
 //
@@ -13,7 +13,7 @@
 //   - 8-bit Palette escape codes
 //   - RGB Color escape codes
 
-use crate::{Ansi, Digits};
+use crate::{_ansi_consts, Ansi, Digits};
 
 mod bit3;
 mod bit8;
@@ -98,60 +98,20 @@ impl AnsiColor {
 
 // the bare color escape codes (private module)
 mod C {
-    use super::AnsiColor3 as A3;
-
     pub(super) const FG: u8 = b'3';
     pub(super) const BG: u8 = b'4';
     pub(super) const BRI_FG: u8 = b'9';
     pub(super) const BRI_BG: [u8; 2] = *b"10";
-    //
     pub(super) const C8: [u8; 4] = *b"8;5;";
     pub(super) const RGB: [u8; 4] = *b"8;2;";
-    //
-    pub(super) const BLACK_FG: [u8; 2] = [FG, A3::Black.to_ascii()];
-    pub(super) const RED_FG: [u8; 2] = [FG, A3::Red.to_ascii()];
-    pub(super) const GREEN_FG: [u8; 2] = [FG, A3::Green.to_ascii()];
-    pub(super) const YELLOW_FG: [u8; 2] = [FG, A3::Yellow.to_ascii()];
-    pub(super) const BLUE_FG: [u8; 2] = [FG, A3::Blue.to_ascii()];
-    pub(super) const MAGENTA_FG: [u8; 2] = [FG, A3::Magenta.to_ascii()];
-    pub(super) const CYAN_FG: [u8; 2] = [FG, A3::Cyan.to_ascii()];
-    pub(super) const WHITE_FG: [u8; 2] = [FG, A3::White.to_ascii()];
-
-    pub(super) const BLACK_BG: [u8; 2] = [BG, A3::Black.to_ascii()];
-    pub(super) const RED_BG: [u8; 2] = [BG, A3::Red.to_ascii()];
-    pub(super) const GREEN_BG: [u8; 2] = [BG, A3::Green.to_ascii()];
-    pub(super) const YELLOW_BG: [u8; 2] = [BG, A3::Yellow.to_ascii()];
-    pub(super) const BLUE_BG: [u8; 2] = [BG, A3::Blue.to_ascii()];
-    pub(super) const MAGENTA_BG: [u8; 2] = [BG, A3::Magenta.to_ascii()];
-    pub(super) const CYAN_BG: [u8; 2] = [BG, A3::Cyan.to_ascii()];
-    pub(super) const WHITE_BG: [u8; 2] = [BG, A3::White.to_ascii()];
-
-    pub(super) const BRI_BLACK_FG: [u8; 2] = [BRI_FG, A3::Black.to_ascii()];
-    pub(super) const BRI_RED_FG: [u8; 2] = [BRI_FG, A3::Red.to_ascii()];
-    pub(super) const BRI_GREEN_FG: [u8; 2] = [BRI_FG, A3::Green.to_ascii()];
-    pub(super) const BRI_YELLOW_FG: [u8; 2] = [BRI_FG, A3::Yellow.to_ascii()];
-    pub(super) const BRI_BLUE_FG: [u8; 2] = [BRI_FG, A3::Blue.to_ascii()];
-    pub(super) const BRI_MAGENTA_FG: [u8; 2] = [BRI_FG, A3::Magenta.to_ascii()];
-    pub(super) const BRI_CYAN_FG: [u8; 2] = [BRI_FG, A3::Cyan.to_ascii()];
-    pub(super) const BRI_WHITE_FG: [u8; 2] = [BRI_FG, A3::White.to_ascii()];
-
-    pub(super) const BRI_BLACK_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::Black.to_ascii()];
-    pub(super) const BRI_RED_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::Red.to_ascii()];
-    pub(super) const BRI_GREEN_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::Green.to_ascii()];
-    pub(super) const BRI_YELLOW_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::Yellow.to_ascii()];
-    pub(super) const BRI_BLUE_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::Blue.to_ascii()];
-    pub(super) const BRI_MAGENTA_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::Magenta.to_ascii()];
-    pub(super) const BRI_CYAN_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::Cyan.to_ascii()];
-    pub(super) const BRI_WHITE_BG: [u8; 3] = [BRI_BG[0], BRI_BG[1], A3::White.to_ascii()];
 }
 
 /// # RGB Color escape codes
 #[rustfmt::skip]
-impl Ansi {
+impl Ansi { _ansi_consts! {
     /// Code to set the foreground color to `fg: [r, g, b]` values,
     /// and the background to `bg: [r, g, b]`.
     // \x1b[38;2;R;G;B;48;2;R;G;Bm
-    #[must_use]
     pub const fn RGB(fg: [u8; 3], bg: [u8; 3]) -> [u8; 36] {
         const X: [u8; 4] = C::RGB;
         let [fR, fG, fB] = fg;
@@ -167,7 +127,6 @@ impl Ansi {
     }
 
     /// Code to set the foreground color to `fg: [r, g, b]` values.
-    #[must_use]
     pub const fn RGB_FG(fg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
         let [r, g, b] = fg;
@@ -181,7 +140,6 @@ impl Ansi {
     }
 
     /// Code to set the background color to `bg: [r, g, b]` values.
-    #[must_use]
     pub const fn RGB_BG(bg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
         let [r, g, b] = bg;
@@ -193,4 +151,4 @@ impl Ansi {
             b'm',
         ]
     }
-}
+}}

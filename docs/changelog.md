@@ -381,12 +381,15 @@ Many feature gates are removed in order to make most features make always availa
 - update `Ansi:`
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
   - add methods: `COLOR_FG_BRIGHT`, `COLOR_BG_BRIGHT`.
+  - rename current associated const items with a `_B` suffix.
+  - add duplicated items with the old name returning a string slice or a `StringU8`.
   - modify `CURSOR_MOVE_N` method to use `Digits::digit_at_index10`.
   - modify `CURSOR_*` methods taking `u32` to take `u16`.
   - make all escape-sequence methods *const*.
   - fix codes related to alternate screen.
 - update `ansi!`:
   - add new arms `p!` and `@p!` that auto-unwrap.
+  - refactor to accomodate `Ansi` changes. TODO
   - fix macro visibility.
 
 

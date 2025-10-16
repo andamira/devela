@@ -7,10 +7,13 @@
 
 pub mod front;
 
-crate::structural_mods! { // _pub_mods
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             front::_all::*,
         };
+    }
+    _crate_internals {
+        pub use super::front::_crate_internals::*;
     }
 }

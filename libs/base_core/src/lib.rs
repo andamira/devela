@@ -72,6 +72,7 @@ pub mod all {
         data::_all::*,
         game::_all::*,
         lang::_all::*,
+        media::_all::*,
         num::_all::*,
         phys::_all::*,
         sys::_all::*,
@@ -89,6 +90,7 @@ pub mod _crate_internals {
     #![allow(unused_imports)]
     pub use super::{
         code::_crate_internals::*,
+        ui::_crate_internals::*,
     };
 }
 #[allow(unused_imports)]

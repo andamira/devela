@@ -10,11 +10,16 @@
 mod namespace; // Ansi
 mod color; // AnsiColor3, AnsiColor8 (+Ansi impls)
 
-crate::structural_mods! { // _mods
+mod helper; // _ANSI_CONSTS
+
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             color::*,
             namespace::*,
         };
+    }
+    _crate_internals {
+        pub(crate) use super::helper::*;
     }
 }
