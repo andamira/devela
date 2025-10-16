@@ -7,8 +7,8 @@
 // - trait impls
 
 use crate::{
-    Char, CharIter, InvalidText, Mismatch, MismatchedCapacity, NotEnoughElements, Str, cfor,
-    char_utf8, char7, char8, char16, is, slice, unwrap,
+    Char, CharIter, InvalidText, Mismatch, MismatchedCapacity, NotEnoughElements, Str, char_utf8,
+    char7, char8, char16, is, slice, unwrap,
 };
 
 /* definitions */
@@ -36,8 +36,8 @@ const NUL_CHAR: char = '\0';
 ///       [8](Self::from_char8),
 ///       [16](Self::from_char16),
 ///       [utf8](Self::from_char_utf8))*.
-///   [`from_byte_array`][Self::from_byte_array],
-///    *([_unchecked][Self::from_str_unchecked])*.
+///   [`from_array`][Self::from_array],
+///    *([_unchecked][Self::from_array_unchecked])*.
 ///
 /// - [Deconstructors](#deconstructors):
 ///   [`into_array`][Self::into_array],
@@ -251,7 +251,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
-
         #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
         return slice![mut &mut self.arr, ..len];
 
@@ -636,18 +635,15 @@ impl<const CAP: usize> StringNonul<CAP> {
 
     /// Returns a string from an array of `bytes`.
     ///
+    /// Note that the first NUL character will indicate the end of the string.
+    ///
     /// # Errors
-    /// Returns [`InvalidText::Utf8`] if the bytes are not valid UTF-8,
-    /// and [`InvalidText::Char`] if the bytes contains a NUL character.
-    pub const fn from_byte_array(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
+    /// Returns [`InvalidText::Utf8`] if the bytes are not valid UTF-8.
+    #[inline(always)]
+    pub const fn from_array(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
         // IMPROVE: use Str
         match ::core::str::from_utf8(&bytes) {
-            Ok(_) => {
-                cfor![index in 0..CAP => {
-                    is![bytes[index] == 0; return Err(InvalidText::Char('\0'))];
-                }];
-                Ok(Self { arr: bytes })
-            }
+            Ok(_) => Ok(Self { arr: bytes }),
             Err(e) => Err(InvalidText::from_utf8_error(e)),
         }
     }
@@ -656,13 +652,23 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Safety
     /// The caller must ensure that the content of the slice is valid UTF-8,
-    /// and that it doesn't contain nul characters.
+    /// and that it has no NUL characters as part of the string.
     ///
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
+    #[inline(always)]
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    pub const unsafe fn from_byte_array_unchecked(bytes: [u8; CAP]) -> Self {
+    pub const unsafe fn from_array_unchecked(bytes: [u8; CAP]) -> Self {
         Self { arr: bytes }
+    }
+    /// Internal accessor for trusted formatting operations, avoiding safe re-validation.
+    ///
+    /// # Safety
+    /// The caller must ensure that the content of the slice is valid UTF-8,
+    /// and that it has no NUL characters as part of the string.
+    #[inline(always)]
+    pub(crate) const fn _from_array_trusted(array: [u8; CAP]) -> Self {
+        Self { arr: array }
     }
 }
 
@@ -670,7 +676,7 @@ impl<const CAP: usize> StringNonul<CAP> {
 
 #[rustfmt::skip]
 mod trait_impls {
-    use crate::{Debug, Deref, Display, FmtResult, Formatter, Hash, Hasher};
+    use crate::{Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash, Hasher};
     use super::{StringNonul, InvalidText, Mismatch, MismatchedCapacity, is};
 
     impl<const CAP: usize> Default for StringNonul<CAP> {
@@ -689,6 +695,18 @@ mod trait_impls {
     impl<const CAP: usize> Debug for StringNonul<CAP> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write!(f, "{:?}", self.as_str())
+        }
+    }
+
+    /// Leverages [`try_push`][Self::try_push] and [`try_push_str`][Self::try_push_str].
+    impl<const CAP: usize> FmtWrite for StringNonul<CAP> {
+        fn write_str(&mut self, s: &str) -> FmtResult<()> {
+            self.try_push_str(s).map_err(|_| FmtError)?;
+            Ok(())
+        }
+        fn write_char(&mut self, c: char) -> FmtResult<()> {
+            self.try_push(c).map_err(|_| FmtError)?;
+            Ok(())
         }
     }
 

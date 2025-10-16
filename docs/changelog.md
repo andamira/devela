@@ -349,27 +349,26 @@ Many feature gates are removed in order to make most features make always availa
 - update `Str:`
   - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
   - remove method `from_boxed_utf8_unchecked`.
-- update `StringNonul`:
-  - new methods: `chars`, `char_count`, `eq`, `from_char_utf8`, `from_char_utf8_unchecked`, `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`.
-  - rename methods `from_bytes*` to `from_array*`.
+- common updates for `StringNonul` and `StringU`:
+  - new methods: `eq`, `from_char_utf8`, `from_char_utf8_unchecked`, `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`.
+  - impl `AsRef<&str>`, `Deref`, `Extend`, `FmtWrite`, `FromIterator`.
   - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
   - make **all** methods *const*.
   - make `new` method panic.
-  - impl `Extend`, `FromIterator`, `PartialEq`.
+  - rename methods `from_bytes*` to `from_array*`.
+- update `StringNonul`:
+  - new methods: `chars`, `char_count`.
+  - rename methods `from_byte_array*` to `from_array*`.
+  - impl `PartialEq`.
 - update `StringU*`:
-  - impl `AsMut<&str>`, `DerefMut`, `Extend`, `FromIterator`.
-  - new methods: `eq`, `from_char_utf8`, `from_char_utf8_unchecked`, `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`, `pop_unchecked`, `sanitize`.
+  - new methods: `pop_unchecked`, `sanitize`.
   - modify methods:
   - `as_mut_str`: make safe.
   - `push_str`, make const, improve efficiency, update docs & examples.
   - `try_push_str*`, make const, return `Result<usize, usize>`, update docs & examples.
-  - rename methods `from_bytes*` to `from_array*`.
-  - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
-  - make **all** methods *const*.
-  - make `new` method panic.
   - remove `AsMut` & `DerefMut` impls.
-  - impl `Extend`, `FromIterator`, `PartialEq`.
   - fix `TryFrom<&str>` impl.
+  - impl `PartialEq`.
   - improve docs.
 
 ## ui

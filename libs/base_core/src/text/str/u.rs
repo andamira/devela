@@ -9,8 +9,9 @@
 // - tests
 
 use crate::{
-    CharIter, Debug, Deref, Display, FmtResult, Formatter, Hash, Hasher, InvalidText, InvalidUtf8,
-    Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste, slice, text::char::*,
+    CharIter, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash, Hasher,
+    InvalidText, InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste,
+    slice, text::char::*,
 };
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, cfor, unwrap};
@@ -327,6 +328,11 @@ macro_rules! impl_str_u {
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_array_unchecked(bytes: [u8; CAP]) -> Self {
                 Self { arr: bytes, len: CAP as $t }
+            }
+            /// Internal accessor for trusted formatting operations, avoiding safe re-validation.
+            #[inline(always)]
+            pub(crate) const fn _from_array_len_trusted(array: [u8; CAP], len: $t) -> Self {
+                Self { arr: array, len }
             }
 
             /// Returns a string from an array of `bytes`,
@@ -725,6 +731,18 @@ macro_rules! impl_str_u {
         impl<const CAP: usize> Debug for $name<CAP> {
             fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
                 write!(f, "{:?}", self.as_str())
+            }
+        }
+
+        /// Leverages [`try_push`][Self::try_push] and [`try_push_str`][Self::try_push_str].
+        impl<const CAP: usize> FmtWrite for $name<CAP> {
+            fn write_str(&mut self, s: &str) -> FmtResult<()> {
+                self.try_push_str(s).map_err(|_| FmtError)?;
+                Ok(())
+            }
+            fn write_char(&mut self, c: char) -> FmtResult<()> {
+                self.try_push(c).map_err(|_| FmtError)?;
+                Ok(())
             }
         }
 
