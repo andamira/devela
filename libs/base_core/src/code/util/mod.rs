@@ -26,6 +26,7 @@ mod impl_trait; // impl_trait!
 mod include; // include_from!, mod_from!, mod_path!
 mod is; // is!
 mod items; // items!, sf!
+mod lut; // Lut
 mod maybe; // maybe!
 mod methods; // methods_as_fns!
 mod paste; // paste! (wrapped for docs)
@@ -52,6 +53,7 @@ structural::structural_mods! { // _mods, _workspace_internals
             include::{include_from, mod_from, mod_path},
             is::is,
             items::{items, sf},
+            lut::Lut,
             maybe::maybe,
             methods::methods_as_fns,
             paste::paste,

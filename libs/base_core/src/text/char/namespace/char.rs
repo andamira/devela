@@ -3,7 +3,7 @@
 // TOC
 // - methods over char
 
-use crate::{Char, LUT_ASCII_CHARS, is, unwrap};
+use crate::{Char, Lut, is, unwrap};
 
 /// # Methods over `char`
 #[rustfmt::skip]
@@ -74,14 +74,14 @@ impl Char<char> {
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
     pub const fn as_ascii(self) -> &'static str {
-        is![self.0.is_ascii(); LUT_ASCII_CHARS[self.0 as usize]; ""]
+        is![self.0.is_ascii(); Lut::ASCII_CHARS[self.0 as usize]; ""]
     }
 
     /// Returns the ASCII representation as a `&'static str`.
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use] #[inline(always)]
-    pub const fn as_ascii_unchecked(self) -> &'static str { LUT_ASCII_CHARS[self.0 as usize] }
+    pub const fn as_ascii_unchecked(self) -> &'static str { Lut::ASCII_CHARS[self.0 as usize] }
 
     /// Converts a character to its closest ASCII equivalent, if possible.
     ///

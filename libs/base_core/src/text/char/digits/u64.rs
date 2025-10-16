@@ -1,7 +1,7 @@
 // devela_base_core::text::char::digits::u64
 
 use super::*;
-use crate::{Cmp, LUT_DECIMAL_PAIRS, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
+use crate::{Cmp, Lut, StringU8, is};
 
 impl Digits<u64> {
     /// The maximum number of decimal digits a `u64` can represent.
@@ -37,7 +37,7 @@ impl Digits<u64> {
     #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return b'0'];
-        let power = LUT_POWERS10[index as usize] as u64;
+        let power = Lut::POWERS10[index as usize] as u64;
         (self.0 / power % 10) as u8 + b'0'
     }
 
@@ -47,7 +47,7 @@ impl Digits<u64> {
     #[must_use]
     pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u64;
+        let power = Lut::POWERS10[index as usize] as u64;
         Some((self.0 / power % 10) as u8 + b'0')
     }
 
@@ -58,7 +58,7 @@ impl Digits<u64> {
     pub const fn digit_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
         let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-        LUT_DIGITS_BASE36[digit]
+        Lut::DIGITS_BASE36[digit]
     }
 
     /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
@@ -69,7 +69,7 @@ impl Digits<u64> {
         is![index >= self.count_digits16(); return None];
         let shift = index as u32 * 4;
         let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-        Some(LUT_DIGITS_BASE36[digit])
+        Some(Lut::DIGITS_BASE36[digit])
     }
 
     /* digit_value_at_ */
@@ -80,7 +80,7 @@ impl Digits<u64> {
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return 0];
-        let power = LUT_POWERS10[index as usize] as u64;
+        let power = Lut::POWERS10[index as usize] as u64;
         (self.0 / power % 10) as u8
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
@@ -89,7 +89,7 @@ impl Digits<u64> {
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u64;
+        let power = Lut::POWERS10[index as usize] as u64;
         Some((self.0 / power % 10) as u8)
     }
 
@@ -132,7 +132,7 @@ impl Digits<u64> {
             0x10000000 => (self.0 >> 28) & 0xF,
             _ => (self.0 / divisor) % 16,
         };
-        LUT_DIGITS_BASE36[digit as usize]
+        Lut::DIGITS_BASE36[digit as usize]
     }
 
     /// Converts a `u64` into a byte array of `20` ASCII decimal digits with leading zeros.
@@ -207,8 +207,8 @@ impl Digits<u64> {
         while n >= 100 {
             pos -= 2;
             let idx = ((n % 100) * 2) as usize;
-            buf[pos] = LUT_DECIMAL_PAIRS[idx];
-            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+            buf[pos] = Lut::DECIMAL_PAIRS[idx];
+            buf[pos + 1] = Lut::DECIMAL_PAIRS[idx + 1];
             n /= 100;
         }
         if n < 10 {
@@ -217,8 +217,8 @@ impl Digits<u64> {
         } else {
             pos -= 2;
             let idx = (n * 2) as usize;
-            buf[pos] = LUT_DECIMAL_PAIRS[idx];
-            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+            buf[pos] = Lut::DECIMAL_PAIRS[idx];
+            buf[pos + 1] = Lut::DECIMAL_PAIRS[idx + 1];
         }
         digits
     }
@@ -233,8 +233,8 @@ impl Digits<u64> {
         while n >= 100 {
             pos -= 2;
             let idx = ((n % 100) * 2) as usize;
-            buf[pos] = LUT_DECIMAL_PAIRS[idx];
-            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+            buf[pos] = Lut::DECIMAL_PAIRS[idx];
+            buf[pos + 1] = Lut::DECIMAL_PAIRS[idx + 1];
             n /= 100;
         }
         if n < 10 {
@@ -243,8 +243,8 @@ impl Digits<u64> {
         } else {
             pos -= 2;
             let idx = (n * 2) as usize;
-            buf[pos] = LUT_DECIMAL_PAIRS[idx];
-            buf[pos + 1] = LUT_DECIMAL_PAIRS[idx + 1];
+            buf[pos] = Lut::DECIMAL_PAIRS[idx];
+            buf[pos + 1] = Lut::DECIMAL_PAIRS[idx + 1];
         }
         let written_len = (offset + MAX) - pos;
         buf.copy_within(pos..(offset + MAX), offset); // WAIT: non-const

@@ -1,6 +1,6 @@
 // devela_base_core::text::char::namespace::u32
 
-use crate::{Char, LUT_ASCII_CHARS};
+use crate::{Char, Lut};
 
 /// # Methods over `u32`.
 #[rustfmt::skip]
@@ -318,7 +318,7 @@ impl Char<u32> {
     /// Returns the ASCII `&'static str` representation of the value, or `""` if non-ASCII.
     #[must_use]
     pub const fn as_ascii(self) -> &'static str {
-        if self.is_ascii() { LUT_ASCII_CHARS[self.0 as usize] } else { "" }
+        if self.is_ascii() { Lut::ASCII_CHARS[self.0 as usize] } else { "" }
     }
 
     /// Returns the ASCII `&'static str` representation of the value, or panics if non-ASCII.
@@ -326,7 +326,7 @@ impl Char<u32> {
     /// # Panics
     /// Panics if the character is not ASCII.
     #[must_use]
-    pub const fn as_ascii_unchecked(self) -> &'static str { LUT_ASCII_CHARS[self.0 as usize] }
+    pub const fn as_ascii_unchecked(self) -> &'static str { Lut::ASCII_CHARS[self.0 as usize] }
 
     /// Converts the Unicode scalar value to a UTF-8 encoded byte sequence array.
     ///

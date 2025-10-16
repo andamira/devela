@@ -1,7 +1,7 @@
 // devela_base_core::text::char::digits::u8
 
 use super::*;
-use crate::{Cmp, LUT_DIGITS_BASE36, LUT_POWERS10, StringU8, is};
+use crate::{Cmp, Lut, StringU8, is};
 
 impl Digits<u8> {
     /// The maximum number of decimal digits a `u8` can represent.
@@ -53,7 +53,7 @@ impl Digits<u8> {
     #[must_use]
     pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u8;
+        let power = Lut::POWERS10[index as usize] as u8;
         Some((self.0 / power % 10) + b'0')
     }
 
@@ -64,7 +64,7 @@ impl Digits<u8> {
     pub const fn digit_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
         let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-        LUT_DIGITS_BASE36[digit]
+        Lut::DIGITS_BASE36[digit]
     }
     /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
     ///
@@ -74,7 +74,7 @@ impl Digits<u8> {
         is![index >= self.count_digits16(); return None];
         let shift = index as u32 * 4;
         let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-        Some(LUT_DIGITS_BASE36[digit])
+        Some(Lut::DIGITS_BASE36[digit])
     }
 
     /* digit_value_at_ */
@@ -85,7 +85,7 @@ impl Digits<u8> {
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return 0];
-        let power = LUT_POWERS10[index as usize] as u8;
+        let power = Lut::POWERS10[index as usize] as u8;
         self.0 / power % 10
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
@@ -94,7 +94,7 @@ impl Digits<u8> {
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = LUT_POWERS10[index as usize] as u8;
+        let power = Lut::POWERS10[index as usize] as u8;
         Some(self.0 / power % 10)
     }
 
@@ -133,7 +133,7 @@ impl Digits<u8> {
             0x10 => (self.0 >> 4) & 0xF,
             _ => (self.0 / divisor) % 16,
         };
-        LUT_DIGITS_BASE36[digit as usize]
+        Lut::DIGITS_BASE36[digit as usize]
     }
 
     /// Converts a `u8` into a byte array of `3` ASCII decimal digits with leading zeros.
@@ -220,11 +220,11 @@ impl Digits<u8> {
         let n = self.0;
         is![offset + 2 > buf.len(); return 0];
         if n < 0x10 {
-            buf[offset] = LUT_DIGITS_BASE36[n as usize];
+            buf[offset] = Lut::DIGITS_BASE36[n as usize];
             1
         } else {
-            buf[offset] = LUT_DIGITS_BASE36[(n >> 4) as usize];
-            buf[offset + 1] = LUT_DIGITS_BASE36[(n & 0x0F) as usize];
+            buf[offset] = Lut::DIGITS_BASE36[(n >> 4) as usize];
+            buf[offset + 1] = Lut::DIGITS_BASE36[(n & 0x0F) as usize];
             2
         }
     }
@@ -237,11 +237,11 @@ impl Digits<u8> {
         is![n == 0; return 0];
         is![offset + 2 > buf.len(); return 0];
         if n < 0x10 {
-            buf[offset] = LUT_DIGITS_BASE36[n as usize];
+            buf[offset] = Lut::DIGITS_BASE36[n as usize];
             1
         } else {
-            buf[offset] = LUT_DIGITS_BASE36[(n >> 4) as usize];
-            buf[offset + 1] = LUT_DIGITS_BASE36[(n & 0x0F) as usize];
+            buf[offset] = Lut::DIGITS_BASE36[(n >> 4) as usize];
+            buf[offset + 1] = Lut::DIGITS_BASE36[(n & 0x0F) as usize];
             2
         }
     }
@@ -298,7 +298,7 @@ impl Digits<u8> {
     /// This function panics in debug if the given number is > `0xF`.
     pub const fn digits16_1(self) -> u8 {
         debug_assert![self.0 <= 0xF];
-        LUT_DIGITS_BASE36[self.0 as usize]
+        Lut::DIGITS_BASE36[self.0 as usize]
     }
 }
 
