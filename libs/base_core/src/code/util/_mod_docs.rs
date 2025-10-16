@@ -10,11 +10,18 @@ crate::CONST! { hidden macro_export,
 #![doc = crate::_DOC_X!()]
     _DOC_ = "";
 */
-    _ABBR_DSL  = "<abbr title='Domain Specific Language'>DSL</abbr>";
+    /// - <https://en.wikipedia.org/wiki/Domain-specific_language>
+    _ABBR_DSL  = "<abbr title='Domain-specific Language'>DSL</abbr>";
+    /// - <https://www.unicode.org/reports/tr29/#:~:text=An-,extended%20grapheme%20cluster,-is>
     _ABBR_EGC  = "<abbr title='Extended Grapheme Cluster'>EGC</abbr>";
+    /// - <https://en.wikipedia.org/wiki/Foreign_function_interface>
     _ABBR_FFI  = "<abbr title='Foreign Function Interface'>FFI</abbr>";
+    /// - <https://en.wikipedia.org/wiki/Queue_(abstract_data_type)>
     _ABBR_FIFO = "<abbr title='First-In, First-Out'>FIFO</abbr>."; // queue
+    /// - <https://en.wikipedia.org/wiki/Stack_(abstract_data_type)>
     _ABBR_LIFO = "<abbr title='Last-In, First-Out'>LIFO</abbr>."; // stack
+    /// - <https://en.wikipedia.org/wiki/Lookup_table>
+    _ABBR_LUT  = "<abbr title='Look-up Table'>LUT</abbr>";
 
 
     _DOC_CODE            = "Code reflective synthesis.";
