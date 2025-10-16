@@ -6,7 +6,6 @@
 // - _doc!
 // - _doc_availability!
 // - _doc_miri_warn!
-// - _std_core!
 //
 // TODO: try to use paste! instead of concat!, since it's faster.
 
@@ -244,9 +243,3 @@ macro_rules! __doc_miri_warn {
 }
 #[doc(hidden)]
 pub use __doc_miri_warn as _doc_miri_warn;
-
-crate::sf! {
-    /// Should return the string literal "std" if `std` is enabled, or "core" otherwise.
-    macro_rules! _std_core { () => { "core" }; }
-    #[allow(unused_imports)] pub(crate) use _std_core;
-}

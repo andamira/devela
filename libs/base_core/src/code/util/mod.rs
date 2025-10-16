@@ -4,11 +4,12 @@
 //
 
 /* private to the workspace */
-mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!, std_core!
+mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!
 mod _links; // _DOCLINK_*!
 mod _mod_docs; // _DOC_*!
 mod _tags; // EMOJI_*! _TAG_*!
 mod _reexport; // reexport!, reexport_from!
+mod _std; // __std!, _std_core!
 mod _use; // _use!
 
 mod reexports;
@@ -62,7 +63,7 @@ structural::structural_mods! { // _mods, _workspace_internals
         };
     }
     _crate_internals {
-        pub(crate) use super::_doc::_std_core;
+        pub(crate) use super::_std::{__std, _std_core};
     }
     _workspace_internals {
         pub use super::{
