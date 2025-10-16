@@ -85,7 +85,7 @@
     all(nightly_stable_1_92, feature = "alloc"),
     feature(file_with_nul, btree_entry_insert,)
 )]
-#![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature())]
+#![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature(rwlock_downgrade,))]
 // ----------------------------
 // `nightly_stable_1_93`: core, alloc, std…
 // #![cfg_attr(nightly_stable_1_93, feature())]
@@ -127,7 +127,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(once_wait, rwlock_downgrade, stdarch_s390x_feature_detection,)
+    feature(once_wait, stdarch_s390x_feature_detection,)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 

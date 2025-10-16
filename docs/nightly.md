@@ -52,13 +52,12 @@ See also
 - 1.92: `a`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
 - 1.92: `·`[const_slice_rotate](https://github.com/rust-lang/rust/pull/146841)
 - 1.92: `a`[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
+- 1.92: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 
 # 1.93 will be stable on 2026-01-22 ([`nightly_stable_1_93`](https://releases.rs/docs/1.93.0/))
 <!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
-
--
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -92,7 +91,6 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 - 1.??: `·`[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
 - 1.??: `a`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
