@@ -22,6 +22,7 @@ pub use devela_base_core::{
     include_from, mod_from, mod_path,
     is,
     items, sf,
+    lets,
     maybe,
     methods_as_fns,
     paste,
