@@ -5,6 +5,8 @@
 
 use crate::_reexport;
 
+/* devela_base_macros */
+
 #[doc = crate::_TAG_PROCEDURAL_MACRO!()] #[rustfmt::skip]
 pub use devela_base_macros::{
     cif, compile, compile_attr,

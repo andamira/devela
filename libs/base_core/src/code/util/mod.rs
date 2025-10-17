@@ -3,7 +3,10 @@
 #![doc = crate::_DOC_CODE_UTIL!()]
 //
 
-/* private to the workspace */
+#[cfg(test)]
+mod tests;
+
+/* internal to the workspace */
 mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!
 mod _links; // _DOCLINK_*!
 mod _mod_docs; // _DOC_*!
@@ -12,7 +15,9 @@ mod _reexport; // reexport!, reexport_from!
 mod _std; // __std!, _std_core!
 mod _use; // _use!
 
-mod reexports;
+/* public */
+
+mod reexports; // macros from core & devela_base_macros
 
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail_tuple]!
@@ -35,7 +40,7 @@ mod paste; // paste! (wrapped for docs)
 mod structural; // structural_mods!
 mod write; // write_at!
 
-structural::structural_mods! { // _mods, _workspace_internals
+structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
     _mods {
         // NOTE: in sync with /devela/code/util/reexports.rs:
         #[doc(inline)]
