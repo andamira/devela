@@ -26,7 +26,7 @@ pub use devela_base_core::{
     methods_as_fns,
     paste,
     structural_mods,
-    write_bytes,
+    write_at,
     // devela_code_macros:
     // cif, compile, compile_attr, compile_doc,
     // ident_total, ident_total_unique, ident_unique,

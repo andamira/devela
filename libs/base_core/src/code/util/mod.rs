@@ -32,7 +32,7 @@ mod maybe; // maybe!
 mod methods; // methods_as_fns!
 mod paste; // paste! (wrapped for docs)
 mod structural; // structural_mods!
-mod write; // write_bytes!
+mod write; // write_at!
 
 structural::structural_mods! { // _mods, _workspace_internals
     _mods {
