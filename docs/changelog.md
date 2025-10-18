@@ -190,6 +190,8 @@ Many feature gates are removed in order to make most features make always availa
 ## media
 ### image
 - rename vendored sixel types with the `Legacy*` prefix.
+- add a new sixel implementation:
+  - new types: `SixelChar`, `SixelColor`, `SixelEncoder`, `SixelPalette`, `SixelPaletteIter`.
 
 ## num
 - move to [base]:
