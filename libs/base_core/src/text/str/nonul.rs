@@ -21,7 +21,7 @@ const NUL_CHAR: char = '\0';
 ///
 #[doc = crate::_doc!(location: "text/str")]
 ///
-/// Prioritizes memory efficiency - uses 1 less byte but O(n) length operations.
+/// Prioritizes memory efficiency: uses 1 less byte but O(n) length operations.
 /// For the opposite trade-off see [`StringU8`][crate::StringU8].
 ///
 /// ## Methods
@@ -720,11 +720,18 @@ mod trait_impls {
     impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> { // &str on the RHS
         fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
     }
+    impl<const CAP: usize> PartialEq<&[u8]> for StringNonul<CAP> { // &[u8] on the RHS
+        fn eq(&self, bytes: &&[u8]) -> bool { self.as_bytes() == *bytes }
+    }
+
     impl<const CAP: usize> PartialEq<StringNonul<CAP>> for str { // &str on the LHS
         fn eq(&self, string: &StringNonul<CAP>) -> bool { self == string.as_str() }
     }
     impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str { // &str on the LHS
         fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_str() }
+    }
+    impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &[u8] { // &[u8] on the LHS
+        fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_bytes() }
     }
 
     impl<const CAP: usize> Hash for StringNonul<CAP> {

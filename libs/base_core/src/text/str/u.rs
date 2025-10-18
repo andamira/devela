@@ -30,7 +30,7 @@ macro_rules! impl_str_u {
         #[doc = crate::_TAG_TEXT!()]
         /// A UTF-8 string with fixed capacity that stores length explicitly.
         ///
-        /// Prioritizes speed over memory - O(1) length operations but uses extra space.
+        /// Prioritizes speed over memory: O(1) length operations but uses extra space.
         /// For the opposite trade-off see [`StringNonul`][crate::StringNonul].
         ///
         #[doc = crate::_doc!(location: "text/str")]
@@ -236,11 +236,11 @@ macro_rules! impl_str_u {
             #[doc = "Will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             /// # Example
             /// ```
-            /// # use devela_base_core::{StringU8, char_utf8};
-            /// let s = StringU8::<3>::from_char_utf8(char_utf8::from_char('€')).unwrap();
+            /// # use devela_base_core::{StringU8, char16};
+            /// let s = StringU8::<3>::from_char16(char16::try_from_char('€')).unwrap();
             /// assert_eq![s.as_str(), "€"];
             ///
-            /// assert![StringU8::<2>::from_char_utf8(char_utf8::from_char('€')).is_err()];
+            /// assert![StringU8::<2>::from_char16(char16::try_from_char('€')).is_err()];
             /// ```
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let mut new = unwrap![ok? Self::new_checked()];
@@ -651,6 +651,22 @@ macro_rules! impl_str_u {
                 }
             }
 
+            /// Appends to the end of the string the given character.
+            ///
+            /// Returns the number of bytes written.
+            ///
+            /// Returns 0 bytes if the given `character` doesn't fit in the remaining capacity.
+            pub const fn push_char_utf8(&mut self, c: char_utf8) -> usize {
+                let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
+                if self.remaining_capacity() >= len {
+                    slice![mut &mut self.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
+                    self.len = len as $t;
+                    len
+                } else {
+                    0
+                }
+            }
+
             /// Appends as many complete characters from `string` as will fit.
             ///
             /// Returns the number of bytes written. UTF-8 characters are never split.
@@ -756,11 +772,18 @@ macro_rules! impl_str_u {
         impl<const CAP: usize> PartialEq<&str> for $name<CAP> { // &str on the RHS
             fn eq(&self, string: &&str) -> bool { self.as_str() == *string }
         }
+        impl<const CAP: usize> PartialEq<&[u8]> for $name<CAP> { // &[u8] on the RHS
+            fn eq(&self, bytes: &&[u8]) -> bool { self.as_bytes() == *bytes }
+        }
+
         impl<const CAP: usize> PartialEq<$name<CAP>> for str { // str on the LHS
             fn eq(&self, string: &$name<CAP>) -> bool { self == string.as_str() }
         }
         impl<const CAP: usize> PartialEq<$name<CAP>> for &str { // &str on the LHS
             fn eq(&self, string: &$name<CAP>) -> bool { *self == string.as_str() }
+        }
+        impl<const CAP: usize> PartialEq<$name<CAP>> for &[u8] { // &[u8] on the LHS
+            fn eq(&self, string: &$name<CAP>) -> bool { *self == string.as_bytes() }
         }
 
         impl<const CAP: usize> Hash for $name<CAP> {

@@ -367,7 +367,7 @@ Many feature gates are removed in order to make most features make always availa
   - rename methods `from_byte_array*` to `from_array*`.
   - impl `PartialEq`.
 - update `StringU*`:
-  - new methods: `pop_unchecked`, `sanitize`.
+  - new methods: `pop_unchecked`, `push_char_utf8`, `sanitize`.
   - modify methods:
   - `as_mut_str`: make safe.
   - `push_str`, make const, improve efficiency, update docs & examples.
