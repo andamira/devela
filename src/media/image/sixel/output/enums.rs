@@ -1,24 +1,23 @@
 // devela::media::image::sixel::output::enums
 //
-//! Defines: [`SixelPixelFormat`],
+//! Defines: [`LegacySixelPixelFormat`],
 //
 // TOC
-// - enum SixelSplit
-// - enum SixelMean
-// - enum SixelDither
-// - enum SixelQuality
+// - enum LegacySixelSplit
+// - enum LegacySixelMean
+// - enum LegacySixelQuality
 //
 // private:
-// - enum SixelEncodePolicy
-// - enum SixelPalette
-// - enum SixelLoop
+// - enum LegacySixelEncodePolicy
+// - enum LegacySixelColorModel
+// - enum Loop
 // - //
-//   - enum ResampleMethod
+//   - enum LegacySixelResampleMethod
 //   - enum ImageFormat
-//   - enum PixelFormatType
+//   - enum LegacySixelPixelFormatType
 
 crate::impl_cdef! { Self::Auto =>
-SixelSplit, SixelMean, SixelQuality, Loop, SixelEncodePolicy, SixelColorModel }
+LegacySixelSplit, LegacySixelMean, LegacySixelQuality, Loop, LegacySixelEncodePolicy, LegacySixelColorModel }
 
 /// Method for finding the largest dimension for splitting,
 /// and sorting by that component.
@@ -27,7 +26,7 @@ SixelSplit, SixelMean, SixelQuality, Loop, SixelEncodePolicy, SixelColorModel }
 // - Derived from `methodForLargest` enum in the `libsixel` C library.
 #[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum SixelSplit {
+pub enum LegacySixelSplit {
     /// Choose automatically the method for finding the largest dimension. (default)
     #[default]
     Auto,
@@ -43,7 +42,7 @@ pub enum SixelSplit {
 // - Derived from `methodForRep` enum in the `libsixel` C library.
 #[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum SixelMean {
+pub enum LegacySixelMean {
     /// Choose automatically the method for selecting representative color from each box.
     /// (default)
     #[default]
@@ -62,7 +61,7 @@ pub enum SixelMean {
 // Derived from `qualityMode` enum in the `libsixel` C library.
 #[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum SixelQuality {
+pub enum LegacySixelQuality {
     /// Choose quality mode automatically.
     #[default]
     Auto,
@@ -85,7 +84,7 @@ pub enum SixelQuality {
 #[repr(u8)]
 #[allow(dead_code, reason = "Fast variant never constructed")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-pub(crate) enum SixelEncodePolicy {
+pub(crate) enum LegacySixelEncodePolicy {
     /// Choose encoding policy automatically (default).
     #[default]
     Auto = 0,
@@ -106,7 +105,7 @@ pub(crate) enum SixelEncodePolicy {
 #[repr(u8)]
 #[allow(dead_code, reason = "Some variants are never constructed")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-pub(crate) enum SixelColorModel {
+pub(crate) enum LegacySixelColorModel {
     /// Automatically chooses a color model based on output settings.
     #[default]
     Auto,
@@ -138,7 +137,7 @@ enum Loop {
 // // # Adaptation
 // // Derived from `methodForResampling` enum in the `libsixel` C library.
 // #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-// pub enum ResampleMethod { // TODO:MAYBE
+// pub enum LegacySixelResampleMethod { // TODO:MAYBE
 //     /// Use nearest neighbor method
 //     Nearest,
 //     /// Use guaussian filter
@@ -181,13 +180,13 @@ enum Loop {
 //     HDR,   //         0xb /* read only */
 // }
 
-// /// Offset value of `PixelFormat`.
+// /// Offset value of `LegacySixelPixelFormat`.
 // //
 // // # Adaptation
 // // Derived from `formatType` enum in the `libsixel` C library.
 // #[repr(u8)]
 // #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-// pub enum PixelFormatType { // TODO:MAYBE
+// pub enum LegacySixelPixelFormatType { // TODO:MAYBE
 //     Color,     // 0
 //     Grayscale, // (1 << 6)
 //     Palette,   // (1 << 7)

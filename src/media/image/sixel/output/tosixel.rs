@@ -3,12 +3,13 @@
 #![allow(clippy::identity_op, reason = "symmetry")]
 
 use super::super::{
-    DitherConf, PixelFormat, SIXEL_PALETTE_MAX, SixelColorModel, SixelEncodePolicy, SixelQuality,
+    LegacySixelColorModel, LegacySixelDitherConf, LegacySixelEncodePolicy, LegacySixelPixelFormat,
+    LegacySixelQuality, SIXEL_PALETTE_MAX,
 };
-use super::{SixelNode, SixelOutput};
-use crate::{IoWrite, NumToStr, SixelError, SixelResult, Vec, is, sf, vec_ as vec};
+use super::{LegacySixelNode, LegacySixelOutput};
+use crate::{IoWrite, LegacySixelError, LegacySixelResult, NumToStr, Vec, is, sf, vec_ as vec};
 
-impl<W: IoWrite> SixelOutput<W> {
+impl<W: IoWrite> LegacySixelOutput<W> {
     /* GNU Screen penetration */
 
     /// Writes a segmented data packet to the output,
@@ -35,18 +36,19 @@ impl<W: IoWrite> SixelOutput<W> {
     ///
     /// Uses `penetrate` if multiplexing is enabled; otherwise, writes directly to output.
     fn advance(&mut self) {
-        if self.buffer.len() >= SixelOutput::<W>::PACKET_SIZE {
+        if self.buffer.len() >= LegacySixelOutput::<W>::PACKET_SIZE {
             if self.penetrate_multiplexer {
                 self.penetrate(
-                    SixelOutput::<W>::PACKET_SIZE,
+                    LegacySixelOutput::<W>::PACKET_SIZE,
                     Self::DCS_START_7BIT,
                     Self::DCS_END_7BIT,
                 );
             } else {
-                let _ =
-                    self.fn_write.write(&self.buffer.as_bytes()[..SixelOutput::<W>::PACKET_SIZE]);
+                let _ = self
+                    .fn_write
+                    .write(&self.buffer.as_bytes()[..LegacySixelOutput::<W>::PACKET_SIZE]);
             }
-            self.buffer.drain(0..SixelOutput::<W>::PACKET_SIZE);
+            self.buffer.drain(0..LegacySixelOutput::<W>::PACKET_SIZE);
         }
     }
 
@@ -94,7 +96,7 @@ impl<W: IoWrite> SixelOutput<W> {
     ///
     /// # Features
     /// This method makes use of the `unsafe_str` feature for converting a `u32` pixel to `char`.
-    pub fn put_flash(&mut self) -> SixelResult<()> {
+    pub fn put_flash(&mut self) -> LegacySixelResult<()> {
         if self.has_gri_arg_limit {
             /* VT240 Max 255 ? */
             while self.save_count > 255 {
@@ -125,7 +127,7 @@ impl<W: IoWrite> SixelOutput<W> {
     }
 
     /// Outputs a single pixel to the sixel stream.
-    pub fn put_pixel(&mut self, mut pix: u8) -> SixelResult<()> {
+    pub fn put_pixel(&mut self, mut pix: u8) -> LegacySixelResult<()> {
         is![pix > b'?'; pix = b'\0'];
         pix += b'?';
         if pix == self.save_pixel {
@@ -140,12 +142,12 @@ impl<W: IoWrite> SixelOutput<W> {
 
     /// Writes a sixel node to the output, with additional parameters for color and position.
     pub fn put_node(
-        &mut self,     /* output context */
-        x: &mut i32,   /* header position */
-        np: SixelNode, /* node object */
-        ncolors: i32,  /* number of palette colors */
+        &mut self,           /* output context */
+        x: &mut i32,         /* header position */
+        np: LegacySixelNode, /* node object */
+        ncolors: i32,        /* number of palette colors */
         keycolor: i32,
-    ) -> SixelResult<()> {
+    ) -> LegacySixelResult<()> {
         if ncolors != 2 || keycolor == -1 {
             /* designate palette index */
             if self.active_palette != np.pal {
@@ -169,7 +171,7 @@ impl<W: IoWrite> SixelOutput<W> {
     }
 
     /// Encodes and outputs the sixel image header with the specified width and height.
-    pub fn encode_header(&mut self, width: i32, height: i32) -> SixelResult<()> {
+    pub fn encode_header(&mut self, width: i32, height: i32) -> LegacySixelResult<()> {
         let p = [0, 0, 0];
         let mut pcount = 3;
 
@@ -223,7 +225,7 @@ impl<W: IoWrite> SixelOutput<W> {
         palette: &[u8],
         n: i32,
         keycolor: i32,
-    ) -> SixelResult<()> {
+    ) -> LegacySixelResult<()> {
         if n != keycolor {
             sf! {
                 /* DECGCI Graphics Color Introducer  # Pc ; Pu; Px; Py; Pz */
@@ -246,7 +248,7 @@ impl<W: IoWrite> SixelOutput<W> {
         palette: &[u8],
         n: i32,
         keycolor: i32,
-    ) -> SixelResult<()> {
+    ) -> LegacySixelResult<()> {
         if n != keycolor {
             let n = n as usize;
             let r = palette[n * 3 + 0] as i32;
@@ -305,9 +307,9 @@ impl<W: IoWrite> SixelOutput<W> {
         keycolor: i32,
         bodyonly: bool,
         palstate: Option<&[i32]>,
-    ) -> SixelResult<()> {
+    ) -> LegacySixelResult<()> {
         if palette.is_empty() {
-            return Err(SixelError::BadArgument);
+            return Err(LegacySixelError::BadArgument);
         }
         let len = ncolors * width as usize;
         self.active_palette = -1;
@@ -315,7 +317,7 @@ impl<W: IoWrite> SixelOutput<W> {
         let mut map: Vec<u8> = vec![0; len];
 
         if !bodyonly && (ncolors != 2 || keycolor == (-1)) {
-            if matches!(self.color_model, SixelColorModel::Hls) {
+            if matches!(self.color_model, LegacySixelColorModel::Hls) {
                 for n in 0..ncolors {
                     self.output_hls_palette_definition(palette, n as i32, keycolor)?;
                 }
@@ -330,7 +332,7 @@ impl<W: IoWrite> SixelOutput<W> {
         let mut pix;
 
         for y in 0..height {
-            if self.encode_policy != SixelEncodePolicy::Size {
+            if self.encode_policy != LegacySixelEncodePolicy::Size {
                 fillable = false;
             } else if palstate.is_some() {
                 /* high color sixel */
@@ -346,7 +348,7 @@ impl<W: IoWrite> SixelOutput<W> {
                     /*sixel_helper_set_additional_message(
                     "sixel_encode_body: integer overflow detected."
                     " (y > INT_MAX)");*/
-                    return Err(SixelError::BadIntegerOverflow);
+                    return Err(LegacySixelError::BadIntegerOverflow);
                 }
                 let mut check_integer_overflow = y * width;
                 if check_integer_overflow > i32::MAX - x {
@@ -354,7 +356,7 @@ impl<W: IoWrite> SixelOutput<W> {
                     /*sixel_helper_set_additional_message(
                     "sixel_encode_body: integer overflow detected."
                     " (y * width > INT_MAX - x)");*/
-                    return Err(SixelError::BadIntegerOverflow);
+                    return Err(LegacySixelError::BadIntegerOverflow);
                 }
                 pix = pixels[(check_integer_overflow + x) as usize] as i32; /* color index */
                 if pix >= 0 && (pix as usize) < ncolors && pix != keycolor {
@@ -363,7 +365,7 @@ impl<W: IoWrite> SixelOutput<W> {
                         /*sixel_helper_set_additional_message(
                         "sixel_encode_body: integer overflow detected."
                         " (pix > INT_MAX / width)");*/
-                        return Err(SixelError::BadIntegerOverflow);
+                        return Err(LegacySixelError::BadIntegerOverflow);
                     }
                     check_integer_overflow = pix * width;
                     if check_integer_overflow > i32::MAX - x {
@@ -371,7 +373,7 @@ impl<W: IoWrite> SixelOutput<W> {
                         /*sixel_helper_set_additional_message(
                         "sixel_encode_body: integer overflow detected."
                         " (pix * width > INT_MAX - x)");*/
-                        return Err(SixelError::BadIntegerOverflow);
+                        return Err(LegacySixelError::BadIntegerOverflow);
                     }
                     map[(pix * width + x) as usize] |= 1 << i;
                 } else if palstate.is_none() {
@@ -410,7 +412,8 @@ impl<W: IoWrite> SixelOutput<W> {
                         mx = mx + n - 1;
                         mx += 1;
                     }
-                    let np = SixelNode::new(c as i32, sx, mx, map[c * width as usize..].to_vec());
+                    let np =
+                        LegacySixelNode::new(c as i32, sx, mx, map[c * width as usize..].to_vec());
                     self.nodes.insert(0, np);
                     sx = mx - 1;
                     sx += 1;
@@ -480,7 +483,7 @@ impl<W: IoWrite> SixelOutput<W> {
     }
 
     /// Encodes and outputs the sixel image footer.
-    pub fn encode_footer(&mut self) -> SixelResult<()> {
+    pub fn encode_footer(&mut self) -> LegacySixelResult<()> {
         if !self.skip_dcs_envelope && !self.penetrate_multiplexer {
             if self.has_8bit_control {
                 self.puts(Self::DCS_END_8BIT);
@@ -509,9 +512,9 @@ impl<W: IoWrite> SixelOutput<W> {
         pixels: &[u8],
         width: i32,
         height: i32,
-        dither: &mut DitherConf,
-    ) -> SixelResult<()> {
-        use PixelFormat as P;
+        dither: &mut LegacySixelDitherConf,
+    ) -> LegacySixelResult<()> {
+        use LegacySixelPixelFormat as P;
         let input_pixels = match dither.pixel_format {
             P::PAL1 | P::PAL2 | P::PAL4 | P::G1 | P::G2 | P::G4 => {
                 let mut paletted_pixels = vec![0; (width * height * 3) as usize];
@@ -543,13 +546,13 @@ impl<W: IoWrite> SixelOutput<W> {
         pixels: &mut [u8],
         width: i32,
         mut height: i32,
-        dither: &mut DitherConf,
-    ) -> SixelResult<()> {
+        dither: &mut LegacySixelDitherConf,
+    ) -> LegacySixelResult<()> {
         let maxcolors = 1 << 15;
         let mut px_idx = 0;
         let mut normalized_pixels = vec![0; (width * height * 3) as usize];
 
-        let pixels = if !matches!(dither.pixel_format, PixelFormat::BGR888) {
+        let pixels = if !matches!(dither.pixel_format, LegacySixelPixelFormat::BGR888) {
             dither.pixel_format.normalize(&mut normalized_pixels, pixels, width, height)?;
             &mut normalized_pixels
         } else {
@@ -695,15 +698,18 @@ impl<W: IoWrite> SixelOutput<W> {
         width: i32,
         height: i32,
         _depth: i32, /* color depth */
-        dither: &mut DitherConf,
-    ) -> SixelResult<()> /* output context */ {
-        is![width < 1; return Err(SixelError::BadInput)];
-        is![height < 1; return Err(SixelError::BadInput)];
+        dither: &mut LegacySixelDitherConf,
+    ) -> LegacySixelResult<()> /* output context */ {
+        is![width < 1; return Err(LegacySixelError::BadInput)];
+        is![height < 1; return Err(LegacySixelError::BadInput)];
         match dither.quality_mode {
-            SixelQuality::Auto | SixelQuality::High | SixelQuality::Low | SixelQuality::Full => {
+            LegacySixelQuality::Auto
+            | LegacySixelQuality::High
+            | LegacySixelQuality::Low
+            | LegacySixelQuality::Full => {
                 self.encode_dither(pixels, width, height, dither)?;
             }
-            SixelQuality::HighColor => {
+            LegacySixelQuality::HighColor => {
                 self.encode_highcolor(pixels, width, height, dither)?;
             }
         }

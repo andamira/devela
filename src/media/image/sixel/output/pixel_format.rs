@@ -1,7 +1,7 @@
 // devela::media::image::sixel::output::pixel_format
 //
 // TOC
-// - PixelFormat
+// - LegacySixelPixelFormat
 //   - bits_per_pixel
 //   - bytes_per_pixel
 //   - required_bytes
@@ -13,7 +13,7 @@
 
 #![allow(clippy::identity_op, reason = "symmetry")]
 
-use crate::{ConstDefault, SixelError, SixelResult};
+use crate::{ConstDefault, LegacySixelError, LegacySixelResult};
 
 /// Pixel format type of input image.
 ///
@@ -21,7 +21,7 @@ use crate::{ConstDefault, SixelError, SixelResult};
 /// Derived from `pixelFormat` enum in the `libsixel` C library.
 #[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum PixelFormat {
+pub enum LegacySixelPixelFormat {
     /// RGB color 15bpp.
     RGB555 = 1,
     /// RGB color 16bpp.
@@ -65,55 +65,55 @@ pub enum PixelFormat {
     PAL8 = (1 << 7) | 0x03,
 }
 #[rustfmt::skip]
-impl ConstDefault for PixelFormat { const DEFAULT: Self = Self::RGB888; }
+impl ConstDefault for LegacySixelPixelFormat { const DEFAULT: Self = Self::RGB888; }
 
-impl PixelFormat {
+impl LegacySixelPixelFormat {
     /// Returns the bits per pixel of the current format.
     #[rustfmt::skip]
     pub const fn bits_per_pixel(self) -> usize {
         match self {
-            PixelFormat::RGB555
-            | PixelFormat::BGR555 => 15,
-            PixelFormat::RGB565
-            | PixelFormat::BGR565
-            | PixelFormat::AG88
-            | PixelFormat::GA88 => 16,
-            PixelFormat::RGB888
-            | PixelFormat::BGR888
-            | PixelFormat::G8
-            | PixelFormat::PAL8 => 24,
-            PixelFormat::ARGB8888
-            | PixelFormat::RGBA8888
-            | PixelFormat::ABGR8888
-            | PixelFormat::BGRA8888 => 32,
-            PixelFormat::G1 | PixelFormat::PAL1 => 1,
-            PixelFormat::G2 | PixelFormat::PAL2 => 2,
-            PixelFormat::G4 | PixelFormat::PAL4 => 4,
+            LegacySixelPixelFormat::RGB555
+            | LegacySixelPixelFormat::BGR555 => 15,
+            LegacySixelPixelFormat::RGB565
+            | LegacySixelPixelFormat::BGR565
+            | LegacySixelPixelFormat::AG88
+            | LegacySixelPixelFormat::GA88 => 16,
+            LegacySixelPixelFormat::RGB888
+            | LegacySixelPixelFormat::BGR888
+            | LegacySixelPixelFormat::G8
+            | LegacySixelPixelFormat::PAL8 => 24,
+            LegacySixelPixelFormat::ARGB8888
+            | LegacySixelPixelFormat::RGBA8888
+            | LegacySixelPixelFormat::ABGR8888
+            | LegacySixelPixelFormat::BGRA8888 => 32,
+            LegacySixelPixelFormat::G1 | LegacySixelPixelFormat::PAL1 => 1,
+            LegacySixelPixelFormat::G2 | LegacySixelPixelFormat::PAL2 => 2,
+            LegacySixelPixelFormat::G4 | LegacySixelPixelFormat::PAL4 => 4,
         }
     }
 
     /// Returns the bytes per pixel of the current format.
     pub const fn bytes_per_pixel(self) -> usize {
         match self {
-            PixelFormat::ARGB8888
-            | PixelFormat::RGBA8888
-            | PixelFormat::ABGR8888
-            | PixelFormat::BGRA8888 => 4,
-            PixelFormat::RGB888 | PixelFormat::BGR888 => 3,
-            PixelFormat::RGB555
-            | PixelFormat::RGB565
-            | PixelFormat::BGR555
-            | PixelFormat::BGR565
-            | PixelFormat::AG88
-            | PixelFormat::GA88 => 2,
-            PixelFormat::G1
-            | PixelFormat::G2
-            | PixelFormat::G4
-            | PixelFormat::G8
-            | PixelFormat::PAL1
-            | PixelFormat::PAL2
-            | PixelFormat::PAL4
-            | PixelFormat::PAL8 => 1,
+            LegacySixelPixelFormat::ARGB8888
+            | LegacySixelPixelFormat::RGBA8888
+            | LegacySixelPixelFormat::ABGR8888
+            | LegacySixelPixelFormat::BGRA8888 => 4,
+            LegacySixelPixelFormat::RGB888 | LegacySixelPixelFormat::BGR888 => 3,
+            LegacySixelPixelFormat::RGB555
+            | LegacySixelPixelFormat::RGB565
+            | LegacySixelPixelFormat::BGR555
+            | LegacySixelPixelFormat::BGR565
+            | LegacySixelPixelFormat::AG88
+            | LegacySixelPixelFormat::GA88 => 2,
+            LegacySixelPixelFormat::G1
+            | LegacySixelPixelFormat::G2
+            | LegacySixelPixelFormat::G4
+            | LegacySixelPixelFormat::G8
+            | LegacySixelPixelFormat::PAL1
+            | LegacySixelPixelFormat::PAL2
+            | LegacySixelPixelFormat::PAL4
+            | LegacySixelPixelFormat::PAL8 => 1,
         }
     }
 
@@ -124,53 +124,57 @@ impl PixelFormat {
         crate::Mem::bytes_from_bits(total_bits)
     }
 
-    /// returns dst_pixelformat: PixelFormat,
+    /// returns dst_pixelformat: LegacySixelPixelFormat,
     pub(crate) fn normalize(
         self,
         dst: &mut [u8],
         src: &[u8],
         width: i32,
         height: i32,
-    ) -> SixelResult<PixelFormat> /* height of source image */ {
+    ) -> LegacySixelResult<LegacySixelPixelFormat> /* height of source image */ {
         match self {
-            PixelFormat::G8 => {
+            LegacySixelPixelFormat::G8 => {
                 expand_rgb(dst, src, width, height, self, 1);
-                Ok(PixelFormat::RGB888)
+                Ok(LegacySixelPixelFormat::RGB888)
             }
 
-            PixelFormat::RGB565
-            | PixelFormat::RGB555
-            | PixelFormat::BGR565
-            | PixelFormat::BGR555
-            | PixelFormat::GA88
-            | PixelFormat::AG88 => {
+            LegacySixelPixelFormat::RGB565
+            | LegacySixelPixelFormat::RGB555
+            | LegacySixelPixelFormat::BGR565
+            | LegacySixelPixelFormat::BGR555
+            | LegacySixelPixelFormat::GA88
+            | LegacySixelPixelFormat::AG88 => {
                 expand_rgb(dst, src, width, height, self, 2);
-                Ok(PixelFormat::RGB888)
+                Ok(LegacySixelPixelFormat::RGB888)
             }
 
-            PixelFormat::RGB888 | PixelFormat::BGR888 => {
+            LegacySixelPixelFormat::RGB888 | LegacySixelPixelFormat::BGR888 => {
                 expand_rgb(dst, src, width, height, self, 3);
-                Ok(PixelFormat::RGB888)
+                Ok(LegacySixelPixelFormat::RGB888)
             }
 
-            PixelFormat::RGBA8888
-            | PixelFormat::ARGB8888
-            | PixelFormat::BGRA8888
-            | PixelFormat::ABGR8888 => {
+            LegacySixelPixelFormat::RGBA8888
+            | LegacySixelPixelFormat::ARGB8888
+            | LegacySixelPixelFormat::BGRA8888
+            | LegacySixelPixelFormat::ABGR8888 => {
                 expand_rgb(dst, src, width, height, self, 4);
-                Ok(PixelFormat::RGB888)
+                Ok(LegacySixelPixelFormat::RGB888)
             }
 
-            PixelFormat::PAL1 | PixelFormat::PAL2 | PixelFormat::PAL4 => {
+            LegacySixelPixelFormat::PAL1
+            | LegacySixelPixelFormat::PAL2
+            | LegacySixelPixelFormat::PAL4 => {
                 expand_palette(dst, src, width, height, self)?;
-                Ok(PixelFormat::PAL8)
+                Ok(LegacySixelPixelFormat::PAL8)
             }
 
-            PixelFormat::G1 | PixelFormat::G2 | PixelFormat::G4 => {
+            LegacySixelPixelFormat::G1
+            | LegacySixelPixelFormat::G2
+            | LegacySixelPixelFormat::G4 => {
                 expand_palette(dst, src, width, height, self)?;
-                Ok(PixelFormat::G8)
+                Ok(LegacySixelPixelFormat::G8)
             }
-            PixelFormat::PAL8 => {
+            LegacySixelPixelFormat::PAL8 => {
                 dst[..((width * height) as usize)]
                     .copy_from_slice(&src[..((width * height) as usize)]);
                 Ok(self)
@@ -181,7 +185,7 @@ impl PixelFormat {
 
 /// TODO
 #[allow(clippy::identity_op, reason = "symmetry")]
-fn get_rgb(data: &[u8], pixelformat: PixelFormat, depth: usize) -> (u8, u8, u8) {
+fn get_rgb(data: &[u8], pixelformat: LegacySixelPixelFormat, depth: usize) -> (u8, u8, u8) {
     let mut count = 0;
     let mut pixels: u32 = 0;
     while count < depth {
@@ -198,34 +202,42 @@ fn get_rgb(data: &[u8], pixelformat: PixelFormat, depth: usize) -> (u8, u8, u8) 
         }
     #endif*/
     let (r, g, b) = match pixelformat {
-        PixelFormat::RGB555 => {
+        LegacySixelPixelFormat::RGB555 => {
             (((pixels >> 10) & 0x1f) << 3, ((pixels >> 5) & 0x1f) << 3, ((pixels >> 0) & 0x1f) << 3)
         }
-        PixelFormat::RGB565 => {
+        LegacySixelPixelFormat::RGB565 => {
             (((pixels >> 11) & 0x1f) << 3, ((pixels >> 5) & 0x3f) << 2, ((pixels >> 0) & 0x1f) << 3)
         }
-        PixelFormat::RGB888 => ((pixels >> 16) & 0xff, (pixels >> 8) & 0xff, (pixels >> 0) & 0xff),
-        PixelFormat::BGR555 => {
-            (((pixels >> 0) & 0x1f) << 3, ((pixels >> 5) & 0x1f) << 3, ((pixels >> 10) & 0x1f) << 3)
-        }
-        PixelFormat::BGR565 => {
-            (((pixels >> 0) & 0x1f) << 3, ((pixels >> 5) & 0x3f) << 2, ((pixels >> 11) & 0x1f) << 3)
-        }
-        PixelFormat::BGR888 => ((pixels >> 0) & 0xff, (pixels >> 8) & 0xff, (pixels >> 16) & 0xff),
-        PixelFormat::ARGB8888 => {
+        LegacySixelPixelFormat::RGB888 => {
             ((pixels >> 16) & 0xff, (pixels >> 8) & 0xff, (pixels >> 0) & 0xff)
         }
-        PixelFormat::RGBA8888 => {
-            ((pixels >> 24) & 0xff, (pixels >> 16) & 0xff, (pixels >> 8) & 0xff)
+        LegacySixelPixelFormat::BGR555 => {
+            (((pixels >> 0) & 0x1f) << 3, ((pixels >> 5) & 0x1f) << 3, ((pixels >> 10) & 0x1f) << 3)
         }
-        PixelFormat::ABGR8888 => {
+        LegacySixelPixelFormat::BGR565 => {
+            (((pixels >> 0) & 0x1f) << 3, ((pixels >> 5) & 0x3f) << 2, ((pixels >> 11) & 0x1f) << 3)
+        }
+        LegacySixelPixelFormat::BGR888 => {
             ((pixels >> 0) & 0xff, (pixels >> 8) & 0xff, (pixels >> 16) & 0xff)
         }
-        PixelFormat::BGRA8888 => {
+        LegacySixelPixelFormat::ARGB8888 => {
+            ((pixels >> 16) & 0xff, (pixels >> 8) & 0xff, (pixels >> 0) & 0xff)
+        }
+        LegacySixelPixelFormat::RGBA8888 => {
+            ((pixels >> 24) & 0xff, (pixels >> 16) & 0xff, (pixels >> 8) & 0xff)
+        }
+        LegacySixelPixelFormat::ABGR8888 => {
+            ((pixels >> 0) & 0xff, (pixels >> 8) & 0xff, (pixels >> 16) & 0xff)
+        }
+        LegacySixelPixelFormat::BGRA8888 => {
             ((pixels >> 8) & 0xff, (pixels >> 16) & 0xff, (pixels >> 24) & 0xff)
         }
-        PixelFormat::G8 | PixelFormat::AG88 => (pixels & 0xff, pixels & 0xff, pixels & 0xff),
-        PixelFormat::GA88 => ((pixels >> 8) & 0xff, (pixels >> 8) & 0xff, (pixels >> 8) & 0xff),
+        LegacySixelPixelFormat::G8 | LegacySixelPixelFormat::AG88 => {
+            (pixels & 0xff, pixels & 0xff, pixels & 0xff)
+        }
+        LegacySixelPixelFormat::GA88 => {
+            ((pixels >> 8) & 0xff, (pixels >> 8) & 0xff, (pixels >> 8) & 0xff)
+        }
         _ => (0, 0, 0),
     };
     (r as u8, g as u8, b as u8)
@@ -237,7 +249,7 @@ fn expand_rgb(
     src: &[u8],
     width: i32,
     height: i32,
-    pixelformat: PixelFormat,
+    pixelformat: LegacySixelPixelFormat,
     depth: usize,
 ) {
     for y in 0..height {
@@ -259,22 +271,22 @@ fn expand_palette(
     src: &[u8],
     width: i32,
     height: i32,
-    pixelformat: PixelFormat,
-) -> SixelResult<()> {
+    pixelformat: LegacySixelPixelFormat,
+) -> LegacySixelResult<()> {
     let bpp = match pixelformat {
-        PixelFormat::PAL1 | PixelFormat::G1 => 1,
+        LegacySixelPixelFormat::PAL1 | LegacySixelPixelFormat::G1 => 1,
 
-        PixelFormat::PAL2 | PixelFormat::G2 => 2,
+        LegacySixelPixelFormat::PAL2 | LegacySixelPixelFormat::G2 => 2,
 
-        PixelFormat::PAL4 | PixelFormat::G4 => 4,
+        LegacySixelPixelFormat::PAL4 | LegacySixelPixelFormat::G4 => 4,
 
-        PixelFormat::PAL8 | PixelFormat::G8 => {
+        LegacySixelPixelFormat::PAL8 | LegacySixelPixelFormat::G8 => {
             dst[..((width * height) as usize)].copy_from_slice(&src[..((width * height) as usize)]);
             return Ok(());
         }
 
         //          sixel_helper_set_additional_message(    "expand_palette: invalid pixelformat.");
-        _ => return Err(SixelError::BadArgument),
+        _ => return Err(LegacySixelError::BadArgument),
     };
     let mut dst_offset = 0;
     let mut src_offset = 0;

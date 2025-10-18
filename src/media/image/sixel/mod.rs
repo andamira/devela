@@ -6,11 +6,11 @@
 #![doc = crate::_doc!(vendor: "icy_sixel")]
 //
 
-mod builder; // Sixel
-mod dither; // Dither, DitherConf…
-mod error; // SixelError
+mod builder; // LegacySixel
+mod dither; // LegacySixelDither
+mod error; // LegacySixelError
 mod quant;
-mod output; // Sixel, SixelMean, SixelQuality, SixelSplit
+mod output; // LegacySixelMean, LegacySixelQuality, LegacySixelSplit
 
 ///
 const SIXEL_PALETTE_MAX: usize = 256;

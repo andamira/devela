@@ -12,23 +12,23 @@
 // - Controls which colors are available for dithering.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[allow(dead_code, reason = "TODO make public")]
-pub(crate) enum SixelPalette {
-    /// Dithering optimized for monochrome terminals **with a dark background**.
+pub(crate) enum LegacySixelPalette {
+    /// LegacySixelDithering optimized for monochrome terminals **with a dark background**.
     MonoDark,
 
-    /// Dithering optimized for monochrome terminals **with a light background**.
+    /// LegacySixelDithering optimized for monochrome terminals **with a light background**.
     MonoLight,
 
-    /// Dithering for **xterm 16-color** mode.
+    /// LegacySixelDithering for **xterm 16-color** mode.
     XTerm16,
 
-    /// Dithering for **xterm 256-color** mode.
+    /// LegacySixelDithering for **xterm 256-color** mode.
     XTerm256,
 
-    /// Dithering for **VT340 monochrome** mode.
+    /// LegacySixelDithering for **VT340 monochrome** mode.
     VT340Mono,
 
-    /// Dithering for **VT340 color** mode.
+    /// LegacySixelDithering for **VT340 color** mode.
     VT340Color,
 
     /// **1-bit grayscale dithering** (2 shades).
@@ -44,19 +44,19 @@ pub(crate) enum SixelPalette {
     G8,
 }
 
-impl SixelPalette {
+impl LegacySixelPalette {
     /// Returns the palette associated with the dithering mode.
     pub fn palette(self) -> &'static [u8] {
         match self {
-            SixelPalette::MonoDark => &Self::PAL_MONO_DARK,
-            SixelPalette::MonoLight => &Self::PAL_MONO_LIGHT,
-            SixelPalette::XTerm16 | SixelPalette::XTerm256 => &Self::PAL_XTERM256,
-            SixelPalette::VT340Mono => &Self::PAL_VT340_MONO,
-            SixelPalette::VT340Color => &Self::PAL_VT340_COLOR,
-            SixelPalette::G1 => &Self::PAL_GRAY_1BIT,
-            SixelPalette::G2 => &Self::PAL_GRAY_2BIT,
-            SixelPalette::G4 => &Self::PAL_GRAY_4BIT,
-            SixelPalette::G8 => &Self::PAL_GRAY_8BIT,
+            LegacySixelPalette::MonoDark => &Self::PAL_MONO_DARK,
+            LegacySixelPalette::MonoLight => &Self::PAL_MONO_LIGHT,
+            LegacySixelPalette::XTerm16 | LegacySixelPalette::XTerm256 => &Self::PAL_XTERM256,
+            LegacySixelPalette::VT340Mono => &Self::PAL_VT340_MONO,
+            LegacySixelPalette::VT340Color => &Self::PAL_VT340_COLOR,
+            LegacySixelPalette::G1 => &Self::PAL_GRAY_1BIT,
+            LegacySixelPalette::G2 => &Self::PAL_GRAY_2BIT,
+            LegacySixelPalette::G4 => &Self::PAL_GRAY_4BIT,
+            LegacySixelPalette::G8 => &Self::PAL_GRAY_8BIT,
         }
     }
 
@@ -68,13 +68,13 @@ impl SixelPalette {
     /// Returns the key color for transparency (default `-1`).
     pub fn keycolor(self) -> i32 {
         match self {
-            SixelPalette::MonoDark | SixelPalette::MonoLight => 0,
+            LegacySixelPalette::MonoDark | LegacySixelPalette::MonoLight => 0,
             _ => -1,
         }
     }
 }
 
-impl SixelPalette {
+impl LegacySixelPalette {
     /// monochrome terminal with dark background
     pub(crate) const PAL_MONO_DARK: [u8; 6] = [0x00, 0x00, 0x00, 0xff, 0xff, 0xff];
 

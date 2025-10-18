@@ -1,18 +1,18 @@
 // devela::media::image::sixel::output
 //
-//! Defines private [`SixelNode`], [`SixelOutput`].
+//! Defines private [`LegacySixelNode`], [`LegacySixelOutput`].
 //
 // TOC
-// - SixelNode
-// - SixelOutput
-// - impl SixelOutput
+// - LegacySixelNode
+// - LegacySixelOutput
+// - impl LegacySixelOutput
 //
 // TODO: NEED:
 
 use crate::{IoWrite, String, Vec};
 
 mod enums; // RETHINK relocate
-mod pixel_format; // PixelFormat
+mod pixel_format; // LegacySixelPixelFormat
 mod tosixel;
 pub use enums::*;
 pub use pixel_format::*;
@@ -25,7 +25,7 @@ pub use pixel_format::*;
 /// # Adaptation
 /// - Derived from `sixel_node` struct in the `libsixel` C library.
 #[derive(Debug, Default, PartialEq, Eq, Hash)]
-pub(crate) struct SixelNode {
+pub(crate) struct LegacySixelNode {
     /// Index of the color in the palette.
     pub pal: i32,
     /// Start x-coordinate of the tile.
@@ -35,7 +35,7 @@ pub(crate) struct SixelNode {
     /// Color data map for the tile.
     pub map: Vec<u8>,
 }
-impl SixelNode {
+impl LegacySixelNode {
     pub fn new(pal: i32, sx: i32, mx: i32, map: Vec<u8>) -> Self {
         Self { pal, sx, mx, map }
     }
@@ -49,11 +49,11 @@ impl SixelNode {
 /// # Adaptation
 /// - Derived from `sixel_output` struct in the `libsixel` C library.
 #[derive(Debug, Default, PartialEq, Eq, Hash)]
-pub(crate) struct SixelOutput<W: IoWrite> {
+pub(crate) struct LegacySixelOutput<W: IoWrite> {
     /* public fields
      */
     /// Palette selection mode.
-    pub color_model: SixelColorModel,
+    pub color_model: LegacySixelColorModel,
 
     /// Writer for output, managing data destination.
     pub fn_write: W,
@@ -66,12 +66,12 @@ pub(crate) struct SixelOutput<W: IoWrite> {
     pub active_palette: i32,
 
     /// Collection of sixel nodes for dithering.
-    pub nodes: Vec<SixelNode>,
+    pub nodes: Vec<LegacySixelNode>,
 
     /// Flag to allow penetration of the multiplexer.
     pub penetrate_multiplexer: bool,
     /// Policy for encoding decisions.
-    pub encode_policy: SixelEncodePolicy,
+    pub encode_policy: LegacySixelEncodePolicy,
 
     /// Buffer for output data.
     pub buffer: String,
@@ -106,7 +106,7 @@ pub(crate) struct SixelOutput<W: IoWrite> {
 
 // general methods annd constants
 #[allow(dead_code, reason = "crate private struct")]
-impl<W: IoWrite> SixelOutput<W> {
+impl<W: IoWrite> LegacySixelOutput<W> {
     /// Device Control String start and end sequences
     pub(crate) const DCS_START_7BIT: &str = "\x1BP";
     pub(crate) const DCS_START_8BIT: &str = "\u{220}";
@@ -131,14 +131,14 @@ impl<W: IoWrite> SixelOutput<W> {
             has_sdm_glitch: false,
             has_gri_arg_limit: true,
             skip_dcs_envelope: false,
-            color_model: SixelColorModel::Auto,
+            color_model: LegacySixelColorModel::Auto,
             fn_write,
             save_pixel: 0,
             save_count: 0,
             active_palette: -1,
             nodes: Vec::new(),
             penetrate_multiplexer: false,
-            encode_policy: SixelEncodePolicy::Auto,
+            encode_policy: LegacySixelEncodePolicy::Auto,
             has_sixel_scrolling: false,
             buffer: String::new(),
         }
@@ -172,12 +172,12 @@ impl<W: IoWrite> SixelOutput<W> {
     }
 
     /// Set the color model.
-    pub fn set_color_model(&mut self, color_model: SixelColorModel) {
+    pub fn set_color_model(&mut self, color_model: LegacySixelColorModel) {
         self.color_model = color_model;
     }
 
     /// Set the encoding policy.
-    pub fn set_encode_policy(&mut self, encode_policy: SixelEncodePolicy) {
+    pub fn set_encode_policy(&mut self, encode_policy: LegacySixelEncodePolicy) {
         self.encode_policy = encode_policy;
     }
 }

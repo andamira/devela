@@ -6,9 +6,10 @@ mod diffuse_fns;
 use diffuse_fns::*;
 
 use super::{
-    PixelFormat, SIXEL_PALETTE_MAX, SixelError, SixelMean, SixelQuality, SixelResult, SixelSplit,
+    LegacySixelError, LegacySixelMean, LegacySixelPixelFormat, LegacySixelQuality,
+    LegacySixelResult, LegacySixelSplit, SIXEL_PALETTE_MAX,
 };
-use crate::{Dither, HashMap, Ordering, Vec, vec_ as vec};
+use crate::{HashMap, LegacySixelDither, Ordering, Vec, vec_ as vec};
 
 /// TODO
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -204,13 +205,13 @@ fn color_map_from_bv(
     boxes: i32,
     colorfreqtable: &mut HashMap<i32, Tuple>,
     depth: i32,
-    rep: SixelMean,
+    rep: LegacySixelMean,
 ) -> HashMap<i32, Tuple> {
     let mut colormap = new_color_map(newcolors, depth);
 
     for bi in 0..boxes {
         match rep {
-            SixelMean::Center => {
+            LegacySixelMean::Center => {
                 center_box(
                     bv[bi as usize].ind,
                     bv[bi as usize].colors,
@@ -219,7 +220,7 @@ fn color_map_from_bv(
                     &mut colormap.get_mut(&bi).unwrap().tuple,
                 );
             }
-            SixelMean::Colors => {
+            LegacySixelMean::Colors => {
                 average_colors(
                     bv[bi as usize].ind,
                     bv[bi as usize].colors,
@@ -228,7 +229,7 @@ fn color_map_from_bv(
                     &mut colormap.get_mut(&bi).unwrap().tuple,
                 );
             }
-            SixelMean::Auto | SixelMean::Pixels => {
+            LegacySixelMean::Auto | LegacySixelMean::Pixels => {
                 average_pixels(
                     bv[bi as usize].ind,
                     bv[bi as usize].colors,
@@ -255,8 +256,8 @@ fn split_box(
     bi: usize,
     colorfreqtable: &mut HashMap<i32, Tuple>,
     depth: i32,
-    _largest: SixelSplit,
-) -> SixelResult<()> {
+    _largest: LegacySixelSplit,
+) -> LegacySixelResult<()> {
     let box_start = bv[bi].ind;
     let box_size = bv[bi].colors;
     let sm = bv[bi].sum;
@@ -275,8 +276,8 @@ fn split_box(
        transforming into luminosities before the comparison.
     */
     // let _largest_dimension = match _largest {
-    //     SixelSplit::Auto | SixelSplit::Norm => largest_by_norm(&minval, &maxval, depth),
-    //     SixelSplit::Lum => largest_by_luminosity(&minval, &maxval, depth),
+    //     LegacySixelSplit::Auto | LegacySixelSplit::Norm => largest_by_norm(&minval, &maxval, depth),
+    //     LegacySixelSplit::Lum => largest_by_luminosity(&minval, &maxval, depth),
     // };
 
     /* TODO: I think this sort should go after creating a box,
@@ -328,10 +329,10 @@ fn mediancut(
     colorfreqtable: &mut HashMap<i32, Tuple>,
     depth: i32,
     newcolors: i32,
-    largest: SixelSplit,
-    rep: SixelMean,
+    largest: LegacySixelSplit,
+    rep: LegacySixelMean,
     colormap: &mut HashMap<i32, Tuple>,
-) -> SixelResult<()> {
+) -> LegacySixelResult<()> {
     let mut sum = 0;
 
     for i in 0..colorfreqtable.len() {
@@ -384,12 +385,12 @@ fn compute_histogram(
     data: &[u8],
     length: i32,
     depth: i32,
-    quality: SixelQuality,
-) -> SixelResult<HashMap<i32, Tuple>> {
+    quality: LegacySixelQuality,
+) -> LegacySixelResult<HashMap<i32, Tuple>> {
     let (max_sample, mut step) = match quality {
-        SixelQuality::Low => (18_383, length / depth / 18_383 * depth),
-        SixelQuality::High => (18_383, length / depth / 18_383 * depth),
-        SixelQuality::Auto | SixelQuality::HighColor | SixelQuality::Full => {
+        LegacySixelQuality::Low => (18_383, length / depth / 18_383 * depth),
+        LegacySixelQuality::High => (18_383, length / depth / 18_383 * depth),
+        LegacySixelQuality::Auto | LegacySixelQuality::HighColor | LegacySixelQuality::Full => {
             (4_003_079, length / depth / 4_003_079 * depth)
         }
     };
@@ -460,12 +461,12 @@ fn compute_color_map_from_input(
     length: i32,
     depth: i32,
     req_colors: i32,
-    largest: SixelSplit,
-    rep: SixelMean,
-    quality: SixelQuality,
+    largest: LegacySixelSplit,
+    rep: LegacySixelMean,
+    quality: LegacySixelQuality,
     colormap: &mut HashMap<i32, Tuple>,
     origcolors: &mut i32,
-) -> SixelResult<()> {
+) -> LegacySixelResult<()> {
     let mut colorfreqtable = compute_histogram(data, length, depth, quality)?;
     *origcolors = colorfreqtable.len() as i32;
 
@@ -617,19 +618,19 @@ fn lookup_mono_lightbg(
 
 /// Choose colors using median-cut method.
 //
-// Called from DitherConf::initialize
+// Called from LegacySixelDitherConf::initialize
 #[expect(clippy::too_many_arguments)]
 pub(crate) fn sixel_quant_make_palette(
     data: &[u8],
     length: i32,
-    pixelformat: PixelFormat,
+    pixelformat: LegacySixelPixelFormat,
     req_colors: i32,
     ncolors: &mut i32,
     origcolors: &mut i32,
-    largest: SixelSplit,
-    rep: SixelMean,
-    quality: SixelQuality,
-) -> SixelResult<Vec<u8>> {
+    largest: LegacySixelSplit,
+    rep: LegacySixelMean,
+    quality: LegacySixelQuality,
+) -> LegacySixelResult<Vec<u8>> {
     let depth = pixelformat.bytes_per_pixel();
     // if (result_depth <= 0) { *result = NULL; goto end; }
 
@@ -657,7 +658,7 @@ pub(crate) fn sixel_quant_make_palette(
 
 /// Apply color palette to the given pixel buffer.
 //
-// Called from DitherConf::initialize
+// Called from LegacySixelDitherConf::initialize
 #[expect(clippy::too_many_arguments)]
 pub(crate) fn sixel_quant_apply_palette(
     result: &mut [u8],
@@ -667,19 +668,19 @@ pub(crate) fn sixel_quant_apply_palette(
     depth: i32,
     palette: &mut Vec<u8>,
     reqcolor: i32,
-    diffuse: Dither,
+    diffuse: LegacySixelDither,
     foptimize: bool,
     foptimize_palette: bool,
     complexion: i32,
     cachetable: Option<&mut [u16]>,
-) -> SixelResult<i32> {
+) -> LegacySixelResult<i32> {
     let mut ncolors: i32;
     // check bad reqcolor
     if reqcolor < 1 {
         // sixel_helper_set_additional_message(
         // "sixel_quant_apply_palette: "
         // "a bad argument is detected, reqcolor < 0.");
-        return Err(SixelError::BadArgument);
+        return Err(LegacySixelError::BadArgument);
     }
 
     let mut f_mask = false;
@@ -688,17 +689,17 @@ pub(crate) fn sixel_quant_apply_palette(
         diffuse_none
     } else {
         match diffuse {
-            Dither::Auto | Dither::None => diffuse_none,
-            Dither::Atkinson => diffuse_atkinson,
-            Dither::FS => diffuse_fs,
-            Dither::JaJuNi => diffuse_jajuni,
-            Dither::Stucki => diffuse_stucki,
-            Dither::Burkes => diffuse_burkes,
-            Dither::ADither => {
+            LegacySixelDither::Auto | LegacySixelDither::None => diffuse_none,
+            LegacySixelDither::Atkinson => diffuse_atkinson,
+            LegacySixelDither::FS => diffuse_fs,
+            LegacySixelDither::JaJuNi => diffuse_jajuni,
+            LegacySixelDither::Stucki => diffuse_stucki,
+            LegacySixelDither::Burkes => diffuse_burkes,
+            LegacySixelDither::ADither => {
                 f_mask = true;
                 diffuse_none
             }
-            Dither::XDither => {
+            LegacySixelDither::XDither => {
                 f_mask = true;
                 diffuse_none
             }
@@ -748,7 +749,7 @@ pub(crate) fn sixel_quant_apply_palette(
                     let pos = y * width + x;
                     for d in 0..depth {
                         let mut val = data[(pos * depth + d) as usize] as i32;
-                        if matches!(diffuse, Dither::ADither) {
+                        if matches!(diffuse, LegacySixelDither::ADither) {
                             val += (mask_a(x, y, d) * 32.0) as i32;
                         } else {
                             val += (mask_x(x, y, d) * 32.0) as i32;
@@ -813,7 +814,7 @@ pub(crate) fn sixel_quant_apply_palette(
                     let pos = y * width + x;
                     for d in 0..depth {
                         let mut val = data[(pos * depth + d) as usize] as i32;
-                        if matches!(diffuse, Dither::ADither) {
+                        if matches!(diffuse, LegacySixelDither::ADither) {
                             val += (mask_a(x, y, d) * 32.0) as i32;
                         } else {
                             val += (mask_x(x, y, d) * 32.0) as i32;

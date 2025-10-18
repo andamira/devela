@@ -1,12 +1,13 @@
 // devela::media::image::sixel::dither::conf
 
-#![allow(dead_code, reason = "unused DitherConf methods")]
+#![allow(dead_code, reason = "unused LegacySixelDitherConf methods")]
 
 use crate::{Vec, vec_ as vec};
 
 use super::super::{
-    Dither, PixelFormat, SIXEL_PALETTE_MAX, SixelError, SixelMean, SixelPalette, SixelQuality,
-    SixelResult, SixelSplit, sixel_quant_apply_palette, sixel_quant_make_palette,
+    LegacySixelDither, LegacySixelError, LegacySixelMean, LegacySixelPalette,
+    LegacySixelPixelFormat, LegacySixelQuality, LegacySixelResult, LegacySixelSplit,
+    SIXEL_PALETTE_MAX, sixel_quant_apply_palette, sixel_quant_make_palette,
 };
 
 /// Configuration for sixel dithering.
@@ -15,7 +16,7 @@ use super::super::{
 // - Based on `sixel_dither_t` from the `libsixel` C library,
 //   adapted with adjustments for idiomatic Rust usage.
 #[derive(Debug)]
-pub(crate) struct DitherConf {
+pub(crate) struct LegacySixelDitherConf {
     /// Palette definition.
     pub palette: Vec<u8>,
     /// Cache table.
@@ -35,35 +36,35 @@ pub(crate) struct DitherConf {
     /// Do not output palette section if true.
     pub bodyonly: bool,
     /// Method for finding the largest dimention for splitting.
-    pub split_method: SixelSplit,
+    pub split_method: LegacySixelSplit,
     /// Method for choosing a color from the box.
-    pub mean_method: SixelMean,
+    pub mean_method: LegacySixelMean,
     /// Method for diffusing
-    pub dither: Dither,
+    pub dither: LegacySixelDither,
     /// Quality of histogram.
-    pub quality_mode: SixelQuality,
+    pub quality_mode: LegacySixelQuality,
     /// Background color.
     pub keycolor: i32,
     /// Pixelformat for internal processing.
-    pub pixel_format: PixelFormat,
+    pub pixel_format: LegacySixelPixelFormat,
 }
 
-impl DitherConf {
+impl LegacySixelDitherConf {
     /// Creates a new dither configuration with the specified number of colors.
-    pub fn new(mut ncolors: i32) -> SixelResult<Self> {
+    pub fn new(mut ncolors: i32) -> LegacySixelResult<Self> {
         let quality_mode = if ncolors < 0 {
             ncolors = SIXEL_PALETTE_MAX as i32;
-            SixelQuality::HighColor
+            LegacySixelQuality::HighColor
         } else {
             if ncolors > SIXEL_PALETTE_MAX as i32 {
-                return Err(SixelError::BadInput);
+                return Err(LegacySixelError::BadInput);
             }
             if ncolors < 1 {
-                return Err(SixelError::BadInput);
+                return Err(LegacySixelError::BadInput);
                 // sixel_helper_set_additional_message(
-                // "DitherConf::new: palette ncolors must be more than 0");
+                // "LegacySixelDitherConf::new: palette ncolors must be more than 0");
             }
-            SixelQuality::Low
+            LegacySixelQuality::Low
         };
         Ok(Self {
             palette: vec![0; ncolors as usize * 3],
@@ -76,17 +77,17 @@ impl DitherConf {
             optimize_palette: false,
             complexion: 1,
             bodyonly: false,
-            split_method: SixelSplit::Norm,
-            mean_method: SixelMean::Center,
-            dither: Dither::FS,
+            split_method: LegacySixelSplit::Norm,
+            mean_method: LegacySixelMean::Center,
+            dither: LegacySixelDither::FS,
             quality_mode,
-            pixel_format: PixelFormat::RGB888,
+            pixel_format: LegacySixelPixelFormat::RGB888,
         })
     }
 
     /// TODO
-    pub fn with_palette(palette: SixelPalette) -> SixelResult<Self> {
-        let mut result = DitherConf::new(palette.num_colors() as i32)?;
+    pub fn with_palette(palette: LegacySixelPalette) -> LegacySixelResult<Self> {
+        let mut result = LegacySixelDitherConf::new(palette.num_colors() as i32)?;
         result.palette = palette.palette().to_vec();
         result.keycolor = palette.keycolor();
         result.optimized = true;
@@ -95,27 +96,31 @@ impl DitherConf {
     }
 
     /// TODO
-    pub fn set_split_method(&mut self, split_method: SixelSplit) {
-        self.split_method = if matches!(split_method, SixelSplit::Auto) {
-            SixelSplit::Norm
+    pub fn set_split_method(&mut self, split_method: LegacySixelSplit) {
+        self.split_method = if matches!(split_method, LegacySixelSplit::Auto) {
+            LegacySixelSplit::Norm
         } else {
             split_method
         };
     }
 
     /// TODO
-    pub fn set_mean_method(&mut self, mean_method: SixelMean) {
-        self.mean_method = if matches!(mean_method, SixelMean::Auto) {
-            SixelMean::Center
+    pub fn set_mean_method(&mut self, mean_method: LegacySixelMean) {
+        self.mean_method = if matches!(mean_method, LegacySixelMean::Auto) {
+            LegacySixelMean::Center
         } else {
             mean_method
         };
     }
 
     /// TODO
-    pub fn set_quality_mode(&mut self, quality_mode: SixelQuality) {
-        self.quality_mode = if matches!(quality_mode, SixelQuality::Auto) {
-            if self.ncolors <= 8 { SixelQuality::High } else { SixelQuality::Low }
+    pub fn set_quality_mode(&mut self, quality_mode: LegacySixelQuality) {
+        self.quality_mode = if matches!(quality_mode, LegacySixelQuality::Auto) {
+            if self.ncolors <= 8 {
+                LegacySixelQuality::High
+            } else {
+                LegacySixelQuality::Low
+            }
         } else {
             quality_mode
         };
@@ -128,15 +133,15 @@ impl DitherConf {
         data: &[u8],
         width: i32,
         height: i32,
-        pixel_format: PixelFormat,
-        split_method: SixelSplit,
-        mean_method: SixelMean,
-        quality_mode: SixelQuality,
-    ) -> SixelResult<()> {
+        pixel_format: LegacySixelPixelFormat,
+        split_method: LegacySixelSplit,
+        mean_method: LegacySixelMean,
+        quality_mode: LegacySixelQuality,
+    ) -> LegacySixelResult<()> {
         self.set_pixel_format(pixel_format);
         #[expect(clippy::single_match_else, reason = "could be extended")]
         let input_pixels = match pixel_format {
-            PixelFormat::RGB888 => data.to_vec(),
+            LegacySixelPixelFormat::RGB888 => data.to_vec(),
             _ => {
                 /* normalize pixel_format */
                 let mut normalized_pixels = vec![0; (width * height * 3) as usize];
@@ -157,7 +162,7 @@ impl DitherConf {
         let buf = sixel_quant_make_palette(
             &input_pixels,
             width * height * 3,
-            PixelFormat::RGB888,
+            LegacySixelPixelFormat::RGB888,
             self.reqcolors,
             &mut self.ncolors,
             &mut self.origcolors,
@@ -169,15 +174,19 @@ impl DitherConf {
         self.palette = buf;
         self.optimized = true;
         if self.origcolors <= self.reqcolors {
-            self.dither = Dither::None;
+            self.dither = LegacySixelDither::None;
         }
         Ok(())
     }
 
     /// Set diffusion method.
-    pub fn set_diffusion_method(&mut self, method: Dither) {
-        self.dither = if matches!(method, Dither::Auto) {
-            if self.ncolors > 16 { Dither::FS } else { Dither::Atkinson }
+    pub fn set_diffusion_method(&mut self, method: LegacySixelDither) {
+        self.dither = if matches!(method, LegacySixelDither::Auto) {
+            if self.ncolors > 16 {
+                LegacySixelDither::FS
+            } else {
+                LegacySixelDither::Atkinson
+            }
         } else {
             method
         };
@@ -224,7 +233,7 @@ impl DitherConf {
     }
 
     /// Set the pixel format
-    pub fn set_pixel_format(&mut self, pixel_format: PixelFormat) {
+    pub fn set_pixel_format(&mut self, pixel_format: LegacySixelPixelFormat) {
         self.pixel_format = pixel_format;
     }
 
@@ -239,24 +248,24 @@ impl DitherConf {
         pixels: &[u8],
         width: i32,
         height: i32,
-    ) -> SixelResult<Vec<u8>> {
+    ) -> LegacySixelResult<Vec<u8>> {
         let bufsize = width * height;
         let mut dest = vec![0; bufsize as usize];
 
         /* if quality_mode is full, do not use palette caching */
-        if matches!(self.quality_mode, SixelQuality::Full) {
+        if matches!(self.quality_mode, LegacySixelQuality::Full) {
             self.optimized = false;
         }
 
         if self.cachetable.is_none()
             && self.optimized
-            && self.palette != SixelPalette::PAL_MONO_DARK
-            && self.palette != SixelPalette::PAL_MONO_LIGHT
+            && self.palette != LegacySixelPalette::PAL_MONO_DARK
+            && self.palette != LegacySixelPalette::PAL_MONO_LIGHT
         {
             self.cachetable = Some(vec![0; 1 << (3 * 5)]);
         }
 
-        let mut input_pixels = if !matches!(self.pixel_format, PixelFormat::RGB888) {
+        let mut input_pixels = if !matches!(self.pixel_format, LegacySixelPixelFormat::RGB888) {
             /* normalize pixel_format */
             let mut normalized_pixels = vec![0; (width * height * 3) as usize];
             self.pixel_format =

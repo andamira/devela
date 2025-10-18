@@ -113,7 +113,7 @@ See the linked modifications for detailed changes.
 - <i id="grapheme_machine"></i>[grapheme_machine] by Martin Atkins,
   as [`GraphemeMachine`] and related items in [`text::grapheme`] ([*modifications*][M_grapheme_machine]).
 - <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
-  as the [`media::image::sixel`] module ([*modifications*][M_icy_sixel]).
+  as the `Legacy*` types in [`media::image::sixel`] ([*modifications*][M_icy_sixel]).
 - <i id="musl"></i>[musl] by Rich Felker, et al.,
   as part of the [`Linux`] signal restorer assembly code.
 - <i id="object-id"></i>[object-id] by *Altertech*,

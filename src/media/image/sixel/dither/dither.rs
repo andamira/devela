@@ -1,9 +1,9 @@
 // devela::media::image::sixel::dither::dither
 //
-//! Defines the [`Dither`] enum.
+//! Defines the [`LegacySixelDither`] enum.
 //
 // TOC
-// - Dither
+// - LegacySixelDither
 // - fn sixel_apply_15bpp_dither
 // - fn dither_none
 // - fn dither_fs_15bpp
@@ -16,18 +16,18 @@
 
 #![allow(clippy::erasing_op, clippy::identity_op, reason = "symmetry")]
 
-crate::impl_cdef! { Self::Auto => Dither }
+crate::impl_cdef! { Self::Auto => LegacySixelDither }
 
-/// Dithering methods of error diffusion.
+/// LegacySixelDithering methods of error diffusion.
 ///
-/// Dithering helps improve image quality when reducing color depth, commonly
+/// LegacySixelDithering helps improve image quality when reducing color depth, commonly
 /// used in **Sixel**, **GIF**, and other indexed-color formats.
 //
 // # Adaptation
 // - Derived from `methodForDiffuse` enum in the `libsixel` C library.
 #[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum Dither {
+pub enum LegacySixelDither {
     /// Choose diffusion type automatically. (Default)
     #[default]
     Auto = 0,
@@ -78,7 +78,7 @@ pub enum Dither {
     XDither = 8,
 }
 
-impl Dither {
+impl LegacySixelDither {
     /// Applies dithering to a pixel array in **15-bit color mode (5-5-5 RGB)**.
     ///
     /// This method modifies pixel values based on the selected **dithering algorithm**.
@@ -94,23 +94,23 @@ impl Dither {
     #[rustfmt::skip]
     pub fn apply_15bpp(self, pixels: &mut [u8], x: i32, y: i32, width: i32, height: i32) {
         match self {
-            Dither::None | Dither::Auto => {
+            LegacySixelDither::None | LegacySixelDither::Auto => {
                 dither_none(pixels, width); }
             /* only run when enough neighboring pixels exist. */
-            Dither::Atkinson => {
+            LegacySixelDither::Atkinson => {
                 if x < width - 2 && y < height - 2 { dither_atkinson_15bpp(pixels, width); } }
-            Dither::FS => {
+            LegacySixelDither::FS => {
                 if x < width - 1 && y < height - 1 { dither_fs_15bpp(pixels, width); } }
-            Dither::JaJuNi => {
+            LegacySixelDither::JaJuNi => {
                 if x < width - 2 && y < height - 2 { dither_jajuni_15bpp(pixels, width); } }
-            Dither::Stucki => {
+            LegacySixelDither::Stucki => {
                 if x < width - 2 && y < height - 2 { dither_stucki_15bpp(pixels, width); } }
-            Dither::Burkes => {
+            LegacySixelDither::Burkes => {
                 if x < width - 2 && y < height - 1 { dither_burkes_15bpp(pixels, width); } }
             /* apply immediately without boundary checks */
-            Dither::ADither => {
+            LegacySixelDither::ADither => {
                 dither_a_dither_15bpp(pixels, width, x, y); }
-            Dither::XDither => {
+            LegacySixelDither::XDither => {
                 dither_x_dither_15bpp(pixels, width, x, y); }
         }
     }

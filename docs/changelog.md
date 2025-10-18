@@ -187,6 +187,10 @@ Many feature gates are removed in order to make most features make always availa
 - rename `lang::ling::grammar` to `lang::hum::gram`.
 - move `lang::i18n` to `lang::hum::i18n`.
 
+## media
+### image
+- rename vendored sixel types with the `Legacy*` prefix.
+
 ## num
 - move to [base]:
   - aliases: `fsize` and `[iu]size_*`.

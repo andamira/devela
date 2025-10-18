@@ -3,11 +3,11 @@
 use devela::Error;
 
 /// A sixel-related result.
-pub(crate) type SixelResult<T> = Result<T, SixelError>;
+pub(crate) type LegacySixelResult<T> = Result<T, LegacySixelError>;
 
 /// A sixel-related error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum SixelError {
+pub enum LegacySixelError {
     /// Bad argument detected.
     BadArgument,
     /// Bad input detected.
@@ -17,17 +17,17 @@ pub enum SixelError {
 }
 
 mod _core_impls {
-    use super::{Error, SixelError};
+    use super::{Error, LegacySixelError};
     use core::fmt;
 
-    impl Error for SixelError {}
+    impl Error for LegacySixelError {}
 
-    impl fmt::Display for SixelError {
+    impl fmt::Display for LegacySixelError {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
-                SixelError::BadArgument => write!(f, "bad argument detected"),
-                SixelError::BadInput => write!(f, "bad input detected"),
-                SixelError::BadIntegerOverflow => write!(f, "integer overflow"),
+                LegacySixelError::BadArgument => write!(f, "bad argument detected"),
+                LegacySixelError::BadInput => write!(f, "bad input detected"),
+                LegacySixelError::BadIntegerOverflow => write!(f, "integer overflow"),
             }
         }
     }
