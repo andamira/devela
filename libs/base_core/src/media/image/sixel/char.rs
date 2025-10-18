@@ -3,7 +3,7 @@
 //! Defines [`SixelChar`].
 //
 
-use crate::{Cmp, Display, FmtResult, FmtWriter, Formatter, Lut, StringU8, format_buf, is, unwrap};
+use crate::{Display, FmtResult, FmtWriter, Formatter, Lut, StringU8, format_buf, is, unwrap};
 
 /// A sixel character.
 #[must_use]
@@ -17,24 +17,16 @@ impl SixelChar {
     ///
     /// Bit 1 is the bottom pixel and bit 6 (== 32) is the top pixel.
     /// Bits 7 and 8 are ignored.
-    #[inline(always)]
-    pub const fn from_bitmask(mask: u8) -> Self {
-        Self(mask & Self::MASK)
-    }
+    #[inline(always)] #[rustfmt::skip]
+    pub const fn from_bitmask(mask: u8) -> Self { Self(mask & Self::MASK) }
 
     /// Get the 6-bit bitmask representation.
-    #[must_use]
-    #[inline(always)]
-    pub const fn as_bitmask(self) -> u8 {
-        self.0
-    }
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn as_bitmask(self) -> u8 { self.0 }
 
     /// Get the sixel byte value.
-    #[must_use]
-    #[inline(always)]
-    pub const fn as_byte(self) -> u8 {
-        self.0 + Self::MASK
-    }
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn as_byte(self) -> u8 { self.0 + Self::MASK }
 
     /// Create a sixel character from a valid Unicode scalar, from '@' to '~'.
     pub const fn from_char(c: char) -> Option<Self> {
@@ -46,32 +38,47 @@ impl SixelChar {
         }
     }
     /// Returns the corresponding Unicode scalar.
-    #[must_use]
-    #[inline(always)]
-    pub const fn as_char(self) -> char {
-        self.as_byte() as char
-    }
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn as_char(self) -> char { self.as_byte() as char }
 
     /// Checks the equality of two chars.
-    #[must_use]
-    #[inline(always)]
-    pub const fn eq(self, other: Self) -> bool {
-        self.0 == other.0
-    }
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn eq(self, other: Self) -> bool { self.0 == other.0 }
 
     /// Returns `true` if all the pixels are unset.
-    #[must_use]
-    #[inline(always)]
-    pub const fn is_empty(self) -> bool {
-        self.eq(Self::EMPTY)
-    }
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn is_empty(self) -> bool { self.eq(Self::EMPTY) }
 
     /// Returns `true` if all the pixels are set.
-    #[must_use]
-    #[inline(always)]
-    pub const fn is_full(self) -> bool {
-        self.eq(Self::FULL)
+    #[must_use] #[inline(always)] #[rustfmt::skip]
+    pub const fn is_full(self) -> bool { self.eq(Self::FULL) }
+
+    /// Returns the next sixel character in sequence, wrapping around from 63 to 0.
+    pub const fn next(self) -> Self {
+        is![self.eq(Self::FULL); Self::EMPTY; Self(self.0 - 1)]
     }
+
+    /// Returns the previous sixel character in sequence, wrapping around from 0 to 63.
+    pub const fn prev(self) -> Self {
+        is![self.eq(Self::EMPTY); Self::FULL; Self(self.0 - 1)]
+    }
+
+    /// Returns the next sixel character in sequence, returning None if at maximum.
+    #[must_use]
+    pub const fn next_checked(self) -> Option<Self> {
+        is![self.eq(Self::FULL); None; Some(Self(self.0 + 1))]
+    }
+
+    /// Returns the previous sixel character in sequence, returning None if at minimum.
+    #[must_use]
+    pub const fn prev_checked(self) -> Option<Self> {
+        is![self.eq(Self::EMPTY); None; Some(Self(self.0 - 1))]
+    }
+}
+
+/// # Other conversions
+impl SixelChar {
+    /* bools */
 
     /// Create a sixel character from 6 pixels [top, 2, 3, 4, 5].
     #[allow(clippy::identity_op)]
@@ -97,6 +104,8 @@ impl SixelChar {
             value & 1 != 0, // Bottom pixel (LSB)
         ]
     }
+
+    /* braille */
 
     /// Attempts to create a `SixelChar` from a Braille pattern Unicode character.
     ///
@@ -127,6 +136,8 @@ impl SixelChar {
     pub const fn to_braille(self) -> char {
         unwrap![some char::from_u32(0x2800 + self.as_bitmask() as u32)]
     }
+
+    /* hexagram */
 
     /// Creates a sixel from an I Ching hexagram character.
     ///
@@ -166,28 +177,67 @@ impl SixelChar {
         Lut::SIXEL_TO_CHAR_HEXAGRAM[(!self.as_bitmask() & Self::MASK) as usize]
     }
 
-    /// Returns the next sixel character in sequence, wrapping around from 63 to 0.
-    pub const fn next(self) -> Self {
-        is![self.eq(Self::FULL); Self::EMPTY; Self(self.0 - 1)]
+    /* string */
+
+    /// Converts this sixel to an ANSI-colored string showing multiple representations.
+    ///
+    /// The output displays:
+    /// - The raw character (red)
+    /// - Braille pattern equivalent (green)
+    /// - Box representation (blue)
+    /// - Hexagram character (cyan)
+    /// - Binary bitmask representation
+    ///
+    /// Uses ANSI escape codes for coloring and resets formatting at the end.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::SixelChar;
+    /// assert_eq![
+    ///     SixelChar::TOP.to_string_ansi(), // == "@⠁■□□□□□|000001"
+    ///     "\u{1b}[40m\u{1b}[31m@\u{1b}[32m⠁\u{1b}[34m■□□□□□\u{1b}[0m\u{1b}[36m\u{1b}[0m|000001"
+    /// ];
+    /// ```
+    #[allow(non_snake_case)]
+    pub fn to_string_ansi(&self) -> StringU8<65> {
+        use crate::{Ansi, lets};
+        let mut buf = [0; 65];
+        let c = self.as_char();
+        let m = self.as_bitmask();
+        let b = self.to_braille();
+        // let h = self.to_hexagram(); // double-width
+        let bx = self.to_string_box();
+        lets![res = "\x1b[0m", inv = "\x1b[7m"];
+        lets![@Ansi::{R=RED, B=BLUE, G=GREEN, W=CYAN, KB=BLACK_BG}];
+        let args = format_args!["{KB}{R}{c}{G}{b}{B}{bx}{res}{W}{res}|{m:06b}"];
+        let len = FmtWriter::format_len_unchecked(&mut buf, args);
+        StringU8::<65>::_from_array_len_trusted(buf, len as u8)
     }
 
-    /// Returns the previous sixel character in sequence, wrapping around from 0 to 63.
-    pub const fn prev(self) -> Self {
-        is![self.eq(Self::EMPTY); Self::FULL; Self(self.0 - 1)]
-    }
-
-    /// Returns the next sixel character in sequence, returning None if at maximum.
-    #[must_use]
-    pub const fn next_checked(self) -> Option<Self> {
-        is![self.eq(Self::FULL); None; Some(Self(self.0 + 1))]
-    }
-
-    /// Returns the previous sixel character in sequence, returning None if at minimum.
-    #[must_use]
-    pub const fn prev_checked(self) -> Option<Self> {
-        is![self.eq(Self::EMPTY); None; Some(Self(self.0 - 1))]
+    /// Converts this sixel to a box representation showing pixel states.
+    ///
+    /// Each of the six pixels is represented as either:
+    /// - `■` for filled/true pixels
+    /// - `□` for empty/false pixels
+    ///
+    /// The output shows pixels from top to bottom.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::SixelChar;
+    /// assert_eq![SixelChar::TOP.to_string_box(), "■□□□□□"];
+    /// ```
+    pub fn to_string_box(&self) -> StringU8<20> {
+        let mut string = StringU8::<20>::new();
+        let mask = self.as_bitmask();
+        let mut i = 0;
+        while i < 6 {
+            is![mask & (1 << i) != 0; string.push('■'); string.push('□')];
+            i += 1;
+        }
+        assert_eq![string.len(), 18];
+        string
     }
 }
+
 /// # Constants
 impl SixelChar {
     /// No pixels set. (?)
@@ -216,67 +266,8 @@ impl SixelChar {
     pub const TOP4: Self = Self::from_bitmask(0b001_111);
     /// The 5 top pixels (^).
     pub const TOP5: Self = Self::from_bitmask(0b011_111);
-
-    /// The 2 middle pixels (K).
-    pub const MID2: Self = Self::from_bitmask(0b001_100);
-    /// The 4 middle pixels (]).
-    pub const MID4: Self = Self::from_bitmask(0b011_110);
-
-    /// All but the 2 middle pixels (r).
-    pub const INV_MID2: Self = Self::from_bitmask(0b110_011);
-    /// All but the 2 middle pixels (`).
-    pub const INV_MID4: Self = Self::from_bitmask(0b100_001);
-
-    /// Alternating pixels starting from unset at the top (i).
-    pub const ALTU: Self = Self::from_bitmask(0b101_010);
-    /// Alternating pixels starting from set at the top (T).
-    pub const ALTS: Self = Self::from_bitmask(0b010_101);
-
-    /// Converts this sixel to an ANSI-colored string showing multiple representations.
-    ///
-    /// The output displays:
-    /// - The raw character (red)
-    /// - Braille pattern equivalent (green)
-    /// - Box representation (blue)
-    /// - Hexagram character (cyan)
-    /// - Binary bitmask representation
-    ///
-    /// Uses ANSI escape codes for coloring and resets formatting at the end.
-    #[allow(non_snake_case)]
-    pub fn to_string_ansi(&self) -> StringU8<65> {
-        use crate::{Ansi, lets};
-        let mut buf = [0; 65];
-        let c = self.as_char();
-        let m = self.as_bitmask();
-        let b = self.to_braille();
-        let h = self.to_hexagram(); // double-width
-        let bx = self.to_string_box();
-        lets![res = "\x1b[0m", inv = "\x1b[7m"];
-        lets![@Ansi::{R=RED, B=BLUE, G=GREEN, W=CYAN, KB=BLACK_BG}];
-        let args = format_args!["{KB}{R}{c}{G}{b}{B}{bx}{res}{W}{h}{res}|{m:06b}"];
-        let len = FmtWriter::format_len_unchecked(&mut buf, args);
-        StringU8::<65>::_from_array_len_trusted(buf, len as u8)
-    }
-
-    /// Converts this sixel to a box representation showing pixel states.
-    ///
-    /// Each of the six pixels is represented as either:
-    /// - `■` for filled/true pixels
-    /// - `□` for empty/false pixels
-    ///
-    /// The output shows pixels from top to bottom. E.g. `SixelChar::TOP == ■□□□□□`.
-    pub fn to_string_box(&self) -> StringU8<20> {
-        let mut string = StringU8::<20>::new();
-        let mask = self.as_bitmask();
-        let mut i = 0;
-        while i < 6 {
-            is![mask & (1 << i) != 0; string.push('■'); string.push('□')];
-            i += 1;
-        }
-        assert_eq![string.len(), 18];
-        string
-    }
 }
+
 impl Display for SixelChar {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         let mut buf = [0u8; 16];
@@ -293,7 +284,7 @@ impl Lut {
     /// - Standard mapping: filled pixels represent broken lines.
     #[rustfmt::skip]
     // size: 256 bytes
-    pub const SIXEL_TO_CHAR_HEXAGRAM: [char; 64] = [
+    const SIXEL_TO_CHAR_HEXAGRAM: [char; 64] = [
         '\u{4DC0}','\u{4DEA}','\u{4DCD}','\u{4DE1}','\u{4DC8}','\u{4DC4}','\u{4DD9}','\u{4DCA}',
         '\u{4DC9}','\u{4DF9}','\u{4DE5}','\u{4DF5}','\u{4DFC}','\u{4DFA}','\u{4DE8}','\u{4DD2}',
         '\u{4DCC}','\u{4DF0}','\u{4DDD}','\u{4DF6}','\u{4DE4}','\u{4DFE}','\u{4DD5}','\u{4DE3}',
@@ -311,7 +302,7 @@ impl Lut {
     /// You have to subtract 0x4dc0 from char to get the index array.
     #[rustfmt::skip]
     // size: 64 bytes
-    pub const CHAR_HEXAGRAM_TO_SIXEL: [u8; 64] = [
+    const CHAR_HEXAGRAM_TO_SIXEL: [u8; 64] = [
         // NEW ORDER, REVERSING THE BITS to have the correct top/down order
         0b_000000, 0b_111111, 0b_011101, 0b_101110, 0b_000101, 0b_101000, 0b_101111, 0b_111101,
         0b_000100, 0b_001000, 0b_000111, 0b_111000, 0b_010000, 0b_000010, 0b_110111, 0b_111011,
@@ -347,8 +338,8 @@ impl Lut {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
+    // use super::*;
+    //
     // #[test]
     // fn sixel_char() {
     // }
