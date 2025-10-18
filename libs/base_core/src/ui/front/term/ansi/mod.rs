@@ -10,6 +10,8 @@
 mod namespace; // Ansi
 mod color; // AnsiColor3, AnsiColor8 (+Ansi impls)
 
+mod strip; // impl: Ansi:strip_codes
+
 mod helper; // _ANSI_CONSTS
 
 crate::structural_mods! { // _mods, _crate_internals

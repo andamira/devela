@@ -386,7 +386,7 @@ Many feature gates are removed in order to make most features make always availa
 - change `Ansi::print*` methods to `ansi_print*` functions.
 - update `Ansi:`
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
-  - add methods: `COLOR_FG_BRIGHT`, `COLOR_BG_BRIGHT`.
+  - add methods: `COLOR_FG_BRIGHT`, `COLOR_BG_BRIGHT`, `strip_codes`.
   - rename current associated const items with a `_B` suffix.
   - add duplicated items with the old name returning a string slice or a `StringU8`.
   - modify `CURSOR_MOVE_N` method to use `Digits::digit_at_index10`.

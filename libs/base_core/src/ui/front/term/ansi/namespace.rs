@@ -20,7 +20,8 @@ use crate::{_ansi_consts, Digits, slice};
 /// assert_eq![Ansi::ITALIC, "\x1b[3m"];
 /// ```
 ///
-/// # List of escape codes
+/// # Methods
+/// ## Escape codes
 /// - [Screen][Self#screen-escape-codes]
 /// - [Erase][Self#erase-escape-codes]
 /// - [Cursor][Self#cursor-escape-codes]
@@ -30,7 +31,9 @@ use crate::{_ansi_consts, Digits, slice};
 /// - [Grey (8-bit) Palette][Self#8-bit-grey-escape-codes]
 /// - [Palette (8-bit)][Self#8-bit-palette-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
-/// - [Print methods][Self#print-methods]
+///
+/// ## Other
+/// - [`strip_codes`](Self#strip_codes)
 ///
 /// # Coordinate Order
 /// All cursor positioning functions use `(columns, rows)` order, equivalent to `(x, y)`.
