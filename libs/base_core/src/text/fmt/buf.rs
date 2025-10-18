@@ -58,6 +58,7 @@ pub struct FmtWriter<'a> {
 }
 
 CONST! {
+    #[allow(unused_import)]
     _DOC_AS_INTO_STR = "Returns the written content as a valid UTF‑8 string.\n\n
 If the final write ended in the middle of a multi‑byte codepoint only the valid prefix is returned.
 # Features
@@ -72,6 +73,7 @@ Makes use of the `unsafe_str` feature to avoid double validation.";
 
 #[rustfmt::skip]
 impl<'a> FmtWriter<'a> {
+    #[inline(always)]
     /// Creates a new writer for the given buffer.
     pub const fn new(buf: &'a mut [u8]) -> Self { FmtWriter { buf, len: 0, truncated: false } }
 
@@ -83,7 +85,7 @@ impl<'a> FmtWriter<'a> {
     /// Returns the number of bytes written.
     pub const fn written_len(&self) -> usize { self.len }
 
-    /// Writes formatted output into the given byte buffer.
+    /// Writes formatted output into the given byte buffer, returning a string slice.
     ///
     /// Returns:
     /// - `Ok(&str)` if all the formatted data fits into `buf`.
@@ -102,11 +104,39 @@ impl<'a> FmtWriter<'a> {
     /// ```
     pub fn format(buf: &'a mut [u8], args: FmtArguments) -> Result<&'a str, &'a str> {
         let mut w = Self::new(buf);
-        let _ = ::core::fmt::write(&mut w, args); // MAYBE re-export as fmt_write() ?
+        let _ = ::core::fmt::write(&mut w, args);
         is![w.is_truncated(); Err(w.into_str()); Ok(w.into_str())]
     }
 
-    /// Writes a string slice to the buffer.
+    /// Writes formatted output into the given byte buffer, returning the number of written bytes.
+    ///
+    /// Returns:
+    /// - `Ok(usize)` if all the formatted data fits into `buf`.
+    /// - `Err(usize)` containing the number of valid UTF-8 written bytes if truncation ocurred,
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::FmtWriter;
+    /// let mut buf = [0u8; 32];
+    /// assert_eq![Ok(12), FmtWriter::format_len(&mut buf, format_args!["Test: {} {}", "foo", 42])];
+    ///
+    /// let mut buf = [0u8; 9];
+    /// assert_eq![Err(9), FmtWriter::format_len(&mut buf, format_args!["Test: {} {}", "foo", 42])];
+    /// ```
+    pub fn format_len(buf: &'a mut [u8], args: FmtArguments) -> Result<usize, usize> {
+        let mut w = Self::new(buf);
+        let _ = ::core::fmt::write(&mut w, args);
+        is![w.is_truncated(); Err(w.written_len()); Ok(w.written_len())]
+    }
+
+    /// Writes formatted output into the given byte buffer, returning the number of written bytes.
+    pub fn format_len_unchecked(buf: &'a mut [u8], args: FmtArguments) -> usize {
+        let mut w = Self::new(buf);
+        let _ = ::core::fmt::write(&mut w, args);
+        w.written_len()
+    }
+
+    /// Writes a string slice to the buffer, returning the number of bytes written.
     ///
     /// It copies as much of the string as will fit into the remaining buffer space.
     ///
@@ -120,7 +150,7 @@ impl<'a> FmtWriter<'a> {
     ///     writer.into_str_const()
     /// }
     /// ```
-    pub const fn write_str_truncate(&mut self, s: &str) {
+    pub const fn write_str_truncate(&mut self, s: &str) -> usize {
         let available = self.buf.len().saturating_sub(self.len);
         let s_bytes = s.as_bytes();
         let n = Cmp(s_bytes.len()).min(available);
@@ -129,8 +159,9 @@ impl<'a> FmtWriter<'a> {
         }
         is![n < s_bytes.len(); self.truncated = true];
         self.len += n;
+        n
     }
-    
+
     /// Writes a string slice, returning the actually written part.
     ///
     /// Returns `Err` if truncation occurred, with the truncated result.
@@ -139,10 +170,10 @@ impl<'a> FmtWriter<'a> {
         let written = self.as_str_const();
         is![self.is_truncated(); Err(written); Ok(written)]
     }
-    /// Writes a string slice, returning the length of the actually written part.
+    /// Writes a string slice, returning the number of the bytes actually written.
     pub const fn write_str_truncate_checked_len(&mut self, s: &str) -> Result<usize, usize> {
-        self.write_str_truncate(s);
-        is![self.is_truncated(); Err(self.len); Ok(self.len)]
+        let n = self.write_str_truncate(s);
+        is![self.is_truncated(); Err(n); Ok(n)]
     }
 
     #[must_use]
@@ -184,9 +215,9 @@ impl<'a> FmtWriter<'a> {
     #[inline(always)]
     fn get_str_from_slice(slice: &[u8], valid_len: usize) -> &str {
         let valid_range = &slice[..valid_len]; // could be faster in debug builds (non-const)
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         { from_utf8(valid_range).unwrap() } // could use dep_simdutf8 (non-const)
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: we only convert the confirmed valid utf-8 length
         { unsafe { Str::from_utf8_unchecked(valid_range) } }
     }
@@ -194,9 +225,9 @@ impl<'a> FmtWriter<'a> {
     #[inline(always)]
     const fn get_str_from_slice_const(slice: &[u8], valid_len: usize) -> &str {
         let valid_range = slice![slice, ..valid_len];
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         { crate::unwrap![ok Str::from_utf8(valid_range)] }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: we only convert the confirmed valid utf-8 length
         { unsafe { Str::from_utf8_unchecked(valid_range) } }
     }
