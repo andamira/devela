@@ -497,6 +497,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or  if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::{StringNonul, char};
+    /// assert_eq![StringNonul::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
+    /// assert_eq![StringNonul::<4>::from_char('\0').unwrap().as_str(), ""];
+    /// assert![StringNonul::<3>::from_char('🐛').is_err()];
+    /// ```
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if c != '\0' {
@@ -520,7 +527,18 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::{StringNonul, char7};
+    /// let s = StringNonul::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
+    /// assert_eq![s.as_str(), "@"];
+    /// let s = StringNonul::<1>::from_char7(char7::try_from_char('\0').unwrap()).unwrap();
+    /// assert_eq![s.as_str(), ""];
+    ///
+    /// assert![StringNonul::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
+    /// ```
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+        is![CAP == 0; return Err(MismatchedCapacity::closed(1, u8::MAX as usize, CAP))];
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             new.arr[0] = c.to_utf8_bytes()[0];
@@ -537,6 +555,16 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::{StringNonul, char8};
+    /// let s = StringNonul::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
+    /// assert_eq![s.as_str(), "ß"];
+    /// let s = StringNonul::<2>::from_char8(char8::try_from_char('\0').unwrap()).unwrap();
+    /// assert_eq![s.as_str(), ""];
+    ///
+    /// assert![StringNonul::<1>::from_char8(char8::try_from_char('ß').unwrap()).is_err()];
+    /// ```
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
@@ -558,6 +586,16 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::{StringNonul, char16};
+    /// let s = StringNonul::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
+    /// assert_eq![s.as_str(), "€"];
+    /// let s = StringNonul::<3>::from_char16(char16::try_from_char('\0').unwrap()).unwrap();
+    /// assert_eq![s.as_str(), ""];
+    ///
+    /// assert![StringNonul::<2>::from_char16(char16::try_from_char('€').unwrap()).is_err()];
+    /// ```
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
@@ -583,10 +621,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Example
     /// ```
     /// # use devela_base_core::{StringNonul, char_utf8};
-    /// let s = StringNonul::<3>::from_char_utf8(char_utf8::from_char('€')).unwrap();
-    /// assert_eq![s.as_str(), "€"];
+    /// let s = StringNonul::<4>::from_char_utf8(char_utf8::from_char('🐛')).unwrap();
+    /// assert_eq![s.as_str(), "🐛"];
+    /// let s = StringNonul::<4>::from_char_utf8(char_utf8::from_char('\0')).unwrap();
+    /// assert_eq![s.as_str(), ""];
     ///
-    /// assert![StringNonul::<2>::from_char_utf8(char_utf8::from_char('€')).is_err()];
+    /// assert![StringNonul::<3>::from_char_utf8(char_utf8::from_char('🐛')).is_err()];
     /// ```
     pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];

@@ -186,10 +186,18 @@ macro_rules! impl_str_u {
             /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            /// # Example
+            /// ```
+            /// # use devela_base_core::{StringU8, char};
+            /// assert_eq![StringU8::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
+            /// assert![StringU8::<3>::from_char('🐛').is_err()];
+            /// ```
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
-                let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = Char(c).to_utf8_bytes();
-                new.len = Char(bytes[0]).len_utf8_unchecked() as $t;
+                let len = Char(bytes[0]).len_utf8_unchecked();
+                is![CAP < len; return Err(MismatchedCapacity::closed(len, <$t>::MAX as usize, CAP))];
+                let mut new = unwrap![ok? Self::new_checked()];
+                new.len = len as $t;
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
@@ -204,7 +212,16 @@ macro_rules! impl_str_u {
             /// or if `CAP < 1.
             ///
             #[doc = "Will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
+            /// # Example
+            /// ```
+            /// # use devela_base_core::{StringU8, char7};
+            /// let s = StringU8::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
+            /// assert_eq![s.as_str(), "@"];
+            ///
+            /// assert![StringU8::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
+            /// ```
             pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+                is![CAP == 0; return Err(MismatchedCapacity::closed(1, <$t>::MAX as usize, CAP))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.arr[0] = c.to_utf8_bytes()[0];
                 new.len = 1;
@@ -218,12 +235,22 @@ macro_rules! impl_str_u {
             /// or if `CAP < 2.
             ///
             #[doc = "Will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
+            /// # Example
+            /// ```
+            /// # use devela_base_core::{StringU8, char8};
+            /// let s = StringU8::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
+            /// assert_eq![s.as_str(), "ß"];
+            ///
+            /// assert![StringU8::<1>::from_char8(char8::try_from_char('ß').unwrap()).is_err()];
+            /// ```
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
-                let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
-                new.len = Char(bytes[0]).len_utf8_unchecked() as $t;
+                let len = Char(bytes[0]).len_utf8_unchecked();
+                is![CAP < len; return Err(MismatchedCapacity::closed(len, <$t>::MAX as usize, CAP))];
+                let mut new = unwrap![ok? Self::new_checked()];
+                new.len = len as $t;
                 new.arr[0] = bytes[0];
-                if new.len > 1 { new.arr[1] = bytes[1]; }
+                if len > 1 { new.arr[1] = bytes[1]; }
                 Ok(new)
             }
 
@@ -237,18 +264,20 @@ macro_rules! impl_str_u {
             /// # Example
             /// ```
             /// # use devela_base_core::{StringU8, char16};
-            /// let s = StringU8::<3>::from_char16(char16::try_from_char('€')).unwrap();
+            /// let s = StringU8::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
             /// assert_eq![s.as_str(), "€"];
             ///
-            /// assert![StringU8::<2>::from_char16(char16::try_from_char('€')).is_err()];
+            /// assert![StringU8::<2>::from_char16(char16::try_from_char('€').unwrap()).is_err()];
             /// ```
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
-                let mut new = unwrap![ok? Self::new_checked()];
                 let bytes = c.to_utf8_bytes();
-                new.len = Char(bytes[0]).len_utf8_unchecked() as $t;
+                let len = Char(bytes[0]).len_utf8_unchecked();
+                is![CAP < len; return Err(MismatchedCapacity::closed(len, <$t>::MAX as usize, CAP))];
+                let mut new = unwrap![ok? Self::new_checked()];
+                new.len = len as $t;
                 new.arr[0] = bytes[0];
-                if new.len > 1 { new.arr[1] = bytes[1]; }
-                if new.len > 2 { new.arr[2] = bytes[2]; }
+                if len > 1 { new.arr[1] = bytes[1]; }
+                if len > 2 { new.arr[2] = bytes[2]; }
                 // slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
                 Ok(new)
             }
@@ -263,10 +292,10 @@ macro_rules! impl_str_u {
             /// # Example
             /// ```
             /// # use devela_base_core::{StringU8, char_utf8};
-            /// let s = StringU8::<3>::from_char_utf8(char_utf8::from_char('€')).unwrap();
-            /// assert_eq![s.as_str(), "€"];
+            /// let s = StringU8::<4>::from_char_utf8(char_utf8::from_char('🐛')).unwrap();
+            /// assert_eq![s.as_str(), "🐛"];
             ///
-            /// assert![StringU8::<2>::from_char_utf8(char_utf8::from_char('€')).is_err()];
+            /// assert![StringU8::<3>::from_char_utf8(char_utf8::from_char('🐛')).is_err()];
             /// ```
             pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
                 let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
