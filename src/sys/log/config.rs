@@ -1,7 +1,5 @@
 // devela::sys::log::config
 
-#![allow(unused, reason = "WIP")]
-
 use super::{LogLevel, LogLevelFilter};
 
 /// Configuration for a logger.

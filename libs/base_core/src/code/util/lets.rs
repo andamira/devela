@@ -218,6 +218,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(dead_code)]
     fn test_struct_destructuring() {
         struct Point {
             x: i32,
@@ -245,6 +246,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(dead_code)]
     fn test_tuple_struct_destructuring() {
         struct Ts(i32, bool);
         let ts = Ts(10, true);

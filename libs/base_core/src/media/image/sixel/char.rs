@@ -206,8 +206,7 @@ impl SixelChar {
         let b = self.to_braille();
         // let h = self.to_hexagram(); // double-width
         let bx = self.to_string_box();
-        lets![res = "\x1b[0m", inv = "\x1b[7m"];
-        lets![@Ansi::{R=RED, B=BLUE, G=GREEN, W=CYAN, KB=BLACK_BG}];
+        lets![res = "\x1b[0m", @Ansi::{R=RED, B=BLUE, G=GREEN, W=CYAN, KB=BLACK_BG}];
         let args = format_args!["{KB}{R}{c}{G}{b}{B}{bx}{res}{W}{res}|{m:06b}"];
         let len = FmtWriter::format_len_unchecked(&mut buf, args);
         StringU8::<65>::_from_array_len_trusted(buf, len as u8)
@@ -223,7 +222,7 @@ impl SixelChar {
     /// # Example
     /// ```
     /// # use devela_base_core::SixelChar;
-    /// assert_eq![SixelChar::TOP.to_string_box(), "■□□□□□"];
+    /// assert_eq![SixelChar::from_bitmask(0b111001).to_string_box(), "■□□■■■"];
     /// ```
     pub fn to_string_box(&self) -> StringU8<20> {
         let mut string = StringU8::<20>::new();
