@@ -2,7 +2,6 @@
 //
 //! Defines the [`lets!`] macro.
 //
-// IMPROVE: support generics
 
 /// A concise macro for declaring multiple variables at once.
 ///
@@ -11,11 +10,10 @@
 /// - `mut name = expr` - mutable variable
 /// - `name: Type = expr` - with type annotation
 /// - `(pattern) = expr` - tuple destructuring
-/// - `Struct { field } = expr` - struct destructuring
 /// - `[pattern] = expr` - slice/array destructuring
+/// - `Struct { field } = expr` - struct destructuring
+/// - `Struct( field ) = expr` - tuple struct destructuring
 /// - `@Type::{alias = Item}` - shortcuts to associated items (constants, variants, etc.)
-///
-/// Note: generics are not supported.
 ///
 /// # Examples
 /// ```
@@ -39,12 +37,17 @@
 ///
 /// // Associated items shortcuts
 /// #[derive(Debug, PartialEq)] enum Color { Red, Green, Blue, Yellow, Magenta, Cyan }
-/// lets![@Color::{R = Red, G = Green, B = Blue}, @i8::{i8m=MAX, i8b=BITS}];
-/// assert_eq![i8m, 127];
+/// lets![@Color::{R = Red, G = Green, B = Blue}, @i8::{m=MAX, b=BITS}];
+/// assert_eq![m, 127];
+///
+/// // lets![@Option::<i32>::{S = Some}]; // generics are not supported
+/// type OptInt = Option<i32>; // use type alias instead
+/// lets![@OptInt::{S = Some}];
 ///
 /// // Mixed up
-/// lets![mut s = "text", f: f32 = 1.78, @Color::{Y=Yellow, C=Cyan}, mut c = Y];
+/// lets![mut s = "text", f: f32 = 1.5, @Color::{Y=Yellow, C=Cyan}, c = Y, f2 = f * 2.0];
 /// assert_eq![c, Color::Yellow];
+/// assert_eq![f2, 3.0];
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -82,26 +85,26 @@ macro_rules! _lets {
     };
     (
     // individual assignments
-    mut $id:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
-        let mut $id $(: $ty)? = $val;
+    mut $ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
+        let mut $ident $(: $ty)? = $val;
         $crate::lets!($($rest)*);
     };
-    (mut $id:ident $(: $ty:ty)? = $val:expr) => {
-        let mut $id $(: $ty)? = $val;
+    (mut $ident:ident $(: $ty:ty)? = $val:expr) => {
+        let mut $ident $(: $ty)? = $val;
     };
-    ($id:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
-        let $id $(: $ty)? = $val;
+    ($ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
+        let $ident $(: $ty)? = $val;
         $crate::lets!($($rest)*);
     };
-    ($id:ident $(: $ty:ty)? = $val:expr) => {
-        let $id $(: $ty)? = $val;
+    ($ident:ident $(: $ty:ty)? = $val:expr) => {
+        let $ident $(: $ty)? = $val;
     };
     (
     // shortcuts for associated items
-    @$type:ident::{ $($id:ident=$var:ident),+ $(,)? } $(, $($rest:tt)*)?) => {
-    $( let $id = $type::$var; )+
-    $crate::lets!($($($rest)*)?);
-};
+    @$type:ident::{ $($ident:ident=$var:ident),+ $(,)? } $(, $($rest:tt)*)?) => {
+        $( let $ident = $type::$var; )+
+        $crate::lets!($($($rest)*)?);
+    };
 }
 #[doc(inline)]
 pub use _lets as lets;
@@ -230,6 +233,12 @@ mod tests {
         lets![Point { x: new_x, y: new_y } = point];
         assert_eq!(new_x, 10);
         assert_eq!(new_y, 20);
+
+        struct GenericPoint<T> { x: T, y: T }
+        lets![GenericPoint {x, y} = GenericPoint { x: 1, y: 2 }];
+        assert_eq!(x, 1);
+        lets![GenericPoint {x: a, y: b} = GenericPoint::<f32> { x: 1.0, y: 2.0 }];
+        assert_eq!(a, 1.0);
     }
 
     #[test]
@@ -239,6 +248,10 @@ mod tests {
 
         lets![Ts(num, _bool) = ts];
         assert_eq!(num, 10);
+
+        struct GenericPair<T>(T, T);
+        lets![GenericPair(a, b) = GenericPair(1, 2)];
+        assert_eq!(a, 1);
     }
 
     #[test]
