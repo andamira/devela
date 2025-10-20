@@ -19,7 +19,7 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{error::*, pnm::*};
     }
     _pub_mods {
-        #[cfg(feature = "term")]
+        #[doc(inline)]
         pub use super::sixel::_all::*;
     }
 }

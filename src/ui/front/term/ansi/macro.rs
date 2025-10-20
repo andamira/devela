@@ -65,6 +65,10 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
     /* 1) */ feature = "std",
     /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
 )))]
+#[cfg_attr(
+    nightly_doc,
+    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
+)]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -99,6 +103,10 @@ macro_rules! ansi {
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(feature = "std")]
 #[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)))]
+#[cfg_attr(
+    nightly_doc,
+    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
+)]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -144,6 +152,10 @@ macro_rules! ansi {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
+#[cfg_attr(
+    nightly_doc,
+    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
+)]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice

@@ -204,6 +204,7 @@ mod tests {
         const_assert!(eq_buf STR_ARR_LIT_SLI, &[48,49,1,2,3,4]);
     }
     #[test]
+    #[cfg(feature = "term")]
     const fn join_bytes_ansi() {
         use crate::Ansi;
         const ANSI0: &[u8] = const_join!(bytes: Ansi::BOLD);

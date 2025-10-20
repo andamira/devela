@@ -36,7 +36,6 @@ mod structs;
 crate::items! {
     mod point_entry; // linux_entry!
     mod restorer;
-    // #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     mod syscalls; // LINUX_SYS
 }
 
@@ -57,6 +56,7 @@ pub mod process {
     pub use _all::*;
     pub(super) mod _all {
         #[cfg(all(any_target_arch_linux, feature = "unsafe_syscall", not(miri)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
         pub use super::super::{
             consts::signal::*,
             structs::{LinuxSigaction, LinuxSiginfo, LinuxSigset},
@@ -78,6 +78,7 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{error::*, namespace::*};
 
         #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
         pub use super::{point_entry::*, syscalls::_all::*};
     }
     _pub_mods {

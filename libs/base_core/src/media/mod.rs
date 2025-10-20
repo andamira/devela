@@ -15,6 +15,7 @@ crate::structural_mods! { // _pub_mods
         // pub use super::color::_all::*;
 
         #[cfg(feature = "image")]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
         pub use super::image::_all::*;
     }
 }

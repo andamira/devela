@@ -1193,7 +1193,7 @@ check-cfg = [ # Allowed configuration flags:
 			#
 			# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 			# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-			"cfg(nightly_doc)", # not(doc_auto_cfg)
+			"cfg(nightly_doc)",
 			#
 			# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
 			# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)

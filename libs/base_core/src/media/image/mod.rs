@@ -15,6 +15,7 @@ crate::structural_mods! { // _pub_mods
         // pub use super::pnm::*;
 
         #[cfg(feature = "term")]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
         pub use super::sixel::_all::*;
     }
 }
