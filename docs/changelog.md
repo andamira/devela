@@ -60,6 +60,7 @@ Many feature gates are removed in order to make most features make always availa
 - remove `_core` and `_dep` re-exports from the public docs.
 - remove dependencie:
   - `const-str`, and related `str!` macro.
+  - `libm` and related `Float` and `ExtFloat` functionality.
 
 ## features & flags
 - new features: `__publish`, `__std`, `base_safe`, `grapheme`, `safe_build`.

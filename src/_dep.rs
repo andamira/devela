@@ -80,9 +80,6 @@ _reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
 _reexport! { optional_crate (safe) "dep_kira", "kira", kira,
     doc: "Expressive audio library for games."
 }
-_reexport! { optional_crate (unsafe) "dep_libm", "libm", libm,
-    doc: "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust."
-}
 _reexport! { optional_crate (safe) "dep_log", "log", log,
     doc: "A lightweight logging facade."
 }

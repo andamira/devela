@@ -22,7 +22,7 @@ macro_rules! impl_float_shared {
         $( impl_float_shared![@$f:$uf, $ie, $ue]; )+
     };
     (@$f:ty:$uf:ty, $ie:ty, $ue:ty) => {
-        /// # *Common implementations with or without `std` or `libm`*.
+        /// # *Common implementations with or without `std`*.
         impl Float<$f> {
             /// The largest integer less than or equal to itself.
             /// # Formulation
@@ -53,8 +53,7 @@ macro_rules! impl_float_shared {
 
             /// The nearest integer to itself, rounding ties away from `0.0`.
             ///
-            /// This is the default `round` method implementation,
-            /// without `std` nor `dep_libm`.
+            /// This is the default `round` method implementation, without `std`.
             ///
             /// # Formulation
             #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_AWAY!()]

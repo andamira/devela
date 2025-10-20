@@ -4,14 +4,14 @@
 //
 
 pub(crate) mod _docs; // _FLOAT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
-// mod consts; // FloatConst
+// mod float_const; // FloatConst
 // mod wrapper; // Float
 
 crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
-        //     // consts::_all::*,
-        //     // wrapper::_all::*,
+        //     float_const::_all::*,
+        //     wrapper::_all::*,
         // };
     }
     _workspace_internals {

@@ -3,15 +3,12 @@
 //! Floating-point wrapper struct.
 //
 
-mod consts; // FloatConst
-
-// WIPZONE
-// mod namespace; // Float
+mod consts;
 
 #[cfg(test)]
 mod tests_f32;
 
-mod libm_std; // for either or neither.
+mod std; // for std or no_std.
 mod shared; // implements shared methods.
 mod shared_series; // with Taylor Series.
 
@@ -24,19 +21,9 @@ mod shared_series; // with Taylor Series.
 /// # Methods
 /// TODO
 ///
-/// The wrapper leverages `std` or `libm` if enabled, otherwise implements fallbacks.
+/// The wrapper leverages `std` if enabled, otherwise implements fallbacks.
 /// It also favors `std` style for method's names, but changes a few like `minimum`
 /// for `min_nan` and `maximum` for `max_nan`, for consistency.
-///
-/// If both the `libm` and `std` features are enabled the `libm` functions will
-/// be used, since it contains more functions, namely:
-/// - Gamma functions: [`gamma`][Float#method.gamma], [`lgamma`][Float#method.lgamma],
-///   [`lgamma_r`][Float#method.lgamma_r].
-/// - Bessel functions:
-///   [`j0`][Float#method.j0], [`j1`][Float#method.j1], [`jn`][Float#method.jn],
-///   [`y0`][Float#method.y0], [`y1`][Float#method.y1], [`yn`][Float#method.yn].
-/// - Error functions: [`erf`][Float#method.erf], [`erfc`][Float#method.erfc].
-/// - [`exp10`][Float#method.exp10].
 #[must_use]
 #[repr(transparent)]
 pub struct Float<T>(pub T);

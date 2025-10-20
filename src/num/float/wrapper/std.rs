@@ -1,23 +1,22 @@
-// devela::num::float::wrapper::libm_std
+// devela::num::float::wrapper::std
 //
-//! Methods depending on libm, std, or their absence
+//! Methods depending on std, or its absence
 //
 // TOC
 // - macro impl_fp!
-// - impls for libm
-// - impls for std && not(libm)
-// - impls for not(std) && not(libm)
+// - impls for std
+// - impls for not(std)
 
 use crate::Float;
 
-/// Macro helper for implementing methods for `Float`, from either `libm` or `std`.
+/// Macro helper for implementing methods for `Float`, from `std`.
 ///
 /// $lib: the library to use.
 /// $f: the floating-point type to support.
 /// $doc: an optional documentation string.
 /// $opfn: the original operation function name.
 /// $op: the new operation function name in Float.
-#[cfg(any(feature = "dep_libm", feature = "std"))]
+#[cfg(feature = "std")]
 macro_rules! impl_fp {
     (
         // Matches a wildcard floating-point type (f*).
@@ -46,15 +45,6 @@ macro_rules! impl_fp {
         impl_fp![@$lib : $f : $($rest)*];
     };
     (
-        // Matches a single operation and implements it using the `libm` library.
-        @libm : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
-    ) => {
-        $(#[doc = $doc])?
-        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
-            Float($crate::_dep::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
-        }
-    };
-    (
         // Matches a single operation and implements it using the `std` library.
         @std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
     ) => {
@@ -64,181 +54,10 @@ macro_rules! impl_fp {
         }
     };
 }
-#[cfg(any(feature = "dep_libm", feature = "std"))]
+#[cfg(feature = "std")]
 use impl_fp;
 
-#[cfg(feature = "dep_libm")]
-mod _libm {
-    use super::{Float, impl_fp};
-    use crate::{_dep::libm::Libm, is};
-
-    // custom implementations are commented out
-    impl_fp![libm:f*:
-        r"The largest integer less than or equal to `x`.
-        $$ \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$ "
-        floor = floor: ;
-        r"The smallest integer greater than or equal to `x`.
-        $$ \lceil x \rceil = \min \{ n \in ℤ \,|\, n \geq x \} $$"
-        ceil = ceil: ;
-        "The nearest integer to itself, rounding ties away from `0.0`."
-        round = round_ties_away: ;
-        "The integral part."
-        trunc = trunc: ;
-        // fract
-        // split == modf
-        // abs
-        // signum
-        // copysign = copysign: sign;
-        "Fused multiply-add. Computes (self * mul) + add with only one rounding error."
-        fma = mul_add: mul, add;
-        // div_euclid
-        // rem_euclid
-        "Raises itself to the `p` floating point power."
-        pow = powf: p;
-        // powi
-        "Square root."
-        sqrt = sqrt: ;
-        "$e^x$ (the exponential function)."
-        exp = exp: ;
-        "$2^x$."
-        exp2 = exp2: ;
-        "$e^x -1$, more accurately for small values of `x`."
-        expm1 = exp_m1: ;
-        // ln = ln: x;
-        "The natural logarithm."
-        log = ln: ;
-        "The natural logarithm plus 1, more accurately."
-        log1p = ln_1p: ;
-        // log
-        "The base 2 logarithm."
-        log2 = log2: ;
-        "The base 10 logarithm."
-        log10 = log10: ;
-        "The cubic root."
-        cbrt = cbrt: ;
-        "The hypothenuse (the euclidean distance)."
-        hypot = hypot: other;
-        "The sine."
-        sin = sin: ;
-        "The cosine."
-        cos = cos: ;
-        "The tangent."
-        tan = tan: ;
-        "The arc sine."
-        asin = asin: ;
-        "The arc cosine."
-        acos = acos: ;
-        "The arc tangent."
-        atan = atan: ;
-        "The arc tangent of two variables."
-        atan2 = atan2: other;
-        // sin_cos
-        "The hyperbolic sine."
-        sinh = sinh: ;
-        "The hyperbolic cosine."
-        cosh = cosh: ;
-        "The hyperbolic tangent."
-        tanh = tanh: ;
-        "The inverse hyperbolic sine."
-        asinh = asinh: ;
-        "The inverse hyperbolic cosine."
-        acosh = acosh: ;
-        "The inverse hyperbolic tangent."
-        atanh = atanh: ;
-        // fmax = max: other;
-        // fmin = min: other;
-
-        /* only in libm */
-
-        "`10^x`."
-        exp10 = exp10: ;
-        "The gamma function. Generalizes the factorial function to complex numbers."
-        tgamma = gamma: ;
-        "The natural logarithm of the absolute value of the gamma function."
-        lgamma = lgamma: ;
-        "The error function."
-        erf = erf: ;
-        "The complementary error function (1 - erf)."
-        erfc = erfc: ;
-        "The bessel function of the first kind, of order 0."
-        j0 = j0: ;
-        "The bessel function of the first kind, of order 1."
-        j1 = j1: ;
-        // jn
-        "The bessel function of the second kind, of order 0."
-        y0 = y0: ;
-        "The bessel function of the second kind, of order 1."
-        y1 = y1:
-        // yn
-    ]; // IMPORTANT: do not end with `;`
-
-    /// $f:   the floating-point type.
-    /// $e:   the integer type for integer exponentiation.
-    macro_rules! custom_impls {
-        () => {
-            custom_impls![(f32, i32), (f64, i32)];
-        };
-
-        ($( ($f:ty, $e:ty)),+) => {
-            $( custom_impls![@$f, $e]; )+
-        };
-        (@$f:ty, $e:ty) => {
-            /// # *Implementations using the `libm` feature*.
-            impl Float<$f> {
-                /// The fractional part.
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_FRACT!()]
-                pub fn fract(self) -> Float<$f> { Float(self.0 - Libm::<$f>::trunc(self.0)) }
-
-                /// The integral and fractional parts.
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
-                pub fn split(self) -> (Float<$f>, Float<$f>) {
-                    let (i, f) = Libm::<$f>::modf(self.0);
-                    (Self(i), Self(f))
-                }
-
-                /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
-                pub fn round_ties_even(self) -> Float<$f> {
-                    let r = self.round_ties_away();
-                    is![r.0 % 2.0 == 0.0; r;
-                        is![(self - r).abs() == 0.5; r - self.signum(); r]]
-                }
-
-                /// Raises `x` to the `p` integer power.
-                pub fn powi(self, p: $e) -> Float<$f> { self.powf(p as $f) }
-
-                /// The logarithm of the number with respect to an arbitrary base.
-                pub fn log(self, base: $f) -> Float<$f> {
-                    // Float(Self::ln(base).0 / Self::ln(self).0)
-                    Float(Float(base).ln().0 / self.ln().0)
-                }
-
-                /// The sine and cosine.
-                pub fn sin_cos(self) -> (Float<$f>, Float<$f>) {
-                    let (sin, cos) = Libm::<$f>::sincos(self.0);
-                    (Float(sin), Float(cos))
-                }
-
-                /* only in libm */
-
-                /// The natural logarithm of the absolute value of the gamma function,
-                /// plus its sign.
-                pub fn lgamma_r(self) -> (Float<$f>, $e) {
-                    let (f, sign) = Libm::<$f>::lgamma_r(self.0);
-                    (Float(f), sign)
-                }
-                /// Bessel function of the first kind, of order `n`.
-                pub fn jn(self, n: $e) -> Float<$f> { Float(Libm::<$f>::jn(n, self.0)) }
-                /// Bessel function of the second kind, of order `n`.
-                pub fn yn(self, n: $e) -> Float<$f> { Float(Libm::<$f>::yn(n, self.0)) }
-            }
-        };
-    }
-    custom_impls!();
-}
-
-#[cfg(all(not(feature = "dep_libm"), feature = "std"))]
+#[cfg(feature = "std")]
 mod _std {
     use super::{Float, impl_fp};
 
@@ -370,8 +189,8 @@ mod _std {
     custom_impls!();
 }
 
-#[cfg(all(not(feature = "dep_libm"), not(feature = "std")))]
-mod _no_std_no_libm {
+#[cfg(not(feature = "std"))]
+mod _no_std {
     use super::Float;
 
     /// $f:   the floating-point type.
@@ -385,7 +204,7 @@ mod _no_std_no_libm {
             $( custom_impls![@$f, $uf, $ie]; )+
         };
         (@$f:ty, $uf:ty, $ie:ty) => {
-            /// # *Implementations without `std` or `libm`*.
+            /// # *Implementations without `std`
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
                 /// # Formulation

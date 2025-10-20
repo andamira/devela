@@ -586,7 +586,7 @@ dep_all = [ # enables all 44 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
 	"dep_crossterm", "dep_flume", "dep_fontdue", "dep_ffmpeg",
 	"dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff",
-	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
+	"dep_kira", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
 	"dep_orion", "dep_portable_atomic", "dep_portable_atomic_util", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite",
 	"dep_rodio", "dep_safe_arch", "dep_sdl2",
@@ -619,7 +619,6 @@ dep_image = ["dep:image"]                                                       
 dep_itertools = ["dep:itertools"]                                                 # data::iter
 dep_jiff = ["dep:jiff", "alloc", "pyo3?/jiff-02"]                                 # phys::time
 dep_kira = ["dep:kira"]                                                           # sys::sound
-dep_libm = ["dep:libm"]                                                           # num::float
 dep_log = ["dep:log"]                                                             # sys::log
 dep_memchr = ["dep:memchr", "winnow?/simd"]                                       # text:str
 dep_midir = ["dep:midir"]                                                         # media::midi
@@ -793,11 +792,6 @@ default-features = false # 10 https://docs.rs/crate/kira/latest/features
 features = ["cpal"] # symphonia, flac, mp3, ogg, wav
 # https://docs.rs/kira/latest/kira/#features
 # INSTALL: libasound2-dev
-
-[dependencies.libm] # https://crates.io/crates/libm
-version = "0.2.15" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
-optional = true # unsafe
-default-features = false # 3 https://docs.rs/crate/libm/latest/features
 
 [dependencies.log] # https://crates.io/crates/log
 version = "0.4.25" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md

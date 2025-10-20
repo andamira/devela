@@ -234,10 +234,13 @@ mod tests {
         assert_eq!(new_x, 10);
         assert_eq!(new_y, 20);
 
-        struct GenericPoint<T> { x: T, y: T }
-        lets![GenericPoint {x, y} = GenericPoint { x: 1, y: 2 }];
+        struct GenericPoint<T> {
+            x: T,
+            y: T,
+        }
+        lets![GenericPoint { x, y } = GenericPoint { x: 1, y: 2 }];
         assert_eq!(x, 1);
-        lets![GenericPoint {x: a, y: b} = GenericPoint::<f32> { x: 1.0, y: 2.0 }];
+        lets![GenericPoint { x: a, y: b } = GenericPoint::<f32> { x: 1.0, y: 2.0 }];
         assert_eq!(a, 1.0);
     }
 
