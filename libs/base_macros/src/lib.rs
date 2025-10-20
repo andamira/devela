@@ -17,6 +17,7 @@
 // - misc:
 //   - coalesce
 //   - field_of
+//   - repeat
 //
 // WAIT: [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727#issuecomment-485181171)
 
@@ -158,3 +159,15 @@ pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 /// ```
 #[proc_macro] #[rustfmt::skip]
 pub fn field_of(input: TS) -> TS { body_field_of(input) }
+
+/// Repeats an expression the given number of times, as duplicated code with no loops.
+///
+/// # Example
+/// ```
+/// # use devela_base_macros::repeat;
+/// let mut a = 0;
+/// repeat![3, a += 1];
+/// assert_eq![a, 3];
+/// ```
+#[proc_macro] #[rustfmt::skip]
+pub fn repeat(input: TS) -> TS { body_repeat(input) }

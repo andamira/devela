@@ -25,7 +25,6 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
             _ => {}
         }
     }
-
     args.push(arg[start..].trim().to_string());
     args
 }

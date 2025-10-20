@@ -25,13 +25,13 @@ pub use devela_base_core::{
     maybe,
     methods_as_fns,
     paste,
-    repeat,
     structural_mods,
     write_at,
     // devela_code_macros:
     // cif, compile, compile_attr, compile_doc,
     // ident_total, ident_total_unique, ident_unique,
     // coalesce, field_of,
+    // repeat,
 };
 
 #[cfg(feature = "devela_macros")]

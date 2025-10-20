@@ -14,6 +14,8 @@ pub use devela_base_macros::{
     coalesce, field_of,
     //
     compile_doc,
+    //
+    repeat,
 };
 
 /* `core::hint` functions re-exports */

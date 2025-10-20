@@ -87,6 +87,7 @@ Many feature gates are removed in order to make most features make always availa
   - add `_workspace_internal` structural module (replacing `_internal`).
 - [base_macros]:
   - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
+  - new macro: `repeat!`.
 - [macros]:
   - use workspace's crate version.
   - make it an optional dependency.
