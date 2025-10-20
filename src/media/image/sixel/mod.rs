@@ -21,6 +21,7 @@ crate::structural_mods! { // _mods
         };
     }
     _pub_mods {
+        #[doc(inline)]
         #[cfg(all(feature = "alloc", feature = "term"))]
         #[cfg(any(feature = "io", feature = "std"))]
         #[cfg(any(feature = "dep_hashbrown", feature = "std"))]

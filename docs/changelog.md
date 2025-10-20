@@ -383,6 +383,7 @@ Many feature gates are removed in order to make most features make always availa
 ## ui
 ### front
 #### term
+- feature-gate with `term`.
 - rename `AnsiColor3b` to `AnsiColor3` and `AnsiColor8b` `AnsiColor8`.
 - move to [base]:
   - types: `Ansi`, `AnsiColor3`, `AnsiColor8`, `TermSize`.

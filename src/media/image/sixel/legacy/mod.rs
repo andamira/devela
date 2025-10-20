@@ -14,4 +14,9 @@ mod quant;
 mod output; // LegacySixelMean, LegacySixelQuality, LegacySixelSplit
 
 use quant::*;
-pub use {builder::*, dither::*, error::*, output::*};
+
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::{builder::*, dither::*, error::*, output::*};
+    }
+}
