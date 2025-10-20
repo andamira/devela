@@ -47,9 +47,6 @@ _reexport! { optional_crate (unsafe) "dep_bumpalo", "bumpalo", bumpalo,
 _reexport! { optional_crate (unsafe) "dep_bytemuck", "bytemuck", bytemuck,
     doc: "Small utilities for casting between plain data types."
 }
-_reexport! { optional_crate (unsafe) "dep_const_str", "const-str", const_str,
-    doc: "Compile-time string operations."
-}
 _reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
     doc: "Cross-platform Terminal Manipulation Library.",
     features: "std"

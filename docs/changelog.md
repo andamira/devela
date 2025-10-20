@@ -58,6 +58,8 @@ Many feature gates are removed in order to make most features make always availa
     - `quote` to 1.0.40.
 - add optional dependencies to [base]: `memchr`, `simdutf8`.
 - remove `_core` and `_dep` re-exports from the public docs.
+- remove dependencie:
+  - `const-str`, and related `str!` macro.
 
 ## features & flags
 - new features: `__publish`, `__std`, `base_safe`, `grapheme`, `safe_build`.

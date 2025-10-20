@@ -170,7 +170,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 186/300 (114 remaining), 134 visible, 52 hidden
+[features] # 185/300 (115 remaining), 133 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -584,7 +584,7 @@ _value_all = [
 # In sync with ./build/main/dep_all & ./src/_dep.rs
 dep_all = [ # enables all 44 optional dependencies:
 	"dep_allocator_api2", "dep_atomic", "dep_bumpalo", "dep_bytemuck",
-	"dep_const_str", "dep_crossterm", "dep_flume", "dep_fontdue", "dep_ffmpeg",
+	"dep_crossterm", "dep_flume", "dep_fontdue", "dep_ffmpeg",
 	"dep_gilrs", "dep_hashbrown", "dep_image", "dep_itertools", "dep_jiff",
 	"dep_kira", "dep_libm", "dep_log", "dep_memchr", "dep_midir", "dep_miniquad",
 	"dep_orion", "dep_portable_atomic", "dep_portable_atomic_util", "dep_pyo3",
@@ -598,7 +598,7 @@ dep_all = [ # enables all 44 optional dependencies:
 
 # groups of dependencies, environment and modules
 alloc_deps = ["alloc", "dep_bumpalo", "dep_allocator_api2"]
-text_deps  = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite",
+text_deps  = ["text", "dep_memchr", "dep_regex_lite",
 	"dep_stringzilla", "dep_unicode_segmentation", "dep_unicode_width"]
 work_deps  = ["work", "dep_atomic", "dep_portable_atomic", "dep_rayon", "dep_tokio"]
 
@@ -608,7 +608,6 @@ dep_allocator_api2 = ["dep:allocator-api2", "hashbrown?/allocator-api2",        
 dep_atomic = ["dep:atomic"]                                                       # work::sync
 dep_bumpalo = ["dep:bumpalo"]                                                     # sys::mem::alloc
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                            # ···
-dep_const_str = ["dep:const-str"]                                                 # text::str
 dep_crossterm = ["dep:crossterm"]                                                 # ui::back
 dep_ffmpeg = ["dep:ffmpeg-the-third"]                                             # media::video
 dep_flume = ["dep:flume"]                                                         # work::sync
@@ -667,7 +666,7 @@ devela_macros = [ "dep:devela_macros"]
 devela_base_data = ["dep:devela_base_data"] # MAYBE
 devela_base_text = ["dep:devela_base_text"] # MAYBE
 
-[dependencies] # 51 (3 required, 48 optional)
+[dependencies] # 50 (3 required, 47 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -717,11 +716,6 @@ optional = true # unsafe
 default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
-
-[dependencies.const-str] # https://crates.io/crates/const-str
-version = "0.6.3" # ✗ https://github.com/Nugine/const-str/commits/main/
-optional = true # unsafe
-default-features = false # 8 https://docs.rs/crate/const-str/latest/features
 
 [dependencies.crossterm] # https://crates.io/crates/crossterm
 # In sync with src::ui::back::crossterm::service

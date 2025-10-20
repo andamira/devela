@@ -5,7 +5,6 @@
 #![doc = crate::_doc!(extends: str, string)]
 
 mod ext_str; // ExtStr
-mod macros; // str!
 mod reexports;
 
 #[cfg(feature = "alloc")]
@@ -15,7 +14,6 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             ext_str::*,
-            macros::*,
             reexports::*,
         };
         #[cfg(feature = "alloc")]
