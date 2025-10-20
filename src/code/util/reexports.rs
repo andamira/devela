@@ -25,6 +25,7 @@ pub use devela_base_core::{
     maybe,
     methods_as_fns,
     paste,
+    repeat,
     structural_mods,
     write_at,
     // devela_code_macros:

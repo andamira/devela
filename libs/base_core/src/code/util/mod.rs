@@ -36,6 +36,7 @@ mod lets; // lets!
 mod maybe; // maybe!
 mod methods; // methods_as_fns!
 mod paste; // paste! (wrapped for docs)
+mod repeat; // repeat!
 mod structural; // structural_mods!
 mod write; // write_at!
 
@@ -63,6 +64,7 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
             maybe::maybe,
             methods::methods_as_fns,
             paste::paste,
+            repeat::repeat,
             structural::structural_mods,
             write::*,
         };
