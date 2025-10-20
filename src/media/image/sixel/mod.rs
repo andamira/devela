@@ -3,17 +3,15 @@
 //! [Sixel] encoding functionality.
 //!
 //! [Sixel]: https://en.wikipedia.org/wiki/Sixel
-#![doc = crate::_doc!(vendor: "icy_sixel")]
 //
 
-mod builder; // LegacySixel
-mod dither; // LegacySixelDither
-mod error; // LegacySixelError
-mod quant;
-mod output; // LegacySixelMean, LegacySixelQuality, LegacySixelSplit
-
-///
-const SIXEL_PALETTE_MAX: usize = 256;
+#[cfg(all(feature = "alloc", feature = "term"))]
+#[cfg(any(feature = "io", feature = "std"))]
+#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
+#[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", feature = "term"))))]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "io", feature = "std"))))]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+pub mod legacy;
 
 crate::structural_mods! { // _mods
     _mods {
@@ -21,7 +19,11 @@ crate::structural_mods! { // _mods
         pub use devela_base_core::media::image::{
             SixelChar, SixelColor, SixelEncoder, SixelPalette,
         };
-
-        pub use super::{builder::*, dither::*, error::*, output::*, quant::*};
+    }
+    _pub_mods {
+        #[cfg(all(feature = "alloc", feature = "term"))]
+        #[cfg(any(feature = "io", feature = "std"))]
+        #[cfg(any(feature = "dep_hashbrown", feature = "std"))]
+        pub use super::legacy::*;
     }
 }

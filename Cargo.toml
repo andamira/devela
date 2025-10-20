@@ -279,7 +279,7 @@ media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	draw = ["sdl2?/gfx"]
 	color = []
 	font = ["sdl2?/ttf"]
-	image = ["sdl2?/image"]
+	image = ["devela_base_core/image", "sdl2?/image"]
 	midi = []
 	video = []
 num = ["geom", "rand", "unit"]
@@ -316,7 +316,7 @@ ui = ["layout", "desk", "term", "web"]
 	# front
 		desk = []
 		# mobi = []
-		term = [] # media::image::sixel
+		term = ["devela_base_core/term"] # media::image::sixel
 		web = []
 work = [
 	"process", "sync", "thread",

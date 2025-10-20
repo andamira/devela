@@ -10,12 +10,8 @@
 mod error;
 mod pnm;
 
-#[cfg(all(feature = "alloc", feature = "term"))]
-#[cfg(any(feature = "io", feature = "std"))]
-#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", feature = "term"))))]
-#[cfg_attr(nightly_doc, doc(cfg(any(feature = "io", feature = "std"))))]
-#[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+#[cfg(feature = "term")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
 pub mod sixel;
 
 crate::structural_mods! { // _mods, _pub_mods
@@ -23,9 +19,7 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{error::*, pnm::*};
     }
     _pub_mods {
-        #[cfg(all(feature = "alloc", feature = "term"))]
-        #[cfg(any(feature = "io", feature = "std"))]
-        #[cfg(any(feature = "dep_hashbrown", feature = "std"))]
+        #[cfg(feature = "term")]
         pub use super::sixel::_all::*;
     }
 }

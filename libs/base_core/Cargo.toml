@@ -31,6 +31,15 @@ __dbg = []
 __publish = []
 __std = [] # remove no_std
 
+#* Module features *#
+media = ["image"]
+	image = [] # media::image
+
+ui = ["term"]
+	# layout = []
+	# front
+		term = [] # media::image::sixel
+
 #* Safety features *#
 base_safe = [] # activates safe enforcement of thematic safe_* features
 safest = ["safe", "base_safe"] # for completion
