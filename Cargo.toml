@@ -170,7 +170,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 185/300 (115 remaining), 133 visible, 52 hidden
+[features] # 184/300 (116 remaining), 132 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -205,6 +205,7 @@ __dbg = [
 ]
 __no_test = [] # exclude examples from being tested
 __std = [      # disables `no_std` in base crates for testing
+	"std",
 	"devela_base_core/__std",
 		"devela_base_data?/__std",
 		"devela_base_num/__std",
@@ -665,7 +666,7 @@ devela_macros = [ "dep:devela_macros"]
 devela_base_data = ["dep:devela_base_data"] # MAYBE
 devela_base_text = ["dep:devela_base_text"] # MAYBE
 
-[dependencies] # 50 (3 required, 47 optional)
+[dependencies] # 49 (3 required, 46 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
