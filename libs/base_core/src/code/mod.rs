@@ -7,6 +7,7 @@
 
 mod any; // dynamic typing and reflection
 mod guard; // ScopeGuard
+mod lut; // Lut
 mod reexports;
 
 pub mod error; // general errors definitions
@@ -18,7 +19,7 @@ pub mod util; // utility macros and functions
 
 util::structural_mods! { // _mods, _pub_mods, _workspace_internals
     _mods {
-        pub use super::{any::*, guard::*, reexports::*};
+        pub use super::{any::*, guard::*, lut::*, reexports::*};
     }
     _pub_mods {
         pub use super::{

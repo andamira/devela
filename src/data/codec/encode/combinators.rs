@@ -4,6 +4,7 @@
 //! [`CodecBe`], [`CodecIf`], [`CodecLe`], [`CodecFlags`], [`CodecJoin`], [`CodecLenValue`].
 //
 // TOC
+#[rustfmt::skip]
 pub use {
     cond::CodecIf,
     endian::{CodecBe, CodecLe},

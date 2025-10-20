@@ -33,7 +33,6 @@ mod include; // include_from!, mod_from!, mod_path!
 mod is; // is!
 mod items; // items!, sf!
 mod lets; // lets!
-mod lut; // Lut
 mod maybe; // maybe!
 mod methods; // methods_as_fns!
 mod paste; // paste! (wrapped for docs)
@@ -60,7 +59,6 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
             include::{include_from, mod_from, mod_path},
             is::is,
             items::{items, sf},
-            lut::Lut,
             lets::lets,
             maybe::maybe,
             methods::methods_as_fns,

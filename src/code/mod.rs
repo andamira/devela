@@ -28,7 +28,7 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
         pub use super::{_c::*, any::_all::*, default::*};
 
         #[doc(inline)]
-        pub use devela_base_core::code::ScopeGuard;
+        pub use devela_base_core::code::{Lut, ScopeGuard};
     }
     _pub_mods {
         pub use super::{

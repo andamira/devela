@@ -73,7 +73,7 @@ macro_rules! _write_at {
         }
         $crate::write_at!(% $buf, $offset, $($rest)*);
     };
-    (%$buf:ident, $offset:ident, @$seq:expr) => {  // last @sequence
+    (% $buf:ident, $offset:ident, @$seq:expr) => {  // last @sequence
         let seq = $seq;
         let mut i = 0;
         while i < seq.len() {
@@ -99,7 +99,7 @@ pub use _write_at as write_at;
 mod tests {
     use super::write_at;
     #[test]
-    fn write_at() {
+    fn test_write_at() {
         let mut buffer = [0u8; 20];
         let mut offset = 0;
 
@@ -111,7 +111,7 @@ mod tests {
         assert_eq![&buffer[0..offset], b"\x1bPq\"hello world"];
     }
     #[test]
-    const fn const_write_at() {
+    const fn test_const_write_at() {
         use crate::Slice;
 
         let mut buffer = [0u8; 20];
@@ -129,7 +129,7 @@ mod tests {
     }
     #[cfg(test)]
     #[test]
-    fn sequence() {
+    fn test_sequence_spread() {
         let bytes = [6, 7, 8];
         let mut buffer = [0u8; 10];
         let mut offset = 0;
@@ -138,7 +138,7 @@ mod tests {
     }
     #[test]
     #[should_panic(expected = "index out of bounds: the len is 4 but the index is 4")]
-    fn buffer_overflow() {
+    fn test_buffer_overflow() {
         let mut buffer = [0u8; 4];
         let mut offset = 0;
         write_at!(buffer, offset, 1, 2, 3, 4, 5);

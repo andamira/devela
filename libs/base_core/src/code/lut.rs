@@ -1,4 +1,4 @@
-// devela_base_core::code::util::lut
+// devela_base_core::code::lut
 //
 //! Defines the [`Lut`] namespace.
 //

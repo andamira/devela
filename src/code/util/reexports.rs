@@ -8,7 +8,6 @@ crate::mod_path!(+pub _c "../../../libs/base_core/src/code/util/reexports.rs");
 // NOTE: in sync with /libs/base_core/src/code/util/mod.rs:
 #[doc(inline)] #[rustfmt::skip]
 pub use devela_base_core::{
-    Lut,
     assert_eq_all, assert_approx_eq_all, const_assert,
     capture_first, capture_last, capture_tail_tuple,
     cfg_if,
