@@ -10,7 +10,7 @@
 
 #![allow(non_camel_case_types)]
 
-pub(crate) use crate::{NonExtremeU8, NonExtremeU32, NonValueU16};
+pub(crate) use crate::{NonExtremeU8, NonExtremeU32, NonNiche, NonValueU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a Unicode scalar.
 pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
@@ -86,4 +86,18 @@ pub struct char16(pub(super) NonSurrogateU16);
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct char_utf8(pub(super) NonExtremeU32);
+pub struct char_utf8(pub(super) NonNiche<u32>);
+
+#[doc = crate::_TAG_TEXT!()]
+/// A 32-bit [Unicode scalar][scalar], with UTF-8 representation,
+/// and niche-memory optimization.
+///
+#[doc = crate::_doc!(location: "text/char")]
+///
+/// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
+///
+/// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
+#[must_use]
+#[repr(transparent)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub struct char_utf8_niche(pub(super) NonExtremeU32);

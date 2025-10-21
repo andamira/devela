@@ -17,7 +17,8 @@ macro_rules! char_core_impls {
             char7 + Self(unwrap![some NonExtremeU8::new(0)]),
             char8 + Self(0),
             char16 + Self(unwrap![some NonSurrogateU16::new(0)]),
-            char_utf8 + Self(unwrap![some NonExtremeU32::new(0)])
+            char_utf8 + Self(unwrap![some NonNiche::<u32>::new(0)]),
+            char_utf8_niche + Self(unwrap![some NonExtremeU32::new(0)])
         ];
     };
     ($( $name:ident + $default:expr ),+ $(,)?) => {

@@ -282,7 +282,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### char
 - new fn: `scalar_as_ascii_translit`.
-- new types: `CharIter`, `char_utf8`.
+- new types: `CharIter`, `char_utf8`, `char_utf8_niche`.
 - new `char7` methods: `to_byte`, `to_str`.
 - new `char[7|8|16]` methods: `to_char_utf8`, `try_from_char_utf8`.
 - new `Lut` consts: `ASCII_BASE36_OFFSET`, `DIGITS_BASE36`, `DECIMAL_PAIRS`, `POWERS10`.
