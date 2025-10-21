@@ -1,8 +1,6 @@
 // devela_base_core::num::niche::mem::non_value
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
-//!
-//! Always available for internal use.
 //
 
 use crate::items;

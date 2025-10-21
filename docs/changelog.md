@@ -225,6 +225,10 @@ Many feature gates are removed in order to make most features make always availa
   - add methods for 2|3d`length[_ref|_mut]`, `width[_ref|_mut]`, `height[_ref|_mut]`, `depth[_ref|_mut]`, `breadth[_ref|_mut]`.
 - remove `c_` prefix from int methods.
 
+### niche
+- new macro: `nv!`.
+- new type: `NonNiche`.
+
 ## phys
 ### time
 - remove `TimeError` alias.
