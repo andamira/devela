@@ -36,3 +36,19 @@ impl<T> From<T> for NonNiche<T> {
         Self(value)
     }
 }
+
+// helper make implementations over primitives.
+macro_rules! impl_non_niche {
+    () => { impl_non_niche!(u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize); };
+    ($($prim:ty),+) => {
+        $(
+            impl NonNiche<$prim> {
+                /// The minimum possible value.
+                pub const MIN: Self = Self(<$prim>::MIN);
+                /// The maximum possible value.
+                pub const MAX: Self = Self(<$prim>::MAX);
+            }
+        )+
+    };
+}
+impl_non_niche![];

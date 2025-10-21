@@ -75,6 +75,7 @@ pub use nz;
 #[doc(hidden)]
 #[derive(Debug)]
 pub struct NicheNew<T>(pub T);
+
 macro_rules! impl_niche {
     () => {
         impl_niche!(U: u8, u16, u32, u64, u128, usize);

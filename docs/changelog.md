@@ -281,6 +281,7 @@ Many feature gates are removed in order to make most features make always availa
   - types: `ByteSearch`, `Digits`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 
 ### char
+- new macro: `ch!`.
 - new fn: `scalar_as_ascii_translit`.
 - new types: `CharIter`, `charu`, `charu_niche`.
 - new `char7` methods: `to_byte`, `to_str`.
