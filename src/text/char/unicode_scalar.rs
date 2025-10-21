@@ -4,11 +4,11 @@
 //
 // TOC
 // - trait UnicodeScalar
-// - impl for char[7|8|16]
-// - impl for char_utf8
 // - impl for char
+// - impl for char[7|8|16]
+// - impl for charu[_niche]
 
-use crate::{Char, char_utf8, char7, char8, char16};
+use crate::{Char, char7, char8, char16, charu, charu_niche};
 
 #[rustfmt::skip]
 #[doc = crate::_TAG_TEXT!()]
@@ -35,7 +35,7 @@ pub trait UnicodeScalar {
     fn to_scalar(self) -> u32;
 
     // // MAYBE
-    // fn to_char_utf8(self) -> char_utf;
+    // fn to_charu(self) -> char_utf;
 
     #[must_use]
     /// Returns the number of bytes needed to represent the scalar value.
@@ -228,6 +228,45 @@ pub trait UnicodeScalar {
 
 /* impls */
 
+#[rustfmt::skip]
+impl UnicodeScalar for char {
+    const MIN: Self = char::MIN;
+    const MAX: Self = char::MAX;
+
+    /* encode */
+
+    fn to_char(self) -> char { self }
+    fn to_scalar(self) -> u32 { self as u32 }
+    fn len_bytes(self) -> usize { Char(self as u32).len_bytes() }
+    fn len_utf8(self) -> usize { self.len_utf8() }
+    fn len_utf16(self) -> usize { self.len_utf16() }
+    fn encode_utf8(self, dst: &mut [u8]) -> &mut str { self.encode_utf8(dst) }
+    fn to_utf8_bytes(self) -> [u8; 4] { Char(self).to_utf8_bytes() }
+    fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] { self.encode_utf16(dst) }
+    fn to_digit(self, radix: u32) -> Option<u32> { self.to_digit(radix) }
+    fn to_ascii_uppercase(self) -> char { char::to_ascii_uppercase(&self) }
+    fn to_ascii_lowercase(self) -> char { char::to_ascii_lowercase(&self) }
+
+    /* queries */
+
+    fn is_ascii(self) -> bool { (self as u32) <= 0x7F }
+    fn is_nul(self) -> bool { self as u32 == 0 }
+    fn is_alphabetic(self) -> bool { self.is_alphabetic() }
+    fn is_numeric(self) -> bool { self.is_numeric() }
+    fn is_alphanumeric(self) -> bool { self.is_alphanumeric() }
+    fn is_digit(self, radix: u32) -> bool { self.is_digit(radix) }
+    fn is_lowercase(self) -> bool { self.is_lowercase() }
+    fn is_uppercase(self) -> bool { self.is_uppercase() }
+    fn is_whitespace(self) -> bool { self.is_whitespace() }
+    fn is_control(self) -> bool { self.is_control() }
+    fn is_control_common(self) -> bool { Char(self as u32).is_control_common() }
+    fn is_noncharacter(self) -> bool { Char(self as u32).is_noncharacter() }
+    fn is_combining(self) -> bool { Char(self as u32).is_combining() }
+    fn is_combining_common(self) -> bool { Char(self as u32).is_combining_common() }
+    fn is_fullwidth(self) -> bool { Char(self as u32).is_fullwidth() }
+    fn is_fullwidth_common(self) -> bool { Char(self as u32).is_fullwidth_common() }
+}
+
 /// Implements `UnicodeScalar` for custom char types.
 macro_rules! impl_char {
     () => {
@@ -292,83 +331,51 @@ macro_rules! impl_char {
 }
 impl_char!();
 
-#[rustfmt::skip]
-impl UnicodeScalar for char_utf8 { // TODO:IMPROVE avoid converting to char
-    const MIN: Self = Self::MIN;
-    const MAX: Self = Self::MAX;
+macro_rules! impl_charu {
+    () => { impl_charu![charu, charu_niche]; };
+    ($( $name:ident),+ ) => { $( impl_charu!(@$name); )+ };
+    (@$name:ident) => {
 
-    /* encode */
+        impl UnicodeScalar for $name { // TODO:IMPROVE avoid converting to char
+            const MIN: Self = Self::MIN;
+            const MAX: Self = Self::MAX;
 
-    fn to_char(self) -> char { self.to_char() }
-    fn to_scalar(self) -> u32 { self.to_scalar() }
-    fn len_bytes(self) -> usize { self.len_bytes() }
-    fn len_utf8(self) -> usize { self.len_utf8() }
-    fn len_utf16(self) -> usize { self.to_char().len_utf16() }
-    fn encode_utf8(self, dst: &mut [u8]) -> &mut str { self.to_char().encode_utf8(dst) }
-    fn to_utf8_bytes(self) -> [u8; 4] { self.to_utf8_bytes() }
-    fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] { self.to_char().encode_utf16(dst) }
-    fn to_digit(self, radix: u32) -> Option<u32> { self.to_char().to_digit(radix) }
-    fn to_ascii_uppercase(self) -> Self {
-        Self::from_char(char::to_ascii_uppercase(&self.to_char()))
-    }
-    fn to_ascii_lowercase(self) -> Self {
-        Self::from_char(char::to_ascii_lowercase(&self.to_char()))
-    }
+            /* encode */
 
-    /* queries */
+            fn to_char(self) -> char { self.to_char() }
+            fn to_scalar(self) -> u32 { self.to_scalar() }
+            fn len_bytes(self) -> usize { self.len_bytes() }
+            fn len_utf8(self) -> usize { self.len_utf8() }
+            fn len_utf16(self) -> usize { self.to_char().len_utf16() }
+            fn encode_utf8(self, dst: &mut [u8]) -> &mut str { self.to_char().encode_utf8(dst) }
+            fn to_utf8_bytes(self) -> [u8; 4] { self.to_utf8_bytes() }
+            fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] { self.to_char().encode_utf16(dst) }
+            fn to_digit(self, radix: u32) -> Option<u32> { self.to_char().to_digit(radix) }
+            fn to_ascii_uppercase(self) -> Self {
+                Self::from_char(char::to_ascii_uppercase(&self.to_char()))
+            }
+            fn to_ascii_lowercase(self) -> Self {
+                Self::from_char(char::to_ascii_lowercase(&self.to_char()))
+            }
 
-    fn is_ascii(self) -> bool { self.is_ascii() }
-    fn is_nul(self) -> bool { self.is_nul() }
-    fn is_alphabetic(self) -> bool { self.to_char().is_alphabetic() }
-    fn is_numeric(self) -> bool { self.to_char().is_numeric() }
-    fn is_alphanumeric(self) -> bool { self.to_char().is_alphanumeric() }
-    fn is_digit(self, radix: u32) -> bool { self.to_char().is_digit(radix) }
-    fn is_lowercase(self) -> bool { self.to_char().is_lowercase() }
-    fn is_uppercase(self) -> bool { self.to_char().is_uppercase() }
-    fn is_whitespace(self) -> bool { self.to_char().is_whitespace() }
-    fn is_control(self) -> bool { self.to_char().is_control() }
-    fn is_noncharacter(self) -> bool { Char(self.to_scalar()).is_noncharacter() }
-    fn is_combining(self) -> bool { Char(self.to_scalar()).is_combining() }
-    fn is_combining_common(self) -> bool { Char(self.to_scalar()).is_combining_common() }
-    fn is_fullwidth(self) -> bool { Char(self.to_scalar()).is_fullwidth() }
-    fn is_fullwidth_common(self) -> bool { Char(self.to_scalar()).is_fullwidth_common() }
+            /* queries */
+
+            fn is_ascii(self) -> bool { self.is_ascii() }
+            fn is_nul(self) -> bool { self.is_nul() }
+            fn is_alphabetic(self) -> bool { self.to_char().is_alphabetic() }
+            fn is_numeric(self) -> bool { self.to_char().is_numeric() }
+            fn is_alphanumeric(self) -> bool { self.to_char().is_alphanumeric() }
+            fn is_digit(self, radix: u32) -> bool { self.to_char().is_digit(radix) }
+            fn is_lowercase(self) -> bool { self.to_char().is_lowercase() }
+            fn is_uppercase(self) -> bool { self.to_char().is_uppercase() }
+            fn is_whitespace(self) -> bool { self.to_char().is_whitespace() }
+            fn is_control(self) -> bool { self.to_char().is_control() }
+            fn is_noncharacter(self) -> bool { Char(self.to_scalar()).is_noncharacter() }
+            fn is_combining(self) -> bool { Char(self.to_scalar()).is_combining() }
+            fn is_combining_common(self) -> bool { Char(self.to_scalar()).is_combining_common() }
+            fn is_fullwidth(self) -> bool { Char(self.to_scalar()).is_fullwidth() }
+            fn is_fullwidth_common(self) -> bool { Char(self.to_scalar()).is_fullwidth_common() }
+        }
+    };
 }
-
-#[rustfmt::skip]
-impl UnicodeScalar for char {
-    const MIN: Self = char::MIN;
-    const MAX: Self = char::MAX;
-
-    /* encode */
-
-    fn to_char(self) -> char { self }
-    fn to_scalar(self) -> u32 { self as u32 }
-    fn len_bytes(self) -> usize { Char(self as u32).len_bytes() }
-    fn len_utf8(self) -> usize { self.len_utf8() }
-    fn len_utf16(self) -> usize { self.len_utf16() }
-    fn encode_utf8(self, dst: &mut [u8]) -> &mut str { self.encode_utf8(dst) }
-    fn to_utf8_bytes(self) -> [u8; 4] { Char(self).to_utf8_bytes() }
-    fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] { self.encode_utf16(dst) }
-    fn to_digit(self, radix: u32) -> Option<u32> { self.to_digit(radix) }
-    fn to_ascii_uppercase(self) -> char { char::to_ascii_uppercase(&self) }
-    fn to_ascii_lowercase(self) -> char { char::to_ascii_lowercase(&self) }
-
-    /* queries */
-
-    fn is_ascii(self) -> bool { (self as u32) <= 0x7F }
-    fn is_nul(self) -> bool { self as u32 == 0 }
-    fn is_alphabetic(self) -> bool { self.is_alphabetic() }
-    fn is_numeric(self) -> bool { self.is_numeric() }
-    fn is_alphanumeric(self) -> bool { self.is_alphanumeric() }
-    fn is_digit(self, radix: u32) -> bool { self.is_digit(radix) }
-    fn is_lowercase(self) -> bool { self.is_lowercase() }
-    fn is_uppercase(self) -> bool { self.is_uppercase() }
-    fn is_whitespace(self) -> bool { self.is_whitespace() }
-    fn is_control(self) -> bool { self.is_control() }
-    fn is_control_common(self) -> bool { Char(self as u32).is_control_common() }
-    fn is_noncharacter(self) -> bool { Char(self as u32).is_noncharacter() }
-    fn is_combining(self) -> bool { Char(self as u32).is_combining() }
-    fn is_combining_common(self) -> bool { Char(self as u32).is_combining_common() }
-    fn is_fullwidth(self) -> bool { Char(self as u32).is_fullwidth() }
-    fn is_fullwidth_common(self) -> bool { Char(self as u32).is_fullwidth_common() }
-}
+impl_charu!();

@@ -1,7 +1,7 @@
 // devela_base_text::grapheme::scanner::properties
 
 use super::trie::graphemes_lookup;
-use crate::{Mem, char_utf8, impl_trait};
+use crate::{Mem, charu, impl_trait};
 
 #[doc = crate::_TAG_TEXT!()]
 #[doc = concat![crate::_ABBR_EGC!(), "property values from Unicode Standard Annex #29."]]
@@ -149,16 +149,16 @@ impl GraphemeProps {
     ///
     /// Uses an embedded trie to find the Grapheme_Cluster_Break and
     /// Indic_Conjunct_Break properties for the scalar.
-    pub const fn for_char_utf8(c: char_utf8) -> Self {
+    pub const fn for_charu(c: charu) -> Self {
         Self { raw: graphemes_lookup(c) }
     }
 
     /// Looks up grapheme properties for a scalar.
     ///
-    /// Convenience method that converts to `char_utf8` internally.
-    /// Prefer `for_char_utf8` if you already have a `char_utf8`.
+    /// Convenience method that converts to `charu` internally.
+    /// Prefer `for_charu` if you already have a `charu`.
     pub const fn for_char(c: char) -> Self {
-        Self { raw: graphemes_lookup(char_utf8::from_char(c)) }
+        Self { raw: graphemes_lookup(charu::from_char(c)) }
     }
 
     /// Returns the Grapheme_Cluster_Break property.

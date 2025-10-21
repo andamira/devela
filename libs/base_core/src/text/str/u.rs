@@ -49,7 +49,7 @@ macro_rules! impl_str_u {
         ///     *([7][Self::from_char7],
         ///       [8][Self::from_char8],
         ///       [16](Self::from_char16),
-        ///       [utf8](Self::from_char_utf8))*.
+        ///       [utf8](Self::from_charu))*.
         ///   [`from_array`][Self::from_array] *(
         #[cfg_attr(feature = "unsafe_str", doc =
             "[_unchecked][Self::from_array_unchecked]<sup title='unsafe function'>⚠</sup>,")]
@@ -282,22 +282,22 @@ macro_rules! impl_str_u {
                 Ok(new)
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `char_utf8`."]
+            #[doc = "Creates a new `String" $t:camel "` from a `charu`."]
             ///
             /// # Errors
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][char_utf8#method.len_utf8]."]
+                "::MAX`]` || CAP < c.`[`len_utf8()`][charu#method.len_utf8]."]
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             /// # Example
             /// ```
-            /// # use devela_base_core::{StringU8, char_utf8};
-            /// let s = StringU8::<4>::from_char_utf8(char_utf8::from_char('🐛')).unwrap();
+            /// # use devela_base_core::{StringU8, charu};
+            /// let s = StringU8::<4>::from_charu(charu::from_char('🐛')).unwrap();
             /// assert_eq![s.as_str(), "🐛"];
             ///
-            /// assert![StringU8::<3>::from_char_utf8(char_utf8::from_char('🐛')).is_err()];
+            /// assert![StringU8::<3>::from_charu(charu::from_char('🐛')).is_err()];
             /// ```
-            pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
+            pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
                 let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
                 if len <= CAP {
                     let mut new = unwrap![ok? Self::new_checked()];
@@ -309,24 +309,24 @@ macro_rules! impl_str_u {
                 }
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `char_utf8`."]
+            #[doc = "Creates a new `String" $t:camel "` from a `charu`."]
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][char_utf8#method.len_utf8]."]
+                "::MAX`]` || CAP < c.`[`len_utf8()`][charu#method.len_utf8]."]
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             /// # Examples
             /// ```
-            /// # use devela_base_core::{StringU8, char_utf8};
-            /// let s = StringU8::<3>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+            /// # use devela_base_core::{StringU8, charu};
+            /// let s = StringU8::<3>::from_charu_unchecked(charu::from_char('€'));
             /// assert_eq![s, "€"]
             /// ```
             /// ```should_panic
-            /// # use devela_base_core::{StringU8, char_utf8};
-            /// StringU8::<2>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+            /// # use devela_base_core::{StringU8, charu};
+            /// StringU8::<2>::from_charu_unchecked(charu::from_char('€'));
             /// ```
-            pub const fn from_char_utf8_unchecked(c: char_utf8) -> Self {
+            pub const fn from_charu_unchecked(c: charu) -> Self {
                 let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
                 let mut new = Self::new();
                 slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
@@ -685,7 +685,7 @@ macro_rules! impl_str_u {
             /// Returns the number of bytes written.
             ///
             /// Returns 0 bytes if the given `character` doesn't fit in the remaining capacity.
-            pub const fn push_char_utf8(&mut self, c: char_utf8) -> usize {
+            pub const fn push_charu(&mut self, c: charu) -> usize {
                 let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
                 if self.remaining_capacity() >= len {
                     slice![mut &mut self.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);

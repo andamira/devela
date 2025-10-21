@@ -6,7 +6,7 @@
 // - struct GraphemeMachine
 // - enum GraphemeBoundary
 
-use crate::{GraphemeProps, GraphemeScanner, Mem, char_utf8, impl_trait};
+use crate::{GraphemeProps, GraphemeScanner, Mem, charu, impl_trait};
 
 mod state;
 use state::GraphemeMachineState;
@@ -55,11 +55,11 @@ impl GraphemeMachine {
         if boundary { GraphemeBoundary::Split } else { GraphemeBoundary::Continue }
     }
 
-    /// Advances the state machine with a [`char_utf8`] scalar.
+    /// Advances the state machine with a [`charu`] scalar.
     ///
     /// See [`Self::next_char_properties`] for result interpretation.
-    pub const fn next_char_utf8(&mut self, c: char_utf8) -> GraphemeBoundary {
-        let props = GraphemeProps::for_char_utf8(c);
+    pub const fn next_charu(&mut self, c: charu) -> GraphemeBoundary {
+        let props = GraphemeProps::for_charu(c);
         self.next_char_properties(props)
     }
 
@@ -67,27 +67,24 @@ impl GraphemeMachine {
     ///
     /// See [`Self::next_char_properties`] for result interpretation.
     ///
-    /// Note: [`GraphemeProps`] lookup is optimized for [`char_utf8`].
-    /// Use [`Self::next_char_utf8`] if you already have `char_utf8` to avoid conversion.
+    /// Note: [`GraphemeProps`] lookup is optimized for [`charu`].
+    /// Use [`Self::next_charu`] if you already have `charu` to avoid conversion.
     pub const fn next_char(&mut self, c: char) -> GraphemeBoundary {
         let props = GraphemeProps::for_char(c);
         self.next_char_properties(props)
     }
 
-    /// Returns an iterator over [`char_utf8`] scalars in `s` with their cluster actions.
+    /// Returns an iterator over [`charu`] scalars in `s` with their cluster actions.
     ///
-    /// The iterator processes code points from `s` using [`Self::next_char_utf8`].
+    /// The iterator processes code points from `s` using [`Self::next_charu`].
     /// For consistent state tracking, consume the entire iterator.
     ///
     /// Does not call [`Self::end_of_input`] automatically, supporting streaming across buffers.
-    pub const fn next_char_utf8_from_str<'a>(
-        &'a mut self,
-        s: &'a str,
-    ) -> GraphemeScanner<'a, char_utf8> {
-        GraphemeScanner::<char_utf8>::new(self, s)
+    pub const fn next_charu_from_str<'a>(&'a mut self, s: &'a str) -> GraphemeScanner<'a, charu> {
+        GraphemeScanner::<charu>::new(self, s)
     }
 
-    /// Like [`Self::next_char_utf8_from_str`] but converts to [`char`] for convenience.
+    /// Like [`Self::next_charu_from_str`] but converts to [`char`] for convenience.
     pub const fn next_char_from_str<'a>(&'a mut self, s: &'a str) -> GraphemeScanner<'a, char> {
         GraphemeScanner::<char>::new(self, s)
     }

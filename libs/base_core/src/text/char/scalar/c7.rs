@@ -69,11 +69,11 @@ impl char7 {
             Err(DataOverflow(Some(scalar as usize)))
         }
     }
-    /// Tries to convert a `char_utf8` to `char7`.
+    /// Tries to convert a `charu` to `char7`.
     ///
     /// # Errors
     /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
-    pub const fn try_from_char_utf8(c: char_utf8) -> Result<char7, DataOverflow> {
+    pub const fn try_from_charu(c: charu) -> Result<char7, DataOverflow> {
         let scalar = c.to_scalar();
         if Char(scalar).is_ascii() {
             Ok(char7::new_unchecked(scalar as u8))
@@ -127,9 +127,9 @@ impl char7 {
     pub const fn to_char16(self) -> char16 {
         char16::from_char7(self)
     }
-    /// Converts this `char7` to `char_utf8`.
-    pub const fn to_char_utf8(self) -> char_utf8 {
-        char_utf8::from_char7(self)
+    /// Converts this `char7` to `charu`.
+    pub const fn to_charu(self) -> charu {
+        charu::from_char7(self)
     }
     /// Converts this `char7` to `char`.
     #[must_use]

@@ -1,6 +1,6 @@
 // devela_base_text::grapheme::scanner::table
 
-use crate::char_utf8;
+use crate::charu;
 
 /// Traverses the trie represented by [`GRAPHEMES_INDEX`] and
 /// [`GRAPHEMES_VALUES`] to find its properties as a raw value in the form
@@ -9,7 +9,7 @@ use crate::char_utf8;
 /// The trie is designed to be traversed by UTF-8 bytes, so shorter UTF-8
 /// sequences need fewer lookup steps and we don't need to decode the UTF-8
 /// representation of a code point to find its properties.
-pub const fn graphemes_lookup(s: char_utf8) -> u8 {
+pub const fn graphemes_lookup(s: charu) -> u8 {
     let mut buf = [0u8; 4];
     let s = s.as_bytes_into(&mut buf);
 

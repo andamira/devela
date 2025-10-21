@@ -1,12 +1,12 @@
 // devela_base_core::text::char::scalar::definitions
 //
-//! Define [`char7`], [`char8`], [`char16`], [`char_utf8`].
+//! Define [`char7`], [`char8`], [`char16`], [`charu`].
 //
 // TOC
 // - struct char7
 // - struct char8
 // - struct char16
-// - struct char_utf8
+// - struct charu
 
 #![allow(non_camel_case_types)]
 
@@ -86,7 +86,7 @@ pub struct char16(pub(super) NonSurrogateU16);
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct char_utf8(pub(super) NonNiche<u32>);
+pub struct charu(pub(super) NonNiche<u32>);
 
 #[doc = crate::_TAG_TEXT!()]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation,
@@ -100,4 +100,4 @@ pub struct char_utf8(pub(super) NonNiche<u32>);
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct char_utf8_niche(pub(super) NonExtremeU32);
+pub struct charu_niche(pub(super) NonExtremeU32);

@@ -3,12 +3,12 @@
 //!
 //
 // TOC
-// - impl over char_utf8
+// - impl over charu
 // - impl over char
 
 use crate::{
     GraphemeBoundary, GraphemeMachine, GraphemeNonul, GraphemeU8, IteratorFused, PhantomData,
-    StringNonul, StringU8, char_utf8, is, slice, unwrap,
+    StringNonul, StringU8, charu, is, slice, unwrap,
 };
 
 #[doc = crate::_TAG_TEXT!()]
@@ -25,16 +25,16 @@ pub struct GraphemeScanner<'a, C> {
     remain: &'a str,
     _char: PhantomData<C>,
 }
-impl<'a> GraphemeScanner<'a, char_utf8> {
+impl<'a> GraphemeScanner<'a, charu> {
     /// Creates a new grapheme iterator over the remaining text.
     pub const fn new(machine: &'a mut GraphemeMachine, remain: &'a str) -> Self {
-        GraphemeScanner::<char_utf8> { machine, remain, _char: PhantomData }
+        GraphemeScanner::<charu> { machine, remain, _char: PhantomData }
     }
 
     /// Returns the next code point and its grapheme boundary action.
-    pub const fn next(&mut self) -> Option<(GraphemeBoundary, char_utf8)> {
-        let (next, len) = unwrap![some? char_utf8::from_str_with_len(self.remain)];
-        let action = self.machine.next_char_utf8(next);
+    pub const fn next(&mut self) -> Option<(GraphemeBoundary, charu)> {
+        let (next, len) = unwrap![some? charu::from_str_with_len(self.remain)];
+        let action = self.machine.next_charu(next);
         self.remain = slice![str self.remain, len as usize, ..];
         Some((action, next))
     }
@@ -49,10 +49,10 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_text::{GraphemeMachine, GraphemeScanner, GraphemeU8, char_utf8};
+    /// # use devela_base_text::{GraphemeMachine, GraphemeScanner, GraphemeU8, charu};
     /// let input = "H€🧑‍🌾";
     /// let mut machine = GraphemeMachine::new();
-    /// let mut scanner = GraphemeScanner::<char_utf8>::new(&mut machine, input);
+    /// let mut scanner = GraphemeScanner::<charu>::new(&mut machine, input);
     ///
     /// let g = scanner.next_grapheme_u8::<32>().unwrap(); assert_eq!(g.as_str(), "H");
     /// let g = scanner.next_grapheme_u8::<32>().unwrap(); assert_eq!(g.as_str(), "€");
@@ -62,8 +62,8 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     pub const fn next_grapheme_u8<const CAP: usize>(&mut self) -> Option<GraphemeU8<CAP>> {
         let mut g = StringU8::<CAP>::new();
         let mut buf = [0u8; 4];
-        while let Some((ch, len)) = char_utf8::from_str_with_len(self.remain) {
-            let boundary = self.machine.next_char_utf8(ch);
+        while let Some((ch, len)) = charu::from_str_with_len(self.remain) {
+            let boundary = self.machine.next_charu(ch);
             if boundary.eq(GraphemeBoundary::Split) && !g.is_empty() {
                 return Some(GraphemeU8(g)); // if split occurs return the previous grapheme
             }
@@ -82,10 +82,10 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_text::{GraphemeMachine, GraphemeScanner, char_utf8};
+    /// # use devela_base_text::{GraphemeMachine, GraphemeScanner, charu};
     /// let input = "H€🧑‍🌾";
     /// let mut machine = GraphemeMachine::new();
-    /// let mut scanner = GraphemeScanner::<char_utf8>::new(&mut machine, input);
+    /// let mut scanner = GraphemeScanner::<charu>::new(&mut machine, input);
     ///
     /// let g = scanner.next_grapheme_nonul::<32>().unwrap(); assert_eq!(g.as_str(), "H");
     /// let g = scanner.next_grapheme_nonul::<32>().unwrap(); assert_eq!(g.as_str(), "€");
@@ -96,8 +96,8 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
         let mut g = StringNonul::<CAP>::new();
         let mut buf = [0u8; 4];
         let mut has_content = false; // to avoid costly is_empty() calls
-        while let Some((ch, len)) = char_utf8::from_str_with_len(self.remain) {
-            let boundary = self.machine.next_char_utf8(ch);
+        while let Some((ch, len)) = charu::from_str_with_len(self.remain) {
+            let boundary = self.machine.next_charu(ch);
             // if split occurs return the previous grapheme:
             if boundary.eq(GraphemeBoundary::Split) && !g.is_empty() {
                 return Some(GraphemeNonul(g)); // if split occurs return the previous grapheme
@@ -111,13 +111,13 @@ impl<'a> GraphemeScanner<'a, char_utf8> {
     }
 }
 
-impl<'a> Iterator for GraphemeScanner<'a, char_utf8> {
-    type Item = (GraphemeBoundary, char_utf8);
+impl<'a> Iterator for GraphemeScanner<'a, charu> {
+    type Item = (GraphemeBoundary, charu);
     fn next(&mut self) -> Option<Self::Item> {
         self.next()
     }
 }
-impl<'a> IteratorFused for GraphemeScanner<'a, char_utf8> {}
+impl<'a> IteratorFused for GraphemeScanner<'a, charu> {}
 
 impl<'a> GraphemeScanner<'a, char> {
     /// Creates a new grapheme iterator over the remaining text.
@@ -130,8 +130,8 @@ impl<'a> GraphemeScanner<'a, char> {
     /// # Features
     /// Uses the `unsafe_str` feature to avoid duplicated validation.
     pub const fn next(&mut self) -> Option<(GraphemeBoundary, char)> {
-        let (next, len) = unwrap![some? char_utf8::from_str_with_len(self.remain)];
-        let action = self.machine.next_char_utf8(next);
+        let (next, len) = unwrap![some? charu::from_str_with_len(self.remain)];
+        let action = self.machine.next_charu(next);
         self.remain = slice![str self.remain, len as usize, ..];
         Some((action, next.to_char()))
     }

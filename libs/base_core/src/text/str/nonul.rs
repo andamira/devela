@@ -7,8 +7,8 @@
 // - trait impls
 
 use crate::{
-    Char, CharIter, InvalidText, Mismatch, MismatchedCapacity, NotEnoughElements, Str, char_utf8,
-    char7, char8, char16, is, slice, unwrap,
+    Char, CharIter, InvalidText, Mismatch, MismatchedCapacity, NotEnoughElements, Str, char7,
+    char8, char16, charu, is, slice, unwrap,
 };
 
 /* definitions */
@@ -35,7 +35,7 @@ const NUL_CHAR: char = '\0';
 ///     *([7](Self::from_char7),
 ///       [8](Self::from_char8),
 ///       [16](Self::from_char16),
-///       [utf8](Self::from_char_utf8))*.
+///       [utf8](Self::from_charu))*.
 ///   [`from_array`][Self::from_array],
 ///    *([_unchecked][Self::from_array_unchecked])*.
 ///
@@ -609,26 +609,26 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `char_utf8`.
+    /// Creates a new `StringNonul` from a `charu`.
     ///
-    /// If `c`.[`is_nul()`][char_utf8#method.is_nul] an empty string will be returned.
+    /// If `c`.[`is_nul()`][charu#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
-    /// or if `CAP` < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
+    /// or if `CAP` < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
     /// # Example
     /// ```
-    /// # use devela_base_core::{StringNonul, char_utf8};
-    /// let s = StringNonul::<4>::from_char_utf8(char_utf8::from_char('🐛')).unwrap();
+    /// # use devela_base_core::{StringNonul, charu};
+    /// let s = StringNonul::<4>::from_charu(charu::from_char('🐛')).unwrap();
     /// assert_eq![s.as_str(), "🐛"];
-    /// let s = StringNonul::<4>::from_char_utf8(char_utf8::from_char('\0')).unwrap();
+    /// let s = StringNonul::<4>::from_charu(charu::from_char('\0')).unwrap();
     /// assert_eq![s.as_str(), ""];
     ///
-    /// assert![StringNonul::<3>::from_char_utf8(char_utf8::from_char('🐛')).is_err()];
+    /// assert![StringNonul::<3>::from_charu(charu::from_char('🐛')).is_err()];
     /// ```
-    pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let len = c.len_utf8();
@@ -642,26 +642,26 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `char_utf8`.
+    /// Creates a new `StringNonul` from a `charu`.
     ///
-    /// If `c`.[`is_nul()`][char_utf8#method.is_nul] an empty string will be returned.
+    /// If `c`.[`is_nul()`][charu#method.is_nul] an empty string will be returned.
     ///
     /// # Panics
     /// Panics if `CAP` > [`u8::MAX`],
-    /// or if `CAP` < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
+    /// or if `CAP` < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
     /// # Examples
     /// ```
-    /// # use devela_base_core::{StringNonul, char_utf8};
-    /// let s = StringNonul::<3>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+    /// # use devela_base_core::{StringNonul, charu};
+    /// let s = StringNonul::<3>::from_charu_unchecked(charu::from_char('€'));
     /// assert_eq![s, "€"]
     /// ```
     /// ```should_panic
-    /// # use devela_base_core::{StringNonul, char_utf8};
-    /// StringNonul::<2>::from_char_utf8_unchecked(char_utf8::from_char('€'));
+    /// # use devela_base_core::{StringNonul, charu};
+    /// StringNonul::<2>::from_charu_unchecked(charu::from_char('€'));
     /// ```
-    pub const fn from_char_utf8_unchecked(c: char_utf8) -> Self {
+    pub const fn from_charu_unchecked(c: charu) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
             let len = c.len_utf8();

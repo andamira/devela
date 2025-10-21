@@ -44,7 +44,8 @@ pub trait Grapheme {
 
 #[rustfmt::skip]
 mod impls {
-    use crate::{Char,Grapheme, GraphemeKind, GraphemeNonul, GraphemeU8, Iter, char, char_utf8, char7, char8, char16};
+    use crate::{Char,Grapheme, GraphemeKind, GraphemeNonul, GraphemeU8, Iter,
+    char, charu, charu_niche, char7, char8, char16};
 
     /* for graphemes */
 
@@ -101,11 +102,19 @@ mod impls {
         fn grapheme_len_utf8(&self) -> usize { Char(self.to_scalar()).len_utf8_unchecked() }
         fn grapheme_len_chars(&self) -> usize { 1 }
     }
-    impl Grapheme for char_utf8 {
+    impl Grapheme for charu {
         fn grapheme_chars(&self) -> impl Iterator<Item = char> { Iter::once(self.to_char()) }
-        fn grapheme_kind(&self) -> GraphemeKind { GraphemeKind::char_utf8 }
+        fn grapheme_kind(&self) -> GraphemeKind { GraphemeKind::charu }
         fn grapheme_len_bytes(&self) -> usize { self.len_bytes() }
         fn grapheme_len_utf8(&self) -> usize { Char(self.to_scalar()).len_utf8_unchecked() }
         fn grapheme_len_chars(&self) -> usize { 1 }
     }
+    impl Grapheme for charu_niche {
+        fn grapheme_chars(&self) -> impl Iterator<Item = char> { Iter::once(self.to_char()) }
+        fn grapheme_kind(&self) -> GraphemeKind { GraphemeKind::charu_niche }
+        fn grapheme_len_bytes(&self) -> usize { self.len_bytes() }
+        fn grapheme_len_utf8(&self) -> usize { Char(self.to_scalar()).len_utf8_unchecked() }
+        fn grapheme_len_chars(&self) -> usize { 1 }
+    }
+
 }

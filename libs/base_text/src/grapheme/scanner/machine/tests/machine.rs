@@ -9,7 +9,7 @@ use crate::{CharIter, GraphemeBoundary, GraphemeMachine, StringU8, array_init};
 #[test]
 #[cfg(feature = "__std")]
 fn t01_grapheme_cluster_logic_directly() {
-    use crate::{GraphemeBoundary, GraphemeMachine, StringU8, char_utf8};
+    use crate::{GraphemeBoundary, GraphemeMachine, StringU8, charu};
 
     let input = "🧑‍🌾";
     let mut machine = GraphemeMachine::new();
@@ -18,8 +18,8 @@ fn t01_grapheme_cluster_logic_directly() {
     let mut buf = [0u8; 4];
 
     // Replicate the scanner logic exactly
-    while let Some((ch, len)) = char_utf8::from_str_with_len(remain) {
-        let boundary = machine.next_char_utf8(ch);
+    while let Some((ch, len)) = charu::from_str_with_len(remain) {
+        let boundary = machine.next_charu(ch);
 
         // This is the exact logic from our current next_grapheme_u8
         // grapheme.try_push_str(ch.as_str_into(&mut buf));
@@ -51,7 +51,7 @@ fn t01_grapheme_cluster_logic_directly() {
 #[test]
 #[cfg(feature = "__std")]
 fn t02_multiple_graphemes_directly() {
-    use crate::{GraphemeBoundary, GraphemeMachine, StringU8, char_utf8};
+    use crate::{GraphemeBoundary, GraphemeMachine, StringU8, charu};
 
     let input = "H🧑‍🌾";
     let mut machine = GraphemeMachine::new();
@@ -61,8 +61,8 @@ fn t02_multiple_graphemes_directly() {
 
     // First grapheme
     let mut grapheme = StringU8::<32>::new();
-    while let Some((ch, len)) = char_utf8::from_str_with_len(remain) {
-        let boundary = machine.next_char_utf8(ch);
+    while let Some((ch, len)) = charu::from_str_with_len(remain) {
+        let boundary = machine.next_charu(ch);
 
         if boundary == GraphemeBoundary::Split && !grapheme.is_empty() {
             break;
@@ -75,8 +75,8 @@ fn t02_multiple_graphemes_directly() {
 
     // Second grapheme
     let mut grapheme = StringU8::<32>::new();
-    while let Some((ch, len)) = char_utf8::from_str_with_len(remain) {
-        let boundary = machine.next_char_utf8(ch);
+    while let Some((ch, len)) = charu::from_str_with_len(remain) {
+        let boundary = machine.next_charu(ch);
 
         if boundary == GraphemeBoundary::Split && !grapheme.is_empty() {
             break;
@@ -94,21 +94,21 @@ fn t02_multiple_graphemes_directly() {
 // #[test]
 // #[cfg(feature = "__std")]
 // fn test_zwj_char_by_char() {
-//     use crate::{GraphemeMachine, GraphemeBoundary, char_utf8};
+//     use crate::{GraphemeMachine, GraphemeBoundary, charu};
 //
 //     let mut machine = GraphemeMachine::new();
 //     let mut buf = [0u8; 4];
 //
 //     // Manually process the exact sequence: 🧑, ZWJ, 🌾
 //     let chars = [
-//         char_utf8::from_char('🧑'),    // U+1F9D1
-//         char_utf8::from_char('‍'),     // U+200D (ZWJ)
-//         char_utf8::from_char('🌾'),    // U+1F33E
+//         charu::from_char('🧑'),    // U+1F9D1
+//         charu::from_char('‍'),     // U+200D (ZWJ)
+//         charu::from_char('🌾'),    // U+1F33E
 //     ];
 //
 //     eprintln!("=== Manual ZWJ processing ===");
 //     for (i, &ch) in chars.iter().enumerate() {
-//         let boundary = machine.next_char_utf8(ch);
+//         let boundary = machine.next_charu(ch);
 //         eprintln!("Char {}: '{}', boundary: {:?}, state: {:?}",
 //                  i, ch.as_str_into(&mut buf), boundary, machine.state);
 //     }
@@ -120,7 +120,7 @@ fn t02_multiple_graphemes_directly() {
 // #[test]
 // #[cfg(feature = "__std")]
 // fn test_zwj_sequence_directly() {
-//     use crate::{GraphemeMachine, GraphemeBoundary, char_utf8};
+//     use crate::{GraphemeMachine, GraphemeBoundary, charu};
 //
 //     let input = "🧑‍🌾";
 //     let mut machine = GraphemeMachine::new();
@@ -131,8 +131,8 @@ fn t02_multiple_graphemes_directly() {
 //     println!("=== Processing ZWJ sequence: '🧑‍🌾' ===");
 //
 //     for (i, ch) in input.chars().enumerate() {
-//         let ch_utf8 = char_utf8::from_char(ch);
-//         let boundary = machine.next_char_utf8(ch_utf8);
+//         let ch_utf8 = charu::from_char(ch);
+//         let boundary = machine.next_charu(ch_utf8);
 //
 //         println!("Step {}: char='{}' (U+{:04X}), boundary={:?}, machine_state={:?}",
 //                  i, ch, ch as u32, boundary, machine.state);
@@ -141,7 +141,7 @@ fn t02_multiple_graphemes_directly() {
 //     // Now test with our scanner
 //     println!("\n=== Testing with GraphemeScanner ===");
 //     let mut machine2 = GraphemeMachine::new();
-//     let mut scanner = crate::GraphemeScanner::<char_utf8>::new(&mut machine2, input);
+//     let mut scanner = crate::GraphemeScanner::<charu>::new(&mut machine2, input);
 //
 //     if let Some(grapheme) = scanner.next_grapheme_u8::<32>() {
 //         println!("Scanner returned: '{}'", grapheme.as_str());
@@ -163,8 +163,8 @@ fn core_basics() {
     let mut iter = CharIter::<&str>::new(input);
     let mut n = 0;
 
-    while let Some(c) = iter.next_char_utf8() {
-        if machine.next_char_utf8(c) == GraphemeBoundary::Split {
+    while let Some(c) = iter.next_charu() {
+        if machine.next_charu(c) == GraphemeBoundary::Split {
             if !current_cluster.is_empty() {
                 clusters[n] = current_cluster;
                 current_cluster.clear();
@@ -193,8 +193,8 @@ fn alloc_basics() {
     let input = "🧑‍🌾";
     let mut iter = CharIter::<&str>::new(input);
 
-    while let Some(c) = iter.next_char_utf8() {
-        if machine.next_char_utf8(c) == GraphemeBoundary::Split {
+    while let Some(c) = iter.next_charu() {
+        if machine.next_charu(c) == GraphemeBoundary::Split {
             if !current_cluster.is_empty() {
                 clusters.push(current_cluster.clone());
                 current_cluster.clear();
@@ -215,10 +215,10 @@ fn end_of_input() {
     let input = "Hello!\r\nBeep 🧑‍🌾";
 
     let mut iter = CharIter::<&str>::new(input);
-    while let Some(c) = iter.next_char_utf8() {
+    while let Some(c) = iter.next_charu() {
         // WORKS
         machine.end_of_input(); // effectively forces a cluster boundary
-        if machine.next_char_utf8(c) != GraphemeBoundary::Split {
+        if machine.next_charu(c) != GraphemeBoundary::Split {
             panic!("non-split after end_of_input came before {c:?}");
         }
     }

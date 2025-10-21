@@ -3,16 +3,16 @@
 use super::*;
 use crate::{Char, CharAscii, DataOverflow, NonExtremeU32, NonNiche, Str, is, slice, unwrap};
 
-/// Implements methods for both `char_utf8` and `char_utf8_niche`.
-macro_rules! impl_char_utf8 {
+/// Implements methods for both `charu` and `charu_niche`.
+macro_rules! impl_charu {
     //
     () => {
-        impl_char_utf8![@non char_utf8, NonNiche::<u32>, !char_utf8_niche];
-        impl_char_utf8![@niche char_utf8_niche, NonExtremeU32, !char_utf8];
+        impl_charu![@non charu, NonNiche::<u32>, !charu_niche];
+        impl_charu![@niche charu_niche, NonExtremeU32, !charu];
     };
     // specific implementations for the non-niche version
     (@non $name:ident, $inner:ty, !$other:ty) => { $crate::paste! {
-        impl_char_utf8![@common $name, $inner, !$other];
+        impl_charu![@common $name, $inner, !$other];
         impl $name {
             #[doc = "Tries to convert this `" $name "` to `char7`."]
             ///
@@ -20,7 +20,7 @@ macro_rules! impl_char_utf8 {
             /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
             #[inline(always)]
             pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
-                char7::try_from_char_utf8(self)
+                char7::try_from_charu(self)
             }
             #[doc = "Tries to convert this `" $name "` to `char8`."]
             ///
@@ -28,7 +28,7 @@ macro_rules! impl_char_utf8 {
             /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
             #[inline(always)]
             pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
-                char8::try_from_char_utf8(self)
+                char8::try_from_charu(self)
             }
             #[doc = "Tries to convert this `" $name "` to `char17`."]
             ///
@@ -36,13 +36,13 @@ macro_rules! impl_char_utf8 {
             /// Returns [`DataOverflow`] if `self` can't fit in 16 bits.
             #[inline(always)]
             pub const fn try_to_char16(self) -> Result<char16, DataOverflow> {
-                char16::try_from_char_utf8(self)
+                char16::try_from_charu(self)
             }
         }
     }};
     // specific implementations for the niche version
     (@niche $name:ident, $inner:ty, !$other:ty) => { $crate::paste! {
-        impl_char_utf8![@common $name, $inner, !$other];
+        impl_charu![@common $name, $inner, !$other];
         // impl $name {}
     }};
     // common implementations for all versions
@@ -107,14 +107,14 @@ macro_rules! impl_char_utf8 {
             ///
             /// # Example
             /// ```
-            /// # use devela_base_core::char_utf8;
-            /// let c = char_utf8::from_str("A").unwrap();
+            /// # use devela_base_core::charu;
+            /// let c = charu::from_str("A").unwrap();
             /// assert_eq!(c.to_utf8_bytes(), [b'A', 0, 0, 0]);
             ///
-            /// let c = char_utf8::from_str("¢ rest").unwrap();
+            /// let c = charu::from_str("¢ rest").unwrap();
             /// assert_eq!(c.to_utf8_bytes(), [0xC2, 0xA2, 0, 0]);
             ///
-            /// assert!(char_utf8::from_str("").is_none());
+            /// assert!(charu::from_str("").is_none());
             /// ```
             ///
             /// # Features
@@ -173,15 +173,15 @@ macro_rules! impl_char_utf8 {
             ///
             /// # Example
             /// ```
-            /// # use devela_base_core::char_utf8;
-            /// let ascii = char_utf8::from_utf8_bytes(b"A").unwrap();
+            /// # use devela_base_core::charu;
+            /// let ascii = charu::from_utf8_bytes(b"A").unwrap();
             /// assert_eq!(ascii.to_utf8_bytes(), [b'A', 0, 0, 0]);
             ///
-            /// let multi_byte = char_utf8::from_utf8_bytes(b"\xC2\xA2 rest").unwrap(); // ¢
+            /// let multi_byte = charu::from_utf8_bytes(b"\xC2\xA2 rest").unwrap(); // ¢
             /// assert_eq!(multi_byte.to_utf8_bytes(), [0xC2, 0xA2, 0, 0]);
             ///
-            /// assert!(char_utf8::from_utf8_bytes(b"").is_none());
-            /// assert!(char_utf8::from_utf8_bytes(b"\xC2").is_none()); // incomplete sequence
+            /// assert!(charu::from_utf8_bytes(b"").is_none());
+            /// assert!(charu::from_utf8_bytes(b"\xC2").is_none()); // incomplete sequence
             /// ```
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
@@ -227,14 +227,14 @@ macro_rules! impl_char_utf8 {
             ///
             /// # Example
             /// ```
-            /// # use devela_base_core::char_utf8;
-            /// let (c, len) = char_utf8::from_utf8_bytes_with_len(b"A").unwrap();
+            /// # use devela_base_core::charu;
+            /// let (c, len) = charu::from_utf8_bytes_with_len(b"A").unwrap();
             /// assert!(c.to_utf8_bytes() == [b'A', 0, 0, 0] && len == 1);
-            /// let (c, len) = char_utf8::from_utf8_bytes_with_len(b"\xC2\xA2 rest").unwrap(); // ¢
+            /// let (c, len) = charu::from_utf8_bytes_with_len(b"\xC2\xA2 rest").unwrap(); // ¢
             /// assert!(c.to_utf8_bytes() == [0xC2, 0xA2, 0, 0] && len == 2);
             ///
-            /// assert!(char_utf8::from_utf8_bytes_with_len(b"").is_none());
-            /// assert!(char_utf8::from_utf8_bytes_with_len(b"\xC2").is_none()); // incomplete sequence
+            /// assert!(charu::from_utf8_bytes_with_len(b"").is_none());
+            /// assert!(charu::from_utf8_bytes_with_len(b"\xC2").is_none()); // incomplete sequence
             /// ```
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
@@ -278,11 +278,11 @@ macro_rules! impl_char_utf8 {
             ///
             /// # Example
             /// ```
-            /// # use devela_base_core::char_utf8;
-            /// assert!(char_utf8::from_utf8_byte_array([b'A', 0, 0, 0]).is_some());    // Valid
-            /// assert!(char_utf8::from_utf8_byte_array([0xC2, 0xA2, 0, 0]).is_some()); // Valid (¢)
-            /// assert!(char_utf8::from_utf8_byte_array([0xC0, 0x80, 0, 0]).is_none()); // overlong enc.
-            /// assert!(char_utf8::from_utf8_byte_array([0xC2, 0x41, 0, 0]).is_none()); // malformed cont.
+            /// # use devela_base_core::charu;
+            /// assert!(charu::from_utf8_byte_array([b'A', 0, 0, 0]).is_some());    // Valid
+            /// assert!(charu::from_utf8_byte_array([0xC2, 0xA2, 0, 0]).is_some()); // Valid (¢)
+            /// assert!(charu::from_utf8_byte_array([0xC0, 0x80, 0, 0]).is_none()); // overlong enc.
+            /// assert!(charu::from_utf8_byte_array([0xC2, 0x41, 0, 0]).is_none()); // malformed cont.
             /// ```
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
@@ -317,7 +317,7 @@ macro_rules! impl_char_utf8 {
                 Self::decode_utf8(&bytes, len)
             }
 
-            // Private helper to create a char_utf8* from the first scalar value in a UTF-8 byte slice.
+            // Private helper to create a charu* from the first scalar value in a UTF-8 byte slice.
             // Most efficient implementation with jump table, bit shifting and oring.
             // This doesn't perform any validation and should be used carefully.
             #[inline(always)] #[rustfmt::skip]
@@ -365,7 +365,7 @@ macro_rules! impl_char_utf8 {
                 return unwrap![some char::from_u32(self.to_scalar())];
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: char_utf8* always has valid UTF-8 in 0..len.
+                // SAFETY: charu* always has valid UTF-8 in 0..len.
                 return unsafe { char::from_u32_unchecked(self.to_scalar()) };
             }
 
@@ -400,7 +400,7 @@ macro_rules! impl_char_utf8 {
                 return unwrap![ok Str::from_utf8(slice![mut buf, ..len])];
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: char_utf8 always contains valid UTF-8
+                // SAFETY: charu always contains valid UTF-8
                 unsafe {
                     Str::from_utf8_unchecked(slice![mut buf, ..len])
                 }
@@ -422,17 +422,17 @@ macro_rules! impl_char_utf8 {
             ///
             /// # Example
             /// ```
-            /// # use devela_base_core::char_utf8;
-            /// let c = char_utf8::from_char('A');
+            /// # use devela_base_core::charu;
+            /// let c = charu::from_char('A');
             /// assert_eq!(c.to_utf8_bytes(), [0x41, 0, 0, 0]);
             ///
-            /// let c = char_utf8::from_char('¢');
+            /// let c = charu::from_char('¢');
             /// assert_eq!(c.to_utf8_bytes(), [0xC2, 0xA2, 0, 0]);
             ///
-            /// let c = char_utf8::from_char('€');
+            /// let c = charu::from_char('€');
             /// assert_eq!(c.to_utf8_bytes(), [0xE2, 0x82, 0xAC, 0]);
             ///
-            /// let c = char_utf8::from_char('𝅘𝅥𝅮');
+            /// let c = charu::from_char('𝅘𝅥𝅮');
             /// assert_eq!(c.to_utf8_bytes(), [0xF0, 0x9D, 0x85, 0xA0]);
             /// ```
             #[must_use]
@@ -445,14 +445,14 @@ macro_rules! impl_char_utf8 {
             ///
             /// # Example
             /// ```
-            /// # use devela_base_core::char_utf8;
-            /// let c = char_utf8::from_char('A');
+            /// # use devela_base_core::charu;
+            /// let c = charu::from_char('A');
             /// assert_eq!(c.first_utf8_byte(), 0x41);
             ///
-            /// let c = char_utf8::from_char('¢');
+            /// let c = charu::from_char('¢');
             /// assert_eq!(c.first_utf8_byte(), 0xC2);
             ///
-            /// let c = char_utf8::from_char('€');
+            /// let c = charu::from_char('€');
             /// assert_eq!(c.first_utf8_byte(), 0xE2);
             /// ```
             #[must_use]
@@ -511,4 +511,4 @@ macro_rules! impl_char_utf8 {
         }
     }};
 }
-impl_char_utf8!();
+impl_charu!();

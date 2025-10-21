@@ -264,7 +264,7 @@ mod impl_devela {
         Sign,
         // text //
         CharAscii,
-        char7, char8, char16, char_utf8,
+        char7, char8, char16, charu, charu_niche,
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
     };
     #[cfg(feature = "grapheme")]
@@ -296,7 +296,8 @@ mod impl_devela {
         impl ConstDefault for char7 { const DEFAULT: Self = char7::MIN; }
         impl ConstDefault for char8 { const DEFAULT: Self = char8::MIN; }
         impl ConstDefault for char16 { const DEFAULT: Self = char16::MIN; }
-        impl ConstDefault for char_utf8 { const DEFAULT: Self = char_utf8::MIN; }
+        impl ConstDefault for charu { const DEFAULT: Self = charu::MIN; }
+        impl ConstDefault for charu_niche { const DEFAULT: Self = charu_niche::MIN; }
     }
 
     #[cfg(feature = "grapheme")]

@@ -1,6 +1,6 @@
 // devela_base_core::text::char::iter::bytes
 
-use crate::{Char, CharIter, PhantomData, char_utf8, char7, char8, char16, is, unwrap};
+use crate::{Char, CharIter, PhantomData, char7, char8, char16, charu, is, unwrap};
 
 /// Methods available when constructed from a byte slice.
 impl<'a> CharIter<'a, &[u8]> {
@@ -197,9 +197,9 @@ impl<'a> CharIter<'a, &[u8]> {
     /// # Features
     /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
     #[must_use] #[rustfmt::skip]
-    pub const fn next_char_utf8(&mut self) -> Option<char_utf8> {
+    pub const fn next_charu(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(); return None];
-        let (ch, len) = unwrap![some? char_utf8::from_utf8_bytes_with_len(self.bytes)];
+        let (ch, len) = unwrap![some? charu::from_utf8_bytes_with_len(self.bytes)];
         self.pos += len as usize;
         Some(ch)
     }
@@ -219,9 +219,9 @@ impl<'a> CharIter<'a, &[u8]> {
     #[must_use]
     #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
-    pub const unsafe fn next_char_utf8_unchecked(&mut self) -> Option<char_utf8> {
+    pub const unsafe fn next_charu_unchecked(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(); return None];
-        let (ch, len) = unsafe { char_utf8::from_utf8_bytes_with_len_unchecked(self.bytes) };
+        let (ch, len) = unsafe { charu::from_utf8_bytes_with_len_unchecked(self.bytes) };
         self.pos += len as usize;
         Some(ch)
     }

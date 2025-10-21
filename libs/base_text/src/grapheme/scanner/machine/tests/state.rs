@@ -3,7 +3,7 @@
 use super::super::GraphemeMachineState;
 #[cfg(feature = "__std")]
 use super::trie::UNICODE_GRAPHEME_CLUSTER_TESTS;
-use crate::{GraphemePropCb, GraphemeProps, char_utf8};
+use crate::{GraphemePropCb, GraphemeProps, charu};
 
 #[test]
 fn code_point_categories() {
@@ -15,7 +15,7 @@ fn code_point_categories() {
 
     use GraphemePropCb::*;
     fn prop(c: char) -> GraphemePropCb {
-        GraphemeProps::for_char_utf8(char_utf8::from_char(c)).gcb_property()
+        GraphemeProps::for_charu(charu::from_char(c)).gcb_property()
     }
 
     // Control code points
@@ -155,10 +155,10 @@ fn unicode_test_table() {
         let mut got: Vec<Box<[u8]>> = Vec::new();
         let mut current: Vec<u8> = Vec::new();
         loop {
-            let Some((next, len)) = char_utf8::from_str_with_len(remain) else {
+            let Some((next, len)) = charu::from_str_with_len(remain) else {
                 break;
             };
-            let next_props = GraphemeProps::for_char_utf8(next);
+            let next_props = GraphemeProps::for_charu(next);
             let (boundary, next_state) = state.transition(prev, next_props);
             if boundary {
                 if !current.is_empty() {

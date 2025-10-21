@@ -3,7 +3,7 @@
 //!
 //
 
-mod definitions; // char7, char8, char16, char_utf8
+mod definitions; // char7, char8, char16, charu
 
 mod shared; // shared methods
 mod traits; // common traits

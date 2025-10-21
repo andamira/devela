@@ -7,8 +7,8 @@
 // - trait impls
 
 use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringU8, char_utf8, char7,
-    char8, char16, unwrap,
+    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringU8, char7, char8, char16,
+    charu, unwrap,
 };
 
 /* definitions */
@@ -30,7 +30,7 @@ use crate::{
 ///     *([7][Self::from_char7],
 ///       [8][Self::from_char8],
 ///       [16](Self::from_char16),
-///       [utf8](Self::from_char_utf8))*.
+///       [utf8](Self::from_charu))*.
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Eq, PartialOrd, Ord)]
@@ -70,7 +70,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns [`MismatchedCapacity`] if `CAP > 255.
     pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
         let mut machine = GraphemeMachine::new();
-        let mut scanner = GraphemeScanner::<char_utf8>::new(&mut machine, string);
+        let mut scanner = GraphemeScanner::<charu>::new(&mut machine, string);
         if let Some(g) = scanner.next_grapheme_u8::<CAP>() {
             Ok(g)
         } else {
@@ -125,24 +125,24 @@ impl<const CAP: usize> GraphemeU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }
 
-    /// Creates a new `GraphemeU8` from a `char_utf8`.
+    /// Creates a new `GraphemeU8` from a `charu`.
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > 255
-    /// or < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
+    /// or < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    pub const fn from_char_utf8(c: char_utf8) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringU8::from_char_utf8(c)]))
+    pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
+        Ok(Self(unwrap![ok? StringU8::from_charu(c)]))
     }
-    /// Creates a new `GraphemeU8` from a `char_utf8`.
+    /// Creates a new `GraphemeU8` from a `charu`.
     ///
     /// # Panics
-    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][char_utf8#method.len_utf8].
+    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    pub const fn from_char_utf8_unchecked(c: char_utf8) -> Self {
-        Self(StringU8::from_char_utf8_unchecked(c))
+    pub const fn from_charu_unchecked(c: charu) -> Self {
+        Self(StringU8::from_charu_unchecked(c))
     }
 
     /* queries */

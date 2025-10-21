@@ -7,7 +7,7 @@ mod ascii; // CharAscii
 mod digits; // Digits
 mod iter; // CharIter
 mod namespace; // Char
-mod scalar; // char7, char8, char16, char_utf8
+mod scalar; // char7, char8, char16, charu, charu_niche
 
 mod reexports;
 

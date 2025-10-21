@@ -1,6 +1,6 @@
 // devela_base_core::text::char::iter::str
 
-use crate::{Char, CharIter, PhantomData, char_utf8, char7, char8, char16, is, slice};
+use crate::{Char, CharIter, PhantomData, char7, char8, char16, charu, is, slice};
 
 /// Methods available when constructed from a string slice.
 impl<'a> CharIter<'a, &str> {
@@ -158,20 +158,20 @@ impl<'a> CharIter<'a, &str> {
     /// # use devela_base_core::CharIter;
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
-    /// assert_eq![iter.next_char_utf8().unwrap(), "C"]; // Basic Latin
-    /// assert_eq![iter.next_char_utf8().unwrap(), "Ð"]; // Latin-1 supplement
-    /// assert_eq![iter.next_char_utf8().unwrap(), "€"]; // Basic Multilingual plane
-    /// assert_eq![iter.next_char_utf8().unwrap(), "𐌅"]; // Supplementary Multilingual Plane
-    /// assert_eq![iter.next_char_utf8().unwrap(), "G"]; // Basic Latin
-    /// assert![iter.next_char_utf8().is_none()];
+    /// assert_eq![iter.next_charu().unwrap(), "C"]; // Basic Latin
+    /// assert_eq![iter.next_charu().unwrap(), "Ð"]; // Latin-1 supplement
+    /// assert_eq![iter.next_charu().unwrap(), "€"]; // Basic Multilingual plane
+    /// assert_eq![iter.next_charu().unwrap(), "𐌅"]; // Supplementary Multilingual Plane
+    /// assert_eq![iter.next_charu().unwrap(), "G"]; // Basic Latin
+    /// assert![iter.next_charu().is_none()];
     /// ```
     /// # Features
     /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
     #[must_use] #[rustfmt::skip]
-    pub const fn next_char_utf8(&mut self) -> Option<char_utf8> {
+    pub const fn next_charu(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(); return None];
         let len = Char(self.bytes[self.pos]).len_utf8_unchecked();
-        let ch = char_utf8::decode_utf8(slice![self.bytes, self.pos,..], len);
+        let ch = charu::decode_utf8(slice![self.bytes, self.pos,..], len);
         self.pos += len;
         Some(ch)
     }

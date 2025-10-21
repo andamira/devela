@@ -282,9 +282,9 @@ Many feature gates are removed in order to make most features make always availa
 
 ### char
 - new fn: `scalar_as_ascii_translit`.
-- new types: `CharIter`, `char_utf8`, `char_utf8_niche`.
+- new types: `CharIter`, `charu`, `charu_niche`.
 - new `char7` methods: `to_byte`, `to_str`.
-- new `char[7|8|16]` methods: `to_char_utf8`, `try_from_char_utf8`.
+- new `char[7|8|16]` methods: `to_charu`, `try_from_charu`.
 - new `Lut` consts: `ASCII_BASE36_OFFSET`, `DIGITS_BASE36`, `DECIMAL_PAIRS`, `POWERS10`.
 - mark `char[7|8|16]` as must_use.
 - impl `ConstDefault` for `char*`.
@@ -350,7 +350,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `Grapheme[Nonul|U*]`:
   - remove methods: `to_cstring`.
   - make `new` method panic
-  - add new methods: `eq`, `[as|into]_string_[nonul|u8]`, `from_char_utf8[_unchecked]`, `from_str`, `new_checked`.
+  - add new methods: `eq`, `[as|into]_string_[nonul|u8]`, `from_charu[_unchecked]`, `from_str`, `new_checked`.
   - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
   - implement `PartialEq` and `Hash` manually.
   - implement `PartialEq` between string and grapheme types.
@@ -364,7 +364,7 @@ Many feature gates are removed in order to make most features make always availa
   - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
   - remove method `from_boxed_utf8_unchecked`.
 - common updates for `StringNonul` and `StringU`:
-  - new methods: `eq`, `from_char_utf8`, `from_char_utf8_unchecked`, `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`.
+  - new methods: `eq`, `from_charu`, `from_charu_unchecked`, `from_str`, `from_str_truncate`, `from_str_unchecked`, `new_checked`.
   - impl `AsRef<&str>`, `Deref`, `Extend`, `FmtWrite`, `FromIterator`.
   - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
   - make **all** methods *const*.
@@ -375,7 +375,7 @@ Many feature gates are removed in order to make most features make always availa
   - rename methods `from_byte_array*` to `from_array*`.
   - impl `PartialEq`.
 - update `StringU*`:
-  - new methods: `pop_unchecked`, `push_char_utf8`, `sanitize`.
+  - new methods: `pop_unchecked`, `push_charu`, `sanitize`.
   - modify methods:
   - `as_mut_str`: make safe.
   - `push_str`, make const, improve efficiency, update docs & examples.

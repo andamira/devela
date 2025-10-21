@@ -25,5 +25,6 @@ pub enum GraphemeKind {
     char7,
     char8,
     char16,
-    char_utf8,
+    charu,
+    charu_niche,
 }
