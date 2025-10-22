@@ -174,7 +174,8 @@ pub struct SixelPaletteIter<'a, const CAP: usize> {
     index: usize,
 }
 impl<'a, const CAP: usize> SixelPaletteIter<'a, CAP> {
-    const fn next(&mut self) -> Option<(u8, SixelColor)> {
+    /// Returns the next index and color if there are still some.
+    pub const fn next(&mut self) -> Option<(u8, SixelColor)> {
         while self.index < self.palette.len {
             let current_index = self.index;
             self.index += 1;

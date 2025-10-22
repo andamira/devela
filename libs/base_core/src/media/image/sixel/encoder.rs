@@ -3,8 +3,11 @@
 //! Defines [`SixelEncoder`].
 //
 
-use crate::__std;
-use crate::{Digits, NotEnoughSpace, SixelChar, SixelColor, SixelPalette, is, write_at};
+// use crate::__std;
+use crate::{
+    Cmp, Digits, NotEnoughSpace, SixelChar, SixelColor, SixelPalette, is, lets, slice, unwrap,
+    write_at,
+};
 
 /// Encoder for Sixel graphics with fixed buffer output
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -88,7 +91,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     }
 
     /// Write color reference (#NN)
-    fn write_color_reference(buffer: &mut [u8], index: u8) -> Result<usize, NotEnoughSpace> {
+    const fn write_color_reference(buffer: &mut [u8], index: u8) -> Result<usize, NotEnoughSpace> {
         let digits = Digits(index).digits10_2();
         buffer[0] = b'#';
         if index < 10 {
@@ -104,125 +107,134 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     }
 
     /// Write an RLE run: either compressed `!NNN` or repeated characters.
-    fn write_rle_run(buffer: &mut [u8], sc: SixelChar, count: u8) -> Result<usize, NotEnoughSpace> {
-        let mut offset = 0;
+    const fn write_rle_run(
+        buffer: &mut [u8],
+        sc: SixelChar,
+        count: u8,
+    ) -> Result<usize, NotEnoughSpace> {
+        let mut off = 0;
         if count >= 4 {
             let digits = Digits(count);
             let dcount = digits.count_digits10();
             let needed = 1 + dcount as usize;
             is![buffer.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
 
-            write_at![buffer, offset, b'!'];
-            offset += digits.write_digits10(buffer, 1);
-            write_at![buffer, offset, sc.as_byte()];
-            __std![@println!("  RLE: !{}{} (saved {} bytes)",
-                count, sc.to_string_ansi(), count - (2 + dcount))];
+            write_at![buffer, off, b'!'];
+            off += digits.write_digits10(buffer, 1);
+            write_at![buffer, off, sc.as_byte()];
+            // __std![@println!("  RLE: !{}{} (saved {} bytes)",
+            //     count, sc.to_string_ansi(), count - (2 + dcount))];
         } else {
-            __std![@println!("  NO RLE: {} times {}", count, sc.to_string_ansi())];
-            for _ in 0..count {
-                is![offset >= buffer.len(); return Err(NotEnoughSpace(Some(buffer.len())))];
-                write_at![buffer, offset, sc.as_byte()];
+            // __std![@println!("  NO RLE: {} times {}", count, sc.to_string_ansi())];
+            let mut _n = 0;
+            while _n < count {
+                is![off >= buffer.len(); return Err(NotEnoughSpace(Some(buffer.len())))];
+                write_at![buffer, off, sc.as_byte()];
+                _n += 1;
             }
         }
-        Ok(offset)
+        Ok(off)
     }
 
     /// Sixel encoding with RLE compression for repeated characters.
     ///
-    /// # RLE Format:
-    /// - `!NNN` where NNN is the repeat count (3 digits max: 1-255)
-    /// - Used when the same sixel character repeats 4 or more times
+    /// - RLE encoding is used when the same sixel character repeats 4 or more times.
     #[rustfmt::skip]
-    pub fn encode_rgb(&mut self, rgb: &[u8], width: usize, height: usize, buffer: &mut [u8])
+    pub const fn encode_rgb(&mut self, rgb: &[u8], width: usize, height: usize, buf: &mut [u8])
         -> Result<usize, NotEnoughSpace> {
-        let mut offset = 0;
-        offset += Self::write_sixel_start_simple(&mut buffer[offset..])?;
+        let mut off = 0;
+        off += unwrap![ok? Self::write_sixel_start_simple(&mut slice![mut buf, off,..])];
 
         self.width = width;
         self.height = height;
 
-        self.build_palette(rgb, width, height)?;
-        offset += self.palette.write_definitions(&mut buffer[offset..]);
+        unwrap![ok? self.build_palette(rgb, width, height)];
+        off += self.palette.write_definitions(&mut slice![mut buf, off, ..]);
 
         // process each horizontal band
-        for band_y in (0..height).step_by(6) {
-            let band_height = (height - band_y).min(6);
-            __std![@println!("Processing band at row {} (height: {})", band_y, band_height)];
+        let mut band_y = 0;
+        while band_y < height {
+            let band_height = Cmp(height - band_y).min(6);
+            // __std![@println!("Processing band at row {} (height: {})", band_y, band_height)];
 
             // for each color, render with RLE compression
-            for (color_idx, palette_color) in self.palette.defined_colors() {
-                is![color_idx == 0; continue]; // Skip background
+            let mut iter = self.palette.defined_colors();
+            while let Some((idx, palette_color)) = iter.next() {
+                is![idx == 0; continue]; // Skip background
 
-                __std![@println!("  Rendering color #{} in band", color_idx)];
-
-                offset += Self::write_color_reference(&mut buffer[offset..], color_idx)?;
+                // __std![@println!("  Rendering color #{} in band", idx)];
+                off += unwrap![ok? Self::write_color_reference(&mut slice![mut buf, off,..], idx)];
 
                 // build and compress sixel pattern for this color
-                let (mut current_char, mut repeat_count) = (None, 0);
-                for x in 0..width {
+                lets![mut x = 0, mut current_char = None, mut repeat_count = 0];
+                while x < width {
                     let sixel_bits = self.build_sixel_bits_for_color(rgb, width, height,
                         x, band_y, band_height, palette_color);
                     let sixel_char = SixelChar::from_bitmask(sixel_bits);
 
                     // RLE compression logic
-                    // Handle lines longer than 255 by splitting long runs,
-                    // outputting current run and starting new one with same character
-                    match (Some(sixel_char) == current_char, repeat_count == 255) {
+                    // Handles lines longer than 255 by splitting long runs,
+                    // outputting the current run and starting a new one with the same character
+                    let is_same_char = is![let Some(c) = current_char; sixel_char.eq(c); false];
+                    match (is_same_char, repeat_count == 255) {
                         (true, false) => {
                             repeat_count += 1;
                         }
-                        (true, true) => { // Split run - output but keep same character
+                        (true, true) => { // Split run: output but keep same character
                             if let Some(char) = current_char {
-                                offset += Self::write_rle_run(&mut buffer[offset..],
-                                    char, repeat_count)?;
+                                off += unwrap![ok? Self::write_rle_run(&mut slice![mut buf, off,..],
+                                    char, repeat_count)];
                             }
                             repeat_count = 1;
                         }
-                        (false, _) => { // New run - output and switch character
+                        (false, _) => { // New run: output and switch character
                             if let Some(char) = current_char {
-                                offset += Self::write_rle_run(&mut buffer[offset..],
-                                    char, repeat_count)?;
+                                off += unwrap![ok? Self::write_rle_run(&mut slice![mut buf, off,..],
+                                    char, repeat_count)];
                             }
                             current_char = Some(sixel_char);
                             repeat_count = 1;
                         }
                     }
+                    x += 1;
                 }
                 // output the final run
                 if let Some(char) = current_char {
-                    offset += Self::write_rle_run(&mut buffer[offset..], char, repeat_count)?;
+                    off += unwrap![ok?
+                        Self::write_rle_run(&mut slice![mut buf, off,..], char, repeat_count)];
                 }
                 // return to start for next color
-                is![color_idx != self.palette.len() as u8 - 1; write_at![buffer, offset, b'$']];
+                is![idx != self.palette.len() as u8 - 1; write_at![buf, off, b'$']];
             }
-            // move to next band
-            is![band_y + 6 < height; write_at![buffer, offset, b'-']];
+            band_y += 6;
+            is![band_y < height; write_at![buf, off, b'-']]; // move to next band?
         }
-        offset += Self::write_sixel_end(&mut buffer[offset..])?;
-        Ok(offset)
+        off += unwrap![ok? Self::write_sixel_end(&mut slice![mut buf, off,..])];
+        Ok(off)
     }
 
     #[rustfmt::skip]
     /// Builds the palette from the given rgb byte buffer.
-    fn build_palette(&mut self, rgb: &[u8], w: usize, h: usize) -> Result<(), NotEnoughSpace> {
+    const fn build_palette(&mut self, rgb: &[u8], w: usize, h: usize) -> Result<(), NotEnoughSpace> {
         self.palette = SixelPalette::new();
-        self.palette.add_color(SixelColor::BLACK)?;
-        let total_pixels = w * h;
-        for i in 0..total_pixels {
+        unwrap![ok? self.palette.add_color(SixelColor::BLACK)];
+        lets![mut i = 0, total_pixels = w * h];
+        while i < total_pixels {
             // is![self.palette.is_full(); break]; // early termination MAYBE for another version
             let idx = i * 3;
             let color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
             is![!color.is_black(); { let _ = self.palette.find_or_add(color); }];
+            i += 1;
         }
         Ok(())
     }
 
     #[rustfmt::skip]
     /// Build sixel bits for a specific color in a column.
-    fn build_sixel_bits_for_color(&self, rgb: &[u8], width: usize, _height: usize,
+    const fn build_sixel_bits_for_color(&self, rgb: &[u8], width: usize, _height: usize,
         x: usize, band_y: usize, band_height: usize, target_color: SixelColor) -> u8 {
-        let mut sixel_bits = 0u8;
-        for dy in 0..band_height {
+        lets![mut dy = 0, mut sixel_bits = 0u8];
+        while dy < band_height {
             let y = band_y + dy;
             let idx = (y * width + x) * 3;
             // only process if within bounds
@@ -230,6 +242,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                 let pixel_color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
                 is![pixel_color.is_similar_to(target_color); sixel_bits |= 1 << dy];
             }
+            dy += 1;
         }
         sixel_bits
     }
