@@ -47,20 +47,18 @@ Many feature gates are removed in order to make most features make always availa
 ## dependencies
 - re-export `alloc` crate from devela and [base_alloc].
 - bump dependencies:
-  - `ffmpeg-the-third` to 4.0.
   - `hashbrown` to 0.16.
-  - `pyo3` to 0.26.
-  - `stringzilla` to 4.0.
-  - `ureq` to 3.1.
-  - `wide` to 0.8.
   - [macros]
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.40.
 - add optional dependencies to [base]: `memchr`, `simdutf8`.
 - remove `_core` and `_dep` re-exports from the public docs.
-- remove dependencie:
+- remove dependencies:
   - `const-str`, and related `str!` macro.
   - `libm` and related `Float` and `ExtFloat` functionality.
+  - itertoos and related re-exports.
+  - remove: `allocator-api2`, `bumpalo`, `fontdue`, `ffmpeg-the-third`, `flume`, `fontdue`,  `gilrs`, `image`, `kira`, `midir`, `rayon`, `regex-lite`, `rodio`, `sdl2`, `sdl3`, `stringzilla`, `symphonia`, `sysinfo`, `toml_edit`, `tokio`, `unicode-segmentation`, `unicode-width`, `ureq`, `winnow`.
+
 
 ## features & flags
 - new features: `__publish`, `__std`, `base_safe`, `grapheme`, `safe_build`.

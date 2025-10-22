@@ -117,10 +117,3 @@ impl Iter {
         zip(a, b)
     }
 }
-
-/// # `itertool` methods.
-///
-/// ## Features
-/// They depend on enabling the `dep_itertools` feature.
-#[cfg(feature = "dep_itertools")]
-impl Iter {}

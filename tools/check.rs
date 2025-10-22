@@ -115,35 +115,16 @@ const DEP_ALL: &[&str] = &include!["../build/main/dep_all"];
 #[rustfmt::skip]
 /// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.
 const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
-    "dep_midir", "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
-    "dep_kira", // REASON: alsa-sys (feature `cpal`)
 ];
 
 /// Dependencies to not cross compile, ever.
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // IMPROVE: allow activating `windows` feature
     "dep_crossterm",
-    // (fails on miri on windows)
-    // https://github.com/zmwangx/rust-ffmpeg/wiki/Notes-on-building#building-on-windows
-    // https://github.com/shssoichiro/ffmpeg-the-third/blob/master/.github/workflows/build.yml#L132
-    "dep_ffmpeg",
-    // because of pkg-config & libudev-sys
-    // SEE: https://gitlab.com/gilrs-project/gilrs/-/issues/86
-    "dep_gilrs",
-    // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
-    "dep_pyo3",
     // - https://docs.rs/safe_arch/latest/safe_arch/#current-support
     "dep_safe_arch",
-    // (experimental)
-    "dep_sdl3",
-    // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
+    // DONE:CHECK: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
-    //
-    // DEP_DISABLED:
-    // // (cross-compile to many platforms fails)
-    // // - [to darwin from linux](https://github.com/briansmith/ring/issues/1442)
-    // // - [to windows from linux](https://github.com/briansmith/ring/issues/894)
-    // "dep_ring",
 ];
 
 #[rustfmt::skip]
@@ -152,13 +133,6 @@ const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
 // - https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#direct-minimal-versions
 // - [minimal-versions](https://github.com/rust-lang/cargo/issues/5657)
 const DEP_NO_MINIMAL_VERSIONS: &[&str] = &[
-    // Using libudev-sys which uses pkc-config 3.2 from (2015-05-25)
-    "dep_gilrs",
-    // WAIT: [minimal-versions](https://github.com/diwic/alsa-sys/issues/14)
-    // WAIT: [minimal-versions](https://github.com/rust-num/num-rational/issues/133)
-    "dep_midir", "dep_rodio", "dep_tinyaudio", "dep_kira", // REASON: alsa-sys
-    // WAIT: [minimal-versions](https://github.com/PyO3/pyo3/issues/4877)
-    "dep_pyo3",
 ];
 
 //* cross-compilation targets *//

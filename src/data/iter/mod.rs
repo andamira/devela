@@ -5,12 +5,12 @@
 #![doc = crate::_doc!(extends: iter)]
 //
 
+crate::mod_path!(_c "../../../libs/base_core/src/data/iter/reexports.rs");
 mod namespace;
-mod reexports;
 
 crate::structural_mods! { // _mods
     _mods {
+        pub use super::_c::*;
         pub use super::namespace::*;
-        pub use super::reexports::*;
     }
 }

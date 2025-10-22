@@ -70,17 +70,9 @@ jobs:
         with:
             submodules: true
 
-      - name: "Install libraries via APT"
-        run: |
-          sudo apt update
-          # for alsa-sys, gilrs:
-          sudo apt install -y libasound2-dev libudev-dev
-          # for ffmpeg:
-          sudo apt install -y clang pkg-config libavcodec-dev libavdevice-dev \
-            libavfilter-dev libavformat-dev libavutil-dev
-          # for sdl2:
-          sudo apt install -y libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev \
-            libsdl2-mixer-dev libsdl2-ttf-dev
+      # - name: "Install libraries via APT"
+      #   run: |
+      #     sudo apt update
 
       - name: "Install nightly"
         uses: dtolnay/rust-toolchain@nightly
