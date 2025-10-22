@@ -669,7 +669,6 @@ optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
 features = ["bracketed-paste", "events"]
 
-
 [dependencies.hashbrown] # https://crates.io/crates/hashbrown
 version = "0.16" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
 optional = true # unsafe

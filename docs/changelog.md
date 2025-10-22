@@ -190,6 +190,16 @@ Many feature gates are removed in order to make most features make always availa
 - move `lang::i18n` to `lang::hum::i18n`.
 
 ## media
+### font
+
+- new type: `FontArt`.
+- new const: `FONT_ART_3_4`.
+- rename:
+  - `BitmapFont` to `FontBitmap`.
+  - `FONT_3_3` to `FONT_BIT_3_3`.
+  - `FONT_3_5` to `FONT_BIT_3_5`.
+  - `FONT_5_6` to `FONT_BIT_5_6`.
+
 ### image
 - rename vendored sixel types with the `Legacy*` prefix.
 - add a new sixel implementation:

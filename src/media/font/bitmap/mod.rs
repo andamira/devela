@@ -6,7 +6,7 @@
 #[cfg(test)]
 mod tests;
 
-mod bitmap;
+mod bitmap; // FontBitmap
 mod fonts;
 
 pub use {bitmap::*, fonts::*};

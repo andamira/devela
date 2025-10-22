@@ -1,6 +1,6 @@
 // devela::media::bitmap::bitmap
 //
-//! Defines the [`BitmapFont`] struct.
+//! Defines the [`FontBitmap`] struct.
 //
 // TODO
 // - wrapping.
@@ -19,7 +19,7 @@ use crate::{format_buf, is};
 /// The font supports drawing text into both mono and RGBA buffers,
 /// as well as using a custom per-pixel color function.
 #[derive(Clone, PartialEq, Eq, Hash)] //, Debug,
-pub struct BitmapFont<'glyphs, T> {
+pub struct FontBitmap<'glyphs, T> {
     /// A slice of glyphs.
     pub glyphs: &'glyphs [T],
     /// The first char in `glyphs`.
@@ -40,10 +40,10 @@ pub struct BitmapFont<'glyphs, T> {
     pub advance_y: u8,
 }
 
-impl<T> core::fmt::Debug for BitmapFont<'_, T> {
+impl<T> core::fmt::Debug for FontBitmap<'_, T> {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         let mut buf = [0u8; 128];
-        let name = format_buf![&mut buf, "BitmapFont<{}>", stringify!(T)].unwrap();
+        let name = format_buf![&mut buf, "FontBitmap<{}>", stringify!(T)].unwrap();
         f.debug_struct(name)
             .field("glyphs", &self.glyphs.len())
             .field("first_glyph", &self.first_glyph)
@@ -57,7 +57,7 @@ impl<T> core::fmt::Debug for BitmapFont<'_, T> {
     }
 }
 
-impl<T: Copy + Into<u64>> BitmapFont<'_, T> {
+impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
     /// Returns the rendered text width.
     pub fn text_width(&self, text: &str) -> usize {
         text.chars().count() * self.advance_x as usize
@@ -141,7 +141,7 @@ impl<T: Copy + Into<u64>> BitmapFont<'_, T> {
 }
 
 // private methods
-impl<T: Copy + Into<u64>> BitmapFont<'_, T> {
+impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
     /// Iterates over every pixel that should be drawn for the given text.
     ///
     /// The closure receives:
