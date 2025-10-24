@@ -4,7 +4,8 @@
 
 #[test]
 /// Tests which non-alphanumeric tokens can prefix macro pattern variables.
-fn macro_symbols() {
+// Note: for separating expressions only `;` and `,` are valid.
+fn macro_symbols_pattern() {
     let mut s = 0;
     macro_symbols!(@s 1);
     macro_symbols!(#s 1);
