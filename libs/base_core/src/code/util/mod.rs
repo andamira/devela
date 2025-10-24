@@ -37,6 +37,7 @@ mod maybe; // maybe!
 mod methods; // methods_as_fns!
 mod paste; // paste! (wrapped for docs)
 mod structural; // structural_mods!
+mod whilst; // whilst!
 mod write; // write_at!
 
 structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
@@ -64,7 +65,8 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
             methods::methods_as_fns,
             paste::paste,
             structural::structural_mods,
-            write::*,
+            whilst::whilst,
+            write::write_at,
         };
     }
     _crate_internals {
