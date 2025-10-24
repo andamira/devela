@@ -3,7 +3,7 @@
 //! Defines all the shared, cross-platform public methods for `Float`.
 //
 
-use crate::{Cmp, Float, FloatCategory, Sign, cfor, concat as cc, is, stringify as sfy};
+use crate::{Cmp, Float, FloatCategory, Sign, concat as cc, is, stringify as sfy, whilst};
 
 /// Implements methods independently of any features
 ///
@@ -278,7 +278,7 @@ macro_rules! impl_float_shared {
                 // 1 newton iteration some times can be enough:
                 // Float(0.5 * (x + self.0 / x))
                 // But 2 iterations gives much better precision:
-                cfor! { _ in 0..2 => { x = 0.5 * (x + self.0 / x); }}
+                whilst![_i in 0..2; x = 0.5 * (x + self.0 / x)];
                 Float(x)
             }
 
@@ -344,7 +344,7 @@ macro_rules! impl_float_shared {
             /// Note that precision is poor for large values.
             pub const fn factorial(x: $ue) -> Float<$f> {
                 let mut result = Self::ONE.0;
-                cfor! { i in 1..{x+1} => { result *= i as $f; }}
+                whilst![i in 1..{x+1}; result *= i as $f];
                 Float(result)
             }
 
@@ -521,13 +521,13 @@ macro_rules! impl_float_shared {
                     0 => Self::ONE,
                     1.. => {
                         let mut result = self.0;
-                        cfor! { _ in 1..p => { result *= self.0; }}
+                        whilst![_i in 1..p; result *= self.0];
                         Float(result)
                     }
                     _ => {
                         let mut result = self.0;
                         let abs_p = p.abs();
-                        cfor! { _ in 1..abs_p => { result /= self.0; }}
+                        whilst![_i in 1..abs_p; result /= self.0];
                         Float(result)
                     }
                 }
@@ -556,7 +556,7 @@ macro_rules! impl_float_shared {
                     _ => {
                         let mut result = coef[0];
                         // for &c in &coef[1..] { result = result * self.0 + c; }
-                        cfor! { i in 1..coef.len() => { result = result * self.0 + coef[i]; }}
+                        whilst![i in 1..coef.len(); result = result * self.0 + coef[i]];
                         Float(result)
                     }
                 }

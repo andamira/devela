@@ -152,7 +152,7 @@ Many feature gates are removed in order to make most features make always availa
 - new struct: `Lut`.
 - new macros: `doclink!`, `lets!`, `mod_path!`, `repeat!`, `whilst!`, `write_at!`.
 - move to [base]:
-  - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `cfor!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
+  - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
   - internal macros: `__std!`, `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_use!`.
 - add tags: `_DOC_*`, `_TAG_[CODEC|CODEGEN_BUILD|CONCURRENCY|DATA|EVENT|HASH|ID|PROC_MACRO]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
@@ -168,6 +168,7 @@ Many feature gates are removed in order to make most features make always availa
   - add new arms: `ne_buf`, `ne_str`.
   - add support for comparing slices of primitives and slices of slices of primitives.
 - remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
+- remove vendored macro `cfor!`, replace with `whilst!`.
 - remove deprecated `iif!` macro.
 
 ## data

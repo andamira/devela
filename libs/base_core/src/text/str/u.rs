@@ -11,10 +11,10 @@
 use crate::{
     CharIter, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash, Hasher,
     InvalidText, InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste,
-    slice, text::char::*,
+    slice, text::char::*, whilst,
 };
 #[allow(unused, reason = "±unsafe")]
-use crate::{Cmp, cfor, unwrap};
+use crate::{Cmp, unwrap};
 
 macro_rules! impl_str_u {
     () => { impl_str_u![u8, u16, u32, usize]; };
@@ -409,9 +409,7 @@ macro_rules! impl_str_u {
                 let length = Cmp(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
-                cfor![i in 0..ulen => {
-                    bytes[i] = bytes[start + i];
-                }];
+                whilst![i in 0..ulen; bytes[i] = bytes[start + i]];
                 match Str::from_utf8(slice![&bytes, ..ulen]) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(e),
@@ -435,9 +433,7 @@ macro_rules! impl_str_u {
                 let length = Cmp(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
-                cfor![i in 0..ulen => {
-                    bytes[i] = bytes[start + i];
-                }];
+                whilst![i in 0..ulen; bytes[i] = bytes[start + i]];
                 Self { arr: bytes, len: length }
             }
         }
@@ -572,11 +568,7 @@ macro_rules! impl_str_u {
             #[inline(always)]
             pub const fn eq(&self, other: &Self) -> bool {
                 self.len == other.len && {
-                    let mut i = 0;
-                    while i < self.len() {
-                        is! { self.arr[i] != other.arr[i]; return false }
-                        i += 1;
-                    }
+                    whilst![i in 0..self.len(); is![self.arr[i] != other.arr[i]; return false]];
                     true
                 }
             }
@@ -595,7 +587,7 @@ macro_rules! impl_str_u {
             /// Zeros all unused bytes while maintaining the current length.
             #[inline(always)]
             pub const fn sanitize(&mut self) {
-                cfor![i in (self.len as usize)..CAP => { self.arr[i] = 0; }];
+                whilst![i in (self.len as usize),..CAP; self.arr[i] = 0];
             }
 
             /// Removes the last character and returns it, or `None` if the string is empty.

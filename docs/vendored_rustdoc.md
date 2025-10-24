@@ -42,7 +42,6 @@
   [`Tuple`]: crate::data::list::tuple::Tuple
 
 <!-- license: MIT -->
-  [`cfor!`]: crate::code::util::cfor
   [M_crunchy]: crate::_info::vendored::crunchy
   [`unroll!`]: crate::code::util::unroll
   [M_current]: crate::_info::vendored::current

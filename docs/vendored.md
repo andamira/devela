@@ -102,8 +102,6 @@ See the linked modifications for detailed changes.
   [`Tuple`]: https://andamira.github.io/devela/latest/devela/data/list/tuple/trait.Tuple.html
 
 ## MIT licenses
-- <i id="const_for"></i>[const_for] by Joachim Enggård Nebel,
-  as the [`cfor!`] macro.
 - <i id="crunchy"></i>[crunchy] by Eira Fransham,
   as the [`unroll!`] macro ([*modifications*][M_crunchy]).
 - <i id="current"></i>[current] by *PistonDevelopers*,
@@ -125,8 +123,6 @@ See the linked modifications for detailed changes.
 - <i id="unsized-stack"></i>[unsized-stack] by *storycraft*,
   as the [`FatPtr`] struct.
 
-[const_for]: https://crates.io/crates/const_for/0.1.4
-  [`cfor!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.cfor.html
 [crunchy]: https://crates.io/crates/crunchy/0.2.3
   [M_crunchy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/crunchy.md
   [`unroll!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.unroll.html

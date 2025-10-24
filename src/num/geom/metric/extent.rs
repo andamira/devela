@@ -4,7 +4,7 @@
 //
 // IMPROVE: use TBD NumConst::ONE and unify methods for int and floats.
 
-use crate::{_impl_metric, cfor, is};
+use crate::{_impl_metric, is, whilst};
 
 #[doc = crate::_TAG_GEOM!()]
 /// An orthogonal extension in `D`-space without a coordinate position.
@@ -42,9 +42,7 @@ macro_rules! impl_extent {
             /// It's equivalent to length, area, and volume in 1, 2 and 3 dimensions.
             pub const fn measure(self) -> $t {
                 let mut measure = 1;
-                cfor!(i in 0..D => {
-                    measure *= self.dim[i];
-                });
+                whilst!(i in 0..D; measure *= self.dim[i]);
                 measure
             }
             /// Returns the external boundary, the sum of the extents.
@@ -52,11 +50,9 @@ macro_rules! impl_extent {
             /// It's equivalent to 2, perimeter and surface area in 1, 2 and 3 dimensions.
             pub const fn boundary(self) -> $t {
                 let mut boundary = 0;
-                cfor!(i in 0..D => {
+                whilst!(i in 0..D; {
                     let mut face_measure = 1;
-                    cfor!(j in 0..D => {
-                        is![i != j; face_measure *= self.dim[j]];
-                    });
+                    whilst!(j in 0..D; is![i != j; face_measure *= self.dim[j]]);
                     boundary += face_measure;
                 });
                 2 * boundary // Each dimension's contribution is counted twice
@@ -111,9 +107,7 @@ macro_rules! impl_extent {
             #[must_use]
             pub const fn measure(self) -> $f {
                 let mut measure = 1.0;
-                cfor!(i in 0..D => {
-                    measure *= self.dim[i];
-                });
+                whilst!(i in 0..D; measure *= self.dim[i]);
                 measure
             }
             /// Returns the external boundary, the sum of the extents.
@@ -122,11 +116,9 @@ macro_rules! impl_extent {
             #[must_use]
             pub const fn boundary(self) -> $f {
                 let mut boundary = 0.0;
-                cfor!(i in 0..D => {
+                whilst!(i in 0..D; {
                     let mut face_measure = 1.0;
-                    cfor!(j in 0..D => {
-                        is![i != j; face_measure *= self.dim[j]];
-                    });
+                    whilst!(j in 0..D; is![i != j; face_measure *= self.dim[j]]);
                     boundary += face_measure;
                 });
                 2.0 * boundary // Each dimension's contribution is counted twice

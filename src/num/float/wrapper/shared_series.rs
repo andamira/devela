@@ -7,7 +7,7 @@
 // - CONST tables
 // - fn helpers
 
-use crate::{Float, cfor, is, paste};
+use crate::{Float, is, paste, whilst};
 
 /// Implements methods independently of any features
 ///
@@ -140,7 +140,7 @@ macro_rules! impl_float_shared_series {
                     let mut sum = 0.0;
                     let y = (self.0 - 1.0) / (self.0 + 1.0);
                     let mut y_pow = y;
-                    cfor![i in 0..terms => {
+                    whilst![i in 0..terms; {
                         sum += y_pow / (2 * i + 1) as $f;
                         y_pow *= y * y;
                     }];
@@ -168,7 +168,7 @@ macro_rules! impl_float_shared_series {
                     let mut sum = 0.0;
                     let y = (x1 - 1.0) / (x1 + 1.0);
                     let mut y_pow = y;
-                    cfor![i in 0..terms => {
+                    whilst![i in 0..terms; {
                         sum += y_pow / (2 * i + 1) as $f;
                         y_pow *= y * y;
                     }];

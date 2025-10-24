@@ -22,7 +22,6 @@ mod reexports; // macros from core & devela_base_macros
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail_tuple]!
 mod cfg_if; // cfg_if!
-mod cfor; // cfor!
 mod r#const; // CONST!
 mod deprecate; // deprecate_feature!
 mod doclink; // doclink!
@@ -50,7 +49,6 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
             asserts::_all::*,
             capture::{capture_first, capture_last, capture_tail_tuple},
             cfg_if::cfg_if,
-            cfor::cfor,
             r#const::CONST,
             deprecate::deprecate_feature,
             doclink::doclink,

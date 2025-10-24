@@ -3,7 +3,7 @@
 //! Implements compile-time sorting algorithms for arrays of primitives.
 //
 
-use crate::{Cmp, Sort, cfor, cswap, is, paste};
+use crate::{Cmp, Sort, cswap, is, paste, whilst};
 
 /* impl Sort on primitives */
 
@@ -26,8 +26,8 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn bubble_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 0..N => {
-                    cfor![j in 0..N-i-1 => {
+                whilst![i in 0..N; {
+                    whilst![j in 0..N-i-1; {
                         is![arr[j] > arr[j+1]; cswap!(xor arr[j], arr[j+1])];
                     }];
                 }];
@@ -38,7 +38,7 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn insertion_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 1..N => {
+                whilst![i in 1..N; {
                     let mut j = i;
                     while j > 0 && arr[j-1] > arr[j] {
                         cswap!(xor arr[j], arr[j-1]);
@@ -52,9 +52,9 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn selection_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 0..N-1 => {
+                whilst![i in 0..N-1; {
                     let mut min_index = i;
-                    cfor![j in (i+1)..N => {
+                    whilst![j in (i+1),..N; {
                         is![arr[j] < arr[min_index]; min_index = j];
                     }];
                     cswap!(xor arr[min_index], arr[i]);
@@ -70,8 +70,8 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn bubble_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 0..N => {
-                    cfor![j in 0..N-i-1 => {
+                whilst![i in 0..N; {
+                    whilst![j in 0..N-i-1; {
                         is![arr[j] > arr[j+1]; cswap!(xor: arr[j], arr[j+1])];
                     }];
                 }];
@@ -82,7 +82,7 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn insertion_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 1..N => {
+                whilst![i in 1..N; {
                     let mut j = i;
                     while j > 0 && arr[j-1] > arr[j] {
                         cswap!(xor: arr[j], arr[j-1]);
@@ -96,9 +96,9 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn selection_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 0..N-1 => {
+                whilst![i in 0..N-1; {
                     let mut min_index = i;
-                    cfor![j in (i+1)..N => {
+                    whilst![j in (i+1),..N; {
                         is![arr[j] < arr[min_index]; min_index = j];
                     }];
                     cswap!(xor: arr[min_index], arr[i]);
@@ -114,8 +114,8 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn bubble_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 0..N => {
-                    cfor![j in 0..N-i-1 => {
+                whilst![i in 0..N; {
+                    whilst![j in 0..N-i-1; {
                         is![Cmp(arr[j]).gt(arr[j+1]); cswap!(tmp: arr[j], arr[j+1])];
                     }];
                 }];
@@ -126,7 +126,7 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn insertion_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 1..N => {
+                whilst![i in 1..N; {
                     let mut j = i;
                     while j > 0 && Cmp(arr[j-1]).gt(arr[j]) {
                         cswap!(tmp: arr[j], arr[j-1]);
@@ -140,9 +140,9 @@ macro_rules! impl_sort {
             #[must_use]
             pub const fn selection_array(&mut self) -> [$t; N] {
                 let mut arr = self.0;
-                cfor![i in 0..N-1 => {
+                whilst![i in 0..N-1; {
                     let mut min_index = i;
-                    cfor![j in (i+1)..N => {
+                    whilst![j in (i+1),..N; {
                         is![Cmp(arr[j]).lt(arr[min_index]); min_index = j];
                     }];
                     cswap!(tmp: arr[min_index], arr[i]);

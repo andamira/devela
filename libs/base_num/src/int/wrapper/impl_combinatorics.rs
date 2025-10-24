@@ -14,7 +14,7 @@ use super::super::_docs::*;
 use crate::{
     Cast, Int,
     IntError::{MismatchedSizes, NonNegativeRequired, Overflow},
-    IntResult as Result, cfor, is, paste,
+    IntResult as Result, is, paste, whilst,
 };
 
 /// Implements combinatorics-related methods for [`Int`].
@@ -190,7 +190,7 @@ macro_rules! impl_combinatorics {
                 is![n < 0 || r < 0; return Err(NonNegativeRequired)];
                 is![r > n; return Err(MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
-                cfor![i in 0..r => {
+                whilst![i in 0..r; {
                     num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
@@ -229,7 +229,7 @@ macro_rules! impl_combinatorics {
                 let n = self.0;
                 is![n < 0 || r < 0; return Err(NonNegativeRequired)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
-                cfor![i in 0..r => {
+                whilst![i in 0..r; {
                     let Some(factor) = n.checked_add(r - 1 - i) else {
                         return Err(Overflow(None))
                     };
@@ -273,7 +273,7 @@ macro_rules! impl_combinatorics {
                 is![n < 0 || r < 0; return Err(NonNegativeRequired)];
                 is![r > n; return Err(MismatchedSizes)];
                 let mut result: $t = 1;
-                cfor![i in 0..r => {
+                whilst![i in 0..r; {
                     result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {
@@ -447,7 +447,7 @@ macro_rules! impl_combinatorics {
                 let n = self.0;
                 is![r > n; return Err(MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
-                cfor![i in 0..r => {
+                whilst![i in 0..r; {
                     num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
@@ -482,7 +482,7 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn combine_rep(self, r: $t) -> Result<Int<$t>> {
                 let [n, mut num, mut den] = [self.0, 1, 1];
-                cfor![i in 0..r => {
+                whilst![i in 0..r; {
                     let Some(factor) = n.checked_add(r - 1 - i) else {
                         return Err(Overflow(None))
                     };
@@ -524,7 +524,7 @@ macro_rules! impl_combinatorics {
                 let n = self.0;
                 is![r > n; return Err(MismatchedSizes)];
                 let mut result: $t = 1;
-                cfor![i in 0..r => {
+                whilst![i in 0..r; {
                     result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {

@@ -11,7 +11,6 @@ pub use devela_base_core::{
     assert_eq_all, assert_approx_eq_all, const_assert,
     capture_first, capture_last, capture_tail_tuple,
     cfg_if,
-    cfor,
     CONST,
     deprecate_feature,
     doclink,

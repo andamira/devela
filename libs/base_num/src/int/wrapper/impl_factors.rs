@@ -18,7 +18,7 @@
 
 // #[cfg(feature = "alloc")]
 // use crate::{BTreeSet, Hook, Vec, vec_ as vec};
-use crate::{Int, IntError::MismatchedSizes, IntResult as Result, cfor, is, paste, unwrap};
+use crate::{Int, IntError::MismatchedSizes, IntResult as Result, is, paste, unwrap, whilst};
 
 /// Implements factors-related methods for [`Int`].
 ///
@@ -206,7 +206,7 @@ macro_rules! impl_factors {
                 is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
-                cfor! { i in 2..n => {
+                whilst! { i in 2..n; {
                     if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
@@ -294,7 +294,7 @@ macro_rules! impl_factors {
                 let prime_factors_count = unwrap![ok? self.factors_prime_buf(buffer)];
                 let mut unique_count = 1;
                 let mut last_unique = buffer[0];
-                cfor! { i in 1..prime_factors_count => {
+                whilst! { i in 1..prime_factors_count; {
                     if buffer[i] != last_unique {
                         if unique_count < buffer.len() {
                             buffer[unique_count] = buffer[i];
@@ -367,7 +367,7 @@ macro_rules! impl_factors {
                 let mut unique_idx = 0; // current unique factor index
                 let mut exp_count = 1; //
 
-                cfor! { i in 1..prime_factors_count => {
+                whilst! { i in 1..prime_factors_count; {
                     // Same factor as before, increment the exponent count
                     if fbuffer[i] == current_factor {
                         exp_count += 1;
@@ -415,9 +415,9 @@ macro_rules! impl_factors {
             ) -> Result<(usize, usize)> {
                 let prime_factors_count = unwrap![ok? self.factors_prime_buf(pfbuf)];
                 let mut unique_count = 0;
-                cfor! { i in 0..prime_factors_count => {
+                whilst! { i in 0..prime_factors_count; {
                     let mut unique = true;
-                    cfor! { j in 0..unique_count => {
+                    whilst! { j in 0..unique_count; {
                         if pfbuf[i] == upfbuf[j] {
                             unique = false;
                             break;
@@ -581,7 +581,7 @@ macro_rules! impl_factors {
                 is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
-                cfor! { i in 2..n => {
+                whilst! { i in 2..n; {
                     if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
@@ -670,7 +670,7 @@ macro_rules! impl_factors {
                 let prime_factors_count = unwrap![ok? self.factors_prime_buf(buffer)];
                 let mut unique_count = 1;
                 let mut last_unique = buffer[0];
-                cfor! { i in 1..prime_factors_count => {
+                whilst! { i in 1..prime_factors_count; {
                     if buffer[i] != last_unique {
                         if unique_count < buffer.len() {
                             buffer[unique_count] = buffer[i];
@@ -743,7 +743,7 @@ macro_rules! impl_factors {
                 let mut unique_idx = 0; // current unique factor index
                 let mut exp_count = 1; //
 
-                cfor! { i in 1..prime_factors_count => {
+                whilst! { i in 1..prime_factors_count; {
                     // Same factor as before, increment the exponent count
                     if fbuffer[i] == current_factor {
                         exp_count += 1;
@@ -791,9 +791,9 @@ macro_rules! impl_factors {
                 ) -> Result<(usize, usize)> {
                 let prime_factors_count = unwrap![ok? self.factors_prime_buf(pfbuf)];
                 let mut unique_count = 0;
-                cfor! { i in 0..prime_factors_count => {
+                whilst! { i in 0..prime_factors_count; {
                     let mut unique = true;
-                    cfor! { j in 0..unique_count => {
+                    whilst! { j in 0..unique_count; {
                         if pfbuf[i] == upfbuf[j] {
                             unique = false;
                             break;
