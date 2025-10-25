@@ -1,6 +1,6 @@
 // devela_base_core::data::bit::wrapper
 //
-//!
+//! Defines the [`Bitwise`] namespace.
 //
 
 mod primitives;

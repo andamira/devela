@@ -71,3 +71,26 @@ crate::items! {
     /// RGB+A color with 64-bit float components (linear space, premultiplied alpha).
     pub type RgbaLinPreF64 = Rgba<f64, true, true>;
 }
+
+#[cfg(test)]
+const _TEST_RGB_SIZES: () = {
+    assert![size_of::<Rgb<u8>>() == 3];
+    assert![size_of::<Rgba<u8>>() == 4];
+    assert![size_of::<Rgb<u16>>() == 6];
+    assert![size_of::<Rgba<u16>>() == 8];
+
+    assert![size_of::<Rgb<f32>>() == 12];
+    assert![size_of::<Rgba<f32>>() == 16];
+    assert![size_of::<Rgb<f64>>() == 24];
+    assert![size_of::<Rgba<f64>>() == 32];
+
+    assert![align_of::<Rgb<u8>>() == 1];
+    assert![align_of::<Rgba<u8>>() == 1];
+    assert![align_of::<Rgb<u16>>() == 2];
+    assert![align_of::<Rgba<u16>>() == 2];
+
+    assert![align_of::<Rgb<f32>>() == 4];
+    assert![align_of::<Rgba<f32>>() == 4];
+    assert![align_of::<Rgb<f64>>() == 8];
+    assert![align_of::<Rgba<f64>>() == 8];
+};

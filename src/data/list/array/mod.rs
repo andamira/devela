@@ -21,7 +21,12 @@ crate::mod_path!(_c "../../../../libs/base_core/src/data/list/array/reexports.rs
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{adt::*, d1::_all::*, d2::_all::*, ext::*};
+        pub use super::{
+            adt::*,
+            d1::_all::*,
+            d2::_all::*,
+            ext::*,
+        };
 
         #[cfg(feature = "alloc")]
         pub use super::vec::_all::*;
