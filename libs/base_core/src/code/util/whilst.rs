@@ -10,7 +10,7 @@
 ///
 /// - A **`while`-like** loop, with optional initialization, pre-step, and post-step:
 /// ```
-/// # use devela_base_core::whilst;
+/// # use devela_base_core::{is, lets, whilst};
 /// // With init, post-step only
 /// let mut sum = 0;
 /// whilst![x = 0; x < 5; {; x += 1} sum += x];
@@ -29,12 +29,20 @@
 /// // Floating-point downward loop with pre-step
 /// let mut sum = 0.0;
 /// whilst![x = 2.0; x > 0.0; { x -= 0.25; } sum += x];
-/// assert_eq!(sum, 7.0);
+/// assert_eq!(sum, 7.0); // 1.75 + 1.5 + 1.25 + 1 + 0.75 + 0.5 + 0.25
 ///
 /// // With a loop label and early break
 /// let mut sum = 0;
 /// whilst!['label: x = 0; x < 5; {; x += 1} { sum += x; if x == 3 { break 'label } }];
 /// assert_eq!(sum, 6); // 0 + 1 + 2 + 3
+///
+/// // With let Some(x) syntax
+/// lets![mut val = Some(3), mut sum = 0, mut steps = 0];
+/// whilst![let Some(x) = val; {steps += 1; val = is![x>0; Some(x-1); None]} {
+///     sum += x;
+/// }];
+/// assert_eq!(steps, 4); // pre-step executed per iteration
+/// assert_eq!(sum, 6); // 3 + 2 + 1
 /// ```
 /// - A **`for`-like** loop, iterating over integer or floating-point ranges:
 /// ```
@@ -61,7 +69,7 @@
 /// whilst![x in rev 0..6; 2; {vals[i] = x; i += 1}];
 /// assert_eq!(vals, [4, 2, 0]);
 ///
-/// // For a non-literal start expression, a comma is necessary:
+/// // For a non-literal start expression, a comma is necessary
 /// let mut vals = [0; 4];
 /// let start = 0;
 /// whilst![x in start,..4; vals[x] = x];
@@ -73,7 +81,17 @@ macro_rules! whilst {
     (
     /* `while` syntax */
 
-    // label:? init?; condition; { pre?; post? } body
+    // label:? let pattern = expr; { pre?; post? } body
+    $($label:lifetime:)?
+    let $pat:pat = $expr:expr ; { $( $pre:expr)? ; $( $post:expr)? } $body:expr) => {
+        $($label:)? while let $pat = $expr { $($pre;)? $body; $($post;)? }
+    };
+    // label:? let pattern = expr; body
+    ($($label:lifetime:)?
+    let $pat:pat = $expr:expr ; $body:expr) => {
+        $($label:)? while let $pat = $expr { $body; }
+    };
+    (// label:? init?; condition; { pre?; post? } body
     $($label:lifetime:)?
     $($var:ident $(: $var_ty:ty)? = $init:expr)? ;
     $condition:expr ; { $( $pre:expr)? ; $( $post:expr)? } $body:expr
@@ -102,6 +120,7 @@ macro_rules! whilst {
         $($label:)? while $condition { $body; }
     };
     (
+
     /* `for` syntax */
 
     // backward (in rev)
@@ -201,7 +220,7 @@ pub use whilst;
 
 #[cfg(test)]
 mod tests {
-    use super::whilst;
+    use crate::{is, whilst};
 
     #[test]
     fn test_whilst() {
@@ -236,6 +255,27 @@ mod tests {
         let mut x = 0;
         whilst![x < 10; { b+=2; x+=1; }];
         assert_eq![b, 20];
+    }
+
+    #[test]
+    fn test_whilst_let() {
+        let mut val = Some(3);
+        let mut sum = 0;
+        whilst![let Some(x) = val; {
+            sum += x;
+            val = if x > 0 { Some(x - 1) } else { None };
+        }];
+        assert_eq!(sum, 6); // 3 + 2 + 1
+
+        // with steps
+        let mut val = Some(3);
+        let mut sum = 0;
+        let mut steps = 0;
+        whilst![let Some(x) = val; {steps += 1; val = is![x > 0; Some(x - 1); None]} {
+            sum += x;
+        }];
+        assert_eq!(steps, 4); // pre-step executed per iteration
+        assert_eq!(sum, 6); // 3 + 2 + 1
     }
 
     #[test]

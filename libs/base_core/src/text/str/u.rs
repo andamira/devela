@@ -626,7 +626,7 @@ macro_rules! impl_str_u {
             pub const fn pop_unchecked(&mut self) -> char {
                 let string = self.as_str();
                 let mut index = string.len();
-                while index > 0 && !string.is_char_boundary(index - 1) { index -= 1; }
+                whilst![index > 0 && !string.is_char_boundary(index - 1); index -= 1];
                 let idx_last_char = index - 1;
                 let range = Str::range_from(string, idx_last_char);
                 let last_char = unwrap![some CharIter::<&str>::new(range).next_char()];
