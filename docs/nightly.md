@@ -71,6 +71,7 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
+- 1.??: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
@@ -78,6 +79,7 @@ See also
 - 1.??: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
 - 1.??: ` `[fmt::from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
+- 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
@@ -86,6 +88,7 @@ See also
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649)
 - 1.??: `·`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
+- 1.??: `·`[maybe_uninit_write_slice](https://github.com/rust-lang/rust/pull/148048)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
