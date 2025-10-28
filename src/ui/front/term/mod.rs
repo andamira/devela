@@ -3,16 +3,22 @@
 //! Terminal functionality.
 //
 
+#[cfg(feature = "term")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
 mod ansi;
 
 crate::structural_mods! { // _mods
     _mods {
+        #[cfg(feature = "term")]
         pub use super::ansi::_all::*;
 
         // re-exports
         #[doc(inline)]
+        pub use devela_base_core::ui::front::term::TermSize;
+        #[doc(inline)]
+        #[cfg(feature = "term")]
         pub use devela_base_core::ui::front::term::{
-            Ansi, AnsiColor, AnsiColor3, AnsiColor8, TermSize,
+            Ansi, AnsiColor, AnsiColor3, AnsiColor8,
         };
     }
 }
