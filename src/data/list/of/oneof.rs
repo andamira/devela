@@ -3,24 +3,59 @@
 //! Defines the [`Oneof`] type.
 //
 
-use crate::{ConstDefault, ExtAny, is};
-
-// 12 variants by default
-impl_oneof!(
-    _0:0+1:"st", _1:1+2:"nd", _2:2+3:"rd", _3:3+4:"th", _4:4+5:"th", _5:5+6:"th",
-    _6:6+7:"th", _7:7+8:"th", _8:8+9:"th", _9:9+10:"th", _10:10+11:"th", _11:11+12:"th",
-);
+impl_oneof!();
 
 /// Defines [`Oneof`] and implements all the methods.
+#[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! impl_oneof {
-    (
+    /* points of entry, using hardcoded argument list */
+
+    // main point of entry
+    // (defines Oneof & implements everything except ConstDefault)
+    () => { $crate::impl_oneof!(%canonical); };
+    //
     // var_name : var_idx(0-based) + var_nth(1-based) : nth_suffix
-    $($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
-        impl_oneof!(define_enum: $($T:$nth:$suf),+);
-        impl_oneof!(impl_default: $($T),+);
-        impl_oneof!(methods_general: $($T:$idx+$nth:$suf),+);
-        impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
+    ($($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
+        $crate::impl_oneof!(define_enum: $($T:$nth:$suf),+);
+        $crate::impl_oneof!(impl_default: $($T),+);
+        // $crate::impl_oneof!(impl_const_default: $($T),+);
+        $crate::impl_oneof!(methods_general: $($T:$idx+$nth:$suf),+);
+        $crate::impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
     };
+
+    // point of entry for implementing ConstDefault
+    (impl_const_default) => {
+        $crate::impl_oneof!(%canonical %map_ident impl_const_default:);
+    };
+    // real ConstDefault implementation
+    (impl_const_default: $_0:ident $(, $rest:ident)*) => {
+        impl<const LEN: usize, $_0: crate::ConstDefault, $($rest),*> crate::ConstDefault
+            for Oneof<LEN, $_0, $($rest),*> {
+            const DEFAULT: Self = Oneof::$_0($_0::DEFAULT);
+        }
+    };
+
+    /* helpers */
+
+    // hardcoded canonical list (12 variants)
+    (%canonical $($prefix:tt)*) => { $crate::impl_oneof! { $($prefix)*
+        _0:0+1:"st", _1:1+2:"nd", _2:2+3:"rd", _3:3+4:"th", _4:4+5:"th", _5:5+6:"th",
+        _6:6+7:"th", _7:7+8:"th", _8:8+9:"th", _9:9+10:"th", _10:10+11:"th", _11:11+12:"th",
+    }};
+    // maps the canonical list to one of idents and forwards them to the prefixed arm.
+    (%map_ident $prefix:ident:
+     $($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
+        $crate::impl_oneof!($prefix: $($T),*);
+    };
+    // maps the canonical list to one of idents:nth:suf and forwards them to the prefixed arm.
+    (%map_ident_nth_suf $prefix:ident:
+     $($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
+        $crate::impl_oneof!($prefix: $($T:$nth:$suf),+);
+    };
+
+    /* main arms */
+
     // (define_enum: $_0:ident, $_1:ident, $_2:ident, $($rest:ident:$nth:literal),*
     (define_enum: $($variant:ident : $nth:literal : $suf:literal),+) => { $crate::paste! {
         /// A generic, parameterized *enum* for expressing structured alternatives.
@@ -39,14 +74,9 @@ macro_rules! impl_oneof {
             ),+
         }
     }};
-    (
-    impl_default: $_0:ident $(, $rest:ident)*) => {
+    (impl_default: $_0:ident $(, $rest:ident)*) => {
         impl<const LEN: usize, $_0: Default, $($rest),*> Default for Oneof<LEN, $_0, $($rest),*> {
             fn default() -> Self { Oneof::$_0($_0::default()) }
-        }
-        impl<const LEN: usize, $_0: ConstDefault, $($rest),*> ConstDefault
-            for Oneof<LEN, $_0, $($rest),*> {
-            const DEFAULT: Self = Oneof::$_0($_0::DEFAULT);
         }
     };
     (
@@ -95,20 +125,25 @@ macro_rules! impl_oneof {
         }
         impl<const LEN: usize, $($T: 'static),+ > Oneof<LEN, $($T),+> {
             /// Returns the first non-unit variant name, if any.
-            // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
+            // WAIT:1.91 [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             pub fn first_non_unit() -> Option<&'static str> {
-                $( if <$T>::type_id() != <()>::type_id() { return Some(stringify!($T)); } )+
+                $(
+                    if $crate::TypeId::of::<$T>() != $crate::TypeId::of::<()>() {
+                        return Some(stringify!($T));
+                    }
+                )+
                 None
             }
 
             /// Validates that inactive `()` variants only appear at the end,
             /// and that `LEN` equals the number of active variants.
             #[allow(unused_assignments, reason = "wont be read in all cases")]
+            // WAIT:1.91 [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             pub fn validate() -> bool {
                 let mut non_unit_count = 0;
                 let mut unit_found = false;
                 $(
-                    if <$T>::type_id() == <()>::type_id() {
+                    if $crate::TypeId::of::<$T>() == $crate::TypeId::of::<()>() {
                         unit_found = true;
                     } else {
                         if unit_found { return false; }
@@ -165,10 +200,10 @@ macro_rules! impl_oneof {
     methods_individ: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
         /// # Variant-specific methods.
         impl<const LEN: usize, $($T),+> Oneof<LEN, $($T),+> {
-            // impl_oneof!(methods_field_access: $($T),+);
-            impl_oneof!(methods_field_access: $($T:$idx+$nth:$suf),+);
-            impl_oneof!(methods_map: $($T),+);
-            // impl_oneof!(methods_map: $($T:$idx+$nth),+);
+            // $crate::impl_oneof!(methods_field_access: $($T),+);
+            $crate::impl_oneof!(methods_field_access: $($T:$idx+$nth:$suf),+);
+            $crate::impl_oneof!(methods_map: $($T),+);
+            // $crate::impl_oneof!(methods_map: $($T:$idx+$nth),+);
         }
     };
     (
@@ -178,7 +213,7 @@ macro_rules! impl_oneof {
     // - as_ref_*
     // - as_mut_*
     methods_field_access: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
-        $( impl_oneof! { @methods_field_access: $T : $idx + $nth : $suf} )+
+        $( $crate::impl_oneof! { @methods_field_access: $T : $idx + $nth : $suf} )+
     };
     (@methods_field_access: $T:ident : $idx:literal + $nth:literal : $suf:literal
     ) => { $crate::paste! {
@@ -188,16 +223,16 @@ macro_rules! impl_oneof {
 
         #[doc = "Returns the owned value in variant `" $T "`, if present."]
         pub fn [<into $T>](self) -> Option<$T> {
-            is![let Self::$T($T) = self; Some($T); None]
+            $crate::is![let Self::$T($T) = self; Some($T); None]
         }
         #[doc = "Returns a reference to the inner value in variant `" $T "`, if present."]
         pub fn [<as_ref $T>](&self) -> Option<&$T> {
-            is![let Self::$T($T) = self; Some($T); None]
+            $crate::is![let Self::$T($T) = self; Some($T); None]
         }
         #[doc = "Returns a reference to the inner value in variant`" $T "`, if present."]
         /// <hr/>
         pub fn [<as_mut $T>](&mut self) -> Option<&mut $T> {
-            is![let Self::$T($T) = self; Some($T); None]
+            $crate::is![let Self::$T($T) = self; Some($T); None]
         }
     }};
     (
@@ -205,9 +240,9 @@ macro_rules! impl_oneof {
     // - map_*
     methods_map: $first:ident $(, $rest:ident)*) => {
         // For the first variant, the `$before` list is empty.
-        impl_oneof!(@methods_map: $first, (), ($($rest),*));
+        $crate::impl_oneof!(@methods_map: $first, (), ($($rest),*));
         // Then, delegate to the helper macro with the first element as the accumulator.
-        impl_oneof!(@methods_map_helper: ($first), ($($rest),*));
+        $crate::impl_oneof!(@methods_map_helper: ($first), ($($rest),*));
 
         // NOTE: generates something like the following (e.g. for 6 variants):
         //
@@ -247,12 +282,13 @@ macro_rules! impl_oneof {
     (@methods_map_helper: ($($before:ident),*), ()) => {};
     // Recursively take the next type as the current one.
     (@methods_map_helper: ($($before:ident),*), ($first:ident $(, $rest:ident)*)) => {
-        impl_oneof!(@methods_map: $first, ($($before),*), ($($rest),*));
+        $crate::impl_oneof!(@methods_map: $first, ($($before),*), ($($rest),*));
         // Append the current type to the "before" list and continue.
-        impl_oneof!(@methods_map_helper: ($($before,)* $first), ($($rest),*));
+        $crate::impl_oneof!(@methods_map_helper: ($($before,)* $first), ($($rest),*));
     };
 }
-use impl_oneof;
+#[doc(hidden)]
+pub use impl_oneof;
 
 #[cfg(test)]
 mod tests {
