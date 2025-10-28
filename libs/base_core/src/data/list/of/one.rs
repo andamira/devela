@@ -1,4 +1,4 @@
-// devela::data::list::oneof
+// devela_base_core::data::list::one
 //
 //! Defines the [`Oneof`] type.
 //

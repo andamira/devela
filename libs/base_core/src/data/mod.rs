@@ -14,7 +14,7 @@ pub mod iter;
 pub mod list;
 // pub mod key;
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _workspace_internals
     _mods {
         pub use super::{bit::_all::*, sort::_all::*};
     }
@@ -23,5 +23,8 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::errors::*;
         pub use super::{codec::_all::*, iter::_all::*, list::_all::*};
         // pub use super::key::_all::*;
+    }
+    _workspace_internals {
+        pub use super::list::_workspace_internals::*;
     }
 }
