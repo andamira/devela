@@ -56,7 +56,6 @@ macro_rules! impl_oneof {
 
     /* main arms */
 
-    // (define_enum: $_0:ident, $_1:ident, $_2:ident, $($rest:ident:$nth:literal),*
     (define_enum: $($variant:ident : $nth:literal : $suf:literal),+) => { $crate::paste! {
         /// A generic, parameterized *enum* for expressing structured alternatives.
         ///
@@ -125,7 +124,7 @@ macro_rules! impl_oneof {
         }
         impl<const LEN: usize, $($T: 'static),+ > Oneof<LEN, $($T),+> {
             /// Returns the first non-unit variant name, if any.
-            // WAIT:1.91 [const_type_id](https://github.com/rust-lang/rust/issues/77125)
+            // WAIT const PartialEq for TypeId
             pub fn first_non_unit() -> Option<&'static str> {
                 $(
                     if $crate::TypeId::of::<$T>() != $crate::TypeId::of::<()>() {
@@ -138,7 +137,7 @@ macro_rules! impl_oneof {
             /// Validates that inactive `()` variants only appear at the end,
             /// and that `LEN` equals the number of active variants.
             #[allow(unused_assignments, reason = "wont be read in all cases")]
-            // WAIT:1.91 [const_type_id](https://github.com/rust-lang/rust/issues/77125)
+            // WAIT const PartialEq for TypeId
             pub fn validate() -> bool {
                 let mut non_unit_count = 0;
                 let mut unit_found = false;
@@ -154,6 +153,7 @@ macro_rules! impl_oneof {
             }
         }
         /// # Conversion methods.
+        // IMPROVE: add a const fn for T: Copy (into_tuple_copy_options / into_tuple_const_default)
         impl<const LEN: usize, $($T: Clone),+ > Oneof<LEN, $($T),+> {
             /// Returns a tuple with `Some(value)` for the active variant and `None` elsewhere.
             pub fn into_tuple_options(self) -> ($(Option<$T>),+) { $crate::paste! {

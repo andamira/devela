@@ -7,7 +7,7 @@
 /// The size of the terminal.
 ///
 /// ## Used by
-/// - `LinuxTermios`.
+/// - `LinuxTermios` and `WindowsConsole`.
 #[must_use]
 #[repr(C)] // field order matters!
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

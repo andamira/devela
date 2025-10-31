@@ -2,7 +2,9 @@
 //
 #![doc = crate::_DOC_SYS_ARCH!()]
 //!
-//! See <https://github.com/rust-lang/stdarch>.
+//! # Links
+//! - <https://github.com/rust-lang/stdarch>
+//! - <https://doc.rust-lang.org/reference/inline-assembly.html>
 #![doc = crate::_doc!(extends: arch)]
 //
 // NOTE In order to show in the docs all possible feature-gated functionality,

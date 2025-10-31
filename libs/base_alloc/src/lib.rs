@@ -12,6 +12,7 @@ extern crate self as devela_base_alloc;
 
 pub mod data;
 pub mod lang;
+pub mod media;
 pub mod num;
 pub mod sys;
 pub mod text;
@@ -31,6 +32,7 @@ pub mod all {
     pub use super::{
         data::_all::*,
         lang::_all::*,
+        media::_all::*,
         num::_all::*,
         sys::_all::*,
         text::_all::*,

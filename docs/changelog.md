@@ -174,7 +174,7 @@ Many feature gates are removed in order to make most features make always availa
 ## data
 - move to [base]:
   - macros: `array_init!`, `bitfield!`.
-  - types: `ArrayFrom`, `Bitwise`, `Sort`.
+  - types: `ArrayFrom`, `Bitwise`, `Oneof`, `Sort`.
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
