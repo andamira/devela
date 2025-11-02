@@ -170,9 +170,9 @@ impl Digits<u16> {
     /// returning the number of bytes written.
     ///
     /// Returns 0 and writes nothing if fewer than 5 bytes remain.
-    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+    #[inline(always)]
+    const fn write_digits10_inner(self, buf: &mut [u8], offset: usize) -> usize {
         let n = self.0;
-        is![offset + 5 > buf.len(); return 0];
         if n < 10 {
             buf[offset] = n as u8 + b'0';
             1
@@ -199,6 +199,25 @@ impl Digits<u16> {
             buf[offset + 4] = (n % 10) as u8 + b'0';
             5
         }
+    }
+
+    /// Writes 1..=5 decimal digits without leading zeros starting at `offset`,
+    /// returning the number of bytes written.
+    ///
+    /// Returns 0 and writes nothing if fewer than 5 bytes remain.
+    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+        is![offset + 5 > buf.len(); return 0];
+        self.write_digits10_inner(buf, offset)
+    }
+
+    /// Writes 1..=5 decimal digits without leading zeros starting at `offset`,
+    /// returning the number of bytes written.
+    ///
+    /// Returns 0 and writes nothing if the value is 0 or if fewer than 5 bytes remain.
+    pub const fn write_digits10_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+        is![self.0 == 0; return 0];
+        is![offset + 5 > buf.len(); return 0];
+        self.write_digits10_inner(buf, offset)
     }
 
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
