@@ -68,7 +68,6 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                 is![idx == 0; continue]; // Skip background
 
                 // __std![@println!("  Rendering color #{} in band", idx)];
-                // MAYBE call different functions depending on the number of colors
                 off += unwrap![ok? Self::write_color_reference(&mut slice![mut buf, off,..], idx)];
 
                 // build and compress sixel pattern for this color
@@ -110,7 +109,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                         Self::write_rle_run(&mut slice![mut buf, off,..], char, repeat_count)];
                 }
                 // return to start for next color
-                is![idx != self.palette.len() as u8 - 1; write_at![buf, off, b'$']];
+                is![idx != self.palette.len() as u16 - 1; write_at![buf, off, b'$']];
             }
             band_y += 6;
             is![band_y < height; write_at![buf, off, b'-']]; // move to next band?
@@ -178,25 +177,12 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     }
 
     /// Write color reference (#NN)
-    const fn write_color_reference(buffer: &mut [u8], index: u8) -> Result<usize, NotEnoughSpace> {
-        let digits = Digits(index).digits10();
+    const fn write_color_reference(buffer: &mut [u8], index: u16) -> Result<usize, NotEnoughSpace> {
+        is![buffer.len() < 2; return Err(NotEnoughSpace(Some(2)))];
         buffer[0] = b'#';
-        if index < 10 {
-            is![buffer.len() < 2; return Err(NotEnoughSpace(Some(2)))];
-            buffer[1] = digits[2]; // ones digit
-            Ok(2)
-        } else if index < 100 {
-            is![buffer.len() < 3; return Err(NotEnoughSpace(Some(3)))];
-            buffer[1] = digits[1]; // tens digit
-            buffer[2] = digits[2]; // ones digit
-            Ok(3)
-        } else {
-            is![buffer.len() < 4; return Err(NotEnoughSpace(Some(4)))];
-            buffer[1] = digits[0]; // hundreds digit
-            buffer[2] = digits[1]; // tens digit
-            buffer[3] = digits[2]; // ones digit
-            Ok(4)
-        }
+        let digits_written = Digits(index).write_digits10_omit0(buffer, 1);
+        is![digits_written == 0; return Err(NotEnoughSpace(Some(2)))];
+        Ok(1 + digits_written)
     }
 
     /// Write an RLE run: either compressed `!NNN` or repeated characters.

@@ -42,28 +42,28 @@ impl<const CAP: usize> SixelPalette<CAP> {
     pub const fn is_full(&self) -> bool { self.len >= CAP }
 
     /// Get color at index (if exists).
-    pub const fn get(&self, index: u8) -> Option<SixelColor> {
+    pub const fn get(&self, index: u16) -> Option<SixelColor> {
         if (index as usize) < self.colors.len() { self.colors[index as usize] } else { None }
     }
 
     /// Add a color to the palette without checking for duplicates, returns its index.
     ///
     /// For duplicate checking, use `find_or_add` instead.
-    pub const fn add_color(&mut self, color: SixelColor) -> Result<u8, NotEnoughSpace> {
+    pub const fn add_color(&mut self, color: SixelColor) -> Result<u16, NotEnoughSpace> {
         if self.is_full() { return Err(NotEnoughSpace(Some(1))); }
         let index = self.len;
         self.colors[index] = Some(color);
         self.len += 1;
-        Ok(index as u8)
+        Ok(index as u16)
     }
 
     /// Find color index.
     #[must_use]
-    pub const fn find(&self, color: SixelColor) -> Option<u8> {
+    pub const fn find(&self, color: SixelColor) -> Option<u16> {
         let mut i = 0;
         while i < self.len {
             if let Some(existing_color) = self.colors[i] {
-                if existing_color.eq(color) { return Some(i as u8); }
+                if existing_color.eq(color) { return Some(i as u16); }
             }
             i += 1;
         }
@@ -71,11 +71,11 @@ impl<const CAP: usize> SixelPalette<CAP> {
     }
 
     /// Find color index or add it if not found.
-    pub const fn find_or_add(&mut self, color: SixelColor) -> Result<u8, NotEnoughSpace> {
+    pub const fn find_or_add(&mut self, color: SixelColor) -> Result<u16, NotEnoughSpace> {
         let mut i = 0;
         while i < self.len {
             if let Some(existing_color) = self.colors[i] {
-                if existing_color.eq(color) { return Ok(i as u8); }
+                if existing_color.eq(color) { return Ok(i as u16); }
             }
             i += 1;
         }
@@ -85,7 +85,7 @@ impl<const CAP: usize> SixelPalette<CAP> {
     // CHECK: COMPARE
     // /// Find the closest color in the palette using Manhattan distance in RGB space
     // #[must_use]
-    // pub const fn find_closest_v0(&self, color: SixelColor) -> Option<u8> {
+    // pub const fn find_closest_v0(&self, color: SixelColor) -> Option<u16> {
     //     if self.len == 0 { return None; }
     //     let mut best_index = 0;
     //     let mut best_distance = u16::MAX;
@@ -98,15 +98,15 @@ impl<const CAP: usize> SixelPalette<CAP> {
     //                 best_index = i;
     //             }
     //             // If we find an exact match, return immediately
-    //             if distance == 0 { return Some(i as u8); }
+    //             if distance == 0 { return Some(i as u16); }
     //         }
     //         i += 1;
     //     }
-    //     Some(best_index as u8)
+    //     Some(best_index as u16)
     // }
 
     /// Find the closest color in the palette to the given color
-    pub const fn find_closest(&self, target: SixelColor) -> Option<u8> {
+    pub const fn find_closest(&self, target: SixelColor) -> Option<u16> {
         if self.len == 0 { return None; }
         let mut best_idx = 0;
         let mut best_distance = u16::MAX;
@@ -175,20 +175,20 @@ pub struct SixelPaletteIter<'a, const CAP: usize> {
 }
 impl<'a, const CAP: usize> SixelPaletteIter<'a, CAP> {
     /// Returns the next index and color if there are still some.
-    pub const fn next(&mut self) -> Option<(u8, SixelColor)> {
+    pub const fn next(&mut self) -> Option<(u16, SixelColor)> {
         while self.index < self.palette.len {
             let current_index = self.index;
             self.index += 1;
             if let Some(color) = self.palette.colors[current_index] {
-                return Some((current_index as u8, color));
+                return Some((current_index as u16, color));
             }
         }
         None
     }
 }
 impl<'a, const CAP: usize> Iterator for SixelPaletteIter<'a, CAP> {
-    type Item = (u8, SixelColor);
-    fn next(&mut self) -> Option<(u8, SixelColor)> {
+    type Item = (u16, SixelColor);
+    fn next(&mut self) -> Option<(u16, SixelColor)> {
         self.next()
     }
 }

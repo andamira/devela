@@ -47,28 +47,19 @@ impl SixelColor {
         }
     }
 
-    /// Convert to sixel color definition bytes for a given color `index`.
-    ///
-    /// Format: `#ID;2;RR;GG;BB`
-    ///
-    /// Note that this function always returns 14 bytes, zero-padding the numbers
-    /// and only supporting indices up to 99.
-    pub const fn to_definition_bytes(self, index: u8) -> [u8; 14] {
-        let [r0, r1] = Digits(self.r()).digits10_2();
-        let [g0, g1] = Digits(self.g()).digits10_2();
-        let [b0, b1] = Digits(self.b()).digits10_2();
-        let [idx0, idx1] = Digits(index).digits10_2();
-        [b'#', idx0, idx1, b';', b'2', b';', r0, r1, b';', g0, g1, b';', b0, b1]
-    }
-
     /// Writes the sixel color definition bytes for a given color index,
     /// returning the number of bytes written.
     ///
-    /// Format: `#ID;2;R;G;B`
+    /// Format: `#IDX;2;R;G;B`
     ///
     /// This function writes the minimum number of bytes necessary, omitting any 0 values.
     /// The bytes written can vary between 6 and 15, depending on the values themselves.
-    pub const fn write_definition_bytes(self, idx: u8, buf: &mut [u8], mut offset: usize) -> usize {
+    pub const fn write_definition_bytes(
+        self,
+        idx: u16,
+        buf: &mut [u8],
+        mut offset: usize,
+    ) -> usize {
         let start = offset;
         write_at!(buf, offset, b'#');
         offset += Digits(idx).write_digits10_omit0(buf, offset);
@@ -91,7 +82,7 @@ impl SixelColor {
     /// The bytes written can vary between 6 and 15, depending on the values themselves.
     pub const fn write_definition_bytes_checked(
         self,
-        idx: u8,
+        idx: u16,
         buf: &mut [u8],
         mut offset: usize,
     ) -> Option<usize> {
