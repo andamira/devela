@@ -1,9 +1,9 @@
-#!/usr/bin/env rust-script
+#!/usr/bin/env -S rust-script -c
 //! ```cargo
 //! [dependencies]
 //! devela = { path = "../..", features = ["linux", "unsafe_syscall"] }
 //! ```
-// devela::examples::term::linux
+// devela::examples::ui::term::linux
 
 use devela::{Linux, LinuxResult};
 
