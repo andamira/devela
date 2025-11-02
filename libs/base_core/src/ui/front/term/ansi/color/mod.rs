@@ -25,7 +25,7 @@ pub use {bit3::*, bit8::*};
 // IMPROVE: use Rgb8 color type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum AnsiColor {
-    /// No color (reset to default).
+    /// No color.
     None,
     /// Standard 3-bit colors.
     Dark(AnsiColor3),
@@ -47,10 +47,12 @@ impl AnsiColor {
         match self { Self::Dark(c) | Self::Bright(c) => Some(c), _ => None }
     }
     ///
+    #[must_use] #[inline(always)]
     pub const fn into_8(self) -> Option<AnsiColor8> {
         match self { Self::Palette(c) => Some(c), _ => None }
     }
     ///
+    #[must_use] #[inline(always)]
     pub const fn into_rgb(self) -> Option<[u8; 3]> {
         match self { Self::Rgb(c) => Some(c), _ => None }
     }

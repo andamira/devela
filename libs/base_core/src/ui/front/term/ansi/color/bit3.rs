@@ -41,6 +41,7 @@ impl AnsiColor3 {
     #[must_use]
     pub const fn from_u8(value: u8) -> Self {
         match value {
+            0 => Self::Black,
             1 => Self::Red,
             2 => Self::Green,
             3 => Self::Yellow,

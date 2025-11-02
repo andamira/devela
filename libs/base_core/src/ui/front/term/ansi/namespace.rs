@@ -47,10 +47,12 @@ use crate::{_ansi_consts, Digits, slice};
 pub struct Ansi;
 
 impl Ansi {
-    /// Control Sequence Introducer (CSI).
-    ///
-    /// <https://en.wikipedia.org/wiki/ANSI_escape_code#Control_Sequence_Introducer_commands>
-    pub const CSI: [u8; 2] = *b"\x1b[";
+    _ansi_consts! {
+        /// Control Sequence Introducer (CSI).
+        ///
+        /// <https://en.wikipedia.org/wiki/ANSI_escape_code#Control_Sequence_Introducer_commands>
+        pub const CSI: [u8; 2] = "\x1b[", *b"\x1b[";
+    }
 
     /* helper functions */
 
