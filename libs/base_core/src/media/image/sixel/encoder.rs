@@ -21,10 +21,7 @@ pub struct SixelEncoder<const MAX_COLORS: usize> {
 /// - new
 /// - with_palette
 /// - palette_mut
-/// - find_closest_color
-/// - write_sixel_start
-/// - write_sixel_end
-/// - write_color_reference
+/// - encode_rgb
 impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     /// Create a new encoder with empty palette
     pub const fn new() -> Self {
@@ -42,98 +39,6 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     /// Get the palette (mutable)
     pub const fn palette_mut(&mut self) -> &mut SixelPalette<MAX_COLORS> {
         &mut self.palette
-    }
-
-    /// Write sixel sequence start with full raster attributes.
-    ///
-    /// Returns an error if the buffer doesn't have at least 21 bytes, for good measure.
-    pub const fn write_sixel_start(
-        buf: &mut [u8],
-        width: usize,
-        height: usize,
-    ) -> Result<usize, NotEnoughSpace> {
-        let needed = 5 + 6 + 5 + 1 + 5; // assume we require 5+5 digits for raster dimensions
-        is![buf.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
-
-        let (width_digits, height_digits) = (Digits(width), Digits(height));
-        let mut offset = 0;
-
-        // initial sequence (6 bytes)
-        write_at!(
-            buf, offset, b'\x1b', b'P', // CIS
-            b';', b'1', b';', // p2 = 1 (transparent background)
-            b'q', // sixel ID
-        );
-        // raster attributes opening sequence (5 bytes)
-        // https://vt100.net/docs/vt3xx-gp/chapter14.html#S14.3.2
-        write_at!(buf, offset, b'"', b'1', b';', b'1', b';'); // pixel aspect ratio
-        offset += width_digits.write_digits10(buf, offset);
-        write_at!(buf, offset, b';'); // + 1 byte
-        offset += height_digits.write_digits10(buf, offset);
-        Ok(offset)
-    }
-    /// Write sixel sequence start with full raster attributes
-    pub const fn write_sixel_start_simple(buf: &mut [u8]) -> Result<usize, NotEnoughSpace> {
-        is![buf.len() < 6; return Err(NotEnoughSpace(Some(6)))];
-        write_at!(
-            buf, 0, b'\x1b', b'P', // CIS
-            b';', b'1', b';', // p2 = 1 (transparent background)
-            b'q', // sixel ID
-        );
-        Ok(6)
-    }
-
-    /// Write sixel sequence end.
-    pub const fn write_sixel_end(buf: &mut [u8]) -> Result<usize, NotEnoughSpace> {
-        is![buf.len() < 2; return Err(NotEnoughSpace(Some(2)))];
-        write_at!(buf, 0, b'\x1b', b'\\'); // string terminator C0 sequence
-        Ok(2)
-    }
-
-    /// Write color reference (#NN)
-    const fn write_color_reference(buffer: &mut [u8], index: u8) -> Result<usize, NotEnoughSpace> {
-        let digits = Digits(index).digits10_2();
-        buffer[0] = b'#';
-        if index < 10 {
-            is![buffer.len() < 2; return Err(NotEnoughSpace(Some(2)))];
-            buffer[1] = digits[1]; // ones digit
-            Ok(2)
-        } else {
-            is![buffer.len() < 3; return Err(NotEnoughSpace(Some(3)))];
-            buffer[1] = digits[0]; // tens digit
-            buffer[2] = digits[1]; // ones digit
-            Ok(3)
-        }
-    }
-
-    /// Write an RLE run: either compressed `!NNN` or repeated characters.
-    const fn write_rle_run(
-        buffer: &mut [u8],
-        sc: SixelChar,
-        count: u8,
-    ) -> Result<usize, NotEnoughSpace> {
-        let mut off = 0;
-        if count >= 4 {
-            let digits = Digits(count);
-            let dcount = digits.count_digits10();
-            let needed = 1 + dcount as usize;
-            is![buffer.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
-
-            write_at![buffer, off, b'!'];
-            off += digits.write_digits10(buffer, 1);
-            write_at![buffer, off, sc.as_byte()];
-            // __std![@println!("  RLE: !{}{} (saved {} bytes)",
-            //     count, sc.to_string_ansi(), count - (2 + dcount))];
-        } else {
-            // __std![@println!("  NO RLE: {} times {}", count, sc.to_string_ansi())];
-            let mut _n = 0;
-            while _n < count {
-                is![off >= buffer.len(); return Err(NotEnoughSpace(Some(buffer.len())))];
-                write_at![buffer, off, sc.as_byte()];
-                _n += 1;
-            }
-        }
-        Ok(off)
     }
 
     /// Sixel encoding with RLE compression for repeated characters.
@@ -163,6 +68,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                 is![idx == 0; continue]; // Skip background
 
                 // __std![@println!("  Rendering color #{} in band", idx)];
+                // MAYBE call different functions depending on the number of colors
                 off += unwrap![ok? Self::write_color_reference(&mut slice![mut buf, off,..], idx)];
 
                 // build and compress sixel pattern for this color
@@ -212,6 +118,117 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
         off += unwrap![ok? Self::write_sixel_end(&mut slice![mut buf, off,..])];
         Ok(off)
     }
+}
+
+/* helpers */
+
+// Methods
+// - write_sixel_start
+// - write_sixel_start_simple
+// - write_sixel_end
+// - write_color_reference
+// - write_rle_run
+// - build_palette
+// - build_sixel_bits_for_color
+impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
+    /// Write sixel sequence start with full raster attributes.
+    ///
+    /// Returns an error if the buffer doesn't have at least 21 bytes, for good measure.
+    pub const fn write_sixel_start(
+        buf: &mut [u8],
+        width: usize,
+        height: usize,
+    ) -> Result<usize, NotEnoughSpace> {
+        let needed = 5 + 6 + 5 + 1 + 5; // assume we require 5+5 digits for raster dimensions
+        is![buf.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
+
+        let (width_digits, height_digits) = (Digits(width), Digits(height));
+        let mut offset = 0;
+
+        // initial sequence (6 bytes)
+        write_at!(
+            buf, offset, b'\x1b', b'P', // CIS
+            b';', b'1', b';', // p2 = 1 (transparent background)
+            b'q', // sixel ID
+        );
+        // raster attributes opening sequence (5 bytes)
+        // https://vt100.net/docs/vt3xx-gp/chapter14.html#S14.3.2
+        write_at!(buf, offset, b'"', b'1', b';', b'1', b';'); // pixel aspect ratio
+        offset += width_digits.write_digits10(buf, offset);
+        write_at!(buf, offset, b';'); // + 1 byte
+        offset += height_digits.write_digits10(buf, offset);
+        Ok(offset)
+    }
+    /// Write sixel sequence start with full raster attributes
+    pub const fn write_sixel_start_simple(buf: &mut [u8]) -> Result<usize, NotEnoughSpace> {
+        is![buf.len() < 6; return Err(NotEnoughSpace(Some(6)))];
+        write_at!(
+            buf, 0, b'\x1b', b'P', // CIS
+            b';', b'1', b';', // p2 = 1 (transparent background)
+            b'q', // sixel ID
+        );
+        Ok(6)
+    }
+
+    /// Write sixel sequence end.
+    pub const fn write_sixel_end(buf: &mut [u8]) -> Result<usize, NotEnoughSpace> {
+        is![buf.len() < 2; return Err(NotEnoughSpace(Some(2)))];
+        write_at!(buf, 0, b'\x1b', b'\\'); // string terminator C0 sequence
+        Ok(2)
+    }
+
+    /// Write color reference (#NN)
+    const fn write_color_reference(buffer: &mut [u8], index: u8) -> Result<usize, NotEnoughSpace> {
+        let digits = Digits(index).digits10();
+        buffer[0] = b'#';
+        if index < 10 {
+            is![buffer.len() < 2; return Err(NotEnoughSpace(Some(2)))];
+            buffer[1] = digits[2]; // ones digit
+            Ok(2)
+        } else if index < 100 {
+            is![buffer.len() < 3; return Err(NotEnoughSpace(Some(3)))];
+            buffer[1] = digits[1]; // tens digit
+            buffer[2] = digits[2]; // ones digit
+            Ok(3)
+        } else {
+            is![buffer.len() < 4; return Err(NotEnoughSpace(Some(4)))];
+            buffer[1] = digits[0]; // hundreds digit
+            buffer[2] = digits[1]; // tens digit
+            buffer[3] = digits[2]; // ones digit
+            Ok(4)
+        }
+    }
+
+    /// Write an RLE run: either compressed `!NNN` or repeated characters.
+    const fn write_rle_run(
+        buffer: &mut [u8],
+        sc: SixelChar,
+        count: u8,
+    ) -> Result<usize, NotEnoughSpace> {
+        let mut off = 0;
+        if count >= 4 {
+            let digits = Digits(count);
+            let dcount = digits.count_digits10();
+            let needed = 1 + dcount as usize;
+            is![buffer.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
+
+            write_at![buffer, off, b'!'];
+            off += digits.write_digits10(buffer, 1);
+            write_at![buffer, off, sc.as_byte()];
+            // __std![@println!("  RLE: !{}{} (saved {} bytes)",
+            //     count, sc.to_string_ansi(), count - (2 + dcount))];
+        } else {
+            // __std![@println!("  NO RLE: {} times {}", count, sc.to_string_ansi())];
+            let mut _n = 0;
+            while _n < count {
+                is![off >= buffer.len(); return Err(NotEnoughSpace(Some(buffer.len())))];
+                write_at![buffer, off, sc.as_byte()];
+                _n += 1;
+            }
+        }
+        Ok(off)
+    }
+
 
     #[rustfmt::skip]
     /// Builds the palette from the given rgb byte buffer.
