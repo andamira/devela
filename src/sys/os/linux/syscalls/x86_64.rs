@@ -294,9 +294,6 @@ impl Linux {
                 "syscall",
                 EXIT = const SYS::EXIT,
                 in("rdi") status,
-                // MAYBE: UNDERSTAND
-                // lateout("rcx") _,
-                // lateout("r11") _,
                 options(noreturn)
             );
         }

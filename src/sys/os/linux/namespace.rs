@@ -5,10 +5,11 @@
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
-    AtomicOrdering, AtomicPtr, Duration, Int, LINUX_ERRNO as ERRNO, LINUX_FILENO as FILENO,
-    LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxClock, LinuxError,
-    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTermios, LinuxTimespec,
-    MaybeUninit, Ptr, ScopeGuard, Str, TermSize, c_int, c_uint, c_void, is, transmute,
+    AtomicOrdering, AtomicPtr, Duration, Int, LINUX_ERRNO as ERRNO, LINUX_EXIT,
+    LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxClock,
+    LinuxError, LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTermios,
+    LinuxTimespec, MaybeUninit, Ptr, ScopeGuard, Str, TermSize, c_int, c_uint, c_void, is,
+    transmute,
 };
 
 #[cfg(all(feature = "unsafe_syscall", feature = "alloc", not(miri)))]
@@ -397,8 +398,18 @@ impl Linux {
     }
 
     /// Returns the current process number.
-    pub fn getpid() -> i32 {
+    #[must_use]
+    #[inline(always)]
+    pub fn getpid() -> c_int {
         unsafe { Linux::sys_getpid() }
+    }
+
+    /// Terminates the process with a normalized exit `status` (0–255).
+    ///
+    /// See also [`LINUX_EXIT`].
+    #[inline(always)]
+    pub fn exit(status: c_int) -> ! {
+        unsafe { Linux::sys_exit(status & LINUX_EXIT::MAX); }
     }
 }
 
