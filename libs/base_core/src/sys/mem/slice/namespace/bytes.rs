@@ -2,7 +2,7 @@
 
 #[cfg(any(doc, unsafe··))]
 use crate::Ptr;
-use crate::{Cmp, Slice};
+use crate::{Char, Cmp, Slice};
 
 /// # Methods for byte slices.
 // TODO: add index
@@ -11,8 +11,6 @@ impl Slice<u8> {
     /// Copies bytes from `src` into `dst` starting at `dst_pos`, up to the remaining capacity.
     ///
     /// Returns the number of bytes copied (possibly less than `src.len()` if truncated).
-    ///
-    /// Never panics; truncates safely if `dst_pos >= dst.len()`.
     ///
     /// # Example
     /// ```
@@ -25,8 +23,8 @@ impl Slice<u8> {
     pub const fn copy_into(dst: &mut [u8], dst_pos: usize, src: &[u8]) -> usize {
         let remaining = dst.len().saturating_sub(dst_pos);
         let len = if src.len() < remaining { src.len() } else { remaining };
-        let dst = crate::Slice::range_mut(dst, dst_pos, dst_pos + len);
-        let src = crate::Slice::range_to(src, len);
+        let dst = Slice::range_mut(dst, dst_pos, dst_pos + len);
+        let src = Slice::range_to(src, len);
         dst.copy_from_slice(src);
         len
     }
@@ -36,14 +34,13 @@ impl Slice<u8> {
     ///
     /// Returns the number of bytes copied (never splits a character).
     ///
-    /// Never panics; truncates safely if `dst_pos >= dst.len()`.
-    ///
     /// # Example
     /// ```
     /// # use devela_base_core::Slice;
+    /// // 'o' (1 byte) would fit, but 'ø' (2 bytes) must be dropped
     /// let mut buf = [0u8; 5];
-    /// assert_eq!(Slice::copy_str_into(&mut buf, 0, "héllo"), 3);
-    /// assert_eq!(&buf[..3], "hé".as_bytes());
+    /// assert_eq!(Slice::copy_str_into(&mut buf, 0, "hellø"), 4);
+    /// assert_eq!(&buf[..4], b"hell");
     /// ```
     #[must_use] #[rustfmt::skip]
     pub const fn copy_str_into(dst: &mut [u8], dst_pos: usize, src: &str) -> usize {
@@ -53,8 +50,34 @@ impl Slice<u8> {
         let mut len = if src_bytes.len() < remaining { src_bytes.len() } else { remaining };
         // backtrack to nearest valid UTF-8 boundary
         while len > 0 && !src.is_char_boundary(len) { len -= 1; }
-        let dst = crate::Slice::range_mut(dst, dst_pos, dst_pos + len);
-        let src = crate::Slice::range_to(src_bytes, len);
+        let dst = Slice::range_mut(dst, dst_pos, dst_pos + len);
+        let src = Slice::range_to(src_bytes, len);
+        dst.copy_from_slice(src);
+        len
+    }
+
+    /// Copies bytes from a UTF-8–encoded slice into `dst` starting at `dst_pos`,
+    /// truncating only at valid UTF-8 character boundaries.
+    ///
+    /// Returns the number of bytes copied (never splits a UTF-8 sequence).
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// // 'o' (1 byte) would fit, but 'ø' (2 bytes) must be dropped
+    /// let mut buf = [0u8; 5];
+    /// assert_eq!(Slice::copy_utf8_into(&mut buf, 0, "hellø".as_bytes()), 4);
+    /// assert_eq!(&buf[..4], b"hell");
+    /// ```
+    #[must_use] #[rustfmt::skip]
+    pub const fn copy_utf8_into(dst: &mut [u8], dst_pos: usize, src: &[u8]) -> usize {
+        let remaining = dst.len().saturating_sub(dst_pos);
+        if remaining == 0 { return 0; }
+        let mut len = if src.len() < remaining { src.len() } else { remaining };
+        // backtrack to nearest valid UTF-8 boundary
+        while len > 0 && !Char(src).is_utf8_boundary(len) { len -= 1; }
+        let dst = Slice::range_mut(dst, dst_pos, dst_pos + len);
+        let src = Slice::range_to(src, len);
         dst.copy_from_slice(src);
         len
     }
