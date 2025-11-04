@@ -5,6 +5,7 @@
 //
 
 mod buf; // FmtWriter, format_buf!
+mod num; // FmtNum
 mod num_to_str; // NumToStr
 mod reexports;
 
@@ -12,6 +13,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             buf::*,
+            num::*,
             num_to_str::*,
             reexports::*,
         };

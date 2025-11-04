@@ -16,15 +16,21 @@ mod namespace; // Fmt
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{_c::*, namespace::*};
-        #[cfg(feature = "alloc")]
-        pub use super::_a::*;
-
-        #[doc(inline)]
-        pub use devela_base_core::text::fmt::{FmtWriter, NumToStr, format_buf};
+        pub use super::namespace::*;
 
         // WIPZONE
         // pub use super::case::*;
         // pub use super::table::*;
+
+        /* re-exports */
+
+        pub use super::_c::*;
+        #[cfg(feature = "alloc")]
+        pub use super::_a::*;
+
+        #[doc(inline)]
+        pub use devela_base_core::text::fmt::{
+            FmtNum, FmtWriter, NumToStr, format_buf,
+        };
     }
 }
