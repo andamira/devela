@@ -347,6 +347,7 @@ Many feature gates are removed in order to make most features make always availa
 - update derives for `AnsiColor*`.
 
 ### fmt
+- new macro: `fmtcat`.
 - new types: `FmtNum`, `FmtWriter`.
 - move to [base]:
   - macros: `format_buf!`.
