@@ -347,7 +347,8 @@ impl Char<&[u8]> {
     /// Useful for safely starting UTF-8 decoding from an arbitrary position in a byte slice.
     #[must_use]
     pub const fn is_utf8_boundary(self, index: usize) -> bool {
-        is![index >= self.0.len(); false; Char(self.0[index]).is_utf8_boundary()]
+        index == self.0.len()
+            || (index < self.0.len() && Char(self.0[index]).is_utf8_boundary())
     }
 }
 
