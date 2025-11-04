@@ -15,5 +15,10 @@ crate::structural_mods! { // _mods
     _mods {
         #[cfg(feature = "dep_log")]
         pub use super::{config::*, ext::*, namespace::*, reexports::*};
+
+        #[doc(inline)]
+        pub use devela_base_core::sys::log::{
+            LoggerStatic, slog,
+        };
     }
 }

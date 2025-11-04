@@ -7,6 +7,7 @@
 
 pub mod arch;
 pub mod env;
+pub mod log;
 pub mod mem;
 pub mod net;
 
@@ -15,6 +16,7 @@ crate::structural_mods! { // _pub_mods
         pub use super::{
             arch::_all::*,
             env::_all::*,
+            log::_all::*,
             mem::_all::*,
             net::_all::*,
         };

@@ -250,6 +250,10 @@ Many feature gates are removed in order to make most features make always availa
 ### env
 - vendor `argv` as `IterArgSOsRef` struct and `Env` method `args_os_ref`.
 
+### log
+- new type `LoggerStatic`.
+- new macro `slog!`.
+
 ### mem
 - move to [base]:
   - macros: `cswap!`, `const_join!`.
