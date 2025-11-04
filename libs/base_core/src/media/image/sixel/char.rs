@@ -224,7 +224,7 @@ impl SixelChar {
     /// # use devela_base_core::SixelChar;
     /// assert_eq![SixelChar::from_bitmask(0b111001).to_string_box(), "■□□■■■"];
     /// ```
-    pub fn to_string_box(&self) -> StringU8<20> {
+    pub const fn to_string_box(&self) -> StringU8<20> {
         let mut string = StringU8::<20>::new();
         let mask = self.as_bitmask();
         let mut i = 0;
@@ -232,7 +232,7 @@ impl SixelChar {
             is![mask & (1 << i) != 0; string.push('■'); string.push('□')];
             i += 1;
         }
-        assert_eq![string.len(), 18];
+        assert![string.len() == 18];
         string
     }
 }
