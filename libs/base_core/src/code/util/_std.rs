@@ -12,8 +12,10 @@ crate::sf! {
     ///
     /// If the first argument is @ then it also feature-gates with the `__dbg` feature.
     macro_rules! __std {
-        (@$($tt:tt)*) => { #[cfg(all(feature = "__std", feature = "__dbg"))] { $($tt)* }};
-        ($($tt:tt)*) => { #[cfg(feature = "__std")] { $($tt)* }};
+        (@$item:item) => { #[cfg(all(feature = "__std", feature = "__dbg"))] $item };
+        (@$($tt:tt)*) => { #[cfg(all(feature = "__std", feature = "__dbg"))] { $($tt)* } };
+        ($item:item) => { #[cfg(feature = "__std")] $item };
+        ($($tt:tt)*) => { #[cfg(feature = "__std")] { $($tt)* } };
     }
     #[allow(unused_imports)] pub(crate) use __std;
 
