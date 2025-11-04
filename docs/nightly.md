@@ -59,6 +59,9 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
 
+- 1.93: `·`[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
+- 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)
+
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
@@ -77,7 +80,6 @@ See also
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
-- 1.??: ` `[fmt::from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
@@ -100,7 +102,6 @@ See also
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
-- 1.??: ` `[-Zjump-tables=](https://github.com/rust-lang/rust/issues/116592)
 
 # … may be stable even later
 

@@ -88,9 +88,14 @@
 #![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature(rwlock_downgrade,))]
 // ----------------------------
 // `nightly_stable_1_93`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_93, feature())]
+#![cfg_attr(nightly_stable_1_93, feature(fmt_from_fn))]
 // #![cfg_attr(all(nightly_stable_1_93, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature())]
+// ----------------------------
+// `nightly_stable_1_94`: core, alloc, std…
+// #![cfg_attr(nightly_stable_1_94, feature())]
+// #![cfg_attr(all(nightly_stable_1_94, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
