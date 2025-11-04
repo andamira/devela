@@ -5,8 +5,60 @@ use crate::Ptr;
 use crate::{Cmp, Slice};
 
 /// # Methods for byte slices.
+// TODO: add index
 #[rustfmt::skip]
 impl Slice<u8> {
+    /// Copies bytes from `src` into `dst` starting at `dst_pos`, up to the remaining capacity.
+    ///
+    /// Returns the number of bytes copied (possibly less than `src.len()` if truncated).
+    ///
+    /// Never panics; truncates safely if `dst_pos >= dst.len()`.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// let mut buf = [0u8; 4];
+    /// assert_eq!(Slice::copy_into(&mut buf, 1, b"abc"), 3);
+    /// assert_eq!(&buf, b"\0abc");
+    /// ```
+    #[must_use]
+    pub const fn copy_into(dst: &mut [u8], dst_pos: usize, src: &[u8]) -> usize {
+        let remaining = dst.len().saturating_sub(dst_pos);
+        let len = if src.len() < remaining { src.len() } else { remaining };
+        let dst = crate::Slice::range_mut(dst, dst_pos, dst_pos + len);
+        let src = crate::Slice::range_to(src, len);
+        dst.copy_from_slice(src);
+        len
+    }
+
+    /// Copies UTF-8 bytes from `src` into `dst` starting at `dst_pos`,
+    /// truncating only at valid UTF-8 character boundaries.
+    ///
+    /// Returns the number of bytes copied (never splits a character).
+    ///
+    /// Never panics; truncates safely if `dst_pos >= dst.len()`.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Slice;
+    /// let mut buf = [0u8; 5];
+    /// assert_eq!(Slice::copy_str_into(&mut buf, 0, "héllo"), 3);
+    /// assert_eq!(&buf[..3], "hé".as_bytes());
+    /// ```
+    #[must_use] #[rustfmt::skip]
+    pub const fn copy_str_into(dst: &mut [u8], dst_pos: usize, src: &str) -> usize {
+        let src_bytes = src.as_bytes();
+        let remaining = dst.len().saturating_sub(dst_pos);
+        if remaining == 0 { return 0; }
+        let mut len = if src_bytes.len() < remaining { src_bytes.len() } else { remaining };
+        // backtrack to nearest valid UTF-8 boundary
+        while len > 0 && !src.is_char_boundary(len) { len -= 1; }
+        let dst = crate::Slice::range_mut(dst, dst_pos, dst_pos + len);
+        let src = crate::Slice::range_to(src_bytes, len);
+        dst.copy_from_slice(src);
+        len
+    }
+
     /* array */
 
     /// Copies the `src` byte array into `dst` in compile-time.

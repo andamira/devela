@@ -264,13 +264,14 @@ Many feature gates are removed in order to make most features make always availa
     - `replace_leading_bytes` to `replace_leading`.
   - add new methods:
     - `range_to_inclusive*`.
+    - `copy_into`, `copy_str_into`.
     - `trim_leading_keep`, `trim_leading_min_len`, `trim_trailing`, `trim_trailing_keep`, `trim_trailing_min_len`, `trim_edges_keep`, `trim_edges_min_len_left`, `trim_edges_min_len_right`.
   - add new `eq` methods for slices of slices of primitives and string slices.
 
 ## os
 ### linux
 - new enum `LinuxClock`.
-- new `Linux` methods: `clock_getres`, `clock_gettime`.
+- new `Linux` methods: `clock_getres`, `clock_gettime`, `exit`.
 - new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
 - fix `Linux`-related warnings & avoid use of `transmute`.
 - rename syscalls doc constants, prefix with `_DOC_`.
