@@ -19,7 +19,6 @@ crate::_doc! { vendor_mod: "etcetera", etcetera}
 crate::_doc! { vendor_mod: "fxhash", fxhash }
 crate::_doc! { vendor_mod: "mini-alloc", mini_alloc }
 crate::_doc! { vendor_mod: "no_std_io", no_std_io }
-crate::_doc! { vendor_mod: "numtoa", numtoa }
 crate::_doc! { vendor_mod: "pollster", pollster }
 crate::_doc! { vendor_mod: "quickdiv", quickdiv }
 crate::_doc! { vendor_mod: "stack_dst", stack_dst }

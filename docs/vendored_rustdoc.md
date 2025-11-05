@@ -23,8 +23,6 @@
   [`WasmAlloc`]: crate::sys::mem::WasmAlloc
   [M_no_std_io]: crate::_info::vendored::no_std_io
   [`io`]: crate::sys::io
-  [M_numtoa]: crate::_info::vendored::numtoa
-  [`NumToStr`]: crate::text::fmt::NumToStr
   [M_pollster]: crate::_info::vendored::pollster
   [`block_on`]: crate::work::future::ExtFuture#method.block_on
   [M_quickdiv]: crate::_info::vendored::quickdiv

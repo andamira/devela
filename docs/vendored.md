@@ -25,8 +25,6 @@ See the linked modifications for detailed changes.
   as the [`WasmAlloc`] struct ([*modifications*][M_mini-alloc]).
 - <i id="no_std_io"></i>[no_std_io]|[core2] by Brendan Molloy,
   as part of the [`sys::io`] module ([*modifications*][M_no_std_io]).
-- <i id="numtoa"></i>[numtoa] by Michael Murphy,
-  as the [`NumToStr`] trait ([*modifications*][M_numtoa]).
 - <i id="pollster"></i>[pollster] by Joshua Barretto,
   as the `ExtFuture::`[`block_on`] method ([*modifications*][M_pollster]).
 - <i id="quickdiv"></i>[quickdiv] by Darko Trifunovski,
@@ -75,9 +73,6 @@ See the linked modifications for detailed changes.
 [core2]: https://crates.io/crates/core2/0.4.0
   [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/_info/vendored/no_std_io.md
   [`sys::io`]: https://andamira.github.io/devela/latest/devela/sys/io/
-[numtoa]: https://crates.io/crates/numtoa/0.2.4
-  [M_numtoa]: https://github.com/andamira/devela/blob/main/src/_info/vendored/numtoa.md
-  [`NumToStr`]: https://andamira.github.io/devela/latest/devela/text/fmt/trait.NumToStr.html
 [pollster]: https://crates.io/crates/pollster/0.3.0
   [M_pollster]: https://github.com/andamira/devela/blob/main/src/_info/vendored/pollster.md
   [`block_on`]: https://andamira.github.io/devela/latest/devela/work/future/trait.ExtFuture.html#method.block_on

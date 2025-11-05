@@ -355,6 +355,7 @@ Many feature gates are removed in order to make most features make always availa
 - new types: `FmtNum`, `FmtWriter`.
 - move to [base]:
   - macros: `format_buf!`.
+- remove vendored `numtoa` crate, `NumToStr` trait replaced with `Digits` struct.
 
 ### grapheme
 - new types: `GraphemeKind`, `GraphemeScanner`.

@@ -7,7 +7,6 @@
 mod buf; // FmtWriter, format_buf!
 mod cat; // fmtcat!
 mod num; // FmtNum
-mod num_to_str; // NumToStr
 mod reexports;
 
 crate::structural_mods! { // _mods
@@ -16,7 +15,6 @@ crate::structural_mods! { // _mods
             buf::*,
             cat::*,
             num::*,
-            num_to_str::*,
             reexports::*,
         };
     }

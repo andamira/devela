@@ -274,11 +274,8 @@ impl Str {
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
 
-            let mut num_buf = Digits(num).digits10();
+            let mut num_buf = Digits(num).digits10(); // IMPROVE
             let mut num_bytes = Slice::trim_leading(&num_buf, b'0');
-            // IMPROVE:BENCH use NumToStr
-            // let mut num_buf = [0u8; 22];
-            // let mut num_bytes = num.to_bytes_base(10, &mut num_buf);
 
             let mut num_len = num_bytes.len();
 
@@ -290,11 +287,8 @@ impl Str {
                     slice![mut buffer, index, ..num_len + index]
                         .copy_from_slice(slice![num_bytes, ..num_len]);
                     num = index;
-                    num_buf = Digits(num).digits10();
+                    num_buf = Digits(num).digits10(); // IMPROVE
                     num_bytes = Slice::trim_leading(&num_buf, b'0');
-                    // IMPROVE: use NumToStr
-                    // num_bytes = num.to_bytes_base(10, &mut num_buf);
-
                     num_len = num_bytes.len();
                 }
                 is![index == 0; break; index -= 1];

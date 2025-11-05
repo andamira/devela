@@ -4,7 +4,6 @@
 //
 // WAIT: [str_as_str](https://github.com/rust-lang/rust/issues/130366)
 // WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
-// IMPROVE: use `NumToStr`
 
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
@@ -136,11 +135,8 @@ impl ExtStr for str {
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
 
-            let mut num_buf = Digits(num).digits10();
+            let mut num_buf = Digits(num).digits10(); // IMPROVE
             let mut num_bytes = Slice::trim_leading(&num_buf, b'0');
-            // IMPROVE:BENCH use NumToStr
-            // let mut num_buf = [0u8; 22];
-            // let mut num_bytes = num.to_bytes_base(10, &mut num_buf);
 
             let mut num_len = num_bytes.len();
 
@@ -153,10 +149,8 @@ impl ExtStr for str {
 
                     num = index;
 
-                    num_buf = Digits(num).digits10();
+                    num_buf = Digits(num).digits10(); // IMPROVE
                     num_bytes = Slice::trim_leading(&num_buf, b'0');
-                    // IMPROVE: use NumToStr
-                    // num_bytes = num.to_bytes_base(10, &mut num_buf);
 
                     num_len = num_bytes.len();
                 }

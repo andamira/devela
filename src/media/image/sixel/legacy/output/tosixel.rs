@@ -7,7 +7,7 @@ use super::super::{
     LegacySixelQuality, SIXEL_PALETTE_MAX,
 };
 use super::{LegacySixelNode, LegacySixelOutput};
-use crate::{IoWrite, LegacySixelError, LegacySixelResult, NumToStr, Vec, is, sf, vec_ as vec};
+use crate::{FmtNum, IoWrite, LegacySixelError, LegacySixelResult, Vec, is, sf, vec_ as vec};
 
 impl<W: IoWrite> LegacySixelOutput<W> {
     /* GNU Screen penetration */
@@ -63,23 +63,17 @@ impl<W: IoWrite> LegacySixelOutput<W> {
     }
 
     /// Writes an integer value to the output as a string.
-    ///
-    /// # Features
-    /// Uses the `fmt` feature to use [`NumToStr`][crate::NumToStr]
     pub(crate) fn puti(&mut self, i: i32) {
         let mut buf = [0u8; 11];
-        self.puts(i.to_str_base(10, &mut buf));
+        self.puts(FmtNum(i).as_str_into(&mut buf));
     }
 
-    /// Writes a byte value to the output as a string.
-    ///
-    /// # Features
-    /// Uses the `fmt` feature to use [`NumToStr`][crate::NumToStr]
-    #[expect(unused, reason = "…")]
-    pub(crate) fn putb(&mut self, b: u8) {
-        let mut buf = [0u8; 3];
-        self.puts(b.to_str_base(10, &mut buf));
-    }
+    // /// Writes a byte value to the output as a string.
+    // #[expect(unused, reason = "…")]
+    // pub(crate) fn putb(&mut self, b: u8) {
+    //     let mut buf = [0u8; 3];
+    //     self.puts(b.to_str_base(10, &mut buf));
+    // }
 
     /// Returns the saved pixel as a character.
     #[rustfmt::skip]
