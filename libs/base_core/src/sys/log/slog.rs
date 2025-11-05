@@ -2,8 +2,24 @@
 //
 //! Defines [`LoggerStatic`] and [`slog`].
 //
+// TOC
+// - macro guard! (private)
+// - struct LoggerStatic
+// - macro slog!
 
 use crate::{Slice, Str, is, lets, unwrap, whilst};
+
+/// Internal helper to set the re-entrancy guard with a custom panic message.
+///
+/// Provides `enter` and `leave` arms for setting and clearing the guard.
+///
+/// # Panics
+/// Panics on `enter` if the logger is already in use,
+/// reporting the calling method's name in the message.
+macro_rules! guard {
+    ($self:ident enter $msg:literal) => { is![$self.guard != 0; panic!($msg)]; $self.guard = 1; };
+    ($self:ident leave) => { $self.guard = 0; };
+}
 
 /// Fixed-capacity static logger with owned byte buffers.
 ///
@@ -11,12 +27,20 @@ use crate::{Slice, Str, is, lets, unwrap, whilst};
 /// stored messages — and each message’s maximum length (`MSG_LEN`).
 ///
 /// Use the [`slog!`] macro to define, log, clear, or iterate its messages.
+///
+/// # Safety
+/// Employs a single-byte, non-atomic guard as a const-safe soft check against
+/// re-entrant or concurrent access. While not providing full thread safety,
+/// it can detect most accidental overlaps in single-threaded or unsynchronized
+/// contexts, serving as a last-resort diagnostic aid under the assumption of
+/// disciplined single-threaded use.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct LoggerStatic<const CAP: usize, const MSG_LEN: usize> {
     buf: [[u8; MSG_LEN]; CAP],
     lens: [usize; CAP],
     leftover: [usize; CAP], // 0 = no truncation
     len: usize,
+    guard: i8, // 0 = free, 1 = in use
 }
 
 impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
@@ -28,18 +52,22 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
             lens: [0; CAP],
             leftover: [0; CAP],
             len: 0,
+            guard: 0,
         }
     }
 
     /// Clears all the stored messages.
     #[inline(always)]
     pub const fn clear(&mut self) {
+        guard![self enter "LoggerStatic::clear()"];
         self.len = 0;
+        guard![self leave];
     }
 
     /// Logs bytes from `msg`, truncating if longer than `MSG_LEN`.
     #[inline(always)]
     pub const fn log_bytes(&mut self, msg: &[u8]) {
+        guard![self enter "LoggerStatic::log_bytes()"];
         if self.len < CAP {
             let written = Slice::copy_utf8_into(&mut self.buf[self.len], 0, msg);
             let remaining = msg.len().saturating_sub(written);
@@ -47,6 +75,16 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
             self.leftover[self.len] = remaining;
             self.len += 1;
         }
+        guard![self leave];
+    }
+
+    /// Whether the logger is full.
+    #[inline(always)]
+    pub const fn is_full(&mut self) -> bool {
+        guard![self enter "LoggerStatic::is_full()"];
+        let full = self.len == CAP;
+        guard![self leave];
+        full
     }
 
     /// Runs the provided closure for each message.
@@ -58,7 +96,8 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     ///
     /// # Features
     /// Uses the `unsafe_str` feature to skip duplicated validation checks.
-    pub fn for_each<F: FnMut(usize, &str, usize)>(&self, mut f: F) {
+    pub fn for_each<F: FnMut(usize, &str, usize)>(&mut self, mut f: F) {
+        guard![self enter "LoggerStatic::log_bytes()"];
         for (i, msg) in self.buf[..self.len].iter().enumerate() {
             let len = self.lens[i];
             let leftover = self.leftover[i];
@@ -71,21 +110,26 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 
             f(i, s, leftover);
         }
+        guard![self leave];
     }
 
     /// Returns `true` if any logged message was truncated.
     #[must_use]
     #[inline(always)]
-    pub const fn any_truncated(&self) -> bool {
+    pub const fn any_truncated(&mut self) -> bool {
+        guard![self enter "LoggerStatic::any_truncated()"];
         whilst! { i in 0..self.len; {
-            is![self.leftover[i] > 0; return true];
+            is![self.leftover[i] > 0; { guard![self leave]; return true; }];
+
         }}
+        guard![self leave];
         false
     }
 
     /// Returns `(count, total_lost_bytes)` for truncated messages.
     #[must_use]
-    pub const fn truncation_stats(&self) -> (usize, usize) {
+    pub const fn truncation_stats(&mut self) -> (usize, usize) {
+        guard![self enter "LoggerStatic::truncation_stats()"];
         lets![mut count = 0,  mut total = 0, mut i = 0];
         while i < self.len {
             let lost = self.leftover[i];
@@ -95,6 +139,7 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
             }
             i += 1;
         }
+        guard![self leave];
         (count, total)
     }
 
@@ -137,7 +182,7 @@ macro_rules! slog {
         #[inline(always)]
         pub const fn [<logger_ $CAP _ $LEN _static_ref>]()
             -> &'static mut $crate::LoggerStatic<$CAP, $LEN> {
-            #[allow(static_mut_refs)]
+            #[allow(static_mut_refs, reason = "accessing the single-thread static logger instance")]
             // SAFETY: user upholds single-threaded access to this static instance.
             unsafe { &mut [<LOGGER $CAP _ $LEN>] }
         }
@@ -155,6 +200,10 @@ macro_rules! slog {
         let slice = $crate::Slice::range_to(&buf, pos);
         $crate::slog!(@get $CAP + $LEN).log_bytes(slice);
     }};
+    ( // Returns true if the logger is full.
+    is_full $CAP:literal + $LEN:literal) => {
+        $crate::slog!(@get $CAP + $LEN).is_full();
+    };
     ( // Run a closure for each log message.
     for_each $CAP:literal + $LEN:literal $closure:expr) => {
         $crate::slog!(@get $CAP + $LEN).for_each($closure);
