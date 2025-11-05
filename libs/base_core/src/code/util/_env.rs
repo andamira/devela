@@ -1,0 +1,34 @@
+// devela_base_core::code::util::_env
+//
+//! Defines private helpers related to the environment.
+//
+// TOC
+// - __dbg!
+// - __std!
+// - _std_core!
+
+crate::sf! {
+    /// Feature-gates all the arguments with the `__dbg` feature.
+    ///
+    /// If the first argument is @ then it also feature-gates with the `__dbg` feature.
+    macro_rules! __dbg {
+        ($item:item) => { #[cfg(feature = "__dbg")] $item };
+        ($($tt:tt)*) => { #[cfg(feature = "__dbg")] { $($tt)* } };
+    }
+    #[allow(unused_imports)] pub(crate) use __dbg;
+
+    /// Feature-gates all the arguments with the `__std` feature.
+    ///
+    /// If the first argument is `#` then it also feature-gates with `__dbg`.
+    macro_rules! __std {
+        (# $item:item) => { #[cfg(all(feature = "__std", feature = "__dbg"))] $item };
+        (# $($tt:tt)*) => { #[cfg(all(feature = "__std", feature = "__dbg"))] { $($tt)* } };
+        ($item:item) => { #[cfg(feature = "__std")] $item };
+        ($($tt:tt)*) => { #[cfg(feature = "__std")] { $($tt)* } };
+    }
+    #[allow(unused_imports)] pub(crate) use __std;
+
+    /// Should return the string literal "std" if `std` is enabled, or "core" otherwise.
+    macro_rules! _std_core { () => { "core" }; }
+    #[allow(unused_imports)] pub(crate) use _std_core;
+}
