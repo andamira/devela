@@ -10,6 +10,7 @@ crate::CONST! { hidden macro_export,
     _EMOJI_ATOMIC = "⚛️"; // ⚛️, 🔬, 🌐
     _EMOJI_CODEC = "🥡"; // 🥡, 🔏, ⇄, (takeout-box)
     _EMOJI_CONCURRENCY = "🧵"; // 🧵, 🪡, (thread, needle)
+    _EMOJI_DEBUG = "🐛"; // 🐛,
     _EMOJI_DATA = "🪪"; // 🪪, 🗂️, 🧩, (id-card)
     _EMOJI_DATA_STRUCTURE = "🗃️"; // 📇,🗃️,📦,🧩,🗂️,
     _EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
@@ -43,14 +44,16 @@ crate::CONST! { hidden macro_export,
         $crate::_EMOJI_ALLOCATOR!(), "</span>");
     _TAG_ATOMIC = concat!($crate::SPAN_OPEN!(), "'Atomic-related item'>",
         $crate::_EMOJI_ATOMIC!(), "</span>");
-    _TAG_CODEC = concat!($crate::SPAN_OPEN!(), "'Codec-related-related item'>",
+    _TAG_CODEC = concat!($crate::SPAN_OPEN!(), "'Codec-related item'>",
         $crate::_EMOJI_CODEC!(), "</span>");
-    _TAG_CONCURRENCY = concat!($crate::SPAN_OPEN!(), "'Concurrency-related-related item'>",
+    _TAG_CONCURRENCY = concat!($crate::SPAN_OPEN!(), "'Concurrency-related item'>",
         $crate::_EMOJI_CONCURRENCY!(), "</span>");
     _TAG_DATA = concat!($crate::SPAN_OPEN!(), "'Data-related item'>",
         $crate::_EMOJI_DATA!(), "</span>");
     _TAG_DATA_STRUCTURE = concat!($crate::SPAN_OPEN!(), "'Data-structure (collection)'>",
         $crate::_EMOJI_DATA_STRUCTURE!(), "</span>");
+    _TAG_DEBUG = concat!($crate::SPAN_OPEN!(), "'Debug-related item'>",
+        $crate::_EMOJI_DEBUG!(), "</span>");
     _TAG_ERROR = concat!($crate::SPAN_OPEN!(), "'Individual error type'>",
         $crate::_EMOJI_ERROR!(), "</span>");
     _TAG_ERROR_COMPOSITE = concat!($crate::SPAN_OPEN!(), "'Composite error type'>",

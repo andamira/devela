@@ -7,7 +7,7 @@
 // - struct LoggerStatic
 // - macro slog!
 
-use crate::{Slice, Str, is, lets, unwrap, whilst};
+use crate::{Slice, Str, is, lets, whilst};
 
 /// Internal helper to set the re-entrancy guard with a custom panic message.
 ///
@@ -23,8 +23,8 @@ macro_rules! guard {
 
 /// Fixed-capacity static logger with owned byte buffers.
 ///
-/// Each logger is identified by its capacity (`CAP`) — the number of
-/// stored messages — and each message’s maximum length (`MSG_LEN`).
+/// Each logger is identified by its capacity (`CAP`) as the number of stored messages,
+/// and each message’s maximum length (`MSG_LEN`).
 ///
 /// Use the [`slog!`] macro to define, log, clear, or iterate its messages.
 ///
@@ -64,8 +64,26 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
         guard![self leave];
     }
 
-    /// Logs bytes from `msg`, truncating if longer than `MSG_LEN`.
+    /// Returns the number of logged messages.
     #[inline(always)]
+    pub const fn count(&mut self) -> usize {
+        guard![self enter "LoggerStatic::len()"];
+        let len = self.len;
+        guard![self leave];
+        len
+    }
+
+    /// Whether the logger is full.
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_full(&mut self) -> bool {
+        guard![self enter "LoggerStatic::is_full()"];
+        let full = self.len == CAP;
+        guard![self leave];
+        full
+    }
+
+    /// Logs bytes from `msg`, truncating if longer than `MSG_LEN`.
     pub const fn log_bytes(&mut self, msg: &[u8]) {
         guard![self enter "LoggerStatic::log_bytes()"];
         if self.len < CAP {
@@ -78,16 +96,30 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
         guard![self leave];
     }
 
-    /// Whether the logger is full.
-    #[inline(always)]
-    pub const fn is_full(&mut self) -> bool {
-        guard![self enter "LoggerStatic::is_full()"];
-        let full = self.len == CAP;
+    /// Returns the message and truncation count at index `i`, or `None` if out of bounds.
+    ///
+    /// # Features
+    /// Uses the `unsafe_str` feature to skip duplicated UTF-8 validation.
+    #[must_use]
+    pub const fn get(&mut self, i: usize) -> Option<(&str, usize)> {
+        guard![self enter "LoggerStatic::get()"];
+        is! { i >= self.len; { guard![self leave]; return None; }}
+
+        let len = self.lens[i];
+        let leftover = self.leftover[i];
+        let msg = Slice::range_to(&self.buf[i], len);
+
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        let s = crate::unwrap![ok Str::from_utf8(msg)];
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        // SAFETY: we ensure to always contain valid UTF-8
+        let s = unsafe { Str::from_utf8_unchecked(msg) };
+
         guard![self leave];
-        full
+        Some((s, leftover))
     }
 
-    /// Runs the provided closure for each message.
+    /// Runs the provided closure for each message in run-time.
     ///
     /// The closure receives:
     /// - `i`: index of the message
@@ -103,7 +135,7 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
             let leftover = self.leftover[i];
 
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-            let s = unwrap![ok Str::from_utf8(&msg[..len])];
+            let s = crate::unwrap![ok Str::from_utf8(&msg[..len])];
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             // SAFETY: we ensure to always contain valid UTF-8
             let s = unsafe { Str::from_utf8_unchecked(&msg[..len]) };
@@ -115,12 +147,10 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 
     /// Returns `true` if any logged message was truncated.
     #[must_use]
-    #[inline(always)]
     pub const fn any_truncated(&mut self) -> bool {
         guard![self enter "LoggerStatic::any_truncated()"];
         whilst! { i in 0..self.len; {
             is![self.leftover[i] > 0; { guard![self leave]; return true; }];
-
         }}
         guard![self leave];
         false
@@ -130,21 +160,34 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     #[must_use]
     pub const fn truncation_stats(&mut self) -> (usize, usize) {
         guard![self enter "LoggerStatic::truncation_stats()"];
-        lets![mut count = 0,  mut total = 0, mut i = 0];
-        while i < self.len {
+        lets![mut count = 0,  mut total = 0];
+        whilst! { i in 0..self.len; {
             let lost = self.leftover[i];
-            if lost > 0 {
-                count += 1;
-                total += lost;
-            }
-            i += 1;
-        }
+            is! { lost > 0; { count += 1; total += lost; }}
+        }}
         guard![self leave];
         (count, total)
     }
 }
 
 /// Static global logger macro, compile-time friendly.
+///
+/// Defines and operates on [`LoggerStatic`] instances for fixed-capacity logging.
+/// Each logger is identified by its `(CAP, MSG_LEN)` pair and may optionally have
+/// an extra identifier for multiple independent instances.
+///
+/// A `new` static logger can be given custom attributes and visibility.
+///
+/// See `LoggerStatic` for details on storage, safety, and const behavior.
+///
+/// # Overview
+/// - `slog!([vis] new [id:]CAP+LEN)` — define a static logger.
+/// - `slog!([id:]CAP+LEN "...")` — log a formatted message.
+/// - `slog!(clear [id:]CAP+LEN)` — clear all messages.
+/// - `slog!(get [id:]CAP+LEN, idx)` — get some message at idx.
+/// - `slog!(for_each [id:]CAP+LEN |idx, msg, trunc| { ... })` — iterate logged messages.
+/// - `slog!(any_truncated [id:]CAP+LEN)` — check if any message was truncated.
+/// - `slog!(truncation_stats [id:]CAP+LEN)` — return truncation count and total lost bytes.
 ///
 /// # Example
 /// ```
@@ -153,39 +196,61 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 /// slog!(4+32 "init ok");
 /// slog!(4+32 "processing step ", %2u8, ".");
 /// # #[cfg(feature = "__std")]
-/// slog!(for_each 4+32 |i, s, _s| println!("[{i}] {s}"));
+/// slog!(for_each 4+32 |idx, msg, _trunc| println!("[{idx}] {msg}"));
 /// slog!(clear 4+32);
 ///
-/// // Supports an extra identifier
-/// slog!(new id0:4+32);
-/// slog!(id0:4+32 "hello world");
-/// slog!(clear id0:4+32);
+/// // with an extra identifier
+/// slog!(#[doc(hidden)] pub new log1:4+32); // with custom attributes & visibility
+/// slog!(log1:4+32 "hello world");
+/// assert_eq![slog!(get log1:4+32, 0), Some(("hello world", 0))];
+/// slog!(clear log1:4+32);
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! slog {
     ( // Define a static logger.
-    new $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
-        #[doc(hidden)]
+    $(#[$attrs:meta])*
+    $vis:vis new $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
+        $(#[$attrs])*
+        // #[doc = "A single-thread global static logger `" $($id ":" )? $CAP "+" $LEN "`."]
+        ///
+        /// Query it with the [`slog!`] macro.
+        /// ```
+        /// # use devela_base_core::*;
+        /// # #[cfg(feature = "__std")]
+        #[doc = "slog![for_each " $($id ":" )? $CAP "+" $LEN " |i, s, _| println!(\"[{i}] {s}\")];"]
+        /// ```
+        // #[doc = "See also the fn `" [<__logger_ $($id _)? $CAP _ $LEN>] "()`."]
         #[allow(non_upper_case_globals, reason = "case-sensitive $id")]
-        pub static mut [<LOGGER_ $($id _)? $CAP _ $LEN>]: $crate::LoggerStatic<$CAP, $LEN>
+        $vis static mut [<__LOGGER_ $($id _)? $CAP _ $LEN>]: $crate::LoggerStatic<$CAP, $LEN>
             = $crate::LoggerStatic::new();
 
-        /// Returns a mutable reference to the global static logger instance.
+        #[doc(hidden)] // the unsafe accessor is always hidden
+        $(#[$attrs])*
+        #[doc = "Returns a mutable reference to the global static [`" [<__LOGGER_ $($id _)? $CAP _ $LEN>] "`]."]
         ///
         /// # Safety
         /// The caller must ensure single-threaded discipline when mutating the returned reference.
         #[inline(always)]
-        pub const fn [<logger_ $($id _)? $CAP _ $LEN _static_ref>]()
+        $vis const unsafe fn [<__logger_ $($id _)? $CAP _ $LEN>]()
             -> &'static mut $crate::LoggerStatic<$CAP, $LEN> {
             #[allow(static_mut_refs, reason = "accessing the single-thread static logger instance")]
             // SAFETY: user upholds single-threaded access to this static instance.
-            unsafe { &mut [<LOGGER_ $($id _)? $CAP _ $LEN>] }
+            unsafe { &mut [<__LOGGER_ $($id _)? $CAP _ $LEN>] }
         }
     }};
 
     ( // Clear all logs.
     clear $($id:ident :)? $CAP:literal + $LEN:literal) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).clear();
+    };
+    ( // Returns the number of messages.
+    count $($id:ident :)? $CAP:literal + $LEN:literal) => {
+        $crate::slog!(@get $($id:)? $CAP + $LEN).count();
+    };
+    ( // Returns true if the logger is full.
+    is_full $($id:ident :)? $CAP:literal + $LEN:literal) => {
+        $crate::slog!(@get $($id:)? $CAP + $LEN).is_full();
     };
     ( // Log message with formatted arguments.
     $($id:ident :)? $CAP:literal + $LEN:literal $($fmt:tt)+) => {{
@@ -195,9 +260,9 @@ macro_rules! slog {
         let slice = $crate::Slice::range_to(&buf, pos);
         $crate::slog!(@get $($id:)? $CAP + $LEN).log_bytes(slice);
     }};
-    ( // Returns true if the logger is full.
-    is_full $($id:ident :)? $CAP:literal + $LEN:literal) => {
-        $crate::slog!(@get $($id:)? $CAP + $LEN).is_full();
+    ( // Retrieve a specific message by index.
+    get $($id:ident :)? $CAP:literal + $LEN:literal, $index:expr) => {
+        $crate::slog!(@get $($id :)? $CAP + $LEN).get($index)
     };
     ( // Run a closure for each log message.
     for_each $($id:ident :)? $CAP:literal + $LEN:literal $closure:expr) => {
@@ -211,9 +276,14 @@ macro_rules! slog {
     truncation_stats $($id:ident :)? $CAP:literal + $LEN:literal) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).truncation_stats();
     };
+    ( // Returns the name of the global static logger as a string slice.
+    static_name $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
+        stringify! { [<__LOGGER_ $($id _)? $CAP _ $LEN>] }
+    }};
     // inner helper to get the global static reference
     (@get $($id:ident :)? $CAP:literal + $LEN:literal) => {{
-        $crate::paste! { [<logger_ $($id _)? $CAP _ $LEN _static_ref>]() }
+        $crate::paste! { unsafe { [<__logger_ $($id _)? $CAP _ $LEN>]() } }
     }};
 }
+#[doc(inline)]
 pub use slog;
