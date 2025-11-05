@@ -142,17 +142,6 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
         guard![self leave];
         (count, total)
     }
-
-    // MAYBE
-    // /// Prints all messages (runtime & std only).
-    // ///
-    // /// # Features
-    // /// - Needs the `__std` feature to actually print.
-    // /// - Uses the `unsafe_str` feature to skip duplicated validation checks.
-    // #[allow(unused_variables, reason = "__std feature-gate")]
-    // pub fn print(&self, name: &str) {
-    //     self.for_each(|i, s| { crate::__std! { println!("{name}[{i}]: {s}");} } );
-    // }
 }
 
 /// Static global logger macro, compile-time friendly.
@@ -166,13 +155,19 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 /// # #[cfg(feature = "__std")]
 /// slog!(for_each 4+32 |i, s, _s| println!("[{i}] {s}"));
 /// slog!(clear 4+32);
+///
+/// // Supports an extra identifier
+/// slog!(new id0:4+32);
+/// slog!(id0:4+32 "hello world");
+/// slog!(clear id0:4+32);
 /// ```
 #[macro_export]
 macro_rules! slog {
     ( // Define a static logger.
-    new $CAP:literal + $LEN:literal) => { $crate::paste! {
+    new $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
         #[doc(hidden)]
-        pub static mut [<LOGGER $CAP _ $LEN>]: $crate::LoggerStatic<$CAP, $LEN>
+        #[allow(non_upper_case_globals, reason = "case-sensitive $id")]
+        pub static mut [<LOGGER_ $($id _)? $CAP _ $LEN>]: $crate::LoggerStatic<$CAP, $LEN>
             = $crate::LoggerStatic::new();
 
         /// Returns a mutable reference to the global static logger instance.
@@ -180,51 +175,45 @@ macro_rules! slog {
         /// # Safety
         /// The caller must ensure single-threaded discipline when mutating the returned reference.
         #[inline(always)]
-        pub const fn [<logger_ $CAP _ $LEN _static_ref>]()
+        pub const fn [<logger_ $($id _)? $CAP _ $LEN _static_ref>]()
             -> &'static mut $crate::LoggerStatic<$CAP, $LEN> {
             #[allow(static_mut_refs, reason = "accessing the single-thread static logger instance")]
             // SAFETY: user upholds single-threaded access to this static instance.
-            unsafe { &mut [<LOGGER $CAP _ $LEN>] }
+            unsafe { &mut [<LOGGER_ $($id _)? $CAP _ $LEN>] }
         }
     }};
 
     ( // Clear all logs.
-    clear $CAP:literal + $LEN:literal) => {
-        $crate::slog!(@get $CAP + $LEN).clear();
+    clear $($id:ident :)? $CAP:literal + $LEN:literal) => {
+        $crate::slog!(@get $($id:)? $CAP + $LEN).clear();
     };
     ( // Log message with formatted arguments.
-    $CAP:literal + $LEN:literal $($fmt:tt)+) => {{
+    $($id:ident :)? $CAP:literal + $LEN:literal $($fmt:tt)+) => {{
         let mut buf = [0u8; $LEN];
         let mut pos = 0;
         $crate::fmtcat!(buf, pos, $($fmt)+);
         let slice = $crate::Slice::range_to(&buf, pos);
-        $crate::slog!(@get $CAP + $LEN).log_bytes(slice);
+        $crate::slog!(@get $($id:)? $CAP + $LEN).log_bytes(slice);
     }};
     ( // Returns true if the logger is full.
-    is_full $CAP:literal + $LEN:literal) => {
-        $crate::slog!(@get $CAP + $LEN).is_full();
+    is_full $($id:ident :)? $CAP:literal + $LEN:literal) => {
+        $crate::slog!(@get $($id:)? $CAP + $LEN).is_full();
     };
     ( // Run a closure for each log message.
-    for_each $CAP:literal + $LEN:literal $closure:expr) => {
-        $crate::slog!(@get $CAP + $LEN).for_each($closure);
+    for_each $($id:ident :)? $CAP:literal + $LEN:literal $closure:expr) => {
+        $crate::slog!(@get $($id:)? $CAP + $LEN).for_each($closure);
     };
     ( // Returns true if any message was truncated.
-    any_truncated $CAP:literal + $LEN:literal) => {
-        $crate::slog!(@get $CAP + $LEN).any_truncated();
+    any_truncated $($id:ident :)? $CAP:literal + $LEN:literal) => {
+        $crate::slog!(@get $($id:)? $CAP + $LEN).any_truncated();
     };
     ( // Returns `(count, total_lost_bytes)` for truncated messages.
-    truncation_stats $CAP:literal + $LEN:literal) => {
-        $crate::slog!(@get $CAP + $LEN).truncation_stats();
+    truncation_stats $($id:ident :)? $CAP:literal + $LEN:literal) => {
+        $crate::slog!(@get $($id:)? $CAP + $LEN).truncation_stats();
     };
-    // MAYBE
-    // ( // Print logs.
-    // static print $CAP:literal + $LEN:literal $name:literal) => {
-    //     $crate::LoggerStatic::<$CAP, $LEN>::global().print($name);
-    // };
-
     // inner helper to get the global static reference
-    (@get $CAP:literal + $LEN:literal) => {{
-        $crate::paste! { [<logger_ $CAP _ $LEN _static_ref>]() }
+    (@get $($id:ident :)? $CAP:literal + $LEN:literal) => {{
+        $crate::paste! { [<logger_ $($id _)? $CAP _ $LEN _static_ref>]() }
     }};
 }
 pub use slog;
