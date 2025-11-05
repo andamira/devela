@@ -3,19 +3,33 @@
 //! Defines [`SixelEncoder`].
 //
 
-// use crate::__std;
+#[allow(unused, reason = "__dbg")]
+use crate::{__dbg, slog};
 use crate::{
     Cmp, Digits, NotEnoughSpace, SixelChar, SixelColor, SixelPalette, is, lets, slice, unwrap,
     write_at,
 };
 
 /// Encoder for Sixel graphics with fixed buffer output
+///
+/// # Features
+/// Enabling the `__dbg` feature defines the [`
+#[doc = slog!(static_name sixel_encoder:64+64)]
+/// `] static logger for diagnostic output.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct SixelEncoder<const MAX_COLORS: usize> {
     width: usize,
     height: usize,
     palette: SixelPalette<MAX_COLORS>,
 }
+
+__dbg! { slog! {
+    // #[doc(hidden)]
+    #[doc = crate::_TAG_DEBUG!()]
+    /// Static debug logger for [`SixelEncoder`].
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "__dbg")))]
+    pub new sixel_encoder:64+64
+}}
 
 /// Methods
 /// - new
@@ -47,6 +61,8 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     #[rustfmt::skip]
     pub const fn encode_rgb(&mut self, rgb: &[u8], width: usize, height: usize, buf: &mut [u8])
         -> Result<usize, NotEnoughSpace> {
+        __dbg![slog!{clear sixel_encoder:64+64}]; // slog point of entry
+
         let mut off = 0;
         off += unwrap![ok? Self::write_sixel_start_simple(&mut slice![mut buf, off,..])];
 
@@ -60,14 +76,15 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
         let mut band_y = 0;
         while band_y < height {
             let band_height = Cmp(height - band_y).min(6);
-            // __std![@println!("Processing band at row {} (height: {})", band_y, band_height)];
+            __dbg![slog!{sixel_encoder:64+64
+                "Processing band at row ", %band_y, " (height: ", %band_height, ")"}];
 
             // for each color, render with RLE compression
             let mut iter = self.palette.defined_colors();
             while let Some((idx, palette_color)) = iter.next() {
                 is![idx == 0; continue]; // Skip background
 
-                // __std![@println!("  Rendering color #{} in band", idx)];
+                __dbg![slog!{sixel_encoder:64+64 "  Rendering color #", %idx, " in band."}];
                 off += unwrap![ok? Self::write_color_reference(&mut slice![mut buf, off,..], idx)];
 
                 // build and compress sixel pattern for this color
@@ -122,13 +139,52 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
 /* helpers */
 
 // Methods
+// - build_palette
+// - build_sixel_bits_for_color
+//
+// IMPROVE: decouple from rgb buffer
+impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
+    #[rustfmt::skip]
+    /// Builds the palette from the given rgb byte buffer.
+    const fn build_palette(&mut self, rgb: &[u8], w: usize, h: usize) -> Result<(), NotEnoughSpace> {
+        self.palette = SixelPalette::new();
+        unwrap![ok? self.palette.add_color(SixelColor::BLACK)];
+        lets![mut i = 0, total_pixels = w * h];
+        while i < total_pixels {
+            // is![self.palette.is_full(); break]; // early termination MAYBE for another version
+            let idx = i * 3;
+            let color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
+            is![!color.is_black(); { let _ = self.palette.find_or_add(color); }];
+            i += 1;
+        }
+        Ok(())
+    }
+
+    #[rustfmt::skip]
+    /// Build sixel bits for a specific color in a column.
+    const fn build_sixel_bits_for_color(&self, rgb: &[u8], width: usize, _height: usize,
+        x: usize, band_y: usize, band_height: usize, target_color: SixelColor) -> u8 {
+        lets![mut dy = 0, mut sixel_bits = 0u8];
+        while dy < band_height {
+            let y = band_y + dy;
+            let idx = (y * width + x) * 3;
+            // only process if within bounds
+            if idx + 2 < rgb.len() {
+                let pixel_color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
+                is![pixel_color.is_similar_to(target_color); sixel_bits |= 1 << dy];
+            }
+            dy += 1;
+        }
+        sixel_bits
+    }
+}
+
+// Methods
 // - write_sixel_start
 // - write_sixel_start_simple
 // - write_sixel_end
 // - write_color_reference
 // - write_rle_run
-// - build_palette
-// - build_sixel_bits_for_color
 impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     /// Write sixel sequence start with full raster attributes.
     ///
@@ -201,10 +257,11 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             write_at![buffer, off, b'!'];
             off += digits.write_digits10(buffer, 1);
             write_at![buffer, off, sc.as_byte()];
-            // __std![@println!("  RLE: !{}{} (saved {} bytes)",
-            //     count, sc.to_string_ansi(), count - (2 + dcount))];
+            __dbg![slog! {sixel_encoder:64+64 "  RLE: !", %count, ":", @sc.to_string_box(),
+            " (saved ", %count-(2+dcount), " bytes)"}];
         } else {
-            // __std![@println!("  NO RLE: {} times {}", count, sc.to_string_ansi())];
+            __dbg![slog! {sixel_encoder:64+64
+            "  NO RLE: ", %count, " times ", @sc.to_string_box()}];
             let mut _n = 0;
             while _n < count {
                 is![off >= buffer.len(); return Err(NotEnoughSpace(Some(buffer.len())))];
@@ -213,40 +270,5 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             }
         }
         Ok(off)
-    }
-
-
-    #[rustfmt::skip]
-    /// Builds the palette from the given rgb byte buffer.
-    const fn build_palette(&mut self, rgb: &[u8], w: usize, h: usize) -> Result<(), NotEnoughSpace> {
-        self.palette = SixelPalette::new();
-        unwrap![ok? self.palette.add_color(SixelColor::BLACK)];
-        lets![mut i = 0, total_pixels = w * h];
-        while i < total_pixels {
-            // is![self.palette.is_full(); break]; // early termination MAYBE for another version
-            let idx = i * 3;
-            let color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
-            is![!color.is_black(); { let _ = self.palette.find_or_add(color); }];
-            i += 1;
-        }
-        Ok(())
-    }
-
-    #[rustfmt::skip]
-    /// Build sixel bits for a specific color in a column.
-    const fn build_sixel_bits_for_color(&self, rgb: &[u8], width: usize, _height: usize,
-        x: usize, band_y: usize, band_height: usize, target_color: SixelColor) -> u8 {
-        lets![mut dy = 0, mut sixel_bits = 0u8];
-        while dy < band_height {
-            let y = band_y + dy;
-            let idx = (y * width + x) * 3;
-            // only process if within bounds
-            if idx + 2 < rgb.len() {
-                let pixel_color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
-                is![pixel_color.is_similar_to(target_color); sixel_bits |= 1 << dy];
-            }
-            dy += 1;
-        }
-        sixel_bits
     }
 }
