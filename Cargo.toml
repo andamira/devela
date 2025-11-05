@@ -196,16 +196,14 @@ bench = false
 #* Development features *#
 # ------------------------------------------------------------------------------
 
-# shows extra debugging information
-__dbg = [
+__dbg = [ # shows extra debugging information
 	"devela_base_core/__dbg",
 		"devela_base_data?/__dbg",
 		"devela_base_num/__dbg",
 		"devela_base_text?/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
 ]
-__no_test = [] # exclude examples from being tested
-__std = [      # disables `no_std` in base crates for testing
+__std = [ # disables `no_std` in base crates for testing
 	"std",
 	"devela_base_core/__std",
 		"devela_base_data?/__std",
@@ -224,6 +222,7 @@ __publish = [
 	"devela_macros?/__publish",
 ]
 
+__exclude_test = [] # exclude examples from being tested
 __force_miri_dst = [] # inhibits disabling miri on several modules
 
 
@@ -906,7 +905,7 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(cargo_primary_package)',
 	#
 	# Allows excluding tests from being run, more concisely:
-	'cfg(__no_test)',
+	'cfg(__exclude_test)',
 	#
 	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
@@ -1058,7 +1057,7 @@ required-features = ["std", "linux"]
 [[example]]
 name = "cargo_script"
 path = "examples/code/cargo_script.rs"
-required-features = ["__no_test"]
+required-features = ["__exclude_test"]
 [[example]]
 name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"

@@ -179,8 +179,8 @@ mod reflection {
         ref_flags: &[],
         features: &[
             "__dbg",
+            "__exclude_test",
             "__force_miri_dst",
-            "__no_test",
             "__publish",
             "__std",
             // "default",
