@@ -92,38 +92,30 @@ _docs = []
 # Names are prefixed with `dep_`, and use underscores in place of dashes.
 
 # In sync with ./config/dep_all & ./src/_dep.rs
-dep_all = [ # enables all 1 optional dependencies:
-	"dep_simdutf8",
+dep_all = [ # enables all 3 optional dependencies:
+	"dep_memchr", "dep_simdutf8", "dep_rand_core",
 ]
 
 # individual dependencies features
-dep_memchr = ["dep:memchr"] # "winnow?/simd"                                      # text:str
+dep_memchr = ["dep:memchr"]                                                       # text:str
+dep_rand_core = ["dep:rand_core"]                                                 # num::rand
 dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
-
 
 [dependencies] # 3 (2 required, 1 optional)
 devela_base_macros = { workspace = true }
+
+#* optional external dependencies *#
+
+memchr = { workspace = true, optional = true }
+rand_core = { workspace = true, optional = true }
+simdutf8 = { workspace = true, optional = true }
 
 #* required external dependencies *#
 
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED
-# alternative: https://crates.io/crates/pastey
-
-#* optional external dependencies *#
-
-[dependencies.memchr] # https://crates.io/crates/memchr
-version = "2.7" # ✗ https://github.com/BurntSushi/memchr/commits/master/
-optional = true # unsafe
-default-features = false # 9 https://docs.rs/crate/memchr/latest/features
-
-[dependencies.simdutf8] # https://crates.io/crates/simdutf8 (2024-09-22)
-version = "0.1" # ✓ https://github.com/rusticstuff/simdutf8/blob/main/CHANGELOG.md
-optional = true # unsafe
-default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
-# features = [] # https://github.com/rusticstuff/simdutf8/blob/main/Cargo.toml
-# WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
+# CONSIDER: https://crates.io/crates/pastey
 
 [badges]
 maintenance.status = "experimental"

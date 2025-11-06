@@ -6,7 +6,7 @@
 ## Table of Contents
 #
 # * [workspace]
-#   * [dependencies]
+#   * [members]
 #   * [package]
 #
 # * [package]
@@ -28,6 +28,7 @@
 #   - Dependency        (dep_*)
 #   - Workspace         (devela_*)
 #
+# * [workspace.dependencies]
 # * [dependencies] (required|optional)
 #   * [dev-dependencies]
 #   * [build-dependencies]
@@ -81,17 +82,6 @@ members = [
 	".", # ← root package
 	"build/post",
 ]
-[workspace.dependencies]
-devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
-devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
-devela_base_data   = { version = "0.25.0-wip", path = "./libs/base_data" }
-devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
-devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
-devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
-devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
-devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
-devela             = { version = "0.25.0-wip", path = "./" } #
-devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 
 [workspace.package]
 version = "0.25.0-wip" # in sync with docs/changelog.md
@@ -604,11 +594,11 @@ dep_crossterm = ["dep:crossterm", "std"]                                        
 dep_hashbrown = ["dep:hashbrown", "alloc"]  									  # data::key
 dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
 dep_log = ["dep:log"]                                                             # sys::log
-dep_memchr = ["dep:memchr"]                                                       # text:str
+dep_memchr = ["dep:memchr", "devela_base_core/dep_memchr"]                        # text:str
 dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                  # ui::back
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
 dep_portable_atomic_util = ["dep:portable-atomic-util"]                           # work::sync
-dep_rand_core = ["dep:rand_core"]                                                 # num::rand
+dep_rand_core = ["dep:rand_core", "devela_base_core/dep_rand_core"]               # num::rand
 dep_raw_cpuid = ["dep:raw-cpuid"]                                                 # sys::arch
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
 dep_serde = ["dep:serde", "portable-atomic?/serde", "wide?/serde"]  			  # data::codec::serde
@@ -622,6 +612,7 @@ dep_wide = ["dep:wide"]                                                         
 devela_macros = [ "dep:devela_macros"]
 devela_base_data = ["dep:devela_base_data"] # MAYBE
 devela_base_text = ["dep:devela_base_text"] # MAYBE
+
 
 [dependencies] # 24 (3 required, 21 optional)
 # ==============================================================================
@@ -649,108 +640,121 @@ devela_macros      = { workspace = true, optional = true }
 
 #* optional external dependencies *#
 
-[dependencies.atomic] # https://crates.io/crates/atomic
+atomic = { workspace = true, optional = true }
+bytemuck = { workspace = true, optional = true }
+crossterm = { workspace = true, optional = true }
+hashbrown = { workspace = true, optional = true }
+jiff = { workspace = true, optional = true }
+log = { workspace = true, optional = true }
+memchr = { workspace = true, optional = true }
+miniquad = { workspace = true, optional = true }
+portable-atomic = { workspace = true, optional = true }
+portable-atomic-util = { workspace = true, optional = true }
+rand_core = { workspace = true, optional = true }
+raw-cpuid = { workspace = true, optional = true }
+safe_arch = { workspace = true, optional = true }
+serde = { workspace = true, optional = true }
+simdutf8 = { workspace = true, optional = true }
+wide = { workspace = true, optional = true }
+
+
+[workspace.dependencies]
+# Can be used by any member of the workspace.
+# ------------------------------------------------------------------------------
+devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
+devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
+devela_base_data   = { version = "0.25.0-wip", path = "./libs/base_data" }
+devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
+devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
+devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
+devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
+devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
+devela             = { version = "0.25.0-wip", path = "./" } #
+devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
+
+#* optional external dependencies *#
+
+[workspace.dependencies.atomic] # https://crates.io/crates/atomic (unsafe)
 version = "0.6.1" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
-optional = true # unsafe
 default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
 
-[dependencies.bytemuck] # https://crates.io/crates/bytemuck
-version = "1.23" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
-optional = true # unsafe
+[workspace.dependencies.bytemuck] # https://crates.io/crates/bytemuck (unsafe)
+version = "1.24" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
 default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
 
-[dependencies.crossterm] # https://crates.io/crates/crossterm
+[workspace.dependencies.crossterm] # https://crates.io/crates/crossterm (unsafe)
 # In sync with src::ui::back::crossterm::service
 version = "0.29" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
-optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
 features = ["bracketed-paste", "events"]
 
-[dependencies.hashbrown] # https://crates.io/crates/hashbrown
+[workspace.dependencies.hashbrown] # https://crates.io/crates/hashbrown (unsafe)
 version = "0.16" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
-optional = true # unsafe
 default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 
-[dependencies.jiff] # https://crates.io/crates/jiff
+[workspace.dependencies.jiff] # https://crates.io/crates/jiff (safe ± few & checked)
 version = "0.2" # ✓ https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
-optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/latest/jiff/#crate-features
 
-[dependencies.log] # https://crates.io/crates/log
+[workspace.dependencies.log] # https://crates.io/crates/log (optional unsafe)
 version = "0.4.25" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
-optional = true # safe (optional unsafe)
 default-features = false # 25 https://docs.rs/crate/log/latest/features
 # features = ["kv"]
 
-# NOTE: also in base
-[dependencies.memchr] # https://crates.io/crates/memchr
+[workspace.dependencies.memchr] # https://crates.io/crates/memchr (unsafe)
 version = "2.7" # ✗ https://github.com/BurntSushi/memchr/commits/master/
-optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/memchr/latest/features
 
-[dependencies.miniquad] # https://crates.io/crates/miniquad
+[workspace.dependencies.miniquad] # https://crates.io/crates/miniquad (unsafe)
 # In sync with src::ui::back::miniquad::service
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
-optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
 features = ["log-impl"]
 # WAIT: [update conf module to derive more traits](https://github.com/not-fl3/miniquad/pull/523)
 # WAIT: [use AtomicPtr in NATIVE_DISPLAY](https://github.com/not-fl3/miniquad/pull/525)
 
-[dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
+[workspace.dependencies.portable-atomic] # https://crates.io/crates/portable-atomic (unsafe)
 version = "1.11" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
-optional = true # unsafe
 default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
 # https://docs.rs/portable-atomic/1.11.0/portable_atomic/#optional-features
 features = ["fallback", "float"]
-# feature-gated: serde
-# feature-maybe: require-cas
+# feature-gated: serde, require-cas(maybe)
 
-[dependencies.portable-atomic-util] # https://crates.io/crates/portable-atomic-util
+[workspace.dependencies.portable-atomic-util] # https://crates.io/crates/portable-atomic-util (unsafe)
 version = "0.2.4" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/portable-atomic-util/CHANGELOG.md
-optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
-[dependencies.rand_core] # https://crates.io/crates/rand_core
-version = "0.9" # ✓ https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md
-optional = true # safe
-default-features = false # 5 https://docs.rs/crate/rand_core/latest/features
-# NOTE: depends on syn, via zerocopy
+[workspace.dependencies.rand_core] # https://crates.io/crates/rand_core (safe)
+version = "0.9" # ✓ https://github.com/rust-random/rand_core/blob/master/CHANGELOG.md
+default-features = false # 3 https://docs.rs/crate/rand_core/latest/features
 
-[dependencies.raw-cpuid] # https://crates.io/crates/raw-cpuid
+[workspace.dependencies.raw-cpuid] # https://crates.io/crates/raw-cpuid (unsafe)
 version = "11.2" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
-optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/raw-cpuid/latest/features
 
-
-[dependencies.safe_arch] # https://crates.io/crates/safe_arch
+[workspace.dependencies.safe_arch] # https://crates.io/crates/safe_arch (unsafe)
 version = "0.9" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
-optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
-[dependencies.serde] # https://crates.io/crates/serde
+[workspace.dependencies.serde] # https://crates.io/crates/serde (unsafe)
 version = "1.0" # ✗ https://github.com/serde-rs/serde/releases
-optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/serde/latest/features
 # WAIT [Const generics support](https://github.com/serde-rs/serde/issues/1937)
 
-# NOTE: also in base
-[dependencies.simdutf8] # https://crates.io/crates/simdutf8
+[workspace.dependencies.simdutf8] # https://crates.io/crates/simdutf8 (unsafe)
 version = "0.1" # ✓ https://github.com/rusticstuff/simdutf8/blob/main/CHANGELOG.md
-optional = true # unsafe
 default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # features = [] # https://github.com/rusticstuff/simdutf8/blob/main/Cargo.toml
 # WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
-[dependencies.wide] # https://crates.io/crates/wide
+[workspace.dependencies.wide] # https://crates.io/crates/wide (unsafe)
 version = "0.8" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 # TEST: cargo check --target riscv64gc-unknown-linux-gnu -F dep_wide
-optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
 
@@ -766,7 +770,7 @@ default-features = false # 2 https://docs.rs/crate/wide/latest/features
 # Used for the main build script. They do NOT inherit from [dependencies].
 # ------------------------------------------------------------------------------
 devela_base_core = { workspace = true }
-devela_base_std  = { workspace = true, optional = true }
+devela_base_std  = { workspace = true, optional = true } # MAYBE RECONSIDER
 
 
 # patches

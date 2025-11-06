@@ -45,13 +45,14 @@ Many feature gates are removed in order to make most features make always availa
 - add new cargo env var `CARGO_WORKSPACE_DIR`.
 
 ## dependencies
+- make all optional external optional dependencies part of the workspace.
 - re-export `alloc` crate from devela and [base_alloc].
 - bump dependencies:
   - `hashbrown` to 0.16.
   - [macros]
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.40.
-- add optional dependencies to [base]: `memchr`, `simdutf8`.
+- add optional dependencies to [base]: `memchr`, `rand_core`, `simdutf8`.
 - remove `_core` and `_dep` re-exports from the public docs.
 - remove dependencies:
   - `const-str`, and related `str!` macro.
