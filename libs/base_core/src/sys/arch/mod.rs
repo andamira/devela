@@ -8,6 +8,6 @@ mod wasm;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{reexports::*, wasm::*, };
+        pub use super::{reexports::*, wasm::_all::*, };
     }
 }

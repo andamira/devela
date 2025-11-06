@@ -54,6 +54,33 @@ pub mod work;
 #[doc(hidden)]
 pub mod _dep;
 
+#[rustfmt::skip]
+pub mod _info {
+    //! Extra information about the library.
+    #[doc = crate::_DOC_CODE!()]
+    pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
+    #[doc = crate::_DOC_DATA!()]
+    pub mod _data { #[allow(unused)] pub use super::super::data::_all::*; }
+    #[doc = crate::_DOC_GAME!()]
+    pub mod _game { #[allow(unused)] pub use super::super::game::_all::*; }
+    #[doc = crate::_DOC_LANG!()]
+    pub mod _lang { #[allow(unused)] pub use super::super::lang::_all::*; }
+    #[doc = crate::_DOC_MEDIA!()]
+    pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
+    #[doc = crate::_DOC_NUM!()]
+    pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
+    #[doc = crate::_DOC_PHYS!()]
+    pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
+    #[doc = crate::_DOC_SYS!()]
+    pub mod _sys { #[allow(unused)] pub use super::super::sys::_all::*; }
+    #[doc = crate::_DOC_TEXT!()]
+    pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
+    #[doc = crate::_DOC_UI!()]
+    pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
+    #[doc = crate::_DOC_WORK!()]
+    pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
+}
+
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
@@ -64,9 +91,9 @@ pub mod all {
     //!
     //! Note that these items are already re-exported (hidden) from the root,
     //! as is every other public module's contents from their parent.
-    #[allow(unused_imports)]
-    #[rustfmt::skip]
     #[doc(inline)]
+    #[rustfmt::skip]
+    #[allow(unused_imports)]
     pub use super::{
         code::_all::*,
         data::_all::*,

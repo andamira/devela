@@ -189,14 +189,15 @@ pub mod _info;
 // public items, feature-gated, visible at their origin and in `all`:
 #[doc(hidden)]
 pub use all::*;
-#[rustfmt::skip]
-pub mod all { #![allow(unused_imports)]
+pub mod all {
     //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
     //! Note that these items are already re-exported (hidden) from the root,
     //! as is every other public module's contents from their parent.
     #[doc(inline)]
+    #[rustfmt::skip]
+    #[allow(unused_imports)]
     pub use super::{
         code::_all::*,
         data::_all::*,
@@ -230,8 +231,8 @@ mod _crate_internals {
     #[cfg(feature = "devela_base_text")]
     pub(crate) use devela_base_text::_workspace_internals::*;
 
-    #[allow(unused_imports)]
     #[rustfmt::skip]
+    #[allow(unused_imports)]
     pub(crate) use super::{
         code::_crate_internals::*,
         data::_crate_internals::*,

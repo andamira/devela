@@ -24,7 +24,7 @@ crate::structural_mods! { // _mods
             iter::*,
             namespace::*,
             reexports::*,
-            scalar::*,
+            scalar::_all::*,
         };
     }
 }
