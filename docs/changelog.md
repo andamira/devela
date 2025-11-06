@@ -85,7 +85,7 @@ Many feature gates are removed in order to make most features make always availa
 - move `core`, `alloc` & `std` re-exports to [base*] libs.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
-  - move `paste` dependency to [base].
+  - replace `paste` dependency with `pastey` and move to [base].
 - [base]
   - add `_workspace_internal` structural module (replacing `_internal`).
 - [base_macros]:

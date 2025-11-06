@@ -4,10 +4,10 @@
 //
 
 #[doc = crate::_TAG_PROCEDURAL_MACRO!()]
-/// <span class="stab portability" title="re-exported from the `paste` crate">`paste`</span>
+/// <span class="stab portability" title="re-exported from the `pastey` crate">`pastey`</span>
 /// Allows to paste identifiers together.
 ///
-#[doc = "*Reexported from the [`paste`](https://docs.rs/paste)* crate.\n\n---"]
+#[doc = "*Reexported from the [`paste`](https://docs.rs/pastey)* crate.\n\n---"]
 ///
 /// Within the `paste!` macro, identifiers inside `[<`...`>]` are pasted
 /// together to form a single identifier.
@@ -74,4 +74,4 @@ macro_rules! paste { ($($tt:tt)*) => { $crate::__paste!{ $($tt)* } } }
 pub use paste;
 
 #[doc(hidden)] // original macro re-exported hidden
-pub use paste_crate::paste as __paste;
+pub use pastey_crate::paste as __paste;
