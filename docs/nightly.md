@@ -59,7 +59,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
 
-- 1.93: `·`[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
+- 1.93: ` `[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
@@ -148,6 +148,15 @@ See also
  ` `- <https://rust-lang.github.io/rfcs/2580-ptr-meta.html>
 - [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 - [type_alias_impl_trait|impl_trait_in_assoc_type](https://github.com/rust-lang/rust/issues/63063)
+
+# Projects
+- on track:
+  - [Associated Const Equality (ACE)](https://github.com/orgs/rust-lang/projects/60/views/1)
+  - [Generic Const Items (GCI)](https://github.com/orgs/rust-lang/projects/62/)
+  - [Inherent Associated Types (IAT)](https://github.com/orgs/rust-lang/projects/64)
+  - [Lazy Type Aliases (LTA)](https://github.com/orgs/rust-lang/projects/59/)
+- other
+  - [type alias impl trait (TAIT) stabilization](https://github.com/orgs/rust-lang/projects/22/)
 
 # Pitfalls
 - [const_evaluatable_unchecked](https://github.com/rust-lang/rust/issues/76200)
