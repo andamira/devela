@@ -16,7 +16,7 @@ crate::structural_mods! { // _mods
         // re-exports
         #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
-        pub use devela_base_core::media::image::{
+        pub use devela_base_core::media::image::sixel:: {
             SixelChar, SixelColor, SixelEncoder, SixelPalette,
         };
     }

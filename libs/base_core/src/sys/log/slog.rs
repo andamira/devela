@@ -30,10 +30,11 @@ macro_rules! guard {
 ///
 /// # Safety
 /// Employs a single-byte, non-atomic guard as a const-safe soft check against
-/// re-entrant or concurrent access. While not providing full thread safety,
-/// it can detect most accidental overlaps in single-threaded or unsynchronized
-/// contexts, serving as a last-resort diagnostic aid under the assumption of
-/// disciplined single-threaded use.
+/// re-entrant or concurrent access.
+///
+/// While not providing full thread safety, it can detect most accidental overlaps
+/// in single-threaded or unsynchronized contexts, serving as a last-resort diagnostic
+/// aid under the assumption of disciplined single-threaded use.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct LoggerStatic<const CAP: usize, const MSG_LEN: usize> {
     buf: [[u8; MSG_LEN]; CAP],
@@ -208,7 +209,8 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! slog {
-    ( // Define a static logger.
+    (
+    // Define a static logger.
     $(#[$attrs:meta])*
     $vis:vis new $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
         $(#[$attrs])*
@@ -239,20 +241,23 @@ macro_rules! slog {
             unsafe { &mut [<__LOGGER_ $($id _)? $CAP _ $LEN>] }
         }
     }};
-
-    ( // Clear all logs.
+    (
+    // Clear all logs.
     clear $($id:ident :)? $CAP:literal + $LEN:literal) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).clear();
     };
-    ( // Returns the number of messages.
+    (
+    // Return the number of messages.
     count $($id:ident :)? $CAP:literal + $LEN:literal) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).count();
     };
-    ( // Returns true if the logger is full.
+    (
+    // Whether the logger is full.
     is_full $($id:ident :)? $CAP:literal + $LEN:literal) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).is_full();
     };
-    ( // Log message with formatted arguments.
+    (
+    // Log message with formatted arguments.
     $($id:ident :)? $CAP:literal + $LEN:literal $($fmt:tt)+) => {{
         let mut buf = [0u8; $LEN];
         let mut pos = 0;
@@ -260,28 +265,34 @@ macro_rules! slog {
         let slice = $crate::Slice::range_to(&buf, pos);
         $crate::slog!(@get $($id:)? $CAP + $LEN).log_bytes(slice);
     }};
-    ( // Retrieve a specific message by index.
+    (
+    // Retrieve a specific message by index.
     get $($id:ident :)? $CAP:literal + $LEN:literal, $index:expr) => {
         $crate::slog!(@get $($id :)? $CAP + $LEN).get($index)
     };
-    ( // Run a closure for each log message.
+    (
+    // Run a closure for each log message.
     for_each $($id:ident :)? $CAP:literal + $LEN:literal $closure:expr) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).for_each($closure);
     };
-    ( // Returns true if any message was truncated.
+    (
+    // Whether if any message was truncated.
     any_truncated $($id:ident :)? $CAP:literal + $LEN:literal) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).any_truncated();
     };
-    ( // Returns `(count, total_lost_bytes)` for truncated messages.
+    (
+    // Returns `(count, total_lost_bytes)` for truncated messages.
     truncation_stats $($id:ident :)? $CAP:literal + $LEN:literal) => {
         $crate::slog!(@get $($id:)? $CAP + $LEN).truncation_stats();
     };
-    ( // Returns the name of the global static logger as a string slice.
+    (
+    // Returns the name of the global static logger as a string slice.
     static_name $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
         stringify! { [<__LOGGER_ $($id _)? $CAP _ $LEN>] }
     }};
+    (
     // inner helper to get the global static reference
-    (@get $($id:ident :)? $CAP:literal + $LEN:literal) => {{
+    @get $($id:ident :)? $CAP:literal + $LEN:literal) => {{
         $crate::paste! { unsafe { [<__logger_ $($id _)? $CAP _ $LEN>]() } }
     }};
 }

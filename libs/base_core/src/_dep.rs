@@ -13,6 +13,9 @@ use crate::_reexport;
 _reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."
 }
+_reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
+    doc: "Random number generation traits."
+}
 _reexport! { optional_crate (unsafe) "dep_simdutf8", "simdutf8", simdutf8,
     doc: "Blazingly fast API-compatible UTF-8 validation for Rust using SIMD extensions."
 }

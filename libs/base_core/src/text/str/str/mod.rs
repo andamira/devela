@@ -171,7 +171,7 @@ impl Str {
     #[doc(hidden)] #[rustfmt::skip]
     pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
         #[cfg(any(base_safe_text, not(unsafe··)))]
-        { crate::unwrap![ok ::core::str::from_utf8(bytes)] }
+        { unwrap![ok ::core::str::from_utf8(bytes)] }
         #[cfg(all(not(base_safe_text), unsafe··))]
         unsafe { ::core::str::from_utf8_unchecked(bytes) }
     }

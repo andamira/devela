@@ -18,7 +18,7 @@
 /// # use devela_base_core::ne;
 /// let x = ne!(42_u32);  // NonExtremeU32
 /// let y = ne!(42, u32); // alternative syntax
-/// // let y: NonExtremeI32 = ne!(20); // Would fail to compile (needs type suffix)
+/// // let y: NonExtremeU32 = ne!(42); // Would fail to compile (needs type suffix)
 /// ```
 #[macro_export]
 #[doc(hidden)]
@@ -36,8 +36,9 @@ pub use ne;
 /// # Example
 /// ```
 /// # use devela_base_core::nv;
-/// let x = nv!(3: 4_u8);  // NonValueU8<3>
-/// let y = nv!(3: 4, u8); // alternative syntax
+/// let x = nv!(3: 42_u8);  // NonValueU8<3>
+/// let y = nv!(3: 42, u8); // alternative syntax
+/// // let y: NonValue<u8> = nv!(3: 42); // Would fail to compile (needs type suffix)
 /// ```
 #[macro_export]
 #[doc(hidden)]
@@ -57,6 +58,7 @@ pub use nv;
 /// # use devela_base_core::nz;
 /// let x = nz!(42u32);   // NonZeroU32
 /// let y = nz!(42, u32); // alternative syntax
+/// // let y: NonZero<u8> = nz!(42); // Would fail to compile (needs type suffix)
 /// ```
 #[macro_export]
 #[doc(hidden)]

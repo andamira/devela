@@ -8,6 +8,7 @@ impl_oneof!();
 /// Defines [`Oneof`] and implements all the methods.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
+#[allow(clippy::crate_in_macro_def, reason = "impl_const_default arm")]
 macro_rules! impl_oneof {
     /* points of entry, using hardcoded argument list */
 

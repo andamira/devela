@@ -7,7 +7,7 @@
 // TODO: octal
 // TODO: floating-point
 
-use crate::{Digits, Slice, Str, StringU8, unwrap, write_at};
+use crate::{Digits, Slice, Str, StringU8, write_at};
 
 #[doc = crate::_TAG_FMT!()]
 /// Const number formatter.
@@ -95,7 +95,7 @@ macro_rules! impl_fmtnum{
                 let slice = Slice::range_to(buf, len);
 
                 #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok Str::from_utf8(slice)];
+                return crate::unwrap![ok Str::from_utf8(slice)];
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
                 // SAFETY: the bytes are valid utf-8
