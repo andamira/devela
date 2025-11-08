@@ -4,6 +4,7 @@
 //
 
 mod aligned; // MemAligned
+mod arena; // ArenaBytes
 mod borrow;
 mod cswap; // cswap!
 mod namespace; // Mem
@@ -18,6 +19,7 @@ crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
             aligned::*,
+            arena::_all::*,
             borrow::_all::*,
             cswap::*,
             namespace::*,
