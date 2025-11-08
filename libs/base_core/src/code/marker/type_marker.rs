@@ -55,7 +55,7 @@ macro_rules! type_marker {
         impl $name {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
             #[allow(dead_code)]
-            pub fn new() -> Self { Self }
+            pub const fn new() -> Self { Self }
         }
     };
     // with generics
@@ -74,7 +74,7 @@ macro_rules! type_marker {
         impl<$($gen),+> $name<$($gen),+> {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
             #[allow(dead_code)]
-            pub fn new() -> Self {
+            pub const fn new() -> Self {
                 Self { _marker: core::marker::PhantomData }
             }
         }

@@ -143,6 +143,9 @@ Many feature gates are removed in order to make most features make always availa
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 - update `ArrayFmt` to support the rest of the core formatting traits.
 
+### marker
+- make `TypeResource` and `type_marker!` constructors *const*.
+
 ### panic
 - move to [base]: `Panic`.
 

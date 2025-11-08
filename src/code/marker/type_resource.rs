@@ -45,7 +45,7 @@ macro_rules! type_resource {
             impl $name {
                 /// Creates a new `TypeResource`.
                 #[allow(unused)]
-                pub fn new(data: $inner) -> $crate::TypeResource<$name> {
+                pub const fn new(data: $inner) -> $crate::TypeResource<$name> {
                     $crate::TypeResource::new(data)
                 }
             }
