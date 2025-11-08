@@ -89,7 +89,7 @@
 // ----------------------------
 // `nightly_stable_1_93`: core, alloc, std…
 // #![cfg_attr(nightly_stable_1_93, feature())]
-// #![cfg_attr(all(nightly_stable_1_93, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_1_93, feature = "alloc"), feature(vec_deque_pop_if,))]
 // #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
@@ -102,6 +102,7 @@
     nightly_stable_later,
     feature(
         assert_matches,
+        atomic_try_update,
         breakpoint,
         cfg_select,
         cfg_version,
@@ -113,6 +114,7 @@
         const_str_split_at,
         debug_closure_helpers,
         derive_coerce_pointee,
+        duration_from_nanos_u128,
         fn_align,
         frontmatter,
         if_let_guard,
@@ -126,12 +128,13 @@
         offset_of_slice,
         slice_as_array, // as_array, as_array_mut
         substr_range,
+        supertrait_item_shadowing,
         unsafe_cell_from_mut,
     )
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_extract_if, new_zeroed_alloc, vec_deque_pop_if,)
+    feature(btree_extract_if, new_zeroed_alloc,)
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),

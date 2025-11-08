@@ -61,10 +61,12 @@ See also
 
 - 1.93: ` `[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)
+- 1.93: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
+- 1.??: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
@@ -78,6 +80,7 @@ See also
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
+- 1.??: `·`[duration_from_nanos_u128](https://github.com/rust-lang/rust/pull/148587)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
@@ -99,8 +102,8 @@ See also
 - 1.??: `·`[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
 - 1.??: `a`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
+- 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
-- 1.??: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
 # … may be stable even later
