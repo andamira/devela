@@ -9,7 +9,7 @@
 // - fundamental methods
 // - primitives (de)coding
 
-use crate::{ArenaHandle, Slice};
+use crate::{ArenaHandle, Slice, unwrap};
 
 #[cfg(feature = "unsafe_array")]
 type ArenaByteUnit = crate::MaybeUninit<u8>;
@@ -36,12 +36,14 @@ pub struct ArenaBytes<const CAP: usize> {
     len: usize,
 }
 
+/* misc. trait impls */
 impl<const CAP: usize> Eq for ArenaBytes<CAP> {}
+#[rustfmt::skip] // Note: this is not recursive, but calls the manual method.
 impl<const CAP: usize> PartialEq for ArenaBytes<CAP> {
-    fn eq(&self, other: &Self) -> bool {
-        self.eq(other)
-    }
+    fn eq(&self, other: &Self) -> bool { ArenaBytes::eq(self, other) }
 }
+#[rustfmt::skip]
+impl<const CAP: usize> Default for ArenaBytes<CAP> { fn default() -> Self { Self::new() } }
 
 // Internal helpers to abstract away MaybeUninit representations
 #[rustfmt::skip]
@@ -94,7 +96,7 @@ impl<const CAP: usize> ArenaBytes<CAP> {
 }
 
 mod main_implementations {
-    use super::{ArenaBytes, ArenaHandle, ArenaMark, Slice};
+    use super::{ArenaBytes, ArenaHandle, ArenaMark, Slice, unwrap};
     #[cfg(feature = "unsafe_array")]
     use crate::MaybeUninit;
     use crate::{is, lets, whilst};
@@ -121,9 +123,12 @@ mod main_implementations {
         /// Return the occupied length.
         pub const fn len(&self) -> usize { self.len }
         #[inline(always)]
+        /// Whether the arena is empty.
+        pub const fn is_empty(&self) -> bool { self.len == 0 }
+        #[inline(always)]
         /// Returns the remaining byte capacity.
         pub const fn remaining(&self) -> usize { CAP - self.len }
-        /// Retruns whether n bytes can be written.
+        /// Returns `true` if n bytes fit in the remaining capacity.
         #[inline(always)]
         pub const fn can_write(&self, n: usize) -> bool { self.len + n <= CAP }
 
@@ -152,7 +157,7 @@ mod main_implementations {
 
         /// Write a byte slice into the arena.
         pub const fn push_bytes(&mut self, bytes: &[u8]) -> Option<ArenaHandle> {
-            if self.len + bytes.len() > CAP { return None; }
+            unwrap!(some_if? self.len.checked_add(bytes.len()), |v| v <= CAP);
             lets![start = self.len, handle = ArenaHandle::new(start, bytes.len())];
             whilst! { i in 0..bytes.len(); {
                 self._write_byte(self.len, bytes[i]);
@@ -172,11 +177,13 @@ mod main_implementations {
             Some(self._slice_bytes_mut(h.offset, h.offset + h.len))
         }
 
-        /// Replace the bytes for `handle`. Lengths must match.
+        /// Replace the bytes for `handle`. Lengths must match. Returns `false` otherwise.
         pub const fn replace_bytes(&mut self, h: ArenaHandle, new: &[u8]) -> bool {
             if let Some(dst) = self.read_bytes_mut(h) {
-                whilst!{ i in 0..h.len; { dst[i] = new[i]; }}
-                return true;
+                if dst.len() == new.len() {
+                    dst.copy_from_slice(new);
+                    return true;
+                }
             }
             false
         }
@@ -252,8 +259,8 @@ mod main_implementations {
 }
 
 mod impl_primitives {
-    use super::{ArenaBytes, ArenaHandle};
-    use crate::{Str, is, unwrap};
+    use super::{ArenaBytes, ArenaHandle, unwrap};
+    use crate::{Str, is};
 
     /// Implements push, read and replace for primitives.
     impl<const CAP: usize> ArenaBytes<CAP> {
@@ -377,10 +384,9 @@ mod impl_primitives {
             pub const fn [<push_str_ $T>](&mut self, val: &str) -> Option<ArenaHandle> {
                 let len = val.len();
                 if len <= <$T>::MAX as usize {
-                    let mut handle = unwrap![some? self.[<push_ $T>](len as $T)];
-                    handle.len += len;
-                    let _  = unwrap![some? self.push_bytes(&val.as_bytes())];
-                    Some(handle)
+                    let prefix = unwrap![some? self.[<push_ $T>](len as $T)];
+                    let data = unwrap![some? self.push_bytes(&val.as_bytes())];
+                    Some(ArenaHandle::new(prefix.offset, prefix.len + data.len))
                 } else { None }
             }
 

@@ -15,6 +15,7 @@ impl ArenaHandle {
     pub(crate) const fn new(offset: usize, len: usize) -> Self { ArenaHandle { offset, len } }
 
     /// Returns the length of the stored data.
+    #[allow(clippy::len_without_is_empty)]
     pub const fn len(self) -> usize { self.len }
 
     /// Returns the offset of the stored data.
