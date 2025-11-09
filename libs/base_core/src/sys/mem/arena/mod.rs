@@ -3,6 +3,9 @@
 //!
 //
 
+#[cfg(test)]
+mod tests;
+
 mod bytes; // ArenaBytes
 mod handle; // ArenaHandle
 

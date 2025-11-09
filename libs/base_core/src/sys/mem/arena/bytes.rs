@@ -15,8 +15,6 @@ type ByteCell = crate::MaybeUninit<u8>;
 #[cfg(not(feature = "unsafe_array"))]
 type ByteCell = u8;
 
-/* arena */
-
 /// An heterogeneous, safe byte arena.
 ///
 /// # Features
@@ -41,9 +39,9 @@ mod main_implementations {
     use crate::MaybeUninit;
     use crate::{Slice, is, lets, whilst};
 
+    /// internal helpers
     #[rustfmt::skip]
     impl<const CAP: usize> ArenaBytes<CAP> {
-        /* helpers */
 
         #[inline(always)]
         const fn _read_byte(&self, i: usize) -> u8 {
@@ -72,51 +70,52 @@ mod main_implementations {
             #[cfg(not(feature = "unsafe_array"))] // safe
             return Slice::range(&self.data, start, end);
             #[cfg(all(feature = "unsafe_array", not(feature = "unsafe_slice")))] // unsafe
-            unsafe {
-                Slice::range(
-                    Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end)
-            }
+            unsafe { Slice::range(
+                Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end) }
             #[cfg(all(feature = "unsafe_array", feature = "unsafe_slice"))] // unsafest
-            unsafe {
-                Slice::range_unchecked(
-                    Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end)
-            }
+            unsafe { Slice::range_unchecked(
+                Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end) }
         }
-
         #[inline(always)]
         const fn _slice_bytes_mut(&mut self, start: usize, end: usize) -> &mut [u8] {
             #[cfg(not(feature = "unsafe_array"))] // safe
             return Slice::range_mut(&mut self.data, start, end);
             #[cfg(all(feature = "unsafe_array", not(feature = "unsafe_slice")))] // unsafe
-            unsafe {
-                Slice::range_mut(
-                    Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end)
-            }
+            unsafe { Slice::range_mut(
+                Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end) }
             #[cfg(all(feature = "unsafe_array", feature = "unsafe_slice"))] // unsafest
-            unsafe {
-                Slice::range_mut_unchecked(
-                    Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end)
-            }
+            unsafe { Slice::range_mut_unchecked(
+                Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end) }
         }
+    }
 
-        /* public methods */
+    /// Core methods.
+    #[rustfmt::skip]
+    impl<const CAP: usize> ArenaBytes<CAP> {
 
         /// Returns a new empty arena.
         ///
         /// # Features
         /// Uses `unsafe_array` to avoid initializing the full capacity.
+        #[inline(always)]
         pub const fn new() -> Self {
             #[cfg(not(feature = "unsafe_array"))]
             { Self { data: [0_u8; CAP], len: 0 } }
             #[cfg(feature = "unsafe_array")]
             { Self { data: [MaybeUninit::<u8>::uninit(); CAP], len: 0 } }
         }
+        #[inline(always)]
         /// Returns the total capacity.
         pub const fn capacity(&self) -> usize { CAP }
+        #[inline(always)]
         /// Return the occupied length.
         pub const fn len(&self) -> usize { self.len }
+        #[inline(always)]
         /// Returns the remaining byte capacity.
         pub const fn remaining(&self) -> usize { CAP - self.len }
+        /// Retruns whether n bytes can be written.
+        #[inline(always)]
+        pub const fn can_write(&self, n: usize) -> bool { self.len + n <= CAP }
 
         /// Compares two arenas for equality.
         pub const fn eq(&self, other: &Self) -> bool {
@@ -127,15 +126,11 @@ mod main_implementations {
 
         /// Returns a byte slice over all the written data.
         #[inline(always)]
-        pub const fn as_bytes(&self) -> &[u8] {
-            self._slice_bytes(0, self.len)
-        }
+        pub const fn as_bytes(&self) -> &[u8] { self._slice_bytes(0, self.len) }
 
         /// Returns a byte slice over all the written data.
         #[inline(always)]
-        pub const fn as_bytes_mut(&mut self) -> &mut [u8] {
-            self._slice_bytes_mut(0, self.len)
-        }
+        pub const fn as_bytes_mut(&mut self) -> &mut [u8] { self._slice_bytes_mut(0, self.len) }
 
 
         /// Write a byte slice into the arena.
@@ -299,7 +294,7 @@ mod impl_primitives {
             impl_for_primitives!(multi-byte:
                 u16, u32, u64, u128, usize, i16, i32, i64, i128, isize, f32, f64,
             );
-            impl_for_primitives!(str_len: u8, u16, u32);
+            impl_for_primitives!(str_len: u8, u16, u32, usize);
         };
         (single-byte: $($T:ty),+ $(,)?) => { $( impl_for_primitives!(%single-byte: $T); )+ };
         (%single-byte: $T:ty) => { $crate::paste! {
@@ -394,83 +389,11 @@ mod impl_primitives {
                 is![handle.len != val.len(); return false];
                 if let Some(dst) = self.read_bytes_mut(handle) {
                     dst.copy_from_slice(val.as_bytes());
+                    return true;
                 }
                 false
             }
         }};
     }
     use impl_for_primitives;
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn push_and_read_bytes() {
-        let mut a = ArenaBytes::<16>::new();
-        let handle = a.push_bytes(&[1, 2, 3, 4]).unwrap();
-        assert_eq!(handle.offset(), 0);
-        assert_eq!(handle.len(), 4);
-        assert_eq!(a.read_bytes(handle).unwrap(), &[1, 2, 3, 4]);
-    }
-
-    #[test]
-    fn replace_and_mutate_bytes() {
-        let mut a = ArenaBytes::<8>::new();
-        let h = a.push_bytes(&[9, 9]).unwrap();
-        assert!(a.replace_bytes(h, &[7, 8]));
-        assert_eq!(a.read_bytes(h).unwrap(), &[7, 8]);
-        a.read_bytes_mut(h).unwrap().copy_from_slice(&[5, 6]);
-        assert_eq!(a.read_bytes(h).unwrap(), &[5, 6]);
-    }
-
-    #[test]
-    fn push_and_read_primitives() {
-        let mut a = ArenaBytes::<32>::new();
-        let h = a.push_u32(0x11223344).unwrap();
-        assert_eq!(a.read_u32(h), Some(0x11223344));
-        assert!(a.replace_u32(h, 0x55667788));
-        assert_eq!(a.read_u32(h), Some(0x55667788));
-    }
-
-    #[test]
-    fn push_and_read_str() {
-        let mut a = ArenaBytes::<32>::new();
-        let h = a.push_str_u8("hi").unwrap();
-        assert_eq!(a.read_str_u8(h), Some("hi"));
-    }
-
-    #[test]
-    fn bool_and_char() {
-        let mut a = ArenaBytes::<16>::new();
-        let hb = a.push_bool(true).unwrap();
-        let hc = a.push_char('Z').unwrap();
-        assert_eq!(a.read_bool(hb), Some(true));
-        assert_eq!(a.read_char(hc), Some('Z'));
-    }
-
-    #[test]
-    fn pop_and_truncate() {
-        let mut a = ArenaBytes::<8>::new();
-        let h1 = a.push_bytes(&[1, 2]).unwrap();
-        let h2 = a.push_bytes(&[3, 4]).unwrap();
-        assert!(!a.truncate_last(h1));
-        assert!(a.truncate_last(h2));
-        assert_eq!(a.len(), h1.offset() + h1.len());
-    }
-
-    #[test]
-    fn capacity_and_remaining() {
-        let a = ArenaBytes::<8>::new();
-        assert_eq!(a.capacity(), 8);
-        assert_eq!(a.remaining(), 8);
-    }
-
-    #[test]
-    fn handle_bounds_checks() {
-        let mut a = ArenaBytes::<4>::new();
-        assert!(a.push_bytes(&[1, 2, 3, 4]).is_some());
-        assert!(a.push_byte(5).is_none()); // capacity overflow
-    }
 }
