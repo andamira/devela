@@ -62,6 +62,8 @@ See also
 - 1.93: ` `[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)
 - 1.93: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
+- 1.93: `·`[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
+- 1.93: `s`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -99,8 +101,6 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `·`[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
-- 1.??: `a`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
@@ -142,7 +142,6 @@ See also
 - 1.??: ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.??: `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
         = `nightly_simd` flag
-- 1.??: ` `[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // into…
 - 1.??: ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:

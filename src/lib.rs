@@ -88,9 +88,9 @@
 #![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature(rwlock_downgrade,))]
 // ----------------------------
 // `nightly_stable_1_93`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_93, feature())]
+#![cfg_attr(nightly_stable_1_93, feature(slice_as_array,))]
 #![cfg_attr(all(nightly_stable_1_93, feature = "alloc"), feature(vec_deque_pop_if,))]
-// #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature())]
+#![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
 // ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
 // #![cfg_attr(nightly_stable_1_94, feature())]
@@ -126,7 +126,6 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
-        slice_as_array, // as_array, as_array_mut
         substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,
@@ -136,10 +135,7 @@
     all(nightly_stable_later, feature = "alloc"),
     feature(btree_extract_if, new_zeroed_alloc,)
 )]
-#![cfg_attr(
-    all(nightly_stable_later, feature = "std"),
-    feature(once_wait, stdarch_s390x_feature_detection,)
-)]
+#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 
 /* crate safeguards */
