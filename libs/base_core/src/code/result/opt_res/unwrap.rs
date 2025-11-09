@@ -1,6 +1,6 @@
 // devela_base_core::code::result::opt_res::unwrap
 //
-//!
+//! Defines [`unwrap!`].
 //
 
 #[doc = crate::_TAG_RESULT!()]
@@ -64,7 +64,26 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Some` value, or a default if it's `None`.
+      // Unwraps the contained `Some($v)` only if the condition `$cond` is true,
+      // otherwise returns `None`.
+      some_if? $value:expr, |$v:ident| $cond:expr) => {
+        match $value {
+            Some($v) if $cond => $v,
+            _ => return None,
+        }
+    };
+    (
+      // Unwraps the contained `Some($v)` only if the condition `$cond` is true,
+      // otherwise panics.
+      some_if $value:expr, |$v:ident| $cond:expr) => {
+        match $value {
+            Some($v) if $cond => $v,
+            _ => ::core::panic![],
+        }
+    };
+    (
+      // Unwraps the contained `Some` value;
+      // otherwise yields the provided $default value.
       some_or $value:expr, $default:expr) => {
         match $value {
             Some(v) => v,
@@ -135,7 +154,16 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Ok` value, or a provided default if it's `Err`.
+      // Unwraps the contained `Ok(v)` or returns `Err($map($e))` with a mapped error.
+      ok_map_err? $value:expr, |$e:ident| $map:expr) => {
+        match $value {
+            Ok(v) => v,
+            Err($e) => return Err($map),
+        }
+    };
+    (
+      // Unwraps the contained `Ok` value;
+      // otherwise yields the provided $default value.
       ok_or $value:expr, $default:expr) => {
         match $value {
             Ok(v) => v,
@@ -156,6 +184,53 @@ macro_rules! unwrap {
                     unsafe { ::core::hint::unreachable_unchecked() }
                 }
             }
+        }
+    };
+    (
+      // Unwraps the contained `Ok(v)` only if `$cond` holds;
+      // otherwise returns `$ok_err`, or propagates the original `Err(e)`.
+      ok_if? $value:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
+        match $value {
+            Ok($v) if $cond => $v,
+            Ok(_) => $ok_err,
+            Err(e) => return Err(e),
+        }
+    };
+    (
+      // Unwraps the contained `Ok($v)` only if `$cond` holds;
+      // otherwise panics.
+      ok_if $value:expr, |$v:ident| $cond:expr) => {
+        match $value {
+            Ok($v) if $cond => $v,
+            _ => ::core::panic![],
+        }
+    };
+    (
+      // Unwraps the contained `Ok($v)` only if `$cond` holds;
+      // otherwise yields the provided $default value.
+      ok_if_or $value:expr, |$v:ident| $cond:expr, $default:expr) => {
+        match $value {
+            Ok($v) if $cond => $v,
+            _ => $default,
+        }
+    };
+    (
+      // Unwraps the contained `Ok($v)` only if `$cond` holds;
+      // otherwise returns `Err($ok_err)`, or maps an existing error into `Err($map($e))`.
+      ok_if_map_err? $value:expr, |$v:ident| $cond:expr, $ok_err:expr, |$e:ident| $map:expr) => {
+        match $value {
+            Ok($v) if $cond => $v,
+            Ok(_) => return Err($ok_err),
+            Err($e) => return Err($map),
+        }
+    };
+    (
+      // Unwraps the contained `Ok($v)` only if `$cond` holds;
+      // otherwise returns `Err($ok_err)`.
+      ok_if_or_err? $value:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
+        match $value {
+            Ok($v) if $cond => $v,
+            _ => return Err($ok_err),
         }
     };
 
@@ -204,7 +279,8 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Err` value, or a provided default if it's `Ok`.
+      // Unwraps the contained `Err` value;
+      // otherwise yields the provided $default value.
       err_or $value:expr, $default:expr) => {
         match $value {
             Ok(_) => $default,
@@ -264,8 +340,8 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Some(Ok)` value,
-      // or a provided default if it's `Some(Err)` or `None`.
+      // Unwraps the contained `Some(Ok)` value;
+      // otherwise yields the provided $default value.
       sok_or $value:expr, $default:expr) => {
         match $value {
             Some(Ok(v)) => v,
@@ -319,8 +395,8 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Some(Err)` value,
-      // or a provided default if it's `Some(Ok)` or `None`.
+      // Unwraps the contained `Some(Err)` value;
+      // otherwise yields the provided $default value.
       serr_or $value:expr, $default:expr) => {
         match $value {
             Some(Ok(_)) => $default,

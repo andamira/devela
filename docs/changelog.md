@@ -156,6 +156,7 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `Chain`, `ExtOption`, `ExtOptRes`, `ExtResult`, `Hook`.
   - types: `Mismatch`, `OptRes`, `OptionFmt`, `OptionFmtOr`, `OptionFmtOrElse`, `Own`.
 - move to [base_num]: `ValueQuant`.
+- update `unwrap!`: add arms: `some_if*`, `ok_map_err`, `ok_if*`.
 
 ### utils
 - new struct: `Lut`.
