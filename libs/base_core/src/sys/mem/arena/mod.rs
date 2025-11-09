@@ -6,7 +6,7 @@
 #[cfg(test)]
 mod tests;
 
-mod bytes; // ArenaBytes
+mod bytes; // ArenaBytes, ArenaMark
 mod handle; // ArenaHandle
 
 crate::structural_mods! { // _mods

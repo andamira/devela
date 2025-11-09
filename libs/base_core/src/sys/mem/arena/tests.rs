@@ -1,6 +1,6 @@
 // devela_base_core::sys::mem::arena::bytes
 
-use crate::{ArenaBytes, ArenaField, ArenaRecipe};
+use crate::ArenaBytes;
 
 #[test]
 fn push_and_read_bytes() {
@@ -83,32 +83,3 @@ fn eq_bytes_and_replace_str() {
     let _ = b.push_str_u8("hi");
     assert!(a == b);
 }
-
-// #[test]
-// fn recipe_header_and_payload() {
-//     let mut a = ArenaBytes::<64>::new();
-//     // TODO
-//     // let r = a.record_push(7, 1, b"abc").unwrap();
-//     // let (ty, ver, len) = a.record_read_header(r).unwrap();
-//     // assert_eq!((ty, ver, len), (7, 1, 3));
-//     // assert_eq!(a.record_read_payload(r).unwrap(), b"abc");
-// }
-//
-// #[test]
-// fn recipe_field_views() {
-//     // payload: [x: u8][y: u16][z: u8] = 1 + 2 + 1 = 4
-//     const F: &[ArenaField] = &[
-//         ArenaField { off: 0, len: 1 },
-//         ArenaField { off: 1, len: 2 },
-//         ArenaField { off: 3, len: 1 },
-//     ];
-//     const R: ArenaRecipe = ArenaRecipe { ty: 10, ver: 0, size: 4, fields: F };
-//
-//     let mut a = ArenaBytes::<32>::new();
-//     // TODO
-//     // let r = a.record_push(10, 0, &[0x01, 0x34, 0x12, 0xFF]).unwrap();
-//     // assert!(ArenaRecipe::record_matches(r, &a, &R));
-//     // assert_eq!(ArenaRecipe::record_view(&a, r, &R, 0).unwrap(), &[0x01]);
-//     // assert_eq!(ArenaRecipe::record_view(&a, r, &R, 1).unwrap(), &[0x34, 0x12]);
-//     // assert_eq!(ArenaRecipe::record_view(&a, r, &R, 2).unwrap(), &[0xFF]);
-// }

@@ -1,19 +1,29 @@
 // devela_base_core::sys::mem::arena::bytes
 //
-//! Defines [`ArenaBytes`].
+//! Defines [`ArenaBytes`], [`ArenaMark`].
 //
 // TOC
+// - struct ArenaMark
 // - struct ArenaBytes
-// - main implementations
-// - impls for primitives
-// - tests
+// - internal helpers
+// - fundamental methods
+// - primitives (de)coding
 
-use crate::ArenaHandle;
+use crate::{ArenaHandle, Slice};
 
 #[cfg(feature = "unsafe_array")]
-type ByteCell = crate::MaybeUninit<u8>;
+type ArenaByteUnit = crate::MaybeUninit<u8>;
 #[cfg(not(feature = "unsafe_array"))]
-type ByteCell = u8;
+type ArenaByteUnit = u8;
+
+/// Append-only mark for snapshots and rollback in an arena.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct ArenaMark(usize);
+impl ArenaMark {
+    const fn new(mark: usize) -> Self {
+        ArenaMark(mark)
+    }
+}
 
 /// An heterogeneous, safe byte arena.
 ///
@@ -22,7 +32,7 @@ type ByteCell = u8;
 /// And uses `unsafe_slice` for further performance gains.
 #[derive(Clone, Debug)]
 pub struct ArenaBytes<const CAP: usize> {
-    data: [ByteCell; CAP],
+    data: [ArenaByteUnit; CAP],
     len: usize,
 }
 
@@ -33,63 +43,63 @@ impl<const CAP: usize> PartialEq for ArenaBytes<CAP> {
     }
 }
 
-mod main_implementations {
-    use super::{ArenaBytes, ArenaHandle};
-    #[cfg(feature = "unsafe_array")]
-    use crate::MaybeUninit;
-    use crate::{Slice, is, lets, whilst};
+// Internal helpers to abstract away MaybeUninit representations
+#[rustfmt::skip]
+impl<const CAP: usize> ArenaBytes<CAP> {
 
-    /// internal helpers
-    #[rustfmt::skip]
-    impl<const CAP: usize> ArenaBytes<CAP> {
-
-        #[inline(always)]
-        const fn _read_byte(&self, i: usize) -> u8 {
-            #[cfg(not(feature = "unsafe_array"))]
-            return self.data[i];
-            #[cfg(feature = "unsafe_array")]
-            unsafe { self.data[i].assume_init_read() }
-        }
-        #[inline(always)]
-        const fn _read_byte_mut(&mut self, i: usize) -> &mut u8 {
-            #[cfg(not(feature = "unsafe_array"))]
-            return &mut self.data[i];
-            #[cfg(feature = "unsafe_array")]
-            unsafe { self.data[i].assume_init_mut() }
-        }
-        #[inline(always)]
-        const fn _write_byte(&mut self, i: usize, b: u8) {
-            #[cfg(not(feature = "unsafe_array"))]
-            { self.data[i] = b; }
-            #[cfg(feature = "unsafe_array")]
-            self.data[i].write(b);
-        }
-
-        #[inline(always)]
-        const fn _slice_bytes(&self, start: usize, end: usize) -> &[u8] {
-            #[cfg(not(feature = "unsafe_array"))] // safe
-            return Slice::range(&self.data, start, end);
-            #[cfg(all(feature = "unsafe_array", not(feature = "unsafe_slice")))] // unsafe
-            unsafe { Slice::range(
-                Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end) }
-            #[cfg(all(feature = "unsafe_array", feature = "unsafe_slice"))] // unsafest
-            unsafe { Slice::range_unchecked(
-                Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end) }
-        }
-        #[inline(always)]
-        const fn _slice_bytes_mut(&mut self, start: usize, end: usize) -> &mut [u8] {
-            #[cfg(not(feature = "unsafe_array"))] // safe
-            return Slice::range_mut(&mut self.data, start, end);
-            #[cfg(all(feature = "unsafe_array", not(feature = "unsafe_slice")))] // unsafe
-            unsafe { Slice::range_mut(
-                Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end) }
-            #[cfg(all(feature = "unsafe_array", feature = "unsafe_slice"))] // unsafest
-            unsafe { Slice::range_mut_unchecked(
-                Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end) }
-        }
+    #[inline(always)]
+    const fn _read_byte(&self, i: usize) -> u8 {
+        #[cfg(not(feature = "unsafe_array"))]
+        return self.data[i];
+        #[cfg(feature = "unsafe_array")]
+        unsafe { self.data[i].assume_init_read() }
+    }
+    #[inline(always)]
+    const fn _read_byte_mut(&mut self, i: usize) -> &mut u8 {
+        #[cfg(not(feature = "unsafe_array"))]
+        return &mut self.data[i];
+        #[cfg(feature = "unsafe_array")]
+        unsafe { self.data[i].assume_init_mut() }
+    }
+    #[inline(always)]
+    const fn _write_byte(&mut self, i: usize, b: u8) {
+        #[cfg(not(feature = "unsafe_array"))]
+        { self.data[i] = b; }
+        #[cfg(feature = "unsafe_array")]
+        self.data[i].write(b);
     }
 
-    /// Core methods.
+    #[inline(always)]
+    const fn _slice_bytes(&self, start: usize, end: usize) -> &[u8] {
+        #[cfg(not(feature = "unsafe_array"))] // safe
+        return Slice::range(&self.data, start, end);
+        #[cfg(all(feature = "unsafe_array", not(feature = "unsafe_slice")))] // unsafe
+        unsafe { Slice::range(
+            Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end) }
+        #[cfg(all(feature = "unsafe_array", feature = "unsafe_slice"))] // unsafest
+        unsafe { Slice::range_unchecked(
+            Slice::from_raw_parts(self.data.as_ptr().cast::<u8>(), CAP), start, end) }
+    }
+    #[inline(always)]
+    const fn _slice_bytes_mut(&mut self, start: usize, end: usize) -> &mut [u8] {
+        #[cfg(not(feature = "unsafe_array"))] // safe
+        return Slice::range_mut(&mut self.data, start, end);
+        #[cfg(all(feature = "unsafe_array", not(feature = "unsafe_slice")))] // unsafe
+        unsafe { Slice::range_mut(
+            Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end) }
+        #[cfg(all(feature = "unsafe_array", feature = "unsafe_slice"))] // unsafest
+        unsafe { Slice::range_mut_unchecked(
+            Slice::from_raw_parts_mut(self.data.as_mut_ptr().cast::<u8>(), CAP), start, end) }
+    }
+}
+
+mod main_implementations {
+    use super::{ArenaBytes, ArenaHandle, ArenaMark, Slice};
+    #[cfg(feature = "unsafe_array")]
+    use crate::MaybeUninit;
+    use crate::{is, lets, whilst};
+
+    // Fundamental methods.
     #[rustfmt::skip]
     impl<const CAP: usize> ArenaBytes<CAP> {
 
@@ -122,16 +132,23 @@ mod main_implementations {
             Slice::<u8>::eq(self.as_bytes(), other.as_bytes())
         }
 
+        /* snapshot and rollback */
+
+        #[inline(always)]
+        /// Snapshot a position in the arena.
+        pub const fn mark(&self) -> ArenaMark { ArenaMark::new(self.len) }
+        #[inline(always)]
+        /// Rollback to a previous marked position.
+        pub const fn rollback(&mut self, m: ArenaMark) { self.len = m.0; }
+
         /* byte slices */
 
         /// Returns a byte slice over all the written data.
         #[inline(always)]
         pub const fn as_bytes(&self) -> &[u8] { self._slice_bytes(0, self.len) }
-
-        /// Returns a byte slice over all the written data.
+        /// Returns an exclusive byte slice over all the written data.
         #[inline(always)]
         pub const fn as_bytes_mut(&mut self) -> &mut [u8] { self._slice_bytes_mut(0, self.len) }
-
 
         /// Write a byte slice into the arena.
         pub const fn push_bytes(&mut self, bytes: &[u8]) -> Option<ArenaHandle> {
@@ -143,17 +160,19 @@ mod main_implementations {
             }}
             Some(handle)
         }
-        /// Read a slice of bytes previously written.
+
+        /// Read a shared slice over the written bytes.
         pub const fn read_bytes(&self, handle: ArenaHandle) -> Option<&[u8]> {
             is![handle.offset + handle.len > self.len; return None];
             Some(self._slice_bytes(handle.offset, handle.offset + handle.len))
         }
-        /// Read a mutable slice for an already-stored value.
+        /// Read an exclusive slice over the written bytes.
         pub const fn read_bytes_mut(&mut self, h: ArenaHandle) -> Option<&mut [u8]> {
             if h.offset + h.len > self.len { return None; }
             Some(self._slice_bytes_mut(h.offset, h.offset + h.len))
         }
-        /// Replace the bytes for `handle`. Length must match.
+
+        /// Replace the bytes for `handle`. Lengths must match.
         pub const fn replace_bytes(&mut self, h: ArenaHandle, new: &[u8]) -> bool {
             if let Some(dst) = self.read_bytes_mut(h) {
                 whilst!{ i in 0..h.len; { dst[i] = new[i]; }}
@@ -200,7 +219,7 @@ mod main_implementations {
             Some(self._slice_bytes(h.offset, h.offset + total))
         }
 
-        /// Returns a mutable slice starting at `handle` and spanning `count` items of its length.
+        /// Returns an exclusive slice starting at `handle` and spanning `count` items of its length.
         ///
         /// Returns `None` if...
         pub const fn view_bytes_mut(&mut self, h: ArenaHandle, count: usize) -> Option<&mut [u8]> {
@@ -286,8 +305,7 @@ mod impl_primitives {
         }
     }
 
-    /// Helper to implement push & read over primitives for `ArenaBytes`.
-    // Note: This has to be called inside an impl block.
+    /// Helper to implement push, read & replace methods over primitives.
     macro_rules! impl_for_primitives {
         () => {
             impl_for_primitives!(single-byte: u8, i8);

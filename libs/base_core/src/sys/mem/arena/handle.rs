@@ -3,7 +3,7 @@
 //! Defines [`ArenaHandle`].
 //
 
-///
+/// Links to a written an entry in an arena.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ArenaHandle {
     pub(super) offset: usize,
