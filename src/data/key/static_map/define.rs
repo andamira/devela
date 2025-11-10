@@ -879,9 +879,10 @@ macro_rules! define_static_map {
         struct Empty;
         struct Tomb;
         fn type_id_hash<T: 'static>() -> u64 {
-            let mut hasher = HasherFx::<u64>::new();
-            $crate::TypeId::of::<T>().hash(&mut hasher);
-            hasher.finish()
+            let mut hasher = $crate::HasherFx::<u64>::new();
+            let id = $crate::TypeId::of::<T>();
+            $crate::Hash::hash(&id, &mut hasher);
+            $crate::Hasher::finish(&hasher)
         }
 
         #[allow(unused)]
