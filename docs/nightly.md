@@ -62,11 +62,12 @@ See also
 - 1.93: ` `[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)
 - 1.93: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
-- 1.93: `·`[slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
+- 1.93: `·`[core_slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
 - 1.93: `s`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
+- 1.??: `·`[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
