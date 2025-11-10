@@ -271,6 +271,7 @@ Many feature gates are removed in order to make most features make always availa
 - new macro `slog!`.
 
 ### mem
+- new alias: `MaybeByte`.
 - new types: `ArenaBytes`, `ArenaHandle`, `ArenaMark`.
 - move to [base]:
   - macros: `cswap!`, `const_join!`.

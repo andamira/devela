@@ -9,12 +9,7 @@
 // - fundamental methods
 // - primitives (de)coding
 
-use crate::{ArenaHandle, Slice, unwrap};
-
-#[cfg(feature = "unsafe_array")]
-type ArenaByteUnit = crate::MaybeUninit<u8>;
-#[cfg(not(feature = "unsafe_array"))]
-type ArenaByteUnit = u8;
+use crate::{ArenaHandle, MaybeByte, Slice, unwrap};
 
 /// Append-only mark for snapshots and rollback in an arena.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -32,7 +27,7 @@ impl ArenaMark {
 /// And uses `unsafe_slice` for further performance gains.
 #[derive(Clone, Debug)]
 pub struct ArenaBytes<const CAP: usize> {
-    data: [ArenaByteUnit; CAP],
+    data: [MaybeByte; CAP],
     len: usize,
 }
 

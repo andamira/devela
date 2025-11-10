@@ -6,6 +6,7 @@
 mod align; // CacheAlign, MemAligned
 mod arena; // ArenaBytes
 mod borrow;
+mod byte; // MaybeByte
 mod cswap; // cswap!
 mod namespace; // Mem
 mod pin;
@@ -21,6 +22,7 @@ crate::structural_mods! { // _mods, _pub_mods
             align::_all::*,
             arena::_all::*,
             borrow::_all::*,
+            byte::*,
             cswap::*,
             namespace::*,
             pin::_all::*,
