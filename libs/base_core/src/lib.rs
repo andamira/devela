@@ -55,8 +55,8 @@ pub mod work;
 pub mod _dep;
 
 #[rustfmt::skip]
-pub mod _info {
-    //! Extra information about the library.
+pub mod _doc {
+    //! Extra documentation about the library.
     #[doc = crate::_DOC_CODE!()]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
     #[doc = crate::_DOC_DATA!()]

@@ -1,4 +1,4 @@
-// devela::_info::vendored
+// devela::_doc::vendored
 //
 //!
 // In sync with:

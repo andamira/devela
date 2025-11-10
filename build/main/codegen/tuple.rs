@@ -75,7 +75,7 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// corresponding capability feature: `_tuple_[24|36|48|72]`.
 ///
 /// # Vendored
-/// This is adapted work from [tupl][crate::_info::vendored#tupl]"#)?;
+/// This is adapted work from [tupl][crate::_doc::vendored#tupl]"#)?;
 // In sync with code::utils::_doc::doc_!(vendor:)
 
     w!(f, "{TAB1}#[cfg_attr(nightly_doc, doc(notable_trait))]

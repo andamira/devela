@@ -68,7 +68,7 @@ pub(crate) fn generate() -> Result<(), Error> {
 /// corresponding capability feature: `_unroll_[128|256|512|1024|2048]`.
 ///
 /// # Vendored
-/// This is adapted work from [crunchy][crate::_info::vendored#crunchy]"#;
+/// This is adapted work from [crunchy][crate::_doc::vendored#crunchy]"#;
 // In sync with code::utils::_doc::doc_!(vendor:)
     w!(f, "{macro_code1}")?;
     let macro_code2 = r#"#[doc(hidden)]

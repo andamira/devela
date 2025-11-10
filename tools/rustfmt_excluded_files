@@ -1,4 +1,4 @@
 # list of rustfmt excluded files for the script "/tools/rustfmt"
 
 examples/code/cargo_script.rs # uses experimental cargo syntax
-# src/_info/examples.rs # imports examples with custom path
+# src/_doc/examples.rs # imports examples with custom path

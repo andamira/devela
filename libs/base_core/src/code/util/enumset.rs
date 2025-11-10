@@ -12,7 +12,7 @@
 ///
 /// # Examples
 /// See also the [enumset] example.
-#[doc = crate::doclink!(custom devela "[enumset]" "_info/examples/enumset" @mod)]
+#[doc = crate::doclink!(custom devela "[enumset]" "_doc/examples/enumset" @mod)]
 ///
 /// ```
 /// # use devela_base_core::enumset;

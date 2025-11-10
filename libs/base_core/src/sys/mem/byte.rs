@@ -5,6 +5,7 @@
 // Used by:
 // - sys::mem::arena::ArenaBytes.
 
+#[allow(unused)]
 use crate::MaybeUninit;
 
 crate::CONST! {

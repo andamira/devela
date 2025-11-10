@@ -88,7 +88,7 @@ fn count_list_items_with_split(document: &Html) -> Vec<String> {
                     if href.starts_with("_dep/_core")
                         || href.starts_with("_dep/_alloc")
                         || href.starts_with("_dep/_std")
-                        || href.starts_with("_info/examples")
+                        || href.starts_with("_doc/examples")
                         || href.starts_with("all/")
                     {
                         continue;

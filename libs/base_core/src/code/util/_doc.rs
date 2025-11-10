@@ -105,7 +105,7 @@ macro_rules! __doc {
     // $crate_id: the crate's name and html id anchor on the docs.
     vendor: $crate_id:literal) => {
         concat!("\n\n# Vendored\n\nThis is adapted work from [", $crate_id, "](",
-            $crate::doclink![custom devela "_info/vendored" @mod],
+            $crate::doclink![custom devela "_doc/vendored" @mod],
             "#", $crate_id, ").\n\n"
         )
     };
@@ -114,11 +114,11 @@ macro_rules! __doc {
     // // Shows the `Vendored` doc section and links to the *modifications* module.
     // vendor: $crate_id:literal, module:$mod_id:ident) => { concat!(
     //     "\n\n# Vendored\n\nThis is adapted work from [",
-    //     $crate_id, "][crate::_info::vendored::", $mod_id, "].\n\n"
+    //     $crate_id, "][crate::_doc::vendored::", $mod_id, "].\n\n"
     // )};
 
     (
-    // Assumes the path is in current directory. Used in `_info/vendored`.
+    // Assumes the path is in current directory. Used in `_doc/vendored`.
     //
     // $crate_id:  the crate's name and html id anchor on the docs.
     // $text_path: the path to the text file to include, explaining the modifications.
@@ -128,7 +128,7 @@ macro_rules! __doc {
     vendor_mod: $crate_id:literal, $mod_id:ident) => {
         #[doc = concat!(
             "# `", $crate_id,
-            "` modifications\n\n[*(↑)*][crate::_info::vendored#", $crate_id, "] ",
+            "` modifications\n\n[*(↑)*][crate::_doc::vendored#", $crate_id, "] ",
             include_str!(concat!("./", $crate_id, ".md"))
         )]
         pub mod $mod_id {}
@@ -139,7 +139,7 @@ macro_rules! __doc {
     // // $crate_id:  the crate's name and html id anchor on the docs.
     // // $text_path: the path to the text file to include, explaining the modifications.
     // vendor_mod: $crate_id:literal, $text_path:literal) => { concat!(
-    //     "# ", $crate_id, "\n\n[*(↑)*][crate::_info::vendored#", $crate_id, "] ",
+    //     "# ", $crate_id, "\n\n[*(↑)*][crate::_doc::vendored#", $crate_id, "] ",
     //     include_str!($text_path),
     // )};
 }

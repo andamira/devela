@@ -20,6 +20,7 @@ crate::structural_mods! { // _mods, _pub_mods
     }
     _pub_mods {
         #[doc(inline)]
+        #[cfg(feature = "term")]
         pub use super::sixel::_all::*;
     }
 }

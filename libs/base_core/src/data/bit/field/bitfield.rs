@@ -19,8 +19,8 @@
 ///
 /// # Examples
 /// See also the [bitfield] example.
-// #[doc = "\n\n[bitfield]: _info::examples::bitfield"]
-#[doc = crate::doclink!(custom devela "[bitfield]" "_info/examples/bitfield" @mod)]
+// #[doc = "\n\n[bitfield]: _doc::examples::bitfield"]
+#[doc = crate::doclink!(custom devela "[bitfield]" "_doc/examples/bitfield" @mod)]
 /// ```
 /// # use devela_base_core::bitfield;
 /// bitfield! {

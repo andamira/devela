@@ -4,7 +4,7 @@
 //!
 #![doc = include_str!("./Mod.md")]
 //
-// NOTE: imported from `../src/_info/mod.rs`.
+// NOTE: imported from `../src/_doc/mod.rs`.
 // NOTE: Have to use relative imports (super::*) instead of crate::*,
 // so that it can also work when compiling the private documentation.
 //

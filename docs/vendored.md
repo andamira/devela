@@ -42,58 +42,58 @@ See the linked modifications for detailed changes.
   as part of the [`Tuple`] trait ([*modifications*][M_tupl]).
 
 [argv]: https://crates.io/crates/argv/0.1.13
-  [M_argv]: https://github.com/andamira/devela/blob/main/src/_info/vendored/argv.md
+  [M_argv]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/argv.md
   [`IterArgsOsRef`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.IterArgsOsRef.html
   [`Env`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.Env.html#method.args_os_ref
 [bytehound-preload]: https://github.com/koute/bytehound/blob/77ea03c7ed90ad4f176c316cd837a77bc09aa6f3/preload/src/spin_lock.rs
-  [M_bytehound-preload]: https://github.com/andamira/devela/blob/main/src/_info/vendored/bytehound-preload.md
+  [M_bytehound-preload]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/bytehound-preload.md
   [`SpinLock`]: https://andamira.github.io/devela/latest/devela/work/sync/struct.SpinLock.html
   [`SpinLockGuard`]: https://andamira.github.io/devela/latest/devela/work/sync/struct.SpinLockGuard.html
 [cfg-if]: https://crates.io/crates/cfg-if/1.0.1
-  [M_cfg-if]: https://github.com/andamira/devela/blob/main/src/_info/vendored/cfg-if.md
+  [M_cfg-if]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/cfg-if.md
   [`cfg-if!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.cfg_if.html
 [const_list]: https://crates.io/crates/const_list/0.1.0
   [`ConstList`]: https://andamira.github.io/devela/latest/devela/data/list/struct.ConstList.html
 [crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.21
-  [M_crossbeam-utils]: https://github.com/andamira/devela/blob/main/src/_info/vendored/crossbeam-utils.md
+  [M_crossbeam-utils]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/crossbeam-utils.md
   [`CacheAlign`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.CacheAlign.html
 [etcetera]: https://crates.io/crates/etcetera/0.8.0
-  [M_etcetera]: https://github.com/andamira/devela/blob/main/src/_info/vendored/etcetera.md
+  [M_etcetera]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/etcetera.md
   [`AppEnv`]: https://andamira.github.io/devela/latest/devela/sys/env/trait.AppEnv.html
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
   [`fmt_or`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.ExtOption.html#tymethod.fmt_or
   [`fmt_or_else`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.ExtOption.html#tymethod.fmt_or_else
   [`fmt_or_empty`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.ExtOption.html#tymethod.fmt_or_empty
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
-  [M_fxhash]: https://github.com/andamira/devela/blob/main/src/_info/vendored/fxhash.md
+  [M_fxhash]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/fxhash.md
   [`HasherFx`]: https://andamira.github.io/devela/latest/devela/data/codec/hash/struct.HasherFx.html
 [mini-alloc]: https://crates.io/crates/mini-alloc/0.9.0
-  [M_mini-alloc]: https://github.com/andamira/devela/blob/main/src/_info/vendored/mini-alloc.md
+  [M_mini-alloc]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/mini-alloc.md
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
-  [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/_info/vendored/no_std_io.md
+  [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/no_std_io.md
   [`sys::io`]: https://andamira.github.io/devela/latest/devela/sys/io/
 [pollster]: https://crates.io/crates/pollster/0.3.0
-  [M_pollster]: https://github.com/andamira/devela/blob/main/src/_info/vendored/pollster.md
+  [M_pollster]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/pollster.md
   [`block_on`]: https://andamira.github.io/devela/latest/devela/work/future/trait.ExtFuture.html#method.block_on
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
-  [M_quickdiv]: https://github.com/andamira/devela/blob/main/src/_info/vendored/quickdiv.md
+  [M_quickdiv]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/quickdiv.md
   [`Divisor`]: https://andamira.github.io/devela/latest/devela/num/struct.Divisor.html
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
-  [M_stack_dst]: https://github.com/andamira/devela/blob/main/src/_info/vendored/stack_dst.md
+  [M_stack_dst]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stack_dst.md
   [`data::dst`]: https://andamira.github.io/devela/latest/devela/data/dst/index.html
 [stated-scope-guard]: https://crates.io/crates/stated-scope-guard/0.1.0
-  [M_stated-scope-guard]: https://github.com/andamira/devela/blob/main/src/_info/vendored/stated-scope-guard.md
+  [M_stated-scope-guard]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stated-scope-guard.md
   [`ScopeGuard`]: https://andamira.github.io/devela/latest/devela/code/struct.ScopeGuard.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
-  [M_static_assertions]: https://github.com/andamira/devela/blob/main/src/_info/vendored/static_assertions.md
+  [M_static_assertions]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/static_assertions.md
   [`const_assert!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.const_assert.html
   [`ConstBool`]: https://andamira.github.io/devela/latest/devela/num/logic/trait.ConstBool.html
 [tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
-  [M_tailcall-chunk]: https://github.com/andamira/devela/blob/main/src/_info/vendored/tailcall-chunk.md
+  [M_tailcall-chunk]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/tailcall-chunk.md
   [`VecChunk`]: https://andamira.github.io/devela/latest/devela/data/list/array/struct.VecChunk.html
 [tupl]: https://crates.io/crates/tupl/0.4.0
-  [M_tupl]: https://github.com/andamira/devela/blob/main/src/_info/vendored/tupl.md
+  [M_tupl]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/tupl.md
   [`Tuple`]: https://andamira.github.io/devela/latest/devela/data/list/tuple/trait.Tuple.html
 
 ## MIT licenses
@@ -119,27 +119,27 @@ See the linked modifications for detailed changes.
   as the [`FatPtr`] struct.
 
 [crunchy]: https://crates.io/crates/crunchy/0.2.3
-  [M_crunchy]: https://github.com/andamira/devela/blob/main/src/_info/vendored/crunchy.md
+  [M_crunchy]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/crunchy.md
   [`unroll!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.unroll.html
 [current]: https://crates.io/crates/current/0.1.2
-  [M_current]: https://github.com/andamira/devela/blob/main/src/_info/vendored/current.md
+  [M_current]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/current.md
   [`Current`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.Current.html
   [`CurrentGuard`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.CurrentGuard.html
 [encode]: https://crates.io/crates/encode/0.1.2
-  [M_encode]: https://github.com/andamira/devela/blob/main/src/_info/vendored/encode.md
+  [M_encode]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/encode.md
   [`data::codec`]: https://andamira.github.io/devela/latest/devela/data/codec/
 [grapheme_machine]: https://crates.io/crates/grapheme_machine/0.2.0
-  [M_grapheme_machine]: https://github.com/andamira/devela/blob/main/src/_info/vendored/grapheme_machine.md
+  [M_grapheme_machine]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/grapheme_machine.md
   [`GraphemeMachine`]: https://andamira.github.io/devela/latest/devela/text/grapheme/struct.GraphemeMachine.html
   [`text::grapheme`]: https://andamira.github.io/devela/latest/devela/text/grapheme/
 [icy_sixel]: https://crates.io/crates/icy_sixel/0.1.3
 [libsixel]: https://github.com/saitoha/libsixel
-  [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/_info/vendored/icy_sixel.md
+  [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/icy_sixel.md
   [`media::image::sixel`]: https://andamira.github.io/devela/latest/devela/media/image/sixel
 [musl]: https://git.musl-libc.org/cgit/musl/tag/?h=v1.2.5
   [`Linux`]: https://andamira.github.io/devela/latest/devela/os/linux/struct.Linux.html
 [object-id]: https://crates.io/crates/object-id/0.1.4
-  [M_object-id]: https://github.com/andamira/devela/blob/main/src/_info/vendored/object-id.md
+  [M_object-id]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/object-id.md
   [`IdPin`]: https://andamira.github.io/devela/latest/devela/data/uid/struct.IdPin.html
   [`IdPinBox`]: https://andamira.github.io/devela/latest/devela/data/uid/struct.IdPinBox.html
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
@@ -180,10 +180,10 @@ See the linked modifications for detailed changes.
   [`FONT_3_5`]: https://andamira.github.io/devela/latest/devela/media/font/const.FONT_3_5.html
   [`FONT_5_6`]: https://andamira.github.io/devela/latest/devela/media/font/const.FONT_5_6.html
 [jiff]: https://crates.io/crates/jiff/0.2.1
-  [M_jiff]: https://github.com/andamira/devela/blob/main/src/_info/vendored/jiff.md
+  [M_jiff]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/jiff.md
   [`TimeDelta`]: https://andamira.github.io/devela/latest/devela/phys/time/struct.TimeDelta.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
-  [M_pengyhash]: https://github.com/andamira/devela/blob/main/src/_info/vendored/pengy.md
+  [M_pengyhash]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/pengy.md
   [`HasherPengy`]: https://andamira.github.io/devela/latest/devela/data/codec/hash/struct.HasherPengy.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
   [`size_of_expr!`]: https://andamira.github.io/devela/latest/devela/sys/mem/macro.size_of_expr.html
