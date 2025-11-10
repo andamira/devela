@@ -1,4 +1,4 @@
-// devela::sys::mem::cache_align
+// devela_base_core::sys::mem::cache_align
 //
 //! Defines the `CacheAlign` struct.
 //
@@ -32,7 +32,7 @@
 /// # Examples
 /// Alignment and padding:
 /// ```
-/// # use devela::CacheAlign;
+/// # use devela_base_core::CacheAlign;
 /// let array = [CacheAlign::new(1i8), CacheAlign::new(2i8)];
 /// let addr1 = &*array[0] as *const i8 as usize;
 /// let addr2 = &*array[1] as *const i8 as usize;
@@ -46,7 +46,7 @@
 /// different cache lines so that concurrent threads pushing and popping elements don't invalidate
 /// each other's cache lines:
 /// ```
-/// # use devela::{CacheAlign, AtomicUsize};
+/// # use devela_base_core::{CacheAlign, AtomicUsize};
 /// struct Queue<T> {
 ///     head: CacheAlign<AtomicUsize>,
 ///     tail: CacheAlign<AtomicUsize>,
@@ -151,22 +151,22 @@ impl<T> CacheAlign<T> {
     /// The alignment of a cache line in the current platform.
     pub const ALIGN: usize = align_of::<Self>();
 
+    #[must_use]
     /// Pads and aligns a value to the length of a cache line.
     /// ```
-    /// # use devela::CacheAlign;
+    /// # use devela_base_core::CacheAlign;
     /// let padded_value = CacheAlign::new(1);
     /// ```
-    #[must_use]
     pub const fn new(t: T) -> CacheAlign<T> { CacheAlign::<T> { value: t } }
 
+    #[must_use]
     /// The inner value.
     /// ```
-    /// # use devela::CacheAlign;
+    /// # use devela_base_core::CacheAlign;
     /// let padded_value = CacheAlign::new(7);
     /// let value = padded_value.into_inner();
     /// assert_eq!(value, 7);
     /// ```
-    #[must_use]
     pub fn into_inner(self) -> T { self.value }
 
     #[must_use]
@@ -200,10 +200,10 @@ mod impls {
             Display::fmt(&self.value, f)
         }
     }
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+    #[cfg(any(base_safe_mem, not(feature = "unsafe_sync")))] // safe
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
     unsafe impl<T: Send> Send for CacheAlign<T> {}
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+    #[cfg(all(not(base_safe_mem), feature = "unsafe_sync"))] // unsafe
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
     unsafe impl<T: Sync> Sync for CacheAlign<T> {}
 }

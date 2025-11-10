@@ -275,7 +275,7 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - macros: `cswap!`, `const_join!`.
   - traits: `MemAligned`.
-  - types: `Mem`, `Ptr`, `Slice`.
+  - types: `CacheAlign`, `Mem`, `Ptr`, `Slice`.
 - rename `join!` macro to `const_join!`.
 - new macro `slice!`.
 - update `Slice`:
