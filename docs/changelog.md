@@ -192,7 +192,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### key
 - update `define_static_map!`:
-  - support custom attributes.
+  - support custom attributes and visibility.
   - add example items: `ExampleStaticMapConstU8`, `ExampleStaticMapTypeId`, `ExampleStaticMapU16`.
   - improve docs.
 

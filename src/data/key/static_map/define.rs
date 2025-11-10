@@ -6,17 +6,17 @@
 #[cfg(doc)]
 define_static_map! {
     #[doc = crate::_TAG_EXAMPLE!()]
-    const ExampleStaticMapConstU8, KEY: u8
+    pub const ExampleStaticMapConstU8, KEY: u8
 }
 #[cfg(doc)]
 define_static_map! {
     #[doc = crate::_TAG_EXAMPLE!()]
-    ExampleStaticMapU16, KEY: u16
+    pub ExampleStaticMapU16, KEY: u16
 }
 #[cfg(doc)]
 define_static_map! {
     #[doc = crate::_TAG_EXAMPLE!()]
-    typeid ExampleStaticMapTypeId
+    pub typeid ExampleStaticMapTypeId
 }
 
 /// Build a custom static hashmap.
@@ -57,10 +57,13 @@ define_static_map! {
 /// ```
 /// # use devela::define_static_map;
 /// // 1. Const hashmap
-/// define_static_map![const MapConst, KEY: u16];
+/// define_static_map![
+///     #[doc(hidden)] // supports attributes
+///     pub const MapConst, KEY: u16
+/// ];
 ///
 /// // 2. Runtime hashmap
-/// define_static_map![MapRuntime, KEY: u16];
+/// define_static_map![pub(crate) MapRuntime, KEY: u16];
 ///
 /// // 3. TypeId-keyed hashmap
 /// define_static_map![typeid MapTypeId];
@@ -133,34 +136,43 @@ macro_rules! define_static_map {
     // ----------------------------------------------------------------------------------------
     // Default constructor:
         $(#[$attr:meta])*
-        const $NAME:ident, KEY:$KEY:ty $(,)?
+        $vis:vis const $NAME:ident, KEY:$KEY:ty $(,)?
     ) => {
-        $crate::define_static_map![$(#[$attr])* const $NAME, KEY:$KEY,
+        $crate::define_static_map![
+            $(#[$attr])*
+            $vis const $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
     (// Custom Empty/Tomb, Default Hasher:
         $(#[$attr:meta])*
-        const $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
+        $vis:vis const $NAME:ident, KEY:$KEY:ty,
+        EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
     ) => {
-        $crate::define_static_map![$(#[$attr])* const $NAME, KEY:$KEY,
+        $crate::define_static_map![
+            $(#[$attr])*
+            $vis const $NAME, KEY:$KEY,
             EMPTY:$EMPTY, TOMB:$TOMB,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
     (// Custom Hasher, Default Empty/Tomb:
         $(#[$attr:meta])*
-        const $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
+        $vis:vis const $NAME:ident, KEY:$KEY:ty,
+        HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
         $crate::define_static_map![
-            $(#[$attr])* const $NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
+            $(#[$attr])*
+            $vis const $NAME, KEY:$KEY,
+            EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER: | $HASH_ARG | $HASH_EXPR
         ];
     };
     (// Fully customizable:
         $(#[$attr:meta])*
-        const $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
+        $vis:vis const $NAME:ident, KEY:$KEY:ty,
+        EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
         $(#[$attr])*
@@ -174,7 +186,7 @@ macro_rules! define_static_map {
         /// All hashing, probing, and insertion logic mirror the runtime variant,
         /// but with stricter compile-time guarantees and no stored marker fields.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub struct $NAME<K: Copy, V, const N: usize> {
+        $vis struct $NAME<K: Copy, V, const N: usize> {
             keys: [K; N],
             values: [V; N],
         }
@@ -490,34 +502,41 @@ macro_rules! define_static_map {
     // ----------------------------------------------------------------------------------------
     // Default constructor:
         $(#[$attr:meta])*
-        $NAME:ident, KEY:$KEY:ty $(,)?
+        $vis:vis $NAME:ident, KEY:$KEY:ty $(,)?
     ) => {
-        $crate::define_static_map![$(#[$attr])* $NAME, KEY:$KEY,
-            EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
+        $crate::define_static_map![
+            $(#[$attr])*
+            $vis $NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
     (// Custom Empty/Tomb, Default Hasher:
         $(#[$attr:meta])*
-        $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
+        $vis:vis $NAME:ident, KEY:$KEY:ty,
+        EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
     ) => {
-        $crate::define_static_map![$(#[$attr])* $NAME, KEY:$KEY,
-            EMPTY:$EMPTY, TOMB:$TOMB,
+        $crate::define_static_map![
+            $(#[$attr])*
+            $vis $NAME, KEY:$KEY, EMPTY:$EMPTY, TOMB:$TOMB,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
     (// Custom Hasher, Default Empty/Tomb:
         $(#[$attr:meta])*
-        $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
+        $vis:vis $NAME:ident, KEY:$KEY:ty,
+        HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
         $crate::define_static_map![
-            $(#[$attr])* NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
+            $(#[$attr])*
+            $vis $NAME, KEY:$KEY,
+            EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER: | $HASH_ARG | $HASH_EXPR
         ];
     };
     (// Fully customizable:
         $(#[$attr:meta])*
-        $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
+        $vis:vis $NAME:ident, KEY:$KEY:ty,
+        EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
         $(#[$attr])*
@@ -528,7 +547,7 @@ macro_rules! define_static_map {
         /// All operations follow the same hashing and probing logic as the const variant,
         /// but methods are non-const to allow greater flexibility.
         #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-        pub struct $NAME<K: Copy, V, const N: usize> {
+        $vis struct $NAME<K: Copy, V, const N: usize> {
             keys: [K; N],
             values: [V; N],
             empty: K,
@@ -844,7 +863,7 @@ macro_rules! define_static_map {
     // ----------------------------------------------------------------------------------------
     // Uses 64-bit hashes of `TypeId`s for the keys:
         $(#[$attr:meta])*
-        typeid $NAME:ident $(,)?) => {
+        $vis:vis typeid $NAME:ident $(,)?) => {
         $crate::define_static_map![
             $(#[$attr])*
             #[doc = "A `TypeId`-keyed static hashmap.\n\n\
@@ -852,7 +871,7 @@ macro_rules! define_static_map {
             type-oriented methods such as `insert_type`, `get_type`, and `remove_type`. \
             It is built on the runtime hashmap variant, inheriting its stored `empty` \
             and `tomb` markers and behavior.\n\n"]
-            $NAME, KEY: u64,
+            $vis $NAME, KEY: u64,
             EMPTY: type_id_hash::<Empty>(), TOMB: type_id_hash::<Tomb>(),
             HASHER: |bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
