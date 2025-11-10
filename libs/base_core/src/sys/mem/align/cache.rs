@@ -1,4 +1,4 @@
-// devela_base_core::sys::mem::cache_align
+// devela_base_core::sys::mem::align::cache
 //
 //! Defines the `CacheAlign` struct.
 //

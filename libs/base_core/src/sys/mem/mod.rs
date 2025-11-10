@@ -3,10 +3,9 @@
 #![doc = crate::_DOC_SYS_MEM!()]
 //
 
-mod aligned; // MemAligned
+mod align; // CacheAlign, MemAligned
 mod arena; // ArenaBytes
 mod borrow;
-mod cache_align; // CacheAlign
 mod cswap; // cswap!
 mod namespace; // Mem
 mod pin;
@@ -19,10 +18,9 @@ pub mod cell;
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
-            aligned::*,
+            align::_all::*,
             arena::_all::*,
             borrow::_all::*,
-            cache_align::*,
             cswap::*,
             namespace::*,
             pin::_all::*,

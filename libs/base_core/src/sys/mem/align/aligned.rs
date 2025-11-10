@@ -1,4 +1,4 @@
-// devela_base_core::sys::mem::aligned
+// devela_base_core::sys::mem::align::aligned
 //
 //! Defines [`MemAligned`].
 //
