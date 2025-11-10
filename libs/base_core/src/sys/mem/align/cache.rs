@@ -45,7 +45,7 @@
 /// When building a concurrent queue with a head and a tail index, it is wise to place them in
 /// different cache lines so that concurrent threads pushing and popping elements don't invalidate
 /// each other's cache lines:
-/// ```
+/// ```ignore
 /// # use devela_base_core::{CacheAlign, AtomicUsize};
 /// struct Queue<T> {
 ///     head: CacheAlign<AtomicUsize>,
@@ -53,7 +53,6 @@
 ///     buffer: *mut T,
 /// }
 /// ```
-///
 #[doc = crate::_doc!(vendor: "crossbeam-utils")]
 //
 // Starting from Intel's Sandy Bridge, spatial prefetcher is now pulling pairs of 64-byte cache

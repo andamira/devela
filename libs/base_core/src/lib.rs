@@ -109,8 +109,14 @@ pub mod all {
     };
 }
 
+// public, hidden items
+#[doc(hidden)]
 #[allow(unused_imports)]
-#[doc(hidden)] #[rustfmt::skip]
+pub use _hidden::*;
+mod _hidden {}
+
+#[doc(hidden)]
+#[allow(unused_imports)]
 pub(crate) use _crate_internals::*;
 #[doc(hidden)] #[rustfmt::skip]
 pub mod _crate_internals {
@@ -120,8 +126,8 @@ pub mod _crate_internals {
         ui::_crate_internals::*,
     };
 }
+#[doc(hidden)]
 #[allow(unused_imports)]
-#[doc(hidden)] #[rustfmt::skip]
 pub use _workspace_internals::*;
 #[doc(hidden)] #[rustfmt::skip]
 pub mod _workspace_internals {

@@ -1,13 +1,13 @@
 // devela_base_core::data::list::of
 
-// mod all; // Allof
 mod one; // Oneof
+// mod _wip_all; // Allof
 
 crate::structural_mods! { // _mods, _workspace_internals
     _mods {
         pub use super::{
-            // all::Allof,
             one::Oneof,
+            // _wip_all::*,
         };
     }
     _workspace_internals {
