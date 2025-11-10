@@ -272,13 +272,13 @@ Many feature gates are removed in order to make most features make always availa
 
 ### mem
 - new alias: `MaybeByte`.
-- new types: `ArenaBytes`, `ArenaHandle`, `ArenaMark`.
+- new types: `ArenaHandle`, `ExampleArena`.
+- new macros: `define_arena`, `slice!`.
 - move to [base]:
   - macros: `cswap!`, `const_join!`.
   - traits: `MemAligned`.
   - types: `CacheAlign`, `Mem`, `Ptr`, `Slice`.
 - rename `join!` macro to `const_join!`.
-- new macro `slice!`.
 - update `Slice`:
   - rename methods:
     - `copy_from_slice` to `copy`.

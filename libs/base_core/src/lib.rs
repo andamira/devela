@@ -113,7 +113,10 @@ pub mod all {
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub use _hidden::*;
-mod _hidden {}
+mod _hidden {
+    #[allow(unused_imports)]
+    pub use super::sys::_hidden::*;
+}
 
 #[doc(hidden)]
 #[allow(unused_imports)]

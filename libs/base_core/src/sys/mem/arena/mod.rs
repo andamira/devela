@@ -3,17 +3,30 @@
 //!
 //
 
-#[cfg(test)]
-mod tests;
-
-mod bytes; // ArenaBytes, ArenaMark
+mod define; // defina_arena!
 mod handle; // ArenaHandle
+mod internals;
 
-crate::structural_mods! { // _mods
+// WIPZONE
+// mod field; // ArenaField
+// mod handle_macro;
+// mod primitive; // ArenaPrimitive
+// mod recipe; // ArenaRecipe
+
+crate::structural_mods! { // _mods, hidden
     _mods {
         pub use super::{
-            bytes::*,
+            define::*,
             handle::*,
+            internals::*,
+            // WIPZONE
+            // handle_macro::*, // TODO
+            // field::*,
+            // primitive::*,
+            // recipe::*,
         };
+    }
+    _hidden {
+        pub use super::internals::*;
     }
 }

@@ -11,7 +11,7 @@ pub mod log;
 pub mod mem;
 pub mod net;
 
-crate::structural_mods! { // _pub_mods
+crate::structural_mods! { // _pub_mods, _hidden
     _pub_mods {
         pub use super::{
             arch::_all::*,
@@ -20,5 +20,8 @@ crate::structural_mods! { // _pub_mods
             mem::_all::*,
             net::_all::*,
         };
+    }
+    _hidden {
+        use super::mem::_hidden::*;
     }
 }

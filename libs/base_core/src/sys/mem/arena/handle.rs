@@ -6,13 +6,14 @@
 /// Links to a written an entry in an arena.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ArenaHandle {
-    pub(super) offset: usize,
-    pub(super) len: usize,
+    offset: usize,
+    len: usize,
 }
 #[rustfmt::skip]
 impl ArenaHandle {
     /// Creates a new handle.
-    pub(crate) const fn new(offset: usize, len: usize) -> Self { ArenaHandle { offset, len } }
+    // TEMP: public constructor
+    pub const fn new(offset: usize, len: usize) -> Self { ArenaHandle { offset, len } }
 
     /// Returns the length of the stored data.
     #[allow(clippy::len_without_is_empty)]

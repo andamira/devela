@@ -16,7 +16,7 @@ mod slice; // Slice
 
 pub mod cell;
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
         pub use super::{
             align::_all::*,
@@ -35,5 +35,8 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             cell::_all::*,
         };
+    }
+    _hidden {
+        pub use super::arena::_hidden::*;
     }
 }
