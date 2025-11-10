@@ -4,7 +4,20 @@
 //
 
 #[cfg(doc)]
-define_static_map![ExampleStaticMapU16, KEY: u16];
+define_static_map! {
+    #[doc = crate::_TAG_EXAMPLE!()]
+    const ExampleStaticMapConstU8, KEY: u8
+}
+#[cfg(doc)]
+define_static_map! {
+    #[doc = crate::_TAG_EXAMPLE!()]
+    ExampleStaticMapU16, KEY: u16
+}
+#[cfg(doc)]
+define_static_map! {
+    #[doc = crate::_TAG_EXAMPLE!()]
+    typeid ExampleStaticMapTypeId
+}
 
 /// Build a custom static hashmap.
 ///
@@ -25,8 +38,33 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 ///   They default to `MIN` and `MAX`, respectively, but can be customized.
 /// - The default hasher is [`HasherFx`][crate::HasherFx].
 ///
+/// # Variants
+/// The macro supports three construction modes:
+///
+/// | Kind | Invocation | Description |
+/// |------|-------------|--------------|
+#[doc = concat!["| **Const** | `define_static_map![const MyMap, KEY: u16]` |",
+"Generates a fully `const` hashmap with compile-time operations and const methods. |"]]
+#[doc = concat!["| **Runtime** | `define_static_map![MyMap, KEY: u16]` |",
+"Generates a non-const variant storing markers as struct fields, suitable for runtime mutation. |"]]
+#[doc = concat!["| **TypeId-based** | `define_static_map![typeid MyMap]` |",
+"Uses `TypeId` hashes as keys and provides type-oriented helper methods. |"]]
+///
 /// # Examples
 /// See the example type: [`ExampleStaticMapU16`].
+///
+/// Overview
+/// ```
+/// # use devela::define_static_map;
+/// // 1. Const hashmap
+/// define_static_map![const MapConst, KEY: u16];
+///
+/// // 2. Runtime hashmap
+/// define_static_map![MapRuntime, KEY: u16];
+///
+/// // 3. TypeId-keyed hashmap
+/// define_static_map![typeid MapTypeId];
+/// ```
 ///
 /// Basic usage
 /// ```
@@ -90,42 +128,58 @@ define_static_map![ExampleStaticMapU16, KEY: u16];
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! define_static_map {
-    // --------------------------------------------------------------------------------------------
-    (const // Default constructor
-        $NAME:ident, KEY:$KEY:ty $(,)?
+    (
+    // Const variant
+    // ----------------------------------------------------------------------------------------
+    // Default constructor:
+        $(#[$attr:meta])*
+        const $NAME:ident, KEY:$KEY:ty $(,)?
     ) => {
-        $crate::define_static_map![const $NAME, KEY:$KEY,
+        $crate::define_static_map![$(#[$attr])* const $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
-    (const // Custom Empty/Tomb, Default Hasher
-        $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
+    (// Custom Empty/Tomb, Default Hasher:
+        $(#[$attr:meta])*
+        const $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
     ) => {
-        $crate::define_static_map![const $NAME, KEY:$KEY,
+        $crate::define_static_map![$(#[$attr])* const $NAME, KEY:$KEY,
             EMPTY:$EMPTY, TOMB:$TOMB,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
-    (const // Custom Hasher, Default Empty/Tomb
-        $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
+    (// Custom Hasher, Default Empty/Tomb:
+        $(#[$attr:meta])*
+        const $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
-        $crate::define_static_map![const $NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
+        $crate::define_static_map![
+            $(#[$attr])* const $NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER: | $HASH_ARG | $HASH_EXPR
         ];
     };
-    (const // Fully customizable
-        $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
+    (// Fully customizable:
+        $(#[$attr:meta])*
+        const $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
-        #[doc = concat!("A custom static hashmap with `", stringify!($KEY), "` keys.")]
+        $(#[$attr])*
+        #[doc = concat!("A fully `const` static hashmap with compile-time `",
+            stringify!($KEY), "` keys.")]
+        ///
+        /// This variant defines its `EMPTY` and `TOMB` markers as **associated constants**
+        /// and exposes only `const fn` methods, allowing construction and use in
+        /// compile-time contexts.
+        ///
+        /// All hashing, probing, and insertion logic mirror the runtime variant,
+        /// but with stricter compile-time guarantees and no stored marker fields.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         pub struct $NAME<K: Copy, V, const N: usize> {
             keys: [K; N],
             values: [V; N],
         }
 
-        $crate::define_static_map![@shared $NAME, KEY:$KEY,
+        $crate::define_static_map![%shared $NAME, KEY:$KEY,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
 
@@ -232,7 +286,7 @@ macro_rules! define_static_map {
                 $crate::StaticMapEntry::Vacant($crate::unwrap![some_or tombstone_index, N])
             }
 
-            /* intropection */
+            /* introspection */
 
             /// Returns the number of occupied slots in the hashmap.
             pub const fn len(&self) -> usize {
@@ -431,35 +485,48 @@ macro_rules! define_static_map {
             }
         }
     };
-    // --------------------------------------------------------------------------------------------
-    ( // Default constructor
+    (
+    // Runtime variant
+    // ----------------------------------------------------------------------------------------
+    // Default constructor:
+        $(#[$attr:meta])*
         $NAME:ident, KEY:$KEY:ty $(,)?
     ) => {
-        $crate::define_static_map![$NAME, KEY:$KEY,
+        $crate::define_static_map![$(#[$attr])* $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
-    ( // Custom Empty/Tomb, Default Hasher
+    (// Custom Empty/Tomb, Default Hasher:
+        $(#[$attr:meta])*
         $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
     ) => {
-        $crate::define_static_map![ $NAME, KEY:$KEY,
+        $crate::define_static_map![$(#[$attr])* $NAME, KEY:$KEY,
             EMPTY:$EMPTY, TOMB:$TOMB,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
     };
-    ( // Custom Hasher, Default Empty/Tomb
+    (// Custom Hasher, Default Empty/Tomb:
+        $(#[$attr:meta])*
         $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
-        $crate::define_static_map![NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
+        $crate::define_static_map![
+            $(#[$attr])* NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER: | $HASH_ARG | $HASH_EXPR
         ];
     };
-    ( // Fully customizable
+    (// Fully customizable:
+        $(#[$attr:meta])*
         $NAME:ident, KEY:$KEY:ty, EMPTY:$EMPTY:expr, TOMB:$TOMB:expr,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
+        $(#[$attr])*
+        /// A runtime static hashmap with stored `empty` and `tomb` markers.
         ///
+        /// This variant stores its marker values as **fields**, enabling runtime
+        /// initialization, cloning, and dynamic configuration.
+        /// All operations follow the same hashing and probing logic as the const variant,
+        /// but methods are non-const to allow greater flexibility.
         #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
         pub struct $NAME<K: Copy, V, const N: usize> {
             keys: [K; N],
@@ -469,7 +536,7 @@ macro_rules! define_static_map {
         }
 
         // implement shared methods
-        $crate::define_static_map![@shared $NAME, KEY:$KEY,
+        $crate::define_static_map![%shared $NAME, KEY:$KEY,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
 
@@ -573,7 +640,7 @@ macro_rules! define_static_map {
                 $crate::StaticMapEntry::Vacant($crate::unwrap![some_or tombstone_index, N])
             }
 
-            /* intropection */
+            /* introspection */
 
             /// Returns the number of occupied slots in the hashmap.
             pub fn len(&self) -> usize {
@@ -772,10 +839,20 @@ macro_rules! define_static_map {
             }
         }
     };
-    // --------------------------------------------------------------------------------------------
-    (typeid // uses 64-bit hashes of `TypeId`s for the keys
-     $NAME:ident $(,)?) => {
-        $crate::define_static_map![$NAME, KEY: u64,
+    (
+    // TypeId runtime variant
+    // ----------------------------------------------------------------------------------------
+    // Uses 64-bit hashes of `TypeId`s for the keys:
+        $(#[$attr:meta])*
+        typeid $NAME:ident $(,)?) => {
+        $crate::define_static_map![
+            $(#[$attr])*
+            #[doc = "A `TypeId`-keyed static hashmap.\n\n\
+            This variant uses 64-bit hashes of Rust `TypeId`s as keys and adds \
+            type-oriented methods such as `insert_type`, `get_type`, and `remove_type`. \
+            It is built on the runtime hashmap variant, inheriting its stored `empty` \
+            and `tomb` markers and behavior.\n\n"]
+            $NAME, KEY: u64,
             EMPTY: type_id_hash::<Empty>(), TOMB: type_id_hash::<Tomb>(),
             HASHER: |bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
@@ -840,9 +917,11 @@ macro_rules! define_static_map {
             }
         }
     };
-
-    // --------------------------------------------------------------------------------------------
-    (@shared $NAME:ident, KEY:$KEY:ty, HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?) => {
+    (
+    // shared internal functionality
+    // ----------------------------------------------------------------------------------------
+    %shared $NAME:ident, KEY:$KEY:ty,
+    HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?) => {
         #[allow(unused)]
         impl<V, const N: usize> $NAME<$KEY, V, N> {
             /// Inserts a key-value pair, consuming the value.

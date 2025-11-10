@@ -190,6 +190,12 @@ Many feature gates are removed in order to make most features make always availa
 - make `Sort` public `quick_*` methods take `&mut self` as well.
 - update `array_init!` to require `ConstDefault` and `Vec` in scope if needed.
 
+### key
+- update `define_static_map!`:
+  - support custom attributes.
+  - add example items: `ExampleStaticMapConstU8`, `ExampleStaticMapTypeId`, `ExampleStaticMapU16`.
+  - improve docs.
+
 ### list
 - move to [base]:
   - type `ConstList`.

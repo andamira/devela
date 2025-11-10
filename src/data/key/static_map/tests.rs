@@ -3,6 +3,7 @@
 //!
 //
 // IMPROVE: make copy methods const, use const_assert
+// IMPROVE: remove the need for allocation.
 
 use crate::define_static_map;
 
