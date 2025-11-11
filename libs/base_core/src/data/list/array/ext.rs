@@ -1,4 +1,4 @@
-// devela::data::list::array::ext
+// devela_base_core::data::list::array::ext
 //
 //! Defines [`ArrayFmt`] and [`ExtArray`].
 //

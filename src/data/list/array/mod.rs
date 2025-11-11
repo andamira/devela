@@ -10,7 +10,6 @@
 mod adt; // DataArray
 mod d1; // 1-dimensional Array
 mod d2; // 2-dimensional Array2d
-mod ext; // ExtArray, ArrayFmt
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
@@ -25,7 +24,6 @@ crate::structural_mods! { // _mods
             adt::*,
             d1::_all::*,
             d2::_all::*,
-            ext::*,
         };
 
         #[cfg(feature = "alloc")]
@@ -34,6 +32,8 @@ crate::structural_mods! { // _mods
         // re-exports
         pub use super::_c::*;
         #[doc(inline)]
-        pub use devela_base_core::data::list::{ArrayFrom, array_init};
+        pub use devela_base_core::data::list::{
+            ArrayFrom, ExtArray, ArrayFmt, array_init,
+        };
     }
 }

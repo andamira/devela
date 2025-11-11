@@ -4,9 +4,7 @@
 //
 
 #[cfg(doc)]
-use crate::{Distance, Extent, Position};
-// #[cfg(all(doc, feature = "metric"))]
-// use crate::{Orientation, Stride};
+use crate::{Distance, Extent, Position, Orientation, Stride};
 
 /// Helps implementing common methods on metric types of the shape of `Name<T, D> { dim: [T; D] }`.
 ///
@@ -69,13 +67,12 @@ macro_rules! _impl_metric {
                 f.debug_struct(stringify!($Name)).field("dim", &self.dim).finish()
             }
         }
-        // WAIT
-        // impl<T: $crate::Display, const D: usize> $crate::Display for $Name<T, D> {
-        //     fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
-        //         use $crate::ExtArray;
-        //         write!(f, "{}", self.dim.fmt())
-        //     }
-        // }
+        impl<T: $crate::Display, const D: usize> $crate::Display for $Name<T, D> {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+                use $crate::ExtArray;
+                write!(f, "{}", self.dim.fmt())
+            }
+        }
 
         /* PartialEq, Eq, PartialOrd, Ord */
 
