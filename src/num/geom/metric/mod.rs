@@ -1,46 +1,34 @@
 // devela::num::geom::metric
 //
-//! Geometric measurement and spatial relationships.
+#![doc = crate::_DOC_NUM_GEOM_METRIC!()]
 //!
 //! This module defines core spatial metrics describing spatial properties
 //! in an orthogonal coordinate system, enabling structured traversal
 //! and measurement in geometric spaces.
 //
 
-mod helpers; // _impl_metric!
-
-mod distance; // Distance
-mod extent; // Extent
-mod position; // Position
-
 #[cfg(feature = "metric")]
 crate::items! {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
     mod angle; // Angle, AngleDirection, AngleKind
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
-    mod orientation; // Orientation
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
-    mod region; // Region
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
-    mod stride; // Stride
 }
 
 // WIPZONE
 // mod cycle;
 // mod radial_sectors;
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::structural_mods! { // _mods
     _mods {
-        pub use super::{distance::*, extent::*, position::*};
-
         #[cfg(feature = "metric")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "metric")))]
-        pub use super::{angle::*, orientation::*, region::*, stride::*};
-        // WIPZONE
-        // pub use super::cycle::*;
-        // pub use super::radial_sectors::*;
-    }
-    _crate_internals {
-        pub(crate) use super::helpers::*;
+        pub use super::{
+            angle::*,
+        };
+
+        // re-exports
+        #[doc(inline)]
+        pub use devela_base_core::{
+            Distance, Extent, Orientation, Position, Region, Stride,
+        };
     }
 }

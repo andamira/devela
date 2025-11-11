@@ -1,16 +1,18 @@
-// devela::num::geom::metric::helpers
+// devela_base_core::num::geom::metric::helpers
 //
 //! Defines helpers for implementing common methods on metric types.
 //
 
 #[cfg(doc)]
 use crate::{Distance, Extent, Position};
-#[cfg(all(doc, feature = "metric"))]
-use crate::{Orientation, Stride};
+// #[cfg(all(doc, feature = "metric"))]
+// use crate::{Orientation, Stride};
 
 /// Helps implementing common methods on metric types of the shape of `Name<T, D> { dim: [T; D] }`.
 ///
 /// It is used for [`Distance`], [`Extent`], [`Orientation`], [`Position`] and [`Stride`].
+#[doc(hidden)]
+#[macro_export]
 macro_rules! _impl_metric {
     ( // implement common utility traits:
       // - conversion From arrays and tuples
@@ -42,12 +44,13 @@ macro_rules! _impl_metric {
                 Self::new($crate::array_init![default [T; D], "safe_num", "unsafe_array"])
             }
         }
-        impl<T: $crate::ConstDefault, const D: usize> $crate::ConstDefault for $Name<T, D> {
-            const DEFAULT: Self = {
-                use crate::ConstDefault;
-                Self::new($crate::array_init![const_default [T; D]])
-            };
-        }
+        // WAIT
+        // impl<T: $crate::ConstDefault, const D: usize> $crate::ConstDefault for $Name<T, D> {
+        //     const DEFAULT: Self = {
+        //         use crate::ConstDefault;
+        //         Self::new($crate::array_init![const_default [T; D]])
+        //     };
+        // }
 
         /* Clone, Copy, Hash */
 
@@ -66,12 +69,13 @@ macro_rules! _impl_metric {
                 f.debug_struct(stringify!($Name)).field("dim", &self.dim).finish()
             }
         }
-        impl<T: $crate::Display, const D: usize> $crate::Display for $Name<T, D> {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
-                use $crate::ExtArray;
-                write!(f, "{}", self.dim.fmt())
-            }
-        }
+        // WAIT
+        // impl<T: $crate::Display, const D: usize> $crate::Display for $Name<T, D> {
+        //     fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+        //         use $crate::ExtArray;
+        //         write!(f, "{}", self.dim.fmt())
+        //     }
+        // }
 
         /* PartialEq, Eq, PartialOrd, Ord */
 
@@ -201,4 +205,5 @@ macro_rules! _impl_metric {
         }
     };
 }
-pub(crate) use _impl_metric;
+#[doc(hidden)]
+pub use _impl_metric;

@@ -1,12 +1,10 @@
-// devela::num::geom::metric::distance
+// devela_base_core::num::geom::metric::distance
 //
 //! Defines [`Distance`].
 //
 
-#[cfg(all(doc, feature = "metric"))]
-use crate::Orientation;
 #[cfg(doc)]
-use crate::Position;
+use crate::{Orientation, Position};
 
 #[doc = crate::_TAG_GEOM!()]
 /// A separation between two locations in `D`-dimensional space.

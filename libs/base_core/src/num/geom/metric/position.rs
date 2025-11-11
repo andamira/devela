@@ -1,12 +1,10 @@
-// devela::num::geom::metric::position
+// devela_base_core::num::geom::metric::position
 //
 //! Defines [`Position`].
 //
 
 #[cfg(doc)]
-use crate::Distance;
-#[cfg(all(doc, feature = "metric"))]
-use crate::Orientation;
+use crate::{Distance, Orientation};
 
 #[doc = crate::_TAG_GEOM!()]
 /// A location in `D`-dimensional space.

@@ -1,4 +1,4 @@
-// devela::num::geom::metric::stride
+// devela_base_core::num::geom::metric::stride
 //
 //! Defines [`Stride`].
 //

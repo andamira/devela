@@ -1,4 +1,4 @@
-// devela::num::geom::metric::distance
+// devela_base_core::num::geom::metric::distance
 //
 //! Defines [`Region`], [`RegionStrided`].
 //

@@ -1,4 +1,4 @@
-// devela::num::geom::metric::direction
+// devela_base_core::num::geom::metric::direction
 //
 //! Defines [`Orientation`].
 //

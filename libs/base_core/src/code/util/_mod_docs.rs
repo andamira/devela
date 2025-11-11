@@ -58,6 +58,8 @@ crate::CONST! { hidden macro_export,
 
     _DOC_NUM        = "Numerical types and math operations.";
     _DOC_NUM_FLOAT  = "Floating point functionality.";
+    _DOC_NUM_GEOM   = "Geometric types and operations, spatial constructs and analysis.";
+    _DOC_NUM_GEOM_METRIC   = "Geometric measurement and spatial relationships.";
     _DOC_NUM_INT    = "Integer functionality.";
     _DOC_NUM_NICHE  = "Specialized numeric types and behaviors.";
     _DOC_NUM_ORD    = "Comparing and ordering values.";

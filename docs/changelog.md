@@ -246,10 +246,14 @@ Many feature gates are removed in order to make most features make always availa
 ### geom
 
 #### metric
+- move to [base]:
+  - internal macro `_impl_metric!`.
+  - types: `Distance`, `Extent`, `Orientation`, `Position`, `Region`, `RegionStrided`, `Stride`.
+- remove `metric` feature gate for `Orientation`, `Region` & `Stride`.
 - impl 2d|3d common methods for all `num::geom::metric` types.
   - update `_impl_metric!` helper macro.
 - update `Extent`:
-  - add methods for 2|3d`length[_ref|_mut]`, `width[_ref|_mut]`, `height[_ref|_mut]`, `depth[_ref|_mut]`, `breadth[_ref|_mut]`.
+  - add methods for 2|3d: `length[_ref|_mut]`, `width[_ref|_mut]`, `height[_ref|_mut]`, `depth[_ref|_mut]`, `breadth[_ref|_mut]`.
 - remove `c_` prefix from int methods.
 
 ### niche

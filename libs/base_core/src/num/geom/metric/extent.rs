@@ -1,4 +1,4 @@
-// devela::num::geom::metric::extent
+// devela_base_core::num::geom::metric::extent
 //
 //! A geometrical extent.
 //
