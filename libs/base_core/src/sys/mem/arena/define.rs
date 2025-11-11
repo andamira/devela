@@ -6,11 +6,20 @@
 #[cfg(any(doc, test))]
 define_arena! {
     #[doc = crate::_TAG_EXAMPLE!()]
-    /// An example memory arena. Generated with [`define_arena!`].
-    pub ExampleArena;
-    /// An example memory arena handle. Generated with [`define_arena!`].
+    /// An example memory arena.
+    ///
+    /// Generated with [`define_arena!`].
+    pub ExampleArena<u8>;
     #[doc = crate::_TAG_EXAMPLE!()]
+    /// An example memory arena handle.
+    ///
+    /// Generated with [`define_arena!`].
     pub ExampleArenaHandle;
+    #[doc = crate::_TAG_EXAMPLE!()]
+    /// An example memory arena mark.
+    ///
+    /// Generated with [`define_arena!`].
+    pub ExampleArenaMark;
 }
 
 /// A custom memory arena generator.
@@ -26,41 +35,58 @@ define_arena! {
 macro_rules! define_arena {
     // Point of entry, defines the names
     (
-    $(#[$arena_attr:meta])*
-    $vis:vis $Arena:ident;
-    $(#[$handle_attr:meta])*
-    $hvis:vis $Handle:ident $(;)?
+     $(#[$arena_attr:meta])*
+     $vis:vis $Arena:ident<$T:ty>;
+     $(#[$handle_attr:meta])*
+     $hvis:vis $Handle:ident $(;)?
+     $(#[$mark_attr:meta])*
+     $mvis:vis $Mark:ident $(;)?
     ) => {
-        $crate::define_handle![$(#[$handle_attr])* $hvis $Handle];
+        $crate::define_handle![$(#[$handle_attr])* $hvis $Handle<$T>];
         $crate::define_arena![%arena
-            $(#[$arena_attr])* $vis $Arena,
+            $(#[$arena_attr])* $vis $Arena<$T>,
             $Handle,
+            $(#[$mark_attr])* $Mark,
             $crate::__Arena::<CAP>
         ];
     };
     // calls the necessary arms in order.
-    (%arena $(#[$arena_attr:meta])* $vis:vis $Arena:ident, $Handle:ty, $_:ty) => { $crate::paste! {
+    (%arena
+     $(#[$arena_attr:meta])*
+     $vis:vis $Arena:ident<$T:ty>,
+     $Handle:ident,
+     $(#[$mark_attr:meta])*
+     $Mark:ident,
+     $_:ty
+    ) => {
         $crate::define_arena![%main
-            $(#[$arena_attr])* $vis $Arena, // the arena type
+            $(#[$arena_attr])* $vis $Arena<$T>, // the arena type
             $Handle, // the handle type
-            [<$Arena Mark>], // the mark type
+            $Mark, // the mark type
             $_ // the internal ops arena namespace
         ];
-        $crate::define_arena![%prim $vis $Arena, $Handle, ($)];
-        $crate::define_arena![%mark $Arena, $(#[$arena_attr])* $vis [<$Arena Mark>]];
-
-        #[cfg(test)]
-        $crate::define_arena![%tests $Arena, [<test_ $Arena>]];
-    }};
+        $crate::define_arena![%prim $vis $Arena<$T>, $Handle, ($)];
+        $crate::define_arena![%mark $Arena<$T>, $(#[$mark_attr])* $vis $Mark];
+        $crate::paste! {
+            #[cfg(test)]
+            $crate::define_arena![%tests $Arena, [<test_ $Arena>]];
+        }
+    };
     // $Arena:   the name of the new generated arena.
     // $Handle:  the handle type used by the arena.
     // $_:       internal arena helper.
-    (%main $(#[$arena_attr:meta])* $vis:vis $Arena:ident, $Handle:ty, $Mark:ty, $_:ty) => {
+    (%main
+     $(#[$arena_attr:meta])*
+     $vis:vis $Arena:ident<$T:ty>,
+     $Handle:ident,
+     $Mark:ident,
+     $_:ty
+    ) => {
         $(#[$arena_attr])*
         #[derive(Clone, Debug)]
         $vis struct $Arena<const CAP: usize> {
             data: [$crate::MaybeByte; CAP],
-            len: usize,
+            len: $T,
         }
 
         /* misc. trait impls */
@@ -85,19 +111,19 @@ macro_rules! define_arena {
 
             #[inline(always)]
             /// Returns the total capacity.
-            $vis const fn capacity(&self) -> usize { CAP }
+            $vis const fn capacity(&self) -> $T { CAP as $T }
             #[inline(always)]
             /// Return the occupied length.
-            $vis const fn len(&self) -> usize { self.len }
+            $vis const fn len(&self) -> $T { self.len }
             #[inline(always)]
             /// Whether the arena is empty.
             $vis const fn is_empty(&self) -> bool { self.len == 0 }
             #[inline(always)]
             /// Returns the remaining byte capacity.
-            $vis const fn remaining(&self) -> usize { CAP - self.len }
+            $vis const fn remaining(&self) -> $T { CAP as $T - self.len }
             /// Returns `true` if n bytes fit in the remaining capacity.
             #[inline(always)]
-            $vis const fn can_write(&self, n: usize) -> bool { self.len + n <= CAP }
+            $vis const fn can_write(&self, n: $T) -> bool { self.len + n <= CAP as $T }
 
             #[inline(always)]
             /// Compares two arenas for equality.
@@ -119,21 +145,22 @@ macro_rules! define_arena {
             #[inline(always)]
             /// Returns a byte slice over all the written data.
             $vis const fn as_bytes(&self) -> &[u8] {
-                <$_>::slice_bytes(&self.data, 0, self.len)
+                <$_>::slice_bytes(&self.data, 0, self.len as usize)
             }
             /// Returns an exclusive byte slice over all the written data.
             #[inline(always)]
             $vis const fn as_bytes_mut(&mut self) -> &mut [u8] {
-                $crate::__Arena::<CAP>::slice_bytes_mut(&mut self.data, 0, self.len)
+                $crate::__Arena::<CAP>::slice_bytes_mut(&mut self.data, 0, self.len as usize)
             }
 
             /// Write a byte slice into the arena.
             $vis const fn push_bytes(&mut self, bytes: &[u8]) -> Option<$Handle> {
-                $crate::unwrap!(some_if? self.len.checked_add(bytes.len()), |v| v <= CAP);
+                $crate::unwrap!(some_if?
+                    self.len.checked_add(bytes.len() as $T), |v| v <= CAP as $T);
                 let start = self.len;
-                let handle = <$Handle>::new(start, bytes.len());
+                let handle = <$Handle>::new(start as $T, bytes.len() as $T);
                 $crate::whilst! { i in 0..bytes.len(); {
-                    $crate::__Arena::<CAP>::write_byte(&mut self.data, self.len, bytes[i]);
+                    $crate::__Arena::<CAP>::write_byte(&mut self.data, self.len as usize, bytes[i]);
                     self.len += 1;
                 }}
                 Some(handle)
@@ -141,15 +168,15 @@ macro_rules! define_arena {
 
             /// Read a shared slice over the written bytes.
             $vis const fn read_bytes(&self, h: $Handle) -> Option<&[u8]> {
-                if h.offset() + h.len() > self.len { return None }
-                Some($crate::__Arena::<CAP>::slice_bytes(&self.data,
-                    h.offset(), h.offset() + h.len()))
+                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
+                if h.len() + h.offset() > self.len { return None }
+                Some($crate::__Arena::<CAP>::slice_bytes(&self.data, hoff, hlen + hoff))
             }
             /// Read an exclusive slice over the written bytes.
             $vis const fn read_bytes_mut(&mut self, h: $Handle) -> Option<&mut [u8]> {
-                if h.offset() + h.len() > self.len { return None; }
-                Some($crate::__Arena::<CAP>::slice_bytes_mut(&mut self.data,
-                    h.offset(), h.offset() + h.len()))
+                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
+                if h.len() + h.offset() > self.len { return None }
+                Some($crate::__Arena::<CAP>::slice_bytes_mut(&mut self.data, hoff, hlen + hoff))
             }
 
             /// Replace the bytes for the handle. Lengths must match. Returns `false` otherwise.
@@ -167,26 +194,26 @@ macro_rules! define_arena {
 
             /// Write a single byte into the arena.
             $vis const fn push_byte(&mut self, byte: u8) -> Option<$Handle> {
-                if self.len + 1 > CAP { return None; }
-                <$_>::write_byte(&mut self.data, self.len, byte);
-                let handle = <$Handle>::new(self.len, 1);
+                if self.len as usize + 1 > CAP { return None; }
+                <$_>::write_byte(&mut self.data, self.len as usize, byte);
+                let handle = <$Handle>::new(self.len as $T, 1);
                 self.len += 1;
                 Some(handle)
             }
             /// Read a byte previously written.
-            $vis const fn read_byte(&self, handle: $Handle) -> Option<u8> {
-                if handle.offset() + 1 > self.len { return None }
-                Some(<$_>::read_byte(&self.data, handle.offset()))
+            $vis const fn read_byte(&self, h: $Handle) -> Option<u8> {
+                if h.offset() + 1 > self.len { return None }
+                Some(<$_>::read_byte(&self.data, h.offset() as usize))
             }
             /// Read a byte previously written.
-            $vis const fn read_byte_mut(&mut self, handle: $Handle) -> Option<&mut u8> {
-                if handle.offset() + 1 > self.len { return None }
-                Some(<$_>::read_byte_mut(&mut self.data, handle.offset()))
+            $vis const fn read_byte_mut(&mut self, h: $Handle) -> Option<&mut u8> {
+                if h.offset() + 1 > self.len { return None }
+                Some(<$_>::read_byte_mut(&mut self.data, h.offset() as usize))
             }
             /// Replace the bytes for `handle`. Length must match.
             $vis const fn replace_byte(&mut self, handle: $Handle, new: u8) -> bool {
                 if handle.len() != 1 { return false; }
-                <$_>::write_byte(&mut self.data, handle.offset(), new);
+                <$_>::write_byte(&mut self.data, handle.offset() as usize, new);
                 true
             }
 
@@ -196,44 +223,47 @@ macro_rules! define_arena {
             /// and spanning `count` items of its length.
             ///
             /// Returns `None` if...
-            $vis const fn view_bytes(&self, h: $Handle, count: usize) -> Option<&[u8]> {
-                let total = h.len() * count;
-                if h.offset() + total > self.len { return None; }
-                Some(<$_>::slice_bytes(&self.data, h.offset(), h.offset() + total))
+            $vis const fn view_bytes(&self, h: $Handle, count: $T) -> Option<&[u8]> {
+                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
+                let total = hlen * count as usize;
+                if hoff + total > self.len as usize { return None; }
+                Some(<$_>::slice_bytes(&self.data, hoff, hoff + total))
             }
 
             /// Returns an exclusive slice starting at `handle`,
             /// and spanning `count` items of its length.
             ///
             /// Returns `None` if...
-            $vis const fn view_bytes_mut(&mut self, h: $Handle, count: usize) -> Option<&mut [u8]> {
-                let total = h.len() * count;
-                if h.offset() + total > self.len { return None; }
-                Some(<$_>::slice_bytes_mut(&mut self.data, h.offset(), h.offset() + total))
+            $vis const fn view_bytes_mut(&mut self, h: $Handle, count: $T) -> Option<&mut [u8]> {
+                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
+                let total = hlen * count as usize;
+                if hoff + total > self.len as usize { return None; }
+                Some(<$_>::slice_bytes_mut(&mut self.data, hoff, hoff + total))
             }
 
             /* shrinking the arena */
 
             /// Truncates the arena if the handle corresponds to the last region.
             $vis const fn truncate_last(&mut self, h: $Handle) -> bool {
-                let end = h.offset() + h.len();
-                if end != self.len { return false; }
+                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
+                if hoff + hlen != self.len as usize { return false; }
                 self.len = h.offset();
                 true
             }
 
             /// Copies the last stored value into `dst` and removes it.
             $vis const fn pop_into(&mut self, h: $Handle, dst: &mut [u8]) -> bool {
-                if h.len() != dst.len() { return false; }
+                let hlen = h.len() as usize;
+                if hlen != dst.len() { return false; }
                 if let Some(src) = self.read_bytes(h) {
-                    $crate::whilst! { i in 0..h.len(); { dst[i] = src[i]; }}
+                    $crate::whilst! { i in 0..hlen; { dst[i] = src[i]; }}
                     self.truncate_last(h)
                 } else { false }
             }
         }
     };
     // $_d: the dollar sign passed as a token, as a trick to be able to nest repetitions.
-    (%prim $vis:vis $Arena:ident, $Handle:ty, ($_d:tt)) => {
+    (%prim $vis:vis $Arena:ident<$T:ty>, $Handle:ty, ($_d:tt)) => {
         #[allow(dead_code, private_interfaces)]
         /// Implements push, read and replace for primitives.
         impl<const CAP: usize> $Arena<CAP> {
@@ -297,57 +327,57 @@ macro_rules! define_arena {
                 );
                 impl_for_primitives!(str_len: u8, u16, u32, usize);
             };
-            (single-byte: $_d($T:ty),+ $_d(,)?) => {
-                $_d( impl_for_primitives!(%single-byte: $T); )+
+            (single-byte: $_d($P:ty),+ $_d(,)?) => {
+                $_d( impl_for_primitives!(%single-byte: $P); )+
             };
-            (%single-byte: $T:ty) => { $crate::paste! {
-                #[doc = "Pushes a `" $T "`. Returns its handle on success."]
+            (%single-byte: $P:ty) => { $crate::paste! {
+                #[doc = "Pushes a `" $P "`. Returns its handle on success."]
                 ///
                 /// # Errors
                 /// Returns `None` if there’s insufficient capacity.
                 #[inline(always)]
-                $vis const fn [<push_ $T>](&mut self, val: $T) -> Option<$Handle> {
+                $vis const fn [<push_ $P>](&mut self, val: $P) -> Option<$Handle> {
                     self.push_byte(val as u8)
                 }
-                #[doc = "Reads a `" $T "` from the given `handle`."]
+                #[doc = "Reads a `" $P "` from the given `handle`."]
                 ///
                 /// # Errors
                 /// Returns `None` if the handle is invalid or incomplete.
-                $vis const fn [<read_ $T>](&self, handle: $Handle) -> Option<$T> {
-                    if let Some(b) = self.read_byte(handle) { Some(b as $T) } else { None }
+                $vis const fn [<read_ $P>](&self, handle: $Handle) -> Option<$P> {
+                    if let Some(b) = self.read_byte(handle) { Some(b as $P) } else { None }
                 }
-                #[doc = "Replaces a `" $T "` from the given `handle`. Returns `true` on success."]
-                $vis const fn [<replace_ $T>](&mut self, handle: $Handle, val: $T) -> bool {
+                #[doc = "Replaces a `" $P "` from the given `handle`. Returns `true` on success."]
+                $vis const fn [<replace_ $P>](&mut self, handle: $Handle, val: $P) -> bool {
                     self.replace_byte(handle, val as u8)
                 }
             }};
-            (multi-byte: $_d($T:ty),+ $_d(,)?) => {
-                $_d( impl_for_primitives!(%multi-byte: $T); )+
+            (multi-byte: $_d($P:ty),+ $_d(,)?) => {
+                $_d( impl_for_primitives!(%multi-byte: $P); )+
             };
-            (%multi-byte: $T:ty) => { $crate::paste! {
-                #[doc = "Pushes a `" $T "` in little-endian order. Returns its handle on success."]
+            (%multi-byte: $P:ty) => { $crate::paste! {
+                #[doc = "Pushes a `" $P "` in little-endian order. Returns its handle on success."]
                 ///
                 /// # Errors
                 /// Returns `None` if there’s insufficient capacity.
                 #[inline(always)]
-                $vis const fn [<push_ $T>](&mut self, val: $T) -> Option<$Handle> {
+                $vis const fn [<push_ $P>](&mut self, val: $P) -> Option<$Handle> {
                     self.push_bytes(&val.to_le_bytes())
                 }
-                #[doc = "Reads a `" $T "` in little-endian order from the given `handle`."]
+                #[doc = "Reads a `" $P "` in little-endian order from the given `handle`."]
                 ///
                 /// # Errors
                 /// Returns `None` if the handle is invalid or incomplete.
-                $vis const fn [<read_ $T>](&self, handle: $Handle) -> Option<$T> {
-                    const T_SIZE: usize = size_of::<$T>();
+                $vis const fn [<read_ $P>](&self, handle: $Handle) -> Option<$P> {
+                    const T_SIZE: usize = size_of::<$P>();
                     if let Some(bytes) = self.read_bytes(handle) {
-                        Some($T::from_le_bytes(
+                        Some($P::from_le_bytes(
                             *$crate::unwrap![some? bytes.first_chunk::<{T_SIZE}>()]))
                     } else { None }
                 }
-                #[doc = "Replaces a `" $T "` from the given `handle`. Returns `true` on success."]
-                $vis const fn [<replace_ $T>](&mut self, handle: $Handle, val: $T) -> bool {
+                #[doc = "Replaces a `" $P "` from the given `handle`. Returns `true` on success."]
+                $vis const fn [<replace_ $P>](&mut self, handle: $Handle, val: $P) -> bool {
                     if let Some(b) = self.read_bytes_mut(handle) {
-                        if let Some(arr) = b.first_chunk_mut::<{size_of::<$T>()}>() {
+                        if let Some(arr) = b.first_chunk_mut::<{size_of::<$P>()}>() {
                             *arr = val.to_le_bytes();
                             return true;
                         }
@@ -355,45 +385,46 @@ macro_rules! define_arena {
                     false
                 }
             }};
-            (str_len: $_d($T:ty),+ $_d(,)?) => {
-                $_d( impl_for_primitives!(%str_len: $T); )+
+            (str_len: $_d($P:ty),+ $_d(,)?) => {
+                $_d( impl_for_primitives!(%str_len: $P); )+
             };
-            (%str_len: $T:ty) => { $crate::paste! {
-                #[doc = "Pushes a `&str` with a prefixed len of up to [`" $T "::MAX`] bytes."]
+            (%str_len: $P:ty) => { $crate::paste! {
+                #[doc = "Pushes a `&str` with a prefixed len of up to [`" $P "::MAX`] bytes."]
                 /// Returns its handle on success.
                 ///
                 /// # Errors
                 /// Returns `None` if there’s insufficient capacity or the string is too long.
-                $vis const fn [<push_str_ $T>](&mut self, val: &str) -> Option<$Handle> {
+                $vis const fn [<push_str_ $P>](&mut self, val: &str) -> Option<$Handle> {
                     let len = val.len();
-                    if len <= <$T>::MAX as usize {
-                        let prefix = $crate::unwrap![some? self.[<push_ $T>](len as $T)];
+                    if len <= <$P>::MAX as usize {
+                        let prefix = $crate::unwrap![some? self.[<push_ $P>](len as $P)];
                         let data = $crate::unwrap![some? self.push_bytes(&val.as_bytes())];
                         Some($Handle::new(prefix.offset(), prefix.len() + data.len()))
                     } else { None }
                 }
 
-                #[doc = "Reads a `&str` with a prefixed len of up to [`" $T "::MAX`] bytes"]
-                /// from the given `handle`.
+                #[doc = "Reads a `&str` with a prefixed len of up to [`" $P "::MAX`] bytes"]
+                /// from the given handle.
                 ///
                 /// # Errors
                 /// Returns `None` if the handle is invalid or incomplete.
-                $vis const fn [<read_str_ $T>](&self, handle: $Handle) -> Option<&str> {
-                    let len_size = size_of::<$T>();
-                    let handle = $Handle::new(handle.offset() + len_size, handle.len() - len_size);
-                    let s = $crate::unwrap![some? self.read_bytes(handle)];
+                $vis const fn [<read_str_ $P>](&self, h: $Handle) -> Option<&str> {
+                    let len_size = size_of::<$P>() as $T;
+                    // $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
+                    let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
+                    let s = $crate::unwrap![some? self.read_bytes(h)];
                     if let Ok(s) = $crate::Str::from_utf8(s) { Some(s) } else { None }
                 }
 
-                #[doc = "Replaces a `&str` with a prefixed len of up to [`" $T "::MAX`] bytes"]
-                /// from the given `handle`. Returns `true` on success.
+                #[doc = "Replaces a `&str` with a prefixed len of up to [`" $P "::MAX`] bytes"]
+                /// from the given handle. Returns `true` on success.
                 ///
                 /// Both strings have to have the same byte length.
-                $vis const fn [<replace_str_ $T>](&mut self, handle: $Handle, val: &str) -> bool {
-                    let len_size = size_of::<$T>();
-                    let handle = $Handle::new(handle.offset() + len_size, handle.len() - len_size);
-                    if handle.len() != val.len() { return false }
-                    if let Some(dst) = self.read_bytes_mut(handle) {
+                $vis const fn [<replace_str_ $P>](&mut self, h: $Handle, val: &str) -> bool {
+                    let len_size = size_of::<$P>() as $T;
+                    let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
+                    if h.len() as usize != val.len() { return false }
+                    if let Some(dst) = self.read_bytes_mut(h) {
                         dst.copy_from_slice(val.as_bytes());
                         return true;
                     }
@@ -403,14 +434,15 @@ macro_rules! define_arena {
         }
         use impl_for_primitives;
     };
-    (%mark $Arena:ident, $(#[$mark_attr:meta])* $vis:vis $Mark:ident) => {
+    (%mark $Arena:ident<$T:ty>, $(#[$mark_attr:meta])* $vis:vis $Mark:ident) => {
         $(#[$mark_attr])*
-        /// Append-only mark for snapshots and rollback in an arena.
+        // Append-only mark for snapshots and rollback in an arena.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        $vis struct $Mark(usize);
+        $vis struct $Mark($T);
         #[allow(dead_code)]
         impl $Mark {
-            const fn new(mark: usize) -> Self { $Mark(mark) }
+            // Constructor always private.
+            const fn new(mark: $T) -> Self { $Mark(mark) }
         }
     };
     (%tests $Arena:ident, $mod:ident) => {
