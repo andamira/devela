@@ -1,6 +1,6 @@
 // devela_base_core::data::list::array::ext
 //
-//! Defines [`ArrayFmt`] and [`ExtArray`].
+//! Defines [`ArrayFmt`] and [`ArrayExt`].
 //
 
 use crate::{
@@ -11,11 +11,11 @@ use crate::{
 #[doc = crate::_TAG_FMT!()]
 /// A formatting wrapper for core [arrays][array], implementing [`Display`] and [`Debug`].
 ///
-/// It is created by the [`ExtArray::fmt`] method.
+/// It is created by the [`ArrayExt::fmt`] method.
 #[repr(transparent)]
-pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
+pub struct ArrayFmt<'a, T: ArrayExt>(&'a T);
 
-/// Marker trait to prevent downstream implementations of the [`ExtArray`] trait.
+/// Marker trait to prevent downstream implementations of the [`ArrayExt`] trait.
 trait Sealed {}
 impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
@@ -24,7 +24,7 @@ impl<T, const LEN: usize> Sealed for [T; LEN] {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtArray: Sealed {
+pub trait ArrayExt: Sealed {
     /// The length of this array.
     const LEN: usize;
 
@@ -33,14 +33,14 @@ pub trait ExtArray: Sealed {
     fn fmt(&self) -> ArrayFmt<'_, Self> where Self: Sized { ArrayFmt(self) }
 }
 
-impl<T, const LEN: usize> ExtArray for [T; LEN] {
+impl<T, const LEN: usize> ArrayExt for [T; LEN] {
     const LEN: usize = LEN;
 }
 
 macro_rules! _impl_fmt {
     ($fmt_trait:ident, $array_trait:ident, $array_method:ident) => {
         // Private trait for arrays with elements that implement the given fmt trait.
-        trait $array_trait: ExtArray {
+        trait $array_trait: ArrayExt {
             fn $array_method(&self, f: &mut Formatter) -> FmtResult<()>;
         }
         // Implement for
@@ -72,7 +72,7 @@ _impl_fmt![UpperExp, ArrayUpperExp, fmt_upper_exp];
 
 /// Technically this trait is redundant since arrays of any size can impl `Debug`,
 /// nevertheless it's better if we can offer the same api in both cases.
-trait ArrayDebug: ExtArray {
+trait ArrayDebug: ArrayExt {
     fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()>;
 }
 impl<T: ArrayDebug> Debug for ArrayFmt<'_, T> {

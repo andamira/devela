@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    ConstDefault, Debug, Display, ExtArray, FmtResult, Formatter, Hash, Hasher, Ordering, Point,
+    ArrayExt, ConstDefault, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering, Point,
     array_init,
 };
 

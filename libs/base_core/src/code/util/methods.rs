@@ -171,7 +171,7 @@ mod tests {
     #[cfg(feature = "std")]
     #[cfg(not(feature = "dep_portable_atomic_util"))]
     fn test_async_functions_with_ext_future() {
-        use crate::ExtFuture;
+        use crate::FutureExt;
         assert_eq!(fetch("test.com").block_on(), "fetched");
         assert_eq!(fetch_data("api.com").block_on(), "fetched");
     }

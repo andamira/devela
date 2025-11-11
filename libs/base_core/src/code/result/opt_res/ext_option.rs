@@ -1,12 +1,12 @@
 // devela_base_core::code::result::option::ext
 //
-//! Defines the [`ExtOption`] trait.
+//! Defines the [`OptionExt`] trait.
 //
 
 use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
 use crate::Display;
 
-/// Marker trait to prevent downstream implementations of the [`ExtOption`] trait.
+/// Marker trait to prevent downstream implementations of the [`OptionExt`] trait.
 trait Sealed {}
 impl<T> Sealed for Option<T> {}
 
@@ -15,21 +15,20 @@ impl<T> Sealed for Option<T> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtResult`][crate::ExtResult],
-/// [`ExtOptRes`][crate::ExtOptRes].
+/// See also [`ResultExt`][crate::ResultExt], [`OptResExt`][crate::OptResExt].
 ///
 /// Based on work from:
 /// - <https://github.com/rust-lang/rust/issues/62358> (contains→has).
 /// - <https://github.com/rust-lang/rust/pull/87036> (reduce).
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtOption<T>: Sealed {
+pub trait OptionExt<T>: Sealed {
     /// Returns `true` if the option is a [`Some`] value having the given value.
     ///
     /// # Example
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::ExtOption;
+    /// use devela::OptionExt;
     /// assert_eq!(Some(1).has(&1), true);
     /// assert_eq!(Some(1).has(&2), false);
     /// assert_eq!(None::<u8>.has(&1), false);
@@ -48,7 +47,7 @@ pub trait ExtOption<T>: Sealed {
     /// ```
     /// # extern crate devela_base_core as devela;
     /// # use core::{cmp::min, ops::Add};
-    /// use devela::ExtOption;
+    /// use devela::OptionExt;
     /// let (x, y) = (Some(2), Some(4));
     ///
     /// assert_eq!(x.reduce(y, Add::add), Some(6));
@@ -70,7 +69,7 @@ pub trait ExtOption<T>: Sealed {
     /// # Example
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::ExtOption;
+    /// use devela::OptionExt;
     /// assert_eq!("42", format!("{}", Some(Box::new(42)).fmt_or("Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or("Nothing")));
     /// ```
@@ -90,7 +89,7 @@ pub trait ExtOption<T>: Sealed {
     /// # Example
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::ExtOption;
+    /// use devela::OptionExt;
     /// assert_eq!("42", format!("{}", Some(42).fmt_or_else(|| "Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or_else(|| "Nothing")));
     /// ```
@@ -101,7 +100,7 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// # use devela_base_core::ExtOption;
+    /// # use devela_base_core::OptionExt;
     /// assert_eq!("0x42", format!("{:#x}", Some(0x42).fmt_or_empty()));
     /// assert_eq!("", format!("{:#x}", None::<u8>.fmt_or_empty()));
     /// ```
@@ -109,7 +108,7 @@ pub trait ExtOption<T>: Sealed {
     fn fmt_or_empty(&self) -> OptionFmt<'_, T>;
 }
 
-impl<T> ExtOption<T> for Option<T> {
+impl<T> OptionExt<T> for Option<T> {
     #[inline(always)]
     fn has<U: PartialEq<T>>(&self, x: &U) -> bool {
         self.as_ref().is_some_and(|y| x == y)

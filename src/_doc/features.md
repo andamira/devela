@@ -176,7 +176,7 @@ To be able to use any unsafe functionality it's necessary to:
   - `unsafe_array`: faster array initialization, `UninitArray`.
   - `unsafe_ffi`: unsafe foreign function calls (WASM, OS, external C).
   - `unsafe_hint`: unreachable_unchecked, assert_unchecked.
-  - `unsafe_layout`: `MemPod`, DSTs in the stack, `ExtAny::downcast*`.
+  - `unsafe_layout`: `MemPod`, DSTs in the stack, `AnyExt::downcast*`.
   - `unsafe_niche`: unchecked niche constructors.
   - `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
   - `unsafe_slice`: extra slice methods, avoid bound checks.

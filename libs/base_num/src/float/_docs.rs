@@ -1,7 +1,7 @@
 // devela::num::float::shared_docs
 //
-//! Defines constants for shared documentation on [`Float`] and [`ExtFloat`].
-#![doc = crate::doclink!(custom devela "[`ExtFloat`]" "num/trait.ExtFloat.html")]
+//! Defines constants for shared documentation on [`Float`] and [`FloatExt`].
+#![doc = crate::doclink!(custom devela "[`FloatExt`]" "num/trait.FloatExt.html")]
 //
 //
 // TOC

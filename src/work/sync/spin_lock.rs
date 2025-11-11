@@ -8,7 +8,7 @@ use crate::{
     any_type_name, spin_loop,
 };
 #[cfg(feature = "std")]
-use crate::{ExtThread, Thread};
+use crate::{Thread, ThreadExt};
 
 /// A spinlock providing mutual exclusion without blocking.
 ///
@@ -65,9 +65,9 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
     ///
     /// This method employs an **adaptive backoff strategy** to minimize CPU contention:
     /// - Spins ([`spin_loop`]`()`) for `SPIN` iterations to avoid unnecessary thread switching.
-    /// - Yields ([`ExtThread::yield_now`]`()`) for the next `YIELD - SPIN` iterations,
+    /// - Yields ([`ThreadExt::yield_now`]`()`) for the next `YIELD - SPIN` iterations,
     ///   allowing other threads to progress.
-    /// - Sleeps ([`ExtThread::sleep_ns`]`(SLEEP)`) if `SLEEP > 0`,
+    /// - Sleeps ([`ThreadExt::sleep_ns`]`(SLEEP)`) if `SLEEP > 0`,
     ///   reducing CPU load under high contention.
     ///
     /// ## Environment

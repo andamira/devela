@@ -1,7 +1,7 @@
 // devela::num::int::fns
 
 #[cfg(not(feature = "std"))]
-use crate::ExtFloat;
+use crate::FloatExt;
 
 #[doc = crate::_TAG_NUM!()]
 /// The prime number theorem formula.

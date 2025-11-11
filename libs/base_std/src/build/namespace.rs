@@ -12,7 +12,7 @@ use std::{env, path::PathBuf};
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Memory-related operations.
 ///
-/// See also: [`ExtMem`][crate::ExtMem], [`MemAligned`][crate::MemAligned]
+/// See also: [`MemExt`][crate::MemExt], [`MemAligned`][crate::MemAligned]
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
 #[derive(Debug)]
 pub struct Build;

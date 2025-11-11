@@ -1,6 +1,6 @@
 // devela::work::thread::ext
 //
-//! Defines the [`ExtThread`] trait.
+//! Defines the [`ThreadExt`] trait.
 //
 
 use crate::{Duration, Thread, ThreadJoinHandle, ThreadScope};
@@ -8,7 +8,7 @@ use std::thread::{
     available_parallelism, current, panicking, park, park_timeout, scope, sleep, spawn, yield_now,
 };
 
-/// Marker trait to prevent downstream implementations of the [`ExtThread`] trait.
+/// Marker trait to prevent downstream implementations of the [`ThreadExt`] trait.
 trait Sealed {}
 impl Sealed for Thread {}
 
@@ -19,7 +19,7 @@ impl Sealed for Thread {}
 #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtThread: Sealed {
+pub trait ThreadExt: Sealed {
     /// Gets a handle to the thread that invokes it.
     ///
     /// See `std::thread::`[current].
@@ -81,4 +81,4 @@ pub trait ExtThread: Sealed {
     /// See `std::thread::`[yield_now].
     fn yield_now() { yield_now() }
 }
-impl ExtThread for Thread {}
+impl ThreadExt for Thread {}

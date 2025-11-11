@@ -10,7 +10,7 @@ mod reexports;
 
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-mod ext; // ExtPath
+mod ext; // PathExt
 
 crate::structural_mods! { // _mods
     _mods {

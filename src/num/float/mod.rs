@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_NUM_FLOAT!()]
 //
 
-mod ext_float; // ExtFloat
+mod ext_float; // FloatExt
 mod float_const; // FloatConst
 mod reexports; // core::num::FloatCategory
 mod wrapper; // Float

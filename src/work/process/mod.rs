@@ -8,7 +8,7 @@
 crate::mod_path!(std _s "../../../libs/base_std/src/work/process/reexports.rs");
 
 #[cfg(feature = "std")]
-mod ext; // ExtProcess
+mod ext; // ProcessExt
 
 crate::structural_mods! { // _mods
     _mods {

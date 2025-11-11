@@ -1,12 +1,12 @@
 // devela::work::process::ext
 //
-//! Defines the [`ExtProcess`] trait.
+//! Defines the [`ProcessExt`] trait.
 //
 
 use crate::{OsStr, Process, ProcessCommand};
 use std::process::{abort, exit, id};
 
-/// Marker trait to prevent downstream implementations of the [`ExtThread`] trait.
+/// Marker trait to prevent downstream implementations of the [`ProcessExt`] trait.
 trait Sealed {}
 impl Sealed for Process {}
 
@@ -17,7 +17,7 @@ impl Sealed for Process {}
 #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtProcess: Sealed {
+pub trait ProcessExt: Sealed {
     /// Constructs a new `ProcessCommand` for launching the `program`.
     ///
     /// See `ProcessCommand::`[new][ProcessCommand::new].
@@ -44,4 +44,4 @@ pub trait ExtProcess: Sealed {
     #[must_use] #[rustfmt::skip]
     fn id() -> u32 { id() }
 }
-impl ExtProcess for Process {}
+impl ProcessExt for Process {}

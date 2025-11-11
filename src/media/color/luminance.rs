@@ -7,7 +7,7 @@
 use super::*; // IMPROVE: specify
 use crate::NumConst;
 #[allow(unused_imports)]
-use crate::{ExtFloat, Float};
+use crate::{Float, FloatExt};
 
 /// A generic luminance-like component.
 ///

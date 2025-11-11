@@ -4,21 +4,21 @@
 //
 
 use crate::{
-    Binary, Debug, Display, ExtOption, FmtResult, Formatter, LowerExp, LowerHex, Octal, Pointer,
+    Binary, Debug, Display, FmtResult, Formatter, LowerExp, LowerHex, Octal, OptionExt, Pointer,
     UpperExp, UpperHex,
 };
 
 #[doc = crate::_TAG_FMT!()]
-/// The type returned from [`ExtOption::fmt_or_empty`].
+/// The type returned from [`OptionExt::fmt_or_empty`].
 #[derive(Eq, PartialEq)]
 pub struct OptionFmt<'t, T>(pub(super) &'t Option<T>);
 
 #[doc = crate::_TAG_FMT!()]
-/// The type returned from [`ExtOption::fmt_or`].
+/// The type returned from [`OptionExt::fmt_or`].
 pub struct OptionFmtOr<'t, T, U>(pub(super) &'t Option<T>, pub(super) U);
 
 #[doc = crate::_TAG_FMT!()]
-/// The type returned from [`ExtOption::fmt_or_else`].
+/// The type returned from [`OptionExt::fmt_or_else`].
 pub struct OptionFmtOrElse<'t, T, F>(pub(super) &'t Option<T>, pub(super) F);
 
 impl<T> Copy for OptionFmt<'_, T> {}

@@ -1,6 +1,6 @@
 // devela::code::any::ext
 //
-//! Defines the [`ExtAny`] trait.
+//! Defines the [`AnyExt`] trait.
 //
 // - WAIT: (const) [type_name](https://github.com/rust-lang/rust/issues/63084)
 // - WAIT: [trait_upcasting](https://github.com/rust-lang/rust/issues/65991)
@@ -11,10 +11,10 @@ use core::any::type_name_of_val;
 #[cfg(feature = "alloc")]
 use crate::Box;
 
-/// Marker trait to prevent downstream implementations of the [`ExtAny`] trait.
+/// Marker trait to prevent downstream implementations of the [`AnyExt`] trait.
 trait Sealed {}
 impl<T: ?Sized + Any> Sealed for T {}
-impl<T: ?Sized + Any> ExtAny for T {}
+impl<T: ?Sized + Any> AnyExt for T {}
 
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing convenience methods for `T:`[`Any`].
@@ -22,7 +22,7 @@ impl<T: ?Sized + Any> ExtAny for T {}
 /// This trait is sealed and cannot be implemented manually.
 #[rustfmt::skip]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtAny: Any + Sealed {
+pub trait AnyExt: Any + Sealed {
 
     /* type */
 
@@ -30,7 +30,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::ExtAny;
+    /// use devela::AnyExt;
     ///
     /// let x = 5;
     /// assert_eq!(x.type_of(), i32::type_id());
@@ -42,7 +42,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::ExtAny;
+    /// use devela::AnyExt;
     ///
     /// let x = 5;
     /// assert_eq!(x.type_of(), i32::type_id());
@@ -54,7 +54,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::ExtAny;
+    /// use devela::AnyExt;
     ///
     /// let x = 5;
     /// assert_eq!(x.type_name(), "i32");
@@ -68,7 +68,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::ExtAny;
+    /// use devela::AnyExt;
     ///
     /// let val = 5;
     /// assert!(val.type_is::<i32>());
@@ -101,7 +101,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::{Any, ExtAny};
+    /// use devela::{Any, AnyExt};
     ///
     /// let val = 5;
     /// let any: &dyn Any = &val as &dyn Any;
@@ -114,7 +114,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::{Any, ExtAny};
+    /// use devela::{Any, AnyExt};
     ///
     /// let mut x = 5;
     /// let any: &mut dyn Any = x.as_any_mut();
@@ -127,7 +127,7 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::{Any, ExtAny};
+    /// use devela::{Any, AnyExt};
     ///
     /// let x = Box::new(5);
     /// let any: Box<dyn Any> = x.as_any_box();
@@ -147,7 +147,7 @@ pub trait ExtAny: Any + Sealed {
     /// # Example
     /// ```
     /// use core::fmt::Display;
-    /// use devela::{Any, ExtAny};
+    /// use devela::{Any, AnyExt};
     ///
     /// trait Trait: Any + Display {}
     /// impl Trait for i32 {}
@@ -173,7 +173,7 @@ pub trait ExtAny: Any + Sealed {
     /// // in the stack:
     /// # #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))] // FIX
     /// {
-    ///     use devela::{Any, DstArray, DstStack, DstValue, ExtAny};
+    ///     use devela::{Any, DstArray, DstStack, DstValue, AnyExt};
     ///     let v = DstValue::<dyn Trait, DstArray<usize, 2>>::new(7, |v| v as _).unwrap();
     ///     if let Some(n) = (*v).downcast_ref::<i32>() {
     ///         assert_eq![n, &7_i32];
@@ -213,7 +213,7 @@ pub trait ExtAny: Any + Sealed {
 
 #[cfg(test)]
 mod tests {
-    use crate::ExtAny;
+    use crate::AnyExt;
 
     // IMPROVE: WAIT:closure test Closure as well
     #[test]

@@ -1,11 +1,11 @@
 // devela::sys::mem::ext
 //
-//! Defines [`ExtMem`], An extension trait for memory management over `T`.
+//! Defines [`MemExt`], An extension trait for memory management over `T`.
 //
 
 use super::Mem;
 
-impl<T: ?Sized> ExtMem for T {}
+impl<T: ?Sized> MemExt for T {}
 
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait for type memory information and manipulation.
@@ -13,7 +13,7 @@ impl<T: ?Sized> ExtMem for T {}
 /// This trait is automatically implemented for every `?Sized` type,
 /// although most methods are only available where `Self: Sized`.
 #[rustfmt::skip]
-pub trait ExtMem {
+pub trait MemExt {
     /// Know whether dropping values of this type matters, in compile-time.
     const NEEDS_DROP: bool = Mem::needs_drop::<Self>();
 

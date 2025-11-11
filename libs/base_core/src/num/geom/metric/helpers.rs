@@ -4,7 +4,7 @@
 //
 
 #[cfg(doc)]
-use crate::{Distance, Extent, Position, Orientation, Stride};
+use crate::{Distance, Extent, Orientation, Position, Stride};
 
 /// Helps implementing common methods on metric types of the shape of `Name<T, D> { dim: [T; D] }`.
 ///
@@ -69,7 +69,7 @@ macro_rules! _impl_metric {
         }
         impl<T: $crate::Display, const D: usize> $crate::Display for $Name<T, D> {
             fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
-                use $crate::ExtArray;
+                use $crate::ArrayExt;
                 write!(f, "{}", self.dim.fmt())
             }
         }

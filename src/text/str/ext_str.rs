@@ -1,6 +1,6 @@
 // devela::text::ext::slice
 //
-//! Defines the [`ExtStr`] trait.
+//! Defines the [`StrExt`] trait.
 //
 // WAIT: [str_as_str](https://github.com/rust-lang/rust/issues/130366)
 // WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
@@ -10,7 +10,7 @@ use crate::{Arc, Box, Rc};
 use crate::{Digits, Slice, Str, is};
 crate::_use! {basic::from_utf8}
 
-/// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
+/// Marker trait to prevent downstream implementations of the [`StrExt`] trait.
 trait Sealed {}
 impl Sealed for str {}
 
@@ -18,7 +18,7 @@ impl Sealed for str {}
 /// Extension trait providing additional methods for [`&str`].
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtStr: Sealed {
+pub trait StrExt: Sealed {
     /// Converts the string slice into a `Box<str>`.
     ///
     /// Allows single ownership with exact allocation,
@@ -43,7 +43,7 @@ pub trait ExtStr: Sealed {
     /// and returns a reference to the new `&str`.
     /// # Examples
     /// ```
-    /// use devela::ExtStr;
+    /// use devela::StrExt;
     ///
     /// let mut buf = [0_u8; 12];
     /// let repeated = "ay".repeat_into(3, &mut buf);
@@ -67,7 +67,7 @@ pub trait ExtStr: Sealed {
     /// with a `separator` positioned after the immediately preceding number.
     /// # Examples
     /// ```
-    /// use devela::ExtStr;
+    /// use devela::StrExt;
     ///
     /// let mut buf = [0; 15];
     /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, '*'));
@@ -86,7 +86,7 @@ pub trait ExtStr: Sealed {
     fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str;
 }
 
-impl ExtStr for str {
+impl StrExt for str {
     #[cfg(feature = "alloc")]
     fn to_box(&self) -> Box<str> {
         Box::from(self)

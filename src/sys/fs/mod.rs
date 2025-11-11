@@ -8,7 +8,7 @@
 
 crate::mod_path!(std _s "../../../libs/base_std/src/sys/fs/reexports.rs");
 
-mod path; // ExtPath, Path*, sys::path::*
+mod path; // PathExt, Path*, sys::path::*
 
 #[cfg(feature = "std")]
 crate::items! {
@@ -19,7 +19,7 @@ crate::items! {
 }
 
 // WIP ZONE
-// mod ext; // ExtFile
+// mod ext; // FileExt
 
 crate::structural_mods! { // _mods
     _mods {

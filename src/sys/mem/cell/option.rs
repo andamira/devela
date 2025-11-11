@@ -1,6 +1,6 @@
 // devela::sys::mem::cell::option
 //
-//! Defines [`ExtCellOption`].
+//! Defines [`CellOptionExt`].
 //
 
 use crate::Cell;
@@ -13,7 +13,7 @@ impl<T> Sealed for Cell<Option<T>> {}
 /// Extension trait providing additional methods for `Cell<Option>`.
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtCellOption<T>: Sealed {
+pub trait CellOptionExt<T>: Sealed {
     /// Modifies the value inside the `Cell<Option<T>>` by applying the provided closure
     /// to a mutable reference of the current value if present.
     ///
@@ -21,7 +21,7 @@ pub trait ExtCellOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::{Cell, ExtCellOption};
+    /// use devela::{Cell, CellOptionExt};
     ///
     /// let cell = Cell::new(Some(10));
     /// cell.modify(|x| x + 5);
@@ -35,7 +35,7 @@ pub trait ExtCellOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::{Cell, ExtCellOption};
+    /// use devela::{Cell, CellOptionExt};
     ///
     /// let cell = Cell::new(Some(10));
     /// let old = cell.modify_ret(|x| x + 5);
@@ -53,7 +53,7 @@ pub trait ExtCellOption<T>: Sealed {
     ///
     /// # Example
     /// ```
-    /// use devela::{Cell, ExtCellOption};
+    /// use devela::{Cell, CellOptionExt};
     ///
     /// let cell = Cell::new(Some(10));
     /// let result = cell.modify_mut(|x| {
@@ -68,7 +68,7 @@ pub trait ExtCellOption<T>: Sealed {
     fn modify_mut<R, F: FnOnce(&mut T) -> R>(&self, func: F) -> Option<R>;
 }
 
-impl<T> ExtCellOption<T> for Cell<Option<T>> {
+impl<T> CellOptionExt<T> for Cell<Option<T>> {
     fn modify<F: FnOnce(T) -> T>(&self, func: F) {
         let mut value = self.take();
         // If the value exists, apply the function and store it back

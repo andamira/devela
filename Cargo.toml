@@ -405,7 +405,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 		# "devela_base_alloc?/unsafe_hint", "devela_base_std?/unsafe_hint",
 		# "devela_macros?/unsafe_hint",
 	]
-	unsafe_layout  = [ # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*
+	unsafe_layout  = [ # MemPod, DSTs in the stack, AnyExt::downcast*, Mem::*
 		"devela_base_core/unsafe_layout",
 		"devela_base_text/unsafe_layout",
 		# "devela_base_alloc?/unsafe_layout", "devela_base_std?/unsafe_layout",

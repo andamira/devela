@@ -5,7 +5,7 @@
 
 #[allow(unused_imports)]
 #[cfg(not(feature = "std"))]
-use crate::ExtFloat;
+use crate::FloatExt;
 use crate::{Int, Vector, concat as cc, stringify as fy, unwrap};
 
 /* common methods */

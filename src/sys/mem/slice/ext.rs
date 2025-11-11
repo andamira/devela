@@ -1,13 +1,13 @@
 // devela::sys::mem::slice::ext
 //
-//! Defines [`ExtSlice`].
+//! Defines [`SliceExt`].
 //
 
 use super::Slice;
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
 
-/// Marker trait to prevent downstream implementations of the [`ExtSlice`] trait.
+/// Marker trait to prevent downstream implementations of the [`SliceExt`] trait.
 trait Sealed {}
 impl<T> Sealed for [T] {}
 impl<T> Sealed for &[T] {}
@@ -26,7 +26,7 @@ impl<T> Sealed for Vec<T> {}
 #[doc = crate::doclink!(custom devela "[`slice!`]" "sys/mem/macro.slice.html")]
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtSlice<T>: Sealed {
+pub trait SliceExt<T>: Sealed {
     /* split */
 
     /// Returns a left subslice of `slice` with the given maximum `len`.
@@ -77,7 +77,7 @@ pub trait ExtSlice<T>: Sealed {
     /// Panics if the length of the slice is less than the length of the array.
     /// # Examples
     /// ```
-    /// # use devela::ExtSlice;
+    /// # use devela::SliceExt;
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// ```
@@ -95,7 +95,7 @@ pub trait ExtSlice<T>: Sealed {
     /// Converts `&[T]` to `Vec<U>` when `U` implements `From<T>`.
     /// # Examples
     /// ```
-    /// # use devela::ExtSlice;
+    /// # use devela::SliceExt;
     /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec::<i16>()];
     /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec::<i16>()];
     /// ```
@@ -110,7 +110,7 @@ pub trait ExtSlice<T>: Sealed {
     /// Tries to convert `&[T]` to `Vec<U>` when `U` implements `TryFrom<T>`.
     /// # Examples
     /// ```
-    /// # use devela::ExtSlice;
+    /// # use devela::SliceExt;
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec()];
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec::<_, i32>()];
     /// ```
@@ -129,7 +129,7 @@ pub trait ExtSlice<T>: Sealed {
 ///
 /// See also [`Slice`][crate::Slice] for *const* methods.
 #[cfg_attr(nightly_doc, doc(notable_trait))]
-pub trait ExtSliceMut<T>: ExtSlice<T> {
+pub trait SliceExtMut<T>: SliceExt<T> {
     /* split */
 
     /// Returns a mutable left subslice of `slice` with the given maximum `len`.
@@ -167,7 +167,7 @@ pub trait ExtSliceMut<T>: ExtSlice<T> {
 
 macro_rules! impl_ext_slice {
     ($t:ty, for $for:ty, impl: $($impl:tt)*) => {
-        impl<$($impl)*> ExtSlice<$t> for $for {
+        impl<$($impl)*> SliceExt<$t> for $for {
             /* split */
 
             fn slice_lsplit(&self, len: usize) -> &[T] { Slice::lsplit(self, len) }
@@ -221,7 +221,7 @@ macro_rules! impl_ext_slice {
     (mut: $t:ty, for $for:ty, impl: $($impl:tt)*) => {
         impl_ext_slice![$t, for $for, impl: $($impl)*];
 
-        impl<$($impl)*> ExtSliceMut<$t> for $for {
+        impl<$($impl)*> SliceExtMut<$t> for $for {
             /* split */
 
             fn slice_lsplit_mut(&mut self, len: usize) -> &mut [T] { Slice::lsplit_mut(self, len) }

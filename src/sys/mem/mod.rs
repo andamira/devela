@@ -16,12 +16,12 @@
 
 mod alloc; // Alloc, ::alloc::alloc::*
 mod borrow; // Mow
-mod ext; // ExtMem
+mod ext; // MemExt
 mod pin; // Pinned, ::core::pin::*
 mod ptr; // Ptr, ::core::ptr::*
 mod reexports;
 mod size; // size_of_expr!, BitSized, ByteSized,
-mod slice; // Slice, ExtSlice
+mod slice; // Slice, SliceExt
 mod storage; // Bare, BareBox, Boxed, Storage
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]

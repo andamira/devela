@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{Angle, AngleDirection, AngleKind, Cmp, ExtFloat, Float, FloatConst};
+use crate::{Angle, AngleDirection, AngleKind, Cmp, Float, FloatConst, FloatExt};
 
 /// impl `Angle` methods with a floating-point representation.
 ///

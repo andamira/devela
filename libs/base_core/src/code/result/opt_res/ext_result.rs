@@ -1,9 +1,9 @@
 // devela_base_core::code::result::ext
 //
-//! Defines the [`ExtResult`] trait.
+//! Defines the [`ResultExt`] trait.
 //
 
-/// Marker trait to prevent downstream implementations of the [`ExtResult`] trait.
+/// Marker trait to prevent downstream implementations of the [`ResultExt`] trait.
 trait Sealed {}
 impl<T, E> Sealed for Result<T, E> {}
 
@@ -12,19 +12,19 @@ impl<T, E> Sealed for Result<T, E> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtOption`][crate::ExtOption].
+/// See also [`OptionExt`][crate::OptionExt], [`OptResExt`][crate::OptResExt].
 ///
 /// Based on work from:
 /// - <https://github.com/rust-lang/rust/issues/62358> (contains→has).
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtResult<T, E>: Sealed {
+pub trait ResultExt<T, E>: Sealed {
     /// Returns `true` if the result is an [`Ok`] value having the given value.
     ///
     /// # Examples
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::ExtResult;
+    /// use devela::ResultExt;
     /// assert_eq!(Ok::<_, ()>(1).has(&1), true);
     /// assert_eq!(Ok::<_, ()>(1).has(&2), false);
     /// assert_eq!(Err::<u8, _>("err").has(&1), false);
@@ -37,7 +37,7 @@ pub trait ExtResult<T, E>: Sealed {
     /// # Examples
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::ExtResult;
+    /// use devela::ResultExt;
     /// assert_eq!(Ok::<_, &str>(1).has_err(&"Some error message"), false);
     /// assert_eq!(Err::<u8, _>("err").has_err(&"err"), true);
     /// assert_eq!(Err::<u8, _>("err2").has_err(&"err"), false);
@@ -54,7 +54,7 @@ pub trait ExtResult<T, E>: Sealed {
     // ///
     // /// # Examples
     // /// ```
-    // /// # use devela_base_core::ExtOption;
+    // /// # use devela_base_core::OptionExt;
     // /// # use core::{cmp::min, ops::Add};
     // /// let x = Some(2);
     // /// let y = Some(4);
@@ -70,7 +70,7 @@ pub trait ExtResult<T, E>: Sealed {
     // fn reduce<F: FnOnce(T, T) -> T>(self, other: Result<T, E>, f: F) -> Result<T, E>;
 }
 
-impl<T, E> ExtResult<T, E> for Result<T, E> {
+impl<T, E> ResultExt<T, E> for Result<T, E> {
     fn has<U: PartialEq<T>>(&self, x: &U) -> bool {
         self.as_ref().is_ok_and(|y| x == y)
     }

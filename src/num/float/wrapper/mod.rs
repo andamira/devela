@@ -16,7 +16,7 @@ mod shared_series; // with Taylor Series.
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 ///
-/// See also the [`ExtFloat`][super::ExtFloat] and [`FloatConst`][super::FloatConst] traits.
+/// See also the [`FloatConst`][super::FloatConst] and [`FloatExt`][super::FloatExt] traits.
 ///
 /// # Methods
 /// TODO

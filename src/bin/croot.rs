@@ -13,7 +13,7 @@
 //
 // IMPROVE: add usage, help
 
-use devela::{Env, ExtProcess, FsPath, Process};
+use devela::{Env, FsPath, Process, ProcessExt};
 
 fn main() {
     let args: Vec<String> = Env::args().collect();

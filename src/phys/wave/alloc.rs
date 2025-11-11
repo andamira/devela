@@ -12,7 +12,7 @@
 use crate::{Vec, WaveletHaar, WaveletUnitRole, vec_ as vec};
 
 #[allow(unused_imports, reason = "!std: abs")]
-use crate::ExtFloat;
+use crate::FloatExt;
 
 /// Trait for lossy compression of wavelet coefficients.
 ///

@@ -9,7 +9,7 @@ crate::mod_path!(std _s "../../../libs/base_std/src/work/thread/reexports.rs");
 
 #[cfg(feature = "std")]
 crate::items! {
-    mod ext; // ExtThread
+    mod ext; // ThreadExt
     mod sleep; // sleep4!
 }
 

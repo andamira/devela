@@ -6,7 +6,7 @@
 #[cfg(feature = "dep_log")]
 crate::items! {
     mod config; // LogConfig
-    mod ext; // ExtLogger
+    mod ext; // LoggerExt
     mod namespace; // Log
     mod reexports; // ::log::*
 }

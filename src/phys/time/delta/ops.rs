@@ -9,7 +9,7 @@
 use super::*;
 use crate::unwrap;
 #[allow(unused)]
-use crate::{ExtFloat, Float};
+use crate::{Float, FloatExt};
 
 /// # Operations.
 impl TimeDelta {

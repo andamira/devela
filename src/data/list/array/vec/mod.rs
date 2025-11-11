@@ -10,7 +10,7 @@
 //
 
 mod chunk; // VecChunk
-mod ext; // ExtVec
+mod ext; // VecExt
 mod reexports;
 
 // WIPZONE

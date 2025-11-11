@@ -13,7 +13,7 @@ use crate::{Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWa
 
 /// Blocks the thread until the `future` is ready.
 ///
-/// See also the [`ExtFuture`][super::ExtFuture] trait.
+/// See also the [`FutureExt`][super::FutureExt] trait.
 ///
 #[doc = crate::_doc!(vendor: "pollster")]
 pub(crate) fn future_block<F: Future>(future: F) -> F::Output {

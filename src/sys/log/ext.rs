@@ -7,7 +7,7 @@ use crate::Box;
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Logger`]s.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]
-pub trait ExtLogger: Logger {
+pub trait LoggerExt: Logger {
     /// Returns the logger as a `Logger` trait object.
     #[must_use]
     #[cfg(feature = "alloc")]

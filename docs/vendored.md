@@ -26,7 +26,7 @@ See the linked modifications for detailed changes.
 - <i id="no_std_io"></i>[no_std_io]|[core2] by Brendan Molloy,
   as part of the [`sys::io`] module ([*modifications*][M_no_std_io]).
 - <i id="pollster"></i>[pollster] by Joshua Barretto,
-  as the `ExtFuture::`[`block_on`] method ([*modifications*][M_pollster]).
+  as the `FutureExt::`[`block_on`] method ([*modifications*][M_pollster]).
 - <i id="quickdiv"></i>[quickdiv] by Darko Trifunovski,
   as the [`Divisor`] struct ([*modifications*][M_quickdiv]).
 - <i id="stack_dst"></i>[stack_dst] by John Hodge,
@@ -75,7 +75,7 @@ See the linked modifications for detailed changes.
   [`sys::io`]: https://andamira.github.io/devela/latest/devela/sys/io/
 [pollster]: https://crates.io/crates/pollster/0.3.0
   [M_pollster]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/pollster.md
-  [`block_on`]: https://andamira.github.io/devela/latest/devela/work/future/trait.ExtFuture.html#method.block_on
+  [`block_on`]: https://andamira.github.io/devela/latest/devela/work/future/trait.FutureExt.html#method.block_on
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
   [M_quickdiv]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/quickdiv.md
   [`Divisor`]: https://andamira.github.io/devela/latest/devela/num/struct.Divisor.html

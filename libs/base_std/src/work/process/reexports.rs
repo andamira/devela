@@ -2,7 +2,7 @@
 //
 //!
 //
-// Note that std's standalone functions are namespaced in `devela::ExtProcess`.
+// Note that std's standalone functions are namespaced in `devela::ProcessExt`.
 //
 // WAIT: [exit_status_error](https://github.com/rust-lang/rust/issues/84908)
 
@@ -19,7 +19,7 @@ _reexport! { rust: std::process,
 
 _reexport! { rust: std::process,
     doc: "Representation of a running or exited child process.\n\n
-See also the [`ExtProcess`][crate::ExtProcess] trait.",
+See also the [`ProcessExt`][crate::ProcessExt] trait.",
     @Child as Process
 }
 _reexport! { rust: std::process,

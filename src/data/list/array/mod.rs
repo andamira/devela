@@ -33,7 +33,7 @@ crate::structural_mods! { // _mods
         pub use super::_c::*;
         #[doc(inline)]
         pub use devela_base_core::data::list::{
-            ArrayFrom, ExtArray, ArrayFmt, array_init,
+            ArrayExt, ArrayFmt, ArrayFrom, array_init,
         };
     }
 }

@@ -7,7 +7,7 @@
 
 crate::mod_path!(_c "../../../../libs/base_core/src/sys/mem/cell/reexports.rs");
 
-mod option; // ExtCellOption
+mod option; // CellOptionExt
 
 // WIPZONE
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]

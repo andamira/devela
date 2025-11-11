@@ -134,6 +134,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ## code
 - move `ScopeGuard` to [base_core].
+- rename `ExtAny` to `AnyExt`.
 
 ### error
 - update `define_error!` macro.
@@ -154,9 +155,13 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - functions: `serr`, `sok`.
   - macros: `unwrap!`.
-  - traits: `Chain`, `ExtOption`, `ExtOptRes`, `ExtResult`, `Hook`.
+  - traits: `Chain`, `Hook`, `OptionExt`, `OptResExt`, `ResultExt`
   - types: `Mismatch`, `OptRes`, `OptionFmt`, `OptionFmtOr`, `OptionFmtOrElse`, `Own`.
 - move to [base_num]: `ValueQuant`.
+- rename:
+  - `ExtOption` to `OptionExt`.
+  - `ExtOptRes` to `OptResExt`.
+  - `ExtResult` to `ResultExt`.
 - update `unwrap!`: add arms: `some_if*`, `ok_map_err`, `ok_if*`.
 
 ### utils
@@ -200,8 +205,11 @@ Many feature gates are removed in order to make most features make always availa
 
 ### list
 - move to [base]:
+  - traits: `ArrayExt`.
   - types: `ArrayFmt`, `ConstList`.
-  - traits: `ExtArray`.
+- rename:
+  - `ExtArray` to `ArrayExt`.
+  - `ExtVec` to `VecExt`.
 - make all `bitfield!` methods consts.
 
 ## lang
@@ -242,7 +250,9 @@ Many feature gates are removed in order to make most features make always availa
 - make std `Float` methods `trunc`, `fract` & `split` *const*.
 - make all `Int` methods *const*.
 - make `Sign` part of `quant`.
-- rename `Compare` to `Cmp`.
+- rename:
+  - `Compare` to `Cmp`.
+  - `ExtFloat` to `FloatExt`.
 
 ### geom
 
@@ -273,19 +283,35 @@ Many feature gates are removed in order to make most features make always availa
 ### env
 - vendor `argv` as `IterArgSOsRef` struct and `Env` method `args_os_ref`.
 
+### fs
+- rename `ExtPath` to `PathExt`.
+
 ### log
 - new type `LoggerStatic`.
 - new macro `slog!`.
+- rename `ExtLogger` to `LoggerExt`.
 
 ### mem
 - new alias: `MaybeByte`.
 - new types: `ExampleArena`, `ExampleArenaHandle`.
-- new macros: `define_arena`, `slice!`.
+- new macros: `define_arena`.
 - move to [base]:
-  - macros: `cswap!`, `const_join!`.
+  - macros: `cswap!`.
   - traits: `MemAligned`.
-  - types: `CacheAlign`, `Mem`, `Ptr`, `Slice`.
-- rename `join!` macro to `const_join!`.
+  - types: `CacheAlign`, `Mem`, `Ptr`.
+- rename `ExtMem` to `MemExt`.
+
+### cell
+- rename `ExtCellOption` to `CellOptionExt`.
+
+### slice
+- new macro `slice!`.
+- move to [base]:
+  - macros: `const_join!`.
+  - types: `Slice`.
+- rename:
+  - `join!` to `const_join!`.
+  - `ExtSlice` to `SliceExt`.
 - update `Slice`:
   - rename methods:
     - `copy_from_slice` to `copy`.
@@ -449,5 +475,10 @@ Many feature gates are removed in order to make most features make always availa
   - refactor to accomodate `Ansi` changes. TODO
   - fix macro visibility.
 
+## work
+### future
+- rename:
+  - `ExtFuture` to `FutureExt`.
+  - `ExtProcess` to `ProcessExt`.
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

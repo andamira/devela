@@ -6,7 +6,7 @@
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc, String, ToString};
 
-/// Marker trait to prevent downstream implementations of the [`ExtString`] trait.
+/// Marker trait to prevent downstream implementations of the [`StringExt`] trait.
 #[cfg(feature = "alloc")]
 trait Sealed {}
 #[cfg(feature = "alloc")]
@@ -17,7 +17,7 @@ impl Sealed for String {}
 #[expect(private_bounds, reason = "Sealed")]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(notable_trait, cfg(feature = "alloc")))]
-pub trait ExtString: Sealed {
+pub trait StringExt: Sealed {
     /// Converts the string into a `Box<str>`.
     ///
     /// Allows single ownership with exact allocation,
@@ -42,7 +42,7 @@ pub trait ExtString: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::ExtString;
+    /// use devela::StringExt;
     ///
     /// assert_eq!("2*4*6*8*11*14*", String::new_counter(14, '*'));
     /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, '_'));
@@ -53,7 +53,7 @@ pub trait ExtString: Sealed {
 }
 
 #[cfg(feature = "alloc")]
-impl ExtString for String {
+impl StringExt for String {
     /// It just calls the method [`String::into_boxed_str`].
     fn to_box(self) -> Box<str> {
         self.into_boxed_str()

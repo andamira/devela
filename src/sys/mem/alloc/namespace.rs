@@ -13,7 +13,7 @@ use crate::{
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Memory-allocation-related operations.
 ///
-/// See also: [`Mem`][crate::Mem], [`ExtMem`][crate::ExtMem],
+/// See also: [`Mem`][crate::Mem], [`MemExt`][crate::MemExt],
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
 #[derive(Debug)]
 pub struct Alloc;

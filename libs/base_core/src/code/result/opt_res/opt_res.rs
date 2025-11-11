@@ -1,11 +1,11 @@
 // devela_base_core::code::result::option::optres
 //
-//! Defines [`ExtOptRes`], [`OptRes`], [`serr`], [`sok`].
+//! Defines [`OptResExt`], [`OptRes`], [`serr`], [`sok`].
 //
 // TOC
 // - type OptRes
 // - fns: sok, serr
-// - trait ExtOptRes
+// - trait OptResExt
 
 #[doc = crate::_TAG_RESULT!()]
 /// An optional result type that combines success, failure, and absence.
@@ -96,7 +96,7 @@ pub const fn serr<T, E>(error: E) -> OptRes<T, E> {
     Some(Err(error))
 }
 
-/// Marker trait to prevent downstream implementations of the [`ExtOptRes`] trait.
+/// Marker trait to prevent downstream implementations of the [`OptResExt`] trait.
 pub(super) trait Sealed {}
 impl<T, E> Sealed for OptRes<T, E> {}
 
@@ -105,17 +105,16 @@ impl<T, E> Sealed for OptRes<T, E> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtOption`][crate::ExtOption],
-/// [`ExtResult`][crate::ExtResult],
+/// See also [`OptionExt`][crate::OptionExt], [`ResultExt`][crate::ResultExt],
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtOptRes<T, E>: Sealed {
+pub trait OptResExt<T, E>: Sealed {
     /// Transposes `Option<Result<T, E>>` into `Result<Option<T>, E>`.
     ///
     /// # Examples
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::{ExtOptRes, OptRes};
+    /// use devela::{OptResExt, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -136,7 +135,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     /// # Examples
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::{ExtOptRes, OptRes};
+    /// use devela::{OptResExt, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -157,7 +156,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     /// # Examples
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::{ExtOptRes, OptRes};
+    /// use devela::{OptResExt, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -178,7 +177,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     /// # Examples
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::{ExtOptRes, OptRes};
+    /// use devela::{OptResExt, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -199,7 +198,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     /// # Examples
     /// ```
     /// # extern crate devela_base_core as devela;
-    /// use devela::{ExtOptRes, OptRes};
+    /// use devela::{OptResExt, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -218,7 +217,7 @@ pub trait ExtOptRes<T, E>: Sealed {
         E: Default;
 }
 
-impl<T, E> ExtOptRes<T, E> for OptRes<T, E> {
+impl<T, E> OptResExt<T, E> for OptRes<T, E> {
     fn transpose_result(self) -> Result<Option<T>, E> {
         match self {
             Some(Ok(t)) => Ok(Some(t)),

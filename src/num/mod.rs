@@ -11,7 +11,7 @@
 
 mod absence; // NoNum
 mod error; // NumError, NumResult
-mod float; // fsize, ExtFloat, Float, FloatConst
+mod float; // fsize, Float, FloatConst, FloatExt
 mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
 mod primitive; // Cast, Primitive[Cast|Join|Split]

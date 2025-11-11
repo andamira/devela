@@ -101,8 +101,8 @@ mod tests;
 ///
 /// Additionally implements `eq()` methods for comparing primitives and slices of primitives.
 ///
-/// See also: [`slice!`], [`ExtSlice`], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
-#[doc = crate::doclink!(custom devela "[`ExtSlice`]" "sys/mem/trait.ExtSlice.html")]
+/// See also: [`slice!`], [`SliceExt`], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
+#[doc = crate::doclink!(custom devela "[`SliceExt`]" "sys/mem/trait.SliceExt.html")]
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);
 

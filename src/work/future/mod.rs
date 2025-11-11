@@ -14,7 +14,7 @@
 //
 
 mod coroutine;
-mod ext;
+mod ext; // FutureExt
 mod reexports;
 
 #[cfg(feature = "std")]

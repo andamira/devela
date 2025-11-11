@@ -4,7 +4,7 @@
 //
 
 #[allow(unused_imports)]
-use crate::{ExtFloat, Float, is};
+use crate::{Float, FloatExt, is};
 
 /// Gamma correction curves.
 ///

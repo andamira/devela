@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: array, vec)]
 //
 
-mod ext; // ExtArray, ArrayFmt
+mod ext; // ArrayExt, ArrayFmt
 mod from; // ArrayFrom
 mod init; // array_init!
 mod reexports;

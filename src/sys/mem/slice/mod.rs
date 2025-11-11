@@ -8,7 +8,7 @@
 #[cfg(test)]
 mod tests;
 
-mod ext; // ExtSlice
+mod ext; // SliceExt
 
 crate::structural_mods! { // _mods
     _mods {
@@ -16,6 +16,8 @@ crate::structural_mods! { // _mods
 
         // re-exports
         #[doc(inline)]
-        pub use devela_base_core::sys::mem::{Slice, const_join, slice};
+        pub use devela_base_core::sys::mem::{
+            Slice, const_join, slice,
+        };
     }
 }

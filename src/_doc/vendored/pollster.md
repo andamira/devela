@@ -3,5 +3,5 @@ This is derived work from the
 including the following modifications:
 
 - remove the macro and all uses of unsafe.
-- expose as an `ExtFuture` trait method.
+- expose as an `FutureExt` trait method.
 - misc refactors.

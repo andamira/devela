@@ -8,7 +8,7 @@
 // - maybe use NonExtreme for the signed representation.
 
 #[cfg(not(feature = "std"))]
-use crate::ExtFloat;
+use crate::FloatExt;
 use crate::{Angle, AngleDirection, AngleKind};
 #[allow(unused_imports)]
 use crate::{FloatConst, fsize};

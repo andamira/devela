@@ -451,7 +451,7 @@ impl Linux {
     /// # Examples
     /// ```no_run
     /// # #[cfg(feature = "std")] {
-    /// # use devela::{Linux, LINUX_SIGNAL, Thread, ExtThread};
+    /// # use devela::{Linux, LINUX_SIGNAL, Thread, ThreadExt};
     /// fn handler(sig: i32) {
     ///    println!("\nsignal `{sig}` received! continuing. . .");
     /// }
@@ -534,7 +534,7 @@ impl Linux {
     /// # Examples
     /// ```no_run
     /// # #[cfg(feature = "std")]
-    /// # use devela::{Thread, ExtThread};
+    /// # use devela::{Thread, ThreadExt};
     /// # use devela::{c_void, Linux, LinuxSiginfo, LINUX_SIGNAL, LINUX_SIGACTION};
     /// fn handler(sig: i32, info: LinuxSiginfo, _context: *mut c_void) {
     ///     println!("Signal {} received from PID {}!", sig, info.pid());

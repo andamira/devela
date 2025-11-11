@@ -2,7 +2,7 @@
 //
 //!
 //
-// Note that std's standalone functions are namespaced in `devela::ExtThread`.
+// Note that std's standalone functions are namespaced in `devela::ThreadExt`.
 
 use crate::_reexport;
 
@@ -35,7 +35,7 @@ _reexport! { rust: std::thread,
 }
 _reexport! { rust: std::thread,
     doc: "A handle to a thread.\n\n
-See also the [`ExtThread`][crate::ExtThread] trait.",
+See also the [`ThreadExt`][crate::ThreadExt] trait.",
     Thread
 }
 _reexport! { rust: std::thread,

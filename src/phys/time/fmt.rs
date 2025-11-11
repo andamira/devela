@@ -8,7 +8,7 @@
 // - nanos_u64: not just clamp the seconds but all to 999?
 
 #[allow(unused_imports)]
-use crate::ExtFloat;
+use crate::FloatExt;
 use crate::{Digits, StringU8, format_buf};
 use crate::{NoTime, TimeSplit, TimeSplitHourNano};
 #[cfg(feature = "alloc")]

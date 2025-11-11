@@ -13,7 +13,7 @@ use crate::{Float, FloatConst, Sign};
 /// This trait can be more convenient to use than the [`Float`] struct,
 /// for non-const operations over primitive floating-point types.
 #[rustfmt::skip]
-pub trait ExtFloat: FloatConst + Sized {
+pub trait FloatExt: FloatConst + Sized {
 
     /// The largest integer less than or equal to `self`.
     ///
@@ -30,7 +30,7 @@ pub trait ExtFloat: FloatConst + Sized {
     fn ceil(self) -> Self;
 
     /// The nearest integer to `self`, default rounding, same as
-    /// [`round_ties_away`][ExtFloat::round_ties_away]
+    /// [`round_ties_away`][FloatExt::round_ties_away]
     #[must_use]
     fn round(self) -> Self;
 
@@ -440,7 +440,7 @@ macro_rules! impl_ext_float {
         $( impl_ext_float![@$f, $ue|$ie]; )+
     };
     (@$f:ty, $ue:ty|$ie:ty) => {
-        impl ExtFloat for $f {
+        impl FloatExt for $f {
             fn floor(self) -> Self { Float(self).floor().0 }
 
             fn ceil(self) -> Self { Float(self).ceil().0 }

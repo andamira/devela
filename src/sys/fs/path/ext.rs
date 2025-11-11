@@ -6,7 +6,7 @@
 use crate::{IoResult, Path, PathBuf};
 use std::path::{MAIN_SEPARATOR, MAIN_SEPARATOR_STR, absolute, is_separator};
 
-/// Marker trait to prevent downstream implementations of the [`ExtPath`] trait.
+/// Marker trait to prevent downstream implementations of the [`PathExt`] trait.
 trait Sealed {}
 impl Sealed for Path {}
 impl Sealed for PathBuf {}
@@ -16,7 +16,7 @@ impl Sealed for PathBuf {}
 #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
-pub trait ExtPath: Sealed {
+pub trait PathExt: Sealed {
     /// The primary separator string of path components for the current platform.
     ///
     /// See `std::path::`[MAIN_SEPARATOR_STR].
@@ -49,12 +49,12 @@ pub trait ExtPath: Sealed {
     }
 
 }
-impl ExtPath for Path {
+impl PathExt for Path {
     fn to_absolute(&self) -> IoResult<PathBuf> {
         absolute(self)
     }
 }
-impl ExtPath for PathBuf {
+impl PathExt for PathBuf {
     fn to_absolute(&self) -> IoResult<PathBuf> {
         absolute(self)
     }

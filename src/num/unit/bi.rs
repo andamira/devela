@@ -5,7 +5,7 @@
 
 use super::helpers::impl_try_from;
 #[allow(unused_imports)]
-use crate::ExtFloat;
+use crate::FloatExt;
 #[cfg(feature = "alloc")]
 #[allow(unused_imports)]
 use crate::{Vec, vec_ as vec};

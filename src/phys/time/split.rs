@@ -3,7 +3,7 @@
 //! Splitting and decomposing time.
 //
 
-use crate::{Duration, ExtAny};
+use crate::{AnyExt, Duration};
 use ::core::fmt;
 
 #[doc = crate::_TAG_TIME!()]

@@ -12,7 +12,7 @@ use {
     ::core::future::{pending, poll_fn, ready},
 };
 
-impl<F: Future> ExtFuture for F {}
+impl<F: Future> FutureExt for F {}
 
 #[cfg(feature = "std")]
 crate::CONST! {
@@ -20,7 +20,7 @@ crate::CONST! {
 # Example
 ```
 # #[cfg(not(feature = "dep_portable_atomic_util"))] {
-# use devela::ExtFuture as _;
+# use devela::FutureExt as _;
 let future = async {};
 let result = future.block_on();
 # }
@@ -34,7 +34,7 @@ See [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874).
 
 /// Extension trait providing additional methods for [`Future`]s.
 #[rustfmt::skip]
-pub trait ExtFuture: Future {
+pub trait FutureExt: Future {
     #[doc = DOC_BLOCK_ON!()]
     #[doc = crate::_doc!(vendor: "pollster")]
     #[cfg(feature = "std")]

@@ -24,7 +24,7 @@
   [M_no_std_io]: crate::_doc::vendored::no_std_io
   [`io`]: crate::sys::io
   [M_pollster]: crate::_doc::vendored::pollster
-  [`block_on`]: crate::work::future::ExtFuture#method.block_on
+  [`block_on`]: crate::work::future::FutureExt#method.block_on
   [M_quickdiv]: crate::_doc::vendored::quickdiv
   [`Divisor`]: crate::num::Divisor
   [M_stack_dst]: crate::_doc::vendored::stack_dst
