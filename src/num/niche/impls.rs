@@ -8,7 +8,7 @@ use crate::MemPod;
 #[cfg(feature = "bit")]
 use crate::{BitSized, ByteSized};
 use crate::{
-    ConstDefault, NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128,
+    ConstDefaultSealed, NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128,
     NonExtremeIsize, NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128,
     NonExtremeUsize, paste,
 };
@@ -41,18 +41,7 @@ macro_rules! impl_for_non_value {
         impl<const V: $IP> BitSized<{<$IP>::BYTE_SIZE * 8}> for $nv<V> {}
 
         // ConstDefault for NonExtreme*
-        impl ConstDefault for $ne {
-            /// # Features
-            /// Makes use of the `unsafe_niche` feature if enabled.
-            const DEFAULT: Self = {
-                #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
-                if let Some(v) = Self::new(<$IP>::DEFAULT) { v } else { unreachable![] }
-
-                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                // SAFETY: the default primitive value is always 0, and their MAX is never 0.
-                unsafe { $ne::new_unchecked(<$IP>::DEFAULT) }
-            };
-        }
+        impl ConstDefaultSealed for $ne {}
 
         // MemPod for NonValue*
         #[cfg(feature = "unsafe_layout")]

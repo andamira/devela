@@ -8,8 +8,8 @@ mod impls_alloc {
     use crate::impl_cdef;
 
     // impl ConstDefault
-    impl_cdef![<T> Self::new() => BTreeSet<T>];
-    impl_cdef![<K, V> Self::new() => BTreeMap<K, V>];
+    impl_cdef![ConstDefault: <T> Self::new() => BTreeSet<T>];
+    impl_cdef![ConstDefault: <K, V> Self::new() => BTreeMap<K, V>];
 }
 
 /* from `hashbrown` or `std` */

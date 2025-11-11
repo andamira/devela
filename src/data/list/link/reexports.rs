@@ -7,7 +7,7 @@ pub use devela_base_core::ConstList;
 
 /* ConstDefault impls */
 
-crate::impl_cdef![<T> Self::new() => ConstList<'_, T>];
+crate::impl_cdef![ConstDefault: <T> Self::new() => ConstList<'_, T>];
 
 #[cfg(feature = "alloc")]
-crate::impl_cdef![<T> Self::new() => LinkedList<T>];
+crate::impl_cdef![ConstDefault: <T> Self::new() => LinkedList<T>];

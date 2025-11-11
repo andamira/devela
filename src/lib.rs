@@ -254,6 +254,8 @@ mod _hidden {
 #[allow(unused_imports)]
 pub(crate) use _crate_internals::*;
 mod _crate_internals {
+    #![allow(unused_imports)]
+
     pub(crate) use devela_base_core::_workspace_internals::*;
     // #[cfg(feature = "devela_base_data")]
     // pub(crate) use devela_base_data::_workspace_internals::*;
@@ -262,7 +264,6 @@ mod _crate_internals {
     pub(crate) use devela_base_text::_workspace_internals::*;
 
     #[rustfmt::skip]
-    #[allow(unused_imports)]
     pub(crate) use super::{
         code::_crate_internals::*,
         data::_crate_internals::*,

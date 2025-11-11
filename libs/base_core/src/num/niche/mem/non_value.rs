@@ -120,7 +120,7 @@ macro_rules! impl_non_value {
                 $XTR "`][" $IP "::" $XTR "])."]
             ///
             /// Unlike the `NonValue*` types in general, this type alias implements
-            /// the [`Default`] and [`ConstDefault`] traits.
+            /// the [`Default`] and [`ConstDefaultCore`][crate::ConstDefaultCore] traits.
             #[doc = crate::_DOCLINK_CONST_DEFAULT!()]
             pub type $ne = $name <{$IP::$XTR}>;
 
@@ -135,6 +135,19 @@ macro_rules! impl_non_value {
                     // SAFETY: the default primitive value is always 0, and their MAX is never 0.
                     unsafe { return $ne::new_unchecked($IP::default()); }
                 }
+            }
+            // ConstDefaultCore for NonExtreme*
+            impl crate::ConstDefaultCore for $ne {
+                /// # Features
+                /// Makes use of the `unsafe_niche` feature if enabled.
+                const DEFAULT: Self = {
+                    #[cfg(any(base_safe_num, not(feature = "unsafe_niche")))]
+                    if let Some(v) = Self::new(<$IP>::DEFAULT) { v } else { unreachable![] }
+
+                    #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+                    // SAFETY: the default primitive value is always 0, and their MAX is never 0.
+                    unsafe { $ne::new_unchecked(<$IP>::DEFAULT) }
+                };
             }
 
             impl<const V: $IP> $name<V> {

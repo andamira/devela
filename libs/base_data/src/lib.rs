@@ -10,6 +10,7 @@
 extern crate self as devela_base_data;
 
 #[doc(hidden)]
+#[allow(unused_imports)]
 pub use all::*;
 pub mod all {
     //! All the crate's items flat re-exported.

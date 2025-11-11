@@ -135,6 +135,10 @@ Many feature gates are removed in order to make most features make always availa
 ## code
 - rename `ExtAny` to `AnyExt`.
 - new trait `ConstDefaultCore`.
+- move to [base]:
+  - all `ConstDefault*` impls.
+  - `impl_cdef!` workspace-internal macro.
+    - modify it to receive the trait as an argument.
 - move `ScopeGuard` to [base_core].
 
 ### error

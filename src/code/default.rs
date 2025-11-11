@@ -33,213 +33,105 @@ pub trait Sealed {}
 impl<T: ConstDefaultCore + Sealed> ConstDefault for T {
     const DEFAULT: Self = <T as ConstDefaultCore>::DEFAULT;
 }
-impl crate::ConstDefaultSealed for bool {}
-
-/// A macro helper to implement [`ConstDefault`]. Supports generics.
-macro_rules! impl_cdef {
-    // <A>
-    (<$A:ident> $def:expr => $($t:ty),+) => { $( $crate::impl_cdef![@<$A> $def => $t]; )+ };
-    (@<$A:ident> $def:expr => $t:ty) => {
-        impl<$A> $crate::ConstDefault for $t {
-            #[allow(clippy::declare_interior_mutable_const)]
-            const DEFAULT: Self = $def;
-        }
-    };
-    // <A: A_> (bounded)
-    (<$A:ident:$A_:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::impl_cdef![@<$A:$A_> $def => $t]; )+
-    };
-    (@<$A:ident:$A_:ident> $def:expr => $t:ty) => {
-        impl<$A: $crate::ConstDefault> $crate::ConstDefault for $t {
-            #[allow(clippy::declare_interior_mutable_const, reason = "FIXME?")]
-            const DEFAULT: Self = $def;
-        }
-    };
-    // <A, B>
-    (<$A:ident, $B:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::impl_cdef![@<$A, $B> $def => $t]; )+
-    };
-    (@<$A:ident, $B:ident> $def:expr => $t:ty) => {
-        impl<$A, $B> $crate::ConstDefault for $t {
-            #[allow(clippy::declare_interior_mutable_const)] //
-            const DEFAULT: Self = $def;
-        }
-    };
-    // <A: A_, B: B_> (bounded)
-    (<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::impl_cdef![@<$A:$A_, $B:$B_> $def => $t]; )+ };
-    (@<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $t:ty) => {
-        impl<$A:$A_, $B:$B_> $crate::ConstDefault for $t {
-            #[allow(clippy::declare_interior_mutable_const)] //
-            const DEFAULT: Self = $def;
-        }
-    };
-
-    // <A, B, C>
-    (<$A:ident, $B:ident, $C:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::impl_cdef![@<$A, $B, $C> $def => $t]; )+
-    };
-    (@<$A:ident, $B:ident, $C:ident> $def:expr => $t:ty) => {
-        impl<$A, $B, $C> $crate::ConstDefault for $t {
-            #[allow(clippy::declare_interior_mutable_const)] //
-            const DEFAULT: Self = $def;
-        }
-    };
-    // <>
-    ($def:expr => $($t:ty),+) => { $( $crate::impl_cdef![@$def => $t]; )+ };
-    (@$def:expr => $t:ty) => {
-        impl $crate::ConstDefault for $t {
-            #[allow(clippy::declare_interior_mutable_const)]
-            const DEFAULT: Self = $def;
-        }
-    };
-    // impl for arrays of the given $LEN lenghts
-    (arrays <$A:ident:$BOUND:ident> $($LEN:literal),+) => {
-        $( $crate::impl_cdef![@array:$LEN <$A:$BOUND>]; )+
-    };
-    (@array:$LEN:literal <$A:ident:$BOUND:ident>) => {
-        impl<$A: $crate::ConstDefault> $crate::ConstDefault for [$A; $LEN] {
-            #[allow(clippy::declare_interior_mutable_const)] //
-            const DEFAULT: Self = [$A::DEFAULT; $LEN];
-        }
-    };
-    // impl for tuples of lenghts from 1 to 12
-    (tuples <$A:ident:$BOUND:ident>) => {
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,) => // 1
-            ($A::DEFAULT,)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,) => // 2
-            ($A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A) => // 3
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A) => // 4
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A) => // 5
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A) => // 6
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A) => // 7
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
-             $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A) => // 8
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
-             $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A) => // 9
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
-             $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 10
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
-             $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 11
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
-             $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 12
-            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
-             $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-    };
-    (@tuple <$A:ident:$BOUND:ident> $type:ty => $value:expr) => {
-        impl<$A: $crate::ConstDefault> $crate::ConstDefault for $type {
-            const DEFAULT: Self = $value;
-        }
-    };
-}
-pub(crate) use impl_cdef;
 
 /* implementations */
 
 #[rustfmt::skip]
 mod impl_core {
-    use super::ConstDefault;
-    use core::{
-        cmp::Reverse,
-        cell::{Cell, OnceCell, RefCell, UnsafeCell},
-        ffi::CStr,
-        marker::{PhantomData, PhantomPinned},
-        mem::ManuallyDrop,
-        num::{Saturating, Wrapping},
-        ops::{Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive},
-        panic::AssertUnwindSafe,
-        // sync::Exclusive,
-        time::Duration,
+    use super::{ConstDefaultCore, Sealed};
+    use crate::{
+        Reverse,
+        Cell, OnceCell, RefCell, UnsafeCell,
+        CStr,
+        PhantomData, PhantomPinned,
+        ManuallyDrop,
+        Saturating, Wrapping,
+        Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
+        PanicAssertUnwindSafe,
+        // Exclusive,
+        Duration,
     };
-    // Types that don't implement `Default`:
-    // ops::{Bound, ControlFlow, CoroutineState, FpCategory, Ordering, Result},
-    //
-    // NOTE: atomic types are implemented in work::sync::atomic
 
-    impl_cdef![Duration::new(0, 0) => Duration];
-    impl_cdef![0 => i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
-    impl_cdef![0.0 => f32, f64];
-    impl_cdef!['\x00' => char];
-    impl_cdef![() => ()];
-    impl_cdef![tuples <T: ConstDefault>];
-    impl_cdef![arrays <T: ConstDefault> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-    13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+    /* sealed implementations (in sync with devela_base_core::code::default) */
 
-    impl_cdef![<T> core::ptr::null() => *const T];
-    impl_cdef![<T> core::ptr::null_mut() => *mut T];
+    impl Sealed for () {}
+    impl Sealed for bool {}
+    impl Sealed for char {}
 
-    impl_cdef![<T> &[] => &[T]]; // not allowed for &mut [T]
+    impl Sealed for Duration {}
 
-    impl ConstDefault for &CStr {
-        const DEFAULT: Self = {
-            if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; }
-        };
-    }
+    impl Sealed for i8 {}
+    impl Sealed for u8 {}
+    impl Sealed for i16 {}
+    impl Sealed for u16 {}
+    impl Sealed for i32 {}
+    impl Sealed for u32 {}
+    impl Sealed for i64 {}
+    impl Sealed for u64 {}
+    impl Sealed for i128 {}
+    impl Sealed for u128 {}
+    impl Sealed for isize {}
+    impl Sealed for usize {}
+    impl Sealed for f32 {}
+    impl Sealed for f64 {}
 
-    impl_cdef![Self => PhantomPinned, RangeFull];
-    impl_cdef![<T: ConstDefault>Self { start: T::DEFAULT } => RangeFrom<T>];
-    impl_cdef![<T: ConstDefault>Self { end: T::DEFAULT } => RangeTo<T>, RangeToInclusive<T>];
-    impl_cdef![<T: ConstDefault>Self { start: T::DEFAULT, end: T::DEFAULT } => Range<T>];
-    // this one has private fields
-    impl_cdef![<T: ConstDefault>Self::new(T::DEFAULT, T::DEFAULT) => RangeInclusive<T>];
+    // TODO
+    // impl_cdef![ConstDefaultCore: tuples <T: ConstDefaultCore>];
+    // impl_cdef![ConstDefaultCore: arrays <T: ConstDefaultCore>
+    // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+    // 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
-    impl_cdef![<T: ConstDefault> Self::new() => OnceCell<T>];
-    impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) =>
-        Cell<T>, ManuallyDrop<T>, RefCell<T>, UnsafeCell<T>
-    ];
-    impl_cdef![<T: ConstDefault> Self(T::DEFAULT) =>
-        AssertUnwindSafe<T>, Reverse<T>, Saturating<T>, Wrapping<T>
-    ];
-    impl_cdef![<T> Self => PhantomData<T>]; // no need for T: ConstDefault here
-    impl_cdef![<T: ConstDefault> Some(T::DEFAULT) => Option<T>];
+    impl<T> Sealed for *const T  {}
+    impl<T> Sealed for *mut T  {}
+    impl<T> Sealed for &[T] {}
 
-    // WAIT: [exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
-    // impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => Exclusive<T>];
-    // WAIT: [sync_unsafe_cell](https://github.com/rust-lang/rust/issues/95439)
-    // impl_cdef![<T> Self::new(|| T::DEFAULT) => SyncUnsafeCell<T>];
-    // WAIT: [ptr_alignment_type](https://github.com/rust-lang/rust/issues/102070)
-    // impl_cdef![<T> Self::MIN => Alignment];
+    impl Sealed for RangeFull {}
+    impl<T> Sealed for RangeFrom<T> {}
+    impl<T> Sealed for RangeTo<T> {}
+    impl<T> Sealed for RangeToInclusive<T> {}
+    impl<T> Sealed for RangeInclusive<T> {}
+    impl<T> Sealed for Range<T> {}
 
-    /* text */
+    impl<T: ConstDefaultCore> Sealed for OnceCell<T> {}
+    impl<T: ConstDefaultCore> Sealed for Cell<T> {}
+    impl<T: ConstDefaultCore> Sealed for ManuallyDrop<T> {}
+    impl<T: ConstDefaultCore> Sealed for RefCell<T> {}
+    impl<T: ConstDefaultCore> Sealed for UnsafeCell<T> {}
 
-    impl_cdef!["" => &str];
+    impl<T: ConstDefaultCore> Sealed for PanicAssertUnwindSafe<T> {}
+    impl<T: ConstDefaultCore> Sealed for Reverse<T> {}
+    impl<T: ConstDefaultCore> Sealed for Saturating<T> {}
+    impl<T: ConstDefaultCore> Sealed for Wrapping<T> {}
 
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    impl crate::ConstDefault for &mut str {
-        // SAFETY: The empty string is valid UTF-8.
-        const DEFAULT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) };
-    }
+    impl Sealed for PhantomPinned {}
+    impl<T> Sealed for PhantomData<T> {}
+    impl<T: ConstDefaultCore> Sealed for Option<T> {}
+    impl<T: ConstDefaultCore, E> Sealed for Result<T, E> {}
+
+    impl Sealed for &CStr {}
+    impl Sealed for &str {}
+    impl Sealed for &mut str {}
 }
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod impl_alloc {
-    use crate::String;
+    use crate::{String, impl_cdef};
 
     #[cfg(feature = "alloc")]
-    impl_cdef![Self::new() => String];
+    impl_cdef![ConstDefault: Self::new() => String];
 
     // TODO: fxhash, fnv, ahash
     // #[cfg(feature = "dep_hashbrown")]
-    // impl_cdef![<K, V> Self::with_hasher(TODO) => HashMap<K, V>];
+    // impl_cdef![ConstDefault: <K, V> Self::with_hasher(TODO) => HashMap<K, V>];
     // #[cfg(feature = "dep_hashbrown")]
-    // impl_cdef![<K> Self::with_hasher(TODO) => HashSet<K>];
+    // impl_cdef![ConstDefault: <K> Self::with_hasher(TODO) => HashSet<K>];
 }
 
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod impl_std {
+    use crate::impl_cdef;
     use std::{
         cell::LazyCell,
         // collections::hash_map::DefaultHasher
@@ -250,17 +142,20 @@ mod impl_std {
     // Types that don't implement Default:
     // - OsString: OsString { inner: Buf::from_string(String::new()) }
 
-    impl_cdef![Self::SUCCESS => ExitCode];
-    impl_cdef![Self::new() => Condvar, Once];
-    impl_cdef![<T: ConstDefault> Self::new() => ArcWeak<T>, OnceLock<T>];
-    impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => Mutex<T>, RwLock<T>];
-    impl_cdef![<T: ConstDefault> Self::new(|| T::DEFAULT) => LazyCell<T>, LazyLock<T>];
+    impl_cdef![ConstDefault: Self::SUCCESS => ExitCode];
+    impl_cdef![ConstDefault: Self::new() => Condvar, Once];
+    impl_cdef![ConstDefault: <T: ConstDefault>
+        Self::new() => ArcWeak<T>, OnceLock<T>];
+    impl_cdef![ConstDefault: <T: ConstDefault>
+        Self::new(T::DEFAULT) => Mutex<T>, RwLock<T>];
+    impl_cdef![ConstDefault: <T: ConstDefault>
+        Self::new(|| T::DEFAULT) => LazyCell<T>, LazyLock<T>];
 
     // WAIT: [const_hash](https://github.com/rust-lang/rust/issues/104061)
     // #[cfg(feature = "dep_hashbrown")]
-    // impl_cdef![<K, V> Self::with_hasher(DefaulHashher) => BTreeMap<K, V>];
+    // impl_cdef![ConstDefault: <K, V> Self::with_hasher(DefaulHashher) => BTreeMap<K, V>];
     // WAIT: [const_io_structs](https://github.com/rust-lang/rust/issues/78812)
-    // impl_cdef![Self => Cursor, Empty, Sink];
+    // impl_cdef![ConstDefault: Self => Cursor, Empty, Sink];
 }
 
 #[rustfmt::skip]
