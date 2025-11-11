@@ -6,6 +6,7 @@
 #![cfg_attr(base_safe_code, forbid(unsafe_code))]
 
 mod any; // dynamic typing and reflection
+mod default; // ConstDefaultCore
 mod guard; // ScopeGuard
 mod lut; // Lut
 mod reexports;
@@ -19,7 +20,13 @@ pub mod util; // utility macros and functions
 
 util::structural_mods! { // _mods, _pub_mods, _workspace_internals
     _mods {
-        pub use super::{any::_all::*, guard::*, lut::*, reexports::*};
+        pub use super::{
+            any::_all::*,
+            default::*,
+            guard::*,
+            lut::*,
+            reexports::*,
+        };
     }
     _pub_mods {
         pub use super::{

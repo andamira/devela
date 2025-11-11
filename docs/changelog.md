@@ -133,8 +133,9 @@ Many feature gates are removed in order to make most features make always availa
 -----------
 
 ## code
-- move `ScopeGuard` to [base_core].
 - rename `ExtAny` to `AnyExt`.
+- new trait `ConstDefaultCore`.
+- move `ScopeGuard` to [base_core].
 
 ### error
 - update `define_error!` macro.

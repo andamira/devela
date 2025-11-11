@@ -11,17 +11,29 @@
 //   - mod impl_core
 //   - mod impl_std
 //   - mod impl_devela
-//
-// TODO: organize in thematic modules
+
+use crate::ConstDefaultCore;
 
 /* definitions */
 
-/// A trait for giving a type a useful default value in *compile-time*.
-// WAIT: [Make Default const](https://github.com/rust-lang/rust/pull/134628)
+/// Provides a compile-time default value for a type.
+///
+/// This trait extends [`ConstDefaultCore`] to cover types from the full
+/// ecosystem, including those depending on `alloc` or `std`.
+///
+/// It is automatically implemented for all **sealed** types that implement
+/// [`ConstDefaultCore`].
 pub trait ConstDefault {
     /// Returns the compile-time “default value” for a type.
     const DEFAULT: Self;
 }
+
+/// Marker trait to allow parameterized blanked implementation
+pub trait Sealed {}
+impl<T: ConstDefaultCore + Sealed> ConstDefault for T {
+    const DEFAULT: Self = <T as ConstDefaultCore>::DEFAULT;
+}
+impl crate::ConstDefaultSealed for bool {}
 
 /// A macro helper to implement [`ConstDefault`]. Supports generics.
 macro_rules! impl_cdef {
@@ -154,7 +166,6 @@ mod impl_core {
     //
     // NOTE: atomic types are implemented in work::sync::atomic
 
-    impl_cdef![false => bool];
     impl_cdef![Duration::new(0, 0) => Duration];
     impl_cdef![0 => i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
     impl_cdef![0.0 => f32, f64];
