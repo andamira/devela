@@ -2,7 +2,8 @@
 //
 //! Defines [`NonNiche`]`<T>`.
 //
-/// A zero-cost wrapper that behaves like `NonZero<T>` or `NonValue<T>` but stores `T` directly.
+
+/// A zero-cost wrapper that behaves like a niche type but stores `T` directly.
 ///
 /// This type is useful when you want to offer API consistency between
 /// niche-optimized and non-optimized versions of a type, allowing users

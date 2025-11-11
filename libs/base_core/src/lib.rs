@@ -55,29 +55,31 @@ pub mod work;
 pub mod _dep;
 
 #[rustfmt::skip]
-pub mod _doc {
-    //! Extra documentation about the library.
-    #[doc = crate::_DOC_CODE!()]
+pub mod _mod {
+    //! All the crate's items flat re-exported in modules.
+    crate::CONST! { COMMON_DOC = "\n\nAll root module's items flat re-exported."; }
+    #[doc = concat![crate::_DOC_CODE!(), COMMON_DOC!()]]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
-    #[doc = crate::_DOC_DATA!()]
+    #[doc = concat![crate::_DOC_DATA!(), COMMON_DOC!()]]
     pub mod _data { #[allow(unused)] pub use super::super::data::_all::*; }
-    #[doc = crate::_DOC_GAME!()]
+    #[doc = concat![crate::_DOC_GAME!(), COMMON_DOC!()]]
     pub mod _game { #[allow(unused)] pub use super::super::game::_all::*; }
-    #[doc = crate::_DOC_LANG!()]
+    #[doc = concat![crate::_DOC_LANG!(), COMMON_DOC!()]]
     pub mod _lang { #[allow(unused)] pub use super::super::lang::_all::*; }
-    #[doc = crate::_DOC_MEDIA!()]
+    #[doc = concat![crate::_DOC_MEDIA!(), COMMON_DOC!()]]
     pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
-    #[doc = crate::_DOC_NUM!()]
+    #[doc = concat![crate::_DOC_NUM!(), COMMON_DOC!()]]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
-    #[doc = crate::_DOC_PHYS!()]
+    #[doc = concat![crate::_DOC_PHYS!(), COMMON_DOC!()]]
     pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
-    #[doc = crate::_DOC_SYS!()]
+    #[doc = concat![crate::_DOC_SYS!(), COMMON_DOC!()]]
     pub mod _sys { #[allow(unused)] pub use super::super::sys::_all::*; }
-    #[doc = crate::_DOC_TEXT!()]
+    #[doc = concat![crate::_DOC_TEXT!(), COMMON_DOC!()]]
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
-    #[doc = crate::_DOC_UI!()]
+    #[doc = concat![crate::_DOC_UI!(), COMMON_DOC!()]]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
-    #[doc = crate::_DOC_WORK!()]
+    #[doc = concat![crate::_DOC_WORK!(), COMMON_DOC!()]]
+    /// <br/><hr>
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
 }
 
@@ -86,7 +88,7 @@ pub use all::*;
 pub mod all {
     // public items, feature-gated, visible at their origin and here in `all`
     //
-    //! All the crate's items flat re-exported.
+    //! All the crate's items flat re-exported all together.
     //! <br/><hr>
     //!
     //! Note that these items are already re-exported (hidden) from the root,

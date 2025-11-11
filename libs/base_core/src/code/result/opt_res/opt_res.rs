@@ -19,7 +19,7 @@
 /// It can simplify value presence management in collections lacking [`Clone`] or [`Default`],
 /// by using [`Option::take`], and enhance control flow in stateful or asynchronous contexts.
 ///
-/// See also: [`sok`] and [`serr`].
+/// See also: [`ExtOptres`], [`sok`] and [`serr`].
 ///
 /// # Examples
 /// ```

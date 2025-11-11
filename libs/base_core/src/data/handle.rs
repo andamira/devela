@@ -23,7 +23,7 @@ define_handle! {
 /// # Examples
 /// See also [`ExampleHandle`].
 /// ```
-/// # use crate::define_handle;
+/// # use devela_base_core::define_handle;
 /// define_handle! {
 ///     /// A custom handle.
 ///     pub ArenaHandle

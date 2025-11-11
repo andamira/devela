@@ -55,6 +55,7 @@ crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use devela_base_core::num::niche::{
+            NonNiche,
             NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
             NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize,
             NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128, NonExtremeUsize,
