@@ -186,6 +186,7 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - macros: `array_init!`, `bitfield!`.
   - types: `ArrayFrom`, `Bitwise`, `Oneof`, `Sort`.
+- new macro: `define_handle!`.
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
@@ -273,7 +274,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### mem
 - new alias: `MaybeByte`.
-- new types: `ArenaHandle`, `ExampleArena`.
+- new types: `ExampleArena`, `ExampleArenaHandle`.
 - new macros: `define_arena`, `slice!`.
 - move to [base]:
   - macros: `cswap!`, `const_join!`.

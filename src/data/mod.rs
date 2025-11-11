@@ -40,10 +40,14 @@ pub mod dst;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
-        pub use super::{absence::*, bit::_all::*, collection::*};
+        pub use super::{
+            absence::*,
+            bit::_all::*,
+            collection::*,
+        };
 
         #[doc(inline)]
-        pub use devela_base_core::Sort;
+        pub use devela_base_core::{Sort, define_handle};
         // #[doc(inline)]
         // #[cfg(feature = "alloc")]
         // pub use devela_base_alloc::SortAlloc;
@@ -51,8 +55,13 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _pub_mods {
         #[doc(inline)]
         pub use super::{
-            codec::_all::*, errors::*, iter::_all::*, key::_all::*,
-            list::_all::*, table::_all::*, uid::_all::*,
+            codec::_all::*,
+            errors::*,
+            iter::_all::*,
+            key::_all::*,
+            list::_all::*,
+            table::_all::*,
+            uid::_all::*,
         };
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
