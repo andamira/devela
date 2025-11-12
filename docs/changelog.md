@@ -274,7 +274,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### niche
 - new macro: `nv!`.
-- new type: `NonNiche`.
+- new types: `MaybeNiche`, `NonNiche`.
 
 ## phys
 ### time

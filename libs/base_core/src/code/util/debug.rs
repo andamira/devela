@@ -61,6 +61,7 @@ pub use compile_warning;
 /// ```
 #[doc = crate::_doc!(vendor: "stdext")]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! fn_name {
     () => {{
         // Okay, this is ugly, I get it. However, this is the best we can get on a stable rust.
