@@ -40,6 +40,8 @@ impl<T: ConstDefaultCore + Sealed> ConstDefault for T {
 mod impl_core {
     use super::{ConstDefaultCore, Sealed};
     use crate::{
+        impl_cdef,
+
         Reverse,
         Cell, OnceCell, RefCell, UnsafeCell,
         CStr,
@@ -54,63 +56,30 @@ mod impl_core {
 
     /* sealed implementations (in sync with devela_base_core::code::default) */
 
-    impl Sealed for () {}
-    impl Sealed for bool {}
-    impl Sealed for char {}
+    impl_cdef![%Sealed%ConstDefaultCore: tuples <T: ConstDefaultCore>];
+    impl_cdef![%Sealed%ConstDefaultCore: arrays <T: ConstDefaultCore>
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+        13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
-    impl Sealed for Duration {}
-
-    impl Sealed for i8 {}
-    impl Sealed for u8 {}
-    impl Sealed for i16 {}
-    impl Sealed for u16 {}
-    impl Sealed for i32 {}
-    impl Sealed for u32 {}
-    impl Sealed for i64 {}
-    impl Sealed for u64 {}
-    impl Sealed for i128 {}
-    impl Sealed for u128 {}
-    impl Sealed for isize {}
-    impl Sealed for usize {}
-    impl Sealed for f32 {}
-    impl Sealed for f64 {}
-
-    // TODO
-    // impl_cdef![ConstDefaultCore: tuples <T: ConstDefaultCore>];
-    // impl_cdef![ConstDefaultCore: arrays <T: ConstDefaultCore>
-    // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-    // 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-
-    impl<T> Sealed for *const T  {}
-    impl<T> Sealed for *mut T  {}
-    impl<T> Sealed for &[T] {}
-
-    impl Sealed for RangeFull {}
-    impl<T> Sealed for RangeFrom<T> {}
-    impl<T> Sealed for RangeTo<T> {}
-    impl<T> Sealed for RangeToInclusive<T> {}
-    impl<T> Sealed for RangeInclusive<T> {}
-    impl<T> Sealed for Range<T> {}
-
-    impl<T: ConstDefaultCore> Sealed for OnceCell<T> {}
-    impl<T: ConstDefaultCore> Sealed for Cell<T> {}
-    impl<T: ConstDefaultCore> Sealed for ManuallyDrop<T> {}
-    impl<T: ConstDefaultCore> Sealed for RefCell<T> {}
-    impl<T: ConstDefaultCore> Sealed for UnsafeCell<T> {}
-
-    impl<T: ConstDefaultCore> Sealed for PanicAssertUnwindSafe<T> {}
-    impl<T: ConstDefaultCore> Sealed for Reverse<T> {}
-    impl<T: ConstDefaultCore> Sealed for Saturating<T> {}
-    impl<T: ConstDefaultCore> Sealed for Wrapping<T> {}
-
-    impl Sealed for PhantomPinned {}
-    impl<T> Sealed for PhantomData<T> {}
-    impl<T: ConstDefaultCore> Sealed for Option<T> {}
+    impl_cdef!(%Sealed%:
+        (), bool, char,
+        i8, i16, i32, i64, i128, isize,
+        u8, u16, u32, u64, u128, usize,
+        f32, f64,
+        Duration,
+        RangeFull,
+        PhantomPinned,
+        &CStr, &str, &mut str,
+    );
+    impl_cdef![%Sealed%: <T> *const T, *mut T, &[T]];
+    impl_cdef![%Sealed%: <T: ConstDefaultCore>
+        RangeFrom<T>, RangeTo<T>, RangeToInclusive<T>, Range<T>, RangeInclusive<T>,
+        OnceCell<T>, Cell<T>, ManuallyDrop<T>, RefCell<T>, UnsafeCell<T>,
+        PanicAssertUnwindSafe<T>, Reverse<T>, Saturating<T>, Wrapping<T>,
+        PhantomData<T>,
+        Option<T>,
+    ];
     impl<T: ConstDefaultCore, E> Sealed for Result<T, E> {}
-
-    impl Sealed for &CStr {}
-    impl Sealed for &str {}
-    impl Sealed for &mut str {}
 }
 
 #[cfg(feature = "alloc")]
