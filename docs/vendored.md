@@ -114,7 +114,7 @@ See the linked modifications for detailed changes.
 - <i id="rawbytes"></i>[rawbytes] by Frank Denis,
   as `Mem`'s [`as_bytes`] and [`as_bytes_mut`] methods.
 - <i id="stdext"></i>[stdext] by Igor Aleksanov,
-  as [`compile_warning!`] and [`fn_name!`] macros ([*modifications*][M_stdext]).
+  as [`compile_warn!`] and [`fn_name!`] macros ([*modifications*][M_stdext]).
 - <i id="transliteration"></i>[transliteration] by *yf-hk*,
   as the [`scalar_as_ascii_translit`] fn.
 - <i id="unsized-stack"></i>[unsized-stack] by *storycraft*,
@@ -149,7 +149,7 @@ See the linked modifications for detailed changes.
   [`as_bytes_mut`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.Mem.html#method.as_bytes_mut
 [stdext]: https://crates.io/crates/stdext/0.3.3
   [M_stdext]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stdext.md
-  [`compile_warning!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.compile_warning.html
+  [`compile_warn!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.compile_warn.html
   [`fn_name!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.fn_name.html
 [transliteration]: https://github.com/yf-hk/transliteration
   [`scalar_as_ascii_translit`]: https://andamira.github.io/devela/latest/devela/text/char/fn.scalar_as_ascii_translit.html

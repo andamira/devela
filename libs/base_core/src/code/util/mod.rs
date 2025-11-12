@@ -51,7 +51,7 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
             capture::{capture_first, capture_last, capture_tail_tuple},
             cfg_if::cfg_if,
             r#const::CONST,
-            debug::{compile_warning, fn_name},
+            debug::{compile_warn, fn_name},
             deprecate::deprecate_feature,
             doclink::doclink,
             enumset::enumset,

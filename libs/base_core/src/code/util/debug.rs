@@ -2,31 +2,28 @@
 
 /// Emits a compile-time warning with a provided message.
 ///
-/// This implemented through an existing `dead_code` warning, thus the
-/// output for the following example:
+/// This implemented through an existing `dead_code` warning,
+/// thus the output for the following example:
 ///
 /// ```
-/// # use devela_base_core::compile_warning;
-/// compile_warning!("Sample user-defined warning!");
+/// # use devela_base_core::compile_warn;
+/// compile_warn!(sample_user_defined_warning);
 /// ```
 ///
 /// may look as follows:
 /// ```text
-/// warning: constant item is never used: `WARNING`
+/// warning: constant `user_defined_warning` is never used
 ///   --> src/lib.rs:7:9
 ///   |
-/// 7 |         const WARNING: &str = $expr;
-///   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-/// ...
-/// 11 | compile_warning!("Sample user-defined warning!");
-///    | ------------------------------------------------- in this macro invocation
+/// 7 |  compile_warn!(user_defined_warning);
+///   |                ^^^^^^^^^^^^^^^^^^^^
 /// ```
 ///
-/// Once [`proc_macro_diagnostics`] feature is stabilized, this macro will be replaced
-/// with a proper proc-macro-based implementation.
+/// Once [`proc_macro_diagnostics`] feature is stabilized, this macro
+/// could be replaced with a proper proc-macro-based implementation.
 ///
-/// This macro is intended to be used in the development process, as an alternative to the
-/// [`unimplemented`] macro which doesn't cause code to panic.
+/// This macro is intended to be used in the development process, as an alternative
+/// to the [`unimplemented`] macro which doesn't cause code to panic.
 ///
 /// [`std::compile_error`]: https://doc.rust-lang.org/std/macro.compile_error.html
 /// [`proc_macro_diagnostics`]: https://github.com/rust-lang/rust/issues/54140
@@ -34,14 +31,15 @@
 #[doc = crate::_doc!(vendor: "stdext")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! compile_warning {
-    ($expr:expr) => {
+macro_rules! compile_warn {
+    ($const:ident) => {
         #[warn(dead_code)]
-        const WARNING: &str = $expr;
+        #[allow(non_upper_case_globals)]
+        const $const: &str = "";
     };
 }
 #[doc(inline)]
-pub use compile_warning;
+pub use compile_warn;
 
 /// This macro returns the name of the enclosing function.
 ///

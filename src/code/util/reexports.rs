@@ -12,6 +12,7 @@ pub use devela_base_core::{
     capture_first, capture_last, capture_tail_tuple,
     cfg_if,
     CONST,
+    compile_warn, fn_name,
     deprecate_feature,
     doclink,
     enumset,

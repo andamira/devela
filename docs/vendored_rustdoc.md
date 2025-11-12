@@ -60,7 +60,7 @@
   [`as_bytes`]: crate::sys::mem::Mem::as_bytes
   [`as_bytes_mut`]: crate::sys::mem::Mem::as_bytes_mut
   [M_stdext]: crate::_doc::vendored::stdext
-  [`compile_warning!`]: crate::code::util::compile_warning
+  [`compile_warn!`]: crate::code::util::compile_warn
   [`fn_name!`]: crate::code::util::fn_name
   [`scalar_as_ascii_translit`]: crate::text::char::scalar_as_ascii_translit
   [`FatPtr`]: crate::sys::mem::FatPtr
