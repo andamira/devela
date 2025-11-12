@@ -246,6 +246,7 @@ macro_rules! impl_non_value {
                 /// # Safety
                 /// The given `value` must never be equal to `V`.
                 #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+                #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_niche")))]
                 pub const unsafe fn new_unchecked(value: $IP) -> Self {
                     #[cfg(debug_assertions)]
                     if value == V { panic!("The given value was specifically prohibited.") }
