@@ -19,10 +19,11 @@ mod _use; // _use!
 
 mod reexports; // macros from core & devela_base_macros
 
-mod asserts; // assertion macros
+mod asserts; // (assertion macros)
 mod capture; // capture_[first|last|tail_tuple]!
 mod cfg_if; // cfg_if!
 mod r#const; // CONST!
+mod debug; // , compile_warning!, fn_name!
 mod deprecate; // deprecate_feature!
 mod doclink; // doclink!
 mod enumset; // enumset!
@@ -50,6 +51,7 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
             capture::{capture_first, capture_last, capture_tail_tuple},
             cfg_if::cfg_if,
             r#const::CONST,
+            debug::{compile_warning, fn_name},
             deprecate::deprecate_feature,
             doclink::doclink,
             enumset::enumset,

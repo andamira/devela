@@ -34,6 +34,7 @@ crate::_doc! { vendor_mod: "grapheme_machine", grapheme_machine }
 crate::_doc! { vendor_mod: "icy_sixel", icy_sixel }
 // crate::_doc! { vendor_mod: "musl", musl }
 crate::_doc! { vendor_mod: "object-id", object_id }
+crate::_doc! { vendor_mod: "stdext", stdext }
 // Other
 // crate::_doc! { vendor_mod: "blit-fonts", blit_fonts }
 crate::_doc! { vendor_mod: "jiff", jiff }
