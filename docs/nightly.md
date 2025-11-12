@@ -68,6 +68,7 @@ See also
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
+- 1.??: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
@@ -105,6 +106,7 @@ See also
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
+- 1.??: `a`[vec_into_raw_parts](https://github.com/rust-lang/rust/pull/148827)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
 # … may be stable even later
