@@ -88,17 +88,17 @@ impl char16 {
     /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
     ///
     /// # Features
-    /// Makes use of the `unsafe_niche` feature if enabled.
+    /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_char_ascii(self) -> Result<CharAscii, DataOverflow> {
         if Char(self.to_scalar()).is_ascii() {
-            #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
+            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             if let Some(c) = CharAscii::from_u8(self.0.get() as u8) {
                 return Ok(c);
             } else {
                 unreachable![]
             }
 
-            #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
+            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { CharAscii::from_u8_unchecked(self.0.get() as u8) });
         }

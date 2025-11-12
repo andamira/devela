@@ -108,12 +108,14 @@ impl char7 {
     }
 
     /// Converts a `char7` to `CharAscii`.
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[must_use]
     pub const fn to_char_ascii(c: char7) -> CharAscii {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
+        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return if let Some(c) = CharAscii::from_u8(c.0.get()) { c } else { unreachable!() };
 
-        #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
+        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         unsafe {
             CharAscii::from_u8_unchecked(c.0.get())
         }
