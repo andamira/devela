@@ -1,6 +1,6 @@
 // devela::num::niche::impls
 //
-//! Implements `BitSized`, `ConstDefault` and `MemPod` for `NonValue*`.
+//! Implements `BitSized`, `ConstInit` and `MemPod` for `NonValue*`.
 //
 
 #[cfg(all(feature = "unsafe_layout", not(feature = "safe_mem")))]
@@ -8,7 +8,7 @@ use crate::MemPod;
 #[cfg(feature = "bit")]
 use crate::{BitSized, ByteSized};
 use crate::{
-    ConstDefaultSealed, NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128,
+    ConstInitSealed, NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128,
     NonExtremeIsize, NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128,
     NonExtremeUsize, paste,
 };
@@ -40,8 +40,8 @@ macro_rules! impl_for_non_value {
         #[cfg(feature = "bit")]
         impl<const V: $IP> BitSized<{<$IP>::BYTE_SIZE * 8}> for $nv<V> {}
 
-        // ConstDefault for NonExtreme*
-        impl ConstDefaultSealed for $ne {}
+        // ConstInit for NonExtreme*
+        impl ConstInitSealed for $ne {}
 
         // MemPod for NonValue*
         #[cfg(feature = "unsafe_layout")]

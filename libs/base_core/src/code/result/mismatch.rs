@@ -3,7 +3,7 @@
 //! Define the [`Mismatch`] type.
 //
 
-use crate::Interval;
+use crate::{ConstInitCore, Interval};
 
 #[doc = crate::_TAG_RESULT!()]
 /// Represents a mismatch between an expected `need` and an encountered `have`.
@@ -53,14 +53,13 @@ impl<N, H> Mismatch<Interval<N>, H> {
     pub fn in_empty_interval(have: H, info: &'static str) -> Self where N: Default {
         Self { need: Interval::empty(), have, info }
     }
-    // NOTE: Can't implement this here because ConstDefault is defined in devela.
-    // /// Creates a mismatch where `need` is an [`Interval::empty_const`],
-    // /// but `have` was provided.
-    // #[must_use] #[rustfmt::skip]
-    // pub const fn in_empty_const_interval(have: H, info: &'static str) -> Self
-    // where N: ConstDefault {
-    //     Self { need: Interval::empty_const(), have, info }
-    // }
+    /// Creates a mismatch where `need` is an [`Interval::empty_const`],
+    /// but `have` was provided.
+    #[must_use] #[rustfmt::skip]
+    pub const fn in_empty_const_interval(have: H, info: &'static str) -> Self
+    where N: ConstInitCore {
+        Self { need: Interval::empty_const(), have, info }
+    }
     /// Creates a mismatch where `need` is an [`Interval::empty_with`],
     /// but `have` was provided.
     #[must_use] #[rustfmt::skip]

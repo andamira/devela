@@ -13,7 +13,7 @@ use super::{
     LegacySixelOutput, LegacySixelPixelFormat, LegacySixelQuality, LegacySixelResult,
     LegacySixelSplit,
 };
-use crate::{ConstDefault, LegacySixelDither, String, ToString, Vec};
+use crate::{ConstInit, LegacySixelDither, String, ToString, Vec};
 
 /// A configurable sixel string builder from a slice of pixel data bytes.
 ///
@@ -48,16 +48,16 @@ pub struct LegacySixel<'a> {
     pub quality: LegacySixelQuality,
 }
 
-impl ConstDefault for LegacySixel<'_> {
-    const DEFAULT: Self = Self {
+impl ConstInit for LegacySixel<'_> {
+    const INIT: Self = Self {
         bytes: None,
         width: 0,
         height: 0,
-        format: LegacySixelPixelFormat::DEFAULT,
-        dither: LegacySixelDither::DEFAULT,
-        split: LegacySixelSplit::DEFAULT,
-        mean: LegacySixelMean::DEFAULT,
-        quality: LegacySixelQuality::DEFAULT,
+        format: LegacySixelPixelFormat::INIT,
+        dither: LegacySixelDither::INIT,
+        split: LegacySixelSplit::INIT,
+        mean: LegacySixelMean::INIT,
+        quality: LegacySixelQuality::INIT,
     };
 }
 
@@ -66,24 +66,24 @@ impl ConstDefault for LegacySixel<'_> {
 impl<'bytes> LegacySixel<'bytes> {
     /// Returns a new empty sixel builder.
     #[must_use]
-    pub const fn new() -> Self { Self::DEFAULT }
+    pub const fn new() -> Self { Self::INIT }
 
     /// Returns a new empty sixel builder with the given byte slice.
     #[must_use]
     pub const fn with_bytes(bytes: &'bytes [u8]) -> Self {
-        Self::DEFAULT.bytes(bytes)
+        Self::INIT.bytes(bytes)
     }
 
     /// Returns a new empty sixel builder with the given size.
     #[must_use]
     pub const fn with_size(width: i32, height: i32) -> Self {
-        Self::DEFAULT.size(width, height)
+        Self::INIT.size(width, height)
     }
 
     /// Returns a new empty sixel builder with the given byte slize and size.
     #[must_use]
     pub const fn with_bytes_size(bytes: &'bytes [u8], width: i32, height: i32) -> Self {
-        Self::DEFAULT.bytes(bytes).size(width, height)
+        Self::INIT.bytes(bytes).size(width, height)
     }
 
     /* */

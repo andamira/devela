@@ -61,7 +61,7 @@ use crate::{Array, Bare, Storage};
 ///   [`get_coords_rmaj`][Self::get_coords_rmaj]*([`uc`][Self::get_coords_rmaj_unchecked])*.
 ///
 /// ## Panics
-/// Note that the `Default` and `ConstDefault` constructors will panic if `C * R != CR`.
+/// Note that the `Default` and `ConstInit` constructors will panic if `C * R != CR`.
 //
 // WAIT: [adt_const_params](https://github.com/rust-lang/rust/issues/95174)
 //       would allow to use enums and arrays as const-generic parameters.

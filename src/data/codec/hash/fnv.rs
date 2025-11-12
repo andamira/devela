@@ -1,6 +1,6 @@
 // devela::data::codec::hash::fnv
 
-use crate::{Cast, ConstDefault, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
+use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 
 /// A builder for default Fnv hashers.
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
@@ -41,14 +41,14 @@ macro_rules! impl_fnv {
     ($($t:ty:$basis:ident:$prime:ident),+) =>  { $( impl_fnv![@$t:$basis:$prime]; )+ };
     (@$t:ty:$basis:ident:$prime:ident) =>  {
 
-        impl ConstDefault for HasherFnv<$t> { const DEFAULT: Self = Self { state: $basis as $t }; }
-        impl Default for HasherFnv<$t> { fn default() -> Self { Self::DEFAULT } }
+        impl ConstInit for HasherFnv<$t> { const INIT: Self = Self { state: $basis as $t }; }
+        impl Default for HasherFnv<$t> { fn default() -> Self { Self::INIT } }
 
         impl HasherFnv<$t> {
             /* state-full methods */
 
             /// Returns a default FNV hasher.
-            pub const fn new() -> Self { Self::DEFAULT }
+            pub const fn new() -> Self { Self::INIT }
 
             /// Returns an FNV hasher with the given `input` data.
             pub const fn with(input: &[u8]) -> Self { Self { state: Self::hash(input) } }

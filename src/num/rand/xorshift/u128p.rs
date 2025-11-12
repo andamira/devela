@@ -5,7 +5,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Box;
-use crate::{Cast, ConstDefault, Own};
+use crate::{Cast, ConstInit, Own};
 #[cfg(feature = "std")]
 use crate::{Hasher, HasherBuild, RandomState};
 
@@ -23,12 +23,12 @@ pub struct XorShift128p([u64; 2]);
 /// Creates a new PRNG initialized with the default fixed seed.
 impl Default for XorShift128p {
     fn default() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstDefault for XorShift128p {
-    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
+impl ConstInit for XorShift128p {
+    const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items

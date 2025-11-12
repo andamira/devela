@@ -10,7 +10,7 @@ mod edge;
 use edge::impl_graph_edge;
 
 use crate::{
-    Array, Bare, ConstDefault,
+    Array, Bare,
     DataError::{IndexOutOfBounds, KeyAlreadyExists, NodeEmpty, NotEnoughSpace},
     DataResult as Result, Storage,
     num::niche::*,

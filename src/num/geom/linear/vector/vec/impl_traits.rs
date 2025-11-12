@@ -15,7 +15,7 @@ impl<T: Clone> Clone for VecVector<T> {
     }
 }
 
-/* Default, ConstDefault */
+/* Default, ConstInit TODO */
 
 impl<T: Default> Default for VecVector<T> {
     /// Returns a `VecVector`, using the default value to fill the data.

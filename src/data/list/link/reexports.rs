@@ -5,9 +5,9 @@ crate::mod_path!(alloc +pub _a "../../../../libs/base_alloc/src/data/list/link/r
 #[doc(inline)]
 pub use devela_base_core::ConstList;
 
-/* ConstDefault impls */
+/* ConstInit impls */
 
-crate::impl_cdef![ConstDefault: <T> Self::new() => ConstList<'_, T>];
+crate::_impl_init![ConstInit: <T> Self::new() => ConstList<'_, T>];
 
 #[cfg(feature = "alloc")]
-crate::impl_cdef![ConstDefault: <T> Self::new() => LinkedList<T>];
+crate::_impl_init![ConstInit: <T> Self::new() => LinkedList<T>];

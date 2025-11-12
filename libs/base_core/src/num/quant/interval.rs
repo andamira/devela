@@ -9,7 +9,10 @@
 //   - impl traits
 // - tests
 
-use crate::{Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive, is};
+use crate::{
+    Bound, ConstInitCore, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
+    is,
+};
 
 #[doc = crate::_TAG_QUANT!()]
 /// Creates an [`Interval`] using extended range notation.
@@ -213,12 +216,12 @@ impl<T> Interval<T> {
     pub fn empty() -> Self where T: Default {
         Self::open(T::default(), T::default())
     }
-    // /// Creates a canonical empty interval,
-    // /// equivalent to [`open`][Interval::open]`(T::DEFAULT, T::DEFAULT)`.
-    // #[must_use] #[rustfmt::skip]
-    // pub const fn empty_const() -> Self where T: ConstDefault {
-    //     Self::open(T::DEFAULT, T::DEFAULT)
-    // }
+    /// Creates a canonical empty interval,
+    /// equivalent to [`open`][Interval::open]`(T::INIT, T::INIT)`.
+    #[must_use] #[rustfmt::skip]
+    pub const fn empty_const() -> Self where T: ConstInitCore {
+        Self::open(T::INIT, T::INIT)
+    }
 
     /// Creates a canonical empty interval,
     /// equivalent to [`open`][Interval::open]`(value, value)`.

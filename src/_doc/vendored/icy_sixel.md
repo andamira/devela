@@ -16,7 +16,7 @@ including the following modifications:
 - add new methods to `LegacyPixelFormat`: `bits_per_pixel`, `bytes_per_pixel`, `required_bytes`.
 - make private: `LegacySixelPalette`, `LegacySixelNode`, `LegacySixelOutput`, `LegacySixelEncodePolicy`, `LegacySixelColorModel`, many functions.
 - new `LegacySixel` builder struct and make the `sixel_string` function private.
-- derive `Default` and `ConstDefault`, when possible.
+- derive `Default` and `ConstInit`, when possible.
 - rename many items according to rust guidelines.
 - simplify lints, comments and attributes.
 - improve docs, also for private items.

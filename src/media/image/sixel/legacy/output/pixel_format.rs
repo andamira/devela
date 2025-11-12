@@ -13,7 +13,7 @@
 
 #![allow(clippy::identity_op, reason = "symmetry")]
 
-use crate::{ConstDefault, LegacySixelError, LegacySixelResult};
+use crate::{ConstInit, LegacySixelError, LegacySixelResult};
 
 /// Pixel format type of input image.
 ///
@@ -65,7 +65,7 @@ pub enum LegacySixelPixelFormat {
     PAL8 = (1 << 7) | 0x03,
 }
 #[rustfmt::skip]
-impl ConstDefault for LegacySixelPixelFormat { const DEFAULT: Self = Self::RGB888; }
+impl ConstInit for LegacySixelPixelFormat { const INIT: Self = Self::RGB888; }
 
 impl LegacySixelPixelFormat {
     /// Returns the bits per pixel of the current format.

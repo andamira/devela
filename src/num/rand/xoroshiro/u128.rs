@@ -10,7 +10,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Box;
-use crate::{Cast, ConstDefault, Own};
+use crate::{Cast, ConstInit, Own};
 #[cfg(feature = "std")]
 use crate::{Hasher, HasherBuild, RandomState};
 
@@ -261,8 +261,8 @@ impl Default for Xoroshiro128pp {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstDefault for Xoroshiro128pp {
-    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
+impl ConstInit for Xoroshiro128pp {
+    const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 #[cfg(feature = "dep_rand_core")]

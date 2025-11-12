@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{ConstDefault, Hash, Hasher, Vector, array_init};
+use crate::{ConstInit, Hash, Hasher, Vector, array_init};
 use ::core::fmt;
 
 /* Clone, Copy */
@@ -18,7 +18,7 @@ impl<T: Clone, const D: usize> Clone for Vector<T, D> {
 // T:Copy
 impl<T: Copy, const D: usize> Copy for Vector<T, D> {}
 
-/* Default, ConstDefault */
+/* Default, ConstInit */
 
 impl<T: Default, const D: usize> Default for Vector<T, D> {
     /// Returns a `Vector`, allocated in the stack,
@@ -29,12 +29,12 @@ impl<T: Default, const D: usize> Default for Vector<T, D> {
     }
 }
 
-// S:Bare + T:ConstDefault
-impl<T: ConstDefault, const D: usize> ConstDefault for Vector<T, D> {
+// S:Bare + T:ConstInit
+impl<T: ConstInit, const D: usize> ConstInit for Vector<T, D> {
     /// Returns a Vector, allocated in the stack,
     /// using the default value to fill the data.
-    const DEFAULT: Self = {
-        let coords = array_init![const_default [T; D]];
+    const INIT: Self = {
+        let coords = array_init![const_init [T; D]];
         Self { coords }
     };
 }

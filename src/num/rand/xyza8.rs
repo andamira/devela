@@ -2,7 +2,7 @@
 //
 //!
 
-use crate::{ConstDefault, Own};
+use crate::{ConstInit, Own};
 
 #[doc = crate::_TAG_RAND!()]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
@@ -28,12 +28,12 @@ pub struct Xyza8a {
 /// Creates a new PRNG initialized with the default fixed seed.
 impl Default for Xyza8a {
     fn default() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstDefault for Xyza8a {
-    const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
+impl ConstInit for Xyza8a {
+    const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // private associated items
@@ -139,11 +139,11 @@ pub struct Xyza8b {
 
 impl Default for Xyza8b {
     fn default() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 }
-impl ConstDefault for Xyza8b {
-    const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
+impl ConstInit for Xyza8b {
+    const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // private associated items

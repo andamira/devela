@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{ConstDefault, Own};
+use crate::{ConstInit, Own};
 
 #[doc = crate::_TAG_RAND!()]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
@@ -49,12 +49,12 @@ pub struct Xabc {
 /// Creates a new PRNG initialized with the default fixed seed.
 impl Default for Xabc {
     fn default() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstDefault for Xabc {
-    const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
+impl ConstInit for Xabc {
+    const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // private associated items

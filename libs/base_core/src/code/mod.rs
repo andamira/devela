@@ -6,7 +6,7 @@
 #![cfg_attr(base_safe_code, forbid(unsafe_code))]
 
 mod any; // dynamic typing and reflection
-mod default; // ConstDefaultCore, <impl_cdef!>
+mod const_init; // ConstInitCore, <_impl_init!>
 mod guard; // ScopeGuard
 mod lut; // Lut
 mod reexports;
@@ -22,7 +22,7 @@ util::structural_mods! { // _mods, _pub_mods, _workspace_internals
     _mods {
         pub use super::{
             any::_all::*,
-            default::ConstDefaultCore,
+            const_init::ConstInitCore,
             guard::*,
             lut::*,
             reexports::*,
@@ -38,7 +38,7 @@ util::structural_mods! { // _mods, _pub_mods, _workspace_internals
         pub(crate) use super::util::_crate_internals::*;
     }
     _workspace_internals {
+        pub/*workspace*/ use super::const_init::_impl_init;
         pub/*workspace*/ use super::util::_workspace_internals::*;
-        pub/*workspace*/ use super::default::impl_cdef;
     }
 }

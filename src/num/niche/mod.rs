@@ -49,7 +49,7 @@
 
 crate::mod_path!(_c "../../../libs/base_core/src/num/niche/reexports.rs");
 
-mod impls; // impl ConstDefault, BitSized
+mod impls; // impl ConstInit, BitSized
 
 crate::structural_mods! { // _mods
     _mods {

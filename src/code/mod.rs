@@ -14,7 +14,7 @@
 crate::mod_path!(_c "../../libs/base_core/src/code/reexports.rs");
 
 mod any; // dynamic typing and reflection
-mod default; // ConstDefault
+mod const_init; // ConstInit
 
 pub mod error; // AllError, modular errors
 pub mod intro; // Introspect
@@ -29,12 +29,12 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
         pub use super::{
             _c::*,
             any::_all::*,
-            default::ConstDefault,
+            const_init::ConstInit,
         };
 
         // re-exports
         #[doc(inline)]
-        pub use devela_base_core::code::{ConstDefaultCore, Lut, ScopeGuard};
+        pub use devela_base_core::code::{ConstInitCore, Lut, ScopeGuard};
     }
     _pub_mods {
         pub use super::{
@@ -44,6 +44,6 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::util::_crate_internals::*;
-        pub(crate) use super::default::{Sealed as ConstDefaultSealed};
+        pub(crate) use super::const_init::{Sealed as ConstInitSealed};
     }
 }

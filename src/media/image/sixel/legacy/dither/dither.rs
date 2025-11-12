@@ -16,7 +16,7 @@
 
 #![allow(clippy::erasing_op, clippy::identity_op, reason = "symmetry")]
 
-crate::impl_cdef! { ConstDefault: Self::Auto => LegacySixelDither }
+crate::_impl_init! { ConstInit: Self::Auto => LegacySixelDither }
 
 /// LegacySixelDithering methods of error diffusion.
 ///

@@ -120,7 +120,7 @@ mod impls {
     #[cfg(feature = "alloc")]
     use crate::String;
     use crate::{
-        ConstDefault, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering, TypeResource,
+        ConstInit, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering, TypeResource,
         TypeResourced,
     };
 
@@ -156,8 +156,8 @@ mod impls {
     impl<T> Default for TypeResource<T> where T: TypeResourced, T::TypeData: Default {
         fn default() -> Self { TypeResource::new(T::TypeData::default()) }
     }
-    impl<T> ConstDefault for TypeResource<T> where T: TypeResourced, T::TypeData: ConstDefault {
-        const DEFAULT: Self = TypeResource::new(T::TypeData::DEFAULT);
+    impl<T> ConstInit for TypeResource<T> where T: TypeResourced, T::TypeData: ConstInit {
+        const INIT: Self = TypeResource::new(T::TypeData::INIT);
     }
 
     #[cfg(feature = "bit")]

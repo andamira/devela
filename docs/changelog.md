@@ -134,9 +134,9 @@ Many feature gates are removed in order to make most features make always availa
 
 ## code
 - rename `ExtAny` to `AnyExt`.
-- new trait `ConstDefaultCore`.
+- new trait `ConstInitCore`.
 - move to [base]:
-  - all `ConstDefault*` impls.
+  - all `ConstInit*` impls.
   - `impl_cdef!` workspace-internal macro.
     - modify it to receive the trait as an argument.
 - move `ScopeGuard` to [base_core].
@@ -202,7 +202,7 @@ Many feature gates are removed in order to make most features make always availa
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
-- update `array_init!` to require `ConstDefault` and `Vec` in scope if needed.
+- update `array_init!` to require `ConstInit` and `Vec` in scope if needed.
 
 ### key
 - update `define_static_map!`:
@@ -341,7 +341,7 @@ Many feature gates are removed in order to make most features make always availa
   - new `Other` variant.
   - impl `Error`.
 - improve `LinuxTimespec`.
-  - impl `Display` and `ConstDefault`
+  - impl `Display` and `ConstInit`
   - rename method `with` to `try_with_duration` and make fallible.
   - add corresponding method `try_to_duration`.
   - add saturating methods to convert from/to `Duration`.
@@ -360,7 +360,7 @@ Many feature gates are removed in order to make most features make always availa
 - new `char[7|8|16]` methods: `to_charu`, `try_from_charu`.
 - new `Lut` consts: `ASCII_BASE36_OFFSET`, `DIGITS_BASE36`, `DECIMAL_PAIRS`, `POWERS10`.
 - mark `char[7|8|16]` as must_use.
-- impl `ConstDefault` for `char*`.
+- impl `ConstInit` for `char*`.
 - rename `AsciiChar` to `CharAscii`.
 - rename `char*` methods:
   - `to_u32` to `to_scalar`.

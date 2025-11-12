@@ -5,7 +5,7 @@
 
 #[cfg(doc)]
 use crate::{Bare, BareBox};
-use crate::{Box, ConstDefault, Storage};
+use crate::{Box, ConstInit, Storage};
 // #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
 // use rkyv::{Archive, Deserialize, Serialize};
 
@@ -24,6 +24,6 @@ impl Storage for Boxed {
         "Boxed"
     }
 }
-impl ConstDefault for Boxed {
-    const DEFAULT: Self = Boxed;
+impl ConstInit for Boxed {
+    const INIT: Self = Boxed;
 }

@@ -1,6 +1,6 @@
 // devela::code::result::reexports
 
-use crate::{ConstDefault, mod_path};
+use crate::{ConstInit, mod_path};
 
 mod_path!(+pub _c "../../../libs/base_core/src/code/result/reexports.rs");
 
@@ -10,7 +10,7 @@ pub use devela_base_core::code::result::{
     Own, ResultExt, serr, sok, unwrap,
 };
 
-impl<N: ConstDefault, H: ConstDefault> ConstDefault for Mismatch<N, H> {
+impl<N: ConstInit, H: ConstInit> ConstInit for Mismatch<N, H> {
     /// Returns a *const* default `Mismatch`.
-    const DEFAULT: Self = Self { need: N::DEFAULT, have: H::DEFAULT, info: "" };
+    const INIT: Self = Self { need: N::INIT, have: H::INIT, info: "" };
 }

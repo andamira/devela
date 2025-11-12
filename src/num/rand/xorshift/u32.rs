@@ -3,7 +3,7 @@
 //! 32-bit version of XorShift.
 //
 
-use crate::{ConstDefault, Own, xorshift_basis};
+use crate::{ConstInit, Own, xorshift_basis};
 
 #[doc = crate::_TAG_RAND!()]
 /// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -25,12 +25,12 @@ pub struct XorShift32<
 /// Creates a new PRNG initialized with the default fixed seed.
 impl Default for XorShift32 {
     fn default() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstDefault for XorShift32 {
-    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
+impl ConstInit for XorShift32 {
+    const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items

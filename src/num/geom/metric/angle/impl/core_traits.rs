@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{Angle, ConstDefault, Debug, FmtResult, Formatter, Ordering};
+use crate::{Angle, ConstInit, Debug, FmtResult, Formatter, Ordering};
 
 /* Clone, Copy */
 
@@ -17,7 +17,7 @@ impl<T: Clone> Clone for Angle<T> {
 // T:Copy
 impl<T: Copy> Copy for Angle<T> {}
 
-/* Default, ConstDefault */
+/* Default, ConstInit */
 
 impl<T: Default> Default for Angle<T> {
     /// Returns a `Angle`, allocated in the stack,
@@ -27,11 +27,11 @@ impl<T: Default> Default for Angle<T> {
     }
 }
 
-// S:Bare + T:ConstDefault
-impl<T: ConstDefault> ConstDefault for Angle<T> {
+// S:Bare + T:ConstInit
+impl<T: ConstInit> ConstInit for Angle<T> {
     /// Returns a Angle, allocated in the stack,
     /// using the default value to fill the data.
-    const DEFAULT: Self = { Self::new(T::DEFAULT) };
+    const INIT: Self = { Self::new(T::INIT) };
 }
 
 // T:Debug

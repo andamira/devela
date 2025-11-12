@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    ArrayExt, ConstDefault, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering, Point,
+    ArrayExt, ConstInit, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering, Point,
     array_init,
 };
 
@@ -20,8 +20,8 @@ impl<T: Default, const D: usize> Default for Point<T, D> {
         Self::new(array_init![default [T; D], "safe_num", "unsafe_array"])
     }
 }
-impl<T: ConstDefault, const D: usize> ConstDefault for Point<T, D> {
-    const DEFAULT: Self = Self::new(array_init![const_default [T; D]]);
+impl<T: ConstInit, const D: usize> ConstInit for Point<T, D> {
+    const INIT: Self = Self::new(array_init![const_init [T; D]]);
 }
 
 impl<T: Debug, const D: usize> Debug for Point<T, D> {

@@ -1,6 +1,6 @@
 // devela::data::dst
 
-use crate::{Array, ConstDefault, Deref, DerefMut, MaybeUninit, MemPod};
+use crate::{Array, ConstInit, Deref, DerefMut, MaybeUninit, MemPod};
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Represents the backing buffer for storing dynamically sized types.
@@ -119,8 +119,8 @@ impl<T: MemPod, const CAP: usize> Default for DstArray<T, CAP> {
         Self { inner: Array::new([MaybeUninit::uninit(); CAP]) }
     }
 }
-impl<T: MemPod, const CAP: usize> ConstDefault for DstArray<T, CAP> {
-    const DEFAULT: Self = Self {
+impl<T: MemPod, const CAP: usize> ConstInit for DstArray<T, CAP> {
+    const INIT: Self = Self {
         inner: Array::new_bare([MaybeUninit::uninit(); CAP]),
     };
 }

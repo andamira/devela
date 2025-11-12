@@ -10,7 +10,7 @@ crate::mod_path!(alloc +pub _a "../../../libs/base_alloc/src/sys/mem/reexports.r
 pub use devela_base_core::{CacheAlign, MaybeByte, Mem, MemAligned, cswap, define_arena};
 
 #[cfg(feature = "alloc")]
-crate::impl_cdef![ConstDefault: <T: ConstDefault> Self::new() => RcWeak<T>];
+crate::_impl_init![ConstInit: <T: ConstInit> Self::new() => RcWeak<T>];
 
 #[doc(inline)]
 pub use crate::Sized;

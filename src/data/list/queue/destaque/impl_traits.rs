@@ -6,8 +6,8 @@
 #[cfg(feature = "alloc")]
 use crate::Boxed;
 use crate::{
-    Array, Bare, ConstDefault, DataCollection, DataDeque, DataDesta, DataQueue, DataStack,
-    Destaque, DestaqueIter, NotAvailable, NotEnoughElements, NotEnoughSpace, Ordering, Storage,
+    Array, Bare, ConstInit, DataCollection, DataDeque, DataDesta, DataQueue, DataStack, Destaque,
+    DestaqueIter, NotAvailable, NotEnoughElements, NotEnoughSpace, Ordering, Storage,
 };
 use ::core::fmt;
 
@@ -349,17 +349,15 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, CAP, ID
     }
 }
 
-// T: ConstDefault, S: Bare
-impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
-    for Destaque<T, CAP, IDX, Bare>
-{
+// T: ConstInit, S: Bare
+impl<T: ConstInit, const CAP: usize, IDX: ConstInit> ConstInit for Destaque<T, CAP, IDX, Bare> {
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
-    const DEFAULT: Self = Self {
-        data: Array::DEFAULT,
-        front: IDX::DEFAULT,
-        back: IDX::DEFAULT,
-        len: IDX::DEFAULT,
+    const INIT: Self = Self {
+        data: Array::INIT,
+        front: IDX::INIT,
+        back: IDX::INIT,
+        len: IDX::INIT,
     };
 }
 

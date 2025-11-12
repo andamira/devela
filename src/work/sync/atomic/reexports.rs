@@ -103,73 +103,73 @@ pub use crate::_dep::portable_atomic::AtomicBool;
 #[cfg(not(feature = "dep_portable_atomic"))]
 pub use core::sync::atomic::AtomicBool;
 
-/* impl ConstDefaut */
+/* impl ConstInit */
 
 #[cfg(feature = "dep_atomic")]
-mod impl_const_default_for_atomic {
+mod impl_const_init_for_atomic {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
-    use crate::{ConstDefault, impl_cdef};
-    impl_cdef![ConstDefault: <T: ConstDefault> Self::new(T::DEFAULT) => super::Atomic<T>];
+    use crate::{_impl_init, ConstInit};
+    _impl_init![ConstInit: <T: ConstInit> Self::new(T::INIT) => super::Atomic<T>];
 }
 #[cfg(feature = "dep_portable_atomic")]
-mod impl_const_default_for_portable_atomic {
+mod impl_const_init_for_portable_atomic {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
-    use crate::{ConstDefault, impl_cdef};
+    use crate::{_impl_init, ConstInit};
 
     // without core alternatives:
-    impl_cdef![ConstDefault: Self::new(f32::DEFAULT) => super::AtomicF32];
-    impl_cdef![ConstDefault: Self::new(f64::DEFAULT) => super::AtomicF64];
+    _impl_init![ConstInit: Self::new(f32::INIT) => super::AtomicF32];
+    _impl_init![ConstInit: Self::new(f64::INIT) => super::AtomicF64];
 
     // with core alternatives:
-    impl_cdef![ConstDefault: Self::new(i8::DEFAULT) => super::AtomicI8];
-    impl_cdef![ConstDefault: Self::new(u8::DEFAULT) => super::AtomicU8];
-    impl_cdef![ConstDefault: Self::new(i16::DEFAULT) => super::AtomicI16];
-    impl_cdef![ConstDefault: Self::new(u16::DEFAULT) => super::AtomicU16];
-    impl_cdef![ConstDefault: Self::new(i32::DEFAULT) => super::AtomicI32];
-    impl_cdef![ConstDefault: Self::new(u32::DEFAULT) => super::AtomicU32];
-    impl_cdef![ConstDefault: Self::new(i64::DEFAULT) => super::AtomicI64];
-    impl_cdef![ConstDefault: Self::new(u64::DEFAULT) => super::AtomicU64];
-    impl_cdef![ConstDefault: Self::new(i128::DEFAULT) => super::AtomicI128];
-    impl_cdef![ConstDefault: Self::new(u128::DEFAULT) => super::AtomicU128];
-    impl_cdef![ConstDefault: Self::new(isize::DEFAULT) => super::AtomicIsize];
-    impl_cdef![ConstDefault: Self::new(usize::DEFAULT) => super::AtomicUsize];
-    impl_cdef![ConstDefault: <T> Self::new(<*mut T>::DEFAULT) => super::AtomicPtr<T>];
+    _impl_init![ConstInit: Self::new(i8::INIT) => super::AtomicI8];
+    _impl_init![ConstInit: Self::new(u8::INIT) => super::AtomicU8];
+    _impl_init![ConstInit: Self::new(i16::INIT) => super::AtomicI16];
+    _impl_init![ConstInit: Self::new(u16::INIT) => super::AtomicU16];
+    _impl_init![ConstInit: Self::new(i32::INIT) => super::AtomicI32];
+    _impl_init![ConstInit: Self::new(u32::INIT) => super::AtomicU32];
+    _impl_init![ConstInit: Self::new(i64::INIT) => super::AtomicI64];
+    _impl_init![ConstInit: Self::new(u64::INIT) => super::AtomicU64];
+    _impl_init![ConstInit: Self::new(i128::INIT) => super::AtomicI128];
+    _impl_init![ConstInit: Self::new(u128::INIT) => super::AtomicU128];
+    _impl_init![ConstInit: Self::new(isize::INIT) => super::AtomicIsize];
+    _impl_init![ConstInit: Self::new(usize::INIT) => super::AtomicUsize];
+    _impl_init![ConstInit: <T> Self::new(<*mut T>::INIT) => super::AtomicPtr<T>];
 }
 #[cfg(not(feature = "dep_portable_atomic"))]
-mod impl_const_default_for_core {
+mod impl_const_init_for_core {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
-    use crate::{ConstDefault, impl_cdef};
+    use crate::{_impl_init, ConstInit};
 
     #[cfg(target_has_atomic = "8")]
-    impl_cdef![ConstDefault: Self::new(i8::DEFAULT) => super::AtomicI8];
+    _impl_init![ConstInit: Self::new(i8::INIT) => super::AtomicI8];
     #[cfg(target_has_atomic = "8")]
-    impl_cdef![ConstDefault: Self::new(u8::DEFAULT) => super::AtomicU8];
+    _impl_init![ConstInit: Self::new(u8::INIT) => super::AtomicU8];
     #[cfg(target_has_atomic = "16")]
-    impl_cdef![ConstDefault: Self::new(i16::DEFAULT) => super::AtomicI16];
+    _impl_init![ConstInit: Self::new(i16::INIT) => super::AtomicI16];
     #[cfg(target_has_atomic = "16")]
-    impl_cdef![ConstDefault: Self::new(u16::DEFAULT) => super::AtomicU16];
+    _impl_init![ConstInit: Self::new(u16::INIT) => super::AtomicU16];
     #[cfg(target_has_atomic = "32")]
-    impl_cdef![ConstDefault: Self::new(i32::DEFAULT) => super::AtomicI32];
+    _impl_init![ConstInit: Self::new(i32::INIT) => super::AtomicI32];
     #[cfg(target_has_atomic = "32")]
-    impl_cdef![ConstDefault: Self::new(u32::DEFAULT) => super::AtomicU32];
+    _impl_init![ConstInit: Self::new(u32::INIT) => super::AtomicU32];
     #[cfg(target_has_atomic = "64")]
-    impl_cdef![ConstDefault: Self::new(i64::DEFAULT) => super::AtomicI64];
+    _impl_init![ConstInit: Self::new(i64::INIT) => super::AtomicI64];
     #[cfg(target_has_atomic = "64")]
-    impl_cdef![ConstDefault: Self::new(u64::DEFAULT) => super::AtomicU64];
+    _impl_init![ConstInit: Self::new(u64::INIT) => super::AtomicU64];
 
     // WAIT: [AtomicU128/AtomicI128 not shown](https://github.com/rust-lang/rust/issues/130539)
     // WAIT: [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
     // #[cfg(target_has_atomic = "128")]
     // #[cfg(feature = "nightly_atomics")]
-    // impl_cdef![Self::new(i128::DEFAULT) => super::AtomicI128];
+    // _impl_init![Self::new(i128::INIT) => super::AtomicI128];
     // #[cfg(target_has_atomic = "128")]
     // #[cfg(feature = "nightly_atomics")]
-    // impl_cdef![Self::new(u128::DEFAULT) => super::AtomicU128];
+    // _impl_init![Self::new(u128::INIT) => super::AtomicU128];
 
     #[cfg(target_has_atomic = "ptr")]
-    impl_cdef![ConstDefault: Self::new(isize::DEFAULT) => super::AtomicIsize];
+    _impl_init![ConstInit: Self::new(isize::INIT) => super::AtomicIsize];
     #[cfg(target_has_atomic = "ptr")]
-    impl_cdef![ConstDefault: Self::new(usize::DEFAULT) => super::AtomicUsize];
+    _impl_init![ConstInit: Self::new(usize::INIT) => super::AtomicUsize];
     #[cfg(target_has_atomic = "ptr")]
-    impl_cdef![ConstDefault: <T> Self::new(<*mut T>::DEFAULT) => super::AtomicPtr<T>];
+    _impl_init![ConstInit: <T> Self::new(<*mut T>::INIT) => super::AtomicPtr<T>];
 }

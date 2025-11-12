@@ -8,7 +8,7 @@
 // - core_impls
 
 use super::{DstArray, DstBuf, check_fat_pointer, decompose_pointer, list_push_gen};
-use crate::{ConstDefault, MaybeUninit, MemAligned, PhantomData, Ptr};
+use crate::{ConstInit, MaybeUninit, MemAligned, PhantomData, Ptr};
 
 /* public API */
 
@@ -67,7 +67,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
 
     /// Constructs a new (empty) stack, in compile-time.
     #[must_use] #[rustfmt::skip]
-    pub const fn new_const() -> Self where BUF: ConstDefault { Self::with_buffer(BUF::DEFAULT) }
+    pub const fn new_const() -> Self where BUF: ConstInit { Self::with_buffer(BUF::INIT) }
 
     /// Constructs a new (empty) stack using the given `buffer`.
     #[must_use] #[rustfmt::skip]

@@ -16,7 +16,7 @@
 //   - enum ImageFormat
 //   - enum LegacySixelPixelFormatType
 
-crate::impl_cdef! { ConstDefault: Self::Auto => LegacySixelSplit, LegacySixelMean,
+crate::_impl_init! { ConstInit: Self::Auto => LegacySixelSplit, LegacySixelMean,
 LegacySixelQuality, Loop, LegacySixelEncodePolicy, LegacySixelColorModel }
 
 /// Method for finding the largest dimension for splitting,

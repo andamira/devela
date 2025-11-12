@@ -8,32 +8,32 @@ impl_oneof!();
 /// Defines [`Oneof`] and implements all the methods.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-#[allow(clippy::crate_in_macro_def, reason = "impl_const_default arm")]
+#[allow(clippy::crate_in_macro_def, reason = "impl_const_init arm")]
 macro_rules! impl_oneof {
     /* points of entry, using hardcoded argument list */
 
     // main point of entry
-    // (defines Oneof & implements everything except ConstDefault)
+    // (defines Oneof & implements everything)
     () => { $crate::impl_oneof!(%canonical); };
     //
     // var_name : var_idx(0-based) + var_nth(1-based) : nth_suffix
     ($($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
         $crate::impl_oneof!(define_enum: $($T:$nth:$suf),+);
         $crate::impl_oneof!(impl_default: $($T),+);
-        // $crate::impl_oneof!(impl_const_default: $($T),+);
+        $crate::impl_oneof!(impl_const_init: $($T),+);
         $crate::impl_oneof!(methods_general: $($T:$idx+$nth:$suf),+);
         $crate::impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
     };
 
-    // point of entry for implementing ConstDefault
-    (impl_const_default) => {
-        $crate::impl_oneof!(%canonical %map_ident impl_const_default:);
+    // point of entry for implementing ConstInitCore
+    (impl_const_init) => {
+        $crate::impl_oneof!(%canonical %map_ident impl_const_init:);
     };
-    // real ConstDefault implementation
-    (impl_const_default: $_0:ident $(, $rest:ident)*) => {
-        impl<const LEN: usize, $_0: crate::ConstDefault, $($rest),*> crate::ConstDefault
+    // real ConstInitCore implementation
+    (impl_const_init: $_0:ident $(, $rest:ident)*) => {
+        impl<const LEN: usize, $_0: crate::ConstInitCore, $($rest),*> crate::ConstInitCore
             for Oneof<LEN, $_0, $($rest),*> {
-            const DEFAULT: Self = Oneof::$_0($_0::DEFAULT);
+            const INIT: Self = Oneof::$_0($_0::INIT);
         }
     };
 
@@ -154,7 +154,7 @@ macro_rules! impl_oneof {
             }
         }
         /// # Conversion methods.
-        // IMPROVE: add a const fn for T: Copy (into_tuple_copy_options / into_tuple_const_default)
+        // IMPROVE: add a const fn for T: Copy (into_tuple_copy_options / into_tuple_const_init)
         impl<const LEN: usize, $($T: Clone),+ > Oneof<LEN, $($T),+> {
             /// Returns a tuple with `Some(value)` for the active variant and `None` elsewhere.
             pub fn into_tuple_options(self) -> ($(Option<$T>),+) { $crate::paste! {

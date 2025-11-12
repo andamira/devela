@@ -117,16 +117,16 @@ pub struct Own<S, V> {
 }
 
 mod core_impls {
-    use crate::{Debug, Display, FmtResult, Formatter, Ordering, Own};
+    use crate::{ConstInitCore, Debug, Display, FmtResult, Formatter, Ordering, Own};
 
     impl<S: Default, V: Default> Default for Own<S, V> {
         fn default() -> Self {
             Own::new(S::default(), V::default())
         }
     }
-    // impl<S: ConstDefault, V: ConstDefault> ConstDefault for Own<S, V> {
-    //     const DEFAULT: Self = Own::new(S::DEFAULT, V::DEFAULT);
-    // }
+    impl<S: ConstInitCore, V: ConstInitCore> ConstInitCore for Own<S, V> {
+        const INIT: Self = Own::new(S::INIT, V::INIT);
+    }
 
     impl<S: Debug, V: Debug> Debug for Own<S, V> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

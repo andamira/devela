@@ -21,7 +21,7 @@
 /// ```
 /// # use devela_base_core::array_init;
 /// # #[cfg(feature = "alloc")]
-/// # use devela::{Vec, ConstDefault};
+/// # use devela::{Vec, ConstInit};
 /// assert_eq![[2,4,6], array_init![safe_init [i32; 3], |n| (n as i32 + 1) * 2]];
 /// #[cfg(feature = "unsafe_array")]
 /// assert_eq![[3,6,9], array_init![unsafe_init [i32; 3], |n| (n as i32 + 1) * 3]];
@@ -44,7 +44,7 @@
 /// assert_eq![[4, 8, 12], ARRAY1];
 ///
 /// # #[cfg(feature = "alloc")] {
-/// const ARRAY2: [i32; 3] = array_init![const_default [i32; 3]];
+/// const ARRAY2: [i32; 3] = array_init![const_init [i32; 3]];
 /// assert_eq![[0, 0, 0], ARRAY2];
 /// # }
 /// ```
@@ -58,8 +58,8 @@
 /// initialization.
 ///
 /// # Notes
-/// For the heap-related arms needs to have `Vec` in scope. And for the
-/// `const_default` arm needs `ConstDefault` in scope.
+/// For the heap-related arms needs to have `Vec` in scope.
+/// And for the `const_init` arm needs `ConstInit` in scope.
 // WAIT [array_repeat](https://github.com/rust-lang/rust/issues/126695)
 // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 #[macro_export]
@@ -199,9 +199,9 @@ macro_rules! array_init {
         { $crate::array_init![unsafe_init [$T; $LEN], |_| <$T>::default()] }
     }};
     (
-    // initialize an array in the stack with $T: ConstDefault::DEFAULT
-    const_default [$T:ty; $LEN:expr]) => {{
-        [<$T as ConstDefault>::DEFAULT; $LEN]
+    // initialize an array in the stack with $T: ConstInit::INIT
+    const_init [$T:ty; $LEN:expr]) => {{
+        [<$T as ConstInit>::INIT; $LEN]
     }};
     (
     // initialize an array in the heap, with $T: Default::default()

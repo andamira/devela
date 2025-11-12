@@ -5,11 +5,11 @@ crate::mod_path!(alloc +pub _c  "../../../libs/base_alloc/src/data/key/reexports
 #[cfg(feature = "alloc")]
 mod impls_alloc {
     use super::*;
-    use crate::impl_cdef;
+    use crate::_impl_init;
 
-    // impl ConstDefault
-    impl_cdef![ConstDefault: <T> Self::new() => BTreeSet<T>];
-    impl_cdef![ConstDefault: <K, V> Self::new() => BTreeMap<K, V>];
+    // impl ConstInit
+    _impl_init![ConstInit: <T> Self::new() => BTreeSet<T>];
+    _impl_init![ConstInit: <K, V> Self::new() => BTreeMap<K, V>];
 }
 
 /* from `hashbrown` or `std` */

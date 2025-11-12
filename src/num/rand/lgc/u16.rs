@@ -3,7 +3,7 @@
 //! 16-bit Linear Congruential Generator
 //
 
-use crate::{ConstDefault, Own};
+use crate::{ConstInit, Own};
 
 #[doc = crate::_TAG_RAND!()]
 /// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr>
@@ -16,12 +16,12 @@ pub struct Lgc16(u16);
 /// Creates a new PRNG initialized with the default fixed seed.
 impl Default for Lgc16 {
     fn default() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstDefault for Lgc16 {
-    const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
+impl ConstInit for Lgc16 {
+    const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // Constant defaults for the Lgc16

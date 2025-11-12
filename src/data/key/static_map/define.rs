@@ -32,7 +32,7 @@ define_static_map! {
 /// - `$HASH_EXPR`: the const hasher expression using `$HASH_ARG`.
 ///
 /// # Notes
-/// - values `V` have to be `Copy` + `ConstDefault`.
+/// - values `V` have to be `Copy` + `ConstInit`.
 /// - keys `$KEY` can be any primitive integers, floats or `char`.
 /// - Two specific `$KEY` values are reserved to indicate empty deleted keys.
 ///   They default to `MIN` and `MAX`, respectively, but can be customized.
@@ -208,9 +208,9 @@ macro_rules! define_static_map {
             pub const fn tomb(&self) -> $KEY { $TOMB }
         }
 
-        impl<V: Copy + $crate::ConstDefault, const N: usize>
-            $crate::ConstDefault for $NAME<$KEY, V, N> {
-            const DEFAULT: Self = Self::new();
+        impl<V: Copy + $crate::ConstInit, const N: usize>
+            $crate::ConstInit for $NAME<$KEY, V, N> {
+            const INIT: Self = Self::new();
         }
         impl<V: Default, const N: usize> Default for $NAME<$KEY, V, N> {
             /// Creates an empty hashmap.
@@ -229,7 +229,7 @@ macro_rules! define_static_map {
         }
 
         #[allow(unused)]
-        impl<V: Copy + $crate::ConstDefault, const N: usize> $NAME<$KEY, V, N> {
+        impl<V: Copy + $crate::ConstInit, const N: usize> $NAME<$KEY, V, N> {
             /// Creates an empty hashmap.
             ///
             /// # Panics
@@ -240,7 +240,7 @@ macro_rules! define_static_map {
                 Self:: debug_assert_invariants();
                 Self {
                     keys: [$EMPTY; N],
-                    values: [V::DEFAULT; N],
+                    values: [V::INIT; N],
                 }
             }
         }
@@ -432,7 +432,7 @@ macro_rules! define_static_map {
         }
 
         #[allow(unused)]
-        impl<V: Copy + $crate::ConstDefault, const N: usize> $NAME<$KEY, V, N> {
+        impl<V: Copy + $crate::ConstInit, const N: usize> $NAME<$KEY, V, N> {
             /// Removes a key-value pair.
             ///
             /// # Returns

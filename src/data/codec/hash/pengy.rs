@@ -3,7 +3,7 @@
 //! Based on pengyhash v0.2 LICENSED as BSD-2.
 //
 
-use crate::{ConstDefault, Hasher};
+use crate::{ConstInit, Hasher};
 
 /// A fast 64-bit non-cryptographic hash algorithm.
 ///
@@ -14,19 +14,19 @@ pub struct HasherPengy {
     seed: u64,
 }
 
-impl ConstDefault for HasherPengy {
-    const DEFAULT: Self = Self { state: [0; 4], seed: 0 };
+impl ConstInit for HasherPengy {
+    const INIT: Self = Self { state: [0; 4], seed: 0 };
 }
 impl Default for HasherPengy {
     fn default() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 }
 
 impl HasherPengy {
     /// Returns a default pengy hasher.
     pub const fn new() -> Self {
-        Self::DEFAULT
+        Self::INIT
     }
 
     /// Returns a new pengy hasher with the given `seed`.

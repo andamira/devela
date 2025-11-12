@@ -11,7 +11,7 @@
 // - helpers
 // - tests
 
-use crate::{_TAG_CODEC, ConstDefault, PhantomData};
+use crate::{_TAG_CODEC, ConstInit, PhantomData};
 
 #[doc = _TAG_CODEC!()]
 /// A compile-time configurable radix-based encoding scheme.
@@ -266,9 +266,9 @@ impl<const RADIX: usize, const LUT: bool, const PAD: bool, const CASE: bool, COD
 #[rustfmt::skip]
 impl<
     const RADIX: usize, const LUT: bool, const PAD: bool, const CASE: bool, CODE,
-    > ConstDefault for Base<RADIX, LUT, PAD, CASE, CODE>
+    > ConstInit for Base<RADIX, LUT, PAD, CASE, CODE>
 {
-    const DEFAULT: Self = Self::new();
+    const INIT: Self = Self::new();
 }
 #[rustfmt::skip]
 impl<

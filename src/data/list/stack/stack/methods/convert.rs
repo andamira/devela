@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    Array, Bare, Cmp, ConstDefault, IndexOutOfBounds, NotEnoughSpace, Own, Stack, array_init,
+    Array, Bare, Cmp, ConstInit, IndexOutOfBounds, NotEnoughSpace, Own, Stack, array_init,
 };
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
@@ -219,7 +219,7 @@ macro_rules! impl_stack {
 
         // T, S: Bare
         #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))]
-        impl<T: ConstDefault + Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
+        impl<T: ConstInit + Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Converts the current stack to a different capacity
             /// while preserving all existing elements.
             ///
@@ -252,7 +252,7 @@ macro_rules! impl_stack {
                     Own::empty(Err(IndexOutOfBounds(Some(NEW_CAP))))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array_copy();
-                    let mut new_arr = array_init![const_default [T; NEW_CAP]];
+                    let mut new_arr = array_init![const_init [T; NEW_CAP]];
 
                     let mut i = 0;
                     while i < self.len as usize {
@@ -291,7 +291,7 @@ macro_rules! impl_stack {
                 };
                 let new_len = Cmp(NEW_CAP).min(self.len as usize);
                 let old_arr: [T; CAP] = self.data.into_array_copy();
-                let mut new_arr = array_init![const_default [T; NEW_CAP]];
+                let mut new_arr = array_init![const_init [T; NEW_CAP]];
 
                 let mut i = 0;
                 while i < new_len {

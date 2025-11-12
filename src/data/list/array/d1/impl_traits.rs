@@ -9,8 +9,8 @@
 
 use crate::{
     Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor,
-    BitXorAssign, Borrow, BorrowMut, ConstDefault, Debug, Deref, DerefMut, FmtResult, Formatter,
-    Hash, Hasher, Not, Ordering, Storage, array_init,
+    BitXorAssign, Borrow, BorrowMut, ConstInit, Debug, Deref, DerefMut, FmtResult, Formatter, Hash,
+    Hasher, Not, Ordering, Storage, array_init,
 };
 
 #[cfg(feature = "alloc")]
@@ -139,11 +139,11 @@ impl<T: Default, const CAP: usize> Default for Array<T, CAP, Bare> {
         Array { data }
     }
 }
-// T: ConstDefault, S: Bare
-impl<T: ConstDefault, const CAP: usize> ConstDefault for Array<T, CAP, Bare> {
+// T: ConstInit, S: Bare
+impl<T: ConstInit, const CAP: usize> ConstInit for Array<T, CAP, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
-    const DEFAULT: Self = { Array { data: BareBox::new([T::DEFAULT; CAP]) } };
+    const INIT: Self = { Array { data: BareBox::new([T::INIT; CAP]) } };
 }
 
 // T: Default, S: Boxed

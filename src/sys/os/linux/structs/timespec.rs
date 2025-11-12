@@ -6,7 +6,7 @@
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
 
 use crate::{
-    Cast, ConstDefault, Display, Duration, FmtResult, Formatter, Overflow, format_buf, unwrap,
+    Cast, ConstInit, Display, Duration, FmtResult, Formatter, Overflow, format_buf, unwrap,
 };
 
 #[cfg(feature = "time")]
@@ -25,8 +25,8 @@ pub struct LinuxTimespec {
     /// Number of nanoseconds.
     pub tv_nsec: isize,
 }
-impl ConstDefault for LinuxTimespec {
-    const DEFAULT: Self = Self::new(0, 0);
+impl ConstInit for LinuxTimespec {
+    const INIT: Self = Self::new(0, 0);
 }
 impl Display for LinuxTimespec {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

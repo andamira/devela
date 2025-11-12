@@ -6,7 +6,7 @@
 //
 
 use crate::{
-    ConstDefault,
+    ConstInit,
     DataError::{IndexOutOfBounds, NodeLinkNotSet, NodeLinkNotUnique, NotEnoughSpace},
     DataResult as Result, Mem, Own,
     num::niche::*,
@@ -476,10 +476,10 @@ macro_rules! impl_node {
             fn default() -> Self { Self { data: D::default(), links: [None; LCAP] } }
         }
 
-        // D: ConstDefault
-        impl<D: ConstDefault, const LCAP: usize> ConstDefault for $Node<D, LCAP> {
+        // D: ConstInit
+        impl<D: ConstInit, const LCAP: usize> ConstInit for $Node<D, LCAP> {
             /// Returns a node with default data and unset links.
-            const DEFAULT: Self = Self { data: D::DEFAULT, links: [None; LCAP] };
+            const INIT: Self = Self { data: D::INIT, links: [None; LCAP] };
         }
     }};
 }

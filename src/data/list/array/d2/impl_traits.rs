@@ -5,7 +5,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Boxed;
-use crate::{Array, Array2d, Bare, ConstDefault, Storage};
+use crate::{Array, Array2d, Bare, ConstInit, Storage};
 use core::fmt;
 
 /* Clone, Copy */
@@ -48,7 +48,7 @@ PartialEq for Array2d<T, C, R, CR, RMAJ, S> where S::Stored<[T; CR]>: PartialEq 
 impl<T: Eq, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage>
 Eq for Array2d<T, C, R, CR, RMAJ, S> where S::Stored<[T; CR]>: Eq {}
 
-/* Default, ConstDefault */
+/* Default, ConstInit */
 
 // T: Default, S: Bare
 impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bool> Default
@@ -64,17 +64,17 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     }
 }
 
-// T: ConstDefault, S: Bare
-impl<T: ConstDefault, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    ConstDefault for Array2d<T, C, R, CR, RMAJ, Bare>
+// T: ConstInit, S: Bare
+impl<T: ConstInit, const C: usize, const R: usize, const CR: usize, const RMAJ: bool> ConstInit
+    for Array2d<T, C, R, CR, RMAJ, Bare>
 {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
     /// # Panics
     /// Panics if `C * R > usize::MAX` or if `C * R != CR`.
-    const DEFAULT: Self = {
+    const INIT: Self = {
         Self::panic_check_CR();
-        Self { data: Array::<T, CR, Bare>::DEFAULT }
+        Self { data: Array::<T, CR, Bare>::INIT }
     };
 }
 

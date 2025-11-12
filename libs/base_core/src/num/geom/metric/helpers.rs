@@ -14,7 +14,7 @@ use crate::{Distance, Extent, Orientation, Position, Stride};
 macro_rules! _impl_metric {
     ( // implement common utility traits:
       // - conversion From arrays and tuples
-      // - Default, ConstDefault
+      // - Default, ConstInitCore
       // - Clone, Copy, Hash
       // - Debug, Display
       // - PartialEq, Eq
@@ -35,18 +35,18 @@ macro_rules! _impl_metric {
             fn from(dim: (T, T, T, T)) -> Self { Self { dim: [dim.0, dim.1, dim.2, dim.3] } }
         }
 
-        /* Default, ConstDefault */
+        /* Default, ConstInitCore */
 
         impl<T: Default, const D: usize> Default for $Name<T, D> {
             fn default() -> Self {
                 Self::new($crate::array_init![default [T; D], "safe_num", "unsafe_array"])
             }
         }
-        // WAIT
-        // impl<T: $crate::ConstDefault, const D: usize> $crate::ConstDefault for $Name<T, D> {
-        //     const DEFAULT: Self = {
-        //         use crate::ConstDefault;
-        //         Self::new($crate::array_init![const_default [T; D]])
+        // TODO: impl ConstInitCore
+        // impl<T: $crate::ConstInitCore, const D: usize> $crate::ConstInitCore for $Name<T, D> {
+        //     const INIT: Self = {
+        //         use crate::ConstInitCore;
+        //         Self::new($crate::array_init![const_init [T; D]])
         //     };
         // }
 
