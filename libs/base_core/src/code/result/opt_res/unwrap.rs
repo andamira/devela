@@ -99,7 +99,9 @@ macro_rules! unwrap {
             Some(v) => v,
             None => {
                 if cfg!(debug_assertions) {
-                    ::core::unreachable!("`None` encountered in `some_guaranteed_or_ub`")
+                    // Note: non-const with message:
+                    // ::core::unreachable!("`None` encountered in `some_guaranteed_or_ub`")
+                    ::core::unreachable!()
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
                 }
@@ -179,7 +181,9 @@ macro_rules! unwrap {
             Ok(v) => v,
             Err(_) => {
                 if cfg!(debug_assertions) {
-                    ::core::unreachable!("`Err` encountered in `ok_guaranteed_or_ub`")
+                    // Note: non-const with message:
+                    // ::core::unreachable!("`Err` encountered in `ok_guaranteed_or_ub`")
+                    ::core::unreachable!()
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
                 }
@@ -359,14 +363,18 @@ macro_rules! unwrap {
             Some(Ok(v)) => v,
             Some(Err(_)) => {
                 if cfg!(debug_assertions) {
-                    ::core::unreachable!("`Some(Err)` encountered in `sok_guaranteed_or_ub`")
+                    // Note: non-const with message:
+                    // ::core::unreachable!("`Some(Err)` encountered in `sok_guaranteed_or_ub`")
+                    ::core::unreachable!();
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
                 }
             }
             None => {
                 if cfg!(debug_assertions) {
-                    ::core::unreachable!("`None` encountered in `sok_guaranteed_or_ub`")
+                    // Note: non-const with message:
+                    // ::core::unreachable!("`None` encountered in `sok_guaranteed_or_ub`")
+                    ::core::unreachable!();
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
                 }
