@@ -60,21 +60,21 @@
       // Load CSS, and scripts sequentially
       const katexCSS = document.createElement("link");
       katexCSS.rel = "stylesheet";
-      katexCSS.href = "https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css";
-      katexCSS.integrity = "sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP";
+      katexCSS.href = "https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css";
+      katexCSS.integrity = "sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi";
       katexCSS.crossOrigin = "anonymous";
       document.head.appendChild(katexCSS);
 
       await loadScript({
-        src: "https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js",
-        integrity: "sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6"
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.js",
+        integrity: "sha384-J+9dG2KMoiR9hqcFao0IBLwxt6zpcyN68IgwzsCSkbreXUjmNVRhPFTssqdSGjwQ"
       });
       await loadScript({
-        src: "https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js",
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/contrib/auto-render.min.js",
         integrity: "sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
       });
       await loadScript({
-        src: "https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/copy-tex.min.js",
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/contrib/copy-tex.min.js",
         integrity: "sha384-HORx6nWi8j5/mYA+y57/9/CZc5z8HnEw4WUZWy5yOn9ToKBv1l58vJaufFAn9Zzi"
       });
 
@@ -101,7 +101,7 @@
     async function loadKatexChem() {
       console.log("Loading KaTeX MhChem plugin for:", relativePath);
       await loadScript({
-        src: "https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/mhchem.min.js",
+        src: "https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/contrib/mhchem.min.js",
         integrity: "sha384-F2ptQFZqNJuqfGGl28mIXyQ5kXH48spn7rcoS0Y9psqIKAcZPLd1NzwFlm/bl1mH"
       });
     }
