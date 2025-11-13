@@ -11,7 +11,7 @@
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
-/// Creates a `NonExtreme*` [`niche`][crate::num::niche] instance with compile-time checking.
+/// Creates a `NonExtreme*` [`niche`] instance with compile-time checking.
 ///
 /// # Example
 /// ```
@@ -20,6 +20,7 @@
 /// let y = ne!(42, u32); // alternative syntax
 /// // let y: NonExtremeU32 = ne!(42); // Would fail to compile (needs type suffix)
 /// ```
+#[doc = crate::doclink!(custom crate "[`niche`]" "num/niche" @mod)]
 #[macro_export]
 #[doc(hidden)]
 macro_rules! ne {
@@ -31,7 +32,7 @@ pub use ne;
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
-/// Creates a `NonValue*` [`niche`][crate::num::niche] value with compile-time checking.
+/// Creates a `NonValue*` [`niche`] value with compile-time checking.
 ///
 /// # Example
 /// ```
@@ -40,6 +41,7 @@ pub use ne;
 /// let y = nv!(3: 42, u8); // alternative syntax
 /// // let y: NonValue<u8> = nv!(3: 42); // Would fail to compile (needs type suffix)
 /// ```
+#[doc = crate::doclink!(custom crate "[`niche`]" "num/niche" @mod)]
 #[macro_export]
 #[doc(hidden)]
 macro_rules! nv {
@@ -51,7 +53,7 @@ pub use nv;
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
-/// Creates a `NonZero*` [`niche`][crate::num::niche] value with compile-time checking.
+/// Creates a `NonZero*` [`niche`] value with compile-time checking.
 ///
 /// # Example
 /// ```
@@ -60,6 +62,7 @@ pub use nv;
 /// let y = nz!(42, u32); // alternative syntax
 /// // let y: NonZero<u8> = nz!(42); // Would fail to compile (needs type suffix)
 /// ```
+#[doc = crate::doclink!(custom crate "[`niche`]" "num/niche" @mod)]
 #[macro_export]
 #[doc(hidden)]
 macro_rules! nz {

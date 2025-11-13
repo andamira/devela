@@ -11,7 +11,7 @@ mod granularity; // TimeGranularity
 mod reexports; // std::time::*
 mod source; // TimeSource
 
-#[cfg(feature = "time")]
+#[cfg(feature = "time")] // RECONSIDER
 crate::items! {
     mod calendar; // Month, Weekday
     mod delta; // TimeDelta

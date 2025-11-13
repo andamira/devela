@@ -18,8 +18,10 @@ Otherwise it aliases [`u8`].";
 
 #[doc = _DOC_MAYBE_BYTE!()]
 #[cfg(any(base_safe_mem, not(feature = "unsafe_array")))] // safe
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 pub type MaybeByte = u8;
 
 #[doc = _DOC_MAYBE_BYTE!()]
 #[cfg(all(not(base_safe_mem), feature = "unsafe_array"))] // unsafe
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 pub type MaybeByte = MaybeUninit<u8>;

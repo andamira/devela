@@ -572,7 +572,7 @@ _value_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./build/main/dep_all & ./src/_dep.rs
-dep_all = [ # enables all 44 optional dependencies:
+dep_all = [ # enables all 15 optional dependencies:
 	"dep_atomic", "dep_bytemuck",
 	"dep_crossterm",
 	"dep_hashbrown", "dep_jiff",
@@ -972,6 +972,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_coro)", # coroutines, coroutine_trait, iter_from_coroutine
 			#
 			# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
+			# LINK: https://github.com/rust-lang/rfcs/blob/master/text/3631-rustdoc-cfgs-handling.md
 			# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 			"cfg(nightly_doc)",
 			#

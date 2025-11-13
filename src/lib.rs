@@ -42,7 +42,7 @@
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
 #![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
 #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
-#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))] // configured below
 #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
 #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
 #![cfg_attr(nightly_float, feature(f16, f128))]
@@ -139,6 +139,21 @@
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
+//
+// documentation
+//
+// #![cfg_attr(nightly_doc, doc(auto_cfg = false))]
+#![cfg_attr(nightly_doc, doc(auto_cfg(hide( // do not document:
+    // development features
+    feature = "__dbg", feature = "__std", feature = "__publish",
+    // positive safety features
+    feature = "safe", feature = "safe_build", feature = "safe_code", feature = "safe_data",
+    feature = "safe_lang", feature = "safe_media", feature = "safe_audio", feature = "safe_color",
+    feature = "safe_draw", feature = "safe_font", feature = "safe_image", feature = "safe_game",
+    feature = "safe_num", feature = "safe_phys", feature = "safe_time", feature = "safe_sys",
+    feature = "safe_io", feature = "safe_mem", feature = "safe_text", feature = "safe_ui",
+    feature = "safe_layout", feature = "safe_work",
+))))]
 
 /* crate safeguards */
 

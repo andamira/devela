@@ -60,7 +60,7 @@ crate::structural_mods! { // _mods
             NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize,
             NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128, NonExtremeUsize,
             NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128, NonExtremeIsize,
-            ne, nz,
+            ne, nv, nz,
         };
         pub use super::_c::*;
     }

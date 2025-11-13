@@ -55,32 +55,38 @@ pub use crate::_dep::portable_atomic::{AtomicU8, AtomicU16, AtomicU32, AtomicU64
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "8"))]
+#[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "8")))]
 pub use core::sync::atomic::{AtomicI8, AtomicU8};
 //
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "16"))]
+#[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "16")))]
 pub use core::sync::atomic::{AtomicI16, AtomicU16};
 //
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "32"))]
+#[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "32")))]
 pub use core::sync::atomic::{AtomicI32, AtomicU32};
 //
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "64"))]
+#[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "64")))]
 pub use core::sync::atomic::{AtomicI64, AtomicU64};
 //
 // WAIT: [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 // #[doc = _TAG_ATOMIC!()]
 // #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 // #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "128"))]
+// #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "128")))]
 // pub use core::sync::atomic::{AtomicI128, AtomicU128};
 //
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "ptr"))]
+#[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "ptr")))]
 pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 
 #[doc = _TAG_ATOMIC!()]
@@ -91,16 +97,19 @@ pub use crate::_dep::portable_atomic::AtomicPtr;
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "ptr"))]
+#[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "ptr")))]
 pub use core::sync::atomic::AtomicPtr;
 
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
+#[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature = "dep_portable_atomic"))))]
 pub use crate::_dep::portable_atomic::AtomicBool;
 //
 #[doc = _TAG_ATOMIC!()]
 #[doc = _TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(not(feature = "dep_portable_atomic"))]
+#[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature = "dep_portable_atomic"))))]
 pub use core::sync::atomic::AtomicBool;
 
 /* impl ConstInit */

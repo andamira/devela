@@ -25,12 +25,10 @@ mod slice; // Slice, SliceExt
 mod storage; // Bare, BareBox, Boxed, Storage
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 mod pod; // MemPod
 
 #[cfg(feature = "std")]
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "unsafe_layout"))))]
 mod guard; // Current, CurrrentGuard
 
 pub mod cell; // ExtCellOption, ::core::cell::*
@@ -49,9 +47,12 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
             storage::*,
         };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
         pub use super::pod::MemPod;
+
         #[cfg(feature = "std")]
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+        #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "unsafe_layout"))))]
         pub use super::guard::{Current, CurrentGuard};
     }
     _pub_mods {

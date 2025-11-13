@@ -213,11 +213,10 @@ mod impl_core {
         Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
         PanicAssertUnwindSafe,
         CStr,
-        // Exclusive,
     };
-    // Types that don't implement `Default`:
+    // TODO: Types that don't implement `Default`:
     // ops::{Bound, ControlFlow, CoroutineState, FpCategory, Ordering, Result},
-    // NOTE: atomic types are implemented in work::sync::atomic IMPROVE
+    // NOTE: atomic types are implemented in devela::work::sync::atomic
 
     /* tuples, arrays */
 

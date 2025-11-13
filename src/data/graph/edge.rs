@@ -189,10 +189,10 @@ macro_rules! impl_graph_edge {
 
         /* trait impls */
 
-        // T: ConstDefault
-        impl<E: ConstDefault> ConstDefault for $Edge<E> {
+        // T: ConstInit
+        impl<E: ConstInit> ConstInit for $Edge<E> {
             /// Returns an edge with default data and unset links.
-            const DEFAULT: Self = Self($Node::DEFAULT);
+            const INIT: Self = Self($Node::INIT);
         }
     }};
 }
