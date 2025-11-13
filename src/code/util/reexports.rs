@@ -26,6 +26,7 @@ pub use devela_base_core::{
     methods_as_fns,
     paste,
     structural_mods,
+    type_count,
     whilst,
     write_at,
     // devela_code_macros:
