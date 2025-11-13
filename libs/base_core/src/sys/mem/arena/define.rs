@@ -5,11 +5,13 @@
 
 #[cfg(any(doc, test))]
 define_arena! {
+    [ offset: u8+crate::NonExtremeU8; ]
+
     #[doc = crate::_TAG_EXAMPLE!()]
     /// An example memory arena.
     ///
     /// Generated with [`define_arena!`].
-    pub ExampleArena<u8>;
+    pub ExampleArena;
     #[doc = crate::_TAG_EXAMPLE!()]
     /// An example memory arena handle.
     ///
@@ -33,16 +35,20 @@ define_arena! {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! define_arena {
-    // Point of entry, defines the names
+    // point of entry
     (
+     [ offset: $prim:ident+$T:ty; ]
+
      $(#[$arena_attr:meta])*
-     $vis:vis $Arena:ident<$T:ty>;
+     $vis:vis $Arena:ident;
      $(#[$handle_attr:meta])*
      $hvis:vis $Handle:ident $(;)?
      $(#[$mark_attr:meta])*
      $mvis:vis $Mark:ident $(;)?
     ) => {
-        $crate::define_handle![$(#[$handle_attr])* $hvis $Handle<$T>];
+        $crate::define_handle! {
+            [offset:$prim+$T;] $(#[$handle_attr])* $hvis $Handle
+        }
         $crate::define_arena![%arena
             $(#[$arena_attr])* $vis $Arena<$T>,
             $Handle,

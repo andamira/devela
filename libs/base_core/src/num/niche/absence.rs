@@ -53,7 +53,9 @@ macro_rules! impl_maybe {
 
             /* constructors */
 
+
             /// Creates a new `MaybeNiche` containing `value`.
+            // MAYBE use Result instead of Option… Invalid, etc. Oneof…
             #[must_use] #[inline(always)]
             pub const fn new(value: $T) -> Self { Self(value) }
 
@@ -73,7 +75,6 @@ macro_rules! impl_maybe {
 
                 Some(Self(unwrap![some? _new(primitive)]))
             }
-
             /// Creates a new `MaybeNiche` without any checks.
             /// # Safety
             /// For niche-optimized types, callers must ensure that
@@ -127,6 +128,24 @@ macro_rules! impl_maybe {
                 const fn _lossy $(<const $V: $v>)? (v: $prim) -> $T { v }
 
                 Self(_lossy(value))
+            }
+
+            /// Tries to create a new `MaybeNiche` from a `usize`.
+            ///
+            /// Returns `None` if the value can't fit in the primitive representation,
+            /// or if it's not not valid for the current niche.
+            #[must_use] #[inline(always)]
+            pub const fn try_from_usize(value: usize) -> Option<Self> {
+                // NonNiche, NonValue, NonZero
+                #[crate::compile(some($($new)?))]
+                const fn _new $(<const $V: $v>)? (v: $prim) -> Option<$T> { $( <$T>::$new(v) )? }
+                // primitives
+                #[crate::compile(none($($new)?))]
+                const fn _new $(<const $V: $v>)? (v: $prim) -> Option<$T> { Some(v) }
+
+                let prim = $crate::paste! { Cast(value).[<checked_cast_to_ $prim>]() };
+                let prim = unwrap![ok_some? prim];
+                Some(Self(unwrap![some? _new(prim)]))
             }
 
             /* queries */
