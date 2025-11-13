@@ -35,6 +35,8 @@ use ::core::{f16, f128};
 #[repr(transparent)]
 pub struct Cmp<T>(pub T);
 
+crate::_impl_init![ConstInitCore: <T: ConstInitCore> Self(T::INIT) => Cmp<T>];
+
 #[rustfmt::skip]
 mod core_impls {
     use {super::{Cmp, Ordering}, core::fmt};

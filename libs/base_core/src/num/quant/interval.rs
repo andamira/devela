@@ -136,6 +136,13 @@ pub struct Interval<T> {
     pub upper: Bound<T>,
 }
 
+/// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
+///
+/// See the [`default`][Self::default] implementation for more information.
+impl<T> ConstInitCore for Interval<T> {
+    const INIT: Self = Self::unbounded();
+}
+
 /// # Methodical constructors
 impl<T> Interval<T> {
     // lower-closed

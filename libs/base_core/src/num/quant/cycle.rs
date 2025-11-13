@@ -3,6 +3,8 @@
 //! Defines [`Cycle`], [`CycleCount`].
 //
 
+use crate::ConstInitCore;
+
 #[doc = crate::_TAG_QUANT!()]
 /// A repeating cycle defined by a fundamental period.
 ///
@@ -13,6 +15,9 @@
 pub struct Cycle<T> {
     /// The fundamental period of the cycle.
     pub period: T,
+}
+impl<T: ConstInitCore> ConstInitCore for Cycle<T> {
+    const INIT: Self = Self { period: T::INIT };
 }
 
 #[doc = crate::_TAG_QUANT!()]
@@ -28,6 +33,9 @@ pub struct CycleCount<T, N> {
     pub cycle: Cycle<T>,
     /// The total number of repetitions.
     pub count: N,
+}
+impl<T: ConstInitCore, N: ConstInitCore> ConstInitCore for CycleCount<T, N> {
+    const INIT: Self = Self { cycle: Cycle::<T>::INIT, count: N::INIT };
 }
 
 // WIPZONE

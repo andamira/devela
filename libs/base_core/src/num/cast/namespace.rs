@@ -12,7 +12,7 @@
 pub struct Cast<T>(pub T);
 
 mod core_impls {
-    use crate::{Cast, Ordering};
+    use crate::{Cast, ConstInitCore, Ordering};
     use core::fmt;
 
     impl<T: Clone> Clone for Cast<T> {
@@ -26,6 +26,9 @@ mod core_impls {
         fn default() -> Self {
             Cast(T::default())
         }
+    }
+    impl<T: ConstInitCore> ConstInitCore for Cast<T> {
+        const INIT: Self = Cast(T::INIT);
     }
 
     impl<T: PartialEq> PartialEq for Cast<T> {

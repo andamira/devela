@@ -135,6 +135,7 @@ Many feature gates are removed in order to make most features make always availa
 ## code
 - rename `ExtAny` to `AnyExt`.
 - new trait `ConstInitCore`.
+  - implement for `NonZero*` and many other types.
 - move to [base]:
   - all `ConstInit*` impls.
   - `impl_cdef!` workspace-internal macro.

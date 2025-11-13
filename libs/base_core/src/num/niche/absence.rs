@@ -7,15 +7,17 @@
 // - struct NonNiche
 
 use crate::{
-    Cast, NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize,
-    NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize, NonZero,
-    Overflow, unwrap,
+    Cast, ConstInitCore, NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128,
+    NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
+    NonZero, Overflow, unwrap,
 };
 
 /// A zero-cost wrapper over both niche and non-niche integer primitives.
+///
+/// It' implemented for all the integer primitives, `NonNiche*` `NonZero*` and `NonValue*`.
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct MaybeNiche<T>(T);
+pub struct MaybeNiche<T: Copy>(T);
 
 /// impl helper for [`MaybeNiche`].
 macro_rules! impl_maybe {
@@ -41,6 +43,10 @@ macro_rules! impl_maybe {
      $(, ^$new:ident)? // for: from_prim, *_unchecked
      $(, @$non0:ident)? // to identify nonzero types, for from_prim_lossy
     ) => {
+        impl $(<const $V: $v>)? ConstInitCore for MaybeNiche<$T> where $T: ConstInitCore {
+            const INIT: Self = Self::new(<$T>::INIT);
+        }
+
         impl $(<const $V: $v>)? MaybeNiche<$T> {
             /// Whether this type supports memory-niche optimization.
             pub const IS_NICHE: bool = $niche;
@@ -202,6 +208,10 @@ impl<T> NonNiche<T> {
 
 #[rustfmt::skip]
 impl<T> From<T> for NonNiche<T> { #[inline(always)] fn from(value: T) -> Self { Self(value) } }
+
+impl<T: ConstInitCore> ConstInitCore for NonNiche<T> {
+    const INIT: Self = Self(T::INIT);
+}
 
 // helper make implementations over primitives.
 macro_rules! impl_non {

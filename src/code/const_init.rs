@@ -49,19 +49,17 @@ impl<T: ConstInitCore + Sealed> ConstInit for T {
 #[rustfmt::skip]
 mod impl_core {
     use super::{ConstInitCore, Sealed};
-    use crate::{
-        _impl_init,
-
-        Reverse,
+    use crate::{_impl_init,
+        NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
+        Duration,
         Cell, OnceCell, RefCell, UnsafeCell,
-        CStr,
-        PhantomData, PhantomPinned,
-        ManuallyDrop,
-        Saturating, Wrapping,
+        PhantomData, PhantomPinned, ManuallyDrop,
+        Reverse, Saturating, Wrapping,
         Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
         PanicAssertUnwindSafe,
+        CStr,
         // Exclusive,
-        Duration,
     };
 
     /* sealed implementations (in sync with devela_base_core::code::default) */
@@ -76,6 +74,8 @@ mod impl_core {
         i8, i16, i32, i64, i128, isize,
         u8, u16, u32, u64, u128, usize,
         f32, f64,
+        NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
         Duration,
         RangeFull,
         PhantomPinned,
@@ -137,17 +137,34 @@ mod impl_std {
     // _impl_init![ConstInit: Self => Cursor, Empty, Sink];
 }
 
+// implements Sealed for ConstInitCore impls
+#[rustfmt::skip]
+mod impl_devela_base_core {
+    use super::{ConstInitCore, Sealed};
+    use crate::{_impl_init,
+        // code
+        // data
+        // media
+        // num
+        Cast, Cmp, Cycle, CycleCount, Interval, Sign,
+        // text
+        // ui
+        // work
+    };
+
+    // num
+    _impl_init![%Sealed%: Sign];
+    _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>, Cycle<T>];
+    _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];
+    _impl_init![%Sealed%: <T> Interval<T>];
+}
+
+// TODO move implementations to [base] as ConstInitCore
 #[rustfmt::skip]
 mod impl_devela {
     use crate::{ConstInit, paste, sf};
     use crate::{
-        // data //
-        Cast,
-        // num //
-        // TODO: Cycle, CycleCount
-        Interval,
-        Sign,
-        // text //
+        // text
         CharAscii,
         char7, char8, char16, charu, charu_niche,
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
@@ -156,23 +173,6 @@ mod impl_devela {
     pub use crate::{GraphemeNonul, GraphemeU8};
     #[cfg(all(feature = "grapheme", feature = "alloc"))]
     pub use crate::GraphemeString;
-
-    /* data */
-
-    impl<T: ConstInit> ConstInit for Cast<T> {
-        const INIT: Self = Cast(T::INIT);
-    }
-
-    /* num */
-
-    /// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
-    ///
-    /// See the [`default`][Self::default] implementation for more information.
-    impl<T> ConstInit for Interval<T> { const INIT: Self = Self::unbounded(); }
-
-    impl ConstInit for Sign { #[doc = "No sign."] const INIT: Self = Sign::None; }
-
-    // NOTE: NonExtreme* types have their implementation in num/niche/impls.rs
 
     /* text */
 

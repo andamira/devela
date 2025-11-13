@@ -62,7 +62,7 @@ macro_rules! _impl_init {
             const INIT: Self = $def;
         }
     };
-    // <A: A_, B: B_> (bounded)
+    // <A: A_, B: B_> (bounded) (e.g. CycleCount)
     ($trait:ident: <$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $($t:ty),+) => {
         $( $crate::_impl_init![$trait:@<$A:$A_, $B:$B_> $def => $t]; )+ };
     ($trait:ident: @<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $t:ty) => {
@@ -70,6 +70,11 @@ macro_rules! _impl_init {
             #[allow(clippy::declare_interior_mutable_const)] //
             const INIT: Self = $def;
         }
+    };
+    (%$seal:ident%: <$A:ident:$A_:ident, $B:ident:$B_:ident> $($t:ty),+ $(,)?) => {
+        $( $crate::_impl_init![%$seal%: @<$A:$A_, $B:$B_> $t]; )+ };
+    (%$seal:ident%: @<$A:ident:$A_:ident, $B:ident:$B_:ident> $t:ty) => {
+        impl<$A:$A_, $B:$B_> $seal for $t {}
     };
 
     // <A, B, C>
@@ -193,19 +198,19 @@ pub use _impl_init;
 /* implementations (in sync with devela::code::default) */
 
 #[rustfmt::skip]
-mod impls {
+mod impl_core {
     use super::ConstInitCore;
     use crate::{
-        Reverse,
+        NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
+        Duration,
         Cell, OnceCell, RefCell, UnsafeCell,
-        CStr,
-        PhantomData, PhantomPinned,
-        ManuallyDrop,
-        Saturating, Wrapping,
+        PhantomData, PhantomPinned, ManuallyDrop,
+        Reverse, Saturating, Wrapping,
         Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
         PanicAssertUnwindSafe,
+        CStr,
         // Exclusive,
-        Duration,
     };
     // Types that don't implement `Default`:
     // ops::{Bound, ControlFlow, CoroutineState, FpCategory, Ordering, Result},
@@ -227,6 +232,10 @@ mod impls {
     _impl_init![ConstInitCore: 0 =>
         i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
     _impl_init![ConstInitCore: 0.0 => f32, f64];
+    _impl_init![ConstInitCore: Self::MIN =>
+        NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize
+    ];
     _impl_init![ConstInitCore: Duration::new(0, 0) => Duration];
 
     _impl_init![ConstInitCore: Self => RangeFull];

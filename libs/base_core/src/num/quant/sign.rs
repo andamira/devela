@@ -7,7 +7,7 @@
 // - impl Into<Sign>
 // - impl From<Sign> TryFrom<Sign>
 
-use crate::InvalidValue;
+use crate::{ConstInitCore, InvalidValue};
 
 #[doc = crate::_TAG_QUANT!()]
 /// Represents the sign of a number.
@@ -23,6 +23,11 @@ pub enum Sign {
 
     /// A positive sign (+).
     Positive = 1,
+}
+
+impl ConstInitCore for Sign {
+    /// No sign.
+    const INIT: Self = Sign::None;
 }
 
 /* Into<Sign> */
