@@ -9,14 +9,15 @@
 // - tests
 
 use crate::{
-    CharIter, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash, Hasher,
-    InvalidText, InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements, Str, is, paste,
-    slice, text::char::*, whilst,
+    CharIter, ConstInitCore, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
+    Hasher, InvalidText, InvalidUtf8, Mismatch, MismatchedCapacity, NotEnoughElements, Str, is,
+    paste, slice, text::char::*, whilst,
 };
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, unwrap};
 
 macro_rules! impl_str_u {
+    // in sync with devela::code::const_init % _stringu
     () => { impl_str_u![u8, u16, u32, usize]; };
     (
     // $t: the length type. E.g.: u8.
@@ -753,10 +754,15 @@ macro_rules! impl_str_u {
 
         impl<const CAP: usize> Default for $name<CAP> {
             /// Returns an empty string.
-            ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
             fn default() -> Self { Self::new() }
+        }
+        impl<const CAP: usize> ConstInitCore for $name<CAP> {
+            /// Returns an empty string.
+            /// # Panics
+            #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
+            const INIT: Self = Self::new();
         }
 
         impl<const CAP: usize> Display for $name<CAP> {

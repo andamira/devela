@@ -716,15 +716,23 @@ impl<const CAP: usize> StringNonul<CAP> {
 
 #[rustfmt::skip]
 mod trait_impls {
-    use crate::{Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash, Hasher};
+    use crate::{
+        ConstInitCore, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
+        Hasher,
+    };
     use super::{StringNonul, InvalidText, Mismatch, MismatchedCapacity, is};
 
     impl<const CAP: usize> Default for StringNonul<CAP> {
         /// Returns an empty string.
-        ///
         /// # Panics
         /// Panics if `CAP > [`u8::MAX`]`.
         fn default() -> Self { Self::new() }
+    }
+    impl<const CAP: usize> ConstInitCore for StringNonul<CAP> {
+        /// Returns an empty string.
+        /// # Panics
+        /// Panics if `CAP > [`u8::MAX`]`.
+        const INIT: Self = Self::new();
     }
 
     impl<const CAP: usize> Display for StringNonul<CAP> {

@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    Binary, DataOverflow, Debug, Display, FmtResult, Formatter, LowerHex, Octal, UpperHex, paste,
-    text::char::*, unwrap,
+    Binary, ConstInitCore, DataOverflow, Debug, Display, FmtResult, Formatter, LowerHex, Octal,
+    UpperHex, paste, text::char::*, unwrap,
 };
 
 /* Default, Display, Debug */
@@ -29,6 +29,11 @@ macro_rules! char_core_impls {
             /// Returns the default value of `\x00` (nul character).
             fn default() -> Self { $default }
         }
+        impl ConstInitCore for super::$name {
+            /// It has the initial value of `\x00` (nul character).
+            const INIT: Self = $default;
+        }
+
         impl Display for super::$name {
             fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
                 write!(f, "{}", self.to_char())

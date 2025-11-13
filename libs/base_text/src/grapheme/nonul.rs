@@ -7,8 +7,8 @@
 // - trait impls
 
 use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonul, char7, char8,
-    char16, charu, doclink, unwrap,
+    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonul,
+    char7, char8, char16, charu, doclink, unwrap,
 };
 
 /* definitions */
@@ -256,12 +256,19 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 
 #[rustfmt::skip]
 mod trait_impls {
-    use crate::{Debug, Display, Formatter, FmtResult, GraphemeNonul, Hash, Hasher, StringNonul};
+    use crate::{
+        ConstInitCore, Debug, Display, Formatter, FmtResult, GraphemeNonul, Hash, Hasher,
+        StringNonul,
+    };
 
     impl<const CAP: usize> Default for GraphemeNonul<CAP> {
         /// Returns an empty extended grapheme character.
         #[inline(always)]
         fn default() -> Self { Self::new() }
+    }
+    impl<const CAP: usize> ConstInitCore for GraphemeNonul<CAP> {
+        /// An empty extended grapheme character.
+        const INIT: Self = Self::new();
     }
 
     impl<const CAP: usize> PartialEq for GraphemeNonul<CAP> {

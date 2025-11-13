@@ -87,9 +87,12 @@ macro_rules! _impl_init {
             const INIT: Self = $def;
         }
     };
-    // <> (e.g.: bool, char, integers, floats…)
-    ($trait:ident: $def:expr => $($t:ty),+) => { $( $crate::_impl_init![$trait:@$def => $t]; )+ };
-    ($trait:ident: @$def:expr => $t:ty) => {
+    // <> (e.g.: bool, char, integers, floats, NonZero…) (supports attributes)
+    ($trait:ident: $def:expr => $( $(#[$attr:meta])* $t:ty ),+ $(,)?) => {
+        $( $crate::_impl_init![$trait:@$def => $(#[$attr])* $t]; )+
+    };
+    ($trait:ident: @$def:expr => $(#[$attr:meta])* $t:ty) => {
+        $(#[$attr])*
         impl crate::$trait for $t {
             #[allow(clippy::declare_interior_mutable_const)]
             const INIT: Self = $def;
@@ -232,9 +235,13 @@ mod impl_core {
     _impl_init![ConstInitCore: 0 =>
         i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
     _impl_init![ConstInitCore: 0.0 => f32, f64];
+
+    crate::CONST! { _NZ = "This implementation returns the same as [`Self::MIN`]."; }
     _impl_init![ConstInitCore: Self::MIN =>
-        NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
-        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize
+        #[doc=_NZ!()]NonZeroU8,  #[doc=_NZ!()]NonZeroU16,  #[doc=_NZ!()]NonZeroU32,
+        #[doc=_NZ!()]NonZeroU64, #[doc=_NZ!()]NonZeroU128, #[doc=_NZ!()]NonZeroUsize,
+        #[doc=_NZ!()]NonZeroI8,  #[doc=_NZ!()]NonZeroI16,  #[doc=_NZ!()]NonZeroI32,
+        #[doc=_NZ!()]NonZeroI64, #[doc=_NZ!()]NonZeroI128, #[doc=_NZ!()]NonZeroIsize
     ];
     _impl_init![ConstInitCore: Duration::new(0, 0) => Duration];
 

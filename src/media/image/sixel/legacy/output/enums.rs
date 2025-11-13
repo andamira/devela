@@ -16,8 +16,8 @@
 //   - enum ImageFormat
 //   - enum LegacySixelPixelFormatType
 
-crate::_impl_init! { ConstInit: Self::Auto => LegacySixelSplit, LegacySixelMean,
-LegacySixelQuality, Loop, LegacySixelEncodePolicy, LegacySixelColorModel }
+crate::_impl_init![ConstInit: Self::Auto => LegacySixelSplit, LegacySixelMean,
+    LegacySixelQuality, Loop, LegacySixelEncodePolicy, LegacySixelColorModel];
 
 /// Method for finding the largest dimension for splitting,
 /// and sorting by that component.

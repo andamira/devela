@@ -132,7 +132,7 @@ mod impl_std {
 
     // WAIT: [const_hash](https://github.com/rust-lang/rust/issues/104061)
     // #[cfg(feature = "dep_hashbrown")]
-    // _impl_init![ConstInit: <K, V> Self::with_hasher(DefaulHashher) => BTreeMap<K, V>];
+    // _impl_init![ConstInit: <K, V> Self::with_hasher(DefaulTHasher) => BTreeMap<K, V>];
     // WAIT: [const_io_structs](https://github.com/rust-lang/rust/issues/78812)
     // _impl_init![ConstInit: Self => Cursor, Empty, Sink];
 }
@@ -141,80 +141,42 @@ mod impl_std {
 #[rustfmt::skip]
 mod impl_devela_base_core {
     use super::{ConstInitCore, Sealed};
-    use crate::{_impl_init,
+    use crate::{_impl_init, paste,
         // code
         // data
         // media
         // num
         Cast, Cmp, Cycle, CycleCount, Interval, Sign,
         // text
+        CharAscii, char7, char8, char16, charu, charu_niche,
+        StringNonul, StringU8, StringU16, StringU32, StringUsize,
         // ui
         // work
     };
+    // text
+    #[cfg(feature = "grapheme")]
+    pub use crate::{GraphemeNonul, GraphemeU8};
 
     // num
     _impl_init![%Sealed%: Sign];
     _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>, Cycle<T>];
     _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];
     _impl_init![%Sealed%: <T> Interval<T>];
-}
 
-// TODO move implementations to [base] as ConstInitCore
-#[rustfmt::skip]
-mod impl_devela {
-    use crate::{ConstInit, paste, sf};
-    use crate::{
-        // text
-        CharAscii,
-        char7, char8, char16, charu, charu_niche,
-        StringNonul, StringU8, StringU16, StringU32, StringUsize,
-    };
+    // text
+    _impl_init![%Sealed%: CharAscii, char7, char8, char16, charu, charu_niche];
+    impl<const CAP: usize> Sealed for StringNonul<CAP> {}
+    macro_rules! _stringu {
+        () => { _stringu![u8, u16, u32, usize]; };
+        ($($t:ty),+ $(,)?) => { $( paste! { _stringu![@[<String $t:camel>], $t]; } )+ };
+        (@$name:ident, $t:ty) => { impl<const CAP: usize> Sealed for $name<CAP> {} };
+    }
+    _stringu!();
+
     #[cfg(feature = "grapheme")]
-    pub use crate::{GraphemeNonul, GraphemeU8};
+    impl<const CAP: usize> Sealed for GraphemeNonul<CAP> {}
+    #[cfg(feature = "grapheme")]
+    impl<const CAP: usize> Sealed for GraphemeU8<CAP> {}
     #[cfg(all(feature = "grapheme", feature = "alloc"))]
-    pub use crate::GraphemeString;
-
-    /* text */
-
-    sf! {
-        impl ConstInit for CharAscii { const INIT: Self = CharAscii::Null; }
-        impl ConstInit for char7 { const INIT: Self = char7::MIN; }
-        impl ConstInit for char8 { const INIT: Self = char8::MIN; }
-        impl ConstInit for char16 { const INIT: Self = char16::MIN; }
-        impl ConstInit for charu { const INIT: Self = charu::MIN; }
-        impl ConstInit for charu_niche { const INIT: Self = charu_niche::MIN; }
-    }
-
-    #[cfg(feature = "grapheme")]
-    impl<const CAP: usize> ConstInit for GraphemeNonul<CAP> {
-        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
-        const INIT: Self = Self::new();
-    }
-    #[cfg(feature = "grapheme")]
-    impl<const CAP: usize> ConstInit for GraphemeU8<CAP> {
-        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
-        const INIT: Self = Self::new();
-    }
-    #[cfg(all(feature = "grapheme", feature = "alloc"))]
-    impl ConstInit for GraphemeString {
-        const INIT: Self = Self::new();
-    }
-
-    impl<const CAP: usize> ConstInit for StringNonul<CAP> {
-        #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`u8::MAX`]."]
-        const INIT: Self = Self::new();
-    }
-    macro_rules! _impl_init_for_string_u { // impl ConstInit for StringU*
-        () => { _impl_init_for_string_u![u8, u16, u32, usize]; };
-        ($($t:ty),+ $(,)?) => {
-            $( paste! { _impl_init_for_string_u![@[<String $t:camel>], $t]; } )+
-        };
-        (@$name:ty, $t:ty) => { paste! {
-            impl<const CAP: usize> ConstInit for $name<CAP> {
-                #[doc = "Returns an empty string.\n\n#Panics\n\nPanics if `CAP > `[`" $t "::MAX`]."]
-                const INIT: Self = Self::new();
-            }
-        }};
-    }
-    _impl_init_for_string_u!();
+    impl Sealed for GraphemeString {}
 }
