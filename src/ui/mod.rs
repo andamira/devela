@@ -2,6 +2,7 @@
 //
 #![doc = crate::_DOC_UI!()]
 #![doc = crate::_doc!(modules: crate; ui: back, front, layout)]
+#![doc = crate::_doc!(newline)]
 //
 // safety
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]

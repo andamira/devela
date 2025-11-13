@@ -1,6 +1,8 @@
 // devela_base_core::game
 //
 #![doc = crate::_DOC_GAME!()]
+#![doc = crate::_doc!(modules: crate; game: loop, map, state)] // map
+#![doc = crate::_doc!(newline)]
 //
 // safety
 #![cfg_attr(base_safe_game, forbid(unsafe_code))]

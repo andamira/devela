@@ -11,8 +11,8 @@ extern crate self as devela_base_data;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
-pub use all::*;
-pub mod all {
+pub use zall::*;
+pub mod zall {
     //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
@@ -35,7 +35,7 @@ mod _crate_internals {
     #[rustfmt::skip]
     pub use {
         devela_base_core::_workspace_internals::*,
-        devela_base_core::all::*,
+        devela_base_core::zall::*,
     };
 }
 

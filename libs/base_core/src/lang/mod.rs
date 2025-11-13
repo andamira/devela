@@ -1,6 +1,10 @@
 // devela_base_core::lang
 //
 #![doc = crate::_DOC_LANG!()]
+#![doc = crate::_doc!(modules: crate; lang: dsl, ffi, hum)]
+#![doc = crate::_doc!(newline)]
+//!
+#![doc = crate::_doc!(extends: ffi)]
 //
 // safety
 #![cfg_attr(base_safe_lang, forbid(unsafe_code))]

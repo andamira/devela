@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_WORK!()]
 #![doc = crate::_doc!(modules: crate; work: future, process, sync, thread)]
-#![doc = crate::_doc!(newline)]
+#![doc = "<br/><hr>"] // gives way to zall
 //!
 #![doc = crate::_doc!(extends: future, process, sync, task, thread)]
 //

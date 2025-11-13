@@ -14,8 +14,8 @@ mod char; // transliterate
 pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 
 #[doc(hidden)]
-pub use all::*;
-pub mod all {
+pub use zall::*;
+pub mod zall {
     //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
@@ -39,7 +39,7 @@ mod _crate_internals {
     #[rustfmt::skip]
     pub use {
         devela_base_core::_workspace_internals::*,
-        devela_base_core::all::*,
+        devela_base_core::zall::*,
     };
 }
 

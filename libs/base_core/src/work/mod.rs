@@ -1,6 +1,10 @@
 // devela_base_core::work
 //
 #![doc = crate::_DOC_WORK!()]
+#![doc = crate::_doc!(modules: crate; work: future, process, sync, thread)]
+#![doc = "<br/><hr>"] // gives way to zall
+//!
+#![doc = crate::_doc!(extends: future, process, sync, task, thread)]
 //
 // safety
 #![cfg_attr(base_safe_work, forbid(unsafe_code))]

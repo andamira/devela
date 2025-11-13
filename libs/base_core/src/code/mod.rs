@@ -1,6 +1,11 @@
 // devela_base_core::code
 //
 #![doc = crate::_DOC_CODE!()]
+#![doc = crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util)]
+#![doc = crate::_doc!(newline)]
+//!
+#![doc = crate::_doc!(extends:
+    any, clone, convert, default, error, hint, marker, ops, panic, result)]
 //
 // safety
 #![cfg_attr(base_safe_code, forbid(unsafe_code))]

@@ -54,9 +54,11 @@ pub mod work;
 #[doc(hidden)]
 pub mod _dep;
 
+#[doc(hidden)]
+pub use zall_ as all_;
 #[rustfmt::skip]
-pub mod _mod {
-    //! All the crate's items flat re-exported in modules.
+#[doc = crate::_DOC_ZALL_!()]
+pub mod zall_ {
     crate::CONST! { COMMON_DOC = "\n\nAll root module's items flat re-exported."; }
     #[doc = concat![crate::_DOC_CODE!(), COMMON_DOC!()]]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
@@ -83,16 +85,12 @@ pub mod _mod {
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
 }
 
+// public items, feature-gated, visible at their origin and in `zall`:
+// WAIT: [doc(canonica)](https://github.com/rust-lang/rfcs/issues/3011)
 #[doc(hidden)]
-pub use all::*;
-pub mod all {
-    // public items, feature-gated, visible at their origin and here in `all`
-    //
-    //! All the crate's items flat re-exported all together.
-    //! <br/><hr>
-    //!
-    //! Note that these items are already re-exported (hidden) from the root,
-    //! as is every other public module's contents from their parent.
+pub use {zall as all, zall::*}; // keep devela_base_core::all::* accesor hidden
+#[doc = crate::_DOC_ZALL!()]
+pub mod zall {
     #[doc(inline)]
     #[rustfmt::skip]
     #[allow(unused_imports)]

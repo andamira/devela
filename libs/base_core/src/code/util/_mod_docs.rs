@@ -10,6 +10,7 @@ crate::CONST! { hidden macro_export,
 #![doc = crate::_DOC_X!()]
     _DOC_ = "";
 */
+
     /// - <https://en.wikipedia.org/wiki/Domain-specific_language>
     _ABBR_DSL  = "<abbr title='Domain-specific Language'>DSL</abbr>";
     /// - <https://www.unicode.org/reports/tr29/#:~:text=An-,extended%20grapheme%20cluster,-is>
@@ -23,6 +24,21 @@ crate::CONST! { hidden macro_export,
     /// - <https://en.wikipedia.org/wiki/Lookup_table>
     _ABBR_LUT  = "<abbr title='Look-up Table'>LUT</abbr>";
 
+    _DOC_ZALL  = "All crate items re-exported in a single flat namespace.\n\n
+This flat view appears here as `zall`, and it is also mirrored at the
+crate root through a hidden `all` module. Every item in this namespace
+is already forwarded upward, since public modules automatically
+re-export their contents to their parent.
+
+The name `zall` ensures rustdoc search shows each item's original
+full path rather than the earlier-sorted `all` re-export.";
+
+    _DOC_ZALL_ = "All crate items re-exported, grouped by their root modules.\n\n
+Each root module appears here and provides its own flat view of all its
+public children. Together, they offer a structured alternative to the
+fully flat `zall` namespace.
+
+It is also mirrored at the crate root through a hidden `all_` module.";
 
     _DOC_CODE            = "Code reflective synthesis.";
     _DOC_CODE_ANY        = "Dynamic typing and reflection.";

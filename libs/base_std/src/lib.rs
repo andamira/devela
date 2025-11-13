@@ -22,8 +22,8 @@ items! {
 
 #[doc(hidden)]
 #[allow(unused_imports)]
-pub use all::*;
-pub mod all {
+pub use zall::*;
+pub mod zall {
     //! All the crate's items flat re-exported.
     //! <br/><hr>
     //!
@@ -50,6 +50,6 @@ pub use _workspace_internals::*;
 #[doc(hidden)] #[rustfmt::skip]
 pub mod _workspace_internals {
     #![allow(unused_imports)]
-    pub use devela_base_alloc::all::*;
+    pub use devela_base_alloc::zall::*;
     pub use devela_base_alloc::_workspace_internals::*;
 }

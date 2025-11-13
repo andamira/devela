@@ -1,8 +1,8 @@
 // devela::_doc
 //
 //! Extra documentation about the library.
+#![doc = "<br/><hr>"] // gives way to the first root module
 //
-
 #![cfg(any(doc, test))]
 #![cfg_attr(nightly_doc, doc(cfg(any(doc, test))))]
 

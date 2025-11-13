@@ -1,6 +1,10 @@
 // devela_base_core::data
 //
 #![doc = crate::_DOC_DATA!()]
+#![doc = crate::_doc!(modules: crate; data: codec, iter, key, list, table, uid)]
+#![doc = crate::_doc!(newline)]
+//!
+#![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //
 // safety
 #![cfg_attr(base_safe_data, forbid(unsafe_code))]

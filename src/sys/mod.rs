@@ -7,19 +7,6 @@
 #![doc = crate::_doc!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
     io, net, os, path, pin, ptr, rc, slice, simd)]
 //
-//
-/* NOTES
-- To get the full list of: `arch`, `os`, `target` and `target-family`:
-```sh
-rustc +nightly -Z unstable-options --print all-target-specs-json | jq '[ to_entries[] | {"arch": .value.arch, "target": .key, "target-family": (.value."target-family" // [] | join(", ")), "os": (.value.os // "") } ]' | grep -v '""'
-```
-- Altenatively:
-```sh
-rustc --print target-list | cut -f1 -d'-'| sort | uniq # List of arches supported
-rustc --print target-list | cut -f2 -d'-'| sort | uniq # List of vendors supported
-rustc --print target-list | cut -f3 -d'-'| sort | uniq # List of OSes supported
-```
-*/
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
