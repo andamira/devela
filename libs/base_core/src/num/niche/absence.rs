@@ -12,12 +12,26 @@ use crate::{
     NonZero, Overflow, unwrap,
 };
 
-/// A zero-cost wrapper over both niche and non-niche integer primitives.
+/// A zero-cost wrapper that abstracts over both niche and non-niche integer types.
 ///
-/// It' implemented for all the integer primitives, `NonNiche*` `NonZero*` and `NonValue*`.
+/// `MaybeNiche<T>` exposes a uniform API for plain integers, `NonNiche*`,
+/// `NonZero*`, and `NonValue*` variants. It adds no rules of its own and
+/// relies entirely on the invariants of `T`.
+///
+/// This is useful when you want code that can switch between optimized and
+/// non-optimized representations without changing any surrounding logic.
+///
+/// Practical note:
+///
+/// `MaybeNiche<T>` is an adapter for generic implementations. It lets macros and
+/// monomorphized structures accept any integer-like representation (primitive,
+/// non-niche, or niche-optimized) while remaining fully niche-agnostic.
+///
+/// Used in macros like `define_handle!` to build generic, niche-agnostic
+/// structures without committing to a specific integer representation.
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct MaybeNiche<T: Copy>(T);
+pub struct MaybeNiche<T: Copy>(pub T);
 
 /// impl helper for [`MaybeNiche`].
 macro_rules! impl_maybe {
@@ -186,17 +200,25 @@ macro_rules! impl_maybe {
 }
 impl_maybe![];
 
-/// A zero-cost wrapper that behaves like a niche type but stores `T` directly.
+/// A zero-cost wrapper that mirrors the shape of a niche type but stores `T` unchanged.
 ///
-/// This type is useful when you want to offer API consistency between
-/// niche-optimized and non-optimized versions of a type, allowing users
-/// to choose based on their memory layout needs.
+/// This provides API symmetry with niche-optimized variants without applying
+/// any niche-based layout optimization.
+///
+/// Practical note:
+///
+/// `NonNiche<T>` is a concrete representation choice. It gives you a parallel,
+/// non-optimized version of a type (e.g. fast vs compact) while keeping the
+/// same public API and implementation surface.
+///
+/// Used in types like `charu` to provide a non-optimized parallel to
+/// their niche-enabled counterparts.
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct NonNiche<T>(T);
+pub struct NonNiche<T: Copy>(pub T);
 
 #[rustfmt::skip]
-impl<T> NonNiche<T> {
+impl<T: Copy> NonNiche<T> {
     /// Creates a new `NonNiche` with the given value.
     ///
     /// This always succeeds, unlike `NonZero*` types.
@@ -220,11 +242,7 @@ impl<T> NonNiche<T> {
 
     /// Extracts the inner value.
     #[must_use] #[inline(always)]
-    pub const fn get(&self) -> T where T: Copy { self.0 }
-
-    #[must_use] #[inline(always)]
-    /// Extracts the inner value by value.
-    pub const fn into_inner(self) -> T where T: Copy { self.0 }
+    pub const fn get(self) -> T { self.0 }
 }
 
 #[rustfmt::skip]
