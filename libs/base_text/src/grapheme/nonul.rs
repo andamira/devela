@@ -7,8 +7,8 @@
 // - trait impls
 
 use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonul,
-    char7, char8, char16, charu, doclink, unwrap,
+    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonul, char7, char8,
+    char16, charu, doclink, unwrap,
 };
 
 /* definitions */

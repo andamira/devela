@@ -189,6 +189,8 @@ impl<T> NonNiche<T> {
     /// This is always safe since `NonNiche` doesn't have any validity constraints.
     /// Method provided for API completion.
     #[must_use] #[inline(always)]
+    #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_niche")))]
     pub const unsafe fn new_unchecked(value: T) -> Self { Self(value) }
 
     /// Creates a NonNiche, automatically converting any prohibited values.

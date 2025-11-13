@@ -8,7 +8,7 @@
 use crate::{MaybeByte, Slice};
 
 #[doc(hidden)]
-/// Internal arena methods
+/// Internal arena methods.
 ///
 /// Abstracts away over safe `u8` or unsafe `MaybeUninit<u8>` representations.
 ///

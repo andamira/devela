@@ -199,7 +199,7 @@ mod impls {
             Display::fmt(&self.value, f)
         }
     }
-    #[cfg(any(base_safe_mem, not(feature = "unsafe_sync")))] // safe
+    #[cfg(all(not(base_safe_mem), feature = "unsafe_sync"))] // unsafe
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
     unsafe impl<T: Send> Send for CacheAlign<T> {}
     #[cfg(all(not(base_safe_mem), feature = "unsafe_sync"))] // unsafe

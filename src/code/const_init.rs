@@ -97,7 +97,6 @@ mod impl_core {
 mod impl_alloc {
     use crate::{_impl_init, String};
 
-    #[cfg(feature = "alloc")]
     _impl_init![ConstInit: Self::new() => String];
 
     // TODO: fxhash, fnv, ahash
@@ -177,6 +176,15 @@ mod impl_devela_base_core {
     impl<const CAP: usize> Sealed for GraphemeNonul<CAP> {}
     #[cfg(feature = "grapheme")]
     impl<const CAP: usize> Sealed for GraphemeU8<CAP> {}
-    #[cfg(all(feature = "grapheme", feature = "alloc"))]
-    impl Sealed for GraphemeString {}
+}
+#[rustfmt::skip]
+#[cfg(feature = "alloc")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+mod impl_devela_base_alloc {
+    use super::{ConstInitCore, Sealed};
+    use crate::{_impl_init,
+    };
+
+    #[cfg(feature = "grapheme")]
+    impl Sealed for crate::GraphemeString {}
 }
