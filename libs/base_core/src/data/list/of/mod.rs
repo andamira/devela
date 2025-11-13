@@ -2,15 +2,14 @@
 
 mod one; // Oneof
 // mod _wip_all; // Allof
+// mod _wip_macro_one; // oneof!
 
-crate::structural_mods! { // _mods, _workspace_internals
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             one::Oneof,
             // _wip_all::*,
+            // _wip_macro_one::oneof,
         };
-    }
-    _workspace_internals {
-        pub use super::one::impl_oneof;
     }
 }

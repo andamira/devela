@@ -8,7 +8,7 @@ mod link;
 mod of; // Oneof
 // mod queue;
 
-crate::structural_mods! { // _mods, _workspace_internals
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             array::_all::*,
@@ -16,8 +16,5 @@ crate::structural_mods! { // _mods, _workspace_internals
             of::_all::*,
         };
         // pub use super::queue::_all::*;
-    }
-    _workspace_internals {
-        pub use super::of::_workspace_internals::*;
     }
 }

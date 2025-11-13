@@ -5,7 +5,8 @@
 
 #[cfg(any(doc, test))]
 define_arena! {
-    [ offset: u8+crate::NonExtremeU8; ]
+    // [ offset: u8+crate::NonExtremeU8; ] // WIP TODO
+    [ offset: u8+u8; ]
 
     #[doc = crate::_TAG_EXAMPLE!()]
     /// An example memory arena.

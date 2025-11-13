@@ -181,6 +181,9 @@ macro_rules! impl_maybe {
             /* casts */
 
             /// Converts the value into a `usize`, returning an error on overflow.
+            ///
+            /// # Errors
+            /// Will return [`Overflow`] if `self` can't fit in a `usize`.
             #[must_use] #[inline(always)]
             pub const fn try_to_usize(self) -> Result<usize, Overflow> {
                 Cast(self.as_prim()).checked_cast_to_usize()
@@ -246,9 +249,12 @@ impl<T: Copy> NonNiche<T> {
 }
 
 #[rustfmt::skip]
-impl<T> From<T> for NonNiche<T> { #[inline(always)] fn from(value: T) -> Self { Self(value) } }
+impl<T: Copy> From<T> for NonNiche<T> {
+    #[inline(always)]
+    fn from(value: T) -> Self { Self(value) }
+}
 
-impl<T: ConstInitCore> ConstInitCore for NonNiche<T> {
+impl<T: Copy + ConstInitCore> ConstInitCore for NonNiche<T> {
     const INIT: Self = Self(T::INIT);
 }
 
