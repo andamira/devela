@@ -12,6 +12,8 @@ use crate::{
     NonZero, Overflow, unwrap,
 };
 
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NICHE!()]
 /// A zero-cost wrapper that abstracts over both niche and non-niche integer types.
 ///
 /// `MaybeNiche<T>` exposes a uniform API for plain integers, `NonNiche*`,
@@ -69,7 +71,6 @@ macro_rules! impl_maybe {
 
 
             /// Creates a new `MaybeNiche` containing `value`.
-            // MAYBE use Result instead of Option… Invalid, etc. Oneof…
             #[must_use] #[inline(always)]
             pub const fn new(value: $T) -> Self { Self(value) }
 
@@ -203,6 +204,8 @@ macro_rules! impl_maybe {
 }
 impl_maybe![];
 
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NICHE!()]
 /// A zero-cost wrapper that mirrors the shape of a niche type but stores `T` unchanged.
 ///
 /// This provides API symmetry with niche-optimized variants without applying

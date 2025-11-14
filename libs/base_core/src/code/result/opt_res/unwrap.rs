@@ -23,8 +23,9 @@
 /// | `?`                 | Early return                           | Safe          |
 /// | (none)              | Panic                                  | Safe          |
 /// | `_expect`           | Panic with message                     | Safe          |
-/// | `_map`              | Maps the value of the previous variant | Safe          |
 /// | `_or`               | Return default                         | Safe          |
+/// | `_map`              | Maps the value of the previous variant | Safe          |
+/// | `_if`               | Unwrap depends on the given condition  | Safe          |
 /// | `_guaranteed_or_ub` | UB if failed (debug checks)            | **Unsafe** *  |
 ///
 /// * Requires `// SAFETY:` justification for impossible-failure invariants

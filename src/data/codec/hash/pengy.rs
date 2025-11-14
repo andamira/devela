@@ -5,6 +5,7 @@
 
 use crate::{ConstInit, Hasher};
 
+#[doc = crate::_TAG_HASH!()]
 /// A fast 64-bit non-cryptographic hash algorithm.
 ///
 #[doc = crate::_doc!(vendor: "pengyhash")]

@@ -3,7 +3,7 @@
 //! Defines the [`structural_mods!`] macro.
 //
 
-/// Defines a standardized module structure with automatic re-exports and visibility handling.
+/// Defines a standardized module structure with automatic re-exports and visibility.
 ///
 /// This macro generates a set of structural modules that help organize exports based on their
 /// intended visibility and usage patterns.

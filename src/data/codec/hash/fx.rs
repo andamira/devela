@@ -5,6 +5,7 @@ use crate::{ConstInit, Hash, Hasher, HasherBuildDefault};
 /// A builder for default Fx hashers.
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 
+#[doc = crate::_TAG_HASH!()]
 /// A hashing algorithm used in the Rustc compiler, implemented for
 /// [u32](#impl-HasherFx<u32>),
 /// [u64](#impl-HasherFx<u64>) &

@@ -47,7 +47,6 @@
 ///
 /// # Features
 /// Makes use of the `unsafe_str` feature if available.
-#[rustfmt::skip]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _const_join {

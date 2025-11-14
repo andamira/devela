@@ -10,8 +10,8 @@ crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
-            namespace::*,
-            join::*,
+            namespace::{Slice, slice},
+            join::const_join,
         };
     }
 }

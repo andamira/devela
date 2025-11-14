@@ -88,7 +88,7 @@
 #![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature(rwlock_downgrade,))]
 // ----------------------------
 // `nightly_stable_1_93`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_93, feature(core_slice_as_array,))]
+#![cfg_attr(nightly_stable_1_93, feature(core_slice_as_array, duration_from_nanos_u128,))]
 #![cfg_attr(all(nightly_stable_1_93, feature = "alloc"), feature(vec_deque_pop_if,))]
 #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
 // ----------------------------
@@ -116,7 +116,6 @@
         const_str_split_at,
         debug_closure_helpers,
         derive_coerce_pointee,
-        duration_from_nanos_u128,
         fn_align,
         frontmatter,
         if_let_guard,

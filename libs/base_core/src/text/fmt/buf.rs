@@ -45,6 +45,7 @@ macro_rules! format_buf {
 #[doc(inline)]
 pub use format_buf;
 
+#[doc = crate::_TAG_FMT!()]
 /// A specialized formatter that works with a fixed byte buffer and has truncation detection.
 ///
 /// It should be faster at runtime than the default formatter.

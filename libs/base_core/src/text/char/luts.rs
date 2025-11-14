@@ -17,7 +17,6 @@ impl Lut {
     /// Lookup table for fast ASCII code point to UTF-8 encoding.
     ///
     /// Used internally in [`Char`][crate::Char] and [`char7`][crate::char7].
-    /// Exposed for advanced use cases.
     pub const ASCII_CHARS: [&str; 128] = [
         "\0", "\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07", "\x08", "\t", "\n",
         "\x0B", "\x0C", "\r", "\x0E", "\x0F", "\x10", "\x11", "\x12", "\x13", "\x14", "\x15",
@@ -38,8 +37,6 @@ impl Lut {
     ///
     /// Used internally in [`FontArt`].
     #[doc = crate::doclink!(custom devela "[`FontArt`]" "media/font/struct.FontArt.html")]
-    ///
-    /// Exposed for advanced use cases.
     pub const ASCII_BASE36_OFFSET: [u8; 37] = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0-9: offset 0
         7, 7, 7, 7, 7, 7, 7, 7, 7, 7, // 10-19: offset 7
@@ -50,7 +47,6 @@ impl Lut {
     /// Precomputed two-digit decimal number strings (00-99).
     ///
     /// Used internally in [`Digits`][crate::Digits].
-    /// Exposed for advanced use cases.
     pub const DECIMAL_PAIRS: &[u8; 200] = b"\
         0001020304050607080910111213141516171819\
         2021222324252627282930313233343536373839\
@@ -61,13 +57,11 @@ impl Lut {
     /// Lookup table for digit characters in bases 2 through 36.
     ///
     /// Used internally in [`Digits`][crate::Digits].
-    /// Exposed for advanced use cases.
     pub const DIGITS_BASE36: [u8; 36] = *b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     /// Precomputed powers of 10: `[10^0, 10^1, ..., 10^38]`
     ///
     /// Used internally in [`Digits`][crate::Digits].
-    /// Exposed for advanced use cases.
     pub const POWERS10: [u128; 39] = [
         1,
         10,

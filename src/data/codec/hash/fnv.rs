@@ -5,6 +5,7 @@ use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify
 /// A builder for default Fnv hashers.
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
 
+#[doc = crate::_TAG_HASH!()]
 /// A Fowler–Noll–Vo hasher, implemented for
 /// [u32](#impl-HasherFnv<u32>),
 /// [u64](#impl-HasherFnv<u64>),
