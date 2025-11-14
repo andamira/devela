@@ -33,8 +33,8 @@ fn sign() {
 }
 #[test]
 fn sign_nonzero() {
-    assert_eq!(Float(0.0_f32).sign_nonzero(), Sign::None);
-    assert_eq!(Float(-0.0_f32).sign_nonzero(), Sign::None);
+    assert_eq!(Float(0.0_f32).sign_nonzero(), Sign::Zero);
+    assert_eq!(Float(-0.0_f32).sign_nonzero(), Sign::Zero);
     assert_eq!(Float(1.0_f32).sign_nonzero(), Sign::Positive);
     assert_eq!(Float(-1.0_f32).sign_nonzero(), Sign::Negative);
 }

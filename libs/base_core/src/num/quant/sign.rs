@@ -4,22 +4,26 @@
 //
 // TOC
 // - enum Sign
+// - impls
 // - impl Into<Sign>
 // - impl From<Sign> TryFrom<Sign>
 
-use crate::{ConstInitCore, InvalidValue};
+use crate::{ConstInitCore, InvalidValue, is, whilst};
 
 #[doc = crate::_TAG_QUANT!()]
-/// Represents the sign of a number.
+/// The three-valued sign of a number: negative (−1), zero (0), or positive (+1).
+///
+/// This enum models the mathematical signum function and is useful when
+/// representing or manipulating a value’s sign independently of its magnitude.
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum Sign {
     /// A negative sign (-).
     Negative = -1,
 
-    /// An absence of sign, associated with Zero. (The default)
+    /// The zero sign (0). (The default)
     #[default]
-    None = 0,
+    Zero = 0,
 
     /// A positive sign (+).
     Positive = 1,
@@ -27,7 +31,117 @@ pub enum Sign {
 
 impl ConstInitCore for Sign {
     /// No sign.
-    const INIT: Self = Sign::None;
+    const INIT: Self = Sign::Zero;
+}
+
+impl Sign {
+    /// True if `self` == `other`.
+    #[inline(always)]
+    pub const fn eq(self, other: Self) -> bool {
+        self as i8 == other as i8
+    }
+
+    /// True if `self` is `Negative`.
+    #[inline(always)]
+    pub const fn is_negative(self) -> bool {
+        matches!(self, Self::Negative)
+    }
+
+    /// True if `self` is `Positive`.
+    #[inline(always)]
+    pub const fn is_positive(self) -> bool {
+        matches!(self, Self::Positive)
+    }
+
+    /// True if `self` is `Zero`.
+    #[inline(always)]
+    pub const fn is_zero(self) -> bool {
+        matches!(self, Self::Zero)
+    }
+
+    /// True if `self` is not `Zero`.
+    #[inline(always)]
+    pub const fn is_nonzero(self) -> bool {
+        !self.is_zero()
+    }
+
+    /// Flips `Positive` ↔ `Negative`, keeps `Zero`.
+    #[inline(always)]
+    pub const fn invert(self) -> Self {
+        match self {
+            Self::Positive => Self::Negative,
+            Self::Negative => Self::Positive,
+            Self::Zero => Self::Zero,
+        }
+    }
+
+    /// Returns true if both have the same non-zero direction.
+    #[inline(always)]
+    pub const fn same_direction(self, other: Self) -> bool {
+        matches!((self, other), (Self::Positive, Self::Positive) | (Self::Negative, Self::Negative))
+    }
+
+    /// Multiplies two signs with zero-dominance.
+    pub const fn combine(self, other: Self) -> Self {
+        match (self, other) {
+            (Self::Zero, _) | (_, Self::Zero) => Self::Zero,
+            (Self::Positive, s) | (s, Self::Positive) => s,
+            (Self::Negative, Self::Negative) => Self::Positive,
+        }
+    }
+
+    /// Raises the sign to `n` with zero-dominance: odd→same, even→`Positive`.
+    pub const fn pow(self, n: u32) -> Self {
+        match self {
+            Self::Zero => Self::Zero,
+            Self::Positive => Self::Positive,
+            Self::Negative => is![n & 1 == 0; Self::Positive; Self::Negative],
+        }
+    }
+
+    /// Converts `Negative`→`Positive`; keeps `Zero`/`Positive`.
+    #[inline(always)]
+    pub const fn abs(self) -> Self {
+        match self {
+            Self::Negative => Self::Positive,
+            _ => self,
+        }
+    }
+
+    /// Converts `Positive`→`Negative`; keeps `Zero`/`Negative`.
+    #[inline(always)]
+    pub const fn neg_abs(self) -> Self {
+        match self {
+            Self::Positive => Self::Negative,
+            _ => self,
+        }
+    }
+
+    /// Combines all signs in `iter` with zero-dominance.
+    pub fn fold<I: IntoIterator<Item = Sign>>(iter: I) -> Self {
+        let mut acc = Self::Positive;
+        let mut it = iter.into_iter();
+        while let Some(s) = it.next() {
+            acc = acc.combine(s);
+            if matches!(acc, Self::Zero) {
+                return Self::Zero;
+            }
+        }
+        acc
+    }
+
+    /// Combines all signs in `slice` with zero-dominance.
+    pub const fn fold_slice(slice: &[Sign]) -> Self {
+        let mut acc = Self::Positive;
+        whilst! { i in 0..slice.len(); {
+            let s = slice[i];
+            acc = acc.combine(s);
+            if matches!(acc, Self::Zero) {
+                return Self::Zero;
+            }
+        }}
+        acc
+    }
 }
 
 /* Into<Sign> */
@@ -38,10 +152,10 @@ macro_rules! impl_into_sign {
     (int: $($int:ty),+) => { $( impl_into_sign![@int: $int]; )+ };
     (@int: $int:ty) => {
         impl From<$int> for Sign {
-            /// Returns `None` if 0, `Positive` if > 0 and `Negative` if < 0.
+            /// Returns `Zero` if 0, `Positive` if > 0 and `Negative` if < 0.
             fn from(n: $int) -> Sign {
                 match n {
-                    0 => Sign::None,
+                    0 => Sign::Zero,
                     1.. => Sign::Positive,
                     #[allow(unreachable_patterns, reason = "for unsigned")]
                     _ => Sign::Negative,
@@ -53,7 +167,7 @@ macro_rules! impl_into_sign {
     (float: $($float:ty),+) => { $( impl_into_sign![@float: $float]; )+ };
     (@float: $float:ty) => {
         impl From<$float> for Sign {
-            /// Returns `None` if 0.0, `Positive` if > 0 and `Negative` if < 0.
+            /// Returns `Zero` if 0.0, `Positive` if > 0 and `Negative` if < 0.
             fn from(n: $float) -> Sign {
                 if n.is_sign_positive() {
                     Sign::Positive
@@ -88,10 +202,10 @@ macro_rules! impl_from_sign {
     (sint: $($sint:ty),+) => { $( impl_from_sign![@sint: $sint]; )+ };
     (@sint: $sint:ty) => {
         impl From<Sign> for $sint {
-            /// Returns 0 if `None`, 1 if `Positive` and -1 if `Negative`.
+            /// Returns 0 if `Zero`, 1 if `Positive` and -1 if `Negative`.
             fn from(s: Sign) -> $sint {
                 match s {
-                    Sign::None => 0,
+                    Sign::Zero => 0,
                     Sign::Positive => 1,
                     Sign::Negative => -1,
                 }
@@ -104,13 +218,13 @@ macro_rules! impl_from_sign {
         impl TryFrom<Sign> for $uint {
             type Error = InvalidValue;
 
-            /// Returns 0 if `None` and 1 if `Positive`.
+            /// Returns 0 if `Zero` and 1 if `Positive`.
             ///
             /// # Errors
             /// Returns [`InvalidValue`] if the sign is `Negative`.
             fn try_from(s: Sign) -> Result<$uint, InvalidValue> {
                 match s {
-                    Sign::None => Ok(0),
+                    Sign::Zero => Ok(0),
                     Sign::Positive => Ok(1),
                     Sign::Negative => Err(InvalidValue),
                 }
@@ -121,10 +235,10 @@ macro_rules! impl_from_sign {
     (float: $($float:ty),+) => { $( impl_from_sign![@float: $float]; )+ };
     (@float: $float:ty) => {
         impl From<Sign> for $float {
-            /// Returns 0.0 if `None`, 1.0 if `Positive` and -1.0 if `Negative`.
+            /// Returns 0.0 if `Zero`, 1.0 if `Positive` and -1.0 if `Negative`.
             fn from(s: Sign) -> $float {
                 match s {
-                    Sign::None => 0.0,
+                    Sign::Zero => 0.0,
                     Sign::Positive => 1.0,
                     Sign::Negative => -1.0,
                 }
@@ -136,15 +250,15 @@ macro_rules! impl_from_sign {
         impl TryFrom<Sign> for bool {
             type Error = InvalidValue;
 
-            /// Returns `true` if `None` and `false` if `Negative`.
+            /// Returns `true` if `Zero` and `false` if `Negative`.
             ///
             /// # Errors
-            /// Returns [`InvalidValue`] if the sign is `None`.
+            /// Returns [`InvalidValue`] if the sign is `Zero`.
             fn try_from(s: Sign) -> Result<bool, InvalidValue> {
                 match s {
                     Sign::Positive => Ok(true),
                     Sign::Negative => Ok(false),
-                    Sign::None => Err(InvalidValue),
+                    Sign::Zero => Err(InvalidValue),
                 }
             }
         }

@@ -61,7 +61,7 @@ define_error![individual: pub struct Overflow(pub Option<Sign>);
         match sign {
             Sign::Positive => f.write_str("Positive overflow."),
             Sign::Negative => f.write_str("Negative overflow."),
-            Sign::None => f.write_str("Unsigned overflow."), // not meaningful
+            Sign::Zero => f.write_str("Unsigned overflow."), // not meaningful
         }
     } else {
         f.write_str("Overflow.")

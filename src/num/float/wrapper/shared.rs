@@ -158,10 +158,10 @@ macro_rules! impl_float_shared {
                 if self.is_sign_positive() { Sign::Positive } else { Sign::Negative }
             }
 
-            /// Returns the [`Sign`], returning [`None`][Sign::None] for zero
+            /// Returns the [`Sign`].
             pub const fn sign_nonzero(self) -> Sign {
                 if self.is_zero() {
-                    Sign::None
+                    Sign::Zero
                 } else if self.is_sign_positive() {
                     Sign::Positive
                 } else {

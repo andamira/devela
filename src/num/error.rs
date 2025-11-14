@@ -93,7 +93,7 @@ mod core_impls {
                         match sign {
                             Sign::Positive => write!(f, "Positive overflow."),
                             Sign::Negative => write!(f, "Negative overflow."),
-                            Sign::None => write!(f, "Unsigned overflow."), // not meaningful
+                            Sign::Zero => write!(f, "Unsigned overflow."), // not meaningful
                         }
                     } else {
                         write!(f, "Overflow.")

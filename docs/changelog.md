@@ -261,7 +261,10 @@ Many feature gates are removed in order to make most features make always availa
 - move `ValueQuant` from `code::result` to `num::quant`.
 - make std `Float` methods `trunc`, `fract` & `split` *const*.
 - make all `Int` methods *const*.
-- make `Sign` part of `quant`.
+- update Sign
+  - make part of `quant`.
+  - rename variant `None` to `Zero`.
+  - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
 - rename:
   - `Compare` to `Cmp`.
   - `ExtFloat` to `FloatExt`.
