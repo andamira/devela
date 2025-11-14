@@ -170,8 +170,11 @@ Many feature gates are removed in order to make most features make always availa
   - `ExtOptRes` to `OptResExt`.
   - `ExtResult` to `ResultExt`.
 - update `unwrap!`:
-  - add arms: `some_if*`, `ok_map_err`, `ok_if*`.
+  - add arms: `err?`, `ok_err_map`, `ok_if*`, `ok_map*`, `ok_some_map`, `some_if*`, `some_map*`, `some_ok_map*`.
   - make *const* the arms that call `unreachable`.
+  - rename arms:
+    - `ok_map_err`? to `ok_err_map?`.
+    - `ok_if_map_err`? to `ok_if_err_map?`.
 
 ### utils
 - new struct: `Lut`.

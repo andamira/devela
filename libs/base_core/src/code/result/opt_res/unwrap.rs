@@ -18,18 +18,19 @@
 /// - **`serr_`** - `Option<Result<T, E>>` (`Some(Err)`)
 ///
 /// #### Suffixes
-/// | Suffix              | Behavior                              | Safety        |
-/// |---------------------|---------------------------------------|---------------|
-/// | `?`                 | Early return                          | Safe          |
-/// | (none)              | Panic                                 | Safe          |
-/// | `_expect`           | Panic with message                    | Safe          |
-/// | `_or`               | Return default                        | Safe          |
-/// | `_guaranteed_or_ub` | UB if failed (debug checks)           | **Unsafe** * |
+/// | Suffix              | Behavior                               | Safety        |
+/// |---------------------|----------------------------------------|---------------|
+/// | `?`                 | Early return                           | Safe          |
+/// | (none)              | Panic                                  | Safe          |
+/// | `_expect`           | Panic with message                     | Safe          |
+/// | `_map`              | Maps the value of the previous variant | Safe          |
+/// | `_or`               | Return default                         | Safe          |
+/// | `_guaranteed_or_ub` | UB if failed (debug checks)            | **Unsafe** *  |
 ///
 /// * Requires `// SAFETY:` justification for impossible-failure invariants
 ///
 /// ### Special Cases
-/// - `ok_err`: Only when `Ok(T)` and `Err(T)` are identical types.
+/// - `ok_err`: Only when `Ok(v)` and `Err(v)` are identical types.
 /// - `some_ok_or`: Converts to `Result` with provided error.
 /// - `[ok|err]_some`: Converts to `Option`.
 #[macro_export]
@@ -40,67 +41,79 @@ macro_rules! unwrap {
       // Option<T>
       // ---------
 
-      // Unwraps the contained `Some` value, or otherwise returns `None`.
-      some? $value:expr ) => {
-        match $value {
+      // Unwraps `Some` value, or otherwise returns `None`.
+      some? $T:expr ) => {
+        match $T {
             Some(v) => v,
             None => return None,
         }
     };
     (
-      // Unwraps the contained `Some` value, or panics if it's `None`.
-      some $value:expr) => {
-        match $value {
+      // Unwraps `Some` value, or panics if it's `None`.
+      some $T:expr) => {
+        match $T {
             Some(v) => v,
             None => ::core::panic![],
         }
     };
     (
-      // Unwraps the contained `Some` value, or panics with a message if it's `None`.
-      some_expect $value:expr, $message:literal) => {
-        match $value {
+      // Unwraps `Some` value, or panics with a message if it's `None`.
+      some_expect $T:expr, $message:literal) => {
+        match $T {
             Some(v) => v,
             None => ::core::panic!["{}", $message],
         }
     };
     (
-      // Unwraps the contained `Some($v)` only if the condition `$cond` is true,
-      // otherwise returns `None`.
-      some_if? $value:expr, |$v:ident| $cond:expr) => {
-        match $value {
+      // Maps `Some` value or otherwise returns `None`.
+      some_map? $T:expr, |$v:ident| $some_map:expr) => {
+        match $T {
+            Some($v) => Some($some_map),
+            None => return None,
+        }
+    };
+    (
+      // Maps `Some` value or panics if it's `None`.
+      some_map $T:expr, |$v:ident| $some_map:expr) => {
+        match $T {
+            Some($v) => Some($some_map),
+            None => ::core::panic![],
+        }
+    };
+
+    (
+      // Unwraps `Some` value if `$cond` holds, otherwise returns `None`.
+      some_if? $T:expr, |$v:ident| $cond:expr) => {
+        match $T {
             Some($v) if $cond => $v,
             _ => return None,
         }
     };
     (
-      // Unwraps the contained `Some($v)` only if the condition `$cond` is true,
-      // otherwise panics.
-      some_if $value:expr, |$v:ident| $cond:expr) => {
-        match $value {
+      // Unwraps `Some` value if `$cond` holds, otherwise panics.
+      some_if $T:expr, |$v:ident| $cond:expr) => {
+        match $T {
             Some($v) if $cond => $v,
             _ => ::core::panic![],
         }
     };
     (
-      // Unwraps the contained `Some` value;
-      // otherwise yields the provided $default value.
-      some_or $value:expr, $default:expr) => {
-        match $value {
+      // Unwraps `Some` value, otherwise yields the provided `$default` value.
+      some_or $T:expr, $default:expr) => {
+        match $T {
             Some(v) => v,
             None => $default,
         }
     };
     (
-      // Unwraps the contained `Some` value, or assumes (unsafely) that it cannot be `None`.
+      // Unwraps `Some` value, assuming (unsafely) that it cannot be `None`.
       // Only use when the `None` case is statically impossible.
-      some_guaranteed_or_ub $value:expr $(,)?
+      some_guaranteed_or_ub $T:expr $(,)?
     ) => {
-        match $value {
+        match $T {
             Some(v) => v,
             None => {
                 if cfg!(debug_assertions) {
-                    // Note: non-const with message:
-                    // ::core::unreachable!("`None` encountered in `some_guaranteed_or_ub`")
                     ::core::unreachable!()
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
@@ -110,79 +123,115 @@ macro_rules! unwrap {
     };
 
     (
-      // Transforms the `Option` into a `Result`, mapping `Some(T)` to `Ok(T)`,
-      // and `None` to `Err($err)`.
-      some_ok_or $value:expr, $err:expr) => {
-        match $value {
+      // Transforms `Some(v)` to `Ok(v)`, and `None` to `Err($err)`.
+      some_ok_or $T:expr, $err:expr) => {
+        match $T {
             Some(v) => Ok(v),
             None => Err($err),
         }
     };
     (
-      // Unwraps the contained `Some` value or otherwise returns Err($err).
-      some_ok_or? $value:expr, $err:expr) => {
-        match $value {
+      // Unwraps `Some` value, or otherwise returns Err($err).
+      some_ok_or? $T:expr, $err:expr) => {
+        match $T {
             Some(v) => v,
             None => return Err($err),
         }
     };
-
+    (
+      // Transforms and maps `Some` value to `Ok`, and `None` to `Err($err)`.
+      some_ok_map_or $T:expr, |$v:ident| $ok_map:expr, $err:expr) => {
+        match $T {
+            Some($v) => Ok($ok_map),
+            None => Err($err),
+        }
+    };
+    (
+      // Transforms and maps `Some` value to `Ok`, or otherwise returns `Err($err)`.
+      some_ok_map_or? $T:expr, |$v:ident| $ok_map:expr, $err:expr) => {
+        match $T {
+            Some($v) => Ok($ok_map),
+            None => return Err($err),
+        }
+    };
+    // -------------------------------------------------------------------------
     (
 
       // Result<T, E>
       // ------------
 
-      // Unwraps the contained `Ok` value, or otherwise returns the `Err` value.
-      ok? $value:expr ) => {
-        match $value {
+      // Unwraps the `Ok` value, or otherwise returns the `Err` value.
+      ok? $T:expr ) => {
+        match $T {
             Ok(v) => v,
             Err(e) => return Err(e),
         }
     };
     (
-      // Unwraps the contained `Ok` value, or panics if it's `Err`.
-      ok $value:expr ) => {
-        match $value {
+      // Unwraps the `Ok` value, or panics if it's `Err`.
+      ok $T:expr ) => {
+        match $T {
             Ok(v) => v,
             Err(_) => ::core::panic![],
         }
     };
     (
-      // Unwraps the contained `Ok` value, or panics with a message if it's `Err`.
-      ok_expect $value:expr, $message:literal) => {
-        match $value {
+      // Unwraps the `Ok` value, or panics with a message if it's `Err`.
+      ok_expect $T:expr, $message:literal) => {
+        match $T {
             Ok(v) => v,
             Err(_) => ::core::panic!["{}", $message],
         }
     };
     (
-      // Unwraps the contained `Ok(v)` or returns `Err($map($e))` with a mapped error.
-      ok_map_err? $value:expr, |$e:ident| $map:expr) => {
-        match $value {
-            Ok(v) => v,
-            Err($e) => return Err($map),
+      // Maps the `Ok` value or otherwise returns the `Err` value.
+      ok_map? $T:expr, |$v:ident| $ok_map:expr) => {
+        match $T {
+            Ok($v) => Ok($ok_map),
+            Err(e) => return Err(e),
         }
     };
     (
-      // Unwraps the contained `Ok` value;
-      // otherwise yields the provided $default value.
-      ok_or $value:expr, $default:expr) => {
-        match $value {
+      // Maps the `Ok` value or panics if it's `Err`.
+      ok_map $T:expr, |$v:ident| $ok_map:expr) => {
+        match $T {
+            Ok($v) => Ok($ok_map),
+            Err(_) => ::core::panic![],
+        }
+    };
+    (
+      // Maps the `Ok` value or otherwise returns the mapped `Err`.
+      ok_map_err_map? $T:expr, |$v:ident| $ok_map:expr, |$e:ident| $err_map:expr) => {
+        match $T {
+            Ok($v) => Ok($ok_map),
+            Err($e) => return Err($err_map),
+        }
+    };
+    (
+      // Unwraps the `Ok` value or otherwise returns the mapped `Err`.
+      ok_err_map? $T:expr, |$e:ident| $err_map:expr) => {
+        match $T {
+            Ok(v) => v,
+            Err($e) => return Err($err_map),
+        }
+    };
+    (
+      // Unwraps the `Ok` value; otherwise yields the provided `$default` value.
+      ok_or $T:expr, $default:expr) => {
+        match $T {
             Ok(v) => v,
             Err(_) => $default,
         }
     };
     (
-      // Unwraps the contained `Ok` value, or assumes (unsafely) that it cannot be `Err`.
+      // Unwraps the `Ok` value, assuming (unsafely) that it cannot be `Err`.
       // Only use when the `Err` case is statically impossible (e.g., `Infallible` or `!`).
-      ok_guaranteed_or_ub $value:expr $(,)?
+      ok_guaranteed_or_ub $T:expr $(,)?
     ) => {
-        match $value {
+        match $T {
             Ok(v) => v,
             Err(_) => {
                 if cfg!(debug_assertions) {
-                    // Note: non-const with message:
-                    // ::core::unreachable!("`Err` encountered in `ok_guaranteed_or_ub`")
                     ::core::unreachable!()
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
@@ -191,142 +240,153 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the contained `Ok(v)` only if `$cond` holds;
-      // otherwise returns `$ok_err`, or propagates the original `Err(e)`.
-      ok_if? $value:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
-        match $value {
+      // Unwraps the `Ok` value if `$cond` holds;
+      // otherwise returns `$ok_err` or propagates the original `Err`.
+      ok_if? $T:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
+        match $T {
             Ok($v) if $cond => $v,
             Ok(_) => $ok_err,
             Err(e) => return Err(e),
         }
     };
     (
-      // Unwraps the contained `Ok($v)` only if `$cond` holds;
-      // otherwise panics.
-      ok_if $value:expr, |$v:ident| $cond:expr) => {
-        match $value {
+      // Unwraps the `Ok` value if `$cond` holds; otherwise panics.
+      ok_if $T:expr, |$v:ident| $cond:expr) => {
+        match $T {
             Ok($v) if $cond => $v,
             _ => ::core::panic![],
         }
     };
     (
-      // Unwraps the contained `Ok($v)` only if `$cond` holds;
-      // otherwise yields the provided $default value.
-      ok_if_or $value:expr, |$v:ident| $cond:expr, $default:expr) => {
-        match $value {
+      // Unwraps the `Ok` value if `$cond` holds;
+      // otherwise yields the provided `$default` value.
+      ok_if_or $T:expr, |$v:ident| $cond:expr, $default:expr) => {
+        match $T {
             Ok($v) if $cond => $v,
             _ => $default,
         }
     };
     (
-      // Unwraps the contained `Ok($v)` only if `$cond` holds;
-      // otherwise returns `Err($ok_err)`, or maps an existing error into `Err($map($e))`.
-      ok_if_map_err? $value:expr, |$v:ident| $cond:expr, $ok_err:expr, |$e:ident| $map:expr) => {
-        match $value {
+      // Unwraps the `Ok` value if `$cond` holds;
+      // otherwise returns `Err($ok_err)`, or maps an existing `Err` with `$err_map`.
+      ok_if_err_map? $T:expr, |$v:ident| $cond:expr, $ok_err:expr, |$e:ident| $err_map:expr) => {
+        match $T {
             Ok($v) if $cond => $v,
             Ok(_) => return Err($ok_err),
-            Err($e) => return Err($map),
+            Err($e) => return Err($err_map),
         }
     };
     (
-      // Unwraps the contained `Ok($v)` only if `$cond` holds;
-      // otherwise returns `Err($ok_err)`.
-      ok_if_or_err? $value:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
-        match $value {
+      // Unwraps the `Ok` value if `$cond` holds; otherwise returns `Err($ok_err)`.
+      ok_if_or_err? $T:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
+        match $T {
             Ok($v) if $cond => $v,
             _ => return Err($ok_err),
         }
     };
 
     (
-      // Transforms the `Result` into an `Option`, mapping `Ok(T)` to `Some(T)`,
-      // and `Err(_)` to `None`.
-      ok_some $value:expr) => {
-        match $value {
+      // Transforms the `Ok` value to `Some`, and `Err` to `None`.
+      ok_some $T:expr) => {
+        match $T {
             Ok(v) => Some(v),
             Err(_) => None,
         }
     };
     (
-      // Unwraps the contained `Ok` value, otherwise returns `None`.
-      ok_some? $value:expr) => {
-        match $value {
+      // Unwraps the `Ok` value, otherwise returns `None`.
+      ok_some? $T:expr) => {
+        match $T {
             Ok(v) => v,
             Err(_) => return None,
         }
     };
 
     (
-      // Unwraps the contained `Ok` value, or the `Err` value.
-      // Only use when `Ok(T)` and `Err(T)` are the same type.
-      ok_err $value:expr) => {
-        match $value {
+      // Transforms and maps the `Ok` value to `Some`, and `Err` to `None`.
+      ok_some_map $T:expr, |$v:ident| $some_map:expr) => {
+        match $T {
+            Ok($v) => Some($some_map),
+            Err(_) => None,
+        }
+    };
+
+    (
+      // Unwraps the `Ok` value, or the `Err` value.
+      // Only use when `Ok` and `Err` contain the same type.
+      ok_err $T:expr) => {
+        match $T {
             Ok(v) => v,
             Err(v) => v,
         }
     };
 
     (
-      // Unwraps the contained `Err` value, or panics if it's `Ok`.
-      err $value:expr ) => {
-        match $value {
+      // Unwraps the `Err` value, or returns the `Ok` value.
+      err? $T:expr ) => {
+        match $T {
+            Ok(v) => return Ok(v),
+            Err(e) => e,
+        }
+    };
+    (
+      // Unwraps the `Err` value, or panics if it's `Ok`.
+      err $T:expr ) => {
+        match $T {
             Ok(_) => ::core::panic![],
-            Err(v) => v,
+            Err(e) => e,
         }
     };
     (
-      // Unwraps the contained `Err` value, or panics a message if it's `Ok`.
-      err_expect $value:expr, $message:literal) => {
-        match $value {
+      // Unwraps the `Err` value, or panics with a message if it's `Ok`.
+      err_expect $T:expr, $message:literal) => {
+        match $T {
             Ok(_) => ::core::panic!["{}", $message],
-            Err(v) => v,
+            Err(e) => e,
         }
     };
     (
-      // Unwraps the contained `Err` value;
-      // otherwise yields the provided $default value.
-      err_or $value:expr, $default:expr) => {
-        match $value {
+      // Unwraps the `Err` value; otherwise yields the provided `$default` value.
+      err_or $T:expr, $default:expr) => {
+        match $T {
             Ok(_) => $default,
-            Err(v) => v,
+            Err(e) => e,
         }
     };
     (
-      // Transforms the `Result` into an `Option`, mapping `Err(E)` to `Some(E)`,
-      // and `Ok(_)` to `None`.
-      err_some $value:expr) => {
-        match $value {
+      // Transforms `Err(e)` to `Some(e)`, and `Ok(_)` to `None`.
+      err_some $T:expr) => {
+        match $T {
             Ok(_) => None,
             Err(e) => Some(e),
         }
     };
     (
-      // Unwraps the contained `Err` value, otherwise returns `None`.
-      err_some? $value:expr) => {
-        match $value {
+      // Unwraps the `Err` value, otherwise returns `None`.
+      err_some? $T:expr) => {
+        match $T {
             Ok(_) => return None,
             Err(e) => e,
         }
     };
+    // -------------------------------------------------------------------------
     (
 
       // OptRes<T, E>
       // ------------
 
-      // Unwraps the contained `Some(Ok)` value,
-      // or otherwise either returns the `Some(Err)` value or `None`.
-      sok? $value:expr ) => {
-        match $value {
+      // Unwraps `Some(Ok)` value; otherwise returns either `Some(Err)` value or `None`.
+      sok? $T:expr ) => {
+        match $T {
             Some(Ok(v)) => v,
             Some(Err(e)) => return Some(Err(e)),
             None => return None,
         }
     };
     (
-      // Unwraps the contained `Some(Ok)` value,
-      // or panics if it's `Some(Err)` or `None`.
-      sok $value:expr ) => {
-        match $value {
+      // Unwraps `Some(Ok)` value, or panics if it's `Some(Err)` or `None`.
+      sok $T:expr ) => {
+        match $T {
             Some(Ok(v)) => v,
             Some(Err(_)) => ::core::panic![],
             None => ::core::panic![],
@@ -334,37 +394,32 @@ macro_rules! unwrap {
     };
 
     (
-      // Unwraps the contained `Some(Ok)` value,
-      // or panics with a message if it's `Some(Err)` or `None`.
-      sok_expect $value:expr, $message:literal) => {
-        match $value {
+      // Unwraps `Some(Ok)` value, or panics with a message if it's `Some(Err)` or `None`.
+      sok_expect $T:expr, $message:literal) => {
+        match $T {
             Some(Ok(v)) => v,
             Some(Err(_)) => ::core::panic!["{}", $message],
             None => ::core::panic!["{}", $message],
         }
     };
     (
-      // Unwraps the contained `Some(Ok)` value;
-      // otherwise yields the provided $default value.
-      sok_or $value:expr, $default:expr) => {
-        match $value {
+      // Unwraps `Some(Ok)` value; otherwise yields the provided `$default` value.
+      sok_or $T:expr, $default:expr) => {
+        match $T {
             Some(Ok(v)) => v,
             Some(Err(_)) => $default,
             None => $default,
         }
     };
     (
-      // Unwraps the contained `Some(Ok)` value,
-      // or assumes (unsafely) that it cannot be Some(Err)` or `None`.
+      // Unwraps `Some(Ok)` value, assuming (unsafely) that it cannot be Some(Err)` or `None`.
       // Only use when the `Some(Err)` or `None` cases are statically impossible.
-      sok_guaranteed_or_ub $value:expr $(,)?
+      sok_guaranteed_or_ub $T:expr $(,)?
     ) => {
-        match $value {
+        match $T {
             Some(Ok(v)) => v,
             Some(Err(_)) => {
                 if cfg!(debug_assertions) {
-                    // Note: non-const with message:
-                    // ::core::unreachable!("`Some(Err)` encountered in `sok_guaranteed_or_ub`")
                     ::core::unreachable!();
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
@@ -372,8 +427,6 @@ macro_rules! unwrap {
             }
             None => {
                 if cfg!(debug_assertions) {
-                    // Note: non-const with message:
-                    // ::core::unreachable!("`None` encountered in `sok_guaranteed_or_ub`")
                     ::core::unreachable!();
                 } else {
                     unsafe { ::core::hint::unreachable_unchecked() }
@@ -383,30 +436,27 @@ macro_rules! unwrap {
     };
 
     (
-      // Unwraps the contained `Some(Err)` value,
-      // or panics if it's `Some(Ok)` or `None`.
-      serr $value:expr ) => {
-        match $value {
+      // Unwraps `Some(Err)` value, or panics if it's `Some(Ok)` or `None`.
+      serr $T:expr ) => {
+        match $T {
             Some(Ok(_)) => ::core::panic![],
             Some(Err(v)) => v,
             None => ::core::panic![],
         }
     };
     (
-      // Unwraps the contained `Some(Err)` value,
-      // or panics with a message if it's `Some(Ok)` or `None`.
-      serr_expect $value:expr, $message:literal) => {
-        match $value {
+      // Unwraps `Some(Err)` value, or panics with a message if it's `Some(Ok)` or `None`.
+      serr_expect $T:expr, $message:literal) => {
+        match $T {
             Some(Ok(_)) => ::core::panic!["{}", $message],
             Some(Err(v)) => v,
             None => ::core::panic!["{}", $message],
         }
     };
     (
-      // Unwraps the contained `Some(Err)` value;
-      // otherwise yields the provided $default value.
-      serr_or $value:expr, $default:expr) => {
-        match $value {
+      // Unwraps `Some(Err)` value; otherwise yields the provided `$default` value.
+      serr_or $T:expr, $default:expr) => {
+        match $T {
             Some(Ok(_)) => $default,
             Some(Err(v)) => v,
             None => $default,
