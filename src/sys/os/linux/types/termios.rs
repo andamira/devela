@@ -1,4 +1,4 @@
-// devela::sys::os::linux::structs::termios
+// devela::sys::os::linux::types::termios
 //
 //! Defines [`LinuxTermios`]
 //

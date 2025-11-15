@@ -30,7 +30,7 @@
 mod consts;
 mod error;
 mod namespace;
-mod structs;
+mod types;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 crate::items! {
@@ -45,7 +45,7 @@ pub mod io {
     pub use _all::*;
     pub(super) mod _all {
         crate::items! {
-            pub use super::super::{consts::termios::*, structs::{LinuxStat, LinuxTermios}};
+            pub use super::super::{consts::termios::*, types::{LinuxStat, LinuxTermios}};
         }
     }
 }
@@ -59,7 +59,7 @@ pub mod process {
         #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
         pub use super::super::{
             consts::signal::*,
-            structs::{LinuxSigaction, LinuxSiginfo, LinuxSigset},
+            types::{LinuxSigaction, LinuxSiginfo, LinuxSigset},
         };
     }
 }
@@ -69,7 +69,7 @@ pub mod thread {
     #[allow(unused)]
     pub use _all::*;
     pub(super) mod _all {
-        pub use super::super::{consts::LinuxClock, structs::LinuxTimespec};
+        pub use super::super::{consts::LinuxClock, types::LinuxTimespec};
     }
 }
 

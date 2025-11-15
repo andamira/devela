@@ -12,6 +12,7 @@
 use super::shared::split_args;
 use proc_macro::{TokenStream, TokenTree};
 
+#[inline(always)]
 pub(crate) fn body_coalesce(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let args = split_args(&input);
@@ -19,6 +20,7 @@ pub(crate) fn body_coalesce(input: TokenStream) -> TokenStream {
     first_non_empty_arg.parse().expect("Failed to parse TokenStream")
 }
 
+#[inline(always)]
 pub(crate) fn body_field_of(input: TokenStream) -> TokenStream {
     let input = input.to_string();
 
@@ -31,6 +33,7 @@ pub(crate) fn body_field_of(input: TokenStream) -> TokenStream {
     format!("{}.{}", value, field).parse().unwrap()
 }
 
+#[inline(always)]
 pub(crate) fn body_ident_total(input: TokenStream) -> TokenStream {
     let mut count = 0;
     for token in input {
@@ -44,6 +47,7 @@ pub(crate) fn body_ident_total(input: TokenStream) -> TokenStream {
     result.parse().unwrap()
 }
 
+#[inline(always)]
 pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
     let mut unique = crate::HashSet::new();
     let mut total = 0;
@@ -61,6 +65,7 @@ pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
     result.parse().unwrap()
 }
 
+#[inline(always)]
 pub(crate) fn body_ident_unique(input: TokenStream) -> TokenStream {
     let mut unique = crate::HashSet::new();
     for token in input {

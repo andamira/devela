@@ -339,6 +339,8 @@ Many feature gates are removed in order to make most features make always availa
   - add new `eq` methods for slices of slices of primitives and string slices.
 
 ## os
+- repurpose module to include operating supervisors.
+
 ### linux
 - new enum `LinuxClock`.
 - new `Linux` methods: `clock_getres`, `clock_gettime`, `exit`.

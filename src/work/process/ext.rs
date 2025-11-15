@@ -2,6 +2,10 @@
 //
 //! Defines the [`ProcessExt`] trait.
 //
+// IMPROVE
+// https://doc.rust-lang.org/std/os/linux/process/trait.CommandExt.html
+// https://doc.rust-lang.org/std/os/unix/process/trait.CommandExt.html
+// https://doc.rust-lang.org/std/os/windows/process/trait.CommandExt.html
 
 use crate::{OsStr, Process, ProcessCommand};
 use std::process::{abort, exit, id};

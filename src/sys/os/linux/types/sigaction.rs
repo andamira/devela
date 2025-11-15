@@ -1,4 +1,4 @@
-// devela::sys::os::linux::structs::sigaction
+// devela::sys::os::linux::types::sigaction
 //
 //! Defines [`LinuxSigaction`], [`LinuxSiginfo`], [`LinuxSigset`].
 //!

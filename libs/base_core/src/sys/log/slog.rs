@@ -6,6 +6,9 @@
 // - macro guard! (private)
 // - struct LoggerStatic
 // - macro slog!
+//
+// IMPROVE: log levels, in another array
+// IMPROVE: configurable message eviction policy with state, internal enum.
 
 use crate::{Slice, Str, is, lets, whilst};
 

@@ -1,4 +1,4 @@
-// devela::sys::os::linux::structs::timespec
+// devela::sys::os::linux::types::timespec
 //
 //!
 //

@@ -11,16 +11,19 @@
 use super::shared::{compile_eval, deindent, split_args, split_compile_doc_tuple};
 use proc_macro::TokenStream;
 
+#[inline(always)]
 pub(crate) fn body_cif(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let result = compile_eval(input);
     result.to_string().parse().unwrap()
 }
 
+#[inline(always)]
 pub(crate) fn body_compile(args: TokenStream, input: TokenStream) -> TokenStream {
     if compile_eval(args.to_string()) { input } else { TokenStream::new() }
 }
 
+#[inline(always)]
 pub(crate) fn body_compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();
     let mut args = split_args(&args);
@@ -41,6 +44,7 @@ pub(crate) fn body_compile_attr(args: TokenStream, input: TokenStream) -> TokenS
     }
 }
 
+#[inline(always)]
 pub(crate) fn body_compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();
     let doc_conditions = split_args(&args);

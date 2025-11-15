@@ -51,6 +51,9 @@ pub struct VecVector<T> {
 pub trait NumVector: Num {
     /// The associated scalar type.
     type Scalar;
+
+    // fn dot() -> Self::Scalar;
+    // fn cross() -> Self::Scalar;
 }
 
 #[cfg(feature = "alloc")]

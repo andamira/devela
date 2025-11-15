@@ -1,4 +1,4 @@
-// devela::sys::os::linux::structs::stat
+// devela::sys::os::linux::types::stat
 //
 //! Defines [`LinuxStat`].
 //

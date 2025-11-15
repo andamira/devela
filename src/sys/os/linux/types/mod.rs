@@ -1,6 +1,6 @@
-// devela::sys::os::linux::structs
+// devela::sys::os::linux::types
 //
-//! Linux related structs.
+//! Linux related types.
 //
 
 mod sigaction;
