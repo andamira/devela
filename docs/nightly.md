@@ -103,6 +103,7 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
+- 1.??: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)

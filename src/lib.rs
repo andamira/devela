@@ -127,6 +127,7 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
+        peekable_next_if_map,
         substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,
