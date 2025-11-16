@@ -2,6 +2,7 @@
 //
 //! Defines [`SixelEncoder`].
 //
+// TODO: modularize, support rgba buffer, Rgb8a buffer
 
 #[allow(unused, reason = "__dbg")]
 use crate::{__dbg, slog};

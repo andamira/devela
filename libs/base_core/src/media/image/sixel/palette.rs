@@ -105,22 +105,22 @@ impl<const CAP: usize> SixelPalette<CAP> {
     //     Some(best_index as u16)
     // }
 
-    /// Find the closest color in the palette to the given color
-    pub const fn find_closest(&self, target: SixelColor) -> Option<u16> {
-        if self.len == 0 { return None; }
-        let mut best_idx = 0;
-        let mut best_distance = u16::MAX;
-        let mut iter = self.defined_colors();
-        while let Some((idx, palette_color)) = iter.next() {
-            let distance = target.distance(palette_color);
-            if distance == 0 { return Some(idx); }
-            if distance < best_distance {
-                best_distance = distance;
-                best_idx = idx;
-            }
-        }
-        Some(best_idx)
-    }
+    // /// Find the closest color in the palette to the given color
+    // pub const fn find_closest(&self, target: SixelColor) -> Option<u16> {
+    //     if self.len == 0 { return None; }
+    //     let mut best_idx = 0;
+    //     let mut best_distance = u16::MAX;
+    //     let mut iter = self.defined_colors();
+    //     while let Some((idx, palette_color)) = iter.next() {
+    //         let distance = target.distance(palette_color);
+    //         if distance == 0 { return Some(idx); }
+    //         if distance < best_distance {
+    //             best_distance = distance;
+    //             best_idx = idx;
+    //         }
+    //     }
+    //     Some(best_idx)
+    // }
 
     /// Get an iterator over the defined colors.
     #[allow(private_interfaces)]

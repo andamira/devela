@@ -3,6 +3,8 @@
 //!
 //
 
+#![allow(non_camel_case_types)]
+
 use crate::{_TAG_NUM, _TAG_PRIMITIVE};
 
 #[doc = _TAG_PRIMITIVE!()]

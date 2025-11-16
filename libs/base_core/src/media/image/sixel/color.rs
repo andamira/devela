@@ -141,15 +141,15 @@ impl SixelColor {
         [r[0], r[1], g[0], g[1], b[0], b[1]]
     }
 
-    /// Simple color distance metric (Manhattan distance in RGB space)
-    #[must_use]
-    #[inline(always)]
-    pub const fn distance(self, other: SixelColor) -> u16 {
-        let dr = (self.r() as i16 - other.r() as i16).unsigned_abs();
-        let dg = (self.g() as i16 - other.g() as i16).unsigned_abs();
-        let db = (self.b() as i16 - other.b() as i16).unsigned_abs();
-        dr + dg + db
-    }
+    // /// Simple color distance metric (Manhattan distance in RGB space)
+    // #[must_use]
+    // #[inline(always)]
+    // pub const fn distance(self, other: SixelColor) -> u16 {
+    //     let dr = (self.r() as i16 - other.r() as i16).unsigned_abs();
+    //     let dg = (self.g() as i16 - other.g() as i16).unsigned_abs();
+    //     let db = (self.b() as i16 - other.b() as i16).unsigned_abs();
+    //     dr + dg + db
+    // }
     /// Simple color distance metric (Manhattan distance in RGB space)
     #[must_use]
     #[inline(always)]
@@ -159,8 +159,9 @@ impl SixelColor {
         let db = (self.b() as i16 - other.b() as i16).unsigned_abs();
         // IMPROVE
         // dr < 10 && dg < 10 && db < 10
-        dr < 6 && dg < 6 && db < 6
+        // dr < 6 && dg < 6 && db < 6
         // dr < 3 && dg < 3 && db < 3
+        dr < 1 && dg < 1 && db < 1
     }
 
     /// Compile-time comparison.

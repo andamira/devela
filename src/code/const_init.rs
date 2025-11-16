@@ -181,10 +181,6 @@ mod impl_devela_base_core {
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod impl_devela_base_alloc {
-    use super::{ConstInitCore, Sealed};
-    use crate::{_impl_init,
-    };
-
     #[cfg(feature = "grapheme")]
-    impl Sealed for crate::GraphemeString {}
+    impl super::Sealed for crate::GraphemeString {}
 }

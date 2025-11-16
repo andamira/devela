@@ -191,13 +191,16 @@ impl SixelChar {
     /// Uses ANSI escape codes for coloring and resets formatting at the end.
     /// # Example
     /// ```
-    /// # use devela_base_core::SixelChar;
+    /// # use devela_base_core::{Ansi, SixelChar, write_at};
+    // /// let (mut offset, mut result) = (0, [0; 65]);
+    // /// write_at![result, offset, @Ansi::BLACK_BG, @Ansi::RED, b'@', @'⠁'];
     /// assert_eq![
     ///     SixelChar::TOP.to_string_ansi(), // == "@⠁■□□□□□|000001"
     ///     "\u{1b}[40m\u{1b}[31m@\u{1b}[32m⠁\u{1b}[34m■□□□□□\u{1b}[0m\u{1b}[36m\u{1b}[0m|000001"
     /// ];
     /// ```
     #[allow(non_snake_case)]
+    // TODO: make const to_string_ansi
     pub fn to_string_ansi(&self) -> StringU8<65> {
         use crate::{Ansi, lets};
         let mut buf = [0; 65];
