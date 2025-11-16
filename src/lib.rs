@@ -88,8 +88,14 @@
 #![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature(rwlock_downgrade,))]
 // ----------------------------
 // `nightly_stable_1_93`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_93, feature(core_slice_as_array, duration_from_nanos_u128,))]
-#![cfg_attr(all(nightly_stable_1_93, feature = "alloc"), feature(vec_deque_pop_if,))]
+#![cfg_attr(
+    nightly_stable_1_93,
+    feature(core_slice_as_array, duration_from_nanos_u128, fmt_from_fn,)
+)]
+#![cfg_attr(
+    all(nightly_stable_1_93, feature = "alloc"),
+    feature(vec_deque_pop_if, vec_into_raw_parts)
+)]
 #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
 // ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
@@ -135,7 +141,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_extract_if, new_zeroed_alloc, vec_into_raw_parts,)
+    feature(btree_extract_if, new_zeroed_alloc,)
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
