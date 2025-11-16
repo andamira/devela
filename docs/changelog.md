@@ -229,6 +229,10 @@ Many feature gates are removed in order to make most features make always availa
 - rename `lang::ling::grammar` to `lang::hum::gram`.
 - move `lang::i18n` to `lang::hum::i18n`.
 
+### ffi
+#### c
+- new type aliases: `c_mode_t`, `c_off_t`.
+
 ## media
 ### font
 
