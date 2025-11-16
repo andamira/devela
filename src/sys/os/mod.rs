@@ -13,6 +13,10 @@
 
 mod print; // os_[e]print[ln]!
 
+#[cfg(feature = "unsafe_syscall")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
+mod c; // Libc
+
 #[cfg(feature = "linux")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
 pub mod linux;
@@ -23,6 +27,9 @@ pub mod linux;
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
+        #[cfg(feature = "unsafe_syscall")]
+        pub use super::c::*;
+
         pub use super::print::*;
     }
     _pub_mods {

@@ -344,6 +344,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ## os
 - repurpose module to include operating supervisors.
+- new `Libc` namespace.
 
 ### linux
 - new enum `LinuxClock`.
