@@ -59,6 +59,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
 
+- 1.93: `·`[char_max_len](https://github.com/rust-lang/rust/pull/145610)
 - 1.93: `·`[core_slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
 - 1.93: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
 - 1.93: `·`[duration_from_nanos_u128](https://github.com/rust-lang/rust/pull/148587)
@@ -78,7 +79,6 @@ See also
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
-- 1.??: `·`[char_max_len](https://github.com/rust-lang/rust/pull/145610)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
