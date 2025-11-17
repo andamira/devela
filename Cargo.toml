@@ -161,7 +161,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 157/300 (143 remaining), 105 visible, 52 hidden
+[features] # 158/300 (142 remaining), 106 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -291,6 +291,10 @@ sys = ["io", "mem"]
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
+	# display
+		# cocoa = []
+		# gdi = []
+		x11 = []
 	# fs
 	io = []
 	mem = ["bit"]
