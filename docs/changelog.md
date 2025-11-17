@@ -263,7 +263,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `Interval` to use individual `IncompatibleBounds` error.
 - fix `Cast` wrapping methods performance, and correctness for negative integers.
 - move `ValueQuant` from `code::result` to `num::quant`.
-- make std `Float` methods `trunc`, `fract` & `split` *const*.
+- make std `Float` methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
 - make all `Int` methods *const*.
 - update Sign
   - make part of `quant`.

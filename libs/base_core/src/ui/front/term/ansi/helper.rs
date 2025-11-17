@@ -51,7 +51,6 @@ macro_rules! _ansi_consts {
 
             // static string version
             $(#[$DOCS])*
-            #[must_use]
             $vis const fn $fn($($param: $param_ty),*) -> $crate::StringU8<$N> {
                 $crate::StringU8::<$N>::_from_array_len_trusted(Ansi::[<$fn _B>]($($param),*), $N)
             }

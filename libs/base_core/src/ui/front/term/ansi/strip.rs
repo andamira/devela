@@ -54,7 +54,7 @@ impl Ansi {
     /// - Malformed sequences (e.g., `ESC` in middle of parameters) are preserved as text.
     /// - Lone `ESC` bytes (0x1B) without valid sequence syntax are stripped.
     /// - If `dest` is too small, output is truncated (no panic).
-    pub fn strip_codes(src: &[u8], dest: &mut [u8]) -> usize {
+    pub const fn strip_codes(src: &[u8], dest: &mut [u8]) -> usize {
         let mut src_pos = 0;
         let mut dest_pos = 0;
         let mut state = State::Normal;

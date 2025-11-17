@@ -24,6 +24,12 @@ pub struct SixelEncoder<const MAX_COLORS: usize> {
     palette: SixelPalette<MAX_COLORS>,
 }
 
+impl<const MAX_COLORS: usize> Default for SixelEncoder<MAX_COLORS> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 __dbg! { slog! {
     // #[doc(hidden)]
     #[doc = crate::_TAG_DEBUG!()]
@@ -65,13 +71,13 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
         __dbg![slog!{clear sixel_encoder:64+64}]; // slog point of entry
 
         let mut off = 0;
-        off += unwrap![ok? Self::write_sixel_start_simple(&mut slice![mut buf, off,..])];
+        off += unwrap![ok? Self::write_sixel_start_simple(slice![mut buf, off,..])];
 
         self.width = width;
         self.height = height;
 
         unwrap![ok? self.build_palette(rgb, width, height)];
-        off += self.palette.write_definitions(&mut slice![mut buf, off, ..]);
+        off += self.palette.write_definitions(slice![mut buf, off, ..]);
 
         // process each horizontal band
         let mut band_y = 0;
@@ -86,13 +92,13 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                 is![idx == 0; continue]; // Skip background
 
                 __dbg![slog!{sixel_encoder:64+64 "  Rendering color #", %idx, " in band."}];
-                off += unwrap![ok? Self::write_color_reference(&mut slice![mut buf, off,..], idx)];
+                off += unwrap![ok? Self::write_color_reference(slice![mut buf, off,..], idx)];
 
                 // build and compress sixel pattern for this color
                 lets![mut x = 0, mut current_char = None, mut repeat_count = 0];
                 while x < width {
-                    let sixel_bits = self.build_sixel_bits_for_color(rgb, width, height,
-                        x, band_y, band_height, palette_color);
+                    let sixel_bits = self.build_sixel_bits_for_color(rgb, width, x, band_y,
+                        band_height, palette_color);
                     let sixel_char = SixelChar::from_bitmask(sixel_bits);
 
                     // RLE compression logic
@@ -105,14 +111,14 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                         }
                         (true, true) => { // Split run: output but keep same character
                             if let Some(char) = current_char {
-                                off += unwrap![ok? Self::write_rle_run(&mut slice![mut buf, off,..],
+                                off += unwrap![ok? Self::write_rle_run(slice![mut buf, off,..],
                                     char, repeat_count)];
                             }
                             repeat_count = 1;
                         }
                         (false, _) => { // New run: output and switch character
                             if let Some(char) = current_char {
-                                off += unwrap![ok? Self::write_rle_run(&mut slice![mut buf, off,..],
+                                off += unwrap![ok? Self::write_rle_run(slice![mut buf, off,..],
                                     char, repeat_count)];
                             }
                             current_char = Some(sixel_char);
@@ -124,7 +130,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                 // output the final run
                 if let Some(char) = current_char {
                     off += unwrap![ok?
-                        Self::write_rle_run(&mut slice![mut buf, off,..], char, repeat_count)];
+                        Self::write_rle_run(slice![mut buf, off,..], char, repeat_count)];
                 }
                 // return to start for next color
                 is![idx != self.palette.len() as u16 - 1; write_at![buf, off, b'$']];
@@ -132,7 +138,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             band_y += 6;
             is![band_y < height; write_at![buf, off, b'-']]; // move to next band?
         }
-        off += unwrap![ok? Self::write_sixel_end(&mut slice![mut buf, off,..])];
+        off += unwrap![ok? Self::write_sixel_end(slice![mut buf, off,..])];
         Ok(off)
     }
 }
@@ -163,8 +169,8 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
 
     #[rustfmt::skip]
     /// Build sixel bits for a specific color in a column.
-    const fn build_sixel_bits_for_color(&self, rgb: &[u8], width: usize, _height: usize,
-        x: usize, band_y: usize, band_height: usize, target_color: SixelColor) -> u8 {
+    const fn build_sixel_bits_for_color(&self, rgb: &[u8], width: usize, x: usize, band_y: usize,
+        band_height: usize, target_color: SixelColor) -> u8 {
         lets![mut dy = 0, mut sixel_bits = 0u8];
         while dy < band_height {
             let y = band_y + dy;

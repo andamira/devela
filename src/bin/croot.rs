@@ -19,7 +19,7 @@ fn main() {
     let args: Vec<String> = Env::args().collect();
 
     // concatenate the optional first argument
-    let relative_path = args.get(1).map(|s| s.as_str()).unwrap_or("");
+    let relative_path = args.get(1).map_or("", |s| s.as_str());
 
     match FsPath::from_crate_root(relative_path) {
         Ok(path) => println!("{}", path.display()),

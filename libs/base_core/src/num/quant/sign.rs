@@ -120,8 +120,7 @@ impl Sign {
     /// Combines all signs in `iter` with zero-dominance.
     pub fn fold<I: IntoIterator<Item = Sign>>(iter: I) -> Self {
         let mut acc = Self::Positive;
-        let mut it = iter.into_iter();
-        while let Some(s) = it.next() {
+        for s in iter.into_iter() {
             acc = acc.combine(s);
             if matches!(acc, Self::Zero) {
                 return Self::Zero;

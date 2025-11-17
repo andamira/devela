@@ -19,7 +19,7 @@ mod raw;
 #[derive(Debug)]
 pub struct Libc;
 
-/// Constants
+/// Constants from POSIX and libc.
 impl Libc {
     /// POSIX open flag: open for read-only access.
     pub const O_RDONLY: c_int = 0o0;
@@ -41,16 +41,17 @@ impl Libc {
     pub const MAP_FAILED: *mut c_void = !0 as *mut c_void;
 }
 
-/// Helpers
+/// Convenience helpers for libc return values.
 impl Libc {
-    /// Returns `true` if `ptr` equals the POSIX `MAP_FAILED` sentinel.
+    /// Returns `true` if `ptr` matches the POSIX `MAP_FAILED` sentinel.
     #[inline(always)]
     pub fn is_map_failed(ptr: *mut c_void) -> bool {
         ptr == Self::MAP_FAILED
     }
 }
 
-/// Calls
+/// Direct wrappers around libc/POSIX calls.
+#[allow(clippy::missing_safety_doc)]
 impl Libc {
     /// Create/open POSIX shared memory.
     /// - <https://www.man7.org/linux/man-pages/man3/shm_open.3.html>
@@ -74,8 +75,8 @@ impl Libc {
     }
 
     /// Map pages of memory.
-    // /// - <https://man7.org/linux/man-pages/man2/mmap.2.html>
     /// - <https://man7.org/linux/man-pages/man3/mmap.3p.html>
+    // /// - <https://man7.org/linux/man-pages/man2/mmap.2.html>
     #[inline(always)]
     pub unsafe fn mmap(
         addr: *mut c_void,
@@ -89,8 +90,8 @@ impl Libc {
     }
 
     ///  Unmap pages of memory.
-    // /// - <https://man7.org/linux/man-pages/man2/mmap.2.html>
     /// - <https://man7.org/linux/man-pages/man3/munmap.3p.html>
+    // /// - <https://man7.org/linux/man-pages/man2/mmap.2.html>
     #[inline(always)]
     pub unsafe fn munmap(addr: *mut c_void, length: usize) -> c_int {
         unsafe { raw::munmap(addr, length) }
@@ -104,8 +105,8 @@ impl Libc {
     }
 
     /// Closes a file descriptor.
-    // /// - <https://man7.org/linux/man-pages/man2/close.2.html>
     /// - <https://man7.org/linux/man-pages/man3/close.3p.html>
+    // /// - <https://man7.org/linux/man-pages/man2/close.2.html>
     #[inline(always)]
     pub unsafe fn close(fd: c_int) -> c_int {
         unsafe { raw::close(fd) }

@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{Angle, AngleDirection, AngleKind, Cmp, Float, FloatConst, FloatExt};
+use crate::{Angle, AngleDirection, AngleKind, Cmp, Float, FloatConst};
 
 /// impl `Angle` methods with a floating-point representation.
 ///
@@ -63,12 +63,10 @@ macro_rules! impl_angle {
             }
 
             /// Returns the angle normalized to the non-inclusive range -1 to 1.
-            // BLOCKED: const by fract
-            pub fn normalize(self) -> Self { Self::new(self.turn.fract()) }
+            pub const fn normalize(self) -> Self { Self::new(Float(self.turn).const_fract().0) }
 
             /// Sets the angle normalized to the non-inclusive range -1 to 1.
-            // BLOCKED: const by fract
-            pub fn set_normalized(&mut self) { self.turn = self.turn.fract(); }
+            pub const fn set_normalized(&mut self) { self.turn = Float(self.turn).const_fract().0; }
 
             /* direction */
 

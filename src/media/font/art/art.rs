@@ -102,7 +102,7 @@ impl<'g> FontArt<'g> {
     /// contain exactly the characters from `first_glyph` to `last_glyph` inclusive.
     pub const fn get_glyph_from_scalar_unchecked(&self, c: u32) -> &'g [&'g str] {
         let idx = c.wrapping_sub(self.first_glyph as u32) as usize;
-        &self.glyphs[idx]
+        self.glyphs[idx]
         // let max_idx = self.last_glyph as usize - self.first_glyph as usize;
         // is![idx <= max_idx; Some(self.glyphs[idx]); None]
     }
@@ -120,7 +120,7 @@ impl<'g> FontArt<'g> {
     ///   exactly the characters from `first_glyph` to `last_glyph` inclusive.
     pub const fn get_glyph_unchecked(&self, c: char) -> &'g [&'g str] {
         let idx = (c as usize) - (self.first_glyph as usize);
-        &self.glyphs[idx]
+        self.glyphs[idx]
     }
 
     /// Returns the glyph for a character, or a fallback/default glyph

@@ -1,7 +1,8 @@
 // devela::media::color::rgb::impls::u8alpha
 
 use super::*;
-use crate::{Norm, Rgb8, Rgb16, RgbF32, RgbF64, Rgba8, Rgba16, RgbaF32, RgbaF64};
+use crate::{Norm, Rgb8, RgbF32, RgbF64, Rgba8, Rgba16, RgbaF32, RgbaF64};
+// use crate::Rgb16;
 
 #[allow(missing_docs)]
 #[rustfmt::skip]

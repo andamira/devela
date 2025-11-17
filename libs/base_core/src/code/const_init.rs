@@ -4,8 +4,10 @@
 //
 // TOC
 // - trait ConstInitCore
-// - macro _impl_init! // RENAME
+// - macro _impl_init!
 // - impls
+//
+// IMPROVE: support more sealed implementations
 
 /// Provides a const-friendly initializer for types that must avoid higher-level abstractions.
 ///
@@ -18,8 +20,8 @@ pub trait ConstInitCore {
 
 #[doc(hidden)]
 /// A macro helper to implement [`ConstInitCore`]. Supports generics.
-// IMPROVE: support sealed implementations
 #[macro_export]
+#[allow(clippy::crate_in_macro_def, reason = "uses $trait relative to the call-site crate")]
 macro_rules! _impl_init {
     // <A> (e.g: pointers and reference)
     ($trait:ident: <$A:ident> $def:expr => $($t:ty),+) => {

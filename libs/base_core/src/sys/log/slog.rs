@@ -47,6 +47,12 @@ pub struct LoggerStatic<const CAP: usize, const MSG_LEN: usize> {
     guard: i8, // 0 = free, 1 = in use
 }
 
+impl<const CAP: usize, const MSG_LEN: usize> Default for LoggerStatic<CAP, MSG_LEN> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     /// Constructs a new static logger.
     #[inline(always)]
