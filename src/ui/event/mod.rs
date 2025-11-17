@@ -3,14 +3,20 @@
 //! User interface events-related functionality.
 //
 
-// mod event;
-// mod window;
+mod event; // Event, EventKind
 mod key; // EventKey, Key[Alpha|Media|Mod|Mods|Pad|State]
 mod pointer; // Event[Button[State]|Mouse|Pointer[Type]|Wheel]
 mod time; // EventTimestamp
+mod window; // EventWindow
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{pointer::*, key::*, time::*};
+        pub use super::{
+            event::*,
+            pointer::*,
+            key::*,
+            time::*,
+            window::*,
+        };
     }
 }

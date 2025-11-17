@@ -1,6 +1,6 @@
 // devela::ui::event::key
 //
-//! Defines [`EventKey`], [`EventKeyFFi`], [`KeyState`].
+//! Defines [`EventKey`], [`KeyState`].
 //
 // TOC
 // - struct EventKey
@@ -31,8 +31,12 @@ crate::items! {
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct EventKey {
     /// The key representing the human-readable code.
+    ///
+    /// This corresponds to X11's keysym.
     pub semantic: Key,
     /// The key representing the hardware scan code.
+    ///
+    /// This corresponds to X11's scancode XKB mapped.
     pub physical: Key,
     /// The state of the key (pressed or released).
     pub state: KeyState,

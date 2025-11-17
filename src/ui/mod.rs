@@ -8,7 +8,7 @@
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 
 // IMPROVE: feature-gate some
-pub mod event; // Event[Button[State]|Key[State]|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
+pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
 pub mod front;
 
 #[cfg(ui··)]

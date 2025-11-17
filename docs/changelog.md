@@ -476,6 +476,9 @@ Many feature gates are removed in order to make most features make always availa
   - improve docs.
 
 ## ui
+### events
+- new types: `Event`, `EventKind`, `EventWindow`.
+
 ### front
 #### term
 - feature-gate with `term`.
