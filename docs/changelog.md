@@ -223,6 +223,10 @@ Many feature gates are removed in order to make most features make always availa
   - `ExtArray` to `ArrayExt`.
   - `ExtVec` to `VecExt`.
 - make all `bitfield!` methods consts.
+- update `Oneof`
+  - new methods: `copy_*`.
+  - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.
+  - make methods const: `as_mut_*`, `as_ref_*`, `as_tuple_ref_options`.
 
 ## lang
 - rename `lang::ling` to `lang::hum`.

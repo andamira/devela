@@ -85,14 +85,12 @@ macro_rules! impl_oneof {
     // - MAX_ARITY
     // - variant_index
     // - is_variant_index
-    // - variant_name
-    // - is_variant_name
     //
-    // - first_non_unit
     // - validate
     //
     // - into_tuple_options
     // - into_tuple_defaults
+    // - as_tuple_ref_options
     methods_general: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
         /// # Structural methods.
         impl<const LEN:usize,  $($T),+ > Oneof<LEN, $($T),+> {
@@ -113,28 +111,8 @@ macro_rules! impl_oneof {
             pub const fn is_variant_index(&self, index: usize) -> bool {
                 self.variant_index() == index
             }
-
-            /// Returns the current variant name.
-            pub const fn variant_name(&self) -> &'static str {
-                match self { $( Oneof::$T(_) => stringify!($T) ),+ }
-            }
-            /// Checks whether the current variant has the given `name`.
-            pub const fn is_variant_name(&self, name: &str) -> bool {
-                $crate::Slice::<&str>::eq(self.variant_name(), name)
-            }
         }
         impl<const LEN: usize, $($T: 'static),+ > Oneof<LEN, $($T),+> {
-            /// Returns the first non-unit variant name, if any.
-            // WAIT const PartialEq for TypeId
-            pub fn first_non_unit() -> Option<&'static str> {
-                $(
-                    if $crate::TypeId::of::<$T>() != $crate::TypeId::of::<()>() {
-                        return Some(stringify!($T));
-                    }
-                )+
-                None
-            }
-
             /// Validates that inactive `()` variants only appear at the end,
             /// and that `LEN` equals the number of active variants.
             #[allow(unused_assignments, reason = "wont be read in all cases")]
@@ -183,9 +161,8 @@ macro_rules! impl_oneof {
         }
         impl<const LEN: usize, $($T),+ > Oneof<LEN, $($T),+> {
             /// Returns a tuple with `Some(&value)` for the active variant and `None` elsewhere.
-            // WAIT: [const_type_id](https://github.com/rust-lang/rust/issues/77125)
             // FUTURE: make the `()` types not wrapped in option.
-            pub fn as_tuple_ref_options(&self) -> ($(Option<&$T>),+) { $crate::paste! {
+            pub const fn as_tuple_ref_options(&self) -> ($(Option<&$T>),+) { $crate::paste! {
                 ( $(
                     if $idx == self.variant_index() {
                         self.[<as_ref $T>]()
@@ -222,17 +199,21 @@ macro_rules! impl_oneof {
             $T "`](#variant." $T ") (The " $nth $suf ")."]
         pub const fn [<is $T>](&self) -> bool { matches!(self, Oneof::$T(_)) }
 
+        #[doc = "Returns a shared reference to the inner value in variant `" $T "`, if present."]
+        pub const fn [<as_ref $T>](&self) -> Option<&$T> {
+            $crate::is![let Self::$T($T) = self; Some($T); None]
+        }
+        #[doc = "Returns an exclusive reference to the inner value in variant`" $T "`, if present."]
+        pub const fn [<as_mut $T>](&mut self) -> Option<&mut $T> {
+            $crate::is![let Self::$T($T) = self; Some($T); None]
+        }
+        #[doc = "Returns a copy of the value in variant `" $T "`, if present."]
+        pub const fn [<copy $T >](self) -> Option<$T> where Self: Copy {
+            $crate::is![let Self::$T($T) = self; Some($T); None]
+        }
         #[doc = "Returns the owned value in variant `" $T "`, if present."]
+        #[doc = "<hr/>"] // separator after the last method
         pub fn [<into $T>](self) -> Option<$T> {
-            $crate::is![let Self::$T($T) = self; Some($T); None]
-        }
-        #[doc = "Returns a reference to the inner value in variant `" $T "`, if present."]
-        pub fn [<as_ref $T>](&self) -> Option<&$T> {
-            $crate::is![let Self::$T($T) = self; Some($T); None]
-        }
-        #[doc = "Returns a reference to the inner value in variant`" $T "`, if present."]
-        /// <hr/>
-        pub fn [<as_mut $T>](&mut self) -> Option<&mut $T> {
             $crate::is![let Self::$T($T) = self; Some($T); None]
         }
     }};
@@ -339,17 +320,17 @@ mod tests {
         assert_eq![u.variant_index(), 2];
         assert_eq![u.is_variant_index(2), true];
         assert_eq![u.is_variant_index(3), false];
-        assert_eq![u.variant_name(), "_2"];
-        assert_eq![u.is_variant_name("_2"), true];
-        assert_eq![u.is_variant_name("_1"), false];
+        // assert_eq![u.variant_name(), "_2"];
+        // assert_eq![u.is_variant_name("_2"), true];
+        // assert_eq![u.is_variant_name("_1"), false];
 
         let u = Unums::_0(32);
         assert_eq![u.variant_index(), 0];
         assert_eq![u.is_variant_index(0), true];
         assert_eq![u.is_variant_index(1), false];
-        assert_eq![u.variant_name(), "_0"];
-        assert_eq![u.is_variant_name("_0"), true];
-        assert_eq![u.is_variant_name("_1"), false];
+        // assert_eq![u.variant_name(), "_0"];
+        // assert_eq![u.is_variant_name("_0"), true];
+        // assert_eq![u.is_variant_name("_1"), false];
     }
     #[test]
     fn tuple() {
