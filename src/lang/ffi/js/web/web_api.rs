@@ -166,12 +166,12 @@ impl Web {
     /// - `callback_ptr` must be a valid function pointer.
     #[unsafe(no_mangle)]
     pub unsafe extern "C" fn wasm_callback_mouse(callback_ptr: usize, button: js_int32,
-        buttons: js_int32, x: js_number, y: js_number, etype: js_int32, time_stamp: js_number) {
+        buttons: js_int32, x: js_number, y: js_number, etype: js_int32, timestamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(WebEventMouse) = unsafe { transmute(callback) };
         let etype = WebEventKind::from_repr(etype as u8);
-        let time_stamp = JsInstant::from_millis_f64(time_stamp);
-        callback(WebEventMouse::new(x, y, button as u8, buttons as u8, etype, time_stamp));
+        let timestamp = JsInstant::from_millis_f64(timestamp);
+        callback(WebEventMouse::new(x, y, button as u8, buttons as u8, etype, timestamp));
     }
     /// WebAssembly mouse event callback dispatcher.
     ///
@@ -187,13 +187,13 @@ impl Web {
     #[unsafe(no_mangle)]
     pub unsafe extern "C" fn wasm_callback_pointer(callback_ptr: usize, id: js_int32,
         x: js_number, y: js_number, pressure: js_number, tilt_x: js_int32, tilt_y: js_int32,
-        twist: js_int32, etype: js_int32, time_stamp: js_number) {
+        twist: js_int32, etype: js_int32, timestamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(WebEventPointer) = unsafe { transmute(callback) };
         let etype = WebEventKind::from_repr(etype as u8);
-        let time_stamp = JsInstant::from_millis_f64(time_stamp);
+        let timestamp = JsInstant::from_millis_f64(timestamp);
         callback(WebEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16,
-            etype, time_stamp));
+            etype, timestamp));
     }
 }
 _js_extern! {

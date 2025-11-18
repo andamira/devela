@@ -105,7 +105,7 @@ pub struct WebEventMouse {
     /// The type of mouse event (Click, MouseDown, MouseMove, etc.).
     pub etype: WebEventKind,
     /// The JavaScript event timestamp.
-    pub time_stamp: JsInstant,
+    pub timestamp: JsInstant,
 }
 impl WebEventMouse {
     pub(crate) fn new(
@@ -114,9 +114,9 @@ impl WebEventMouse {
         button: u8,
         buttons: u8,
         etype: WebEventKind,
-        time_stamp: JsInstant,
+        timestamp: JsInstant,
     ) -> Self {
-        Self { x, y, button, buttons, etype, time_stamp }
+        Self { x, y, button, buttons, etype, timestamp }
     }
 }
 
@@ -145,7 +145,7 @@ pub struct WebEventPointer {
     /// The type of pointer event (PointerDown, PointerMove, etc.).
     pub etype: WebEventKind,
     /// The JavaScript event timestamp.
-    pub time_stamp: JsInstant,
+    pub timestamp: JsInstant,
 }
 impl WebEventPointer {
     #[allow(clippy::too_many_arguments)] #[rustfmt::skip]
@@ -158,9 +158,9 @@ impl WebEventPointer {
         tilt_y: i8,
         twist: u16,
         etype: WebEventKind,
-        time_stamp: JsInstant,
+        timestamp: JsInstant,
     ) -> Self {
-        Self { x, y, pressure, id, tilt_x, tilt_y, twist, etype, time_stamp }
+        Self { x, y, pressure, id, tilt_x, tilt_y, twist, etype, timestamp }
     }
 }
 

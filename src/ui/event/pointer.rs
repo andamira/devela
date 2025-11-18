@@ -8,7 +8,7 @@
 // - impls
 // - tests
 
-use crate::{EventTimestamp, NonZeroU8, f32bits_niche};
+use crate::{ConstInit, EventTimestamp, NonZeroU8, f32bits_niche};
 
 /* definitions */
 
@@ -26,7 +26,7 @@ pub struct EventMouse {
     /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
     pub buttons: u8,
     /// The time stamp of when the event occurred.
-    pub time_stamp: Option<EventTimestamp>,
+    pub timestamp: Option<EventTimestamp>,
 }
 
 /// Represents a pointer event (mouse, touch, or pen).
@@ -59,7 +59,7 @@ pub struct EventPointer {
     // /// The phase of the pointer (useful for touch events).
     // pub phase: EventPointerPhase,
     /// The time stamp of the event.
-    pub time_stamp: Option<EventTimestamp>,
+    pub timestamp: Option<EventTimestamp>,
 }
 
 #[rustfmt::skip]
@@ -80,8 +80,9 @@ pub enum EventPointerType {
     /// A pen pointer.
     Pen,
 }
+
 // /// Represents the phase of a pointer (useful for touch events).
-// #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+// #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 // pub enum EventPointerPhase {
 //     /// The pointer has started touching the surface.
 //     Start,
@@ -135,6 +136,32 @@ pub struct EventWheel {
 /* impls */
 
 #[rustfmt::skip]
+mod init {
+    use {crate::_impl_init, super::*};
+
+    impl ConstInit for EventMouse {
+        const INIT: Self = Self {
+            x: 0, y: 0, button: None, state: EventButtonState::INIT, buttons: 0, timestamp: None,
+        };
+    }
+    impl ConstInit for EventPointer {
+        const INIT: Self = Self {
+            kind: EventPointerType::INIT, id: 0, x: 0, y: 0, dx: 0, dy: 0,
+            pressure: f32bits_niche::INIT, tilt_x: 0, tilt_y: 0, twist: 0, button: None,
+            state: EventButtonState::INIT, timestamp: None,
+        };
+    }
+    impl ConstInit for EventPointerType { const INIT: Self = Self::Mouse; }
+    // impl ConstInit for EventPointerPhase { const INIT: Self = Self::Start; }
+
+    impl ConstInit for EventButton { const INIT: Self = Self::Left; }
+    impl ConstInit for EventButtonState { const INIT: Self = Self::Pressed; }
+    impl ConstInit for EventWheel {
+        const INIT: Self = Self { delta_x: 0, delta_y: 0, x: 0, y: 0, timestamp: None };
+    }
+}
+
+#[rustfmt::skip]
 #[cfg(all(feature = "js", not(windows)))]
 mod impl_js {
     use super::*;
@@ -151,7 +178,7 @@ mod impl_js {
                 button: EventButton::from_js(js.button),
                 state: EventButtonState::from_js(js.etype),
                 buttons: js.buttons,
-                time_stamp: Some(EventTimestamp::from_js(js.time_stamp)),
+                timestamp: Some(EventTimestamp::from_js(js.timestamp)),
             }
         }
     }
@@ -165,7 +192,7 @@ mod impl_js {
                 button: is![let Some(b) = self.button; b.to_js(); 255], // IMPROVE to_js
                 buttons: self.buttons, // Already a bitmask, directly compatible
                 etype: self.state.to_js_as_mouse(),
-                time_stamp: is![let Some(t) = self.time_stamp; t.to_js(); JsInstant { ms: 0.0 }],
+                timestamp: is![let Some(t) = self.timestamp; t.to_js(); JsInstant { ms: 0.0 }],
             }
         }
     }
@@ -243,6 +270,7 @@ mod tests {
         assert_eq![02, size_of::<EventButton>()];       // 16
         assert_eq![01, size_of::<EventButtonState>()];  // 8
         assert_eq![36, size_of::<EventPointer>()];      // 288
+        // assert_eq![40, size_of::<EventPointer>()];      // 320 (with phase)
         assert_eq![01, size_of::<EventPointerType>()];  // 8
         // assert_eq![01, size_of::<EventPointerPhase>()]; // 8
         assert_eq![20, size_of::<EventWheel>()];        // 160

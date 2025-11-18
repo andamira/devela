@@ -34,8 +34,8 @@ pub struct EventKeyFfi {
     pub mods: KeyMods,
     #[doc = crate::_TAG_FFI!()]
     /// The time stamp of when the event occurred.
-    // TODO IMPROVE: store the f32 bits as u32 & CHECK with web-api example
-    pub time_stamp: f32,
+    // TODO store the f32 bits as f32bits; CHECK with web-api example
+    pub timestamp: f32,
 }
 
 impl EventKey {
@@ -46,7 +46,7 @@ impl EventKey {
             physical: self.physical.to_ffi(),
             state: self.state,
             mods: self.mods,
-            time_stamp: if let Some(t) = self.time_stamp { t.as_millis_f32() } else { 0.0 },
+            timestamp: if let Some(t) = self.timestamp { t.as_millis_f32() } else { 0.0 },
         }
     }
     /// Converts `EventKeyFfi` to `EventKey`.
@@ -56,7 +56,7 @@ impl EventKey {
             physical: Key::from_ffi(from.physical),
             state: from.state,
             mods: from.mods,
-            time_stamp: Some(EventTimestamp::from_millis_f32(from.time_stamp)),
+            timestamp: Some(EventTimestamp::from_millis_f32(from.timestamp)),
         }
     }
 }

@@ -43,7 +43,7 @@ pub struct EventKey {
     /// The active modifiers of the key (e.g., Shift, Ctrl).
     pub mods: KeyMods,
     /// The time stamp of when the event occurred.
-    pub time_stamp: Option<EventTimestamp>,
+    pub timestamp: Option<EventTimestamp>,
 }
 
 /// Represents the state of a [`Key`].
