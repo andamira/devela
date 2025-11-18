@@ -199,6 +199,7 @@ Many feature gates are removed in order to make most features make always availa
 - remove vendored macro `cfor!`, replace with `whilst!`.
 - remove deprecated `iif!` macro.
 
+---
 ## data
 - move to [base]:
   - macros: `array_init!`, `bitfield!`.
@@ -228,6 +229,7 @@ Many feature gates are removed in order to make most features make always availa
   - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.
   - make methods const: `as_mut_*`, `as_ref_*`, `as_tuple_ref_options`.
 
+---
 ## lang
 - rename `lang::ling` to `lang::hum`.
 - rename `lang::ling::grammar` to `lang::hum::gram`.
@@ -237,6 +239,7 @@ Many feature gates are removed in order to make most features make always availa
 #### c
 - new type aliases: `c_mode_t`, `c_off_t`.
 
+---
 ## media
 ### font
 
@@ -253,32 +256,28 @@ Many feature gates are removed in order to make most features make always availa
 - add a new sixel implementation:
   - new types: `SixelChar`, `SixelColor`, `SixelEncoder`, `SixelPalette`, `SixelPaletteIter`.
 
+---
 ## num
 - move to [base]:
-  - aliases: `fsize` and `[iu]size_*`.
   - all data, numeric, text & time error types.
-  - macros: `const_bool!`, `ne!`, `nz!`.
-  - types: `Cast`, `Cmp`, `Cycle`, `CycleCount`, `False`, `Int`, `Interval`,  `NonExtreme*`, `NonValue*`, `Sign`, `True`.
+  - macros: `const_bool!`.
+  - types: `Cast`, `Cycle`, `CycleCount`, `False`, `Interval`,  `Sign`, `True`.
   - traits: `ConstBool`.
-- new types: `IntAlloc`, `IntError`, `IntResult`, `NicheValueError`.
-- move float shared docs to `devela_base_num` prefixed with `_FLOAT_`.
-- move int shared docs to `devela_base_num` prefixed with `_INT_`.
-- un-gate `Compare` impls and many dependent const methods.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - fix `Cast` wrapping methods performance, and correctness for negative integers.
 - move `ValueQuant` from `code::result` to `num::quant`.
-- make std `Float` methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
-- make all `Int` methods *const*.
-- update Sign
+- update `Sign`
   - make part of `quant`.
   - rename variant `None` to `Zero`.
   - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
-- rename:
-  - `Compare` to `Cmp`.
-  - `ExtFloat` to `FloatExt`.
+
+### float
+- move aliases: `fsize`, to [base].
+- move float shared docs to `devela_base_num` prefixed with `_FLOAT_`.
+- make std `Float` methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
+- rename: `ExtFloat` to `FloatExt`.
 
 ### geom
-
 #### metric
 - move to [base]:
   - internal macro `_impl_metric!`.
@@ -290,20 +289,37 @@ Many feature gates are removed in order to make most features make always availa
   - add methods for 2|3d: `length[_ref|_mut]`, `width[_ref|_mut]`, `height[_ref|_mut]`, `depth[_ref|_mut]`, `breadth[_ref|_mut]`.
 - remove `c_` prefix from int methods.
 
+### int
+- move to [base]: `Int`, `[iu]size_*`.
+- move int shared docs to `devela_base_num` prefixed with `_INT_`.
+- new types: `IntAlloc`, `IntError`, `IntResult`.
+- make all `Int` methods *const*.
+
+### logic
+- move to [base]: `Int`, `[iu]size_*`.
+
 ### niche
 - new macro: `nv!`.
-- new types: `MaybeNiche`, `NonNiche`.
+- new types: `MaybeNiche`, `NonNiche`, `NicheValueError`.
+- move to [base]: `NonExtreme*`, `NonValue*`, `ne!`, `nz!`.
 
+### ord
+- move `Cmp` to [base].
+- rename: `Compare` to `Cmp`.
+- un-gate `Cmp` impls and many dependent const methods.
+
+---
 ## phys
 ### time
 - remove `TimeError` alias.
 
+---
 ## sys
 ### arch
 - new `Arch` methods: `cntvct`, `cycles`, `rdcycle`, `rdtsc`, `rdtscp`.
 - new internal macro `ARCH!`.
 
-## display
+### display
 - new module `sys::display::x11`.
 - new types: `XDisplay`, `XError`, `XEvent`, `XWindow`.
 
@@ -328,10 +344,10 @@ Many feature gates are removed in order to make most features make always availa
   - types: `CacheAlign`, `Mem`, `Ptr`.
 - rename `ExtMem` to `MemExt`.
 
-### cell
+#### cell
 - rename `ExtCellOption` to `CellOptionExt`.
 
-### slice
+#### slice
 - new macro `slice!`.
 - move to [base]:
   - macros: `const_join!`.
@@ -350,11 +366,11 @@ Many feature gates are removed in order to make most features make always availa
     - `trim_leading_keep`, `trim_leading_min_len`, `trim_trailing`, `trim_trailing_keep`, `trim_trailing_min_len`, `trim_edges_keep`, `trim_edges_min_len_left`, `trim_edges_min_len_right`.
   - add new `eq` methods for slices of slices of primitives and string slices.
 
-## os
+### os
 - repurpose module to include operating supervisors.
 - new `Libc` namespace.
 
-### linux
+#### linux
 - new enum `LinuxClock`.
 - new `Linux` methods: `clock_getres`, `clock_gettime`, `exit`.
 - new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
@@ -370,6 +386,7 @@ Many feature gates are removed in order to make most features make always availa
   - add saturating methods to convert from/to `Duration`.
   - add corresponding conversions and methods from/to `TimeDelta`.
 
+---
 ## text
 - move to [base]:
   - traits: `NumToStr`.
@@ -483,6 +500,7 @@ Many feature gates are removed in order to make most features make always availa
   - impl `PartialEq`.
   - improve docs.
 
+---
 ## ui
 ### events
 - new types: `Event`, `EventKind`, `EventWindow`.
@@ -510,6 +528,7 @@ Many feature gates are removed in order to make most features make always availa
   - refactor to accomodate `Ansi` changes. TODO
   - fix macro visibility.
 
+---
 ## work
 ### future
 - rename:
