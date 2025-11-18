@@ -8,7 +8,7 @@
 // - impls
 // - tests
 
-use crate::{EventTimestamp, NonZeroU8};
+use crate::{EventTimestamp, NonZeroU8, f32bits_niche};
 
 /* definitions */
 
@@ -45,10 +45,7 @@ pub struct EventPointer {
     ///
     pub dy: i32,
     /// The pressure applied (0.0 to 1.0), applicable for pen/touch.
-    ///
-    /// This is stored as the f32 bits.
-    // IMPROVE: use Norm<u32>
-    pressure: u32,
+    pressure: f32bits_niche,
     /// The tilt angle of a stylus (if applicable).
     pub tilt_x: i8,
     /// The tilt of the stylus along the Y-axis (-90° to 90°).
@@ -67,10 +64,10 @@ pub struct EventPointer {
 
 #[rustfmt::skip]
 impl EventPointer {
-    ///
-    pub fn get_pressure(&self) -> f32 { f32::from_bits(self.pressure) }
-    ///
-    pub fn set_pressure(&mut self, pressure: f32) { self.pressure = pressure.to_bits(); }
+    /// Gets the pressure.
+    pub fn get_pressure(&self) -> f32 { self.pressure.as_float() }
+    /// Sets the pressure.
+    pub fn set_pressure(&mut self, pressure: f32) { self.pressure = f32bits_niche::new(pressure); }
 }
 
 /// Enum representing the type of pointer.

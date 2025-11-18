@@ -506,7 +506,7 @@ Many feature gates are removed in order to make most features make always availa
 ## ui
 ### events
 - new types: `Event`, `EventKind`, `EventWindow`.
-- change `EventPointer.pressure` field to store the `f32` bits.
+- change `EventPointer.pressure` field to be `f32bits_niche`.
 - derive `Eq` & `Hash` for most event types.
 - update `EventTimestamp`
   - implement `ConstInit`.
