@@ -145,6 +145,7 @@ mod impl_devela_base_core {
         // data
         // media
         // num
+        f32bits, f64bits,
         Cast, Cmp, Cycle, CycleCount, Interval, Sign,
         // text
         CharAscii, char7, char8, char16, charu, charu_niche,
@@ -157,6 +158,8 @@ mod impl_devela_base_core {
     pub use crate::{GraphemeNonul, GraphemeU8};
 
     // num
+    _impl_init![%Sealed%: f32bits, f64bits];
+
     _impl_init![%Sealed%: Sign];
     _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>, Cycle<T>];
     _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];

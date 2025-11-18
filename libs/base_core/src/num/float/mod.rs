@@ -4,9 +4,13 @@
 //
 
 mod alias; // fsize
+mod bits; // f32bits, f64bits
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::alias::*;
+        pub use super::{
+            alias::*,
+            bits::*,
+        };
     }
 }

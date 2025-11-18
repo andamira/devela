@@ -1,4 +1,7 @@
 // devela_base_core::num::float::alias
+//
+//! Defines [`fsize`].
+//
 
 #![allow(non_camel_case_types)]
 
