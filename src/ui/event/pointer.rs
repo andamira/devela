@@ -154,7 +154,7 @@ mod impl_js {
                 button: EventButton::from_js(js.button),
                 state: EventButtonState::from_js(js.etype),
                 buttons: js.buttons,
-                time_stamp: EventTimestamp::try_from_js(js.time_stamp),
+                time_stamp: Some(EventTimestamp::from_js(js.time_stamp)),
             }
         }
     }

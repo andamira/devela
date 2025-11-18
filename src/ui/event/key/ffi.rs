@@ -56,7 +56,7 @@ impl EventKey {
             physical: Key::from_ffi(from.physical),
             state: from.state,
             mods: from.mods,
-            time_stamp: EventTimestamp::try_from_millis_f32(from.time_stamp),
+            time_stamp: Some(EventTimestamp::from_millis_f32(from.time_stamp)),
         }
     }
 }
