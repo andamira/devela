@@ -272,6 +272,7 @@ Many feature gates are removed in order to make most features make always availa
   - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
 
 ### float
+- new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
 - move aliases: `fsize`, to [base].
 - move float shared docs to `devela_base_num` prefixed with `_FLOAT_`.
 - make std `Float` methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.

@@ -1,26 +1,33 @@
 // devela_base_core::num::float::bits
 //
-//! Defines [`f32bits`], [`f64bits`].
+//! Defines [`f32bits`]|`_niche`, [`f64bits`]|`_niche`.
 //
 
 #![allow(non_camel_case_types)]
 
+use crate::{ConstInitCore, NonExtremeU32, NonExtremeU64, ne, paste};
+
+// Macro helper to implement the types f32bits, f32bits_niche, ...
 macro_rules! impl_fbits {
     () => { impl_fbits![f32+u32, f64+u64]; };
-    ($($float:ident + $bits:ident),+) => { $crate::paste! {
-        $( impl_fbits![@[<$float bits>], $float, $bits]; )+
-    }};
-    (@$name:ident, $float:ident, $bits:ident) => { $crate::paste! {
+    ($($float:ident + $bits:ident),+ $(,)? ) => { paste! { $( impl_fbits![
+        @[<$float bits>], [<$float bits_niche>], $float, $bits, [<NonExtreme $bits:upper>]
+    ]; )+ }};
+    (@$non_niche:ident, $niche:ident, $float:ident, $bits:ident, $NE:ident) => { paste! {
+        /* non-niche */
+
         #[doc = "Bitwise wrapper for `" $float "` providing `Eq`, `Ord`, and `Hash`."]
         ///
         #[doc = "This stores the raw IEEE-754 bits of a `" $float "` in a `" $bits "`."]
         /// Ordering and hashing operate on the raw bit pattern, not the numeric value.
         /// All bit patterns are preserved, including NaNs and signed zeroes.
+        ///
+        #[doc = "For a masked and niche-compressed variant, see [`" $niche "`]."]
         #[repr(transparent)]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        pub struct $name($bits);
+        pub struct $non_niche($bits);
 
-        impl $name {
+        impl $non_niche {
             /// Converts a `$float` into its raw-bit representation.
             pub const fn new(float: $float) -> Self { Self(float.to_bits()) }
             /// Wraps an existing raw bit pattern.
@@ -32,20 +39,82 @@ macro_rules! impl_fbits {
             pub const fn as_bits(self) -> $bits { self.0 }
         }
 
-        impl Default for $name {
+        impl Default for $non_niche {
             /// The default value is the bit pattern of `0.0`.
             fn default() -> Self { Self::new(0.0) }
         }
-        impl $crate::ConstInitCore for $name {
+        impl ConstInitCore for $non_niche {
             /// The initialization value is the bit pattern of `0.0`.
             const INIT: Self = Self::new(0.0);
         }
 
-        impl From<$float> for $name {
-            fn from(from: $float) -> $name { $name::new(from) }
+        impl From<$float> for $non_niche {
+            fn from(from: $float) -> $non_niche { $non_niche::new(from) }
         }
-        impl From<$name> for $float {
-            fn from(from: $name) -> $float { from.as_float() }
+        impl From<$non_niche> for $float {
+            fn from(from: $non_niche) -> $float { from.as_float() }
+        }
+
+        /* niche */
+
+        #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NE "`]."]
+        ///
+        /// This preserves all IEEE-754 bit patterns except the prohibited value.
+        /// Ordering and hashing operate on the masked bit pattern.
+        /// Signed zeroes and all NaNs are represented, with a single NaN payload
+        /// (the prohibited one) mapped to an adjacent payload.
+        ///
+        /// # Reserved NaN Payload
+        #[doc = "The only prohibited bit pattern is `" $bits "::MAX`."]
+        ///
+        /// It is a quiet NaN that also matches the highest value of the
+        /// underlying unsigned integer type. This makes it a good sentinel:
+        /// it never appears in normal floating-point or millisecond values.
+        ///
+        /// If this bit pattern is used, it is automatically replaced with
+        /// the previous representable payload, keeping every other value intact.
+        ///
+        #[doc = "For the unmasked, fully identity-preserving variant, see [`" $non_niche "`]."]
+        #[repr(transparent)]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct $niche($NE);
+
+        impl $niche {
+            #[doc = "Converts a `" $float "` into its masked bit representation."]
+            ///
+            /// All bit patterns are preserved except the prohibited one.
+            pub const fn new(float: $float) -> Self {
+                Self(ne![lossy float.to_bits(), $bits])
+            }
+            #[doc = "Wraps an existing raw bit pattern, masking it through `" $NE "`."]
+            pub const fn from_bits(bits: $bits) -> Self {
+                Self(ne![lossy bits, $bits])
+            }
+
+            #[doc = "Reinterprets the stored bits as a `" $float "`."]
+            pub const fn as_float(self) -> $float { <$float>::from_bits(self.as_bits()) }
+
+            /// Returns the masked raw bits.
+            ///
+            /// The prohibited value is never returned; it is always replaced
+            #[doc = "by the remapped payload defined by `" $NE "`."]
+            pub const fn as_bits(self) -> $bits { self.0.get() }
+        }
+
+        impl Default for $niche {
+            /// The default value is the bit pattern of `0.0`.
+            fn default() -> Self { Self::new(0.0) }
+        }
+        impl ConstInitCore for $niche {
+            /// The initialization value is the bit pattern of `0.0`.
+            const INIT: Self = Self::new(0.0);
+        }
+
+        impl From<$float> for $niche {
+            fn from(from: $float) -> $niche { $niche::new(from) }
+        }
+        impl From<$niche> for $float {
+            fn from(from: $niche) -> $float { from.as_float() }
         }
     }};
 }
