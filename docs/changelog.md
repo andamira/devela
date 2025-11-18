@@ -302,6 +302,7 @@ Many feature gates are removed in order to make most features make always availa
 - new macro: `nv!`.
 - new types: `MaybeNiche`, `NonNiche`, `NicheValueError`.
 - move to [base]: `NonExtreme*`, `NonValue*`, `ne!`, `nz!`.
+- update macros: `ne`, `nv`, `nz`, adding lossy constructors.
 
 ### ord
 - move `Cmp` to [base].
