@@ -482,6 +482,8 @@ Many feature gates are removed in order to make most features make always availa
 ## ui
 ### events
 - new types: `Event`, `EventKind`, `EventWindow`.
+- change `EventPointer.pressure` field to store the `f32` bits.
+- derive `Eq` & `Hash` for most event types.
 
 ### front
 #### term

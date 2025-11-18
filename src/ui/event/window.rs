@@ -12,7 +12,7 @@ use crate::String;
 //
 // - https://docs.rs/sdl2/latest/sdl2/event/enum.WindowEvent.html
 // - https://docs.rs/crossterm/latest/crossterm/event/enum.Event.html
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum EventWindow {
     ///

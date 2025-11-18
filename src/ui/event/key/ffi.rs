@@ -34,6 +34,7 @@ pub struct EventKeyFfi {
     pub mods: KeyMods,
     #[doc = crate::_TAG_FFI!()]
     /// The time stamp of when the event occurred.
+    // TODO IMPROVE: store the f32 bits as u32 & CHECK with web-api example
     pub time_stamp: f32,
 }
 
@@ -71,7 +72,7 @@ crate::items! {
 #[repr(C)]
 #[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum KeyFfi {
     Backspace, Enter, Tab, Escape, Space,
     Left, Right, Up, Down,

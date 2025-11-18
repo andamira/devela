@@ -6,7 +6,7 @@
 use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWindow};
 
 /// An event.
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug, PartialEq, Eq, Hash)]
 pub struct Event {
     ///
     pub kind: EventKind,
@@ -24,8 +24,7 @@ pub struct Event {
 // - https://docs.rs/notcurses/latest/notcurses/struct.Input.html
 //   - https://docs.rs/notcurses/latest/notcurses/enum.Received.html
 // - https://docs.rs/sdl2/latest/sdl2/event/enum.Event.html
-//
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventKind {
     /// An unknown, empty or absent event.
     #[default]

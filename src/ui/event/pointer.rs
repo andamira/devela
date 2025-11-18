@@ -13,7 +13,7 @@ use crate::{EventTimestamp, NonZeroU8};
 /* definitions */
 
 /// Represents a basic mouse event.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventMouse {
     /// The x-coordinate of the mouse cursor.
     pub x: i32,
@@ -30,7 +30,7 @@ pub struct EventMouse {
 }
 
 /// Represents a pointer event (mouse, touch, or pen).
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventPointer {
     /// The type of pointer (mouse, touch, pen).
     pub kind: EventPointerType,
@@ -45,7 +45,10 @@ pub struct EventPointer {
     ///
     pub dy: i32,
     /// The pressure applied (0.0 to 1.0), applicable for pen/touch.
-    pub pressure: f32,
+    ///
+    /// This is stored as the f32 bits.
+    // IMPROVE: use Norm<u32>
+    pressure: u32,
     /// The tilt angle of a stylus (if applicable).
     pub tilt_x: i8,
     /// The tilt of the stylus along the Y-axis (-90° to 90°).
@@ -61,8 +64,17 @@ pub struct EventPointer {
     /// The time stamp of the event.
     pub time_stamp: Option<EventTimestamp>,
 }
+
+#[rustfmt::skip]
+impl EventPointer {
+    ///
+    pub fn get_pressure(&self) -> f32 { f32::from_bits(self.pressure) }
+    ///
+    pub fn set_pressure(&mut self, pressure: f32) { self.pressure = pressure.to_bits(); }
+}
+
 /// Enum representing the type of pointer.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventPointerType {
     /// A mouse pointer.
     Mouse,
@@ -85,7 +97,7 @@ pub enum EventPointerType {
 // }
 
 /// Represents mouse, touch, or pen buttons.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventButton {
     /// Left mouse button.
     Left,
@@ -98,7 +110,7 @@ pub enum EventButton {
 }
 
 /// Represents the state of a button.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventButtonState {
     /// The button was pressed.
     Pressed,
@@ -109,7 +121,7 @@ pub enum EventButtonState {
 }
 
 /// Represents a mouse wheel event.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventWheel {
     /// The amount scrolled horizontally.
     pub delta_x: i32,

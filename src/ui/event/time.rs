@@ -14,10 +14,16 @@ pub struct EventTimestamp {
     /// The millisecond `f32` bit representation as `NonZeroU32` for compact storage.
     ms: NonZeroU32,
 }
+
+// private helpers
 #[rustfmt::skip]
 impl EventTimestamp {
     pub(crate) const fn new(ms: NonZeroU32) -> Self { Self { ms } }
+}
 
+/// floating-point methods
+#[rustfmt::skip]
+impl EventTimestamp {
     /// Creates a timestamp from milliseconds, ensuring a valid value.
     ///
     /// If the input is `0.0`, it defaults to `f32::EPSILON`.
@@ -46,11 +52,11 @@ impl EventTimestamp {
         }
     }
 
-    /// Creates a timestamp from seconds, ensuring a valid value.
+    /// Creates a timestamp from milliseconds, ensuring a valid value.
     ///
     /// If the input is `0.0`, it defaults to `f32::EPSILON`.
-    pub const fn from_millis_f32(milliseconds: f32) -> Self {
-        let ms = milliseconds.to_bits();
+    pub const fn from_millis_f32(ms: f32) -> Self {
+        let ms = ms.to_bits();
         let valid_ms = if ms == 0 { f32::EPSILON.to_bits() } else { ms };
         #[cfg(any(feature = "safe_ui", not(feature = "unsafe_niche")))]
         { EventTimestamp::new(NonZeroU32::new(valid_ms).unwrap()) }
@@ -60,8 +66,21 @@ impl EventTimestamp {
     }
     /// Tries to create a timestamp from milliseconds.
     /// Returns `None` if the input is `0.0`.
-    pub const fn try_from_millis_f32(milliseconds: f32) -> Option<Self> {
-        let ms = milliseconds.to_bits();
+    pub const fn try_from_millis_f32(ms: f32) -> Option<Self> {
+        Self::try_from_millis_u32(ms.to_bits())
+    }
+    /// Converts to seconds as `f32` for calculations.
+    pub const fn as_secs_f32(self) -> f32 { f32::from_bits(self.ms.get()) * 0.001 }
+    /// Converts to seconds as `f32` for calculations.
+    pub const fn as_millis_f32(self) -> f32 { f32::from_bits(self.ms.get()) }
+}
+
+/// Integer methods
+#[rustfmt::skip]
+impl EventTimestamp {
+    /// Creates some timestamp from integer milliseconds, or returns `None` if it's 0.
+    #[must_use]
+    pub const fn try_from_millis_u32(ms: u32) -> Option<Self> {
         if ms == 0 {
             None
         } else {
@@ -72,11 +91,36 @@ impl EventTimestamp {
             { Some(EventTimestamp::new(unsafe { NonZeroU32::new_unchecked(ms) })) }
         }
     }
-    /// Converts to seconds as `f32` for calculations.
-    pub const fn as_secs_f32(self) -> f32 { f32::from_bits(self.ms.get()) * 0.001 }
-    /// Converts to seconds as `f32` for calculations.
-    pub const fn as_millis_f32(self) -> f32 { f32::from_bits(self.ms.get()) }
+
+    /// Interprets the stored bits as `u32` milliseconds and returns them as so.
+    ///
+    /// Useful when the original timestamp was created from integer data.
+    #[must_use]
+    pub const fn as_millis_u32(&self) -> u32 { self.ms.get() }
+
+    /// Creates a timestamp from integer milliseconds by converting them to `f32`
+    /// and storing the resulting bit pattern.
+    ///
+    /// Ensures the stored payload is nonzero by replacing zero with `f32::EPSILON`.
+    #[must_use]
+    pub const fn from_millis_u32_as_f32(ms: u32) -> Self {
+        let f = if ms == 0 { f32::EPSILON } else { ms as f32 };
+        let bits = f.to_bits();
+        #[cfg(any(feature = "safe_ui", not(feature = "unsafe_niche")))]
+        { EventTimestamp::new(NonZeroU32::new(bits).unwrap()) }
+        #[cfg(all(not(feature = "safe_ui"), feature = "unsafe_niche"))]
+        // SAFETY: bit pattern is guaranteed nonzero.
+        EventTimestamp::new(unsafe { NonZeroU32::new_unchecked(bits) })
+    }
+
+    /// Interprets the stored bits as `f32` milliseconds and returns them as `u32`.
+    ///
+    /// Useful when the original timestamp was created from floating-point data
+    /// and an integer millisecond view is desired.
+    #[must_use]
+    pub const fn as_millis_f32_to_u32(&self) -> u32 { f32::from_bits(self.ms.get()) as u32 }
 }
+
 impl Default for EventTimestamp {
     fn default() -> Self {
         Self::new(NonZeroU32::new(f32::EPSILON.to_bits()).unwrap())
