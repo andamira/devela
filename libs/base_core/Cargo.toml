@@ -113,7 +113,7 @@ simdutf8 = { workspace = true, optional = true }
 #* required external dependencies *#
 
 [dependencies.pastey_crate] # https://crates.io/crates/pastey
-version = "0.1.1" # ✓ https://github.com/AS1100K/pastey/blob/master/CHANGELOG.md
+version = "0.2.0" # ✓ https://github.com/AS1100K/pastey/blob/master/CHANGELOG.md
 package = "pastey" # safe
 
 [badges]
