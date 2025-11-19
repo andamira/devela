@@ -16,6 +16,8 @@ macro_rules! impl_fbits {
     (@$non_niche:ident, $niche:ident, $float:ident, $bits:ident, $NE:ident) => { paste! {
         /* non-niche */
 
+        #[doc = crate::_TAG_NUM!()]
+        #[doc = crate::_TAG_FFI!()]
         #[doc = "Bitwise wrapper for `" $float "` providing `Eq`, `Ord`, and `Hash`."]
         ///
         #[doc = "This stores the raw IEEE-754 bits of a `" $float "` in a `" $bits "`."]
@@ -23,6 +25,7 @@ macro_rules! impl_fbits {
         /// All bit patterns are preserved, including NaNs and signed zeroes.
         ///
         #[doc = "For a masked and niche-compressed variant, see [`" $niche "`]."]
+        #[must_use]
         #[repr(transparent)]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $non_niche($bits);
@@ -37,6 +40,9 @@ macro_rules! impl_fbits {
             pub const fn as_float(self) -> $float { <$float>::from_bits(self.0) }
             /// Returns the underlying raw bits unchanged.
             pub const fn as_bits(self) -> $bits { self.0 }
+
+            /// Converts to the niche variant.
+            pub const fn to_niche(self) -> $niche { $niche::from_bits(self.as_bits()) }
         }
 
         impl Default for $non_niche {
@@ -57,6 +63,8 @@ macro_rules! impl_fbits {
 
         /* niche */
 
+        #[doc = crate::_TAG_NUM!()]
+        #[doc = crate::_TAG_NICHE!()]
         #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NE "`]."]
         ///
         /// This preserves all IEEE-754 bit patterns except the prohibited value.
@@ -75,6 +83,7 @@ macro_rules! impl_fbits {
         /// the previous representable payload, keeping every other value intact.
         ///
         #[doc = "For the unmasked, fully identity-preserving variant, see [`" $non_niche "`]."]
+        #[must_use]
         #[repr(transparent)]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $niche($NE);
@@ -99,6 +108,9 @@ macro_rules! impl_fbits {
             /// The prohibited value is never returned; it is always replaced
             #[doc = "by the remapped payload defined by `" $NE "`."]
             pub const fn as_bits(self) -> $bits { self.0.get() }
+
+            /// Converts to the non-niche variant.
+            pub const fn to_non_niche(self) -> $non_niche { $non_niche::from_bits(self.as_bits()) }
         }
 
         impl Default for $niche {
