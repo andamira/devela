@@ -129,6 +129,7 @@
         isqrt,
         macro_metavar_expr,
         macro_metavar_expr_concat,
+        maybe_uninit_slice,
         maybe_uninit_write_slice,
         more_qualified_paths,
         offset_of_enum,
@@ -136,6 +137,8 @@
         peekable_next_if_map,
         substr_range,
         supertrait_item_shadowing,
+        unchecked_neg,
+        unchecked_shifts,
         unsafe_cell_from_mut,
     )
 )]
