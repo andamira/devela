@@ -507,8 +507,8 @@ Many feature gates are removed in order to make most features make always availa
 ### events
 - new types: `Event`, `EventKind`, `EventWindow`.
 - change `EventPointer.pressure` field to be `f32bits_niche`.
-- derive `Eq` & `Hash` for most event types.
 - rename `time_stamp` fields to `timestamp`.
+- derive `Eq` & `Hash` for all event types.
 - update `EventTimestamp`
   - implement `ConstInit`.
   - remove all inner unsafe.
@@ -516,6 +516,7 @@ Many feature gates are removed in order to make most features make always availa
   - change inner representation to `f32bits_niche`.
   - add methods: `as_millis_f32_to_u32`, `as_millis_u32`, `from_millis_u32_as_f32`.
   - remove methods: `try_from_js`, `try_from_millis_f32`,  `try_from_millis_u32`, `try_from_secs_f32`.
+- change `EventKeyFfi.timestamp` field to be `f32bits`.
 
 ### front
 #### term

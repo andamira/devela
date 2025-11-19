@@ -137,7 +137,7 @@ pub struct EventWheel {
 
 #[rustfmt::skip]
 mod init {
-    use {crate::_impl_init, super::*};
+    use super::*;
 
     impl ConstInit for EventMouse {
         const INIT: Self = Self {

@@ -3,7 +3,7 @@
 //! Defines [`EventTimestamp`].
 //
 
-use crate::{ConstInit, f32bits_niche, impl_trait};
+use crate::{ConstInit, f32bits, f32bits_niche, impl_trait};
 
 /// The time at which the event occurs, stored as single-precision milliseconds.
 ///
@@ -21,8 +21,12 @@ pub struct EventTimestamp {
 
 // private helpers
 #[rustfmt::skip]
+#[allow(dead_code)]
 impl EventTimestamp {
     pub(crate) const fn new(ms: f32bits_niche) -> Self { Self { ms } }
+    pub(crate) const fn from_non_niche(ms: f32bits) -> Self { Self::new(ms.to_niche()) }
+    pub(crate) const fn get_niche(self) -> f32bits_niche { self.ms }
+    pub(crate) const fn get_non_niche(self) -> f32bits { self.ms.to_non_niche() }
 }
 
 /// Methods related to floating-point representations.

@@ -9,7 +9,7 @@
 // - impls `js`
 
 use super::*;
-use crate::{is, unwrap};
+use crate::{ConstInit, f32bits, is, unwrap};
 #[cfg(all(feature = "js", not(windows)))]
 crate::items! {
     use crate::{Char, WebKeyLocation, Slice};
@@ -20,7 +20,7 @@ crate::items! {
 /// An FFI-safe version of [`EventKey`].
 #[repr(C)]
 #[allow(missing_docs)]
-#[derive(Copy, Clone, Debug, Default, PartialEq)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct EventKeyFfi {
     #[doc = crate::_TAG_FFI!()]
     /// The key representing the human-readable code.
@@ -34,8 +34,7 @@ pub struct EventKeyFfi {
     pub mods: KeyMods,
     #[doc = crate::_TAG_FFI!()]
     /// The time stamp of when the event occurred.
-    // TODO store the f32 bits as f32bits; CHECK with web-api example
-    pub timestamp: f32,
+    pub timestamp: f32bits,
 }
 
 impl EventKey {
@@ -46,7 +45,7 @@ impl EventKey {
             physical: self.physical.to_ffi(),
             state: self.state,
             mods: self.mods,
-            timestamp: if let Some(t) = self.timestamp { t.as_millis_f32() } else { 0.0 },
+            timestamp: if let Some(t) = self.timestamp { t.get_non_niche() } else { f32bits::INIT },
         }
     }
     /// Converts `EventKeyFfi` to `EventKey`.
@@ -56,7 +55,7 @@ impl EventKey {
             physical: Key::from_ffi(from.physical),
             state: from.state,
             mods: from.mods,
-            timestamp: Some(EventTimestamp::from_millis_f32(from.timestamp)),
+            timestamp: Some(EventTimestamp::from_non_niche(from.timestamp)),
         }
     }
 }
@@ -69,19 +68,26 @@ crate::items! {
 
 #[doc = crate::_TAG_FFI!()]
 /// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
+// The difference is in the Char variant.
 #[repr(C)]
 #[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum KeyFfi {
+    #[default]
+    Unknown,
+
     Backspace, Enter, Tab, Escape, Space,
     Left, Right, Up, Down,
     Home, End, PageUp, PageDown,
     Delete, Insert,
-    CapsLock, ScrollLock, NumLock,
-    PrintScreen, Pause, Menu,
+
     /// Function keys (F1-F48).
     F(u8),
+
+    CapsLock, ScrollLock, NumLock,
+    PrintScreen, Pause, Menu,
+
     /// An alphanumeric key (A-Z, 0-9).
     Alpha(KeyAlpha),
     #[doc = crate::_TAG_FFI!()]
@@ -93,8 +99,6 @@ pub enum KeyFfi {
     Media(KeyMedia),
     /// A modifier key.
     Mod(KeyMod),
-    #[default]
-    Unknown,
 }
 
 impl Key {
@@ -102,6 +106,7 @@ impl Key {
     pub const fn to_ffi(self) -> KeyFfi {
         use {Key as K, KeyFfi as F};
         match self {
+            K::Unknown => F::Unknown,
             K::Backspace => F::Backspace,
             K::Enter => F::Enter,
             K::Tab => F::Tab,
@@ -117,19 +122,18 @@ impl Key {
             K::PageDown => F::PageDown,
             K::Delete => F::Delete,
             K::Insert => F::Insert,
+            K::F(f) => F::F(f),
             K::CapsLock => F::CapsLock,
             K::ScrollLock => F::ScrollLock,
             K::NumLock => F::NumLock,
             K::PrintScreen => F::PrintScreen,
             K::Pause => F::Pause,
             K::Menu => F::Menu,
-            K::F(f) => F::F(f),
             K::Alpha(a) => F::Alpha(a),
             K::Char(c) => F::Char(c as u32), // Convert char to u32
             K::Pad(p) => F::Pad(p),
             K::Media(m) => F::Media(m),
             K::Mod(m) => F::Mod(m),
-            K::Unknown => F::Unknown,
         }
     }
 
@@ -160,7 +164,7 @@ impl Key {
             F::Menu => K::Menu,
             F::F(f) => K::F(f),
             F::Alpha(a) => K::Alpha(a),
-            F::Char(c) => K::Char(unwrap![some_or char::from_u32(c), '?']), // IMPROVE: ?
+            F::Char(c) => K::Char(unwrap![some_or char::from_u32(c), char::REPLACEMENT_CHARACTER]),
             F::Pad(p) => K::Pad(p),
             F::Media(m) => K::Media(m),
             F::Mod(m) => K::Mod(m),
@@ -173,12 +177,13 @@ crate::items! {
     impl From<KeyFfi> for Key { fn from(k: KeyFfi) -> Self { Key::from_ffi(k) } }
 }
 
+#[rustfmt::skip]
 #[cfg(all(feature = "js", not(windows)))]
-pub(crate) static F_KEYS: [&str; 48] = [
-    "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15",
-    "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24", "F25", "F26", "F27", "F28",
-    "F29", "F30", "F31", "F32", "F33", "F34", "F35", "F36", "F37", "F38", "F39", "F40", "F41",
-    "F42", "F43", "F44", "F45", "F46", "F47", "F48",
+pub(crate) const F_KEYS: [&str; 48] = [
+    "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+    "F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24",
+    "F25", "F26", "F27", "F28", "F29", "F30", "F31", "F32", "F33", "F34", "F35", "F36",
+    "F37", "F38", "F39", "F40", "F41", "F42", "F43", "F44", "F45", "F46", "F47", "F48",
 ];
 
 #[rustfmt::skip]
