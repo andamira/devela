@@ -4,21 +4,23 @@
 use super::*;
 #[cfg(all(feature = "js", not(windows)))]
 use crate::WebEventKind;
+use crate::items;
 
 #[test] #[rustfmt::skip]
 fn sizes_of() {
-    assert_eq![24, size_of::<EventKey>()];        // 192 bits
-    assert_eq![ 8, size_of::<Key>()];             //  64 bits
-    #[cfg(ffi··)] crate::items! {
-        assert_eq![24, size_of::<EventKeyFfi>()]; // 192 bits
-        assert_eq![ 8, size_of::<KeyFfi>()];      //  64 bits
-    }
-    assert_eq![ 1, size_of::<KeyAlpha>()];        //   8 bits
-    assert_eq![ 1, size_of::<KeyMedia>()];        //   8 bits
-    assert_eq![ 1, size_of::<KeyMod>()];          //   8 bits
-    assert_eq![ 2, size_of::<KeyMods>()];         //  16 bits
-    assert_eq![ 1, size_of::<KeyPad>()];          //   8 bits
-    assert_eq![ 1, size_of::<KeyState>()];        //   8 bits
+    assert_eq![24, size_of::<EventKey>()];      // 192 bits
+    #[cfg(ffi··)]
+    assert_eq![24, size_of::<EventKeyFfi>()];   // 192 bits
+
+    assert_eq![ 8, size_of::<Key>()];           //  64 bits
+    #[cfg(ffi··)]
+    assert_eq![ 8, size_of::<KeyFfi>()];        //  64 bits
+
+    assert_eq![ 1, size_of::<KeyMedia>()];      //   8 bits
+    assert_eq![ 1, size_of::<KeyMod>()];        //   8 bits
+    assert_eq![ 2, size_of::<KeyMods>()];       //  16 bits
+    assert_eq![ 1, size_of::<KeyPad>()];        //   8 bits
+    assert_eq![ 1, size_of::<KeyState>()];      //   8 bits
 }
 
 #[test]

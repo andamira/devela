@@ -524,6 +524,12 @@ Many feature gates are removed in order to make most features make always availa
   - rename variant `IsoLevel3Shift` to `AltGr`.
   - remove variants: `LeftMeta`, `RightMeta`, `LeftHyper`, `RightHyper`.
 - update `KeyMods`, rename method `has_meta` to `has_super`.
+- remove `KeyAlpha`.
+- update `Key` & `KeyFfi`:
+  - rename `F(u8)` variant to `Fn(u8)`.
+  - integrate `KeyAlpha`'s variants.
+  - add new punctuation variants.
+  - add new `Scancode(u16)` variant.
 
 ### front
 #### term
