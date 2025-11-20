@@ -55,7 +55,6 @@ impl EventTimestamp {
     ///
     /// The `u32` value is stored directly as the underlying bit pattern and is
     /// intended to be paired with [`as_millis_u32`].
-    #[must_use]
     pub const fn from_millis_u32(ms: u32) -> Self {
         Self::new(f32bits_niche::from_bits(ms))
     }
@@ -70,7 +69,6 @@ impl EventTimestamp {
     ///
     /// This is the integer → floating-point path and is intended to be paired
     /// with [`as_millis_f32_to_u32`].
-    #[must_use]
     pub const fn from_millis_u32_as_f32(ms: u32) -> Self {
         Self::new(f32bits_niche::new(ms as f32))
     }
@@ -84,7 +82,6 @@ impl EventTimestamp {
 }
 
 impl_trait! { fmt::Display for EventTimestamp |self, f| self.as_millis_f32().fmt(f) }
-
 impl ConstInit for EventTimestamp {
     const INIT: Self = Self::new(f32bits_niche::INIT);
 }
@@ -113,3 +110,11 @@ mod impl_js {
         fn from(from: EventTimestamp) -> Self { from.to_js() }
     }
 }
+
+/* tests */
+
+#[cfg(test)]
+const _SIZE: () = {
+    assert![size_of::<f32bits_niche>() == 4];
+    assert![size_of::<Option<f32bits_niche>>() == 4];
+};

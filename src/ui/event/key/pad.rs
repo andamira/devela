@@ -3,6 +3,8 @@
 //! Defines [`KeyPad`].
 //
 
+use crate::ConstInit;
+
 /* definitions */
 
 /// Keypad keys.
@@ -17,6 +19,10 @@ pub enum KeyPad {
 }
 
 /* impls */
+
+impl ConstInit for KeyPad {
+    const INIT: Self = Self::Num0;
+}
 
 #[rustfmt::skip]
 #[cfg(feature = "js")]

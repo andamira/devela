@@ -264,6 +264,15 @@ mod impl_js {
 mod tests {
     use super::*;
 
+    const _SIZES: () = {
+        assert![size_of::<EventMouse>() == size_of::<Option<EventMouse>>()];
+        assert![size_of::<EventButton>() == size_of::<Option<EventButton>>()];
+        assert![size_of::<EventButtonState>() == size_of::<Option<EventButtonState>>()];
+        assert![size_of::<EventPointer>() == size_of::<Option<EventPointer>>()];
+        assert![size_of::<EventPointerType>() == size_of::<Option<EventPointerType>>()];
+        // assert![size_of::<EventWheel>() == size_of::<Option<EventWheel>>()]; // not equal
+    };
+
     #[test] #[rustfmt::skip]
     fn sizes_of() {
         assert_eq![16, size_of::<EventMouse>()];        // 128

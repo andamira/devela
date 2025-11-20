@@ -11,7 +11,7 @@
 
 #[cfg(all(feature = "js", not(windows)))]
 use crate::WebEventKind;
-use crate::{EventTimestamp, Key, KeyMods};
+use crate::{ConstInit, EventTimestamp, Key, KeyMods};
 
 /// Represents a keyboard event.
 ///
@@ -33,6 +33,15 @@ pub struct EventKey {
     /// The time stamp of when the event occurred.
     pub timestamp: Option<EventTimestamp>,
 }
+impl ConstInit for EventKey {
+    const INIT: Self = Self {
+        semantic: Key::INIT,
+        physical: Key::INIT,
+        state: KeyState::INIT,
+        mods: KeyMods::INIT,
+        timestamp: None,
+    };
+}
 
 /// Represents the state of a [`Key`].
 #[repr(u8)]
@@ -43,6 +52,9 @@ pub enum KeyState {
     Press,
     /// The key was released.
     Release,
+}
+impl ConstInit for KeyState {
+    const INIT: Self = Self::Press;
 }
 
 #[cfg(ffi··)]

@@ -3,7 +3,7 @@
 //! Defines [`Event`] and [`EventKind`].
 //
 
-use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWindow};
+use crate::{ConstInit, EventKey, EventMouse, EventPointer, EventTimestamp, EventWindow};
 
 /// An event.
 #[derive(Clone, Default, Debug, PartialEq, Eq, Hash)]
@@ -15,6 +15,9 @@ pub struct Event {
     pub emitted: Option<EventTimestamp>,
     // processed: Option<EventTimestamp>, // TODO
     // count: Option<EventCounter>, // gilrs
+}
+impl ConstInit for Event {
+    const INIT: Self = Self { kind: EventKind::INIT, emitted: None };
 }
 
 /// A an enumeration of kinds of events.
@@ -46,6 +49,9 @@ pub enum EventKind {
 
     // /// A gamepad event.
     // Gamepad(GamepadEvent),
+}
+impl ConstInit for EventKind {
+    const INIT: Self = Self::None;
 }
 
 /* impls */

@@ -8,7 +8,7 @@
 // - impls `js`
 
 use super::*;
-use crate::{is, unwrap};
+use crate::{ConstInit, is, unwrap};
 #[cfg(all(feature = "js", not(windows)))]
 crate::items! {
     use crate::{Char, WebKeyLocation, Slice};
@@ -94,6 +94,9 @@ pub enum KeyFfi {
 
     #[default]
     Unknown,
+}
+impl ConstInit for KeyFfi {
+    const INIT: Self = Self::Unknown;
 }
 
 impl Key {

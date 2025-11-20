@@ -509,8 +509,8 @@ Many feature gates are removed in order to make most features make always availa
 - change `EventPointer.pressure` field to be `f32bits_niche`.
 - rename `time_stamp` fields to `timestamp`.
 - derive `Eq` & `Hash` for all event types.
+- implement `ConstInit` for all types.
 - update `EventTimestamp`
-  - implement `ConstInit`.
   - remove all inner unsafe.
   - make it support timestamps of 0 ms.
   - change inner representation to `f32bits_niche`.

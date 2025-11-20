@@ -3,7 +3,7 @@
 //! Defines [`EventWindow`].
 //
 
-use super::{Event, EventKind};
+use crate::{ConstInit, Event, EventKind};
 
 #[cfg(feature = "alloc")]
 use crate::String;
@@ -59,6 +59,9 @@ pub enum EventWindow {
     // Close,
     // TakeFocus,
     // HitTest,
+}
+impl ConstInit for EventWindow {
+    const INIT: Self = Self::FocusLost;
 }
 impl From<EventWindow> for EventKind {
     fn from(window_event: EventWindow) -> EventKind {

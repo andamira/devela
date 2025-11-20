@@ -3,7 +3,7 @@
 //! Defines [`Key`].
 //
 
-use crate::{KeyMedia, KeyMod, KeyPad};
+use crate::{ConstInit, KeyMedia, KeyMod, KeyPad};
 
 /// Keyboard codes, used in [`EventKey`][crate::EventKey].
 ///
@@ -158,6 +158,9 @@ pub enum Key {
     // - crossterm: Null,
     #[default]
     Unknown,
+}
+impl ConstInit for Key {
+    const INIT: Self = Self::Unknown;
 }
 
 /* impl aliases */

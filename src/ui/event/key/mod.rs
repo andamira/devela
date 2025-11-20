@@ -12,9 +12,10 @@
 #[cfg(test)]
 mod tests;
 
+mod dif; // KeyMod, KeyMods
 mod event; // EventKey, EventKeyFfi, KeyState
 mod key; // Key
-mod media_mods; // KeyMedia, KeyMod, KeyMods
+mod media; // KeyMedia, KeyMod, KeyMods
 mod pad; // KeyPad
 
 #[cfg(ffi··)]
@@ -24,9 +25,10 @@ mod ffi; // KeyFfi
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            dif::*,
             event::*,
             key::*,
-            media_mods::*,
+            media::*,
             pad::*,
         };
         #[cfg(ffi··)]
