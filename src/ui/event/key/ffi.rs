@@ -1,69 +1,18 @@
 // devela::ui::event::key::key
 //
-//! Defines [`EventKeyFfi`], [`KeyFfi`].
+//! Defines [`KeyFfi`].
 //
 // TOC
-// - struct EventKeyFfi
 // - enum KeyFfi
 // - static F_KEYS
 // - impls `js`
 
 use super::*;
-use crate::{ConstInit, f32bits, is, unwrap};
+use crate::{ConstInit, is, unwrap};
 #[cfg(all(feature = "js", not(windows)))]
 crate::items! {
     use crate::{Char, WebKeyLocation, Slice};
     crate::_use! {basic::from_utf8}
-}
-
-#[doc = crate::_TAG_FFI!()]
-/// An FFI-safe version of [`EventKey`].
-#[repr(C)]
-#[allow(missing_docs)]
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub struct EventKeyFfi {
-    #[doc = crate::_TAG_FFI!()]
-    /// The key representing the human-readable code.
-    pub semantic: KeyFfi,
-    #[doc = crate::_TAG_FFI!()]
-    /// The key representing the hardware scan code.
-    pub physical: KeyFfi,
-    /// The state of the key (pressed or released).
-    pub state: KeyState,
-    /// The active modifiers of the key (e.g., Shift, Ctrl).
-    pub mods: KeyMods,
-    #[doc = crate::_TAG_FFI!()]
-    /// The time stamp of when the event occurred.
-    pub timestamp: f32bits,
-}
-
-impl EventKey {
-    /// Converts `EventKey` to `EventKeyFfi`.
-    pub const fn to_ffi(&self) -> EventKeyFfi {
-        EventKeyFfi {
-            semantic: self.semantic.to_ffi(),
-            physical: self.physical.to_ffi(),
-            state: self.state,
-            mods: self.mods,
-            timestamp: if let Some(t) = self.timestamp { t.get_non_niche() } else { f32bits::INIT },
-        }
-    }
-    /// Converts `EventKeyFfi` to `EventKey`.
-    pub const fn from_ffi(from: &EventKeyFfi) -> EventKey {
-        EventKey {
-            semantic: Key::from_ffi(from.semantic),
-            physical: Key::from_ffi(from.physical),
-            state: from.state,
-            mods: from.mods,
-            timestamp: Some(EventTimestamp::from_non_niche(from.timestamp)),
-        }
-    }
-}
-crate::items! {
-    impl From<&EventKey> for EventKeyFfi { fn from(e: &EventKey) -> Self { EventKey::to_ffi(e) } }
-    impl From<&EventKeyFfi> for EventKey { fn from(e: &EventKeyFfi) -> Self { Self::from_ffi(e) } }
-    impl From<EventKey> for EventKeyFfi { fn from(e: EventKey) -> Self { EventKey::to_ffi(&e) } }
-    impl From<EventKeyFfi> for EventKey { fn from(e: EventKeyFfi) -> Self { Self::from_ffi(&e) } }
 }
 
 #[doc = crate::_TAG_FFI!()]
