@@ -518,6 +518,13 @@ Many feature gates are removed in order to make most features make always availa
   - remove methods: `try_from_js`, `try_from_millis_f32`,  `try_from_millis_u32`, `try_from_secs_f32`.
 - change `EventKeyFfi.timestamp` field to be `f32bits`.
 
+#### key
+- update `KeyPad`, add variant `Comma`.
+- update `KeyMod`:
+  - rename variant `IsoLevel3Shift` to `AltGr`.
+  - remove variants: `LeftMeta`, `RightMeta`, `LeftHyper`, `RightHyper`.
+- update `KeyMods`, rename method `has_meta` to `has_super`.
+
 ### front
 #### term
 - feature-gate with `term`.

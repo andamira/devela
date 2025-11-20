@@ -108,11 +108,11 @@ pub enum KeyMod {
     LeftAlt,
     /// Left **Super** key (Windows key on Windows, Command ⌘ on macOS).
     LeftSuper,
-    /// Left **Hyper** key (historically used in some Unix systems).
-    LeftHyper,
-    /// Left **Meta** key (used in some Unix-based systems, overlaps with Super).
-    LeftMeta,
-
+    // obsolete:
+    // /// Left **Hyper** key (historically used in some Unix systems).
+    // LeftHyper,
+    // /// Left **Meta** key (used in some Unix-based systems, overlaps with Super).
+    // LeftMeta,
     /// Right **Shift** key.
     RightShift,
     /// Right **Control** (Ctrl) key.
@@ -121,22 +121,22 @@ pub enum KeyMod {
     RightAlt,
     /// Right **Super** key (Windows key on Windows, Command ⌘ on macOS).
     RightSuper,
-    /// Right **Hyper** key (historically used in some Unix systems).
-    RightHyper,
-    /// Right **Meta** key (used in some Unix-based systems, overlaps with Super).
-    RightMeta,
-
-    /// **ISO Level 3 Shift** key (commonly known as **AltGr**).
-    ///
+    // obsolete:
+    // /// Right **Hyper** key (historically used in some Unix systems).
+    // RightHyper,
+    // /// Right **Meta** key (used in some Unix-based systems, overlaps with Super).
+    // RightMeta,
     /// Used to access alternative characters on some keyboards.
-    IsoLevel3Shift,
+    ///
+    /// Also known as *ISO Level 3 Shift*.
+    AltGr,
     /// **ISO Level 5 Shift** key (used in some advanced keyboard layouts).
     IsoLevel5Shift,
 }
 #[allow(non_upper_case_globals)]
 impl KeyMod {
     /// AltGr key.
-    pub const AltGr: KeyMod = KeyMod::IsoLevel3Shift;
+    pub const IsoLevel3Shift: KeyMod = KeyMod::AltGr;
 }
 
 /// A bitfield of keys modifiers (Shift, Ctrl…) + extra (repeating, composing).
@@ -148,7 +148,7 @@ impl KeyMods {
     const CTRL: u16 = 1 << 0;
     const SHIFT: u16 = 1 << 1;
     const ALT: u16 = 1 << 2;
-    const META: u16 = 1 << 3;
+    const SUPER: u16 = 1 << 3;
     const ALT_GRAPH: u16 = 1 << 4;
     const CAPS_LOCK: u16 = 1 << 5;
     const NUM_LOCK: u16 = 1 << 6;
@@ -170,7 +170,7 @@ impl KeyMods {
     /// Checks if the *AltGraph* modifier is set.
     pub const fn has_alt_gr(self) -> bool { self.0 & Self::ALT_GRAPH != 0 }
     /// Checks if the *Meta* modifier is set.
-    pub const fn has_meta(self) -> bool { self.0 & Self::META != 0 }
+    pub const fn has_super(self) -> bool { self.0 & Self::SUPER != 0 }
     /// Checks if the *Caps Lock* modifier is set.
     pub const fn has_caps_lock(self) -> bool { self.0 & Self::CAPS_LOCK != 0 }
     /// Checks if the *Num Lock* modifier is set.
@@ -356,22 +356,23 @@ impl KeyMod {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
+    // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
     pub const fn from_js_code(code: &str, location: WebKeyLocation) -> Option<Self> {
         use {KeyMod as K, WebKeyLocation as L};
         match (code.as_bytes(), location) {
             (b"ShiftLeft", L::Left) => Some(K::LeftShift),
             (b"ControlLeft", L::Left) => Some(K::LeftControl),
             (b"AltLeft", L::Left) => Some(K::LeftAlt),
-            (b"MetaLeft", L::Left) => Some(K::LeftSuper),
-            (b"HyperLeft", L::Left) => Some(K::LeftHyper),
-            (b"OSLeft", L::Left) => Some(K::LeftMeta),
+            (b"MetaLeft", L::Left) => Some(K::LeftSuper), //
+            // (b"HyperLeft", L::Left) => Some(K::LeftHyper), //
+            // (b"OSLeft", L::Left) => Some(K::LeftMeta), //
             (b"ShiftRight", L::Right) => Some(K::RightShift),
             (b"ControlRight", L::Right) => Some(K::RightControl),
             (b"AltRight", L::Right) => Some(K::RightAlt),
-            (b"MetaRight", L::Right) => Some(K::RightSuper),
-            (b"HyperRight", L::Right) => Some(K::RightHyper),
-            (b"OSRight", L::Right) => Some(K::RightMeta),
-            (b"AltGraph", L::Standard) => Some(K::IsoLevel3Shift),
+            // (b"MetaRight", L::Right) => Some(K::RightSuper), //
+            // (b"HyperRight", L::Right) => Some(K::RightHyper), //
+            // (b"OSRight", L::Right) => Some(K::RightMeta), //
+            (b"AltGraph", L::Standard) => Some(K::AltGr),
             (b"Level5Shift", L::Standard) => Some(K::IsoLevel5Shift),
             _ => None,
         }
@@ -380,22 +381,23 @@ impl KeyMod {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
+    // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
     pub const fn to_js_code(self) -> (&'static str, WebKeyLocation) {
         use {KeyMod as K, WebKeyLocation as L};
         match self {
             K::LeftShift => ("ShiftLeft", L::Left),
             K::LeftControl => ("ControlLeft", L::Left),
             K::LeftAlt => ("AltLeft", L::Left),
-            K::LeftSuper => ("MetaLeft", L::Left),
-            K::LeftHyper => ("HyperLeft", L::Left),
-            K::LeftMeta => ("OSLeft", L::Left),
+            K::LeftSuper => ("MetaLeft", L::Left), //
+            // K::LeftHyper => ("HyperLeft", L::Left), //
+            // K::LeftMeta => ("OSLeft", L::Left), //
             K::RightShift => ("ShiftRight", L::Right),
             K::RightControl => ("ControlRight", L::Right),
             K::RightAlt => ("AltRight", L::Right),
-            K::RightSuper => ("MetaRight", L::Right),
-            K::RightHyper => ("HyperRight", L::Right),
-            K::RightMeta => ("OSRight", L::Right),
-            K::IsoLevel3Shift => ("AltGraph", L::Standard),
+            K::RightSuper => ("MetaRight", L::Right), //
+            // K::RightHyper => ("HyperRight", L::Right), //
+            // K::RightMeta => ("OSRight", L::Right), //
+            K::AltGr => ("AltGraph", L::Standard),
             K::IsoLevel5Shift => ("Level5Shift", L::Standard),
         }
     }
@@ -411,15 +413,15 @@ impl KeyMod {
             (b"Control", L::Left) => Some(K::LeftControl),
             (b"Alt", L::Left) => Some(K::LeftAlt),
             (b"Meta", L::Left) => Some(K::LeftSuper),
-            (b"Hyper", L::Left) => Some(K::LeftHyper),
-            (b"OS", L::Left) => Some(K::LeftMeta),
+            // (b"Hyper", L::Left) => Some(K::LeftHyper),
+            // (b"OS", L::Left) => Some(K::LeftMeta),
             (b"Shift", L::Right) => Some(K::RightShift),
             (b"Control", L::Right) => Some(K::RightControl),
             (b"Alt", L::Right) => Some(K::RightAlt),
             (b"Meta", L::Right) => Some(K::RightSuper),
-            (b"Hyper", L::Right) => Some(K::RightHyper),
-            (b"OS", L::Right) => Some(K::RightMeta),
-            (b"AltGraph", L::Standard) => Some(K::IsoLevel3Shift),
+            // (b"Hyper", L::Right) => Some(K::RightHyper),
+            // (b"OS", L::Right) => Some(K::RightMeta),
+            (b"AltGraph", L::Standard) => Some(K::AltGr),
             (b"Level5Shift", L::Standard) => Some(K::IsoLevel5Shift),
             _ => None,
         }
@@ -435,15 +437,15 @@ impl KeyMod {
             K::LeftControl => ("Control", L::Left),
             K::LeftAlt => ("Alt", L::Left),
             K::LeftSuper => ("Meta", L::Left),
-            K::LeftHyper => ("Hyper", L::Left),
-            K::LeftMeta => ("OS", L::Left),
+            // K::LeftHyper => ("Hyper", L::Left),
+            // K::LeftMeta => ("OS", L::Left),
             K::RightShift => ("Shift", L::Right),
             K::RightControl => ("Control", L::Right),
             K::RightAlt => ("Alt", L::Right),
             K::RightSuper => ("Meta", L::Right),
-            K::RightHyper => ("Hyper", L::Right),
-            K::RightMeta => ("OS", L::Right),
-            K::IsoLevel3Shift => ("AltGraph", L::Standard),
+            // K::RightHyper => ("Hyper", L::Right),
+            // K::RightMeta => ("OS", L::Right),
+            K::AltGr => ("AltGraph", L::Standard),
             K::IsoLevel5Shift => ("Level5Shift", L::Standard),
         }
     }
