@@ -349,6 +349,9 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `MemAligned`.
   - types: `CacheAlign`, `Mem`, `Ptr`.
 - rename `ExtMem` to `MemExt`.
+- update `Mem`
+  - rename method `bytes_from_bits` to `bytes_from_bits_saturating`.
+  - new method: `bytes_from_bits` with a faster impl.
 
 #### cell
 - rename `ExtCellOption` to `CellOptionExt`.

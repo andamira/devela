@@ -3,7 +3,7 @@
 //! Defines the [`Mem`] namespace.
 //
 
-use crate::Discriminant;
+use crate::{Discriminant, is};
 use ::core::mem::{
     align_of, align_of_val, discriminant, drop, forget, needs_drop, replace, size_of, size_of_val,
     swap, take,
@@ -170,20 +170,31 @@ impl Mem {
 }
 
 /// # Extra methods
+#[rustfmt::skip]
 impl Mem {
-    /// Returns the rounded up size in bytes from a size in bits.
+    /// Returns the rounded-up byte count for a bit size.
     ///
-    /// This is equivalent to `(bit_size + 7) / 8` but handles potential overflow.
+    /// Fast path suitable for typical inputs.
+    /// For extremely large values (`> usize::MAX - 7`)
+    /// the internal wraparound can produce an incorrect result.
+    ///
+    /// Use [`Mem::bytes_from_bits_saturating`] when correctness
+    /// must be guaranteed even for impractical edge cases.
+    pub const fn bytes_from_bits(bit_size: usize) -> usize { (bit_size + 7) >> 3 }
+
+    /// Returns the rounded-up byte count for a bit size, saturating on overflow.
+    ///
+    /// If the addition overflows, this returns the maximum representable
+    /// rounded-up value: `usize::MAX >> 3`.
+    ///
+    /// Always produces the mathematically correct upper bound, even for inputs
+    /// near `usize::MAX`, at the cost of a small performance overhead compared
+    /// to [`Mem::bytes_from_bits`].
     #[must_use]
-    pub const fn bytes_from_bits(bit_size: usize) -> usize {
-        if let Some(t) = bit_size.checked_add(8 - 1) {
-            t / 8
-        } else {
-            Self::bytes_from_bits_cold()
-        }
+    pub const fn bytes_from_bits_saturating(bit_size: usize) -> usize {
+        #[cold] const fn bytes_from_bits_cold() -> usize { usize::MAX >> 3 }
+        is![let Some(t) = bit_size.checked_add(7); t >> 3; bytes_from_bits_cold()]
     }
-    #[cold] #[rustfmt::skip]
-    const fn bytes_from_bits_cold() -> usize { usize::MAX / 8 }
 }
 
 /// # Unsafe methods
