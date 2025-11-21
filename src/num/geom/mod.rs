@@ -4,6 +4,7 @@
 #![doc = crate::_doc!(modules: crate::num; geom: linear, metric, shape)]
 //
 
+pub mod dir; // Angle, AngleKind, Orientation...
 pub mod metric; // Position, Distance, Extent, Stride...
 
 #[cfg(feature = "linear")]
@@ -15,7 +16,10 @@ pub mod shape; // Point, …
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {
-        pub use super::metric::_all::*;
+        pub use super::{
+            dir::_all::*,
+            metric::_all::*,
+        };
 
         #[cfg(feature = "linear")]
         pub use super::linear::_all::*;

@@ -265,7 +265,7 @@ mod reflection {
         ref_flags: &["num··"],
         features: &["num",
             "geom",
-                "linear", "metric", "shape",
+                "linear", "shape",
             "rand",
             "unit",
         ]

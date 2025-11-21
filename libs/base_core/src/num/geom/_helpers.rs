@@ -1,17 +1,18 @@
-// devela_base_core::num::geom::metric::helpers
+// devela_base_core::num::geom::_helpers
 //
-//! Defines helpers for implementing common methods on metric types.
+//! Defines helpers for implementing common methods on geometric types.
 //
 
 #[cfg(doc)]
 use crate::{Distance, Extent, Orientation, Position, Stride};
 
-/// Helps implementing common methods on metric types of the shape of `Name<T, D> { dim: [T; D] }`.
+/// Helps implementing common methods for geometric types of the form:
+/// `Name<T, const D: usize> { dim: [T; D] }`.
 ///
 /// It is used for [`Distance`], [`Extent`], [`Orientation`], [`Position`] and [`Stride`].
 #[doc(hidden)]
 #[macro_export]
-macro_rules! _impl_metric {
+macro_rules! _impl_geom_dim {
     ( // implement common utility traits:
       // - conversion From arrays and tuples
       // - Default, ConstInitCore
@@ -120,8 +121,8 @@ macro_rules! _impl_metric {
             }
         }
 
-        $crate::_impl_metric![common_methods_2d: $Name];
-        $crate::_impl_metric![common_methods_3d: $Name];
+        $crate::_impl_geom_dim![common_methods_2d: $Name];
+        $crate::_impl_geom_dim![common_methods_3d: $Name];
     }};
 
     /* manual impls for specific dimensionalities */
@@ -199,4 +200,4 @@ macro_rules! _impl_metric {
     };
 }
 #[doc(hidden)]
-pub use _impl_metric;
+pub use _impl_geom_dim;

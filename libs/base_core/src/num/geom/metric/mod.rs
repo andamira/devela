@@ -3,18 +3,14 @@
 #![doc = crate::_DOC_NUM_GEOM_METRIC!()]
 //
 
-mod helpers; // _impl_metric!
-
 mod distance; // Distance
 mod extent; // Extent
-mod orientation; // Orientation
 mod position; // Position
 mod region; // Region
 mod stride; // Stride
 
 // WIPZONE
-// mod _wip_cycle;
-// mod _wip_radial_sectors;
+// mod _wip_cycle; // CycleOffset, Spacing
 
 crate::structural_mods! { // _mods
     _mods {
@@ -22,7 +18,6 @@ crate::structural_mods! { // _mods
         pub use super::{
             distance::*,
             extent::*,
-            orientation::*,
             position::*,
             region::*,
             stride::*,
@@ -30,9 +25,5 @@ crate::structural_mods! { // _mods
 
         // WIPZONE
         // pub use super::_wip_cycle::*;
-        // pub use super::radial_sectors::*;
-    }
-    _workspace_internals {
-        pub use super::helpers::*;
     }
 }

@@ -14,8 +14,7 @@ use crate::{Orientation, Position};
 ///
 /// - Unlike [`Position`], `Distance` is **relative**,
 ///   and represents how far apart two positions are.
-/// - Unlike [`Orientation`], `Distance` has **magnitude**
-///   but no defined **orientation**.
+/// - Unlike [`Orientation`], `Distance` has **magnitude** but no defined direction.
 #[must_use]
 #[repr(transparent)]
 pub struct Distance<T, const D: usize> {
@@ -23,5 +22,5 @@ pub struct Distance<T, const D: usize> {
     pub dim: [T; D],
 }
 
-crate::_impl_metric![common_methods: Distance];
-crate::_impl_metric![common_traits: Distance];
+crate::_impl_geom_dim![common_methods: Distance];
+crate::_impl_geom_dim![common_traits: Distance];

@@ -22,5 +22,5 @@ pub struct Stride<T, const D: usize> {
     /// The step sizes per dimension.
     pub dim: [T; D],
 }
-crate::_impl_metric![common_methods: Stride];
-crate::_impl_metric![common_traits: Stride];
+crate::_impl_geom_dim![common_methods: Stride];
+crate::_impl_geom_dim![common_traits: Stride];

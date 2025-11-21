@@ -13,8 +13,7 @@ use crate::{Distance, Orientation};
 ///
 /// - Unlike [`Distance`], `Position` is **not relative**, it describes
 ///   a fixed location rather than a displacement.
-/// - Unlike [`Orientation`], `Position` has **magnitude and reference**,
-///   but no inherent orientation.
+/// - Unlike [`Orientation`], `Position` is a **location**, not a direction.
 #[must_use]
 #[repr(transparent)]
 pub struct Position<T, const D: usize> {
@@ -22,5 +21,5 @@ pub struct Position<T, const D: usize> {
     pub dim: [T; D],
 }
 
-crate::_impl_metric![common_methods: Position];
-crate::_impl_metric![common_traits: Position];
+crate::_impl_geom_dim![common_methods: Position];
+crate::_impl_geom_dim![common_traits: Position];

@@ -23,6 +23,7 @@ crate::CONST! { hidden macro_export,
     _EMOJI_FONT = "🅵"; // 🅵,, 🅰, ℱ, 𝔉, 𝕱, 𝐅
     _EMOJI_FMT = "🖹"; // 🖹, 📄, 📝, 🄵, ✎, ℱ, 𝔽
     _EMOJI_GEOM = "📐";
+    _EMOJI_GEOM_DIR = "🧭";
     _EMOJI_HASH = "🔀"; // 🔀,
     _EMOJI_ITERATOR = "🔄"; // 🔄,
     _EMOJI_NAMESPACE = "🌐"; // 🌐,📛,
@@ -75,6 +76,8 @@ crate::CONST! { hidden macro_export,
         $crate::_EMOJI_FMT!(), "</span>");
     _TAG_GEOM = concat!($crate::SPAN_OPEN!(), "'Geometry or spatial-related item'>",
         $crate::_EMOJI_GEOM!(), "</span>");
+    _TAG_GEOM_DIR = concat!($crate::SPAN_OPEN!(), "'Direction, orientation or spatial symmetry item'>",
+        $crate::_EMOJI_GEOM_DIR!(), "</span>");
     _TAG_HASH = concat!($crate::SPAN_OPEN!(), "'Hashing-related item'>",
         $crate::_EMOJI_HASH!(), "</span>");
     _TAG_ITERATOR = concat!($crate::SPAN_OPEN!(), "'Iterator or iterator adapter'>",

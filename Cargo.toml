@@ -161,7 +161,7 @@ targets = [ ## +std:
 bench = false
 
 
-[features] # 158/300 (142 remaining), 106 visible, 52 hidden
+[features] # 157/300 (143 remaining), 105 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -273,9 +273,9 @@ media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	midi = []
 	video = []
 num = ["geom", "rand", "unit"]
-	geom = ["linear", "metric", "shape"] # geometry
+	geom = ["linear", "shape"] # geometry
+		# dir = [] # orientation
 		linear = [] # linear algebra
-		metric = []
 		shape = []
 	rand = [] # random number generators
 	# symb = []

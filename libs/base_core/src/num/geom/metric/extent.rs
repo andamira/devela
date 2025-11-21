@@ -4,7 +4,7 @@
 //
 // IMPROVE: use TBD NumConst::ONE and unify methods for int and floats.
 
-use crate::{_impl_metric, is, whilst};
+use crate::{_impl_geom_dim, is, whilst};
 
 #[doc = crate::_TAG_GEOM!()]
 /// An orthogonal extension in `D`-space without a coordinate position.
@@ -19,8 +19,8 @@ pub struct Extent<T, const D: usize> {
     pub dim: [T; D],
 }
 
-_impl_metric![common_methods: Extent];
-_impl_metric![common_traits: Extent];
+_impl_geom_dim![common_methods: Extent];
+_impl_geom_dim![common_traits: Extent];
 
 /// Implement `Extent` methods for all primitives.
 macro_rules! impl_extent {

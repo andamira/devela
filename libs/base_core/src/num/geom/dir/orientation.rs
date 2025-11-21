@@ -25,5 +25,5 @@ pub struct Orientation<T, const D: usize> {
     pub dim: [T; D],
 }
 
-crate::_impl_metric![common_methods: Orientation];
-crate::_impl_metric![common_traits: Orientation];
+crate::_impl_geom_dim![common_methods: Orientation];
+crate::_impl_geom_dim![common_traits: Orientation];

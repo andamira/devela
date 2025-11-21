@@ -86,7 +86,7 @@ const SUB_MODULES: &[&str] = &[
     "audio", "color", "draw", "font", "image", "midi", "video",
     // num
     "geom",
-        "linear", "metric", "shape",
+        "linear", "shape",
     "rand",
     "unit",
     // phys
