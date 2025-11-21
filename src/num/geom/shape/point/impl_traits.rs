@@ -21,7 +21,7 @@ impl<T: Default, const D: usize> Default for Point<T, D> {
     }
 }
 impl<T: ConstInit, const D: usize> ConstInit for Point<T, D> {
-    const INIT: Self = Self::new(array_init![const_init [T; D]]);
+    const INIT: Self = Self::new(array_init![INIT in ConstInit [T; D]]);
 }
 
 impl<T: Debug, const D: usize> Debug for Point<T, D> {

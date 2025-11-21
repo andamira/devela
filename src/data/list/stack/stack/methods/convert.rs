@@ -252,7 +252,7 @@ macro_rules! impl_stack {
                     Own::empty(Err(IndexOutOfBounds(Some(NEW_CAP))))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array_copy();
-                    let mut new_arr = array_init![const_init [T; NEW_CAP]];
+                    let mut new_arr = array_init![INIT in ConstInit [T; NEW_CAP]];
 
                     let mut i = 0;
                     while i < self.len as usize {
@@ -291,7 +291,7 @@ macro_rules! impl_stack {
                 };
                 let new_len = Cmp(NEW_CAP).min(self.len as usize);
                 let old_arr: [T; CAP] = self.data.into_array_copy();
-                let mut new_arr = array_init![const_init [T; NEW_CAP]];
+                let mut new_arr = array_init![INIT in ConstInit [T; NEW_CAP]];
 
                 let mut i = 0;
                 while i < new_len {

@@ -10,18 +10,19 @@
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.
 /// - `$init`: a function with an `usize` argument that returns `$T`.
-/// - `$const_init`: a const fn with an `usize` argument that returns `$T: Copy`.
+/// - `$const_fn`: a const fn with an `usize` argument that returns `$T: Copy`.
 /// - `$copiable`: an expression that returns an element of type `$T: Copy`.
 /// - `$clonable`: an expression that returns an element of type `$T: Clone`.
 /// - `$fsafe`: a feature that forbids the use of `unsafe` when enabled.
 /// - `$funsafe`: a feature that enables the use of `unsafe` when enabled.
 /// - `$intoiter`: an item that implements [`IntoIterator`].
+/// - `$trait`: in the `INIT in` arm, the path to either `ConstInit` or `ConstInitCore`.
 ///
 /// # Examples
 /// ```
 /// # use devela_base_core::array_init;
 /// # #[cfg(feature = "alloc")]
-/// # use devela::{Vec, ConstInit};
+/// # use devela::{Vec, ConstInit}; // IMPROVE: remove alloc/Vec, use ConstInitCore
 /// assert_eq![[2,4,6], array_init![safe_init [i32; 3], |n| (n as i32 + 1) * 2]];
 /// #[cfg(feature = "unsafe_array")]
 /// assert_eq![[3,6,9], array_init![unsafe_init [i32; 3], |n| (n as i32 + 1) * 3]];
@@ -40,11 +41,11 @@
 /// # }
 ///
 /// const fn init(n: usize) -> i32 { (n as i32 + 1) * 4 }
-/// const ARRAY1: [i32; 3] = array_init![const_init [i32; 3], "safe", "unsafe_array", init, 0];
+/// const ARRAY1: [i32; 3] = array_init![const_fn [i32; 3], "safe", "unsafe_array", init, 0];
 /// assert_eq![[4, 8, 12], ARRAY1];
 ///
 /// # #[cfg(feature = "alloc")] {
-/// const ARRAY2: [i32; 3] = array_init![const_init [i32; 3]];
+/// const ARRAY2: [i32; 3] = array_init![INIT in ConstInit [i32; 3]];
 /// assert_eq![[0, 0, 0], ARRAY2];
 /// # }
 /// ```
@@ -53,13 +54,12 @@
 /// The unsafe version uses [`MaybeUninit`][crate::MaybeUninit] in the case
 /// of stack allocation or [`Box::from_raw`] in the case of heap allocation.
 ///
-/// For the `const_init`, `clone`, `default` and `iter` versions, if the given
+/// For the `const`, `clone`, `default` and `iter` versions, if the given
 /// `$funsafe` is enabled and the given `$fsafe` is disabled, it will use unsafe
 /// initialization.
 ///
 /// # Notes
 /// For the heap-related arms needs to have `Vec` in scope.
-/// And for the `const_init` arm needs `ConstInit` in scope.
 // WAIT [array_repeat](https://github.com/rust-lang/rust/issues/126695)
 // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 #[macro_export]
@@ -75,12 +75,12 @@ macro_rules! array_init {
     }};
     (
     // safe array initialization in the stack, compile-time friendly.
-    safe_const_init [$T:ty; $LEN:expr], $const_init:expr, $copiable:expr) => {{
+    safe_const_fn [$T:ty; $LEN:expr], $const_fn:expr, $copiable:expr) => {{
         let mut arr: [$T; $LEN] = [$copiable; $LEN];
         let mut i = 0;
         while i < $LEN {
             // WAIT: [const_closures](https://github.com/rust-lang/rust/issues/106003)
-            arr[i] = $const_init(i);
+            arr[i] = $const_fn(i);
             i += 1;
         }
         arr
@@ -102,6 +102,7 @@ macro_rules! array_init {
     /* unsafe initializations */
 
     // unsafe array initialization in the stack
+    // TODO:CHECK:AGAIN
     unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
         let mut arr: [$crate::MaybeUninit<$T>; $LEN] =
             // SAFETY: array will be fully initialized in the subsequent loop
@@ -111,7 +112,7 @@ macro_rules! array_init {
             let _ = e.write($init(i)); // NOTE: const since 1.85
         }
         // Can't use transmute for now, have to use transmute_copy:
-        // - WAIT: [const generics transmute](https://github.com/rust-lang/rust/issues/61956)
+        // - WAIT:CLOSED:[const generics transmute](https://github.com/rust-lang/rust/issues/61956)
         //   - https://github.com/rust-lang/rust/issues/62875 (duplicate)
         // unsafe { $crate::transmute::<_, [T; LEN]>(&arr) }
         // SAFETY: we've initialized all the elements
@@ -119,14 +120,14 @@ macro_rules! array_init {
     }};
     (
     // unsafe array initialization in the stack, compile-time friendly.
-    unsafe_const_init [$T:ty; $LEN:expr], $const_init:expr) => {{
+    unsafe_const_fn [$T:ty; $LEN:expr], $const_fn:expr) => {{
         // WAIT: [maybe_uninit_uninit_array](https://github.com/rust-lang/rust/issues/96097)
         let mut arr: [$crate::MaybeUninit<$T>; $LEN] =
             // SAFETY: array will be fully initialized in the subsequent loop
             unsafe { $crate::MaybeUninit::uninit().assume_init() };
         let mut i = 0;
         while i < $LEN {
-            arr[i] = $crate::MaybeUninit::new($const_init(i));
+            arr[i] = $crate::MaybeUninit::new($const_fn(i));
             i += 1;
         }
         // SAFETY: we've initialized all the elements
@@ -157,12 +158,12 @@ macro_rules! array_init {
     (
     // initialize an array the stack, compile-time friendly.
     // $copiable is only used by the safe version as temporary placeholder.
-    const_init
-    [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $const_init:expr, $copiable:expr) => {{
+    const_fn
+    [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $const_fn:expr, $copiable:expr) => {{
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::array_init![safe_const_init [$T; $LEN], $const_init, $copiable] }
+        { $crate::array_init![safe_const_fn [$T; $LEN], $const_fn, $copiable] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::array_init![unsafe_const_init [$T; $LEN], $const_init ] }
+        { $crate::array_init![unsafe_const_fn [$T; $LEN], $const_fn ] }
     }};
     (
     // initialize an array in the heap
@@ -199,9 +200,9 @@ macro_rules! array_init {
         { $crate::array_init![unsafe_init [$T; $LEN], |_| <$T>::default()] }
     }};
     (
-    // initialize an array in the stack with $T: ConstInit::INIT
-    const_init [$T:ty; $LEN:expr]) => {{
-        [<$T as ConstInit>::INIT; $LEN]
+    // initialize an array in the stack with $T: $trait::INIT
+    INIT in $trait:path [$T:ty; $LEN:expr]) => {{
+        [<$T as $trait>::INIT; $LEN]
     }};
     (
     // initialize an array in the heap, with $T: Default::default()

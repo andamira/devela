@@ -208,7 +208,10 @@ Many feature gates are removed in order to make most features make always availa
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
-- update `array_init!` to require `ConstInit` and `Vec` in scope if needed.
+- update `array_init!`:
+  - require `ConstInit` and `Vec` in scope if needed.
+  - rename `const_init` arm related to traits to `INIT in`.
+  - rename `const_init*` arms unrelated to traits to `const_fn*`.
 
 ### key
 - update `define_static_map!`:

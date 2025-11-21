@@ -24,8 +24,7 @@ impl<T: Default, const D: usize> Default for Vector<T, D> {
     /// Returns a `Vector`, allocated in the stack,
     /// using the default value to fill the data.
     fn default() -> Self {
-        let coords = array_init![default [T; D], "safe_num", "unsafe_array"];
-        Self { coords }
+        Self::new(array_init![default [T; D], "safe_num", "unsafe_array"])
     }
 }
 
@@ -33,10 +32,7 @@ impl<T: Default, const D: usize> Default for Vector<T, D> {
 impl<T: ConstInit, const D: usize> ConstInit for Vector<T, D> {
     /// Returns a Vector, allocated in the stack,
     /// using the default value to fill the data.
-    const INIT: Self = {
-        let coords = array_init![const_init [T; D]];
-        Self { coords }
-    };
+    const INIT: Self = Self::new(array_init![INIT in ConstInit [T; D]]);
 }
 
 // T:Debug
