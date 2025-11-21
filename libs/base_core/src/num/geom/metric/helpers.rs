@@ -42,13 +42,9 @@ macro_rules! _impl_metric {
                 Self::new($crate::array_init![default [T; D], "safe_num", "unsafe_array"])
             }
         }
-        // TODO: impl ConstInitCore
-        // impl<T: $crate::ConstInitCore, const D: usize> $crate::ConstInitCore for $Name<T, D> {
-        //     const INIT: Self = {
-        //         use crate::ConstInitCore;
-        //         Self::new($crate::array_init![const_init [T; D]])
-        //     };
-        // }
+        impl<T: $crate::ConstInitCore, const D: usize> $crate::ConstInitCore for $Name<T, D> {
+            const INIT: Self = Self::new($crate::array_init![INIT in $crate::ConstInitCore [T; D]]);
+        }
 
         /* Clone, Copy, Hash */
 

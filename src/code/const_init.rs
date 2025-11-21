@@ -146,9 +146,14 @@ mod impl_devela_base_core {
         // media
         // num
         f32bits, f32bits_niche, f64bits, f64bits_niche,
-        Cast, Cmp, Cycle, CycleCount, Interval, Sign,
-        // text
+        Cast, Cmp,
+        // num::quant
+        Cycle, CycleCount, Interval, Sign,
+        // num::geom::metric
+        Distance, Extent, Orientation, Position, Stride,
+        // text::char
         CharAscii, char7, char8, char16, charu, charu_niche,
+        // text::str
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
         // ui
         // work
@@ -164,6 +169,12 @@ mod impl_devela_base_core {
     _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>, Cycle<T>];
     _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];
     _impl_init![%Sealed%: <T> Interval<T>];
+
+    impl<T: ConstInitCore, const D: usize> Sealed for Distance<T, D> {}
+    impl<T: ConstInitCore, const D: usize> Sealed for Extent<T, D> {}
+    impl<T: ConstInitCore, const D: usize> Sealed for Orientation<T, D> {}
+    impl<T: ConstInitCore, const D: usize> Sealed for Position<T, D> {}
+    impl<T: ConstInitCore, const D: usize> Sealed for Stride<T, D> {}
 
     // text
     _impl_init![%Sealed%: CharAscii, char7, char8, char16, charu, charu_niche];
