@@ -339,6 +339,10 @@ Many feature gates are removed in order to make most features make always availa
 ### fs
 - rename `ExtPath` to `PathExt`.
 
+### hw
+- new module `sys::hw`.
+- move `sys::sound` to `sys::hw::audio`.
+
 ### log
 - new type `LoggerStatic`.
 - new macro `slog!`.

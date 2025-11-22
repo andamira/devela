@@ -1,4 +1,4 @@
-// devela::sys::sound
+// devela::sys::hw::audio
 //
 //! Sound I/O functionality.
 //

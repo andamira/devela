@@ -15,7 +15,8 @@ mod sound; // IMPROVE
 pub mod arch; // Arch, *asm, detect_*, m128* m256*
 pub mod display;
 pub mod env; // App*, Arg*, Env
-pub mod fs; // Fs
+pub mod fs; // Fs, FsPath, PathExt
+pub mod hw; //
 pub mod io; // Io*
 pub mod log;
 pub mod mem; // Mem,
@@ -36,6 +37,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
             display::_all::*,
             env::_all::*,
             fs::_all::*,
+            hw::_all::*,
             io::_all::*,
             log::_all::*,
             mem::_all::*,
@@ -44,7 +46,6 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
         };
         // WIPZONE
         // #[cfg(feature = "std")]
-        // pub use super::bench::*;
         // pub use super::bench::_all::*;
     }
     _hidden {
