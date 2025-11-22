@@ -90,6 +90,8 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_ENV        = "Inspection and manipulation of the process’s environment.";
     _DOC_SYS_FS         = "Filesystem abstractions.";
     _DOC_SYS_FS_PATH    = "Cross-platform path manipulation.";
+    _DOC_SYS_HW         = "Hardware-level interfaces and device I/O.";
+    _DOC_SYS_IO         = "I/O primitives and stream interfaces.";
     _DOC_SYS_LOG        = "Logging functionality.";
     _DOC_SYS_MEM        = "Memory management.";
     _DOC_SYS_MEM_ALLOC  = "Memory allocation.";
