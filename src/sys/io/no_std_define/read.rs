@@ -1,4 +1,4 @@
-// devela::sys::io::reimplement_no_std::read
+// devela::sys::io::no_std_define::read
 //
 //! Defines the [`IoRead`] trait.
 //

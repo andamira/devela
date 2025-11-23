@@ -1,4 +1,4 @@
-// devela::sys::io::reexports_std
+// devela::sys::io::std_reexports
 //
 //! Reexported items from `std`.
 //

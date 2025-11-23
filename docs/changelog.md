@@ -343,6 +343,10 @@ Many feature gates are removed in order to make most features make always availa
 - new module `sys::hw`.
 - move `sys::sound` to `sys::hw::audio`.
 
+### io
+- new `IoDuplex` trait.
+- refactor the `sys::io` module.
+
 ### log
 - new type `LoggerStatic`.
 - new macro `slog!`.

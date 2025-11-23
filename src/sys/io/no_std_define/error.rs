@@ -1,4 +1,7 @@
-// devela::sys::io::error
+// devela::sys::io::no_std_define::error
+//
+//! Defines `IoError`, `IoResult`.
+//
 
 #[cfg(all(doc, any(feature = "std", feature = "io")))]
 use crate::IoSeek;

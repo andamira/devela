@@ -1,4 +1,4 @@
-// devela::sys::io::define_no_std
+// devela::sys::io::no_std_define
 //
 //! Reimplementations of I/O functionality for `no_std`.
 //

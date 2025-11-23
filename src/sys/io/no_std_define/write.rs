@@ -1,4 +1,4 @@
-// devela::sys::io::reimplement_no_std::write
+// devela::sys::io::no_std_define::write
 //
 //! Defines the [`IoWrite`] trait.
 //

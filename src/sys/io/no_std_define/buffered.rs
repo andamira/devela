@@ -1,4 +1,4 @@
-// devela::sys::io::reimplement_no_std::buffered
+// devela::sys::io::no_std_define::buffered
 //
 //! Buffering wrappers for I/O traits
 //

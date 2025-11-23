@@ -1,4 +1,4 @@
-// devela::sys::io::reimplement_no_std::cursor
+// devela::sys::io::no_std_define::cursor
 //
 //! Defines [`IoCursor`], [`IoSeek`], [`IoSeekFrom`].
 //

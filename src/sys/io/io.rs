@@ -1,6 +1,6 @@
-// devela::sys::io::namespace
+// devela::sys::io::io
 //
-//! `Io` namespace.
+//! Defines the [`Io`] namespace.
 //
 
 #[cfg(not(feature = "std"))]

@@ -1,4 +1,4 @@
-// devela::sys::io::reimplement_no_std::fns
+// devela::sys::io::no_std_define::other
 //
 //! Defines [`IoEmpty`], [`IoRepeat`], [`io_copy`], [`io_empty`], [`io_repeat`].
 //
