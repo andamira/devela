@@ -271,7 +271,12 @@ pub mod zall {
 #[doc(hidden)]
 pub use _hidden::*;
 mod _hidden {
-    pub use super::sys::_hidden::*;
+    #[rustfmt::skip]
+    #[allow(unused_imports)]
+    pub use super::{
+        media::_hidden::*,
+        sys::_hidden::*,
+    };
 }
 
 // private, internal items

@@ -14,7 +14,7 @@ mod pnm;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
 pub mod sixel;
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
         pub use super::{error::*, pnm::*};
     }
@@ -22,5 +22,9 @@ crate::structural_mods! { // _mods, _pub_mods
         #[doc(inline)]
         #[cfg(feature = "term")]
         pub use super::sixel::_all::*;
+    }
+    _hidden {
+        #[cfg(feature = "term")]
+        pub use super::sixel::_hidden::*;
     }
 }

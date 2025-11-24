@@ -11,7 +11,7 @@ mod internals;
 // mod primitive; // ArenaPrimitive
 // mod recipe; // ArenaRecipe
 
-crate::structural_mods! { // _mods, hidden
+crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
             define::*,

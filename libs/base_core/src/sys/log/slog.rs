@@ -219,36 +219,19 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! slog {
     (
+    /* public API*/
+
     // Define a static logger.
     $(#[$attrs:meta])*
     $vis:vis new $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
-        $(#[$attrs])*
-        // #[doc = "A single-thread global static logger `" $($id ":" )? $CAP "+" $LEN "`."]
-        ///
-        /// Query it with the [`slog!`] macro.
-        /// ```
-        /// # use devela_base_core::*;
-        /// # #[cfg(feature = "__std")]
-        #[doc = "slog![for_each " $($id ":" )? $CAP "+" $LEN " |i, s, _| println!(\"[{i}] {s}\")];"]
-        /// ```
-        // #[doc = "See also the fn `" [<__logger_ $($id _)? $CAP _ $LEN>] "()`."]
-        #[allow(non_upper_case_globals, reason = "case-sensitive $id")]
-        $vis static mut [<__LOGGER_ $($id _)? $CAP _ $LEN>]: $crate::LoggerStatic<$CAP, $LEN>
-            = $crate::LoggerStatic::new();
-
-        #[doc(hidden)] // the unsafe accessor is always hidden
-        $(#[$attrs])*
-        #[doc = "Returns a mutable reference to the global static [`" [<__LOGGER_ $($id _)? $CAP _ $LEN>] "`]."]
-        ///
-        /// # Safety
-        /// The caller must ensure single-threaded discipline when mutating the returned reference.
-        #[inline(always)]
-        $vis const unsafe fn [<__logger_ $($id _)? $CAP _ $LEN>]()
-            -> &'static mut $crate::LoggerStatic<$CAP, $LEN> {
-            #[allow(static_mut_refs, reason = "accessing the single-thread static logger instance")]
-            // SAFETY: user upholds single-threaded access to this static instance.
-            unsafe { &mut [<__LOGGER_ $($id _)? $CAP _ $LEN>] }
-        }
+        $crate::slog![@$(#[$attrs])* $vis new
+            $($id:)? $CAP+$LEN,
+            // NOTE: getting the ident using the macro doesn't seem compatible with paste!
+            // slog![@static_ident $($id:)?$CAP+$LEN],
+            // slog![@fn_ident $($id:)?$CAP+$LEN],
+            [<__LOGGER_ $($id _)?$CAP _$LEN>], // $static
+            [<__logger_ $($id _)?$CAP _$LEN>], // $fn
+        ];
     }};
     (
     // Clear all logs.
@@ -295,15 +278,69 @@ macro_rules! slog {
         $crate::slog!(@get $($id:)? $CAP + $LEN).truncation_stats();
     };
     (
-    // Returns the name of the global static logger as a string slice.
+    // Returns the name name of the global static as a static string slice.
     static_name $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
-        stringify! { [<__LOGGER_ $($id _)? $CAP _ $LEN>] }
+        stringify!{ $crate::slog![@static_ident $($id :)? $CAP+$LEN] }
     }};
+    // (
+    // // Returns name of the global fn as a static string slice.
+    // fn_name $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
+    //     stringify!{ $crate::slog![@fn_ident $($id :)? $CAP+$LEN] }
+    // }};
     (
-    // inner helper to get the global static reference
-    @get $($id:ident :)? $CAP:literal + $LEN:literal) => {{
-        $crate::paste! { unsafe { [<__logger_ $($id _)? $CAP _ $LEN>]() } }
+    /* private API */
+    @$(#[$attrs:meta])*
+    $vis:vis new $($id:ident :)? $CAP:literal + $LEN:literal,
+    $static:ident, $fn:ident $(,)?) => { $crate::paste! {
+        $(#[$attrs])*
+        #[doc = "\nA single-thread global static logger `" $($id ":" )? $CAP "+" $LEN "`."]
+        ///
+        /// Query it with the [`slog!`] macro.
+        /// ```
+        /// # use devela_base_core::*;
+        /// # #[cfg(feature = "__std")]
+        #[doc = "slog![for_each " $($id ":" )? $CAP "+" $LEN " |i, s, _| println!(\"[{i}] {s}\")];"]
+        /// ```
+        // #[doc = "See also the fn `" $fn "()`."]
+        #[allow(non_upper_case_globals, reason = "case-sensitive $id")]
+        $vis static mut $static: $crate::LoggerStatic<$CAP, $LEN> = $crate::LoggerStatic::new();
+
+        #[doc(hidden)] // the unsafe fn accessor is always hidden
+        $(#[$attrs])*
+        #[doc = "Returns a mutable reference to the global static [`" $static "`]."]
+        ///
+        /// # Safety
+        /// The caller must ensure single-threaded discipline when mutating the returned reference.
+        #[inline(always)]
+        $vis const unsafe fn $fn() -> &'static mut $crate::LoggerStatic<$CAP, $LEN> {
+            #[allow(static_mut_refs, reason = "accessing the single-thread static logger instance")]
+            // SAFETY: user upholds single-threaded access to this static instance.
+            unsafe { &mut $static }
+        }
     }};
+    // returns the global static reference
+    (@get $($id:ident :)? $CAP:literal + $LEN:literal) => {{
+        unsafe { $crate::slog![@fn_ident $($id :)? $CAP+$LEN]() }
+    }};
+    // returns the identifier of the global static
+    (@static_ident $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
+        [<__LOGGER_ $($id _)? $CAP _ $LEN>]
+    }};
+    // returns the identifier of the global fn
+    (@fn_ident $($id:ident :)? $CAP:literal + $LEN:literal) => { $crate::paste! {
+        [<__logger_ $($id _)? $CAP _ $LEN>]
+    }};
+    // import the static
+    (@$(#[$attr:meta])*
+     $vis:vis use static: $($id:ident :)? $CAP:literal+$LEN:literal in $path:path) => {
+        // NOTE: we can't call a macro to get the ident at the end of the path.
+        $crate::paste! { $(#[$attr])* $vis use $path::[<__LOGGER_ $($id _)? $CAP _ $LEN>]; }
+    };
+    // import the fn
+    (@$(#[$attr:meta])*
+     $vis:vis use fn: $($id:ident :)? $CAP:literal+$LEN:literal in $path:path) => {
+        $crate::paste! { $(#[$attr])* $vis use $path::[<__logger_ $($id _)? $CAP _ $LEN>]; }
+    };
 }
 #[doc(inline)]
 pub use slog;

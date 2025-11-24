@@ -42,4 +42,7 @@ crate::structural_mods! { // _pub_mods, _internals
     _crate_internals {
         #[cfg(feature = "color")] pub use super::color::_crate_internals::*;
     }
+    _hidden {
+        #[cfg(feature = "image")] pub use super::image::_hidden::*;
+    }
 }

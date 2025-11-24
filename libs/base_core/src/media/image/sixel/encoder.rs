@@ -31,7 +31,6 @@ impl<const MAX_COLORS: usize> Default for SixelEncoder<MAX_COLORS> {
 }
 
 __dbg! { slog! {
-    // #[doc(hidden)]
     #[doc = crate::_TAG_DEBUG!()]
     /// Static debug logger for [`SixelEncoder`].
     #[cfg_attr(nightly_doc, doc(cfg(feature = "__dbg")))]
