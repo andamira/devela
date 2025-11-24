@@ -15,7 +15,7 @@
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
 // private modules
-mod _std_core; // _std_core!
+mod _env; // __dbg!, _std_core!
 
 mod cdbg; // cdbg!
 mod reexports; // re-exported items
@@ -40,6 +40,6 @@ devela_base_core::structural_mods! { // _mods, _crate_internals
         // pub use super::structural::*;
     }
     _crate_internals {
-        pub(crate) use super::_std_core::*;
+        pub(crate) use super::_env::*;
     }
 }
