@@ -9,6 +9,7 @@
 //
 #![cfg_attr(doc, allow(rustdoc::broken_intra_doc_links))]
 
+pub mod audio;
 // pub mod color;
 
 // // #[cfg(feature = "draw")]
@@ -21,6 +22,7 @@ pub mod image;
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {
+        pub use super::audio::_all::*;
         // pub use super::color::_all::*;
         // pub use super::draw::_all::*;
 

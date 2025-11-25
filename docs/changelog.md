@@ -244,6 +244,9 @@ Many feature gates are removed in order to make most features make always availa
 
 ---
 ## media
+### audio
+- new types: `AudioChannel`, `AudioChannels`.
+
 ### font
 
 - new type: `FontArt`.
