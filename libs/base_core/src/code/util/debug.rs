@@ -43,11 +43,11 @@ pub use compile_warn;
 
 /// This macro returns the name of the enclosing function.
 ///
-/// As the internal implementation is based on [`type_name`][crate::AnyExt::type_name],
+/// As the internal implementation is based on [`type_name`],
 /// this macro derives all the limitations of this function.
+#[doc = crate::doclink!(custom devela "[`type_name`]" "code/trait.AnyExt.html#method.type_name")]
 ///
 /// ## Examples
-///
 /// ```
 /// mod bar {
 ///     pub fn sample_function() {

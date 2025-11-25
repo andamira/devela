@@ -1,7 +1,7 @@
 // devela_base_core::num
 //
 #![doc = crate::_DOC_NUM!()]
-#![doc = crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand)]
+#![doc = crate::_doc!(modules: crate; num: error, geom, niche, quant)] // logic, ord, rand
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: cmp, num)]

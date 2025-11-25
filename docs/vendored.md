@@ -18,7 +18,7 @@ See the linked modifications for detailed changes.
 - <i id="etcetera"></i>[etcetera] by Luna Razzaghipour,
   as the [`AppEnv`] trait and related structs ([*modifications*][M_etcetera]).
 - <i id="fmtor"></i>[fmtor] by Tyler Ruckinger,
-  as `ExtOption`'s [`fmt_or`], [`fmt_or_else`] and [`fmt_or_empty`] methods.
+  as `OptionExt`'s [`fmt_or`], [`fmt_or_else`] and [`fmt_or_empty`] methods.
 - <i id="fxhash"></i>[fxhash] by Christopher Breeden,
   as the [`HasherFx`] struct ([*modifications*][M_fxhash]).
 - <i id="mini-alloc"></i>[mini-alloc] by Offchain Labs Inc.,
@@ -44,7 +44,7 @@ See the linked modifications for detailed changes.
 [argv]: https://crates.io/crates/argv/0.1.13
   [M_argv]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/argv.md
   [`IterArgsOsRef`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.IterArgsOsRef.html
-  [`Env`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.Env.html#method.args_os_ref
+  [`Env::args_os_ref`]: https://andamira.github.io/devela/latest/devela/sys/env/struct.Env.html#method.args_os_ref
 [bytehound-preload]: https://github.com/koute/bytehound/blob/77ea03c7ed90ad4f176c316cd837a77bc09aa6f3/preload/src/spin_lock.rs
   [M_bytehound-preload]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/bytehound-preload.md
   [`SpinLock`]: https://andamira.github.io/devela/latest/devela/work/sync/struct.SpinLock.html
@@ -61,9 +61,9 @@ See the linked modifications for detailed changes.
   [M_etcetera]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/etcetera.md
   [`AppEnv`]: https://andamira.github.io/devela/latest/devela/sys/env/trait.AppEnv.html
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
-  [`fmt_or`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.ExtOption.html#tymethod.fmt_or
-  [`fmt_or_else`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.ExtOption.html#tymethod.fmt_or_else
-  [`fmt_or_empty`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.ExtOption.html#tymethod.fmt_or_empty
+  [`fmt_or`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.OptionExt.html#tymethod.fmt_or
+  [`fmt_or_else`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.OptionExt.html#tymethod.fmt_or_else
+  [`fmt_or_empty`]: https://andamira.github.io/devela/latest/devela/code/util/result/trait.OptionExt.html#tymethod.fmt_or_empty
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
   [M_fxhash]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/fxhash.md
   [`HasherFx`]: https://andamira.github.io/devela/latest/devela/data/codec/hash/struct.HasherFx.html
@@ -162,7 +162,7 @@ See the linked modifications for detailed changes.
 - <i id="apply"></i>[apply] by GeorgeBurton (Unlicense),
   as part of the [`Chain`] and [`Hook`] structs.
 - <i id="blit-fonts"></i>[blit-fonts] by Andrew Reece (ISC),
-  as the [`FONT_3_5`] and [`FONT_5_6`] consts data<!-- ([*modifications*][M_blit-fonts]) -->.
+  as the [`FONT_BIT_3_5`] and [`FONT_BIT_5_6`] consts data<!-- ([*modifications*][M_blit-fonts]) -->.
 - <i id="jiff"></i>[jiff] by Andrew Gallant (Unlicense),
   as the [`TimeDelta`] struct ([*modifications*][M_jiff]).
 - <i id="pengyhash"></i>[pengyhash] by Alberto Fajardo (BSD-2),
@@ -183,8 +183,8 @@ See the linked modifications for detailed changes.
   [`Hook`]: https://andamira.github.io/devela/latest/devela/code/result/trait.Hook.html
 [blit-fonts]: https://github.com/azmr/blit-fonts
   <!-- [M_blit-fonts]: https://github.com/andamira/devela/blob/main/src/media/font/bitmap/MODS_BLIT.md -->
-  [`FONT_3_5`]: https://andamira.github.io/devela/latest/devela/media/font/const.FONT_3_5.html
-  [`FONT_5_6`]: https://andamira.github.io/devela/latest/devela/media/font/const.FONT_5_6.html
+  [`FONT_BIT_3_5`]: https://andamira.github.io/devela/latest/devela/media/font/const.FONT_BIT_3_5.html
+  [`FONT_BIT_5_6`]: https://andamira.github.io/devela/latest/devela/media/font/const.FONT_BIT_5_6.html
 [jiff]: https://crates.io/crates/jiff/0.2.1
   [M_jiff]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/jiff.md
   [`TimeDelta`]: https://andamira.github.io/devela/latest/devela/phys/time/struct.TimeDelta.html

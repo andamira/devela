@@ -37,7 +37,10 @@ const NUL_CHAR: char = '\0';
 ///       [16](Self::from_char16),
 ///       [utf8](Self::from_charu))*.
 ///   [`from_array`][Self::from_array],
-///    *([_unchecked][Self::from_array_unchecked])*.
+#[cfg_attr(
+    feature = "unsafe_str",
+    doc = "[_unchecked][Self::from_array_unchecked]<sup title='unsafe function'>⚠</sup>."
+)]
 ///
 /// - [Deconstructors](#deconstructors):
 ///   [`into_array`][Self::into_array],

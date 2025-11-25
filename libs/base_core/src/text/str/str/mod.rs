@@ -32,7 +32,7 @@ use ::core::str::from_utf8_mut;
 /// - [methods namespaced from `core::str`](#corestr-namespaced-methods)
 /// - [extra methods](#extra-methods)
 ///
-/// - [`range*` API methods](#range-api-methods-for-returning-substrings):</br>
+/// - [`range*` API methods](#range-api-methods-for-returning-substrings):<br/>
 ///   - [**range**](#method.range)
 ///    ([*checked*](#method.range_checked),
 ///     [_**mut**_](#method.range_mut),
@@ -54,7 +54,7 @@ use ::core::str::from_utf8_mut;
 ///     [_**mut**_](#method.range_to_inclusive_mut),
 ///     [*mut_checked*](#method.range_to_inclusive_mut_checked)).        ≈ `&str[..=end]`
 ///
-/// - [`take*` API methods](#take-api-methods-for-subslicing):</br>
+/// - [`take*` API methods](#take-api-methods-for-subslicing):<br/>
 ///   - [**take_first**](#method.take_first)
 ///    ([*checked*](#method.take_first_checked),
 ///     [_**mut**_](#method.take_first_mut),
@@ -68,7 +68,7 @@ use ::core::str::from_utf8_mut;
 ///     [_**mut**_](#method.take_omit_last_mut),
 ///     [*mut_checked*](#method.take_omit_last_mut_checked)).            ≈ `&str[..len - n]`
 ///
-/// - [`*split*` API methods](#split-api-methods-for-returning-substrings):</br>
+/// - [`*split*` API methods](#split-api-methods-for-returning-substrings):<br/>
 ///   - [**lsplit**](#method.lsplit)
 ///    ([*checked*](#method.lsplit_checked),
 ///    [**mut**](#method.lsplit_mut),

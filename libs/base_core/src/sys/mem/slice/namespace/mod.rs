@@ -11,6 +11,8 @@
 // - saturating subslicing.
 // - first_chunk_padded
 
+#![cfg_attr(all(doc, not(feature = "unsafe_slice")), allow(rustdoc::broken_intra_doc_links))]
+
 #[cfg(doc)]
 use crate::Str;
 
@@ -34,7 +36,7 @@ mod tests;
 /// # Methods
 /// - [methods namespaced from `core::slice`](#coreslice-namespaced-methods)
 ///
-/// - [`range*` API methods](#range-api-methods-for-subslicing):</br>
+/// - [`range*` API methods](#range-api-methods-for-subslicing):<br/>
 ///   - [**range_to**](#method.range_to)
 ///    ([*checked*](#method.range_to_checked),
 ///     [*unchecked*](#method.range_to_unchecked),
@@ -66,7 +68,7 @@ mod tests;
 ///     [*mut_checked*](#method.range_inclusive_mut_checked),
 ///     [*mut_unchecked*](#method.range_inclusive_mut_unchecked)).    ≈ `&slice[start..=end]`
 ///
-/// - [`take*` API methods](#take-api-methods-for-subslicing):</br>
+/// - [`take*` API methods](#take-api-methods-for-subslicing):<br/>
 ///   - [**take_first**](#method.take_first)
 ///    ([*checked*](#method.take_first_checked),
 ///     [*unchecked*](#method.take_first_unchecked),
@@ -86,7 +88,7 @@ mod tests;
 ///     [*mut_checked*](#method.take_omit_last_mut_checked),
 ///     [*mut_unchecked*](#method.take_omit_last_mut_unchecked)).     ≈ `&slice[..len - n]`
 ///
-/// - [`*split*` API methods](#split-api-methods-for-subslicing):</br>
+/// - [`*split*` API methods](#split-api-methods-for-subslicing):<br/>
 ///   - [**lsplit**](#method.lsplit)
 ///    ([*mut*](#method.lsplit_mut)),
 ///   - [**rsplit**](#method.rsplit)

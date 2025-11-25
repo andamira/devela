@@ -4,6 +4,8 @@
 //
 // WAIT: [intra-doc links to pointers](https://github.com/rust-lang/rust/issues/80896)
 
+#![cfg_attr(all(doc, not(feature = "unsafe_slice")), allow(rustdoc::broken_intra_doc_links))]
+
 use crate::{Hasher, NonZero, PtrNonNull, is};
 use ::core::ptr::{
     addr_eq, dangling, dangling_mut, eq, from_mut, from_ref, hash, null, null_mut,

@@ -6,6 +6,8 @@
 // - __dbg!
 // - _std_core!
 
+#![allow(unused)]
+
 crate::sf! {
     /// Feature-gates all the arguments with the `__dbg` feature.
     ///

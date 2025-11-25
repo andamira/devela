@@ -19,8 +19,9 @@ use ::core::{
 ///
 #[doc = crate::_doc!(location: "sys/mem")]
 ///
-/// See also: [`MemExt`][crate::MemExt], [`MemAligned`][crate::MemAligned]
+/// See also: [`MemExt`], [`MemAligned`][crate::MemAligned]
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
+#[doc = crate::doclink!(custom devela "[`MemExt`]" "sys/mem/trait.MemExt.html")]
 #[derive(Debug)]
 pub struct Mem;
 
@@ -32,7 +33,8 @@ impl Mem {
     /// which may generate better code on some architectures.
     ///
     /// # Requirements
-    /// - `align` must be a power of two (guaranteed when using [`MemLayout`][crate::MemLayout])
+    /// - `align` must be a power of two (guaranteed when using [`MemLayout`])
+    #[doc = crate::doclink!(custom devela "[`MemLayout`]" "sys/mem/struct.MemLayout.html")]
     ///
     /// # Examples
     /// ```

@@ -65,7 +65,7 @@ impl<'g> FontArt<'g> {
 
     /// Returns the glyph for the specified character, if available.
     ///
-    /// Returns `Some(glyph)` if `c` is within [`first_glyph`..=`last_glyph`],
+    /// Returns `Some(glyph)` if `c` is within [\`first_glyph`..=`last_glyph`\],
     ///
     /// or `None` if the character is not supported by this font.
     ///
@@ -81,7 +81,7 @@ impl<'g> FontArt<'g> {
 
     /// Returns the glyph for the specified Unicode scalar, if available.
     ///
-    /// Returns `Some(glyph)` if `c` is within [`first_glyph`..=`last_glyph`],
+    /// Returns `Some(glyph)` if `c` is within [\`first_glyph`..=`last_glyph`\],
     /// or `None` if the character is not supported by this font.
     ///
     /// # Panics
@@ -94,7 +94,7 @@ impl<'g> FontArt<'g> {
     }
     /// Returns the glyph for the specified Unicode scalar, if available.
     ///
-    /// Returns `Some(glyph)` if `c` is within [`first_glyph`..=`last_glyph`],
+    /// Returns `Some(glyph)` if `c` is within [\`first_glyph`..=`last_glyph`\],
     /// or `None` if the character is not supported by this font.
     ///
     /// # Panics
@@ -115,7 +115,7 @@ impl<'g> FontArt<'g> {
     ///
     /// # Panics
     /// Panics if:
-    /// - The character is not within [`first_glyph`..=`last_glyph`], or
+    /// - The character is not within [\`first_glyph`..=`last_glyph`\], or
     /// - The font was constructed incorrectly and `glyphs` does not contain
     ///   exactly the characters from `first_glyph` to `last_glyph` inclusive.
     pub const fn get_glyph_unchecked(&self, c: char) -> &'g [&'g str] {

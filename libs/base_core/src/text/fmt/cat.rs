@@ -3,12 +3,15 @@
 //! Defines [`fmtcat!`].
 //
 
+#[cfg(doc)]
+use crate::{FmtNum, Slice};
+
 /// Writes concatenated formatted data into a byte buffer.
 ///
 /// Expands into sequential write calls using a mutable offset, combining:
-/// - String literals: `"text"`.
-/// - Strings expressions: `@expr` — written via [`Slice::copy_str_into`].
-/// - Number expressions: `%expr` — formatted using [`FmtNum`]. (only integers for now)
+/// - String literals: `"text"`
+/// - Strings expressions: `@expr` — written via [`Slice::copy_str_into`]
+/// - Number expressions: `%expr` — formatted using [`FmtNum`] (only integers for now)
 ///
 /// # Examples
 /// ```

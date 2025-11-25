@@ -1,11 +1,13 @@
 // devela_base_core::media
 //
 #![doc = crate::_DOC_MEDIA!()]
-#![doc = crate::_doc!(modules: crate; media: audio, color, draw, font, image, video)]
+#![doc = crate::_doc!(modules: crate; media: audio, image)] // color, draw, font, video
 #![doc = crate::_doc!(newline)]
 //
 // safety
 #![cfg_attr(base_safe_media, forbid(unsafe_code))]
+//
+#![cfg_attr(doc, allow(rustdoc::broken_intra_doc_links))]
 
 // pub mod color;
 

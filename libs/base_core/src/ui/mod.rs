@@ -1,7 +1,7 @@
 // devela_base_core::ui
 //
 #![doc = crate::_DOC_UI!()]
-#![doc = crate::_doc!(modules: crate; ui: back, front, layout)]
+#![doc = crate::_doc!(modules: crate; ui: front)] // back, layout
 #![doc = crate::_doc!(newline)]
 //
 // safety

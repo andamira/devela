@@ -134,8 +134,10 @@ define_error! { composite: fmt(f)
     /// An error composite of [`NotEnoughElements`] + [`NotEnoughSpace`].
     ///
     /// Used in methods of:
-    /// [`Destaque`][crate::Destaque],
-    /// [`Stack`][crate::Stack].
+    /// [`Destaque`],
+    /// [`Stack`].
+    #[doc = crate::doclink!(custom devela "[`Destaque`]" "data/list/struct.Destaque.html")]
+    #[doc = crate::doclink!(custom devela "[`Stack`]" "data/list/struct.Stack.html")]
     pub enum DataNotEnough {
         DOC_NOT_ENOUGH_ELEMENTS: +const Elements(i|0: Option<usize>)  => NotEnoughElements(*i),
         DOC_NOT_ENOUGH_SPACE:    +const Space(i|0: Option<usize>)     => NotEnoughSpace(*i),
@@ -147,11 +149,13 @@ define_error! { composite: fmt(f)
     /// [`MismatchedIndices`] + [`MismatchedCapacity`].
     ///
     /// Used in methods of:
-    /// [`Array`][crate::Array],
-    /// [`Array2d`][crate::Array2d],
+    /// [`Array`],
+    /// [`Array2d`],
     /// [`bitfield!`][crate::bitfield],
     /// [`BitOps`],
     /// [`Bitwise`][crate::Bitwise].
+    #[doc = crate::doclink!(custom devela "[`Array`]" "data/list/struct.Array.html")]
+    #[doc = crate::doclink!(custom devela "[`Array2d`]" "data/list/struct.Array2d.html")]
     #[doc = crate::doclink!(custom devela "[`BitOps`]" "data::BitOps")]
     pub enum MismatchedBounds {
         DOC_DATA_OVERFLOW: +const

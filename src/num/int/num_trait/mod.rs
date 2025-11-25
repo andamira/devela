@@ -15,6 +15,8 @@
 //   - link_impls
 //   - ref_fn
 
+#![cfg_attr(all(doc, feature = "alloc"), allow(rustdoc::broken_intra_doc_links))] // Int::factors*
+
 #[cfg(feature = "alloc")]
 use crate::Vec;
 use crate::{GcdReturn, IntError as E, IntResult as Result, Num, ValueQuant};
@@ -877,8 +879,8 @@ use link_impls;
 /// Links to the version that operates on references.
 macro_rules! ref_fn {
     ($fn:literal) => {
-        concat! { "Similar to [", $fn, "][Self::",
-        $fn, "], but operates on references instead of values." }
+        concat! { "Similar to [", $fn, "][Self::", $fn,
+        "], but operates on references instead of values." }
     };
 }
 use ref_fn;

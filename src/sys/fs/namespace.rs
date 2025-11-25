@@ -15,7 +15,7 @@ use crate::{
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Filesystem-related operations.
 ///
-/// See also: [`ExtPath`][crate::ExtPath], [`fsPath`][crate::FsPath].
+/// See also: [`PathExt`][crate::PathExt], [`fsPath`][crate::FsPath].
 #[derive(Debug)]
 pub struct Fs;
 

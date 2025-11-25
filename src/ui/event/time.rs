@@ -54,21 +54,22 @@ impl EventTimestamp {
     /// Creates a timestamp from integer milliseconds.
     ///
     /// The `u32` value is stored directly as the underlying bit pattern and is
-    /// intended to be paired with [`as_millis_u32`].
+    /// intended to be paired with [`as_millis_u32`][Self::as_millis_u32].
     pub const fn from_millis_u32(ms: u32) -> Self {
         Self::new(f32bits_niche::from_bits(ms))
     }
 
     /// Interprets the stored bits as `u32` milliseconds and returns them.
     ///
-    /// Only meaningful if the timestamp was created through [`from_millis_u32`].
+    /// Only meaningful if the timestamp was created through
+    /// [`from_millis_u32`][Self::from_millis_u32].
     #[must_use]
     pub const fn as_millis_u32(&self) -> u32 { self.ms.as_bits() }
 
     /// Converts integer milliseconds to `f32` and stores the resulting bit pattern.
     ///
     /// This is the integer → floating-point path and is intended to be paired
-    /// with [`as_millis_f32_to_u32`].
+    /// with [`as_millis_f32_to_u32`][Self::as_millis_f32_to_u32].
     pub const fn from_millis_u32_as_f32(ms: u32) -> Self {
         Self::new(f32bits_niche::new(ms as f32))
     }
@@ -76,7 +77,8 @@ impl EventTimestamp {
     /// Returns the stored `f32` milliseconds truncated to `u32`.
     ///
     /// Only meaningful if the timestamp was created from a floating-point-based
-    /// constructor (such as [`from_secs_f32`] or [`from_millis_f32`]).
+    /// constructor (such as [`from_secs_f32`][Self::from_secs_f32] or
+    /// [`from_millis_f32`][Self::from_millis_f32]).
     #[must_use]
     pub const fn as_millis_f32_to_u32(&self) -> u32 { self.ms.as_float() as u32 }
 }

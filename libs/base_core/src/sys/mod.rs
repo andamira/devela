@@ -1,7 +1,7 @@
 // devela_base_core::sys
 //
 #![doc = crate::_DOC_SYS!()]
-#![doc = crate::_doc!(modules: crate; sys: arch, env, fs, io, log, mem, net, os)]
+#![doc = crate::_doc!(modules: crate; sys: arch, env, log, mem, net)] // fs, io, os
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,

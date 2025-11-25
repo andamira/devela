@@ -3,7 +3,7 @@
 <!-- license: Apache-2.0 OR MIT -->
   [M_argv]: crate::_doc::vendored::argv
   [`IterArgsOsRef`]: crate::sys::env::IterArgsOsRef
-  [`Env`]: crate::sys::env::Env#method.args_os_ref
+  [`Env::args_os_ref`]: crate::sys::env::Env#method.args_os_ref
   [M_bytehound-preload]: crate::_doc::vendored::bytehound_preload
   [`SpinLock`]: crate::work::sync::SpinLock
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
@@ -14,9 +14,9 @@
   [`CacheAlign`]: crate::sys::mem::CacheAlign
   [M_etcetera]: crate::_doc::vendored::etcetera
   [`AppEnv`]: crate::sys::env::AppEnv
-  [`fmt_or`]: crate::code::result::ExtOption::fmt_or
-  [`fmt_or_else`]: crate::code::result::ExtOption::fmt_or_else
-  [`fmt_or_empty`]: crate::code::result::ExtOption::fmt_or_empty
+  [`fmt_or`]: crate::code::result::OptionExt::fmt_or
+  [`fmt_or_else`]: crate::code::result::OptionExt::fmt_or_else
+  [`fmt_or_empty`]: crate::code::result::OptionExt::fmt_or_empty
   [M_fxhash]: crate::_doc::vendored::fxhash
   [`HasherFx`]: crate::data::codec::hash::HasherFx
   [M_mini-alloc]: crate::_doc::vendored::mini_alloc
@@ -71,8 +71,8 @@
   [`Chain`]: crate::code::result::Chain
   [`Hook`]: crate::code::result::Hook
  <!-- [M_blitfonts]: crate::_doc::vendored::blit-fonts -->
-  [`FONT_3_5`]: crate::media::font::FONT_3_5
-  [`FONT_5_6`]: crate::media::font::FONT_5_6
+  [`FONT_BIT_3_5`]: crate::media::font::FONT_BIT_3_5
+  [`FONT_BIT_5_6`]: crate::media::font::FONT_BIT_5_6
   [M_jiff]: crate::_doc::vendored::jiff
   [`TimeDelta`]: crate::phys::time::TimeDelta
   [M_pengyhash]: crate::_doc::vendored::pengyhash

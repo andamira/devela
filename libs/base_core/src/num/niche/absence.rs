@@ -116,10 +116,10 @@ macro_rules! impl_maybe {
             /// This constructor performs a **lossy conversion**, applying a best-effort
             /// fallback when the primitive violates the underlying type’s invariant:
             ///
-            /// - For [`NonZero*`] types, `0` becomes the smallest valid value (`MIN`).
-            /// - For [`NonValue*`] types, conversion defers to their own
+            /// - For `NonZero*` types, `0` becomes the smallest valid value (`MIN`).
+            /// - For `NonValue*` types, conversion defers to their own
             ///   [`new_lossy`](NonValueU8::new_lossy)-style semantics.
-            /// - For [`NonNiche`] and primitive integers, the value is used as-is.
+            /// - For `NonNiche` and primitive integers, the value is used as-is.
             #[must_use] #[inline(always)]
             pub const fn from_prim_lossy(value: $prim) -> Self {
                 // NonZero converts
@@ -185,7 +185,7 @@ macro_rules! impl_maybe {
             ///
             /// # Errors
             /// Will return [`Overflow`] if `self` can't fit in a `usize`.
-            #[must_use] #[inline(always)]
+            #[inline(always)]
             pub const fn try_to_usize(self) -> Result<usize, Overflow> {
                 Cast(self.as_prim()).checked_cast_to_usize()
             }

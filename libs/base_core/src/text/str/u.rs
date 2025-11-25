@@ -184,7 +184,7 @@ macro_rules! impl_str_u {
             ///
             /// # Errors
             #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
-            /// or if `CAP < c.`[`len_utf8()`][crate::UnicodeScalar#method.len_utf8].
+            /// or if `CAP < c.`[`len_utf8()`].
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             /// # Example
@@ -193,6 +193,8 @@ macro_rules! impl_str_u {
             /// assert_eq![StringU8::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
             /// assert![StringU8::<3>::from_char('🐛').is_err()];
             /// ```
+            #[doc = crate::doclink!(custom devela
+                "[`len_utf8()`]" "text/grapheme/trait.UnicodeScalar.html#method.len_utf8")]
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let bytes = Char(c).to_utf8_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();

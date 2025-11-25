@@ -67,16 +67,21 @@ macro_rules! __doc {
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
             $crate::_doc!(@meta_start_nobr), "Extends: ",
-            crate::_std_core!(), "::{", $crate::_doc!(@extends: $($mod),+), "}",
+            // crate::_std_core!(), "::{", $crate::_doc!(@extends: $($mod),+), "}",
+            "std::{", $crate::_doc!(@extends: $($mod),+), "}",
             $crate::_doc!(@meta_end_hr),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
     (@extends: $first:ident $(, $rest:ident)*) => {
         concat!(
-            "[", stringify!($first), "](mod@", crate::_std_core!(), "::", stringify!($first), ")",
+            // "[", stringify!($first), "](mod@", crate::_std_core!(), "::", stringify!($first), ")",
+            // $(
+            // ", [", stringify!($rest), "](mod@", crate::_std_core!(), "::", stringify!($rest), ")"
+            // ),*
+            "[", stringify!($first), "](https://doc.rust-lang.org/std/", stringify!($first), ")",
             $(
-            ", [", stringify!($rest), "](mod@", crate::_std_core!(), "::", stringify!($rest), ")"
+            ", [", stringify!($rest), "](https://doc.rust-lang.org/std/", stringify!($rest), ")"
             ),*
         )
     };

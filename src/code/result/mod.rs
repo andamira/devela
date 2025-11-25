@@ -13,8 +13,7 @@
 //! finds its place.
 //!
 //! It includes fundamental outcome types ([`Option`], [`Result`], [`OptRes`]),
-//! structured ownership ([`Own`]), quantified values ([`ValueQuant`]),
-//! and mismatch-aware comparisons ([`Mismatch`]).
+//! structured ownership ([`Own`]) and mismatch-aware comparisons ([`Mismatch`]).
 //
 
 mod reexports;

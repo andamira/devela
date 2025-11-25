@@ -53,6 +53,8 @@
 /// # Features
 /// The unsafe version uses [`MaybeUninit`][crate::MaybeUninit] in the case
 /// of stack allocation or [`Box::from_raw`] in the case of heap allocation.
+#[doc = crate::doclink!(custom devela
+    "[`Box::from_raw`]" "sys/mem/struct.Box.html#method.from_raw")]
 ///
 /// For the `const`, `clone`, `default` and `iter` versions, if the given
 /// `$funsafe` is enabled and the given `$fsafe` is disabled, it will use unsafe

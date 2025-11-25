@@ -3,6 +3,8 @@
 //! Naive versions of `memchr` fns
 //
 
+#![cfg_attr(all(doc, not(feature = "dep_memchr")), allow(rustdoc::broken_intra_doc_links))]
+
 #[cfg(feature = "dep_memchr")]
 use crate::_dep::memchr::*;
 
