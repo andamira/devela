@@ -10,7 +10,13 @@ mod namespace;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::_c::*;
         pub use super::namespace::*;
+
+        // re-exports
+        pub use super::_c::*;
+        pub use devela_base_core::data::iter::{
+            IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize,
+            IteratorLendingPeek,
+        };
     }
 }

@@ -213,6 +213,9 @@ Many feature gates are removed in order to make most features make always availa
   - rename `const_init` arm related to traits to `INIT in`.
   - rename `const_init*` arms unrelated to traits to `const_fn*`.
 
+### iter
+- new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
+
 ### key
 - update `define_static_map!`:
   - support custom attributes and visibility.
