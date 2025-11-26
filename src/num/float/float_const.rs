@@ -8,7 +8,7 @@
 // - macro impl_ext_float_const!
 // - struct TempFloat
 //
-// WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
+// WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/146939)
 // - SQRT_3, FRAC_1_SQRT_3, FRAC_1_SQRT_PI, PHI, EGAMMA…
 //
 // NOTE: In sync with num::float:wrapper::consts

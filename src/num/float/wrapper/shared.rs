@@ -2,6 +2,7 @@
 //
 //! Defines all the shared, cross-platform public methods for `Float`.
 //
+// WAIT: [core_float_math](https://github.com/rust-lang/rust/issues/137578)
 
 use crate::{Cmp, Float, FloatCategory, Sign, concat as cc, is, stringify as sfy, whilst};
 

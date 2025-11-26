@@ -1,14 +1,13 @@
-// devela::num::float::shared_docs
+// devela_base_num::float::_docs
 //
 //! Defines constants for shared documentation on [`Float`] and [`FloatExt`].
 #![doc = crate::doclink!(custom devela "[`FloatExt`]" "num/trait.FloatExt.html")]
-//
 //
 // TOC
 // - constants: _FLOAT_CONST_*
 // - formulas: _FLOAT_FORMULA_*
 
-// constants
+// documentation constants
 crate::CONST! { hidden macro_export,
 // identities
 _FLOAT_CONST_ONE = r#"The multiplicative identity 1."#;
