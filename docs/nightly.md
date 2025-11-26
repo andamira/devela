@@ -59,6 +59,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
 
+- 1.93: `·`[asm_cfg](https://github.com/rust-lang/rust/pull/147736)
 - 1.93: `·`[char_max_len](https://github.com/rust-lang/rust/pull/145610)
 - 1.93: `·`[core_slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
 - 1.93: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
@@ -133,6 +134,7 @@ See also
           (depends on const_trait_impl)
 - 1.??: ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
 - 1.??: ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/143874)
+- 1.??: ` `[core_float_math](https://github.com/rust-lang/rust/issues/137578)
 - 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
         = `nightly_coro` flag
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
