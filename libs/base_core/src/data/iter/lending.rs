@@ -4,9 +4,10 @@
 //! [`IteratorLendingPeek`].
 //
 
-use crate::{Deref, is};
+use crate::{_TAG_ITERATOR, is};
 
-/// A borrowing iterator using a generic associated lifetime.
+#[doc = _TAG_ITERATOR!()]
+/// A lending iterator using a generic associated lifetime.
 ///
 /// A lending iterator yields items borrowed from its own internal state.
 /// Each call to [`next`][Self::next] creates a temporary borrow of `self`
@@ -235,6 +236,7 @@ pub trait IteratorLending {
     // ✓ is_sorted_by_key
 }
 
+#[doc = _TAG_ITERATOR!()]
 /// A lending iterator that can yield items from the back.
 ///
 /// This is the borrowing analogue of [`DoubleEndedIterator`].
@@ -275,6 +277,7 @@ pub trait IteratorLendingDoubleEnded: IteratorLending {
     }
 }
 
+#[doc = _TAG_ITERATOR!()]
 /// A lending iterator with a known remaining length.
 ///
 /// Types implementing this trait can report how many items are left
@@ -298,6 +301,7 @@ pub trait IteratorLendingExactSize: IteratorLending {
     }
 }
 
+#[doc = _TAG_ITERATOR!()]
 /// A lending iterator that can inspect the next item without advancing.
 ///
 /// The returned reference is tied to the temporary mutable borrow of `self`

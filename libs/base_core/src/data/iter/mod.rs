@@ -12,5 +12,7 @@ crate::structural_mods! { // _mods
             lending::*,
             reexports::*,
         };
+        #[doc(inline)]
+        pub use crate::sys::mem::{SliceIter, SliceIterMut};
     }
 }

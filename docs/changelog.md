@@ -376,6 +376,7 @@ Many feature gates are removed in order to make most features make always availa
 
 #### slice
 - new macro `slice!`.
+- new types: `SliceIter`, `SliceIterMut`.
 - move to [base]:
   - macros: `const_join!`.
   - types: `Slice`.

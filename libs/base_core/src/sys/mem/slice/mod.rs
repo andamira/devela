@@ -3,6 +3,7 @@
 //! Slices of memory.
 //
 
+mod iter; // SliceIter. SliceIterMut
 mod join; // const_join!
 mod namespace; // Slice, slice!
 
@@ -10,6 +11,7 @@ crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
+            iter::{SliceIter, SliceIterMut},
             namespace::{Slice, slice},
             join::const_join,
         };

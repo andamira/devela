@@ -5,8 +5,10 @@
 #![doc = crate::_doc!(extends: iter)]
 //
 
+mod namespace; // Iter
+
+// re-exports
 crate::mod_path!(_c "../../../libs/base_core/src/data/iter/reexports.rs");
-mod namespace;
 
 crate::structural_mods! { // _mods
     _mods {
@@ -18,5 +20,6 @@ crate::structural_mods! { // _mods
             IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize,
             IteratorLendingPeek,
         };
+        pub use devela_base_core::sys::mem::{SliceIter, SliceIterMut};
     }
 }
