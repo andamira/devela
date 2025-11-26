@@ -73,7 +73,7 @@ macro_rules! array_init {
     // safe array initialization in the stack
     safe_init [$T:ty; $LEN:expr], $init:expr) => {{
         #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
-        core::array::from_fn(|i| $init(i))
+        ::core::array::from_fn(|i| $init(i))
     }};
     (
     // safe array initialization in the stack, compile-time friendly.
@@ -251,7 +251,7 @@ macro_rules! array_init {
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         {
             let init_value = $pre?; // error prone initial value
-            let mut arr: [$T; $LEN] = core::array::from_fn(|_| init_value.clone());
+            let mut arr: [$T; $LEN] = ::core::array::from_fn(|_| init_value.clone());
             for (i, data) in $op.enumerate() {
                 arr[i] = data?;
             }

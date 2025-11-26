@@ -26,7 +26,7 @@ mod bytes;
 mod tests;
 
 #[doc = crate::_TAG_NAMESPACE!()]
-/// Slice-related operations, all of them *const*.
+/// Slice-related operations, most of them *const*.
 ///
 #[doc = crate::_doc!(location: "sys/mem")]
 ///

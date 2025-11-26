@@ -8,6 +8,15 @@ use ::core::slice::{from_raw_parts, from_raw_parts_mut};
 /// # `core::slice` namespaced methods.
 #[rustfmt::skip]
 impl<T> Slice<T> {
+    /// Clones all elements from `src` into `dst`.
+    ///
+    /// # Panics
+    /// Panics if `src` and `dst` slices have different lengths.
+    ///
+    /// See `core::slice::`[`clone_from_slice`][slice#method.clone_from_slice].
+    #[inline(always)]
+    pub fn clone(dst: &mut [T], src: &[T]) where T: Clone { dst.clone_from_slice(src); }
+
     /// Copies all elements from `src` into `dst` using a memcpy.
     ///
     /// # Panics
