@@ -18,8 +18,10 @@
 
 # NOTE: this is a temporary fix to be able to pass unstable flags only in nightly
 # WAIT: [unstable flags](https://github.com/rust-lang/cargo/issues/14733#issuecomment-2520030015)
+# WAIT: [config-include](https://github.com/rust-lang/cargo/issues/7723#event-21173644041)
 # ------------------------------------------------------------------------------
-include = "nightly.toml"
+# include = [{ path = "nightly.toml", optional = true }]
+include = ["nightly.toml"]
 
 
 [unstable]

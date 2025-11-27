@@ -90,7 +90,14 @@
 // `nightly_stable_1_93`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_93,
-    feature(asm_cfg, char_max_len, core_slice_as_array, duration_from_nanos_u128, fmt_from_fn,)
+    feature(
+        asm_cfg,
+        char_max_len,
+        core_slice_as_array,
+        duration_from_nanos_u128,
+        fmt_from_fn,
+        maybe_uninit_write_slice,
+    )
 )]
 #![cfg_attr(
     all(nightly_stable_1_93, feature = "alloc"),
