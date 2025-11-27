@@ -19,7 +19,7 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 // #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
 // #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
-#![cfg_attr(nightly_float, feature(f16, f128))]
+// #![cfg_attr(nightly_float, feature(f16, f128))]
 // #![cfg_attr(nightly_simd, feature(portable_simd))]
 
 extern crate self as devela_base_num;
@@ -27,7 +27,6 @@ extern crate self as devela_base_num;
 mod _internals; // upcasted_op!, impl_ops!
 
 mod int; // Int
-mod float; // Float, FloatConst
 mod quant; // ValueQuant
 
 #[doc(hidden)]
@@ -42,7 +41,6 @@ pub mod zall {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
-        float::_all::*,
         int::_all::*,
         quant::_all::*,
     };
@@ -71,7 +69,6 @@ pub mod _workspace_internals {
     #[allow(unused_imports)]
     pub use super::{
         _internals::*,
-        float::_workspace_internals::*,
         int::_workspace_internals::*,
     };
 }

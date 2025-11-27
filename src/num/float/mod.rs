@@ -19,8 +19,9 @@ crate::structural_mods! { // _mods
         // re-exports
         pub use super::_c::*;
         #[doc(inline)]
-        pub use devela_base_core::{f32bits, f32bits_niche, f64bits, f64bits_niche, fsize};
-        #[doc(inline)]
-        pub use devela_base_num::{FloatConst};
+        pub use devela_base_core::{
+            FloatConst,
+            f32bits, f32bits_niche, f64bits, f64bits_niche, fsize,
+        };
     }
 }

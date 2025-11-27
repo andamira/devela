@@ -41,6 +41,7 @@ crate::structural_mods! { //_mods, _pub_mods
     }
     _workspace_internals {
         pub use super::{
+            float::_workspace_internals::*,
             geom::_workspace_internals::*,
             niche::_workspace_internals::*,
         };
