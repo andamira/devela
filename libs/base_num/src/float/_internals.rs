@@ -5,6 +5,8 @@
 // TODO: make crate-private once possible
 
 use crate::PhantomData;
+#[cfg(nightly_float)]
+use ::core::{f16, f128};
 
 /// Private helper struct to define manual, type-dependendent constants.
 #[derive(Debug)]

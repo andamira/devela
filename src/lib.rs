@@ -137,7 +137,6 @@
         macro_metavar_expr,
         macro_metavar_expr_concat,
         maybe_uninit_slice,
-        maybe_uninit_write_slice,
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
