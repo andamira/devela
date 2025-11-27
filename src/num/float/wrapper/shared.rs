@@ -140,21 +140,9 @@ macro_rules! impl_float_shared {
 
             /// A number that represents its sign, propagating `NaN`.
             pub const fn signum(self) -> Float<$f> { Float(self.0.signum()) }
-            #[allow(missing_docs)]
-            #[deprecated(since = "0.23.0", note = "use `signum()` instead")]
-            pub const fn const_signum(self) -> Float<$f> { self.signum() }
-            // if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.copysign(self.0) }
 
             /// A number composed of the magnitude of itself and the `sign` of other.
             pub const fn copysign(self, sign: $f) -> Float<$f> { Float(self.0.copysign(sign)) }
-            #[allow(missing_docs)]
-            #[deprecated(since = "0.23.0", note = "use `copysign()` instead")]
-            pub const fn const_copysign(self, sign: $f) -> Float<$f> { self.copysign(sign) }
-            // const SIGN_MASK: $uf = <$uf>::MAX / 2 + 1;
-            // const VALUE_MASK: $uf = <$uf>::MAX / 2;
-            // let sign_bit = sign.to_bits() & SIGN_MASK;
-            // let value_bits = self.0.to_bits() & VALUE_MASK;
-            // Float(<$f>::from_bits(value_bits | sign_bit))
 
             /// Returns the [`Sign`].
             pub const fn sign(self) -> Sign {
@@ -410,15 +398,6 @@ macro_rules! impl_float_shared {
                 // if other.is_nan() || self.0 < other { self } else { Float(other) }
                 Self(self.0.min(other))
             }
-            ///
-            #[deprecated(since = "0.23.0", note = "use `clamp()` instead")]
-            pub const fn const_clamp(self, min: $f, max: $f) -> Float<$f> { self.clamp(min, max) }
-            ///
-            #[deprecated(since = "0.23.0", note = "use `max()` instead")]
-            pub const fn const_max(self, other: $f) -> Float<$f> { self.max(other) }
-            ///
-            #[deprecated(since = "0.23.0", note = "use `min()` instead")]
-            pub const fn const_min(self, other: $f) -> Float<$f> { self.min(other) }
 
             /// Returns itself clamped between `min` and `max`, using total order.
             ///
