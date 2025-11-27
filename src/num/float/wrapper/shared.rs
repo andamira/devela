@@ -4,7 +4,9 @@
 //
 // WAIT: [core_float_math](https://github.com/rust-lang/rust/issues/137578)
 
-use crate::{Cmp, Float, FloatCategory, Sign, concat as cc, is, stringify as sfy, whilst};
+use crate::{
+    _FloatInternals, Cmp, Float, FloatCategory, Sign, concat as cc, is, stringify as sfy, whilst,
+};
 
 /// Implements methods independently of any features
 ///
@@ -93,9 +95,9 @@ macro_rules! impl_float_shared {
             /// the truncated floating-point number.
             pub const fn const_trunc(self) -> Float<$f> {
                 let bits = self.0.to_bits();
-                const BIAS: $ie = Float::<$f>::EXPONENT_BIAS as $ie;
-                const SIG_BITS: $ie = Float::<$f>::SIGNIFICAND_BITS as $ie;
-                const EXP_MASK: $uf = (1 << Float::<$f>::EXPONENT_BITS) - 1;
+                const BIAS: $ie = _FloatInternals::<$f>::EXPONENT_BIAS as $ie;
+                const SIG_BITS: $ie = _FloatInternals::<$f>::SIGNIFICAND_BITS as $ie;
+                const EXP_MASK: $uf = (1 << _FloatInternals::<$f>::EXPONENT_BITS) - 1;
 
                 #[allow(clippy::cast_possible_wrap)]
                 let exponent = (((bits >> SIG_BITS) & EXP_MASK) as $ie) - BIAS;
@@ -263,7 +265,7 @@ macro_rules! impl_float_shared {
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             pub const fn fisr(self) -> Float<$f> {
                 let (mut i, three_halfs, x2) = (self.0.to_bits(), 1.5, self.0 * 0.5);
-                i = Self::FISR_MAGIC - (i >> 1);
+                i = _FloatInternals::<$f>::FISR_MAGIC - (i >> 1);
                 let y = <$f>::from_bits(i);
                 Float(y * (three_halfs - (x2 * y * y)))
             }
@@ -293,7 +295,7 @@ macro_rules! impl_float_shared {
                 } else {
                     let mut guess = self.0;
                     let mut guess_next = 0.5 * (guess + self.0 / guess);
-                    while Self(guess - guess_next).abs().0 > Self::NR_TOLERANCE {
+                    while Self(guess - guess_next).abs().0 > _FloatInternals::<$f>::NR_TOLERANCE {
                         guess = guess_next;
                         guess_next = 0.5 * (guess + self.0 / guess);
                     }
@@ -330,7 +332,7 @@ macro_rules! impl_float_shared {
                 let mut guess = self.0;
                 loop {
                     let next_guess = (2.0 * guess + self.0 / (guess * guess)) / 3.0;
-                    if Float(next_guess - guess).abs().0 < Self::NR_TOLERANCE {
+                    if Float(next_guess - guess).abs().0 < _FloatInternals::<$f>::NR_TOLERANCE {
                         break Float(next_guess);
                     }
                     guess = next_guess;

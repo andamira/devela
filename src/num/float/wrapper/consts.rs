@@ -13,62 +13,6 @@ use crate::{Float, FloatConst};
 #[cfg(nightly_float)]
 use ::core::{f16, f128};
 
-/// impl. floating-point technical constants
-macro_rules! float_technical_const_impls {
-    () => {
-        float_technical_const_impls![
-            // Uses Lomont's single precision magic number for fisqrt
-            f32:u32[8, 0x5f37_59df, 1e-6],
-
-            // Uses Lomont's double precision magic number for fisqrt
-            // f64[11, 0x5fe6_eb50_c7b5_37a9, 1e-15],
-            //
-            // Uses Matthew Robertson's double precision magic number
-            f64:u64[11, 0x5fe6_eb50_c7b5_37a9, 1e-12]
-        ];
-        #[cfg(nightly_float)]
-        float_technical_const_impls![
-            // Uses a half-precision magic number found by brute-force
-            f16:u16[5, 0x59b9, 1e-3],
-            // Uses Matthew Robertson's quadruple precision magic number
-            f128:u128[15, 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, 1e-30]
-        ];
-    };
-    (
-        // $f:    the floating-point type
-        // $u:    unsigned integer type with the same bit-size
-        // [
-        // $ebit:  bits for the exponent
-        // $fisr: magic fisr constant
-        // $nrt:  newton-rapson-tolerance for sqrt()
-        // ]
-        $( $f:ty:$u:ty
-        [$ebit:literal, $fisr:literal, $nrt:literal] ),+) => {
-        $( float_technical_const_impls![@$f:$u[$ebit, $fisr, $nrt]]; )+
-    };
-    (@$f:ty:$u:ty
-        [$ebit:literal, $fisr:literal, $nrt:literal] ) => {
-        impl Float<$f> {
-            // MAYBE move below (split them up)
-            // MAYBE move to FloatConst (make all public)
-            #[doc = crate::_FLOAT_CONST_SIGNIFICAND_BITS!()]
-            pub const SIGNIFICAND_BITS: u32 = <$f>::MANTISSA_DIGITS -1;
-            #[doc = crate::_FLOAT_CONST_EXPONENT_BIAS!()]
-            pub const EXPONENT_BIAS: u32 = <$f>::MAX_EXP as u32 - 1;
-            #[doc = crate::_FLOAT_CONST_EXPONENT_BITS!()]
-            pub const EXPONENT_BITS: u32 = $ebit;
-
-            /// Fast inverse square root magic constant.
-            pub(super) const FISR_MAGIC: $u = $fisr;
-
-            /// Tolerances for the difference between successive guesses using the
-            /// Newton-Raphson method for square root calculation:
-            pub(super) const NR_TOLERANCE: $f = $nrt;
-        }
-    };
-}
-float_technical_const_impls![];
-
 /// impl mathematical constants
 ///
 /// $f: the floating-point type.
