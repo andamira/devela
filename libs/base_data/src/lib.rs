@@ -9,6 +9,8 @@
 
 extern crate self as devela_base_data;
 
+// pub mod data;
+
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub use zall::*;
@@ -22,7 +24,7 @@ pub mod zall {
     // #[rustfmt::skip]
     // #[doc(inline)]
     // pub use super::{
-    //     grapheme::_all::*,
+    //     data::_all::*,
     // };
 }
 
@@ -48,7 +50,6 @@ pub mod _workspace_internals {
     // #[rustfmt::skip]
     // #[allow(unused_imports)]
     // pub use super::{
-    //     _internals::*,
-    //     _?::_workspace_internals::*,
+    //     data::_workspace_internals::*,
     // };
 }

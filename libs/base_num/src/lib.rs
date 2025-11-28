@@ -24,10 +24,7 @@
 
 extern crate self as devela_base_num;
 
-mod _internals; // upcasted_op!, impl_ops!
-
-mod int; // Int
-mod quant; // ValueQuant
+pub mod num;
 
 #[doc(hidden)]
 pub use zall::*;
@@ -41,8 +38,7 @@ pub mod zall {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
-        int::_all::*,
-        quant::_all::*,
+        num::_all::*,
     };
 }
 
@@ -68,7 +64,6 @@ pub mod _workspace_internals {
     #[rustfmt::skip]
     #[allow(unused_imports)]
     pub use super::{
-        _internals::*,
-        int::_workspace_internals::*,
+        num::_workspace_internals::*,
     };
 }
