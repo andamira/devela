@@ -8,6 +8,29 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.91 became stable on [2025-10-30](https://releases.rs/docs/1.91.0/))
+> - <https://github.com/rust-lang/rust/milestone/135>
+> - <https://blog.rust-lang.org/2025/10/30/Rust-1.91.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.91.0>
+
+- 1.91: `…`[array_repeat](https://github.com/rust-lang/rust/issues/126695)
+- 1.91: ` `[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
+- 1.91: `…`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
+- 1.91: ` `[const_pathbuf_osstring_new](https://github.com/rust-lang/rust/pull/145464)
+- 1.91: ` `[const_type_id](https://github.com/rust-lang/rust/pull/144133)
+- 1.91: ` `[duration_constructors_lite](https://github.com/rust-lang/rust/pull/145135)
+- 1.91: ` `[ip_from](https://github.com/rust-lang/rust/pull/141744)
+- 1.91: ` `[iter_chain](https://github.com/rust-lang/rust/pull/144963)
+- 1.91: ` `[loongarch32 inline asm](https://github.com/rust-lang/rust/pull/144402)
+- 1.91: `…`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
+- 1.91: `…`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
+- 1.91: `…`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) <!-- & 129114 -->
+- 1.91: `…`[round_char_boundary](https://github.com/rust-lang/rust/issues/93743)
+- 1.91: ` `[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
+- 1.91: ` `[strict_provenance_atomic_ptr](https://github.com/rust-lang/rust/issues/99108)
+- 1.91: ` `[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
+- 1.91: ` `[unsigned_bigint_helpers](https://github.com/rust-lang/rust/pull/144494)
+
 # 1.90 became stable on [2025-09-18](https://releases.rs/docs/1.90.0/)
 > - <https://github.com/rust-lang/rust/milestone/134>
 > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0>

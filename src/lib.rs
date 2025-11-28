@@ -97,6 +97,8 @@
         duration_from_nanos_u128,
         fmt_from_fn,
         maybe_uninit_write_slice,
+        unchecked_neg,
+        unchecked_shifts,
     )
 )]
 #![cfg_attr(
@@ -143,8 +145,6 @@
         peekable_next_if_map,
         substr_range,
         supertrait_item_shadowing,
-        unchecked_neg,
-        unchecked_shifts,
         unsafe_cell_from_mut,
     )
 )]

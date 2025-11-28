@@ -495,12 +495,14 @@ _docs_min = [ # the minimum capabilities to document every item
 ]
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
-	"devela_base_core/_docs", "devela_base_alloc?/_docs", "devela_base_std?/_docs",
+	"devela_base_core/_docs_nodep", "devela_base_alloc?/_docs", "devela_base_std?/_docs",
 	#
 	"devela_macros?/_docs_nodep",
 ]
 _docs = [ # + dependencies
 	"_docs_nodep", "dep_all",
+	"devela_base_core/_docs",
+	#
 	"devela_macros?/_docs",
 ]
 

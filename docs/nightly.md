@@ -21,30 +21,7 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-# 1.91 will be stable on 2025-10-30 ([`nightly_stable_1_91`](https://releases.rs/docs/1.91.0/))
-> - <https://github.com/rust-lang/rust/milestone/135>
-<!-- > - <https://blog.rust-lang.org/2025/10/30/Rust-1.91.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.91.0> -->
-
-- 1.91: `·`[array_repeat](https://github.com/rust-lang/rust/issues/126695)
-- 1.91: `·`[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
-- 1.91: `·`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
-- 1.91: `s`[const_pathbuf_osstring_new](https://github.com/rust-lang/rust/pull/145464)
-- 1.91: `·`[const_type_id](https://github.com/rust-lang/rust/pull/144133)
-- 1.91: `·`[duration_constructors_lite](https://github.com/rust-lang/rust/pull/145135)
-- 1.91: `·`[ip_from](https://github.com/rust-lang/rust/pull/141744)
-- 1.91: `·`[iter_chain](https://github.com/rust-lang/rust/pull/144963)
-- 1.91: ` `[loongarch32 inline asm](https://github.com/rust-lang/rust/pull/144402)
-- 1.91: `s`[panic_payload_as_str](https://github.com/rust-lang/rust/issues/125175)
-- 1.91: `s`[path_add_extension](https://github.com/rust-lang/rust/pull/145209)
-- 1.91: `s`[path_file_prefix](https://github.com/rust-lang/rust/pull/144870) <!-- & 129114 -->
-- 1.91: `·`[round_char_boundary](https://github.com/rust-lang/rust/issues/93743)
-- 1.91: `·`[strict_overflow_ops](https://github.com/rust-lang/rust/pull/144682)
-- 1.91: `·`[strict_provenance_atomic_ptr](https://github.com/rust-lang/rust/issues/99108)
-- 1.91: `·`[unsigned_signed_diff](https://github.com/rust-lang/rust/pull/144900)
-- 1.91: ` `[unsigned_bigint_helpers](https://github.com/rust-lang/rust/pull/144494)
-
-# 1.92 will be stable on 2025-12-11 ([`nightly_stable_1_92`](https://releases.rs/docs/1.92.0/))
+# 1.92 will be stable on [2025-12-11](https://releases.rs/docs/1.92.0/) `nightly_stable_1_92`
 <!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
 <!-- > - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
@@ -54,8 +31,8 @@ See also
 - 1.92: `a`[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
 - 1.92: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 
-# 1.93 will be stable on 2026-01-22 ([`nightly_stable_1_93`](https://releases.rs/docs/1.93.0/))
-<!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
+# 1.93 will be stable on [2026-01-22](https://releases.rs/docs/1.93.0/) `nightly_stable_1_93`
+<!-- > - <https://github.com/rust-lang/rust/milestone/137> -->
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
 
@@ -70,6 +47,13 @@ See also
 - 1.93: `a`[vec_into_raw_parts](https://github.com/rust-lang/rust/pull/148827)
 - 1.93: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
 - 1.93: `s`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
+- 1.93: `·`[unchecked_neg](https://github.com/rust-lang/rust/pull/149087)
+- 1.93: `·`[unchecked_shifts](https://github.com/rust-lang/rust/pull/149087)
+
+# 1.94 will be stable on [2026-03-05](https://releases.rs/docs/1.94.0/) `nightly_stable_1_94`
+<!-- > - <https://github.com/rust-lang/rust/milestone/139> -->
+<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.94.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.94.0> -->
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -109,8 +93,6 @@ See also
 - 1.??: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
-- 1.??: `·`[unchecked_neg](https://github.com/rust-lang/rust/pull/149087)
-- 1.??: `·`[unchecked_shifts](https://github.com/rust-lang/rust/pull/149087)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
