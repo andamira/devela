@@ -18,7 +18,7 @@ mod impls_alloc {
 macro_rules! hashbrown_or_std {
     (start) => {
         "<span class='stab portability'
-        title='re-exported from either `hashbrown` or `std`'>`std?`</span>"
+        title='re-exported from either `hashbrown` or `std`'>`≡std`</span>"
     };
     (end) => {
         "\n\n*Re-exported from either the [`hashmap`](https://docs.rs/hasmap) crate
@@ -61,23 +61,21 @@ mod hashbrown_reexports {
 pub use std_reexports::*;
 #[cfg(all(not(feature = "dep_hashbrown"), feature = "std"))]
 mod std_reexports {
-    use super::hashbrown_or_std;
-
-    #[doc = hashbrown_or_std!(start)]
+    #[doc = super::hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
-    #[doc = hashbrown_or_std!(end)]
+    #[doc = super::hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::HashMap;
 
-    #[doc = hashbrown_or_std!(start)]
+    #[doc = super::hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
-    #[doc = hashbrown_or_std!(end)]
+    #[doc = super::hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::Entry as HashMapEntry;
 
-    #[doc = hashbrown_or_std!(start)]
+    #[doc = super::hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
-    #[doc = hashbrown_or_std!(end)]
+    #[doc = super::hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::HashSet;
 }

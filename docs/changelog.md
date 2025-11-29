@@ -285,9 +285,11 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]
   - aliases: `fsize`.
   - traits: `FloatConst`.
+  - types: `Float`.
   - float shared docs prefixed with `_FLOAT_`.
 - new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
 - make std `Float` methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
+- split out std-enabled implementation as internal `FloatStd`.
 - rename: `ExtFloat` to `FloatExt`.
 - remove deprecated `Float` methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
 

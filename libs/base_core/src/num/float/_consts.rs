@@ -4,6 +4,8 @@
 //
 // MAYBE duplicate the literals of synonymous constants.
 
+#![allow(clippy::crate_in_macro_def, reason = "crate::*")]
+
 // mathematical constants
 crate::CONST! { hidden macro_export,
     /* pi */

@@ -110,7 +110,10 @@ crate::CONST! { hidden macro_export,
     /* misc. */
 
     _TAG_MAYBE_STD = concat!($crate::SPAN_OPEN!(),
-        "'re-exported from rust&#39;s `std` or recreated if `not(std)`'>`?std`</span>");
+        "'re-exported from `std` when available, otherwise replaced with an internal equivalent'>`?std`</span>");
+
+    _TAG_OPTIONAL_STD = concat!($crate::SPAN_OPEN!(),
+        "'uses `std` features when enabled; or employs fallbacks otherwise'>`±std`</span>");
 
     _TAG_CODEGEN_BUILD = concat!($crate::SPAN_OPEN!(),
     "'code generated in the build script'>", "<small>cgen</small></span>");

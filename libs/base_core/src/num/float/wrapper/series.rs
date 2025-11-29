@@ -1,13 +1,16 @@
-// devela::num::float::wrapper::shared_series
+// devela_base_core::num::float::wrapper::taylor
 //
 //! Shared methods implemented using Taylor Series.
 //
 // TOC
 // - impl_float_shared_series!
 // - CONST tables
-// - fn helpers
+//
+// TODO: f16, 128
+// NOTE: this file is symlinked from devela_base_std::num::float::wrapper
 
-use crate::{Float, is, paste, whilst};
+use super::definition::Float;
+use crate::{is, paste, whilst};
 
 /// Implements methods independently of any features
 ///
@@ -24,7 +27,7 @@ macro_rules! impl_float_shared_series {
     };
     (@$f:ty:$uf:ty, $ue:ty) => {
         ///
-        /// # *Common methods with or without `std`*.
+        /// # *Common methods with or without `std`.*
         ///   *Implemented using Taylor series.*
         impl Float<$f> {
             /// Raises itself to the `y` floating point power using the Taylor series via the

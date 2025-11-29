@@ -7,7 +7,7 @@
 #![doc = crate::_doc!(extends: cmp, num)]
 //
 
-mod _internals; // upcasted_op!, impl_ops!
+mod _internals; // upcasted_op!
 
 mod int; // Int
 mod quant; // ValueQuant

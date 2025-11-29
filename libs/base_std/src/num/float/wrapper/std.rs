@@ -5,9 +5,8 @@
 // TOC
 // - macro impl_fp!
 // - impls for std
-// - impls for not(std)
 
-use crate::Float;
+use super::definition::Float;
 
 /// Macro helper for implementing methods for `Float`, from `std`.
 ///
@@ -16,7 +15,6 @@ use crate::Float;
 /// $doc: an optional documentation string.
 /// $opfn: the original operation function name.
 /// $op: the new operation function name in Float.
-#[cfg(feature = "std")]
 macro_rules! impl_fp {
     (
         // Matches a wildcard floating-point type (f*).
@@ -31,7 +29,6 @@ macro_rules! impl_fp {
         // Generates the impl block for Float<$f> and calls the matching implementation.
         $lib:ident : $f:ty : $($ops:tt)*
     ) => { $crate::paste! {
-        #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
         impl Float<$f> {
             impl_fp![@$lib : $f : $($ops)*];
         }
@@ -54,10 +51,8 @@ macro_rules! impl_fp {
         }
     };
 }
-#[cfg(feature = "std")]
 use impl_fp;
 
-#[cfg(feature = "std")]
 mod _std {
     use super::{Float, impl_fp};
 
@@ -183,81 +178,6 @@ mod _std {
                     let trunc = self.trunc();
                     (trunc, Float(self.0 - trunc.0))
                 }
-            }
-        };
-    }
-    custom_impls!();
-}
-
-#[cfg(not(feature = "std"))]
-mod _no_std {
-    use super::Float;
-
-    /// $f:   the floating-point type.
-    /// $uf:  unsigned int type with the same bit-size.
-    /// $ie:  the integer type for integer exponentiation.
-    macro_rules! custom_impls {
-        () => {
-            custom_impls![(f32, u32, i32), (f64, u64, i32)];
-        };
-        ($( ($f:ty, $uf:ty, $ie:ty)),+) => {
-            $( custom_impls![@$f, $uf, $ie]; )+
-        };
-        (@$f:ty, $uf:ty, $ie:ty) => {
-            /// # *Implementations without `std`
-            impl Float<$f> {
-                /// The largest integer less than or equal to itself.
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_FLOOR!()]
-                pub const fn floor(self) -> Float<$f> { self.const_floor() }
-
-                /// The smallest integer greater than or equal to itself.
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_CEIL!()]
-                pub const fn ceil(self) -> Float<$f> { self.const_ceil() }
-
-                /// The nearest integer to itself, default rounding
-                ///
-                /// This is the default [`round_ties_away`] implementation.
-                pub const fn round(self) -> Float<$f> { self.const_round() }
-
-                /// The nearest integer to itself, rounding ties away from `0.0`.
-                ///
-                /// This is the default [`round`] implementation.
-                ///
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_AWAY!()]
-                pub const fn round_ties_away(self) -> Float<$f> {self.const_round_ties_away() }
-
-                /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_EVEN!()]
-                pub const fn round_ties_even(self) -> Float<$f> { self.const_round_ties_even() }
-
-                /// The integral part.
-                /// This means that non-integer numbers are always truncated towards zero.
-                ///
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_TRUNC!()]
-                ///
-                /// This implementation uses bitwise manipulation to remove the fractional part
-                /// of the floating-point number. The exponent is extracted, and a mask is
-                /// created to remove the fractional part. The new bits are then used to create
-                /// the truncated floating-point number.
-                pub const fn trunc(self) -> Float<$f> { self.const_trunc() }
-
-                /// The fractional part.
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_FRACT!()]
-                pub const fn fract(self) -> Float<$f> { self.const_fract() }
-
-                /// The integral and fractional parts.
-                /// # Formulation
-                #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
-                pub const fn split(self) -> (Float<$f>, Float<$f>) { self.const_split() }
-
-                /// Raises itself to the `p` integer power.
-                pub const fn powi(self, p: $ie) -> Float<$f> { self.const_powi(p) }
             }
         };
     }

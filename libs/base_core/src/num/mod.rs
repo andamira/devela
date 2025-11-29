@@ -9,11 +9,13 @@
 // safety
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
 
+mod _internals; // impl_ops!
+
 mod cast; // Cast
-mod float;
-mod int;
+mod float; // Float, FloatConst, f[32|64]_bits, fsize
+mod int; // Divisor, GcdReturn, [i|u]size_[down|up]
 mod logic; // ConstBool, False, True, const_bool!
-mod ord;
+mod ord; // Cmp
 
 pub mod error; // error types
 pub mod geom;
@@ -41,6 +43,7 @@ crate::structural_mods! { //_mods, _pub_mods
     }
     _workspace_internals {
         pub use super::{
+            _internals::*,
             float::_workspace_internals::*,
             geom::_workspace_internals::*,
             niche::_workspace_internals::*,

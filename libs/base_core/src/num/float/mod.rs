@@ -11,7 +11,7 @@ mod alias; // fsize
 mod bits; // f32bits, f64bits
 mod float_const; // FloatConst
 mod reexports; // FloatCategory
-// mod wrapper; // Float
+mod wrapper; // Float
 
 crate::structural_mods! { // _mods, _workspace_internals
     _mods {
@@ -20,7 +20,7 @@ crate::structural_mods! { // _mods, _workspace_internals
             bits::*,
             float_const::*,
             reexports::*,
-            // wrapper::_all::*,
+            wrapper::_all::*,
         };
     }
     _workspace_internals {

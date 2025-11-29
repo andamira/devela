@@ -368,8 +368,8 @@ _FLOAT_FORMULA_DERIVATIVE = r#"$$ f^{\prime}(x) \approx \frac{f(x + h) - f(x)}{h
 _FLOAT_FORMULA_INTEGRATE = r#"$$
 \int_a^b f(x) \, dx \approx \sum_{i=0}^{n-1} f(x_i) \cdot \Delta x $$
 where $$ \Delta x = \frac{b-a}{n} $$"#;
-_FLOAT_FORMULA_PARTIAL_DERIVATIVE_X = r#"
+_FLOAT_FORMULA_PARTIAL_DERIVATIVE_X = r#"$$
 \frac{\partial f}{\partial x} \approx \frac{f(x + h, y) - f(x, y)}{h} $$"#;
-_FLOAT_FORMULA_PARTIAL_DERIVATIVE_Y = r#"
+_FLOAT_FORMULA_PARTIAL_DERIVATIVE_Y = r#"$$
 \frac{\partial f}{\partial x} \approx \frac{f(x + h, y) - f(x, y)}{h} $$"#;
 }

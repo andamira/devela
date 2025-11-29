@@ -1,25 +1,18 @@
-// devela::num::float::wrapper
+// devela_base_std::num::float::wrapper::definition
 //
-//! Floating-point wrapper struct.
+//! Defines [`Float`] ([`FloatStd`] outside of the current float module).
 //
-
-mod consts;
-
-#[cfg(test)]
-mod tests_f32;
-
-mod std; // for std or no_std.
-mod shared; // implements shared methods.
-mod shared_series; // with Taylor Series.
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_TAG_OPTIONAL_STD!()]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 ///
-/// See also the [`FloatConst`][super::FloatConst] and [`FloatExt`][super::FloatExt] traits.
+/// See also the [`FloatConst`][crate::FloatConst] and [`FloatExt`] traits.
+#[doc = crate::doclink!(custom devela "[`FloatExt`]" "num/trait.FloatExt.html")]
 ///
-/// # Methods
-/// TODO
+// # Methods
+// TODO
 ///
 /// The wrapper leverages `std` if enabled, otherwise implements fallbacks.
 /// It also favors `std` style for method's names, but changes a few like `minimum`
@@ -29,12 +22,17 @@ mod shared_series; // with Taylor Series.
 pub struct Float<T>(pub T);
 
 crate::impl_ops![Float: f32, f64];
-// #[cfg(nightly_float)]
-// crate::impl_ops![Float: f16, f128];
+#[cfg(nightly_float)]
+crate::impl_ops![Float: f16, f128];
 
 #[rustfmt::skip]
 mod core_impls {
-    use crate::{Float, Ordering, FmtResult, Formatter, Display, Debug};
+    use super::Float;
+    use crate::{ConstInitCore, Debug, Display, FmtResult, Formatter, Ordering};
+
+    impl<T: ConstInitCore> ConstInitCore for Float<T> {
+        const INIT: Self = Float(T::INIT);
+    }
 
     impl<T: Clone> Clone for Float<T> {
         fn clone(&self) -> Self { Self(self.0.clone()) }

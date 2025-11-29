@@ -1,15 +1,16 @@
-// devela::num::float::wrapper::consts
+// devela_base_core::num::float::wrapper::consts
 //
-//! Constants
+//! `Float` constants.
 //!
 //! - <https://en.wikipedia.org/wiki/List_of_mathematical_constants>
 //
-// NOTE: In sync with num::float::constants
+// Note: In sync with num::float::{float_const, _consts}
+// NOTE: this file is symlinked from devela_base_std::num::float::wrapper
 
-#![allow(clippy::excessive_precision, reason = "constants are defined with 81 decimals")]
-#![allow(dead_code, reason = "WIP f16,f128")]
+#![allow(clippy::excessive_precision, reason = "constants defined with 81 decimals")]
 
-use crate::{Float, FloatConst};
+use super::definition::Float;
+use crate::FloatConst;
 #[cfg(nightly_float)]
 use ::core::{f16, f128};
 
@@ -24,7 +25,7 @@ macro_rules! float_const_impls {
     };
     ($( $f:ty),+) => { $( float_const_impls![@$f]; )+ };
     (@$f:ty) => {
-        /// # *Mathematical constants*.
+        /// # *Mathematical constants.*
         ///
         /// See [`FloatConst`].
         impl Float<$f> {

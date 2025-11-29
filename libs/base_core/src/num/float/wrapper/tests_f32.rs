@@ -1,4 +1,4 @@
-// devela::num::float::wrapper::tests
+// devela_base_core::num::float::wrapper::tests_f32
 //
 //! Tests for `Float<f32>`.
 //
@@ -101,32 +101,6 @@ fn eval_poly() {
     assert_eq![Float(3.0_f32).eval_poly(&[0.]), 0.0];
     assert_eq![Float(3.0_f32).eval_poly(&[1.]), 1.0];
     assert_eq![Float(3.0_f32).eval_poly(&[2.0, -6.0, 2.0, -1.0]), 5.0];
-}
-
-#[test]
-#[cfg(feature = "std")]
-fn sqrt_basic() {
-    let test_values = [
-        0.0_f32, 0.5, 1.0, 2.0, 10.0,
-        1e-6, // fisr: 1.0016958 vs std: 1.0
-             // 1e6, f32::MIN_POSITIVE, f32::MAX, // NOTE require higher tolerance
-    ];
-    for &x in &test_values {
-        let nr = Float(x).sqrt_nr().0;
-        let fisr = Float(x).sqrt_fisr().0; // 1e-3
-        let std = x.sqrt();
-        assert_approx_eq_all!(tolerance: 1e-9, nr, std);
-        assert_approx_eq_all!(tolerance: 1e-2, fisr, std); // looser tolerance for FISR
-    }
-}
-#[test]
-fn sqrt_hybrid() {
-    let test_values = [0.0_f32, 0.5, 1.0, 2.0, 10.0, 1e-6, 1e6, f32::MIN_POSITIVE, f32::MAX / 2.0];
-    for &x in &test_values {
-        let our = Float(x).sqrt_hybrid().0;
-        let std = x.sqrt();
-        assert_approx_eq_all!(tolerance: 1e-9, our, std);
-    }
 }
 
 /* shared series */
