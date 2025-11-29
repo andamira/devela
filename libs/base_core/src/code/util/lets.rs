@@ -84,6 +84,22 @@ macro_rules! _lets {
         let [ $($pat)+ ] = $val;
     };
     (
+    // individual declarations
+    mut $ident:ident $(: $ty:ty)?, $($rest:tt)*) => {
+        let mut $ident $(: $ty)?;
+        $crate::lets!($($rest)*);
+    };
+    (mut $ident:ident $(: $ty:ty)?) => {
+        let mut $ident $(: $ty)?;
+    };
+    ($ident:ident $(: $ty:ty)?, $($rest:tt)*) => {
+        let $ident $(: $ty)?;
+        $crate::lets!($($rest)*);
+    };
+    ($ident:ident $(: $ty:ty)?) => {
+        let $ident $(: $ty)?;
+    };
+    (
     // individual assignments
     mut $ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
         let mut $ident $(: $ty)? = $val;
