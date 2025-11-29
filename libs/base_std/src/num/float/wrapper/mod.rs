@@ -5,14 +5,14 @@
 
 mod definition; // FloatStd
 
-mod basic; // basic operations
-mod consts; // constants
-mod series; // series-based functions
+mod basic; // [SYMLINK:base_core] basic operations
+mod consts; // [SYMLINK:base_core] constants
+mod series; // [SYMLINK:base_core] series-based functions
 
 mod std; // std methods
 
-// #[cfg(test)]
-// mod tests_f32;
+#[cfg(test)]
+mod tests_f32;
 
 crate::structural_mods! { // _mods
     _mods {

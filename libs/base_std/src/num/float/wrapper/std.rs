@@ -51,10 +51,9 @@ macro_rules! impl_fp {
         }
     };
 }
-use impl_fp;
 
 mod _std {
-    use super::{Float, impl_fp};
+    use super::Float;
 
     // custom implementations are commented out:
     impl_fp![std:f*:

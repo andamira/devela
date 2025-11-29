@@ -16,7 +16,7 @@ mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod reexports;
-mod traits; // Num, NumConst, NumRef
+mod traits; // Num, NumRef
 
 #[cfg(feature = "unit")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
@@ -36,8 +36,14 @@ pub mod rand;
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
-            absence::*, error::*, float::_all::*, frac::_all::*, int::_all::*,
-            primitive::_all::*, reexports::*, traits::*,
+            absence::*,
+            error::*,
+            float::_all::*,
+            frac::_all::*,
+            int::_all::*,
+            primitive::_all::*,
+            reexports::*,
+            traits::_all::*,
         };
         #[cfg(feature = "unit")]
         pub use super::unit::_all::*;
@@ -46,8 +52,12 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _pub_mods {
         pub use super::{
-            geom::_all::*, logic::_all::*, niche::_all::*,
-            ord::_all::*, quant::_all::*,rand::_all::*,
+            geom::_all::*,
+            logic::_all::*,
+            niche::_all::*,
+            ord::_all::*,
+            quant::_all::*,
+            rand::_all::*,
         };
         // WIPZONE
         // pub use super::wip_symb::_all::*;

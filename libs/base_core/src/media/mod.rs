@@ -13,9 +13,9 @@
 #[cfg_attr(nightly_doc, doc(cfg(feature = "audio")))]
 pub mod audio;
 
-#[cfg(feature = "color")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "color")))]
-pub mod color;
+// #[cfg(feature = "color")]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "color")))]
+// pub mod color;
 
 // #[cfg(feature = "draw")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "draw")))]
@@ -29,8 +29,8 @@ crate::structural_mods! { // _pub_mods
     _pub_mods {
         #[cfg(feature = "audio")]
         pub use super::audio::_all::*;
-        #[cfg(feature = "color")]
-        pub use super::color::_all::*;
+        // #[cfg(feature = "color")]
+        // pub use super::color::_all::*;
 
         // #[cfg(feature = "draw")]
         // pub use super::draw::_all::*;

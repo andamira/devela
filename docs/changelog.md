@@ -272,7 +272,7 @@ Many feature gates are removed in order to make most features make always availa
   - all data, numeric, text & time error types.
   - macros: `const_bool!`.
   - types: `Cast`, `Cycle`, `CycleCount`, `False`, `Interval`,  `Sign`, `True`.
-  - traits: `ConstBool`.
+  - traits: `ConstBool` `NumConst`.
 - update `Interval` to use individual `IncompatibleBounds` error.
 - fix `Cast` wrapping methods performance, and correctness for negative integers.
 - move `ValueQuant` from `code::result` to `num::quant`.
@@ -290,6 +290,7 @@ Many feature gates are removed in order to make most features make always availa
 - new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
 - make std `Float` methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
 - split out std-enabled implementation as internal `FloatStd`.
+- recreate internal version of `FloatExt` in [devela_base_core].
 - rename: `ExtFloat` to `FloatExt`.
 - remove deprecated `Float` methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
 
