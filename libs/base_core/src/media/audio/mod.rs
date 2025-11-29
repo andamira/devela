@@ -9,6 +9,7 @@
 mod layout; // AudioChannel, AudioChannels
 // mod pcm; // PcmBuffer, PcmPlanar, PcmRaw, PcmWav, PcmSample, PcmSpec, …
 // mod spatial; // …
+// mod synth; // …
 
 crate::structural_mods! { // _mods
     _mods {
@@ -17,6 +18,7 @@ crate::structural_mods! { // _mods
             layout::*,
             // pcm::*,
             // spatial::*,
+            // synth::*,
         };
     }
 }

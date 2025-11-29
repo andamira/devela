@@ -32,8 +32,12 @@ __publish = []
 __std = [] # remove no_std
 
 #* Module features *#
-media = ["image"]
-	image = [] # media::image
+media = ["audio", "color", "draw", "font", "image"]
+	audio = []
+	color = []
+	draw = []
+	font = []
+	image = []
 
 ui = ["term"]
 	# layout = []
