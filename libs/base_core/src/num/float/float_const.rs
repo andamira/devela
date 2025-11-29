@@ -1,4 +1,4 @@
-// devela_base_num::float::float_const
+// devela_base_core::num::float::float_const
 //
 //! Defines [`FloatConst`] and implements it for floating-point primitives.
 //

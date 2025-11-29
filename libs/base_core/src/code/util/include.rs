@@ -43,7 +43,6 @@
 /// See [#752](https://github.com/rust-lang/rfcs/issues/752).
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 macro_rules! _include_from {
     ($module_name:ident) => {
         include!(concat!(env!("CARGO_MANIFEST_DIR"), "/", stringify!($module_name), ".rs"));

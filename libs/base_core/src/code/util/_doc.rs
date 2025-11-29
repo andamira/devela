@@ -12,7 +12,7 @@
 /// Generates a formatted meta-documentation string.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-#[expect(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
+// #[allow(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
 macro_rules! __doc {
     (@meta_start) => {
         "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"

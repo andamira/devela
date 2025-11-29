@@ -44,7 +44,7 @@ pub trait IteratorLending {
     /// Consumes the iterator, returning the number of remaining items.
     fn count(&mut self) -> usize {
         let mut n = 0;
-        while let Some(_) = self.next() { n += 1; }
+        while self.next().is_some() { n += 1; }
         n
     }
 
@@ -325,7 +325,7 @@ pub trait IteratorLendingPeek: IteratorLending {
     where
         F: FnOnce(&Self::Item<'_>) -> bool,
     {
-        is![self.peek().map(|i| pred(&i)).unwrap_or(false); self.next(); None]
+        is![self.peek().is_some_and(|i| pred(&i)); self.next(); None]
     }
 
     /// Returns the next item if it is equal to `expected`.

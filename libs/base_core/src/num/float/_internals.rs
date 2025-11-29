@@ -1,4 +1,4 @@
-// devela_base_num::float::internals
+// devela_base_core::num::float::internals
 //
 //!
 //

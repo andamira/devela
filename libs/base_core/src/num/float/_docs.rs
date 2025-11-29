@@ -1,4 +1,4 @@
-// devela_base_num::float::_docs
+// devela_base_core::num::float::_docs
 //
 //! Defines constants for shared documentation on [`Float`] and [`FloatExt`].
 #![doc = crate::doclink!(custom devela "[`FloatExt`]" "num/trait.FloatExt.html")]

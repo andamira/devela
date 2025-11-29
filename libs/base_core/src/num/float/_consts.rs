@@ -1,4 +1,4 @@
-// devela_base_num::float::_consts
+// devela_base_core::num::float::_consts
 //
 //!
 //

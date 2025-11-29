@@ -63,6 +63,7 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! is {
     ($cond:expr ; $then:expr) => {
+        #[allow(clippy::question_mark, reason = "to remain const-friendly")]
         if $cond {
             $then
         }
