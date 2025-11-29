@@ -6,7 +6,6 @@
 pub(crate) mod _consts; // PI, TAU, SQRT2, …
 pub(crate) mod _docs; // _FLOAT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
 mod _internals; // _FloatInternals
-mod ext_float; // [SYMLINK:devela] (ExtFloat)
 
 mod alias; // fsize
 mod bits; // f32bits, f64bits
@@ -23,9 +22,6 @@ crate::structural_mods! { // _mods, _crate_internals, _workspace_internals
             reexports::*,
             wrapper::_all::*,
         };
-    }
-    _crate_internals {
-        pub(crate) use super::ext_float::*; // recreated in devela
     }
     _workspace_internals {
         pub use super::{

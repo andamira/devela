@@ -2,11 +2,7 @@
 //
 //! Extention trait for floating-point primitives.
 //
-// NOTE: this file is symlinked from devela_base_core::num::float::ext_float
 // IMPROVE: remove redundant methods implemented in `core`
-
-#![allow(unexpected_cfgs, reason = "`std` feature in devela_base_core symlinked file")]
-#![allow(dead_code, reason = "privately re-expoted in devela_base_core")]
 
 use crate::{Float, FloatConst, Sign};
 
