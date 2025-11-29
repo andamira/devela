@@ -27,7 +27,7 @@ macro_rules! impl_float_basic {
         $( impl_float_basic![@$f:$uf, $ie, $ue]; )+
     };
     (@$f:ty:$uf:ty, $ie:ty, $ue:ty) => {
-        /// # *Common implementations with or without `std`.*
+        /// # *Basic common methods*
         impl Float<$f> {
             /// The largest integer less than or equal to itself.
             /// # Formulation

@@ -9,6 +9,7 @@ crate::CONST! { hidden macro_export,
     _EMOJI_ALLOCATOR = "🧺"; // 🧮, (basket, abacus)
     _EMOJI_ATOMIC = "⚛️"; // ⚛️, 🔬, 🌐
     _EMOJI_CODEC = "🥡"; // 🥡, 🔏, ⇄, (takeout-box)
+    _EMOJI_COLOR = "🎨"; // 🎨,
     _EMOJI_CONCURRENCY = "🧵"; // 🧵, 🪡, (thread, needle)
     _EMOJI_DEBUG = "🐛"; // 🐛,
     _EMOJI_DATA = "🪪"; // 🪪, 🗂️, 🧩, (id-card)
@@ -48,6 +49,8 @@ crate::CONST! { hidden macro_export,
         $crate::_EMOJI_ATOMIC!(), "</span>");
     _TAG_CODEC = concat!($crate::SPAN_OPEN!(), "'Codec-related item'>",
         $crate::_EMOJI_CODEC!(), "</span>");
+    _TAG_COLOR = concat!($crate::SPAN_OPEN!(), "'Chromatic-related item'>",
+        $crate::_EMOJI_COLOR!(), "</span>");
     _TAG_CONCURRENCY = concat!($crate::SPAN_OPEN!(), "'Concurrency-related item'>",
         $crate::_EMOJI_CONCURRENCY!(), "</span>");
     _TAG_DATA = concat!($crate::SPAN_OPEN!(), "'Data-related item'>",

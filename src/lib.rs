@@ -303,7 +303,6 @@ mod _crate_internals {
         code::_crate_internals::*,
         data::_crate_internals::*,
         lang::_crate_internals::*,
-        media::_crate_internals::*,
         num::_crate_internals::*,
     };
 }

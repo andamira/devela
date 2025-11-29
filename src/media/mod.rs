@@ -29,7 +29,7 @@ pub mod midi;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "video")))]
 pub mod video;
 
-crate::structural_mods! { // _pub_mods, _internals
+crate::structural_mods! { // _pub_mods, _hidden
     _pub_mods {
         #[cfg(feature = "audio")] pub use super::audio::_all::*;
         #[cfg(feature = "color")] pub use super::color::_all::*;
@@ -38,9 +38,6 @@ crate::structural_mods! { // _pub_mods, _internals
         #[cfg(feature = "image")] pub use super::image::_all::*;
         #[cfg(feature = "midi")]  pub use super::midi::_all::*;
         #[cfg(feature = "video")] pub use super::video::_all::*;
-    }
-    _crate_internals {
-        #[cfg(feature = "color")] pub use super::color::_crate_internals::*;
     }
     _hidden {
         #[cfg(feature = "image")] pub use super::image::_hidden::*;

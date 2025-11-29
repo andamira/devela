@@ -4,11 +4,9 @@
 //! [`Luminance`], [`Lightness`], [`Luma`], `LinearLightness`.
 //
 
-use super::*; // IMPROVE: specify
-use crate::NumConst;
-#[allow(unused_imports)]
-use crate::{Float, FloatExt};
+use crate::{_TAG_COLOR, NumConst, Rgb};
 
+#[doc = _TAG_COLOR!()]
 /// A generic luminance-like component.
 ///
 /// Represents either physical luminance, gamma-encoded luma, or perceptual lightness,
@@ -29,6 +27,7 @@ pub struct Lum<T, const LINEAR: bool = true, const LIGHTNESS: bool = false> {
 
 /* aliases*/
 
+#[doc = _TAG_COLOR!()]
 /// Physical [luminance].
 ///
 /// Linear light intensity, measured in cd/m² or normalized to [0.0, 1.0].
@@ -36,6 +35,7 @@ pub struct Lum<T, const LINEAR: bool = true, const LIGHTNESS: bool = false> {
 /// [luminance]: https://en.wikipedia.org/wiki/Luminance
 pub type Luminance<T> = Lum<T, true, false>;
 
+#[doc = _TAG_COLOR!()]
 /// Perceptual [lightness] (L*).
 ///
 /// Non-linear encoding of luminance,
@@ -44,6 +44,7 @@ pub type Luminance<T> = Lum<T, true, false>;
 /// [lightness]: https://en.wikipedia.org/wiki/Lightness
 pub type Lightness<T> = Lum<T, false, true>;
 
+#[doc = _TAG_COLOR!()]
 /// Gamma-encoded [luma] (Y′).
 ///
 /// A non-linear approximation of luminance, typically used in video systems.
@@ -51,6 +52,7 @@ pub type Lightness<T> = Lum<T, false, true>;
 /// [luma]: https://en.wikipedia.org/wiki/Luma_(video)
 pub type Luma<T> = Lum<T, false, false>;
 
+#[doc = _TAG_COLOR!()]
 /// Linearized perceptual lightness (L* in linear space).
 ///
 /// Use cases include:
@@ -117,7 +119,7 @@ macro_rules! impl_lum {
         $( impl_lum![@lumina $T|$f : $BITS+$INT]; )+
     };
     (@lumina    $T:ty | $f:ty : $BITS:literal + $INT:literal   ) => {
-        impl_color![lum: $T, $BITS, $INT, true, false];
+        // impl_color![lum: $T, $BITS, $INT, true, false]; // TEMP
 
         impl Luminance<$T> {
             /// Returns the **linear luminance** (physical light intensity, Y).
@@ -135,7 +137,7 @@ macro_rules! impl_lum {
         $( impl_lum![@light $T|$f : $BITS+$INT]; )+
     };
     (@light    $T:ty | $f:ty : $BITS:literal + $INT:literal   ) => {
-        impl_color![lum: $T, $BITS, $INT, false, true];
+        // impl_color![lum: $T, $BITS, $INT, false, true]; // TEMP
 
         impl Lightness<$T> {
             /// Returns the **perceptual lightness** (CIE L\*).
@@ -162,7 +164,7 @@ macro_rules! impl_lum {
         $( impl_lum![@luma $T|$f : $BITS+$INT]; )+
     };
     (@luma    $T:ty | $f:ty : $BITS:literal + $INT:literal    ) => {
-        impl_color![lum: $T, $BITS, $INT, false, false];
+        // impl_color![lum: $T, $BITS, $INT, false, false]; // TEMP
 
         impl Luma<$T> {
             /// Returns the **gamma-encoded luma** (non-linear Y′).
@@ -189,7 +191,7 @@ macro_rules! impl_lum {
           $( impl_lum![@lumi_light $T|$f : $BITS+$INT]; )+
     };
     (@lumi_light    $T:ty | $f:ty : $BITS:literal + $INT:literal   ) => {
-        impl_color![lum: $T, $BITS, $INT, true, true];
+        // impl_color![lum: $T, $BITS, $INT, true, true]; TEMP
 
         impl LinearLightness<$T> {
             /// Returns the **linear-light perceptual** value (experimental).

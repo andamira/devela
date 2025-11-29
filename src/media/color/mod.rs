@@ -5,27 +5,32 @@
 // safety
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
-mod helpers;
-
 mod color; // Color
-mod gamma; // Gamma
-mod luminance; // Luma, Luminance
-mod rgb; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
-
-// WIPZONE
 // mod spectral;
 // #[cfg(feature = "linear")]
 // mod xyz; // Xyz
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
-        pub use super::{color::*, gamma::*, luminance::*, rgb::_all::*};
-        // WIPZONE
-        // pub use super::spectral::*;
+        pub use super::{
+            color::*,
+            // spectral::*,
+        };
         // #[cfg(feature = "linear")]
         // pub use super::xyz::*;
-    }
-    _crate_internals {
-        pub(crate) use super::helpers::*;
+
+        // re-exports
+        pub use devela_base_core::media::color::{
+            GammaConst, Lum, // & aliases:
+            Lightness, LinearLightness, Luma, Luminance,
+            Rgb, Rgba, // & aliases:
+            Rgb8, Rgba8, RgbaPre8, Rgb16, Rgba16, RgbaPre16,
+            RgbF32, RgbaF32, RgbaPreF32, RgbF64, RgbaF64, RgbaPreF64,
+            RgbLinF32, RgbaLinF32, RgbaLinPreF32, RgbLinF64, RgbaLinF64, RgbaLinPreF64,
+        };
+        #[cfg(feature = "std")]
+        pub use devela_base_std::media::color::{
+            Gamma,
+        };
     }
 }

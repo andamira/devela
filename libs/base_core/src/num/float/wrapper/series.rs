@@ -27,8 +27,7 @@ macro_rules! impl_float_shared_series {
     };
     (@$f:ty:$uf:ty, $ue:ty) => {
         ///
-        /// # *Common methods with or without `std`.*
-        ///   *Implemented using Taylor series.*
+        /// # *Common methods implemented using Taylor series*
         impl Float<$f> {
             /// Raises itself to the `y` floating point power using the Taylor series via the
             /// `exp` and `ln` functions.

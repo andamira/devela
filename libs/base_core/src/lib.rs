@@ -126,6 +126,8 @@ pub mod _crate_internals {
     #![allow(unused_imports)]
     pub use super::{
         code::_crate_internals::*,
+        media::_crate_internals::*,
+        num::_crate_internals::*,
         ui::_crate_internals::*,
     };
 }

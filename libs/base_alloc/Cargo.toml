@@ -34,6 +34,10 @@ __std = [] # remove no_std
 #* Environment features *#
 alloc = [] # always enabled
 
+#* Module features *#
+media = ["color"]
+	color = []
+
 #* Safety features *#
 base_safe = ["devela_base_core/base_safe"]
 safe = [
@@ -46,7 +50,8 @@ safe = [
 	safe_data = ["devela_base_core/safe_data"]
 	safe_game = ["devela_base_core/safe_game"]
 	safe_lang = ["devela_base_core/safe_lang"]
-	safe_media = ["devela_base_core/safe_media"]
+	safe_media = ["devela_base_core/safe_media", "safe_color"]
+		safe_color = ["devela_base_core/safe_color"]
 	safe_num = ["devela_base_core/safe_num"]
 	safe_phys = ["devela_base_core/safe_phys"]
 	safe_sys = ["devela_base_core/safe_sys", "safe_mem"]

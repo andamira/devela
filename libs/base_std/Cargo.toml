@@ -33,6 +33,10 @@ __publish = []
 #* Environment features *#
 std = [] # to be disabled when testing workspace with no_std
 
+#* Module features *#
+media = ["color"]
+	color = []
+
 #* Safety features *#
 base_safe = ["devela_base_alloc/base_safe"]
 safe = [
@@ -45,7 +49,8 @@ safe = [
 	safe_data = ["devela_base_alloc/safe_data"]
 	safe_game = ["devela_base_alloc/safe_game"]
 	safe_lang = ["devela_base_alloc/safe_lang"]
-	safe_media = ["devela_base_alloc/safe_media"]
+	safe_media = ["devela_base_alloc/safe_media", "safe_color"]
+		safe_color = ["devela_base_alloc/safe_color"]
 	safe_num = ["devela_base_alloc/safe_num"]
 	safe_phys = ["devela_base_alloc/safe_phys"]
 	safe_sys = ["devela_base_alloc/safe_sys", "safe_mem"]

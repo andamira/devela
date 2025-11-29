@@ -28,6 +28,7 @@ items! {
     pub mod build;
     pub mod code;
     pub mod data;
+    pub mod media;
     pub mod num;
     pub mod phys;
     pub mod sys;
@@ -52,6 +53,7 @@ pub mod zall {
         build::_all::*,
         code::_all::*,
         data::_all::*,
+        media::_all::*,
         num::_all::*,
         phys::_all::*,
         sys::_all::*,

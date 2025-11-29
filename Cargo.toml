@@ -267,7 +267,7 @@ lang = ["glsl", "js"]
 media = ["audio", "color", "draw", "font", "image", "midi", "video"]
 	audio = ["devela_base_core/audio"]
 	draw = ["devela_base_core/draw"]
-	color = ["devela_base_core/color"]
+	color = ["devela_base_core/color", "devela_base_alloc?/color", "devela_base_std?/color"]
 	font = ["devela_base_core/font"]
 	image = ["devela_base_core/image"]
 	midi = []
@@ -363,11 +363,12 @@ base_safe = [
 	safe_media = [ # "devela_base_core/safe_media",
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
 		]
-		safe_audio = []
-		safe_color = []
-		safe_draw = []
-		safe_font = []
-		safe_image = []
+		safe_audio = ["devela_base_core/safe_audio"]
+		safe_color = ["devela_base_core/safe_color",
+			"devela_base_alloc?/safe_color", "devela_base_std?/safe_color"]
+		safe_draw = ["devela_base_core/safe_draw"]
+		safe_font = ["devela_base_core/safe_font"]
+		safe_image = ["devela_base_core/safe_image"]
 	safe_num = ["devela_base_num/safe"]
 	safe_phys = ["safe_time"]
 		safe_time = []
@@ -936,6 +937,11 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(base_safe_game)",
 		"cfg(base_safe_lang)",
 		"cfg(base_safe_media)",
+			"cfg(base_safe_audio)",
+			"cfg(base_safe_color)",
+			"cfg(base_safe_draw)",
+			"cfg(base_safe_font)",
+			"cfg(base_safe_image)",
 		"cfg(base_safe_num)",
 		"cfg(base_safe_phys)",
 		"cfg(base_safe_sys)",

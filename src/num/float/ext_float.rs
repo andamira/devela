@@ -6,6 +6,7 @@
 // IMPROVE: remove redundant methods implemented in `core`
 
 #![allow(unexpected_cfgs, reason = "`std` feature in devela_base_core symlinked file")]
+#![allow(dead_code, reason = "privately re-expoted in devela_base_core")]
 
 use crate::{Float, FloatConst, Sign};
 

@@ -3,9 +3,9 @@
 //! Defines [`Gamma`].
 //
 
-#[allow(unused_imports)]
-use crate::{Float, FloatExt, is};
+use crate::is;
 
+#[doc = crate::_TAG_COLOR!()]
 /// Gamma correction curves.
 ///
 /// Used for encoding and decoding linear luminance or tristimulus values
@@ -36,21 +36,11 @@ macro_rules! impl_gamma {
             ///
             /// Performs basic gamma encoding (power-law).
             pub fn encode(self, v: $T) -> $T { v.powf(self.exp.recip()) }
-            /// Compile-time [`encode`](#method.encode).
-            pub const fn const_encode(self, v: $T) -> $T {
-                let terms = Float(v).exp_series_terms();
-                Float(v).powf_series(self.exp.recip(), terms).0
-            }
 
             /// Decodes the given gamma-encoded `v`alue using this gamma: $v^γ$ .
             ///
             /// Performs basic gamma decoding (power-law inverse).
             pub fn decode(self, v: $T) -> $T { v.powf(self.exp) }
-            /// Compile-time [`decode`](#method.decode).
-            pub const fn const_decode(self, v: $T) -> $T {
-                let terms = Float(v).exp_series_terms();
-                Float(v).powf_series(self.exp, terms).0
-            }
 
             /* srgb gamma */
 
@@ -68,14 +58,6 @@ macro_rules! impl_gamma {
             pub fn encode_srgb(self, v: $T) -> $T {
                 is![v <= 0.003_130_8; 12.92 * v; 1.055 * v.powf(self.exp.recip()) - 0.055]
             }
-            /// Compile-time [`encode_srgb`](#method.encode_srgb).
-            pub const fn const_encode_srgb(self, v: $T) -> $T {
-                if v <= 0.003_130_8 { 12.92 * v }
-                else {
-                    let terms = Float(v).exp_series_terms();
-                    1.055 * Float(v).powf_series(self.exp.recip(), terms).0 - 0.055
-                }
-            }
 
             /// Decodes the given `v`alue using the sRGB inverse transfer function.
             ///
@@ -91,13 +73,6 @@ macro_rules! impl_gamma {
             /// $$
             pub fn decode_srgb(self, v: $T) -> $T {
                 is![v <= 0.040_45; v / 12.92; ((v + 0.055) / (1.055)).powf(self.exp)]
-            }
-            /// Compile-time [`decode_srgb`](#method.decode_srgb).
-            pub const fn const_decode_srgb(self, v: $T) -> $T {
-                if v <= 0.040_45 { v / 12.92 } else {
-                    let terms = Float(v).exp_series_terms();
-                    Float((v + 0.055) / (1.055)).powf_series(self.exp, terms).0
-                }
             }
         }
         /// Weighted RGB → luma conversion utilities using standard coefficients.
@@ -169,19 +144,10 @@ macro_rules! impl_gamma {
             pub fn luminance_to_lightness(y: $T) -> $T {
                 is![y <= Self::CIE_E; Self::CIE_K * y; 116.0 * y.cbrt() - 16.0]
             }
-            /// Compile-time [`luminance_to_lightness`](#method.luminance_to_lightness).
-            pub const fn const_luminance_to_lightness(y: $T) -> $T {
-                is![y <= Self::CIE_E; Self::CIE_K * y; 116.0 * Float(y).cbrt_nr().0 - 16.0]
-            }
 
             /// Converts CIE lightness (L*) to linear luminance
             pub fn lightness_to_luminance(l_star: $T) -> $T {
                 is![l_star <= 8.0; l_star / Self::CIE_K; ((l_star + 16.0) / 116.0).powi(3)]
-            }
-            /// Compile-time [`lightness_to_luminance`](#method.lightness_to_luminance).
-            pub const fn const_lightness_to_luminance(l_star: $T) -> $T {
-                if l_star <= 8.0 { l_star / Self::CIE_K }
-                else { Float((l_star + 16.0) / 116.0).const_powi(3).0 }
             }
         }
     };
