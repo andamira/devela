@@ -165,7 +165,6 @@ macro_rules! bit_sized {
         )+
     };
 }
-pub(crate) use bit_sized;
 
 /* impl BitSized */
 

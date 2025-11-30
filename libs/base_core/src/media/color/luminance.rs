@@ -214,5 +214,4 @@ macro_rules! impl_lum {
         }
     };
 }
-use impl_lum;
 impl_lum!();

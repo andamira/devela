@@ -132,7 +132,6 @@ macro_rules! mem_pod {
     (option: $($t:ty),+) => { $( mem_pod![@option: $t]; )+ };
     (@option: $t:ty) => { unsafe impl MemPod for Option<$t> {} };
 }
-pub(crate) use mem_pod;
 
 #[rustfmt::skip]
 mem_pod![(), u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize, f32, f64];

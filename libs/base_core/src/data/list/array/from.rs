@@ -17,6 +17,8 @@
 /// let arr = ArrayFrom("hello").to_array::<5>();
 /// assert_eq!(arr, *b"hello");
 /// ```
+///
+/// Used in [`const_join!`][crate::const_join] implementation.
 #[derive(Debug)]
 pub struct ArrayFrom<T>(pub T);
 

@@ -23,7 +23,7 @@ pub mod geom;
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 
-crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals
+crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
     _mods {
         pub use super::{
             cast::_all::*,
@@ -41,11 +41,6 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
             geom::_all::*,
             niche::_all::*,
             quant::_all::*,
-        };
-    }
-    _crate_internals {
-        pub(crate) use super::{
-            float::_crate_internals::*,
         };
     }
     _workspace_internals {

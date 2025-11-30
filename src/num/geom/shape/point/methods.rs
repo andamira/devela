@@ -138,7 +138,6 @@ macro_rules! impl_point {
         }
     };
 }
-use impl_point;
 impl_point!();
 
 #[rustfmt::skip]

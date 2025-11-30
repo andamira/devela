@@ -168,5 +168,4 @@ macro_rules! impl_gamma {
         }
     };
 }
-use impl_gamma;
 impl_gamma!();

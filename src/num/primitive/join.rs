@@ -8,6 +8,7 @@
 
 use crate::Cast;
 
+#[doc = crate::_TAG_NUM!()]
 /// Offers methods to construct a primitive from an array or slice of smaller primitives.
 ///
 /// Methods expecting an array are more efficient than the ones expecting an

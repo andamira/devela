@@ -8,6 +8,7 @@
 
 use crate::Cast;
 
+#[doc = crate::_TAG_NUM!()]
 /// Offers methods to split a primitive into an array of smaller primitives.
 ///
 /// See also the [`Cast`] type for the equivalent *const* methods, and the

@@ -2,6 +2,7 @@
 //
 //! Defines [`Gamma`].
 //
+// WAIT: when required std operations are in core and const we willll rename GammeConst to Gamma.
 
 use crate::is;
 
@@ -152,5 +153,4 @@ macro_rules! impl_gamma {
         }
     };
 }
-use impl_gamma;
 impl_gamma!();
