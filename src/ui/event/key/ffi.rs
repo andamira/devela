@@ -85,7 +85,7 @@ pub enum KeyFfi {
     /// Physical `,` key.
     Comma,
     /// Physical `.` key.
-    Period,
+    Dot,
     /// Physical `/` key.
     Slash,
 
@@ -191,7 +191,7 @@ impl Key {
             K::IntlBackslash => F::IntlBackslash,
             // A row
             K::Comma => F::Comma,
-            K::Period => F::Period,
+            K::Dot => F::Dot,
             K::Slash => F::Slash,
             //
             K::Scancode(sc) => F::Scancode(sc),
@@ -289,7 +289,7 @@ impl Key {
             F::IntlBackslash => K::IntlBackslash,
             // A row
             F::Comma => K::Comma,
-            F::Period => K::Period,
+            F::Dot => K::Dot,
             F::Slash => K::Slash,
             //
             F::Scancode(sc) => K::Scancode(sc),

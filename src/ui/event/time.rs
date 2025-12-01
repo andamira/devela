@@ -12,11 +12,26 @@ use crate::{ConstInit, f32bits, f32bits_niche, impl_trait};
 /// The underlying representation can be treated as either `f32` milliseconds
 /// or `u32` milliseconds, depending on the event source.
 #[must_use]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Default, PartialEq, Eq, Hash)]
 pub struct EventTimestamp {
     /// The millisecond representation as `f32bits_niche` for compact storage,
     /// with a dual possible interpretation as either `f32` or `u32` milliseconds.
     ms: f32bits_niche,
+}
+
+impl_trait! { fmt::Debug for EventTimestamp |self, f|
+    {
+        let float = self.ms.as_float();
+        let bits = self.ms.as_bits();
+        let sure_float = |f:f32| f.is_finite() && (1e-5..=1e9).contains(&f);
+        let sure_int = |f:f32| !f.is_finite() || !(1e-12..1e12).contains(&f);
+        // finite and within the plausible ms range:
+        if sure_float(float) { write![f, "{float:.6}"] }
+        // non-finite, subnormal (<1e-12), or huge (>1e12):
+        else if sure_int(float) { write![f, "{bits}"] }
+        // narrow ambiguous zone; show both representations:
+        else { write![f, "{bits}|{float:.6}"] }
+    }
 }
 
 // private helpers

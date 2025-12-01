@@ -146,7 +146,7 @@ pub enum Key {
     /// Physical `,` key.
     Comma,
     /// Physical `.` key.
-    Period,
+    Dot,
     /// Physical `/` key.
     Slash,
 
@@ -206,7 +206,7 @@ impl Key {
     /// Spanish key for `,` and `;`.
     pub const EsComma: Self = Self::Comma;
     /// Spanish key for `.` and `:`.
-    pub const EsPeriod: Self = Self::Period;
+    pub const EsDot: Self = Self::Dot;
     /// Spanish key for `-` and `_`.
     pub const EsMinus: Self = Self::Slash;
 }

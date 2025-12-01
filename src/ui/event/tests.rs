@@ -1,5 +1,4 @@
-// devela::ui::event::key::tests
-//
+// devela::ui::event::tests
 
 use super::*;
 #[cfg(all(feature = "js", not(windows)))]
@@ -8,6 +7,15 @@ use crate::items;
 
 #[test] #[rustfmt::skip]
 fn sizes_of() {
+    #[cfg(not(feature = "alloc"))] {
+    assert_eq![40, size_of::<Event>()];         // 320 bits
+    assert_eq![36, size_of::<EventKind>()];     // 288 bits
+    }
+    #[cfg(feature = "alloc")] {
+    assert_eq![48, size_of::<Event>()];         // 384 bits
+    assert_eq![40, size_of::<EventKind>()];     // 320 bits
+    }
+
     assert_eq![24, size_of::<EventKey>()];      // 192 bits
     #[cfg(ffi··)]
     assert_eq![24, size_of::<EventKeyFfi>()];   // 192 bits
@@ -32,7 +40,12 @@ fn key_state_to_js_event() {
 #[test]
 #[cfg(all(feature = "js", not(windows)))]
 fn js_event_to_key_state() {
-    assert_eq!(KeyState::from_js(WebEventKind::KeyDown), Some(KeyState::Press));
-    assert_eq!(KeyState::from_js(WebEventKind::KeyUp), Some(KeyState::Release));
-    assert_eq!(KeyState::from_js(WebEventKind::Click), None);
+    assert_eq!(KeyState::from_js(WebEventKind::KeyDown, false), Some(KeyState::Press));
+    assert_eq!(KeyState::from_js(WebEventKind::KeyUp, false), Some(KeyState::Release));
+
+    assert_eq!(KeyState::from_js(WebEventKind::KeyDown, true), Some(KeyState::Repeat));
+    assert_eq!(KeyState::from_js(WebEventKind::KeyUp, true), Some(KeyState::Release));
+
+    assert_eq!(KeyState::from_js(WebEventKind::Click, false), None);
+    assert_eq!(KeyState::from_js(WebEventKind::Click, true), None);
 }

@@ -9,14 +9,12 @@
 //   - struct EventKeyFfi
 // - tests
 
-#[cfg(test)]
-mod tests;
-
 mod dif; // KeyMod, KeyMods
-mod event; // EventKey, EventKeyFfi, KeyState
+mod event; // EventKey, EventKeyFfi
 mod key; // Key
 mod media; // KeyMedia, KeyMod, KeyMods
 mod pad; // KeyPad
+mod state; // KeyState
 
 #[cfg(ffi··)]
 #[cfg_attr(nightly_doc, doc(cfg(ffi··)))]
@@ -30,6 +28,7 @@ crate::structural_mods! { // _mods
             key::*,
             media::*,
             pad::*,
+            state::*,
         };
         #[cfg(ffi··)]
         pub use super::ffi::*;

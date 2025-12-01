@@ -547,7 +547,12 @@ Many feature gates are removed in order to make most features make always availa
 - rename `time_stamp` fields to `timestamp`.
 - derive `Eq` & `Hash` for all event types.
 - implement `ConstInit` for all types.
+- update `Key:` rename `Period` variant to `Dot`.
+- update `KeyState`: add variant `Repeat`.
+- update `EventWindow`
+  - new variants: `Hidden`, `Moved`, `RedrawRequested`, `Resized`, `Shown`.
 - update `EventTimestamp`
+  - manually impl `Debug`.
   - remove all inner unsafe.
   - make it support timestamps of 0 ms.
   - change inner representation to `f32bits_niche`.

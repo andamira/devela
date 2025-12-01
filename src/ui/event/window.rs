@@ -15,15 +15,27 @@ use crate::String;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum EventWindow {
+    /// The window gained input focus.
     ///
+    /// Triggered when the system directs keyboard input to this window.
     FocusGained,
 
+    /// The window lost input focus.
     ///
+    /// Triggered when the system stops directing keyboard input to this window.
     FocusLost,
 
+    /// Window size changed.
     ///
-    // crossterm and sdl has this
-    Resized(Option<[usize; 2]>),
+    /// Carries the new width–height pair when available.
+    // Some backends (like X11 expose sequences) may not provide it.
+    Resized(Option<[u32; 2]>),
+
+    /// Window position changed.
+    ///
+    /// Carries the new x–y coordinates when available.
+    // Some backends emit movement without precise coordinates.
+    Moved(Option<[u32; 2]>),
 
     // NOTE the difference in SDL: https://stackoverflow.com/a/55076700/940200
     // SizeChanged(UiSize),
@@ -46,11 +58,21 @@ pub enum EventWindow {
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     Paste(String),
-    // Moved(Position),
 
-    // Shown,
-    // Hidden,
-    // Exposed,
+    /// The window requests a repaint of its contents.
+    ///
+    /// Emitted when the system notifies that some region needs redrawing.
+    RedrawRequested,
+
+    /// Window became visible on screen.
+    ///
+    /// Triggered when the system maps or shows the window.
+    Shown,
+
+    /// Window became hidden or obscured.
+    ///
+    /// Triggered when the system unmaps or hides the window.
+    Hidden,
     // Minimized,
     // Maximized,
     // Restored,
