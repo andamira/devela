@@ -542,16 +542,17 @@ Many feature gates are removed in order to make most features make always availa
 ---
 ## ui
 ### events
-- new types: `Event`, `EventKind`, `EventWindow`.
+- new types: `Event`, `EventKind`, `EventTag`, `EventWindow`.
 - change `EventPointer.pressure` field to be `f32bits_niche`.
 - rename `time_stamp` fields to `timestamp`.
 - derive `Eq` & `Hash` for all event types.
 - implement `ConstInit` for all types.
+- update Event:
+  - new fields `processed`, `count`.
+  - new methods: `mark_processed`, `mark_count`, `clear_count`, `finalize`, `count`, `tag`.
 - update `Key:` rename `Period` variant to `Dot`.
 - update `KeyState`: add variant `Repeat`.
-- update `EventWindow`
-  - new variants: `Hidden`, `Moved`, `RedrawRequested`, `Resized`, `Shown`.
-- update `EventTimestamp`
+- update `EventTimestamp`:
   - manually impl `Debug`.
   - remove all inner unsafe.
   - make it support timestamps of 0 ms.

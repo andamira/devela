@@ -3,8 +3,8 @@
 //! User interface events-related functionality.
 //
 
-mod event; // Event, EventKind
-mod key; // EventKey, Key[Alpha|Media|Mod|Mods|Pad|State]
+mod event; // Event, EventKind, EventKindTag
+mod key; // EventKey[Ffi], Key[Ffi|Media|Mod|Mods|Pad|State]
 mod pointer; // Event[Button[State]|Mouse|Pointer[Type]|Wheel]
 mod time; // EventTimestamp
 mod window; // EventWindow

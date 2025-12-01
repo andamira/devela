@@ -65,9 +65,11 @@ pub struct EventPointer {
 #[rustfmt::skip]
 impl EventPointer {
     /// Gets the pressure.
-    pub fn get_pressure(&self) -> f32 { self.pressure.as_float() }
+    pub const fn get_pressure(&self) -> f32 { self.pressure.as_float() }
     /// Sets the pressure.
-    pub fn set_pressure(&mut self, pressure: f32) { self.pressure = f32bits_niche::new(pressure); }
+    pub const fn set_pressure(&mut self, pressure: f32) {
+        self.pressure = f32bits_niche::new(pressure);
+    }
 }
 
 /// Enum representing the type of pointer.
@@ -257,31 +259,5 @@ mod impl_js {
                 E::Moved => J::PointerMove,
             }
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    const _SIZES: () = {
-        assert![size_of::<EventMouse>() == size_of::<Option<EventMouse>>()];
-        assert![size_of::<EventButton>() == size_of::<Option<EventButton>>()];
-        assert![size_of::<EventButtonState>() == size_of::<Option<EventButtonState>>()];
-        assert![size_of::<EventPointer>() == size_of::<Option<EventPointer>>()];
-        assert![size_of::<EventPointerType>() == size_of::<Option<EventPointerType>>()];
-        // assert![size_of::<EventWheel>() == size_of::<Option<EventWheel>>()]; // not equal
-    };
-
-    #[test] #[rustfmt::skip]
-    fn sizes_of() {
-        assert_eq![16, size_of::<EventMouse>()];        // 128
-        assert_eq![02, size_of::<EventButton>()];       // 16
-        assert_eq![01, size_of::<EventButtonState>()];  // 8
-        assert_eq![36, size_of::<EventPointer>()];      // 288
-        // assert_eq![40, size_of::<EventPointer>()];      // 320 (with phase)
-        assert_eq![01, size_of::<EventPointerType>()];  // 8
-        // assert_eq![01, size_of::<EventPointerPhase>()]; // 8
-        assert_eq![20, size_of::<EventWheel>()];        // 160
     }
 }
