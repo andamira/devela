@@ -3,8 +3,9 @@
 //! User interface events-related functionality.
 //
 
-mod event; // Event, EventKind, EventKindTag
+mod event; // Event
 mod key; // EventKey[Ffi], Key[Ffi|Media|Mod|Mods|Pad|State]
+mod kind; // EventKind, EventTag
 mod pointer; // Event[Button[State]|Mouse|Pointer[Type]|Wheel]
 mod time; // EventTimestamp
 mod window; // EventWindow
@@ -18,6 +19,7 @@ crate::structural_mods! { // _mods
             event::*,
             pointer::*,
             key::*,
+            kind::*,
             time::*,
             window::*,
         };
