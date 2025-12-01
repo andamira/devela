@@ -3,7 +3,6 @@
 use super::*;
 #[cfg(all(feature = "js", not(windows)))]
 use crate::WebEventKind;
-use crate::items;
 
 #[test] #[rustfmt::skip]
 fn sizes_of() {

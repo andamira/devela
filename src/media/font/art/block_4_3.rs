@@ -230,7 +230,7 @@ fn test_font() {
         crate::cdbg![1# FONT[i]]; // show the symbol we're testing
         while j < 3 {
             let row = FONT[i][j];
-            let mut iter = CharIter::<&str>::new(row);
+            let iter = CharIter::<&str>::new(row);
             assert_eq![iter.count(), 4];
             j += 1;
         }

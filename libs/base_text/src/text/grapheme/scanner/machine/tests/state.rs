@@ -1,8 +1,7 @@
 // devela_base_text::text::grapheme::scanner::machine::tests::state
 
-use super::super::GraphemeMachineState;
 #[cfg(feature = "__std")]
-use super::trie::UNICODE_GRAPHEME_CLUSTER_TESTS;
+use super::{super::GraphemeMachineState, trie::UNICODE_GRAPHEME_CLUSTER_TESTS};
 use crate::{GraphemePropCb, GraphemeProps, charu};
 
 #[test]
@@ -302,6 +301,7 @@ fn emoji_extend() {
     );
 }
 
+#[cfg(feature = "__std")]
 fn transitions(
     cats: &[GraphemeProps],
 ) -> impl Iterator<Item = (bool, GraphemeProps, GraphemeMachineState)> + use<'_> {

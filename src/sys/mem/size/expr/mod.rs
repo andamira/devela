@@ -64,8 +64,6 @@ mod test_coro;
 
 #[cfg(test)]
 mod tests {
-    use super::size_of_expr;
-
     async fn f() {
         let _x = 1;
         core::future::ready(()).await;

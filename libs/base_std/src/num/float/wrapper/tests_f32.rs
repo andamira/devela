@@ -4,7 +4,7 @@
 //
 
 use super::definition::Float;
-use crate::{Sign, assert_approx_eq_all};
+use crate::assert_approx_eq_all;
 
 #[test]
 fn sqrt_basic() {

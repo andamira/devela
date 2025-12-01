@@ -3,7 +3,6 @@
 #[cfg(not(miri))]
 #[test]
 fn api_coro() {
-    use super::size_of_expr;
     use crate::{Coroutine, String, vec_ as vec};
 
     pub(super) trait Foo<'a, 'b> {}

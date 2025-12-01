@@ -1,3 +1,4 @@
+//!
 use devela_macros::enumint;
 
 enumint![pub UEnum, u8, 2, 5]; // Generates the following enum:

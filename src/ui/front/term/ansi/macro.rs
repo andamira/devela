@@ -53,7 +53,7 @@ const_assert![eq_str
 ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 # }
 ```
-[0]: super::Ansi#ansi-escape-codes"#;
+[0]: crate::Ansi#ansi-escape-codes"#;
 }
 
 // non-printing version fallback (not(std), not(linux))
@@ -201,7 +201,7 @@ pub use ansi;
 
 #[cfg(test)]
 mod tests {
-    use crate::{ansi, const_assert};
+    use crate::const_assert;
 
     #[test]
     fn str() {
