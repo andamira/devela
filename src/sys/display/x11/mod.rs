@@ -7,14 +7,14 @@
 
 // private items
 mod raw;
-// mod xkb;
+mod xkb; // (KeyRepeatFilter), (XkbInfo), (XkbState)
 
 // public items
 mod display; // XDisplay
 mod error; // XError
 mod event; // XEvent
 // mod shm; // XShm
-// mod surface; // XSurface TODO
+// mod surface; // XSurface
 mod window; // XWindow
 
 crate::structural_mods! { // _pub_mods, _crate_internals
@@ -30,8 +30,8 @@ crate::structural_mods! { // _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::{
-            // xkb::XkbState,
             raw::*,
+            xkb::*,
         };
     }
 }

@@ -16,6 +16,7 @@
 
 mod consts;
 mod fns;
+mod lut; // LUT_SCANCODE_TO_KEY
 mod types;
 
-pub(crate) use {consts::*, fns::*, types::*};
+pub(crate) use {consts::*, fns::*, lut::*, types::*};

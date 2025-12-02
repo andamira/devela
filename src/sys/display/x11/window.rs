@@ -6,7 +6,7 @@
 #![allow(unused)]
 
 use super::raw;
-use crate::{XDisplay, XError, XEvent, lets};
+use crate::{Extent, Libc, Position, XDisplay, XError, XEvent, lets};
 
 /// X11 window created through XCB.
 ///
@@ -30,9 +30,15 @@ impl XWindow {
         let conn = display.conn;
         let win: u32 = unsafe { raw::xcb_generate_id(conn) }; // generate window ID
         let screen = unsafe { &*display.screen }; // extract screen
+
         // create window
-        let values: [u32; 2] =
-            [screen.white_pixel, raw::XCB_EVENT_MASK_EXPOSURE | raw::XCB_EVENT_MASK_KEY_PRESS];
+        let values: [u32; 2] = [screen.white_pixel,
+            raw::XCB_EVENT_MASK_KEY_PRESS
+            | raw::XCB_EVENT_MASK_KEY_RELEASE
+            | raw::XCB_EVENT_MASK_EXPOSURE
+            | raw::XCB_EVENT_MASK_KEY_PRESS
+            | raw::XCB_EVENT_MASK_STRUCTURE_NOTIFY
+        ];
         let mask: u32 = raw::XCB_CW_BACK_PIXEL | raw::XCB_CW_EVENT_MASK;
         unsafe {
             raw::xcb_create_window(conn, screen.root_depth, win, screen.root, x, y, width, height,
@@ -59,14 +65,6 @@ impl XWindow {
     #[inline(always)]
     pub fn flush(&self) { unsafe { raw::xcb_flush(self.display); } }
 
-    /// Retrieves the next event from the X server, if any.
-    pub fn next_event(&self) -> Option<XEvent> {
-        let evt = unsafe { raw::xcb_wait_for_event(self.display) };
-        if evt.is_null() { return None; }
-        Some(XEvent { raw: evt })
-    }
-
-
     /// Writes an rgba image from a byte buffer, into the window using XCB.
     pub fn put_image_bytes(&self, width: u16, height: u16, depth: u8, data: &[u8]) {
         lets![dst_x=0, dst_y=0, left_pad=0];
@@ -84,14 +82,12 @@ impl XWindow {
         }
     }
 
-
-    /* internals */
-
     /// Fills a rectangle in the window
     /// using the foreground pixel defined in the window’s graphics context.
     ///
     /// Coordinates are relative to the window’s origin in the X11 pixel grid.
-    pub(crate) unsafe fn fill_rect(&self, rect: &raw::xcb_rectangle_t) {
-        unsafe { raw::xcb_poly_fill_rectangle(self.display, self.win, self.gc, 1, rect as *const _); }
+    pub fn fill_rect(&self, pos: Position<i16, 2>, ext: Extent<u16, 2>) {
+        let rect = raw::xcb_rectangle_t::new(pos, ext);
+        unsafe { raw::xcb_poly_fill_rectangle(self.display, self.win, self.gc, 1, &rect as *const _); }
     }
 }
