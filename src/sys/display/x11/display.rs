@@ -119,7 +119,7 @@ impl XDisplay {
         if let Some(next) = self.peek_raw_event() {
             unsafe {
                 let ty = (*next).response_type & 0x7F;
-                if ty == raw::XCB_KEY_PRESS {
+                if ty == raw::xcb_event_code::XCB_KEY_PRESS as u8 {
                     let kpev = next as *const raw::xcb_key_press_event_t;
                     if (*kpev).detail == keycode && (*kpev).time == timestamp { return false; }
                 }

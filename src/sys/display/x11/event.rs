@@ -30,17 +30,23 @@ impl XEvent {
 
     /// Returns true if this is an expose (repaint) event.
     #[inline(always)]
-    pub fn is_expose(&self) -> bool { self.response_type() == raw::XCB_EXPOSE }
+    pub fn is_expose(&self) -> bool {
+        self.response_type() == raw::xcb_event_code::XCB_EXPOSE as u8
+    }
 
     /// Returns true if this is a key event.
     #[inline(always)]
     pub fn is_key(&self) -> bool { self.is_key_press() || self.is_key_release() }
     /// Returns true if this is a key-press event.
     #[inline(always)]
-    pub fn is_key_press(&self) -> bool { self.response_type() == raw::XCB_KEY_PRESS }
+    pub fn is_key_press(&self) -> bool {
+        self.response_type() == raw::xcb_event_code::XCB_KEY_PRESS as u8
+    }
     /// Returns true if this is a key-press event.
     #[inline(always)]
-    pub fn is_key_release(&self) -> bool { self.response_type() == raw::XCB_KEY_RELEASE }
+    pub fn is_key_release(&self) -> bool {
+        self.response_type() == raw::xcb_event_code::XCB_KEY_RELEASE as u8
+    }
 
     /* internals */
 
@@ -57,8 +63,8 @@ impl XEvent {
 
         // update XKB only for real events (Press/Repeat/Release)
         let dir = match state {
-            KeyState::Press | KeyState::Repeat => raw::XKB_KEY_DOWN,
-            KeyState::Release => raw::XKB_KEY_UP,
+            KeyState::Press | KeyState::Repeat => raw::xkb_key_direction::XKB_KEY_DOWN,
+            KeyState::Release => raw::xkb_key_direction::XKB_KEY_UP,
         };
         xkb.update(keycode, dir);
 

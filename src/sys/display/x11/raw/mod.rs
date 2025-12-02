@@ -14,9 +14,16 @@
 
 #![allow(unused)]
 
-mod consts;
-mod fns;
-mod lut; // LUT_SCANCODE_TO_KEY
-mod types;
+mod xcb; // main xcb.h + xproto.h structs, fns
+mod xcb_flags; // protocol bit-masks
+mod xcb_values; // protocol const values
+mod xcb_shm; // shm extension
 
-pub(crate) use {consts::*, fns::*, lut::*, types::*};
+mod xkb; // libxkbcommon core bindings
+mod xkb_x11; // libxkbcommon-x11 extension
+
+mod lut; // LUT_SCANCODE_TO_KEY
+
+pub(crate) use lut::*;
+pub(crate) use {xcb::*, xcb_flags::*, xcb_values::*, xcb_shm::*};
+pub(crate) use {xkb::*, xkb_x11::*};
