@@ -100,6 +100,7 @@ impl WebWindow {
         id: unsafe { window_eval_interval(js_code.as_ptr(), js_code.len(), interval_ms) } } }
 
     /* animation */
+    // TODO
 
     #[doc = _js_doc!("Window", "requestAnimationFrame")]
     /// Requests an animation frame, executing the given `callback`.

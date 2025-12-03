@@ -38,12 +38,7 @@ impl JsInstant {
     /// Returns the duration between this and an earlier instant as a `TimeDelta`.
     #[cfg(feature = "time")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
-    pub fn delta_since(self, earlier: Self) -> TimeDelta { TimeDelta::from_js(self.since(earlier)) }
-    /// Returns the duration between this and an earlier instant as a `TimeDelta`.
-    #[cfg(feature = "time")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
-    pub const fn const_delta_since(self, earlier: Self) -> TimeDelta {
-        TimeDelta::const_from_js(self.since(earlier)) }
+    pub const fn delta_since(self, earlier: Self) -> TimeDelta { TimeDelta::from_js(self.since(earlier)) }
 }
 
 #[rustfmt::skip]

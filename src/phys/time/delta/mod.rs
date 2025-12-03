@@ -121,11 +121,7 @@ mod impl_js {
     use crate::{JsInstant, TimeDelta};
     impl TimeDelta {
         /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
-        pub fn from_js(js: JsInstant) -> Self { Self::from_millis_f64(js.as_millis_f64()) }
-        /// Converts a `JsInstant` into a `TimeDelta` relative to the time origin.
-        pub const fn const_from_js(js: JsInstant) -> Self {
-            Self::const_from_millis_f64(js.as_millis_f64())
-        }
+        pub const fn from_js(js: JsInstant) -> Self { Self::from_millis_f64(js.as_millis_f64()) }
         /// Converts a `TimeDelta` into a `JsInstant`, interpreting it as an absolute timestamp.
         pub const fn to_js(self) -> JsInstant { JsInstant::from_millis_f64(self.as_millis_f64()) }
     }

@@ -225,7 +225,7 @@ impl Weekday {
 #[allow(missing_docs, non_upper_case_globals)]
 impl Weekday {
     /// Returns the 3-letter abbreviated weekday name, in ASCII, UpperCamelCase.
-    pub fn abbr3(self) -> &'static str {
+    pub const fn abbr3(self) -> &'static str {
         match self {
             Monday => "Mon",
             Tuesday => "Tue",
@@ -246,7 +246,7 @@ impl Weekday {
     pub const Sun: Weekday = Weekday::Sunday;
 
     /// Returns the 2-letter abbreviated weekday name, in ASCII, UPPERCASE.
-    pub fn abbr2(self) -> &'static str {
+    pub const fn abbr2(self) -> &'static str {
         match self {
             Monday => "MO",
             Tuesday => "TU",
@@ -267,7 +267,7 @@ impl Weekday {
     pub const SU: Weekday = Weekday::Sunday;
 
     /// Returns the 1-letter abbreviated weekday name, in ASCII, UPPERCASE.
-    pub fn abbr1(self) -> &'static str {
+    pub const fn abbr1(self) -> &'static str {
         match self {
             Monday => "M",
             Tuesday => "T",

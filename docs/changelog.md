@@ -246,6 +246,11 @@ Many feature gates are removed in order to make most features make always availa
 #### c
 - new type aliases: `c_mode_t`, `c_off_t`.
 
+#### js
+- update `JsInstant`:
+  - make method const: `delta_since`.
+  - remove methods: `const_delta_since`.
+
 ---
 ## media
 ### audio
@@ -339,6 +344,13 @@ Many feature gates are removed in order to make most features make always availa
 ## phys
 ### time
 - remove `TimeError` alias.
+- remove `time` feature gate for `NoTime`, `Timecode`, `TimeDelta`, `TimeSplit`.
+- update `TimeDelta`:
+  - make method const: `from_js`, `[div|mul]_f[32|64]`, `[try_]from_[millis|secs]_f[32|64]`.
+  - remove methods: `const_from_js`, const_try_from_millis_f64.
+- update `WeekDay`: make all methods const.
+- rename `UnixTimeI64` to `TimeUnixI64`, `UnixTimeU32` to `TimeUnixU32`.
+  - make their `new` method const.
 
 ---
 ## sys

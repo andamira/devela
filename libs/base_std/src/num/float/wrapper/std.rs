@@ -158,6 +158,11 @@ mod _std {
                     let (sin, cos) = <$f>::sin_cos(self.0);
                     (Float(sin), Float(cos))
                 }
+                /// The nearest integer to itself, default rounding
+                ///
+                /// This is the default [`round_ties_away`] implementation.
+                pub const fn round(self) -> Float<$f> { Float(self.0.round()) }
+
                 /// The integral part of `x`.
                 /// # Formulation
                 #[doc = crate::_FLOAT_FORMULA_TRUNC!()]

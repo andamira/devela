@@ -1,16 +1,13 @@
 // devela::phys::time::fmt
 //
-//!
+//! Defines [`Timecode`].
 //
 // IMPROVE:
 // - secs_f64: make a version with fixed format, and another custom reducible.
 // - nanos_u64: to not show leading zeros for seconds.
 // - nanos_u64: not just clamp the seconds but all to 999?
 
-#[allow(unused_imports)]
-use crate::FloatExt;
-use crate::{Digits, StringU8, format_buf};
-use crate::{NoTime, TimeSplit, TimeSplitHourNano};
+use crate::{Cmp, Digits, Float, NoTime, StringU8, TimeSplit, TimeSplitHourNano, format_buf};
 #[cfg(feature = "alloc")]
 use crate::{String, format};
 
@@ -35,9 +32,11 @@ impl Timecode {
     /// `{ h: 5_124_095_576_030_431, .. }` (more than 584_942_417 millenia).
     // -> 64 bits
     #[must_use]
-    pub fn split_secs_f64(seconds: f64) -> TimeSplitHourNano<u32, u8, u8, u16, NoTime, NoTime> {
-        let ms = (seconds.fract() * 1000.) as u16;
-        let mut ts = seconds.trunc() as u64;
+    pub const fn split_secs_f64(
+        seconds: f64,
+    ) -> TimeSplitHourNano<u32, u8, u8, u16, NoTime, NoTime> {
+        let ms = (Float(seconds).fract().0 * 1000.) as u16;
+        let mut ts = Float(seconds).trunc().0 as u64;
         let h = (ts / 3600) as u32;
         ts %= 3600;
         let m = (ts / 60) as u8;
@@ -83,6 +82,7 @@ impl Timecode {
     /// Makes use of the `unsafe_str` feature if enabled.
     //
     // -> 96 bits
+    // TODO: make const, replace format_buf.
     pub fn secs_f64(seconds: f64) -> StringU8<12> {
         let TimeSplitHourNano { h, m, s, ms, .. } = Self::split_secs_f64(seconds);
         let m = Digits(m as u32).digits10_str(2);
@@ -91,9 +91,8 @@ impl Timecode {
 
         let mut buf = [0; 12];
         let mut buf_len = 12;
-
         if h > 0 {
-            let h = Digits(h.min(99)).digits10_str(2);
+            let h = Digits(Cmp(h).min(99)).digits10_str(2);
             let _str = format_buf![&mut buf, "{h}:{m}:{s}.{ms}"];
         } else {
             buf_len = 9;
@@ -101,7 +100,7 @@ impl Timecode {
         }
 
         #[cfg(any(feature = "safe_time", not(feature = "unsafe_str")))]
-        return StringU8::<12>::from_array_nleft(buf, buf_len).unwrap();
+        return crate::unwrap![ok StringU8::<12>::from_array_nleft(buf, buf_len)];
 
         #[cfg(all(not(feature = "safe_time"), feature = "unsafe_str"))]
         // SAFETY: the buffer contains only ASCII characters.
@@ -137,6 +136,7 @@ impl Timecode {
     ///
     /// The seconds are clamped to 999 (more than 16 minutes).
     // -> 208 bits
+    // TODO: make const, replace format_buf.
     pub fn nanos_u64(nanos: u64) -> StringU8<23> {
         let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
         let s_str = Digits(s.min(999)).digits10_str(3);
@@ -146,7 +146,6 @@ impl Timecode {
 
         let mut buf = [0; 23];
         let mut buf_len = 23; // = 18 + 3digits + 1name(s) + 1space
-
         if s > 0 {
             let _ = format_buf![&mut buf, "{s_str}s {ms_str}ms {us_str}µs {ns_str}ns"];
         } else if ms > 0 {
@@ -161,7 +160,7 @@ impl Timecode {
         }
 
         #[cfg(any(feature = "safe_time", not(feature = "unsafe_str")))]
-        return StringU8::<23>::from_array_nleft(buf, buf_len).unwrap();
+        return crate::unwrap![ok StringU8::<23>::from_array_nleft(buf, buf_len)];
 
         #[cfg(all(not(feature = "safe_time"), feature = "unsafe_str"))]
         // SAFETY: the buffer contains only ASCII characters.
