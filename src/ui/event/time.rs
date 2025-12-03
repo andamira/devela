@@ -1,9 +1,28 @@
 // devela::ui::event::time
 //
-//! Defines [`EventTimestamp`].
+//! Defines [`EventTimestampMode`], [`EventTimestamp`].
 //
 
-use crate::{ConstInit, f32bits, f32bits_niche, impl_trait};
+use crate::{ConstInit, FmtResult, Formatter, f32bits, f32bits_niche, impl_trait};
+
+/// Selects how an [`EventTimestamp`] should be formatted.
+///
+/// This controls whether the timestamp is shown as integer milliseconds,
+/// floating-point milliseconds, both representations, or chosen automatically
+/// using bit-pattern heuristics.
+#[must_use]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum EventTimestampMode {
+    /// Use heuristic selection (integer, float, or dual).
+    #[default]
+    Auto,
+    /// Force floating-point interpretation.
+    Float,
+    /// Force integer interpretation.
+    Int,
+    /// Show both integer and floating-point interpretations.
+    Dual,
+}
 
 /// The time at which the event occurs, stored as single-precision milliseconds.
 ///
@@ -18,18 +37,6 @@ pub struct EventTimestamp {
     /// with a dual possible interpretation as either `f32` or `u32` milliseconds.
     ms: f32bits_niche,
 }
-
-impl_trait! { fmt::Debug for EventTimestamp |self, f| {
-    let (float, bits) = (self.ms.as_float(), self.ms.as_bits());
-    // valid finite float-ms live between 0.001 ms and ~11 days:
-    let sure_float = |f:f32| f.is_finite() && (1e-3..=1e9).contains(&f);
-    // NaNs and infinities, subnormal/tiny values, absurdly large magnitudes:
-    let sure_int   = |f: f32| !f.is_finite() || f < 1e-10 || f > 1e12;
-    if sure_float(float) { write![f, "{float:.6} ms"] }
-    else if sure_int(float) { write![f, "{bits} ms"] }
-    // narrow ambiguous zone; show both representations:
-    else { write![f, "{bits}|{float:.6} ms"] }
-} }
 
 // private helpers
 #[rustfmt::skip]
@@ -95,6 +102,38 @@ impl EventTimestamp {
     pub const fn as_millis_f32_to_u32(&self) -> u32 { self.ms.as_float() as u32 }
 }
 
+/// Methods related to formatting.
+#[rustfmt::skip]
+impl EventTimestamp {
+    /// Formats the timestamp using heuristic detection.
+    ///
+    /// Chooses between integer, float, or dual representations based on the
+    /// stored bit pattern. Intended for default `Debug` output.
+    pub fn fmt_auto_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+        // valid finite float-ms live between 0.001 ms and ~11 days:
+        let sure_float = |f:f32| f.is_finite() && (1e-3..=1e9).contains(&f);
+        // NaNs, infinities, subnormal/tiny values, absurdly large magnitudes:
+        let sure_int   = |f: f32| !f.is_finite() || f < 1e-8 || f > 1e12;
+        let float = self.ms.as_float();
+        if sure_float(float) { self.fmt_float_ms(f) }
+        else if sure_int(float) { self.fmt_int_ms(f) }
+        else { self.fmt_dual_ms(f) } // narrow ambiguous zone; show both representations
+    }
+    /// Formats the timestamp by interpreting the stored bits as integer milliseconds.
+    pub fn fmt_int_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+        write![f, "{} ms", self.ms.as_bits()]
+    }
+    /// Formats the timestamp by interpreting the stored bits as floating-point milliseconds.
+    pub fn fmt_float_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+        write![f, "{} ms", self.ms.as_float()]
+    }
+    /// Formats the timestamp by showing both integer and floating-point interpretations.
+    pub fn fmt_dual_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+        write![f, "{}|{:.6} ms", self.ms.as_bits(), self.ms.as_float()]
+    }
+}
+
+impl_trait! { fmt::Debug for EventTimestamp |self, f| self.fmt_auto_ms(f) }
 impl_trait! { fmt::Display for EventTimestamp |self, f| self.as_millis_f32().fmt(f) }
 impl ConstInit for EventTimestamp {
     const INIT: Self = Self::new(f32bits_niche::INIT);

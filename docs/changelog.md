@@ -542,7 +542,7 @@ Many feature gates are removed in order to make most features make always availa
 ---
 ## ui
 ### events
-- new types: `Event`, `EventKind`, `EventTag`, `EventWindow`, `KeyDead`.
+- new types: `Event`, `EventKind`, `EventTag`, `EventTimestampMode`, `EventWindow`, `KeyDead`.
 - change `EventPointer.pressure` field to be `f32bits_niche`.
 - rename `time_stamp` fields to `timestamp`.
 - derive `Eq` & `Hash` for all event types.
