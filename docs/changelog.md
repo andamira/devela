@@ -489,6 +489,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### fmt
 - new macro: `fmtcat`.
+- new trait: `DebugExt`.
 - new types: `FmtNum`, `FmtWriter`.
 - move to [base]:
   - macros: `format_buf!`.
@@ -555,7 +556,7 @@ Many feature gates are removed in order to make most features make always availa
   - add new `Dead` variant.
 - update `KeyState`: add variant `Repeat`.
 - update `EventTimestamp`:
-  - manually impl `Debug`.
+  - manually impl `Debug` and `DebugExt`.
   - remove all inner unsafe.
   - make it support timestamps of 0 ms.
   - change inner representation to `f32bits_niche`.

@@ -3,7 +3,7 @@
 //! Defines [`EventTimestampMode`], [`EventTimestamp`].
 //
 
-use crate::{ConstInit, FmtResult, Formatter, f32bits, f32bits_niche, impl_trait};
+use crate::{ConstInit, DebugExt, FmtResult, Formatter, f32bits, f32bits_niche, impl_trait};
 
 /// Selects how an [`EventTimestamp`] should be formatted.
 ///
@@ -22,6 +22,17 @@ pub enum EventTimestampMode {
     Int,
     /// Show both integer and floating-point interpretations.
     Dual,
+}
+impl DebugExt for EventTimestamp {
+    type Ctx = EventTimestampMode;
+    fn fmt_with(&self, f: &mut Formatter, ctx: &Self::Ctx) -> FmtResult<()> {
+        match ctx {
+            Self::Ctx::Auto => self.fmt_auto_ms(f),
+            Self::Ctx::Float => self.fmt_float_ms(f),
+            Self::Ctx::Int => self.fmt_int_ms(f),
+            Self::Ctx::Dual => self.fmt_dual_ms(f),
+        }
+    }
 }
 
 /// The time at which the event occurs, stored as single-precision milliseconds.

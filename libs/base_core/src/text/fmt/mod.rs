@@ -6,6 +6,7 @@
 
 mod buf; // FmtWriter, format_buf!
 mod cat; // fmtcat!
+mod debug; // DebugWith
 mod num; // FmtNum
 mod reexports;
 
@@ -14,6 +15,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             buf::*,
             cat::*,
+            debug::*,
             num::*,
             reexports::*,
         };
