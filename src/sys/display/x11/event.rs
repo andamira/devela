@@ -4,7 +4,9 @@
 //
 
 use super::{KeyRepeatFilter, XkbState, raw, xcb_event_code};
-use crate::{EventKey, EventTimestamp, KeyState, Libc, c_void};
+use crate::{
+    EventButton, EventButtonState, EventKey, EventTimestamp, KeyState, Libc, c_void, is, unwrap,
+};
 // use crate::{EventKind, EventWindow};
 
 /// Wrapper for an XCB event.
@@ -86,6 +88,25 @@ impl XEvent {
 
     /* internals */
 
+    /// Return some key event, if that's the kind.
+    pub(crate) fn as_raw_key(&self) -> Option<&raw::xcb_key_press_event_t> {
+        if self.is_key() {
+            Some(unsafe { &*(self.raw as *const raw::xcb_key_press_event_t) })
+        } else { None }
+    }
+    /// Return some key event, if that's the kind.
+    pub(crate) fn as_raw_button(&self) -> Option<&raw::xcb_button_press_event_t> {
+        if self.is_button() {
+            Some(unsafe { &*(self.raw as *const raw::xcb_button_press_event_t) })
+        } else { None }
+    }
+    /// Return some key event, if that's the kind.
+    pub(crate) fn as_raw_motion(&self) -> Option<&raw::xcb_motion_notify_event_t> {
+        if self.is_motion() {
+            Some(unsafe { &*(self.raw as *const raw::xcb_motion_notify_event_t) })
+        } else { None }
+    }
+
     /// Converts this X11 key event into a generic `EventKey` using XKB.
     pub(crate) fn to_event_key(&self, xkb: &XkbState, repeat: &mut KeyRepeatFilter)
         -> Option<EventKey> {
@@ -116,6 +137,27 @@ impl XEvent {
             mods: info.mods,
             timestamp: Some(EventTimestamp::from_millis_u32(time_ms)),
         })
+    }
+
+    /// Converts this X11 button event into an `EventButton`.
+    pub(crate) const fn map_button(detail: u8) -> EventButton {
+        unwrap![some EventButton::new(detail)]
+    }
+    /// Converts this X11 button state into an `EventButton.buttons` bit-mask field.
+    #[inline(always)]
+    pub(crate) fn map_button_mask(state: u16) -> u8 {
+        let mut mask = 0u8;
+        is![state & (raw::XCB_KEY_BUT_MASK_BUTTON_1) != 0; mask |= 1]; // left
+        is![state & (raw::XCB_KEY_BUT_MASK_BUTTON_3) != 0; mask |= 2]; // right
+        is![state & (raw::XCB_KEY_BUT_MASK_BUTTON_2) != 0; mask |= 4]; // middle
+        mask
+    }
+
+    /// Converts this X11 button state into an `EventButtonState`.
+    pub(crate) fn map_button_state(&self) -> EventButtonState {
+        if self.is_button_press() { EventButtonState::Pressed }
+        else if self.is_button_release() { EventButtonState::Released }
+        else { EventButtonState::Moved }
     }
 }
 

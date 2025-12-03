@@ -14,7 +14,7 @@ use crate::{ConstInit, NonZeroU32, impl_trait, is};
 ///
 /// Modeled after XKB dead keysym from `xkbcommon-keysyms.h`.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum KeyDead {
     /* 32 dead vowels */
     Grave = 0, // keysym:fe50
@@ -72,11 +72,10 @@ pub enum KeyDead {
     LongSolidusOverlay, // = 67 0xfe93
 
     /// Not part of the known dead-key set.
-    #[default]
     Unknown = u8::MAX,
 }
 impl ConstInit for KeyDead {
-    const INIT: Self = Self::Unknown;
+    const INIT: Self = KeyDead::Unknown;
 }
 
 /// Aliases.

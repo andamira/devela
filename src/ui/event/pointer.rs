@@ -8,13 +8,15 @@
 // - impls
 // - tests
 
-use crate::{ConstInit, EventTimestamp, NonZeroU8, f32bits_niche};
+use crate::{ConstInit, EventTimestamp, NonZeroU8, f32bits_niche, unwrap};
 
 /* definitions */
 
 /// Represents a basic mouse event.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventMouse {
+    /// The time stamp of when the event occurred.
+    pub timestamp: Option<EventTimestamp>,
     /// The x-coordinate of the mouse cursor.
     pub x: i32,
     /// The y-coordinate of the mouse cursor.
@@ -25,13 +27,13 @@ pub struct EventMouse {
     pub state: EventButtonState,
     /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
     pub buttons: u8,
-    /// The time stamp of when the event occurred.
-    pub timestamp: Option<EventTimestamp>,
 }
 
 /// Represents a pointer event (mouse, touch, or pen).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventPointer {
+    /// The time stamp of the event.
+    pub timestamp: Option<EventTimestamp>,
     /// The type of pointer (mouse, touch, pen).
     pub kind: EventPointerType,
     /// Unique ID for touch and pen inputs (e.g., multi-touch gestures).
@@ -58,8 +60,6 @@ pub struct EventPointer {
     pub state: EventButtonState,
     // /// The phase of the pointer (useful for touch events).
     // pub phase: EventPointerPhase,
-    /// The time stamp of the event.
-    pub timestamp: Option<EventTimestamp>,
 }
 
 #[rustfmt::skip]
@@ -97,9 +97,11 @@ pub enum EventPointerType {
 // }
 
 /// Represents mouse, touch, or pen buttons.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButton {
     /// Left mouse button.
+    #[default]
     Left,
     /// Right mouse button.
     Right,
@@ -107,6 +109,28 @@ pub enum EventButton {
     Middle,
     /// Additional buttons (e.g., side buttons on advanced mice).
     Other(NonZeroU8),
+}
+impl EventButton {
+    /// Returns some button as long as it's not 0.
+    pub const fn new(number: u8) -> Option<Self> {
+        match number {
+            1 => Some(Self::Left),
+            2 => Some(Self::Middle),
+            3 => Some(Self::Right),
+            _ => Some(Self::Other(unwrap![some? NonZeroU8::new(number)])),
+        }
+    }
+
+    /// Returns some primary button (left, right, middle) from the mask, if only one is set.
+    #[inline(always)]
+    pub const fn primary_from_mask(mask: u8) -> Option<EventButton> {
+        match mask {
+            1 => Some(EventButton::Left),
+            2 => Some(EventButton::Right),
+            4 => Some(EventButton::Middle),
+            _ => None,
+        }
+    }
 }
 
 /// Represents the state of a button.
@@ -192,7 +216,7 @@ mod impl_js {
                 x: self.x as js_number,
                 y: self.y as js_number,
                 button: is![let Some(b) = self.button; b.to_js(); 255], // IMPROVE to_js
-                buttons: self.buttons, // Already a bitmask, directly compatible
+                buttons: self.buttons, // already a bitmask, directly compatible
                 etype: self.state.to_js_as_mouse(),
                 timestamp: is![let Some(t) = self.timestamp; t.to_js(); JsInstant { ms: 0.0 }],
             }

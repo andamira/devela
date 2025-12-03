@@ -6,7 +6,10 @@
 #![allow(unused)]
 
 use super::{KeyRepeatFilter, XkbState, raw};
-use crate::{Event, EventKind, EventWindow, Ptr, XError, XEvent, c_int, is};
+use crate::{
+    Event, EventButton, EventButtonState, EventKind, EventMouse, EventWindow, Ptr, XError, XEvent,
+    c_int, is,
+};
 
 /// A connection to an X11 display server.
 ///
@@ -111,10 +114,9 @@ impl XDisplay {
     /// It never performs I/O. The caller supplies the raw event pointer; the method returns
     /// the corresponding high-level `Event` or `Event::None` if the event is ignored.
     fn handle_raw_event(&mut self, xev: XEvent) -> Event {
-        if xev.is_key() {
-            let ev = xev.raw as *const raw::xcb_key_press_event_t;
-            let keycode = unsafe { (*ev).detail };
-            let time_ms = unsafe { (*ev).time };
+        if let Some(ev) = xev.as_raw_key() {
+            let keycode = unsafe { ev.detail };
+            let time_ms = unsafe { ev.time };
             if xev.is_key_release() {
                 let real = self.classify_release(keycode, time_ms);
                 if !real { return Event::default(); } // skip fake release
@@ -122,13 +124,40 @@ impl XDisplay {
             if let Some(key) = xev.to_event_key(&self.xkb, &mut self.repeat_filter) {
                 return Event::new(EventKind::Key(key), xev.timestamp());
             }
+
+        } else if let Some(ev) = xev.as_raw_button() {
+            let buttons = XEvent::map_button_mask(ev.state);
+            let button = XEvent::map_button(ev.detail);
+            let state  = xev.map_button_state();
+            return Event::new(
+                EventKind::Mouse(EventMouse {
+                    x: ev.event_x.into(),
+                    y: ev.event_y.into(),
+                    button: Some(button),
+                    state,
+                    buttons,
+                    timestamp: xev.timestamp(),
+                }),
+                xev.timestamp(),
+            );
+
+        } else if let Some(ev) = xev.as_raw_motion() {
+            let buttons = XEvent::map_button_mask(ev.state);
+            let button = EventButton::primary_from_mask(buttons);
+            return Event::new(
+                EventKind::Mouse(EventMouse {
+                    x: ev.event_x.into(),
+                    y: ev.event_y.into(),
+                    button,
+                    state: EventButtonState::Moved,
+                    buttons,
+                    timestamp: xev.timestamp(),
+                }),
+                xev.timestamp(),
+            );
         // TODO: WIP
         } else if xev.is_client_message() {
             // eprintln!("CLIENT MSG: {}", xev.response_type());
-        } else if xev.is_button() {
-            // eprintln!("BUTTON: {} {:?}", xev.response_type(), xev.timestamp());
-        } else if xev.is_motion() {
-            // eprintln!("MOTION: {} {:?}", xev.response_type(), xev.timestamp());
         } else if xev.is_enter() {
             // eprintln!("ENTER: {} {:?}", xev.response_type(), xev.timestamp());
         } else if xev.is_leave() {

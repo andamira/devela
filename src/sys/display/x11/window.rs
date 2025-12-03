@@ -40,12 +40,12 @@ impl XWindow {
             | raw::XCB_EVENT_MASK_BUTTON_PRESS
             | raw::XCB_EVENT_MASK_BUTTON_RELEASE
             | raw::XCB_EVENT_MASK_POINTER_MOTION
-            | raw::XCB_EVENT_MASK_BUTTON_1_MOTION
-            | raw::XCB_EVENT_MASK_BUTTON_2_MOTION
-            | raw::XCB_EVENT_MASK_BUTTON_3_MOTION
-            | raw::XCB_EVENT_MASK_BUTTON_4_MOTION
-            | raw::XCB_EVENT_MASK_BUTTON_5_MOTION
-            // | raw::XCB_EVENT_MASK_BUTTON_MOTION
+            // | raw::XCB_EVENT_MASK_BUTTON_1_MOTION
+            // | raw::XCB_EVENT_MASK_BUTTON_2_MOTION
+            // | raw::XCB_EVENT_MASK_BUTTON_3_MOTION
+            // | raw::XCB_EVENT_MASK_BUTTON_4_MOTION
+            // | raw::XCB_EVENT_MASK_BUTTON_5_MOTION
+            | raw::XCB_EVENT_MASK_BUTTON_MOTION
             // pointer enter/leave
             | raw::XCB_EVENT_MASK_ENTER_WINDOW
             | raw::XCB_EVENT_MASK_LEAVE_WINDOW

@@ -3,8 +3,10 @@
 //! Values from `xproto.h`
 //
 // TOC
-//  - event masks
-//  - window attributes
+// - events
+// - keyboard modifiers
+// - buttons
+// - window attributes
 
 /* event masks */
 
@@ -81,6 +83,22 @@ pub(crate) const XCB_MOD_MASK_3: u16 = 32;
 pub(crate) const XCB_MOD_MASK_4: u16 = 64;
 /// AltGr.
 pub(crate) const XCB_MOD_MASK_5: u16 = 128;
+
+/* button masks (xcb_key_but_mask_t)  */
+
+pub(crate) const XCB_KEY_BUT_MASK_SHIFT: u16 = 1;
+pub(crate) const XCB_KEY_BUT_MASK_LOCK: u16 = 2;
+pub(crate) const XCB_KEY_BUT_MASK_CONTROL: u16 = 4;
+pub(crate) const XCB_KEY_BUT_MASK_MOD_1: u16 = 8;
+pub(crate) const XCB_KEY_BUT_MASK_MOD_2: u16 = 16;
+pub(crate) const XCB_KEY_BUT_MASK_MOD_3: u16 = 32;
+pub(crate) const XCB_KEY_BUT_MASK_MOD_4: u16 = 64;
+pub(crate) const XCB_KEY_BUT_MASK_MOD_5: u16 = 128;
+pub(crate) const XCB_KEY_BUT_MASK_BUTTON_1: u16 = 256;
+pub(crate) const XCB_KEY_BUT_MASK_BUTTON_2: u16 = 512;
+pub(crate) const XCB_KEY_BUT_MASK_BUTTON_3: u16 = 1024;
+pub(crate) const XCB_KEY_BUT_MASK_BUTTON_4: u16 = 2048;
+pub(crate) const XCB_KEY_BUT_MASK_BUTTON_5: u16 = 4096;
 
 /* window attribute value-mask bits (`xcb_cw_t`). */
 

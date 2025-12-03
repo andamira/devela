@@ -383,6 +383,10 @@ pub(crate) struct xcb_key_press_event_t {
     pad0: u8,
 }
 
+// these have the same representation:
+pub type xcb_button_press_event_t = xcb_key_press_event_t;
+pub type xcb_motion_notify_event_t = xcb_key_press_event_t;
+
 #[link(name = "xcb")]
 unsafe extern "C" {
     /// Returns the next event or error from the server.
