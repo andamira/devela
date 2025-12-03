@@ -106,6 +106,8 @@ impl XEvent {
 
         // translate key after both filter + update
         let info = xkb.translate_key(keycode, state_raw);
+        // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
+        // let info = xkb.translate_key(keycode);
 
         Some(EventKey {
             semantic: info.semantic,

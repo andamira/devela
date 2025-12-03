@@ -67,6 +67,60 @@ impl XkbKeyInfo {
     }
 }
 
+// WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
+// #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+// struct XkbModIndices {
+//     shift: u32,
+//     lock: u32,
+//     control: u32,
+//     mod1: u32,
+//     mod2: u32,
+//     mod3: u32,
+//     mod4: u32,
+//     mod5: u32,
+//     level3: u32,
+//     level5: u32,
+// }
+// impl XkbModIndices {
+//     fn new(keymap: *mut raw::xkb_keymap) -> Self {
+//         Self {
+//             shift:   Self::index(keymap, "Shift\0"),
+//             lock:    Self::index(keymap, "Lock\0"),
+//             control: Self::index(keymap, "Control\0"),
+//             mod1:    Self::index(keymap, "Mod1\0"),
+//             mod2:    Self::index(keymap, "Mod2\0"),
+//             mod3:    Self::index(keymap, "Mod3\0"),
+//             mod4:    Self::index(keymap, "Mod4\0"),
+//             mod5:    Self::index(keymap, "Mod5\0"),
+//             // level3:  Self::index(keymap, "LevelThree\0"),
+//             // level5:  Self::index(keymap, "LevelFive\0"),
+//         }
+//     }
+//     #[inline(always)]
+//     fn index(keymap: *mut raw::xkb_keymap, name: &str) -> u32 {
+//         unsafe { raw::xkb_keymap_mod_get_index(keymap, name.as_ptr().cast()) }
+//     }
+// }
+// #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+// struct XkbLedIndices {
+//     caps: u32,
+//     num: u32,
+//     scroll: u32,
+// }
+// impl XkbLedIndices {
+//     fn new(keymap: *mut raw::xkb_keymap) -> Self {
+//         Self {
+//             caps:   Self::index(keymap, "Caps Lock\0"),
+//             num:    Self::index(keymap, "Num Lock\0"),
+//             scroll: Self::index(keymap, "Scroll Lock\0"),
+//         }
+//     }
+//     #[inline(always)]
+//     fn index(keymap: *mut raw::xkb_keymap, name: &str) -> u32 {
+//         unsafe { raw::xkb_keymap_led_get_index(keymap, name.as_ptr().cast()) }
+//     }
+// }
+
 /// XKB translation state.
 ///
 /// Provides keysym interpretation, physical-key identification,
@@ -89,6 +143,11 @@ pub(crate) struct XkbState {
     ///
     /// Updated implicitly according to X11 events.
     pub(crate) state: *mut raw::xkb_state,
+    // // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
+    // /// Cached key modifier indices.
+    // mod_idx: XkbModIndices,
+    // /// Cached keyboard led indices.
+    // led_idx: XkbLedIndices,
 }
 
 #[rustfmt::skip]
@@ -120,6 +179,13 @@ impl XkbState {
             unsafe { raw::xkb_keymap_unref(keymap) };
             return Err(XError::ExtensionUnavailable("xkb-state"));
         }
+
+        // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
+        // cache indices of key modifiers and leds
+        // let mod_idx = XkbModIndices::new(keymap);
+        // let led_idx = XkbLedIndices::new(keymap);
+        // Ok(Self { ctx, keymap, state, mod_idx, led_idx })
+
         Ok(Self { ctx, keymap, state })
     }
 
@@ -137,9 +203,38 @@ impl XkbState {
     /// Translates an X11 keycode and modifier bitmask into semantic + physical keys.
     ///
     /// This is the high-level entry point used by the XEvent → EventKey conversion.
+    // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
     pub fn translate_key(&self, keycode: u8, mods: u16) -> XkbKeyInfo {
         XkbKeyInfo::new(self.key_semantic(keycode), self.key_physical(keycode), self.key_mods(mods))
+        // XkbKeyInfo::new(self.key_semantic(keycode), self.key_physical(keycode), self.key_mods())
     }
+
+    // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
+    // NOTE: https://github.com/xkbcommon/libxkbcommon/issues/583
+    // #[inline(always)]
+    // pub fn key_mods(&self) -> KeyMods {
+    //     let mut m = KeyMods::empty();
+    //     // basic modifiers
+    //     if self.mod_active(self.mod_idx.shift)   { m.set_shift(); }
+    //     if self.mod_active(self.mod_idx.control) { m.set_control(); }
+    //     if self.mod_active(self.mod_idx.mod1)    { m.set_alt(); }
+    //     if self.mod_active(self.mod_idx.mod4)    { m.set_super(); }
+    //     // locks
+    //     if self.mod_active(self.mod_idx.lock)    { m.set_caps_lock(); }
+    //     if self.mod_active(self.mod_idx.mod2)    { m.set_num_lock(); }
+    //     if self.mod_active(self.mod_idx.mod3)    { m.set_scroll_lock(); }
+    //     // extended layers
+    //     if self.mod_active(self.mod_idx.level3)  { m.set_alt_gr(); }
+    //     if self.mod_active(self.mod_idx.level5)  { m.set_level5(); }
+    //     m
+    // }
+    // helper to check effective modifier state
+    // #[inline(always)]
+    // fn mod_active(&self, idx: u32) -> bool {
+    //     idx != raw::XKB_MOD_INVALID && unsafe {
+    //         raw::xkb_state_mod_index_is_active(self.state, idx,
+    //             raw::xkb_state_component::XKB_STATE_MODS_EFFECTIVE) } != 0
+    // }
 
     /// Converts an X11 modifier bitmask into a [`KeyMods`] representation.
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {

@@ -10,9 +10,18 @@
 
 #![allow(non_camel_case_types, non_upper_case_globals, clippy::upper_case_acronyms)]
 
-use crate::{_TAG_FFI, c_int, c_void};
+use crate::{_TAG_FFI, c_char, c_int, c_void};
 
-/* keysyms — from xkbcommon-keysyms.h */
+/* from xkbcommon.h */
+
+pub(crate) const XKB_KEYCODE_INVALID: u32 = 0xffff_ffff;
+pub(crate) const XKB_LAYOUT_INVALID: u32 = 0xffff_ffff;
+pub(crate) const XKB_LEVEL_INVALID: u32 = 0xffff_ffff;
+pub(crate) const XKB_MOD_INVALID: u32 = 0xffff_ffff;
+pub(crate) const XKB_LED_INVALID: u32 = 0xffff_ffff;
+pub(crate) const XKB_KEYCODE_MAX: u32 = 0xffff_ffff - 1;
+
+/* xkbcommon-keysyms.h */
 
 // TTY function keys
 pub(crate) const XKB_KEY_BackSpace: u32 = 0xff08;
@@ -230,6 +239,14 @@ unsafe extern "C" {
     /// Release a reference on a keymap, and possibly free it.
     /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_keymap_unref.html>
     pub(crate) fn xkb_keymap_unref(keymap: *mut xkb_keymap);
+
+    /// Get the index of a modifier by name.
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_keymap_mod_get_index.html>
+    pub(crate) fn xkb_keymap_mod_get_index(keymap: *mut xkb_keymap, name: *const c_char) -> u32;
+
+    /// Get the index of a LED by name.
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_keymap_led_get_index.html>
+    pub(crate) fn xkb_keymap_led_get_index(keymap: *mut xkb_keymap, name: *const c_char) -> u32;
 
     /// Release a reference on a keybaord state object, and possibly free it.
     /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_unref.html>
