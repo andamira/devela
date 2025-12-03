@@ -5,7 +5,6 @@
 // DOC LINKS:
 // - https://www.x.org/releases/current/doc/man/man3/
 // - https://xcb.freedesktop.org/manual/group__XCB____API.html
-// - https://xkbcommon-d.dpldocs.info/~master/xkbcommon.html
 //
 // TOC
 // * basic protocol scalar types

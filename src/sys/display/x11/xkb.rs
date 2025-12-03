@@ -11,6 +11,8 @@ use super::raw;
 use crate::{Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, XError, is};
 
 /// Tracks the minimal state needed to classify `Press` vs `Repeat`.
+///
+/// This is stored in [`XDisplay`][crate::XDisplay], and used in [`crate::XEvent::to_event_key`].
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub(crate) struct KeyRepeatFilter {
     /// The last pressed keycode
@@ -51,8 +53,7 @@ impl KeyRepeatFilter {
 
 /// Intermediate result combining semantic + physical keys + modifiers.
 ///
-/// This is produced by [`XkbState::translate_key`] and consumed by the
-/// XEvent → EventKey conversion layer.
+/// This is produced by [`XkbState::translate_key`] and consumed by [`crate::XEvent::to_event_key]`.
 #[derive(Debug)]
 pub(crate) struct XkbKeyInfo {
     pub(crate) semantic: Key,
@@ -122,9 +123,14 @@ impl XkbState {
         Ok(Self { ctx, keymap, state })
     }
 
-    // TODO
+    /// Updates the internal XKB state with a key press or release.
     ///
-    pub(crate) fn update(&self, keycode: u8, dir: raw::xkb_key_direction ) {
+    /// This applies the given `keycode` and direction (`Press` or `Release`)
+    /// to the XKB state machine so that subsequent queries
+    /// (`key_mods`, `key_semantic`, etc.) reflect the new modifier and group state.
+    ///
+    /// This is called from [`crate::XEvent::to_update_key`].
+    pub fn update(&self, keycode: u8, dir: raw::xkb_key_direction ) {
         unsafe { raw::xkb_state_update_key(self.state, keycode as u32, dir); }
     }
 
@@ -136,7 +142,6 @@ impl XkbState {
     }
 
     /// Converts an X11 modifier bitmask into a [`KeyMods`] representation.
-    #[inline(always)]
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
         let (x, mut m) = (xcb_modifiers, KeyMods::empty());
         if x & raw::XCB_MOD_MASK_SHIFT != 0 { m.set_shift(); }
@@ -182,15 +187,17 @@ impl XkbState {
     #[inline(always)]
     pub fn key_physical(&self, keycode: u8) -> Key {
         // X11 core keycodes on Linux are usually evdev + 8.
-        // Subtract 8 to get a layout-independent “physical” scancode.
+        // We subtract 8 to get a layout-independent "physical" scancode.
         let scancode = keycode.saturating_sub(8) as u32;
         Self::map_scancode_to_key(scancode)
     }
 
     /* internals */
 
+    // IMPROVE: add more LUTs like in dead key recognition, for faster conversion.
+    /// Maps special keys before converting to UTF32 in [`XkbState::key_semantic`].
     #[inline(always)]
-    fn map_special_keys(sym: u32) -> Option<Key> {
+    const fn map_special_keys(sym: u32) -> Option<Key> {
         let k = match sym {
             /* control keys */
             raw::XKB_KEY_Return       => Key::Enter,

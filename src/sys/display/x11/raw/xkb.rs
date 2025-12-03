@@ -8,7 +8,7 @@
 // - enums
 // - state
 
-#![allow(non_camel_case_types, non_upper_case_globals)]
+#![allow(non_camel_case_types, non_upper_case_globals, clippy::upper_case_acronyms)]
 
 use crate::{_TAG_FFI, c_int, c_void};
 
@@ -183,7 +183,7 @@ pub(crate) enum xkb_key_direction {
 #[doc = _TAG_FFI!()]
 /// Modifier and layout types for state objects
 ///
-/// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_state_component.html>
+/// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_component.html>
 #[repr(C)]
 pub(crate) enum xkb_state_component {
     /// Depressed modifiers.
@@ -218,34 +218,34 @@ pub(crate) enum xkb_state_component {
 
 #[rustfmt::skip]
 #[link(name = "xkbcommon")]
-// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.html>
-// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.html>
+// - <https://xkbcommon-d.dpldocs.info/xkbcommon.html>
+// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.html>
 unsafe extern "C" {
     /// Create a new context.
     ///
     /// Returns a new context, or NULL on failure.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_context_new.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_context_new.html>
     pub(crate) fn xkb_context_new(flags: u32) -> *mut xkb_context;
 
     /// Release a reference on a keymap, and possibly free it.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_keymap_unref.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_keymap_unref.html>
     pub(crate) fn xkb_keymap_unref(keymap: *mut xkb_keymap);
 
     /// Release a reference on a keybaord state object, and possibly free it.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_state_unref.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_unref.html>
     pub(crate) fn xkb_state_unref(state: *mut xkb_state);
 
     /// Get the single keysym obtained from pressing a particular key in a given keyboard state.
     ///
     /// Returns The keysym. If the key does not have exactly one keysym, returns XKB_KEY_NoSymbol.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_state_key_get_one_sym.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_key_get_one_sym.html>
     pub(crate) fn xkb_state_key_get_one_sym(state: *mut xkb_state, keycode: u32) -> u32;
 
     /// Test whether a modifier is active in a given keyboard state by index.
     ///
     /// Returns 1 if the modifier is active, 0 if it is not.
     /// If the modifier index is invalid in the keymap, returns -1.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_state_mod_index_is_active.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_mod_index_is_active.html>
     pub(crate) fn xkb_state_mod_index_is_active(state: *mut xkb_state, idx: u32,
         ty: xkb_state_component) -> c_int;
 
@@ -253,7 +253,7 @@ unsafe extern "C" {
     ///
     /// Returns A mask of state components that have changed as a result of the update.
     /// If nothing in the state has changed, returns 0.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_state_update_key.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_update_key.html>
     pub(crate) fn xkb_state_update_key(state: *mut xkb_state, key: u32, direction: xkb_key_direction)
         -> xkb_state_component;
 
@@ -261,7 +261,7 @@ unsafe extern "C" {
     ///
     /// Returns the UTF-32 representation for the key, if it consists of only a single codepoint.
     /// Otherwise, returns 0.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_state_key_get_utf32.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_key_get_utf32.html>
     pub(crate) fn xkb_state_key_get_utf32(state: *mut xkb_state, key: u32) -> u32;
 
     // MAYBE
@@ -270,6 +270,6 @@ unsafe extern "C" {
     // /// Returns The number of bytes required for the string, excluding the NUL byte.
     // /// If the buffer passed is too small, the string is truncated
     // /// If there is nothing to write, returns 0.
-    // /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.xkbcommon.xkb_state_key_get_utf8.html>
+    // /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_key_get_utf8.html>
     // pub(crate) fn xkb_state_key_get_utf8(state: *mut xkb_state, key: u32, buf *mut u8, len: usize) -> u32;
 }

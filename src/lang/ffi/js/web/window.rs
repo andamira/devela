@@ -4,6 +4,7 @@
 //!
 //
 
+#[allow(unused_imports, reason = "used by _js_method_str_alloc!")]
 #[cfg(feature = "alloc")]
 use devela::String;
 use devela::{_js_doc, Distance, Extent, Float, offset_of};

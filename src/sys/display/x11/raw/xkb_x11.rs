@@ -6,12 +6,12 @@
 use crate::{c_int, xcb_connection_t, xkb_context, xkb_keymap, xkb_state};
 
 #[link(name = "xkbcommon-x11")]
-// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.x11.html>
+// - <https://xkbcommon-d.dpldocs.info/xkbcommon.x11.html>
 unsafe extern "C" {
     /// Setup the XKB X11 extension for this X client.
     ///
     /// Returns 1 on success, or 0 on failure.
-    /// - <https://xkbcommon-d.dpldocs.info/~master/xkbcommon.x11.xkb_x11_setup_xkb_extension.html>
+    /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.x11.xkb_x11_setup_xkb_extension.html>
     pub(crate) fn xkb_x11_setup_xkb_extension(
         conn: *mut xcb_connection_t,
         major_xkb_version: u16,
