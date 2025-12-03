@@ -25,30 +25,20 @@ use crate::{ConstInit, impl_trait, is};
 pub enum KeyMod {
     /// Left **Shift** key.
     LeftShift,
-    /// Left **Control** (Ctrl) key.
+    /// Left **Control** (Control) key.
     LeftControl,
     /// Left **Alt** key.
     LeftAlt,
     /// Left **Super** key (Windows key on Windows, Command ⌘ on macOS).
     LeftSuper,
-    // obsolete:
-    // /// Left **Hyper** key (historically used in some Unix systems).
-    // LeftHyper,
-    // /// Left **Meta** key (used in some Unix-based systems, overlaps with Super).
-    // LeftMeta,
     /// Right **Shift** key.
     RightShift,
-    /// Right **Control** (Ctrl) key.
+    /// Right **Control** key.
     RightControl,
     /// Right **Alt** key.
     RightAlt,
     /// Right **Super** key (Windows key on Windows, Command ⌘ on macOS).
     RightSuper,
-    // obsolete:
-    // /// Right **Hyper** key (historically used in some Unix systems).
-    // RightHyper,
-    // /// Right **Meta** key (used in some Unix-based systems, overlaps with Super).
-    // RightMeta,
     /// Used to access alternative characters on some keyboards.
     ///
     /// Also known as *ISO Level 3 Shift*.
@@ -65,7 +55,7 @@ impl KeyMod {
     pub const IsoLevel3Shift: KeyMod = KeyMod::AltGr;
 }
 
-/// A bitfield of keys modifiers (Shift, Ctrl…) + extra (repeating, composing).
+/// A bitfield of key modifiers (Shift, Control…) + extra (repeating, composing).
 #[repr(transparent)]
 #[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct KeyMods(u16);
@@ -73,7 +63,7 @@ impl ConstInit for KeyMods {
     const INIT: Self = Self(0);
 }
 impl_trait! { fmt::Debug for KeyMods |self, f| {
-    let c = is![self.has_ctrl(); "C"; "-"];
+    let c = is![self.has_control(); "C"; "-"];
     let s = is![self.has_shift(); "S"; "-"];
     let a = is![self.has_alt(); "A"; "-"];
     let g = is![self.has_alt_gr(); "G"; "-"];
@@ -86,7 +76,7 @@ impl_trait! { fmt::Debug for KeyMods |self, f| {
 } }
 #[rustfmt::skip]
 impl KeyMods {
-    pub(crate) const CTRL: u16 = 1 << 0;
+    pub(crate) const CONTROL: u16 = 1 << 0;
     pub(crate) const SHIFT: u16 = 1 << 1;
     pub(crate) const ALT: u16 = 1 << 2;
     pub(crate) const SUPER: u16 = 1 << 3;
@@ -94,8 +84,9 @@ impl KeyMods {
     pub(crate) const CAPS_LOCK: u16 = 1 << 5;
     pub(crate) const NUM_LOCK: u16 = 1 << 6;
     pub(crate) const SCROLL_LOCK: u16 = 1 << 7;
-    pub(crate) const REPEAT: u16 = 1 << 8;
-    pub(crate) const IS_COMPOSING: u16 = 1 << 9;
+    pub(crate) const LEVEL5: u16 = 1 << 8;
+    pub(crate) const REPEATING: u16 = 1 << 9;
+    pub(crate) const COMPOSING: u16 = 1 << 10;
 
     /// Constructs an empty `KeyMods`.
     pub const fn empty() -> Self { Self::INIT }
@@ -109,14 +100,14 @@ impl KeyMods {
     // /// Checks if a given modifier is active.
     // pub const fn has(self, mod_mask: u16) -> bool { self.0 & mod_mask != 0 }
     /// Checks if the *Control* modifier is set.
-    pub const fn has_ctrl(self) -> bool { self.0 & Self::CTRL != 0 }
+    pub const fn has_control(self) -> bool { self.0 & Self::CONTROL != 0 }
     /// Checks if the *Shift* modifier is set.
     pub const fn has_shift(self) -> bool { self.0 & Self::SHIFT != 0 }
     /// Checks if the *Alt* modifier is set.
     pub const fn has_alt(self) -> bool { self.0 & Self::ALT != 0 }
     /// Checks if the *AltGraph* modifier is set.
     pub const fn has_alt_gr(self) -> bool { self.0 & Self::ALT_GRAPH != 0 }
-    /// Checks if the *Meta* modifier is set.
+    /// Checks if the *Super* modifier is set.
     pub const fn has_super(self) -> bool { self.0 & Self::SUPER != 0 }
     /// Checks if the *Caps Lock* modifier is set.
     pub const fn has_caps_lock(self) -> bool { self.0 & Self::CAPS_LOCK != 0 }
@@ -124,23 +115,25 @@ impl KeyMods {
     pub const fn has_num_lock(self) -> bool { self.0 & Self::NUM_LOCK != 0 }
     /// Checks if the *Scroll Lock* modifier is set.
     pub const fn has_scroll_lock(self) -> bool { self.0 & Self::SCROLL_LOCK != 0 }
+    /// Checks if the *IsoLevel5Shift* modifier is set.
+    pub const fn has_level5(self) -> bool { self.0 & Self::LEVEL5 != 0 }
 
-    /// Queries if a key event is a repeat.
-    pub const fn is_repeating(self) -> bool { self.0 & Self::REPEAT != 0 }
+    /// Queries if a key event is repeating.
+    pub const fn is_repeating(self) -> bool { self.0 & Self::REPEATING != 0 }
     /// Queries if a key event is composing (IME input).
-    pub const fn is_composing(self) -> bool { self.0 & Self::IS_COMPOSING != 0 }
+    pub const fn is_composing(self) -> bool { self.0 & Self::COMPOSING != 0 }
 
     /* setters */
 
     /// Sets the *Control* modifier.
-    pub const fn set_ctrl(&mut self) { self.0 |= Self::CTRL; }
+    pub const fn set_control(&mut self) { self.0 |= Self::CONTROL; }
     /// Sets the *Shift* modifier.
     pub const fn set_shift(&mut self) { self.0 |= Self::SHIFT; }
     /// Sets the *Alt* modifier.
     pub const fn set_alt(&mut self) { self.0 |= Self::ALT; }
     /// Sets the *AltGraph* modifier.
     pub const fn set_alt_gr(&mut self) { self.0 |= Self::ALT_GRAPH; }
-    /// Sets the *Meta* modifier.
+    /// Sets the *Super* modifier.
     pub const fn set_super(&mut self) { self.0 |= Self::SUPER; }
     /// Sets the *Caps Lock* modifier.
     pub const fn set_caps_lock(&mut self) { self.0 |= Self::CAPS_LOCK; }
@@ -148,20 +141,22 @@ impl KeyMods {
     pub const fn set_num_lock(&mut self) { self.0 |= Self::NUM_LOCK; }
     /// Sets the *Scroll Lock* modifier.
     pub const fn set_scroll_lock(&mut self) { self.0 |= Self::SCROLL_LOCK; }
-    /// Sets the repeat modifier.
-    pub const fn set_repeating(&mut self) { self.0 |= Self::REPEAT; }
+    /// Sets the *IsoLevel5Shift* modifier.
+    pub const fn set_level5(&mut self) { self.0 |= Self::LEVEL5; }
+    /// Sets the repeating modifier.
+    pub const fn set_repeating(&mut self) { self.0 |= Self::REPEATING; }
     /// Sets the composing modifier.
-    pub const fn set_composing(&mut self) { self.0 |= Self::IS_COMPOSING; }
+    pub const fn set_composing(&mut self) { self.0 |= Self::COMPOSING; }
 
     /// Unsets the *Control* modifier.
-    pub const fn unset_ctrl(&mut self) { self.0 &= !Self::CTRL; }
+    pub const fn unset_control(&mut self) { self.0 &= !Self::CONTROL; }
     /// Unsets the *Shift* modifier.
     pub const fn unset_shift(&mut self) { self.0 &= !Self::SHIFT; }
     /// Unsets the *Alt* modifier.
     pub const fn unset_alt(&mut self) { self.0 &= !Self::ALT; }
     /// Unsets the *AltGraph* modifier.
     pub const fn unset_alt_gr(&mut self) { self.0 &= !Self::ALT_GRAPH; }
-    /// Unsets the *Meta* modifier.
+    /// Unsets the *Super* modifier.
     pub const fn unset_super(&mut self) { self.0 &= !Self::SUPER; }
     /// Unsets the *Caps Lock* modifier.
     pub const fn unset_caps_lock(&mut self) { self.0 &= !Self::CAPS_LOCK; }
@@ -169,10 +164,12 @@ impl KeyMods {
     pub const fn unset_num_lock(&mut self) { self.0 &= !Self::NUM_LOCK; }
     /// Unsets the *Scroll Lock* modifier.
     pub const fn unset_scroll_lock(&mut self) { self.0 &= !Self::SCROLL_LOCK; }
-    /// Unsets the repeat modifier.
-    pub const fn unset_repeating(&mut self) { self.0 &= !Self::REPEAT; }
+    /// Unsets the *IsoLevel5Shift* modifier.
+    pub const fn unset_level5(&mut self) { self.0 &= !Self::LEVEL5; }
+    /// Unsets the repeating modifier.
+    pub const fn unset_repeating(&mut self) { self.0 &= !Self::REPEATING; }
     /// Unsets the composing modifier.
-    pub const fn unset_composing(&mut self) { self.0 &= !Self::IS_COMPOSING; }
+    pub const fn unset_composing(&mut self) { self.0 &= !Self::COMPOSING; }
 }
 
 /* impls */
@@ -193,15 +190,11 @@ impl KeyMod {
             (b"ShiftLeft", L::Left) => Some(K::LeftShift),
             (b"ControlLeft", L::Left) => Some(K::LeftControl),
             (b"AltLeft", L::Left) => Some(K::LeftAlt),
-            (b"MetaLeft", L::Left) => Some(K::LeftSuper), //
-            // (b"HyperLeft", L::Left) => Some(K::LeftHyper), //
-            // (b"OSLeft", L::Left) => Some(K::LeftMeta), //
+            (b"MetaLeft", L::Left) => Some(K::LeftSuper),
             (b"ShiftRight", L::Right) => Some(K::RightShift),
             (b"ControlRight", L::Right) => Some(K::RightControl),
             (b"AltRight", L::Right) => Some(K::RightAlt),
-            // (b"MetaRight", L::Right) => Some(K::RightSuper), //
-            // (b"HyperRight", L::Right) => Some(K::RightHyper), //
-            // (b"OSRight", L::Right) => Some(K::RightMeta), //
+            (b"MetaRight", L::Right) => Some(K::RightSuper),
             (b"AltGraph", L::Standard) => Some(K::AltGr),
             (b"Level5Shift", L::Standard) => Some(K::IsoLevel5Shift),
             _ => None,
@@ -218,15 +211,11 @@ impl KeyMod {
             K::LeftShift => ("ShiftLeft", L::Left),
             K::LeftControl => ("ControlLeft", L::Left),
             K::LeftAlt => ("AltLeft", L::Left),
-            K::LeftSuper => ("MetaLeft", L::Left), //
-            // K::LeftHyper => ("HyperLeft", L::Left), //
-            // K::LeftMeta => ("OSLeft", L::Left), //
+            K::LeftSuper => ("MetaLeft", L::Left),
             K::RightShift => ("ShiftRight", L::Right),
             K::RightControl => ("ControlRight", L::Right),
             K::RightAlt => ("AltRight", L::Right),
-            K::RightSuper => ("MetaRight", L::Right), //
-            // K::RightHyper => ("HyperRight", L::Right), //
-            // K::RightMeta => ("OSRight", L::Right), //
+            K::RightSuper => ("MetaRight", L::Right),
             K::AltGr => ("AltGraph", L::Standard),
             K::IsoLevel5Shift => ("Level5Shift", L::Standard),
         }
@@ -243,14 +232,10 @@ impl KeyMod {
             (b"Control", L::Left) => Some(K::LeftControl),
             (b"Alt", L::Left) => Some(K::LeftAlt),
             (b"Meta", L::Left) => Some(K::LeftSuper),
-            // (b"Hyper", L::Left) => Some(K::LeftHyper),
-            // (b"OS", L::Left) => Some(K::LeftMeta),
             (b"Shift", L::Right) => Some(K::RightShift),
             (b"Control", L::Right) => Some(K::RightControl),
             (b"Alt", L::Right) => Some(K::RightAlt),
             (b"Meta", L::Right) => Some(K::RightSuper),
-            // (b"Hyper", L::Right) => Some(K::RightHyper),
-            // (b"OS", L::Right) => Some(K::RightMeta),
             (b"AltGraph", L::Standard) => Some(K::AltGr),
             (b"Level5Shift", L::Standard) => Some(K::IsoLevel5Shift),
             _ => None,
@@ -267,14 +252,10 @@ impl KeyMod {
             K::LeftControl => ("Control", L::Left),
             K::LeftAlt => ("Alt", L::Left),
             K::LeftSuper => ("Meta", L::Left),
-            // K::LeftHyper => ("Hyper", L::Left),
-            // K::LeftMeta => ("OS", L::Left),
             K::RightShift => ("Shift", L::Right),
             K::RightControl => ("Control", L::Right),
             K::RightAlt => ("Alt", L::Right),
             K::RightSuper => ("Meta", L::Right),
-            // K::RightHyper => ("Hyper", L::Right),
-            // K::RightMeta => ("OS", L::Right),
             K::AltGr => ("AltGraph", L::Standard),
             K::IsoLevel5Shift => ("Level5Shift", L::Standard),
         }

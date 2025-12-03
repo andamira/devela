@@ -568,7 +568,12 @@ Many feature gates are removed in order to make most features make always availa
 - update `KeyMod`:
   - rename variant `IsoLevel3Shift` to `AltGr`.
   - remove variants: `LeftMeta`, `RightMeta`, `LeftHyper`, `RightHyper`.
-- update `KeyMods`, rename method `has_meta` to `has_super`.
+- update `KeyMods`:
+  - rename `ctrl` in methods to  `control`.
+  - rename method `has_meta` to `has_super`.
+  - add bits and methods for `IsoLevel5Shift`.
+  - add getter and setter methods: `set_*`, `unset_*`.
+  - remove old obsolete variants.
 - remove `KeyAlpha`.
 - update `Key` & `KeyFfi`:
   - rename `F(u8)` variant to `Fn(u8)`.

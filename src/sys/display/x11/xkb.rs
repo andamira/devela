@@ -136,14 +136,11 @@ impl XkbState {
     }
 
     /// Converts an X11 modifier bitmask into a [`KeyMods`] representation.
-    ///
-    /// X11 (xproto) uses the same bit pattern for Shift/Ctrl/Alt/Super groups,
-    /// so we can map it directly.
     #[inline(always)]
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
         let (x, mut m) = (xcb_modifiers, KeyMods::empty());
         if x & raw::XCB_MOD_MASK_SHIFT != 0 { m.set_shift(); }
-        if x & raw::XCB_MOD_MASK_CONTROL  != 0 { m.set_ctrl(); }
+        if x & raw::XCB_MOD_MASK_CONTROL  != 0 { m.set_control(); }
         if x & raw::XCB_MOD_MASK_LOCK != 0 { m.set_caps_lock(); }
         if x & raw::XCB_MOD_MASK_1 != 0 { m.set_alt(); }
         if x & raw::XCB_MOD_MASK_2 != 0 { m.set_num_lock(); }
