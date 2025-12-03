@@ -8,7 +8,7 @@
 // - struct XkbState
 
 use super::raw;
-use crate::{Key, KeyMod, KeyMods, KeyState, XError, is};
+use crate::{Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, XError, is};
 
 /// Tracks the minimal state needed to classify `Press` vs `Repeat`.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -140,8 +140,17 @@ impl XkbState {
     /// X11 (xproto) uses the same bit pattern for Shift/Ctrl/Alt/Super groups,
     /// so we can map it directly.
     #[inline(always)]
-    pub const fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
-        KeyMods::from_bits(xcb_modifiers)
+    pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
+        let (x, mut m) = (xcb_modifiers, KeyMods::empty());
+        if x & raw::XCB_MOD_MASK_SHIFT != 0 { m.set_shift(); }
+        if x & raw::XCB_MOD_MASK_CONTROL  != 0 { m.set_ctrl(); }
+        if x & raw::XCB_MOD_MASK_LOCK != 0 { m.set_caps_lock(); }
+        if x & raw::XCB_MOD_MASK_1 != 0 { m.set_alt(); }
+        if x & raw::XCB_MOD_MASK_2 != 0 { m.set_num_lock(); }
+        // if x & raw::XCB_MOD_MASK_3 != 0 { unimplemented![] }
+        if x & raw::XCB_MOD_MASK_4 != 0 { m.set_super(); }
+        if x & raw::XCB_MOD_MASK_5 != 0 { m.set_alt_gr(); }
+        m
     }
 
     /// Returns the logical (layout-dependent) key for the given X11 keycode.
@@ -187,83 +196,71 @@ impl XkbState {
     fn map_special_keys(sym: u32) -> Option<Key> {
         let k = match sym {
             /* control keys */
-            // raw::XKB_KEY_Return     => Key::Enter,
-            // raw::XKB_KEY_KP_Enter   => Key::Enter,
-            // raw::XKB_KEY_Tab        => Key::Tab,
-            // raw::XKB_KEY_BackSpace  => Key::Backspace,
-            // raw::XKB_KEY_Escape     => Key::Escape,
-            // raw::XKB_KEY_Delete     => Key::Delete,
-            // raw::XKB_KEY_KP_Delete  => Key::Delete,
-            // raw::XKB_KEY_Insert     => Key::Insert,
-            // raw::XKB_KEY_KP_Insert  => Key::Insert,
-            // raw::XKB_KEY_space      => Key::Space,
+            raw::XKB_KEY_Return       => Key::Enter,
+            raw::XKB_KEY_Tab          => Key::Tab,
+            raw::XKB_KEY_BackSpace    => Key::Backspace,
+            raw::XKB_KEY_Escape       => Key::Escape,
+            raw::XKB_KEY_Delete       => Key::Delete,
+            raw::XKB_KEY_KP_Delete    => Key::Delete,
+            raw::XKB_KEY_Insert       => Key::Insert,
+            raw::XKB_KEY_KP_Insert    => Key::Insert,
 
             /* navigation */
-            // raw::XKB_KEY_Left       => Key::Left,
-            // raw::XKB_KEY_Right      => Key::Right,
-            // raw::XKB_KEY_Up         => Key::Up,
-            // raw::XKB_KEY_Down       => Key::Down,
-            // raw::XKB_KEY_Home       => Key::Home,
-            // raw::XKB_KEY_End        => Key::End,
-            // raw::XKB_KEY_Page_Up    => Key::PageUp,
-            // raw::XKB_KEY_Page_Down  => Key::PageDown,
+            raw::XKB_KEY_Left         => Key::Left,
+            raw::XKB_KEY_Right        => Key::Right,
+            raw::XKB_KEY_Up           => Key::Up,
+            raw::XKB_KEY_Down         => Key::Down,
+            raw::XKB_KEY_Home         => Key::Home,
+            raw::XKB_KEY_End          => Key::End,
+            raw::XKB_KEY_Page_Up      => Key::PageUp,
+            raw::XKB_KEY_Page_Down    => Key::PageDown,
 
             /* lock keys */
-            // raw::XKB_KEY_Num_Lock   => Key::NumLock,
-            // raw::XKB_KEY_Caps_Lock  => Key::CapsLock,
-            // raw::XKB_KEY_Scroll_Lock=> Key::ScrollLock,
+            raw::XKB_KEY_Num_Lock     => Key::NumLock,
+            raw::XKB_KEY_Caps_Lock    => Key::CapsLock,
+            raw::XKB_KEY_Scroll_Lock  => Key::ScrollLock,
 
-            0x27 => Key::Char('\''),
+            /* dead keys */
+            0xfe50 ..= 0xfe93 => Key::Dead(KeyDead::from_keysym(sym)),
 
-            // MAYBE
-            // XKB_KEY_dead_acute        => Key::Dead(DeadKey::Acute),
-            // XKB_KEY_dead_grave        => Key::Dead(DeadKey::Grave),
-            // XKB_KEY_dead_tilde        => Key::Dead(DeadKey::Tilde),
-            // XKB_KEY_dead_circumflex   => Key::Dead(DeadKey::Circumflex),
-            // XKB_KEY_dead_diaeresis    => Key::Dead(DeadKey::Diaeresis),
-            // DECIDE
-            // XKB_KEY_dead_acute      => Key::Char('\u{00B4}'), // ´
-            // XKB_KEY_dead_grave      => Key::Char('\u{0060}'), // `
-            // XKB_KEY_dead_tilde      => Key::Char('~'),
-            // XKB_KEY_dead_circumflex => Key::Char('^'),
-            // XKB_KEY_dead_diaeresis  => Key::Char('\u{00A8}'), // ¨
+            /* modifiers */
+            raw::XKB_KEY_Shift_L      => Key::Mod(KeyMod::LeftShift),
+            raw::XKB_KEY_Shift_R      => Key::Mod(KeyMod::RightShift),
+            raw::XKB_KEY_Control_L    => Key::Mod(KeyMod::LeftControl),
+            raw::XKB_KEY_Control_R    => Key::Mod(KeyMod::RightControl),
+            raw::XKB_KEY_Alt_L        => Key::Mod(KeyMod::LeftAlt),
+            raw::XKB_KEY_Alt_R        => Key::Mod(KeyMod::RightAlt),
+            raw::XKB_KEY_Super_L      => Key::Mod(KeyMod::LeftSuper),
+            raw::XKB_KEY_Super_R      => Key::Mod(KeyMod::RightSuper),
+            0xfe03..=0xfe05           => Key::Mod(KeyMod::IsoLevel3Shift),
+            raw::XKB_KEY_Mode_switch  => Key::Mod(KeyMod::AltGr),
+            0xfe11..=0xfe13           => Key::Mod(KeyMod::IsoLevel5Shift),
 
-            /* Modifiers */
-            raw::XKB_KEY_Shift_L    => Key::Mod(KeyMod::LeftShift),
-            raw::XKB_KEY_Shift_R    => Key::Mod(KeyMod::RightShift),
-            raw::XKB_KEY_Control_L  => Key::Mod(KeyMod::LeftControl),
-            raw::XKB_KEY_Control_R  => Key::Mod(KeyMod::RightControl),
-            raw::XKB_KEY_Alt_L      => Key::Mod(KeyMod::LeftAlt),
-            raw::XKB_KEY_Alt_R      => Key::Mod(KeyMod::RightAlt),
-            raw::XKB_KEY_Super_L    => Key::Mod(KeyMod::LeftSuper),
-            raw::XKB_KEY_Super_R    => Key::Mod(KeyMod::RightSuper),
-            raw::XKB_KEY_ISO_Level3_Shift => Key::Mod(KeyMod::AltGr),
-            raw::XKB_KEY_Mode_switch      => Key::Mod(KeyMod::AltGr),
-
-            /* Function keys */
-            // SDL/GLFW map up to F35;
-            // sym if (sym >= XKB_KEY_F1 && sym <= XKB_KEY_F24) => {
-            //     let n = (sym - XKB_KEY_F1 + 1) as u8;
-            //     Key::Fn(n)
-            // }
+            /* function keys */
+            sym if (sym >= raw::XKB_KEY_F1 && sym <= raw::XKB_KEY_F35) => {
+                let n = (sym - raw::XKB_KEY_F1 + 1) as u8;
+                Key::Fn(n)
+            }
 
             /* keypad numeric keys */
-            // XKB_KEY_KP_0 => Key::Pad(KeyPad::Digit0),
-            // XKB_KEY_KP_1 => Key::Pad(KeyPad::Digit1),
-            // XKB_KEY_KP_2 => Key::Pad(KeyPad::Digit2),
-            // XKB_KEY_KP_3 => Key::Pad(KeyPad::Digit3),
-            // XKB_KEY_KP_4 => Key::Pad(KeyPad::Digit4),
-            // XKB_KEY_KP_5 => Key::Pad(KeyPad::Digit5),
-            // XKB_KEY_KP_6 => Key::Pad(KeyPad::Digit6),
-            // XKB_KEY_KP_7 => Key::Pad(KeyPad::Digit7),
-            // XKB_KEY_KP_8 => Key::Pad(KeyPad::Digit8),
-            // XKB_KEY_KP_9 => Key::Pad(KeyPad::Digit9),
-            // XKB_KEY_KP_Add      => Key::Pad(KeyPad::Add),
-            // XKB_KEY_KP_Subtract => Key::Pad(KeyPad::Subtract),
-            // XKB_KEY_KP_Multiply => Key::Pad(KeyPad::Multiply),
-            // XKB_KEY_KP_Divide   => Key::Pad(KeyPad::Divide),
-            // XKB_KEY_KP_Separator|
-            // XKB_KEY_KP_Decimal  => Key::Pad(KeyPad::Decimal),
+            raw::XKB_KEY_KP_0         => Key::Pad(KeyPad::Num0),
+            raw::XKB_KEY_KP_1         => Key::Pad(KeyPad::Num1),
+            raw::XKB_KEY_KP_2         => Key::Pad(KeyPad::Num2),
+            raw::XKB_KEY_KP_3         => Key::Pad(KeyPad::Num3),
+            raw::XKB_KEY_KP_4         => Key::Pad(KeyPad::Num4),
+            raw::XKB_KEY_KP_5         => Key::Pad(KeyPad::Num5),
+            raw::XKB_KEY_KP_6         => Key::Pad(KeyPad::Num6),
+            raw::XKB_KEY_KP_7         => Key::Pad(KeyPad::Num7),
+            raw::XKB_KEY_KP_8         => Key::Pad(KeyPad::Num8),
+            raw::XKB_KEY_KP_9         => Key::Pad(KeyPad::Num9),
+            raw::XKB_KEY_KP_Add       => Key::Pad(KeyPad::Add),
+            raw::XKB_KEY_KP_Subtract  => Key::Pad(KeyPad::Subtract),
+            raw::XKB_KEY_KP_Multiply  => Key::Pad(KeyPad::Multiply),
+            raw::XKB_KEY_KP_Divide    => Key::Pad(KeyPad::Divide),
+            raw::XKB_KEY_KP_Enter     => Key::Pad(KeyPad::Enter),
+            raw::XKB_KEY_KP_Equal     => Key::Pad(KeyPad::Equal),
+            raw::XKB_KEY_KP_Separator => Key::Pad(KeyPad::Comma),
+            raw::XKB_KEY_KP_Decimal   => Key::Pad(KeyPad::Decimal),
 
             // no match => not a special key
             _ => return None,
@@ -292,7 +289,6 @@ impl Drop for XkbState {
         unsafe {
             raw::xkb_state_unref(self.state);
             raw::xkb_keymap_unref(self.keymap);
-            // raw::xkb_context_unref(self.ctx);
         }
     }
 }

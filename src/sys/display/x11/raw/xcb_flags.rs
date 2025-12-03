@@ -8,32 +8,79 @@
 
 /* event masks */
 
+/// Receive nothing.
 pub(crate) const XCB_EVENT_MASK_NO_EVENT: u32 = 0;
+/// Keyboard input on key press. (XCB_KEY_PRESS)
 pub(crate) const XCB_EVENT_MASK_KEY_PRESS: u32 = 1 << 0;
+/// Keyboard input on key release. (XCB_KEY_RELEASE)
 pub(crate) const XCB_EVENT_MASK_KEY_RELEASE: u32 = 1 << 1;
+/// Mouse button press. (XCB_BUTTON_PRESS)
 pub(crate) const XCB_EVENT_MASK_BUTTON_PRESS: u32 = 1 << 2;
+/// Mouse button release. (XCB_BUTTON_RELEASE)
 pub(crate) const XCB_EVENT_MASK_BUTTON_RELEASE: u32 = 1 << 3;
+/// Enter window boundary. (XCB_ENTER_NOTIFY)
 pub(crate) const XCB_EVENT_MASK_ENTER_WINDOW: u32 = 1 << 4;
+/// Leave window boundary. (XCB_LEAVE_NOTIFY)
 pub(crate) const XCB_EVENT_MASK_LEAVE_WINDOW: u32 = 1 << 5;
+/// Mouse movement with no buttons pressed. (XCB_MOTION_NOTIFY, no buttons)
 pub(crate) const XCB_EVENT_MASK_POINTER_MOTION: u32 = 1 << 6;
+// Obsolete. Mouse movement.
 pub(crate) const XCB_EVENT_MASK_POINTER_MOTION_HINT: u32 = 1 << 7;
+/// Mouse movement with button 1 pressed. (XCB_MOTION_NOTIFY, with button 1)
 pub(crate) const XCB_EVENT_MASK_BUTTON_1_MOTION: u32 = 1 << 8;
+/// Mouse movement with button 2 pressed. (XCB_MOTION_NOTIFY, with button 2)
 pub(crate) const XCB_EVENT_MASK_BUTTON_2_MOTION: u32 = 1 << 9;
+/// Mouse movement with button 3 pressed. (XCB_MOTION_NOTIFY, with button 3)
 pub(crate) const XCB_EVENT_MASK_BUTTON_3_MOTION: u32 = 1 << 10;
+/// Mouse movement with button 5 pressed. (XCB_MOTION_NOTIFY, with button 4)
 pub(crate) const XCB_EVENT_MASK_BUTTON_4_MOTION: u32 = 1 << 11;
+/// Mouse movement with button 5 pressed. (XCB_MOTION_NOTIFY, with button 4)
 pub(crate) const XCB_EVENT_MASK_BUTTON_5_MOTION: u32 = 1 << 12;
+/// Mouse movement with any button pressed. (XCB_MOTION_NOTIFY, with buttons)
 pub(crate) const XCB_EVENT_MASK_BUTTON_MOTION: u32 = 1 << 13;
+// Obsolete map state notification (XCB_KEYMAP_NOTIFY)
 pub(crate) const XCB_EVENT_MASK_KEYMAP_STATE: u32 = 1 << 14;
+/// Redraw requests. (XCB_EVENT_MASK_EXPOSURE)
 pub(crate) const XCB_EVENT_MASK_EXPOSURE: u32 = 1 << 15;
+/// Window partially/fully obscured. (XCB_VISIBILITY_NOTIFY)
 pub(crate) const XCB_EVENT_MASK_VISIBILITY_CHANGE: u32 = 1 << 16;
+/// Window resize, configure, map/unmap.
+/// (XCB_CREATE_NOTIFY, XCB_DESTROY_NOTIFY, XCB_UNMAP_NOTIFY, XCB_MAP_NOTIFY,
+/// XCB_REPARENT_NOTIFY, XCB_CONFIGURE_NOTIFY, XCB_CIRCULATE_NOTIFY)
 pub(crate) const XCB_EVENT_MASK_STRUCTURE_NOTIFY: u32 = 1 << 17;
+/// WM redirect for client-resize.
 pub(crate) const XCB_EVENT_MASK_RESIZE_REDIRECT: u32 = 1 << 18;
+/// Like `XCB_EVENT_MASK_STRUCTURE_NOTIFY`, but for children.
 pub(crate) const XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY: u32 = 1 << 19;
+/// Like `XCB_EVENT_MASK_STRUCTURE_REDIRECT`, but for children.
 pub(crate) const XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT: u32 = 1 << 20;
+/// Focus in/out. (XCB_FOCUS_IN, XCB_FOCUS_OUT)
 pub(crate) const XCB_EVENT_MASK_FOCUS_CHANGE: u32 = 1 << 21;
+/// Window property changes. (XCB_PROPERTY_NOTIFY)
 pub(crate) const XCB_EVENT_MASK_PROPERTY_CHANGE: u32 = 1 << 22;
+// Obsolete color map change (XCB_COLORMAP_NOTIFY)
 pub(crate) const XCB_EVENT_MASK_COLOR_MAP_CHANGE: u32 = 1 << 23;
+/// Passive button grabs for menus/popups.
 pub(crate) const XCB_EVENT_MASK_OWNER_GRAB_BUTTON: u32 = 1 << 24;
+
+/* keyboard modifiers masks (xcb_mod_mask_t) */
+
+/// Shift.
+pub(crate) const XCB_MOD_MASK_SHIFT: u16 = 1;
+/// CapsLock.
+pub(crate) const XCB_MOD_MASK_LOCK: u16 = 2;
+/// Control.
+pub(crate) const XCB_MOD_MASK_CONTROL: u16 = 4;
+/// Alt.
+pub(crate) const XCB_MOD_MASK_1: u16 = 8;
+/// NumLock.
+pub(crate) const XCB_MOD_MASK_2: u16 = 16;
+///
+pub(crate) const XCB_MOD_MASK_3: u16 = 32;
+/// Super.
+pub(crate) const XCB_MOD_MASK_4: u16 = 64;
+/// AltGr.
+pub(crate) const XCB_MOD_MASK_5: u16 = 128;
 
 /* window attribute value-mask bits (`xcb_cw_t`). */
 
@@ -67,7 +114,6 @@ pub(crate) const XCB_CW_BACK_PIXEL: u32 = 1 << 1;
 /// (subsequent changes to the parent's border attribute do not affect the child),
 /// but the window must have the same depth as the parent.
 pub(crate) const XCB_CW_BORDER_PIXMAP: u32 = 1 << 2;
-
 
 /// Overrides `BorderPixmap`.
 ///

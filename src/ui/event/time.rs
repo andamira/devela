@@ -19,20 +19,17 @@ pub struct EventTimestamp {
     ms: f32bits_niche,
 }
 
-impl_trait! { fmt::Debug for EventTimestamp |self, f|
-    {
-        let float = self.ms.as_float();
-        let bits = self.ms.as_bits();
-        let sure_float = |f:f32| f.is_finite() && (1e-5..=1e9).contains(&f);
-        let sure_int = |f:f32| !f.is_finite() || !(1e-12..1e12).contains(&f);
-        // finite and within the plausible ms range:
-        if sure_float(float) { write![f, "{float:.6}"] }
-        // non-finite, subnormal (<1e-12), or huge (>1e12):
-        else if sure_int(float) { write![f, "{bits}"] }
-        // narrow ambiguous zone; show both representations:
-        else { write![f, "{bits}|{float:.6}"] }
-    }
-}
+impl_trait! { fmt::Debug for EventTimestamp |self, f| {
+    let (float, bits) = (self.ms.as_float(), self.ms.as_bits());
+    // valid finite float-ms live between 0.001 ms and ~11 days:
+    let sure_float = |f:f32| f.is_finite() && (1e-3..=1e9).contains(&f);
+    // NaNs and infinities, subnormal/tiny values, absurdly large magnitudes:
+    let sure_int   = |f: f32| !f.is_finite() || f < 1e-10 || f > 1e12;
+    if sure_float(float) { write![f, "{float:.6} ms"] }
+    else if sure_int(float) { write![f, "{bits} ms"] }
+    // narrow ambiguous zone; show both representations:
+    else { write![f, "{bits}|{float:.6} ms"] }
+} }
 
 // private helpers
 #[rustfmt::skip]
@@ -127,11 +124,3 @@ mod impl_js {
         fn from(from: EventTimestamp) -> Self { from.to_js() }
     }
 }
-
-/* tests */
-
-#[cfg(test)]
-const _SIZE: () = {
-    assert![size_of::<f32bits_niche>() == 4];
-    assert![size_of::<Option<f32bits_niche>>() == 4];
-};

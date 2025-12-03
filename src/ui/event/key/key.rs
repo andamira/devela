@@ -3,7 +3,7 @@
 //! Defines [`Key`].
 //
 
-use crate::{ConstInit, KeyMedia, KeyMod, KeyPad};
+use crate::{ConstInit, KeyDead, KeyMedia, KeyMod, KeyPad};
 
 /// Keyboard codes, used in [`EventKey`][crate::EventKey].
 ///
@@ -104,6 +104,9 @@ pub enum Key {
 
     /// A Unicode character (text input, international layouts, fallback).
     Char(char),
+
+    /// A dead key (accent prefix, composition).
+    Dead(KeyDead),
 
     /* ------------------------------------------------------
       US ANSI physical layout keys (letters/digits/symbols)

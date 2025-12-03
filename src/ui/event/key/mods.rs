@@ -7,9 +7,9 @@
 // - struct KeyMods
 // - impls
 
-use crate::ConstInit;
 #[cfg(all(feature = "js", not(windows)))]
 use crate::WebKeyLocation;
+use crate::{ConstInit, impl_trait, is};
 
 /* definitions */
 
@@ -56,34 +56,55 @@ pub enum KeyMod {
     /// **ISO Level 5 Shift** key (used in some advanced keyboard layouts).
     IsoLevel5Shift,
 }
+impl ConstInit for KeyMod {
+    const INIT: Self = Self::LeftShift;
+}
 #[allow(non_upper_case_globals)]
 impl KeyMod {
     /// AltGr key.
     pub const IsoLevel3Shift: KeyMod = KeyMod::AltGr;
 }
-impl ConstInit for KeyMod {
-    const INIT: Self = Self::LeftShift;
-}
 
 /// A bitfield of keys modifiers (Shift, Ctrl…) + extra (repeating, composing).
 #[repr(transparent)]
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct KeyMods(u16);
+impl ConstInit for KeyMods {
+    const INIT: Self = Self(0);
+}
+impl_trait! { fmt::Debug for KeyMods |self, f| {
+    let c = is![self.has_ctrl(); "C"; "-"];
+    let s = is![self.has_shift(); "S"; "-"];
+    let a = is![self.has_alt(); "A"; "-"];
+    let g = is![self.has_alt_gr(); "G"; "-"];
+    let u = is![self.has_super(); "U"; "-"];
+    let l = is![self.has_caps_lock(); "L"; "-"];
+    let n = is![self.has_num_lock(); "N"; "-"];
+    let r = is![self.is_repeating(); "R"; "-"];
+    let p = is![self.is_composing(); "P"; "-"];
+    write![f, "{c}{s}{a}{g}{u}{l}{n}{r}{p}"]
+} }
 #[rustfmt::skip]
 impl KeyMods {
-    const CTRL: u16 = 1 << 0;
-    const SHIFT: u16 = 1 << 1;
-    const ALT: u16 = 1 << 2;
-    const SUPER: u16 = 1 << 3;
-    const ALT_GRAPH: u16 = 1 << 4;
-    const CAPS_LOCK: u16 = 1 << 5;
-    const NUM_LOCK: u16 = 1 << 6;
-    const SCROLL_LOCK: u16 = 1 << 7;
-    const REPEAT: u16 = 1 << 8;
-    const IS_COMPOSING: u16 = 1 << 9;
+    pub(crate) const CTRL: u16 = 1 << 0;
+    pub(crate) const SHIFT: u16 = 1 << 1;
+    pub(crate) const ALT: u16 = 1 << 2;
+    pub(crate) const SUPER: u16 = 1 << 3;
+    pub(crate) const ALT_GRAPH: u16 = 1 << 4;
+    pub(crate) const CAPS_LOCK: u16 = 1 << 5;
+    pub(crate) const NUM_LOCK: u16 = 1 << 6;
+    pub(crate) const SCROLL_LOCK: u16 = 1 << 7;
+    pub(crate) const REPEAT: u16 = 1 << 8;
+    pub(crate) const IS_COMPOSING: u16 = 1 << 9;
+
+    /// Constructs an empty `KeyMods`.
+    pub const fn empty() -> Self { Self::INIT }
 
     /// Constructs a `KeyMods` from a bitfield representation.
     pub const fn from_bits(bits: u16) -> Self { Self(bits) }
+
+    /// Returns a bitfield representation.
+    pub const fn to_bits(self) -> u16 { self.0 }
 
     // /// Checks if a given modifier is active.
     // pub const fn has(self, mod_mask: u16) -> bool { self.0 & mod_mask != 0 }
@@ -108,9 +129,50 @@ impl KeyMods {
     pub const fn is_repeating(self) -> bool { self.0 & Self::REPEAT != 0 }
     /// Queries if a key event is composing (IME input).
     pub const fn is_composing(self) -> bool { self.0 & Self::IS_COMPOSING != 0 }
-}
-impl ConstInit for KeyMods {
-    const INIT: Self = Self(0);
+
+    /* setters */
+
+    /// Sets the *Control* modifier.
+    pub const fn set_ctrl(&mut self) { self.0 |= Self::CTRL; }
+    /// Sets the *Shift* modifier.
+    pub const fn set_shift(&mut self) { self.0 |= Self::SHIFT; }
+    /// Sets the *Alt* modifier.
+    pub const fn set_alt(&mut self) { self.0 |= Self::ALT; }
+    /// Sets the *AltGraph* modifier.
+    pub const fn set_alt_gr(&mut self) { self.0 |= Self::ALT_GRAPH; }
+    /// Sets the *Meta* modifier.
+    pub const fn set_super(&mut self) { self.0 |= Self::SUPER; }
+    /// Sets the *Caps Lock* modifier.
+    pub const fn set_caps_lock(&mut self) { self.0 |= Self::CAPS_LOCK; }
+    /// Sets the *Num Lock* modifier.
+    pub const fn set_num_lock(&mut self) { self.0 |= Self::NUM_LOCK; }
+    /// Sets the *Scroll Lock* modifier.
+    pub const fn set_scroll_lock(&mut self) { self.0 |= Self::SCROLL_LOCK; }
+    /// Sets the repeat modifier.
+    pub const fn set_repeating(&mut self) { self.0 |= Self::REPEAT; }
+    /// Sets the composing modifier.
+    pub const fn set_composing(&mut self) { self.0 |= Self::IS_COMPOSING; }
+
+    /// Unsets the *Control* modifier.
+    pub const fn unset_ctrl(&mut self) { self.0 &= !Self::CTRL; }
+    /// Unsets the *Shift* modifier.
+    pub const fn unset_shift(&mut self) { self.0 &= !Self::SHIFT; }
+    /// Unsets the *Alt* modifier.
+    pub const fn unset_alt(&mut self) { self.0 &= !Self::ALT; }
+    /// Unsets the *AltGraph* modifier.
+    pub const fn unset_alt_gr(&mut self) { self.0 &= !Self::ALT_GRAPH; }
+    /// Unsets the *Meta* modifier.
+    pub const fn unset_super(&mut self) { self.0 &= !Self::SUPER; }
+    /// Unsets the *Caps Lock* modifier.
+    pub const fn unset_caps_lock(&mut self) { self.0 &= !Self::CAPS_LOCK; }
+    /// Unsets the *Num Lock* modifier.
+    pub const fn unset_num_lock(&mut self) { self.0 &= !Self::NUM_LOCK; }
+    /// Unsets the *Scroll Lock* modifier.
+    pub const fn unset_scroll_lock(&mut self) { self.0 &= !Self::SCROLL_LOCK; }
+    /// Unsets the repeat modifier.
+    pub const fn unset_repeating(&mut self) { self.0 &= !Self::REPEAT; }
+    /// Unsets the composing modifier.
+    pub const fn unset_composing(&mut self) { self.0 &= !Self::IS_COMPOSING; }
 }
 
 /* impls */

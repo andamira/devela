@@ -64,6 +64,9 @@ pub enum EventWindow {
     /// Emitted when the system notifies that some region needs redrawing.
     RedrawRequested,
 
+    /// The window manager requested that this window should close.
+    CloseRequested,
+
     /// Window became visible on screen.
     ///
     /// Triggered when the system maps or shows the window.

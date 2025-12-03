@@ -9,10 +9,11 @@
 //   - struct EventKeyFfi
 // - tests
 
-mod dif; // KeyMod, KeyMods
+mod dead; // KeyDead
 mod event; // EventKey, EventKeyFfi
 mod key; // Key
 mod media; // KeyMedia, KeyMod, KeyMods
+mod mods; // KeyMod, KeyMods
 mod pad; // KeyPad
 mod state; // KeyState
 
@@ -23,10 +24,11 @@ mod ffi; // KeyFfi
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            dif::*,
+            dead::*,
             event::*,
             key::*,
             media::*,
+            mods::*,
             pad::*,
             state::*,
         };

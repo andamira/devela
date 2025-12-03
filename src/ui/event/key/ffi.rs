@@ -49,6 +49,9 @@ pub enum KeyFfi {
     /// A unicode character (FFI-safe, stored as `u32`).
     Char(u32),
 
+    /// A dead key (accent prefix, composition).
+    Dead(KeyDead),
+
     // Letters
     A, B, C, D, E, F, G, H, I, J,
     K, L, M, N, O, P, Q, R, S, T,
@@ -136,6 +139,7 @@ impl Key {
             K::Media(m) => F::Media(m),
             K::Fn(f) => F::Fn(f),
             K::Char(c) => F::Char(c as u32), // Convert char to u32
+            K::Dead(d) => F::Dead(d),
             // Letters
             K::A => F::A,
             K::B => F::B,
@@ -234,6 +238,7 @@ impl Key {
             F::Media(m) => K::Media(m),
             F::Fn(f) => K::Fn(f),
             F::Char(c) => K::Char(unwrap![some_or char::from_u32(c), char::REPLACEMENT_CHARACTER]),
+            F::Dead(d) => K::Dead(d),
             // Letters
             F::A => K::A,
             F::B => K::B,

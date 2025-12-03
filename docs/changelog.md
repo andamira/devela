@@ -542,7 +542,7 @@ Many feature gates are removed in order to make most features make always availa
 ---
 ## ui
 ### events
-- new types: `Event`, `EventKind`, `EventTag`, `EventWindow`.
+- new types: `Event`, `EventKind`, `EventTag`, `EventWindow`, `KeyDead`.
 - change `EventPointer.pressure` field to be `f32bits_niche`.
 - rename `time_stamp` fields to `timestamp`.
 - derive `Eq` & `Hash` for all event types.
@@ -550,7 +550,9 @@ Many feature gates are removed in order to make most features make always availa
 - update Event:
   - new fields `processed`, `count`.
   - new methods: `mark_processed`, `mark_count`, `clear_count`, `finalize`, `count`, `tag`.
-- update `Key:` rename `Period` variant to `Dot`.
+- update `Key` & `KeyFfi`:
+  - rename `Period` variant to `Dot`.
+  - add new `Dead` variant.
 - update `KeyState`: add variant `Repeat`.
 - update `EventTimestamp`:
   - manually impl `Debug`.

@@ -327,7 +327,7 @@ unsafe extern "C" {
     ) -> *mut xcb_intern_atom_reply_t;
 }
 
-/* error / event structs */
+/* error / event */
 
 #[doc = _TAG_FFI!()]
 /// A generic error.
@@ -378,7 +378,7 @@ pub(crate) struct xcb_key_press_event_t {
     pub root_y: i16,
     pub event_x: i16,
     pub event_y: i16,
-    /// modifier mask
+    /// Modifier mask
     pub state: u16,
     pub same_screen: u8,
     pad0: u8,

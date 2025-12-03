@@ -6,15 +6,17 @@ use crate::WebEventKind;
 
 #[test] #[rustfmt::skip]
 fn sizes_of() {
+    /* event, kind */
+
     #[cfg(not(feature = "alloc"))] {
-    // assert_eq![40, size_of::<Event>()];             // 320 bits (old)
-    // assert_eq![44, size_of::<Event>()];             // 352 bits (+processed)
-    // assert_eq![64, size_of::<Event>()];             // 512 bits (+proc+count u64)
+    // assert_eq![40, size_of::<Event>()];          // 320 bits (old)
+    // assert_eq![44, size_of::<Event>()];          // 352 bits (+processed)
+    // assert_eq![64, size_of::<Event>()];          // 512 bits (+proc+count u64)
     assert_eq![56, size_of::<Event>()];             // 448 bits (+proc+count NonZeroU64)
     assert_eq![36, size_of::<EventKind>()];         // 288 bits
     }
     #[cfg(feature = "alloc")] {
-    // assert_eq![48, size_of::<Event>()];             // 384 bits (old)
+    // assert_eq![48, size_of::<Event>()];          // 384 bits (old)
     assert_eq![56, size_of::<Event>()];             // 448 bits (+proc+count NonZeroU64)
     assert_eq![40, size_of::<EventKind>()];         // 320 bits
     }
@@ -25,15 +27,17 @@ fn sizes_of() {
     #[cfg(ffi··)]
     assert_eq![24, size_of::<EventKeyFfi>()];       // 192 bits
 
-    assert_eq![ 8, size_of::<Key>()];               //  64 bits
+    assert_eq![8, size_of::<Key>()];                //  64 bits
     #[cfg(ffi··)]
-    assert_eq![ 8, size_of::<KeyFfi>()];            //  64 bits
+    assert_eq![8, size_of::<KeyFfi>()];             //  64 bits
 
-    assert_eq![ 1, size_of::<KeyMedia>()];          //   8 bits
-    assert_eq![ 1, size_of::<KeyMod>()];            //   8 bits
-    assert_eq![ 2, size_of::<KeyMods>()];           //  16 bits
-    assert_eq![ 1, size_of::<KeyPad>()];            //   8 bits
-    assert_eq![ 1, size_of::<KeyState>()];          //   8 bits
+    assert_eq![1, size_of::<KeyMedia>()];           //   8 bits
+    assert_eq![1, size_of::<KeyMod>()];             //   8 bits
+    assert_eq![2, size_of::<KeyMods>()];            //  16 bits
+    assert_eq![1, size_of::<KeyPad>()];             //   8 bits
+    assert_eq![1, size_of::<KeyState>()];           //   8 bits
+
+    assert_eq![1, size_of::<KeyDead>()];            //   8 bits
 
     /* pointer */
 
@@ -53,6 +57,17 @@ fn sizes_of() {
     assert![size_of::<EventPointer>() == size_of::<Option<EventPointer>>()];
     assert![size_of::<EventPointerType>() == size_of::<Option<EventPointerType>>()];
     // assert![size_of::<EventWheel>() == size_of::<Option<EventWheel>>()]; // not equal
+
+    /* timestamp */
+
+    assert_eq![4, size_of::<EventTimestamp>()]; // 32
+
+    /* window */
+
+    #[cfg(not(feature = "alloc"))]
+    assert_eq![16, size_of::<EventWindow>()];   // 128
+    #[cfg(feature = "alloc")]
+    assert_eq![24, size_of::<EventWindow>()];   // 192
 }
 
 #[test]

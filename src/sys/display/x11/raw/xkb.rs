@@ -3,7 +3,7 @@
 //!
 //
 // TOC
-// - constants
+// - keysyms
 // - opaque types
 // - enums
 // - state
@@ -12,9 +12,126 @@
 
 use crate::{_TAG_FFI, c_int, c_void};
 
-/* constants */
-/* keysyms — from xkbcommon keysyms.h */
+/* keysyms — from xkbcommon-keysyms.h */
 
+// TTY function keys
+pub(crate) const XKB_KEY_BackSpace: u32 = 0xff08;
+pub(crate) const XKB_KEY_Tab: u32 = 0xff09;
+pub(crate) const XKB_KEY_Linefeed: u32 = 0xff0a;
+pub(crate) const XKB_KEY_Clear: u32 = 0xff0b;
+pub(crate) const XKB_KEY_Return: u32 = 0xff0d;
+pub(crate) const XKB_KEY_Pause: u32 = 0xff13;
+pub(crate) const XKB_KEY_Scroll_Lock: u32 = 0xff14;
+pub(crate) const XKB_KEY_Sys_Req: u32 = 0xff15;
+pub(crate) const XKB_KEY_Escape: u32 = 0xff1b;
+pub(crate) const XKB_KEY_Delete: u32 = 0xffff;
+
+// Cursor control & motion
+pub(crate) const XKB_KEY_Home: u32 = 0xff50;
+pub(crate) const XKB_KEY_Left: u32 = 0xff51;
+pub(crate) const XKB_KEY_Up: u32 = 0xff52;
+pub(crate) const XKB_KEY_Right: u32 = 0xff53;
+pub(crate) const XKB_KEY_Down: u32 = 0xff54;
+pub(crate) const XKB_KEY_Prior: u32 = 0xff55;
+pub(crate) const XKB_KEY_Page_Up: u32 = 0xff55;
+pub(crate) const XKB_KEY_Next: u32 = 0xff56;
+pub(crate) const XKB_KEY_Page_Down: u32 = 0xff56;
+pub(crate) const XKB_KEY_End: u32 = 0xff57;
+pub(crate) const XKB_KEY_Begin: u32 = 0xff58;
+
+// Misc. functions
+pub(crate) const XKB_KEY_Select: u32 = 0xff60;
+pub(crate) const XKB_KEY_Print: u32 = 0xff61;
+pub(crate) const XKB_KEY_Execute: u32 = 0xff62;
+pub(crate) const XKB_KEY_Insert: u32 = 0xff63;
+pub(crate) const XKB_KEY_Undo: u32 = 0xff65;
+pub(crate) const XKB_KEY_Redo: u32 = 0xff66;
+pub(crate) const XKB_KEY_Menu: u32 = 0xff67;
+pub(crate) const XKB_KEY_Find: u32 = 0xff68;
+pub(crate) const XKB_KEY_Cancel: u32 = 0xff69;
+pub(crate) const XKB_KEY_Help: u32 = 0xff6a;
+pub(crate) const XKB_KEY_Break: u32 = 0xff6b;
+pub(crate) const XKB_KEY_Mode_switch: u32 = 0xff7e;
+// pub(crate) const XKB_KEY_script_switch: u32 = 0xff7e;
+pub(crate) const XKB_KEY_Num_Lock: u32 = 0xff7f;
+
+// Keypad functions
+pub(crate) const XKB_KEY_KP_Space: u32 = 0xff80;
+pub(crate) const XKB_KEY_KP_Tab: u32 = 0xff89;
+pub(crate) const XKB_KEY_KP_Enter: u32 = 0xff8d;
+pub(crate) const XKB_KEY_KP_F1: u32 = 0xff91;
+pub(crate) const XKB_KEY_KP_F2: u32 = 0xff92;
+pub(crate) const XKB_KEY_KP_F3: u32 = 0xff93;
+pub(crate) const XKB_KEY_KP_F4: u32 = 0xff94;
+pub(crate) const XKB_KEY_KP_Home: u32 = 0xff95;
+pub(crate) const XKB_KEY_KP_Left: u32 = 0xff96;
+pub(crate) const XKB_KEY_KP_Up: u32 = 0xff97;
+pub(crate) const XKB_KEY_KP_Right: u32 = 0xff98;
+pub(crate) const XKB_KEY_KP_Down: u32 = 0xff99;
+pub(crate) const XKB_KEY_KP_Prior: u32 = 0xff9a;
+pub(crate) const XKB_KEY_KP_Page_Up: u32 = 0xff9a;
+pub(crate) const XKB_KEY_KP_Next: u32 = 0xff9b;
+pub(crate) const XKB_KEY_KP_Page_Down: u32 = 0xff9b;
+pub(crate) const XKB_KEY_KP_End: u32 = 0xff9c;
+pub(crate) const XKB_KEY_KP_Begin: u32 = 0xff9d;
+pub(crate) const XKB_KEY_KP_Insert: u32 = 0xff9e;
+pub(crate) const XKB_KEY_KP_Delete: u32 = 0xff9f;
+pub(crate) const XKB_KEY_KP_Equal: u32 = 0xffbd;
+pub(crate) const XKB_KEY_KP_Multiply: u32 = 0xffaa;
+pub(crate) const XKB_KEY_KP_Add: u32 = 0xffab;
+pub(crate) const XKB_KEY_KP_Separator: u32 = 0xffac;
+pub(crate) const XKB_KEY_KP_Subtract: u32 = 0xffad;
+pub(crate) const XKB_KEY_KP_Decimal: u32 = 0xffae;
+pub(crate) const XKB_KEY_KP_Divide: u32 = 0xffaf;
+pub(crate) const XKB_KEY_KP_0: u32 = 0xffb0;
+pub(crate) const XKB_KEY_KP_1: u32 = 0xffb1;
+pub(crate) const XKB_KEY_KP_2: u32 = 0xffb2;
+pub(crate) const XKB_KEY_KP_3: u32 = 0xffb3;
+pub(crate) const XKB_KEY_KP_4: u32 = 0xffb4;
+pub(crate) const XKB_KEY_KP_5: u32 = 0xffb5;
+pub(crate) const XKB_KEY_KP_6: u32 = 0xffb6;
+pub(crate) const XKB_KEY_KP_7: u32 = 0xffb7;
+pub(crate) const XKB_KEY_KP_8: u32 = 0xffb8;
+pub(crate) const XKB_KEY_KP_9: u32 = 0xffb9;
+
+// Auxiliary functions
+pub(crate) const XKB_KEY_F1: u32 = 0xffbe;
+pub(crate) const XKB_KEY_F2: u32 = 0xffbf;
+pub(crate) const XKB_KEY_F3: u32 = 0xffc0;
+pub(crate) const XKB_KEY_F4: u32 = 0xffc1;
+pub(crate) const XKB_KEY_F5: u32 = 0xffc2;
+pub(crate) const XKB_KEY_F6: u32 = 0xffc3;
+pub(crate) const XKB_KEY_F7: u32 = 0xffc4;
+pub(crate) const XKB_KEY_F8: u32 = 0xffc5;
+pub(crate) const XKB_KEY_F9: u32 = 0xffc6;
+pub(crate) const XKB_KEY_F10: u32 = 0xffc7;
+pub(crate) const XKB_KEY_F11: u32 = 0xffc8;
+pub(crate) const XKB_KEY_F12: u32 = 0xffc9;
+pub(crate) const XKB_KEY_F13: u32 = 0xffca;
+pub(crate) const XKB_KEY_F14: u32 = 0xffcb;
+pub(crate) const XKB_KEY_F15: u32 = 0xffcc;
+pub(crate) const XKB_KEY_F16: u32 = 0xffcd;
+pub(crate) const XKB_KEY_F17: u32 = 0xffce;
+pub(crate) const XKB_KEY_F18: u32 = 0xffcf;
+pub(crate) const XKB_KEY_F19: u32 = 0xffd0;
+pub(crate) const XKB_KEY_F20: u32 = 0xffd1;
+pub(crate) const XKB_KEY_F21: u32 = 0xffd2;
+pub(crate) const XKB_KEY_F22: u32 = 0xffd3;
+pub(crate) const XKB_KEY_F23: u32 = 0xffd4;
+pub(crate) const XKB_KEY_F24: u32 = 0xffd5;
+pub(crate) const XKB_KEY_F25: u32 = 0xffd6;
+pub(crate) const XKB_KEY_F26: u32 = 0xffd7;
+pub(crate) const XKB_KEY_F27: u32 = 0xffd8;
+pub(crate) const XKB_KEY_F28: u32 = 0xffd9;
+pub(crate) const XKB_KEY_F29: u32 = 0xffda;
+pub(crate) const XKB_KEY_F30: u32 = 0xffdb;
+pub(crate) const XKB_KEY_F31: u32 = 0xffdc;
+pub(crate) const XKB_KEY_F32: u32 = 0xffdd;
+pub(crate) const XKB_KEY_F33: u32 = 0xffde;
+pub(crate) const XKB_KEY_F34: u32 = 0xffdf;
+pub(crate) const XKB_KEY_F35: u32 = 0xffe0;
+
+// Modifiers
 pub(crate) const XKB_KEY_Shift_L: u32 = 0xffe1;
 pub(crate) const XKB_KEY_Shift_R: u32 = 0xffe2;
 pub(crate) const XKB_KEY_Control_L: u32 = 0xffe3;
@@ -29,9 +146,16 @@ pub(crate) const XKB_KEY_Super_L: u32 = 0xffeb;
 pub(crate) const XKB_KEY_Super_R: u32 = 0xffec;
 pub(crate) const XKB_KEY_Hyper_L: u32 = 0xffed;
 pub(crate) const XKB_KEY_Hyper_R: u32 = 0xffee;
+
+// XKB extension function and modifier keys (partially)
+// AltGr
 pub(crate) const XKB_KEY_ISO_Level3_Shift: u32 = 0xfe03;
+pub(crate) const XKB_KEY_ISO_Level3_Latch: u32 = 0xfe04;
+pub(crate) const XKB_KEY_ISO_Level3_Lock: u32 = 0xfe05;
+// IsoLevel5Shift
 pub(crate) const XKB_KEY_ISO_Level5_Shift: u32 = 0xfe11;
-pub(crate) const XKB_KEY_Mode_switch: u32 = 0xff7e;
+pub(crate) const XKB_KEY_ISO_Level5_Latch: u32 = 0xfe12;
+pub(crate) const XKB_KEY_ISO_Level5_Lock: u32 = 0xfe13;
 
 /* opaque types */
 
