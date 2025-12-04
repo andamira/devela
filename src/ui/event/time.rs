@@ -35,6 +35,7 @@ impl DebugExt for EventTimestamp {
     }
 }
 
+#[doc = crate::_TAG_TIME!()]
 /// The time at which the event occurs, stored as single-precision milliseconds.
 ///
 /// Backend dependent and relative to an arbitrary origin.
@@ -124,7 +125,7 @@ impl EventTimestamp {
         // valid finite float-ms live between 0.001 ms and ~11 days:
         let sure_float = |f:f32| f.is_finite() && (1e-3..=1e9).contains(&f);
         // NaNs, infinities, subnormal/tiny values, absurdly large magnitudes:
-        let sure_int   = |f: f32| !f.is_finite() || f < 1e-8 || f > 1e12;
+        let sure_int   = |f: f32| !f.is_finite() || !(1e-8..=1e12).contains(&f);
         let float = self.ms.as_float();
         if sure_float(float) { self.fmt_float_ms(f) }
         else if sure_int(float) { self.fmt_int_ms(f) }
