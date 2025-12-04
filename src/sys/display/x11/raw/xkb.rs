@@ -105,39 +105,7 @@ pub(crate) const XKB_KEY_KP_9: u32 = 0xffb9;
 
 // Auxiliary functions
 pub(crate) const XKB_KEY_F1: u32 = 0xffbe;
-pub(crate) const XKB_KEY_F2: u32 = 0xffbf;
-pub(crate) const XKB_KEY_F3: u32 = 0xffc0;
-pub(crate) const XKB_KEY_F4: u32 = 0xffc1;
-pub(crate) const XKB_KEY_F5: u32 = 0xffc2;
-pub(crate) const XKB_KEY_F6: u32 = 0xffc3;
-pub(crate) const XKB_KEY_F7: u32 = 0xffc4;
-pub(crate) const XKB_KEY_F8: u32 = 0xffc5;
-pub(crate) const XKB_KEY_F9: u32 = 0xffc6;
-pub(crate) const XKB_KEY_F10: u32 = 0xffc7;
-pub(crate) const XKB_KEY_F11: u32 = 0xffc8;
-pub(crate) const XKB_KEY_F12: u32 = 0xffc9;
-pub(crate) const XKB_KEY_F13: u32 = 0xffca;
-pub(crate) const XKB_KEY_F14: u32 = 0xffcb;
-pub(crate) const XKB_KEY_F15: u32 = 0xffcc;
-pub(crate) const XKB_KEY_F16: u32 = 0xffcd;
-pub(crate) const XKB_KEY_F17: u32 = 0xffce;
-pub(crate) const XKB_KEY_F18: u32 = 0xffcf;
-pub(crate) const XKB_KEY_F19: u32 = 0xffd0;
-pub(crate) const XKB_KEY_F20: u32 = 0xffd1;
-pub(crate) const XKB_KEY_F21: u32 = 0xffd2;
-pub(crate) const XKB_KEY_F22: u32 = 0xffd3;
-pub(crate) const XKB_KEY_F23: u32 = 0xffd4;
-pub(crate) const XKB_KEY_F24: u32 = 0xffd5;
-pub(crate) const XKB_KEY_F25: u32 = 0xffd6;
-pub(crate) const XKB_KEY_F26: u32 = 0xffd7;
-pub(crate) const XKB_KEY_F27: u32 = 0xffd8;
-pub(crate) const XKB_KEY_F28: u32 = 0xffd9;
-pub(crate) const XKB_KEY_F29: u32 = 0xffda;
-pub(crate) const XKB_KEY_F30: u32 = 0xffdb;
-pub(crate) const XKB_KEY_F31: u32 = 0xffdc;
-pub(crate) const XKB_KEY_F32: u32 = 0xffdd;
-pub(crate) const XKB_KEY_F33: u32 = 0xffde;
-pub(crate) const XKB_KEY_F34: u32 = 0xffdf;
+// …
 pub(crate) const XKB_KEY_F35: u32 = 0xffe0;
 
 // Modifiers

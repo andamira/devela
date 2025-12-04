@@ -5,7 +5,8 @@
 
 use super::{KeyRepeatFilter, XkbState, raw, xcb_event_code};
 use crate::{
-    EventButton, EventButtonState, EventKey, EventTimestamp, KeyState, Libc, c_void, is, unwrap,
+    Bitwise, EventButton, EventButtonState, EventKey, EventTimestamp, KeyState, Libc, c_void, is,
+    unwrap,
 };
 // use crate::{EventKind, EventWindow};
 
@@ -145,12 +146,12 @@ impl XEvent {
     }
     /// Converts this X11 button state into an `EventButton.buttons` bit-mask field.
     #[inline(always)]
-    pub(crate) fn map_button_mask(state: u16) -> u8 {
-        let mut mask = 0u8;
-        is![state & (raw::XCB_KEY_BUT_MASK_BUTTON_1) != 0; mask |= 1]; // left
-        is![state & (raw::XCB_KEY_BUT_MASK_BUTTON_3) != 0; mask |= 2]; // right
-        is![state & (raw::XCB_KEY_BUT_MASK_BUTTON_2) != 0; mask |= 4]; // middle
-        mask
+    pub(crate) const fn map_button_mask(state: u16) -> u8 {
+        let (state, mut buttons) = (Bitwise(state), 0u8);
+        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_1); buttons |= 1]; // Left
+        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_3); buttons |= 2]; // Right
+        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_2); buttons |= 4]; // Middle
+        buttons
     }
 
     /// Converts this X11 button state into an `EventButtonState`.

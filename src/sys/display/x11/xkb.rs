@@ -7,8 +7,8 @@
 // - struct XkbInfo
 // - struct XkbState
 
-use super::raw;
-use crate::{Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, XError, is};
+use super::{XError, raw};
+use crate::{Bitwise, Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, is};
 
 /// Tracks the minimal state needed to classify `Press` vs `Repeat`.
 ///
@@ -238,15 +238,15 @@ impl XkbState {
 
     /// Converts an X11 modifier bitmask into a [`KeyMods`] representation.
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
-        let (x, mut m) = (xcb_modifiers, KeyMods::empty());
-        if x & raw::XCB_MOD_MASK_SHIFT != 0 { m.set_shift(); }
-        if x & raw::XCB_MOD_MASK_CONTROL  != 0 { m.set_control(); }
-        if x & raw::XCB_MOD_MASK_LOCK != 0 { m.set_caps_lock(); }
-        if x & raw::XCB_MOD_MASK_1 != 0 { m.set_alt(); }
-        if x & raw::XCB_MOD_MASK_2 != 0 { m.set_num_lock(); }
-        // if x & raw::XCB_MOD_MASK_3 != 0 { unimplemented![] }
-        if x & raw::XCB_MOD_MASK_4 != 0 { m.set_super(); }
-        if x & raw::XCB_MOD_MASK_5 != 0 { m.set_alt_gr(); }
+        let (x, mut m) = (Bitwise(xcb_modifiers), KeyMods::empty());
+        is![x.is_set_mask(raw::XCB_MOD_MASK_SHIFT); m.set_shift()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_CONTROL); m.set_control()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_LOCK); m.set_caps_lock()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_1); m.set_alt()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_2); m.set_num_lock()];
+        // is![x.is_set_mask(raw::XCB_MOD_MASK_3); unimplemented!()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_4); m.set_super()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_4); m.set_alt_gr()];
         m
     }
 

@@ -155,16 +155,17 @@ impl XDisplay {
                 }),
                 xev.timestamp(),
             );
-        // TODO: WIP
         } else if xev.is_client_message() {
+            // TODO:
             // eprintln!("CLIENT MSG: {}", xev.response_type());
         } else if xev.is_enter() {
-            // eprintln!("ENTER: {} {:?}", xev.response_type(), xev.timestamp());
+            // return Event::new(EventKind::Window(EventWindow::Enter), xev.timestamp());
         } else if xev.is_leave() {
-            // eprintln!("LEAVE: {} {:?}", xev.response_type(), xev.timestamp());
+            // return Event::new(EventKind::Window(EventWindow::Leave), xev.timestamp());
         } else if xev.is_expose() {
-            return Event::new(EventKind::Window(EventWindow::RedrawRequested),xev.timestamp());
+            return Event::new(EventKind::Window(EventWindow::RedrawRequested), xev.timestamp());
         } else {
+            // TODO
             // eprintln!("(OTHER): {} {:?}", xev.response_type(), xev.timestamp());
         }
         Event::None
