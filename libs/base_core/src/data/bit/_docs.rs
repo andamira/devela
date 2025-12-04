@@ -6,7 +6,7 @@
 
 crate::CONST! { pub(super),
 
-/* mask constructors */
+/* mask */
 
 _DOC_BIT_MASK_RANGE = r#"
 Returns a bitmask of ones from the `[start..=end]` range.
@@ -22,6 +22,26 @@ Sets the rest of the bits to 0.
 # Errors
 Returns [`IndexOutOfBounds`] if `start >= BITS` || `end >= BITS`
 and [`MismatchedIndices`] if `start > end`.
+"#;
+_DOC_BIT_IS_SET_MASK = r#"
+Returns `true` if any bit selected by `mask` is 1 in `self`.
+
+Bits not included in `mask` are ignored.
+"#;
+_DOC_BIT_SET_MASK = r#"
+Sets all bits selected by `mask` to 1.
+
+Bits not included in `mask` are left unchanged.
+"#;
+_DOC_BIT_IS_UNSET_MASK = r#"
+Returns `true` if all bits selected by `mask` are 0 in `self`.
+
+Bits not included in `mask` are ignored.
+"#;
+_DOC_BIT_UNSET_MASK = r#"
+Sets all bits selected by `mask` to 0.
+
+Bits not included in `mask` are left unchanged.
 "#;
 
 /* get */

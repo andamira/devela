@@ -11,8 +11,6 @@ use super::_docs::*;
 use crate::MismatchedBounds::{DataOverflow, IndexOutOfBounds, MismatchedIndices};
 use crate::{Bitwise, MismatchedBounds};
 
-crate::CONST! { _DOC_BIT_XXX = ""; } // TEMP
-
 /// Provides bitwise operations on `T`.
 ///
 /// See also [`Bitwise`] for the related const wrapper.
@@ -23,7 +21,7 @@ pub trait BitOps where Self: Sized {
 
     // const BITS: u32; // no need because the primitives already have this.
 
-    /* mask constructors */
+    /* mask */
 
     #[must_use]
     #[doc = _DOC_BIT_MASK_RANGE!()]
@@ -33,6 +31,20 @@ pub trait BitOps where Self: Sized {
     #[doc = _DOC_BIT_MASK_RANGE_CHECKED!()]
     #[doc = include_str!("benches/mask_checked_range.md")]
     fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self, MismatchedBounds>;
+
+    #[must_use]
+    #[doc = _DOC_BIT_IS_SET_MASK!()]
+    fn bit_is_set_mask(self, mask: Self::Inner) -> bool;
+
+    #[doc = _DOC_BIT_SET_MASK!()]
+    fn bit_set_mask(self, mask: Self::Inner) -> Self;
+
+    #[must_use]
+    #[doc = _DOC_BIT_IS_UNSET_MASK!()]
+    fn bit_is_unset_mask(self, mask: Self::Inner) -> bool;
+
+    #[doc = _DOC_BIT_UNSET_MASK!()]
+    fn bit_unset_mask(self, mask: Self::Inner) -> Self;
 
     /* get */
 
@@ -211,7 +223,7 @@ macro_rules! impl_bit_ops {
         impl BitOps for $t {
             type Inner = $t;
 
-            /* mask constructors */
+            /* mask */
 
             fn bit_mask_range(start: u32, end: u32) -> Self {
                 Bitwise::<$t>::mask_range(start, end).0
@@ -219,6 +231,18 @@ macro_rules! impl_bit_ops {
             fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self, MismatchedBounds> {
                 Ok(Bitwise::<$t>::mask_checked_range(start, end)?.0)
             }
+
+            #[doc = _DOC_BIT_IS_SET_MASK!()]
+            fn bit_is_set_mask(self, mask: $t) -> bool { Bitwise(self).is_set_mask(mask) }
+
+            #[doc = _DOC_BIT_SET_MASK!()]
+            fn bit_set_mask(self, mask: $t) -> Self { Bitwise(self).set_mask(mask).0 }
+
+            #[doc = _DOC_BIT_IS_UNSET_MASK!()]
+            fn bit_is_unset_mask(self, mask: $t) -> bool { Bitwise(self).is_unset_mask(mask) }
+
+            #[doc = _DOC_BIT_UNSET_MASK!()]
+            fn bit_unset_mask(self, mask: $t) -> Self { Bitwise(self).unset_mask(mask).0 }
 
             /* get */
 

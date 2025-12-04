@@ -67,6 +67,22 @@ macro_rules! impl_bits_wrapper {
                     Ok(Self(mask_end - mask_start))
                 }
             }
+
+            #[must_use]
+            #[doc = _DOC_BIT_IS_SET_MASK!()]
+            pub const fn is_set_mask(self, mask: $t) -> bool { (self.0 & mask) != 0 }
+
+            #[must_use]
+            #[doc = _DOC_BIT_SET_MASK!()]
+            pub const fn set_mask(self, mask: $t) -> Self { Self(self.0 | mask) }
+
+            #[must_use]
+            #[doc = _DOC_BIT_IS_UNSET_MASK!()]
+            pub const fn is_unset_mask(self, mask: $t) -> bool { (self.0 & mask) == 0 }
+
+            #[must_use]
+            #[doc = _DOC_BIT_UNSET_MASK!()]
+            pub const fn unset_mask(self, mask: $t) -> Self { Self(self.0 & !mask) }
         }
         #[doc = concat!["# Get methods for `", stringify!($t), "`."]]
         impl Bitwise::<$t> {
