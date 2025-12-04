@@ -204,14 +204,18 @@ Many feature gates are removed in order to make most features make always availa
 ## data
 - move to [base]:
   - macros: `array_init!`, `bitfield!`.
+  - traits: `BitOps`.
   - types: `ArrayFrom`, `Bitwise`, `Oneof`, `Sort`.
 - new macro: `define_handle!`.
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
-- update `Bitwise`.
+
+### bit
+- update `BitOps` & `Bitwise`.
   - rearrange methods in thematic impl blocks.
-  - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip`, `flip_range_if`.
+  - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip[_checked]`, `flip[_checked]_range_if`.
+- separate documentations for `BitOps` and `Bitwise` as individual constants.
 
 ### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.

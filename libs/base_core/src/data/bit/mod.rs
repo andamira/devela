@@ -3,11 +3,21 @@
 //! Bit-focused items.
 //
 
+// internals
+mod _docs;
+
 mod field; // bitfield
-mod wrapper; // Bitwise
+mod ops; // BitOps
+// mod view; // BitView // WIP
+mod wise; // Bitwise
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{field::_all::*, wrapper::*};
+        pub use super::{
+            field::_all::*,
+            ops::*,
+            // view::*,
+            wise::*,
+        };
     }
 }

@@ -1,9 +1,9 @@
-// devela_base_core::data::bit::wrapper
+// devela_base_core::data::bit::wise
 //
 //! Defines the [`Bitwise`] namespace.
 //
 
-mod primitives;
+mod impls;
 
 #[cfg(test)]
 mod tests;
@@ -15,8 +15,15 @@ mod tests;
 /// [`i8`], [`i16`], [`i32`], [`i64`], [`i128`], [`isize`],
 /// [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
 ///
-/// See also [`BitOps`] for the related trait.
-#[doc = crate::doclink!(custom devela "[`BitOps`]" "data/trait.BitOps.html")]
+/// ## Panic behavior
+/// Unchecked bit operations panic in debug builds when a bit index or range
+/// is out of bounds. In release builds they do not panic; the invalid
+/// index produces a wrapped shift and a non-meaningful result.
+///
+/// Checked variants never panic and return an error instead.
+///
+/// # Related items
+/// See also [`BitOps`][crate::BitOps] for the related trait.
 ///
 /// [`i8`]: Self#implementations-for-i8
 /// [`i16`]: Self#implementations-for-i16

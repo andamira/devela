@@ -1,4 +1,4 @@
-// devela_base_core::data::bit::wrapper::tests
+// devela_base_core::data::bit::wise::tests
 //
 // TOC
 // - bit_mask_range
