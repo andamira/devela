@@ -6,7 +6,7 @@
 #![allow(unused)]
 
 use super::raw;
-use crate::{Extent, Libc, Position, XDisplay, XError, XEvent, lets, x11_intern_atom};
+use crate::{Extent, Libc, Position, XAtoms, XDisplay, XError, XEvent, lets};
 
 /// X11 window created through XCB.
 ///
@@ -67,12 +67,9 @@ impl XWindow {
         unsafe { raw::xcb_create_gc(conn, gc, win, raw::XCB_GC_FOREGROUND, gc_values.as_ptr()); }
         unsafe { raw::xcb_map_window(conn, win); } // show window
 
-        // enable WM_DELETE_WINDOW so the window manager can request closure
-        let wm_protocols = x11_intern_atom(conn, b"WM_PROTOCOLS");
-        let wm_delete_window = x11_intern_atom(conn, b"WM_DELETE_WINDOW");
-        let data = wm_delete_window.to_ne_bytes();
-        unsafe { raw::xcb_change_property(conn, raw::xcb_prop_mode::XCB_PROP_MODE_REPLACE as u8,
-            win, wm_protocols, raw::xcb_atom_enum_t::XCB_ATOM_ATOM as u32, 32, 1, data.as_ptr()); }
+        // set window properties
+        display.atoms.set_property_atom(conn, win,
+            display.atoms.wm_protocols, display.atoms.wm_delete_window);
 
         let window = Self { display: conn, win, gc, width, height, depth: display.depth };
         window.flush();

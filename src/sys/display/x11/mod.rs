@@ -6,6 +6,7 @@
 //
 
 // private items
+mod atoms; // (XAtoms)
 mod raw;
 mod xkb; // (KeyRepeatFilter), (XkbInfo), (XkbState)
 
@@ -30,6 +31,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::{
+            atoms::*,
             raw::*,
             xkb::*,
         };

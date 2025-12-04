@@ -14,8 +14,6 @@
 
 #![allow(unused)]
 
-mod helpers;
-
 mod xcb; // main xcb.h + xproto.h structs, fns
 mod xcb_flags; // protocol bit-masks
 mod xcb_values; // protocol const values
@@ -26,7 +24,6 @@ mod xkb_x11; // libxkbcommon-x11 extension
 
 mod lut; // LUT_SCANCODE_TO_KEY
 
-pub(crate) use helpers::*;
 pub(crate) use lut::*;
 pub(crate) use {xcb::*, xcb_flags::*, xcb_shm::*, xcb_values::*};
 pub(crate) use {xkb::*, xkb_x11::*};

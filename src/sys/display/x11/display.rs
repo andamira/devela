@@ -5,28 +5,11 @@
 
 #![allow(unused)]
 
-use super::{KeyRepeatFilter, XError, XEvent, XkbState, raw};
+use super::{KeyRepeatFilter, XAtoms, XError, XEvent, XkbState, raw};
 use crate::{
     ConstInit, Event, EventButton, EventButtonState, EventKind, EventMouse, EventWindow, Ptr,
     c_int, is,
 };
-
-/// Cached atoms required for high-level event interpretation.
-///
-/// X11 atoms are server-allocated integer identifiers.
-/// These specific atoms are needed to:
-/// - advertise support for `WM_DELETE_WINDOW`,
-/// - interpret incoming `ClientMessage` events requesting window closure.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub(crate) struct XAtoms {
-    pub wm_protocols: u32,
-    pub wm_delete_window: u32,
-}
-impl XAtoms {
-    pub fn new(wm_protocols: u32, wm_delete_window: u32) -> Self {
-        Self { wm_protocols, wm_delete_window }
-    }
-}
 
 /// A connection to an X11 display server.
 ///
@@ -39,7 +22,7 @@ pub struct XDisplay {
     screen_num: c_int,
     pub(super) depth: u8,
     xkb: XkbState,
-    atoms: XAtoms,
+    pub(super) atoms: XAtoms,
     /* repeat detection */
     pub(super) pending: Option<*mut raw::xcb_generic_event_t>,
     pub(super) repeat_filter: KeyRepeatFilter,
@@ -80,11 +63,7 @@ impl XDisplay {
             return Err(XError::ExtensionUnavailable("xkb-setup"));
         }
         let xkb = XkbState::new(conn)?;
-
-        // atoms
-        let wm_protocols     = raw::x11_intern_atom(conn, b"WM_PROTOCOLS");
-        let wm_delete_window = raw::x11_intern_atom(conn, b"WM_DELETE_WINDOW");
-        let atoms = XAtoms { wm_protocols, wm_delete_window };
+        let atoms = XAtoms::new(conn);
 
         // repeat
         let pending = None;
