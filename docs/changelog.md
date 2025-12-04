@@ -209,10 +209,9 @@ Many feature gates are removed in order to make most features make always availa
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
-- update `array_init!`:
-  - require `ConstInit` and `Vec` in scope if needed.
-  - rename `const_init` arm related to traits to `INIT in`.
-  - rename `const_init*` arms unrelated to traits to `const_fn*`.
+- update `Bitwise`.
+  - rearrange methods in thematic impl blocks.
+  - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip`, `flip_range_if`.
 
 ### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
@@ -231,6 +230,10 @@ Many feature gates are removed in order to make most features make always availa
   - `ExtArray` to `ArrayExt`.
   - `ExtVec` to `VecExt`.
 - make all `bitfield!` methods consts.
+- update `array_init!`:
+  - require `ConstInit` and `Vec` in scope if needed.
+  - rename `const_init` arm related to traits to `INIT in`.
+  - rename `const_init*` arms unrelated to traits to `const_fn*`.
 - update `Oneof`
   - new methods: `copy_*`.
   - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.

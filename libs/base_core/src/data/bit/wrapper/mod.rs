@@ -18,18 +18,18 @@ mod tests;
 /// See also [`BitOps`] for the related trait.
 #[doc = crate::doclink!(custom devela "[`BitOps`]" "data/trait.BitOps.html")]
 ///
-/// [`i8`]: Self#implementation-for-i8
-/// [`i16`]: Self#implementation-for-i16
-/// [`i32`]: Self#implementation-for-i32
-/// [`i64`]: Self#implementation-for-i64
-/// [`i128`]: Self#implementation-for-i128
-/// [`isize`]: Self#implementation-for-isize
-/// [`u8`]: Self#implementation-for-u8
-/// [`u16`]: Self#implementation-for-u16
-/// [`u32`]: Self#implementation-for-u32
-/// [`u64`]: Self#implementation-for-u64
-/// [`u128`]: Self#implementation-for-u128
-/// [`usize`]: Self#implementation-for-usize
+/// [`i8`]: Self#implementations-for-i8
+/// [`i16`]: Self#implementations-for-i16
+/// [`i32`]: Self#implementations-for-i32
+/// [`i64`]: Self#implementations-for-i64
+/// [`i128`]: Self#implementations-for-i128
+/// [`isize`]: Self#implementations-for-isize
+/// [`u8`]: Self#implementations-for-u8
+/// [`u16`]: Self#implementations-for-u16
+/// [`u32`]: Self#implementations-for-u32
+/// [`u64`]: Self#implementations-for-u64
+/// [`u128`]: Self#implementations-for-u128
+/// [`usize`]: Self#implementations-for-usize
 #[must_use]
 #[repr(transparent)]
 pub struct Bitwise<T>(pub T);

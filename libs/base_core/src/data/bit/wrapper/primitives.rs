@@ -10,21 +10,33 @@ use crate::{
 };
 
 macro_rules! impl_bits_wrapper {
-    () => { impl_bits_wrapper![i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize]; };
+    () => { impl_bits_wrapper![
+        i8, i16, i32, i64, i128, isize,
+        u8, u16, u32, u64, u128, usize
+    ]; };
     ( $( $t:ty),+ ) => { $( impl_bits_wrapper![@$t]; )+ };
 
     // `$t`: the primitive type
     (@$t:ty) => {
         /* impl traits */
 
-        #[doc = concat!["# Implementation for `", stringify!($t), "`."]]
+        #[doc = concat!["# Implementations for `", stringify!($t), "`."]]
+        /// ---
+        /// TOC
+        /// - constants + mask constructors
+        /// - single-bit set, set_range, set_value_range…
+        /// - unset, unset_range…
+        /// - flip, flip_range…
+        /// - reverse ops
+        /// - count_ones_range, count_zeros_range…
+        /// - find_first_one, find_last_one…
         impl Bitwise::<$t> {
             /* constants */
 
             /// The size in bits.
             pub const BITS: u32 = <$t>::BITS;
 
-            /* new mask */
+            /* mask constructors */
 
             /// Returns a new bitmask of 1s from the `[start..=end]` range.
             ///
@@ -65,7 +77,9 @@ macro_rules! impl_bits_wrapper {
                     Ok(Self(mask_end - mask_start))
                 }
             }
-
+        }
+        #[doc = concat!["# Get methods for `", stringify!($t), "`."]]
+        impl Bitwise::<$t> {
             /* get */
 
             /// Gets the bits in `self` from the `[start..=end]` range.
@@ -121,8 +135,62 @@ macro_rules! impl_bits_wrapper {
                     Err(e) => Err(e),
                 }
             }
-
+        }
+        #[doc = concat!["# Set ops for `", stringify!($t), "`."]]
+        impl Bitwise::<$t> {
             /* set */
+
+            /// Returns true if the `nth` bit is 1.
+            /// # Panics
+            /// Panics if `nth >= BITS`.
+            pub const fn is_set(self, nth: u32) -> bool {
+                (self.0 & (1 << nth)) != 0
+            }
+            /// Returns true if the `nth` bit is 1.
+            /// # Errors
+            /// Returns [`IndexOutOfBounds`] if `nth >= BITS`.
+            pub const fn is_set_checked(self, nth: u32) -> Result<bool, MismatchedBounds> {
+                if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
+                else { Ok((self.0 & (1 << nth)) != 0) }
+            }
+
+            /// Sets the nth bit.
+            /// # Panics
+            /// Panics if `nth >= BITS
+            pub const fn set(self, nth: u32) -> Self {
+                Self(self.0 | 1 << nth)
+            }
+            /// Sets the `nth` bit.
+            /// # Errors
+            /// Returns [`IndexOutOfBounds`] if `nth >= BITS`.
+            pub const fn set_checked(self, nth: u32) -> Result<Self, MismatchedBounds> {
+                if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
+                else { Ok(Self(self.0 | (1 << nth))) }
+            }
+
+            /// Returns `true` if all bits in the `[start..=end]` range are 1.
+            ///
+            /// Bits outside the range are ignored.
+            ///
+            /// # Panics
+            /// Panics if `start >= BITS || end >= BITS || start > end`.
+            pub const fn is_set_range(self, start: u32, end: u32) -> bool {
+                self.get_range(start, end).0 == Self::mask_range(start, end).0
+            }
+            /// Returns `true` if all bits in the checked `[start..=end]` range are 1.
+            ///
+            /// Bits outside the range are ignored.
+            ///
+            /// # Errors
+            /// Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS`
+            /// and [`MismatchedIndices`] if `start > end`.
+            pub const fn is_set_checked_range(self, start: u32, end: u32,)
+                -> Result<bool, MismatchedBounds> {
+                match Self::mask_checked_range(start, end) {
+                    Ok(mask) => Ok((self.0 & mask.0) == mask.0),
+                    Err(e) => Err(e),
+                }
+            }
 
             /// Sets the bits in `self` to 1, from the `[start..=end]` range.
             ///
@@ -132,7 +200,6 @@ macro_rules! impl_bits_wrapper {
             pub const fn set_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 | Self::mask_range(start, end).0)
             }
-
             /// Sets the bits in `self` to 1, from the `[start..=end]` checked range.
             ///
             /// Leaves the rest of the bits unchanged.
@@ -146,6 +213,9 @@ macro_rules! impl_bits_wrapper {
                     Err(e) => Err(e),
                 }
             }
+
+            /// Sets all the bits to 1.
+            pub const fn set_all(self) -> Self { Self(!0) }
 
             /* set value */
 
@@ -163,7 +233,6 @@ macro_rules! impl_bits_wrapper {
                 let value_shifted = (value << start) & mask;
                 Self((self.0 & !mask) | value_shifted)
             }
-
             /// Sets the given `value` into the bits from the `[start..=end]` checked range.
             ///
             /// Leaves the rest of the bits unchanged.
@@ -180,7 +249,6 @@ macro_rules! impl_bits_wrapper {
                     Err(e) => Err(e),
                 }
             }
-
             /// Sets the given checked `value` into the bits from the `[start..=end]` checked range.
             ///
             /// Leaves the rest of the bits unchanged.
@@ -200,8 +268,57 @@ macro_rules! impl_bits_wrapper {
                     Err(e) => Err(e),
                 }
             }
-
+        }
+        #[doc = concat!["# Unset ops for `", stringify!($t), "`."]]
+        impl Bitwise::<$t> {
             /* unset */
+
+            /// Returns true if the nth bit is 0.
+            pub const fn is_unset(self, nth: u32) -> bool {
+                (self.0 & (1 << nth)) == 0
+            }
+            /// Returns true if the `nth` bit is unset to 0.
+            /// # Errors
+            /// Returns [`IndexOutOfBounds`] if `nth >= BITS`.
+            pub const fn is_unset_checked(self, nth: u32) -> Result<bool, MismatchedBounds> {
+                if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
+                else { Ok((self.0 & (1 << nth)) == 0) }
+            }
+
+            /// Unsets the nth bit.
+            pub const fn unset(self, nth: u32) -> Self {
+                Self(self.0 & !(1 << nth))
+            }
+            /// Unsets the `nth` bit.
+            /// # Errors
+            /// Returns [`IndexOutOfBounds`] if `nth >= BITS`.
+            pub const fn unset_checked(self, nth: u32) -> Result<Self, MismatchedBounds> {
+                if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
+                else { Ok(Self(self.0 & !(1 << nth))) }
+            }
+
+            /// Returns `true` if all bits in the `[start..=end]` range are 0.
+            ///
+            /// Bits outside the range are ignored.
+            ///
+            /// # Panics
+            /// Panics if `start >= BITS || end >= BITS || start > end`.
+            pub const fn is_unset_range(self, start: u32, end: u32) -> bool {
+                self.get_range(start, end).0 == 0
+            }
+            /// Returns `true` if all bits in the checked `[start..=end]` range are 0.
+            ///
+            /// Bits outside the range are ignored.
+            /// # Errors
+            /// Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS`
+            /// and [`MismatchedIndices`] if `start > end`.
+            pub const fn is_unset_checked_range(self, start: u32, end: u32)
+                -> Result<bool, MismatchedBounds> {
+                match Self::mask_checked_range(start, end) {
+                    Ok(mask) => Ok((self.0 & mask.0) == 0),
+                    Err(e) => Err(e),
+                }
+            }
 
             /// Unsets the bits in `self` to 0, from the `[start..=end]` range.
             ///
@@ -211,7 +328,6 @@ macro_rules! impl_bits_wrapper {
             pub const fn unset_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 & !Self::mask_range(start, end).0)
             }
-
             /// Unsets the bits in `self` to 0, from the `[start..=end]` checked range.
             ///
             /// Leaves the rest of the bits unchanged.
@@ -226,7 +342,17 @@ macro_rules! impl_bits_wrapper {
                 }
             }
 
+            /// Unsets all the bits to 0.
+            pub const fn unset_all(self) -> Self { Self(0) }
+        }
+        #[doc = concat!["# Flip ops for `", stringify!($t), "`."]]
+        impl Bitwise::<$t> {
             /* flip */
+
+            /// Flips the nth bit.
+            pub const fn flip(self, nth: u32) -> Self {
+                Self(self.0 ^ (1 << nth))
+            }
 
             /// Flips the bits in `self` from the `[start..=end]` range.
             ///
@@ -251,6 +377,13 @@ macro_rules! impl_bits_wrapper {
                 }
             }
 
+            /// Conditionally flips bits in a range if `cond` is true.
+            pub const fn flip_range_if(self, start: u32, end: u32, cond: bool) -> Self {
+                if cond { self.flip_range(start, end) } else { self }
+            }
+        }
+        #[doc = concat!["# Reverse ops for `", stringify!($t), "`."]]
+        impl Bitwise::<$t> {
             /* reverse */
 
             /// Reverses the order of the bits in `self` from the `[start..=end]` range.
@@ -301,7 +434,9 @@ macro_rules! impl_bits_wrapper {
                     Ok(Self((self.0 & !mask) | rev_shifted))
                 }
             }
-
+        }
+        #[doc = concat!["# Count ops for `", stringify!($t), "`."]]
+        impl Bitwise::<$t> {
             /* count */
 
             /// Counts the number of 1s in `self` from the `[start..=end]` range.
@@ -348,7 +483,9 @@ macro_rules! impl_bits_wrapper {
                     Err(e) => Err(e),
                 }
             }
-
+        }
+        #[doc = concat!["# Find ops for `", stringify!($t), "`."]]
+        impl Bitwise::<$t> {
             /* find first */
 
             /// Finds the index of the first 1 in `self` from the `[start..=end]` range.
