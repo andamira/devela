@@ -48,13 +48,12 @@ impl XWindow {
             | raw::XCB_EVENT_MASK_FOCUS_CHANGE
             // expose
             | raw::XCB_EVENT_MASK_EXPOSURE
-            // | raw::XCB_EVENT_MASK_VISIBILITY_CHANGE
             | raw::XCB_EVENT_MASK_STRUCTURE_NOTIFY
-            // resize
-            // | raw::XCB_EVENT_MASK_RESIZE_REDIRECT
+            // | raw::XCB_EVENT_MASK_VISIBILITY_CHANGE
+            // | raw::XCB_EVENT_MASK_PROPERTY_CHANGE
+            // | raw::XCB_EVENT_MASK_RESIZE_REDIRECT // intended for window managers
             // | raw::XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY
             // | raw::XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT
-            // | raw::XCB_EVENT_MASK_PROPERTY_CHANGE
         ];
         let mask: u32 = raw::XCB_CW_BACK_PIXEL | raw::XCB_CW_EVENT_MASK;
         unsafe {

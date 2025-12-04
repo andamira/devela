@@ -44,6 +44,11 @@
 //   - xcb_generic_error_t
 //   - xcb_generic_event_t
 //   - xcb_key_press_event_t
+//     - xcb_button_press_event_t (alias)
+//     - xcb_motion_notify_event_t (alias)
+//   - xcb_client_message_event_t
+//   - xcb_client_message_data_t
+//   - xcb_configure_notify_event_t
 //   - xcb_poll_for_event()
 //   - xcb_wait_for_event()
 
@@ -386,6 +391,87 @@ pub(crate) struct xcb_key_press_event_t {
 // these have the same representation:
 pub type xcb_button_press_event_t = xcb_key_press_event_t;
 pub type xcb_motion_notify_event_t = xcb_key_press_event_t;
+
+#[doc = _TAG_FFI!()]
+/// A `ClientMessage` event sent by other clients or the window manager.
+/// - <https://man.archlinux.org/man/xcb_client_message_event_t.3.en.txt>
+///
+/// The `format` field tells you which union member of `data` is valid:
+/// - 8  → interpret as `data8`
+/// - 16 → interpret as `data16`
+/// - 32 → interpret as `data32`
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct xcb_client_message_event_t {
+    /// The type of this event, in this case `XCB_CLIENT_MESSAGE`.
+    pub response_type: u8,
+    /// Specifies how to interpret data. Can be either 8, 16 or 32.
+    pub format: u8,
+    /// The sequence number of the last request processed by the X11 server.
+    pub sequence: u16,
+    ///
+    pub window: xcb_window_t, // u32
+    /// An atom which indicates how the data should be interpreted by the receiving client.
+    pub type_: u32, // xcb_atom_t
+    /// The data itself (20 bytes max).
+    pub data: xcb_client_message_data_t,
+}
+
+#[doc = _TAG_FFI!()]
+/// Data from a client message.
+/// - <https://xcb.freedesktop.org/manual/unionxcb__client__message__data__t.html>.
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub(crate) union xcb_client_message_data_t {
+    pub data8: [u8; 20],
+    pub data16: [u16; 10],
+    pub data32: [u32; 5],
+}
+crate::impl_trait! { fmt::Debug for xcb_client_message_data_t |self,f|
+    f.write_str("xcb_client_message_data_t { … }")
+}
+
+#[doc = _TAG_FFI!()]
+/// Geometry update for a window: includes new x/y, width/height, and stacking info.
+/// - <https://man.archlinux.org/man/xcb_configure_notify_event_t.3.en.txt>
+///
+/// Emitted when:
+/// - the window is moved,
+/// - the window is resized,
+/// - its border width changes,
+/// - stacking order changes.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct xcb_configure_notify_event_t {
+    /// The type of this event, in this case `XCB_CONFIGURE_NOTIFY`.
+    pub response_type: u8,
+    pad0: u8,
+    /// The sequence number of the last request processed by the X11 server.
+    pub sequence: u16,
+    /// The reconfigured window or its parent, depending on whether
+    /// StructureNotify or SubstructureNotify was selected.
+    pub event: xcb_window_t, // u32
+    /// The window whose size, position, border, and/or stacking order was changed.
+    pub window: xcb_window_t, // u32
+    /// If XCB_NONE, the window is on the bottom of the stack with respect to sibling windows.
+    /// However, if set to a sibling window, the window is placed on top of this sibling window.
+    pub above_sibling: xcb_window_t, // u32
+    /// The X coordinate of the upper-left outside corner of window,
+    /// relative to the parent window's origin.
+    pub x: i16,
+    /// The Y coordinate of the upper-left outside corner of window,
+    /// relative to the parent window's origin.
+    pub y: i16,
+    /// The inside width of window, not including the border.
+    pub width: i16,
+    /// The inside height of window, not including the border.
+    pub height: i16,
+    /// The border width of window.
+    pub border_width: u16,
+    /// Window managers should ignore this window if override_redirect is 1.
+    pub override_redirect: u8,
+    pad1: u8,
+}
 
 #[link(name = "xcb")]
 unsafe extern "C" {

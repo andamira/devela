@@ -5,11 +5,28 @@
 
 #![allow(unused)]
 
-use super::{KeyRepeatFilter, XkbState, raw};
+use super::{KeyRepeatFilter, XError, XEvent, XkbState, raw};
 use crate::{
-    Event, EventButton, EventButtonState, EventKind, EventMouse, EventWindow, Ptr, XError, XEvent,
+    ConstInit, Event, EventButton, EventButtonState, EventKind, EventMouse, EventWindow, Ptr,
     c_int, is,
 };
+
+/// Cached atoms required for high-level event interpretation.
+///
+/// X11 atoms are server-allocated integer identifiers.
+/// These specific atoms are needed to:
+/// - advertise support for `WM_DELETE_WINDOW`,
+/// - interpret incoming `ClientMessage` events requesting window closure.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct XAtoms {
+    pub wm_protocols: u32,
+    pub wm_delete_window: u32,
+}
+impl XAtoms {
+    pub fn new(wm_protocols: u32, wm_delete_window: u32) -> Self {
+        Self { wm_protocols, wm_delete_window }
+    }
+}
 
 /// A connection to an X11 display server.
 ///
@@ -19,9 +36,10 @@ use crate::{
 pub struct XDisplay {
     pub(super) conn: *mut raw::xcb_connection_t,
     pub(super) screen: *const raw::xcb_screen_t,
-    pub(super) screen_num: c_int,
+    screen_num: c_int,
     pub(super) depth: u8,
-    pub(super) xkb: XkbState,
+    xkb: XkbState,
+    atoms: XAtoms,
     /* repeat detection */
     pub(super) pending: Option<*mut raw::xcb_generic_event_t>,
     pub(super) repeat_filter: KeyRepeatFilter,
@@ -63,10 +81,19 @@ impl XDisplay {
         }
         let xkb = XkbState::new(conn)?;
 
+        // atoms
+        let wm_protocols     = raw::x11_intern_atom(conn, b"WM_PROTOCOLS");
+        let wm_delete_window = raw::x11_intern_atom(conn, b"WM_DELETE_WINDOW");
+        let atoms = XAtoms { wm_protocols, wm_delete_window };
+
+        // repeat
         let pending = None;
         let repeat_filter = KeyRepeatFilter::new();
 
-        Ok(Self { conn, screen, screen_num, depth, xkb, pending, repeat_filter })
+        Ok(Self {
+            conn, screen, screen_num, depth, xkb,
+            pending, repeat_filter, atoms,
+        })
     }
     /// Returns the root depth of the default screen.
     pub fn depth(&self) -> u8 { self.depth }
@@ -114,6 +141,9 @@ impl XDisplay {
     /// It never performs I/O. The caller supplies the raw event pointer; the method returns
     /// the corresponding high-level `Event` or `Event::None` if the event is ignored.
     fn handle_raw_event(&mut self, xev: XEvent) -> Event {
+        use EventKind as Kind;
+        use EventWindow as Win;
+
         if let Some(ev) = xev.as_raw_key() {
             let keycode = unsafe { ev.detail };
             let time_ms = unsafe { ev.time };
@@ -122,7 +152,7 @@ impl XDisplay {
                 if !real { return Event::default(); } // skip fake release
             }
             if let Some(key) = xev.to_event_key(&self.xkb, &mut self.repeat_filter) {
-                return Event::new(EventKind::Key(key), xev.timestamp());
+                return Event::new(Kind::Key(key), xev.timestamp());
             }
 
         } else if let Some(ev) = xev.as_raw_button() {
@@ -130,7 +160,7 @@ impl XDisplay {
             let button = XEvent::map_button(ev.detail);
             let state  = xev.map_button_state();
             return Event::new(
-                EventKind::Mouse(EventMouse {
+                Kind::Mouse(EventMouse {
                     x: ev.event_x.into(),
                     y: ev.event_y.into(),
                     button: Some(button),
@@ -145,7 +175,7 @@ impl XDisplay {
             let buttons = XEvent::map_button_mask(ev.state);
             let button = EventButton::primary_from_mask(buttons);
             return Event::new(
-                EventKind::Mouse(EventMouse {
+                Kind::Mouse(EventMouse {
                     x: ev.event_x.into(),
                     y: ev.event_y.into(),
                     button,
@@ -155,15 +185,17 @@ impl XDisplay {
                 }),
                 xev.timestamp(),
             );
-        } else if xev.is_client_message() {
-            // TODO:
-            // eprintln!("CLIENT MSG: {}", xev.response_type());
+        } else if let Some(cm) = xev.as_raw_client_message() {
+            let proto = unsafe { cm.data.data32[0] };
+            if proto == self.atoms.wm_delete_window {
+                return Event::new(Kind::Window(Win::CloseRequested), xev.timestamp());
+            }
         } else if xev.is_enter() {
-            // return Event::new(EventKind::Window(EventWindow::Enter), xev.timestamp());
+            return Event::new(Kind::Window(Win::Enter), xev.timestamp());
         } else if xev.is_leave() {
-            // return Event::new(EventKind::Window(EventWindow::Leave), xev.timestamp());
+            return Event::new(Kind::Window(Win::Leave), xev.timestamp());
         } else if xev.is_expose() {
-            return Event::new(EventKind::Window(EventWindow::RedrawRequested), xev.timestamp());
+            return Event::new(Kind::Window(Win::RedrawRequested), xev.timestamp());
         } else {
             // TODO
             // eprintln!("(OTHER): {} {:?}", xev.response_type(), xev.timestamp());

@@ -86,6 +86,10 @@ impl XEvent {
     pub fn is_client_message(&self) -> bool {
         self.response_type() == xcb_event_code::XCB_CLIENT_MESSAGE as u8
     }
+    /// Whether this is a configure notification.
+    pub fn is_configure(&self) -> bool {
+        self.response_type() == xcb_event_code::XCB_CONFIGURE_NOTIFY as u8
+    }
 
     /* internals */
 
@@ -105,6 +109,18 @@ impl XEvent {
     pub(crate) fn as_raw_motion(&self) -> Option<&raw::xcb_motion_notify_event_t> {
         if self.is_motion() {
             Some(unsafe { &*(self.raw as *const raw::xcb_motion_notify_event_t) })
+        } else { None }
+    }
+    /// Return some client message, if that's the kind.
+    pub(crate) fn as_raw_client_message(&self) -> Option<&raw::xcb_client_message_event_t> {
+        if self.is_client_message() {
+            Some(unsafe { &*(self.raw as *const raw::xcb_client_message_event_t) })
+        } else { None }
+    }
+        /// Return some client message, if that's the kind.
+    pub(crate) fn as_raw_configure(&self) -> Option<&raw::xcb_configure_notify_event_t> {
+        if self.is_configure() {
+            Some(unsafe { &*(self.raw as *const raw::xcb_configure_notify_event_t) })
         } else { None }
     }
 
