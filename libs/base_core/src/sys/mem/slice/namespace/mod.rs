@@ -20,6 +20,7 @@ mod core;
 mod range;
 mod take;
 mod split;
+mod chunk;
 mod bytes;
 
 #[cfg(test)]
@@ -97,6 +98,12 @@ mod tests;
 ///    ([*mut*](#method.msplit_left_mut)),
 ///   - [**msplit_right**](#method.msplit_right)
 ///    ([*mut*](#method.msplit_right_mut)).
+///
+/// - [`*chunk*` API methods](#chunk-api-methods-for-subslicing):<br/>
+///   - [**chunks_exact**](#method.chunks_exact)
+///    ([*mut*](#method.chunks_exact_mut)),
+///   - [**chunk**](#method.chunk)
+///    ([*mut*](#method.chunks_mut)).
 ///
 /// - [specific methods for byte slices](#methods-for-byte-slices)
 /// - [`eq` methods for slices of (slices of) primitives](#method.eq)

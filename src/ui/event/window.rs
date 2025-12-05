@@ -12,8 +12,8 @@ use crate::String;
 //
 // - https://docs.rs/sdl2/latest/sdl2/event/enum.WindowEvent.html
 // - https://docs.rs/crossterm/latest/crossterm/event/enum.Event.html
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[non_exhaustive]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum EventWindow {
     /// The window gained input focus.
     ///
@@ -35,7 +35,7 @@ pub enum EventWindow {
     ///
     /// Carries the new x–y coordinates when available.
     // Some backends emit movement without precise coordinates.
-    Moved(Option<[u32; 2]>),
+    Moved(Option<[i32; 2]>),
 
     // NOTE the difference in SDL: https://stackoverflow.com/a/55076700/940200
     // SizeChanged(UiSize),
