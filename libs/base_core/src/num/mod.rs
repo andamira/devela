@@ -16,6 +16,7 @@ mod float; // Float, FloatConst, f[32|64]_bits, fsize
 mod int; // Divisor, GcdReturn, [i|u]size_[down|up]
 mod logic; // ConstBool, False, True, const_bool!
 mod ord; // Cmp
+mod wide; // Lane4, Lane8, Lane16
 mod traits; // NumConst
 
 pub mod error; // error types
@@ -31,6 +32,7 @@ crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
             int::_all::*,
             logic::_all::*,
             ord::_all::*,
+            wide::_all::*,
             traits::_all::*,
         };
     }

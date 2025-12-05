@@ -350,6 +350,10 @@ Many feature gates are removed in order to make most features make always availa
 - rename: `Compare` to `Cmp`.
 - un-gate `Cmp` impls and many dependent const methods.
 
+### wide
+- new module `num::wide`.
+- new types: `Lane4`, `Lane8`.
+
 ---
 ## phys
 ### time
