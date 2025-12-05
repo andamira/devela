@@ -156,6 +156,9 @@ Many feature gates are removed in order to make most features make always availa
 ### marker
 - make `TypeResource` and `type_marker!` constructors *const*.
 
+### ops
+- new macro: `punroll!`.
+
 ### panic
 - move to [base]: `Panic`.
 
