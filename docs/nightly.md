@@ -56,10 +56,11 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.94.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.94.0> -->
 
+- 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
+
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
-- 1.??: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)

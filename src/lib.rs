@@ -109,7 +109,7 @@
 #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
 // ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_94, feature())]
+#![cfg_attr(nightly_stable_1_94, feature(array_windows))]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature())]
 // ----------------------------
@@ -118,7 +118,6 @@
     nightly_stable_later,
     feature(
         alloc_layout_extra,
-        array_windows,
         assert_matches,
         atomic_try_update,
         breakpoint,
