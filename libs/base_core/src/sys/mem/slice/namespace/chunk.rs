@@ -1,7 +1,5 @@
 // devela_base_core::sys::mem::slice::namespace::chunk
 
-#![allow(unused)] // WIP
-
 use crate::{Slice, is, lets};
 
 /// # `*chunk*` API methods for subslicing.

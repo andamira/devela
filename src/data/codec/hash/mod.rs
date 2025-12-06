@@ -10,13 +10,15 @@
 )]
 //
 
-mod reexports;
-
 #[cfg(feature = "hash")]
 crate::items! {
     mod pengy; // hash_pengy
     mod fnv; // HasherBuildFnv, HasherFnv
 }
+
+// re-exports
+crate::mod_path!(_c "../../../../libs/base_core/src/data/codec/hash/reexports.rs");
+crate::mod_path!(std _s "../../../../libs/base_std/src/data/codec/hash/reexports.rs");
 
 crate::structural_mods! { // _mods
     _mods {
@@ -26,9 +28,11 @@ crate::structural_mods! { // _mods
         pub use super::{fnv::*, pengy::*};
 
         // re-exports
-        pub use super::reexports::*;
+        pub use super::_c::*;
+        #[cfg(feature = "std")]
+        pub use super::_s::*;
         pub use devela_base_core::data::codec::hash::{
-            HasherBuildFx, HasherFx,
+            Adler32, HasherBuildFx, HasherFx,
         };
     }
 }

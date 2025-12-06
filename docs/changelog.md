@@ -222,6 +222,8 @@ Many feature gates are removed in order to make most features make always availa
 
 ### hash
 - move to [base]: `HasherFx`, `HasherBuildFx`.
+- new module `data::codec::hash::check`.
+- new type `Adler32`.
 
 ### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.

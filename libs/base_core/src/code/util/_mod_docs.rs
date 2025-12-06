@@ -51,6 +51,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA            = "Data handling and manipulation.";
     _DOC_DATA_CODEC      = "Abstractions for encoding and decoding data.";
     _DOC_DATA_CODEC_HASH = "Generic hashing support.";
+    _DOC_DATA_CODEC_HASH_CHECK = "Lightweight checksums for detecting accidental data corruption.";
     _DOC_DATA_ITER       = "Composable external iteration.";
     _DOC_DATA_KEY        = "Implementations of key-based storage.";
     _DOC_DATA_LIST       = "Implementations of sequential collections.";

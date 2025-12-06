@@ -143,7 +143,8 @@ mod impl_devela_base_core {
     use crate::{_impl_init, paste,
         // code
         // data
-        HasherFx,
+        // data::codec::hash
+        Adler32, HasherFx,
         // media
         // num
         f32bits, f32bits_niche, f64bits, f64bits_niche,
@@ -164,6 +165,7 @@ mod impl_devela_base_core {
     pub use crate::{GraphemeNonul, GraphemeU8};
 
     // data
+    _impl_init![%Sealed%: Adler32];
     _impl_init![%Sealed%: <T> HasherFx<T>];
 
     // num
