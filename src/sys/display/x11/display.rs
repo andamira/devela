@@ -7,8 +7,8 @@
 
 use super::{KeyRepeatFilter, XAtoms, XError, XEvent, XkbState, raw};
 use crate::{
-    ConstInit, Event, EventButton, EventButtonState, EventKind, EventMouse, EventWindow, Ptr,
-    c_int, is,
+    ConstInit, Event, EventButton, EventButtonState, EventKind, EventMouse, EventQueue,
+    EventWindow, Ptr, c_int, is,
 };
 
 /// A connection to an X11 display server.
@@ -26,6 +26,8 @@ pub struct XDisplay {
     /* repeat detection */
     pub(super) pending: Option<*mut raw::xcb_generic_event_t>,
     pub(super) repeat_filter: KeyRepeatFilter,
+    // custom synthetic event queue
+    queue: EventQueue<2>,
 }
 
 #[rustfmt::skip]
@@ -69,9 +71,12 @@ impl XDisplay {
         let pending = None;
         let repeat_filter = KeyRepeatFilter::new();
 
+        let queue = EventQueue::new();
+
         Ok(Self {
             conn, screen, screen_num, depth, xkb,
             pending, repeat_filter, atoms,
+            queue,
         })
     }
     /// Returns the root depth of the default screen.
@@ -87,7 +92,9 @@ impl XDisplay {
     /// the program must remain responsive without waiting.
     #[inline(always)]
     pub fn poll_event(&mut self) -> Event {
-        is![let Some(raw) = self.poll_raw_event(); self.handle_raw_event(raw); Event::None]
+        is![let Some(ev) = self.queue.pop(); return ev]; // return pending events first
+        is![let Some(raw) = self.poll_raw_event(); return self.handle_raw_event(raw)];
+        Event::None
     }
 
     /// Waits for the next event, blocking until one is available.
@@ -99,6 +106,7 @@ impl XDisplay {
     /// application should sleep until user input or a window notification arrives.
     #[inline(always)]
     pub fn wait_event(&mut self) -> Event {
+        is![let Some(ev) = self.queue.pop(); return ev]; // return pending events first
         is![let Some(raw) = self.wait_raw_event(); self.handle_raw_event(raw); Event::None]
     }
 
@@ -170,13 +178,20 @@ impl XDisplay {
                 return Event::new(Kind::Window(Win::CloseRequested), xev.timestamp());
             }
         } else if xev.is_enter() {
-            return Event::new(Kind::Window(Win::Enter), xev.timestamp());
+            return Event::new(Kind::Window(Win::Entered), xev.timestamp());
         } else if xev.is_leave() {
-            return Event::new(Kind::Window(Win::Leave), xev.timestamp());
+            return Event::new(Kind::Window(Win::Left), xev.timestamp());
         } else if xev.is_expose() {
             return Event::new(Kind::Window(Win::RedrawRequested), xev.timestamp());
+        } else if let Some(ev) = xev.as_raw_configure() {
+            let (w, h) = (ev.width as u32, ev.height as u32);
+            let (x, y) = (ev.x as i32, ev.y as i32);
+            let ts = xev.timestamp();
+            // queue both events in FIFO order
+            self.queue.push(Event::new(EventKind::Window(EventWindow::Moved(Some([x, y]))), ts));
+            self.queue.push(Event::new(EventKind::Window(EventWindow::Resized(Some([w, h]))), ts));
+            return Event::None;
         } else {
-            // TODO
             // eprintln!("(OTHER): {} {:?}", xev.response_type(), xev.timestamp());
         }
         Event::None
