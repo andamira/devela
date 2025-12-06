@@ -365,25 +365,38 @@ pub(crate) struct xcb_generic_event_t {
 
 #[doc = _TAG_FFI!()]
 /// A key was pressed/released.
-/// - <https://xcb.freedesktop.org/manual/structxcb__key__press__event__t.html>
+/// - <https://man.archlinux.org/man/xcb_key_press_event_t.3.en.txt>
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub(crate) struct xcb_key_press_event_t {
-    /// event kind
+    /// The type of this event, in this case XCB_KEY_RELEASE
     pub response_type: u8,
-    /// keycode
+    /// The keycode (a number representing a physical key on the keyboard)
+    /// of the key which was pressed.
     pub detail: xcb_keycode_t, // u8
+    /// The sequence number of the last request processed by the X11 server.
     pub sequence: u16,
+    /// Time when the event was generated (in milliseconds).
     pub time: xcb_timestamp_t, // u32
-    pub root: xcb_window_t,    // u32
-    pub event: xcb_window_t,   // u32
-    pub child: xcb_window_t,   // u32
+    /// The root window of child.
+    pub root: xcb_window_t, // u32
+    //
+    pub event: xcb_window_t, // u32
+    //
+    pub child: xcb_window_t, // u32
+    /// The X coordinate of the pointer relative to the root window at the time of the event.
     pub root_x: i16,
+    /// The Y coordinate of the pointer relative to the root window at the time of the event.
     pub root_y: i16,
+    /// If same_screen is true, this is the X coordinate relative to
+    /// the event window's origin. Otherwise, event_x will be set to zero.
     pub event_x: i16,
+    /// If same_screen is true, this is the Y coordinate relative to
+    /// the event window's origin. Otherwise, event_y will be set to zero.
     pub event_y: i16,
-    /// Modifier mask
+    /// The logical state of the pointer buttons and modifier keys just prior to the event.
     pub state: u16,
+    /// Whether the event window is on the same screen as the root window.
     pub same_screen: u8,
     pad0: u8,
 }
@@ -391,6 +404,115 @@ pub(crate) struct xcb_key_press_event_t {
 // these have the same representation:
 pub type xcb_button_press_event_t = xcb_key_press_event_t;
 pub type xcb_motion_notify_event_t = xcb_key_press_event_t;
+
+#[doc = _TAG_FFI!()]
+/// A window was exposed (damaged).
+/// - <https://man.archlinux.org/man/xcb_expose_event_t.3.en.txt>
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct xcb_expose_event_t {
+    /// The type of this event, in this case `XCB_EXPOSE`.
+    pub response_type: u8,
+    _pad0: u8,
+    /// The sequence number of the last request processed by the X11 server.
+    pub sequence: u16,
+    /// The exposed (damaged) window.
+    pub window: xcb_window_t, // u32
+    /// The X coordinate of the left-upper corner of the exposed
+    /// rectangle, relative to the window's origin.
+    pub x: u16,
+    /// The Y coordinate of the left-upper corner of the exposed
+    /// rectangle, relative to the window's origin
+    pub y: u16,
+    /// The width of the exposed rectangle.
+    pub width: u16,
+    /// The height of the exposed rectangle
+    pub height: u16,
+    /// The amount of Expose events following this one.
+    ///
+    /// Simple applications that do not want to optimize redisplay by
+    /// distinguishing between subareas of its window can just ignore
+    /// all Expose events with nonzero counts and perform full
+    /// redisplays on events with zero counts.
+    pub count: u16,
+    _pad1: [u8; 2],
+}
+
+#[doc = _TAG_FFI!()]
+/// The pointer is in a different window.
+/// - <https://man.archlinux.org/man/xcb_enter_notify_event_t.3.en.txt>
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct xcb_enter_notify_event_t {
+    /// The type of this event, in this case `XCB_ENTER_NOTIFY`.
+    pub response_type: u8,
+    //
+    pub detail: u8,
+    /// The sequence number of the last request processed by the X11 server.
+    pub sequence: u16,
+    /// Time when the event was generated (in milliseconds).
+    pub time: xcb_timestamp_t, // u32
+    /// The root window for the final cursor position.
+    pub root: xcb_window_t, // u32
+    /// The window on which the event was generated.
+    pub event: xcb_window_t, // u32
+    /// If the event window has subwindows and the final pointer position is in one of them,
+    /// then child is set to that subwindow, XCB_WINDOW_NONE otherwise.
+    pub child: xcb_window_t, // u32
+    /// The pointer X coordinate relative to root's origin at the time of the event.
+    pub root_x: i16,
+    /// The pointer Y coordinate relative to root's origin at the time of the event.
+    pub root_y: i16,
+    /// If event is on the same screen as root,
+    /// this is the pointer X coordinate relative to the event window's origin.
+    pub event_x: i16,
+    /// If event is on the same screen as root,
+    /// this is the pointer Y coordinate relative to the event window's origin.
+    pub event_y: i16,
+    //
+    pub state: u16,
+    //
+    pub mode: u8,
+    // Probably: Whether the event window is on the same screen as the root window.
+    pub same_screen_focus: u8,
+    _pad1: [u8; 3],
+}
+/// The pointer is in a different window.
+///
+/// The only things that change are:
+/// - response_type is `XCB_LEAVE_NOTIFY`.
+pub type xcb_leave_notify_event_t = xcb_enter_notify_event_t;
+
+#[doc = _TAG_FFI!()]
+/// A window was mapped.
+/// - <https://man.archlinux.org/man/xcb_map_notify_event_t.3.en.txt>
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct xcb_map_notify_event_t {
+    /// The type of this event, in this case `XCB_MAP_NOTIFY`.
+    pub response_type: u8,
+    _pad0: u8,
+    /// The sequence number of the last request processed by the X11 server.
+    pub sequence: u16,
+    /// The window which was mapped or its parent, depending on
+    /// whether StructureNotify or SubstructureNotify was selected.
+    pub event: xcb_window_t, // u32
+    /// The window that was mapped.
+    pub window: xcb_window_t, // u32
+    /// Window managers should ignore this window if override_redirect is 1.
+    pub override_redirect: u8,
+    _pad1: [u8; 3],
+}
+#[doc = _TAG_FFI!()]
+/// A window is unmapped.
+/// - <https://man.archlinux.org/man/xcb_unmap_notify_event_t.3.en.txt>
+///
+/// The only 2 things that change are:
+/// - response_type is `XCB_UNMAP_NOTIFY`.
+/// - the field `override_redirect` should be named `from_configure`, and it
+///   will be Set to 1 if the event was generated as a result of a resizing
+///   of the window's parent when window had a win_gravity of UnmapGravity.
+pub type xcb_unmap_notify_event_t = xcb_map_notify_event_t;
 
 #[doc = _TAG_FFI!()]
 /// A `ClientMessage` event sent by other clients or the window manager.
@@ -477,8 +599,19 @@ pub(crate) struct xcb_configure_notify_event_t {
 unsafe extern "C" {
     /// Returns the next event or error from the server.
     /// - <https://xcb.freedesktop.org/manual/group__XCB__Core__API.html#:~:text=xcb_poll_for_event>
+    ///
+    /// - Looks first at the client-side queue,
+    /// - if empty, it will flush the socket and try to read from the server to fetch more events.
+    /// - Non-blocking: returns NULL if no queued and no newly-received events.
     pub(crate) fn xcb_poll_for_event(c: *mut xcb_connection_t) -> *mut xcb_generic_event_t;
-    // xcb_poll_for_queued_event
+
+    /// Returns the next event without reading from the connection.
+    /// - <https://xcb.freedesktop.org/manual/group__XCB__Core__API.html#:~:text=xcb_poll_for_queued_event>
+    ///
+    /// - Looks ONLY at the client-side queue,
+    /// - Never reads from the server socket.
+    /// - Non-blocking: returns NULL if the queue is empyt.
+    pub(crate) fn xcb_poll_for_queued_event(c: *mut xcb_connection_t) -> *mut xcb_generic_event_t;
 
     /// Returns the next event or error from the server.
     /// - <https://xcb.freedesktop.org/manual/group__XCB__Core__API.html#:~:text=xcb_wait_for_event>

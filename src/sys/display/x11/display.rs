@@ -110,6 +110,10 @@ impl XDisplay {
         is![let Some(raw) = self.wait_raw_event(); self.handle_raw_event(raw); Event::None]
     }
 
+    /// Flushes pending XCB commands.
+    #[inline(always)]
+    pub fn flush(&self) { unsafe { raw::xcb_flush(self.conn); } }
+
     /* internals */
 
     /// Returns the underlying XCB connection.

@@ -18,8 +18,8 @@ mod event; // XEvent
 // mod surface; // XSurface
 mod window; // XWindow
 
-crate::structural_mods! { // _pub_mods, _crate_internals
-    _pub_mods {
+crate::structural_mods! { // _mods, _crate_internals
+    _mods {
         pub use super::{
             display::*,
             error::*,

@@ -72,7 +72,7 @@ impl XWindow {
             display.atoms.wm_protocols, display.atoms.wm_delete_window);
 
         let window = Self { display: conn, win, gc, width, height, depth: display.depth };
-        window.flush();
+        display.flush();
         Ok(window)
     }
 
@@ -81,10 +81,6 @@ impl XWindow {
 
     /// Returns the dimensions of the window `(width, height)`.
     pub fn size(&self) -> (u16, u16) { (self.width, self.height) }
-
-    /// Flushes pending XCB commands.
-    #[inline(always)]
-    pub fn flush(&self) { unsafe { raw::xcb_flush(self.display); } }
 
     /// Writes an rgba image from a byte buffer, into the window using XCB.
     pub fn put_image_bytes(&self, width: u16, height: u16, depth: u8, data: &[u8]) {
