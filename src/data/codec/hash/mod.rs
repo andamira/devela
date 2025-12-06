@@ -10,7 +10,6 @@
 )]
 //
 
-mod fx; // HasherBuildFx, HasherFx (not feature-gated).
 mod reexports;
 
 #[cfg(feature = "hash")]
@@ -21,10 +20,15 @@ crate::items! {
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{fx::*, reexports::*};
 
         #[cfg(feature = "hash")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "hash")))]
         pub use super::{fnv::*, pengy::*};
+
+        // re-exports
+        pub use super::reexports::*;
+        pub use devela_base_core::data::codec::hash::{
+            HasherBuildFx, HasherFx,
+        };
     }
 }

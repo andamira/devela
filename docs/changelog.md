@@ -220,6 +220,9 @@ Many feature gates are removed in order to make most features make always availa
   - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip[_checked]`, `flip[_checked]_range_if`, `[is_][un]set_mask`.
 - separate documentations for `BitOps` and `Bitwise` as individual constants.
 
+### hash
+- move to [base]: `HasherFx`, `HasherBuildFx`.
+
 ### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
 

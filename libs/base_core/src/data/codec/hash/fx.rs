@@ -1,6 +1,6 @@
-// devela::data::codec::hash::fx
+// devela_base_core::data::codec::hash::fx
 
-use crate::{ConstInit, Hash, Hasher, HasherBuildDefault};
+use crate::{ConstInitCore, Hash, Hasher, HasherBuildDefault};
 
 /// A builder for default Fx hashers.
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
@@ -38,7 +38,7 @@ macro_rules! impl_fx {
 
     ($($t:ty:$seed:ident),+) =>  { $( impl_fx![@$t:$seed]; )+ };
     (@$t:ty:$seed:ident) =>  {
-        impl ConstInit for HasherFx<$t> { const INIT: Self = Self { state: 0 }; }
+        impl ConstInitCore for HasherFx<$t> { const INIT: Self = Self { state: 0 }; }
         impl Default for HasherFx<$t> { fn default() -> Self { Self::INIT } }
 
         impl HasherFx<$t> {
