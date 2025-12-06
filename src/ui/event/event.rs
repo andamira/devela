@@ -4,8 +4,8 @@
 //
 
 use crate::{
-    ConstInit, EventKey, EventKind, EventMouse, EventPointer, EventTag, EventTimestamp,
-    EventWindow, NonZeroU64,
+    ConstInit, EventKey, EventKind, EventMouse, EventPointer, EventTag, EventTarget,
+    EventTimestamp, EventWindow, NonZeroU64,
 };
 
 /// A fully-typed event with optional timing and metadata.
@@ -19,6 +19,9 @@ use crate::{
 /// scheduling, and frame-deterministic logic.
 #[derive(Clone, Default, Debug, PartialEq, Eq, Hash)]
 pub struct Event {
+    /// The target associated with the event.
+    pub target: EventTarget,
+
     /// The concrete event payload.
     pub kind: EventKind,
 
@@ -57,6 +60,7 @@ impl Event {
     #[allow(non_upper_case_globals)]
     pub const None: Event = Self {
         kind: EventKind::None,
+        target: EventTarget::Global,
         emitted: None,
         processed: None,
         count: None,
@@ -64,10 +68,21 @@ impl Event {
 
     /// Creates a new event with a `kind` and an optional backend `emitted` timestamp.
     ///
-    /// `processed` and `count` are left unset and should be filled by the engine.
+    /// The `target` is set to [`Global`][EventTarget::Global],
+    /// while `processed` and `count` are left unset and should be filled by the engine.
     #[inline(always)]
     pub const fn new(kind: EventKind, emitted: Option<EventTimestamp>) -> Event {
-        Self { kind, emitted, processed: None, count: None }
+        Self { kind, target: EventTarget::Global, emitted, processed: None, count: None }
+    }
+
+    /// Creates a new event with the given `target`, `kind`,
+    /// and an optional backend `emitted` timestamp.
+    ///
+    /// `processed` and `count` are left unset and should be filled by the engine.
+    #[inline(always)]
+    pub const fn new_with(target: EventTarget, kind: EventKind, emitted: Option<EventTimestamp>)
+        -> Event {
+        Self { kind, target, emitted, processed: None, count: None }
     }
 
     /* setters */
@@ -182,6 +197,12 @@ impl Event {
 
 impl From<EventKind> for Event {
     fn from(kind: EventKind) -> Event {
-        Self { kind, emitted: None, processed: None, count: None }
+        Self {
+            kind,
+            target: EventTarget::Global,
+            emitted: None,
+            processed: None,
+            count: None,
+        }
     }
 }

@@ -574,14 +574,14 @@ Many feature gates are removed in order to make most features make always availa
 
 ---
 ## ui
-### events
-- new types: `Event`, `EventKind`, `EventQueue`, `EventTag`, `EventTimestampMode`, `EventWindow`, `KeyDead`.
+### event
+- new types: `DeviceId`, `Event`, `EventKind`, `EventQueue`, `EventTag`, `EventTarget`, `EventTimestampMode`, `EventWindow`, `KeyDead`, `WindowId`.
 - change `EventPointer.pressure` field to be `f32bits_niche`.
 - rename `time_stamp` fields to `timestamp`.
 - derive `Eq` & `Hash` for all event types.
 - implement `ConstInit` for all types.
 - update Event:
-  - new fields `processed`, `count`.
+  - new fields `count`, `processed`, `target`.
   - new methods: `mark_processed`, `mark_count`, `clear_count`, `finalize`, `count`, `tag`.
 - update `Key` & `KeyFfi`:
   - rename `Period` variant to `Dot`.
