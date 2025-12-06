@@ -1,12 +1,7 @@
-// devela::data::uid::pin
+// devela_base_core::data::uid::pin
 //
-//!
+//! Defines [`IdPin`].
 //
-
-#[cfg(feature = "alloc")]
-mod r#box;
-#[cfg(feature = "alloc")]
-pub use r#box::IdPinBox;
 
 use crate::Pin;
 
@@ -18,11 +13,11 @@ use crate::Pin;
 ///
 /// It doesn't implement `Clone` or `Default`.
 ///
-#[cfg_attr(feature = "alloc", doc = "See also [`IdPinBox`].")]
+// #[cfg_attr(feature = "alloc", doc = "See also [`IdPinBox`].")]
 ///
 /// # Example
 /// ```
-/// # use devela::IdPin;
+/// # use devela_base_core::IdPin;
 /// let mut data1: u8 = 0;
 /// let id1 = IdPin::new(&mut data1);
 /// ```
@@ -51,15 +46,14 @@ mod impl_traits {
     use crate::{IdPin, Ordering, Ptr, impl_trait};
 
     impl_trait![fmt::Debug for IdPin<'a> |self, f| write!(f, "{}", self.as_usize())];
-
     impl_trait![Hash for IdPin<'a> |self, s| self.as_usize().hash(s)];
 
+    impl Eq for IdPin<'_> {}
     impl PartialEq for IdPin<'_> {
         fn eq(&self, other: &Self) -> bool {
             Ptr::eq(&*self.inner, &*other.inner)
         }
     }
-    impl Eq for IdPin<'_> {}
 
     impl PartialOrd for IdPin<'_> {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {

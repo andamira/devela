@@ -61,6 +61,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
         $crate::_ABBR_FIFO!(), " order."];
     _DOC_DATA_LIST_STACK = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_LIFO!(), " order."];
+    _DOC_DATA_UID        = "Abstractions for uniquely identifying data.";
 
     _DOC_GAME = "Game-development and interactive applications.";
 

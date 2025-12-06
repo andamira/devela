@@ -251,6 +251,10 @@ Many feature gates are removed in order to make most features make always availa
   - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.
   - make methods const: `as_mut_*`, `as_ref_*`, `as_tuple_ref_options`.
 
+### uid
+- move `IdPin` to [base].
+- new type `IdRegistry`.
+
 ---
 ## lang
 - rename `lang::ling` to `lang::hum`.

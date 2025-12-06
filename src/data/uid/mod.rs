@@ -1,23 +1,27 @@
 // devela::data::uid
 //
-//! Abstractions for uniquely identifying data.
+#![doc = crate::_DOC_DATA_UID!()]
 //!
 //! Includes utilities for managing unique identifiers such as sequential IDs,
 //! scoped IDs, and universal unique identifiers.
 //
 
-mod pin; // pinned memory-based ids
-mod seq; // static sequential ids
+mod seq; // id_seq!
 
-// WIPZONE
 // #[cfg(feature = "std")]
 // mod snowflake;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{pin::*, seq::*};
-        // WIPZONE
+        pub use super::{
+            seq::*,
+        };
         // #[cfg(feature = "std")]
         // pub use super::snowflake::*;
+
+        // re-exports
+        pub use devela_base_core::data::uid::{IdPin, IdRegistry};
+        #[cfg(feature = "alloc")]
+        pub use devela_base_alloc::data::uid::IdPinBox;
     }
 }

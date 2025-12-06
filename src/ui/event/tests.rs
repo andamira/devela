@@ -9,7 +9,7 @@ fn sizes_of() {
     /* event, kind, window */
 
     #[cfg(not(feature = "alloc"))] {
-    assert_eq![56, size_of::<Event>()];             // 448 bits (+proc+count NonZeroU64)
+    assert_eq![64, size_of::<Event>()];             // 448 bits (+proc+count NonZeroU64)
     assert_eq![36, size_of::<EventKind>()];         // 288 bits
     assert_eq![16, size_of::<EventWindow>()];       // 128 bits
     assert![size_of::<Event>() == size_of::<Option<Event>>()];

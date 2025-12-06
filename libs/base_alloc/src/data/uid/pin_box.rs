@@ -1,6 +1,6 @@
-// devela::data::uid::pin::box
+// devela_base_alloc::data::uid::pin_box
 //
-//! Pinned memory-based unique IDs.
+//! Defines [`IdPinBox`].
 //
 
 use crate::{Box, Pin};
@@ -69,9 +69,9 @@ mod impl_traits {
     }
 }
 
-#[cfg(all(test, feature = "alloc"))]
+#[cfg(test)]
 mod test {
-    use crate::_dep::_alloc::{sync::Arc, vec};
+    use alloc::{sync::Arc, vec};
 
     use super::IdPinBox;
 

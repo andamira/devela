@@ -1,7 +1,7 @@
 // devela_base_core::data
 //
 #![doc = crate::_DOC_DATA!()]
-#![doc = crate::_doc!(modules: crate; data: codec, errors, iter, list)] // key, table, uid
+#![doc = crate::_doc!(modules: crate; data: codec, errors, iter, list, uid)] // key, table
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
@@ -18,10 +18,17 @@ pub mod errors;
 pub mod iter;
 // pub mod key;
 pub mod list;
+// pub mod space; // Grid
+pub mod uid; // IdPin
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
-        pub use super::{bit::_all::*, handle::*, sort::_all::*};
+        pub use super::{
+            bit::_all::*,
+            handle::*,
+            sort::_all::*,
+            uid::_all::*,
+        };
     }
     _pub_mods {
         #[doc(inline)]
@@ -31,6 +38,7 @@ crate::structural_mods! { // _mods, _pub_mods
             iter::_all::*,
             // key::_all::*,
             list::_all::*,
+            // space::_all::*,
         };
     }
 }

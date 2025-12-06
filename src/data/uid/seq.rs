@@ -1,6 +1,6 @@
 // devela::data::uid::seq
 //
-//! Sequential unique IDs.
+//! Defines [`id_seq!`], for sequential unique IDs.
 //
 
 /// A macro for constructing a unique sequential identifier generator.
