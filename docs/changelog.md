@@ -595,6 +595,10 @@ Many feature gates are removed in order to make most features make always availa
   - add methods: `as_millis_f32_to_u32`, `as_millis_u32`, `from_millis_u32_as_f32`.
   - remove methods: `try_from_js`, `try_from_millis_f32`,  `try_from_millis_u32`, `try_from_secs_f32`.
 - change `EventKeyFfi.timestamp` field to be `f32bits`.
+- update `EventWindow`
+  - fix `Moved` variant to use `i32`.
+  - new methods `is_[geometry|resize|move|focus|close|redraw|visibility|pointer_crossing|text_input|stream_signal]`, `[resize|move]_coords`.
+  - new variants: `Entered`, `Left`, `Minimized`, `Maximized`, `Restored`, `FullscreenEntered`, `FullscreenExited`.
 
 #### key
 - update `KeyPad`, add variant `Comma`.
