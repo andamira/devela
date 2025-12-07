@@ -7,8 +7,8 @@ use crate::_reexport;
 
 /* standard libraries */
 
-/* 2 optional dependencies */
-// In sync with ../Cargo.toml::dep_all & ../config/dep_all
+/* 3 optional dependencies */
+// In sync with ../Cargo.toml::dep_all
 
 _reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."

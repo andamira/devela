@@ -46,7 +46,7 @@ ui = ["term"]
 
 #* Safety features *#
 base_safe = [] # activates safe enforcement of thematic safe_* features
-safest = ["safe", "base_safe"] # for completion
+safest = ["safe", "base_safe"]
 safe = [
 	"devela_base_macros/safe", "safe_build",
 	"safe_code", "safe_data", "safe_game", "safe_lang", "safe_media", "safe_num",
@@ -111,7 +111,7 @@ dep_memchr = ["dep:memchr"]                                                     
 dep_rand_core = ["dep:rand_core"]                                                 # num::rand
 dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
 
-[dependencies] # 3 (2 required, 1 optional)
+[dependencies]
 devela_base_macros = { workspace = true }
 
 #* optional external dependencies *#

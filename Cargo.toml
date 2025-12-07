@@ -604,7 +604,8 @@ dep_log = ["dep:log"]                                                           
 dep_memchr = ["dep:memchr", "devela_base_core/dep_memchr"]                        # text:str
 dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                  # ui::back
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
-dep_portable_atomic_util = ["dep:portable-atomic-util"]                           # work::sync
+dep_portable_atomic_util = ["dep:portable-atomic-util",                           # work::sync
+	"devela_base_alloc?/dep_portable_atomic_util"]
 dep_rand_core = ["dep:rand_core", "devela_base_core/dep_rand_core"]               # num::rand
 dep_raw_cpuid = ["dep:raw-cpuid"]                                                 # sys::arch
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch

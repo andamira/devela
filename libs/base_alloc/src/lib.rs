@@ -16,6 +16,10 @@ pub mod media;
 pub mod num;
 pub mod sys;
 pub mod text;
+pub mod work;
+
+#[doc(hidden)]
+pub mod _dep;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
@@ -36,6 +40,7 @@ pub mod zall {
         num::_all::*,
         sys::_all::*,
         text::_all::*,
+        work::_all::*,
     };
 }
 

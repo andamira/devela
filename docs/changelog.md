@@ -650,4 +650,8 @@ Many feature gates are removed in order to make most features make always availa
   - `ExtFuture` to `FutureExt`.
   - `ExtProcess` to `ProcessExt`.
 
+### sync
+- move `portable-atomic-util` dependent re-exports to [base_alloc]: `Arc`, `ArkWeak`.
+
+
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0
