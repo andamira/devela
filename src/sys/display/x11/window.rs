@@ -49,9 +49,9 @@ impl XWindow {
             // expose
             | raw::XCB_EVENT_MASK_EXPOSURE
             | raw::XCB_EVENT_MASK_STRUCTURE_NOTIFY
-            // | raw::XCB_EVENT_MASK_VISIBILITY_CHANGE
-            // | raw::XCB_EVENT_MASK_PROPERTY_CHANGE
-            // | raw::XCB_EVENT_MASK_RESIZE_REDIRECT // intended for window managers
+            | raw::XCB_EVENT_MASK_VISIBILITY_CHANGE
+            | raw::XCB_EVENT_MASK_PROPERTY_CHANGE
+            // | raw::XCB_EVENT_MASK_RESIZE_REDIRECT // only intended for window managers
             // | raw::XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY
             // | raw::XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT
         ];
@@ -61,6 +61,11 @@ impl XWindow {
                 border_width, raw::XCB_WINDOW_CLASS_INPUT_OUTPUT, screen.root_visual, mask,
                 values.as_ptr());
         }
+
+        // tell WM we are intentionally specifying a position
+        let hints = raw::XSizeHints::new().set_position(x, y);
+        hints.set_on(conn, win, display.atoms.wm_normal_hints);
+
         // create graphic context
         let gc: u32 = unsafe { raw::xcb_generate_id(conn) };
         let gc_values: [u32; 1] = [screen.black_pixel];

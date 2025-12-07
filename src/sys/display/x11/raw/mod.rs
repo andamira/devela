@@ -18,12 +18,18 @@ mod xcb; // main xcb.h + xproto.h structs, fns
 mod xcb_flags; // protocol bit-masks
 mod xcb_values; // protocol const values
 mod xcb_shm; // shm extension
+pub(crate) use {xcb::*, xcb_flags::*, xcb_shm::*, xcb_values::*};
 
 mod xkb; // libxkbcommon core bindings
 mod xkb_x11; // libxkbcommon-x11 extension
+pub(crate) use {xkb::*, xkb_x11::*};
+
+// WM
+mod icccm; // ICCCM
+pub(crate) use icccm::*;
+
+mod helpers; // change_property_*
+pub(crate) use helpers::*;
 
 mod lut; // LUT_SCANCODE_TO_KEY
-
 pub(crate) use lut::*;
-pub(crate) use {xcb::*, xcb_flags::*, xcb_shm::*, xcb_values::*};
-pub(crate) use {xkb::*, xkb_x11::*};

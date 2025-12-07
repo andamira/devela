@@ -1,6 +1,6 @@
 // devela::sys::display::x11::raw::xcb
 //
-//! All from xcb.h and xproto.h.
+//! from `xcb.h`, `xproto.h`.
 //
 // DOC LINKS:
 // - https://www.x.org/releases/current/doc/man/man3/

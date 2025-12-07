@@ -14,6 +14,8 @@ use crate::{Libc, Ptr, is};
 /// This struct caches only the atoms that are relevant for the current minimal X11 backend.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub(crate) struct XAtoms {
+    /// The `WM_NORMAL_HINTS atom.
+    pub wm_normal_hints: u32,
     /// The `WM_PROTOCOLS` atom.
     pub wm_protocols: u32,
     /// The `WM_DELETE_WINDOW` protocol atom.
@@ -22,9 +24,10 @@ pub(crate) struct XAtoms {
 impl XAtoms {
     /// Returns a new [`XAtoms`] by resolving and caching the relevant atoms.
     pub(crate) fn new(conn: *mut raw::xcb_connection_t) -> Self {
+        let wm_normal_hints = XAtoms::get_atom(conn, b"WM_NORMAL_HINTS");
         let wm_protocols = XAtoms::get_atom(conn, b"WM_PROTOCOLS");
         let wm_delete_window = XAtoms::get_atom(conn, b"WM_DELETE_WINDOW");
-        Self { wm_protocols, wm_delete_window }
+        Self { wm_normal_hints, wm_protocols, wm_delete_window }
     }
 
     /// Resolves an X11 atom by name.

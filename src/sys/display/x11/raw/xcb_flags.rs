@@ -1,6 +1,6 @@
 // devela::sys::display::x11::raw::xcb_values
 //
-//! Values from `xproto.h`
+//! from `xproto.h`
 //
 // TOC
 // - events
