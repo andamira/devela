@@ -158,6 +158,7 @@ targets = [ ## +std:
 ]
 
 [lib]
+path = "src/index.rs"
 bench = false
 
 
@@ -335,7 +336,7 @@ work = [
 #
 # The `safe_*` features are only enforced in [base] crates when the `base_safe` feature is enabled.
 #
-# In sync with ./build/main/features.rs::[UN]SAFE & ./src/lib.rs::safety)
+# In sync with ./build/main/features.rs::[UN]SAFE & ./src/index.rs::safety)
 
 safest = ["safe", "base_safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
 
@@ -860,7 +861,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 
 # missing_crate_level_docs = "warn" # no documentation at the crate root (or any binary)
 #
-# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs & other places
+# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in index.rs & other places
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
 
 [workspace.lints.clippy]
@@ -955,14 +956,14 @@ check-cfg = [ # Allowed configuration flags:
 	# --------------------------------------------------------------------------
 	# They are prefixed with `nightly_`.
 	# Enabling any of these will set the `nightly··` reflection flag.
-	# In sync with: ./src/lib.rs, ./build/main/features.rs && ./docs/nightly.md.
+	# In sync with: ./src/index.rs, ./build/main/features.rs && ./docs/nightly.md.
 	#
 	## Links
 	# - https://doc.rust-lang.org/unstable-book/library-features.html
 	# - https://releases.rs/
 	# - ./tools/release_dates.rs
 	# - ./docs/nightly.md
-	"cfg(nightly)", # [12] (in sync with ./build/main/features.rs::FLAGS_NIGHTLY & ./src/lib.rs)
+	"cfg(nightly)", # [12] (in sync with ./build/main/features.rs::FLAGS_NIGHTLY & ./src/index.rs)
 		#
 		# Unstable nightly features without clear stabilization timeline
 		"cfg(nightly_unstable)",
@@ -972,7 +973,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_allocator)", # allocator_api
 			#
 			# WAIT: [explicit_tail_calls](https://github.com/rust-lang/rust/issues/112788)
-			"cfg(nightly_become)", # explicit_tail_calls WARN:incomplete_features (commented out in lib.rs)
+			"cfg(nightly_become)", # explicit_tail_calls WARN:incomplete_features (commented out in index.rs)
 			#
 			# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 			# https://rust-lang.zulipchat.com/#narrow/channel/390790-wg-autodiff
@@ -999,6 +1000,7 @@ check-cfg = [ # Allowed configuration flags:
 		#
 		# nightly features expected to stabilize soon:
 		"cfg(nightly_stable)",
+			"cfg(nightly_stable_1_91)",
 			"cfg(nightly_stable_1_92)",
 			"cfg(nightly_stable_1_93)",
 			"cfg(nightly_stable_1_94)",

@@ -1,6 +1,6 @@
-// devela_base_macros::lib
+// devela_base_macros::index
 //
-#![doc = include_str!("./Lib.md")]
+#![doc = include_str!("./Index.md")]
 //!
 //
 // TOC

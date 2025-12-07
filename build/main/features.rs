@@ -112,7 +112,7 @@ mod reflection {
         cfg_flags: &'a [&'a str],
     }
 
-    // In sync with ./Cargo.toml, ./docs/nightly.md && ./src/lib.rs
+    // In sync with ./Cargo.toml, ./docs/nightly.md && ./src/index.rs
     pub const FLAGS_NIGHTLY: FlagsFlags = FlagsFlags {
         auto_flags: &[
             "nightly_unstable",
@@ -195,7 +195,7 @@ mod reflection {
         features: &["std", "alloc", "no_std"]
     };
 
-    // In sync with ./Cargo.toml::[un][safe][st] & ./src/lib.rs::safety
+    // In sync with ./Cargo.toml::[un][safe][st] & ./src/index.rs::safety
     pub const SAFE: FlagsFeatures = FlagsFeatures {
         ref_flags: &["safe··"],
         features: &[

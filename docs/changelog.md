@@ -123,6 +123,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `config/rustdoc-header.html` to support multiple crates with custom whitelists.
 - move `/config/dep_all.rs` to `/build/main/dep_all`.
 - add flat re-exports of root modules to `zall_` & re-export hidden as `all_`.
+- rename all `lib.rs` to `index.rs`.
 - rename `_info` to `_doc`
 - rename `all` to `zall` & re-export hidden as `all`.
 - update github CI workflows

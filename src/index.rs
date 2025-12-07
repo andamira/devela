@@ -1,8 +1,8 @@
-// devela::lib
+// devela::index
 //
 //! A development layer in Rust.
 //!
-#![doc = include_str!("./Lib.md")]
+#![doc = include_str!("./Index.md")]
 //
 
 /* crate configuration */
@@ -36,7 +36,7 @@
 // ```
 //
 // (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs],
-//  ../build/main/features.rs::FLAGS_NIGHTLY) && ../libs/base_core/src/lib.rs
+//  ../build/main/features.rs::FLAGS_NIGHTLY) && ../libs/base_core/src/index.rs
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features

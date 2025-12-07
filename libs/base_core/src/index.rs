@@ -1,4 +1,4 @@
-// devela_base_core::lib
+// devela_base_core::index
 //
 //!
 //

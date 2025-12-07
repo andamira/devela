@@ -65,9 +65,9 @@
 /// strict adherence to the established guidelines for the module chain throughout the entire crate
 /// hierarchy.
 ///
-/// Each module must properly re-export its structural components upward, culminating in
-/// the root `lib.rs` file, to ensure consistent visibility and proper aggregation of exports. The
-/// system relies on a disciplined approach to visibility modifiers and re-export patterns at each
+/// Each module must properly re-export its structural components upward, culminating in crate
+/// root file, to ensure consistent visibility and proper aggregation of exports. The system
+/// relies on a disciplined approach to visibility modifiers and re-export patterns at each
 /// level of the module structure to maintain the intended public API surface and internal
 /// organization. Deviation from these patterns in intermediate modules may break the automatic
 /// aggregation mechanism and compromise the consistency of the final exported interface.

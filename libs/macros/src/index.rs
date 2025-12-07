@@ -1,4 +1,4 @@
-// devela_macros::lib
+// devela_macros::index
 //
 //!
 //

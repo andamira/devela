@@ -1,6 +1,6 @@
-// devela_base_alloc::lib
+// devela_base_alloc::index
 //
-//! …
+//!
 //
 
 #![cfg_attr(not(feature = "__std"), no_std)]

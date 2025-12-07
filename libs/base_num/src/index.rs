@@ -1,15 +1,30 @@
-// devela_base_text::lib
+// devela_base_num::index
 //
 //!
 //
 
+/* crate configuration */
+// environment
 #![cfg_attr(not(feature = "__std"), no_std)]
+// safety
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
-#![cfg_attr(nightly_doc, feature(doc_cfg))]
+//
+// nightly
+// nightly (uncomment as used)
+// #![cfg_attr(nightly_allocator, feature(allocator_api))]
+// #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
+// #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
+// #![cfg_attr(nightly_bigint, feature(bigint_helper_methods))]
+// #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
+// #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
+// #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
+// #![cfg_attr(nightly_float, feature(f16, f128))]
+// #![cfg_attr(nightly_simd, feature(portable_simd))]
 
-extern crate self as devela_base_text;
+extern crate self as devela_base_num;
 
-pub mod text;
+pub mod num;
 
 #[doc(hidden)]
 pub use zall::*;
@@ -23,7 +38,7 @@ pub mod zall {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
-        text::_all::*,
+        num::_all::*,
     };
 }
 
@@ -49,6 +64,6 @@ pub mod _workspace_internals {
     #[rustfmt::skip]
     #[allow(unused_imports)]
     pub use super::{
-        text::_workspace_internals::*,
+        num::_workspace_internals::*,
     };
 }
