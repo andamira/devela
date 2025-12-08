@@ -237,9 +237,9 @@ macro_rules! impl_float_shared_series {
             #[doc = TABLE_SIN_SERIES_TERMS!()]
             // NOTE: OPTIMIZED
             pub const fn sin_series(self, terms: u32) -> Float<$f> {
+                if terms == 0 { return Self::ZERO; } // Early exit for trivial cases
                 const PI: $f = Float::<$f>::PI.0;
                 const TAU: $f = Float::<$f>::TAU.0;
-                if terms == 0 { return Self::ZERO; } // Early exit for trivial cases
                 let x = self.0 % TAU; // Reduce angle to [-π, π] while preserving sign
                 let x = is![x > PI; x - TAU; is![x < -PI; x + TAU; x ]];
                 let x_sq = x * x;
@@ -455,7 +455,15 @@ macro_rules! impl_float_shared_series {
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
             pub const fn sinh_series(self, terms: $ue) -> Float<$f> {
-                Float((self.exp_series(terms).0 - -self.exp_series(terms).0) / 2.0)
+                // small-x polynomial: sinh(x) ≈ x + x³/6 + x⁵/120
+                if self.0.abs() < 0.01 {
+                    let x = self.0;
+                    let x2 = x * x;
+                    return Float(x + x * x2 / 6.0 + x * x2 * x2 / 120.0);
+                }
+                let epos = self.exp_series(terms).0;
+                let eneg = Float(-self.0).exp_series(terms).0;
+                Float((epos - eneg) * 0.5)
             }
 
             /// The hyperbolic cosine calculated using Taylor series expansion
@@ -467,7 +475,15 @@ macro_rules! impl_float_shared_series {
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
             pub const fn cosh_series(self, terms: $ue) -> Float<$f> {
-                Float((self.exp_series(terms).0 + -self.exp_series(terms).0) / 2.0)
+                // small-x polynomial: cosh(x) ≈ 1 + x²/2 + x⁴/24
+                if self.0.abs() < 0.01 {
+                    let x = self.0;
+                    let x2 = x * x;
+                    return Float(1.0 + x2 * 0.5 + x2 * x2 / 24.0);
+                }
+                let epos = self.exp_series(terms).0;
+                let eneg = Float(-self.0).exp_series(terms).0;
+                Float((epos + eneg) * 0.5)
             }
 
             /// Computes the hyperbolic tangent using Taylor series expansion of

@@ -196,6 +196,7 @@ macro_rules! impl_float_basic {
 
             /// The euclidean division.
             // NOTE: [incorrect computations](https://github.com/rust-lang/rust/issues/107904)
+            // WAIT: [const_float_euclidean_division](https://github.com/rust-lang/rust/issues/141572)
             pub const fn div_euclid(self, other: $f) -> Float<$f> {
                 let q = Float(self.0 / other).const_trunc().0;
                 if self.0 % other < 0.0 {
