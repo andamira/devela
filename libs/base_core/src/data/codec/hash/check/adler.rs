@@ -3,7 +3,12 @@
 //! Defines [`Adler32`].
 //
 
-use crate::{ConstInitCore, Hasher, Lane4, Slice, unwrap, whilst};
+use crate::{ConstInitCore, Hasher, Slice, define_lane, unwrap, whilst};
+
+define_lane! {
+    #[derive(Clone, Copy)]
+    struct Lane4 lanes(4); unsigned(u32);
+}
 
 /// Adler-32 checksum.
 ///
@@ -16,8 +21,8 @@ use crate::{ConstInitCore, Hasher, Lane4, Slice, unwrap, whilst};
 /// results may differ between little-endian and big-endian targets unless
 /// the input is serialized in a fixed byte order.
 ///
-/// This type supports incremental updates via [`write_bytes`], making it
-/// suitable for checksumming streaming data.
+/// This type supports incremental updates via [`write_bytes`][Self::write_bytes],
+/// making it suitable for checksumming streaming data.
 ///
 /// For details, see <https://en.wikipedia.org/wiki/Adler-32>.
 #[derive(Debug, Copy, Clone)]

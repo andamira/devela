@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_NUM_WIDE!()]
 //
 
-mod lane;
+mod lane; // define_lane!
 
 crate::structural_mods! { // _mods
     _mods {

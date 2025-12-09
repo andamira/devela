@@ -362,7 +362,8 @@ Many feature gates are removed in order to make most features make always availa
 
 ### wide
 - new module `num::wide`.
-- new types: `Lane4`, `Lane8`.
+- new macro: `define_lane!`.
+- new type `ExampleLane4_i32`.
 
 ---
 ## phys
