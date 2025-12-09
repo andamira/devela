@@ -408,6 +408,7 @@ mod core_impls {
             impl<BUF: DstBuf, DST: ?Sized> $t for DstStack<DST, BUF> where DST: $t { $( $body )* }
         }
     }
+    // FIXME
     impl_trait! { fmt::Debug;
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
             f.write_str("[")?;

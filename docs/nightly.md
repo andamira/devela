@@ -65,7 +65,7 @@ See also
 - 1.??: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
-- 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/issues/115585)
+- 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/pull/149783)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
@@ -84,7 +84,7 @@ See also
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
-  - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649)
+  - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
 - 1.??: `·`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)

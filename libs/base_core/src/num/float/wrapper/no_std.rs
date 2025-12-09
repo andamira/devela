@@ -30,12 +30,12 @@ macro_rules! impl_float_no_std {
 
             /// The nearest integer to itself, default rounding
             ///
-            /// This is the default [`round_ties_away`] implementation.
+            /// This is the default [`round_ties_away`][Self::round_ties_away] implementation.
             pub const fn round(self) -> Float<$f> { self.const_round() }
 
             /// The nearest integer to itself, rounding ties away from `0.0`.
             ///
-            /// This is the default [`round`] implementation.
+            /// This is the default [`round`][Self::round] implementation.
             ///
             /// # Formulation
             #[doc = crate::_FLOAT_FORMULA_ROUND_TIES_AWAY!()]
