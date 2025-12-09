@@ -19,3 +19,6 @@ _reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
 _reexport! { optional_crate (unsafe) "dep_simdutf8", "simdutf8", simdutf8,
     doc: "Blazingly fast API-compatible UTF-8 validation for Rust using SIMD extensions."
 }
+_reexport! { optional_crate (unsafe) "dep_wide", "wide", wide,
+    doc: "SIMD-compatible data types."
+}

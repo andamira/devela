@@ -107,13 +107,14 @@ _docs = ["_docs_nodep", "dep_all"]
 
 # In sync with ./config/dep_all & ./src/_dep.rs
 dep_all = [ # enables all 3 optional dependencies:
-	"dep_memchr", "dep_simdutf8", "dep_rand_core",
+	"dep_memchr", "dep_simdutf8", "dep_rand_core", "dep_wide",
 ]
 
 # individual dependencies features
 dep_memchr = ["dep:memchr"]                                                       # text:str
 dep_rand_core = ["dep:rand_core"]                                                 # num::rand
 dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
+dep_wide = ["dep:wide"]                                                           # num::wide
 
 [dependencies]
 devela_base_macros = { workspace = true }
@@ -123,6 +124,7 @@ devela_base_macros = { workspace = true }
 memchr = { workspace = true, optional = true }
 rand_core = { workspace = true, optional = true }
 simdutf8 = { workspace = true, optional = true }
+wide = { workspace = true, optional = true }
 
 #* required external dependencies *#
 

@@ -363,7 +363,10 @@ Many feature gates are removed in order to make most features make always availa
 ### wide
 - new module `num::wide`.
 - new macro: `define_lane!`.
-- new type `ExampleLane4_i32`.
+- new internal macro `_dep_wide_use`.
+- new example type `ExampleLane4_i32`.
+- support `nightly_simd` & `dep_wide` in [base_core].
+- re-export `core::simd::Simd`.
 
 ---
 ## phys
