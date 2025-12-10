@@ -32,6 +32,26 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub extern crate std as _std;
 
+/* workspace.dependencies */
+
+pub use devela_base_core as base_core;
+pub use devela_base_macros as base_macros;
+//
+#[cfg(feature = "alloc")]
+pub use devela_base_alloc as base_alloc;
+#[cfg(feature = "std")]
+pub use devela_base_std as base_std;
+//
+#[cfg(feature = "data")]
+pub use devela_base_data as base_data;
+// #[cfg(feature = "num")]
+pub use devela_base_num as base_num;
+#[cfg(feature = "text")]
+pub use devela_base_text as base_text;
+//
+#[cfg(feature = "macros")]
+pub use devela_macros as macros;
+
 /* 44 optional dependencies */
 // In sync with /Cargo.toml::dep_all & /build/main/dep_all
 

@@ -55,6 +55,7 @@ Many feature gates are removed in order to make most features make always availa
     - `quote` to 1.0.40.
 - add optional dependencies to [base]: `memchr`, `rand_core`, `simdutf8`.
 - remove `_core` and `_dep` re-exports from the public docs.
+re-export hidden workspace dependencies from `_dep`.
 - remove dependencies:
   - `const-str`, and related `str!` macro.
   - `libm` and related `Float` and `ExtFloat` functionality.
