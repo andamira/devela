@@ -1,7 +1,7 @@
 // devela::num
 //
 #![doc = crate::_DOC_NUM!()]
-#![doc = crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand)]
+#![doc = crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand)] // symb
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: cmp, num)]
@@ -17,6 +17,7 @@ mod int; // [i|u]size_[down|up], Int
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod reexports;
 mod traits; // Num, NumRef
+mod wide; // define_lane!
 
 #[cfg(feature = "unit")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
@@ -33,7 +34,7 @@ pub mod rand;
 // pub mod wip_symb;
 // mod wip_power; // Tp
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             absence::*,
@@ -44,11 +45,11 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             primitive::_all::*,
             reexports::*,
             traits::_all::*,
+            wide::_all::*,
+            // wip_power::*;
         };
         #[cfg(feature = "unit")]
         pub use super::unit::_all::*;
-        // WIPZONE
-        // pub use super::wip_power::*;
     }
     _pub_mods {
         pub use super::{
@@ -58,13 +59,17 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             ord::_all::*,
             quant::_all::*,
             rand::_all::*,
+            // wip_symb::_all::*;
         };
-        // WIPZONE
-        // pub use super::wip_symb::_all::*;
     }
     _crate_internals {
         pub(crate) use super::{
             rand::_crate_internals::*,
+        };
+    }
+    _hidden {
+        pub use super::{
+            wide::_hidden::*,
         };
     }
 }

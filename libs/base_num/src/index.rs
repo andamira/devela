@@ -20,7 +20,7 @@
 // #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
 // #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
 // #![cfg_attr(nightly_float, feature(f16, f128))]
-// #![cfg_attr(nightly_simd, feature(portable_simd))]
+#![cfg_attr(nightly_simd, feature(portable_simd))]
 
 extern crate self as devela_base_num;
 

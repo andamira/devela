@@ -95,7 +95,8 @@ unsafe = [
 	unsafe_thread  = []
 
 #* Capability features *#
-_docs_nodep = []
+_docs_min = []
+_docs_nodep = ["_docs_min"]
 _docs = ["_docs_nodep", "dep_all"]
 
 #* Dependency features (optional external dependencies) *#

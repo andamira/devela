@@ -489,6 +489,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 
 _docs_min = [ # the minimum capabilities to document every item
 	# workspace
+	"devela_base_core/_docs_min",
 	"devela_macros",
 	# modules:
 	"all", "linux",

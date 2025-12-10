@@ -280,6 +280,7 @@ mod _hidden {
     #[allow(unused_imports)]
     pub use super::{
         media::_hidden::*,
+        num::_hidden::*,
         sys::_hidden::*,
     };
 }
