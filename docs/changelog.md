@@ -312,16 +312,19 @@ Many feature gates are removed in order to make most features make always availa
   - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
 
 ### float
+- rename: `ExtFloat` to `FloatExt`.
+- new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
+- update `Float`
+  - new methods: `poly_eval_const`.
+  - remove deprecated methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
+  - make std methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
+  - split out std-enabled implementation as internal `FloatStd`.
 - move to [base]
   - aliases: `fsize`.
   - traits: `FloatConst`.
   - types: `Float`.
   - float shared docs prefixed with `_FLOAT_`.
-- new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
-- make std `Float` methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
-- split out std-enabled implementation as internal `FloatStd`.
-- rename: `ExtFloat` to `FloatExt`.
-- remove deprecated `Float` methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
+
 
 ### geom
 #### dir

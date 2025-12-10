@@ -530,6 +530,8 @@ macro_rules! impl_float_basic {
             #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&coefficients), 5.0];"]]
             #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&[]), 0.0];"]]
             /// ```
+            /// # See Also
+            /// - [`eval_poly_const`]: compile-time array-based Horner evaluator.
             ///
             /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
             // WAIT: [for-loops in constants](https://github.com/rust-lang/rust/issues/87575)
@@ -545,6 +547,24 @@ macro_rules! impl_float_basic {
                         Float(result)
                     }
                 }
+            }
+
+            /// Evaluates a polynomial at the `self` point value, using [Horner's method],
+            /// with all coefficients supplied as a compile-time fixed-size array.
+            ///
+            /// This is the `const`-friendly counterpart to [`eval_poly`][Self::eval_poly],
+            /// intended for performance-critical or numerically-sensitive code where:
+            /// - the polynomial degree is known at compile time,
+            /// - coefficients are stored in a fixed `[T; N]` array,
+            /// - the evaluator should be fully monomorphized and inlined,
+            /// - and the compiler can optimize the loop by unrolling and constant propagation.
+            ///
+            /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
+            #[inline(always)]
+            pub const fn eval_poly_const<const N: usize>(self, coeffs: &[$f; N]) -> Float<$f> {
+                let mut acc = coeffs[N-1];
+                whilst![i in rev 0..N-1; acc = acc * self.0 + coeffs[i]];
+                Float(acc)
             }
 
             /// Approximates the derivative of the 1D function `f` at `x` point using step size `h`.
