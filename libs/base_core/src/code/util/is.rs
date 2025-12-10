@@ -97,8 +97,6 @@ pub use is;
 
 #[cfg(test)]
 mod test_is {
-    use crate::is;
-
     #[test]
     fn is_if() {
         assert_eq!('a', is!(true ; 'a' ; 'b'));

@@ -234,7 +234,7 @@ mod tests {
     }
 
     #[test]
-    #[allow(unused_variables)]
+    #[allow(unused)]
     fn test_struct_destructuring() {
         struct Point {
             x: i32,
@@ -257,7 +257,7 @@ mod tests {
         }
         lets![GenericPoint { x, y } = GenericPoint { x: 1, y: 2 }];
         assert_eq!(x, 1);
-        lets![GenericPoint { x: a, y: b } = GenericPoint::<f32> { x: 1.0, y: 2.0 }];
+        lets![GenericPoint { x: a, y } = GenericPoint::<f32> { x: 1.0, y: 2.0 }];
         assert_eq!(a, 1.0);
     }
 
@@ -271,7 +271,7 @@ mod tests {
         assert_eq!(num, 10);
 
         struct GenericPair<T>(T, T);
-        lets![GenericPair(a, b) = GenericPair(1, 2)];
+        lets![GenericPair(a, _b) = GenericPair(1, 2)];
         assert_eq!(a, 1);
     }
 

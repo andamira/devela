@@ -49,7 +49,7 @@ pub use devela_base_num as base_num;
 #[cfg(feature = "text")]
 pub use devela_base_text as base_text;
 //
-#[cfg(feature = "macros")]
+#[cfg(feature = "devela_macros")]
 pub use devela_macros as macros;
 
 /* 44 optional dependencies */

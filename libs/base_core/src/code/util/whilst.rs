@@ -220,7 +220,7 @@ pub use whilst;
 
 #[cfg(test)]
 mod tests {
-    use crate::{is, whilst};
+    use crate::is;
 
     #[test]
     fn test_whilst() {

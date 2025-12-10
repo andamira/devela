@@ -116,8 +116,6 @@ pub use cfg_if;
 mod test_cfg_if {
     #![allow(dead_code, unexpected_cfgs)]
 
-    use crate::cfg_if;
-
     cfg_if! {
         if #[cfg(test)] {
             use core::option::Option as Option2;

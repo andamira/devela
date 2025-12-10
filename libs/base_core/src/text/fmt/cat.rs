@@ -81,8 +81,6 @@ pub use fmtcat;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn fmtargs() {
         let name = "Alice";

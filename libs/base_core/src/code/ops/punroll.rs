@@ -135,7 +135,7 @@ pub use punroll;
 #[cfg(test)]
 mod tests {
     #[test] fn statements() {
-        let mut a=0; punroll![0 |i|a+=i]; assert_eq!(a, 0); //
+        let a=0; punroll![0 |i|a+=i]; assert_eq!(a, 0); //
         let mut a=0; punroll![1 |i|a+=i]; assert_eq!(a, 0+0);
         let mut a=0; punroll![2 |i|a+=i]; assert_eq!(a, 0+1);
         let mut a=0; punroll![3 |i|a+=i]; assert_eq!(a, 0+1+2);

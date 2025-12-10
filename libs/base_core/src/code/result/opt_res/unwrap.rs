@@ -470,7 +470,7 @@ pub use unwrap;
 // NOTE: std tests that panic are in /libs/src/code/result/unwrap_test
 #[cfg(test)]
 mod tests {
-    use crate::{OptRes, serr, sok, unwrap};
+    use crate::{OptRes, serr, sok};
 
     const OPTION_SOME: Option<bool> = Some(true);
     const OPTION_NONE: Option<bool> = None;

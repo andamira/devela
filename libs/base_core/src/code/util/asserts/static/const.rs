@@ -99,8 +99,6 @@ pub use const_assert;
 
 #[cfg(test)]
 mod tests {
-    pub use super::*;
-
     #[test]
     const fn const_assert_logic() {
         const_assert!(true && (true != false));
