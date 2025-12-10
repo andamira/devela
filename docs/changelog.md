@@ -316,10 +316,11 @@ re-export hidden workspace dependencies from `_dep`.
 - rename: `ExtFloat` to `FloatExt`.
 - new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
 - update `Float`
-  - new methods: `poly_eval_const`.
+  - new methods: `poly_eval_const`, `sin_minimax`, `cos_minimax`, `sin_cos_minimax`.
   - remove deprecated methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
   - make std methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
   - split out std-enabled implementation as internal `FloatStd`.
+- Change `ExtFloat` to use `*_minimax` methods by default.
 - move to [base]
   - aliases: `fsize`.
   - traits: `FloatConst`.

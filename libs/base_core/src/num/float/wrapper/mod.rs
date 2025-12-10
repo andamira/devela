@@ -7,7 +7,8 @@ mod definition; // Float
 
 mod basic; // basic operations
 mod consts; // constants
-mod series; // series-based functions
+mod minimax; // Horner minimax-based functions
+mod series; // Taylor series-based functions
 
 mod no_std; // no_std methods
 

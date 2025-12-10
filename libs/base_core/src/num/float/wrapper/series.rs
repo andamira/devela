@@ -21,7 +21,6 @@ macro_rules! impl_float_shared_series {
     () => {
         impl_float_shared_series![(f32:u32, u32), (f64:u64, u32)];
     };
-
     ($( ($f:ty:$uf:ty, $ue:ty)),+ $(,)?) => {
         $( impl_float_shared_series![@$f:$uf, $ue]; )+
     };
@@ -235,7 +234,6 @@ macro_rules! impl_float_shared_series {
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
             #[doc = TABLE_SIN_SERIES_TERMS!()]
-            // NOTE: OPTIMIZED
             pub const fn sin_series(self, terms: u32) -> Float<$f> {
                 if terms == 0 { return Self::ZERO; } // Early exit for trivial cases
                 const PI: $f = Float::<$f>::PI.0;
@@ -262,7 +260,6 @@ macro_rules! impl_float_shared_series {
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
             #[doc = TABLE_COS_SERIES_TERMS!()]
-            // NOTE: OPTIMIZED
             pub const fn cos_series(self, terms: $ue) -> Float<$f> {
                 if terms == 0 { return Float::<$f>::ONE; } // Early exit for trivial cases
                 let x = self.0.abs() % Float::<$f>::TAU.0;
@@ -279,6 +276,8 @@ macro_rules! impl_float_shared_series {
             }
 
             /// Computes the sine and the cosine using Taylor series expansion.
+            ///
+            /// The current implementation computes separately the sine and the cosine.
             pub const fn sin_cos_series(self, terms: $ue) -> (Float<$f>, Float<$f>) {
                 (self.sin_series(terms), self.cos_series(terms))
             }

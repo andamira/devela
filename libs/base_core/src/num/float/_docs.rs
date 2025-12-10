@@ -339,6 +339,9 @@ _FLOAT_FORMULA_LOG10_SERIES = r#"$$ \log_{10}(x) = \frac{\ln(x)}{\ln(10)} $$"#;
 
 /* Trigonometry */
 
+_FLOAT_FORMULA_SIN_MINIMAX = r#"$$ \sin(x) \approx x + x^3\,P(x^2) $$"#;
+_FLOAT_FORMULA_COS_MINIMAX = r#"$$ \cos(x) \approx 1 + x^2\,Q(x^2) $$"#;
+
 _FLOAT_FORMULA_SIN_SERIES = r#"$$
 \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots $$"#;
 _FLOAT_FORMULA_COS_SERIES = r#"$$

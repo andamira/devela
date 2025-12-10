@@ -269,19 +269,19 @@ pub trait FloatExt: FloatConst + Sized {
 
     /// The sine.
     ///
-    /// With `std` disabled it leverages [`sin_series`][Float::sin_series] with 8 terms.
+    /// With `std` disabled it leverages [`sin_minimax`][Float::sin_minimx].
     #[must_use]
     fn sin(self) -> Self;
 
     /// The cosine.
     ///
-    /// With `std` disabled it leverages [`cos_series`][Float::cos_series] with 8 terms.
+    /// With `std` disabled it leverages [`cos_minimax`][Float::cos_minimax].
     #[must_use]
     fn cos(self) -> Self;
 
     /// Both the sine and cosine.
     ///
-    /// With `std` disabled it leverages [`sin_cos_series`][Float::sin_cos_series] with 8 terms.
+    /// With `std` disabled it leverages [`sin_cos_minimax`][Float::sin_cos_minimax].
     #[must_use]
     fn sin_cos(self) -> (Self, Self);
 
@@ -584,18 +584,18 @@ macro_rules! impl_ext_float {
             #[cfg(feature = "std")]
             fn sin(self) -> Self { Float(self).sin().0 }
             #[cfg(not(feature = "std"))]
-            fn sin(self) -> Self { Float(self).sin_series(12).0 }
+            fn sin(self) -> Self { Float(self).sin_minimax().0 }
 
             #[cfg(feature = "std")]
             fn cos(self) -> Self { Float(self).cos().0 }
             #[cfg(not(feature = "std"))]
-            fn cos(self) -> Self { Float(self).cos_series(11).0 }
+            fn cos(self) -> Self { Float(self).cos_minimax().0 }
 
             #[cfg(feature = "std")]
             fn sin_cos(self) -> (Self, Self) { let (s, c) = Float(self).sin_cos(); (s.0, c.0) }
             #[cfg(not(feature = "std"))]
             fn sin_cos(self) -> (Self, Self) {
-                let (s, c) = Float(self).sin_cos_series(12); (s.0, c.0) }
+                let (s, c) = Float(self).sin_cos_minimax(); (s.0, c.0) }
             #[cfg(feature = "std")]
             fn tan(self) -> Self { Float(self).tan().0 }
             #[cfg(not(feature = "std"))]

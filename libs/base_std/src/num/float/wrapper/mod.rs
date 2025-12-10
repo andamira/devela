@@ -7,7 +7,8 @@ mod definition; // FloatStd
 
 mod basic; // [SYMLINK:base_core] basic operations
 mod consts; // [SYMLINK:base_core] constants
-mod series; // [SYMLINK:base_core] series-based functions
+mod minimax; // [SYMLINK:base_core] Horner minimax-based functions
+mod series; // [SYMLINK:base_core] Taylor series-based functions
 
 mod std; // std methods
 
