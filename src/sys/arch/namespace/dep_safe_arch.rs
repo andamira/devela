@@ -752,7 +752,7 @@ impl_arch! {
         "Shuffle the `f64` lanes in `$a` using an immediate control value.",
         shuffle_ai_i64_all_m256i<const IMM: i32>(a: m256i) -> m256i;
         "Shuffle `f32` lanes in `a` using `i32` values in `v`.",
-        shuffle_av_i32_all_m256(a: m256, v: m256i) -> m256;
+        shuffle_av_f32_all_m256(a: m256, v: m256i) -> m256;
         "Shuffle `i32` lanes in `a` using `i32` values in `v`.",
         shuffle_av_i32_all_m256i(a: m256i, v: m256i) -> m256i;
         "Shuffle `i8` lanes in `a` using `i8` values in `v`.",
