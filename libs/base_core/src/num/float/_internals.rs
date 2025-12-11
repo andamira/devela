@@ -1,17 +1,20 @@
 // devela_base_core::num::float::internals
 //
-//!
+//! Defines [`_FloatInternals`].
 //
-// TODO: make crate-private once possible
+// NOTE: It's also used from devela_base_std for FloatStd.
+
+#![allow(clippy::excessive_precision)]
 
 use crate::PhantomData;
 #[cfg(nightly_float)]
 use ::core::{f16, f128};
 
 /// Private helper struct to define manual, type-dependendent constants.
+#[doc(hidden)]
 #[derive(Debug)]
-pub struct _FloatInternals<T> {
-    _marker: PhantomData<T>,
+pub struct _FloatInternals<F> {
+    _f: PhantomData<F>,
 }
 
 macro_rules! impl_float_internals {
@@ -19,7 +22,7 @@ macro_rules! impl_float_internals {
         // ~3–4 decimal digits of precision.
         // Uses a half-precision magic number found by brute-force
         #[cfg(nightly_float)]
-        impl_float_internals![f16:u16; (1e-4, 1e-3, 1e-2)
+        impl_float_internals![f16,u16; (1e-4, 1e-3, 1e-2)
             [5, 0x59b9, 1e-3]
             // TEMP
             { 4, [
@@ -37,7 +40,7 @@ macro_rules! impl_float_internals {
         // ~7 decimal digits of precision.
         // Chris Lomont's single precision magic number for fisqrt: 0x5f37_59df
         // Uses Matthew Robertson's single precision magic number for fisqrt:
-        impl_float_internals![f32:u32; (1e-7, 1e-6, 1e-5)
+        impl_float_internals![f32,u32; (1e-7, 1e-6, 1e-5)
             [8, 0x5f375a86, 1e-6]
             { 4, [
                 -0.1666666716337204,
@@ -54,7 +57,7 @@ macro_rules! impl_float_internals {
         // ~15–16 decimal digits of precision.
         // Chris Lomont's double precision magic number: 0x5fe6_eb50_c7b5_37aa
         // Uses Matthew Robertson's double precision magic number for fisqrt:
-        impl_float_internals![f64:u64; (1e-12, 1e-9, 1e-6)
+        impl_float_internals![f64,u64; (1e-12, 1e-9, 1e-6)
             [11, 0x5fe6_eb50_c7b5_37a9, 1e-12]
             { 8, [
                 -1.66666666666666324348e-01,
@@ -79,7 +82,7 @@ macro_rules! impl_float_internals {
         // ~33–34 decimal digits of precision.
         // Uses Matthew Robertson's quadruple precision magic number:
         #[cfg(nightly_float)]
-        impl_float_internals![f128:u128; (1e-30, 1e-27, 1e-24)
+        impl_float_internals![f128,u128; (1e-30, 1e-27, 1e-24)
             [15, 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, 1e-30]
             // TEMP, same as f64, but should be a better set of 12
             { 8, [
@@ -120,7 +123,7 @@ macro_rules! impl_float_internals {
     // $deg:   number of polynomial coefficients for sine/cosine
     // [$sin]: minimax polynomial coefficients for sine
     // [$cos]: minimax polynomial coefficients for cosine
-    $f:ty:$u:ty;
+    $f:ty, $u:ty;
     ($lm:literal, $mm:literal, $hm:literal)
     [$ebit:literal, $fisr:literal, $nrt:literal]
     { $deg:literal, [$($sin:expr),*], [$($cos:expr),*] } ) => {
@@ -151,12 +154,12 @@ macro_rules! impl_float_internals {
 
             /// Minimax polynomial coefficients for sine.
             ///
-            ///   sin(x) ≈ x + x³·p1 + x⁵·p2 + x⁷·p3 + x⁹·p4
+            /// `sin(x) ≈ x + x³·p1 + x⁵·p2 + x⁷·p3 + x⁹·p4`
             pub const SIN_COEFFS: [$f; $deg] = [ $($sin),* ];
 
             /// Minimax polynomial coefficients for cosine.
             ///
-            /// cos(x) ≈ 1 + x²·c1 + x⁴·c2 + x⁶·c3 + x⁸·c4
+            /// `cos(x) ≈ 1 + x²·c1 + x⁴·c2 + x⁶·c3 + x⁸·c4`
             pub const COS_COEFFS: [$f; $deg] = [ $($cos),* ];
         }
     };

@@ -269,7 +269,7 @@ pub trait FloatExt: FloatConst + Sized {
 
     /// The sine.
     ///
-    /// With `std` disabled it leverages [`sin_minimax`][Float::sin_minimx].
+    /// With `std` disabled it leverages [`sin_minimax`][Float::sin_minimax].
     #[must_use]
     fn sin(self) -> Self;
 
