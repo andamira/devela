@@ -1,10 +1,10 @@
 // devela::num
 //
 #![doc = crate::_DOC_NUM!()]
-#![doc = crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand)] // symb
+#![doc = crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand, wide)] // symb
 #![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::_doc!(extends: cmp, num)]
+#![doc = crate::_doc!(extends: cmp, num, simd)]
 //
 // safety
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
@@ -17,7 +17,6 @@ mod int; // [i|u]size_[down|up], Int
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod reexports;
 mod traits; // Num, NumRef
-mod wide; // define_lane!
 
 #[cfg(feature = "unit")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
@@ -29,6 +28,7 @@ pub mod niche; // MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, n
 pub mod ord; // Cmp
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
+pub mod wide; // define_lane!
 
 // WIPZONE
 // pub mod wip_symb;
@@ -45,7 +45,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             primitive::_all::*,
             reexports::*,
             traits::_all::*,
-            wide::_all::*,
             // wip_power::*;
         };
         #[cfg(feature = "unit")]
@@ -59,6 +58,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             ord::_all::*,
             quant::_all::*,
             rand::_all::*,
+            wide::_all::*,
             // wip_symb::_all::*;
         };
     }

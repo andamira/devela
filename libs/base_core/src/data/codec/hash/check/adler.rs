@@ -106,12 +106,12 @@ impl Adler32 {
             whilst! { j in 0..inner_count; {
                 let byte_vec = Slice::chunk::<INNER_CHUNK>(outer_chunk, j).unwrap();
                 let val = Lane4::<u32>::from_bytes(byte_vec);
-                a_vec.add_assign(val);
-                b_vec.add_assign(a_vec);
+                a_vec.add_assign_plain(val);
+                b_vec.add_assign_plain(a_vec);
             }}
             b += OUTER_CHUNK as u32 * a;
-            a_vec.rem_scalar_assign(MOD);
-            b_vec.rem_scalar_assign(MOD);
+            a_vec.rem_scalar_assign_plain(MOD);
+            b_vec.rem_scalar_assign_plain(MOD);
             b %= MOD;
         }}
         // vectorized remainder after the outer loop
@@ -119,16 +119,16 @@ impl Adler32 {
         whilst! { i in 0..inner_count; {
             let byte_vec = unwrap![some Slice::chunk::<4>(remainder_outer_chunk, i)];
             let val = Lane4::<u32>::from_bytes(byte_vec);
-            a_vec.add_assign(val);
-            b_vec.add_assign(a_vec);
+            a_vec.add_assign_plain(val);
+            b_vec.add_assign_plain(a_vec);
         }}
 
         // combine vector lanes into scalar a and b
         b += remainder_outer_chunk.len() as u32 * a;
-        a_vec.rem_scalar_assign(MOD);
-        b_vec.rem_scalar_assign(MOD);
+        a_vec.rem_scalar_assign_plain(MOD);
+        b_vec.rem_scalar_assign_plain(MOD);
         b %= MOD;
-        b_vec.mul_scalar_assign(4);
+        b_vec.mul_scalar_assign_plain(4);
         b_vec.0[1] += MOD - a_vec.0[1];
         b_vec.0[2] += (MOD - a_vec.0[2]) * 2;
         b_vec.0[3] += (MOD - a_vec.0[3]) * 3;

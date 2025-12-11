@@ -1,10 +1,10 @@
 // devela_base_core::num
 //
 #![doc = crate::_DOC_NUM!()]
-#![doc = crate::_doc!(modules: crate; num: error, geom, niche, quant)] // logic, ord, rand
+#![doc = crate::_doc!(modules: crate; num: error, geom, niche, quant, wide)] // logic, ord, rand
 #![doc = crate::_doc!(newline)]
 //!
-#![doc = crate::_doc!(extends: cmp, num)]
+#![doc = crate::_doc!(extends: cmp, num, simd)]
 //
 // safety
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
@@ -16,13 +16,13 @@ mod float; // Float, FloatConst, f[32|64]_bits, fsize
 mod int; // Divisor, GcdReturn, [i|u]size_[down|up]
 mod logic; // ConstBool, False, True, const_bool!
 mod ord; // Cmp
-mod wide; // define_lane!
 mod traits; // NumConst
 
 pub mod error; // error types
 pub mod geom;
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod quant; // Cycle*, Interval, interval!, Ratio
+pub mod wide; // define_lane!
 
 crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
     _mods {
@@ -32,7 +32,6 @@ crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
             int::_all::*,
             logic::_all::*,
             ord::_all::*,
-            wide::_all::*,
             traits::_all::*,
         };
     }
@@ -43,6 +42,7 @@ crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
             geom::_all::*,
             niche::_all::*,
             quant::_all::*,
+            wide::_all::*,
         };
     }
     _workspace_internals {

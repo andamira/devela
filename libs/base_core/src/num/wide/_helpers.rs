@@ -1,7 +1,78 @@
 // devela_base_core::num::wide::_dep_wide
 //
-//! Defines [`_dep_wide_compile!`], [`_dep_wide_use!`].
+//! Defines [__lane_dispatch!], [`_dep_wide_compile!`], [`_dep_wide_use!`].
 //
+
+/* __lane_dispatch! */
+
+// NOTE: the fallback order is: _simd, _wide, _plain
+
+// calls the *_simd version
+#[doc(hidden)]
+#[macro_export]
+#[cfg(nightly_simd)]
+macro_rules! __lane_dispatch {
+    (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    (no_wide: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _simd>]($($a)*) }};
+    ($s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _simd>]($($a)*) }};
+}
+
+// calls the *_wide version
+#[doc(hidden)]
+#[macro_export]
+#[cfg(not(nightly_simd))]
+#[cfg(feature = "dep_wide")]
+macro_rules! __lane_dispatch {
+    (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    (no_wide: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    ($s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _wide>]($($a)*) }};
+}
+
+// calls the *_plain version
+#[doc(hidden)]
+#[macro_export]
+#[cfg(not(nightly_simd))]
+#[cfg(not(feature = "dep_wide"))]
+macro_rules! __lane_dispatch {
+    (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    (no_wide: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    ($s:ident, $fn:ident ($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+}
+
+#[doc(hidden)]
+pub use __lane_dispatch;
+
+/* simd_use */
+
+/// Defines a Simd alias over `core::simd::Simd` for the given element type and lane count.
+///
+/// It also imports the traits from `core:simd::{cmp, num, ptr}`.
+#[doc(hidden)]
+#[macro_export]
+#[rustfmt::skip]
+macro_rules! __simd_use {
+    ($t:ty, $L:literal) => {
+        // type Simd = $crate::Simd<$t, $L>; // FIX: doctest
+        type Simd = ::core::simd::Simd<$t, $L>;
+
+        // common
+        #[allow(unused_imports)]
+        // use $crate::num::{ // FIX: doctest
+        //     SimdOrd, SimdPartialEq, SimdPartialOrd, // cmp
+        //     SimdFloat, SimdInt, SimdUint, // num
+        //     SimdConstPtr, SimdMutPtr, // ptr
+        // };
+        use core::simd::{
+            cmp::{SimdOrd, SimdPartialEq, SimdPartialOrd},
+            num::{SimdFloat, SimdInt, SimdUint},
+            ptr::{SimdConstPtr, SimdMutPtr},
+        };
+    };
+}
+#[doc(hidden)]
+pub use __simd_use as _simd_use;
+
+/* dep_wide_compile! */
 
 /// No-op fallback for `_dep_wide_compile!`.
 ///
@@ -225,7 +296,8 @@ macro_rules! _dep_wide_use {
         // common
         #[allow(unused_imports)]
         use $crate::_dep::wide::{
-            AlignTo as _, CmpEq as _, CmpGe as _, CmpGt as _, CmpLe as _, CmpLt as _, CmpNe as _,
+            AlignTo as WideAlignTo, CmpEq as WideCmpEq, CmpGe as WideCmpGe, CmpGt as WideCmpGt,
+            CmpLe as WideCmpLe, CmpLt as WideCmpLt, CmpNe as WideCmpNe,
         };
     };
 }

@@ -2,6 +2,7 @@
 //
 #![doc = crate::_DOC_NUM_WIDE!()]
 //!
+#![doc = crate::_doc!(extends: simd)]
 //
 
 // re-exports
@@ -17,7 +18,6 @@ crate::structural_mods! { // _hidden
         pub use devela_base_core::num::ExampleLane4_i32;
     }
     _hidden {
-        #[cfg(feature = "dep_wide")]
         pub use devela_base_core::{
             _dep_wide_compile, _dep_wide_use
         };

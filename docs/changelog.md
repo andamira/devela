@@ -368,10 +368,10 @@ re-export hidden workspace dependencies from `_dep`.
 ### wide
 - new module `num::wide`.
 - new macro: `define_lane!`.
-- new internal macro `_dep_wide_use`.
+- new internal helper macros.
 - new example type `ExampleLane4_i32`.
 - support `nightly_simd` & `dep_wide` in [base_core].
-- re-export `core::simd::Simd`.
+- re-export some of `core::simd` types and traits.
 
 ---
 ## phys
