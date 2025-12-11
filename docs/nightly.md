@@ -57,6 +57,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.94.0> -->
 
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
+- 1.94: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -71,7 +72,6 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
-- 1.??: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
