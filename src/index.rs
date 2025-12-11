@@ -50,43 +50,6 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_91`: core, alloc, std…
-#![cfg_attr(
-    nightly_stable_1_91,
-    feature(
-        array_repeat,
-        as_array_of_cells,
-        const_array_each_ref,
-        const_type_id,
-        duration_constructors_lite,
-        ip_from,
-        iter_chain,
-        round_char_boundary,
-        strict_overflow_ops,
-        strict_provenance_atomic_ptr,
-        unsigned_signed_diff,
-        // unsigned_bigint_helpers, // (bigint_helper_methods),
-    )
-)]
-// #![cfg_attr(all(nightly_stable_1_91, feature = "alloc"), feature())]
-#![cfg_attr(
-    all(nightly_stable_1_91, feature = "std"),
-    feature(
-        const_pathbuf_osstring_new,
-        panic_payload_as_str,
-        path_add_extension,
-        path_file_prefix,
-    )
-)]
-// ----------------------------
-// `nightly_stable_1_92`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_92, feature(const_slice_rotate,))]
-#![cfg_attr(
-    all(nightly_stable_1_92, feature = "alloc"),
-    feature(file_with_nul, btree_entry_insert,)
-)]
-#![cfg_attr(all(nightly_stable_1_92, feature = "std"), feature(rwlock_downgrade,))]
-// ----------------------------
 // `nightly_stable_1_93`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_93,
@@ -109,9 +72,14 @@
 #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
 // ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_94, feature(array_windows, const_mul_add,))]
+#![cfg_attr(nightly_stable_1_94, feature(array_windows, /*const_mul_add,*/))]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature())]
+// ----------------------------
+// `nightly_stable_1_95`: core, alloc, std…
+// #![cfg_attr(nightly_stable_1_95, feature())]
+// #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(

@@ -85,7 +85,7 @@ members = [
 
 [workspace.package]
 version = "0.25.0-wip" # in sync with docs/changelog.md
-rust-version = "1.90.0" # in sync with README.md && .github/workflows/check.yml
+rust-version = "1.92.0" # in sync with README.md && .github/workflows/check.yml
 documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
@@ -1001,10 +1001,9 @@ check-cfg = [ # Allowed configuration flags:
 		#
 		# nightly features expected to stabilize soon:
 		"cfg(nightly_stable)",
-			"cfg(nightly_stable_1_91)",
-			"cfg(nightly_stable_1_92)",
 			"cfg(nightly_stable_1_93)",
 			"cfg(nightly_stable_1_94)",
+			"cfg(nightly_stable_1_95)",
 			"cfg(nightly_stable_later)",
 	#
 	# Auto-enabled reflection flags from ./build/main/features.rs (20)

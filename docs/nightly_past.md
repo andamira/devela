@@ -8,6 +8,17 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.92 became stable on [2025-12-11](https://releases.rs/docs/1.92.0/)
+<!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
+<!-- > - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
+
+- 1.92: ` `[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
+- 1.92: `→`[const_slice_rotate](https://github.com/rust-lang/rust/pull/146841)
+- 1.92: ` `[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
+- 1.92: `…`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
+- 1.92: `…`[unsigned_nonzero_div_ceil](https://github.com/rust-lang/rust/pull/147562)
+
 # 1.91 became stable on [2025-10-30](https://releases.rs/docs/1.91.0/))
 > - <https://github.com/rust-lang/rust/milestone/135>
 > - <https://blog.rust-lang.org/2025/10/30/Rust-1.91.0>

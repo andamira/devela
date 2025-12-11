@@ -19,7 +19,7 @@ Many feature gates are removed in order to make most features make always availa
 - build system enhancements: improved build configuration and post-build processing
 - memory & system improvements: enhanced slice operations and system arches support.
 - error system refinement: updated error macros and type organization.
-- msrv bump: minimum supported rust version increased to 1.90.0.
+- msrv bump: minimum supported rust version increased to 1.92.0.
 
 <!-- **Legend:** ⚠️ Breaking Change | 🆕 New Addition | ✨ Enhancement | 🐛 Bug Fix -->
 
@@ -40,7 +40,7 @@ Many feature gates are removed in order to make most features make always availa
 - add [base] symlinks to `devela/main/[alias|environment|features].rs`.
 
 ## cargo
-- bump MSRV to 1.90.0.
+- bump MSRV to 1.92.0.
 - add new cargo doc workspace aliases `w*`.
 - add new cargo env var `CARGO_WORKSPACE_DIR`.
 - fix updated syntax for unstable cargo-include in `.cargo/config.toml`.

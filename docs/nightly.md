@@ -21,15 +21,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-# 1.92 will be stable on [2025-12-11](https://releases.rs/docs/1.92.0/) `nightly_stable_1_92`
-<!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
-<!-- > - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
-
-- 1.92: `a`[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
-- 1.92: `·`[const_slice_rotate](https://github.com/rust-lang/rust/pull/146841)
-- 1.92: `a`[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
-- 1.92: `s`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
 
 # 1.93 will be stable on [2026-01-22](https://releases.rs/docs/1.93.0/) `nightly_stable_1_93`
 <!-- > - <https://github.com/rust-lang/rust/milestone/137> -->
@@ -58,6 +49,16 @@ See also
 
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
 - 1.94: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
+
+# 1.95 will be stable on [2026-04-16](https://releases.rs/docs/1.95.0/) `nightly_stable_1_95`
+<!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
+<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.95.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.95.0> -->
+
+# 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
+<!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
+<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.96.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.96.0> -->
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
