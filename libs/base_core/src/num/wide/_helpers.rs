@@ -12,8 +12,11 @@
 #[macro_export]
 #[cfg(nightly_simd)]
 macro_rules! __lane_dispatch {
+    // always plain
     (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    // never wide
     (no_wide: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _simd>]($($a)*) }};
+    // preferred order
     ($s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _simd>]($($a)*) }};
 }
 
@@ -23,8 +26,11 @@ macro_rules! __lane_dispatch {
 #[cfg(not(nightly_simd))]
 #[cfg(feature = "dep_wide")]
 macro_rules! __lane_dispatch {
+    // always plain
     (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    // never wide
     (no_wide: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    // preferred order
     ($s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _wide>]($($a)*) }};
 }
 
@@ -34,8 +40,11 @@ macro_rules! __lane_dispatch {
 #[cfg(not(nightly_simd))]
 #[cfg(not(feature = "dep_wide"))]
 macro_rules! __lane_dispatch {
+    // always plain
     (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    // never wide
     (no_wide: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
+    // preferred order
     ($s:ident, $fn:ident ($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
 }
 
@@ -92,9 +101,12 @@ macro_rules! _dep_wide_compile {
 /// Unsupported combinations expand to nothing.
 ///
 /// Three selector modes determine the admissible sets:
-/// - `for ALL`: arithmetic operations valid for integers and floats.
-/// - `for FLOAT`: operations requiring floating-point types only.
-/// - `for INT`: bitwise operations restricted to integer types.
+/// - `for ALL_OR_ELSE`:   arithmetic operations valid for integers and floats.
+/// - `for FLOAT`:         operations requiring floating-point types only.
+/// - `for INT_OR_ELSE`:   bitwise operations restricted to integer types.
+/// - `for SHIFT_OR_ELSE`: shift operations restricted to a subset of integer types.
+///
+/// The _OR_ELSE variants expect a fallback body to polyfill unsupported conditions.
 ///
 /// The generated function is also gated behind `feature = "dep_wide"`.
 #[doc(hidden)]
@@ -102,9 +114,10 @@ macro_rules! _dep_wide_compile {
 #[cfg(feature = "dep_wide")]
 macro_rules! _dep_wide_compile {
     ( // add, sub, mul, neg, sum, min, max, clap
-        for ALL $t:ty, $L:literal;
+        for ALL_OR_ELSE $t:ty, $L:literal;
         $(#[$attr:meta])*
         $vis:vis fn $name:ident ( $($args:tt)* ) $( -> $ret:ty )?  $body:block
+        else $fallback_body:block
     ) => {
         $(#[$attr])*
         #[$crate::compile(any(
@@ -136,6 +149,38 @@ macro_rules! _dep_wide_compile {
         ))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_wide")))]
         $vis fn $name( $($args)* ) $( -> $ret )? $body
+
+        // OR_ELSE:
+        $(#[$attr])*
+        #[$crate::compile(not(any( // negation of the above
+            all(same($L, 2), any(
+                same($t, f64),                // f
+                same($t, i64), same($t, u64)  // iu64
+            )),
+            all(same($L, 4), any(
+                same($t, f32), same($t, f64), // f
+                same($t, i32), same($t, u32), // iu32
+                same($t, i64), same($t, u64)  // iu64
+            )),
+            all(same($L, 8), any(
+                same($t, f32), same($t, f64), // f
+                same($t, i16), same($t, u16), // iu16
+                same($t, i32), same($t, u32), // iu32
+                same($t, i64), same($t, u64)  // iu64
+            )),
+            all(same($L, 16), any(
+                same($t, f32),                // f
+                same($t, i8), same($t, u8),   // iu8
+                same($t, i16), same($t, u16), // iu16
+                same($t, i32), same($t, u32)  // iu32
+            )),
+            all(same($L, 32), any(
+                same($t, i8), same($t, u8),   // iu8
+                same($t, i16), same($t, u16)  // iu16
+            ))
+        )))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_wide")))]
+        $vis fn $name( $($args)* ) $( -> $ret )? $fallback_body
     };
     ( // div,
         for FLOAT $t:ty, $L:literal;
@@ -153,9 +198,10 @@ macro_rules! _dep_wide_compile {
         $vis fn $name( $($args)* ) $( -> $ret )? $body
     };
     ( // bitand, bitor, bitxor, not
-        for INT $t:ty, $L:literal;
+        for INT_OR_ELSE $t:ty, $L:literal;
         $(#[$attr:meta])*
         $vis:vis fn $name:ident ( $($args:tt)* ) $( -> $ret:ty )?  $body:block
+        else $fallback_body:block
     ) => {
         $(#[$attr])*
         #[$crate::compile(any(
@@ -183,12 +229,41 @@ macro_rules! _dep_wide_compile {
         ))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_wide")))]
         $vis fn $name( $($args)* ) $( -> $ret )? $body
+
+        // OR_ELSE:
+        $(#[$attr])*
+        #[$crate::compile(not(any( // negation of the above
+            all(same($L, 2), any(
+                same($t, i64), same($t, u64)  // iu32
+            )),
+            all(same($L, 4), any(
+                same($t, i32), same($t, u32), // iu32
+                same($t, i64), same($t, u64)  // iu64
+            )),
+            all(same($L, 8), any(
+                same($t, i16), same($t, u16), // iu16
+                same($t, i32), same($t, u32), // iu32
+                same($t, i64), same($t, u64)  // iu64
+            )),
+            all(same($L, 16), any(
+                same($t, i8), same($t, u8),   // iu8
+                same($t, i16), same($t, u16), // iu16
+                same($t, i32), same($t, u32)  // iu32
+            )),
+            all(same($L, 32), any(
+                same($t, i8), same($t, u8),   // iu8
+                same($t, i16), same($t, u16)  // iu16
+            ))
+        )))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_wide")))]
+        $vis fn $name( $($args)* ) $( -> $ret )? $fallback_body
     };
     ( // shl, shr
       // differs from INT in that this doesn't support 8-bit types
-        for SHIFT $t:ty, $L:literal;
+        for SHIFT_OR_ELSE $t:ty, $L:literal;
         $(#[$attr:meta])*
-        $vis:vis fn $name:ident ( $($args:tt)* ) $( -> $ret:ty )?  $body:block
+        $vis:vis fn $name:ident ( $($args:tt)* ) $( -> $ret:ty )? $body:block
+        else $fallback_body:block
     ) => {
         $(#[$attr])*
         #[$crate::compile(any(
@@ -214,6 +289,32 @@ macro_rules! _dep_wide_compile {
         ))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_wide")))]
         $vis fn $name( $($args)* ) $( -> $ret )? $body
+
+        // OR_ELSE:
+        $(#[$attr])*
+        #[$crate::compile(not(any( // negation of the above
+            all(same($L, 2), any(
+                same($t, i64), same($t, u64)  // iu32
+            )),
+            all(same($L, 4), any(
+                same($t, i32), same($t, u32), // iu32
+                same($t, i64), same($t, u64)  // iu64
+            )),
+            all(same($L, 8), any(
+                same($t, i16), same($t, u16), // iu16
+                same($t, i32), same($t, u32), // iu32
+                same($t, i64), same($t, u64)  // iu64
+            )),
+            all(same($L, 16), any(
+                same($t, i16), same($t, u16), // iu16
+                same($t, i32), same($t, u32)  // iu32
+            )),
+            all(same($L, 32), any(
+                same($t, i16), same($t, u16)  // iu16
+            ))
+        )))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_wide")))]
+        $vis fn $name( $($args)* ) $( -> $ret )? $fallback_body
     }
 }
 #[doc(hidden)]

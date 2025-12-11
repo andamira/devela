@@ -13,7 +13,7 @@ define_lane! {
     /// Example fixed-width pack of 4 × `i32` lanes.
     ///
     /// Generated with [`define_lane!`].
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, Debug)]
     #[allow(non_camel_case_types)]
     pub struct ExampleLane4_i32 pub lanes(4); unsigned(i32);
 }
@@ -251,12 +251,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0); let b = Simd::from_array(rhs.0);
                 self.0 = (a + b).to_array();
             }
-            $crate::_dep_wide_compile! { for ALL $t, $L;
+            $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
                 #[doc = $crate::_ADD_ASSIGN_SIMD!()]
                 pub fn add_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = (a + b).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] += rhs.0[i] }
                 }
             }
 
@@ -280,12 +282,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0); let b = Simd::from_array(rhs.0);
                 self.0 = (a - b).to_array();
             }
-            $crate::_dep_wide_compile! { for ALL $t, $L;
+            $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
                 #[doc = $crate::_SUB_ASSIGN_SIMD!()]
                 pub fn sub_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = (a + b).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] -= rhs.0[i] }
                 }
             }
 
@@ -309,12 +313,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0); let b = Simd::from_array(rhs.0);
                 self.0 = (a * b).to_array();
             }
-            $crate::_dep_wide_compile! { for ALL $t, $L;
+            $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
                 #[doc = $crate::_MUL_ASSIGN_SIMD!()]
                 pub fn mul_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = (a + b).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] *= rhs.0[i] }
                 }
             }
 
@@ -433,13 +439,11 @@ macro_rules! define_lane {
                 $crate::__lane_dispatch!(no_wide: self, min(rhs)); // BUG
             }
             /// Returns the minimum lane value.
-            pub const fn min_plain(&self, rhs: Self) -> Self {
-                let mut out = self.0;
-                $crate::punroll! { $L |i| if rhs.0[i] < out[i] { out[i] = rhs.0[i]; } }
-                Self(out)
+            pub const fn min_plain(&mut self, rhs: Self) {
+                $crate::punroll! { $L |i| if rhs.0[i] < self.0[i] { self.0[i] = rhs.0[i]; } }
             }
             // NOTE: min_simd has separate implementation for integer and floats
-            $crate::_dep_wide_compile! { for ALL $t, $L;
+            $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
                 #[doc = $crate::_MIN_SIMD!()]
                 // TEMP:WAIT: https://github.com/Lokathor/wide/issues/239
                 #[$crate::compile(not(any(
@@ -451,6 +455,8 @@ macro_rules! define_lane {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = a.min(b).into();
+                } else {
+                    $crate::punroll! { $L |i| if rhs.0[i] < self.0[i] { self.0[i] = rhs.0[i]; } }
                 }
             }
 
@@ -461,13 +467,11 @@ macro_rules! define_lane {
                 $crate::__lane_dispatch!(no_wide: self, max(rhs)); // BUG
             }
             /// Returns the maximum lane value.
-            pub const fn max_plain(&self, rhs: Self) -> Self {
-                let mut out = self.0;
-                $crate::punroll! { $L |i| if rhs.0[i] > out[i] { out[i] = rhs.0[i]; } }
-                Self(out)
+            pub const fn max_plain(&mut self, rhs: Self) {
+                $crate::punroll! { $L |i| if rhs.0[i] > self.0[i] { self.0[i] = rhs.0[i]; } }
             }
             // NOTE: max_simd has separate implementation for integer and floats
-            $crate::_dep_wide_compile! { for ALL $t, $L;
+            $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
                 // TEMP:WAIT: https://github.com/Lokathor/wide/issues/239
                 #[$crate::compile(not(any(
                     all(same($L, 2), same($t, u64)),
@@ -479,6 +483,8 @@ macro_rules! define_lane {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = a.max(b).into();
+                } else {
+                    $crate::punroll! { $L |i| if rhs.0[i] > self.0[i] { self.0[i] = rhs.0[i]; } }
                 }
             }
 
@@ -633,12 +639,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0); let b = Simd::from_array(rhs.0);
                 self.0 = (a & b).to_array();
             }
-            $crate::_dep_wide_compile! { for INT $t, $L;
+            $crate::_dep_wide_compile! { for INT_OR_ELSE $t, $L;
                 #[doc = $crate::_BITAND_ASSIGN_SIMD!()]
                 pub fn bitand_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = (a & b).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] &= rhs.0[i] }
                 }
             }
 
@@ -660,12 +668,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0); let b = Simd::from_array(rhs.0);
                 self.0 = (a | b).to_array();
             }
-            $crate::_dep_wide_compile! { for INT $t, $L;
+            $crate::_dep_wide_compile! { for INT_OR_ELSE $t, $L;
                 #[doc = $crate::_BITOR_ASSIGN_SIMD!()]
                 pub fn bitor_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = (a | b).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] |= rhs.0[i] }
                 }
             }
 
@@ -687,12 +697,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0); let b = Simd::from_array(rhs.0);
                 self.0 = (a ^ b).to_array();
             }
-            $crate::_dep_wide_compile! { for INT $t, $L;
+            $crate::_dep_wide_compile! { for INT_OR_ELSE $t, $L;
                 #[doc = $crate::_BITXOR_ASSIGN_SIMD!()]
                 pub fn bitxor_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = (a ^ b).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] ^= rhs.0[i] }
                 }
             }
 
@@ -716,12 +728,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0);
                 self.0 = (a << n).to_array();
             }
-            $crate::_dep_wide_compile! { for SHIFT $t, $L;
+            $crate::_dep_wide_compile! { for SHIFT_OR_ELSE $t, $L;
                 #[doc = $crate::_SHL_ASSIGN_SIMD!()]
                 pub fn shl_assign_wide(&mut self, n: $t) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0);
                     self.0 = (a << n).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] <<= n }
                 }
             }
 
@@ -746,12 +760,14 @@ macro_rules! define_lane {
                 let a = Simd::from_array(self.0);
                 self.0 = (a >> n).to_array();
             }
-            $crate::_dep_wide_compile! { for SHIFT $t, $L;
+            $crate::_dep_wide_compile! { for SHIFT_OR_ELSE $t, $L;
                 #[doc = $crate::_SHR_ASSIGN_SIMD!()]
                 pub fn shr_assign_wide(&mut self, n: $t) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0);
                     self.0 = (a >> n).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] >>= n }
                 }
             }
 
@@ -791,12 +807,14 @@ macro_rules! define_lane {
                 $crate::__lane_dispatch!(self, div_assign(rhs));
             }
             // NOTE: div_assign_wide only support floats
-            $crate::_dep_wide_compile! { for ALL $t, $L;
+            $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
                 #[doc = $crate::_DIV_ASSIGN_SIMD!()]
                 pub fn div_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
                     self.0 = (a / b).into();
+                } else {
+                    $crate::punroll! { $L |i| self.0[i] /= rhs.0[i] }
                 }
             }
 
