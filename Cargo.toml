@@ -748,7 +748,7 @@ version = "11.2" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
 default-features = false # 9 https://docs.rs/crate/raw-cpuid/latest/features
 
 [workspace.dependencies.safe_arch] # https://crates.io/crates/safe_arch (unsafe)
-version = "0.9" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
+version = "1.0" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
 [workspace.dependencies.serde] # https://crates.io/crates/serde (unsafe)
@@ -763,7 +763,7 @@ default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [workspace.dependencies.wide] # https://crates.io/crates/wide (unsafe)
-version = "0.8" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
+version = "1.0" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 # TEST: cargo check --target riscv64gc-unknown-linux-gnu -F dep_wide
 default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
