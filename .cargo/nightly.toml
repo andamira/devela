@@ -7,8 +7,8 @@
 #
 # $ cargo +nightly -Z unstable-options config get
 
-[profile.dev]
-codegen-backend = "cranelift"
+# [profile.dev]
+# codegen-backend = "cranelift"
 
 [resolver]
 # ==============================================================================
