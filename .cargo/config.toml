@@ -1,3 +1,5 @@
+# ./cargo/config.toml
+#
 # https://doc.rust-lang.org/cargo/reference/config.html
 #
 # NOTE: Cargo uses this configuration file for the entire build process, including dependencies.
@@ -31,7 +33,7 @@ include = ["nightly.toml"]
 
 codegen-backend = true #codegen-backend
 config-include = true  #config-include
-unstable-options = true
+# unstable-options = true
 # mtime-on-use = true
 
 

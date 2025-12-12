@@ -1,21 +1,39 @@
+# ./cargo/nightly.toml
+#
 # NOTE: this is a temporary fix for nightly-only.
 #
 # Because including files is an unstable feature,
 # this will only be included while using nightly.
+#
+# $ cargo +nightly -Z unstable-options config get
+
+[profile.dev]
+codegen-backend = "cranelift"
+
+[resolver]
+# ==============================================================================
+# https://doc.rust-lang.org/stable/cargo/guide/build-performance.html#resolve-features-for-the-whole-workspace
+# FIX: warning: ignoring `resolver.feature-unification` without `-Zfeature-unification`
+##feature-unification = "workspace" # MAYBE
 
 [build]
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/config.html#build
+# https://doc.rust-lang.org/stable/cargo/guide/build-performance.html#enable-the-experimental-parallel-frontend
 
 # In sync with ./config.toml & ../tools/cargo-native
 rustdocflags = [
 	"-Zunstable-options",
+	#
 	"--generate-link-to-definition",
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./config/rustdoc-header.html",
 	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
 rustflags = [
+	"-Zunstable-options",
+	"-Zthreads=6",
+	#
 	"--cfg", "nightly_doc",
 	# "--cfg", "nightly",    # enables all nightly flags
 	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
