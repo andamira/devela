@@ -140,7 +140,8 @@ re-export hidden workspace dependencies from `_dep`.
 
 ## code
 - rename `ExtAny` to `AnyExt`.
-- new trait `ConstInitCore`.
+- new trait: `ConstInitCore`.
+- new types: `CodeLocation`, `CodeSpan`.
   - implement for `NonZero*` and many other types.
 - move to [base]:
   - all `ConstInit*` impls.

@@ -13,7 +13,9 @@
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInitCore, <_impl_init!>
 mod guard; // ScopeGuard
-mod lut; // Lut
+mod lut; // Lut RETHINK
+mod site; // CodeLocation, CodeSpan
+
 mod reexports;
 
 pub mod error; // general errors definitions
@@ -31,6 +33,7 @@ util::structural_mods! { // _mods, _pub_mods, _workspace_internals
             guard::*,
             lut::*,
             reexports::*,
+            site::*,
         };
     }
     _pub_mods {
