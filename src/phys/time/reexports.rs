@@ -10,4 +10,7 @@ crate::mod_path!(std +pub _s "../../../libs/base_std/src/phys/time/reexports.rs"
 pub use devela_base_core::Timeout;
 
 #[cfg(feature = "std")]
-pub use devela_base_std::{SystemTimeError, TimeError};
+pub use devela_base_std::SystemTimeError;
+#[cfg(feature = "std")]
+/// Error returned from `SystemTime` methods `duration_since` and `elapsed`.
+pub use devela_base_std::TimeError;
