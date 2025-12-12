@@ -180,34 +180,29 @@ mod tests {
         assert_eq!(8, size_of_val(&result)); //
         assert_eq!(result, TimeSplit::new_hour_nano(1, 1, 1, 500, (), ()));
     }
-
     #[test]
     fn timecode_split_nanos_u64() {
         let result = Timecode::split_nanos_u64(1_002_003_004);
         assert_eq!(12, size_of_val(&result));
         assert_eq!(result, TimeSplit::new_hour_nano((), (), 1, 2, 3, 4));
     }
-
     #[test]
     fn timecode_split_nanos_u32() {
         let result = Timecode::split_nanos_u32(1_002_003);
         assert_eq!(8, size_of_val(&result));
         assert_eq!(result, TimeSplit::new_hour_nano((), (), 0, 1, 2, 3));
     }
-
     #[test]
     fn timecode_secs_f64() {
         let formatted = Timecode::secs_f64(3661.5);
         assert_eq!(formatted, "01:01:01.500");
     }
-
     #[test]
     #[cfg(feature = "alloc")]
     fn timecode_nanos_u64_alloc() {
         let formatted = Timecode::nanos_u64_alloc(1_002_003_004);
         assert_eq!(formatted, "1s 002ms 003µs 004ns");
     }
-
     #[test]
     fn timecode_nanos_u64() {
         let formatted = Timecode::nanos_u64(1_002_003_004);

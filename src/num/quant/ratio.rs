@@ -25,7 +25,7 @@ use crate::{NumConst, Rem};
 /// let aspect_ratio = Ratio::new(16u32, 9u32);
 /// let velocity = Ratio::new(100.0, 2.0); // Distance / Time
 /// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Ratio<N, D> {
     /// The numerator.
     pub n: N,

@@ -380,9 +380,16 @@ re-export hidden workspace dependencies from `_dep`.
 ### time
 - remove `TimeError` alias.
 - remove `time` feature gate for `NoTime`, `Timecode`, `TimeDelta`, `TimeSplit`.
+- rename `TimeGranularity` to `TimeScale`.
+  - add `Ratio` variant.
+- update `TimeSource`:
+  - rename `granularity` method to `time_source` and return `TimeSource`.
 - update `TimeDelta`:
   - make method const: `from_js`, `[div|mul]_f[32|64]`, `[try_]from_[millis|secs]_f[32|64]`.
   - remove methods: `const_from_js`, const_try_from_millis_f64.
+- update `TimeSplitMilliNanoNorm`
+  - add method `from_duration`.
+  - rename `from_duration` method to `from_duration_subsec`.
 - update `WeekDay`: make all methods const.
 - rename `UnixTimeI64` to `TimeUnixI64`, `UnixTimeU32` to `TimeUnixU32`.
   - make their `new` method const.

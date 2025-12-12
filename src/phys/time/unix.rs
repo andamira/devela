@@ -149,7 +149,7 @@ impl TimeUnixI64 {
     //     #[allow(clippy::unnecessary_cast)] // could be i32 in other platforms?
     //     // SAFETY: safe since we pass a null pointer and do not dereference anything.
     //     unsafe {
-    //         libc::time(core::ptr::null_mut()) as i64
+    //         Libc::time(Ptr::null_mut()) as i64
     //     }
     // }
 }

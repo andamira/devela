@@ -6,7 +6,7 @@
 // - TimeSource
 // - TimeSourceFake
 
-use crate::{Oneof, Ratio, TimeGranularity};
+use crate::{Oneof, Ratio, TimeScale, Timecode};
 
 #[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))]
 use crate::JsInstant;
@@ -15,13 +15,13 @@ use crate::{SystemInstant, SystemTime, UNIX_EPOCH};
 
 #[rustfmt::skip]
 #[doc = crate::_TAG_TIME!()]
-/// A source of timestamps with a known granularity and monotonicity.
+/// A source of timestamps with a known scale and monotonicity.
 ///
 /// Provides a consistent API for querying timestamps at various precisions,
 /// abstracting over different time sources.
 pub trait TimeSource<const MONOTONIC: bool> {
-    /// Returns the granularity of this time source.
-    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>>;
+    /// Returns the time scale of this time source.
+    fn time_scale() -> TimeScale;
 
     /// Returns the current timestamp in milliseconds.
     fn now_millis() -> u64;
@@ -71,9 +71,7 @@ pub trait TimeSource<const MONOTONIC: bool> {
 #[cfg(feature = "std")] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl TimeSource<false> for SystemTime {
-    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-        Oneof::_0(TimeGranularity::Nanos)
-    }
+    fn time_scale() -> TimeScale { TimeScale::Nanos }
     fn now_millis() -> u64 {
         SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_millis() as u64
     }
@@ -88,9 +86,7 @@ impl TimeSource<false> for SystemTime {
 #[cfg(feature = "std")] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl TimeSource<true> for SystemInstant {
-    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-        Oneof::_0(TimeGranularity::Nanos)
-    }
+    fn time_scale() -> TimeScale { TimeScale::Nanos }
     fn now_millis() -> u64 { SystemInstant::now().elapsed().as_millis() as u64 }
     //
     fn now_micros() -> u64 { SystemInstant::now().elapsed().as_micros() as u64 }
@@ -102,27 +98,12 @@ impl TimeSource<true> for SystemInstant {
 #[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))] #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "js", feature = "unsafe_ffi"))))]
 impl TimeSource<true> for JsInstant {
-    fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-        Oneof::_0(TimeGranularity::Millis)
-    }
+    fn time_scale() -> TimeScale { TimeScale::Millis }
     fn now_millis() -> u64 { JsInstant::now().as_millis_f64() as u64 }
-    fn epoch_millis() -> u64 { JsInstant::origin().as_millis_f64() as u64 }
     //
+    fn epoch_millis() -> u64 { JsInstant::origin().as_millis_f64() as u64 }
     fn now_millis_f64() -> f64 { JsInstant::now().as_millis_f64() }
 }
-
-// #[cfg(all(target_arch = "arm", feature = "dep_cortex_m"))]
-// impl TimeSource<true> for ::cortex_m::peripheral::DWT {
-//     fn granularity() -> Oneof<TimeGranularity, Ratio<u32, u32>> {
-//         Oneof::B(Ratio<1, 32_768>)
-//     }
-//     fn now_millis() -> u64 {
-//         unsafe { ::cortex_m::peripheral::DWT::cycle_count() as u64 / (SystemCoreClock / 1_000) }
-//     }
-//     fn now_micros() -> u64 {
-//         unsafe { ::cortex_m::peripheral::DWT::cycle_count() as u64 / (SystemCoreClock / 1_000_000) }
-//     }
-// }
 
 #[cfg(test)]
 #[allow(unused_imports)]
@@ -131,7 +112,7 @@ pub(crate) use tests::*;
 mod tests {
     #![allow(dead_code, unused_variables)]
 
-    use crate::{_TAG_FAKE, AtomicOrdering, AtomicU64, Oneof, Ratio, TimeGranularity, TimeSource};
+    use crate::{_TAG_FAKE, AtomicOrdering, AtomicU64, Oneof, Ratio, TimeScale, TimeSource};
 
     /// Global test time source for convenience.
     #[doc = _TAG_FAKE!()]
@@ -179,12 +160,13 @@ mod tests {
         }
     }
     impl TimeSource<true> for TimeSourceFake {
-        fn granularity() -> Oneof<2, TimeGranularity, Ratio<u32, u32>> {
-            Oneof::_0(TimeGranularity::Millis)
+        fn time_scale() -> TimeScale {
+            TimeScale::Millis
         }
         fn now_millis() -> u64 {
             TIME_SOURCE_FAKE.now.load(AtomicOrdering::SeqCst)
         }
+        //
         fn epoch_millis() -> u64 {
             1_700_000_000_000 // Default testing epoch
         }

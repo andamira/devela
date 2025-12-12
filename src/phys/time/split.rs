@@ -179,12 +179,25 @@ impl<MS, US, NS> TimeSplitMilliNano<MS, US, NS> {
         Self::new((), (), (), (), (), (), ms, us, ns)
     }
 }
+// FIXME: do not just get subsec_nanos… or have 2 methods RETHINK
 impl TimeSplitMilliNanoNorm {
+    // /// Converts a `Duration`'s into a compact time split representation.
+    // ///
+    // /// Extracts and segments the total number of nanoseconds of a `Duration`
+    // /// into milliseconds, microseconds, and nanoseconds.
+    // pub const fn from_duration(duration: Duration) -> Self {
+    //     let nanos = duration.nanos();
+    //     let ms = (nanos / 1_000_000) as u32; // or u64
+    //     let us = ((nanos % 1_000_000) / 1_000) as u16;
+    //     let ns = (nanos % 1_000) as u16;
+    //     Self::new_milli_nano(ms, us, ns)
+    // }
+
     /// Converts a `Duration`'s sub-second component into a compact time split representation.
     ///
     /// Extracts and segments the nanosecond portion of a `Duration`
     /// into milliseconds, microseconds, and nanoseconds.
-    pub const fn from_duration(duration: Duration) -> Self {
+    pub const fn from_duration_subsec(duration: Duration) -> Self {
         let nanos = duration.subsec_nanos();
         let ms = (nanos / 1_000_000) as u16;
         let us = ((nanos % 1_000_000) / 1_000) as u16;
