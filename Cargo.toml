@@ -795,13 +795,20 @@ devela_base_std  = { workspace = true, optional = true } # MAYBE RECONSIDER
 # https://doc.rust-lang.org/cargo/reference/profiles.html
 # https://doc.rust-lang.org/stable/rustc/codegen-options/
 # https://nnethercote.github.io/perf-book/build-configuration.html
+# https://doc.rust-lang.org/stable/cargo/guide/build-performance.html
 
-# [profile.dev]
+[profile.dev]
+debug = "line-tables-only"
 # codegen-backend = "cranelift"
 
-# [profile.dev.package."*"]
+[profile.dev.package."*"]
+debug = false
 # codegen-backend = "llvm"
 # opt-level = 3
+
+[profile.debugging]
+inherits = "dev"
+debug = true
 
 [profile.dev-lto]
 inherits = "dev"

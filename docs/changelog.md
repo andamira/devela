@@ -104,10 +104,12 @@ re-export hidden workspace dependencies from `_dep`.
   - add feature `__dbg`.
 
 ## manifest
+- add workspace hiearchy diagram.
+- add *binaries* and *metrics* sections.
 - add lint `missing_debug_implementations`.
 - make keys parts of the workspace: edition, version, authors, license, documentation.
-- add *binaries* and *metrics* sections.
-- add workspace hiearchy diagram.
+- simplify debugging info in `dev` profile.
+- add `debugging` profile.
 
 ## metrics
 - rename directory `/benches` to `/metrics`.
