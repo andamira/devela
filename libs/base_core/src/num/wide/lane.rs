@@ -368,12 +368,6 @@ macro_rules! define_lane {
             // NOTE: min_simd has separate implementation for integer and floats
             $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
                 #[doc = $crate::_MIN_SIMD!()]
-                // TEMP:WAIT: https://github.com/Lokathor/wide/issues/239
-                #[$crate::compile(not(any(
-                    all(same($L, 2), same($t, u64)),
-                    all(same($L, 2), same($t, i64)),
-                    all(same($L, 8), same($t, u64)),
-                )))]
                 pub fn min_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
@@ -395,12 +389,6 @@ macro_rules! define_lane {
             }
             // NOTE: max_simd has separate implementation for integer and floats
             $crate::_dep_wide_compile! { for ALL_OR_ELSE $t, $L;
-                // TEMP:WAIT: https://github.com/Lokathor/wide/issues/239
-                #[$crate::compile(not(any(
-                    all(same($L, 2), same($t, u64)),
-                    all(same($L, 2), same($t, i64)),
-                    all(same($L, 8), same($t, u64)),
-                )))]
                 #[doc = $crate::_MAX_SIMD!()]
                 pub fn max_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
