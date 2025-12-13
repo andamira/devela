@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_SYS_ARCH!()]
 //!
+//! CPU, ISA, instruction-level reality.
+//!
 //! # Links
 //! - <https://github.com/rust-lang/stdarch>
 //! - <https://doc.rust-lang.org/reference/inline-assembly.html>
@@ -22,6 +24,11 @@ mod wasm; // Wasm
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{helpers::*, namespace::*, reexports::*, wasm::*};
+        pub use super::{
+            helpers::*,
+            namespace::*,
+            reexports::*,
+            wasm::*,
+        };
     }
 }

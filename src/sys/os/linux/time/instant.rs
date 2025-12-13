@@ -3,7 +3,7 @@
 //! Defines [`LinuxInstant`], [`LinuxTime`].
 //
 
-use crate::{Linux, LinuxClock, TimeScale, TimeSource, TimeSourceCfg, LinuxTimespec};
+use crate::{Linux, LinuxClock, LinuxTimespec, TimeScale, TimeSource, TimeSourceCfg};
 
 /// A fast, monotonic Linux time source.
 ///
@@ -66,7 +66,8 @@ impl TimeSourceCfg for LinuxTime {
     type Config = LinuxClock;
 
     fn time_is_monotonic(clock: LinuxClock) -> bool {
-        matches!(clock,
+        matches!(
+            clock,
             LinuxClock::Monotonic
                 | LinuxClock::MonotonicRaw
                 | LinuxClock::Boottime
@@ -76,8 +77,12 @@ impl TimeSourceCfg for LinuxTime {
         )
     }
     #[inline(always)]
-    fn time_is_absolute(_: LinuxClock) -> bool { true }
-    fn time_scale(_: LinuxClock) -> TimeScale { TimeScale::Nanoseconds }
+    fn time_is_absolute(_: LinuxClock) -> bool {
+        true
+    }
+    fn time_scale(_: LinuxClock) -> TimeScale {
+        TimeScale::Nanoseconds
+    }
     fn time_now_millis(clock: LinuxClock) -> u64 {
         let ts = Linux::clock_gettime(clock).expect("clock_gettime failed");
         (ts.tv_sec as u64) * 1_000 + (ts.tv_nsec as u64) / 1_000_000

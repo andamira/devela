@@ -13,6 +13,8 @@ mod dep_safe_arch;
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Arch-related functionality.
 ///
+/// > If you are on this architecture, here is what the CPU itself can do.
+///
 /// # Methods
 /// - Architecture-specific instructions
 ///   - [Portable abstractions](#portable-abstractions-over-architecture-dependent-instructions)

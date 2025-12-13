@@ -10,14 +10,14 @@ use crate::TimeScale;
 #[rustfmt::skip]
 impl<T: TimeSource> TimeSourceCfg for T {
     type Config = ();
-    fn time_is_monotonic(_: ()) -> bool { T::time_is_monotonic() }
-    fn time_is_absolute(_: ()) -> bool { T::time_is_absolute() }
-    fn time_scale(_: ()) -> TimeScale { T::time_scale() }
-    fn time_now_millis(_: ()) -> u64 { T::time_now_millis() }
+    fn time_is_monotonic((): ()) -> bool { T::time_is_monotonic() }
+    fn time_is_absolute((): ()) -> bool { T::time_is_absolute() }
+    fn time_scale((): ()) -> TimeScale { T::time_scale() }
+    fn time_now_millis((): ()) -> u64 { T::time_now_millis() }
     //
-    fn time_now_micros(_: ()) -> u64 { T::time_now_micros() }
-    fn time_now_nanos(_: ()) -> u64 { T::time_now_nanos() }
-    fn time_now_millis_f64(_: ()) -> f64 { T::time_now_millis_f64() }
+    fn time_now_micros((): ()) -> u64 { T::time_now_micros() }
+    fn time_now_nanos((): ()) -> u64 { T::time_now_nanos() }
+    fn time_now_millis_f64((): ()) -> f64 { T::time_now_millis_f64() }
 }
 
 #[rustfmt::skip]

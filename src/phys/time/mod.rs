@@ -14,8 +14,9 @@ mod fmt; // Timecode
 mod no; // NoTime
 mod reexports; // std::time::*
 mod scale; // TimeScale
-mod source; // TimeSource
+mod source; // TimeSource, TimeSourceCfg, TimeFake, TimeFakeRef
 mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
+mod tick; // TimeTick
 
 #[cfg(feature = "time")] // RECONSIDER
 crate::items! {
@@ -39,6 +40,7 @@ crate::structural_mods! { // _mods
             scale::*,
             source::*,
             split::*,
+            tick::*,
         };
 
         #[cfg(feature = "time")]

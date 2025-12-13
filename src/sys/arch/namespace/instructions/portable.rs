@@ -19,7 +19,7 @@ use crate::{Arch, cfg_if};
     )))
 )]
 impl Arch {
-    /// A portable, best-effort cycle counter for performance measurement.
+    /// A portable, best-effort raw cycle counter for performance measurement.
     ///
     /// # Notes and Warnings
     /// - The behavior and availability is entirely architecture-dependent.
