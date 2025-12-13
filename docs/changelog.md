@@ -379,6 +379,7 @@ re-export hidden workspace dependencies from `_dep`.
 ---
 ## phys
 ### time
+- new types: `TimeFake`, `TimeFakeRef`.
 - remove `TimeError` alias.
 - remove `time` feature gate for `NoTime`, `Timecode`, `TimeDelta`, `TimeSplit`.
 - rename `TimeGranularity` to `TimeScale`.

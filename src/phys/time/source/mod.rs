@@ -49,18 +49,20 @@
 #![cfg_attr(not(all(feature = "js", feature = "unsafe_ffi")), doc = "[`JsInstant`]: #")]
 
 mod impls;
-mod traits;
-// mod tsc;
 
-#[cfg(test)]
-mod fake;
+mod traits; // TimeSource, TimeSourceCfg
+// mod tsc; // TimeSourceTsc
+
+#[cfg(target_has_atomic = "64")]
+mod fake; // TimeFake, TimeFakeRef
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::traits::{TimeSource, TimeSourceCfg};
-        // pub use super::tsc::TimeSourceTsc;
-
-        #[cfg(test)]
-        pub(crate) use super::fake::TimeSourceFake;
+        pub use super::{
+            traits::*,
+            // tsc::*,
+        };
+        #[cfg(target_has_atomic = "64")]
+        pub use super::fake::*;
     }
 }
