@@ -383,6 +383,8 @@ re-export hidden workspace dependencies from `_dep`.
 - remove `time` feature gate for `NoTime`, `Timecode`, `TimeDelta`, `TimeSplit`.
 - rename `TimeGranularity` to `TimeScale`.
   - add `Ratio` variant.
+  - add new variant aliases: `Mins`, `Secs`.
+  - add new methods: `convert[_simulated]`, `is_fixed`, `new_ratio`, `some_ratio`, `to_ratio[_simulated]`.
 - update `TimeSource`:
   - rename `granularity` method to `time_source` and return `TimeSource`.
   - change `MONOTONIC` from a const generic to the `time_is_monotonic` method.
