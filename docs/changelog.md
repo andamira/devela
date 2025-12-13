@@ -385,7 +385,10 @@ re-export hidden workspace dependencies from `_dep`.
   - add `Ratio` variant.
 - update `TimeSource`:
   - rename `granularity` method to `time_source` and return `TimeSource`.
-  - change `MONOTONIC` from a const generic to the `is_monotonic` method.
+  - change `MONOTONIC` from a const generic to the `time_is_monotonic` method.
+  - new method: `time_is_absolute`.
+  - rename methods: `now_*` to `time_now*`.
+  - remove methods: `epoch_*`.
   - fix impl for `SystemInstant`.
 - update `TimeDelta`:
   - make method const: `from_js`, `[div|mul]_f[32|64]`, `[try_]from_[millis|secs]_f[32|64]`.

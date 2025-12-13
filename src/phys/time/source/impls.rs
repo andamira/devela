@@ -15,21 +15,22 @@ mod impl_std {
     use crate::{TimeSource, TimeScale, UNIX_EPOCH, OnceLock, SystemInstant, SystemTime};
 
     impl TimeSource for SystemTime {
-        fn is_monotonic() -> bool { false }
+        fn time_is_monotonic() -> bool { false }
+        fn time_is_absolute() -> bool { true }
         fn time_scale() -> TimeScale { TimeScale::Nanos }
-        fn now_millis() -> u64 {
+        fn time_now_millis() -> u64 {
             SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_millis() as u64
         }
         //
-        fn now_micros() -> u64 {
+        fn time_now_micros() -> u64 {
             SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_micros() as u64
         }
-        fn now_nanos() -> u64 {
+        fn time_now_nanos() -> u64 {
             SystemTime::now().duration_since(UNIX_EPOCH).expect("backwards time").as_nanos() as u64
         }
     }
 
-    /// Process-local base instant used to derive a numeric timeline for `std::time::Instant`.
+    /// Process-local base instant used to derive a numeric timeline for `SystemInstant`.
     ///
     /// `SystemInstant` does not expose a global or absolute epoch;
     /// it only supports measuring durations between two instants.
@@ -43,18 +44,19 @@ mod impl_std {
     static SYSTEM_INSTANT_BASE: OnceLock<SystemInstant> = OnceLock::new();
 
     impl TimeSource for SystemInstant {
-        fn is_monotonic() -> bool { true }
+        fn time_is_monotonic() -> bool { true }
+        fn time_is_absolute() -> bool { false }
         fn time_scale() -> TimeScale { TimeScale::Nanos }
-        fn now_millis() -> u64 {
+        fn time_now_millis() -> u64 {
             let base = SYSTEM_INSTANT_BASE.get_or_init(SystemInstant::now);
             base.elapsed().as_millis() as u64
         }
         //
-        fn now_micros() -> u64 {
+        fn time_now_micros() -> u64 {
             let base = SYSTEM_INSTANT_BASE.get_or_init(SystemInstant::now);
             base.elapsed().as_micros() as u64
         }
-        fn now_nanos() -> u64 {
+        fn time_now_nanos() -> u64 {
             let base = SYSTEM_INSTANT_BASE.get_or_init(SystemInstant::now);
             base.elapsed().as_nanos() as u64
         }
@@ -66,11 +68,10 @@ mod impl_std {
 #[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "js", feature = "unsafe_ffi"))))]
 impl TimeSource for crate::JsInstant {
-    fn is_monotonic() -> bool { true }
+    fn time_is_monotonic() -> bool { true }
+    fn time_is_absolute() -> bool { false }
     fn time_scale() -> TimeScale { TimeScale::Millis }
-    fn now_millis() -> u64 { crate::JsInstant::now().as_millis_f64() as u64 }
+    fn time_now_millis() -> u64 { crate::JsInstant::now().as_millis_f64() as u64 }
     //
-    /// Returns the JS time origin, not UNIX time.
-    fn epoch_millis() -> u64 { crate::JsInstant::origin().as_millis_f64() as u64 }
-    fn now_millis_f64() -> f64 { crate::JsInstant::now().as_millis_f64() }
+    fn time_now_millis_f64() -> f64 { crate::JsInstant::now().as_millis_f64() }
 }

@@ -10,17 +10,14 @@ use crate::TimeScale;
 #[rustfmt::skip]
 impl<T: TimeSource> TimeSourceCfg for T {
     type Config = ();
-    fn is_monotonic(_: ()) -> bool { T::is_monotonic() }
+    fn time_is_monotonic(_: ()) -> bool { T::time_is_monotonic() }
+    fn time_is_absolute(_: ()) -> bool { T::time_is_absolute() }
     fn time_scale(_: ()) -> TimeScale { T::time_scale() }
-    fn now_millis(_: ()) -> u64 { T::now_millis() }
+    fn time_now_millis(_: ()) -> u64 { T::time_now_millis() }
     //
-    fn epoch_millis(_: ()) -> u64 { T::epoch_millis() }
-    fn now_micros(_: ()) -> u64 { T::now_micros() }
-    fn epoch_micros(_: ()) -> u64 { T::epoch_micros() }
-    fn now_nanos(_: ()) -> u64 { T::now_nanos() }
-    fn epoch_nanos(_: ()) -> u64 { T::epoch_nanos() }
-    fn now_millis_f64(_: ()) -> f64 { T::now_millis_f64() }
-    fn epoch_millis_f64(_: ()) -> f64 { T::epoch_millis_f64() }
+    fn time_now_micros(_: ()) -> u64 { T::time_now_micros() }
+    fn time_now_nanos(_: ()) -> u64 { T::time_now_nanos() }
+    fn time_now_millis_f64(_: ()) -> f64 { T::time_now_millis_f64() }
 }
 
 #[rustfmt::skip]
@@ -34,12 +31,8 @@ impl<T: TimeSource> TimeSourceCfg for T {
 /// - The timeline may be **absolute** (e.g. UNIX time),
 ///   **relative** (e.g. boot time, JS origin),
 ///   or **synthetic** (process-local).
-/// - For monotonic sources, successive calls to `now_*` will never go backwards.
+/// - For monotonic sources, successive calls to `time_now_*` will never go backwards.
 /// - For non-monotonic sources (e.g. wall clocks), values may jump.
-///
-/// ## Epoch
-/// Some sources expose a meaningful epoch via `epoch_*`. Others (notably [`SystemInstant`])
-/// use a synthetic, process-local origin and therefore return `0` as their epoch.
 ///
 /// ## Intended use
 /// This trait is designed for:
@@ -55,7 +48,13 @@ pub trait TimeSource {
     /// Returns whether this source is monotonic.
     ///
     /// A monotonic source never goes backwards on its timeline.
-    fn is_monotonic() -> bool;
+    fn time_is_monotonic() -> bool;
+
+    /// Returns whether this source provides an absolute civil timeline.
+    ///
+    /// If `true`, `time_now_*` returns a timestamp aligned to the Unix epoch.
+    /// If `false`, `time_now_*` returns a relative or synthetic timeline.
+    fn time_is_absolute() -> bool;
 
     /// Returns the time scale of this time source.
     fn time_scale() -> TimeScale;
@@ -64,37 +63,24 @@ pub trait TimeSource {
 
     /// Returns the current timestamp in milliseconds.
     ///
-    /// All other `now_*` methods must be consistent with this timeline.
-    fn now_millis() -> u64;
+    /// All other `time_now_*` methods must be consistent with this timeline.
+    ///
+    /// By default, sub-millisecond methods derive from this value
+    /// and assume a millisecond-based timeline.
+    fn time_now_millis() -> u64;
 
     /* # provided # */
     /* current time */
 
     /// Returns the current timestamp in microseconds.
-    fn now_micros() -> u64 { Self::now_millis() * 1_000 }
+    fn time_now_micros() -> u64 { Self::time_now_millis() * 1_000 }
     /// Returns the current timestamp in nanoseconds.
-    fn now_nanos() -> u64 { Self::now_millis() * 1_000_000 }
-
-    /* epoch / origin */
-
-    /// Returns the epoch offset in milliseconds.
-    ///
-    /// It is provided for inspection and logging only;
-    /// it must not be relied upon for ordering or delta computation.
-    ///
-    /// Returns `0` if this source does not expose a meaningful epoch.
-    fn epoch_millis() -> u64 { 0 }
-    /// Returns the epoch offset in microseconds.
-    fn epoch_micros() -> u64 { Self::epoch_millis() * 1_000 }
-    /// Returns the epoch offset in nanoseconds.
-    fn epoch_nanos() -> u64 { Self::epoch_millis() * 1_000_000 }
+    fn time_now_nanos() -> u64 { Self::time_now_millis() * 1_000_000 }
 
     /* float helpers */
 
     /// Returns the current timestamp as an `f64` value in milliseconds.
-    fn now_millis_f64() -> f64 { Self::now_millis() as f64 }
-    /// Returns the current timestamp as an `f64` value in milliseconds.
-    fn epoch_millis_f64() -> f64 { Self::epoch_millis() as f64 }
+    fn time_now_millis_f64() -> f64 { Self::time_now_millis() as f64 }
 }
 
 #[rustfmt::skip]
@@ -108,6 +94,8 @@ pub trait TimeSource {
 /// and monotonicity. Returned timestamps are suitable for computing
 /// deltas by subtraction *within the same configuration*.
 ///
+/// `Config` is expected to be a small, copyable selector, not a stateful handle.
+///
 /// This trait exists to support families of clocks that
 /// cannot be modeled as a single, fixed time source.
 pub trait TimeSourceCfg {
@@ -116,36 +104,33 @@ pub trait TimeSourceCfg {
 
     /* # required # */
 
-    /// Returns whether the timeline selected by `cfg` is monotonic.
+    /// Returns whether the source selected by `cfg` is monotonic.
     ///
-    /// A monotonic timeline never goes backwards.
-    fn is_monotonic(cfg: Self::Config) -> bool;
+    /// A monotonic source never goes backwards on its timeline.
+    fn time_is_monotonic(cfg: Self::Config) -> bool;
+
+    /// Returns whether the source selected by `cfg` provides an absolute civil timeline.
+    ///
+    /// If `true`, `time_now_*` returns a timestamp aligned to the Unix epoch.
+    /// If `false`, `time_now_*` returns a relative or synthetic timeline.
+    fn time_is_absolute(cfg: Self::Config) -> bool;
 
     /// Returns the time scale of the timeline selected by `cfg`.
     fn time_scale(cfg: Self::Config) -> TimeScale;
 
     /// Returns the current timestamp in milliseconds for the timeline selected by `cfg`.
-    fn now_millis(cfg: Self::Config) -> u64;
+    ///
+    /// By default, sub-millisecond methods derive from this value
+    /// and assume a millisecond-based timeline.
+    fn time_now_millis(cfg: Self::Config) -> u64;
 
     /* # provided # */
 
     /// Returns the current timestamp in microseconds.
-    fn now_micros(cfg: Self::Config) -> u64 { Self::now_millis(cfg) * 1_000 }
+    fn time_now_micros(cfg: Self::Config) -> u64 { Self::time_now_millis(cfg) * 1_000 }
     /// Returns the current timestamp in nanoseconds.
-    fn now_nanos(cfg: Self::Config) -> u64 { Self::now_millis(cfg) * 1_000_000 }
-
-    /// Returns the epoch offset in milliseconds for `cfg`.
-    ///
-    /// Returns `0` if the selected timeline does not expose a meaningful epoch.
-    #[allow(unused_variables)]
-    fn epoch_millis(cfg: Self::Config) -> u64 { 0 }
-    /// Returns the epoch offset in microseconds.
-    fn epoch_micros(cfg: Self::Config) -> u64 { Self::epoch_millis(cfg) * 1_000 }
-    /// Returns the epoch offset in nanoseconds.
-    fn epoch_nanos(cfg: Self::Config) -> u64 { Self::epoch_millis(cfg) * 1_000_000 }
+    fn time_now_nanos(cfg: Self::Config) -> u64 { Self::time_now_millis(cfg) * 1_000_000 }
 
     /// Returns the current timestamp as an `f64` value in milliseconds.
-    fn now_millis_f64(cfg: Self::Config) -> f64 { Self::now_millis(cfg) as f64 }
-    /// Returns the current timestamp as an `f64` value in milliseconds.
-    fn epoch_millis_f64(cfg: Self::Config) -> f64 { Self::epoch_millis(cfg) as f64 }
+    fn time_now_millis_f64(cfg: Self::Config) -> f64 { Self::time_now_millis(cfg) as f64 }
 }
