@@ -1,6 +1,9 @@
-// devela::sys::os::linux::types::termios
+// devela::sys::os::linux::term::termios
 //
-//! Defines [`LinuxTermios`]
+//! Terminal I/O configuration structure.
+//!
+//! Defines the [`LinuxTermios`] structure used to query and configure terminal
+//! attributes via ioctl operations.
 //
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]

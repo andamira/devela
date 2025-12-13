@@ -1,6 +1,9 @@
-// devela::sys::os::linux::types::timespec
+// devela::sys::os::linux::time::timespec
 //
+//! Time value representation.
 //!
+//! Defines the [`LinuxTimespec`] structure used to represent time values
+//! with second and nanosecond precision.
 //
 
 #![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
@@ -9,7 +12,6 @@ use crate::{
     Cast, ConstInit, Display, Duration, FmtResult, Formatter, Overflow, format_buf, unwrap,
 };
 
-#[cfg(feature = "time")]
 use crate::TimeDelta;
 
 /// Represents the [`timespec`] structure from libc.
@@ -59,7 +61,6 @@ impl LinuxTimespec {
     }
 
     /// Returns a new `LinuxTimespec` with the given `time_delta`.
-    #[cfg(feature = "time")]
     pub const fn try_with_time_delta(time_delta: TimeDelta) -> Result<Self, Overflow> {
         Ok(Self {
             tv_sec: unwrap![ok? Cast(time_delta.as_secs()).checked_cast_to_isize()],
@@ -67,7 +68,6 @@ impl LinuxTimespec {
         })
     }
     /// Returns a new `LinuxTimespec` with the given `time_delta`.
-    #[cfg(feature = "time")]
     pub const fn with_saturating_time_delta(time_delta: TimeDelta) -> Self {
         Self {
             tv_sec: time_delta.as_secs() as isize,
@@ -102,8 +102,6 @@ impl LinuxTimespec {
     }
 
     /// Converts to a `TimeDelta`.
-    #[cfg(feature = "time")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
     pub const fn try_to_time_delta(&self) -> Result<TimeDelta, Overflow> {
         Ok(TimeDelta::new(
             unwrap![ok? Cast(self.tv_sec).checked_cast_to_i64()],
@@ -112,8 +110,6 @@ impl LinuxTimespec {
     }
     #[must_use]
     /// Converts to a `TimeDelta`, saturating on overflow.
-    #[cfg(feature = "time")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
     pub const fn to_saturating_time_delta(&self) -> TimeDelta {
         TimeDelta::new(
             Cast(self.tv_sec).saturating_cast_to_i64(),
@@ -134,16 +130,12 @@ impl TryFrom<LinuxTimespec> for Duration {
         timespec.try_to_duration()
     }
 }
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl TryFrom<TimeDelta> for LinuxTimespec {
     type Error = Overflow;
     fn try_from(time_delta: TimeDelta) -> Result<Self, Self::Error> {
         Self::try_with_time_delta(time_delta)
     }
 }
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl TryFrom<LinuxTimespec> for TimeDelta {
     type Error = Overflow;
     fn try_from(timespec: LinuxTimespec) -> Result<Self, Self::Error> {

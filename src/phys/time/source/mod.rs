@@ -50,10 +50,17 @@
 
 mod impls;
 mod traits;
-pub use traits::{TimeSource, TimeSourceCfg};
+// mod tsc;
 
 #[cfg(test)]
-crate::items! {
-    mod fake;
-    pub use::fake::TimeSourceFake;
+mod fake;
+
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::traits::{TimeSource, TimeSourceCfg};
+        // pub use super::tsc::TimeSourceTsc;
+
+        #[cfg(test)]
+        pub(crate) use super::fake::TimeSourceFake;
+    }
 }

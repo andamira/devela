@@ -1,6 +1,10 @@
-// devela::sys::os::linux::consts::ioctl
+// devela::sys::os::linux::file::ioctl
 //
-//! Linux `ioctl` constants.
+//! Extended file-descriptor control operations.
+//!
+//! Provides ioctl request encoding, direction and size macros, and Linux-specific ioctl constants.
+//!
+//! Defines [`LINUX_IOCTL`].
 //
 // https://man7.org/linux/man-pages/man4/tty_ioctl.4.html
 

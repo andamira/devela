@@ -1,6 +1,9 @@
-// devela::sys::os::linux::consts::termios
+// devela::sys::os::linux::term::consts
 //
-//! linux [`termios`] flags
+//! Terminal mode flags.
+//!
+//! Defines termios input, output, control, and local mode flags used to
+//! configure terminal behavior.
 //!
 //! [`termios`]: https://man7.org/linux/man-pages/man3/termios.3.html
 //

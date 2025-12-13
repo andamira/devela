@@ -1,5 +1,7 @@
-// devela::sys::os::linux::consts::clock
+// devela::sys::os::linux::time::clock
 //
+//! Clock identifiers and clock selection.
+//!
 //! Defines [`LinuxClock`].
 //
 

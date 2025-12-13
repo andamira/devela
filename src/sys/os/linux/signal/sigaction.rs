@@ -1,7 +1,11 @@
-// devela::sys::os::linux::types::sigaction
+// devela::sys::os::linux::signal::sigaction
 //
-//! Defines [`LinuxSigaction`], [`LinuxSiginfo`], [`LinuxSigset`].
+//! Signal action configuration and delivery metadata.
 //!
+//! Defines the `sigaction` structure, signal handler configuration,
+//! signal masks, and associated metadata passed to handlers.
+//!
+//! Defines [`LinuxSigaction`], [`LinuxSiginfo`], [`LinuxSigset`].
 //! As well as the private items: `LinuxSigactionHandler`, `LinuxSigval`.
 //
 

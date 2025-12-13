@@ -1,6 +1,9 @@
-// devela::sys::os::linux::error
+// devela::sys::os::linux::error::error
 //
-//! Defines [`LinuxError`] and [`LinuxResult`].
+//! Typed Linux error model.
+//!
+//! Defines [`LinuxError`] and [`LinuxResult`], providing a structured representation
+//! of Linux-related failures and mappings to and from standard I/O error types.
 //
 // TOC
 // - type LinuxResult

@@ -1,6 +1,9 @@
-// devela::sys::os::linux::consts::errno
+// devela::sys::os::linux::error::consts
 //
-//! Defines [`LINUX_ERRNO`] and [`LINUX_EXIT`].
+//! Linux error and exit status constants.
+//!
+//! Defines [`LINUX_ERRNO`] values and [`LINUX_EXIT`] process exit status codes
+//! used by system calls and process termination.!
 //
 
 #![allow(non_camel_case_types)]
