@@ -474,7 +474,7 @@ re-export hidden workspace dependencies from `_dep`.
 - new `Libc` namespace.
 
 #### linux
-- new enum `LinuxClock`.
+- new types `LinuxClock`, `LinuxTime`, `LinuxInstant`.
 - new `Linux` methods: `clock_getres`, `clock_gettime`, `exit`.
 - new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
 - fix `Linux`-related warnings & avoid use of `transmute`.

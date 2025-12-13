@@ -23,7 +23,7 @@ mod file; // LinuxStat, LINUX_[F_CMD|FILENO|IOCTL|O_FLAGS|S_IFMT|SEEK]
 mod namespace; // Linux
 mod signal; // LinuxSigaction, LinuxSiginfo, LinuxSigset, LINUX_[SIGACTION|SIGNAL]
 mod term; // LinuxTermios, LINUX_TERMIOS
-mod time; // LinuxClock, LinuxTimespec
+mod time; // LinuxClock, LinuxInstant, LinuxTime, LinuxTimespec
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 crate::items! {
