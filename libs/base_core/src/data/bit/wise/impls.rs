@@ -40,7 +40,7 @@ macro_rules! impl_bits_wrapper {
             /* mask constructors */
 
             #[doc = _DOC_BIT_MASK_RANGE!()]
-            #[doc = include_str!("../benches/mask_range.md")]
+            #[doc = include_str!("../_benches/mask_range.md")]
             pub const fn mask_range(start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
                 // a mask with all bits set, from 0 to end:
@@ -50,7 +50,7 @@ macro_rules! impl_bits_wrapper {
                 Self(mask_end - mask_start)
             }
             #[doc = _DOC_BIT_MASK_RANGE_CHECKED!()]
-            #[doc = include_str!("../benches/mask_checked_range.md")]
+            #[doc = include_str!("../_benches/mask_checked_range.md")]
             pub const fn mask_checked_range(start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 if start >= <$t>::BITS {
@@ -72,7 +72,6 @@ macro_rules! impl_bits_wrapper {
             #[doc = _DOC_BIT_IS_SET_MASK!()]
             pub const fn is_set_mask(self, mask: $t) -> bool { (self.0 & mask) != 0 }
 
-            #[must_use]
             #[doc = _DOC_BIT_SET_MASK!()]
             pub const fn set_mask(self, mask: $t) -> Self { Self(self.0 | mask) }
 
@@ -80,7 +79,6 @@ macro_rules! impl_bits_wrapper {
             #[doc = _DOC_BIT_IS_UNSET_MASK!()]
             pub const fn is_unset_mask(self, mask: $t) -> bool { (self.0 & mask) == 0 }
 
-            #[must_use]
             #[doc = _DOC_BIT_UNSET_MASK!()]
             pub const fn unset_mask(self, mask: $t) -> Self { Self(self.0 & !mask) }
         }
@@ -347,7 +345,6 @@ macro_rules! impl_bits_wrapper {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 masked_bits.count_ones()
             }
-            #[must_use]
             #[doc = _DOC_BIT_COUNT_ONES_RANGE!()]
             pub const fn count_ones_checked_range(self, start: u32, end: u32)
                 -> Result<u32, MismatchedBounds> {
@@ -364,7 +361,6 @@ macro_rules! impl_bits_wrapper {
                 let masked_bits = self.0 & mask;
                 (!masked_bits & mask).count_ones()
             }
-            #[must_use]
             #[doc = _DOC_BIT_COUNT_ZEROS_CHECKED_RANGE!()]
             pub const fn count_zeros_checked_range(self, start: u32, end: u32)
                 -> Result<u32, MismatchedBounds> {

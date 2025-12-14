@@ -25,11 +25,11 @@ pub trait BitOps where Self: Sized {
 
     #[must_use]
     #[doc = _DOC_BIT_MASK_RANGE!()]
-    #[doc = include_str!("benches/mask_range.md")]
+    #[doc = include_str!("_benches/mask_range.md")]
     fn bit_mask_range(start: u32, end: u32) -> Self;
 
     #[doc = _DOC_BIT_MASK_RANGE_CHECKED!()]
-    #[doc = include_str!("benches/mask_checked_range.md")]
+    #[doc = include_str!("_benches/mask_checked_range.md")]
     fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self, MismatchedBounds>;
 
     #[must_use]
