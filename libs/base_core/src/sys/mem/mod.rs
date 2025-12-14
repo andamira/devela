@@ -12,6 +12,7 @@ mod namespace; // Mem
 mod pin;
 mod ptr;
 mod reexports;
+mod size; // size_of_expr!, BitSized, ByteSized,
 mod slice; // Slice
 
 pub mod cell;
@@ -28,6 +29,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
             pin::_all::*,
             ptr::_all::*,
             reexports::*,
+            size::_all::*,
             slice::_all::*,
         };
     }
@@ -37,6 +39,9 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
         };
     }
     _hidden {
-        pub use super::arena::_hidden::*;
+        pub use super::{
+            arena::_hidden::*,
+            size::_hidden::*,
+        };
     }
 }

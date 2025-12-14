@@ -1,9 +1,12 @@
-// devela::sys::mem::size::expr::test_coro
+// devela_vase_core::sys::mem::size::expr::test_coro
 
 #[cfg(not(miri))]
 #[test]
 fn api_coro() {
-    use crate::{Coroutine, String, vec_ as vec};
+    use crate::Coroutine;
+
+    #[allow(unused)]
+    struct NonCopy(u32);
 
     pub(super) trait Foo<'a, 'b> {}
     impl<'a> Foo<'a, 'static> for () {}
@@ -20,12 +23,12 @@ fn api_coro() {
     fn h() -> impl Coroutine<Return = u32> {
         #[coroutine]
         || {
-            let a = vec![0];
-            let _b = String::new();
+            let a = [const { NonCopy(0) }; 2];
+            let _b = NonCopy(1);
             yield a;
             0
         }
     }
     const H: usize = size_of_expr!(h());
-    assert_eq!(H, 32); // IMPROVE: gives 16 in miri i686
+    assert_eq!(H, 1);
 }

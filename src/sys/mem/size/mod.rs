@@ -3,23 +3,23 @@
 //! Memory size functionality.
 //
 
-mod byte; // ByteSized
-mod expr;
-
 #[cfg(feature = "bit")]
 mod bit; // BitSized
 
-crate::structural_mods! { // _mods, _hidden
+crate::structural_mods! { // _mods
     _mods {
-        #[doc(inline)]
-        pub use super::{byte::*, expr::size_of_expr};
-
         #[doc(inline)]
         #[cfg(feature = "bit")]
         pub use super::bit::*;
+
+        // re-exports
+        #[doc(inline)]
+        pub use devela_base_core::sys::mem::{
+            ByteSized, size_of_expr
+        };
     }
     _hidden {
-        #[doc(hidden)]
-        pub use super::expr::__size_of_expr;
+        // re-exports
+        pub use devela_base_core::sys::mem::__size_of_expr;
     }
 }

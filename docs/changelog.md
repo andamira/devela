@@ -449,6 +449,9 @@ re-export hidden workspace dependencies from `_dep`.
 #### cell
 - rename `ExtCellOption` to `CellOptionExt`.
 
+#### size
+- move `ByteSized` and `size_of_expr!` to [base].
+
 #### slice
 - new macro `slice!`.
 - new types: `SliceIter`, `SliceIterMut`.

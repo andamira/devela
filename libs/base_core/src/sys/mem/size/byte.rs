@@ -1,4 +1,4 @@
-// devela::sys::mem::size::byte
+// devela_base_core::sys::mem::size::byte
 //
 //! Functionality related to byte sizes.
 //
@@ -38,8 +38,7 @@ pub trait ByteSized: Sized {
     ///
     /// # Example
     /// ```
-    /// use devela::ByteSized;
-    ///
+    /// # use devela_base_core::ByteSized;
     /// assert_eq![().ptr_size_ratio(), [1, 0]];
     /// assert_eq![1_usize.ptr_size_ratio(), [1, 1]];
     /// assert_eq!["slice".ptr_size_ratio(), [1, 2]];
