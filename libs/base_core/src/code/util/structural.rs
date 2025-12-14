@@ -89,16 +89,12 @@ macro_rules! _structural_mods {
         $( $(_pub_mods$($has_pub_mods:lifetime)?)? { $($block_pub_mods:tt)* } )?
         //
         // Items inside should be pub(crate).
-        // They are re-exported from the root of the crate.
+        // They are re-exported from the root of the current crate.
         $( _crate_internals { $($block_crate_internals:tt)* } )?
         //
         // Items inside should be pub & doc(hidden).
-        // They are publicly re-exported from the root of the crate except for the top crate.
+        // They are publicly re-exported from the root of each crate except for the top crate.
         $( _workspace_internals { $($block_workspace_internals:tt)* } )?
-        //
-        // Items inside should be pub.
-        // They bubble up side-stepping certain feature-gates.
-        $( _always { $($block_always:tt)* } )?
         //
         // Items inside should be pub & doc(hidden).
         // They are publicly reexported from the root of the crate.
@@ -144,14 +140,6 @@ macro_rules! _structural_mods {
                 pub use super::_pub_mods::*;
             )?)?
         }
-        $(
-            #[allow(unused_imports)]
-            #[doc(hidden, no_inline)]
-            pub use _always::*;
-            pub(crate) mod _always { #![allow(unused_imports)]
-                $($block_always)*
-            }
-        )?
         $(
             #[allow(unused_imports)]
             pub use _hidden::*;
