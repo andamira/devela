@@ -10,13 +10,18 @@
 //   - TimeError
 //   - TimeResult
 
-use crate::{Duration, StdSystemTimeError, define_error};
-// use ::std::time::SystemTimeError as StdSystemTimeError;
+use crate::{_TAG_ERROR, _TAG_TIME, _reexport, Duration, define_error};
+
+// NOTE: replicated below
+_reexport! { rust: std::time,
+    tag: _TAG_TIME!() _TAG_ERROR!(),
+    doc: "Error returned from the `duration_since` and `elapsed` methods on [`SystemTime`].",
+    @SystemTimeError as StdSystemTimeError
+}
 
 /* individual errors */
 
 define_error! { individual:
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     pub struct SystemTimeError(Duration);
     +tag: crate::_TAG_TIME!(),
     DOC_SYSTEM_TIME_ERROR =
@@ -26,7 +31,6 @@ This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTim
 }
 
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))] // RETHINK these
 impl From<StdSystemTimeError> for SystemTimeError {
     fn from(from: StdSystemTimeError) -> Self { SystemTimeError(from.duration()) }
 }
@@ -40,6 +44,7 @@ impl From<StdSystemTimeError> for SystemTimeError {
 //     fn from(_from: MpscRecvTimeoutError) -> Self { Timeout }
 // }
 
+// TODO: RETHINK
 pub use full_composite::*;
 mod full_composite {
     use super::*;

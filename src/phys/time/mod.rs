@@ -7,14 +7,14 @@
 // safety
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
+pub mod source; // TimeSource, TimeSourceCfg, TimeFake, TimeFakeRef
+
 mod delta; // TimeDelta
 // mod drop; // TimeDrop
 mod fmt; // Timecode
 // mod freq; // TimeFreq
 mod no; // NoTime
-mod reexports; // std::time::*
 mod scale; // TimeScale
-mod source; // TimeSource, TimeSourceCfg, TimeFake, TimeFakeRef
 mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
 mod tick; // TimeTick
 
@@ -26,9 +26,8 @@ crate::items! {
 
 // #[cfg(feature = "_destaque_u16")]
 // mod looper;
-// mod instant;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
             delta::*,
@@ -36,9 +35,7 @@ crate::structural_mods! { // _mods
             fmt::*,
             // freq::*;
             no::*,
-            reexports::*,
             scale::*,
-            source::*,
             split::*,
             tick::*,
         };
@@ -49,10 +46,23 @@ crate::structural_mods! { // _mods
             calendar::*,
             unix::*,
         };
-        // WIPZONE
+
         // #[cfg(feature = "_destaque_u16")]
         // #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u16")))]
         // pub use super::looper::*;
-        // pub use super::instant::*;
+
+        // re-exports
+        pub use devela_base_core::phys::time::{
+            Duration, DurationErrorTryFromFloatSecs, Timeout,
+        };
+        #[cfg(feature = "std")]
+        pub use devela_base_std::phys::time::{
+            StdSystemTimeError, SystemTimeError, TimeError,
+        };
+    }
+    _pub_mods {
+        pub use super::{
+            source::*,
+        };
     }
 }

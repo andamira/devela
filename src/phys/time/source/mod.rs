@@ -1,6 +1,6 @@
 // devela::phys::time::source
 //
-//! # Time sources
+//! Time sources.
 //!
 //! This module defines **numeric time sources** used for profiling,
 //! instrumentation, and elapsed-time measurement.
@@ -64,5 +64,11 @@ crate::structural_mods! { // _mods
         };
         #[cfg(target_has_atomic = "64")]
         pub use super::fake::*;
+
+        // re-exports
+        #[cfg(feature = "std")]
+        pub use devela_base_std::phys::time::source::{
+            SystemInstant, SystemTime, UNIX_EPOCH,
+        };
     }
 }

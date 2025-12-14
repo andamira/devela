@@ -379,6 +379,7 @@ re-export hidden workspace dependencies from `_dep`.
 ---
 ## phys
 ### time
+- new public module: `phys::time::source`.
 - new types: `TimeFake`, `TimeFakeRef`.
 - remove `TimeError` alias.
 - remove `time` feature gate for `NoTime`, `Timecode`, `TimeDelta`, `TimeSplit`.
