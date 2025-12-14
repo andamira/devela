@@ -3,12 +3,10 @@
 //! Defines [`JsInstant`] & [`JsTimeout`].
 //
 
-#[cfg(feature = "time")]
-use crate::TimeDelta;
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 use crate::{_js_doc, WebWindow};
-use crate::{Display, impl_trait};
+use crate::{Display, TimeDelta, impl_trait};
 #[allow(unused_imports)]
 use crate::{Web, js_number, js_uint32};
 
@@ -36,8 +34,6 @@ impl JsInstant {
     pub const fn since(self, earlier: Self) -> Self { Self::from_millis_f64(self.ms - earlier.ms) }
 
     /// Returns the duration between this and an earlier instant as a `TimeDelta`.
-    #[cfg(feature = "time")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
     pub const fn delta_since(self, earlier: Self) -> TimeDelta { TimeDelta::from_js(self.since(earlier)) }
 }
 
@@ -57,8 +53,6 @@ impl JsInstant {
     /// Returns the elapsed time since this instant.
     pub fn elapsed(self) -> Self { Self::from_millis_f64(Web::performance_now().ms - self.ms) }
     /// Returns the elapsed time since this instant as a `TimeDelta`.
-    #[cfg(feature = "time")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
     pub fn delta_elapsed(self) -> TimeDelta { TimeDelta::from_js(self.elapsed()) }
 }
 

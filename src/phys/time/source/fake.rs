@@ -7,11 +7,15 @@
 
 use crate::{_TAG_FAKE, AtomicOrdering, AtomicU64, TimeScale, TimeSourceCfg};
 
+#[doc = crate::_TAG_TIME!()]
 #[doc = _TAG_FAKE!()]
 /// A test-friendly time source that allows manual control.
 ///
 /// `TimeFake` provides a controlled, adjustable timestamp source for tests.
 /// This enables predictable behavior when testing time-dependent systems.
+///
+/// Although TimeFake is commonly advanced monotonically, it allows arbitrary
+/// time jumps and therefore does not provide a monotonic timeline guarantee.
 ///
 /// This form is ideal for:
 /// - tests that need explicit control
@@ -96,6 +100,8 @@ impl TimeFake {
     }
 }
 
+#[doc = crate::_TAG_TIME!()]
+#[doc = _TAG_FAKE!()]
 /// A borrowed configuration handle selecting a specific `TimeFake` timeline.
 ///
 /// This type does not own time state; it exists solely to satisfy
@@ -152,7 +158,7 @@ impl<'a> TimeFakeRef<'a> {
 #[rustfmt::skip]
 impl<'a> TimeSourceCfg for TimeFakeRef<'a> {
     type Config = Self;
-    fn time_is_monotonic(_: Self::Config) -> bool { true }
+    fn time_is_monotonic(_: Self::Config) -> bool { false }
     fn time_is_absolute(_: Self::Config) -> bool { false }
     fn time_scale(cfg: Self::Config) -> TimeScale { cfg.src.scale }
     fn time_now_millis(cfg: Self) -> u64 {
