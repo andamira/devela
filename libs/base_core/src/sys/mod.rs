@@ -28,6 +28,7 @@ pub mod env;
 pub mod log;
 pub mod mem;
 pub mod net;
+pub mod os;
 
 crate::structural_mods! { // _pub_mods, _hidden
     _pub_mods {
@@ -37,6 +38,7 @@ crate::structural_mods! { // _pub_mods, _hidden
             log::_all::*,
             mem::_all::*,
             net::_all::*,
+            os::_all::*,
         };
     }
     _hidden {

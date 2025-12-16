@@ -10,6 +10,7 @@ pub mod env;
 pub mod fs;
 pub mod mem;
 pub mod net;
+pub mod os;
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {
@@ -19,6 +20,7 @@ crate::structural_mods! { // _pub_mods
             fs::_all::*,
             mem::_all::*,
             net::_all::*,
+            os::_all::*,
         };
     }
 }

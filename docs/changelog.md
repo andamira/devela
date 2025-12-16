@@ -477,6 +477,9 @@ re-export hidden workspace dependencies from `_dep`.
 - repurpose module to include operating supervisors.
 - new `Libc` namespace.
 
+####
+- new `sys::os::fd` module.
+
 #### linux
 - new types `LinuxClock`, `LinuxTime`, `LinuxInstant`.
 - new `Linux` methods: `clock_getres`, `clock_gettime`, `exit`.
