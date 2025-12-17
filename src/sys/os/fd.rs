@@ -1,6 +1,6 @@
 // devela::sys::os::fd
 //
-//! Unix-like file descriptors.
+#![doc = crate::_DOC_SYS_OS_FD!()]
 //
 
 crate::structural_mods! { //_mods
@@ -10,8 +10,6 @@ crate::structural_mods! { //_mods
             FdRaw,
         };
         #[cfg(feature = "std")]
-        pub use devela_base_std::sys::os::fd::{
-            AsFd, AsFdRaw, FromFdRaw, IntoFdRaw,
-        };
+        pub use devela_base_std::sys::os::fd::*;
     }
 }

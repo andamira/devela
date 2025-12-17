@@ -104,6 +104,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_MEM_PTR    = "Manually manage memory through raw pointers.";
     _DOC_SYS_NET        = "Networking functionality.";
     _DOC_SYS_OS         = "Operating systems and supervisors.";
+    _DOC_SYS_OS_FD      = "Unix-like file descriptors.";
 
     _DOC_TEXT       = "Text types and operations, text processing.";
     _DOC_TEXT_ASCII = "ASCII strings and characters.";

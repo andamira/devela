@@ -1,17 +1,16 @@
 // devela_base_std::sys::os
 //
-//! Unix-like file descriptors.
+#![doc = crate::_DOC_SYS_OS!()]
+#![doc = crate::_doc!(modules: crate::sys; os: fd)]
+#![doc = crate::_doc!(newline)]
+//!
+#![doc = crate::_doc!(extends: os)]
 //
 
-crate::structural_mods! { //_mods
-    _mods {
-        // re-exports
-        pub use ::std::os::fd::{
-            BorrowedFd as FdBorrowed, OwnedFd as FdOwned,
-            AsFd,
-            AsRawFd as AsFdRaw,
-            FromRawFd as FromFdRaw,
-            IntoRawFd as IntFdRaw,
-        };
+pub mod fd;
+
+crate::structural_mods! { // _pub_mods
+    _pub_mods {
+        pub use super::fd::*;
     }
 }

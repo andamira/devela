@@ -1,6 +1,6 @@
 // devela_base_core::sys::os::fd
 //
-//! Unix-like file descriptors.
+#![doc = crate::_DOC_SYS_OS_FD!()]
 //
 
 use crate::c_int;

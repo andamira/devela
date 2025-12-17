@@ -10,6 +10,11 @@
 //! host environments such as browser runtimes.
 #![doc = crate::_doc!(extends: os)]
 //
+// OSes: (https://doc.rust-lang.org/beta/rustc/platform-support.html)
+// - https://motor-os.org/ | https://github.com/moturus/motor-os
+// - https://hermit-os.org/ | https://github.com/hermit-os/hermit-rs
+// - https://source.android.com/docs/security/features/trusty
+// - https://wasi.dev/ | https://github.com/WebAssembly/WASI
 
 mod print; // os_[e]print[ln]!
 
