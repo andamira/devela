@@ -76,6 +76,8 @@ See also
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
+- 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
+        = `nightly_doc` flag
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
@@ -83,6 +85,7 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
+- 1.??: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
@@ -121,8 +124,6 @@ See also
 - 1.??: ` `[core_float_math](https://github.com/rust-lang/rust/issues/137578)
 - 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
         = `nightly_coro` flag
-- 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/issues/43781)
-        = `nightly_doc` flag
 - 1.??: `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
         = `nightly_doc` flag
 - 1.??: `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)

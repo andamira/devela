@@ -103,6 +103,7 @@
         if_let_guard,
         impl_trait_in_assoc_type,
         isqrt,
+        lazy_get,
         macro_metavar_expr,
         macro_metavar_expr_concat,
         more_qualified_paths,
@@ -124,6 +125,7 @@
 // documentation
 //
 // #![cfg_attr(nightly_doc, doc(auto_cfg = false))]
+// NOTE: that doc attribute hiding only works in nightly
 #![cfg_attr(nightly_doc, doc(auto_cfg(hide( // do not document:
     // development features
     feature = "__dbg", feature = "__std", feature = "__publish",
