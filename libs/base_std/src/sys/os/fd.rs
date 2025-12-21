@@ -14,6 +14,7 @@ crate::structural_mods! { //_mods
             target_os = "motor",
             doc
         ))]
+        #[cfg(not(miri))]
         pub use ::std::os::fd::{
             BorrowedFd as FdBorrowed, OwnedFd as FdOwned,
             AsFd,
