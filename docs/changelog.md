@@ -242,7 +242,7 @@ re-export hidden workspace dependencies from `_dep`.
 ### list
 - move to [base]:
   - traits: `ArrayExt`.
-  - types: `ArrayFmt`, `ConstList`.
+  - types: `ArrayFmt`, `BufLine`, `ConstList`.
 - rename:
   - `ExtArray` to `ArrayExt`.
   - `ExtVec` to `VecExt`.

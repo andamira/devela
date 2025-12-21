@@ -4,6 +4,7 @@
 //
 
 mod array;
+mod buf; // BufLine
 mod link;
 mod of; // Oneof
 // mod queue;
@@ -12,6 +13,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             array::_all::*,
+            buf::_all::*,
             link::_all::*,
             of::_all::*,
         };
