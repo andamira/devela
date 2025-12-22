@@ -92,6 +92,19 @@ macro_rules! impl_maybe {
             /// Whether this type supports memory-niche optimization.
             pub const IS_NICHE: bool = $is_niche;
 
+            /// Whether every primitive value `v` such that `MIN ≤ v ≤ MAX` is representable.
+            pub const IS_CONTIGUOUS: bool = {
+                // primitives, NonNiche, NonZero
+                #[crate::compile(none($(<const $V: $v>)?))]
+                const fn _is_contiguous $(<const $V: $v>)? () -> bool { true }
+                // NonValue
+                #[crate::compile(some($(<const $V: $v>)?))]
+                const fn _is_contiguous $(<const $V: $v>)? () -> bool {
+                    V == <$prim>::MIN || V == <$prim>::MAX
+                }
+                _is_contiguous$(::<$V>)?()
+            };
+
             /// The minimum possible value.
             pub const MIN: Self = Self(<$T>::MIN);
             /// The maximum possible value.
@@ -229,6 +242,11 @@ macro_rules! impl_maybe {
             #[must_use] #[inline(always)]
             pub const fn is_niche(self) -> bool { Self::IS_NICHE }
 
+            /// Returns `true` iff every primitive value `v`
+            /// such that `MIN ≤ v ≤ MAX` is representable.
+            #[must_use] #[inline(always)]
+            pub const fn is_contiguous(self) -> bool { Self::IS_CONTIGUOUS }
+
             /// Returns `true` if this type can represent zero.
             #[must_use] #[inline(always)]
             pub const fn has_zero(self) -> bool { Self::ZERO.is_some() }
@@ -357,18 +375,23 @@ mod tests {
         let nv1 = MaybeNiche(NonValueU8::<1>::new(3).unwrap());
 
         // u8
+        assert_eq![u.is_contiguous(), true];
         assert_eq![u.is_niche(), false];
         assert_eq![u.has_zero(), true];
         // NonNiche
+        assert_eq![nn.is_contiguous(), true];
         assert_eq![nn.is_niche(), false];
         assert_eq![nn.has_zero(), true];
         // NonZero
+        assert_eq![n0.is_contiguous(), true];
         assert_eq![n0.is_niche(), true];
         assert_eq![n0.has_zero(), false];
         // NonValue::<0>
+        assert_eq![nv0.is_contiguous(), true];
         assert_eq![nv0.is_niche(), true];
         assert_eq![nv0.has_zero(), false];
         // NonValue::<1>
+        assert_eq![nv1.is_contiguous(), false];
         assert_eq![nv1.is_niche(), true];
         assert_eq![nv1.has_zero(), true];
     }
