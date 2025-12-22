@@ -1,6 +1,22 @@
 // devela_base_core::num::niche::absence
 //
-//! Defines [`MaybeNiche`] and [`NonNiche`].
+//! Absence of niche constraints and commitments.
+//!
+//! This module defines building blocks for working *around* niche-optimized
+//! numeric representations, either by explicitly opting out of layout
+//! optimization or by abstracting over whether such optimization is used.
+//!
+//! - [`MaybeNiche`] represents the **absence of representation commitment**:
+//!   it abstracts over primitive integers, niche-optimized types, and their
+//!   non-optimized counterparts, allowing generic code to remain independent
+//!   of the chosen representation.
+//!
+//! - [`NonNiche`] represents the **absence of niche constraints**: it mirrors
+//!   the API of niche-constrained numeric types while storing values unchanged.
+//!
+//! These types are complementary: one selects a concrete, non-optimized
+//! representation, while the other erases the distinction between optimized
+//! and non-optimized forms.
 //
 // TOC
 // - struct MaybeNiche
@@ -17,21 +33,26 @@ use crate::{
 #[doc = crate::_TAG_NICHE!()]
 /// A zero-cost wrapper that abstracts over both niche and non-niche integer types.
 ///
-/// `MaybeNiche<T>` exposes a uniform API for plain integers, `NonNiche*`,
-/// `NonZero*`, and `NonValue*` variants. It adds no rules of its own and
-/// relies entirely on the invariants of `T`.
+/// `MaybeNiche<T>` represents the absence of a commitment to either a niche-optimized
+/// or non-optimized numeric representation.
+///
+/// It exposes a uniform API for plain integers, `NonNiche`, `NonZero*`, and `NonValue*` variants.
+/// It adds no rules of its own and relies entirely on the invariants of `T`.
 ///
 /// This is useful when you want code that can switch between optimized and
 /// non-optimized representations without changing any surrounding logic.
 ///
 /// Practical note:
 ///
-/// `MaybeNiche<T>` is an adapter for generic implementations. It lets macros and
-/// monomorphized structures accept any integer-like representation (primitive,
-/// non-niche, or niche-optimized) while remaining fully niche-agnostic.
+/// `MaybeNiche<T>` serves as an adapter for generic implementations.
+/// It lets macros and monomorphized structures accept any integer-like
+/// representation while remaining fully niche-agnostic.
 ///
 /// Used in macros like `define_handle!` to build generic, niche-agnostic
 /// structures without committing to a specific integer representation.
+///
+/// See also [`NonNiche`], which provides a concrete non-optimized representation
+/// with the same public API as niche-constrained types.
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MaybeNiche<T: Copy>(pub T);
@@ -42,19 +63,19 @@ macro_rules! impl_maybe {
         impl_maybe!(u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
     };
     ($($T:ty),+) => {
-        // % $niche,$zero; $prim, $T $(,<const V: $V>) $(,*$get)? $(,^$new)? $(,@$non0)?
-        // -----------------------------------------------------------------------------
-        $( impl_maybe![% false,true; $T, $T]; )+
-        $( impl_maybe![% false,true; $T, NonNiche<$T>, *get, ^new]; )+
-        $( impl_maybe![% true,false; $T, NonZero<$T>, *get, ^new, @non0]; )+
+        // % $is_niche, $prim, $T
+        //   $(,<const V: $V>) $(,*$get)? $(,^$new)? $(,@$non0)?
+        // ------------------------------------------------------
+        $( impl_maybe![% false, $T, $T]; )+
+        $( impl_maybe![% false, $T, NonNiche<$T>, *get, ^new]; )+
+        $( impl_maybe![% true,  $T, NonZero<$T>, *get, ^new, @non0]; )+
         $crate::paste!{ $(
-            impl_maybe![% true,V!=0; $T, [<NonValue $T:camel>] <V>, <const V: $T>,
+            impl_maybe![% true, $T, [<NonValue $T:camel>] <V>, <const V: $T>,
             *get, ^new];
         )+ }
     };
     (%
-     $niche:literal, // IS_NICHE
-     $zero:expr;     // HAS_ZERO
+     $is_niche:literal, // IS_NICHE
      $prim:ty,
      $T:ty $(, <const $V:ident : $v:ty>)?
      $(, *$get:ident)?  // for: as_prim
@@ -66,11 +87,18 @@ macro_rules! impl_maybe {
         }
 
         impl $(<const $V: $v>)? MaybeNiche<$T> {
-            /// Whether this type supports memory-niche optimization.
-            pub const IS_NICHE: bool = $niche;
+            /* constants */
 
-            /// Whether this type can represent a 0 value.
-            pub const HAS_ZERO: bool = $zero;
+            /// Whether this type supports memory-niche optimization.
+            pub const IS_NICHE: bool = $is_niche;
+
+            /// The minimum possible value.
+            pub const MIN: Self = Self(<$T>::MIN);
+            /// The maximum possible value.
+            pub const MAX: Self = Self(<$T>::MAX);
+
+            /// The zero value, if representable by this type.
+            pub const ZERO: Option<Self> = Self::try_from_prim(0);
 
             /* constructors */
 
@@ -201,9 +229,9 @@ macro_rules! impl_maybe {
             #[must_use] #[inline(always)]
             pub const fn is_niche(self) -> bool { Self::IS_NICHE }
 
-            /// Whether this type can represent a 0 value.
+            /// Returns `true` if this type can represent zero.
             #[must_use] #[inline(always)]
-            pub const fn has_zero(self) -> bool { Self::HAS_ZERO }
+            pub const fn has_zero(self) -> bool { Self::ZERO.is_some() }
 
             /* accessors */
 
@@ -244,8 +272,8 @@ impl_maybe![];
 #[doc = crate::_TAG_NICHE!()]
 /// A zero-cost wrapper that mirrors the shape of a niche type but stores `T` unchanged.
 ///
-/// This provides API symmetry with niche-optimized variants without applying
-/// any niche-based layout optimization.
+/// `NonNiche` represents the absence of niche constraints while preserving
+/// API symmetry with niche-optimized numeric types.
 ///
 /// Practical note:
 ///
@@ -255,6 +283,9 @@ impl_maybe![];
 ///
 /// Used in types like `charu` to provide a non-optimized parallel to
 /// their niche-enabled counterparts.
+///
+/// See also [`MaybeNiche`], which abstracts over primitive, niche-optimized,
+/// and non-optimized integer representations.
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct NonNiche<T: Copy>(pub T);
@@ -315,11 +346,12 @@ impl_non![];
 
 #[cfg(test)]
 mod tests {
-    use super::{MaybeNiche, NonValueU8, NonZero};
+    use super::{MaybeNiche, NonNiche, NonValueU8, NonZero};
 
     #[test]
     fn maybe_niche() {
         let u = MaybeNiche(3_u8);
+        let nn = MaybeNiche(NonNiche::<u8>::new(3).unwrap());
         let n0 = MaybeNiche(NonZero::<u8>::new(3).unwrap());
         let nv0 = MaybeNiche(NonValueU8::<0>::new(3).unwrap());
         let nv1 = MaybeNiche(NonValueU8::<1>::new(3).unwrap());
@@ -327,6 +359,9 @@ mod tests {
         // u8
         assert_eq![u.is_niche(), false];
         assert_eq![u.has_zero(), true];
+        // NonNiche
+        assert_eq![nn.is_niche(), false];
+        assert_eq![nn.has_zero(), true];
         // NonZero
         assert_eq![n0.is_niche(), true];
         assert_eq![n0.has_zero(), false];
