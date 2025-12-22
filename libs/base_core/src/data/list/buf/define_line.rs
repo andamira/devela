@@ -5,30 +5,13 @@
 
 #[cfg(doc)]
 define_bufline!(
-    /// Linear index interpreter over contiguous storage.
-    ///
-    /// Interprets a contiguous storage backend as a linear buffer,
-    /// where elements occupy a prefix of the underlying storage.
-    ///
-    /// The storage strategy determines ownership and drop behavior,
-    /// while `len` defines the logical extent of the buffer.
-    ///
-    /// # Invariants
-    /// - `0 <= len <= capacity(S)`
-    /// - Logical element `i` is stored at physical index `i`
-    /// - Only elements in `storage[0 .. len)` are considered part of the buffer
-    ///
-    /// # Storage backends
-    /// - Owned array (`[T; CAP]`)
-    /// - Owned uninitialized array (`[MaybeUninit<T>; CAP]`)
-    /// - Owned option array (`[Option<T>; CAP]`)
-    /// - Exclusive slice (`&'a mut [T]`)
-    /// - Shared slice (`&'a [T]`)
-    pub struct BufLineExample: u8; array, option, ref, mut
+    #[doc = crate::_TAG_EXAMPLE!()]
+    pub struct BufLineExample: crate::NonExtremeU8; array, option, ref, mut,
+
+    #[cfg(all(not(base_safe_mem), feature = "unsafe_array"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
+    uninit,
 );
-#[cfg(doc)]
-#[cfg(all(not(base_safe_mem), feature = "unsafe_array"))]
-define_bufline!(impl BufLineExample:u8; uninit);
 
 /// Defines a `BufLine` type parameterized by an index primitive.
 ///
@@ -48,13 +31,32 @@ macro_rules! define_bufline {
     (
     /* public macro arms */
 
-        // Struct definition with optional implementations
+        // 1. Struct definition and optional implementations
 
-        $(#[$struct_attr:meta])* // optional attributes
-        $vis:vis struct $name:ident : $idx:ty ; // visibility, name, index type
-        $($rest:tt)* // optional implementations (array, uninit, option, ref, mut)
+        $(#[$struct_attr:meta])*                        // optional attributes
+        $vis:vis struct $name:ident : $idx:ty ;         // visibility, name, index type
+        $($rest:tt)*                                    // optional implementations
     ) => {
         $(#[$struct_attr])*
+        /// Linear index interpreter over contiguous storage.
+        ///
+        /// Interprets a contiguous storage backend as a linear buffer,
+        /// where elements occupy a prefix of the underlying storage.
+        ///
+        /// The storage strategy determines ownership and drop behavior,
+        /// while `len` defines the logical extent of the buffer.
+        ///
+        /// # Invariants
+        /// - `0 <= len <= capacity(S)`
+        /// - Logical element `i` is stored at physical index `i`
+        /// - Only elements in `storage[0 .. len)` are considered part of the buffer
+        ///
+        /// # Storage backends
+        /// - Owned array (`[T; CAP]`)
+        /// - Owned uninitialized array (`[MaybeUninit<T>; CAP]`)
+        /// - Owned option array (`[Option<T>; CAP]`)
+        /// - Exclusive slice (`&'a mut [T]`)
+        /// - Shared slice (`&'a [T]`)
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name<'a, T, S> {
             storage: S,
@@ -65,12 +67,11 @@ macro_rules! define_bufline {
         $crate::define_bufline!(%impl_common $name, $idx);
         $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
     };
-
     (
-        // Only optional implementations (array, uninit, option, ref, mut)
+        // 2. Optional implementations only (array, uninit, option, ref, mut)
 
-        impl $name:ident : $idx:ty ; // for name, index type
-        $($rest:tt)* // optional implementations
+        impl $name:ident : $idx:ty ;                    // for name, index type
+        $($rest:tt)*                                    // optional implementations
 
     /* private macro arms */
 
@@ -79,40 +80,41 @@ macro_rules! define_bufline {
     };
     //% impl group dispatch
     (%impls $name:ident : $idx:ty ;) => {}; // no impls
-    (%impls $name:ident : $idx:ty ; $impl:ident) => { // last impl (no trail comma)
+    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* $impl:ident) => { // last impl (no trail comma)
         $crate::define_bufline!(%impl1 $name : $idx ; $impl);
     };
-    (%impl1 $name:ident : $idx:ty; array) => {
-        $crate::define_bufline!(%impl_array $name, $idx); };
-    (%impls $name:ident : $idx:ty ; array , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_array $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
-    };
-    (%impl1 $name:ident : $idx:ty ; uninit) => {
-        $crate::define_bufline!(%impl_uninit $name, $idx); };
-    (%impls $name:ident : $idx:ty ; uninit , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_uninit $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
-    };
-    (%impl1 $name:ident : $idx:ty ; option) => {
-        $crate::define_bufline!(%impl_option $name, $idx); };
-    (%impls $name:ident : $idx:ty ; option , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_option $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
-    };
-    (%impl1 $name:ident : $idx:ty ; mut) => {
-        $crate::define_bufline!(%impl_mut $name, $idx); };
-    (%impls $name:ident : $idx:ty ; mut , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_mut $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
-    };
-    (%impl1 $name:ident : $idx:ty ; ref) => {
-        $crate::define_bufline!(%impl_ref $name, $idx); };
-    (%impls $name:ident : $idx:ty ; ref , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_ref $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
-    };
-    (%impls $name:ident : $idx:ty ; $other:ident , $($rest:tt)*) => {
+
+    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* array , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_array $(#[$i])* $name, $idx);
+        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty; array) => {
+        $crate::define_bufline!(%impl_array $(#[$i])* $name, $idx); };
+
+    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* uninit , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $idx);
+        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; uninit) => {
+        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $idx); };
+
+    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* option , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_option $(#[$i])* $name, $idx);
+        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; option) => {
+        $crate::define_bufline!(%impl_option $(#[$i])* $name, $idx); };
+
+    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* mut , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $idx);
+        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; mut) => {
+        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $idx); };
+
+    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* ref , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $idx);
+        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; ref) => {
+        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $idx); };
+
+    (%impls $name:ident : $idx:ty ; $(#[$_attr:meta])* $other:ident , $($rest:tt)*) => {
         compile_error!(concat!( "define_bufline!: unknown impl `", stringify!($other), "`"));
     };
 
@@ -227,7 +229,9 @@ macro_rules! define_bufline {
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { self.len() == self.capacity() }
     };
-    (%impl_array $name:ident, $idx:ty) => {
+    (%impl_array $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+        $(#[$impl_attr])*
+        ///
         /// Fully initialized storage.
         ///
         /// # Invariants
@@ -417,7 +421,9 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_uninit $name:ident, $idx:ty) => {
+    (%impl_uninit $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+        $(#[$impl_attr])*
+        ///
         /// Partially initialized storage.
         ///
         /// # Invariants
@@ -641,7 +647,9 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_option $name:ident, $idx:ty) => {
+    (%impl_option $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+        $(#[$impl_attr])*
+        ///
         /// Fully initialized storage using `Option<T>` as a drop boundary.
         ///
         /// # Invariants
@@ -874,7 +882,9 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_mut $name:ident, $idx:ty) => {
+    (%impl_mut $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+        $(#[$impl_attr])*
+        ///
         /// Buffer view over an exclusive slice.
         ///
         /// # Invariants
@@ -1021,7 +1031,9 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_ref $name:ident, $idx:ty) => {
+    (%impl_ref $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+        $(#[$impl_attr])*
+        ///
         /// Read-only buffer view over a shared slice.
         ///
         /// # Invariants
