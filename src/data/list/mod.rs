@@ -20,10 +20,22 @@ pub mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
-        pub use super::{link::_all::*, of::_all::*};
+        pub use super::{
+            link::_all::*,
+            of::_all::*,
+        };
+        // re-exports
+        #[doc(inline)]
+        pub use devela_base_core::data::list::{
+            BufLine, define_bufline,
+        };
     }
     _pub_mods {
-        pub use super::{array::_all::*, queue::_all::*, stack::_all::*};
+        pub use super::{
+            array::_all::*,
+            queue::_all::*,
+            stack::_all::*,
+        };
         #[cfg(feature = "_tuple")]
         pub use super::tuple::_all::*;
     }
