@@ -79,18 +79,18 @@ define_error! { composite: fmt(f)
         DOC_NOT_SUPPORTED: +const NotSupported => NotSupported,
 
         // used by ops: core, combinatoric, modulo, prime, root:
-        DOC_OVERFLOW: Overflow(s|0: Option<Sign>) => Overflow(*s),
+        DOC_OVERFLOW: +const Overflow(s|0: Option<Sign>) => Overflow(*s),
         // used by ops: modulo:
-        DOC_NO_INVERSE: NoInverse => NoInverse,
+        DOC_NO_INVERSE: +const NoInverse => NoInverse,
         // used by ops: combinatoric, root:
-        DOC_NON_NEGATIVE_REQUIRED: NonNegativeRequired => NonNegativeRequired,
+        DOC_NON_NEGATIVE_REQUIRED: +const NonNegativeRequired => NonNegativeRequired,
         // used by ops: division, modulo, root:
-        DOC_NON_ZERO_REQUIRED: NonZeroRequired => NonZeroRequired,
+        DOC_NON_ZERO_REQUIRED: +const NonZeroRequired => NonZeroRequired,
         // used by ops: combinatoric, factor:
-        DOC_MISMATCHED_SIZES: MismatchedSizes => MismatchedSizes,
+        DOC_MISMATCHED_SIZES: +const MismatchedSizes => MismatchedSizes,
 
-        // DOC_POSITIVE_REQUIRED: PositiveRequired => PositiveRequired,
-        // DOC_INCOMPATIBLE_BOUNDS: IncompatibleBounds => IncompatibleBounds,
+        // DOC_POSITIVE_REQUIRED: +const PositiveRequired => PositiveRequired,
+        // DOC_INCOMPATIBLE_BOUNDS: +const IncompatibleBounds => IncompatibleBounds,
     }
 }
 // MAYBE TEMP
