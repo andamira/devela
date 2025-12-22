@@ -5,6 +5,7 @@
 // TOC
 // - struct MaybeNiche
 // - struct NonNiche
+// - tests
 
 use crate::{
     Cast, ConstInitCore, NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128,
@@ -41,23 +42,24 @@ macro_rules! impl_maybe {
         impl_maybe!(u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
     };
     ($($T:ty),+) => {
-        // $niche, $prim, $T $(,<const V: $V>) $(,*$get)? $(,^$new)?
-        // ---------------------------------------------------------
-        $( impl_maybe![%false, $T, $T]; )+
-        $( impl_maybe![%false, $T, NonNiche<$T>, *get, ^new]; )+
-        $( impl_maybe![%true, $T, NonZero<$T>, *get, ^new, @non0]; )+
+        // % $niche,$zero; $prim, $T $(,<const V: $V>) $(,*$get)? $(,^$new)? $(,@$non0)?
+        // -----------------------------------------------------------------------------
+        $( impl_maybe![% false,true; $T, $T]; )+
+        $( impl_maybe![% false,true; $T, NonNiche<$T>, *get, ^new]; )+
+        $( impl_maybe![% true,false; $T, NonZero<$T>, *get, ^new, @non0]; )+
         $crate::paste!{ $(
-            impl_maybe![%true, $T, [<NonValue $T:camel>] <V>, <const V: $T>,
+            impl_maybe![% true,V!=0; $T, [<NonValue $T:camel>] <V>, <const V: $T>,
             *get, ^new];
         )+ }
     };
     (%
-     $niche:literal,
+     $niche:literal, // IS_NICHE
+     $zero:expr;     // HAS_ZERO
      $prim:ty,
      $T:ty $(, <const $V:ident : $v:ty>)?
-     $(, *$get:ident)? // for: as_prim
-     $(, ^$new:ident)? // for: from_prim, *_unchecked
-     $(, @$non0:ident)? // to identify nonzero types, for from_prim_lossy
+     $(, *$get:ident)?  // for: as_prim
+     $(, ^$new:ident)?  // for: from_prim, *_unchecked
+     $(, @$non0:ident)? // identifies nonzero types, for: from_prim_lossy
     ) => {
         impl $(<const $V: $v>)? ConstInitCore for MaybeNiche<$T> where $T: ConstInitCore {
             const INIT: Self = Self::new(<$T>::INIT);
@@ -67,8 +69,10 @@ macro_rules! impl_maybe {
             /// Whether this type supports memory-niche optimization.
             pub const IS_NICHE: bool = $niche;
 
-            /* constructors */
+            /// Whether this type can represent a 0 value.
+            pub const HAS_ZERO: bool = $zero;
 
+            /* constructors */
 
             /// Creates a new `MaybeNiche` containing `value`.
             #[must_use] #[inline(always)]
@@ -168,6 +172,10 @@ macro_rules! impl_maybe {
             /// Returns `true` if this type has a memory-niche optimization.
             #[must_use] #[inline(always)]
             pub const fn is_niche(self) -> bool { Self::IS_NICHE }
+
+            /// Whether this type can represent a 0 value.
+            #[must_use] #[inline(always)]
+            pub const fn has_zero(self) -> bool { Self::HAS_ZERO }
 
             /* accessors */
 
@@ -276,3 +284,29 @@ macro_rules! impl_non {
     };
 }
 impl_non![];
+
+#[cfg(test)]
+mod tests {
+    use super::{MaybeNiche, NonValueU8, NonZero};
+
+    #[test]
+    fn maybe_niche() {
+        let u = MaybeNiche(3_u8);
+        let n0 = MaybeNiche(NonZero::<u8>::new(3).unwrap());
+        let nv0 = MaybeNiche(NonValueU8::<0>::new(3).unwrap());
+        let nv1 = MaybeNiche(NonValueU8::<1>::new(3).unwrap());
+
+        // u8
+        assert_eq![u.is_niche(), false];
+        assert_eq![u.has_zero(), true];
+        // NonZero
+        assert_eq![n0.is_niche(), true];
+        assert_eq![n0.has_zero(), false];
+        // NonValue::<0>
+        assert_eq![nv0.is_niche(), true];
+        assert_eq![nv0.has_zero(), false];
+        // NonValue::<1>
+        assert_eq![nv1.is_niche(), true];
+        assert_eq![nv1.has_zero(), true];
+    }
+}
