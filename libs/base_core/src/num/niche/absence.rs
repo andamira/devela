@@ -8,9 +8,9 @@
 // - tests
 
 use crate::{
-    Cast, ConstInitCore, NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128,
-    NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
-    NonZero, Overflow, unwrap,
+    Cast, ConstInitCore, NicheValueError, NonValueI8, NonValueI16, NonValueI32, NonValueI64,
+    NonValueI128, NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128,
+    NonValueUsize, NonZero, Overflow, unwrap,
 };
 
 #[doc = crate::_TAG_NUM!()]
@@ -79,8 +79,10 @@ macro_rules! impl_maybe {
             pub const fn new(value: $T) -> Self { Self(value) }
 
             /// Creates a new `MaybeNiche` from a primitive value.
+            ///
+            /// Returns `None` if the primitive value does not satisfy the niche invariants, if any.
             #[must_use] #[inline(always)]
-            pub const fn from_prim(primitive: $prim) -> Option<Self> {
+            pub const fn try_from_prim(primitive: $prim) -> Option<Self> {
                 // WAIT: custom attrs on expr https://github.com/rust-lang/rust/issues/54727
                 // Can't use `compile` on expr or stmt, e.g.: return Some(Self(primitive));
                 // so we need to leverage defined functions instead.
@@ -150,11 +152,13 @@ macro_rules! impl_maybe {
             }
 
             /// Tries to create a new `MaybeNiche` from a `usize`.
-            ///
-            /// Returns `None` if the value can't fit in the primitive representation,
-            /// or if it's not not valid for the current niche.
+            /// # Errors
+            /// - [`NicheValueError::Overflow`] if the value cannot be represented by the
+            ///   underlying primitive type.
+            /// - [`NicheValueError::InvalidValue`] if the value violates the validity
+            ///   invariant of `T`.
             #[must_use] #[inline(always)]
-            pub const fn try_from_usize(value: usize) -> Option<Self> {
+            pub const fn try_from_usize(value: usize) -> Result<Self, NicheValueError> {
                 // NonNiche, NonValue, NonZero
                 #[crate::compile(some($($new)?))]
                 const fn _new $(<const $V: $v>)? (v: $prim) -> Option<$T> { $( <$T>::$new(v) )? }
@@ -163,8 +167,32 @@ macro_rules! impl_maybe {
                 const fn _new $(<const $V: $v>)? (v: $prim) -> Option<$T> { Some(v) }
 
                 let prim = $crate::paste! { Cast(value).[<checked_cast_to_ $prim>]() };
-                let prim = unwrap![ok_some? prim];
-                Some(Self(unwrap![some? _new(prim)]))
+                let prim = unwrap![ok_err_map? prim, |e| NicheValueError::from_overflow(e)];
+                Ok(Self(unwrap![some_ok_or? _new(prim), NicheValueError::InvalidValue]))
+            }
+
+            /// Creates a new `MaybeNiche` from a `usize`, saturating at numeric bounds.
+            ///
+            /// The conversion applies the following steps:
+            /// 1. The `usize` value is saturated to the bounds of the primitive type.
+            /// 2. If the resulting value violates the niche invariant of `T`,
+            ///    a best-effort lossy conversion is applied.
+            #[must_use] #[inline(always)]
+            pub const fn from_usize_saturating(value: usize) -> Self {
+                let prim = $crate::paste! { Cast(value).[<saturating_cast_to_ $prim>]() };
+                Self::from_prim_lossy(prim)
+            }
+
+            /// Creates a new `MaybeNiche` from a `usize`, wrapping at numeric bounds.
+            ///
+            /// The conversion applies the following steps:
+            /// 1. The `usize` value is wrapped to the primitive type.
+            /// 2. If the resulting value violates the niche invariant of `T`,
+            ///    a best-effort lossy conversion is applied.
+            #[must_use] #[inline(always)]
+            pub const fn from_usize_wrapping(value: usize) -> Self {
+                let prim = $crate::paste! { Cast(value).[<wrapping_cast_to_ $prim>]() };
+                Self::from_prim_lossy(prim)
             }
 
             /* queries */

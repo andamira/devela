@@ -112,7 +112,7 @@ define_error! { composite: fmt(f)
     /// Invalid or problematic values for niche types.
     pub enum NicheValueError {
         +tag: _TAG_NUM!(),
-        DOC_OVERFLOW: Overflow(s|0: Option<Sign>) => Overflow(*s),
-        DOC_INVALID_VALUE: InvalidValue => InvalidValue,
+        DOC_OVERFLOW: +const Overflow(s|0: Option<Sign>) => Overflow(*s),
+        DOC_INVALID_VALUE: +const InvalidValue => InvalidValue,
     }
 }

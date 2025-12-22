@@ -98,8 +98,8 @@ macro_rules! define_handle {
             /// Returns `None` if any of the values are invalid.
             #[must_use] #[inline(always)]
             $vis const fn from_prim(offset: $prim, len: $prim) -> Option<Self> {
-                let offset = $crate::unwrap![some? $crate::MaybeNiche::<$T>::from_prim(offset)];
-                let len = $crate::unwrap![some? $crate::MaybeNiche::<$T>::from_prim(len)];
+                let offset = $crate::unwrap![some? $crate::MaybeNiche::<$T>::try_from_prim(offset)];
+                let len = $crate::unwrap![some? $crate::MaybeNiche::<$T>::try_from_prim(len)];
                 Some(Self { offset, len })
             }
 
@@ -125,12 +125,13 @@ macro_rules! define_handle {
             /// Creates a new handle from a primitive `offset` and `len`.
             ///
             /// Returns `None` if any of the values can't fit in the primitive representation,
-            /// or if it's not not valid for the current niche.
+            /// or if it's not valid for the current niche.
             #[must_use] #[inline(always)]
-            $vis const fn try_from_usize(offset: usize, len: usize) -> Option<Self> {
-                let o = $crate::unwrap![some? $crate::MaybeNiche::<$T>::try_from_usize(offset)];
-                let len = $crate::unwrap![some? $crate::MaybeNiche::<$T>::try_from_usize(len)];
-                Some(Self { offset: o, len })
+            $vis const fn try_from_usize(offset: usize, len: usize)
+                -> Result<Self, $crate::NicheValueError> {
+                let o = $crate::unwrap![ok? $crate::MaybeNiche::<$T>::try_from_usize(offset)];
+                let len = $crate::unwrap![ok? $crate::MaybeNiche::<$T>::try_from_usize(len)];
+                Ok(Self { offset: o, len })
             }
 
             /* accessors */
