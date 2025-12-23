@@ -3,14 +3,12 @@
 //!
 //
 
-mod define_line; // define_bufline!
-mod line; // BufLine
+mod line; // define_bufline!
 // mod ring; // BufRing
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            define_line::*,
             line::*,
             // ring::*,
         };

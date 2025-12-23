@@ -26,7 +26,7 @@ crate::structural_mods! { // _mods, _pub_mods
         };
         // re-exports
         #[doc(inline)]
-        pub use devela_base_core::data::list::{BufLine, define_bufline};
+        pub use devela_base_core::data::list::define_bufline;
         // #[cfg(doc)]
         // pub use devela_base_core::data::list::{BufLineExample};
     }
