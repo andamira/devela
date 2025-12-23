@@ -3,11 +3,81 @@
 //! Defines [`ne!`], [`nv!`] [`nz!`], and the [`NicheNew`] hidden helper.
 //
 // TOC
+// - macro niche_prim! (via generate_niche_prim!)
 // - macro ne!
 // - macro nv!
 // - macro nz!
 // - struct NicheNew
 // - tests
+
+/// Generates the `niche_prim!` macro for a closed set of primitive carrier types.
+///
+/// It exists solely to avoid duplication and keep the supported primitive list centralized.
+///
+/// About using $ as a token delimiter:
+///   this part:  ($P $_d($_:tt)*) => { $P };
+///   expands to: (u8 $($_:tt)*) => { u8 };
+macro_rules! generate_niche_prim {
+    ($_d:tt $($P:ty),+ $(,)?) => { $crate::paste! {
+        #[doc = crate::_TAG_NICHE!()]
+        /// Maps a niche representation type to its primitive carrier type.
+        ///
+        /// `niche_prim!` performs a purely syntactic, compile-time mapping from a
+        /// supported niche type (for example `NonExtremeU8`, `NonValueU16<…>`,
+        /// `MaybeNiche<NonZero<i32>>`) to its underlying primitive numeric type
+        /// (`u8`, `u16`, `i32`, …).
+        ///
+        /// This macro is intended for use in type position, including type aliases,
+        /// signatures, and const contexts.
+        ///
+        /// ## Supported forms
+        /// For each supported primitive `P`, the following spellings are recognized:
+        /// - `P`
+        /// - `NonNiche<P>`
+        /// - `NonZero<P>` and `NonZeroP`
+        /// - `NonExtremeP`
+        /// - `NonValueP<…>`
+        /// - `MaybeNiche<P>`
+        /// - `MaybeNiche<NonNiche<P>>`
+        /// - `MaybeNiche<NonZero<P>>` and `MaybeNiche<NonZeroP>`
+        /// - `MaybeNiche<NonExtremeP>`
+        /// - `MaybeNiche<NonValueP<…>>`
+        ///
+        /// The mapping is shallow and exact: only the explicitly supported spellings are matched.
+        ///
+        /// ## Closed-world behavior
+        /// The set of recognized niche types is intentionally fixed and mirrors the
+        /// niche representations provided by this crate. User-defined wrappers or
+        /// arbitrary nesting are not supported.
+        ///
+        /// # Example
+        /// ```
+        /// # use devela_base_core::{NonValueU8, niche_prim};
+        /// let x: niche_prim!(NonValueU8<43>) = 3_u8;
+        /// ```
+        #[cfg_attr(cargo_primary_package, doc(hidden))]
+        #[macro_export]
+        macro_rules! niche_prim {
+            $(
+                ($P $_d($_:tt)*) => { $P };
+                (NonNiche<$P> $_d($_:tt)*) => { $P };
+                (NonZero<$P> $_d($_:tt)*) => { $P };
+                ([<NonZero$P:camel>] $_d($_:tt)*) => { $P };
+                ([<NonExtreme$P:camel>] $_d($_:tt)*) => { $P };
+                ([<NonValue$P:camel>] $_d($_:tt)*) => { $P };
+                (MaybeNiche<$P> $_d($_:tt)*) => { $P };
+                (MaybeNiche<NonNiche<$P>> $_d($_:tt)*) => { $P };
+                (MaybeNiche<NonZero<$P>> $_d($_:tt)*) => { $P };
+                (MaybeNiche<[<NonZero$P:camel>]> $_d($_:tt)*) => { $P };
+                (MaybeNiche<[<NonExtreme$P:camel>]> $_d($_:tt)*) => { $P };
+                (MaybeNiche<[<NonValue$P:camel>]> $_d($_:tt)*) => { $P };
+            )+
+        }
+        #[doc(inline)]
+        pub use niche_prim;
+    }};
+}
+generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
@@ -167,6 +237,15 @@ impl_niche_new!();
 
 #[cfg(test)]
 crate::items! {
+    #[test]
+    fn test_niche_prim() {
+        let _a: niche_prim!(NonValueU8<43>) = 3;
+        let _b: u8 = _a + 4_u8;
+
+        let _a: niche_prim!(MaybeNiche<NonZeroIsize>) = 3;
+        let _b: isize = _a + 4_isize;
+    }
+
     #[test]
     fn test_nz() {
         assert_eq![nz![20i32], crate::NonZeroI32::new(20).unwrap()];

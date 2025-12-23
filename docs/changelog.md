@@ -360,7 +360,7 @@ re-export hidden workspace dependencies from `_dep`.
 - move to [base]: `Int`, `[iu]size_*`.
 
 ### niche
-- new macro: `nv!`.
+- new macros: `niche_prim!`, `nv!`.
 - new types: `MaybeNiche`, `NonNiche`, `NicheValueError`.
 - move to [base]: `NonExtreme*`, `NonValue*`, `ne!`, `nz!`.
 - update macros: `ne`, `nv`, `nz`, adding lossy constructors.
