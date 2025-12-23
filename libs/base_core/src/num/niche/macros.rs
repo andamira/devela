@@ -55,9 +55,11 @@ macro_rules! generate_niche_prim {
         /// # use devela_base_core::{NonValueU8, niche_prim};
         /// let x: niche_prim!(NonValueU8<43>) = 3_u8;
         /// ```
-        #[cfg_attr(cargo_primary_package, doc(hidden))]
+        #[doc(hidden)]
         #[macro_export]
-        macro_rules! niche_prim {
+        macro_rules! _niche_prim {
+            // strip one leading path segment at a time
+            ($head:ident :: $_d($rest:tt)+) => { $crate::niche_prim!($_d($rest)+) };
             $(
                 ($P $_d($_:tt)*) => { $P };
                 (NonNiche<$P> $_d($_:tt)*) => { $P };
@@ -74,7 +76,7 @@ macro_rules! generate_niche_prim {
             )+
         }
         #[doc(inline)]
-        pub use niche_prim;
+        pub use _niche_prim as niche_prim;
     }};
 }
 generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
@@ -238,12 +240,26 @@ impl_niche_new!();
 #[cfg(test)]
 crate::items! {
     #[test]
+    #[allow(unused)]
     fn test_niche_prim() {
-        let _a: niche_prim!(NonValueU8<43>) = 3;
-        let _b: u8 = _a + 4_u8;
+        let a: niche_prim!(NonValueU8<43>) = 3;
+        let b: u8 = a + 4_u8;
 
-        let _a: niche_prim!(MaybeNiche<NonZeroIsize>) = 3;
-        let _b: isize = _a + 4_isize;
+        let a: niche_prim!(MaybeNiche<NonZeroIsize>) = 3;
+        let b: isize = a + 4_isize;
+
+        // works with paths
+        let a: niche_prim!(crate::num::NonValueU8<43>) = 3;
+
+        const fn prim() -> crate::niche_prim![u8] { 32 }
+
+        // NOTE: the following works because the macro matches on arbitrary tokens.
+        // But it wouldn't compile if it'd match over $P:ty, for example.
+        macro_rules! example_macro {
+            // ($P:ty) => { const fn prim3() -> crate::niche_prim![$P] { 32 } }; // would fail
+            ($($P:tt)+) => { const fn prim2() -> crate::niche_prim![$($P)+] { 32 } }; // works
+        }
+        example_macro![NonValueU8<43>];
     }
 
     #[test]
