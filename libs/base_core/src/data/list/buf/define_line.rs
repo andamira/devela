@@ -3,7 +3,7 @@
 //! Defines [`define_bufline!`].
 //
 
-#[cfg(doc)]
+#[cfg(any(doc, test))]
 define_bufline!(
     #[doc = crate::_TAG_EXAMPLE!()]
     pub struct BufLineExample: crate::NonExtremeU8; array, option, ref, mut,
@@ -122,44 +122,70 @@ macro_rules! define_bufline {
     (%impl_common $name:ident, $idx:ty) => {
         // Private helpers
         impl<'a, T, S> $name<'a, T, S> {
-            #[inline(always)]
             /// Constructs a buffer from raw components, assuming all invariants hold.
+            #[inline(always)]
             const fn _new(storage: S, len: $crate::MaybeNiche<$idx>) -> Self {
                 Self { storage, len, _m: $crate::PhantomData }
             }
-            /// The maximum representable value of the index type, as a usize.
-            const _IDX_MAX_USIZE: usize = $crate::MaybeNiche(<$idx>::MAX).to_usize_saturating();
 
-            #[inline(always)]
-            /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
-            const fn _idx_from_usize_saturating(from: usize) -> $crate::MaybeNiche<$idx> {
-                $crate::MaybeNiche::<$idx>::from_usize_saturating(from)
-            }
-            #[inline(always)]
-            /// Returns the given usize value as a MaybeNiche wrapped index type.
-            // It should not panic since we've already checked the invariants.
-            const fn _idx_from_usize(from: usize) -> $crate::MaybeNiche<$idx> {
-                $crate::unwrap![ok $crate::MaybeNiche::<$idx>::try_from_usize(from)]
-            }
-            #[inline(always)]
-            /// Returns the given index value as a usize.
-            // It should not panic unless we're using 128-bit values!
-            const fn _usize_from_idx(from: $idx) -> usize {
-                $crate::unwrap![ok $crate::MaybeNiche(from).try_to_usize()]
-            }
+            /* idx */
 
-            #[inline(always)]
             /// Returns the zero value as a MaybeNiche wrapped index type.
             // It should not panic since we've already checked the invariants.
+            #[inline(always)]
             const fn _idx_zero() -> $crate::MaybeNiche<$idx> {
                 $crate::unwrap![some $crate::MaybeNiche::<$idx>::ZERO]
             }
+
+            /// `a == b`
+            #[inline(always)]
+            const fn _idx_eq(a: $idx, b: $idx) -> bool {
+                let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim());
+                a == b
+            }
+            /// `a <= b`
+            #[inline(always)]
+            const fn _idx_le(a: $idx, b: $idx) -> bool {
+                let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim());
+                a <= b
+            }
+            /// `a >= b`
+            #[inline(always)]
+            const fn _idx_ge(a: $idx, b: $idx) -> bool {
+                let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim());
+                a >= b
+            }
+
+            /* usize */
+
+            /// The maximum representable value of the index type, as a usize.
+            const _IDX_MAX_USIZE: usize = $crate::MaybeNiche(<$idx>::MAX).to_usize_saturating();
 
             /// Returns the current logical length as a `usize`, saturating if necessary.
             #[inline(always)]
             const fn _len_usize(&self) -> usize {
                 self.len.to_usize_saturating()
             }
+
+            /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
+            #[inline(always)]
+            const fn _idx_from_usize_saturating(from: usize) -> $crate::MaybeNiche<$idx> {
+                $crate::MaybeNiche::<$idx>::from_usize_saturating(from)
+            }
+            /// Returns the given usize value as a MaybeNiche wrapped index type.
+            // It should not panic since we've already checked the invariants.
+            #[inline(always)]
+            const fn _idx_from_usize(from: usize) -> $crate::MaybeNiche<$idx> {
+                $crate::unwrap![ok $crate::MaybeNiche::<$idx>::try_from_usize(from)]
+            }
+            /// Returns the given index value as a usize.
+            // It should not panic unless we're using 128-bit values!
+            #[inline(always)]
+            const fn _usize_from_idx(from: $idx) -> usize {
+                $crate::unwrap![ok $crate::MaybeNiche(from).try_to_usize()]
+            }
+
+            /* len */
 
             /// Sets the logical length without checking invariants.
             #[inline(always)]
@@ -171,14 +197,14 @@ macro_rules! define_bufline {
             /// Caller must guarantee `len < capacity`.
             #[inline(always)]
             const fn _len_inc(&self) -> $crate::MaybeNiche<$idx> {
-                $crate::MaybeNiche(self.len.get() + 1)
+                $crate::unwrap![ok $crate::MaybeNiche::<$idx>::try_from_prim(self.len.prim() + 1)]
             }
             /// Returns the previous logical length (len - 1).
             ///
             /// Caller must guarantee `len > 0`.
             #[inline(always)]
             const fn _len_dec(&self) -> $crate::MaybeNiche<$idx> {
-                $crate::MaybeNiche(self.len.get() - 1)
+                $crate::unwrap![ok $crate::MaybeNiche::<$idx>::try_from_prim(self.len.prim() - 1)]
             }
         }
 
@@ -189,7 +215,7 @@ macro_rules! define_bufline {
             /// Returns the number of elements currently stored in the buffer.
             pub const fn len(&self) -> $idx { self.len.get() }
             /// Returns `true` if the buffer contains no elements.
-            pub const fn is_empty(&self) -> bool { self.len.get() == 0 }
+            pub const fn is_empty(&self) -> bool { self.len.prim() == 0 }
         }
     };
     // common items for owned variants
@@ -211,7 +237,7 @@ macro_rules! define_bufline {
         /// Returns the fixed capacity of the buffer.
         pub const fn capacity(&self) -> $idx { Self::CAP }
         /// Returns `true` if the buffer has reached its capacity.
-        pub const fn is_full(&self) -> bool { self.len() == self.capacity() }
+        pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };
     // common items for slice variants
     (%common_sliced_items $name:ident, $idx:ty) => {
@@ -223,11 +249,9 @@ macro_rules! define_bufline {
         };
 
         /// Returns the capacity of the underlying slice.
-        pub const fn capacity(&self) -> $idx {
-            Self::_idx_from_usize(self.storage.len()).get()
-        }
+        pub const fn capacity(&self) -> $idx { Self::_idx_from_usize(self.storage.len()).get() }
         /// Returns `true` if the buffer has reached its capacity.
-        pub const fn is_full(&self) -> bool { self.len() == self.capacity() }
+        pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };
     (%impl_array $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
         $(#[$impl_attr])*
@@ -261,8 +285,13 @@ macro_rules! define_bufline {
             /// Creates a buffer from an already initialized array,
             /// limiting the logical length to `max_len`.
             pub fn from_array_clamped(array: [T; CAP], max_len: $idx) -> Self {
-                let len = $crate::Cmp(max_len).min(Self::CAP);
-                Self::_new(array, $crate::MaybeNiche(len))
+                let a = $crate::MaybeNiche(max_len).prim();
+                let b = $crate::MaybeNiche(Self::CAP).prim();
+                let min = $crate::Cmp(a).min(b);
+                // SAFETY: both are already validated
+                let len = $crate::unwrap![ok_guaranteed_or_ub
+                    $crate::MaybeNiche::<$idx>::try_from_prim(min)];
+                Self::_new(array, len)
             }
 
             /// Creates a new buffer by cloning all the possible elements from `src`,
@@ -306,7 +335,7 @@ macro_rules! define_bufline {
             ///
             /// If `new_len >= len`, this is a no-op.
             pub const fn truncate(&mut self, new_len: $idx) {
-                if new_len <= self.len() { self._set_len(new_len); }
+                if Self::_idx_le(new_len, self.len()) { self._set_len(new_len); }
             }
 
             /* push */
@@ -363,14 +392,14 @@ macro_rules! define_bufline {
 
             /// Returns a shared reference to the element at `index`, or `None` if out of bounds.
             pub const fn get(&self, index: $idx) -> Option<&T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 Some(&self.storage[Self::_usize_from_idx(index)])
             }
 
             /// Returns an exclusive reference to the element at `index`,
             /// or `None` if out of bounds.
             pub const fn get_mut(&mut self, index: $idx) -> Option<&mut T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 Some(&mut self.storage[Self::_usize_from_idx(index)])
             }
 
@@ -387,14 +416,14 @@ macro_rules! define_bufline {
             /// Takes the value at `index`, replacing it with `T::INIT`.
             pub const fn take_init(&mut self, index: $idx) -> Option<T>
             where T: $crate::ConstInitCore {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 let index_usize = Self::_usize_from_idx(index);
                 Some($crate::Mem::replace(&mut self.storage[index_usize], T::INIT))
             }
 
             /// Takes the value at `index`, replacing it with `other`.
             pub fn take_with(&mut self, index: $idx, other: T) -> Option<T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 let index_usize = Self::_usize_from_idx(index);
                 Some($crate::Mem::replace(&mut self.storage[index_usize], other))
             }
@@ -402,7 +431,7 @@ macro_rules! define_bufline {
             /// Takes the value at `index`, replacing it with a copy of `other`.
             pub const fn take_with_copy(&mut self, index: $idx, other: T) -> Option<T>
             where T: Copy {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 let index_usize = Self::_usize_from_idx(index);
                 Some($crate::Mem::replace(&mut self.storage[index_usize], other))
             }
@@ -471,7 +500,7 @@ macro_rules! define_bufline {
                 storage: [$crate::MaybeUninit<T>; CAP],
                 len: $idx,
             ) -> Self {
-                debug_assert!(len <= Self::CAP);
+                debug_assert!(Self::_idx_ge(len, Self::CAP));
                 Self::_new(storage, $crate::MaybeNiche(len))
             }
 
@@ -588,14 +617,14 @@ macro_rules! define_bufline {
 
             /// Returns a reference to the element at `index`, if within bounds.
             pub const fn get(&self, index: $idx) -> Option<&T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 // SAFETY: `index < self.len`, so the slot is initialized per invariant.
                 Some(unsafe { &*self.storage[Self::_usize_from_idx(index)].as_ptr() })
             }
 
             /// Returns an exclusive reference to the element at `index`, if within bounds.
             pub const fn get_mut(&mut self, index: $idx) -> Option<&mut T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 // SAFETY: `index < self.len`, so the slot is initialized per invariant.
                 Some(unsafe { &mut *self.storage[Self::_usize_from_idx(index)].as_mut_ptr() })
             }
@@ -604,7 +633,7 @@ macro_rules! define_bufline {
 
             /// Takes the value at `index`, replacing it with `value`.
             pub fn take_with(&mut self, index: $idx, value: T) -> Option<T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 let index_usize = Self::_usize_from_idx(index);
                 // SAFETY: `index < self.len`, so the slot is initialized per invariant.
                 let old = unsafe { self.storage[index_usize].assume_init_read() };
@@ -620,7 +649,7 @@ macro_rules! define_bufline {
             /// Takes the value at `index`, replacing it with `T::INIT`.
             pub const fn take_init(&mut self, index: $idx) -> Option<T>
             where T: $crate::ConstInitCore {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 let index_usize = Self::_usize_from_idx(index);
                 // SAFETY: `index < self.len`, so the slot is initialized per invariant.
                 let old = unsafe { self.storage[index_usize].assume_init_read() };
@@ -703,7 +732,7 @@ macro_rules! define_bufline {
             /// - `storage[0..len]` are `Some`
             /// - `storage[len..CAP]` are `None`
             pub const unsafe fn from_array_unchecked(array: [Option<T>; CAP], len: $idx) -> Self {
-                debug_assert!(len <= Self::CAP);
+                debug_assert!(Self::_idx_ge(len, Self::CAP));
                 Self::_new(array, $crate::MaybeNiche(len))
             }
 
@@ -819,14 +848,14 @@ macro_rules! define_bufline {
 
             /// Returns a shared reference to the element at `index`, or `None` if out of bounds.
             pub const fn get(&self, index: $idx) -> Option<&T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 self.storage[Self::_usize_from_idx(index)].as_ref()
             }
 
             /// Returns an exclusive reference to the element at `index`,
             /// or `None` if out of bounds.
             pub const fn get_mut(&mut self, index: $idx) -> Option<&mut T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 self.storage[Self::_usize_from_idx(index)].as_mut()
             }
 
@@ -854,11 +883,11 @@ macro_rules! define_bufline {
             ///
             /// Decrements `len`. Does not preserve order.
             pub const fn swap_remove_copy(&mut self, index: $idx) -> Option<T> where T: Copy {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 let last = self._len_dec().get();
                 self._set_len(last);
                 let last_usize = Self::_usize_from_idx(last);
-                if index == last {
+                if Self::_idx_eq(index, last) {
                     self.storage[last_usize]
                 } else {
                     let index_usize = Self::_usize_from_idx(index);
@@ -952,7 +981,7 @@ macro_rules! define_bufline {
             ///
             /// If `new_len >= len`, this is a no-op.
             pub const fn truncate(&mut self, new_len: $idx) {
-                if new_len <= self.len() { self._set_len(new_len); }
+                if Self::_idx_le(new_len, self.len()) { self._set_len(new_len); }
             }
 
             /* push */
@@ -1008,13 +1037,13 @@ macro_rules! define_bufline {
 
             /// Returns a shared reference to the element at `index`, or `None` if out of bounds.
             pub const fn get(&self, index: $idx) -> Option<&T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 Some(&self.storage[Self::_usize_from_idx(index)])
             }
             /// Returns an exclusive reference to the element at `index`,
             /// or `None` if out of bounds.
             pub const fn get_mut(&mut self, index: $idx) -> Option<&mut T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 Some(&mut self.storage[Self::_usize_from_idx(index)])
             }
 
@@ -1080,8 +1109,8 @@ macro_rules! define_bufline {
 
             /// Returns a shared reference to the element at `index`, or `None` if out of bounds.
             pub const fn get(&self, index: $idx) -> Option<&T> {
-                if index >= self.len() { return None; }
-                Some(&self.storage[index as usize])
+                if Self::_idx_ge(index, self.len()) { return None; }
+                Some(&self.storage[Self::_usize_from_idx(index)])
             }
 
             /// Returns the initialized prefix as a slice.
