@@ -6,25 +6,24 @@
 #[cfg(any(doc, test))]
 define_bufline!(
     #[doc = crate::_TAG_EXAMPLE!()]
-    pub struct BufLineExample: crate::NonExtremeU8; array, option, ref, mut,
+    pub struct BufLineExample: (crate::NonExtremeU8); array, option, ref, mut,
 
     #[cfg(all(not(base_safe_mem), feature = "unsafe_array"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
     uninit,
 );
 
-/// Defines a `BufLine` type parameterized by an index primitive.
+/// Defines a `BufLine` type parameterized by an index type.
 ///
-/// The index type must be an unsigned integer capable of representing
-/// all valid indices for the selected storage backend.
+/// The index type defines the representation used for indexing into the
+/// selected storage backend. It may be a primitive integer type or a
+/// supported niche wrapper over one.
 ///
 /// # Index type
-/// - The index type `$idx` must be an unsigned integer-like type.
-/// - It must be able to represent all valid indices for the chosen storage backend.
-/// - `$idx` must be able to represent zero. Types such as `NonZero*` are not supported.
-/// - `$idx` must be [contiguous], supporting +1 / -1 arithmetic without gaps.
-///
-/// [contiguous]: crate::MaybeNiche::IS_CONTIGUOUS
+/// - Must represent a contiguous integer domain covering all valid indices, including zero.
+/// - Niche wrappers are supported, provided their primitive carrier satisfies
+///   the above constraints (see [`MaybeNiche`][crate::MaybeNiche]).
+/// - Is provided as a token group to allow complex and path-qualified types.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! define_bufline {
@@ -34,7 +33,7 @@ macro_rules! define_bufline {
         // 1. Struct definition and optional implementations
 
         $(#[$struct_attr:meta])*                        // optional attributes
-        $vis:vis struct $name:ident : $idx:ty ;         // visibility, name, index type
+        $vis:vis struct $name:ident : ($($idx:tt)+) ;   // visibility, name, index type
         $($rest:tt)*                                    // optional implementations
     ) => {
         $(#[$struct_attr])*
@@ -60,66 +59,65 @@ macro_rules! define_bufline {
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name<'a, T, S> {
             storage: S,
-            len: $crate::MaybeNiche<$idx>,
+            len: $crate::MaybeNiche<$($idx)+>,
             _m: $crate::PhantomData<&'a T>,
         }
-
-        $crate::define_bufline!(%impl_common $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
+        $crate::define_bufline!(%impl_common $name, $crate::niche_prim![$($idx)+], $($idx)+);
+        $crate::define_bufline!(%impls $name : $crate::niche_prim![$($idx)+], $($idx)+ ; $($rest)*);
     };
     (
         // 2. Optional implementations only (array, uninit, option, ref, mut)
 
-        impl $name:ident : $idx:ty ;                    // for name, index type
+        impl $name:ident : ($($idx:tt)+) ;              // for name, index type
         $($rest:tt)*                                    // optional implementations
 
     /* private macro arms */
 
     ) => {
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*);
+        $crate::define_bufline!(%impls $name : $crate::niche_prim![$($idx)+], $($idx)+ ; $($rest)*);
     };
     //% impl group dispatch
-    (%impls $name:ident : $idx:ty ;) => {}; // no impls
-    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* $impl:ident) => { // last impl (no trail comma)
-        $crate::define_bufline!(%impl1 $name : $idx ; $impl);
+    (%impls $name:ident : $prim:ty, $idx:ty ;) => {}; // no impls
+    (%impls $name:ident : $prim:ty, $idx:ty ; $(#[$i:meta])* $impl:ident) => { // last impl
+        $crate::define_bufline!(%impl1 $name : $prim, $idx ; $impl);
     };
+    // array
+    (%impls $name:ident : $prim:ty, $idx:ty ; $(#[$i:meta])* array , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_array $(#[$i])* $name, $prim, $idx);
+        $crate::define_bufline!(%impls $name : $prim, $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $prim:ty, $idx:ty; array) => {
+        $crate::define_bufline!(%impl_array $(#[$i])* $name, $prim, $idx); };
+    // uninit
+    (%impls $name:ident : $prim:ty, $idx:ty ; $(#[$i:meta])* uninit , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $prim, $idx);
+        $crate::define_bufline!(%impls $name : $prim, $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $prim:ty, $idx:ty ; uninit) => {
+        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $prim, $idx); };
+    // option
+    (%impls $name:ident : $prim:ty, $idx:ty ; $(#[$i:meta])* option , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_option $(#[$i])* $name, $prim, $idx);
+        $crate::define_bufline!(%impls $name : $prim, $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $prim:ty, $idx:ty ; option) => {
+        $crate::define_bufline!(%impl_option $(#[$i])* $name, $prim, $idx); };
+    // mut
+    (%impls $name:ident : $prim:ty, $idx:ty ; $(#[$i:meta])* mut , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $prim, $idx);
+        $crate::define_bufline!(%impls $name : $prim, $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $prim:ty, $idx:ty ; mut) => {
+        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $prim, $idx); };
+    // ref
+    (%impls $name:ident : $prim:ty, $idx:ty ; $(#[$i:meta])* ref , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $prim, $idx);
+        $crate::define_bufline!(%impls $name : $prim, $idx ; $($rest)*); };
+    (%impl1 $(#[$i:meta])* $name:ident : $prim:ty, $idx:ty ; ref) => {
+        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $prim, $idx); };
 
-    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* array , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_array $(#[$i])* $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty; array) => {
-        $crate::define_bufline!(%impl_array $(#[$i])* $name, $idx); };
-
-    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* uninit , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; uninit) => {
-        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $idx); };
-
-    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* option , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_option $(#[$i])* $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; option) => {
-        $crate::define_bufline!(%impl_option $(#[$i])* $name, $idx); };
-
-    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* mut , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; mut) => {
-        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $idx); };
-
-    (%impls $name:ident : $idx:ty ; $(#[$i:meta])* ref , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $idx);
-        $crate::define_bufline!(%impls $name : $idx ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $idx:ty ; ref) => {
-        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $idx); };
-
-    (%impls $name:ident : $idx:ty ; $(#[$_attr:meta])* $other:ident , $($rest:tt)*) => {
+    (%impls $name:ident : $_p:ty, $_i:ty ; $(#[$_:meta])* $other:ident , $($rest:tt)*) => {
         compile_error!(concat!( "define_bufline!: unknown impl `", stringify!($other), "`"));
     };
 
     // impl block for all implementations
-    (%impl_common $name:ident, $idx:ty) => {
+    (%impl_common $name:ident, $prim:ty, $idx:ty) => {
         // Private helpers
         impl<'a, T, S> $name<'a, T, S> {
             /// Constructs a buffer from raw components, assuming all invariants hold.
@@ -155,6 +153,12 @@ macro_rules! define_bufline {
                 let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim());
                 a >= b
             }
+
+            /* prim */
+
+            /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
+            #[inline(always)]
+            const fn _idx_to_prim(from: $idx) -> $prim { $crate::MaybeNiche(from).prim() }
 
             /* usize */
 
@@ -213,13 +217,15 @@ macro_rules! define_bufline {
             /* queries */
 
             /// Returns the number of elements currently stored in the buffer.
-            pub const fn len(&self) -> $idx { self.len.get() }
+            pub const fn len(&self) -> $idx { self.len.repr() }
+            /// Returns the number of elements currently stored in the buffer.
+            pub const fn len_prim(&self) -> $prim { self.len.prim() }
             /// Returns `true` if the buffer contains no elements.
             pub const fn is_empty(&self) -> bool { self.len.prim() == 0 }
         }
     };
     // common items for owned variants
-    (%common_owned_items $name:ident, $idx:ty) => {
+    (%common_owned_items $name:ident, $prim:ty, $idx:ty) => {
         const _CHECK_INVARIANTS: () = {
             assert!($crate::MaybeNiche::<$idx>::ZERO.is_some(),
                 "define_bufline! index type cannot represent zero");
@@ -232,15 +238,17 @@ macro_rules! define_bufline {
         /// The fixed capacity of the buffer as the index type.
         pub const CAP: $idx = {
             let _ = Self::_CHECK_INVARIANTS; // ensure proper eval order
-            Self::_idx_from_usize(CAP).get()
+            Self::_idx_from_usize(CAP).repr()
         };
         /// Returns the fixed capacity of the buffer.
         pub const fn capacity(&self) -> $idx { Self::CAP }
+        /// Returns the fixed capacity of the buffer.
+        pub const fn capacity_prim(&self) -> $prim { Self::_idx_to_prim(Self::CAP) }
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };
     // common items for slice variants
-    (%common_sliced_items $name:ident, $idx:ty) => {
+    (%common_sliced_items $name:ident, $prim:ty, $idx:ty) => {
         const _CHECK_INVARIANTS: () = {
             assert!($crate::MaybeNiche::<$idx>::ZERO.is_some(),
                 "define_bufline! index type cannot represent zero");
@@ -249,11 +257,15 @@ macro_rules! define_bufline {
         };
 
         /// Returns the capacity of the underlying slice.
-        pub const fn capacity(&self) -> $idx { Self::_idx_from_usize(self.storage.len()).get() }
+        pub const fn capacity(&self) -> $idx { Self::_idx_from_usize(self.storage.len()).repr() }
+        /// Returns the capacity of the underlying slice.
+        pub const fn capacity_prim(&self) -> $prim {
+            Self::_idx_from_usize(self.storage.len()).prim()
+        }
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };
-    (%impl_array $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+    (%impl_array $(#[$impl_attr:meta])* $name:ident, $prim:ty, $idx:ty) => {
         $(#[$impl_attr])*
         ///
         /// Fully initialized storage.
@@ -269,7 +281,7 @@ macro_rules! define_bufline {
         /// - Shrinking len does not affect drop behavior
         #[rustfmt::skip]
         impl<T, const CAP: usize> $name<'_, T, [T; CAP]> {
-            $crate::define_bufline!(%common_owned_items $name, $idx);
+            $crate::define_bufline!(%common_owned_items $name, $prim, $idx);
 
             /* construct */
 
@@ -450,7 +462,7 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_uninit $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+    (%impl_uninit $(#[$impl_attr:meta])* $name:ident, $prim:ty, $idx:ty) => {
         $(#[$impl_attr])*
         ///
         /// Partially initialized storage.
@@ -465,7 +477,7 @@ macro_rules! define_bufline {
         /// - Real drop operations are meaningful
         /// - `len` controls both logical membership and initialization
         impl<T, const CAP: usize> $name<'_, T, [$crate::MaybeUninit<T>; CAP]> {
-            $crate::define_bufline!(%common_owned_items $name, $idx);
+            $crate::define_bufline!(%common_owned_items $name, $prim, $idx);
 
             /* construct */
 
@@ -676,7 +688,7 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_option $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+    (%impl_option $(#[$impl_attr:meta])* $name:ident, $prim:ty, $idx:ty) => {
         $(#[$impl_attr])*
         ///
         /// Fully initialized storage using `Option<T>` as a drop boundary.
@@ -691,7 +703,7 @@ macro_rules! define_bufline {
         /// - `len` is the number of elements
         /// - Methods never access storage past `len`
         impl<T, const CAP: usize> $name<'_, T, [Option<T>; CAP]> {
-            $crate::define_bufline!(%common_owned_items $name, $idx);
+            $crate::define_bufline!(%common_owned_items $name, $prim, $idx);
 
             /* construct */
 
@@ -866,7 +878,7 @@ macro_rules! define_bufline {
             /// Decrements `len`. Does not preserve order.
             pub fn swap_remove(&mut self, index: $idx) -> Option<T> {
                 if index >= self.len() { return None; }
-                let last = self._len_dec().get();
+                let last = self._len_dec().repr();
                 self._set_len(last);
                 let last_usize = Self::_usize_from_idx(last);
                 if index == last {
@@ -884,7 +896,7 @@ macro_rules! define_bufline {
             /// Decrements `len`. Does not preserve order.
             pub const fn swap_remove_copy(&mut self, index: $idx) -> Option<T> where T: Copy {
                 if Self::_idx_ge(index, self.len()) { return None; }
-                let last = self._len_dec().get();
+                let last = self._len_dec().repr();
                 self._set_len(last);
                 let last_usize = Self::_usize_from_idx(last);
                 if Self::_idx_eq(index, last) {
@@ -911,7 +923,7 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_mut $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+    (%impl_mut $(#[$impl_attr:meta])* $name:ident, $prim:ty, $idx:ty) => {
         $(#[$impl_attr])*
         ///
         /// Buffer view over an exclusive slice.
@@ -925,7 +937,7 @@ macro_rules! define_bufline {
         /// - Dropping or shrinking the buffer does not drop values
         /// - Mutations affect the underlying slice
         impl<'a, T> $name<'a, T, &'a mut [T]> {
-            $crate::define_bufline!(%common_sliced_items $name, $idx);
+            $crate::define_bufline!(%common_sliced_items $name, $prim, $idx);
 
             /* construct */
 
@@ -1060,7 +1072,7 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_ref $(#[$impl_attr:meta])* $name:ident, $idx:ty) => {
+    (%impl_ref $(#[$impl_attr:meta])* $name:ident, $prim:ty, $idx:ty) => {
         $(#[$impl_attr])*
         ///
         /// Read-only buffer view over a shared slice.
@@ -1074,7 +1086,7 @@ macro_rules! define_bufline {
         /// - No mutation or removal operations are supported
         /// - `len` limits the visible prefix
         impl<'a, T> $name<'a, T, &'a [T]> {
-            $crate::define_bufline!(%common_sliced_items $name, $idx);
+            $crate::define_bufline!(%common_sliced_items $name, $prim, $idx);
 
             /// Creates a buffer over a shared slice.
             ///
