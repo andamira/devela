@@ -26,8 +26,7 @@ define_handle! {
 /// bridging raw storage with higher-level structure.
 ///
 /// # Examples
-/// The following defines a simple arena handle type.
-/// See also [`ExampleHandle`].
+/// A simple handle for an arena.
 /// ```
 /// # use devela_base_core::{define_handle, NonExtremeUsize};
 /// define_handle! {
@@ -36,6 +35,7 @@ define_handle! {
 ///     pub MyHandle;
 /// }
 /// ```
+/// See also [`ExampleHandle`].
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! define_handle {
@@ -97,10 +97,11 @@ macro_rules! define_handle {
             ///
             /// Returns `None` if any of the values are invalid.
             #[must_use] #[inline(always)]
-            $vis const fn from_prim(offset: $prim, len: $prim) -> Option<Self> {
-                let offset = $crate::unwrap![some? $crate::MaybeNiche::<$T>::try_from_prim(offset)];
-                let len = $crate::unwrap![some? $crate::MaybeNiche::<$T>::try_from_prim(len)];
-                Some(Self { offset, len })
+            $vis const fn from_prim(offset: $prim, len: $prim)
+                -> Result<Self, $crate::InvalidValue> {
+                let offset = $crate::unwrap![ok? $crate::MaybeNiche::<$T>::try_from_prim(offset)];
+                let len = $crate::unwrap![ok? $crate::MaybeNiche::<$T>::try_from_prim(len)];
+                Ok(Self { offset, len })
             }
 
             // MAYBE: if we gate the unsafe with a macro argument
@@ -142,7 +143,7 @@ macro_rules! define_handle {
             $vis const fn len(self) -> $T { self.len.get() }
             /// Returns the length of the stored data as the corresponding primitive.
             #[must_use] #[inline(always)]
-            $vis const fn len_prim(self) -> $prim { self.len.as_prim() }
+            $vis const fn len_prim(self) -> $prim { self.len.get_prim() }
 
             /// Returns the length of the stored data as a usize.
             #[must_use] #[inline(always)]
@@ -160,7 +161,7 @@ macro_rules! define_handle {
             $vis const fn offset(self) -> $T { self.offset.get() }
             /// Returns the offset of the stored data as the corresponding primitive.
             #[must_use] #[inline(always)]
-            $vis const fn offset_prim(self) -> $prim { self.offset.as_prim() }
+            $vis const fn offset_prim(self) -> $prim { self.offset.get_prim() }
 
             /// Returns the offset of the stored data as a usize.
             #[must_use] #[inline(always)]

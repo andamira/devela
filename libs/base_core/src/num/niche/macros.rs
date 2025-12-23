@@ -7,7 +7,7 @@
 // - macro ne!
 // - macro nv!
 // - macro nz!
-// - struct NicheNew
+// - struct NicheNew (hidden)
 // - tests
 
 /// Generates the `niche_prim!` macro for a closed set of primitive carrier types.

@@ -24,9 +24,9 @@
 // - tests
 
 use crate::{
-    Cast, ConstInitCore, NicheValueError, NonValueI8, NonValueI16, NonValueI32, NonValueI64,
-    NonValueI128, NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128,
-    NonValueUsize, NonZero, Overflow, unwrap,
+    Cast, ConstInitCore, InvalidValue, NicheValueError, NonValueI8, NonValueI16, NonValueI32,
+    NonValueI64, NonValueI128, NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64,
+    NonValueU128, NonValueUsize, NonZero, Overflow, unwrap,
 };
 
 #[doc = crate::_TAG_NUM!()]
@@ -78,7 +78,7 @@ macro_rules! impl_maybe {
      $is_niche:literal, // IS_NICHE
      $prim:ty,
      $T:ty $(, <const $V:ident : $v:ty>)?
-     $(, *$get:ident)?  // for: as_prim
+     $(, *$get:ident)?  // for: get_prim
      $(, ^$new:ident)?  // for: from_prim, *_unchecked
      $(, @$non0:ident)? // identifies nonzero types, for: from_prim_lossy
     ) => {
@@ -111,7 +111,7 @@ macro_rules! impl_maybe {
             pub const MAX: Self = Self(<$T>::MAX);
 
             /// The zero value, if representable by this type.
-            pub const ZERO: Option<Self> = Self::try_from_prim(0);
+            pub const ZERO: Option<Self> = unwrap![ok_some Self::try_from_prim(0)];
 
             /* constructors */
 
@@ -120,10 +120,10 @@ macro_rules! impl_maybe {
             pub const fn new(value: $T) -> Self { Self(value) }
 
             /// Creates a new `MaybeNiche` from a primitive value.
-            ///
-            /// Returns `None` if the primitive value does not satisfy the niche invariants, if any.
+            /// # Errors
+            /// - [`InvalidValue`] if the value violates the validity invariant of `T`.
             #[must_use] #[inline(always)]
-            pub const fn try_from_prim(primitive: $prim) -> Option<Self> {
+            pub const fn try_from_prim(primitive: $prim) -> Result<Self, InvalidValue> {
                 // WAIT: custom attrs on expr https://github.com/rust-lang/rust/issues/54727
                 // Can't use `compile` on expr or stmt, e.g.: return Some(Self(primitive));
                 // so we need to leverage defined functions instead.
@@ -135,7 +135,7 @@ macro_rules! impl_maybe {
                 #[crate::compile(none($($new)?))]
                 const fn _new $(<const $V: $v>)? (v: $prim) -> Option<$T> { Some(v) }
 
-                Some(Self(unwrap![some? _new(primitive)]))
+                Ok(Self(unwrap![some_ok_or? _new(primitive), crate::InvalidValue]))
             }
             /// Creates a new `MaybeNiche` without any checks.
             /// # Safety
@@ -198,7 +198,7 @@ macro_rules! impl_maybe {
             ///   underlying primitive type.
             /// - [`NicheValueError::InvalidValue`] if the value violates the validity
             ///   invariant of `T`.
-            #[must_use] #[inline(always)]
+            #[inline(always)]
             pub const fn try_from_usize(value: usize) -> Result<Self, NicheValueError> {
                 // NonNiche, NonValue, NonZero
                 #[crate::compile(some($($new)?))]
@@ -251,15 +251,25 @@ macro_rules! impl_maybe {
             #[must_use] #[inline(always)]
             pub const fn has_zero(self) -> bool { Self::ZERO.is_some() }
 
-            /* accessors */
+            /* representation access */
 
-            /// Returns a copy of the inner value.
+            /// Returns the validated (niche) representation.
             #[must_use] #[inline(always)]
             pub const fn get(self) -> $T { self.0 }
 
-            /// Returns the primitive value directly.
+            /// Alias of [`get`][Self::get], provided for representational clarity.
             #[must_use] #[inline(always)]
-            pub const fn as_prim(self) -> $prim { self.0 $( . $get() )? }
+            pub const fn repr(self) -> $T { self.get() }
+
+            /* primitive access */
+
+            /// Returns the primitive carrier value.
+            #[must_use] #[inline(always)]
+            pub const fn get_prim(self) -> $prim { self.0 $( . $get() )? }
+
+            /// Alias of [`get_prim`][Self::get_prim], provided for representational clarity.
+            #[must_use] #[inline(always)]
+            pub const fn prim(self) -> $prim { self.get_prim() }
 
             /* casts */
 
@@ -269,17 +279,17 @@ macro_rules! impl_maybe {
             /// Will return [`Overflow`] if `self` can't fit in a `usize`.
             #[inline(always)]
             pub const fn try_to_usize(self) -> Result<usize, Overflow> {
-                Cast(self.as_prim()).checked_cast_to_usize()
+                Cast(self.get_prim()).checked_cast_to_usize()
             }
             /// Converts the value into a `usize`, saturating at the numeric bounds.
             #[must_use] #[inline(always)]
             pub const fn to_usize_saturating(self) -> usize {
-                Cast(self.as_prim()).saturating_cast_to_usize()
+                Cast(self.get_prim()).saturating_cast_to_usize()
             }
             /// Converts the value into a `usize`, wrapping at the numeric bounds.
             #[must_use] #[inline(always)]
             pub const fn to_usize_wrapping(self) -> usize {
-                Cast(self.as_prim()).wrapping_cast_to_usize()
+                Cast(self.get_prim()).wrapping_cast_to_usize()
             }
         }
     };
