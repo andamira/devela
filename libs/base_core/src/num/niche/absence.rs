@@ -89,10 +89,13 @@ macro_rules! impl_maybe {
         impl $(<const $V: $v>)? MaybeNiche<$T> {
             /* constants */
 
-            /// Whether this type supports memory-niche optimization.
+            /// Whether this representation uses a memory niche for layout optimization.
             pub const IS_NICHE: bool = $is_niche;
 
-            /// Whether every primitive value `v` such that `MIN ≤ v ≤ MAX` is representable.
+            /// Whether the representable domain forms a contiguous interval.
+            ///
+            /// That is, whether every primitive value `v` such that
+            /// `MIN <= v <= MAX` is representable.
             pub const IS_CONTIGUOUS: bool = {
                 // primitives, NonNiche, NonZero
                 #[crate::compile(none($(<const $V: $v>)?))]
@@ -105,9 +108,13 @@ macro_rules! impl_maybe {
                 _is_contiguous$(::<$V>)?()
             };
 
-            /// The minimum possible value.
+            /// Whether the representable domain includes negative values.
+            #[allow(unused_comparisons, reason = "for unsigned types")]
+            pub const HAS_NEGATIVE: bool = Self::MIN.prim() < 0;
+
+            /// The minimum representable value.
             pub const MIN: Self = Self(<$T>::MIN);
-            /// The maximum possible value.
+            /// The maximum representable value.
             pub const MAX: Self = Self(<$T>::MAX);
 
             /// The zero value, if representable by this type.
@@ -238,14 +245,19 @@ macro_rules! impl_maybe {
 
             /* queries */
 
-            /// Returns `true` if this type has a memory-niche optimization.
+            /// Returns `true` if this representation uses a memory niche.
             #[must_use] #[inline(always)]
             pub const fn is_niche(self) -> bool { Self::IS_NICHE }
 
-            /// Returns `true` iff every primitive value `v`
-            /// such that `MIN ≤ v ≤ MAX` is representable.
+            /// Returns `true` if the representable domain is contiguous.
+            ///
+            /// That is, if every primitive value `v` such that `MIN <= v <= MAX` is representable.
             #[must_use] #[inline(always)]
             pub const fn is_contiguous(self) -> bool { Self::IS_CONTIGUOUS }
+
+            /// Returns `true` if the representable domain includes negative values.
+            #[must_use] #[inline(always)]
+            pub const fn has_negative(self) -> bool { Self::HAS_NEGATIVE }
 
             /// Returns `true` if this type can represent zero.
             #[must_use] #[inline(always)]
