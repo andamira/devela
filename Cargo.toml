@@ -671,6 +671,18 @@ wide = { workspace = true, optional = true }
 [workspace.dependencies]
 # Can be used by any member of the workspace.
 # ------------------------------------------------------------------------------
+# publish (crates.io valid):
+# devela_base_macros = { version = "0.25.0-wip" } #
+# devela_base_core   = { version = "0.25.0-wip" }
+# devela_base_data   = { version = "0.25.0-wip" }
+# devela_base_num    = { version = "0.25.0-wip" }
+# devela_base_text   = { version = "0.25.0-wip" }
+# devela_base_alloc  = { version = "0.25.0-wip" } #
+# devela_base_std    = { version = "0.25.0-wip" }
+# devela_macros      = { version = "0.25.0-wip" }
+# devela_buildpost   = { version = "0.25.0-wip" }
+
+# dev (local override):
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
 devela_base_data   = { version = "0.25.0-wip", path = "./libs/base_data" }
@@ -679,7 +691,6 @@ devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
-devela             = { version = "0.25.0-wip", path = "./" } #
 devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 
 #* optional external dependencies *#
