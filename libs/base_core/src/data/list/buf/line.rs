@@ -6,24 +6,73 @@
 #[cfg(any(doc, test))]
 define_bufline!(
     #[doc = crate::_TAG_EXAMPLE!()]
-    pub struct BufLineExample: (crate::NonExtremeU8); array, option, ref, mut,
+    pub struct BufLineExample: (crate::NonExtremeU8); array, option, slice_mut, slice,
 
     #[cfg(all(not(base_safe_mem), feature = "unsafe_array"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
     uninit,
 );
 
-/// Defines a `BufLine` type parameterized by an index type.
+/// Defines a linear buffer type over contiguous storage.
 ///
-/// The index type defines the representation used for indexing into the
-/// selected storage backend. It may be a primitive integer type or a
-/// supported niche wrapper over one.
+/// The generated type represents a growable logical prefix over a
+/// contiguous storage backend, using an index type to track length
+/// and element positions.
 ///
-/// # Index type
-/// - Must represent a contiguous integer domain covering all valid indices, including zero.
-/// - Niche wrappers are supported, provided their primitive carrier satisfies
-///   the above constraints (see [`MaybeNiche`][crate::MaybeNiche]).
-/// - Is provided as a token group to allow complex and path-qualified types.
+/// ## Index type requirements
+///
+/// The index type must be non-negative, represent zero, form a contiguous
+/// integer range, and be able to represent the buffer capacity.
+///
+/// Primitive unsigned integers and supported niche wrappers are accepted
+/// (see [`MaybeNiche`][crate::MaybeNiche]).
+///
+/// ## Storage backends
+///
+/// The generated type can support different storage backends depending on
+/// which implementation arms are enabled in the macro invocation.
+///
+/// Each backend determines ownership, initialization, and drop behavior:
+///
+/// - **`array`**
+///   Owned, fully initialized fixed-size array (`[T; CAP]`).
+///   Logical length is tracked independently of initialization.
+///
+/// - **`uninit`**
+///   Owned, partially initialized array (`[MaybeUninit<T>; CAP]`).
+///   Logical length tracks initialization and drop semantics.
+///
+/// - **`option`**
+///   Owned array of options (`[Option<T>; CAP]`).
+///   `Some` marks initialized elements; `None` marks unused slots.
+///
+/// - **`slice_mut`**
+///   Exclusive slice (`&mut [T]`).
+///   The slice provides backing storage and defines capacity.
+///
+/// - **`slice`**
+///   Shared slice (`&[T]`).
+///   Read-only view over a contiguous prefix.
+///
+/// Backends are opt-in and selected by the corresponding macro arguments.
+/// Only the implementations explicitly enabled by the macro are generated.
+///
+/// The available constructors and methods depend on the enabled backends.
+/// All variants interpret their storage as a linear buffer whose elements
+/// occupy a logical prefix of the underlying storage.
+///
+/// ## Example
+/// Define a linear buffer type using an 8-bit index and multiple storage backends:
+/// ```rust
+/// # use devela_base_core::define_bufline;
+/// define_bufline!(
+///     /// Example linear buffer.
+///     pub struct LineBufU8: (u8);
+///     array, option, slice, slice_mut,
+/// );
+/// ```
+//
+// NOTE: The index type is passed as a token group to allow complex or path-qualified types.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! define_bufline {
@@ -37,25 +86,17 @@ macro_rules! define_bufline {
         $($rest:tt)*                                  // optional implementations
     ) => {
         $(#[$struct_attr])*
-        /// Linear index interpreter over contiguous storage.
+        /// Linear buffer over contiguous storage.
         ///
-        /// Interprets a contiguous storage backend as a linear buffer,
-        /// where elements occupy a prefix of the underlying storage.
+        /// Represents a growable logical prefix of an underlying contiguous
+        /// storage backend. Elements occupy the range `0 .. len`, and logical
+        /// indices map directly to physical indices.
         ///
-        /// The storage strategy determines ownership and drop behavior,
-        /// while `len` defines the logical extent of the buffer.
-        ///
-        /// # Invariants
-        /// - `0 <= len <= capacity(S)`
+        /// ## Invariants
+        /// - `len` is within the storage capacity
         /// - Logical element `i` is stored at physical index `i`
         /// - Only elements in `storage[0 .. len)` are considered part of the buffer
         ///
-        /// # Storage backends
-        /// - Owned array (`[T; CAP]`)
-        /// - Owned uninitialized array (`[MaybeUninit<T>; CAP]`)
-        /// - Owned option array (`[Option<T>; CAP]`)
-        /// - Exclusive slice (`&'a mut [T]`)
-        /// - Shared slice (`&'a [T]`)
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name<'a, T, S> {
             storage: S,
@@ -66,7 +107,7 @@ macro_rules! define_bufline {
         $crate::define_bufline!(%impls $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
     };
     (
-        // 2. Optional implementations only (array, uninit, option, ref, mut)
+        // 2. Optional implementations only (array, uninit, option, slice_mut, slice)
 
         impl $name:ident : ($($I:tt)+) ;              // for name, index type
         $($rest:tt)*                                  // optional implementations
@@ -99,18 +140,18 @@ macro_rules! define_bufline {
         $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
     (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; option) => {
         $crate::define_bufline!(%impl_option $(#[$i])* $name, $I, $P); };
-    // mut
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* mut , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $I, $P);
+    // slice_mut
+    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* slice_mut , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_slice_mut $(#[$i])* $name, $I, $P);
         $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; mut) => {
-        $crate::define_bufline!(%impl_mut $(#[$i])* $name, $I, $P); };
-    // ref
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* ref , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $I, $P);
+    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; slice_mut) => {
+        $crate::define_bufline!(%impl_slice_mut $(#[$i])* $name, $I, $P); };
+    // slice
+    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* slice , $($rest:tt)*) => {
+        $crate::define_bufline!(%impl_slice $(#[$i])* $name, $I, $P);
         $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; ref) => {
-        $crate::define_bufline!(%impl_ref $(#[$i])* $name, $I, $P); };
+    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; slice) => {
+        $crate::define_bufline!(%impl_slice $(#[$i])* $name, $I, $P); };
 
     (%impls $name:ident : $_I:ty, $_P:ty ; $(#[$_i:meta])* $impl:ident , $($_r:tt)*) => {
         compile_error!(concat!( "define_bufline!: unknown impl `", stringify!($impl), "`"));
@@ -153,7 +194,7 @@ macro_rules! define_bufline {
 
             /* prim */
 
-            /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
+            /// Returns the given index-typed value as a primitive.
             #[inline(always)]
             const fn _idx_to_prim(from: $I) -> $P { $crate::MaybeNiche(from).prim() }
 
@@ -222,6 +263,8 @@ macro_rules! define_bufline {
     // common items for owned variants
     (%common_owned_items $name:ident, $I:ty, $P:ty) => {
         const _CHECK_INVARIANTS: () = {
+            assert!(!$crate::MaybeNiche::<$I>::HAS_NEGATIVE,
+                "define_bufline! index type must be non-negative");
             assert!($crate::MaybeNiche::<$I>::ZERO.is_some(),
                 "define_bufline! index type cannot represent zero");
             assert!($crate::MaybeNiche::<$I>::IS_CONTIGUOUS,
@@ -245,6 +288,8 @@ macro_rules! define_bufline {
     // common items for slice variants
     (%common_sliced_items $name:ident, $I:ty, $P:ty) => {
         const _CHECK_INVARIANTS: () = {
+            assert!(!$crate::MaybeNiche::<$I>::HAS_NEGATIVE,
+                "define_bufline! index type must be non-negative");
             assert!($crate::MaybeNiche::<$I>::ZERO.is_some(),
                 "define_bufline! index type cannot represent zero");
             assert!($crate::MaybeNiche::<$I>::IS_CONTIGUOUS,
@@ -918,7 +963,7 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_mut $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
+    (%impl_slice_mut $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
         /// Buffer view over an exclusive slice.
@@ -1067,7 +1112,7 @@ macro_rules! define_bufline {
             }
         }
     };
-    (%impl_ref $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
+    (%impl_slice $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
         /// Read-only buffer view over a shared slice.
