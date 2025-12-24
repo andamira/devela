@@ -31,28 +31,59 @@ use crate::{
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
-/// A zero-cost wrapper that abstracts over both niche and non-niche integer types.
+/// A zero-cost wrapper that abstracts over niche and non-niche integer types.
 ///
-/// `MaybeNiche<T>` represents the absence of a commitment to either a niche-optimized
-/// or non-optimized numeric representation.
+/// `MaybeNiche<T>` is a transparent wrapper that preserves the representation
+/// semantics of `T` without imposing a niche choice, and introduces no
+/// invariants of its own.
 ///
-/// It exposes a uniform API for plain integers, `NonNiche`, `NonZero*`, and `NonValue*` variants.
-/// It adds no rules of its own and relies entirely on the invariants of `T`.
+/// It enables niche-agnostic generic code over integer-like representations.
 ///
-/// This is useful when you want code that can switch between optimized and
-/// non-optimized representations without changing any surrounding logic.
-///
-/// Practical note:
-///
-/// `MaybeNiche<T>` serves as an adapter for generic implementations.
-/// It lets macros and monomorphized structures accept any integer-like
-/// representation while remaining fully niche-agnostic.
-///
-/// Used in macros like `define_handle!` to build generic, niche-agnostic
-/// structures without committing to a specific integer representation.
-///
-/// See also [`NonNiche`], which provides a concrete non-optimized representation
+/// See also [`NonNiche`], which provides an explicit non-optimized representation
 /// with the same public API as niche-constrained types.
+///
+/// # Implementations
+///
+/// Implemented for:
+/// - [Primitive integers](#impl-MaybeNiche<u8>):
+///   `u8`, `u16`, `u32`, `u64`, `u128`, `usize`,
+///   `i8`, `i16`, `i32`, `i64`, `i128`, `isize`.
+/// - [`NonNiche<T>`](#impl-MaybeNiche<NonNiche<u8>>) for all supported primitives.
+/// - [`NonZero<T>`](#impl-MaybeNiche<NonZero<u8>>) for all supported primitives.
+/// - [`NonValue*<V>`](#impl-MaybeNiche<NonValueU8<V>>) for all supported primitives.
+///
+/// # Methods and constants
+///
+/// The API is identical across all implementations
+/// (links below point to the `u8` specialization).
+///
+/// - Niche properties: [`IS_NICHE`](#associatedconstant.IS_NICHE),
+///   [`is_niche`](#method.is_niche).
+/// - Contiguity: [`IS_CONTIGUOUS`](#associatedconstant.IS_CONTIGUOUS),
+///   [`is_contiguous`](#method.is_contiguous).
+/// - Signedness: [`HAS_NEGATIVE`](#associatedconstant.HAS_NEGATIVE),
+///   [`has_negative`](#method.has_negative).
+/// - Bounds: [`MIN`](#associatedconstant.MIN), [`MAX`](#associatedconstant.MAX).
+/// - Zero: [`ZERO`](#associatedconstant.ZERO), [`has_zero`](#method.has_zero).
+/// - Construction:
+///   - From `T`:
+///     [`new`](#method.new) / `MaybeNiche(T)`.
+///   - From primitive:
+///     [`try_from_prim`](#method.try_from_prim),
+///     [`from_prim_lossy`](#method.from_prim_lossy).
+///   - From `usize`:
+///     [`try_from_usize`](#method.try_from_usize),
+///     [`from_usize_saturating`](#method.from_usize_saturating),
+///     [`from_usize_wrapping`](#method.from_usize_wrapping).
+/// - Extraction:
+///   - To `T`:
+///     [`get`](#method.get)/[`repr`](#method.repr).
+///   - To primitive:
+///     [`get_prim`](#method.get_prim)/[`prim`](#method.prim).
+///   - To `usize`:
+///     [`try_to_usize`](#method.try_to_usize),
+///     [`to_usize_saturating`](#method.to_usize_saturating),
+///     [`to_usize_wrapping`](#method.to_usize_wrapping).
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MaybeNiche<T: Copy>(pub T);
@@ -78,7 +109,7 @@ macro_rules! impl_maybe {
      $is_niche:literal, // IS_NICHE
      $prim:ty,
      $T:ty $(, <const $V:ident : $v:ty>)?
-     $(, *$get:ident)?  // for: get_prim
+     $(, *$get:ident)?  // for: get_prim, prim
      $(, ^$new:ident)?  // for: from_prim, *_unchecked
      $(, @$non0:ident)? // identifies nonzero types, for: from_prim_lossy
     ) => {
@@ -265,11 +296,11 @@ macro_rules! impl_maybe {
 
             /* representation access */
 
-            /// Returns the validated (niche) representation.
+            /// Returns the validated (niche-aware) representation.
             #[must_use] #[inline(always)]
             pub const fn get(self) -> $T { self.0 }
 
-            /// Alias of [`get`][Self::get], provided for representational clarity.
+            /// Alias of [`get`][Self::get], emphasizing representational access.
             #[must_use] #[inline(always)]
             pub const fn repr(self) -> $T { self.get() }
 
@@ -279,7 +310,7 @@ macro_rules! impl_maybe {
             #[must_use] #[inline(always)]
             pub const fn get_prim(self) -> $prim { self.0 $( . $get() )? }
 
-            /// Alias of [`get_prim`][Self::get_prim], provided for representational clarity.
+            /// Alias of [`get_prim`][Self::get_prim], emphasizing primitive access.
             #[must_use] #[inline(always)]
             pub const fn prim(self) -> $prim { self.get_prim() }
 
