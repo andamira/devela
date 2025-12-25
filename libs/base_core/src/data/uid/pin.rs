@@ -45,8 +45,8 @@ impl<'a> IdPin<'a> {
 mod impl_traits {
     use crate::{IdPin, Ordering, Ptr, impl_trait};
 
-    impl_trait![fmt::Debug for IdPin<'a> |self, f| write!(f, "{}", self.as_usize())];
-    impl_trait![Hash for IdPin<'a> |self, s| self.as_usize().hash(s)];
+    impl_trait![fmt::Debug for IdPin['a]['a] |self, f| write!(f, "{}", self.as_usize())];
+    impl_trait![Hash for IdPin['a]['a] |self, s| self.as_usize().hash(s)];
 
     impl Eq for IdPin<'_> {}
     impl PartialEq for IdPin<'_> {

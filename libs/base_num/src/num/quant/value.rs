@@ -68,10 +68,10 @@ mod core_impls {
         }
     }
 
-    impl_trait! { fmt::Debug for ValueQuant<V, Q> where V, Q |self, f|
+    impl_trait! { fmt::Debug for ValueQuant[V, Q][V, Q] where V, Q |self, f|
        f.debug_struct("ValueQuant").field("v", &self.v).field("q", &self.q).finish()
     }
-    impl_trait! { fmt::Display for ValueQuant<V, Q> where V, Q |self, f|
+    impl_trait! { fmt::Display for ValueQuant[V, Q][V, Q] where V, Q |self, f|
         write!(f, "Value: {}, Quant: {}", self.v, self.q)
     }
 
@@ -106,7 +106,7 @@ mod core_impls {
             }
         }
     }
-    impl_trait! { Hash for ValueQuant<V, Q> where V, Q |self, state|
+    impl_trait! { Hash for ValueQuant[V, Q][V, Q] where V, Q |self, state|
         { self.v.hash(state); self.q.hash(state); }
     }
 }

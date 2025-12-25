@@ -48,22 +48,20 @@ mod core_impls {
     }
     impl<T: Copy> Copy for IntAlloc<T> {}
 
-    impl_trait![fmt::Debug for IntAlloc<T> where T |self, f|
+    impl_trait![fmt::Debug for IntAlloc[T][T] where T |self, f|
         f.debug_tuple("IntAlloc").field(&self.0).finish()
     ];
-    impl_trait![fmt::Display for IntAlloc<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Binary for IntAlloc<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Octal for IntAlloc<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerHex for IntAlloc<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperHex for IntAlloc<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerExp for IntAlloc<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperExp for IntAlloc<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Display for IntAlloc[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Binary for IntAlloc[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Octal for IntAlloc[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerHex for IntAlloc[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperHex for IntAlloc[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerExp for IntAlloc[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperExp for IntAlloc[T][T] where T |self, f| self.0.fmt(f)];
 
     /* eq */
 
-    impl<T: PartialEq> PartialEq for IntAlloc<T> {
-        fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
-    }
+    impl_trait![PartialEq for IntAlloc[T][T] where T |self, o| self.0.eq(&o.0)];
     impl<T: Eq> Eq for IntAlloc<T> {}
     // with the inner value:
     impl<T: PartialEq> PartialEq<T> for IntAlloc<T> {
@@ -89,5 +87,5 @@ mod core_impls {
         }
     }
 
-    impl_trait![Hash for IntAlloc<T> where T |self, s| self.0.hash(s)];
+    impl_trait![Hash for IntAlloc[T][T] where T |self, s| self.0.hash(s)];
 }

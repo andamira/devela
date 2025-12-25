@@ -201,6 +201,7 @@ re-export hidden workspace dependencies from `_dep`.
 - add `location` arms to the `_doc!` macro.
 - update `impl_traits!` macro:
   - add new arms for: `PartialEq`.
+  - change syntax from a single <gen> group to a double [decl][args] group, to support const generics.
 - update `const_assert!` macro:
   - add new arms: `ne_buf`, `ne_str`.
   - add support for comparing slices of primitives and slices of slices of primitives.

@@ -48,16 +48,16 @@ mod core_impls {
     impl<T: Clone> Clone for Bitwise<T> { fn clone(&self) -> Self { Self(self.0.clone()) } }
     impl<T: Copy> Copy for Bitwise<T> {}
 
-    impl_trait![fmt::Debug for Bitwise<T> where T |self, f|
+    impl_trait![fmt::Debug for Bitwise[T][T] where T |self, f|
         f.debug_tuple("Bitwise").field(&self.0).finish()
     ];
-    impl_trait![fmt::Display for Bitwise<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Binary for Bitwise<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Octal for Bitwise<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerHex for Bitwise<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperHex for Bitwise<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerExp for Bitwise<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperExp for Bitwise<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Display for Bitwise[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Binary for Bitwise[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Octal for Bitwise[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerHex for Bitwise[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperHex for Bitwise[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerExp for Bitwise[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperExp for Bitwise[T][T] where T |self, f| self.0.fmt(f)];
 
     impl<T: PartialEq> PartialEq for Bitwise<T> {
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }

@@ -36,16 +36,16 @@ mod core_impls {
     }
     impl<T: Copy> Copy for Frac<T> {}
 
-    impl_trait![fmt::Debug for Frac<T> where T |self, f|
+    impl_trait![fmt::Debug for Frac[T][T] where T |self, f|
         f.debug_tuple("Frac").field(&self.0).finish()
     ];
-    impl_trait![fmt::Display for Frac<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Binary for Frac<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Octal for Frac<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerHex for Frac<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperHex for Frac<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerExp for Frac<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperExp for Frac<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Display for Frac[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Binary for Frac[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Octal for Frac[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerHex for Frac[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperHex for Frac[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerExp for Frac[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperExp for Frac[T][T] where T |self, f| self.0.fmt(f)];
 
-    impl_trait![Hash for Frac<T> where T |self, s| self.0.hash(s)];
+    impl_trait![Hash for Frac[T][T] where T |self, s| self.0.hash(s)];
 }

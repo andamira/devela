@@ -48,16 +48,16 @@ mod core_impls {
     }
     impl<T: Copy> Copy for Int<T> {}
 
-    impl_trait![fmt::Debug for Int<T> where T |self, f|
+    impl_trait![fmt::Debug for Int[T][T] where T |self, f|
         f.debug_tuple("Int").field(&self.0).finish()
     ];
-    impl_trait![fmt::Display for Int<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Binary for Int<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::Octal for Int<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerHex for Int<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperHex for Int<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::LowerExp for Int<T> where T |self, f| self.0.fmt(f)];
-    impl_trait![fmt::UpperExp for Int<T> where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Display for Int[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Binary for Int[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::Octal for Int[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerHex for Int[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperHex for Int[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::LowerExp for Int[T][T] where T |self, f| self.0.fmt(f)];
+    impl_trait![fmt::UpperExp for Int[T][T] where T |self, f| self.0.fmt(f)];
 
     /* eq */
 
@@ -89,7 +89,7 @@ mod core_impls {
         }
     }
 
-    impl_trait![Hash for Int<T> where T |self, s| self.0.hash(s)];
+    impl_trait![Hash for Int[T][T] where T |self, s| self.0.hash(s)];
 
     // with ValueQuant:
     impl<T: PartialEq> PartialEq<ValueQuant<T, T>> for ValueQuant<Int<T>, Int<T>> {

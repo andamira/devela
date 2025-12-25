@@ -64,10 +64,10 @@ macro_rules! type_marker {
         #[derive(Clone, Copy, Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[allow(unused_parens, reason = "can have >1 generics")]
         pub struct $name< $($gen),+ > {
-            _marker: core::marker::PhantomData<($($gen),+)>
+            _marker: $crate::PhantomData<($($gen),+)>
         }
 
-        $crate::impl_trait! { fmt::Display for $name<$($gen),+> |self, f|
+        $crate::impl_trait! { fmt::Display for $name[$($gen),+][$($gen),+] |self, f|
             write![f, "{}", stringify!($name)]
         }
 
@@ -75,7 +75,7 @@ macro_rules! type_marker {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
             #[allow(dead_code)]
             pub const fn new() -> Self {
-                Self { _marker: core::marker::PhantomData }
+                Self { _marker: $crate::PhantomData }
             }
         }
     };

@@ -30,66 +30,35 @@
 ///     write!(f, "S? {{ v: {:?} }}", self.v)
 /// }}
 /// ```
-// IMPROVE: support const-generic arguments, like e.g. for NonValue*
-// IMPROVE? support `$generic` as `ty` instead of `ident` (e.g. for `Divisor`)
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! impl_trait {
     (Hash for
-     $(
-        $type:ident<$($lt:lifetime),* $(,)? $($generic:ident),*>
-        $(where $($bounded:ident),+ )?
-     );+ |$self:ident, $state:ident| $expr:expr) => {
+     $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?);+
+      | $self:ident, $state:ident | $expr:expr) => {
         $(
-            impl<$($lt,)* $($generic,)*> $crate::Hash for $type<$($lt,)* $($generic,)*>
-                $(where $($bounded: $crate::Hash,)+ )? {
+            impl< $($($decl)*)? > $crate::Hash for $type $(<$($args)*>)?
+            $(where $($bounded: $crate::Hash,)+ )? {
                 fn hash<__H: $crate::Hasher>(&$self, $state: &mut __H) { $expr }
             }
         )+
     };
-    (Hash for $($type:ident),+ |$self:ident, $state:ident| $expr:expr) => {
-        $(
-            impl $crate::Hash for $type {
-                fn hash<__H: $crate::Hasher>(&$self, $state: &mut __H) { $expr }
-            }
-        )+
-    };
-
     (PartialEq for
-     $(
-        $type:ident<$($lt:lifetime),* $(,)? $($generic:ident),*>
-        $(where $($bounded:ident),+ )?
-     );+ |$self:ident, $other:ident| $expr:expr) => {
+     $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?);+
+      | $self:ident, $other:ident | $expr:expr) => {
         $(
-            impl<$($lt,)* $($generic,)*> $crate::PartialEq for $type<$($lt,)* $($generic,)*>
-                $(where $($bounded: $crate::PartialEq,)+ )? {
-                fn eq(&$self, $other: &Self) { $expr }
-            }
-        )+
-    };
-    (PartialEq for $($type:ident),+ |$self:ident, $other:ident| $expr:expr) => {
-        $(
-            impl $crate::PartialEq for $type {
+            impl< $($($decl)*)? > $crate::PartialEq for $type $(<$($args)*>)?
+            $(where $($bounded: $crate::PartialEq,)+ )? {
                 fn eq(&$self, $other: &Self) -> bool { $expr }
             }
         )+
     };
-
     (fmt::$trait:ident for
-     $(
-        $type:ident<$($lt:lifetime),* $(,)? $($generic:ident),*>
-        $(where $($bounded:ident),+ )?
-     );+ |$self:ident, $f:ident| $expr:expr) => {
+        $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )? );+
+        | $self:ident, $f:ident | $expr:expr) => {
         $(
-            impl<$($lt,)* $($generic,)*> $crate::$trait for $type<$($lt,)* $($generic,)*>
-                $(where $($bounded: $crate::$trait,)+ )? {
-                fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> { $expr }
-            }
-        )+
-    };
-    (fmt::$trait:ident for $($type:ident),+ |$self:ident, $f:ident| $expr:expr) => {
-        $(
-            impl $crate::$trait for $type {
+            impl< $($($decl)*)? > $crate::$trait for $type $(<$($args)*>)?
+            $(where $($bounded: $crate::$trait,)+ )? {
                 fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> { $expr }
             }
         )+
@@ -110,11 +79,15 @@ mod tests {
     struct GS2<'a, T, U, V> { v1: T, v2: U, _v3: PhantomData<&'a V> }
 
     // multiple types without generics
-    impl_trait!(fmt::Debug for S1, S2 |self, f| {
+    impl_trait!(PartialEq for S1; S2 |self, o| self.v == o.v);
+    impl_trait!(Hash for S1; S2 |self, s| self.v.hash(s));
+    impl_trait!(fmt::Debug for S1; S2 |self, f| {
         write!(f, "S? {{ v: {:?} }}", self.v)
     });
     // multiple types with different generics
-    impl_trait!(fmt::Debug for GS1<T, U> where T, U; GS2<'a, T, U, V> where T, U |self, f| {
+    impl_trait!(fmt::Debug for
+        GS1[T, U][T, U] where T, U;
+        GS2['a, T, U, V]['a, T, U, V] where T, U |self, f| {
         // all sharing the same implementation
         write!(f, "GS? {{ v1: {:?}, v2: {:?} }}", self.v1, self.v2)
     });
