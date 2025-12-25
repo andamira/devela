@@ -3,10 +3,11 @@
 //! Defines [`define_bufline!`].
 //
 
-#[cfg(any(doc, test))]
+#[cfg(any(doc, test, feature = "_docs_min"))]
 define_bufline!(
     #[doc = crate::_TAG_EXAMPLE!()]
-    pub struct BufLineExample: (crate::NonExtremeU8); array, option, slice_mut, slice,
+    pub struct BufLineExample: (crate::NonValueU8<{u8::MAX}>);
+    array, option, slice_mut, slice,
 
     #[cfg(all(not(base_safe_mem), feature = "unsafe_array"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
@@ -40,7 +41,7 @@ define_bufline!(
 ///
 /// - **`uninit`**
 ///   Owned, partially initialized array (`[MaybeUninit<T>; CAP]`).
-///   Logical length tracks initialization and drop semantics.
+///   Logical length tracks initialization and drop.
 ///
 /// - **`option`**
 ///   Owned array of options (`[Option<T>; CAP]`).
@@ -67,10 +68,20 @@ define_bufline!(
 /// # use devela_base_core::define_bufline;
 /// define_bufline!(
 ///     /// Example linear buffer.
-///     pub struct LineBufU8: (u8);
+///     pub struct BufLineU8: (u8);
 ///     array, option, slice, slice_mut,
 /// );
+///
+/// let mut storage = [0u8; 16];
+/// let mut buf = BufLineU8::try_new(&mut storage).unwrap();
+/// buf.push_back(1).unwrap();
+/// buf.push_back(2).unwrap();
+/// assert_eq![buf.pop_back_copy(), Some(2)];
+/// buf.push_back(3).unwrap();
+///
+/// assert_eq!(buf.as_slice(), &[1, 3]);
 /// ```
+/// See also [`BufLineExample`][crate::BufLineExample].
 //
 // NOTE: The index type is passed as a token group to allow complex or path-qualified types.
 #[macro_export]
@@ -112,13 +123,12 @@ macro_rules! define_bufline {
         impl $name:ident : ($($I:tt)+) ;              // for name, index type
         $($rest:tt)*                                  // optional implementations
 
-    /* private macro arms */
-
-    ) => {
+    /* private macro arms */ ) => {
         $crate::define_bufline!(%impls $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
     };
     //% impl group dispatch
-    (%impls $name:ident : $I:ty, $P:ty ;) => {}; // no impls
+    (
+    %impls $name:ident : $I:ty, $P:ty ;) => {}; // no impls
     (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* $impl:ident) => { // last impl
         $crate::define_bufline!(%impl1 $name : $I, $P ; $impl);
     };
@@ -278,10 +288,13 @@ macro_rules! define_bufline {
             let _ = Self::_CHECK_INVARIANTS; // ensure proper eval order
             Self::_usize_to_idx(CAP).repr()
         };
+        /// The fixed capacity of the buffer as the primitive type.
+        pub const CAP_PRIM: $P = Self::_idx_to_prim(Self::CAP);
+
         /// Returns the fixed capacity of the buffer.
         pub const fn capacity(&self) -> $I { Self::CAP }
         /// Returns the fixed capacity of the buffer.
-        pub const fn capacity_prim(&self) -> $P { Self::_idx_to_prim(Self::CAP) }
+        pub const fn capacity_prim(&self) -> $P { Self::CAP_PRIM }
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };

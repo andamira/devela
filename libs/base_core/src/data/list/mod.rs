@@ -4,7 +4,7 @@
 //
 
 mod array;
-mod buf; // BufLine
+mod buf; // define_buflist!
 mod link;
 mod of; // Oneof
 // mod queue;
