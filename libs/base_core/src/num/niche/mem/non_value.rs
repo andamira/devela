@@ -81,26 +81,18 @@ macro_rules! impl_non_value {
     @$name:ident, $n0:ident, $ne:ident, $XTR:ident, $doc:literal, $IP:ty, $s:ident, $b:literal)
         => { $crate::paste! {
 
+        // NOTE: the inner module is necessary to get the full docs for the alias.
         pub use [<__impls_ $name >]::*;
         #[allow(non_snake_case)]
         mod [<__impls_ $name >] {
-            // #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche",
-            // not(base_safe_num)))]
-            // use $crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
-
-            use ::core::num::*;
-            use $crate::{is, unwrap, FromStr, NicheValueError::{self, InvalidValue, Overflow},
-                Debug, Display, FmtResult, Formatter, Binary, Octal, LowerHex, UpperHex,
-            };
-
             /* definition */
 
             #[doc = $crate::_TAG_NUM!()]
             #[doc = $crate::_TAG_NICHE!()]
             #[doc = $doc " integer that is known not to equal some specific value." ]
             ///
-            #[doc = "It has the same memory layout optimization as [`" $n0 "`][core::num::" $n0 "],"]
-            #[doc = " so that `Option<" $name ">` is the same size as `" $name "`."]
+            #[doc = "It has the same memory layout optimization as [`NonZero<" $IP
+            ">`][crate::NonZero], so that `Option<" $name ">` is the same size as `" $name "`."]
             ///
             /// # Examples
             /// ```ignore
@@ -110,7 +102,7 @@ macro_rules! impl_non_value {
             /// ```
             #[doc = "See also [`" $ne "`]."]
             #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-            pub struct $name <const V: $IP>(pub(in crate::num::niche::mem) $n0);
+            pub struct $name <const V: $IP>(pub(in crate::num::niche::mem) $crate::$n0);
 
             /* aliases */
 
@@ -122,7 +114,7 @@ macro_rules! impl_non_value {
             /// Unlike the `NonValue*` types in general, this type alias implements
             /// the [`Default`] and [`ConstInitCore`][crate::ConstInitCore] traits.
             #[doc = crate::_DOCLINK_CONST_INIT!()]
-            pub type $ne = $name <{$IP::$XTR}>;
+            pub type $ne = $crate::$name <{$IP::$XTR}>;
 
             impl Default for $ne {
                 /// # Features
@@ -156,17 +148,17 @@ macro_rules! impl_non_value {
                 /// Returns the maximum possible value.
                 pub const MAX: Self = {
                     if $IP::MAX > V {
-                        unwrap![some Self::new($IP::MAX)]
+                        $crate::unwrap![some Self::new($IP::MAX)]
                     } else {
-                        unwrap![some Self::new($IP::MAX - 1)]
+                        $crate::unwrap![some Self::new($IP::MAX - 1)]
                     }
                 };
                 /// Returns the minimum possible value.
                 pub const MIN: Self = {
                     if $IP::MIN < V {
-                        unwrap![some Self::new($IP::MIN)]
+                        $crate::unwrap![some Self::new($IP::MIN)]
                     } else {
-                        unwrap![some Self::new($IP::MIN + 1)]
+                        $crate::unwrap![some Self::new($IP::MIN + 1)]
                     }
                 };
 
@@ -184,11 +176,11 @@ macro_rules! impl_non_value {
                 pub const fn new(value: $IP) -> Option<Self> {
                     if $IP::MIN == 0 && V == $IP::MAX { // unsigned::MAX optimization
                         if value == V { return None; }
-                        is![let Some(nz) = $n0::new(!value); Some(Self(nz)); None]
+                        $crate::is![let Some(nz) = $crate::$n0::new(!value); Some(Self(nz)); None]
                     } else { // default case: XOR
                         // NOTE: `i*::MIN` uses `LEA`-optimized `value ^ MIN`
                         // (equivalent to `value.wrapping_sub(MIN)`).
-                        is![let Some(nz) = $n0::new(value ^ V); Some(Self(nz)); None]
+                        $crate::is![let Some(nz) = $crate::$n0::new(value ^ V); Some(Self(nz)); None]
                     }
                 }
                 /// Creates a non-value integer, automatically converting the prohibited value `V`
@@ -214,13 +206,14 @@ macro_rules! impl_non_value {
                         let transformed = if value == V { V - 1 } else { value };
                         !transformed
                     } else { // For MIN: choose MIN+1, for others: V-1
-                        let transformed = is![value == V; is![V == $IP::MIN; V + 1; V - 1]; value];
+                        let transformed =
+                            $crate::is![value == V; $crate::is![V == $IP::MIN; V + 1; V - 1]; value];
                         transformed ^ V
                     };
 
                     #[cfg(any(base_safe_num,
                         not(feature = "unsafe_niche")))]
-                    { Self(unwrap![some $n0::new(transformed)]) }
+                    { Self($crate::unwrap![some $crate::$n0::new(transformed)]) }
 
                     #[cfg(all(not(base_safe_num),
                         feature = "unsafe_niche"))]
@@ -235,7 +228,7 @@ macro_rules! impl_non_value {
                                 assert!((V - 1) ^ V != 0); // all others
                             }
                         }
-                        Self($n0::new_unchecked(transformed))
+                        Self($crate::$n0::new_unchecked(transformed))
                     }
                 }
 
@@ -252,7 +245,7 @@ macro_rules! impl_non_value {
                     if value == V { panic!("The given value was specifically prohibited.") }
 
                     // SAFETY: caller must ensure safety
-                    Self(unsafe { $n0::new_unchecked(value ^ V) })
+                    Self(unsafe { $crate::$n0::new_unchecked(value ^ V) })
                 }
 
                 /// Returns the value as a primitive type.
@@ -278,18 +271,26 @@ macro_rules! impl_non_value {
                 /// # Errors
                 /// Returns [`Overflow`] if the operations overflows, or
                 /// [`InvalidValue`] if the result equals the forbidden value `V`.
-                pub const fn checked_add(&self, other: $IP) -> Result<Self, NicheValueError> {
-                    let res = unwrap![some_ok_or? self.get().checked_add(other), Overflow(None)];
-                    unwrap![some_ok_or Self::new(res), InvalidValue]
+                ///
+                /// [`Overflow`]: crate::NicheValueError::Overflow
+                /// [`InvalidValue`]: crate::NicheValueError::InvalidValue
+                pub const fn checked_add(&self, other: $IP) -> Result<Self, $crate::NicheValueError> {
+                    let res = $crate::unwrap![some_ok_or? self.get().checked_add(other),
+                        $crate::NicheValueError::Overflow(None)];
+                    $crate::unwrap![some_ok_or Self::new(res), $crate::NicheValueError::InvalidValue]
                 }
                 /// Checked integer substration. Computes `self - rhs`.
                 ///
                 /// # Errors
-                /// Returns [`Overflow`] if the operations overflows, or
+                /// Returns [`Overflow`][crate::Overflow] if the operations overflows, or
                 /// [`InvalidValue`] if the result equals the forbidden value `V`.
-                pub const fn checked_sub(&self, other: $IP) -> Result<Self, NicheValueError> {
-                    let res = unwrap![some_ok_or? self.get().checked_sub(other), Overflow(None)];
-                    unwrap![some_ok_or Self::new(res), InvalidValue]
+                ///
+                /// [`Overflow`]: crate::NicheValueError::Overflow
+                /// [`InvalidValue`]: crate::NicheValueError::InvalidValue
+                pub const fn checked_sub(&self, other: $IP) -> Result<Self, $crate::NicheValueError> {
+                    let res = $crate::unwrap![some_ok_or? self.get().checked_sub(other),
+                        $crate::NicheValueError::Overflow(None)];
+                    $crate::unwrap![some_ok_or Self::new(res), $crate::NicheValueError::InvalidValue]
                 }
 
                 /// Strict integer addition. Computes `self + rhs`.
@@ -297,16 +298,16 @@ macro_rules! impl_non_value {
                 /// # Panics
                 /// Panics on overflow or if the result equals the forbidden value `V`.
                 pub const fn strict_add(&self, other: $IP) -> Self {
-                    let res = unwrap![some self.get().checked_add(other)];
-                    unwrap![some Self::new(res)]
+                    let res = $crate::unwrap![some self.get().checked_add(other)];
+                    $crate::unwrap![some Self::new(res)]
                 }
                 /// Strict integer substration. Computes `self - rhs`.
                 ///
                 /// # Panics
                 /// Panics on overflow or if the result equals the forbidden value `V`.
                 pub const fn strict_sub(&self, other: $IP) -> Self {
-                    let res = unwrap![some self.get().checked_sub(other)];
-                    unwrap![some Self::new(res)]
+                    let res = $crate::unwrap![some self.get().checked_sub(other)];
+                    $crate::unwrap![some Self::new(res)]
                 }
 
                 /// Saturating integer addition. Computes `self + rhs`.
@@ -315,7 +316,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V - 1`.
                 pub const fn saturating_add(&self, other: $IP) -> Self {
                     let res = self.get().saturating_add(other);
-                    unwrap![some Self::new(is![res == V; res - 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V; res - 1; res])]
                 }
                 /// Saturating integer substration. Computes `self - rhs`.
                 ///
@@ -323,7 +324,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V + 1`.
                 pub const fn saturating_sub(&self, other: $IP) -> Self {
                     let res = self.get().saturating_sub(other);
-                    unwrap![some Self::new(is![res == V; res + 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V; res + 1; res])]
                 }
 
                 /// Wraping integer addition. Computes `self + rhs`.
@@ -332,7 +333,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V + 1`.
                 pub const fn wrapping_add(&self, other: $IP) -> Self {
                     let res = self.get().wrapping_add(other);
-                    unwrap![some Self::new(is![res == V; res + 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V; res + 1; res])]
                 }
                 /// Wraping integer subtraction. Computes `self - rhs`.
                 ///
@@ -340,34 +341,27 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V - 1`.
                 pub const fn wrapping_sub(&self, other: $IP) -> Self {
                     let res = self.get().wrapping_sub(other);
-                    unwrap![some Self::new(is![res == V; res - 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V; res - 1; res])]
                 }
             }
 
             /* core impls */
 
-            impl<const V: $IP> Display for $name <V> {
-                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    write!(f, "{}", self.get()) } }
-            impl<const V: $IP> Debug for $name <V> {
-                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    write!(f, "{}::<{}>({})", stringify!($name), V, self.get()) } }
-            impl<const V: $IP> Binary for $name<V> {
-                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    Binary::fmt(&self.get(), f) } }
-            impl<const V: $IP> Octal for $name<V> {
-                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    Octal::fmt(&self.get(), f) } }
-            impl<const V: $IP> LowerHex for $name<V> {
-                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    LowerHex::fmt(&self.get(), f) } }
-            impl<const V: $IP> UpperHex for $name<V> {
-                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-                    UpperHex::fmt(&self.get(), f) } }
-            impl<const V: $IP> FromStr for $name<V> {
-                type Err = ParseIntError;
-                fn from_str(s: &str) -> Result<Self, Self::Err> {
-                    Self::new($IP::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err()) } }
+            $crate::impl_trait! { fmt::Display for $name[const V: $IP][V] |self, f| {
+                write!(f, "{}", self.get()) } }
+            $crate::impl_trait! { fmt::Debug for $name[const V: $IP][V] |self, f| {
+                write!(f, "{}::<{}>({})", stringify!($name), V, self.get()) }}
+            $crate::impl_trait! { fmt::Binary for $name[const V: $IP][V] |self, f| {
+                $crate::Binary::fmt(&self.get(), f) }}
+            $crate::impl_trait! { fmt::Octal for $name[const V: $IP][V] |self, f| {
+                $crate::Octal::fmt(&self.get(), f) }}
+            $crate::impl_trait! { fmt::LowerHex for $name[const V: $IP][V] |self, f| {
+                $crate::LowerHex::fmt(&self.get(), f) }}
+            $crate::impl_trait! { fmt::UpperHex for $name[const V: $IP][V] |self, f| {
+                $crate::UpperHex::fmt(&self.get(), f) }}
+
+            $crate::impl_trait! { FromStr<$crate::ParseIntError> for $name[const V: $IP][V] |s|
+                { Self::new($IP::from_str(s)?) .ok_or_else(|| "".parse::<i32>().unwrap_err()) }}
 
             /* conversions */
 
