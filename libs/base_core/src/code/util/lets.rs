@@ -56,71 +56,37 @@ macro_rules! _lets {
     (
     // pattern destructuring (struct, tuple, slice)
     $struct:ident { $($pat:tt)+ } = $val:expr, $($rest:tt)*) => { // field struct
-        let $struct { $($pat)+ } = $val;
-        $crate::lets!($($rest)*);
-    };
-    ($struct:ident { $($pat:tt)+ } = $val:expr) => {
-        let $struct { $($pat)+ } = $val;
-    };
+        let $struct { $($pat)+ } = $val; $crate::lets!($($rest)*); };
+    ($struct:ident { $($pat:tt)+ } = $val:expr) => { let $struct { $($pat)+ } = $val; };
     ($struct:ident ( $($pat:tt)+ ) = $val:expr, $($rest:tt)*) => { // tuple struct
-        let $struct ( $($pat)+ ) = $val;
-        $crate::lets!($($rest)*);
-    };
-    ($struct:ident ( $($pat:tt)+ ) = $val:expr) => {
-        let $struct ( $($pat)+ ) = $val;
-    };
+        let $struct ( $($pat)+ ) = $val; $crate::lets!($($rest)*); };
+    ($struct:ident ( $($pat:tt)+ ) = $val:expr) => { let $struct ( $($pat)+ ) = $val; };
     (($($pat:tt)+) = $val:expr, $($rest:tt)*) => { // tuple
-        let ( $($pat)+ ) = $val;
-        $crate::lets!($($rest)*);
-    };
-    (($($pat:tt)+) = $val:expr) => {
-        let ( $($pat)+ ) = $val;
-    };
+        let ( $($pat)+ ) = $val; $crate::lets!($($rest)*); };
+    (($($pat:tt)+) = $val:expr) => { let ( $($pat)+ ) = $val; };
     ([ $($pat:tt)+ ] = $val:expr, $($rest:tt)*) => { // slice
-        let [ $($pat)+ ] = $val;
-        $crate::lets!($($rest)*);
-    };
-    ([ $($pat:tt)+ ] = $val:expr) => {
-        let [ $($pat)+ ] = $val;
-    };
+        let [ $($pat)+ ] = $val; $crate::lets!($($rest)*); };
+    ([ $($pat:tt)+ ] = $val:expr) => { let [ $($pat)+ ] = $val; };
     (
     // individual declarations
     mut $ident:ident $(: $ty:ty)?, $($rest:tt)*) => {
-        let mut $ident $(: $ty)?;
-        $crate::lets!($($rest)*);
-    };
-    (mut $ident:ident $(: $ty:ty)?) => {
-        let mut $ident $(: $ty)?;
-    };
+        let mut $ident $(: $ty)?; $crate::lets!($($rest)*); };
+    (mut $ident:ident $(: $ty:ty)?) => { let mut $ident $(: $ty)?; };
     ($ident:ident $(: $ty:ty)?, $($rest:tt)*) => {
-        let $ident $(: $ty)?;
-        $crate::lets!($($rest)*);
-    };
-    ($ident:ident $(: $ty:ty)?) => {
-        let $ident $(: $ty)?;
-    };
+        let $ident $(: $ty)?; $crate::lets!($($rest)*); };
+    ($ident:ident $(: $ty:ty)?) => { let $ident $(: $ty)?; };
     (
     // individual assignments
     mut $ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
-        let mut $ident $(: $ty)? = $val;
-        $crate::lets!($($rest)*);
-    };
-    (mut $ident:ident $(: $ty:ty)? = $val:expr) => {
-        let mut $ident $(: $ty)? = $val;
-    };
+        let mut $ident $(: $ty)? = $val; $crate::lets!($($rest)*); };
+    (mut $ident:ident $(: $ty:ty)? = $val:expr) => { let mut $ident $(: $ty)? = $val; };
     ($ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
-        let $ident $(: $ty)? = $val;
-        $crate::lets!($($rest)*);
-    };
-    ($ident:ident $(: $ty:ty)? = $val:expr) => {
-        let $ident $(: $ty)? = $val;
-    };
+        let $ident $(: $ty)? = $val; $crate::lets!($($rest)*); };
+    ($ident:ident $(: $ty:ty)? = $val:expr) => { let $ident $(: $ty)? = $val; };
     (
     // shortcuts for associated items
     @$type:ident::{ $($ident:ident=$var:ident),+ $(,)? } $(, $($rest:tt)*)?) => {
-        $( let $ident = $type::$var; )+
-        $crate::lets!($($($rest)*)?);
-    };
+        $( let $ident = $type::$var; )+ $crate::lets!($($($rest)*)?); };
 }
 #[doc(inline)]
 pub use _lets as lets;
