@@ -6,12 +6,40 @@
 #[cfg(any(doc, test, feature = "_docs_min"))]
 define_bufline!(
     #[doc = crate::_TAG_EXAMPLE!()]
+    /// # Methods per storage backend
+    ///
+    /// - For all owned backends (`array`, `uninit`, `option`)
+    ///   - Constants: [`CAP`][Self::CAP] *([_PRIM][Self::CAP_PRIM])*.
+    ///
+    /// - [For all bakends](#impl-BufLineExample<'a,+T,+S>)
+    ///   - Queries: [`len`][Self::len], *([_prim][Self::len_prim])*,
+    ///   [`is_empty`][Self::is_empty].
+    ///
+    /// - [fully initialized array](#impl-BufLineExample<'_,+T,+[T;+CAP]>)
+    /// (`array`)
+    ///   - ...
+    ///
+    /// - [partially initialized array](#impl-BufLineExample<'_,+T,+[MaybeUninit<T>;+CAP]>)
+    /// (`uninit`)<sup title="unsafe implementation">⚠</sup>
+    ///   - ...
+    ///
+    /// - [fully initialized array of options](#impl-BufLineExample<'_,+T,+[Option<T>;+CAP]>)
+    /// (`option`)
+    ///   - ...
+    ///
+    /// - [exclusive slice](#impl-BufLineExample<'a,+T,+%26mut+[T]>) (`slice`)
+    ///   - ...
+    ///
+    /// - [shared slice](#impl-BufLineExample<'a,+T,+%26[T]>) (`slice_mut`)
+    ///   - ...
+    ///
+    /// ---
     pub struct BufLineExample: (crate::NonValueU8<{u8::MAX}>);
-    array, option, slice_mut, slice,
-
+    array,
     #[cfg(all(not(base_safe_mem), feature = "unsafe_array"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
     uninit,
+    option, slice_mut, slice,
 );
 
 /// Defines a linear buffer type over contiguous storage.
@@ -97,6 +125,7 @@ macro_rules! define_bufline {
         $($rest:tt)*                                  // optional implementations
     ) => {
         $(#[$struct_attr])*
+        ///
         /// Linear buffer over contiguous storage.
         ///
         /// Represents a growable logical prefix of an underlying contiguous
@@ -208,6 +237,19 @@ macro_rules! define_bufline {
             #[inline(always)]
             const fn _idx_to_prim(from: $I) -> $P { $crate::MaybeNiche(from).prim() }
 
+            /// Returns the given primitive value as an index type.
+            #[inline(always)]
+            const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
+                $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
+            }
+
+            /// Returns the given primitive value as an index type,
+            /// converting invalid inputs to the closest valid number.
+            #[inline(always)]
+            const fn _prim_to_idx_lossy(from: $P) -> $I {
+                $crate::MaybeNiche::<$I>::from_prim_lossy(from).repr()
+            }
+
             /* usize */
 
             /// The maximum representable value of the index type, as a usize.
@@ -258,7 +300,7 @@ macro_rules! define_bufline {
             }
         }
 
-        /// Common methods.
+        /// Common methods for all backends.
         impl<'a, T, S> $name<'a, T, S> {
             /* queries */
 
@@ -270,8 +312,8 @@ macro_rules! define_bufline {
             pub const fn is_empty(&self) -> bool { self.len.prim() == 0 }
         }
     };
-    // common items for owned variants
-    (%common_owned_items $name:ident, $I:ty, $P:ty) => {
+    // common items for owned variants (array, uninit, option)
+    (%common_owned $name:ident, $I:ty, $P:ty) => {
         const _CHECK_INVARIANTS: () = {
             assert!(!$crate::MaybeNiche::<$I>::HAS_NEGATIVE,
                 "define_bufline! index type must be non-negative");
@@ -298,8 +340,41 @@ macro_rules! define_bufline {
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };
+    // common items for array and slice_mut variants
+    (%common_array_uninit_slice_mut $name:ident, $I:ty, $P:ty) => {
+        /// Iterates over the initialized elements.
+        pub fn iter(&self) -> impl Iterator<Item = &T> {
+            self.as_slice().iter()
+        }
+        /// Iterates mutably over the initialized elements.
+        pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut T> {
+            self.as_mut_slice().iter_mut()
+        }
+
+        /* visitation */
+
+        /// Visits each initialized element without exposing borrow identity.
+        pub fn visit_each<F>(&self, f: F) where for<'v> F: Fn(&'v T) {
+            for x in self.as_slice() { f(x); }
+        }
+        /// Visits each initialized element mutably without exposing borrow identity.
+        pub fn visit_each_mut<F>(&mut self, f: F) where for<'v> F: Fn(&'v mut T) {
+            for x in self.as_mut_slice() { f(x); }
+        }
+
+        /// Visits the initialized prefix as a shared slice of `Some(T)`,
+        /// without exposing borrow identity.
+        pub fn visit_slice<F, R>(&self, f: F)
+            -> R where for<'v> F: FnOnce(&'v [T]) -> R { f(self.as_slice())
+        }
+        /// Visits the initialized prefix as an exclusive slice of `Some(T)`,
+        /// without exposing borrow identity.
+        pub fn visit_mut_slice<F, R>(&mut self, f: F)
+            -> R where for<'v> F: FnOnce(&'v mut [T]) -> R { f(self.as_mut_slice())
+        }
+    };
     // common items for slice variants
-    (%common_sliced_items $name:ident, $I:ty, $P:ty) => {
+    (%common_sliced $name:ident, $I:ty, $P:ty) => {
         const _CHECK_INVARIANTS: () = {
             assert!(!$crate::MaybeNiche::<$I>::HAS_NEGATIVE,
                 "define_bufline! index type must be non-negative");
@@ -321,7 +396,7 @@ macro_rules! define_bufline {
     (%impl_array $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
-        /// Fully initialized storage.
+        /// Fully initialized array.
         ///
         /// # Invariants
         /// - All CAP slots always contain a valid T
@@ -334,7 +409,7 @@ macro_rules! define_bufline {
         /// - Shrinking len does not affect drop behavior
         #[rustfmt::skip]
         impl<T, const CAP: usize> $name<'_, T, [T; CAP]> {
-            $crate::define_bufline!(%common_owned_items $name, $I, $P);
+            $crate::define_bufline!(%common_owned $name, $I, $P);
 
             /* construct */
 
@@ -357,6 +432,11 @@ macro_rules! define_bufline {
                 let len = $crate::unwrap![ok_guaranteed_or_ub
                     $crate::MaybeNiche::<$I>::try_from_prim(min)];
                 Self::_new(array, len)
+            }
+            /// Primitive-index variant of [`from_array_clamped`][Self::from_array_clamped].
+            #[inline(always)]
+            pub fn from_array_clamped_prim(array: [T; CAP], max_len: $P) -> Self {
+                Self::from_array_clamped(array, Self::_prim_to_idx_lossy(max_len))
             }
 
             /// Creates a new buffer by cloning all the possible elements from `src`,
@@ -401,6 +481,12 @@ macro_rules! define_bufline {
             /// If `new_len >= len`, this is a no-op.
             pub const fn truncate(&mut self, new_len: $I) {
                 if Self::_idx_le(new_len, self.len()) { self._set_len(new_len); }
+            }
+            /// Primitive-index variant of [`truncate`][Self::truncate],
+            #[inline(always)]
+            pub const fn truncate_prim(&mut self, new_len: $P) -> Result<(), $crate::InvalidValue> {
+                self.truncate($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
+                Ok(())
             }
 
             /* push */
@@ -501,24 +587,24 @@ macro_rules! define_bufline {
                 Some($crate::Mem::replace(&mut self.storage[index_usize], other))
             }
 
-            /* slice */
+            /* views */
 
             /// Returns the initialized prefix as a slice.
             pub const fn as_slice(&self) -> &[T] {
-                $crate::Slice::range_to(&self.storage, self._len_usize())
+                let len = self._len_usize(); $crate::Slice::range_to(&self.storage, len)
+            }
+            /// Returns the initialized prefix as an exclusive slice.
+            pub fn as_mut_slice(&mut self) -> &mut [T] {
+                let len = self._len_usize(); $crate::Slice::range_to_mut(&mut self.storage, len)
             }
 
-            /// Returns the initialized prefix as a mutable slice.
-            pub fn as_mut_slice(&mut self) -> &mut [T] {
-                let len_usize = self._len_usize();
-                $crate::Slice::range_to_mut(&mut self.storage, len_usize)
-            }
+            $crate::define_bufline!(%common_array_uninit_slice_mut $name, $I, $P);
         }
     };
     (%impl_uninit $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
-        /// Partially initialized storage.
+        /// Partially initialized array.
         ///
         /// # Invariants
         /// - Only slots `0 .. len` are initialized
@@ -530,7 +616,7 @@ macro_rules! define_bufline {
         /// - Real drop operations are meaningful
         /// - `len` controls both logical membership and initialization
         impl<T, const CAP: usize> $name<'_, T, [$crate::MaybeUninit<T>; CAP]> {
-            $crate::define_bufline!(%common_owned_items $name, $I, $P);
+            $crate::define_bufline!(%common_owned $name, $I, $P);
 
             /* construct */
 
@@ -722,7 +808,7 @@ macro_rules! define_bufline {
                 Some(old)
             }
 
-            /* slice */
+            /* views */
 
             /// Returns the initialized prefix as a slice.
             pub const fn as_slice(&self) -> &[T] {
@@ -739,12 +825,14 @@ macro_rules! define_bufline {
                     self.storage.as_mut_ptr() as *mut T, self._len_usize()
                 ) }
             }
+
+            $crate::define_bufline!(%common_array_uninit_slice_mut $name, $I, $P);
         }
     };
     (%impl_option $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
-        /// Fully initialized storage using `Option<T>` as a drop boundary.
+        /// Fully initialized array using `Option<T>` as a drop boundary.
         ///
         /// # Invariants
         /// - Slots `0 .. len` are `Some`
@@ -756,7 +844,7 @@ macro_rules! define_bufline {
         /// - `len` is the number of elements
         /// - Methods never access storage past `len`
         impl<T, const CAP: usize> $name<'_, T, [Option<T>; CAP]> {
-            $crate::define_bufline!(%common_owned_items $name, $I, $P);
+            $crate::define_bufline!(%common_owned $name, $I, $P);
 
             /* construct */
 
@@ -962,7 +1050,7 @@ macro_rules! define_bufline {
                 }
             }
 
-            /* slice */
+            /* views */
 
             /// Returns the initialized prefix as a slice.
             pub const fn as_slice(&self) -> &[Option<T>] {
@@ -973,6 +1061,46 @@ macro_rules! define_bufline {
             pub fn as_mut_slice(&mut self) -> &mut [Option<T>] {
                 let len_usize = self._len_usize();
                 $crate::Slice::range_to_mut(&mut self.storage, len_usize)
+            }
+
+            /// Iterates over the initialized elements.
+            pub fn iter(&self) -> impl Iterator<Item = &T> {
+                let len = self._len_usize();
+                self.storage[..len].iter().map(|x| x.as_ref().unwrap())
+            }
+            /// Iterates mutably over the initialized elements.
+            pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut T> {
+                let len = self._len_usize();
+                self.storage[..len].iter_mut().map(|x| x.as_mut().unwrap())
+            }
+
+            /* visitation */
+
+            /// Visits each initialized element without exposing borrow identity.
+            pub fn visit_each<F>(&self, f: F) where for<'v> F: Fn(&'v T) {
+                let len = self._len_usize();
+                self.storage[..len].iter() // SAFETY: prefix elements are all Some(T)
+                    .for_each(|x| f($crate::unwrap![some_guaranteed_or_ub x.as_ref()]));
+
+            }
+            /// Visits each initialized element mutably without exposing borrow identity.
+            pub fn visit_each_mut<F>(&mut self, f: F) where for<'v> F: Fn(&'v mut T) {
+                let len = self._len_usize();
+                self.storage[..len].iter_mut() // SAFETY: prefix elements are all Some(T)
+                    .for_each(|x| f($crate::unwrap![some_guaranteed_or_ub x.as_mut()]));
+            }
+
+            /// Visits the initialized prefix as a shared slice of `Some(T)`,
+            /// without exposing borrow identity.
+            pub fn visit_slice<F, R>(&self, f: F)
+                -> R where for<'v> F: FnOnce(&'v [Option<T>]) -> R {
+                let len = self._len_usize(); f(&self.storage[..len])
+            }
+            /// Visits the initialized prefix as an exclusive slice of `Some(T)`,
+            /// without exposing borrow identity.
+            pub fn visit_mut_slice<F, R>(&mut self, f: F)
+                -> R where for<'v> F: FnOnce(&'v mut [Option<T>]) -> R {
+                let len = self._len_usize(); f(&mut self.storage[..len])
             }
         }
     };
@@ -990,7 +1118,7 @@ macro_rules! define_bufline {
         /// - Dropping or shrinking the buffer does not drop values
         /// - Mutations affect the underlying slice
         impl<'a, T> $name<'a, T, &'a mut [T]> {
-            $crate::define_bufline!(%common_sliced_items $name, $I, $P);
+            $crate::define_bufline!(%common_sliced $name, $I, $P);
 
             /* construct */
 
@@ -1112,7 +1240,7 @@ macro_rules! define_bufline {
                 Some(&mut self.storage[Self::_idx_to_usize(index)])
             }
 
-            /* slice */
+            /* views */
 
             /// Returns the initialized prefix as a slice.
             pub const fn as_slice(&self) -> &[T] {
@@ -1123,6 +1251,8 @@ macro_rules! define_bufline {
                 let len_usize = self._len_usize();
                 $crate::Slice::range_to_mut(&mut self.storage, len_usize)
             }
+
+            $crate::define_bufline!(%common_array_uninit_slice_mut $name, $I, $P);
         }
     };
     (%impl_slice $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
@@ -1139,7 +1269,7 @@ macro_rules! define_bufline {
         /// - No mutation or removal operations are supported
         /// - `len` limits the visible prefix
         impl<'a, T> $name<'a, T, &'a [T]> {
-            $crate::define_bufline!(%common_sliced_items $name, $I, $P);
+            $crate::define_bufline!(%common_sliced $name, $I, $P);
 
             /// Creates a buffer over a shared slice.
             ///
@@ -1178,9 +1308,27 @@ macro_rules! define_bufline {
                 Some(&self.storage[Self::_idx_to_usize(index)])
             }
 
+            /* views */
+
             /// Returns the initialized prefix as a slice.
             pub const fn as_slice(&self) -> &[T] {
                 $crate::Slice::range_to(&self.storage, self.len.to_usize_saturating())
+            }
+            /// Iterates over the initialized elements.
+            pub fn iter(&self) -> impl Iterator<Item = &T> {
+                let len = self._len_usize(); self.storage[..len].iter()
+            }
+
+            /* visitation */
+
+            /// Visits each initialized element without exposing borrow identity.
+            pub fn visit_each<F>(&self, f: F) where for<'v> F: Fn(&'v T) {
+                let len = self._len_usize(); for item in &self.storage[..len] { f(item); }
+            }
+            /// Visits the initialized prefix as a shared slice
+            /// without exposing borrow identity.
+            pub fn visit_slice<F, R>(&self, f: F) -> R where for<'v> F: FnOnce(&'v [T]) -> R {
+                let len = self._len_usize(); f(&self.storage[..len])
             }
         }
     };
