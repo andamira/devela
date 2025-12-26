@@ -15,11 +15,13 @@
 /// - `Struct( field ) = expr` - tuple struct destructuring
 /// - `@Type::{alias = Item}` - shortcuts to associated items (constants, variants, etc.)
 ///
+/// Supports both commas and semicolons to separate items, and even mixing them up.
+///
 /// # Examples
 /// ```
 /// # use devela_base_core::lets;
 /// // Basic declarations
-/// lets![name = "John", mut age = 30, active: bool = true];
+/// lets! { name = "John", mut age = 30; active: bool = true, }
 ///
 /// // Destructuring structs, tuples and slices
 /// #[derive(Default)] struct PointF { x: i32, y: i32 }
@@ -45,7 +47,7 @@
 /// lets![@OptInt::{S = Some}];
 ///
 /// // Mixed up
-/// lets![mut s = "text", f: f32 = 1.5, @Color::{Y=Yellow, C=Cyan}, c = Y, f2 = f * 2.0];
+/// lets![mut s = "text", f: f32 = 1.5; @Color::{Y=Yellow, C=Cyan}; c = Y, f2 = f * 2.0];
 /// assert_eq![c, Color::Yellow];
 /// assert_eq![f2, 3.0];
 /// ```
@@ -54,61 +56,80 @@
 macro_rules! _lets {
     () => {};
     (
-    // pattern destructuring (struct, tuple, slice)
-    $struct:ident { $($pat:tt)+ } = $val:expr, $($rest:tt)*) => { // field struct
+    // pattern destructuring (struct;, tuple;, slice;,)
+    $struct:ident { $($pat:tt)+ } = $val:expr; $($rest:tt)*) => { // field struct;
+        let $struct { $($pat)+ } = $val; $crate::lets!($($rest)*); };
+    ($struct:ident { $($pat:tt)+ } = $val:expr, $($rest:tt)*) => { // field struct,
         let $struct { $($pat)+ } = $val; $crate::lets!($($rest)*); };
     ($struct:ident { $($pat:tt)+ } = $val:expr) => { let $struct { $($pat)+ } = $val; };
-    ($struct:ident ( $($pat:tt)+ ) = $val:expr, $($rest:tt)*) => { // tuple struct
+    ($struct:ident ( $($pat:tt)+ ) = $val:expr; $($rest:tt)*) => { // tuple struct;
+        let $struct ( $($pat)+ ) = $val; $crate::lets!($($rest)*); };
+    ($struct:ident ( $($pat:tt)+ ) = $val:expr, $($rest:tt)*) => { // tple struct,
         let $struct ( $($pat)+ ) = $val; $crate::lets!($($rest)*); };
     ($struct:ident ( $($pat:tt)+ ) = $val:expr) => { let $struct ( $($pat)+ ) = $val; };
-    (($($pat:tt)+) = $val:expr, $($rest:tt)*) => { // tuple
+    (($($pat:tt)+) = $val:expr; $($rest:tt)*) => { // tuple;
+        let ( $($pat)+ ) = $val; $crate::lets!($($rest)*); };
+    (($($pat:tt)+) = $val:expr, $($rest:tt)*) => { // tuple,
         let ( $($pat)+ ) = $val; $crate::lets!($($rest)*); };
     (($($pat:tt)+) = $val:expr) => { let ( $($pat)+ ) = $val; };
-    ([ $($pat:tt)+ ] = $val:expr, $($rest:tt)*) => { // slice
+    ([ $($pat:tt)+ ] = $val:expr; $($rest:tt)*) => { // slice;
+        let [ $($pat)+ ] = $val; $crate::lets!($($rest)*); };
+    ([ $($pat:tt)+ ] = $val:expr, $($rest:tt)*) => { // slice,
         let [ $($pat)+ ] = $val; $crate::lets!($($rest)*); };
     ([ $($pat:tt)+ ] = $val:expr) => { let [ $($pat)+ ] = $val; };
     (
     // individual declarations
-    mut $ident:ident $(: $ty:ty)?, $($rest:tt)*) => {
+    mut $ident:ident $(: $ty:ty)?; $($rest:tt)*) => { // mut *;
+        let mut $ident $(: $ty)?; $crate::lets!($($rest)*); };
+    (mut $ident:ident $(: $ty:ty)?, $($rest:tt)*) => { // mut *,
         let mut $ident $(: $ty)?; $crate::lets!($($rest)*); };
     (mut $ident:ident $(: $ty:ty)?) => { let mut $ident $(: $ty)?; };
-    ($ident:ident $(: $ty:ty)?, $($rest:tt)*) => {
+    ($ident:ident $(: $ty:ty)?; $($rest:tt)*) => { // *;
+        let $ident $(: $ty)?; $crate::lets!($($rest)*); };
+    ($ident:ident $(: $ty:ty)?, $($rest:tt)*) => { // *,
         let $ident $(: $ty)?; $crate::lets!($($rest)*); };
     ($ident:ident $(: $ty:ty)?) => { let $ident $(: $ty)?; };
     (
     // individual assignments
-    mut $ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
+    mut $ident:ident $(: $ty:ty)? = $val:expr; $($rest:tt)*) => { // mut *;
+        let mut $ident $(: $ty)? = $val; $crate::lets!($($rest)*); };
+    (mut $ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => { // mut *;
         let mut $ident $(: $ty)? = $val; $crate::lets!($($rest)*); };
     (mut $ident:ident $(: $ty:ty)? = $val:expr) => { let mut $ident $(: $ty)? = $val; };
-    ($ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => {
+    ($ident:ident $(: $ty:ty)? = $val:expr; $($rest:tt)*) => { // *;
+        let $ident $(: $ty)? = $val; $crate::lets!($($rest)*); };
+    ($ident:ident $(: $ty:ty)? = $val:expr, $($rest:tt)*) => { // *,
         let $ident $(: $ty)? = $val; $crate::lets!($($rest)*); };
     ($ident:ident $(: $ty:ty)? = $val:expr) => { let $ident $(: $ty)? = $val; };
     (
     // shortcuts for associated items
-    @$type:ident::{ $($ident:ident=$var:ident),+ $(,)? } $(, $($rest:tt)*)?) => {
+    @$type:ident::{ $($ident:ident=$var:ident),+ $(,)? } $(; $($rest:tt)*)?) => { // *;
+        $( let $ident = $type::$var; )+ $crate::lets!($($($rest)*)?); };
+    (@$type:ident::{ $($ident:ident=$var:ident),+ $(,)? } $(, $($rest:tt)*)?) => { // *,
         $( let $ident = $type::$var; )+ $crate::lets!($($($rest)*)?); };
 }
 #[doc(inline)]
 pub use _lets as lets;
 
 #[cfg(test)]
+#[rustfmt::skip]
 mod tests {
     use super::*;
 
     #[test]
     fn test_basic_immutable() {
-        lets![a = 1, b = 2, c = 3];
-        assert_eq!(a, 1);
-        assert_eq!(b, 2);
-        assert_eq!(c, 3);
+        lets![a = 1, b = 2, c = 3]; // comma for separator
+        assert_eq!(a, 1); assert_eq!(b, 2); assert_eq!(c, 3);
+
+        lets![a = 1; b = 2; c = 3]; // semicolon for separator
+        assert_eq!(a, 1); assert_eq!(b, 2); assert_eq!(c, 3);
     }
 
     #[test]
     fn test_basic_mutable() {
         lets![mut a = 1, b = 2];
         a += 1;
-        assert_eq!(a, 2);
-        assert_eq!(b, 2);
+        assert_eq!(a, 2); assert_eq!(b, 2);
     }
 
     #[test]
@@ -119,10 +140,18 @@ mod tests {
     }
 
     #[test]
-    fn test_trailing_comma() {
+    fn test_trailing_separator() {
         lets![a = 1, b = 2,]; // trailing comma
-        assert_eq!(a, 1);
-        assert_eq!(b, 2);
+        assert_eq!(a, 1); assert_eq!(b, 2);
+
+        lets![a = 3; b = 4;]; // trailing semicolon
+        assert_eq!(a, 3); assert_eq!(b, 4);
+
+        // mixed:
+        lets![a = 5; b = 6,]; // first semicolon, then trailing comma
+        assert_eq!(a, 5); assert_eq!(b, 6);
+        lets![a = 7, b = 8;]; // first comma, then trailing semicolon
+        assert_eq!(a, 7); assert_eq!(b, 8);
     }
 
     #[test]
@@ -139,11 +168,7 @@ mod tests {
     #[allow(dead_code, non_snake_case)]
     fn test_enum_scoping() {
         #[derive(Debug, PartialEq)]
-        enum Color {
-            Red,
-            Green,
-            Blue,
-        }
+        enum Color { Red, Green, Blue }
         lets![@Color::{R = Red, G = Green}];
         assert_eq!(R, Color::Red);
         assert_eq!(G, Color::Green);
@@ -153,12 +178,7 @@ mod tests {
     #[allow(dead_code, non_snake_case)]
     fn test_enum_scoping_with_trailing_comma() {
         #[derive(Debug, PartialEq)]
-        enum Direction {
-            Up,
-            Down,
-            Left,
-            Right,
-        }
+        enum Direction { Up, Down, Left, Right }
         lets![@Direction::{U = Up, D = Down,}]; // trailing comma
         assert_eq!(U, Direction::Up);
         assert_eq!(D, Direction::Down);
@@ -168,18 +188,9 @@ mod tests {
     #[allow(dead_code)]
     fn test_mixed_declarations() {
         #[derive(Debug, PartialEq)]
-        enum Status {
-            Active,
-            Inactive,
-        }
+        enum Status { Active, Inactive }
 
-        lets![
-            name = "John",
-            mut age = 30,
-            @Status::{a = Active},
-            status = a,
-            score: f64 = 95.5
-        ];
+        lets![name = "John", mut age = 30, @Status::{a = Active}, status = a, score: f64 = 95.5];
 
         assert_eq!(name, "John");
         age += 1;
@@ -202,10 +213,7 @@ mod tests {
     #[test]
     #[allow(unused)]
     fn test_struct_destructuring() {
-        struct Point {
-            x: i32,
-            y: i32,
-        }
+        struct Point { x: i32, y: i32 }
         let point = Point { x: 10, y: 20 };
 
         lets![Point {x, mut y} = point];
@@ -217,10 +225,7 @@ mod tests {
         assert_eq!(new_x, 10);
         assert_eq!(new_y, 20);
 
-        struct GenericPoint<T> {
-            x: T,
-            y: T,
-        }
+        struct GenericPoint<T> { x: T, y: T }
         lets![GenericPoint { x, y } = GenericPoint { x: 1, y: 2 }];
         assert_eq!(x, 1);
         lets![GenericPoint { x: a, y } = GenericPoint::<f32> { x: 1.0, y: 2.0 }];
@@ -254,14 +259,8 @@ mod tests {
     #[allow(non_snake_case, unused_variables)]
     fn test_complex_mixed() {
         #[derive(Debug, PartialEq)]
-        enum Option {
-            Some,
-            None,
-        }
-        struct Data {
-            value: i32,
-            name: &'static str,
-        }
+        enum Option { Some, None }
+        struct Data { value: i32, name: &'static str }
         lets![
             base = 100,
             mut counter = 0,
@@ -285,14 +284,7 @@ mod tests {
 
     #[test]
     fn test_expression_evaluation() {
-        lets![
-            a = 1 + 2,
-            b = a * 2,
-            c = {
-                let x = 5;
-                x * 2
-            }
-        ];
+        lets![ a = 1 + 2, b = a * 2, c = { let x = 5; x * 2 } ];
         assert_eq!(a, 3);
         assert_eq!(b, 6);
         assert_eq!(c, 10);
