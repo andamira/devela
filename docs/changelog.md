@@ -564,7 +564,7 @@ re-export hidden workspace dependencies from `_dep`.
 ### fmt
 - new macro: `fmtcat`.
 - new trait: `DebugExt`.
-- new types: `FmtNum`, `FmtNumShape`, `FmtWriter`.
+- new types: `FmtNum`, `FmtNumConf`, `FmtNumShape`, `FmtNumSign`, `FmtWriter`.
 - move to [base]:
   - macros: `format_buf!`.
 - remove vendored `numtoa` crate, `NumToStr` trait replaced with `Digits` struct.

@@ -86,7 +86,6 @@ macro_rules! impl_fmtnum_int {
             // pub const fn measure_fmt(self, fmt: IntFmt) -> FmtNumShape {}
         }
     )+};
-    // convenience methods for integers
     (common $($t:ty),+) => {$(
         impl FmtNum<$t> {
             /// Formats the number into a provided buffer and returns it as a byte slice.

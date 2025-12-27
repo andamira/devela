@@ -7,9 +7,9 @@
 mod tests;
 
 // definitions
+mod conf; // FmtNumConf, FmtNumSign
 mod num; // FmtNum
 mod shape; // FmtNumShape
-// conf; // FmtNumConf, FmtNumSign
 
 /* implementations */
 mod float;
@@ -18,6 +18,7 @@ mod int;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            conf::*,
             num::*,
             shape::*,
         };

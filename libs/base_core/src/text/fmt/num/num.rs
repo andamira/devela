@@ -4,6 +4,7 @@
 //
 
 #[doc = crate::_TAG_FMT!()]
+#[doc = crate::_TAG_NUM!()]
 /// Const number formatter.
 ///
 /// Provides a lightweight, allocation-free interface
