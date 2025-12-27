@@ -24,6 +24,34 @@ pub struct FmtNumConf {
     pub fract: u16,
 }
 
+#[rustfmt::skip]
+impl FmtNumConf {
+    /// Sets the sign formatting policy.
+    #[inline(always)]
+    pub const fn set_sign(&mut self, sign: FmtNumSign) { self.sign = sign }
+    /// Returns a copy with the given sign formatting policy.
+    #[inline(always)]
+    pub const fn with_sign(mut self, sign: FmtNumSign) -> Self { self.sign = sign; self }
+
+    /// Sets the minimum number of integral digits (zero-padded).
+    #[inline(always)]
+    pub const fn set_int(&mut self, min: u16) { self.min_integral = min }
+    /// Returns a copy with the given minimum integral digit count.
+    #[inline(always)]
+    pub const fn with_int(mut self, min: u16) -> Self { self.min_integral = min; self }
+
+    /// Sets the number of fractional digits to emit.
+    ///
+    /// For integers, this value is ignored.
+    #[inline(always)]
+    pub const fn set_fract(&mut self, fract: u16) { self.fract = fract }
+    /// Returns a copy with the given fractional digit count.
+    ///
+    /// For integers, this value is ignored.
+    #[inline(always)]
+    pub const fn with_fract(mut self, fract: u16) -> Self { self.fract = fract; self }
+}
+
 #[doc = crate::_TAG_FMT!()]
 #[doc = crate::_TAG_NUM!()]
 /// Controls how the sign of a number is formatted.

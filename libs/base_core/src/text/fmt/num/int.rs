@@ -3,8 +3,8 @@
 //! Implements [`FmtNum`] for all integer primitives.
 //
 
-use super::{FmtNum, FmtNumShape};
-use crate::{Digits, Slice, Str, StringU8, unwrap, write_at};
+use super::{FmtNum, FmtNumConf as Conf, FmtNumShape, FmtNumSign as Sign};
+use crate::{Cmp, Digits, Slice, Str, StringU8, is, unwrap, whilst, write_at};
 
 macro_rules! impl_fmtnum_int {
     () => {
@@ -21,7 +21,7 @@ macro_rules! impl_fmtnum_int {
             ///
             /// The operation is atomic: on failure, nothing is written.
             /// Negative values are preceded by the `'-'` sign.
-            #[inline(always)] #[rustfmt::skip]
+            #[rustfmt::skip]
             pub const fn write(self, buf: &mut [u8], mut pos: usize) -> usize {
                 if self.0 < 0 {
                     let digits = Digits(self.0.wrapping_neg().cast_unsigned()); // abs
@@ -37,6 +37,36 @@ macro_rules! impl_fmtnum_int {
                 }
             }
 
+            /// Writes the integer as ASCII decimal digits into `buf` starting at `pos`,
+            /// using the given formatting configuration.
+            ///
+            /// Returns the number of bytes written, or `0` if the buffer is too small.
+            ///
+            /// The operation is atomic: on failure, nothing is written.
+            /// The emitted sign and any leading zero-padding are controlled by `conf`.
+            #[rustfmt::skip]
+            pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: Conf) -> usize {
+                let neg = self.0 < 0;
+                let emit_sign = match conf.sign {
+                    Sign::NegativeOnly => neg,
+                    Sign::Always => true,
+                    Sign::Never => false,
+                    Sign::PositiveOnly => !neg,
+                };
+                let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
+                // digit counts
+                let digit_count = Digits(abs).count_digits10() as u16;
+                let left_digits = Cmp(digit_count).max(conf.min_integral);
+                // compute required space
+                let needed = (emit_sign as usize) + left_digits as usize;
+                if needed > buf.len().saturating_sub(pos) { return 0; }
+                // emit sign, zero padding and digits
+                if emit_sign { write_at![buf, pos, is![neg; b'-'; b'+']]; }
+                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, pos, b'0']; }}
+                let _ = Digits(abs).write_digits10(buf, pos);
+                needed
+            }
+
             /// Returns the measured shape of the integer to be formatted.
             pub const fn measure(self) -> FmtNumShape {
                 let (prefix, left) = if self.0 < 0 {
@@ -47,12 +77,25 @@ macro_rules! impl_fmtnum_int {
                 FmtNumShape::new(prefix, left, 0)
             }
 
+            /// Returns the measured shape of the number
+            /// when formatted with the given configuration.
+            pub const fn measure_fmt(self, conf: Conf) -> FmtNumShape {
+                let neg = self.0 < 0;
+                let prefix = match conf.sign {
+                    Sign::NegativeOnly => neg as u16,
+                    Sign::Always => 1,
+                    Sign::Never => 0,
+                    Sign::PositiveOnly => (!neg) as u16,
+                };
+                let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
+                let digits = Digits(abs).count_digits10() as u16;
+                let left = Cmp(digits).max(conf.min_integral);
+                FmtNumShape::new(prefix, left, 0)
+            }
+
             // TODO
             // pub const fn write16(self, buf: &mut [u8], pos: usize) -> usize {}
             // pub const fn measure16(self) -> FmtNumShape {}
-            //
-            // pub const fn write_fmt(self, buf: &mut [u8], pos: usize, fmt: FmtInt) -> usize {}
-            // pub const fn measure_fmt(self, fmt: IntFmt) -> FmtNumShape {}
         }
     )+};
     (unsigned $($t:ty),+) => {$(
@@ -71,11 +114,42 @@ macro_rules! impl_fmtnum_int {
                 if needed > buf.len().saturating_sub(pos) { return 0; }
                 digits.write_digits10(buf, pos)
             }
+            /// Writes the integer as ASCII decimal digits into `buf` starting at `pos`,
+            /// using the given formatting configuration.
+            ///
+            /// Returns the number of bytes written, or `0` if the buffer is too small.
+            ///
+            /// The operation is atomic: on failure, nothing is written.
+            /// The emitted sign and any leading zero-padding are controlled by `conf`.
+            pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: Conf) -> usize {
+                let emit_sign = match conf.sign {
+                    Sign::Always | Sign::PositiveOnly => true,
+                    _ => false
+                };
+                // digit counts
+                let digit_count = Digits(self.0).count_digits10() as u16;
+                let left_digits = Cmp(digit_count).max(conf.min_integral);
+                // compute required space
+                let needed = (emit_sign as usize) + left_digits as usize;
+                if needed > buf.len().saturating_sub(pos) { return 0; }
+                // emit sign, zero padding and digits
+                if emit_sign { write_at![buf, pos, b'+']; }
+                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, pos, b'0']; }}
+                let _ = Digits(self.0).write_digits10(buf, pos);
+                needed
+            }
 
             /// Returns the measured shape of the integer to be formatted.
             pub const fn measure(self) -> FmtNumShape {
                 let left = Digits(self.0).count_digits10() as u16;
                 FmtNumShape::new(0, left, 0)
+            }
+            /// Returns the measured shape of the integer to be formatted.
+            pub const fn measure_fmt(self, conf: Conf) -> FmtNumShape {
+                let prefix = match conf.sign { Sign::Always | Sign::PositiveOnly => 1, _ => 0 };
+                let digits = Digits(self.0).count_digits10() as u16;
+                let left = Cmp(digits).max(conf.min_integral);
+                FmtNumShape::new(prefix, left, 0)
             }
 
             // TODO

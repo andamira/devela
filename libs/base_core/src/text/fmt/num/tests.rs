@@ -20,7 +20,7 @@ fn fmtnum_float() {
 }
 
 #[test]
-fn fmtnum_signed() {
+fn fmtnum_int_signed() {
     let mut buf = [0u8; 8];
 
     // unsigned
@@ -39,14 +39,14 @@ fn fmtnum_signed() {
 }
 
 #[test]
-fn fmtnum_unsigned() {
+fn fmtnum_int_unsigned() {
     let mut buf = [0u8; 8];
     let len = FmtNum(255u8).write(&mut buf, 0);
     assert_eq!(&buf[..len], b"255");
 }
 
 #[test]
-fn fmtnum_truncation() {
+fn fmtnum_int_truncation() {
     let mut buf = [0u8; 2];
     let len = FmtNum(1234u32).write(&mut buf, 0);
     // digits not written, since there's not enough space for all four digits
