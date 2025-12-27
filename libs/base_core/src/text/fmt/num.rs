@@ -1,15 +1,40 @@
 // devela_base_core::text::fmt::num
 //
-//! Defines [`FmtNum`].
+//! Defines [`FmtNum`], [`FmtNumShape`].
 //
-// TODO: hexadecimal
-// TODO: binary
-// TODO: octal
-// TODO: floating-point
 
-use crate::{Digits, Float, Slice, Str, StringU8, whilst, write_at};
+use crate::{_TAG_FMT, Digits, Float, Slice, Str, StringU8, unwrap, whilst, write_at};
 
-#[doc = crate::_TAG_FMT!()]
+#[doc = _TAG_FMT!()]
+/// Describes the measured shape of a formatted number.
+///
+/// The shape captures the number of digits on each side of the radix point,
+/// independent of field width, padding, or alignment.
+///
+/// For formats with additional notation (e.g. scientific),
+/// the radix refers to the primary numeric mantissa.
+///
+/// This information is useful for higher-level formatting tasks
+/// such as decimal alignment and column layout.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct FmtNumShape {
+    /// Number of digits to the left of the radix point,
+    /// including any sign or leading numeric zeros.
+    pub left_len: usize,
+
+    /// Number of digits to the right of the radix point.
+    ///
+    /// This is always `0` for integers.
+    ///
+    pub right_len: usize,
+}
+impl FmtNumShape {
+    /// Creates a new numeric shape from left and right digit counts.
+    #[inline(always)] #[rustfmt::skip]
+    pub const fn new(left_len: usize, right_len: usize) -> Self { Self { left_len, right_len } }
+}
+
+#[doc = _TAG_FMT!()]
 /// Const number formatter.
 ///
 /// Provides a lightweight, allocation-free interface
@@ -47,21 +72,42 @@ macro_rules! impl_fmtnum {
         impl FmtNum<$t> {
             /// Writes the integer as ASCII decimal digits into `buf` starting at `pos`.
             ///
-            /// - For negative values, writes a leading `'-'` followed by the absolute digits.
-            /// - Returns the number of bytes written.
+            /// Returns the number of bytes written, or `0` if the buffer is too small.
+            ///
+            /// The operation is atomic: on failure, nothing is written.
+            /// Negative values are preceded by the `'-'` sign.
             #[inline(always)] #[rustfmt::skip]
             pub const fn write(self, buf: &mut [u8], mut pos: usize) -> usize {
-                let n = self.0;
-                if n < 0 {
-                    if pos >= buf.len() { return 0; } // no room for the sign
+                if self.0 < 0 {
+                    let digits = Digits(self.0.wrapping_neg().cast_unsigned()); // abs
+                    let needed = digits.count_digits10() as usize + 1;
+                    if needed > buf.len().saturating_sub(pos) { return 0; }
                     write_at![buf, pos, b'-'];
-                    let abs = n.wrapping_neg().cast_unsigned();
-                    let written = Digits(abs).write_digits10(buf, pos);
-                    1 + written
+                    digits.write_digits10(buf, pos) + 1
                 } else {
-                    Digits(n.cast_unsigned()).write_digits10(buf, pos)
+                    let digits = Digits(self.0.cast_unsigned());
+                    let needed = digits.count_digits10() as usize;
+                    if needed > buf.len().saturating_sub(pos) { return 0; }
+                    digits.write_digits10(buf, pos)
                 }
             }
+
+            /// Returns the measured shape of the integer to be formatted.
+            pub const fn measure(self) -> FmtNumShape {
+                let left = if self.0 < 0 {
+                    Digits(self.0.wrapping_neg().cast_unsigned()).count_digits10() as usize + 1
+                } else {
+                    Digits(self.0.cast_unsigned()).count_digits10() as usize
+                };
+                FmtNumShape::new(left, 0)
+            }
+
+            // TODO
+            // pub const fn write16(self, buf: &mut [u8], pos: usize) -> usize {}
+            // pub const fn measure16(self) -> FmtNumShape {}
+            //
+            // pub const fn write_fmt(self, buf: &mut [u8], pos: usize, fmt: FmtInt) -> usize {}
+            // pub const fn measure_fmt(self, fmt: IntFmt) -> FmtNumShape {}
         }
     )+};
     (unsigned $($t:ty),+) => {$(
@@ -70,28 +116,57 @@ macro_rules! impl_fmtnum {
         impl FmtNum<$t> {
             /// Writes the integer as ASCII decimal digits into `buf` starting at `pos`.
             ///
-            /// - Returns the number of bytes written.
-            /// - Writes nothing if there isn't enough space for the full number.
+            /// Returns the number of bytes written, or `0` if the buffer is too small.
+            ///
+            /// The operation is atomic: on failure, nothing is written.
             #[inline(always)]
-            pub const fn write(self, buf: &mut [u8], off: usize) -> usize {
-                Digits(self.0).write_digits10(buf, off)
+            pub const fn write(self, buf: &mut [u8], pos: usize) -> usize {
+                let digits = Digits(self.0);
+                let needed = digits.count_digits10() as usize;
+                if needed > buf.len().saturating_sub(pos) { return 0; }
+                digits.write_digits10(buf, pos)
             }
+
+            /// Returns the measured shape of the integer to be formatted.
+            pub const fn measure(self) -> FmtNumShape {
+                let left = Digits(self.0).count_digits10() as usize;
+                FmtNumShape::new(left, 0)
+            }
+
+            // TODO
+            // pub const fn write16(self, buf: &mut [u8], pos: usize) -> usize {}
+            // pub const fn measure16(self) -> FmtNumShape {}
+            //
+            // pub const fn write_fmt(self, buf: &mut [u8], pos: usize, fmt: FmtInt) -> usize {}
+            // pub const fn measure_fmt(self, fmt: IntFmt) -> FmtNumShape {}
         }
     )+};
-
-    // only for integers
+    // convenience methods for integers
     (common $($t:ty),+) => {$(
         impl FmtNum<$t> {
             /// Formats the number into a provided buffer and returns it as a byte slice.
+            ///
+            /// This operation is atomic: if the buffer is too small, nothing is written.
             #[inline(always)]
             pub const fn as_bytes_into<'a>(&self, buf: &'a mut [u8]) -> &'a [u8] {
                 let len = self.write(buf, 0);
                 Slice::range_to(buf, len)
             }
+            /// Formats the number into a provided buffer and returns it as some byte slice.
+            ///
+            /// This operation is atomic: if the buffer is too small, nothing is written
+            /// and it returns `None`.
+            #[inline(always)]
+            pub const fn as_bytes_into_checked<'buf>(&self, buf: &'buf mut [u8])
+                -> Option<&'buf [u8]> {
+                let len = self.write(buf, 0);
+                if len == 0 { return None; }
+                Some(Slice::range_to(buf, len))
+            }
 
             /// Formats the number into a provided buffer and returns it as a string slice.
             ///
-            /// The string will be empty if there isn't enough space for the full number.
+            /// This operation is atomic: if the buffer is too small, nothing is written.
             ///
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
@@ -101,21 +176,52 @@ macro_rules! impl_fmtnum {
                 let slice = Slice::range_to(buf, len);
 
                 #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return crate::unwrap![ok Str::from_utf8(slice)];
+                return unwrap![ok Str::from_utf8(slice)];
 
                 #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: the bytes are valid utf-8
+                // SAFETY: the ASCII bytes are always valid utf-8
                 unsafe { Str::from_utf8_unchecked(slice) }
+            }
+            /// Formats the number into a provided buffer and returns it as some string slice.
+            ///
+            /// This operation is atomic: if the buffer is too small, nothing is written
+            /// and it returns `None`.
+            ///
+            /// # Features
+            /// Uses the `unsafe_str` feature to avoid duplicated validation.
+            #[inline(always)]
+            pub const fn as_str_into_checked<'buf>(&self, buf: &'buf mut [u8])
+                -> Option<&'buf str> {
+                let len = self.write(buf, 0);
+                if len == 0 { return None; }
+                let slice = Slice::range_to(buf, len);
+
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                return unwrap![ok_some Str::from_utf8(slice)];
+
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                // SAFETY: the ASCII bytes are always valid utf-8
+                Some(unsafe { Str::from_utf8_unchecked(slice) })
             }
 
             /// Converts the number into an owned fixed-size string.
             ///
-            /// The string will be empty if there isn't enough space for the full number.
+            /// This operation is atomic: if the buffer is too small, it returns an empty string.
             #[inline(always)]
             pub const fn as_string<const N: usize>(&self) -> StringU8<N> {
                 let mut buf = [0u8; N];
                 let len = self.write(&mut buf, 0);
                 StringU8::<N>::_from_array_len_trusted(buf, len as u8)
+            }
+            /// Converts the number into an owned fixed-size string.
+            ///
+            /// This operation is atomic: if the buffer is too small, it returns `None`.
+            #[inline(always)]
+            pub const fn as_string_checked<const N: usize>(&self) -> Option<StringU8<N>> {
+                let mut buf = [0u8; N];
+                let len = self.write(&mut buf, 0);
+                if len == 0 { return None; }
+                Some(StringU8::<N>::_from_array_len_trusted(buf, len as u8))
             }
         }
     )+ };
@@ -242,9 +348,9 @@ mod tests {
         assert_eq!(len, 0);
         assert_eq!(&buf, b"\0\0");
 
-        // For negative numbers the sign is written if it fits, and taken into account
+        // For negative numbers the sign should not be written wither
         let len = FmtNum(-123i32).write(&mut buf, 0);
-        assert_eq!(len, 1);
-        assert_eq!(&buf, b"-\0");
+        assert_eq!(len, 0);
+        assert_eq!(&buf, b"\0\0");
     }
 }

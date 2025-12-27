@@ -7,7 +7,7 @@
 mod buf; // FmtWriter, format_buf!
 mod cat; // fmtcat!
 mod debug; // DebugWith
-mod num; // FmtNum
+mod num; // FmtNum, FmtNumShape
 mod reexports;
 
 crate::structural_mods! { // _mods
