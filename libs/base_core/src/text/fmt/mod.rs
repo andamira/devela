@@ -16,7 +16,7 @@ crate::structural_mods! { // _mods
             buf::*,
             cat::*,
             debug::*,
-            num::*,
+            num::_all::*,
             reexports::*,
         };
     }
