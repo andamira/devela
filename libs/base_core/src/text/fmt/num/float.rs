@@ -44,6 +44,7 @@ macro_rules! impl_fmtnum_float {
                     let multiplier = Float(10.0 as $t).powi(fract_len as i32).0;
                     let fract = (fabs.fract().0 * multiplier) as $u;
                     let written = Digits(fract).write_digits10(buf, pos); // fractional digits
+                    pos += written;
                     let missing = fract_len as usize - written;
                     whilst! { _i in 0..missing; { write_at![buf, pos, b'0']; }}
                 }
@@ -88,6 +89,7 @@ macro_rules! impl_fmtnum_float {
                     let multiplier = Float(10.0 as $t).powi(conf.fract as i32).0;
                     let fract = (fabs.fract().0 * multiplier) as $u;
                     let written = Digits(fract).write_digits10(buf, pos); // fractional digits
+                    pos += written;
                     let missing = conf.fract as usize - written;
                     whilst! { _i in 0..missing; { write_at![buf, pos, b'0']; }}
                 }
