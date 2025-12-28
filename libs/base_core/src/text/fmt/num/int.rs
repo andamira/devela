@@ -4,7 +4,7 @@
 //
 
 use super::{FmtNum, FmtNumConf as Conf, FmtNumShape, FmtNumSign as Sign};
-use crate::{Cmp, Digits, Slice, Str, StringU8, is, unwrap, whilst, write_at};
+use crate::{Cmp, Digits, Slice, Str, StringU8, is, whilst, write_at};
 
 macro_rules! impl_fmtnum_int {
     () => {
@@ -12,8 +12,6 @@ macro_rules! impl_fmtnum_int {
         impl_fmtnum_int!(unsigned u8, u16, u32, u64, u128, usize);
     };
     (signed $($t:ty),+) => {$(
-        impl_fmtnum_int!(common $t);
-
         impl FmtNum<$t> {
             /// Writes the integer as ASCII decimal digits into `buf` starting at `pos`.
             ///
@@ -43,6 +41,7 @@ macro_rules! impl_fmtnum_int {
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
             /// The operation is atomic: on failure, nothing is written.
+            ///
             /// The emitted sign and any leading zero-padding are controlled by `conf`.
             #[rustfmt::skip]
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: Conf) -> usize {
@@ -97,10 +96,9 @@ macro_rules! impl_fmtnum_int {
             // pub const fn write16(self, buf: &mut [u8], pos: usize) -> usize {}
             // pub const fn measure16(self) -> FmtNumShape {}
         }
+        impl_fmtnum_int!(common $t);
     )+};
     (unsigned $($t:ty),+) => {$(
-        impl_fmtnum_int!(common $t);
-
         impl FmtNum<$t> {
             /// Writes the integer as ASCII decimal digits into `buf` starting at `pos`.
             ///
@@ -120,6 +118,7 @@ macro_rules! impl_fmtnum_int {
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
             /// The operation is atomic: on failure, nothing is written.
+            ///
             /// The emitted sign and any leading zero-padding are controlled by `conf`.
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: Conf) -> usize {
                 let emit_sign = match conf.sign {
@@ -144,7 +143,8 @@ macro_rules! impl_fmtnum_int {
                 let left = Digits(self.0).count_digits10() as u16;
                 FmtNumShape::new(0, left, 0)
             }
-            /// Returns the measured shape of the integer to be formatted.
+            /// Returns the measured shape of the integer to be formatted,
+            /// using the given formatting configuration.
             pub const fn measure_fmt(self, conf: Conf) -> FmtNumShape {
                 let prefix = match conf.sign { Sign::Always | Sign::PositiveOnly => 1, _ => 0 };
                 let digits = Digits(self.0).count_digits10() as u16;
@@ -155,91 +155,139 @@ macro_rules! impl_fmtnum_int {
             // TODO
             // pub const fn write16(self, buf: &mut [u8], pos: usize) -> usize {}
             // pub const fn measure16(self) -> FmtNumShape {}
-            //
-            // pub const fn write_fmt(self, buf: &mut [u8], pos: usize, fmt: FmtInt) -> usize {}
-            // pub const fn measure_fmt(self, fmt: IntFmt) -> FmtNumShape {}
         }
+        impl_fmtnum_int!(common $t);
     )+};
     (common $($t:ty),+) => {$(
         impl FmtNum<$t> {
+            /* as_bytes */
+
             /// Formats the number into a provided buffer and returns it as a byte slice.
             ///
-            /// This operation is atomic: if the buffer is too small, nothing is written.
+            /// The operation is atomic: if the buffer is too small, nothing is written.
             #[inline(always)]
-            pub const fn as_bytes_into<'buf>(&self, buf: &'buf mut [u8]) -> &'buf [u8] {
-                let len = self.write(buf, 0);
-                Slice::range_to(buf, len)
+            pub const fn as_bytes_into<'b>(&self, buf: &'b mut [u8]) -> &'b [u8] {
+                let len = self.write(buf, 0); Slice::range_to(buf, len)
             }
+            /// Formats the number into a provided buffer and returns it as a byte slice,
+            /// using the given formatting configuration.
+            ///
+            /// The operation is atomic: if the buffer is too small, nothing is written.
+            #[inline(always)]
+            pub const fn as_bytes_into_fmt<'b>(&self, buf: &'b mut [u8], conf: Conf) -> &'b [u8] {
+                let len = self.write_fmt(buf, 0, conf); Slice::range_to(buf, len)
+            }
+
             /// Formats the number into a provided buffer and returns it as some byte slice.
             ///
-            /// This operation is atomic: if the buffer is too small, nothing is written
+            /// The operation is atomic: if the buffer is too small, nothing is written
             /// and it returns `None`.
             #[inline(always)]
-            pub const fn as_bytes_into_checked<'buf>(&self, buf: &'buf mut [u8])
-                -> Option<&'buf [u8]> {
+            pub const fn as_bytes_into_checked<'b>(&self, buf: &'b mut [u8]) -> Option<&'b [u8]> {
                 let len = self.write(buf, 0);
-                if len == 0 { return None; }
-                Some(Slice::range_to(buf, len))
+                is![len == 0; None; Some(Slice::range_to(buf, len))]
+            }
+            /// Formats the number into a provided buffer and returns it as some byte slice,
+            /// using the given formatting configuration.
+            ///
+            /// The operation is atomic: if the buffer is too small, nothing is written
+            /// and it returns `None`.
+            #[inline(always)]
+            pub const fn as_bytes_into_checked_fmt<'b>(&self, buf: &'b mut [u8], conf: Conf)
+                -> Option<&'b [u8]> {
+                let len = self.write_fmt(buf, 0, conf);
+                is![len == 0; None; Some(Slice::range_to(buf, len))]
+            }
+
+            /* as_str */
+
+            #[inline(always)]
+            const fn _as_str(slice: &[u8]) -> &str {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))] // safe
+                return crate::unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)];
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))] // unsafe
+                // SAFETY: the ASCII bytes are always valid utf-8
+                unsafe { Str::from_utf8_unchecked(slice) }
             }
 
             /// Formats the number into a provided buffer and returns it as a string slice.
             ///
-            /// This operation is atomic: if the buffer is too small, nothing is written.
-            ///
+            /// The operation is atomic: if the buffer is too small, nothing is written.
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
             #[inline(always)]
-            pub const fn as_str_into<'buf>(&self, buf: &'buf mut [u8]) -> &'buf str {
-                let len = self.write(buf, 0);
-                let slice = Slice::range_to(buf, len);
-
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok Str::from_utf8(slice)];
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: the ASCII bytes are always valid utf-8
-                unsafe { Str::from_utf8_unchecked(slice) }
+            pub const fn as_str_into<'b>(&self, buf: &'b mut [u8]) -> &'b str {
+                let len = self.write(buf, 0); Self::_as_str(Slice::range_to(buf, len))
             }
+            /// Formats the number into a provided buffer and returns it as a string slice,
+            /// using the given formatting configuration.
+            ///
+            /// The operation is atomic: if the buffer is too small, nothing is written.
+            /// # Features
+            /// Uses the `unsafe_str` feature to avoid duplicated validation.
+            #[inline(always)]
+            pub const fn as_str_into_fmt<'b>(&self, buf: &'b mut [u8], conf: Conf) -> &'b str {
+                let len = self.write_fmt(buf, 0, conf); Self::_as_str(Slice::range_to(buf, len))
+            }
+
             /// Formats the number into a provided buffer and returns it as some string slice.
             ///
-            /// This operation is atomic: if the buffer is too small, nothing is written
+            /// The operation is atomic: if the buffer is too small, nothing is written
             /// and it returns `None`.
-            ///
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
             #[inline(always)]
-            pub const fn as_str_into_checked<'buf>(&self, buf: &'buf mut [u8])
-                -> Option<&'buf str> {
+            pub const fn as_str_into_checked<'b>(&self, buf: &'b mut [u8]) -> Option<&'b str> {
                 let len = self.write(buf, 0);
-                if len == 0 { return None; }
-                let slice = Slice::range_to(buf, len);
-
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok_some Str::from_utf8(slice)];
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: the ASCII bytes are always valid utf-8
-                Some(unsafe { Str::from_utf8_unchecked(slice) })
+                if len == 0 { None } else { Some(Self::_as_str(Slice::range_to(buf, len))) }
             }
+            /// Formats the number into a provided buffer and returns it as some string slice,
+            /// using the given formatting configuration.
+            ///
+            /// The operation is atomic: if the buffer is too small, nothing is written,
+            /// and it returns `None`.
+            /// # Features
+            /// Uses the `unsafe_str` feature to avoid duplicated validation.
+            #[inline(always)]
+            pub const fn as_str_into_checked_fmt<'b>(&self, buf: &'b mut [u8], conf: Conf)
+                -> Option<&'b str> {
+                let len = self.write_fmt(buf, 0, conf);
+                if len == 0 { None } else { Some(Self::_as_str(Slice::range_to(buf, len))) }
+            }
+
+            /* as_string */
 
             /// Converts the number into an owned fixed-size string.
             ///
-            /// This operation is atomic: if the buffer is too small, it returns an empty string.
-            #[inline(always)]
+            /// The operation is atomic: if the buffer is too small, it returns an empty string.
             pub const fn as_string<const N: usize>(&self) -> StringU8<N> {
-                let mut buf = [0u8; N];
-                let len = self.write(&mut buf, 0);
+                let mut buf = [0u8; N]; let len = self.write(&mut buf, 0);
                 StringU8::<N>::_from_array_len_trusted(buf, len as u8)
             }
+            /// Converts the number into an owned fixed-size string,
+            /// using the given formatting configuration.
+            ///
+            /// The operation is atomic: if the buffer is too small, it returns an empty string.
+            pub const fn as_string_fmt<const N: usize>(&self, conf: Conf) -> StringU8<N> {
+                let mut buf = [0u8; N]; let len = self.write_fmt(&mut buf, 0, conf);
+                StringU8::<N>::_from_array_len_trusted(buf, len as u8)
+            }
+
             /// Converts the number into an owned fixed-size string.
             ///
-            /// This operation is atomic: if the buffer is too small, it returns `None`.
-            #[inline(always)]
+            /// The operation is atomic: if the buffer is too small, it returns `None`.
             pub const fn as_string_checked<const N: usize>(&self) -> Option<StringU8<N>> {
-                let mut buf = [0u8; N];
-                let len = self.write(&mut buf, 0);
-                if len == 0 { return None; }
-                Some(StringU8::<N>::_from_array_len_trusted(buf, len as u8))
+                let mut buf = [0u8; N]; let len = self.write(&mut buf, 0);
+                is![len == 0; None; Some(StringU8::<N>::_from_array_len_trusted(buf, len as u8))]
+            }
+            /// Converts the number into an owned fixed-size string,
+            /// using the given formatting configuration.
+            ///
+            /// The operation is atomic: if the buffer is too small, it returns `None`.
+            pub const fn as_string_checked_fmt<const N: usize>(&self, conf: Conf)
+                -> Option<StringU8<N>> {
+                let mut buf = [0u8; N]; let len = self.write_fmt(&mut buf, 0, conf);
+                is![len == 0; None; Some(StringU8::<N>::_from_array_len_trusted(buf, len as u8))]
             }
         }
     )+ };

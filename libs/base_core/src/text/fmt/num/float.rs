@@ -4,7 +4,7 @@
 //
 
 use super::{FmtNum, FmtNumShape};
-use crate::{Digits, Float, Slice, Str, StringU8, is, unwrap, whilst, write_at};
+use crate::{Digits, Float, Slice, Str, StringU8, is, whilst, write_at};
 
 macro_rules! impl_fmtnum_float {
     () => {
@@ -57,27 +57,35 @@ macro_rules! impl_fmtnum_float {
                 FmtNumShape::new(neg as u16, integ_digits, fract_len)
             }
 
-            //
+            /* as_bytes */
 
             /// Formats the number into a provided buffer and returns it as a byte slice.
             ///
             /// This operation is atomic: if the buffer is too small, nothing is writte.
             #[inline(always)]
-            pub const fn as_bytes_into<'buf>(&self, buf: &'buf mut [u8], fract_len: u16)
-            -> &'buf [u8] {
-                let len = self.write(buf, 0, fract_len);
-                Slice::range_to(buf, len)
+            pub const fn as_bytes_into<'b>(&self, buf: &'b mut [u8], fract_len: u16) -> &'b [u8] {
+                let len = self.write(buf, 0, fract_len); Slice::range_to(buf, len)
             }
             /// Formats the number into a provided buffer and returns it as a byte slice.
             ///
             /// This operation is atomic: if the buffer is too small, nothing is written
             /// and it returns `None`.
             #[inline(always)]
-            pub const fn as_bytes_into_checked<'buf>(&self, buf: &'buf mut [u8], fract_len: u16)
-            -> Option<&'buf [u8]> {
+            pub const fn as_bytes_into_checked<'b>(&self, buf: &'b mut [u8], fract_len: u16)
+            -> Option<&'b [u8]> {
                 let len = self.write(buf, 0, fract_len);
-                if len == 0 { return None; }
-                Some(Slice::range_to(buf, len))
+                if len == 0 { None } else { Some(Slice::range_to(buf, len)) }
+            }
+
+            /* as_str */
+
+            #[inline(always)]
+            const fn _as_str(slice: &[u8]) -> &str {
+                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))] // safe
+                return crate::unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)];
+                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))] // unsafe
+                // SAFETY: the ASCII bytes are always valid utf-8
+                unsafe { Str::from_utf8_unchecked(slice) }
             }
 
             /// Formats the number into a provided buffer and returns it as a string slice.
@@ -87,17 +95,8 @@ macro_rules! impl_fmtnum_float {
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
             #[inline(always)]
-            pub const fn as_str_into<'buf>(&self, buf: &'buf mut [u8], fract_len: u16)
-            -> &'buf str {
-                let len = self.write(buf, 0, fract_len);
-                let slice = Slice::range_to(buf, len);
-
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok Str::from_utf8(slice)];
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: the bytes are valid utf-8
-                unsafe { Str::from_utf8_unchecked(slice) }
+            pub const fn as_str_into<'b>(&self, buf: &'b mut [u8], fract_len: u16) -> &'b str {
+                let len = self.write(buf, 0, fract_len); Self::_as_str(Slice::range_to(buf, len))
             }
             /// Formats the number into a provided buffer and returns it as a string slice.
             ///
@@ -106,27 +105,20 @@ macro_rules! impl_fmtnum_float {
             ///
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
-            pub const fn as_str_into_checked<'buf>(&self, buf: &'buf mut [u8], fract_len: u16)
-            -> Option<&'buf str> {
+            pub const fn as_str_into_checked<'b>(&self, buf: &'b mut [u8], fract_len: u16)
+            -> Option<&'b str> {
                 let len = self.write(buf, 0, fract_len);
-                if len == 0 { return None; }
-                let slice = Slice::range_to(buf, len);
-
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
-                return unwrap![ok_some Str::from_utf8(slice)];
-
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-                // SAFETY: the ASCII bytes are always valid utf-8
-                Some(unsafe { Str::from_utf8_unchecked(slice) })
+                if len == 0 { None } else { Some(Self::_as_str(Slice::range_to(buf, len))) }
             }
+
+            /* as_string */
 
             /// Converts the number into an owned fixed-size string.
             ///
             /// This operation is atomic: if the buffer is too small, it returns an empty string.
             #[inline(always)]
             pub const fn as_string<const N: usize>(&self, fract_len: u16) -> StringU8<N> {
-                let mut buf = [0u8; N];
-                let len = self.write(&mut buf, 0, fract_len);
+                let mut buf = [0u8; N]; let len = self.write(&mut buf, 0, fract_len);
                 StringU8::<N>::_from_array_len_trusted(buf, len as u8)
             }
             /// Converts the number into an owned fixed-size string.
@@ -135,10 +127,8 @@ macro_rules! impl_fmtnum_float {
             #[inline(always)]
             pub const fn as_string_checked<const N: usize>(&self, fract_len: u16)
                 -> Option<StringU8<N>> {
-                let mut buf = [0u8; N];
-                let len = self.write(&mut buf, 0, fract_len);
-                if len == 0 { return None; }
-                Some(StringU8::<N>::_from_array_len_trusted(buf, len as u8))
+                let mut buf = [0u8; N]; let len = self.write(&mut buf, 0, fract_len);
+                is![len == 0; None; Some(StringU8::<N>::_from_array_len_trusted(buf, len as u8))]
             }
         }
     )+ };
