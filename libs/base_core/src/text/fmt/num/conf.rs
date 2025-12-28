@@ -35,6 +35,15 @@ impl ConstInitCore for FmtNumConf {
 
 #[rustfmt::skip]
 impl FmtNumConf {
+    /// Creates a default formatting configuration.
+    ///
+    /// This sets:
+    /// - the default sign policy,
+    /// - no minimum integral digit count,
+    /// - and zero fractional digits.
+    #[inline(always)]
+    pub const fn new() -> Self { Self::INIT }
+
     /// Creates a formatting configuration for integers.
     ///
     /// This sets:

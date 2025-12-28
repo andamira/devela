@@ -1,6 +1,6 @@
 // devela_base_core::text::fmt::num::tests
 
-use super::*;
+use super::{FmtNumConf as Conf, FmtNumShape as Shape, FmtNumSign as Sign, *};
 
 #[test] #[rustfmt::skip]
 fn fmtnum_float() {
@@ -17,6 +17,21 @@ fn fmtnum_float() {
 
     let f = FmtNum(1.2f32); assert_eq!(f.measure(2).total(), 4);
     let s = f.as_str_into(&mut buf, 2); assert_eq!(s, "1.20");
+}
+
+#[test] #[rustfmt::skip]
+fn fmtnum_float_conf() {
+    let mut buf = [0u8; 8];
+    let mut c = Conf::new();
+
+    let f = FmtNum(-1.2f32);
+    let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-1");
+    c.set_fract(3);
+    let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-1.200");
+    c.set_int(2);
+    let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-01.200");
+    c.set_sign(Sign::Never);
+    let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "01.200");
 }
 
 #[test]
@@ -57,4 +72,19 @@ fn fmtnum_int_truncation() {
     let len = FmtNum(-123i32).write(&mut buf, 0);
     assert_eq!(len, 0);
     assert_eq!(&buf, b"\0\0");
+}
+
+#[test] #[rustfmt::skip]
+fn fmtnum_int_conf() {
+    let mut buf = [0u8; 8];
+    let mut c = Conf::new();
+
+    let i = FmtNum(-42_i32);
+    let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-42");
+    c.set_fract(3);
+    let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-42");
+    c.set_int(4);
+    let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-0042");
+    c.set_sign(Sign::Never);
+    let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "0042");
 }
