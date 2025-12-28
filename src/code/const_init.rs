@@ -155,6 +155,8 @@ mod impl_devela_base_core {
         Distance, Extent, Orientation, Position, Stride,
         // text::char
         CharAscii, char7, char8, char16, charu, charu_niche,
+        // text::fmt
+        FmtNumConf, FmtNumSign,
         // text::str
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
         // ui
@@ -184,6 +186,8 @@ mod impl_devela_base_core {
 
     // text
     _impl_init![%Sealed%: CharAscii, char7, char8, char16, charu, charu_niche];
+    _impl_init![%Sealed%: FmtNumConf, FmtNumSign];
+
     impl<const CAP: usize> Sealed for StringNonul<CAP> {}
     macro_rules! _stringu {
         () => { _stringu![u8, u16, u32, usize]; };

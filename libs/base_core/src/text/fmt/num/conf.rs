@@ -2,9 +2,14 @@
 //
 //! Defines [`FmtNumConf`], [`FmtNumSign`].
 //
+// TOC
+// struct FmtNumConf
+// enum FmtNumSign
 
-#[doc = crate::_TAG_FMT!()]
-#[doc = crate::_TAG_NUM!()]
+use crate::{_TAG_FMT, _TAG_NUM, ConstInitCore, Sign};
+
+#[doc = _TAG_FMT!()]
+#[doc = _TAG_NUM!()]
 /// Configuration for numeric formatting.
 ///
 /// This configuration applies uniformly to integers and floating-point numbers.
@@ -15,7 +20,7 @@ pub struct FmtNumConf {
     pub sign: FmtNumSign,
 
     /// Minimum number of digits in the integral part (zero-padded).
-    pub min_integral: u16,
+    pub int: u16,
 
     /// Number of fractional digits to emit.
     ///
@@ -24,8 +29,32 @@ pub struct FmtNumConf {
     pub fract: u16,
 }
 
+impl ConstInitCore for FmtNumConf {
+    const INIT: Self = FmtNumConf { sign: FmtNumSign::INIT, int: 0, fract: 0 };
+}
+
 #[rustfmt::skip]
 impl FmtNumConf {
+    /// Creates a formatting configuration for integers.
+    ///
+    /// This sets:
+    /// - the default sign policy,
+    /// - a minimum integral digit count,
+    /// - and zero fractional digits.
+    #[inline(always)]
+    pub const fn new_int(int: u16) -> Self { Self::INIT.with_int(int) }
+
+    /// Creates a formatting configuration for fixed-point floating-point numbers.
+    ///
+    /// This sets:
+    /// - the default sign policy,
+    /// - a minimum integral digit count,
+    /// - and a fixed number of fractional digits.
+    #[inline(always)]
+    pub const fn new_float(int: u16, fract: u16) -> Self { Self::new_int(int).with_fract(fract) }
+
+    //
+
     /// Sets the sign formatting policy.
     #[inline(always)]
     pub const fn set_sign(&mut self, sign: FmtNumSign) { self.sign = sign }
@@ -35,10 +64,10 @@ impl FmtNumConf {
 
     /// Sets the minimum number of integral digits (zero-padded).
     #[inline(always)]
-    pub const fn set_int(&mut self, min: u16) { self.min_integral = min }
+    pub const fn set_int(&mut self, int: u16) { self.int = int }
     /// Returns a copy with the given minimum integral digit count.
     #[inline(always)]
-    pub const fn with_int(mut self, min: u16) -> Self { self.min_integral = min; self }
+    pub const fn with_int(mut self, int: u16) -> Self { self.int = int; self }
 
     /// Sets the number of fractional digits to emit.
     ///
@@ -52,8 +81,8 @@ impl FmtNumConf {
     pub const fn with_fract(mut self, fract: u16) -> Self { self.fract = fract; self }
 }
 
-#[doc = crate::_TAG_FMT!()]
-#[doc = crate::_TAG_NUM!()]
+#[doc = _TAG_FMT!()]
+#[doc = _TAG_NUM!()]
 /// Controls how the sign of a number is formatted.
 ///
 /// This enum specifies whether a sign glyph (`'-'` or `'+'`) is emitted,
@@ -78,4 +107,22 @@ pub enum FmtNumSign {
     /// Only print '+' for positive numbers.
     /// (`-42 → 42`, `42 → +42`)
     PositiveOnly,
+}
+
+impl ConstInitCore for FmtNumSign {
+    const INIT: Self = FmtNumSign::NegativeOnly;
+}
+
+impl FmtNumSign {
+    /// Returns a formatting sign policy derived from a numeric sign.
+    ///
+    /// This maps:
+    /// - `Negative` → `NegativeOnly`
+    /// - `Zero | Positive` → `PositiveOnly`
+    pub const fn from_quant(sign: Sign) -> Self {
+        match sign {
+            Sign::Negative => Self::NegativeOnly,
+            Sign::Zero | Sign::Positive => Self::PositiveOnly,
+        }
+    }
 }

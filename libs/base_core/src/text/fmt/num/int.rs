@@ -56,7 +56,7 @@ macro_rules! impl_fmtnum_int {
                 let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
                 // digit counts
                 let digit_count = Digits(abs).count_digits10() as u16;
-                let left_digits = Cmp(digit_count).max(conf.min_integral);
+                let left_digits = Cmp(digit_count).max(conf.int);
                 // compute required space
                 let needed = (emit_sign as usize) + left_digits as usize;
                 if needed > buf.len().saturating_sub(pos) { return 0; }
@@ -89,7 +89,7 @@ macro_rules! impl_fmtnum_int {
                 };
                 let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
                 let digits = Digits(abs).count_digits10() as u16;
-                let left = Cmp(digits).max(conf.min_integral);
+                let left = Cmp(digits).max(conf.int);
                 FmtNumShape::new(prefix, left, 0)
             }
 
@@ -128,7 +128,7 @@ macro_rules! impl_fmtnum_int {
                 };
                 // digit counts
                 let digit_count = Digits(self.0).count_digits10() as u16;
-                let left_digits = Cmp(digit_count).max(conf.min_integral);
+                let left_digits = Cmp(digit_count).max(conf.int);
                 // compute required space
                 let needed = (emit_sign as usize) + left_digits as usize;
                 if needed > buf.len().saturating_sub(pos) { return 0; }
@@ -148,7 +148,7 @@ macro_rules! impl_fmtnum_int {
             pub const fn measure_fmt(self, conf: Conf) -> FmtNumShape {
                 let prefix = match conf.sign { Sign::Always | Sign::PositiveOnly => 1, _ => 0 };
                 let digits = Digits(self.0).count_digits10() as u16;
-                let left = Cmp(digits).max(conf.min_integral);
+                let left = Cmp(digits).max(conf.int);
                 FmtNumShape::new(prefix, left, 0)
             }
 
