@@ -55,7 +55,11 @@ macro_rules! impl_fmtnum_int {
                 let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
                 // digit count
                 let digit_count = Digits(abs).count_digits10() as u16;
-                let left_digits = Cmp(digit_count).max(conf.int);
+                let left_digits = if conf.pad_sign && emit_sign {
+                    Cmp(digit_count + 1).max(conf.int) - 1
+                } else {
+                    Cmp(digit_count).max(conf.int)
+                };
                 // compute required space
                 let needed = (emit_sign as usize) + left_digits as usize;
                 if needed > buf.len().saturating_sub(pos) { return 0; }
@@ -76,7 +80,7 @@ macro_rules! impl_fmtnum_int {
                 Shape::new(prefix, left, 0)
             }
 
-            /// Returns the measured shape of the number
+            /// Returns the measured shape of the integer
             /// when formatted with the given configuration.
             pub const fn measure_fmt(self, conf: Conf) -> Shape {
                 let neg = self.0 < 0;
@@ -88,7 +92,8 @@ macro_rules! impl_fmtnum_int {
                 };
                 let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
                 let digits = Digits(abs).count_digits10() as u16;
-                let left = Cmp(digits).max(conf.int);
+                let left = if conf.pad_sign && prefix > 0 { Cmp(digits + 1).max(conf.int) - 1 }
+                else { Cmp(digits).max(conf.int) };
                 Shape::new(prefix, left, 0)
             }
 

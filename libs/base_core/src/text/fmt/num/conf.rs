@@ -19,6 +19,9 @@ pub struct FmtNumConf {
     /// Whether to emit a sign and which one (+ / - / none).
     pub sign: FmtNumSign,
 
+    /// Whether the sign prefix participates in zero-padding.
+    pub pad_sign: bool,
+
     /// Minimum number of digits in the integral part (zero-padded).
     pub int: u16,
 
@@ -30,11 +33,18 @@ pub struct FmtNumConf {
 }
 
 impl ConstInitCore for FmtNumConf {
-    const INIT: Self = FmtNumConf { sign: FmtNumSign::INIT, int: 0, fract: 0 };
+    const INIT: Self = FmtNumConf {
+        sign: FmtNumSign::INIT,
+        pad_sign: false,
+        int: 0,
+        fract: 0,
+    };
 }
 
 #[rustfmt::skip]
 impl FmtNumConf {
+    const _SIZE: () = const { assert![size_of::<Self>() == 6]; };
+
     /// Creates a default formatting configuration.
     ///
     /// This sets:
@@ -70,6 +80,13 @@ impl FmtNumConf {
     /// Returns a copy with the given sign formatting policy.
     #[inline(always)]
     pub const fn with_sign(mut self, sign: FmtNumSign) -> Self { self.sign = sign; self }
+
+    /// Sets the sign padding influence policy.
+    #[inline(always)]
+    pub const fn set_pad_sign(&mut self, pad_sign: bool) { self.pad_sign = pad_sign }
+    /// Returns a copy with the given sign padding influence policy.
+    #[inline(always)]
+    pub const fn with_pad_sign(mut self, pad_sign: bool) -> Self { self.pad_sign = pad_sign; self }
 
     /// Sets the minimum number of integral digits (zero-padded).
     #[inline(always)]

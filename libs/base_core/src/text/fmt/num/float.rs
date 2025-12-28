@@ -71,7 +71,11 @@ macro_rules! impl_fmtnum_float {
                 // digit count of integral part
                 let integ = fabs.trunc().0 as $u;
                 let digit_count = Digits(integ).count_digits10() as u16;
-                let left_digits = Cmp(digit_count).max(conf.int);
+                let left_digits = if conf.pad_sign && emit_sign {
+                    Cmp(digit_count + 1).max(conf.int) - 1
+                } else {
+                    Cmp(digit_count).max(conf.int)
+                };
                 // compute required space
                 let (sign_len, dot_len) = (emit_sign as usize, (conf.fract > 0) as usize);
                 let needed = sign_len + (left_digits as usize) + dot_len + (conf.fract as usize);
@@ -96,10 +100,10 @@ macro_rules! impl_fmtnum_float {
             pub const fn measure(self, fract_len: u16) -> Shape {
                 let f = Float(self.0);
                 let (neg, fabs) = is![f.is_sign_negative(); (true, f.abs()); (false, f)];
-                let integ_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
-                Shape::new(neg as u16, integ_digits, fract_len)
+                let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
+                Shape::new(neg as u16, int_digits, fract_len)
             }
-            /// Returns the measured shape of the integer to be formatted,
+            /// Returns the measured shape of the floating-point to be formatted,
             /// using the given formatting configuration.
             pub const fn measure_fmt(self, conf: Conf) -> Shape {
                 let f = Float(self.0);
@@ -110,8 +114,10 @@ macro_rules! impl_fmtnum_float {
                     Sign::Never => 0,
                     Sign::PositiveOnly => (!neg) as u16,
                 };
-                let integ_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
-                Shape::new(prefix, integ_digits, conf.fract)
+                let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
+                let left = if conf.pad_sign && prefix > 0 { Cmp(int_digits + 1).max(conf.int) - 1 }
+                else { Cmp(int_digits).max(conf.int) };
+                Shape::new(prefix, left, conf.fract)
             }
 
             // TODO

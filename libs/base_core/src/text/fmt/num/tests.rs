@@ -1,6 +1,8 @@
 // devela_base_core::text::fmt::num::tests
 
-use super::{FmtNumConf as Conf, FmtNumShape as Shape, FmtNumSign as Sign, *};
+use super::{FmtNumConf as Conf, FmtNumSign as Sign, *};
+
+/* float */
 
 #[test] #[rustfmt::skip]
 fn fmtnum_float() {
@@ -30,9 +32,13 @@ fn fmtnum_float_conf() {
     let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-1.200");
     c.set_int(2);
     let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-01.200");
+    c.set_pad_sign(true);
+    let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-1.200");
     c.set_sign(Sign::Never);
     let s = f.as_str_into_fmt(&mut buf, c); assert_eq!(s, "01.200");
 }
+
+/* integers */
 
 #[test]
 fn fmtnum_int_signed() {
@@ -85,6 +91,8 @@ fn fmtnum_int_conf() {
     let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-42");
     c.set_int(4);
     let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-0042");
+    c.set_pad_sign(true);
+    let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "-042");
     c.set_sign(Sign::Never);
     let s = i.as_str_into_fmt(&mut buf, c); assert_eq!(s, "0042");
 }
