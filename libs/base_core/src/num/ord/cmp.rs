@@ -146,6 +146,26 @@ impl<T: PartialOrd> Cmp<T> {
             None => None,
         }
     }
+
+    /// Compares, orders, and returns both (minimum, maximum) [`PartialOrd`]ered values.
+    ///
+    /// Returns `None` if comparisons are indeterminate.
+    /// # Example
+    /// ```
+    /// # use devela_base_core::Cmp;
+    /// assert_eq![Some((0.2, 0.4)), Cmp(0.4).pminmax(0.2)];
+    /// //
+    /// assert_eq![None, Cmp(0.2).pminmax(f32::NAN)];
+    /// assert_eq![None, Cmp(f32::NAN).pminmax(0.4)];
+    /// ```
+    #[must_use]
+    pub fn pminmax(self, other: T) -> Option<(T, T)> {
+        match self.0.partial_cmp(&other) {
+            Some(Less | Equal) => Some((self.0, other)),
+            Some(Greater)      => Some((other, self.0)),
+            None               => None,
+        }
+    }
 }
 
 /// Implement [`Comparing`] for primitives.
@@ -175,7 +195,11 @@ macro_rules! impl_comparing {
             /// Compares and returns the minimum between `self` and `other`.
             #[must_use] #[inline(always)]
             pub const fn min(self, other: $p) -> $p { if self.0 < other { self.0 } else { other } }
-
+            /// Compares, orders and returns the (minimum, maximum) `self` and `other`.
+            #[must_use] #[inline(always)]
+            pub const fn minmax(self, other: $p) -> ($p, $p) {
+                if self.0 < other { (self.0, other) } else { (other, self.0) }
+            }
             /// Returns `true` if `self == other`.
             #[must_use] #[inline(always)]
             pub const fn eq(self, other: $p) -> bool { self.0 == other }

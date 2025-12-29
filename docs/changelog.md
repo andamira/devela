@@ -371,6 +371,7 @@ re-export hidden workspace dependencies from `_dep`.
 - update `Cmp:`
   - move to [base].
   - new impl for `Ordering`.
+  - new methods: `minmax`, `pminmax`.
   - un-gate impls and many dependent const methods.
 
 ### wide
