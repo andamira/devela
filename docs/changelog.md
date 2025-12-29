@@ -367,9 +367,11 @@ re-export hidden workspace dependencies from `_dep`.
 - update macros: `ne`, `nv`, `nz`, adding lossy constructors.
 
 ### ord
-- move `Cmp` to [base].
-- rename: `Compare` to `Cmp`.
-- un-gate `Cmp` impls and many dependent const methods.
+  - rename `Compare` to `Cmp`.
+- update `Cmp:`
+  - move to [base].
+  - new impl for `Ordering`.
+  - un-gate impls and many dependent const methods.
 
 ### wide
 - new module `num::wide`.

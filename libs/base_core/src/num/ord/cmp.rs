@@ -9,6 +9,7 @@
 // - impl Cmp for primitives
 //   - int
 //   - float
+// - impl Cmp for Ordering
 // - tests
 
 use crate::Ordering::{self, Equal, Greater, Less};
@@ -28,9 +29,11 @@ use ::core::{f16, f128};
 /// It provides the following *const* methods for comparing primitives:
 /// `clamp`, `max`, `min`, `eq`, `ne`, `lt`, `le`, `gt`, `ge`.
 ///
+/// And it also allows compile-time comparison between [`Ordering`]s.
+///
 /// In the case of floating-point primitives:
 /// - total ordering is used.
-/// - aditional methods are provided:
+/// - additional methods are provided:
 ///  `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
 #[repr(transparent)]
 pub struct Cmp<T>(pub T);
@@ -297,7 +300,7 @@ macro_rules! impl_comparing {
             #[must_use]
             pub const fn is_infinite(self) -> bool { self.0.is_infinite() }
 
-            /// Returns `true` if `self` is nether infinite nor NaN.
+            /// Returns `true` if `self` is neither infinite nor NaN.
             #[must_use]
             pub const fn is_finite(self) -> bool { self.0.is_finite() }
 
@@ -316,6 +319,45 @@ macro_rules! impl_comparing {
     }};
 }
 impl_comparing!();
+
+#[rustfmt::skip]
+impl Cmp<Ordering> {
+    /// Compares and returns `self` clamped between `min` and `max`.
+    #[must_use]
+    pub const fn clamp(self, min: Ordering, max: Ordering) -> Ordering {
+        if (self.0 as i8) < min as i8 { min }
+        else if self.0 as i8 > max as i8 { max }
+        else { self.0 }
+    }
+    /// Compares and returns the maximum between `self` and `other`.
+    #[must_use]
+    pub const fn max(self, other: Ordering) -> Ordering {
+        if self.0 as i8 > other as i8 { self.0 } else { other }
+    }
+    /// Compares and returns the minimum between `self` and `other`.
+    #[must_use]
+    pub const fn min(self, other: Ordering) -> Ordering {
+        if (self.0 as i8) < other as i8 { self.0 } else { other }
+    }
+    /// Returns `true` if `self == other`.
+    #[must_use]
+    pub const fn eq(self, other: Ordering) -> bool { self.0 as i8 == other as i8 }
+    /// Returns `true` if `self != other`.
+    #[must_use]
+    pub const fn ne(self, other: Ordering) -> bool { self.0 as i8 != other as i8 }
+    /// Returns `true` if `self < other`.
+    #[must_use]
+    pub const fn lt(self, other: Ordering) -> bool { (self.0 as i8) < other as i8 }
+    /// Returns `true` if `self <= other`.
+    #[must_use]
+    pub const fn le(self, other: Ordering) -> bool { self.0 as i8 <= other as i8 }
+    /// Returns `true` if `self > other`.
+    #[must_use]
+    pub const fn gt(self, other: Ordering) -> bool { self.0 as i8 > other as i8 }
+    /// Returns `true` if `self >= other`.
+    #[must_use]
+    pub const fn ge(self, other: Ordering) -> bool { self.0 as i8 >= other as i8 }
+}
 
 #[cfg(test)]
 mod test_min_max_clamp {
