@@ -2,6 +2,7 @@
 
 use crate::{ConstInitCore, Hash, Hasher, HasherBuildDefault};
 
+#[doc = crate::_TAG_HASH!()]
 /// A builder for default Fx hashers.
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 

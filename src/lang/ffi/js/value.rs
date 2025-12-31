@@ -8,6 +8,7 @@
 use devela::String;
 use devela::{js_bool, js_number, js_uint32};
 
+#[doc = crate::_TAG_RUNTIME!()]
 /// A JavaScript value for FFI communication.
 ///
 /// # Variants

@@ -3,6 +3,8 @@
 //! Defines skip formatting macros ([`items`], [`sf`]).
 //
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_FMT!()]
 /// Groups *`items`* together and expands them as if they were written directly.
 ///
 /// It can be useful to apply an attribute to a group of items.
@@ -28,6 +30,8 @@ macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
 #[doc(inline)]
 pub use items;
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_FMT!()]
 /// *`s`kip `f`ormatting* macro.
 ///
 /// Preserves the formatting of the code provided as arguments, by relying on

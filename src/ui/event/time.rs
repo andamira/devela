@@ -5,6 +5,8 @@
 
 use crate::{ConstInit, DebugExt, FmtResult, Formatter, f32bits, f32bits_niche, impl_trait};
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_TIME!()]
 /// Selects how an [`EventTimestamp`] should be formatted.
 ///
 /// This controls whether the timestamp is shown as integer milliseconds,
@@ -35,6 +37,7 @@ impl DebugExt for EventTimestamp {
     }
 }
 
+#[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_TIME!()]
 /// The time at which the event occurs, stored as single-precision milliseconds.
 ///

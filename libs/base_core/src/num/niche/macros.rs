@@ -83,6 +83,7 @@ generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, 
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Creates a `NonExtreme*` [`niche`] instance with compile-time checking.
 ///
 /// # Example
@@ -112,6 +113,7 @@ pub use ne;
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Creates a `NonValue*` [`niche`] value with compile-time checking.
 ///
 /// # Example
@@ -143,6 +145,7 @@ pub use nv;
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Creates a `NonZero*` [`niche`] value with compile-time checking.
 ///
 /// # Example
@@ -175,6 +178,7 @@ pub use nz;
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Private helper to construct niche types.
 #[doc(hidden)]
 #[derive(Debug)]

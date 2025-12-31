@@ -8,8 +8,8 @@
 // use core::iter::from_coroutine;
 use core::iter::{empty, from_fn, once, once_with, repeat, repeat_n, repeat_with, successors, zip};
 
-#[doc = crate::_TAG_NAMESPACE!()]
 #[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Iterator-related namespaced operations.
 #[derive(Debug)]
 pub struct Iter;

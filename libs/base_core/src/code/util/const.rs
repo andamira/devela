@@ -5,6 +5,8 @@
 // IMPROVE: the examples showing the last two arms [hidden|inline] macro_export
 // IMPROVE: support constants with macro metavariables
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// A helper for constructing macro constants.
 ///
 /// It accepts either a series of expressions or a series of functions.

@@ -10,7 +10,8 @@
 // IMPROVE: do not depend on included types being Copy.
 // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms).
 
-/// Helper for defining individual and composite error types.
+#[doc = crate::_TAG_CONSTRUCTION!()]
+/// Defines individual and composite error types.
 ///
 /// It can also implement `From` and `TryFrom` traits between them.
 ///

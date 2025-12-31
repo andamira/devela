@@ -19,6 +19,7 @@ thread_local! {
         = RefCell::new(KeyCurrentMap::new_cloned(PtrNonNull::<u8>::dangling()));
 }
 
+#[doc = crate::_TAG_GUARD!()]
 /// A guard that temporarily sets a global current pointer for `T`, restoring the old one on drop.
 ///
 /// When dropped, it restores the previous pointer or sets a placeholder if none existed."
@@ -75,6 +76,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
     }
 }
 
+#[doc = crate::_TAG_GUARD!()]
 /// A marker object representing the current instance of a type `T`.
 ///
 /// This struct does not hold any actual value but instead allows access to

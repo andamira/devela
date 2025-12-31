@@ -11,6 +11,8 @@ use crate::{
     write_at,
 };
 
+#[doc = crate::_TAG_IMAGE!()]
+#[doc = crate::_TAG_TERM!()]
 /// Encoder for Sixel graphics with fixed buffer output
 ///
 /// # Features
@@ -32,6 +34,7 @@ impl<const MAX_COLORS: usize> Default for SixelEncoder<MAX_COLORS> {
 
 __dbg! { slog! {
     #[doc = crate::_TAG_DEBUG!()]
+    #[doc = crate::_TAG_LOG!()]
     /// Static debug logger for [`SixelEncoder`].
     #[cfg_attr(nightly_doc, doc(cfg(feature = "__dbg")))]
     pub new sixel_encoder:64+64

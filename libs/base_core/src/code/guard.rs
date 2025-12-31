@@ -5,6 +5,7 @@
 
 use crate::{Deref, DerefMut};
 
+#[doc = crate::_TAG_GUARD!()]
 /// A general-purpose RAII guard that executes a callback on drop.
 ///
 /// - The callback can take both a value and a state.

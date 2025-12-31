@@ -7,7 +7,8 @@ use crate::ConstInit;
 #[cfg(all(feature = "js", not(windows)))]
 use crate::{WebEventKind, is};
 
-/// Represents the state of a [`Key`].
+#[doc = crate::_TAG_INTERACTION!()]
+/// Represents the state of a [`Key`][crate::Key].
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum KeyState {

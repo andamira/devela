@@ -15,6 +15,7 @@ use crate::{Debug, FmtResult, Formatter, c_void};
 #[cfg(feature = "unsafe_syscall")]
 use crate::{LINUX_SIGACTION, impl_trait};
 
+#[doc = crate::_TAG_LINUX!()]
 /// Examine and change a signal action.
 ///
 /// Represents the [`sigaction`] structure from libc.
@@ -118,6 +119,7 @@ impl LinuxSigaction {
     // pub const SIG_ERR: isize = -1;
 }
 
+#[doc = crate::_TAG_LINUX!()]
 /// A set of linux signals.
 ///
 /// Represents the [`sigset_t`] structure from libc.
@@ -167,6 +169,7 @@ impl LinuxSigset {
     }
 }
 
+#[doc = crate::_TAG_LINUX!()]
 /// Additional information about a signal.
 ///
 /// Represents the [`siginfo_t`] structure from libc.

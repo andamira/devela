@@ -9,6 +9,8 @@ pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0];
     crate::Mem::size_of::<T>()
 }
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_MEM!()]
 /// Returns the size of an expression in bytes.
 ///
 /// - The expression will not be evaluated.

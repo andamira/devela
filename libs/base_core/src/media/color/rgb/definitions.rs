@@ -6,7 +6,7 @@
 use crate::_TAG_COLOR;
 
 #[doc = _TAG_COLOR!()]
-/// RGB color with 3 components.
+/// RGB color with 3 channels.
 #[repr(C)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -18,7 +18,7 @@ pub struct Rgb<T, const LINEAR: bool = false> {
 }
 
 #[doc = _TAG_COLOR!()]
-/// RGB+A color with 4 components.
+/// RGB+A color with 4 channels.
 #[repr(C)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -33,65 +33,65 @@ pub struct Rgba<T, const LINEAR: bool = false, const PREMUL: bool = false> {
 /* aliases */
 
 #[doc = _TAG_COLOR!()]
-/// RGB color with 8-bit integer components (sRGB gamma space).
+/// RGB color with 8-bit integer channels (sRGB gamma space).
 pub type Rgb8 = Rgb<u8>;
 #[doc = _TAG_COLOR!()]
-/// RGB+A color with 8-bit integer components (sRGB gamma space, straight alpha).
+/// RGB+A color with 8-bit integer channels (sRGB gamma space, straight alpha).
 pub type Rgba8 = Rgba<u8>;
 #[doc = _TAG_COLOR!()]
-/// RGB+A color with 8-bit integer components (sRGB gamma space, premultiplied alpha).
+/// RGB+A color with 8-bit integer channels (sRGB gamma space, premultiplied alpha).
 pub type RgbaPre8 = Rgba<u8, false, true>;
 
 #[doc = _TAG_COLOR!()]
-/// RGB color with 16-bit integer components (sRGB gamma space).
+/// RGB color with 16-bit integer channels (sRGB gamma space).
 pub type Rgb16 = Rgb<u16>;
 #[doc = _TAG_COLOR!()]
-/// RGB+A color with 16-bit integer components (sRGB gamma space, straight alpha).
+/// RGB+A color with 16-bit integer channels (sRGB gamma space, straight alpha).
 pub type Rgba16 = Rgba<u16>;
 #[doc = _TAG_COLOR!()]
-/// RGB+A color with 16-bit integer components (sRGB gamma space, premultiplied alpha).
+/// RGB+A color with 16-bit integer channels (sRGB gamma space, premultiplied alpha).
 pub type RgbaPre16 = Rgba<u16, false, true>;
 
 crate::items! {
     #[doc = _TAG_COLOR!()]
-    /// RGB color with 32-bit float components (sRGB gamma space).
+    /// RGB color with 32-bit float channels (sRGB gamma space).
     pub type RgbF32 = Rgb<f32>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 32-bit float components (sRGB gamma space, straight alpha).
+    /// RGB+A color with 32-bit float channels (sRGB gamma space, straight alpha).
     pub type RgbaF32 = Rgba<f32>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 32-bit float components (sRGB gamma space, premultiplied alpha).
+    /// RGB+A color with 32-bit float channels (sRGB gamma space, premultiplied alpha).
     pub type RgbaPreF32 = Rgba<f32, false, true>;
 
     #[doc = _TAG_COLOR!()]
-    /// RGB color with 32-bit float components (linear space).
+    /// RGB color with 32-bit float channels (linear space).
     pub type RgbLinF32 = Rgb<f32, true>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 32-bit float components (linear space, straight alpha).
+    /// RGB+A color with 32-bit float channels (linear space, straight alpha).
     pub type RgbaLinF32 = Rgba<f32, true>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 32-bit float components (linear space, premultiplied alpha).
+    /// RGB+A color with 32-bit float channels (linear space, premultiplied alpha).
     pub type RgbaLinPreF32 = Rgba<f32, true, true>;
 }
 crate::items! {
     #[doc = _TAG_COLOR!()]
-    /// RGB color with 64-bit float components (sRGB gamma space).
+    /// RGB color with 64-bit float channels (sRGB gamma space).
     pub type RgbF64 = Rgb<f64>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 64-bit float components (sRGB gamma space, straight alpha).
+    /// RGB+A color with 64-bit float channels (sRGB gamma space, straight alpha).
     pub type RgbaF64 = Rgba<f64>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 64-bit float components (sRGB gamma space, premultiplied alpha).
+    /// RGB+A color with 64-bit float channels (sRGB gamma space, premultiplied alpha).
     pub type RgbaPreF64 = Rgba<f64, false, true>;
 
     #[doc = _TAG_COLOR!()]
-    /// RGB color with 64-bit float components (linear space).
+    /// RGB color with 64-bit float channels (linear space).
     pub type RgbLinF64 = Rgb<f64, true>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 64-bit float components (linear space, straight alpha).
+    /// RGB+A color with 64-bit float channels (linear space, straight alpha).
     pub type RgbaLinF64 = Rgba<f64, true>;
     #[doc = _TAG_COLOR!()]
-    /// RGB+A color with 64-bit float components (linear space, premultiplied alpha).
+    /// RGB+A color with 64-bit float channels (linear space, premultiplied alpha).
     pub type RgbaLinPreF64 = Rgba<f64, true, true>;
 }
 

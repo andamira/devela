@@ -10,6 +10,7 @@
 
 use crate::{ConstInit, NonZeroU32, impl_trait, is};
 
+#[doc = crate::_TAG_INTERACTION!()]
 /// Dead-key accent operators used during text composition.
 ///
 /// Modeled after XKB dead keysym from `xkbcommon-keysyms.h`.

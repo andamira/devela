@@ -3,6 +3,7 @@
 //! Defines [`Idegistry`]
 //
 
+#[doc = crate::_TAG_UID!()]
 /// Maps backend/native identifiers into stable, compact internal IDs.
 ///
 /// Used throughout the library anywhere a subsystem needs to allocate

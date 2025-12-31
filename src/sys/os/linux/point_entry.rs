@@ -11,7 +11,9 @@
 //! The implementations match the system's calling conventions and use architecture-specific
 //! syscall instructions for process termination.
 
-/// Defines the program entry point and main function translation layer for Linux systems.
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_LINUX!()]
+/// Defines the program entry point and main fn translation layer for Linux systems.
 ///
 /// Handles architecture-specific entry point setup and Rust-to-C ABI translation.
 #[doc(hidden)]

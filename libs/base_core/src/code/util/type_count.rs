@@ -3,6 +3,7 @@
 //! Counting types.
 //
 
+#[doc = crate::_TAG_CODE!()]
 /// Returns the total number of types received.
 /// # Examples
 /// ```

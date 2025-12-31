@@ -12,6 +12,7 @@ use crate::{
 };
 use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 
+#[doc = crate::_TAG_IO!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// I/O-related operations.
 #[derive(Debug)]

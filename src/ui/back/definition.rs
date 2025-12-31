@@ -5,6 +5,7 @@
 
 use crate::UiCap;
 
+#[doc = crate::_TAG_UI!()]
 /// Common trait for all UI services.
 pub trait UiService {
     /// Returns the service capabilities.

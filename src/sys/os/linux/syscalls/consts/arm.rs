@@ -6,6 +6,8 @@
 // - https://syscalls.mebeim.net/?table=arm/32/eabi/latest
 //
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_PLATFORM!()]
 /// Linux `sys/syscall.h` constants for `armv7`.
 #[allow(non_camel_case_types)]
 #[derive(Debug)]

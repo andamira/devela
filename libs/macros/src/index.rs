@@ -14,6 +14,9 @@ use proc_macro::TokenStream as TS;
 mod bodies;
 use bodies::*;
 
+#[doc = devela_base_core::_TAG_CONSTRUCTION!()]
+#[doc = devela_base_core::_TAG_NICHE!()]
+#[doc = devela_base_core::_TAG_PROCEDURAL_MACRO!()]
 #[doc = include_str!("docs/enumint.md")]
 #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]

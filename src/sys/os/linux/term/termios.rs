@@ -15,6 +15,8 @@ use crate::{
     LinuxResult as Result, TermSize, is,
 };
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_TERM!()]
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.
 ///

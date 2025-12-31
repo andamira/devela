@@ -17,6 +17,8 @@ pub(crate) use crate::{NonExtremeU8, NonExtremeU32, NonNiche, NonValueU16};
 // This is a surrogate UTF-16 code point that can't ever be a Unicode scalar.
 pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Concisely creates any kind of Unicode scalar.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

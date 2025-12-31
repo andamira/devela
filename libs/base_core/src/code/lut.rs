@@ -3,6 +3,8 @@
 //! Defines the [`Lut`] namespace.
 //
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 #[doc = concat!["A ", crate::_ABBR_LUT!() , " namespace."]]
 #[derive(Debug)]
 pub struct Lut;

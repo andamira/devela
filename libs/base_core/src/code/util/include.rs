@@ -11,6 +11,7 @@
 // WAIT [include! should allow inner attributes](https://github.com/rust-lang/rust/issues/66920)
 // WAIT [inner attributes with include!](https://github.com/rust-lang/rust/issues/117464)
 
+#[doc = crate::_TAG_CODE!()]
 /// Includes a Rust source file relative to the project's directory.
 ///
 /// The contents of the specified file are inserted into the current file
@@ -54,6 +55,7 @@ macro_rules! _include_from {
 #[doc(inline)]
 pub use _include_from as include_from;
 
+#[doc = crate::_TAG_CODE!()]
 /// Declares a module by including a Rust source file relative to the project's directory.
 ///
 /// The macro generates a `mod` declaration and inserts the contents of the specified file
@@ -92,6 +94,7 @@ macro_rules! _mod_from {
 #[doc(inline)]
 pub use _mod_from as mod_from;
 
+#[doc = crate::_TAG_CODE!()]
 /// A macro helper to define a module name and path.
 ///
 /// This is used to include files re-exported by lower-level workspace crates,

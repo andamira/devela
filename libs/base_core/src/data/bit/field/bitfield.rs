@@ -10,6 +10,8 @@
     reason = "fixes lints for fields assertions"
 )]
 
+#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Creates a custom bit field struct.
 ///
 /// The inner type must be an integer primitive.

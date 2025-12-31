@@ -8,7 +8,7 @@ use crate::{
     AtomicUsize, GlobalAlloc, MemLayout, Ptr, is,
 };
 
-#[doc = crate::_TAG_ALLOCATOR!()]
+#[doc = crate::_TAG_ALLOCATION!()]
 /// A simple, single-threaded bump allocator.
 ///
 /// - Allocates memory linearly from a fixed memory region.

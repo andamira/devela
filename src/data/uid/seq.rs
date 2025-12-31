@@ -1,8 +1,9 @@
 // devela::data::uid::seq
 //
-//! Defines [`id_seq!`], for sequential unique IDs.
+//! Defines [`id_seq!`], for sequential unique IDs. An identity allocator.
 //
 
+#[doc = crate::_TAG_UID!()]
 /// A macro for constructing a unique sequential identifier generator.
 ///
 /// It generates the necessary static instances dynamically.

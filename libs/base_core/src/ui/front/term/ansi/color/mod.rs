@@ -19,6 +19,8 @@ mod bit3;
 mod bit8;
 pub use {bit3::*, bit8::*};
 
+#[doc = crate::_TAG_COLOR!()]
+#[doc = crate::_TAG_TERM!()]
 /// Complete ANSI color selection
 ///
 /// The size of this type is 32-bit.

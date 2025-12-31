@@ -6,6 +6,7 @@
 #[cfg(feature = "alloc")]
 use devela::{Borrow, String, Vec};
 
+#[doc = crate::_TAG_LIFETIME!()]
 /// Defines the relationship between a borrowed type and its owned counterpart.
 ///
 /// This enables abstracting over allocation strategies in [`MaybeOwned`][crate::MaybeOwned].

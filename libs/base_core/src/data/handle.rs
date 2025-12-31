@@ -14,6 +14,7 @@ define_handle! {
     pub ExampleHandle;
 }
 
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines a lightweight handle type.
 ///
 /// A *handle* is a lightweight, copyable semantic reference that identifies

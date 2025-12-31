@@ -3,6 +3,7 @@
 //! Defines the [`lets!`] macro.
 //
 
+#[doc = crate::_TAG_CODE!()]
 /// A concise macro for declaring multiple variables at once.
 ///
 /// # Syntax

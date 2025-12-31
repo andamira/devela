@@ -6,6 +6,7 @@
 #[cfg(feature = "alloc")]
 use crate::String;
 
+#[doc = crate::_TAG_UI!()]
 /// The capabilities supported by a [`UiService`][crate::UiService].
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct UiCap {
@@ -23,6 +24,8 @@ pub struct UiCap {
     pub window: Option<UiCapWindow>,
 }
 
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_IMAGE!()]
 /// Image capabilities.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapImage {
@@ -41,6 +44,8 @@ pub struct UiCapImage {
     // pub palette_size: u16,
 }
 
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Input capabilities.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapInput {
@@ -56,6 +61,8 @@ pub struct UiCapInput {
     pub touchscreen: bool,
 }
 
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_AUDIO!()]
 /// Sound capabilities.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapSound {
@@ -63,6 +70,7 @@ pub struct UiCapSound {
     pub play: bool,
 }
 
+#[doc = crate::_TAG_UI!()]
 /// System capabilities.
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
@@ -76,6 +84,7 @@ pub struct UiCapSystem {
     pub host_name: Option<String>,
 }
 
+#[doc = crate::_TAG_UI!()]
 /// Window capabilities.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapWindow {

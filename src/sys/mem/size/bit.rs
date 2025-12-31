@@ -40,6 +40,7 @@ use crate::{AtomicIsize, AtomicPtr, AtomicUsize};
 
 /* trait definition */
 
+#[doc = crate::_TAG_MEM!()]
 /// Type size information in bits.
 ///
 /// Indicates a size of exactly `LEN` bits for the relevant data part of this type.

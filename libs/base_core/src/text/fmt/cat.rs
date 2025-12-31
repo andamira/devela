@@ -6,6 +6,7 @@
 #[cfg(doc)]
 use crate::{FmtNum, Slice};
 
+#[doc = crate::_TAG_FMT!()]
 /// Writes concatenated formatted data into a byte buffer.
 ///
 /// Expands into sequential write calls using a mutable offset, combining:

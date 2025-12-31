@@ -3,6 +3,7 @@
 //! Additional assertion macros
 //
 
+#[doc = crate::_TAG_ASSERT!()]
 /// Asserts the equality of a series of expressions.
 ///
 /// Similar to [`assert_eq`] but supports more than 2 terms to test for equality.
@@ -30,6 +31,7 @@ macro_rules! assert_eq_all {
 #[doc(inline)]
 pub use assert_eq_all;
 
+#[doc = crate::_TAG_ASSERT!()]
 /// Asserts the approximate equality of a series of expressions within `tolerance`.
 ///
 /// This macro should work with any numeric type that supports comparison and

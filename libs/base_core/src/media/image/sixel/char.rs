@@ -5,6 +5,8 @@
 
 use crate::{Display, FmtResult, FmtWriter, Formatter, Lut, StringU8, format_buf, is, unwrap};
 
+#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_TERM!()]
 /// A sixel character.
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

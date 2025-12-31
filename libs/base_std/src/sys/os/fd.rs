@@ -6,21 +6,21 @@
 crate::structural_mods! { //_mods
     _mods {
         // re-exports
-        #[cfg(any(
-            unix,
-            target_os = "hermit",
-            target_os = "trusty",
-            target_os = "wasi",
-            target_os = "motor",
-            doc
-        ))]
+        #[doc = crate::_TAG_FS!()]
+        #[cfg(any(unix, target_os = "wasi", doc))]
         #[cfg(not(miri))]
         pub use ::std::os::fd::{
-            BorrowedFd as FdBorrowed, OwnedFd as FdOwned,
-            AsFd,
-            AsRawFd as AsFdRaw,
+            OwnedFd as FdOwned,
+            AsFd, AsRawFd as AsFdRaw,
             FromRawFd as FromFdRaw,
             IntoRawFd as IntoFdRaw,
+        };
+        #[doc = crate::_TAG_FS!()]
+        #[doc = crate::_TAG_LIFETIME!()]
+        #[cfg(any(unix, target_os = "wasi", doc))]
+        #[cfg(not(miri))]
+        pub use ::std::os::fd::{
+            BorrowedFd as FdBorrowe
         };
     }
 }

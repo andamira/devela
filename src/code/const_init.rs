@@ -15,6 +15,7 @@ use crate::ConstInitCore;
 
 /* definitions */
 
+#[doc = crate::_TAG_INIT!()]
 /// Provides a const-friendly initializer for types that may use higher-level abstractions.
 ///
 /// Implemented by general types that can freely depend on higher-level traits.
@@ -38,6 +39,7 @@ pub trait ConstInit {
     const INIT: Self;
 }
 
+#[doc = crate::_TAG_INIT!()]
 /// Marker trait to allow parameterized blanked implementation
 pub trait Sealed {}
 impl<T: ConstInitCore + Sealed> ConstInit for T {

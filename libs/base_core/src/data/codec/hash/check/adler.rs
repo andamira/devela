@@ -10,6 +10,7 @@ define_lane! {
     struct Lane4 lanes(4); unsigned(u32);
 }
 
+#[doc = crate::_TAG_HASH!()]
 /// Adler-32 checksum.
 ///
 /// A lightweight checksum consisting of two 16-bit accumulators (`a` and `b`)

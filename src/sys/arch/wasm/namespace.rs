@@ -17,6 +17,7 @@
 #[cfg(target_family = "wasm")]
 use ::core::arch::wasm32::{memory_grow, memory_size};
 
+#[doc = crate::_TAG_RUNTIME!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// A Wasm namespace.
 #[derive(Debug)]

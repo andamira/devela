@@ -127,6 +127,7 @@
 // #![cfg_attr(nightly_doc, doc(auto_cfg = false))]
 // NOTE: that doc attribute hiding only works in nightly
 #![cfg_attr(nightly_doc, doc(auto_cfg(hide( // do not document:
+    miri,
     // development features
     feature = "__dbg", feature = "__std", feature = "__publish",
     // positive safety features

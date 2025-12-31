@@ -10,12 +10,16 @@ use crate::{Mem, Storage};
 // #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
 // use rkyv::{Archive, Deserialize, Serialize};
 
+#[doc = crate::_TAG_NO!()]
+#[doc = crate::_TAG_MEM!()]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`BareBox`].
 ///
 /// Equivalent to the [`Boxed`] marker struct which uses a [`Box`] for the underlying storage.
 pub type Bare = ();
 
+#[doc = crate::_TAG_NO!()]
+#[doc = crate::_TAG_MEM!()]
 /// A no-op pointer type, like a [`Box`] but without affecting how `T` is stored.
 ///
 /// It is used as the underlying [`Storage`] for the [`Bare`] marker

@@ -1,12 +1,14 @@
 // devela::ui::event::target
 //
-//! Defines [`EventTarget`], [`DeviceId`], [`WindowId`].
+//! Defines [`EventTarget`].
 //
 
 use crate::{_impl_init, DeviceId, WindowId};
 
 _impl_init![ConstInit: Self::Global => EventTarget];
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_UID!()]
 /// Identifies what an [`Event`][crate::Event] is conceptually directed to.
 ///
 /// - Some backends (X11, Wayland, Win32, macOS) generate window–scoped events.

@@ -10,6 +10,7 @@ use crate::{
 };
 use ::core::{cmp, fmt};
 
+#[doc = crate::_TAG_IO!()]
 /// The `IoBufReader<R, S>` struct adds buffering to any reader.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html>.
@@ -134,6 +135,7 @@ impl<R: IoSeek, const S: usize> IoSeek for IoBufReader<R, S> {
     }
 }
 
+#[doc = crate::_TAG_IO!()]
 /// Wraps a writer and buffers its output.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.BufWriter.html>.
@@ -147,6 +149,7 @@ pub struct IoBufWriter<W: IoWrite, const S: usize> {
     panicked: bool,
 }
 
+#[doc = crate::_TAG_IO!()]
 #[doc = crate::_TAG_ERROR!()]
 /// An error returned by [`IoBufWriter::into_inner`]
 ///
@@ -386,6 +389,7 @@ impl<W> fmt::Display for IoIntoInnerError<W> {
     }
 }
 
+#[doc = crate::_TAG_IO!()]
 /// Private helper struct for implementing the line-buffered writing logic.
 /// This shim temporarily wraps an `IoBufWriter`, and uses its internals to
 /// implement a line-buffered writer (specifically by using the internal
@@ -554,6 +558,7 @@ impl<W: IoWrite, const S: usize> IoWrite for LineWriterShim<'_, W, S> {
     }
 }
 
+#[doc = crate::_TAG_IO!()]
 /// Wraps a writer and buffers output to it, flushing whenever a newline is detected.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html>.

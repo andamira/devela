@@ -105,7 +105,9 @@ impl IntError {
     //     Err(IntError::NotSupported)
     // }
 }
-///
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_RESULT!()]
+/// A result of a fallibe integer operation.
 pub type IntResult<T> = crate::Result<T, IntError>;
 
 define_error! { composite: fmt(f)

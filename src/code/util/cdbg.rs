@@ -3,6 +3,8 @@
 //! Defines the custom debug macro [`cdbg!`].
 //
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_DEBUG!()]
 /// *`c`ustomizable [`dbg!`]* macro.
 ///
 /// - By default uses `{:?}` instead of `{:#?}` for formatting.

@@ -58,6 +58,7 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 
 // non-printing version fallback (not(std), not(linux))
 // -----------------------------------------------------------------------------
+#[doc = crate::_TAG_TERM!()]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -98,6 +99,7 @@ macro_rules! ansi {
 
 // std version (not(linux))
 // -----------------------------------------------------------------------------
+#[doc = crate::_TAG_TERM!()]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -148,6 +150,7 @@ macro_rules! ansi {
 
 // linux version (overrides std)
 // -----------------------------------------------------------------------------
+#[doc = crate::_TAG_TERM!()]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

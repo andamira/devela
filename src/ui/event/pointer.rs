@@ -12,6 +12,8 @@ use crate::{ConstInit, EventTimestamp, NonZeroU8, f32bits_niche, unwrap};
 
 /* definitions */
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Represents a basic mouse event.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventMouse {
@@ -29,6 +31,8 @@ pub struct EventMouse {
     pub buttons: u8,
 }
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Represents a pointer event (mouse, touch, or pen).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventPointer {
@@ -72,6 +76,8 @@ impl EventPointer {
     }
 }
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Enum representing the type of pointer.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventPointerType {
@@ -96,6 +102,8 @@ pub enum EventPointerType {
 //     Cancel,
 // }
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Represents mouse, touch, or pen buttons.
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
@@ -133,6 +141,8 @@ impl EventButton {
     }
 }
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Represents the state of a button.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventButtonState {
@@ -144,6 +154,8 @@ pub enum EventButtonState {
     Moved,
 }
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Represents a mouse wheel event.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventWheel {

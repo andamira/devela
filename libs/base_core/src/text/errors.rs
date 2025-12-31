@@ -87,6 +87,7 @@ mod full_composite {
     use super::*;
     use crate::{DOC_ELEMENT_NOT_FOUND, ElementNotFound, MismatchedCapacity};
 
+    #[doc = _TAG_TEXT!()]
     #[doc = _TAG_RESULT!()]
     /// A text-related result.
     pub type TextResult<T> = crate::Result<T, TextError>;

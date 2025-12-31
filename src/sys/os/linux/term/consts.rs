@@ -15,18 +15,26 @@
 
 use core::ffi::c_uint;
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_TERM!()]
 /// [`LinuxTermios`][crate::LinuxTermios] input flags.
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_IFLAG;
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_TERM!()]
 /// [`LinuxTermios`][crate::LinuxTermios] output flags.
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_OFLAG;
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_TERM!()]
 /// [`LinuxTermios`][crate::LinuxTermios] control flags.
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_CFLAG;
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_TERM!()]
 /// [`LinuxTermios`][crate::LinuxTermios] local flags.
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_LFLAG;

@@ -10,6 +10,7 @@ use crate::ConstInit;
 
 /* definitions */
 
+#[doc = crate::_TAG_INTERACTION!()]
 /// Media key codes.
 ///
 /// These keys are commonly found on multimedia keyboards and remote controls.

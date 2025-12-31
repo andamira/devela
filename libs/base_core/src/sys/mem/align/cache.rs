@@ -3,6 +3,7 @@
 //! Defines the `CacheAlign` struct.
 //
 
+#[doc = crate::_TAG_MEM!()]
 /// Aligns and pads a value to the length of a cache line.
 ///
 /// In concurrent programming, sometimes it is desirable to make sure commonly accessed pieces of

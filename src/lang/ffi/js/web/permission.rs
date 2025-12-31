@@ -2,6 +2,7 @@
 
 use crate::{_TAG_EXPERIMENTAL, _TAG_NON_STANDARD, js_int32};
 
+#[doc = crate::_TAG_WEB!()]
 /// # Web API permissions
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
@@ -75,6 +76,7 @@ impl WebPermission {
     }
 }
 
+#[doc = crate::_TAG_WEB!()]
 /// # Permission query result state.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(i8)]

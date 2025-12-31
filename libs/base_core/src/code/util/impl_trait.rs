@@ -1,5 +1,10 @@
 // devela_base_core::code::util::impl_trait
+//
+//! Defines [`impl_trait`].
+//
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// A helper macro to concisely implement a few common utility traits.
 ///
 /// ## Traits supported

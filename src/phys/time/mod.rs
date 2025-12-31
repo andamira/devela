@@ -52,10 +52,12 @@ crate::structural_mods! { // _mods, _pub_mods
         // pub use super::looper::*;
 
         // re-exports
+        #[doc = crate::_TAG_TIME!()]
         pub use devela_base_core::phys::time::{
             Duration, DurationErrorTryFromFloatSecs, Timeout,
         };
         #[cfg(feature = "std")]
+        #[doc = crate::_TAG_TIME!()]
         pub use devela_base_std::phys::time::{
             StdSystemTimeError, SystemTimeError, TimeError,
         };

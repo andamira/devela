@@ -18,10 +18,12 @@ use crate::{
     LINUX_EXIT as EXIT, Overflow, is,
 };
 
+#[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_RESULT!()]
 /// The return type for Linux-related functions that can fail.
 pub type LinuxResult<T> = crate::Result<T, LinuxError>;
 
+#[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// Represents a Linux-related error.
 ///

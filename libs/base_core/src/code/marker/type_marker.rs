@@ -6,6 +6,9 @@
 // - macro type_marker!
 // - tests
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_UID!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines zero-cost, zero-sized, generic *marker* IDs.
 ///
 /// These marker types carry no runtime data and serve as compile-time indicators

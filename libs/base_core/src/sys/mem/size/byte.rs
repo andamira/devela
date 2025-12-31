@@ -7,6 +7,7 @@ use crate::Ptr;
 
 impl<T> ByteSized for T {}
 
+#[doc = crate::_TAG_MEM!()]
 /// Type size information in bytes.
 ///
 /// This trait is automatically implemented for every `Sized` type.

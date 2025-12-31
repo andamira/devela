@@ -10,6 +10,7 @@ mod instructions; // architecture-specific instructions
 #[cfg(feature = "dep_safe_arch")]
 mod dep_safe_arch;
 
+#[doc = crate::_TAG_PLATFORM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Arch-related functionality.
 ///

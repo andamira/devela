@@ -3,12 +3,14 @@
 //! Defines [`TimeTick`].
 //
 
-use crate::{Ordering, TimeSource};
+use crate::Ordering;
 
 #[doc = crate::_TAG_TIME!()]
 /// A deterministic logical time counter.
 ///
-/// `TickTime` represents time as a monotonically increasing tick count.
+/// `TimeTick` represents time as an explicitly advanced,
+/// monotonically increasing tick count.
+///
 /// It is **constructed**, not observed: ticks are advanced explicitly by
 /// program logic rather than sampled from external clocks.
 ///
@@ -29,13 +31,13 @@ use crate::{Ordering, TimeSource};
 /// - representing civil or absolute time
 /// - implicit progression
 ///
-/// For sampled or system-backed time, use a [`TimeSource`] instead.
+/// For sampled or system-backed time, use a [`TimeSource`][crate::TimeSource] instead.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct TickTime {
+pub struct TimeTick {
     ticks: u64,
 }
 
-impl TickTime {
+impl TimeTick {
     /// Creates a new logical time value with the given tick count.
     pub const fn new(ticks: u64) -> Self {
         Self { ticks }
@@ -61,7 +63,7 @@ impl TickTime {
         self.ticks += delta;
     }
 
-    /// Returns a new `TickTime` advanced by `delta` ticks.
+    /// Returns a new `TimeTick` advanced by `delta` ticks.
     pub const fn advanced(self, delta: u64) -> Self {
         Self { ticks: self.ticks + delta }
     }

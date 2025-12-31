@@ -16,6 +16,7 @@ use crate::{NotEnoughSpace, NumConst};
 #[cfg(feature = "alloc")]
 use crate::{Vec, vec_ as vec};
 
+#[doc = crate::_TAG_COLOR!()]
 /// Base trait for general color data representation.
 ///
 /// Provides a core interface for working with color data across different

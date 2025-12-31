@@ -29,9 +29,9 @@ use crate::{
     NonValueU128, NonValueUsize, NonZero, Overflow, unwrap,
 };
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_MAYBE!()]
 #[doc = crate::_TAG_NICHE!()]
-/// A zero-cost wrapper that abstracts over niche and non-niche integer types.
+/// A zero-cost wrapper that abstracts over niche and non-niche types.
 ///
 /// `MaybeNiche<T>` is a transparent wrapper that preserves the representation
 /// semantics of `T` without imposing a niche choice, and introduces no
@@ -339,9 +339,9 @@ macro_rules! impl_maybe {
 }
 impl_maybe![];
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NO!()]
 #[doc = crate::_TAG_NICHE!()]
-/// A zero-cost wrapper that mirrors the shape of a niche type but stores `T` unchanged.
+/// A zero-cost wrapper that mimics a niche type without using a niche.
 ///
 /// `NonNiche` represents the absence of niche constraints while preserving
 /// API symmetry with niche-optimized numeric types.

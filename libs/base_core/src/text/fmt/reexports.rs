@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{_TAG_ERROR, _TAG_FMT, _TAG_RESULT, _reexport};
+use crate::{_TAG_DEBUG, _TAG_ERROR, _TAG_FMT, _TAG_RESULT, _reexport};
 
 /* macros */
 
@@ -31,7 +31,7 @@ _reexport! { rust: core::fmt,
     Binary
 }
 _reexport! { rust: core::fmt,
-    tag: _TAG_FMT!(),
+    tag: _TAG_FMT!() _TAG_DEBUG!(),
     doc: "`?` formatting.",
     Debug
 }
@@ -102,22 +102,22 @@ _reexport! { rust: core::fmt,
     @Arguments as FmtArguments
 }
 _reexport! { rust: core::fmt,
-    tag: _TAG_FMT!(),
+    tag: _TAG_FMT!() _TAG_DEBUG!(),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugList
 }
 _reexport! { rust: core::fmt,
-    tag: _TAG_FMT!(),
+    tag: _TAG_FMT!() _TAG_DEBUG!(),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugMap
 }
 _reexport! { rust: core::fmt,
-    tag: _TAG_FMT!(),
+    tag: _TAG_FMT!() _TAG_DEBUG!(),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugSet
 }
 _reexport! { rust: core::fmt,
-    tag: _TAG_FMT!(),
+    tag: _TAG_FMT!() _TAG_DEBUG!(),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugStruct
 }

@@ -11,6 +11,8 @@
 
 use crate::c_int;
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_FS!()]
 /// [`Linux`][crate::Linux] File descriptor commands (for `fcntl`).
 //
 // - /usr/include/asm-generic/fcntl.h

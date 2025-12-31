@@ -5,6 +5,7 @@
 
 use crate::{_ansi_consts, Digits, slice};
 
+#[doc = crate::_TAG_TERM!()]
 /// ANSI escape codes.
 ///
 /// # Return type

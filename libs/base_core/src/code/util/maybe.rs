@@ -4,6 +4,8 @@
 //
 // MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_MAYBE!()]
 /// Helper for using optionally implemented traits, like `Default` or `Clone`.
 ///
 /// The first boolean argument says whether `$T` implements the given trait.

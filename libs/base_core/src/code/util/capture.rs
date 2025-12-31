@@ -3,6 +3,7 @@
 //! Defines [`capture_first!`], [`capture_last!`] and [`capture_tail_tuple!`].
 //
 
+#[doc = crate::_TAG_CODE!()]
 /// Captures the first token from a list of inputs.
 ///
 /// Usage: `capture_first!(<category> <first>, <tail>*, <optional_comma>?);`
@@ -30,6 +31,7 @@ macro_rules! _capture_first {
 #[doc(inline)]
 pub use _capture_first as capture_first;
 
+#[doc = crate::_TAG_CODE!()]
 /// Captures all the tokens except the first one, as a tuple.
 #[macro_export]
 #[rustfmt::skip]
@@ -51,6 +53,7 @@ macro_rules! _capture_tail_tuple {
 #[doc(inline)]
 pub use _capture_tail_tuple as capture_tail_tuple;
 
+// #[doc = crate::_TAG_CODE!()]
 // /// Captures all the tokens except the first one.
 // #[macro_export]
 // #[rustfmt::skip]
@@ -67,6 +70,7 @@ pub use _capture_tail_tuple as capture_tail_tuple;
 // }
 // pub use capture_tail;
 
+#[doc = crate::_TAG_CODE!()]
 /// Captures the last token from a list of inputs.
 #[macro_export]
 #[rustfmt::skip]

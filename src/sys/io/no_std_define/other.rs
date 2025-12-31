@@ -58,6 +58,7 @@ where
     }
 }
 
+#[doc = crate::_TAG_IO!()]
 /// `Empty` ignores any data written via [`IoWrite`], and will always be empty.
 ///
 /// Returning zero bytes when read via [`IoRead`].
@@ -94,6 +95,7 @@ sf! {
     }
 }
 
+#[doc = crate::_TAG_IO!()]
 /// A reader which yields one byte over and over and over and over and over and...
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Empty.html>.

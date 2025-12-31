@@ -5,6 +5,8 @@
 
 use crate::{NotEnoughSpace, SixelColor};
 
+#[doc = crate::_TAG_COLOR!()]
+#[doc = crate::_TAG_TERM!()]
 /// Palette of Sixel colors with fixed capacity.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct SixelPalette<const CAP: usize> {
@@ -167,6 +169,9 @@ impl<const CAP: usize> SixelPalette<CAP> {
     ]);
 }
 
+#[doc = crate::_TAG_COLOR!()]
+#[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_TAG_TERM!()]
 /// An iterator over [`SixelPalette`] colors.
 #[derive(Debug)]
 pub struct SixelPaletteIter<'a, const CAP: usize> {

@@ -19,6 +19,7 @@ _reexport! { rust: core::mem,
 /* mem unions */
 
 _reexport! { rust: core::mem,
+    tag: crate::_TAG_MAYBE!(),
     doc: "A wrapper type to construct uninitialized instances of `T`.",
     MaybeUninit
 }

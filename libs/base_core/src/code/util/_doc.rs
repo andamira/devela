@@ -85,25 +85,30 @@ macro_rules! __doc {
             ),*
         )
     };
-    // WIP:
     ( // Links to the module where this item was defined, in the devela crate.
-      // do NOT pass a leading slash.
+      // NOTE: do NOT pass a leading slash.
     location: $path:literal) => {
-        concat!("\n\n<sup title='Original location'>[`[", $path, "]`](",
+        concat!($crate::_doc!(%location_prefix),
+            "<sup title='Item location'>[`[", $path, "]`](",
             $crate::doclink![custom devela $path @mod], ")</sup>\n\n")
     };
     ( // Links to the item in the module where it was defined, in the devela crate.
     location_item: $path:literal) => {
-        concat!("\n\n<sup title='Original location'><em>[`", $path, "`](",
+        concat!($crate::_doc!(%location_prefix),
+            "<sup title='Item location'><em>[`", $path, "`](",
             $crate::doclink![custom devela $path], ")</em></sup>\n\n")
     };
 
     ( // Links to the module where this item was defined, in the given crate.
     location: $crate_id:ident, $path:literal) => {
-        concat!("\n\n<small title='Original location'>[`", $path, "`](",
+        concat!($crate::_doc!(%location_prefix),
+            "<small title='Item location'>[`", $path, "`](",
             $crate::doclink![custom $crate_id $path @mod], ")</small>\n\n")
     };
-
+    (%location_prefix) => {
+        // "\n\n"
+        "\n\n---\n\n"
+    };
     (
     // Shows the `Vendored` doc section and links to the info line.
     //

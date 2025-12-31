@@ -19,6 +19,7 @@ define_static_map! {
     pub typeid ExampleStaticMapTypeId
 }
 
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Build a custom static hashmap.
 ///
 /// # Arguments

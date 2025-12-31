@@ -11,6 +11,8 @@
 
 use crate::c_int;
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_FS!()]
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
 #[derive(Debug)]
 pub struct LINUX_FILENO;
@@ -23,6 +25,8 @@ impl LINUX_FILENO {
     pub const STDERR: c_int = 2;
 }
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_FS!()]
 /// [`Linux`][crate::Linux] file creation and status flags.
 ///
 /// Used with `sys_open`, `sys_fcntl`, etc.
@@ -102,6 +106,8 @@ impl LINUX_O_FLAGS {
     pub const RESOLVE_IN_ROOT: c_int = 0o2_000_000_000;
 }
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_FS!()]
 /// [`Linux`][crate::Linux] Seek commands (for `lseek`).
 //
 // Architecture independent

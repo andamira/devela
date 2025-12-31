@@ -4,10 +4,13 @@
 //
 
 use crate::{ConstInit, Event, EventKind};
+// use crate::{Extent, Position};
 
 #[cfg(feature = "alloc")]
 use crate::String;
 
+#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_TAG_INTERACTION!()]
 /// Events related to a window.
 ///
 /// Names and payloads are backend-agnostic and focus on
@@ -25,11 +28,12 @@ pub enum EventWindow {
     // NOTE in SDL: https://stackoverflow.com/a/55076700/940200
     // SizeChanged(UiSize),
     Resized(Option<[u32; 2]>),
-
+    // Resized(Option<Extent<u32, 2>>),
     /// The window's position changed.
     ///
     /// Carries the new `[x, y]` when available.
     Moved(Option<[i32; 2]>),
+    // Moved(Option<Position<i32, 2>>),
 
     /* focus*/
     /// The window gained keyboard focus.
@@ -116,6 +120,7 @@ impl EventWindow {
     }
     /// Returns some resize event, if that's the kind.
     pub const fn resize_coord(&self) -> Option<[u32; 2]> {
+        // pub const fn resize_coord(&self) -> Option<Extent<u32, 2>> {
         if let EventWindow::Resized(e) = self { *e } else { None }
     }
 
@@ -125,6 +130,7 @@ impl EventWindow {
     }
     /// Returns some move event, if that's the kind.
     pub const fn move_coords(&self) -> Option<[i32; 2]> {
+        // pub const fn move_coord(&self) -> Option<Position<i32, 2>> {
         if let EventWindow::Moved(e) = self { *e } else { None }
     }
 

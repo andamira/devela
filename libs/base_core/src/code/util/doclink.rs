@@ -43,6 +43,7 @@ pub struct Example;
     ";
 }
 
+#[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// <!-- (*internet* version) -->
 #[doc = _DOC_DOCLINK!()]
@@ -108,6 +109,7 @@ macro_rules! _doclink {
     };
 }
 
+#[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// (*local* version)
 #[doc = _DOC_DOCLINK!()]

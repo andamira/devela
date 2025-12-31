@@ -1,5 +1,6 @@
 // devela::data::codec::types
 
+#[doc = crate::_TAG_CODEC!()]
 /// The primary mode for data encoding.
 ///
 /// This enum is used to guide encoding/decoding strategies.
@@ -19,6 +20,7 @@ pub enum EncodingMode {
     Binary,
 }
 
+#[doc = crate::_TAG_CODEC!()]
 /// The type of compression applied to data.
 ///
 /// This enum is used to specify whether the compression algorithm prioritizes

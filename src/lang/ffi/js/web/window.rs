@@ -14,6 +14,8 @@ use devela::{
     js_uint32,
 };
 
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_WEB!()]
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
 ///
 /// [Window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
@@ -135,7 +137,9 @@ _js_extern! {
     safe fn window_cancel_animation_frame(requestId: js_uint32);
 }
 
-/// Aggregates the live state of a [`WebWindow`], including its geometry and screen context.
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_WEB!()]
+/// Aggregates the live state of a [`WebWindow`], including geometry and screen context.
 ///
 /// It has a size of 52 Bytes.
 ///

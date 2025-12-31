@@ -11,8 +11,8 @@
 
 use super::definition::Float;
 use crate::FloatConst;
-#[cfg(nightly_float)]
-use ::core::{f16, f128};
+// #[cfg(nightly_float)]
+// use ::core::{f16, f128};
 
 /// impl mathematical constants
 ///
@@ -20,8 +20,8 @@ use ::core::{f16, f128};
 macro_rules! float_const_impls {
     () => {
         float_const_impls![f32, f64];
-        #[cfg(nightly_float)]
-        float_const_impls![f16, f128];
+        // #[cfg(nightly_float)]
+        // float_const_impls![f16, f128];
     };
     ($( $f:ty),+) => { $( float_const_impls![@$f]; )+ };
     (@$f:ty) => {

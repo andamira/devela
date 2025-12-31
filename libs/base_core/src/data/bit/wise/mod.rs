@@ -8,6 +8,7 @@ mod impls;
 #[cfg(test)]
 mod tests;
 
+#[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Provides constant bitwise operations on `T`.
 ///

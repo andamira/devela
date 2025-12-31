@@ -13,6 +13,7 @@ use crate::{ConstInit, impl_trait, is};
 
 /* definitions */
 
+#[doc = crate::_TAG_INTERACTION!()]
 /// Modifier key codes (when pressed by themselves)
 ///
 /// These keys modify the behavior of other keys when held down.
@@ -55,6 +56,7 @@ impl KeyMod {
     pub const IsoLevel3Shift: KeyMod = KeyMod::AltGr;
 }
 
+#[doc = crate::_TAG_INTERACTION!()]
 /// A bitfield of key modifiers (Shift, Control…) + extra (repeating, composing).
 #[repr(transparent)]
 #[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

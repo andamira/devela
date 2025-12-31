@@ -5,6 +5,7 @@
 
 use crate::{Display, FmtResult, Formatter, Slice};
 
+#[doc = crate::_TAG_CODE!()]
 /// A precise location in the source code.
 ///
 /// Captures the module path, file name, line, and column of a specific
@@ -73,6 +74,7 @@ impl CodeLocation {
     }
 }
 
+#[doc = crate::_TAG_CODE!()]
 /// A contiguous span between two code locations.
 ///
 /// Represents a range in the source code, typically describing where a construct,

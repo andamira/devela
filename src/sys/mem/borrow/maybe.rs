@@ -10,6 +10,8 @@ use devela::Cow;
 use devela::{Borrow, Box, ToOwned};
 use devela::{Deref, Hash, Hasher, Ordering, Ownership};
 
+#[doc = crate::_TAG_MAYBE!()]
+#[doc = crate::_TAG_LIFETIME!()]
 /// A container that may hold either a borrowed or owned value.
 ///
 /// Unlike [`Cow`], this:

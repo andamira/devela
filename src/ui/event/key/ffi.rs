@@ -15,6 +15,7 @@ crate::items! {
     crate::_use! {basic::from_utf8}
 }
 
+#[doc = crate::_TAG_INTERACTION!()]
 #[doc = crate::_TAG_FFI!()]
 /// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
 // (The main difference is in the Char variant.)

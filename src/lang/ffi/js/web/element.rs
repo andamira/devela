@@ -9,6 +9,7 @@
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{_js_extern, _js_method_str_alloc, Js, WebDocument, js_bool, js_int32, js_uint32};
 
+#[doc = crate::_TAG_WEB!()]
 /// Handle to a DOM [Element].
 ///
 /// [Element]: https://developer.mozilla.org/en-US/docs/Web/API/Element

@@ -14,6 +14,7 @@ use ::core::{
     slice::{from_raw_parts, from_raw_parts_mut},
 };
 
+#[doc = crate::_TAG_MEM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Memory-related operations.
 ///

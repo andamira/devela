@@ -3,6 +3,7 @@
 //! Defines the [`Introspect`] struct.
 //
 
+#[doc = crate::_TAG_CODE!()]
 /// Introspection core trait
 ///
 /// Provides structural metadata about types and values.

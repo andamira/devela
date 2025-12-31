@@ -3,6 +3,7 @@
 //! Defines inline if macro [`is!`].
 //
 
+#[doc = crate::_TAG_CODE!()]
 /// Conditional evaluation.
 ///
 /// Combines:

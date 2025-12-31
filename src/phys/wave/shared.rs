@@ -1,5 +1,6 @@
 // devela::phys::wave::shared
 
+#[doc = crate::_TAG_WAVE!()]
 /// Distinguishes the role of a component in wavelet analysis.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum WaveletUnitRole {
@@ -11,6 +12,7 @@ pub enum WaveletUnitRole {
     Wavelet,
 }
 
+#[doc = crate::_TAG_WAVE!()]
 /// A Haar wavelet is a simple, piecewise-constant wavelet.
 ///
 /// It is ideal for basic signal decomposition and testing.

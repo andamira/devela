@@ -18,7 +18,10 @@ define_lane! {
     pub struct ExampleLane4_i32 pub lanes(4); unsigned(i32);
 }
 
-/// Defines a fixed-width lane type and/or attaches implementations for specific primitive types.
+#[doc = crate::_TAG_CONSTRUCTION!()]
+/// Defines a fixed-width lane type.
+///
+/// It has optional implementations for the given integer and floating-point primitive types.
 ///
 /// It offers parallel APIs, depending on the method suffix.
 /// - `_plain`: A plain, compile-time friendly, unrolled fallback.
@@ -381,7 +384,7 @@ macro_rules! define_lane {
             /// Returns the maximum lane value.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn max(&mut self, rhs: Self) {
-                $crate::__lane_dispatch!(no_wide: self, max(rhs)); // BUG
+                $crate::__lane_dispatch!(no_wide: self, max(rhs));
             }
             /// Returns the maximum lane value.
             pub const fn max_plain(&mut self, rhs: Self) {

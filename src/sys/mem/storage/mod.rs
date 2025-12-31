@@ -20,6 +20,7 @@ crate::items! {
 }
 pub use bare::*;
 
+#[doc = crate::_TAG_MEM!()]
 /// Allows to be generic in respect of the data storage.
 ///
 /// There are two reference implementations:

@@ -2,9 +2,12 @@
 //
 //! Defines [`IdPin`].
 //
+// [A physically anchored identity]
 
 use crate::Pin;
 
+#[doc = crate::_TAG_UID!()]
+#[doc = crate::_TAG_ALLOCATION!()]
 /// A unique identifier based on a pinned stack-allocated reference.
 ///
 /// `IdPin` generates a unique ID by pinning a value on the stack,

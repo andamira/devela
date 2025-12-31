@@ -6,6 +6,8 @@
 // - https://syscalls.mebeim.net/?table=x86/32/ia32/latest
 //
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_PLATFORM!()]
 /// Linux `sys/syscall.h` constants for `x86`.
 #[allow(non_camel_case_types)]
 #[derive(Debug)]

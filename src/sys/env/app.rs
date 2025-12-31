@@ -5,6 +5,7 @@
 
 use crate::{Env, Path, PathBuf, is};
 
+#[doc = crate::_TAG_PLATFORM!()]
 /// Application specific metadata.
 ///
 /// It is used together with [`AppEnv`].
@@ -98,6 +99,7 @@ impl AppConfig {
     }
 }
 
+#[doc = crate::_TAG_PLATFORM!()]
 /// Manages directory paths in an environment-aware manner.
 ///
 #[doc = crate::_doc!(vendor: "etcetera")]
@@ -202,6 +204,7 @@ pub trait AppEnv {
 #[must_use] #[rustfmt::skip]
 fn app_in(mut base: PathBuf, path: &Path) -> PathBuf { base.push(path); base }
 
+#[doc = crate::_TAG_LINUX!()]
 /// Xdg enviroment for directories.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AppXdg {
@@ -258,6 +261,7 @@ impl AppEnv for AppXdg {
     }
 }
 
+#[doc = crate::_TAG_PLATFORM!()]
 /// Unix enviroment for directories.
 ///
 /// This constructs directories specific to an application using
@@ -293,6 +297,7 @@ impl AppEnv for AppUnix {
     fn app_runtime(&self) -> Option<PathBuf> { Some(self.app_config().join("runtime")) }
 }
 
+#[doc = crate::_TAG_APPLE!()]
 /// Apple enviroment for directories.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AppApple {
@@ -332,6 +337,7 @@ impl AppEnv for AppApple {
     fn app_runtime(&self) -> Option<PathBuf> { None }
 }
 
+#[doc = crate::_TAG_WINDOWS!()]
 /// Windows enviroment for directories.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AppWindows {

@@ -1,5 +1,10 @@
 // devela_base_core::code::util::debug
+//
+//! Defines [`compile_warn!`], [`fn_name`].
+//
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_DEBUG!()]
 /// Emits a compile-time warning with a provided message.
 ///
 /// This implemented through an existing `dead_code` warning,
@@ -41,6 +46,8 @@ macro_rules! compile_warn {
 #[doc(inline)]
 pub use compile_warn;
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_DEBUG!()]
 /// This macro returns the name of the enclosing function.
 ///
 /// As the internal implementation is based on [`type_name`],
@@ -65,7 +72,7 @@ macro_rules! fn_name {
         // Okay, this is ugly, I get it. However, this is the best we can get on a stable rust.
         fn f() {}
         fn type_name_of<T>(_: T) -> &'static str {
-            core::any::type_name::<T>()
+            ::core::any::type_name::<T>()
         }
         let name = type_name_of(f);
         &name[..name.len() - 3] // `3` is the length of the `::f`.

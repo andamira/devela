@@ -63,7 +63,7 @@ mod data_types {
     pub struct g_vec3 { pub x: g_float, pub y: g_float, pub z: g_float }
     #[doc = _TAG_GEOM!()]
     /// Equivalent to GLSL `vec4`, a vector of 4×[`g_float`]s.
-    #[repr(C)] #[derive(Clone, Copy, Debug, Default, PartialEq)]
+    #[repr(C)] #[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
     pub struct g_vec4 { pub x: g_float, pub y: g_float, pub z: g_float, pub w: g_float }
 
     #[doc = _TAG_GEOM!()]
@@ -199,7 +199,7 @@ impl_matrix_methods!(
 
 #[cfg(test)]
 mod tests {
-    use super::g_mat3;
+    use super::*;
 
     #[test]
     fn matrix_methods() {

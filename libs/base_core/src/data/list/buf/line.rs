@@ -42,6 +42,7 @@ define_bufline!(
     option, slice_mut, slice,
 );
 
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines a linear buffer type over contiguous storage.
 ///
 /// The generated type represents a growable logical prefix over a

@@ -23,7 +23,7 @@ use E::{NotImplemented, NotSupported};
 /// - Operations are generally supported if they can be valid for some values.
 /// E.g. `num_abs` for unsigned types is only valid for `0`.
 ///
-/// See also [`NumRef`] which is automatically implemented for `Num` references.
+/// See also [`NumRef`][crate::NumRef] which is automatically implemented for `Num` references.
 #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[allow(unused_variables, reason = "default implementation is not implemented")]

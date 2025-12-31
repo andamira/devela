@@ -1,5 +1,9 @@
 // devela_base_core::code::util::deprecate
+//
+//! Defines [`deprecate_feature`].
+//
 
+#[doc = crate::_TAG_CODE!()]
 /// Configures a feature as deprecated, warning if it is enabled.
 ///
 /// You can only call this macro once per deprecated feature.

@@ -8,6 +8,7 @@ use crate::EventTarget;
 
 crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
 
+#[doc = crate::_TAG_UID!()]
 /// A backend-agnostic identifier for a UI window.
 ///
 /// Backends (X11, Wayland, Win32, macOS, terminal, web…) map their native
@@ -23,6 +24,7 @@ crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WindowId(pub u32);
 
+#[doc = crate::_TAG_UID!()]
 /// A backend-agnostic identifier for an input device.
 ///
 /// Backends map native device handles (libinput device, MIDI port, gamepad,

@@ -3,6 +3,7 @@
 //! Compile-time assertions.
 //
 
+#[doc = crate::_TAG_ASSERT!()]
 /// Asserts various comparisons on constants.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

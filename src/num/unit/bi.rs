@@ -10,6 +10,7 @@ use crate::FloatExt;
 #[allow(unused_imports)]
 use crate::{Vec, vec_ as vec};
 
+#[doc = crate::_TAG_NUM!()]
 /// Binary unit prefixes.
 ///
 /// - <https://en.wikipedia.org/wiki/Binary_prefix>

@@ -8,6 +8,7 @@ use crate::{
     EventTimestamp, EventWindow, NonZeroU64,
 };
 
+#[doc = crate::_TAG_EVENT!()]
 /// A fully-typed event with optional timing and metadata.
 ///
 /// `Event` separates three notions of time/state:

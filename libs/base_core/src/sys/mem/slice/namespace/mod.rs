@@ -115,6 +115,7 @@ mod tests;
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);
 
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Invokes [`Slice`] [range methods][Slice#range-api-methods-for-subslicing] using short notation.
 ///
 #[doc = crate::_doc!(location: "sys/mem")]

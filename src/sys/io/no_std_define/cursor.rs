@@ -10,6 +10,7 @@
 use crate::{IoBufRead, IoError, IoErrorKind, IoRead, IoResult, IoWrite};
 use ::core::cmp;
 
+#[doc = crate::_TAG_IO!()]
 /// The `IoSeek` trait provides a cursor which can be moved within a stream of
 /// bytes.
 ///
@@ -27,6 +28,7 @@ impl<S: IoSeek + ?Sized> IoSeek for &mut S {
     }
 }
 
+#[doc = crate::_TAG_IO!()]
 /// Enumeration of possible methods to seek within an I/O object.
 ///
 /// It is used by the [`IoSeek`] trait.
@@ -50,6 +52,7 @@ pub enum IoSeekFrom {
     Current(i64),
 }
 
+#[doc = crate::_TAG_IO!()]
 /// Wraps an in-memory buffer and provides it with an [`IoSeek`] implementation.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Cursor.html>.

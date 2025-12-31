@@ -9,6 +9,9 @@
 // - core_impls
 // - tests
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_UID!()]
+#[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines zero-cost, zero-sized, type-safe *resource* IDs.
 ///
 /// This macro generates zero-sized types associated with an inner ID type.
@@ -65,6 +68,8 @@ macro_rules! type_resource {
 #[doc(inline)]
 pub use type_resource;
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_UID!()]
 /// Represents an association between a resource and its inner data type.
 ///
 /// See also: [`TypeResource`] and [`type_resource!`].

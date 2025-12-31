@@ -12,6 +12,7 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 }
 
 #[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_TAG_LIFETIME!()]
 #[doc = crate::_doc_miri_warn!(tag)]
 /// Iterator over references of command line arguments.
 ///

@@ -3,6 +3,7 @@
 //! Defines [`ArrayFrom`].
 //
 
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Compile-time conversion from slice-like types to arrays.
 ///
 /// # Features

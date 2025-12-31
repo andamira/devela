@@ -14,6 +14,7 @@ use crate::{Vec, WaveletHaar, WaveletUnitRole, vec_ as vec};
 #[allow(unused_imports, reason = "!std: abs")]
 use crate::FloatExt;
 
+#[doc = crate::_TAG_WAVE!()]
 /// Trait for lossy compression of wavelet coefficients.
 ///
 /// Compresses coefficients based on a given tolerance, zeroing out those
@@ -23,6 +24,7 @@ pub trait WaveletCompressionVec {
     fn compress(&self, coeffs: &[f64], tolerance: f64) -> Vec<f64>;
 }
 
+#[doc = crate::_TAG_WAVE!()]
 /// Trait defining essential wavelet transform operations.
 pub trait WaveletTransformVec {
     /// Computes the forward wavelet transform on the given input.
@@ -34,6 +36,7 @@ pub trait WaveletTransformVec {
     fn inverse(&self, coeffs: &[f64]) -> Vec<f64>;
 }
 
+#[doc = crate::_TAG_WAVE!()]
 /// A single unit of the wavelet decomposition at a specific level and position.
 #[derive(Debug)]
 pub struct WaveletUnitVec {

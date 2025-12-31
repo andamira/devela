@@ -8,7 +8,7 @@
 #![expect(non_snake_case, reason = "uppercase const fns as related constants")]
 
 mod namespace; // Ansi
-mod color; // AnsiColor3, AnsiColor8 (+Ansi impls)
+mod color; // AnsiColor, AnsiColor3, AnsiColor8 (+Ansi impls)
 
 mod strip; // impl: Ansi:strip_codes
 

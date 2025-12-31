@@ -3,6 +3,7 @@
 //! Defines the [`structural_mods!`] macro.
 //
 
+#[doc = crate::_TAG_CODE!()]
 /// Defines a standardized module structure with automatic re-exports and visibility.
 ///
 /// This macro generates a set of structural modules that help organize exports based on their

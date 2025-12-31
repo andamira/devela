@@ -11,6 +11,7 @@
 
 use crate::PathBuf;
 
+#[doc = crate::_TAG_FS!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// A more featureful wrapper over [`PathBuf`].
 ///

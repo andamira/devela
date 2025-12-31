@@ -3,6 +3,7 @@
 //! Defines the [`cswap!`] macro.
 //
 
+#[doc = crate::_TAG_CODE!()]
 /// Swaps two mutable variables in a *compile-time* friendly manner.
 ///
 #[doc = crate::_doc!(location: "sys/mem")]

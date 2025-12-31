@@ -9,12 +9,14 @@ use crate::{Debug, From, Result, impl_trait};
 #[cfg(doc)]
 use crate::{IoRead, IoWrite};
 
+#[doc = crate::_TAG_IO!()]
 #[doc = crate::_TAG_RESULT!()]
 /// A specialized [`Result`] type for I/O operations.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Result.html>.
 pub type IoResult<T> = Result<T, IoError>;
 
+#[doc = crate::_TAG_IO!()]
 #[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.
 ///
@@ -50,6 +52,7 @@ struct Custom {
     error: &'static str,
 }
 
+#[doc = crate::_TAG_IO!()]
 #[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// A list specifying general categories of I/O error.
 ///

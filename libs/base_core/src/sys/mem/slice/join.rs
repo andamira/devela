@@ -3,7 +3,7 @@
 //! Defines the [`const_join!`] macro.
 //
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_TAG_CODE!()]
 /// Joins multiple byte slices or string slices in compile-time.
 ///
 #[doc = crate::_doc!(location: "sys/mem")]

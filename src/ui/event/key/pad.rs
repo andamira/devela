@@ -7,6 +7,7 @@ use crate::ConstInit;
 
 /* definitions */
 
+#[doc = crate::_TAG_INTERACTION!()]
 /// Keypad keys.
 #[repr(u8)]
 #[non_exhaustive]

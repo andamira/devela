@@ -40,5 +40,6 @@ doc: "The identity function. Just returns back its input.", identity }
 /* `core::default` re-exports */
 
 // NOTE: the trait and the derive macro have the same name
+#[doc = crate::_TAG_INIT!()]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use ::core::default::Default;

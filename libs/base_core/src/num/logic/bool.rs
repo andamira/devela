@@ -9,6 +9,8 @@
 
 use crate::sf;
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_LOGIC!()]
 /// Allows to convert compile-time constants into type-level booleans.
 ///
 /// See also the [`const_bool`] macro, and the [`True`] and [`False`] types.
@@ -30,6 +32,8 @@ sf! {
     impl ConstBool for [(); 1] { type Value = True; const VALUE: Self::Value = True; }
 }
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_LOGIC!()]
 /// Converts a *const* `bool` expression to a type-level boolean.
 ///
 /// Internally, it leverages the [`ConstBool`] trait and a trick related to array sizes:
@@ -53,6 +57,8 @@ macro_rules! const_bool {
 #[doc(inline)]
 pub use const_bool;
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_LOGIC!()]
 /// A type-level logical *true*.
 ///
 /// The second state in binary and ternary logic.
@@ -61,6 +67,8 @@ pub use const_bool;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct True;
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_LOGIC!()]
 /// A type-level logical *false*.
 ///
 /// The first state in binary and ternary logic.

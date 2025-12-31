@@ -3,11 +3,13 @@
 //! Reexported macros and hints.
 //
 
-use crate::_reexport;
+use crate::{_TAG_ASSERT, _TAG_CODE, _TAG_TEXT, _reexport};
 
 /* devela_base_macros */
 
-#[doc = crate::_TAG_PROCEDURAL_MACRO!()] #[rustfmt::skip]
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_PROCEDURAL_MACRO!()]
+#[rustfmt::skip]
 pub use devela_base_macros::{
     cif, compile, compile_attr,
     ident_total, ident_total_unique, ident_unique,
@@ -21,12 +23,14 @@ pub use devela_base_macros::{
 /* `core::hint` functions re-exports */
 
 _reexport! { rust: core::hint,
+tag: _TAG_ASSERT!(),
 doc: "Makes a *soundness* promise to the compiler that the `cond`ition holds.", assert_unchecked }
 _reexport! { rust: core::hint,
 doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
 _reexport! { rust: core::hint,
 doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop }
 _reexport! { rust: core::hint,
+tag: _TAG_ASSERT!(),
 doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
 
 /* `core` macros re-exports */
@@ -37,26 +41,36 @@ doc: "Informs the compiler that the current calling site is not reachable.", unr
 
 // source code
 _reexport! { rust: core,
+tag: _TAG_CODE!(),
 doc: "Expands to the column number at which it was invoked.", @column as code_column }
 _reexport! { rust: core,
+tag: _TAG_CODE!(),
 doc: "Expands to the line number at which it was invoked.", @line as code_line }
 _reexport! { rust: core,
+tag: _TAG_CODE!(),
 doc: "Expands to the file name at which it was invoked.", @file as code_file }
 _reexport! { rust: core,
+tag: _TAG_CODE!(),
 doc: "Expands to a string representing the current module path.", @module_path as code_module }
 
 // assert
 _reexport! { rust: core,
+tag: _TAG_ASSERT!(),
 doc: "Asserts that a boolean expression is true at runtime.", assert }
 _reexport! { rust: core,
+tag: _TAG_ASSERT!(),
 doc: "Asserts that two expressions are equal to each other.", assert_eq }
 _reexport! { rust: core,
+tag: _TAG_ASSERT!(),
 doc: "Asserts that two expressions are not equal to each other.", assert_ne }
 _reexport! { rust: core,
+tag: _TAG_ASSERT!(),
 doc: "Asserts that a boolean expression is true at runtime.", debug_assert }
 _reexport! { rust: core,
+tag: _TAG_ASSERT!(),
 doc: "Asserts that two expressions are equal to each other.", debug_assert_eq }
 _reexport! { rust: core,
+tag: _TAG_ASSERT!(),
 doc: "Asserts that two expressions are not equal to each other.", debug_assert_ne }
 
 // cfg
@@ -65,15 +79,19 @@ doc: "Evaluates boolean combinations of configuration flags at compile-time.", c
 
 // include
 _reexport! { rust: core,
+tag: _TAG_CODE!(),
 doc: "Parses a file as an expression or an item according to the context.", include }
 _reexport! { rust: core,
+tag: _TAG_CODE!(),
 doc: "Includes a file as a reference to a byte array.", include_bytes }
-_reexport! { rust: core, tag: crate::_TAG_TEXT!(),
+_reexport! { rust: core, tag: concat!(_TAG_CODE!(), _TAG_TEXT!()),
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
 // concatenating
-_reexport! { rust: core, doc: "Concatenates literals into a static string slice.", concat }
-_reexport! { rust: core, doc: "Stringifies its arguments.", stringify }
+_reexport! { rust: core, tag: concat!(_TAG_CODE!(), _TAG_TEXT!()),
+doc: "Concatenates literals into a static string slice.", concat }
+_reexport! { rust: core, tag: concat!(_TAG_CODE!(), _TAG_TEXT!()),
+doc: "Stringifies its arguments.", stringify }
 // WAIT: [concat_idents](https://github.com/rust-lang/rust/issues/29599)
 // _reexport! { rust: core, doc: "Concatenates identifiers into one identifier.", concat_idents }
 // WAIT: [concat_bytes](https://github.com/rust-lang/rust/issues/87555)

@@ -16,7 +16,6 @@ trait Sealed {}
 impl<T: ?Sized + Any> Sealed for T {}
 impl<T: ?Sized + Any> AnyExt for T {}
 
-#[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing convenience methods for `T:`[`Any`].
 ///
 /// This trait is sealed and cannot be implemented manually.

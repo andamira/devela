@@ -9,6 +9,7 @@
 //
 // IMPROVE: support more sealed implementations
 
+#[doc = crate::_TAG_INIT!()]
 /// Provides a const-friendly initializer for types that must avoid higher-level abstractions.
 ///
 /// Implemented by fundamental types that must remain minimal and cannot rely on [`ConstInit`].
