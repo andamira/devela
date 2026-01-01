@@ -10,10 +10,6 @@
 //
 // FIX: unresolved link to `alloc`.
 // IMPROVE: make dependencies safety related to features.
-// IMPROVE: rendered paths with trailing `::`. E.g.:
-// - Re-exported from std::backtrace:: .
-// - Re-exported from [alloc]::boxed:: .
-// - Re-exported from core::array:: IntoIter→ArrayIntoIter.
 // MAYBE: new branch for: either a crate or core (for portable-atomic types).
 // WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 //       the solution is to re-export from core/alloc/std items on each crate.
@@ -50,7 +46,7 @@ macro_rules! __reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from [`core" $( "`]::[`" $( $core_path "::" )+ )?
+        #[doc = "\n\n*Re-exported from `core" $( "`[`" $( "::" $core_path )+ )?
             "`](https://doc.rust-lang.org/core/" $($( $core_path "/" )+)? ")*"]
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
@@ -84,7 +80,7 @@ macro_rules! __reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from [`alloc" $( "`]::[`" $( $alloc_path "::" )+ )?
+        #[doc = "\n\n*Re-exported from `alloc" $( "`[`" $( "::" $alloc_path )+ )?
             "`](https://doc.rust-lang.org/alloc/" $($( $alloc_path "/" )+)? ")*"]
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
@@ -117,7 +113,7 @@ macro_rules! __reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`std`'>`std`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
+        #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
@@ -150,7 +146,7 @@ macro_rules! __reexport {
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated for `no_std`'>`[no_]std`</span>
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
+        #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
@@ -184,7 +180,7 @@ macro_rules! __reexport {
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
+        #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]

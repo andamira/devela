@@ -195,6 +195,7 @@ re-export hidden workspace dependencies from `_dep`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - rename `reexport!` internal macro to `_reexport!`.
   - allow accepting multiple tags.
+  - fix rendering of std path links.
 - prefix internal constants `TAG_*` & `EMOJI_*` with `_`
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
