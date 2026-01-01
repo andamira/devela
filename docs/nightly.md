@@ -49,6 +49,7 @@ See also
 
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
 - 1.94: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
+- 1.94: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
 
 # 1.95 will be stable on [2026-04-16](https://releases.rs/docs/1.95.0/) `nightly_stable_1_95`
 <!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
@@ -85,7 +86,6 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
-- 1.??: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
@@ -96,10 +96,11 @@ See also
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
+- 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
+- 1.??: ` `[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
-- 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 
 # … may be stable even later
 

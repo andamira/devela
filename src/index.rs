@@ -72,7 +72,7 @@
 #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
 // ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_94, feature(array_windows, /*const_mul_add,*/))]
+#![cfg_attr(nightly_stable_1_94, feature(array_windows, /*const_mul_add,*/ lazy_get,))]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature())]
 // ----------------------------
@@ -103,7 +103,6 @@
         if_let_guard,
         impl_trait_in_assoc_type,
         isqrt,
-        lazy_get,
         macro_metavar_expr,
         macro_metavar_expr_concat,
         more_qualified_paths,
