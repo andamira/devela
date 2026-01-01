@@ -77,7 +77,7 @@ _reexport! { rust: std::sync,
 }
 _reexport! { rust: std::sync,
     tag: _TAG_CONCURRENCY!() _TAG_RESULT!(),
-    doc: "Whether a timed wait on a [`CondVar`] returned due to a time out or not.",
+    doc: "Whether a timed wait on a [`Condvar`] returned due to a time out or not.",
     WaitTimeoutResult
 }
 

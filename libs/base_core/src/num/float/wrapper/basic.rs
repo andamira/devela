@@ -531,7 +531,7 @@ macro_rules! impl_float_basic {
             #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&[]), 0.0];"]]
             /// ```
             /// # See Also
-            /// - [`eval_poly_const`]: compile-time array-based Horner evaluator.
+            /// - [`eval_poly_const`][Self::eval_poly_const]: compile-time array-based Horner evaluator.
             ///
             /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
             // WAIT: [for-loops in constants](https://github.com/rust-lang/rust/issues/87575)

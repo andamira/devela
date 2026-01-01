@@ -46,6 +46,7 @@ macro_rules! __reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
         #[doc = $description]
+        #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
         #[doc = "\n\n*Re-exported from `core" $( "`[`" $( "::" $core_path )+ )?
             "`](https://doc.rust-lang.org/core/" $($( $core_path "/" )+)? ")*"]
 
@@ -80,6 +81,7 @@ macro_rules! __reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
         #[doc = $description]
+        #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
         #[doc = "\n\n*Re-exported from `alloc" $( "`[`" $( "::" $alloc_path )+ )?
             "`](https://doc.rust-lang.org/alloc/" $($( $alloc_path "/" )+)? ")*"]
 
@@ -113,6 +115,7 @@ macro_rules! __reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`std`'>`std`</span>"]
         #[doc = $description]
+        #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
         #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
 
@@ -146,6 +149,7 @@ macro_rules! __reexport {
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated for `no_std`'>`[no_]std`</span>
         #[doc = $description]
+        #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
         #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
 
@@ -180,6 +184,7 @@ macro_rules! __reexport {
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>
         #[doc = $description]
+        #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
         #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
 
