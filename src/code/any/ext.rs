@@ -17,6 +17,7 @@ impl<T: ?Sized + Any> Sealed for T {}
 impl<T: ?Sized + Any> AnyExt for T {}
 
 /// Extension trait providing convenience methods for `T:`[`Any`].
+#[doc = crate::_doc!(location: "code")]
 ///
 /// This trait is sealed and cannot be implemented manually.
 #[rustfmt::skip]

@@ -1,4 +1,4 @@
-// devela::data::collections::traits::stacks
+// devela::data::list::stack::adt
 //
 //! Defines the [`DataStack`] & [`DataDesta`] abstract data types.
 //
@@ -13,6 +13,7 @@ use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// An abstract *stack* data type.
+#[doc = crate::_doc!(location: "data/list")]
 pub trait DataStack: DataCollection {
     /// Remove an element from the (back of the) stack.
     fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element, NotEnoughElements>;
@@ -25,6 +26,7 @@ pub trait DataStack: DataCollection {
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// An abstract *double-ended stack* data type.
+#[doc = crate::_doc!(location: "data/list")]
 pub trait DataDesta: DataStack {
     /// Remove an element from the front of the stack.
     fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element, NotEnoughElements>;

@@ -2,6 +2,7 @@
 
 #[doc = crate::_TAG_CODEC!()]
 /// The primary mode for data encoding.
+#[doc = crate::_doc!(location: "data/codec")]
 ///
 /// This enum is used to guide encoding/decoding strategies.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -22,6 +23,7 @@ pub enum EncodingMode {
 
 #[doc = crate::_TAG_CODEC!()]
 /// The type of compression applied to data.
+#[doc = crate::_doc!(location: "data/codec")]
 ///
 /// This enum is used to specify whether the compression algorithm prioritizes
 /// retaining all original data or reducing file size, potentially at the cost

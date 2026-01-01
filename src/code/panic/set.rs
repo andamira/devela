@@ -3,7 +3,10 @@
 //! Defines the [`set_panic_handler!`] macro.
 //
 
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_PLATFORM!()]
 /// Sets a panic handler based on the chosen strategy.
+#[doc = crate::_doc!(location: "code")]
 ///
 /// - `loop`: Enters an infinite loop, ensuring the program halts without undefined behavior.
 /// - `unreachable`: optimally halts execution based on the target architecture.

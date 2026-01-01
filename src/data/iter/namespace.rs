@@ -11,6 +11,7 @@ use core::iter::{empty, from_fn, once, once_with, repeat, repeat_n, repeat_with,
 #[doc = crate::_TAG_ITERATOR!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Iterator-related namespaced operations.
+#[doc = crate::_doc!(location: "data/iter")]
 #[derive(Debug)]
 pub struct Iter;
 

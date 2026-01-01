@@ -24,6 +24,7 @@ mod codegen {
     #[doc = crate::_TAG_FMT!()]
     #[doc = crate::_TAG_DEBUG!()]
     /// A formatting wrapper for [`Tuple`]s, implementing `Display` and `Debug`.
+    #[doc = crate::_doc!(location: "data/list/tuple")]
     #[repr(transparent)]
     pub struct TupleFmt<'a, T: Tuple>(&'a T);
 

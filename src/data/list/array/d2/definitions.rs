@@ -9,6 +9,7 @@ use crate::{Array, Bare, Storage};
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A static 2-dimensional [`Array`].
+#[doc = crate::_doc!(location: "data/list/array")]
 ///
 /// It is generic in respect to its:
 /// - elements (`T`),

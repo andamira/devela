@@ -26,6 +26,7 @@ mod endian {
 
     #[doc = _TAG_CODEC!()]
     /// Encodes and decodes a number in big-endian order.
+    #[doc = crate::_doc!(location: "data/codec")]
     ///
     /// # Example
     /// ```
@@ -54,6 +55,7 @@ mod endian {
 
     #[doc = _TAG_CODEC!()]
     /// Encodes and decodes a number in little-endian order.
+    #[doc = crate::_doc!(location: "data/codec")]
     ///
     /// # Examples
     /// ```
@@ -182,6 +184,7 @@ mod cond {
 
     #[doc = _TAG_CODEC!()]
     /// Encodes and decodes conditionally.
+    #[doc = crate::_doc!(location: "data/codec")]
     ///
     /// # Example
     /// ```
@@ -225,6 +228,7 @@ mod flags {
 
     #[doc = _TAG_CODEC!()]
     /// Encodes and decodes a sequence of flags as a single byte.
+    #[doc = crate::_doc!(location: "data/codec")]
     ///
     /// # Examples
     /// ```
@@ -306,6 +310,7 @@ mod join {
 
     #[doc = _TAG_CODEC!()]
     /// Encodes and decodes an iterator as a sequence with an optional `separator`.
+    #[doc = crate::_doc!(location: "data/codec")]
     ///
     /// # Example
     /// ```
@@ -376,6 +381,7 @@ mod len {
 
     #[doc = _TAG_CODEC!()]
     /// A dummy writer that counts bytes instead of actually writing them.
+    #[doc = crate::_doc!(location: "data/codec")]
     ///
     /// Note that this encoder runs all the same encoding logic as any other encoder,
     /// so it will trigger the same side effects that other encoders would trigger
@@ -414,6 +420,7 @@ mod len {
     #[doc = _TAG_CODEC!()]
     /// Encodes and decodes a length prefixed value
     /// (<abbr title = "Type-Length-Value">[TLV]</abbr>).
+    #[doc = crate::_doc!(location: "data/codec")]
     ///
     /// Encodes a value by **prefixing it with its length** using a fixed-size integer.
     ///

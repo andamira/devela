@@ -17,6 +17,7 @@ use crate::ConstInitCore;
 
 #[doc = crate::_TAG_INIT!()]
 /// Provides a const-friendly initializer for types that may use higher-level abstractions.
+#[doc = crate::_doc!(location: "code")]
 ///
 /// Implemented by general types that can freely depend on higher-level traits.
 ///

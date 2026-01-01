@@ -4,7 +4,8 @@
 //
 
 #[doc = crate::_TAG_CODE!()]
-/// Introspection core trait
+/// Introspection core trait.
+#[doc = crate::_doc!(location: "code")]
 ///
 /// Provides structural metadata about types and values.
 /// Implement for any type to describe its fundamental properties.
