@@ -50,8 +50,6 @@
   [M_grapheme_machine]: crate::_doc::vendored::grapheme_machine
   [`GraphemeMachine`]: crate::text::grapheme::GraphemeMachine
   [`text::grapheme`]: crate::text::grapheme
-  [M_icy_sixel]: crate::_doc::vendored::icy_sixel
-  [`media::image::sixel`]: crate::media::image::sixel
   <!-- [M_musl]: crate::_doc::vendored::musl -->
   [`Linux`]: crate::sys::os::linux::Linux
   [M_object-id]: crate::_doc::vendored::object_id

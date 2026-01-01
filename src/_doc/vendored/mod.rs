@@ -31,7 +31,6 @@ crate::_doc! { vendor_mod: "crunchy", crunchy }
 crate::_doc! { vendor_mod: "current", current }
 crate::_doc! { vendor_mod: "encode", encode }
 crate::_doc! { vendor_mod: "grapheme_machine", grapheme_machine }
-crate::_doc! { vendor_mod: "icy_sixel", icy_sixel }
 // crate::_doc! { vendor_mod: "musl", musl }
 crate::_doc! { vendor_mod: "object-id", object_id }
 crate::_doc! { vendor_mod: "stdext", stdext }

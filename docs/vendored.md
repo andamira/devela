@@ -105,8 +105,6 @@ See the linked modifications for detailed changes.
   as some items in the [`data::codec`] module ([*modifications*][M_encode]).
 - <i id="grapheme_machine"></i>[grapheme_machine] by Martin Atkins,
   as [`GraphemeMachine`] and related items in [`text::grapheme`] ([*modifications*][M_grapheme_machine]).
-- <i id="icy_sixel"></i>[icy_sixel] by Mike Krüger, based on [libsixel] by Hayaki Saito,
-  as the `Legacy*` types in [`media::image::sixel`] ([*modifications*][M_icy_sixel]).
 - <i id="musl"></i>[musl] by Rich Felker, et al.,
   as part of the [`Linux`] signal restorer assembly code.
 - <i id="object-id"></i>[object-id] by *Altertech*,
@@ -134,10 +132,6 @@ See the linked modifications for detailed changes.
   [M_grapheme_machine]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/grapheme_machine.md
   [`GraphemeMachine`]: https://andamira.github.io/devela/latest/devela/text/grapheme/struct.GraphemeMachine.html
   [`text::grapheme`]: https://andamira.github.io/devela/latest/devela/text/grapheme/
-[icy_sixel]: https://crates.io/crates/icy_sixel/0.1.3
-[libsixel]: https://github.com/saitoha/libsixel
-  [M_icy_sixel]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/icy_sixel.md
-  [`media::image::sixel`]: https://andamira.github.io/devela/latest/devela/media/image/sixel
 [musl]: https://git.musl-libc.org/cgit/musl/tag/?h=v1.2.5
   [`Linux`]: https://andamira.github.io/devela/latest/devela/os/linux/struct.Linux.html
 [object-id]: https://crates.io/crates/object-id/0.1.4

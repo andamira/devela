@@ -296,9 +296,9 @@ re-export hidden workspace dependencies from `_dep`.
   - `FONT_5_6` to `FONT_BIT_5_6`.
 
 ### image
-- rename vendored sixel types with the `Legacy*` prefix.
 - add a new sixel implementation:
   - new types: `SixelChar`, `SixelColor`, `SixelEncoder`, `SixelPalette`, `SixelPaletteIter`.
+- remove legacy vendored sixel implementation.
 
 ---
 ## num
