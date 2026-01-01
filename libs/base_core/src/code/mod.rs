@@ -16,7 +16,7 @@ mod guard; // ScopeGuard
 mod lut; // Lut RETHINK
 mod site; // CodeLocation, CodeSpan
 
-mod reexports;
+mod _reexport;
 
 pub mod error; // general errors definitions
 pub mod marker; // core::marker, type_marker!, type_resource!, TypeResource, TypeResourced
@@ -25,14 +25,13 @@ pub mod panic;
 pub mod result; // utility macros and functions
 pub mod util; // utility macros and functions
 
-util::structural_mods! { // _mods, _pub_mods, _workspace_internals
+util::structural_mods! { // _mods, _pub_mods, _reexport, _crate_internals, _workspace_internals
     _mods {
         pub use super::{
             any::_all::*,
             const_init::ConstInitCore,
             guard::*,
             lut::*,
-            reexports::*,
             site::*,
         };
     }
@@ -41,6 +40,9 @@ util::structural_mods! { // _mods, _pub_mods, _workspace_internals
             error::_all::*, marker::_all::*, ops::_all::*,
             panic::_all::*, result::_all::*, util::_all::*,
         };
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
     _crate_internals {
         pub(crate) use super::util::_crate_internals::*;

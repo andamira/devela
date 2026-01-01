@@ -3,14 +3,11 @@
 #![doc = crate::_DOC_CODE_PANIC!()]
 //
 
-mod namespace; // Panic
-mod reexports;
+mod _reexport;
 
-crate::structural_mods! { // _mods
-    _mods {
-        pub use super::{
-            namespace::*,
-            reexports::*,
-        };
-    }
+mod namespace; // Panic
+
+crate::structural_mods! { // _mods, _reexports
+    _mods { pub use super::namespace::*; }
+    _reexports { pub use super::_reexport::*; }
 }

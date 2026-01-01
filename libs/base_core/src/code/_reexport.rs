@@ -1,4 +1,4 @@
-// devela_base_core::code::reexports
+// devela_base_core::code::_reexport
 //
 //! General reexported items, except macros and overloadable operators.
 //

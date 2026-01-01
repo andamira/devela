@@ -1,6 +1,6 @@
 // devela_base_core::code::ops::reexports
 
-use crate::{_TAG_QUANT, _reexport};
+use crate::{_TAG_LIFETIME, _TAG_QUANT, _reexport};
 
 // enums
 _reexport! { rust: core::ops, tag: _TAG_QUANT!(),
@@ -31,9 +31,9 @@ _reexport! { rust: core::ops, doc: "The bitwise OR operator `|`.", BitOr }
 _reexport! { rust: core::ops, doc: "The bitwise OR assignment operator `|=`.", BitOrAssign }
 _reexport! { rust: core::ops, doc: "The bitwise XOR operator `^`.", BitXor }
 _reexport! { rust: core::ops, doc: "The bitwise XOR assignment operator `^=`.", BitXorAssign }
-_reexport! { rust: core::ops,
+_reexport! { rust: core::ops, tag: _TAG_LIFETIME!(),
 doc: "Used for immutable dereferencing operations, like `*v`.", Deref }
-_reexport! { rust: core::ops,
+_reexport! { rust: core::ops, tag: _TAG_LIFETIME!(),
 doc: "Used for mutable dereferencing operations, like in `*v = 1;`.", DerefMut }
 _reexport! { rust: core::ops, doc: "The division operator `/`.", Div }
 _reexport! { rust: core::ops, doc: "The division assignment operator `/=`.", DivAssign }

@@ -14,12 +14,10 @@
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
-// private modules
 mod _env; // __dbg!, _std_core!
+mod _reexport;
 
 mod cdbg; // cdbg!
-
-mod _reexport; // re-exported items
 
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
@@ -28,22 +26,18 @@ mod unroll; // unroll!
 // #[cfg(all(feature = "std", feature = "dep_image"))]
 // #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "dep_image"))))]
 // mod docima; // DocImage
-// mod structural; // structural_mods!
 
-devela_base_core::structural_mods! { // _mods, _crate_internals
+devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             cdbg::*,
-            _reexport::*,
         };
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
         // WIPZONE
         // #[cfg(all(feature = "std", feature = "dep_image"))]
         // pub use super::docima::*;
-        // pub use super::structural::*;
     }
-    _crate_internals {
-        pub(crate) use super::_env::*;
-    }
+    _reexports { pub use super::_reexport::*; }
+    _crate_internals { pub(crate) use super::_env::*; }
 }

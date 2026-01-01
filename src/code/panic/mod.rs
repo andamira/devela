@@ -8,8 +8,8 @@
 mod set; // set_panic_handler!
 
 // re-exports
-crate::mod_path!(_c "../../../libs/base_core/src/code/panic/reexports.rs");
-crate::mod_path!(std _s "../../../libs/base_std/src/code/panic/reexports.rs");
+crate::mod_path!(_c "../../../libs/base_core/src/code/panic/_reexport.rs");
+crate::mod_path!(std _s "../../../libs/base_std/src/code/panic/_reexport.rs");
 
 crate::structural_mods! { // _mods
     _mods {

@@ -4,18 +4,21 @@
 //
 
 #[doc = crate::_TAG_CODE!()]
-/// Defines a standardized module structure with automatic re-exports and visibility.
+/// Defines a standardized module structure for organizing visibility and re-exports.
 ///
-/// This macro generates a set of structural modules that help organize exports based on their
-/// intended visibility and usage patterns.
-/// It reduces boilerplate and ensures consistency throught the workspace crates.
+/// This macro generates a set of structural helper modules that centralize export logic
+/// according to intended visibility and usage. It reduces boilerplate and enforces a
+/// consistent module layout across workspace crates.
 ///
 /// <div class="warning">
 ///
-/// **Order Matters:** The modules must be specified in the exact order shown in the examples
-/// below, though all modules are optional. The macro parsing is order-sensitive, and incorrect
-/// ordering will result in compilation errors or unexpected behavior. The `_all` module is
-/// automatically generated based on the presence of `_mods` and `_pub_mods` modules.
+/// **Usage Constraints:**
+/// - Module blocks must be specified in the exact order shown below (all are optional).
+/// - This macro defines internal modules with reserved names
+///   (`_mods`, `_pub_mods`, `_reexports`, `_crate_internals`, `_workspace_internals`,
+///   `_hidden`, and `_all`). Do not define modules with these names in the same scope.
+///
+/// Violating either rule will result in compilation errors or incorrect aggregation.
 /// </div>
 ///
 /// # Generated Modules
@@ -23,14 +26,14 @@
 /// The macro can generate these optional modules:
 ///
 /// - `_mods`: Public items from non-public modules. Items should be `pub`.
-/// - `_pub_mods`: Public items from public modules. Items should be `pub` and have `doc(inline)`.
-/// - `_crate_internals`: Crate-private items (`pub(crate)` visibility) that bubble up to the top.
-/// - `_workspace_internals`: Workspace-visible items (`pub` but hidden from external crates).
-/// - `_always`: Items that bypass normal modules feature-gating and are always available.
-/// - `_hidden`: Public but hidden items (`pub` + `doc(hidden)`).
+/// - `_pub_mods`: Public items from public modules. Items should be `pub` and use `doc(inline)`.
+/// - `_reexports`: Public items from other modules, crates, or the std. Items should be `pub`.
+/// - `_crate_internals`: Crate-private items (`pub(crate)`) re-exported within the crate.
+/// - `_workspace_internals`: Workspace-visible items (`pub`, `doc(hidden)`).
+/// - `_hidden`: Public but hidden items (`pub`, `doc(hidden)`).
 ///
-/// Additionally, it always generates an `_all` module that aggregates exports from
-/// `_mods` and `_pub_mods` when they are present.
+/// An `_all` module is always generated. It aggregates exports from `_mods`, `_pub_mods`,
+/// and `_reexports` when present.
 ///
 /// # Usage Patterns
 /// ```ignore
@@ -38,6 +41,7 @@
 /// # mod some_module {}
 /// # mod other_module {}
 /// # pub mod public_module { pub(super) mod _all {} }
+/// # mod _reexport {}
 /// # mod internal_utils {}
 /// # mod workspace_tools {}
 /// structural_mods! {
@@ -48,6 +52,9 @@
 ///         #[doc(inline)]
 ///         pub use super::public_module::_all::*;
 ///     }
+///     _pub_mods {
+///         pub use super::_reexport::*;
+///     }
 ///     _crate_internals {
 ///         pub(crate) use super::internal_utils::*;
 ///     }
@@ -57,22 +64,10 @@
 /// }
 /// ```
 /// # Notes
-/// - Modules are generated with `#[allow(unused_imports)]` to prevent noise from
-///   intra-crate visibility boundaries
-///
-/// <div class="warning">
-///
-/// **Important Usage Note**: The correct functionality of these structural modules depends on
-/// strict adherence to the established guidelines for the module chain throughout the entire crate
-/// hierarchy.
-///
-/// Each module must properly re-export its structural components upward, culminating in crate
-/// root file, to ensure consistent visibility and proper aggregation of exports. The system
-/// relies on a disciplined approach to visibility modifiers and re-export patterns at each
-/// level of the module structure to maintain the intended public API surface and internal
-/// organization. Deviation from these patterns in intermediate modules may break the automatic
-/// aggregation mechanism and compromise the consistency of the final exported interface.
-/// </div>
+/// - Generated modules use `#[allow(unused_imports)]` to avoid warnings caused by
+///   intra-crate visibility boundaries.
+/// - Each module in the hierarchy must forward its structural exports upward to preserve
+///   the intended public API surface.
 //
 // We use the pattern `$(_mods$($has_mods:lifetime)?)?` where the optional lifetime parameter
 // serves as a marker to conditionally include the module in `_all`. The lifetime is never
@@ -89,6 +84,9 @@ macro_rules! _structural_mods {
         // Public items from public modules. They bubble up but are hidden in the current module.
         $( $(_pub_mods$($has_pub_mods:lifetime)?)? { $($block_pub_mods:tt)* } )?
         //
+        // Items inside should be pub.
+        $( $(_reexports$($has_reexports:lifetime)?)? { $($block_reexports:tt)* } )?
+        //
         // Items inside should be pub(crate).
         // They are re-exported from the root of the current crate.
         $( _crate_internals { $($block_crate_internals:tt)* } )?
@@ -98,7 +96,7 @@ macro_rules! _structural_mods {
         $( _workspace_internals { $($block_workspace_internals:tt)* } )?
         //
         // Items inside should be pub & doc(hidden).
-        // They are publicly reexported from the root of the crate.
+        // They are publicly re-exported from the root of the crate.
         $( _hidden { $($block_hidden:tt)* } )?
     ) => {
         $(
@@ -114,6 +112,13 @@ macro_rules! _structural_mods {
             pub use _pub_mods::*;
             mod _pub_mods { #![allow(unused_imports)]
                 $($block_pub_mods)*
+            }
+        )?
+        $(
+            #[allow(unused_imports)]
+            pub use _reexports::*;
+            mod _reexports { #![allow(unused_imports)]
+                $($block_reexports)*
             }
         )?
         $(
@@ -139,6 +144,10 @@ macro_rules! _structural_mods {
             $($($($has_pub_mods)?
                 #[doc(inline)]
                 pub use super::_pub_mods::*;
+            )?)?
+            $($($($has_reexports)?
+                #[doc(inline)]
+                pub use super::_reexports::*;
             )?)?
         }
         $(

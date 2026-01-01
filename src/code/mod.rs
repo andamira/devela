@@ -11,7 +11,7 @@
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
 // re-exports
-crate::mod_path!(_c "../../libs/base_core/src/code/reexports.rs");
+crate::mod_path!(_c "../../libs/base_core/src/code/_reexport.rs");
 
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInit

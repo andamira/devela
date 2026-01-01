@@ -1,4 +1,4 @@
-// devela_base_core::code::panic::reexports
+// devela_base_core::code::panic::_reexport
 
 use crate::_reexport;
 
