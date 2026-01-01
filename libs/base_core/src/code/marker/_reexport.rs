@@ -1,7 +1,4 @@
-// devela_base_core::code::marker::reexports
-//
-//!
-//
+// devela_base_core::code::marker::_reexport
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 //

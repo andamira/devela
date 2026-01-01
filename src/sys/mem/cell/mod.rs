@@ -5,8 +5,6 @@
 #![doc = crate::_doc!(extends: cell)]
 //
 
-crate::mod_path!(_c "../../../../libs/base_core/src/sys/mem/cell/reexports.rs");
-
 mod option; // CellOptionExt
 
 // WIPZONE
@@ -15,18 +13,20 @@ mod option; // CellOptionExt
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
 // mod ghost; // WIP
 
-mod reexports_core; // NOTE: symlink to /libs/base_core/src/sys/mem/cell/reexports.rs
+mod _reexport_core; // NOTE: symlink to /libs/base_core/src/sys/mem/cell/_reexport.rs
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{option::*, _c::*};
+        pub use super::{
+            option::*,
+        };
         // WIPZONE
         // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
         // pub use super::scell::*;
         // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
         // pub use super::ghost::*; // WIP
-
-        // re-exports
-        pub use super::reexports_core::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
     }
 }

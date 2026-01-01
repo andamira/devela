@@ -14,7 +14,7 @@ mod _tags; // EMOJI_*! _TAG_*!
 mod _reexport_macro; // reexport!
 mod _use; // _use!
 
-mod _reexport;
+mod _reexport; // SYMLINK from /src/code/util/_reexport_core.rs
 
 mod asserts; // (assertion macros)
 mod capture; // capture_[first|last|tail_tuple]!

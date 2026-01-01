@@ -1,4 +1,4 @@
-// devela_base_std::code::error::reexports
+// devela_base_std::code::error::_reexport
 //
 //!
 //

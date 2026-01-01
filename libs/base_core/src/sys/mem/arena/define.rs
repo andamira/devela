@@ -25,8 +25,8 @@ define_arena! {
     pub ExampleArenaMark;
 }
 
-#[doc = crate::_TAG_ALLOCATION!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_TAG_ALLOCATION!()]
 /// A custom memory arena generator.
 ///
 /// # Features

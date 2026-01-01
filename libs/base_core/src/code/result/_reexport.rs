@@ -1,4 +1,4 @@
-// devela_base_core::code::result::reexports
+// devela_base_core::code::result::_reexport
 
 use crate::{_TAG_ITERATOR, _TAG_NICHE, _TAG_RESULT, _reexport};
 

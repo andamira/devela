@@ -3,14 +3,17 @@
 #![doc = crate::_DOC_CODE_PANIC!()]
 //
 
-mod punroll; // punroll!
-mod reexports;
+mod _reexport; // SYMLINK from /src/code/ops/_reexport_core.rs
 
-crate::structural_mods! { // _mods
+mod punroll; // punroll!
+
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             punroll::*,
-            reexports::*,
         };
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

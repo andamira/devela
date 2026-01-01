@@ -1,9 +1,7 @@
-// devela_base_std::work::sync::mpsc::reexports
-//
-//!
-//
+// devela_base_std::work::sync::mpsc::_reexport
 
 use crate::_reexport;
+#[allow(unused_imports)]
 use crate::{_TAG_CONCURRENCY, _TAG_ERROR, _TAG_ERROR_COMPOSITE, _TAG_ITERATOR};
 
 /* structs */

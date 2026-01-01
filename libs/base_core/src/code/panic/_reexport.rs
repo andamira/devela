@@ -1,18 +1,21 @@
 // devela_base_core::code::panic::_reexport
 
-use crate::_reexport;
+use crate::{_TAG_ASSERT, _TAG_CODE, _TAG_LIFETIME, _reexport};
 
 /* structs */
 
 _reexport! { rust: core::panic,
+    tag: _TAG_CODE!(),
     doc: "Passed to `#[panic_handler]` in `no_std`, always carrying a formatted message.",
     PanicInfo
 }
 _reexport! { rust: core::panic,
+    tag: _TAG_CODE!(),
     doc: "A struct containing information about the location of a panic.",
     @Location as PanicLocation
 }
 _reexport! { rust: core::panic,
+    tag: _TAG_CODE!() _TAG_ASSERT!(),
     doc: "A simple wrapper around a type to assert that it is unwind safe.",
     @AssertUnwindSafe as PanicAssertUnwindSafe
 }
@@ -20,11 +23,13 @@ _reexport! { rust: core::panic,
 /* traits */
 
 _reexport! { rust: core::panic,
+    tag: _TAG_CODE!() _TAG_LIFETIME!(),
     doc: "A marker trait which represents a shared reference considered unwind safe.",
     @RefUnwindSafe as PanicRefUnwindSafe
     // RefUnwindSafe
 }
 _reexport! { rust: core::panic,
+    tag: _TAG_CODE!(),
     doc: "A marker trait which represents “panic safe” types in Rust.",
     @UnwindSafe as PanicUnwindSafe
     // UnwindSafe
@@ -32,12 +37,16 @@ _reexport! { rust: core::panic,
 
 /* macros */
 
-_reexport! { rust: core, doc: "Indicates unfinished code.", todo }
-_reexport! { rust: core, doc: "Indicates unreachable code.", unreachable }
-_reexport! { rust: core, doc: "Indicates unimplemented code.", unimplemented }
+_reexport! { rust: core, tag: _TAG_CODE!(),
+doc: "Indicates unfinished code.", todo }
+_reexport! { rust: core, tag: _TAG_CODE!(),
+doc: "Indicates unreachable code.", unreachable }
+_reexport! { rust: core, tag: _TAG_CODE!(),
+doc: "Indicates unimplemented code.", unimplemented }
 
 // NOTE: the macro and the module have the same name
 //
+#[doc = _TAG_CODE!()]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Panics the current thread.
 ///

@@ -145,6 +145,7 @@ mod impl_devela_base_core {
     use super::{ConstInitCore, Sealed};
     use crate::{_impl_init, paste,
         // code
+        Mismatch,
         // data
         // data::codec::hash
         Adler32, HasherFx,
@@ -168,6 +169,10 @@ mod impl_devela_base_core {
     // text
     #[cfg(feature = "grapheme")]
     pub use crate::{GraphemeNonul, GraphemeU8};
+    // -------------------------------------------------------------------------
+
+    // code
+    _impl_init![%Sealed%: <N: ConstInitCore, H: ConstInitCore> Mismatch<N, H>];
 
     // data
     _impl_init![%Sealed%: Adler32];

@@ -3,14 +3,17 @@
 #![doc = crate::_DOC_WORK_SYNC_MPSC!()]
 // #![doc = crate::_doc!(extends: mpsc)] // IMPROVE
 
-crate::mod_path!(std _s "../../../../libs/base_std/src/work/sync/mpsc/reexports.rs");
+#[cfg(feature = "std")]
+mod _reexport_std; // SYMLINK to /libs/base_std/src/work/sync/mpsc/_reexport.rs
 
 mod namespace; // Mpsc
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::namespace::*;
+    }
+    _reexports {
         #[cfg(feature = "std")]
-        pub use super::_s::*;
+        pub use super::_reexport_std::*;
     }
 }

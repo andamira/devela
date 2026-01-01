@@ -3,23 +3,22 @@
 //! Coroutine implementations.
 //
 
+// #[cfg(nightly_coro)]
+mod _reexport_core; // SYMLINK to /libs/base_core/src/work/future/coroutine/_reexport.rs
+
 mod coro; // CoroManager, CoroWork, CoroWorker
 
 // #[cfg(test)]
 // #[cfg(feature = "alloc")]
 // mod tests;
 
-// re-exports
-#[cfg(nightly_coro)]
-crate::mod_path!(_c "../../../../libs/base_core/src/work/future/coroutine/reexports.rs");
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::coro::*;
-
-        // re-exports
-        #[cfg(nightly_coro)]
-        #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
-        pub use super::_c::*;
+    }
+    _reexports {
+        // #[cfg(nightly_coro)]
+        // #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
+        pub use super::_reexport_core::*;
     }
 }

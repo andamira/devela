@@ -10,8 +10,7 @@
 // safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
-// re-exports
-crate::mod_path!(_c "../../libs/base_core/src/code/_reexport.rs");
+mod _reexport_core; // SYMLINK to ../../libs/base_core/src/code/_reexport.rs
 
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInit
@@ -27,24 +26,24 @@ pub mod util; // (utility macros and functions)
 devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
-            _c::*,
             any::_all::*,
             const_init::ConstInit,
-        };
-
-        // re-exports
-        #[doc(inline)]
-        pub use devela_base_core::code::{
-            CodeLocation, CodeSpan,
-            ConstInitCore,
-            Lut,
-            ScopeGuard,
         };
     }
     _pub_mods {
         pub use super::{
             error::_all::*, intro::_all::*, marker::_all::*, ops::_all::*,
             panic::_all::*, result::_all::*, util::_all::*,
+        };
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+        #[doc(inline)]
+        pub use devela_base_core::code::{
+            CodeLocation, CodeSpan,
+            ConstInitCore,
+            Lut,
+            ScopeGuard,
         };
     }
     _crate_internals {

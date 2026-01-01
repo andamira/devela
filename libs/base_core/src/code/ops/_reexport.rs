@@ -1,4 +1,4 @@
-// devela_base_core::code::ops::reexports
+// devela_base_core::code::ops::_reexport
 
 use crate::{_TAG_LIFETIME, _TAG_QUANT, _reexport};
 

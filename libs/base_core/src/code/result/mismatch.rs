@@ -5,6 +5,11 @@
 
 use crate::{ConstInitCore, Interval};
 
+impl<N: ConstInitCore, H: ConstInitCore> ConstInitCore for Mismatch<N, H> {
+    /// Returns a *const* default `Mismatch`.
+    const INIT: Self = Self::new(N::INIT, H::INIT);
+}
+
 #[doc = crate::_TAG_RESULT!()]
 /// Represents a mismatch between an expected `need` and an encountered `have`.
 ///

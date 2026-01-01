@@ -1,9 +1,9 @@
-// devela_base_std::work
+// devela_base_std::phys::time::source
 //
-#![doc = crate::_DOC_WORK_PROCESS!()]
+//! Time sources.
 //
 
-mod _reexport; // SYMLINK from
+mod _reexport;
 
 crate::structural_mods! { // _reexports
     _reexports {

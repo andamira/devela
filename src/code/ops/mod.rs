@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(extends: ops)]
 //
 
-crate::mod_path!(_c "../../../libs/base_core/src/code/ops/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/code/ops/_reexport.rs
 
 // WIPZONE
 // #[cfg(feature = "std")]
@@ -14,10 +14,13 @@ crate::mod_path!(_c "../../../libs/base_core/src/code/ops/reexports.rs");
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::_c::*;
         // WIPZONE
         // #[cfg(feature = "std")]
         // pub use super::_wip_fns::*;
         // pub use super::_wip_closure::*;
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::_reexport_core::*;
     }
 }

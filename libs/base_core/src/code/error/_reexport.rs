@@ -1,4 +1,4 @@
-// devela_base_core::code::error::reexports
+// devela_base_core::code::error::reexport
 //
 //!
 //

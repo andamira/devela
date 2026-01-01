@@ -78,6 +78,7 @@ re-export hidden workspace dependencies from `_dep`.
 
 ## workspace libraries
 - declare the `std` external crate.
+- add `_reexports` structural modules.
 - remove `_always` structural modules.
 - refactor all structural access modules.
 - enable `_docsrs` for workspace dependencies.

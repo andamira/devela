@@ -16,10 +16,19 @@
 //! structured ownership ([`Own`]) and mismatch-aware comparisons ([`Mismatch`]).
 //
 
-mod reexports;
+mod _reexport_core; // SYMLINK to /libs/base_core/src/code/result/_reexport.rs
 
-crate::structural_mods! { // _mods
-    _mods {
-        pub use super::reexports::*;
+crate::structural_mods! { // _reexports
+    _reexports {
+        #[doc(inline)]
+        pub use super::_reexport_core::*;
+
+        #[doc(inline)]
+        pub use devela_base_core::code::result::{
+            Chain, Hook, Mismatch,
+            OptRes, OptResExt, serr, sok,
+            OptionExt, OptionFmt, OptionFmtOr, OptionFmtOrElse,
+            Own, ResultExt, unwrap,
+        };
     }
 }

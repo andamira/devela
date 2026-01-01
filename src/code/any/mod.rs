@@ -6,12 +6,15 @@
 // #![doc = crate::_doc!(newline)]
 //
 
-crate::mod_path!(_c "../../../libs/base_core/src/code/any/reexports.rs");
+mod _reexport_core; // SYMLINK TO /libs/base_core/src/code/any/_reexport.rs
 
 mod ext;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{ext::*, _c::*};
+        pub use super::ext::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
     }
 }

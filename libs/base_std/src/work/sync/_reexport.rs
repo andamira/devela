@@ -1,9 +1,10 @@
-// devela_base_std::work::sync::reexports
+// devela_base_std::work::sync::_reexport
 //
 //!
 //
 // WAIT: [unique_rc_arc](https://github.com/rust-lang/rust/issues/112566)
 
+#[allow(unused_imports, reason = "symlinked from devela")]
 use crate::{
     _TAG_CONCURRENCY, _TAG_ERROR, _TAG_ERROR_COMPOSITE, _TAG_GUARD, _TAG_RESULT, _reexport,
 };

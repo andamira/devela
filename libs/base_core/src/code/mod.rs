@@ -10,13 +10,13 @@
 // safety
 #![cfg_attr(base_safe_code, forbid(unsafe_code))]
 
+mod _reexport; // SYMLINK from /src/code/_reexport.rs
+
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInitCore, <_impl_init!>
 mod guard; // ScopeGuard
 mod lut; // Lut RETHINK
 mod site; // CodeLocation, CodeSpan
-
-mod _reexport;
 
 pub mod error; // general errors definitions
 pub mod marker; // core::marker, type_marker!, type_resource!, TypeResource, TypeResourced

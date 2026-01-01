@@ -5,14 +5,16 @@
 #![doc = crate::_doc!(extends: marker)]
 //
 
-crate::mod_path!(_c "../../../libs/base_core/src/code/marker/reexports.rs");
+mod _reexport_core; // SYMLINK to ../../../libs/base_core/src/code/marker/_reexport.rs
 
 mod type_resource; // zero-cost type-safe resource markers
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{_c::*, type_resource::*};
-
+        pub use super::type_resource::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
         #[doc(inline)]
         pub use devela_base_core::code::marker::type_marker;
     }

@@ -14,8 +14,9 @@
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
+mod _reexport_core; // SYMLINK to /libs/base_core/src/code/util/_reexport.rs
+
 mod _env; // __dbg!, _std_core!
-mod _reexport;
 
 mod cdbg; // cdbg!
 
@@ -38,6 +39,47 @@ devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
         // #[cfg(all(feature = "std", feature = "dep_image"))]
         // pub use super::docima::*;
     }
-    _reexports { pub use super::_reexport::*; }
-    _crate_internals { pub(crate) use super::_env::*; }
+    _reexports {
+        pub use super::_reexport_core::*;
+
+        #[doc(inline)]
+        // NOTE: in sync with /libs/base_core/src/code/util/mod.rs
+        pub use devela_base_core::{ // IMPROVE path
+            assert_eq_all, assert_approx_eq_all, const_assert,
+            capture_first, capture_last, capture_tail_tuple,
+            cfg_if,
+            CONST,
+            compile_warn, fn_name,
+            deprecate_feature,
+            doclink,
+            enumset,
+            ident_const_index,
+            impl_trait,
+            include_from, mod_from, mod_path,
+            is,
+            items, sf,
+            lets,
+            maybe,
+            methods_as_fns,
+            paste,
+            structural_mods,
+            type_count,
+            whilst,
+            write_at,
+            // devela_code_macros:
+            // cif, compile, compile_attr, compile_doc,
+            // ident_total, ident_total_unique, ident_unique,
+            // coalesce, field_of,
+            // repeat,
+        };
+        #[doc(inline)]
+        #[cfg(feature = "devela_macros")]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "devela_macros")))]
+        pub use devela_macros::{
+            enumint,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::_env::*;
+    }
 }

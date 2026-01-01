@@ -13,9 +13,10 @@
 //! [`await`]: https://doc.rust-lang.org/std/keyword.await.html
 //
 
+mod _reexport_core; // SYMLINK to /libs/base_core/src/work/future/_reexport.rs
+
 mod coroutine;
 mod ext; // FutureExt
-mod reexports;
 
 #[cfg(feature = "std")]
 #[cfg(not(feature = "dep_portable_atomic_util"))]
@@ -23,10 +24,30 @@ mod block;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{coroutine::_all::*, ext::*, reexports::*};
+        pub use super::{
+            coroutine::_all::*,
+            ext::*,
+        };
 
         #[cfg(feature = "std")]
         #[cfg(not(feature = "dep_portable_atomic_util"))]
         pub use super::block::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+
+        /* from either `alloc` or `portable-atomic-util` and `alloc` */
+
+        #[doc = crate::_TAG_ATOMIC!()]
+        #[doc = crate::_TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+        #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+        pub use crate::_dep::portable_atomic_util::task::Wake as TaskWake;
+        //
+        #[doc = crate::_TAG_ATOMIC!()]
+        #[doc = crate::_TAG_ATOMIC_ALLOC_PORTABLE_UTIL!()]
+        #[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+        pub use crate::_dep::_alloc::task::Wake as TaskWake;
     }
 }

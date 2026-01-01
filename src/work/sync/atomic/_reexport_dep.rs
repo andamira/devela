@@ -1,14 +1,12 @@
-// devela::work::sync::atomic::reexports
+// devela::work::sync::atomic::_reexport_dep
 //
-//! Re-exports items from core, [portable-atomic](https://docs.rs/portable-atomic),
+//! Re-exports items [portable-atomic](https://docs.rs/portable-atomic),
 //! and the [`Atomic`] type from the [atomic](https://docs.rs/atomic) crate.
 //
 
 #[cfg(feature = "dep_portable_atomic")]
 use crate::_DOC_ATOMIC_CORE_PORTABLE;
 use crate::{_TAG_ATOMIC, _TAG_ATOMIC_CORE_PORTABLE, _reexport};
-
-crate::mod_path!(+pub _c "../../../../libs/base_core/src/work/sync/atomic/reexports.rs");
 
 /* from the `atomic` crate */
 

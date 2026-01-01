@@ -5,14 +5,19 @@
 #![doc = crate::_doc!(extends: process)]
 //
 
-crate::mod_path!(std _s "../../../libs/base_std/src/work/process/reexports.rs");
+#[cfg(feature = "std")]
+mod _reexport_std;
 
 #[cfg(feature = "std")]
 mod ext; // ProcessExt
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         #[cfg(feature = "std")]
-        pub use super::{_s::*, ext::*};
+        pub use super::ext::*;
+    }
+    _reexports {
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
     }
 }

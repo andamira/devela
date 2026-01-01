@@ -3,14 +3,17 @@
 #![doc = crate::_DOC_WORK_FUTURE!()]
 //
 
-mod coroutine;
-mod reexports;
+mod _reexport; // SYMLINK from /src/work/future/_reexport_core.rs
 
-crate::structural_mods! { // _mods
+mod coroutine;
+
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             coroutine::_all::*,
-            reexports::*,
         };
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

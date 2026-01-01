@@ -49,6 +49,9 @@
 #![cfg_attr(not(all(feature = "linux", feature = "unsafe_syscall")), doc = "[`LinuxInstant`]: #")]
 #![cfg_attr(not(all(feature = "js", not(windows))), doc = "[`JsInstant`]: #")]
 
+#[cfg(feature = "std")]
+mod _reexport_std; // SYMLINK to /libs/base_std/src/phys/time/source/_reexport.rs
+
 mod impls;
 
 mod traits; // TimeSource, TimeSourceCfg
@@ -57,7 +60,7 @@ mod traits; // TimeSource, TimeSourceCfg
 #[cfg(target_has_atomic = "64")]
 mod fake; // TimeFake, TimeFakeRef
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             traits::*,
@@ -65,15 +68,15 @@ crate::structural_mods! { // _mods
         };
         #[cfg(target_has_atomic = "64")]
         pub use super::fake::*;
+    }
+    _reexports {
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
 
-        // re-exports
+        // intra-crate
         #[cfg(all(feature = "js", not(windows)))]
         pub use crate::JsInstant;
         #[cfg(all(feature = "linux", feature = "unsafe_syscall"))]
         pub use crate::{LinuxInstant, LinuxTime};
-        #[cfg(feature = "std")]
-        pub use devela_base_std::phys::time::source::{
-            SystemInstant, SystemTime, UNIX_EPOCH,
-        };
     }
 }
