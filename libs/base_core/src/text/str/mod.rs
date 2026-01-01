@@ -3,23 +3,21 @@
 #![doc = crate::_DOC_TEXT_STR!()]
 //
 
-mod reexports;
 mod nonul; // StringNonul
+// mod _wip_sixbit; WIP
 mod str; // Str
 mod u; // StringU8, StringU16, StringU32, StringUsize
 
-// WIPZONE
-// mod _wip_sixbit;
+mod reexports; // SYMLINK from /src/text/str/reexports_core.rs
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             reexports::*,
             nonul::*,
+            // _wip_sixbit::*;
             str::Str,
             u::*,
         };
-        // WIPZONE
-        // pub use super::_wip_sixbit::*;
     }
 }

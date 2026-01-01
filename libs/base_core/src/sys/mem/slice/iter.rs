@@ -4,11 +4,12 @@
 //
 
 use crate::{
-    _TAG_ITERATOR, IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize,
-    IteratorLendingPeek,
+    _TAG_ITERATOR, _TAG_LIFETIME, IteratorLending, IteratorLendingDoubleEnded,
+    IteratorLendingExactSize, IteratorLendingPeek,
 };
 
 #[doc = _TAG_ITERATOR!()]
+#[doc = _TAG_LIFETIME!()]
 /// A lending iterator over a shared slice.
 ///
 /// Yields elements by reference in index order. Produces `&T` without copying.
@@ -69,6 +70,7 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 //
 
 #[doc = _TAG_ITERATOR!()]
+#[doc = _TAG_LIFETIME!()]
 /// A lending iterator over an exclusive slice.
 ///
 /// Yields `&mut T` references in index order.
