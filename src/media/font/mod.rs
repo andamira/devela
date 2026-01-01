@@ -12,7 +12,7 @@ mod bitmap; // FontBitmap
 // #[cfg(any(feature = "std", feature = "dep_hashbrown"))]
 // pub mod bdf;
 
-crate::structural_mods! { // _mods, _all
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             art::*,

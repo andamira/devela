@@ -1,23 +1,22 @@
-// devela_base_core::data::codec::bit
+// devela_base_core::data::bit
 //
 //! Bit-focused items.
 //
 
-// internals
-mod _docs;
-
-mod field; // bitfield
-mod ops; // BitOps
+// mod budget; // BitBudget
+mod field; // bitfield!
+// mod manifest; // BitManifest
+// mod recipe; // BitRecipe
 // mod view; // BitView // WIP
-mod wise; // Bitwise
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            // budget::*,
             field::_all::*,
-            ops::*,
+            // manifest::*,
+            // recipe::*,
             // view::*,
-            wise::*,
         };
     }
 }

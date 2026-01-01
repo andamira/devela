@@ -1,4 +1,4 @@
-// devela_base_core::data::bit::_docs
+// devela_base_core::num::bit::_docs
 //
 //! Defines constants for shared documentation on
 //! [`BitOps`][crate::BitOps] and [`Bitwise`][crate::Bitwise].

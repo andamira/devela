@@ -11,6 +11,7 @@
 
 mod _internals; // impl_ops!
 
+mod bit; // BitOps, Bitwise
 mod cast; // Cast
 mod float; // Float, FloatConst, f[32|64]_bits, fsize
 mod int; // Divisor, GcdReturn, [i|u]size_[down|up]
@@ -27,6 +28,7 @@ pub mod wide; // define_lane!
 crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
     _mods {
         pub use super::{
+            bit::_all::*,
             cast::_all::*,
             float::_all::*,
             int::_all::*,

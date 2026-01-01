@@ -221,10 +221,7 @@ re-export hidden workspace dependencies from `_dep`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
 
 ### bit
-- update `BitOps` & `Bitwise`.
-  - rearrange methods in thematic impl blocks.
-  - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip[_checked]`, `flip[_checked]_range_if`, `[is_][un]set_mask`.
-- separate documentations for `BitOps` and `Bitwise` as individual constants.
+- move `BitOps` & `Bitwise` to `num::bit`.
 
 ### hash
 - move to [base]: `HasherFx`, `HasherBuildFx`.
@@ -317,6 +314,13 @@ re-export hidden workspace dependencies from `_dep`.
   - make part of `quant`.
   - rename variant `None` to `Zero`.
   - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
+
+### bit
+- new module `num::bit`.
+- update `BitOps` & `Bitwise`.
+  - rearrange methods in thematic impl blocks.
+  - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip[_checked]`, `flip[_checked]_range_if`, `[is_][un]set_mask`.
+- separate documentations for `BitOps` and `Bitwise` as individual constants.
 
 ### float
 - rename: `ExtFloat` to `FloatExt`.

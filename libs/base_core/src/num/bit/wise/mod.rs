@@ -11,10 +11,9 @@ mod tests;
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Provides constant bitwise operations on `T`.
+#[doc = crate::_doc!(location: "num")]
 ///
-/// It's implemented for:
-/// [`i8`], [`i16`], [`i32`], [`i64`], [`i128`], [`isize`],
-/// [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
+/// It's implemented for: [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
 ///
 /// ## Panic behavior
 /// Unchecked bit operations panic in debug builds when a bit index or range
@@ -26,12 +25,6 @@ mod tests;
 /// # Related items
 /// See also [`BitOps`][crate::BitOps] for the related trait.
 ///
-/// [`i8`]: Self#implementations-for-i8
-/// [`i16`]: Self#implementations-for-i16
-/// [`i32`]: Self#implementations-for-i32
-/// [`i64`]: Self#implementations-for-i64
-/// [`i128`]: Self#implementations-for-i128
-/// [`isize`]: Self#implementations-for-isize
 /// [`u8`]: Self#implementations-for-u8
 /// [`u16`]: Self#implementations-for-u16
 /// [`u32`]: Self#implementations-for-u32

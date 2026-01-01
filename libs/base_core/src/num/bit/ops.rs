@@ -1,4 +1,4 @@
-// devela_base_core::data::bit::ops
+// devela_base_core::num::bit::ops
 //
 //! Defines the [`BitOps`] trait.
 //
@@ -11,7 +11,10 @@ use super::_docs::*;
 use crate::MismatchedBounds::{DataOverflow, IndexOutOfBounds, MismatchedIndices};
 use crate::{Bitwise, MismatchedBounds};
 
+#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// Provides bitwise operations on `T`.
+#[doc = crate::_doc!(location: "num")]
 ///
 /// See also [`Bitwise`] for the related const wrapper.
 #[rustfmt::skip]
@@ -212,7 +215,6 @@ pub trait BitOps where Self: Sized {
 macro_rules! impl_bit_ops {
     () => {
         impl_bit_ops![
-            i8, i16, i32, i64, i128, isize,
             u8, u16, u32, u64, u128, usize
         ];
     };
