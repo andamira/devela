@@ -1,4 +1,4 @@
-// devela_base_alloc::text::str:reexports
+// devela_base_alloc::text::str::_reexport
 //
 //! String related re-exports.
 //!

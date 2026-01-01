@@ -10,9 +10,9 @@ mod ext_str; // StrExt
 mod ext_string; // StringExt
 
 // re-exports
-mod reexports_core; // SYMLINK to /libs/base_core/src/text/str/reexports.rs
-mod reexports_alloc; // SYMLINK to /libs/base_alloc/src/text/str/reexports.rs
-mod reexports_std; // SYMLINK to /libs/base_std/src/text/str/reexports.rs
+mod _reexport_core; // SYMLINK to /libs/base_core/src/text/str/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/text/str/_reexport.rs
+mod _reexport_std; // SYMLINK to /libs/base_std/src/text/str/_reexport.rs
 
 crate::structural_mods! { // _mods
     _mods {
@@ -25,9 +25,9 @@ crate::structural_mods! { // _mods
         /* re-exports */
 
         pub use super::{
-            reexports_core::*,
-            reexports_alloc::*,
-            reexports_std::*,
+            _reexport_core::*,
+            _reexport_alloc::*,
+            _reexport_std::*,
         };
         #[doc(inline)]
         pub use devela_base_core::text::str::{

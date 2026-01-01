@@ -18,7 +18,8 @@
 mod _env; // __dbg!, _std_core!
 
 mod cdbg; // cdbg!
-mod reexports; // re-exported items
+
+mod _reexport; // re-exported items
 
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
@@ -31,7 +32,10 @@ mod unroll; // unroll!
 
 devela_base_core::structural_mods! { // _mods, _crate_internals
     _mods {
-        pub use super::{cdbg::*, reexports::*};
+        pub use super::{
+            cdbg::*,
+            _reexport::*,
+        };
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
         // WIPZONE

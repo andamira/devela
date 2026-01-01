@@ -1,4 +1,4 @@
-// devela_base_std::text::str:reexports
+// devela_base_std::text::str:_reexport
 //
 //! String related re-exports.
 //

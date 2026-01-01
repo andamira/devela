@@ -8,7 +8,7 @@
 mod namespace; // Iter
 
 // re-exports
-crate::mod_path!(_c "../../../libs/base_core/src/data/iter/reexports.rs");
+crate::mod_path!(_c "../../../libs/base_core/src/data/iter/_reexport.rs");
 
 crate::structural_mods! { // _mods
     _mods {

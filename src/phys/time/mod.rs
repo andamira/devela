@@ -51,7 +51,6 @@ crate::structural_mods! { // _mods, _pub_mods
         // #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u16")))]
         // pub use super::looper::*;
 
-        // re-exports
         #[doc = crate::_TAG_TIME!()]
         pub use devela_base_core::phys::time::{
             Duration, DurationErrorTryFromFloatSecs, Timeout,
@@ -64,7 +63,7 @@ crate::structural_mods! { // _mods, _pub_mods
     }
     _pub_mods {
         pub use super::{
-            source::*,
+            source::_all::*,
         };
     }
 }

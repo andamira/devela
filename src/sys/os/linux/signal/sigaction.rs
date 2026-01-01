@@ -109,7 +109,7 @@ impl LinuxSigaction {
         }
     }
 }
-/// [`sa_handler`][Self::sa_handler] field constants.
+/// `Self::sa_handler` field constants.
 impl LinuxSigaction {
     /// The default signal handling.
     pub const SIG_DFL: isize = 0;

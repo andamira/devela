@@ -8,16 +8,16 @@ mod nonul; // StringNonul
 mod str; // Str
 mod u; // StringU8, StringU16, StringU32, StringUsize
 
-mod reexports; // SYMLINK from /src/text/str/reexports_core.rs
+mod _reexport; // SYMLINK from /src/text/str/_reexport_core.rs
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            reexports::*,
             nonul::*,
             // _wip_sixbit::*;
             str::Str,
             u::*,
+            _reexport::*,
         };
     }
 }

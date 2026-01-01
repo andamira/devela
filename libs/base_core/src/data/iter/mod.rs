@@ -3,15 +3,20 @@
 #![doc = crate::_DOC_DATA_ITER!()]
 //
 
-mod lending; // IteratorLending, SliceIter, SliceIterMut
-mod reexports;
+mod lending; // IteratorLending[DoubleEnded|ExactSize|Peek]
+
+// re-exports
+mod _reexport;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             lending::*,
-            reexports::*,
         };
+
+        // re-exports
+        pub use super::_reexport::*;
+        // intra-crate
         #[doc(inline)]
         pub use crate::sys::mem::{SliceIter, SliceIterMut};
     }

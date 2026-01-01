@@ -1,8 +1,6 @@
 // devela::index
 //
 //! A development layer in Rust.
-//!
-#![doc = include_str!("./Index.md")]
 //
 
 /* crate configuration */

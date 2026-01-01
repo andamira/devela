@@ -26,6 +26,7 @@ mod bytes;
 #[cfg(test)]
 mod tests;
 
+#[doc = crate::_TAG_LIFETIME!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Slice-related operations, most of them *const*.
 ///

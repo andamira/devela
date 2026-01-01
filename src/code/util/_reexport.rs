@@ -3,7 +3,7 @@
 //! Reexported macros and hints.
 //
 
-crate::mod_path!(+pub _c "../../../libs/base_core/src/code/util/reexports.rs");
+crate::mod_path!(+pub _c "../../../libs/base_core/src/code/util/_reexport.rs");
 
 // NOTE: in sync with /libs/base_core/src/code/util/mod.rs:
 #[doc(inline)] #[rustfmt::skip]

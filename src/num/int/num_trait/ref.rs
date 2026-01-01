@@ -21,6 +21,7 @@ use crate::Vec;
 use crate::{Deref, GcdReturn, IntResult as Result, Num, NumInt, NumRef, ValueQuant};
 
 #[doc = crate::_TAG_NUM!()]
+#[doc = crate::_TAG_LIFETIME!()]
 /// Common auto-trait for referenced integer types.
 ///
 /// # Notes
