@@ -5,7 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// A concise macro for declaring multiple variables at once.
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 ///
 /// # Syntax
 /// - `name = expr` - immutable variable

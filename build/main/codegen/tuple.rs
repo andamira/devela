@@ -62,7 +62,7 @@ pub(crate) fn generate() -> Result<(), Error> {
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 #[doc = crate::_TAG_CODEGEN_BUILD!()]
 /// Extension trait providing convenience methods for [tuples][tuple].
-#[doc = crate::_doc!(location: "data/list/tuple")]
+#[doc = crate::_doc_location!("data/list/tuple")]
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
@@ -611,7 +611,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     w!(f, "#[doc = crate::_TAG_CODE!()]")?;
     w!(f, "#[doc = crate::_TAG_CODEGEN_BUILD!()]")?;
     w!(f, "/// An element of a [`Tuple`].")?;
-    w!(f, r#"#[doc = crate::_doc!(location: "data/list/tuple")]"#)?;
+    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "#[non_exhaustive]")?;
     w!(f, "#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]")?;
     w0!(f, "pub enum TupleElement<")?;
@@ -627,7 +627,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     w!(f, "#[doc = crate::_TAG_LIFETIME!()]")?;
     w!(f, "#[doc = crate::_TAG_CODEGEN_BUILD!()]")?;
     w!(f, "/// A shared reference to an element of a [`Tuple`].")?;
-    w!(f, r#"#[doc = crate::_doc!(location: "data/list/tuple")]"#)?;
+    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "#[non_exhaustive]")?;
     w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
     w0!(f, "pub enum TupleElementRef<'a, ")?;
@@ -643,7 +643,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     w!(f, "#[doc = crate::_TAG_LIFETIME!()]")?;
     w!(f, "#[doc = crate::_TAG_CODEGEN_BUILD!()]")?;
     w!(f, "/// An exclusive reference to an element of a [`Tuple`].")?;
-    w!(f, r#"#[doc = crate::_doc!(location: "data/list/tuple")]"#)?;
+    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "#[non_exhaustive]")?;
     w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
     w0!(f, "pub enum TupleElementMut<'a, ")?;
@@ -664,7 +664,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     w!(f, "#[doc = crate::_TAG_ITERATOR!()]")?;
     w!(f, "#[doc = crate::_TAG_CODEGEN_BUILD!()]")?;
     w!(f, "/// An iterator over elements of a [`Tuple`].")?;
-    w!(f, r#"#[doc = crate::_doc!(location: "data/list/tuple")]"#)?;
+    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "#[derive(Clone, Debug)]")?;
     w0!(f, "pub struct TupleIter<")?;
         for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
@@ -688,7 +688,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     w!(f, "#[doc = crate::_TAG_LIFETIME!()]")?;
     w!(f, "#[doc = crate::_TAG_CODEGEN_BUILD!()]")?;
     w!(f, "/// An iterator over shared references to elements of a [`Tuple`].")?;
-    w!(f, r#"#[doc = crate::_doc!(location: "data/list/tuple")]"#)?;
+    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "#[derive(Clone, Debug)]")?;
     w!(f, "pub struct TupleIterRef<'a, ")?;
         for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
@@ -711,7 +711,7 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     w!(f, "#[doc = crate::_TAG_ITERATOR!()]")?;
     w!(f, "#[doc = crate::_TAG_LIFETIME!()]")?;
     w!(f, "#[doc = crate::_TAG_CODEGEN_BUILD!()]")?;
-    w!(f, r#"#[doc = crate::_doc!(location: "data/list/tuple")]"#)?;
+    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "/// An iterator over exclusive references to elements of a [`Tuple`].")?;
     w!(f, "#[derive(Debug)]")?;
     w!(f, "pub struct TupleIterMut<'a, ")?;

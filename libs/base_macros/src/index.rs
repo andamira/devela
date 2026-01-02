@@ -25,6 +25,14 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 extern crate self as devela_base_macros;
+macro_rules! __crate_name {
+    () => {
+        "devela_base_macros"
+    };
+}
+#[allow(unused_imports)] // temp
+pub(crate) use __crate_name;
+
 use proc_macro::TokenStream as TS;
 use std::collections::HashSet;
 

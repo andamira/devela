@@ -8,6 +8,12 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 extern crate self as devela_base_data;
+macro_rules! __crate_name {
+    () => {
+        "devela_base_data"
+    };
+}
+pub(crate) use __crate_name;
 
 // pub mod data;
 

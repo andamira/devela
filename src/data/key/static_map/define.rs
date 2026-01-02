@@ -22,7 +22,7 @@ define_static_map! {
 #[doc = crate::_TAG_CONSTRUCTION!()]
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Build a custom static hashmap.
-#[doc = crate::_doc!(location: "data/dst")]
+#[doc = crate::_doc_location!("data/dst")]
 ///
 /// # Arguments
 /// - `$NAME`:      the name of the new hashmap.

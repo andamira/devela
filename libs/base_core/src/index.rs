@@ -38,6 +38,12 @@ compile_error!("You can't enable `safe` and any `unsafe*` features at the same t
 // (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
 
 extern crate self as devela_base_core;
+macro_rules! __crate_name {
+    () => {
+        "devela_base_core"
+    };
+}
+pub(crate) use __crate_name;
 
 pub mod code;
 pub mod data;

@@ -9,7 +9,7 @@ use crate::{_TAG_ITERATOR, _TAG_LIFETIME, is};
 #[doc = _TAG_ITERATOR!()]
 #[doc = _TAG_LIFETIME!()]
 /// A lending iterator using a generic associated lifetime.
-#[doc = crate::_doc!(location: "data/iter")]
+#[doc = crate::_doc_location!("data/iter")]
 ///
 /// A lending iterator yields items borrowed from its own internal state.
 /// Each call to [`next`][Self::next] creates a temporary borrow of `self`
@@ -241,7 +241,7 @@ pub trait IteratorLending {
 #[doc = _TAG_ITERATOR!()]
 #[doc = _TAG_LIFETIME!()]
 /// A lending iterator that can yield items from the back.
-#[doc = crate::_doc!(location: "data/iter")]
+#[doc = crate::_doc_location!("data/iter")]
 ///
 /// This is the borrowing analogue of [`DoubleEndedIterator`].
 pub trait IteratorLendingDoubleEnded: IteratorLending {
@@ -284,7 +284,7 @@ pub trait IteratorLendingDoubleEnded: IteratorLending {
 #[doc = _TAG_ITERATOR!()]
 #[doc = _TAG_LIFETIME!()]
 /// A lending iterator with a known remaining length.
-#[doc = crate::_doc!(location: "data/iter")]
+#[doc = crate::_doc_location!("data/iter")]
 ///
 /// Types implementing this trait can report how many items are left
 /// without consuming the iterator.
@@ -310,7 +310,7 @@ pub trait IteratorLendingExactSize: IteratorLending {
 #[doc = _TAG_ITERATOR!()]
 #[doc = _TAG_LIFETIME!()]
 /// A lending iterator that can inspect the next item without advancing.
-#[doc = crate::_doc!(location: "data/iter")]
+#[doc = crate::_doc_location!("data/iter")]
 ///
 /// The returned reference is tied to the temporary mutable borrow of `self`
 /// created by this call. Implementations must not modify the iteration state

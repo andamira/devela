@@ -6,7 +6,7 @@
 // https://crates.io/crates/apply/0.3.0
 
 /// Allows chaining transformations by passing values through a sequence of functions.
-#[doc = crate::_doc!(location: "code/result")]
+#[doc = crate::_doc_location!("code/result")]
 ///
 /// Use `Chain` to thread operations where each function takes ownership or
 /// references the value and returns a new result.
@@ -65,7 +65,7 @@ pub trait Chain<R> {
 impl<T: ?Sized, R> Chain<R> for T {}
 
 /// Allows attaching operations or side effects to a value without breaking its flow.
-#[doc = crate::_doc!(location: "code/result")]
+#[doc = crate::_doc_location!("code/result")]
 ///
 /// Use `Hook` when you want to inspect, log, or modify the value in-place without
 /// directly returning a new result from the function.

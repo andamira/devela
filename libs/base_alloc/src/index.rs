@@ -9,6 +9,12 @@
 
 extern crate alloc;
 extern crate self as devela_base_alloc;
+macro_rules! __crate_name {
+    () => {
+        "devela_base_alloc"
+    };
+}
+pub(crate) use __crate_name;
 
 pub mod data;
 pub mod lang;

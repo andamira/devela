@@ -3,7 +3,7 @@
 use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 
 /// A builder for default Fnv hashers.
-#[doc = crate::_doc!(location: "data/codec/hash")]
+#[doc = crate::_doc_location!("data/codec/hash")]
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
 
 #[doc = crate::_TAG_HASH!()]
@@ -12,7 +12,7 @@ pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
 /// [u64](#impl-HasherFnv<u64>),
 /// [u128](#impl-HasherFnv<u128>) &
 /// [usize](#impl-HasherFnv<usize>).
-#[doc = crate::_doc!(location: "data/codec/hash")]
+#[doc = crate::_doc_location!("data/codec/hash")]
 ///
 /// It uses the `fnv-1a` variation which gives better avalanche characteristics.
 ///

@@ -6,7 +6,7 @@
 #[doc = crate::_TAG_CODE!()]
 /// Swaps two mutable variables in a *compile-time* friendly manner.
 ///
-#[doc = crate::_doc!(location: "sys/mem")]
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// For that it uses either:
 /// 1. a temporary variable.

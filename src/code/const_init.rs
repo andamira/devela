@@ -16,8 +16,8 @@ use crate::ConstInitCore;
 /* definitions */
 
 #[doc = crate::_TAG_INIT!()]
-/// A trait for giving a type a useful const-friendly initial value (higher-level).
-#[doc = crate::_doc!(location: "code")]
+/// A trait for giving a type a useful const-friendly initial value *(higher-level)*.
+#[doc = crate::_doc_location!("code")]
 ///
 /// Implemented by general types that can freely depend on higher-level traits.
 ///

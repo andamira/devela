@@ -12,7 +12,7 @@
 use core::fmt::Debug;
 
 /// Common trait for enumerating *data types*.
-#[doc = crate::_doc!(location: "data/list/table/value")]
+#[doc = crate::_doc_location!("data/list/table/value")]
 ///
 /// Allows extending `DataType*`**`With`** versions with custom *types*.
 ///
@@ -41,7 +41,7 @@ pub trait DataType: Debug {
 }
 
 /// Common trait for enumerating `Copy`-constrained *data types*.
-#[doc = crate::_doc!(location: "data/list/table/value")]
+#[doc = crate::_doc_location!("data/list/table/value")]
 ///
 /// Allows extending `DataType*Copy`**`With`** versions with custom *types*.
 ///
@@ -67,7 +67,7 @@ where
 }
 
 /// Common trait for enumerating *data values*.
-#[doc = crate::_doc!(location: "data/list/table/value")]
+#[doc = crate::_doc_location!("data/list/table/value")]
 ///
 /// Allows extending `DataValue*`**`With`** versions.
 ///
@@ -90,7 +90,7 @@ pub trait DataValue: Debug {
 }
 
 /// Common trait for enumerating `Copy`-constrained *data values*.
-#[doc = crate::_doc!(location: "data/list/table/value")]
+#[doc = crate::_doc_location!("data/list/table/value")]
 ///
 /// Allows extending `DataValue*Copy`**`With`** versions.
 ///
@@ -115,7 +115,7 @@ pub trait DataValueCopy: DataValue + Copy {
 }
 
 /// Common unsafe trait for enumerating untagged *raw data values*.
-#[doc = crate::_doc!(location: "data/list/table/value")]
+#[doc = crate::_doc_location!("data/list/table/value")]
 ///
 /// # Safety
 /// You have to know what you're doing.
@@ -124,7 +124,7 @@ pub trait DataValueCopy: DataValue + Copy {
 pub unsafe trait DataRaw {}
 
 /// Common unsafe trait for enumerating `Copy`-constrained untagged *raw data values*.
-#[doc = crate::_doc!(location: "data/list/table/value")]
+#[doc = crate::_doc_location!("data/list/table/value")]
 ///
 /// # Safety
 /// You have to know what you're doing.

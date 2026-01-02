@@ -5,7 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// Conditional evaluation.
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 ///
 /// Combines:
 /// 1. `if`/`else` conditions

@@ -7,7 +7,7 @@ use crate::{_TAG_CODEC, CodecLen, IoRead, IoResult, IoWrite};
 
 #[doc = _TAG_CODEC!()]
 /// A type that can be decoded from an I/O reader.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// See also [`Encodable`].
 pub trait Decodable<R: IoRead>: Sized {
@@ -23,7 +23,7 @@ pub trait Decodable<R: IoRead>: Sized {
 
 #[doc = _TAG_CODEC!()]
 /// A type that can be encoded into an I/O writer.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// See also [`Decodable`].
 #[doc = crate::_doc!(vendor: "encode")]
@@ -37,7 +37,7 @@ pub trait Encodable<W: IoWrite> {
 
 #[doc = _TAG_CODEC!()]
 /// A type that can compute the size of its encoded form without actual encoding.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// This trait is automatically implemented for all types that implement
 /// [`Encodable`] with [`CodecLen`].

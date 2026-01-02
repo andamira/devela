@@ -5,7 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// A macro for defining `#[cfg]` if-else statements.
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 ///
 /// Allows definition of a cascade of `#[cfg]` cases,
 /// emitting the implementation which matches first.

@@ -15,7 +15,7 @@ use crate::{_TAG_CODEC, ConstInit, PhantomData};
 
 #[doc = _TAG_CODEC!()]
 /// A compile-time configurable radix-based encoding scheme.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// This struct defines the core behavior for various base encodings,
 /// including [`Base16`], [`Base32`] and [`Base64`].
@@ -47,14 +47,14 @@ pub struct Base<
 
 #[doc = _TAG_CODEC!()]
 /// `Base16` standard encoding (hex), with linear search. Case-insensitive.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// RFC 4648 describes Base16 as "the standard case-insensitive hex encoding".
 pub type Base16 = Base<16, false, false, false, Rfc4648>;
 
 #[doc = _TAG_CODEC!()]
 /// `Base32` standard encoding, using LUT decoding. Case-sensitive.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// RFC 4648 specifies Base32 as case-insensitive in decoding,
 /// but encoded output is uppercase.
@@ -62,21 +62,21 @@ pub type Base32 = Base<32, true, false, false, Rfc4648>;
 
 #[doc = _TAG_CODEC!()]
 /// `Base32` encoding with padding (`=`) enabled, using LUT decoding.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// Padding ensures the encoded length is always a multiple of 8 characters
 pub type Base32Padded = Base<32, true, true, false, Rfc4648>;
 
 #[doc = _TAG_CODEC!()]
 /// `Base32` `Crockford` encoding. Case-insensitive, remaps `O → 0`, `I/L → 1`.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// This variant is human-friendly and eliminates ambiguity in certain characters.
 pub type Base32Crockford = Base<32, true, false, true, Crockford>;
 
 #[doc = _TAG_CODEC!()]
 /// `Base32Hex` uses RFC 4648 hex-encoding (`0-9 A-V` instead of `A-Z 2-7`).
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// Encoded data maintains its sort order when compared bit-wise.
 pub type Base32Hex = Base<32, true, false, false, Rfc4648Hex>;
@@ -86,14 +86,14 @@ pub type Base32Hex = Base<32, true, false, false, Rfc4648Hex>;
 
 #[doc = _TAG_CODEC!()]
 /// `Base64` standard encoding, using LUT decoding. Case-sensitive.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// RFC 4648 specifies that Base64 preserves case distinctions in encoding and decoding.
 pub type Base64 = Base<64, true, false, false, Rfc4648>;
 
 #[doc = _TAG_CODEC!()]
 /// `Base64` encoding with padding (`=`) enabled, using LUT decoding.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 ///
 /// Ensures encoded output length is always a multiple of 4 characters.
 pub type Base64Padded = Base<64, true, true, false, Rfc4648>;
@@ -105,19 +105,19 @@ pub type Base64Padded = Base<64, true, true, false, Rfc4648>;
 
 #[doc = _TAG_CODEC!()]
 /// The `RFC 4648` standard encoding, used in [`Base16`], [`Base32`], and [`Base64`].
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 #[derive(Clone, Copy, Debug)]
 pub struct Rfc4648;
 
 #[doc = _TAG_CODEC!()]
 /// The `RFC 4648` hexadecimal-variant encoding, used in [`Base32`].
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 #[derive(Clone, Copy, Debug)]
 pub struct Rfc4648Hex;
 
 #[doc = _TAG_CODEC!()]
 /// The `Crockford` [`Base32`] encoding, case-insensitive, remaps certain characters.
-#[doc = crate::_doc!(location: "data/codec")]
+#[doc = crate::_doc_location!("data/codec")]
 #[derive(Clone, Copy, Debug)]
 pub struct Crockford;
 

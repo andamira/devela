@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_RESULT!()]
 /// A value with associated quantification.
+#[doc = crate::_doc_location!("num/quant")]
 #[must_use]
 pub struct ValueQuant<V, Q> {
     /// The main value.

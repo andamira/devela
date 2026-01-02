@@ -12,7 +12,7 @@
 
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines individual and composite error types.
-#[doc = crate::_doc!(location: "code/error")]
+#[doc = crate::_doc_location!("code/error")]
 ///
 /// It can also implement `From` and `TryFrom` traits between them.
 ///
@@ -120,7 +120,7 @@ macro_rules! _define_error {
         #[doc = $crate::_TAG_ERROR!()] // IMPROVE: make optional
         $(#[$attributes])*
         #[doc = $DOC_NAME!()]
-        $(#[doc = $crate::_doc![location_inline: $($location)?]])? // canonical location
+        $(#[doc = $crate::_doc_location![$($location)?]])? // canonical location
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
         $struct_vis struct $struct_name
             $(( $($e_vis $e_ty),+ ) )? $(; $($_a)?)?                              // tuple-struct↓
@@ -189,7 +189,7 @@ macro_rules! _define_error {
         $(#[doc = $tag])?
         #[doc = $crate::_TAG_ERROR_COMPOSITE!()] // IMPROVE: make optional
         $(#[$enum_attr])*
-        $(#[doc = $crate::_doc![location_inline: $($location)?]])? // canonical location
+        $(#[doc = $crate::_doc_location![$($location)?]])? // canonical location
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
             $(#[doc = $tag_variant])?

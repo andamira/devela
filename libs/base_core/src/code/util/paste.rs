@@ -7,7 +7,7 @@
 #[doc = crate::_TAG_PROCEDURAL_MACRO!()]
 /// <span class="stab portability" title="re-exported from the `pastey` crate">`pastey`</span>
 /// Allows to paste identifiers together.
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 ///
 #[doc = "*Reexported from the [`paste`](https://docs.rs/pastey)* crate.\n\n---"]
 ///

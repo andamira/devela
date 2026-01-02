@@ -43,7 +43,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     let macro_code1 = r#"
 #[doc = crate::_TAG_CODEGEN_BUILD!()]
 /// Unrolls the given for loop.
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 ///
 /// # Example
 /// ```ignore

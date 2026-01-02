@@ -44,7 +44,7 @@ pub use ch;
 /// A 7-bit [Unicode scalar][scalar], limited to [basic latin][0w] subset
 /// (ASCII).
 ///
-#[doc = crate::_doc!(location: "text/char")]
+#[doc = crate::_doc_location!("text/char")]
 ///
 /// `Option<char7>` is the same size as `char7` or `char8` (1 byte).
 ///
@@ -61,7 +61,7 @@ pub struct char7(pub(super) NonExtremeU8);
 /// An 8-bit [Unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
 ///
-#[doc = crate::_doc!(location: "text/char")]
+#[doc = crate::_doc_location!("text/char")]
 ///
 /// `Option<char8>` is the same size as `char16` or `Option<char16>` (2 bytes),
 /// because each possible value is a valid Unicode scalar.
@@ -80,7 +80,7 @@ pub struct char8(pub(crate) u8);
 /// A 16-bit [Unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
 ///
-#[doc = crate::_doc!(location: "text/char")]
+#[doc = crate::_doc_location!("text/char")]
 ///
 /// It can represent every scalar from the [Basic Multilingual Plane][0w] (BMP),
 /// the first and most important plane in the Unicode standard (also known as
@@ -100,7 +100,7 @@ pub struct char16(pub(super) NonSurrogateU16);
 #[doc = crate::_TAG_TEXT!()]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation.
 ///
-#[doc = crate::_doc!(location: "text/char")]
+#[doc = crate::_doc_location!("text/char")]
 ///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
 ///
@@ -117,7 +117,7 @@ pub struct charu(pub(super) NonNiche<u32>);
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation,
 /// and niche-memory optimization.
 ///
-#[doc = crate::_doc!(location: "text/char")]
+#[doc = crate::_doc_location!("text/char")]
 ///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
 ///

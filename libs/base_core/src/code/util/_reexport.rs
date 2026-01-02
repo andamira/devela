@@ -70,13 +70,13 @@ _reexport! { rust: core, location: "code/util", tag: _TAG_CODE!(),
 doc: "Parses a file as an expression or an item according to the context.", include }
 _reexport! { rust: core, location: "code/util", tag: _TAG_CODE!(),
 doc: "Includes a file as a reference to a byte array.", include_bytes }
-_reexport! { rust: core, location: "code/util", tag: concat!(_TAG_CODE!(), _TAG_TEXT!()),
+_reexport! { rust: core, location: "code/util", tag: _TAG_CODE!() _TAG_TEXT!(),
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
 // concatenating
-_reexport! { rust: core, location: "code/util", tag: concat!(_TAG_CODE!(), _TAG_TEXT!()),
+_reexport! { rust: core, location: "code/util", tag: _TAG_CODE!() _TAG_TEXT!(),
 doc: "Concatenates literals into a static string slice.", concat }
-_reexport! { rust: core, location: "code/util", tag: concat!(_TAG_CODE!(), _TAG_TEXT!()),
+_reexport! { rust: core, location: "code/util", tag: _TAG_CODE!() _TAG_TEXT!(),
 doc: "Stringifies its arguments.", stringify }
 // WAIT: [concat_idents](https://github.com/rust-lang/rust/issues/29599)
 // _reexport! { rust: core, doc: "Concatenates identifiers into one identifier.", concat_idents }

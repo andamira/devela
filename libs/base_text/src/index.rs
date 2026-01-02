@@ -8,6 +8,12 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
 extern crate self as devela_base_text;
+macro_rules! __crate_name {
+    () => {
+        "devela_base_text"
+    };
+}
+pub(crate) use __crate_name;
 
 pub mod text;
 

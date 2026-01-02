@@ -22,6 +22,12 @@
 #![cfg_attr(nightly_simd, feature(portable_simd))]
 
 extern crate self as devela_base_std;
+macro_rules! __crate_name {
+    () => {
+        "devela_base_std"
+    };
+}
+pub(crate) use __crate_name;
 
 #[cfg(feature = "std")]
 items! {

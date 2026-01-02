@@ -5,13 +5,15 @@
 // TOC
 // - _doc!
 // - _doc_availability!
+// - _doc_location!
 // - _doc_miri_warn!
 //
 // TODO: try to use paste! instead of concat!, since it's faster.
 
 /// Generates a formatted meta-documentation string.
+#[doc = crate::_doc_location!("code/util")]
+#[doc(hidden)]
 #[macro_export]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
 // #[allow(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
 macro_rules! __doc {
     (@meta_start) => {
@@ -85,38 +87,23 @@ macro_rules! __doc {
             ),*
         )
     };
-    // -------------------------------------------------------------------------
     (
-    // Links to original location in the workspace
+    // Links to original location where the item was defined
     // (NOTE: do NOT pass a leading slash)
-    //
-    // Links to the module where this item was defined, in the devela crate.
-    // USAGE: #[doc = crate::_doc!(location: "data/iter")]
     location: $path:literal) => {
         concat!($crate::_doc!(%location_prefix),
             "<sup title='canonical workspace location'>[`[", $path, "]`](",
-            $crate::doclink![custom devela $path @mod], ")</sup>\n\n") };
-    ( // the same, but without ending in a new line. used in _reexport!
-    location_inline: $path:literal) => {
-        concat!($crate::_doc!(%location_prefix_inline),
-            "<sup title='canonical workspace location'>[`[", $path, "]`](",
-            $crate::doclink![custom devela $path @mod], ")</sup>") };
-    // (
-    // // Links to the item in the module where it was defined, in the devela crate.
-    // // USAGE: #[doc = crate::_doc!(location_item: "text/char/struct.Char.html")]
-    // location_item: $path:literal) => {
-    //     concat!($crate::_doc!(%location_prefix),
-    //         "<sup title='canonical workspace location'><em>[`", $path, "`](",
-    //         $crate::doclink![custom devela $path], ")</em></sup>\n\n") };
+            $crate::doclink![custom_current_crate $path @mod], ")</sup>\n\n")
+    };
     (
     // Links to the module where this item was defined, in the given crate.
-    // USAGE: #[doc = crate::_doc!(location: devela, "data/iter")]
     location: $crate_id:ident, $path:literal) => {
         concat!($crate::_doc!(%location_prefix),
             "<small title='canonical workspace location '>[`📍", $path, "`](",
-            $crate::doclink![custom $crate_id $path @mod], ")</small>\n\n") };
-    (%location_prefix) => { "\n\n---\n\n<sup>`📍`</sup>" /* 🎅DEBUG*/ };
-    (%location_prefix_inline) => { "\n\n<sup>`📍`</sup>" };
+            $crate::doclink![custom $crate_id $path @mod], ")</small>\n\n")
+    };
+    (%location_prefix) => { "\n\n---\n\n<sup>`📍`</sup>" };
+
     // -------------------------------------------------------------------------
     (
     // Shows the `Vendored` doc section and links to the info line.
@@ -240,7 +227,44 @@ macro_rules! __doc_availability {
 #[doc(hidden)]
 pub use __doc_availability as _doc_availability;
 
+/// Emits a location annotation for documentation.
+///
+/// This macro renders a small location marker (`📍`) followed by the public
+/// API path under `devela`, and optionally the crate where the item is defined.
+///
+/// Two forms are supported:
+/// - `= path` marks items defined directly in `devela`
+/// - `path` marks items defined in another crate and re-exported by `devela`
+///
+/// NOTE: It's important NOT to pass a leading slash in `$path` for the URL to work.
+#[doc(hidden)]
+#[macro_export]
+macro_rules! _doc_location {
+    // for items defined in a workspace crate and aggregated in devela.
+    ($path:literal) => {
+        concat!(
+            "\n\n---\n\n<sup title='defined in ", __crate_name!(),
+            "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
+            "<sup title='location in `devela`'><b>[`", $path,
+            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>\n\n",
+        )
+    };
+    // for items re-exported from another crate.
+    // called from the _reexport! macro, does not end with \n\n
+    (re-exported $path:literal) => {
+        concat!(
+            "\n\n<sup title='defined in ", __crate_name!(),
+            "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
+            "<sup title='location in `devela`'><b>[`", $path,
+            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
+        )
+    };
+}
+#[doc(hidden)]
+pub use _doc_location;
+
 /// Generates a formatted documentation string for a miri warning.
+#[doc = crate::_doc_location!("code/util")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! __doc_miri_warn {

@@ -30,7 +30,7 @@ mod tests;
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Slice-related operations, most of them *const*.
 ///
-#[doc = crate::_doc!(location: "sys/mem")]
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
@@ -119,7 +119,7 @@ pub struct Slice<T>(crate::PhantomData<T>);
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Invokes [`Slice`] [range methods][Slice#range-api-methods-for-subslicing] using short notation.
 ///
-#[doc = crate::_doc!(location: "sys/mem")]
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// # Syntax
 /// `(s = slice, l = lower bound, u = upper bound)`

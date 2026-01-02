@@ -5,7 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// Configures a feature as deprecated, warning if it is enabled.
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 ///
 /// You can only call this macro once per deprecated feature.
 ///

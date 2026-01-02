@@ -17,7 +17,7 @@ mod bytes; // Char<u8 | &[u8] | &[u8; N]>
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Unicode scalars-related low-level *const* operations.
-#[doc = crate::_doc!(location: "text/char")]
+#[doc = crate::_doc_location!("text/char")]
 ///
 /// # Methods
 /// - [over `char`](#methods-over-char)

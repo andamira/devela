@@ -6,11 +6,11 @@
 #[cfg(test)]
 mod tests;
 
-mod _doc; // doc_!, doc_availability! `doc_link!`, doc_miri_warn!
+mod _doc; // _doc!, _doc_availability!, _doc_miri_warn!
 mod _env; // __dbg!, __std!, _std_core!
 mod _links; // _DOCLINK_*!
 mod _mod_docs; // _DOC_*!
-mod _tags; // EMOJI_*! _TAG_*!
+mod _tags; // EMOJI_*!, _TAG_*!
 mod _reexport_macro; // reexport!
 mod _use; // _use!
 
@@ -32,7 +32,7 @@ mod items; // items!, sf!
 mod lets; // lets!
 mod maybe; // maybe!
 mod methods; // methods_as_fns!
-mod paste; // paste! (wrapped for docs)
+mod paste; // paste!, (wrapped for docs)
 mod structural; // structural_mods!
 mod type_count; // type_count!
 mod whilst; // whilst!
@@ -69,11 +69,11 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
         };
     }
     _crate_internals {
-        pub(crate) use super::_env::{__dbg, __std, _std_core};
+        pub(crate) use super::_env::*;
     }
     _workspace_internals {
         pub use super::{
-            _doc::{_doc, _doc_availability, _doc_miri_warn},
+            _doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn},
             _links::*, _mod_docs::*, _tags::*,
             _reexport_macro::_reexport,
             _use::_use,

@@ -34,7 +34,7 @@ macro_rules! impl_str_u {
         /// Prioritizes speed over memory: O(1) length operations but uses extra space.
         /// For the opposite trade-off see [`StringNonul`][crate::StringNonul].
         ///
-        #[doc = crate::_doc!(location: "text/str")]
+        #[doc = crate::_doc_location!("text/str")]
         ///
         #[doc = "Internally, the current length is stored as a [`" $t "`]."]
         ///

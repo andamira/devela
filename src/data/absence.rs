@@ -10,7 +10,7 @@ use crate::{DataType, DataTypeCopy, DataValue, DataValueCopy};
 #[doc = crate::_TAG_NO!()]
 #[doc = crate::_TAG_DATA!()]
 /// Represents the absence of some data.
-#[doc = crate::_doc!(location: "data")]
+#[doc = crate::_doc_location!("data")]
 pub type NoData = ();
 
 #[rustfmt::skip]

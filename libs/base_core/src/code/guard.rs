@@ -7,7 +7,7 @@ use crate::{Deref, DerefMut};
 
 #[doc = crate::_TAG_GUARD!()]
 /// A general-purpose RAII guard that executes a callback on drop.
-#[doc = crate::_doc!(location: "code")]
+#[doc = crate::_doc_location!("code")]
 ///
 /// - The callback can take both a value and a state.
 /// - The state can be updated dynamically during the guard's lifetime.

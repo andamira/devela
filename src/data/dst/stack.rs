@@ -15,7 +15,7 @@ use crate::{ConstInit, MaybeUninit, MemAligned, PhantomData, Ptr};
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A statically allocated LIFO stack of
 /// <abbr title="Dynamically sized type">DST</abbr>s with pointer alignment.
-#[doc = crate::_doc!(location: "data/dst")]
+#[doc = crate::_doc_location!("data/dst")]
 ///
 /// # Examples
 /// ```
@@ -36,7 +36,7 @@ pub type DstStackUsize<DST /*: ?Sized*/, const CAP: usize> = DstStack<DST, DstAr
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A statically allocated LIFO stack of <abbr title="Dynamically sized type">DST</abbr>s.
-#[doc = crate::_doc!(location: "data/dst")]
+#[doc = crate::_doc_location!("data/dst")]
 ///
 /// Note: Each item in the stack takes at least one slot in the buffer
 /// (to store the metadata)
@@ -50,13 +50,13 @@ pub struct DstStack<DST: ?Sized, BUF: DstBuf> {
 
 #[doc = crate::_TAG_ITERATOR!()]
 /// An iterator over the elements of a [`DstStack`].
-#[doc = crate::_doc!(location: "data/dst")]
+#[doc = crate::_doc_location!("data/dst")]
 #[derive(Debug)]
 pub struct DstStackIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstStack<DST, BUF>, usize);
 
 #[doc = crate::_TAG_ITERATOR!()]
 /// A mutable iterator over the elements of a [`DstStack`].
-#[doc = crate::_doc!(location: "data/dst")]
+#[doc = crate::_doc_location!("data/dst")]
 #[derive(Debug)]
 pub struct DstStackIterMut<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(
     &'a mut DstStack<DST, BUF>,

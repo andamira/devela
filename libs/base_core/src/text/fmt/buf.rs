@@ -15,7 +15,7 @@ crate::_use! {compat::from_utf8}
 #[doc = crate::_TAG_FMT!()]
 /// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
 ///
-#[doc = crate::_doc!(location: "text/fmt")]
+#[doc = crate::_doc_location!("text/fmt")]
 ///
 /// This is implemented via [`FmtWriter::format`] and [`format_args!`][crate::format_args].
 ///

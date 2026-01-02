@@ -30,7 +30,7 @@ type Result<T> = crate::Result<T, NotAvailable>;
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// An abstract *collection* data type.
-#[doc = crate::_doc!(location: "data")]
+#[doc = crate::_doc_location!("data")]
 ///
 /// By default returns [`NotImplemented`] for every method.
 #[rustfmt::skip] #[allow(unused_variables)]

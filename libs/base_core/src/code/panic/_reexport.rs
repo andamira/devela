@@ -44,7 +44,7 @@ doc: "Indicates unimplemented code.", unimplemented }
 #[doc = _TAG_CODE!()]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Panics the current thread.
-#[doc = crate::_doc!(location: "code/panic")]
+#[doc = crate::_doc_location!("code/panic")]
 ///
 #[doc = "*Re-exported from [`core::panic`][macro@::core::panic]*."]
 #[doc = "\n\n---"]

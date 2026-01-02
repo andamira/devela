@@ -11,6 +11,6 @@ _reexport! { rust: core::error, location: "code/error", tag: _TAG_CODE!() _TAG_E
 }
 
 _reexport! { rust: core, location: "code/error", tag: _TAG_CODE!() _TAG_ERROR!(),
-    doc: "Causes compilation to fail with the given error message when encountered.",
+    doc: "Causes compilation to fail with the given message when encountered.",
     compile_error
 }

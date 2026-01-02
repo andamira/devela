@@ -2,6 +2,10 @@
 //
 //! Defines [`doclink!`].
 //
+// TOC
+// - doclink! (*internet*)
+// - doclink! (*local*)
+//
 // WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 
 /// Custom domain used for the [`doclink!`] macro.
@@ -29,6 +33,9 @@ otherwise it links to the local path.
 The local version needs the `CARGO_TARGET_DIR` env var always defined.
 For *devela* it is defined in `/build/main/environment.rs`.
 
+The `current_crate` versions needs a macro defined named `__crate_name!`
+that returns a string literal with the name of the current crate.
+
 # Examples
 ```
 # use devela_base_core::doclink;
@@ -46,7 +53,7 @@ pub struct Example;
 #[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// <!-- (*internet* version) -->
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 #[doc = _DOC_DOCLINK!()]
 #[macro_export]
 #[cfg(feature = "__publish")]
@@ -81,6 +88,12 @@ macro_rules! _doclink {
         concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
         stringify!($crate_name), "/latest/", stringify!($crate_name), "/", $item_path]
     };
+    ( // https://…/{crate::__crate_name!()}/item_path
+      // file://…/{crate::__crate_name!()}/item_path/index.html
+     custom_current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
+        concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
+        crate::__crate_name!(),"/latest/", stringify!($crate_name), "/", $item_path]
+    };
     (
      /* links to either docs.rs or a local URL */
 
@@ -108,12 +121,18 @@ macro_rules! _doclink {
         concat!["https://docs.rs/",
         stringify!($crate_name), "/latest/", stringify!($crate_name), "/", $item_path]
     };
+    ( // https://…/{crate::__crate_name!()}/item_path
+      // file://…/{crate::__crate_name!()}/item_path/index.html
+     current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
+        concat!["https://docs.rs/",
+        crate::__crate_name!(),"/latest/", stringify!($crate_name), "/", $item_path]
+    };
 }
 
 #[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// (*local* version)
-#[doc = crate::_doc!(location: "code/util")]
+#[doc = crate::_doc_location!("code/util")]
 #[doc = _DOC_DOCLINK!()]
 #[macro_export]
 #[cfg(not(feature = "__publish"))]
@@ -143,6 +162,11 @@ macro_rules! _doclink {
         concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
         stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?]
     };
+    ( // file://…/{crate::__crate_name!()}/item_path/index.html
+     custom_current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
+        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)?]
+    };
     (
      /* links to either docs.rs or a local URL */
 
@@ -164,6 +188,11 @@ macro_rules! _doclink {
      $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
         stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?]
+    };
+    ( // file://…/{crate::__crate_name!()}/item_path/index.html
+     current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
+        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)?]
     };
 }
 

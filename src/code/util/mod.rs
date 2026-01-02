@@ -9,12 +9,21 @@
 // This makes them able to be imported from the root. E.g.: bitfield, capture_last, enumset…
 // See: https://github.com/rust-lang/rust/pull/52234#issuecomment-976702997
 //
+// # Warning regarding macro expansion
+// Some attributes (#[doc = …], #[rustfmt::skip], and other tooling-related ones) cause the
+// compiler to inspect or expand tokens earlier than normal, before the crate's macro resolution
+// graph is fully fixed. At that point, macros that are only introduced indirectly (for example
+// via helper macros, exported macros, or re-exports) may not yet be visible, even if they would
+// exist after full expansion. Because macro_rules! resolution depends on phase ordering, this
+// can lead to "resolution is stuck" errors where the compiler cannot prove which macro applies.
+// Defining the macro directly in the crate root avoids this, because it is visible in all phases.
+//
 // # Documentation for declarative macros
 // - [The Little Book of Rust Macros](https://veykril.github.io/tlborm/decl-macros.html)
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
-mod _env; // __dbg!, _std_core!
+mod _env; // __dbg!, __std!, _std_core!
 mod _reexport_core; // SYMLINK to /libs/base_core/src/code/util/_reexport.rs
 
 mod cdbg; // cdbg!

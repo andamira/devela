@@ -39,7 +39,7 @@ mod hashbrown_reexports {
     #[doc = crate::_TAG_DATA_STRUCTURE!()]
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     #[doc = hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashMap;
@@ -47,14 +47,14 @@ mod hashbrown_reexports {
     #[doc = crate::_TAG_DATA_STRUCTURE!()]
     #[doc = hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     #[doc = hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::hash_map::Entry as HashMapEntry;
 
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     #[doc = hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashSet;
@@ -66,33 +66,33 @@ pub use std_reexports::*;
 mod std_reexports {
     #[doc = super::hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     #[doc = super::hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::HashMap;
 
     #[doc = super::hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     #[doc = super::hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::Entry as HashMapEntry;
 
     #[doc = super::hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     #[doc = super::hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::HashSet;
 }
 
 /// The `HashMap` in the standard library.
-#[doc = crate::_doc!(location: "data/key")]
+#[doc = crate::_doc_location!("data/key")]
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub type HashMapStd<K, V> = std::collections::HashMap<K, V>;
 /// The `HashSet` in the standard library.
-#[doc = crate::_doc!(location: "data/key")]
+#[doc = crate::_doc_location!("data/key")]
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub type HashSetStd<T> = std::collections::HashSet<T>;
@@ -112,14 +112,14 @@ mod aliases {
     use crate::HasherBuildFx;
 
     /// A [`HashMap`] using a default Fx hasher.
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     ///
     /// To create with a reserved capacity,
     /// use `HashMapFx::with_capacity_and_hasher(num, Default::default())`.
     pub type HashMapFx<K, V> = HashMap<K, V, HasherBuildFx>;
 
     /// A [`HashSet`] using a default Fx hasher.
-    #[doc = crate::_doc!(location: "data/key")]
+    #[doc = crate::_doc_location!("data/key")]
     ///
     /// To create with a reserved capacity,
     /// use `HashSetFx::with_capacity_and_hasher(num, Default::default())`.

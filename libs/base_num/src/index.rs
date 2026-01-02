@@ -23,6 +23,12 @@
 #![cfg_attr(nightly_simd, feature(portable_simd))]
 
 extern crate self as devela_base_num;
+macro_rules! __crate_name {
+    () => {
+        "devela_base_num"
+    };
+}
+pub(crate) use __crate_name;
 
 pub mod num;
 
