@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_ASSERT!()]
 /// Asserts various comparisons on constants.
+#[doc = crate::_doc!(location: "code/util")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! const_assert {

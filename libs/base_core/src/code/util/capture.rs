@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// Captures the first token from a list of inputs.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// Usage: `capture_first!(<category> <first>, <tail>*, <optional_comma>?);`
 ///
@@ -33,6 +34,7 @@ pub use _capture_first as capture_first;
 
 #[doc = crate::_TAG_CODE!()]
 /// Captures all the tokens except the first one, as a tuple.
+#[doc = crate::_doc!(location: "code/util")]
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -72,6 +74,7 @@ pub use _capture_tail_tuple as capture_tail_tuple;
 
 #[doc = crate::_TAG_CODE!()]
 /// Captures the last token from a list of inputs.
+#[doc = crate::_doc!(location: "code/util")]
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

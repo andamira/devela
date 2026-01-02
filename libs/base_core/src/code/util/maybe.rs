@@ -7,6 +7,7 @@
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_MAYBE!()]
 /// Helper for using optionally implemented traits, like `Default` or `Clone`.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// The first boolean argument says whether `$T` implements the given trait.
 ///

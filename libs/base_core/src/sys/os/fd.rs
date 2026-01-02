@@ -10,6 +10,7 @@ pub type FdRaw = c_int;
 
 crate::structural_mods! { //_mods
     _mods {
+        #[doc(inline)]
         pub use super::FdRaw;
     }
 }

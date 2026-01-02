@@ -16,21 +16,25 @@ use crate::{_TAG_NO, define_error};
 /* individual errors */
 
 define_error![individual: pub struct FailedErrorConversion;
+    +location: "code/error",
     DOC_FAILED_CONVERSION = "A failed conversion between two error types.",
     self+f => write!(f, "Failed to convert between error types."),
 ];
 define_error![individual: pub struct NotImplemented;
+    +location: "code/error",
     +tag: _TAG_NO!(),
     DOC_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
 ];
 define_error![individual: pub struct NotSupported;
+    +location: "code/error",
     +tag: _TAG_NO!(),
     DOC_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
 ];
 
 define_error![individual: pub struct InvalidValue;
+    +location: "code/error",
     DOC_INVALID_VALUE = "An invalid value was received for the given type or operation.",
     self+f => write!(f, "An invalid value was received for the given type or operation."),
 ];
@@ -38,6 +42,7 @@ define_error![individual: pub struct InvalidValue;
 /* composite errors */
 
 define_error! { composite: fmt(f)
+    +location: "code/error",
     +tag: _TAG_NO!(),
     /// An error composite of [`NotImplemented`] + [`NotSupported`].
     pub enum NotAvailable {

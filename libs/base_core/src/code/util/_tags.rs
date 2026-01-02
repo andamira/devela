@@ -14,69 +14,90 @@ macro_rules! define_symbol_tags {
 define_symbol_tags! {
     /* thematic */
 
-    // _ALLOCATION: allocation mechanisms
+    // Allocation mechanisms
     _TAG_ALLOCATION, "Memory allocation", "🧺"; // 🧮, (basket, abacus)
     _TAG_APPLE, "Apple platform", "🍏"; // 🍏,🍎, (green-apple, red-apple)
+    // Invariants, contracts, and conditions that must hold.
+    // Not for predicates, filters, or conditional behavior.
     _TAG_ASSERT, "Assertion", "💯"; // 💯
     _TAG_ATOMIC, "Atomic", "⚛️"; // ⚛️, 🔬, 🌐,
     _TAG_AUDIO, "Audio", "🔊"; // 🎧,🎼,🎶,🎜 ,🎝 ,🎵,🔈,🔉,🔊,🕪 ,🕩 ,🕨 ,🕫 ,🕬 ,📢,
-    // _CODE: structure, compilation, syntax. Items that operate on, reason about,
+    // Structure, compilation, syntax. Items that operate on, reason about,
     // or structurally transform Rust code itself, rather than runtime values
     _TAG_CODE, "Code structure and compilation", "⌗"; // ⌗,≡,§,⧉,
     _TAG_CODEC, "Encoding and decoding", "🥡"; // 🥡, 🔏, ⇄, (takeout-box)
     _TAG_COLOR, "Color", "🎨"; // 🎨,
     _TAG_CONCURRENCY, "Concurrency", "🧵"; // 🧵, 🪡, (thread, needle)
     _TAG_CONSTRUCTION, "Construction", "🏗️"; // 🏗️,🏭,
+    // General data abstractions and value carriers.
+    // Not specific to storage layout or collection semantics.
     _TAG_DATA, "Data", "🪪"; // 🪪, 🗂️, 🧩, (id-card)
+    // Containers and collections that organize multiple values.
+    // Emphasizes structure over individual value semantics.
     _TAG_DATA_STRUCTURE, "Data structure (collection)", "🗃️"; // 📇,🗃️,📦,🧩,🗂️,
-    // _DEBUG: diagnostics, introspection, debugging intent
+    // Diagnostics, introspection, debugging intent.
     _TAG_DEBUG, "Debugging", "🐛"; // 🐛,
+    // Actual error types representing failure states.
+    // Not for fallible abstractions or result carriers.
     _TAG_ERROR, "Error", "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
     _TAG_ERROR_COMPOSITE, "", "🚩+"; // 📎,📦,🖇️,🗂️,
-    // _EVENT: occurrences and event vocabularies
+    // Discrete occurrences or event vocabularies.
     _TAG_EVENT, "Event", "🎫"; // 🎫, 🎟️, 🎊, 🎉,
     _TAG_EXPERIMENTAL, "Experimental", "🧪";
     _TAG_EXAMPLE, "Example", "✨"; // ✨, 📘, 🪄,
     _TAG_FAKE, "Mock or fake implementation", "🎭"; // 🎭, 👻, 🦄, 🐛,
+    // Types and APIs that are safe to use across foreign language boundaries.
     _TAG_FFI, "FFI safe", "🛡️"; // 🛡️, ✅
     _TAG_FS, "File system", "📁"; // 📁,💾,🗄️,📄
     _TAG_FONT, "Font or glyph", "🅵"; // 🅵,, 🅰, ℱ, 𝔉, 𝕱, 𝐅
     _TAG_FMT, "Formatting", "🖹"; // 🖹, 📄, 📝, 🄵, ✎, ℱ, 𝔽
     _TAG_GEOM, "Geometry", "📐";
     _TAG_GEOM_DIR, "Direction and orientation", "🧭";
-    // RAII / drop-driven behavior
+    // RAII abstractions whose semantics are driven by scope exit (`Drop`).
     _TAG_GUARD, "Scoped guard", "🔒"; // 🔒,🪢,⏹️ ,
-    _TAG_HASH, "Hashing", "🔀"; // 🔀,
+    _TAG_HASH, "Hashing", "🔀";
     _TAG_IMAGE, "Image", "🖼️"; // 🖼️,📷,
     _TAG_INIT, "Initialization", "🌱"; // 🌱,🎬,〽️,🆕,🌑,🌚
-    // _INTERACTION: human intent vocabulary
+    // Human intent vocabulary
     _TAG_INTERACTION, "Human interaction", "🎮"; // 🎮,👤,✋,🖱️,⌨️,
     _TAG_IO, "Input and output", "🔌"; // 🔌,
-    _TAG_ITERATOR, "Iterator or iterator adapter", "🔄"; // 🔄,
-    // _LAYOUT: Arrangement in conceptual or visual space, not in RAM.
+    // Iterator traits and adapters operating on sequential iteration.
+    _TAG_ITERATOR, "Iterator or iterator adapter", "🔄";
+    // Arrangement in conceptual or visual space, not in RAM.
     _TAG_LAYOUT, "Spatial layout", "🧱"; // 🧱,
-    // _LIFETIME: Lifetime / scoped validity (views, borrows, guards, ownership relations)
+    // Borrowed views, scoped validity, and ownership relations.
+    // Applies when Rust lifetime semantics are the primary concern.
     _TAG_LIFETIME, "Lifetime", "🍃"; // 🍃,⏳,🍂,
     _TAG_LINUX, "Linux platform", "🐧";
     // _TAG_LOCATION, "", "🖈"; // 🖈,📌,📍,
     _TAG_LOG, "Logging", "🪵"; // 🪵,👣,📜,📊,🧾
+    // Abstractions whose primary subject is formal or mathematical logic:
+    // truth, relations, inference, or logical composition.
     _TAG_LOGIC, "Logic", "∧"; // ∧,⊨,⊢,⊙
-    // _MAYBE: applies to different underlying representations with different
-    // guarantees that are deliberately collapsed behind a single abstraction
+    // Abstractions that intentionally unify multiple representations
+    // with different guarantees behind a single interface.
     _TAG_MAYBE, "Conditional representation", "🤷"; // 🤷,💁, (shrugging, tipping hand)
-    // Memory form / representation (POD / bit validity / alignment / erased forms)
+    // Memory form / representation (layout, bits, alignment, validity),
+    // independent of allocation strategy.
     _TAG_MEM, "Memory representation", "🫗"; // 🫗,◧, ◨, ▣ (glass pouring)
-    // _NAMESPACE: deliberate operation containers (or by association)
+    // Items used primarily as method namespaces or operation groupings.
     _TAG_NAMESPACE, "Utility namespace", "🛠️"; // 🛠️,🔧,🧰,🚙,🌐,📛,
     _TAG_NETWORK, "Networking", "📡"; // 🖧 ,📡,
     _TAG_NICHE, "Niche memory optimizations", "⚗️"; // ⚗️,♟️,🧩,🧮,
     _TAG_NON_STANDARD, "Non-standard", "⚠️";
+    // Semantic absence, emptiness, or inert behavior.
+    // Not exclusion, constraints, or invalid states.
     _TAG_NO, "Absence, emptiness or a no-op effect", "∅"; // ∅, ⊘, ⬛
-    _TAG_NUM, "Numeric structures and computation", "⅀"; // ⅀,∑,×,±,π,🔢,½,¾,🖩,🔟,𝟙,⒈,𝟷,𝟏
+    // Numeric structures, operations, and mathematical computation.
+    _TAG_NUM, "Numeric structures and computation", "⅀"; // ⅀,∑,×,±,π,🔢,½,¾,🔟,𝟙
     _TAG_PLATFORM, "Platform-dependent", "🖥️"; // 🖥️,💻,📱,📲,
     _TAG_PRIMITIVE, "Rust primitive", "⚙️"; // ⚙️,
+    // Quantitative relations and measured magnitudes.
+    // Implies numeric structure, but focuses on measurement and comparison.
     _TAG_QUANT, "Quantitative relations", "📏";
     _TAG_RAND, "Randomness", "🎲"; // 🎲, 🎰, 🔀
+    // Outcome or resolution values themselves,
+    // not APIs that may produce outcomes.
     _TAG_RESULT, "Outcome", "⚖️"; // ⚖️,↔️,✅,🗳,
     _TAG_RUNTIME, "Runtime", "⬡"; // ⬡,
     _TAG_TERM, "Terminal platform", "🮖"; // 🮴 ,🮖,🖳 ,⌨️ ,⎚,❯,🗔 ,
@@ -84,9 +105,14 @@ define_symbol_tags! {
     _TAG_TIME, "Time", "🕘"; // 🕘, ⏳, 📅
     _TAG_UI, "User interface", "▦"; // ▦,🗔  ,▣,⌗,◧,◨,⊞
     _TAG_UID, "Identification", "🫆"; // 🫆, 🆔, (fingerprint, id-button)
+    // Abstractions whose primary concern is the semantic meaning or
+    // transformation of values, independent of storage, borrowing, or encoding.
+    _TAG_VALUE, "Value semantics", "💱";
+    // Wave, oscillatory, and signal-domain analysis
+    // (frequency, phase, spectra, transforms).
     _TAG_WAVE, "Wave and signal analysis", "〰️"; // 〰️, 🌊,
     _TAG_WEB, "Web platform", "🌐"; // 🌐,🕸️,🌍,
-    _TAG_WINDOWS, "Windows platform", "🪟"; // 🪟,
+    _TAG_WINDOWS, "Windows platform", "🪟";
 
     /* misc. */
 

@@ -9,6 +9,7 @@ mod value;
 
 #[doc = crate::_TAG_RESULT!()]
 /// A return type encapsulating an owned **state** `S` and a **value** `V`.
+#[doc = crate::_doc!(location: "code/result")]
 ///
 /// It is designed to be used by methods that take ownership of `self`,
 /// and return it alongside the operation-specific result.

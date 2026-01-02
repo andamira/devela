@@ -5,7 +5,6 @@
 
 /// Macro helper for documentation of re-exported items.
 //
-// FIX: unresolved link to `alloc`.
 // IMPROVE: make dependencies safety related to features.
 // MAYBE: new branch for: either a crate or core (for portable-atomic types).
 // WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
@@ -14,6 +13,7 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[allow(clippy::crate_in_macro_def, reason = "_dep relative to macro call")]
 macro_rules! __reexport {
+    // -------------------------------------------------------------------------
     /* re-exports from normal modules */
 
     // the following 4 arms allows reexporting items from:
@@ -32,22 +32,26 @@ macro_rules! __reexport {
       $( local_module: $module_feature:literal, )?
       $( extra_features: $($extra_feat:literal),+ $(,)? )?
       $( extra_flags:($($extra_flag:ident),+) $(,)? )?
+      $( location: $($location:literal)+ ,)?
       $( tag: $($tag:expr)+ ,)?
-      doc: $description:literal,
+      doc: $doc_line:literal,
+      $( +doc: $($doc_more:literal),+, )?
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( $(#[doc = $tag])+ )?
+        $( $(#[doc = $tag])+ )? // tags
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
-        #[doc = $description]
+        #[doc = $doc_line] #[doc = "\n\n---\n\n"] // first doc line
+        $(#[doc = $crate::_doc![location_inline: $($location)?]])? // canonical location
         #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
-        #[doc = "\n\n*Re-exported from `core" $( "`[`" $( "::" $core_path )+ )?
-            "`](https://doc.rust-lang.org/core/" $($( $core_path "/" )+)? ")*"]
-
-        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+        #[doc = "<sup>re-exported from Rust `core" $("`[`"$("::"$core_path)+)? // Rust location
+            "`](https://doc.rust-lang.org/core/" $($($core_path "/")+)? ")"]
+        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
+        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
+        #[doc = "\n\n---\n\n---"] // final double line
 
         #[cfg_attr(nightly_doc, doc(cfg(all(
             $( feature = $module_feature, )?
@@ -66,23 +70,26 @@ macro_rules! __reexport {
     // when the item is available in `alloc`
     ( rust : alloc $( :: $( $alloc_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
+      $( location: $($location:literal)+ ,)?
       $( tag: $($tag:expr)+ ,)?
-      doc: $description:literal,
+      doc: $doc_line:literal,
+      $( +doc: $($doc_more:literal),+, )?
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        // #[allow(rustdoc::broken_intra_doc_links)] // TEMP CHECK unresolved link to alloc
-        $( $(#[doc = $tag])+ )?
+        $( $(#[doc = $tag])+ )? // tags
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
-        #[doc = $description]
+        #[doc = $doc_line] #[doc = "\n\n---\n\n"] // first doc line
+        $(#[doc = $crate::_doc![location_inline: $($location)?]])? // canonical location
         #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
-        #[doc = "\n\n*Re-exported from `alloc" $( "`[`" $( "::" $alloc_path )+ )?
-            "`](https://doc.rust-lang.org/alloc/" $($( $alloc_path "/" )+)? ")*"]
-
-        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+        #[doc = "<sup>re-exported from Rust `alloc" $("`[`"$("::"$alloc_path)+)? // Rust location
+            "`](https://doc.rust-lang.org/alloc/" $($($alloc_path "/")+)? ")"]
+        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
+        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
+        #[doc = "\n\n---\n\n---"] // final double line
 
         #[cfg_attr(
             nightly_doc,
@@ -91,7 +98,6 @@ macro_rules! __reexport {
                 feature = "alloc"
             )))
         )]
-
         #[cfg(feature = "alloc")]
         pub use alloc :: $($( $alloc_path :: )+)? {
             $( $item ),*
@@ -101,22 +107,26 @@ macro_rules! __reexport {
     ( // when the item is available in `std`
       rust : std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
+      $( location: $($location:literal)+ ,)?
       $( tag: $($tag:expr)+ ,)?
-      doc: $description:literal,
+      doc: $doc_line:literal,
+      $( +doc: $($doc_more:literal),+, )?
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( $(#[doc = $tag])+ )?
+        $( $(#[doc = $tag])+ )? // tags
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`std`'>`std`</span>"]
-        #[doc = $description]
+        #[doc = $doc_line] #[doc = "\n\n---\n\n"] // first doc line
+        $(#[doc = $crate::_doc![location_inline: $($location)?]])? // canonical location
         #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
-        #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
-            "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
-
-        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+        #[doc = "<sup>re-exported from Rust `std" $("`[`"$("::"$std_path)+)? // Rust location
+            "`](https://doc.rust-lang.org/std/" $($($std_path "/")+)? ")"]
+        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
+        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
+        #[doc = "\n\n---\n\n---"] // final double line
 
         #[cfg_attr(
             nightly_doc,
@@ -125,7 +135,6 @@ macro_rules! __reexport {
                 feature = "std"
             )))
         )]
-
         #[cfg(feature = "std")]
         pub use std :: $($( $std_path :: )+)? {
             $( $item ),*
@@ -135,8 +144,10 @@ macro_rules! __reexport {
     ( // when the item is available in either `no_std` or `std`
       rust : no_std|std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
+      $( location: $($location:literal)+ ,)?
       $( tag: $($tag:expr)+ ,)?
-      doc: $description:literal,
+      doc: $doc_line:literal,
+      $( +doc: $($doc_more:literal),+, )?
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
@@ -145,7 +156,7 @@ macro_rules! __reexport {
         $( $(#[doc = $tag])+ )?
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated for `no_std`'>`[no_]std`</span>
-        #[doc = $description]
+        #[doc = $doc_line]
         #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
         #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
@@ -170,17 +181,20 @@ macro_rules! __reexport {
     ( // when the item is available in either `not(std)` or `std` (always, more transparent)
       rust : not(std)|std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
+      $( location: $($location:literal)+ ,)?
       $( tag: $($tag:expr)+ ,)?
-      doc: $description:literal,
+      doc: $doc_line:literal,
+      $( +doc: $($doc_more:literal),+, )?
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
+        // TODO
         #[doc(inline)]
         $( $(#[doc = $tag])+ )?
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>
-        #[doc = $description]
+        #[doc = $doc_line]
         #[allow(rustdoc::bare_urls, reason = "rust misinterprets the url as bare")]
         #[doc = "\n\n*Re-exported from `std" $( "`[`" $( "::" $std_path )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
@@ -200,17 +214,18 @@ macro_rules! __reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
+    // -------------------------------------------------------------------------
     (
       /* external dependencies */
 
       // Re-exports a non-optional crate
       crate $dep_str:literal | $dep:ident,
-      doc: $description:literal
+      doc: $doc_line:literal
       $(, features: $( $f:literal ),+ )?
     ) => { $crate::paste! {
         #[doc = "<span class='stab portability' title='re-exported `" $dep_str
             "`'>`" $dep_str "`</span>"]
-        #[doc = $description "\n\n---" ]
+        #[doc = $doc_line "\n\n---" ]
         #[doc(inline)]
         pub use ::$dep;
     }};
@@ -221,11 +236,11 @@ macro_rules! __reexport {
       // $dep_feat:    the dependency feature that enables it
       // $dep_name:    the dependency real name
       // $dep_mod:     the dependency module name (using _ instead of -)
-      // $description: the dependency description
+      // $doc_line:    the dependency description
       // $f:           additional features needed to enable this dependency
       optional_crate ($dep_safe:tt)
       $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
-      doc: $description:literal
+      doc: $doc_line:literal
       $(, features: $( $f:literal ),+ )?
     ) => { $crate::paste! {
         #[cfg(all(feature = $dep_feat $(, $(feature = $f),+ )? ))]
@@ -238,7 +253,7 @@ macro_rules! __reexport {
 
             #[doc = "<span class='stab portability' title='re-exported `" $dep_name
                 "`'>`" $dep_name "`</span>"]
-            #[doc = $description "\n\n---" ]
+            #[doc = $doc_line "\n\n---" ]
             #[cfg_attr(
                 nightly_doc,
                 doc(cfg(all(
@@ -259,14 +274,14 @@ macro_rules! __reexport {
       // $dep_name:    the dependency name
       // $dep_mod:     the dependency module
       // $f:           additional features needed
-      // $description: the dependency description
+      // $doc_line:    the dependency description
       // $item:
       // $item_to_rename:
       // $item_renamed:
       $dep_feat:literal, $dep_name:literal, $dep_mod:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       $( tag: $($tag:expr)+ ,)?
-      doc: $description:literal,
+      doc: $doc_line:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
@@ -275,7 +290,7 @@ macro_rules! __reexport {
         $( $(#[doc = $tag])+ )?
         #[doc = "<span class='stab portability' title='re-exported from the `"
             $dep_name "` crate'>`" $dep_name "`</span>"]
-        #[doc = $description]
+        #[doc = $doc_line]
         #[doc = "\n\n*Re-exported from the [`" $dep_name
             "`](https://docs.rs/" $dep_name " ) crate*"]
 
@@ -310,7 +325,7 @@ macro_rules! __reexport {
       $( features: $( $f:literal ),+ ,)?
       $( local_module: $module_feature:literal ,)?
       $( tag: $($tag:expr)+ ,)?
-      doc: $description:literal,
+      doc: $doc_line:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
@@ -319,7 +334,7 @@ macro_rules! __reexport {
         $( $(#[doc = $tag])+ )?
         #[doc = "<span class='stab portability' title='re-exported from the `" $dep_str
             "` crate'>`" $dep_str "`</span>"]
-        #[doc = $description]
+        #[doc = $doc_line]
         #[doc = "\n\n*Re-exported from the [`" $dep_str
             "`](https://docs.rs/" $dep_str " ) crate*"]
 

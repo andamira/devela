@@ -14,16 +14,14 @@
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/code/util/_reexport.rs
-
 mod _env; // __dbg!, _std_core!
+mod _reexport_core; // SYMLINK to /libs/base_core/src/code/util/_reexport.rs
 
 mod cdbg; // cdbg!
 
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
 
-// WIPZONE
 // #[cfg(all(feature = "std", feature = "dep_image"))]
 // #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "dep_image"))))]
 // mod docima; // DocImage
@@ -35,11 +33,16 @@ devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
         };
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
-        // WIPZONE
+
         // #[cfg(all(feature = "std", feature = "dep_image"))]
         // pub use super::docima::*;
     }
     _reexports {
+        // includes devela_code_macros:
+        // cif, compile, compile_attr, compile_doc,
+        // ident_total, ident_total_unique, ident_unique,
+        // coalesce, field_of,
+        // repeat,
         pub use super::_reexport_core::*;
 
         #[doc(inline)]
@@ -66,11 +69,6 @@ devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
             type_count,
             whilst,
             write_at,
-            // devela_code_macros:
-            // cif, compile, compile_attr, compile_doc,
-            // ident_total, ident_total_unique, ident_unique,
-            // coalesce, field_of,
-            // repeat,
         };
         #[doc(inline)]
         #[cfg(feature = "devela_macros")]

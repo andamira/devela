@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_ASSERT!()]
 /// Asserts the equality of a series of expressions.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// Similar to [`assert_eq`] but supports more than 2 terms to test for equality.
 ///
@@ -33,6 +34,7 @@ pub use assert_eq_all;
 
 #[doc = crate::_TAG_ASSERT!()]
 /// Asserts the approximate equality of a series of expressions within `tolerance`.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// This macro should work with any numeric type that supports comparison and
 /// subtraction, including signed and unsigned integers and floating-point numbers.

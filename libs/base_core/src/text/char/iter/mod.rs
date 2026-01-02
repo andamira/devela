@@ -11,7 +11,7 @@ mod bytes; // methods over &[u8]
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_ITERATOR!()]
 /// An iterator over Unicode scalars.
-#[doc = crate::_doc!(location_item: "text/char/struct.CharIter.html")]
+#[doc = crate::_doc!(location: "text/char")]
 ///
 /// Implements `Iterator<Item = char>` by default, but provides specialized methods
 /// for other scalar types.

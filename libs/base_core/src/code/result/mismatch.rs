@@ -12,6 +12,7 @@ impl<N: ConstInitCore, H: ConstInitCore> ConstInitCore for Mismatch<N, H> {
 
 #[doc = crate::_TAG_RESULT!()]
 /// Represents a mismatch between an expected `need` and an encountered `have`.
+#[doc = crate::_doc!(location: "code/result")]
 ///
 /// With optional contextual information in the `info` field.
 ///

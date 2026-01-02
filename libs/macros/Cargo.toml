@@ -13,10 +13,12 @@ include = [
 	"/Cargo.toml",
 	"/LICENSE*",
 	"/src/**/*.rs", "/src/**/*.md",
+	"/build/**/*",
 	"/examples/*.rs", # used in docs
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
+build = "build/mod.rs"
 publish = true
 metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
 
@@ -28,6 +30,7 @@ bench = false
 [features]
 
 #* Development features *#
+__dbg = ["devela_base_std/__dbg"]
 __publish = []
 
 #* Safety features *#

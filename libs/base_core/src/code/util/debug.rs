@@ -6,6 +6,7 @@
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_DEBUG!()]
 /// Emits a compile-time warning with a provided message.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// This implemented through an existing `dead_code` warning,
 /// thus the output for the following example:
@@ -49,6 +50,7 @@ pub use compile_warn;
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_DEBUG!()]
 /// This macro returns the name of the enclosing function.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// As the internal implementation is based on [`type_name`],
 /// this macro derives all the limitations of this function.

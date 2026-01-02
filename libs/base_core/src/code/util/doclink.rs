@@ -46,6 +46,7 @@ pub struct Example;
 #[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// <!-- (*internet* version) -->
+#[doc = crate::_doc!(location: "code/util")]
 #[doc = _DOC_DOCLINK!()]
 #[macro_export]
 #[cfg(feature = "__publish")]
@@ -112,6 +113,7 @@ macro_rules! _doclink {
 #[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// (*local* version)
+#[doc = crate::_doc!(location: "code/util")]
 #[doc = _DOC_DOCLINK!()]
 #[macro_export]
 #[cfg(not(feature = "__publish"))]

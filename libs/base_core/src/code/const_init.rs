@@ -10,7 +10,8 @@
 // IMPROVE: support more sealed implementations
 
 #[doc = crate::_TAG_INIT!()]
-/// Provides a const-friendly initializer for types that must avoid higher-level abstractions.
+/// A trait for giving a type a useful const-friendly initial value *(lower-level)*.
+#[doc = crate::_doc!(location: "code")]
 ///
 /// Implemented by fundamental types that must remain minimal and cannot rely on [`ConstInit`].
 #[doc = crate::doclink!(custom devela "[`ConstInit`]" "code/trait.ConstInit.html")]

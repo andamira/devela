@@ -85,30 +85,39 @@ macro_rules! __doc {
             ),*
         )
     };
-    ( // Links to the module where this item was defined, in the devela crate.
-      // NOTE: do NOT pass a leading slash.
+    // -------------------------------------------------------------------------
+    (
+    // Links to original location in the workspace
+    // (NOTE: do NOT pass a leading slash)
+    //
+    // Links to the module where this item was defined, in the devela crate.
+    // USAGE: #[doc = crate::_doc!(location: "data/iter")]
     location: $path:literal) => {
         concat!($crate::_doc!(%location_prefix),
-            "<sup title='Item location'>[`[", $path, "]`](",
-            $crate::doclink![custom devela $path @mod], ")</sup>\n\n")
-    };
-    ( // Links to the item in the module where it was defined, in the devela crate.
-    location_item: $path:literal) => {
-        concat!($crate::_doc!(%location_prefix),
-            "<sup title='Item location'><em>[`", $path, "`](",
-            $crate::doclink![custom devela $path], ")</em></sup>\n\n")
-    };
-
-    ( // Links to the module where this item was defined, in the given crate.
+            "<sup title='canonical workspace location'>[`[", $path, "]`](",
+            $crate::doclink![custom devela $path @mod], ")</sup>\n\n") };
+    ( // the same, but without ending in a new line. used in _reexport!
+    location_inline: $path:literal) => {
+        concat!($crate::_doc!(%location_prefix_inline),
+            "<sup title='canonical workspace location'>[`[", $path, "]`](",
+            $crate::doclink![custom devela $path @mod], ")</sup>") };
+    // (
+    // // Links to the item in the module where it was defined, in the devela crate.
+    // // USAGE: #[doc = crate::_doc!(location_item: "text/char/struct.Char.html")]
+    // location_item: $path:literal) => {
+    //     concat!($crate::_doc!(%location_prefix),
+    //         "<sup title='canonical workspace location'><em>[`", $path, "`](",
+    //         $crate::doclink![custom devela $path], ")</em></sup>\n\n") };
+    (
+    // Links to the module where this item was defined, in the given crate.
+    // USAGE: #[doc = crate::_doc!(location: devela, "data/iter")]
     location: $crate_id:ident, $path:literal) => {
         concat!($crate::_doc!(%location_prefix),
-            "<small title='Item location'>[`", $path, "`](",
-            $crate::doclink![custom $crate_id $path @mod], ")</small>\n\n")
-    };
-    (%location_prefix) => {
-        // "\n\n"
-        "\n\n---\n\n"
-    };
+            "<small title='canonical workspace location '>[`📍", $path, "`](",
+            $crate::doclink![custom $crate_id $path @mod], ")</small>\n\n") };
+    (%location_prefix) => { "\n\n---\n\n<sup>`📍`</sup>" /* 🎅DEBUG*/ };
+    (%location_prefix_inline) => { "\n\n<sup>`📍`</sup>" };
+    // -------------------------------------------------------------------------
     (
     // Shows the `Vendored` doc section and links to the info line.
     //

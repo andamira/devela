@@ -6,5 +6,6 @@
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 #[doc = concat!["A ", crate::_ABBR_LUT!() , " namespace."]]
+#[doc = crate::_doc!(location: "code")]
 #[derive(Debug)]
 pub struct Lut;

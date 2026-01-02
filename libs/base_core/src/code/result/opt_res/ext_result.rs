@@ -9,6 +9,7 @@ impl<T, E> Sealed for Result<T, E> {}
 
 #[doc = crate::_TAG_RESULT!()]
 /// Extension trait providing additional methods for [`Result`].
+#[doc = crate::_doc!(location: "code/result")]
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///

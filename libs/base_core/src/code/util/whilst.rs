@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// A flexible loop constructor supporting both `while`- and `for`-style syntaxes.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// The `whilst!` macro unifies control over initialization, condition, and iteration steps
 /// in a single consistent form. It can be used as:

@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// Returns the total number of types received.
+#[doc = crate::_doc!(location: "code/util")]
 /// # Examples
 /// ```
 /// # use devela_base_core::{type_count, Duration};

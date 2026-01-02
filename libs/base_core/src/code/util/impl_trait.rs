@@ -6,6 +6,7 @@
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// A helper macro to concisely implement a few common utility traits.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// ## Traits supported
 /// - FromStr

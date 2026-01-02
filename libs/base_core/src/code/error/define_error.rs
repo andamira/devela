@@ -12,6 +12,7 @@
 
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines individual and composite error types.
+#[doc = crate::_doc!(location: "code/error")]
 ///
 /// It can also implement `From` and `TryFrom` traits between them.
 ///
@@ -105,6 +106,7 @@ macro_rules! _define_error {
         $struct_vis:vis struct $struct_name:ident
         $(( $($e_vis:vis $e_ty:ty),+ $(,)? ))? $(;$($_a:lifetime)?)?              // tuple-struct↓
         $({ $($(#[$f_attr:meta])* $f_vis:vis $f_name:ident: $f_ty:ty),+ $(,)? })? // field-struct↑
+        $(+location: $($location:literal)+ ,)?
         $(+tag: $($tag:expr)+ ,)?
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
@@ -118,6 +120,7 @@ macro_rules! _define_error {
         #[doc = $crate::_TAG_ERROR!()] // IMPROVE: make optional
         $(#[$attributes])*
         #[doc = $DOC_NAME!()]
+        $(#[doc = $crate::_doc![location_inline: $($location)?]])? // canonical location
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
         $struct_vis struct $struct_name
             $(( $($e_vis $e_ty),+ ) )? $(; $($_a)?)?                              // tuple-struct↓
@@ -167,6 +170,7 @@ macro_rules! _define_error {
     // - From/TryFrom implementations for each individual error type
     // - Optional const conversion methods for variants marked with +const
     composite: fmt($fmt:ident)
+        $(+location: $($location:literal)+ ,)?
         $(+tag: $tag:expr ,)?
         $(#[$enum_attr:meta])*
         $vis:vis enum $composite_error_name:ident { $(
@@ -185,6 +189,7 @@ macro_rules! _define_error {
         $(#[doc = $tag])?
         #[doc = $crate::_TAG_ERROR_COMPOSITE!()] // IMPROVE: make optional
         $(#[$enum_attr])*
+        $(#[doc = $crate::_doc![location_inline: $($location)?]])? // canonical location
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
             $(#[doc = $tag_variant])?

@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_CODE!()]
 /// Defines a constant for every given identifier with a value of its index in the list.
+#[doc = crate::_doc!(location: "code/util")]
 /// # Examples
 /// ```
 /// # use devela_base_core::ident_const_index;

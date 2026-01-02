@@ -18,6 +18,7 @@ use bodies::*;
 #[doc = devela_base_core::_TAG_NICHE!()]
 #[doc = devela_base_core::_TAG_PROCEDURAL_MACRO!()]
 #[doc = include_str!("docs/enumint.md")]
+#[doc = base::_doc!(location: "code/util")] // IMPROVE
 #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]
 pub fn enumint(input: TS) -> TS { body_enumint(input) }

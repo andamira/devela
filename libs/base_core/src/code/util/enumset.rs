@@ -6,6 +6,7 @@
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines an enum and an associated type set of its variants.
+#[doc = crate::_doc!(location: "code/util")]
 ///
 /// It uses the [`bitfield!`] macro to create the associated set.
 #[doc = crate::doclink!(custom devela "[`bitfield!`]" "data/bit/macro.bitfield.html")]
