@@ -7,6 +7,7 @@ use crate::Ordering;
 
 #[doc = crate::_TAG_TIME!()]
 /// A deterministic logical time counter.
+#[doc = crate::_doc_location!("phys/time")]
 ///
 /// `TimeTick` represents time as an explicitly advanced,
 /// monotonically increasing tick count.

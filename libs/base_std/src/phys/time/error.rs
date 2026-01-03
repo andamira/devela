@@ -10,20 +10,14 @@
 //   - TimeError
 //   - TimeResult
 
-use crate::{_TAG_ERROR, _TAG_TIME, _reexport, Duration, define_error};
-
-// NOTE: replicated below
-_reexport! { rust: std::time,
-    tag: _TAG_TIME!() _TAG_ERROR!(),
-    doc: "Error returned from the `duration_since` and `elapsed` methods on [`SystemTime`].",
-    @SystemTimeError as StdSystemTimeError
-}
+use crate::{_TAG_TIME, Duration, StdSystemTimeError, define_error};
 
 /* individual errors */
 
 define_error! { individual:
     pub struct SystemTimeError(Duration);
-    +tag: crate::_TAG_TIME!(),
+    +location: "phys/time",
+    +tag: _TAG_TIME!(),
     DOC_SYSTEM_TIME_ERROR =
     "Returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
@@ -55,8 +49,9 @@ mod full_composite {
     }
 
     define_error! { composite: fmt(f)
-        #[doc = crate::_TAG_TIME!()]
+        #[doc = _TAG_TIME!()]
         /// A time-related composite error.
+        #[doc = crate::_doc_location!("phys/time/source")]
         #[non_exhaustive]
         pub enum TimeError {
             DOC_DATA_OVERFLOW: +const

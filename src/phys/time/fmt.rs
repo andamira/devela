@@ -13,6 +13,7 @@ use crate::{String, format};
 
 #[doc = crate::_TAG_TIME!()]
 /// Timecode splitting and formatting.
+#[doc = crate::_doc_location!("phys/time")]
 ///
 /// # Examples
 /// ```
@@ -21,6 +22,7 @@ use crate::{String, format};
 /// assert_eq!(Timecode::nanos_u64(1_002_003_004), "001s 002ms 003µs 004ns");
 /// ```
 #[derive(Debug)]
+#[doc = crate::_doc_location!("phys/time")]
 pub struct Timecode;
 
 impl Timecode {

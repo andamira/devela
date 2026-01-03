@@ -16,6 +16,7 @@ use crate::FloatExt;
 
 #[doc = crate::_TAG_WAVE!()]
 /// Trait for lossy compression of wavelet coefficients.
+#[doc = crate::_doc_location!("phys/wave")]
 ///
 /// Compresses coefficients based on a given tolerance, zeroing out those
 /// deemed insignificant to the desired error threshold.
@@ -26,6 +27,7 @@ pub trait WaveletCompressionVec {
 
 #[doc = crate::_TAG_WAVE!()]
 /// Trait defining essential wavelet transform operations.
+#[doc = crate::_doc_location!("phys/wave")]
 pub trait WaveletTransformVec {
     /// Computes the forward wavelet transform on the given input.
     #[must_use]
@@ -38,6 +40,7 @@ pub trait WaveletTransformVec {
 
 #[doc = crate::_TAG_WAVE!()]
 /// A single unit of the wavelet decomposition at a specific level and position.
+#[doc = crate::_doc_location!("phys/wave")]
 #[derive(Debug)]
 pub struct WaveletUnitVec {
     /// The type of the wavelet component (scaling or wavelet).

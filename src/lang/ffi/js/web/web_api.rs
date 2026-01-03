@@ -17,8 +17,8 @@ use devela::{
 #[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
 use devela::{String, Vec, vec_ as vec};
 
-#[doc = crate::_TAG_NAMESPACE!()]
 #[doc = crate::_TAG_WEB!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// A Web API namespace.
 ///
 /// # Features

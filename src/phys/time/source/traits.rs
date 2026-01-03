@@ -23,6 +23,7 @@ impl<T: TimeSource> TimeSourceCfg for T {
 #[rustfmt::skip]
 #[doc = crate::_TAG_TIME!()]
 /// A numeric time source.
+#[doc = crate::_doc_location!("phys/time/source")]
 ///
 /// A `TimeSource` provides timestamps as numeric values (`u64`) on a well-defined timeline
 /// with a known scale. Returned values are suitable for computing time deltas by subtraction.
@@ -86,6 +87,7 @@ pub trait TimeSource {
 #[rustfmt::skip]
 #[doc = crate::_TAG_TIME!()]
 /// A configurable numeric time source.
+#[doc = crate::_doc_location!("phys/time/source")]
 ///
 /// `TimeSourceCfg` generalizes [`TimeSource`] to sources whose behavior depends
 /// on a runtime configuration value (for example, selecting a specific Linux clock).

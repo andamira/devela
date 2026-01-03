@@ -6,6 +6,7 @@
 #[doc = crate::_TAG_NO!()]
 #[doc = crate::_TAG_TIME!()]
 /// Represents the absence of time.
+#[doc = crate::_doc_location!("phys/time")]
 ///
 /// This can be used anywhere an implementation of a time-related trait or
 /// a time component is expected, serving as a no-op placeholder.

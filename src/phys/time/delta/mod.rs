@@ -16,6 +16,7 @@ mod tests;
 
 #[doc = crate::_TAG_TIME!()]
 /// A signed duration of time, stored as an `(i64, i32)` pair of secs and nanos.
+#[doc = crate::_doc_location!("phys/time")]
 ///
 /// Supports negative values, allowing representation of both past and future offsets.
 #[doc = crate::_doc!(vendor: "jiff")]
