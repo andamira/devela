@@ -487,9 +487,10 @@ re-export hidden workspace dependencies from `_dep`.
 ### os
 - repurpose module to include operating supervisors.
 - new `Libc` namespace.
+- new modules: `sys::os::browser`, `sys::os::fd`.
 
-####
-- new `sys::os::fd` module.
+#### browser
+- move `lang::ffi::js::web` to `sys::os::browser::web`.
 
 #### linux
 - new types `LinuxClock`, `LinuxTime`, `LinuxInstant`.

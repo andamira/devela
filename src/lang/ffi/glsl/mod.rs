@@ -8,15 +8,16 @@
 //! Matrices are column-major order, and they implement a few methods for correctly indexing.
 //
 
-mod types;
+// mod impls;
 
-// WIPZONE
 // mod shaders;
+mod types; // g_*
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::types::*;
-        // WIPZONE
-        // pub use super::shaders::*;
+        pub use super::{
+            // shaders::*,
+            types::*,
+        };
     }
 }

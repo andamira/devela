@@ -10,6 +10,7 @@ use devela::{String, Vec};
 #[doc = crate::_TAG_RUNTIME!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Javascript-related operations.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// See also: [`Web`][crate::Web].
 #[derive(Debug)]

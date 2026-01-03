@@ -1,4 +1,4 @@
-// devela::lang::ffi::js::web::worker
+// devela::sys::os::browser::web::worker
 //
 //! Defines [`WebWorker`], [`WebWorkerError`], [`WebWorkerJob`].
 //
@@ -14,13 +14,15 @@ use crate::String;
 use crate::{TaskPoll, Web, js_uint32};
 
 #[doc = crate::_TAG_WEB!()]
+#[doc = crate::_TAG_UID!()]
 /// A handle to a JavaScript Web Worker.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WebWorker {
-    pub(in crate::lang::ffi::js) id: js_uint32,
+    pub(crate) id: js_uint32,
 }
 
 #[rustfmt::skip]
@@ -54,9 +56,10 @@ impl WebWorker {
     }
 }
 
-#[doc = crate::_TAG_ERROR!()]
 #[doc = crate::_TAG_WEB!()]
+#[doc = crate::_TAG_ERROR!()]
 /// Errors that can occur when working with JavaScript Web Workers.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum WebWorkerError {
     /// The worker script provided was invalid.
@@ -68,11 +71,13 @@ pub enum WebWorkerError {
 }
 
 #[doc = crate::_TAG_WEB!()]
+#[doc = crate::_TAG_UID!()]
 /// Represents a job running inside a [`WebWorker`].
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct WebWorkerJob {
-    pub(in crate::lang::ffi::js) worker: WebWorker,
-    pub(in crate::lang::ffi::js) id: js_uint32,
+    pub(crate) worker: WebWorker,
+    pub(crate) id: js_uint32,
 }
 
 #[rustfmt::skip]

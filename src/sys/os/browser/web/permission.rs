@@ -1,9 +1,10 @@
-// devela::lang::ffi::js::web::permission
+// devela::sys::os::browser::web::permission
 
-use crate::{_TAG_EXPERIMENTAL, _TAG_NON_STANDARD, js_int32};
+use crate::{_TAG_EXPERIMENTAL, _TAG_NON_STANDARD, _TAG_RESULT, _TAG_WEB, js_int32};
 
-#[doc = crate::_TAG_WEB!()]
-/// # Web API permissions
+#[doc = _TAG_WEB!()]
+/// Web API permissions
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions#browser_compatibility>
@@ -76,8 +77,10 @@ impl WebPermission {
     }
 }
 
-#[doc = crate::_TAG_WEB!()]
-/// # Permission query result state.
+#[doc = _TAG_WEB!()]
+#[doc = _TAG_RESULT!()]
+/// Permission query result state.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(i8)]
 pub enum WebPermissionState {

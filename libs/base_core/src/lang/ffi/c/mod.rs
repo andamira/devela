@@ -3,14 +3,17 @@
 #![doc = crate::_DOC_LANG_FFI_C!()]
 //
 
-mod libc; // c_mode_t, c_off_t
-mod reexports;
+mod _reexport; // SYMLINK to /src/lang/ffi/c/_reexport_core.rs
 
-crate::structural_mods! { // _mods
+mod libc; // c_mode_t, c_off_t
+
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             libc::*,
-            reexports::*,
         };
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

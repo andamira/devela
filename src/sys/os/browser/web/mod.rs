@@ -1,4 +1,4 @@
-// devela::lang::ffi::js::web
+// devela::sys::os::browser::web
 //
 //! <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web APIs</a> interfacing.
 //
@@ -17,7 +17,13 @@ mod worker; // WebWorker, WebWorkerError, WebWorkerJob
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            document::*, element::*, event::*, permission::*, web_api::*, window::*, worker::*,
+            document::*,
+            element::*,
+            event::*,
+            permission::*,
+            web_api::*,
+            window::*,
+            worker::*,
         };
     }
 }

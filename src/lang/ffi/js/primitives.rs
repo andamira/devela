@@ -9,6 +9,7 @@ use crate::_TAG_PRIMITIVE;
 #[doc = _TAG_PRIMITIVE!()]
 #[doc = crate::_TAG_NUM!()]
 /// A JavaScript Number.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// All numeric values are represented as IEEE 754 **64-bit floating-point** values.
 ///
@@ -18,6 +19,7 @@ pub type js_number = f64;
 #[doc = _TAG_PRIMITIVE!()]
 #[doc = crate::_TAG_NUM!()]
 /// A JavaScript signed 32-bit integer.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// JavaScript does not have true integer types, but **bitwise operations** and certain APIs
 /// force numbers into signed 32-bit integer representation (`i32`).
@@ -30,6 +32,7 @@ pub type js_int32 = i32;
 #[doc = _TAG_PRIMITIVE!()]
 #[doc = crate::_TAG_NUM!()]
 /// A JavaScript unsigned 32-bit integer.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// JavaScript lacks native unsigned integers, but **the `>>>` operator** treats numbers as unsigned **`u32`**.
 /// Some APIs, such as `Uint32Array`, also provide unsigned integer behavior.
@@ -53,6 +56,7 @@ pub type js_uint32 = u32;
 
 #[doc = _TAG_PRIMITIVE!()]
 /// A JavaScript boolean (`true` / `false`).
+#[doc = crate::_doc_location!("lang/ffi/js")]
 pub type js_bool = bool;
 
 /* string */
@@ -60,6 +64,7 @@ pub type js_bool = bool;
 #[doc = _TAG_PRIMITIVE!()]
 #[doc = crate::_TAG_TEXT!()]
 /// A JavaScript string reference.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// JavaScript strings are **UTF-16 internally**, but Rust typically interacts with them
 /// as **UTF-8**. This type represents a pointer to a UTF-8 encoded string.
@@ -70,6 +75,7 @@ pub type js_str = *const u8;
 #[doc = _TAG_PRIMITIVE!()]
 #[doc = crate::_TAG_NO!()]
 /// The JavaScript `null` value.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// Though `null` is distinct from `undefined` in JavaScript,
 /// both are often treated interchangeably.
@@ -79,6 +85,7 @@ pub type js_null = ();
 #[doc = _TAG_PRIMITIVE!()]
 #[doc = crate::_TAG_NO!()]
 /// The JavaScript `undefined` value.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// In Rust, `undefined` is represented as the unit type `()`, as it carries no meaningful value.
 pub type js_undefined = ();

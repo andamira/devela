@@ -1,4 +1,4 @@
-// devela::lang::ffi::js::web::event
+// devela::sys::os::browser::web::event
 //
 //! Defines [`WebEventKind`], [`WebEventMouse`], [`WebEventPointer`], [`WebKeyLocation`].
 //
@@ -9,7 +9,9 @@ use crate::{JsInstant, js_int32, js_number};
 
 #[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_WEB!()]
+#[doc = crate::_TAG_UID!()]
 /// # A web API Event kind.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Event>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
@@ -89,7 +91,8 @@ impl WebEventKind {
 
 #[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_WEB!()]
-/// # A web API Mouse Event.
+/// A web API Mouse Event.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// Represents a JavaScript mouse event containing relevant properties.
 ///
@@ -126,7 +129,8 @@ impl WebEventMouse {
 
 #[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_WEB!()]
-/// # A web API Pointer Event.
+/// A web API Pointer Event.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// Represents a JavaScript pointer event containing relevant properties.
 ///
@@ -173,6 +177,7 @@ impl WebEventPointer {
 #[doc = crate::_TAG_INTERACTION!()]
 #[doc = crate::_TAG_WEB!()]
 /// Which part of the keyboard the key event originates from
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#keyboard_locations>
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

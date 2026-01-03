@@ -1,4 +1,4 @@
-// devela::lang::ffi::js::web::window
+// devela::sys::os::browser::web::window
 //
 //! Defines [`WebWindow`], [`WebWindowState`].
 //!
@@ -17,6 +17,7 @@ use devela::{
 #[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_WEB!()]
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// [Window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
 /// [Screen]: https://developer.mozilla.org/en-US/docs/Web/API/Window/screen
@@ -82,7 +83,7 @@ impl WebWindow {
     #[doc = _js_doc!("Window", "clearTimeout")]
     #[doc = _js_doc!("Window", "clearInterval")]
     /// Cancels a timeout or interval.
-    pub fn clear_timeout(id: JsTimeout) { window_clear_timeout(id.id); }
+    pub fn clear_timeout(id: JsTimeout) { window_clear_timeout(id.id()); }
 
     /* eval */
 
@@ -140,6 +141,7 @@ _js_extern! {
 #[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_WEB!()]
 /// Aggregates the live state of a [`WebWindow`], including geometry and screen context.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// It has a size of 52 Bytes.
 ///

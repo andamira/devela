@@ -7,6 +7,7 @@ use crate::Web;
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_LAYOUT!()]
 /// Text Metrics.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// Represents the size of rendered text, measured by [`Web::measure_text`].
 ///
@@ -26,6 +27,7 @@ pub struct JsTextMetrics {
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_LAYOUT!()]
 /// Full Text Metrics.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// Represents the size of rendered text, measured by [`Web::measure_text_full`].
 ///

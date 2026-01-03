@@ -13,6 +13,7 @@ use crate::{Web, js_number, js_uint32};
 #[doc = crate::_TAG_RUNTIME!()]
 #[doc = crate::_TAG_TIME!()]
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// The internal representation is a double-precision floating-point millisecond value.
 #[repr(C)]
@@ -64,12 +65,13 @@ impl_trait![fmt::Display for JsInstant |self, f| Display::fmt(&self.ms, f)];
 #[doc = crate::_TAG_TIME!()]
 #[doc = crate::_TAG_UID!()]
 /// A handle to a JavaScript timeout.
+#[doc = crate::_doc_location!("lang/ffi/js")]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value>.
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JsTimeout {
-    pub(in crate::lang::ffi::js) id: js_uint32,
+    pub(crate) id: js_uint32,
 }
 
 #[rustfmt::skip]

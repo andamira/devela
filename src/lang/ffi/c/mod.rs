@@ -8,15 +8,18 @@
 //! other C-based libraries.
 //
 
-crate::mod_path!(_c "../../../../libs/base_core/src/lang/ffi/c/reexports.rs");
-crate::mod_path!(alloc _a "../../../../libs/base_alloc/src/lang/ffi/c/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/lang/ffi/c/_reexport.rs
+#[cfg(feature = "alloc")]
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/lang/ffi/c/_reexport.rs
 
-crate::structural_mods! { // _mods
-    _mods {
-        pub use devela_base_core::lang::ffi::c::{c_mode_t, c_off_t};
-
-        pub use super::_c::*;
+crate::structural_mods! { // _reexports
+    _reexports {
+        pub use super::_reexport_core::*;
         #[cfg(feature = "alloc")]
-        pub use super::_a::*;
+        pub use super::_reexport_alloc::*;
+
+        pub use devela_base_core::lang::ffi::c::{
+            c_mode_t, c_off_t,
+        };
     }
 }

@@ -3,12 +3,10 @@
 #![doc = crate::_DOC_LANG_FFI_C!()]
 //
 
-mod reexports;
+mod _reexport; // SYMLINK to /src/lang/ffi/c/_reexport_alloc.rs
 
-crate::structural_mods! { // _mods
-    _mods {
-        pub use super::{
-            reexports::*,
-        };
+crate::structural_mods! { // _reexports
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

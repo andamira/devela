@@ -37,13 +37,11 @@
 //! # Concurrency
 //!
 //! - JavaScript runs in a **single-threaded** environment.
-//! - **Web Workers** allow parallel execution but **cannot block** execution.
+//! - [`WebWorker`][crate::WebWorker]s allow parallel execution but **cannot block** execution.
 //! - Delays can be simulated using `setTimeout()` or `Atomics.wait()` in shared memory.
 //!
 //! While Web Workers enable concurrency, they communicate via message passing
 //! and do not share memory except through `SharedArrayBuffer`.
-
-pub mod web; // Web*
 
 mod console; // JsConsole
 mod namespace; // Js
@@ -58,7 +56,7 @@ mod helpers; // _js_doc!, _js_extern!, js_method_str_alloc!
 // mod error; // JsError
 // mod object; // JsObject
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             console::*,
@@ -70,9 +68,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             time::*,
             value::*,
         };
-    }
-    _pub_mods {
-       pub use super::web::_all::*;
     }
     _crate_internals {
         pub(crate) use super::helpers::*;

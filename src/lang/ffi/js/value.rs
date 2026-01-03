@@ -10,15 +10,7 @@ use devela::{js_bool, js_number, js_uint32};
 
 #[doc = crate::_TAG_RUNTIME!()]
 /// A JavaScript value for FFI communication.
-///
-/// # Variants
-/// - `Null`: JS `null`
-/// - `Undefined`: JS `undefined`  
-/// - `Boolean(bool)`: JS boolean (`true`/`false`)
-/// - `Object(u32)`: Handle to JS object (registry index)
-/// - `Str(&'static str)`: Static string (no allocation)
-/// - `String(String)`: Heap-allocated string (requires `alloc` feature)
-/// - `Number(f64)`: JS number (always 64-bit float)
+#[doc = crate::_doc_location!("lang/ffi/js")]
 #[non_exhaustive]
 #[derive(Clone, Debug, PartialEq)]
 #[allow(missing_docs)]

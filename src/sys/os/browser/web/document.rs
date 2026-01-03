@@ -1,4 +1,4 @@
-// devela::lang::ffi::js::web::document
+// devela::sys::os::browser::web::document
 //
 //! Defines [`WebDocument`].
 //
@@ -11,6 +11,7 @@ use devela::{_js_extern, _js_method_str_alloc, WebElement, js_bool, js_int32, js
 
 #[doc = crate::_TAG_WEB!()]
 /// Handle to the brower's global [Document] associated APIs.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// [Document]: https://developer.mozilla.org/en-US/docs/Web/API/Document
 #[repr(C)]

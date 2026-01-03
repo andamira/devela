@@ -1,4 +1,4 @@
-// devela::lang::ffi::js::web::web_api
+// devela::sys::os::browser::web::web_api
 // (in sync with ./web_api.js)
 //
 //! Defines [`Web`] and implements Web API methods.
@@ -20,6 +20,7 @@ use devela::{String, Vec, vec_ as vec};
 #[doc = crate::_TAG_WEB!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// A Web API namespace.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// # Features
 /// All methods depend on the `unsafe_ffi` feature and the `wasm32` architecture.
