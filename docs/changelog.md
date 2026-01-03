@@ -192,7 +192,7 @@ re-export hidden workspace dependencies from `_dep`.
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
   - internal macros: `__crate_name!`, `__dbg!`, `__std!`, `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_use!`.
-- add tags: `_DOC_*`, `_TAG_[APPLE|ASSERT|AUDIO|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|IO|LAYOUT|LIFETIME|LINUX|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|TERM|VALUE|WAVE|WINDOWS]`.
+- add tags: `_DOC_*`, `_TAG_[APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|IO|LAYOUT|LIFETIME|LINUX|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|TERM|VALUE|WAVE|WINDOWS]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - rename `reexport!` internal macro to `_reexport!`.
   - allow accepting multiple tags.

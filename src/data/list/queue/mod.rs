@@ -9,21 +9,24 @@
 //! at both ends, providing additional flexibility.
 //
 
+#[cfg(feature = "alloc")]
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/data/list/queue/_reexport.rs
+
 mod adt;
 #[cfg(_destaque··)]
 mod destaque;
-mod reexports;
+// mod define_destaque; // WIP
 
-// WIPZONE
-// mod destaque_define; // MAYBE
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{adt::*, reexports::*};
+        pub use super::adt::*;
 
         #[cfg(_destaque··)]
         pub use super::destaque::_all::*;
-        // WIPZONE
-        // pub use super::destaque_define::_all::*;
+        // pub use super::define_destaque::_all::*;
+    }
+    _reexports {
+        #[cfg(feature = "alloc")]
+        pub use super::_reexport_alloc::*;
     }
 }

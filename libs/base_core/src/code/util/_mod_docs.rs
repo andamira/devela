@@ -50,6 +50,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
 
     _DOC_DATA            = "Data handling and manipulation.";
     _DOC_DATA_ADDRESS    = "Addressability and directed reachability.";
+    _DOC_DATA_BIT        = "Bit-focused items.";
     _DOC_DATA_CODEC      = "Data encoding and decoding abstractions.";
     _DOC_DATA_CODEC_HASH = "Generic hashing support.";
     _DOC_DATA_CODEC_HASH_CHECK = "Lightweight checksums for accidental corruption detection.";
@@ -118,6 +119,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_STR        = "String types and related functionality.";
 
     _DOC_UI              = "User interface functionality.";
+    _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
 
     _DOC_WORK             = "Work management and concurrency.";
     _DOC_WORK_FUTURE      = "Asynchronous execution.";

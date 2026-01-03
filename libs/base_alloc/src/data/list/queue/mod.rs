@@ -3,10 +3,10 @@
 #![doc = crate::_DOC_DATA_LIST_QUEUE!()]
 //
 
-mod reexports;
+mod _reexport;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::reexports::_all::*;
+        pub use super::_reexport::_all::*;
     }
 }

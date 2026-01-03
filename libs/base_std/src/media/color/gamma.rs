@@ -2,12 +2,13 @@
 //
 //! Defines [`Gamma`].
 //
-// WAIT: when required std operations are in core and const we willll rename GammeConst to Gamma.
+// WAIT: when required std operations are in core and const we willll rename GammaConst to Gamma.
 
 use crate::is;
 
 #[doc = crate::_TAG_COLOR!()]
 /// Gamma correction curves.
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// Used for encoding and decoding linear luminance or tristimulus values
 /// via power-law transformations (e.g. $v^γ$ and $v^{(1/γ)}$).

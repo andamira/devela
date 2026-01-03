@@ -3,10 +3,8 @@
 #![doc = crate::_DOC_DATA_LIST_LINK!()]
 //
 
-mod reexports;
+mod _reexport;
 
-crate::structural_mods! { // _mods
-    _mods {
-        pub use super::reexports::_all::*;
-    }
+crate::structural_mods! { // _mods, _reexports
+    _reexports { pub use super::reexports::_all::*; }
 }

@@ -1,10 +1,15 @@
 // devela_base_core::data::list::link:const
 //
+//! Defines [`ConstList`], [`ConstListIterator`].
+//
 // This is a modified version of:
 // [`const_list`](https://crates.io/crates/const_list/0.1.0)
+//
 
 #[doc = crate::_TAG_DATA!()]
+#[doc = crate::_TAG_LIFETIME!()]
 /// A linked list node in a `ConstList`.
+#[doc = crate::_doc_location!("data/list")]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 struct ConstListItem<'a, T: 'a> {
     /// The item represented by this node.
@@ -14,7 +19,9 @@ struct ConstListItem<'a, T: 'a> {
 }
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_LIFETIME!()]
 /// An immutable, append-only, linear, functional, non-contiguous, list.
+#[doc = crate::_doc_location!("data/list")]
 ///
 /// A safe, predictable, and lightweight structure, suitable where immutability
 /// is an asset and compile-time guarantees matter more than list manipulation.
@@ -33,6 +40,8 @@ struct ConstListItem<'a, T: 'a> {
 #[must_use]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ConstList<'a, T: 'a>(Option<ConstListItem<'a, T>>);
+
+crate::_impl_init![ConstInitCore: <T> Self::new() => ConstList<'_, T>];
 
 impl<'a, T: 'a> ConstList<'a, T> {
     /// Creates a new, empty list.
@@ -94,7 +103,9 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
 }
 
 #[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_TAG_LIFETIME!()]
 /// Iterates over the contents of a [`ConstList`].
+#[doc = crate::_doc_location!("data/list")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct ConstListIterator<'a, T> {

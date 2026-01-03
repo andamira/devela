@@ -1,14 +1,12 @@
 // devela_base_alloc::data::bit
 //
-//! Bit-focused types and traits.
+#![doc = crate::_DOC_DATA_BIT!()]
 //
 
-// WIPZONE
-// mod _wip_vec;
+// mod _wip_vec; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
-        // WIPZONE
-        // pub use super::_wip_vec::*;
+        // pub use super::_wip_vec::*; // WIP
     }
 }

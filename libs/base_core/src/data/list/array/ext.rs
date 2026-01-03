@@ -9,7 +9,9 @@ use crate::{
 };
 
 #[doc = crate::_TAG_FMT!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A formatting wrapper for core [arrays][array], implementing [`Display`] and [`Debug`].
+#[doc = crate::_doc_location!("data/list/array")]
 ///
 /// It is created by the [`ArrayExt::fmt`] method.
 #[repr(transparent)]
@@ -21,6 +23,7 @@ impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Extension trait providing convenience methods for [`[T; N]`][array] arrays.
+#[doc = crate::_doc_location!("data/list/array")]
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 #[expect(private_bounds, reason = "Sealed")]

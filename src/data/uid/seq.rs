@@ -3,8 +3,10 @@
 //! Defines [`id_seq!`], for sequential unique IDs. An identity allocator.
 //
 
+#[doc = crate::_TAG_CONSTRUCTION!()]
 #[doc = crate::_TAG_UID!()]
 /// A macro for constructing a unique sequential identifier generator.
+#[doc = crate::_doc_location!("data/uid")]
 ///
 /// It generates the necessary static instances dynamically.
 ///

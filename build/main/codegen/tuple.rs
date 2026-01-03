@@ -711,8 +711,8 @@ impl<_0: Display> TupleDisplay for (_0,) {{
     w!(f, "#[doc = crate::_TAG_ITERATOR!()]")?;
     w!(f, "#[doc = crate::_TAG_LIFETIME!()]")?;
     w!(f, "#[doc = crate::_TAG_CODEGEN_BUILD!()]")?;
-    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "/// An iterator over exclusive references to elements of a [`Tuple`].")?;
+    w!(f, r#"#[doc = crate::_doc_location!("data/list/tuple")]"#)?;
     w!(f, "#[derive(Debug)]")?;
     w!(f, "pub struct TupleIterMut<'a, ")?;
         for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;

@@ -11,8 +11,10 @@
 )]
 
 #[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_TAG_BIT!()]
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Creates a custom bit field struct.
+#[doc = crate::_doc_location!("data/bit")]
 ///
 /// The inner type must be an integer primitive.
 ///

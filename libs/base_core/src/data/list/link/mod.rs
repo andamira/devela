@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA_LIST_LINK!()]
 //
 
-mod r#const; // ConstList
+mod r#const; // ConstList[Iterator]
 
 crate::structural_mods! { // _mods
     _mods {

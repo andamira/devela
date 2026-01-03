@@ -1,4 +1,4 @@
-// devela_base_core::data::errors
+// devela_base_core::data::error
 //
 //! Data-related errors.
 //
@@ -18,7 +18,7 @@
 //   - NotEnoughElements
 //   - NotEnoughSpace
 //   - PartiallyAdded
-// - partial composite errors:
+// - composite data-related error types:
 //   - DataNotEnough:    NotEnoughElements, NotEnoughSpace
 //   - MismatchedBounds: DataOverflow, IndexOutOfBounds, MismatchedIndices, MismatchedCapacity
 //   - PartialSpace:     NotEnoughSpace, PartiallyAdded
@@ -28,6 +28,7 @@ use crate::{_TAG_DATA, Interval, Mismatch, define_error};
 /* individual errors */
 
 define_error! { individual: pub struct DataOverflow(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.",
     self+f => if let Some(v) = self.0 {
@@ -35,11 +36,13 @@ define_error! { individual: pub struct DataOverflow(pub Option<usize>);
     } else { f.write_str(DOC_DATA_OVERFLOW!()) }
 }
 define_error! { individual: pub struct ElementNotFound;
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_ELEMENT_NOT_FOUND = "The requested element has not been found.",
     self+f => f.write_str(DOC_ELEMENT_NOT_FOUND!()),
 }
 define_error! { individual: pub struct IndexOutOfBounds(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_INDEX_OUT_OF_BOUNDS = "The given index is out of bounds.\n\n
 Optionally contains the given index.",
@@ -47,6 +50,7 @@ Optionally contains the given index.",
     } else { f.write_str("The given index is out of bounds.") }
 }
 define_error! { individual: pub struct InvalidAxisLength(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_INVALID_AXIS_LENGTH = "The given axis has an invalid length.\n\n
 Optionally contains the given axis number.",
@@ -55,11 +59,13 @@ Optionally contains the given axis number.",
     } else { f.write_str("One ore more axis have 0 length, which is not allowed.") }
 }
 define_error! { individual: pub struct KeyAlreadyExists;
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_KEY_ALREADY_EXISTS = "The key already exists.",
     self+f => f.write_str(DOC_KEY_ALREADY_EXISTS!())
 }
 define_error! { individual: pub struct MismatchedCapacity(pub Mismatch<Interval<usize>, usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_MISMATCHED_CAPACITY = "The given capacity did not match the required constraints.",
     self+f => write!(f, "Mismatched capacity: {:?}.", self.0)
@@ -77,34 +83,40 @@ impl MismatchedCapacity {
     }
 }
 define_error! { individual: pub struct MismatchedDimensions(pub Mismatch<usize, usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
     self+f => write!(f, "Mismatched dimensions: {:?}.", self.0)
 }
 define_error! { individual: pub struct MismatchedIndices;
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_MISMATCHED_INDICES = "The given indices does not match the expected order.",
     self+f => f.write_str(DOC_MISMATCHED_INDICES!())
 }
 define_error! { individual: pub struct NodeEmpty(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_NODE_EMPTY = "The node is empty.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node `{n}` is empty.")
     } else { f.write_str(DOC_NODE_EMPTY!()) }
 }
 define_error! { individual: pub struct NodeLinkNotSet(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_NODE_LINK_NOT_SET = "The node link is not set.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not set.")
     } else { f.write_str(DOC_NODE_LINK_NOT_SET!()) }
 }
 define_error! { individual: pub struct NodeLinkNotUnique(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_NODE_LINK_NOT_UNIQUE = "The node link is not unique.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
     } else { f.write_str(DOC_NODE_LINK_NOT_UNIQUE!()) }
 }
 define_error! { individual: pub struct NotEnoughElements(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.\n\n
 Optionally contains the minimum number of elements needed.",
@@ -113,6 +125,7 @@ Optionally contains the minimum number of elements needed.",
     } else { f.write_str("Not enough elements.") }
 }
 define_error! { individual: pub struct NotEnoughSpace(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.\n\n
 Optionally contains the number of free spaces needed.",
@@ -121,6 +134,7 @@ Optionally contains the number of free spaces needed.",
     } else { f.write_str("Not enough space.") }
 }
 define_error! { individual: pub struct PartiallyAdded(pub Option<usize>);
+    +location: "data/error",
     +tag: _TAG_DATA!(),
     DOC_PARTIALLY_ADDED = "The operation could only add a subset of the elements.\n\n
 Optionally contains the number of elements added.",
@@ -131,6 +145,7 @@ Optionally contains the number of elements added.",
 /* composite errors */
 
 define_error! { composite: fmt(f)
+    +location: "data/error",
     /// An error composite of [`NotEnoughElements`] + [`NotEnoughSpace`].
     ///
     /// Used in methods of:
@@ -144,6 +159,7 @@ define_error! { composite: fmt(f)
     }
 }
 define_error! { composite: fmt(f)
+    +location: "data/error",
     /// An error composite of
     /// [`DataOverflow`] + [`IndexOutOfBounds`] +
     /// [`MismatchedIndices`] + [`MismatchedCapacity`].
@@ -170,6 +186,7 @@ define_error! { composite: fmt(f)
 }
 // MAYBE: Merge with DataNotEnough
 define_error! { composite: fmt(f)
+    +location: "data/error",
     /// An error composite of [`NotEnoughSpace`] + [`PartiallyAdded`].
     ///
     /// Used in methods of:

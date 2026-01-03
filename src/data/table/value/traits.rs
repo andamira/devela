@@ -9,10 +9,11 @@
 // - DataRaw
 // - DataRawCopy
 
-use core::fmt::Debug;
+use crate::{_TAG_VALUE, Debug};
 
+#[doc = _TAG_VALUE!()]
 /// Common trait for enumerating *data types*.
-#[doc = crate::_doc_location!("data/list/table/value")]
+#[doc = crate::_doc_location!("data/table/value")]
 ///
 /// Allows extending `DataType*`**`With`** versions with custom *types*.
 ///
@@ -40,8 +41,9 @@ pub trait DataType: Debug {
     fn data_value_size(&self) -> usize;
 }
 
+#[doc = _TAG_VALUE!()]
 /// Common trait for enumerating `Copy`-constrained *data types*.
-#[doc = crate::_doc_location!("data/list/table/value")]
+#[doc = crate::_doc_location!("data/table/value")]
 ///
 /// Allows extending `DataType*Copy`**`With`** versions with custom *types*.
 ///
@@ -66,8 +68,9 @@ where
     }
 }
 
+#[doc = _TAG_VALUE!()]
 /// Common trait for enumerating *data values*.
-#[doc = crate::_doc_location!("data/list/table/value")]
+#[doc = crate::_doc_location!("data/table/value")]
 ///
 /// Allows extending `DataValue*`**`With`** versions.
 ///
@@ -89,8 +92,9 @@ pub trait DataValue: Debug {
     fn data_value_is_copy(&self) -> bool;
 }
 
+#[doc = _TAG_VALUE!()]
 /// Common trait for enumerating `Copy`-constrained *data values*.
-#[doc = crate::_doc_location!("data/list/table/value")]
+#[doc = crate::_doc_location!("data/table/value")]
 ///
 /// Allows extending `DataValue*Copy`**`With`** versions.
 ///
@@ -114,8 +118,9 @@ pub trait DataValueCopy: DataValue + Copy {
     }
 }
 
+#[doc = _TAG_VALUE!()]
 /// Common unsafe trait for enumerating untagged *raw data values*.
-#[doc = crate::_doc_location!("data/list/table/value")]
+#[doc = crate::_doc_location!("data/table/value")]
 ///
 /// # Safety
 /// You have to know what you're doing.
@@ -123,8 +128,9 @@ pub trait DataValueCopy: DataValue + Copy {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 pub unsafe trait DataRaw {}
 
+#[doc = _TAG_VALUE!()]
 /// Common unsafe trait for enumerating `Copy`-constrained untagged *raw data values*.
-#[doc = crate::_doc_location!("data/list/table/value")]
+#[doc = crate::_doc_location!("data/table/value")]
 ///
 /// # Safety
 /// You have to know what you're doing.

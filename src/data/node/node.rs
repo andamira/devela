@@ -38,7 +38,9 @@ macro_rules! impl_node {
         )+
     }};
     (@$NodeIndex:ty, $Node:ty, $Links:ty, $IP:ty, $cap:literal) => { paste! {
+        #[doc = _TAG_DATA!()]
         /// A generic node with a configurable capacity for links.
+        #[doc = crate::_doc_location!("data/key")]
         ///
         /// It's designed to be used in graphs, linked lists, and other node-based data structures.
         ///

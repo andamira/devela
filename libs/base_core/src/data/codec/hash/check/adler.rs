@@ -12,6 +12,7 @@ define_lane! {
 
 #[doc = crate::_TAG_HASH!()]
 /// Adler-32 checksum.
+#[doc = crate::_doc_location!("data/codec/hash")]
 ///
 /// A lightweight checksum consisting of two 16-bit accumulators (`a` and `b`)
 /// updated modulo 65521, the largest prime below 2^16.
@@ -44,8 +45,11 @@ impl Hasher for Adler32 {
     fn write(&mut self, bytes: &[u8]) { self.write_bytes(bytes); }
 }
 
+/// Compile-time friendly API.
 #[rustfmt::skip]
 impl Adler32 {
+    /* constructors */
+
     /// Creates a new Adler-32 state with the initial value `1`.
     ///
     /// This corresponds to the standard Adler-32 initial state `(a=1, b=0)`.

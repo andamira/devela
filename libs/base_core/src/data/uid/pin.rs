@@ -9,6 +9,7 @@ use crate::Pin;
 #[doc = crate::_TAG_UID!()]
 #[doc = crate::_TAG_ALLOCATION!()]
 /// A unique identifier based on a pinned stack-allocated reference.
+#[doc = crate::_doc_location!("data/uid")]
 ///
 /// `IdPin` generates a unique ID by pinning a value on the stack,
 /// ensuring that the ID is based on the stack memory address

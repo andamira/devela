@@ -95,11 +95,29 @@ mod impl_core {
     impl<T: ConstInitCore, E> Sealed for Result<T, E> {}
 }
 
+// NOTE: we can't implement ConstInitCore for extern `alloc` items
+#[rustfmt::skip]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod impl_alloc {
-    use crate::{_impl_init, String};
+    // use super::{ConstInitCore, Sealed};
+    use super::ConstInit;
+    use crate::{_impl_init,
+        // data
+        BTreeSet, BTreeMap,
+        LinkedList,
+        Vec,
+        BinaryHeap, VecDeque,
+        // text
+        String,
+    };
+    // data
+    _impl_init![ConstInit: <T> Self::new() => BTreeSet<T>, LinkedList<T>, Vec<T>, VecDeque<T>];
+    impl<T: Ord> ConstInit for BinaryHeap<T> { const INIT: Self = Self::new(); }
 
+    _impl_init![ConstInit: <K, V> Self::new() => BTreeMap<K, V>];
+
+    // text
     _impl_init![ConstInit: Self::new() => String];
 
     // TODO: fxhash, fnv, ahash
@@ -109,6 +127,7 @@ mod impl_alloc {
     // _impl_init![ConstInit: <K> Self::with_hasher(TODO) => HashSet<K>];
 }
 
+// NOTE: we can't implement ConstInitCore for extern `std` items
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod impl_std {
@@ -147,6 +166,7 @@ mod impl_devela_base_core {
         // code
         Mismatch,
         // data
+        ConstList,
         // data::codec::hash
         Adler32, HasherFx,
         // media
@@ -175,6 +195,8 @@ mod impl_devela_base_core {
     _impl_init![%Sealed%: <N: ConstInitCore, H: ConstInitCore> Mismatch<N, H>];
 
     // data
+    _impl_init![%Sealed%: <T> ConstList<'_, T>];
+    // data::codec::hash
     _impl_init![%Sealed%: Adler32];
     _impl_init![%Sealed%: <T> HasherFx<T>];
 

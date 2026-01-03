@@ -15,7 +15,6 @@ mod float; // fsize, Float, FloatConst, FloatExt
 mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
 mod primitive; // Cast, Primitive[Cast|Join|Split]
-mod reexports;
 mod traits; // Num, NumRef
 
 #[cfg(feature = "unit")]
@@ -34,7 +33,7 @@ pub mod wide; // define_lane!
 // pub mod wip_symb;
 // mod wip_power; // Tp
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
         pub use super::{
             absence::*,
@@ -43,7 +42,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             frac::_all::*,
             int::_all::*,
             primitive::_all::*,
-            reexports::*,
             traits::_all::*,
             // wip_power::*;
         };
@@ -60,6 +58,23 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             rand::_all::*,
             wide::_all::*,
             // wip_symb::_all::*;
+        };
+    }
+    _reexports {
+        pub use devela_base_core::num::{
+            BitOps, Bitwise, // bit
+            Cast, // cast
+            // individual errors:
+            IncompatibleBounds,
+            NoInverse,
+            MismatchedSizes,
+            NonNegativeRequired,
+            PositiveRequired,
+            NonZeroRequired,
+            Overflow,
+            // composite errors:
+            IntError, IntResult,
+            NicheValueError,
         };
     }
     _crate_internals {

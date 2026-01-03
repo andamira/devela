@@ -1,16 +1,16 @@
 // devela::data::bit
 //
-//! Bit-focused items.
+#![doc = crate::_DOC_DATA_BIT!()]
 //
 
 #[cfg(test)]
 mod tests;
 
-crate::structural_mods! { // _mods
-    _mods {
+crate::structural_mods! { // _reexports
+    _reexports {
         #[doc(inline)]
         pub use devela_base_core::{
-            BitOps, Bitwise, bitfield,
+            bitfield,
         };
     }
 }

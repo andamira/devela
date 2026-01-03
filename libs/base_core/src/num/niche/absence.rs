@@ -160,7 +160,7 @@ macro_rules! impl_maybe {
             /// Creates a new `MaybeNiche` from a primitive value.
             /// # Errors
             /// - [`InvalidValue`] if the value violates the validity invariant of `T`.
-            #[must_use] #[inline(always)]
+            #[inline(always)]
             pub const fn try_from_prim(primitive: $prim) -> Result<Self, InvalidValue> {
                 // WAIT: custom attrs on expr https://github.com/rust-lang/rust/issues/54727
                 // Can't use `compile` on expr or stmt, e.g.: return Some(Self(primitive));

@@ -1,10 +1,15 @@
 // devela_base_core::data::uid::registry
 //
-//! Defines [`Idegistry`]
+//! Defines [`IdRegistry`]
+//!
+//! > A resolver of foreign identities into local identities
 //
+// IMPROVE: Naming slightly undersells its role
+// MAYBE:RENAME: IdInterner | IdMapper | IdTranslator
 
 #[doc = crate::_TAG_UID!()]
 /// Maps backend/native identifiers into stable, compact internal IDs.
+#[doc = crate::_doc_location!("data/uid")]
 ///
 /// Used throughout the library anywhere a subsystem needs to allocate
 /// a small set of stable identifiers from arbitrary external handles.

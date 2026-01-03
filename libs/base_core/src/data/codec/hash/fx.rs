@@ -4,6 +4,7 @@ use crate::{ConstInitCore, Hash, Hasher, HasherBuildDefault};
 
 #[doc = crate::_TAG_HASH!()]
 /// A builder for default Fx hashers.
+#[doc = crate::_doc_location!("data/codec/hash")]
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 
 #[doc = crate::_TAG_HASH!()]
@@ -11,6 +12,7 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 /// [u32](#impl-HasherFx<u32>),
 /// [u64](#impl-HasherFx<u64>) &
 /// [usize](##impl-HasherFx<usize>).
+#[doc = crate::_doc_location!("data/codec/hash")]
 ///
 /// This is the same hashing algorithm used for some internal operations in
 /// Firefox. The strength of this algorithm is in hashing 4 bytes at a time on

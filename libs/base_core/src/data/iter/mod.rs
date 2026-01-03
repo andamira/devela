@@ -15,7 +15,5 @@ crate::structural_mods! { // _mods, _reexports
     }
     _reexports {
         pub use super::_reexport::*;
-        #[doc(inline)]
-        pub use crate::sys::mem::{SliceIter, SliceIterMut};
     }
 }

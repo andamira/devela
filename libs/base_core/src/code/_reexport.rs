@@ -29,8 +29,7 @@ doc: "A value-to-value conversion that consumes the input value.", Into }
 _reexport! { rust: core::convert, location: "code", tag: _TAG_VALUE!(),
 doc: "Simple and safe type conversions that may fail in a controlled way.", TryFrom }
 _reexport! { rust: core::convert, location: "code", tag: _TAG_VALUE!(),
-doc: "An attempted conversion that consumes self, which may or may not be expensive.",
-TryInto }
+doc: "An attempted conversion that consumes self, which may be expensive.", TryInto }
 
 // functions
 _reexport! { rust: core::convert, location: "code", tag: crate::_TAG_NO!(),

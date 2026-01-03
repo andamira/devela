@@ -7,6 +7,7 @@
 #[doc = crate::_TAG_INIT!()]
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Initializes a [`[$T; $LEN]`][array] array in multiple ways.
+#[doc = crate::_doc_location!("data/list/array")]
 ///
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.

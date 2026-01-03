@@ -1,7 +1,7 @@
 // devela::data
 //
 #![doc = crate::_DOC_DATA!()]
-#![doc = crate::_doc!(modules: crate; data: codec, iter, key, list, table, uid)]
+#![doc = crate::_doc!(modules: crate; data: bit, codec, iter, key, list, table, uid)] // address
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
@@ -10,14 +10,14 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 mod absence; // NoData
-mod bit; // bitfield handling and binary transformations.
+mod collection; // DataCollection
 
-mod collection;
+pub mod bit;
 pub mod codec;
-pub mod errors {
+pub mod error {
     //! Data-related errors.
     #[doc(inline)]
-    pub use devela_base_core::data::errors::*;
+    pub use devela_base_core::data::error::*;
 }
 pub mod iter;
 pub mod key;
@@ -56,7 +56,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         #[doc(inline)]
         pub use super::{
             codec::_all::*,
-            errors::*,
+            error::*,
             iter::_all::*,
             key::_all::*,
             list::_all::*,

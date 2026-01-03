@@ -14,6 +14,7 @@ macro_rules! __crate_name {
         "devela_base_alloc"
     };
 }
+#[allow(unused_imports)]
 pub(crate) use __crate_name;
 
 pub mod data;

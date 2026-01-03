@@ -9,6 +9,7 @@
 // IMPROVE: make the automatic error tag optional.
 // IMPROVE: do not depend on included types being Copy.
 // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms).
+// IMPROVE: allow differentiating between the first doc line and additional docs.
 
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines individual and composite error types.

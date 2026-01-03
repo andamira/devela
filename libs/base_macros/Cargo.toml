@@ -30,6 +30,7 @@ bench = false
 [features]
 
 #* Development features *#
+__dbg = [] # shows extra debugging information
 __publish = []
 
 #* Safety features *#

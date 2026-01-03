@@ -1,6 +1,6 @@
 // devela_base_core::data::bit
 //
-//! Bit-focused items.
+#![doc = crate::_DOC_DATA_BIT!()]
 //
 
 // mod budget; // BitBudget

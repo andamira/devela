@@ -10,6 +10,7 @@ mod tests;
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A persistent data structure with efficient append and concatenation operations.
+#[doc = crate::_doc_location!("data/list/array")]
 ///
 /// # Overview
 /// `VecChunk<A>` is an immutable data structure that allows O(1) complexity for append and

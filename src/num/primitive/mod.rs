@@ -9,9 +9,10 @@ mod split; // PrimitiveSplit
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{cast::*, join::*, split::*};
-
-        #[doc(inline)]
-        pub use devela_base_core::Cast;
+        pub use super::{
+            cast::*,
+            join::*,
+            split::*,
+        };
     }
 }

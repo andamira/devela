@@ -11,6 +11,11 @@ macro_rules! define_symbol_tags {
         }
     };
 }
+// SEMANTIC AXES AND CONCERNS
+// - what it represents      (VALUE, NUM, LOGIC, DATA)
+// - how it is realized      (MEM, LIFETIME, GUARD, NICHE)
+// - where it applies        (PLATFORM, RUNTIME, TERM, WEB)
+// - how it operates         (CODE, CONSTRUCTION, ITERATOR)
 define_symbol_tags! {
     /* thematic */
 
@@ -22,15 +27,21 @@ define_symbol_tags! {
     _TAG_ASSERT, "Assertion", "💯"; // 💯
     _TAG_ATOMIC, "Atomic", "⚛️"; // ⚛️, 🔬, 🌐,
     _TAG_AUDIO, "Audio", "🔊"; // 🎧,🎼,🎶,🎜 ,🎝 ,🎵,🔈,🔉,🔊,🕪 ,🕩 ,🕨 ,🕫 ,🕬 ,📢,
-    // Structure, compilation, syntax. Items that operate on, reason about,
-    // or structurally transform Rust code itself, rather than runtime values
+    _TAG_BIT, "Bit-focused", "▫️"; // ▫️,▪️,🍪,
+    // Structure, compilation, syntax. Items that operate on,
+    // reason about, or structurally transform Rust code itself.
+    // Excludes runtime metaprogramming.
     _TAG_CODE, "Code structure and compilation", "⌗"; // ⌗,≡,§,⧉,
     _TAG_CODEC, "Encoding and decoding", "🥡"; // 🥡, 🔏, ⇄, (takeout-box)
     _TAG_COLOR, "Color", "🎨"; // 🎨,
     _TAG_CONCURRENCY, "Concurrency", "🧵"; // 🧵, 🪡, (thread, needle)
+    // Construction patterns and builders.
+    // Emphasizes how values or structures come into existence,
+    // not what they represent once built.
     _TAG_CONSTRUCTION, "Construction", "🏗️"; // 🏗️,🏭,
-    // General data abstractions and value carriers.
-    // Not specific to storage layout or collection semantics.
+    // General data carriers and abstractions.
+    // Focuses on representation and transport of information,
+    // not on its semantic meaning or interpretation.
     _TAG_DATA, "Data", "🪪"; // 🪪, 🗂️, 🧩, (id-card)
     // Containers and collections that organize multiple values.
     // Emphasizes structure over individual value semantics.
@@ -40,9 +51,10 @@ define_symbol_tags! {
     // Actual error types representing failure states.
     // Not for fallible abstractions or result carriers.
     _TAG_ERROR, "Error", "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
-    _TAG_ERROR_COMPOSITE, "", "🚩+"; // 📎,📦,🖇️,🗂️,
+    _TAG_ERROR_COMPOSITE, "Composite error", "🚩+"; // 📎,📦,🖇️,🗂️,
     // Discrete occurrences or event vocabularies.
     _TAG_EVENT, "Event", "🎫"; // 🎫, 🎟️, 🎊, 🎉,
+    // Subject to change; APIs or semantics are not yet stabilized.
     _TAG_EXPERIMENTAL, "Experimental", "🧪";
     _TAG_EXAMPLE, "Example", "✨"; // ✨, 📘, 🪄,
     _TAG_FAKE, "Mock or fake implementation", "🎭"; // 🎭, 👻, 🦄, 🐛,
@@ -66,7 +78,8 @@ define_symbol_tags! {
     // Arrangement in conceptual or visual space, not in RAM.
     _TAG_LAYOUT, "Spatial layout", "🧱"; // 🧱,
     // Borrowed views, scoped validity, and ownership relations.
-    // Applies when Rust lifetime semantics are the primary concern.
+    // Applies when Rust lifetime semantics are the primary design constraint,
+    // not merely an implementation detail.
     _TAG_LIFETIME, "Lifetime", "🍃"; // 🍃,⏳,🍂,
     _TAG_LINUX, "Linux platform", "🐧";
     // _TAG_LOCATION, "", "🖈"; // 🖈,📌,📍,
@@ -75,30 +88,36 @@ define_symbol_tags! {
     // truth, relations, inference, or logical composition.
     _TAG_LOGIC, "Logic", "∧"; // ∧,⊨,⊢,⊙
     // Abstractions that intentionally unify multiple representations
-    // with different guarantees behind a single interface.
+    // or execution paths behind a single interface,
+    // typically trading static guarantees for flexibility.
     _TAG_MAYBE, "Conditional representation", "🤷"; // 🤷,💁, (shrugging, tipping hand)
     // Memory form / representation (layout, bits, alignment, validity),
-    // independent of allocation strategy.
+    // independent of allocation strategy. Excludes lifetime and ownership concerns.
     _TAG_MEM, "Memory representation", "🫗"; // 🫗,◧, ◨, ▣ (glass pouring)
     // Items used primarily as method namespaces or operation groupings.
+    // Not intended to carry semantic state of their own.
     _TAG_NAMESPACE, "Utility namespace", "🛠️"; // 🛠️,🔧,🧰,🚙,🌐,📛,
     _TAG_NETWORK, "Networking", "📡"; // 🖧 ,📡,
     _TAG_NICHE, "Niche memory optimizations", "⚗️"; // ⚗️,♟️,🧩,🧮,
     _TAG_NON_STANDARD, "Non-standard", "⚠️";
     // Semantic absence, emptiness, or inert behavior.
-    // Not exclusion, constraints, or invalid states.
+    // Represents "nothing happens" or "nothing is present",
+    // not error, exclusion, or invalid state.
     _TAG_NO, "Absence, emptiness or a no-op effect", "∅"; // ∅, ⊘, ⬛
     // Numeric structures, operations, and mathematical computation.
     _TAG_NUM, "Numeric structures and computation", "⅀"; // ⅀,∑,×,±,π,🔢,½,¾,🔟,𝟙
+    // Platform-dependent behavior or guarantees.
     _TAG_PLATFORM, "Platform-dependent", "🖥️"; // 🖥️,💻,📱,📲,
     _TAG_PRIMITIVE, "Rust primitive", "⚙️"; // ⚙️,
     // Quantitative relations and measured magnitudes.
     // Implies numeric structure, but focuses on measurement and comparison.
     _TAG_QUANT, "Quantitative relations", "📏";
     _TAG_RAND, "Randomness", "🎲"; // 🎲, 🎰, 🔀
-    // Outcome or resolution values themselves,
-    // not APIs that may produce outcomes.
+    // Outcome or resolution values themselves, not APIs that may produce outcomes.
+    // Often terminal in a control or computation flow”
     _TAG_RESULT, "Outcome", "⚖️"; // ⚖️,↔️,✅,🗳,
+    // Runtime behavior and execution-time mechanisms.
+    // Excludes compile-time structure and static guarantees.
     _TAG_RUNTIME, "Runtime", "⬡"; // ⬡,
     _TAG_TERM, "Terminal platform", "🮖"; // 🮴 ,🮖,🖳 ,⌨️ ,⎚,❯,🗔 ,
     _TAG_TEXT, "Text", "𝐓"; // 𝐓, 𝓣, 𝔸, 🄰

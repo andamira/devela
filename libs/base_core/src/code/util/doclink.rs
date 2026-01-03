@@ -59,6 +59,7 @@ pub struct Example;
 #[macro_export]
 #[cfg(feature = "__publish")]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
+#[allow(clippy::crate_in_macro_def, reason = "crate::__crate_name! is intended")]
 macro_rules! _doclink {
     (
      /* links to either a custom domain or a local URL */
@@ -150,6 +151,7 @@ macro_rules! _doclink {
 #[macro_export]
 #[cfg(not(feature = "__publish"))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
+#[allow(clippy::crate_in_macro_def, reason = "crate::__crate_name! is intended")]
 macro_rules! _doclink {
     (
      /* links to either a custom domain or a local URL */

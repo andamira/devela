@@ -9,19 +9,23 @@
 //! homogeneous data structures.
 //
 
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/data/list/array/vec/_reexport.rs
+
 mod chunk; // VecChunk
 mod ext; // VecExt
-mod reexports;
+// mod d2; // Vec2d WIP
+// mod hvec; // HVec ? WIP
 
-// WIPZONE
-// mod d2; // Vec2d
-// mod hvec; // HVec ?
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{chunk::*, ext::*, reexports::*};
-        // WIPZONE
+        pub use super::{
+            chunk::*,
+            ext::*,
+        };
         // pub use super::d2::_all::*;
         // pub use super::hvec::_all::*;
+    }
+    _reexports {
+        pub use super::_reexport_alloc::*;
     }
 }

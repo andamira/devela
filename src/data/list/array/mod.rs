@@ -7,6 +7,8 @@
 //! They enable efficient iterable storage over a sequence of the same type.
 //
 
+mod _reexport_core; // SYMLINK to /libs/base_core/src/data/list/array/_reexport.rs
+
 mod adt; // DataArray
 mod d1; // 1-dimensional Array
 mod d2; // 2-dimensional Array2d
@@ -15,10 +17,7 @@ mod d2; // 2-dimensional Array2d
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod vec;
 
-// re-exports
-crate::mod_path!(_c "../../../../libs/base_core/src/data/list/array/reexports.rs");
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             adt::*,
@@ -28,9 +27,9 @@ crate::structural_mods! { // _mods
 
         #[cfg(feature = "alloc")]
         pub use super::vec::_all::*;
-
-        // re-exports
-        pub use super::_c::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
         #[doc(inline)]
         pub use devela_base_core::data::list::{
             ArrayExt, ArrayFmt, ArrayFrom, array_init,

@@ -6,23 +6,26 @@
 #[cfg(doc)]
 define_static_map! {
     #[doc = crate::_TAG_EXAMPLE!()]
-    pub const ExampleStaticMapConstU8, KEY: u8
+    #[doc = crate::_TAG_DATA_STRUCTURE!()]
+    pub const MapStaticConstU8Example, KEY: u8
 }
 #[cfg(doc)]
 define_static_map! {
     #[doc = crate::_TAG_EXAMPLE!()]
-    pub ExampleStaticMapU16, KEY: u16
+    #[doc = crate::_TAG_DATA_STRUCTURE!()]
+    pub MapStaticU16Example, KEY: u16
 }
 #[cfg(doc)]
 define_static_map! {
     #[doc = crate::_TAG_EXAMPLE!()]
-    pub typeid ExampleStaticMapTypeId
+    #[doc = crate::_TAG_DATA_STRUCTURE!()]
+    pub typeid MapStaticTypeIdExample
 }
 
 #[doc = crate::_TAG_CONSTRUCTION!()]
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
-/// Build a custom static hashmap.
-#[doc = crate::_doc_location!("data/dst")]
+/// Defines a custom static hashmap.
+#[doc = crate::_doc_location!("data/key")]
 ///
 /// # Arguments
 /// - `$NAME`:      the name of the new hashmap.
@@ -54,7 +57,7 @@ define_static_map! {
 "Uses `TypeId` hashes as keys and provides type-oriented helper methods. |"]]
 ///
 /// # Examples
-/// See the example type: [`ExampleStaticMapU16`].
+/// See the example type: [`MapStaticU16Example`].
 ///
 /// Overview
 /// ```

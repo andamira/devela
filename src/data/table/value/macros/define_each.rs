@@ -65,7 +65,9 @@ macro_rules! define_data_value {
     ) => { $crate::paste! {
         // ## copy version (DataValue)
         // -----------------------------------------------------------------
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *value*, restricted to `Copy` variants, with extra `V`." ]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Type $b Copy With>] "]" ]
@@ -113,7 +115,9 @@ macro_rules! define_data_value {
         }
 
         // DataValue Copy (-With) alias
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *value*, restricted to `Copy` variants." ]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Type $b Copy>] "]" ]
@@ -155,7 +159,9 @@ macro_rules! define_data_value {
 
         // ## non-copy version (DataValue)
         // -----------------------------------------------------------------
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *value*, with extra `V`." ]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Type $b With>] "]" ]
@@ -228,7 +234,9 @@ macro_rules! define_data_value {
         }
 
         // alias DataValue
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *value*." ]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Type $b>] "]" ]
@@ -439,7 +447,9 @@ macro_rules! define_data_type {
     ) =>  { $crate::paste! {
         // ## copy version (DataType)
         // -----------------------------------------------------------------
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *type*, restricted to `Copy` variants, with extra `T`." ]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Value $b Copy With>] "]" ]
@@ -487,7 +497,9 @@ macro_rules! define_data_type {
         }
 
         // DataType Copy (-With) alias
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *type*, restricted to `Copy` variants." ]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Value $b Copy>] "]" ]
@@ -534,7 +546,9 @@ macro_rules! define_data_type {
 
         // ## non-copy version (DataType)
         // -----------------------------------------------------------------
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *type*, with extra `T`." ]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Value $b With>] "]" ]
@@ -608,7 +622,9 @@ macro_rules! define_data_type {
         }
 
         // DataType (-With) alias
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit data *type*"]
+        #[doc = crate::_doc_location!("data/table/value")]
         ///
         /// See also:
         #[doc = "- [" [<$Value $b>] "]" ]
@@ -734,7 +750,9 @@ macro_rules! define_data_raw {
         // ## copy version (DataRaw)
         // -----------------------------------------------------------------
         #[repr(C)]
+        #[doc = crate::_TAG_VALUE!()]
         #[doc = $b "-bit *raw* data, restricted to `Copy` variants."]
+        #[doc = crate::_doc_location!("data/table/value")]
         #[derive(Copy, Clone)]
         #[cfg_attr(nightly_doc, doc(cfg(feature = $feature)))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]

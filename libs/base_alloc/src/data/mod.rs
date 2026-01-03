@@ -1,14 +1,14 @@
 // devela_base_alloc::data
 //
 #![doc = crate::_DOC_DATA!()]
-#![doc = crate::_doc!(modules: crate; data: list, key, uid)]
+#![doc = crate::_doc!(modules: crate; data: bit, list, key, uid)]
 #![doc = crate::_doc!(newline)]
 //!
 //
 // safety
 #![cfg_attr(base_safe_data, forbid(unsafe_code))]
 
-mod bit;
+mod bit; // pub WIP
 mod sort;
 
 pub mod list;
@@ -18,7 +18,7 @@ pub mod uid;
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
-            bit::_all::*,
+            bit::_all::*, // pub WIP
             sort::_all::*,
         };
     }

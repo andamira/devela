@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Represents an entry in a [static map] allowing for in-place mutation or insertion.
+#[doc = crate::_doc_location!("data/key")]
 ///
 /// [static map]: crate::define_static_map
 #[derive(Debug)]

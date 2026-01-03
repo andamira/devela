@@ -5,7 +5,7 @@ use crate::{_TAG_ASSERT, _TAG_CODE, _TAG_LIFETIME, _reexport};
 /* structs */
 
 _reexport! { rust: core::panic, location: "code/panic", tag: _TAG_CODE!(),
-    doc: "Passed to `#[panic_handler]` in `no_std`, always carrying a formatted message.",
+    doc: "Passed to `#[panic_handler]` in `no_std`, carries a formatted message.",
     PanicInfo
 }
 _reexport! { rust: core::panic, location: "code/panic", tag: _TAG_CODE!(),

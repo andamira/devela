@@ -10,6 +10,9 @@
 // - trait impls
 // - helpers
 // - tests
+//
+// IMPROVE: simplify, leave just the LUT option
+// RE-DESIGN to have 2 versions: Base & BaseAlloc, like Sort.
 
 use crate::{_TAG_CODEC, ConstInit, PhantomData};
 

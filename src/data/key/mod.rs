@@ -8,19 +8,23 @@
 #![doc = crate::_doc!(extends: collections)]
 //
 
-mod reexports;
-mod static_map; // define_static_map!
+#[cfg(feature = "alloc")]
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/data/key/_reexport.rs
+mod _reexport_dep;
 
-// WIPZONE
+mod static_map; // define_static_map!
 // mod set;
 // mod trie;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::reexports::*;
         pub use super::static_map::*;
-        // WIPZONE
         // pub use set::*;
         // pub use trie::*;
+    }
+    _reexports {
+        #[cfg(feature = "alloc")]
+        pub use super::_reexport_alloc::*;
+        pub use super::_reexport_dep::*;
     }
 }

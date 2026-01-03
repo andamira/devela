@@ -6,6 +6,9 @@
 #[cfg(any(doc, test, feature = "_docs_min"))]
 define_bufline!(
     #[doc = crate::_TAG_EXAMPLE!()]
+    /// A linear buffer type over contiguous storage, made with [define_bufline!].
+    #[doc = crate::_doc_location!("data/list")]
+    ///
     /// # Methods per storage backend
     ///
     /// - For all owned backends (`array`, `uninit`, `option`)
@@ -43,6 +46,7 @@ define_bufline!(
 );
 
 #[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// Defines a linear buffer type over contiguous storage.
 ///
 /// The generated type represents a growable logical prefix over a

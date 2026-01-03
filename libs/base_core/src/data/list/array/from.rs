@@ -3,8 +3,11 @@
 //! Defines [`ArrayFrom`].
 //
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_TAG_VALUE!()]
+#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_TAG_MEM!()]
 /// Compile-time conversion from slice-like types to arrays.
+#[doc = crate::_doc_location!("data/list/array")]
 ///
 /// # Features
 /// Uses `Ptr::copy_nonoverlapping` internally when unsafe operations are allowed.

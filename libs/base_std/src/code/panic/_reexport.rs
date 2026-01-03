@@ -1,10 +1,12 @@
 // devela_base_std::code::panic::_reexport
 
-use crate::_reexport;
+use crate::{_TAG_CODE, _reexport};
 
 /* structs */
 
 _reexport! { rust: std::panic,
-    doc: "Passed to `std::panic::set_hook` in `std`, where panics can have arbitrary payloads.",
+    location: "code/panic",
+    tag: _TAG_CODE!(),
+    doc: "Passed to `std::panic::set_hook` where panics can have arbitrary payloads.",
     PanicHookInfo
 }
