@@ -25,9 +25,9 @@ items! {
 
 /* build modules */
 
-mod alias; // NOTE: symlink to /devela/build/main/alias.rs
-mod environment; // NOTE: symlink to /devela/build/main/environment.rs
-mod features; // NOTE: symlink to /devela/build/main/features.rs
+mod alias; // SYMLINK to /devela/build/main/alias.rs
+mod environment; // SYMLINK to /devela/build/main/environment.rs
+mod features; // SYMLINK to /devela/build/main/features.rs
 
 fn main() {
     if let Err(err) = try_main() {
