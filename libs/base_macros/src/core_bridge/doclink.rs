@@ -1,62 +1,18 @@
-// devela_base_core::code::util::doclink
+// devela_base_macros::core_bridge::_doc_location
 //
-//! Defines [`doclink!`].
+//! Recreates devela_base_core's `doclink!` macro without #[macro_export].
 //
-// TOC
-// - doclink! (*internet*)
-// - doclink! (*local*)
-//
-// NOTE: duplicated (not symlinked) in devela_base_macros/src/core_bridge/)
-// WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
+
+#![allow(unused)]
 
 /// Custom domain used for the [`doclink!`] macro.
-#[doc(hidden)] #[macro_export] #[rustfmt::skip]
+#[rustfmt::skip]
 macro_rules! _DOCLINK_CUSTOM_DOMAIN { () => { "https://andamira.github.io/" }; }
-#[doc(hidden)] #[rustfmt::skip] pub use _DOCLINK_CUSTOM_DOMAIN as DOCLINK_CUSTOM_DOMAIN;
+pub(crate) use _DOCLINK_CUSTOM_DOMAIN as DOCLINK_CUSTOM_DOMAIN;
 
-crate::CONST! { hidden macro_export,
-    // DOCLINK_CUSTOM_DOMAIN = "https://andamira.github.io"; // doesn't work
-
-    /// Documentation for the `doclink!` macro.
-    _DOC_DOCLINK = "\n\nReturns the constructed URL to the linked doc element.
-
-The `custom` arms depend on defining a macro that returns a string literal
-containing the custom domain to use for the docs, following the same structure as docs.rs. E.g.:
-```
-#[macro_export] #[doc(hidden)]
-macro_rules! DOCLINK_CUSTOM_DOMAIN { () => { \"https://docs.rs/\" } } // it must end in `/`
-```
-
-# Features
-If the `__publish` feature is enabled it links to the published documentation on the internet,
-otherwise it links to the local path.
-
-The local version needs the `CARGO_TARGET_DIR` env var always defined.
-For *devela* it is defined in `/build/main/environment.rs`.
-
-The `current_crate` versions needs a macro defined named `__crate_name!`
-that returns a string literal with the name of the current crate.
-
-# Examples
-```
-# use devela_base_core::doclink;
-/// Example links to [`AnotherExample`] and [some module].
-#[doc = doclink!(crate_name \"[`AnotherExample`]\" \"path/to/struct.AnotherExample.html\")]
-#[doc = doclink!(crate_name \"[some module]\" \"path/to/some_module\" @mod)]
-///
-/// This doclink to [`Item`] links to the current crate being compiled.
-#[doc = doclink!(crate \"[`Item`]\" \"path/to/struct.Item.html\")]
-pub struct Example;
-```
-    ";
-}
-
-#[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// <!-- (*internet* version) -->
 #[doc = crate::_doc_location!("code/util")]
-#[doc = _DOC_DOCLINK!()]
-#[macro_export]
 #[cfg(feature = "__publish")]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _doclink {
@@ -142,12 +98,9 @@ macro_rules! _doclink {
     };
 }
 
-#[doc = crate::_TAG_CODE!()]
 /// Helps doc-linking items in downstream crates.
 /// (*local* version)
 #[doc = crate::_doc_location!("code/util")]
-#[doc = _DOC_DOCLINK!()]
-#[macro_export]
 #[cfg(not(feature = "__publish"))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _doclink {
@@ -219,5 +172,4 @@ macro_rules! _doclink {
     };
 }
 
-#[doc(inline)]
-pub use _doclink as doclink;
+pub(crate) use _doclink as doclink;

@@ -37,7 +37,8 @@ use proc_macro::TokenStream as TS;
 use std::collections::HashSet;
 
 mod bodies;
-use bodies::*;
+mod core_bridge;
+use {bodies::*, core_bridge::*};
 
 /* helpers */
 
@@ -48,6 +49,7 @@ items! { #[allow(unused_imports)] use items; }
 /* macros: compile */
 
 /// Evaluates to either a `true` of `false` literal based on the [predicate].
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// [predicate]: https://andamira.github.io/devela/latest/devela/_doc/macros/#compilation-predicates
 #[doc = concat!("# Example\n```\n", include_str!("../examples/cif.rs"), "\n```")]
@@ -55,6 +57,7 @@ items! { #[allow(unused_imports)] use items; }
 pub fn cif(input: TS) -> TS { body_cif(input) }
 
 /// Conditionally compiles the thing it is attached to based on the [predicate].
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// [predicate]: https://andamira.github.io/devela/latest/devela/_doc/macros/#compilation-predicates
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile.rs"), "\n```")]
@@ -62,6 +65,7 @@ pub fn cif(input: TS) -> TS { body_cif(input) }
 pub fn compile(args: TS, input: TS) -> TS { body_compile(args, input) }
 
 /// Conditionally compiles the given attributes based on the [predicate].
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// [predicate]: https://andamira.github.io/devela/latest/devela/_doc/macros/#compilation-predicates
 ///
@@ -71,6 +75,7 @@ pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) 
 
 #[doc(hidden)]
 /// Conditionally compiles each doc comment based on the [predicate].
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// [predicate]: https://andamira.github.io/devela/latest/devela/_doc/macros/#compilation-predicates
 ///
@@ -81,6 +86,7 @@ pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
 /* macros: ident */
 
 /// Returns the total number of [identifiers] in its input.
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
 ///
@@ -99,6 +105,7 @@ pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
 pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 
 /// Returns the numbers of both *total* and *unique* [identifiers] in its input.
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
 ///
@@ -117,6 +124,7 @@ pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 pub fn ident_total_unique(input: TS) -> TS { body_ident_total_unique(input) }
 
 /// Returns the number of *unique* [identifiers] in its input.
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
 ///
@@ -137,6 +145,7 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 /* macros: misc. */
 
 /// Returns the first non-empty argument.
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// If all arguments are empty, the macro returns nothing.
 ///
@@ -148,6 +157,7 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 
 /// Generates an expression for accessing a field of a tuple or struct.
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// Constructs an expression in the form `<value>.<field>`, where `<value>`
 /// is a tuple or struct, and `<field>` is the field to access, either
@@ -169,6 +179,7 @@ pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 pub fn field_of(input: TS) -> TS { body_field_of(input) }
 
 /// Repeats an expression the given number of times, as duplicated code with no loops.
+#[doc = crate::_doc_location!(proc "code/util")]
 ///
 /// # Example
 /// ```
