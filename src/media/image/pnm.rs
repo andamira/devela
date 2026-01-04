@@ -18,9 +18,11 @@ use crate::{
 #[cold] #[rustfmt::skip]
 const fn invalid_pixel<T>() -> crate::Result<T, ImageError> { Err(InvalidPixel) }
 
+#[doc = crate::_TAG_IMAGE!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// A collection of methods for encoding and decoding
 /// <abbr title="Portable anymap format">PNM</abbr> bitmap formats.
+#[doc = crate::_doc_location!("media/image")]
 ///
 /// - <https://en.wikipedia.org/wiki/Netpbm>
 ///

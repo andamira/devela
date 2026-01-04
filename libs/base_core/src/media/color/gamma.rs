@@ -7,6 +7,7 @@ use crate::{Float, is};
 
 #[doc = crate::_TAG_COLOR!()]
 /// GammaConst correction curves.
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// Used for encoding and decoding linear luminance or tristimulus values
 /// via power-law transformations (e.g. $v^γ$ and $v^{(1/γ)}$).

@@ -91,7 +91,7 @@ impl Rgb8 {
     /* u16 */
 
     /// Convert to `Rgba<u8>` by scaling each component proportionally.
-    pub fn from_rgb16(from: Rgb16) -> Rgb8 {
+    pub const fn from_rgb16(from: Rgb16) -> Rgb8 {
         Rgb8::new(
             ((from.c[0] + 128) / 257) as u8, // Rounding via +128
             ((from.c[1] + 128) / 257) as u8,
@@ -99,7 +99,7 @@ impl Rgb8 {
         )
     }
     /// Create from `Rgb<u16>` by scaling each component proportionally.
-    pub fn to_rgb16(self) -> Rgb16 {
+    pub const fn to_rgb16(self) -> Rgb16 {
         Rgb16::new(
             (self.c[0] as u16) * 257, // 255 * 257 = 65535
             (self.c[1] as u16) * 257,

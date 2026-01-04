@@ -14,6 +14,7 @@ use crate::{
 #[doc = crate::_TAG_IMAGE!()]
 #[doc = crate::_TAG_TERM!()]
 /// Encoder for Sixel graphics with fixed buffer output
+#[doc = crate::_doc_location!("media/image")]
 ///
 /// # Features
 /// Enabling the `__dbg` feature defines the [`

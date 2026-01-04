@@ -9,9 +9,9 @@
 // mod buffer;
 // mod canvas;
 // mod grid;
-#[cfg(feature = "shape")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "shape")))]
-mod line;
+// #[cfg(feature = "shape")]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "shape")))]
+// mod line;
 
 crate::structural_mods! { // _mods
     _mods {
@@ -19,7 +19,7 @@ crate::structural_mods! { // _mods
         // pub use super::buffer::*;
         // pub use super::canvas::*;
         // pub use super::grid::*;
-        #[cfg(feature = "shape")]
-        pub use super::line::*;
+        // #[cfg(feature = "shape")]
+        // pub use super::line::*;
     }
 }

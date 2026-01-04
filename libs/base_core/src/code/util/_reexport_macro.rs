@@ -304,8 +304,8 @@ macro_rules! __reexport {
         $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
         // rust location
         #[doc = "<sup>re-exported from the <a title='`" $dep_name "` docs'
-            href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a>"]
-        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
+            href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a> crate."]
+        #[doc = $("` (" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
         #[doc = "\n\n---\n\n---"] // final double line
 
@@ -354,8 +354,8 @@ macro_rules! __reexport {
         $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
         // rust location
         #[doc = "<sup>re-exported from the <a title='`" $dep_str "` docs'
-            href=\"https://docs.rs/" $dep_str "\">" $dep_str "</a>"]
-        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
+            href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a> crate."]
+        #[doc = $("` (" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
         #[doc = "\n\n---\n\n---"] // final double line
 

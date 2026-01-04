@@ -9,6 +9,7 @@ use crate::{Lut, is, unwrap};
 
 #[doc = crate::_TAG_FONT!()]
 /// A simple Unicode-Art font for rendering fixed-size glyphs.
+#[doc = crate::_doc_location!("media/font")]
 ///
 /// The glyphs are arranged sequentially starting from `first_glyph`.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)] //, Debug,

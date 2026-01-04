@@ -7,12 +7,16 @@
 #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
 use crate::IoErrorKind;
 
+#[doc = crate::_TAG_IMAGE!()]
 #[doc = crate::_TAG_RESULT!()]
 /// An image-related result.
+#[doc = crate::_doc_location!("media/image")]
 pub type ImageResult<T> = crate::Result<T, ImageError>;
 
+#[doc = crate::_TAG_IMAGE!()]
 #[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// An image-related error.
+#[doc = crate::_doc_location!("media/image")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ImageError {
     /// Invalid image size, with an optional width and height.

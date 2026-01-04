@@ -18,6 +18,7 @@ use crate::{Vec, vec_ as vec};
 
 #[doc = crate::_TAG_COLOR!()]
 /// Base trait for general color data representation.
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// Provides a core interface for working with color data across different
 /// formats and models, supporting both practical and scientific applications.

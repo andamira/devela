@@ -8,6 +8,7 @@ use crate::{_TAG_COLOR, NumConst, Rgb};
 
 #[doc = _TAG_COLOR!()]
 /// A generic luminance-like component.
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// Represents either physical luminance, gamma-encoded luma, or perceptual lightness,
 /// depending on the `LINEAR` and `LIGHTNESS` flags.
@@ -29,6 +30,7 @@ pub struct Lum<T, const LINEAR: bool = true, const LIGHTNESS: bool = false> {
 
 #[doc = _TAG_COLOR!()]
 /// Physical [luminance].
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// Linear light intensity, measured in cd/m² or normalized to [0.0, 1.0].
 ///
@@ -37,6 +39,7 @@ pub type Luminance<T> = Lum<T, true, false>;
 
 #[doc = _TAG_COLOR!()]
 /// Perceptual [lightness] (L*).
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// Non-linear encoding of luminance,
 /// normalized to [0.0, 1.0] for floats or 0..=MAX for integers.
@@ -46,6 +49,7 @@ pub type Lightness<T> = Lum<T, false, true>;
 
 #[doc = _TAG_COLOR!()]
 /// Gamma-encoded [luma] (Y′).
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// A non-linear approximation of luminance, typically used in video systems.
 ///
@@ -54,6 +58,7 @@ pub type Luma<T> = Lum<T, false, false>;
 
 #[doc = _TAG_COLOR!()]
 /// Linearized perceptual lightness (L* in linear space).
+#[doc = crate::_doc_location!("media/color")]
 ///
 /// Use cases include:
 /// - Combining linear luminance (for precise computations)
