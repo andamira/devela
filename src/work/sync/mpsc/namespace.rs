@@ -11,6 +11,7 @@ use std::sync::mpsc::{channel, sync_channel};
 #[doc = crate::_TAG_CONCURRENCY!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Multi-producer, single-consumer channel operations.
+#[doc = crate::_doc_location!("work/sync/mpsc")]
 #[derive(Debug)]
 pub struct Mpsc;
 

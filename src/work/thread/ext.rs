@@ -12,8 +12,10 @@ use std::thread::{
 trait Sealed {}
 impl Sealed for Thread {}
 
+#[doc = crate::_TAG_CONCURRENCY!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Thread`]s.
+#[doc = crate::_doc_location!("work/thread")]
 ///
 /// It offers the standalone functions in `std::thread` as associated methods.
 #[rustfmt::skip]

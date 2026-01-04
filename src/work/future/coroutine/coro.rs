@@ -18,7 +18,10 @@ use crate::{Debug, Future, OptRes, Pin, TaskContext, TaskPoll, serr, sok};
 
 /* coroutine */
 
+#[doc = crate::_TAG_CONCURRENCY!()]
+#[doc = crate::_TAG_RUNTIME!()]
 /// Represents a single-thread stackless coroutine worker.
+#[doc = crate::_doc_location!("work/future")]
 ///
 /// It has a private status that can be either running or halted.
 #[derive(Clone, Copy, Debug)]
@@ -56,8 +59,11 @@ impl<T, E> CoroWorker<T, E> {
 
 /* yielder */
 
+#[doc = crate::_TAG_CONCURRENCY!()]
+#[doc = crate::_TAG_RUNTIME!()]
 /// A future that alternates between [`Ready`][TaskPoll::Ready] and
 /// [`Pending`][TaskPoll::Pending] status each time it's polled.
+#[doc = crate::_doc_location!("work/future")]
 ///
 /// This allows the coroutine to yield control back and be resumed later.
 #[derive(Debug)]
@@ -91,7 +97,10 @@ impl<T, E> Future for CoroWork<'_, T, E> {
 
 /* manager */
 
+#[doc = crate::_TAG_CONCURRENCY!()]
+#[doc = crate::_TAG_RUNTIME!()]
 /// A managed dynamic collection of single-thread [`CoroWorker`] coroutines.
+#[doc = crate::_doc_location!("work/future")]
 ///
 /// It maintains a queue of coroutines in the stack, and runs them in a loop
 /// until they are all complete.

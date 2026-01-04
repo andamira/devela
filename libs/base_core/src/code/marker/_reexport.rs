@@ -1,6 +1,6 @@
 // devela_base_core::code::marker::_reexport
 
-use crate::{_TAG_CODE, _reexport};
+use crate::{_TAG_CODE, _TAG_CONCURRENCY, _reexport};
 
 // See: <https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns>
 _reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!(),
@@ -12,12 +12,13 @@ doc: "A marker type which does not implement `Unpin`.", PhantomPinned }
 _reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!(),
 doc: "Types whose values can be duplicated simply by copying bits. (Derivable)", Copy }
 
-_reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!(),
+_reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!() _TAG_CONCURRENCY!(),
 doc: "Types that can be transferred across thread boundaries.", Send }
+_reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!() _TAG_CONCURRENCY!(),
+doc: "Types for which it is safe to share references between threads.", Sync }
+
 _reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!(),
 doc: "Types with a constant size known at compile time.", Sized }
-_reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!(),
-doc: "Types for which it is safe to share references between threads.", Sync }
 _reexport! { rust: core::marker, location: "code/marker", tag: _TAG_CODE!(),
 doc: "Types that do not require any pinning guarantees.", Unpin }
 

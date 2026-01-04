@@ -18,7 +18,7 @@ use devela::{_js_extern, _js_method_str_alloc, Js, WebDocument, js_bool, js_int3
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WebElement {
-    pub(crate) id: js_uint32
+    pub(crate) id: js_uint32,
 }
 
 #[rustfmt::skip]

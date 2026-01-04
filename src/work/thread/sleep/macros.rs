@@ -1,6 +1,9 @@
 // devela::work::thread::sleep::macros
 
+#[doc = crate::_TAG_CONCURRENCY!()]
+#[doc = crate::_TAG_TIME!()]
 /// A more compact [`Thread::sleep`][crate::Thread#method.sleep].
+#[doc = crate::_doc_location!("work/thread")]
 ///
 /// Sleeps for `$ns` seconds + `$ms` milliseconds + `$us` microseconds + `$ns` nanoseconds
 ///

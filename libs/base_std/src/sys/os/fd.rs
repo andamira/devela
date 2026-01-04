@@ -20,7 +20,7 @@ crate::structural_mods! { //_mods
         #[cfg(any(unix, target_os = "wasi", doc))]
         #[cfg(not(miri))]
         pub use ::std::os::fd::{
-            BorrowedFd as FdBorrowe
+            BorrowedFd as FdBorrowed
         };
     }
 }

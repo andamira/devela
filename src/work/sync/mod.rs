@@ -5,6 +5,8 @@
 #![doc = crate::_doc!(extends: sync)]
 //
 
+#[cfg(feature = "alloc")]
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/work/sync/_reexport.rs
 #[cfg(feature = "std")]
 mod _reexport_std; // SYMLINK to /libs/base_std/src/work/sync/_reexport.rs
 
@@ -30,9 +32,7 @@ crate::structural_mods! { // _mods, _pub_mods
     }
     _reexports {
         #[cfg(feature = "alloc")]
-        pub use devela_base_alloc::{
-            Arc, ArcWeak
-        };
+        pub use super::_reexport_alloc::*;
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
     }

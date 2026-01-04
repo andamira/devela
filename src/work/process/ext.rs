@@ -14,8 +14,11 @@ use std::process::{abort, exit, id};
 trait Sealed {}
 impl Sealed for Process {}
 
+#[doc = crate::_TAG_PLATFORM!()]
+#[doc = crate::_TAG_CONCURRENCY!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`Process`]es.
+#[doc = crate::_doc_location!("work/process")]
 ///
 /// It offers the standalone functions in `std::process` as associated methods.
 #[rustfmt::skip]
@@ -41,11 +44,10 @@ pub trait ProcessExt: Sealed {
     #[rustfmt::skip]
     fn exit(code: i32) -> ! { exit(code) }
 
-
     /// Returns the OS-assigned process identifier associated with this process.
     ///
     /// See `std::process::`[id].
     #[must_use] #[rustfmt::skip]
-    fn id() -> u32 { id() }
+    fn self_pid() -> u32 { id() }
 }
 impl ProcessExt for Process {}

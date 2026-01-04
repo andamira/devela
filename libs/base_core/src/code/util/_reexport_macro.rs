@@ -288,21 +288,27 @@ macro_rules! __reexport {
       // $item_renamed:
       $dep_feat:literal, $dep_name:literal, $dep_mod:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
+      $( location: $($location:literal)+ ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
+      $( +doc: $($doc_more:literal),+, )?
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( $(#[doc = $tag])+ )?
+        $( $(#[doc = $tag])+ )? // tags
         #[doc = "<span class='stab portability' title='re-exported from the `"
             $dep_name "` crate'>`" $dep_name "`</span>"]
-        #[doc = $doc_line]
-        #[doc = "\n\n*Re-exported from the [`" $dep_name
-            "`](https://docs.rs/" $dep_name " ) crate*"]
+        #[doc = $doc_line] // first doc line
+        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
+        // rust location
+        #[doc = "<sup>re-exported from the <a title='`" $dep_name "` docs'
+            href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a>"]
+        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
+        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
+        #[doc = "\n\n---\n\n---"] // final double line
 
-        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         // IMPROVE: can't use like this for portable-atomic | core::atomic,
         // should remove depend from here for the portable-atomic part,
@@ -332,21 +338,27 @@ macro_rules! __reexport {
       non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       $( local_module: $module_feature:literal ,)?
+      $( location: $($location:literal)+ ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
+      $( +doc: $($doc_more:literal),+, )?
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
-        $( $(#[doc = $tag])+ )?
-        #[doc = "<span class='stab portability' title='re-exported from the `" $dep_str
-            "` crate'>`" $dep_str "`</span>"]
-        #[doc = $doc_line]
-        #[doc = "\n\n*Re-exported from the [`" $dep_str
-            "`](https://docs.rs/" $dep_str " ) crate*"]
+        $( $(#[doc = $tag])+ )? // tags
+        #[doc = "<span class='stab portability' title='re-exported from the `"
+            $dep_str "` crate'>`" $dep_str "`</span>"]
+        #[doc = $doc_line] // first doc line
+        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
+        // rust location
+        #[doc = "<sup>re-exported from the <a title='`" $dep_str "` docs'
+            href=\"https://docs.rs/" $dep_str "\">" $dep_str "</a>"]
+        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
+        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
+        #[doc = "\n\n---\n\n---"] // final double line
 
-        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         #[cfg_attr(nightly_doc, doc(cfg(all(
             $( feature = $module_feature ,)?

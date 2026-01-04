@@ -10,7 +10,9 @@ use crate::{
 #[cfg(feature = "std")]
 use crate::{Thread, ThreadExt};
 
+#[doc = crate::_TAG_CONCURRENCY!()]
 /// A spinlock providing mutual exclusion without blocking.
+#[doc = crate::_doc_location!("work/sync")]
 ///
 /// Uses an atomic flag for synchronization, with a configurable backoff strategy.
 ///

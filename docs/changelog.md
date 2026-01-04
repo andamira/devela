@@ -696,6 +696,7 @@ re-export hidden workspace dependencies from `_dep`.
 - rename:
   - `ExtFuture` to `FutureExt`.
   - `ExtProcess` to `ProcessExt`.
+    - `ProcessExt::id` to `self_pid`.
 
 ### sync
 - move `portable-atomic-util` dependent re-exports to [base_alloc]: `Arc`, `ArkWeak`.
