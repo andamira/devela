@@ -7,6 +7,7 @@ use crate::{ConstInit, Own};
 #[doc = crate::_TAG_RAND!()]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
+#[doc = crate::_doc_location!("num/rand")]
 ///
 /// It has a 0.8% chance of falling into a poor quality short chain,
 /// a some degree of care is required to seed it. However, the quality of the
@@ -122,6 +123,7 @@ impl Xyza8a {
 #[doc = crate::_TAG_RAND!()]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
+#[doc = crate::_doc_location!("num/rand")]
 ///
 /// It has an almost optimal cycle so no real care is required
 /// for seeding except avoiding all zeros, but it fails many of the die hard

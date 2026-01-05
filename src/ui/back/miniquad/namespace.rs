@@ -9,7 +9,11 @@ use ::miniquad::{
     ShaderMeta,
 };
 
-/// A macro for namespaced [`miniquad`][::miniquad] operations.
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_TAG_NAMESPACE!()]
+/// A macro for namespaced `miniquad` operations.
+#[doc = crate::_doc_location!("ui/back/miniquad")]
 ///
 /// # Arms
 /// - [`new_buffer`] wrappers:

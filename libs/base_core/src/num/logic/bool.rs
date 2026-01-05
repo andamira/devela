@@ -12,6 +12,7 @@ use crate::sf;
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_LOGIC!()]
 /// Allows to convert compile-time constants into type-level booleans.
+#[doc = crate::_doc_location!("num")]
 ///
 /// See also the [`const_bool`] macro, and the [`True`] and [`False`] types.
 #[rustfmt::skip]
@@ -35,6 +36,7 @@ sf! {
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_LOGIC!()]
 /// Converts a *const* `bool` expression to a type-level boolean.
+#[doc = crate::_doc_location!("num")]
 ///
 /// Internally, it leverages the [`ConstBool`] trait and a trick related to array sizes:
 /// - Arrays of size `[(); 0]` are mapped to [`False`].
@@ -60,6 +62,7 @@ pub use const_bool;
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_LOGIC!()]
 /// A type-level logical *true*.
+#[doc = crate::_doc_location!("num")]
 ///
 /// The second state in binary and ternary logic.
 ///
@@ -70,6 +73,7 @@ pub struct True;
 #[doc = crate::_TAG_CODE!()]
 #[doc = crate::_TAG_LOGIC!()]
 /// A type-level logical *false*.
+#[doc = crate::_doc_location!("num")]
 ///
 /// The first state in binary and ternary logic.
 ///

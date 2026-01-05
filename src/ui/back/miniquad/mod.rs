@@ -8,8 +8,9 @@
 //
 // TODO ::miniquad::data::now (secs since SystemTime::UNIX_EPOCH) or Date.now() / 1000.0 in wasm
 
+mod _reexport;
+
 mod namespace; // miniquad!
-mod reexports;
 mod service; // MiniquadEventHandlerExt, MiniquadService
 mod window; // MiniquadWindow
 
@@ -21,14 +22,21 @@ mod pixels; // MiniquadPixels
 // mod events;
 // mod text;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{namespace::*, reexports::*, service::*, window::*};
+        pub use super::{
+            namespace::*,
+            service::*,
+            window::*,
+        };
         #[cfg(feature = "alloc")]
         pub use super::pixels::*;
 
         // WIPZONE
         // pub use super::events::*;
         // pub use super::text::*;
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

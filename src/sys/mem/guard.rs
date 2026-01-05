@@ -3,9 +3,14 @@
 //! [dependencies]
 //! devela = { path = "../../../../devela", features = ["std"]}
 //! ```
-//!
+// devela::sys::mem::guard
+//
 //! Defines the [`Current`] and [`CurrentGuard`] structs.
 //
+// TOC
+// - struct CurrentGuard
+// - struct Current
+// - example main()
 
 use ::devela::{
     Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name,
@@ -20,7 +25,8 @@ thread_local! {
 }
 
 #[doc = crate::_TAG_GUARD!()]
-/// A guard that temporarily sets a global current pointer for `T`, restoring the old one on drop.
+/// A guard that temporarily sets a global current ptr for `T`, restoring the old one on drop.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// When dropped, it restores the previous pointer or sets a placeholder if none existed."
 ///
@@ -78,6 +84,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 
 #[doc = crate::_TAG_GUARD!()]
 /// A marker object representing the current instance of a type `T`.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// This struct does not hold any actual value but instead allows access to
 /// a globally tracked instance of `T`, typically managed through `CurrentGuard`.

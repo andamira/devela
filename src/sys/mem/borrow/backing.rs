@@ -9,6 +9,7 @@ use devela::RangeFull;
 #[doc = crate::_TAG_MAYBE!()]
 #[doc = crate::_TAG_LIFETIME!()]
 /// Controls how memory is provided for a value.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// Complements [`MaybeOwned`][super::MaybeOwned] by specifying whether to:
 /// - Use an existing mutable buffer (`Buf`)

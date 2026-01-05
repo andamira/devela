@@ -12,6 +12,7 @@ use crate::{_TAG_FMT, _TAG_NUM, ConstInitCore, Sign};
 #[doc = _TAG_FMT!()]
 #[doc = _TAG_NUM!()]
 /// Configuration for numeric formatting.
+#[doc = crate::_doc_location!("text/fmt")]
 ///
 /// This configuration applies uniformly to integers and floating-point numbers.
 /// Fields that do not apply to a given number type are ignored.
@@ -113,6 +114,7 @@ impl FmtNumConf {
 #[doc = _TAG_FMT!()]
 #[doc = _TAG_NUM!()]
 /// Numeric digit grouping configuration.
+#[doc = crate::_doc_location!("text/fmt")]
 ///
 /// This type controls structural digit grouping for formatted numbers,
 /// such as thousands separators, without performing layout or localization.
@@ -259,6 +261,7 @@ impl FmtNumGroup {
 #[doc = _TAG_FMT!()]
 #[doc = _TAG_NUM!()]
 /// Controls how the sign of a number is formatted.
+#[doc = crate::_doc_location!("text/fmt")]
 ///
 /// This enum specifies whether a sign glyph (`'-'` or `'+'`) is emitted,
 /// independently of the numeric magnitude.

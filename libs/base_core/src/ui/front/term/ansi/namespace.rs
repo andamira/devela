@@ -6,7 +6,9 @@
 use crate::{_ansi_consts, Digits, slice};
 
 #[doc = crate::_TAG_TERM!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// ANSI escape codes.
+#[doc = crate::_doc_location!("ui/front/term")]
 ///
 /// # Return type
 /// Constants ending with `_B` return a byte array. Those without it return a string slice.

@@ -1,4 +1,4 @@
-// devela::ui::service::cap
+// devela::ui::back::cap
 //
 //! Ui service capabilities.
 //

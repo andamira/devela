@@ -12,7 +12,7 @@
 #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_syscall"))]
 pub mod x11;
 
-crate::structural_mods! { // _pub_mods
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         // #[cfg(feature = "cocoa")]
         // pub use super::cocoa::*;
@@ -21,6 +21,11 @@ crate::structural_mods! { // _pub_mods
 
         #[cfg(feature = "x11")]
         #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_syscall"))]
-        pub use super::x11::*;
+        pub use super::x11::_all::*;
+    }
+    _crate_internals {
+        #[cfg(feature = "x11")]
+        #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_syscall"))]
+        pub(crate) use super::x11::_crate_internals::*;
     }
 }

@@ -20,6 +20,7 @@ pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// Concisely creates any kind of Unicode scalar.
+#[doc = crate::_doc_location!("text/char")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! ch {
@@ -43,7 +44,6 @@ pub use ch;
 #[doc = crate::_TAG_TEXT!()]
 /// A 7-bit [Unicode scalar][scalar], limited to [basic latin][0w] subset
 /// (ASCII).
-///
 #[doc = crate::_doc_location!("text/char")]
 ///
 /// `Option<char7>` is the same size as `char7` or `char8` (1 byte).
@@ -60,7 +60,6 @@ pub struct char7(pub(super) NonExtremeU8);
 #[doc = crate::_TAG_TEXT!()]
 /// An 8-bit [Unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
-///
 #[doc = crate::_doc_location!("text/char")]
 ///
 /// `Option<char8>` is the same size as `char16` or `Option<char16>` (2 bytes),
@@ -79,7 +78,6 @@ pub struct char8(pub(crate) u8);
 #[doc = crate::_TAG_TEXT!()]
 /// A 16-bit [Unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
-///
 #[doc = crate::_doc_location!("text/char")]
 ///
 /// It can represent every scalar from the [Basic Multilingual Plane][0w] (BMP),
@@ -99,7 +97,6 @@ pub struct char16(pub(super) NonSurrogateU16);
 
 #[doc = crate::_TAG_TEXT!()]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation.
-///
 #[doc = crate::_doc_location!("text/char")]
 ///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
@@ -116,7 +113,6 @@ pub struct charu(pub(super) NonNiche<u32>);
 #[doc = crate::_TAG_TEXT!()]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation,
 /// and niche-memory optimization.
-///
 #[doc = crate::_doc_location!("text/char")]
 ///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].

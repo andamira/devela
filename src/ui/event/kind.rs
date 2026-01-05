@@ -8,6 +8,7 @@ use crate::{ConstInit, EventKey, EventMouse, EventPointer, EventWindow};
 #[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_UID!()]
 /// A lightweight, data-less identifier for `EventKind`.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 /// Used when only the *category* of the event is relevant and the
 /// payload of the variant is not needed.
@@ -32,6 +33,7 @@ pub enum EventTag {
 
 #[doc = crate::_TAG_EVENT!()]
 /// An enumeration of concrete event variants.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 /// High-level, typed grouping of input and window interactions.
 /// Backends normalize their raw events into these variants.

@@ -7,12 +7,12 @@
 
 #![expect(non_snake_case, reason = "uppercase const fns as related constants")]
 
-mod namespace; // Ansi
-mod color; // AnsiColor, AnsiColor3, AnsiColor8 (+Ansi impls)
+mod helper; // _ANSI_CONSTS
 
 mod strip; // impl: Ansi:strip_codes
 
-mod helper; // _ANSI_CONSTS
+mod namespace; // Ansi
+mod color; // AnsiColor, AnsiColor3, AnsiColor8 (+Ansi impls)
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {

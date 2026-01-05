@@ -24,18 +24,21 @@ pub struct LINUX_TERMIOS_IFLAG;
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_TERM!()]
 /// [`LinuxTermios`][crate::LinuxTermios] output flags.
+#[doc = crate::_doc_location!("sys/os/linux")]
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_OFLAG;
 
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_TERM!()]
 /// [`LinuxTermios`][crate::LinuxTermios] control flags.
+#[doc = crate::_doc_location!("sys/os/linux")]
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_CFLAG;
 
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_TERM!()]
 /// [`LinuxTermios`][crate::LinuxTermios] local flags.
+#[doc = crate::_doc_location!("sys/os/linux")]
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_LFLAG;
 

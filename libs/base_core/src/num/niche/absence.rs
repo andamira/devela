@@ -32,6 +32,7 @@ use crate::{
 #[doc = crate::_TAG_MAYBE!()]
 #[doc = crate::_TAG_NICHE!()]
 /// A zero-cost wrapper that abstracts over niche and non-niche types.
+#[doc = crate::_doc_location!("num/niche")]
 ///
 /// `MaybeNiche<T>` is a transparent wrapper that preserves the representation
 /// semantics of `T` without imposing a niche choice, and introduces no
@@ -342,6 +343,7 @@ impl_maybe![];
 #[doc = crate::_TAG_NO!()]
 #[doc = crate::_TAG_NICHE!()]
 /// A zero-cost wrapper that mimics a niche type without using a niche.
+#[doc = crate::_doc_location!("num/niche")]
 ///
 /// `NonNiche` represents the absence of niche constraints while preserving
 /// API symmetry with niche-optimized numeric types.

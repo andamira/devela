@@ -228,6 +228,7 @@ macro_rules! _doc_location {
     ($path:literal) => {
         concat!(
             "\n\n---\n\n<sup title='defined in ", __crate_name!(),
+            // "🎅\n\n---\n\n<sup title='defined in `", __crate_name!(), // DEBUG
             "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>\n\n",
@@ -238,6 +239,7 @@ macro_rules! _doc_location {
     (proc $path:literal) => {
         concat!(
             "\n\n---\n\n<sup title='defined in ", __crate_name!(),
+            // "🎅\n\n---\n\n<sup title='defined in `", __crate_name!(), // DEBUG
             "`'>[`📍`](", $crate::doclink![custom_current_proc_crate @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>\n\n",
@@ -247,7 +249,8 @@ macro_rules! _doc_location {
     // called from the _reexport! macro, does not end with \n\n
     (re-exported $path:literal) => {
         concat!(
-            "\n\n<sup title='defined in ", __crate_name!(),
+            "\n\n<sup title='re-exported from ", __crate_name!(),
+            // "🎅\n\n---\n\n<sup title='re-exported from `", __crate_name!(), // DEBUG
             "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",

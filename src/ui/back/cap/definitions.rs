@@ -1,6 +1,6 @@
-// devela::ui::service::cap::definitions
+// devela::ui::back::cap::definitions
 //
-//!
+//! UI backend capabilities.
 //
 
 #[cfg(feature = "alloc")]
@@ -8,14 +8,15 @@ use crate::String;
 
 #[doc = crate::_TAG_UI!()]
 /// The capabilities supported by a [`UiService`][crate::UiService].
+#[doc = crate::_doc_location!("ui/back")]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct UiCap {
     /// Image capabilities.
     pub image: Option<UiCapImage>,
     /// Input capabilities.
     pub input: Option<UiCapInput>,
-    /// Sound capabilities.
-    pub sound: Option<UiCapSound>,
+    /// Audio capabilities.
+    pub audio: Option<UiCapAudio>,
     /// System capabilities.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
@@ -27,6 +28,7 @@ pub struct UiCap {
 #[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_IMAGE!()]
 /// Image capabilities.
+#[doc = crate::_doc_location!("ui/back")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapImage {
     /// Maximum bitmap size, in native pixels.
@@ -47,6 +49,7 @@ pub struct UiCapImage {
 #[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_INTERACTION!()]
 /// Input capabilities.
+#[doc = crate::_doc_location!("ui/back")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapInput {
     /// Gamepad input capabilities.
@@ -63,15 +66,17 @@ pub struct UiCapInput {
 
 #[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_AUDIO!()]
-/// Sound capabilities.
+/// Audio capabilities.
+#[doc = crate::_doc_location!("ui/back")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct UiCapSound {
-    /// Sound playback capabilities.
+pub struct UiCapAudio {
+    /// Audio playback capabilities.
     pub play: bool,
 }
 
 #[doc = crate::_TAG_UI!()]
 /// System capabilities.
+#[doc = crate::_doc_location!("ui/back")]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
@@ -86,6 +91,7 @@ pub struct UiCapSystem {
 
 #[doc = crate::_TAG_UI!()]
 /// Window capabilities.
+#[doc = crate::_doc_location!("ui/back")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct UiCapWindow {
     /// Whether multiple windows are supported.

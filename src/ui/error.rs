@@ -10,11 +10,13 @@ use crate::IoError;
 #[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_RESULT!()]
 /// A user-interface result.
+#[doc = crate::_doc_location!("ui")]
 pub type UiResult<T> = core::result::Result<T, UiError>;
 
 #[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_ERROR!()]
 /// A user-interface error.
+#[doc = crate::_doc_location!("ui")]
 #[non_exhaustive]
 #[derive(Debug)]
 pub enum UiError {

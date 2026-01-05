@@ -8,6 +8,7 @@ use crate::{ConstInit, Own};
 #[doc = crate::_TAG_RAND!()]
 /// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr>
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
+#[doc = crate::_doc_location!("num/rand")]
 ///
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
 #[derive(Clone, Debug, PartialEq, Eq)]

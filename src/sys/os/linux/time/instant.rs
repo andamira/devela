@@ -8,6 +8,7 @@ use crate::{Linux, LinuxClock, LinuxTimespec, TimeScale, TimeSource, TimeSourceC
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_TIME!()]
 /// A fast, monotonic Linux time source.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// This type is a zero-configuration wrapper around a fixed
 /// Linux monotonic clock, optimized for hot timing paths.
@@ -60,6 +61,7 @@ impl TimeSource for LinuxInstant {
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_TIME!()]
 /// Configurable Linux time source.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// Represents the family of Linux clocks selectable via `LinuxClock`.
 /// Each configuration defines an independent numeric timeline.

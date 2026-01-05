@@ -8,8 +8,10 @@ use crate::EventTarget;
 
 crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
 
+#[doc = crate::_TAG_UI!()]
 #[doc = crate::_TAG_UID!()]
 /// A backend-agnostic identifier for a UI window.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 /// Backends (X11, Wayland, Win32, macOS, terminal, web…) map their native
 /// window or surface handles into a compact, stable `WindowId`.
@@ -24,8 +26,10 @@ crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WindowId(pub u32);
 
+#[doc = crate::_TAG_INTERACTION!()]
 #[doc = crate::_TAG_UID!()]
 /// A backend-agnostic identifier for an input device.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 /// Backends map native device handles (libinput device, MIDI port, gamepad,
 /// tablet, virtual input stream…) into a stable `DeviceId`.
@@ -36,3 +40,8 @@ pub struct WindowId(pub u32);
 /// data structures, and it has no arithmetic meaning.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct DeviceId(pub u32);
+
+// /// Maps backend-native window handles to stable [`WindowId`]s.
+// pub type WindowRegistry<const MAX: usize> = IdRegistry<WindowId, MAX>;
+// /// Maps backend-native window handles to stable [`DeviceId`]s.
+// pub type DeviceRegistry<const MAX: usize> = IdRegistry<DeviceId, MAX>;

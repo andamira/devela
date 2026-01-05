@@ -19,6 +19,7 @@ macro_rules! impl_fbits {
         #[doc = crate::_TAG_NUM!()]
         #[doc = crate::_TAG_FFI!()]
         #[doc = "Bitwise wrapper for `" $float "` providing `Eq`, `Ord`, and `Hash`."]
+        #[doc = crate::_doc_location!("num")]
         ///
         #[doc = "This stores the raw IEEE-754 bits of a `" $float "` in a `" $bits "`."]
         /// Ordering and hashing operate on the raw bit pattern, not the numeric value.

@@ -1,6 +1,6 @@
 // devela::num::rand
 //
-//! Random number generation.
+#![doc = crate::_DOC_NUM_RAND!()]
 //!
 //! This module defines several types:
 //! - RNG algorithms specialized for 8-bit devices:

@@ -21,6 +21,7 @@ macro_rules! generate_niche_prim {
     ($_d:tt $($P:ty),+ $(,)?) => { $crate::paste! {
         #[doc = crate::_TAG_NICHE!()]
         /// Maps a niche representation type to its primitive carrier type.
+        #[doc = crate::_doc_location!("num/niche")]
         ///
         /// `niche_prim!` performs a purely syntactic, compile-time mapping from a
         /// supported niche type (for example `NonExtremeU8`, `NonValueU16<…>`,
@@ -84,7 +85,8 @@ generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
-/// Creates a `NonExtreme*` [`niche`] instance with compile-time checking.
+/// Creates a `NonExtreme*` niche instance with compile-time checking.
+#[doc = crate::_doc_location!("num/niche")]
 ///
 /// # Example
 /// ```
@@ -99,7 +101,6 @@ generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, 
 /// assert_eq![ne!(lossy -127_i8).get(), -127];
 /// assert_eq![ne!(lossy i8::MIN).get(), i8::MIN+1]; // MIN prohibited value is +1 mapped
 /// ```
-#[doc = crate::doclink!(custom crate "[`niche`]" "num/niche" @mod)]
 #[macro_export]
 #[doc(hidden)]
 macro_rules! ne {
@@ -114,7 +115,8 @@ pub use ne;
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
-/// Creates a `NonValue*` [`niche`] value with compile-time checking.
+/// Creates a `NonValue*` niche value with compile-time checking.
+#[doc = crate::_doc_location!("num/niche")]
 ///
 /// # Example
 /// ```
@@ -130,7 +132,6 @@ pub use ne;
 /// assert_eq![nv!(lossy 2: 1, u8).get(), 1];
 /// assert_eq![nv!(lossy 0: 0, u8).get(), 1]; // MIN prohibited value is +1 mapped
 /// ```
-#[doc = crate::doclink!(custom crate "[`niche`]" "num/niche" @mod)]
 #[macro_export]
 #[doc(hidden)]
 macro_rules! nv {
@@ -146,7 +147,8 @@ pub use nv;
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NICHE!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
-/// Creates a `NonZero*` [`niche`] value with compile-time checking.
+/// Creates a `NonZero*` niche value with compile-time checking.
+#[doc = crate::_doc_location!("num/niche")]
 ///
 /// # Example
 /// ```
@@ -161,7 +163,6 @@ pub use nv;
 /// assert_eq![nz!(lossy 0_u8).get(), 1]; // 0 value is 1 mapped
 /// assert_eq![nz!(lossy i8::MIN).get(), i8::MIN];
 /// ```
-#[doc = crate::doclink!(custom crate "[`niche`]" "num/niche" @mod)]
 #[macro_export]
 #[doc(hidden)]
 macro_rules! nz {
@@ -180,6 +181,7 @@ pub use nz;
 #[doc = crate::_TAG_NICHE!()]
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// Private helper to construct niche types.
+#[doc = crate::_doc_location!("num/niche")]
 #[doc(hidden)]
 #[derive(Debug)]
 pub struct NicheNew<T>(pub T);

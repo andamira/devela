@@ -3,6 +3,7 @@
 use crate::ASCII_TRANSLIT_BLOCKS;
 
 /// Returns the ASCII transliteration of a Unicode scalar code point.
+#[doc = crate::_doc_location!("text/char")]
 ///
 /// Returns an empty string if unhandled.
 ///

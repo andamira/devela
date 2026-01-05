@@ -23,6 +23,7 @@ use ::core::{f16, f128};
 #[doc = crate::_TAG_LOGIC!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Provides comparing methods for `T`.
+#[doc = crate::_doc_location!("num/ord")]
 ///
 /// It provides the non-*const* methods `pclamp`, `pmax`, `pmin`
 /// for comparing [`PartialOrd`]ered values.

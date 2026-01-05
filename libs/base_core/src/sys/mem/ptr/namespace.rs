@@ -18,9 +18,9 @@ use ::core::ptr::{
     swap_nonoverlapping, write, write_bytes, write_unaligned, write_volatile,
 };
 
+#[doc = crate::_TAG_MEM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Pointer-related operations.
-///
 #[doc = crate::_doc_location!("sys/mem")]
 ///
 /// See also [`Mem`][crate::Mem], [`Slice`][crate::Slice].

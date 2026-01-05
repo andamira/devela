@@ -10,6 +10,7 @@ use crate::{
 
 #[doc = crate::_TAG_EVENT!()]
 /// A fully-typed event with optional timing and metadata.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 /// `Event` separates three notions of time/state:
 /// - **emitted:** when the backend or OS generated the event.

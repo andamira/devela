@@ -5,6 +5,7 @@ use crate::charu;
 /// Traverses the trie represented by [`GRAPHEMES_INDEX`] and
 /// [`GRAPHEMES_VALUES`] to find its properties as a raw value in the form
 /// expected by [`Properties`].
+#[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// The trie is designed to be traversed by UTF-8 bytes, so shorter UTF-8
 /// sequences need fewer lookup steps and we don't need to decode the UTF-8

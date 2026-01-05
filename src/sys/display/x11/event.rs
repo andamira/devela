@@ -10,6 +10,8 @@ use crate::{
 };
 // use crate::{EventKind, EventWindow};
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_EVENT!()]
 /// Wrapper for an XCB event.
 #[derive(Debug)]
 pub struct XEvent {

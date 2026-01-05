@@ -10,6 +10,7 @@ use crate::Cast;
 
 #[doc = crate::_TAG_NUM!()]
 /// Offers methods to construct a primitive from an array or slice of smaller primitives.
+#[doc = crate::_doc_location!("num")]
 ///
 /// Methods expecting an array are more efficient than the ones expecting an
 /// slice. On the other hand slices of any lenght are supported as follows:

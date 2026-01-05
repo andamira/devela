@@ -17,6 +17,7 @@ use crate::{LINUX_SIGACTION, impl_trait};
 
 #[doc = crate::_TAG_LINUX!()]
 /// Examine and change a signal action.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// Represents the [`sigaction`] structure from libc.
 ///
@@ -121,6 +122,7 @@ impl LinuxSigaction {
 
 #[doc = crate::_TAG_LINUX!()]
 /// A set of linux signals.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// Represents the [`sigset_t`] structure from libc.
 ///
@@ -171,6 +173,7 @@ impl LinuxSigset {
 
 #[doc = crate::_TAG_LINUX!()]
 /// Additional information about a signal.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// Represents the [`siginfo_t`] structure from libc.
 ///

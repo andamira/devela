@@ -6,6 +6,7 @@
 #[doc = crate::_TAG_FMT!()]
 #[doc = crate::_TAG_NUM!()]
 /// Const number formatter.
+#[doc = crate::_doc_location!("text/fmt")]
 ///
 /// Provides a lightweight, allocation-free interface
 /// for writing numeric values into an existing byte buffer.

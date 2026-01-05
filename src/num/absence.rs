@@ -6,6 +6,7 @@
 #[doc = crate::_TAG_NO!()]
 #[doc = crate::_TAG_NUM!()]
 /// Represents the absence of a number.
+#[doc = crate::_doc_location!("num")]
 ///
 /// This can be used anywhere an implementation of [`Num`][super::Num] is expected,
 /// since it implements all the numeric traits, but does nothing.

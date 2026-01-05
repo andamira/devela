@@ -20,6 +20,7 @@ pub mod char;
 pub mod fmt;
 pub mod parse;
 pub mod str;
+// mod template; // WIP
 
 #[cfg(feature = "grapheme")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
@@ -34,6 +35,7 @@ crate::structural_mods! { // _pub_mods
             fmt::_all::*,
             parse::_all::*,
             str::_all::*,
+            // template::*, // WIP
         };
         #[cfg(feature = "grapheme")]
         pub use super::{

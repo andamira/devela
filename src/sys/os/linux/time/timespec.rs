@@ -16,8 +16,8 @@ use crate::TimeDelta;
 
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_TIME!()]
-/// Represents the [`timespec`] structure from libc.
-/// Time in seconds and nanoseconds.
+/// Represents the [`timespec`] structure from libc. Time in seconds and nanoseconds.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// [`timespec`]: https://man7.org/linux/man-pages/man3/timespec.3type.html
 #[derive(Clone, Copy, Debug, Default, PartialEq)]

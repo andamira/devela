@@ -11,6 +11,7 @@ use crate::{NumConst, Rem};
 
 #[doc = crate::_TAG_QUANT!()]
 /// A generic ratio representing a proportional relationship between two values.
+#[doc = crate::_doc_location!("num/quant")]
 ///
 /// This type models a mathematical ratio `n/d`, where:
 /// - `N` is the numerator type.

@@ -5,6 +5,7 @@ use crate::{Mem, charu, impl_trait};
 
 #[doc = crate::_TAG_TEXT!()]
 #[doc = concat![crate::_ABBR_EGC!(), "property values from Unicode Standard Annex #29."]]
+#[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Used by the grapheme boundary detection algorithm to determine where
 /// grapheme cluster boundaries occur in text.
@@ -82,6 +83,7 @@ impl GraphemePropCb {
 
 #[doc = crate::_TAG_TEXT!()]
 /// Break property for Indic scripts that prevents splitting within orthographic syllables.
+#[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Used by grapheme boundary rule [GB9c](https://www.unicode.org/reports/tr29/#GB9c)
 /// to avoid inappropriate breaks in conjunct sequences.
@@ -121,6 +123,7 @@ impl GraphemePropInCb {
 
 #[doc = crate::_TAG_TEXT!()]
 #[doc = concat!["Combined ", crate::_ABBR_EGC!(), "break properties for a single code point."]]
+#[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Packed representation of both [`GraphemePropCb`] and [`GraphemePropInCb`]
 /// properties used by Unicode grapheme cluster [boundary rules].

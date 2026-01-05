@@ -6,17 +6,20 @@
 #![doc = crate::_doc!(newline)]
 //
 
-mod reexports;
+#[cfg(feature = "std")]
+mod _reexport_std; // SYMLINK to /libs/base_std/src/sys/fs/path/_reexport.rs
 
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod ext; // PathExt
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::reexports::*;
-
         #[cfg(feature = "std")]
         pub use super::ext::*;
+    }
+    _reexports {
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
     }
 }

@@ -14,7 +14,6 @@ use crate::{
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_ITERATOR!()]
 /// Scans text and detects grapheme cluster boundaries during iteration.
-///
 #[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Can process different text representations (`&str`, `&[u8]`) while

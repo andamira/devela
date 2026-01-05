@@ -16,6 +16,7 @@ use crate::{
 
 #[doc = crate::_TAG_QUANT!()]
 /// Creates an [`Interval`] using extended range notation.
+#[doc = crate::_doc_location!("num/quant")]
 ///
 /// # Syntax
 ///
@@ -121,6 +122,7 @@ pub use _interval as interval;
 
 #[doc = crate::_TAG_QUANT!()]
 /// A range of values with `lower` and `upper` [`Bound`]s.
+#[doc = crate::_doc_location!("num/quant")]
 ///
 /// The `Interval` type allows modeling ranges of values with optional inclusion
 /// or exclusion at each bound. This is useful for mathematical operations,

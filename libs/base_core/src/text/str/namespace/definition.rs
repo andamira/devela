@@ -1,11 +1,6 @@
-// devela_base_core::text::str::str
+// devela_base_core::text::str::namespace::definition
 //
-//! [`Str`] namespace.
-//
-
-mod range;
-mod take;
-mod split;
+//! Defines [`Str`].
 
 use crate::{CharIter, Digits, InvalidUtf8, Slice, is, slice};
 
@@ -25,7 +20,6 @@ use ::core::str::from_utf8_mut;
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// A string slice namespace.
-///
 #[doc = crate::_doc_location!("text/str")]
 ///
 /// # Methods

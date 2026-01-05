@@ -16,6 +16,7 @@ use crate::{
 
 #[doc = crate::_TAG_NUM!()]
 /// Fundamental numeric constants for both integer and floating-point types.
+#[doc = crate::_doc_location!("num")]
 pub trait NumConst: PartialEq<Self::Num> {
     /// The underlying numeric type implementing this trait.
     type Num;

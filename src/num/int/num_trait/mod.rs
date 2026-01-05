@@ -41,6 +41,7 @@ mod auto_impls {
 
 #[doc = crate::_TAG_NUM!()]
 /// Common trait for integer types.
+#[doc = crate::_doc_location!("num")]
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
 ///

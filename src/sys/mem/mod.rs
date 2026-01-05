@@ -66,7 +66,9 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
         pub use super::_reexport_alloc::*;
 
         #[doc(inline)]
-        pub use devela_base_core::{CacheAlign, MaybeByte, Mem, MemAligned, cswap, define_arena};
+        pub use devela_base_core::sys::mem::{
+            CacheAlign, MaybeByte, Mem, MemAligned, cswap, define_arena,
+        };
 
         #[doc(inline)]
         pub use crate::Sized;

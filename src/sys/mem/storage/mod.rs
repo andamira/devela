@@ -22,6 +22,7 @@ pub use bare::*;
 
 #[doc = crate::_TAG_MEM!()]
 /// Allows to be generic in respect of the data storage.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// There are two reference implementations:
 /// - [`Bare`], which wraps the data in a [`BareBox`].

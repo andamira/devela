@@ -8,11 +8,13 @@ use crate::Sign;
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_RESULT!()]
 /// A numeric-related result.
+#[doc = crate::_doc_location!("num")]
 pub type NumResult<T> = crate::Result<T, NumError>;
 
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// A numeric-related error.
+#[doc = crate::_doc_location!("num")]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum NumError {

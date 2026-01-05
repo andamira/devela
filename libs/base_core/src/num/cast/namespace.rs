@@ -3,6 +3,7 @@
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Provides *const* casting, joining and splitting operations between primitives.
+#[doc = crate::_doc_location!("num")]
 //
 // See also the related traits: [`PrimitiveCast`], [`PrimitiveJoin`] and [`PrimitiveSplit`].
 //

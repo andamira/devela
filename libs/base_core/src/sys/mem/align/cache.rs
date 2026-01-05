@@ -5,6 +5,7 @@
 
 #[doc = crate::_TAG_MEM!()]
 /// Aligns and pads a value to the length of a cache line.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// In concurrent programming, sometimes it is desirable to make sure commonly accessed pieces of
 /// data are not placed into the same cache line. Updating an atomic value invalidates the whole

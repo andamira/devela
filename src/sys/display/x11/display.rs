@@ -11,7 +11,11 @@ use crate::{
     EventWindow, Ptr, c_int, is,
 };
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_TAG_GUARD!()]
 /// A connection to an X11 display server.
+#[doc = crate::_doc_location!("sys/display/x11")]
 ///
 /// Wraps an `xcb_connection_t` and its associated screen information.
 /// Represents the root environment required to create windows and interact with the X server.

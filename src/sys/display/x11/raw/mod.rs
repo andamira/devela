@@ -16,8 +16,8 @@
 
 mod xcb; // main xcb.h + xproto.h structs, fns
 mod xcb_flags; // protocol bit-masks
-mod xcb_values; // protocol const values
 mod xcb_shm; // shm extension
+mod xcb_values; // protocol const values
 pub(crate) use {xcb::*, xcb_flags::*, xcb_shm::*, xcb_values::*};
 
 mod xkb; // libxkbcommon core bindings
@@ -25,8 +25,12 @@ mod xkb_x11; // libxkbcommon-x11 extension
 pub(crate) use {xkb::*, xkb_x11::*};
 
 // WM
-mod icccm; // ICCCM
-pub(crate) use icccm::*;
+mod icccm; // ICCCM: XSizeHints, XSizeRatio, XWinGravity, …
+// mod ewmh; // EWMH
+pub(crate) use {
+    // ewmh::*,
+    icccm::*,
+};
 
 mod helpers; // change_property_*
 pub(crate) use helpers::*;

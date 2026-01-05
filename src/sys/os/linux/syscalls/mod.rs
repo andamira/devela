@@ -24,6 +24,9 @@ items! { mod riscv; use riscv as sys; }
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{consts::*, sys::*};
+        pub use super::{
+            consts::*,
+            sys::*,
+        };
     }
 }

@@ -8,6 +8,7 @@ use ::core::{fmt, hash, ops};
 
 #[doc = crate::_TAG_NUM!()]
 /// Faster divisor for division and modulo operations.
+#[doc = crate::_doc_location!("num")]
 ///
 /// It's implemented for the integer primitives.
 #[doc = crate::_doc!(vendor: "quickdiv")]

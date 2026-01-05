@@ -17,6 +17,7 @@ mod tests;
 #[doc = crate::_TAG_TEXT!()]
 #[doc = concat!["Streaming ", crate::_ABBR_EGC!(), "boundary detector."]]
 /// Streaming grapheme cluster boundary detector.
+#[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Sequentially processes Unicode code points,
 /// returning whether each starts a new cluster or continues the current one.
@@ -112,6 +113,7 @@ impl GraphemeMachine {
 
 #[doc = crate::_TAG_TEXT!()]
 /// Indicates how to handle a code point when detecting grapheme cluster boundaries.
+#[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Returned by [`GraphemeMachine`] for each code point processed, indicating
 /// whether the code point continues the current grapheme cluster or starts a new one.

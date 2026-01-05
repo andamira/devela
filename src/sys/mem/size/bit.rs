@@ -42,6 +42,7 @@ use crate::{AtomicIsize, AtomicPtr, AtomicUsize};
 
 #[doc = crate::_TAG_MEM!()]
 /// Type size information in bits.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// Indicates a size of exactly `LEN` bits for the relevant data part of this type.
 ///

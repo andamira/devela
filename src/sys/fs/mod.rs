@@ -6,7 +6,8 @@
 #![doc = crate::_doc!(newline)]
 //
 
-crate::mod_path!(std _s "../../../libs/base_std/src/sys/fs/reexports.rs");
+#[cfg(feature = "std")]
+mod _reexport_std; // SYMLINK to ../../../libs/base_std/src/sys/fs/_reexport.rs
 
 mod path; // PathExt, Path*, sys::path::*
 
@@ -18,16 +19,19 @@ crate::items! {
     mod fs_path; // FsPath
 }
 
-// WIP ZONE
-// mod ext; // FileExt
+// mod ext; // FileExt // WIP
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{path::_all::*};
 
         #[cfg(feature = "std")]
-        pub use super::{_s::*, namespace::*, fs_path::*};
-        // WIPZONE
-        // pub use super::ext::*;
+        pub use super::{namespace::*, fs_path::*};
+
+        // pub use super::ext::*; // WIP
+    }
+    _reexports {
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
     }
 }

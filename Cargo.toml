@@ -492,7 +492,9 @@ _docs_min = [ # the minimum capabilities to document every item
 	"devela_base_core/_docs_min",
 	"devela_macros",
 	# modules:
-	"all", "linux",
+	"all",
+		"linux",
+		"x11",
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 ]
@@ -789,8 +791,8 @@ default-features = false # 2 https://docs.rs/crate/wide/latest/features
 [build-dependencies]
 # Used for the main build script. They do NOT inherit from [dependencies].
 # ------------------------------------------------------------------------------
-devela_base_core = { workspace = true }
-devela_base_std  = { workspace = true, optional = true } # MAYBE RECONSIDER
+# devela_base_core = { workspace = true }
+# devela_base_std  = { workspace = true, optional = true } # MAYBE RECONSIDER
 
 
 # patches

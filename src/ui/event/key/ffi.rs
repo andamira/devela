@@ -19,6 +19,7 @@ crate::items! {
 #[doc = crate::_TAG_FFI!()]
 /// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
 // (The main difference is in the Char variant.)
+#[doc = crate::_doc_location!("ui/event")]
 #[repr(C)]
 #[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]

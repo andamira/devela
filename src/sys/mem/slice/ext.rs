@@ -18,6 +18,7 @@ impl<T> Sealed for Vec<T> {}
 
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`&[T]`][slice].
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
@@ -124,6 +125,7 @@ pub trait SliceExt<T>: Sealed {
 
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///

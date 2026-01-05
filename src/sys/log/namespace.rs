@@ -7,8 +7,10 @@ use ::log::set_boxed_logger;
 use ::log::set_logger_racy;
 use ::log::{STATIC_MAX_LEVEL, logger, max_level, set_logger, set_max_level};
 
+#[doc = crate::_TAG_LOG!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Log-related operations.
+#[doc = crate::_doc_location!("sys/log")]
 ///
 /// It is a namespace for the `log` crate standalone functions.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]

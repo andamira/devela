@@ -9,6 +9,7 @@ use ::core::fmt;
 #[doc = crate::_TAG_RESULT!()]
 /// A return type for the calculated
 /// <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+#[doc = crate::_doc_location!("num")]
 ///
 /// The coefficients are the solutions to the equation $ \text{gcd}(a, b) = ax + by $.
 #[must_use]

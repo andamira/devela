@@ -24,6 +24,6 @@ _reexport! { rust: alloc::rc, location: "sys::mem", tag: _TAG_MEM!() _TAG_LIFETI
     Rc
 }
 _reexport! { rust: alloc::rc, location: "sys::mem", tag: _TAG_MEM!() _TAG_LIFETIME!(),
-    doc: "A version of `Rc` that holds a non-owning reference to the managed allocation.",
+    doc: "A version of `Rc` that holds a non-owning ref to the managed allocation.",
     @Weak as RcWeak
 }

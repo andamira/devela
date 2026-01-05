@@ -18,6 +18,7 @@ use crate::Vec;
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Linux-related operations.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// # Features
 /// All the methods depend on the features `linux` and `unsafe_syscall`.

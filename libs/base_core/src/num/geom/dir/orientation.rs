@@ -8,6 +8,7 @@ use crate::{Distance, Position};
 
 #[doc = crate::_TAG_GEOM!()]
 /// A unitless directional vector in `D`-dimensional space.
+#[doc = crate::_doc_location!("num/geom/dir")]
 ///
 /// Represents **only the direction of movement**, without an absolute
 /// reference point or inherent magnitude. It is **typically normalized**

@@ -22,6 +22,7 @@ pub use {bit3::*, bit8::*};
 #[doc = crate::_TAG_COLOR!()]
 #[doc = crate::_TAG_TERM!()]
 /// Complete ANSI color selection
+#[doc = crate::_doc_location!("ui/front/term")]
 ///
 /// The size of this type is 32-bit.
 // IMPROVE: use Rgb8 color type.

@@ -18,7 +18,11 @@ use crate::{
     /* Window, */ UiCapWindow, UiService,
 };
 
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_TAG_PLATFORM!()]
 /// `crossterm`'s UI backend service.
+#[doc = crate::_doc_location!("ui/back/crossterm")]
 //
 // https://docs.rs/crossterm/latest/crossterm/terminal/index.html
 #[derive(Debug)]

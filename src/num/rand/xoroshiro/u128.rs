@@ -19,6 +19,7 @@ use crate::{Hasher, HasherBuild, RandomState};
 #[doc = crate::_TAG_RAND!()]
 /// The `Xoroshiro128++`
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
+#[doc = crate::_doc_location!("num/rand")]
 ///
 /// It has a 128-bit state and generates 32-bit numbers.
 #[must_use]

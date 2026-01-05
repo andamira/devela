@@ -5,8 +5,9 @@
 #![doc = crate::_doc!(extends: fmt)]
 //
 
-crate::mod_path!(_c "../../../libs/base_core/src/text/fmt/reexports.rs");
-crate::mod_path!(alloc _a "../../../libs/base_alloc/src/text/fmt/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/text/fmt/_reexport.rs
+#[cfg(feature = "alloc")]
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/text/fmt/_reexport.rs
 
 mod namespace; // Fmt
 
@@ -14,19 +15,18 @@ mod namespace; // Fmt
 // mod case;
 // mod table;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::namespace::*;
 
         // WIPZONE
         // pub use super::case::*;
         // pub use super::table::*;
-
-        /* re-exports */
-
-        pub use super::_c::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
         #[cfg(feature = "alloc")]
-        pub use super::_a::*;
+        pub use super::_reexport_alloc::*;
 
         #[doc(inline)]
         pub use devela_base_core::text::fmt::{

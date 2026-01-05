@@ -7,6 +7,7 @@ use crate::{Extent, Position, Stride};
 
 #[doc = crate::_TAG_GEOM!()]
 /// A [`Position`]ed [`Extent`].
+#[doc = crate::_doc_location!("num/geom/metric")]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Region<T, const D: usize> {

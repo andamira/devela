@@ -25,7 +25,7 @@ pub mod os; // Linux,
 // #[cfg(feature = "std")]
 // mod bench;
 
-crate::structural_mods! { // _pub_mods, _hidden
+crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         pub use super::{
             arch::_all::*,
@@ -42,6 +42,9 @@ crate::structural_mods! { // _pub_mods, _hidden
         // WIPZONE
         // #[cfg(feature = "std")]
         // pub use super::bench::_all::*;
+    }
+    _crate_internals {
+        pub(crate) use super::display::_crate_internals::*;
     }
     _hidden {
         pub use super::mem::_hidden::*;

@@ -15,6 +15,7 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 #[doc = crate::_TAG_LIFETIME!()]
 #[doc = crate::_doc_miri_warn!(tag)]
 /// Iterator over references of command line arguments.
+#[doc = crate::_doc_location!("sys/env")]
 ///
 /// See [`Env::args_os_ref()`][crate::Env#method.args_os_ref].
 #[doc = crate::_doc!(vendor: "argv")]

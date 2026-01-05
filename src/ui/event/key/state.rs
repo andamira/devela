@@ -9,6 +9,7 @@ use crate::{WebEventKind, is};
 
 #[doc = crate::_TAG_INTERACTION!()]
 /// Represents the state of a [`Key`][crate::Key].
+#[doc = crate::_doc_location!("ui/event")]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum KeyState {

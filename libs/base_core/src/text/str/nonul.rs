@@ -18,7 +18,6 @@ const NUL_CHAR: char = '\0';
 
 #[doc = crate::_TAG_TEXT!()]
 /// A null-terminated UTF-8 string with up to `u8::MAX` bytes capacity.
-///
 #[doc = crate::_doc_location!("text/str")]
 ///
 /// Prioritizes memory efficiency: uses 1 less byte but O(n) length operations.

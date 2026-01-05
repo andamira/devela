@@ -1,5 +1,7 @@
 // devela::data::key::_reexport_dep
 
+#![allow(unused_imports, unused_macros, reason = "dep_hashbrown|std feature-gate")]
+
 /* from `hashbrown` or `std` */
 
 #[allow(unused_macros)]
@@ -14,7 +16,6 @@ macro_rules! hashbrown_or_std {
         \n\n---"
     };
 }
-#[allow(unused_imports)]
 use hashbrown_or_std;
 
 // types from hashbrown have preference over those from std.

@@ -79,7 +79,6 @@ macro_rules! impl_fmtnum_int {
                 };
                 Shape::new(prefix, left, 0)
             }
-
             /// Returns the measured shape of the integer
             /// when formatted with the given configuration.
             pub const fn measure_fmt(self, conf: Conf) -> Shape {

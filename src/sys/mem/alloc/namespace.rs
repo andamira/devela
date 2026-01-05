@@ -13,6 +13,7 @@ use crate::{
 #[doc = crate::_TAG_ALLOCATION!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Memory-allocation-related operations.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// See also: [`Mem`][crate::Mem], [`MemExt`][crate::MemExt],
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].

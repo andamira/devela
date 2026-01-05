@@ -8,8 +8,7 @@
 // - versions differ only in having support for printing, and in the Ansi print method called.
 
 crate::CONST! {
-    DOC_ANSI = r#"Concatenates or prints [`Ansi` escape codes][0].
-
+    DOC_ANSI = r#"
 - the `b:` arm accepts only static arguments to commands and returns [`&[u8]`](slice).
 - the `s:` arm accepts only static arguments to commands and returns [`&str`].
 - the `p:` arm accepts only static arguments to commands and prints to stdout. `*`
@@ -59,6 +58,8 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 // non-printing version fallback (not(std), not(linux))
 // -----------------------------------------------------------------------------
 #[doc = crate::_TAG_TERM!()]
+/// Concatenates or prints [`Ansi` escape codes][0]
+#[doc = crate::_doc_location!("ui/event")]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -100,6 +101,8 @@ macro_rules! ansi {
 // std version (not(linux))
 // -----------------------------------------------------------------------------
 #[doc = crate::_TAG_TERM!()]
+/// Concatenates or prints [`Ansi` escape codes][0]
+#[doc = crate::_doc_location!("ui/event")]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -151,6 +154,8 @@ macro_rules! ansi {
 // linux version (overrides std)
 // -----------------------------------------------------------------------------
 #[doc = crate::_TAG_TERM!()]
+/// Concatenates or prints [`Ansi` escape codes][0]
+#[doc = crate::_doc_location!("ui/event")]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

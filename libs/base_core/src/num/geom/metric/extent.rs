@@ -8,6 +8,7 @@ use crate::{_impl_geom_dim, is, whilst};
 
 #[doc = crate::_TAG_GEOM!()]
 /// An orthogonal extension in `D`-space without a coordinate position.
+#[doc = crate::_doc_location!("num/geom/metric")]
 ///
 /// Represents the lengths of each dimension in a multi-dimensional space,
 /// providing an origin-agnostic shape with the implied form of an orthotope

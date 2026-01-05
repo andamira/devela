@@ -1,4 +1,4 @@
-// devela_base_core::text::str::str::take
+// devela_base_core::text::str::namespace::take
 //
 //! Implements take methods for [`Str`].
 //

@@ -3,23 +3,26 @@
 //! Defines [`define_lane!`] macro.
 //
 // TOC
-// - struct ExampleLn4_i32
+// - struct Ln4_i32Example
 // - consts for method's docs
 // - macro define_lane!
 // - tests
 
 #[cfg(feature = "_docs_min")]
 define_lane! {
+    #[doc = crate::_TAG_EXAMPLE!()]
     /// Example fixed-width pack of 4 × `i32` lanes.
+    #[doc = crate::_doc_location!("num/wide")]
     ///
     /// Generated with [`define_lane!`].
     #[derive(Clone, Copy, Debug)]
     #[allow(non_camel_case_types)]
-    pub struct ExampleLane4_i32 pub lanes(4); unsigned(i32);
+    pub struct Lane4_i32Example pub lanes(4); unsigned(i32);
 }
 
 #[doc = crate::_TAG_CONSTRUCTION!()]
 /// Defines a fixed-width lane type.
+#[doc = crate::_doc_location!("num/wide")]
 ///
 /// It has optional implementations for the given integer and floating-point primitive types.
 ///
@@ -50,7 +53,7 @@ define_lane! {
 /// define_lane![impl Lane8 lanes(8); signed(i64);];
 /// ```
 ///
-/// See also [`ExampleLane4_i32`] for the exact methods implementations.
+/// See also [`Lane4_i32Example`] for the exact methods implementations.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! define_lane {

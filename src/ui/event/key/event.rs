@@ -8,6 +8,7 @@ use crate::{ConstInit, EventTimestamp, Key, KeyMods, KeyState};
 #[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_INTERACTION!()]
 /// Represents a keyboard event.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 #[doc = "See also [`EventKeyFfi`]."]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
@@ -54,6 +55,7 @@ mod ffi {
     #[doc = crate::_TAG_INTERACTION!()]
     #[doc = crate::_TAG_FFI!()]
     /// An FFI-safe version of [`EventKey`].
+    #[doc = crate::_doc_location!("ui/event")]
     #[repr(C)]
     #[allow(missing_docs)]
     #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]

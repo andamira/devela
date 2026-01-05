@@ -10,6 +10,7 @@ use crate::{Mem, NonZeroUsize, Wasm};
 #[doc = crate::_TAG_RUNTIME!()]
 #[doc = crate::_TAG_ALLOCATION!()]
 /// A WebAssembly global memory allocator that uses a bump allocation strategy.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// This allocator manages memory starting from `__heap_base` (the WASM heap start)
 /// and grows memory as needed using `memory.grow`. It's designed for single-threaded

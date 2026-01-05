@@ -3,8 +3,11 @@
 //! Defines [`TermSize`].
 //
 
+#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_TAG_LAYOUT!()]
 #[doc = crate::_TAG_FFI!()]
 /// The size of the terminal.
+#[doc = crate::_doc_location!("ui/front/term")]
 ///
 /// ## Used by
 /// - `LinuxTermios` and `WindowsConsole`.

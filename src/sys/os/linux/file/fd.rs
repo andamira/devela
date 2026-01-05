@@ -14,6 +14,7 @@ use crate::c_int;
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_FS!()]
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
+#[doc = crate::_doc_location!("sys/os/linux")]
 #[derive(Debug)]
 pub struct LINUX_FILENO;
 impl LINUX_FILENO {
@@ -28,6 +29,7 @@ impl LINUX_FILENO {
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_FS!()]
 /// [`Linux`][crate::Linux] file creation and status flags.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// Used with `sys_open`, `sys_fcntl`, etc.
 //
@@ -109,6 +111,7 @@ impl LINUX_O_FLAGS {
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_FS!()]
 /// [`Linux`][crate::Linux] Seek commands (for `lseek`).
+#[doc = crate::_doc_location!("sys/os/linux")]
 //
 // Architecture independent
 // - /usr/include/unistd.h

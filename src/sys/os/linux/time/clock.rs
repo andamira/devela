@@ -13,6 +13,7 @@ use crate::{LINUX_ERRNO, LinuxError, LinuxResult as Result, c_int};
 #[doc = crate::_TAG_TIME!()]
 /// [`Linux`][crate::Linux] clock identifiers for
 /// [`sys_clock_gettime`][crate::Linux::sys_clock_gettime] and related time functions.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// See [clock_gettime(2)] for detailed information about each clock type.
 ///

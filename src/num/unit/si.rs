@@ -12,6 +12,7 @@ use crate::{Vec, vec_ as vec};
 
 #[doc = crate::_TAG_NUM!()]
 /// SI (metric) unit prefixes.
+#[doc = crate::_doc_location!("num")]
 ///
 /// - <https://en.wikipedia.org/wiki/Metric_prefix>
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

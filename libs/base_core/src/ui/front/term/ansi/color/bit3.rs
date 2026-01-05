@@ -9,6 +9,7 @@ use crate::{_ansi_consts, Ansi, Digits};
 #[doc = crate::_TAG_COLOR!()]
 #[doc = crate::_TAG_TERM!()]
 /// ANSI 3-bit color codes, 8 colors.
+#[doc = crate::_doc_location!("ui/front/term")]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum AnsiColor3 {

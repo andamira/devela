@@ -5,16 +5,13 @@
 // #![doc = crate::_doc!(modules: crate::text; char)]
 // #![doc = crate::_doc!(newline)]
 
+mod _reexport_core; // SYMLINK to /libs/base_core/src/text/char/_reexport.rs
+
 mod unicode_scalar; // UnicodeScalar
 
-// with re-exports
-crate::mod_path!(_c "../../../libs/base_core/src/text/char/reexports.rs");
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::unicode_scalar::*;
-
-        pub use super::_c::*; // char
 
         #[doc(inline)]
         pub use devela_base_core::text::{
@@ -25,6 +22,9 @@ crate::structural_mods! { // _mods
         pub use devela_base_text::{
             scalar_as_ascii_translit,
         };
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
     }
 }
 

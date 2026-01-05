@@ -1,4 +1,4 @@
-// devela::ui::service::definition
+// devela::ui::back::definition
 //
 //! Defines the [`UiService`] trait.
 //
@@ -7,6 +7,7 @@ use crate::UiCap;
 
 #[doc = crate::_TAG_UI!()]
 /// Common trait for all UI services.
+#[doc = crate::_doc_location!("ui/back")]
 pub trait UiService {
     /// Returns the service capabilities.
     fn capabilities(&self) -> UiCap;

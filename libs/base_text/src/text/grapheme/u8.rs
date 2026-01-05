@@ -15,7 +15,6 @@ use crate::{
 
 #[doc = crate::_TAG_TEXT!()]
 #[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringU8`]."]]
-///
 #[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// ## Methods

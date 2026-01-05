@@ -6,7 +6,7 @@ use crate::{_TAG_ERROR, _TAG_ITERATOR, _TAG_NETWORK, _TAG_UID, _reexport};
 /* core structs */
 
 _reexport! { rust: core::net, location: "sys/net", tag: _TAG_NETWORK!() _TAG_ERROR!(),
-    doc: "An error which can be returned when parsing an IP address or a socket address.",
+    doc: "An error which can be returned when parsing an IP or socket address.",
     AddrParseError
 }
 _reexport! { rust: core::net, location: "sys/net", tag: _TAG_NETWORK!(),

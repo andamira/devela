@@ -8,6 +8,7 @@ pub use crate::Int;
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// This is a wrapper over [`Int`] with additional allocating methods.
+#[doc = crate::_doc_location!("num")]
 #[must_use]
 #[repr(transparent)]
 pub struct IntAlloc<T>(pub Int<T>);

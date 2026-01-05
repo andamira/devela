@@ -8,6 +8,7 @@ use crate::{Deref, DerefMut, Num, NumResult as Result};
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_LIFETIME!()]
 /// Common auto-trait for referenced numeric types.
+#[doc = crate::_doc_location!("num")]
 ///
 /// It is automatically implemented for references of types implementing [`Num`].
 /// Mutable operations are only available for exclusive (`&mut`) references.

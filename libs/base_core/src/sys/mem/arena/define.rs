@@ -28,6 +28,7 @@ define_arena! {
 #[doc = crate::_TAG_CONSTRUCTION!()]
 #[doc = crate::_TAG_ALLOCATION!()]
 /// A custom memory arena generator.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// # Features
 /// Uses `unsafe_array` to leverage `MaybeUninit` and avoid initializing the full capacity.

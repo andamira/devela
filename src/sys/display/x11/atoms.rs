@@ -6,7 +6,11 @@
 use super::raw;
 use crate::{Libc, Ptr, is};
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_UID!()]
+#[doc = crate::_TAG_RUNTIME!()]
 /// Cached atoms required for high–level event interpretation.
+#[doc = crate::_doc_location!("sys/display/x11")]
 ///
 /// X11 atoms are integer identifiers allocated by the server and
 /// used as symbolic names for properties and protocols.

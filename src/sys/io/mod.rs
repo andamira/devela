@@ -31,9 +31,10 @@ crate::structural_mods! { // _mods
         #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
         pub use super::io::*;
 
-        #[cfg(not(feature = "std"))]
-        pub use super::no_std_define::*;
-        #[cfg(feature = "std")]
-        pub use super::std_reexports::*;
+        crate::cfg_if! { if #[cfg(feature = "std")] {
+            pub use super::std_reexports::*;
+        } else {
+            pub use super::no_std_define::*;
+        }}
     }
 }

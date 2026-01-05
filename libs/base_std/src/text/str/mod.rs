@@ -5,8 +5,8 @@
 
 mod _reexport; // SYMLINK from /src/text/str/_reexport_std.rs
 
-crate::structural_mods! { // _mods
-    _mods {
+crate::structural_mods! { // _reexports
+    _reexports {
         pub use super::_reexport::*;
     }
 }

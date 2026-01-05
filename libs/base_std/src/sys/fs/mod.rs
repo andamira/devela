@@ -3,12 +3,15 @@
 #![doc = crate::_DOC_SYS_FS!()]
 //
 
-mod reexports;
+mod _reexport;
 
-crate::structural_mods! { // _mods
+mod path;
+
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{
-            reexports::*,
-        };
+        pub use super::path::*;
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

@@ -10,6 +10,7 @@ use crate::Cast;
 
 #[doc = crate::_TAG_NUM!()]
 /// Offers methods to split a primitive into an array of smaller primitives.
+#[doc = crate::_doc_location!("num")]
 ///
 /// See also the [`Cast`] type for the equivalent *const* methods, and the
 /// [`PrimitiveJoin`][super::PrimitiveJoin] trait for the opposite operations.

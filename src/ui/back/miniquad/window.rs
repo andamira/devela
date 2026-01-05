@@ -13,7 +13,10 @@ use ::miniquad::window::{
 };
 use ::miniquad::{CursorIcon, RenderingBackend};
 
+#[doc = crate::_TAG_UI!()]
+#[doc = crate::_TAG_NAMESPACE!()]
 /// A wrapper namespace over [`miniquad::window`] functions.
+#[doc = crate::_doc_location!("ui/back/miniquad")]
 #[derive(Debug)]
 pub struct MiniquadWindow;
 

@@ -3,12 +3,10 @@
 #![doc = crate::_DOC_SYS_FS_PATH!()]
 //
 
-mod reexports;
+mod _reexport; // SYMLINK from /src/sys/fs/path/_reexport_std.rs
 
-crate::structural_mods! { // _pub_mods
-    _pub_mods {
-        pub use super::{
-            reexports::*,
-        };
+crate::structural_mods! { // _reexports
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

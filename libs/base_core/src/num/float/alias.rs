@@ -18,6 +18,7 @@ macro_rules! impl_fsize {
         #[doc = crate::_TAG_PRIMITIVE!()]
         #[doc = crate::_TAG_NUM!()]
         /// A pointer-sized floating-point primitive.
+        #[doc = crate::_doc_location!("num")]
         ///
         /// # Features
         /// Makes use of `nightly_float` in 16-bit architectures.

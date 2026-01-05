@@ -14,6 +14,7 @@ use crate::{Mem, Storage};
 #[doc = crate::_TAG_MEM!()]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`BareBox`].
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// Equivalent to the [`Boxed`] marker struct which uses a [`Box`] for the underlying storage.
 pub type Bare = ();
@@ -21,6 +22,7 @@ pub type Bare = ();
 #[doc = crate::_TAG_NO!()]
 #[doc = crate::_TAG_MEM!()]
 /// A no-op pointer type, like a [`Box`] but without affecting how `T` is stored.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// It is used as the underlying [`Storage`] for the [`Bare`] marker
 /// struct, just as a [`Box`] is used as the storage for [`Boxed`].

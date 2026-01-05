@@ -8,6 +8,7 @@ use ::core::{mem::MaybeUninit, num::*};
 
 #[doc = crate::_TAG_MEM!()]
 /// Indicates a type is Plain Old Data, and meets specific memory layout guarantees.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// Types that implement this trait are guaranteed to be safe for certain
 /// low-level memory operations, such as transmuting to and from byte slices,

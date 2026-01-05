@@ -8,6 +8,7 @@ use crate::{Orientation, Position};
 
 #[doc = crate::_TAG_GEOM!()]
 /// A separation between two locations in `D`-dimensional space.
+#[doc = crate::_doc_location!("num/geom/metric")]
 ///
 /// Represents a displacement vector **without an absolute origin**.
 /// It describes the magnitude of separation between positions.

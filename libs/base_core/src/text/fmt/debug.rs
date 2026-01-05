@@ -8,6 +8,7 @@ use crate::{FmtResult, Formatter};
 #[doc = crate::_TAG_FMT!()]
 #[doc = crate::_TAG_DEBUG!()]
 /// Extension for contextual debugging.
+#[doc = crate::_doc_location!("text/fmt")]
 ///
 /// Types implementing this trait support formatting with a caller-supplied context.
 /// The context is defined per-type via the `Ctx` associated type, allowing each type

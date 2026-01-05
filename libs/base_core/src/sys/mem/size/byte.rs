@@ -9,6 +9,7 @@ impl<T> ByteSized for T {}
 
 #[doc = crate::_TAG_MEM!()]
 /// Type size information in bytes.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// This trait is automatically implemented for every `Sized` type.
 // (this allows to have associated constants depending on Self)

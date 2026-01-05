@@ -13,6 +13,7 @@
 
 #[doc = crate::_TAG_MEM!()]
 /// Represents a fat pointer with separate data and metadata pointers.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 #[doc = crate::_doc!(vendor: "unsized-stack")]
 #[derive(Debug, Clone, Copy)]

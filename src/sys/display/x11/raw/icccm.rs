@@ -11,6 +11,11 @@
 //! window managers are expected to follow. This module offers no
 //! abstraction beyond the layout itself.
 //
+// TOC
+// - XAtomsIcccm
+// - XSizeHints
+// - XSizeRatio
+// - XWinGravity
 
 use super::super::raw;
 
@@ -29,6 +34,16 @@ pub(crate) const P_BASE_SIZE: i64 = 1 << 8; // base_width, base_height
 pub(crate) const P_WIN_GRAVITY: i64 = 1 << 9;
 
 /* types */
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct XAtomsIcccm {
+    /// The `WM_NORMAL_HINTS atom.
+    pub wm_normal_hints: u32,
+    /// The `WM_PROTOCOLS` atom.
+    pub wm_protocols: u32,
+    /// The `WM_DELETE_WINDOW` protocol atom.
+    pub wm_delete_window: u32,
+}
 
 /// ICCCM WM_NORMAL_HINTS structure.
 /// Must match XSizeHints layout exactly.

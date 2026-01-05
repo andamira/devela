@@ -31,6 +31,7 @@ define_error! { individual:
         /// The length of the error in bytes, if known.
         pub error_len: Option<usize>
     }
+    +location: "text",
     +tag: _TAG_TEXT!(),
     DOC_INVALID_UTF8 = "Invalid Utf-8 found while interpreting a byte sequence.\n\n
 This is basically a replication of `core::str::`[`Utf8Error`]`.",
@@ -54,6 +55,7 @@ impl InvalidUtf8 {
 define_error! { composite: fmt(f)
     #[doc = _TAG_TEXT!()]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
+    #[doc = crate::_doc_location!("text")]
     ///
     /// Used in methods of:
     /// [`StringNonul`][crate::StringNonul], and `StringU*`.
@@ -95,6 +97,7 @@ mod full_composite {
     define_error! { composite: fmt(f)
         +tag: _TAG_TEXT!(),
         /// A text-related composite error.
+        #[doc = crate::_doc_location!("text")]
         #[non_exhaustive]
         pub enum TextError {
             DOC_ELEMENT_NOT_FOUND: +const

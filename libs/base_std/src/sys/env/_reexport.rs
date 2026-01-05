@@ -29,7 +29,7 @@ _reexport! { rust: std::env, location: "sys/env", tag: _TAG_ITERATOR!() _TAG_PLA
 }
 
 _reexport! { rust: std::env, location: "sys/env", tag: _TAG_ERROR!() _TAG_PLATFORM!(),
-    doc: "Returned from [Env::join_paths][crate::Env#method.join_paths].",
+    doc: "Returned from [[`Env::join_paths`]][crate::Env#method.join_paths].",
     JoinPathsError,
 }
 _reexport! { rust: std::env, location: "sys/env", tag: _TAG_ERROR!() _TAG_PLATFORM!(),

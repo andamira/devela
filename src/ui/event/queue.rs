@@ -8,6 +8,7 @@ use crate::{ConstInit, Event, is, whilst};
 #[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_DATA_STRUCTURE!()]
 /// A tiny, zero-alloc FIFO queue for `Event`.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 /// This structure is intended for small CAP values (typically 1–4),
 /// where linear operations are simpler and cheaper than managing head/tail indices.

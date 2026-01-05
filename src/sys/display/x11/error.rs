@@ -5,7 +5,10 @@
 
 use crate::{Display, Error, FmtResult, Formatter};
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_ERROR!()]
 /// XCB/X11 error categories.
+#[doc = crate::_doc_location!("sys/display/x11")]
 ///
 /// Represents the main classes of failures that can occur when interacting with
 /// the X server through XCB. These variants cover connection issues, setup failures,

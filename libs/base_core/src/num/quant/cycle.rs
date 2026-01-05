@@ -7,6 +7,7 @@ use crate::ConstInitCore;
 
 #[doc = crate::_TAG_QUANT!()]
 /// A repeating cycle defined by a fundamental period.
+#[doc = crate::_doc_location!("num/quant")]
 ///
 /// A `Cycle` encapsulates the basic unit over which any phenomenon repeats,
 /// whether in time, space, or any abstract domain. It is the foundation for
@@ -22,6 +23,7 @@ impl<T: ConstInitCore> ConstInitCore for Cycle<T> {
 
 #[doc = crate::_TAG_QUANT!()]
 /// A cycle that repeats a fixed number of times.
+#[doc = crate::_doc_location!("num/quant")]
 ///
 /// `CycleCount` couples a fundamental `Cycle` with a discrete repetition count.
 ///

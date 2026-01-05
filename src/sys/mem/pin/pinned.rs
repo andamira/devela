@@ -5,7 +5,10 @@
 
 use crate::Pin;
 
+#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_TAG_LIFETIME!()]
 /// A wrapper for structurally pinned data.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// Up to 8 generics can be supplied for 8 structurally pinned fields.
 #[rustfmt::skip]

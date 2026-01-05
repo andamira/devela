@@ -12,6 +12,7 @@ type Result<T> = crate::Result<T, Overflow>;
 
 #[doc = crate::_TAG_NUM!()]
 /// Offers methods for casting between primitives.
+#[doc = crate::_doc_location!("num")]
 ///
 /// See also the [`Cast`] type for the equivalent *const* methods.
 /// # Errors

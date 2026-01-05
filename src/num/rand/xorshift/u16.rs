@@ -7,6 +7,7 @@ use crate::{ConstInit, Own, xorshift_basis};
 
 #[doc = crate::_TAG_RAND!()]
 /// The `XorShift16` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
+#[doc = crate::_doc_location!("num/rand")]
 ///
 /// It has a 16-bit state and generates 16-bit numbers.
 ///
@@ -180,7 +181,9 @@ mod impl_rand {
     }
 }
 
+#[doc = crate::_TAG_RAND!()]
 /// 4 × good triplets for 16-bit xorshift. (243 Bytes)
+#[doc = crate::_doc_location!("num/rand")]
 ///
 /// There are 60 shift triplets with the maximum period 2^16-1. 4 triplets pass
 /// a series of lightweight randomness tests including randomly plotting various

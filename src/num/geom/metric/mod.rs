@@ -7,9 +7,8 @@
 //! and measurement in geometric spaces.
 //
 
-crate::structural_mods! { // _mods
-    _mods {
-        // re-exports
+crate::structural_mods! { // _reexports
+    _reexports {
         #[doc(inline)]
         pub use devela_base_core::{
             Distance, Extent, Position, Region, Stride,

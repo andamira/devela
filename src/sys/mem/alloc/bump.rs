@@ -10,6 +10,7 @@ use crate::{
 
 #[doc = crate::_TAG_ALLOCATION!()]
 /// A simple, single-threaded bump allocator.
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// - Allocates memory linearly from a fixed memory region.
 /// - Does not support deallocation.

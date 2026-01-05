@@ -7,6 +7,7 @@
 #[doc = crate::_TAG_NAMESPACE!()]
 #[doc = crate::_TAG_OPTIONAL_STD!()]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
+#[doc = crate::_doc_location!("num")]
 ///
 /// See also the [`FloatConst`][crate::FloatConst] and [`FloatExt`] traits.
 #[doc = crate::doclink!(custom devela "[`FloatExt`]" "num/trait.FloatExt.html")]

@@ -3,12 +3,14 @@
 //! Defines [`XWindow`].
 //
 
-#![allow(unused)]
-
 use super::raw;
-use crate::{Extent, Libc, Position, XAtoms, XDisplay, XError, XEvent, lets};
+use crate::{Extent, Position, XDisplay, XError, lets};
 
+#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_TAG_UID!()]
+#[doc = crate::_TAG_GUARD!()]
 /// X11 window created through XCB.
+#[doc = crate::_doc_location!("sys/display/x11")]
 ///
 /// Represents a top-level window backed by an X11 drawable. Holds the XCB identifiers
 /// required to manage the window, its graphics context, and its basic geometry.

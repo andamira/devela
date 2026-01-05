@@ -7,6 +7,7 @@ use crate::{ConstInit, KeyDead, KeyMedia, KeyMod, KeyPad};
 
 #[doc = crate::_TAG_INTERACTION!()]
 /// Keyboard codes, used in [`EventKey`][crate::EventKey].
+#[doc = crate::_doc_location!("ui/event")]
 ///
 #[doc = "See also [`KeyFfi`][super::KeyFfi]."]
 //

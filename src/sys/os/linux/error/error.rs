@@ -21,11 +21,13 @@ use crate::{
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_RESULT!()]
 /// The return type for Linux-related functions that can fail.
+#[doc = crate::_doc_location!("sys/os/linux")]
 pub type LinuxResult<T> = crate::Result<T, LinuxError>;
 
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// Represents a Linux-related error.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// Encapsulates errors that can occur when interacting with Linux syscalls or
 /// performing Linux-specific operations.

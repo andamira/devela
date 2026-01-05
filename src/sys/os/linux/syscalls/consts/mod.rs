@@ -6,7 +6,8 @@
 
 #![allow(non_camel_case_types, clippy::upper_case_acronyms)]
 
-crate::CONST! { _DOC_SYS = "Linux `sys/syscall.h` constants for the current compilation target."; }
+crate::CONST! { _DOC_SYS = concat!( crate::_TAG_LINUX!(), " ", crate::_TAG_PLATFORM!(),
+"Linux `sys/syscall.h` constants for the current compilation target."); }
 
 crate::items! {
     #[cfg(target_arch = "aarch64")] mod aarch64;
@@ -18,18 +19,23 @@ crate::items! {
 
 #[doc = _DOC_SYS!()]
 #[cfg(target_arch = "aarch64")]
+#[doc = crate::_doc_location!("sys/os/linux")]
 pub type LINUX_SYS = aarch64::LINUX_SYS_AARCH64;
 #[doc = _DOC_SYS!()]
 #[cfg(target_arch = "arm")]
+#[doc = crate::_doc_location!("sys/os/linux")]
 pub type LINUX_SYS = arm::LINUX_SYS_ARM;
 #[doc = _DOC_SYS!()]
 #[cfg(any_target_arch_riscv)]
+#[doc = crate::_doc_location!("sys/os/linux")]
 pub type LINUX_SYS = riscv::LINUX_SYS_RISCV;
 #[doc = _DOC_SYS!()]
 #[cfg(target_arch = "x86")]
+#[doc = crate::_doc_location!("sys/os/linux")]
 pub type LINUX_SYS = x86::LINUX_SYS_X86;
 #[doc = _DOC_SYS!()]
 #[cfg(target_arch = "x86_64")]
+#[doc = crate::_doc_location!("sys/os/linux")]
 pub type LINUX_SYS = x86_64::LINUX_SYS_X86_64;
 
 /// File offset type (always 64-bit in modern Linux, even on 32-bit architectures)

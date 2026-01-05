@@ -13,6 +13,7 @@ use crate::c_int;
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_RESULT!()]
 /// Standard exit codes for Linux processes
+#[doc = crate::_doc_location!("sys/os/linux")]
 //
 // - /usr/include/sysexits.h
 #[derive(Debug)]
@@ -141,6 +142,7 @@ impl LINUX_EXIT {
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_ERROR_COMPOSITE!()]
 /// [`Linux`][crate::Linux] `sys/errno.h` constants.
+#[doc = crate::_doc_location!("sys/os/linux")]
 //
 // - /usr/include/asm-generic/errno.h
 #[derive(Debug)]

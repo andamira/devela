@@ -1,6 +1,6 @@
 // devela_base_core::num::geom::dir
 //
-#![doc = crate::_DOC_NUM_GEOM_METRIC!()]
+#![doc = crate::_DOC_NUM_GEOM_DIR!()]
 //
 
 mod orientation; // Orientation

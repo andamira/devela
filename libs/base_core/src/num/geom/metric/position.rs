@@ -8,6 +8,7 @@ use crate::{Distance, Orientation};
 
 #[doc = crate::_TAG_GEOM!()]
 /// A location in `D`-dimensional space.
+#[doc = crate::_doc_location!("num/geom/metric")]
 ///
 /// Represents an absolute position in a coordinate system.
 ///

@@ -10,6 +10,7 @@ use crate::{Box, ConstInit, Storage};
 // use rkyv::{Archive, Deserialize, Serialize};
 
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`Box`].
+#[doc = crate::_doc_location!("sys/mem")]
 ///
 /// Equivalent to the [`Bare`] marker struct which uses a [`BareBox`] for the underlying storage.
 // #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]

@@ -12,6 +12,7 @@ use crate::String;
 #[doc = crate::_TAG_EVENT!()]
 #[doc = crate::_TAG_INTERACTION!()]
 /// Events related to a window.
+#[doc = crate::_doc_location!("ui/event")]
 ///
 /// Names and payloads are backend-agnostic and focus on
 /// the stable cross-platform meaning of each event.

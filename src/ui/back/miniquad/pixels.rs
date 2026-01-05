@@ -15,7 +15,10 @@ use ::miniquad::{
     RenderingBackend, TextureFormat, TextureId, TextureParams, VertexAttribute, VertexFormat,
 };
 
+#[doc = crate::_TAG_IMAGE!()]
+#[doc = crate::_TAG_RUNTIME!()]
 /// Draws a single fullscreen quad textured by a pixel buffer.
+#[doc = crate::_doc_location!("ui/back/miniquad")]
 pub struct MiniquadPixels {
     ctx: Option<Box<dyn RenderingBackend>>,
     pipeline: Option<Pipeline>,

@@ -18,6 +18,7 @@ use ::core::{f16, f128};
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NAMESPACE!()] // by association with Float
 /// Extension trait for floating-point types. Associated constants.
+#[doc = crate::_doc_location!("num")]
 ///
 /// # Constants
 ///

@@ -20,6 +20,7 @@ mod vec;
 
 #[doc = crate::_TAG_GEOM!()]
 /// A static `D`-dimensional vector, backed by a primitive [`array`][prim@array].
+#[doc = crate::_doc_location!("num/geom/linear")]
 #[repr(transparent)]
 pub struct Vector<T, const D: usize> {
     /// The vector coordinates in some basis.
@@ -28,14 +29,17 @@ pub struct Vector<T, const D: usize> {
 
 #[doc = crate::_TAG_GEOM!()]
 /// A static 2-dimensional vector.
+#[doc = crate::_doc_location!("num/geom/linear")]
 pub type Vector2d<T> = Vector<T, 2>;
 
 #[doc = crate::_TAG_GEOM!()]
 /// A static 3-dimensional vector.
+#[doc = crate::_doc_location!("num/geom/linear")]
 pub type Vector3d<T> = Vector<T, 3>;
 
 #[doc = crate::_TAG_GEOM!()]
 /// A dynamic vector, backed by a primitive [`Vec`].
+#[doc = crate::_doc_location!("num/geom/linear")]
 #[repr(transparent)]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
@@ -48,6 +52,7 @@ pub struct VecVector<T> {
 
 #[doc = crate::_TAG_GEOM!()]
 /// A common trait for all vectors.
+#[doc = crate::_doc_location!("num/geom/linear")]
 pub trait NumVector: Num {
     /// The associated scalar type.
     type Scalar;

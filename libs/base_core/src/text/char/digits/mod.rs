@@ -14,13 +14,13 @@ mod u16;
 mod u32;
 mod u64;
 mod u128;
+// mod u256; // WIP
 mod usize;
 
 #[doc = crate::_TAG_TEXT!()]
 #[doc = crate::_TAG_NUM!()]
 #[doc = crate::_TAG_NAMESPACE!()]
 /// Provides ASCII digit operations and conversions for unsigned integer primitives.
-///
 #[doc = crate::_doc_location!("text/char")]
 ///
 /// Enables efficient ASCII digit extraction, counting, and conversion

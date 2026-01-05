@@ -29,7 +29,7 @@ const CRATE_NAME: &str = "devela";
 
 /* imports */
 
-extern crate devela_base_core as base_core;
+// extern crate devela_base_core as base_core;
 // extern crate devela_base_std as base_std; // MAYBE
 extern crate self as build;
 

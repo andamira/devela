@@ -30,6 +30,7 @@ macro_rules! impl_str_u {
         #[allow(rustdoc::broken_intra_doc_links, reason = "±unsafe")]
         #[doc = crate::_TAG_TEXT!()]
         /// A UTF-8 string with fixed capacity that stores length explicitly.
+        #[doc = crate::_doc_location!("text/str")]
         ///
         /// Prioritizes speed over memory: O(1) length operations but uses extra space.
         /// For the opposite trade-off see [`StringNonul`][crate::StringNonul].

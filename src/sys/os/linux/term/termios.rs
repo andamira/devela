@@ -17,8 +17,8 @@ use crate::{
 
 #[doc = crate::_TAG_LINUX!()]
 #[doc = crate::_TAG_TERM!()]
-/// Represents the [`termios`] structure from libc,
-/// used to control terminal I/O.
+/// Represents the [`termios`] structure from libc, used to control terminal I/O.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// It has fields for input, output, control, and local modes,
 /// as well as a line discipline and control characters.

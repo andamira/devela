@@ -14,6 +14,7 @@ use crate::c_int;
 
 #[doc = crate::_TAG_LINUX!()]
 /// Linux flag constants for [`LinuxSigaction`][crate::sys::os::linux::LinuxSigaction].
+#[doc = crate::_doc_location!("sys/os/linux")]
 #[allow(non_camel_case_types)]
 #[derive(Debug)]
 pub struct LINUX_SIGACTION;
@@ -114,6 +115,7 @@ impl LINUX_SIGACTION {
 
 #[doc = crate::_TAG_LINUX!()]
 /// Linux standard signals constants.
+#[doc = crate::_doc_location!("sys/os/linux")]
 ///
 /// Each signal has a current disposition, which determines how the process
 /// behaves when it is delivered the signal.

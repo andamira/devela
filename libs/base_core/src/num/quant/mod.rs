@@ -17,22 +17,25 @@
 #![doc = crate::doclink!(custom devela "[`interval!`]" "num/quant/macro.interval.html")]
 //
 
+// mod align; // Align WIP
+// mod counter; // Counter
 mod cycle; // Cycle, CycleCount
 mod interval; // Interval, interval!
+// mod norm; // Norm
 // mod ratio; // Ratio
+// mod scale; // Scale
 mod sign; // Sign
-
-// WIPZONE
-// mod _wip_counter;
-// mod _wip_norm;
-// mod _wip_scale;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{cycle::*, interval::*, sign::*};
-        // WIPZONE
-        // pub use super::_wip_counter::*;
-        // pub use super::_wip_norm::*;
-        // pub use super::_wip_scale::*;
+        pub use super::{
+            // align::*, WIP
+            // counter::*,
+            cycle::*,
+            interval::*,
+            // norm::*,
+            // scale::*,
+            sign::*,
+        };
     }
 }

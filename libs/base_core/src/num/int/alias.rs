@@ -11,6 +11,7 @@ macro_rules! iusize_alias {
             #[doc = $crate::_TAG_PRIMITIVE!()]
             #[doc = $crate::_TAG_NUM!()]
             #[doc = $casted " pointer-sized " $sign " integer primitive."]
+            #[doc = crate::_doc_location!("num")]
             #[cfg(target_pointer_width = $width)]
             pub type $ty = $cast;
         )+

@@ -12,6 +12,7 @@ use crate::data::Vec;
 
 #[doc = crate::_TAG_NUM!()]
 /// Common trait for unit prefixes.
+#[doc = crate::_doc_location!("num")]
 ///
 /// - <https://en.wikipedia.org/wiki/Unit_of_measurement>
 pub trait Unit: Sized {
