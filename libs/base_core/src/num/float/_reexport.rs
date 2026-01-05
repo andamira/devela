@@ -1,4 +1,4 @@
-// devela_base_core::num::float::reexports
+// devela_base_core::num::float::_reexport
 //
 //!
 //
@@ -6,6 +6,7 @@
 use crate::_reexport;
 
 _reexport! { rust: core::num,
+    location: "num",
     tag: crate::_TAG_NUM!(),
     doc: "A classification of floating point numbers.",
     @FpCategory as FloatCategory

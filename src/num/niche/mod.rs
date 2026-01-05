@@ -66,11 +66,11 @@
 //! | No constraints needed     | Primitive / `NonNiche`    | Maximum simplicity             |
 //
 
-crate::mod_path!(_c "../../../libs/base_core/src/num/niche/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/num/niche/_reexport.rs
 
 mod impls; // impl ConstInit, BitSized
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         #[doc(inline)]
         pub use devela_base_core::num::niche::{
@@ -81,6 +81,8 @@ crate::structural_mods! { // _mods
             NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128, NonExtremeIsize,
             ne, nv, nz,
         };
-        pub use super::_c::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
     }
 }

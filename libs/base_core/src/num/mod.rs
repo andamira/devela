@@ -16,12 +16,12 @@ mod cast; // Cast
 mod float; // Float, FloatConst, f[32|64]_bits, fsize
 mod int; // Divisor, GcdReturn, [i|u]size_[down|up]
 mod logic; // ConstBool, False, True, const_bool!
-mod ord; // Cmp
 mod traits; // NumConst
 
 pub mod error; // error types
 pub mod geom;
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
+pub mod ord; // Cmp
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod wide; // define_lane!
 
@@ -33,7 +33,6 @@ crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
             float::_all::*,
             int::_all::*,
             logic::_all::*,
-            ord::_all::*,
             traits::_all::*,
         };
     }
@@ -43,6 +42,7 @@ crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
         pub use super::{
             geom::_all::*,
             niche::_all::*,
+            ord::_all::*,
             quant::_all::*,
             wide::_all::*,
         };

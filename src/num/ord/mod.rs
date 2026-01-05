@@ -5,14 +5,12 @@
 #![doc = crate::_doc!(extends: cmp)]
 //
 
-// re-exports
-crate::mod_path!(_c "../../../libs/base_core/src/num/ord/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/num/ord/_reexport.rs
 
-crate::structural_mods! { // _mods
-    _mods {
-        // re-exports
-        pub use super::_c::*;
+crate::structural_mods! { // _reexports
+    _reexports {
+        pub use super::_reexport_core::*;
         #[doc(inline)]
-        pub use devela_base_core::Cmp;
+        pub use devela_base_core::num::ord::Cmp;
     }
 }

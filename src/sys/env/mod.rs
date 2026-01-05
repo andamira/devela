@@ -5,8 +5,9 @@
 #![doc = crate::_doc!(extends: env)]
 //
 
-crate::mod_path!(_c "../../../libs/base_core/src/sys/env/reexports.rs");
-crate::mod_path!(std _s "../../../libs/base_std/src/sys/env/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/sys/env/_reexport.rs
+#[cfg(feature = "std")]
+mod _reexport_std; // SYMLINK to /libs/base_std/src/sys/env/_reexport.rs
 
 mod arg;
 mod namespace;
@@ -15,11 +16,19 @@ mod namespace;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod app;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{_c::*, arg::_all::*, namespace::*};
+        pub use super::{
+            arg::_all::*,
+            namespace::*,
+        };
 
         #[cfg(feature = "std")]
-        pub use super::{_s::*, app::*};
+        pub use super::app::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
     }
 }

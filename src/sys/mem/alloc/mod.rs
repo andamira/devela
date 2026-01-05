@@ -4,7 +4,11 @@
 //!
 // #![doc = crate::_doc!(extends: alloc)]
 
-mod reexports;
+#[cfg(feature = "alloc")]
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/sys/mem/alloc/_reexport.rs
+#[cfg(feature = "std")]
+mod _reexport_std; // SYMLINK to /libs/base_std/src/sys/mem/alloc/_reexport.rs
+
 mod namespace;
 
 #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
@@ -18,10 +22,16 @@ mod bump;
 )]
 mod wasm;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{namespace::*, reexports::*};
+        pub use super::namespace::*;
         #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
         pub use super::{bump::*, wasm::*};
+    }
+    _reexports {
+        #[cfg(feature = "alloc")]
+        pub use super::_reexport_alloc::*;
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
     }
 }

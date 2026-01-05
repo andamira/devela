@@ -20,8 +20,7 @@ fn min_max_clamp() {
 
 #[test]
 fn float() {
-    let (zero, negzero, one, negone) =
-        (Cmp(0.0_f32), Cmp(-0.0_f32), Cmp(1.0_f32), Cmp(-1.0_f32));
+    let (zero, negzero, one, negone) = (Cmp(0.0_f32), Cmp(-0.0_f32), Cmp(1.0_f32), Cmp(-1.0_f32));
     let (nan1, nan2) = (Cmp(f32::NAN), Cmp(0.0_f32 / 0.0_f32));
     let (inf, neginf) = (Cmp(f32::INFINITY), Cmp(f32::NEG_INFINITY));
     let sub = Cmp(1.401298464e-45_f32);

@@ -3,12 +3,15 @@
 //! WASM architecture functionality.
 //
 
-crate::mod_path!(_c "../../../../libs/base_core/src/sys/arch/wasm/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/sys/arch/wasm/_reexport.rs
 
 mod namespace; // Wasm
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, reexports
     _mods {
-        pub use super::{namespace::*, _c::*};
+        pub use super::namespace::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
     }
 }

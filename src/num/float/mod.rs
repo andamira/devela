@@ -3,31 +3,29 @@
 #![doc = crate::_DOC_NUM_FLOAT!()]
 //
 
+mod _reexport_core; // SYMLINK to /libs/base_core/src/num/float/_reexport.rs
+
 mod ext_float; // FloatExt
 
-// re-exports
-crate::mod_path!(_c "../../../libs/base_core/src/num/float/reexports.rs");
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             ext_float::*,
         };
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
 
-        // re-exports
-        pub use super::_c::*;
         #[doc(inline)]
         pub use devela_base_core::num::{
             FloatConst,
             f32bits, f32bits_niche, f64bits, f64bits_niche, fsize,
         };
 
-        #[cfg(not(feature = "std"))]
-        #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature = "std"))))]
-        pub use devela_base_core::num::Float;
-
-        #[cfg(feature = "std")]
-        #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature = "std"))))]
-        pub use devela_base_std::num::FloatStd as Float;
+        crate::cfg_if! { if #[cfg(feature = "std")] {
+            pub use devela_base_std::num::FloatStd as Float;
+        } else {
+            pub use devela_base_core::num::Float;
+        }}
     }
 }

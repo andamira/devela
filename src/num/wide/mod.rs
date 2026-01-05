@@ -5,17 +5,16 @@
 #![doc = crate::_doc!(extends: simd)]
 //
 
-// re-exports
-crate::mod_path!(_c "../../../libs/base_core/src/num/wide/reexports.rs");
+mod _reexport_core; // SYMLINK to /libs/base_core/src/num/wide/_reexport.rs
 
-crate::structural_mods! { // _hidden
-    _mods {
-        // re-exports
-        pub use super::_c::*;
+crate::structural_mods! { // _reexports, _hidden
+    _reexports {
+        pub use super::_reexport_core::*;
+
         #[doc(inline)]
-        pub use devela_base_core::num::define_lane;
+        pub use devela_base_core::num::wide::define_lane;
         #[cfg(feature = "_docs_min")]
-        pub use devela_base_core::num::ExampleLane4_i32;
+        pub use devela_base_core::num::wide::ExampleLane4_i32;
     }
     _hidden {
         pub use devela_base_core::{

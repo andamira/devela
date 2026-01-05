@@ -3,11 +3,15 @@
 #![doc = crate::_DOC_SYS_ARCH!()]
 //
 
-mod reexports;
+mod _reexport; // SYMLINK from /src/sys/arch/_reexport_core.rs
+
 mod wasm;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::{reexports::*, wasm::_all::*, };
+        pub use super::wasm::_all::*;
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

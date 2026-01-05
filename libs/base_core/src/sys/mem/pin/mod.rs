@@ -3,12 +3,10 @@
 #![doc = crate::_DOC_SYS_MEM_PIN!()]
 //
 
-mod reexports;
+mod _reexport; // SYMLINK from /src/sys/mem/pin/_reexport_core.rs
 
-crate::structural_mods! { // _mods
-    _mods {
-        pub use super::{
-            reexports::*,
-        };
+crate::structural_mods! { // _reexports
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

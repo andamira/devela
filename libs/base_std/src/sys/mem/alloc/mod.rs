@@ -1,14 +1,12 @@
-// devela_base_std::sys::mem
+// devela_base_std::sys::mem::alloc
 //
-#![doc = crate::_DOC_SYS_MEM!()]
+#![doc = crate::_DOC_SYS_MEM_ALLOC!()]
 //
 
-mod reexports;
+mod _reexport; // SYMLINK from /src/sys/mem/alloc/_reexport_std.rs
 
-crate::structural_mods! { // _mods
-    _mods {
-        pub use super::{
-            reexports::*,
-        };
+crate::structural_mods! { // _reexports
+    _reexports {
+        pub use super::_reexport::*;
     }
 }

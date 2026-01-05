@@ -108,6 +108,8 @@ mod impl_alloc {
         LinkedList,
         Vec,
         BinaryHeap, VecDeque,
+        // sys
+        RcWeak,
         // text
         String,
     };
@@ -116,6 +118,9 @@ mod impl_alloc {
     impl<T: Ord> ConstInit for BinaryHeap<T> { const INIT: Self = Self::new(); }
 
     _impl_init![ConstInit: <K, V> Self::new() => BTreeMap<K, V>];
+
+    // sys
+    _impl_init![ConstInit: <T: ConstInit> Self::new() => RcWeak<T>];
 
     // text
     _impl_init![ConstInit: Self::new() => String];

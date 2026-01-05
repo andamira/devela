@@ -3,6 +3,8 @@
 #![doc = crate::_DOC_SYS_MEM!()]
 //
 
+mod _reexport; // SYMLINK from /src/sys/mem/_reexport_core.rs
+
 mod align; // CacheAlign, MemAligned
 mod arena; // ArenaBytes
 mod borrow;
@@ -11,13 +13,12 @@ mod cswap; // cswap!
 mod namespace; // Mem
 mod pin;
 mod ptr;
-mod reexports;
 mod size; // size_of_expr!, BitSized, ByteSized,
 mod slice; // Slice
 
 pub mod cell;
 
-crate::structural_mods! { // _mods, _pub_mods, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         pub use super::{
             align::_all::*,
@@ -28,7 +29,6 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
             namespace::*,
             pin::_all::*,
             ptr::_all::*,
-            reexports::*,
             size::_all::*,
             slice::_all::*,
         };
@@ -37,6 +37,9 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
         pub use super::{
             cell::_all::*,
         };
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
     _hidden {
         pub use super::{
