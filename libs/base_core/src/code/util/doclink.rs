@@ -92,7 +92,7 @@ macro_rules! _doclink {
     };
     ( // https://…/{crate::__crate_name!()}/item_path
       // file://…/{crate::__crate_name!()}/item_path/index.html
-     custom_current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
+     custom_current_crate $item_path:expr, $(@mod$($_m:lifetime)?)?) => {
         concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
         crate::__crate_name!(),"/latest/", stringify!($crate_name), "/", $item_path]
     };
@@ -178,7 +178,7 @@ macro_rules! _doclink {
         stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?]
     };
     ( // file://…/{crate::__crate_name!()}/item_path/index.html
-     custom_current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
+     custom_current_crate $item_path:expr, $(@mod$($_m:lifetime)?)?) => {
         concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
         crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)?]
     };

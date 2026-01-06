@@ -30,6 +30,14 @@ macro_rules! __doc {
     // (newline) => { "<br/><br/>" };
     (newline) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" };
 
+    /* link to zall_:: associated module */
+
+    (all: $mod:literal) => {
+        // concat!("[*👁*][crate::zall_::", stringify!($mod), "]")
+        concat!["<a title='See all items flat re-exported' href='",
+            $crate::doclink![custom_current_crate concat!["zall_/", $mod], @mod], "'>👁</a>"]
+    };
+
     /* list of submodules */
 
     // IMPROVE:MAYBE pass optional feature-gate arg for each module
@@ -229,7 +237,7 @@ macro_rules! _doc_location {
         concat!(
             "\n\n---\n\n<sup title='defined in ", __crate_name!(),
             // "🎅\n\n---\n\n<sup title='defined in `", __crate_name!(), // DEBUG
-            "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
+            "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
             "\n\n---\n\n" // final horizontal line
@@ -253,7 +261,7 @@ macro_rules! _doc_location {
         concat!(
             "\n\n<sup title='re-exported from ", __crate_name!(),
             // "🎅\n\n---\n\n<sup title='re-exported from `", __crate_name!(), // DEBUG
-            "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
+            "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
         )
