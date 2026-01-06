@@ -3,8 +3,10 @@
 #![doc = crate::_DOC_CODE_PANIC!()]
 //
 
-mod _reexport;
+mod _reexport; // SYMLINK from /src/code/panic/_reexport_core.rs
 
 crate::structural_mods! { // _reexports
-    _reexports { pub use super::_reexport::*; }
+    _reexports {
+        pub use super::_reexport::*;
+    }
 }

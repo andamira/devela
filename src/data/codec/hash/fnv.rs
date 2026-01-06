@@ -2,6 +2,8 @@
 
 use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 
+#[doc = crate::_TAG_HASH!()]
+#[doc = crate::_TAG_INIT!()]
 /// A builder for default Fnv hashers.
 #[doc = crate::_doc_location!("data/codec/hash")]
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;

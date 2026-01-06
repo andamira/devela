@@ -52,7 +52,7 @@ macro_rules! __reexport {
             $($($core_path "/")+)? "\">core" $($("::" $core_path)+)? "</a>"]
         #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final double line
+        #[doc = "\n\n---\n\n---"] // final horizontal double line
 
         #[cfg_attr(nightly_doc, doc(cfg(all(
             $( feature = $module_feature, )?
@@ -91,7 +91,7 @@ macro_rules! __reexport {
             $($($alloc_path "/")+)? "\">alloc" $($("::" $alloc_path)+)? "</a>"]
         #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final double line
+        #[doc = "\n\n---\n\n---"] // final horizontal double line
 
         #[cfg_attr(
             nightly_doc,
@@ -129,7 +129,7 @@ macro_rules! __reexport {
             $($($std_path "/")+)? "\">std" $($("::" $std_path)+)? "</a>"]
         #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final double line
+        #[doc = "\n\n---\n\n---"] // final horizontal double line
 
         #[cfg_attr(
             nightly_doc,
@@ -167,7 +167,7 @@ macro_rules! __reexport {
             $($($std_path "/")+)? "\">std" $($("::" $std_path)+)? "</a>"]
         #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final double line
+        #[doc = "\n\n---\n\n---"] // final horizontal double line
 
         #[cfg_attr(
             nightly_doc,
@@ -205,7 +205,7 @@ macro_rules! __reexport {
     //       $($($std_path "/")+)? "\">std" $($("::" $std_path)+)? "</a>"]
     //     #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
     //     $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-    //     #[doc = "\n\n---\n\n---"] // final double line
+    //     #[doc = "\n\n---\n\n---"] // final horizontal double line
     //
     //
     //     #[cfg_attr(
@@ -307,7 +307,7 @@ macro_rules! __reexport {
             href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a> crate."]
         #[doc = $("` (" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final double line
+        #[doc = "\n\n---\n\n---"] // final horizontal double line
 
 
         // IMPROVE: can't use like this for portable-atomic | core::atomic,
@@ -357,8 +357,7 @@ macro_rules! __reexport {
             href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a> crate."]
         #[doc = $("` (" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
         $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final double line
-
+        #[doc = "\n\n---\n\n---"] // final horizontal double line
 
         #[cfg_attr(nightly_doc, doc(cfg(all(
             $( feature = $module_feature ,)?

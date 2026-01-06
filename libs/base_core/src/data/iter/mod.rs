@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA_ITER!()]
 //
 
-mod _reexport;
+mod _reexport; // SYMLINK from /src/data/iter/_reexport_core.rs
 
 mod lending; // IteratorLending[DoubleEnded|ExactSize|Peek]
 

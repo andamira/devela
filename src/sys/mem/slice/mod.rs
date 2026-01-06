@@ -10,11 +10,11 @@ mod tests;
 
 mod ext; // SliceExt
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::ext::*;
-
-        // re-exports
+    }
+    _reexports {
         #[doc(inline)]
         pub use devela_base_core::sys::mem::{
             Slice, const_join, slice,

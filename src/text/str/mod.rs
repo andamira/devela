@@ -4,15 +4,14 @@
 //!
 #![doc = crate::_doc!(extends: str, string)]
 
+mod _reexport_core; // SYMLINK to /libs/base_core/src/text/str/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/text/str/_reexport.rs
+mod _reexport_std; // SYMLINK to /libs/base_std/src/text/str/_reexport.rs
+
 mod ext_str; // StrExt
 
 #[cfg(feature = "alloc")]
 mod ext_string; // StringExt
-
-// re-exports
-mod _reexport_core; // SYMLINK to /libs/base_core/src/text/str/_reexport.rs
-mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/text/str/_reexport.rs
-mod _reexport_std; // SYMLINK to /libs/base_std/src/text/str/_reexport.rs
 
 crate::structural_mods! { // _mods, _reexports
     _mods {

@@ -1,7 +1,4 @@
 // devela_base_std::text::str:_reexport
-//
-//! String related re-exports.
-//
 
 #![allow(unused_imports)]
 

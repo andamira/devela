@@ -13,14 +13,14 @@ crate::sf! {
     impl<T: Num> NumRef<'_> for &mut T { type Own = T; }
 }
 
-crate::structural_mods! { //_mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             num::*,
             r#ref::*,
         };
-
-        // re-exports
+    }
+    _reexports {
         pub use devela_base_core::num::{
             NumConst,
         };

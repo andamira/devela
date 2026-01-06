@@ -5,22 +5,19 @@
 #![doc = crate::_doc!(extends: panic)]
 //
 
+mod _reexport_core; // SYMLINK to /libs/base_core/src/code/panic/_reexport.rs
+mod _reexport_std; // SYMLINK to ../../../libs/base_std/src/code/panic/_reexport.rs
+
 mod set; // set_panic_handler!
 
-// re-exports
-crate::mod_path!(_c "../../../libs/base_core/src/code/panic/_reexport.rs");
-crate::mod_path!(std _s "../../../libs/base_std/src/code/panic/_reexport.rs");
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::set::*;
-
-        // re-exports
-        pub use super::_c::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+        pub use super::_reexport_std::*;
         #[cfg(feature = "std")]
-        pub use {
-            devela_base_std::code::panic::Panic,
-            super::_s::*,
-        };
+        pub use devela_base_std::code::panic::Panic;
     }
 }

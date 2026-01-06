@@ -7,11 +7,11 @@
 
 // mod drum_machine;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         // pub use super::drum_machine::*;
-
-        // re-exports
+    }
+    _reexports {
         pub use devela_base_core::media::audio::{
             AudioChannel, AudioChannels,
         };

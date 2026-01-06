@@ -20,7 +20,7 @@ pub use devela_base_macros::{
     repeat,
 };
 
-/* `core::hint` functions re-exports */
+/* `core::hint` functions */
 
 _reexport! { rust: core::hint, location: "code/util", tag: _TAG_ASSERT!(),
 doc: "Makes a *soundness* promise to the compiler that the `cond`ition holds.", assert_unchecked }
@@ -31,7 +31,7 @@ doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_
 _reexport! { rust: core::hint, location: "code/util", tag: _TAG_ASSERT!(),
 doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
 
-/* `core` macros re-exports */
+/* `core` macros */
 
 // FLAG_DISABLED:nightly_autodiff
 // _reexport! { rust: core::autodiff, location: "code/util", extra_flags:(nightly_autodiff),

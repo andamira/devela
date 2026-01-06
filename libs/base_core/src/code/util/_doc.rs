@@ -231,7 +231,8 @@ macro_rules! _doc_location {
             // "🎅\n\n---\n\n<sup title='defined in `", __crate_name!(), // DEBUG
             "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
-            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>\n\n",
+            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
+            "\n\n---\n\n" // final horizontal line
         )
     };
     // for items defined in a proc-macro workspace crate and aggregated in devela.
@@ -242,7 +243,8 @@ macro_rules! _doc_location {
             // "🎅\n\n---\n\n<sup title='defined in `", __crate_name!(), // DEBUG
             "`'>[`📍`](", $crate::doclink![custom_current_proc_crate @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
-            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>\n\n",
+            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
+            "\n\n---\n\n" // final horizontal line
         )
     };
     // for items re-exported from another crate.

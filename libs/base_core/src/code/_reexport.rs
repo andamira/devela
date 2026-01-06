@@ -5,13 +5,13 @@
 
 use crate::{_TAG_ERROR, _TAG_INIT, _TAG_LIFETIME, _TAG_NO, _TAG_VALUE, _reexport};
 
-/* `core::clone` re-exports */
+/* `core::clone` */
 
 // NOTE: the trait and the derive macro have the same name
 _reexport! { rust: core::clone, location: "code", tag: _TAG_VALUE!(),
 doc: "A common trait that allows explicit creation of a duplicate value. (Derivable)", Clone }
 
-/* `core::convert` re-exports */
+/* `core::convert` */
 
 // enums
 _reexport! { rust: core::convert, location: "code", tag: _TAG_NO!() _TAG_ERROR!(),
@@ -35,7 +35,7 @@ doc: "An attempted conversion that consumes self, which may be expensive.", TryI
 _reexport! { rust: core::convert, location: "code", tag: crate::_TAG_NO!(),
 doc: "The identity function. Just returns back its input.", identity }
 
-/* `core::default` re-exports */
+/* `core::default` */
 
 // NOTE: the trait and the derive macro have the same name
 _reexport! { rust: core::default, location: "code", tag: _TAG_INIT!(),

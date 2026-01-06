@@ -1,5 +1,6 @@
 // devela_base_std::code::panic::_reexport
 
+#[allow(unused_imports, reason = "re-exported from devela")]
 use crate::{_TAG_CODE, _reexport};
 
 /* structs */

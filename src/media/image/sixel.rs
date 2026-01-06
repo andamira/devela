@@ -5,9 +5,8 @@
 //! [Sixel]: https://en.wikipedia.org/wiki/Sixel
 //
 
-crate::structural_mods! { // _mods, _hidden
-    _mods {
-        // re-exports
+crate::structural_mods! { // _reexports, _hidden
+    _reexports {
         #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
         pub use devela_base_core::media::image::sixel:: {

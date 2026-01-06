@@ -10,7 +10,7 @@ mod color; // Color
 // #[cfg(feature = "linear")]
 // mod xyz; // Xyz
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             color::*,
@@ -18,8 +18,8 @@ crate::structural_mods! { // _mods, _crate_internals
         };
         // #[cfg(feature = "linear")]
         // pub use super::xyz::*;
-
-        // re-exports
+    }
+    _reexports {
         pub use devela_base_core::media::color::{
             GammaConst, Lum, // & aliases:
             Lightness, LinearLightness, Luma, Luminance,

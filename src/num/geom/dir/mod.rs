@@ -18,13 +18,13 @@
 
 mod angle; // Angle, AngleDirection, AngleKind
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             angle::*,
         };
-
-        // re-exports
+    }
+    _reexports {
         #[doc(inline)]
         pub use devela_base_core::{
             Orientation,
