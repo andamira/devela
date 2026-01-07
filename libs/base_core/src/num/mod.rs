@@ -1,13 +1,18 @@
 // devela_base_core::num
 //
 #![doc = crate::_DOC_NUM!()]
-#![doc = crate::_doc!(modules: crate; num: error, geom, niche, quant, wide)] // logic, ord, rand
+#![doc = crate::_DOC_NUM_MODULES!()]
+#![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: cmp, num, simd)]
 //
 // safety
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_NUM_MODULES =
+    crate::_doc!(modules: crate; num: error, geom, niche, quant, wide); // logic, ord, rand
+}
 
 mod _internals; // impl_ops!
 
@@ -25,7 +30,7 @@ pub mod ord; // Cmp
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod wide; // define_lane!
 
-crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
+crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals
     _mods {
         pub use super::{
             bit::_all::*,
@@ -46,6 +51,9 @@ crate::structural_mods! { //_mods, _pub_mods, _workspace_internals
             quant::_all::*,
             wide::_all::*,
         };
+    }
+    _crate_internals {
+        pub(crate) use super::_DOC_NUM_MODULES;
     }
     _workspace_internals {
         pub use super::{

@@ -1,13 +1,18 @@
 // devela_base_core::data
 //
 #![doc = crate::_DOC_DATA!()]
-#![doc = crate::_doc!(modules: crate; data: bit, codec, error, iter, list, uid)] // key, table
+#![doc = crate::_DOC_DATA_MODULES!()]
+#![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //
 // safety
 #![cfg_attr(base_safe_data, forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_DATA_MODULES =
+    crate::_doc!(modules: crate; data: bit, codec, error, iter, list, uid); // key, table
+}
 
 mod handle; // define_handle!
 mod sort; // Sort
@@ -22,7 +27,7 @@ pub mod list;
 // pub mod space; // Grid
 pub mod uid; // IdPin
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             handle::*,
@@ -42,5 +47,8 @@ crate::structural_mods! { // _mods, _pub_mods
             list::_all::*,
             // space::_all::*,
         };
+    }
+    _crate_internals {
+        pub(crate) use super::_DOC_DATA_MODULES;
     }
 }

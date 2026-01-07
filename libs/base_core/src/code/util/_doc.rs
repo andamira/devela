@@ -30,12 +30,15 @@ macro_rules! __doc {
     // (newline) => { "<br/><br/>" };
     (newline) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" };
 
-    /* link to zall_:: associated module */
-
-    (all: $mod:literal) => {
-        // concat!("[*👁*][crate::zall_::", stringify!($mod), "]")
-        concat!["<a title='See all items flat re-exported' href='",
-            $crate::doclink![custom_current_crate concat!["zall_/", $mod], @mod], "'>👁</a>"]
+    // link to zall_::* associated module
+    (flat: $mod:literal) => {
+        concat!["<a title='Flat view of the `", $mod, "` module' href='",
+            $crate::doclink![custom_current_crate concat!["zall_/_", $mod], @mod], "'>◉</a>"]//◉◦•
+    };
+    // link to the root * associated module
+    (root: $mod:literal) => {
+        concat!["<a title='Hierarchical view of the `", $mod, "` module' href='",
+            $crate::doclink![custom_current_crate $mod, @mod], "'>◬</a>"]//◬◌⊙⊜◎◎
     };
 
     /* list of submodules */

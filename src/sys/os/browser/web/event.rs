@@ -105,6 +105,7 @@ pub struct WebEventMouse {
     /// The Y-coordinate of the mouse event relative to the viewport.
     pub y: js_number,
     /// The mouse button that triggered the event (`0`: left, `1`: middle, `2`: right).
+    ///
     /// If the event was a movement without a button click, this is `-1` (255)
     pub button: u8,
     /// A bitmask of buttons currently being held down (`1`: left, `2`: right, `4`: middle).

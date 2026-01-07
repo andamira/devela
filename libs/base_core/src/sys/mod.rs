@@ -1,7 +1,8 @@
 // devela_base_core::sys
 //
 #![doc = crate::_DOC_SYS!()]
-#![doc = crate::_doc!(modules: crate; sys: arch, env, log, mem, net)] // fs, io, os
+#![doc = crate::_DOC_SYS_MODULES!()]
+#![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
@@ -22,6 +23,10 @@ rustc --print target-list | cut -f3 -d'-'| sort | uniq # List of OSes supported
 //
 // safety
 #![cfg_attr(base_safe_sys, forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_SYS_MODULES =
+    crate::_doc!(modules: crate; sys: arch, env, log, mem, net); // display, fs, hw, io, os
+}
 
 pub mod arch;
 pub mod env;
@@ -30,7 +35,7 @@ pub mod mem;
 pub mod net;
 pub mod os;
 
-crate::structural_mods! { // _pub_mods, _hidden
+crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         pub use super::{
             arch::_all::*,
@@ -40,6 +45,9 @@ crate::structural_mods! { // _pub_mods, _hidden
             net::_all::*,
             os::_all::*,
         };
+    }
+    _crate_internals {
+        pub(crate) use super::_DOC_SYS_MODULES;
     }
     _hidden {
         use super::mem::_hidden::*;

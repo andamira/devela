@@ -1,13 +1,18 @@
 // devela::data
 //
 #![doc = crate::_DOC_DATA!()]
-#![doc = crate::_doc!(modules: crate; data: bit, codec, iter, key, list, table, uid)] // address
+#![doc = crate::_DOC_DATA_MODULES!()]
+#![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //
 // safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_DATA_MODULES =
+    crate::_doc!(modules: crate; data: bit, codec, iter, key, list, table, uid); // address
+}
 
 mod absence; // NoData
 mod collection; // DataCollection
@@ -80,6 +85,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         // pub use super::node::_all::*;
     }
     _crate_internals {
+        pub(crate) use super::_DOC_DATA_MODULES;
         pub(crate) use super::table::_crate_internals::*;
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
         #[cfg(all(

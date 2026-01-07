@@ -1,7 +1,8 @@
 // devela::lang
 //
 #![doc = crate::_DOC_LANG!()]
-#![doc = crate::_doc!(modules: crate; lang: dsl, ffi, hum)]
+#![doc = crate::_DOC_LANG_MODULES!()]
+#![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: ffi)]
@@ -11,6 +12,10 @@
 //
 // safety
 #![cfg_attr(feature = "safe_lang", forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_LANG_MODULES =
+    crate::_doc!(modules: crate; lang: dsl, ffi, hum);
+}
 
 pub mod dsl; // forth, …
 pub mod ffi; // c, glsl, js, …
@@ -25,6 +30,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         };
     }
     _crate_internals {
+        pub(crate) use super::_DOC_LANG_MODULES;
         pub(crate) use super::ffi::_crate_internals::*;
     }
 }

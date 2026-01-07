@@ -23,6 +23,7 @@
 // For macro hygiene reasons it's not possible to generate partial contents of an array or tuple,
 // not even from a separate arm of the same macro, so each one has to be constructed in one step.
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! punroll {
     (0 |$i:ident| $stmt:stmt) => {};
     (0 [] |$i:ident| $expr:expr) => { [] };
@@ -130,9 +131,9 @@ macro_rules! punroll {
         ( $( { let $i: usize = $idx; $expr } ),+ )
     };
 }
+#[doc(inline)]
 pub use punroll;
 
-///
 #[rustfmt::skip]
 #[cfg(test)]
 mod tests {

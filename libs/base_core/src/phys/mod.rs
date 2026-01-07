@@ -1,18 +1,30 @@
 // devela_base_core::phys
 //
 #![doc = crate::_DOC_PHYS!()]
-#![doc = crate::_doc!(modules: crate; phys: time)] // bio, chem, elec, mech, time, unit, wave
+#![doc = crate::_DOC_PHYS_MODULES!()]
+#![doc = crate::_doc!(flat:"phys")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: time)]
 //
 // safety
 #![cfg_attr(base_safe_phys, forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
+    crate::_doc!(modules: crate; phys: time, wave); // bio, chem, elec, mech, time, unit
+}
 
 pub mod time;
+// pub mod wave; // Freq, Phase
 
-crate::structural_mods! { // _pub_mods
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
-        pub use super::time::_all::*;
+        pub use super::{
+            time::_all::*,
+            // wave::_all::*,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::_DOC_PHYS_MODULES;
     }
 }

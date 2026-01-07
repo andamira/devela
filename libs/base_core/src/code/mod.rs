@@ -1,7 +1,8 @@
 // devela_base_core::code
 //
 #![doc = crate::_DOC_CODE!()]
-#![doc = crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util)]
+#![doc = crate::_DOC_CODE_MODULES!()]
+#![doc = crate::_doc!(flat:"code")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends:
@@ -9,6 +10,10 @@
 //
 // safety
 #![cfg_attr(base_safe_code, forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_CODE_MODULES =
+    crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util);
+}
 
 mod _reexport; // SYMLINK from /src/code/_reexport.rs
 
@@ -45,7 +50,10 @@ util::structural_mods! { // _mods, _pub_mods, _reexport, _crate_internals, _work
         pub use super::_reexport::*;
     }
     _crate_internals {
-        pub(crate) use super::util::_crate_internals::*;
+        pub(crate) use super::{
+            _DOC_CODE_MODULES,
+            util::_crate_internals::*,
+        };
     }
     _workspace_internals {
         pub/*workspace*/ use super::const_init::_impl_init;

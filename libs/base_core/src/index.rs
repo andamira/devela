@@ -65,28 +65,29 @@ pub use zall_ as all_;
 #[rustfmt::skip]
 #[doc = crate::_DOC_ZALL_!()]
 pub mod zall_ {
-    crate::CONST! { COMMON_DOC = "\n\nAll root module's items flat re-exported."; }
-    #[doc = concat![crate::_DOC_CODE!(), COMMON_DOC!()]]
+    macro_rules! COMMON_DOC { ($mod:literal) => { concat!(" ",
+        crate::_doc!(root:$mod), "\n\n**All root module's items flat re-exported.**") }; }
+    #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), COMMON_DOC!("code")]]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
-    #[doc = concat![crate::_DOC_DATA!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_DATA!(), crate::_DOC_DATA_MODULES!(), COMMON_DOC!("data")]]
     pub mod _data { #[allow(unused)] pub use super::super::data::_all::*; }
-    #[doc = concat![crate::_DOC_GAME!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_GAME!(), crate::_DOC_GAME_MODULES!(), COMMON_DOC!("game")]]
     pub mod _game { #[allow(unused)] pub use super::super::game::_all::*; }
-    #[doc = concat![crate::_DOC_LANG!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_LANG!(), crate::_DOC_LANG_MODULES!(), COMMON_DOC!("lang")]]
     pub mod _lang { #[allow(unused)] pub use super::super::lang::_all::*; }
-    #[doc = concat![crate::_DOC_MEDIA!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_MEDIA!(), crate::_DOC_MEDIA_MODULES!(), COMMON_DOC!("media")]]
     pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
-    #[doc = concat![crate::_DOC_NUM!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_NUM!(), crate::_DOC_NUM_MODULES!(), COMMON_DOC!("num")]]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
-    #[doc = concat![crate::_DOC_PHYS!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), COMMON_DOC!("phys")]]
     pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
-    #[doc = concat![crate::_DOC_SYS!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_SYS!(), crate::_DOC_SYS_MODULES!(), COMMON_DOC!("sys")]]
     pub mod _sys { #[allow(unused)] pub use super::super::sys::_all::*; }
-    #[doc = concat![crate::_DOC_TEXT!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_TEXT!(), crate::_DOC_TEXT_MODULES!(), COMMON_DOC!("text")]]
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
-    #[doc = concat![crate::_DOC_UI!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), COMMON_DOC!("ui")]]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
-    #[doc = concat![crate::_DOC_WORK!(), COMMON_DOC!()]]
+    #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), COMMON_DOC!("work")]]
     /// <br/><hr>
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
 }
@@ -132,8 +133,16 @@ pub mod _crate_internals {
     #![allow(unused_imports)]
     pub use super::{
         code::_crate_internals::*,
+        data::_crate_internals::*,
+        game::_crate_internals::*,
+        lang::_crate_internals::*,
         media::_crate_internals::*,
+        num::_crate_internals::*,
+        phys::_crate_internals::*,
+        sys::_crate_internals::*,
+        text::_crate_internals::*,
         ui::_crate_internals::*,
+        work::_crate_internals::*,
     };
 }
 #[doc(hidden)]

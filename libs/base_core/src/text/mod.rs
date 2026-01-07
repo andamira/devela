@@ -1,13 +1,18 @@
 // devela_base_core::text
 //
 #![doc = crate::_DOC_TEXT!()]
-#![doc = crate::_doc!(modules: crate; text: char, errors, fmt, parse, str)] // grapheme
+#![doc = crate::_DOC_TEXT_MODULES!()]
+#![doc = crate::_doc!(flat:"text")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: ascii, char, fmt, str, string)]
 //
 // safety
 #![cfg_attr(base_safe_text, forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
+    crate::_doc!(modules: crate; text: char, errors, fmt, parse, str); // grapheme
+}
 
 // mod _wip_cell;
 // mod _wip_draw;
@@ -16,10 +21,11 @@
 pub mod char; // Char, CharAscii, CharIter, UnicodeScalar, char[7|8|16|utf8]
 pub mod errors;
 pub mod fmt;
+// pub mod layout; // WIP
 pub mod parse;
 pub mod str;
 
-crate::structural_mods! { // mods, _pub_mods
+crate::structural_mods! { // mods, _pub_mods, _crate_internals
     _mods {
         // pub use super::_wip_cell::*;
         // pub use super::_wip_draw::_all::*;
@@ -30,8 +36,12 @@ crate::structural_mods! { // mods, _pub_mods
         pub use super::{
             char::_all::*,
             fmt::_all::*,
+            // layout::_all::*, // WIP
             parse::_all::*,
             str::_all::*,
         };
+    }
+    _crate_internals {
+        pub(crate) use super::_DOC_TEXT_MODULES;
     }
 }

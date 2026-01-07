@@ -1,13 +1,18 @@
 // devela::num
 //
 #![doc = crate::_DOC_NUM!()]
-#![doc = crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand, wide)] // symb
+#![doc = crate::_DOC_NUM_MODULES!()]
+#![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: cmp, num, simd)]
 //
 // safety
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_NUM_MODULES =
+    crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand, wide); // symb
+}
 
 mod absence; // NoNum
 mod error; // NumError, NumResult
@@ -79,6 +84,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
     }
     _crate_internals {
         pub(crate) use super::{
+            _DOC_NUM_MODULES,
             rand::_crate_internals::*,
         };
     }

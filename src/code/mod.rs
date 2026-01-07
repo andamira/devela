@@ -1,7 +1,8 @@
 // devela::code
 //
 #![doc = crate::_DOC_CODE!()]
-#![doc = crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util)]
+#![doc = crate::_DOC_CODE_MODULES!()]
+#![doc = crate::_doc!(flat:"code")]
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends:
@@ -9,6 +10,10 @@
 //
 // safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
+// docs
+crate::CONST! { pub(crate) _DOC_CODE_MODULES =
+    crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util);
+}
 
 mod _reexport_core; // SYMLINK to ../../libs/base_core/src/code/_reexport.rs
 
@@ -23,7 +28,7 @@ pub mod panic; // Panic, set_panic_handler!
 pub mod result; // AllError, Mismatch, OptRes, ValueQuant, serr, sok, …
 pub mod util; // (utility macros and functions)
 
-devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
+devela_base_core::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             any::_all::*,
@@ -47,6 +52,7 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _crate_internals
         };
     }
     _crate_internals {
+        pub(crate) use super::_DOC_CODE_MODULES;
         pub(crate) use super::util::_crate_internals::*;
         pub(crate) use super::const_init::{Sealed as ConstInitSealed};
     }
