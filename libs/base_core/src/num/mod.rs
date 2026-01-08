@@ -28,6 +28,8 @@ pub mod geom;
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod ord; // Cmp
 pub mod quant; // Cycle*, Interval, interval!, Ratio
+// pub mod rand; // WIP
+// pub mod symb; // WIP
 pub mod wide; // define_lane!
 
 crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals
@@ -49,11 +51,16 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
             niche::_all::*,
             ord::_all::*,
             quant::_all::*,
+            // rand::_all::*, // WIP
+            // symb::_all::*, // WIP
             wide::_all::*,
         };
     }
     _crate_internals {
-        pub(crate) use super::_DOC_NUM_MODULES;
+        pub(crate) use super::{
+            _DOC_NUM_MODULES,
+            ord::_crate_internals::*,
+        };
     }
     _workspace_internals {
         pub use super::{
