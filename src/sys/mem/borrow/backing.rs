@@ -6,8 +6,7 @@
 #[cfg(feature = "alloc")]
 use devela::RangeFull;
 
-#[doc = crate::_TAG_MAYBE!()]
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(maybe lifetime)]
 /// Controls how memory is provided for a value.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

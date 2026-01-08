@@ -9,7 +9,7 @@ use crate::{Cast, ConstInit, Own};
 #[cfg(feature = "std")]
 use crate::{Hasher, HasherBuild, RandomState};
 
-#[doc = crate::_TAG_RAND!()]
+#[doc = crate::_tags!(rand)]
 /// The `XorShift128+` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 #[doc = crate::_doc_location!("num/rand")]
 ///

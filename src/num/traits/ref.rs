@@ -5,8 +5,7 @@
 
 use crate::{Deref, DerefMut, Num, NumResult as Result};
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(num lifetime)]
 /// Common auto-trait for referenced numeric types.
 #[doc = crate::_doc_location!("num")]
 ///

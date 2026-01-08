@@ -9,7 +9,7 @@
 
 use crate::GraphemeKind;
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// Common trait for <abbr title="Extended Grapheme Cluster">EGC</abbr> types.
 #[doc = crate::_doc_location!("text/grapheme")]
 pub trait Grapheme {

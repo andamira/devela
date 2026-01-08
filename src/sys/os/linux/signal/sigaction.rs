@@ -15,7 +15,7 @@ use crate::{Debug, FmtResult, Formatter, c_void};
 #[cfg(feature = "unsafe_syscall")]
 use crate::{LINUX_SIGACTION, impl_trait};
 
-#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_tags!(linux)]
 /// Examine and change a signal action.
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///
@@ -120,7 +120,7 @@ impl LinuxSigaction {
     // pub const SIG_ERR: isize = -1;
 }
 
-#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_tags!(linux)]
 /// A set of linux signals.
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///
@@ -171,7 +171,7 @@ impl LinuxSigset {
     }
 }
 
-#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_tags!(linux)]
 /// Additional information about a signal.
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///

@@ -12,8 +12,7 @@ use std::thread::{
 trait Sealed {}
 impl Sealed for Thread {}
 
-#[doc = crate::_TAG_CONCURRENCY!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(concurrency namespace)]
 /// Extension trait providing additional methods for [`Thread`]s.
 #[doc = crate::_doc_location!("work/thread")]
 ///

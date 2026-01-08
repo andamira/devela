@@ -8,8 +8,7 @@ use crate::{MpscReceiver, MpscSender, MpscSyncSender};
 #[cfg(feature = "std")]
 use std::sync::mpsc::{channel, sync_channel};
 
-#[doc = crate::_TAG_CONCURRENCY!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(concurrency namespace)]
 /// Multi-producer, single-consumer channel operations.
 #[doc = crate::_doc_location!("work/sync/mpsc")]
 #[derive(Debug)]

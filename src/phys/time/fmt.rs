@@ -11,7 +11,7 @@ use crate::{Cmp, Digits, Float, NoTime, StringU8, TimeSplit, TimeSplitHourNano, 
 #[cfg(feature = "alloc")]
 use crate::{String, format};
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// Timecode splitting and formatting.
 #[doc = crate::_doc_location!("phys/time")]
 ///

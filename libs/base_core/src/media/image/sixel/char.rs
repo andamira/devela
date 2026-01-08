@@ -5,8 +5,7 @@
 
 use crate::{Display, FmtResult, FmtWriter, Formatter, StringU8, TextLut, format_buf, is, unwrap};
 
-#[doc = crate::_TAG_IMAGE!()]
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(image term)]
 /// A sixel character.
 #[doc = crate::_doc_location!("media/image")]
 #[must_use]

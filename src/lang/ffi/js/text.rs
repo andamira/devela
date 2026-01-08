@@ -3,9 +3,7 @@
 #[cfg(doc)]
 use crate::Web;
 
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_LAYOUT!()]
+#[doc = crate::_tags!(runtime text layout)]
 /// Text Metrics.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///
@@ -23,9 +21,7 @@ pub struct JsTextMetrics {
     pub descent: f32,
 }
 
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_LAYOUT!()]
+#[doc = crate::_tags!(runtime text layout)]
 /// Full Text Metrics.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///

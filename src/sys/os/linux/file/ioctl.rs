@@ -10,8 +10,7 @@
 
 use crate::{c_int, c_ulong};
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_FS!()]
+#[doc = crate::_tags!(linux fs)]
 /// Linux `ioctl` constants.
 #[doc = crate::_doc_location!("sys/os/linux")]
 #[allow(non_camel_case_types)]

@@ -16,8 +16,7 @@ macro_rules! impl_fbits {
     (@$non_niche:ident, $niche:ident, $float:ident, $bits:ident, $NE:ident) => { paste! {
         /* non-niche */
 
-        #[doc = crate::_TAG_NUM!()]
-        #[doc = crate::_TAG_FFI!()]
+        #[doc = crate::_tags!(num ffi)]
         #[doc = "Bitwise wrapper for `" $float "` providing `Eq`, `Ord`, and `Hash`."]
         #[doc = crate::_doc_location!("num")]
         ///
@@ -64,8 +63,7 @@ macro_rules! impl_fbits {
 
         /* niche */
 
-        #[doc = crate::_TAG_NUM!()]
-        #[doc = crate::_TAG_NICHE!()]
+        #[doc = crate::_tags!(num niche)]
         #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NE "`]."]
         ///
         /// This preserves all IEEE-754 bit patterns except the prohibited value.

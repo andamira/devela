@@ -4,10 +4,9 @@
 //! [`IteratorLendingPeek`].
 //
 
-use crate::{_TAG_ITERATOR, _TAG_LIFETIME, is};
+use crate::is;
 
-#[doc = _TAG_ITERATOR!()]
-#[doc = _TAG_LIFETIME!()]
+#[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator using a generic associated lifetime.
 #[doc = crate::_doc_location!("data/iter")]
 ///
@@ -238,8 +237,7 @@ pub trait IteratorLending {
     // ✓ is_sorted_by_key
 }
 
-#[doc = _TAG_ITERATOR!()]
-#[doc = _TAG_LIFETIME!()]
+#[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can yield items from the back.
 #[doc = crate::_doc_location!("data/iter")]
 ///
@@ -281,8 +279,7 @@ pub trait IteratorLendingDoubleEnded: IteratorLending {
     }
 }
 
-#[doc = _TAG_ITERATOR!()]
-#[doc = _TAG_LIFETIME!()]
+#[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator with a known remaining length.
 #[doc = crate::_doc_location!("data/iter")]
 ///
@@ -307,8 +304,7 @@ pub trait IteratorLendingExactSize: IteratorLending {
     }
 }
 
-#[doc = _TAG_ITERATOR!()]
-#[doc = _TAG_LIFETIME!()]
+#[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can inspect the next item without advancing.
 #[doc = crate::_doc_location!("data/iter")]
 ///

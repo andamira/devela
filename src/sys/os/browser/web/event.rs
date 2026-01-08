@@ -7,9 +7,7 @@
 
 use crate::{JsInstant, js_int32, js_number};
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_WEB!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(event web uid)]
 /// # A web API Event kind.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
@@ -89,8 +87,7 @@ impl WebEventKind {
     }
 }
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_WEB!()]
+#[doc = crate::_tags!(event web)]
 /// A web API Mouse Event.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
@@ -128,8 +125,7 @@ impl WebEventMouse {
     }
 }
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_WEB!()]
+#[doc = crate::_tags!(event web)]
 /// A web API Pointer Event.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
@@ -175,8 +171,7 @@ impl WebEventPointer {
     }
 }
 
-#[doc = crate::_TAG_INTERACTION!()]
-#[doc = crate::_TAG_WEB!()]
+#[doc = crate::_tags!(interaction web)]
 /// Which part of the keyboard the key event originates from
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///

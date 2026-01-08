@@ -5,8 +5,7 @@
 
 use crate::{ConstInit, EventTimestamp, Key, KeyMods, KeyState};
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(event interaction)]
 /// Represents a keyboard event.
 #[doc = crate::_doc_location!("ui/event")]
 ///
@@ -51,20 +50,18 @@ mod ffi {
     use super::*;
     use crate::{ConstInit, KeyFfi, f32bits, is};
 
-    #[doc = crate::_TAG_EVENT!()]
-    #[doc = crate::_TAG_INTERACTION!()]
-    #[doc = crate::_TAG_FFI!()]
+    #[doc = crate::_tags!(event interaction ffi)]
     /// An FFI-safe version of [`EventKey`].
     #[doc = crate::_doc_location!("ui/event")]
     #[repr(C)]
     #[allow(missing_docs)]
     #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
     pub struct EventKeyFfi {
-        #[doc = crate::_TAG_FFI!()]
+        #[doc = crate::_tags!(ffi)]
         /// The key representing the human-readable code.
         pub semantic: KeyFfi,
 
-        #[doc = crate::_TAG_FFI!()]
+        #[doc = crate::_tags!(ffi)]
         /// The key representing the hardware scan code.
         pub physical: KeyFfi,
 
@@ -74,7 +71,7 @@ mod ffi {
         /// The active modifiers of the key (e.g., Shift, Ctrl).
         pub mods: KeyMods,
 
-        #[doc = crate::_TAG_FFI!()]
+        #[doc = crate::_tags!(ffi)]
         /// The time stamp of when the event occurred.
         pub timestamp: f32bits,
     }

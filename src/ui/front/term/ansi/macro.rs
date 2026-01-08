@@ -57,7 +57,7 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 
 // non-printing version fallback (not(std), not(linux))
 // -----------------------------------------------------------------------------
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
 #[doc = crate::_doc_location!("ui/event")]
 #[doc = DOC_ANSI!()]
@@ -100,7 +100,7 @@ macro_rules! ansi {
 
 // std version (not(linux))
 // -----------------------------------------------------------------------------
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
 #[doc = crate::_doc_location!("ui/event")]
 #[doc = DOC_ANSI!()]
@@ -153,7 +153,7 @@ macro_rules! ansi {
 
 // linux version (overrides std)
 // -----------------------------------------------------------------------------
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
 #[doc = crate::_doc_location!("ui/event")]
 #[doc = DOC_ANSI!()]

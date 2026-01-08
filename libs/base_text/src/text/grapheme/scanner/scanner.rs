@@ -11,8 +11,7 @@ use crate::{
     StringNonul, StringU8, charu, is, slice, unwrap,
 };
 
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_tags!(text iterator)]
 /// Scans text and detects grapheme cluster boundaries during iteration.
 #[doc = crate::_doc_location!("text/grapheme")]
 ///

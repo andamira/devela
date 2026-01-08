@@ -7,8 +7,7 @@ use crate::{GlobalAlloc, MemLayout, Ptr};
 #[cfg(target_arch = "wasm32")]
 use crate::{Mem, NonZeroUsize, Wasm};
 
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_ALLOCATION!()]
+#[doc = crate::_tags!(runtime allocation)]
 /// A WebAssembly global memory allocator that uses a bump allocation strategy.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

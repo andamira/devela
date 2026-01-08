@@ -5,8 +5,7 @@
 // - https://arm64.syscall.sh/
 // - https://syscalls.mebeim.net/?table=arm64/64/aarch64/latest
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = crate::_tags!(linux platform)]
 /// Linux `sys/syscall.h` constants for `aarch64`.
 #[allow(non_camel_case_types)]
 #[derive(Debug)]

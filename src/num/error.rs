@@ -5,14 +5,12 @@
 
 use crate::Sign;
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_RESULT!()]
+#[doc = crate::_tags!(num result)]
 /// A numeric-related result.
 #[doc = crate::_doc_location!("num")]
 pub type NumResult<T> = crate::Result<T, NumError>;
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_ERROR_COMPOSITE!()]
+#[doc = crate::_tags!(num error_composite)]
 /// A numeric-related error.
 #[doc = crate::_doc_location!("num")]
 #[non_exhaustive]

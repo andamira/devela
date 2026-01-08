@@ -6,7 +6,7 @@
 
 use crate::{_impl_geom_dim, is, whilst};
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// An orthogonal extension in `D`-space without a coordinate position.
 #[doc = crate::_doc_location!("num/geom/metric")]
 ///

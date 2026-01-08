@@ -16,7 +16,7 @@ use crate::{
 /// The nul character.
 const NUL_CHAR: char = '\0';
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// A null-terminated UTF-8 string with up to `u8::MAX` bytes capacity.
 #[doc = crate::_doc_location!("text/str")]
 ///

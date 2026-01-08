@@ -19,8 +19,7 @@ mod bit3;
 mod bit8;
 pub use {bit3::*, bit8::*};
 
-#[doc = crate::_TAG_COLOR!()]
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(color term)]
 /// Complete ANSI color selection
 #[doc = crate::_doc_location!("ui/front/term")]
 ///

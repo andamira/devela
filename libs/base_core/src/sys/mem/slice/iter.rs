@@ -4,12 +4,10 @@
 //
 
 use crate::{
-    _TAG_ITERATOR, _TAG_LIFETIME, IteratorLending, IteratorLendingDoubleEnded,
-    IteratorLendingExactSize, IteratorLendingPeek,
+    IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize, IteratorLendingPeek,
 };
 
-#[doc = _TAG_ITERATOR!()]
-#[doc = _TAG_LIFETIME!()]
+#[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over a shared slice.
 #[doc = crate::_doc_location!("sys/mem")]
 ///
@@ -70,8 +68,7 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 
 //
 
-#[doc = _TAG_ITERATOR!()]
-#[doc = _TAG_LIFETIME!()]
+#[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over an exclusive slice.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

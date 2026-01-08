@@ -3,7 +3,7 @@
 //! Defines [`Matrix`].
 //
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// A static `R×C` shaped matrix backed by an array.
 #[doc = crate::_doc_location!("num/geom/linear")]
 ///

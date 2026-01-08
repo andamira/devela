@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::{Distance, Orientation};
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// A location in `D`-dimensional space.
 #[doc = crate::_doc_location!("num/geom/metric")]
 ///

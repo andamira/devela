@@ -12,8 +12,7 @@ use crate::{
     FileMetadata, FilePermissions, IoResult, IterDirRead, Path, PathBuf,
 };
 
-#[doc = crate::_TAG_FS!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(fs namespace)]
 /// Filesystem-related operations.
 ///
 /// See also: [`PathExt`][crate::PathExt], [`fsPath`][crate::FsPath].

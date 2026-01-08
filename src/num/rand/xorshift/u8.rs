@@ -5,7 +5,7 @@
 
 use crate::{ConstInit, Own, xorshift_basis};
 
-#[doc = crate::_TAG_RAND!()]
+#[doc = crate::_tags!(rand)]
 /// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 #[doc = crate::_doc_location!("num/rand")]
 ///

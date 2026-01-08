@@ -14,7 +14,7 @@ use crate::{
     is,
 };
 
-#[doc = crate::_TAG_QUANT!()]
+#[doc = crate::_tags!(quant)]
 /// Creates an [`Interval`] using extended range notation.
 #[doc = crate::_doc_location!("num/quant")]
 ///
@@ -120,7 +120,7 @@ macro_rules! _interval {
 #[doc(inline)]
 pub use _interval as interval;
 
-#[doc = crate::_TAG_QUANT!()]
+#[doc = crate::_tags!(quant)]
 /// A range of values with `lower` and `upper` [`Bound`]s.
 #[doc = crate::_doc_location!("num/quant")]
 ///

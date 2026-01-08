@@ -15,8 +15,7 @@ When `unsafe_array` is **enabled** it aliases [`MaybeUninit<u8>`].
 Otherwise it aliases [`u8`].";
 }
 
-#[doc = crate::_TAG_MAYBE!()]
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(maybe mem)]
 /// A byte type that may be uninitialized depending on features.
 #[doc = crate::_doc_location!("sys/mem")]
 #[doc = _DOC_MAYBE_BYTE!()]
@@ -24,8 +23,7 @@ Otherwise it aliases [`u8`].";
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 pub type MaybeByte = u8;
 
-#[doc = crate::_TAG_MAYBE!()]
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(maybe mem)]
 /// A byte type that may be uninitialized depending on features.
 #[doc = crate::_doc_location!("sys/mem")]
 #[doc = _DOC_MAYBE_BYTE!()]

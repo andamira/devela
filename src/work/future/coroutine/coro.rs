@@ -18,8 +18,7 @@ use crate::{Debug, Future, OptRes, Pin, TaskContext, TaskPoll, serr, sok};
 
 /* coroutine */
 
-#[doc = crate::_TAG_CONCURRENCY!()]
-#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_tags!(concurrency runtime)]
 /// Represents a single-thread stackless coroutine worker.
 #[doc = crate::_doc_location!("work/future")]
 ///
@@ -59,8 +58,7 @@ impl<T, E> CoroWorker<T, E> {
 
 /* yielder */
 
-#[doc = crate::_TAG_CONCURRENCY!()]
-#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_tags!(concurrency runtime)]
 /// A future that alternates between [`Ready`][TaskPoll::Ready] and
 /// [`Pending`][TaskPoll::Pending] status each time it's polled.
 #[doc = crate::_doc_location!("work/future")]
@@ -97,8 +95,7 @@ impl<T, E> Future for CoroWork<'_, T, E> {
 
 /* manager */
 
-#[doc = crate::_TAG_CONCURRENCY!()]
-#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_tags!(concurrency runtime)]
 /// A managed dynamic collection of single-thread [`CoroWorker`] coroutines.
 #[doc = crate::_doc_location!("work/future")]
 ///

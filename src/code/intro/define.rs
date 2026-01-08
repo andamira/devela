@@ -3,7 +3,7 @@
 //! Defines the [`Introspect`] struct.
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Introspection core trait.
 #[doc = crate::_doc_location!("code")]
 ///

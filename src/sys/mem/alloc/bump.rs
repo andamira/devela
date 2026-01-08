@@ -8,7 +8,7 @@ use crate::{
     AtomicUsize, GlobalAlloc, MemLayout, Ptr, is,
 };
 
-#[doc = crate::_TAG_ALLOCATION!()]
+#[doc = crate::_tags!(allocation)]
 /// A simple, single-threaded bump allocator.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

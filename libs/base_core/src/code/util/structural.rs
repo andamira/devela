@@ -3,7 +3,7 @@
 //! Defines the [`structural_mods!`] macro.
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Defines a standardized module structure for organizing visibility and re-exports.
 #[doc = crate::_doc_location!("code/util")]
 ///

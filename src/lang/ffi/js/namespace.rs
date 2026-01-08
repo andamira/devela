@@ -7,8 +7,7 @@ use devela::{JsConsole, Str, js_int32, js_uint32};
 #[cfg(all(feature = "alloc", unsafe··))]
 use devela::{String, Vec};
 
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(runtime namespace)]
 /// Javascript-related operations.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///

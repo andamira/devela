@@ -11,8 +11,7 @@
 
 use crate::c_int;
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_FS!()]
+#[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
 #[doc = crate::_doc_location!("sys/os/linux")]
 #[derive(Debug)]
@@ -26,8 +25,7 @@ impl LINUX_FILENO {
     pub const STDERR: c_int = 2;
 }
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_FS!()]
+#[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] file creation and status flags.
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///
@@ -108,8 +106,7 @@ impl LINUX_O_FLAGS {
     pub const RESOLVE_IN_ROOT: c_int = 0o2_000_000_000;
 }
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_FS!()]
+#[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] Seek commands (for `lseek`).
 #[doc = crate::_doc_location!("sys/os/linux")]
 //

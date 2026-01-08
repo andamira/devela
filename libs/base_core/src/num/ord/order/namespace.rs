@@ -3,9 +3,7 @@
 //! Defines [`Order`].
 //
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_LAYOUT!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(num layout namespace)]
 /// Unified namespace for multi-dimensional ordering schemes.
 #[doc = crate::_doc_location!("num/ord")]
 ///

@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::{Distance, Position};
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// A unitless directional vector in `D`-dimensional space.
 #[doc = crate::_doc_location!("num/geom/dir")]
 ///

@@ -8,7 +8,7 @@ use crate::{
     EventTimestamp, EventWindow, NonZeroU64,
 };
 
-#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_tags!(event)]
 /// A fully-typed event with optional timing and metadata.
 #[doc = crate::_doc_location!("ui/event")]
 ///

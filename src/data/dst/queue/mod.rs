@@ -10,7 +10,7 @@ mod impl_traits;
 mod methods;
 mod private;
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A statically allocated FIFO queue of <abbr title="Dynamically sized type">DST</abbr>s.
 #[doc = crate::_doc_location!("data/dst")]
 ///
@@ -29,7 +29,7 @@ pub struct DstQueue<DST: ?Sized, BUF: DstBuf> {
     data: BUF,
 }
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A statically allocated FIFO queue of <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 #[doc = crate::_doc_location!("data/dst")]
@@ -51,13 +51,13 @@ pub struct DstQueuePopHandle<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> {
     parent: &'a mut DstQueue<DST, BUF>,
 }
 
-#[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_tags!(iterator)]
 /// An iterator over the elements of a [`DstQueue`].
 #[doc = crate::_doc_location!("data/dst")]
 #[derive(Debug)]
 pub struct DstQueueIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstQueue<DST, BUF>, usize);
 
-#[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_tags!(iterator)]
 /// A mutable iterator over the elements of a [`DstQueue`].
 #[doc = crate::_doc_location!("data/dst")]
 #[derive(Debug)]

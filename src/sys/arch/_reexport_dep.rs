@@ -1,7 +1,7 @@
 // devela::sys::arch::_reexport_dep
 
 #[allow(unused_imports, reason = "dep_safe_arc feature-gate")]
-use crate::{_TAG_PLATFORM, _reexport};
+use crate::{_reexport, _tags};
 
 /* `safe_arch` re-exports */
 
@@ -14,7 +14,7 @@ use crate::{_TAG_PLATFORM, _reexport};
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_safe_arch")))]
 // pub use crate::_dep::safe_arch::cmp_op as arch_cmp;
 
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = _tags!(platform)]
 /// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
 /// Turns a round operator token to the correct constant value.
 #[doc = crate::_doc_location!("sys/arch")]
@@ -23,28 +23,28 @@ use crate::{_TAG_PLATFORM, _reexport};
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_safe_arch")))]
 pub use crate::_dep::safe_arch::round_op as arch_round;
 
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _TAG_PLATFORM!(),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
     doc: "The data for a 128-bit SSE register of four `f32` lanes.", m128
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _TAG_PLATFORM!(),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
     doc: "The data for a 256-bit AVX register of eight `f32` lanes.", m256
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _TAG_PLATFORM!(),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
     doc: "The data for a 128-bit SSE register of two `f64` values.", m128d
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _TAG_PLATFORM!(),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
     doc: "The data for a 128-bit SSE register of integer data.", m128i
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _TAG_PLATFORM!(),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
     doc: "The data for a 256-bit AVX register of four `f64` values.", m256d
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _TAG_PLATFORM!(),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
     doc: "The data for a 256-bit AVX register of integer data.", m256i
 }
 
 /* `safe_arch` re-implementations */
 
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = _tags!(platform)]
 /// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
 /// Turns a comparison operator token to the correct constant value.
 #[doc = crate::_doc_location!("sys/arch")]

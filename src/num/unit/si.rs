@@ -10,7 +10,7 @@ use crate::FloatExt;
 #[cfg(feature = "alloc")]
 use crate::{Vec, vec_ as vec};
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(num)]
 /// SI (metric) unit prefixes.
 #[doc = crate::_doc_location!("num")]
 ///

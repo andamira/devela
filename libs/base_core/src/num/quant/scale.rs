@@ -17,7 +17,7 @@
 
 use crate::{is, isize_up, nz, unwrap, usize_up};
 
-#[doc = crate::_TAG_QUANT!()]
+#[doc = crate::_tags!(quant)]
 /// Comprehensive scaling operations.
 #[doc = crate::_doc_location!("num/quant")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

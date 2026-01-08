@@ -11,9 +11,7 @@ use crate::{
     EventWindow, Ptr, c_int, is,
 };
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_GUARD!()]
+#[doc = crate::_tags!(linux runtime guard)]
 /// A connection to an X11 display server.
 #[doc = crate::_doc_location!("sys/display/x11")]
 ///

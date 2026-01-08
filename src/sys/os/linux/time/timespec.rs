@@ -14,8 +14,7 @@ use crate::{
 
 use crate::TimeDelta;
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(linux time)]
 /// Represents the [`timespec`] structure from libc. Time in seconds and nanoseconds.
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///

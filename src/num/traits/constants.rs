@@ -15,7 +15,7 @@ use crate::{
     NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
 };
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(num)]
 /// Fundamental numeric constants for both integer and floating-point types.
 #[doc = crate::_doc_location!("num")]
 pub trait NumConst: PartialEq<Self::Num> {

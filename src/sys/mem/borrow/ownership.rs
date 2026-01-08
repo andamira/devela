@@ -6,7 +6,7 @@
 #[cfg(feature = "alloc")]
 use devela::{Borrow, String, Vec};
 
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(lifetime)]
 /// Defines the relationship between a borrowed type and its owned counterpart.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

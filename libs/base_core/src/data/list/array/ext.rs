@@ -8,8 +8,7 @@ use crate::{
     UpperHex, is,
 };
 
-#[doc = crate::_TAG_FMT!()]
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(fmt data_structure)]
 /// A formatting wrapper for core [arrays][array], implementing [`Display`] and [`Debug`].
 #[doc = crate::_doc_location!("data/list/array")]
 ///
@@ -21,7 +20,7 @@ pub struct ArrayFmt<'a, T: ArrayExt>(&'a T);
 trait Sealed {}
 impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// Extension trait providing convenience methods for [`[T; N]`][array] arrays.
 #[doc = crate::_doc_location!("data/list/array")]
 ///

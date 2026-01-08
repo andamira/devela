@@ -3,7 +3,7 @@
 //! Defines [`deprecate_feature`].
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Configures a feature as deprecated, warning if it is enabled.
 #[doc = crate::_doc_location!("code/util")]
 ///

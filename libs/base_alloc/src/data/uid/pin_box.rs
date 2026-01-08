@@ -5,8 +5,7 @@
 
 use crate::{Box, Pin};
 
-#[doc = crate::_TAG_UID!()]
-#[doc = crate::_TAG_ALLOCATION!()]
+#[doc = crate::_tags!(uid allocation)]
 /// A unique identifier based on a pinned heap-allocated memory address.
 #[doc = crate::_doc_location!("data/uid")]
 ///

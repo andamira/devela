@@ -17,9 +17,7 @@ mod u128;
 // mod u256; // WIP
 mod usize;
 
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(text num namespace)]
 /// Provides ASCII digit operations and conversions for unsigned integer primitives.
 #[doc = crate::_doc_location!("text/char")]
 ///

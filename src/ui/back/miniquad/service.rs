@@ -12,8 +12,7 @@ use crate::{UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService, is};
 use ::miniquad::FilterMode;
 use ::miniquad::{EventHandler, conf::Conf};
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_UI!()]
+#[doc = crate::_tags!(event ui)]
 /// An extension trait for miniquad's `MiniquadEventHandler`.
 #[doc = crate::_doc_location!("ui/back/miniquad")]
 ///
@@ -47,8 +46,7 @@ impl<T: MiniquadEventHandlerExt + 'static> UiService for MiniquadService<T> {
     }
 }
 
-#[doc = crate::_TAG_UI!()]
-#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_tags!(event runtime)]
 /// `miniquad`'s UI Service.
 #[doc = crate::_doc_location!("ui/back/miniquad")]
 #[derive(Debug)]

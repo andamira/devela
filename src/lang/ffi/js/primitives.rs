@@ -2,12 +2,9 @@
 
 #![allow(non_camel_case_types, non_upper_case_globals)]
 
-use crate::_TAG_PRIMITIVE;
-
 /* numbers */
 
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(primitive num)]
 /// A JavaScript Number.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///
@@ -16,8 +13,7 @@ use crate::_TAG_PRIMITIVE;
 /// JavaScript does not distinguish between integers and floating-point numbers at the type level.
 pub type js_number = f64;
 
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(primitive num)]
 /// A JavaScript signed 32-bit integer.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///
@@ -29,8 +25,7 @@ pub type js_number = f64;
 /// - **Bitwise shifts (`<<`, `>>`) operate on signed 32-bit integers.**
 pub type js_int32 = i32;
 
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(primitive num)]
 /// A JavaScript unsigned 32-bit integer.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///
@@ -54,15 +49,14 @@ pub type js_uint32 = u32;
 
 /* boolean */
 
-#[doc = _TAG_PRIMITIVE!()]
+#[doc = crate::_tags!(primitive)]
 /// A JavaScript boolean (`true` / `false`).
 #[doc = crate::_doc_location!("lang/ffi/js")]
 pub type js_bool = bool;
 
 /* string */
 
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(primitive text)]
 /// A JavaScript string reference.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///
@@ -72,8 +66,7 @@ pub type js_str = *const u8;
 
 /* special types */
 
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = crate::_TAG_NO!()]
+#[doc = crate::_tags!(primitive no)]
 /// The JavaScript `null` value.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///
@@ -82,8 +75,7 @@ pub type js_str = *const u8;
 /// In Rust, `null` is mapped to the unit type `()`.
 pub type js_null = ();
 
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = crate::_TAG_NO!()]
+#[doc = crate::_tags!(primitive no)]
 /// The JavaScript `undefined` value.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///

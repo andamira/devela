@@ -5,8 +5,7 @@
 
 pub use crate::Int;
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(num namespace)]
 /// This is a wrapper over [`Int`] with additional allocating methods.
 #[doc = crate::_doc_location!("num")]
 #[must_use]

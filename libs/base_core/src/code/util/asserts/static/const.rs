@@ -3,7 +3,7 @@
 //! Compile-time assertions.
 //
 
-#[doc = crate::_TAG_ASSERT!()]
+#[doc = crate::_tags!(assert)]
 /// Asserts various comparisons on constants.
 #[doc = crate::_doc_location!("code/util")]
 #[macro_export]

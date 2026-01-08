@@ -6,8 +6,7 @@
 // [`const_list`](https://crates.io/crates/const_list/0.1.0)
 //
 
-#[doc = crate::_TAG_DATA!()]
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(data lifetime)]
 /// A linked list node in a `ConstList`.
 #[doc = crate::_doc_location!("data/list")]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
@@ -18,8 +17,7 @@ struct ConstListItem<'a, T: 'a> {
     rest: &'a ConstList<'a, T>,
 }
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(data_structure lifetime)]
 /// An immutable, append-only, linear, functional, non-contiguous, list.
 #[doc = crate::_doc_location!("data/list")]
 ///
@@ -102,8 +100,7 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
     }
 }
 
-#[doc = crate::_TAG_ITERATOR!()]
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(iterator lifetime)]
 /// Iterates over the contents of a [`ConstList`].
 #[doc = crate::_doc_location!("data/list")]
 #[must_use]

@@ -3,9 +3,7 @@
 //! Defines [`TermSize`].
 //
 
-#[doc = crate::_TAG_TERM!()]
-#[doc = crate::_TAG_LAYOUT!()]
-#[doc = crate::_TAG_FFI!()]
+#[doc = crate::_tags!(term layout ffi)]
 /// The size of the terminal.
 #[doc = crate::_doc_location!("ui/front/term")]
 ///

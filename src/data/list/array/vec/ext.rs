@@ -9,7 +9,7 @@ use crate::Vec;
 trait Sealed {}
 impl<T> Sealed for Vec<T> {}
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// Extension trait providing additional methods for [`Vec`].
 #[doc = crate::_doc_location!("data/list/array")]
 ///

@@ -7,7 +7,7 @@ use super::Mem;
 
 impl<T: ?Sized> MemExt for T {}
 
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(namespace)]
 /// Extension trait for type memory information and manipulation.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

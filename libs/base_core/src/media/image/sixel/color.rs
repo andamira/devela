@@ -5,8 +5,7 @@
 
 use crate::{Cmp, Digits, Display, FmtResult, Formatter, format_buf, is, write_at};
 
-#[doc = crate::_TAG_COLOR!()]
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(color term)]
 /// Sixel color representation.
 #[doc = crate::_doc_location!("media/image")]
 ///

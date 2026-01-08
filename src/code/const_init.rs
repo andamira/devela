@@ -15,7 +15,7 @@ use crate::ConstInitCore;
 
 /* definitions */
 
-#[doc = crate::_TAG_INIT!()]
+#[doc = crate::_tags!(init)]
 /// A trait for giving a type a useful const-friendly initial value *(higher-level)*.
 #[doc = crate::_doc_location!("code")]
 ///
@@ -40,7 +40,7 @@ pub trait ConstInit {
     const INIT: Self;
 }
 
-#[doc = crate::_TAG_INIT!()]
+#[doc = crate::_tags!(code init)]
 /// Marker trait to allow parameterized blanked implementation
 pub trait Sealed {}
 impl<T: ConstInitCore + Sealed> ConstInit for T {

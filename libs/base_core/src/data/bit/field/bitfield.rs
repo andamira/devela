@@ -10,9 +10,7 @@
     reason = "fixes lints for fields assertions"
 )]
 
-#[doc = crate::_TAG_CONSTRUCTION!()]
-#[doc = crate::_TAG_BIT!()]
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(construction bit data_structure)]
 /// Creates a custom bit field struct.
 #[doc = crate::_doc_location!("data/bit")]
 ///

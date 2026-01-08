@@ -3,7 +3,7 @@
 //! Additional assertion macros
 //
 
-#[doc = crate::_TAG_ASSERT!()]
+#[doc = crate::_tags!(assert)]
 /// Asserts the equality of a series of expressions.
 #[doc = crate::_doc_location!("code/util")]
 ///
@@ -32,7 +32,7 @@ macro_rules! assert_eq_all {
 #[doc(inline)]
 pub use assert_eq_all;
 
-#[doc = crate::_TAG_ASSERT!()]
+#[doc = crate::_tags!(assert)]
 /// Asserts the approximate equality of a series of expressions within `tolerance`.
 #[doc = crate::_doc_location!("code/util")]
 ///

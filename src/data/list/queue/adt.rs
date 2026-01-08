@@ -9,7 +9,7 @@
 
 use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// An abstract *queue* data type.
 #[doc = crate::_doc_location!("data/list/queue")]
 pub trait DataQueue: DataCollection {
@@ -26,7 +26,7 @@ pub trait DataQueue: DataCollection {
     ) -> Result<(), NotEnoughSpace>;
 }
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// An abstract *double-ended queue* data type.
 #[doc = crate::_doc_location!("data/list/queue")]
 pub trait DataDeque: DataQueue {

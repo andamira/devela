@@ -5,7 +5,7 @@
 
 use crate::{ConstInit, Own};
 
-#[doc = crate::_TAG_RAND!()]
+#[doc = crate::_tags!(rand)]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
 #[doc = crate::_doc_location!("num/rand")]
 ///

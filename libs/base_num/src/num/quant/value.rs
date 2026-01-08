@@ -3,7 +3,7 @@
 //! Defines [`ValueQuant`].
 //
 
-#[doc = crate::_TAG_RESULT!()]
+#[doc = crate::_tags!(quant result)]
 /// A value with associated quantification.
 #[doc = crate::_doc_location!("num/quant")]
 #[must_use]

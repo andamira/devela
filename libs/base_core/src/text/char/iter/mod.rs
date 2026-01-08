@@ -8,8 +8,7 @@ use crate::{IteratorFused, PhantomData};
 mod str; // methods over &str
 mod bytes; // methods over &[u8]
 
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_tags!(text iterator)]
 /// An iterator over Unicode scalars.
 #[doc = crate::_doc_location!("text/char")]
 ///

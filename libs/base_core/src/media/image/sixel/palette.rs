@@ -5,8 +5,7 @@
 
 use crate::{NotEnoughSpace, SixelColor};
 
-#[doc = crate::_TAG_COLOR!()]
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(color term)]
 /// Palette of Sixel colors with fixed capacity.
 #[doc = crate::_doc_location!("media/image")]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -170,9 +169,7 @@ impl<const CAP: usize> SixelPalette<CAP> {
     ]);
 }
 
-#[doc = crate::_TAG_COLOR!()]
-#[doc = crate::_TAG_ITERATOR!()]
-#[doc = crate::_TAG_TERM!()]
+#[doc = crate::_tags!(color iterator term)]
 /// An iterator over [`SixelPalette`] colors.
 #[doc = crate::_doc_location!("media/image")]
 #[derive(Debug)]

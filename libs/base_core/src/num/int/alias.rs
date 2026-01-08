@@ -8,8 +8,7 @@ use crate::paste;
 macro_rules! iusize_alias {
     ($casted:literal, $sign:literal, $ty:ident, $($width:literal : $cast:ty),+) => { paste! {
         $(
-            #[doc = $crate::_TAG_PRIMITIVE!()]
-            #[doc = $crate::_TAG_NUM!()]
+            #[doc = crate::_tags!(primitive num)]
             #[doc = $casted " pointer-sized " $sign " integer primitive."]
             #[doc = crate::_doc_location!("num")]
             #[cfg(target_pointer_width = $width)]

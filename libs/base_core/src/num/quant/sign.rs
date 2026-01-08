@@ -10,7 +10,7 @@
 
 use crate::{ConstInitCore, InvalidValue, is, whilst};
 
-#[doc = crate::_TAG_QUANT!()]
+#[doc = crate::_tags!(quant)]
 /// The three-valued sign of a number: negative (−1), zero (0), or positive (+1).
 #[doc = crate::_doc_location!("num/quant")]
 ///

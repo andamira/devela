@@ -10,7 +10,7 @@
 
 #[cfg(feature = "_docs_min")]
 define_lane! {
-    #[doc = crate::_TAG_EXAMPLE!()]
+    #[doc = crate::_tags!(example code num)]
     /// Example fixed-width pack of 4 × `i32` lanes.
     #[doc = crate::_doc_location!("num/wide")]
     ///
@@ -20,7 +20,7 @@ define_lane! {
     pub struct Lane4_i32Example pub lanes(4); unsigned(i32);
 }
 
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(construction code num)]
 /// Defines a fixed-width lane type.
 #[doc = crate::_doc_location!("num/wide")]
 ///

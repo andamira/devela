@@ -5,8 +5,7 @@
 
 use crate::{_ansi_consts, Digits, slice};
 
-#[doc = crate::_TAG_TERM!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(term namespace)]
 /// ANSI escape codes.
 #[doc = crate::_doc_location!("ui/front/term")]
 ///

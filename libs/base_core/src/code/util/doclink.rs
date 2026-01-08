@@ -51,7 +51,7 @@ pub struct Example;
     ";
 }
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Helps doc-linking items in downstream crates.
 /// <!-- (*internet* version) -->
 #[doc = crate::_doc_location!("code/util")]
@@ -143,7 +143,7 @@ macro_rules! _doclink {
     };
 }
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Helps doc-linking items in downstream crates.
 /// (*local* version)
 #[doc = crate::_doc_location!("code/util")]

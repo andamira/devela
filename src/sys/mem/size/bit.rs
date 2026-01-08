@@ -40,7 +40,7 @@ use crate::{AtomicIsize, AtomicPtr, AtomicUsize};
 
 /* trait definition */
 
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(mem)]
 /// Type size information in bits.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

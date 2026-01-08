@@ -3,7 +3,7 @@
 //! Defines the [`whilst!`] macro.
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// A flexible loop constructor supporting both `while`- and `for`-style syntaxes.
 #[doc = crate::_doc_location!("code/util")]
 ///

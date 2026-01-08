@@ -3,8 +3,7 @@
 //! Defines [`ArrayFrom`].
 //
 
-#[doc = crate::_TAG_VALUE!()]
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(value mem)]
 /// Compile-time conversion from slice-like types to arrays.
 #[doc = crate::_doc_location!("data/list/array")]
 ///

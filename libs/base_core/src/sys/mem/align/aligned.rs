@@ -10,7 +10,7 @@ use crate::Mem;
 trait Sealed {}
 impl<Candidate, Requirement> Sealed for (Candidate, Requirement) {}
 
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(mem)]
 /// Marker trait to verify memory alignment between two types.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

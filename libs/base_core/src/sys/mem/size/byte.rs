@@ -7,7 +7,7 @@ use crate::Ptr;
 
 impl<T> ByteSized for T {}
 
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(mem)]
 /// Type size information in bytes.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

@@ -14,8 +14,7 @@ use devela::{
     js_uint32,
 };
 
-#[doc = crate::_TAG_UI!()]
-#[doc = crate::_TAG_WEB!()]
+#[doc = crate::_tags!(ui web)]
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
@@ -138,8 +137,7 @@ _js_extern! {
     safe fn window_cancel_animation_frame(requestId: js_uint32);
 }
 
-#[doc = crate::_TAG_UI!()]
-#[doc = crate::_TAG_WEB!()]
+#[doc = crate::_tags!(ui web)]
 /// Aggregates the live state of a [`WebWindow`], including geometry and screen context.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///

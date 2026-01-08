@@ -13,7 +13,7 @@ use crate::{
 
 /* definitions */
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 #[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonul`]."]]
 #[doc = crate::_doc_location!("text/grapheme")]
 ///

@@ -21,8 +21,7 @@ mod codegen {
     /// Marker trait to prevent downstream implementations of the [`Tuple`] trait.
     trait Sealed {}
 
-    #[doc = crate::_TAG_FMT!()]
-    #[doc = crate::_TAG_DEBUG!()]
+    #[doc = crate::_tags!(fmt debug)]
     /// A formatting wrapper for [`Tuple`]s, implementing `Display` and `Debug`.
     #[doc = crate::_doc_location!("data/list/tuple")]
     #[repr(transparent)]

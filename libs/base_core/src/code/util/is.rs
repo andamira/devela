@@ -3,7 +3,7 @@
 //! Defines inline if macro [`is!`].
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Conditional evaluation.
 #[doc = crate::_doc_location!("code/util")]
 ///

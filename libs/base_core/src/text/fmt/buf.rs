@@ -12,7 +12,7 @@
 use crate::{CONST, Cmp, FmtArguments, FmtResult, FmtWrite, Str, is, slice};
 crate::_use! {compat::from_utf8}
 
-#[doc = crate::_TAG_FMT!()]
+#[doc = crate::_tags!(fmt)]
 /// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
 #[doc = crate::_doc_location!("text/fmt")]
 ///
@@ -44,7 +44,7 @@ macro_rules! format_buf {
 #[doc(inline)]
 pub use format_buf;
 
-#[doc = crate::_TAG_FMT!()]
+#[doc = crate::_tags!(fmt)]
 /// A specialized formatter with a fixed byte buffer and truncation detection.
 #[doc = crate::_doc_location!("text/fmt")]
 ///

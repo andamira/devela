@@ -7,7 +7,7 @@
 // IMPROVE: Naming slightly undersells its role
 // MAYBE:RENAME: IdInterner | IdMapper | IdTranslator
 
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(uid)]
 /// Maps backend/native identifiers into stable, compact internal IDs.
 #[doc = crate::_doc_location!("data/uid")]
 ///

@@ -7,7 +7,7 @@ use crate::{Display, FmtResult, Formatter, FromStr};
 #[allow(clippy::enum_glob_use)]
 use Month::*;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// The months of the year.
 #[doc = crate::_doc_location!("phys/time")]
 #[repr(u8)]

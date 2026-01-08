@@ -11,8 +11,7 @@
 
 use crate::PathBuf;
 
-#[doc = crate::_TAG_FS!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(fs namespace)]
 /// A more featureful wrapper over [`PathBuf`].
 ///
 /// # Table of contents

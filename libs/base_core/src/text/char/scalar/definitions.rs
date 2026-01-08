@@ -17,8 +17,7 @@ pub(crate) use crate::{NonExtremeU8, NonExtremeU32, NonNiche, NonValueU16};
 // This is a surrogate UTF-16 code point that can't ever be a Unicode scalar.
 pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(construction text)]
 /// Concisely creates any kind of Unicode scalar.
 #[doc = crate::_doc_location!("text/char")]
 #[macro_export]
@@ -41,7 +40,7 @@ pub use ch;
 
 /* public types */
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// A 7-bit [Unicode scalar][scalar], limited to [basic latin][0w] subset
 /// (ASCII).
 #[doc = crate::_doc_location!("text/char")]
@@ -57,7 +56,7 @@ pub use ch;
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char7(pub(super) NonExtremeU8);
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// An 8-bit [Unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
 #[doc = crate::_doc_location!("text/char")]
@@ -75,7 +74,7 @@ pub struct char7(pub(super) NonExtremeU8);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char8(pub(crate) u8);
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// A 16-bit [Unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
 #[doc = crate::_doc_location!("text/char")]
@@ -95,7 +94,7 @@ pub struct char8(pub(crate) u8);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation.
 #[doc = crate::_doc_location!("text/char")]
 ///
@@ -110,7 +109,7 @@ pub struct char16(pub(super) NonSurrogateU16);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct charu(pub(super) NonNiche<u32>);
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation,
 /// and niche-memory optimization.
 #[doc = crate::_doc_location!("text/char")]

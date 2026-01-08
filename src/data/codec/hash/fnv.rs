@@ -2,13 +2,12 @@
 
 use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 
-#[doc = crate::_TAG_HASH!()]
-#[doc = crate::_TAG_INIT!()]
+#[doc = crate::_tags!(hash init)]
 /// A builder for default Fnv hashers.
 #[doc = crate::_doc_location!("data/codec/hash")]
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
 
-#[doc = crate::_TAG_HASH!()]
+#[doc = crate::_tags!(hash)]
 /// A Fowler–Noll–Vo hasher, implemented for
 /// [u32](#impl-HasherFnv<u32>),
 /// [u64](#impl-HasherFnv<u64>),

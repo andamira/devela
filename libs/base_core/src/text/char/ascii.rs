@@ -14,7 +14,7 @@
 use crate::transmute;
 use ::core::fmt;
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// One of 128 Unicode characters (`U+0000` to `U+007F`), the ASCII subset.
 #[doc = crate::_doc_location!("text/char")]
 ///

@@ -12,7 +12,7 @@ use crate::{ConstInit, MaybeUninit, MemAligned, PhantomData, Ptr};
 
 /* public API */
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A statically allocated LIFO stack of
 /// <abbr title="Dynamically sized type">DST</abbr>s with pointer alignment.
 #[doc = crate::_doc_location!("data/dst")]
@@ -34,7 +34,7 @@ pub type DstStackUsize<DST /*: ?Sized*/, const CAP: usize> = DstStack<DST, DstAr
 // single integer to track the position (using size_of_val when popping items,
 // and the known size when pushing).
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A statically allocated LIFO stack of <abbr title="Dynamically sized type">DST</abbr>s.
 #[doc = crate::_doc_location!("data/dst")]
 ///
@@ -48,13 +48,13 @@ pub struct DstStack<DST: ?Sized, BUF: DstBuf> {
     data: BUF,
 }
 
-#[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_tags!(iterator)]
 /// An iterator over the elements of a [`DstStack`].
 #[doc = crate::_doc_location!("data/dst")]
 #[derive(Debug)]
 pub struct DstStackIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstStack<DST, BUF>, usize);
 
-#[doc = crate::_TAG_ITERATOR!()]
+#[doc = crate::_tags!(iterator)]
 /// A mutable iterator over the elements of a [`DstStack`].
 #[doc = crate::_doc_location!("data/dst")]
 #[derive(Debug)]

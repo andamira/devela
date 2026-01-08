@@ -6,7 +6,7 @@
 
 use crate::{_impl_init, impl_trait};
 
-#[doc = crate::_TAG_AUDIO!()]
+#[doc = crate::_tags!(audio)]
 /// Individual spatial audio channel positions.
 #[doc = crate::_doc_location!("media/audio")]
 ///
@@ -70,7 +70,7 @@ impl AudioChannel {
     }
 }
 
-#[doc = crate::_TAG_AUDIO!()]
+#[doc = crate::_tags!(audio)]
 /// Fixed, discrete multichannel audio layouts (1.0, 2.0, 5.1, 7.1, …).
 #[doc = crate::_doc_location!("media/audio")]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

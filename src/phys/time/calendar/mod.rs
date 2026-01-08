@@ -9,7 +9,7 @@ mod weekday;
 pub use month::Month;
 pub use weekday::Weekday;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// Returns `true` if the provided `year` is a leap year.
 #[doc = crate::_doc_location!("phys/time")]
 ///

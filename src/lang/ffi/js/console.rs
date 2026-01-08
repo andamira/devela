@@ -6,8 +6,7 @@
 #[allow(unused_imports)]
 use devela::{_js_doc, _js_extern};
 
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(runtime namespace)]
 /// Javascript Console.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 #[derive(Debug)]

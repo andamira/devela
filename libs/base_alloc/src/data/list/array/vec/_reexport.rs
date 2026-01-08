@@ -1,18 +1,17 @@
 // devela_base_alloc::data::list::array::vec::_reexport
 
-use crate::{_TAG_CONSTRUCTION, _TAG_DATA_STRUCTURE, _reexport};
+use crate::{_reexport, _tags};
 
 _reexport! { rust: alloc::vec,
     location: "data/list/array",
-    tag: _TAG_DATA_STRUCTURE!(),
+    tag: _tags!(data_structure),
     doc: "A contiguous growable array.",
     Vec
 }
 
 // NOTE: the macro and the module have the same name
 //
-#[doc = _TAG_CONSTRUCTION!()]
-#[doc = _TAG_DATA_STRUCTURE!()]
+#[doc = _tags!(construction data_structure)]
 /// <span class='stab portability' title='re-exported from rust&#39;s `alloc`'>`alloc`</span>
 /// Creates a [`Vec`] containing the arguments.
 #[doc = crate::_doc_location!("data/list/array")]

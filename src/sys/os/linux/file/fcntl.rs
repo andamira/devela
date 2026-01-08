@@ -11,8 +11,7 @@
 
 use crate::c_int;
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_FS!()]
+#[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] File descriptor commands (for `fcntl`).
 #[doc = crate::_doc_location!("sys/os/linux")]
 //

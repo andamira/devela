@@ -5,8 +5,7 @@
 
 use crate::Pin;
 
-#[doc = crate::_TAG_MEM!()]
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(mem lifetime)]
 /// A wrapper for structurally pinned data.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

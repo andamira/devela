@@ -14,9 +14,7 @@ use std::process::{abort, exit, id};
 trait Sealed {}
 impl Sealed for Process {}
 
-#[doc = crate::_TAG_PLATFORM!()]
-#[doc = crate::_TAG_CONCURRENCY!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(platform concurrency namespace)]
 /// Extension trait providing additional methods for [`Process`]es.
 #[doc = crate::_doc_location!("work/process")]
 ///

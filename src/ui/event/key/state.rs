@@ -7,7 +7,7 @@ use crate::ConstInit;
 #[cfg(all(feature = "js", not(windows)))]
 use crate::{WebEventKind, is};
 
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(interaction)]
 /// Represents the state of a [`Key`][crate::Key].
 #[doc = crate::_doc_location!("ui/event")]
 #[repr(u8)]

@@ -6,9 +6,7 @@
 use super::raw;
 use crate::{Libc, Ptr, is};
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_UID!()]
-#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_tags!(linux uid runtime)]
 /// Cached atoms required for high–level event interpretation.
 #[doc = crate::_doc_location!("sys/display/x11")]
 ///

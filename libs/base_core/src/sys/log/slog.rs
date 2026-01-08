@@ -24,7 +24,7 @@ macro_rules! guard {
     ($self:ident leave) => { $self.guard = 0; };
 }
 
-#[doc = crate::_TAG_LOG!()]
+#[doc = crate::_tags!(log)]
 /// Fixed-capacity static logger with owned byte buffers.
 ///
 /// Each logger is identified by its capacity (`CAP`) as the number of stored messages,
@@ -181,7 +181,7 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     }
 }
 
-#[doc = crate::_TAG_LOG!()]
+#[doc = crate::_tags!(log)]
 /// Static global logger macro, compile-time friendly.
 ///
 /// Defines and operates on [`LoggerStatic`] instances for fixed-capacity logging.

@@ -13,8 +13,7 @@ use crate::String;
 #[allow(unused_imports)]
 use crate::{TaskPoll, Web, js_uint32};
 
-#[doc = crate::_TAG_WEB!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(web uid)]
 /// A handle to a JavaScript Web Worker.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
@@ -56,8 +55,7 @@ impl WebWorker {
     }
 }
 
-#[doc = crate::_TAG_WEB!()]
-#[doc = crate::_TAG_ERROR!()]
+#[doc = crate::_tags!(web error)]
 /// Errors that can occur when working with JavaScript Web Workers.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -70,8 +68,7 @@ pub enum WebWorkerError {
     JobNotFound,
 }
 
-#[doc = crate::_TAG_WEB!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(web uid)]
 /// Represents a job running inside a [`WebWorker`].
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]

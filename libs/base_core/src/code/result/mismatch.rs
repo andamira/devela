@@ -10,7 +10,7 @@ impl<N: ConstInitCore, H: ConstInitCore> ConstInitCore for Mismatch<N, H> {
     const INIT: Self = Self::new(N::INIT, H::INIT);
 }
 
-#[doc = crate::_TAG_RESULT!()]
+#[doc = crate::_tags!(result)]
 /// Represents a mismatch between an expected `need` and an encountered `have`.
 #[doc = crate::_doc_location!("code/result")]
 ///

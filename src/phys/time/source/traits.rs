@@ -21,7 +21,7 @@ impl<T: TimeSource> TimeSourceCfg for T {
 }
 
 #[rustfmt::skip]
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A numeric time source.
 #[doc = crate::_doc_location!("phys/time/source")]
 ///
@@ -85,7 +85,7 @@ pub trait TimeSource {
 }
 
 #[rustfmt::skip]
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A configurable numeric time source.
 #[doc = crate::_doc_location!("phys/time/source")]
 ///

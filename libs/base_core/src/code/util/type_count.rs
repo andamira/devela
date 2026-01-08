@@ -3,7 +3,7 @@
 //! Counting types.
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Returns the total number of types received.
 #[doc = crate::_doc_location!("code/util")]
 /// # Examples

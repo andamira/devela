@@ -3,7 +3,7 @@
 //! Defines the [`punroll!`] macro.
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Compile-time pattern unroll over a width of `0..=8 || pow(2) <= 64`.
 #[doc = crate::_doc_location!("core/ops")]
 ///

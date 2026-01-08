@@ -17,8 +17,7 @@ use {
 use ::core::str::from_utf8_mut;
 // crate::_use! {basic::from_utf8} // MAYBE not needed
 
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(text namespace)]
 /// A string slice namespace.
 #[doc = crate::_doc_location!("text/str")]
 ///

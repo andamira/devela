@@ -10,14 +10,14 @@
 //   - TimeError
 //   - TimeResult
 
-use crate::{_TAG_TIME, Duration, StdSystemTimeError, define_error};
+use crate::{_tags, Duration, StdSystemTimeError, define_error};
 
 /* individual errors */
 
 define_error! { individual:
     pub struct SystemTimeError(Duration);
     +location: "phys/time",
-    +tag: _TAG_TIME!(),
+    +tag: _tags!(time),
     DOC_SYSTEM_TIME_ERROR =
     "Returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
@@ -49,7 +49,7 @@ mod full_composite {
     }
 
     define_error! { composite: fmt(f)
-        #[doc = _TAG_TIME!()]
+        #[doc = _tags!(time)]
         /// A time-related composite error.
         #[doc = crate::_doc_location!("phys/time/source")]
         #[non_exhaustive]

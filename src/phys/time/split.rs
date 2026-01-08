@@ -6,7 +6,7 @@
 use crate::{AnyExt, Duration};
 use ::core::fmt;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A full time split from years to nanoseconds.
 #[doc = crate::_doc_location!("phys/time")]
 ///
@@ -41,52 +41,52 @@ pub struct TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
 
 /* aliases */
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from years to nanoseconds, normalized *(192b size, 152b payload)*.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitNorm = TimeSplit<u64, u8, u8, u8, u8, u8, u16, u16, u16>;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from years to days.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitYearDay<Y, MO, D> = TimeSplit<Y, MO, D, (), (), (), (), (), ()>;
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from years to days, normalized *(128b size, 80b payload)*.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitYearDayNorm = TimeSplit<u64, u8, u8, (), (), (), (), (), ()>;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from years to seconds.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitYearSec<Y, MO, D, H, M, S> = TimeSplit<Y, MO, D, H, M, S, (), (), ()>;
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from years to seconds, normalized *(128b size, 104b payload)*.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitYearSecNorm = TimeSplit<u64, u8, u8, u8, u8, u8, (), (), ()>;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from hours to seconds.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitHourSec<H, M, S> = TimeSplit<(), (), (), H, M, S, (), (), ()>;
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from hours to seconds, normalized *(128b size, 80b payload)*.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitHourSecNorm = TimeSplit<(), (), (), u64, u8, u8, (), (), ()>;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from hours to nanoseconds.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitHourNano<H, M, S, MS, US, NS> = TimeSplit<(), (), (), H, M, S, MS, US, NS>;
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from hours to seconds, normalized *(128b size & payload)*.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitHourNanoNorm = TimeSplit<(), (), (), u64, u8, u8, u16, u16, u16>;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from milliseconds to nanoseconds.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitMilliNano<MS, US, NS> = TimeSplit<(), (), (), (), (), (), MS, US, NS>;
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A time split from milliseconds to nanoseconds, normalized *(48b size & payload)*.
 #[doc = crate::_doc_location!("phys/time")]
 pub type TimeSplitMilliNanoNorm = TimeSplit<(), (), (), (), (), (), u16, u16, u16>;

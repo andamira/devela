@@ -26,8 +26,7 @@ mod bytes;
 #[cfg(test)]
 mod tests;
 
-#[doc = crate::_TAG_LIFETIME!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(lifetime namespace)]
 /// Slice-related operations, most of them *const*.
 #[doc = crate::_doc_location!("sys/mem")]
 ///
@@ -115,7 +114,7 @@ mod tests;
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);
 
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(namespace)]
 /// Invokes [`Slice`] [range methods][Slice#range-api-methods-for-subslicing] using short notation.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

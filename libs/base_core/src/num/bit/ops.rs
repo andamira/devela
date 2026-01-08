@@ -11,8 +11,7 @@ use super::_docs::*;
 use crate::MismatchedBounds::{DataOverflow, IndexOutOfBounds, MismatchedIndices};
 use crate::{Bitwise, MismatchedBounds};
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(num namespace)]
 /// Provides bitwise operations on `T`.
 #[doc = crate::_doc_location!("num")]
 ///

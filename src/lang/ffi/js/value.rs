@@ -8,7 +8,7 @@
 use devela::String;
 use devela::{js_bool, js_number, js_uint32};
 
-#[doc = crate::_TAG_RUNTIME!()]
+#[doc = crate::_tags!(runtime value)]
 /// A JavaScript value for FFI communication.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 #[non_exhaustive]

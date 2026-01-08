@@ -5,7 +5,7 @@
 
 use crate::ConstInitCore;
 
-#[doc = crate::_TAG_QUANT!()]
+#[doc = crate::_tags!(quant)]
 /// A repeating cycle defined by a fundamental period.
 #[doc = crate::_doc_location!("num/quant")]
 ///
@@ -21,7 +21,7 @@ impl<T: ConstInitCore> ConstInitCore for Cycle<T> {
     const INIT: Self = Self { period: T::INIT };
 }
 
-#[doc = crate::_TAG_QUANT!()]
+#[doc = crate::_tags!(quant)]
 /// A cycle that repeats a fixed number of times.
 #[doc = crate::_doc_location!("num/quant")]
 ///
@@ -42,7 +42,7 @@ impl<T: ConstInitCore, N: ConstInitCore> ConstInitCore for CycleCount<T, N> {
 
 // WIPZONE
 
-// #[doc = crate::_TAG_QUANT!()]
+// #[doc = crate::_tags!(quant)]
 // /// Cyclic behavior.
 // ///
 // /// Defines operations common to periodic structures, such as retrieving

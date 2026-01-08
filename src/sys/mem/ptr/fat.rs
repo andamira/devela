@@ -11,7 +11,7 @@
 // WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
 // use core::ptr::{metadata, from_raw_parts};
 
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(mem)]
 /// Represents a fat pointer with separate data and metadata pointers.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

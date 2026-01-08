@@ -5,7 +5,7 @@
 
 use crate::{ConstInit, KeyDead, KeyMedia, KeyMod, KeyPad};
 
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(interaction)]
 /// Keyboard codes, used in [`EventKey`][crate::EventKey].
 #[doc = crate::_doc_location!("ui/event")]
 ///

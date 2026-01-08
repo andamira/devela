@@ -11,8 +11,7 @@
 
 use crate::{c_long, c_uint, c_ulong};
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_FS!()]
+#[doc = crate::_tags!(linux fs)]
 /// File status structure matching libc's stat ([man 2 stat])
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///
@@ -71,8 +70,7 @@ impl LinuxStat {
     }
 }
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_FS!()]
+#[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] File mode and permission bits.
 #[doc = crate::_doc_location!("sys/os/linux")]
 //

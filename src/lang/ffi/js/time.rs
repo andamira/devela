@@ -10,8 +10,7 @@ use crate::{Display, TimeDelta, impl_trait};
 #[allow(unused_imports)]
 use crate::{Web, js_number, js_uint32};
 
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(runtime time)]
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///
@@ -61,9 +60,7 @@ impl JsInstant {
 
 impl_trait![fmt::Display for JsInstant |self, f| Display::fmt(&self.ms, f)];
 
-#[doc = crate::_TAG_RUNTIME!()]
-#[doc = crate::_TAG_TIME!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(runtime time uid)]
 /// A handle to a JavaScript timeout.
 #[doc = crate::_doc_location!("lang/ffi/js")]
 ///

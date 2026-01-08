@@ -7,7 +7,7 @@ mod general;
 mod state;
 mod value;
 
-#[doc = crate::_TAG_RESULT!()]
+#[doc = crate::_tags!(result)]
 /// A return type encapsulating an owned **state** `S` and a **value** `V`.
 #[doc = crate::_doc_location!("code/result")]
 ///

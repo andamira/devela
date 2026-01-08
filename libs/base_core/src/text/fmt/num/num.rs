@@ -3,8 +3,7 @@
 //! Defines [`FmtNum`].
 //
 
-#[doc = crate::_TAG_FMT!()]
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(fmt num)]
 /// Const number formatter.
 #[doc = crate::_doc_location!("text/fmt")]
 ///

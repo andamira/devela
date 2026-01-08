@@ -5,7 +5,7 @@
 
 use crate::{Extent, Position, Stride};
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// A [`Position`]ed [`Extent`].
 #[doc = crate::_doc_location!("num/geom/metric")]
 #[must_use]
@@ -17,7 +17,7 @@ pub struct Region<T, const D: usize> {
     pub size: Extent<T, D>,
 }
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// A [`Stride`]d [`Region`] defining structured traversal.
 ///
 /// `RegionStrided` extends `Region` by adding a stride, allowing

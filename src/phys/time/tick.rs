@@ -5,7 +5,7 @@
 
 use crate::Ordering;
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// A deterministic logical time counter.
 #[doc = crate::_doc_location!("phys/time")]
 ///

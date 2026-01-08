@@ -19,7 +19,7 @@
 ///   expands to: (u8 $($_:tt)*) => { u8 };
 macro_rules! generate_niche_prim {
     ($_d:tt $($P:ty),+ $(,)?) => { $crate::paste! {
-        #[doc = crate::_TAG_NICHE!()]
+        #[doc = crate::_tags!(niche)]
         /// Maps a niche representation type to its primitive carrier type.
         #[doc = crate::_doc_location!("num/niche")]
         ///
@@ -82,9 +82,7 @@ macro_rules! generate_niche_prim {
 }
 generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NICHE!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(num niche construction)]
 /// Creates a `NonExtreme*` niche instance with compile-time checking.
 #[doc = crate::_doc_location!("num/niche")]
 ///
@@ -112,9 +110,7 @@ macro_rules! ne {
 #[doc(inline)]
 pub use ne;
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NICHE!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(num niche construction)]
 /// Creates a `NonValue*` niche value with compile-time checking.
 #[doc = crate::_doc_location!("num/niche")]
 ///
@@ -144,9 +140,7 @@ macro_rules! nv {
 #[doc(inline)]
 pub use nv;
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NICHE!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(num niche construction)]
 /// Creates a `NonZero*` niche value with compile-time checking.
 #[doc = crate::_doc_location!("num/niche")]
 ///
@@ -177,9 +171,7 @@ pub use nz;
 
 /* helpers */
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NICHE!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(num niche construction)]
 /// Private helper to construct niche types.
 #[doc = crate::_doc_location!("num/niche")]
 #[doc(hidden)]

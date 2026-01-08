@@ -88,8 +88,7 @@ macro_rules! impl_non_value {
         mod [<__impls_ $name >] {
             /* definition */
 
-            #[doc = $crate::_TAG_NUM!()]
-            #[doc = $crate::_TAG_NICHE!()]
+            #[doc = crate::_tags!(num niche)]
             #[doc = $doc " integer that is known not to equal some specific value." ]
             #[doc = crate::_doc_location!("num/niche")]
             ///
@@ -108,8 +107,7 @@ macro_rules! impl_non_value {
 
             /* aliases */
 
-            #[doc = $crate::_TAG_NUM!()]
-            #[doc = $crate::_TAG_NICHE!()]
+            #[doc = crate::_tags!(num niche)]
             #[doc = $doc " integer that is known not to equal its most extreme value ([`"
                 $XTR "`][" $IP "::" $XTR "])."]
             #[doc = crate::_doc_location!("num/niche")]

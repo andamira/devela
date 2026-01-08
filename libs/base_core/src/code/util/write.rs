@@ -3,8 +3,7 @@
 //! Defines the [write_at!] macro.
 //
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(code mem)]
 /// Write elements to a buffer at the given offset.
 #[doc = crate::_doc_location!("code/util")]
 ///

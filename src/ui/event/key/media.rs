@@ -10,7 +10,7 @@ use crate::ConstInit;
 
 /* definitions */
 
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(interaction)]
 /// Media key codes.
 #[doc = crate::_doc_location!("ui/event")]
 ///

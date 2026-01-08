@@ -6,7 +6,7 @@
 use crate::{compile, is, isize_up, paste, usize_up};
 use ::core::{fmt, hash, ops};
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(num)]
 /// Faster divisor for division and modulo operations.
 #[doc = crate::_doc_location!("num")]
 ///

@@ -5,7 +5,7 @@
 
 use crate::{Display, FmtResult, Formatter, Slice};
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// A precise location in the source code.
 #[doc = crate::_doc_location!("code")]
 ///
@@ -75,7 +75,7 @@ impl CodeLocation {
     }
 }
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// A contiguous span between two code locations.
 #[doc = crate::_doc_location!("code")]
 ///

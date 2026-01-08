@@ -3,7 +3,7 @@
 //! Defines the `CacheAlign` struct.
 //
 
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(mem)]
 /// Aligns and pads a value to the length of a cache line.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

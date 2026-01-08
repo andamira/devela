@@ -14,7 +14,7 @@ crate::_use! {basic::from_utf8}
 trait Sealed {}
 impl Sealed for str {}
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// Extension trait providing additional methods for [`&str`].
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]

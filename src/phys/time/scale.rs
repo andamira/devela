@@ -5,7 +5,7 @@
 
 use crate::{NonZeroU32, Ratio, nz, unwrap};
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// Describes the conceptual scale at which time is expressed or interpreted.
 #[doc = crate::_doc_location!("phys/time")]
 ///

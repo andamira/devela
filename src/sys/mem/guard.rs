@@ -24,7 +24,7 @@ thread_local! {
         = RefCell::new(KeyCurrentMap::new_cloned(PtrNonNull::<u8>::dangling()));
 }
 
-#[doc = crate::_TAG_GUARD!()]
+#[doc = crate::_tags!(guard)]
 /// A guard that temporarily sets a global current ptr for `T`, restoring the old one on drop.
 #[doc = crate::_doc_location!("sys/mem")]
 ///
@@ -82,7 +82,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
     }
 }
 
-#[doc = crate::_TAG_GUARD!()]
+#[doc = crate::_tags!(guard)]
 /// A marker object representing the current instance of a type `T`.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

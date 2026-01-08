@@ -11,7 +11,7 @@
 // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms).
 // IMPROVE: allow differentiating between the first doc line and additional docs.
 
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(construction error)]
 /// Defines individual and composite error types.
 #[doc = crate::_doc_location!("code/error")]
 ///
@@ -118,7 +118,7 @@ macro_rules! _define_error {
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
         $( $(#[doc = $tag])+ )?
-        #[doc = $crate::_TAG_ERROR!()] // IMPROVE: make optional
+        #[doc = $crate::_tags!(error)] // IMPROVE: make optional
         $(#[$attributes])*
         #[doc = $DOC_NAME!()]
         $(#[doc = $crate::_doc_location![$($location)?]])? // canonical location
@@ -188,13 +188,13 @@ macro_rules! _define_error {
         ),+ $(,)? }
     ) => {
         $(#[doc = $tag])?
-        #[doc = $crate::_TAG_ERROR_COMPOSITE!()] // IMPROVE: make optional
+        #[doc = $crate::_tags!(error_composite)] // IMPROVE: make optional
         $(#[$enum_attr])*
         $(#[doc = $crate::_doc_location![$($location)?]])? // canonical location
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
             $(#[doc = $tag_variant])?
-            #[doc = $crate::_TAG_ERROR!()] // IMPROVE: make optional
+            #[doc = $crate::_tags!(error)] // IMPROVE: make optional
             $(#[$variant_attr])*
             #[doc = $DOC_VARIANT!()]
             $variant_name

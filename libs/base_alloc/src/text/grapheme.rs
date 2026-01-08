@@ -11,7 +11,7 @@ use crate::{CharIter, String};
 // #[allow(unused, reason = "feature-gated")]
 // use {crate::Char, ::core::str::from_utf8_unchecked};
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[doc = crate::_doc_location!("text/grapheme")]
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]

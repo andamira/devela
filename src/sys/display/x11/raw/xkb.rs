@@ -10,7 +10,7 @@
 
 #![allow(non_camel_case_types, non_upper_case_globals, clippy::upper_case_acronyms)]
 
-use crate::{_TAG_FFI, c_char, c_int, c_void};
+use crate::{c_char, c_int, c_void};
 
 /* from xkbcommon.h */
 
@@ -145,7 +145,7 @@ pub(crate) enum xkb_state {}
 
 /* enums */
 
-#[doc = _TAG_FFI!()]
+#[doc = crate::_tags!(ffi)]
 /// Direction of a key event.
 #[repr(C)]
 pub(crate) enum xkb_key_direction {
@@ -157,7 +157,7 @@ pub(crate) enum xkb_key_direction {
 
 /* state */
 
-#[doc = _TAG_FFI!()]
+#[doc = crate::_tags!(ffi)]
 /// Modifier and layout types for state objects
 ///
 /// - <https://xkbcommon-d.dpldocs.info/xkbcommon.xkbcommon.xkb_state_component.html>

@@ -14,7 +14,7 @@ use crate::{
     is_leap_year,
 };
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// 64-bit Unix time, supporting negative values.
 #[doc = crate::_doc_location!("phys/time")]
 ///
@@ -25,7 +25,7 @@ pub struct TimeUnixI64 {
     pub seconds: i64,
 }
 
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(time)]
 /// 32-bit Unix time, supporting only non-negative values.
 #[doc = crate::_doc_location!("phys/time")]
 ///

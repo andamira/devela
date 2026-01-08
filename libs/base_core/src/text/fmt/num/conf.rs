@@ -7,10 +7,9 @@
 // struct FmtNumGroup
 // enum FmtNumSign
 
-use crate::{_TAG_FMT, _TAG_NUM, ConstInitCore, Sign};
+use crate::{ConstInitCore, Sign};
 
-#[doc = _TAG_FMT!()]
-#[doc = _TAG_NUM!()]
+#[doc = crate::_tags!(fmt num)]
 /// Configuration for numeric formatting.
 #[doc = crate::_doc_location!("text/fmt")]
 ///
@@ -111,8 +110,7 @@ impl FmtNumConf {
     pub const fn with_fract(mut self, fract: u16) -> Self { self.fract = fract; self }
 }
 
-#[doc = _TAG_FMT!()]
-#[doc = _TAG_NUM!()]
+#[doc = crate::_tags!(fmt num)]
 /// Numeric digit grouping configuration.
 #[doc = crate::_doc_location!("text/fmt")]
 ///
@@ -258,8 +256,7 @@ impl FmtNumGroup {
         self.right_len = len; self.right_sep = Some(sep); self }
 }
 
-#[doc = _TAG_FMT!()]
-#[doc = _TAG_NUM!()]
+#[doc = crate::_tags!(fmt num)]
 /// Controls how the sign of a number is formatted.
 #[doc = crate::_doc_location!("text/fmt")]
 ///

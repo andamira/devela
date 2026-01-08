@@ -8,7 +8,7 @@
 // - IMPROVE: support generics, other use cases.
 // - TODO: make corresponding fns_as_methods.
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Defines standalone functions that call associated methods.
 #[doc = crate::_doc_location!("code/util")]
 ///

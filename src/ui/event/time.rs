@@ -5,8 +5,7 @@
 
 use crate::{ConstInit, DebugExt, FmtResult, Formatter, f32bits, f32bits_niche, impl_trait};
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(event time)]
 /// Selects how an [`EventTimestamp`] should be formatted.
 #[doc = crate::_doc_location!("ui/event")]
 ///
@@ -38,8 +37,7 @@ impl DebugExt for EventTimestamp {
     }
 }
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(event time)]
 /// The time at which the event occurs, stored as single-precision milliseconds.
 #[doc = crate::_doc_location!("ui/event")]
 ///

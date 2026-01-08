@@ -11,8 +11,7 @@ use crate::Int;
 
 mod impl_frac;
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(num namespace)]
 /// Provides comprehensive fractional operations on `T`, most of them *const*.
 #[doc = crate::_doc_location!("num")]
 ///

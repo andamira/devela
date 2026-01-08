@@ -9,7 +9,7 @@
 
 use std::{env, path::PathBuf};
 
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_TAG_NAMESPACE!()] // NOTE: use tag directly to work from /build
 /// Memory-related operations.
 ///
 /// See also: [`MemExt`][crate::MemExt], [`MemAligned`][crate::MemAligned]

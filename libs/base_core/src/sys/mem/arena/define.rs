@@ -8,25 +8,24 @@ define_arena! {
     // [ offset: u8+crate::NonExtremeU8; ] // WIP TODO
     [ offset: u8+u8; ]
 
-    #[doc = crate::_TAG_EXAMPLE!()]
+    #[doc = crate::_tags!(example allocation)]
     /// An example memory arena.
     ///
     /// Generated with [`define_arena!`].
     pub ExampleArena;
-    #[doc = crate::_TAG_EXAMPLE!()]
+    #[doc = crate::_tags!(example allocation)]
     /// An example memory arena handle.
     ///
     /// Generated with [`define_arena!`].
     pub ExampleArenaHandle;
-    #[doc = crate::_TAG_EXAMPLE!()]
+    #[doc = crate::_tags!(example allocation)]
     /// An example memory arena mark.
     ///
     /// Generated with [`define_arena!`].
     pub ExampleArenaMark;
 }
 
-#[doc = crate::_TAG_CONSTRUCTION!()]
-#[doc = crate::_TAG_ALLOCATION!()]
+#[doc = crate::_tags!(construction allocation)]
 /// A custom memory arena generator.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

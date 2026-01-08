@@ -5,7 +5,7 @@
 
 use crate::{FloatConst, Interval};
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// The kind of [`Angle`][super::Angle], based on its normalized turn.
 #[doc = crate::_doc_location!("num/geom/dir")]
 ///

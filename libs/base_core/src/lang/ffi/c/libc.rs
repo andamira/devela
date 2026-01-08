@@ -5,18 +5,14 @@
 
 #![allow(non_camel_case_types)]
 
-use crate::{_TAG_NUM, _TAG_PRIMITIVE};
-
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = _TAG_NUM!()]
+#[doc = crate::_tags!(primitive num)]
 /// Equivalent to C's `mode_t` type.
 #[doc = crate::_doc_location!("lang/ffi/c")]
 ///
 /// Numeric type used in POSIX interfaces to encode file modes and permission bits.
 pub type c_mode_t = u32;
 
-#[doc = _TAG_PRIMITIVE!()]
-#[doc = _TAG_NUM!()]
+#[doc = crate::_tags!(primitive num)]
 /// Equivalent to C's `off_t` type.
 #[doc = crate::_doc_location!("lang/ffi/c")]
 ///

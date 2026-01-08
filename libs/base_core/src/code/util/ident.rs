@@ -3,7 +3,7 @@
 //! identifier related macro functionality
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// Defines a constant for every given identifier with a value of its index in the list.
 #[doc = crate::_doc_location!("code/util")]
 /// # Examples

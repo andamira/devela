@@ -8,7 +8,7 @@
 use crate::{Any, Box, PanicHookInfo, PanicUnwindSafe, ThreadResult};
 use ::std::panic::{catch_unwind, panic_any, resume_unwind, set_hook, take_hook};
 
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(namespace)]
 /// Panic-related operations.
 #[doc = crate::_doc_location!("code/panic")]
 #[derive(Debug)]

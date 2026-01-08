@@ -20,9 +20,7 @@ use proc_macro::TokenStream as TS;
 mod bodies;
 use bodies::*;
 
-#[doc = devela_base_core::_TAG_CONSTRUCTION!()]
-#[doc = devela_base_core::_TAG_NICHE!()]
-#[doc = devela_base_core::_TAG_PROCEDURAL_MACRO!()]
+#[doc = base::_tags!(construction niche procedural_macro)]
 #[doc = include_str!("docs/enumint.md")]
 #[doc = base::_doc_location!("code/util")] // IMPROVE: not a valid route in this crate
 #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]

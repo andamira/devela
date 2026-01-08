@@ -9,8 +9,7 @@
 
 use crate::sf;
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_LOGIC!()]
+#[doc = crate::_tags!(code logic)]
 /// Allows to convert compile-time constants into type-level booleans.
 #[doc = crate::_doc_location!("num")]
 ///
@@ -33,8 +32,7 @@ sf! {
     impl ConstBool for [(); 1] { type Value = True; const VALUE: Self::Value = True; }
 }
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_LOGIC!()]
+#[doc = crate::_tags!(code logic)]
 /// Converts a *const* `bool` expression to a type-level boolean.
 #[doc = crate::_doc_location!("num")]
 ///
@@ -59,8 +57,7 @@ macro_rules! const_bool {
 #[doc(inline)]
 pub use const_bool;
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_LOGIC!()]
+#[doc = crate::_tags!(code logic)]
 /// A type-level logical *true*.
 #[doc = crate::_doc_location!("num")]
 ///
@@ -70,8 +67,7 @@ pub use const_bool;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct True;
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_LOGIC!()]
+#[doc = crate::_tags!(code logic)]
 /// A type-level logical *false*.
 #[doc = crate::_doc_location!("num")]
 ///

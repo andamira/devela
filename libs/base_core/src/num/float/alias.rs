@@ -15,8 +15,7 @@ macro_rules! impl_fsize {
         impl_fsize![::core::f128, "128"];
     };
     ($float:ty , $pointer_width:literal) => {
-        #[doc = crate::_TAG_PRIMITIVE!()]
-        #[doc = crate::_TAG_NUM!()]
+        #[doc = crate::_tags!(primitive num)]
         /// A pointer-sized floating-point primitive.
         #[doc = crate::_doc_location!("num")]
         ///

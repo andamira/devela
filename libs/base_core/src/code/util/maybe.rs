@@ -4,8 +4,7 @@
 //
 // MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_MAYBE!()]
+#[doc = crate::_tags!(code maybe)]
 /// Helper for using optionally implemented traits, like `Default` or `Clone`.
 #[doc = crate::_doc_location!("code/util")]
 ///

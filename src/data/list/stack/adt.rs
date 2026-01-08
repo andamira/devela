@@ -11,7 +11,7 @@
 
 use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// An abstract *stack* data type.
 #[doc = crate::_doc_location!("data/list/stack")]
 pub trait DataStack: DataCollection {
@@ -24,7 +24,7 @@ pub trait DataStack: DataCollection {
     ) -> Result<(), NotEnoughSpace>;
 }
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// An abstract *double-ended stack* data type.
 #[doc = crate::_doc_location!("data/list/stack")]
 pub trait DataDesta: DataStack {

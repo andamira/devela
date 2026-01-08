@@ -5,8 +5,7 @@
 // - https://syscalls.mebeim.net/?table=riscv/32/rv32/latest
 // - https://syscalls.mebeim.net/?table=riscv/64/rv64/latest
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = crate::_tags!(linux platform)]
 /// Linux `sys/syscall.h` constants for `riscv`.
 #[allow(non_camel_case_types)]
 #[derive(Debug)]

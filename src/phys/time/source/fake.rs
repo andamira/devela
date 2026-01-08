@@ -5,10 +5,9 @@
 
 #![allow(dead_code, unused_variables)]
 
-use crate::{_TAG_FAKE, AtomicOrdering, AtomicU64, TimeScale, TimeSourceCfg};
+use crate::{AtomicOrdering, AtomicU64, TimeScale, TimeSourceCfg};
 
-#[doc = crate::_TAG_TIME!()]
-#[doc = _TAG_FAKE!()]
+#[doc = crate::_tags!(time fake)]
 /// A test-friendly time source that allows manual control.
 #[doc = crate::_doc_location!("phys/time/source")]
 ///
@@ -101,8 +100,7 @@ impl TimeFake {
     }
 }
 
-#[doc = crate::_TAG_TIME!()]
-#[doc = _TAG_FAKE!()]
+#[doc = crate::_tags!(time fake)]
 /// A borrowed configuration handle selecting a specific `TimeFake` timeline.
 #[doc = crate::_doc_location!("phys/time/source")]
 ///

@@ -9,7 +9,7 @@ use devela::String;
 // #[allow(unused_imports, reason = "not(windows)")]
 use devela::{_js_extern, _js_method_str_alloc, WebElement, js_bool, js_int32, js_uint32};
 
-#[doc = crate::_TAG_WEB!()]
+#[doc = crate::_tags!(web)]
 /// Handle to the brower's global [Document] associated APIs.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///

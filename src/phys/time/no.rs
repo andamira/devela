@@ -3,8 +3,7 @@
 //! Not a time.
 //
 
-#[doc = crate::_TAG_NO!()]
-#[doc = crate::_TAG_TIME!()]
+#[doc = crate::_tags!(no time)]
 /// Represents the absence of time.
 #[doc = crate::_doc_location!("phys/time")]
 ///

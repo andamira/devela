@@ -5,8 +5,7 @@
 
 use crate::{FmtResult, Formatter};
 
-#[doc = crate::_TAG_FMT!()]
-#[doc = crate::_TAG_DEBUG!()]
+#[doc = crate::_tags!(fmt debug)]
 /// Extension for contextual debugging.
 #[doc = crate::_doc_location!("text/fmt")]
 ///

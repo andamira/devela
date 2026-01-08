@@ -9,7 +9,7 @@
 //
 // IMPROVE: support more sealed implementations
 
-#[doc = crate::_TAG_INIT!()]
+#[doc = crate::_tags!(init)]
 /// A trait for giving a type a useful const-friendly initial value *(lower-level)*.
 #[doc = crate::_doc_location!("code")]
 ///

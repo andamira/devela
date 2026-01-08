@@ -7,13 +7,15 @@
 // - struct KeyMods
 // - impls
 
+#![allow(unused, missing_docs)] // WIP
+
 #[cfg(all(feature = "js", not(windows)))]
 use crate::WebKeyLocation;
 use crate::{ConstInit, impl_trait, is};
 
 /* definitions */
 
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(interaction)]
 /// Modifier key codes (when pressed by themselves)
 #[doc = crate::_doc_location!("ui/event")]
 ///
@@ -57,7 +59,7 @@ impl KeyMod {
     pub const IsoLevel3Shift: KeyMod = KeyMod::AltGr;
 }
 
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(interaction)]
 /// A bitfield of key modifiers (Shift, Control…) + extra (repeating, composing).
 #[doc = crate::_doc_location!("ui/event")]
 #[repr(transparent)]

@@ -14,8 +14,7 @@ mod u16; // Char<u16>
 mod u32; // Char<u32>
 mod bytes; // Char<u8 | &[u8] | &[u8; N]>
 
-#[doc = crate::_TAG_TEXT!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(text namespace)]
 /// Unicode scalars-related low-level *const* operations.
 #[doc = crate::_doc_location!("text/char")]
 ///

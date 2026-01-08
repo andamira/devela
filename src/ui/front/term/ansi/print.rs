@@ -31,8 +31,7 @@ See also the [`ansi!`][crate::ansi] macro.
 // In sync with /src/sys/os/print/mod.rs
 
 // std version (overrides linux)
-#[doc = crate::_TAG_TERM!()]
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = crate::_tags!(term platform)]
 /// A function to print an ANSI escape `sequence` of bytes to `stdout`
 #[doc = crate::_doc_location!("ui/front/term")]
 #[doc = DOC_ANSI_PRINT!()]
@@ -47,8 +46,7 @@ pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
 }
 
 // linux version (only if not(std)) (because of the extra conversions)
-#[doc = crate::_TAG_TERM!()]
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = crate::_tags!(term platform)]
 /// A function to print an ANSI escape `sequence` of bytes to `stdout`
 #[doc = crate::_doc_location!("ui/front/term")]
 #[doc = DOC_ANSI_PRINT!()]
@@ -62,8 +60,7 @@ pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
     crate::Linux::print_bytes(sequence).map_err(crate::LinuxError::to_io)
 }
 
-#[doc = crate::_TAG_TERM!()]
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = crate::_tags!(term platform)]
 /// The most efficient print method, exclusive for `std`.
 #[doc = crate::_doc_location!("ui/front/term")]
 #[cfg(feature = "std")]
@@ -72,8 +69,7 @@ pub fn ansi_print_std(sequence: &[u8]) -> IoResult<()> {
     crate::Io::stdout().write_all(sequence)
 }
 
-#[doc = crate::_TAG_TERM!()]
-#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_tags!(term linux)]
 /// The most efficient print method, exclusive for `linux`.
 #[doc = crate::_doc_location!("ui/front/term")]
 ///

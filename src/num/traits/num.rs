@@ -7,7 +7,7 @@ use crate::{NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{NotImplemented, NotSupported};
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(num)]
 /// Common trait for numeric types.
 #[doc = crate::_doc_location!("num")]
 ///

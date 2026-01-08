@@ -6,9 +6,7 @@
 use super::raw;
 use crate::{Extent, Position, XDisplay, XError, lets};
 
-#[doc = crate::_TAG_LINUX!()]
-#[doc = crate::_TAG_UID!()]
-#[doc = crate::_TAG_GUARD!()]
+#[doc = crate::_tags!(linux uid guard)]
 /// X11 window created through XCB.
 #[doc = crate::_doc_location!("sys/display/x11")]
 ///

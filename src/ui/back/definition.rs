@@ -5,7 +5,7 @@
 
 use crate::UiCap;
 
-#[doc = crate::_TAG_UI!()]
+#[doc = crate::_tags!(ui)]
 /// Common trait for all UI services.
 #[doc = crate::_doc_location!("ui/back")]
 pub trait UiService {

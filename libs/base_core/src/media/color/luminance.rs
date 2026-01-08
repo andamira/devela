@@ -4,9 +4,9 @@
 //! [`Luminance`], [`Lightness`], [`Luma`], `LinearLightness`.
 //
 
-use crate::{_TAG_COLOR, NumConst, Rgb};
+use crate::{NumConst, Rgb};
 
-#[doc = _TAG_COLOR!()]
+#[doc = crate::_tags!(color)]
 /// A generic luminance-like component.
 #[doc = crate::_doc_location!("media/color")]
 ///
@@ -28,7 +28,7 @@ pub struct Lum<T, const LINEAR: bool = true, const LIGHTNESS: bool = false> {
 
 /* aliases*/
 
-#[doc = _TAG_COLOR!()]
+#[doc = crate::_tags!(color)]
 /// Physical [luminance].
 #[doc = crate::_doc_location!("media/color")]
 ///
@@ -37,7 +37,7 @@ pub struct Lum<T, const LINEAR: bool = true, const LIGHTNESS: bool = false> {
 /// [luminance]: https://en.wikipedia.org/wiki/Luminance
 pub type Luminance<T> = Lum<T, true, false>;
 
-#[doc = _TAG_COLOR!()]
+#[doc = crate::_tags!(color)]
 /// Perceptual [lightness] (L*).
 #[doc = crate::_doc_location!("media/color")]
 ///
@@ -47,7 +47,7 @@ pub type Luminance<T> = Lum<T, true, false>;
 /// [lightness]: https://en.wikipedia.org/wiki/Lightness
 pub type Lightness<T> = Lum<T, false, true>;
 
-#[doc = _TAG_COLOR!()]
+#[doc = crate::_tags!(color)]
 /// Gamma-encoded [luma] (Y′).
 #[doc = crate::_doc_location!("media/color")]
 ///
@@ -56,7 +56,7 @@ pub type Lightness<T> = Lum<T, false, true>;
 /// [luma]: https://en.wikipedia.org/wiki/Luma_(video)
 pub type Luma<T> = Lum<T, false, false>;
 
-#[doc = _TAG_COLOR!()]
+#[doc = crate::_tags!(color)]
 /// Linearized perceptual lightness (L* in linear space).
 #[doc = crate::_doc_location!("media/color")]
 ///

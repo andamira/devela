@@ -29,8 +29,7 @@ use crate::{
     NonValueU128, NonValueUsize, NonZero, Overflow, unwrap,
 };
 
-#[doc = crate::_TAG_MAYBE!()]
-#[doc = crate::_TAG_NICHE!()]
+#[doc = crate::_tags!(maybe niche)]
 /// A zero-cost wrapper that abstracts over niche and non-niche types.
 #[doc = crate::_doc_location!("num/niche")]
 ///
@@ -340,8 +339,7 @@ macro_rules! impl_maybe {
 }
 impl_maybe![];
 
-#[doc = crate::_TAG_NO!()]
-#[doc = crate::_TAG_NICHE!()]
+#[doc = crate::_tags!(no niche)]
 /// A zero-cost wrapper that mimics a niche type without using a niche.
 #[doc = crate::_doc_location!("num/niche")]
 ///

@@ -3,7 +3,7 @@
 //! Defines [`unwrap!`].
 //
 
-#[doc = crate::_TAG_RESULT!()]
+#[doc = crate::_tags!(result)]
 /// An unwrapper macro that works in compile-time.
 #[doc = crate::_doc_location!("code/result")]
 ///

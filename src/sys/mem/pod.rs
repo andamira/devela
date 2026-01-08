@@ -6,7 +6,7 @@
 
 use ::core::{mem::MaybeUninit, num::*};
 
-#[doc = crate::_TAG_MEM!()]
+#[doc = crate::_tags!(mem)]
 /// Indicates a type is Plain Old Data, and meets specific memory layout guarantees.
 #[doc = crate::_doc_location!("sys/mem")]
 ///

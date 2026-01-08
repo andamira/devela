@@ -3,8 +3,7 @@
 //! Defines skip formatting macros ([`items`], [`sf`]).
 //
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_FMT!()]
+#[doc = crate::_tags!(code fmt)]
 /// Groups *`items`* together and expands them as if they were written directly.
 #[doc = crate::_doc_location!("code/util")]
 ///
@@ -31,8 +30,7 @@ macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
 #[doc(inline)]
 pub use items;
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_FMT!()]
+#[doc = crate::_tags!(code fmt)]
 /// *`s`kip `f`ormatting* macro.
 #[doc = crate::_doc_location!("code/util")]
 ///

@@ -16,7 +16,7 @@ impl<T, const LEN: usize> Sealed for [T; LEN] {}
 #[cfg(feature = "alloc")]
 impl<T> Sealed for Vec<T> {}
 
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(namespace)]
 /// Extension trait providing additional methods for [`&[T]`][slice].
 #[doc = crate::_doc_location!("sys/mem")]
 ///
@@ -123,7 +123,7 @@ pub trait SliceExt<T>: Sealed {
         U: TryFrom<T, Error = E>;
 }
 
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(namespace)]
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
 #[doc = crate::_doc_location!("sys/mem")]
 ///

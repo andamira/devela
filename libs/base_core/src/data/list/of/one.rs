@@ -58,7 +58,7 @@ macro_rules! impl_oneof {
     /* main arms */
 
     (define_enum: $($variant:ident : $nth:literal : $suf:literal),+) => { $crate::paste! {
-        #[doc = crate::_TAG_CODE!()]
+        #[doc = crate::_tags!(code)]
         /// A generic, parameterized *enum* for expressing structured alternatives.
         #[doc = crate::_doc_location!("data/list")]
         ///

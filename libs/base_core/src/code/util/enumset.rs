@@ -3,8 +3,7 @@
 //! An enum with an associated bitfield.
 //
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(code construction)]
 /// Defines an enum and an associated type set of its variants.
 #[doc = crate::_doc_location!("code/util")]
 ///

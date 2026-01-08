@@ -7,7 +7,7 @@ use crate::{IoRead, IoResult, IoWrite, is};
 
 impl<T: IoRead + IoWrite> IoDuplex for T {}
 
-#[doc = crate::_TAG_IO!()]
+#[doc = crate::_tags!(io)]
 /// A duplex byte I/O primitive.
 ///
 /// This trait is blanket-implemented for any type that implements both

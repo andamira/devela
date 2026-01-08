@@ -7,14 +7,12 @@
 #[cfg(feature = "sys")]
 use crate::IoError;
 
-#[doc = crate::_TAG_UI!()]
-#[doc = crate::_TAG_RESULT!()]
+#[doc = crate::_tags!(ui result)]
 /// A user-interface result.
 #[doc = crate::_doc_location!("ui")]
 pub type UiResult<T> = core::result::Result<T, UiError>;
 
-#[doc = crate::_TAG_UI!()]
-#[doc = crate::_TAG_ERROR!()]
+#[doc = crate::_tags!(ui error_composite)]
 /// A user-interface error.
 #[doc = crate::_doc_location!("ui")]
 #[non_exhaustive]

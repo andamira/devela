@@ -5,7 +5,7 @@
 
 use crate::{ConstInit, Own};
 
-#[doc = crate::_TAG_RAND!()]
+#[doc = crate::_tags!(rand)]
 /// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr>
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 #[doc = crate::_doc_location!("num/rand")]

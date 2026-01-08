@@ -3,7 +3,7 @@
 //!
 //
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// Represents an entry in a [static map] allowing for in-place mutation or insertion.
 #[doc = crate::_doc_location!("data/key")]
 ///

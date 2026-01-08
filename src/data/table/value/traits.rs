@@ -9,9 +9,9 @@
 // - DataRaw
 // - DataRawCopy
 
-use crate::{_TAG_VALUE, Debug};
+use crate::Debug;
 
-#[doc = _TAG_VALUE!()]
+#[doc = crate::_tags!(value)]
 /// Common trait for enumerating *data types*.
 #[doc = crate::_doc_location!("data/table/value")]
 ///
@@ -41,7 +41,7 @@ pub trait DataType: Debug {
     fn data_value_size(&self) -> usize;
 }
 
-#[doc = _TAG_VALUE!()]
+#[doc = crate::_tags!(value)]
 /// Common trait for enumerating `Copy`-constrained *data types*.
 #[doc = crate::_doc_location!("data/table/value")]
 ///
@@ -68,7 +68,7 @@ where
     }
 }
 
-#[doc = _TAG_VALUE!()]
+#[doc = crate::_tags!(value)]
 /// Common trait for enumerating *data values*.
 #[doc = crate::_doc_location!("data/table/value")]
 ///
@@ -92,7 +92,7 @@ pub trait DataValue: Debug {
     fn data_value_is_copy(&self) -> bool;
 }
 
-#[doc = _TAG_VALUE!()]
+#[doc = crate::_tags!(value)]
 /// Common trait for enumerating `Copy`-constrained *data values*.
 #[doc = crate::_doc_location!("data/table/value")]
 ///
@@ -118,7 +118,7 @@ pub trait DataValueCopy: DataValue + Copy {
     }
 }
 
-#[doc = _TAG_VALUE!()]
+#[doc = crate::_tags!(value)]
 /// Common unsafe trait for enumerating untagged *raw data values*.
 #[doc = crate::_doc_location!("data/table/value")]
 ///
@@ -128,7 +128,7 @@ pub trait DataValueCopy: DataValue + Copy {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 pub unsafe trait DataRaw {}
 
-#[doc = _TAG_VALUE!()]
+#[doc = crate::_tags!(value)]
 /// Common unsafe trait for enumerating `Copy`-constrained untagged *raw data values*.
 #[doc = crate::_doc_location!("data/table/value")]
 ///

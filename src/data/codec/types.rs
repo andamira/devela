@@ -1,6 +1,6 @@
 // devela::data::codec::types
 
-#[doc = crate::_TAG_CODEC!()]
+#[doc = crate::_tags!(codec)]
 /// The primary mode for data encoding.
 #[doc = crate::_doc_location!("data/codec")]
 ///
@@ -21,7 +21,7 @@ pub enum EncodingMode {
     Binary,
 }
 
-#[doc = crate::_TAG_CODEC!()]
+#[doc = crate::_tags!(codec)]
 /// The type of compression applied to data.
 #[doc = crate::_doc_location!("data/codec")]
 ///

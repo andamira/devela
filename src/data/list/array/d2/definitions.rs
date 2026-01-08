@@ -7,7 +7,7 @@ use crate::{Array, Bare, Storage};
 // #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
 // use rkyv::{Archive, Deserialize, Serialize};
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A static 2-dimensional [`Array`].
 #[doc = crate::_doc_location!("data/list/array")]
 ///
@@ -69,7 +69,7 @@ use crate::{Array, Bare, Storage};
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560)
 //       would allow calculating CR automatically from C and R.
 // #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
-// rkyv(archived = Array2dArchived, attr(doc = crate::_TAG_RKYV![])))]
+// rkyv(archived = Array2dArchived, attr(doc = crate::_tag!(rkyv))))]
 // #[cfg_attr(
 //     all(feature = "dep_rkyv", nightly_doc),
 //     rkyv(attr(doc(cfg(feature = "dep_rkiv"))))

@@ -8,7 +8,7 @@
 
 use crate::Cast;
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(num)]
 /// Offers methods to split a primitive into an array of smaller primitives.
 #[doc = crate::_doc_location!("num")]
 ///

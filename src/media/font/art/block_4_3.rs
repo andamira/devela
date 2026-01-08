@@ -8,7 +8,7 @@
 
 use crate::FontArt;
 
-#[doc = crate::_TAG_FONT!()]
+#[doc = crate::_tags!(font)]
 /// A simple 4x3 Unicode-art font.
 #[doc = crate::_doc_location!("media/font")]
 ///
@@ -42,7 +42,7 @@ pub const FONT_ART_4_3: FontArt = FontArt {
 };
 
 #[rustfmt::skip]
-#[doc = crate::_TAG_FONT!()]
+#[doc = crate::_tags!(font)]
 /// An ASCII art font size 4x3 made with half blocks.
 const FONT_ART_BLOCK_4_3: &[&[&str]] = &[
    &[

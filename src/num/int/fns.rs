@@ -3,7 +3,7 @@
 #[cfg(not(feature = "std"))]
 use crate::FloatExt;
 
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(num)]
 /// The prime number theorem formula.
 #[doc = crate::_doc_location!("num")]
 ///

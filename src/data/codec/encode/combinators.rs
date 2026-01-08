@@ -14,9 +14,9 @@ pub use {
 };
 
 use crate::{
-    _TAG_CODEC, BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite,
-    Formatter, IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData,
-    TryFromIntError, is,
+    BitOr, Debug, Decodable, Deref, Encodable, EncodableLen, FmtResult, FmtWrite, Formatter,
+    IoError, IoErrorKind, IoRead, IoResult, IoTake, IoWrite, NonZero, PhantomData, TryFromIntError,
+    is,
 };
 crate::_use! {basic::from_utf8}
 
@@ -24,7 +24,7 @@ crate::_use! {basic::from_utf8}
 mod endian {
     use super::*;
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// Encodes and decodes a number in big-endian order.
     #[doc = crate::_doc_location!("data/codec")]
     ///
@@ -53,7 +53,7 @@ mod endian {
         pub const fn new(num: W) -> Self { Self { num } }
     }
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// Encodes and decodes a number in little-endian order.
     #[doc = crate::_doc_location!("data/codec")]
     ///
@@ -182,7 +182,7 @@ mod endian {
 mod cond {
     use super::*;
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// Encodes and decodes conditionally.
     #[doc = crate::_doc_location!("data/codec")]
     ///
@@ -226,7 +226,7 @@ mod cond {
 mod flags {
     use super::*;
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// Encodes and decodes a sequence of flags as a single byte.
     #[doc = crate::_doc_location!("data/codec")]
     ///
@@ -308,7 +308,7 @@ mod flags {
 mod join {
     use super::*;
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// Encodes and decodes an iterator as a sequence with an optional `separator`.
     #[doc = crate::_doc_location!("data/codec")]
     ///
@@ -379,7 +379,7 @@ mod join {
 mod len {
     use super::*;
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// A dummy writer that counts bytes instead of actually writing them.
     #[doc = crate::_doc_location!("data/codec")]
     ///
@@ -417,7 +417,7 @@ mod len {
         fn flush(&mut self) -> IoResult<()> { Ok(()) }
     }
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// Encodes and decodes a length prefixed value
     /// (<abbr title = "Type-Length-Value">[TLV]</abbr>).
     #[doc = crate::_doc_location!("data/codec")]
@@ -543,7 +543,7 @@ mod len {
         }
     }
 
-    #[doc = _TAG_CODEC!()]
+    #[doc = crate::_tags!(codec)]
     /// A private helper trait to tie a length type to the endian codec.
     ///
     /// This trait ensures that `CodecLenValue` only accepts explicit endianness encoders

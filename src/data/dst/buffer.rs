@@ -2,7 +2,7 @@
 
 use crate::{Array, ConstInit, Deref, DerefMut, MaybeUninit, MemPod};
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// Represents the backing buffer for storing dynamically sized types.
 #[doc = crate::_doc_location!("data/dst")]
 ///
@@ -97,7 +97,7 @@ unsafe impl<T: MemPod> DstBuf for crate::Vec<MaybeUninit<T>> {
     }
 }
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A static array for storing <abbr title="Dynamically sized type">DST</abbr>s.
 #[doc = crate::_doc_location!("data/dst")]
 #[derive(Debug)]
@@ -140,13 +140,13 @@ unsafe impl<T: MemPod, const CAP: usize> DstBuf for DstArray<T, CAP> {
     }
 }
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A statically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 #[doc = crate::_doc_location!("data/dst")]
 pub type DstArrayUsize<const CAP: usize> = DstArray<usize, CAP>;
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A dynamically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 #[doc = crate::_doc_location!("data/dst")]

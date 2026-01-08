@@ -20,7 +20,7 @@ use crate::Vec;
 use crate::{IoError, IoErrorKind, IoResult, OptRes, Slice, is, sf};
 use ::core::{cmp, fmt};
 
-#[doc = crate::_TAG_IO!()]
+#[doc = crate::_tags!(io)]
 /// The `IoRead` trait allows for reading bytes from a source.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Read.html>.

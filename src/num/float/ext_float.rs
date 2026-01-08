@@ -6,8 +6,7 @@
 
 use crate::{Float, FloatConst, Sign};
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NAMESPACE!()] // by association with Float
+#[doc = crate::_tags!(num namespace)] // by association with Float
 /// Extension trait for floating-point types. Associated methods.
 #[doc = crate::_doc_location!("num")]
 ///

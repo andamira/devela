@@ -3,7 +3,7 @@
 use super::trie::graphemes_lookup;
 use crate::{Mem, charu, impl_trait};
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 #[doc = concat![crate::_ABBR_EGC!(), "property values from Unicode Standard Annex #29."]]
 #[doc = crate::_doc_location!("text/grapheme")]
 ///
@@ -81,7 +81,7 @@ impl GraphemePropCb {
     }
 }
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// Break property for Indic scripts that prevents splitting within orthographic syllables.
 #[doc = crate::_doc_location!("text/grapheme")]
 ///
@@ -121,7 +121,7 @@ impl GraphemePropInCb {
     }
 }
 
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 #[doc = concat!["Combined ", crate::_ABBR_EGC!(), "break properties for a single code point."]]
 #[doc = crate::_doc_location!("text/grapheme")]
 ///

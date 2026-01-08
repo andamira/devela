@@ -3,8 +3,7 @@
 //! Allows the unit type [`()`] to represent the absence of a number.
 //
 
-#[doc = crate::_TAG_NO!()]
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(no num)]
 /// Represents the absence of a number.
 #[doc = crate::_doc_location!("num")]
 ///

@@ -20,8 +20,7 @@
 use crate::Vec;
 use crate::{Deref, GcdReturn, IntResult as Result, Num, NumInt, NumRef, ValueQuant};
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_LIFETIME!()]
+#[doc = crate::_tags!(num lifetime)]
 /// Common auto-trait for referenced integer types.
 #[doc = crate::_doc_location!("num")]
 ///

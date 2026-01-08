@@ -5,7 +5,7 @@
 
 use crate::{Float, is};
 
-#[doc = crate::_TAG_COLOR!()]
+#[doc = crate::_tags!(color)]
 /// GammaConst correction curves.
 #[doc = crate::_doc_location!("media/color")]
 ///

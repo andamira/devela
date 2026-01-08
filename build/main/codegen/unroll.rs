@@ -41,7 +41,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     // let mut f = BufWriter::with_capacity(100 * 1024, file);
 
     let macro_code1 = r#"
-#[doc = crate::_TAG_CODEGEN_BUILD!()]
+#[doc = crate::_tags!(code codegen_build)]
 /// Unrolls the given for loop.
 #[doc = crate::_doc_location!("code/util")]
 ///

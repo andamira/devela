@@ -7,7 +7,7 @@
 
 use crate::{TextLut, is, unwrap};
 
-#[doc = crate::_TAG_FONT!()]
+#[doc = crate::_tags!(font)]
 /// A simple Unicode-Art font for rendering fixed-size glyphs.
 #[doc = crate::_doc_location!("media/font")]
 ///

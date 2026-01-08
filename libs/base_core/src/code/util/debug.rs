@@ -3,8 +3,7 @@
 //! Defines [`compile_warn!`], [`fn_name`].
 //
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_DEBUG!()]
+#[doc = crate::_tags!(code debug)]
 /// Emits a compile-time warning with a provided message.
 #[doc = crate::_doc_location!("code/util")]
 ///
@@ -47,8 +46,7 @@ macro_rules! compile_warn {
 #[doc(inline)]
 pub use compile_warn;
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_DEBUG!()]
+#[doc = crate::_tags!(code debug)]
 /// This macro returns the name of the enclosing function.
 #[doc = crate::_doc_location!("code/util")]
 ///

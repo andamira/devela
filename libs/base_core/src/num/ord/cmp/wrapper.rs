@@ -20,8 +20,7 @@ use crate::{is, paste};
 #[cfg(nightly_float)]
 use ::core::{f16, f128};
 
-#[doc = crate::_TAG_LOGIC!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(logic namespace)]
 /// Provides comparing methods for `T`.
 #[doc = crate::_doc_location!("num/ord")]
 ///

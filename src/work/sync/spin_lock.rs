@@ -7,10 +7,11 @@ use crate::{
     AtomicBool, AtomicOrdering, Debug, Deref, DerefMut, FmtResult, Formatter, UnsafeCell,
     any_type_name, spin_loop,
 };
+// use crate::SleepSpin; // WIP
 #[cfg(feature = "std")]
 use crate::{Thread, ThreadExt};
 
-#[doc = crate::_TAG_CONCURRENCY!()]
+#[doc = crate::_tags!(concurrency)]
 /// A spinlock providing mutual exclusion without blocking.
 #[doc = crate::_doc_location!("work/sync")]
 ///
@@ -93,6 +94,14 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
             #[cfg(not(feature = "std"))]
             { spin_loop(); }
         }
+        // let mut sleep_spin = SleepSpin::<SPIN, YIELD, SLEEP>::new();
+        // while self
+        //     .lock
+        //     .compare_exchange_weak(false, true, Ordering::Acquire, Ordering::Acquire)
+        //     .is_err()
+        // {
+        //     sleep_spin.spin();
+        // }
         SpinLockGuard(self)
     }
 

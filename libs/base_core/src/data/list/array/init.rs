@@ -4,8 +4,7 @@
 //
 // WAIT: [Stack overflow with Boxed array](https://github.com/rust-lang/rust/issues/53827)
 
-#[doc = crate::_TAG_INIT!()]
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(init data_structure)]
 /// Initializes a [`[$T; $LEN]`][array] array in multiple ways.
 #[doc = crate::_doc_location!("data/list/array")]
 ///

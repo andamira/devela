@@ -10,7 +10,7 @@ define_lane! {
     struct Lane4 lanes(4); unsigned(u32);
 }
 
-#[doc = crate::_TAG_HASH!()]
+#[doc = crate::_tags!(hash)]
 /// Adler-32 checksum.
 #[doc = crate::_doc_location!("data/codec/hash")]
 ///

@@ -12,7 +12,7 @@
 
 use crate::c_int;
 
-#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_tags!(linux)]
 /// Linux flag constants for [`LinuxSigaction`][crate::sys::os::linux::LinuxSigaction].
 #[doc = crate::_doc_location!("sys/os/linux")]
 #[allow(non_camel_case_types)]
@@ -113,7 +113,7 @@ impl LINUX_SIGACTION {
     pub const SA_SIGINFO: usize = 0x0000_0004;
 }
 
-#[doc = crate::_TAG_LINUX!()]
+#[doc = crate::_tags!(linux)]
 /// Linux standard signals constants.
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///

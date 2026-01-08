@@ -1,8 +1,8 @@
 // devela::sys::os::browser::web::permission
 
-use crate::{_TAG_EXPERIMENTAL, _TAG_NON_STANDARD, _TAG_RESULT, _TAG_WEB, js_int32};
+use crate::{_tags, js_int32};
 
-#[doc = _TAG_WEB!()]
+#[doc = _tags!(web)]
 /// Web API permissions
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
@@ -11,24 +11,25 @@ use crate::{_TAG_EXPERIMENTAL, _TAG_NON_STANDARD, _TAG_RESULT, _TAG_WEB, js_int3
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(u8)]
 pub enum WebPermission {
-    #[doc = _TAG_EXPERIMENTAL!()]
+    #[doc = _tags!(experimental)]
     /// Access to accelerometer sensor data.
     Accelerometer,
-    #[doc = _TAG_EXPERIMENTAL!()]
+    #[doc = _tags!(experimental)]
     /// Background sync capability for web applications.
     BackgroundSync,
     /// Access to the device camera.
     Camera,
-    #[doc = _TAG_EXPERIMENTAL!()]
-    #[doc = _TAG_NON_STANDARD!()]
+    #[doc = _tags!(experimental non_standard)]
     /// Read access to the system clipboard.
     ClipboardRead,
-    #[doc = _TAG_EXPERIMENTAL!()]
+    #[doc = _tags!(experimental)]
+    /// Read access to the system clipboard.
+    #[doc = _tags!(experimental)]
     /// Write access to the system clipboard.
     ClipboardWrite,
     /// Access to device geolocation data.
     Geolocation,
-    #[doc = _TAG_EXPERIMENTAL!()]
+    #[doc = _tags!(experimental)]
     /// Access to gyroscope sensor data.
     Gyroscope,
     /// Access to the device microphone.
@@ -37,7 +38,7 @@ pub enum WebPermission {
     Midi,
     /// Permission to display system notifications.
     Notifications,
-    #[doc = _TAG_EXPERIMENTAL!()]
+    #[doc = _tags!(experimental)]
     /// Permission to use a payment handler.
     PaymentHandler,
     /// Persistent storage access to prevent data loss.
@@ -48,7 +49,7 @@ pub enum WebPermission {
     ScreenWakeLock,
     /// Access to storage that requires explicit user permission.
     StorageAccess,
-    #[doc = _TAG_EXPERIMENTAL!()]
+    #[doc = _tags!(experimental)]
     /// Allows a site to access storage without top-level navigation.
     TopLevelStorageAccess,
 }
@@ -77,8 +78,7 @@ impl WebPermission {
     }
 }
 
-#[doc = _TAG_WEB!()]
-#[doc = _TAG_RESULT!()]
+#[doc = _tags!(web result)]
 /// Permission query result state.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]

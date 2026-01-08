@@ -3,7 +3,7 @@
 //! Defines [`Stride`].
 //
 
-#[doc = crate::_TAG_GEOM!()]
+#[doc = crate::_tags!(geom)]
 /// A step size for traversing dimensions or repetitions.
 #[doc = crate::_doc_location!("num/geom/metric")]
 ///

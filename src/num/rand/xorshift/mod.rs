@@ -74,7 +74,7 @@ crate::items! {
             }
         }};
     }
-    #[doc = crate::_TAG_RAND!()]
+    #[doc = crate::_tags!(rand)]
     #[doc(inline)]
     pub use _xorshift_custom as xorshift_custom;
 

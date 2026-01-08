@@ -28,7 +28,7 @@ use crate::{HashMap, HashSet};
 
 type Result<T> = crate::Result<T, NotAvailable>;
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// An abstract *collection* data type.
 #[doc = crate::_doc_location!("data")]
 ///

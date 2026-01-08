@@ -5,25 +5,21 @@
 
 #[cfg(doc)]
 define_static_map! {
-    #[doc = crate::_TAG_EXAMPLE!()]
-    #[doc = crate::_TAG_DATA_STRUCTURE!()]
+    #[doc = crate::_tags!(example data_structure)]
     pub const MapStaticConstU8Example, KEY: u8
 }
 #[cfg(doc)]
 define_static_map! {
-    #[doc = crate::_TAG_EXAMPLE!()]
-    #[doc = crate::_TAG_DATA_STRUCTURE!()]
+    #[doc = crate::_tags!(example data_structure)]
     pub MapStaticU16Example, KEY: u16
 }
 #[cfg(doc)]
 define_static_map! {
-    #[doc = crate::_TAG_EXAMPLE!()]
-    #[doc = crate::_TAG_DATA_STRUCTURE!()]
+    #[doc = crate::_tags!(example data_structure)]
     pub typeid MapStaticTypeIdExample
 }
 
-#[doc = crate::_TAG_CONSTRUCTION!()]
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(construction data_structure)]
 /// Defines a custom static hashmap.
 #[doc = crate::_doc_location!("data/key")]
 ///

@@ -2,13 +2,12 @@
 
 use crate::{ConstInitCore, Hash, Hasher, HasherBuildDefault};
 
-#[doc = crate::_TAG_HASH!()]
-#[doc = crate::_TAG_INIT!()]
+#[doc = crate::_tags!(hash init)]
 /// A builder for default Fx hashers.
 #[doc = crate::_doc_location!("data/codec/hash")]
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 
-#[doc = crate::_TAG_HASH!()]
+#[doc = crate::_tags!(hash)]
 /// A hashing algorithm used in the Rustc compiler, implemented for
 /// [u32](#impl-HasherFx<u32>),
 /// [u64](#impl-HasherFx<u64>) &

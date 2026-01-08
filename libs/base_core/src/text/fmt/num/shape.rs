@@ -5,8 +5,7 @@
 
 use crate::is;
 
-#[doc = crate::_TAG_FMT!()]
-#[doc = crate::_TAG_NUM!()]
+#[doc = crate::_tags!(fmt num)]
 /// Describes the structural shape of a formatted number.
 #[doc = crate::_doc_location!("text/fmt")]
 ///

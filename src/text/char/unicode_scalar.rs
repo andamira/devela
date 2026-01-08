@@ -11,7 +11,7 @@
 use crate::{Char, char7, char8, char16, charu, charu_niche};
 
 #[rustfmt::skip]
-#[doc = crate::_TAG_TEXT!()]
+#[doc = crate::_tags!(text)]
 /// Common trait for Unicode scalar types.
 ///
 #[doc = crate::_doc_location!("text/char")]

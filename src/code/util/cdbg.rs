@@ -3,8 +3,7 @@
 //! Defines the custom debug macro [`cdbg!`].
 //
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_DEBUG!()]
+#[doc = crate::_tags!(code debug)]
 /// *`c`ustomizable [`dbg!`]* macro.
 #[doc = crate::_doc_location!("code/util")]
 ///

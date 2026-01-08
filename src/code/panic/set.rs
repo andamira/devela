@@ -3,8 +3,7 @@
 //! Defines the [`set_panic_handler!`] macro.
 //
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_PLATFORM!()]
+#[doc = crate::_tags!(code platform)]
 /// Sets a panic handler based on the chosen strategy.
 #[doc = crate::_doc_location!("code")]
 ///

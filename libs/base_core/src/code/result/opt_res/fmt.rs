@@ -8,18 +8,18 @@ use crate::{
     UpperExp, UpperHex,
 };
 
-#[doc = crate::_TAG_FMT!()]
+#[doc = crate::_tags!(fmt)]
 /// The type returned from [`OptionExt::fmt_or_empty`].
 #[doc = crate::_doc_location!("code/result")]
 #[derive(Eq, PartialEq)]
 pub struct OptionFmt<'t, T>(pub(super) &'t Option<T>);
 
-#[doc = crate::_TAG_FMT!()]
+#[doc = crate::_tags!(fmt)]
 /// The type returned from [`OptionExt::fmt_or`].
 #[doc = crate::_doc_location!("code/result")]
 pub struct OptionFmtOr<'t, T, U>(pub(super) &'t Option<T>, pub(super) U);
 
-#[doc = crate::_TAG_FMT!()]
+#[doc = crate::_tags!(fmt)]
 /// The type returned from [`OptionExt::fmt_or_else`].
 #[doc = crate::_doc_location!("code/result")]
 pub struct OptionFmtOrElse<'t, T, F>(pub(super) &'t Option<T>, pub(super) F);

@@ -16,7 +16,7 @@ use crate::{Hasher, HasherBuild, RandomState};
 
 /* public definitions */
 
-#[doc = crate::_TAG_RAND!()]
+#[doc = crate::_tags!(rand)]
 /// The `Xoroshiro128++`
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 #[doc = crate::_doc_location!("num/rand")]

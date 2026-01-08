@@ -3,7 +3,7 @@
 //! Defines the [`cfg_if!`] macro.
 //
 
-#[doc = crate::_TAG_CODE!()]
+#[doc = crate::_tags!(code)]
 /// A macro for defining `#[cfg]` if-else statements.
 #[doc = crate::_doc_location!("code/util")]
 ///

@@ -10,7 +10,7 @@
 
 use crate::{ConstInit, NonZeroU32, impl_trait, is};
 
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(interaction)]
 /// Dead-key accent operators used during text composition.
 #[doc = crate::_doc_location!("ui/event")]
 ///

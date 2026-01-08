@@ -1,15 +1,15 @@
 // devela_base_core::sys::env::_reexport
 
-use crate::{_TAG_CODE, _reexport};
+use crate::{_reexport, _tags};
 
 /* core macros */
 
-_reexport! { rust: core, location: "sys/env", tag: _TAG_CODE!(),
+_reexport! { rust: core, location: "sys/env", tag: _tags!(code),
     doc: "Optionally inspects an environment variable at compile time.",
     option_env
 }
 
-#[doc = _TAG_CODE!()]
+#[doc = _tags!(code)]
 // NOTE: the macro and the module have the same name
 //
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>

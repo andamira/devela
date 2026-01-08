@@ -15,8 +15,7 @@ crate::items! {
     crate::_use! {basic::from_utf8}
 }
 
-#[doc = crate::_TAG_INTERACTION!()]
-#[doc = crate::_TAG_FFI!()]
+#[doc = crate::_tags!(interaction ffi)]
 /// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
 // (The main difference is in the Char variant.)
 #[doc = crate::_doc_location!("ui/event")]
@@ -47,7 +46,7 @@ pub enum KeyFfi {
     /// Function keys (F1-F48).
     Fn(u8),
 
-    #[doc = crate::_TAG_FFI!()]
+    #[doc = crate::_tags!(ffi)]
     /// A unicode character (FFI-safe, stored as `u32`).
     Char(u32),
 

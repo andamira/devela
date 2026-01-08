@@ -9,8 +9,7 @@ use crate::{ConstInit, Event, EventKind};
 #[cfg(feature = "alloc")]
 use crate::String;
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_INTERACTION!()]
+#[doc = crate::_tags!(event interaction)]
 /// Events related to a window.
 #[doc = crate::_doc_location!("ui/event")]
 ///

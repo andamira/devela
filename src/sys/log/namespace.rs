@@ -7,8 +7,7 @@ use ::log::set_boxed_logger;
 use ::log::set_logger_racy;
 use ::log::{STATIC_MAX_LEVEL, logger, max_level, set_logger, set_max_level};
 
-#[doc = crate::_TAG_LOG!()]
-#[doc = crate::_TAG_NAMESPACE!()]
+#[doc = crate::_tags!(log namespace)]
 /// Log-related operations.
 #[doc = crate::_doc_location!("sys/log")]
 ///

@@ -7,8 +7,7 @@
 use super::DataRaw;
 use crate::{DataType, DataTypeCopy, DataValue, DataValueCopy};
 
-#[doc = crate::_TAG_NO!()]
-#[doc = crate::_TAG_DATA!()]
+#[doc = crate::_tags!(no data)]
 /// Represents the absence of some data.
 #[doc = crate::_doc_location!("data")]
 pub type NoData = ();

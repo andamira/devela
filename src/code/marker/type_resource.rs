@@ -9,9 +9,7 @@
 // - core_impls
 // - tests
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_UID!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(code uid construction)]
 /// Defines zero-cost, zero-sized, type-safe *resource* IDs.
 #[doc = crate::_doc_location!("code/marker")]
 ///
@@ -69,8 +67,7 @@ macro_rules! type_resource {
 #[doc(inline)]
 pub use type_resource;
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(code uid)]
 /// Represents an association between a resource and its inner data type.
 #[doc = crate::_doc_location!("code/marker")]
 ///

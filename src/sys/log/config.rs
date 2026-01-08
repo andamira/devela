@@ -2,7 +2,7 @@
 
 use super::{LogLevel, LogLevelFilter};
 
-#[doc = crate::_TAG_LOG!()]
+#[doc = crate::_tags!(log)]
 /// Configuration for a logger.
 #[doc = crate::_doc_location!("sys/mem")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]

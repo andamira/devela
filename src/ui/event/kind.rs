@@ -5,8 +5,7 @@
 
 use crate::{ConstInit, EventKey, EventMouse, EventPointer, EventWindow};
 
-#[doc = crate::_TAG_EVENT!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(event uid)]
 /// A lightweight, data-less identifier for `EventKind`.
 #[doc = crate::_doc_location!("ui/event")]
 ///
@@ -31,7 +30,7 @@ pub enum EventTag {
     Window,
 }
 
-#[doc = crate::_TAG_EVENT!()]
+#[doc = crate::_tags!(event)]
 /// An enumeration of concrete event variants.
 #[doc = crate::_doc_location!("ui/event")]
 ///

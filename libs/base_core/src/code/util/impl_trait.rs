@@ -3,8 +3,7 @@
 //! Defines [`impl_trait`].
 //
 
-#[doc = crate::_TAG_CODE!()]
-#[doc = crate::_TAG_CONSTRUCTION!()]
+#[doc = crate::_tags!(code construction)]
 /// A helper macro to concisely implement a few common utility traits.
 #[doc = crate::_doc_location!("code/util")]
 ///

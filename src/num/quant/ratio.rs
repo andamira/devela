@@ -9,7 +9,7 @@ use crate::{NumConst, Rem};
 
 // use crate::Frac;
 
-#[doc = crate::_TAG_QUANT!()]
+#[doc = crate::_tags!(quant)]
 /// A generic ratio representing a proportional relationship between two values.
 #[doc = crate::_doc_location!("num/quant")]
 ///

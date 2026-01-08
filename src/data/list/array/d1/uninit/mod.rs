@@ -8,7 +8,7 @@ use crate::{Bare, MaybeUninit, Storage};
 // mod impl_traits; // TODO: FIXME
 mod methods;
 
-#[doc = crate::_TAG_DATA_STRUCTURE!()]
+#[doc = crate::_tags!(data_structure)]
 /// A static array allowing uninitialized elements.
 #[doc = crate::_doc_location!("data/list/array")]
 #[derive(Debug, Default)]

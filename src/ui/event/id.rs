@@ -8,8 +8,7 @@ use crate::EventTarget;
 
 crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
 
-#[doc = crate::_TAG_UI!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(ui uid)]
 /// A backend-agnostic identifier for a UI window.
 #[doc = crate::_doc_location!("ui/event")]
 ///
@@ -26,8 +25,7 @@ crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WindowId(pub u32);
 
-#[doc = crate::_TAG_INTERACTION!()]
-#[doc = crate::_TAG_UID!()]
+#[doc = crate::_tags!(interaction uid)]
 /// A backend-agnostic identifier for an input device.
 #[doc = crate::_doc_location!("ui/event")]
 ///

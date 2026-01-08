@@ -4,9 +4,7 @@
 //
 // TODO: Write doc with methods in a separate constant.
 
-#[doc = crate::_TAG_NUM!()]
-#[doc = crate::_TAG_NAMESPACE!()]
-#[doc = crate::_TAG_OPTIONAL_STD!()]
+#[doc = crate::_tags!(num namespace optional_std)]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 #[doc = crate::_doc_location!("num")]
 ///
