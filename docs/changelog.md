@@ -187,7 +187,6 @@ re-export hidden workspace dependencies from `_dep`.
     - `ok_if_map_err`? to `ok_if_err_map?`.
 
 ### utils
-- new struct: `Lut`.
 - new macros: `compile_warn!`, `doc_location!`, `doclink!`, `fn_name!`, `lets!`, `mod_path!`, `repeat!`, `type_count!`, `whilst!`, `write_at!`.
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
@@ -510,6 +509,7 @@ re-export hidden workspace dependencies from `_dep`.
 
 ---
 ## text
+- new struct: `TextLut`.
 - move to [base]:
   - traits: `NumToStr`.
   - types: `ByteSearch`, `Digits`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
@@ -520,7 +520,7 @@ re-export hidden workspace dependencies from `_dep`.
 - new types: `CharIter`, `charu`, `charu_niche`.
 - new `char7` methods: `to_byte`, `to_str`.
 - new `char[7|8|16]` methods: `to_charu`, `try_from_charu`.
-- new `Lut` consts: `ASCII_BASE36_OFFSET`, `DIGITS_BASE36`, `DECIMAL_PAIRS`, `POWERS10`.
+- new `TextLut` consts: `ASCII_BASE36_OFFSET`, `DIGITS_BASE36`, `DECIMAL_PAIRS`, `POWERS10`.
 - mark `char[7|8|16]` as must_use.
 - impl `ConstInit` for `char*`.
 - rename `AsciiChar` to `CharAscii`.

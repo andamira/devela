@@ -22,13 +22,17 @@ pub mod char; // Char, CharAscii, CharIter, UnicodeScalar, char[7|8|16|utf8]
 pub mod errors;
 pub mod fmt;
 // pub mod layout; // WIP
+pub mod lut; // TextLut
 pub mod parse;
 pub mod str;
 
 crate::structural_mods! { // mods, _pub_mods, _crate_internals
     _mods {
-        // pub use super::_wip_cell::*;
-        // pub use super::_wip_draw::_all::*;
+        pub use super::{
+            lut::*,
+            // _wip_cell::*,
+            // _wip_draw::_all::*,
+        };
     }
     _pub_mods {
         #[doc(inline)]

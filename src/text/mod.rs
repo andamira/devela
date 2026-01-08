@@ -19,7 +19,6 @@ pub mod errors {
     #[doc(inline)]
     pub use devela_base_core::text::errors::*;
 }
-
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 pub mod char;
 pub mod fmt;
@@ -31,7 +30,7 @@ pub mod str;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
 pub mod grapheme; // Grapheme
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {
         #[doc(inline)]
         pub use super::{
@@ -46,6 +45,10 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         pub use super::{
             grapheme::_all::*,
         };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use devela_base_core::text::TextLut;
     }
     _crate_internals {
         pub(crate) use super::_DOC_TEXT_MODULES;

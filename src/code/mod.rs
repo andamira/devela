@@ -47,7 +47,6 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _reexports, _crate_int
         pub use devela_base_core::code::{
             CodeLocation, CodeSpan,
             ConstInitCore,
-            Lut,
             ScopeGuard,
         };
     }

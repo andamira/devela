@@ -5,7 +5,7 @@
 // MAYBE: use utf8_char or char7 or char8? for first and last glyphs
 // MAYBE:RENAME: methods: get_glyph_... etc.
 
-use crate::{Lut, is, unwrap};
+use crate::{TextLut, is, unwrap};
 
 #[doc = crate::_TAG_FONT!()]
 /// A simple Unicode-Art font for rendering fixed-size glyphs.
@@ -59,7 +59,7 @@ impl<'g> FontArt<'g> {
     pub const fn get_digit_base(&self, digit: u8, base: u8) -> &'g [&'g str] {
         assert!(base >= 2 && base <= 36, "Base must be between 2 and 36");
         assert!(digit < base, "The given digit is not valid in the given base");
-        let offset = Lut::ASCII_BASE36_OFFSET[digit as usize];
+        let offset = TextLut::ASCII_BASE36_OFFSET[digit as usize];
         let char_code = self.first_glyph as u8 + digit + offset;
         self.get_glyph_from_scalar_unchecked(char_code as u32)
     }

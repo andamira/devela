@@ -20,7 +20,6 @@ mod _reexport; // SYMLINK from /src/code/_reexport.rs
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInitCore, <_impl_init!>
 mod guard; // ScopeGuard
-mod lut; // Lut RETHINK
 mod site; // CodeLocation, CodeSpan
 
 pub mod error; // general errors definitions
@@ -36,7 +35,6 @@ util::structural_mods! { // _mods, _pub_mods, _reexport, _crate_internals, _work
             any::_all::*,
             const_init::ConstInitCore,
             guard::*,
-            lut::*,
             site::*,
         };
     }

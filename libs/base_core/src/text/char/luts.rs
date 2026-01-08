@@ -9,10 +9,10 @@
 // - DIGITS_BASE36
 // - POWERS10
 
-use crate::Lut;
+use crate::TextLut;
 
 #[doc = concat!["# Unicode scalar related ", crate::_ABBR_LUT!(), "s."]]
-impl Lut {
+impl TextLut {
     #[rustfmt::skip]
     /// Lookup table for fast ASCII code point to UTF-8 encoding.
     ///
@@ -105,7 +105,7 @@ impl Lut {
     ];
     #[cfg(test)]
     const _POWERS10_ASSERT: () = {
-        assert![size_of_val(&Lut::POWERS10) == size_of::<u128>() * 39];
-        assert![size_of_val(&Lut::POWERS10) == 624];
+        assert![size_of_val(&TextLut::POWERS10) == size_of::<u128>() * 39];
+        assert![size_of_val(&TextLut::POWERS10) == 624];
     };
 }

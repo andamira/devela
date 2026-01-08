@@ -1,7 +1,7 @@
 // devela_base_core::text::char::digits::u16
 
 use super::*;
-use crate::{Cmp, Lut, StringU8, is};
+use crate::{Cmp, StringU8, TextLut, is};
 
 impl Digits<u16> {
     /// The maximum number of decimal digits a `u16` can represent.
@@ -44,7 +44,7 @@ impl Digits<u16> {
     #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return b'0'];
-        let power = Lut::POWERS10[index as usize] as u16;
+        let power = TextLut::POWERS10[index as usize] as u16;
         (self.0 / power % 10) as u8 + b'0'
     }
 
@@ -54,7 +54,7 @@ impl Digits<u16> {
     #[must_use]
     pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = Lut::POWERS10[index as usize] as u16;
+        let power = TextLut::POWERS10[index as usize] as u16;
         Some((self.0 / power % 10) as u8 + b'0')
     }
 
@@ -65,7 +65,7 @@ impl Digits<u16> {
     pub const fn digit_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
         let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-        Lut::DIGITS_BASE36[digit]
+        TextLut::DIGITS_BASE36[digit]
     }
 
     /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
@@ -76,7 +76,7 @@ impl Digits<u16> {
         is![index >= self.count_digits16(); return None];
         let shift = index as u32 * 4;
         let digit = (self.0.unbounded_shr(shift) & 0xF) as usize;
-        Some(Lut::DIGITS_BASE36[digit])
+        Some(TextLut::DIGITS_BASE36[digit])
     }
 
     /* digit_value_at_ */
@@ -87,7 +87,7 @@ impl Digits<u16> {
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(); return 0];
-        let power = Lut::POWERS10[index as usize] as u16;
+        let power = TextLut::POWERS10[index as usize] as u16;
         (self.0 / power % 10) as u8
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
@@ -96,7 +96,7 @@ impl Digits<u16> {
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(); return None];
-        let power = Lut::POWERS10[index as usize] as u16;
+        let power = TextLut::POWERS10[index as usize] as u16;
         Some((self.0 / power % 10) as u8)
     }
 
@@ -134,7 +134,7 @@ impl Digits<u16> {
             0x1000 => (self.0 >> 12) & 0xF,
             _ => (self.0 / divisor) % 16,
         };
-        Lut::DIGITS_BASE36[digit as usize]
+        TextLut::DIGITS_BASE36[digit as usize]
     }
 
     /// Converts a `u16` into a byte array of `5` ASCII decimal digits with leading zeros.
