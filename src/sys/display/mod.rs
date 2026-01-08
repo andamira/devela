@@ -1,6 +1,9 @@
 // devela::sys::display
 //
-//!
+#![doc = crate::_DOC_SYS_DISPLAY!()]
+///
+/// Unlike hosted environments (e.g. browsers),
+/// display backends expose process-owned windows and event loops.
 //
 
 // #[cfg(feature = "cocoa")]

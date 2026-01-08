@@ -93,6 +93,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
 
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
+    _DOC_SYS_DISPLAY     = "Display backends for windows, surfaces, and events.";
     _DOC_SYS_ENV         = "Process environment inspection and manipulation.";
     _DOC_SYS_FS          = "Filesystem abstractions.";
     _DOC_SYS_FS_PATH     = "Cross-platform path manipulation.";

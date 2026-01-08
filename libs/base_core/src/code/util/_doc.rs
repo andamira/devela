@@ -38,7 +38,7 @@ macro_rules! __doc {
     // link to the root * associated module
     (root: $mod:literal) => {
         concat!["<a title='Hierarchical view of the `", $mod, "` module' href='",
-            $crate::doclink![custom_current_crate $mod, @mod], "'>◬</a>"]//◬◌⊙⊜◎◎
+            $crate::doclink![custom_current_crate $mod, @mod], "'>▽</a>"]//▽▾⧩◬◌⊙⊜◎◎
     };
 
     /* list of submodules */

@@ -50,6 +50,7 @@ See also
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
 - 1.94: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
 - 1.94: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
+- 1.94: ` `[slice::element_offset (substr_range)](https://github.com/rust-lang/rust/pull/150777)
 
 # 1.95 will be stable on [2026-04-16](https://releases.rs/docs/1.95.0/) `nightly_stable_1_95`
 <!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
