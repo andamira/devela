@@ -3,7 +3,7 @@
 //! Defines [`LUT_SCANCODE_TO_KEY`].
 //
 
-use crate::{Key, KeyMedia as Media, KeyMod as Mod, KeyPad as Pad, array_init, whilst};
+use crate::{Key, KeyMedia as Media, KeyMod as Mod, KeyPad as Pad, init_array, whilst};
 
 /// Scancodes to keys.
 //
@@ -22,7 +22,7 @@ pub(crate) const LUT_SCANCODE_TO_KEY: [Key; 256] = {
     const fn init(n: usize) -> Key {
         Key::Scancode(n as u16)
     }
-    let mut t = array_init![const_fn [Key; 256], "safe_sys", "unsafe_array", init, Key::Unknown];
+    let mut t = init_array![const_fn [Key; 256], "safe_sys", "unsafe_array", init, Key::Unknown];
 
     // t[0] = KEY_RESERVED;
     t[1] = Key::Escape;

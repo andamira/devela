@@ -224,12 +224,12 @@ macro_rules! define_static_map {
             /// # Panics
             /// Panics in debug if `EMPTY` and `TOMB` are equal,
             /// or if any of them are out of range for `$KEY`.
-            #[allow(unexpected_cfgs, reason = "array_init")]
+            #[allow(unexpected_cfgs, reason = "init_array")]
             fn default() -> Self {
                 Self:: debug_assert_invariants();
                 Self {
                     keys: [$EMPTY; N],
-                    values: $crate::array_init![default [V; N], "safe_data", "unsafe_array"],
+                    values: $crate::init_array![default [V; N], "safe_data", "unsafe_array"],
                 }
             }
         }
@@ -579,12 +579,12 @@ macro_rules! define_static_map {
             /// # Panics
             /// Panics in debug if `EMPTY` and `TOMB` are equal,
             /// or if any of them are out of range for `$KEY`.
-            #[allow(unexpected_cfgs, reason = "array_init")]
+            #[allow(unexpected_cfgs, reason = "init_array")]
             fn default() -> Self {
                 Self:: debug_assert_invariants();
                 Self {
                     keys: [$EMPTY; N],
-                    values: $crate::array_init![default [V; N], "safe_data", "unsafe_array"],
+                    values: $crate::init_array![default [V; N], "safe_data", "unsafe_array"],
                     empty: $EMPTY,
                     tomb: $TOMB,
                 }
@@ -603,12 +603,12 @@ macro_rules! define_static_map {
             /// # Panics
             /// Panics in debug if `EMPTY` and `TOMB` are equal,
             /// or if any of them are out of range for `$KEY`.
-            #[allow(unexpected_cfgs, reason = "array_init")]
+            #[allow(unexpected_cfgs, reason = "init_array")]
             fn new_cloned(value: V) -> Self where V: Clone {
                 Self:: debug_assert_invariants();
                 Self {
                     keys: [$EMPTY; N],
-                    values: $crate::array_init![clone [V; N], "safe_data", "unsafe_array", value],
+                    values: $crate::init_array![clone [V; N], "safe_data", "unsafe_array", value],
                     empty: $EMPTY,
                     tomb: $TOMB,
                 }

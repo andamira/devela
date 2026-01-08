@@ -6,7 +6,7 @@
 // - constructors
 // - methods
 
-use crate::{Array, Box, Boxed, Vec, array_init};
+use crate::{Array, Box, Boxed, Vec, init_array};
 
 /// # *Boxed* constructors
 impl<T, const CAP: usize> Array<T, CAP, Boxed> {
@@ -26,7 +26,7 @@ impl<T, const CAP: usize> Array<T, CAP, Boxed> {
     where
         T: Clone,
     {
-        let data = array_init!(clone_heap [T; CAP], "safe_data", "unsafe_array", element);
+        let data = init_array!(clone_heap [T; CAP], "safe_data", "unsafe_array", element);
         Self { data }
     }
 }

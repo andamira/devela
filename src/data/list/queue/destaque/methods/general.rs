@@ -1192,7 +1192,7 @@ macro_rules! impl_destaque {
             /// # Features
             /// Makes use of the `unsafe_array` feature if enabled.
             pub fn to_array<const LEN: usize>(&self) -> Option<[T; LEN]> {
-                // IMPROVE: use array_init
+                // IMPROVE: use init_array
                 // MAYBE return not option
                 // TODO: improve from_iter
                 // Some(Array::<T, LEN, S>::new())

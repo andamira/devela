@@ -5,7 +5,7 @@
 
 use crate::{
     ArrayExt, ConstInit, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering, Point,
-    array_init,
+    init_array,
 };
 
 impl<T: Clone, const D: usize> Clone for Point<T, D> {
@@ -17,11 +17,11 @@ impl<T: Copy, const D: usize> Copy for Point<T, D> {}
 
 impl<T: Default, const D: usize> Default for Point<T, D> {
     fn default() -> Self {
-        Self::new(array_init![default [T; D], "safe_num", "unsafe_array"])
+        Self::new(init_array![default [T; D], "safe_num", "unsafe_array"])
     }
 }
 impl<T: ConstInit, const D: usize> ConstInit for Point<T, D> {
-    const INIT: Self = Self::new(array_init![INIT in ConstInit [T; D]]);
+    const INIT: Self = Self::new(init_array![INIT in ConstInit [T; D]]);
 }
 
 impl<T: Debug, const D: usize> Debug for Point<T, D> {

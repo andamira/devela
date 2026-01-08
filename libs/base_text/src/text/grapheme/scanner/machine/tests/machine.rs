@@ -1,6 +1,6 @@
 // devela_base_text::text::grapheme::scanner::machine::tests::machine
 
-use crate::{CharIter, GraphemeBoundary, GraphemeMachine, StringU8, array_init};
+use crate::{CharIter, GraphemeBoundary, GraphemeMachine, StringU8, init_array};
 
 // The tests in this file are only for the public-facing `GraphemeCluster` API.
 // The internal state machine implementation has its own tests under
@@ -155,7 +155,7 @@ fn t02_multiple_graphemes_directly() {
 #[rustfmt::skip]
 fn core_basics() {
     let mut clusters: [StringU8::<16>; 32] =
-        array_init![default [StringU8::<16>; 32], "safe", "unsafe_array"];
+        init_array![default [StringU8::<16>; 32], "safe", "unsafe_array"];
     let mut current_cluster = StringU8::<16>::new();
     let mut machine = GraphemeMachine::new();
     let mut buf = [0u8; 4];

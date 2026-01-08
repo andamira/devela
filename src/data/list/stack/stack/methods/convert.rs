@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    Array, Bare, Cmp, ConstInit, IndexOutOfBounds, NotEnoughSpace, Own, Stack, array_init,
+    Array, Bare, Cmp, ConstInit, IndexOutOfBounds, NotEnoughSpace, Own, Stack, init_array,
 };
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
@@ -71,7 +71,7 @@ macro_rules! impl_stack {
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array();
                     let mut new_arr =
-                        array_init![default [T; NEW_CAP], "safe_data", "unsafe_array"];
+                        init_array![default [T; NEW_CAP], "safe_data", "unsafe_array"];
                     for (i, item) in old_arr.into_iter().enumerate().take(NEW_CAP) {
                         new_arr[i] = item;
                     }
@@ -107,7 +107,7 @@ macro_rules! impl_stack {
                 };
                 let new_len = core::cmp::min(self.len(), NEW_CAP as $IDX);
                 let old_arr: [T; CAP] = self.data.into_array();
-                let mut new_arr = array_init![default [T; NEW_CAP], "safe_data", "unsafe_array"];
+                let mut new_arr = init_array![default [T; NEW_CAP], "safe_data", "unsafe_array"];
                 for (i, item) in old_arr.into_iter().enumerate().skip(start_idx).take(NEW_CAP) {
                     new_arr[i - start_idx] = item;
                 }
@@ -252,7 +252,7 @@ macro_rules! impl_stack {
                     Own::empty(Err(IndexOutOfBounds(Some(NEW_CAP))))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array_copy();
-                    let mut new_arr = array_init![INIT in ConstInit [T; NEW_CAP]];
+                    let mut new_arr = init_array![INIT in ConstInit [T; NEW_CAP]];
 
                     let mut i = 0;
                     while i < self.len as usize {
@@ -291,7 +291,7 @@ macro_rules! impl_stack {
                 };
                 let new_len = Cmp(NEW_CAP).min(self.len as usize);
                 let old_arr: [T; CAP] = self.data.into_array_copy();
-                let mut new_arr = array_init![INIT in ConstInit [T; NEW_CAP]];
+                let mut new_arr = init_array![INIT in ConstInit [T; NEW_CAP]];
 
                 let mut i = 0;
                 while i < new_len {

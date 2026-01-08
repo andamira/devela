@@ -40,11 +40,11 @@ macro_rules! _impl_geom_dim {
 
         impl<T: Default, const D: usize> Default for $Name<T, D> {
             fn default() -> Self {
-                Self::new($crate::array_init![default [T; D], "safe_num", "unsafe_array"])
+                Self::new($crate::init_array![default [T; D], "safe_num", "unsafe_array"])
             }
         }
         impl<T: $crate::ConstInitCore, const D: usize> $crate::ConstInitCore for $Name<T, D> {
-            const INIT: Self = Self::new($crate::array_init![INIT in $crate::ConstInitCore [T; D]]);
+            const INIT: Self = Self::new($crate::init_array![INIT in $crate::ConstInitCore [T; D]]);
         }
 
         /* Clone, Copy, Hash */

@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{ConstInit, Hash, Hasher, Vector, array_init};
+use crate::{ConstInit, Hash, Hasher, Vector, init_array};
 use ::core::fmt;
 
 /* Clone, Copy */
@@ -24,7 +24,7 @@ impl<T: Default, const D: usize> Default for Vector<T, D> {
     /// Returns a `Vector`, allocated in the stack,
     /// using the default value to fill the data.
     fn default() -> Self {
-        Self::new(array_init![default [T; D], "safe_num", "unsafe_array"])
+        Self::new(init_array![default [T; D], "safe_num", "unsafe_array"])
     }
 }
 
@@ -32,7 +32,7 @@ impl<T: Default, const D: usize> Default for Vector<T, D> {
 impl<T: ConstInit, const D: usize> ConstInit for Vector<T, D> {
     /// Returns a Vector, allocated in the stack,
     /// using the default value to fill the data.
-    const INIT: Self = Self::new(array_init![INIT in ConstInit [T; D]]);
+    const INIT: Self = Self::new(init_array![INIT in ConstInit [T; D]]);
 }
 
 // T:Debug

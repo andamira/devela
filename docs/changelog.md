@@ -212,7 +212,7 @@ re-export hidden workspace dependencies from `_dep`.
 ---
 ## data
 - move to [base]:
-  - macros: `array_init!`, `bitfield!`.
+  - macros: `bitfield!`, `init_array!`.
   - traits: `BitOps`.
   - types: `ArrayFrom`, `Bitwise`, `Oneof`, `Sort`.
 - new macro: `define_handle!`.
@@ -247,7 +247,8 @@ re-export hidden workspace dependencies from `_dep`.
   - `ExtArray` to `ArrayExt`.
   - `ExtVec` to `VecExt`.
 - make all `bitfield!` methods consts.
-- update `array_init!`:
+- update `init_array!`:
+  - rename `array_init!` to `init_array!`.
   - require `ConstInit` and `Vec` in scope if needed.
   - rename `const_init` arm related to traits to `INIT in`.
   - rename `const_init*` arms unrelated to traits to `const_fn*`.

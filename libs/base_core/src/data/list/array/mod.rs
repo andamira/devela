@@ -11,7 +11,7 @@ mod _reexport; // SYMLINK from /src/data/list/array/_reexport_core.rs
 // mod define_usize; // Array WIP TEMP
 mod ext; // ArrayExt, ArrayFmt
 mod from; // ArrayFrom
-mod init; // array_init!
+mod init; // init_array!
 
 crate::structural_mods! { // _mods, _reexports
     _mods {

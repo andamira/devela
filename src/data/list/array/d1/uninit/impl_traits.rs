@@ -6,7 +6,6 @@
 use crate::{
     Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor,
     BitXorAssign, Borrow, BorrowMut, Deref, DerefMut, Hash, Hasher, Not, Ordering, Storage,
-    array_init,
 };
 use ::core::fmt;
 

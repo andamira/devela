@@ -10,7 +10,7 @@
 use crate::{
     Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor,
     BitXorAssign, Borrow, BorrowMut, ConstInit, Debug, Deref, DerefMut, FmtResult, Formatter, Hash,
-    Hasher, Not, Ordering, Storage, array_init,
+    Hasher, Not, Ordering, Storage, init_array,
 };
 
 #[cfg(feature = "alloc")]
@@ -135,7 +135,7 @@ impl<T: Default, const CAP: usize> Default for Array<T, CAP, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
     fn default() -> Self {
-        let data = BareBox::new(array_init!(default [T; CAP], "safe_data", "unsafe_array"));
+        let data = BareBox::new(init_array!(default [T; CAP], "safe_data", "unsafe_array"));
         Array { data }
     }
 }
@@ -159,7 +159,7 @@ impl<T: Default, const CAP: usize> Default for Array<T, CAP, Boxed> {
     /// let mut s = Array::<i32, 100, Boxed>::default();
     /// ```
     fn default() -> Self {
-        let data = array_init!(default_heap [T; CAP], "safe_data", "unsafe_array");
+        let data = init_array!(default_heap [T; CAP], "safe_data", "unsafe_array");
         Array { data }
     }
 }
@@ -195,7 +195,7 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, CAP, Bare> {
-        let data = BareBox::new(array_init!(iter [T; CAP], "safe_data", "unsafe_array", iterator));
+        let data = BareBox::new(init_array!(iter [T; CAP], "safe_data", "unsafe_array", iterator));
         Array { data }
     }
 }
@@ -216,7 +216,7 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, CAP, Boxed> {
-        let data = array_init!(iter_heap [T; CAP], "safe_data", "unsafe_array", iterator);
+        let data = init_array!(iter_heap [T; CAP], "safe_data", "unsafe_array", iterator);
         Array { data }
     }
 }

@@ -8,7 +8,7 @@
 // - indexing methods (panicking)
 // - Option<T> methods
 
-use crate::{Array, Bare, BareBox, array_init, is};
+use crate::{Array, Bare, BareBox, init_array, is};
 
 /// # *Bare* constructors
 impl<T, const CAP: usize> Array<T, CAP, Bare> {
@@ -29,7 +29,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
     where
         T: Clone,
     {
-        let data = BareBox::new(array_init!(clone [T; CAP], "safe_data", "unsafe_array", element));
+        let data = BareBox::new(init_array!(clone [T; CAP], "safe_data", "unsafe_array", element));
         Self { data }
     }
 
