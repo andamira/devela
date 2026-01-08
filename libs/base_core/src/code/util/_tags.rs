@@ -3,6 +3,15 @@
 //! Private tags definitions for visual type categorization in documentation.
 //
 
+/// Aggregates multiple documentation tags into a single `#[doc = ...]` string.
+#[doc(hidden)]
+#[macro_export(local_inner_macros)] // local modifier needed to enable resolution
+macro_rules! _tags {
+    ($($tag:ident)+) => { concat![$( _tags![@$tag], " "),+] };
+    (@$tag:ident) =>  { paste! { [<_TAG_ $tag:upper>] !() }};
+}
+pub use _tags;
+
 // helper for defining doc tags with symbol and a title attribute attribute
 macro_rules! define_symbol_tags {
     ($( $tag:ident, $title:literal, $symbol:literal;)+) => {

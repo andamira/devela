@@ -10,7 +10,7 @@ mod _doc; // _doc!, _doc_availability!, _doc_miri_warn!
 mod _env; // __dbg!, __std!, _std_core!
 mod _links; // _DOCLINK_*!
 mod _mod_docs; // _DOC_*!
-mod _tags; // EMOJI_*!, _TAG_*!
+mod _tags; // EMOJI_*!, _TAG_*! _tags!
 mod _reexport_macro; // reexport!
 mod _use; // _use!
 
