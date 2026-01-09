@@ -1,15 +1,15 @@
-// devela::phys::time::tick
+// devela::run::tick
 //
-//! Defines [`TimeTick`].
+//! Defines [`RuntimeTick`].
 //
 
 use crate::Ordering;
 
-#[doc = crate::_tags!(time)]
-/// A deterministic logical time counter.
-#[doc = crate::_doc_location!("phys/time")]
+#[doc = crate::_tags!(runtime time)]
+/// A deterministic logical execution-time counter.
+#[doc = crate::_doc_location!("run")]
 ///
-/// `TimeTick` represents time as an explicitly advanced,
+/// `RuntimeTick` represents execution time as an explicitly advanced,
 /// monotonically increasing tick count.
 ///
 /// It is **constructed**, not observed: ticks are advanced explicitly by
@@ -22,8 +22,8 @@ use crate::Ordering;
 /// - Advancement is explicit and deterministic.
 ///
 /// ## Intended use
-/// - simulation and game loops
-/// - schedulers and state machines
+/// - simulation and game execution loops
+/// - runtime state machines
 /// - compile-time–friendly time tracking
 /// - deterministic testing and replay
 ///
@@ -34,11 +34,11 @@ use crate::Ordering;
 ///
 /// For sampled or system-backed time, use a [`TimeSource`][crate::TimeSource] instead.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct TimeTick {
+pub struct RuntimeTick {
     ticks: u64,
 }
 
-impl TimeTick {
+impl RuntimeTick {
     /// Creates a new logical time value with the given tick count.
     pub const fn new(ticks: u64) -> Self {
         Self { ticks }
@@ -64,7 +64,7 @@ impl TimeTick {
         self.ticks += delta;
     }
 
-    /// Returns a new `TimeTick` advanced by `delta` ticks.
+    /// Returns a new `RuntimeTick` advanced by `delta` ticks.
     pub const fn advanced(self, delta: u64) -> Self {
         Self { ticks: self.ticks + delta }
     }

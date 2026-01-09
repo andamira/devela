@@ -21,8 +21,6 @@ mod fmt; // Timecode
 mod no; // NoTime
 mod scale; // TimeScale
 mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
-// mod step; // TimeStep
-mod tick; // TimeTick
 
 #[cfg(feature = "time")] // RECONSIDER
 crate::items! {
@@ -44,8 +42,6 @@ crate::structural_mods! { // _mods, _pub_mods
             no::*,
             scale::*,
             split::*,
-            // step::*,
-            tick::*,
         };
         #[cfg(feature = "time")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]

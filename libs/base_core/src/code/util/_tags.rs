@@ -125,9 +125,10 @@ define_symbol_tags! {
     // Outcome or resolution values themselves, not APIs that may produce outcomes.
     // Often terminal in a control or computation flow”
     _TAG_RESULT, "Outcome", "⚖️"; // ⚖️,↔️,✅,🗳,
-    // Dynamic execution environment and runtime systems.
-    // Covers schedulers, tasks, coroutines, and foreign runtimes
-    // (JS, WASM, async execution), not general execution effects.
+    // Live execution context and runtime systems.
+    // Covers execution state, progression, and coordination,
+    // as well as runtime machinery such as schedulers, tasks,
+    // coroutines, and foreign runtimes (JS, WASM, async execution).
     _TAG_RUNTIME, "Runtime", "⬡"; // ⬡,
     _TAG_TERM, "Terminal platform", "🮖"; // 🮴 ,🮖,🖳 ,⌨️ ,⎚,❯,🗔 ,
     _TAG_TEXT, "Text", "𝐓"; // 𝐓, 𝓣, 𝔸, 🄰
