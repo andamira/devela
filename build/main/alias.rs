@@ -89,6 +89,9 @@ fn base_aliases(aliases: &mut Vec<&'static str>) {
     #[cfg(all(feature = "base_safe", feature = "safe_phys"))]
     new_alias(aliases, "base_safe_phys");
 
+    #[cfg(all(feature = "base_safe", feature = "safe_run"))]
+    new_alias(aliases, "base_safe_run");
+
     #[cfg(all(feature = "base_safe", feature = "safe_sys"))]
     new_alias(aliases, "base_safe_sys");
         #[cfg(all(feature = "base_safe", feature = "safe_mem"))]

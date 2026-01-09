@@ -40,6 +40,7 @@ fully flat `zall` namespace.
 
 It is also mirrored at the crate root through a hidden `all_` module.";
 
+    // 1
     _DOC_CODE            = "Reflective code synthesis.";
     _DOC_CODE_ANY        = "Dynamic typing and reflection.";
     _DOC_CODE_ERROR      = "Errors, backtraces and structured handling.";
@@ -47,7 +48,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_CODE_PANIC      = "Panic hooks, unwinding, and abort strategies.";
     _DOC_CODE_RESULT     = "Parameterized outcome and resolution types.";
     _DOC_CODE_UTIL       = "Utility macros and hint functions.";
-
+    // 2
     _DOC_DATA            = "Data handling and manipulation.";
     _DOC_DATA_ADDRESS    = "Addressability and directed reachability.";
     _DOC_DATA_BIT        = "Bit-focused items.";
@@ -64,18 +65,18 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_LIST_STACK = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_LIFO!(), " order."];
     _DOC_DATA_UID        = "Abstractions for producing and stabilizing unique identities.";
-
+    // 3
     _DOC_GAME = "Game-development and interactive applications.";
-
+    // 4
     _DOC_LANG = concat!["Language facilities, ",
         $crate::_ABBR_DSL!(), "s and ", $crate::_ABBR_FFI!(),"s."];
     _DOC_LANG_FFI = concat![$crate::_ABBR_FFI!(),
         "bindings and interoperability.\n\nBridges to external languages and platforms."];
     _DOC_LANG_FFI_C =
         "<a href='https://en.wikipedia.org/wiki/C_(programming_language)'>C</a> interfacing.";
-
-    _DOC_MEDIA      = "Multimedia functionality.";
-
+    // 5
+    _DOC_MEDIA           = "Multimedia functionality.";
+    // 6
     _DOC_NUM             = "Numerical types and operations.";
     _DOC_NUM_FLOAT       = "Floating point types and operations.";
     _DOC_NUM_GEOM        = "Geometric types, operations, and spatial constructs.";
@@ -87,10 +88,12 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_QUANT       = "Quantification and numerical relationships.";
     _DOC_NUM_RAND        = "Random number generation.";
     _DOC_NUM_WIDE        = "Wide numeric types and parallel arithmetic.";
-
+    // 7
+    _DOC_RUN             = "Live execution coordination of time, frames, and setup.";
+    // 8
     _DOC_PHYS            = "Physical units and measurement.";
     _DOC_PHYS_TIME       = "Time and calendar types and operations.";
-
+    // 9
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
     _DOC_SYS_DISPLAY     = "Display backends for windows, surfaces, and events.";
@@ -110,7 +113,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_OS          = "Operating systems and supervisors.";
     _DOC_SYS_OS_FD       = "Unix-like file descriptors.";
     _DOC_SYS_SOUND       = "Sound systems.";
-
+    // 10
     _DOC_TEXT            = "Text types and processing.";
     _DOC_TEXT_ASCII      = "ASCII strings and characters.";
     _DOC_TEXT_CHAR       = "Unicode scalar types and operations.";
@@ -118,10 +121,10 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_FMT        = "String formatting.";
     _DOC_TEXT_PARSE      = "Unstructured string parsing.";
     _DOC_TEXT_STR        = "String types and related functionality.";
-
+    // 11
     _DOC_UI              = "User interface functionality.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
-
+    // 12
     _DOC_WORK             = "Work management and concurrency.";
     _DOC_WORK_FUTURE      = "Asynchronous execution.";
     _DOC_WORK_PROCESS     = "Native process management.";

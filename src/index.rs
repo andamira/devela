@@ -131,9 +131,9 @@
     feature = "safe", feature = "safe_build", feature = "safe_code", feature = "safe_data",
     feature = "safe_lang", feature = "safe_media", feature = "safe_audio", feature = "safe_color",
     feature = "safe_draw", feature = "safe_font", feature = "safe_image", feature = "safe_game",
-    feature = "safe_num", feature = "safe_phys", feature = "safe_time", feature = "safe_sys",
-    feature = "safe_io", feature = "safe_mem", feature = "safe_text", feature = "safe_ui",
-    feature = "safe_layout", feature = "safe_work",
+    feature = "safe_num", feature = "safe_phys", feature = "safe_time", feature = "safe_run",
+    feature = "safe_sys", feature = "safe_io", feature = "safe_mem", feature = "safe_text",
+    feature = "safe_ui", feature = "safe_layout", feature = "safe_work",
 ))))]
 
 /* crate safeguards */
@@ -178,6 +178,7 @@ pub mod lang;
 pub mod media;
 pub mod num;
 pub mod phys;
+pub mod run;
 pub mod sys;
 pub mod text;
 pub mod ui;
@@ -211,6 +212,8 @@ pub mod zall_ {
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
     #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), COMMON_DOC!("phys")]]
     pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
+    #[doc = concat![crate::_DOC_RUN!(), crate::_DOC_RUN_MODULES!(), COMMON_DOC!("run")]]
+    pub mod _run { #[allow(unused)] pub use super::super::run::_all::*; }
     #[doc = concat![crate::_DOC_SYS!(), crate::_DOC_SYS_MODULES!(), COMMON_DOC!("sys")]]
     pub mod _sys { #[allow(unused)] pub use super::super::sys::_all::*; }
     #[doc = concat![crate::_DOC_TEXT!(), crate::_DOC_TEXT_MODULES!(), COMMON_DOC!("text")]]
@@ -239,6 +242,7 @@ pub mod zall {
         media::_all::*,
         num::_all::*,
         phys::_all::*,
+        run::_all::*,
         sys::_all::*,
         text::_all::*,
         ui::_all::*,
@@ -281,6 +285,7 @@ mod _crate_internals {
         media::_crate_internals::*,
         num::_crate_internals::*,
         phys::_crate_internals::*,
+        run::_crate_internals::*,
         sys::_crate_internals::*,
         text::_crate_internals::*,
         ui::_crate_internals::*,

@@ -211,6 +211,7 @@ mod reflection {
             "safe_num",
             "safe_phys",
                 "safe_time",
+            "safe_run",
             "safe_sys",
                 "safe_io", "safe_mem",
             "safe_text",
@@ -277,6 +278,10 @@ mod reflection {
     pub const PHYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["phys··"],
         features: &["phys", "time", "wave"]
+    };
+    pub const RUN: FlagsFeatures = FlagsFeatures {
+        ref_flags: &["run··"],
+        features: &["run"]
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["sys··"],
@@ -370,6 +375,7 @@ mod reflection {
             MEDIA,
             NUM, GEOM,
             PHYS,
+            RUN,
             SYS, MEM,
             TEXT,
             UI,

@@ -16,7 +16,7 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std, alloc, no_std)
-#   - Module            (all, code, data, game, lang, media, num, phys, sys, text, ui, work)
+#   - Module            (all, code, data, game, lang, media, num, phys, run, sys, text, ui, work)
 #   - Safety            (safest, safe, unsafe, …)
 #   - Capability        (_*)
 #     - default         (_default, _max, _maxest)
@@ -77,8 +77,8 @@ members = [
 	"libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	# "libs/code", "libs/data", "libs/media", "libs/num",
-	# "libs/game", "libs/lang", "libs/phys", "libs/sys",
-	# "libs/text", "libs/ui", "libs/work",
+	# "libs/game", "libs/lang", "libs/phys", "libs/run",
+	# "libs/sys", "libs/text", "libs/ui", "libs/work",
 	".", # ← root package
 	"build/post",
 ]
@@ -247,7 +247,7 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # In sync with ./tools/check.rs::SUB_MODULES
 
 all = [ # enables all the 11 modules (and their submodules)
-	"code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
+	"code", "data", "game", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
 ]
 code = []
 data = ["devela_base_data", "hash"]
@@ -288,6 +288,7 @@ phys = ["time", "wave"]
 	time = []
 	# unit
 	wave = [] # wavelets
+run = []
 sys = ["io", "mem"]
 	# arch
 		# simd = ["fontdue?/simd"]
@@ -342,8 +343,8 @@ safest = ["safe", "base_safe"] # forbids all `unsafe` in the workspace and all u
 
 safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
 	"devela_macros?/safe",
-	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game",
-	"safe_num", "safe_phys", "safe_sys", "safe_text", "safe_ui", "safe_work",
+	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game", "safe_num",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ]
 
 # activates safe enforcement in the [base] crates.
@@ -373,6 +374,7 @@ base_safe = [
 	safe_num = ["devela_base_num/safe"]
 	safe_phys = ["safe_time"]
 		safe_time = []
+	safe_run = []
 	safe_sys = ["safe_io", "safe_mem", "devela_base_core/safe_sys"]
 		safe_io = ["devela_base_core/safe_io"]
 		safe_mem = ["devela_base_core/safe_mem"]
@@ -966,6 +968,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(base_safe_image)",
 		"cfg(base_safe_num)",
 		"cfg(base_safe_phys)",
+		"cfg(base_safe_run)",
 		"cfg(base_safe_sys)",
 			"cfg(base_safe_mem)",
 		"cfg(base_safe_text)",
@@ -1043,6 +1046,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(num··)',
 	# phys: (1)
 	'cfg(phys··)',
+	# run: (1)
+	'cfg(run··)',
 	# sys: (2)
 	'cfg(sys··, mem··)',
     # text: (1)

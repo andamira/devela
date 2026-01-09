@@ -68,8 +68,8 @@ use toml_edit::Document;
 const NIGHTLY: &str = "nightly"; // … nightly-2025-08-14
 
 #[rustfmt::skip]
-const ROOT_MODULES: [&str; 11 + 1] = [
-    "code", "data", "game", "lang", "media", "num", "phys", "sys", "text", "ui", "work",
+const ROOT_MODULES: [&str; 12 + 1] = [
+    "code", "data", "game", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
 
     // sys::os submodules (platforms)
     "linux", // "windows",
@@ -92,6 +92,7 @@ const SUB_MODULES: &[&str] = &[
     // phys
     "time",
     "wave",
+    // run
     // sys
     "io",
     "mem",

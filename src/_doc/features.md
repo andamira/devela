@@ -90,6 +90,7 @@ Root modules & public sub-modules features:
   - [`time`]
   - `unit`:
   - [`wave`][crate::phys::wave]: wavelets.
+- [`run`]:
 - [`sys`]: enables all `sys` sub-features (except for `os`).
   - [`io`]: no_std `io` implementations.
   - [`mem`]
@@ -123,6 +124,7 @@ Root modules & public sub-modules features:
   [`rand`]:       crate::num::rand
 [`phys`]:         crate::phys
   [`time`]:       crate::phys::time
+[`run`]:          crate::run
 [`sys`]:          crate::sys
   [`io`]:         crate::sys::io
   [`mem`]:        crate::sys::mem

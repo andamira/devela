@@ -416,6 +416,10 @@ re-export hidden workspace dependencies from `_dep`.
   - make their `new` method const.
 
 ---
+## run
+- new `run` root module.
+
+---
 ## sys
 ### arch
 - new `Arch` methods: `cntvct`, `cycles`, `rdcycle`, `rdtsc`, `rdtscp`.
