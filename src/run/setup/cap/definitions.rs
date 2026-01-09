@@ -1,35 +1,35 @@
-// devela::ui::back::cap::definitions
+// devela::run::setup::cap::definitions
 //
-//! UI backend capabilities.
+//! Runtime capabilities.
 //
 
 #[cfg(feature = "alloc")]
 use crate::String;
 
-#[doc = crate::_tags!(ui)]
-/// The capabilities supported by a [`UiService`][crate::UiService].
-#[doc = crate::_doc_location!("ui/back")]
+#[doc = crate::_tags!(runtime)]
+/// The capabilities supported by a `Runtime`.
+#[doc = crate::_doc_location!("run/setup")]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
-pub struct UiCap {
+pub struct RunCap {
     /// Image capabilities.
-    pub image: Option<UiCapImage>,
+    pub image: Option<RunCapImage>,
     /// Input capabilities.
-    pub input: Option<UiCapInput>,
+    pub input: Option<RunCapInput>,
     /// Audio capabilities.
-    pub audio: Option<UiCapAudio>,
+    pub audio: Option<RunCapAudio>,
     /// System capabilities.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub system: Option<UiCapSystem>,
+    pub system: Option<RunCapSystem>,
     /// Windowing capabilities.
-    pub window: Option<UiCapWindow>,
+    pub window: Option<RunCapWindow>,
 }
 
-#[doc = crate::_tags!(ui image)]
+#[doc = crate::_tags!(runtime image)]
 /// Image capabilities.
-#[doc = crate::_doc_location!("ui/back")]
+#[doc = crate::_doc_location!("run/setup")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct UiCapImage {
+pub struct RunCapImage {
     /// Maximum bitmap size, in native pixels.
     pub max_bitmap_size: Option<[usize; 2]>,
     /// Whether pixel-accurate bitmaps are supported.
@@ -45,11 +45,11 @@ pub struct UiCapImage {
     // pub palette_size: u16,
 }
 
-#[doc = crate::_tags!(ui interaction)]
-/// Input capabilities.
-#[doc = crate::_doc_location!("ui/back")]
+#[doc = crate::_tags!(runtime interaction)]
+/// Runtime input capabilities.
+#[doc = crate::_doc_location!("run/setup")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct UiCapInput {
+pub struct RunCapInput {
     /// Gamepad input capabilities.
     pub gamepad: bool,
     /// Keyboard input capabilities.
@@ -62,22 +62,22 @@ pub struct UiCapInput {
     pub touchscreen: bool,
 }
 
-#[doc = crate::_tags!(ui audio)]
-/// Audio capabilities.
-#[doc = crate::_doc_location!("ui/back")]
+#[doc = crate::_tags!(runtime audio)]
+/// Runtime audio capabilities.
+#[doc = crate::_doc_location!("run/setup")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct UiCapAudio {
+pub struct RunCapAudio {
     /// Audio playback capabilities.
     pub play: bool,
 }
 
-#[doc = crate::_tags!(ui)]
-/// System capabilities.
-#[doc = crate::_doc_location!("ui/back")]
+#[doc = crate::_tags!(runtime)]
+/// Runtime system capabilities.
+#[doc = crate::_doc_location!("run/setup")]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
-pub struct UiCapSystem {
+pub struct RunCapSystem {
     /// The name of the detected OS version.
     pub os_version: Option<String>,
     /// The name of the current user.
@@ -86,11 +86,11 @@ pub struct UiCapSystem {
     pub host_name: Option<String>,
 }
 
-#[doc = crate::_tags!(ui)]
-/// Window capabilities.
-#[doc = crate::_doc_location!("ui/back")]
+#[doc = crate::_tags!(runtime)]
+/// Runtime window capabilities.
+#[doc = crate::_doc_location!("run/setup")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct UiCapWindow {
+pub struct RunCapWindow {
     /// Whether multiple windows are supported.
     pub multi: bool,
 }

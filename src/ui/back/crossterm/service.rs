@@ -14,8 +14,8 @@
 use ::crossterm::{event, execute, terminal};
 
 use crate::{
-    Io, IoResult, UiCap, UiCapImage, /* Event, EventSource, */ UiCapInput,
-    /* Window, */ UiCapWindow, UiService,
+    Io, IoResult, RunCap, RunCapImage, /* Event, EventSource, */ RunCapInput,
+    /* Window, */ RunCapWindow, UiService,
 };
 
 #[doc = crate::_tags!(ui runtime platform)]
@@ -116,17 +116,17 @@ impl CrosstermService {
 }
 
 impl UiService for CrosstermService {
-    fn capabilities(&self) -> UiCap {
-        let image = Some(UiCapImage {
+    fn capabilities(&self) -> RunCap {
+        let image = Some(RunCapImage {
             rgb: true,
             // palette_change: false,
             // palette_size: ::crossterm::style::available_color_count(),
             ..Default::default()
         });
 
-        let input = Some(UiCapInput { keyboard: true, mouse: true, ..Default::default() });
+        let input = Some(RunCapInput { keyboard: true, mouse: true, ..Default::default() });
 
-        // let text_grid = Some(UiCapTextGridCap {
+        // let text_grid = Some(RunCapTextGridCap {
         //     // we don't unknown
         //     cell_size: None,
         //     // https://github.com/crossterm-rs/crossterm/issues/166
@@ -136,9 +136,9 @@ impl UiService for CrosstermService {
         //     // ..Default::default()
         // });
 
-        let window = Some(UiCapWindow { multi: false });
+        let window = Some(RunCapWindow { multi: false });
 
-        UiCap {
+        RunCap {
             image,
             input,
             // text_grid,

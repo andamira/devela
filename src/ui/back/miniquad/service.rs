@@ -7,7 +7,7 @@
 // - MiniquadService
 
 use crate::{Box, ToString};
-use crate::{UiCap, UiCapImage, UiCapInput, UiCapWindow, UiService, is};
+use crate::{RunCap, RunCapImage, RunCapInput, RunCapWindow, UiService, is};
 #[cfg(doc)]
 use ::miniquad::FilterMode;
 use ::miniquad::{EventHandler, conf::Conf};
@@ -35,11 +35,11 @@ pub trait MiniquadEventHandlerExt: EventHandler {
 }
 
 impl<T: MiniquadEventHandlerExt + 'static> UiService for MiniquadService<T> {
-    fn capabilities(&self) -> UiCap {
-        let image = Some(UiCapImage { rgb: true, ..Default::default() });
-        let input = Some(UiCapInput { keyboard: true, mouse: true, ..Default::default() });
-        let window = Some(UiCapWindow { multi: false });
-        UiCap { image, input, window, ..Default::default() }
+    fn capabilities(&self) -> RunCap {
+        let image = Some(RunCapImage { rgb: true, ..Default::default() });
+        let input = Some(RunCapInput { keyboard: true, mouse: true, ..Default::default() });
+        let window = Some(RunCapWindow { multi: false });
+        RunCap { image, input, window, ..Default::default() }
     }
     fn version(&self) -> (u32, u32, u32) {
         (0, 4, 7)

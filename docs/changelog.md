@@ -422,6 +422,10 @@ re-export hidden workspace dependencies from `_dep`.
 ### frame
 - new items: `RunTick`.
 
+### setup
+- move capabilities from `ui::back::cap` to `run::setup::cap`.
+  - rename `UiCap*` to `RunCap*`.
+
 ---
 ## sys
 ### arch

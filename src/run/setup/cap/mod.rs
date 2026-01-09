@@ -1,9 +1,9 @@
 // devela::ui::back::cap
 //
-//! Ui service capabilities.
+//! Runtime capabilities.
 //
 
-mod definitions;
+mod definitions; // RunCap[Audio|Image|Input|System|Window]
 
 crate::structural_mods! { // _mods
     _mods {

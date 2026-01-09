@@ -4,7 +4,6 @@
 #![doc = crate::_doc!(modules: crate::ui; back: miniquad, crossterm)]
 //
 
-mod cap;
 mod definition;
 
 #[cfg(feature = "dep_crossterm")]
@@ -17,7 +16,7 @@ pub mod miniquad;
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         #[cfg(ui··)]
-        pub use super::{cap::*, definition::*};
+        pub use super::definition::*;
     }
     _pub_mods {
         #[cfg(feature = "dep_crossterm")]

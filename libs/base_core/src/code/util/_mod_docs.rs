@@ -92,7 +92,9 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_WIDE        = "Wide numeric types and parallel arithmetic.";
     // 7
     _DOC_RUN             = "Live execution coordination of time, frames, and setup.";
-    _QUOTE_RUN           = "> Where execution exists, progresses, and is made concrete.";
+    _QUOTE_RUN           = "> Where execution exists, progresses, and becomes concrete.";
+    _DOC_RUN_FRAME       = "The per-step execution envelope and state snapshot.";
+    _DOC_RUN_SETUP       = "The committed configuration of a running environment.";
     // 8
     _DOC_PHYS            = "Physical units and measurement.";
     _DOC_PHYS_TIME       = "Time and calendar types and operations.";

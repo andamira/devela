@@ -23,7 +23,7 @@ pub mod front;
 #[cfg(ui··)]
 crate::items! {
     mod error;
-    pub mod back; // UiService*, UiCap*
+    pub mod back; // UiService*
 }
 #[cfg(feature = "layout")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "layout")))]

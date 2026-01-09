@@ -1,6 +1,6 @@
 // devela::run::frame
 //
-//!
+#![doc = crate::_DOC_RUN_FRAME!()]
 //
 
 // mod pacer; // FramePacer WIP

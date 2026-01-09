@@ -3,14 +3,14 @@
 //! Defines the [`UiService`] trait.
 //
 
-use crate::UiCap;
+use crate::RunCap;
 
 #[doc = crate::_tags!(ui)]
 /// Common trait for all UI services.
 #[doc = crate::_doc_location!("ui/back")]
 pub trait UiService {
     /// Returns the service capabilities.
-    fn capabilities(&self) -> UiCap;
+    fn capabilities(&self) -> RunCap;
 
     /// Returns the service inner version numbers (major, minor, patch).
     fn version(&self) -> (u32, u32, u32);
