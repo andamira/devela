@@ -32,12 +32,12 @@ macro_rules! __doc {
 
     // link to zall_::* associated module
     (flat: $mod:literal) => {
-        concat!["<a title='Flat view of the `", $mod, "` module' href='",
+        concat!["<a title='See the flat view of the `", $mod, "` module' href='",
             $crate::doclink![custom_current_crate concat!["zall_/_", $mod], @mod], "'>◉</a>"]//◉◦•
     };
     // link to the root * associated module
     (root: $mod:literal) => {
-        concat!["<a title='Hierarchical view of the `", $mod, "` module' href='",
+        concat!["<a title='See the hierarchical view of the `", $mod, "` module' href='",
             $crate::doclink![custom_current_crate $mod, @mod], "'>▽</a>"]//▽▾⧩◬◌⊙⊜◎◎
     };
 
@@ -222,6 +222,7 @@ macro_rules! __doc_availability {
 pub use __doc_availability as _doc_availability;
 
 /// Emits a location annotation for documentation.
+#[doc = crate::_doc_location!("code/util")]
 ///
 /// This macro renders a small location marker (`📍`) followed by the public
 /// API path under `devela`, and optionally the crate where the item is defined.

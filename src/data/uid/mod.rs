@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_DATA_UID!()]
 //!
-//! > defines identity kinds and generation tools
+#![doc = crate::_QUOTE_DATA_UID!()]
 //!
 //! Includes utilities for managing unique identifiers such as sequential IDs,
 //! scoped IDs, and universal unique identifiers.

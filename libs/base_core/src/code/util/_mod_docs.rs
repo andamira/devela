@@ -53,6 +53,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_ADDRESS    = "Addressability and directed reachability.";
     _DOC_DATA_BIT        = "Bit-focused items.";
     _DOC_DATA_CODEC      = "Data encoding and decoding abstractions.";
+    _QUOTE_DATA_CODEC    = "> Structured, algorithmic transformations of data representations.";
     _DOC_DATA_CODEC_HASH = "Generic hashing support.";
     _DOC_DATA_CODEC_HASH_CHECK = "Lightweight checksums for accidental corruption detection.";
     _DOC_DATA_ITER       = "Composable external iteration.";
@@ -65,6 +66,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_LIST_STACK = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_LIFO!(), " order."];
     _DOC_DATA_UID        = "Abstractions for producing and stabilizing unique identities.";
+    _QUOTE_DATA_UID      = "> Defines identity kinds and generation tools.";
     // 3
     _DOC_GAME = "Game-development and interactive applications.";
     // 4
@@ -90,6 +92,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_WIDE        = "Wide numeric types and parallel arithmetic.";
     // 7
     _DOC_RUN             = "Live execution coordination of time, frames, and setup.";
+    _QUOTE_RUN           = "> Where execution exists, progresses, and is made concrete.";
     // 8
     _DOC_PHYS            = "Physical units and measurement.";
     _DOC_PHYS_TIME       = "Time and calendar types and operations.";
@@ -123,6 +126,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_STR        = "String types and related functionality.";
     // 11
     _DOC_UI              = "User interface functionality.";
+    _QUOTE_UI            = "> How humans interact with what exists.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
     // 12
     _DOC_WORK             = "Work management and concurrency.";

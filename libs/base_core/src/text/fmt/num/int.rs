@@ -13,6 +13,8 @@ macro_rules! impl_fmtnum_int {
     };
     (signed $($t:ty),+) => {$(
         impl FmtNum<$t> {
+            /* write*/
+
             /// Writes the integer as ASCII decimal digits into `buf` starting at `pos`.
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.

@@ -60,6 +60,8 @@ impl Adler32 {
         Adler32 { a: sum as u16, b: (sum >> 16) as u16 }
     }
 
+    /* */
+
     /// Returns the current Adler-32 checksum as a packed `u32`.
     pub const fn checksum(&self) -> u32 {
         ((self.b as u32) << 16) | self.a as u32
@@ -79,7 +81,7 @@ impl Adler32 {
     ///
     /// This method may be called multiple times to checksum data streams.
     pub const fn write_bytes(&mut self, bytes: &[u8]) {
-        self.update_chucked(bytes);
+        self.update_chunked(bytes);
     }
 
     /// Internal Adler-32 update routine.
@@ -90,7 +92,7 @@ impl Adler32 {
     /// b = (b + a)        mod 65521
     /// ```
     /// using chunked reduction to avoid accumulator overflow.
-    const fn update_chucked(&mut self, bytes: &[u8]) {
+    const fn update_chunked(&mut self, bytes: &[u8]) {
         const MOD: u32 = 65521;
         const OUTER_CHUNK: usize = 5552 * INNER_CHUNK;
         const INNER_CHUNK: usize = 4;

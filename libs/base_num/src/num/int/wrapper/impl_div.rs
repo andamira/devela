@@ -21,7 +21,6 @@ use crate::{Int, is, paste};
 ///
 /// # Args
 /// $t:   the input/output type
-///
 /// $d:   the doclink suffix for the method name
 macro_rules! impl_div {
     () => {

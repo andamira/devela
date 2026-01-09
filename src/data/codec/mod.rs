@@ -5,8 +5,7 @@
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: hash)]
-//!
-//! > Structured, algorithmic transformations of data representations.
+#![doc = crate::_QUOTE_DATA_CODEC!()]
 //!
 //! ## Determinism & Side Effects
 //! Encoding and decoding should be **deterministic**.

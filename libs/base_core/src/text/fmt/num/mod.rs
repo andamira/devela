@@ -10,6 +10,7 @@ mod tests;
 mod conf; // FmtNumConf, FmtNumSign
 mod num; // FmtNum
 mod shape; // FmtNumShape
+// mod unicode; // WIP
 
 /* implementations */
 mod float;
