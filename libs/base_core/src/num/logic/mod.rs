@@ -4,6 +4,7 @@
 //
 
 mod bool; // ConstBool, False, True
+// mod linear; // WIP
 
 // WIPZONE
 // mod bops;
@@ -14,7 +15,10 @@ mod bool; // ConstBool, False, True
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::bool::*;
+        pub use super::{
+            bool::*,
+            // linear::*, // WIP
+        };
 
         // WIPZONE
         // pub use super::bops::*;

@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
-    io, net, os, path, pin, ptr, rc, slice, simd)]
+    io, net, os, path, pin, ptr, rc, slice)]
 //
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]

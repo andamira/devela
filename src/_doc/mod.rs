@@ -26,6 +26,10 @@ pub mod macros {
 
 #[cfg(doc)]
 crate::items! {
+    // pub mod api {
+    //     //! Library API design.
+    //     #![doc = include_str!("./api.md")]
+    // }
     pub mod features {
         //! Library features.
         #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]

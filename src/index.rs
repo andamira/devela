@@ -196,7 +196,7 @@ pub use zall_ as all_;
 #[doc = crate::_DOC_ZALL_!()]
 pub mod zall_ {
     macro_rules! COMMON_DOC { ($mod:literal) => { concat!(" ",
-        crate::_doc!(root:$mod), "\n\n**All root module's items flat re-exported.**") }; }
+        crate::_doc!(root:$mod), "\n\nAll `", $mod,"` module's items flat re-exported.") }; }
     #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), COMMON_DOC!("code")]]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
     #[doc = concat![crate::_DOC_DATA!(), crate::_DOC_DATA_MODULES!(), COMMON_DOC!("data")]]

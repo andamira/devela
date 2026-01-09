@@ -6,6 +6,8 @@
 //!
 #![doc = crate::_doc!(extends: hash)]
 //!
+//! > Structured, algorithmic transformations of data representations.
+//!
 //! ## Determinism & Side Effects
 //! Encoding and decoding should be **deterministic**.
 //! Implementations should avoid introducing side effects where possible.
