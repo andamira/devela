@@ -96,7 +96,7 @@ edition = "2024"
 # ==============================================================================
 name = "devela"
 build = "build/main/mod.rs"
-description = "A development layer."
+description = "A development layer: rooting in Rust."
 readme = "docs/readme_crate.md"
 rust-version.workspace = true
 edition.workspace = true
