@@ -126,7 +126,6 @@ mod auto_impls {
 //   [`root_round`][Self::int_root_round], TODO
 //
 // In sync with src/num/int/num_trait/ref.rs (int_ref_* methods)
-#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(unused_variables, reason = "pretty signatures")]
 #[rustfmt::skip]
 pub trait NumInt: Num {

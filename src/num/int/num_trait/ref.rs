@@ -29,7 +29,6 @@ use crate::{Deref, GcdReturn, IntResult as Result, Num, NumInt, NumRef, ValueQua
 /// - Mutable operations are only available for exclusive (`&mut`) references.
 //
 // In sync with src/num/int/num_trait/mod.rs (int_ref_* methods)
-#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[rustfmt::skip]
 pub trait NumRefInt<'a>: NumRef<'a>
 where

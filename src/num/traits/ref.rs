@@ -12,7 +12,6 @@ use crate::{Deref, DerefMut, Num, NumResult as Result};
 /// It is automatically implemented for references of types implementing [`Num`].
 /// Mutable operations are only available for exclusive (`&mut`) references.
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(notable_trait))]
 pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
     /// The owned version of this numeric type.
     type Own: Num;

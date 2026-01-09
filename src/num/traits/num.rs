@@ -26,7 +26,6 @@ use E::{NotImplemented, NotSupported};
 ///
 /// See also [`NumRef`][crate::NumRef] which is automatically implemented for `Num` references.
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(notable_trait))]
 #[allow(unused_variables, reason = "default implementation is not implemented")]
 pub trait Num {
     /// The internal representation of this numeric type.
