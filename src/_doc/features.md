@@ -72,7 +72,6 @@ Root modules & public sub-modules features:
   - [`draw`]:
   - [`font`]:
   - [`image`]:
-  - [`midi`]:
   - [`video`]:
 - [`num`]:
   - [`geom`][crate::num::geom]: geometry.
@@ -91,7 +90,10 @@ Root modules & public sub-modules features:
   - `unit`:
   - [`wave`][crate::phys::wave]: wavelets.
 - [`run`]:
+  - `frame`:
+  - `setup`:
 - [`sys`]: enables all `sys` sub-features (except for `os`).
+  - [`device`]
   - [`io`]: no_std `io` implementations.
   - [`mem`]
   - [`os`]:
@@ -117,7 +119,6 @@ Root modules & public sub-modules features:
   [`draw`]:       crate::media::draw
   [`font`]:       crate::media::font
   [`image`]:      crate::media::image
-  [`midi`]:       crate::media::midi
   [`video`]:      crate::media::video
 [`num`]:          crate::num
   [`logic`]:      crate::num::logic
@@ -126,6 +127,7 @@ Root modules & public sub-modules features:
   [`time`]:       crate::phys::time
 [`run`]:          crate::run
 [`sys`]:          crate::sys
+  [`device`]:     crate::sys::device
   [`io`]:         crate::sys::io
   [`mem`]:        crate::sys::mem
   [`os`]:         crate::sys::os

@@ -432,8 +432,13 @@ re-export hidden workspace dependencies from `_dep`.
 - new `Arch` methods: `cntvct`, `cycles`, `rdcycle`, `rdtsc`, `rdtscp`.
 - new internal macro `ARCH!`.
 
-### display
-- new module `sys::display::x11`.
+### device
+- new module: `sys::device`.
+- move `media::midi` to `sys::device::midi`.
+- move `sys::sound` to `sys::device::audio`.
+
+#### display
+- new module: `sys::device::display::x11`.
 - new types: `XDisplay`, `XError`, `XEvent`, `XWindow`.
 
 ### env
@@ -444,7 +449,6 @@ re-export hidden workspace dependencies from `_dep`.
 
 ### hw
 - new module `sys::hw`.
-- move `sys::sound` to `sys::hw::audio`.
 
 ### io
 - new `IoDuplex` trait.

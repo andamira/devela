@@ -21,17 +21,6 @@ use crate::Ordering;
 ///   (frames, cycles, steps, events, etc.).
 /// - Advancement is explicit and deterministic.
 ///
-/// ## Intended use
-/// - simulation and game execution loops
-/// - runtime state machines
-/// - compile-time–friendly time tracking
-/// - deterministic testing and replay
-///
-/// ## Non-goals
-/// - querying wall-clock or system time
-/// - representing civil or absolute time
-/// - implicit progression
-///
 /// For sampled or system-backed time, use a [`TimeSource`][crate::TimeSource] instead.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct RuntimeTick {

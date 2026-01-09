@@ -1,4 +1,4 @@
-// devela::sys::display::x11
+// devela::sys::device::display::x11
 //
 //!
 // - <https://www.x.org/releases/current/doc/>

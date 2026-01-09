@@ -27,9 +27,6 @@ pub mod font;
 #[cfg(feature = "image")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
 pub mod image;
-#[cfg(feature = "midi")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "midi")))]
-pub mod midi;
 #[cfg(feature = "video")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "video")))]
 pub mod video;
@@ -41,7 +38,6 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
         #[cfg(feature = "draw")]  pub use super::draw::_all::*;
         #[cfg(feature = "font")]  pub use super::font::_all::*;
         #[cfg(feature = "image")] pub use super::image::_all::*;
-        #[cfg(feature = "midi")]  pub use super::midi::_all::*;
         #[cfg(feature = "video")] pub use super::video::_all::*;
     }
     _crate_internals {

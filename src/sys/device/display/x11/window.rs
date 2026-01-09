@@ -1,4 +1,4 @@
-// devela::sys::display::x11::window
+// devela::sys::device::display::x11::window
 //
 //! Defines [`XWindow`].
 //
@@ -8,7 +8,7 @@ use crate::{Extent, Position, XDisplay, XError, lets};
 
 #[doc = crate::_tags!(linux uid guard)]
 /// X11 window created through XCB.
-#[doc = crate::_doc_location!("sys/display/x11")]
+#[doc = crate::_doc_location!("sys/device/display/x11")]
 ///
 /// Represents a top-level window backed by an X11 drawable. Holds the XCB identifiers
 /// required to manage the window, its graphics context, and its basic geometry.

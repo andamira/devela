@@ -162,7 +162,7 @@ path = "src/index.rs"
 bench = false
 
 
-[features] # 157/300 (143 remaining), 105 visible, 52 hidden
+[features] # 158/300 (142 remaining), 106 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -265,13 +265,12 @@ lang = ["glsl", "js"]
 		# py = []
 	# i18n = []
 	# hum = []
-media = ["audio", "color", "draw", "font", "image", "midi", "video"]
+media = ["audio", "color", "draw", "font", "image", "video"]
 	audio = ["devela_base_core/audio"]
 	draw = ["devela_base_core/draw"]
 	color = ["devela_base_core/color", "devela_base_alloc?/color", "devela_base_std?/color"]
 	font = ["devela_base_core/font"]
 	image = ["devela_base_core/image"]
-	midi = []
 	video = []
 num = ["geom", "rand", "unit"]
 	geom = ["linear", "shape"] # geometry
@@ -293,10 +292,13 @@ sys = ["io", "mem"]
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
-	# display
-		# cocoa = []
-		# gdi = []
-		x11 = []
+	# device
+		# audio
+		# display
+			# cocoa = []
+			# gdi = []
+			x11 = []
+		# midi = []
 	# fs
 	io = []
 	mem = ["bit"]

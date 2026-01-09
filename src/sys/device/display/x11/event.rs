@@ -1,4 +1,4 @@
-// devela::sys::display::x11::event
+// devela::sys::device::display::x11::event
 //
 //! Defines [`XEvent`].
 //
@@ -12,6 +12,7 @@ use crate::{
 
 #[doc = crate::_tags!(linux event)]
 /// Wrapper for an XCB event.
+#[doc = crate::_doc_location!("sys/device/display/x11")]
 #[derive(Debug)]
 pub struct XEvent {
     pub(super) raw: *mut raw::xcb_generic_event_t,

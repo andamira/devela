@@ -1,6 +1,6 @@
-// devela::sys::display
+// devela::sys::device::display
 //
-#![doc = crate::_DOC_SYS_DISPLAY!()]
+#![doc = crate::_DOC_SYS_DEVICE_DISPLAY!()]
 ///
 /// Unlike hosted environments (e.g. browsers),
 /// display backends expose process-owned windows and event loops.

@@ -1,4 +1,4 @@
-// devela::sys::display::x11::atoms
+// devela::sys::device::display::x11::atoms
 //
 //! Defines [`XAtoms`].
 //
@@ -8,7 +8,7 @@ use crate::{Libc, Ptr, is};
 
 #[doc = crate::_tags!(linux uid runtime)]
 /// Cached atoms required for high–level event interpretation.
-#[doc = crate::_doc_location!("sys/display/x11")]
+#[doc = crate::_doc_location!("sys/device/display/x11")]
 ///
 /// X11 atoms are integer identifiers allocated by the server and
 /// used as symbolic names for properties and protocols.

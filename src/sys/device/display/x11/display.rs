@@ -1,4 +1,4 @@
-// devela::sys::display::x11::display
+// devela::sys::device::display::x11::display
 //
 //! Defines [`XDisplay`].
 //
@@ -13,7 +13,7 @@ use crate::{
 
 #[doc = crate::_tags!(linux runtime guard)]
 /// A connection to an X11 display server.
-#[doc = crate::_doc_location!("sys/display/x11")]
+#[doc = crate::_doc_location!("sys/device/display/x11")]
 ///
 /// Wraps an `xcb_connection_t` and its associated screen information.
 /// Represents the root environment required to create windows and interact with the X server.

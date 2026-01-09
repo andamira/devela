@@ -18,7 +18,7 @@ crate::CONST! { pub(crate) _DOC_RUN_MODULES =
 mod tick; // RuntimeTick
 
 pub mod frame; // FramePacer // WIP
-pub mod setup; // RunCap* WIP
+pub mod setup; // RunCap*
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {

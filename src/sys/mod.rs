@@ -12,16 +12,16 @@
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_SYS_MODULES =
-    crate::_doc!(modules: crate; sys: arch, display, env, fs, hw, io, log, mem, net, os);
+    crate::_doc!(modules: crate; sys: arch, device, env, fs, hw, io, log, mem, net, os);
 }
 
 pub mod arch; // Arch, *asm, detect_*, m128* m256*
-pub mod display; // {x11}
+pub mod device; //
 pub mod env; // App*, Arg*, Env
 pub mod fs; // Fs, FsPath, PathExt
 pub mod hw; // {audio, …}
 pub mod io; // Io*
-pub mod log;
+pub mod log; // Log*
 pub mod mem; // Mem,
 pub mod net; // Ip*, Socket*, Tcp*, Udp*
 pub mod os; // Linux,
@@ -34,7 +34,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         pub use super::{
             arch::_all::*,
-            display::_all::*,
+            device::_all::*,
             env::_all::*,
             fs::_all::*,
             hw::_all::*,
@@ -50,7 +50,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     }
     _crate_internals {
         pub(crate) use super::_DOC_SYS_MODULES;
-        pub(crate) use super::display::_crate_internals::*;
+        pub(crate) use super::device::_crate_internals::*;
     }
     _hidden {
         pub use super::mem::_hidden::*;
