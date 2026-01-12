@@ -63,6 +63,10 @@ Root modules & public sub-modules features:
 - [`code`]
 - [`data`]
   - [`hash`]:
+- [`geom`]: geometry.
+  - `linear`: linear algebra
+  - `metric`:
+  - `shape`:
 - [`lang`]:
   - `ffi`: glsl, js.
 - [`media`]
@@ -73,10 +77,6 @@ Root modules & public sub-modules features:
   - [`image`]:
   - [`video`]:
 - [`num`]:
-  - [`geom`][crate::num::geom]: geometry.
-    - `linear`: linear algebra
-    - `metric`:
-    - `shape`:
   - [`logic`]:
   - [`rand`]: random number generators.
   - `unit`: unit prefixes.
@@ -110,6 +110,7 @@ Root modules & public sub-modules features:
   [`error`]:      crate::code::error
 [`data`]:         crate::data
   [`hash`]:       crate::data::codec::hash
+[`geom`]:         crate::geom
 [`lang`]:         crate::lang
 [`media`]:        crate::media
   [`audio`]:      crate::media::audio

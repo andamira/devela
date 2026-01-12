@@ -269,6 +269,27 @@ re-export hidden workspace dependencies from `_dep`.
 - new type `IdRegistry`.
 
 ---
+## geom
+- make `num::geom` a new `geom` root module.
+
+### dir
+- new module.
+- move here `Orientation`, `Angle`, `AngleDirection` & `AngleKind`.
+- new types: `Boundary1d`, `Boundary2d`, `Boundary3d`.
+
+### metric
+- move to [base]:
+  - internal macro `_impl_metric!`.
+  - types: `Distance`, `Extent`, `Orientation`, `Position`, `Region`, `RegionStrided`, `Stride`.
+- remove `metric` feature gate for `Orientation`, `Region` & `Stride`.
+- update `_impl_metric!` helper macro.
+  - implement 2d|3d common methods.
+  - implement `ConstInit*`.
+- update `Extent`:
+  - add methods for 2|3d: `length[_ref|_mut]`, `width[_ref|_mut]`, `height[_ref|_mut]`, `depth[_ref|_mut]`, `breadth[_ref|_mut]`.
+- remove `c_` prefix from int methods.
+
+---
 ## lang
 - rename `lang::ling` to `lang::hum`.
 - rename `lang::ling::grammar` to `lang::hum::gram`.
@@ -344,25 +365,6 @@ re-export hidden workspace dependencies from `_dep`.
   - traits: `FloatConst`.
   - types: `Float`.
   - float shared docs prefixed with `_FLOAT_`.
-
-
-### geom
-#### dir
-- new module.
-- move here `Orientation`, `Angle`, `AngleDirection` & `AngleKind`.
-- new types: `Boundary1d`, `Boundary2d`, `Boundary3d`.
-
-#### metric
-- move to [base]:
-  - internal macro `_impl_metric!`.
-  - types: `Distance`, `Extent`, `Orientation`, `Position`, `Region`, `RegionStrided`, `Stride`.
-- remove `metric` feature gate for `Orientation`, `Region` & `Stride`.
-- update `_impl_metric!` helper macro.
-  - implement 2d|3d common methods.
-  - implement `ConstInit*`.
-- update `Extent`:
-  - add methods for 2|3d: `length[_ref|_mut]`, `width[_ref|_mut]`, `height[_ref|_mut]`, `depth[_ref|_mut]`, `breadth[_ref|_mut]`.
-- remove `c_` prefix from int methods.
 
 ### int
 - move to [base]: `Int`, `[iu]size_*`.

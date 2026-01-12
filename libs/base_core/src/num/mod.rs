@@ -11,7 +11,7 @@
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_NUM_MODULES =
-    crate::_doc!(modules: crate; num: error, geom, niche, quant, wide); // logic, ord, rand
+    crate::_doc!(modules: crate; num: error, niche, quant, wide); // logic, ord, rand
 }
 
 mod _internals; // impl_ops!
@@ -24,7 +24,6 @@ mod logic; // ConstBool, False, True, const_bool!
 mod traits; // NumConst
 
 pub mod error; // error types
-pub mod geom;
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod ord; // Cmp
 pub mod quant; // Cycle*, Interval, interval!, Ratio
@@ -47,7 +46,6 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
         #[doc(inline)]
         pub use super::error::*;
         pub use super::{
-            geom::_all::*,
             niche::_all::*,
             ord::_all::*,
             quant::_all::*,
@@ -66,7 +64,6 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
         pub use super::{
             _internals::*,
             float::_workspace_internals::*,
-            geom::_workspace_internals::*,
             niche::_workspace_internals::*,
         };
         pub use super::wide::_hidden::*;

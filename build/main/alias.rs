@@ -64,6 +64,9 @@ fn base_aliases(aliases: &mut Vec<&'static str>) {
     #[cfg(all(feature = "base_safe", feature = "safe_data"))]
     new_alias(aliases, "base_safe_data");
 
+    #[cfg(all(feature = "base_safe", feature = "safe_geom"))]
+    new_alias(aliases, "base_safe_geom");
+
     #[cfg(all(feature = "base_safe", feature = "safe_lang"))]
     new_alias(aliases, "base_safe_lang");
 

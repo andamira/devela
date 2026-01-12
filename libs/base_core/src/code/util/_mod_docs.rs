@@ -68,6 +68,9 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_UID        = "Abstractions for producing and stabilizing unique identities.";
     _QUOTE_DATA_UID      = "> Defines identity kinds and generation tools.";
     // 3
+    _DOC_GEOM        = "Geometric types, operations, and spatial constructs.";
+    _DOC_GEOM_METRIC = "Geometric measurement and spatial relationships.";
+    _DOC_GEOM_DIR    = "Direction, orientation, and spatial symmetry.";
     // 4
     _DOC_LANG = concat!["Language facilities, ",
         $crate::_ABBR_DSL!(), "s and ", $crate::_ABBR_FFI!(),"s."];
@@ -80,9 +83,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 6
     _DOC_NUM             = "Numerical types and operations.";
     _DOC_NUM_FLOAT       = "Floating point types and operations.";
-    _DOC_NUM_GEOM        = "Geometric types, operations, and spatial constructs.";
-    _DOC_NUM_GEOM_METRIC = "Geometric measurement and spatial relationships.";
-    _DOC_NUM_GEOM_DIR    = "Direction, orientation, and spatial symmetry.";
     _DOC_NUM_INT         = "Integer types and operations.";
     _DOC_NUM_NICHE       = "Specialized numeric types and behaviors.";
     _DOC_NUM_ORD         = "Algorithms and structures based on relative ordering.";

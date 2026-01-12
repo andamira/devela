@@ -11,7 +11,7 @@
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_NUM_MODULES =
-    crate::_doc!(modules: crate; num: geom, logic, niche, ord, quant, rand, wide); // symb
+    crate::_doc!(modules: crate; num: logic, niche, ord, quant, rand, wide); // symb
 }
 
 mod absence; // NoNum
@@ -26,7 +26,6 @@ mod traits; // Num, NumRef
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
 mod unit; // Unit, Unit[Bi|Si]
 
-pub mod geom;
 pub mod logic;
 pub mod niche; // MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod ord; // Cmp
@@ -55,7 +54,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
     }
     _pub_mods {
         pub use super::{
-            geom::_all::*,
             logic::_all::*,
             niche::_all::*,
             ord::_all::*,

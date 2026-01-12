@@ -205,6 +205,7 @@ mod reflection {
             "safe_build",
             "safe_code",
             "safe_data",
+            "safe_geom",
             "safe_lang",
             "safe_media",
                 "safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
@@ -246,6 +247,10 @@ mod reflection {
         ref_flags: &["data··"],
         features: &["data", "hash"]
     };
+    pub const GEOM: FlagsFeatures = FlagsFeatures {
+        ref_flags: &["geom··"],
+        features: &["geom", "linear", "shape"]
+    };
     pub const LANG: FlagsFeatures = FlagsFeatures {
         ref_flags: &["lang··"],
         features: &["lang", "glsl", "js"]
@@ -267,10 +272,6 @@ mod reflection {
             "unit",
         ]
     };
-        pub const GEOM: FlagsFeatures = FlagsFeatures {
-            ref_flags: &["geom··"],
-            features: &["geom", "linear", "metric", "shape"]
-        };
     pub const PHYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["phys··"],
         features: &["phys", "time", "wave"]
@@ -366,9 +367,10 @@ mod reflection {
 
             CODE,
             DATA,
+            GEOM,
             LANG, FFI,
             MEDIA,
-            NUM, GEOM,
+            NUM,
             PHYS,
             RUN,
             SYS, MEM,

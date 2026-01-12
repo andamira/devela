@@ -47,6 +47,7 @@ pub(crate) use __crate_name;
 
 pub mod code;
 pub mod data;
+pub mod geom;
 pub mod lang;
 pub mod media;
 pub mod num;
@@ -71,6 +72,8 @@ pub mod zall_ {
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
     #[doc = concat![crate::_DOC_DATA!(), crate::_DOC_DATA_MODULES!(), COMMON_DOC!("data")]]
     pub mod _data { #[allow(unused)] pub use super::super::data::_all::*; }
+    #[doc = concat![crate::_DOC_GEOM!(), crate::_DOC_GEOM_MODULES!(), COMMON_DOC!("geom")]]
+    pub mod _geom { #[allow(unused)] pub use super::super::geom::_all::*; }
     #[doc = concat![crate::_DOC_LANG!(), crate::_DOC_LANG_MODULES!(), COMMON_DOC!("lang")]]
     pub mod _lang { #[allow(unused)] pub use super::super::lang::_all::*; }
     #[doc = concat![crate::_DOC_MEDIA!(), crate::_DOC_MEDIA_MODULES!(), COMMON_DOC!("media")]]
@@ -104,6 +107,7 @@ pub mod zall {
     pub use super::{
         code::_all::*,
         data::_all::*,
+        geom::_all::*,
         lang::_all::*,
         media::_all::*,
         num::_all::*,
@@ -134,6 +138,7 @@ pub mod _crate_internals {
     pub use super::{
         code::_crate_internals::*,
         data::_crate_internals::*,
+        geom::_crate_internals::*,
         lang::_crate_internals::*,
         media::_crate_internals::*,
         num::_crate_internals::*,
