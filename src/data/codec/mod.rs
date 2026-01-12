@@ -46,7 +46,12 @@ mod serde; // structured serialization/deserialization.
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
-        pub use super::{crypto::_all::*, encode::_all::*, radix::_all::*, types::*};
+        pub use super::{
+            crypto::_all::*,
+            encode::_all::*,
+            radix::_all::*,
+            types::*,
+        };
         // WIPZONE
         pub use super::serde::_all::*;
         // pub use serde::lempel_ziv::*;

@@ -223,10 +223,16 @@ re-export hidden workspace dependencies from `_dep`.
 ### bit
 - move `BitOps` & `Bitwise` to `num::bit`.
 
-### hash
-- move to [base]: `HasherFx`, `HasherBuildFx`.
-- new module `data::codec::hash::check`.
-- new type `Adler32`.
+
+### codec
+#### hash
+  - move to [base]: `HasherFx`, `HasherBuildFx`.
+  - new module `data::codec::hash::check`.
+  - new type `Adler32`.
+
+#### radix
+- move `Base` to [base].
+- remove methods that allocate.
 
 ### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.

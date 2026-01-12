@@ -172,7 +172,8 @@ mod impl_devela_base_core {
         Mismatch,
         // data
         ConstList,
-        // data::codec::hash
+        // data::codec
+        Base,
         Adler32, HasherFx,
         // media
         // num
@@ -201,7 +202,9 @@ mod impl_devela_base_core {
 
     // data
     _impl_init![%Sealed%: <T> ConstList<'_, T>];
-    // data::codec::hash
+    // data::codec
+    impl<const RADIX: usize, const LUT: bool, const PAD: bool, const CASE: bool, CODE>
+        Sealed for Base<RADIX, LUT, PAD, CASE, CODE> {}
     _impl_init![%Sealed%: Adler32];
     _impl_init![%Sealed%: <T> HasherFx<T>];
 

@@ -3,10 +3,13 @@
 //! Radix-based encodings.
 //
 
-mod base;
+// mod ext; // BaseExt WIP
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::base::*;
+        // pub use super::ext::*;
+    }
+    _reexports {
+        pub use devela_base_core::data::codec::Base;
     }
 }
