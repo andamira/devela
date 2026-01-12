@@ -349,6 +349,7 @@ re-export hidden workspace dependencies from `_dep`.
 #### dir
 - new module.
 - move here `Orientation`, `Angle`, `AngleDirection` & `AngleKind`.
+- new types: `Boundary1d`, `Boundary2d`, `Boundary3d`.
 
 #### metric
 - move to [base]:

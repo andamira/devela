@@ -1,4 +1,4 @@
-// devela_base_core::num::geom::metric::direction
+// devela_base_core::num::geom::dir::orientation
 //
 //! Defines [`Orientation`].
 //
@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::{Distance, Position};
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(geom_dir)]
 /// A unitless directional vector in `D`-dimensional space.
 #[doc = crate::_doc_location!("num/geom/dir")]
 ///
