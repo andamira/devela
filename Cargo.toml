@@ -16,7 +16,7 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std, alloc, no_std)
-#   - Module            (all, code, data, game, lang, media, num, phys, run, sys, text, ui, work)
+#   - Module            (all, code, data, lang, media, num, phys, run, sys, text, ui, work)
 #   - Safety            (safest, safe, unsafe, …)
 #   - Capability        (_*)
 #     - default         (_default, _max, _maxest)
@@ -77,7 +77,7 @@ members = [
 	"libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	# "libs/code", "libs/data", "libs/media", "libs/num",
-	# "libs/game", "libs/lang", "libs/phys", "libs/run",
+	# "libs/lang", "libs/phys", "libs/run",
 	# "libs/sys", "libs/text", "libs/ui", "libs/work",
 	".", # ← root package
 	"build/post",
@@ -247,7 +247,7 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # In sync with ./tools/check.rs::SUB_MODULES
 
 all = [ # enables all the 11 modules (and their submodules)
-	"code", "data", "game", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
+	"code", "data", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
 ]
 code = []
 data = ["devela_base_data", "hash"]
@@ -255,7 +255,6 @@ data = ["devela_base_data", "hash"]
 		hash = [] # HashFnv, HashFx, HashPengy
 		# crypto = []
 	# list = []
-game = []
 	# ...
 lang = ["glsl", "js"]
 	# dsl = []
@@ -345,7 +344,7 @@ safest = ["safe", "base_safe"] # forbids all `unsafe` in the workspace and all u
 
 safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
 	"devela_macros?/safe",
-	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_game", "safe_num",
+	"safe_code", "safe_data", "safe_lang", "safe_media", "safe_num",
 	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ]
 
@@ -360,7 +359,6 @@ base_safe = [
 	safe_build = ["devela_base_std?/safe_build"]
 	safe_code = ["devela_base_core/safe_code"]
 	safe_data = ["devela_base_core/safe_data", "devela_base_data?/safe"]
-	safe_game = ["devela_base_core/safe_game"]
 	safe_lang = []
 		# safe_ffi
 			# safe_js
@@ -960,7 +958,6 @@ check-cfg = [ # Allowed configuration flags:
 		"cfg(base_safe_build)", # base_safe + safe_build
 		"cfg(base_safe_code)",  # base_safe + safe_code
 		"cfg(base_safe_data)",  # ...
-		"cfg(base_safe_game)",
 		"cfg(base_safe_lang)",
 		"cfg(base_safe_media)",
 			"cfg(base_safe_audio)",
@@ -1038,8 +1035,6 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(data··)',
 	'cfg(_destaque··, _stack··)',
 	'cfg(_graph··, _node··)',
-	# game: (1)
-	'cfg(game··)',
 	# lang: (2)
 	'cfg(lang··, ffi··)',
 	# media: (1)

@@ -77,6 +77,7 @@ re-export hidden workspace dependencies from `_dep`.
 - add default feature `std` to [base_std].
 
 ## workspace libraries
+- remove the `game` root module.
 - declare the `std` external crate.
 - add `_reexports` structural modules.
 - remove `_always` structural modules.

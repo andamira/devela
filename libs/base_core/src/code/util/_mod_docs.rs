@@ -68,7 +68,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_UID        = "Abstractions for producing and stabilizing unique identities.";
     _QUOTE_DATA_UID      = "> Defines identity kinds and generation tools.";
     // 3
-    _DOC_GAME = "Game-development and interactive applications.";
     // 4
     _DOC_LANG = concat!["Language facilities, ",
         $crate::_ABBR_DSL!(), "s and ", $crate::_ABBR_FFI!(),"s."];
