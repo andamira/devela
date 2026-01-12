@@ -50,6 +50,7 @@ See also
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
 - 1.94: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
 - 1.94: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
+- 1.94: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
 - 1.94: ` `[slice::element_offset (substr_range)](https://github.com/rust-lang/rust/pull/150777)
 - 1.94: ` `[-Zconfig-include](https://github.com/rust-lang/cargo/pull/16284)
 
@@ -97,7 +98,6 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: ` `[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
@@ -170,7 +170,6 @@ See also
 - [MaybeUninit methods for arrays](https://github.com/rust-lang/rust/issues/96097)
 - [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
 - [Reproducible Build bugs](https://github.com/rust-lang/rust/issues/129080)
-- [unchecked_* on integers](https://github.com/rust-lang/rust/issues/85122)
 
 # Rust project Goals:
 - <https://rust-lang.github.io/rust-project-goals/>
@@ -180,6 +179,7 @@ See also
 - [Linux building on stable](https://github.com/rust-lang/rust-project-goals/issues/116)
 - [next generation trait solver](https://github.com/rust-lang/rust-project-goals/issues/113)
 - [optimize clippy & linting](https://github.com/rust-lang/rust-project-goals/issues/114)
+- [reflection and comptime](https://github.com/rust-lang/rust-project-goals/issues/406)
 - [stabilize cargo-script](https://github.com/rust-lang/rust-project-goals/issues/119)
 - [stabilize doc_cfg](https://github.com/rust-lang/rust-project-goals/issues/120)
 

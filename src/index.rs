@@ -70,7 +70,15 @@
 #![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
 // ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_94, feature(array_windows, /*const_mul_add,*/ lazy_get,))]
+#![cfg_attr(
+    nightly_stable_1_94,
+    feature(
+        array_windows,
+        // const_mul_add,
+        lazy_get,
+        peekable_next_if_map,
+    )
+)]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature())]
 // ----------------------------
@@ -106,7 +114,6 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
-        peekable_next_if_map,
         substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,
