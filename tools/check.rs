@@ -1,10 +1,11 @@
-#!/usr/bin/env -S rust-script -c
-//! ```cargo
-//! [dependencies]
-//! devela = { version = "0.24.0", features = ["std", "dep_itertools"] }
-//! lexopt = "0.3"
-//! toml_edit = "0.23"
-//! ```
+#!/usr/bin/env -S cargo +nightly-2026-01-09 -Zscript
+---cargo
+[dependencies]
+devela = { version = "0.24.0", features = ["std"] }
+itertools = "0.14"
+lexopt = "0.3"
+toml_edit = "0.23"
+---
 // devela::tools::check
 //
 //!
@@ -52,7 +53,8 @@
 
 #![allow(clippy::useless_format)]
 
-use devela::all::{FsPath, Itertools, is, sf};
+use devela::all::{FsPath, is, sf};
+use itertools::Itertools;
 use std::{
     collections::HashSet,
     env,
@@ -65,7 +67,8 @@ use toml_edit::Document;
 
 /* config */
 
-const NIGHTLY: &str = "nightly"; // … nightly-2025-08-14
+// const NIGHTLY: &str = "nightly"; // … nightly-2025-08-14
+const NIGHTLY: &str = "nightly-2026-01-09"; // WAIT: ICE https://github.com/rust-lang/rust/pull/150939
 
 #[rustfmt::skip]
 const ROOT_MODULES: [&str; 12 + 1] = [
@@ -384,7 +387,9 @@ fn main() -> Result<()> {
         sf! { headline(0, &format!["miri testing in each architecture ({atotal}):"]); }
 
         // std
-        env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
+        unsafe {
+            env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
+        }
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env(NIGHTLY, "miri",
@@ -394,7 +399,9 @@ fn main() -> Result<()> {
         }
 
         // std + dep_all (except DEP_*_EVER)
-        env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
+        unsafe {
+            env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
+        }
         for arch in STD_ARCHES {
             let deps = filter_deps(DEP_ALL, &[DEP_NO_CROSS_COMPILE_EVER]);
             let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
@@ -408,7 +415,9 @@ fn main() -> Result<()> {
         }
 
         // no_std
-        env::remove_var("MIRIFLAGS");
+        unsafe {
+            env::remove_var("MIRIFLAGS");
+        }
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env(NIGHTLY, "miri",

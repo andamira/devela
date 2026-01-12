@@ -121,7 +121,7 @@ re-export hidden workspace dependencies from `_dep`.
   - bump `devela` to 0.24.0.
   - test all workspace crates.
   - start testing without dependencies.
-  - remove `itertools` direct dependency.
+  - switch rust-script for cargo-script.
   - simplify and homogeinize toolchain selection syntax.
   - configure the exact nightly version to install and use.
 - update `config/rustdoc-header.html` to support multiple crates with custom whitelists.

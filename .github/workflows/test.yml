@@ -40,8 +40,9 @@ jobs:
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
 
-      - name: "install rust-script"
-        run: cargo install rust-script;
+      # NOTE: not needed; using cargo-script
+      # - name: "install rust-script"
+      #   run: cargo install rust-script;
 
       # https://twitter.com/jonhoo/status/1571290371124260865
 
