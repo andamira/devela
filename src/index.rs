@@ -16,14 +16,11 @@
     // not(all(doc, feature = "_docs", feature = "std")),
     allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
 )]
-//
 // environment
-//
 #![cfg_attr(not(feature = "std"), no_std)]
 // #![no_implicit_prelude] //?
 //
 // safety
-//
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly (flags)

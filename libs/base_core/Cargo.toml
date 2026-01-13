@@ -31,11 +31,16 @@ bench = false
 [features]
 
 #* Development features *#
+
 __dbg = []
 __publish = []
 __std = [] # remove no_std
 
 #* Module features *#
+
+all = [ # enables all the 12 modules (and their submodules)
+	"media", "ui", # "code", "data", "geom", "lang", "num", "phys", "run", "sys", "text", "work",
+]
 media = ["audio", "color", "draw", "font", "image"]
 	audio = []
 	color = []
@@ -49,6 +54,7 @@ ui = ["term"]
 		term = [] # media::image::sixel
 
 #* Safety features *#
+
 base_safe = [] # activates safe enforcement of thematic safe_* features
 safest = ["safe", "base_safe"]
 safe = [
@@ -96,7 +102,11 @@ unsafe = [
 	unsafe_thread  = []
 
 #* Capability features *#
-_docs_min = []
+
+_docs_min = [ # the minimum capabilities to document every item
+	# modules
+	"all",
+]
 _docs_nodep = ["_docs_min"]
 _docs = ["_docs_nodep", "dep_all"]
 

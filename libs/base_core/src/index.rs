@@ -4,6 +4,12 @@
 //
 
 /* crate configuration */
+//
+// lints
+#![cfg_attr(
+    not(all(doc, feature = "_docs")), // if features are incomplete…
+    allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
+)]
 // environment
 #![cfg_attr(not(feature = "__std"), no_std)]
 // safety
