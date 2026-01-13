@@ -4,12 +4,11 @@
 //
 // TOC
 // - individual data-related error types:
-//   - CapacityMismatch WIP
+//   - CapacityMismatch
 //   - ElementNotFound
 //   - IndexOutOfBounds
 //   - InvalidAxisLength
 //   - KeyAlreadyExists
-//   - MismatchedCapacity TEMP DELETE
 //   - MismatchedDimensions
 //   - MismatchedIndices
 //   - NodeEmpty
@@ -20,10 +19,10 @@
 //   - PartiallyAdded
 // - composite data-related error types:
 //   - DataNotEnough:    NotEnoughElements, NotEnoughSpace
-//   - MismatchedBounds: CapacityMismatch, IndexOutOfBounds, MismatchedIndices, MismatchedCapacity TEMP FIX
+//   - MismatchedBounds: CapacityMismatch, IndexOutOfBounds, MismatchedIndices
 //   - PartialSpace:     NotEnoughSpace, PartiallyAdded
 
-use crate::{_TAG_DATA, Boundary1d, Interval, Mismatch, define_error};
+use crate::{_TAG_DATA, Boundary1d, Mismatch, define_error};
 
 /* individual errors */
 
@@ -169,23 +168,6 @@ define_error! { individual: pub struct KeyAlreadyExists;
     DOC_KEY_ALREADY_EXISTS = "The key already exists.",
     self+f => f.write_str(DOC_KEY_ALREADY_EXISTS!())
 }
-define_error! { individual: pub struct MismatchedCapacity(pub Mismatch<Interval<usize>, usize>);
-    #[derive(Default)], +location: "data/error", +tag: _TAG_DATA!(),
-    DOC_MISMATCHED_CAPACITY = "The given capacity did not match the required constraints.",
-    self+f => write!(f, "Mismatched capacity: {:?}.", self.0)
-}
-impl MismatchedCapacity {
-    /// Creates a mismatch where `need` is an [`Interval::closed`], and `have` is outside it.
-    #[must_use]
-    pub const fn closed(lower: usize, upper: usize, have: usize) -> Self {
-        Self(Mismatch::in_closed_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))
-    }
-    /// Creates a mismatch where `need` is an [`Interval::closed_open`], and `have` is outside it.
-    #[must_use]
-    pub const fn closed_open(lower: usize, upper: usize, have: usize) -> Self {
-        Self(Mismatch::in_closed_open_interval(lower, upper, have, DOC_MISMATCHED_CAPACITY!()))
-    }
-}
 define_error! { individual: pub struct MismatchedDimensions(pub Mismatch<usize, usize>);
     #[derive(Default)], +location: "data/error", +tag: _TAG_DATA!(),
     DOC_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
@@ -262,8 +244,7 @@ define_error! { composite: fmt(f)
 define_error! { composite: fmt(f)
     +location: "data/error",
     /// An error composite of
-    /// [`CapacityMismatch`] + [`IndexOutOfBounds`] +
-    /// [`MismatchedIndices`] + [`MismatchedCapacity`].
+    /// [`CapacityMismatch`] + [`IndexOutOfBounds`] + [`MismatchedIndices`]
     ///
     /// Used in methods of:
     /// [`Array`],
@@ -286,9 +267,6 @@ define_error! { composite: fmt(f)
 
         DOC_INDEX_OUT_OF_BOUNDS: +const
             IndexOutOfBounds(i|0: Option<usize>) => IndexOutOfBounds(*i),
-        // TEMP
-        DOC_MISMATCHED_CAPACITY: +const
-            MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
         DOC_MISMATCHED_INDICES: +const
             MismatchedIndices => MismatchedIndices,
     }

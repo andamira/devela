@@ -7,7 +7,7 @@
 // - trait impls
 
 use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonul, char7, char8,
+    CapacityMismatch, CharIter, GraphemeMachine, GraphemeScanner, StringNonul, char7, char8,
     char16, charu, doclink, unwrap,
 };
 
@@ -51,8 +51,8 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// Creates a new empty `GraphemeNonul` with a capacity of `CAP` bytes.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP > 255.
-    pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
+    /// Returns [`CapacityMismatch`] if `CAP > 255.
+    pub const fn new_checked() -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringNonul::new_checked()]))
     }
 
@@ -66,8 +66,8 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// Panics if `CAP > 255.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP > 255.
-    pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
+    /// Returns [`CapacityMismatch`] if `CAP > 255.
+    pub const fn from_str(string: &str) -> Result<Self, CapacityMismatch> {
         let mut machine = GraphemeMachine::new();
         let mut scanner = GraphemeScanner::<charu>::new(&mut machine, string);
         if let Some(g) = scanner.next_grapheme_nonul::<CAP>() {
@@ -86,11 +86,11 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`][char7#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// Returns [`CapacityMismatch`] if `CAP` > 255,
     /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
-    pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char7(c: char7) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
 
@@ -99,11 +99,11 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`][char8#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// Returns [`CapacityMismatch`] if `CAP` > 255,
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
-    pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char8(c: char8) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
 
@@ -112,11 +112,11 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`][char16#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// Returns [`CapacityMismatch`] if `CAP` > 255,
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
-    pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char16(c: char16) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }
 
@@ -125,24 +125,24 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// If `c`.[`is_nul()`] an empty grapheme will be returned.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255,
+    /// Returns [`CapacityMismatch`] if `CAP` > 255,
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`].
     ///
     /// Will always succeed if `CAP` >= 4.
     #[doc = doclink!(devela "[`is_nul()`]" "text/trait.UnicodeScalar.html#method.is_nul")]
     #[doc = doclink!(devela "[`len_utf8()`]" "text/trait.UnicodeScalar.html#method.len_utf8")]
-    pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char(c: char) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringNonul::from_char(c)]))
     }
 
     /// Creates a new `GraphemeNonul` from a `charu`.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    /// Returns [`CapacityMismatch`] if `CAP` > 255
     /// or < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_charu(c: charu) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringNonul::from_charu(c)]))
     }
     /// Creates a new `GraphemeNonul` from a `charu`.

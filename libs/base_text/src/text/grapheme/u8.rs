@@ -7,7 +7,7 @@
 // - trait impls
 
 use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringU8, char7, char8, char16,
+    CapacityMismatch, CharIter, GraphemeMachine, GraphemeScanner, StringU8, char7, char8, char16,
     charu, unwrap,
 };
 
@@ -51,8 +51,8 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Creates a new empty `GraphemeU8` with a capacity of `CAP` bytes.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP > 255.
-    pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
+    /// Returns [`CapacityMismatch`] if `CAP > 255.
+    pub const fn new_checked() -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringU8::new_checked()]))
     }
 
@@ -66,8 +66,8 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Panics if `CAP > 255.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP > 255.
-    pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
+    /// Returns [`CapacityMismatch`] if `CAP > 255.
+    pub const fn from_str(string: &str) -> Result<Self, CapacityMismatch> {
         let mut machine = GraphemeMachine::new();
         let mut scanner = GraphemeScanner::<charu>::new(&mut machine, string);
         if let Some(g) = scanner.next_grapheme_u8::<CAP>() {
@@ -84,54 +84,54 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Creates a new `GraphemeU8` from a `char7`.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP > 255.
+    /// Returns [`CapacityMismatch`] if `CAP > 255.
     ///
     /// Will always succeed if `CAP` >= 1 and <= 255.
-    pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char7(c: char7) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
     }
 
     /// Creates a new `GraphemeU8` from a `char8`.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    /// Returns [`CapacityMismatch`] if `CAP` > 255
     /// or < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2 and <= 255.
-    pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char8(c: char8) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
     }
 
     /// Creates a new `GraphemeU8` from a `char16`.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    /// Returns [`CapacityMismatch`] if `CAP` > 255
     /// or < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3 and <= 255.
-    pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char16(c: char16) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
 
     /// Creates a new `GraphemeU8` from a `char`.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    /// Returns [`CapacityMismatch`] if `CAP` > 255
     /// or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_char(c: char) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }
 
     /// Creates a new `GraphemeU8` from a `charu`.
     ///
     /// # Errors
-    /// Returns [`MismatchedCapacity`] if `CAP` > 255
+    /// Returns [`CapacityMismatch`] if `CAP` > 255
     /// or < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
+    pub const fn from_charu(c: charu) -> Result<Self, CapacityMismatch> {
         Ok(Self(unwrap![ok? StringU8::from_charu(c)]))
     }
     /// Creates a new `GraphemeU8` from a `charu`.

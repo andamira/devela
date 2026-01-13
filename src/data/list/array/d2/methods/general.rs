@@ -3,13 +3,13 @@
 //! 2-dimensional array general methods.
 //
 
-#[cfg(doc)]
-use crate::BareBox;
 use crate::{
-    Array, Array2d, Bare, Mismatch,
-    MismatchedBounds::{self, IndexOutOfBounds, MismatchedCapacity},
+    Array, Array2d, Bare,
+    MismatchedBounds::{self, IndexOutOfBounds},
     Storage,
 };
+#[cfg(doc)]
+use crate::{BareBox, MismatchedBounds::CapacityMismatch};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 
@@ -22,8 +22,8 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedCapacity`] if `C * R != CR`.
+    /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
+    /// or [`CapacityMismatch`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::Array2d;
@@ -41,8 +41,8 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedCapacity`] if `C * R != CR`.
+    /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
+    /// or [`CapacityMismatch`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::{Array2d, MismatchedBounds};
@@ -67,8 +67,8 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// Returns a 2-dimensional grid, allocated in the heap,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedCapacity`] if `C * R != CR`.
+    /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
+    /// or [`CapacityMismatch`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::{Boxed, Array2d};
@@ -105,20 +105,29 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
-    /// Returns [`IndexOutOfBounds`] if `C * R > usize::MAX`
-    /// or [`MismatchedCapacity`] if `C * R != CR`.
+    /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
+    /// or [`CapacityMismatch`] if `C * R != CR`.
     #[allow(non_snake_case)]
     pub(crate) const fn check_CR() -> Result<(), MismatchedBounds> {
-        if let Some(len) = C.checked_mul(R) {
-            if len == CR { Ok(()) } else {
-                Err(MismatchedCapacity(Mismatch::in_closed_interval(CR, CR, len, "C * R != CR")))
+        match C.checked_mul(R) {
+            Some(len) => {
+                if len == CR {
+                    Ok(())
+                } else if len > CR {
+                    let err = crate::CapacityMismatch::too_large(len, CR);
+                    Err(MismatchedBounds::from_capacity_mismatch(err))
+                } else {
+                    let err = crate::CapacityMismatch::too_small(len, CR);
+                    Err(MismatchedBounds::from_capacity_mismatch(err))
+                }
             }
-        } else { Err(IndexOutOfBounds(None)) } // RETHINK: return some value
+            None => Err(IndexOutOfBounds(None)),
+        }
     }
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Panics
-    /// Panics if `C * R > usize::MAX` or if `C * R != CR`.
+    /// Panics if `C * R` is not representable as a `usize`, or if `C * R != CR`.
     #[allow(non_snake_case)]
     pub(crate) const fn panic_check_CR() {
         if let Some(len) = C.checked_mul(R) {

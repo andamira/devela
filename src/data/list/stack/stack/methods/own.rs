@@ -11,8 +11,7 @@
 // - returning it.
 
 use crate::{
-    Bare, DataNotEnough, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Own, Stack, cswap,
-    sf,
+    Bare, CapacityMismatch, DataNotEnough, NotEnoughElements, NotEnoughSpace, Own, Stack, cswap, sf,
 };
 
 // helper macro to impl methods for a Stack with custom index size.
@@ -46,7 +45,7 @@ macro_rules! impl_stack {
             /// copying `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -55,7 +54,7 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel "<i32, 16> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s;"]
             /// ```
-            pub const fn own_new(element: T) -> Own<Result<Self, MismatchedCapacity>, ()> {
+            pub const fn own_new(element: T) -> Own<Result<Self, CapacityMismatch>, ()> {
                 Own::empty(Self::new_copied(element))
             }
 

@@ -10,7 +10,7 @@
 //   - TextResult
 //   - TextError
 
-use crate::{_tags, DOC_MISMATCHED_CAPACITY, Interval, Mismatch, MismatchedCapacity, define_error};
+use crate::{_tags, Boundary1d, CapacityMismatch, DOC_CAPACITY_MISMATCH, define_error};
 use ::core::str::Utf8Error; // replaced with InvalidUtf8
 
 /* individual errors */
@@ -50,22 +50,31 @@ impl InvalidUtf8 {
 
 define_error! { composite: fmt(f)
     #[doc = crate::_tags!(text)]
-    /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
+    /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`CapacityMismatch`].
     #[doc = crate::_doc_location!("text")]
     ///
     /// Used in methods of:
     /// [`StringNonul`][crate::StringNonul], and `StringU*`.
     pub enum InvalidText {
         +tag: _tags!(text),
+
         DOC_INVALID_CHAR: +const
             Char(c|0: char) => InvalidChar(*c),
+
         DOC_INVALID_UTF8: +const
             Utf8 {
                 #[doc = ""] valid_up_to: usize,
                 #[doc = ""] error_len: Option<usize>
             } => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
-        DOC_MISMATCHED_CAPACITY: +const
-            Capacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
+
+        DOC_CAPACITY_MISMATCH: +const CapacityMismatch {
+            /// Which boundary of the capacity constraint applies.
+            bound: Boundary1d,
+            /// The value involved in the capacity check, if known.
+            value: Option<usize>,
+            /// The capacity limit involved in the check, if known.
+            limit: Option<usize>
+        } => CapacityMismatch { bound: *bound, value: *value, limit: *limit },
     }
 }
 #[rustfmt::skip]
@@ -83,7 +92,7 @@ impl InvalidText {
 pub use full_composite::*;
 mod full_composite {
     use super::*;
-    use crate::{DOC_ELEMENT_NOT_FOUND, ElementNotFound, MismatchedCapacity};
+    use crate::{DOC_ELEMENT_NOT_FOUND, ElementNotFound};
 
     #[doc = crate::_tags!(text result)]
     /// A text-related result.
@@ -110,13 +119,19 @@ mod full_composite {
                 }
                 => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
 
-            DOC_MISMATCHED_CAPACITY: +const
-                MismatchedCapacity(c|0: Mismatch<Interval<usize>, usize>) => MismatchedCapacity(*c),
+            DOC_CAPACITY_MISMATCH: +const CapacityMismatch {
+                /// Which boundary of the capacity constraint applies.
+                bound: Boundary1d,
+                /// The value involved in the capacity check, if known.
+                value: Option<usize>,
+                /// The capacity limit involved in the check, if known.
+                limit: Option<usize>
+            } => CapacityMismatch { bound: *bound, value: *value, limit: *limit },
         }
     }
     define_error! { composite: from(f): InvalidText, for: TextError {
         Char(c) => InvalidChar(c),
         Utf8 { valid_up_to, error_len } => InvalidUtf8 { valid_up_to, error_len },
-        Capacity(i) => MismatchedCapacity(i),
+        CapacityMismatch { bound,  value, limit } => CapacityMismatch { bound, value, limit },
     }}
 }

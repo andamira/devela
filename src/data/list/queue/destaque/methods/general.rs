@@ -1,7 +1,7 @@
 // devela::data::list::queue::destaque::methods::general
 
 use crate::{
-    Array, Bare, Cmp, DataNotEnough, Destaque, DestaqueIter, MismatchedCapacity, NotEnoughElements,
+    Array, Bare, CapacityMismatch, Cmp, DataNotEnough, Destaque, DestaqueIter, NotEnoughElements,
     NotEnoughSpace, Storage, array_from_fn,
 };
 #[cfg(feature = "alloc")]
@@ -40,7 +40,7 @@ macro_rules! impl_destaque {
             /// cloning `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -48,10 +48,10 @@ macro_rules! impl_destaque {
             #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
-            pub fn new(element: T) -> Result<Self, MismatchedCapacity> {
+            pub fn new(element: T) -> Result<Self, CapacityMismatch> {
                 let max = Cmp($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
                 if CAP > max {
-                    Err(MismatchedCapacity::closed(0, max, CAP))
+                    Err(CapacityMismatch::too_large(max, CAP))
                 } else {
                     Ok(Self {
                         data: Array::<T, CAP, Bare>::with_cloned(element),
@@ -69,7 +69,7 @@ macro_rules! impl_destaque {
             /// copying `element` to fill the remaining free data, in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $IDX "::MAX`]"]
+            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $IDX "::MAX`]"]
             /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
@@ -78,10 +78,10 @@ macro_rules! impl_destaque {
             #[doc = "const S: Destaque" $IDX:camel
                 "<i32, 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
             /// ```
-            pub const fn new_copied(element: T) -> Result<Self, MismatchedCapacity> {
+            pub const fn new_copied(element: T) -> Result<Self, CapacityMismatch> {
                 let max = Cmp($IDX::MAX as usize).min(isize::MAX as usize / size_of::<T>());
                 if CAP > max {
-                    Err(MismatchedCapacity::closed(0, max, CAP))
+                    Err(CapacityMismatch::too_large(CAP, max))
                 } else {
                     let data = Array::with_copied(element);
                     Ok(Self { data, front: 0, back: 0, len: 0 })
