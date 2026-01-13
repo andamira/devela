@@ -10,8 +10,8 @@
 // - tests
 
 use crate::{
-    Bound, ConstInitCore, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
-    is,
+    Bound, Boundary1d, ConstInitCore, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo,
+    RangeToInclusive, is,
 };
 
 #[doc = crate::_tags!(quant)]
@@ -255,65 +255,73 @@ impl<T: Copy> Interval<T> {
     }
 }
 
+#[rustfmt::skip]
 impl<T> Interval<T> {
     /// Returns both bounds as a tuple `(lower, upper)`.
     #[must_use]
-    pub fn into_tuple(self) -> (Bound<T>, Bound<T>) {
-        (self.lower, self.upper)
-    }
+    pub fn into_tuple(self) -> (Bound<T>, Bound<T>) { (self.lower, self.upper) }
 
     /// Returns a reference to both bounds as a tuple `(&lower, &upper)`.
     #[must_use]
-    pub fn to_tuple_ref(&self) -> (Bound<&T>, Bound<&T>) {
-        (self.lower_ref(), self.upper_ref())
-    }
+    pub fn to_tuple_ref(&self) -> (Bound<&T>, Bound<&T>) { (self.lower_ref(), self.upper_ref()) }
 
     /// Returns a reference to the lower bound.
     #[must_use]
-    pub fn lower_ref(&self) -> Bound<&T> {
-        self.lower.as_ref()
-    }
+    pub fn lower_ref(&self) -> Bound<&T> { self.lower.as_ref() }
 
     /// Returns a reference to the upper bound.
     #[must_use]
-    pub fn upper_ref(&self) -> Bound<&T> {
-        self.upper.as_ref()
-    }
+    pub fn upper_ref(&self) -> Bound<&T> { self.upper.as_ref() }
 
     /// Checks if the interval is both lower and upper bounded.
     #[must_use]
-    pub const fn is_bounded(&self) -> bool {
-        self.is_lower_bounded() && self.is_upper_bounded()
-    }
+    pub const fn is_bounded(&self) -> bool { self.is_lower_bounded() && self.is_upper_bounded() }
     /// Checks if the lower bound is bounded.
     #[must_use]
-    pub const fn is_lower_bounded(&self) -> bool {
-        !matches!(self.lower, Bound::Unbounded)
-    }
+    pub const fn is_lower_bounded(&self) -> bool { !matches!(self.lower, Bound::Unbounded) }
     /// Checks if the upper bound is bounded.
     #[must_use]
-    pub const fn is_upper_bounded(&self) -> bool {
-        !matches!(self.upper, Bound::Unbounded)
-    }
+    pub const fn is_upper_bounded(&self) -> bool { !matches!(self.upper, Bound::Unbounded) }
     /// Checks if the lower bound is open (excluded).
     #[must_use]
-    pub const fn is_lower_open(&self) -> bool {
-        matches!(self.lower, Bound::Excluded(_))
-    }
+    pub const fn is_lower_open(&self) -> bool { matches!(self.lower, Bound::Excluded(_)) }
     /// Checks if the lower bound is closed (included).
     #[must_use]
-    pub const fn is_lower_closed(&self) -> bool {
-        matches!(self.lower, Bound::Included(_))
-    }
+    pub const fn is_lower_closed(&self) -> bool { matches!(self.lower, Bound::Included(_)) }
     /// Checks if the upper bound is open (excluded).
     #[must_use]
-    pub const fn is_upper_open(&self) -> bool {
-        matches!(self.upper, Bound::Excluded(_))
-    }
+    pub const fn is_upper_open(&self) -> bool { matches!(self.upper, Bound::Excluded(_)) }
     /// Checks if the upper bound is closed (included).
     #[must_use]
-    pub const fn is_upper_closed(&self) -> bool {
-        matches!(self.upper, Bound::Included(_))
+    pub const fn is_upper_closed(&self) -> bool { matches!(self.upper, Bound::Included(_)) }
+}
+
+impl<T> Interval<T> {
+    /// Returns the bound corresponding to the given boundary orientation.
+    #[must_use]
+    pub const fn bound(&self, side: Boundary1d) -> &Bound<T> {
+        match side {
+            Boundary1d::Lower => &self.lower,
+            Boundary1d::Upper => &self.upper,
+        }
+    }
+
+    /// Returns a mutable reference to the bound corresponding to the given boundary orientation.
+    #[must_use]
+    pub fn bound_mut(&mut self, side: Boundary1d) -> &mut Bound<T> {
+        match side {
+            Boundary1d::Lower => &mut self.lower,
+            Boundary1d::Upper => &mut self.upper,
+        }
+    }
+
+    /// Returns the bound corresponding to the given boundary, with the contained value borrowed.
+    #[must_use]
+    pub fn bound_as_ref(&self, side: Boundary1d) -> Bound<&T> {
+        match side {
+            Boundary1d::Lower => self.lower_ref(),
+            Boundary1d::Upper => self.upper_ref(),
+        }
     }
 }
 

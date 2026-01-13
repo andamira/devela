@@ -36,6 +36,8 @@ pub enum Boundary1d {
 impl Boundary1d {
     pub const Left: Self = Self::Lower;
     pub const Right: Self = Self::Upper;
+    pub const Start: Self = Self::Lower;
+    pub const End: Self = Self::Upper;
 
     /// Returns the opposite boundary.
     pub const fn opposite(self) -> Self {

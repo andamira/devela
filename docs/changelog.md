@@ -334,16 +334,9 @@ re-export hidden workspace dependencies from `_dep`.
 ## num
 - move to [base]:
   - all data, numeric, text & time error types.
-  - macros: `const_bool!`.
-  - types: `Cast`, `Cycle`, `CycleCount`, `False`, `Interval`,  `Sign`, `True`.
-  - traits: `ConstBool` `NumConst`.
-- update `Interval` to use individual `IncompatibleBounds` error.
+  - types: `Cast`, `Int`, `True`.
+  - traits: `NumConst`.
 - fix `Cast` wrapping methods performance, and correctness for negative integers.
-- move `ValueQuant` from `code::result` to `num::quant`.
-- update `Sign`
-  - make part of `quant`.
-  - rename variant `None` to `Zero`.
-  - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
 
 ### bit
 - new module `num::bit`.
@@ -374,7 +367,7 @@ re-export hidden workspace dependencies from `_dep`.
 - make all `Int` methods *const*.
 
 ### logic
-- move to [base]: `Int`, `[iu]size_*`.
+- move to [base]: `ConstBool`, `False`, `True`, `const_bool!`, `[iu]size_*`.
 
 ### niche
 - new macros: `niche_prim!`, `nv!`.
@@ -389,6 +382,17 @@ re-export hidden workspace dependencies from `_dep`.
   - new impl for `Ordering`.
   - new methods: `minmax`, `pminmax`.
   - un-gate impls and many dependent const methods.
+
+### quant
+- move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.
+- update `Interval`:
+  - use individual `IncompatibleBounds` error.
+  - add methods: `bound`, `bound_mut`, `bound_as_ref`.
+- update `Sign`
+  - make part of `quant`.
+  - rename variant `None` to `Zero`.
+  - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
+- move `ValueQuant` from `code::result` to `num::quant`.
 
 ### wide
 - new module `num::wide`.
