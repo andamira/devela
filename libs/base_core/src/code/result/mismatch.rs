@@ -14,12 +14,8 @@ impl<N: ConstInitCore, H: ConstInitCore> ConstInitCore for Mismatch<N, H> {
 /// Represents a mismatch between an expected `need` and an encountered `have`.
 #[doc = crate::_doc_location!("code/result")]
 ///
-/// With optional contextual information in the `info` field.
-///
-/// This struct conveys optional information about the anticipated `need` and
-/// the observed `have`, allowing for either, both, or none to be specified.
-///
-/// It can be particularly useful for error handling and reporting.
+/// A diagnostic description of a mismatch between an expected requirement and an observed value.
+/// This type does not encode failure semantics on its own.
 pub struct Mismatch<N, H> {
     /// Information about something that was needed, expected or anticipated.
     pub need: N,

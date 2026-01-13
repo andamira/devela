@@ -16,7 +16,7 @@
 //   - NodeLinkNotSet
 //   - NodeLinkNotUnique
 //   - NotEnoughElements
-//   - NotEnoughSpace TEMP DELETE
+//   - NotEnoughSpace
 //   - PartiallyAdded
 // - composite data-related error types:
 //   - DataNotEnough:    NotEnoughElements, NotEnoughSpace
@@ -28,6 +28,9 @@ use crate::{_TAG_DATA, Boundary1d, Interval, Mismatch, define_error};
 /* individual errors */
 
 define_error! { individual:
+    /// Represents an absolute mismatch: the operation cannot succeed
+    /// for the given value, regardless of the current state or any retry.
+    ///
     /// # Examples
     /// ```
     /// # use devela_base_core::{Boundary1d, CapacityMismatch};
@@ -76,10 +79,9 @@ define_error! { individual:
         _ => f.write_str(DOC_CAPACITY_MISMATCH!())
     }
 }
+/// Constructors
 #[rustfmt::skip]
 impl CapacityMismatch {
-    /* constructors */
-
     /// Creates a capacity mismatch with no additional information.
     pub const fn none(bound: Boundary1d) -> Self {
         Self { bound, value: None, limit: None }
@@ -120,9 +122,9 @@ impl CapacityMismatch {
             Err(_) => Self::limit(Boundary1d::Upper, limit),
         }
     }
-
-    /* queries */
-
+}
+/// Queries
+impl CapacityMismatch {
     /// Returns the amount by which the value exceeded the limit,
     /// if this is an upper-bound mismatch and both quantities are known.
     pub const fn excess(&self) -> Option<usize> {
@@ -145,17 +147,19 @@ define_error! { individual: pub struct ElementNotFound;
     DOC_ELEMENT_NOT_FOUND = "The requested element has not been found.",
     self+f => f.write_str(DOC_ELEMENT_NOT_FOUND!()),
 }
-define_error! { individual: pub struct IndexOutOfBounds(pub Option<usize>);
+define_error! { individual:
+    /// Optionally contains the given index.
+    pub struct IndexOutOfBounds(pub Option<usize>);
     #[derive(Default)], +location: "data/error", +tag: _TAG_DATA!(),
-    DOC_INDEX_OUT_OF_BOUNDS = "The given index is out of bounds.\n\n
-Optionally contains the given index.",
+    DOC_INDEX_OUT_OF_BOUNDS = "The given index is out of bounds.",
     self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
     } else { f.write_str("The given index is out of bounds.") }
 }
-define_error! { individual: pub struct InvalidAxisLength(pub Option<usize>);
+define_error! { individual:
+    /// Optionally contains the given axis number.
+    pub struct InvalidAxisLength(pub Option<usize>);
     #[derive(Default)], +location: "data/error", +tag: _TAG_DATA!(),
-    DOC_INVALID_AXIS_LENGTH = "The given axis has an invalid length.\n\n
-Optionally contains the given axis number.",
+    DOC_INVALID_AXIS_LENGTH = "The given axis has an invalid length.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Axis number {n} has 0 length, which is not allowed.")
     } else { f.write_str("One ore more axis have 0 length, which is not allowed.") }
@@ -210,26 +214,31 @@ define_error! { individual: pub struct NodeLinkNotUnique(pub Option<usize>);
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
     } else { f.write_str(DOC_NODE_LINK_NOT_UNIQUE!()) }
 }
-define_error! { individual: pub struct NotEnoughElements(pub Option<usize>);
+define_error! { individual:
+    /// Optionally contains the minimum number of elements needed.
+    pub struct NotEnoughElements(pub Option<usize>);
     #[derive(Default)], +location: "data/error", +tag: _TAG_DATA!(),
-    DOC_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.\n\n
-Optionally contains the minimum number of elements needed.",
+    DOC_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough elements. Needs at least `{n}` elements.")
     } else { f.write_str("Not enough elements.") }
 }
-define_error! { individual: pub struct NotEnoughSpace(pub Option<usize>);
+define_error! { individual:
+    /// Optionally contains the number of free spaces needed.
+    ///
+    /// This error represents a contingent failure: the operation may succeed
+    /// after a change of state that frees or increases available space.
+    pub struct NotEnoughSpace(pub Option<usize>);
     #[derive(Default)], +location: "data/error", +tag: _TAG_DATA!(),
-    DOC_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.\n\n
-Optionally contains the number of free spaces needed.",
+    DOC_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
     } else { f.write_str("Not enough space.") }
 }
 define_error! { individual: pub struct PartiallyAdded(pub Option<usize>);
+    /// Optionally contains the number of elements added.
     #[derive(Default)], +location: "data/error", +tag: _TAG_DATA!(),
-    DOC_PARTIALLY_ADDED = "The operation could only add a subset of the elements.\n\n
-Optionally contains the number of elements added.",
+    DOC_PARTIALLY_ADDED = "The operation could only add a subset of the elements.",
     self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements could be added.")
     } else { f.write_str("Only a subset of elements could be added.") }
 }
