@@ -79,7 +79,7 @@ jobs:
       #   run: cargo install rust-script;
 
       - name: "./tools/check.rs --docs --install-nightly"
-        run:
+        run: |
           echo "Running nightly docs with RUSTFLAGS: $RUSTFLAGS"
           ./tools/check.rs --docs --install-nightly
         env:
