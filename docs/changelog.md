@@ -156,6 +156,7 @@ re-export hidden workspace dependencies from `_dep`.
   - move to `code::error`.
   - update docs, add example.
   - allow accepting multiple tags.
+  - do not automatically derive `Default`.
   - make conversion method optional const.
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 - update `ArrayFmt` to support the rest of the core formatting traits.

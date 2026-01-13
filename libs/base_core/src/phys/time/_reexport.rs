@@ -8,5 +8,5 @@ _reexport! { rust: core::time, location: "phys/time", tag: _TAG_TIME!(),
 }
 _reexport! { rust: core::time, location: "phys/time", tag: _TAG_TIME!() _TAG_ERROR!(),
     doc: "Error returned from converting floating-point seconds into a [`Duration`].",
-    @TryFromFloatSecsError as DurationErrorTryFromFloatSecs
+    @TryFromFloatSecsError as DurationErrorTryFromFloatSecs // MAYBE RENAME
 }

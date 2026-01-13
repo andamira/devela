@@ -84,9 +84,10 @@ macro_rules! _define_error {
     // Defines a standalone error struct with optional tuple or field variants.
     //
     // # Arguments
-    // - `attributes`  :   Optional attributes applied to struct and implementations
-    // - `struct_vis`  :   Struct visibility (e.g., `pub`, `pub(crate)`)
-    // - `struct_name` :   Name of the error struct
+    // - `shared_attributes` :   Optional attributes applied to struct and impls
+    // - `struct_vis`        :   Struct visibility (e.g., `pub`, `pub(crate)`)
+    // - `struct_name`       :   Name of the error struct
+    // - `derive_attributes` :   Optional derive attributes applied to struct
     //
     // ## Struct Body (choose one):
     // - Unit variant  :  No body (just struct name)
@@ -103,33 +104,35 @@ macro_rules! _define_error {
     //   - `fmt_var`    : Name for formatter in display method
     //   - `expression` : Expression writing to formatter
     individual:
-        $(#[$attributes:meta])*
+        $(#[$shared_attributes:meta])*
         $struct_vis:vis struct $struct_name:ident
         $(( $($e_vis:vis $e_ty:ty),+ $(,)? ))? $(;$($_a:lifetime)?)?              // tuple-struct↓
         $({ $($(#[$f_attr:meta])* $f_vis:vis $f_name:ident: $f_ty:ty),+ $(,)? })? // field-struct↑
+        $($(#[$derive_attributes:meta])*,)?
         $(+location: $($location:literal)+ ,)?
         $(+tag: $($tag:expr)+ ,)?
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
     ) => {
-        $(#[$attributes])*
+        $(#[$shared_attributes])*
         // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms)
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
         $( $(#[doc = $tag])+ )?
         #[doc = $crate::_tags!(error)] // IMPROVE: make optional
-        $(#[$attributes])*
         #[doc = $DOC_NAME!()]
+        $(#[$shared_attributes])*
         $(#[doc = $crate::_doc_location![$($location)?]])? // canonical location
-        #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
+        $($(#[$derive_attributes])*)?
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $struct_vis struct $struct_name
             $(( $($e_vis $e_ty),+ ) )? $(; $($_a)?)?                              // tuple-struct↓
         $({ $( $(#[$f_attr])* $f_vis $f_name: $f_ty),+ })?                        // field-struct↑
 
-        $(#[$attributes])*
+        $(#[$shared_attributes])*
         impl $crate::Error for $struct_name {}
-        $(#[$attributes])*
+        $(#[$shared_attributes])*
         impl $crate::Display for $struct_name {
             fn fmt(&$self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 $display_expr
@@ -195,8 +198,8 @@ macro_rules! _define_error {
         $vis enum $composite_error_name { $(
             $(#[doc = $tag_variant])?
             #[doc = $crate::_tags!(error)] // IMPROVE: make optional
-            $(#[$variant_attr])*
             #[doc = $DOC_VARIANT!()]
+            $(#[$variant_attr])*
             $variant_name
                 $(( $($e_ty),+ ))?                                                // tuple-struct↓
                 $({ $($(#[$f_attr])* $f_name: $f_ty),+ })?                        // field-struct↑

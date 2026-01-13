@@ -16,7 +16,7 @@ use ::core::str::Utf8Error; // replaced with InvalidUtf8
 /* individual errors */
 
 define_error! { individual: pub struct InvalidChar(char);
-    +tag: _tags!(text),
+    +location: "text", +tag: _tags!(text),
     DOC_INVALID_CHAR = "An invalid given character was found.",
     self+f => write!(f, "An invalid {:?} character was found.", self.0)
 }
@@ -28,8 +28,7 @@ define_error! { individual:
         /// The length of the error in bytes, if known.
         pub error_len: Option<usize>
     }
-    +location: "text",
-    +tag: _tags!(text),
+    +location: "text", +tag: _tags!(text),
     DOC_INVALID_UTF8 = "Invalid Utf-8 found while interpreting a byte sequence.\n\n
 This is basically a replication of `core::str::`[`Utf8Error`]`.",
     self+f => if let Some(len) = self.error_len {
