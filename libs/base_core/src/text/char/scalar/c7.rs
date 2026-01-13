@@ -4,7 +4,7 @@
 //
 
 use super::*;
-use crate::{CapacityMismatch, Char, CharAscii, NonExtremeU8, TextLut};
+use crate::{Char, CharAscii, MismatchedCapacity, NonExtremeU8, TextLut};
 
 impl char7 {
     /* private helper fns */
@@ -48,49 +48,49 @@ impl char7 {
     /// Tries to convert a `char8` to `char7`.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
-    pub const fn try_from_char8(c: char8) -> Result<char7, CapacityMismatch> {
+    /// Returns [`MismatchedCapacity`] if the character can't fit in 7 bits.
+    pub const fn try_from_char8(c: char8) -> Result<char7, MismatchedCapacity> {
         let scalar = c.to_scalar();
         if Char(scalar).is_ascii() {
             Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(CapacityMismatch::too_large(scalar as usize, 127))
+            Err(MismatchedCapacity::too_large(scalar as usize, 127))
         }
     }
     /// Tries to convert a `char16` to `char7`.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
-    pub const fn try_from_char16(c: char16) -> Result<char7, CapacityMismatch> {
+    /// Returns [`MismatchedCapacity`] if the character can't fit in 7 bits.
+    pub const fn try_from_char16(c: char16) -> Result<char7, MismatchedCapacity> {
         let scalar = c.to_scalar();
         if Char(scalar).is_ascii() {
             Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(CapacityMismatch::too_large(scalar as usize, 127))
+            Err(MismatchedCapacity::too_large(scalar as usize, 127))
         }
     }
     /// Tries to convert a `charu` to `char7`.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
-    pub const fn try_from_charu(c: charu) -> Result<char7, CapacityMismatch> {
+    /// Returns [`MismatchedCapacity`] if the character can't fit in 7 bits.
+    pub const fn try_from_charu(c: charu) -> Result<char7, MismatchedCapacity> {
         let scalar = c.to_scalar();
         if Char(scalar).is_ascii() {
             Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(CapacityMismatch::too_large(scalar as usize, 127))
+            Err(MismatchedCapacity::too_large(scalar as usize, 127))
         }
     }
 
     /// Tries to convert a `char` to `char7`.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
-    pub const fn try_from_char(c: char) -> Result<char7, CapacityMismatch> {
+    /// Returns [`MismatchedCapacity`] if the character can't fit in 7 bits.
+    pub const fn try_from_char(c: char) -> Result<char7, MismatchedCapacity> {
         if Char(c as u32).is_ascii() {
             Ok(char7::new_unchecked(c as u32 as u8))
         } else {
-            Err(CapacityMismatch::too_large(c as u32 as usize, 127))
+            Err(MismatchedCapacity::too_large(c as u32 as usize, 127))
         }
     }
 

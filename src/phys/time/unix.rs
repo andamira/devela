@@ -295,7 +295,7 @@ impl TryFrom<TimeUnixI64> for TimeUnixU32 {
 
 #[cfg(feature = "std")]
 mod std_impls {
-    use crate::{CapacityMismatch, Cast, TimeUnixU32};
+    use crate::{Cast, MismatchedCapacity, TimeUnixU32};
     use crate::{SystemTime, SystemTimeError, TimeUnixI64};
 
     impl TryFrom<SystemTime> for TimeUnixI64 {
@@ -315,7 +315,7 @@ mod std_impls {
         fn try_from(time: SystemTime) -> Result<Self, Self::Error> {
             let since = time.duration_since(SystemTime::UNIX_EPOCH)?;
             let seconds = u32::try_from(since.as_secs()).map_err(|_| {
-                CapacityMismatch::too_large_try(
+                MismatchedCapacity::too_large_try(
                     Cast(since.as_secs()).checked_cast_to_usize(),
                     u32::MAX as usize,
                 )

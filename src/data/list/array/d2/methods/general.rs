@@ -9,7 +9,7 @@ use crate::{
     Storage,
 };
 #[cfg(doc)]
-use crate::{BareBox, MismatchedBounds::CapacityMismatch};
+use crate::{BareBox, MismatchedBounds::MismatchedCapacity};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 
@@ -23,7 +23,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// using `element` to fill the remaining free data.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
-    /// or [`CapacityMismatch`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::Array2d;
@@ -42,7 +42,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// using `element` to fill the remaining free data.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
-    /// or [`CapacityMismatch`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::{Array2d, MismatchedBounds};
@@ -68,7 +68,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// using `element` to fill the remaining free data.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
-    /// or [`CapacityMismatch`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::{Boxed, Array2d};
@@ -106,7 +106,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `C * R` is not representable as a `usize`,
-    /// or [`CapacityMismatch`] if `C * R != CR`.
+    /// or [`MismatchedCapacity`] if `C * R != CR`.
     #[allow(non_snake_case)]
     pub(crate) const fn check_CR() -> Result<(), MismatchedBounds> {
         match C.checked_mul(R) {
@@ -114,11 +114,11 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
                 if len == CR {
                     Ok(())
                 } else if len > CR {
-                    let err = crate::CapacityMismatch::too_large(len, CR);
-                    Err(MismatchedBounds::from_capacity_mismatch(err))
+                    let err = crate::MismatchedCapacity::too_large(len, CR);
+                    Err(MismatchedBounds::from_mismatched_capacity(err))
                 } else {
-                    let err = crate::CapacityMismatch::too_small(len, CR);
-                    Err(MismatchedBounds::from_capacity_mismatch(err))
+                    let err = crate::MismatchedCapacity::too_small(len, CR);
+                    Err(MismatchedBounds::from_mismatched_capacity(err))
                 }
             }
             None => Err(IndexOutOfBounds(None)),

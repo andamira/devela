@@ -42,7 +42,7 @@ impl From<StdSystemTimeError> for SystemTimeError {
 pub use full_composite::*;
 mod full_composite {
     use super::*;
-    use crate::{Boundary1d, CONST, CapacityMismatch};
+    use crate::{Boundary1d, CONST, MismatchedCapacity};
 
     CONST! {
         DOC_CAPACITY_MISMATCH = "The operation did not satisfy a finite capacity constraint.";
@@ -64,7 +64,7 @@ mod full_composite {
                     /// The capacity limit involved in the check, if known.
                     limit: Option<usize>
                 }
-                => CapacityMismatch { bound: *bound, value: *value, limit: *limit },
+                => MismatchedCapacity { bound: *bound, value: *value, limit: *limit },
             DOC_SYSTEM_TIME_ERROR: +const
                 SystemTime(d|0: Duration) => SystemTimeError(*d)
         }

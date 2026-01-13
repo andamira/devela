@@ -4,10 +4,10 @@
 //
 
 use super::super::_docs::*;
-#[allow(unused_imports, reason = "CapacityMismatch only used for docs")]
+#[allow(unused_imports, reason = "MismatchedCapacity only used for docs")]
 use crate::{
     Bitwise,
-    MismatchedBounds::{self, CapacityMismatch, IndexOutOfBounds, MismatchedIndices},
+    MismatchedBounds::{self, IndexOutOfBounds, MismatchedCapacity, MismatchedIndices},
     is,
 };
 
@@ -192,9 +192,9 @@ macro_rules! impl_bits_wrapper {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
                         if value >= (1 << (end - start)) {
-                            let err = crate::CapacityMismatch
+                            let err = crate::MismatchedCapacity
                                 ::too_large(value as usize, ( 1 << (end - start)));
-                            return Err(MismatchedBounds::from_capacity_mismatch(err));
+                            return Err(MismatchedBounds::from_mismatched_capacity(err));
                         }
                         let value_shifted = (value << start) & mask.0;
                         Ok(Self((self.0 & !mask.0) | value_shifted))

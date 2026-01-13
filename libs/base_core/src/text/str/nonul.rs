@@ -7,7 +7,7 @@
 // - trait impls
 
 use crate::{
-    CapacityMismatch, Char, CharIter, InvalidText, NotEnoughElements, NotEnoughSpace, Str, char7,
+    Char, CharIter, InvalidText, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Str, char7,
     char8, char16, charu, is, lets, slice, unwrap, whilst,
 };
 
@@ -96,19 +96,19 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Creates a new empty `StringNonul`.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`].
-    pub const fn new_checked() -> Result<Self, CapacityMismatch> {
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
+    pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
         if CAP <= u8::MAX as usize {
             Ok(Self { arr: [0; CAP] })
         } else {
-            Err(CapacityMismatch::too_large(CAP, u8::MAX as usize))
+            Err(MismatchedCapacity::too_large(CAP, u8::MAX as usize))
         }
     }
 
     /// Creates a new `StringNonul` from a complete `&str`.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`] or if `CAP < string.len()`.
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`] or if `CAP < string.len()`.
     ///
     /// This is implemented via `Self::`[`try_push_str_complete()`][Self::try_push_str_complete].
     ///
@@ -118,18 +118,18 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
     /// assert_eq![s.as_str(), "Hello Wørld!"];
     /// ```
-    pub const fn from_str(string: &str) -> Result<Self, CapacityMismatch> {
+    pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
         let mut new_string = unwrap![ok? Self::new_checked()];
         if new_string.try_push_str_complete(string).is_ok() { Ok(new_string) }
-        else { Err(CapacityMismatch::too_small(CAP, string.len())) }
+        else { Err(MismatchedCapacity::too_small(CAP, string.len())) }
     }
 
     /// Creates a new `StringNonul` from a `&str`, truncating if it does not fit.
     ///
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`].
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
     ///
     /// This is implemented via `Self::`[`push_str()`][Self::push_str].
-    pub const fn from_str_truncate(string: &str) -> Result<Self, CapacityMismatch> {
+    pub const fn from_str_truncate(string: &str) -> Result<Self, MismatchedCapacity> {
         let mut new_string = unwrap![ok? Self::new_checked()];
         let _ = new_string.push_str(string);
         Ok(new_string)
@@ -164,8 +164,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela_base_core::{StringNonul, CapacityMismatch};
-    /// # fn main() -> Result<(), CapacityMismatch> {
+    /// # use devela_base_core::{StringNonul, MismatchedCapacity};
+    /// # fn main() -> Result<(), MismatchedCapacity> {
     /// let mut s = StringNonul::<4>::new_checked()?;
     /// assert_eq![0, s.len()];
     ///
@@ -495,7 +495,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c` is NUL an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`],
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
     /// or  if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
@@ -506,12 +506,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// assert_eq![StringNonul::<4>::from_char('\0').unwrap().as_str(), ""];
     /// assert![StringNonul::<3>::from_char('🐛').is_err()];
     /// ```
-    pub const fn from_char(c: char) -> Result<Self, CapacityMismatch> {
+    pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if c != '\0' {
             let bytes = Char(c).to_utf8_bytes();
             let len = Char(bytes[0]).len_utf8_unchecked();
-            is![CAP < len; return Err(CapacityMismatch::too_small(CAP, len))];
+            is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
             if len > 2 { new.arr[2] = bytes[2]; }
@@ -525,7 +525,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c`.[`is_nul()`][char7#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`],
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
     /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
@@ -539,8 +539,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// assert![StringNonul::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
     /// ```
-    pub const fn from_char7(c: char7) -> Result<Self, CapacityMismatch> {
-        is![CAP == 0; return Err(CapacityMismatch::too_small(CAP, 1))];
+    pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+        is![CAP == 0; return Err(MismatchedCapacity::too_small(CAP, 1))];
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             new.arr[0] = c.to_utf8_bytes()[0];
@@ -553,7 +553,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c`.[`is_nul()`][char8#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`],
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
@@ -567,12 +567,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// assert![StringNonul::<1>::from_char8(char8::try_from_char('ß').unwrap()).is_err()];
     /// ```
-    pub const fn from_char8(c: char8) -> Result<Self, CapacityMismatch> {
+    pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char(bytes[0]).len_utf8_unchecked();
-            is![CAP < len; return Err(CapacityMismatch::too_small(CAP, len))];
+            is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
         }
@@ -584,7 +584,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c`.[`is_nul()`][char16#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`],
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
@@ -598,12 +598,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// assert![StringNonul::<2>::from_char16(char16::try_from_char('€').unwrap()).is_err()];
     /// ```
-    pub const fn from_char16(c: char16) -> Result<Self, CapacityMismatch> {
+    pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char(bytes[0]).len_utf8_unchecked();
-            is![CAP < len; return Err(CapacityMismatch::too_small(CAP, len))];
+            is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
             if len > 2 { new.arr[2] = bytes[2]; }
@@ -616,7 +616,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// If `c`.[`is_nul()`][charu#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
-    /// Returns [`CapacityMismatch`] if `CAP` > [`u8::MAX`],
+    /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`],
     /// or if `CAP` < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
@@ -630,7 +630,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// assert![StringNonul::<3>::from_charu(charu::from_char('🐛')).is_err()];
     /// ```
-    pub const fn from_charu(c: charu) -> Result<Self, CapacityMismatch> {
+    pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             let len = c.len_utf8();
@@ -638,7 +638,7 @@ impl<const CAP: usize> StringNonul<CAP> {
                 let bytes = c.to_utf8_bytes();
                 slice![mut &mut new.arr, 0,..len].copy_from_slice(slice![&bytes, 0,..len]);
             } else {
-                return Err(CapacityMismatch::too_small(CAP, len));
+                return Err(MismatchedCapacity::too_small(CAP, len));
             }
         }
         Ok(new)
@@ -722,7 +722,7 @@ mod trait_impls {
         ConstInitCore, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
         Hasher,
     };
-    use super::{StringNonul, InvalidText, CapacityMismatch, is};
+    use super::{StringNonul, InvalidText, MismatchedCapacity, is};
 
     impl<const CAP: usize> Default for StringNonul<CAP> {
         /// Returns an empty string.
@@ -805,16 +805,16 @@ mod trait_impls {
     }
 
     impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
-        type Error = CapacityMismatch;
+        type Error = MismatchedCapacity;
 
         /// Tries to create a new `StringNonul` from the given string slice.
         ///
         /// # Errors
-        /// Returns [`CapacityMismatch`] if `CAP > `[`u8::MAX`] or if `CAP < str.len()`.
-        fn try_from(string: &str) -> Result<Self, CapacityMismatch> {
+        /// Returns [`MismatchedCapacity`] if `CAP > `[`u8::MAX`] or if `CAP < str.len()`.
+        fn try_from(string: &str) -> Result<Self, MismatchedCapacity> {
             let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
             if CAP < non_nul_len {
-                Err(CapacityMismatch::too_small(CAP, non_nul_len))
+                Err(MismatchedCapacity::too_small(CAP, non_nul_len))
             } else {
                 let mut new_string = Self::new_checked()?;
                 let copied_bytes = new_string.push_str(string);
@@ -832,11 +832,12 @@ mod trait_impls {
         /// The string will stop before the first nul character or the end of the slice.
         ///
         /// # Errors
-        /// Returns [`InvalidText::CapacityMismatch`] if `CAP > `[u8::MAX`] or if `CAP < bytes.len()`
+        /// Returns [`InvalidText::MismatchedCapacity`] if `CAP > `[u8::MAX`]
+        /// or if `CAP < bytes.len()`,
         /// or [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
         fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
             let len = bytes.len();
-            if len >= CAP { return Err(CapacityMismatch::too_small(CAP, len).into()); }
+            if len >= CAP { return Err(MismatchedCapacity::too_small(CAP, len).into()); }
             // IMPROVE: use Str
             match ::core::str::from_utf8(bytes) {
                 Ok(_) => {

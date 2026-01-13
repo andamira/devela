@@ -9,9 +9,9 @@
 // - tests
 
 use crate::{
-    CapacityMismatch, CharIter, ConstInitCore, Debug, Deref, Display, FmtError, FmtResult,
-    FmtWrite, Formatter, Hash, Hasher, InvalidText, InvalidUtf8, NotEnoughElements, NotEnoughSpace,
-    Str, is, paste, slice, text::char::*, whilst,
+    CharIter, ConstInitCore, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
+    Hasher, InvalidText, InvalidUtf8, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Str,
+    is, paste, slice, text::char::*, whilst,
 };
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, unwrap};
@@ -123,12 +123,12 @@ macro_rules! impl_str_u {
             #[doc = "Creates a new empty `String" $t:camel "` with a capacity of `CAP` bytes."]
             ///
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t "::MAX`]."]
-            pub const fn new_checked() -> Result<Self, CapacityMismatch> {
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
+            pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
                 if CAP <= $t::MAX as usize {
                     Ok(Self { arr: [0; CAP], len: 0 })
                 } else {
-                    Err(CapacityMismatch::too_large(CAP, <$t>::MAX as usize))
+                    Err(MismatchedCapacity::too_large(CAP, <$t>::MAX as usize))
                 }
             }
 
@@ -137,7 +137,7 @@ macro_rules! impl_str_u {
             #[doc = "Creates a new `String" $t:camel "` from a complete `&str`."]
             ///
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t "::MAX`]."]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < string.len()`.
             ///
             /// This is implemented via `Self::`[`try_push_str_complete()`][Self::try_push_str_complete].
@@ -148,19 +148,19 @@ macro_rules! impl_str_u {
             /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
             /// assert_eq![s.as_str(), "Hello Wørld!"];
             /// ```
-            pub const fn from_str(string: &str) -> Result<Self, CapacityMismatch> {
+            pub const fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
                 let mut new_string = unwrap![ok? Self::new_checked()];
                 if let Ok(_) = new_string.try_push_str_complete(string) { Ok(new_string) }
-                else { Err(CapacityMismatch::too_small(CAP, string.len())) }
+                else { Err(MismatchedCapacity::too_small(CAP, string.len())) }
             }
 
             #[doc = "Creates a new `String" $t:camel "` from a `&str`,"]
             /// truncating if it does not fit.
             ///
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t "::MAX`]"]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]"]
             ///
             /// This is implemented via `Self::`[`push_str()`][Self::push_str].
-            pub const fn from_str_truncate(string: &str) -> Result<Self, CapacityMismatch> {
+            pub const fn from_str_truncate(string: &str) -> Result<Self, MismatchedCapacity> {
                 let mut new_string = unwrap![ok? Self::new_checked()];
                 let _ = new_string.push_str(string);
                 Ok(new_string)
@@ -184,7 +184,7 @@ macro_rules! impl_str_u {
             #[doc = "Creates a new `String" $t:camel "` from a `char`."]
             ///
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t "::MAX`]."]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < c.`[`len_utf8()`].
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
@@ -196,10 +196,10 @@ macro_rules! impl_str_u {
             /// ```
             #[doc = crate::doclink!(custom devela
                 "[`len_utf8()`]" "text/grapheme/trait.UnicodeScalar.html#method.len_utf8")]
-            pub const fn from_char(c: char) -> Result<Self, CapacityMismatch> {
+            pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let bytes = Char(c).to_utf8_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                is![CAP < len; return Err(CapacityMismatch::too_small(CAP, len))];
+                is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.len = len as $t;
                 new.arr[0] = bytes[0];
@@ -212,7 +212,7 @@ macro_rules! impl_str_u {
             #[doc = "Creates a new `String" $t:camel "` from a `char7`."]
             ///
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t "::MAX`]."]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < 1.
             ///
             #[doc = "Will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
@@ -224,8 +224,8 @@ macro_rules! impl_str_u {
             ///
             /// assert![StringU8::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
             /// ```
-            pub const fn from_char7(c: char7) -> Result<Self, CapacityMismatch> {
-                is![CAP == 0; return Err(CapacityMismatch::too_small(CAP, 1))];
+            pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
+                is![CAP == 0; return Err(MismatchedCapacity::too_small(CAP, 1))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.arr[0] = c.to_utf8_bytes()[0];
                 new.len = 1;
@@ -235,7 +235,7 @@ macro_rules! impl_str_u {
             #[doc = "Creates a new `String" $t:camel "` from a `char8`."]
             ///
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t "::MAX`]."]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]."]
             /// or if `CAP < 2.
             ///
             #[doc = "Will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
@@ -247,10 +247,10 @@ macro_rules! impl_str_u {
             ///
             /// assert![StringU8::<1>::from_char8(char8::try_from_char('ß').unwrap()).is_err()];
             /// ```
-            pub const fn from_char8(c: char8) -> Result<Self, CapacityMismatch> {
+            pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let bytes = c.to_utf8_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                is![CAP < len; return Err(CapacityMismatch::too_small(CAP, len))];
+                is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.len = len as $t;
                 new.arr[0] = bytes[0];
@@ -261,7 +261,7 @@ macro_rules! impl_str_u {
             #[doc = "Creates a new `String" $t:camel "` from a `char16`."]
             ///
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
             ///
             #[doc = "Will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
@@ -273,10 +273,10 @@ macro_rules! impl_str_u {
             ///
             /// assert![StringU8::<2>::from_char16(char16::try_from_char('€').unwrap()).is_err()];
             /// ```
-            pub const fn from_char16(c: char16) -> Result<Self, CapacityMismatch> {
+            pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let bytes = c.to_utf8_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                is![CAP < len; return Err(CapacityMismatch::too_small(CAP, len))];
+                is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.len = len as $t;
                 new.arr[0] = bytes[0];
@@ -289,7 +289,7 @@ macro_rules! impl_str_u {
             #[doc = "Creates a new `String" $t:camel "` from a `charu`."]
             ///
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][charu#method.len_utf8]."]
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
@@ -301,7 +301,7 @@ macro_rules! impl_str_u {
             ///
             /// assert![StringU8::<3>::from_charu(charu::from_char('🐛')).is_err()];
             /// ```
-            pub const fn from_charu(c: charu) -> Result<Self, CapacityMismatch> {
+            pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
                 let (bytes, len) = (c.to_utf8_bytes(), c.len_utf8());
                 if len <= CAP {
                     let mut new = unwrap![ok? Self::new_checked()];
@@ -309,7 +309,7 @@ macro_rules! impl_str_u {
                     new.len = len as $t;
                     Ok(new)
                 } else {
-                    Err(CapacityMismatch::too_small(CAP, len))
+                    Err(MismatchedCapacity::too_small(CAP, len))
                 }
             }
 
@@ -839,15 +839,15 @@ macro_rules! impl_str_u {
         /* conversions */
 
         impl<const CAP: usize> TryFrom<&str> for $name<CAP> {
-            type Error = CapacityMismatch;
+            type Error = MismatchedCapacity;
 
             #[doc = "Tries to create a new `String" $t:camel "` from the given `string` slice."]
             ///
             /// This is implemented via `Self::`[`from_str()`][Self::from_str].
             /// # Errors
-            #[doc = "Returns [`CapacityMismatch`] if `CAP > `[`" $t "::MAX`]"]
+            #[doc = "Returns [`MismatchedCapacity`] if `CAP > `[`" $t "::MAX`]"]
             /// or if `CAP < string.len()`.
-            fn try_from(string: &str) -> Result<Self, CapacityMismatch> { Self::from_str(string) }
+            fn try_from(string: &str) -> Result<Self, MismatchedCapacity> { Self::from_str(string) }
         }
 
         impl<const CAP: usize> TryFrom<&[u8]> for $name<CAP> {
@@ -860,7 +860,7 @@ macro_rules! impl_str_u {
             /// `CAP < bytes.len()`, and [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
             fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
                 let bytes_len = bytes.len();
-                if CAP < bytes_len { Err(CapacityMismatch::too_small(CAP, bytes_len).into()) }
+                if CAP < bytes_len { Err(MismatchedCapacity::too_small(CAP, bytes_len).into()) }
                 else {
                     match Str::from_utf8(bytes) {
                         Ok(_) => {

@@ -10,7 +10,7 @@
 //   - TextResult
 //   - TextError
 
-use crate::{_tags, Boundary1d, CapacityMismatch, DOC_CAPACITY_MISMATCH, define_error};
+use crate::{_tags, Boundary1d, DOC_MISMATCHED_CAPACITY, MismatchedCapacity, define_error};
 use ::core::str::Utf8Error; // replaced with InvalidUtf8
 
 /* individual errors */
@@ -50,7 +50,7 @@ impl InvalidUtf8 {
 
 define_error! { composite: fmt(f)
     #[doc = crate::_tags!(text)]
-    /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`CapacityMismatch`].
+    /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
     #[doc = crate::_doc_location!("text")]
     ///
     /// Used in methods of:
@@ -67,14 +67,14 @@ define_error! { composite: fmt(f)
                 #[doc = ""] error_len: Option<usize>
             } => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
 
-        DOC_CAPACITY_MISMATCH: +const CapacityMismatch {
+        DOC_MISMATCHED_CAPACITY: +const MismatchedCapacity {
             /// Which boundary of the capacity constraint applies.
             bound: Boundary1d,
             /// The value involved in the capacity check, if known.
             value: Option<usize>,
             /// The capacity limit involved in the check, if known.
             limit: Option<usize>
-        } => CapacityMismatch { bound: *bound, value: *value, limit: *limit },
+        } => MismatchedCapacity { bound: *bound, value: *value, limit: *limit },
     }
 }
 #[rustfmt::skip]
@@ -119,19 +119,19 @@ mod full_composite {
                 }
                 => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
 
-            DOC_CAPACITY_MISMATCH: +const CapacityMismatch {
+            DOC_MISMATCHED_CAPACITY: +const MismatchedCapacity {
                 /// Which boundary of the capacity constraint applies.
                 bound: Boundary1d,
                 /// The value involved in the capacity check, if known.
                 value: Option<usize>,
                 /// The capacity limit involved in the check, if known.
                 limit: Option<usize>
-            } => CapacityMismatch { bound: *bound, value: *value, limit: *limit },
+            } => MismatchedCapacity { bound: *bound, value: *value, limit: *limit },
         }
     }
     define_error! { composite: from(f): InvalidText, for: TextError {
         Char(c) => InvalidChar(c),
         Utf8 { valid_up_to, error_len } => InvalidUtf8 { valid_up_to, error_len },
-        CapacityMismatch { bound,  value, limit } => CapacityMismatch { bound, value, limit },
+        MismatchedCapacity { bound,  value, limit } => MismatchedCapacity { bound, value, limit },
     }}
 }

@@ -236,7 +236,7 @@ re-export hidden workspace dependencies from `_dep`.
 - remove methods that allocate.
 
 ### error
-- new type `CapacityMismatch`.
+- recreate the type `MismatchedCapacity`.
 - remove type: `DataOverflow`.
 - update `MismatchedBounds`.
 
