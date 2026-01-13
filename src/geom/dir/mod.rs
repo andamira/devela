@@ -27,6 +27,7 @@ crate::structural_mods! { // _mods, _reexports
     _reexports {
         #[doc(inline)]
         pub use devela_base_core::{
+            Boundary1d, Boundary2d, Boundary3d,
             Orientation,
         };
     }

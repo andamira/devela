@@ -175,14 +175,16 @@ mod impl_devela_base_core {
         // data::codec
         Base,
         Adler32, HasherFx,
+        // geom::dir
+        Boundary1d, Boundary2d, Boundary3d, Orientation,
+        // geom::metric
+        Distance, Extent, Position, Stride,
         // media
         // num
         f32bits, f32bits_niche, f64bits, f64bits_niche,
         Cast, Cmp,
         // num::quant
         Cycle, CycleCount, Interval, Sign,
-        // num::geom::metric
-        Distance, Extent, Orientation, Position, Stride,
         // text::char
         CharAscii, char7, char8, char16, charu, charu_niche,
         // text::fmt
@@ -208,6 +210,16 @@ mod impl_devela_base_core {
     _impl_init![%Sealed%: Adler32];
     _impl_init![%Sealed%: <T> HasherFx<T>];
 
+    // geom
+    // geom::dir
+    _impl_init![%Sealed%: Boundary1d, Boundary2d, Boundary3d];
+    impl<T: ConstInitCore, const D: usize> Sealed for Orientation<T, D> {}
+    // geom::metric
+    impl<T: ConstInitCore, const D: usize> Sealed for Distance<T, D> {}
+    impl<T: ConstInitCore, const D: usize> Sealed for Extent<T, D> {}
+    impl<T: ConstInitCore, const D: usize> Sealed for Position<T, D> {}
+    impl<T: ConstInitCore, const D: usize> Sealed for Stride<T, D> {}
+
     // num
     _impl_init![%Sealed%: f32bits, f32bits_niche, f64bits, f64bits_niche];
 
@@ -215,12 +227,6 @@ mod impl_devela_base_core {
     _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>, Cycle<T>];
     _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];
     _impl_init![%Sealed%: <T> Interval<T>];
-
-    impl<T: ConstInitCore, const D: usize> Sealed for Distance<T, D> {}
-    impl<T: ConstInitCore, const D: usize> Sealed for Extent<T, D> {}
-    impl<T: ConstInitCore, const D: usize> Sealed for Orientation<T, D> {}
-    impl<T: ConstInitCore, const D: usize> Sealed for Position<T, D> {}
-    impl<T: ConstInitCore, const D: usize> Sealed for Stride<T, D> {}
 
     // text
     _impl_init![%Sealed%: CharAscii, char7, char8, char16, charu, charu_niche];
