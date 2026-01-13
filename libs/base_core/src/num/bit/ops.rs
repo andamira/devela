@@ -8,7 +8,7 @@
 
 use super::_docs::*;
 #[cfg(doc)]
-use crate::MismatchedBounds::{DataOverflow, IndexOutOfBounds, MismatchedIndices};
+use crate::MismatchedBounds::{CapacityMismatch, IndexOutOfBounds, MismatchedIndices};
 use crate::{Bitwise, MismatchedBounds};
 
 #[doc = crate::_tags!(num namespace)]

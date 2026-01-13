@@ -1,4 +1,4 @@
-// devela_base_core::data::bit::wise
+// devela_base_core::num::bit::wise
 //
 //! Defines the [`Bitwise`] namespace.
 //

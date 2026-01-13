@@ -1,12 +1,13 @@
-// devela_base_core::data::bit::ops::wise::impls
+// devela_base_core::num::bit::ops::wise::impls
 //
 //! Implements `Bitwise` for the integer primitives.
 //
 
 use super::super::_docs::*;
+#[allow(unused_imports, reason = "CapacityMismatch only used for docs")]
 use crate::{
     Bitwise,
-    MismatchedBounds::{self, DataOverflow, IndexOutOfBounds, MismatchedIndices},
+    MismatchedBounds::{self, CapacityMismatch, IndexOutOfBounds, MismatchedIndices},
     is,
 };
 
@@ -190,8 +191,11 @@ macro_rules! impl_bits_wrapper {
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
-                        is![value >= (1 << (end - start));
-                            return Err(DataOverflow(Some(value as usize)))];
+                        if value >= (1 << (end - start)) {
+                            let err = crate::CapacityMismatch
+                                ::too_large(value as usize, ( 1 << (end - start)));
+                            return Err(MismatchedBounds::from_capacity_mismatch(err));
+                        }
                         let value_shifted = (value << start) & mask.0;
                         Ok(Self((self.0 & !mask.0) | value_shifted))
                     },

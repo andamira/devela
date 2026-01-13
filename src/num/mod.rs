@@ -15,6 +15,7 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
 }
 
 mod absence; // NoNum
+mod bit; // (BitOps, Bitwise)
 mod error; // NumError, NumResult
 mod float; // fsize, Float, FloatConst, FloatExt
 mod frac; // Frac
@@ -41,6 +42,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
     _mods {
         pub use super::{
             absence::*,
+            bit::*,
             error::*,
             float::_all::*,
             frac::_all::*,
@@ -65,7 +67,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
     }
     _reexports {
         pub use devela_base_core::num::{
-            BitOps, Bitwise, // bit
             Cast, // cast
             // individual errors:
             IncompatibleBounds,

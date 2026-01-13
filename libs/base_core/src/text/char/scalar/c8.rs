@@ -1,7 +1,7 @@
 // devela_base_core::text::char::scalar::c8
 
 use super::*;
-use crate::{Char, CharAscii, DataOverflow};
+use crate::{CapacityMismatch, Char, CharAscii};
 
 impl char8 {
     /* private helper fns */
@@ -34,37 +34,37 @@ impl char8 {
     /// Tries to convert a `char16` to `char8`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
-    pub const fn try_from_char16(c: char16) -> Result<char8, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 8 bits.
+    pub const fn try_from_char16(c: char16) -> Result<char8, CapacityMismatch> {
         let scalar = c.to_scalar();
         if Char(scalar).len_bytes() == 1 {
             Ok(char8(scalar as u8))
         } else {
-            Err(DataOverflow(Some(scalar as usize)))
+            Err(CapacityMismatch::too_large(scalar as usize, u8::MAX as usize))
         }
     }
     /// Tries to convert a `charu` to `char8`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
-    pub const fn try_from_charu(c: charu) -> Result<char8, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 8 bits.
+    pub const fn try_from_charu(c: charu) -> Result<char8, CapacityMismatch> {
         let scalar = c.to_scalar();
         if Char(scalar).len_bytes() == 1 {
             Ok(char8(scalar as u8))
         } else {
-            Err(DataOverflow(Some(scalar as usize)))
+            Err(CapacityMismatch::too_large(scalar as usize, u8::MAX as usize))
         }
     }
     /// Tries to convert a `char` to `char8`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
-    pub const fn try_from_char(c: char) -> Result<char8, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 8 bits.
+    pub const fn try_from_char(c: char) -> Result<char8, CapacityMismatch> {
         let scalar = c as u32;
         if Char(scalar).len_bytes() == 1 {
             Ok(char8(scalar as u8))
         } else {
-            Err(DataOverflow(Some(scalar as usize)))
+            Err(CapacityMismatch::too_large(scalar as usize, u8::MAX as usize))
         }
     }
 
@@ -73,11 +73,11 @@ impl char8 {
     /// Tries to convert this `char8` to `CharAscii`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
+    /// Returns [`CapacityMismatch`] if `self` can't fit in 7 bits.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
-    pub const fn try_to_char_ascii(self) -> Result<CharAscii, DataOverflow> {
+    pub const fn try_to_char_ascii(self) -> Result<CharAscii, CapacityMismatch> {
         if Char(self.to_scalar()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             if let Some(c) = CharAscii::from_u8(self.0) {
@@ -90,14 +90,14 @@ impl char8 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { CharAscii::from_u8_unchecked(self.0) });
         }
-        Err(DataOverflow(Some(self.to_scalar() as usize)))
+        Err(CapacityMismatch::too_large(self.to_scalar() as usize, 127))
     }
 
     /// Tries to convert this `char8` to `char7`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
-    pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if `self` can't fit in 7 bits.
+    pub const fn try_to_char7(self) -> Result<char7, CapacityMismatch> {
         char7::try_from_char8(self)
     }
     /// Converts this `char8` to `char16`.

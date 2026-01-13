@@ -4,7 +4,7 @@
 //
 
 use super::*;
-use crate::{Char, CharAscii, DataOverflow, NonExtremeU8, TextLut};
+use crate::{CapacityMismatch, Char, CharAscii, NonExtremeU8, TextLut};
 
 impl char7 {
     /* private helper fns */
@@ -48,49 +48,49 @@ impl char7 {
     /// Tries to convert a `char8` to `char7`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
-    pub const fn try_from_char8(c: char8) -> Result<char7, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
+    pub const fn try_from_char8(c: char8) -> Result<char7, CapacityMismatch> {
         let scalar = c.to_scalar();
         if Char(scalar).is_ascii() {
             Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(DataOverflow(Some(scalar as usize)))
+            Err(CapacityMismatch::too_large(scalar as usize, 127))
         }
     }
     /// Tries to convert a `char16` to `char7`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
-    pub const fn try_from_char16(c: char16) -> Result<char7, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
+    pub const fn try_from_char16(c: char16) -> Result<char7, CapacityMismatch> {
         let scalar = c.to_scalar();
         if Char(scalar).is_ascii() {
             Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(DataOverflow(Some(scalar as usize)))
+            Err(CapacityMismatch::too_large(scalar as usize, 127))
         }
     }
     /// Tries to convert a `charu` to `char7`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
-    pub const fn try_from_charu(c: charu) -> Result<char7, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
+    pub const fn try_from_charu(c: charu) -> Result<char7, CapacityMismatch> {
         let scalar = c.to_scalar();
         if Char(scalar).is_ascii() {
             Ok(char7::new_unchecked(scalar as u8))
         } else {
-            Err(DataOverflow(Some(scalar as usize)))
+            Err(CapacityMismatch::too_large(scalar as usize, 127))
         }
     }
 
     /// Tries to convert a `char` to `char7`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 7 bits.
-    pub const fn try_from_char(c: char) -> Result<char7, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 7 bits.
+    pub const fn try_from_char(c: char) -> Result<char7, CapacityMismatch> {
         if Char(c as u32).is_ascii() {
             Ok(char7::new_unchecked(c as u32 as u8))
         } else {
-            Err(DataOverflow(Some(c as u32 as usize)))
+            Err(CapacityMismatch::too_large(c as u32 as usize, 127))
         }
     }
 

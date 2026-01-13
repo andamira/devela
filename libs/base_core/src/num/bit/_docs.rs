@@ -168,7 +168,7 @@ Leaves the rest of the bits unchanged.
 # Errors
 Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS`,
 [`MismatchedIndices`] if `start > end`, and
-[`DataOverflow`] if `value` does not fit within the specified bit range.
+[`CapacityMismatch`] if `value` does not fit within the specified bit range.
 "#;
 
 /* unset */

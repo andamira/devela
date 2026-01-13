@@ -1,7 +1,7 @@
 // devela_base_core::text::char::scalar::utf8
 
 use super::*;
-use crate::{Char, CharAscii, DataOverflow, NonExtremeU32, NonNiche, Str, is, slice, unwrap};
+use crate::{CapacityMismatch, Char, CharAscii, NonExtremeU32, NonNiche, Str, is, slice, unwrap};
 
 /// Implements methods for both `charu` and `charu_niche`.
 macro_rules! impl_charu {
@@ -17,25 +17,25 @@ macro_rules! impl_charu {
             #[doc = "Tries to convert this `" $name "` to `char7`."]
             ///
             /// # Errors
-            /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
+            /// Returns [`CapacityMismatch`] if `self` can't fit in 7 bits.
             #[inline(always)]
-            pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
+            pub const fn try_to_char7(self) -> Result<char7, CapacityMismatch> {
                 char7::try_from_charu(self)
             }
             #[doc = "Tries to convert this `" $name "` to `char8`."]
             ///
             /// # Errors
-            /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
+            /// Returns [`CapacityMismatch`] if `self` can't fit in 8 bits.
             #[inline(always)]
-            pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
+            pub const fn try_to_char8(self) -> Result<char8, CapacityMismatch> {
                 char8::try_from_charu(self)
             }
             #[doc = "Tries to convert this `" $name "` to `char17`."]
             ///
             /// # Errors
-            /// Returns [`DataOverflow`] if `self` can't fit in 16 bits.
+            /// Returns [`CapacityMismatch`] if `self` can't fit in 16 bits.
             #[inline(always)]
-            pub const fn try_to_char16(self) -> Result<char16, DataOverflow> {
+            pub const fn try_to_char16(self) -> Result<char16, CapacityMismatch> {
                 char16::try_from_charu(self)
             }
         }

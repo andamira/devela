@@ -82,6 +82,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_MEDIA           = "Multimedia functionality.";
     // 6
     _DOC_NUM             = "Numerical types and operations.";
+    _DOC_NUM_BIT         = "Bitwise operations.";
     _DOC_NUM_FLOAT       = "Floating point types and operations.";
     _DOC_NUM_INT         = "Integer types and operations.";
     _DOC_NUM_NICHE       = "Specialized numeric types and behaviors.";

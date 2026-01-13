@@ -42,10 +42,10 @@ impl From<StdSystemTimeError> for SystemTimeError {
 pub use full_composite::*;
 mod full_composite {
     use super::*;
-    use crate::{CONST, DataOverflow};
+    use crate::{Boundary1d, CONST, CapacityMismatch};
 
     CONST! {
-        DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.";
+        DOC_CAPACITY_MISMATCH = "The operation did not satisfy a finite capacity constraint.";
     }
 
     define_error! { composite: fmt(f)
@@ -54,11 +54,19 @@ mod full_composite {
         #[doc = crate::_doc_location!("phys/time/source")]
         #[non_exhaustive]
         pub enum TimeError {
-            DOC_DATA_OVERFLOW: +const
-                DataOverflow(o|0: Option<usize>) => DataOverflow(*o),
-
+            +tag: _tags!(time),
+            DOC_CAPACITY_MISMATCH: +const
+                Overflow {
+                    /// Which boundary of the capacity constraint applies.
+                    bound: Boundary1d,
+                    /// The value involved in the capacity check, if known.
+                    value: Option<usize>,
+                    /// The capacity limit involved in the check, if known.
+                    limit: Option<usize>
+                }
+                => CapacityMismatch { bound: *bound, value: *value, limit: *limit },
             DOC_SYSTEM_TIME_ERROR: +const
-                SystemTime(d|0: Duration) => SystemTimeError(*d),
+                SystemTime(d|0: Duration) => SystemTimeError(*d)
         }
     }
     impl From<StdSystemTimeError> for TimeError {

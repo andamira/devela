@@ -225,7 +225,6 @@ re-export hidden workspace dependencies from `_dep`.
 ### bit
 - move `BitOps` & `Bitwise` to `num::bit`.
 
-
 ### codec
 #### hash
   - move to [base]: `HasherFx`, `HasherBuildFx`.
@@ -235,6 +234,11 @@ re-export hidden workspace dependencies from `_dep`.
 #### radix
 - move `Base` to [base].
 - remove methods that allocate.
+
+### error
+- new type `CapacityMismatch`.
+- remove type: `DataOverflow`.
+- update `MismatchedBounds`.
 
 ### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
@@ -250,7 +254,7 @@ re-export hidden workspace dependencies from `_dep`.
   - traits: `ArrayExt`.
   - types: `ArrayFmt`, `ConstList`.
 - new macros: `define_bufline!`.
-- new types: `BufLine`.
+- new example type: `BufLineExample`.
 - rename:
   - `ExtArray` to `ArrayExt`.
   - `ExtVec` to `VecExt`.

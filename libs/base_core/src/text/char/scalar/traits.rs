@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    Binary, ConstInitCore, DataOverflow, Debug, Display, FmtResult, Formatter, LowerHex, Octal,
+    Binary, CapacityMismatch, ConstInitCore, Debug, Display, FmtResult, Formatter, LowerHex, Octal,
     UpperHex, paste, text::char::*, unwrap,
 };
 
@@ -96,8 +96,8 @@ mod c8 {
     impl From<char8> for char16 { fn from(c: char8) -> char16 { c.to_char16() } }
     impl From<char8> for charu { fn from(c: char8) -> charu { c.to_charu() } }
 
-    impl TryFrom<char8> for char7 { type Error = DataOverflow;
-        fn try_from(c: char8) -> Result<char7, DataOverflow> { c.try_to_char7() }
+    impl TryFrom<char8> for char7 { type Error = CapacityMismatch;
+        fn try_from(c: char8) -> Result<char7, CapacityMismatch> { c.try_to_char7() }
     }
     // string comparisons via conversion to charu
     impl PartialEq<str> for char8 { fn eq(&self, s: &str) -> bool { // RHS
@@ -119,12 +119,12 @@ mod c16 {
     impl From<char16> for charu { fn from(c: char16) -> charu { c.to_charu() } }
 
     impl TryFrom<char16> for char7 {
-        type Error = DataOverflow;
-        fn try_from(c: char16) -> Result<char7, DataOverflow> { c.try_to_char7() }
+        type Error = CapacityMismatch;
+        fn try_from(c: char16) -> Result<char7, CapacityMismatch> { c.try_to_char7() }
     }
     impl TryFrom<char16> for char8 {
-        type Error = DataOverflow;
-        fn try_from(c: char16) -> Result<char8, DataOverflow> { c.try_to_char8() }
+        type Error = CapacityMismatch;
+        fn try_from(c: char16) -> Result<char8, CapacityMismatch> { c.try_to_char8() }
     }
 
     // string comparisons via conversion to charu
@@ -146,16 +146,16 @@ mod utf8 {
     impl From<charu> for char { fn from(c: charu) -> char { c.to_char() } }
 
     impl TryFrom<charu> for char7 {
-        type Error = DataOverflow;
-        fn try_from(c: charu) -> Result<char7, DataOverflow> { c.try_to_char7() }
+        type Error = CapacityMismatch;
+        fn try_from(c: charu) -> Result<char7, CapacityMismatch> { c.try_to_char7() }
     }
     impl TryFrom<charu> for char8 {
-        type Error = DataOverflow;
-        fn try_from(c: charu) -> Result<char8, DataOverflow> { c.try_to_char8() }
+        type Error = CapacityMismatch;
+        fn try_from(c: charu) -> Result<char8, CapacityMismatch> { c.try_to_char8() }
     }
     impl TryFrom<charu> for char16 {
-        type Error = DataOverflow;
-        fn try_from(c: charu) -> Result<char16, DataOverflow> { c.try_to_char16() }
+        type Error = CapacityMismatch;
+        fn try_from(c: charu) -> Result<char16, CapacityMismatch> { c.try_to_char16() }
     }
     // string comparisons
     impl PartialEq<str> for charu { fn eq(&self, s: &str) -> bool { // RHS
@@ -175,15 +175,15 @@ mod c {
     impl From<char> for charu { fn from(c: char) -> charu { charu::from_char(c) } }
 
     impl TryFrom<char> for char7 {
-        type Error = DataOverflow;
-        fn try_from(c: char) -> Result<char7, DataOverflow> { char7::try_from_char(c) }
+        type Error = CapacityMismatch;
+        fn try_from(c: char) -> Result<char7, CapacityMismatch> { char7::try_from_char(c) }
     }
     impl TryFrom<char> for char8 {
-        type Error = DataOverflow;
-        fn try_from(c: char) -> Result<char8, DataOverflow> { char8::try_from_char(c) }
+        type Error = CapacityMismatch;
+        fn try_from(c: char) -> Result<char8, CapacityMismatch> { char8::try_from_char(c) }
     }
     impl TryFrom<char> for char16 {
-        type Error = DataOverflow;
-        fn try_from(c: char) -> Result<char16, DataOverflow> { char16::try_from_char(c) }
+        type Error = CapacityMismatch;
+        fn try_from(c: char) -> Result<char16, CapacityMismatch> { char16::try_from_char(c) }
     }
 }

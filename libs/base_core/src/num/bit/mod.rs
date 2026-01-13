@@ -1,6 +1,6 @@
 // devela_base_core::num::bit
 //
-//! Bitwise operations.
+#![doc = crate::_DOC_NUM_BIT!()]
 //
 
 // internals

@@ -1,4 +1,4 @@
-// devela_base_core::data::bit::wise::tests
+// devela_base_core::num::bit::wise::tests
 //
 // TOC
 // - bit_mask_range
@@ -19,7 +19,7 @@ fn bit_mask_range() {
     debug_assert![Bitwise::<u8>::mask_checked_range(0, 8).is_err()];
     debug_assert![Bitwise::<u8>::mask_checked_range(4, 1).is_err()];
 
-    // NOTE: panics are tested in devela::data::bit::tests
+    // NOTE: panics are tested in devela::num::bit::tests
 }
 #[test] #[rustfmt::skip]
 fn bit_ops() {

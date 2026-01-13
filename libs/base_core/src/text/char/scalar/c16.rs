@@ -4,7 +4,7 @@
 //
 
 use super::*;
-use crate::{Char, CharAscii, DataOverflow, text::char::NonSurrogateU16};
+use crate::{CapacityMismatch, Char, CharAscii, text::char::NonSurrogateU16};
 
 impl char16 {
     /* private helper fns */
@@ -56,27 +56,27 @@ impl char16 {
     pub const fn from_char8(c: char8) -> char16 {
         char16::new_unchecked(c.0 as u16)
     }
-    /// Tries to convert a `charu` to `char8`.
+    /// Tries to convert a `charu` to `char16`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 8 bits.
-    pub const fn try_from_charu(c: charu) -> Result<char16, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 16 bits.
+    pub const fn try_from_charu(c: charu) -> Result<char16, CapacityMismatch> {
         let scalar = c.to_scalar();
         if Char(scalar).len_bytes() == 1 {
             Ok(char16::new_unchecked(scalar as u16))
         } else {
-            Err(DataOverflow(Some(scalar as usize)))
+            Err(CapacityMismatch::too_large(scalar as usize, u16::MAX as usize))
         }
     }
     /// Tries to convert a `char` to `char16`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if the character can't fit in 16 bits.
-    pub const fn try_from_char(c: char) -> Result<char16, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if the character can't fit in 16 bits.
+    pub const fn try_from_char(c: char) -> Result<char16, CapacityMismatch> {
         if Char(c as u32).len_bytes() <= 2 {
             Ok(char16::new_unchecked(c as u32 as u16))
         } else {
-            Err(DataOverflow(Some(c as u32 as usize)))
+            Err(CapacityMismatch::too_large(c as u32 as usize, u16::MAX as usize))
         }
     }
 
@@ -85,11 +85,11 @@ impl char16 {
     /// Tries to convert this `char16` to `CharAscii`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
+    /// Returns [`CapacityMismatch`] if `self` can't fit in 7 bits.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
-    pub const fn try_to_char_ascii(self) -> Result<CharAscii, DataOverflow> {
+    pub const fn try_to_char_ascii(self) -> Result<CharAscii, CapacityMismatch> {
         if Char(self.to_scalar()).is_ascii() {
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             if let Some(c) = CharAscii::from_u8(self.0.get() as u8) {
@@ -102,21 +102,21 @@ impl char16 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { CharAscii::from_u8_unchecked(self.0.get() as u8) });
         }
-        Err(DataOverflow(Some(self.to_scalar() as usize)))
+        Err(CapacityMismatch::too_large(self.to_scalar() as usize, 127))
     }
 
     /// Tries to convert this `char16` to `char7`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if `self` can't fit in 7 bits.
-    pub const fn try_to_char7(self) -> Result<char7, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if `self` can't fit in 7 bits.
+    pub const fn try_to_char7(self) -> Result<char7, CapacityMismatch> {
         char7::try_from_char16(self)
     }
     /// Tries to convert this `char16` to `char8`.
     ///
     /// # Errors
-    /// Returns [`DataOverflow`] if `self` can't fit in 8 bits.
-    pub const fn try_to_char8(self) -> Result<char8, DataOverflow> {
+    /// Returns [`CapacityMismatch`] if `self` can't fit in 8 bits.
+    pub const fn try_to_char8(self) -> Result<char8, CapacityMismatch> {
         char8::try_from_char16(self)
     }
     /// Converts this `char8` to `charu`.
