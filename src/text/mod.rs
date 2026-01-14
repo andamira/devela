@@ -22,6 +22,7 @@ pub mod errors {
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 pub mod char;
 pub mod fmt;
+pub mod layout;
 pub mod parse;
 pub mod str;
 // mod template; // WIP
@@ -37,6 +38,7 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
             char::_all::*,
             errors::*,
             fmt::_all::*,
+            layout::_all::*,
             parse::_all::*,
             str::_all::*,
             // template::*, // WIP

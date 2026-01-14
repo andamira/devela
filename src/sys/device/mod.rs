@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_SYS_DEVICE!()]
 //!
-#![doc = crate::_QUOTE_SYS_DEVICE!()]
+#![doc = crate::_QUO_SYS_DEVICE!()]
 //!
 //
 

@@ -4,7 +4,7 @@
 #![doc = crate::_DOC_RUN_MODULES!()]
 #![doc = crate::_doc!(flat:"run")]
 #![doc = crate::_doc!(newline)]
-#![doc = crate::_QUOTE_RUN!()]
+#![doc = crate::_QUO_RUN!()]
 //!
 //
 // safety

@@ -14,33 +14,35 @@ crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
     crate::_doc!(modules: crate; text: char, errors, fmt, parse, str); // grapheme
 }
 
-// mod _wip_cell;
-// mod _wip_draw;
+// mod cell; // TextCell, TextCellGrid WIP
+// mod draw; // TextDraw WIP
+
+mod lut; // TextLut
 
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
-pub mod char; // Char, CharAscii, CharIter, UnicodeScalar, char[7|8|16|utf8]
-pub mod errors;
-pub mod fmt;
-// pub mod layout; // WIP
-pub mod lut; // TextLut
-pub mod parse;
-pub mod str;
+pub mod char; // Char[Ascii|Iter], Digits, UnicodeScalar, char[7|8|16|utf8]
+pub mod errors; // Invalid[Char|Text|Utf8], TextError, TextResult
+// pub mod grapheme; // Grapheme[Boundary|Machine|Scanner|U8|…] (in [base_text])
+pub mod fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
+pub mod layout; // TextLayout*, …
+pub mod parse; // ByteSearch
+pub mod str; // Str, StringNonul, StringU*
 
 crate::structural_mods! { // mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
+            // cell::_all::*,
+            // draw::_all::*,
             lut::*,
-            // _wip_cell::*,
-            // _wip_draw::_all::*,
         };
     }
     _pub_mods {
         #[doc(inline)]
-        pub use super::errors::*;
         pub use super::{
             char::_all::*,
             fmt::_all::*,
-            // layout::_all::*, // WIP
+            errors::*,
+            layout::_all::*,
             parse::_all::*,
             str::_all::*,
         };

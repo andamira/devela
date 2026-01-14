@@ -1,6 +1,6 @@
 // devela_base_core::text::char::iter::str
 
-use crate::{Char, CharIter, PhantomData, char7, char8, char16, charu, is, slice};
+use crate::{Char, CharIter, char7, char8, char16, charu, is, slice};
 
 /// Methods available when constructed from a string slice.
 impl<'a> CharIter<'a, &str> {
@@ -9,7 +9,7 @@ impl<'a> CharIter<'a, &str> {
     /// Returns a new iterator over the Unicode scalars of a `string` slice.
     #[inline(always)] #[rustfmt::skip]
     pub const fn new(string: &'a str) -> Self {
-        Self { bytes: string.as_bytes(), pos: 0, _source: PhantomData }
+        Self::_new(string.as_bytes(), 0)
     }
 
     /// Returns a new iterator over the Unicode scalars of a `string` slice,
@@ -19,7 +19,7 @@ impl<'a> CharIter<'a, &str> {
     #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn new_at(string: &'a str, index: usize) -> Option<Self> {
         if string.is_char_boundary(index) {
-            Some(Self { bytes: string.as_bytes(), pos: index, _source: PhantomData })
+            Some(Self::_new(string.as_bytes(), index))
         } else {
             None
         }

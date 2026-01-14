@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(newline)]
 //!
 #![doc = crate::_doc!(extends: hash)]
-#![doc = crate::_QUOTE_DATA_CODEC!()]
+#![doc = crate::_QUO_DATA_CODEC!()]
 //!
 //! ## Determinism & Side Effects
 //! Encoding and decoding should be **deterministic**.

@@ -189,12 +189,16 @@ mod impl_devela_base_core {
         CharAscii, char7, char8, char16, charu, charu_niche,
         // text::fmt
         FmtNumConf, FmtNumSign,
+        // text::layout
+        TextFit, TextLayout, TextLayoutStep,
+        TextCohesion, TextCursor, TextSpan, TextSymbol,
+        TextIndex,
         // text::str
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
         // ui
         // work
     };
-    // text
+    // text::grapheme
     #[cfg(feature = "grapheme")]
     pub use crate::{GraphemeNonul, GraphemeU8};
     // -------------------------------------------------------------------------
@@ -228,18 +232,22 @@ mod impl_devela_base_core {
     _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];
     _impl_init![%Sealed%: <T> Interval<T>];
 
-    // text
+    // text::char
     _impl_init![%Sealed%: CharAscii, char7, char8, char16, charu, charu_niche];
+    // text::fmt
     _impl_init![%Sealed%: FmtNumConf, FmtNumSign];
-
+    // text::layout
+    _impl_init![%Sealed%: TextFit, TextLayout, TextLayoutStep,
+        TextCohesion, TextCursor, TextSpan, TextSymbol,
+        TextIndex];
+    // text::str
     impl<const CAP: usize> Sealed for StringNonul<CAP> {}
     macro_rules! _stringu {
         () => { _stringu![u8, u16, u32, usize]; };
         ($($t:ty),+ $(,)?) => { $( paste! { _stringu![@[<String $t:camel>], $t]; } )+ };
         (@$name:ident, $t:ty) => { impl<const CAP: usize> Sealed for $name<CAP> {} };
-    }
-    _stringu!();
-
+    } _stringu!();
+    // text::grapheme
     #[cfg(feature = "grapheme")]
     impl<const CAP: usize> Sealed for GraphemeNonul<CAP> {}
     #[cfg(feature = "grapheme")]

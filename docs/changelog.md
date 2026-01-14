@@ -629,6 +629,10 @@ re-export hidden workspace dependencies from `_dep`.
   - implement `PartialEq` between string and grapheme types.
   - make all methods *const*.
 
+### layout
+- new module `text::layout`.
+- new types: `TextCohesion`, `TextCursor`, `TextFit`,  `TextIndex`, `TextLayout`, `TextLayoutStep`, `TextSpan`, `TextSymbol`, `TextUnit`.
+
 ### str
 - remove methods: `to_cstring`, from `String*`.
 - make `chars` methods *const* when possible.

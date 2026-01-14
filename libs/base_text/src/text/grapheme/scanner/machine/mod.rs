@@ -15,7 +15,7 @@ use state::GraphemeMachineState;
 mod tests;
 
 #[doc = crate::_tags!(text)]
-#[doc = concat!["Streaming ", crate::_ABBR_EGC!(), "boundary detector."]]
+#[doc = concat!["Streaming ", crate::_ABBR_EGC!(), " boundary detector."]]
 /// Streaming grapheme cluster boundary detector.
 #[doc = crate::_doc_location!("text/grapheme")]
 ///

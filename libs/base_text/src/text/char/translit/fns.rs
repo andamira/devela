@@ -2,6 +2,7 @@
 
 use crate::ASCII_TRANSLIT_BLOCKS;
 
+#[doc = crate::_tags!(text)]
 /// Returns the ASCII transliteration of a Unicode scalar code point.
 #[doc = crate::_doc_location!("text/char")]
 ///

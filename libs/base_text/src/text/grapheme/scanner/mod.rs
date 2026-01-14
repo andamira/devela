@@ -6,7 +6,10 @@
 mod machine; // GraphemeBoundary, GraphemeMachine
 mod properties; // GraphemeProps, GraphemePropCb, GraphemePropInCb
 mod scanner; // GraphemeScanner
+
 mod trie;
+
+mod layout; // text-layout methods for GraphemeScanner
 
 crate::structural_mods! { // _mods
     _mods {

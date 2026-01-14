@@ -4,7 +4,7 @@
 #![doc = crate::_DOC_UI_MODULES!()]
 #![doc = crate::_doc!(flat:"ui")]
 #![doc = crate::_doc!(newline)]
-#![doc = crate::_QUOTE_UI!()]
+#![doc = crate::_QUO_UI!()]
 //
 // safety
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]

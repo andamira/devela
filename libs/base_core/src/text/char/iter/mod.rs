@@ -5,8 +5,10 @@
 
 use crate::{IteratorFused, PhantomData};
 
-mod str; // methods over &str
 mod bytes; // methods over &[u8]
+mod str; // methods over &str
+
+mod layout; // common methods related to text-layout
 
 #[doc = crate::_tags!(text iterator)]
 /// An iterator over Unicode scalars.
@@ -20,6 +22,11 @@ pub struct CharIter<'a, Source> {
     bytes: &'a [u8],
     pos: usize,
     _source: PhantomData<Source>,
+}
+impl<'a, Source> CharIter<'a, Source> {
+    pub(crate) const fn _new(bytes: &'a [u8], pos: usize) -> Self {
+        Self { bytes, pos, _source: PhantomData }
+    }
 }
 
 impl<'a> Iterator for CharIter<'a, &'a str> {

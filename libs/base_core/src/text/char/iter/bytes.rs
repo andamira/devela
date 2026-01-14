@@ -1,6 +1,6 @@
 // devela_base_core::text::char::iter::bytes
 
-use crate::{Char, CharIter, PhantomData, char7, char8, char16, charu, is, unwrap};
+use crate::{Char, CharIter, char7, char8, char16, charu, is, unwrap};
 
 /// Methods available when constructed from a byte slice.
 impl<'a> CharIter<'a, &[u8]> {
@@ -8,7 +8,7 @@ impl<'a> CharIter<'a, &[u8]> {
 
     /// Returns a new iterator over the Unicode scalars of a slice of `bytes`.
     pub const fn new(bytes: &'a [u8]) -> Self {
-        Self { bytes, pos: 0, _source: PhantomData }
+        Self::_new(bytes, 0)
     }
 
     /// Returns a new iterator over the Unicode scalars of a slice of `bytes`,
@@ -18,7 +18,7 @@ impl<'a> CharIter<'a, &[u8]> {
     #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn new_at(bytes: &'a [u8], index: usize) -> Option<Self> {
         if Char(bytes).is_utf8_boundary(index) {
-            Some(Self { bytes, pos: index, _source: PhantomData })
+            Some(Self::_new(bytes, index))
         } else {
             None
         }

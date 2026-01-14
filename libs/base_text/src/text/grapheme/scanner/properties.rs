@@ -4,7 +4,7 @@ use super::trie::graphemes_lookup;
 use crate::{Mem, charu, impl_trait};
 
 #[doc = crate::_tags!(text)]
-#[doc = concat![crate::_ABBR_EGC!(), "property values from Unicode Standard Annex #29."]]
+#[doc = concat![crate::_ABBR_EGC!(), " property values from Unicode Standard Annex #29."]]
 #[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Used by the grapheme boundary detection algorithm to determine where
@@ -122,7 +122,7 @@ impl GraphemePropInCb {
 }
 
 #[doc = crate::_tags!(text)]
-#[doc = concat!["Combined ", crate::_ABBR_EGC!(), "break properties for a single code point."]]
+#[doc = concat!["Combined ", crate::_ABBR_EGC!(), " break properties for a single code point."]]
 #[doc = crate::_doc_location!("text/grapheme")]
 ///
 /// Packed representation of both [`GraphemePropCb`] and [`GraphemePropInCb`]
