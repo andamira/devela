@@ -10,7 +10,7 @@ use crate::{
 };
 // use crate::{EventKind, EventWindow};
 
-#[doc = crate::_tags!(linux event)]
+#[doc = crate::_tags!(unix event)]
 /// Wrapper for an XCB event.
 #[doc = crate::_doc_location!("sys/device/display/x11")]
 #[derive(Debug)]

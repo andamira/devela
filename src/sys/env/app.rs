@@ -264,7 +264,7 @@ impl AppEnv for AppXdg {
     }
 }
 
-#[doc = crate::_tags!(platform)]
+#[doc = crate::_tags!(unix)]
 /// Unix enviroment for directories.
 #[doc = crate::_doc_location!("sys/env")]
 ///

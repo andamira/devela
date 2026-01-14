@@ -5,7 +5,7 @@
 
 use crate::{Display, Error, FmtResult, Formatter};
 
-#[doc = crate::_tags!(linux error)]
+#[doc = crate::_tags!(unix error)]
 /// XCB/X11 error categories.
 #[doc = crate::_doc_location!("sys/device/display/x11")]
 ///

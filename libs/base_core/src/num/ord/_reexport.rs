@@ -3,13 +3,13 @@
 //!
 //
 
-use crate::{_TAG_NUM, _TAG_RESULT, _reexport};
+use crate::{_TAG_NUM, _reexport, _tags};
 
 _reexport! { rust: core::cmp, location: "num/ord", tag: _TAG_NUM!(),
     doc: "A helper struct for reverse ordering.",
     Reverse
 }
-_reexport! { rust: core::cmp, location: "num/ord", tag: _TAG_NUM!() _TAG_RESULT!(),
+_reexport! { rust: core::cmp, location: "num/ord", tag: _tags!(num result),
     doc: "The result of a comparison between two values.",
     Ordering
 }

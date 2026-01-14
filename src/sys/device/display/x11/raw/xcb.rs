@@ -69,7 +69,7 @@ pub(crate) type xcb_timestamp_t = u32;
 
 /* connection */
 
-#[doc = crate::_tags!(ffi)]
+#[doc = crate::_tags!(unix ffi)]
 /// - <https://xcb.freedesktop.org/manual/structxcb__connection__t.html>
 #[repr(C)]
 #[derive(Debug)]
@@ -101,7 +101,7 @@ unsafe extern "C" {
 
 /* setup structs */
 
-#[doc = crate::_tags!(ffi)]
+#[doc = crate::_tags!(unix ffi)]
 /// Xcb setup.
 /// - <https://xcb.freedesktop.org/manual/structxcb__setup__t.html>
 #[repr(C)]
@@ -129,7 +129,7 @@ pub(crate) struct xcb_setup_t {
     pad1: [u8; 4],
 }
 
-#[doc = crate::_tags!(ffi)]
+#[doc = crate::_tags!(unix ffi)]
 /// A screen.
 /// - <https://xcb.freedesktop.org/manual/structxcb__screen__t.html>
 #[repr(C)]
@@ -153,7 +153,7 @@ pub(crate) struct xcb_screen_t {
     pub allowed_depths_len: u8,
 }
 
-#[doc = crate::_tags!(ffi iterator)]
+#[doc = crate::_tags!(unix ffi iterator)]
 /// A screen iterator.
 ///
 /// Returned by [`xcb_setup_roots_iterator`].
@@ -231,7 +231,7 @@ unsafe extern "C" {
 
 /* image/rectangle */
 
-#[doc = crate::_tags!(ffi)]
+#[doc = crate::_tags!(unix ffi)]
 /// A rectangle.
 /// - <https://xcb.freedesktop.org/manual/structxcb__rectangle__t.html>
 #[repr(C)]
@@ -288,7 +288,7 @@ unsafe extern "C" {
 /// Cookie returned by `xcb_intern_atom`, used to retrieve the reply.
 pub(crate) type xcb_intern_atom_cookie_t = u32;
 
-#[doc = crate::_tags!(ffi)]
+#[doc = crate::_tags!(unix ffi)]
 /// Generic cookie.
 ///
 /// - <https://xcb.freedesktop.org/manual/structxcb__void__cookie__t.html>
@@ -298,7 +298,7 @@ pub(crate) struct xcb_void_cookie_t {
     sequence: u32,
 }
 
-#[doc = crate::_tags!(ffi)]
+#[doc = crate::_tags!(unix ffi)]
 /// - <https://xcb.freedesktop.org/manual/structxcb__intern__atom__reply__t.html>
 #[repr(C)]
 #[derive(Debug)]
@@ -333,7 +333,7 @@ unsafe extern "C" {
 
 /* error / event */
 
-#[doc = crate::_tags!(ffi error)]
+#[doc = crate::_tags!(unix ffi error)]
 /// A generic error.
 /// - <https://xcb.freedesktop.org/manual/structxcb__generic__error__t.html>
 #[repr(C)]
@@ -350,7 +350,7 @@ pub struct xcb_generic_error_t {
     pub full_sequence: u32,
 }
 
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// A generic event.
 /// - <https://xcb.freedesktop.org/manual/structxcb__generic__event__t.html>
 #[repr(C)]
@@ -363,7 +363,7 @@ pub(crate) struct xcb_generic_event_t {
     pub full_sequence: u32,
 }
 
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// A key was pressed/released.
 /// - <https://man.archlinux.org/man/xcb_key_press_event_t.3.en.txt>
 #[repr(C)]
@@ -405,7 +405,7 @@ pub(crate) struct xcb_key_press_event_t {
 pub type xcb_button_press_event_t = xcb_key_press_event_t;
 pub type xcb_motion_notify_event_t = xcb_key_press_event_t;
 
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// A window was exposed (damaged).
 /// - <https://man.archlinux.org/man/xcb_expose_event_t.3.en.txt>
 #[repr(C)]
@@ -438,7 +438,7 @@ pub(crate) struct xcb_expose_event_t {
     _pad1: [u8; 2],
 }
 
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// The pointer is in a different window.
 /// - <https://man.archlinux.org/man/xcb_enter_notify_event_t.3.en.txt>
 #[repr(C)]
@@ -483,7 +483,7 @@ pub(crate) struct xcb_enter_notify_event_t {
 /// - response_type is `XCB_LEAVE_NOTIFY`.
 pub type xcb_leave_notify_event_t = xcb_enter_notify_event_t;
 
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// A window was mapped.
 /// - <https://man.archlinux.org/man/xcb_map_notify_event_t.3.en.txt>
 #[repr(C)]
@@ -503,7 +503,7 @@ pub(crate) struct xcb_map_notify_event_t {
     pub override_redirect: u8,
     _pad1: [u8; 3],
 }
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// A window is unmapped.
 /// - <https://man.archlinux.org/man/xcb_unmap_notify_event_t.3.en.txt>
 ///
@@ -514,7 +514,7 @@ pub(crate) struct xcb_map_notify_event_t {
 ///   of the window's parent when window had a win_gravity of UnmapGravity.
 pub type xcb_unmap_notify_event_t = xcb_map_notify_event_t;
 
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// A `ClientMessage` event sent by other clients or the window manager.
 /// - <https://man.archlinux.org/man/xcb_client_message_event_t.3.en.txt>
 ///
@@ -539,7 +539,7 @@ pub(crate) struct xcb_client_message_event_t {
     pub data: xcb_client_message_data_t,
 }
 
-#[doc = crate::_tags!(ffi)]
+#[doc = crate::_tags!(unix ffi)]
 /// Data from a client message.
 /// - <https://xcb.freedesktop.org/manual/unionxcb__client__message__data__t.html>.
 #[repr(C)]
@@ -553,7 +553,7 @@ crate::impl_trait! { fmt::Debug for xcb_client_message_data_t |self,f|
     f.write_str("xcb_client_message_data_t { … }")
 }
 
-#[doc = crate::_tags!(ffi event)]
+#[doc = crate::_tags!(unix ffi event)]
 /// Geometry update for a window: includes new x/y, width/height, and stacking info.
 /// - <https://man.archlinux.org/man/xcb_configure_notify_event_t.3.en.txt>
 ///

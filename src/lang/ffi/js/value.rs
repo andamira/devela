@@ -59,10 +59,9 @@ impl JsValue {
     /// ```
     /// # Panics
     /// If buffer is too small (debug builds only).
-    ///
     pub fn encode_into(&self, buf: &mut [u8]) -> usize {
         let mut offset = 0;
-        buf[offset] = self.type_tag(); // 1 Byte
+        buf[offset] = self.type_tag();
         offset += 1;
 
         match self {

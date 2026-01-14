@@ -2,6 +2,11 @@
 //
 //! Methods for matrices.
 //
+// TODO
+// - rank
+// - is_square
+// - is ... (see paper)
+// - impl ops
 
 use crate::{Matrix, NumConst, is};
 

@@ -29,7 +29,7 @@ pub struct MiniquadPixels {
     pub pixels: Vec<u8>,
     width: u32,
     height: u32,
-    viewport: (f32, f32, f32, f32), // x, y, w, h IMPROVE: use Extent2d
+    viewport: (f32, f32, f32, f32), // x, y, w, h IMPROVE: use Extent<f32, 2>
     //
     interpolation: bool,
     maintain_aspect_ratio: bool,
@@ -74,7 +74,7 @@ impl MiniquadPixels {
     }
 
     /// Returns the current viewport size
-    // IMPROVE: Use Extent2d
+    // IMPROVE: Use Extent<f32, 2>
     pub fn viewport(&self) -> (f32, f32, f32, f32) {
         self.viewport
     }

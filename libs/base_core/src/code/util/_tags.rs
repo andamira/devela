@@ -133,6 +133,7 @@ define_symbol_tags! {
     _TAG_TERM, "Terminal platform", "🮖"; // 🮴 ,🮖,🖳 ,⌨️ ,⎚,❯,🗔 ,
     _TAG_TEXT, "Text", "𝐓"; // 𝐓, 𝓣, 𝔸, 🄰
     _TAG_TIME, "Time", "🕘"; // 🕘, ⏳, 📅
+    _TAG_UNIX, "Unix platform", "🐚"; // 🐚,🐡(bsd)
     _TAG_UI, "User interface", "▦"; // ▦,🗔  ,▣,⌗,◧,◨,⊞
     _TAG_UID, "Identification", "🫆"; // 🫆, 🆔, (fingerprint, id-button)
     // Abstractions whose primary concern is the semantic meaning or

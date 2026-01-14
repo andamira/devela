@@ -871,7 +871,7 @@ unsafe_op_in_unsafe_fn = "deny" # unsafe use inside unsafe fn without unsafe blo
 #
 # https://doc.rust-lang.org/rustc/lints/listing/warn-by-default.html
 missing_docs = "warn" # missing docs for public items
-missing_debug_implementations = "warn" # missing Debug impls for public items
+# missing_debug_implementations = "warn" # missing Debug impls for public items
 #
 # https://doc.rust-lang.org/rustc/lints/listing/allowed-by-default.html
 stable_features = "allow" # a feature attribute that has since been made stable

@@ -13,6 +13,7 @@
 //   - div_ties_odd
 //
 // TODO: change panic for Result<T, NonZeroRequired>
+// TOOD: change return for div_rem to tuple
 
 use super::super::_docs::*;
 use crate::{Int, is, paste};

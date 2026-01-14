@@ -8,6 +8,7 @@ mod _reexport; // SYMLINK from /src/num/niche/_reexport_core.rs
 mod absence; // MaybeNiche, NonNiche
 mod macros; // niche_prim!, ne!, nv!, nz!, (NicheNew)
 mod mem; // NonExtreme*, NonValue*
+// mod norm; // Norm WIP
 
 crate::structural_mods! { // _mods, _reexports, _workspace_internals
     _mods {
@@ -16,6 +17,7 @@ crate::structural_mods! { // _mods, _reexports, _workspace_internals
             absence::*,
             macros::{niche_prim, ne, nv, nz},
             mem::*,
+            // norm::*, // WIP
         };
     }
     _reexports {

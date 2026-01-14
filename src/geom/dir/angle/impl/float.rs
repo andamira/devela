@@ -63,10 +63,10 @@ macro_rules! impl_angle {
             }
 
             /// Returns the angle normalized to the non-inclusive range -1 to 1.
-            pub const fn normalize(self) -> Self { Self::new(Float(self.turn).const_fract().0) }
+            pub const fn normalize(self) -> Self { Self::new(Float(self.turn).fract().0) }
 
             /// Sets the angle normalized to the non-inclusive range -1 to 1.
-            pub const fn set_normalized(&mut self) { self.turn = Float(self.turn).const_fract().0; }
+            pub const fn set_normalized(&mut self) { self.turn = Float(self.turn).fract().0; }
 
             /* direction */
 
