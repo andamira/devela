@@ -1,32 +1,14 @@
 // devela_base_core::text::layout::engine
 //
-//! Defines [`TextFit`], [`TextLayout`], [`TextLayoutStep`].
+//! Defines [`TextFit`], [`TextLayoutStep`].
 //!
-//! > Everything that does layout or reports layout.
+//! > Everything that does layout.
 //
 
 use crate::{
-    _impl_init, TextCohesion, TextCursor, TextIndex, TextSpan, TextSymbol, TextUnit, is, unwrap,
+    _impl_init, CharIter, Slice, TextCohesion, TextCursor, TextFit, TextIndex, TextLayoutStep,
+    TextSpan, TextSymbol, TextUnit, is, unwrap,
 };
-
-#[doc = crate::_tags!(text layout result)]
-/// Result of testing whether text fits within an inline extent.
-#[doc = crate::_doc_location!("text/layout")]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-pub enum TextFit {
-    /// All required symbols fit within the extent.
-    Full,
-
-    /// Some symbols fit, but space was exhausted.
-    Partial,
-
-    /// No symbols fit within the extent.
-    ///
-    /// This is the default.
-    #[default]
-    None,
-}
-_impl_init![ConstInitCore: Self::None => TextFit];
 
 #[doc = crate::_tags!(text layout namespace)]
 /// Text layout engine configuration.
@@ -37,7 +19,7 @@ _impl_init![ConstInitCore: Self::None => TextFit];
 /// but does not store mutable state.
 ///
 /// Layout proceeds incrementally via repeated layout steps.
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TextLayout;
 _impl_init![ConstInitCore: Self => TextLayout];
 
@@ -136,42 +118,70 @@ impl TextLayout {
         };
         TextLayoutStep { span_count, consumed, carry, fit }
     }
-}
 
-#[doc = crate::_tags!(text layout result)]
-/// Result of a single text layout step.
-#[doc = crate::_doc_location!("text/layout")]
-///
-/// A layout step consumes a prefix of the symbol stream within a given inline extent,
-/// and reports:
-/// - how much space was used
-/// - which spans were produced
-/// - whether layout should continue
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct TextLayoutStep {
-    /// Number of valid spans written to the output buffer.
-    pub span_count: usize,
+    /* */
 
-    /// Total inline space consumed by this step.
-    pub consumed: TextUnit,
-
-    /// Continuation cursor, if not all symbols were consumed.
+    /// Prepares layout symbols from the Unicode scalars of `text` using the
+    /// default character-based symbol policy, and returns the initialized prefix
+    /// of the provided buffer.
     ///
-    /// `None` indicates that layout reached the end of the symbol stream.
-    pub carry: Option<TextCursor>,
+    /// This is a convenience helper for common cases such as terminal-style
+    /// text layout. Performs no allocation and retains no state.
+    ///
+    /// The default policy typically assigns:
+    /// - unit width = 1
+    /// - `Breakable` cohesion to whitespace
+    /// - `Atomic` cohesion otherwise
+    pub const fn prepare_symbols_from_chars<'a>(
+        &self,
+        text: &'a str,
+        buf: &'a mut [TextSymbol],
+    ) -> &'a [TextSymbol] {
+        let len = CharIter::<&str>::new(text).fill_text_symbols(buf);
+        Slice::range_to(buf, len)
+    }
 
-    /// Result of testing whether the text fit the available extent.
-    pub fit: TextFit,
-}
-impl TextLayoutStep {
-    /// Creates a new text layout step outcome.
-    pub const fn new(
-        span_count: usize,
-        consumed: TextUnit,
-        carry: Option<TextCursor>,
-        fit: TextFit,
-    ) -> Self {
-        TextLayoutStep { span_count, consumed, carry, fit }
+    /// Fills `out` with layout symbols derived from the Unicode scalars of `text`,
+    /// using a caller-provided mapping function.
+    ///
+    /// Each character is visited in order and transformed into a [`TextSymbol`]
+    /// by the closure. Stops when either the text ends or the buffer is full.
+    ///
+    /// This is a low-level, allocation-free escape hatch for custom or experimental
+    /// symbol policies. No layout or segmentation is performed.
+    pub fn fill_symbols_from_chars_with<F>(text: &str, out: &mut [TextSymbol], mut f: F) -> usize
+    where
+        F: FnMut(char) -> TextSymbol,
+    {
+        let mut it = CharIter::<&str>::new(text);
+        let mut len = 0;
+        while let Some(ch) = it.next_char() {
+            is![len == out.len(); break];
+            out[len] = f(ch);
+            len += 1;
+        }
+        len
+    }
+
+    /// Like [`fill_symbols_from_chars_with`][Self::fill_symbols_from_chars_with], but the
+    /// mapping closure also receives the ordinal index of the character in the input sequence.
+    pub fn fill_symbols_from_chars_with_index<F>(
+        text: &str,
+        out: &mut [TextSymbol],
+        mut f: F,
+    ) -> usize
+    where
+        F: FnMut(usize, char) -> TextSymbol,
+    {
+        let mut it = CharIter::<&str>::new(text);
+        let mut i = 0;
+        let mut len = 0;
+        while let Some(ch) = it.next_char() {
+            is![len == out.len(); break];
+            out[len] = f(i, ch);
+            i += 1;
+            len += 1;
+        }
+        len
     }
 }
-_impl_init![ConstInitCore: Self::new(0, TextUnit::INIT, None, TextFit::INIT) => TextLayoutStep];

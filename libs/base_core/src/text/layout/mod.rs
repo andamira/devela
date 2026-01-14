@@ -7,7 +7,8 @@
 #[cfg(test)]
 mod tests;
 
-mod engine; // TextFit, TextLayout, TextLayoutStep
+mod engine; // TextLayout
+mod result; // TextFit, TextLayoutStep
 mod symbol; // TextCohesion, TextCursor, TextSpan, TextSymbol,
 mod unit; // TextUnit, TextIndex
 
@@ -15,6 +16,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             engine::*,
+            result::*,
             symbol::*,
             unit::*,
         };
