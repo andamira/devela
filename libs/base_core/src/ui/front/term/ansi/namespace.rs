@@ -3,7 +3,7 @@
 //! Defines the [`Ansi`] namespace for emitting ANSI codes.
 //
 
-use crate::{_ansi_consts, Digits, slice};
+use crate::{_ansi_consts, Digits, StringNonul, slice, write_at};
 
 #[doc = crate::_tags!(term namespace)]
 /// ANSI escape codes.
@@ -13,7 +13,7 @@ use crate::{_ansi_consts, Digits, slice};
 /// Constants ending with `_B` return a byte array. Those without it return a string slice.
 ///
 /// Functions ending with `_B` return either an array or a byte slice.
-/// Those without it return a [`StringU8`][crate::StringU8] or a string slice, respectively.
+/// Those without it return a [`StringNonul`] or a string slice, respectively.
 ///
 /// # Example
 /// ```
@@ -64,13 +64,7 @@ impl Ansi {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
         let mut index = 2;
-        let digit_count = Digits(n).count_digits10();
-        let mut i = 0;
-        while i < digit_count {
-            buffer[index] = Digits(n).digit_at_index10(digit_count - 1 - i);
-            index += 1;
-            i += 1;
-        }
+        index += Digits(n).write_digits10(buffer, index);
         buffer[index] = final_byte;
         slice![buffer, ..=index]
     }
@@ -152,6 +146,12 @@ impl Ansi {
             [b'\x1b', b'[', r[0], r[1], r[2], r[3], b';', c[0], c[1], c[2], c[3], b'H']
         }
     }
+    /// Returns a string with the code to move the cursor to the specified position (col, row).
+    pub const fn CURSOR_MOVE(col: u16, row: u16) -> StringNonul<14> {
+        let mut buf = [0; 14];
+        let _ = Self::CURSOR_MOVE_N(&mut buf, col, row);
+        StringNonul::<14>::_from_array_trusted(buf)
+    }
     _ansi_consts! {
         /// Returns a slice with the code to move the cursor to the specified position (col, row).
         ///
@@ -163,22 +163,9 @@ impl Ansi {
             buffer[0] = b'\x1b';
             buffer[1] = b'[';
             let mut index = 2;
-            let mut i = 0;
-            let row_digits = Digits(row).count_digits10();
-            while i < row_digits {
-                buffer[index] = Digits(row).digit_at_index10(row_digits - 1 - i);
-                index += 1;
-                i += 1;
-            }
-            buffer[index] = b';';
-            index += 1;
-            let col_digits = Digits(col).count_digits10();
-            let mut i = 0;
-            while i < col_digits {
-                buffer[index] = Digits(col).digit_at_index10(col_digits - 1 - i);
-                index += 1;
-                i += 1;
-            }
+            index += Digits(row).write_digits10(buffer, index);
+            write_at![buffer, index, b';'];
+            index += Digits(col).write_digits10(buffer, index);
             buffer[index] = b'H';
             slice![buffer, ..=index]
         }
@@ -530,5 +517,7 @@ mod tests {
         assert_eq!(result, b"\x1b[456;123H");
         let result = Ansi::CURSOR_MOVE_N_B(&mut buffer, 1999, 10999);
         assert_eq!(result, b"\x1b[10999;1999H");
+        let result = Ansi::CURSOR_MOVE(30_000, 20_000); // StringNonul
+        assert_eq!(result, "\x1b[20000;30000H");
     }
 }

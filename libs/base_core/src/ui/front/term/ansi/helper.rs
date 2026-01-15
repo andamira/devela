@@ -51,8 +51,8 @@ macro_rules! _ansi_consts {
 
             // static string version
             $(#[$DOCS])*
-            $vis const fn $fn($($param: $param_ty),*) -> $crate::StringU8<$N> {
-                $crate::StringU8::<$N>::_from_array_len_trusted(Ansi::[<$fn _B>]($($param),*), $N)
+            $vis const fn $fn($($param: $param_ty),*) -> $crate::StringNonul<$N> {
+                $crate::StringNonul::<$N>::_from_array_trusted(Ansi::[<$fn _B>]($($param),*))
             }
         )*
     }};
@@ -83,7 +83,7 @@ macro_rules! _ansi_consts {
             $vis const [<$const _B>]: [u8; $N] = $crate::Ansi::[<$fn _B>]($($param),*);
 
             $(#[$DOCS])*
-            $vis const $const: $crate::StringU8<$N> = $crate::Ansi::$fn($($param),*);
+            $vis const $const: $crate::StringNonul<$N> = $crate::Ansi::$fn($($param),*);
         )*
     }};
 }

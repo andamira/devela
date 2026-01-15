@@ -32,10 +32,9 @@ macro_rules! impl_str_u {
         /// A UTF-8 string with fixed capacity that stores length explicitly.
         #[doc = crate::_doc_location!("text/str")]
         ///
-        /// Prioritizes speed over memory: O(1) length operations but uses extra space.
+        /// Suited for frequently inspected or manipulated text where constant-time
+        /// length access is important. Uses extra space to provide O(1) length operations.
         /// For the opposite trade-off see [`StringNonul`][crate::StringNonul].
-        ///
-        #[doc = crate::_doc_location!("text/str")]
         ///
         #[doc = "Internally, the current length is stored as a [`" $t "`]."]
         ///
