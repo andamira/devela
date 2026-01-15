@@ -2,7 +2,7 @@
 //
 //! Defines [`Str`].
 
-use crate::{CharIter, Digits, InvalidUtf8, Slice, is, slice};
+use crate::{CharIter, Digits, InvalidUtf8, is, slice};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
@@ -246,7 +246,7 @@ impl Str {
     /// assert_eq!("_3_5_7_9_12_15_", Str::new_counter(&mut buf, 15, '_'));
     /// ```
     /// # Panics
-    /// Panics if `buffer.len() < length`, or if `!char.is_ascii()`.
+    /// Panics if `buffer.len() < length`, or if `!separator.is_ascii()`.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
@@ -266,23 +266,16 @@ impl Str {
             let mut index = length - 1; // start writing from the end
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
-
-            let mut num_buf = Digits(num).digits10(); // IMPROVE
-            let mut num_bytes = Slice::trim_leading(&num_buf, b'0');
-
-            let mut num_len = num_bytes.len();
-
+            let mut digits = Digits(num).count_digits10() as usize;
             loop {
                 if separator_turn {
                     buffer[index] = separator;
                 } else {
-                    is![index > 0; index -= num_len - 1];
-                    slice![mut buffer, index, ..num_len + index]
-                        .copy_from_slice(slice![num_bytes, ..num_len]);
+                    let start = index + 1 - digits;
+                    let _ = Digits(num).write_digits10(buffer, start);
+                    index = start;
                     num = index;
-                    num_buf = Digits(num).digits10(); // IMPROVE
-                    num_bytes = Slice::trim_leading(&num_buf, b'0');
-                    num_len = num_bytes.len();
+                    digits = Digits(num).count_digits10() as usize;
                 }
                 is![index == 0; break; index -= 1];
                 separator_turn = !separator_turn;
@@ -291,7 +284,7 @@ impl Str {
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             return unwrap![ok Str::from_utf8(slice![buffer, ..length])];
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-            // SAFETY: TODO: since `string` is a valid &str, checks are unneeded.
+            // SAFETY: only ASCII bytes are written
             sf! { unsafe { Str::from_utf8_unchecked(slice![buffer, ..length]) }}
         }
     }

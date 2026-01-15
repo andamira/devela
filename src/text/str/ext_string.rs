@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::{Arc, Box, Rc, String, ToString};
+use crate::{Arc, Box, Rc, Str, String, ToString, Vec, vec_};
 
 /// Marker trait to prevent downstream implementations of the [`StringExt`] trait.
 #[cfg(feature = "alloc")]
@@ -47,6 +47,12 @@ pub trait StringExt: Sealed {
     /// assert_eq!("2*4*6*8*11*14*", String::new_counter(14, '*'));
     /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, '_'));
     /// ```
+    /// # Panics
+    /// Panics if `!separator.is_ascii()`.
+    ///
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
+    ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
     fn new_counter(length: usize, separator: char) -> String;
@@ -66,19 +72,26 @@ impl StringExt for String {
     }
 
     fn new_counter(mut length: usize, separator: char) -> String {
-        let mut cstr = String::new();
-
-        while length > 0 {
-            let mut tmpstr = separator.to_string();
-            tmpstr.push_str(&length.to_string().chars().rev().collect::<String>());
-
-            if tmpstr.len() > length {
-                tmpstr = tmpstr[..length].to_string();
-            }
-
-            cstr.push_str(&tmpstr);
-            length -= tmpstr.len();
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        {
+            let mut buf = vec_![0u8; length];
+            let s = Str::new_counter(&mut buf, length, separator);
+            let len = s.len();
+            buf.truncate(len);
+            String::from_utf8(buf).expect("counter string is guaranteed ASCII")
         }
-        cstr.chars().rev().collect::<String>()
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        {
+            let mut s = String::with_capacity(length);
+            // SAFETY: only ASCII bytes are written and the str.len() is set to the written prefix
+            unsafe {
+                let buf = s.as_mut_vec();
+                buf.resize(length, 0);
+                let out = Str::new_counter(buf, length, separator);
+                let len = out.len();
+                buf.truncate(len);
+            }
+            s
+        }
     }
 }

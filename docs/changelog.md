@@ -661,6 +661,7 @@ re-export hidden workspace dependencies from `_dep`.
   - fix `TryFrom<&str>` impl.
   - impl `PartialEq`.
   - improve docs.
+- improve `new_counter` method in `Str`, `StrExt` & `StringExt`.
 
 ---
 ## ui

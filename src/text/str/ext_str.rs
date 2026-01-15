@@ -7,7 +7,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
-use crate::{Digits, Slice, Str, is};
+use crate::{Str, is};
 crate::_use! {basic::from_utf8}
 
 /// Marker trait to prevent downstream implementations of the [`StrExt`] trait.
@@ -74,7 +74,7 @@ pub trait StrExt: Sealed {
     /// assert_eq!("_3_5_7_9_12_15_", str::new_counter(&mut buf, 15, '_'));
     /// ```
     /// # Panics
-    /// Panics if `buffer.len() < length`, or if `!char.is_ascii()`.
+    /// Panics if `buffer.len() < length`, or if `!separator.is_ascii()`.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
@@ -126,43 +126,6 @@ impl StrExt for str {
     }
 
     fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
-        assert![buffer.len() >= length];
-        if length == 0 {
-            Str::new_cold_empty()
-        } else {
-            let separator = separator as u8;
-            let mut index = length - 1; // start writing from the end
-            let mut num = length; // the first number to write is the length
-            let mut separator_turn = true; // start writing the separator
-
-            let mut num_buf = Digits(num).digits10(); // IMPROVE
-            let mut num_bytes = Slice::trim_leading(&num_buf, b'0');
-
-            let mut num_len = num_bytes.len();
-
-            loop {
-                if separator_turn {
-                    buffer[index] = separator;
-                } else {
-                    is![index > 0; index -= num_len - 1];
-                    buffer[index..(num_len + index)].copy_from_slice(&num_bytes[..num_len]);
-
-                    num = index;
-
-                    num_buf = Digits(num).digits10(); // IMPROVE
-                    num_bytes = Slice::trim_leading(&num_buf, b'0');
-
-                    num_len = num_bytes.len();
-                }
-                is![index == 0; break; index -= 1];
-                separator_turn = !separator_turn;
-            }
-
-            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            return from_utf8(&buffer[..length]).unwrap();
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            // SAFETY: We are only using with Ascii characters
-            return unsafe { Str::from_utf8_unchecked(&buffer[..length]) };
-        }
+        Str::new_counter(buffer, length, separator)
     }
 }
