@@ -661,7 +661,9 @@ re-export hidden workspace dependencies from `_dep`.
   - fix `TryFrom<&str>` impl.
   - impl `PartialEq`.
   - improve docs.
-- improve `new_counter` method in `Str`, `StrExt` & `StringExt`.
+- add new method `repeat_into_slice` to `Str` & `StrExt`.
+- improve method `repeat_into` for `Str` & `StrExt`.
+- improve method `new_counter` for `Str`, `StrExt` & `StringExt`.
 
 ---
 ## ui

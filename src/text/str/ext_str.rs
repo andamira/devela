@@ -5,9 +5,9 @@
 // WAIT: [str_as_str](https://github.com/rust-lang/rust/issues/130366)
 // WAIT: [substr_range](https://github.com/rust-lang/rust/issues/126769)
 
+use crate::Str;
 #[cfg(feature = "alloc")]
 use crate::{Arc, Box, Rc};
-use crate::{Str, is};
 crate::_use! {basic::from_utf8}
 
 /// Marker trait to prevent downstream implementations of the [`StrExt`] trait.
@@ -60,6 +60,17 @@ pub trait StrExt: Sealed {
         buffer: &'input mut [u8; CAP],
     ) -> &'input str;
 
+    /// Repeats `string` up to `n` times into `buffer`,
+    /// stopping early if it does not fit,
+    /// and returns the written prefix as `&str`.
+    ///
+    /// Like [`repeat_into`], but accepts a dynamically sized buffer.
+    fn repeat_into_slice<'input, const CAP: usize>(
+        &self,
+        n: usize,
+        buffer: &'input mut [u8],
+    ) -> &'input str;
+
     /// Returns a [`&str`] backed by a `buffer`, where you always know each
     /// character's position.
     ///
@@ -105,24 +116,14 @@ impl StrExt for str {
         n: usize,
         buffer: &'input mut [u8; CAP],
     ) -> &'input str {
-        // Str::repeat_into(self, n, buffer) // BENCH
-
-        let s_bytes = self.as_bytes();
-        let mut index = 0;
-        for _ in 0..n {
-            for &b in s_bytes {
-                is![index == CAP; break];
-                buffer[index] = b;
-                index += 1;
-            }
-        }
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return from_utf8(&buffer[..index]).unwrap();
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        // SAFETY: since self is a valid &str, checks are unneeded.
-        unsafe {
-            Str::from_utf8_unchecked(&buffer[..index])
-        }
+        Str::repeat_into(self, n, buffer)
+    }
+    fn repeat_into_slice<'input, const CAP: usize>(
+        &self,
+        n: usize,
+        buffer: &'input mut [u8],
+    ) -> &'input str {
+        Str::repeat_into_slice(self, n, buffer)
     }
 
     fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {

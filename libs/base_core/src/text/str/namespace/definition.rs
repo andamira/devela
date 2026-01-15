@@ -2,7 +2,7 @@
 //
 //! Defines [`Str`].
 
-use crate::{CharIter, Digits, InvalidUtf8, is, slice};
+use crate::{CharIter, Digits, InvalidUtf8, is, slice, whilst};
 
 #[allow(unused_imports, reason = "±unsafe")]
 use {
@@ -206,31 +206,37 @@ impl Str {
         n: usize,
         buffer: &'input mut [u8; CAP],
     ) -> &'input str {
+        Self::repeat_into_slice(string, n, buffer)
+    }
+
+    /// Repeats `string` up to `n` times into `buffer`,
+    /// stopping early if it does not fit,
+    /// and returns the written prefix as `&str`.
+    ///
+    /// Like [`repeat_into`], but accepts a dynamically sized buffer.
+    ///
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
+    #[must_use]
+    pub const fn repeat_into_slice<'input>(
+        string: &str,
+        n: usize,
+        buffer: &'input mut [u8],
+    ) -> &'input str {
         let s_bytes = string.as_bytes();
+        let s_len = s_bytes.len();
         let mut index = 0;
-        // for _ in 0..n {
-        //     for &b in s_bytes {
-        //         is![index == CAP; break];
-        //         buffer[index] = b;
-        //         index += 1;
-        //     }
-        // } // const loop:
-        let mut outer_count = 0;
-        while outer_count < n {
-            let mut inner_index = 0;
-            while inner_index < s_bytes.len() {
-                is![index == CAP; break];
-                buffer[index] = s_bytes[inner_index];
-                index += 1;
-                inner_index += 1;
-            }
-            outer_count += 1;
-        }
+        whilst! { count in 0..n; {
+            is![index + s_len > buffer.len(); break];
+            // buffer[index..index + s_len].copy_from_slice(s_bytes);
+            slice![mut buffer, index, ..index + s_len].copy_from_slice(s_bytes);
+            index += s_len;
+        }}
         #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
         return unwrap![ok Str::from_utf8(slice![buffer, ..index])];
         #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
         // SAFETY: since `string` is a valid &str, checks are unneeded.
-        sf! { unsafe { str::from_utf8_unchecked(slice![buffer, ..index]) }}
+        sf! { unsafe { Str::from_utf8_unchecked(slice![buffer, ..index]) }}
     }
 
     /// Returns a [`&str`] backed by a `buffer`, where you always know each
@@ -280,7 +286,6 @@ impl Str {
                 is![index == 0; break; index -= 1];
                 separator_turn = !separator_turn;
             }
-
             #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
             return unwrap![ok Str::from_utf8(slice![buffer, ..length])];
             #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
