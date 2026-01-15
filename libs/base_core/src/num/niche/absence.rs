@@ -294,6 +294,10 @@ macro_rules! impl_maybe {
             #[must_use] #[inline(always)]
             pub const fn has_zero(self) -> bool { Self::ZERO.is_some() }
 
+            /// Compile-time equality comparison.
+            #[must_use] #[inline(always)]
+            pub const fn eq(self, other: Self) -> bool { self.prim() == other.prim() }
+
             /* representation access */
 
             /// Returns the validated (niche-aware) representation.

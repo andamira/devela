@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{Char, char7, char8, char16};
+use crate::{Char, MaybeNiche, char7, char8, char16};
 
 /// Implements const fns for custom char types.
 macro_rules! impl_char {
@@ -56,6 +56,12 @@ macro_rules! impl_char {
             #[must_use]
             pub const fn is_digit(self, radix: u32) -> bool {
                 if let Some(_) = self.to_digit(radix) { true } else { false }
+            }
+
+            /// Compile-time equality comparison.
+            #[must_use]
+            pub const fn eq(self, other: Self) -> bool {
+                MaybeNiche(self.0).eq(MaybeNiche(other.0))
             }
         }
     };
