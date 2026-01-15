@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::{Arc, Box, Rc, Str, String, ToString, Vec, vec_};
+use crate::{Arc, Box, Rc, Str, String};
 
 /// Marker trait to prevent downstream implementations of the [`StringExt`] trait.
 #[cfg(feature = "alloc")]
@@ -71,10 +71,10 @@ impl StringExt for String {
         Arc::from(self)
     }
 
-    fn new_counter(mut length: usize, separator: char) -> String {
+    fn new_counter(length: usize, separator: char) -> String {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         {
-            let mut buf = vec_![0u8; length];
+            let mut buf = crate::vec_![0u8; length];
             let s = Str::new_counter(&mut buf, length, separator);
             let len = s.len();
             buf.truncate(len);

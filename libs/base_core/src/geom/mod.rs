@@ -9,13 +9,14 @@
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
-    crate::_doc!(modules: crate; geom: dir, metric); // field, shape
+    crate::_doc!(modules: crate; geom: dir, metric); // field, linear, shape
 }
 
 mod _helpers;
 
 pub mod dir; // Orientation
 // pub mod field; // WIP
+// pub mod layout; // WIP
 pub mod metric; // Distance, Extent, Orientation, Position...
 
 crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals
@@ -24,6 +25,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals
         pub use super::{
             dir::_all::*,
             // field::_all::*, // WIP
+            // layout::_all::*, // WIP
             metric::_all::*,
         };
     }

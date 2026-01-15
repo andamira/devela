@@ -3,10 +3,7 @@
 //! implementations of core traits
 //
 
-use crate::{
-    Binary, ConstInitCore, Debug, Display, FmtResult, Formatter, LowerHex, MismatchedCapacity,
-    Octal, UpperHex, paste, text::char::*, unwrap,
-};
+use crate::{MismatchedCapacity, paste, text::char::*, unwrap};
 
 /* Default, Display, Debug */
 
@@ -25,44 +22,25 @@ macro_rules! char_core_impls {
         $( char_core_impls![@$name + $default]; )+
     };
     (@$name:ident + $default:expr) => { paste! {
-        impl Default for super::$name {
-            /// Returns the default value of `\x00` (nul character).
-            fn default() -> Self { $default }
-        }
-        impl ConstInitCore for super::$name {
-            /// It has the initial value of `\x00` (nul character).
-            const INIT: Self = $default;
-        }
+        mod [< _impl_ $name >] {
+            use crate::{Binary, ConstInitCore, LowerHex, Octal, UpperHex, impl_trait};
+            use super::*;
 
-        impl Display for super::$name {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-                write!(f, "{}", self.to_char())
+            impl Default for $name {
+                /// Returns the default value of `\x00` (nul character).
+                fn default() -> Self { $default }
             }
-        }
-        impl Debug for super::$name {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-                write!(f, "{:?}", self.to_char())
+            impl ConstInitCore for $name {
+                /// It has the initial value of `\x00` (nul character).
+                const INIT: Self = $default;
             }
-        }
-        impl Binary for super::$name {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-                Binary::fmt(&self.to_scalar(), f)
-            }
-        }
-        impl LowerHex for super::$name {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-                LowerHex::fmt(&self.to_scalar(), f)
-            }
-        }
-        impl UpperHex for super::$name {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-                UpperHex::fmt(&self.to_scalar(), f)
-            }
-        }
-        impl Octal for super::$name {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-                Octal::fmt(&self.to_scalar(), f)
-            }
+
+            impl_trait![fmt::Display for $name |self, f| write!(f, "{}", self.to_char())];
+            impl_trait![fmt::Debug for $name |self, f| write!(f, "{}", self.to_char())];
+            impl_trait![fmt::Binary for $name |self, f| Binary::fmt(&self.to_scalar(), f)];
+            impl_trait![fmt::LowerHex for $name |self, f| LowerHex::fmt(&self.to_scalar(), f)];
+            impl_trait![fmt::UpperHex for $name |self, f| UpperHex::fmt(&self.to_scalar(), f)];
+            impl_trait![fmt::Octal for $name |self, f| Octal::fmt(&self.to_scalar(), f)];
         }
     }};
 }

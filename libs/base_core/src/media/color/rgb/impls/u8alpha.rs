@@ -96,7 +96,7 @@ impl Rgba8 {
     /* u16 */
 
     /// Create from `Rgba<u16>` by scaling each component proportionally.
-    pub fn from_rgba16(from: Rgba16) -> Rgba8 {
+    pub const fn from_rgba16(from: Rgba16) -> Rgba8 {
         Rgba8::new(
             ((from.c[0] + 128) / 257) as u8, // Rounding via +128
             ((from.c[1] + 128) / 257) as u8,
@@ -105,7 +105,7 @@ impl Rgba8 {
         )
     }
     /// Convert to Rgba16 by scaling each component proportionally.
-    pub fn to_rgba16(self) -> Rgba16 {
+    pub const fn to_rgba16(self) -> Rgba16 {
         Rgba16::new(
             (self.c[0] as u16) * 257, // 255 * 257 = 65535
             (self.c[1] as u16) * 257,

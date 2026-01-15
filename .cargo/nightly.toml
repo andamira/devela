@@ -24,6 +24,7 @@
 # In sync with ./config.toml & ../tools/cargo-native
 rustdocflags = [
 	"-Zunstable-options",
+	# "-Zbuild-analysis", # MAYBE
 	#
 	"--generate-link-to-definition",
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
@@ -32,9 +33,13 @@ rustdocflags = [
 ]
 rustflags = [
 	"-Zunstable-options",
+	# "-Zbuild-analysis", # MAYBE
 	"-Zthreads=6",
 	#
 	"--cfg", "nightly_doc",
 	# "--cfg", "nightly",    # enables all nightly flags
 	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
+
+# [build.analysis]
+# enabled = true

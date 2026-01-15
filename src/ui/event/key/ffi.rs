@@ -8,10 +8,10 @@
 // - impls `js`
 
 use super::*;
-use crate::{ConstInit, is, unwrap};
+use crate::{ConstInit, unwrap};
 #[cfg(all(feature = "js", not(windows)))]
 crate::items! {
-    use crate::{Char, WebKeyLocation, Slice};
+    use crate::{Char, WebKeyLocation, Slice, is};
     crate::_use! {basic::from_utf8}
 }
 
