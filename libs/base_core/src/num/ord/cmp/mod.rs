@@ -6,13 +6,13 @@
 #[cfg(test)]
 mod tests;
 
-// mod macros; // cmp! WIP
+mod macros; // cmp!
 mod wrapper; // Cmp
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // macros::*,
+            macros::*,
             wrapper::*,
         };
     }

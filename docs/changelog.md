@@ -381,10 +381,11 @@ re-export hidden workspace dependencies from `_dep`.
 
 ### ord
   - rename `Compare` to `Cmp`.
-- update `Cmp:`
+- new macro `cmp!`.
+- update `Cmp`:
   - move to [base].
   - new impl for `Ordering`.
-  - new methods: `minmax`, `pminmax`.
+  - new methods: `minmax`, `pminmax`, `total_cmp`.
   - un-gate impls and many dependent const methods.
 
 ### quant

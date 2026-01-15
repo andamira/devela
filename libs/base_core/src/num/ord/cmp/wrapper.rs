@@ -24,18 +24,23 @@ use ::core::{f16, f128};
 /// Provides comparing methods for `T`.
 #[doc = crate::_doc_location!("num/ord")]
 ///
+/// This wrapper exposes comparison operations as value methods,
+/// enabling uniform and const-evaluable comparisons across primitives.
+///
 /// It provides the non-*const* methods `pclamp`, `pmax`, `pmin`
 /// for comparing [`PartialOrd`]ered values.
 ///
 /// It provides the following *const* methods for comparing primitives:
 /// `clamp`, `max`, `min`, `eq`, `ne`, `lt`, `le`, `gt`, `ge`.
 ///
-/// And it also allows compile-time comparison between [`Ordering`]s.
+/// It also allows compile-time comparison between [`Ordering`]s.
 ///
 /// In the case of floating-point primitives:
 /// - total ordering is used.
 /// - additional methods are provided:
-///  `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
+///   `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
+///
+/// See also the [`cmp!`][crate::cmp] macro for an operation-first syntax.
 //
 // DESIGN NOTES
 // Due to Rust's inherent method resolution rules, primitive const fn comparison
@@ -185,6 +190,15 @@ macro_rules! impl_comparing {
     (@int: $p:ty $(: $cap:literal)? ) => {
         $( #[cfg(feature = $cap)] )?
         impl Cmp<$p> {
+            /// Compares `self` and `other` using total order.
+            ///
+            /// For integer types, ordering is already total; this method exists
+            /// for consistency with floating-point comparisons.
+            #[must_use]
+            pub const fn total_cmp(self, other: $p) -> Ordering {
+                is![self.0 < other; Less; is![self.0 > other; Greater; Equal]]
+            }
+
             /// Compares and returns `self` clamped between `min` and `max`.
             #[must_use] #[inline(always)]
             pub const fn clamp(self, min: $p, max: $p) -> $p {
@@ -348,6 +362,15 @@ impl_comparing!();
 
 #[rustfmt::skip]
 impl Cmp<Ordering> {
+    /// Compares `self` and `other` using total order.
+    ///
+    /// Ordering is already totally ordered as: `Less < Equal < Greater`.
+    #[must_use]
+    pub const fn total_cmp(self, other: Ordering) -> Ordering {
+        if (self.0 as i8) < other as i8 { Less }
+        else if (self.0 as i8) > other as i8 { Greater }
+        else { Equal }
+    }
     /// Compares and returns `self` clamped between `min` and `max`.
     #[must_use]
     pub const fn clamp(self, min: Ordering, max: Ordering) -> Ordering {

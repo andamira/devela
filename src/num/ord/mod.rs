@@ -11,6 +11,6 @@ crate::structural_mods! { // _reexports
     _reexports {
         pub use super::_reexport_core::*;
         #[doc(inline)]
-        pub use devela_base_core::num::ord::Cmp;
+        pub use devela_base_core::num::ord::{Cmp, cmp};
     }
 }
