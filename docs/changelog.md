@@ -526,6 +526,7 @@ re-export hidden workspace dependencies from `_dep`.
 
 #### browser
 - move `lang::ffi::js::web` to `sys::os::browser::web`.
+- move `examples::lang::js_web*` to `examples::sys::web*`.
 
 #### linux
 - new types `LinuxClock`, `LinuxTime`, `LinuxInstant`.

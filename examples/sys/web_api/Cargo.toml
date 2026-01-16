@@ -1,6 +1,6 @@
 [workspace]
 [package]
-name = "js_web_worker"
+name = "web_api" # in sync with build.sh, public_html/index.html
 version = "0.1.0"
 edition = "2024"
 
@@ -17,7 +17,7 @@ path = "main.rs"
 path = "../../.."
 features = [
 	"js", "time", "unsafe_ffi",
-	# "alloc","unsafe_layout", 
+	"alloc", "unsafe_layout",
 ]
 
 [profile.release]

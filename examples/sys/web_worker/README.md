@@ -1,4 +1,4 @@
-# `js_web_worker` example
+# `web_worker` example
 
 This example demonstrates how to use the `web_api` module in a web browser with Rust-generated WASM.
 

@@ -1,4 +1,4 @@
-// devela::examples::lang::js_web
+// devela::examples::sys::web
 //
 //! A Javascript Web API canvas example.
 //

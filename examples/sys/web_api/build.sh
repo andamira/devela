@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela::examples::lang::js_web_worker::build.sh
+# devela::examples::sys::web_api::build.sh
 #
 ## install required tools
 # $ apt install jq
@@ -11,16 +11,16 @@
 set -e
 
 # CONFIG
-CRATE_NAME="js_web_worker"
+CRATE_NAME="web_api" # in sync with Cargo.toml, public_html/index.html
 WASM_NAME="${CRATE_NAME}.wasm"
-JS_LIB_DIR="../../../src/lang/ffi/js/web/"
+JS_LIB_DIR="../../../src/sys/os/browser/web/"
 JS_LIB_NAME="web_api.js"
-# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/lang/ffi/js/web/${JS_LIB_NAME}"
-
+# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/sys/os/browser/web/${JS_LIB_NAME}"
 PROFILE="release"
 WEB_DIR="./public_html/"
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
 BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown"
+
 
 # BUILD
 echo "$ export RUSTFLAGS=\"$RUSTFLAGS\""

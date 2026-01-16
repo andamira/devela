@@ -1,4 +1,4 @@
-// devela::examples::lang::js_web_worker::main
+// devela::examples::sys::web_worker::main
 //
 //! A Web API canvas example.
 //

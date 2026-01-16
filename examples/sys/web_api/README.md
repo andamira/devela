@@ -1,4 +1,4 @@
-# `js_web` example
+# `web_api` example
 
 This example demonstrates how to use the Web API in a web browser with Rust-generated WASM.
 
