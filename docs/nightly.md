@@ -3,7 +3,7 @@
 Legend:
 - ` ` = not enabled / can't be enabled
 - `i` = not enabled (incomplete_features).
-- `·` = enabled by non-specific cfg flag (`nightly_stable_[1_91|1_92|later]`)
+- `·` = enabled by non-specific cfg flag (`nightly_stable_[1_XX|later]`)
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
 - `F` = enabled by some specific cfg flag, shown afterwards.
@@ -48,7 +48,8 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.94.0> -->
 
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
-- 1.94: `·`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
+- 1.94: ` `[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
+- 1.94: ` `[euler_gamma_golden_ratio](https://github.com/rust-lang/rust/pull/151164)
 - 1.94: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
 - 1.94: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
 - 1.94: ` `[slice::element_offset (substr_range)](https://github.com/rust-lang/rust/pull/150777)

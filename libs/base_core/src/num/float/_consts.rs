@@ -2,6 +2,7 @@
 //
 //!
 //
+// WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/146939)
 // MAYBE duplicate the literals of synonymous constants.
 
 #![allow(clippy::crate_in_macro_def, reason = "crate::*")]

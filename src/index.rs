@@ -72,6 +72,7 @@
     feature(
         array_windows,
         // const_mul_add,
+        // euler_gamma_golden_ratio,
         lazy_get,
         peekable_next_if_map,
     )

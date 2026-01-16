@@ -213,6 +213,7 @@ pub trait FloatConst: Sized {
     #[doc = crate::_FLOAT_CONST_ARC_SECOND!()]          const ARC_SECOND: Self;
     // phi
     #[doc = crate::_FLOAT_CONST_PHI!()]                 const PHI: Self;
+    #[doc = crate::_FLOAT_CONST_PHI!()]                 const GOLDEN_RATIO: Self; // std
     #[doc = crate::_FLOAT_CONST_SQ_PHI!()]              const SQ_PHI: Self;
     #[doc = crate::_FLOAT_CONST_FRAC_1_PHI!()]          const FRAC_1_PHI: Self;
     #[doc = crate::_FLOAT_CONST_NEG_FRAC_1_PHI!()]      const NEG_FRAC_1_PHI: Self;
@@ -236,7 +237,9 @@ pub trait FloatConst: Sized {
     #[doc = crate::_FLOAT_CONST_FRAC_1_CBRT_3!()]       const FRAC_1_CBRT_3: Self;
     // other
     #[doc = crate::_FLOAT_CONST_E!()]                   const E: Self;
+    #[doc = crate::_FLOAT_CONST_E!()]                   const EULER: Self;
     #[doc = crate::_FLOAT_CONST_EGAMMA!()]              const EGAMMA: Self;
+    #[doc = crate::_FLOAT_CONST_EGAMMA!()]              const EULER_GAMMA: Self; // std
     #[doc = crate::_FLOAT_CONST_LOG2_E!()]              const LOG2_E: Self;
     #[doc = crate::_FLOAT_CONST_LOG2_10!()]             const LOG2_10: Self;
     #[doc = crate::_FLOAT_CONST_LOG10_E!()]             const LOG10_E: Self;
@@ -324,6 +327,7 @@ macro_rules! impl_float_const {
 
             // phi
             const PHI: $f = crate::PHI!();
+            const GOLDEN_RATIO: $f = crate::PHI!(); // std
             const SQ_PHI: $f = crate::SQ_PHI!();
             const FRAC_1_PHI: $f = crate::FRAC_1_PHI!();
             const NEG_FRAC_1_PHI: $f = crate::NEG_FRAC_1_PHI!();
@@ -349,7 +353,9 @@ macro_rules! impl_float_const {
 
             // other
             const E: $f = crate::E!();
+            const EULER: $f = crate::E!();
             const EGAMMA: $f = crate::EGAMMA!();
+            const EULER_GAMMA: $f = crate::EGAMMA!(); // std
             const LOG2_E: $f = crate::LOG2_E!();
             const LOG2_10: $f = crate::LOG2_10!();
             const LOG10_E: $f = crate::LOG10_E!();
