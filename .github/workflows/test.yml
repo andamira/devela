@@ -40,10 +40,6 @@ jobs:
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
 
-      # NOTE: not needed; using cargo-script
-      # - name: "install rust-script"
-      #   run: cargo install rust-script;
-
       # https://twitter.com/jonhoo/status/1571290371124260865
 
       - name: "./tools/check.rs --install-arches --install-nightly"
@@ -106,27 +102,3 @@ jobs:
 
       - name: "cargo test --locked -F all,safe,__dbg"
         run: cargo test --locked -F all,safe,__dbg -v
-
-  # 4.
-  # coverage:
-  #   runs-on: ubuntu-latest
-  #   name: ubuntu / stable / coverage
-  #   steps:
-  #     - uses: actions/checkout@v5
-  #       with:
-  #         submodules: true
-  #     - name: Install stable
-  #       uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         components: llvm-tools-preview
-  #     - name: cargo install cargo-llvm-cov
-  #       uses: taiki-e/install-action@cargo-llvm-cov
-  #     - name: cargo generate-lockfile
-  #       if: hashFiles('Cargo.lock') == ''
-  #       run: cargo generate-lockfile
-  #     - name: cargo llvm-cov
-  #       run: cargo llvm-cov --locked --lcov --output-path lcov.info
-  #     - name: Upload to codecov.io
-  #       uses: codecov/codecov-action@v5
-  #       with:
-  #         fail_ci_if_error: true

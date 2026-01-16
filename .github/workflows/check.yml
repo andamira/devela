@@ -74,10 +74,6 @@ jobs:
       #   run: |
       #     sudo apt update
 
-      # NOTE: not needed; using cargo-script
-      # - name: "install rust-script"
-      #   run: cargo install rust-script;
-
       - name: "./tools/check.rs --docs --install-nightly"
         run: |
           echo "Running nightly docs with RUSTFLAGS: $RUSTFLAGS"
@@ -85,17 +81,6 @@ jobs:
         env:
           RUSTFLAGS: "--cfg nightly -Ctarget-cpu=native"
           RUSTDOCFLAGS: "--cfg nightly -Ctarget-cpu=native"
-
-      # NOTE: old manual version of docs compilation
-      # - name: "Install nightly"
-      #   uses: dtolnay/rust-toolchain@nightly
-      # - name: "cargo +nightly doc -F _docs,__dbg"
-      #   run: |
-      #     echo "Running nightly docs with RUSTFLAGS: $RUSTFLAGS"
-      #     cargo doc -F _docs,__dbg
-      #   env:
-      #     RUSTFLAGS: "--cfg nightly -Ctarget-cpu=native"
-      #     RUSTDOCFLAGS: "--cfg nightly -Ctarget-cpu=native"
 
   # 4. minimum supported Rust version
   msrv:

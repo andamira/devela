@@ -37,10 +37,6 @@ jobs:
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
 
-      # NOTE: not needed; using cargo-script
-      # - name: "install rust-script"
-      #   run: cargo install rust-script;
-
       # https://twitter.com/jonhoo/status/1571290371124260865
 
       - name: "./tools/check.rs --install-arches --install-nightly"

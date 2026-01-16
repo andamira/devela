@@ -67,8 +67,7 @@ use toml_edit::Document;
 
 /* config */
 
-// const NIGHTLY: &str = "nightly"; // … nightly-2025-08-14
-const NIGHTLY: &str = "nightly-2026-01-09"; // WAIT: ICE https://github.com/rust-lang/rust/pull/150939
+const NIGHTLY: &str = "nightly"; // NOTE: specific version can be set like: nightly-2025-08-14
 
 #[rustfmt::skip]
 const ROOT_MODULES: [&str; 12 + 1] = [
