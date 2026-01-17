@@ -14,13 +14,15 @@ crate::CONST! { pub(crate) _DOC_WORK_MODULES =
     crate::_doc!(modules: crate; work: future, sync); // process, thread
 }
 
-pub mod future;
+pub mod future; // Coro*
+pub mod process; // cmd!
 pub mod sync;
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             future::_all::*,
+            process::_all::*,
             sync::_all::*,
         };
     }

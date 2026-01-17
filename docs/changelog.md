@@ -733,7 +733,6 @@ re-export hidden workspace dependencies from `_dep`.
   - fix codes related to alternate screen.
 - update `ansi!`:
   - add new arms `p!` and `@p!` that auto-unwrap.
-  - refactor to accomodate `Ansi` changes. TODO
   - fix macro visibility.
 
 ---
@@ -743,6 +742,8 @@ re-export hidden workspace dependencies from `_dep`.
   - `ExtFuture` to `FutureExt`.
   - `ExtProcess` to `ProcessExt`.
     - `ProcessExt::id` to `self_pid`.
+
+### process
 
 ### sync
 - move `portable-atomic-util` dependent re-exports to [base_alloc]: `Arc`, `ArkWeak`.

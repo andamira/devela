@@ -21,7 +21,7 @@ pub mod process;
 pub mod sync;
 pub mod thread;
 
-crate::structural_mods! { // _pub_mods, _crate_internal
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             // actor::*,
