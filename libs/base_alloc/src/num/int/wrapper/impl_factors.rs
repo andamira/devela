@@ -177,7 +177,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             pub fn factors_prime_unique(self) -> Vec<$t> {
-                self.factors_prime().hook_mut(|v| v.dedup())
+                self.factors_prime().hook(|v| v.dedup())
             }
 
             /// Returns the unique prime factors with its exponent.
@@ -345,7 +345,7 @@ macro_rules! impl_factors {
             /// ```
             #[must_use]
             pub fn factors_prime_unique(self) -> Vec<$t> {
-                self.factors_prime().hook_mut(|v| v.dedup())
+                self.factors_prime().hook(|v| v.dedup())
             }
 
             /// Returns the unique prime factors with its exponent.

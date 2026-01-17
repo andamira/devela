@@ -35,6 +35,7 @@ crate::_doc! { vendor_mod: "grapheme_machine", grapheme_machine }
 crate::_doc! { vendor_mod: "object-id", object_id }
 crate::_doc! { vendor_mod: "stdext", stdext }
 // Other
+crate::_doc! { vendor_mod: "apply", apply }
 // crate::_doc! { vendor_mod: "blit-fonts", blit_fonts }
 crate::_doc! { vendor_mod: "jiff", jiff }
 crate::_doc! { vendor_mod: "pengyhash", pengyhash }

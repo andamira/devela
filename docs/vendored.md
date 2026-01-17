@@ -154,7 +154,7 @@ See the linked modifications for detailed changes.
 - <i id="8bit_rng"></i>[8bit_rng] by Edward Rosten, (BSD-2),
   as the [`Xyza8a`] and [`Xyza8b`] structs algorithms.
 - <i id="apply"></i>[apply] by GeorgeBurton (Unlicense),
-  as part of the [`Chain`] and [`Hook`] structs.
+  as part of the [`Hook`] and [`Morph`] structs ([*modifications*][M_apply]).
 - <i id="blit-fonts"></i>[blit-fonts] by Andrew Reece (ISC),
   as the [`FONT_BIT_3_5`] and [`FONT_BIT_5_6`] consts data<!-- ([*modifications*][M_blit-fonts]) -->.
 - <i id="jiff"></i>[jiff] by Andrew Gallant (Unlicense),
@@ -173,8 +173,9 @@ See the linked modifications for detailed changes.
   [`Xyza8b`]: https://andamira.github.io/devela/latest/devela/num/rand/struct.Xyza8b.html
 [agg]: https://crates.io/crates/agg/0.1.0
 [apply]: https://crates.io/crates/apply/0.3.0
-  [`Chain`]: https://andamira.github.io/devela/latest/devela/code/result/trait.Chain.html
+  [M_apply]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/apply.md
   [`Hook`]: https://andamira.github.io/devela/latest/devela/code/result/trait.Hook.html
+  [`Morph`]: https://andamira.github.io/devela/latest/devela/code/result/trait.Morph.html
 [blit-fonts]: https://github.com/azmr/blit-fonts
   <!-- [M_blit-fonts]: https://github.com/andamira/devela/blob/main/src/media/font/bitmap/MODS_BLIT.md -->
   [`FONT_BIT_3_5`]: https://andamira.github.io/devela/latest/devela/media/font/const.FONT_BIT_3_5.html

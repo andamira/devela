@@ -5,7 +5,7 @@
 
 mod _reexport;
 
-mod chain_hook; // Chain, Hook
+mod hook_morph; // Hook, Morph, hook!, morph!
 mod mismatch; // Mismatch
 mod opt_res; // OptRes, sok, serr
 mod own; // Own
@@ -19,7 +19,7 @@ mod own; // Own
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            chain_hook::*,
+            hook_morph::*,
             mismatch::*,
             opt_res::_all::*,
             own::*,

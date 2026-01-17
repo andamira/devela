@@ -66,8 +66,9 @@
 <!-- license: Other compatible -->
   [`Xyza8a`]: crate::num::rand::Xyza8a
   [`Xyza8b`]: crate::num::rand::Xyza8b
-  [`Chain`]: crate::code::result::Chain
+  [M_apply]: crate::_doc::vendored::apply
   [`Hook`]: crate::code::result::Hook
+  [`Morph`]: crate::code::result::Morph
  <!-- [M_blitfonts]: crate::_doc::vendored::blit-fonts -->
   [`FONT_BIT_3_5`]: crate::media::font::FONT_BIT_3_5
   [`FONT_BIT_5_6`]: crate::media::font::FONT_BIT_5_6

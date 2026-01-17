@@ -25,7 +25,8 @@ crate::structural_mods! { // _reexports
 
         #[doc(inline)]
         pub use devela_base_core::code::result::{
-            Chain, Hook, Mismatch,
+            Hook, Morph, hook, morph,
+            Mismatch,
             OptRes, OptResExt, serr, sok,
             OptionExt, OptionFmt, OptionFmtOr, OptionFmtOrElse,
             Own, ResultExt, unwrap,

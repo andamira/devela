@@ -174,10 +174,12 @@ re-export hidden workspace dependencies from `_dep`.
 - move to [base]:
   - functions: `serr`, `sok`.
   - macros: `unwrap!`.
-  - traits: `Chain`, `Hook`, `OptionExt`, `OptResExt`, `ResultExt`
+  - traits: `Morph`, `Hook`, `OptionExt`, `OptResExt`, `ResultExt`
   - types: `Mismatch`, `OptRes`, `OptionFmt`, `OptionFmtOr`, `OptionFmtOrElse`, `Own`.
 - move to [base_num]: `ValueQuant`.
+- new macros: `hook!`, `morph!`.
 - rename:
+  - `Chain` to `Morph`.
   - `ExtOption` to `OptionExt`.
   - `ExtOptRes` to `OptResExt`.
   - `ExtResult` to `ResultExt`.
