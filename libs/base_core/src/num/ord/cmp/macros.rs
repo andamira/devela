@@ -25,8 +25,10 @@
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _cmp {
+    (
     // partial cmp
-    (pclamp $v:tt $x:tt $y:tt) => { $crate::Cmp($v).pclamp($x, $y) };
+
+    pclamp $v:tt $x:tt $y:tt) => { $crate::Cmp($v).pclamp($x, $y) };
     (pclamp $v:expr, $x:expr, $y:expr) => { $crate::Cmp($v).pclamp($x, $y) };
     (pmax $x:tt $y:tt) => { $crate::Cmp($x).pmax($y) };
     (pmax $x:expr, $y:expr) => { $crate::Cmp($x).pmax($y) };
@@ -34,8 +36,10 @@ macro_rules! _cmp {
     (pmin $x:expr, $y:expr) => { $crate::Cmp($x).pmin($y) };
     (pminmax $x:tt $y:tt) => { $crate::Cmp($x).pminmax($y) };
     (pminmax $x:expr, $y:expr) => { $crate::Cmp($x).pminmax($y) };
+    (
     // total cmp
-    (total $x:tt $y:tt) => { $crate::Cmp($x).total_cmp($y) };
+
+    total $x:tt $y:tt) => { $crate::Cmp($x).total_cmp($y) };
     (total $x:expr, $y:expr) => { $crate::Cmp($x).total_cmp($y) };
     (clamp $v:tt $x:tt $y:tt) => { $crate::Cmp($v).clamp($x, $y) };
     (clamp $x:expr, $y:expr) => { $crate::Cmp($x).clamp($x, $y) };
@@ -45,8 +49,10 @@ macro_rules! _cmp {
     (min $x:expr, $y:expr) => { $crate::Cmp($x).min($y) };
     (minmax $x:tt $y:tt) => { $crate::Cmp($x).minmax($y) };
     (minmax $x:expr, $y:expr) => { $crate::Cmp($x).minmax($y) };
-    //
-    (eq $x:tt $y:tt) => { $crate::Cmp($x).eq($y) };
+    (
+    // equality
+
+    eq $x:tt $y:tt) => { $crate::Cmp($x).eq($y) };
     (eq $x:expr, $y:expr) => { $crate::Cmp($x).eq($y) };
     (ne $x:tt $y:tt) => { $crate::Cmp($x).ne($y) };
     (ne $x:expr, $y:expr) => { $crate::Cmp($x).ne($y) };
