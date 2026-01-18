@@ -746,6 +746,8 @@ re-export hidden workspace dependencies from `_dep`.
     - `ProcessExt::id` to `self_pid`.
 
 ### process
+- new macro: `cmd!`.
+- new type: `Pipeline`.
 - rename re-exported types back by removing the `Process` prefix, except for `Child*`→`Process*` renames and `ProcessTermination`.
 
 ### sync

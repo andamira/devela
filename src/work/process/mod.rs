@@ -6,19 +6,21 @@
 //
 
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /libs/base_std/src/work/process/_reexport.rs
+crate::items! {
+    mod _reexport_std; // SYMLINK to /libs/base_std/src/work/process/_reexport.rs
 
-#[cfg(feature = "std")]
-// mod cmd; // Cmd, cmd! WIP
-#[cfg(feature = "std")]
-mod ext; // ProcessExt
+    mod cmd; // cmd!
+    mod ext; // ProcessExt
+    mod pipe; // Pipeline
+}
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         #[cfg(feature = "std")]
         pub use super::{
-            // cmd::*, // WIP
+            cmd::*,
             ext::*,
+            pipe::*,
         };
     }
     _reexports {
