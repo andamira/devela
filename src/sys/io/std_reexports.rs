@@ -59,6 +59,14 @@ _reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!() _TAG_ERROR!(),
     @IntoInnerError as IoIntoInnerError
 }
 _reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+    doc: "Read end of an anonymous pipe.",
+    @PipeReader as IoPipeReader
+}
+_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+    doc: "Write end of an anonymous pipe.",
+    @PipeWriter as IoPipeWriter
+}
+_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "A buffer type used with `IoWrite::write_vectored`.",
     IoSlice
 }

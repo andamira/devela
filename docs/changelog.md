@@ -475,6 +475,8 @@ re-export hidden workspace dependencies from `_dep`.
 ### io
 - new `IoDuplex` trait.
 - refactor the `sys::io` module.
+- update `Io`: add `pipe` method.
+- re-export `IoPipeReader`, `IoPipeWriter`.
 
 ### log
 - new type `LoggerStatic`.

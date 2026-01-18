@@ -7,8 +7,8 @@
 use super::{io_copy as copy, io_empty as empty, io_repeat as repeat};
 #[cfg(feature = "std")]
 use crate::{
-    _dep::_std::io::{copy, empty, read_to_string, repeat, sink, stderr, stdin, stdout},
-    IoSink, Stderr, Stdin, Stdout, String,
+    _dep::_std::io::{copy, empty, pipe, read_to_string, repeat, sink, stderr, stdin, stdout},
+    IoPipeReader, IoPipeWriter, IoSink, Stderr, Stdin, Stdout, String,
 };
 use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 
@@ -58,6 +58,11 @@ impl Io {
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl Io {
+    /// Creates an anonymous pipe.
+    ///
+    /// See `std::io::`[`pipe`].
+    pub fn pipe() -> IoResult<(IoPipeReader, IoPipeWriter)> { pipe() }
+
     /// Reads all bytes from a reader into a new String.
     ///
     /// See `std::io::`[`read_to_string`].
