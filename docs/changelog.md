@@ -557,7 +557,7 @@ re-export hidden workspace dependencies from `_dep`.
 - new macro: `ch!`.
 - new fn: `scalar_as_ascii_translit`.
 - new types: `CharIter`, `charu`, `charu_niche`.
-- new `char7` methods: `to_byte`, `to_str`.
+- new `char7` methods: `to_byte`, `to_str`, `try_from_u8_array`, `from_u8_array_unchecked`, `read_u8_slice`, `read_u8_slice_trunc`, `write_u8_slice`, `write_str`, `to_ascii_lowercase_array`, `eq_ignore_ascii_case`.
 - new `char[7|8|16]` methods: `to_charu`, `try_from_charu`.
 - new `TextLut` consts: `ASCII_BASE36_OFFSET`, `DIGITS_BASE36`, `DECIMAL_PAIRS`, `POWERS10`.
 - mark `char[7|8|16]` as must_use.
