@@ -7,7 +7,7 @@
 // https://doc.rust-lang.org/std/os/unix/process/trait.CommandExt.html
 // https://doc.rust-lang.org/std/os/windows/process/trait.CommandExt.html
 
-use crate::{OsStr, Process, ProcessCommand};
+use crate::{Command, OsStr, Process};
 use std::process::{abort, exit, id};
 
 /// Marker trait to prevent downstream implementations of the [`ProcessExt`] trait.
@@ -23,11 +23,11 @@ impl Sealed for Process {}
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ProcessExt: Sealed {
-    /// Constructs a new `ProcessCommand` for launching the `program`.
+    /// Constructs a new `Command` for launching the `program`.
     ///
-    /// See `ProcessCommand::`[new][ProcessCommand::new].
-    fn command<S: AsRef<OsStr>>(program: S) -> ProcessCommand {
-        ProcessCommand::new(program)
+    /// See `Command::`[new][Command::new].
+    fn command<S: AsRef<OsStr>>(program: S) -> Command {
+        Command::new(program)
     }
 
     /// Terminates the current process in an abnormal fashion.

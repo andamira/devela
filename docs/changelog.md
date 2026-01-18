@@ -746,6 +746,7 @@ re-export hidden workspace dependencies from `_dep`.
     - `ProcessExt::id` to `self_pid`.
 
 ### process
+- rename re-exported types back by removing the `Process` prefix, except for `Child*`→`Process*` renames and `ProcessTermination`.
 
 ### sync
 - move `portable-atomic-util` dependent re-exports to [base_alloc]: `Arc`, `ArkWeak`.

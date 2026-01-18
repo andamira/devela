@@ -36,29 +36,29 @@ _reexport! { rust: std::process, location: "work/process", tag: _tags!(io),
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform runtime),
     doc: "A builder for configuring and spawning new processes.",
-    @Command as ProcessCommand
+    Command
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform runtime),
     doc: "An iterator over the command arguments.",
-    @CommandArgs as ProcessCommandArgs
+    CommandArgs
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform runtime),
     doc: "An iterator over the command environment variables.",
-    @CommandEnvs as ProcessCommandEnvs
+    CommandEnvs
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform runtime result),
     doc: "The status code the process returns to its parent on normal termination.",
-    @ExitCode as ProcessExitCode
+    ExitCode
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform runtime result),
     doc: "Describes the result of a process after it has terminated.",
-    @ExitStatus as ProcessExitStatus
+    ExitStatus
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform runtime),
     doc: "The output of a finished process.",
-    @Output as ProcessOutput
+    Output
 }
 _reexport! { rust: std::process, location: "work/process", tag:  _tags!(platform runtime io),
     doc: "Specifies how to handle standard I/O streams in [`ProcessCommand`].",
-    @Stdio as ProcessStdio
+    Stdio
 }
