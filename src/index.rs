@@ -70,9 +70,10 @@
 #![cfg_attr(
     nightly_stable_1_94,
     feature(
+        alloc_layout_extra,
         array_windows,
         // const_mul_add,
-        // euler_gamma_golden_ratio,
+        euler_gamma_golden_ratio,
         lazy_get,
         peekable_next_if_map,
     )
@@ -89,7 +90,6 @@
 #![cfg_attr(
     nightly_stable_later,
     feature(
-        alloc_layout_extra,
         assert_matches,
         atomic_try_update,
         breakpoint,
