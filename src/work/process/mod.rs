@@ -11,7 +11,7 @@ crate::items! {
 
     mod cmd; // cmd!
     mod ext; // ProcessExt
-    mod pipe; // Pipeline
+    mod flow; // CommandFlow
 }
 
 crate::structural_mods! { // _mods, _reexports
@@ -20,7 +20,7 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::{
             cmd::*,
             ext::*,
-            pipe::*,
+            flow::*,
         };
     }
     _reexports {

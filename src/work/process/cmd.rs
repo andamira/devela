@@ -4,17 +4,18 @@
 //
 
 #[doc = crate::_tags!(code platform runtime)]
-/// Builds a [`Pipeline`] from a linear sequence of commands.
+/// Builds a [`CommandFlow`] from one or more command invocations.
 #[doc = crate::_doc_location!("work/process")]
 ///
 /// Grammar (informal):
-/// - A pipeline is one or more *segments* separated by `=>`.
+/// - The `=>` operator constructs a linear flow, connecting each command’s
+///   stdout to the stdin of the next.
 /// - Each segment is a command invocation:
 ///   - The first expression is the program.
 ///   - Remaining expressions are arguments to that program.
-/// - A single segment is treated as a pipeline of length 1.
+/// - A single segment is treated as a command flow of length 1.
 ///
-/// Notes:
+/// Semantics:
 /// - This macro does not invoke a shell.
 /// - No redirection, globbing, or quoting is performed.
 /// - Argument splitting only happens when a segment consists of a single string literal.
@@ -42,27 +43,27 @@
 /// ```
 #[macro_export]
 macro_rules! cmd {
-    // Entry point for single-command pipelines.
+    // Entry point for a single-command flow.
     //   cmd!(a, b)
     ($($args:expr),+ $(,)?) => {{
-        $crate::Pipeline::new($crate::cmd!(%cmd $($args),+))
+        $crate::CommandFlow::new($crate::cmd!(%cmd $($args),+))
     }};
-    // Entry point for multi-command pipelines.
+    // Entry point for a multi-command flow.
     //   cmd!(a, b => c, d => e)
     ($($first:expr),+ $(=> $($rest:expr),+ )+) => {{
-        let p = $crate::Pipeline::new($crate::cmd!(%cmd $($first),+)); // build the first
-        $crate::cmd!(%pipe p $(=> $($rest),+ )+) // fold the rest
+        let p = $crate::CommandFlow::new($crate::cmd!(%cmd $($first),+)); // build the first
+        $crate::cmd!(%flow p $(=> $($rest),+ )+) // fold the rest
     }};
     // unsupported cases:
     () => { compile_error!("`cmd!` needs at least one command"); };
     //
-    // Recursively folds => separated segments into a linear pipeline.
-    (%pipe $pipeline:expr => $($next:expr),+ $(=> $($rest:expr),+ )*) => {{
-        let p = $pipeline.then($crate::cmd!(%cmd $($next),+)); // append the next
-        $crate::cmd!(%pipe p $(=> $($rest),+ )*) // repeat for the rest
+    // Recursively folds => separated segments into a command flow.
+    (%flow $flow:expr => $($next:expr),+ $(=> $($rest:expr),+ )*) => {{
+        let p = $flow.then($crate::cmd!(%cmd $($next),+)); // append the next
+        $crate::cmd!(%flow p $(=> $($rest),+ )*) // repeat for the rest
     }};
-    // Stops the recursive pipeline fold and returns the fully built pipeline.
-    (%pipe $pipeline:expr) => { $pipeline };
+    // Stops the recursive fold and returns the fully built command flow.
+    (%flow $flow:expr) => { $flow };
     // Command constructor: A single string literal is split on whitespace.
     (%cmd $cmd:literal) => {{
         let mut it = $cmd.split_whitespace();

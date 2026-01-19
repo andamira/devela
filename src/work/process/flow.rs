@@ -1,46 +1,46 @@
-// devela_base_std::work::process::pipe
+// devela_base_std::work::process::flow
 //
-//! Defines [`Pipeline`].
+//! Defines [`CommandFlow`].
 //
 
 use crate::{Command, ExitStatus, Stdio};
 use crate::{Io, IoError, IoErrorKind, IoRead, IoResult};
 
 #[doc = crate::_tags!(platform runtime)]
-/// A linear sequence of OS process invocations connected by pipes.
+/// An executable flow of OS process invocations.
 #[doc = crate::_doc_location!("work/process")]
 ///
-/// A `Pipeline` represents one or more [`Command`]s executed in order, where the
-/// standard output of each command is connected to the standard input of the next.
+/// A `CommandFlow` represents one or more [`Command`]s executed as a single unit.
+/// In the current implementation, commands are arranged linearly, connecting
+/// the stdout of each command to the stdin of the next.
 ///
-/// Pipelines are constructed programmatically (for example via [`cmd!`]) and
-/// do not involve a shell. As a result:
+/// Command flows are constructed programmatically (for example via [`cmd!`][crate::cmd])
+/// and do not involve a shell. As a result:
 /// - No globbing, quoting, or redirection is performed.
 /// - Each command is spawned directly via the OS process API.
 ///
-/// Execution is eager: all commands in the pipeline are spawned before waiting for completion.
+/// Execution is eager: all commands in the flow are spawned before waiting for completion.
 ///
-/// See also the [`cmd!`][crate::cmd] macro for a compact pipeline syntax.
+/// See also the [`cmd!`][crate::cmd] macro for a compact construction syntax.
 #[derive(Debug)]
-pub struct Pipeline {
+pub struct CommandFlow {
     cmds: Vec<Command>,
 }
 #[rustfmt::skip]
-impl Pipeline {
-    /// Creates a new pipeline with a single command.
+impl CommandFlow {
+    /// Creates a new flow with a single command.
     ///
-    /// This is equivalent to a pipeline of length 1, with no piping.
-    /// Additional commands can be appended using [`Pipeline::then`].
+    /// This is equivalent to a flow of length 1, with no piping.
     pub fn new(cmd: Command) -> Self { Self { cmds: vec![cmd] } }
 
-    /// Appends a command to the pipeline, piping the previous command into it.
+    /// Appends a command to the flow, piping the previous command into it.
     ///
     /// The stdout of the current command is connected to the stdin of `next` using an OS pipe.
     ///
-    /// This consumes the pipeline and returns an extended one, allowing chaining.
+    /// This consumes the flow and returns an extended one, allowing chaining.
     ///
     /// # Panics
-    /// Panics if the pipeline is empty. This invariant is upheld by construction.
+    /// Panics if the flow is empty. This invariant is upheld by construction.
     pub fn then(mut self, mut next: Command) -> Self {
         let (reader, writer) = Io::pipe().expect("pipe failed");
         let left = self.cmds.last_mut().unwrap();
@@ -50,10 +50,10 @@ impl Pipeline {
         self
     }
 
-    /// Runs the pipeline and waits for all commands to complete.
+    /// Runs the flow and waits for all commands to complete.
     ///
     /// All commands are spawned first. The method then waits for each process,
-    /// returning the exit status of the **last** command in the pipeline.
+    /// returning the exit status of the **last** command in the flow.
     ///
     /// Standard input, output, and error streams are inherited unless modified
     /// earlier (for example by piping or capture methods).
@@ -68,7 +68,7 @@ impl Pipeline {
         Ok(last_status.unwrap())
     }
 
-    /// Runs the pipeline and captures the standard output of the last command.
+    /// Runs the flow and captures the standard output of the last command.
     ///
     /// The stdout of the final command is redirected into a pipe and fully
     /// collected into a byte buffer.
@@ -101,13 +101,13 @@ impl Pipeline {
         Ok((last_status.unwrap(), output))
     }
 
-    /// Runs the pipeline and returns the last command’s stdout as a UTF-8 string.
+    /// Runs the flow and returns the last command’s stdout as a UTF-8 string.
     ///
-    /// This is a convenience wrapper over [`Pipeline::stdout`], converting the
+    /// This is a convenience wrapper over [`CommandFlow::stdout`], converting the
     /// captured stdout bytes into a [`String`] using strict UTF-8 decoding.
     ///
     /// # Errors
-    /// - Returns an I/O error if the pipeline fails to execute or capture output.
+    /// - Returns an I/O error if the flow fails to execute or capture output.
     /// - Returns [`InvalidData`] if stdout is not valid UTF-8.
     ///
     /// The exit status of the last command is returned alongside the decoded string.
@@ -117,18 +117,20 @@ impl Pipeline {
         Ok((status, str))
     }
 
-    /// Runs the pipeline and returns the last command’s stdout as a UTF-8 string,
+    /// Runs the flow and returns the last command’s stdout as a UTF-8 string,
     /// replacing invalid sequences.
     ///
     /// This method is identical to [`stdout_string`], except that invalid UTF-8 sequences
     /// are replaced with the Unicode replacement character (�) instead of causing an error.
+    ///
+    /// This is useful when consuming output from programs that may emit arbitrary bytes.
     pub fn stdout_string_lossy(self) -> IoResult<(ExitStatus, String)> {
         let (status, bytes) = self.stdout()?;
         let str = String::from_utf8_lossy(&bytes);
         Ok((status, str.to_string()))
     }
 
-    /// Runs the pipeline and captures both stdout and stderr of the last command.
+    /// Runs the flow and captures both stdout and stderr of the last command.
     ///
     /// The stdout and stderr streams of the final command are merged
     /// into a single byte stream, equivalent to:
@@ -159,7 +161,7 @@ impl Pipeline {
         Ok((last_status.unwrap(), output))
     }
 
-    /// Runs the pipeline and streams the stdout of the last command to a callback.
+    /// Runs the flow and streams the stdout of the last command to a callback.
     ///
     /// The provided function `f` is invoked incrementally with chunks of bytes
     /// as they become available from the final command’s standard output.

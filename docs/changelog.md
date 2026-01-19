@@ -747,7 +747,7 @@ re-export hidden workspace dependencies from `_dep`.
 
 ### process
 - new macro: `cmd!`.
-- new type: `Pipeline`.
+- new type: `CommandFlow`.
 - rename re-exported types back by removing the `Process` prefix, except for `Child*`→`Process*` renames and `ProcessTermination`.
 
 ### sync
