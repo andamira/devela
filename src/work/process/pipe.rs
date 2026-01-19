@@ -147,7 +147,7 @@ impl Pipeline {
     pub fn output(mut self) -> IoResult<(ExitStatus, Vec<u8>)> {
         let (mut reader, writer) = Io::pipe()?;
         let last = self.cmds.last_mut().unwrap();
-        // Fan-in: clone writer
+        // fan-in: clone writer
         last.stdout(Stdio::from(writer.try_clone()?));
         last.stderr(Stdio::from(writer));
         let mut children = Vec::with_capacity(self.cmds.len());

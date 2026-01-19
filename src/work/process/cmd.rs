@@ -22,6 +22,7 @@
 /// # Example
 /// ```
 /// # use devela::{cmd};
+/// # #[cfg(not(miri))] {
 /// let arg1 = "-F";
 /// let cmd2 = "grep";
 ///
@@ -37,6 +38,7 @@
 /// // NOTE: This is invalid. The program will be treated as `"ls -F"`, not `"ls"`,
 /// // because splitting only happens when the *entire segment* is a single literal:
 /// // cmd!("ls -F", "."); // ❌ invalid, no splitting will happen
+/// # }
 /// ```
 #[macro_export]
 macro_rules! cmd {
