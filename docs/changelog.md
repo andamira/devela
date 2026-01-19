@@ -611,6 +611,9 @@ re-export hidden workspace dependencies from `_dep`.
     - `digits` to `digits10`.
 - update derives for `AnsiColor*`.
 
+### error
+- re-export std's `FromUtf8Error`.
+
 ### fmt
 - new macro: `fmtcat`.
 - new trait: `DebugExt`.
