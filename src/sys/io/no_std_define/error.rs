@@ -23,9 +23,8 @@ pub type IoResult<T> = Result<T, IoError>;
 pub struct IoError {
     repr: Repr,
 }
-impl crate::Error for IoError {}
 impl_trait![fmt::Debug for IoError |self, f| Debug::fmt(&self.repr, f)];
-impl_trait![fmt::Display for IoError |self, f|
+impl_trait![fmt::Display+Error for IoError |self, f|
     match self.repr {
         Repr::Custom(ref c) => Debug::fmt(&c, f),
         Repr::Simple(kind) => write!(f, "{}", kind.as_str()),

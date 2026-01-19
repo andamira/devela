@@ -12,6 +12,7 @@
 /// - Hash
 /// - PartialEq (where other == &Self)
 /// - fmt:: Debug, Display…
+/// - fmt::Display+Error (common combination)
 ///
 /// ## Features:
 /// - Allows multiple types in a single invocation, separated by semicolon
@@ -72,6 +73,17 @@ macro_rules! impl_trait {
             $(where $($bounded: $crate::PartialEq,)+ )? {
                 fn eq(&$self, $other: &Self) -> bool { $expr }
             }
+        )+
+    };
+    (fmt::Display+Error for
+        $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )? );+
+        | $self:ident, $f:ident | $expr:expr) => {
+        $(
+            impl< $($($decl)*)? > $crate::Display for $type $(<$($args)*>)?
+            $(where $($bounded: $crate::Display,)+ )? {
+                fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> { $expr }
+            }
+            impl< $($($decl)*)? > $crate::Error for $type $(<$($args)*>)? {}
         )+
     };
     (fmt::$trait:ident for

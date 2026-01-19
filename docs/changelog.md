@@ -204,7 +204,7 @@ re-export hidden workspace dependencies from `_dep`.
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
 - update `impl_traits!` macro:
-  - add new arms for: `FromStr`, `PartialEq`.
+  - add new arms for: `Display+Error`, `FromStr`, `PartialEq`.
   - change syntax from a single <gen> group to a double [decl][args] group, to support const generics.
 - update `const_assert!` macro:
   - add new arms: `ne_buf`, `ne_str`.

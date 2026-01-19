@@ -2,9 +2,8 @@
 //
 //! Defines [`ExitStatusError`].
 //
-// NOTE: we can't implement ConstInit for it.
 
-use crate::{Error, ExitStatus, impl_trait};
+use crate::{ExitStatus, impl_trait};
 
 #[doc = crate::_tags!(platform runtime error)]
 /// Indicates that a process terminated unsuccessfully.
@@ -17,8 +16,7 @@ pub struct ExitStatusError {
     pub(crate) status: ExitStatus,
 }
 
-impl Error for ExitStatusError {}
-impl_trait!(fmt::Display for ExitStatusError |self, f| {
+impl_trait!(fmt::Display+Error for ExitStatusError |self, f| {
     write!(f, "process exited unsuccessfully: {}", self.status)
 });
 
