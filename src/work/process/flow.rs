@@ -3,8 +3,8 @@
 //! Defines [`CommandFlow`].
 //
 
-use crate::{Command, ExitStatus, Stdio};
-use crate::{Io, IoError, IoErrorKind, IoRead, IoResult};
+use crate::sys::io::{Io, IoRead, IoResult};
+use crate::work::process::{Command, ExitStatus, Output, Stdio};
 
 #[doc = crate::_tags!(platform runtime)]
 /// An executable flow of OS process invocations.
@@ -74,9 +74,9 @@ impl CommandFlow {
     /// collected into a byte buffer.
     ///
     /// All commands are spawned before any output is read.
-    /// The method waits for all commands to complete and returns:
-    /// - the exit status of the last command
-    /// - the captured stdout bytes
+    /// The method waits for all commands to complete and returns
+    /// an [`Output`] containing the exit status and captured stdout.
+    /// The stderr field is empty.
     ///
     /// # Notes
     /// - Output is buffered in memory.
@@ -84,7 +84,7 @@ impl CommandFlow {
     ///
     /// # Errors
     /// Returns an I/O error if spawning, piping, reading, or waiting fails.
-    pub fn stdout(mut self) -> IoResult<(ExitStatus, Vec<u8>)> {
+    pub fn stdout(mut self) -> IoResult<Output> {
         let (mut reader, writer) = Io::pipe()?;
         // attach writer to last command's stdout
         let last = self.cmds.last_mut().unwrap();
@@ -96,38 +96,9 @@ impl CommandFlow {
         let mut output = Vec::new();
         reader.read_to_end(&mut output)?;
         // wait for children
-        let mut last_status = None;
-        for mut child in children { last_status = Some(child.wait()?); }
-        Ok((last_status.unwrap(), output))
-    }
-
-    /// Runs the flow and returns the last command’s stdout as a UTF-8 string.
-    ///
-    /// This is a convenience wrapper over [`CommandFlow::stdout`], converting the
-    /// captured stdout bytes into a [`String`] using strict UTF-8 decoding.
-    ///
-    /// # Errors
-    /// - Returns an I/O error if the flow fails to execute or capture output.
-    /// - Returns [`InvalidData`] if stdout is not valid UTF-8.
-    ///
-    /// The exit status of the last command is returned alongside the decoded string.
-    pub fn stdout_string(self) -> IoResult<(ExitStatus, String)> {
-        let (status, bytes) = self.stdout()?;
-        let str = String::from_utf8(bytes).map_err(|e| IoError::new(IoErrorKind::InvalidData, e))?;
-        Ok((status, str))
-    }
-
-    /// Runs the flow and returns the last command’s stdout as a UTF-8 string,
-    /// replacing invalid sequences.
-    ///
-    /// This method is identical to [`stdout_string`], except that invalid UTF-8 sequences
-    /// are replaced with the Unicode replacement character (�) instead of causing an error.
-    ///
-    /// This is useful when consuming output from programs that may emit arbitrary bytes.
-    pub fn stdout_string_lossy(self) -> IoResult<(ExitStatus, String)> {
-        let (status, bytes) = self.stdout()?;
-        let str = String::from_utf8_lossy(&bytes);
-        Ok((status, str.to_string()))
+        let mut last_status = ExitStatus::default();
+        for mut child in children { last_status = child.wait()?; }
+        Ok(Output { status: last_status, stdout: output, stderr: Vec::new() })
     }
 
     /// Runs the flow and captures both stdout and stderr of the last command.
@@ -142,11 +113,12 @@ impl CommandFlow {
     /// - The relative ordering of stdout and stderr bytes is unspecified.
     /// - Output is buffered in memory.
     ///
-    /// Returns the exit status of the last command and the merged output bytes.
+    /// Returns an [`Output`] containing the exit status and merged stdout/stderr.
+    /// The merged output is stored in `Output.stdout`; `stderr` is empty.
     ///
     /// # Errors
     /// Returns an I/O error if spawning, piping, reading, or waiting fails.
-    pub fn output(mut self) -> IoResult<(ExitStatus, Vec<u8>)> {
+    pub fn output(mut self) -> IoResult<Output> {
         let (mut reader, writer) = Io::pipe()?;
         let last = self.cmds.last_mut().unwrap();
         // fan-in: clone writer
@@ -156,9 +128,9 @@ impl CommandFlow {
         for mut cmd in self.cmds { children.push(cmd.spawn()?); }
         let mut output = Vec::new();
         reader.read_to_end(&mut output)?;
-        let mut last_status = None;
-        for mut child in children { last_status = Some(child.wait()?); }
-        Ok((last_status.unwrap(), output))
+        let mut last_status = ExitStatus::default();
+        for mut child in children { last_status = child.wait()?; }
+        Ok(Output { status: last_status, stdout: output, stderr: Vec::new() })
     }
 
     /// Runs the flow and streams the stdout of the last command to a callback.

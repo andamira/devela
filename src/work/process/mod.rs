@@ -10,8 +10,10 @@ crate::items! {
     mod _reexport_std; // SYMLINK to /libs/base_std/src/work/process/_reexport.rs
 
     mod cmd; // cmd!
-    mod ext; // ProcessExt
+    mod error; // ExitStatusError
     mod flow; // CommandFlow
+    mod output; // OutputExt
+    mod process; // ProcessExt
 }
 
 crate::structural_mods! { // _mods, _reexports
@@ -19,8 +21,10 @@ crate::structural_mods! { // _mods, _reexports
         #[cfg(feature = "std")]
         pub use super::{
             cmd::*,
-            ext::*,
+            error::*,
             flow::*,
+            output::*,
+            process::*,
         };
     }
     _reexports {

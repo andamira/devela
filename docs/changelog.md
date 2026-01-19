@@ -747,7 +747,8 @@ re-export hidden workspace dependencies from `_dep`.
 
 ### process
 - new macro: `cmd!`.
-- new type: `CommandFlow`.
+- new trait: `OutputExt`.
+- new types: `CommandFlow`, `ExitStatusError`.
 - rename re-exported types back by removing the `Process` prefix, except for `Child*`→`Process*` renames and `ProcessTermination`.
 
 ### sync
