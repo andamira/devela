@@ -90,20 +90,25 @@ re-export hidden workspace dependencies from `_dep`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
   - replace `paste` dependency with `pastey` and move to [base].
-- [base]
-  - add `_workspace_internal` structural module (replacing `_internal`).
-- [base_macros]:
-  - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
-  - new macro: `repeat!`.
-- [macros]:
-  - use workspace's crate version.
-  - make it an optional dependency.
-  - add `devela_base_core` as a dependency.
-  - enable `doc_cfg` via `nightly_doc` flag.
-  - remove dependency `hashbrown`.
-  - remove features: `alloc`, `std`, `nightly`, `nightly_doc`.
-- [postbuild]
-  - add feature `__dbg`.
+
+### [base]
+- add `_workspace_internal` structural module (replacing `_internal`).
+
+### [base_macros]
+- move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
+- new macro: `repeat!`.
+- new compiler predicate: `nota`.
+
+### [macros]
+- use workspace's crate version.
+- make it an optional dependency.
+- add `devela_base_core` as a dependency.
+- enable `doc_cfg` via `nightly_doc` flag.
+- remove dependency `hashbrown`.
+- remove features: `alloc`, `std`, `nightly`, `nightly_doc`.
+
+### [postbuild]
+- add feature `__dbg`.
 
 ## manifest
 - add workspace hiearchy diagram.

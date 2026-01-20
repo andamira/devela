@@ -44,8 +44,9 @@ The following compilation predicates are supported:
   - `all()`: returns `true` if **all** predicates **are `true`**.
   - `none()`: returns `true` if there is **no given** predicate.
   - `some()`: returns `true` if there is **some given** predicate.
-  - `diff()`: returns `true` if **any** predicate has a **different text**.
   - `same()`: returns `true` if **all** the predicates have the **same text**.
+  - `diff()`: returns `true` if **any** predicate **differs from the first** in text.
+  - `nota()`: returns `true` if the first predicate's text matches **none of the rest**.
   - `xany()`: returns `true` if there are **any `true`** predicates, but **not all**.
   - `xodd()`: returns `true` if there is an **odd number** of `true` predicates.
   - `xone()`: returns `true` if there is just **one `true`** predicate, but **no more**.
@@ -62,7 +63,17 @@ The following compilation predicates are supported:
   - `little_endian()`: returns `true` if current architecture is little-endian.
   - `big_endian()`: returns `true` if current architecture is big-endian.
 
-When more than 1 predicate is supported, they are separated by commas.
+#### Notes
+- When more than one predicate is supported, they are separated by commas.
+
+Empty-argument semantics:
+- `all()`  == `true`
+- `any()`  == `false`
+- `same()` == `true`
+- `diff()` == `false`
+- `none()` == `true`
+- `some()` == `false`
+- `nota()` == panic (no reference predicate)
 
 [1]: https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg-attribute
 [2]: https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg_attr-attribute
