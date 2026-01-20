@@ -20,6 +20,7 @@ impl super::Num for NoNum {
     fn num_into(self) -> Self::Inner {}
 }
 
+#[cfg(feature = "devela_base_num")]
 impl super::NumInt for NoNum {
     type OutI = ();
 }

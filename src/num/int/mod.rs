@@ -5,14 +5,17 @@
 
 mod fns; // prime_number_teorem
 
+#[cfg(feature = "devela_base_num")]
 mod num_trait; // NumInt, NumRefInt
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             fns::*,
-            num_trait::*,
         };
+        #[cfg(feature = "devela_base_num")]
+        pub use super::num_trait::*;
+
         #[doc(inline)]
         pub use devela_base_core::{
             isize_down, isize_up, usize_down, usize_up,
@@ -21,6 +24,7 @@ crate::structural_mods! { // _mods
         };
 
         #[doc(inline)]
+        #[cfg(feature = "devela_base_num")]
         pub use devela_base_num::Int;
 
         #[doc(inline)]

@@ -60,7 +60,7 @@ resolver = "3"
 # ┌╼devela_base_macros         : base proc macros, zero-deps | always available, |
 # └╥╼devela_base_core          : base core-dependent items   | primitive focused |
 #  ╟─┼╼devela_base_data?       : base data structures        | monomorphizations |
-#  ╟─┼╼devela_base_num         : base numeric operations     | stable interfaces |
+#  ╟─┼╼devela_base_num?        : base numeric operations     | stable interfaces |
 #  ╟─┴╼devela_base_text?       : base text functionality     | & infrastructures |
 #  ║                                                         ·-------------------·
 #  ╚╦╼devela_base_alloc?       : base alloc-dependent items  |                   |
@@ -190,7 +190,7 @@ bench = false
 __dbg = [ # shows extra debugging information
 	"devela_base_core/__dbg",
 		"devela_base_data?/__dbg",
-		"devela_base_num/__dbg",
+		"devela_base_num?/__dbg",
 		"devela_base_text?/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
 ]
@@ -198,7 +198,7 @@ __std = [ # disables `no_std` in base crates for testing
 	"std",
 	"devela_base_core/__std",
 		"devela_base_data?/__std",
-		"devela_base_num/__std",
+		"devela_base_num?/__std",
 		"devela_base_text?/__std",
 	"devela_base_alloc?/__std",
 ]
@@ -207,7 +207,7 @@ __std = [ # disables `no_std` in base crates for testing
 __publish = [
 	"devela_base_core/__publish",
 		"devela_base_data?/__publish",
-		"devela_base_num/__publish",
+		"devela_base_num?/__publish",
 		"devela_base_text?/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
@@ -274,7 +274,7 @@ media = ["audio", "color", "draw", "font", "image", "video"]
 	font = ["devela_base_core/font"]
 	image = ["devela_base_core/image"]
 	video = []
-num = ["rand", "unit"]
+num = ["devela_base_num", "rand", "unit"]
 	rand = [] # random number generators
 	# symb = []
 	unit = [] # unit prefixes
@@ -371,7 +371,7 @@ base_safe = [
 		safe_draw = ["devela_base_core/safe_draw"]
 		safe_font = ["devela_base_core/safe_font"]
 		safe_image = ["devela_base_core/safe_image"]
-	safe_num = ["devela_base_num/safe"]
+	safe_num = ["devela_base_num?/safe"]
 	safe_phys = ["safe_time"]
 		safe_time = []
 	safe_run = ["devela_base_core/safe_run"]
@@ -409,7 +409,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_hint    = [ # arch instructions, unreachable_unchecked, unchecked arithmetic
 		"devela_base_core/unsafe_hint",
-		"devela_base_num/unsafe_hint",
+		"devela_base_num?/unsafe_hint",
 		# "devela_base_alloc?/unsafe_hint", "devela_base_std?/unsafe_hint",
 		# "devela_macros?/unsafe_hint",
 	]
@@ -644,7 +644,7 @@ devela_base_text = ["dep:devela_base_text"] # MAYBE
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
 devela_base_data   = { workspace = true, optional = true }
-devela_base_num    = { workspace = true } # TODO: optional
+devela_base_num    = { workspace = true, optional = true }
 devela_base_text   = { workspace = true, optional = true }
 #
 devela_base_alloc  = { workspace = true, optional = true }

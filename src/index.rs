@@ -277,6 +277,7 @@ mod _crate_internals {
     pub(crate) use devela_base_core::_workspace_internals::*;
     // #[cfg(feature = "devela_base_data")]
     // pub(crate) use devela_base_data::_workspace_internals::*;
+    #[cfg(feature = "devela_base_num")]
     pub(crate) use devela_base_num::_workspace_internals::*;
     #[cfg(feature = "devela_base_text")]
     pub(crate) use devela_base_text::_workspace_internals::*;
