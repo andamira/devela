@@ -72,14 +72,13 @@
     feature(
         alloc_layout_extra,
         array_windows,
-        // const_mul_add,
         euler_gamma_golden_ratio,
         lazy_get,
         peekable_next_if_map,
     )
 )]
 // #![cfg_attr(all(nightly_stable_1_94, feature = "alloc"), feature())]
-// #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature())]
+#![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature(const_mul_add))]
 // ----------------------------
 // `nightly_stable_1_95`: core, alloc, std…
 // #![cfg_attr(nightly_stable_1_95, feature())]
@@ -119,7 +118,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_extract_if, new_zeroed_alloc,)
+    feature(btree_extract_if, new_zeroed_alloc, vec_deque_truncate_front,)
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]

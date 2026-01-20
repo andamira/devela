@@ -49,7 +49,7 @@ See also
 
 - 1.94: `·`[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
-- 1.94: ` `[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
+- 1.94: `s`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
 - 1.94: `·`[euler_gamma_golden_ratio](https://github.com/rust-lang/rust/pull/151164)
 - 1.94: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
 - 1.94: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
@@ -104,6 +104,7 @@ See also
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
+- 1.??: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 
 # … may be stable even later
 
