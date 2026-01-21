@@ -31,7 +31,7 @@ define_lane! {
 /// - `_simd`:  A nightly-only portable SIMD implementation, that will stabilize some day.
 /// - `_wide`:  A stable SIMD implementation, leveraging the `wide` crate.
 // And the method without a suffix chooses from the available XXX
-// in the following order of preference, from highe to lowest: simd → wide → plain.
+// in the following order of preference, from highest to lowest: simd → wide → plain.
 ///
 /// # Example
 /// ```
@@ -527,14 +527,15 @@ macro_rules! define_lane {
 
             /* alternative fast integer division */
 
-            /// Divides each lane by the scalar `rhs`, using an optimized
-            /// [`Divisor`][crate::Divisor].
-            /// # Panics
-            /// Panics if `rhs == 0` or if signed division overflows.
-            pub const fn div_scalar_fast_assign_plain(&mut self, rhs: $t) {
-                let d = $crate::Divisor::<$t>::new(rhs).expect("Divisor::new(0) is invalid");
-                $crate::punroll! { $L |i| self.0[i] = d.div_of(self.0[i]) }
-            }
+            // TODO FIX IMPROVE
+            // /// Divides each lane by the scalar `rhs`, using an optimized
+            // /// [`Divisor`][crate::Divisor].
+            // /// # Panics
+            // /// Panics if `rhs == 0` or if signed division overflows.
+            // pub const fn div_scalar_fast_assign_plain(&mut self, rhs: $t) {
+            //     let d = $crate::Divisor::<$t>::new(rhs).expect("Divisor::new(0) is invalid");
+            //     $crate::punroll! { $L |i| self.0[i] = d.div_of(self.0[i]) }
+            // }
 
             /* bitwise operations */
 

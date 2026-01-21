@@ -19,9 +19,11 @@ crate::structural_mods! { // _mods
         #[doc(inline)]
         pub use devela_base_core::{
             isize_down, isize_up, usize_down, usize_up,
-            Divisor,
+            define_divisor,
             GcdReturn,
         };
+        #[cfg(feature = "_docs_min")]
+        pub use devela_base_core::num::DivisorExample;
 
         #[doc(inline)]
         #[cfg(feature = "devela_base_num")]

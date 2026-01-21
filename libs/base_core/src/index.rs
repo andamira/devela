@@ -126,15 +126,6 @@ pub mod zall {
     };
 }
 
-// public, hidden items
-#[doc(hidden)]
-#[allow(unused_imports)]
-pub use _hidden::*;
-mod _hidden {
-    #[allow(unused_imports)]
-    pub use super::sys::_hidden::*;
-}
-
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub(crate) use _crate_internals::*;
@@ -165,5 +156,18 @@ pub mod _workspace_internals {
     pub use super::{
         code::_workspace_internals::*,
         num::_workspace_internals::*,
+    };
+}
+
+// public, hidden items
+#[doc(hidden)]
+#[allow(unused_imports)]
+pub use _hidden::*;
+#[doc(hidden)] #[rustfmt::skip]
+pub mod _hidden {
+    #[allow(unused_imports)]
+    pub use super::{
+        num::_hidden::*,
+        sys::_hidden::*,
     };
 }

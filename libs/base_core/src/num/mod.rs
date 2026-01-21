@@ -31,7 +31,7 @@ pub mod quant; // Cycle*, Interval, interval!, Ratio
 // pub mod symb; // WIP
 pub mod wide; // define_lane!
 
-crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals
+crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals, _hidden
     _mods {
         pub use super::{
             bit::_all::*,
@@ -67,5 +67,8 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
             niche::_workspace_internals::*,
         };
         pub use super::wide::_hidden::*;
+    }
+    _hidden {
+        pub use super::int::_hidden::*;
     }
 }

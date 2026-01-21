@@ -374,7 +374,9 @@ re-export hidden workspace dependencies from `_dep`.
 ### int
 - move to [base]: `Int`, `[iu]size_*`.
 - move int shared docs to `devela_base_num` prefixed with `_INT_`.
-- new types: `IntAlloc`, `IntError`, `IntResult`.
+- new macros: `define_divisor!`.
+- new types: `DivisorExample`, `IntAlloc`, `IntError`, `IntResult`.
+- remove type: `Divisor`.
 - make all `Int` methods *const*.
 
 ### logic

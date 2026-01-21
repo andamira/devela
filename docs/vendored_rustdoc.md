@@ -26,7 +26,7 @@
   [M_pollster]: crate::_doc::vendored::pollster
   [`block_on`]: crate::work::future::FutureExt#method.block_on
   [M_quickdiv]: crate::_doc::vendored::quickdiv
-  [`Divisor`]: crate::num::Divisor
+  [`define_divisor`]: crate::num::define_divisor
   [M_stack_dst]: crate::_doc::vendored::stack_dst
   [`data::dst`]: crate::data::dst
   [M_stated-scope-guard]: crate::_doc::vendored::stated_scope_guard
