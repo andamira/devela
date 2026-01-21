@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_NUM_NICHE!()]
 //!
+#![doc = crate::_doc!(extends: num)]
+//!
 //! This module provides niche-constrained numeric representations and
 //! related utilities for domain modeling, sentinel values, and
 //! memory-efficient data structures.

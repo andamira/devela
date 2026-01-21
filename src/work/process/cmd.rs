@@ -4,7 +4,7 @@
 //
 
 #[doc = crate::_tags!(code platform runtime)]
-/// Builds a [`CommandFlow`] from one or more command invocations.
+/// Builds a [`CommandFlow`][crate::CommandFlow] from one or more command invocations.
 #[doc = crate::_doc_location!("work/process")]
 ///
 /// Grammar (informal):
@@ -42,6 +42,7 @@
 /// # }
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cmd {
     // Entry point for a single-command flow.
     //   cmd!(a, b)
@@ -77,3 +78,5 @@ macro_rules! cmd {
         let mut c = $crate::Command::new($prog); $( c.arg($arg); )* c
     }};
 }
+#[doc(inline)]
+pub use cmd;

@@ -46,7 +46,7 @@ The following compilation predicates are supported:
   - `some()`: returns `true` if there is **some given** predicate.
   - `same()`: returns `true` if **all** the predicates have the **same text**.
   - `diff()`: returns `true` if **any** predicate **differs from the first** in text.
-  - `nota()`: returns `true` if the first predicate's text matches **none of the rest**.
+  - `nota()`: returns `true` if the first predicate's text matches **none of the additional** predicates.
   - `xany()`: returns `true` if there are **any `true`** predicates, but **not all**.
   - `xodd()`: returns `true` if there is an **odd number** of `true` predicates.
   - `xone()`: returns `true` if there is just **one `true`** predicate, but **no more**.

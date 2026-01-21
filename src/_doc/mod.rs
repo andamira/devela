@@ -6,6 +6,7 @@
 #![cfg(any(doc, test))]
 #![cfg_attr(nightly_doc, doc(cfg(any(doc, test))))]
 
+#[doc(hidden)] // TEMP
 /// Build-time metaprogramming and code generation utilities.
 ///
 /// Contains logic executed during `cargo build`, including:

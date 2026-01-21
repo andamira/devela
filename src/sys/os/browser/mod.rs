@@ -11,7 +11,7 @@
 
 #[cfg(all(feature = "js", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
-pub mod web; // Web*
+pub mod web; // Web[Document|Element|Event*|Permission*|Window*|Worker*]…
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {

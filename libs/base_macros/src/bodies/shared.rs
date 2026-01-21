@@ -234,7 +234,7 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         let args: Vec<_> = split_args(inner_args);
         args.iter().all(|b| b == &args[0])
 
-    // first predicate matches none of the rest
+    // first predicate matches none of the additional predicates
     // set: ∀ i > 0 : Pᵢ ≠ P₀
     } else if arg.starts_with("nota(") && arg.ends_with(')') {
         let inner_args = &arg[7..arg.len() - 1];

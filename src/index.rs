@@ -234,9 +234,9 @@ pub mod zall_ {
 #[doc(hidden)]
 pub use {zall as all, zall::*}; // keep devela::all::* accesor hidden
 #[doc = crate::_DOC_ZALL!()]
+#[rustfmt::skip]
 pub mod zall {
     #[doc(inline)]
-    #[rustfmt::skip]
     #[allow(unused_imports)]
     pub use super::{
         code::_all::*,
@@ -257,9 +257,11 @@ pub mod zall {
 // public, hidden items
 #[doc(hidden)]
 pub use _hidden::*;
+#[rustfmt::skip]
 mod _hidden {
-    #[rustfmt::skip]
-    #[allow(unused_imports)]
+    #![allow(unused_imports)]
+
+    pub use devela_base_core::_hidden::*;
     pub use super::{
         media::_hidden::*,
         num::_hidden::*,
@@ -270,6 +272,7 @@ mod _hidden {
 // private, internal items
 #[allow(unused_imports)]
 pub(crate) use _crate_internals::*;
+// NOTE: module-level `#[rustfmt::skip]` breaks macro import resolution here.
 mod _crate_internals {
     #![allow(unused_imports)]
 

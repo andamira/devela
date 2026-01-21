@@ -61,6 +61,8 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.95.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.95.0> -->
 
+- 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
+
 # 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
 <!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.96.0> -->
