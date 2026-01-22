@@ -59,7 +59,4 @@ pub mod _workspace_internals {
     #![allow(unused_imports)]
     pub use devela_base_core::zall::*;
     pub use devela_base_core::_workspace_internals::*;
-
-    pub use devela_base_num::zall::*;
-    pub use devela_base_num::_workspace_internals::*;
 }

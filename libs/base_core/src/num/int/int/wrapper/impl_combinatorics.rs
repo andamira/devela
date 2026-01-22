@@ -1,4 +1,4 @@
-// devela_base_num::num::int::wrapper::impl_combinatorics
+// devela_base_core::num::int::int::wrapper::impl_combinatorics
 //
 //! Implements combinatorics-related methods for [`Int`].
 //
@@ -79,7 +79,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
@@ -132,7 +132,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
@@ -178,7 +178,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
@@ -218,7 +218,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
@@ -261,7 +261,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
@@ -294,7 +294,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]
@@ -345,7 +345,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
@@ -394,7 +394,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
@@ -437,7 +437,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
@@ -474,7 +474,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
@@ -513,7 +513,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
@@ -544,7 +544,7 @@ macro_rules! impl_combinatorics {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]

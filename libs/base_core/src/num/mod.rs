@@ -14,19 +14,19 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
     crate::_doc!(modules: crate; num: error, niche, quant, wide); // logic, ord, rand
 }
 
-mod _internals; // impl_ops!
+mod _internals; // impl_ops!, upcasted_op!
 
 mod bit; // BitOps, Bitwise
 mod cast; // Cast
 mod float; // Float, FloatConst, f[32|64]_bits, fsize
-mod int; // Divisor, GcdReturn, [i|u]size_[down|up]
+mod int; // Divisor, GcdReturn, Int, [i|u]size_[down|up]
 mod logic; // ConstBool, False, True, const_bool!
 mod traits; // NumConst
 
 pub mod error; // error types
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod ord; // Cmp
-pub mod quant; // Cycle*, Interval, interval!, Ratio
+pub mod quant; // Cycle*, Interval, interval!, Ratio, ValueQuant
 // pub mod rand; // WIP
 // pub mod symb; // WIP
 pub mod wide; // define_lane!
@@ -64,11 +64,14 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
         pub use super::{
             _internals::*,
             float::_workspace_internals::*,
+            int::_workspace_internals::*,
             niche::_workspace_internals::*,
         };
-        pub use super::wide::_hidden::*;
     }
     _hidden {
-        pub use super::int::_hidden::*;
+        pub use super::{
+            int::_hidden::*,
+            wide::_hidden::*,
+        };
     }
 }

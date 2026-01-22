@@ -1,4 +1,4 @@
-// devela_base_num::num::int::wrapper::namespace
+// devela_base_core::num::int::int::wrapper::namespace
 //
 //! Defines the [`Int`] namespace wrapper.
 //

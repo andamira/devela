@@ -13,8 +13,6 @@
 //! - Range and interval mathematics: [`Interval`], [`interval!`].
 // - Scaling transformations: [`Scale`].
 //! - Numerical classification and properties: [`Sign`].
-//!
-#![doc = crate::doclink!(custom devela "[`interval!`]" "num/quant/macro.interval.html")]
 //
 
 // mod align; // Align WIP
@@ -25,6 +23,7 @@ mod interval; // Interval, interval!
 // mod ratio; // Ratio
 // mod scale; // Scale
 mod sign; // Sign
+mod value; // ValueQuant
 
 crate::structural_mods! { // _mods
     _mods {
@@ -36,6 +35,7 @@ crate::structural_mods! { // _mods
             // norm::*,
             // scale::*,
             sign::*,
+            value::*,
         };
     }
 }

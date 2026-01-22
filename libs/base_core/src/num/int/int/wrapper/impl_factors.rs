@@ -1,4 +1,4 @@
-// devela_base_num::num::int::wrapper::impl_factors
+// devela_base_core::num::int::int::wrapper::impl_factors
 //
 //! Implements factors-related methods for [`Int`].
 //
@@ -72,7 +72,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
@@ -107,7 +107,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
@@ -150,7 +150,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t ").factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];"]
             ///
@@ -191,7 +191,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];"]
@@ -229,7 +229,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let mut buf = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_buf(&mut buf), Ok(4)];"]
             ///
@@ -285,7 +285,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let mut uniq = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
@@ -324,7 +324,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let mut fbuf = [0; 4];
             /// let mut ebuf = [0; 2];
             #[doc = "assert_eq![Int(40_" $t
@@ -404,7 +404,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_prime_unique_plus_buf(&mut fac, &mut uniq), Ok((4, 2))];"]
@@ -451,7 +451,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_count(), 0];"]
@@ -485,7 +485,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
             #[must_use]
@@ -527,7 +527,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t ").factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];"]
             ///
@@ -566,7 +566,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];"]
@@ -604,7 +604,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let mut buf = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_buf(&mut buf), Ok(4)];"]
             ///
@@ -661,7 +661,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let mut uniq = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
@@ -700,7 +700,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let mut fbuf = [0; 4];
             /// let mut ebuf = [0; 2];
             #[doc = "assert_eq![Int(40_" $t
@@ -780,7 +780,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_num::Int;
+            /// # use devela_base_core::Int;
             /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_prime_unique_plus_buf(&mut fac, &mut uniq), Ok((4, 2))];"]

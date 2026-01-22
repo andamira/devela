@@ -11,7 +11,6 @@ impl Digits<u16> {
     pub const MAX_DIGITS_16: u8 = 4;
 
     #[doc = DOC_COUNT_DIGITS_10!()]
-    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     /// # Example
     /// ```
     /// # use devela_base_core::text::Digits;
@@ -24,7 +23,6 @@ impl Digits<u16> {
     }
 
     #[doc = DOC_COUNT_DIGITS_16!()]
-    #[doc = crate::doclink!(custom devela_base_num "[`Int`]" "num/struct.Int.html")]
     pub const fn count_digits16(self) -> u8 {
         match self.0 {
             0 => 1,

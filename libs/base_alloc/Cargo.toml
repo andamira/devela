@@ -105,7 +105,6 @@ dep_portable_atomic_util = ["dep:portable-atomic-util"]                         
 
 [dependencies]
 devela_base_core = { workspace = true }
-devela_base_num = { workspace = true }
 
 #* optional external dependencies *#
 portable-atomic-util = { workspace = true, optional = true }

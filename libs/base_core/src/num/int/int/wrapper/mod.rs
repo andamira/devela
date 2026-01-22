@@ -1,4 +1,4 @@
-// devela_base_num::num::int::wrapper
+// devela_base_core::num::int::int::wrapper
 //
 //! Integer wrapper struct.
 //

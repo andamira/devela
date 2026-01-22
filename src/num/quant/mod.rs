@@ -27,9 +27,7 @@ crate::structural_mods! { // _mods
             Cycle, CycleCount,
             Interval, interval,
             Sign,
+            ValueQuant,
         };
-
-        #[cfg(feature = "devela_base_num")]
-        pub use devela_base_num::ValueQuant;
     }
 }

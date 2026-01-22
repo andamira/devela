@@ -85,6 +85,7 @@ pub enum DivisorInner<T> {
 /// - Division by zero is checked when constructing a divisor.
 #[doc = crate::_doc!(vendor: "quickdiv")]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! define_divisor {
     (
     /* public macro arms */
@@ -583,6 +584,7 @@ macro_rules! define_divisor {
     //     stringify!($($tt)*))];
     // };
 }
+#[doc(inline)]
 pub use define_divisor;
 
 #[cfg(test)]

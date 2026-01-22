@@ -3,7 +3,7 @@
 //! Fractional functionality.
 //
 
-#[cfg(feature = "devela_base_num")]
+#[cfg(feature = "int")]
 mod wrapper;
 
 // WIPZONE
@@ -11,7 +11,7 @@ mod wrapper;
 
 crate::structural_mods! { // _mods
     _mods {
-        #[cfg(feature = "devela_base_num")]
+        #[cfg(feature = "int")]
         pub use super::wrapper::*;
 
         // WIPZONE

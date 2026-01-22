@@ -56,26 +56,19 @@ resolver = "3"
 
 ## Bottom-up hierarchical dependency flow of units of compilation (? = optional)
 # ·------------------------------------------------------------------------------
-#                                                            .-------------------.
-# ┌╼devela_base_macros         : base proc macros, zero-deps | always available, |
-# └╥╼devela_base_core          : base core-dependent items   | primitive focused |
-#  ╟─┼╼devela_base_data?       : base data structures        | monomorphizations |
-#  ╟─┼╼devela_base_num?        : base numeric operations     | stable interfaces |
-#  ╟─┴╼devela_base_text?       : base text functionality     | & infrastructures |
-#  ║                                                         ·-------------------·
-#  ╚╦╼devela_base_alloc?       : base alloc-dependent items  |                   |
-#   ╟─┴╼devela_base_std?╾────┐ : base std-dependent items    |                   |
-#   ╚-╗╼devela_macros?       │ : heavy proc macros           |                   |
-#     ║                      │                               ··------------------·
-#     ╚═╦╼devela             │ : unified front, traits       | integration layer |
-#       ║ ├╼build/main───────┤ : build, codegen, debug       | public interfaces |
-#       ║ └╼devela_postbuild─┘ : post-build processing       | development tools |
-#       ╏                                                    ·-------------------·
+#                                                           .-------------------.
+# ┌╼devela_base_macros        : base proc macros, zero-deps | always available, |
+# └╥╼devela_base_core         : base  core-dependent items  | primitive focused |
+#  ╟─┴╼devela_base_alloc?     : base alloc-dependent items  | monomorphizations |
+#  ╟──┴╼devela_base_std?╾───┐ : base   std-dependent items  | stable interfaces |
+#  ╚═╗╼devela_macros?       │ : heavy proc macros           | & infrastructures |
+#    ║                      │                               ··------------------·
+#    ╚═╦╼devela             │ : unified front, traits       | integration layer |
+#      ║ ├╼build/main───────┤ : build, codegen, debug       | public interfaces |
+#      ║ └╼devela_postbuild─┘ : post-build processing       | development tools |
+#      ╏                                                    ·-------------------·
 members = [
-	"libs/base_macros",
-	"libs/base_core", "libs/base_num",
-	"libs/base_alloc", "libs/base_std",
-	"libs/macros",
+	"libs/base_macros", "libs/base_core", "libs/base_alloc", "libs/base_std", "libs/macros",
 	".", # ← root package
 	"build/post",
 ]
@@ -187,20 +180,17 @@ bench = false
 
 __dbg = [ # shows extra debugging information
 	"devela_base_core/__dbg",
-		"devela_base_num?/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
 ]
 __std = [ # disables `no_std` in base crates for testing
 	"std",
 	"devela_base_core/__std",
-		"devela_base_num?/__std",
 	"devela_base_alloc?/__std",
 ]
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
 	"devela_base_core/__publish",
-		"devela_base_num?/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
 ]
@@ -266,7 +256,8 @@ media = ["audio", "color", "draw", "font", "image", "video"]
 	font = ["devela_base_core/font"]
 	image = ["devela_base_core/image"]
 	video = []
-num = ["devela_base_num", "rand", "unit"]
+num = ["int", "rand", "unit"]
+	int = ["devela_base_core/int"] # Int TEMP
 	rand = [] # random number generators
 	# symb = []
 	unit = [] # unit prefixes
@@ -364,7 +355,7 @@ base_safe = [
 		safe_draw = ["devela_base_core/safe_draw"]
 		safe_font = ["devela_base_core/safe_font"]
 		safe_image = ["devela_base_core/safe_image"]
-	safe_num = ["devela_base_num?/safe"]
+	safe_num = []
 	safe_phys = ["safe_time"]
 		safe_time = []
 	safe_run = ["devela_base_core/safe_run"]
@@ -401,7 +392,6 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_hint    = [ # arch instructions, unreachable_unchecked, unchecked arithmetic
 		"devela_base_core/unsafe_hint",
-		"devela_base_num?/unsafe_hint",
 		# "devela_base_alloc?/unsafe_hint", "devela_base_std?/unsafe_hint",
 		# "devela_macros?/unsafe_hint",
 	]
@@ -631,7 +621,6 @@ devela_macros = [ "dep:devela_macros"]
 #* workspace internal libraries *#
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
-devela_base_num    = { workspace = true, optional = true }
 #
 devela_base_alloc  = { workspace = true, optional = true }
 devela_base_std    = { workspace = true, optional = true }
@@ -664,7 +653,6 @@ wide = { workspace = true, optional = true }
 # publish (crates.io valid):
 # devela_base_macros = { version = "0.25.0-wip" } #
 # devela_base_core   = { version = "0.25.0-wip" }
-# devela_base_num    = { version = "0.25.0-wip" }
 # devela_base_alloc  = { version = "0.25.0-wip" } #
 # devela_base_std    = { version = "0.25.0-wip" }
 # devela_macros      = { version = "0.25.0-wip" }
@@ -673,7 +661,6 @@ wide = { workspace = true, optional = true }
 # dev (local override):
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
-devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
