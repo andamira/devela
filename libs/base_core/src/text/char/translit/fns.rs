@@ -1,4 +1,4 @@
-// devela_base_text::text::char::fns
+// devela_base_core::text::char::fns
 
 use crate::ASCII_TRANSLIT_BLOCKS;
 

@@ -73,7 +73,7 @@ resolver = "3"
 #       ╏                                                    ·-------------------·
 members = [
 	"libs/base_macros",
-	"libs/base_core", "libs/base_num", "libs/base_text",
+	"libs/base_core", "libs/base_num",
 	"libs/base_alloc", "libs/base_std",
 	"libs/macros",
 	".", # ← root package
@@ -188,14 +188,12 @@ bench = false
 __dbg = [ # shows extra debugging information
 	"devela_base_core/__dbg",
 		"devela_base_num?/__dbg",
-		"devela_base_text?/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
 ]
 __std = [ # disables `no_std` in base crates for testing
 	"std",
 	"devela_base_core/__std",
 		"devela_base_num?/__std",
-		"devela_base_text?/__std",
 	"devela_base_alloc?/__std",
 ]
 
@@ -203,7 +201,6 @@ __std = [ # disables `no_std` in base crates for testing
 __publish = [
 	"devela_base_core/__publish",
 		"devela_base_num?/__publish",
-		"devela_base_text?/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
 	"devela_macros?/__publish",
 ]
@@ -299,8 +296,9 @@ sys = ["io", "mem"]
 	# os
 		linux = []
 		windows = ["crossterm?/windows"]
-text = ["grapheme"]
-	grapheme = ["devela_base_text"]
+text = ["grapheme", "translit"]
+	grapheme = ["devela_base_core/grapheme"]
+	translit = ["devela_base_core/translit"]
 ui = ["layout", "desk", "term", "web"]
 	layout = []
 	# back
@@ -373,7 +371,7 @@ base_safe = [
 	safe_sys = ["safe_io", "safe_mem", "devela_base_core/safe_sys"]
 		safe_io = ["devela_base_core/safe_io"]
 		safe_mem = ["devela_base_core/safe_mem"]
-	safe_text = ["devela_base_core/safe_text", "devela_base_text?/safe"]
+	safe_text = ["devela_base_core/safe_text"]
 	safe_ui = ["safe_layout"]
 		safe_layout = []
 	safe_work = ["devela_base_core/safe_work"]
@@ -392,7 +390,6 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 
 	unsafe_array   = [ # faster array initialization, UninitArray
 		"devela_base_core/unsafe_array",
-		"devela_base_text/unsafe_array",
 		# "devela_base_alloc?/unsafe_array", "devela_base_std?/unsafe_array",
 		# "devela_macros?/unsafe_array",
 	]
@@ -410,7 +407,6 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_layout  = [ # MemPod, DSTs in the stack, AnyExt::downcast*, Mem::*
 		"devela_base_core/unsafe_layout",
-		"devela_base_text/unsafe_layout",
 		# "devela_base_alloc?/unsafe_layout", "devela_base_std?/unsafe_layout",
 		# "devela_macros?/unsafe_layout",
 	]
@@ -431,7 +427,6 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_str     = [ # unchecked utf-8 char and &str conversions
 		"devela_base_core/unsafe_str",
-		"devela_base_text/unsafe_str",
 		# "devela_base_alloc?/unsafe_str", "devela_base_std?/unsafe_str",
 		# "devela_macros?/unsafe_str",
 	]
@@ -619,7 +614,6 @@ dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                            
 # ------------------------------------------------------------------------------
 
 devela_macros = [ "dep:devela_macros"]
-devela_base_text = ["dep:devela_base_text"] # MAYBE
 
 
 [dependencies] # 24 (3 required, 21 optional)
@@ -638,7 +632,6 @@ devela_base_text = ["dep:devela_base_text"] # MAYBE
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
 devela_base_num    = { workspace = true, optional = true }
-devela_base_text   = { workspace = true, optional = true }
 #
 devela_base_alloc  = { workspace = true, optional = true }
 devela_base_std    = { workspace = true, optional = true }
@@ -672,7 +665,6 @@ wide = { workspace = true, optional = true }
 # devela_base_macros = { version = "0.25.0-wip" } #
 # devela_base_core   = { version = "0.25.0-wip" }
 # devela_base_num    = { version = "0.25.0-wip" }
-# devela_base_text   = { version = "0.25.0-wip" }
 # devela_base_alloc  = { version = "0.25.0-wip" } #
 # devela_base_std    = { version = "0.25.0-wip" }
 # devela_macros      = { version = "0.25.0-wip" }
@@ -682,7 +674,6 @@ wide = { workspace = true, optional = true }
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
 devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
-devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
 devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }

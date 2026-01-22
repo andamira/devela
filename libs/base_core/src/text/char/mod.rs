@@ -10,13 +10,16 @@ mod digits; // Digits
 mod iter; // CharIter
 mod namespace; // Char
 mod scalar; // char7, char8, char16, charu, charu_niche
+#[cfg(feature = "translit")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "translit")))]
+mod translit; // scalar_as_ascii_translit()
 
 // no public re-exports
 mod luts;
 #[cfg(test)]
 mod tests;
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _reexports, _workspace_internals
     _mods {
         pub use super::{
             ascii::*,
@@ -25,8 +28,14 @@ crate::structural_mods! { // _mods, _reexports
             namespace::*,
             scalar::_all::*,
         };
+        #[cfg(feature = "translit")]
+        pub use super::translit::_all::*;
     }
     _reexports {
         pub use super::_reexport::*;
+    }
+    _workspace_internals {
+        #[cfg(feature = "translit")]
+        pub use super::translit::_workspace_internals::*;
     }
 }

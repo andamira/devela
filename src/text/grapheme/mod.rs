@@ -22,7 +22,7 @@ crate::structural_mods! { // _mods
         };
 
         #[doc(inline)]
-        pub use devela_base_text::{
+        pub use devela_base_core::{
             GraphemeNonul, GraphemeU8, GraphemeScanner,
             GraphemeBoundary, GraphemeMachine, GraphemePropCb, GraphemePropInCb, GraphemeProps,
         };

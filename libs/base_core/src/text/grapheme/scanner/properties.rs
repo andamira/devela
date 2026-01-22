@@ -1,4 +1,4 @@
-// devela_base_text::text::grapheme::scanner::properties
+// devela_base_core::text::grapheme::scanner::properties
 
 use super::trie::graphemes_lookup;
 use crate::{Mem, charu, impl_trait};

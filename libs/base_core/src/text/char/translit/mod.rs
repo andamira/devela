@@ -1,4 +1,4 @@
-// devela_base_text::text::char::transliterate
+// devela_base_core::text::char::transliterate
 
 mod fns; // scalar_as_ascii_translit[_unchecked]
 mod table; // ASCII_TRANSLIT

@@ -64,7 +64,7 @@ re-export hidden workspace dependencies from `_dep`.
 
 
 ## features & flags
-- new features: `__publish`, `__std`, `base_safe`, `grapheme`, `safe_build`, `x11`.
+- new features: `__publish`, `__std`, `base_safe`, `grapheme`, `safe_build`, `translit`, `x11`.
 - remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `fmt`, `join`, `metric`, `prim`, `split`, `str`.
 - remove flags: `bit··`, `char··`, `cmp··`, `_float··`, `_int*··`, `_nums··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - add an adittional `nightly_stable_1_??` flag for the 3rd next version.
@@ -84,7 +84,7 @@ re-export hidden workspace dependencies from `_dep`.
 - refactor all structural access modules.
 - enable `_docsrs` for workspace dependencies.
 - support having external optional dependencies.
-- new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_num`, `devela_base_std`, `devela_base_text`.
+- new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_num`, `devela_base_std`.
 - prepare future workspace library crates related to root modules.
 - move `core`, `alloc` & `std` re-exports to [base*] libs.
 - use a single version, changelog and readme for all workspace libs.

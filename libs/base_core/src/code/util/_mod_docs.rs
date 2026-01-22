@@ -125,7 +125,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT            = "Text types and processing.";
     _DOC_TEXT_ASCII      = "ASCII strings and characters.";
     _DOC_TEXT_CHAR       = "Unicode scalar types and operations.";
-    _DOC_TEXT_EGC        = concat!["Unicode", $crate::_ABBR_EGC!(), "."];
+    _DOC_TEXT_EGC        = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
     _DOC_TEXT_FMT        = "String formatting.";
     _DOC_TEXT_LAYOUT     = "One-dimensional spatial semantics of text.";
     _QUO_TEXT_LAYOUT     = "> A negotiation between a symbolic sequence and an available extent.";

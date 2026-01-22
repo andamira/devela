@@ -39,7 +39,7 @@ __std = [] # remove no_std
 #* Module features *#
 
 all = [ # enables all the 12 modules (and their submodules)
-	"media", "ui", # "code", "data", "geom", "lang", "num", "phys", "run", "sys", "text", "work",
+	"media", "text", "ui", # "code", "data", "geom", "lang", "num", "phys", "run", "sys", "work",
 ]
 media = ["audio", "color", "draw", "font", "image"]
 	audio = []
@@ -47,7 +47,9 @@ media = ["audio", "color", "draw", "font", "image"]
 	draw = []
 	font = []
 	image = []
-
+text = ["grapheme", "translit"]
+	grapheme = []
+	translit = []
 ui = ["term"]
 	# layout = []
 	# front

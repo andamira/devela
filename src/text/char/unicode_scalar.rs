@@ -103,8 +103,8 @@ pub trait UnicodeScalar {
 
     #[must_use]
     /// Returns the ASCII transliteration of the value.
-    #[cfg(feature = "devela_base_text")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "devela_base_text")))]
+    #[cfg(feature = "translit")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "translit")))]
     fn as_ascii_translit(self) -> &'static str where Self: Sized {
         crate::scalar_as_ascii_translit(self.to_scalar())
     }

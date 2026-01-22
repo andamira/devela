@@ -1,4 +1,4 @@
-// devela_base_text::text::grapheme::scanner
+// devela_base_core::text::grapheme::scanner
 //
 //! An scanner/segmentator of extended grapheme clusters.
 //

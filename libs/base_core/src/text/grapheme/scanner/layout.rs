@@ -1,4 +1,4 @@
-// devela_base_text::text::grapheme::scanner::layout
+// devela_base_core::text::grapheme::scanner::layout
 
 use crate::{GraphemeMachine, GraphemeScanner, TextCohesion::Atomic, TextSymbol, charu, is};
 

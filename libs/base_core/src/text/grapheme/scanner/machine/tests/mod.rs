@@ -1,4 +1,4 @@
-// devela_base_text::text::grapheme::scanner::machine::tests
+// devela_base_core::text::grapheme::scanner::machine::tests
 
 mod machine;
 mod state;

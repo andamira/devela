@@ -1,4 +1,4 @@
-// devela_base_text::text::grapheme::scanner::machine::state
+// devela_base_core::text::grapheme::scanner::machine::state
 
 use crate::{GraphemePropCb, GraphemePropInCb, GraphemeProps, Mem, impl_trait};
 

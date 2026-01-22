@@ -44,8 +44,6 @@ pub use devela_base_std as base_std;
 //
 #[cfg(feature = "devela_base_num")]
 pub use devela_base_num as base_num;
-#[cfg(feature = "devela_base_text")]
-pub use devela_base_text as base_text;
 //
 #[cfg(feature = "devela_macros")]
 pub use devela_macros as macros;

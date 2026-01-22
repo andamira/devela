@@ -12,19 +12,15 @@ mod unicode_scalar; // UnicodeScalar
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::unicode_scalar::*;
-
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
         #[doc(inline)]
         pub use devela_base_core::text::{
             Char, CharAscii, CharIter, Digits, ch, char7, char8, char16, charu, charu_niche,
         };
-
-        #[cfg(feature = "devela_base_text")]
-        pub use devela_base_text::{
-            scalar_as_ascii_translit,
-        };
-    }
-    _reexports {
-        pub use super::_reexport_core::*;
+        #[cfg(feature = "translit")]
+        pub use devela_base_core::text::scalar_as_ascii_translit;
     }
 }
 

@@ -11,7 +11,7 @@
 #![cfg_attr(base_safe_text, forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
-    crate::_doc!(modules: crate; text: char, errors, fmt, parse, str); // grapheme
+    crate::_doc!(modules: crate; text: char, errors, fmt, grapheme, parse, str);
 }
 
 // mod cell; // TextCell, TextCellGrid WIP
@@ -20,9 +20,11 @@ crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
 mod lut; // TextLut
 
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
-pub mod char; // Char[Ascii|Iter], Digits, UnicodeScalar, char[7|8|16|utf8]
+pub mod char; // Char[Ascii|Iter], Digits, UnicodeScalar, char[7|8|16|utf8], transliterate
 pub mod errors; // Invalid[Char|Text|Utf8], TextError, TextResult
-// pub mod grapheme; // Grapheme[Boundary|Machine|Scanner|U8|…] (in [base_text])
+#[cfg(feature = "grapheme")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
+pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 pub mod fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
 pub mod layout; // TextLayout*, …
 pub mod parse; // ByteSearch
@@ -46,8 +48,13 @@ crate::structural_mods! { // mods, _pub_mods, _crate_internals
             parse::_all::*,
             str::_all::*,
         };
+        #[cfg(feature = "grapheme")]
+        pub use super::grapheme::*;
     }
     _crate_internals {
-        pub(crate) use super::_DOC_TEXT_MODULES;
+        pub(crate) use super::{
+            _DOC_TEXT_MODULES,
+            char::_workspace_internals::*,
+        };
     }
 }
