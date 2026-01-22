@@ -68,7 +68,7 @@
 //! | No constraints needed     | Primitive / `NonNiche`    | Maximum simplicity             |
 //
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/num/niche/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/num/niche/_reexport.rs
 
 mod impls; // impl ConstInit, BitSized
 

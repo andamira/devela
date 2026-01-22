@@ -6,7 +6,7 @@
 //
 // IMPROVE: move _reexport_dep to base_core
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/work/sync/atomic/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/work/sync/atomic/_reexport.rs
 mod _reexport_dep; // from dep_atomic, dep_portable_atomic (and impls ConstInit)
 
 crate::structural_mods! { // _reexports

@@ -8,9 +8,9 @@
 //! other C-based libraries.
 //
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/lang/ffi/c/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/lang/ffi/c/_reexport.rs
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/lang/ffi/c/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/lang/ffi/c/_reexport.rs
 
 crate::structural_mods! { // _reexports
     _reexports {

@@ -1,1 +1,1 @@
-../../../libs/base_core/src/code/result/_reexport.rs
+../../base/core/src/code/result/_reexport.rs

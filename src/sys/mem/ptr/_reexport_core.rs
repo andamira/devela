@@ -1,1 +1,1 @@
-../../../..//libs/base_core/src/sys/mem/ptr/_reexport.rs
+../../../base/core/src/sys/mem/ptr/_reexport.rs

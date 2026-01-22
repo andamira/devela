@@ -1,1 +1,1 @@
-../../../../libs/base_alloc/src/sys/mem/borrow/_reexport.rs
+../../../base/alloc/src/sys/mem/borrow/_reexport.rs

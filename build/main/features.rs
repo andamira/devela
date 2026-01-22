@@ -268,6 +268,7 @@ mod reflection {
         features: &["num",
             "geom",
                 "linear", "shape",
+            "int",
             "rand",
             "unit",
         ]
@@ -293,7 +294,7 @@ mod reflection {
         };
     pub const TEXT: FlagsFeatures = FlagsFeatures {
         ref_flags: &["text··"],
-        features: &["text"]
+        features: &["text", "grapheme", "translit"]
     };
     pub const UI: FlagsFeatures = FlagsFeatures {
         ref_flags: &["ui··"],

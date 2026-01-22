@@ -25,8 +25,8 @@ pub(crate) fn main() -> Result<(), IoError> {
 
     // Makes sure `CARGO_TARGET_DIR` and `CARGO_WORKSPACE_DIR` are always defined.
     //
-    // Used in: doclink! (/libs/base_core/src/code/util/doclink
-    // In sync with: /.cargo/config.toml#[env] & /libs/base_core/build/environment.rs
+    // Used in: doclink! (/src/base/core/src/code/util/doclink
+    // In sync with: /.cargo/config.toml#[env] & /src/base/core/build/environment.rs
     let cwd = get_workspace_dir();
     let ctd = get_target_dir(&cwd);
     println!("cargo:rustc-env=CARGO_WORKSPACE_DIR={}", cwd);

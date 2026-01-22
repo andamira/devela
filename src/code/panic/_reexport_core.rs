@@ -1,1 +1,1 @@
-../../../libs/base_core/src/code/panic/_reexport.rs
+../../base/core/src/code/panic/_reexport.rs

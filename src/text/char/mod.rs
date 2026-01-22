@@ -5,7 +5,7 @@
 // #![doc = crate::_doc!(modules: crate::text; char)]
 // #![doc = crate::_doc!(newline)]
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/text/char/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/text/char/_reexport.rs
 
 mod unicode_scalar; // UnicodeScalar
 

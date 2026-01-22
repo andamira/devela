@@ -24,7 +24,7 @@
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
 mod _env; // __dbg!, __std!, _std_core!
-mod _reexport_core; // SYMLINK to /libs/base_core/src/code/util/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/code/util/_reexport.rs
 
 mod cdbg; // cdbg!
 
@@ -55,7 +55,7 @@ devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
         pub use super::_reexport_core::*;
 
         #[doc(inline)]
-        // NOTE: in sync with /libs/base_core/src/code/util/mod.rs
+        // NOTE: in sync with /src/base/core/src/code/util/mod.rs
         pub use devela_base_core::{ // IMPROVE path
             assert_eq_all, assert_approx_eq_all, const_assert,
             capture_first, capture_last, capture_tail_tuple,

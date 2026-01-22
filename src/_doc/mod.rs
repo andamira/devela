@@ -22,7 +22,7 @@ pub mod examples;
 
 /// Procedural macros.
 pub mod macros {
-    #![doc = include_str!("../../libs/base_macros/src/Index.md")]
+    #![doc = include_str!("../base/macros/src/Index.md")]
 }
 
 #[cfg(doc)]

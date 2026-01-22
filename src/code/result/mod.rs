@@ -16,7 +16,7 @@
 //! structured ownership ([`Own`]) and mismatch-aware comparisons ([`Mismatch`]).
 //
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/code/result/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/code/result/_reexport.rs
 
 crate::structural_mods! { // _reexports
     _reexports {

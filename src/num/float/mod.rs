@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_NUM_FLOAT!()]
 //
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/num/float/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/num/float/_reexport.rs
 
 mod ext_float; // FloatExt
 

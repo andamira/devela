@@ -36,7 +36,7 @@ extern crate self as build;
 // NOTE: manually imports the Build namespace from devela_base_std
 items! {
     macro_rules! _TAG_NAMESPACE {()=>{""}} #[allow(unused)] use _TAG_NAMESPACE; // NEEDED
-    #[path = "../../libs/base_std/src/build/namespace.rs"] #[allow(unused)]
+    #[path = "../../src/base/std/src/build/namespace.rs"] #[allow(unused)]
     mod imports; #[allow(unused_imports)] use imports::Build;
 }
 

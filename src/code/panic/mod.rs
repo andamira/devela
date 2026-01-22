@@ -5,8 +5,8 @@
 #![doc = crate::_doc!(extends: panic)]
 //
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/code/panic/_reexport.rs
-mod _reexport_std; // SYMLINK to ../../../libs/base_std/src/code/panic/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/code/panic/_reexport.rs
+mod _reexport_std; // SYMLINK to ../../../src/base/std/src/code/panic/_reexport.rs
 
 mod set; // set_panic_handler!
 

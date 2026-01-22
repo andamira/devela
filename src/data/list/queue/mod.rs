@@ -10,7 +10,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /libs/base_alloc/src/data/list/queue/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/data/list/queue/_reexport.rs
 
 mod adt;
 #[cfg(_destaque··)]

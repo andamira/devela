@@ -1,1 +1,1 @@
-../../../../libs/base_core/src/sys/arch/wasm/_reexport.rs
+../../../base/core/src/sys/arch/wasm/_reexport.rs

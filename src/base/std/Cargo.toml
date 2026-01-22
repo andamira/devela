@@ -1,0 +1,97 @@
+[package]
+name = "devela_base_std"
+description = "base std shared functionality for devela"
+repository = "https://github.com/andamira/devela/tree/main/src/base/std"
+# version.workspace = true
+version.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+documentation.workspace = true
+authors.workspace = true
+license.workspace = true
+include = [
+	# configuration:
+	"/Cargo.toml", "/config/*",
+	# source code & documentation:
+	"/src/**/*.rs", "/src/**/*.md",
+	"/build/**/*",
+	"/LICENSE*",
+]
+categories = ["rust-patterns", "development-tools"]
+keywords = ["dev", "extension"]
+build = "build/mod.rs"
+autoexamples = false
+publish = true
+metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
+
+[lib]
+path = "src/index.rs"
+bench = false
+
+[features]
+
+#* Development features *#
+__dbg = ["devela_base_alloc/__dbg"]
+__publish = []
+
+#* Environment features *#
+std = [] # to be disabled when testing workspace with no_std
+
+#* Module features *#
+media = ["color"]
+	color = []
+
+#* Safety features *#
+base_safe = ["devela_base_alloc/base_safe"]
+safe = [
+	"devela_base_alloc/safe", "safe_build",
+	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
+]
+	safe_build = []
+	safe_code = ["devela_base_alloc/safe_code"]
+	safe_data = ["devela_base_alloc/safe_data"]
+	safe_geom = ["devela_base_alloc/safe_geom"]
+	safe_lang = ["devela_base_alloc/safe_lang"]
+	safe_media = ["devela_base_alloc/safe_media", "safe_color"]
+		safe_color = ["devela_base_alloc/safe_color"]
+	safe_num = ["devela_base_alloc/safe_num"]
+	safe_phys = ["devela_base_alloc/safe_phys"]
+	safe_run = ["devela_base_alloc/safe_run"]
+	safe_sys = ["devela_base_alloc/safe_sys", "safe_mem"]
+		safe_mem = ["devela_base_alloc/safe_mem"]
+	safe_text = ["devela_base_alloc/safe_text"]
+	safe_ui = ["devela_base_alloc/safe_ui"]
+	safe_work = ["devela_base_alloc/safe_work"]
+
+unsafe = [
+	"devela_base_alloc/unsafe",
+	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
+	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
+	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
+]
+	unsafe_array   = []
+	unsafe_ffi     = []
+	unsafe_hint    = []
+	unsafe_layout  = []
+	unsafe_niche   = []
+	unsafe_ptr     = []
+	unsafe_slice   = []
+	unsafe_str     = []
+	unsafe_sync    = []
+	unsafe_syscall = []
+	unsafe_thread  = []
+
+#* Capability features *#
+# default = ["std"]
+_docs = ["unsafe"]
+
+[dependencies] # 2 required
+devela_base_core = { workspace = true }
+devela_base_alloc = { workspace = true }
+
+[badges]
+maintenance.status = "experimental"
+
+[lints]
+workspace = true

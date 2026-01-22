@@ -1,1 +1,1 @@
-../../../libs/base_std/src/text/str/_reexport.rs
+../../base/std/src/text/str/_reexport.rs

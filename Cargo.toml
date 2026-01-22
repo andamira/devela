@@ -61,15 +61,14 @@ resolver = "3"
 # └╥╼devela_base_core         : base  core-dependent items  | primitive focused |
 #  ╟─┴╼devela_base_alloc?     : base alloc-dependent items  | monomorphizations |
 #  ╟──┴╼devela_base_std?╾───┐ : base   std-dependent items  | stable interfaces |
-#  ╚═╗╼devela_macros?       │ : heavy proc macros           | & infrastructures |
+#  ╚═╗╼devela_macros?       │ : optional proc macros        | & infrastructures |
 #    ║                      │                               ··------------------·
 #    ╚═╦╼devela             │ : unified front, traits       | integration layer |
 #      ║ ├╼build/main───────┤ : build, codegen, debug       | public interfaces |
 #      ║ └╼devela_postbuild─┘ : post-build processing       | development tools |
 #      ╏                                                    ·-------------------·
 members = [
-	"libs/base_macros", "libs/base_core", "libs/base_alloc", "libs/base_std",
-	"src/base/opt_macros",
+	"src/base/macros", "src/base/core", "src/base/alloc", "src/base/std", "src/base/opt_macros",
 	".", # ← root package
 	"build/post",
 ]
@@ -604,10 +603,7 @@ dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                            
 #* Workspace features *#
 # ------------------------------------------------------------------------------
 
-devela_macros = [ "dep:devela_macros"]
-
-
-[dependencies] # 24 (3 required, 21 optional)
+[dependencies] # 21 (2 required, 19 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -619,7 +615,7 @@ devela_macros = [ "dep:devela_macros"]
 # 1. Update `dep_all` above and /build/main/dep_all.
 # 2. Add a new entry below and in ./src/_deps.rs.
 
-#* workspace internal libraries *#
+#* workspace internal libraries (2req + 3opt) *#
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
 #
@@ -628,7 +624,7 @@ devela_base_std    = { workspace = true, optional = true }
 #
 devela_macros      = { workspace = true, optional = true }
 
-#* optional external dependencies *#
+#* optional external dependencies (16opt) *#
 
 atomic = { workspace = true, optional = true }
 bytemuck = { workspace = true, optional = true }
@@ -660,10 +656,10 @@ wide = { workspace = true, optional = true }
 # devela_buildpost   = { version = "0.25.0-wip" }
 
 # dev (local override):
-devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
-devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
-devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
-devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
+devela_base_macros = { version = "0.25.0-wip", path = "./src/base/macros" } #
+devela_base_core   = { version = "0.25.0-wip", path = "./src/base/core" }
+devela_base_alloc  = { version = "0.25.0-wip", path = "./src/base/alloc" } #
+devela_base_std    = { version = "0.25.0-wip", path = "./src/base/std" }
 devela_macros      = { version = "0.25.0-wip", path = "./src/base/opt_macros" }
 devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 

@@ -1,1 +1,1 @@
-../../../libs/base_core/src/sys/arch/_reexport.rs
+../../base/core/src/sys/arch/_reexport.rs

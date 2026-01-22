@@ -1,1 +1,1 @@
-../../../libs/base_alloc/src/text/str/_reexport.rs
+../../base/alloc/src/text/str/_reexport.rs

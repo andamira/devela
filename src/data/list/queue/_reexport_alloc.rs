@@ -1,1 +1,1 @@
-../../../../libs/base_alloc/src/data/list/queue/_reexport.rs
+../../../base/alloc/src/data/list/queue/_reexport.rs

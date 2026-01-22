@@ -1,1 +1,1 @@
-../../../libs/base_alloc/src/work/sync/_reexport.rs
+../../base/alloc/src/work/sync/_reexport.rs

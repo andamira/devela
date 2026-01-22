@@ -13,7 +13,7 @@ mod option; // CellOptionExt
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
 // mod ghost; // WIP
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/sys/mem/cell/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/sys/mem/cell/_reexport.rs
 
 crate::structural_mods! { // _mods
     _mods {

@@ -1,1 +1,1 @@
-../../../libs/base_core/src/text/fmt/_reexport.rs
+../../base/core/src/text/fmt/_reexport.rs

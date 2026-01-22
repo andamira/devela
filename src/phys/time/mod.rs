@@ -7,9 +7,9 @@
 // safety
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
-mod _reexport_core; // SYMLINK to /libs/base_core/src/phys/time/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/phys/time/_reexport.rs
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /libs/base_std/src/phys/time/_reexport.rs
+mod _reexport_std; // SYMLINK to /src/base/std/src/phys/time/_reexport.rs
 
 pub mod source; // TimeSource, TimeSourceCfg, TimeFake, TimeFakeRef
 

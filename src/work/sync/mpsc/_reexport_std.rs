@@ -1,1 +1,1 @@
-../../../../libs/base_std/src/work/sync/mpsc/_reexport.rs
+../../../base/std/src/work/sync/mpsc/_reexport.rs
