@@ -73,12 +73,9 @@ resolver = "3"
 #       ╏                                                    ·-------------------·
 members = [
 	"libs/base_macros",
-	"libs/base_core", "libs/base_data", "libs/base_num", "libs/base_text",
+	"libs/base_core", "libs/base_num", "libs/base_text",
 	"libs/base_alloc", "libs/base_std",
 	"libs/macros",
-	# "libs/code", "libs/data", "libs/media", "libs/num",
-	# "libs/geom", "libs/lang", "libs/phys", "libs/run",
-	# "libs/sys", "libs/text", "libs/ui", "libs/work",
 	".", # ← root package
 	"build/post",
 ]
@@ -190,7 +187,6 @@ bench = false
 
 __dbg = [ # shows extra debugging information
 	"devela_base_core/__dbg",
-		"devela_base_data?/__dbg",
 		"devela_base_num?/__dbg",
 		"devela_base_text?/__dbg",
 	"devela_base_alloc?/__dbg", "devela_base_std?/__dbg",
@@ -198,7 +194,6 @@ __dbg = [ # shows extra debugging information
 __std = [ # disables `no_std` in base crates for testing
 	"std",
 	"devela_base_core/__std",
-		"devela_base_data?/__std",
 		"devela_base_num?/__std",
 		"devela_base_text?/__std",
 	"devela_base_alloc?/__std",
@@ -207,7 +202,6 @@ __std = [ # disables `no_std` in base crates for testing
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
 	"devela_base_core/__publish",
-		"devela_base_data?/__publish",
 		"devela_base_num?/__publish",
 		"devela_base_text?/__publish",
 	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
@@ -251,7 +245,7 @@ all = [ # enables all the 12 modules (and their submodules)
 	"code", "data", "geom", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
 ]
 code = []
-data = ["devela_base_data", "hash"]
+data = ["hash"]
 	# codec
 		hash = [] # HashFnv, HashFx, HashPengy
 		# crypto = []
@@ -358,7 +352,7 @@ base_safe = [
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
 	safe_code = ["devela_base_core/safe_code"]
-	safe_data = ["devela_base_core/safe_data", "devela_base_data?/safe"]
+	safe_data = ["devela_base_core/safe_data"]
 	safe_geom = []
 	safe_lang = []
 		# safe_ffi
@@ -625,7 +619,6 @@ dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                            
 # ------------------------------------------------------------------------------
 
 devela_macros = [ "dep:devela_macros"]
-devela_base_data = ["dep:devela_base_data"] # MAYBE
 devela_base_text = ["dep:devela_base_text"] # MAYBE
 
 
@@ -644,7 +637,6 @@ devela_base_text = ["dep:devela_base_text"] # MAYBE
 #* workspace internal libraries *#
 devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
-devela_base_data   = { workspace = true, optional = true }
 devela_base_num    = { workspace = true, optional = true }
 devela_base_text   = { workspace = true, optional = true }
 #
@@ -679,7 +671,6 @@ wide = { workspace = true, optional = true }
 # publish (crates.io valid):
 # devela_base_macros = { version = "0.25.0-wip" } #
 # devela_base_core   = { version = "0.25.0-wip" }
-# devela_base_data   = { version = "0.25.0-wip" }
 # devela_base_num    = { version = "0.25.0-wip" }
 # devela_base_text   = { version = "0.25.0-wip" }
 # devela_base_alloc  = { version = "0.25.0-wip" } #
@@ -690,7 +681,6 @@ wide = { workspace = true, optional = true }
 # dev (local override):
 devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
-devela_base_data   = { version = "0.25.0-wip", path = "./libs/base_data" }
 devela_base_num    = { version = "0.25.0-wip", path = "./libs/base_num" }
 devela_base_text   = { version = "0.25.0-wip", path = "./libs/base_text" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
