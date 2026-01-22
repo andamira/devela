@@ -45,7 +45,7 @@
 #     - reflection                   (*··)
 #
 # * [[bench]]           metrics
-# * [[bin]]             binaries
+# * [[bin]]             programs
 # * [[example]]         examples
 
 
@@ -108,6 +108,7 @@ categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
 repository = "https://github.com/andamira/devela"
 autoexamples = false
+autobins = false
 publish = true
 include = [
 	# configuration:
@@ -1077,14 +1078,14 @@ name = "char_utf8_custom"
 path = "metrics/char_utf8_custom.rs"
 harness = false
 
-
-# binaries
+# programs
 # ==============================================================================
 # To install a binary:
 # cargo install --path . --bin NAME -F std
 
 [[bin]]
 name = "croot" # Get the path to your Cargo project root
+path = "programs/croot.rs"
 required-features = ["std", "linux"]
 
 # num
