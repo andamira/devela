@@ -93,6 +93,7 @@ re-export hidden workspace dependencies from `_dep`.
 
 ### [base]
 - add `_workspace_internal` structural module (replacing `_internal`).
+- move `libs` to `src/base`.
 
 ### [base_macros]
 - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.

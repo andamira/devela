@@ -68,7 +68,8 @@ resolver = "3"
 #      ║ └╼devela_postbuild─┘ : post-build processing       | development tools |
 #      ╏                                                    ·-------------------·
 members = [
-	"libs/base_macros", "libs/base_core", "libs/base_alloc", "libs/base_std", "libs/macros",
+	"libs/base_macros", "libs/base_core", "libs/base_alloc", "libs/base_std",
+	"src/base/opt_macros",
 	".", # ← root package
 	"build/post",
 ]
@@ -663,7 +664,7 @@ devela_base_macros = { version = "0.25.0-wip", path = "./libs/base_macros" } #
 devela_base_core   = { version = "0.25.0-wip", path = "./libs/base_core" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./libs/base_alloc" } #
 devela_base_std    = { version = "0.25.0-wip", path = "./libs/base_std" }
-devela_macros      = { version = "0.25.0-wip", path = "./libs/macros" }
+devela_macros      = { version = "0.25.0-wip", path = "./src/base/opt_macros" }
 devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 
 #* optional external dependencies *#
