@@ -63,6 +63,7 @@ pub mod sys;
 pub mod text;
 pub mod ui;
 pub mod work;
+mod yard;
 
 #[doc(hidden)]
 pub mod _dep;
@@ -145,6 +146,7 @@ pub mod _crate_internals {
         text::_crate_internals::*,
         ui::_crate_internals::*,
         work::_crate_internals::*,
+        yard::_crate_internals::*,
     };
 }
 #[doc(hidden)]
@@ -156,6 +158,7 @@ pub mod _workspace_internals {
     pub use super::{
         code::_workspace_internals::*,
         num::_workspace_internals::*,
+        yard::_workspace_internals::*,
     };
 }
 

@@ -41,6 +41,8 @@ alloc = [] # always enabled
 #* Module features *#
 media = ["color"]
 	color = []
+num = ["int"]
+	int = []
 
 #* Safety features *#
 base_safe = ["devela_base_core/base_safe"]

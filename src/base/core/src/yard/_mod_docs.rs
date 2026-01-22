@@ -1,4 +1,4 @@
-// devela_base_core::code::util::_docs
+// devela_base_core::yard::_docs
 //
 //! Docs headings for modules across crates and misc. abbreviations.
 //
@@ -6,11 +6,6 @@
 #![allow(missing_docs, reason = "hidden internals for the workspace")]
 
 crate::CONST! { hidden macro_export,
-/* templates:
-#![doc = crate::_DOC_X!()]
-    _DOC_ = "";
-*/
-
     /// - <https://en.wikipedia.org/wiki/Domain-specific_language>
     _ABBR_DSL  = "<abbr title='Domain-specific Language'>DSL</abbr>";
     /// - <https://www.unicode.org/reports/tr29/#:~:text=An-,extended%20grapheme%20cluster,-is>

@@ -6,14 +6,6 @@
 #[cfg(test)]
 mod tests;
 
-mod _doc; // _doc!, _doc_availability!, _doc_miri_warn!
-mod _env; // __dbg!, __std!, _std_core!
-mod _links; // _DOCLINK_*!
-mod _mod_docs; // _DOC_*!
-mod _tags; // EMOJI_*!, _TAG_*! _tags!
-mod _reexport_macro; // reexport!
-mod _use; // _use!
-
 mod _reexport; // SYMLINK from /src/code/util/_reexport_core.rs
 
 mod asserts; // (assertion macros)
@@ -38,7 +30,7 @@ mod type_count; // type_count!
 mod whilst; // whilst!
 mod write; // write_at!
 
-structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
+structural::structural_mods! { // _mods, _workspace_internals
     _mods {
         // NOTE: in sync with /devela/code/util/_reexport.rs:
         #[doc(inline)]
@@ -68,15 +60,8 @@ structural::structural_mods! { // _mods, _crate_internals, _workspace_internals
             write::write_at,
         };
     }
-    _crate_internals {
-        pub(crate) use super::_env::*;
-    }
     _workspace_internals {
         pub use super::{
-            _doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn},
-            _links::*, _mod_docs::*, _tags::*,
-            _reexport_macro::_reexport,
-            _use::_use,
             doclink::DOCLINK_CUSTOM_DOMAIN,
             paste::__paste,
         };

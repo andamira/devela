@@ -764,5 +764,10 @@ re-export hidden workspace dependencies from `_dep`.
 ### sync
 - move `portable-atomic-util` dependent re-exports to [base_alloc]: `Arc`, `ArkWeak`.
 
+---
+## yard
+- new private root module `yard`.
+- move here most private macros from `code::util`.
+
 
 [0.25.0]: https://github.com/andamira/devela/releases/tag/v0.25.0

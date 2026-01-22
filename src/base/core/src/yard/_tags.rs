@@ -1,4 +1,4 @@
-// devela_base_core::code::util::_tags
+// devela_base_core::yard::tags
 //
 //! Private tags definitions for visual type categorization in documentation.
 //

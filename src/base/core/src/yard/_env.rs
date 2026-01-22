@@ -1,4 +1,4 @@
-// devela_base_core::code::util::_env
+// devela_base_core::yard::_env
 //
 //! Defines private helpers related to the environment.
 //

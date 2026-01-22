@@ -16,6 +16,7 @@ RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_later" cargo +nightly b
 ```
 
 See also
+- <https://github.com/rust-lang/rust/blob/main/RELEASES.md>
 - <https://doc.rust-lang.org/nightly/unstable-book/the-unstable-book.html>
 - <https://github.com/rust-lang/rust/blob/master/library/core/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>

@@ -1,4 +1,4 @@
-// devela_base_core::code::util::_use
+// devela_base_core::yard::_use
 //
 //! Defines the [`_use`] internal meta helper.
 //

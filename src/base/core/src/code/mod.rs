@@ -48,10 +48,7 @@ util::structural_mods! { // _mods, _pub_mods, _reexport, _crate_internals, _work
         pub use super::_reexport::*;
     }
     _crate_internals {
-        pub(crate) use super::{
-            _DOC_CODE_MODULES,
-            util::_crate_internals::*,
-        };
+        pub(crate) use super::_DOC_CODE_MODULES;
     }
     _workspace_internals {
         pub/*workspace*/ use super::const_init::_impl_init;
