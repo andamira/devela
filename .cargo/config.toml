@@ -1,7 +1,7 @@
 # ./cargo/config.toml
 #
-# https://doc.rust-lang.org/cargo/reference/config.html
-# https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html
+# - https://doc.rust-lang.org/cargo/reference/config.html
+# - https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html
 #
 # NOTE: Cargo uses this configuration file for the entire build process, including dependencies.
 #
@@ -30,7 +30,7 @@ include = ["nightly.toml"]
 [unstable]
 # ==============================================================================
 # These features correspond to the -Z command-line flags.
-# https://doc.rust-lang.org/cargo/reference/unstable.html
+# - https://doc.rust-lang.org/cargo/reference/unstable.html
 
 # codegen-backend = true #codegen-backend
 config-include = true  #config-include
@@ -40,7 +40,7 @@ config-include = true  #config-include
 
 [build]
 # ==============================================================================
-# https://doc.rust-lang.org/cargo/reference/config.html#build
+# - https://doc.rust-lang.org/cargo/reference/config.html#build
 
 # In sync with ./nightly.toml & ../tools/cargo-native
 rustdocflags = [
@@ -54,7 +54,7 @@ rustflags = [
 
 [env]
 # ==============================================================================
-# https://doc.rust-lang.org/cargo/reference/config.html#env
+# - https://doc.rust-lang.org/cargo/reference/config.html#env
 # WAIT: https://github.com/rust-lang/cargo/issues/3946#issuecomment-973132993
 
 # In sync with ../libs/base/build/environment.rs
@@ -186,8 +186,8 @@ trr = "tr --format {p}:{r}" # with repository url
 # ------------------------------------------------------------------------------
 
 # $ cargo install -f cargo-show-asm
-# https://crates.io/crates/cargo-show-asm
-# https://github.com/pacak/cargo-show-asm/blob/master/Changelog.md
+# - https://crates.io/crates/cargo-show-asm
+# - https://github.com/pacak/cargo-show-asm/blob/master/Changelog.md
 #
 # USAGE EXAMPLES:
 # $ cargo A_x64l --lib -F linux,unsafe_syscall linux
@@ -246,9 +246,10 @@ Ar_w32i   = "Ar --target wasm32-wasip1"
 A_w32     = "A  --target wasm32-unknown-unknown"       # wasm 32 (web) [CI]
 Ar_w32    = "Ar --target wasm32-unknown-unknown"
 
+
 # $ cargo install -f cargo-expand
-# https://crates.io/crates/cargo-expand
-# https://github.com/dtolnay/cargo-expand/releases
+# - https://crates.io/crates/cargo-expand
+# - https://github.com/dtolnay/cargo-expand/releases
 #
 # USAGE EXAMPLES:
 # $ cargo Elt -F dep_const_str text::str::r#macro::tests
@@ -282,22 +283,29 @@ E_r64     = "E --target riscv64imac-unknown-none-elf"  # riscv 64
 E_w32i    = "E --target wasm32-wasip1"                 # wasm 32 (wasi)
 E_w32     = "E --target wasm32-unknown-unknown"        # wasm 32 (web)
 
+
 # $ cargo install -f cargo-llvm-lines
-# https://crates.io/crates/cargo-llvm-lines
-# https://github.com/dtolnay/cargo-llvm-lines/releases
+# - https://crates.io/crates/cargo-llvm-lines
+# - https://github.com/dtolnay/cargo-llvm-lines/releases
 #
 # USAGE EXAMPLE:
 # $ cargo Lo --lib --filter data
+
 L = "llvm-lines --profile dev"
 Lo = "llvm-lines --profile dev-lto"
 Lr = "llvm-lines --profile release"
 Lro = "llvm-lines --profile release-lto"
-# https://doc.rust-lang.org/stable/rustc/codegen-options/index.html#symbol-mangling-version
+
+# These are useful to know the const-generic values of StringU8, for example:
+# - https://doc.rust-lang.org/stable/rustc/codegen-options/index.html#symbol-mangling-version
+# - https://github.com/dtolnay/cargo-llvm-lines/issues/7
 L0 = "llvm-lines --profile dev -- -Csymbol-mangling-version=v0"
+L0r = "llvm-lines --profile release -- -Csymbol-mangling-version=v0"
+
 
 # $ cargo install -f cargo-supply-chain
-# https://crates.io/crates/cargo-supply-chain
-# https://github.com/rust-secure-code/cargo-supply-chain/commits/master/
+# - https://crates.io/crates/cargo-supply-chain
+# - https://github.com/rust-secure-code/cargo-supply-chain/commits/master/
 #
 # NOTE:
 # - lists all crates in the supply chain, not just in the dependency tree.

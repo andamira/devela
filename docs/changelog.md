@@ -41,7 +41,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ## cargo
 - bump MSRV to 1.93.0.
-- add new cargo doc workspace aliases `w*`.
+- add cargo aliases: `L0r`, `w*` (workspace).
 - add new cargo env var `CARGO_WORKSPACE_DIR`.
 - fix updated syntax for unstable cargo-include in `.cargo/config.toml`.
 
