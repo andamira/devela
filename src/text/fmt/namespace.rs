@@ -5,8 +5,8 @@
 
 #[cfg(feature = "alloc")]
 use crate::{_dep::_alloc::fmt::format, String};
-use crate::{FmtArguments, FmtError, FmtWrite, FmtWriter};
-use ::core::fmt::write;
+use crate::{FmtArguments, FmtFromFn, FmtResult, FmtWrite, FmtWriter, Formatter};
+use ::core::fmt::{from_fn, write};
 
 #[doc = crate::_tags!(text namespace)]
 /// A string formatting namespace.
@@ -64,17 +64,13 @@ impl Fmt {
     /// See `core::fmt::`[`write`][fn@write].
     ///
     /// [`format_args!`]: crate::format_args
-    pub fn write(output: &mut dyn FmtWrite, args: FmtArguments<'_>) -> Result<(), FmtError> {
+    pub fn write(output: &mut dyn FmtWrite, args: FmtArguments<'_>) -> FmtResult<()> {
         write(output, args)
     }
 
-    // /// Creates a type whose `fmt::Debug` and `fmt::Display` impls
-    // /// are provided with the function `f`.
-    // // WAIT: 1.93 [debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
-    // pub fn from_fn<F>(f: F) -> FromFn<F>
-    // where
-    //     F: Fn(&mut Formatter<'_>) -> Result<(), Error>,
-    // {
-    //     ::core::fmt::from_fn(f)
-    // }
+    /// Creates a type whose [`Debug`][crate::Debug] and [`Display`][crate::Display]
+    /// impls are provided with the function `f`.
+    pub fn from_fn<F: Fn(&mut Formatter<'_>) -> FmtResult<()>>(f: F) -> FmtFromFn<F> {
+        from_fn(f)
+    }
 }

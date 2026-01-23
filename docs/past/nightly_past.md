@@ -13,12 +13,12 @@ Legend:
 > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.93.0>
 
-- 1.93: `→`[asm_cfg](https://github.com/rust-lang/rust/pull/147736)
+- 1.93: `…`[asm_cfg](https://github.com/rust-lang/rust/pull/147736)
 - 1.93: ` `[char_max_len](https://github.com/rust-lang/rust/pull/145610)
 - 1.93: `→`[core_slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
 - 1.93: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
 - 1.93: ` `[duration_from_nanos_u128](https://github.com/rust-lang/rust/pull/148587)
-- 1.93: `→`[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
+- 1.93: `✓`[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
 - 1.93: `…`[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
 - 1.93: `…`[maybe_uninit_write_slice](https://github.com/rust-lang/rust/pull/148048)
 - 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)

@@ -108,6 +108,10 @@ _reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt error),
     @Error as FmtError
 }
 _reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+    doc: "Implements [`Debug`] and [`Display`] via the provided closure.",
+    @FromFn as FmtFromFn
+}
+_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
     doc: "Configuration for formatting.",
     Formatter
 }
