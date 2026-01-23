@@ -23,26 +23,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 
-# 1.93 will be stable on [2026-01-22](https://releases.rs/docs/1.93.0/) `nightly_stable_1_93`
-<!-- > - <https://github.com/rust-lang/rust/milestone/137> -->
-<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.93.0> -->
-
-- 1.93: `·`[asm_cfg](https://github.com/rust-lang/rust/pull/147736)
-- 1.93: `·`[char_max_len](https://github.com/rust-lang/rust/pull/145610)
-- 1.93: `·`[core_slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
-- 1.93: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
-- 1.93: `·`[duration_from_nanos_u128](https://github.com/rust-lang/rust/pull/148587)
-- 1.93: `·`[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
-- 1.93: `·`[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
-- 1.93: `·`[maybe_uninit_write_slice](https://github.com/rust-lang/rust/pull/148048)
-- 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)
-- 1.93: `a`[vec_into_raw_parts](https://github.com/rust-lang/rust/pull/148827)
-- 1.93: `a`[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
-- 1.93: `s`[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
-- 1.93: `·`[unchecked_neg](https://github.com/rust-lang/rust/pull/149087)
-- 1.93: `·`[unchecked_shifts](https://github.com/rust-lang/rust/pull/149087)
-
 # 1.94 will be stable on [2026-03-05](https://releases.rs/docs/1.94.0/) `nightly_stable_1_94`
 <!-- > - <https://github.com/rust-lang/rust/milestone/139> -->
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.94.0> -->
@@ -68,6 +48,11 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.96.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.96.0> -->
+
+# 1.97 will be stable on [2026-07-09](https://releases.rs/docs/1.97.0/) `nightly_stable_1_97`
+<!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
+<!-- > - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.97.0> -->
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 

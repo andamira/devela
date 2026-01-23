@@ -8,10 +8,30 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.93 became stable on [2026-01-22](https://releases.rs/docs/1.93.0/)
+> - <https://github.com/rust-lang/rust/milestone/137>
+> - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.93.0>
+
+- 1.93: `→`[asm_cfg](https://github.com/rust-lang/rust/pull/147736)
+- 1.93: ` `[char_max_len](https://github.com/rust-lang/rust/pull/145610)
+- 1.93: `→`[core_slice_as_array](https://github.com/rust-lang/rust/issues/133508) // as_array*
+- 1.93: ` `[extern_system_varargs](https://github.com/rust-lang/rust/pull/145954)
+- 1.93: ` `[duration_from_nanos_u128](https://github.com/rust-lang/rust/pull/148587)
+- 1.93: `→`[fmt_from_fn](https://github.com/rust-lang/rust/pull/145915)
+- 1.93: `…`[maybe_uninit_slice](https://github.com/rust-lang/rust/issues/63569)
+- 1.93: `…`[maybe_uninit_write_slice](https://github.com/rust-lang/rust/pull/148048)
+- 1.93: ` `[-Zjump-tables=bool](https://github.com/rust-lang/rust/issues/116592)
+- 1.93: ` `[vec_into_raw_parts](https://github.com/rust-lang/rust/pull/148827)
+- 1.93: ` `[vec_deque_pop_if](https://github.com/rust-lang/rust/issues/135889)
+- 1.93: ` `[stdarch_s390x_feature_detection](https://github.com/rust-lang/rust/pull/145656)
+- 1.93: ` `[unchecked_neg](https://github.com/rust-lang/rust/pull/149087)
+- 1.93: ` `[unchecked_shifts](https://github.com/rust-lang/rust/pull/149087)
+
 # 1.92 became stable on [2025-12-11](https://releases.rs/docs/1.92.0/)
-<!-- > - <https://github.com/rust-lang/rust/milestone/136> -->
-<!-- > - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.92.0> -->
+> - <https://github.com/rust-lang/rust/milestone/136>
+> - <https://blog.rust-lang.org/2025/12/11/Rust-1.92.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.92.0>
 
 - 1.92: ` `[btree_entry_insert](https://github.com/rust-lang/rust/pull/144871)
 - 1.92: `→`[const_slice_rotate](https://github.com/rust-lang/rust/pull/146841)

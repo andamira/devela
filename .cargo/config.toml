@@ -90,6 +90,7 @@ CARGO_WORKSPACE_DIR = { value = "", relative = true, force = true }
 # WORKSPACE variations
 wc = "check --workspace"
 wcl = "clippy --workspace"
+wC = "clean --workspace"
 wb = "build --workspace"
 wr = "run --workspace"
 wt = "test --workspace"

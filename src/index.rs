@@ -45,27 +45,6 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_93`: core, alloc, std…
-#![cfg_attr(
-    nightly_stable_1_93,
-    feature(
-        asm_cfg,
-        char_max_len,
-        core_slice_as_array,
-        duration_from_nanos_u128,
-        fmt_from_fn,
-        maybe_uninit_slice,
-        maybe_uninit_write_slice,
-        unchecked_neg,
-        unchecked_shifts,
-    )
-)]
-#![cfg_attr(
-    all(nightly_stable_1_93, feature = "alloc"),
-    feature(vec_deque_pop_if, vec_into_raw_parts)
-)]
-#![cfg_attr(all(nightly_stable_1_93, feature = "std"), feature(stdarch_s390x_feature_detection,))]
-// ----------------------------
 // `nightly_stable_1_94`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_94,
@@ -84,6 +63,11 @@
 // #![cfg_attr(nightly_stable_1_95, feature())]
 // #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
+// ----------------------------
+// `nightly_stable_1_96`: core, alloc, std…
+// #![cfg_attr(nightly_stable_1_96, feature())]
+// #![cfg_attr(all(nightly_stable_1_96, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
