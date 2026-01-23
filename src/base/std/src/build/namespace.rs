@@ -7,7 +7,7 @@
 // - print
 // - other
 
-use std::{env, path::PathBuf};
+use std::{env, fmt, path::PathBuf};
 
 #[doc = crate::_TAG_NAMESPACE!()] // NOTE: use tag directly to work from /build
 /// Memory-related operations.
@@ -43,7 +43,7 @@ impl Build {
     /* print */
 
     /// Prints a message to *stdout* from the build script.
-    pub fn println(msg: &str) {
+    pub fn println(msg: impl fmt::Display) {
         println!("cargo:warning={}", msg);
     }
 
@@ -57,9 +57,9 @@ impl Build {
     /// Prints the value of an environment variable.
     pub fn println_var(var: &str) {
         if let Ok(v) = env::var(var) {
-            Self::println(&format!["· {var}: {v}"]);
+            Self::println(fmt::from_fn(|f| write!(f, "· {var}: {v}")));
         } else {
-            Self::println(&format!["x {var}:"]);
+            Self::println(fmt::from_fn(|f| write!(f, "x {var}:")));
         }
     }
     /// Prints the value of an encoded environment variable,

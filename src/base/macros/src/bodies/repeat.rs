@@ -10,6 +10,7 @@
 // - find_operator
 // - find_outer_parentheses
 
+use ::core::fmt::Write;
 use proc_macro::TokenStream;
 
 #[inline(always)]
@@ -34,8 +35,12 @@ fn generate_repeat_code(count: usize, expr: &str) -> TokenStream {
     if count == 0 {
         return "".parse().unwrap();
     }
-    let repeated = format!("{}; ", expr).repeat(count);
-    repeated.parse().unwrap_or_else(|_| {
+    let mut s = String::new();
+    s.reserve((expr.len() + 2) * count);
+    for _ in 0..count {
+        write!(&mut s, "{}; ", expr).unwrap();
+    }
+    s.parse().unwrap_or_else(|_| {
         panic!(
             "Failed to parse generated code. Expression '{}' may contain invalid Rust syntax",
             expr

@@ -9,6 +9,7 @@
 // - compile_doc
 
 use super::shared::{compile_eval, deindent, split_args, split_compile_doc_tuple};
+use ::core::fmt::Write;
 use proc_macro::TokenStream;
 
 #[inline(always)]
@@ -27,17 +28,17 @@ pub(crate) fn body_compile(args: TokenStream, input: TokenStream) -> TokenStream
 pub(crate) fn body_compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();
     let mut args = split_args(&args);
-
     if args.is_empty() {
         panic!("The compile_attr macro requires at least one argument");
     }
     let condition = args.remove(0);
 
     if compile_eval(condition) {
-        let mut expanded = input.to_string();
-        for attribute in args {
-            expanded = format!("#[{}] {}", attribute, expanded);
+        let mut expanded = String::new();
+        for attr in &args {
+            write!(&mut expanded, "#[{}] ", attr).unwrap();
         }
+        expanded.push_str(&input.to_string());
         expanded.parse().expect("Couldn't parse as a TokenStream")
     } else {
         input
@@ -56,7 +57,7 @@ pub(crate) fn body_compile_doc(args: TokenStream, input: TokenStream) -> TokenSt
         }
         let (condition, comment) = split_compile_doc_tuple(&doc_condition);
         if compile_eval(condition) {
-            result.push_str(&format!("#[doc = \"{}\n\"]", deindent(&comment)));
+            write!(&mut result, "#[doc = \"{}\n\"]", deindent(&comment)).unwrap();
         }
     }
     // Append the original item
