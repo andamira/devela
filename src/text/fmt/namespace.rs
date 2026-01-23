@@ -70,7 +70,7 @@ impl Fmt {
 
     // /// Creates a type whose `fmt::Debug` and `fmt::Display` impls
     // /// are provided with the function `f`.
-    // // WAIT: [debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
+    // // WAIT: 1.93 [debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
     // pub fn from_fn<F>(f: F) -> FromFn<F>
     // where
     //     F: Fn(&mut Formatter<'_>) -> Result<(), Error>,

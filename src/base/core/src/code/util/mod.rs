@@ -30,14 +30,12 @@ mod type_count; // type_count!
 mod whilst; // whilst!
 mod write; // write_at!
 
-structural::structural_mods! { // _mods, _workspace_internals
+structural::structural_mods! { // _mods, _reexports, _workspace_internals
     _mods {
         // NOTE: in sync with /devela/code/util/_reexport.rs:
         #[doc(inline)]
         pub use super::{
-            _reexport::*,
-            //
-            asserts::_all::*,
+            asserts::{assert_eq_all, assert_approx_eq_all, const_assert},
             capture::{capture_first, capture_last, capture_tail_tuple},
             cfg_if::cfg_if,
             r#const::CONST,
@@ -59,6 +57,9 @@ structural::structural_mods! { // _mods, _workspace_internals
             whilst::whilst,
             write::write_at,
         };
+    }
+    _reexports {
+        pub use super::_reexport::*;
     }
     _workspace_internals {
         pub use super::{

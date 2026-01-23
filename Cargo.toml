@@ -9,9 +9,10 @@
 #   * [members]
 #   * [package]
 #
+# * [lib]
+#
 # * [package]
 #   - [metadata.docs.rs]
-# * [lib]
 #
 # * [features]
 #   - Development       (__*)
@@ -81,6 +82,9 @@ authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
 edition = "2024"
 
+[lib]
+path = "src/index.rs"
+bench = false
 
 [package]
 # ==============================================================================
@@ -101,20 +105,21 @@ autoexamples = false
 autobins = false
 publish = true
 include = [
-	# configuration:
+	## configuration:
 	"/Cargo.toml", "/config/*",
-	# source code & documentation:
+	## source code, documentation & licenses:
 	"/build/main/**/*.rs", "/build/main/**/*.md",
-	"/src/**/*.rs", "/src/**/*.md",
+	"/src/**/*.rs", "/src/**/*.md", "!/src/base/**",
 	"/docs/nightly.md", "/docs/vendored*.md",
 	"/LICENSE*",
-	# examples in documentation:
+	## examples shown in _doc:
 	"/examples/code/enumint.rs",
 	"/examples/code/enumset.rs",
 	"/examples/data/bitfield.rs",
 	"/examples/data/id_seq.rs",
-	# "/examples/ui/term/*.rs",
 	"/examples/work/coro_manager.rs",
+	## programs:
+	"/programs/croot.rs",
 ]
 
 [package.metadata.docs.rs]
@@ -147,10 +152,6 @@ targets = [ ## +std:
 	# "riscv32imac-unknown-none-elf", "riscv64imac-unknown-none-elf",
 	"wasm32-unknown-unknown",
 ]
-
-[lib]
-path = "src/index.rs"
-bench = false
 
 
 [features] # 157/300 (143 remaining), 105 visible, 52 hidden
@@ -191,8 +192,7 @@ __std = [ # disables `no_std` in base crates for testing
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
 	"devela_base_core/__publish",
-	"devela_base_alloc?/__publish", "devela_base_std?/__publish",
-	"devela_macros?/__publish",
+	"devela_base_alloc?/__publish", "devela_base_std?/__publish", "devela_macros?/__publish",
 ]
 
 __exclude_test = [] # exclude examples from being tested
@@ -204,19 +204,15 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 
 alloc = [ # enables `alloc` functionality
 	"devela_base_alloc",
-	"bytemuck?/extern_crate_alloc",
-	"jiff?/alloc", "memchr?/alloc", "portable-atomic-util?/alloc",
+	"bytemuck?/extern_crate_alloc", "jiff?/alloc",
+	"memchr?/alloc", "portable-atomic-util?/alloc",
 	"serde?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "devela_base_std/std",
-	"atomic?/std",
-	"bytemuck?/extern_crate_std",
-	"jiff?/std", "log?/std",
-	"memchr?/std", "portable-atomic-util?/std",
-	"raw-cpuid?/std",
-	"serde?/std", "simdutf8?/std",
-	"wide?/std",
+	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "log?/std",
+	"memchr?/std", "portable-atomic-util?/std", "raw-cpuid?/std",
+	"serde?/std", "simdutf8?/std", "wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -853,46 +849,59 @@ unknown_lints = "allow" # unrecognized lint attributes
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
 
 [workspace.lints.clippy]
+# https://doc.rust-lang.org/clippy/lints.html
 # https://rust-lang.github.io/rust-clippy/master/index.html
 # https://github.com/rust-lang/rust-clippy/blob/master/CHANGELOG.md
 # ------------------------------------------------------------------------------
+# --- deny ---
+#
+## [pedantic]
 enum_glob_use = "deny" # `use Enum::*`
+## [style]
 missing_safety_doc = "deny" # no `# Safety` section in public unsafe fns
 #
+# --- warn ---
+#
 all = { level = "warn", priority = -1 } # (the default set of clippy lints)
-# a selection from pedantic:
+## [complexity]
+map_unwrap_or = "warn" # usage of result|option.map(_).unwrap_or[_else](_)
+## [pedantic]
 bool_to_int_with_if = "warn" # using an if statement to convert a bool to an int
 cloned_instead_of_copied = "warn" # usage of cloned() where copied() could be used
-default_union_representation = "warn" # union declared without #[repr(C)]
-empty_structs_with_brackets = "warn" # structs without fields, with brackets
-# if_then_some_else_none = "warn" # if-else that could be written using bool::then[_some]
 ignored_unit_patterns = "warn" # Checks for usage of _ in patterns of type ()
 float_cmp = "warn" # (in-)equality comparisons on floating-point values
-float_cmp_const = "warn" # (in-)equality comparisons on const floating-point values
 manual_let_else = "warn" # cases where let...else could be used
 manual_string_new = "warn" # usage of "" to create a String
-map_unwrap_or = "warn" # usage of result|option.map(_).unwrap_or[_else](_)
 ptr_cast_constness = "warn" # as casts between raw pointers that change their constness
+# NOTE: not compatible with the is! macro w/o being able to ignore it in an expr:
+# WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
+# redundant_else = "warn" // else blocks that can be removed without changing semantics
 same_functions_in_if_condition = "warn" # consecutive ifs with the same function call
 semicolon_if_nothing_returned = "warn" # expr returns () but it's not followed by ;
 single_match_else = "warn" # 2 arms in match where an if let else will usually suffice
 trivially_copy_pass_by_ref = "warn" # fns with ref args that could be passed by value
 unnested_or_patterns = "warn" # unnested or-patterns, (Some(a)|Some(b) vs Some(a|b))
 unreadable_literal = "warn" #  long integral or float does not contain underscores
-# NOTE: not compatible with the iif! macro w/o being able to ignore it in an expr:
-# WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
-# redundant_else = "warn" // else blocks that can be removed without changing semantics
+## [restriction]
+default_union_representation = "warn" # union declared without #[repr(C)]
+# doc_paragraphs_missing_punctuation = "warn" # doc paragraphs not ending with punctuation
+empty_structs_with_brackets = "warn" # structs without fields, with brackets
+# if_then_some_else_none = "warn" # if-else that could be written using bool::then[_some]
+float_cmp_const = "warn" # (in-)equality comparisons on const floating-point values
 #
-approx_constant = "allow" # floating-point approximating constants
+# --- allow ---
+#
+## [correctness]
+approx_constant = "allow" # floating-point approximating constants (are more precise in crate)
+## [style]
 collapsible_if = "allow" # nested if statements
-empty_docs = "allow" # empty documentation
 doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
 mixed_attributes_style = "allow" # items with mixed (inner/outer) attributes
 module_inception = "allow" # modules with the same name as its parent
 needless_doctest_main = "allow" # doctests with a main fn (imported from examples)
-too_long_first_doc_paragraph = "allow" # reason: root modules doc_extends!
-uninlined_format_args = "allow" # reason: consistency, ergonomics
 wrong_self_convention = "allow" # `is_` methods having an owned self
+## [suspicious]
+empty_docs = "allow" # empty documentation
 
 [workspace.lints.rust.unexpected_cfgs]
 # WAIT: [override lints](https://github.com/rust-lang/cargo/issues/13157) (move down to [lints])
