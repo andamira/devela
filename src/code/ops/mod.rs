@@ -2,6 +2,9 @@
 //
 //! Overloadable operators.
 //!
+#![doc = crate::_doc!(modules: crate::code; ops)]
+#![doc = crate::_doc!(flat:"code")]
+//!
 #![doc = crate::_doc!(extends: ops)]
 //
 

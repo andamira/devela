@@ -5,10 +5,10 @@
 
 mod definition; // FloatStd
 
-mod basic; // [SYMLINK:base_core] basic operations
-mod consts; // [SYMLINK:base_core] constants
-mod minimax; // [SYMLINK:base_core] Horner minimax-based functions
-mod series; // [SYMLINK:base_core] Taylor series-based functions
+mod basic; // basic operations           SYMLINK to /src/base/core/src/num/float/wrapper/basic.rs
+mod consts; // constants                 SYMLINK to /src/base/core/src/num/float/wrapper/consts.rs
+mod minimax; // Horner minimax-based fns SYMLINK to /src/base/core/src/num/float/wrapper/minimax.rs
+mod series; // Taylor series-based fns   SYMLINK to /src/base/core/src/num/float/wrapper/series.rs
 
 mod std; // std methods
 

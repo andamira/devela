@@ -2,6 +2,9 @@
 //
 #![doc = crate::_DOC_CODE_UTIL!()]
 //!
+#![doc = crate::_doc!(modules: crate::code; XXX)]
+#![doc = crate::_doc!(flat:"code")]
+//!
 #![doc = crate::_doc!(extends: hint)]
 //
 // # Implementation notes
@@ -31,10 +34,6 @@ mod cdbg; // cdbg!
 #[cfg(feature = "_unroll")]
 mod unroll; // unroll!
 
-// #[cfg(all(feature = "std", feature = "dep_image"))]
-// #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "dep_image"))))]
-// mod docima; // DocImage
-
 devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
@@ -42,9 +41,6 @@ devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
         };
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
-
-        // #[cfg(all(feature = "std", feature = "dep_image"))]
-        // pub use super::docima::*;
     }
     _reexports {
         // includes devela_code_macros:

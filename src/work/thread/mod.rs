@@ -7,7 +7,7 @@
 
 #[cfg(feature = "std")]
 crate::items! {
-    mod _reexport_std; // SYMLINK to ../../../src/base/std/src/work/thread/_reexport.rs
+    mod _reexport_std; // SYMLINK to /src/base/std/src/work/thread/_reexport.rs
 
     mod ext; // ThreadExt
     mod sleep; // sleep4!

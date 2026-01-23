@@ -77,8 +77,8 @@ mod data_types {
     #[doc = crate::_doc_location!("lang/ffi/glsl")]
     #[repr(C)] #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct g_dvec2 { pub x: g_double, pub y: g_double }
-    /// Equivalent to GLSL `dvec3`, a vector of 3×[`g_double`]s.
     #[doc = crate::_tags!(geom)]
+    /// Equivalent to GLSL `dvec3`, a vector of 3×[`g_double`]s.
     #[doc = crate::_doc_location!("lang/ffi/glsl")]
     #[repr(C)] #[derive(Clone, Copy, Debug, Default, PartialEq)]
     pub struct g_dvec3 { pub x: g_double, pub y: g_double, pub z: g_double }

@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_WORK_THREAD!()]
 //
 
-mod _reexport; // SYMLINK from /src/work/thread/_reexport.rs
+mod _reexport; // SYMLINK from /src/work/thread/_reexport_std.rs
 
 crate::structural_mods! { // _reexports
     _reexports {

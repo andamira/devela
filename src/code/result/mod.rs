@@ -2,8 +2,8 @@
 //
 #![doc = crate::_DOC_CODE_RESULT!()]
 //!
-// #![doc = crate::_doc!(modules: crate::code; result)]
-// #![doc = crate::_doc!(newline)]
+#![doc = crate::_doc!(modules: crate::code; result)]
+#![doc = crate::_doc!(flat:"code")]
 //!
 #![doc = crate::_doc!(extends: option, result)]
 //!

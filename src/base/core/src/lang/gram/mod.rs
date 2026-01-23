@@ -1,5 +1,6 @@
-// devela_base_core::lang::hum::grammar
+// devela_base_core::lang::hum::gram
 //
+#![doc = crate::_TAG_WIP!()]
 //! Grammar and structural theory.
 //!
 //! > Structure precedes interpretation.

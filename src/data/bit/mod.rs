@@ -1,6 +1,9 @@
 // devela::data::bit
 //
 #![doc = crate::_DOC_DATA_BIT!()]
+//!
+#![doc = crate::_doc!(modules: crate::code; bit)]
+#![doc = crate::_doc!(flat:"data")]
 //
 
 #[cfg(test)]

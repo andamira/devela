@@ -47,7 +47,7 @@ macro_rules! __doc {
     ( // no submodules:
         modules: $path:path; $self:ident) => {
         concat!(
-            $crate::_doc!(@meta_start),
+            $crate::_doc!(@meta_start_nobr),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
             $crate::_doc!(@meta_end),
         )

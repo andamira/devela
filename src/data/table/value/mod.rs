@@ -1,5 +1,6 @@
 // devela::data::table::value
 //
+#![doc = crate::_TAG_WIP!()]
 //! Enumerated data values and types, classified by size.
 //
 

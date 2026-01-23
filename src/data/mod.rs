@@ -11,13 +11,13 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: bit, codec, iter, key, list, table, uid); // address
+    crate::_doc!(modules: crate; data: codec, iter, key, list, table, uid); // address
 }
 
 mod absence; // NoData
+mod bit;
 mod collection; // DataCollection
 
-pub mod bit;
 pub mod codec;
 pub mod error {
     //! Data-related errors.

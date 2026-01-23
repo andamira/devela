@@ -237,13 +237,14 @@ geom = ["linear", "shape"] # geometry
 	linear = [] # linear algebra
 	shape = []
 lang = ["glsl", "js"]
-	# dsl = []
-	# ffi = []
-		glsl = []
-		js = []
-		# py = []
-	# i18n = []
 	# hum = []
+		# i18n = []
+	# repr
+	# prog
+		# dsl = []
+		# ffi = []
+			glsl = []
+			js = []
 media = ["audio", "color", "draw", "font", "image", "video"]
 	audio = ["devela_base_core/audio"]
 	draw = ["devela_base_core/draw"]
@@ -339,8 +340,10 @@ base_safe = [
 	safe_data = ["devela_base_core/safe_data"]
 	safe_geom = []
 	safe_lang = []
-		# safe_ffi
-			# safe_js
+		# safe_prog
+			# safe_ffi
+				# safe_js
+		# safe_repr
 	safe_media = [ # "devela_base_core/safe_media",
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
 		]

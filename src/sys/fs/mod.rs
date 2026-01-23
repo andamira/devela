@@ -7,7 +7,7 @@
 //
 
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to ../../../src/base/std/src/sys/fs/_reexport.rs
+mod _reexport_std; // SYMLINK to /src/base/std/src/sys/fs/_reexport.rs
 
 mod path; // PathExt, Path*, sys::path::*
 

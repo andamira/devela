@@ -1,7 +1,7 @@
-// devela::phys::mech
+// devela::phys::geo
 //
 #![doc = crate::_TAG_WIP!()]
-//! Mechanics-related abstractions.
+//! Geophysics-related abstractions.
 //
 
 crate::structural_mods! {}

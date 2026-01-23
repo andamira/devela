@@ -67,8 +67,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_GEOM_METRIC = "Geometric measurement and spatial relationships.";
     _DOC_GEOM_DIR    = "Direction, orientation, and spatial symmetry.";
     // 4
-    _DOC_LANG = concat!["Language facilities, ",
-        $crate::_ABBR_DSL!(), "s and ", $crate::_ABBR_FFI!(),"s."];
+    _DOC_LANG            = "Language structure and meaning across domains.";
     _DOC_LANG_HUM        = "Human linguistics and language theory.";
     _DOC_LANG_PROG       = "Programming languages.";
     _DOC_LANG_PROG_FFI   = concat![$crate::_ABBR_FFI!(),

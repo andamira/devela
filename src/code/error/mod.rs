@@ -2,6 +2,9 @@
 //
 #![doc = crate::_DOC_CODE_ERROR!()]
 //!
+#![doc = crate::_doc!(modules: crate::code; error)]
+#![doc = crate::_doc!(flat:"code")]
+//!
 //! Re-exports the error and result types defined in other modules and crates.
 //!
 #![doc = crate::_doc!(extends: backtrace, error)]

@@ -15,13 +15,13 @@ crate::CONST! { pub(crate) _DOC_CODE_MODULES =
     crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util);
 }
 
-mod _reexport_core; // SYMLINK to ../../src/base/core/src/code/_reexport.rs
+mod _reexport_core; // SYMLINK to /src/base/core/src/code/_reexport.rs
 
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInit
+mod intro; // Introspect
 
 pub mod error; // AllError, modular errors
-pub mod intro; // Introspect
 pub mod marker; // core::marker, TypeResource, TypeResourced, type_marker!, type_resource!
 pub mod ops; // ::core::ops::*
 pub mod panic; // Panic, set_panic_handler!
@@ -33,12 +33,17 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _reexports, _crate_int
         pub use super::{
             any::_all::*,
             const_init::ConstInit,
+            intro::_all::*,
         };
     }
     _pub_mods {
         pub use super::{
-            error::_all::*, intro::_all::*, marker::_all::*, ops::_all::*,
-            panic::_all::*, result::_all::*, util::_all::*,
+            error::_all::*,
+            marker::_all::*,
+            ops::_all::*,
+            panic::_all::*,
+            result::_all::*,
+            util::_all::*,
         };
     }
     _reexports {

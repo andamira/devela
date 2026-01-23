@@ -17,6 +17,7 @@ crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
 pub mod bio;
 pub mod chem;
 pub mod elec;
+// pub mod geo;
 pub mod mech;
 pub mod time;
 pub mod unit;
@@ -28,8 +29,13 @@ pub mod wave;
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
-            bio::_all::*, chem::_all::*, elec::_all::*,
-            time::_all::*, mech::_all::*, unit::_all::*,
+            bio::_all::*,
+            chem::_all::*,
+            elec::_all::*,
+            // geo::_all::*,
+            time::_all::*,
+            mech::_all::*,
+            unit::_all::*,
         };
         #[cfg(feature = "wave")]
         pub use super::wave::_all::*;

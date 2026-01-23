@@ -1,6 +1,9 @@
 // devela::data::table
 //
 //! Tabular and heterogeneous data processing.
+//!
+#![doc = crate::_doc!(modules: crate::data; table)]
+#![doc = crate::_doc!(flat:"data")]
 //
 
 pub mod value;

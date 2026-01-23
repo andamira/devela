@@ -2,6 +2,9 @@
 //
 #![doc = crate::_DOC_DATA_KEY!()]
 //!
+#![doc = crate::_doc!(modules: crate::data; key)]
+#![doc = crate::_doc!(flat:"data")]
+//!
 //! Provides tools for mapping, indexing, and efficiently organizing data
 //! through unique keys, including maps, sets, and other key-value structures.
 //!
