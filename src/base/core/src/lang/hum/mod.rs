@@ -1,4 +1,4 @@
-// devela::lang::hum
+// devela_base_core::lang::hum
 //
 #![doc = crate::_DOC_LANG_HUM!()]
 #![doc = crate::_doc!(modules: crate::lang; hum: art, i18n, nat)]

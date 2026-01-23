@@ -5,16 +5,15 @@
 //! Utilities for translating and adapting software to different languages and regions.
 //
 
-// WIPZONE
-// mod fluent;
-// mod gettext;
-// mod msf2;
+// mod data; // registries, tables, normative datasets
+// mod locale; // locale matching & fallback
+// mod msg; // message selection languages
+// mod tag; // language tags
+// mod select; // selection logic (plural, gender, variants, fallback)
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        // WIPZONE:
-        // pub use super::fluent::_all::*;
-        // pub use super::gettext::_all::*;
-        // pub use super::msf2::_all::*;
+    }
+    _reexports {
     }
 }

@@ -14,23 +14,26 @@
 #![cfg_attr(feature = "safe_lang", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_LANG_MODULES =
-    crate::_doc!(modules: crate; lang: dsl, ffi, hum);
+    crate::_doc!(modules: crate; lang: gram, hum, prog, repr, sem);
 }
 
-pub mod dsl; // forth, …
-pub mod ffi; // c, glsl, js, …
-pub mod hum; // art, nat, … (linguistics)
+pub mod gram; // grammar machinery
+pub mod hum; // human languages
+pub mod prog; // programming languages
+pub mod repr; // representation languages
+pub mod sem; // semantic relations
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
-            ffi::_all::*,
-            dsl::_all::*,
             hum::_all::*,
+            prog::_all::*,
+            repr::_all::*,
+            sem::_all::*,
         };
     }
     _crate_internals {
         pub(crate) use super::_DOC_LANG_MODULES;
-        pub(crate) use super::ffi::_crate_internals::*;
+        pub(crate) use super::prog::_crate_internals::*;
     }
 }

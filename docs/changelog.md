@@ -308,12 +308,17 @@ Many feature gates are removed in order to make most features make always availa
 - rename `lang::ling` to `lang::hum`.
 - rename `lang::ling::grammar` to `lang::hum::gram`.
 - move `lang::i18n` to `lang::hum::i18n`.
+- new modules: `gram`, `prog`, `repr`, `sem`.
+- move `ffi` to `prog::ffi`.
 
-### ffi
-#### c
+### prog
+- new module: `dsl`.
+
+#### ffi
+##### c
 - new type aliases: `c_mode_t`, `c_off_t`.
 
-#### js
+##### js
 - update `JsInstant`:
   - make method const: `delta_since`.
   - remove methods: `const_delta_since`.

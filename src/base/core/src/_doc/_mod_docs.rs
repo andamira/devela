@@ -69,9 +69,11 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 4
     _DOC_LANG = concat!["Language facilities, ",
         $crate::_ABBR_DSL!(), "s and ", $crate::_ABBR_FFI!(),"s."];
-    _DOC_LANG_FFI = concat![$crate::_ABBR_FFI!(),
+    _DOC_LANG_HUM        = "Human linguistics and language theory.";
+    _DOC_LANG_PROG       = "Programming languages.";
+    _DOC_LANG_PROG_FFI   = concat![$crate::_ABBR_FFI!(),
         "bindings and interoperability.\n\nBridges to external languages and platforms."];
-    _DOC_LANG_FFI_C =
+    _DOC_LANG_PROG_FFI_C =
         "<a href='https://en.wikipedia.org/wiki/C_(programming_language)'>C</a> interfacing.";
     // 5
     _DOC_MEDIA           = "Multimedia functionality.";
