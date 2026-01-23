@@ -10,11 +10,11 @@ documentation.workspace = true
 authors.workspace = true
 license.workspace = true
 include = [
-	# configuration:
-	"/Cargo.toml", "/config/*",
-	# source code & documentation:
+	"/Cargo.toml",
+	## source code
 	"/src/**/*.rs", "/src/**/*.md",
 	"/build/**/*",
+	## documentation
 	"/LICENSE*",
 ]
 categories = ["rust-patterns", "development-tools"]

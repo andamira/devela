@@ -105,20 +105,19 @@ autoexamples = false
 autobins = false
 publish = true
 include = [
-	## configuration:
-	"/Cargo.toml", "/config/*",
-	## source code, documentation & licenses:
+	"/Cargo.toml",
+	## source code
 	"/build/main/**/*.rs", "/build/main/**/*.md",
 	"/src/**/*.rs", "/src/**/*.md", "!/src/base/**",
-	"/docs/nightly.md", "/docs/vendored*.md",
-	"/LICENSE*",
-	## examples shown in _doc:
+	## documentation
+	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
+	## examples shown from _doc
 	"/examples/code/enumint.rs",
 	"/examples/code/enumset.rs",
 	"/examples/data/bitfield.rs",
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
-	## programs:
+	## programs
 	"/programs/croot.rs",
 ]
 
@@ -137,7 +136,7 @@ rustdoc-args = [
 	"--no-deps", # WAIT: https://github.com/rust-lang/rust/issues/126638
 	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
 	"--generate-link-to-definition",
-	"--html-in-header", "./config/rustdoc-header.html",
+	"--html-in-header", "./src/_doc/header.html",
 	"--cfg", "nightly",
 ]
 default-target = "x86_64-unknown-linux-gnu"

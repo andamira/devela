@@ -28,7 +28,7 @@ rustdocflags = [
 	#
 	"--generate-link-to-definition",
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
-	"--html-in-header", "./config/rustdoc-header.html",
+	"--html-in-header", "./src/_doc/header.html",
 	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
 rustflags = [

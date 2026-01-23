@@ -55,7 +55,8 @@ Many feature gates are removed in order to make most features make always availa
     - `quote` to 1.0.40.
 - add optional dependencies to [base]: `memchr`, `rand_core`, `simdutf8`.
 - remove `_core` and `_dep` re-exports from the public docs.
-re-export hidden workspace dependencies from `_dep`.
+- move `_dep` to `yard/_dep` & re-export from the root.
+- re-export hidden workspace dependencies from `_dep`.
 - remove dependencies:
   - `const-str`, and related `str!` macro.
   - `libm` and related `Float` and `ExtFloat` functionality.
@@ -131,8 +132,9 @@ re-export hidden workspace dependencies from `_dep`.
   - switch rust-script for cargo-script.
   - simplify and homogeinize toolchain selection syntax.
   - configure the exact nightly version to install and use.
-- update `config/rustdoc-header.html` to support multiple crates with custom whitelists.
+- move `config/rustdoc-header.html` to `src/_doc/header.html`.
 - move `/config/dep_all.rs` to `/build/main/dep_all`.
+- update `src/_doc/header.html` to support multiple crates with custom whitelists.
 - add flat re-exports of root modules to `zall_` & re-export hidden as `all_`.
 - rename all `lib.rs` to `index.rs`.
 - rename `_info` to `_doc`

@@ -21,7 +21,7 @@
 #
 # In sync with .cargo/config.toml
 FLAGS="-C target-cpu=native"
-DOCFLAGS="--html-in-header ./config/rustdoc-header.html -C target-cpu=native"
+DOCFLAGS="--html-in-header ./src/_doc/header.html -C target-cpu=native"
 
 # Shift the first argument ("native") and pass the rest to Cargo
 shift

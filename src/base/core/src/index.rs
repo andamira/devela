@@ -63,10 +63,12 @@ pub mod sys;
 pub mod text;
 pub mod ui;
 pub mod work;
-mod yard;
 
+mod yard;
 #[doc(hidden)]
-pub mod _dep;
+pub use yard::_dep;
+
+mod _doc;
 
 #[doc(hidden)]
 pub use zall_ as all_;
@@ -156,6 +158,7 @@ pub use _workspace_internals::*;
 pub mod _workspace_internals {
     #![allow(unused_imports)]
     pub use super::{
+        _doc::_workspace_internals::*,
         code::_workspace_internals::*,
         num::_workspace_internals::*,
         yard::_workspace_internals::*,

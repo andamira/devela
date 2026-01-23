@@ -188,8 +188,9 @@ pub mod text;
 pub mod ui;
 pub mod work;
 
+mod yard;
 #[doc(hidden)]
-pub mod _dep;
+pub use yard::_dep;
 
 pub mod _doc;
 

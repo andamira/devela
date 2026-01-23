@@ -25,8 +25,11 @@ pub mod sys;
 pub mod text;
 pub mod work;
 
+mod yard;
 #[doc(hidden)]
-pub mod _dep;
+pub use yard::_dep;
+
+// mod _doc;
 
 #[doc(hidden)]
 #[allow(unused_imports)]

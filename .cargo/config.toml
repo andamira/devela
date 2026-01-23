@@ -1,6 +1,7 @@
 # ./cargo/config.toml
 #
 # https://doc.rust-lang.org/cargo/reference/config.html
+# https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html
 #
 # NOTE: Cargo uses this configuration file for the entire build process, including dependencies.
 #
@@ -20,7 +21,7 @@
 
 # NOTE: this is a temporary fix to be able to pass unstable flags only in nightly
 # WAIT: [unstable flags](https://github.com/rust-lang/cargo/issues/14733#issuecomment-2520030015)
-# WAIT:1.94 [config-include](https://github.com/rust-lang/cargo/pull/16284)
+# WAIT:1.94:FIX [config-include](https://github.com/rust-lang/cargo/pull/16284)
 # ------------------------------------------------------------------------------
 # include = [{ path = "nightly.toml", optional = true }]
 include = ["nightly.toml"]
@@ -44,7 +45,7 @@ config-include = true  #config-include
 # In sync with ./nightly.toml & ../tools/cargo-native
 rustdocflags = [
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
-	"--html-in-header", "./config/rustdoc-header.html",
+	"--html-in-header", "./src/_doc/header.html",
 	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
 ]
 rustflags = [
