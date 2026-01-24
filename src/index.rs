@@ -78,6 +78,7 @@
         breakpoint,
         cfg_select,
         cfg_version,
+        cold_path,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,

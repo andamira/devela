@@ -60,13 +60,14 @@ See also
 - 1.??: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
+- 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/pull/149783)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
+- 1.??: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
-- 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
@@ -152,6 +153,7 @@ See also
 # Meta tracking issues:
 - [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874)
   - [stabilize arbitrary self types v2](https://github.com/rust-lang/rust/pull/135881)
+- [branch hints](https://github.com/rust-lang/rust/issues/26179)
 - [cargo config search](https://github.com/rust-lang/cargo/issues/9769)
 - [const fn](https://github.com/rust-lang/rust/issues/57563)
 - [feature-metadata](https://github.com/rust-lang/cargo/issues/14157)
