@@ -428,6 +428,9 @@ Many feature gates are removed in order to make most features make always availa
 
 ---
 ## phys
+### astro
+- new `phys::astro` module.
+
 ### time
 - new public module: `phys::time::source`.
 - new types: `TimeFake`, `TimeFakeRef`.

@@ -4,6 +4,7 @@
 #![doc = crate::_doc!(modules: crate::lang; hum: art, i18n, nat)]
 // denote, form, prag, syntax, vocal, write
 #![doc = crate::_doc!(flat:"lang")]
+#![doc = crate::_doc!(newline)]
 //!
 //! Structure and use of language as produced, interpreted, and shared by humans.
 //

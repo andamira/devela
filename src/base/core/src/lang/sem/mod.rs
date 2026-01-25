@@ -2,6 +2,7 @@
 //
 #![doc = crate::_TAG_WIP!()]
 //! Semantic relations, independent of form and execution.
+#![doc = crate::_doc!(flat:"lang")]
 //!
 //! > Meaning is relational.
 //

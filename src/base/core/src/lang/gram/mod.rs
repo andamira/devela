@@ -2,6 +2,7 @@
 //
 #![doc = crate::_TAG_WIP!()]
 //! Grammar and structural theory.
+#![doc = crate::_doc!(flat:"lang")]
 //!
 //! > Structure precedes interpretation.
 //!
@@ -9,6 +10,5 @@
 //
 
 crate::structural_mods! { // _mods
-    _mods {
-    }
+    _mods {}
 }
