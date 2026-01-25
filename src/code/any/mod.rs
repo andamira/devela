@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_CODE_ANY!()]
 // #![doc = crate::_doc!(extends: any)]
 // #![doc = crate::_doc!(modules: crate::code; any)]
-// #![doc = crate::_doc!(newline)]
+// #![doc = crate::_doc!(br+lf)]
 //
 
 mod _reexport_core; // SYMLINK TO /src/base/core/src/code/any/_reexport.rs

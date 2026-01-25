@@ -1,7 +1,7 @@
 // devela::data::uid
 //
 #![doc = crate::_DOC_DATA_UID!()]
-//!
+#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(modules: crate::data; uid)]
 #![doc = crate::_doc!(flat:"data")]
 //!

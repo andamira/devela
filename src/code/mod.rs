@@ -3,8 +3,7 @@
 #![doc = crate::_DOC_CODE!()]
 #![doc = crate::_DOC_CODE_MODULES!()]
 #![doc = crate::_doc!(flat:"code")]
-#![doc = crate::_doc!(newline)]
-//!
+#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(extends:
     any, clone, convert, default, error, hint, marker, ops, panic, result)]
 //

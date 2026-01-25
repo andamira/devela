@@ -3,8 +3,7 @@
 #![doc = crate::_DOC_LANG_PROG!()]
 #![doc = crate::_doc!(modules: crate::lang; prog: ffi)] // dsl, ir
 #![doc = crate::_doc!(flat:"lang")]
-#![doc = crate::_doc!(newline)]
-//!
+#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(extends: ffi)]
 //!
 //! Languages that describe computation, behavior, and execution.

@@ -77,6 +77,7 @@ pub trait TypeResourced {
     type TypeData;
 }
 
+#[doc = crate::_tags!(code uid)]
 /// A newtype-based ID that associates a resource with its inner ID.
 #[doc = crate::_doc_location!("code/marker")]
 ///

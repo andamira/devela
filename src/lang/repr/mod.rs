@@ -2,7 +2,7 @@
 //
 #![doc = crate::_TAG_WIP!()]
 //! Representation languages.
-//!
+#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(modules: crate::lang; repr)]
 #![doc = crate::_doc!(flat:"lang")]
 //!

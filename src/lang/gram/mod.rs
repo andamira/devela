@@ -2,7 +2,7 @@
 //
 #![doc = crate::_TAG_WIP!()]
 //! Grammar and structural theory.
-//!
+#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(modules: crate::lang; gram)]
 #![doc = crate::_doc!(flat:"lang")]
 //!

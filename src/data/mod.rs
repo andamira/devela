@@ -3,8 +3,7 @@
 #![doc = crate::_DOC_DATA!()]
 #![doc = crate::_DOC_DATA_MODULES!()]
 #![doc = crate::_doc!(flat:"data")]
-#![doc = crate::_doc!(newline)]
-//!
+#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //
 // safety

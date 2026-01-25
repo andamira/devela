@@ -2,7 +2,7 @@
 //
 //! Image manipulation.
 #![doc = crate::_doc!(modules: crate::media; image: sixel)]
-// #![doc = crate::_doc!(newline)]
+#![doc = crate::_doc!(flat:"media")]
 //
 // safety
 #![cfg_attr(feature = "safe_image", forbid(unsafe_code))]

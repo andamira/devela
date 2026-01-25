@@ -2,6 +2,7 @@
 //
 #![doc = crate::_TAG_WIP!()]
 //! Semantic relations, independent of form and execution.
+#![doc = crate::_doc!(br+lf)]
 //!
 #![doc = crate::_doc!(modules: crate::lang; sem)]
 #![doc = crate::_doc!(flat:"lang")]

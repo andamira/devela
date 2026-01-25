@@ -27,8 +27,12 @@ macro_rules! __doc {
     };
     (@meta_end) => { "</span>" };
     (@meta_end_hr) => { "</span><hr/>" };
+
     // (newline) => { "<br/><br/>" };
-    (newline) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" };
+    (newline) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" }; // DEPRECATE
+    (lf) => { "\n\n" };
+    (br) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" };
+    (br+lf) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />\n\n" };
 
     // link to zall_::* associated module
     (flat: $mod:literal) => {

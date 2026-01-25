@@ -9,6 +9,7 @@ use crate::{Box, ConstInit, Storage};
 // #[cfg(feature = "dep_rkyv")] // DEP_DISABLED
 // use rkyv::{Archive, Deserialize, Serialize};
 
+#[doc = crate::_tags!(mem)]
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`Box`].
 #[doc = crate::_doc_location!("sys/mem")]
 ///

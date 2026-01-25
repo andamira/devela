@@ -1,5 +1,6 @@
 // devela::data::codec::crypto
 //
+#![doc = crate::_TAG_WIP!()]
 //! Cryptographic primitives for encryption, authentication, and hashing.
 //
 

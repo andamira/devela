@@ -10,7 +10,7 @@
 /// It leverages the [`ArrayFrom`][crate::ArrayFrom] struct.
 ///
 /// Note that these operations are slow and should not be used for fast paths,
-/// and mostly for compile-time needs.
+/// but mostly for compile-time needs.
 ///
 /// # Example
 /// ```
