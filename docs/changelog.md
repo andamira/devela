@@ -205,6 +205,7 @@ Many feature gates are removed in order to make most features make always availa
 - add tags: `_DOC_*`, `_TAG_[APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|IO|LAYOUT|LIFETIME|LINUX|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - new re-exports: `select_unpredictable`.
+- new functions: `cold_path`, `likely`, `unlikely`.
 - rename `reexport!` internal macro to `_reexport!`.
   - allow accepting multiple tags.
   - fix rendering of std path links.

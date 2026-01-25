@@ -27,12 +27,13 @@ mod methods; // methods_as_fns!
 mod paste; // paste!, (wrapped for docs)
 mod structural; // structural_mods!
 mod type_count; // type_count!
+mod unlikely; // cold_path, likely, unlikely
 mod whilst; // whilst!
 mod write; // write_at!
 
 structural::structural_mods! { // _mods, _reexports, _workspace_internals
     _mods {
-        // NOTE: in sync with /devela/code/util/_reexport.rs:
+        // NOTE: in sync with /devela/code/util/mod.rs:
         #[doc(inline)]
         pub use super::{
             asserts::{assert_eq_all, assert_approx_eq_all, const_assert},
@@ -54,6 +55,7 @@ structural::structural_mods! { // _mods, _reexports, _workspace_internals
             paste::paste,
             structural::structural_mods,
             type_count::type_count,
+            unlikely::{cold_path, likely, unlikely},
             whilst::whilst,
             write::write_at,
         };

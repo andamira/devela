@@ -72,6 +72,7 @@ devela_base_core::structural_mods! { // _mods, _reexports, _crate_internals
             paste,
             structural_mods,
             type_count,
+            cold_path, likely, unlikely,
             whilst,
             write_at,
         };
