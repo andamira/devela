@@ -26,6 +26,8 @@ doc: "Makes a *soundness* promise to the compiler that the `cond`ition holds.", 
 _reexport! { rust: core::hint, location: "code/util",
 doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
 _reexport! { rust: core::hint, location: "code/util",
+doc: "Hints the compiler that the `condition` is branch-unpredictable.", select_unpredictable }
+_reexport! { rust: core::hint, location: "code/util",
 doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop }
 _reexport! { rust: core::hint, location: "code/util", tag: _tags!(assert),
 doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }

@@ -204,6 +204,7 @@ Many feature gates are removed in order to make most features make always availa
   - internal macros: `__crate_name!`, `__dbg!`, `__std!`, `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_tags!`, `_use!`.
 - add tags: `_DOC_*`, `_TAG_[APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|IO|LAYOUT|LIFETIME|LINUX|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
+- new re-exports: `select_unpredictable`.
 - rename `reexport!` internal macro to `_reexport!`.
   - allow accepting multiple tags.
   - fix rendering of std path links.
