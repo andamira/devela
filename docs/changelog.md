@@ -357,7 +357,6 @@ Many feature gates are removed in order to make most features make always availa
   - all data, numeric, text & time error types.
   - types: `Cast`, `Int`, `True`.
   - traits: `NumConst`.
-- fix `Cast` wrapping methods performance, and correctness for negative integers.
 
 ### fin
 - new module `num::fin`.
@@ -382,6 +381,27 @@ Many feature gates are removed in order to make most features make always availa
   - new methods: `minmax`, `pminmax`, `total_cmp`.
   - un-gate impls and many dependent const methods.
 
+### grain
+- new module `num::grain`.
+- move inside: `num::cast`, `num::niche`, `num::wide`.
+
+#### cast
+- fix `Cast` wrapping methods performance, and correctness for negative integers.
+
+#### niche
+- new macros: `niche_prim!`, `nv!`.
+- new types: `MaybeNiche`, `NonNiche`, `NicheValueError`.
+- move to [base]: `NonExtreme*`, `NonValue*`, `ne!`, `nz!`.
+- update macros: `ne`, `nv`, `nz`, adding lossy constructors.
+
+#### wide
+- new module `num::grain::wide`.
+- new macro: `define_lane!`.
+- new internal helper macros.
+- new example type `ExampleLane4_i32`.
+- support `nightly_simd` & `dep_wide` in [base_core].
+- re-export some of `core::simd` types and traits.
+
 ### float
 - rename: `ExtFloat` to `FloatExt`.
 - new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
@@ -405,12 +425,6 @@ Many feature gates are removed in order to make most features make always availa
 - remove type: `Divisor`.
 - make all `Int` methods *const*.
 
-### niche
-- new macros: `niche_prim!`, `nv!`.
-- new types: `MaybeNiche`, `NonNiche`, `NicheValueError`.
-- move to [base]: `NonExtreme*`, `NonValue*`, `ne!`, `nz!`.
-- update macros: `ne`, `nv`, `nz`, adding lossy constructors.
-
 ### quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.
 - update `Interval`:
@@ -421,14 +435,6 @@ Many feature gates are removed in order to make most features make always availa
   - rename variant `None` to `Zero`.
   - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
 - move `ValueQuant` from `code::result` to `num::quant`.
-
-### wide
-- new module `num::wide`.
-- new macro: `define_lane!`.
-- new internal helper macros.
-- new example type `ExampleLane4_i32`.
-- support `nightly_simd` & `dep_wide` in [base_core].
-- re-export some of `core::simd` types and traits.
 
 ---
 ## phys

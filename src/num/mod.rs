@@ -16,11 +16,9 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
 
 mod absence; // NoNum
 mod error; // NumError, NumResult
-pub mod fin; // Finite and discrete numeric structures
 mod float; // fsize, Float, FloatConst, FloatExt
 mod frac; // Frac
 mod int; // [i|u]size_[down|up], Int
-mod primitive; // Cast, Primitive[Cast|Join|Split]
 // pub mod symb;
 mod traits; // Num, NumRef
 
@@ -28,10 +26,10 @@ mod traits; // Num, NumRef
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
 mod unit; // Unit, Unit[Bi|Si]
 
-pub mod niche; // MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
+pub mod fin; // Finite and discrete numeric structures
+pub mod grain; // Structural granularity and representation of numeric values.
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
-pub mod wide; // define_lane!
 
 crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
@@ -41,7 +39,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
             float::_all::*,
             frac::_all::*,
             int::_all::*,
-            primitive::_all::*,
             traits::_all::*,
             // wip_power::*;
         };
@@ -51,16 +48,14 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
     _pub_mods {
         pub use super::{
             fin::_all::*,
-            niche::_all::*,
+            grain::_all::*,
             quant::_all::*,
             rand::_all::*,
             // symb::_all::*;
-            wide::_all::*,
         };
     }
     _reexports {
         pub use devela_base_core::num::{
-            Cast, // cast
             // individual errors:
             IncompatibleBounds,
             NoInverse,
@@ -82,7 +77,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
     }
     _hidden {
         pub use super::{
-            wide::_hidden::*,
+            grain::_hidden::*,
         };
     }
 }

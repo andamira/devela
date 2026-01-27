@@ -2,12 +2,6 @@
 //
 //! Defines [`Scale`]
 //
-// > https://chat.deepseek.com/a/chat/s/352900c3-1360-4500-9223-a02a6f23a986
-//
-// IDEAS
-// common used scales as constants…
-// - IDENTITY, etc.
-//
 
 #![allow(missing_docs, unused)]
 

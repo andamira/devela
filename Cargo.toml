@@ -595,7 +595,7 @@ dep_raw_cpuid = ["dep:raw-cpuid"]                                               
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
 dep_serde = ["dep:serde", "portable-atomic?/serde", "wide?/serde"]  			  # data::codec::serde
 dep_simdutf8 = ["dep:simdutf8", "devela_base_core/dep_simdutf8"]                  # text::str
-dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                              # num::wide
+dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                              # num::grain::wide
 
 
 #* Workspace features *#

@@ -14,24 +14,21 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
     crate::_doc!(modules: crate; num: dom, error, fin, grain, lin, prob, quant, symb);
 }
 
+// pub mod dom;
 mod _internals; // impl_ops!, upcasted_op!
-
-mod cast; // Cast
 mod float; // Float, FloatConst, f[32|64]_bits, fsize
 mod int; // Divisor, GcdReturn, Int, [i|u]size_[down|up]
 mod traits; // NumConst
-
 pub mod error; // error types
 pub mod fin; // Finite and discrete numeric structures
-pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
+pub mod grain; // Structural granularity and representation of numeric values.
+// pub mod lin; //
 pub mod quant; // Cycle*, Interval, interval!, Ratio, ValueQuant
-// pub mod symb; // WIP
-pub mod wide; // define_lane!
+// pub mod symb; //
 
 crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals, _hidden
     _mods {
         pub use super::{
-            cast::_all::*,
             float::_all::*,
             int::_all::*,
             traits::_all::*,
@@ -41,13 +38,12 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
         #[doc(inline)]
         pub use super::error::*;
         pub use super::{
-            // WIP
+            // dom::_all::*,
             fin::_all::*,
-
-            niche::_all::*,
+            grain::_all::*,
+            // lin::_all::*,
             quant::_all::*,
             // symb::_all::*,
-            wide::_all::*,
         };
     }
     _crate_internals {
@@ -60,14 +56,14 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
         pub use super::{
             _internals::*,
             float::_workspace_internals::*,
+            grain::_workspace_internals::*,
             int::_workspace_internals::*,
-            niche::_workspace_internals::*,
         };
     }
     _hidden {
         pub use super::{
             int::_hidden::*,
-            wide::_hidden::*,
+            grain::_hidden::*,
         };
     }
 }

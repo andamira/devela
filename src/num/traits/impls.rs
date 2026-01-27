@@ -10,7 +10,7 @@ use crate::num::{
     Num,
     NumError::{self, Invalid, Unspecified},
     NumResult as Result,
-    niche::*,
+    grain::niche::*,
 };
 use crate::{Add, Div, Mul, Neg, Rem, Sub, paste};
 

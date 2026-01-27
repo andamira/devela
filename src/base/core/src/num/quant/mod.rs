@@ -15,12 +15,13 @@
 //! - Numerical classification and properties: [`Sign`].
 //
 
-// mod align; // Align WIP
-// mod counter; // Counter
+// mod align; // Align
+// mod cont;
 mod cycle; // Cycle, CycleCount
 mod interval; // Interval, interval!
 // mod norm; // Norm
 // mod ratio; // Ratio
+// mod power; // Log, Power, Root, TriPow
 // mod scale; // Scale
 mod sign; // Sign
 mod value; // ValueQuant
@@ -28,8 +29,8 @@ mod value; // ValueQuant
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // align::*, WIP
-            // counter::*,
+            // align::*,
+            // cont::*,
             cycle::*,
             interval::*,
             // norm::*,

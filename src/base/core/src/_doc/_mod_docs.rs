@@ -84,6 +84,9 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_FIN_LOGIC   = "Truth systems, reachability, constraints.";
     _DOC_NUM_FIN_ORD     = "Algorithms and structures based on relative ordering.";
     _DOC_NUM_GRAIN       = "Structural granularity and representation of numeric values.";
+    _DOC_NUM_GRAIN_CAST  = "Casting between primitives.";
+    _DOC_NUM_GRAIN_NICHE = "Specialized numeric types and behaviors.";
+    _DOC_NUM_GRAIN_WIDE  = "Wide numeric types and parallel arithmetic.";
     _DOC_NUM_LIN         = "Linear algebraic structures and methods.";
     _DOC_NUM_PROB        = "Probability theory and statistical inference.";
     _DOC_NUM_QUANT       = "Quantification, measurement, and numerical relationships.";
@@ -91,9 +94,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
 
     _DOC_NUM_FLOAT       = "Floating point types and operations.";
     _DOC_NUM_INT         = "Integer types and operations.";
-    _DOC_NUM_NICHE       = "Specialized numeric types and behaviors.";
     _DOC_NUM_RAND        = "Random number generation.";
-    _DOC_NUM_WIDE        = "Wide numeric types and parallel arithmetic.";
     // 7
     _DOC_RUN             = "Live execution coordination of time, frames, and setup.";
     _QUO_RUN             = "> Where execution exists, progresses, and becomes concrete.";
