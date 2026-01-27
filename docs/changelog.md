@@ -359,12 +359,28 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `NumConst`.
 - fix `Cast` wrapping methods performance, and correctness for negative integers.
 
-### bit
+### fin
+- new module `num::fin`.
+- move here `num::bit`, `num::logic` and `num::ord`.
+
+#### bit
 - new module `num::bit`.
 - update `BitOps` & `Bitwise`.
   - rearrange methods in thematic impl blocks.
   - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip[_checked]`, `flip[_checked]_range_if`, `[is_][un]set_mask`.
 - separate documentations for `BitOps` and `Bitwise` as individual constants.
+
+#### logic
+- move to [base]: `ConstBool`, `False`, `True`, `const_bool!`, `[iu]size_*`.
+
+#### ord
+- rename `Compare` to `Cmp`.
+- new macro `cmp!`.
+- update `Cmp`:
+  - move to [base].
+  - new impl for `Ordering`.
+  - new methods: `minmax`, `pminmax`, `total_cmp`.
+  - un-gate impls and many dependent const methods.
 
 ### float
 - rename: `ExtFloat` to `FloatExt`.
@@ -389,23 +405,11 @@ Many feature gates are removed in order to make most features make always availa
 - remove type: `Divisor`.
 - make all `Int` methods *const*.
 
-### logic
-- move to [base]: `ConstBool`, `False`, `True`, `const_bool!`, `[iu]size_*`.
-
 ### niche
 - new macros: `niche_prim!`, `nv!`.
 - new types: `MaybeNiche`, `NonNiche`, `NicheValueError`.
 - move to [base]: `NonExtreme*`, `NonValue*`, `ne!`, `nz!`.
 - update macros: `ne`, `nv`, `nz`, adding lossy constructors.
-
-### ord
-  - rename `Compare` to `Cmp`.
-- new macro `cmp!`.
-- update `Cmp`:
-  - move to [base].
-  - new impl for `Ordering`.
-  - new methods: `minmax`, `pminmax`, `total_cmp`.
-  - un-gate impls and many dependent const methods.
 
 ### quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.

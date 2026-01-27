@@ -77,13 +77,21 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 5
     _DOC_MEDIA           = "Multimedia functionality.";
     // 6
-    _DOC_NUM             = "Numerical types and operations.";
-    _DOC_NUM_BIT         = "Bitwise operations.";
+    _DOC_NUM             = "Numerical types, structures, and operations.";
+    _DOC_NUM_DOM         = "Numeric domains and value representations.";
+    _DOC_NUM_FIN         = "Finite and discrete numeric structures.";
+    _DOC_NUM_FIN_BIT     = "Bitwise operations.";
+    _DOC_NUM_FIN_LOGIC   = "Truth systems, reachability, constraints.";
+    _DOC_NUM_FIN_ORD     = "Algorithms and structures based on relative ordering.";
+    _DOC_NUM_GRAIN       = "Structural granularity and representation of numeric values.";
+    _DOC_NUM_LIN         = "Linear algebraic structures and methods.";
+    _DOC_NUM_PROB        = "Probability theory and statistical inference.";
+    _DOC_NUM_QUANT       = "Quantification, measurement, and numerical relationships.";
+    _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
+
     _DOC_NUM_FLOAT       = "Floating point types and operations.";
     _DOC_NUM_INT         = "Integer types and operations.";
     _DOC_NUM_NICHE       = "Specialized numeric types and behaviors.";
-    _DOC_NUM_ORD         = "Algorithms and structures based on relative ordering.";
-    _DOC_NUM_QUANT       = "Quantification and numerical relationships.";
     _DOC_NUM_RAND        = "Random number generation.";
     _DOC_NUM_WIDE        = "Wide numeric types and parallel arithmetic.";
     // 7

@@ -88,7 +88,7 @@ See the linked modifications for detailed changes.
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
   [M_static_assertions]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/static_assertions.md
   [`const_assert!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.const_assert.html
-  [`ConstBool`]: https://andamira.github.io/devela/latest/devela/num/logic/trait.ConstBool.html
+  [`ConstBool`]: https://andamira.github.io/devela/latest/devela/num/fin/logic/trait.ConstBool.html
 [tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
   [M_tailcall-chunk]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/tailcall-chunk.md
   [`VecChunk`]: https://andamira.github.io/devela/latest/devela/data/list/array/struct.VecChunk.html

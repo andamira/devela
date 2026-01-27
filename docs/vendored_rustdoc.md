@@ -33,7 +33,7 @@
   [`ScopeGuard`]: crate::code::ScopeGuard
   [M_static_assertions]: crate::_doc::vendored::static_assertions
   [`const_assert!`]: crate::code::util::const_assert
-  [`ConstBool`]: crate::num::logic::ConstBool
+  [`ConstBool`]: crate::num::fin::logic::ConstBool
   [M_tailcall-chunk]: crate::_doc::vendored::tailcall_chunk
   [`VecChunk`]: crate::data::list::array::VecChunk
   [M_tupl]: crate::_doc::vendored::tupl

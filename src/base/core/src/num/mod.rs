@@ -11,34 +11,29 @@
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_NUM_MODULES =
-    crate::_doc!(modules: crate; num: error, niche, quant, wide); // logic, ord, rand
+    crate::_doc!(modules: crate; num: dom, error, fin, grain, lin, prob, quant, symb);
 }
 
 mod _internals; // impl_ops!, upcasted_op!
 
-mod bit; // BitOps, Bitwise
 mod cast; // Cast
 mod float; // Float, FloatConst, f[32|64]_bits, fsize
 mod int; // Divisor, GcdReturn, Int, [i|u]size_[down|up]
-mod logic; // ConstBool, False, True, const_bool!
 mod traits; // NumConst
 
 pub mod error; // error types
+pub mod fin; // Finite and discrete numeric structures
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
-pub mod ord; // Cmp
 pub mod quant; // Cycle*, Interval, interval!, Ratio, ValueQuant
-// pub mod rand; // WIP
 // pub mod symb; // WIP
 pub mod wide; // define_lane!
 
 crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals, _hidden
     _mods {
         pub use super::{
-            bit::_all::*,
             cast::_all::*,
             float::_all::*,
             int::_all::*,
-            logic::_all::*,
             traits::_all::*,
         };
     }
@@ -46,18 +41,19 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
         #[doc(inline)]
         pub use super::error::*;
         pub use super::{
+            // WIP
+            fin::_all::*,
+
             niche::_all::*,
-            ord::_all::*,
             quant::_all::*,
-            // rand::_all::*, // WIP
-            // symb::_all::*, // WIP
+            // symb::_all::*,
             wide::_all::*,
         };
     }
     _crate_internals {
         pub(crate) use super::{
             _DOC_NUM_MODULES,
-            ord::_crate_internals::*,
+            fin::_crate_internals::*,
         };
     }
     _workspace_internals {
