@@ -79,6 +79,9 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 6
     _DOC_NUM             = "Numerical types, structures, and operations.";
     _DOC_NUM_DOM         = "Numeric domains and value representations.";
+    _DOC_NUM_DOM_REAL    = "Real-valued numeric domains and representations.";
+    _DOC_NUM_DOM_REAL_FLOAT = "Floating point types and operations.";
+    _DOC_NUM_DOM_INT     = "Integer types and operations.";
     _DOC_NUM_FIN         = "Finite and discrete numeric structures.";
     _DOC_NUM_FIN_BIT     = "Bitwise operations.";
     _DOC_NUM_FIN_LOGIC   = "Truth systems, reachability, constraints.";
@@ -92,8 +95,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_QUANT       = "Quantification, measurement, and numerical relationships.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
-    _DOC_NUM_FLOAT       = "Floating point types and operations.";
-    _DOC_NUM_INT         = "Integer types and operations.";
     _DOC_NUM_RAND        = "Random number generation.";
     // 7
     _DOC_RUN             = "Live execution coordination of time, frames, and setup.";

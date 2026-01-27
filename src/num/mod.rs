@@ -16,18 +16,16 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
 
 mod absence; // NoNum
 mod error; // NumError, NumResult
-mod float; // fsize, Float, FloatConst, FloatExt
 mod frac; // Frac
-mod int; // [i|u]size_[down|up], Int
 // pub mod symb;
-mod traits; // Num, NumRef
 
 #[cfg(feature = "unit")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
 mod unit; // Unit, Unit[Bi|Si]
 
+pub mod dom; // Numeric domains and value representations
 pub mod fin; // Finite and discrete numeric structures
-pub mod grain; // Structural granularity and representation of numeric values.
+pub mod grain; // Structural granularity and representation of numeric values
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
 
@@ -36,10 +34,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
         pub use super::{
             absence::*,
             error::*,
-            float::_all::*,
             frac::_all::*,
-            int::_all::*,
-            traits::_all::*,
             // wip_power::*;
         };
         #[cfg(feature = "unit")]
@@ -47,6 +42,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hi
     }
     _pub_mods {
         pub use super::{
+            dom::_all::*,
             fin::_all::*,
             grain::_all::*,
             quant::_all::*,

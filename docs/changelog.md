@@ -358,6 +358,34 @@ Many feature gates are removed in order to make most features make always availa
   - types: `Cast`, `Int`, `True`.
   - traits: `NumConst`.
 
+### dom
+- new module `num::dom`.
+- move here `num::float`, `num::frac`, `num::int`, `num::traits`.
+
+#### real
+##### float
+- rename: `ExtFloat` to `FloatExt`.
+- new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
+- update `Float`
+  - new methods: `poly_eval_const`, `sin_minimax`, `cos_minimax`, `sin_cos_minimax`.
+  - remove deprecated methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
+  - make std methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
+  - split out std-enabled implementation as internal `FloatStd`.
+- Change `ExtFloat` to use `*_minimax` methods by default.
+- move to [base]
+  - aliases: `fsize`.
+  - traits: `FloatConst`.
+  - types: `Float`.
+  - float shared docs prefixed with `_FLOAT_`.
+
+#### int
+- move to [base]: `Int`, `[iu]size_*`.
+- prefix int shared docs with `_INT_`.
+- new macros: `define_divisor!`.
+- new types: `DivisorExample`, `IntAlloc`, `IntError`, `IntResult`.
+- remove type: `Divisor`.
+- make all `Int` methods *const*.
+
 ### fin
 - new module `num::fin`.
 - move here `num::bit`, `num::logic` and `num::ord`.
@@ -401,29 +429,6 @@ Many feature gates are removed in order to make most features make always availa
 - new example type `ExampleLane4_i32`.
 - support `nightly_simd` & `dep_wide` in [base_core].
 - re-export some of `core::simd` types and traits.
-
-### float
-- rename: `ExtFloat` to `FloatExt`.
-- new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
-- update `Float`
-  - new methods: `poly_eval_const`, `sin_minimax`, `cos_minimax`, `sin_cos_minimax`.
-  - remove deprecated methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
-  - make std methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
-  - split out std-enabled implementation as internal `FloatStd`.
-- Change `ExtFloat` to use `*_minimax` methods by default.
-- move to [base]
-  - aliases: `fsize`.
-  - traits: `FloatConst`.
-  - types: `Float`.
-  - float shared docs prefixed with `_FLOAT_`.
-
-### int
-- move to [base]: `Int`, `[iu]size_*`.
-- prefix int shared docs with `_INT_`.
-- new macros: `define_divisor!`.
-- new types: `DivisorExample`, `IntAlloc`, `IntError`, `IntResult`.
-- remove type: `Divisor`.
-- make all `Int` methods *const*.
 
 ### quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.

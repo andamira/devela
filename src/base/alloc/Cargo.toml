@@ -42,7 +42,7 @@ alloc = [] # always enabled
 media = ["color"]
 	color = []
 num = ["int"]
-	int = []
+	int = ["devela_base_core/int"]
 
 #* Safety features *#
 base_safe = ["devela_base_core/base_safe"]

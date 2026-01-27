@@ -14,11 +14,8 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
     crate::_doc!(modules: crate; num: dom, error, fin, grain, lin, prob, quant, symb);
 }
 
-// pub mod dom;
+pub mod dom; // Numeric domains and value representations
 mod _internals; // impl_ops!, upcasted_op!
-mod float; // Float, FloatConst, f[32|64]_bits, fsize
-mod int; // Divisor, GcdReturn, Int, [i|u]size_[down|up]
-mod traits; // NumConst
 pub mod error; // error types
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values.
@@ -26,19 +23,12 @@ pub mod grain; // Structural granularity and representation of numeric values.
 pub mod quant; // Cycle*, Interval, interval!, Ratio, ValueQuant
 // pub mod symb; //
 
-crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_internals, _hidden
-    _mods {
-        pub use super::{
-            float::_all::*,
-            int::_all::*,
-            traits::_all::*,
-        };
-    }
+crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals, _hidden
     _pub_mods {
         #[doc(inline)]
         pub use super::error::*;
         pub use super::{
-            // dom::_all::*,
+            dom::_all::*,
             fin::_all::*,
             grain::_all::*,
             // lin::_all::*,
@@ -55,14 +45,13 @@ crate::structural_mods! { //_mods, _pub_mods, _crate_internals, _workspace_inter
     _workspace_internals {
         pub use super::{
             _internals::*,
-            float::_workspace_internals::*,
+            dom::_workspace_internals::*,
             grain::_workspace_internals::*,
-            int::_workspace_internals::*,
         };
     }
     _hidden {
         pub use super::{
-            int::_hidden::*,
+            dom::_hidden::*,
             grain::_hidden::*,
         };
     }

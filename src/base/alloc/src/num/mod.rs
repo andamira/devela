@@ -5,12 +5,12 @@
 // safety
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
 
-pub mod int;
+pub mod dom;
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {
         pub use super::{
-            int::_all::*,
+            dom::_all::*,
         };
     }
 }

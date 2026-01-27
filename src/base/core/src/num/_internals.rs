@@ -130,7 +130,7 @@ pub use impl_ops;
 /// `$up`:       the upcasted type
 ///
 /// # Invoked from:
-/// - num/int/wrapper/impl_root.rs
+/// - /src/num/dom/int/wrapper/impl_root.rs
 ///
 /// # Examples
 /// ```ignore
