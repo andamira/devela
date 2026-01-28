@@ -1,4 +1,4 @@
-// devela::num::frac::wrapper::impl_frac
+// devela::num::dom::frac::wrapper::impl_frac
 //
 //! implements non-owning fraction-related methods
 //

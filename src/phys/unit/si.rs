@@ -1,9 +1,9 @@
-// devela::num::unit::si
+// devela::phys::unit::si
 //
 //! SI unit prefixes.
 //
 
-use super::helpers::impl_try_from;
+use super::_helpers::impl_try_from;
 #[allow(unused_imports)]
 use crate::FloatExt;
 #[allow(unused_imports)]
@@ -12,7 +12,7 @@ use crate::{Vec, vec_ as vec};
 
 #[doc = crate::_tags!(num)]
 /// SI (metric) unit prefixes.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("phys/unit")]
 ///
 /// - <https://en.wikipedia.org/wiki/Metric_prefix>
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

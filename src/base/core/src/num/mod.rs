@@ -15,7 +15,6 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
 }
 
 pub mod dom; // Numeric domains and value representations
-mod _internals; // impl_ops!, upcasted_op!
 pub mod error; // error types
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values.
@@ -44,7 +43,6 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals, 
     }
     _workspace_internals {
         pub use super::{
-            _internals::*,
             dom::_workspace_internals::*,
             grain::_workspace_internals::*,
         };

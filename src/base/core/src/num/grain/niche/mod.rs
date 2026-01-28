@@ -1,6 +1,8 @@
 // devela_base_core::num::grain::niche
 //
 #![doc = crate::_DOC_NUM_GRAIN_NICHE!()]
+//!
+#![doc = crate::_doc!(extends: num)]
 //
 
 mod _reexport; // SYMLINK from /src/num/grain/niche/_reexport_core.rs

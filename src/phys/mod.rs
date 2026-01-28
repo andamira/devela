@@ -20,6 +20,10 @@ pub mod elec;
 // pub mod geo;
 pub mod mech;
 pub mod time;
+
+
+#[cfg(feature = "unit")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
 pub mod unit;
 
 #[cfg(feature = "wave")]
@@ -35,8 +39,9 @@ crate::structural_mods! { // _pub_mods, _crate_internals
             // geo::_all::*,
             time::_all::*,
             mech::_all::*,
-            unit::_all::*,
         };
+        #[cfg(feature = "unit")]
+        pub use super::unit::_all::*;
         #[cfg(feature = "wave")]
         pub use super::wave::_all::*;
     }

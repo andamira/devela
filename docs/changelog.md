@@ -357,6 +357,8 @@ Many feature gates are removed in order to make most features make always availa
   - all data, numeric, text & time error types.
   - types: `Cast`, `Int`, `True`.
   - traits: `NumConst`.
+- move `num::unit` to `phys::unit`.
+- make `num::error` public.
 
 ### dom
 - new module `num::dom`.

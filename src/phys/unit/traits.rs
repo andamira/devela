@@ -1,4 +1,4 @@
-// devela::num::unit::traits
+// devela::phys::unit::traits
 //
 //! Unit prefixes traits.
 //
@@ -12,7 +12,7 @@ use crate::data::Vec;
 
 #[doc = crate::_tags!(num)]
 /// Common trait for unit prefixes.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("phys/unit")]
 ///
 /// - <https://en.wikipedia.org/wiki/Unit_of_measurement>
 pub trait Unit: Sized {

@@ -270,12 +270,11 @@ mod reflection {
                 "linear", "shape",
             "int",
             "rand",
-            "unit",
         ]
     };
     pub const PHYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["phys··"],
-        features: &["phys", "time", "wave"]
+        features: &["phys", "time", "unit", "wave"]
     };
     pub const RUN: FlagsFeatures = FlagsFeatures {
         ref_flags: &["run··"],

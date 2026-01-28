@@ -1,16 +1,18 @@
 // devela::num::fin
 //
 #![doc = crate::_DOC_NUM_FIN!()]
+#![doc = crate::_doc!(modules: crate::num; fin: logic, ord)]
+#![doc = crate::_doc!(flat:"num")]
 //
 
 // mod auto;
 mod bit; // (BitOps, Bitwise)
 // mod comb;
 // mod graph;
-pub mod ord; // (Cmp, cmp!, Order)
 // mod seq;
 
 pub mod logic; // ConstBool, False, True, const_bool!
+pub mod ord; // (Cmp, cmp!, Order)
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
@@ -20,7 +22,6 @@ crate::structural_mods! { // _mods, _pub_mods
             bit::_all::*,
             // comb::_all::*,
             // graph::_all::*,
-            ord::_all::*,
             // seq::_all::*,
         };
     }
@@ -28,6 +29,7 @@ crate::structural_mods! { // _mods, _pub_mods
         #[doc(inline)]
         pub use super::{
             logic::_all::*,
+            ord::_all::*,
         };
     }
 }

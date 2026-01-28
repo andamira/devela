@@ -1,6 +1,8 @@
 // devela_base_core::num::error
 //
 //! Defines numeric-related error types.
+//!
+#![doc = crate::_doc!(flat:"num")]
 //
 // TOC
 // - individual errors:

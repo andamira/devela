@@ -1,6 +1,6 @@
-// devela::num::error
+// devela::num::error::definitions
 //
-//!
+//! Defines [`NumError`], [`NumResult`].
 //
 
 use crate::Sign;

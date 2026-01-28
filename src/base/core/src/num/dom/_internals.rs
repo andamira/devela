@@ -1,4 +1,4 @@
-// devela_base_core::num::_internals
+// devela_base_core::num::dom::_internals
 //
 //! Workspace-internal numeric helpers: `impl_ops`, `upcasted_op`.
 //

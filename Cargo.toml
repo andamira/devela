@@ -252,17 +252,16 @@ media = ["audio", "color", "draw", "font", "image", "video"]
 	font = ["devela_base_core/font"]
 	image = ["devela_base_core/image"]
 	video = []
-num = ["int", "rand", "unit"]
+num = ["int", "rand"]
 	int = ["devela_base_core/int", "devela_base_alloc?/int"] # Int TEMP
 	rand = [] # random number generators
 	# symb = []
-	unit = [] # unit prefixes
-phys = ["time", "wave"]
+phys = ["time", "unit", "wave"]
 	# bio
 	# chem
 	# mech
 	time = []
-	# unit
+	unit = []
 	wave = [] # wavelets
 run = []
 sys = ["io", "mem"]

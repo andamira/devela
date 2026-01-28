@@ -1,15 +1,23 @@
 // devela::phys::unit
 //
-#![doc = crate::_TAG_WIP!()]
-//! Physical units of measure.
+//! Physical units of measure and unit prefixes.
 //
 
-// WIPZONE
+mod _helpers; // impl_try_from!
+
+mod bi; // UnitBi
+mod si; // UnitSi
+mod traits; // Unit
+
 // mod heat;
 
 crate::structural_mods! { // _mods
     _mods {
-        // WIPZONE
-        // pub use super::heat::*;
+        pub use super::{
+            bi::*,
+            si::*,
+            traits::*,
+            // heat::*,
+        };
     }
 }

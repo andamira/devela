@@ -1,9 +1,9 @@
-// devela::num::unit::bi
+// devela::phys::unit::bi
 //
 //! Binary unit prefixes.
 //
 
-use super::helpers::impl_try_from;
+use super::_helpers::impl_try_from;
 #[allow(unused_imports)]
 use crate::FloatExt;
 #[cfg(feature = "alloc")]
@@ -12,7 +12,7 @@ use crate::{Vec, vec_ as vec};
 
 #[doc = crate::_tags!(num)]
 /// Binary unit prefixes.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("phys/unit")]
 ///
 /// - <https://en.wikipedia.org/wiki/Binary_prefix>
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

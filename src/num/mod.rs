@@ -15,54 +15,31 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
 }
 
 mod absence; // NoNum
-mod error; // NumError, NumResult
-mod frac; // Frac
 // pub mod symb;
 
-#[cfg(feature = "unit")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
-mod unit; // Unit, Unit[Bi|Si]
-
 pub mod dom; // Numeric domains and value representations
+pub mod error; // Numeric-related error types.
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values
 pub mod quant; // Cycle*, Interval, interval!, Ratio
 pub mod rand;
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             absence::*,
-            error::*,
-            frac::_all::*,
             // wip_power::*;
         };
-        #[cfg(feature = "unit")]
-        pub use super::unit::_all::*;
     }
     _pub_mods {
         pub use super::{
             dom::_all::*,
+            error::_all::*,
             fin::_all::*,
             grain::_all::*,
             quant::_all::*,
             rand::_all::*,
             // symb::_all::*;
-        };
-    }
-    _reexports {
-        pub use devela_base_core::num::{
-            // individual errors:
-            IncompatibleBounds,
-            NoInverse,
-            MismatchedSizes,
-            NonNegativeRequired,
-            PositiveRequired,
-            NonZeroRequired,
-            Overflow,
-            // composite errors:
-            IntError, IntResult,
-            NicheValueError,
         };
     }
     _crate_internals {

@@ -2,6 +2,8 @@
 //
 #![doc = crate::_DOC_NUM_QUANT!()]
 //!
+#![doc = crate::_doc!(flat:"num")]
+//!
 //! This module provides general concepts for measuring and quantifying values,
 //! including both discrete and continuous representations, without being tied
 //! to specific interpretations.

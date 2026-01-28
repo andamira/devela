@@ -17,7 +17,7 @@
 /// ];
 /// ```
 ///
-/// It introduces no new comparison semantics and forwards directly to [Cmp].
+/// It introduces no new comparison semantics and forwards directly to [Cmp][crate::Cmp].
 ///
 /// Notes:
 /// - `minmax` / `pminmax` return `(min, max)`.
