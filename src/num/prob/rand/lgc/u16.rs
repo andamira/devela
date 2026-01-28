@@ -1,4 +1,4 @@
-// devela::num::rand::lgc::u16
+// devela::num::prob::rand::lgc::u16
 //
 //! 16-bit Linear Congruential Generator
 //

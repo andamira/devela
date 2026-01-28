@@ -437,6 +437,10 @@ Many feature gates are removed in order to make most features make always availa
 - new module: `num::lin`.
 - move here `geom::linear::{matrix, vetcor}`.
 
+### prob
+- new module `num::prob`.
+- move here `num::rand`.
+
 ### quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.
 - update `Interval`:
@@ -447,6 +451,9 @@ Many feature gates are removed in order to make most features make always availa
   - rename variant `None` to `Zero`.
   - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
 - move `ValueQuant` from `code::result` to `num::quant`.
+
+### symb
+- new modules `num::symb`.
 
 ---
 ## phys

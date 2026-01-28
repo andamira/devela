@@ -18,10 +18,9 @@ pub mod dom; // Numeric domains and value representations
 pub mod error; // Numeric-related error types.
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values
-// pub mod prob;
-pub mod quant; // Cycle*, Interval, interval!, Ratio
-pub mod rand;
-// pub mod symb;
+pub mod prob; // Probability theory and statistical inference
+pub mod quant; // Quantification, measurement, and numerical relationships
+pub mod symb; // Symbolic numeric forms and manipulation
 
 #[cfg(feature = "lin")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
@@ -34,10 +33,9 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals, _hidden
             error::_all::*,
             fin::_all::*,
             grain::_all::*,
-            // prob::_all::*,
+            prob::_all::*,
             quant::_all::*,
-            rand::_all::*,
-            // symb::_all::*;
+            symb::_all::*,
         };
         #[cfg(feature = "lin")]
         pub use super::lin::_all::*;
@@ -48,7 +46,7 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals, _hidden
     _crate_internals {
         pub(crate) use super::{
             _DOC_NUM_MODULES,
-            rand::_crate_internals::*,
+            prob::_crate_internals::*,
         };
     }
     _hidden {

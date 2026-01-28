@@ -12,7 +12,7 @@ macro_rules! _tags {
 }
 pub use _tags;
 
-// helper for defining doc tags with symbol and a title attribute attribute
+// helper for defining doc tags with an associated symbol and title attribute
 macro_rules! define_symbol_tags {
     ($( $tag:ident, $title:literal, $symbol:literal;)+) => {
         $crate::CONST! { hidden macro_export,

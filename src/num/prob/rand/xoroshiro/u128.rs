@@ -1,4 +1,4 @@
-// devela::num::rand::xoroshiro::u128
+// devela::num::prob::rand::xoroshiro::u128
 //
 //! 128-bit versions of Xoroshiro generators.
 //

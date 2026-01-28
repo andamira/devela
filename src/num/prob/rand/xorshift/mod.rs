@@ -1,4 +1,4 @@
-// devela::num::rand::xorshift
+// devela::num::prob::rand::xorshift
 //
 //! Pseudo-random number generators based on [Xorshift].
 //!

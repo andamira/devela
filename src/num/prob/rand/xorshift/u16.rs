@@ -1,4 +1,4 @@
-// devela::num::rand::xorshift::u16
+// devela::num::prob::rand::xorshift::u16
 //
 //! 16-bit version of XorShift.
 //

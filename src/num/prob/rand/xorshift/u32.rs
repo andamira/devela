@@ -1,4 +1,4 @@
-// devela::num::rand::xorshift::u32
+// devela::num::prob::rand::xorshift::u32
 //
 //! 32-bit version of XorShift.
 //

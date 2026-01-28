@@ -1,4 +1,4 @@
-// devela::num::rand::xabc
+// devela::num::prob::rand::xabc
 //
 //!
 //

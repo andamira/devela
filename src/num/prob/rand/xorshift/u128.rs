@@ -1,4 +1,4 @@
-// devela::num::rand::xorshift::u128
+// devela::num::prob::rand::xorshift::u128
 //
 //! 128-bit version of XorShift.
 //

@@ -152,7 +152,7 @@ See the linked modifications for detailed changes.
 
 ## Other compatible licenses
 - <i id="8bit_rng"></i>[8bit_rng] by Edward Rosten, (BSD-2),
-  as the [`Xyza8a`] and [`Xyza8b`] structs algorithms.
+  as the [`Xyza8a`] and [`Xyza8b`] structs PRNG algorithms.
 - <i id="apply"></i>[apply] by GeorgeBurton (Unlicense),
   as part of the [`Hook`] and [`Morph`] structs ([*modifications*][M_apply]).
 - <i id="blit-fonts"></i>[blit-fonts] by Andrew Reece (ISC),
@@ -164,7 +164,7 @@ See the linked modifications for detailed changes.
 - <i id="size_of_trait"></i>[size_of_trait] by Joshua Nelson (BSD-3),
   as the [`size_of_expr!`] macro.
 - <i id="Xabc"></i>[Xabc] by *EternityForest* (openly shared),
-  as the [`Xabc`] struct algorithm.
+  as the [`Xabc`] struct PRNG algorithm.
 - <i id="GraphicGems"></i>[Graphics Gems] (1985–1994) (permissive EULA),
   as various algorithms.
 

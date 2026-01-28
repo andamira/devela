@@ -1,6 +1,6 @@
-// devela::num::rand
+// devela::num::prob::rand
 //
-#![doc = crate::_DOC_NUM_RAND!()]
+#![doc = crate::_DOC_NUM_PROB_RAND!()]
 //!
 //! This module defines several types:
 //! - RNG algorithms specialized for 8-bit devices:
@@ -34,17 +34,19 @@ crate::items! {
     mod xabc;
 }
 
-// WIPZONE
-// mod noise;
+// mod noise; // WIP
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::xorshift::*;
         #[cfg(feature = "rand")]
-        pub use super::{lgc::*, xabc::*, xoroshiro::*, xyza8::*};
-
-        // WIPZONE
-        // pub use super::noise::*;
+        pub use super::{
+            lgc::*,
+            xabc::*,
+            xoroshiro::*,
+            xyza8::*,
+        };
+        // pub use super::noise::*; // WIP
     }
     _crate_internals {
         #[cfg(feature = "rand")]

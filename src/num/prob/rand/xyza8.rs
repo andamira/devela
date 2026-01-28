@@ -1,4 +1,4 @@
-// devela::num::rand::xyza8
+// devela::num::prob::rand::xyza8
 //
 //!
 

@@ -6,6 +6,8 @@
 #![allow(missing_docs, reason = "hidden internals for the workspace")]
 
 crate::CONST! { hidden macro_export,
+    /* abbreviations */
+
     /// - <https://en.wikipedia.org/wiki/Domain-specific_language>
     _ABBR_DSL  = "<abbr title='Domain-specific Language'>DSL</abbr>";
     /// - <https://www.unicode.org/reports/tr29/#:~:text=An-,extended%20grapheme%20cluster,-is>
@@ -18,6 +20,8 @@ crate::CONST! { hidden macro_export,
     _ABBR_LIFO = "<abbr title='Last-In, First-Out'>LIFO</abbr>."; // stack
     /// - <https://en.wikipedia.org/wiki/Lookup_table>
     _ABBR_LUT  = "<abbr title='Look-up Table'>LUT</abbr>";
+
+    /* misc. root modules */
 
     _DOC_ZALL  = "All crate items re-exported in a single flat namespace.\n\n
 This flat view appears here as `zall`, and it is also mirrored at the
@@ -35,6 +39,8 @@ fully flat `zall` namespace.
 
 It is also mirrored at the crate root through a hidden `all_` module.";
 
+    /* thematic modules tree */
+
     // 1
     _DOC_CODE            = "Reflective code synthesis.";
     _DOC_CODE_ANY        = "Dynamic typing and reflection.";
@@ -43,6 +49,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_CODE_PANIC      = "Panic hooks, unwinding, and abort strategies.";
     _DOC_CODE_RESULT     = "Parameterized outcome and resolution types.";
     _DOC_CODE_UTIL       = "Utility macros and hint functions.";
+
     // 2
     _DOC_DATA            = "Data handling and manipulation.";
     _DOC_DATA_ADDRESS    = "Addressability and directed reachability.";
@@ -62,6 +69,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
         $crate::_ABBR_LIFO!(), " order."];
     _DOC_DATA_UID        = "Abstractions for producing and stabilizing unique identities.";
     _QUO_DATA_UID        = "> Defines identity kinds and generation tools.";
+
     // 3
     _DOC_GEOM        = "Geometric types, operations, and spatial constructs.";
     _DOC_GEOM_METRIC = "Geometric measurement and spatial relationships.";
@@ -76,6 +84,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
         "<a href='https://en.wikipedia.org/wiki/C_(programming_language)'>C</a> interfacing.";
     // 5
     _DOC_MEDIA           = "Multimedia functionality.";
+
     // 6
     _DOC_NUM             = "Numerical types, structures, and operations.";
     _DOC_NUM_DOM         = "Numeric domains and value representations.";
@@ -92,18 +101,22 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_GRAIN_WIDE  = "Wide numeric types and parallel arithmetic.";
     _DOC_NUM_LIN         = "Linear algebraic structures and methods.";
     _DOC_NUM_PROB        = "Probability theory and statistical inference.";
+    _DOC_NUM_PROB_RAND   = "Random number generation.";
+    _DOC_NUM_PROB_STATS  = "Descriptive statistics.";
     _DOC_NUM_QUANT       = "Quantification, measurement, and numerical relationships.";
+    _DOC_NUM_QUANT_CONT  = "Continuity, calculus.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
-    _DOC_NUM_RAND        = "Random number generation.";
     // 7
     _DOC_RUN             = "Live execution coordination of time, frames, and setup.";
     _QUO_RUN             = "> Where execution exists, progresses, and becomes concrete.";
     _DOC_RUN_FRAME       = "The per-step execution envelope and state snapshot.";
     _DOC_RUN_SETUP       = "The committed configuration of a running environment.";
+
     // 8
     _DOC_PHYS            = "Physical units and measurement.";
     _DOC_PHYS_TIME       = "Time and calendar types and operations.";
+
     // 9
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
@@ -127,6 +140,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_NET         = "Networking functionality.";
     _DOC_SYS_OS          = "Operating systems and supervisors.";
     _DOC_SYS_OS_FD       = "Unix-like file descriptors.";
+
     // 10
     _DOC_TEXT            = "Text types and processing.";
     _DOC_TEXT_ASCII      = "ASCII strings and characters.";
@@ -137,10 +151,12 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _QUO_TEXT_LAYOUT     = "> A negotiation between a symbolic sequence and an available extent.";
     _DOC_TEXT_PARSE      = "Unstructured string parsing.";
     _DOC_TEXT_STR        = "String types and related functionality.";
+
     // 11
     _DOC_UI              = "User interface functionality.";
     _QUO_UI              = "> How humans interact with what exists.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
+
     // 12
     _DOC_WORK             = "Work management and concurrency.";
     _DOC_WORK_FUTURE      = "Asynchronous execution.";

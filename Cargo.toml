@@ -257,7 +257,8 @@ num = ["int", "lin", "rand"]
 		# real
 			# float
 	lin = [] # linear algebra
-	rand = [] # random number generators
+	# prob
+		rand = [] # random number generation
 	# symb = []
 phys = ["time", "unit", "wave"]
 	# bio

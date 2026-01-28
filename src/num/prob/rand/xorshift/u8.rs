@@ -1,4 +1,4 @@
-// devela::num::rand::xorshift::u8
+// devela::num::prob::rand::xorshift::u8
 //
 //! 8-bit versions of XorShift.
 //
