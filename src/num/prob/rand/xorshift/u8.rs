@@ -82,7 +82,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
 
     /// Updates the state and returns the next random `u8`.
     ///
-    pub fn next_u8(&mut self) -> u8 {
+    pub const fn next_u8(&mut self) -> u8 {
         let mut x = self.0;
         xorshift_basis!(x, 0, (A, B, C));
         self.0 = x;

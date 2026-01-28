@@ -60,6 +60,39 @@ impl XorShift128p {
         Self(seeds)
     }
 
+    /// Creates a new `XoroShift128p` generator, seeded from addresses of stack variables.
+    ///
+    /// This is a very poor source of randomness.
+    #[inline(never)]
+    pub fn from_stack() -> Self {
+        let (a, b) = (0, 0);
+        let seed: [u64; 2] = [&a as *const _ as u64, &b as *const _ as u64];
+        Self::new_unchecked(seed)
+    }
+
+    /// Creates a new `XoroShift128p` generator, seeded from addresses of heap and stack variables.
+    ///
+    /// This is a very poor source of randomness.
+    #[inline(never)]
+    #[cfg(feature = "alloc")]
+    pub fn from_heap() -> Self {
+        let (a, b) = (0, Box::new(0));
+        let seed: [u64; 2] = [&a as *const _ as u64, &b as *const _ as u64];
+        Self::new_unchecked(seed)
+    }
+
+    /// Creates a new `Xorshift128p` generatr, seeded from [`RandomState`].
+    #[inline(never)]
+    #[cfg(feature = "std")]
+    pub fn from_randomstate() -> Self {
+        let h = RandomState::new();
+        let (mut hasher1, mut hasher2) = (h.build_hasher(), h.build_hasher());
+        hasher1.write_u64(Self::DEFAULT_SEED[0]);
+        hasher2.write_u64(Self::DEFAULT_SEED[0]);
+        let seed = [hasher1.finish(), hasher2.finish()];
+        Self::new_unchecked(seed)
+    }
+
     #[must_use]
     /// Returns the PRNG's inner state as a raw snapshot.
     pub const fn inner_state(self) -> [u64; 2] {
@@ -78,7 +111,7 @@ impl XorShift128p {
 
     /// Returns the next random `u64`.
     #[must_use]
-    pub fn next_u64(&mut self) -> u64 {
+    pub const fn next_u64(&mut self) -> u64 {
         let [s0, mut s1] = [self.0[0], self.0[1]];
         let result = s0.wrapping_add(s1);
 

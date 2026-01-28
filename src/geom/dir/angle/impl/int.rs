@@ -7,6 +7,7 @@
 //   and instead use integer scaling functions Int::scale.
 // - maybe use NonExtreme for the signed representation.
 
+// IMPROVE: remove FloatExt, replace by Float, to simplify from_float_normalized
 #[cfg(not(feature = "std"))]
 use crate::FloatExt;
 use crate::{Angle, AngleDirection, AngleKind};
@@ -98,6 +99,7 @@ macro_rules! impl_angle {
 
             /// Sets the angle normalized (no-op for integer representation).
             pub fn set_normalized(&mut self) {}
+            // TODO: to_norm*
 
             /// Returns `true` if the angle has the given `direction`.
             #[must_use ]

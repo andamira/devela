@@ -24,15 +24,16 @@ crate::structural_mods! { // _mods, _reexports
             GcdReturn,
         };
         #[cfg(feature = "_docs_min")]
-        pub use devela_base_core::num::dom::{ // int
+        pub use devela_base_core::num::dom::int::{
             DivisorExample,
         };
         #[cfg(feature = "int")]
-        pub use devela_base_core::num::dom::{ // int
+        pub use devela_base_core::num::dom::int::{
             Int,
         };
+        #[cfg(feature = "int")]
         #[cfg(feature = "alloc")]
-        pub use devela_base_alloc::num::dom::{ // int
+        pub use devela_base_alloc::num::dom::int::{
             IntAlloc,
         };
     }

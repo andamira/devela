@@ -82,7 +82,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     //
     // Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs"
     #[must_use]
-    pub fn next_u32(&mut self) -> u32 {
+    pub const fn next_u32(&mut self) -> u32 {
         let mut x = self.0;
         xorshift_basis!(x, BASIS, (A, B, C));
         self.0 = x;

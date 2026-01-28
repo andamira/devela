@@ -77,7 +77,7 @@ impl Xabc {
     }
 
     /// Reseeds the generator from the given 3 × 8-bit seeds.
-    pub fn reseed(&mut self, seeds: [u8; 3]) {
+    pub const fn reseed(&mut self, seeds: [u8; 3]) {
         // XOR new entropy into key state
         self.a ^= seeds[0];
         self.b ^= seeds[1];
@@ -106,7 +106,7 @@ impl Xabc {
     }
     /// Advances the state and returns the next random `u8`.
     #[must_use]
-    pub fn next_u8(&mut self) -> u8 {
+    pub const fn next_u8(&mut self) -> u8 {
         // x is incremented every round and is not affected by any other variable
         self.x = self.x.wrapping_add(1);
         // note the mix of addition and XOR

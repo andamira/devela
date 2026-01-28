@@ -2,6 +2,9 @@
 //
 //! Private tags definitions for visual type categorization in documentation.
 //
+// MAYBE
+// - _ORD
+// - _STATE
 
 /// Aggregates multiple documentation tags into a single `#[doc = ...]` string.
 #[doc(hidden)]
@@ -41,9 +44,8 @@ define_symbol_tags! {
     _TAG_ATOMIC, "Atomic", "⚛️"; // ⚛️, 🔬, 🌐,
     _TAG_AUDIO, "Audio", "🔊"; // 🎧,🎼,🎶,🎜 ,🎝 ,🎵,🔈,🔉,🔊,🕪 ,🕩 ,🕨 ,🕫 ,🕬 ,📢,
     _TAG_BIT, "Bit-focused", "▫️"; // ▫️,▪️,🍪,
-    // Structure, compilation, syntax. Items that operate on,
-    // reason about, or structurally transform Rust code itself.
-    // Excludes runtime metaprogramming.
+    // Items that operate on or reason about Rust code itself,
+    // including syntax, compilation, and structural transformation.
     _TAG_CODE, "Code structure and compilation", "⌗"; // ⌗,≡,§,⧉,
     _TAG_CODEC, "Encoding and decoding", "🥡"; // 🥡, 🔏, ⇄, (takeout-box)
     _TAG_COLOR, "Color", "🎨"; // 🎨,
@@ -54,7 +56,7 @@ define_symbol_tags! {
     _TAG_CONSTRUCTION, "Construction", "🏗️"; // 🏗️,🏭,
     // General data carriers and abstractions.
     // Focuses on representation and transport of information,
-    // not on its semantic meaning or interpretation.
+    // not on its semantic meaning or mathematical structure.
     _TAG_DATA, "Data", "🪪"; // 🪪, 🗂️, 🧩, (id-card)
     // Containers and collections that organize multiple values.
     // Emphasizes structure over individual value semantics.
@@ -96,34 +98,34 @@ define_symbol_tags! {
     _TAG_LIFETIME, "Lifetime", "🍃"; // 🍃,⏳,🍂,
     // Linear algebraic structures and operations.
     // Covers vector spaces, matrices, linear maps, and linear optimization.
-    // Implies algebraic linearity, not data layout or sequencing.
+    // Implies algebraic linearity, not data layout, storage, or sequencing.
     _TAG_LIN, "Linear algebraic structure", "⊕"; // ⊕,→, ⟂, ≡
     _TAG_LINUX, "Linux platform", "🐧";
     // Sequential data structures with ordered elements.
     // Emphasizes layout and traversal (arrays, lists, queues, stacks).
+    // Excludes associative, keyed, or graph-based collections.
     _TAG_LIST, "Sequential data structures", "≡"; // ≡, ⋯. →, ☰,
     // _TAG_LOCATION, "", "🖈"; // 🖈,📌,📍,
     _TAG_LOG, "Logging", "🪵"; // 🪵,👣,📜,📊,🧾
     // Abstractions whose primary subject is formal or mathematical logic:
     // truth, relations, inference, or logical composition.
     _TAG_LOGIC, "Logic", "∧"; // ∧,⊨,⊢,⊙
-    // Abstractions that intentionally unify multiple representations
-    // or execution paths behind a single interface,
-    // typically trading static guarantees for flexibility.
+    // Abstractions that unify multiple representations or execution paths
+    // behind a single interface, typically via runtime selection.
     _TAG_MAYBE, "Conditional representation", "🤷"; // 🤷,💁, (shrugging, tipping hand)
     // Memory form / representation (layout, bits, alignment, validity),
-    // independent of allocation strategy. Excludes lifetime and ownership concerns.
+    // independent of allocation strategy. Excludes allocation strategy and lifetime semantics.
     _TAG_MEM, "Memory representation", "🫗"; // 🫗,◧, ◨, ▣ (glass pouring)
     // Items used primarily as method namespaces or operation groupings.
     // Not intended to carry semantic state of their own.
     _TAG_NAMESPACE, "Utility namespace", "🛠️"; // 🛠️,🔧,🧰,🚙,🌐,📛,
     _TAG_NETWORK, "Networking", "📡"; // 🖧 ,📡,
     _TAG_NICHE, "Niche memory optimizations", "⚗️"; // ⚗️,♟️,🧩,🧮,
-    _TAG_NON_STANDARD, "Non-standard", "⚠️";
     // Semantic absence, emptiness, or inert behavior.
     // Represents "nothing happens" or "nothing is present",
-    // not error, exclusion, or invalid state.
+    // not an error, failure, or alternative outcome.
     _TAG_NO, "Absence, emptiness or a no-op effect", "∅"; // ∅, ⊘, ⬛
+    _TAG_NON_STANDARD, "Non-standard", "⚠️";
     // Numeric structures, operations, and mathematical computation.
     _TAG_NUM, "Numeric structures and computation", "⅀"; // ⅀,∑,×,±,π,🔢,½,¾,🔟,𝟙
     // Platform-dependent behavior or guarantees.
@@ -133,8 +135,8 @@ define_symbol_tags! {
     // Implies numeric structure, but focuses on measurement and comparison.
     _TAG_QUANT, "Quantitative relations", "📏";
     _TAG_RAND, "Randomness", "🎲"; // 🎲, 🎰, 🔀
-    // Outcome or resolution values themselves, not APIs that may produce outcomes.
-    // Often terminal in a control or computation flow”
+    // Terminal outcome values in a control or computation flow,
+    // not producers or fallible abstractions.
     _TAG_RESULT, "Outcome", "⚖️"; // ⚖️,↔️,✅,🗳,
     // Live execution context and runtime systems.
     // Covers execution state, progression, and coordination,
@@ -142,7 +144,7 @@ define_symbol_tags! {
     // coroutines, and foreign runtimes (JS, WASM, async execution).
     _TAG_RUNTIME, "Runtime", "⬡"; // ⬡,
     // Symbolic representations and manipulation of expressions.
-    // Focuses on form, structure, and rewriting rather than evaluation.
+    // Focuses on form and rewriting, not truth evaluation or inference.
     // Applicable across numeric, logical, and domain-specific languages.
     _TAG_SYMB, "Symbolic representation", "🔣"; // 🔣,𝑥,λ,≔
     _TAG_TERM, "Terminal platform", "🮖"; // 🮴 ,🮖,🖳 ,⌨️ ,⎚,❯,🗔 ,

@@ -79,7 +79,7 @@ impl XorShift128 {
     /// Returns the next random `u64`.
     // Note how the output of the RNG is computed before updating the state,
     // unlike on Xoroshiro128pp, for example.
-    pub fn next_u64(&mut self) -> u64 {
+    pub const fn next_u64(&mut self) -> u64 {
         let t = self.0[3];
         let mut s = self.0[0];
         self.0[3] = self.0[2];

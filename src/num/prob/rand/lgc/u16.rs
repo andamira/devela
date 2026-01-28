@@ -45,7 +45,7 @@ impl Lgc16 {
     }
 
     /// Reseeds the generator with a new seed.
-    pub fn reseed(&mut self, seed: u16) {
+    pub const fn reseed(&mut self, seed: u16) {
         self.0 = seed;
     }
 
@@ -66,7 +66,7 @@ impl Lgc16 {
     }
     /// Advances to the next random `u16` value.
     #[must_use]
-    pub fn next_u16(&mut self) -> u16 {
+    pub const fn next_u16(&mut self) -> u16 {
         self.0 = (Self::MUL.wrapping_mul(self.0).wrapping_add(Self::INC)) & Self::MOD;
         self.0
     }

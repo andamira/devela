@@ -80,7 +80,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
 
     /// Returns the next random `u64`.
     #[must_use]
-    pub fn next_u64(&mut self) -> u64 {
+    pub const fn next_u64(&mut self) -> u64 {
         let mut x = self.0;
         xorshift_basis!(x, BASIS, (A, B, C));
         self.0 = x;

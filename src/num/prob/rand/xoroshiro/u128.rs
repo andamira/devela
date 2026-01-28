@@ -10,7 +10,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Box;
-use crate::{Cast, ConstInit, Own};
+use crate::{Cast, ConstInit, Own, whilst};
 #[cfg(feature = "std")]
 use crate::{Hasher, HasherBuild, RandomState};
 
@@ -107,12 +107,12 @@ impl Xoroshiro128pp {
 /// # Methods taking `&mut self`
 impl Xoroshiro128pp {
     /// The jump function for the generator, equivalent to 2^64 `next_u32` calls.
-    pub fn jump(&mut self) {
+    pub const fn jump(&mut self) {
         self.jump_with_constant(Self::JUMP);
     }
 
     /// The long jump function for the generator, equivalent to 2^96 `next_u32` calls.
-    pub fn long_jump(&mut self) {
+    pub const fn long_jump(&mut self) {
         self.jump_with_constant(Self::LONG_JUMP);
     }
 
@@ -120,7 +120,7 @@ impl Xoroshiro128pp {
     // Note how the output of the RNG is computed before updating the state.
     // unlike on Xorshift128, for example.
     #[must_use]
-    pub fn next_u32(&mut self) -> u32 {
+    pub const fn next_u32(&mut self) -> u32 {
         let result = self.current_u32();
         let t = self.0[1] << 9;
         self.0[2] ^= self.0[0];
@@ -134,32 +134,32 @@ impl Xoroshiro128pp {
 
     /// Generates the next 2 random `u32` values.
     #[must_use]
-    pub fn next2(&mut self) -> [u32; 2] {
+    pub const fn next2(&mut self) -> [u32; 2] {
         [self.next_u32(), self.next_u32()]
     }
     /// Generates the next 4 random `u32` values.
     #[must_use]
-    pub fn next4(&mut self) -> [u32; 4] {
+    pub const fn next4(&mut self) -> [u32; 4] {
         [self.next_u32(), self.next_u32(), self.next_u32(), self.next_u32()]
     }
     /// Generates the next random value split into 4 u8 values.
     #[must_use]
-    pub fn next4_u8(&mut self) -> [u8; 4] {
+    pub const fn next4_u8(&mut self) -> [u8; 4] {
         self.next_u32().to_ne_bytes()
     }
     /// Generates the next random value split into 2 u16 values.
     #[must_use]
-    pub fn next2_u16(&mut self) -> [u16; 2] {
+    pub const fn next2_u16(&mut self) -> [u16; 2] {
         Cast(self.next_u32()).into_u16_ne()
     }
     /// Returns the next u64, advancing the state 2 times.
     #[must_use]
-    pub fn next_u64(&mut self) -> u64 {
+    pub const fn next_u64(&mut self) -> u64 {
         Cast::<u64>::from_u32_ne(self.next2())
     }
     /// Returns the next u128, advancing the state 4 times.
     #[must_use]
-    pub fn next_u128(&mut self) -> u128 {
+    pub const fn next_u128(&mut self) -> u128 {
         Cast::<u128>::from_u32_ne(self.next4())
     }
 }
@@ -340,19 +340,19 @@ impl Xoroshiro128pp {
         (x << k) | (x >> (32 - k))
     }
 
-    fn jump_with_constant(&mut self, jump: [u32; 4]) {
+    const fn jump_with_constant(&mut self, jump: [u32; 4]) {
         let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);
-        for &j in jump.iter() {
-            for b in 0..32 {
-                if (j & (1 << b)) != 0 {
+        whilst! { j in 0..4; {
+            whilst! { b in 0..32; {
+                if (jump[j] & (1 << b)) != 0 {
                     s0 ^= self.0[0];
                     s1 ^= self.0[1];
                     s2 ^= self.0[2];
                     s3 ^= self.0[3];
                 }
                 let _ = self.next_u32();
-            }
-        }
+            }}
+        }}
         self.0 = [s0, s1, s2, s3];
     }
 

@@ -64,7 +64,7 @@ impl Xyza8a {
         self.a
     }
     /// Advances the state and returns the next random `u8`.
-    pub fn next_u8(&mut self) -> u8 {
+    pub const fn next_u8(&mut self) -> u8 {
         let t = self.x ^ (self.x << 4);
         self.x = self.y;
         self.y = self.z;
@@ -176,7 +176,7 @@ impl Xyza8b {
     }
 
     /// Returns the next random `u8`.
-    pub fn next_u8(&mut self) -> u8 {
+    pub const fn next_u8(&mut self) -> u8 {
         let t = self.x ^ (self.x >> 1);
         self.x = self.y;
         self.y = self.z;
