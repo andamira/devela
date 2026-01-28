@@ -14,26 +14,35 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
     crate::_doc!(modules: crate; num: dom, error, fin, grain, lin, prob, quant, symb);
 }
 
+mod absence; // NoNum
+
 pub mod dom; // Numeric domains and value representations
 pub mod error; // error types
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values.
-// pub mod lin; //
+
+// #[cfg(feature = "lin")]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
+// pub mod lin; // Linear algebraic structures and methods.
+
 pub mod quant; // Cycle*, Interval, interval!, Ratio, ValueQuant
 // pub mod symb; //
 
-crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _workspace_internals, _hidden
+    _mods {
+        pub use super::absence::*;
+    }
     _pub_mods {
-        #[doc(inline)]
-        pub use super::error::*;
         pub use super::{
             dom::_all::*,
+            error::*,
             fin::_all::*,
             grain::_all::*,
-            // lin::_all::*,
             quant::_all::*,
             // symb::_all::*,
         };
+        // #[cfg(feature = "lin")]
+        // pub use super::lin::_all::*;
     }
     _crate_internals {
         pub(crate) use super::{

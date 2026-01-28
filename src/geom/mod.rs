@@ -9,15 +9,13 @@
 #![cfg_attr(feature = "safe_geom", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
-    crate::_doc!(modules: crate; geom: linear, metric, shape); // field
+    crate::_doc!(modules: crate; geom: metric, shape); // field
 }
 
 pub mod dir; // Angle, AngleKind, Orientation...
 pub mod metric; // Position, Distance, Extent, Stride...
 
-#[cfg(feature = "linear")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
-pub mod linear; // Vector*, Matrix*
+// pub mod algebra; // Vector*, Matrix* // TODO
 #[cfg(feature = "shape")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "shape")))]
 pub mod shape; // Point, …
@@ -29,8 +27,6 @@ crate::structural_mods! { // _pub_mods, _crate_internals
             metric::_all::*,
         };
 
-        #[cfg(feature = "linear")]
-        pub use super::linear::_all::*;
         #[cfg(feature = "shape")]
         pub use super::shape::_all::*;
     }

@@ -1,4 +1,4 @@
-// devela::geom::linear::vector
+// devela::num::lin::vector
 //
 //! Linear algebra vectors.
 //!
@@ -12,34 +12,30 @@ use crate::Num;
 // #[cfg(feature = "alloc")]
 // use crate::{Box, NumError, NumResult as Result, Vec};
 
-mod array;
-// #[cfg(feature = "alloc")]
-// mod vec;
-
 /* types */
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(lin)]
 /// A static `D`-dimensional vector, backed by a primitive [`array`][prim@array].
-#[doc = crate::_doc_location!("num/geom/linear")]
+#[doc = crate::_doc_location!("num/lin")]
 #[repr(transparent)]
 pub struct Vector<T, const D: usize> {
     /// The vector coordinates in some basis.
     pub coords: [T; D],
 }
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(lin)]
 /// A static 2-dimensional vector.
-#[doc = crate::_doc_location!("num/geom/linear")]
+#[doc = crate::_doc_location!("num/lin")]
 pub type Vector2d<T> = Vector<T, 2>;
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(lin)]
 /// A static 3-dimensional vector.
-#[doc = crate::_doc_location!("num/geom/linear")]
+#[doc = crate::_doc_location!("num/lin")]
 pub type Vector3d<T> = Vector<T, 3>;
 
-// #[doc = crate::_tags!(geom)]
+// #[doc = crate::_tags!(lin)]
 // /// A dynamic vector, backed by a primitive [`Vec`].
-// #[doc = crate::_doc_location!("num/geom/linear")]
+// #[doc = crate::_doc_location!("num/lin")]
 // #[repr(transparent)]
 // #[cfg(feature = "alloc")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
@@ -50,9 +46,10 @@ pub type Vector3d<T> = Vector<T, 3>;
 
 /* trait */
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_TAG_WIP!()]
+#[doc = crate::_tags!(lin)]
 /// A common trait for all vectors.
-#[doc = crate::_doc_location!("num/geom/linear")]
+#[doc = crate::_doc_location!("num/lin")]
 pub trait NumVector: Num {
     /// The associated scalar type.
     type Scalar;

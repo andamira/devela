@@ -1,4 +1,4 @@
-// devela_base_core::yard::_docs
+// devela_base_core::_doc::_mod_docs
 //
 //! Docs headings for modules across crates and misc. abbreviations.
 //

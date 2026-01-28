@@ -9,7 +9,7 @@
 // - impl_point!
 // - Points
 
-#[cfg(feature = "linear")]
+#[cfg(feature = "lin")]
 use crate::Vector;
 use crate::{Point, Point2d, Point3d, Points};
 
@@ -19,17 +19,17 @@ impl<T, const D: usize> Point<T, D> {
     pub const fn new(coords: [T; D]) -> Self { Self { coords } }
 
     #[must_use] /// Consumes this `Point` and converts it into a `Vector`.
-    #[cfg(feature = "linear")] #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+    #[cfg(feature = "lin")] #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
     pub fn into_vector(self) -> Vector<T, D> { Vector::new(self.coords) }
     #[must_use] /// Converts this `Point` to a `Vector`, keeping `self` intact.
-    #[cfg(feature = "linear")] #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+    #[cfg(feature = "lin")] #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
     pub const fn to_vector(self) -> Vector<T, D> where T: Copy { Vector::new(self.coords) }
 
     /// Creates a `Point` from a `Vector`.
-    #[cfg(feature = "linear")] #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+    #[cfg(feature = "lin")] #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
     pub fn from_vector(v: Vector<T, D>) -> Self { Self::new(v.coords) }
     /// Creates a `Point` from a constant `Vector`.
-    #[cfg(feature = "linear")] #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+    #[cfg(feature = "lin")] #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
     pub const fn from_vector_const(v: Vector<T, D>) -> Self where T: Copy { Self::new(v.coords) }
 }
 
@@ -92,15 +92,15 @@ macro_rules! impl_point {
     (@int $t:ty) => {
         impl<const D: usize> Point<$t, D> {
             /// Adds the given vector.
-            #[cfg(feature = "linear")]
-            #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+            #[cfg(feature = "lin")]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
             pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {
                 Self { coords: Vector::new(self.coords).c_add(v).coords }
             }
             // /// Subtracts the given vector.
             //
-            // #[cfg(feature = "linear")]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+            // #[cfg(feature = "lin")]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
             // pub const fn c_sub_vector(self, v: Vector<$t, D>) -> Self {
             //     Self { coords: self.coords.c_sub(v) }
             // }
@@ -123,15 +123,15 @@ macro_rules! impl_point {
             //
             // /// Adds the given vector.
             //
-            // #[cfg(feature = "linear")]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+            // #[cfg(feature = "lin")]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
             // pub fn add_vector(self, v: Vector<$f, D>) -> Self {
             //     Self { coords: self.coords.add(v) }
             // }
             // /// Subtracts the given vector.
             //
-            // #[cfg(feature = "linear")]
-            // #[cfg_attr(nightly_doc, doc(cfg(feature = "linear")))]
+            // #[cfg(feature = "lin")]
+            // #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
             // pub fn sub_vector(self, v: Vector<$f, D>) -> Self {
             //     Self { coords: self.coords.sub(v) }
             // }

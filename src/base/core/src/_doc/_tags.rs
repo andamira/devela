@@ -1,4 +1,4 @@
-// devela_base_core::yard::tags
+// devela_base_core::_doc::tags
 //
 //! Private tags definitions for visual type categorization in documentation.
 //
@@ -28,6 +28,10 @@ macro_rules! define_symbol_tags {
 define_symbol_tags! {
     /* thematic */
 
+    // Abstract algebraic structures and laws.
+    // Covers groups, rings, modules, algebras, and related operations,
+    // independent of representation or numeric evaluation.
+    _TAG_ALG, "Algebraic structure", "𝔄"; // 𝔄,⋆, ∘, ⊗
     // Allocation mechanisms
     _TAG_ALLOCATION, "Memory allocation", "🧺"; // 🧮, (basket, abacus)
     _TAG_APPLE, "Apple platform", "🍏"; // 🍏,🍎, (green-apple, red-apple)
@@ -90,7 +94,14 @@ define_symbol_tags! {
     // Applies when Rust lifetime semantics are the primary design constraint,
     // not merely an implementation detail.
     _TAG_LIFETIME, "Lifetime", "🍃"; // 🍃,⏳,🍂,
+    // Linear algebraic structures and operations.
+    // Covers vector spaces, matrices, linear maps, and linear optimization.
+    // Implies algebraic linearity, not data layout or sequencing.
+    _TAG_LIN, "Linear algebraic structure", "⊕"; // ⊕,→, ⟂, ≡
     _TAG_LINUX, "Linux platform", "🐧";
+    // Sequential data structures with ordered elements.
+    // Emphasizes layout and traversal (arrays, lists, queues, stacks).
+    _TAG_LIST, "Sequential data structures", "≡"; // ≡, ⋯. →, ☰,
     // _TAG_LOCATION, "", "🖈"; // 🖈,📌,📍,
     _TAG_LOG, "Logging", "🪵"; // 🪵,👣,📜,📊,🧾
     // Abstractions whose primary subject is formal or mathematical logic:
@@ -130,6 +141,10 @@ define_symbol_tags! {
     // as well as runtime machinery such as schedulers, tasks,
     // coroutines, and foreign runtimes (JS, WASM, async execution).
     _TAG_RUNTIME, "Runtime", "⬡"; // ⬡,
+    // Symbolic representations and manipulation of expressions.
+    // Focuses on form, structure, and rewriting rather than evaluation.
+    // Applicable across numeric, logical, and domain-specific languages.
+    _TAG_SYMB, "Symbolic representation", "🔣"; // 🔣,𝑥,λ,≔
     _TAG_TERM, "Terminal platform", "🮖"; // 🮴 ,🮖,🖳 ,⌨️ ,⎚,❯,🗔 ,
     _TAG_TEXT, "Text", "𝐓"; // 𝐓, 𝓣, 𝔸, 🄰
     _TAG_TIME, "Time", "🕘"; // 🕘, ⏳, 📅

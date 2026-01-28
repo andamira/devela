@@ -232,9 +232,8 @@ data = ["hash"]
 		hash = [] # HashFnv, HashFx, HashPengy
 		# crypto = []
 	# list = []
-geom = ["linear", "shape"] # geometry
+geom = ["shape"] # geometry
 	# dir = [] # orientation
-	linear = [] # linear algebra
 	shape = []
 lang = ["glsl", "js"]
 	# hum = []
@@ -252,8 +251,12 @@ media = ["audio", "color", "draw", "font", "image", "video"]
 	font = ["devela_base_core/font"]
 	image = ["devela_base_core/image"]
 	video = []
-num = ["int", "rand"]
-	int = ["devela_base_core/int", "devela_base_alloc?/int"] # Int TEMP
+num = ["int", "lin", "rand"]
+	# dom
+		int = ["devela_base_core/int", "devela_base_alloc?/int"] # Int TEMP
+		# real
+			# float
+	lin = [] # linear algebra
 	rand = [] # random number generators
 	# symb = []
 phys = ["time", "unit", "wave"]

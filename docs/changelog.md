@@ -74,6 +74,7 @@ Many feature gates are removed in order to make most features make always availa
   - `_docsrs` to `_docs`.
   - `_docsrs_nodep` to `_docs_nodep`.
   - `__no_test` to `__exclude_test`.
+  - `linear` to `lin` and move from `geom` to `num`.
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
 
@@ -202,7 +203,7 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
   - internal macros: `__crate_name!`, `__dbg!`, `__std!`, `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_tags!`, `_use!`.
-- add tags: `_DOC_*`, `_TAG_[APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|IO|LAYOUT|LIFETIME|LINUX|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
+- add tags: `_DOC_*`, `_TAG_[ALG|APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|IO|LAYOUT|LIFETIME|LIN|LINUX|LIST|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|SYMB|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - new re-exports: `select_unpredictable`.
 - new functions: `cold_path`, `likely`, `unlikely`.
@@ -431,6 +432,10 @@ Many feature gates are removed in order to make most features make always availa
 - new example type `ExampleLane4_i32`.
 - support `nightly_simd` & `dep_wide` in [base_core].
 - re-export some of `core::simd` types and traits.
+
+### lin
+- new module: `num::lin`.
+- move here `geom::linear::{matrix, vetcor}`.
 
 ### quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.

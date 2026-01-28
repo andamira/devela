@@ -1,4 +1,4 @@
-// devela::geom::linear::vector::vec::num
+// devela::num::lin::vector::vec::num
 //
 //!
 //

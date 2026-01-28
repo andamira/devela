@@ -1,4 +1,4 @@
-// devela::geom::linear::vector::array::methods
+// devela::num::lin::vector::array::methods
 //
 //! impl methods for Vector
 //
@@ -6,7 +6,9 @@
 #[allow(unused_imports)]
 #[cfg(not(feature = "std"))]
 use crate::FloatExt;
-use crate::{Int, Vector, concat as cc, stringify as fy, unwrap};
+#[cfg(feature = "int")]
+use crate::{Int, unwrap};
+use crate::{Vector, concat as cc, stringify as fy};
 
 /* common methods */
 
@@ -24,8 +26,11 @@ impl<T, const D: usize> Vector<T, D> {
 /// $t: the inner integer primitive type
 macro_rules! impl_vector {
     () => {
+        #[cfg(feature = "int")]
         impl_vector![sint i8, i16, i32, i64, i128, isize];
+        #[cfg(feature = "int")]
         impl_vector![uint u8, u16, u32, u64, u128, usize];
+
         impl_vector![float f32, f64];
     };
 

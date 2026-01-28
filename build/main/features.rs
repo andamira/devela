@@ -249,7 +249,7 @@ mod reflection {
     };
     pub const GEOM: FlagsFeatures = FlagsFeatures {
         ref_flags: &["geom··"],
-        features: &["geom", "linear", "shape"]
+        features: &["geom", "shape"]
     };
     pub const LANG: FlagsFeatures = FlagsFeatures {
         ref_flags: &["lang··"],
@@ -266,8 +266,7 @@ mod reflection {
     pub const NUM: FlagsFeatures = FlagsFeatures {
         ref_flags: &["num··"],
         features: &["num",
-            "geom",
-                "linear", "shape",
+            "lin",
             "int",
             "rand",
         ]

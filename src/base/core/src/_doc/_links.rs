@@ -1,4 +1,4 @@
-// devela_base_core::yard::_links
+// devela_base_core::_doc::_links
 //
 //! Private common intra-doc links definitions built using the [`_doclink`] macro
 //

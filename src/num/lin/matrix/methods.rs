@@ -1,4 +1,4 @@
-// devela::geom::alg::matrix::methods
+// devela::num::lin::matrix::methods
 //
 //! Methods for matrices.
 //
@@ -49,6 +49,11 @@ macro_rules! impl_matrix {
         // methods for row-major matrices
         impl<const R: usize, const C: usize, const LEN: usize, const MAX_LEN_DET: usize>
             Matrix<$T, R, C, LEN, true, MAX_LEN_DET> {
+
+            /// Returns a new matrix with the given `data`.
+            pub const fn new(data: [$T; LEN]) -> Self {
+                Self { data }
+            }
 
             /* misc */
 

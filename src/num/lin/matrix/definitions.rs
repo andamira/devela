@@ -1,11 +1,11 @@
-// devela::geom::alg::matrix::definitions
+// devela::num::lin::matrix::definitions
 //
 //! Defines [`Matrix`].
 //
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(lin)]
 /// A static `R×C` shaped matrix backed by an array.
-#[doc = crate::_doc_location!("num/geom/linear")]
+#[doc = crate::_doc_location!("num/lin")]
 ///
 /// - `T` is the type of elements in the matrix.
 /// - `R` and `C` represent the dimensions in terms of columns and rows.

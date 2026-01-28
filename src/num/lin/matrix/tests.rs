@@ -1,4 +1,4 @@
-// devela::geom::linear::matrix::tests
+// devela::num::lin::matrix::tests
 //
 //!
 //

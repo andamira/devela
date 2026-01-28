@@ -10,7 +10,7 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: codec, iter, key, list, table, uid); // address
+    crate::_doc!(modules: crate; data: codec, error, iter, key, list, table, uid); // address
 }
 
 mod absence; // NoData
