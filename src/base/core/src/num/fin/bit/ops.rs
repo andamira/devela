@@ -13,7 +13,7 @@ use crate::{Bitwise, MismatchedBounds};
 
 #[doc = crate::_tags!(num namespace)]
 /// Provides bitwise operations on `T`.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("num/fin")]
 ///
 /// See also [`Bitwise`] for the related const wrapper.
 #[rustfmt::skip]

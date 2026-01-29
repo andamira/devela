@@ -46,7 +46,6 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals, _hidden
     _crate_internals {
         pub(crate) use super::{
             _DOC_NUM_MODULES,
-            prob::_crate_internals::*,
         };
     }
     _hidden {

@@ -441,6 +441,10 @@ Many feature gates are removed in order to make most features make always availa
 - new module `num::prob`.
 - move here `num::rand`.
 
+#### rand
+- move `num::prob::rand` to [base].
+- new traits: `Rand`, `RandAlloc`, `RandStd`.
+
 ### quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.
 - update `Interval`:

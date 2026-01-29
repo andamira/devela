@@ -1,4 +1,4 @@
-// devela::num::prob::rand::xoroshiro
+// devela_base_core::num::prob::rand::xoroshiro
 //
 //! Pseudo-random number generators based on [Xoroxhiro].
 //!

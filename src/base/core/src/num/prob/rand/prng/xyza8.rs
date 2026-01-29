@@ -1,13 +1,13 @@
-// devela::num::prob::rand::xyza8
+// devela_base_core::num::prob::rand::xyza8
 //
 //!
 
-use crate::{ConstInit, Own};
+use crate::{ConstInitCore, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has a 0.8% chance of falling into a poor quality short chain,
 /// a some degree of care is required to seed it. However, the quality of the
@@ -33,13 +33,14 @@ impl Default for Xyza8a {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInit for Xyza8a {
+impl ConstInitCore for Xyza8a {
     const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // private associated items
 impl Xyza8a {
-    const DEFAULT_SEED: [u8; 4] = [0xDE, 0xFA, 0x00, 0x17];
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: [u8; 4] = [0xDE, 0xFA, 0x00, 0x17];
 }
 
 impl Xyza8a {
@@ -123,7 +124,7 @@ impl Xyza8a {
 #[doc = crate::_tags!(rand)]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has an almost optimal cycle so no real care is required
 /// for seeding except avoiding all zeros, but it fails many of the die hard
@@ -144,13 +145,14 @@ impl Default for Xyza8b {
         Self::INIT
     }
 }
-impl ConstInit for Xyza8b {
+impl ConstInitCore for Xyza8b {
     const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // private associated items
 impl Xyza8b {
-    const DEFAULT_SEED: [u8; 4] = [0xDE, 0xFA, 0x00, 0x17];
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: [u8; 4] = [0xDE, 0xFA, 0x00, 0x17];
 }
 
 impl Xyza8b {
@@ -230,34 +232,75 @@ impl Xyza8b {
     }
 }
 
+impl Rand for Xyza8a {
+    const RAND_OUTPUT_BITS: u32 = 8;
+    const RAND_STATE_BITS: u32 = 32;
+    /// Returns the next 4 × random `u8` combined as a single `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+    }
+    /// Returns the next 8 × random `u8` combined as a single `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        u64::from_le_bytes([
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+        ])
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        for byte in dest {
+            *byte = self.next_u8();
+        }
+    }
+}
+impl Rand for Xyza8b {
+    const RAND_OUTPUT_BITS: u32 = 8;
+    const RAND_STATE_BITS: u32 = 32;
+    /// Returns the next 4 × random `u8` combined as a single `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+    }
+    /// Returns the next 8 × random `u8` combined as a single `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        u64::from_le_bytes([
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+        ])
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        for byte in dest {
+            *byte = self.next_u8();
+        }
+    }
+}
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::{Xyza8a, Xyza8b};
+    use super::{Rand, Xyza8a, Xyza8b};
     use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl RngCore for Xyza8a {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+            self.rand_next_u32()
         }
         /// Returns the next 8 × random `u8` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
-            u64::from_le_bytes([
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-            ])
+            self.rand_next_u64()
         }
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            for byte in dest {
-                *byte = self.next_u8();
-            }
+            self.rand_fill_bytes(dest)
         }
     }
     impl SeedableRng for Xyza8a {
@@ -270,25 +313,14 @@ mod impl_rand {
     impl RngCore for Xyza8b {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+            self.rand_next_u32()
         }
         /// Returns the next 8 × random `u8` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
-            u64::from_le_bytes([
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-            ])
+            self.rand_next_u64()
         }
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            for byte in dest {
-                *byte = self.next_u8();
-            }
+            self.rand_fill_bytes(dest)
         }
     }
     impl SeedableRng for Xyza8b {

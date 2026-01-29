@@ -1,4 +1,4 @@
-// devela::num::prob::rand::xoroshiro::u128
+// devela_base_core::num::prob::rand::xoroshiro::u128
 //
 //! 128-bit versions of Xoroshiro generators.
 //
@@ -8,18 +8,14 @@
 //   - trait implementations
 //   - private items and helpers
 
-#[cfg(feature = "alloc")]
-use crate::Box;
-use crate::{Cast, ConstInit, Own, whilst};
-#[cfg(feature = "std")]
-use crate::{Hasher, HasherBuild, RandomState};
+use crate::{Cast, ConstInitCore, Own, Rand, whilst};
 
 /* public definitions */
 
 #[doc = crate::_tags!(rand)]
 /// The `Xoroshiro128++`
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has a 128-bit state and generates 32-bit numbers.
 #[must_use]
@@ -61,35 +57,6 @@ impl Xoroshiro128pp {
             &c as *const _ as u32,
             &d as *const _ as u32,
         ];
-        Self::new_unchecked(seed)
-    }
-
-    /// Creates a new Xoroshiro128++ PRNG, seeded from addresses of heap and stack variables.
-    ///
-    /// This is a very poor source of randomness.
-    #[inline(never)]
-    #[cfg(feature = "alloc")]
-    pub fn from_heap() -> Self {
-        let (a, b, c, d) = (0, Box::new(0), Box::new(0), 0);
-        let seed: [u32; 4] = [
-            &a as *const _ as u32,
-            &b as *const _ as u32,
-            &c as *const _ as u32,
-            &d as *const _ as u32,
-        ];
-        Self::new_unchecked(seed)
-    }
-
-    /// Creates a new Xoroshiro128++ PRNG, seeded from [`RandomState`].
-    #[inline(never)]
-    #[cfg(feature = "std")]
-    pub fn from_randomstate() -> Self {
-        let h = RandomState::new();
-        let (mut hasher1, mut hasher2) = (h.build_hasher(), h.build_hasher());
-        hasher1.write_u32(Self::DEFAULT_SEED[0]);
-        hasher2.write_u32(Self::DEFAULT_SEED[0]);
-        let (hash1, hash2) = (hasher1.finish(), hasher2.finish());
-        let seed = [(hash1 >> 32) as u32, hash1 as u32, (hash2 >> 32) as u32, hash2 as u32];
         Self::new_unchecked(seed)
     }
 
@@ -262,40 +229,57 @@ impl Default for Xoroshiro128pp {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInit for Xoroshiro128pp {
+impl ConstInitCore for Xoroshiro128pp {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
+}
+
+impl Rand for Xoroshiro128pp {
+    const RAND_OUTPUT_BITS: u32 = 32;
+    const RAND_STATE_BITS: u32 = 128;
+
+    /// Returns the next random `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        self.next_u32()
+    }
+    /// Returns the next random `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        ((self.next_u32() as u64) << 32) | (self.next_u32() as u64)
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        let mut i = 0;
+        while i < dest.len() {
+            let random_u32 = self.next_u32();
+            let bytes = random_u32.to_le_bytes();
+            let remaining = dest.len() - i;
+
+            if remaining >= 4 {
+                dest[i..i + 4].copy_from_slice(&bytes);
+                i += 4;
+            } else {
+                dest[i..].copy_from_slice(&bytes[..remaining]);
+                break;
+            }
+        }
+    }
 }
 
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::Xoroshiro128pp;
+    use super::{Rand, Xoroshiro128pp};
     use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl RngCore for Xoroshiro128pp {
         /// Returns the next random `u32`.
         fn next_u32(&mut self) -> u32 {
-            self.next_u32()
+            self.rand_next_u32()
         }
         /// Returns the next random `u64`.
         fn next_u64(&mut self) -> u64 {
-            ((self.next_u32() as u64) << 32) | (self.next_u32() as u64)
+            self.rand_next_u64()
         }
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            let mut i = 0;
-            while i < dest.len() {
-                let random_u32 = self.next_u32();
-                let bytes = random_u32.to_le_bytes();
-                let remaining = dest.len() - i;
-
-                if remaining >= 4 {
-                    dest[i..i + 4].copy_from_slice(&bytes);
-                    i += 4;
-                } else {
-                    dest[i..].copy_from_slice(&bytes[..remaining]);
-                    break;
-                }
-            }
+            self.rand_fill_bytes(dest)
         }
     }
 
@@ -326,7 +310,9 @@ mod impl_rand {
 /* private items and helpers */
 
 impl Xoroshiro128pp {
-    const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
+
     const JUMP: [u32; 4] = [0x8764_000b, 0xf542_d2d3, 0x6fa0_35c3, 0x77f2_db5b];
     const LONG_JUMP: [u32; 4] = [0xb523_952e, 0x0b6f_099f, 0xccf_5a0ef, 0x1c58_0662];
 

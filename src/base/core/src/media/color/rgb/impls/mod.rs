@@ -1,4 +1,4 @@
-// devela::media::color::rgb::impls
+// devela_base_core::media::color::rgb::impls
 //
 //!
 //

@@ -40,6 +40,8 @@ std = [] # to be disabled when testing workspace with no_std
 #* Module features *#
 media = ["color"]
 	color = []
+num = ["rand"]
+	rand = ["devela_base_alloc/rand"]
 
 #* Safety features *#
 base_safe = ["devela_base_alloc/base_safe"]

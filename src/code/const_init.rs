@@ -181,8 +181,12 @@ mod impl_devela_base_core {
         Distance, Extent, Position, Stride,
         // media
         // num
+        // num::dom::real::float
         f32bits, f32bits_niche, f64bits, f64bits_niche,
+        // num::fin::ord
         Cast, Cmp,
+        // num::prob::rand
+        XorShift128p,
         // num::quant
         Cycle, CycleCount, Interval, Sign,
         // text::char
@@ -197,6 +201,12 @@ mod impl_devela_base_core {
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
         // ui
         // work
+    };
+    // num::prob::rand
+    #[cfg(feature = "rand")]
+    pub use crate::{
+        Lgc16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
+        XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
     };
     // text::grapheme
     #[cfg(feature = "grapheme")]
@@ -225,12 +235,19 @@ mod impl_devela_base_core {
     impl<T: ConstInitCore, const D: usize> Sealed for Stride<T, D> {}
 
     // num
+    // num::dom::real::float
     _impl_init![%Sealed%: f32bits, f32bits_niche, f64bits, f64bits_niche];
-
+    // num::quant
     _impl_init![%Sealed%: Sign];
-    _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>, Cycle<T>];
+    _impl_init![%Sealed%: <T> Cycle<T>, Interval<T>];
     _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];
-    _impl_init![%Sealed%: <T> Interval<T>];
+    // num::fin::ord
+    _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>];
+    // num::prob::rand::prng
+    _impl_init![%Sealed%: XorShift128p];
+    #[cfg(feature = "rand")]
+    _impl_init![%Sealed%: Lgc16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
+        XorShift8, XorShift16, XorShift32, XorShift64, XorShift128];
 
     // text::char
     _impl_init![%Sealed%: CharAscii, char7, char8, char16, charu, charu_niche];
@@ -238,8 +255,7 @@ mod impl_devela_base_core {
     _impl_init![%Sealed%: FmtNumConf, FmtNumSign];
     // text::layout
     _impl_init![%Sealed%: TextFit, TextLayout, TextLayoutStep,
-        TextCohesion, TextCursor, TextSpan, TextSymbol,
-        TextIndex];
+        TextCohesion, TextCursor, TextSpan, TextSymbol, TextIndex];
     // text::str
     impl<const CAP: usize> Sealed for StringNonul<CAP> {}
     macro_rules! _stringu {

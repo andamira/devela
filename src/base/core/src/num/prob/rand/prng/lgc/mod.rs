@@ -1,4 +1,4 @@
-// devela::num::prob::rand::lgc
+// devela_base_core::num::prob::rand::lgc
 //
 //! Linear Congruential Generators
 //

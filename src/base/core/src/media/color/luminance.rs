@@ -1,4 +1,4 @@
-// devela::media::color::luminance
+// devela_base_core::media::color::luminance
 //
 //! Defines the [`Lum`] type and aliases:
 //! [`Luminance`], [`Lightness`], [`Luma`], `LinearLightness`.

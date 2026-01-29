@@ -1,4 +1,4 @@
-// devela::media::color::rgb::impls::u16
+// devela_base_core::media::color::rgb::impls::u16
 
 use super::*;
 use crate::{Norm, Rgb16, Rgba16};

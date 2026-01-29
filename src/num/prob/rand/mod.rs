@@ -20,36 +20,31 @@
 //! `rand` feature, except for [`XorShift128p`], which is always compiled.
 //
 
-mod xorshift;
+// mod from_rand; // FromRand
+// mod noise; // Structured deterministic randomness
 
-#[cfg(feature = "rand")]
-crate::items! {
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
-    mod lgc;
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
-    mod xoroshiro;
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
-    mod xyza8;
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
-    mod xabc;
-}
-
-// mod noise; // WIP
-
-crate::structural_mods! { // _mods, _crate_internals
+crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::xorshift::*;
-        #[cfg(feature = "rand")]
-        pub use super::{
-            lgc::*,
-            xabc::*,
-            xoroshiro::*,
-            xyza8::*,
-        };
-        // pub use super::noise::*; // WIP
+        // pub use super::{
+        //     from_rand::*,
+        //     noise::*,
+        // };
     }
-    _crate_internals {
+    _reexports {
+        pub use devela_base_core::num::prob::rand::{
+            Rand,
+            XorShift128p,
+        };
+        #[doc(inline)]
         #[cfg(feature = "rand")]
-        pub(crate) use super::xorshift::xorshift_basis;
+        pub use devela_base_core::num::prob::rand::{
+            Lgc16, Xabc, Xyza8a, Xyza8b, Xoroshiro128pp,
+            XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
+            xorshift_custom,
+        };
+        #[cfg(feature = "alloc")]
+        pub use devela_base_alloc::num::prob::rand::RandAlloc;
+        #[cfg(feature = "std")]
+        pub use devela_base_std::num::prob::rand::RandStd;
     }
 }

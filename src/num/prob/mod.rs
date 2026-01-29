@@ -28,9 +28,4 @@ crate::structural_mods! { // _mods, _pub_mods
             // stats::_all::*,
         };
     }
-    _crate_internals {
-        pub(crate) use super::{
-            rand::_crate_internals::*,
-        };
-    }
 }

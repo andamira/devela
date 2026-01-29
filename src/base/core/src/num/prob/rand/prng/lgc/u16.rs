@@ -1,14 +1,14 @@
-// devela::num::prob::rand::lgc::u16
+// devela_base_core::num::prob::rand::lgc::u16
 //
 //! 16-bit Linear Congruential Generator
 //
 
-use crate::{ConstInit, Own};
+use crate::{Cast, ConstInitCore, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr>
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -21,13 +21,14 @@ impl Default for Lgc16 {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInit for Lgc16 {
+impl ConstInitCore for Lgc16 {
     const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // Constant defaults for the Lgc16
 impl Lgc16 {
-    const DEFAULT_SEED: u16 = 0xDEFA;
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: u16 = 0xDEFA;
 
     /// Multiplier.
     const MUL: u16 = 25173;
@@ -104,48 +105,63 @@ impl Lgc16 {
     }
 }
 
+impl Rand for Lgc16 {
+    const RAND_OUTPUT_BITS: u32 = 16;
+    const RAND_STATE_BITS: u32 = 16;
+
+    /// Returns the next 4 × random `u16` combined as a single `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        Cast::<u64>::from_u16_le([
+            self.next_u16(),
+            self.next_u16(),
+            self.next_u16(),
+            self.next_u16(),
+        ])
+    }
+    /// Returns the next 2 × random `u16` combined as a single `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        Cast::<u32>::from_u16_le([self.next_u16(), self.next_u16()])
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        let mut i = 0;
+        while i < dest.len() {
+            let random_u16 = self.next_u16();
+            let bytes = random_u16.to_le_bytes();
+            let remaining = dest.len() - i;
+
+            if remaining >= 2 {
+                dest[i] = bytes[0];
+                dest[i + 1] = bytes[1];
+                i += 2;
+            } else {
+                dest[i] = bytes[0];
+                i += 1;
+            }
+        }
+    }
+}
+
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
+    use super::{Lgc16, Rand};
     use crate::_dep::rand_core::{RngCore, SeedableRng};
-    use crate::{Cast, Lgc16};
 
     impl RngCore for Lgc16 {
         /// Returns the next 2 × random `u16` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            Cast::<u32>::from_u16_le([self.next_u16(), self.next_u16()])
+            self.rand_next_u32()
         }
         /// Returns the next 4 × random `u16` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
-            Cast::<u64>::from_u16_le([
-                self.next_u16(),
-                self.next_u16(),
-                self.next_u16(),
-                self.next_u16(),
-            ])
+            self.rand_next_u64()
         }
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            let mut i = 0;
-            while i < dest.len() {
-                let random_u16 = self.next_u16();
-                let bytes = random_u16.to_le_bytes();
-                let remaining = dest.len() - i;
-
-                if remaining >= 2 {
-                    dest[i] = bytes[0];
-                    dest[i + 1] = bytes[1];
-                    i += 2;
-                } else {
-                    dest[i] = bytes[0];
-                    i += 1;
-                }
-            }
+            self.rand_fill_bytes(dest)
         }
     }
-
     impl SeedableRng for Lgc16 {
         type Seed = [u8; 2];
-
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
         fn from_seed(seed: Self::Seed) -> Self {

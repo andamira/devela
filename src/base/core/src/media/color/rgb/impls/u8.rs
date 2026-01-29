@@ -1,4 +1,4 @@
-// devela::media::color::rgb::impls::u8
+// devela_base_core::media::color::rgb::impls::u8
 
 use crate::{Norm, Rgb8, Rgb16, RgbF32, RgbF64, Rgba8, RgbaF32, RgbaF64};
 #[cfg(doc)]

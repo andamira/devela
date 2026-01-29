@@ -50,6 +50,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _workspace_inte
         pub(crate) use super::{
             _DOC_NUM_MODULES,
             fin::_crate_internals::*,
+            prob::_crate_internals::*,
         };
     }
     _workspace_internals {

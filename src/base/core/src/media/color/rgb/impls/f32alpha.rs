@@ -1,4 +1,4 @@
-// devela::media::color::rgb::impls::f32alpha
+// devela_base_core::media::color::rgb::impls::f32alpha
 
 #![expect(unused)]
 

@@ -1,13 +1,13 @@
-// devela::num::prob::rand::xabc
+// devela_base_core::num::prob::rand::xabc
 //
 //!
 //
 
-use crate::{ConstInit, Own};
+use crate::{ConstInitCore, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has a 32-bit state and generates 8-bit numbers.
 ///
@@ -54,13 +54,14 @@ impl Default for Xabc {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInit for Xabc {
+impl ConstInitCore for Xabc {
     const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // private associated items
 impl Xabc {
-    const DEFAULT_SEED: [u8; 3] = [0xDE, 0xFA, 0x17];
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: [u8; 3] = [0xDE, 0xFA, 0x17];
 }
 
 impl Xabc {
@@ -147,40 +148,54 @@ impl Xabc {
     }
 }
 
+impl Rand for Xabc {
+    const RAND_OUTPUT_BITS: u32 = 8;
+    const RAND_STATE_BITS: u32 = 32;
+    /// Returns the next 8 × random `u8` combined as a single `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        u64::from_le_bytes([
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+        ])
+    }
+    /// Returns the next 4 × random `u8` combined as a single `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        for byte in dest {
+            *byte = self.next_u8();
+        }
+    }
+}
+
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::Xabc;
+    use super::{Rand, Xabc};
     use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl RngCore for Xabc {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+            self.rand_next_u32()
         }
         /// Returns the next 8 × random `u8` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
-            u64::from_le_bytes([
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-            ])
+            self.rand_next_u64()
         }
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            for byte in dest {
-                *byte = self.next_u8();
-            }
+            self.rand_fill_bytes(dest)
         }
     }
-
     impl SeedableRng for Xabc {
         type Seed = [u8; 3];
-
         fn from_seed(seed: Self::Seed) -> Self {
             Self::new(seed)
         }

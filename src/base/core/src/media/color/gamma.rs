@@ -1,4 +1,4 @@
-// devela::media::color::gamma
+// devela_base_core::media::color::gamma
 //
 //! Defines [`GammaConstConst`].
 //

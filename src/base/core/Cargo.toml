@@ -47,8 +47,9 @@ media = ["audio", "color", "draw", "font", "image"]
 	draw = []
 	font = []
 	image = []
-num = ["int"]
+num = ["int", "rand"]
 	int = []
+	rand = []
 text = ["grapheme", "translit"]
 	grapheme = []
 	translit = []
@@ -128,7 +129,7 @@ dep_all = [ # enables all 3 optional dependencies:
 
 # individual dependencies features
 dep_memchr = ["dep:memchr"]                                                       # text:str
-dep_rand_core = ["dep:rand_core"]                                                 # num::rand
+dep_rand_core = ["dep:rand_core"]                                                 # num::prob::rand
 dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
 dep_wide = ["dep:wide"]                                                           # num::grain::wide
 

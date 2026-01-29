@@ -20,6 +20,8 @@ crate::CONST! { hidden macro_export,
     _ABBR_LIFO = "<abbr title='Last-In, First-Out'>LIFO</abbr>."; // stack
     /// - <https://en.wikipedia.org/wiki/Lookup_table>
     _ABBR_LUT  = "<abbr title='Look-up Table'>LUT</abbr>";
+    /// - <https://en.wikipedia.org/wiki/Pseudorandom_number_generator>
+    _ABBR_PRNG = "<abbr title='Pseudorandom number generator'>PRNG</abbr>";
 
     /* misc. root modules */
 
@@ -102,6 +104,8 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_LIN         = "Linear algebraic structures and methods.";
     _DOC_NUM_PROB        = "Probability theory and statistical inference.";
     _DOC_NUM_PROB_RAND   = "Random number generation.";
+    _DOC_NUM_PROB_RAND_PRNG  = concat!["Concrete ", $crate::_ABBR_PRNG!(), "s"];
+    _DOC_NUM_PROB_RAND_NOISE = "Structured deterministic randomness.";
     _DOC_NUM_PROB_STATS  = "Descriptive statistics.";
     _DOC_NUM_QUANT       = "Quantification, measurement, and numerical relationships.";
     _DOC_NUM_QUANT_CONT  = "Continuity, calculus.";

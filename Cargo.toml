@@ -258,7 +258,7 @@ num = ["int", "lin", "rand"]
 			# float
 	lin = [] # linear algebra
 	# prob
-		rand = [] # random number generation
+		rand = ["devela_base_core/rand", "devela_base_alloc?/rand", "devela_base_std?/rand"]
 	# symb = []
 phys = ["time", "unit", "wave"]
 	# bio

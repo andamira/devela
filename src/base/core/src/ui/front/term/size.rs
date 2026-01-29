@@ -1,4 +1,4 @@
-// devela::ui::front::term::size
+// devela_base_core::ui::front::term::size
 //
 //! Defines [`TermSize`].
 //

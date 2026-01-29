@@ -202,7 +202,7 @@ macro_rules! _impl_init {
 #[doc(hidden)]
 pub use _impl_init;
 
-/* implementations (in sync with devela::code::default) */
+/* implementations (in sync with devela::code::const_init) */
 
 #[rustfmt::skip]
 mod impl_core {

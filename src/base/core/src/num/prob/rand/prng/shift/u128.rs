@@ -1,13 +1,13 @@
-// devela::num::prob::rand::xorshift::u128
+// devela_base_core::num::prob::rand::prng::shift::u128
 //
 //! 128-bit version of XorShift.
 //
 
-use crate::{Cast, ConstInit, Own};
+use crate::{Cast, ConstInitCore, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift128` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has a 128-bit state and generates 64-bit numbers.
 ///
@@ -23,13 +23,14 @@ impl Default for XorShift128 {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInit for XorShift128 {
+impl ConstInitCore for XorShift128 {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items
 impl XorShift128 {
-    const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
 
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
@@ -166,39 +167,56 @@ impl XorShift128 {
     }
 }
 
+impl Rand for XorShift128 {
+    const RAND_OUTPUT_BITS: u32 = 64;
+    const RAND_STATE_BITS: u32 = 128;
+
+    /// Returns the next random `u32`,
+    /// from the first 32-bits of `next_u64`.
+    fn rand_next_u32(&mut self) -> u32 {
+        self.next_u64() as u32
+    }
+    /// Returns the next random `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        self.next_u64()
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        let mut i = 0;
+        while i < dest.len() {
+            let random_u64 = self.next_u64();
+            let bytes = random_u64.to_le_bytes();
+            let remaining = dest.len() - i;
+
+            if remaining >= 8 {
+                dest[i..i + 8].copy_from_slice(&bytes);
+                i += 8;
+            } else {
+                dest[i..].copy_from_slice(&bytes[..remaining]);
+                break;
+            }
+        }
+    }
+}
+
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::XorShift128;
+    use super::{Rand, XorShift128};
     use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl RngCore for XorShift128 {
         /// Returns the next random `u32`,
         /// from the first 32-bits of `next_u64`.
         fn next_u32(&mut self) -> u32 {
-            self.next_u64() as u32
+            self.rand_next_u32()
         }
-
         /// Returns the next random `u64`.
         fn next_u64(&mut self) -> u64 {
-            self.next_u64()
+            self.rand_next_u64()
         }
 
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            let mut i = 0;
-            while i < dest.len() {
-                let random_u64 = self.next_u64();
-                let bytes = random_u64.to_le_bytes();
-                let remaining = dest.len() - i;
-
-                if remaining >= 8 {
-                    dest[i..i + 8].copy_from_slice(&bytes);
-                    i += 8;
-                } else {
-                    dest[i..].copy_from_slice(&bytes[..remaining]);
-                    break;
-                }
-            }
+            self.rand_fill_bytes(dest)
         }
     }
 

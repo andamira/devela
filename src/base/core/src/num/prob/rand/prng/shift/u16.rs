@@ -1,13 +1,13 @@
-// devela::num::prob::rand::xorshift::u16
+// devela_base_core::num::prob::rand::prng::shift::u16
 //
 //! 16-bit version of XorShift.
 //
 
-use crate::{ConstInit, Own, xorshift_basis};
+use crate::{Cast, ConstInitCore, Own, Rand, xorshift_basis};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift16` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has a 16-bit state and generates 16-bit numbers.
 ///
@@ -31,7 +31,7 @@ impl Default for XorShift16 {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInit for XorShift16 {
+impl ConstInitCore for XorShift16 {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
@@ -39,7 +39,8 @@ impl ConstInit for XorShift16 {
 impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     XorShift16<BASIS, A, B, C>
 {
-    const DEFAULT_SEED: u16 = 0xDEFA;
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: u16 = 0xDEFA;
 
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
@@ -123,44 +124,63 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     }
 }
 
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> Rand
+    for XorShift16<BASIS, A, B, C>
+{
+    const RAND_OUTPUT_BITS: u32 = 16;
+    const RAND_STATE_BITS: u32 = 16;
+
+    /// Returns the next 2 × random `u16` combined as a single `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        Cast::<u32>::from_u16_le([self.next_u16(), self.next_u16()])
+    }
+    /// Returns the next 4 × random `u16` combined as a single `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        Cast::<u64>::from_u16_le([
+            self.next_u16(),
+            self.next_u16(),
+            self.next_u16(),
+            self.next_u16(),
+        ])
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        let mut i = 0;
+        while i < dest.len() {
+            let random_u16 = self.next_u16();
+            let bytes = random_u16.to_le_bytes();
+            let remaining = dest.len() - i;
+
+            if remaining >= 2 {
+                dest[i] = bytes[0];
+                dest[i + 1] = bytes[1];
+                i += 2;
+            } else {
+                dest[i] = bytes[0];
+                i += 1;
+            }
+        }
+    }
+}
+
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use crate::_dep::rand_core::{RngCore, SeedableRng};
-    use crate::{Cast, XorShift16};
+    use crate::{Rand, XorShift16};
 
     impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RngCore
         for XorShift16<BASIS, A, B, C>
     {
         /// Returns the next 2 × random `u16` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            Cast::<u32>::from_u16_le([self.next_u16(), self.next_u16()])
+            self.rand_next_u32()
         }
         /// Returns the next 4 × random `u16` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
-            Cast::<u64>::from_u16_le([
-                self.next_u16(),
-                self.next_u16(),
-                self.next_u16(),
-                self.next_u16(),
-            ])
+            self.rand_next_u64()
         }
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            let mut i = 0;
-            while i < dest.len() {
-                let random_u16 = self.next_u16();
-                let bytes = random_u16.to_le_bytes();
-                let remaining = dest.len() - i;
-
-                if remaining >= 2 {
-                    dest[i] = bytes[0];
-                    dest[i + 1] = bytes[1];
-                    i += 2;
-                } else {
-                    dest[i] = bytes[0];
-                    i += 1;
-                }
-            }
+            self.rand_fill_bytes(dest)
         }
     }
 
@@ -183,7 +203,7 @@ mod impl_rand {
 
 #[doc = crate::_tags!(rand)]
 /// 4 × good triplets for 16-bit xorshift. (243 Bytes)
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// There are 60 shift triplets with the maximum period 2^16-1. 4 triplets pass
 /// a series of lightweight randomness tests including randomly plotting various

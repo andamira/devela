@@ -1,13 +1,13 @@
-// devela::num::prob::rand::xorshift::u32
+// devela_base_core::num::prob::rand::prng::shift::u32
 //
 //! 32-bit version of XorShift.
 //
 
-use crate::{ConstInit, Own, xorshift_basis};
+use crate::{Cast, ConstInitCore, Own, Rand, xorshift_basis};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has a 32-bit state and generates 32-bit numbers.
 ///
@@ -30,7 +30,7 @@ impl Default for XorShift32 {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInit for XorShift32 {
+impl ConstInitCore for XorShift32 {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
@@ -38,7 +38,8 @@ impl ConstInit for XorShift32 {
 impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     XorShift32<BASIS, A, B, C>
 {
-    const DEFAULT_SEED: u32 = 0xDEFA_0017;
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: u32 = 0xDEFA_0017;
 
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
@@ -119,7 +120,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     ///
     /// The seeds will be joined in little endian order.
     pub const fn new2_u16(seeds: [u16; 2]) -> Self {
-        Self::new(crate::Cast::<u32>::from_u16_le(seeds))
+        Self::new(Cast::<u32>::from_u16_le(seeds))
     }
 
     /// Returns a seeded `XorShift32` generator from the given 4 × 8-bit seeds.
@@ -130,40 +131,59 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     }
 }
 
+impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> Rand
+    for XorShift32<BASIS, A, B, C>
+{
+    const RAND_OUTPUT_BITS: u32 = 32;
+    const RAND_STATE_BITS: u32 = 32;
+
+    /// Returns the next random `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        self.next_u32()
+    }
+
+    /// Returns the next 2 × random `u32` combined as a single `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        Cast::<u64>::from_u32_le([self.next_u32(), self.next_u32()])
+    }
+
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        let mut i = 0;
+        while i < dest.len() {
+            let random_u32 = self.next_u32();
+            let bytes = random_u32.to_le_bytes();
+            let remaining = dest.len() - i;
+
+            if remaining >= 4 {
+                dest[i..i + 4].copy_from_slice(&bytes);
+                i += 4;
+            } else {
+                dest[i..].copy_from_slice(&bytes[..remaining]);
+                break;
+            }
+        }
+    }
+}
+
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use crate::_dep::rand_core::{RngCore, SeedableRng};
-    use crate::{Cast, XorShift32};
+    use crate::{Rand, XorShift32};
 
     impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RngCore
         for XorShift32<BASIS, A, B, C>
     {
         /// Returns the next random `u32`.
         fn next_u32(&mut self) -> u32 {
-            self.next_u32()
+            self.rand_next_u32()
         }
-
         /// Returns the next 2 × random `u32` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
-            Cast::<u64>::from_u32_le([self.next_u32(), self.next_u32()])
+            self.rand_next_u64()
         }
-
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            let mut i = 0;
-            while i < dest.len() {
-                let random_u32 = self.next_u32();
-                let bytes = random_u32.to_le_bytes();
-                let remaining = dest.len() - i;
-
-                if remaining >= 4 {
-                    dest[i..i + 4].copy_from_slice(&bytes);
-                    i += 4;
-                } else {
-                    dest[i..].copy_from_slice(&bytes[..remaining]);
-                    break;
-                }
-            }
+            self.rand_fill_bytes(dest)
         }
     }
 
@@ -186,7 +206,7 @@ mod impl_rand {
 
 #[doc = crate::_tags!(rand)]
 /// 81 × good triplets for 32-bit xorshift. (243 Bytes)
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 #[doc(hidden)]
 #[rustfmt::skip]
 #[allow(dead_code)]

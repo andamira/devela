@@ -1,4 +1,4 @@
-// devela::media::color::rgb
+// devela_base_core::media::color::rgb
 //
 //! RGB color space
 //

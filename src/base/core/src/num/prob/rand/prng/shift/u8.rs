@@ -1,13 +1,13 @@
-// devela::num::prob::rand::xorshift::u8
+// devela_base_core::num::prob::rand::prng::shift::u8
 //
 //! 8-bit versions of XorShift.
 //
 
-use crate::{ConstInit, Own, xorshift_basis};
+use crate::{ConstInitCore, Own, Rand, xorshift_basis};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/rand")]
+#[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
 /// It has poor statistical quality and limited entropy.
@@ -22,13 +22,14 @@ impl<const A: usize, const B: usize, const C: usize> Default for XorShift8<A, B,
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl<const A: usize, const B: usize, const C: usize> ConstInit for XorShift8<A, B, C> {
+impl<const A: usize, const B: usize, const C: usize> ConstInitCore for XorShift8<A, B, C> {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items
 impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
-    const DEFAULT_SEED: u8 = 0xDE;
+    #[doc(hidden)]
+    pub const DEFAULT_SEED: u8 = 0xDE;
 
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
@@ -114,39 +115,54 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     }
 }
 
+impl<const A: usize, const B: usize, const C: usize> Rand for XorShift8<A, B, C> {
+    const RAND_OUTPUT_BITS: u32 = 8;
+    const RAND_STATE_BITS: u32 = 8;
+
+    /// Returns the next 4 × random `u8` combined as a single `u32`.
+    fn rand_next_u32(&mut self) -> u32 {
+        u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+    }
+
+    /// Returns the next 8 × random `u8` combined as a single `u64`.
+    fn rand_next_u64(&mut self) -> u64 {
+        u64::from_le_bytes([
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+            self.next_u8(),
+        ])
+    }
+    fn rand_fill_bytes(&mut self, dest: &mut [u8]) {
+        for byte in dest {
+            *byte = self.next_u8();
+        }
+    }
+}
+
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::XorShift8;
+    use super::{Rand, XorShift8};
     use crate::_dep::rand_core::{RngCore, SeedableRng};
 
     impl<const A: usize, const B: usize, const C: usize> RngCore for XorShift8<A, B, C> {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
+            self.rand_next_u32()
         }
-
         /// Returns the next 8 × random `u8` combined as a single `u64`.
         fn next_u64(&mut self) -> u64 {
-            u64::from_le_bytes([
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-            ])
+            self.rand_next_u64()
         }
-
         fn fill_bytes(&mut self, dest: &mut [u8]) {
-            for byte in dest {
-                *byte = self.next_u8();
-            }
+            self.rand_fill_bytes(dest)
         }
     }
-
     impl<const A: usize, const B: usize, const C: usize> SeedableRng for XorShift8<A, B, C> {
         type Seed = [u8; 1];
 

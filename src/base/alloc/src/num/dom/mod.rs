@@ -3,10 +3,10 @@
 #![doc = crate::_DOC_NUM_DOM!()]
 //
 
-mod int; // Int alloc methods
+pub mod int; // IntAlloc
 
-crate::structural_mods! { // _mods
-    _mods {
+crate::structural_mods! { // _pub_mods
+    _pub_mods {
         #[doc(inline)]
         pub use super::{
             int::_all::*,
