@@ -88,6 +88,7 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
+- 1.??: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: ` `[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/151603)
