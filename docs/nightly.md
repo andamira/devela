@@ -43,6 +43,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.95.0> -->
 
 - 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
+- 1.95: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
 
 # 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
 <!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
@@ -88,7 +89,6 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: ` `[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/151603)

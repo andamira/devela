@@ -61,7 +61,7 @@
 // ----------------------------
 // `nightly_stable_1_95`: core, alloc, std…
 // #![cfg_attr(nightly_stable_1_95, feature())]
-// #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature(push_mut,))]
 // #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_96`: core, alloc, std…
@@ -96,7 +96,6 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
-        push_mut,
         str_as_str,
         substr_range,
         supertrait_item_shadowing,
