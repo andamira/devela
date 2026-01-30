@@ -5,6 +5,7 @@
 //
 
 mod shift; // XorShift[8|16|32|64|128], XorShift128p, xorshift_custom!
+// mod pcg; // Pcg[8|16|32|64|128], define_pcg!
 
 #[cfg(feature = "rand")]
 crate::items! {
@@ -18,13 +19,16 @@ crate::items! {
     mod xabc; // Xabc
 }
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
-        pub use super::shift::*;
+        pub use super::{
+            // pcg::_all::*,
+            shift::_all::*,
+        };
 
         #[cfg(feature = "rand")]
         pub use super::{
-            lcg::*,
+            lcg::_all::*,
             xabc::*,
             xoroshiro::*,
             xyza8::*,
@@ -32,6 +36,9 @@ crate::structural_mods! { // _mods, _crate_internals
     }
     _crate_internals {
         #[cfg(feature = "rand")]
-        pub(crate) use super::shift::xorshift_basis;
+        pub(crate) use super::shift::_crate_internals::*;
+    }
+    _hidden {
+        pub(crate) use super::shift::_hidden::*;
     }
 }

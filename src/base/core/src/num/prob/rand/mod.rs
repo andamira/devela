@@ -19,4 +19,7 @@ crate::structural_mods! { // _mods, _crate_internals
     _crate_internals {
         pub(crate) use super::prng::_crate_internals::*;
     }
+    _hidden {
+        pub(crate) use super::prng::_hidden::*;
+    }
 }

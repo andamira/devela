@@ -63,6 +63,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _workspace_inte
         pub use super::{
             dom::_hidden::*,
             grain::_hidden::*,
+            prob::_hidden::*,
         };
     }
 }

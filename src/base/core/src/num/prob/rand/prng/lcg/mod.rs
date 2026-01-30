@@ -7,6 +7,12 @@ mod u16;
 // mod u32;
 // mod u64;
 
-pub use u16::Lcg16;
-// pub use u32::Lcg32;
-// pub use u64::Lcg64;
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::{
+            u16::Lcg16,
+            // u32::Lcg32,
+            // u64::Lcg64,
+        };
+    }
+}

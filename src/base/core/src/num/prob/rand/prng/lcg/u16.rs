@@ -10,7 +10,7 @@ use crate::{Cast, ConstInitCore, Own, Rand};
 #[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Lcg16(u16);
 
 /// Creates a new PRNG initialized with the default fixed seed.
