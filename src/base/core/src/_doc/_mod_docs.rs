@@ -16,16 +16,16 @@ crate::CONST! { hidden macro_export,
     _ABBR_FFI  = "<abbr title='Foreign Function Interface'>FFI</abbr>";
     /// - <https://en.wikipedia.org/wiki/Queue_(abstract_data_type)>
     _ABBR_FIFO = "<abbr title='First-In, First-Out'>FIFO</abbr>."; // queue
-    /// - <https://en.wikipedia.org/wiki/Linear_congruential_generator>
-    _ABBR_LCG  = "<abbr title='Linear congruential generator'>LCG</abbr>";
     /// - <https://en.wikipedia.org/wiki/Stack_(abstract_data_type)>
     _ABBR_LIFO = "<abbr title='Last-In, First-Out'>LIFO</abbr>."; // stack
     /// - <https://en.wikipedia.org/wiki/Lookup_table>
     _ABBR_LUT  = "<abbr title='Look-up Table'>LUT</abbr>";
-    /// - <https://en.wikipedia.org/wiki/Permuted_congruential_generator>
-    _ABBR_PCG  = "<abbr title='Permuted congruential generator'>PCG</abbr>";
     /// - <https://en.wikipedia.org/wiki/Pseudorandom_number_generator>
     _ABBR_PRNG = "<abbr title='Pseudorandom number generator'>PRNG</abbr>";
+        /// - <https://en.wikipedia.org/wiki/Linear_congruential_generator>
+        _ABBR_LCG  = "<abbr title='Linear congruential generator'>LCG</abbr>";
+        /// - <https://en.wikipedia.org/wiki/Permuted_congruential_generator>
+        _ABBR_PCG  = "<abbr title='Permuted congruential generator'>PCG</abbr>";
 
     /* misc. root modules */
 

@@ -35,9 +35,9 @@ and crate-private items (if compiled with --document-private-items)",
     Ok(())
 }
 
-/// Compiles documentation running this command: `cargo +nightly nd -F _docs`
+/// Compiles documentation running this command: `cargo +nightly d -F _docs`
 fn compile_docs() -> Result<(), Box<dyn Error>> {
-    let status = Command::new("cargo").args(["+nightly", "nd", "-F", "_docs"]).status()?;
+    let status = Command::new("cargo").args(["+nightly", "d", "-F", "_docs"]).status()?;
     if !status.success() {
         eprintln!("Failed to compile documentation.");
         return Err("Documentation compilation failed".into());
@@ -47,7 +47,7 @@ fn compile_docs() -> Result<(), Box<dyn Error>> {
 
 /// Processes the document at the given subpath, with optional `dep_split`
 fn process_document(subpath: &str, dep_split: bool) -> Result<(), Box<dyn Error>> {
-    let doc_path = format!("{}/doc/devela/{}", TARGET_DIR, subpath);
+    let doc_path = format!("{}/doc/src/devela/{}", TARGET_DIR, subpath);
     if !Path::new(&doc_path).exists() {
         println!("Documentation file not found: {}", doc_path);
         return Ok(());

@@ -34,6 +34,7 @@ Many feature gates are removed in order to make most features make always availa
 - new `Build` namespace in `devela_base_std`.
 - make `devela_base_std` optional for builds.
 - add rerun instructions for changed env vars.
+- new internal env vars `__DEVELA_MEMBER`, `__DEVELA_MEMBER_NAME`.
 - make sure `CARGO_TARGET_DIR` and `CARGO_WORKSPACE_DIR` are always defined.
 - add new `devela_postbuild` crate to `build/post`.
 - add build config flag aliases: `any_target_arch_linux`, `any_target_arch_riscv`, `base_safe*`.

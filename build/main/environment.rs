@@ -32,6 +32,22 @@ pub(crate) fn main() -> Result<(), IoError> {
     println!("cargo:rustc-env=CARGO_WORKSPACE_DIR={}", cwd);
     println!("cargo:rustc-env=CARGO_TARGET_DIR={}", ctd);
 
+    let crate_name = std::env::var("CARGO_PKG_NAME").unwrap();
+    let is_workspace_member = matches!(
+        crate_name.as_str(), // hardcoded workspace member list:
+        "devela_base_macros"
+            | "devela_base_core"
+            | "devela_base_alloc"
+            | "devela_base_std"
+            | "devela_macros"
+            | "devela"
+            | "devela_postbuild"
+    );
+    if is_workspace_member {
+        println!("cargo:rustc-env=__DEVELA_MEMBER=");
+        println!("cargo:rustc-env=__DEVELA_MEMBER_NAME={crate_name}");
+    }
+
     #[cfg(feature = "__dbg")]
     {
         use super::{Build, CRATE_NAME};
