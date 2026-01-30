@@ -5,7 +5,12 @@
 //! This module defines several types:
 //! - RNG algorithms specialized for 8-bit devices:
 //!   [`Xabc`], [`Xyza8a`], [`Xyza8b`].
+//! - [`Lcg16`] 16-bit Linear Congruential Generator.
 //! - Classic *XorShift* algorithms and variations with a smaller state.
+//!   - [`XorShift8`], [`XorShift16`], [`XorShift32`], [`XorShift64`],
+//!     [`XorShift128`], [`XorShift128p`].
+//!   - [`Xoroshift128pp`].
+//!   - [`xorshift_custom`].
 //!
 //! The RNGs implement `Copy` for convenience and versatility.
 //! Be careful to not duplicate the state by accident.
@@ -16,8 +21,8 @@
 //! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
 //!
 //! # Features
-//! All <abbr title="Pseudo-Random Number Generator">PRNG</abbr>s require the
-//! `rand` feature, except for [`XorShift128p`], which is always compiled.
+#![doc = concat!["All ", crate::_ABBR_PRNG!(), "s require the `rand` feature,"]]
+//! except for [`XorShift128p`], which is always compiled.
 //
 
 // mod from_rand; // FromRand
@@ -38,7 +43,7 @@ crate::structural_mods! { // _mods, _reexports
         #[doc(inline)]
         #[cfg(feature = "rand")]
         pub use devela_base_core::num::prob::rand::{
-            Lgc16, Xabc, Xyza8a, Xyza8b, Xoroshiro128pp,
+            Lcg16, Xabc, Xyza8a, Xyza8b, Xoroshiro128pp,
             XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
             xorshift_custom,
         };

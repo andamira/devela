@@ -1,4 +1,4 @@
-// devela_base_core::num::prob::rand::lgc::u16
+// devela_base_core::num::prob::rand::lcg::u16
 //
 //! 16-bit Linear Congruential Generator
 //
@@ -6,27 +6,26 @@
 use crate::{Cast, ConstInitCore, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
-/// A 16-bit <abbr title="Linear Congruential Generator">LCG</abbr>
-/// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
+#[doc = concat!["A 16-bit ", crate::_ABBR_LCG!(), " ", crate::_ABBR_PRNG!(), "."]]
 #[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Lgc16(u16);
+pub struct Lcg16(u16);
 
 /// Creates a new PRNG initialized with the default fixed seed.
-impl Default for Lgc16 {
+impl Default for Lcg16 {
     fn default() -> Self {
         Self::INIT
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInitCore for Lgc16 {
+impl ConstInitCore for Lcg16 {
     const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
-// Constant defaults for the Lgc16
-impl Lgc16 {
+// Constant defaults for the Lcg16
+impl Lcg16 {
     #[doc(hidden)]
     pub const DEFAULT_SEED: u16 = 0xDEFA;
 
@@ -38,8 +37,8 @@ impl Lgc16 {
     const MOD: u16 = 65535;
 }
 
-impl Lgc16 {
-    /// Creates a new `Lgc16` instance with the given seed.
+impl Lcg16 {
+    /// Creates a new `Lcg16` instance with the given seed.
     #[must_use]
     pub const fn new(seed: u16) -> Self {
         Self(seed)
@@ -88,15 +87,15 @@ impl Lgc16 {
 }
 
 /// # Extra constructors
-impl Lgc16 {
-    /// Returns a seeded `Lgc16` generator from the given 16-bit seed.
+impl Lcg16 {
+    /// Returns a seeded `Lcg16` generator from the given 16-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
     pub const fn new1_u16(seed: u16) -> Self {
         Self::new(seed)
     }
 
-    /// Returns a seeded `Lgc16` generator from the given 2 × 8-bit seeds.
+    /// Returns a seeded `Lcg16` generator from the given 2 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
     #[must_use]
@@ -105,7 +104,7 @@ impl Lgc16 {
     }
 }
 
-impl Rand for Lgc16 {
+impl Rand for Lcg16 {
     const RAND_OUTPUT_BITS: u32 = 16;
     const RAND_STATE_BITS: u32 = 16;
 
@@ -144,10 +143,10 @@ impl Rand for Lgc16 {
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::{Lgc16, Rand};
+    use super::{Lcg16, Rand};
     use crate::_dep::rand_core::{RngCore, SeedableRng};
 
-    impl RngCore for Lgc16 {
+    impl RngCore for Lcg16 {
         /// Returns the next 2 × random `u16` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
             self.rand_next_u32()
@@ -160,7 +159,7 @@ mod impl_rand {
             self.rand_fill_bytes(dest)
         }
     }
-    impl SeedableRng for Lgc16 {
+    impl SeedableRng for Lcg16 {
         type Seed = [u8; 2];
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.

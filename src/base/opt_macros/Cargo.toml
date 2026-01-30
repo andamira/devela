@@ -55,4 +55,5 @@ maintenance.status = "experimental"
 workspace = true
 
 [[example]]
-name = "enumint"
+name = "enumint_macro"
+path = "examples/enumint.rs"

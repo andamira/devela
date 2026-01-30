@@ -205,7 +205,7 @@ mod impl_devela_base_core {
     // num::prob::rand
     #[cfg(feature = "rand")]
     pub use crate::{
-        Lgc16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
+        Lcg16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
         XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
     };
     // text::grapheme
@@ -246,7 +246,7 @@ mod impl_devela_base_core {
     // num::prob::rand::prng
     _impl_init![%Sealed%: XorShift128p];
     #[cfg(feature = "rand")]
-    _impl_init![%Sealed%: Lgc16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
+    _impl_init![%Sealed%: Lcg16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
         XorShift8, XorShift16, XorShift32, XorShift64, XorShift128];
 
     // text::char
