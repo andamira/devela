@@ -225,6 +225,17 @@ macro_rules! __doc_availability {
 #[doc(hidden)]
 pub use __doc_availability as _doc_availability;
 
+// WAIT: doctests cannot see items/macros behind cfg(doctest) in dependencies:
+// WAIT: [cfg(doctest)](https://github.com/rust-lang/rust/issues/67295)
+// no-op stub for doctests
+// #[cfg(doctest)]
+// #[doc(hidden)]
+// #[macro_export]
+// macro_rules! _doc_location {
+//     ($($tt:tt)*) => { "" }
+// }
+
+// #[cfg(not(doctest))]
 /// Emits a location annotation for documentation.
 #[doc = crate::_doc_location!("code/util")]
 ///

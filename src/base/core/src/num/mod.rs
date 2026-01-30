@@ -34,6 +34,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _workspace_inte
         pub use super::absence::*;
     }
     _pub_mods {
+        #[doc(inline)]
         pub use super::{
             dom::_all::*,
             error::*,

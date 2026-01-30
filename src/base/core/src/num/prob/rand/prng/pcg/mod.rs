@@ -3,25 +3,17 @@
 #![doc = concat![crate::_ABBR_PCG!(), "s."]]
 //
 
-mod consts;
+mod define; // define_pcg!
 
-// mod u8; // Pcg8
-// mod u16; // Pcg16
-mod u32; // Pcg32
-// mod u64; // Pcg64
-// mod u128; // Pcg128
+#[cfg(test)]
+mod tests;
 
 crate::structural_mods! { // _mods
     _mods {
+        define_pcg![pub Pcg32: (u32)];
+
         pub use super::{
-            // u8::*,
-            // u16::*,
-            u32::*,
-            // u64::*,
-            // u128::*,
+            define::*,
         };
-    }
-    _crate_internals {
-        pub(crate) use super::consts::*;
     }
 }
