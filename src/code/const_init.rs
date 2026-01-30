@@ -186,7 +186,7 @@ mod impl_devela_base_core {
         // num::fin::ord
         Cast, Cmp,
         // num::prob::rand
-        XorShift128p,
+        Pcg32, XorShift128p,
         // num::quant
         Cycle, CycleCount, Interval, Sign,
         // text::char
@@ -205,7 +205,8 @@ mod impl_devela_base_core {
     // num::prob::rand
     #[cfg(feature = "rand")]
     pub use crate::{
-        Lcg16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
+        Lcg16,
+        Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
         XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
     };
     // text::grapheme
@@ -244,7 +245,7 @@ mod impl_devela_base_core {
     // num::fin::ord
     _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>];
     // num::prob::rand::prng
-    _impl_init![%Sealed%: XorShift128p];
+    _impl_init![%Sealed%: Pcg32, XorShift128p];
     #[cfg(feature = "rand")]
     _impl_init![%Sealed%: Lcg16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
         XorShift8, XorShift16, XorShift32, XorShift64, XorShift128];

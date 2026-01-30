@@ -16,6 +16,15 @@ pub trait RandAlloc: Rand {
 
 /* impls */
 
+impl RandAlloc for crate::Pcg32 {
+    /// Creates a new `Pcg32` PRNG, seeded from addresses of heap and stack variables.
+    #[inline(never)]
+    fn rand_seed_from_heap() -> Self {
+        let (a, b) = (0, Box::new(0));
+        let (state, inc): (u64, u64) = (&a as *const _ as u64, &b as *const _ as u64 | 1);
+        Self::new_unchecked(state, inc)
+    }
+}
 impl RandAlloc for crate::XorShift128p {
     /// Creates a new `XoroShift128p` PRNG, seeded from addresses of heap and stack variables.
     #[inline(never)]

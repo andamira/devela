@@ -5,7 +5,7 @@
 //
 
 mod shift; // XorShift[8|16|32|64|128], XorShift128p, xorshift_custom!
-// mod pcg; // Pcg[8|16|32|64|128], define_pcg!
+mod pcg; // Pcg[8|16|32|64|128], define_pcg!
 
 #[cfg(feature = "rand")]
 crate::items! {
@@ -22,7 +22,7 @@ crate::items! {
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
         pub use super::{
-            // pcg::_all::*,
+            pcg::_all::*,
             shift::_all::*,
         };
 

@@ -10,7 +10,9 @@
 //!   - [`XorShift8`], [`XorShift16`], [`XorShift32`], [`XorShift64`],
 //!     [`XorShift128`], [`XorShift128p`].
 //!   - [`Xoroshift128pp`].
-//!   - [`xorshift_custom`].
+//!   - [`xorshift_custom!`].
+//! - *Permuted Congruential Generator* algorithms:
+//!     - [`Pcg32`].
 //!
 //! The RNGs implement `Copy` for convenience and versatility.
 //! Be careful to not duplicate the state by accident.
@@ -22,7 +24,7 @@
 //!
 //! # Features
 #![doc = concat!["All ", crate::_ABBR_PRNG!(), "s require the `rand` feature,"]]
-//! except for [`XorShift128p`], which is always compiled.
+//! except for [`Pcg32`] and [`XorShift128p`], which are always compiled.
 //
 
 // mod from_rand; // FromRand
@@ -38,12 +40,14 @@ crate::structural_mods! { // _mods, _reexports
     _reexports {
         pub use devela_base_core::num::prob::rand::{
             Rand,
+            Pcg32,
             XorShift128p,
         };
         #[doc(inline)]
         #[cfg(feature = "rand")]
         pub use devela_base_core::num::prob::rand::{
-            Lcg16, Xabc, Xyza8a, Xyza8b, Xoroshiro128pp,
+            Lcg16,
+            Xabc, Xyza8a, Xyza8b, Xoroshiro128pp,
             XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
             xorshift_custom,
         };

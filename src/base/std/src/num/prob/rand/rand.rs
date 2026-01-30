@@ -17,6 +17,18 @@ pub trait RandStd: Rand {
 
 /* impls */
 
+impl RandStd for crate::Pcg32 {
+    /// Creates a new `Pcg32` PRNG, seeded from [`RandomState`].
+    #[inline(never)]
+    fn rand_seed_from_os() -> Self {
+        let h = RandomState::new();
+        let (mut hasher1, mut hasher2) = (h.build_hasher(), h.build_hasher());
+        hasher1.write_u64(Self::DEFAULT_SEED);
+        hasher2.write_u64(Self::DEFAULT_INC);
+        let (state, inc) = (hasher1.finish(), hasher2.finish() | 1);
+        Self::new_unchecked(state, inc)
+    }
+}
 impl RandStd for crate::XorShift128p {
     /// Creates a new `XoroShift128p` PRNG, seeded from [`RandomState`].
     #[inline(never)]

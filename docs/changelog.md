@@ -445,6 +445,7 @@ Many feature gates are removed in order to make most features make always availa
 - move `num::prob::rand` to [base].
 - rename `Lgc16` to `Lcg16`.
 - new traits: `Rand`, `RandAlloc`, `RandStd`.
+- new types: `Pcg32`.
 
 ### quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.
