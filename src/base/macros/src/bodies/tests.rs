@@ -83,13 +83,17 @@ fn test_compile_eval() {
     assert_eq!(compile_eval("some(something)".to_string()), true);
     assert_eq!(compile_eval("some()".to_string()), false);
 
+    // same()
+    assert_eq!(compile_eval("same(ABC, ABC, ABC)".to_string()), true);
+    assert_eq!(compile_eval("same(ABC, DEF, ABC)".to_string()), false);
+
     // diff()
     assert_eq!(compile_eval("diff(ABC, DEF, ABC)".to_string()), true);
     assert_eq!(compile_eval("diff(ABC, ABC, ABC)".to_string()), false);
 
-    // same()
-    assert_eq!(compile_eval("same(ABC, ABC, ABC)".to_string()), true);
-    assert_eq!(compile_eval("same(ABC, DEF, ABC)".to_string()), false);
+    // nota()
+    assert_eq!(compile_eval("nota(ABC, DEF, GHI)".to_string()), true);
+    assert_eq!(compile_eval("nota(ABC, DEF, ABC)".to_string()), false);
 
     // xany()
     assert_eq!(compile_eval("xany(true, true, false)".into()), true);
@@ -107,4 +111,11 @@ fn test_compile_eval() {
     assert_eq!(compile_eval("xone(true, true, false, false)".into()), false);
     assert_eq!(compile_eval("xone(true, true, true, false)".into()), false);
     assert_eq!(compile_eval("xone(true, true, true, true)".into()), false);
+
+    // env()
+    assert_eq!(compile_eval("env(CARGO_PKG_NAME)".into()), true);
+    assert_eq!(compile_eval("env_eq(CARGO_PKG_NAME, devela_base_macros)".into()), true);
+    assert_eq!(compile_eval("env_ne(CARGO_PKG_NAME, other_crate_name)".into()), true);
+    assert_eq!(compile_eval("env_nonempty(CARGO_PKG_NAME)".into()), true);
+    // assert_eq!(compile_eval("env_empty(TODO)".into()), true); //
 }

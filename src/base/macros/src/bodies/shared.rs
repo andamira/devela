@@ -220,13 +220,6 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         let inner_arg = &arg[5..arg.len() - 1];
         !inner_arg.is_empty()
 
-    // at least one predicate differs from the first
-    // set: ∃ i : Pᵢ ≠ P₀
-    } else if arg.starts_with("diff(") && arg.ends_with(')') {
-        let inner_args = &arg[5..arg.len() - 1];
-        let args: Vec<_> = split_args(inner_args);
-        args.iter().any(|b| b != &args[0])
-
     // all predicates equal to the first (vacuously true)
     // set: ∀ i : Pᵢ = P₀
     } else if arg.starts_with("same(") && arg.ends_with(')') {
@@ -234,10 +227,17 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         let args: Vec<_> = split_args(inner_args);
         args.iter().all(|b| b == &args[0])
 
+    // at least one predicate differs from the first
+    // set: ∃ i : Pᵢ ≠ P₀
+    } else if arg.starts_with("diff(") && arg.ends_with(')') {
+        let inner_args = &arg[5..arg.len() - 1];
+        let args: Vec<_> = split_args(inner_args);
+        args.iter().any(|b| b != &args[0])
+
     // first predicate matches none of the additional predicates
     // set: ∀ i > 0 : Pᵢ ≠ P₀
     } else if arg.starts_with("nota(") && arg.ends_with(')') {
-        let inner_args = &arg[7..arg.len() - 1];
+        let inner_args = &arg[5..arg.len() - 1];
         let args: Vec<_> = split_args(inner_args);
         if args.is_empty() { panic!("nota() requires at least one predicate"); }
         args.iter().skip(1).all(|b| b != &args[0])
@@ -299,6 +299,42 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         cfg!(target_endian = "little")
     } else if arg == "big_endian()" {
         cfg!(target_endian = "big")
+
+    /* environment variables */
+
+    // environment variable exists
+    // logic: ∃ env(NAME)
+    } else if arg.starts_with("env(") && arg.ends_with(')') {
+        let name = &arg[4..arg.len() - 1];
+        std::env::var(name).is_ok()
+
+    // environment variable equals value
+    // logic: env(NAME) = VALUE
+    } else if arg.starts_with("env_eq(") && arg.ends_with(')') {
+        let inner_args = &arg[7..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && std::env::var(&args[0]).is_ok_and(|v| v == args[1])
+
+    // environment variable not equal to value
+    // logic: env(NAME) ≠ VALUE
+    } else if arg.starts_with("env_ne(") && arg.ends_with(')') {
+        let inner_args = &arg[7..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && std::env::var(&args[0]).is_ok_and(|v| v != args[1])
+
+    // environment variable exists but is empty
+    // logic: env(NAME) = ""
+    } else if arg.starts_with("env_empty(") && arg.ends_with(')') {
+        let name = &arg[10..arg.len() - 1];
+        std::env::var(name).is_ok_and(|v| v.is_empty())
+
+    // environment variable exists and is non-empty
+    // logic: env(NAME) ≠ ""
+    } else if arg.starts_with("env_nonempty(") && arg.ends_with(')') {
+        let name = &arg[13..arg.len() - 1];
+        std::env::var(name).is_ok_and(|v| !v.is_empty())
 
     /* _ */
 

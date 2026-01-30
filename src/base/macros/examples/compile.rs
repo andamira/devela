@@ -89,18 +89,6 @@ fn compiled_all() {}
 #[compile(all(true, false))]
 fn not_compiled_all() {}
 
-// diff()
-#[compile(diff(ABC, DEF))]
-fn compiled_diff() {}
-#[compile(diff(true, true))]
-fn not_compiled_diff() {}
-
-// same()
-#[compile(same(ABC, ABC))]
-fn compiled_same() {}
-#[compile(same(ABC, DEF))]
-fn not_compiled_same() {}
-
 // none()
 #[compile(none())]
 fn compiled_none() {}
@@ -112,6 +100,24 @@ fn not_compiled_none() {}
 fn compiled_some() {}
 #[compile(some())]
 fn not_compiled_some() {}
+
+// same()
+#[compile(same(ABC, ABC))]
+fn compiled_same() {}
+#[compile(same(ABC, DEF))]
+fn not_compiled_same() {}
+
+// diff()
+#[compile(diff(ABC, DEF))]
+fn compiled_diff() {}
+#[compile(diff(true, true))]
+fn not_compiled_diff() {}
+
+// nota()
+#[compile(nota(ABC, EDF, GHI))]
+fn compiled_nota() {}
+#[compile(nota(ABC, EDF, ABC))]
+fn not_compiled_nota() {}
 
 // xany()
 #[compile(xany(true, false, true, true))]
@@ -136,6 +142,29 @@ fn not_compiled_xone() {}
 fn compiled_nested() {}
 #[compile(all(true, not(any(some(), none(thing), true))))]
 fn not_compiled_nested() {}
+
+/* environment variables */
+
+// env(NAME)
+#[compile(env(CARGO_PKG_NAME))]
+fn compiled_env_exists() {}
+// always true in any Cargo build
+
+// env_eq(NAME, VALUE)
+#[compile(env_eq(PROFILE, release))]
+fn compiled_only_in_release() {}
+
+// env_ne(NAME, VALUE)
+#[compile(env_ne(PROFILE, release))]
+fn compiled_only_in_debug() {}
+
+// env_nonempty(NAME)
+#[compile(env_nonempty(CARGO_MANIFEST_DIR))]
+fn compiled_env_nonempty() {}
+
+// env_empty(NAME)
+#[compile(env_empty(CARGO_PKG_NAME))]
+fn not_compiled_env_empty() {}
 
 fn main() {
     /* unary */
@@ -174,8 +203,9 @@ fn main() {
     compiled_all();
     compiled_none();
     compiled_some();
-    compiled_diff();
     compiled_same();
+    compiled_diff();
+    compiled_nota();
     compiled_xany();
     compiled_xodd();
     compiled_xone();
@@ -184,10 +214,20 @@ fn main() {
     // not_compiled_all();
     // not_compiled_none();
     // not_compiled_some();
-    // not_compiled_diff();
     // not_compiled_same();
+    // not_compiled_diff();
+    // not_compiled_nota();
     // not_compiled_xany();
     // not_compiled_xodd();
     // not_compiled_xone();
     // not_compiled_nested();
+
+    /* environment variables */
+
+    compiled_env_exists();
+    compiled_env_nonempty();
+
+    // compiled_only_in_release(); // depends on --release
+    // compiled_only_in_debug();  // depends on profile
+    // not_compiled_env_empty();
 }

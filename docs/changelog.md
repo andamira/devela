@@ -100,7 +100,7 @@ Many feature gates are removed in order to make most features make always availa
 ### [base_macros]
 - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
 - new macro: `repeat!`.
-- new compiler predicate: `nota`.
+- new compiler predicates: `env`, `env_eq`, `env_ne`, `env_empty`, `env_nonempty`, `nota`.
 
 ### [macros]
 - use workspace's crate version.

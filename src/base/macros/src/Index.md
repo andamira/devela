@@ -63,8 +63,16 @@ The following compilation predicates are supported:
   - `little_endian()`: returns `true` if current architecture is little-endian.
   - `big_endian()`: returns `true` if current architecture is big-endian.
 
+- environment variables:
+  - `env(NAME)`: returns `true` if the env var **exists**.
+  - `env_eq(NAME, VALUE)`: returns `true` if the env var **exists** and its value **== VALUE**.
+  - `env_ne(NAME, VALUE)`: returns `true` if the env var **exists** and its value **!= VALUE**.
+  - `env_empty(NAME)`: returns `true` if the env var **exists** and its value is **empty**.
+  - `env_nonempty(NAME)`: returns `true` if the env var **exists** and its value is **non-empty**.
+
 #### Notes
 - When more than one predicate is supported, they are separated by commas.
+- Env predicates compare textual values, not numeric or boolean coercions.
 
 Empty-argument semantics:
 - `all()`  == `true`
