@@ -1,9 +1,8 @@
 // devela::sys::fs::path
 //
-#![doc = crate::_DOC_SYS_FS_PATH!()]
-//!
+#![doc = crate::_DOC_SYS_FS_PATH!()] // private
+#![doc = crate::_doc!(modules: crate::sys::fs; path)]
 #![doc = crate::_doc!(extends: path)]
-#![doc = crate::_doc!(newline)]
 //
 
 #[cfg(feature = "std")]

@@ -10,20 +10,28 @@
 //
 // TODO: try to use paste! instead of concat!, since it's faster.
 
+/* TEMPLATES:
+
+#![doc = crate::_doc!(modules: crate::data; XXX)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
+
+*/
+
 /// Generates a formatted meta-documentation string.
 #[doc = crate::_doc_location!("code/util")]
 #[doc(hidden)]
 #[macro_export]
 // #[allow(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
 macro_rules! __doc {
-    (@meta_start) => {
+    (@meta_start_br) => {
         "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"
     };
+    (@meta_start_lf) => {
+        "\n\n<i style='margin-left:0em;margin-top:-2em;'></i><span style='font-size:90%;word-spacing:0px'>"
+    };
     (@meta_start_nobr) => {
-        concat!(
-            "<i style='margin-left:0em;margin-top:-2em;'></i>",
-            "<span style='font-size:90%;word-spacing:0px'>",
-        )
+        "<i style='margin-left:0em;margin-top:-2em;'></i><span style='font-size:90%;word-spacing:0px'>"
     };
     (@meta_end) => { "</span>" };
     (@meta_end_hr) => { "</span><hr/>" };
@@ -33,6 +41,8 @@ macro_rules! __doc {
     (lf) => { "\n\n" };
     (br) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" };
     (br+lf) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />\n\n" };
+    (br+hr) => { "<br/><hr/>" };
+    (hr) => { "<hr/>" };
 
     // link to zall_::* associated module
     (flat: $mod:literal) => {
@@ -51,7 +61,7 @@ macro_rules! __doc {
     ( // no submodules:
         modules: $path:path; $self:ident) => {
         concat!(
-            $crate::_doc!(@meta_start_nobr),
+            $crate::_doc!(@meta_start_lf),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
             $crate::_doc!(@meta_end),
         )
@@ -59,7 +69,7 @@ macro_rules! __doc {
     ( // with submodules:
         modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
         concat!(
-            $crate::_doc!(@meta_start),
+            $crate::_doc!(@meta_start_br),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]::{",
             $crate::_doc!(@modules: $path; $self: $($mod),+), "}",
             $crate::_doc!(@meta_end),
@@ -83,7 +93,7 @@ macro_rules! __doc {
     // NOTE: it needs `_std_core!` to be defined in the crate where this is invoked.
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
-            $crate::_doc!(@meta_start_nobr), "Extends: ",
+            $crate::_doc!(@meta_start_lf), "Extends: ",
             // crate::_std_core!(), "::{", $crate::_doc!(@extends: $($mod),+), "}",
             "std::{", $crate::_doc!(@extends: $($mod),+), "}",
             $crate::_doc!(@meta_end_hr),

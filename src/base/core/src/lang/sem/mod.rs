@@ -1,8 +1,10 @@
 // devela_base_core::lang::sem
 //
-#![doc = crate::_TAG_WIP!()]
-//! Semantic relations, independent of form and execution.
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_LANG_SEM!()] // public
+#![doc = crate::_doc!(modules: crate::lang; sem)]
 #![doc = crate::_doc!(flat:"lang")]
+#![doc = crate::_doc!(hr)]
 //!
 //! > Meaning is relational.
 //

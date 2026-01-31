@@ -1,10 +1,8 @@
 // devela::work
 //
-#![doc = crate::_DOC_WORK!()]
+#![doc = crate::_DOC_WORK!()] // public
 #![doc = crate::_DOC_WORK_MODULES!()]
 #![doc = crate::_doc!(flat:"work")]
-#![doc = "<br/><hr>"] // gives way to zall
-//!
 #![doc = crate::_doc!(extends: future, process, sync, task, thread)]
 //
 // safety

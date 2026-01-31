@@ -1,9 +1,10 @@
 // devela::num::symb
 //
-#![doc = crate::_TAG_WIP!()]
-#![doc = crate::_DOC_NUM_SYMB!()]
-//!
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_NUM_SYMB!()] // public
+#![doc = crate::_doc!(modules: crate::num; symb)]
 #![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod eq;

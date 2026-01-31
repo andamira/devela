@@ -1,9 +1,9 @@
 // devela::media
 //
-#![doc = crate::_DOC_MEDIA!()]
+#![doc = crate::_DOC_MEDIA!()] // public, root
 #![doc = crate::_DOC_MEDIA_MODULES!()]
 #![doc = crate::_doc!(flat:"media")]
-#![doc = crate::_doc!(newline)]
+#![doc = crate::_doc!(hr)]
 //
 // safety
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]

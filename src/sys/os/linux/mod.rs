@@ -1,6 +1,9 @@
 // devela::sys::os::linux
 //
-//! Linux-specific definitions
+#![doc = crate::_DOC_SYS_OS_LINUX!()] // public
+#![doc = crate::_doc!(modules: crate::sys::os; linux)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: sys)]
 //!
 //! # Supported architectures
 //! Most of Linux functionality is feature-gated for the following target architectures:

@@ -1,8 +1,8 @@
 // devela_base_alloc::lang::prog
 //
-#![doc = crate::_DOC_LANG_PROG!()]
-#![doc = crate::_doc!(modules: crate::lang; prog: ffi)] // dsl
-//!
+#![doc = crate::_DOC_LANG_PROG!()] // public
+#![doc = crate::_doc!(modules: crate::lang; prog: ffi)] // dsl, ir
+#![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(extends: ffi)]
 //!
 //! Languages that describe computation, behavior, and execution.
@@ -13,13 +13,7 @@
 
 pub mod ffi; // foreign language interfaces
 
-crate::structural_mods! { // _mods
-    _mods {
-        // pub use super::{
-        //     // dls::_all::*,
-        //     // ir::_all::*,
-        // };
-    }
+crate::structural_mods! { // , _pub_mods
     _pub_mods {
         pub use super::{
             ffi::_all::*,

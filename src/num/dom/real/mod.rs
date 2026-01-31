@@ -1,6 +1,9 @@
 // devela::num::dom::real
 //
-#![doc = crate::_DOC_NUM_DOM_REAL!()]
+#![doc = crate::_DOC_NUM_DOM_REAL!()] // public
+#![doc = crate::_doc!(modules: crate::num::dom; real)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod fixed; //

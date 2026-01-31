@@ -17,18 +17,23 @@ macro_rules! __crate_name {
 #[allow(unused_imports)]
 pub(crate) use __crate_name;
 
+pub mod code;
 pub mod data;
+pub mod geom;
 pub mod lang;
 pub mod media;
 pub mod num;
+pub mod phys;
+pub mod run;
 pub mod sys;
 pub mod text;
+pub mod ui;
 pub mod work;
-
+//
 mod yard;
 #[doc(hidden)]
 pub use yard::_dep;
-
+//
 // mod _doc;
 
 #[doc(hidden)]
@@ -44,13 +49,39 @@ pub mod zall {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
+        code::_all::*,
         data::_all::*,
+        geom::_all::*,
         lang::_all::*,
         media::_all::*,
         num::_all::*,
+        phys::_all::*,
+        run::_all::*,
         sys::_all::*,
         text::_all::*,
+        ui::_all::*,
         work::_all::*,
+    };
+}
+
+// private, internal items
+#[allow(unused_imports)]
+pub(crate) use _crate_internals::*;
+mod _crate_internals {
+    #[rustfmt::skip]
+    pub(crate) use super::{
+        code::_crate_internals::*,
+        data::_crate_internals::*,
+        geom::_crate_internals::*,
+        lang::_crate_internals::*,
+        media::_crate_internals::*,
+        num::_crate_internals::*,
+        phys::_crate_internals::*,
+        run::_crate_internals::*,
+        sys::_crate_internals::*,
+        text::_crate_internals::*,
+        ui::_crate_internals::*,
+        work::_crate_internals::*,
     };
 }
 

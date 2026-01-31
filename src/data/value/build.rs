@@ -1,4 +1,4 @@
-// devela::data::table::value::build
+// devela::data::value::build
 //
 //! All the data-value related types are declared here.
 //!

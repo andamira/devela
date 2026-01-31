@@ -1,6 +1,9 @@
 // devela::data::list::queue
 //
-#![doc = crate::_DOC_DATA_LIST_QUEUE!()]
+#![doc = crate::_DOC_DATA_LIST_QUEUE!()] // public
+#![doc = crate::_doc!(modules: crate::data::list; queue)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(extends: collections)]
 //!
 //! Elements are typically added at one end (the "tail" or "back")
 //! and removed from the other (the "head" or "front").

@@ -1,6 +1,9 @@
 // devela_base_core::num::quant::cont
 //
-#![doc = crate::_DOC_NUM_QUANT_CONT!()]
+#![doc = crate::_DOC_NUM_QUANT_CONT!()] // public
+#![doc = crate::_doc!(modules: crate::num::quant; cont)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod series;

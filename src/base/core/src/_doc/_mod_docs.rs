@@ -29,8 +29,8 @@ crate::CONST! { hidden macro_export,
 
     /* misc. root modules */
 
-    _DOC_ZALL  = "All crate items re-exported in a single flat namespace.\n\n
-This flat view appears here as `zall`, and it is also mirrored at the
+    _DOC_ZALL  = "<hr/>All crate items re-exported in a single flat namespace.\n\n
+<br/>This flat view appears here as `zall`, and it is also mirrored at the
 crate root through a hidden `all` module. Every item in this namespace
 is already forwarded upward, since public modules automatically
 re-export their contents to their parent.
@@ -39,7 +39,7 @@ The name `zall` ensures rustdoc search shows each item's original
 full path rather than the earlier-sorted `all` re-export.";
 
     _DOC_ZALL_ = "All crate items re-exported, grouped by their root modules.\n\n
-Each root module appears here and provides its own flat view of all its
+<br/>Each root module appears here and provides its own flat view of all its
 public children. Together, they offer a structured alternative to the
 fully flat `zall` namespace.
 
@@ -52,44 +52,73 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_CODE_ANY        = "Dynamic typing and reflection.";
     _DOC_CODE_ERROR      = "Errors, backtraces and structured handling.";
     _DOC_CODE_MARKER     = "Marker types, traits, and macros.";
+    _DOC_CODE_OPS        = "Overloadable operators.";
     _DOC_CODE_PANIC      = "Panic hooks, unwinding, and abort strategies.";
     _DOC_CODE_RESULT     = "Parameterized outcome and resolution types.";
     _DOC_CODE_UTIL       = "Utility macros and hint functions.";
 
     // 2
-    _DOC_DATA            = "Data handling and manipulation.";
-    _DOC_DATA_ADDRESS    = "Addressability and directed reachability.";
-    _DOC_DATA_BIT        = "Bit-focused items.";
-    _DOC_DATA_CODEC      = "Data encoding and decoding abstractions.";
-    _QUO_DATA_CODEC      = "> Structured, algorithmic transformations of data representations.";
-    _DOC_DATA_CODEC_HASH = "Generic hashing support.";
+    _DOC_DATA              = "Data handling and manipulation.";
+    _DOC_DATA_ADDRESS      = "Addressability and directed reachability.";
+    _DOC_DATA_BIT          = "Bit-focused items.";
+    _DOC_DATA_CODEC        = "Data encoding and decoding abstractions.";
+    _QUO_DATA_CODEC        = "> Structured, algorithmic transformations of data representations.";
+    _DOC_DATA_CODEC_CRYPTO = "Cryptographic primitives for encryption, authentication, and hashing.";
+    _DOC_DATA_CODEC_HASH   = "Generic hashing support.";
     _DOC_DATA_CODEC_HASH_CHECK = "Lightweight checksums for accidental corruption detection.";
-    _DOC_DATA_ITER       = "Composable external iteration.";
-    _DOC_DATA_KEY        = "Key-based storage implementations.";
-    _DOC_DATA_LIST       = "Sequential collections implementations.";
-    _DOC_DATA_LIST_ARRAY = "Homogeneous, sequentially allocated, random-access structures.";
-    _DOC_DATA_LIST_LINK  = "Homogeneous, sequentially accessed structures.";
-    _DOC_DATA_LIST_QUEUE = concat!["Homogeneous data structures that process elements in ",
+    _DOC_DATA_DST          = "Dynamically-sized types stored without need of heap allocation.";
+    _DOC_DATA_ERROR        = "Data-related error types.";
+    _DOC_DATA_ITER         = "Composable external iteration.";
+    _DOC_DATA_KEY          = "Key-based storage implementations.";
+    _DOC_DATA_LIST         = "Sequential collections implementations.";
+    _DOC_DATA_LIST_ARRAY   = "Homogeneous, sequentially allocated, random-access structures.";
+    _DOC_DATA_LIST_LINK    = "Homogeneous, sequentially accessed structures.";
+    _DOC_DATA_LIST_QUEUE   = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_FIFO!(), " order."];
-    _DOC_DATA_LIST_STACK = concat!["Homogeneous data structures that process elements in ",
+    _DOC_DATA_LIST_STACK   = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_LIFO!(), " order."];
-    _DOC_DATA_UID        = "Abstractions for producing and stabilizing unique identities.";
-    _QUO_DATA_UID        = "> Defines identity kinds and generation tools.";
+    _DOC_DATA_NODE         = "Abstractions for structured relationships.";
+    _DOC_DATA_SPACE        = "Spatial data structures.";
+    _DOC_DATA_TABLE        = "Tabular and heterogeneous data processing.";
+    _DOC_DATA_UID          = "Abstractions for producing and stabilizing unique identities.";
+    _QUO_DATA_UID          = "> Defines identity kinds and generation tools.";
+    _DOC_DATA_VALUE        = "Enumerated data values and types, classified by size.";
 
     // 3
-    _DOC_GEOM        = "Geometric types, operations, and spatial constructs.";
-    _DOC_GEOM_METRIC = "Geometric measurement and spatial relationships.";
-    _DOC_GEOM_DIR    = "Direction, orientation, and spatial symmetry.";
+    _DOC_GEOM              = "Geometric types, operations, and spatial constructs.";
+    _DOC_GEOM_AFFINE       = "Structure of space under translation and linear combination.";
+    _DOC_GEOM_DIR          = "Direction, orientation, and spatial symmetry.";
+    _DOC_GEOM_DIR_NAV      = "Spatial navigation.";
+    _DOC_GEOM_FIG          = "Concrete geometric figures and objects.";
+    _DOC_GEOM_METRIC       = "Measurement of space: distances and magnitudes.";
+    _DOC_GEOM_REL          = "Spatial relations and semantics independent of measurement.";
+    _DOC_GEOM_SPACE        = "Global organization and decomposition of space.";
+    _DOC_GEOM_SPACE_FIELD  = "Quantities defined over space.";
+    _DOC_GEOM_SPACE_GRID   = "Regular or semi-regular spatial schemas with memory.";
+
     // 4
     _DOC_LANG            = "Language structure and meaning across domains.";
     _DOC_LANG_HUM        = "Human linguistics and language theory.";
+    _DOC_LANG_HUM_ART    = "Artificial human languages";
+    _DOC_LANG_HUM_GRAM   = "Grammar and structural theory.";
+    _DOC_LANG_HUM_I18N   = "Internationalization and localization support.";
+    _DOC_LANG_HUM_NAT    = "Natural human languages.";
     _DOC_LANG_PROG       = "Programming languages.";
-    _DOC_LANG_PROG_FFI   = concat![$crate::_ABBR_FFI!(),
-        "bindings and interoperability.\n\nBridges to external languages and platforms."];
+    _DOC_LANG_PROG_FFI   = concat![$crate::_ABBR_FFI!(), " bindings and interoperability."];
     _DOC_LANG_PROG_FFI_C =
         "<a href='https://en.wikipedia.org/wiki/C_(programming_language)'>C</a> interfacing.";
+    _DOC_LANG_REPR       = "Representation languages.";
+    _DOC_LANG_SEM        = "Semantic relations, independent of form and execution.";
     // 5
     _DOC_MEDIA           = "Multimedia functionality.";
+    _DOC_MEDIA_AUDIO     = "Audio functionality.";
+    _DOC_MEDIA_COLOR     = "Chromatic functionality.";
+    _DOC_MEDIA_DRAW      = "Drawing functionality.";
+    _DOC_MEDIA_FONT      = "Font functionality.";
+    _DOC_MEDIA_IMAGE     = "Image functionality.";
+    _DOC_MEDIA_MOTION    = "Motion language.";
+    _DOC_MEDIA_PDF       = "Pdf generation.";
+    _DOC_MEDIA_VIDEO     = "Video functionality.";
 
     // 6
     _DOC_NUM             = "Numerical types, structures, and operations.";
@@ -97,6 +126,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_DOM_REAL    = "Real-valued numeric domains and representations.";
     _DOC_NUM_DOM_REAL_FLOAT = "Floating point types and operations.";
     _DOC_NUM_DOM_INT     = "Integer types and operations.";
+    _DOC_NUM_ERROR       = "Numeric-related error types.";
     _DOC_NUM_FIN         = "Finite and discrete numeric structures.";
     _DOC_NUM_FIN_BIT     = "Bitwise operations.";
     _DOC_NUM_FIN_LOGIC   = "Truth systems, reachability, constraints.";
@@ -113,25 +143,36 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_PROB_STATS  = "Descriptive statistics.";
     _DOC_NUM_QUANT       = "Quantification, measurement, and numerical relationships.";
     _DOC_NUM_QUANT_CONT  = "Continuity, calculus.";
+    _DOC_NUM_QUANT_SCALE = "Scaling, remapping, and magnitude transformation of numeric values.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
     // 7
+    _DOC_PHYS             = "Physical units and measurement.";
+    _DOC_PHYS_ASTRO       = "Astronomy-related abstractions.";
+    _DOC_PHYS_BIO         = "Biology-related abstractions.";
+    _DOC_PHYS_CHEM        = "Chemistry-related abstractions.";
+    _DOC_PHYS_ELEC        = "Electromagnetic-related abstractions.";
+    _DOC_PHYS_GEO         = "Geophysics-related abstractions.";
+    _DOC_PHYS_MECH        = "Mechanics-related abstractions.";
+    _DOC_PHYS_TIME        = "Time and calendar types and operations.";
+    _DOC_PHYS_TIME_SOURCE = "Time sources.";
+    _DOC_PHYS_UNIT        = "Physical units of measure and unit prefixes.";
+    _DOC_PHYS_WAVE        = "Wave primitives, wavelet.";
+
+    // 8
     _DOC_RUN             = "Live execution coordination of time, frames, and setup.";
     _QUO_RUN             = "> Where execution exists, progresses, and becomes concrete.";
     _DOC_RUN_FRAME       = "The per-step execution envelope and state snapshot.";
     _DOC_RUN_SETUP       = "The committed configuration of a running environment.";
-
-    // 8
-    _DOC_PHYS            = "Physical units and measurement.";
-    _DOC_PHYS_TIME       = "Time and calendar types and operations.";
 
     // 9
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
     _DOC_SYS_DEVICE      = "Live system device interfaces";
     _QUO_SYS_DEVICE      = "> Usable system devices exposed to running programs.";
-    _DOC_SYS_DEVICE_DISPLAY = "Display backends for windows, surfaces, and events.";
-    _DOC_SYS_DEVICE_AUDIO   = "Audio device backends and stream interfaces.";
+    _DOC_SYS_DEVICE_AUDIO       = "Audio device backends and stream interfaces.";
+    _DOC_SYS_DEVICE_DISPLAY     = "Display backends for windows, surfaces, and events.";
+    _DOC_SYS_DEVICE_DISPLAY_X11 = "X11 display backend.";
     _DOC_SYS_ENV         = "Process environment inspection and manipulation.";
     _DOC_SYS_FS          = "Filesystem abstractions.";
     _DOC_SYS_FS_PATH     = "Cross-platform path manipulation.";
@@ -145,15 +186,21 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_MEM_CELL    = "Shareable mutable containers.";
     _DOC_SYS_MEM_PIN     = "Types that pin data to a location in memory.";
     _DOC_SYS_MEM_PTR     = "Manual memory management via raw pointers.";
+    _DOC_SYS_MEM_SLICE   = "Slices of memory";
     _DOC_SYS_NET         = "Networking functionality.";
     _DOC_SYS_OS          = "Operating systems and supervisors.";
+    _DOC_SYS_OS_BROWSER      = "Browser supervisory environment.";
+    _DOC_SYS_OS_BROWSER_WEB  = "Web APIs interfacing.";
     _DOC_SYS_OS_FD       = "Unix-like file descriptors.";
+    _DOC_SYS_OS_LINUX    = "Linux-specific definitions.";
+    _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
     // 10
     _DOC_TEXT            = "Text types and processing.";
     _DOC_TEXT_ASCII      = "ASCII strings and characters.";
     _DOC_TEXT_CHAR       = "Unicode scalar types and operations.";
-    _DOC_TEXT_EGC        = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
+    _DOC_TEXT_GRAPHEME   = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
+    _DOC_TEXT_ERROR      = "Text-related error types.";
     _DOC_TEXT_FMT        = "String formatting.";
     _DOC_TEXT_LAYOUT     = "One-dimensional spatial semantics of text.";
     _QUO_TEXT_LAYOUT     = "> A negotiation between a symbolic sequence and an available extent.";
@@ -163,6 +210,9 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 11
     _DOC_UI              = "User interface functionality.";
     _QUO_UI              = "> How humans interact with what exists.";
+    _DOC_UI_BACK         = "User interface backends.";
+    _DOC_UI_FRONT        = "User interface frontends.";
+    _DOC_UI_FRONT_TERM   = "UI terminal functionality.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
 
     // 12

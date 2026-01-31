@@ -1,6 +1,9 @@
 // devela::sys::mem::borrow
 //
-#![doc = crate::_DOC_SYS_MEM_BORROW!()]
+#![doc = crate::_DOC_SYS_MEM_BORROW!()] // private
+#![doc = crate::_doc!(modules: crate::sys::mem; borrow)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: borrow)]
 //
 
 mod _reexport_core; // SYMLINK to /src/base/core/src/sys/mem/borrow/_reexport.rs

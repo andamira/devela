@@ -1,6 +1,9 @@
 // devela::phys::wave
 //
-//! Wavelets.
+#![doc = crate::_DOC_PHYS_WAVE!()] // public
+#![doc = crate::_doc!(modules: crate::phys; wave)]
+#![doc = crate::_doc!(flat:"phys")]
+#![doc = crate::_doc!(hr)]
 //
 
 #[cfg(test)]
@@ -20,5 +23,9 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::alloc::*;
     }
     _reexports {
+        // #[doc(inline)]
+        // pub use devela_base_core::phys::wave::{
+        //     Freq, Phase,
+        // };
     }
 }

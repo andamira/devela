@@ -1,9 +1,8 @@
 // devela_base_core::lang
 //
-#![doc = crate::_DOC_LANG!()]
+#![doc = crate::_DOC_LANG!()] // public, root
 #![doc = crate::_DOC_LANG_MODULES!()]
 #![doc = crate::_doc!(flat:"lang")]
-#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(extends: ffi)]
 //
 // safety

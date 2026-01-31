@@ -1,6 +1,11 @@
 // devela::sys::os::browser::web
 //
-//! <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web APIs</a> interfacing.
+#![doc = crate::_DOC_SYS_OS_BROWSER_WEB!()] // public
+#![doc = crate::_doc!(modules: crate::sys::os::browser; web)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(hr)]
+//!
+//! - <https://developer.mozilla.org/en-US/docs/Web/API>.
 //
 
 mod document; // WebDocument

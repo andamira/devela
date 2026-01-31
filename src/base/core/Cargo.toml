@@ -47,9 +47,14 @@ media = ["audio", "color", "draw", "font", "image"]
 	draw = []
 	font = []
 	image = []
-num = ["int", "rand"]
-	int = []
-	rand = []
+num = ["int", "lin", "rand"]
+	# dom
+		int = []
+		# real
+			# float
+	lin = [] # linear algebra
+	# prob
+		rand = []
 text = ["grapheme", "translit"]
 	grapheme = []
 	translit = []

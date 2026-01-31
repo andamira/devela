@@ -1,7 +1,10 @@
 // devela::run::frame
 //
-#![doc = crate::_TAG_WIP!()]
-#![doc = crate::_DOC_RUN_FRAME!()]
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_RUN_FRAME!()] // public
+#![doc = crate::_doc!(modules: crate::run; frame)]
+#![doc = crate::_doc!(flat:"run")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod pacer; // FramePacer WIP

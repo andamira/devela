@@ -34,7 +34,7 @@ pub(crate) fn main() -> Result<(), IoError> {
 
     let crate_name = std::env::var("CARGO_PKG_NAME").unwrap();
     let is_workspace_member = matches!(
-        crate_name.as_str(), // hardcoded workspace member list:
+        crate_name.as_str(), // in sync with /Cargo.toml:members
         "devela_base_macros"
             | "devela_base_core"
             | "devela_base_alloc"

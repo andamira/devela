@@ -1,10 +1,8 @@
 // devela_base_core::sys
 //
-#![doc = crate::_DOC_SYS!()]
+#![doc = crate::_DOC_SYS!()] // public, root
 #![doc = crate::_DOC_SYS_MODULES!()]
 #![doc = crate::_doc!(flat:"sys")]
-#![doc = crate::_doc!(newline)]
-//!
 #![doc = crate::_doc!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
     io, net, os, path, pin, ptr, rc, slice)]
 //

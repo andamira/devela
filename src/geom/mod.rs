@@ -1,9 +1,8 @@
 // devela::geom
 //
-#![doc = crate::_DOC_GEOM!()]
+#![doc = crate::_DOC_GEOM!()] // public, root
 #![doc = crate::_DOC_GEOM_MODULES!()]
 #![doc = crate::_doc!(flat:"geom")]
-#![doc = crate::_doc!(newline)]
 //
 // safety
 #![cfg_attr(feature = "safe_geom", forbid(unsafe_code))]

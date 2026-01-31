@@ -1,7 +1,8 @@
 // devela::sys::mem::cell
 //
-#![doc = crate::_DOC_SYS_MEM_CELL!()]
-//!
+#![doc = crate::_DOC_SYS_MEM_CELL!()] // pulic
+#![doc = crate::_doc!(modules: crate::sys::mem; cell)]
+#![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: cell)]
 //
 

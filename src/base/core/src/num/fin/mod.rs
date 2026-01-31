@@ -1,8 +1,9 @@
 // devela_base_core::num::fin
 //
-#![doc = crate::_DOC_NUM_FIN!()]
+#![doc = crate::_DOC_NUM_FIN!()] // public
 #![doc = crate::_doc!(modules: crate::num; fin: logic, ord)]
 #![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod auto;

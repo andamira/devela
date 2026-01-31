@@ -1,7 +1,9 @@
 // devela_base_core::num::prob::rand::prng
 //
-#![doc = crate::_DOC_NUM_PROB_RAND_PRNG!()]
-//!
+#![doc = crate::_DOC_NUM_PROB_RAND_PRNG!()] // private
+#![doc = crate::_doc!(modules: crate::num::prob::rand; prng)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod shift; // XorShift[8|16|32|64|128], XorShift128p, xorshift_custom!

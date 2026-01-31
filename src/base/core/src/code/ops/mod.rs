@@ -1,6 +1,9 @@
 // devela_base_core::code::ops
 //
-#![doc = crate::_DOC_CODE_PANIC!()]
+#![doc = crate::_DOC_CODE_OPS!()] // public
+#![doc = crate::_doc!(modules: crate::code; ops)]
+#![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(extends: ops)]
 //
 
 mod _reexport; // SYMLINK from /src/code/ops/_reexport_core.rs

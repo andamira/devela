@@ -1,6 +1,9 @@
 // devela::geom::dir
 //
-#![doc = crate::_DOC_GEOM_DIR!()]
+#![doc = crate::_DOC_GEOM_DIR!()] // public
+#![doc = crate::_doc!(modules: crate::geom; dir)]
+#![doc = crate::_doc!(flat:"geom")]
+#![doc = crate::_doc!(hr)]
 //!
 //! This module defines the core primitives that describe how objects
 //! point, turn, and transform within a geometric space. It covers both

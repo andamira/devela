@@ -1,9 +1,9 @@
 // devela::media::audio
 //
-//! Audio functionality.
-#![doc = crate::_doc!(lf)]
+#![doc = crate::_DOC_MEDIA_AUDIO!()] // public
 #![doc = crate::_doc!(modules: crate::media; audio)]
 #![doc = crate::_doc!(flat:"media")]
+#![doc = crate::_doc!(hr)]
 //
 // safety
 #![cfg_attr(feature = "safe_audio", forbid(unsafe_code))]

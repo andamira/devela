@@ -1,6 +1,9 @@
 // devela::geom::metric
 //
-#![doc = crate::_DOC_GEOM_METRIC!()]
+#![doc = crate::_DOC_GEOM_METRIC!()] // public
+#![doc = crate::_doc!(modules: crate::geom; metric)]
+#![doc = crate::_doc!(flat:"geom")]
+#![doc = crate::_doc!(hr)]
 //!
 //! This module defines core spatial metrics describing spatial properties
 //! in an orthogonal coordinate system, enabling structured traversal

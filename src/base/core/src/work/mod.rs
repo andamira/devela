@@ -1,10 +1,8 @@
 // devela_base_core::work
 //
-#![doc = crate::_DOC_WORK!()]
+#![doc = crate::_DOC_WORK!()] // public, root
 #![doc = crate::_DOC_WORK_MODULES!()]
 #![doc = crate::_doc!(flat:"work")]
-#![doc = "<br/><hr>"] // gives way to zall
-//!
 #![doc = crate::_doc!(extends: future, process, sync, task, thread)]
 //
 // safety
@@ -15,14 +13,14 @@ crate::CONST! { pub(crate) _DOC_WORK_MODULES =
 }
 
 pub mod future; // Coro*
-pub mod process; // cmd!
+// pub mod process;
 pub mod sync;
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             future::_all::*,
-            process::_all::*,
+            // process::_all::*,
             sync::_all::*,
         };
     }

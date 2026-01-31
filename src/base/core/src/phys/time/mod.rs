@@ -1,6 +1,9 @@
 // devela_base_core::phys::time
 //
-#![doc = crate::_DOC_PHYS_TIME!()]
+#![doc = crate::_DOC_PHYS_TIME!()] // public
+#![doc = crate::_doc!(modules: crate::phys; time)]
+#![doc = crate::_doc!(flat:"phys")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _reexport; // SYMLINK from /src/phys/time/_reexport_core.rs

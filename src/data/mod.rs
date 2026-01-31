@@ -1,16 +1,16 @@
 // devela::data
 //
-#![doc = crate::_DOC_DATA!()]
+#![doc = crate::_DOC_DATA!()] // public, root
 #![doc = crate::_DOC_DATA_MODULES!()]
 #![doc = crate::_doc!(flat:"data")]
-#![doc = crate::_doc!(br+lf)]
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //
 // safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: codec, error, iter, key, list, table, uid); // address
+    crate::_doc!(modules: crate; data: codec, error, iter, key, list, uid, value); // table
+    // address
 }
 
 mod absence; // NoData
@@ -19,15 +19,19 @@ mod collection; // DataCollection
 
 pub mod codec;
 pub mod error {
-    //! Data-related errors.
+    #![doc = crate::_DOC_DATA_ERROR!()] // public
+    #![doc = crate::_doc!(modules: crate::data; error)]
+    #![doc = crate::_doc!(flat:"data")]
+    #![doc = crate::_doc!(hr)]
     #[doc(inline)]
     pub use devela_base_core::data::error::*;
 }
 pub mod iter;
 pub mod key;
 pub mod list;
-pub mod table;
+// pub mod table; // TODO
 pub mod uid;
+pub mod value; // TODO
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -64,8 +68,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             iter::_all::*,
             key::_all::*,
             list::_all::*,
-            table::_all::*,
+            // table::_all::*, // TODO
             uid::_all::*,
+            value::_all::*, // TODO
         };
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -85,7 +90,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::_DOC_DATA_MODULES;
-        pub(crate) use super::table::_crate_internals::*;
+        pub(crate) use super::value::_crate_internals::*;
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
         #[cfg(all(
             not(any(feature = "safe_data", feature = "safe_mem")),

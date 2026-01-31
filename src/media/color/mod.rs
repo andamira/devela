@@ -1,9 +1,9 @@
 // devela::media::color
 //
-//! Chromatic functionality.
-#![doc = crate::_doc!(lf)]
+#![doc = crate::_DOC_MEDIA_COLOR!()] // public
 #![doc = crate::_doc!(modules: crate::media; color)]
 #![doc = crate::_doc!(flat:"media")]
+#![doc = crate::_doc!(hr)]
 //
 // safety
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]

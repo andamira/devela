@@ -1,14 +1,15 @@
 // devela_base_alloc::data::list::array
 //
-#![doc = crate::_DOC_DATA_LIST_ARRAY!()]
+#![doc = crate::_DOC_DATA_LIST_ARRAY!()] // public
+#![doc = crate::_doc!(modules: crate::data::list; array)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(extends: array, vec)]
 //
 
-// mod reexports;
 mod vec;
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::reexports::*;
         pub use super::vec::*;
     }
 }

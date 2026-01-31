@@ -1,15 +1,9 @@
 // devela::sys::mem
 //
-#![doc = crate::_DOC_SYS_MEM!()]
-//!
+#![doc = crate::_DOC_SYS_MEM!()] // public
 #![doc = crate::_doc!(modules: crate::sys; mem: cell)]
-#![doc = crate::_doc!(newline)]
-//!
+#![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
-#![cfg_attr(
-    any(not(feature = "bit")),
-    doc = "## Features\nTo compile the missing items, enable the `bit` feature."
-)]
 //
 // safety
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]

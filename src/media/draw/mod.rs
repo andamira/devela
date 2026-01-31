@@ -1,10 +1,10 @@
 // devela::media::draw
 //
-#![doc = crate::_TAG_WIP!()]
-//! Drawing functionality.
-#![doc = crate::_doc!(lf)]
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_MEDIA_DRAW!()] // public
 #![doc = crate::_doc!(modules: crate::media; draw)]
 #![doc = crate::_doc!(flat:"media")]
+#![doc = crate::_doc!(hr)]
 //
 // safety
 #![cfg_attr(feature = "safe_draw", forbid(unsafe_code))]

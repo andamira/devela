@@ -1,10 +1,6 @@
 // devela_base_core::text::char::ascii
 //
 //! Defines [`CharAscii`].
-// #![doc = crate::_DOC_TEXT_ASCII!()]
-// #![doc = crate::_doc!(extends: ascii)]
-// #![doc = crate::_doc!(modules: crate::text; ascii)]
-// #![doc = crate::_doc!(newline)]
 //
 // Ported from:
 // - https://doc.rust-lang.org/stable/core/ascii/enum.Char.html

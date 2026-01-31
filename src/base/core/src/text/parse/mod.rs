@@ -1,6 +1,9 @@
 // devela_base_core::text::parse
 //
-//! String parsing without structured semantics.
+#![doc = crate::_DOC_TEXT_PARSE!()] // public
+#![doc = crate::_doc!(modules: crate::text; parse)]
+#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _reexport; // SYMLINK from /src/text/parse/_reexport_core.rs

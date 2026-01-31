@@ -1,9 +1,6 @@
 // devela::data::list::array::vec
 //
-//! Vectors,
-// #![doc = crate::_doc!(extends: vec)]
-// #![doc = crate::_doc!(modules: crate::data::collections; vec)]
-// #![doc = crate::_doc!(newline)]
+//! Dynamic arrays.
 //!
 //! Vectors are random-access, sequentially allocated, *dynamically* sized,
 //! homogeneous data structures.

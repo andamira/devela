@@ -1,23 +1,24 @@
 // devela::text
 //
-#![doc = crate::_DOC_TEXT!()]
+#![doc = crate::_DOC_TEXT!()] // public, root
 #![doc = crate::_DOC_TEXT_MODULES!()]
 #![doc = crate::_doc!(flat:"text")]
-#![doc = crate::_doc!(newline)]
-//!
 #![doc = crate::_doc!(extends: ascii, char, fmt, str, string)]
 //
 // safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
-    crate::_doc!(modules: crate; text: char, errors, fmt, grapheme, parse, str);
+    crate::_doc!(modules: crate; text: char, error, fmt, grapheme, parse, str);
 }
 
-pub mod errors {
-    //! Text-related errors.
+pub mod error {
+    #![doc = crate::_DOC_TEXT_ERROR!()] // public
+    #![doc = crate::_doc!(modules: crate::text; error)]
+    #![doc = crate::_doc!(flat:"text")]
+    #![doc = crate::_doc!(hr)]
     #[doc(inline)]
-    pub use devela_base_core::text::errors::*;
+    pub use devela_base_core::text::error::*;
 }
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 pub mod char;
@@ -36,7 +37,7 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
         #[doc(inline)]
         pub use super::{
             char::_all::*,
-            errors::*,
+            error::*,
             fmt::_all::*,
             layout::_all::*,
             parse::_all::*,

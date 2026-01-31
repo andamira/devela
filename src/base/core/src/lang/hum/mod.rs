@@ -1,10 +1,10 @@
 // devela_base_core::lang::hum
 //
-#![doc = crate::_DOC_LANG_HUM!()]
+#![doc = crate::_DOC_LANG_HUM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; hum: art, i18n, nat)]
 // denote, form, prag, syntax, vocal, write
 #![doc = crate::_doc!(flat:"lang")]
-#![doc = crate::_doc!(br+lf)]
+#![doc = crate::_doc!(hr)]
 //! Structure and use of language as produced, interpreted, and shared by humans.
 //
 

@@ -1,6 +1,9 @@
 // devela_base_core::code::util
 //
-#![doc = crate::_DOC_CODE_UTIL!()]
+#![doc = crate::_DOC_CODE_UTIL!()] // public
+#![doc = crate::_doc!(modules: crate::code; util)]
+#![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(extends: hint)]
 //
 
 #[cfg(test)]

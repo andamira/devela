@@ -1,8 +1,9 @@
 // devela::sys::mem::alloc
 //
-#![doc = crate::_DOC_SYS_MEM_ALLOC!()]
-//!
-// #![doc = crate::_doc!(extends: alloc)]
+#![doc = crate::_DOC_SYS_MEM_ALLOC!()] // private
+#![doc = crate::_doc!(modules: crate::sys::mem; alloc)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: alloc)]
 
 #[cfg(feature = "alloc")]
 mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/sys/mem/alloc/_reexport.rs

@@ -1,6 +1,9 @@
 // devela::ui::front::term
 //
-//! Terminal functionality.
+#![doc = crate::_DOC_UI_FRONT_TERM!()] // public
+#![doc = crate::_doc!(modules: crate::ui; front)]
+#![doc = crate::_doc!(flat:"ui")]
+#![doc = crate::_doc!(hr)]
 //
 
 #[cfg(feature = "term")]

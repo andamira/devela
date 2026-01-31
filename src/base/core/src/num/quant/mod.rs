@@ -1,8 +1,9 @@
 // devela_base_core::num::quant
 //
-#![doc = crate::_DOC_NUM_QUANT!()]
-//!
+#![doc = crate::_DOC_NUM_QUANT!()] // public
+#![doc = crate::_doc!(modules: crate::num; quant)]
 #![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //!
 //! This module provides general concepts for measuring and quantifying values,
 //! including both discrete and continuous representations, without being tied

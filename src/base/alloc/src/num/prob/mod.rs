@@ -1,8 +1,9 @@
 // devela_base_alloc::num::prob
 //
-#![doc = crate::_DOC_NUM_PROB!()]
+#![doc = crate::_DOC_NUM_PROB!()] // public
 #![doc = crate::_doc!(modules: crate::num; prob: rand)]
 #![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //!
 //! > What is the structure of uncertainty?
 //

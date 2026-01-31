@@ -1,7 +1,8 @@
 // devela_base_alloc::work::sync
 //
-#![doc = crate::_DOC_WORK_SYNC!()]
-//!
+#![doc = crate::_DOC_WORK_SYNC!()] // public
+#![doc = crate::_doc!(modules: crate::work; sync)]
+#![doc = crate::_doc!(flat:"work")]
 #![doc = crate::_doc!(extends: sync)]
 //
 // safety

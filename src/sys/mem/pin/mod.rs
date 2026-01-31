@@ -1,7 +1,8 @@
 // devela::sys::mem::pin
 //
-#![doc = crate::_DOC_SYS_MEM_PIN!()]
-//!
+#![doc = crate::_DOC_SYS_MEM_PIN!()] // private
+#![doc = crate::_doc!(modules: crate::sys::mem; pin)]
+#![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: pin)]
 //
 

@@ -1,6 +1,9 @@
 // devela_base_std::num::dom::real::float
 //
-#![doc = crate::_DOC_NUM!()]
+#![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()] // private
+#![doc = crate::_doc!(modules: crate::num::dom::real; float)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 // safety
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]

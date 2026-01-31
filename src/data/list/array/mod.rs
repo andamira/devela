@@ -1,7 +1,8 @@
 // devela::data::list::array
 //
-#![doc = crate::_DOC_DATA_LIST_ARRAY!()]
-//!
+#![doc = crate::_DOC_DATA_LIST_ARRAY!()] // public
+#![doc = crate::_doc!(modules: crate::data::list; array)]
+#![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, vec)]
 //!
 //! They enable efficient iterable storage over a sequence of the same type.

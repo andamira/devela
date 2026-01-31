@@ -1,13 +1,9 @@
 // devela::data::codec::hash
 //
-#![doc = crate::_DOC_DATA_CODEC_HASH!()]
-//!
+#![doc = crate::_DOC_DATA_CODEC_HASH!()] // public
+#![doc = crate::_doc!(modules: crate::data::codec; hash)]
+#![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
-//!
-#![cfg_attr(
-    not(feature = "hash"),
-    doc = "## Features\nTo compile the missing items, enable the `hash` feature."
-)]
 //
 
 mod _reexport_core; // SYMLINK to /src/base/core/src/data/codec/hash/_reexport.rs

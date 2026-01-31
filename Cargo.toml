@@ -68,15 +68,15 @@ resolver = "3"
 #      ║ ├╼build/main───────┤ : build, codegen, debug       | public interfaces |
 #      ║ └╼devela_postbuild─┘ : post-build processing       | development tools |
 #      ╏                                                    ·-------------------·
-members = [
+members = [ # In sync with ./build/main/environment.rs
 	"src/base/macros", "src/base/core", "src/base/alloc", "src/base/std", "src/base/opt_macros",
 	".", # ← root package
 	"build/post",
 ]
 
 [workspace.package]
-version = "0.25.0-wip" # in sync with docs/changelog.md
-rust-version = "1.93.0" # in sync with README.md && .github/workflows/check.yml
+version = "0.25.0-wip" # In sync with ./docs/changelog.md
+rust-version = "1.93.0" # In sync with ./README.md && ./.github/workflows/check.yml
 documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"

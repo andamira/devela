@@ -1,11 +1,10 @@
 // devela::lang::repr
 //
-#![doc = crate::_TAG_WIP!()]
-//! Representation languages.
-#![doc = crate::_doc!(br+lf)]
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_LANG_REPR!()] // public
 #![doc = crate::_doc!(modules: crate::lang; repr)]
 #![doc = crate::_doc!(flat:"lang")]
-//!
+#![doc = crate::_doc!(hr)]
 //! Declarative languages for describing data, documents, and structure.
 //
 

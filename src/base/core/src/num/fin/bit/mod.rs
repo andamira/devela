@@ -1,6 +1,9 @@
 // devela_base_core::num::fin::bit
 //
-#![doc = crate::_DOC_NUM_FIN_BIT!()]
+#![doc = crate::_DOC_NUM_FIN_BIT!()] // private
+#![doc = crate::_doc!(modules: crate::num::fin; bit)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 // internals

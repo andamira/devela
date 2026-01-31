@@ -1,8 +1,9 @@
 // devela::num::error
 //
-//! Numeric-related error types.
-//!
+#![doc = crate::_DOC_NUM_ERROR!()] // public
+#![doc = crate::_doc!(modules: crate::num; error)]
 #![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod definitions;

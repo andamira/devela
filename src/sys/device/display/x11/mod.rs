@@ -1,6 +1,9 @@
 // devela::sys::device::display::x11
 //
-//!
+#![doc = crate::_DOC_SYS_DEVICE_DISPLAY_X11!()] // public
+#![doc = crate::_doc!(modules: crate::sys::device::display; x11)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(hr)]
 // - <https://www.x.org/releases/current/doc/>
 // - [library functions](https://www.x.org/releases/current/doc/man/man3/)
 //

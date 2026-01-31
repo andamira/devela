@@ -85,7 +85,7 @@ fn nothing_fits() {
         TextSymbol { units: 3, cohesion: TextCohesion::Elidable },
         TextSymbol { units: 4, cohesion: TextCohesion::Atomic },
     ];
-    let (spans, step) = run(&symbols, 0, Some(2));
+    let (_spans, step) = run(&symbols, 0, Some(2));
     assert_eq!(step.span_count, 0);
     assert_eq!(step.fit, TextFit::None);
     assert_eq!(step.carry.unwrap().index.0, 1);

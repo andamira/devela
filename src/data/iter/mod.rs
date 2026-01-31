@@ -1,10 +1,8 @@
 // devela::data::iter
 //
-#![doc = crate::_DOC_DATA_ITER!()]
-//!
+#![doc = crate::_DOC_DATA_ITER!()] // public
 #![doc = crate::_doc!(modules: crate::data; iter)]
 #![doc = crate::_doc!(flat:"data")]
-//!
 #![doc = crate::_doc!(extends: iter)]
 //
 

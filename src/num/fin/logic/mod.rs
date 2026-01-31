@@ -1,6 +1,9 @@
 // devela::num::fin::logic
 //
-//! Type-level booleans.
+#![doc = crate::_DOC_NUM_FIN_LOGIC!()] // public
+#![doc = crate::_doc!(modules: crate::num::fin; logic)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 crate::structural_mods! { // _reexports

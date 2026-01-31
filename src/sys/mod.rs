@@ -1,10 +1,8 @@
 // devela::sys
 //
-#![doc = crate::_DOC_SYS!()]
+#![doc = crate::_DOC_SYS!()] // public, root
 #![doc = crate::_DOC_SYS_MODULES!()]
 #![doc = crate::_doc!(flat:"sys")]
-#![doc = crate::_doc!(newline)]
-//!
 #![doc = crate::_doc!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
     io, net, os, path, pin, ptr, rc, slice)]
 //
@@ -26,9 +24,8 @@ pub mod mem; // Mem,
 pub mod net; // Ip*, Socket*, Tcp*, Udp*
 pub mod os; // Linux,
 
-// WIPZONE
 // #[cfg(feature = "std")]
-// mod bench;
+// mod bench; // WIP
 
 crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
@@ -44,9 +41,8 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
             net::_all::*,
             os::_all::*,
         };
-        // WIPZONE
         // #[cfg(feature = "std")]
-        // pub use super::bench::_all::*;
+        // pub use super::bench::_all::*; // WIP
     }
     _crate_internals {
         pub(crate) use super::_DOC_SYS_MODULES;

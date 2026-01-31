@@ -1,6 +1,9 @@
 // devela_base_core::num::grain::cast
 //
-#![doc = crate::_DOC_NUM_GRAIN_CAST!()]
+#![doc = crate::_DOC_NUM_GRAIN_CAST!()] // private
+#![doc = crate::_doc!(modules: crate::num::grain; cast)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod namespace; // Cast

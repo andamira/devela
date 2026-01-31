@@ -1,0 +1,20 @@
+// devela_base_alloc::geom
+//
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_GEOM!()] // public
+#![doc = crate::_DOC_GEOM_MODULES!()]
+#![doc = crate::_doc!(flat:"geom")]
+#![doc = crate::_doc!(hr)]
+//
+// safety
+#![cfg_attr(base_safe_geom, forbid(unsafe_geom))]
+// docs
+crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
+    crate::_doc!(modules: crate; geom); // metric, shape, field
+}
+
+crate::structural_mods! { // _crate_internals
+    _crate_internals {
+        pub(crate) use super::_DOC_GEOM_MODULES;
+    }
+}

@@ -1,9 +1,9 @@
 // devela::text::char
 //
-#![doc = crate::_DOC_TEXT_CHAR!()]
-// #![doc = crate::_doc!(extends: char)]
-// #![doc = crate::_doc!(modules: crate::text; char)]
-// #![doc = crate::_doc!(newline)]
+#![doc = crate::_DOC_TEXT_CHAR!()] // public
+#![doc = crate::_doc!(modules: crate::text; char)]
+#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(extends: char)]
 
 mod _reexport_core; // SYMLINK to /src/base/core/src/text/char/_reexport.rs
 

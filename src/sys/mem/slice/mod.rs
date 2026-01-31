@@ -1,9 +1,9 @@
 // devela::sys::mem::slice
 //
-//! Slices of memory.
-// #![doc = crate::_doc!(extends: slice)]
-// #![doc = crate::_doc!(modules: crate::sys::mem; slice)]
-// #![doc = crate::_doc!(newline)]
+#![doc = crate::_DOC_SYS_MEM_SLICE!()] // private
+#![doc = crate::_doc!(modules: crate::sys::mem; slice)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: slice)]
 
 #[cfg(test)]
 mod tests;

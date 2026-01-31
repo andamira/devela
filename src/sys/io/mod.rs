@@ -1,7 +1,8 @@
 // devela::sys::io
 //
-#![doc = crate::_DOC_SYS_IO!()]
-//!
+#![doc = crate::_DOC_SYS_IO!()] // public
+#![doc = crate::_doc!(modules: crate::sys; io)]
+#![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: io)]
 //!
 //! Provides unified traits, buffers, transports, and no-std foundations for

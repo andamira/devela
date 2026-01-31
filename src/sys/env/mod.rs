@@ -1,7 +1,8 @@
 // devela::sys::env
 //
-#![doc = crate::_DOC_SYS_ENV!()]
-//!
+#![doc = crate::_DOC_SYS_ENV!()] // public
+#![doc = crate::_doc!(modules: crate::sys; env)]
+#![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: env)]
 //
 

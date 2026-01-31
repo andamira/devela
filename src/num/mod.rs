@@ -1,10 +1,8 @@
 // devela::num
 //
-#![doc = crate::_DOC_NUM!()]
+#![doc = crate::_DOC_NUM!()] // public, root
 #![doc = crate::_DOC_NUM_MODULES!()]
 #![doc = crate::_doc!(flat:"num")]
-#![doc = crate::_doc!(newline)]
-//!
 #![doc = crate::_doc!(extends: cmp, num, simd)]
 //
 // safety
@@ -44,9 +42,7 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals, _hidden
         pub use devela_base_core::num::NoNum;
     }
     _crate_internals {
-        pub(crate) use super::{
-            _DOC_NUM_MODULES,
-        };
+        pub(crate) use super::_DOC_NUM_MODULES;
     }
     _hidden {
         pub use super::{

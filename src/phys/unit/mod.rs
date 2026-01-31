@@ -1,6 +1,9 @@
 // devela::phys::unit
 //
-//! Physical units of measure and unit prefixes.
+#![doc = crate::_DOC_PHYS_UNIT!()] // public
+#![doc = crate::_doc!(modules: crate::phys; unit)]
+#![doc = crate::_doc!(flat:"phys")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _helpers; // impl_try_from!

@@ -1,9 +1,8 @@
 // devela_base_core::num::grain
 //
-#![doc = crate::_DOC_NUM_GRAIN!()]
+#![doc = crate::_DOC_NUM_GRAIN!()] // public
 #![doc = crate::_doc!(modules: crate::num; grain: niche, wide)]
 #![doc = crate::_doc!(flat:"num")]
-//!
 #![doc = crate::_doc!(extends: num)]
 //
 

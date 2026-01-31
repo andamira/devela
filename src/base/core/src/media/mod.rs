@@ -1,9 +1,9 @@
 // devela_base_core::media
 //!
-#![doc = crate::_DOC_MEDIA!()]
+#![doc = crate::_DOC_MEDIA!()] // public, root
 #![doc = crate::_DOC_MEDIA_MODULES!()]
 #![doc = crate::_doc!(flat:"media")]
-#![doc = crate::_doc!(newline)]
+#![doc = crate::_doc!(hr)]
 // lints
 #![cfg_attr(doc, allow(rustdoc::broken_intra_doc_links))]
 // safety
@@ -29,6 +29,12 @@ pub mod color;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
 pub mod image;
 
+// #[cfg(feature = "motion")]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "motion")))]
+// pub mod motion; // WIP
+
+// pub mod pdf; // WIP
+
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         #[cfg(feature = "audio")]
@@ -43,6 +49,10 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         #[cfg(feature = "image")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
         pub use super::image::_all::*;
+
+        //
+        // pub use super::motion::_all::*; // WIP
+        // pub use super::pdf::_all::*; // WIP
     }
     _crate_internals {
         pub(crate) use super::_DOC_MEDIA_MODULES;

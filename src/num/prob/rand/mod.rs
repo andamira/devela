@@ -1,6 +1,9 @@
 // devela::num::prob::rand
 //
-#![doc = crate::_DOC_NUM_PROB_RAND!()]
+#![doc = crate::_DOC_NUM_PROB_RAND!()] // public
+#![doc = crate::_doc!(modules: crate::num::prob; rand)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //!
 //! This module defines several types:
 //! - RNG algorithms specialized for 8-bit devices:
@@ -9,7 +12,7 @@
 //! - Classic *XorShift* algorithms and variations with a smaller state.
 //!   - [`XorShift8`], [`XorShift16`], [`XorShift32`], [`XorShift64`],
 //!     [`XorShift128`], [`XorShift128p`].
-//!   - [`Xoroshift128pp`].
+//!   - [`Xoroshiro128pp`].
 //!   - [`xorshift_custom!`].
 //! - *Permuted Congruential Generator* algorithms:
 //!     - [`Pcg32`].
@@ -38,9 +41,10 @@ crate::structural_mods! { // _mods, _reexports
         // };
     }
     _reexports {
+        #[doc(inline)]
         pub use devela_base_core::num::prob::rand::{
             Rand,
-            Pcg32,
+            Pcg32, define_pcg,
             XorShift128p,
         };
         #[doc(inline)]

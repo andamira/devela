@@ -1,6 +1,9 @@
 // devela::lang::prog::ffi::c
 //
-#![doc = crate::_DOC_LANG_PROG_FFI_C!()]
+#![doc = crate::_DOC_LANG_PROG_FFI_C!()] // public
+#![doc = crate::_doc!(modules: crate::lang::prog::ffi; c)]
+#![doc = crate::_doc!(flat:"lang")]
+#![doc = crate::_doc!(hr)]
 //!
 //! Provides C-compatible types, constants, and symbols used when calling
 //! C or POSIX APIs. These definitions mirror the C standard and POSIX

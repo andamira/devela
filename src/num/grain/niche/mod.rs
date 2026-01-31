@@ -1,7 +1,8 @@
 // devela::num::grain::niche
 //
-#![doc = crate::_DOC_NUM_GRAIN_NICHE!()]
-//!
+#![doc = crate::_DOC_NUM_GRAIN_NICHE!()] // public
+#![doc = crate::_doc!(modules: crate::num::grain; niche)]
+#![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(extends: num)]
 //!
 //! This module provides niche-constrained numeric representations and

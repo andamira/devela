@@ -1,6 +1,9 @@
 // devela_base_core::num::dom::real::float
 //
-#![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()]
+#![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()] // private
+#![doc = crate::_doc!(modules: crate::num::dom::real; float)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 pub(crate) mod _consts; // PI, TAU, SQRT2, …

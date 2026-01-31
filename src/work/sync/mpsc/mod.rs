@@ -1,7 +1,9 @@
 // devela::work::sync::mpsc
 //
-#![doc = crate::_DOC_WORK_SYNC_MPSC!()]
-// #![doc = crate::_doc!(extends: mpsc)] // IMPROVE
+#![doc = crate::_DOC_WORK_SYNC_MPSC!()] // public
+#![doc = crate::_doc!(modules: crate::work::sync; mpsc)]
+#![doc = crate::_doc!(flat:"work")]
+#![doc = crate::_doc!(extends: sync)]
 
 #[cfg(feature = "std")]
 mod _reexport_std; // SYMLINK to /src/base/std/src/work/sync/mpsc/_reexport.rs

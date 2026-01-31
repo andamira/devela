@@ -64,8 +64,8 @@
   [`FatPtr`]: crate::sys::mem::FatPtr
 
 <!-- license: Other compatible -->
-  [`Xyza8a`]: crate::num::rand::Xyza8a
-  [`Xyza8b`]: crate::num::rand::Xyza8b
+  [`Xyza8a`]: crate::num::prob::rand::Xyza8a
+  [`Xyza8b`]: crate::num::prob::rand::Xyza8b
   [M_apply]: crate::_doc::vendored::apply
   [`Hook`]: crate::code::result::Hook
   [`Morph`]: crate::code::result::Morph
@@ -77,4 +77,4 @@
   [M_pengyhash]: crate::_doc::vendored::pengyhash
   [`HasherPengy`]: crate::data::codec::hash::HasherPengy
   [`size_of_expr!`]: crate::sys::mem::size_of_expr
-  [`Xabc`]: crate::num::rand::Xabc
+  [`Xabc`]: crate::num::prob::rand::Xabc

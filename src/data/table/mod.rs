@@ -1,18 +1,11 @@
 // devela::data::table
 //
-//! Tabular and heterogeneous data processing.
-//!
-#![doc = crate::_doc!(modules: crate::data; table)] // RETHINK DESIGN
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_DATA_TABLE!()] // public
+#![doc = crate::_doc!(modules: crate::data; table)]
 #![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
 //
 
-pub mod value;
-
-crate::structural_mods! { // _pub_mods, _crate_internals
-    _pub_mods {
-        pub use super::value::_all::*;
-    }
-    _crate_internals {
-        pub(crate) use super::value::_crate_internals::*;
-    }
+crate::structural_mods! { //
 }

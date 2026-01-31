@@ -1,24 +1,23 @@
 // devela::phys
 //
-#![doc = crate::_DOC_PHYS!()]
+#![doc = crate::_DOC_PHYS!()] // public
 #![doc = crate::_DOC_PHYS_MODULES!()]
 #![doc = crate::_doc!(flat:"phys")]
-#![doc = crate::_doc!(newline)]
-//!
 #![doc = crate::_doc!(extends: time)]
 //
 // safety
 #![cfg_attr(feature = "safe_phys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
-    crate::_doc!(modules: crate; phys: astro, bio, chem, elec, mech, time, unit, wave);
+    crate::_doc!(modules: crate; phys: time, unit, wave); // astro, bio, chem, elec, geo, mech
 }
 
-pub mod bio;
-pub mod chem;
-pub mod elec;
+// pub mod astro;
+// pub mod bio;
+// pub mod chem;
+// pub mod elec;
 // pub mod geo;
-pub mod mech;
+// pub mod mech;
 pub mod time;
 
 #[cfg(feature = "unit")]
@@ -32,12 +31,13 @@ pub mod wave;
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
-            bio::_all::*,
-            chem::_all::*,
-            elec::_all::*,
+            // astro::_all::*,
+            // bio::_all::*,
+            // chem::_all::*,
+            // elec::_all::*,
             // geo::_all::*,
+            // mech::_all::*,
             time::_all::*,
-            mech::_all::*,
         };
         #[cfg(feature = "unit")]
         pub use super::unit::_all::*;

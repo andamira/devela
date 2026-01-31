@@ -1,13 +1,12 @@
 // devela::code::error
 //
-#![doc = crate::_DOC_CODE_ERROR!()]
-//!
+#![doc = crate::_DOC_CODE_ERROR!()] // public
 #![doc = crate::_doc!(modules: crate::code; error)]
 #![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(extends: backtrace, error)]
 //!
 //! Re-exports the error and result types defined in other modules and crates.
 //!
-#![doc = crate::_doc!(extends: backtrace, error)]
 //
 
 mod _reexport_core; // SYMLINK to /src/base/core/src/code/error/_reexport.rs
@@ -32,7 +31,7 @@ crate::structural_mods! { // _reexports
             NotAvailable,
         };
 
-        /* intra-crate */
+        /* intra-crate */ // RETHINK
 
         #[doc(inline)]
         #[cfg(feature = "image")]

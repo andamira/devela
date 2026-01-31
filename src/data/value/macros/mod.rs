@@ -1,4 +1,4 @@
-// devela::data::table::value::macros
+// devela::data::value::macros
 //
 //! Defines macros for generating `DataValue*`, `DataType*` & `DataRaw*` items.
 //

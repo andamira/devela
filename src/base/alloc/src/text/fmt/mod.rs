@@ -1,7 +1,9 @@
 // devela_base_alloc::text::fmt
 //
-#![doc = crate::_DOC_TEXT_FMT!()]
-// #![doc = crate::doc_!(extends: fmt)]
+#![doc = crate::_DOC_TEXT_FMT!()] // public
+#![doc = crate::_doc!(modules: crate::text; fmt)]
+#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(extends: fmt)]
 //
 
 mod _reexport; // SYMLINK from /src/text/fmt/_reexport_alloc.rs

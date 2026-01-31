@@ -1,9 +1,8 @@
 // devela::ui
 //
-#![doc = crate::_DOC_UI!()]
+#![doc = crate::_DOC_UI!()] // public, root
 #![doc = crate::_DOC_UI_MODULES!()]
 #![doc = crate::_doc!(flat:"ui")]
-#![doc = crate::_doc!(newline)]
 #![doc = crate::_QUO_UI!()]
 //
 // safety

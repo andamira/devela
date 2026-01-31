@@ -1,6 +1,9 @@
 // devela::num::dom::real::float
 //
-#![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()]
+#![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()] // private
+#![doc = crate::_doc!(modules: crate::num::dom::real; float)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _reexport_core; // SYMLINK to /src/base/core/src/num/dom/real/float/_reexport.rs

@@ -1,6 +1,10 @@
 // devela_base_alloc::data::bit
 //
-#![doc = crate::_DOC_DATA_BIT!()]
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_DATA_BIT!()] // private
+#![doc = crate::_doc!(modules: crate::data; bit)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod _wip_vec; // WIP

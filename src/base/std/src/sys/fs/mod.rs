@@ -1,6 +1,9 @@
 // devela_base_std::sys::fs
 //
-#![doc = crate::_DOC_SYS_FS!()]
+#![doc = crate::_DOC_SYS_FS!()] // public
+#![doc = crate::_doc!(modules: crate::sys; fs)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: fs, path)]
 //
 
 mod _reexport;

@@ -1,7 +1,8 @@
 // devela::work::thread
 //
-#![doc = crate::_DOC_WORK_THREAD!()]
-//!
+#![doc = crate::_DOC_WORK_THREAD!()] // public
+#![doc = crate::_doc!(modules: crate::work; thread)]
+#![doc = crate::_doc!(flat:"work")]
 #![doc = crate::_doc!(extends: thread)]
 //
 

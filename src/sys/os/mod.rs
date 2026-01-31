@@ -1,14 +1,14 @@
 // devela::sys::os
 //
-#![doc = crate::_DOC_SYS_OS!()]
+#![doc = crate::_DOC_SYS_OS!()] // public
 #![doc = crate::_doc!(modules: crate::sys; os: linux)]
-#![doc = crate::_doc!(newline)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: os)]
 //!
 //! Kernel-backed or virtualized environments that define the core capability
 //! surfaces available to applications. This includes native OS layers
 //! (Linux, macOS, Windows), compatibility layers (libc), and sandboxed
 //! host environments such as browser runtimes.
-#![doc = crate::_doc!(extends: os)]
 //
 // OSes: (https://doc.rust-lang.org/beta/rustc/platform-support.html)
 // - https://motor-os.org/ | https://github.com/moturus/motor-os

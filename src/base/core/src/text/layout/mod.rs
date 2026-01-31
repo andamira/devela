@@ -1,7 +1,9 @@
 // devela_base_core::text::layout
 //
-#![doc = crate::_DOC_TEXT_LAYOUT!()]
-//!
+#![doc = crate::_DOC_TEXT_LAYOUT!()] // public
+#![doc = crate::_doc!(modules: crate::text; layout)]
+#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(hr)]
 //
 
 #[cfg(test)]

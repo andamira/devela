@@ -1,9 +1,8 @@
 // devela::work::future
 //
-#![doc = crate::_DOC_WORK_FUTURE!()]
-// #![doc = crate::_doc!(modules: crate::work; future)]
-// #![doc = crate::_doc!(newline)]
-//!
+#![doc = crate::_DOC_WORK_FUTURE!()] // public
+#![doc = crate::_doc!(modules: crate::work; future)]
+#![doc = crate::_doc!(flat:"work")]
 #![doc = crate::_doc!(extends: future, task)]
 //!
 //! See also the fundamental [`async`] and [`await`] keywords and the

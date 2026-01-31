@@ -1,6 +1,9 @@
 // devela_base_core::num::fin::logic
 //
-#![doc = crate::_DOC_NUM_FIN_LOGIC!()]
+#![doc = crate::_DOC_NUM_FIN_LOGIC!()] // public
+#![doc = crate::_doc!(modules: crate::num::fin; logic)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod bool; // ConstBool, False, True

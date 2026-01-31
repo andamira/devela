@@ -1,6 +1,10 @@
 // devela::sys::hw
 //
-#![doc = crate::_DOC_SYS_HW!()]
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_SYS_HW!()] // public
+#![doc = crate::_doc!(modules: crate::sys; hw)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod camera; //

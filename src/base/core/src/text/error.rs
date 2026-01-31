@@ -1,6 +1,9 @@
-// devela_base_core::text::errors
+// devela_base_core::text::error
 //
-//! Text-related errors.
+#![doc = crate::_DOC_TEXT_ERROR!()] // public
+#![doc = crate::_doc!(modules: crate::text; error)]
+#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(hr)]
 //
 // TOC
 // - individual text-related error types:

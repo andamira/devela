@@ -1,10 +1,9 @@
 // devela_base_core::num::dom
 //
-#![doc = crate::_DOC_NUM_DOM!()]
+#![doc = crate::_DOC_NUM_DOM!()] // public
 #![doc = crate::_doc!(modules: crate::num; dom: int, real)]
 #![doc = crate::_doc!(flat:"num")]
-//!
-#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _internals; // impl_ops!, upcasted_op! TODO:RENAME

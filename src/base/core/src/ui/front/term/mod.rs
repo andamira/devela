@@ -1,6 +1,9 @@
 // devela_base_core::ui::front::term
 //
-//! UI terminal functionality.
+#![doc = crate::_DOC_UI_FRONT_TERM!()] // public
+#![doc = crate::_doc!(modules: crate::ui; front)]
+#![doc = crate::_doc!(flat:"ui")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod size; // TermSize

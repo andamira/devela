@@ -1,10 +1,9 @@
 // devela::data::uid
 //
-#![doc = crate::_DOC_DATA_UID!()]
-#![doc = crate::_doc!(br+lf)]
+#![doc = crate::_DOC_DATA_UID!()] // public
 #![doc = crate::_doc!(modules: crate::data; uid)]
 #![doc = crate::_doc!(flat:"data")]
-//!
+#![doc = crate::_doc!(hr)]
 #![doc = crate::_QUO_DATA_UID!()]
 //!
 //! Includes utilities for managing unique identifiers such as sequential IDs,

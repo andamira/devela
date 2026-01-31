@@ -1,6 +1,9 @@
-// devela::sys::hw::audio
+// devela::sys::device::audio
 //
-//! Audio device interfaces.
+#![doc = crate::_DOC_DEVICE_AUDIO!()] // public
+#![doc = crate::_doc!(modules: crate::sys::device; audio)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(hr)]
 //
 // Access to hardware endpoints for input and output,
 // including backend bindings for ALSA, JACK, Pulse,
@@ -14,9 +17,8 @@
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{
-            // alsa::*,
-            // pulse::*,
-        };
+        // #[cfg(all(feature = "audio", feature = "unsafe_syscall", feature = "std"))]
+        // pub use super::alsa::*;
+        // pub use super::pulse::*;
     }
 }

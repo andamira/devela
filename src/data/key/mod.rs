@@ -1,14 +1,13 @@
 // devela::data::key
 //
-#![doc = crate::_DOC_DATA_KEY!()]
-#![doc = crate::_doc!(br+lf)]
+#![doc = crate::_DOC_DATA_KEY!()] // public
 #![doc = crate::_doc!(modules: crate::data; key)]
 #![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(extends: collections)]
 //!
 //! Provides tools for mapping, indexing, and efficiently organizing data
 //! through unique keys, including maps, sets, and other key-value structures.
 //!
-#![doc = crate::_doc!(extends: collections)]
 //
 
 #[cfg(feature = "alloc")]

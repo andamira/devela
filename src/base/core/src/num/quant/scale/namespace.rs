@@ -1,4 +1,4 @@
-// devela_base_core::num::quant::scale
+// devela_base_core::num::quant::scale::namespace
 //
 //! Defines [`Scale`]
 //
@@ -170,77 +170,3 @@ mod tests {
     #[test]
     fn scale_wrap() {}
 }
-
-/* clipboard */
-
-/*
-///
-// ±PROS:
-// -
-// ±CONS:
-// -
-*/
-
-/*
-
-/// 1 Baseline: 64-Bit Intermediate (Safe for ≤32-Bit Values)
-// ±PROS:
-// - Works for all integer types ≤64-bit.
-// - No floating-point, minimal precision loss.
-// ±CONS:
-// - Overflow risk: Fails if (omax - omin) * (v - imin) exceeds u64 (e.g., scaling u32 with large ranges).
-// - Inefficient for u8/i8 (unnecessary upcasting).
-fn scale<T>(v: T, imin: T, imax: T, omin: T, omax: T) -> T
-where
-    T: Copy + Into<u64> + TryFrom<u64>,
-{
-    let v = v.into();
-    let imin = imin.into();
-    let imax = imax.into();
-    let omin = omin.into();
-    let omax = omax.into();
-
-    let scaled = (v - imin) * (omax - omin) / (imax - imin);
-    (scaled + omin).try_into().unwrap_or_else(|_| omax)
-}
-
-
-/// 2. Fixed-Point (Precision-Configurable)
-// ±PROS:
-// - Tunable precision (precision_bits).
-// - Efficient for small types (no 64-bit ops).
-// ±CONS:
-// - Precision loss if precision_bits too low.
-// - Still overflows if (omax - omin) << precision_bits exceeds type.
-fn scale_fixed<T>(v: T, imin: T, imax: T, omin: T, omax: T, precision_bits: u32) -> T
-where
-    T: IntOps + Shl<u32, Output = T> + Shr<u32, Output = T>,
-{
-    let range_ratio = (omax - omin) << precision_bits / (imax - imin);
-    let scaled = (v - imin) * range_ratio >> precision_bits;
-    scaled + omin
-}
-
-
-/// 3. Saturated Arithmetic (Overflow-Protected)
-// ±PROS:
-// - Never panics (strictly safe).
-// - Good for adversarial inputs.
-// ±CONS:
-// - Precision loss: Saturates early on large ranges.
-fn scale_saturating<T: Saturating>(v: T, imin: T, imax: T, omin: T, omax: T) -> T {
-    let scaled = (v - imin).saturating_mul(omax - omin) / (imax - imin);
-    scaled.saturating_add(omin)
-}
-
-/// 4. . 128-Bit Intermediate (For 64-Bit Values)
-// ±PROS:
-// - Handles full u64/i64 ranges.
-// ±CONS:
-// - Slower on non-128-bit platforms (emulated math).
-fn scale_128bit<T: Into<u128>>(v: T, imin: T, imax: T, omin: T, omax: T) -> T {
-    let scaled = (v - imin) as u128 * (omax - omin) as u128 / (imax - imin) as u128;
-    (scaled + omin as u128) as T
-}
-
-*/

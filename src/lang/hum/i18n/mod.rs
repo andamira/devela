@@ -1,7 +1,10 @@
 // devela::hum::i18n
 //
-//! Internationalization and localization support.
-//!
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_LANG_HUM_I18N!()] // public
+#![doc = crate::_doc!(modules: crate::lang::hum; i18n)]
+#![doc = crate::_doc!(flat:"lang")]
+#![doc = crate::_doc!(hr)]
 //! Utilities for translating and adapting software to different languages and regions.
 //
 

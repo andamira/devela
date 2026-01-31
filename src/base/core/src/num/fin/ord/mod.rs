@@ -1,6 +1,9 @@
 // devela_base_core::num::fin::ord
 //
-#![doc = crate::_DOC_NUM_FIN_ORD!()]
+#![doc = crate::_DOC_NUM_FIN_ORD!()] // public
+#![doc = crate::_doc!(modules: crate::num::fin; ord)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _reexport; // SYMLINK from /src/num/fin/ord/_reexport_core.rs

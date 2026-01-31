@@ -120,8 +120,8 @@ Root modules & public sub-modules features:
   [`image`]:      crate::media::image
   [`video`]:      crate::media::video
 [`num`]:          crate::num
-  [`logic`]:      crate::num::logic
-  [`rand`]:       crate::num::rand
+  [`logic`]:      crate::num::fin::logic
+  [`rand`]:       crate::num::prob::rand
 [`phys`]:         crate::phys
   [`time`]:       crate::phys::time
 [`run`]:          crate::run

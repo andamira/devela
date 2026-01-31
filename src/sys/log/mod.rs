@@ -1,6 +1,9 @@
 // devela::sys::log
 //
-#![doc = crate::_DOC_SYS_LOG!()]
+#![doc = crate::_DOC_SYS_LOG!()] // public
+#![doc = crate::_doc!(modules: crate::sys; log)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _reexport_dep; // ::log::*

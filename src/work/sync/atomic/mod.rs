@@ -1,7 +1,8 @@
 // devela::work::sync::atomic
 //
-#![doc = crate::_DOC_WORK_SYNC_ATOMIC!()]
-//!
+#![doc = crate::_DOC_WORK_SYNC_ATOMIC!()] // public
+#![doc = crate::_doc!(modules: crate::work::sync; atomic)]
+#![doc = crate::_doc!(flat:"work")]
 #![doc = crate::_doc!(extends: sync)]
 //
 // IMPROVE: move _reexport_dep to base_core

@@ -1,9 +1,8 @@
 // devela::run
 //
-#![doc = crate::_DOC_RUN!()]
+#![doc = crate::_DOC_RUN!()] // public, root
 #![doc = crate::_DOC_RUN_MODULES!()]
 #![doc = crate::_doc!(flat:"run")]
-#![doc = crate::_doc!(newline)]
 #![doc = crate::_QUO_RUN!()]
 //!
 //

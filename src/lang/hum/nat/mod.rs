@@ -1,6 +1,10 @@
 // devela::lang::hum::nat
 //
-//! Natural human languages.
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_LANG_HUM_NAT!()] // public
+#![doc = crate::_doc!(modules: crate::lang::hum; nat)]
+#![doc = crate::_doc!(flat:"lang")]
+#![doc = crate::_doc!(hr)]
 //
 
 // WIPZONE

@@ -1,10 +1,8 @@
 // devela::code::marker
 //
-#![doc = crate::_DOC_CODE_MARKER!()]
-//!
+#![doc = crate::_DOC_CODE_MARKER!()] // public
 #![doc = crate::_doc!(modules: crate::code; marker)]
 #![doc = crate::_doc!(flat:"code")]
-//!
 #![doc = crate::_doc!(extends: marker)]
 //
 

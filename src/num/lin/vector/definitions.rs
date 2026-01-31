@@ -46,7 +46,7 @@ pub type Vector3d<T> = Vector<T, 3>;
 
 /* trait */
 
-#[doc = crate::_TAG_WIP!()]
+#[doc = crate::_tags!(wip)]
 #[doc = crate::_tags!(lin)]
 /// A common trait for all vectors.
 #[doc = crate::_doc_location!("num/lin")]

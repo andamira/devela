@@ -1,7 +1,9 @@
 // revela::ui::back
 //
-//! UI backends.
+#![doc = crate::_DOC_UI_BACK!()] // public
 #![doc = crate::_doc!(modules: crate::ui; back: miniquad, crossterm)]
+#![doc = crate::_doc!(flat:"ui")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod definition;

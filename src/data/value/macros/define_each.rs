@@ -1,4 +1,4 @@
-// devela::data::table::value::macros::define_each
+// devela::data::value::macros::define_each
 //
 //!
 //

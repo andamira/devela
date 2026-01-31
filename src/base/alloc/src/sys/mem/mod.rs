@@ -1,6 +1,9 @@
 // devela_base_alloc::sys::mem
 //
-#![doc = crate::_DOC_SYS_MEM!()]
+#![doc = crate::_DOC_SYS_MEM!()] // public
+#![doc = crate::_doc!(modules: crate::sys; mem)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
 //
 
 mod _reexport; // SYMLINK from /src/sys/mem/_reexport_alloc.rs

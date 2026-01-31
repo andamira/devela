@@ -1,6 +1,9 @@
 // devela_base_core::data::bit
 //
-#![doc = crate::_DOC_DATA_BIT!()]
+#![doc = crate::_DOC_DATA_BIT!()] // private
+#![doc = crate::_doc!(modules: crate::data; bit)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod budget; // BitBudget

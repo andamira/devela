@@ -1,6 +1,9 @@
 // devela::data::list::stack
 //
-#![doc = crate::_DOC_DATA_LIST_STACK!()]
+#![doc = crate::_DOC_DATA_LIST_STACK!()] // public
+#![doc = crate::_doc!(modules: crate::data::list; stack)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
 //!
 //! Elements are added and removed from the same end,
 //! commonly referred to as the "top" of the stack.

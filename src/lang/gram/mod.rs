@@ -1,8 +1,7 @@
 // devela::lang::hum::gram
 //
-#![doc = crate::_TAG_WIP!()]
-//! Grammar and structural theory.
-#![doc = crate::_doc!(br+lf)]
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_LANG_HUM_GRAM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; gram)]
 #![doc = crate::_doc!(flat:"lang")]
 //!

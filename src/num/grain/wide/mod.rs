@@ -1,7 +1,8 @@
 // devela::num::grain::wide
 //
-#![doc = crate::_DOC_NUM_GRAIN_WIDE!()]
-//!
+#![doc = crate::_DOC_NUM_GRAIN_WIDE!()] // public
+#![doc = crate::_doc!(modules: crate::num::grain; wide)]
+#![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(extends: simd)]
 //
 

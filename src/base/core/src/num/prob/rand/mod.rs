@@ -1,7 +1,9 @@
 // devela_base_core::num::prob::rand
 //
-#![doc = crate::_DOC_NUM_PROB_RAND!()]
-//!
+#![doc = crate::_DOC_NUM_PROB_RAND!()] // public
+#![doc = crate::_doc!(modules: crate::num::prob; rand)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod noise; // Structured deterministic randomness

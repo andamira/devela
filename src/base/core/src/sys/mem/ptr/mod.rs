@@ -1,6 +1,9 @@
 // devela_base_core::sys::mem::ptr
 //
-#![doc = crate::_DOC_SYS_MEM_PTR!()]
+#![doc = crate::_DOC_SYS_MEM_PTR!()] // private
+#![doc = crate::_doc!(modules: crate::sys::mem; ptr)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: ptr)]
 //
 
 mod _reexport; // SYMLINK from /src/sys/mem/ptr/_reexport_core.rs

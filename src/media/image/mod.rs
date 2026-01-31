@@ -1,8 +1,9 @@
 // devela::media::image
 //
-//! Image manipulation.
+#![doc = crate::_DOC_MEDIA_IMAGE!()] // public
 #![doc = crate::_doc!(modules: crate::media; image: sixel)]
 #![doc = crate::_doc!(flat:"media")]
+#![doc = crate::_doc!(hr)]
 //
 // safety
 #![cfg_attr(feature = "safe_image", forbid(unsafe_code))]

@@ -1,4 +1,4 @@
-// devela::data::table::value::macros::impls
+// devela::data::value::macros::impls
 //
 //! Implements the traits: `DataValue`*, `DataType`*, `DataRaw`*.
 //

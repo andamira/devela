@@ -1,9 +1,9 @@
 // devela::media::font
 //
-//! Font functionality.
-#![doc = crate::_doc!(lf)]
+#![doc = crate::_DOC_MEDIA_FONT!()] // public
 #![doc = crate::_doc!(modules: crate::media; font)]
 #![doc = crate::_doc!(flat:"media")]
+#![doc = crate::_doc!(hr)]
 //
 // safety
 #![cfg_attr(feature = "safe_font", forbid(unsafe_code))]
