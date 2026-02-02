@@ -23,6 +23,9 @@
 
 #![forbid(unsafe_code)]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
+// ----------------------------
+// `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
+#![cfg_attr(nightly_stable_later, feature(proc_macro_value))]
 
 extern crate self as devela_base_macros;
 macro_rules! __crate_name {

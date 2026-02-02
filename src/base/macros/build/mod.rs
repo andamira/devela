@@ -25,9 +25,9 @@ const CRATE_NAME: &str = "devela_base_macros";
 
 /* build modules */
 
-// mod alias; // SYMLINK to /build/main/alias.rs
+mod alias; // SYMLINK to /build/main/alias.rs
 mod environment; // SYMLINK to /build/main/environment.rs
-// mod features; // SYMLINK to /build/main/features.rs
+mod features; // SYMLINK to /build/main/features.rs
 
 fn main() {
     if let Err(err) = try_main() {
@@ -39,10 +39,9 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     #[cfg(feature = "__dbg")]
     Build::println_start_end("base_macros build script", true);
 
-    // alias::main()?;
-
+    alias::main()?;
     environment::main()?;
-    // features::main()?;
+    features::main()?;
 
     #[cfg(feature = "__dbg")]
     Build::println_start_end("base_macros build script", false);

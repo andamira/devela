@@ -16,6 +16,9 @@ pub(crate) static ENABLED_CARGO_FEATURES: OnceLock<HashSet<String>> = OnceLock::
 pub(crate) static ENABLED_CFG_FLAGS: OnceLock<HashSet<String>> = OnceLock::new();
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
+    println!("cargo:rerun-if-env-changed=CARGO_ENCODED_RUSTFLAGS");
+    println!("cargo:rerun-if-env-changed=RUSTDOCFLAGS");
+
     #[cfg(feature = "__dbg")]
     Build::println_heading("Features:");
 
@@ -45,21 +48,44 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         ));
     }
 
-    /* Collect enabled cfg flags from both RUSTFLAGS and RUSTDOCFLAGS */
-
-    // WARNING: `RUSTDOCFLAGS` changes may not take effect immediately!
-    // ------------------------------------------------------------------
-    // Unlike `RUSTFLAGS`, changes to `RUSTDOCFLAGS` may not always trigger a rebuild.
-    // Cargo caches documentation builds, so previously compiled flags might still apply.
+    /* Collect *semantic* cfg names (`--cfg <name>`) from compiler flags */
+    //
+    // IMPORTANT:
+    // - Build scripts receive raw compiler arguments, not parsed cfgs.
+    // - We must explicitly extract `--cfg <name>` pairs.
+    // - `cargo:rustc-cfg` only affects the current crate.
+    // - For consistent behavior, we parse both
+    //   - CARGO_ENCODED_RUSTFLAGS (build)
+    //   - RUSTDOCFLAGS (docs)
+    //
+    // * NOTE on docs:
+    // * - Changes to RUSTDOCFLAGS may not take effect immediately.
+    // * - Cargo caches documentation builds, so previously compiled flags may persist.
     ENABLED_CFG_FLAGS.get_or_init(|| {
-        let mut cfg_flags = HashSet::new();
-        if let Ok(value) = env::var("RUSTDOCFLAGS") {
-            cfg_flags.extend(value.split_whitespace().map(String::from));
-        }
+        let mut cfgs = HashSet::new();
+        // rustc / cargo build
         if let Ok(value) = env::var("CARGO_ENCODED_RUSTFLAGS") {
-            cfg_flags.extend(value.split('\x1f').map(String::from));
+            let mut it = value.split('\x1f');
+            while let Some(arg) = it.next() {
+                if arg == "--cfg" {
+                    if let Some(name) = it.next() {
+                        cfgs.insert(name.to_string());
+                    }
+                }
+            }
         }
-        cfg_flags
+        // rustdoc
+        if let Ok(value) = env::var("RUSTDOCFLAGS") {
+            let mut it = value.split_whitespace();
+            while let Some(arg) = it.next() {
+                if arg == "--cfg" {
+                    if let Some(name) = it.next() {
+                        cfgs.insert(name.to_string());
+                    }
+                }
+            }
+        }
+        cfgs
     });
     #[cfg(feature = "__dbg")]
     if let Some(f) = ENABLED_CFG_FLAGS.get() {
@@ -72,7 +98,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
             filtered_flags
         ));
     }
-    // Enable reflection flags based on cfg flags (e.g., RUSTFLAGS)
+    // Enable reflection flags based on detected cfgs (`--cfg <name>`)
     let _enabled_flags_from_cfg_flags = reflection::set_ref_flags_from_cfg_flags();
     #[cfg(feature = "__dbg")]
     {
@@ -121,7 +147,7 @@ mod reflection {
                 "nightly_doc", "nightly_float", "nightly_simd",
             //
             "nightly_stable",
-                "nightly_stable_1_93", "nightly_stable_1_94", "nightly_stable_1_95",
+                "nightly_stable_1_94", "nightly_stable_1_95", "nightly_stable_1_96",
                 "nightly_stable_later",
         ],
         cfg_flags: &["nightly"],
@@ -136,7 +162,7 @@ mod reflection {
         };
         pub const FLAGS_NIGHTLY_STABLE: FlagsFlags = FlagsFlags {
             auto_flags: &[
-                "nightly_stable_1_92", "nightly_stable_1_94", "nightly_stable_1_95",
+                "nightly_stable_1_94", "nightly_stable_1_95", "nightly_stable_1_96",
                 "nightly_stable_later",
             ],
             cfg_flags: &["nightly_stable"],
@@ -150,7 +176,7 @@ mod reflection {
                     "nightly_doc", "nightly_float", "nightly_simd",
                 //
                 "nightly_stable",
-                    "nightly_stable_1_93", "nightly_stable_1_94", "nightly_stable_1_95",
+                    "nightly_stable_1_94", "nightly_stable_1_95", "nightly_stable_1_96",
                     "nightly_stable_later",
             ],
         };
