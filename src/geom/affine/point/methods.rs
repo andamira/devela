@@ -1,4 +1,4 @@
-// devela::geom::shape::point::methods
+// devela::geom::affine::point::methods
 //
 //!
 //

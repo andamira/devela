@@ -7,9 +7,9 @@
 //
 
 mod boundary; // Boundary1d, Boundary2d, Boundary3d
+// mod nav; // Spatial navigation and facing semantics.
 // mod octant; // WIP
 mod orientation; // Orientation
-// mod nav; // WIP
 // mod radial_sectors;
 
 crate::structural_mods! { // _mods
@@ -17,9 +17,9 @@ crate::structural_mods! { // _mods
         #[doc(inline)]
         pub use super::{
             boundary::*,
+            // nav::_all::*, // WIP
             // octant::*, // WIP
             orientation::*,
-            // nav::_all::*, // WIP
             // radial_sectors::*;
         };
     }

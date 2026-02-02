@@ -15,7 +15,7 @@
 Devela is a growing development layer built around coherence rather than completeness.<br/>
 It uses Rust as its foundation, while staying open to other paradigms and tools.
 
-- The project evolves by exploration. Ideas are tested, kept, reshaped, or discarded.
+- The project evolves by exploration; ideas are always being refactored.
 - Some parts are mature and stable; others are still taking shape.
 - Most of the library lives between sketch and refinement.
 

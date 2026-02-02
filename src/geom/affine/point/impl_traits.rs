@@ -1,4 +1,4 @@
-// devela::geom::shape::point::core_traits
+// devela::geom::affine::point::core_traits
 //
 //!
 //

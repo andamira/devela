@@ -1,4 +1,4 @@
-// devela::geom::shape::point
+// devela::geom::affine::point
 //
 //! A geometrical point.
 //

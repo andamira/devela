@@ -62,11 +62,15 @@ For example, `num··` will be set if any num submodule feature is enabled.
 Root modules & public sub-modules features:
 - [`code`]
 - [`data`]
-  - [`hash`]:
+  - `codec`:
+    - [`hash`]:
 - [`geom`]: geometry.
-  - `linear`: linear algebra
-  - `metric`:
-  - `shape`:
+  - [`affine`]:
+  - [`dir`]:
+  - [`fig`]:
+  - [`metric`]:
+  - [`rel`]:
+  - [`space`]:
 - [`lang`]:
   - `ffi`: glsl, js.
 - [`media`]
@@ -77,16 +81,20 @@ Root modules & public sub-modules features:
   - [`image`]:
   - [`video`]:
 - [`num`]:
-  - [`logic`]:
-  - [`rand`]: random number generators.
-  - `unit`: unit prefixes.
+  - [`dom`]:
+  - [`fin`]:
+  - [`grain`]:
+  - [`lin`]:
+  - [`prob`]:
+  - [`quant`]:
+  - [`symb`]:
 - [`phys`]:
   - `bio`:
   - `chem`:
   - `elec`:
   - `mech`:
   - [`time`]
-  - `unit`:
+  - [`unit`]:
   - [`wave`][crate::phys::wave]: wavelets.
 - [`run`]:
   - `frame`:
@@ -111,6 +119,12 @@ Root modules & public sub-modules features:
 [`data`]:         crate::data
   [`hash`]:       crate::data::codec::hash
 [`geom`]:         crate::geom
+  [`affine`]:     crate::geom::affine
+  [`dir`]:        crate::geom::dir
+  [`fig`]:        crate::geom::fig
+  [`metric`]:     crate::geom::metric
+  [`rel`]:        crate::geom::rel
+  [`space`]:      crate::geom::space
 [`lang`]:         crate::lang
 [`media`]:        crate::media
   [`audio`]:      crate::media::audio
@@ -120,8 +134,12 @@ Root modules & public sub-modules features:
   [`image`]:      crate::media::image
   [`video`]:      crate::media::video
 [`num`]:          crate::num
-  [`logic`]:      crate::num::fin::logic
-  [`rand`]:       crate::num::prob::rand
+  [`dom`]:        crate::num::fin::logic
+  [`fin`]:        crate::num::prob::fin
+  [`lin`]:        crate::num::prob::lin
+  [`prob`]:       crate::num::prob::prob
+  [`quant`]:      crate::num::prob::quant
+  [`symb`]:       crate::num::prob::symb
 [`phys`]:         crate::phys
   [`time`]:       crate::phys::time
 [`run`]:          crate::run

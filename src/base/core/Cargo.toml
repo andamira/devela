@@ -39,8 +39,13 @@ __std = [] # remove no_std
 #* Module features *#
 
 all = [ # enables all the 12 modules (and their submodules)
-	"media", "num", "text", "ui", # "code", "data", "geom", "lang", "phys", "run", "sys", "work",
+	"geom", "media", "num", "text", "ui", # "code", "data", "lang", "phys", "run", "sys", "work",
 ]
+# data = ["hash"]
+	# codec
+		# hash = []
+geom = ["fig"]
+	fig = []
 media = ["audio", "color", "draw", "font", "image"]
 	audio = []
 	color = []

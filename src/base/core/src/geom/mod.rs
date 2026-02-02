@@ -9,26 +9,30 @@
 #![cfg_attr(base_safe_num, forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
-    crate::_doc!(modules: crate; geom: affine, dir, metric, rel); // field, space
+    crate::_doc!(modules: crate; geom: affine, dir, metric, rel, space);
 }
 
 mod _helpers;
 
-pub mod dir; // Orientation
-// pub mod field; // WIP
-pub mod metric; // Distance, Extent, Orientation, Position...
+pub mod affine; // Structure of space under translation and linear combination.
+pub mod dir; // Spatial navigation and facing semantics.
+pub mod metric; // Measurement of space: distances, extents, and magnitudes.
+pub mod rel; // Spatial predicates and semantic relations between geometric entities.
+pub mod space; // Global organization, decomposition, and structure of space.
 
-// WIP
-// pub mod affine; // structure without measurement
-// pub mod rel; // spatial meaning without quantity
+#[cfg(feature = "fig")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "fig")))]
+pub mod fig; // Concrete geometric figures and objects.
 
 crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals
     _pub_mods {
         #[doc(inline)]
         pub use super::{
+            affine::_all::*,
             dir::_all::*,
-            // field::_all::*, // WIP
             metric::_all::*,
+            rel::_all::*,
+            space::_all::*,
         };
     }
     _crate_internals {

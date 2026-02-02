@@ -229,12 +229,13 @@ all = [ # enables all the 12 modules (and their submodules)
 code = []
 data = ["hash"]
 	# codec
-		hash = [] # HashFnv, HashFx, HashPengy
+		hash = [] # HashFnv, HashPengy
 		# crypto = []
 	# list = []
-geom = ["shape"] # geometry
-	# dir = [] # orientation
-	shape = []
+geom = ["fig"]
+	# dir = []
+	fig = ["devela_base_core/fig"]
+	# space
 lang = ["glsl", "js"]
 	# hum = []
 		# i18n = []
@@ -261,9 +262,6 @@ num = ["int", "lin", "rand"]
 		rand = ["devela_base_core/rand", "devela_base_alloc?/rand", "devela_base_std?/rand"]
 	# symb = []
 phys = ["time", "unit", "wave"]
-	# bio
-	# chem
-	# mech
 	time = []
 	unit = []
 	wave = [] # wavelets

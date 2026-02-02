@@ -290,6 +290,8 @@ Many feature gates are removed in order to make most features make always availa
 ---
 ## geom
 - make `num::geom` a new `geom` root module.
+- new modules: `affine`, `rel`, `space`.
+- rename `shape` to `fig`, as well as the related feature.
 
 ### dir
 - new module.
