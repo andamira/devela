@@ -9,11 +9,17 @@
 mod pin; // Pinned, ::core::pin::*
 mod ptr; // FatPtr, Ptr, ::core::ptr::*
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             pin::_all::*,
             ptr::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use devela_base_core::sys::mem::bound::{
+            CacheAlign, MemAligned, cswap,
         };
     }
 }

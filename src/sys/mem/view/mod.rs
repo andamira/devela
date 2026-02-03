@@ -6,14 +6,20 @@
 #![doc = crate::_doc!(extends: borrow, slice)]
 //
 
-mod borrow; // Mow
+mod borrow; // Borrowed data and ownership-relaxed views.
 mod slice; // Slice, SliceExt
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             borrow::_all::*,
             slice::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use devela_base_core::sys::mem::{
+            MaybeByte,
         };
     }
 }

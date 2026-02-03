@@ -1,7 +1,7 @@
 // devela_base_core::sys::os
 //
 #![doc = crate::_DOC_SYS_OS!()] // public
-#![doc = crate::_doc!(modules: crate::sys; os: fd)]
+#![doc = crate::_doc!(modules: crate::sys; os: fd)] // browser, windows
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: os)]
 //

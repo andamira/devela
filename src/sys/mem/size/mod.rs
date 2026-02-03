@@ -17,6 +17,8 @@ crate::structural_mods! { // _mods, _reexports, _hidden
         pub use devela_base_core::sys::mem::{
             ByteSized, size_of_expr
         };
+        #[doc(inline)]
+        pub use crate::Sized;
     }
     _hidden {
         pub use devela_base_core::sys::mem::__size_of_expr;
