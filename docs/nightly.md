@@ -44,6 +44,7 @@ See also
 
 - 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
 - 1.95: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
+- 1.95: ` `[TryFrom<integer> for bool](https://github.com/rust-lang/rust/pull/147400)
 
 # 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
 <!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
@@ -149,6 +150,10 @@ See also
   - [Lazy Type Aliases (LTA)](https://github.com/orgs/rust-lang/projects/59/)
 - other
   - [type alias impl trait (TAIT) stabilization](https://github.com/orgs/rust-lang/projects/22/)
+  - [safer transmute](https://github.com/rust-lang/rfcs/pull/2981)
+    - https://github.com/jswrenn/project-safe-transmute/blob/rfc/rfcs/0000-safe-transmute.md#safe-transmute-rfc
+    - https://jswrenn.github.io/safer-transmute-rustdoc/rfc/core/convert/transmute/index.html
+    - https://jswrenn.github.io/transmutation-foundation/
 
 # Pitfalls
 - [const_evaluatable_unchecked](https://github.com/rust-lang/rust/issues/76200)
