@@ -12,17 +12,12 @@ mod _reexport_core; // SYMLINK to /src/base/core/src/sys/mem/_reexport.rs
 #[cfg(feature = "alloc")]
 mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/sys/mem/_reexport.rs
 
-mod alloc; // Alloc, ::alloc::alloc::*
-mod borrow; // Mow
+mod alloc; // Memory allocation, arenas, and ownership-backed storage.
+mod bound; // Addressing, alignment, and movement constraints over memory.
 mod ext; // MemExt
-mod pin; // Pinned, ::core::pin::*
-mod ptr; // Ptr, ::core::ptr::*
+mod layout; // Memory layout, bit-validity, and representation invariants.
 mod size; // size_of_expr!, BitSized, ByteSized,
-mod slice; // Slice, SliceExt
-mod storage; // Bare, BareBox, Boxed, Storage
-
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
-mod pod; // MemPod
+mod view; // Typed and byte-level views over memory.
 
 #[cfg(feature = "std")]
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
@@ -34,18 +29,12 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         pub use super::{
             alloc::_all::*,
-            borrow::_all::*,
+            bound::_all::*,
             ext::*,
-            pin::_all::*,
-            ptr::_all::*,
+            layout::_all::*,
             size::_all::*,
-            slice::_all::*,
-            storage::*,
+            view::_all::*,
         };
-        #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
-        pub use super::pod::MemPod;
-
         #[cfg(feature = "std")]
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "unsafe_layout"))))]

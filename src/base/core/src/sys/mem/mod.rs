@@ -8,32 +8,24 @@
 
 mod _reexport; // SYMLINK from /src/sys/mem/_reexport_core.rs
 
-mod align; // CacheAlign, MemAligned
-mod arena; // ArenaBytes
-mod borrow;
-mod byte; // MaybeByte
-mod cswap; // cswap!
+mod alloc; // Allocation strategies and ownership-backed storage abstractions.
+mod bound; // Addressing, alignment, and movement constraints over memory.
+mod layout; // Memory layout, bit-validity, and representation invariants.
 mod namespace; // Mem
-mod pin;
-mod ptr;
 mod size; // size_of_expr!, BitSized, ByteSized,
-mod slice; // Slice
+mod view; // Typed and byte-level views over memory.
 
 pub mod cell;
 
 crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         pub use super::{
-            align::_all::*,
-            arena::_all::*,
-            borrow::_all::*,
-            byte::*,
-            cswap::*,
+            alloc::_all::*,
+            bound::_all::*,
+            layout::_all::*,
             namespace::*,
-            pin::_all::*,
-            ptr::_all::*,
             size::_all::*,
-            slice::_all::*,
+            view::_all::*,
         };
     }
     _pub_mods {
@@ -46,7 +38,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     }
     _hidden {
         pub use super::{
-            arena::_hidden::*,
+            alloc::_hidden::*,
             size::_hidden::*,
         };
     }

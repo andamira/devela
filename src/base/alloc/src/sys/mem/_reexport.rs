@@ -3,10 +3,10 @@
 //!
 //
 
-// use crate::Boxed; // TODO
-use crate::{_TAG_LIFETIME, _TAG_MEM, _reexport};
+// use crate::Boxed; // TODO:FIX
+use crate::{_reexport, _tags};
 
-_reexport! { rust: alloc::boxed, location: "sys::mem", tag: _TAG_MEM!(),
+_reexport! { rust: alloc::boxed, location: "sys::mem", tag: _tags!(mem),
     doc: "A pointer type that uniquely owns a heap allocation of type `T`.
 
 It is used as the underlying [`Storage`][super::Storage] for the [`Boxed`] marker
@@ -19,11 +19,11 @@ possible for other types to opt in to move-from-deref.
     Box
 }
 
-_reexport! { rust: alloc::rc, location: "sys::mem", tag: _TAG_MEM!() _TAG_LIFETIME!(),
+_reexport! { rust: alloc::rc, location: "sys::mem", tag: _tags!(mem lifetime),
     doc: "A single-threaded reference-counting pointer.",
     Rc
 }
-_reexport! { rust: alloc::rc, location: "sys::mem", tag: _TAG_MEM!() _TAG_LIFETIME!(),
+_reexport! { rust: alloc::rc, location: "sys::mem", tag: _tags!(mem lifetime),
     doc: "A version of `Rc` that holds a non-owning ref to the managed allocation.",
     @Weak as RcWeak
 }

@@ -7,14 +7,17 @@
 // - macro bit_sized!
 // - trait impls
 
-use crate::{
-    Ansi, AnsiColor, AnsiColor3, AnsiColor8, BareBox, ByteSized, CharAscii, Duration,
-    GraphemeNonul, Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128,
-    NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
-    Ordering, PhantomData, PhantomPinned, StringNonul,
-};
+#[cfg(feature = "grapheme")]
+use crate::GraphemeNonul;
+#[cfg(feature = "term")]
+use crate::{Ansi, AnsiColor, AnsiColor3, AnsiColor8};
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
+use crate::{
+    BareBox, ByteSized, CharAscii, Duration, Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32,
+    NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64,
+    NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, StringNonul,
+};
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // use crate::{StringU16, StringU32, GraphemeU8, StringU8};
@@ -215,7 +218,9 @@ bit_sized![= 64; for AtomicF64];
 bit_sized![= 128; for AtomicI128, AtomicU128];
 
 bit_sized![= 7; for CharAscii];
-bit_sized![<const LEN: usize> = LEN; for GraphemeNonul<LEN>, StringNonul<LEN>];
+#[cfg(feature = "grapheme")]
+bit_sized![<const LEN: usize> = LEN; for GraphemeNonul<LEN>];
+bit_sized![<const LEN: usize> = LEN; for StringNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, GraphemeU8<LEN>];
 // bit_sized![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];
@@ -250,7 +255,10 @@ bit_sized![array = 112 * len for T: 112 * len: 1, 2, 4, 8, 16]; // *
 bit_sized![array = 120 * len for T: 120 * len: 1, 2, 4, 8, 16]; // *
 bit_sized![array = 128 * len for T: 128 * len: 1, 2, 4, 8, 16];
 
-bit_sized![= 0; for Ansi];
-bit_sized![= 3; for AnsiColor3];
-bit_sized![= 8; for AnsiColor8];
-bit_sized![= 24; for AnsiColor]; // NOTE: 24 as union, 32 with discriminant
+#[cfg(feature = "term")]
+crate::items! {
+    bit_sized![= 0; for Ansi];
+    bit_sized![= 3; for AnsiColor3];
+    bit_sized![= 8; for AnsiColor8];
+    bit_sized![= 24; for AnsiColor]; // NOTE: 24 as union, 32 with discriminant
+}

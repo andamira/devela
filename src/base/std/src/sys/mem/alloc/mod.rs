@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: alloc)]
 //
 
-mod _reexport; // SYMLINK from /src/sys/mem/alloc/_reexport_std.rs
+mod _reexport; // SYMLINK from /src/sys/mem/alloc/alloc/_reexport_std.rs
 
 crate::structural_mods! { // _reexports
     _reexports {

@@ -546,6 +546,11 @@ Many feature gates are removed in order to make most features make always availa
 - new alias: `MaybeByte`.
 - new types: `ExampleArena`, `ExampleArenaHandle`.
 - new macros: `define_arena`.
+- new submodules: `alloc`, `bound`, `layout`, `view`.
+- move previous submodules:
+  - `align`, `pin`, `ptr` inside `bound`.
+  - `alloc`, `arena`, `storage` inside `alloc`.
+  - `borrow`, `slice` inside `view`.
 - move to [base]:
   - macros: `cswap!`.
   - traits: `MemAligned`.

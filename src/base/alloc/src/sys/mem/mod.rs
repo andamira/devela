@@ -9,9 +9,6 @@
 mod _reexport; // SYMLINK from /src/sys/mem/_reexport_alloc.rs
 
 mod alloc;
-mod borrow;
-// mod pin;
-// mod ptr;
 
 // pub mod cell;
 
@@ -19,7 +16,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
         pub use super::{
             alloc::_all::*,
-            borrow::_all::*,
             // pin::_all::*,
             // ptr::_all::*,
         };
