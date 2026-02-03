@@ -315,7 +315,7 @@ Many feature gates are removed in order to make most features make always availa
 - rename `lang::ling` to `lang::hum`.
 - rename `lang::ling::grammar` to `lang::hum::gram`.
 - move `lang::i18n` to `lang::hum::i18n`.
-- new modules: `gram`, `prog`, `repr`, `sem`.
+- new modules: `disc`, `gram`, `prog`, `repr`, `sem`.
 - move `ffi` to `prog::ffi`.
 
 ### prog

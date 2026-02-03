@@ -13,6 +13,7 @@
 // mod comp; // composed relations
 // mod equiv; // semantic sameness
 // mod intent; // directedness
+// mod logic; // formal relations
 // mod polar; // polarity, stance
 // mod scope; // extent of meaning
 
@@ -23,6 +24,7 @@ crate::structural_mods! { // _mods
         //     comp::_all::*,
         //     equiv::_all::*,
         //     intent::_all::*,
+        //     logic::_all::*,
         //     polar::_all::*,
         //     scope::_all::*,
         // };

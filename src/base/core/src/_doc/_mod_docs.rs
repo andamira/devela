@@ -114,21 +114,23 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_GEOM_SPACE_TOPOL  = "Topological properties of space such as connectivity and boundaries.";
 
     // 4
-    _DOC_LANG            = "Language structure and meaning across domains.";
-    _DOC_LANG_HUM        = "Human linguistics and language theory.";
-    _DOC_LANG_HUM_ART    = "Artificial human languages.";
-    _DOC_LANG_HUM_GRAM   = "Grammar and structural theory.";
-    _DOC_LANG_HUM_I18N   = "Internationalization and localization support.";
-    _DOC_LANG_HUM_NAT    = "Natural human languages.";
-    _DOC_LANG_PROG       = "Programming languages.";
-    _DOC_LANG_PROG_FFI   = concat![$crate::_ABBR_FFI!(), " bindings and interoperability."];
-    _DOC_LANG_PROG_FFI_C =
+    _DOC_LANG               = "Language structure and meaning across domains.";
+    _DOC_LANG_DISC          = "Discourse and expression.";
+    _DOC_LANG_DISC_RETHORIC = "Rhetorical structures and stylistic devices.";
+    _DOC_LANG_HUM           = "Human linguistics and language theory.";
+    _DOC_LANG_HUM_ART       = "Artificial human languages.";
+    _DOC_LANG_HUM_GRAM      = "Grammar and structural theory.";
+    _DOC_LANG_HUM_I18N      = "Internationalization and localization support.";
+    _DOC_LANG_HUM_NAT       = "Natural human languages.";
+    _DOC_LANG_PROG          = "Programming languages.";
+    _DOC_LANG_PROG_FFI      = concat![$crate::_ABBR_FFI!(), " bindings and interoperability."];
+    _DOC_LANG_PROG_FFI_C    =
         "<a href='https://en.wikipedia.org/wiki/C_(programming_language)'>C</a> interfacing.";
-    _DOC_LANG_REPR       = "Representation languages.";
-    _DOC_LANG_SEM        = "Semantic relations, independent of form and execution.";
+    _DOC_LANG_REPR          = "Representation languages.";
+    _DOC_LANG_SEM           = "Semantic relations, independent of form and execution.";
 
     // 5
-    _DOC_MEDIA           = "Multimedia functionality.";
+    _DOC_MEDIA           = "Media representation, processing, and synthesis.";
     _DOC_MEDIA_AUDIO     = "Audio functionality.";
     _DOC_MEDIA_COLOR     = "Chromatic functionality.";
     _DOC_MEDIA_DRAW      = "Drawing functionality.";
@@ -165,7 +167,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
     // 7
-    _DOC_PHYS             = "Physical units and measurement.";
+    _DOC_PHYS             = "Physical quantities, units, and models of the natural world.";
     _DOC_PHYS_ASTRO       = "Astronomy-related abstractions.";
     _DOC_PHYS_BIO         = "Biology-related abstractions.";
     _DOC_PHYS_CHEM        = "Chemistry-related abstractions.";
@@ -175,10 +177,10 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_PHYS_TIME        = "Time and calendar types and operations.";
     _DOC_PHYS_TIME_SOURCE = "Time sources.";
     _DOC_PHYS_UNIT        = "Physical units of measure and unit prefixes.";
-    _DOC_PHYS_WAVE        = "Wave primitives, wavelet.";
+    _DOC_PHYS_WAVE        = "Wave primitives, wavelets.";
 
     // 8
-    _DOC_RUN             = "Live execution coordination of time, frames, and setup.";
+    _DOC_RUN             = "Temporal coordination and orchestration of program execution.";
     _QUO_RUN             = "> Where execution exists, progresses, and becomes concrete.";
     _DOC_RUN_FRAME       = "The per-step execution envelope and state snapshot.";
     _DOC_RUN_SETUP       = "The committed configuration of a running environment.";
@@ -230,7 +232,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_STR        = "String types and related functionality.";
 
     // 11
-    _DOC_UI              = "User interface functionality.";
+    _DOC_UI              = "Interactive surfaces, input semantics, and presentation state.";
     _QUO_UI              = "> How humans interact with what exists.";
     _DOC_UI_BACK         = "User interface backends.";
     _DOC_UI_FRONT        = "User interface frontends.";
