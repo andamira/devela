@@ -17,7 +17,7 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std, alloc, no_std)
-#   - Module            (all, code, data, geom, lang, media, num, phys, run, sys, text, ui, work)
+#   - Module            (all, code, data, geom, lang, media, num, org, phys, run, sys, text, ui, work)
 #   - Safety            (safest, safe, unsafe, …)
 #   - Capability        (_*)
 #     - default         (_default, _max, _maxest)
@@ -153,7 +153,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 157/300 (143 remaining), 105 visible, 52 hidden
+[features] # 160/300 (141 remaining), 107 visible, 52 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -223,8 +223,10 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 #
 # In sync with ./tools/check.rs::SUB_MODULES
 
-all = [ # enables all the 12 modules (and their submodules)
-	"code", "data", "geom", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
+all = [ # enables all the 13 modules (and their submodules)
+	"code", "data", "geom", "lang",
+	"media", "num", "org", "phys",
+	"run", "sys", "text", "ui", "work",
 ]
 code = []
 data = ["hash"]
@@ -261,6 +263,8 @@ num = ["int", "lin", "rand"]
 	# prob
 		rand = ["devela_base_core/rand", "devela_base_alloc?/rand", "devela_base_std?/rand"]
 	# symb = []
+org = []
+	#
 phys = ["time", "unit", "wave"]
 	time = []
 	unit = []
@@ -324,8 +328,9 @@ safest = ["safe", "base_safe"] # forbids all `unsafe` in the workspace and all u
 
 safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
 	"devela_macros?/safe",
-	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num",
-	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
+	"safe_code", "safe_data", "safe_geom", "safe_lang",
+	"safe_media", "safe_num", "safe_org", "safe_phys",
+	"safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ]
 
 # activates safe enforcement in the [base] crates.
@@ -355,6 +360,7 @@ base_safe = [
 		safe_font = ["devela_base_core/safe_font"]
 		safe_image = ["devela_base_core/safe_image"]
 	safe_num = []
+	safe_org = []
 	safe_phys = ["safe_time"]
 		safe_time = []
 	safe_run = ["devela_base_core/safe_run"]
@@ -1006,7 +1012,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_stable_1_96)",
 			"cfg(nightly_stable_later)",
 	#
-	# Auto-enabled reflection flags from ./build/main/features.rs (21)
+	# Auto-enabled reflection flags from ./build/main/features.rs (22)
 	# --------------------------------------------------------------------------
 	# general: (4)
 	"cfg(unsafe··, safe··, nightly··, dep··)",
@@ -1022,6 +1028,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(media··)',
 	# num: (1)
 	'cfg(num··)',
+	# org: (1)
+	'cfg(org··)',
 	# phys: (1)
 	'cfg(phys··)',
 	# run: (1)

@@ -1,6 +1,6 @@
 // devela_base_core::lang::disc
 //
-#![doc = _tags!(wip)]
+#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_DISC!()] // public
 #![doc = crate::_doc!(modules: crate::lang; disc)]
 // argument, lyric, narrative, plot, rethoric, style

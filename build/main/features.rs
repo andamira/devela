@@ -236,6 +236,7 @@ mod reflection {
             "safe_media",
                 "safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
             "safe_num",
+            "safe_org",
             "safe_phys",
                 "safe_time",
             "safe_run",
@@ -296,6 +297,10 @@ mod reflection {
             "int",
             "rand",
         ]
+    };
+    pub const ORG: FlagsFeatures = FlagsFeatures {
+        ref_flags: &["org··"],
+        features: &["org"]
     };
     pub const PHYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["phys··"],
@@ -396,6 +401,7 @@ mod reflection {
             LANG, FFI,
             MEDIA,
             NUM,
+            ORG,
             PHYS,
             RUN,
             SYS, MEM,

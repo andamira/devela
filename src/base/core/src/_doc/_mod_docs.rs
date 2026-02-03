@@ -166,7 +166,9 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_QUANT_SCALE = "Scaling, remapping, and magnitude transformation of numeric values.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
-    // 7
+    _DOC_ORG             = "Organization of agents, roles, norms, and coordinated action.";
+
+    // 8
     _DOC_PHYS             = "Physical quantities, units, and models of the natural world.";
     _DOC_PHYS_ASTRO       = "Astronomy-related abstractions.";
     _DOC_PHYS_BIO         = "Biology-related abstractions.";
@@ -179,13 +181,13 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_PHYS_UNIT        = "Physical units of measure and unit prefixes.";
     _DOC_PHYS_WAVE        = "Wave primitives, wavelets.";
 
-    // 8
+    // 9
     _DOC_RUN             = "Temporal coordination and orchestration of program execution.";
     _QUO_RUN             = "> Where execution exists, progresses, and becomes concrete.";
     _DOC_RUN_FRAME       = "The per-step execution envelope and state snapshot.";
     _DOC_RUN_SETUP       = "The committed configuration of a running environment.";
 
-    // 9
+    // 10
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
     _DOC_SYS_DEVICE      = "Live system device interfaces.";
@@ -219,7 +221,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_OS_LINUX    = "Linux-specific definitions.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
-    // 10
+    // 11
     _DOC_TEXT            = "Text types and processing.";
     _DOC_TEXT_ASCII      = "ASCII strings and characters.";
     _DOC_TEXT_CHAR       = "Unicode scalar types and operations.";
@@ -231,7 +233,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_PARSE      = "Unstructured string parsing.";
     _DOC_TEXT_STR        = "String types and related functionality.";
 
-    // 11
+    // 12
     _DOC_UI              = "Interactive surfaces, input semantics, and presentation state.";
     _QUO_UI              = "> How humans interact with what exists.";
     _DOC_UI_BACK         = "User interface backends.";
@@ -239,7 +241,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_UI_FRONT_TERM   = "UI terminal functionality.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
 
-    // 12
+    // 13
     _DOC_WORK             = "Work management and concurrency.";
     _DOC_WORK_FUTURE      = "Asynchronous execution.";
     _DOC_WORK_PROCESS     = "Native process management.";
