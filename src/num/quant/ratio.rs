@@ -5,6 +5,7 @@
 // IMPROVE
 // - to Frac
 
+#[cfg(feature = "num")]
 use crate::{NumConst, Rem};
 
 // use crate::Frac;
@@ -41,6 +42,8 @@ impl<N, D> Ratio<N, D> {
         Self { n, d }
     }
     /// Creates a new `Ratio<N, D>`, ensuring `d != 0`.
+    #[cfg(feature = "num")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "num")))]
     pub fn new_checked(n: N, d: D) -> Option<Self> where D: NumConst<Num = D> + PartialEq {
         let new = Self::new(n, d);
         if let Some(zero) = D::NUM_ZERO {
@@ -66,6 +69,8 @@ impl<N: Clone, D: Clone> Ratio<N, D> {
     ///
     /// Returns `None` if `NUM_ZERO` is not defined for `N`, meaning divisibility
     /// cannot be determined.
+    #[cfg(feature = "num")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "num")))]
     pub fn is_whole(&self) -> Option<bool>
     where
         N: NumConst<Num = N> + Rem<D, Output = N> + PartialEq,

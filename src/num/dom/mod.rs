@@ -10,6 +10,8 @@
 mod frac;
 // mod laws;
 // mod ops;
+
+#[cfg(feature = "num")]
 mod traits; // Num, NumRef, (NumConst)
 
 pub mod int; // NumInt[Ref], prime_number_theorem, (Divisor, GcdReturn, Int[Alloc], [i|u]size_[down|up])
@@ -23,6 +25,9 @@ crate::structural_mods! { // _mods, _pub_mods
             frac::_all::*,
             // laws::_all::*,
             // ops::_all::*,
+        };
+        #[cfg(feature = "num")]
+        pub use super::{
             traits::_all::*,
         };
     }
