@@ -7,21 +7,16 @@
 #![cfg_attr(nightly_doc, doc(cfg(any(doc, test))))]
 
 #[doc(hidden)] // TEMP
-/// Build-time metaprogramming and code generation utilities.
-///
-/// Contains logic executed during `cargo build`, including:
-/// - Feature flag management
-/// - Compile-time environment inspection
-/// - Procedural code generation
 #[cfg(feature = "std")]
 #[path = "../../build/main/mod.rs"]
-pub mod build;
+pub mod build; // Build-time configuration and code generation.
 
-/// Documented examples.
-pub mod examples;
+#[cfg(feature = "_docs_examples")]
+pub mod examples; // Documented examples
 
-/// Procedural macros.
 pub mod macros {
+    #![doc = crate::_tags!(procedural_macro)]
+    //!Procedural macros.
     #![doc = include_str!("../base/macros/src/Index.md")]
 }
 

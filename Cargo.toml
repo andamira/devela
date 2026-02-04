@@ -153,7 +153,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 160/300 (141 remaining), 107 visible, 52 hidden
+[features] # 160/300 (140 remaining), 107 visible, 53 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -474,6 +474,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
 _docs_min = [ # the minimum capabilities to document every item
+	"_docs_examples",
 	# workspace
 	"devela_base_core/_docs_min",
 	"devela_macros",
@@ -484,6 +485,8 @@ _docs_min = [ # the minimum capabilities to document every item
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 ]
+	_docs_examples = []
+
 _docs_nodep = [ # + std + unsafe
 	"_docs_min", "std", "unsafe", "__dbg",
 	"devela_base_core/_docs_nodep", "devela_base_alloc?/_docs", "devela_base_std?/_docs",

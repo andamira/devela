@@ -35,7 +35,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
     _reexports {
         #[doc(inline)]
         pub use devela_base_core::data::list::define_bufline;
-        #[cfg(feature = "_docs_min")]
+        #[cfg(feature = "_docs_examples")]
         pub use devela_base_core::data::list::BufLineExample;
     }
 }

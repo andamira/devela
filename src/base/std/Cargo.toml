@@ -86,6 +86,8 @@ unsafe = [
 
 #* Capability features *#
 # default = ["std"]
+
+	_docs_examples = []
 _docs = ["unsafe"]
 
 [dependencies] # 2 required

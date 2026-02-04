@@ -27,7 +27,7 @@ crate::structural_mods! { // _mods, _workspace_internals, _hidden
         };
         #[cfg(feature = "int")]
         pub use super::int::_all::*;
-        #[cfg(feature = "_docs_min")]
+        #[cfg(feature = "_docs_examples")]
         pub use super::divisor::DivisorExample;
     }
     _workspace_internals {

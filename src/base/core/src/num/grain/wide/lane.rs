@@ -8,7 +8,7 @@
 // - macro define_lane!
 // - tests
 
-#[cfg(feature = "_docs_min")]
+#[cfg(feature = "_docs_examples")]
 define_lane! {
     #[doc = crate::_tags!(example code num)]
     /// Example fixed-width pack of 4 × `i32` lanes.

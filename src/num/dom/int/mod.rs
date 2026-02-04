@@ -26,7 +26,7 @@ crate::structural_mods! { // _mods, _reexports
             define_divisor,
             GcdReturn,
         };
-        #[cfg(feature = "_docs_min")]
+        #[cfg(feature = "_docs_examples")]
         pub use devela_base_core::num::dom::int::{
             DivisorExample,
         };

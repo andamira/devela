@@ -1,5 +1,7 @@
 // devela::_doc::examples
 //
+#![doc = crate::_tags!(example)]
+//! Documented examples.
 //!
 //! These examples generate example structures for documentation purposes.
 //

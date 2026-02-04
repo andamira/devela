@@ -14,7 +14,7 @@ crate::structural_mods! { // _reexports, _hidden
 
         #[doc(inline)]
         pub use devela_base_core::num::grain::define_lane;
-        #[cfg(feature = "_docs_min")]
+        #[cfg(feature = "_docs_examples")]
         pub use devela_base_core::num::grain::Lane4_i32Example;
     }
     _hidden {

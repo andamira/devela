@@ -39,7 +39,7 @@ __std = [] # remove no_std
 #* Module features *#
 
 all = [ # enables all the 12 modules (and their submodules)
-	"geom", "media", "num", "text", "ui", # "code", "data", "lang", "phys", "run", "sys", "work",
+	"geom","media","num","text","ui", # "code","data","lang","org","phys","run","sys","work",
 ]
 # data = ["hash"]
 	# codec
@@ -119,9 +119,11 @@ unsafe = [
 #* Capability features *#
 
 _docs_min = [ # the minimum capabilities to document every item
+	"_docs_examples",
 	# modules
 	"all",
 ]
+	_docs_examples = []
 _docs_nodep = ["_docs_min"]
 _docs = ["_docs_nodep", "dep_all"]
 

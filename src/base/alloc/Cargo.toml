@@ -89,6 +89,8 @@ unsafe = [
 
 #* Capability features *#
 default = ["alloc"]
+
+	_docs_examples = []
 _docs = ["unsafe"]
 
 #* Dependency features (optional external dependencies) *#

@@ -1,6 +1,11 @@
 // devela::build
 //
-//! Build-time code generation and configuration.
+//! Build-time configuration and code generation.
+//!
+//! Contains logic executed during `cargo build`, including:
+//! - Feature flag management
+//! - Compile-time environment inspection
+//! - Procedural code generation
 //!
 #![doc = include_str!("./Mod.md")]
 //

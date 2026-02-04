@@ -3,17 +3,17 @@
 //! Defines the [`define_static_map!`] macro.
 //
 
-#[cfg(doc)]
+#[cfg(feature = "_docs_examples")]
 define_static_map! {
     #[doc = crate::_tags!(example data_structure)]
     pub const MapStaticConstU8Example, KEY: u8
 }
-#[cfg(doc)]
+#[cfg(feature = "_docs_examples")]
 define_static_map! {
     #[doc = crate::_tags!(example data_structure)]
     pub MapStaticU16Example, KEY: u16
 }
-#[cfg(doc)]
+#[cfg(feature = "_docs_examples")]
 define_static_map! {
     #[doc = crate::_tags!(example data_structure)]
     pub typeid MapStaticTypeIdExample

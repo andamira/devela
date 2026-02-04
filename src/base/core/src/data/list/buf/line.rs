@@ -3,7 +3,7 @@
 //! Defines [`define_bufline!`].
 //
 
-#[cfg(any(doc, test, feature = "_docs_min"))]
+#[cfg(any(doc, test, feature = "_docs_examples"))]
 define_bufline!(
     #[doc = crate::_tags!(example data_structure)]
     /// A linear buffer type over contiguous storage, made with [define_bufline!].
