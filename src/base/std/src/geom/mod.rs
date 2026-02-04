@@ -7,7 +7,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-#![cfg_attr(base_safe_geom, forbid(unsafe_geom))]
+#![cfg_attr(feature = "safe_geom", forbid(unsafe_geom))]
 // docs
 crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
     crate::_doc!(modules: crate; geom); // metric, shape, field

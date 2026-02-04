@@ -19,7 +19,7 @@ Otherwise it aliases [`u8`].";
 /// A byte type that may be uninitialized depending on features.
 #[doc = crate::_doc_location!("sys/mem")]
 #[doc = _DOC_MAYBE_BYTE!()]
-#[cfg(any(base_safe_mem, not(feature = "unsafe_array")))] // safe
+#[cfg(any(feature = "safe_mem", not(feature = "unsafe_array")))] // safe
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 pub type MaybeByte = u8;
 
@@ -27,6 +27,6 @@ pub type MaybeByte = u8;
 /// A byte type that may be uninitialized depending on features.
 #[doc = crate::_doc_location!("sys/mem")]
 #[doc = _DOC_MAYBE_BYTE!()]
-#[cfg(all(not(base_safe_mem), feature = "unsafe_array"))] // unsafe
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_array"))] // unsafe
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
 pub type MaybeByte = MaybeUninit<u8>;

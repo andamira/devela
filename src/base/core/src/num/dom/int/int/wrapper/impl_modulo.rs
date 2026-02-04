@@ -44,9 +44,9 @@ macro_rules! upcastop {
     // this is used for checked versions
     (err $op:tt $fn:ident($lhs:expr, $rhs:expr) $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             { $lhs $op $rhs }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
 
@@ -59,9 +59,9 @@ macro_rules! upcastop {
     // this is used for checked versions that don't need to calculate cycles
     (reduce_err $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             { $lhs $op $rhs }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
 
@@ -74,9 +74,9 @@ macro_rules! upcastop {
     // this is used for unchecked versions that don't need to calculate cycles
     (reduce $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             { $lhs $op $rhs }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
 

@@ -48,7 +48,7 @@ impl<T> Slice<T> {
     /// See also `Ptr::`[`slice_from_raw_parts`][crate::Ptr::slice_from_raw_parts].
     #[inline(always)]
     #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-    #[cfg(all(not(base_safe_mem), unsafe··))]
+    #[cfg(all(not(feature = "safe_mem"), unsafe··))]
     pub const unsafe fn from_raw_parts<'a>(data: *const T, len: usize) -> &'a [T] {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_raw_parts(data, len) }
@@ -62,7 +62,7 @@ impl<T> Slice<T> {
     /// See also `Ptr::`[`slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
     #[inline(always)]
     #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-    #[cfg(all(not(base_safe_mem), unsafe··))]
+    #[cfg(all(not(feature = "safe_mem"), unsafe··))]
     pub const unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_raw_parts_mut(data, len) }

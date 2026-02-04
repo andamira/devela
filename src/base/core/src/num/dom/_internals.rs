@@ -149,11 +149,11 @@ macro_rules! upcasted_op {
     // if we've not upcasted, do checked operation and return err on overflow
     add_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             {
                 $lhs + $rhs
             }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_add($rhs)
@@ -168,11 +168,11 @@ macro_rules! upcasted_op {
     };
     (mul_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             {
                 $lhs * $rhs
             }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_mul($rhs)
@@ -192,11 +192,11 @@ macro_rules! upcasted_op {
     // then do checked operation and return err on overflow
     reduced_add_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             {
                 $lhs + $rhs
             }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_add($rhs)
@@ -214,11 +214,11 @@ macro_rules! upcasted_op {
     // if we've not upcasted, just reduce the sumands with the given $modulus
     reduced_add($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             {
                 $lhs + $rhs
             }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_add($rhs)
@@ -230,11 +230,11 @@ macro_rules! upcasted_op {
     };
     (reduced_mul_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             {
                 $lhs * $rhs
             }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_mul($rhs)
@@ -250,11 +250,11 @@ macro_rules! upcasted_op {
     };
     (reduced_mul($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(base_safe, not(feature = "unsafe_hint")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
             {
                 $lhs * $rhs
             }
-            #[cfg(all(not(base_safe), feature = "unsafe_hint"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
             unsafe {
                 $lhs.unchecked_mul($rhs)

@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: ffi)]
 //
 // safety
-#![cfg_attr(base_safe_lang, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_lang", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_LANG_MODULES =
     crate::_doc!(modules: crate; lang: hum, prog, repr, sem); // disc, gram

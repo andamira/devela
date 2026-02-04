@@ -39,7 +39,7 @@ define_bufline!(
     /// ---
     pub struct BufLineExample: (crate::NonValueU8<{u8::MAX}>);
     array,
-    #[cfg(all(not(base_safe_mem), feature = "unsafe_array"))]
+    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
     uninit,
     option, slice_mut, slice,
@@ -877,20 +877,22 @@ macro_rules! define_bufline {
                 Self::_new(storage, Self::_usize_to_idx(N))
             }
 
-            /// Creates a buffer from an array of options and an explicit logical length,
-            /// without validating the linear invariant.
-            ///
-            /// # Panics
-            /// Panics in debug if `len > CAP`.
-            ///
-            /// # Safety
-            /// Caller must guarantee:
-            /// - `len <= CAP`
-            /// - `storage[0..len]` are `Some`
-            /// - `storage[len..CAP]` are `None`
-            pub const unsafe fn from_array_unchecked(array: [Option<T>; CAP], len: $I) -> Self {
-                debug_assert!(Self::_idx_ge(len, Self::CAP));
-                Self::_new(array, $crate::MaybeNiche(len))
+            $crate::_devela_policy! { safe:"safe_data", unsafe:"unsafe_array",
+                /// Creates a buffer from an array of options and an explicit logical length,
+                /// without validating the linear invariant.
+                ///
+                /// # Panics
+                /// Panics in debug if `len > CAP`.
+                ///
+                /// # Safety
+                /// Caller must guarantee:
+                /// - `len <= CAP`
+                /// - `storage[0..len]` are `Some`
+                /// - `storage[len..CAP]` are `None`
+                pub const unsafe fn from_array_unchecked(array: [Option<T>; CAP], len: $I) -> Self {
+                    debug_assert!(Self::_idx_ge(len, Self::CAP));
+                    Self::_new(array, $crate::MaybeNiche(len))
+                }
             }
 
             /// Creates a buffer from an array of options, validating the linear invariant.

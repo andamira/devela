@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: cmp, num, simd)]
 //
 // safety
-#![cfg_attr(base_safe_num, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_NUM_MODULES =
     crate::_doc!(modules: crate; num: dom, prob); // error, fin, grain, lin, quant, symb

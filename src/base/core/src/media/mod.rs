@@ -7,7 +7,7 @@
 // lints
 #![cfg_attr(doc, allow(rustdoc::broken_intra_doc_links))]
 // safety
-#![cfg_attr(base_safe_media, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_MEDIA_MODULES =
     crate::_doc!(modules: crate; media: audio, color, image); // draw, font, video

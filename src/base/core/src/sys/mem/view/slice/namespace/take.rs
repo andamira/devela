@@ -40,7 +40,7 @@ impl<T> Slice<T> {
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
     #[inline(always)]
-    #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_first_unchecked(slice: &[T], n: usize) -> &[T] {
         unsafe { slice.split_at_unchecked(n).0 }
@@ -80,7 +80,7 @@ impl<T> Slice<T> {
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
     #[inline(always)]
-    #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_first_mut_unchecked(slice: &mut [T], n: usize) -> &mut [T] {
         unsafe { slice.split_at_mut_unchecked(n).0 }
@@ -113,9 +113,9 @@ impl<T> Slice<T> {
     pub const fn take_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(base_safe_mem, not(feature = "unsafe_slice")))]
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
                 return Some(slice.split_at(index).1);
-                #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_unchecked(index).1 });
             }
@@ -131,7 +131,7 @@ impl<T> Slice<T> {
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
     #[inline(always)]
-    #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_last_unchecked(slice: &[T], n: usize) -> &[T] {
         unsafe { slice.split_at_unchecked(slice.len() - n).1 }
@@ -162,9 +162,9 @@ impl<T> Slice<T> {
     pub const fn take_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(base_safe_mem, not(feature = "unsafe_slice")))]
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
                 return Some(slice.split_at_mut(index).1);
-                #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_mut_unchecked(index).1 });
             }
@@ -180,7 +180,7 @@ impl<T> Slice<T> {
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
     #[inline(always)]
-    #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_last_mut_unchecked(slice: &mut [T], n: usize) -> &mut [T] {
         unsafe { slice.split_at_mut_unchecked(slice.len() - n).1 }
@@ -213,9 +213,9 @@ impl<T> Slice<T> {
     pub const fn take_omit_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(base_safe_mem, not(feature = "unsafe_slice")))]
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
                 return Some(slice.split_at(index).0);
-                #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_unchecked(index).0 });
             }
@@ -231,7 +231,7 @@ impl<T> Slice<T> {
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
     #[inline(always)]
-    #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const fn take_omit_last_unchecked(slice: &[T], n: usize) -> &[T] {
         unsafe { slice.split_at_unchecked(slice.len() - n).0 }
@@ -262,9 +262,9 @@ impl<T> Slice<T> {
     pub const fn take_omit_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
-                #[cfg(any(base_safe_mem, not(feature = "unsafe_slice")))]
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
                 return Some(slice.split_at_mut(index).0);
-                #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
                 // SAFETY: `n` is checked to be within bounds and valid
                 return Some(unsafe { slice.split_at_mut_unchecked(index).0 });
             }
@@ -280,7 +280,7 @@ impl<T> Slice<T> {
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
     #[inline(always)]
-    #[cfg(all(not(base_safe_mem), feature = "unsafe_slice"))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const fn take_omit_last_mut_unchecked(slice: &mut [T], n: usize) -> &mut [T] {
         unsafe { slice.split_at_mut_unchecked(slice.len() - n).0 }

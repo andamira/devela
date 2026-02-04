@@ -216,9 +216,9 @@ impl<'a> FmtWriter<'a> {
     #[inline(always)]
     fn get_str_from_slice(slice: &[u8], valid_len: usize) -> &str {
         let valid_range = &slice[..valid_len]; // could be faster in debug builds (non-const)
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         { from_utf8(valid_range).unwrap() } // could use dep_simdutf8 (non-const)
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we only convert the confirmed valid utf-8 length
         { unsafe { Str::from_utf8_unchecked(valid_range) } }
     }
@@ -226,9 +226,9 @@ impl<'a> FmtWriter<'a> {
     #[inline(always)]
     const fn get_str_from_slice_const(slice: &[u8], valid_len: usize) -> &str {
         let valid_range = slice![slice, ..valid_len];
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         { crate::unwrap![ok Str::from_utf8(valid_range)] }
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we only convert the confirmed valid utf-8 length
         { unsafe { Str::from_utf8_unchecked(valid_range) } }
     }

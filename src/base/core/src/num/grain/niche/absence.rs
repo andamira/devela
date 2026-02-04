@@ -180,7 +180,7 @@ macro_rules! impl_maybe {
             /// For niche-optimized types, callers must ensure that
             /// `value` satisfies the variant's validity constraints.
             #[must_use] #[inline(always)]
-            #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_niche")))]
             pub const unsafe fn from_prim_unchecked(primitive: $prim) -> Self {
                 // NonNiche, NonValue, NonZero
@@ -212,9 +212,9 @@ macro_rules! impl_maybe {
                 const fn _lossy $(<const $V: $v>)? (v: $prim) -> $T {
                     if v == 0 { <$T>::MIN }
                     else {
-                        #[cfg(any(base_safe_num, not(feature = "unsafe_niche")))] // safe
+                        #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))] // safe
                         { unwrap![some <$T>::new(v)] }
-                        #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))] // unsafe
+                        #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))] // unsafe
                         { unwrap![some_guaranteed_or_ub <$T>::new(v)] }
                     }
                 }
@@ -378,7 +378,7 @@ impl<T: Copy> NonNiche<T> {
     /// This is always safe since `NonNiche` doesn't have any validity constraints.
     /// Method provided for API completion.
     #[must_use] #[inline(always)]
-    #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_niche")))]
     pub const unsafe fn new_unchecked(value: T) -> Self { Self(value) }
 

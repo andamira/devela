@@ -6,6 +6,7 @@
 //
 
 mod _env; // __dbg!, __std!, _std_core!
+mod _policy; // _devela_policy!
 mod _reexport_macro; // _reexport!
 mod _use; // _use!
 
@@ -13,11 +14,14 @@ pub mod _dep;
 
 crate::structural_mods! { // _crate_internals, _workspace_internals
     _crate_internals {
-        pub(crate) use super::_env::*;
+        pub(crate) use super::{
+            _env::*,
+        };
     }
     _workspace_internals {
         pub use super::{
             _use::_use,
+            _policy::_devela_policy,
             _reexport_macro::_reexport,
         };
     }

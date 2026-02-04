@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: future, process, sync, task, thread)]
 //
 // safety
-#![cfg_attr(base_safe_work, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_WORK_MODULES =
     crate::_doc!(modules: crate; work: process, sync, thread); // future

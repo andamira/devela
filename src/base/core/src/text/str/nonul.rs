@@ -250,14 +250,14 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
     #[must_use] #[inline(always)]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
-        #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
         return slice![mut &mut self.arr, ..len];
 
-        #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
         // SAFETY: we ensure to uphold a valid length
         unsafe { slice![mut_unchecked &mut self.arr, ..len] }
     }
@@ -267,10 +267,10 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Makes use of the `unsafe_slice` feature if enabled.
     #[must_use]
     pub const fn as_str(&self) -> &str {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_slice")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
         return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
-        #[cfg(all(not(base_safe_text), feature = "unsafe_slice"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
         // SAFETY: we ensure to contain only valid UTF-8
         unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
     }
@@ -282,7 +282,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and that it doesn't contain any `NUL` characters before the borrow
     /// ends and the underlying `str` is used.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
         // SAFETY: we ensure to contain only valid UTF-8
@@ -699,7 +699,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
     #[inline(always)]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_array_unchecked(bytes: [u8; CAP]) -> Self {
         Self { arr: bytes }

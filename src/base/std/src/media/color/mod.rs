@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-#![cfg_attr(base_safe_color, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
 mod gamma; // Gamma
 

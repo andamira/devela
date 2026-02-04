@@ -38,9 +38,9 @@ impl Char<u16> {
     pub const fn decode_surrogate_pair(high: u16, low: u16) -> Option<char> {
         if Char(high).is_surrogate_high() && Char(low).is_surrogate_low() {
             let code = 0x10000 + (((high as u32 - 0xD800) << 10) | (low as u32 - 0xDC00));
-            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             return char::from_u32(code);
-            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             Some(unsafe { char::from_u32_unchecked(code) })
         } else {
             None

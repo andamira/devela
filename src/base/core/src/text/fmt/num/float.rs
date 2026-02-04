@@ -170,9 +170,9 @@ macro_rules! impl_fmtnum_float {
 
             #[inline(always)]
             const fn _as_str(slice: &[u8]) -> &str {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))] // safe
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))] // safe
                 return crate::unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)];
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))] // unsafe
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))] // unsafe
                 // SAFETY: the ASCII bytes are always valid utf-8
                 unsafe { Str::from_utf8_unchecked(slice) }
             }

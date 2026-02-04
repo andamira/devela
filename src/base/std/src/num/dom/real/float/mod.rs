@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-#![cfg_attr(base_safe_num, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
 mod wrapper; // FloatStd
 

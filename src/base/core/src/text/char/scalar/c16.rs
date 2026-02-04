@@ -18,10 +18,10 @@ impl char16 {
     // SAFETY: this is not marked as unsafe because it's only used privately
     // for a few selected operations in this module and also by CharIter.
     pub(crate) const fn new_unchecked(value: u16) -> char16 {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         return Self(crate::unwrap![some NonSurrogateU16::new(value)]);
 
-        #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe {
             char16(NonSurrogateU16::new_unchecked(value))
         }
@@ -91,14 +91,14 @@ impl char16 {
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_char_ascii(self) -> Result<CharAscii, MismatchedCapacity> {
         if Char(self.to_scalar()).is_ascii() {
-            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = CharAscii::from_u8(self.0.get() as u8) {
                 return Ok(c);
             } else {
                 unreachable![]
             }
 
-            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { CharAscii::from_u8_unchecked(self.0.get() as u8) });
         }
@@ -130,10 +130,10 @@ impl char16 {
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         if let Some(c) = char::from_u32(self.to_scalar()) { c } else { unreachable![] }
 
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we guarantee we contain a valid scalar value
         return unsafe { char::from_u32_unchecked(self.to_scalar()) };
     }

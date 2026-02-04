@@ -49,8 +49,7 @@ num = ["int", "rand"]
 	rand = ["devela_base_core/rand"]
 
 #* Safety features *#
-base_safe = ["devela_base_core/base_safe"]
-safest = ["safe", "base_safe"]
+safest = ["safe"]
 safe = [
 	"devela_base_core/safe", "safe_build",
 	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num",

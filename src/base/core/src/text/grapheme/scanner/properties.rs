@@ -169,7 +169,7 @@ impl GraphemeProps {
     /// # Features
     /// Uses the `unsafe_layout` feature to transmute instead of match.
     pub const fn gcb_property(self) -> GraphemePropCb {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_layout")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_layout")))]
         match self.raw & 0xf {
             0x00 => GraphemePropCb::None,
             0x01 => GraphemePropCb::CR,
@@ -188,7 +188,7 @@ impl GraphemeProps {
             0x0e => GraphemePropCb::Zwj,
             _ => unreachable!(), // mask ensures only 0x00-0x0E
         }
-        #[cfg(all(not(base_safe_text), feature = "unsafe_layout"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
         {
             let raw = self.raw & 0xf;
             // SAFETY: The low nibble of raw repr matches the GraphemePropCb repr.
@@ -201,7 +201,7 @@ impl GraphemeProps {
     /// # Features
     /// Uses the `unsafe_layout` feature to transmute instead of match.
     pub const fn incb_property(self) -> GraphemePropInCb {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_layout")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_layout")))]
         match self.raw & 0x30 {
             0x00 => GraphemePropInCb::None,
             0x10 => GraphemePropInCb::Consonant,
@@ -209,7 +209,7 @@ impl GraphemeProps {
             0x30 => GraphemePropInCb::Linker,
             _ => unreachable!(), // mask ensures only these values
         }
-        #[cfg(all(not(base_safe_text), feature = "unsafe_layout"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
         {
             let raw = self.raw & 0x30;
             // SAFETY: The selected bits of raw repr matches ththe GraphemePropInCb repr.

@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-// #![cfg_attr(base_safe_image, forbid(unsafe_code))] // no feature
+// #![cfg_attr(feature = "safe_image", forbid(unsafe_code))] // no feature
 
 /* image formats */
 

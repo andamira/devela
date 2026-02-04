@@ -51,10 +51,10 @@ macro_rules! impl_charu {
             /* private helper fns */
 
             const fn new_unchecked(value: u32) -> $name {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
                 return $name(unwrap![some $inner::new(value)]);
 
-                #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
                 unsafe {
                     $name($inner::new_unchecked(value))
                 }
@@ -211,7 +211,7 @@ macro_rules! impl_charu {
             ///
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
-            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_utf8_bytes_unchecked(bytes: &[u8]) -> $name {
                 let len = Char(bytes[0]).len_utf8_unchecked();
@@ -264,7 +264,7 @@ macro_rules! impl_charu {
             ///
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
-            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_utf8_bytes_with_len_unchecked(bytes: &[u8]) -> ($name, u32) {
                 let len = Char(bytes[0]).len_utf8_unchecked();
@@ -310,7 +310,7 @@ macro_rules! impl_charu {
             ///
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
-            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_utf8_byte_array_unchecked(bytes: [u8; 4]) -> $name {
                 let len = Char(bytes[0]).len_utf8_unchecked();
@@ -334,9 +334,9 @@ macro_rules! impl_charu {
                        | ((bytes[2] as u32) <<  8)
                        |  (bytes[3] as u32),
                     _ => {
-                        #[cfg(any(base_safe_text, not(feature = "unsafe_hint")))]
+                        #[cfg(any(feature = "safe_text", not(feature = "unsafe_hint")))]
                         unreachable!();
-                        #[cfg(all(not(base_safe_text), feature = "unsafe_hint"))]
+                        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_hint"))]
                         unsafe {
                             ::core::hint::unreachable_unchecked()
                         }
@@ -361,10 +361,10 @@ macro_rules! impl_charu {
             #[must_use]
             #[inline(always)]
             pub const fn to_char(self) -> char {
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
                 return unwrap![some char::from_u32(self.to_scalar())];
 
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: charu* always has valid UTF-8 in 0..len.
                 return unsafe { char::from_u32_unchecked(self.to_scalar()) };
             }
@@ -396,10 +396,10 @@ macro_rules! impl_charu {
                 *buf = self.to_utf8_bytes();
                 let len = self.len_utf8();
 
-                #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
                 return unwrap![ok Str::from_utf8(slice![mut buf, ..len])];
 
-                #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: charu always contains valid UTF-8
                 unsafe {
                     Str::from_utf8_unchecked(slice![mut buf, ..len])

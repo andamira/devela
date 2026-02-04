@@ -7,7 +7,7 @@
     io, net, os, path, pin, ptr, rc, slice)]
 //
 // safety
-#![cfg_attr(base_safe_sys, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_SYS_MODULES =
     crate::_doc!(modules: crate; sys: arch, env, fs, mem, net, os); //  device, hw, io, log

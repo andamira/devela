@@ -118,7 +118,14 @@ macro_rules! unwrap {
                 if cfg!(debug_assertions) {
                     ::core::unreachable!()
                 } else {
-                    unsafe { ::core::hint::unreachable_unchecked() }
+                    #[cfg(not(unsafe··))]
+                    {
+                        ::core::unreachable!()
+                    }
+                    #[cfg(unsafe··)]
+                    unsafe {
+                        ::core::hint::unreachable_unchecked()
+                    }
                 }
             }
         }
@@ -236,7 +243,14 @@ macro_rules! unwrap {
                 if cfg!(debug_assertions) {
                     ::core::unreachable!()
                 } else {
-                    unsafe { ::core::hint::unreachable_unchecked() }
+                    #[cfg(not(unsafe··))]
+                    {
+                        ::core::unreachable!()
+                    }
+                    #[cfg(unsafe··)]
+                    unsafe {
+                        ::core::hint::unreachable_unchecked()
+                    }
                 }
             }
         }
@@ -424,14 +438,28 @@ macro_rules! unwrap {
                 if cfg!(debug_assertions) {
                     ::core::unreachable!();
                 } else {
-                    unsafe { ::core::hint::unreachable_unchecked() }
+                    #[cfg(not(unsafe··))]
+                    {
+                        ::core::unreachable!()
+                    }
+                    #[cfg(unsafe··)]
+                    unsafe {
+                        ::core::hint::unreachable_unchecked()
+                    }
                 }
             }
             None => {
                 if cfg!(debug_assertions) {
                     ::core::unreachable!();
                 } else {
-                    unsafe { ::core::hint::unreachable_unchecked() }
+                    #[cfg(not(unsafe··))]
+                    {
+                        ::core::unreachable!()
+                    }
+                    #[cfg(unsafe··)]
+                    unsafe {
+                        ::core::hint::unreachable_unchecked()
+                    }
                 }
             }
         }

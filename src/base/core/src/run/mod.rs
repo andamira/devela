@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-#![cfg_attr(base_safe_run, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_run", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_RUN_MODULES =
     crate::_doc!(modules: crate; run: frame, setup);

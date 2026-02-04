@@ -19,7 +19,6 @@ pub(crate) fn main() -> Result<(), IoError> {
 
     let mut aliases = Vec::with_capacity(20);
     arch_aliases(&mut aliases);
-    base_aliases(&mut aliases);
 
     #[cfg(feature = "__dbg")]
     Build::println(&format!("Active compiler cfg flag aliases ({}): {:?}", aliases.len(), aliases));
@@ -46,63 +45,4 @@ fn arch_aliases(aliases: &mut Vec<&'static str>) {
     if target_arch == "riscv32" || target_arch == "riscv64" {
         new_alias(aliases, "any_target_arch_riscv");
     }
-}
-
-// 19
-#[rustfmt::skip]
-#[allow(unexpected_cfgs, unused_variables, clippy::ptr_arg)]
-fn base_aliases(aliases: &mut Vec<&'static str>) {
-    #[cfg(all(feature = "base_safe", feature = "safe"))]
-    new_alias(aliases, "base_safe");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_build"))]
-    new_alias(aliases, "base_safe_build");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_code"))]
-    new_alias(aliases, "base_safe_code");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_data"))]
-    new_alias(aliases, "base_safe_data");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_geom"))]
-    new_alias(aliases, "base_safe_geom");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_lang"))]
-    new_alias(aliases, "base_safe_lang");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_media"))]
-    new_alias(aliases, "base_safe_media");
-        #[cfg(all(feature = "base_safe", feature = "safe_audio"))]
-        new_alias(aliases, "base_safe_audio");
-        #[cfg(all(feature = "base_safe", feature = "safe_color"))]
-        new_alias(aliases, "base_safe_color");
-        #[cfg(all(feature = "base_safe", feature = "safe_draw"))]
-        new_alias(aliases, "base_safe_draw");
-        #[cfg(all(feature = "base_safe", feature = "safe_font"))]
-        new_alias(aliases, "base_safe_font");
-        #[cfg(all(feature = "base_safe", feature = "safe_image"))]
-        new_alias(aliases, "base_safe_image");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_num"))]
-    new_alias(aliases, "base_safe_num");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_phys"))]
-    new_alias(aliases, "base_safe_phys");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_run"))]
-    new_alias(aliases, "base_safe_run");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_sys"))]
-    new_alias(aliases, "base_safe_sys");
-        #[cfg(all(feature = "base_safe", feature = "safe_mem"))]
-        new_alias(aliases, "base_safe_mem");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_text"))]
-    new_alias(aliases, "base_safe_text");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_ui"))]
-    new_alias(aliases, "base_safe_ui");
-
-    #[cfg(all(feature = "base_safe", feature = "safe_work"))]
-    new_alias(aliases, "base_safe_work");
 }

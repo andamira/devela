@@ -320,26 +320,17 @@ work = [
 # The `safest` feature forbids unsafe transitively in dependencies
 # (except for Rust's `core`, `alloc` and `std`).
 #
-# The `safe_*` features are only enforced in [base] crates when the `base_safe` feature is enabled.
-#
 # In sync with ./build/main/features.rs::[UN]SAFE & ./src/index.rs::safety)
 
-safest = ["safe", "base_safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
+safest = ["safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
 
 safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
+	"devela_base_core/safe",
+	"devela_base_alloc?/safe", "devela_base_std?/safe",
 	"devela_macros?/safe",
-	"safe_code", "safe_data", "safe_geom", "safe_lang",
-	"safe_media", "safe_num", "safe_org", "safe_phys",
-	"safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
-]
-
-# activates safe enforcement in the [base] crates.
-base_safe = [
-	"devela_base_core/base_safe", "devela_base_alloc?/base_safe", "devela_base_std?/base_safe",
-]
-
-	# List of safe thematic modules (orthogonal to unsafe purposes):
-
+	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
+] # List of safe thematic modules (orthogonal to unsafe purposes):
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
 	safe_code = ["devela_base_core/safe_code"]
@@ -931,34 +922,10 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(target_pointer_width, values("8", "128"))',
 	# Expect more target vendors. In sync with ./src/sys/env/namespace.rs:
 	'cfg(target_vendor, values("vex"))', # WAIT
-
+	#
 	# Arch flags
 	"cfg(any_target_arch_linux)", # x86_64, x86, arm, aarch64, riscv32, riscv64
 	"cfg(any_target_arch_riscv)", # riscv32, riscv64
-
-	# Safety flags
-	# --------------------------------------------------------------------------
-	# for [base] crates:
-	"cfg(base_safe)",           # base_safe + safe
-		"cfg(base_safe_build)", # base_safe + safe_build
-		"cfg(base_safe_code)",  # base_safe + safe_code
-		"cfg(base_safe_data)",  # ...
-		"cfg(base_safe_geom)",
-		"cfg(base_safe_lang)",
-		"cfg(base_safe_media)",
-			"cfg(base_safe_audio)",
-			"cfg(base_safe_color)",
-			"cfg(base_safe_draw)",
-			"cfg(base_safe_font)",
-			"cfg(base_safe_image)",
-		"cfg(base_safe_num)",
-		"cfg(base_safe_phys)",
-		"cfg(base_safe_run)",
-		"cfg(base_safe_sys)",
-			"cfg(base_safe_mem)",
-		"cfg(base_safe_text)",
-		"cfg(base_safe_ui)",
-		"cfg(base_safe_work)",
 	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-#![cfg_attr(base_safe_media, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 // lints
 #![cfg_attr(doc, allow(rustdoc::broken_intra_doc_links))]
 // docs

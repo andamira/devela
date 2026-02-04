@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: ascii, char, fmt, str, string)]
 //
 // safety
-#![cfg_attr(base_safe_text, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
     crate::_doc!(modules: crate; text: fmt, grapheme, str); // char, errors, parse

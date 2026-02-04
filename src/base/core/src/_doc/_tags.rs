@@ -72,7 +72,9 @@ define_symbol_tags! {
     // Subject to change; APIs or semantics are not yet stabilized.
     _TAG_EXPERIMENTAL, "Experimental", "🧪";
     _TAG_EXAMPLE, "Example", "✨"; // ✨, 📘, 🪄,
-    _TAG_FAKE, "Mock or fake implementation", "🎭"; // 🎭, 👻, 🦄, 🐛,
+    // A fake implementation intentionally diverges from real-world semantics,
+    // while preserving the role or shape of the real abstraction.
+    _TAG_FAKE, "Intentional non-real or placeholder implementation", "🎭"; // 🎭, 👻, 🦄, 🐛,
     // Types and APIs that are safe to use across foreign language boundaries.
     _TAG_FFI, "FFI safe", "🛡️"; // 🛡️, ✅
     _TAG_FS, "File system", "📁"; // 📁,💾,🗄️,📄

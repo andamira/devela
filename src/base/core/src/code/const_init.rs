@@ -256,7 +256,7 @@ mod impl_core {
             if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; } }; }
     _impl_init![ConstInitCore: "" => &str];
 
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     impl crate::ConstInitCore for &mut str {
         // SAFETY: The empty string is valid UTF-8.

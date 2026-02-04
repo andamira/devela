@@ -16,7 +16,7 @@ mod init; // init_array!
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        // #[cfg(all(not(base_safe_data), feature = "unsafe_array"))]
+        // #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
         // pub use super::define::ArrayIterMut; // WIP
 
         pub use super::{

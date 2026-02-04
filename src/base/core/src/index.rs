@@ -14,7 +14,7 @@
 // environment
 #![cfg_attr(not(feature = "__std"), no_std)]
 // safety
-#![cfg_attr(base_safe, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly (uncomment as used)
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
@@ -32,7 +32,7 @@
 
 // safety
 #[cfg(all(
-    base_safe, // alias: all(feature = "base_safe", feature = "safe")
+    feature = "safe",
     // In sync with ../Cargo.toml::unsafe & /build/main/features.rs::UNSAFE
     any(feature = "unsafe", // includes all 11 specific purposes below:
         feature = "unsafe_array", feature = "unsafe_ffi", feature = "unsafe_hint",

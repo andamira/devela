@@ -7,7 +7,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-#![cfg_attr(base_safe_ui, forbid(unsafe_ui))]
+#![cfg_attr(feature = "safe_ui", forbid(unsafe_ui))]
 // docs
 crate::CONST! { pub(crate) _DOC_UI_MODULES =
     crate::_doc!(modules: crate; ui); // back, front, layout

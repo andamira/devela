@@ -37,7 +37,7 @@ Many feature gates are removed in order to make most features make always availa
 - new internal env vars `__DEVELA_MEMBER`, `__DEVELA_MEMBER_NAME`.
 - make sure `CARGO_TARGET_DIR` and `CARGO_WORKSPACE_DIR` are always defined.
 - add new `devela_postbuild` crate to `build/post`.
-- add build config flag aliases: `any_target_arch_linux`, `any_target_arch_riscv`, `base_safe*`.
+- add build config flag aliases: `any_target_arch_linux`, `any_target_arch_riscv`.
 - add [base] symlinks to `devela/main/[alias|environment|features].rs`.
 
 ## cargo
@@ -66,7 +66,7 @@ Many feature gates are removed in order to make most features make always availa
 
 
 ## features & flags
-- new features: `__publish`, `__std`, `_docs_examples` `base_safe`, `grapheme`, `int`, `org`, `safe_build`, `safe_org`, `translit`, `x11`.
+- new features: `__publish`, `__std`, `_docs_examples` `grapheme`, `int`, `org`, `safe_build`, `safe_org`, `translit`, `x11`.
 - remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `fmt`, `join`, `metric`, `nightly_bigint`, `prim`, `safe_layout`, `split`, `str`.
 - remove flags: `bit··`, `char··`, `cmp··`, `_float··`, `_int*··`, `_nums··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - add an adittional `nightly_stable_1_??` flag for the 3rd next version.

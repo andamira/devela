@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: sync)]
 //
 // safety
-#![cfg_attr(base_safe_work, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
 
 mod _reexport;
 

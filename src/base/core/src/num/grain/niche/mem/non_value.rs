@@ -121,10 +121,10 @@ macro_rules! impl_non_value {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn default() -> Self {
-                    #[cfg(any(base_safe_num, not(feature = "unsafe_niche")))]
+                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                     return $ne::new($IP::default()).unwrap();
 
-                    #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                     // SAFETY: the default primitive value is always 0, and their MAX is never 0.
                     unsafe { return $ne::new_unchecked($IP::default()); }
                 }
@@ -134,10 +134,10 @@ macro_rules! impl_non_value {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 const INIT: Self = {
-                    #[cfg(any(base_safe_num, not(feature = "unsafe_niche")))]
+                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                     if let Some(v) = Self::new(<$IP>::INIT) { v } else { unreachable![] }
 
-                    #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                     // SAFETY: the default primitive value is always 0, and their MAX is never 0.
                     unsafe { $ne::new_unchecked(<$IP>::INIT) }
                 };
@@ -212,11 +212,11 @@ macro_rules! impl_non_value {
                         transformed ^ V
                     };
 
-                    #[cfg(any(base_safe_num,
+                    #[cfg(any(feature = "safe_num",
                         not(feature = "unsafe_niche")))]
                     { Self($crate::unwrap![some $crate::$n0::new(transformed)]) }
 
-                    #[cfg(all(not(base_safe_num),
+                    #[cfg(all(not(feature = "safe_num"),
                         feature = "unsafe_niche"))]
                     // SAFETY: We make sure the transformed value != 0
                     unsafe {
@@ -239,7 +239,7 @@ macro_rules! impl_non_value {
                 /// Panics in debug if the given `value` is equal to `V`.
                 /// # Safety
                 /// The given `value` must never be equal to `V`.
-                #[cfg(all(not(base_safe_num), feature = "unsafe_niche"))]
+                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_niche")))]
                 pub const unsafe fn new_unchecked(value: $IP) -> Self {
                     #[cfg(debug_assertions)]
@@ -377,11 +377,11 @@ macro_rules! impl_non_value {
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn try_from(value: $IP) -> Result<Self, Self::Error> {
                     // We generate a TryFromIntError by intentionally causing a failed conversion.
-                    #[cfg(any(base_safe_num,
+                    #[cfg(any(feature = "safe_num",
                         not(feature = "unsafe_niche")))]
                     return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
 
-                    #[cfg(all(not(base_safe_num),
+                    #[cfg(all(not(feature = "safe_num"),
                         feature = "unsafe_niche"))]
                     return Self::new(value)
                         .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });

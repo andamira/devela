@@ -146,10 +146,10 @@ impl Char<&[u8]> {
     pub const fn to_char(self, index: usize) -> Option<(char, usize)> {
         let (cp, len) = unwrap![some? self.to_scalar(index)];
 
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return Some((unwrap![some? char::from_u32(cp)], len));
 
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         Some((unsafe { char::from_u32_unchecked(cp) }, len))
     }
 
@@ -205,8 +205,8 @@ impl Char<&[u8]> {
     ///
     /// Violating these conditions may lead to undefined behavior.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn to_char_unchecked(self, index: usize) -> (char, usize) {
         let (cp, len) = self.to_scalar_unchecked(index);
         (unsafe { char::from_u32_unchecked(cp) }, len)

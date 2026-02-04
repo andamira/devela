@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //
 // safety
-#![cfg_attr(base_safe_data, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
     crate::_doc!(modules: crate; data: key, list, uid); // address, codec, error, iter, table

@@ -11,7 +11,7 @@
 // environment
 #![cfg_attr(not(feature = "std"), no_std)]
 // safety
-#![cfg_attr(base_safe, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly (uncomment as used)
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]

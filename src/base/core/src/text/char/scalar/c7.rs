@@ -19,9 +19,9 @@ impl char7 {
     // SAFETY: this is not marked as unsafe because it's only used privately
     // for a few selected operations in this module and also by CharIter.
     pub(crate) const fn new_unchecked(value: u8) -> char7 {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_niche")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         if let Some(c) = NonExtremeU8::new(value) { char7(c) } else { unreachable![] }
-        #[cfg(all(not(base_safe_text), feature = "unsafe_niche"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe { char7(NonExtremeU8::new_unchecked(value)) }
     }
 
@@ -89,9 +89,9 @@ impl char7 {
     /// Makes use of the `unsafe_str` feature if enabled.
     #[must_use]
     pub const fn to_char_ascii(c: char7) -> CharAscii {
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return if let Some(c) = CharAscii::from_u8(c.0.get()) { c } else { unreachable!() };
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe { CharAscii::from_u8_unchecked(c.0.get()) }
     }
 
@@ -178,6 +178,8 @@ impl char7 {
     ///
     /// # Safety
     /// All bytes must be ASCII (`<= 0x7F`).
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     pub const unsafe fn from_u8_array_unchecked<const N: usize>(bytes: [u8; N]) -> [char7; N] {
         let mut out = [char7::INIT; N];
         whilst! { i in 0..N; { out[i] = char7::new_unchecked(bytes[i]); }}
@@ -241,9 +243,9 @@ impl char7 {
         -> &'s str {
         whilst! { i in 0..N; { out[i] = chars[i].to_byte(); }}
 
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return crate::unwrap![ok Str::from_utf8(out)];
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: all bytes are ASCII by construction
         unsafe { Str::from_utf8_unchecked(out) }
     }

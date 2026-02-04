@@ -79,14 +79,14 @@ impl char8 {
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_char_ascii(self) -> Result<CharAscii, MismatchedCapacity> {
         if Char(self.to_scalar()).is_ascii() {
-            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = CharAscii::from_u8(self.0) {
                 return Ok(c);
             } else {
                 unreachable![]
             }
 
-            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { CharAscii::from_u8_unchecked(self.0) });
         }

@@ -79,8 +79,8 @@ impl<'a> CharIter<'a, &[u8]> {
     ///
     /// Violating these conditions may lead to undefined behavior.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_char_unchecked(&mut self) -> Option<char> {
         is![self.pos >= self.bytes.len(); return None];
         let (ch, len) = unsafe { Char(self.bytes).to_char_unchecked(self.pos) };
@@ -134,8 +134,8 @@ impl<'a> CharIter<'a, &[u8]> {
     ///
     /// Violating these conditions may lead to undefined behavior.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_char8_unchecked(&mut self) -> Option<char8> {
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         is![Char(cp).len_bytes() == 1; { self.pos += len; Some(char8(cp as u8)) }; None]
@@ -179,8 +179,8 @@ impl<'a> CharIter<'a, &[u8]> {
     /// # Features
     /// Uses the `unsafe_niche` feature to skip validation checks.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_char16_unchecked(&mut self) -> Option<char16> {
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         if Char(cp).len_bytes() <= 2 {
@@ -217,8 +217,8 @@ impl<'a> CharIter<'a, &[u8]> {
     /// # Features
     /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
-    #[cfg_attr(nightly_doc, doc(cfg(all(not(base_safe_text), feature = "unsafe_str"))))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_charu_unchecked(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(); return None];
         let (ch, len) = unsafe { charu::from_utf8_bytes_with_len_unchecked(self.bytes) };

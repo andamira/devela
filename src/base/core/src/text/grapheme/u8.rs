@@ -187,7 +187,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// and that it contains exactly one extended grapheme character,
     /// before the borrow ends and the underlying `str` is used.
     #[must_use]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         // SAFETY: caller must ensure safety
@@ -224,7 +224,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// The caller must ensure that the content of the slice is valid UTF-8
     /// and that it contains exactly one extended grapheme character,
     /// before the borrow ends and the underlying `str` is used.
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
         // SAFETY: caller must ensure safety

@@ -16,9 +16,8 @@ use crate::{
 #[doc = crate::_doc_location!("media/image")]
 ///
 /// # Features
-/// Enabling the `__dbg` feature defines the [`
-#[doc = slog!(static_name sixel_encoder:64+64)]
-/// `] static logger for diagnostic output.
+/// Enabling the `unsafe_sync` and `__dbg` features defines
+/// [`__LOGGER_sixel_encoder_64_64`] for diagnostic output.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct SixelEncoder<const MAX_COLORS: usize> {
     width: usize,

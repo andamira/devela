@@ -8,7 +8,7 @@
     any, clone, convert, default, error, hint, marker, ops, panic, result)]
 //
 // safety
-#![cfg_attr(base_safe_code, forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_CODE_MODULES =
     crate::_doc!(modules: crate; code); // error, marker, ops, panic, result, util

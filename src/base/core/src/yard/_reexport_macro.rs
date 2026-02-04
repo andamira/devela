@@ -9,8 +9,8 @@
 // MAYBE: new branch for: either a crate or core (for portable-atomic types).
 // WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 //       the solution is to re-export from core/alloc/std items on each crate.
+#[doc(hidden)]
 #[macro_export]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
 #[allow(clippy::crate_in_macro_def, reason = "_dep relative to macro call")]
 macro_rules! __reexport {
     // -------------------------------------------------------------------------

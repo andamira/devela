@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 // safety
-// #![cfg_attr(base_safe_audio, forbid(unsafe_code))] // no feature
+// #![cfg_attr(feature = "safe_audio", forbid(unsafe_code))] // no feature
 
 // mod codec; // …
 mod layout; // AudioChannel, AudioChannels

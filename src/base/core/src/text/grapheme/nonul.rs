@@ -201,7 +201,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
     #[must_use] #[inline(always)]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         // SAFETY: caller must ensure safety
@@ -239,7 +239,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// and that it contains exactly one extended grapheme character other
     /// than `NUL`, before the borrow ends and the underlying `str` is used.
     #[must_use] #[inline(always)]
-    #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
         // SAFETY: caller must ensure safety

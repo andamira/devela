@@ -26,6 +26,7 @@ macro_rules! guard {
 
 #[doc = crate::_tags!(log)]
 /// Fixed-capacity static logger with owned byte buffers.
+#[doc = crate::_doc_location!("sys/log")]
 ///
 /// Each logger is identified by its capacity (`CAP`) as the number of stored messages,
 /// and each message’s maximum length (`MSG_LEN`).
@@ -120,9 +121,9 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
         let leftover = self.leftover[i];
         let msg = Slice::range_to(&self.buf[i], len);
 
-        #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         let s = crate::unwrap![ok Str::from_utf8(msg)];
-        #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we ensure to always contain valid UTF-8
         let s = unsafe { Str::from_utf8_unchecked(msg) };
 
@@ -145,9 +146,9 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
             let len = self.lens[i];
             let leftover = self.leftover[i];
 
-            #[cfg(any(base_safe_text, not(feature = "unsafe_str")))]
+            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             let s = crate::unwrap![ok Str::from_utf8(&msg[..len])];
-            #[cfg(all(not(base_safe_text), feature = "unsafe_str"))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we ensure to always contain valid UTF-8
             let s = unsafe { Str::from_utf8_unchecked(&msg[..len]) };
 
@@ -181,8 +182,26 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     }
 }
 
+// no-op macro placeholder
+#[doc = crate::_tags!(fake log)]
+/// Static global logger macro, compile-time friendly.
+#[doc = crate::_doc_location!("sys/log")]
+///
+/// This inert implementation preserves call-site ergonomics
+/// when the logging backend is not enabled.
+///
+/// # Features
+/// Active with the `unsafe_sync` feature.
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
+#[macro_export]
+#[cfg(not(feature = "unsafe_sync"))]
+macro_rules! slog {
+    ($($tt:tt)*) => {};
+}
+
 #[doc = crate::_tags!(log)]
 /// Static global logger macro, compile-time friendly.
+#[doc = crate::_doc_location!("sys/log")]
 ///
 /// Defines and operates on [`LoggerStatic`] instances for fixed-capacity logging.
 /// Each logger is identified by its `(CAP, MSG_LEN)` pair and may optionally have
@@ -219,6 +238,8 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
+#[cfg(feature = "unsafe_sync")]
 macro_rules! slog {
     (
     /* public API*/
@@ -295,9 +316,9 @@ macro_rules! slog {
     $vis:vis new $($id:ident :)? $CAP:literal + $LEN:literal,
     $static:ident, $fn:ident $(,)?) => { $crate::paste! {
         $(#[$attrs])*
-        #[doc = "\nA single-thread global static logger `" $($id ":" )? $CAP "+" $LEN "`."]
+        #[doc = "\n\nA single-thread global static logger `" $($id ":" )? $CAP "+" $LEN "`."]
         ///
-        /// Query it with the [`slog!`] macro.
+        /// Query it with the [`slog!`] macro, like this:
         /// ```
         /// # use devela_base_core::*;
         /// # #[cfg(feature = "__std")]

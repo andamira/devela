@@ -70,8 +70,7 @@ ui = ["term"]
 
 #* Safety features *#
 
-base_safe = [] # activates safe enforcement of thematic safe_* features
-safest = ["safe", "base_safe"]
+safest = ["safe"]
 safe = [
 	"devela_base_macros/safe", "safe_build",
 	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num",
