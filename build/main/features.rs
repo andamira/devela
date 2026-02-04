@@ -244,7 +244,6 @@ mod reflection {
                 "safe_io", "safe_mem",
             "safe_text",
             "safe_ui",
-                "safe_layout",
             "safe_work",
         ]
     };

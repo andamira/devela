@@ -6,8 +6,6 @@
 #![doc = crate::_doc!(flat:"ui")]
 #![doc = crate::_doc!(hr)]
 //
-// safety
-#![cfg_attr(feature = "safe_layout", forbid(unsafe_code))]
 
 // WIPZONE
 

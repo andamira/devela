@@ -191,7 +191,6 @@ To be able to use any unsafe functionality it's necessary to:
   - `safe_text`
   - `safe_work`
   - `safe_ui`
-    - `safe_layout`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), including:
   - `unsafe_array`: faster array initialization, `UninitArray`.

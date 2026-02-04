@@ -122,7 +122,7 @@
     feature = "safe_color", feature = "safe_draw", feature = "safe_font", feature = "safe_image",
     feature = "safe_num", feature = "safe_org", feature = "safe_phys", feature = "safe_time",
     feature = "safe_run", feature = "safe_sys", feature = "safe_io", feature = "safe_mem",
-    feature = "safe_text", feature = "safe_ui", feature = "safe_layout", feature = "safe_work",
+    feature = "safe_text", feature = "safe_ui", feature = "safe_work",
 ))))]
 
 /* crate safeguards */

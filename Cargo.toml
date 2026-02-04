@@ -368,8 +368,7 @@ base_safe = [
 		safe_io = ["devela_base_core/safe_io"]
 		safe_mem = ["devela_base_core/safe_mem"]
 	safe_text = ["devela_base_core/safe_text"]
-	safe_ui = ["safe_layout"]
-		safe_layout = []
+	safe_ui = []
 	safe_work = ["devela_base_core/safe_work"]
 		# safe_async
 
