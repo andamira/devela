@@ -21,7 +21,7 @@ crate::structural_mods! { // _crate_internals, _workspace_internals
     _workspace_internals {
         pub use super::{
             _use::_use,
-            _policy::_devela_policy,
+            _policy::{_devela_policy, __devela_unreachable_unchecked},
             _reexport_macro::_reexport,
         };
     }

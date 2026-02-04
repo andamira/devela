@@ -114,20 +114,7 @@ macro_rules! unwrap {
     ) => {
         match $T {
             Some(v) => v,
-            None => {
-                if cfg!(debug_assertions) {
-                    ::core::unreachable!()
-                } else {
-                    #[cfg(not(unsafe··))]
-                    {
-                        ::core::unreachable!()
-                    }
-                    #[cfg(unsafe··)]
-                    unsafe {
-                        ::core::hint::unreachable_unchecked()
-                    }
-                }
-            }
+            None => $crate::_devela_policy!{unreachable},
         }
     };
 
@@ -239,20 +226,7 @@ macro_rules! unwrap {
     ) => {
         match $T {
             Ok(v) => v,
-            Err(_) => {
-                if cfg!(debug_assertions) {
-                    ::core::unreachable!()
-                } else {
-                    #[cfg(not(unsafe··))]
-                    {
-                        ::core::unreachable!()
-                    }
-                    #[cfg(unsafe··)]
-                    unsafe {
-                        ::core::hint::unreachable_unchecked()
-                    }
-                }
-            }
+            Err(_) => $crate::_devela_policy!{unreachable},
         }
     };
     (
@@ -434,34 +408,8 @@ macro_rules! unwrap {
     ) => {
         match $T {
             Some(Ok(v)) => v,
-            Some(Err(_)) => {
-                if cfg!(debug_assertions) {
-                    ::core::unreachable!();
-                } else {
-                    #[cfg(not(unsafe··))]
-                    {
-                        ::core::unreachable!()
-                    }
-                    #[cfg(unsafe··)]
-                    unsafe {
-                        ::core::hint::unreachable_unchecked()
-                    }
-                }
-            }
-            None => {
-                if cfg!(debug_assertions) {
-                    ::core::unreachable!();
-                } else {
-                    #[cfg(not(unsafe··))]
-                    {
-                        ::core::unreachable!()
-                    }
-                    #[cfg(unsafe··)]
-                    unsafe {
-                        ::core::hint::unreachable_unchecked()
-                    }
-                }
-            }
+            Some(Err(_)) $crate::_devela_policy!{unreachable},
+            None => $crate::_devela_policy!{unreachable},
         }
     };
 

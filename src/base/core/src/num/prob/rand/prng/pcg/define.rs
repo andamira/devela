@@ -80,31 +80,24 @@ macro_rules! define_pcg {
      $obytes:literal, $output_fn:ident,
      $SEED:literal, $MUL:literal, $INC:literal
      ) => { $crate::paste! {
-        // devela-specific doc conventions
-        #[$crate::compile(env(__DEVELA_MEMBER))]
-        #[allow(non_snake_case)]
-        mod [<__pcg_def_ $name >] {
-            $crate::define_pcg!(%define
+        $crate::_devela_policy! { $vis mod [<__pcg_def_ $name >],
+            // devela-specific doc conventions
+            devela { $crate::define_pcg!(%define
                 $(#[$attrs])*
                 #[doc = $crate::_tags!(rand)]
                 #[doc = concat!["A ", $obits, "-bit ", $crate::_ABBR_PCG!(), " ",
                 $crate::_ABBR_PRNG!(), "."]]
                 #[doc = $crate::_doc_location!("num/prob/rand")]
                 $vis $name, $sbits+$state, $obits+$output, $obytes, $output_fn, $SEED, $MUL, $INC);
-        }
-
-        // simpler docs when invoked externally
-        #[$crate::compile(not(env(__DEVELA_MEMBER)))]
-        #[allow(non_snake_case)]
-        mod [<__pcg_def_ $name >] {
-            $crate::define_pcg!(%define
+            }
+            // simpler docs when invoked externally
+            extern { $crate::define_pcg!(%define
                 $(#[$attrs])*
                 #[doc = concat![
                 "A ", $obits, "-bit ", $crate::_ABBR_PCG!(), " ", $crate::_ABBR_PRNG!(), ".\n\n"]]
                 $vis $name, $sbits+$state, $obits+$output, $obytes, $output_fn, $SEED, $MUL, $INC);
+            }
         }
-
-        $vis use [<__pcg_def_ $name >]::*;
     }};
 
     /* private arms */

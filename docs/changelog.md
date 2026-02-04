@@ -832,6 +832,7 @@ Many feature gates are removed in order to make most features make always availa
 ---
 ## yard
 - new private root module `yard`.
+- new workspace-internal macro `_devela_policy!`.
 - move here most private macros from `code::util`.
 
 
