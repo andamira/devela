@@ -105,8 +105,11 @@ See also
         = `nightly_allocator` flag
 - 1.??: `D`[autodiff](https://github.com/rust-lang/rust/issues/124509)
           `nightly_autodiff` flag
-- 1.??: `F`[bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
-        = `nightly_bigint` flag
+
+- 1.??: ` `[signed_bigint_helpers](https://github.com/rust-lang/rust/issues/151989)
+- 1.??: ` `[const bigint_helper_methods](https://github.com/rust-lang/rust/issues/152015)
+- 1.??: ` `[widening bigint_helper_methods](https://github.com/rust-lang/rust/issues/152016)
+
 - 1.??: ` `[box_into_inner](https://github.com/rust-lang/rust/issues/80437)
 - 1.??: ` `[cfg(accessible(::path::to::thing))](https://github.com/rust-lang/rust/issues/64797)
 - 1.??: ` `[cfg(version(..))](https://github.com/rust-lang/rust/issues/64796)

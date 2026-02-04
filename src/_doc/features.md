@@ -267,7 +267,6 @@ RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly build
 - `nightly`: enables the nightly cfg flags:
   - `nightly_allocator`: enables [`allocator_api`].
   <!-- - `nightly_autodiff`: enables [`autodiff`]. FEATURE_DISABLED:nightly_autodiff -->
-  - `nightly_bigint`: enables [`bigint_helper_methods`].
   - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
   - `nightly_float`: enables [`f16`, `f128`].
@@ -278,7 +277,6 @@ RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly build
 
 [`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
 [`autodiff`]: https://github.com/rust-lang/rust/issues/124509
-[`bigint_helper_methods`]: https://github.com/rust-lang/rust/issues/85532
 [`coroutines`]: https://github.com/rust-lang/rust/issues/43122
 [`doc_cfg`]: https://github.com/rust-lang/rust/issues/43781
 [`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040

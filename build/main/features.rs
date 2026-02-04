@@ -143,7 +143,7 @@ mod reflection {
         auto_flags: &[
             "nightly_unstable",
                 // "nightly_autodiff", // FLAG_DISABLED
-                "nightly_allocator", "nightly_become", "nightly_bigint", "nightly_coro",
+                "nightly_allocator", "nightly_become", "nightly_coro",
                 "nightly_doc", "nightly_float", "nightly_simd",
             //
             "nightly_stable",
@@ -155,7 +155,7 @@ mod reflection {
         pub const FLAGS_NIGHTLY_UNSTABLE: FlagsFlags = FlagsFlags {
             auto_flags: &[
                 // "nightly_autodiff", // FLAG_DISABLED
-                "nightly_allocator", "nightly_become", "nightly_bigint", "nightly_coro",
+                "nightly_allocator", "nightly_become", "nightly_coro",
                 "nightly_doc", "nightly_float", "nightly_simd",
             ],
             cfg_flags: &["nightly_stable"],
@@ -172,7 +172,7 @@ mod reflection {
             cfg_flags: &[ "nightly",
                 "nightly_unstable",
                     // "nightly_autodiff", // FLAG_DISABLED
-                    "nightly_allocator", "nightly_bigint", "nightly_coro",
+                    "nightly_allocator", "nightly_coro",
                     "nightly_doc", "nightly_float", "nightly_simd",
                 //
                 "nightly_stable",
