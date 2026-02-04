@@ -59,6 +59,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
 
     // 2
     _DOC_DATA              = "Data handling and manipulation.";
+    _QUO_DATA              = "> How values are organized and accessed.";
     _DOC_DATA_ADDRESS      = "Addressability and directed reachability.";
     _DOC_DATA_BIT          = "Bit-focused items.";
     _DOC_DATA_CODEC        = "Data encoding and decoding abstractions.";
@@ -203,6 +204,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_IO          = "I/O primitives and stream interfaces.";
     _DOC_SYS_LOG         = "Logging functionality.";
     _DOC_SYS_MEM         = "Memory primitives, layout contracts, and safe access foundations.";
+    _QUO_SYS_MEM         = "> How bytes live, move, and are validated.";
     _DOC_SYS_MEM_ALLOC   = "Allocation strategies and ownership-backed storage abstractions.";
     _DOC_SYS_MEM_BOUND   = "Addressing, alignment, and movement constraints over memory.";
     _DOC_SYS_MEM_BOUND_PIN = "Types that pin data to a location in memory.";

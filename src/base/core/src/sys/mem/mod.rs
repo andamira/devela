@@ -4,6 +4,7 @@
 #![doc = crate::_doc!(modules: crate::sys; mem: alloc, bound, cell, layout, size, view)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
+#![doc = crate::_QUO_SYS_MEM!()]
 //
 
 mod _reexport; // SYMLINK from /src/sys/mem/_reexport_core.rs

@@ -4,6 +4,7 @@
 #![doc = crate::_DOC_DATA_MODULES!()]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
+#![doc = crate::_QUO_DATA!()]
 //
 // safety
 #![cfg_attr(base_safe_data, forbid(unsafe_code))]

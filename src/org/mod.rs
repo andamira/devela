@@ -10,7 +10,7 @@
 #![cfg_attr(base_safe_run, forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_ORG_MODULES =
-    crate::_doc!(modules: crate; org); // agent, care, econ, gov, inst, moral, role
+    crate::_doc!(modules: crate; org: __); // agent, care, econ, gov, inst, moral, role
 }
 
 // mod norm; // general norms
