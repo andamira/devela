@@ -36,9 +36,12 @@ __publish = []
 __std = [] # remove no_std
 
 #* Environment features *#
-alloc = [] # always enabled
+alloc = ["portable-atomic-util?/alloc"] # always enabled
 
 #* Module features *#
+all = [ # enables all the 12 modules (and their submodules)
+	"media","num", # "code","data","geom","lang","org","phys","run","sys","work","text","ui",
+]
 media = ["color"]
 	color = []
 num = ["int", "rand"]
@@ -90,8 +93,18 @@ unsafe = [
 #* Capability features *#
 default = ["alloc"]
 
-	_docs_examples = []
-_docs = ["unsafe"]
+_docs_examples = [] # document examples and example generated items
+_docs_min = [ # the minimum capabilities to document every item
+	"_docs_examples",
+	# modules
+	"all",
+]
+_docs_nodep = [ # +unsafe
+	"_docs_min", "unsafe",
+]
+_docs = [ # +dependencies
+	"_docs_nodep", "dep_all",
+]
 
 #* Dependency features (optional external dependencies) *#
 # ------------------------------------------------------------------------------
@@ -100,7 +113,7 @@ _docs = ["unsafe"]
 #
 # Names are prefixed with `dep_`, and use underscores in place of dashes.
 
-# In sync with ./config/dep_all & ./src/_dep.rs
+# In sync with ./config/dep_all & ./src/yard/_dep.rs
 dep_all = [ # enables all optional dependencies:
 	"dep_portable_atomic_util",
 ]

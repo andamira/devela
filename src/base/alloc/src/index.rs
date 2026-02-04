@@ -3,9 +3,25 @@
 //!
 //
 
+/* crate configuration */
+//
+// lints
+// #![allow(unexpected_cfgs)]
+//
+// environment
 #![cfg_attr(not(feature = "__std"), no_std)]
+// safety
 #![cfg_attr(base_safe, forbid(unsafe_code))]
-#![cfg_attr(nightly_doc, feature(doc_cfg))]
+// nightly
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
+#![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
+#![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
+// #![cfg_attr(nightly_allocator, feature(allocator_api))]
+// #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
+// #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
+// #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
+// #![cfg_attr(nightly_float, feature(f16, f128))]
+// #![cfg_attr(nightly_simd, feature(portable_simd))]
 
 extern crate alloc;
 extern crate self as devela_base_alloc;
@@ -17,18 +33,21 @@ macro_rules! __crate_name {
 #[allow(unused_imports)]
 pub(crate) use __crate_name;
 
-pub mod code;
-pub mod data;
-pub mod geom;
-pub mod lang;
-pub mod media;
-pub mod num;
-pub mod phys;
-pub mod run;
-pub mod sys;
-pub mod text;
-pub mod ui;
-pub mod work;
+#[cfg(feature = "alloc")]
+items! {
+    pub mod code;
+    pub mod data;
+    pub mod geom;
+    pub mod lang;
+    pub mod media;
+    pub mod num;
+    pub mod phys;
+    pub mod run;
+    pub mod sys;
+    pub mod text;
+    pub mod ui;
+    pub mod work;
+}
 //
 mod yard;
 #[doc(hidden)]
@@ -48,6 +67,7 @@ pub mod zall {
     #[allow(unused_imports)]
     #[rustfmt::skip]
     #[doc(inline)]
+    #[cfg(feature = "alloc")]
     pub use super::{
         code::_all::*,
         data::_all::*,
@@ -69,6 +89,7 @@ pub mod zall {
 pub(crate) use _crate_internals::*;
 mod _crate_internals {
     #[rustfmt::skip]
+    #[cfg(feature = "alloc")]
     pub(crate) use super::{
         code::_crate_internals::*,
         data::_crate_internals::*,

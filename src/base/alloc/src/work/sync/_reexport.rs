@@ -9,7 +9,7 @@
 #[doc = crate::_doc_location!("work/sync")]
 #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-pub use crate::_dep::portable_atomic_util::Arc;
+pub use crate::yard::_dep::portable_atomic_util::Arc;
 //
 #[doc = crate::_tags!(concurrency atomic lifetime atomic_alloc_portable_util)]
 /// A thread-safe reference-counting pointer.
@@ -23,8 +23,8 @@ pub use alloc::sync::Arc;
 #[doc = crate::_doc_location!("work/sync")]
 #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-pub use crate::_dep::portable_atomic_util::Weak as ArcWeak;
-//
+pub use crate::yard::_dep::portable_atomic_util::Weak as ArcWeak;
+
 #[doc = crate::_tags!(concurrency atomic lifetime atomic_alloc_portable_util)]
 /// A version of [`Arc`] that holds a non-owning reference.
 #[doc = crate::_doc_location!("work/sync")]

@@ -118,14 +118,18 @@ unsafe = [
 
 #* Capability features *#
 
+_docs_examples = [] # document examples and example generated items
 _docs_min = [ # the minimum capabilities to document every item
 	"_docs_examples",
 	# modules
 	"all",
 ]
-	_docs_examples = []
-_docs_nodep = ["_docs_min"]
-_docs = ["_docs_nodep", "dep_all"]
+_docs_nodep = [ # +unsafe
+	"_docs_min", "unsafe",
+]
+_docs = [ # +dependencies
+	"_docs_nodep", "dep_all",
+]
 
 #* Dependency features (optional external dependencies) *#
 # ------------------------------------------------------------------------------
@@ -134,7 +138,7 @@ _docs = ["_docs_nodep", "dep_all"]
 #
 # Names are prefixed with `dep_`, and use underscores in place of dashes.
 
-# In sync with ./config/dep_all & ./src/_dep.rs
+# In sync with ./config/dep_all & ./src/yard/_dep.rs
 dep_all = [ # enables all 3 optional dependencies:
 	"dep_memchr", "dep_simdutf8", "dep_rand_core", "dep_wide",
 ]
