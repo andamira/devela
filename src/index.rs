@@ -94,6 +94,7 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
+        refcell_try_map,
         str_as_str,
         substr_range,
         supertrait_item_shadowing,
