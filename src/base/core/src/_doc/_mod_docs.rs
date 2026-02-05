@@ -244,6 +244,15 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
 
     // 13
+    _DOC_VITA       = "Lived practices of embodied beings.";
+    _DOC_VITA_BODY  = "Embodied capability, health, and physical limits of living beings.";
+    _DOC_VITA_CRAFT = "Practical, learned ways of shaping material reality to support life.";
+    _DOC_VITA_HOME  = "Inhabited space, from dwelling to built and shared environments.";
+    _DOC_VITA_LOVE  = "Relational life, from kinship and care to intimacy and community.";
+    _DOC_VITA_MIND  = "Cognition, memory, meaning, and inner orientation of lived experience.";
+    _DOC_VITA_PLAY  = "Expression, play, and shared enjoyment beyond necessity or survival.";
+
+    // 14
     _DOC_WORK             = "Work management and concurrency.";
     _DOC_WORK_FUTURE      = "Asynchronous execution.";
     _DOC_WORK_PROCESS     = "Native process management.";

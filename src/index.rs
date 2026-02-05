@@ -24,21 +24,20 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly (flags)
-//
 // ```
 // RUSTFLAGS="--cfg nightly_stable" cargo +nightly build
 // RUSTDOCFLAGS="--cfg nightly_stable" cargo +nightly doc
 // ```
-//
 // (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs],
 //  ../build/main/features.rs::FLAGS_NIGHTLY) && ../src/base/core/src/index.rs
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))] // configured below
+#![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
+#![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
+//
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
 #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
-#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))] // configured below
-#![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
-#![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
 #![cfg_attr(nightly_float, feature(f16, f128))]
 #![cfg_attr(nightly_simd, feature(portable_simd))]
 //
@@ -122,7 +121,7 @@
     feature = "safe_color", feature = "safe_draw", feature = "safe_font", feature = "safe_image",
     feature = "safe_num", feature = "safe_org", feature = "safe_phys", feature = "safe_time",
     feature = "safe_run", feature = "safe_sys", feature = "safe_io", feature = "safe_mem",
-    feature = "safe_text", feature = "safe_ui", feature = "safe_work",
+    feature = "safe_text", feature = "safe_ui", feature = "safe_vita", feature = "safe_work",
 ))))]
 
 /* crate safeguards */
@@ -172,6 +171,7 @@ pub mod run;
 pub mod sys;
 pub mod text;
 pub mod ui;
+pub mod vita;
 pub mod work;
 //
 mod yard;
@@ -201,7 +201,8 @@ pub mod zall_ {
     pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
     #[doc = concat![crate::_DOC_NUM!(), crate::_DOC_NUM_MODULES!(), COMMON_DOC!("num")]]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
-    #[doc = concat![crate::_DOC_ORG!(), crate::_DOC_ORG_MODULES!(), COMMON_DOC!("org")]]
+    #[doc = concat![crate::_tags!(wip),
+        crate::_DOC_ORG!(), crate::_DOC_ORG_MODULES!(), COMMON_DOC!("org")]]
     pub mod _org { #[allow(unused)] pub use super::super::org::_all::*; }
     #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), COMMON_DOC!("phys")]]
     pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
@@ -213,6 +214,9 @@ pub mod zall_ {
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
     #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), COMMON_DOC!("ui")]]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
+    #[doc = concat![crate::_tags!(wip),
+        crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), COMMON_DOC!("vita")]]
+    pub mod _vita { #[allow(unused)] pub use super::super::vita::_all::*; }
     #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), COMMON_DOC!("work")]]
     /// <br/><hr>
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
@@ -240,6 +244,7 @@ pub mod zall {
         sys::_all::*,
         text::_all::*,
         ui::_all::*,
+        vita::_all::*,
         work::_all::*,
     };
 }
@@ -282,6 +287,7 @@ mod _crate_internals {
         sys::_crate_internals::*,
         text::_crate_internals::*,
         ui::_crate_internals::*,
+        vita::_crate_internals::*,
         work::_crate_internals::*,
     };
 }

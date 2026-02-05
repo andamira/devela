@@ -11,7 +11,7 @@
 #![cfg_attr(feature = "safe_run", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_ORG_MODULES =
-    crate::_doc!(modules: crate; org); // agent, care, econ, gov, inst, moral, role
+    crate::_doc!(modules: crate; org: _); // agent, care, econ, gov, inst, moral, role
 }
 
 // mod norm; // general norms

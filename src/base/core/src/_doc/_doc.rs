@@ -10,14 +10,6 @@
 //
 // TODO: try to use paste! instead of concat!, since it's faster.
 
-/* TEMPLATES:
-
-#![doc = crate::_doc!(modules: crate::data; XXX)]
-#![doc = crate::_doc!(flat:"data")]
-#![doc = crate::_doc!(hr)]
-
-*/
-
 /// Generates a formatted meta-documentation string.
 #[doc = crate::_doc_location!("code/util")]
 #[doc(hidden)]
@@ -63,6 +55,15 @@ macro_rules! __doc {
         concat!(
             $crate::_doc!(@meta_start_lf),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
+            $crate::_doc!(@meta_end),
+        )
+    };
+    ( // without submodules, but showing the module line.
+        modules: $path:path; $self:ident: _ $(,)?) => {
+        concat!(
+            $crate::_doc!(@meta_start_br),
+            "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
+            // $crate::_doc!(@modules: $path; $self: $($mod),+), "}",
             $crate::_doc!(@meta_end),
         )
     };

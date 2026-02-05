@@ -39,7 +39,7 @@ __std = [] # remove no_std
 #* Module features *#
 
 all = [ # enables all the 12 modules (and their submodules)
-	"geom","media","num","text","ui", # "code","data","lang","org","phys","run","sys","work",
+	"geom","media","num","text","ui", # "code","data","lang","org","phys","run","sys","vita","work",
 ]
 # data = ["hash"]
 	# codec
@@ -73,8 +73,8 @@ ui = ["term"]
 safest = ["safe"]
 safe = [
 	"devela_base_macros/safe", "safe_build",
-	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num",
-	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
+	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_vita", "safe_work",
 ]
 	safe_build = []
 	safe_code = []
@@ -88,6 +88,7 @@ safe = [
 		safe_font = []
 		safe_image = []
 	safe_num = []
+	safe_org = []
 	safe_phys = []
 	safe_run = []
 	safe_sys = ["safe_io", "safe_mem"]
@@ -95,6 +96,7 @@ safe = [
 		safe_mem = []
 	safe_text = []
 	safe_ui = []
+	safe_vita = []
 	safe_work = []
 
 unsafe = [

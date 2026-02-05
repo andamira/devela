@@ -153,7 +153,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 160/300 (140 remaining), 107 visible, 53 hidden
+[features] # 159/300 (141 remaining), 106 visible, 53 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -249,8 +249,8 @@ lang = ["glsl", "js"]
 			js = []
 media = ["audio", "color", "draw", "font", "image", "video"]
 	audio = ["devela_base_core/audio"]
-	draw = ["devela_base_core/draw"]
 	color = ["devela_base_core/color", "devela_base_alloc?/color", "devela_base_std?/color"]
+	draw = ["devela_base_core/draw"]
 	font = ["devela_base_core/font"]
 	image = ["devela_base_core/image"]
 	video = []
@@ -291,14 +291,15 @@ sys = ["io", "mem"]
 text = ["grapheme", "translit"]
 	grapheme = ["devela_base_core/grapheme"]
 	translit = ["devela_base_core/translit"]
-ui = ["layout", "desk", "term", "web"]
+vita = []
+ui = ["layout", "desk", "term"]
 	layout = []
 	# back
 	# front
 		desk = []
 		# mobi = []
 		term = ["devela_base_core/term"] # media::image::sixel
-		web = []
+		# web = []
 work = [
 	"process", "sync", "thread",
 	"bytemuck?/zeroable_atomics",
@@ -329,7 +330,7 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 	"devela_base_alloc?/safe", "devela_base_std?/safe",
 	"devela_macros?/safe",
 	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
-	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_vita", "safe_work",
 ] # List of safe thematic modules (orthogonal to unsafe purposes):
 	# thematic [22]
 	safe_build = ["devela_base_std?/safe_build"]
@@ -360,6 +361,7 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 		safe_mem = ["devela_base_core/safe_mem"]
 	safe_text = ["devela_base_core/safe_text"]
 	safe_ui = []
+	safe_vita = []
 	safe_work = ["devela_base_core/safe_work"]
 		# safe_async
 

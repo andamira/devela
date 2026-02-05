@@ -16,7 +16,7 @@
 // safety
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
-// nightly (uncomment as used)
+// nightly (flags)
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
 #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
@@ -64,6 +64,7 @@ pub mod run;
 pub mod sys;
 pub mod text;
 pub mod ui;
+pub mod vita;
 pub mod work;
 //
 mod yard;
@@ -103,6 +104,8 @@ pub mod zall_ {
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
     #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), COMMON_DOC!("ui")]]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
+    #[doc = concat![crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), COMMON_DOC!("vita")]]
+    pub mod _vita { #[allow(unused)] pub use super::super::vita::_all::*; }
     #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), COMMON_DOC!("work")]]
     /// <br/><hr>
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
@@ -130,6 +133,7 @@ pub mod zall {
         sys::_all::*,
         text::_all::*,
         ui::_all::*,
+        vita::_all::*,
         work::_all::*,
     };
 }
@@ -153,6 +157,7 @@ pub mod _crate_internals {
         sys::_crate_internals::*,
         text::_crate_internals::*,
         ui::_crate_internals::*,
+        vita::_crate_internals::*,
         work::_crate_internals::*,
         yard::_crate_internals::*,
     };

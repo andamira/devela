@@ -1,18 +1,18 @@
-#!/usr/bin/env -S cargo +nightly-2026-01-09 -Zscript
+#!/usr/bin/env -S cargo +nightly -Zscript
 ---cargo
 [dependencies]
-devela = { version = "0.24.0", features = ["std"] }
 itertools = "0.14"
 lexopt = "0.3"
 toml_edit = "0.23"
+[dependencies.devela]
+version = "0.25.0-wip"
+git = "https://github.com/andamira/devela/"
+rev = "b7365a29d228236236227ae2610eedb8a923b183" # 20260204
+features = ["std"]
 ---
 // devela::tools::check
 //
 //!
-//
-// NOTE: needs [rust-script](https://crates.io/crates/rust-script) to run.
-// NOTE: run clippy as follow:
-// cargo clippy --manifest-path (rust-script --package tools/check.rs)/Cargo.toml
 //
 // TOC
 // - config:
@@ -79,35 +79,33 @@ const ROOT_MODULES: [&str; 12 + 1] = [
 #[rustfmt::skip]
 const SUB_MODULES: &[&str] = &[
     // code
+
     // data
-    "hash",
+        "hash",
     // geom
-    "linear", "shape",
+        "fig",
     // lang
-    "glsl", "js",
+        "glsl", "js",
     // media
-    "audio", "color", "draw", "font", "image", "midi", "video",
+        "audio", "color", "draw", "font", "image", "video",
     // num
-    "geom",
-        "linear", "shape",
-    "rand",
-    "unit",
+        "int", "lin", "rand",
+    // org
+
     // phys
-    "time",
-    "wave",
+        "time", "unit", "wave",
     // run
+
     // sys
-    "io",
-    "mem",
-        "bit",
+        "io", "mem", "bit", // "x11",
     // text
-    "str",
+        "grapheme", "translit",
     // ui
-    "layout",
-    /* front */
-        "desk", "term", "web",
+        "layout", "desk", "term",
+    // vita
+
     // work
-    "process", "sync", "thread",
+        "process", "sync", "thread",
 ];
 
 //* dependencies *//

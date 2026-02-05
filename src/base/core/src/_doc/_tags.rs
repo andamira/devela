@@ -11,7 +11,7 @@
 #[macro_export(local_inner_macros)] // local modifier needed to enable resolution
 macro_rules! _tags {
     ($($tag:ident)+) => { concat![$( _tags![@$tag], " "),+] };
-    (@$tag:ident) =>  { paste! { [<_TAG_ $tag:upper>] !() }};
+    (@$tag:ident) =>  { $crate::paste! { [<_TAG_ $tag:upper>] !() }};
 }
 pub use _tags;
 

@@ -39,7 +39,7 @@ std = [] # to be disabled when testing workspace with no_std
 
 #* Module features *#
 all = [ # enables all the 12 modules (and their submodules)
-	"media","num", # "code","data","geom","lang","org","phys","run","sys","work","text","ui",
+	"media","num", # "code","data","geom","lang","org","phys","run","sys","work","text","ui","vita",
 ]
 media = ["color"]
 	color = []
@@ -49,8 +49,8 @@ num = ["rand"]
 #* Safety features *#
 safe = [
 	"devela_base_alloc/safe", "safe_build",
-	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num",
-	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
+	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work", "safe_vita",
 ]
 	safe_build = []
 	safe_code = ["devela_base_alloc/safe_code"]
@@ -60,12 +60,14 @@ safe = [
 	safe_media = ["devela_base_alloc/safe_media", "safe_color"]
 		safe_color = ["devela_base_alloc/safe_color"]
 	safe_num = ["devela_base_alloc/safe_num"]
+	safe_org = ["devela_base_alloc/safe_org"]
 	safe_phys = ["devela_base_alloc/safe_phys"]
 	safe_run = ["devela_base_alloc/safe_run"]
 	safe_sys = ["devela_base_alloc/safe_sys", "safe_mem"]
 		safe_mem = ["devela_base_alloc/safe_mem"]
 	safe_text = ["devela_base_alloc/safe_text"]
 	safe_ui = ["devela_base_alloc/safe_ui"]
+	safe_vita = ["devela_base_alloc/safe_vita"]
 	safe_work = ["devela_base_alloc/safe_work"]
 
 unsafe = [
