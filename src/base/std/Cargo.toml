@@ -103,8 +103,8 @@ _docs_min = [ # the minimum capabilities to document every item
 _docs_nodep = [ # +unsafe
 	"_docs_min", "unsafe",
 ]
-_docs = [ # +dependencies
-	"_docs_nodep", # "dep_all",
+_docs = [ # +dep_all
+	"_docs_nodep", "dep_all",
 ]
 
 #* Dependency features (optional external dependencies) *#
@@ -119,8 +119,8 @@ dep_all = [ # enables all optional dependencies:
 ]
 
 [dependencies] # 2 required
-devela_base_core = { workspace = true }
-devela_base_alloc = { workspace = true }
+devela_base_core.workspace = true
+devela_base_alloc.workspace = true
 
 [badges]
 maintenance.status = "experimental"

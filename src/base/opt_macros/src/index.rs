@@ -7,7 +7,11 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 
-extern crate devela_base_std as base;
+extern crate devela_base_core as base;
+// #[cfg(feature = "alloc"]
+// extern crate devela_base_alloc as base_alloc;
+// #[cfg(feature = "std"]
+// extern crate devela_base_std as base_std;
 extern crate self as devela_macros;
 macro_rules! __crate_name {
     () => {

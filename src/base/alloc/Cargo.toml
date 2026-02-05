@@ -106,7 +106,7 @@ _docs_min = [ # the minimum capabilities to document every item
 _docs_nodep = [ # +unsafe
 	"_docs_min", "unsafe",
 ]
-_docs = [ # +dependencies
+_docs = [ # +dep_all
 	"_docs_nodep", "dep_all",
 ]
 
@@ -118,7 +118,7 @@ _docs = [ # +dependencies
 # Names are prefixed with `dep_`, and use underscores in place of dashes.
 
 # In sync with ./config/dep_all & ./src/yard/_dep.rs
-dep_all = [ # enables all optional dependencies:
+dep_all = [ # enables all 1 optional external dependencies:
 	"dep_portable_atomic_util",
 ]
 
@@ -126,9 +126,10 @@ dep_all = [ # enables all optional dependencies:
 dep_portable_atomic_util = ["dep:portable-atomic-util"]                           # text:str
 
 [dependencies]
-devela_base_core = { workspace = true }
+devela_base_core.workspace = true
 
 #* optional external dependencies *#
+
 portable-atomic-util = { workspace = true, optional = true }
 
 

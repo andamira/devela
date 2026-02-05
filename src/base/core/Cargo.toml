@@ -143,7 +143,7 @@ _docs = [ # +dependencies
 # Names are prefixed with `dep_`, and use underscores in place of dashes.
 
 # In sync with ./config/dep_all & ./src/yard/_dep.rs
-dep_all = [ # enables all 3 optional dependencies:
+dep_all = [ # enables all 3 optional external dependencies:
 	"dep_memchr", "dep_simdutf8", "dep_rand_core", "dep_wide",
 ]
 
@@ -154,7 +154,7 @@ dep_simdutf8 = ["dep:simdutf8"]                                                 
 dep_wide = ["dep:wide"]                                                           # num::grain::wide
 
 [dependencies]
-devela_base_macros = { workspace = true }
+devela_base_macros.workspace = true
 
 #* optional external dependencies *#
 

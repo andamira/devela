@@ -472,7 +472,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
 _docs_examples = [] # document examples and example generated items
-_docs_min = [ # the minimum capabilities to document every item
+_docs_min = [ # the minimum capabilities to document every item independent of alloc/std/unsafe
 	"_docs_examples",
 	# workspace
 	"devela_base_core/_docs_min",
@@ -484,17 +484,16 @@ _docs_min = [ # the minimum capabilities to document every item
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 ]
-_docs_nodep = [ # +std +unsafe
+_docs_nodep = [ # +std +unsafe +__dbg
 	"_docs_min", "std", "unsafe", "__dbg",
-	"devela_base_core/_docs_nodep", "devela_base_alloc?/_docs", "devela_base_std?/_docs",
-	#
-	"devela_macros?/_docs_nodep",
+	"devela_base_core/_docs_nodep",
+	"devela_base_alloc?/_docs_nodep", "devela_base_std?/_docs_nodep", "devela_macros?/_docs_nodep",
 ]
-_docs = [ # +dependencies
+_docs = [ # +dep_all
 	"_docs_nodep", "dep_all",
 	"devela_base_core/_docs",
-	#
-	"devela_macros?/_docs",
+	"devela_base_core/_docs",
+	"devela_base_alloc?/_docs", "devela_base_std?/_docs", "devela_macros?/_docs",
 ]
 
 #* code capabilities *#
@@ -569,7 +568,7 @@ _value_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./build/main/dep_all & ./src/yard/_dep.rs
-dep_all = [ # enables all 15 optional dependencies:
+dep_all = [ # enables all 15 optional external dependencies:
 	"dep_atomic", "dep_bytemuck",
 	"dep_crossterm",
 	"dep_hashbrown", "dep_jiff",
