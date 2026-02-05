@@ -167,7 +167,16 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_QUANT_SCALE = "Scaling, remapping, and magnitude transformation of numeric values.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
-    _DOC_ORG             = "Organization of agents, roles, norms, and coordinated action.";
+    // 7
+    _DOC_ORG         = "Coordination and structure of collective action.";
+    _DOC_ORG_AGENT   = "Intentional entities capable of action and coordination.";
+    _DOC_ORG_ECON    = "Exchange, incentives, and flows of value within collectives.";
+    _DOC_ORG_GOV     = "Governance, authority, and rule-based coordination.";
+    _DOC_ORG_INST    = "Enduring organizational forms and institutional structures.";
+    _DOC_ORG_MORAL   = "Normative frameworks of responsibility, duty, and judgment.";
+    _DOC_ORG_NORM    = "Shared social norms and informal behavioral expectations.";
+    _DOC_ORG_ROLE    = "Roles, responsibilities, and positions within coordinated action.";
+    _DOC_ORG_SUPPORT = "Structures for providing support, provisioning, and dependency management.";
 
     // 8
     _DOC_PHYS             = "Physical quantities, units, and models of the natural world.";

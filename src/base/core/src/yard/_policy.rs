@@ -10,6 +10,19 @@
 ///
 /// This macro centralizes devela-specific rules (such as safety, documentation,
 /// or debug behavior) while keeping external expansions unrestricted.
+///
+/// # Note
+/// This macro may emit the unstable attribute `#[doc(cfg(...))]` under
+/// `nightly_doc`. When such expansions occur inside doctests, the doctest
+/// crate must explicitly enable `feature(doc_cfg)`, for example:
+/// ```ignore
+/// #![cfg_attr(nightly_doc, feature(doc_cfg))]
+/// ```
+///
+/// # Used in
+/// - [`define_bufline!`][crate::define_bufline]
+/// - [`define_pcg!`][crate::define_pcg]
+/// - [`unwrap!`][crate::unwrap]
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _devela_policy {
@@ -28,7 +41,7 @@ macro_rules! _devela_policy {
     };
     (%devela safe:$safe:literal, unsafe:$unsafe:literal, $item:item) => {
         #[cfg(all(not(feature = $safe), feature = $unsafe))]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE
         $item
     };
     (unsafe:$unsafe:literal, $item:item) => {
@@ -41,7 +54,7 @@ macro_rules! _devela_policy {
     };
     (%devela unsafe:$unsafe:literal, $item:item) => {
         #[cfg(feature = $unsafe)]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE
         $item
     };
 

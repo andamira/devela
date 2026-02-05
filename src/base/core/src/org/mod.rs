@@ -14,15 +14,13 @@ crate::CONST! { pub(crate) _DOC_ORG_MODULES =
     crate::_doc!(modules: crate; org: _); // agent, care, econ, gov, inst, moral, role
 }
 
-// mod norm; // general norms
-
-// pub mod agent; // intentional entities
-// pub mod care; // maintenance, dependency, support
-// pub mod econ; // economy, incentives, value flows
-// pub mod gov; // governance, rules, authority
-// pub mod inst; // institutions, organizations, systems
-// pub mod moral; // moral norms, responsibility
-// pub mod role; // agents, roles, responsibilities
+// pub mod agent; // Intentional entities capable of action and coordination.
+// pub mod econ; // Exchange, incentives, and flows of value within collectives.
+// pub mod gov; // Governance, authority, and rule-based coordination.
+// pub mod inst; // Enduring organizational forms and institutional structures.
+// pub mod moral; // Normative frameworks of responsibility, duty, and judgment.
+// pub mod norm; // Shared social norms and informal behavioral expectations.
+// pub mod role; // Roles, responsibilities, and positions within coordinated action.
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {

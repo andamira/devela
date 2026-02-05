@@ -96,7 +96,8 @@ define_bufline!(
 ///
 /// ## Example
 /// Define a linear buffer type using an 8-bit index and multiple storage backends:
-/// ```rust
+/// ```
+/// # #![cfg_attr(nightly_doc, feature(doc_cfg))] // reason = _devela_policy! emmiting doc(cfg)
 /// # use devela_base_core::define_bufline;
 /// define_bufline!(
 ///     /// Example linear buffer.
