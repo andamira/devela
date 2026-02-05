@@ -35,6 +35,9 @@ bench = false
 __dbg = []
 __publish = []
 __std = [] # remove no_std
+__docs_internal = [ # enables documentation for internal items
+	"devela_base_macros/__docs_internal",
+]
 
 #* Module features *#
 

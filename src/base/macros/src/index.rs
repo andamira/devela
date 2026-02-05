@@ -1,5 +1,6 @@
 // devela_base_macros::index
 //
+// NOTE: proc. macro crates can only export procedural macros.
 #![doc = include_str!("./Index.md")]
 //!
 //
@@ -43,8 +44,8 @@ mod bodies;
 mod core_bridge;
 use {bodies::*, core_bridge::*};
 
-// mod yard;
 // mod _doc;
+// mod yard;
 
 /* helpers */
 

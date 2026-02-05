@@ -171,6 +171,8 @@ define_symbol_tags! {
         "?std";
     _TAG_OPTIONAL_STD, "uses `std` features when enabled; or employs fallbacks otherwise", "±std";
     _TAG_CODEGEN_BUILD, "code generated in the build script", "<small>cgen</small>";
+    // Should only be documented with the __docs_internal feature enabled
+    _TAG_INTERNAL, "Internal item", "🥷"; // 🥷,🫥
     _TAG_PROCEDURAL_MACRO, "procedural macro", "<small>proc</small>";
     _TAG_WIP, "Work In Progress", "🚧"; // 🚧,🔜,👷
 

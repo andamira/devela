@@ -269,4 +269,9 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_WORK_SYNC_ATOMIC = "Atomic types.";
     _DOC_WORK_SYNC_MPSC   = "Multi-producer, single-consumer channels.";
     _DOC_WORK_THREAD      = "Native threads.";
+
+    // (15)
+    _DOC_YARD       = "Internal scaffolding and misc. machinery.";
+    _DOC_YARD__DEP  = "Re-exported dependencies.";
+    _QUO_YARD       = "> This space exists so the rest can be clean.";
 }

@@ -34,6 +34,9 @@ bench = false
 __dbg = ["devela_base_core/__dbg"]
 __publish = []
 __std = [] # remove no_std
+__docs_internal = [ # enables documentation for internal items
+	"devela_base_core/__docs_internal",
+]
 
 #* Environment features *#
 alloc = ["portable-atomic-util?/alloc"] # always enabled

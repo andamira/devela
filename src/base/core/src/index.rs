@@ -66,8 +66,8 @@ pub mod text;
 pub mod ui;
 pub mod vita;
 pub mod work;
-//
-mod yard;
+// internal:
+pub mod yard;
 #[doc(hidden)]
 pub use yard::_dep;
 

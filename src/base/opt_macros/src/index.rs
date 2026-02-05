@@ -1,5 +1,6 @@
 // devela_macros::index
 //
+// NOTE: proc. macro crates can only export procedural macros.
 //!
 //
 
@@ -20,8 +21,8 @@ use proc_macro::TokenStream as TS;
 mod bodies;
 use bodies::*;
 
-// mod yard;
 // mod _doc;
+// mod yard;
 
 #[doc = base::_tags!(construction niche procedural_macro)]
 #[doc = include_str!("docs/enumint.md")]

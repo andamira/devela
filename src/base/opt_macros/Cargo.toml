@@ -32,6 +32,9 @@ bench = false
 #* Development features *#
 __dbg = ["devela_base_std/__dbg"]
 __publish = []
+__docs_internal = [ # enables documentation for internal items
+	"devela_base_std/__docs_internal",
+]
 
 #* Safety features *#
 safe = []

@@ -66,7 +66,7 @@ Many feature gates are removed in order to make most features make always availa
 
 
 ## features & flags
-- new features: `__publish`, `__std`, `_docs_examples` `grapheme`, `int`, `org`, `safe_build`, `safe_org`, `safe_vita`, `translit`, `vita`, `x11`.
+- new features: `__publish`, `__std`, `__docs_internal`, `_docs_examples` `grapheme`, `int`, `org`, `safe_build`, `safe_org`, `safe_vita`, `translit`, `vita`, `x11`.
 - remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `fmt`, `join`, `metric`, `nightly_bigint`, `prim`, `safe_layout`, `split`, `str`.
 - remove flags: `bit··`, `char··`, `cmp··`, `_float··`, `_int*··`, `_nums··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - add an adittional `nightly_stable_1_??` flag for the 3rd next version.
@@ -205,11 +205,12 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
   - internal macros: `__crate_name!`, `__dbg!`, `__std!`, `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_tags!`, `_use!`.
-- add tags: `_DOC_*`, `_TAG_[ALG|APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|IO|LAYOUT|LIFETIME|LIN|LINUX|LIST|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|SYMB|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
+- add tags: `_DOC_*`, `_TAG_[ALG|APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|INTERNAL|IO|LAYOUT|LIFETIME|LIN|LINUX|LIST|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|SYMB|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - new re-exports: `select_unpredictable`.
 - new functions: `cold_path`, `likely`, `unlikely`.
 - rename `reexport!` internal macro to `_reexport!`.
+  - mark as `doc(no_inline)`.
   - allow accepting multiple tags.
   - fix rendering of std path links.
 - prefix internal constants `TAG_*` & `EMOJI_*` with `_`
@@ -835,7 +836,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ---
 ## yard
-- new private root module `yard`.
+- new internal root module `yard`.
 - new workspace-internal macro `_devela_policy!`.
 - move here most private macros from `code::util`.
 

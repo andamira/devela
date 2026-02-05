@@ -3,13 +3,15 @@
 //! private reexport meta helper
 //
 
+#[doc = crate::_tags!(internal)]
 /// Macro helper for documentation of re-exported items.
+#[doc = crate::_doc_location!("yard")]
 //
 // IMPROVE: make dependencies safety related to features.
 // MAYBE: new branch for: either a crate or core (for portable-atomic types).
 // WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 //       the solution is to re-export from core/alloc/std items on each crate.
-#[doc(hidden)]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[macro_export]
 #[allow(clippy::crate_in_macro_def, reason = "_dep relative to macro call")]
 macro_rules! __reexport {
@@ -238,7 +240,7 @@ macro_rules! __reexport {
         pub use ::$dep;
     }};
     (
-      // Re-exports an optional crate
+      // Re-exports an optional crate (used in */src/yard/_dep.rs)
       //
       // $dep_safe:    [safe|unsafe] (affects compilation with "safest" feature)
       // $dep_feat:    the dependency feature that enables it
@@ -268,7 +270,7 @@ macro_rules! __reexport {
                     feature = $dep_feat $(, $(feature = $f)+ )?
                 )))
             )]
-            #[doc(inline)]
+            #[doc(no_inline)] // MAYBE IMPROVE: allow customization
             pub use ::$dep_mod;
         }
     }};
@@ -371,4 +373,5 @@ macro_rules! __reexport {
         };
     }};
 }
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 pub use __reexport as _reexport;

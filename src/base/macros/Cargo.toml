@@ -32,6 +32,7 @@ bench = false
 #* Development features *#
 __dbg = [] # shows extra debugging information
 __publish = []
+__docs_internal = [] # enables documentation for internal items
 
 #* Safety features *#
 unsafe = []

@@ -1,11 +1,13 @@
 // devela::_dep
 //
-//! Re-exported optional dependencies.
+#![doc = crate::_tags!(internal)]
+#![doc = crate::_DOC_YARD__DEP!()] // internal
+#![doc = crate::_doc!(modules: crate::yard; _dep)]
+#![doc = crate::_doc!(hr)]
 //
 // TOC
 // - standard libraries
 // - external dependencies
-
 #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
 
 use crate::_reexport;
@@ -14,14 +16,14 @@ use crate::_reexport;
 
 /// <span class='stab portability' title='re-exported `core`'>`core`</span>
 /// *Re-exported Rust `core` library.*
-#[doc(inline)]
+#[doc(no_inline)]
 pub use ::core as _core;
 
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
 /// *Re-exported Rust `alloc` library.*
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[cfg(feature = "alloc")]
-#[doc(inline)]
+#[doc(no_inline)]
 pub extern crate alloc as _alloc;
 
 /// <span class='stab portability' title='re-exported `std`'>`std`</span>
@@ -29,7 +31,7 @@ pub extern crate alloc as _alloc;
 /// <br/><hr>
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[cfg(feature = "std")]
-#[doc(inline)]
+#[doc(no_inline)]
 pub extern crate std as _std;
 
 /* workspace.dependencies */

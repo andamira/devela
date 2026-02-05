@@ -48,8 +48,8 @@ items! {
     pub mod ui;
     pub mod work;
 }
-//
-mod yard;
+// internal:
+pub mod yard;
 #[doc(hidden)]
 pub use yard::_dep;
 //

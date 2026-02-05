@@ -33,6 +33,9 @@ bench = false
 #* Development features *#
 __dbg = ["devela_base_alloc/__dbg"]
 __publish = []
+__docs_internal = [ # enables documentation for internal items
+	"devela_base_alloc/__docs_internal",
+]
 
 #* Environment features *#
 std = [] # to be disabled when testing workspace with no_std

@@ -6,9 +6,11 @@
 // - _devela_policy!
 // - __devela_unreachable_unchecked
 
+#[doc = crate::_tags!(internal)]
 /// Applies devela-internal policy to expressions, items, and namespaces.
+#[doc = crate::_doc_location!("yard")]
 ///
-/// This macro centralizes devela-specific rules (such as safety, documentation,
+/// Centralizes devela-specific rules (such as safety, documentation,
 /// or debug behavior) while keeping external expansions unrestricted.
 ///
 /// # Note
@@ -23,9 +25,9 @@
 /// - [`define_bufline!`][crate::define_bufline]
 /// - [`define_pcg!`][crate::define_pcg]
 /// - [`unwrap!`][crate::unwrap]
-#[doc(hidden)]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[macro_export]
-macro_rules! _devela_policy {
+macro_rules! __devela_policy {
     /* item-level safety policy */
 
     // Defines an item whose availability differs between devela and external builds,
@@ -82,8 +84,8 @@ macro_rules! _devela_policy {
         $vis use $mod_name::*;
     };
 }
-#[doc(hidden)]
-pub use _devela_policy;
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+pub use __devela_policy as _devela_policy;
 
 /// for devela safe
 #[crate::compile(env(__DEVELA_MEMBER))] #[cfg(not(unsafe··))]

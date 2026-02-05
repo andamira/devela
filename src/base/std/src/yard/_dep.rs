@@ -1,6 +1,9 @@
 // devela_base_std::_dep
 //
-//! Re-exported optional dependencies.
+#![doc = crate::_tags!(internal)]
+#![doc = crate::_DOC_YARD__DEP!()] // internal
+#![doc = crate::_doc!(modules: crate::yard; _dep)]
+#![doc = crate::_doc!(hr)]
 //
 
 // use crate::_reexport;
