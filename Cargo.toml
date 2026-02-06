@@ -674,7 +674,7 @@ default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
 
 [workspace.dependencies.bytemuck] # https://crates.io/crates/bytemuck (unsafe)
-version = "1.24" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
+version = "1.25" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
 default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
@@ -696,7 +696,7 @@ default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/latest/jiff/#crate-features
 
 [workspace.dependencies.log] # https://crates.io/crates/log (optional unsafe)
-version = "0.4.25" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
+version = "0.4.29" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
 default-features = false # 25 https://docs.rs/crate/log/latest/features
 # features = ["kv"]
 
@@ -706,29 +706,29 @@ default-features = false # 9 https://docs.rs/crate/memchr/latest/features
 
 [workspace.dependencies.miniquad] # https://crates.io/crates/miniquad (unsafe)
 # In sync with src::ui::back::miniquad::service
-version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
+version = "0.4.8" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
 features = ["log-impl"]
 # WAIT: [update conf module to derive more traits](https://github.com/not-fl3/miniquad/pull/523)
 # WAIT: [use AtomicPtr in NATIVE_DISPLAY](https://github.com/not-fl3/miniquad/pull/525)
 
 [workspace.dependencies.portable-atomic] # https://crates.io/crates/portable-atomic (unsafe)
-version = "1.11" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
+version = "1.13" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
 default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
 # https://docs.rs/portable-atomic/1.11.0/portable_atomic/#optional-features
 features = ["fallback", "float"]
 # feature-gated: serde, require-cas(maybe)
 
 [workspace.dependencies.portable-atomic-util] # https://crates.io/crates/portable-atomic-util (unsafe)
-version = "0.2.4" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/portable-atomic-util/CHANGELOG.md
+version = "0.2.5" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/portable-atomic-util/CHANGELOG.md
 default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
 [workspace.dependencies.rand_core] # https://crates.io/crates/rand_core (safe)
-version = "0.9" # ✓ https://github.com/rust-random/rand_core/blob/master/CHANGELOG.md
+version = "0.10" # ✓ https://github.com/rust-random/rand_core/blob/master/CHANGELOG.md
 default-features = false # 3 https://docs.rs/crate/rand_core/latest/features
 
 [workspace.dependencies.raw-cpuid] # https://crates.io/crates/raw-cpuid (unsafe)
-version = "11.2" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
+version = "11.6" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
 default-features = false # 9 https://docs.rs/crate/raw-cpuid/latest/features
 
 [workspace.dependencies.safe_arch] # https://crates.io/crates/safe_arch (unsafe)

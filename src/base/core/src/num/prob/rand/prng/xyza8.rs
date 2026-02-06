@@ -288,19 +288,21 @@ impl Rand for Xyza8b {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::{Rand, Xyza8a, Xyza8b};
-    use crate::_dep::rand_core::{RngCore, SeedableRng};
+    use crate::_dep::rand_core::{SeedableRng, TryRng};
 
-    impl RngCore for Xyza8a {
+    impl TryRng for Xyza8a {
+        type Error = crate::Infallible;
+
         /// Returns the next 4 × random `u8` combined as a single `u32`.
-        fn next_u32(&mut self) -> u32 {
-            self.rand_next_u32()
+        fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
+            Ok(self.rand_next_u32())
         }
         /// Returns the next 8 × random `u8` combined as a single `u64`.
-        fn next_u64(&mut self) -> u64 {
-            self.rand_next_u64()
+        fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
+            Ok(self.rand_next_u64())
         }
-        fn fill_bytes(&mut self, dest: &mut [u8]) {
-            self.rand_fill_bytes(dest)
+        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
+            Ok(self.rand_fill_bytes(dst))
         }
     }
     impl SeedableRng for Xyza8a {
@@ -309,18 +311,19 @@ mod impl_rand {
             Self::new(seeds)
         }
     }
+    impl TryRng for Xyza8b {
+        type Error = crate::Infallible;
 
-    impl RngCore for Xyza8b {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
-        fn next_u32(&mut self) -> u32 {
-            self.rand_next_u32()
+        fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
+            Ok(self.rand_next_u32())
         }
         /// Returns the next 8 × random `u8` combined as a single `u64`.
-        fn next_u64(&mut self) -> u64 {
-            self.rand_next_u64()
+        fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
+            Ok(self.rand_next_u64())
         }
-        fn fill_bytes(&mut self, dest: &mut [u8]) {
-            self.rand_fill_bytes(dest)
+        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
+            Ok(self.rand_fill_bytes(dst))
         }
     }
     impl SeedableRng for Xyza8b {

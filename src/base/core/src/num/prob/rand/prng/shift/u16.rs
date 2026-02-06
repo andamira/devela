@@ -165,25 +165,26 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> Rand
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use crate::_dep::rand_core::{RngCore, SeedableRng};
+    use crate::_dep::rand_core::{SeedableRng, TryRng};
     use crate::{Rand, XorShift16};
 
-    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RngCore
+    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> TryRng
         for XorShift16<BASIS, A, B, C>
     {
+        type Error = crate::Infallible;
+
         /// Returns the next 2 × random `u16` combined as a single `u32`.
-        fn next_u32(&mut self) -> u32 {
-            self.rand_next_u32()
+        fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
+            Ok(self.rand_next_u32())
         }
         /// Returns the next 4 × random `u16` combined as a single `u64`.
-        fn next_u64(&mut self) -> u64 {
-            self.rand_next_u64()
+        fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
+            Ok(self.rand_next_u64())
         }
-        fn fill_bytes(&mut self, dest: &mut [u8]) {
-            self.rand_fill_bytes(dest)
+        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
+            Ok(self.rand_fill_bytes(dst))
         }
     }
-
     impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> SeedableRng
         for XorShift16<BASIS, A, B, C>
     {
