@@ -262,13 +262,13 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_VITA_PLAY  = "Expression, play, and shared enjoyment beyond necessity or survival.";
 
     // 14
-    _DOC_WORK             = "Work management and concurrency.";
-    _DOC_WORK_FUTURE      = "Asynchronous execution.";
-    _DOC_WORK_PROCESS     = "Native process management.";
-    _DOC_WORK_SYNC        = "Synchronization primitives.";
+    _DOC_WORK             = "Computational work and its execution mechanics.";
+    _DOC_WORK_FUTURE      = "Asynchronous work and continuations.";
+    _DOC_WORK_PROCESS     = "Process-based execution of work.";
+    _DOC_WORK_SYNC        = "Synchronization mechanisms for concurrent work.";
     _DOC_WORK_SYNC_ATOMIC = "Atomic types.";
     _DOC_WORK_SYNC_MPSC   = "Multi-producer, single-consumer channels.";
-    _DOC_WORK_THREAD      = "Native threads.";
+    _DOC_WORK_THREAD      = "Thread-based execution of work.";
 
     // (15)
     _DOC_YARD       = "Internal scaffolding and misc. machinery.";

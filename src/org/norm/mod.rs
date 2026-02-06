@@ -1,4 +1,4 @@
-// devela_base_core::org::norm
+// devela::org::norm
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_NORM!()] // public

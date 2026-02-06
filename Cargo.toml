@@ -652,11 +652,11 @@ wide = { workspace = true, optional = true }
 # ------------------------------------------------------------------------------
 # publish (crates.io valid):
 # devela_base_macros = { version = "0.25.0-wip" } #
-# devela_base_core   = { version = "0.25.0-wip" }
+# devela_base_core   = { version = "0.25.0-wip" } # "0.25.0-wip.0" # 2025-09-18
 # devela_base_alloc  = { version = "0.25.0-wip" } #
-# devela_base_std    = { version = "0.25.0-wip" }
-# devela_macros      = { version = "0.25.0-wip" }
-# devela_buildpost   = { version = "0.25.0-wip" }
+# devela_base_std    = { version = "0.25.0-wip" } #
+# devela_macros      = { version = "0.25.0-wip" } # "0.25.0-wip.1" # 2025-09-18
+# devela_buildpost   = { version = "0.25.0-wip" } #
 
 # dev (local override):
 devela_base_macros = { version = "0.25.0-wip", path = "./src/base/macros" } #

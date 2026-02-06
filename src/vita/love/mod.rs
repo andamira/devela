@@ -10,7 +10,7 @@
 // pub mod care; // nurturing, dependency, support
 // pub mod friend; // friendship, trust, affinity
 // pub mod kin; // family, lineage, household
-// pub mod sex; // intimacy, sexuality (if you choose to include)
+// pub mod sex; // intimacy, sexuality
 // pub mod tribe; // community, belonging
 
 crate::structural_mods! { // _pub_mods

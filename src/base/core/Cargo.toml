@@ -2,7 +2,7 @@
 name = "devela_base_core"
 description = "base shared functionality for devela"
 repository = "https://github.com/andamira/devela/tree/main/src/base/core"
-# version = "0.25.0-wip.0" # published
+# version = "0.25.0-wip.0" # 2025-09-18
 version.workspace = true
 rust-version.workspace = true
 edition.workspace = true

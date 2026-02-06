@@ -13,6 +13,7 @@
 name = "devela_postbuild"
 description = "post-build orchestrator for devela"
 rust-version.workspace = true
+# version = "0.25.0-wip" #
 edition.workspace = true
 version.workspace = true
 documentation.workspace = true

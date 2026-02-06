@@ -2,7 +2,7 @@
 name = "devela_base_std"
 description = "base std shared functionality for devela"
 repository = "https://github.com/andamira/devela/tree/main/src/base/std"
-# version.workspace = true
+# version = "0.25.0-wip" #
 version.workspace = true
 rust-version.workspace = true
 edition.workspace = true
