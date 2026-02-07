@@ -68,7 +68,7 @@ Many feature gates are removed in order to make most features make always availa
 
 
 ## features & flags
-- new features: `__publish`, `__std`, `__docs_internal`, `_docs_examples` `grapheme`, `int`, `org`, `safe_build`, `safe_org`, `safe_vita`, `translit`, `vita`, `x11`.
+- new features: `__publish`, `__std`, `__docs_internal`, `_docs_examples`, `_docs_max`, `grapheme`, `int`, `org`, `safe_build`, `safe_org`, `safe_vita`, `translit`, `vita`, `x11`.
 - remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `fmt`, `join`, `metric`, `nightly_bigint`, `prim`, `safe_layout`, `split`, `str`.
 - remove flags: `bit··`, `char··`, `cmp··`, `_float··`, `_int*··`, `_nums··`, `prim··`, `sort··`, `str··`, `str_u··`.
 - add an adittional `nightly_stable_1_??` flag for the 3rd next version.

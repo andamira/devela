@@ -153,7 +153,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 160/300 (140 remaining), 106 visible, 54 hidden
+[features] # 161/300 (139 remaining), 107 visible, 54 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -494,6 +494,9 @@ _docs = [ # +dep_all
 	"devela_base_core/_docs",
 	"devela_base_core/_docs",
 	"devela_base_alloc?/_docs", "devela_base_std?/_docs", "devela_macros?/_docs",
+]
+_docs_max = [ # +max +__docs_internal
+	"_docs", "_max", "__docs_internal"
 ]
 
 #* code capabilities *#
