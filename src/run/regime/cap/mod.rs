@@ -1,4 +1,4 @@
-// devela::ui::back::cap
+// devela::run::regime::cap
 //
 //! Runtime capabilities.
 //

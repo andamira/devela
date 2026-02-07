@@ -1,4 +1,4 @@
-// devela::run::setup::cap::definitions
+// devela::run::regime::cap::definitions
 //
 //! Runtime capabilities.
 //
@@ -8,7 +8,7 @@ use crate::String;
 
 #[doc = crate::_tags!(runtime)]
 /// The capabilities supported by a `Runtime`.
-#[doc = crate::_doc_location!("run/setup")]
+#[doc = crate::_doc_location!("run/regime")]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct RunCap {
     /// Image capabilities.
@@ -27,7 +27,7 @@ pub struct RunCap {
 
 #[doc = crate::_tags!(runtime image)]
 /// Image capabilities.
-#[doc = crate::_doc_location!("run/setup")]
+#[doc = crate::_doc_location!("run/regime")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCapImage {
     /// Maximum bitmap size, in native pixels.
@@ -47,7 +47,7 @@ pub struct RunCapImage {
 
 #[doc = crate::_tags!(runtime interaction)]
 /// Runtime input capabilities.
-#[doc = crate::_doc_location!("run/setup")]
+#[doc = crate::_doc_location!("run/regime")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCapInput {
     /// Gamepad input capabilities.
@@ -64,7 +64,7 @@ pub struct RunCapInput {
 
 #[doc = crate::_tags!(runtime audio)]
 /// Runtime audio capabilities.
-#[doc = crate::_doc_location!("run/setup")]
+#[doc = crate::_doc_location!("run/regime")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCapAudio {
     /// Audio playback capabilities.
@@ -73,7 +73,7 @@ pub struct RunCapAudio {
 
 #[doc = crate::_tags!(runtime)]
 /// Runtime system capabilities.
-#[doc = crate::_doc_location!("run/setup")]
+#[doc = crate::_doc_location!("run/regime")]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
@@ -88,7 +88,7 @@ pub struct RunCapSystem {
 
 #[doc = crate::_tags!(runtime)]
 /// Runtime window capabilities.
-#[doc = crate::_doc_location!("run/setup")]
+#[doc = crate::_doc_location!("run/regime")]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCapWindow {
     /// Whether multiple windows are supported.

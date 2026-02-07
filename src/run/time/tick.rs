@@ -1,4 +1,4 @@
-// devela::run::tick
+// devela::run::time::tick
 //
 //! Defines [`RuntimeTick`].
 //
@@ -7,7 +7,7 @@ use crate::Ordering;
 
 #[doc = crate::_tags!(runtime time)]
 /// A deterministic logical execution-time counter.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_location!("run/time")]
 ///
 /// `RuntimeTick` represents execution time as an explicitly advanced,
 /// monotonically increasing tick count.
@@ -26,68 +26,44 @@ use crate::Ordering;
 pub struct RuntimeTick {
     ticks: u64,
 }
-
+#[rustfmt::skip]
 impl RuntimeTick {
     /// Creates a new logical time value with the given tick count.
-    pub const fn new(ticks: u64) -> Self {
-        Self { ticks }
-    }
+    pub const fn new(ticks: u64) -> Self { Self { ticks } }
 
     /// Returns the underlying tick count.
-    pub const fn ticks(self) -> u64 {
-        self.ticks
-    }
+    pub const fn ticks(self) -> u64 { self.ticks }
 
     /// Advances by one tick in place.
-    pub const fn tick(&mut self) {
-        self.ticks += 1;
-    }
+    pub const fn tick(&mut self) { self.ticks += 1; }
 
     /// Returns the next tick value.
-    pub const fn next(self) -> Self {
-        Self { ticks: self.ticks + 1 }
-    }
+    pub const fn next(self) -> Self { Self { ticks: self.ticks + 1 } }
 
     /// Advances this time by `delta` ticks in place.
-    pub const fn advance_mut(&mut self, delta: u64) {
-        self.ticks += delta;
-    }
+    pub const fn advance_mut(&mut self, delta: u64) { self.ticks += delta; }
 
     /// Returns a new `RuntimeTick` advanced by `delta` ticks.
-    pub const fn advanced(self, delta: u64) -> Self {
-        Self { ticks: self.ticks + delta }
-    }
+    pub const fn advanced(self, delta: u64) -> Self { Self { ticks: self.ticks + delta } }
 
     /// Returns the difference in ticks between two times.
     ///
     /// The result is saturating and never negative.
-    pub const fn delta(self, earlier: Self) -> u64 {
-        self.ticks.saturating_sub(earlier.ticks)
-    }
+    pub const fn delta(self, earlier: Self) -> u64 { self.ticks.saturating_sub(earlier.ticks) }
 
     /// Returns whether this time is strictly after `other`.
-    pub const fn is_after(self, other: Self) -> bool {
-        self.ticks > other.ticks
-    }
+    pub const fn is_after(self, other: Self) -> bool { self.ticks > other.ticks }
 
     /// Returns whether this time is strictly before `other`.
-    pub const fn is_before(self, other: Self) -> bool {
-        self.ticks < other.ticks
-    }
+    pub const fn is_before(self, other: Self) -> bool { self.ticks < other.ticks }
 
     /// Returns whether this time is equal to `other`.
-    pub const fn eq(self, other: Self) -> bool {
-        self.ticks == other.ticks
-    }
+    pub const fn eq(self, other: Self) -> bool { self.ticks == other.ticks }
 
     /// Compares two tick times.
     pub const fn cmp(self, other: Self) -> core::cmp::Ordering {
-        if self.ticks < other.ticks {
-            Ordering::Less
-        } else if self.ticks > other.ticks {
-            Ordering::Greater
-        } else {
-            Ordering::Equal
-        }
+        if self.ticks < other.ticks { Ordering::Less }
+        else if self.ticks > other.ticks { Ordering::Greater }
+        else { Ordering::Equal }
     }
 }

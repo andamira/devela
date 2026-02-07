@@ -471,7 +471,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
-_docs_examples = [] # document examples and example generated items
+_docs_examples = [] # documents examples and generates example items
 _docs_min = [ # the minimum capabilities to document every item independent of alloc/std/unsafe
 	"_docs_examples",
 	# workspace
@@ -701,7 +701,7 @@ default-features = false # 25 https://docs.rs/crate/log/latest/features
 # features = ["kv"]
 
 [workspace.dependencies.memchr] # https://crates.io/crates/memchr (unsafe)
-version = "2.7" # ✗ https://github.com/BurntSushi/memchr/commits/master/
+version = "2.8" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 default-features = false # 9 https://docs.rs/crate/memchr/latest/features
 
 [workspace.dependencies.miniquad] # https://crates.io/crates/miniquad (unsafe)

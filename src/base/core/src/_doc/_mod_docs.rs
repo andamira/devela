@@ -47,7 +47,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
 
     /* thematic modules tree */
 
-    // 1
+    // 1 (the internal language of the library)
     _DOC_CODE            = "Reflective code synthesis.";
     _DOC_CODE_ANY        = "Dynamic typing and reflection.";
     _DOC_CODE_ERROR      = "Errors, backtraces and structured handling.";
@@ -57,7 +57,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_CODE_RESULT     = "Parameterized outcome and resolution types.";
     _DOC_CODE_UTIL       = "Utility macros and hint functions.";
 
-    // 2
+    // 2 (structure without interpretation)
     _DOC_DATA              = "Data handling and manipulation.";
     _QUO_DATA              = "> How values are organized and accessed.";
     _DOC_DATA_ADDRESS      = "Addressability and directed reachability.";
@@ -85,7 +85,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _QUO_DATA_UID          = "> Defines identity kinds and generation tools.";
     _DOC_DATA_VALUE        = "Enumerated data values and types, classified by size.";
 
-    // 3
+    // 3 (the grammar of space)
     _DOC_GEOM              = "Geometric types, operations, and spatial constructs.";
     _DOC_GEOM_AFFINE       = "Structure of space under translation and linear combination.";
     _DOC_GEOM_AFFINE_FRAME = "Affine reference frames and coordinate systems.";
@@ -114,10 +114,10 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_GEOM_SPACE_PART   = "Spatial partitioning, subdivision, and tessellation.";
     _DOC_GEOM_SPACE_TOPOL  = "Topological properties of space such as connectivity and boundaries.";
 
-    // 4
+    // 4 (structures of meaning, expression, and interpretation across domains)
     _DOC_LANG               = "Language structure and meaning across domains.";
     _DOC_LANG_DISC          = "Discourse and expression.";
-    _DOC_LANG_DISC_RETHORIC = "Rhetorical structures and stylistic devices.";
+    _DOC_LANG_DISC_RETHORIC = "Rethorical structures and stylistic devices.";
     _DOC_LANG_HUM           = "Human linguistics and language theory.";
     _DOC_LANG_HUM_ART       = "Artificial human languages.";
     _DOC_LANG_HUM_GRAM      = "Grammar and structural theory.";
@@ -130,7 +130,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_LANG_REPR          = "Representation languages.";
     _DOC_LANG_SEM           = "Semantic relations, independent of form and execution.";
 
-    // 5
+    // 5 (artifacts meant to be perceived)
     _DOC_MEDIA           = "Media representation, processing, and synthesis.";
     _DOC_MEDIA_AUDIO     = "Audio functionality.";
     _DOC_MEDIA_COLOR     = "Chromatic functionality.";
@@ -141,7 +141,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_MEDIA_PDF       = "Pdf generation.";
     _DOC_MEDIA_VIDEO     = "Video functionality.";
 
-    // 6
+    // 6 (formal systems of magnitude, order, and uncertainty)
     _DOC_NUM             = "Numerical types, structures, and operations.";
     _DOC_NUM_DOM         = "Numeric domains and value representations.";
     _DOC_NUM_DOM_REAL    = "Real-valued numeric domains and representations.";
@@ -167,7 +167,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_QUANT_SCALE = "Scaling, remapping, and magnitude transformation of numeric values.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
-    // 7
+    // 7 (patterns of agency beyond the individual)
     _DOC_ORG         = "Coordination and structure of collective action.";
     _DOC_ORG_AGENT   = "Intentional entities capable of action and coordination.";
     _DOC_ORG_ECON    = "Exchange, incentives, and flows of value within collectives.";
@@ -176,9 +176,8 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_ORG_MORAL   = "Normative frameworks of responsibility, duty, and judgment.";
     _DOC_ORG_NORM    = "Shared social norms and informal behavioral expectations.";
     _DOC_ORG_ROLE    = "Roles, responsibilities, and positions within coordinated action.";
-    _DOC_ORG_SUPPORT = "Structures for providing support, provisioning, and dependency management.";
 
-    // 8
+    // 8 (measured reality constrained by nature)
     _DOC_PHYS             = "Physical quantities, units, and models of the natural world.";
     _DOC_PHYS_ASTRO       = "Astronomy-related abstractions.";
     _DOC_PHYS_BIO         = "Biology-related abstractions.";
@@ -191,13 +190,21 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_PHYS_UNIT        = "Physical units of measure and unit prefixes.";
     _DOC_PHYS_WAVE        = "Wave primitives, wavelets.";
 
-    // 9
-    _DOC_RUN             = "Temporal coordination and orchestration of program execution.";
-    _QUO_RUN             = "> Where execution exists, progresses, and becomes concrete.";
-    _DOC_RUN_FRAME       = "The per-step execution envelope and state snapshot.";
-    _DOC_RUN_SETUP       = "The committed configuration of a running environment.";
+    // 9 (temporal structure and staging of program execution)
+    _DOC_RUN               = "Temporal coordination and staging of a running system.";
+    _QUO_RUN               = "> Where execution exists, progresses, and becomes concrete.";
+    _DOC_RUN_CYCLE         = "Phases and transitions of a running system.";
+    _DOC_RUN_TIME          = "Temporal structure and progression within a run.";
+    _DOC_RUN_TIME_FRAME    = "The per-step temporal envelope and state snapshot.";
+    _DOC_RUN_TIME_LOOP     = "Composed policies for advancing time within a run.";
+    _DOC_RUN_REGIME        = "The committed configuration of a running environment.";
+    _DOC_RUN_REGIME_CAP    = "Declared runtime capabilities available to a running system.";
+    _DOC_RUN_STATE         = "The mutable state of a running system.";
+    _DOC_RUN_STATE_CONTEXT = "Ambient, ephemeral state associated with the current run step.";
+    _DOC_RUN_STATE_LOG     = "Sequential records of runtime state evolution.";
+    _DOC_RUN_STATE_SCENE   = "A bounded runtime situation defining active state and transitions.";
 
-    // 10
+    // 10 (the contract with the host)
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
     _DOC_SYS_DEVICE      = "Live system device interfaces.";
@@ -218,7 +225,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_MEM_BOUND   = "Addressing, alignment, and movement constraints over memory.";
     _DOC_SYS_MEM_BOUND_PIN = "Types that pin data to a location in memory.";
     _DOC_SYS_MEM_BOUND_PTR = "Manual memory management via raw pointers.";
-    _DOC_SYS_MEM_CELL    = "Shareable containers with interior mutability";
+    _DOC_SYS_MEM_CELL    = "Shareable containers with interior mutability.";
     _DOC_SYS_MEM_LAYOUT  = "Memory layout, bit-validity, and representation invariants.";
     _DOC_SYS_MEM_SIZE    = "Memory size, bit width, and storage accounting.";
     _DOC_SYS_MEM_VIEW    = "Typed and byte-level views over memory.";
@@ -232,7 +239,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_OS_LINUX    = "Linux-specific definitions.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
-    // 11
+    // 11 (symbolic sequences with cultural weight)
     _DOC_TEXT            = "Text types and processing.";
     _DOC_TEXT_ASCII      = "ASCII strings and characters.";
     _DOC_TEXT_CHAR       = "Unicode scalar types and operations.";
@@ -244,7 +251,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_PARSE      = "Unstructured string parsing.";
     _DOC_TEXT_STR        = "String types and related functionality.";
 
-    // 12
+    // 12 (interaction structures, presentation state, and input semantics)
     _DOC_UI              = "Interactive surfaces, input semantics, and presentation state.";
     _QUO_UI              = "> How humans interact with what exists.";
     _DOC_UI_BACK         = "User interface backends.";
@@ -252,7 +259,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_UI_FRONT_TERM   = "UI terminal functionality.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
 
-    // 13
+    // 13 (practices, capacities, and meanings of lived life)
     _DOC_VITA       = "Lived practices of embodied beings.";
     _DOC_VITA_BODY  = "Embodied capability, health, and physical limits of living beings.";
     _DOC_VITA_CRAFT = "Practical, learned ways of shaping material reality to support life.";
@@ -261,17 +268,19 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_VITA_MIND  = "Cognition, memory, meaning, and inner orientation of lived experience.";
     _DOC_VITA_PLAY  = "Expression, play, and shared enjoyment beyond necessity or survival.";
 
-    // 14
+    // 14 (effort structured over time)
     _DOC_WORK             = "Computational work and its execution mechanics.";
+    _DOC_WORK_ACTOR       = "Isolated units of agency that own state and communicate by message.";
     _DOC_WORK_FUTURE      = "Asynchronous work and continuations.";
+    _DOC_WORK_FUTURE_COROUTINE = "Stackless coroutines with explicit scheduling and runners.";
     _DOC_WORK_PROCESS     = "Process-based execution of work.";
     _DOC_WORK_SYNC        = "Synchronization mechanisms for concurrent work.";
     _DOC_WORK_SYNC_ATOMIC = "Atomic types.";
     _DOC_WORK_SYNC_MPSC   = "Multi-producer, single-consumer channels.";
     _DOC_WORK_THREAD      = "Thread-based execution of work.";
 
-    // (15)
+    // (15) (support structures not part of the public scene)
     _DOC_YARD       = "Internal scaffolding and misc. machinery.";
-    _DOC_YARD__DEP  = "Re-exported dependencies.";
     _QUO_YARD       = "> This space exists so the rest can be clean.";
+    _DOC_YARD__DEP  = "Re-exported dependencies.";
 }

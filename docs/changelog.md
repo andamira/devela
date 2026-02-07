@@ -51,6 +51,7 @@ Many feature gates are removed in order to make most features make always availa
 - re-export `alloc` crate from devela and [base_alloc].
 - bump dependencies:
   - `hashbrown` to 0.16.
+  - `memchr` to 2.8.
   - `rand_core` to 0.10.
   - [macros]
     - `proc-macro2` to 1.0.101.
