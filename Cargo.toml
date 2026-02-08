@@ -16,14 +16,14 @@
 #
 # * [features]
 #   - Development       (__*)
-#   - Environment       (std, alloc, no_std)
-#   - Module            (all, code, data, geom, lang, media, num, org, phys, run, sys, text, ui, work)
-#   - Safety            (safest, safe, unsafe, …)
+#   - Environment       (std,alloc,no_std)
+#   - Module            (all,code,data,geom,lang,media,num,org,phys,run,sys,text,ui,work)
+#   - Safety            (safest,safe,unsafe,…)
 #   - Capability        (_*)
-#     - default         (_default, _max, _maxest)
-#     - docs            (_doc*)
-#     . code            (_unroll*)
-#     - data            (_data*, _tuple*, _value*, …)
+#     - default         (_max,_maxest)
+#     - docs            (_docs, _docs_[examples|min|nodep|max])
+#     - code            (_unroll*)
+#     - data            (_data*,_tuple*,_value*,…)
 #     - num             (_num*)
 #     - text            (_text*)
 #   - Dependency        (dep_*)
@@ -72,7 +72,7 @@ members = [ # In sync with ./build/main/environment.rs
 	"crates/base/macros", "crates/base/core", "crates/base/alloc", "crates/base/std",
 	"crates/macros",
 	".", # ← root package
-	"build/post",
+	# "build/post",
 ]
 
 [workspace.package]
@@ -112,7 +112,7 @@ include = [
 	"/src/**/*.rs", "/src/**/*.md", "!/src/base/**",
 	## documentation
 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
-	## examples shown from _doc
+	## examples shown from /src/_doc
 	"/examples/code/enumint.rs",
 	"/examples/code/enumset.rs",
 	"/examples/data/bitfield.rs",
@@ -668,7 +668,7 @@ devela_base_core   = { version = "0.25.0-wip", path = "./crates/base/core" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./crates/base/alloc" }
 devela_base_std    = { version = "0.25.0-wip", path = "./crates/base/std" }
 devela_macros      = { version = "0.25.0-wip", path = "./crates/macros" }
-devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
+# devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 
 #* optional external dependencies *#
 
