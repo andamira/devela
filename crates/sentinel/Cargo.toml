@@ -1,0 +1,18 @@
+[workspace]
+[package]
+name = "devela_sentinel"
+description = "A downstream sentinel crate for validating devela’s public behavior."
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+devela_base_core = { version = "0.25.0-wip", path = "../base/core" }
+
+[features]
+test_feature = []
+
+# [lints.rust.unexpected_cfgs]
+# level = "warn"
+# check-cfg = [ # Allowed configuration flags:
+# 	"cfg(nightly_doc)",
+# ]
