@@ -12,7 +12,7 @@ Many feature gates are removed in order to make most features make always availa
 ```
 
 ## Key changes:
-- workspace restructuring: split into multiple crates (devela_base_*).
+- core extraction: separate foundational types, traits, and macros into base crates.
 - feature consolidation: removed feature gates, make functionality always available.
 - text system overhaul: major improvements to scalar, string, and grapheme handling.
 - const evolution: many methods made const across numeric, text, and system modules.
@@ -48,7 +48,11 @@ Many feature gates are removed in order to make most features make always availa
 
 ## dependencies
 - make all optional external optional dependencies part of the workspace.
-- re-export `alloc` crate from devela and [base_alloc].
+- move `core`, `alloc` & `std` re-exports to `src/yard/_dep`.
+- remove `_core` and `_dep` re-exports from public docs.
+- move `_dep` to `yard/_dep` & re-export from the root.
+- re-export hidden workspace dependencies from `_dep`.
+- re-export `alloc` from devela and [base_alloc].
 - bump dependencies:
   - `hashbrown` to 0.16.
   - `memchr` to 2.8.
@@ -56,22 +60,18 @@ Many feature gates are removed in order to make most features make always availa
   - [macros]
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.40.
-- add optional dependencies to [base]: `memchr`, `rand_core`, `simdutf8`.
-- remove `_core` and `_dep` re-exports from the public docs.
-- move `_dep` to `yard/_dep` & re-export from the root.
-- re-export hidden workspace dependencies from `_dep`.
 - remove dependencies:
   - `const-str`, and related `str!` macro.
   - `libm` and related `Float` and `ExtFloat` functionality.
-  - itertoos and related re-exports.
+  - itertools and related re-exports.
   - remove: `allocator-api2`, `bumpalo`, `fontdue`, `ffmpeg-the-third`, `flume`, `fontdue`,  `gilrs`, `image`, `kira`, `midir`, `rayon`, `regex-lite`, `rodio`, `sdl2`, `sdl3`, `stringzilla`, `symphonia`, `sysinfo`, `toml_edit`, `tokio`, `unicode-segmentation`, `unicode-width`, `ureq`, `winnow`.
-
+- add optional dependencies to [base]: `memchr`, `rand_core`, `simdutf8`.
 
 ## features & flags
 - new features: `__publish`, `__std`, `__docs_internal`, `_docs_examples`, `_docs_max`, `grapheme`, `int`, `org`, `safe_build`, `safe_org`, `safe_vita`, `translit`, `vita`, `x11`.
 - remove features: `_bit*`, `_char*`, `_cmp*`, `_float_*`, `_int_*`, `_num?_all`, `_sort*`, `_str_*`, `_str_nonul`, `_str_u*`, `_text_all`, `ascii`, `cast`, `error`, `fmt`, `join`, `metric`, `nightly_bigint`, `prim`, `safe_layout`, `split`, `str`.
 - remove flags: `bit··`, `char··`, `cmp··`, `_float··`, `_int*··`, `_nums··`, `prim··`, `sort··`, `str··`, `str_u··`.
-- add an adittional `nightly_stable_1_??` flag for the 3rd next version.
+- add an additional `nightly_stable_1_??` flag for the 3rd next version.
 - rename:
   - `_docs` to _`docs_min`.
   - `_docsrs` to `_docs`.
@@ -81,7 +81,9 @@ Many feature gates are removed in order to make most features make always availa
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
 
-## workspace libraries
+## workspace
+- new `/crates/` directory.
+- add `devela_sentinel` crate.
 - remove the `game` root module.
 - declare the `std` external crate.
 - add `_reexports` structural modules.
@@ -92,14 +94,12 @@ Many feature gates are removed in order to make most features make always availa
 - support having external optional dependencies.
 - new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_std`.
 - prepare future workspace library crates related to root modules.
-- move `core`, `alloc` & `std` re-exports to `src/yard/_dep`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
   - replace `paste` dependency with `pastey` and move to [base].
 
 ### [base]
 - add `_workspace_internal` structural module (replacing `_internal`).
-- new location `/crates/` for most workspace members.
 
 ### [base_macros]
 - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
@@ -118,7 +118,7 @@ Many feature gates are removed in order to make most features make always availa
 - add feature `__dbg`.
 
 ## manifest
-- add workspace hiearchy diagram.
+- add workspace hierarchy diagram.
 - add *binaries* and *metrics* sections.
 - add lint `missing_debug_implementations`.
 - make keys parts of the workspace: edition, version, authors, license, documentation.
@@ -135,7 +135,7 @@ Many feature gates are removed in order to make most features make always availa
   - test all workspace crates.
   - start testing without dependencies.
   - switch rust-script for cargo-script.
-  - simplify and homogeinize toolchain selection syntax.
+  - simplify and homogenize toolchain selection syntax.
   - configure the exact nightly version to install and use.
 - move `config/rustdoc-header.html` to `src/_doc/header.html`.
 - move `/config/dep_all.rs` to `/build/main/dep_all`.
@@ -443,7 +443,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### lin
 - new module: `num::lin`.
-- move here `geom::linear::{matrix, vetcor}`.
+- move here `geom::linear::{matrix, vector}`.
 
 ### prob
 - new module `num::prob`.
@@ -662,7 +662,7 @@ Many feature gates are removed in order to make most features make always availa
   - remove `code_` prefix from `Char<u32>` methods.
   - rename method `byte_len` to `len_bytes`.
   - modify all methods to take `self`.
-  - return lenghts as usize.
+  - return lengths as usize.
 - update `UnicodeScalar`:
   - new methods: `as_ascii_translit`, `is_combining`, `is_combining_common`, `is_control`, `is_control_common`, `is_fullwidth`, `is_fullwidth_common`, `to_char`, `to_scalar`.
   - rename method `byte_len` to `len_bytes`.
