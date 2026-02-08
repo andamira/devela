@@ -42,8 +42,11 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.95.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.95.0> -->
 
+- 1.95: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
+- 1.95: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
 - 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
 - 1.95: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
+- 1.95: `·`[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522) (new_range_api)
 - 1.95: ` `[`TryFrom<integer>` for bool](https://github.com/rust-lang/rust/pull/147400)
 
 # 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
@@ -59,13 +62,11 @@ See also
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
-- 1.??: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/pull/149783)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
-- 1.??: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
@@ -81,17 +82,19 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
+- 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
 - 1.??: `·`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
+- 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/issues/125687)
+- 1.??: `·`[RangeToInclusive](https://github.com/rust-lang/rust/pull/152304) (new_range_api)
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `·`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_base_macros`
-- 1.??: ` `[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/151603)

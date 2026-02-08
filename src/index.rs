@@ -58,7 +58,7 @@
 #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature(const_mul_add))]
 // ----------------------------
 // `nightly_stable_1_95`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_95, feature())]
+#![cfg_attr(nightly_stable_1_95, feature(atomic_try_update, cold_path,))]
 #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature(push_mut,))]
 // #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
 // ----------------------------
@@ -72,11 +72,9 @@
     nightly_stable_later,
     feature(
         assert_matches,
-        atomic_try_update,
         breakpoint,
         cfg_select,
         cfg_version,
-        cold_path,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,
@@ -89,9 +87,11 @@
         if_let_guard,
         impl_trait_in_assoc_type,
         isqrt,
+        likely_unlikely,
         macro_metavar_expr,
         macro_metavar_expr_concat,
         more_qualified_paths,
+        new_range_api,
         offset_of_enum,
         offset_of_slice,
         refcell_try_map,
