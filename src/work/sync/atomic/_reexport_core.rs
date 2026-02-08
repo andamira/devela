@@ -1,1 +1,1 @@
-../../../base/core/src/work/sync/atomic/_reexport.rs
+../../../../crates/base/core/src/work/sync/atomic/_reexport.rs

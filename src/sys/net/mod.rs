@@ -6,9 +6,9 @@
 #![doc = crate::_doc!(extends: net)]
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/sys/net/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/sys/net/_reexport.rs
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /src/base/std/src/sys/net/_reexport.rs
+mod _reexport_std; // SYMLINK to /crates/base/std/src/sys/net/_reexport.rs
 
 // #[cfg(feature = "std")]
 // mod http; // WIP

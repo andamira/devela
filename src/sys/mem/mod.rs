@@ -8,9 +8,9 @@
 // safety
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/sys/mem/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/sys/mem/_reexport.rs
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/sys/mem/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/sys/mem/_reexport.rs
 
 mod ext; // MemExt
 #[cfg(feature = "std")]

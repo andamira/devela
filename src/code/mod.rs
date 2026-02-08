@@ -13,7 +13,7 @@ crate::CONST! { pub(crate) _DOC_CODE_MODULES =
     crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util);
 }
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/code/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/code/_reexport.rs
 
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInit

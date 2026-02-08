@@ -5,9 +5,9 @@
 #![doc = crate::_doc!(flat:"text")]
 #![doc = crate::_doc!(extends: str, string)]
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/text/str/_reexport.rs
-mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/text/str/_reexport.rs
-mod _reexport_std; // SYMLINK to /src/base/std/src/text/str/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/text/str/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/text/str/_reexport.rs
+mod _reexport_std; // SYMLINK to /crates/base/std/src/text/str/_reexport.rs
 
 mod ext_str; // StrExt
 

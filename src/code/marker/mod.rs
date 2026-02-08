@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: marker)]
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/code/marker/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/code/marker/_reexport.rs
 
 mod type_resource; // zero-cost type-safe resource markers
 

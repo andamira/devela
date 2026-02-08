@@ -25,7 +25,7 @@
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
 mod _env; // __dbg!, __std!, _std_core!
-mod _reexport_core; // SYMLINK to /src/base/core/src/code/util/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/code/util/_reexport.rs
 
 mod cdbg; // cdbg!
 

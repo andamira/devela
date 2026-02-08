@@ -3,7 +3,7 @@
 //! WASM architecture functionality.
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/sys/arch/wasm/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/sys/arch/wasm/_reexport.rs
 
 mod namespace; // Wasm
 

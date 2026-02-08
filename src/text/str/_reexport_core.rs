@@ -1,1 +1,1 @@
-../../base/core/src/text/str/_reexport.rs
+../../../crates/base/core/src/text/str/_reexport.rs

@@ -92,14 +92,14 @@ Many feature gates are removed in order to make most features make always availa
 - support having external optional dependencies.
 - new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_std`.
 - prepare future workspace library crates related to root modules.
-- move `core`, `alloc` & `std` re-exports to `src/base`.
+- move `core`, `alloc` & `std` re-exports to `src/yard/_dep`.
 - use a single version, changelog and readme for all workspace libs.
   - move `devela_macros` changelog into `devela` archived changelog history.
   - replace `paste` dependency with `pastey` and move to [base].
 
 ### [base]
 - add `_workspace_internal` structural module (replacing `_internal`).
-- new location `src/base` for most workspace members.
+- new location `/crates/` for most workspace members.
 
 ### [base_macros]
 - move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.

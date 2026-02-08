@@ -6,7 +6,7 @@
 //
 
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /src/base/std/src/sys/fs/path/_reexport.rs
+mod _reexport_std; // SYMLINK to /crates/base/std/src/sys/fs/path/_reexport.rs
 
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]

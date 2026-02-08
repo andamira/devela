@@ -7,9 +7,9 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/work/sync/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/work/sync/_reexport.rs
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /src/base/std/src/work/sync/_reexport.rs
+mod _reexport_std; // SYMLINK to /crates/base/std/src/work/sync/_reexport.rs
 
 #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]

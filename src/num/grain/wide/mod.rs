@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: simd)]
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/num/grain/wide/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/num/grain/wide/_reexport.rs
 
 crate::structural_mods! { // _reexports, _hidden
     _reexports {

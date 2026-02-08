@@ -12,7 +12,7 @@
 //! [`await`]: https://doc.rust-lang.org/std/keyword.await.html
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/work/future/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/work/future/_reexport.rs
 
 mod coroutine;
 mod ext; // FutureExt

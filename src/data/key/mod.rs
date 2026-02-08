@@ -11,7 +11,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/data/key/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/key/_reexport.rs
 mod _reexport_dep;
 
 mod static_map; // define_static_map!

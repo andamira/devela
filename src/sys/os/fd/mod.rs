@@ -7,7 +7,7 @@
 //
 
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /src/base/std/src/sys/os/fd/_reexport.rs
+mod _reexport_std; // SYMLINK to /crates/base/std/src/sys/os/fd/_reexport.rs
 
 crate::structural_mods! { // _reexports
     _reexports {

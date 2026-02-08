@@ -17,7 +17,7 @@ pub mod examples; // Documented examples
 pub mod macros {
     #![doc = crate::_tags!(procedural_macro)]
     //!Procedural macros.
-    #![doc = include_str!("../base/macros/src/Index.md")]
+    #![doc = include_str!("../../crates/base/macros/src/Index.md")]
 }
 
 #[cfg(doc)]

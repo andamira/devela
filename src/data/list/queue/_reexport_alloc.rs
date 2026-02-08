@@ -1,1 +1,1 @@
-../../../base/alloc/src/data/list/queue/_reexport.rs
+../../../../crates/base/alloc/src/data/list/queue/_reexport.rs

@@ -9,7 +9,7 @@
 //!
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/code/error/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/code/error/_reexport.rs
 mod _reexport_std; // SYMLINK TO /src/base/std/src/code/error/_reexport.rs
 
 crate::structural_mods! { // _reexports

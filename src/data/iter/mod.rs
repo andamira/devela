@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: iter)]
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/data/iter/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/data/iter/_reexport.rs
 
 mod namespace; // Iter
 

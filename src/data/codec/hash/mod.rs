@@ -6,9 +6,9 @@
 #![doc = crate::_doc!(extends: hash)]
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/data/codec/hash/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/data/codec/hash/_reexport.rs
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /src/base/std/src/data/codec/hash/_reexport.rs
+mod _reexport_std; // SYMLINK to /crates/base/std/src/data/codec/hash/_reexport.rs
 
 #[cfg(feature = "hash")]
 crate::items! {

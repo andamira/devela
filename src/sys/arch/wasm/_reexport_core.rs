@@ -1,1 +1,1 @@
-../../../base/core/src/sys/arch/wasm/_reexport.rs
+../../../../crates/base/core/src/sys/arch/wasm/_reexport.rs

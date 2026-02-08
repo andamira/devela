@@ -8,7 +8,7 @@
 //! They enable efficient iterable storage over a sequence of the same type.
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/data/list/array/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/data/list/array/_reexport.rs
 
 mod adt; // DataArray
 mod d1; // 1-dimensional Array

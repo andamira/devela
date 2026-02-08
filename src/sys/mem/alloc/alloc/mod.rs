@@ -6,9 +6,9 @@
 #![doc = crate::_doc!(extends: alloc)]
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /src/base/alloc/src/sys/mem/alloc/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/sys/mem/alloc/_reexport.rs
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /src/base/std/src/sys/mem/alloc/_reexport.rs
+mod _reexport_std; // SYMLINK to /crates/base/std/src/sys/mem/alloc/_reexport.rs
 
 mod namespace;
 

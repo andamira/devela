@@ -1,1 +1,1 @@
-../../base/alloc/src/work/sync/_reexport.rs
+../../../crates/base/alloc/src/work/sync/_reexport.rs

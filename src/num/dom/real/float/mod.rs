@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _reexport_core; // SYMLINK to /src/base/core/src/num/dom/real/float/_reexport.rs
+mod _reexport_core; // SYMLINK to /crates/base/core/src/num/dom/real/float/_reexport.rs
 
 mod ext_float; // FloatExt
 
