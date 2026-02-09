@@ -689,7 +689,7 @@ Many feature gates are removed in order to make most features make always availa
 ### fmt
 - new macro: `fmtcat`.
 - new trait: `DebugExt`.
-- new types: `FmtNum`, `FmtNumConf`, `FmtNumShape`, `FmtNumSign`, `FmtWriter`.
+- new types: `FmtNum`, `FmtNumConf`, `FmtNumGroup`, `FmtNumShape`, `FmtNumSign`, `FmtWriter`.
 - re-export `FromFn` as `FmtFromFn`.
 - move to [base]:
   - macros: `format_buf!`.

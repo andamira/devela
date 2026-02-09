@@ -3,8 +3,10 @@
 //! Implemnts [`FmtNum`] for all floating-point primitives.
 //
 
-use super::{FmtNum, FmtNumConf as Conf, FmtNumShape as Shape, FmtNumSign as Sign};
-use crate::{Cmp, Digits, Float, Slice, Str, StringU8, is, whilst, write_at};
+use super::{
+    FmtNum, FmtNumConf as Conf, FmtNumGroup as Group, FmtNumShape as Shape, FmtNumSign as Sign,
+};
+use crate::{Boundary1d, Cmp, Digits, Float, Slice, Str, StringU8, is, whilst, write_at};
 
 macro_rules! impl_fmtnum_float {
     () => {
@@ -63,12 +65,7 @@ macro_rules! impl_fmtnum_float {
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: Conf) -> usize {
                 let f = Float(self.0);
                 let (neg, fabs) = is![f.is_sign_negative(); (true, f.abs()); (false, f)];
-                let emit_sign = match conf.sign {
-                    Sign::NegativeOnly => neg,
-                    Sign::Always => true,
-                    Sign::Never => false,
-                    Sign::PositiveOnly => !neg,
-                };
+                let emit_sign = conf.sign.emit_sign(neg);
                 // digit count of integral part
                 let integ = fabs.trunc().0 as $u;
                 let digit_count = Digits(integ).count_digits10() as u16;
@@ -96,6 +93,118 @@ macro_rules! impl_fmtnum_float {
                 needed
             }
 
+            /// Writes the formatted floating-point number with optional digit grouping.
+            ///
+            /// Grouping is applied to the *rendered* digit sequences on both sides of the radix,
+            /// after sign emission, zero-padding, and precision handling have been accounted for.
+            ///
+            /// # Invariants
+            /// - Grouping assumes 1-byte separators and ASCII digits.
+            /// - `conf.int` specifies the minimum width of the *entire* left block
+            ///   (integral digits + zero padding + grouping separators), excluding the sign.
+            /// - `conf.fract` specifies the fractional precision before grouping is applied
+            ///   to the rendered fractional digit sequence.
+            /// - On failure, nothing is written (atomic operation).
+            pub const fn write_group(self, buf: &mut [u8], pos: usize, conf: Conf, group: Group)
+                -> usize {
+                // Fast path: grouping disabled on both sides.
+                if (group.left_len == 0 || group.left_sep.is_none())
+                    && (group.right_len == 0 || group.right_sep.is_none())
+                {
+                    return self.write_fmt(buf, pos, conf);
+                }
+                let f = Float(self.0);
+                let neg = f.is_sign_negative();
+                let fabs = is![neg; f.abs(); f];
+
+                /* left (integral) side */
+
+                // Integral magnitude and digit count.
+                let integ = fabs.trunc().0 as u128;
+                let integ_digits = Digits(integ).count_digits10() as u16;
+                let emit_sign = conf.sign.emit_sign(neg);
+
+                // Target minimum width of the left block (excluding sign unless pad_sign is set).
+                let mut target_left = conf.int;
+                if conf.pad_sign && emit_sign && target_left > 0 {
+                    target_left -= 1;
+                }
+                // Compute minimal digit count so that: digits + grouping seps >= target_left.
+                let left_digits = group.digits_for_grouped_width(Boundary1d::Left,
+                    integ_digits, target_left);
+
+                /* right (fractional) side */
+
+                // Fractional digit count is fixed by configuration.
+                let fract_digits = conf.fract;
+                // Compute minimal digit count so that: digits + grouping seps >= target_right.
+                let right_digits = group.digits_for_grouped_width(Boundary1d::Right,
+                    fract_digits, fract_digits);
+
+                // Adjusted configuration.
+                let conf2 = Conf {
+                    int: is![conf.pad_sign && emit_sign; left_digits + 1; left_digits],
+                    fract: right_digits,
+                    ..conf
+                };
+
+                // Measure final layout.
+                let raw_shape = self.measure_fmt(conf2);
+                let g_shape = self.measure_group(conf2, group);
+                let (raw_len, final_len) = (raw_shape.total(), g_shape.total());
+                if final_len > buf.len().saturating_sub(pos) { return 0; }
+
+                // Write ungrouped.
+                let written = self.write_fmt(buf, pos, conf2);
+                if written == 0 { return 0; }
+
+                /* Backward expansion */
+
+                let mut src = pos + raw_len;
+                let mut dst = pos + final_len;
+                // Counters for both sides of the radix.
+                let mut left_left = raw_shape.left;
+                let mut right_left = raw_shape.right;
+                let mut left_group = 0u16;
+                let mut right_group = 0u16;
+                let left_len = group.left_len as u16;
+                let right_len = group.right_len as u16;
+                let has_left = group.left_len != 0 && group.left_sep.is_some();
+                let has_right = group.right_len != 0 && group.right_sep.is_some();
+                while src > pos {
+                    src -= 1;
+                    dst -= 1;
+                    let b = buf[src];
+                    buf[dst] = b;
+                    // Fractional side (right of radix)
+                    if b >= b'0' && b <= b'9' && right_left > 0 {
+                        right_left -= 1;
+                        if has_right {
+                            right_group += 1;
+                            if right_left > 0 && right_group == right_len {
+                                dst -= 1;
+                                buf[dst] = crate::unwrap![some group.right_sep] as u8;
+                                right_group = 0;
+                            }
+                        }
+                        continue;
+                    }
+                    // Integral side (left of radix)
+                    if b >= b'0' && b <= b'9' && left_left > 0 {
+                        left_left -= 1;
+                        if has_left {
+                            left_group += 1;
+                            if left_left > 0 && left_group == left_len {
+                                dst -= 1;
+                                buf[dst] = crate::unwrap![some group.left_sep] as u8;
+                                left_group = 0;
+                            }
+                        }
+                    }
+                }
+                final_len
+            }
+
             /* measure */
 
             /// Returns the measured shape of the floating-point to be formatted.
@@ -120,6 +229,25 @@ macro_rules! impl_fmtnum_float {
                 let left = if conf.pad_sign && prefix > 0 { Cmp(int_digits + 1).max(conf.int) - 1 }
                 else { Cmp(int_digits).max(conf.int) };
                 Shape::new(prefix, left, conf.fract)
+            }
+
+            /// Returns the measured shape of the number after applying digit grouping.
+            ///
+            /// This first measures the formatted number using `measure_fmt`, then
+            /// accounts for any additional separator glyphs introduced by grouping.
+            ///
+            /// Grouping assumes 1-byte separators and ASCII digits.
+            pub const fn measure_group(self, conf: Conf, group: Group) -> Shape {
+                let mut shape = self.measure_fmt(conf);
+                if group.left_len > 0 && group.left_sep.is_some() && shape.left > 0 {
+                    let groups = (shape.left.saturating_sub(1)) / group.left_len as u16;
+                    shape.left += groups;
+                }
+                if group.right_len > 0 && group.right_sep.is_some() && shape.right > 0 {
+                    let groups = (shape.right.saturating_sub(1)) / group.right_len as u16;
+                    shape.right += groups;
+                }
+                shape
             }
 
             // TODO

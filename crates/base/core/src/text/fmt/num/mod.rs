@@ -8,9 +8,10 @@ mod tests;
 
 // definitions
 mod conf; // FmtNumConf, FmtNumSign
+mod group; // FmtNumGroup,
 mod num; // FmtNum
 mod shape; // FmtNumShape
-// mod unicode; // WIP
+// mod unicode;
 
 /* implementations */
 mod float;
@@ -20,6 +21,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             conf::*,
+            group::*,
             num::*,
             shape::*,
         };

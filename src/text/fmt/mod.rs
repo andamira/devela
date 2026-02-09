@@ -32,7 +32,7 @@ crate::structural_mods! { // _mods, _reexports
         #[doc(inline)]
         pub use devela_base_core::text::fmt::{
             DebugExt,
-            FmtNum, FmtNumConf, FmtNumShape, FmtNumSign,
+            FmtNum, FmtNumConf, FmtNumGroup, FmtNumShape, FmtNumSign,
             FmtWriter, fmtcat, format_buf,
         };
     }

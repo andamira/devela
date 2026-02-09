@@ -3,8 +3,10 @@
 //! Implements [`FmtNum`] for all integer primitives.
 //
 
-use super::{FmtNum, FmtNumConf as Conf, FmtNumShape as Shape, FmtNumSign as Sign};
-use crate::{Cmp, Digits, Slice, Str, StringU8, is, whilst, write_at};
+use super::{
+    FmtNum, FmtNumConf as Conf, FmtNumGroup as Group, FmtNumShape as Shape, FmtNumSign as Sign,
+};
+use crate::{Boundary1d, Cmp, Digits, Slice, Str, StringU8, is, whilst, write_at};
 
 macro_rules! impl_fmtnum_int {
     () => {
@@ -19,8 +21,9 @@ macro_rules! impl_fmtnum_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// The operation is atomic: on failure, nothing is written.
-            /// Negative values are preceded by the `'-'` sign.
+            /// # Invariants
+            /// - Negative values are preceded by the `'-'` sign.
+            /// - The operation is atomic: on failure, nothing is written.
             #[rustfmt::skip]
             pub const fn write(self, buf: &mut [u8], mut pos: usize) -> usize {
                 if self.0 < 0 {
@@ -42,18 +45,13 @@ macro_rules! impl_fmtnum_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// The operation is atomic: on failure, nothing is written.
-            ///
-            /// The emitted sign and any leading zero-padding are controlled by `conf`.
+            /// # Invariants
+            /// - The emitted sign and any leading zero-padding are controlled by `conf`.
+            /// - The operation is atomic: on failure, nothing is written.
             #[rustfmt::skip]
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: Conf) -> usize {
                 let neg = self.0 < 0;
-                let emit_sign = match conf.sign {
-                    Sign::NegativeOnly => neg,
-                    Sign::Always => true,
-                    Sign::Never => false,
-                    Sign::PositiveOnly => !neg,
-                };
+                let emit_sign = conf.sign.emit_sign(neg);
                 let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
                 // digit count
                 let digit_count = Digits(abs).count_digits10() as u16;
@@ -71,6 +69,76 @@ macro_rules! impl_fmtnum_int {
                 let _ = Digits(abs).write_digits10(buf, pos);
                 needed
             }
+
+            /// Writes the formatted integer with optional digit grouping.
+            ///
+            /// Grouping is applied to the *rendered* integral digit sequence,
+            /// after sign emission and zero-padding have been accounted for.
+            ///
+            /// # Invariants
+            /// - Grouping assumes 1-byte separators and ASCII digits.
+            /// - `conf.int` specifies the minimum width of the *entire* left block
+            ///   (digits + zero padding + grouping separators), excluding the sign.
+            /// - On failure, nothing is written (atomic operation).
+            pub const fn write_group(self, buf: &mut [u8], pos: usize, conf: Conf, group: Group)
+                -> usize {
+                // Fast path: grouping disabled.
+                if !group.has_left() { return self.write_fmt(buf, pos, conf); }
+
+                // Determine whether a sign is emitted.
+                let neg = self.0 < 0;
+                let emit_sign = conf.sign.emit_sign(neg);
+
+                // Absolute value and digit count of the numeric magnitude.
+                let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
+                let digit_count = Digits(abs).count_digits10() as u16;
+
+                // Target minimum width of the left block (excluding sign unless padded).
+                let mut target_left = conf.int;
+                if conf.pad_sign && emit_sign && target_left > 0 { target_left -= 1; }
+
+                // Compute minimal digit count so that: digits + grouping separators >= target_left.
+                let len = group.left_len as u16;
+                let left_digits = group.digits_for_grouped_width(Boundary1d::Left,
+                    digit_count, target_left);
+
+                // Translate back to write_fmt semantics.
+                let conf2_int = is![conf.pad_sign && emit_sign; left_digits + 1; left_digits];
+                let conf2 = conf.with_int(conf2_int);
+
+                // Measure final layout.
+                let raw_shape = self.measure_fmt(conf2);
+                let g_shape = self.measure_group(conf2, group);
+                let (raw_len, final_len) = (raw_shape.total(), g_shape.total());
+                if final_len > buf.len().saturating_sub(pos) { return 0; }
+
+                // Write ungrouped number at the start.
+                let written = self.write_fmt(buf, pos, conf2);
+                is![written == 0; return 0];
+
+                // Backward expansion: insert grouping separators in place.
+                let (mut src, mut dst) = (pos + raw_len, pos + final_len);
+                let (mut digits_left, mut group_count) = (raw_shape.left, 0u16);
+                while src > pos {
+                    src -= 1;
+                    dst -= 1;
+                    let b = buf[src];
+                    buf[dst] = b;
+                    // Only count digits belonging to the numeric magnitude.
+                    if b >= b'0' && b <= b'9' && digits_left > 0 {
+                        digits_left -= 1;
+                        group_count += 1;
+                        if digits_left > 0 && group_count == len {
+                            dst -= 1;
+                            buf[dst] = $crate::unwrap![some group.left_sep] as u8;
+                            group_count = 0;
+                        }
+                    }
+                }
+                final_len
+            }
+
+            /* measure */
 
             /// Returns the measured shape of the integer to be formatted.
             pub const fn measure(self) -> Shape {
@@ -112,6 +180,7 @@ macro_rules! impl_fmtnum_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
+            /// # Invariants
             /// The operation is atomic: on failure, nothing is written.
             #[inline(always)]
             pub const fn write(self, buf: &mut [u8], pos: usize) -> usize {
@@ -125,9 +194,9 @@ macro_rules! impl_fmtnum_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// The operation is atomic: on failure, nothing is written.
-            ///
+            /// # Invariants
             /// The emitted sign and any leading zero-padding are controlled by `conf`.
+            /// The operation is atomic: on failure, nothing is written.
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: Conf) -> usize {
                 let emit_sign = match conf.sign {
                     Sign::Always | Sign::PositiveOnly => true,
@@ -144,6 +213,67 @@ macro_rules! impl_fmtnum_int {
                 whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, pos, b'0']; }}
                 let _ = Digits(self.0).write_digits10(buf, pos);
                 needed
+            }
+
+            /// Writes the formatted integer with optional digit grouping.
+            ///
+            /// Grouping is applied to the *rendered* integral digit sequence,
+            /// after sign emission and zero-padding have been accounted for.
+            ///
+            /// # Invariants
+            /// - Grouping assumes 1-byte separators and ASCII digits.
+            /// - `conf.int` specifies the minimum width of the *entire* left block
+            ///   (digits + zero padding + grouping separators), excluding the sign.
+            /// - On failure, nothing is written (atomic operation).
+            pub const fn write_group(self, buf: &mut [u8], pos: usize, conf: Conf, group: Group)
+                -> usize {
+                // Fast path: grouping disabled.
+                if !group.has_left() { return self.write_fmt(buf, pos, conf); }
+
+                // Digit count of the numeric magnitude.
+                let digit_count = Digits(self.0).count_digits10() as u16;
+
+                // Target minimum width of the left block.
+                let target_left = conf.int;
+
+                // Compute minimal digit count so that: digits + grouping separators >= target_left.
+                let len = group.left_len as u16;
+                let left_digits = group.digits_for_grouped_width(Boundary1d::Left,
+                    digit_count, target_left);
+
+                // Adjust formatting configuration.
+                let conf2 = conf.with_int(left_digits);
+
+                // Measure final layout.
+                let raw_shape = self.measure_fmt(conf2);
+                let g_shape = self.measure_group(conf2, group);
+                let (raw_len, final_len) = (raw_shape.total(), g_shape.total());
+                if final_len > buf.len().saturating_sub(pos) { return 0; }
+
+                // Write ungrouped number at the start.
+                let written = self.write_fmt(buf, pos, conf2);
+                is![written == 0; return 0];
+
+                // Backward expansion: insert grouping separators in place.
+                let (mut src, mut dst) = (pos + raw_len, pos + final_len);
+                let (mut digits_left, mut group_count) = (raw_shape.left, 0u16);
+                while src > pos {
+                    src -= 1;
+                    dst -= 1;
+                    let b = buf[src];
+                    buf[dst] = b;
+                    // Only count digits belonging to the numeric magnitude.
+                    if b >= b'0' && b <= b'9' && digits_left > 0 {
+                        digits_left -= 1;
+                        group_count += 1;
+                        if digits_left > 0 && group_count == len {
+                            dst -= 1;
+                            buf[dst] = $crate::unwrap![some group.left_sep] as u8;
+                            group_count = 0;
+                        }
+                    }
+                }
+                final_len
             }
 
             /* measure */
@@ -170,6 +300,21 @@ macro_rules! impl_fmtnum_int {
     )+};
     (common $($t:ty),+) => {$(
         impl FmtNum<$t> {
+            /* measure */
+
+            /// Returns the measured shape of the number after applying digit grouping.
+            ///
+            /// This first measures the formatted number using `measure_fmt`, then
+            /// accounts for any additional separator glyphs introduced by grouping.
+            pub const fn measure_group(self, conf: Conf, group: Group) -> Shape {
+                let mut shape = self.measure_fmt(conf);
+                if shape.left > 0 && group.left_len != 0 && group.left_sep.is_some() {
+                    let groups = (shape.left.saturating_sub(1)) / group.left_len as u16;
+                    shape.left += groups;
+                }
+                shape
+            }
+
             /* as_bytes */
 
             /// Formats the number into a provided buffer and returns it as a byte slice.
@@ -214,7 +359,7 @@ macro_rules! impl_fmtnum_int {
             #[inline(always)]
             const fn _as_str(slice: &[u8]) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))] // safe
-                return crate::unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)];
+                return $crate::unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)];
                 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))] // unsafe
                 // SAFETY: the ASCII bytes are always valid utf-8
                 unsafe { Str::from_utf8_unchecked(slice) }

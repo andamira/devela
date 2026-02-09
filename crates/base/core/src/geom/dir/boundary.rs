@@ -38,6 +38,8 @@ impl Boundary1d {
     pub const Right: Self = Self::Upper;
     pub const Start: Self = Self::Lower;
     pub const End: Self = Self::Upper;
+    pub const Before: Self = Self::Lower;
+    pub const After: Self = Self::Upper;
 
     /// Returns the opposite boundary.
     pub const fn opposite(self) -> Self {
