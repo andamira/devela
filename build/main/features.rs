@@ -328,8 +328,7 @@ mod reflection {
         ref_flags: &["ui··"],
         features: &[
             "ui", "layout",
-            /* front: */ "desk", "term", "web",
-            "dep_crossterm", "dep_fltk", "dep_girls", "dep_miniquad", "dep_sdl2", "dep_sdl3",
+            /* front: */ "term", // "web",
         ]
     };
     pub const WORK: FlagsFeatures = FlagsFeatures {

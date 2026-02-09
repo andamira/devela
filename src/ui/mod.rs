@@ -12,6 +12,9 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
     crate::_doc!(modules: crate; ui: back, front, layout);
 }
 
+mod back; // UiService*
+#[cfg(ui··)]
+mod error;
 // mod pref; // WIP
 // mod widgets; // WIP
 
@@ -19,18 +22,17 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
 pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
 pub mod front;
 
-#[cfg(ui··)]
-crate::items! {
-    mod error;
-    pub mod back; // UiService*
-}
 #[cfg(feature = "layout")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "layout")))]
 pub mod layout;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
-        // pub use super::pref::*;
+        pub use super::{
+            back::_all::*,
+            // pref::*,
+            // widgets::*,
+        };
         #[cfg(ui··)]
         pub use super::error::*; // RETHINK
     }
@@ -39,8 +41,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             event::_all::*,
             front::_all::*,
         };
-        #[cfg(ui··)]
-        pub use super::back::_all::*;
         #[cfg(feature = "layout")]
         pub use super::layout::_all::*;
     }

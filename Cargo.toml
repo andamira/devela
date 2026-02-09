@@ -91,7 +91,7 @@ bench = false
 # ==============================================================================
 name = "devela"
 build = "build/main/mod.rs"
-description = "A development layer: rooting in Rust."
+description = "A development layer rooting in Rust."
 readme = "docs/readme_crate.md"
 rust-version.workspace = true
 edition.workspace = true
@@ -154,7 +154,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 161/300 (139 remaining), 107 visible, 54 hidden
+[features] # 158/300 (142 remaining), 103 visible, 55 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -293,16 +293,16 @@ sys = ["io", "mem"]
 		bit = [] # BitSize
 	# os
 		linux = []
-		windows = ["crossterm?/windows"]
+		windows = []
 text = ["grapheme", "translit"]
 	grapheme = ["devela_base_core/grapheme"]
 	translit = ["devela_base_core/translit"]
 vita = []
-ui = ["layout", "desk", "term"]
+ui = ["layout", "term"]
 	layout = []
 	# back
 	# front
-		desk = []
+		# desk = []
 		# mobi = []
 		term = ["devela_base_core/term"] # media::image::sixel
 		# web = []
@@ -572,11 +572,10 @@ _value_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./build/main/dep_all & ./src/yard/_dep.rs
-dep_all = [ # enables all 15 optional external dependencies:
+dep_all = [ # enables all 13 optional external dependencies:
 	"dep_atomic", "dep_bytemuck",
-	"dep_crossterm",
 	"dep_hashbrown", "dep_jiff",
-	"dep_memchr", "dep_miniquad",
+	"dep_memchr",
 	"dep_portable_atomic", "dep_portable_atomic_util",
 	"dep_rand_core", "dep_raw_cpuid",
 	"dep_safe_arch",
@@ -590,12 +589,10 @@ work_deps  = ["work", "dep_atomic", "dep_portable_atomic"]
 # individual dependencies features
 dep_atomic = ["dep:atomic"]                                                       # work::sync
 dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                            # sys::mem
-dep_crossterm = ["dep:crossterm", "std"]                                          # ui::back
 dep_hashbrown = ["dep:hashbrown", "alloc"]  									  # data::key
 dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
 dep_log = ["dep:log"]                                                             # sys::log
 dep_memchr = ["dep:memchr", "devela_base_core/dep_memchr"]                        # text:str
-dep_miniquad = ["dep:miniquad", "alloc", "glsl"]                                  # ui::back
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
 dep_portable_atomic_util = ["dep:portable-atomic-util",                           # work::sync
 	"devela_base_alloc?/dep_portable_atomic_util"]
@@ -610,7 +607,7 @@ dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                            
 #* Workspace features *#
 # ------------------------------------------------------------------------------
 
-[dependencies] # 21 (2 required, 19 optional)
+[dependencies] # 19 (2 required, 17 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -631,16 +628,14 @@ devela_base_std    = { workspace = true, optional = true }
 #
 devela_macros      = { workspace = true, optional = true }
 
-#* optional external dependencies (16opt) *#
+#* optional external dependencies (14opt) *#
 
 atomic = { workspace = true, optional = true }
 bytemuck = { workspace = true, optional = true }
-crossterm = { workspace = true, optional = true }
 hashbrown = { workspace = true, optional = true }
 jiff = { workspace = true, optional = true }
 log = { workspace = true, optional = true }
 memchr = { workspace = true, optional = true }
-miniquad = { workspace = true, optional = true }
 portable-atomic = { workspace = true, optional = true }
 portable-atomic-util = { workspace = true, optional = true }
 rand_core = { workspace = true, optional = true }
@@ -683,12 +678,6 @@ default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
 
-[workspace.dependencies.crossterm] # https://crates.io/crates/crossterm (unsafe)
-# In sync with src::ui::back::crossterm::service
-version = "0.29" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
-default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
-features = ["bracketed-paste", "events"]
-
 [workspace.dependencies.hashbrown] # https://crates.io/crates/hashbrown (unsafe)
 version = "0.16" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
 default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
@@ -707,14 +696,6 @@ default-features = false # 25 https://docs.rs/crate/log/latest/features
 [workspace.dependencies.memchr] # https://crates.io/crates/memchr (unsafe)
 version = "2.8" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 default-features = false # 9 https://docs.rs/crate/memchr/latest/features
-
-[workspace.dependencies.miniquad] # https://crates.io/crates/miniquad (unsafe)
-# In sync with src::ui::back::miniquad::service
-version = "0.4.8" # ✗ https://github.com/not-fl3/miniquad/commits/master/
-default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
-features = ["log-impl"]
-# WAIT: [update conf module to derive more traits](https://github.com/not-fl3/miniquad/pull/523)
-# WAIT: [use AtomicPtr in NATIVE_DISPLAY](https://github.com/not-fl3/miniquad/pull/525)
 
 [workspace.dependencies.portable-atomic] # https://crates.io/crates/portable-atomic (unsafe)
 version = "1.13" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md

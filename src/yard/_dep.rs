@@ -47,7 +47,7 @@ pub use devela_base_std as base_std;
 #[cfg(feature = "devela_macros")]
 pub use devela_macros as macros;
 
-/* 44 optional dependencies */
+/* 13 optional dependencies */
 // In sync with /Cargo.toml::dep_all & /build/main/dep_all
 
 _reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
@@ -55,10 +55,6 @@ _reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
 }
 _reexport! { optional_crate (unsafe) "dep_bytemuck", "bytemuck", bytemuck,
     doc: "Small utilities for casting between plain data types."
-}
-_reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
-    doc: "Cross-platform Terminal Manipulation Library.",
-    features: "std"
 }
 _reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
@@ -73,9 +69,6 @@ _reexport! { optional_crate (safe) "dep_log", "log", log,
 }
 _reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."
-}
-_reexport! { optional_crate (unsafe) "dep_miniquad", "miniquad", miniquad,
-    doc: "Cross-platform window context and rendering library."
 }
 _reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "Portable atomic types including 128-bit atomics, floats, etc."

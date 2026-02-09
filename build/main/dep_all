@@ -4,9 +4,8 @@
 // NOTE: make sure to recompile `../tools/check.rs` after modifying this file.
 [
     "dep_atomic", "dep_bytemuck",
-    "dep_crossterm",
     "dep_hashbrown", "dep_jiff",
-    "dep_log", "dep_memchr", "dep_miniquad",
+    "dep_log", "dep_memchr",
     "dep_portable_atomic", "dep_portable_atomic_util",
     "dep_rand_core", "dep_raw_cpuid",
     "dep_safe_arch",
