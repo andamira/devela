@@ -22,20 +22,26 @@ pub use {bit3::*, bit8::*};
 #[doc = crate::_tags!(color term)]
 /// Complete ANSI color selection
 #[doc = crate::_doc_location!("ui/front/term")]
+/// Covers all terminal color modes:
+/// - no color / default
+/// - 3-bit (dark / bright)
+/// - 8-bit palette (256 colors)
+/// - 24-bit truecolor (RGB)
 ///
 /// The size of this type is 32-bit.
-// IMPROVE: use Rgb8 color type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum AnsiColor {
-    /// No color.
+    /// No color (explicitly unset).
     None,
-    /// Standard 3-bit colors.
+    /// Terminal default color.
+    Default,
+    /// Standard 3-bit colors (ANSI dark set).
     Dark(AnsiColor3),
-    /// Bright 3-bit colors.
+    /// Bright 3-bit colors (ANSI bright set).
     Bright(AnsiColor3),
-    /// 8-bit colors (256 colors).
+    /// 8-bit indexed color (ANSI 256 colors).
     Palette(AnsiColor8),
-    /// True color RGB
+    /// 24-bit true color RGB.
     Rgb([u8; 3]),
 }
 
@@ -44,16 +50,54 @@ pub enum AnsiColor {
 impl AnsiColor {
     const _CHECK_SIZE: () = const { assert![4 == size_of::<Self>(), "AnsiColor size != 4"] };
 
+    /// Returns `true` if this is [`AnsiColor::None`].
+    #[must_use] #[inline(always)]
+    pub const fn is_none(self) -> bool { matches![self, Self::None] }
+    /// Returns `true` if this is [`AnsiColor::Default`].
+    #[must_use] #[inline(always)]
+    pub const fn is_default(self) -> bool { matches![self, Self::Default] }
+
+    /// Returns `true` if this is a 3-bit ANSI color (dark or bright).
+    #[must_use] #[inline(always)]
+    pub const fn is_3(self) -> bool { matches![self, Self::Dark(_) | Self::Bright(_)] }
+    /// Returns `true` if this is a dark 3-bit ANSI color.
+    #[must_use] #[inline(always)]
+    pub const fn is_dark(self) -> bool { matches![self, Self::Dark(_)] }
+    /// Returns `true` if this is a bright 3-bit ANSI color.
+    #[must_use] #[inline(always)]
+    pub const fn is_bright(self) -> bool { matches![self, Self::Bright(_)] }
+
+    /// Returns `true` if this is an 8-bit ANSI palette color.
+    #[must_use] #[inline(always)]
+    pub const fn is_8(self) -> bool { matches![self, Self::Palette(_)] }
+    /// Returns `true` if this is an 8-bit ANSI palette color.
     ///
+    /// Alias of [`Self::is_8`].
+    #[must_use] #[inline(always)]
+    pub const fn is_palette(self) -> bool { matches![self, Self::Palette(_)] }
+    /// Returns `true` if this is a 24-bit RGB color.
+    #[must_use] #[inline(always)]
+    pub const fn is_rgb(self) -> bool { matches![self, Self::Rgb(_)] }
+
+    //
+
+    /// Extracts the 3-bit color if present.
+    ///
+    /// Returns `None` for non-3-bit variants.
+    #[must_use] #[inline(always)]
     pub const fn into_3(self) -> Option<AnsiColor3> {
         match self { Self::Dark(c) | Self::Bright(c) => Some(c), _ => None }
     }
+    /// Extracts the 8-bit palette color if present.
     ///
+    /// Returns `None` for non-palette variants.
     #[must_use] #[inline(always)]
     pub const fn into_8(self) -> Option<AnsiColor8> {
         match self { Self::Palette(c) => Some(c), _ => None }
     }
+    /// Extracts the RGB value if present.
     ///
+    /// Returns `None` for non-RGB variants.
     #[must_use] #[inline(always)]
     pub const fn into_rgb(self) -> Option<[u8; 3]> {
         match self { Self::Rgb(c) => Some(c), _ => None }
@@ -109,6 +153,17 @@ mod C {
     pub(super) const C8: [u8; 4] = *b"8;5;";
     pub(super) const RGB: [u8; 4] = *b"8;2;";
 }
+
+/// # Default color escape codes
+///
+/// Resets foreground or background color to the terminal default.
+#[rustfmt::skip]
+impl Ansi { _ansi_consts! {
+    /// Code to reset the background color to the terminal default.
+    pub const DEFAULT_BG: [u8; 5] = "\x1b[49m", *b"\x1b[49m";
+    /// Code to reset the foreground color to the terminal default.
+    pub const DEFAULT_FG: [u8; 5] = "\x1b[39m", *b"\x1b[39m";
+}}
 
 /// # RGB Color escape codes
 #[rustfmt::skip]

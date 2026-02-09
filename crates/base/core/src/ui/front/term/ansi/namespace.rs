@@ -27,11 +27,13 @@ use crate::{_ansi_consts, Digits, StringNonul, slice, write_at};
 /// - [Screen][Self#screen-escape-codes]
 /// - [Erase][Self#erase-escape-codes]
 /// - [Cursor][Self#cursor-escape-codes]
+/// - [Mouse][Self#mouse-escape-codes]
 /// - [Font effects][Self#font-effects-escape-codes]
 /// - [Color (3-bit)][Self#3-bit-color-escape-codes]
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
 /// - [Grey (8-bit) Palette][Self#8-bit-grey-escape-codes]
 /// - [Palette (8-bit)][Self#8-bit-palette-escape-codes]
+/// - [Default][Self#default-color-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
 ///
 /// ## Other
@@ -434,6 +436,38 @@ impl Ansi {
     pub const fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'E')
     }}
+}
+
+/// # Mouse escape codes
+///
+/// Example SGR mouse event received:
+/// `ESC [ < 0 ; 45 ; 10 M`, where:
+/// - `0`: button state
+/// - `45`: column
+/// - `10`: row
+/// -  `M`: press (`m` indicates release)
+impl Ansi {
+    _ansi_consts! {
+        /// Code to enable X10 compatibility mode for mouse click reporting.
+        ///
+        /// Response: `CSI M Cb Cx Cy` (fixed-length, byte-encoded).
+        /// - Cb is button (1, 2 or 3) plus 32.
+        /// - Cx and Cy are column and row plus 32.
+        pub const MOUSE_X10_ENABLE: [u8; 5] = "\x1b[?9h", *b"\x1b[?9h";
+        /// Code to disable X10 compatibility mode.
+        pub const MOUSE_X10_DISABLE: [u8; 5] = "\x1b[?9l", *b"\x1b[?9l";
+
+        // /// Code to enable basic mouse click reporting.
+        // pub const MOUSE_NORMAL: [u8; 8] = "\x1b[?1000h", *b"\x1b[?1000h";
+        // /// Code to enable all motion tracking.
+        // pub const MOUSE_TRACKING: [u8; 8] = "\x1b[?1003h", *b"\x1b[?1003h";
+        /// Code to enable UTF-8 extended mouse coordinates (legacy) with report in cells.
+        pub const MOUSE_UTF8: [u8; 8] = "\x1b[?1005h", *b"\x1b[?1005h";
+        /// Code to enable SGR extended mouse coordinates with report in cells.
+        pub const MOUSE_SGR: [u8; 8] = "\x1b[?1006h", *b"\x1b[?1006h";
+        /// Code to enable SGR extended coordinates with report in pixels.
+        pub const MOUSE_SGR_PIXELS: [u8; 8] = "\x1b[?1016h", *b"\x1b[?1016h"; // = SGR + pixel mode
+    }
 }
 
 /// # Font effects escape codes

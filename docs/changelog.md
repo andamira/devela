@@ -673,7 +673,6 @@ Many feature gates are removed in order to make most features make always availa
 - rename `ASCII_TABLE` to `LUT_ASCII_CHARS` and make it a public *const*.
 - rename `Ascii` to `Digits`.
 - update `Digits`:
-  - new type: `AnsiColor`.
   - new const: `MAX_DIGITS_16`.
   - new methods: `count_digits16`, `digit_at_index10[_checked]`, `digit_at_index16[_checked]`, `digit_value_at_index10[_checked]`, `digit_value_at_index16[_checked]`, `digits16`, `write_digits10`, `write_digits10_fast`, `write_digits10_omit0`, `write_digits16`, `write_digits16_omit0`.
   - new private method: `digit_at_power16`.
@@ -683,7 +682,6 @@ Many feature gates are removed in order to make most features make always availa
     - `count_digits` to `count_digits10`.
     - `digits_*` to `digits10_*`.
     - `digits` to `digits10`.
-- update derives for `AnsiColor*`.
 
 ### error
 - re-export std's `FromUtf8Error`.
@@ -803,9 +801,10 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - types: `Ansi`, `AnsiColor3`, `AnsiColor8`, `TermSize`.
 - change `Ansi::print*` methods to `ansi_print*` functions.
+- new type: `AnsiColor`.
 - update `Ansi:`
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
-  - add methods: `COLOR_FG_BRIGHT`, `COLOR_BG_BRIGHT`, `CURSOR_MOVE`, `strip_codes`.
+  - add methods: `COLOR_[BG|FG]_BRIGHT`, `CURSOR_MOVE`, `DEFAULT_[BG|FG]`, `MOUSE_X10_[ENABLE|DISABLE]`, `MOUSE_[NORMAL|TRACKING|UTF8]`, `MOUSE_SGR[_PIXELS]`, `strip_codes`.
   - rename current associated const items with a `_B` suffix.
   - add duplicated items with the old name returning a string slice or a `StringNonul`.
   - update digits formatting methods to use `Digits::write_digits10`.

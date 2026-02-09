@@ -1,6 +1,6 @@
 // devela_base_core::ui::front::term::ansi::strip
 //
-//! Defines the
+//! Defines the [`Ansi::strip_codes`] method.
 //
 
 use crate::Ansi;
