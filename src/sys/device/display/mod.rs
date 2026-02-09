@@ -14,7 +14,7 @@
 // #[cfg(feature = "gdi")]
 // pub mod gdi;
 
-#[cfg(feature = "x11")]
+#[cfg(all(feature = "x11", feature = "event"))]
 #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_syscall"))]
 pub mod x11;
 
@@ -25,12 +25,12 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         // #[cfg(feature = "gdi")]
         // pub use super::gdi::*;
 
-        #[cfg(feature = "x11")]
+        #[cfg(all(feature = "x11", feature = "event"))]
         #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_syscall"))]
         pub use super::x11::_all::*;
     }
     _crate_internals {
-        #[cfg(feature = "x11")]
+        #[cfg(all(feature = "x11", feature = "event"))]
         #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_syscall"))]
         pub(crate) use super::x11::_crate_internals::*;
     }

@@ -154,7 +154,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 158/300 (142 remaining), 103 visible, 55 hidden
+[features] # 159/300 (141 remaining), 104 visible, 55 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -298,7 +298,8 @@ text = ["grapheme", "translit"]
 	grapheme = ["devela_base_core/grapheme"]
 	translit = ["devela_base_core/translit"]
 vita = []
-ui = ["layout", "term"]
+ui = ["event", "layout", "term"]
+	event = []
 	layout = []
 	# back
 	# front

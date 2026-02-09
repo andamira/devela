@@ -8,6 +8,8 @@
 // safety
 #![cfg_attr(feature = "safe_image", forbid(unsafe_code))]
 
+// #[cfg(feature = "alloc")]
+// mod buf; // WIP TEMP
 mod error;
 mod pnm;
 
@@ -17,7 +19,12 @@ pub mod sixel;
 
 crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
-        pub use super::{error::*, pnm::*};
+        pub use super::{
+            error::*,
+            pnm::*,
+        };
+        // #[cfg(feature = "alloc")]
+        // pub use super::buf::*; // TEMP WIP
     }
     _pub_mods {
         #[doc(inline)]

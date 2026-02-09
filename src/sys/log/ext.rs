@@ -1,4 +1,7 @@
 // devela::sys::log::ext
+//
+//! Defines [`LoggerExt`].
+//
 
 use super::{LogConfig, LogLevelFilter, Logger};
 #[cfg(feature = "alloc")]

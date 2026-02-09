@@ -101,7 +101,7 @@ const SUB_MODULES: &[&str] = &[
     // text
         "grapheme", "translit",
     // ui
-        "layout", "desk", "term",
+        "event", "layout", "term",
     // vita
 
     // work

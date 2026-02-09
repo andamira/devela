@@ -3,7 +3,10 @@
 //! Defines [`EventTimestampMode`], [`EventTimestamp`].
 //
 
-use crate::{ConstInit, DebugExt, FmtResult, Formatter, f32bits, f32bits_niche, impl_trait};
+use crate::{
+    ConstInit, DebugExt, Duration, FmtResult, Formatter, TimeSplitNorm, f32bits, f32bits_niche,
+    impl_trait,
+};
 
 #[doc = crate::_tags!(event time)]
 /// Selects how an [`EventTimestamp`] should be formatted.
@@ -61,6 +64,18 @@ impl EventTimestamp {
     pub(crate) const fn from_non_niche(ms: f32bits) -> Self { Self::new(ms.to_niche()) }
     pub(crate) const fn get_niche(self) -> f32bits_niche { self.ms }
     pub(crate) const fn get_non_niche(self) -> f32bits { self.ms.to_non_niche() }
+}
+
+/// General methods.
+#[rustfmt::skip]
+impl EventTimestamp {
+    /// Converts the timestamp to a `Duration`, truncating fractional milliseconds.
+    pub fn as_duration(&self) -> Duration {
+        // Always round-down to integer ms before converting.
+        // Ensures stable splits for both float and int paths.
+        let ms = self.ms.as_float() as u64;
+        Duration::from_millis(ms)
+    }
 }
 
 /// Methods related to floating-point representations.
@@ -145,6 +160,14 @@ impl EventTimestamp {
     /// Formats the timestamp by showing both integer and floating-point interpretations.
     pub fn fmt_dual_ms(&self, f: &mut Formatter) -> FmtResult<()> {
         write![f, "{}|{:.6} ms", self.ms.as_bits(), self.ms.as_float()]
+    }
+
+    /// Formats the timestamp using a full `TimeSplit` from years down to nanoseconds.
+    pub fn fmt_split_full(&self, f: &mut Formatter) -> FmtResult<()> {
+        let split = TimeSplitNorm::from_duration(self.as_duration());
+        write!(f, "{}mo {}d {:02}h:{:02}m:{:02}s {:03}ms {:03}us {:03}ns",
+            split.mo, split.d, split.h, split.m, split.s, split.ms, split.us, split.ns
+        )
     }
 }
 

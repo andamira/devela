@@ -2,8 +2,6 @@
 //
 //! Defines [`Ratio`].
 //
-// IMPROVE
-// - to Frac
 
 #[cfg(feature = "num")]
 use crate::{NumConst, Rem};

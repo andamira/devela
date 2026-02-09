@@ -6,6 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
+#[cfg(ui··)]
 mod definition; // UiService
 
 crate::structural_mods! { // _mods

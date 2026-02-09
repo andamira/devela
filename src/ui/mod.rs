@@ -18,7 +18,7 @@ mod error;
 // mod pref; // WIP
 // mod widgets; // WIP
 
-// IMPROVE: feature-gate some
+#[cfg(feature = "event")]
 pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
 pub mod front;
 
@@ -38,9 +38,10 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _pub_mods {
         pub use super::{
-            event::_all::*,
             front::_all::*,
         };
+        #[cfg(feature = "event")]
+        pub use super::event::_all::*;
         #[cfg(feature = "layout")]
         pub use super::layout::_all::*;
     }

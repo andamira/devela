@@ -327,7 +327,7 @@ mod reflection {
     pub const UI: FlagsFeatures = FlagsFeatures {
         ref_flags: &["ui··"],
         features: &[
-            "ui", "layout",
+            "ui", "event", "layout",
             /* front: */ "term", // "web",
         ]
     };

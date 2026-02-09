@@ -76,6 +76,9 @@ impl Timecode {
         TimeSplit::new_hour_nano((), (), s, ms, us, ns)
     }
 
+    /* strings */
+    // TODO add write methods into the given buffer
+
     /// Returns the time code as `HH:MM:SS:MIL` or `MM:SS:MIL`.
     ///
     /// The hours are clamped to 99 (more than 4 days).
@@ -114,6 +117,7 @@ impl Timecode {
     /// Returns the time code, up to seconds, as `001s 012ms 012µs 012ns`.
     ///
     /// The seconds are clamped to 999 (more than 16 minutes).
+    /// TODO TEST
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     // -> 192 bits in "64", 92 bits in "32"
@@ -139,6 +143,7 @@ impl Timecode {
     /// The seconds are clamped to 999 (more than 16 minutes).
     // -> 208 bits
     // TODO: make const, replace format_buf.
+    // TODO: also make a version that writes bytes on provided buffer
     pub fn nanos_u64(nanos: u64) -> StringU8<23> {
         let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
         let s_str = Digits(s.min(999)).digits10_str(3);
