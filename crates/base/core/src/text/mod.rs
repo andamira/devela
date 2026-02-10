@@ -30,7 +30,7 @@ pub mod layout; // TextLayout*, …
 pub mod parse; // ByteSearch
 pub mod str; // Str, StringNonul, StringU*
 
-crate::structural_mods! { // mods, _pub_mods, _crate_internals
+crate::structural_mods! { // mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             // cell::_all::*,
@@ -58,5 +58,8 @@ crate::structural_mods! { // mods, _pub_mods, _crate_internals
             _DOC_TEXT_MODULES,
             char::_workspace_internals::*,
         };
+    }
+    _hidden {
+        pub use super::fmt::_hidden::*;
     }
 }

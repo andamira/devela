@@ -192,5 +192,6 @@ pub mod _hidden {
     pub use super::{
         num::_hidden::*,
         sys::_hidden::*,
+        text::_hidden::*,
     };
 }

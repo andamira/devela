@@ -11,9 +11,9 @@ mod _reexport; // SYMLINK from /src/text/fmt/_reexport_core.rs
 mod buf; // FmtWriter, format_buf!
 mod cat; // fmtcat!
 mod debug; // DebugWith
-mod num; // FmtNum, FmtNumShape
+mod num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, define_fmt_num!
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _reexports, _hidden
     _mods {
         pub use super::{
             buf::*,
@@ -24,5 +24,8 @@ crate::structural_mods! { // _mods, _reexports
     }
     _reexports {
         pub use super::_reexport::*;
+    }
+    _hidden {
+        pub use super::num::_hidden::*;
     }
 }
