@@ -352,7 +352,7 @@ macro_rules! methods {
             (length * $chunk_bits) / 8
         }
 
-        /* decode / encode */
+        /* decode */
 
         /// Decodes `input` into `output`, returning the number of bytes written.
         /// Uses a LUT when `DEC_TABLE = true`, otherwise falls back to linear search.
@@ -377,6 +377,8 @@ macro_rules! methods {
             }
             Some(index)
         }
+
+        /* encode */
 
         /// Encodes `input` into `output`, returning the number of bytes written.
         /// # Panics

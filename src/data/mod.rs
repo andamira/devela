@@ -55,7 +55,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         };
 
         #[doc(inline)]
-        pub use devela_base_core::{Sort, define_handle};
+        pub use devela_base_core::data::{Sort, define_handle};
+        #[cfg(feature = "_docs_examples")]
+        pub use devela_base_core::data::HandleExample;
         // #[doc(inline)]
         // #[cfg(feature = "alloc")]
         // pub use devela_base_alloc::SortAlloc;

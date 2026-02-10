@@ -22,5 +22,9 @@ crate::structural_mods! { // _mods, _reexports
         pub use devela_base_core::sys::mem::alloc::{
             define_arena,
         };
+        #[cfg(feature = "_docs_examples")]
+        pub use devela_base_core::sys::mem::alloc::{
+            ArenaExample, ArenaHandleExample, ArenaMarkExample,
+        };
     }
 }

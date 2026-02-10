@@ -473,7 +473,11 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
-_docs_examples = [] # documents examples and generates example items
+_docs_examples = [ # documents examples and generates example items
+	"devela_base_core/_docs_examples",
+	"devela_base_alloc?/_docs_examples",
+	"devela_base_std?/_docs_examples",
+]
 _docs_min = [ # the minimum capabilities to document every item independent of alloc/std/unsafe
 	"_docs_examples",
 	# workspace

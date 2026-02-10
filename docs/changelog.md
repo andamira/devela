@@ -236,6 +236,7 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `BitOps`.
   - types: `ArrayFrom`, `Bitwise`, `Oneof`, `Sort`.
 - new macro: `define_handle!`.
+- new type: `HandleExample`.
 - new `SortAlloc` wrapper for `Sort`.
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
@@ -265,7 +266,7 @@ Many feature gates are removed in order to make most features make always availa
 ### key
 - update `define_static_map!`:
   - support custom attributes and visibility.
-  - add example items: `ExampleStaticMapConstU8`, `ExampleStaticMapTypeId`, `ExampleStaticMapU16`.
+  - add example items: `StaticMapConstU8Example`, `StaticMapTypeIdExample`, `StaticMapU16Example`.
   - improve docs.
 
 ### list
@@ -438,7 +439,7 @@ Many feature gates are removed in order to make most features make always availa
 - new module `num::grain::wide`.
 - new macro: `define_lane!`.
 - new internal helper macros.
-- new example type `ExampleLane4_i32`.
+- new example type `Lane4_i32Example`.
 - support `nightly_simd` & `dep_wide` in [base_core].
 - re-export some of `core::simd` types and traits.
 
@@ -554,7 +555,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### mem
 - new alias: `MaybeByte`.
-- new types: `ExampleArena`, `ExampleArenaHandle`.
+- new types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`.
 - new macros: `define_arena`.
 - new submodules: `alloc`, `bound`, `layout`, `view`.
 - move previous submodules:

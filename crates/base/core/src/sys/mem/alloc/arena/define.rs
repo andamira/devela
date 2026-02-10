@@ -3,7 +3,7 @@
 //! Defines [`define_arena`].
 //
 
-#[cfg(any(doc, test))]
+#[cfg(any(test, feature = "_docs_examples"))]
 define_arena! {
     // [ offset: u8+crate::NonExtremeU8; ] // WIP TODO
     [ offset: u8+u8; ]
@@ -12,17 +12,17 @@ define_arena! {
     /// An example memory arena.
     ///
     /// Generated with [`define_arena!`].
-    pub ExampleArena;
+    pub ArenaExample;
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena handle.
     ///
     /// Generated with [`define_arena!`].
-    pub ExampleArenaHandle;
+    pub ArenaHandleExample;
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena mark.
     ///
     /// Generated with [`define_arena!`].
-    pub ExampleArenaMark;
+    pub ArenaMarkExample;
 }
 
 #[doc = crate::_tags!(construction allocation)]
@@ -34,7 +34,7 @@ define_arena! {
 /// And uses `unsafe_slice` for further performance gains.
 ///
 /// # Examples
-/// See: [`ExampleArena`].
+/// See: [`ArenaExample`], [`ArenaHandleExample`], [`ArenaMarkExample`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! define_arena {

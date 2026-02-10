@@ -3,7 +3,7 @@
 //! Defines [`define_handle!`] macro.
 //
 
-#[cfg(any(doc, test))]
+#[cfg(any(test, feature = "_docs_examples"))]
 define_handle! {
     [offset: u8 + crate::NonExtremeU8; ]
 
@@ -12,7 +12,7 @@ define_handle! {
     #[doc = crate::_doc_location!("data")]
     ///
     /// Demonstrates a minimal two-field handle using niche-aware `u8` storage.
-    pub ExampleHandle;
+    pub HandleExample;
 }
 
 #[doc = crate::_tags!(construction uid)]
@@ -38,7 +38,7 @@ define_handle! {
 ///     pub MyHandle;
 /// }
 /// ```
-/// See also [`ExampleHandle`].
+/// See also [`HandleExample`].
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! define_handle {
