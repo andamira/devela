@@ -1,6 +1,6 @@
 // devela_base_core::index
 //
-//!
+//! A development substrate of coherence.
 //
 
 /* crate configuration */
@@ -118,14 +118,14 @@ pub mod zall_ {
 }
 
 // public items, feature-gated, visible at their origin and in `zall`:
-// WAIT: [doc(canonica)](https://github.com/rust-lang/rfcs/issues/3011)
+// WAIT: [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 #[doc(hidden)]
 pub use {zall as all, zall::*}; // keep devela_base_core::all::* accesor hidden
 #[doc = crate::_DOC_ZALL!()]
 pub mod zall {
-    #[doc(inline)]
-    #[rustfmt::skip]
     #[allow(unused_imports)]
+    #[rustfmt::skip]
+    #[doc(inline)]
     pub use super::{
         code::_all::*,
         data::_all::*,
@@ -147,9 +147,10 @@ pub mod zall {
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub(crate) use _crate_internals::*;
-#[doc(hidden)] #[rustfmt::skip]
-pub mod _crate_internals {
+mod _crate_internals {
+    //! Crate-internal, hidden items.
     #![allow(unused_imports)]
+    #[rustfmt::skip]
     pub use super::{
         code::_crate_internals::*,
         data::_crate_internals::*,
@@ -171,9 +172,11 @@ pub mod _crate_internals {
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub use _workspace_internals::*;
-#[doc(hidden)] #[rustfmt::skip]
+#[doc(hidden)]
 pub mod _workspace_internals {
+    //! Workspace-internal, hidden items.
     #![allow(unused_imports)]
+    #[rustfmt::skip]
     pub use super::{
         _doc::_workspace_internals::*,
         code::_workspace_internals::*,
@@ -182,13 +185,14 @@ pub mod _workspace_internals {
     };
 }
 
-// public, hidden items
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub use _hidden::*;
-#[doc(hidden)] #[rustfmt::skip]
+#[doc(hidden)]
 pub mod _hidden {
+    //! Public, hidden items.
     #[allow(unused_imports)]
+    #[rustfmt::skip]
     pub use super::{
         num::_hidden::*,
         sys::_hidden::*,

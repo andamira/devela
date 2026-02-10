@@ -26,6 +26,7 @@
 /// - [`define_pcg!`][crate::define_pcg]
 /// - [`unwrap!`][crate::unwrap]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! __devela_policy {
     /* item-level safety policy */
@@ -84,7 +85,7 @@ macro_rules! __devela_policy {
         $vis use $mod_name::*;
     };
 }
-#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[doc(inline)]
 pub use __devela_policy as _devela_policy;
 
 /// for devela safe

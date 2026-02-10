@@ -10,9 +10,12 @@
 //
 // TODO: try to use paste! instead of concat!, since it's faster.
 
+#[doc = crate::_tags!(internal)]
 /// Generates a formatted meta-documentation string.
-#[doc = crate::_doc_location!("code/util")]
-#[doc(hidden)]
+#[doc = crate::_doc_location!("yard")]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
 // #[allow(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
 macro_rules! __doc {
@@ -158,10 +161,12 @@ macro_rules! __doc {
     //     include_str!($text_path),
     // )};
 }
-#[doc(hidden)]
+#[doc(inline)]
 pub use __doc as _doc;
 
+#[doc = crate::_tags!(internal)]
 /// Generates a formatted documentation string for conditional availability.
+#[doc = crate::_doc_location!("yard")]
 ///
 /// It's intended to be used like this:
 /// ```txt
@@ -169,8 +174,10 @@ pub use __doc as _doc;
 /// #[doc = crate::doc_availability!(all(feature = "one", feature = "two")]
 /// #[doc = crate::doc_availability!(any(feature = "one", feature = "two")]
 /// ```
-#[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
+#[macro_export]
 macro_rules! __doc_availability {
     (feature = $feat:literal) => {
         $crate::_doc_availability!{@wrap
@@ -233,7 +240,7 @@ macro_rules! __doc_availability {
         )
     };
 }
-#[doc(hidden)]
+#[doc(inline)]
 pub use __doc_availability as _doc_availability;
 
 // WAIT: doctests cannot see items/macros behind cfg(doctest) in dependencies:
@@ -247,8 +254,9 @@ pub use __doc_availability as _doc_availability;
 // }
 
 // #[cfg(not(doctest))]
+#[doc = crate::_tags!(internal)]
 /// Emits a location annotation for documentation.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_location!("yard")]
 ///
 /// This macro renders a small location marker (`📍`) followed by the public
 /// API path under `devela`, and optionally the crate where the item is defined.
@@ -259,7 +267,9 @@ pub use __doc_availability as _doc_availability;
 ///
 /// NOTE: It's important NOT to pass a leading slash in `$path` for the URL to work.
 // NOTE: duplicated (not symlinked) in devela_base_macros/src/core_bridge/)
-#[doc(hidden)]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
 macro_rules! _doc_location {
     // for items defined in a workspace crate and aggregated in devela.
@@ -297,13 +307,16 @@ macro_rules! _doc_location {
         )
     };
 }
-#[doc(hidden)]
+#[doc(inline)]
 pub use _doc_location;
 
+#[doc = crate::_tags!(internal)]
 /// Generates a formatted documentation string for a miri warning.
-#[doc = crate::_doc_location!("code/util")]
-#[macro_export]
+#[doc = crate::_doc_location!("yard")]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
+#[macro_export]
 macro_rules! __doc_miri_warn {
     (tag) => {
         concat!(
@@ -321,5 +334,5 @@ macro_rules! __doc_miri_warn {
         )
     };
 }
-#[doc(hidden)]
+#[doc(inline)]
 pub use __doc_miri_warn as _doc_miri_warn;

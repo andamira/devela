@@ -458,5 +458,4 @@ macro_rules! __impl_fmt_num_int {
         }
     )+ };
 }
-#[doc(hidden)]
 pub use __impl_fmt_num_int;

@@ -19,7 +19,7 @@ pub struct XWindow {
     pub(super) gc: u32,
     pub(super) width: u16,
     pub(super) height: u16,
-    pub(super) depth: u8,
+    // pub(super) depth: u8,
 }
 
 #[rustfmt::skip]
@@ -76,7 +76,8 @@ impl XWindow {
         display.atoms.set_property_atom(conn, win,
             display.atoms.wm_protocols, display.atoms.wm_delete_window);
 
-        let window = Self { display: conn, win, gc, width, height, depth: display.depth };
+        // let window = Self { display: conn, win, gc, width, height, depth: display.depth };
+        let window = Self { display: conn, win, gc, width, height };
         display.flush();
         Ok(window)
     }

@@ -19,6 +19,7 @@ crate::structural_mods! { // _reexports
         #[doc(inline)]
         #[cfg(feature = "alloc")]
         pub use devela_base_alloc::yard::*;
+        #[doc(inline)]
         #[cfg(feature = "std")]
         pub use devela_base_std::yard::*;
     }

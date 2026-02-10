@@ -192,9 +192,10 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 ///
 /// # Features
 /// Active with the `unsafe_sync` feature.
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
-#[macro_export]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(not(feature = "unsafe_sync"))]
+#[macro_export]
 macro_rules! slog {
     ($($tt:tt)*) => {};
 }

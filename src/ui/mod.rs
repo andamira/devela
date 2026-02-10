@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_UI_MODULES =
-    crate::_doc!(modules: crate; ui: back, front, layout);
+    crate::_doc!(modules: crate; ui: event, front, layout);
 }
 
 mod back; // UiService*

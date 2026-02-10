@@ -1,7 +1,6 @@
 // devela::vita
 //
 #![cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
-#![cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_VITA!()] // public, root

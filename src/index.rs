@@ -1,6 +1,6 @@
 // devela::index
 //
-//! A development layer in Rust.
+//! A development substrate of coherence.
 //
 
 /* crate configuration */
@@ -235,10 +235,10 @@ pub mod zall_ {
 #[doc(hidden)]
 pub use {zall as all, zall::*}; // keep devela::all::* accesor hidden
 #[doc = crate::_DOC_ZALL!()]
-#[rustfmt::skip]
 pub mod zall {
-    #[doc(inline)]
     #[allow(unused_imports)]
+    #[rustfmt::skip]
+    #[doc(inline)]
     pub use super::{
         code::_all::*,
         data::_all::*,
@@ -257,29 +257,16 @@ pub mod zall {
     };
 }
 
-// public, hidden items
-#[doc(hidden)]
-pub use _hidden::*;
-#[rustfmt::skip]
-mod _hidden {
-    #![allow(unused_imports)]
-
-    pub use devela_base_core::_hidden::*;
-    pub use super::{
-        media::_hidden::*,
-        num::_hidden::*,
-        sys::_hidden::*,
-    };
-}
-
-// private, internal items
 #[allow(unused_imports)]
 pub(crate) use _crate_internals::*;
 // NOTE: module-level `#[rustfmt::skip]` breaks macro import resolution here.
 mod _crate_internals {
+    //! Crate-internal, hidden items.
     #![allow(unused_imports)]
 
     pub(crate) use devela_base_core::_workspace_internals::*;
+    // NOTE: do not re-export alloc|std _workspace_internals,
+    // it conflicts at least with alt. Float implementations.
 
     #[rustfmt::skip]
     pub(crate) use super::{
@@ -297,5 +284,22 @@ mod _crate_internals {
         ui::_crate_internals::*,
         vita::_crate_internals::*,
         work::_crate_internals::*,
+    };
+}
+
+#[doc(hidden)]
+pub use _hidden::*;
+mod _hidden {
+    //! Workspace-public, hidden items.
+    #![allow(unused_imports)]
+
+    #[doc(hidden)]
+    pub use devela_base_core::_hidden::*;
+    #[rustfmt::skip]
+    #[doc(hidden)]
+    pub use super::{
+        media::_hidden::*,
+        num::_hidden::*,
+        sys::_hidden::*,
     };
 }

@@ -21,16 +21,17 @@
 // mod cont; //
 mod ratio; // Ratio
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             // cont::_all::*,
             ratio::*,
         };
-
+    }
+    _reexports {
         #[doc(inline)]
         #[rustfmt::skip]
-        pub use devela_base_core::num::{
+        pub use devela_base_core::num::quant::{
             Cycle, CycleCount,
             Interval, interval,
             Sign,

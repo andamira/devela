@@ -13,7 +13,7 @@
 // - Discrete counting and increments: [`Count`].
 //! - Periodic phenomena [`Cycle`], [`CycleCount`].
 // - Proportional relationships and ratios: [`Ratio`].
-//! - Range and interval mathematics: [`Interval`], [`interval!`].
+//! - Range and interval mathematics: [`Interval`], [`interval!`][crate::interval].
 // - Scaling transformations: [`Scale`].
 //! - Numerical classification and properties: [`Sign`].
 //

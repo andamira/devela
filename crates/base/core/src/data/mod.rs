@@ -10,7 +10,7 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: bit, codec, error, iter, list, uid); // key, table, value
+    crate::_doc!(modules: crate; data: codec, error, iter, list, uid); // key, table, value
 }
 
 mod bit; // bitfield!

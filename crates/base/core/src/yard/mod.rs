@@ -17,6 +17,19 @@ mod _use; // _use!
 
 pub mod _dep;
 
+// documented internal re-exports
+#[doc(inline)]
+pub use crate::{
+    _doc::_doc::{
+        _doc, _doc_availability, _doc_location, _doc_miri_warn,
+    },
+    yard::{
+        _use::_use,
+        _policy::_devela_policy,
+        _reexport_macro::_reexport,
+    },
+};
+
 crate::structural_mods! { // _crate_internals, _workspace_internals
     _crate_internals {
         pub(crate) use super::{
