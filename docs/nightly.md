@@ -44,6 +44,7 @@ See also
 
 - 1.95: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.95: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
+- 1.95: `·`[more_conversion_trait_implsa](https://github.com/rust-lang/rust/pull/145504)
 - 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
 - 1.95: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
 - 1.95: `·`[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522) (new_range_api)

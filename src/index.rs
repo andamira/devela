@@ -58,7 +58,10 @@
 #![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature(const_mul_add))]
 // ----------------------------
 // `nightly_stable_1_95`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_95, feature(atomic_try_update, cold_path,))]
+#![cfg_attr(
+    nightly_stable_1_95,
+    feature(atomic_try_update, cold_path, more_conversion_trait_impls,)
+)]
 #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature(push_mut,))]
 // #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
 // ----------------------------
