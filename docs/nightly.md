@@ -42,6 +42,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.95.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.95.0> -->
 
+- 1.95: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.95: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.95: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
 - 1.95: `·`[more_conversion_trait_implsa](https://github.com/rust-lang/rust/pull/145504)
@@ -62,7 +63,6 @@ See also
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
-- 1.??: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
@@ -81,6 +81,7 @@ See also
 - 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
+- 1.??: `·`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)

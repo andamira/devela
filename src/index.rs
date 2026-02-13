@@ -60,7 +60,7 @@
 // `nightly_stable_1_95`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_95,
-    feature(atomic_try_update, cold_path, more_conversion_trait_impls,)
+    feature(assert_matches, atomic_try_update, cold_path, more_conversion_trait_impls,)
 )]
 #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature(push_mut,))]
 // #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
@@ -74,7 +74,6 @@
 #![cfg_attr(
     nightly_stable_later,
     feature(
-        assert_matches,
         breakpoint,
         cfg_select,
         cfg_version,
@@ -88,6 +87,7 @@
         fn_align,
         frontmatter,
         if_let_guard,
+        int_format_into,
         impl_trait_in_assoc_type,
         isqrt,
         likely_unlikely,
