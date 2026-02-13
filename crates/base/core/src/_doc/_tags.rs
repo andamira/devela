@@ -69,9 +69,12 @@ define_symbol_tags! {
     _TAG_ERROR_COMPOSITE, "Composite error", "🚩+"; // 📎,📦,🖇️,🗂️,
     // Discrete occurrences or event vocabularies.
     _TAG_EVENT, "Event", "🎫"; // 🎫, 🎟️, 🎊, 🎉,
+    _TAG_EXAMPLE, "Example", "✨"; // ✨, 📘, 🪄,
+    // Structural execution semantics and invocation mechanics.
+    // Independent of specific runtime systems or schedulers.
+    _TAG_EXEC, "Execution semantics", "⟳";
     // Subject to change; APIs or semantics are not yet stabilized.
     _TAG_EXPERIMENTAL, "Experimental", "🧪";
-    _TAG_EXAMPLE, "Example", "✨"; // ✨, 📘, 🪄,
     // A fake implementation intentionally diverges from real-world semantics,
     // while preserving the role or shape of the real abstraction.
     _TAG_FAKE, "Intentional non-real or placeholder implementation", "🎭"; // 🎭, 👻, 🦄, 🐛,
