@@ -63,13 +63,13 @@ impl SixelColor {
         mut offset: usize,
     ) -> usize {
         let start = offset;
-        write_at!(buf, offset, b'#');
+        write_at!(buf, +=offset, b'#');
         offset += Digits(idx).write_digits10_omit0(buf, offset);
-        write_at!(buf, offset, b';', b'2', b';'); // 2=RGB, 1=HSL
+        write_at!(buf, +=offset, b';', b'2', b';'); // 2=RGB, 1=HSL
         offset += Digits(self.r()).write_digits10_omit0(buf, offset);
-        write_at!(buf, offset, b';');
+        write_at!(buf, +=offset, b';');
         offset += Digits(self.g()).write_digits10_omit0(buf, offset);
-        write_at!(buf, offset, b';');
+        write_at!(buf, +=offset, b';');
         offset += Digits(self.b()).write_digits10_omit0(buf, offset);
         offset - start
     }
@@ -90,13 +90,13 @@ impl SixelColor {
     ) -> Option<usize> {
         is![offset + 15 > buf.len(); return None];
         let start = offset;
-        write_at!(buf, offset, b'#');
+        write_at!(buf, +=offset, b'#');
         offset += Digits(idx).write_digits10_omit0(buf, offset);
-        write_at!(buf, offset, b';', b'2', b';'); // 2=RGB, 1=HSL
+        write_at!(buf, +=offset, b';', b'2', b';'); // 2=RGB, 1=HSL
         offset += Digits(self.r()).write_digits10_omit0(buf, offset);
-        write_at!(buf, offset, b';');
+        write_at!(buf, +=offset, b';');
         offset += Digits(self.g()).write_digits10_omit0(buf, offset);
-        write_at!(buf, offset, b';');
+        write_at!(buf, +=offset, b';');
         offset += Digits(self.b()).write_digits10_omit0(buf, offset);
         Some(offset - start)
     }

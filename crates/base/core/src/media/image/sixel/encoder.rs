@@ -133,10 +133,10 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                         Self::write_rle_run(slice![mut buf, off,..], char, repeat_count)];
                 }
                 // return to start for next color
-                is![idx != self.palette.len() as u16 - 1; write_at![buf, off, b'$']];
+                is![idx != self.palette.len() as u16 - 1; write_at![buf, +=off, b'$']];
             }
             band_y += 6;
-            is![band_y < height; write_at![buf, off, b'-']]; // move to next band?
+            is![band_y < height; write_at![buf, +=off, b'-']]; // move to next band?
         }
         off += unwrap![ok? Self::write_sixel_end(slice![mut buf, off,..])];
         Ok(off)
@@ -209,15 +209,15 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
 
         // initial sequence (6 bytes)
         write_at!(
-            buf, offset, b'\x1b', b'P', // CIS
+            buf, +=offset, b'\x1b', b'P', // CIS
             b';', b'1', b';', // p2 = 1 (transparent background)
             b'q', // sixel ID
         );
         // raster attributes opening sequence (5 bytes)
         // https://vt100.net/docs/vt3xx-gp/chapter14.html#S14.3.2
-        write_at!(buf, offset, b'"', b'1', b';', b'1', b';'); // pixel aspect ratio
+        write_at!(buf, +=offset, b'"', b'1', b';', b'1', b';'); // pixel aspect ratio
         offset += width_digits.write_digits10(buf, offset);
-        write_at!(buf, offset, b';'); // + 1 byte
+        write_at!(buf, +=offset, b';'); // + 1 byte
         offset += height_digits.write_digits10(buf, offset);
         Ok(offset)
     }
@@ -261,9 +261,9 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             let needed = 1 + dcount as usize;
             is![buffer.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
 
-            write_at![buffer, off, b'!'];
+            write_at![buffer, +=off, b'!'];
             off += digits.write_digits10(buffer, 1);
-            write_at![buffer, off, sc.as_byte()];
+            write_at![buffer, +=off, sc.as_byte()];
             __dbg![slog! {sixel_encoder:64+64 "  RLE: !", %count, ":", @sc.to_string_box(),
             " (saved ", %count-(2+dcount), " bytes)"}];
         } else {
@@ -272,7 +272,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             let mut _n = 0;
             while _n < count {
                 is![off >= buffer.len(); return Err(NotEnoughSpace(Some(buffer.len())))];
-                write_at![buffer, off, sc.as_byte()];
+                write_at![buffer, +=off, sc.as_byte()];
                 _n += 1;
             }
         }

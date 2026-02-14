@@ -29,7 +29,7 @@ macro_rules! __impl_fmt_num_int {
                     let digits = Digits(self.0.wrapping_neg().cast_unsigned()); // abs
                     let needed = digits.count_digits10() as usize + 1;
                     if needed > buf.len().saturating_sub(pos) { return 0; }
-                    write_at![buf, pos, b'-'];
+                    write_at![buf, +=pos, b'-'];
                     digits.write_digits10(buf, pos) + 1
                 } else {
                     let digits = Digits(self.0.cast_unsigned());
@@ -65,8 +65,8 @@ macro_rules! __impl_fmt_num_int {
                 let needed = (emit_sign as usize) + left_digits as usize;
                 if needed > buf.len().saturating_sub(pos) { return 0; }
                 // emit sign, zero padding and digits
-                if emit_sign { write_at![buf, pos, is![neg; b'-'; b'+']]; }
-                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, pos, b'0']; }}
+                if emit_sign { write_at![buf, +=pos, is![neg; b'-'; b'+']]; }
+                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, +=pos, b'0']; }}
                 let _ = Digits(abs).write_digits10(buf, pos);
                 needed
             }
@@ -210,8 +210,8 @@ macro_rules! __impl_fmt_num_int {
                 let needed = (emit_sign as usize) + left_digits as usize;
                 if needed > buf.len().saturating_sub(pos) { return 0; }
                 // emit sign, zero padding and digits
-                if emit_sign { write_at![buf, pos, b'+']; }
-                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, pos, b'0']; }}
+                if emit_sign { write_at![buf, +=pos, b'+']; }
+                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, +=pos, b'0']; }}
                 let _ = Digits(self.0).write_digits10(buf, pos);
                 needed
             }

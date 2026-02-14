@@ -166,7 +166,7 @@ impl Ansi {
             buffer[1] = b'[';
             let mut index = 2;
             index += Digits(row).write_digits10(buffer, index);
-            write_at![buffer, index, b';'];
+            write_at![buffer, +=index, b';'];
             index += Digits(col).write_digits10(buffer, index);
             buffer[index] = b'H';
             slice![buffer, ..=index]

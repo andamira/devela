@@ -38,16 +38,16 @@ macro_rules! __impl_fmt_num_float {
                 let needed = sign_len + integ_digits + dot_len + fract_len as usize;
                 if needed > buf.len().saturating_sub(pos) { return 0; }
                 // write:
-                if neg { write_at![buf, pos, b'-']; } // sign
+                if neg { write_at![buf, +=pos, b'-']; } // sign
                 pos += Digits(integ).write_digits10(buf, pos); // integral digits
                 if fract_len > 0 {
-                    write_at![buf, pos, b'.']; // dot
+                    write_at![buf, +=pos, b'.']; // dot
                     let multiplier = Float(10.0 as $t).powi(fract_len as i32).0;
                     let fract = (fabs.fract().0 * multiplier) as $u;
                     let written = Digits(fract).write_digits10(buf, pos); // frac. digits
                     pos += written;
                     let missing = fract_len as usize - written;
-                    whilst! { _i in 0..missing; { write_at![buf, pos, b'0']; }}
+                    whilst! { _i in 0..missing; { write_at![buf, +=pos, b'0']; }}
                 }
                 needed
             }
@@ -79,17 +79,17 @@ macro_rules! __impl_fmt_num_float {
                 let (sign_len, dot_len) = (emit_sign as usize, (conf.fract > 0) as usize);
                 let needed = sign_len + (left_digits as usize) + dot_len + (conf.fract as usize);
                 // emit sign, zero padding, int digits, dot and fract digits
-                if emit_sign { write_at![buf, pos, is![neg; b'-'; b'+']]; } // ←sign ↓zero-padding
-                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, pos, b'0']; }}
+                if emit_sign { write_at![buf, +=pos, is![neg; b'-'; b'+']]; } // ←sign ↓zero-padding
+                whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, +=pos, b'0']; }}
                 pos += Digits(integ).write_digits10(buf, pos); // integral digits
                 if conf.fract > 0 {
-                    write_at![buf, pos, b'.']; // dot
+                    write_at![buf, +=pos, b'.']; // dot
                     let multiplier = Float(10.0 as $t).powi(conf.fract as i32).0;
                     let fract = (fabs.fract().0 * multiplier) as $u;
                     let written = Digits(fract).write_digits10(buf, pos); // frac. digits
                     pos += written;
                     let missing = conf.fract as usize - written;
-                    whilst! { _i in 0..missing; { write_at![buf, pos, b'0']; }}
+                    whilst! { _i in 0..missing; { write_at![buf, +=pos, b'0']; }}
                 }
                 needed
             }
