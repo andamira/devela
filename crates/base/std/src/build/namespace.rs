@@ -51,7 +51,7 @@ impl Build {
     pub fn println_heading(msg: &str) {
         Self::println("");
         Self::println(msg);
-        Self::println(&"-".repeat(msg.len()));
+        Self::println("-".repeat(msg.len()));
     }
 
     /// Prints the value of an environment variable.
@@ -69,9 +69,9 @@ impl Build {
     pub fn println_var_encoded(var: &str, new_var_name: &str) {
         if let Ok(ev) = env::var(var) {
             let v = ev.replace('\x1f', " ");
-            Self::println(&format!["· {new_var_name}(*): {v}"]);
+            Self::println(format!["· {new_var_name}(*): {v}"]);
         } else {
-            Self::println(&format!["x {new_var_name}:"]);
+            Self::println(format!["x {new_var_name}:"]);
         }
     }
 

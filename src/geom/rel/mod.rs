@@ -1,5 +1,6 @@
 // devela::geom::rel
 //
+#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_GEOM_REL!()] // public
 #![doc = crate::_doc!(modules: crate::geom; rel)]
 #![doc = crate::_doc!(flat:"geom")]

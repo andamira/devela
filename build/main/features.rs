@@ -35,13 +35,13 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     });
     #[cfg(feature = "__dbg")]
     if let Some(f) = ENABLED_CARGO_FEATURES.get() {
-        Build::println(&format!("Active cargo features ({}): {:?}", f.len(), f));
+        Build::println(format!("Active cargo features ({}): {:?}", f.len(), f));
     };
     // Enable reflection flags based on cargo features
     let _enabled_flags_from_features = reflection::set_ref_flags_from_cargo_features();
     #[cfg(feature = "__dbg")]
     {
-        Build::println(&format!(
+        Build::println(format!(
             "Reflection flags auto-enabled by features ({}): {:?}",
             _enabled_flags_from_features.len(),
             _enabled_flags_from_features,
@@ -92,7 +92,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         // IMPROVE FIXME always shows as ""
         let filtered_flags: Vec<_> = f.iter().filter(|&f| f != "--cfg" && f != "-C").collect();
         // let filtered_flags: Vec<_> = f.iter().collect(); // SAME FOR THIS (TEMP)
-        Build::println(&format!(
+        Build::println(format!(
             "Active compiler cfg flags ({}): {:?}",
             filtered_flags.len(),
             filtered_flags
@@ -102,7 +102,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
     let _enabled_flags_from_cfg_flags = reflection::set_ref_flags_from_cfg_flags();
     #[cfg(feature = "__dbg")]
     {
-        Build::println(&format!(
+        Build::println(format!(
             "Flags auto-enabled by cfg flags ({}): {:?}",
             _enabled_flags_from_cfg_flags.len(),
             _enabled_flags_from_cfg_flags,

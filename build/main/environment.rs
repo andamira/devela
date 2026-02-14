@@ -56,10 +56,10 @@ pub(crate) fn main() -> Result<(), IoError> {
         Build::println_heading("Environment:");
 
         // using the global constant because if not, from here we can only get "build_script_mod"
-        Build::println(&format!["· CARGO_CRATE_NAME={CRATE_NAME}"]);
+        Build::println(format!["· CARGO_CRATE_NAME={CRATE_NAME}"]);
 
         if let Some(v) = cargo_primary_package {
-            Build::println(&format!["· CARGO_PRIMARY_PACKAGE={v}"]);
+            Build::println(format!["· CARGO_PRIMARY_PACKAGE={v}"]);
         } else {
             Build::println("x CARGO_PRIMARY_PACKAGE");
         }

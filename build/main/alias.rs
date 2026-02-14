@@ -21,7 +21,7 @@ pub(crate) fn main() -> Result<(), IoError> {
     arch_aliases(&mut aliases);
 
     #[cfg(feature = "__dbg")]
-    Build::println(&format!("Active compiler cfg flag aliases ({}): {:?}", aliases.len(), aliases));
+    Build::println(format!("Active compiler cfg flag aliases ({}): {:?}", aliases.len(), aliases));
 
     Ok(())
 }

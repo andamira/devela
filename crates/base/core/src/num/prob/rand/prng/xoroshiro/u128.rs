@@ -95,7 +95,7 @@ impl Xoroshiro128pp {
         self.0[1] ^= self.0[2];
         self.0[0] ^= self.0[3];
         self.0[2] ^= t;
-        self.0[3] = Self::rotl(self.0[3], 11);
+        self.0[3] = self.0[3].rotate_left(11);
         result
     }
 
@@ -136,7 +136,7 @@ impl Xoroshiro128pp {
     /// Returns the current random `u32`, without updating the state.
     #[must_use]
     pub const fn current_u32(self) -> u32 {
-        Self::rotl(self.0[0].wrapping_add(self.0[3]), 7).wrapping_add(self.0[0])
+        self.0[0].wrapping_add(self.0[3]).rotate_left(7).wrapping_add(self.0[0])
     }
 
     /// Returns a copy of the next new random state.
@@ -148,7 +148,7 @@ impl Xoroshiro128pp {
         x[1] ^= x[2];
         x[0] ^= x[3];
         x[2] ^= t;
-        x[3] = Self::rotl(x[3], 11);
+        x[3] = x[3].rotate_left(11);
         Self(x)
     }
 
@@ -321,11 +321,6 @@ impl Xoroshiro128pp {
     const fn cold_path_result() -> Option<Self> { None }
     #[cold] #[allow(dead_code)] #[rustfmt::skip]
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
-
-    // rotates `x` left by `k` bits.
-    const fn rotl(x: u32, k: i32) -> u32 {
-        (x << k) | (x >> (32 - k))
-    }
 
     const fn jump_with_constant(&mut self, jump: [u32; 4]) {
         let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);

@@ -185,7 +185,7 @@ macro_rules! __impl_fmt_num_float {
                             right_group += 1;
                             if right_left > 0 && right_group == right_len {
                                 dst -= 1;
-                                buf[dst] = crate::unwrap![some group.right_sep] as u8;
+                                buf[dst] = $crate::unwrap![some group.right_sep] as u8;
                                 right_group = 0;
                             }
                         }
@@ -198,7 +198,7 @@ macro_rules! __impl_fmt_num_float {
                             left_group += 1;
                             if left_left > 0 && left_group == left_len {
                                 dst -= 1;
-                                buf[dst] = crate::unwrap![some group.left_sep] as u8;
+                                buf[dst] = $crate::unwrap![some group.left_sep] as u8;
                                 left_group = 0;
                             }
                         }
@@ -300,7 +300,7 @@ macro_rules! __impl_fmt_num_float {
             #[inline(always)]
             const fn _as_str(slice: &[u8]) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))] // safe
-                return crate::unwrap![ok_guaranteed_or_ub $crate::Str::from_utf8(slice)];
+                return $crate::unwrap![ok_guaranteed_or_ub $crate::Str::from_utf8(slice)];
                 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))] // unsafe
                 // SAFETY: the ASCII bytes are always valid utf-8
                 unsafe { $crate::Str::from_utf8_unchecked(slice) }
