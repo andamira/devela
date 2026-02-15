@@ -209,7 +209,7 @@ Many feature gates are removed in order to make most features make always availa
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
   - internal macros: `__crate_name!`, `__dbg!`, `__std!`, `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_tags!`, `_use!`.
-- add tags: `_DOC_*`, `_TAG_[ALG|APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|EXEC|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|INTERNAL|IO|LAYOUT|LIFETIME|LIN|LINUX|LIST|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|SYMB|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
+- add tags: `_DOC_*`, `_TAG_[ALG|APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|EXEC|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|INTERNAL|INTROSPECT|IO|LAYOUT|LIFETIME|LIN|LINUX|LIST|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|SYMB|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - new re-exports: `select_unpredictable`.
 - new functions: `cold_path`, `likely`, `unlikely`.

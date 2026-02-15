@@ -3,7 +3,7 @@
 [dependencies]
 itertools = "0.14"
 lexopt = "0.3"
-toml_edit = "0.23"
+toml_edit = "0.25"
 [dependencies.devela]
 version = "0.25.0-wip"
 git = "https://github.com/andamira/devela/"

@@ -72,7 +72,7 @@ define_symbol_tags! {
     _TAG_EXAMPLE, "Example", "✨"; // ✨, 📘, 🪄,
     // Structural execution semantics and invocation mechanics.
     // Independent of specific runtime systems or schedulers.
-    _TAG_EXEC, "Execution semantics", "⟳";
+    _TAG_EXEC, "Execution semantics", "↦"; // ↦,⟳,
     // Subject to change; APIs or semantics are not yet stabilized.
     _TAG_EXPERIMENTAL, "Experimental", "🧪";
     // A fake implementation intentionally diverges from real-world semantics,
@@ -92,6 +92,7 @@ define_symbol_tags! {
     _TAG_INIT, "Initialization", "🌱"; // 🌱,🎬,〽️,🆕,🌑,🌚
     // Human intent vocabulary
     _TAG_INTERACTION, "Human interaction", "🎮"; // 🎮,👤,✋,🖱️,⌨️,
+    _TAG_INTROSPECT, "Structural introspection", "🔎"; // 🔎,🔍,🪞,
     _TAG_IO, "Input and output", "🔌"; // 🔌,
     // Iterator traits and adapters operating on sequential iteration.
     _TAG_ITERATOR, "Iterator or iterator adapter", "🔄";
@@ -143,10 +144,9 @@ define_symbol_tags! {
     // Terminal outcome values in a control or computation flow,
     // not producers or fallible abstractions.
     _TAG_RESULT, "Outcome", "⚖️"; // ⚖️,↔️,✅,🗳,
-    // Live execution context and runtime systems.
-    // Covers execution state, progression, and coordination,
-    // as well as runtime machinery such as schedulers, tasks,
-    // coroutines, and foreign runtimes (JS, WASM, async execution).
+    // Live orchestration of execution flows.
+    // Covers schedulers, tasks, async runtimes, and progression of active systems.
+    // Excludes structural invocation semantics.
     _TAG_RUNTIME, "Runtime", "⬡"; // ⬡,
     // Symbolic representations and manipulation of expressions.
     // Focuses on form and rewriting, not truth evaluation or inference.

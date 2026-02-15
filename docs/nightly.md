@@ -45,10 +45,12 @@ See also
 - 1.95: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.95: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.95: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
+- 1.95: ` `[improve pattern matching semantics](https://github.com/rust-lang/rust/pull/150681)
 - 1.95: `·`[more_conversion_trait_implsa](https://github.com/rust-lang/rust/pull/145504)
 - 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
 - 1.95: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
 - 1.95: `·`[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522) (new_range_api)
+- 1.95: ` `[rustdoc: sort stable items first](https://github.com/rust-lang/rust/pull/149460)
 - 1.95: ` `[`TryFrom<integer>` for bool](https://github.com/rust-lang/rust/pull/147400)
 
 # 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
