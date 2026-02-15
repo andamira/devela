@@ -242,6 +242,13 @@ Many feature gates are removed in order to make most features make always availa
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
 
+### access
+- new module `data::access`.
+- move here `address` & `iter`.
+
+#### iter
+- new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
+
 ### bit
 - move `BitOps` & `Bitwise` to `num::bit`.
 - make the module private.
@@ -261,14 +268,19 @@ Many feature gates are removed in order to make most features make always availa
 - remove type: `DataOverflow`.
 - update `MismatchedBounds`.
 
-### iter
-- new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
+### id
+- new module `data::id`.
+- move here `key` and `uid`.
 
-### key
+#### key
 - update `define_static_map!`:
   - support custom attributes and visibility.
   - add example items: `StaticMapConstU8Example`, `StaticMapTypeIdExample`, `StaticMapU16Example`.
   - improve docs.
+
+### uid
+- move `IdPin` to [base].
+- new type `IdRegistry`.
 
 ### list
 - move to [base]:
@@ -289,10 +301,6 @@ Many feature gates are removed in order to make most features make always availa
   - new methods: `copy_*`.
   - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.
   - make methods const: `as_mut_*`, `as_ref_*`, `as_tuple_ref_options`.
-
-### uid
-- move `IdPin` to [base].
-- new type `IdRegistry`.
 
 ---
 ## geom

@@ -15,9 +15,8 @@ crate::CONST! { pub(crate) _DOC_DATA_MODULES =
 mod bit; // WIP
 mod sort;
 
-pub mod key;
+pub mod id;
 pub mod list;
-pub mod uid;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
@@ -28,9 +27,8 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _pub_mods {
         pub use super::{
+            id::_all::*,
             list::_all::*,
-            key::_all::*,
-            uid::_all::*,
         };
     }
     _crate_internals {

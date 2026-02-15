@@ -9,14 +9,14 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: codec, error, iter, key, list, uid, value); // table
-    // address
+    crate::_doc!(modules: crate; data: access, codec, error, id, list, value); // table
 }
 
 mod absence; // NoData
 mod bit;
 mod collection; // DataCollection
 
+pub mod access;
 pub mod codec;
 pub mod error {
     #![doc = crate::_DOC_DATA_ERROR!()] // public
@@ -26,11 +26,9 @@ pub mod error {
     #[doc(inline)]
     pub use devela_base_core::data::error::*;
 }
-pub mod iter;
-pub mod key;
+pub mod id;
 pub mod list;
 // pub mod table; // TODO
-pub mod uid;
 pub mod value; // TODO
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
@@ -65,13 +63,12 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _pub_mods {
         #[doc(inline)]
         pub use super::{
+            access::_all::*,
             codec::_all::*,
             error::*,
-            iter::_all::*,
-            key::_all::*,
+            id::_all::*,
             list::_all::*,
             // table::_all::*, // TODO
-            uid::_all::*,
             value::_all::*, // TODO
         };
 

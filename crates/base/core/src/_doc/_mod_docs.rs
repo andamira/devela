@@ -60,7 +60,10 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 2 (structure without interpretation)
     _DOC_DATA              = "Data handling and manipulation.";
     _QUO_DATA              = "> How values are organized and accessed.";
-    _DOC_DATA_ADDRESS      = "Addressability and directed reachability.";
+    _DOC_DATA_ACCESS         = "Mechanisms of reachability and traversal.";
+    _QUO_DATA_ACCESS         = "> Defines how elements are located without prescribing storage.";
+    _DOC_DATA_ACCESS_ADDRESS = "Addressability and directed reachability.";
+    _DOC_DATA_ACCESS_ITER    = "Composable external iteration.";
     _DOC_DATA_BIT          = "Bit-focused items.";
     _DOC_DATA_CODEC        = "Data encoding and decoding abstractions.";
     _QUO_DATA_CODEC        = "> Structured, algorithmic transformations of data representations.";
@@ -69,8 +72,11 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_CODEC_HASH_CHECK = "Lightweight checksums for accidental corruption detection.";
     _DOC_DATA_DST          = "Dynamically-sized types stored without need of heap allocation.";
     _DOC_DATA_ERROR        = "Data-related error types.";
-    _DOC_DATA_ITER         = "Composable external iteration.";
-    _DOC_DATA_KEY          = "Key-based storage implementations.";
+    _DOC_DATA_ID           = "Identity abstractions for stable and contextual distinction.";
+    _QUO_DATA_ID           = "> Defines how entities remain distinguishable across structure.";
+    _DOC_DATA_ID_KEY          = "Key-based storage implementations.";
+    _DOC_DATA_ID_UID       = "Abstractions for producing and stabilizing unique identities.";
+    _QUO_DATA_ID_UID       = "> Defines identity kinds and generation tools.";
     _DOC_DATA_LIST         = "Sequential collections implementations.";
     _DOC_DATA_LIST_ARRAY   = "Homogeneous, sequentially allocated, random-access structures.";
     _DOC_DATA_LIST_LINK    = "Homogeneous, sequentially accessed structures.";
@@ -81,8 +87,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_NODE         = "Abstractions for structured relationships.";
     _DOC_DATA_SPACE        = "Spatial data structures.";
     _DOC_DATA_TABLE        = "Tabular and heterogeneous data processing.";
-    _DOC_DATA_UID          = "Abstractions for producing and stabilizing unique identities.";
-    _QUO_DATA_UID          = "> Defines identity kinds and generation tools.";
     _DOC_DATA_VALUE        = "Enumerated data values and types, classified by size.";
 
     // 3 (the grammar of space)
