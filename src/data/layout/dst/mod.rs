@@ -1,8 +1,8 @@
-// devela::data::codec::dst
+// devela::data::layout::dst
 //
 #![doc = crate::_doc_miri_warn!(tag)]
-#![doc = crate::_DOC_DATA_CODEC_DST!()] // public
-#![doc = crate::_doc!(modules: crate::data::codec; dst)]
+#![doc = crate::_DOC_DATA_LAYOUT_DST!()] // public
+#![doc = crate::_doc!(modules: crate::data::layout; dst)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!

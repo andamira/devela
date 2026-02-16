@@ -1,5 +1,6 @@
-// devela::data::codec::serde
+// devela::data::codec::deser
 //
+#![doc = crate::_tags!(wip)]
 //! Structured serialization/deserialization.
 //
 

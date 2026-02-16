@@ -1,4 +1,4 @@
-// devela::data::codec::dst::queue
+// devela::data::layout::dst::queue
 //
 //! Implementation of the FIFO queue structure.
 //
@@ -12,7 +12,7 @@ mod private;
 
 #[doc = crate::_tags!(data_structure)]
 /// A statically allocated FIFO queue of <abbr title="Dynamically sized type">DST</abbr>s.
-#[doc = crate::_doc_location!("data/codec/dst")]
+#[doc = crate::_doc_location!("data/layout/dst")]
 ///
 /// # Examples
 /// ```
@@ -32,7 +32,7 @@ pub struct DstQueue<DST: ?Sized, BUF: DstBuf> {
 #[doc = crate::_tags!(data_structure)]
 /// A statically allocated FIFO queue of <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
-#[doc = crate::_doc_location!("data/codec/dst")]
+#[doc = crate::_doc_location!("data/layout/dst")]
 ///
 /// # Examples
 /// ```
@@ -45,7 +45,7 @@ pub type DstQueueUsize<DST /*: ?Sized*/, const CAP: usize> = DstQueue<DST, DstAr
 
 /// Handle returned by [`DstQueue::pop`][DstQueue#method.pop]
 /// (does the actual pop on drop).
-#[doc = crate::_doc_location!("data/codec/dst")]
+#[doc = crate::_doc_location!("data/layout/dst")]
 #[derive(Debug)]
 pub struct DstQueuePopHandle<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> {
     parent: &'a mut DstQueue<DST, BUF>,
@@ -53,13 +53,13 @@ pub struct DstQueuePopHandle<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> {
 
 #[doc = crate::_tags!(iterator)]
 /// An iterator over the elements of a [`DstQueue`].
-#[doc = crate::_doc_location!("data/codec/dst")]
+#[doc = crate::_doc_location!("data/layout/dst")]
 #[derive(Debug)]
 pub struct DstQueueIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstQueue<DST, BUF>, usize);
 
 #[doc = crate::_tags!(iterator)]
 /// A mutable iterator over the elements of a [`DstQueue`].
-#[doc = crate::_doc_location!("data/codec/dst")]
+#[doc = crate::_doc_location!("data/layout/dst")]
 #[derive(Debug)]
 pub struct DstQueueIterMut<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(
     &'a mut DstQueue<DST, BUF>,

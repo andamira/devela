@@ -250,12 +250,15 @@ Many feature gates are removed in order to make most features make always availa
 #### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
 
-### bit
+### codec
+- move here: `bit/`.
+- rename `serde/` to `deser/`.
+
+#### bit
 - move `BitOps` & `Bitwise` to `num::bit`.
 - make all `bitfield!` methods consts.
 - make the module private.
 
-### codec
 #### hash
   - move to [base]: `HasherFx`, `HasherBuildFx`.
   - new module `data::codec::hash::check`.
@@ -272,7 +275,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### id
 - new module `data::id`.
-- move here `key` and `uid`.
+- move here `key/` and `uid/`.
 
 #### key
 - update `define_static_map!`:
@@ -286,8 +289,8 @@ Many feature gates are removed in order to make most features make always availa
 
 ### layout
 - new module `data::layout`.
-- move here `list`, `sort`, space (as spatial). WIP
-- move here `list::{array, buf→buffer, link→linked, queue, stack}`, `pool`, `sort`, `table`.
+- move here: `DataCollection`, `dst/`, `pool/`, `sort/`, `table/`.
+- move here: `list/` submodules: `array/`, `buf/`→`buffer/`, `link/`→`linked/`, `queue/`, `stack/`.
 
 #### array
 - move to [base]:
@@ -307,7 +310,7 @@ Many feature gates are removed in order to make most features make always availa
 - new example type: `BufLineExample`.
 
 ### value
-- move here: `of`, `tuple`.
+- move here: `NoData`, `of/`, `tuple/`.
 - update `Oneof`:
   - new methods: `copy_*`.
   - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.
@@ -316,7 +319,7 @@ Many feature gates are removed in order to make most features make always availa
 ---
 ## geom
 - make `num::geom` a new `geom` root module.
-- new modules: `affine`, `rel`, `space`.
+- new modules: `affine/`, `rel/`, `space/`.
 - rename `shape` to `fig`, as well as the related feature.
 
 ### dir

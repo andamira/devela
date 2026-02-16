@@ -1,4 +1,4 @@
-// devela::data::codec::dst::tests::queue
+// devela::data::layout::dst::tests::queue
 
 use crate::data::{DstArray, DstQueue};
 

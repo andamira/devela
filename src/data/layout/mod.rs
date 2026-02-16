@@ -1,11 +1,12 @@
 // devela::data::layout
 //
 #![doc = crate::_DOC_DATA_LAYOUT!()] // public
-#![doc = crate::_doc!(modules: crate::data; layout: array)]
+#![doc = crate::_doc!(modules: crate::data; layout: array, dst)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //
 
+mod collection; // DataCollection
 mod linked; // ConstList[Item], LinkedList
 mod queue;
 mod stack;
@@ -14,9 +15,15 @@ mod stack;
 pub mod array;
 // pub mod table;
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+#[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+#[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
+pub mod dst;
+
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
+            collection::*,
             linked::_all::*,
             queue::_all::*,
             stack::_all::*,
@@ -28,6 +35,12 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
             array::_all::*,
             // table::_all::*,
         };
+        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+        #[cfg(all(
+            not(any(feature = "safe_data", feature = "safe_mem")),
+            feature = "unsafe_layout"
+        ))]
+        pub use super::dst::_all::*;
     }
     _reexports {
         // buffer
@@ -42,5 +55,13 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
         // #[doc(inline)]
         // #[cfg(feature = "alloc")]
         // pub use devela_base_alloc::SortAlloc;
+    }
+    _crate_internals {
+        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+        #[cfg(all(
+            not(any(feature = "safe_data", feature = "safe_mem")),
+            feature = "unsafe_layout"
+        ))]
+        pub(crate) use super::dst::_crate_internals::*;
     }
 }

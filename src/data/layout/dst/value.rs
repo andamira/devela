@@ -16,7 +16,7 @@ use ::core::{marker, ptr};
 #[doc = crate::_tags!(data_structure)]
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr>
 /// value with pointer alignment.
-#[doc = crate::_doc_location!("data/codec/dst")]
+#[doc = crate::_doc_location!("data/layout/dst")]
 ///
 /// # Examples
 /// ```
@@ -28,7 +28,7 @@ pub type DstValueUsize<DST /*: ?Sized*/, const CAP: usize> = DstValue<DST, DstAr
 
 #[doc = crate::_tags!(data_structure)]
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr> value.
-#[doc = crate::_doc_location!("data/codec/dst")]
+#[doc = crate::_doc_location!("data/layout/dst")]
 ///
 /// `DST` is the unsized type contained.
 /// `BUF` is the buffer used to hold the unsized type (both data and metadata).

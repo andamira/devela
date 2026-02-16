@@ -7,10 +7,10 @@
 //
 
 mod macros; // internal macros
-
 mod build;
 mod traits; // DataValue(Copy), DataType(Copy), DataRaw(Copy)
 
+mod absence; // NoData
 mod of; // Oneof
 
 #[cfg(feature = "_tuple")]
@@ -22,6 +22,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             build::*,
             traits::*,
 
+            absence::*,
             of::_all::*,
         };
     }

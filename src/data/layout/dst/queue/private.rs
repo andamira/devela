@@ -1,4 +1,4 @@
-// devela::data::codec::dst::queue::private
+// devela::data::layout::dst::queue::private
 //
 //! DstQueue private API
 //

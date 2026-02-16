@@ -12,9 +12,6 @@ crate::CONST! { pub(crate) _DOC_DATA_MODULES =
     crate::_doc!(modules: crate; data: access, codec, error, id, layout, value); // topol
 }
 
-mod absence; // NoData
-mod collection; // DataCollection
-
 pub mod access;
 pub mod codec;
 pub mod error {
@@ -30,13 +27,7 @@ pub mod layout;
 // pub mod topol;
 pub mod value;
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
-    _mods {
-        pub use super::{
-            absence::*,
-            collection::*,
-        };
-    }
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         #[doc(inline)]
         pub use super::{
@@ -52,7 +43,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _crate_internals {
         pub(crate) use super::_DOC_DATA_MODULES;
         pub(crate) use super::{
-            codec::_crate_internals::*,
+            layout::_crate_internals::*,
             value::_crate_internals::*,
         };
     }

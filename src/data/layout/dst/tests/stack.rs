@@ -1,4 +1,4 @@
-// devela::data::codec::dst::tests::stack
+// devela::data::layout::dst::tests::stack
 
 use crate::data::{DstArray, DstStack};
 use core::any::Any;

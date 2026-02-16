@@ -1,4 +1,4 @@
-// devela::data::codec::dst::queue_impl_traits
+// devela::data::layout::dst::queue_impl_traits
 //
 //!
 //

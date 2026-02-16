@@ -1,7 +1,7 @@
 // devela_base_core::data::layout
 //
 #![doc = crate::_DOC_DATA_LAYOUT!()] // public
-#![doc = crate::_doc!(modules: crate::data; layout: array)]
+#![doc = crate::_doc!(modules: crate::data; layout: array)] // dst
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //

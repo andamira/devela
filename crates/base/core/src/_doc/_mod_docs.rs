@@ -68,7 +68,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _QUO_DATA_CODEC         = "> Structured, algorithmic transformations of data representations.";
     _DOC_DATA_CODEC_BIT     = "Bit-focused items.";
     _DOC_DATA_CODEC_CRYPTO  = "Cryptographic primitives for encryption, authentication, and hashing.";
-    _DOC_DATA_CODEC_DST     = "Dynamically-sized types stored without need of heap allocation.";
     _DOC_DATA_CODEC_HASH    = "Generic hashing support.";
     _DOC_DATA_CODEC_HASH_CHECK = "Lightweight checksums for accidental corruption detection.";
     _DOC_DATA_ERROR         = "Data-related error types.";
@@ -80,6 +79,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_LAYOUT        = "Structural arrangement of elements in memory or sequence.";
     _QUO_DATA_LAYOUT        = "> Determines how values are positioned and grouped.";
     _DOC_DATA_LAYOUT_ARRAY  = "Homogeneous, sequentially allocated, random-access structures.";
+    _DOC_DATA_LAYOUT_DST    = "Dynamically-sized types stored without need of heap allocation.";
     _DOC_DATA_LAYOUT_LINKED = "Homogeneous, sequentially accessed structures.";
     _DOC_DATA_LAYOUT_QUEUE  = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_FIFO!(), " order."];
