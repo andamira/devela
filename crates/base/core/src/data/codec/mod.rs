@@ -6,6 +6,7 @@
 #![doc = crate::_doc!(extends: hash)]
 //
 
+mod bit; // bitfield!
 mod radix; // radix-based encodings (Base32, Base64, Base58…).
 
 // pub mod crypto;
@@ -16,7 +17,10 @@ pub mod hash;
 
 crate::structural_mods! { // _mod, _pub_mods
     _mods {
-        pub use super::radix::*;
+        pub use super::{
+            bit::_all::*,
+            radix::*,
+        };
     }
     _pub_mods {
         pub use super::{

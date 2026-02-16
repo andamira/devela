@@ -9,26 +9,17 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: key, list, uid); // address, codec, error, iter, table
+    crate::_doc!(modules: crate; data: key, layout, uid); // access, codec, error, iter
 }
 
-mod bit; // WIP
-mod sort;
-
 pub mod id;
-pub mod list;
+pub mod layout;
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
-    _mods {
-        pub use super::{
-            bit::_all::*, // WIP
-            sort::_all::*,
-        };
-    }
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             id::_all::*,
-            list::_all::*,
+            layout::_all::*,
         };
     }
     _crate_internals {

@@ -27,12 +27,18 @@
 //! ```
 //
 
+mod bit;
 mod encode; // encoders and decoders.
 mod radix; // radix-based encodings (Base32, Base64, Base58…).
 mod types;
 
 pub mod crypto; // cryptography
 pub mod hash; // hashing algorithms (Fnv, Fx, MD5).
+
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+#[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+#[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
+pub mod dst;
 
 // WIP ZONE
 // mod compress; // compression algorithms
@@ -43,9 +49,10 @@ mod serde; // structured serialization/deserialization.
 // #[cfg(feature = "alloc")]
 // mod lempel_ziv;
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
+            bit::_all::*,
             crypto::_all::*,
             encode::_all::*,
             radix::_all::*,
@@ -59,5 +66,20 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             hash::_all::*,
         };
+
+        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+        #[cfg(all(
+            not(any(feature = "safe_data", feature = "safe_mem")),
+            feature = "unsafe_layout"
+        ))]
+        pub use super::dst::_all::*;
+    }
+    _crate_internals {
+        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+        #[cfg(all(
+            not(any(feature = "safe_data", feature = "safe_mem")),
+            feature = "unsafe_layout"
+        ))]
+        pub(crate) use super::dst::_crate_internals::*;
     }
 }

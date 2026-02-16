@@ -236,6 +236,7 @@ Many feature gates are removed in order to make most features make always availa
   - macros: `bitfield!`, `init_array!`.
   - traits: `BitOps`.
   - types: `ArrayFrom`, `Bitwise`, `Oneof`, `Sort`.
+- remove module `data::list`.
 - new macro: `define_handle!`.
 - new type: `HandleExample`.
 - new `SortAlloc` wrapper for `Sort`.
@@ -251,6 +252,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### bit
 - move `BitOps` & `Bitwise` to `num::bit`.
+- make all `bitfield!` methods consts.
 - make the module private.
 
 ### codec
@@ -278,26 +280,35 @@ Many feature gates are removed in order to make most features make always availa
   - add example items: `StaticMapConstU8Example`, `StaticMapTypeIdExample`, `StaticMapU16Example`.
   - improve docs.
 
-### uid
+#### uid
 - move `IdPin` to [base].
 - new type `IdRegistry`.
 
-### list
+### layout
+- new module `data::layout`.
+- move here `list`, `sort`, space (as spatial). WIP
+- move here `list::{array, buf→buffer, link→linked, queue, stack}`, `pool`, `sort`, `table`.
+
+#### array
 - move to [base]:
   - traits: `ArrayExt`.
   - types: `ArrayFmt`, `ConstList`.
-- new macros: `define_bufline!`.
-- new example type: `BufLineExample`.
 - rename:
   - `ExtArray` to `ArrayExt`.
   - `ExtVec` to `VecExt`.
-- make all `bitfield!` methods consts.
 - update `init_array!`:
   - rename `array_init!` to `init_array!`.
   - require `ConstInit` and `Vec` in scope if needed.
   - rename `const_init` arm related to traits to `INIT in`.
   - rename `const_init*` arms unrelated to traits to `const_fn*`.
-- update `Oneof`
+
+#### buffer
+- new macros: `define_bufline!`.
+- new example type: `BufLineExample`.
+
+### value
+- move here: `of`, `tuple`.
+- update `Oneof`:
   - new methods: `copy_*`.
   - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.
   - make methods const: `as_mut_*`, `as_ref_*`, `as_tuple_ref_options`.

@@ -9,11 +9,10 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: access, codec, error, id, list, value); // table
+    crate::_doc!(modules: crate; data: access, codec, error, id, layout, topol, value);
 }
 
 mod absence; // NoData
-mod bit;
 mod collection; // DataCollection
 
 pub mod access;
@@ -27,28 +26,14 @@ pub mod error {
     pub use devela_base_core::data::error::*;
 }
 pub mod id;
-pub mod list;
-// pub mod table; // TODO
-pub mod value; // TODO
-
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
-#[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
-#[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
-pub mod dst;
-
-// WIPZONE
-// mod _wip_pool;
-// mod _wip_view;
-// #[cfg(_graph··)]
-// pub mod graph;
-// #[cfg(_node··)]
-// pub mod node;
+pub mod layout;
+pub mod topol;
+pub mod value;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             absence::*,
-            bit::_all::*,
             collection::*,
         };
 
@@ -67,34 +52,16 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             codec::_all::*,
             error::*,
             id::_all::*,
-            list::_all::*,
-            // table::_all::*, // TODO
-            value::_all::*, // TODO
+            layout::_all::*,
+            topol::_all::*,
+            value::_all::*,
         };
-
-        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
-        #[cfg(all(
-            not(any(feature = "safe_data", feature = "safe_mem")),
-            feature = "unsafe_layout"
-        ))]
-        pub use super::dst::_all::*;
-
-        // WIPZONE
-        // pub use super::_wip_pool::*;
-        // pub use super::_wip_view::*;
-        // #[cfg(_graph··)]
-        // pub use super::graph::*;
-        // #[cfg(_node··)]
-        // pub use super::node::_all::*;
     }
     _crate_internals {
         pub(crate) use super::_DOC_DATA_MODULES;
-        pub(crate) use super::value::_crate_internals::*;
-        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
-        #[cfg(all(
-            not(any(feature = "safe_data", feature = "safe_mem")),
-            feature = "unsafe_layout"
-        ))]
-        pub(crate) use super::dst::_crate_internals::*;
+        pub(crate) use super::{
+            codec::_crate_internals::*,
+            value::_crate_internals::*,
+        };
     }
 }
