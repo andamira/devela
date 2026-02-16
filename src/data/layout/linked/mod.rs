@@ -1,7 +1,7 @@
-// devela::data::layout::link
+// devela::data::layout::linked
 //
 #![doc = crate::_DOC_DATA_LAYOUT_LINKED!()] // private
-#![doc = crate::_doc!(modules: crate::data::layout; link)]
+#![doc = crate::_doc!(modules: crate::data::layout; linked)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
@@ -10,7 +10,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/layout/link/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/layout/linked/_reexport.rs
 
 // #[cfg(_list1··)]
 // mod l1;

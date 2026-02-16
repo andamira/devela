@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: access, codec, error, id, layout, topol, value);
+    crate::_doc!(modules: crate; data: access, codec, error, id, layout, value); // topol
 }
 
 mod absence; // NoData
@@ -27,7 +27,7 @@ pub mod error {
 }
 pub mod id;
 pub mod layout;
-pub mod topol;
+// pub mod topol;
 pub mod value;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
@@ -36,14 +36,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             absence::*,
             collection::*,
         };
-
-        #[doc(inline)]
-        pub use devela_base_core::data::{Sort, define_handle};
-        #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::data::HandleExample;
-        // #[doc(inline)]
-        // #[cfg(feature = "alloc")]
-        // pub use devela_base_alloc::SortAlloc;
     }
     _pub_mods {
         #[doc(inline)]
@@ -53,7 +45,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             error::*,
             id::_all::*,
             layout::_all::*,
-            topol::_all::*,
+            // topol::_all::*,
             value::_all::*,
         };
     }

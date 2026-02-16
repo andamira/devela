@@ -1,7 +1,7 @@
 // devela::data::access
 //
 #![doc = crate::_DOC_DATA_ACCESS!()] // public
-#![doc = crate::_doc!(modules: crate::data; access)]
+#![doc = crate::_doc!(modules: crate::data; access: iter)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_QUO_DATA_ACCESS!()]
 //

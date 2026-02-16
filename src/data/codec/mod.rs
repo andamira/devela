@@ -1,7 +1,7 @@
 // devela::data::codec
 //
 #![doc = crate::_DOC_DATA_CODEC!()] // public
-#![doc = crate::_doc!(modules: crate::data; codec: hash)]
+#![doc = crate::_doc!(modules: crate::data; codec: dst, hash)] // crypto
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
 #![doc = crate::_QUO_DATA_CODEC!()]
@@ -32,7 +32,7 @@ mod encode; // encoders and decoders.
 mod radix; // radix-based encodings (Base32, Base64, Base58…).
 mod types;
 
-pub mod crypto; // cryptography
+// pub mod crypto; // cryptography
 pub mod hash; // hashing algorithms (Fnv, Fx, MD5).
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
@@ -53,7 +53,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             bit::_all::*,
-            crypto::_all::*,
+            // crypto::_all::*,
             encode::_all::*,
             radix::_all::*,
             types::*,

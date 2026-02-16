@@ -1,7 +1,7 @@
 // devela_base_core::data::codec
 //
 #![doc = crate::_DOC_DATA_CODEC!()] // public
-#![doc = crate::_doc!(modules: crate::data; codec: hash)]
+#![doc = crate::_doc!(modules: crate::data; codec: hash)] // crypto, dst
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
 //

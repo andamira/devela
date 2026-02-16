@@ -79,7 +79,6 @@ Root modules & public sub-modules features:
   - [`draw`]:
   - [`font`]:
   - [`image`]:
-  - [`video`]:
 - [`num`]:
   - [`dom`]:
   - [`fin`]:
@@ -132,14 +131,14 @@ Root modules & public sub-modules features:
   [`draw`]:       crate::media::draw
   [`font`]:       crate::media::font
   [`image`]:      crate::media::image
-  [`video`]:      crate::media::video
 [`num`]:          crate::num
-  [`dom`]:        crate::num::fin::logic
-  [`fin`]:        crate::num::prob::fin
-  [`lin`]:        crate::num::prob::lin
-  [`prob`]:       crate::num::prob::prob
-  [`quant`]:      crate::num::prob::quant
-  [`symb`]:       crate::num::prob::symb
+  [`dom`]:        crate::num::dom
+  [`fin`]:        crate::num::fin
+  [`grain`]:      crate::num::grain
+  [`lin`]:        crate::num::lin
+  [`prob`]:       crate::num::prob
+  [`quant`]:      crate::num::quant
+  [`symb`]:       crate::num::symb
 [`phys`]:         crate::phys
   [`time`]:       crate::phys::time
 [`run`]:          crate::run

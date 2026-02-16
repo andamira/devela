@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: collections)]
 //
 
-mod _reexport;
+mod _reexport; // SYMLINK from /src/data/layout/linked/_reexport_alloc.rs
 
 crate::structural_mods! { // _mods, _reexports
     _reexports {

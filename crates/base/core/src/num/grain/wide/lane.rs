@@ -3,7 +3,7 @@
 //! Defines [`define_lane!`] macro.
 //
 // TOC
-// - struct Ln4_i32Example
+// - struct Lane4_i32Example
 // - consts for method's docs
 // - macro define_lane!
 // - tests

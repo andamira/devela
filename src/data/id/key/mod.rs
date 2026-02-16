@@ -1,6 +1,6 @@
 // devela::data::id::key
 //
-#![doc = crate::_DOC_DATA_ID_KEY!()] // private
+#![doc = crate::_DOC_DATA_ID_KEY!()] // public
 #![doc = crate::_doc!(modules: crate::data::id; key)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]

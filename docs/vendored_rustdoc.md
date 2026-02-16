@@ -9,7 +9,7 @@
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
   [M_cfg-if]: crate::_doc::vendored::cfg_if
   [`cfg-if!`]: crate::code::util::cfg_if
-  [`ConstList`]: crate::data::list::ConstList
+  [`ConstList`]: crate::data::layout::ConstList
   [M_crossbeam-utils]: crate::_doc::vendored::crossbeam_utils
   [`CacheAlign`]: crate::sys::mem::CacheAlign
   [M_etcetera]: crate::_doc::vendored::etcetera
@@ -28,16 +28,16 @@
   [M_quickdiv]: crate::_doc::vendored::quickdiv
   [`define_divisor`]: crate::num::define_divisor
   [M_stack_dst]: crate::_doc::vendored::stack_dst
-  [`data::dst`]: crate::data::dst
+  [`data::dst`]: crate::data::codec::dst
   [M_stated-scope-guard]: crate::_doc::vendored::stated_scope_guard
   [`ScopeGuard`]: crate::code::ScopeGuard
   [M_static_assertions]: crate::_doc::vendored::static_assertions
   [`const_assert!`]: crate::code::util::const_assert
   [`ConstBool`]: crate::num::fin::logic::ConstBool
   [M_tailcall-chunk]: crate::_doc::vendored::tailcall_chunk
-  [`VecChunk`]: crate::data::list::array::VecChunk
+  [`VecChunk`]: crate::data::layout::array::VecChunk
   [M_tupl]: crate::_doc::vendored::tupl
-  [`Tuple`]: crate::data::list::tuple::Tuple
+  [`Tuple`]: crate::data::value::tuple::Tuple
 
 <!-- license: MIT -->
   [M_crunchy]: crate::_doc::vendored::crunchy
@@ -53,7 +53,7 @@
   <!-- [M_musl]: crate::_doc::vendored::musl -->
   [`Linux`]: crate::sys::os::linux::Linux
   [M_object-id]: crate::_doc::vendored::object_id
-  [`IdPin`]: crate::data::uid::IdPin
+  [`IdPin`]: crate::data::id::IdPin
   [`IdPinBox`]: crate::IdPinBox
   [`as_bytes`]: crate::sys::mem::Mem::as_bytes
   [`as_bytes_mut`]: crate::sys::mem::Mem::as_bytes_mut

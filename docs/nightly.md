@@ -151,6 +151,7 @@ See also
 - [local_waker](https://github.com/rust-lang/rust/issues/118959)
 - [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
  ` `- <https://rust-lang.github.io/rfcs/2580-ptr-meta.html>
+    - [related issues](https://github.com/rust-lang/rust/issues?q=state%3Aopen%20label%3A%22F-ptr_metadata%22)
 - [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 - [type_alias_impl_trait|impl_trait_in_assoc_type](https://github.com/rust-lang/rust/issues/63063)
 

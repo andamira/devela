@@ -1,12 +1,12 @@
 // devela::data::layout
 //
 #![doc = crate::_DOC_DATA_LAYOUT!()] // public
-#![doc = crate::_doc!(modules: crate::data; layout: array, tuple)]
+#![doc = crate::_doc!(modules: crate::data; layout: array)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //
 
-mod link; // ConstList[Item], LinkedList
+mod linked; // ConstList[Item], LinkedList
 mod queue;
 mod stack;
 // mod view;
@@ -17,7 +17,7 @@ pub mod array;
 crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
         pub use super::{
-            link::_all::*,
+            linked::_all::*,
             queue::_all::*,
             stack::_all::*,
             // view::_all::*,
@@ -30,13 +30,17 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
         };
     }
     _reexports {
+        // buffer
         #[doc(inline)]
-        pub use devela_base_core::data::layout::{ // buf
-            define_bufline,
-        };
+        pub use devela_base_core::data::layout::define_bufline;
         #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::data::layout::{ // buf
-            BufLineExample,
-        };
+        pub use devela_base_core::data::layout::BufLineExample;
+
+        // sort
+        #[doc(inline)]
+        pub use devela_base_core::data::layout::Sort;
+        // #[doc(inline)]
+        // #[cfg(feature = "alloc")]
+        // pub use devela_base_alloc::SortAlloc;
     }
 }
