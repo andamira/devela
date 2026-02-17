@@ -3,12 +3,17 @@
 //!
 //
 
-mod line; // define_bufline!
+mod linear; // buffer_linear!
+
+#[cfg(any(test, feature = "_docs_examples"))]
+mod examples;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            line::*,
+            linear::*,
         };
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::examples::*;
     }
 }

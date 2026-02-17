@@ -22,7 +22,7 @@
 /// ```
 ///
 /// # Used in
-/// - [`define_bufline!`][crate::define_bufline]
+/// - [`buffer_linear!`][crate::buffer_linear]
 /// - [`define_pcg!`][crate::define_pcg]
 /// - [`unwrap!`][crate::unwrap]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]

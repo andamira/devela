@@ -306,8 +306,8 @@ Many feature gates are removed in order to make most features make always availa
   - rename `const_init*` arms unrelated to traits to `const_fn*`.
 
 #### buffer
-- new macros: `define_bufline!`.
-- new example type: `BufLineExample`.
+- new macros: `buffer_linear!`.
+- new example types: `BufferExample`, `BufferViewExample`.
 
 ### value
 - move here: `NoData`, `of/`, `tuple/`.

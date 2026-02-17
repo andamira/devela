@@ -1,49 +1,7 @@
-// devela_base_core::data::layout::buffer::line
+// devela_base_core::data::layout::buffer::linear
 //
-//! Defines [`define_bufline!`].
+//! Defines [`buffer_linear!`].
 //
-
-#[cfg(any(doc, test, feature = "_docs_examples"))]
-define_bufline!(
-    #[doc = crate::_tags!(example data_structure)]
-    /// A linear buffer type over contiguous storage, made with [define_bufline!].
-    #[doc = crate::_doc_location!("data/layout")]
-    ///
-    /// # Methods per storage backend
-    ///
-    /// - For all owned backends (`array`, `uninit`, `option`)
-    ///   - Constants: [`CAP`][Self::CAP] *([_PRIM][Self::CAP_PRIM])*.
-    ///
-    /// - [For all backends](#impl-BufLineExample<'a,+T,+S>)
-    ///   - Queries: [`len`][Self::len], *([_prim][Self::len_prim])*,
-    ///   [`is_empty`][Self::is_empty].
-    ///
-    /// - [fully initialized array](#impl-BufLineExample<'_,+T,+[T;+CAP]>)
-    /// (`array`)
-    ///   - ...
-    ///
-    /// - [partially initialized array](#impl-BufLineExample<'_,+T,+[MaybeUninit<T>;+CAP]>)
-    /// (`uninit`)<sup title="unsafe implementation">⚠</sup>
-    ///   - ...
-    ///
-    /// - [fully initialized array of options](#impl-BufLineExample<'_,+T,+[Option<T>;+CAP]>)
-    /// (`option`)
-    ///   - ...
-    ///
-    /// - [exclusive slice](#impl-BufLineExample<'a,+T,+%26mut+[T]>) (`slice`)
-    ///   - ...
-    ///
-    /// - [shared slice](#impl-BufLineExample<'a,+T,+%26[T]>) (`slice_mut`)
-    ///   - ...
-    ///
-    /// ---
-    pub struct BufLineExample: (crate::NonValueU8<{u8::MAX}>);
-    array,
-    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
-    uninit,
-    option, slice_mut, slice,
-);
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a linear buffer type over contiguous storage.
@@ -53,32 +11,48 @@ define_bufline!(
 /// contiguous storage backend, using an index type to track length
 /// and element positions.
 ///
+/// ## Ownership modes
+///
+/// The macro supports two ownership modes:
+///
+/// - **Owned** (default)
+///   The buffer owns its storage backend.
+///   The optional `owned` specifier can be omitted.
+///
+/// - **View**
+///   The buffer is a non-owning view over externally provided storage.
+///   The `view` specifier must be made explicit.
+///
 /// ## Index type requirements
 ///
-/// The index type must be non-negative, represent zero, form a contiguous
-/// integer range, and be able to represent the buffer capacity.
+/// The index type must:
+/// - Be non-negative
+/// - Represent zero
+/// - Form a contiguous integer range
+/// - Be able to represent the buffer capacity
 ///
 /// Primitive unsigned integers and supported niche wrappers are accepted
 /// (see [`MaybeNiche`][crate::MaybeNiche]).
 ///
 /// ## Storage backends
 ///
-/// The generated type can support different storage backends depending on
-/// which implementation arms are enabled in the macro invocation.
+/// Backends are opt-in and selected by listing them after the struct declaration.
 ///
-/// Each backend determines ownership, initialization, and drop behavior:
+/// ### Owned backends
 ///
 /// - **`array`**
-///   Owned, fully initialized fixed-size array (`[T; CAP]`).
+///   Fully initialized fixed-size array (`[T; CAP]`).
 ///   Logical length is tracked independently of initialization.
 ///
 /// - **`uninit`**
-///   Owned, partially initialized array (`[MaybeUninit<T>; CAP]`).
+///   Partially initialized array (`[MaybeUninit<T>; CAP]`).
 ///   Logical length tracks initialization and drop.
 ///
 /// - **`option`**
-///   Owned array of options (`[Option<T>; CAP]`).
+///   Array of options (`[Option<T>; CAP]`).
 ///   `Some` marks initialized elements; `None` marks unused slots.
+///
+/// ### View backends
 ///
 /// - **`slice_mut`**
 ///   Exclusive slice (`&mut [T]`).
@@ -88,247 +62,292 @@ define_bufline!(
 ///   Shared slice (`&[T]`).
 ///   Read-only view over a contiguous prefix.
 ///
-/// Backends are opt-in and selected by the corresponding macro arguments.
-/// Only the implementations explicitly enabled by the macro are generated.
+/// Only the implementations explicitly enabled are generated.
+/// Constructors and methods depend on the selected backends.
 ///
-/// The available constructors and methods depend on the enabled backends.
-/// All variants interpret their storage as a linear buffer whose elements
-/// occupy a logical prefix of the underlying storage.
+/// ## Examples
 ///
-/// ## Example
-/// Define a linear buffer type using an 8-bit index and multiple storage backends:
+/// ### Owned buffer (default mode)
 /// ```
 /// # #![cfg_attr(nightly_doc, feature(doc_cfg))] // reason = _devela_policy! emmiting doc(cfg)
-/// # use devela_base_core::define_bufline;
-/// define_bufline!(
-///     /// Example linear buffer.
-///     pub struct BufLineU8: (u8);
-///     array, option, slice, slice_mut,
+/// # use devela_base_core::buffer_linear;
+/// buffer_linear!(
+///     /// Owned linear buffer.
+///     pub struct BufferU8: (u8); array
 /// );
-///
-/// let mut storage = [0u8; 16];
-/// let mut buf = BufLineU8::try_new(&mut storage).unwrap();
-/// buf.push_back(1).unwrap();
-/// buf.push_back(2).unwrap();
-/// assert_eq![buf.pop_back_copy(), Some(2)];
-/// buf.push_back(3).unwrap();
-///
-/// assert_eq!(buf.as_slice(), &[1, 3]);
+/// let mut buf = BufferU8::<i32, [i32; 8]>::new_init();
+/// buf.push_back(10).unwrap();
+/// buf.push_back(20).unwrap();
+/// assert_eq!(buf.as_slice(), &[10, 20]);
 /// ```
-/// See also [`BufLineExample`][crate::BufLineExample].
+///
+/// ### View buffer
+/// ```
+/// # #![cfg_attr(nightly_doc, feature(doc_cfg))]
+/// # use devela_base_core::buffer_linear;
+/// buffer_linear!(
+///     /// Read-only linear view.
+///     pub struct BufferViewU8: view (u8); slice
+/// );
+/// let storage = [1u8, 2, 3, 4];
+/// let buf = BufferViewU8::try_from_slice(&storage).unwrap();
+/// assert_eq!(buf.len_prim(), 4);
+/// assert_eq!(buf.peek_back(), Some(&4));
+/// ```
+///
+/// ### Separate implementation blocks
+/// ```
+/// # use devela_base_core::buffer_linear;
+/// buffer_linear!(pub struct BufferSplit: view (u8););
+/// buffer_linear!(impl BufferSplit: view (u8); slice, slice_mut);
+/// ```
+/// See also: [`BufferExample`][crate::BufferExample],
+/// [`BufferViewExample`][crate::BufferViewExample].
 //
 // NOTE: The index type is passed as a token group to allow complex or path-qualified types.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! define_bufline {
+macro_rules! buffer_linear {
     (
-    /* public macro arms */
+    // OWNED (array, uninit, option)
+    // struct definition + optional implementations
 
-        // 1. Struct definition and optional implementations
-
-        $(#[$struct_attr:meta])*                      // optional attributes
-        $vis:vis struct $name:ident : ($($I:tt)+) ;   // visibility, name, index type
-        $($rest:tt)*                                  // optional implementations
+        $(#[$struct_attr:meta])*                                 // attributes
+        $vis:vis struct $name:ident : $(owned)? ($($I:tt)+);     // visibility, name, index type
+        $($rest:tt)*                                             // impls
     ) => {
         $(#[$struct_attr])*
-        ///
-        /// Linear buffer over contiguous storage.
-        ///
-        /// Represents a growable logical prefix of an underlying contiguous
-        /// storage backend. Elements occupy the range `0 .. len`, and logical
-        /// indices map directly to physical indices.
-        ///
-        /// ## Invariants
-        /// - `len` is within the storage capacity
-        /// - Logical element `i` is stored at physical index `i`
-        /// - Only elements in `storage[0 .. len)` are considered part of the buffer
-        ///
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        $vis struct $name<T, S> {
+            storage: S,
+            len: $crate::MaybeNiche<$($I)+>,
+            _m: $crate::PhantomData<T>,
+        }
+        $crate::buffer_linear!(%impl_common_owned $name, $($I)+, $crate::niche_prim![$($I)+]);
+        $crate::buffer_linear!(%impls_owned
+            $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
+    };
+    ( // implementations only
+        impl $name:ident : $(owned)? ($($I:tt)+) ; $($rest:tt)*  // for name, index type, impls
+    ) => {
+        $crate::buffer_linear!(%impls_owned
+            $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
+    };
+    (
+    // VIEW (slice_mut, slice)
+    // struct definition + optional implementations
+
+        $(#[$struct_attr:meta])*                                 // attributes
+        $vis:vis struct $name:ident : view ($($I:tt)+);          // visibility, name, index type
+        $($rest:tt)*                                             // impls
+    ) => {
+        $(#[$struct_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name<'a, T, S> {
             storage: S,
             len: $crate::MaybeNiche<$($I)+>,
             _m: $crate::PhantomData<&'a T>,
         }
-        $crate::define_bufline!(%impl_common $name, $($I)+, $crate::niche_prim![$($I)+]);
-        $crate::define_bufline!(%impls $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
+        $crate::buffer_linear!(%impl_common_view $name, $($I)+, $crate::niche_prim![$($I)+]);
+        $crate::buffer_linear!(%impls_view
+            $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
     };
+    ( // implementations only
+        impl $name:ident : view ($($I:tt)+) ; $($rest:tt)*       // for name, index type, impls
+    ) => {
+        $crate::buffer_linear!(%impls_view
+            $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
+    };
+    // --------------------------------------------------------------------------------------------
+    //% owned dispatch
     (
-        // 2. Optional implementations only (array, uninit, option, slice_mut, slice)
 
-        impl $name:ident : ($($I:tt)+) ;              // for name, index type
-        $($rest:tt)*                                  // optional implementations
-
-    /* private macro arms */ ) => {
-        $crate::define_bufline!(%impls $name : $($I)+, $crate::niche_prim![$($I)+] ; $($rest)*);
+    /* internals */
+     %impls_owned $name:ident : $I:ty, $P:ty ;) => {}; // no impls
+    (%impls_owned $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* $impl:ident) => { // last impl
+        $crate::buffer_linear!(%impl1_owned $name : $I, $P ; $impl);
     };
-    //% impl group dispatch
-    (
-    %impls $name:ident : $I:ty, $P:ty ;) => {}; // no impls
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* $impl:ident) => { // last impl
-        $crate::define_bufline!(%impl1 $name : $I, $P ; $impl);
-    };
-    // array
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* array , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_array $(#[$i])* $name, $I, $P);
-        $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty; array) => {
-        $crate::define_bufline!(%impl_array $(#[$i])* $name, $I, $P); };
-    // uninit
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* uninit , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $I, $P);
-        $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; uninit) => {
-        $crate::define_bufline!(%impl_uninit $(#[$i])* $name, $I, $P); };
-    // option
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* option , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_option $(#[$i])* $name, $I, $P);
-        $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; option) => {
-        $crate::define_bufline!(%impl_option $(#[$i])* $name, $I, $P); };
-    // slice_mut
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* slice_mut , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_slice_mut $(#[$i])* $name, $I, $P);
-        $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; slice_mut) => {
-        $crate::define_bufline!(%impl_slice_mut $(#[$i])* $name, $I, $P); };
-    // slice
-    (%impls $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* slice , $($rest:tt)*) => {
-        $crate::define_bufline!(%impl_slice $(#[$i])* $name, $I, $P);
-        $crate::define_bufline!(%impls $name : $I, $P ; $($rest)*); };
-    (%impl1 $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; slice) => {
-        $crate::define_bufline!(%impl_slice $(#[$i])* $name, $I, $P); };
+    // owned: array
+    (%impls_owned $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* array , $($rest:tt)*) => {
+        $crate::buffer_linear!(%impl_array $(#[$i])* $name, $I, $P);
+        $crate::buffer_linear!(%impls_owned $name : $I, $P ; $($rest)*); };
+    (%impl1_owned $(#[$i:meta])* $name:ident : $I:ty, $P:ty; array) => {
+        $crate::buffer_linear!(%impl_array $(#[$i])* $name, $I, $P); };
+    // owned: uninit
+    (%impls_owned $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* uninit , $($rest:tt)*) => {
+        $crate::buffer_linear!(%impl_uninit $(#[$i])* $name, $I, $P);
+        $crate::buffer_linear!(%impls_owned $name : $I, $P ; $($rest)*); };
+    (%impl1_owned $(#[$i:meta])* $name:ident : $I:ty, $P:ty; uninit) => {
+        $crate::buffer_linear!(%impl_uninit $(#[$i])* $name, $I, $P); };
+    // owned: option
+    (%impls_owned $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* option , $($rest:tt)*) => {
+        $crate::buffer_linear!(%impl_option $(#[$i])* $name, $I, $P);
+        $crate::buffer_linear!(%impls_owned $name : $I, $P ; $($rest)*); };
+    (%impl1_owned $(#[$i:meta])* $name:ident : $I:ty, $P:ty; option) => {
+        $crate::buffer_linear!(%impl_option $(#[$i])* $name, $I, $P); };
 
-    (%impls $name:ident : $_I:ty, $_P:ty ; $(#[$_i:meta])* $impl:ident , $($_r:tt)*) => {
-        compile_error!(concat!( "define_bufline!: unknown impl `", stringify!($impl), "`"));
+    //% view dispatch
+    (%impls_view $name:ident : $I:ty, $P:ty ;) => {}; // no impls
+    (%impls_view $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* $impl:ident) => { // last impl
+        $crate::buffer_linear!(%impl1_view $name : $I, $P ; $impl);
+    };
+    // view: slice_mut
+    (%impls_view $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* slice_mut , $($rest:tt)*) => {
+        $crate::buffer_linear!(%impl_slice_mut $(#[$i])* $name, $I, $P);
+        $crate::buffer_linear!(%impls_view $name : $I, $P ; $($rest)*); };
+    (%impl1_view $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; slice_mut) => {
+        $crate::buffer_linear!(%impl_slice_mut $(#[$i])* $name, $I, $P); };
+    // view: slice
+    (%impls_view $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* slice , $($rest:tt)*) => {
+        $crate::buffer_linear!(%impl_slice $(#[$i])* $name, $I, $P);
+        $crate::buffer_linear!(%impls_view $name : $I, $P ; $($rest)*); };
+    (%impl1_view $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; slice) => {
+        $crate::buffer_linear!(%impl_slice $(#[$i])* $name, $I, $P); };
+
+    // safe-guards
+    (%impls_owned $name:ident : $_I:ty, $_P:ty ; $(#[$_i:meta])* $impl:ident , $($_r:tt)*) => {
+        compile_error!(concat!( "buffer_linear!: unknown impl `", stringify!($impl), "`"));
+    };
+    (%impls_view $name:ident : $_I:ty, $_P:ty ; $(#[$_i:meta])* $impl:ident , $($_r:tt)*) => {
+        compile_error!(concat!( "buffer_linear!: unknown impl `", stringify!($impl), "`"));
     };
 
-    // impl block for all implementations
-    (%impl_common $name:ident, $I:ty, $P:ty) => {
-        // Private helpers
+    /* blocks for common private associated items */
+
+    (%impl_common_owned $name:ident, $I:ty, $P:ty) => {
+        /// Common methods.
+        impl<T, S> $name<T, S> {
+            $crate::buffer_linear!(%common_private $name, $I, $P);
+            $crate::buffer_linear!(%common_public $name, $I, $P);
+        }
+    };
+    (%impl_common_view $name:ident, $I:ty, $P:ty) => {
+        /// Common methods.
         impl<'a, T, S> $name<'a, T, S> {
-            /// Constructs a buffer from raw components, assuming all invariants hold.
-            #[inline(always)]
-            const fn _new(storage: S, len: $crate::MaybeNiche<$I>) -> Self {
-                Self { storage, len, _m: $crate::PhantomData }
-            }
-
-            /* idx */
-
-            /// Returns the zero value as a MaybeNiche wrapped index type.
-            // It should not panic since we've already checked the invariants.
-            #[inline(always)]
-            const fn _idx_zero() -> $crate::MaybeNiche<$I> {
-                $crate::unwrap![some $crate::MaybeNiche::<$I>::ZERO]
-            }
-
-            /// `a == b`
-            #[inline(always)]
-            const fn _idx_eq(a: $I, b: $I) -> bool {
-                let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a == b
-            }
-            /// `a <= b`
-            #[inline(always)]
-            const fn _idx_le(a: $I, b: $I) -> bool {
-                let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a <= b
-            }
-            /// `a >= b`
-            #[inline(always)]
-            const fn _idx_ge(a: $I, b: $I) -> bool {
-                let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a >= b
-            }
-
-            /* prim */
-
-            /// Returns the given index-typed value as a primitive.
-            #[inline(always)]
-            const fn _idx_to_prim(from: $I) -> $P { $crate::MaybeNiche(from).prim() }
-
-            /// Returns the given primitive value as an index type.
-            #[inline(always)]
-            const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
-                $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
-            }
-
-            /// Returns the given primitive value as an index type,
-            /// converting invalid inputs to the closest valid number.
-            #[inline(always)]
-            const fn _prim_to_idx_lossy(from: $P) -> $I {
-                $crate::MaybeNiche::<$I>::from_prim_lossy(from).repr()
-            }
-
-            /* usize */
-
-            /// The maximum representable value of the index type, as a usize.
-            const _IDX_MAX_USIZE: usize = $crate::MaybeNiche(<$I>::MAX).to_usize_saturating();
-
-            /// Returns the current logical length as a `usize`, saturating if necessary.
-            #[inline(always)]
-            const fn _len_usize(&self) -> usize { self.len.to_usize_saturating() }
-
-            /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
-            #[inline(always)]
-            const fn _usize_to_idx_sat(from: usize) -> $crate::MaybeNiche<$I> {
-                $crate::MaybeNiche::<$I>::from_usize_saturating(from)
-            }
-            /// Returns the given usize value as a MaybeNiche wrapped index type.
-            // It should not panic since we've already checked the invariants.
-            #[inline(always)]
-            const fn _usize_to_idx(from: usize) -> $crate::MaybeNiche<$I> {
-                $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_usize(from)]
-            }
-            /// Returns the given index value as a usize.
-            // It should not panic unless we're using 128-bit values!
-            #[inline(always)]
-            const fn _idx_to_usize(from: $I) -> usize {
-                $crate::unwrap![ok $crate::MaybeNiche(from).try_to_usize()]
-            }
-
-            /* len */
-
-            /// Sets the logical length without checking invariants.
-            #[inline(always)]
-            const fn _set_len(&mut self, len: $I) {
-                self.len = $crate::MaybeNiche(len);
-            }
-            /// Returns the next logical length (len + 1).
-            ///
-            /// Caller must guarantee `len < capacity`.
-            #[inline(always)]
-            const fn _len_inc(&self) -> $crate::MaybeNiche<$I> {
-                $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() + 1)]
-            }
-            /// Returns the previous logical length (len - 1).
-            ///
-            /// Caller must guarantee `len > 0`.
-            #[inline(always)]
-            const fn _len_dec(&self) -> $crate::MaybeNiche<$I> {
-                $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() - 1)]
-            }
+            $crate::buffer_linear!(%common_private $name, $I, $P);
+            $crate::buffer_linear!(%common_public $name, $I, $P);
+        }
+    };
+    (%common_private $name:ident, $I:ty, $P:ty) => {
+        /// Constructs a buffer from raw components, assuming all invariants hold.
+        #[inline(always)]
+        const fn _new(storage: S, len: $crate::MaybeNiche<$I>) -> Self {
+            Self { storage, len, _m: $crate::PhantomData }
         }
 
-        /// Common methods for all backends.
-        impl<'a, T, S> $name<'a, T, S> {
-            /* queries */
+        /* idx */
 
-            /// Returns the number of elements currently stored in the buffer.
-            pub const fn len(&self) -> $I { self.len.repr() }
-            /// Returns the number of elements currently stored in the buffer.
-            pub const fn len_prim(&self) -> $P { self.len.prim() }
-            /// Returns `true` if the buffer contains no elements.
-            pub const fn is_empty(&self) -> bool { self.len.prim() == 0 }
+        /// Returns the zero value as a MaybeNiche wrapped index type.
+        // It should not panic since we've already checked the invariants.
+        #[inline(always)]
+        const fn _idx_zero() -> $crate::MaybeNiche<$I> {
+            $crate::unwrap![some $crate::MaybeNiche::<$I>::ZERO]
         }
+
+        /// `a == b`
+        #[inline(always)]
+        const fn _idx_eq(a: $I, b: $I) -> bool {
+            let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a == b
+        }
+        /// `a <= b`
+        #[inline(always)]
+        const fn _idx_le(a: $I, b: $I) -> bool {
+            let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a <= b
+        }
+        /// `a >= b`
+        #[inline(always)]
+        const fn _idx_ge(a: $I, b: $I) -> bool {
+            let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a >= b
+        }
+
+        /* prim */
+
+        /// Returns the given index-typed value as a primitive.
+        #[inline(always)]
+        const fn _idx_to_prim(from: $I) -> $P { $crate::MaybeNiche(from).prim() }
+
+        /// Returns the given primitive value as an index type.
+        #[inline(always)]
+        const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
+            $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
+        }
+
+        /// Returns the given primitive value as an index type,
+        /// converting invalid inputs to the closest valid number.
+        #[inline(always)]
+        const fn _prim_to_idx_lossy(from: $P) -> $I {
+            $crate::MaybeNiche::<$I>::from_prim_lossy(from).repr()
+        }
+
+        /* usize */
+
+        /// The maximum representable value of the index type, as a usize.
+        const _IDX_MAX_USIZE: usize = $crate::MaybeNiche(<$I>::MAX).to_usize_saturating();
+
+        /// Returns the current logical length as a `usize`, saturating if necessary.
+        #[inline(always)]
+        const fn _len_usize(&self) -> usize { self.len.to_usize_saturating() }
+
+        /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
+        #[inline(always)]
+        const fn _usize_to_idx_sat(from: usize) -> $crate::MaybeNiche<$I> {
+            $crate::MaybeNiche::<$I>::from_usize_saturating(from)
+        }
+        /// Returns the given usize value as a MaybeNiche wrapped index type.
+        // It should not panic since we've already checked the invariants.
+        #[inline(always)]
+        const fn _usize_to_idx(from: usize) -> $crate::MaybeNiche<$I> {
+            $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_usize(from)]
+        }
+        /// Returns the given index value as a usize.
+        // It should not panic unless we're using 128-bit values!
+        #[inline(always)]
+        const fn _idx_to_usize(from: $I) -> usize {
+            $crate::unwrap![ok $crate::MaybeNiche(from).try_to_usize()]
+        }
+
+        /* len */
+
+        /// Sets the logical length without checking invariants.
+        #[inline(always)]
+        const fn _set_len(&mut self, len: $I) {
+            self.len = $crate::MaybeNiche(len);
+        }
+        /// Returns the next logical length (len + 1).
+        ///
+        /// Caller must guarantee `len < capacity`.
+        #[inline(always)]
+        const fn _len_inc(&self) -> $crate::MaybeNiche<$I> {
+            $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() + 1)]
+        }
+        /// Returns the previous logical length (len - 1).
+        ///
+        /// Caller must guarantee `len > 0`.
+        #[inline(always)]
+        const fn _len_dec(&self) -> $crate::MaybeNiche<$I> {
+            $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() - 1)]
+        }
+    };
+    // common public query methods
+    (%common_public $name:ident, $I:ty, $P:ty) => {
+        /// Returns the number of elements currently stored in the buffer.
+        pub const fn len(&self) -> $I { self.len.repr() }
+        /// Returns the number of elements currently stored in the buffer.
+        pub const fn len_prim(&self) -> $P { self.len.prim() }
+        /// Returns `true` if the buffer contains no elements.
+        pub const fn is_empty(&self) -> bool { self.len.prim() == 0 }
     };
     // common items for owned variants (array, uninit, option)
     (%common_owned $name:ident, $I:ty, $P:ty) => {
         const _CHECK_INVARIANTS: () = {
             assert!(!$crate::MaybeNiche::<$I>::HAS_NEGATIVE,
-                "define_bufline! index type must be non-negative");
+                "buffer_linear! index type must be non-negative");
             assert!($crate::MaybeNiche::<$I>::ZERO.is_some(),
-                "define_bufline! index type cannot represent zero");
+                "buffer_linear! index type cannot represent zero");
             assert!($crate::MaybeNiche::<$I>::IS_CONTIGUOUS,
-                "define_bufline! index type must be contiguous");
+                "buffer_linear! index type must be contiguous");
             assert!($crate::MaybeNiche::<$I>::try_from_usize(CAP).is_ok(),
-                "define_bufline! capacity does not fit in index type");
+                "buffer_linear! capacity does not fit in index type");
         };
 
         /// The fixed capacity of the buffer as the index type.
@@ -346,7 +365,27 @@ macro_rules! define_bufline {
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };
-    // common items for array and slice_mut variants
+    // common items for view variants (slice_mut, slice)
+    (%common_view $name:ident, $I:ty, $P:ty) => {
+        const _CHECK_INVARIANTS: () = {
+            assert!(!$crate::MaybeNiche::<$I>::HAS_NEGATIVE,
+                "buffer_linear! index type must be non-negative");
+            assert!($crate::MaybeNiche::<$I>::ZERO.is_some(),
+                "buffer_linear! index type cannot represent zero");
+            assert!($crate::MaybeNiche::<$I>::IS_CONTIGUOUS,
+                "buffer_linear! index type must be contiguous");
+        };
+
+        /// Returns the capacity of the underlying slice.
+        pub const fn capacity(&self) -> $I { Self::_usize_to_idx(self.storage.len()).repr() }
+        /// Returns the capacity of the underlying slice.
+        pub const fn capacity_prim(&self) -> $P {
+            Self::_usize_to_idx(self.storage.len()).prim()
+        }
+        /// Returns `true` if the buffer has reached its capacity.
+        pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
+    };
+    // common items for array, uninit & and slice_mut variants
     (%common_array_uninit_slice_mut $name:ident, $I:ty, $P:ty) => {
         /// Iterates over the initialized elements.
         pub fn iter(&self) -> impl Iterator<Item = &T> {
@@ -379,26 +418,9 @@ macro_rules! define_bufline {
             -> R where for<'v> F: FnOnce(&'v mut [T]) -> R { f(self.as_mut_slice())
         }
     };
-    // common items for slice variants
-    (%common_sliced $name:ident, $I:ty, $P:ty) => {
-        const _CHECK_INVARIANTS: () = {
-            assert!(!$crate::MaybeNiche::<$I>::HAS_NEGATIVE,
-                "define_bufline! index type must be non-negative");
-            assert!($crate::MaybeNiche::<$I>::ZERO.is_some(),
-                "define_bufline! index type cannot represent zero");
-            assert!($crate::MaybeNiche::<$I>::IS_CONTIGUOUS,
-                "define_bufline! index type must be contiguous");
-        };
 
-        /// Returns the capacity of the underlying slice.
-        pub const fn capacity(&self) -> $I { Self::_usize_to_idx(self.storage.len()).repr() }
-        /// Returns the capacity of the underlying slice.
-        pub const fn capacity_prim(&self) -> $P {
-            Self::_usize_to_idx(self.storage.len()).prim()
-        }
-        /// Returns `true` if the buffer has reached its capacity.
-        pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
-    };
+    /* owned variants (array, uninit, option) */
+
     (%impl_array $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
@@ -414,9 +436,7 @@ macro_rules! define_bufline {
         /// - Pop must be Copy or Clone
         /// - Shrinking len does not affect drop behavior
         #[rustfmt::skip]
-        impl<T, const CAP: usize> $name<'_, T, [T; CAP]> {
-            $crate::define_bufline!(%common_owned $name, $I, $P);
-
+        impl<T, const CAP: usize> $name<T, [T; CAP]> {
             /* construct */
 
             /// Creates a buffer from an already initialized array, with logical length 0.
@@ -474,6 +494,10 @@ macro_rules! define_bufline {
                 }}
                 Some(Self::_new(storage, Self::_usize_to_idx(src.len())))
             }
+
+            /* common query methods */
+
+            $crate::buffer_linear!(%common_owned $name, $I, $P);
 
             /* deconstruct */
 
@@ -603,8 +627,6 @@ macro_rules! define_bufline {
             pub fn as_mut_slice(&mut self) -> &mut [T] {
                 let len = self._len_usize(); $crate::Slice::range_to_mut(&mut self.storage, len)
             }
-
-            $crate::define_bufline!(%common_array_uninit_slice_mut $name, $I, $P);
         }
     };
     (%impl_uninit $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
@@ -621,9 +643,7 @@ macro_rules! define_bufline {
         /// - pop_back can safely move out `T`
         /// - Real drop operations are meaningful
         /// - `len` controls both logical membership and initialization
-        impl<T, const CAP: usize> $name<'_, T, [$crate::MaybeUninit<T>; CAP]> {
-            $crate::define_bufline!(%common_owned $name, $I, $P);
-
+        impl<T, const CAP: usize> $name<T, [$crate::MaybeUninit<T>; CAP]> {
             /* construct */
 
             /// Creates an empty buffer with uninitialized storage.
@@ -696,6 +716,10 @@ macro_rules! define_bufline {
                 }}
                 Some(Self::_new(storage, Self::_usize_to_idx(src.len())))
             }
+
+            /* common query methods */
+
+            $crate::buffer_linear!(%common_owned $name, $I, $P);
 
             /* deconstruct */
 
@@ -832,7 +856,7 @@ macro_rules! define_bufline {
                 ) }
             }
 
-            $crate::define_bufline!(%common_array_uninit_slice_mut $name, $I, $P);
+            $crate::buffer_linear!(%common_array_uninit_slice_mut $name, $I, $P);
         }
     };
     (%impl_option $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
@@ -849,9 +873,7 @@ macro_rules! define_bufline {
         /// - `Option<T>` is used to control initialization and dropping, not sparsity
         /// - `len` is the number of elements
         /// - Methods never access storage past `len`
-        impl<T, const CAP: usize> $name<'_, T, [Option<T>; CAP]> {
-            $crate::define_bufline!(%common_owned $name, $I, $P);
-
+        impl<T, const CAP: usize> $name<T, [Option<T>; CAP]> {
             /* construct */
 
             /// Creates a buffer from a fully initialized array with logical length 0.
@@ -940,6 +962,10 @@ macro_rules! define_bufline {
                 $crate::whilst! { i in 0..src.len(); { storage[i] = Some(src[i]); }}
                 Some(Self::_new(storage, Self::_usize_to_idx(src.len())))
             }
+
+            /* common query methods */
+
+            $crate::buffer_linear!(%common_owned $name, $I, $P);
 
             /* deconstruct */
 
@@ -1112,6 +1138,9 @@ macro_rules! define_bufline {
             }
         }
     };
+
+    /* `view` variants (slice_mut, slice) */
+
     (%impl_slice_mut $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
@@ -1126,8 +1155,6 @@ macro_rules! define_bufline {
         /// - Dropping or shrinking the buffer does not drop values
         /// - Mutations affect the underlying slice
         impl<'a, T> $name<'a, T, &'a mut [T]> {
-            $crate::define_bufline!(%common_sliced $name, $I, $P);
-
             /* construct */
 
             /// Creates an empty buffer using the entire slice as backing storage.
@@ -1170,6 +1197,10 @@ macro_rules! define_bufline {
                 let slice = $crate::Slice::range_to_mut(slice, len_usize);
                 Self::_new(slice, Self::_usize_to_idx_sat(len_usize))
             }
+
+            /* common query methods */
+
+            $crate::buffer_linear!(%common_view $name, $I, $P);
 
             /* deconstruct */
 
@@ -1260,7 +1291,7 @@ macro_rules! define_bufline {
                 $crate::Slice::range_to_mut(&mut self.storage, len_usize)
             }
 
-            $crate::define_bufline!(%common_array_uninit_slice_mut $name, $I, $P);
+            $crate::buffer_linear!(%common_array_uninit_slice_mut $name, $I, $P);
         }
     };
     (%impl_slice $(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
@@ -1277,8 +1308,6 @@ macro_rules! define_bufline {
         /// - No mutation or removal operations are supported
         /// - `len` limits the visible prefix
         impl<'a, T> $name<'a, T, &'a [T]> {
-            $crate::define_bufline!(%common_sliced $name, $I, $P);
-
             /// Creates a buffer over a shared slice.
             ///
             /// Returns `None` if the slice length cannot be represented by the index type.
@@ -1304,11 +1333,19 @@ macro_rules! define_bufline {
                 Self::_new(slice, Self::_usize_to_idx_sat(len_usize))
             }
 
+            /* common query methods */
+
+            $crate::buffer_linear!(%common_view $name, $I, $P);
+
+            /* peek */
+
             /// Returns a shared reference to the last element without removing it.
             pub const fn peek_back(&self) -> Option<&T> {
                 if self.is_empty() { return None; }
                 Some(&self.storage[self.len.to_usize_saturating() - 1])
             }
+
+            /* get */
 
             /// Returns a shared reference to the element at `index`, or `None` if out of bounds.
             pub const fn get(&self, index: $I) -> Option<&T> {
@@ -1342,4 +1379,4 @@ macro_rules! define_bufline {
     };
 }
 #[doc(inline)]
-pub use define_bufline;
+pub use crate::buffer_linear;

@@ -6,7 +6,7 @@
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //
 
-mod buffer; // define_buflist!
+mod buffer; // buffer_linear!
 mod linked;
 // mod pool;
 // mod queue;

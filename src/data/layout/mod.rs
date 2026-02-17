@@ -45,9 +45,9 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _reexports {
         // buffer
         #[doc(inline)]
-        pub use devela_base_core::data::layout::define_bufline;
+        pub use devela_base_core::data::layout::buffer_linear;
         #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::data::layout::BufLineExample;
+        pub use devela_base_core::data::layout::{BufferExample, BufferViewExample};
 
         // sort
         #[doc(inline)]
