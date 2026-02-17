@@ -14,7 +14,7 @@ define_bufline!(
     /// - For all owned backends (`array`, `uninit`, `option`)
     ///   - Constants: [`CAP`][Self::CAP] *([_PRIM][Self::CAP_PRIM])*.
     ///
-    /// - [For all bakends](#impl-BufLineExample<'a,+T,+S>)
+    /// - [For all backends](#impl-BufLineExample<'a,+T,+S>)
     ///   - Queries: [`len`][Self::len], *([_prim][Self::len_prim])*,
     ///   [`is_empty`][Self::is_empty].
     ///
@@ -47,6 +47,7 @@ define_bufline!(
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a linear buffer type over contiguous storage.
+#[doc = crate::_doc_location!("data/layout")]
 ///
 /// The generated type represents a growable logical prefix over a
 /// contiguous storage backend, using an index type to track length

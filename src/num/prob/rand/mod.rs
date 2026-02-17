@@ -13,7 +13,7 @@
 //!   - [`XorShift8`], [`XorShift16`], [`XorShift32`], [`XorShift64`],
 //!     [`XorShift128`], [`XorShift128p`].
 //!   - [`Xoroshiro128pp`].
-//!   - [`xorshift_custom!`].
+//!   - [`define_xorshift!`].
 //! - *Permuted Congruential Generator* algorithms:
 //!     - [`Pcg32`].
 //!
@@ -53,7 +53,7 @@ crate::structural_mods! { // _mods, _reexports
             Lcg16,
             Xabc, Xyza8a, Xyza8b, Xoroshiro128pp,
             XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
-            xorshift_custom,
+            define_xorshift,
         };
         #[cfg(feature = "alloc")]
         pub use devela_base_alloc::num::prob::rand::RandAlloc;

@@ -34,7 +34,7 @@ crate::structural_mods! { // _mods, _hidden
         #[cfg(feature = "rand")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
         pub use super::{
-            macros::xorshift_custom,
+            macros::define_xorshift,
             u8::XorShift8,
             u16::XorShift16,
             u32::XorShift32,

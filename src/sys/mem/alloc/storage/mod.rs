@@ -22,7 +22,7 @@ pub use bare::*;
 
 #[doc = crate::_tags!(mem)]
 /// Allows data structures to be generic over their storage strategy.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_location!("sys/mem/alloc")]
 ///
 /// There are two reference implementations:
 /// - [`Bare`], storing data inline via [`BareBox`].

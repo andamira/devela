@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod shift; // XorShift[8|16|32|64|128], XorShift128p, xorshift_custom!
+mod shift; // XorShift[8|16|32|64|128], XorShift128p, define_xorshift!
 mod pcg; // Pcg[8|16|32|64|128], define_pcg!
 
 #[cfg(feature = "rand")]

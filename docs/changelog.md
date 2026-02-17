@@ -477,6 +477,7 @@ Many feature gates are removed in order to make most features make always availa
 #### rand
 - move `num::prob::rand` to [base].
 - rename `Lgc16` to `Lcg16`.
+- rename `xorshift_custom!` to `define_xorshift!`.
 - new macro: `define_pcg!`.
 - new traits: `Rand`, `RandAlloc`, `RandStd`.
 - new type: `Pcg32`.

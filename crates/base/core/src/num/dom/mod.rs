@@ -11,6 +11,7 @@ mod _internals; // impl_ops!, upcasted_op! TODO:RENAME
 // mod complex;
 // mod fract;
 // mod laws;
+mod no; // NoNum
 // mod ops;
 mod traits; // NumConst
 
@@ -24,6 +25,7 @@ crate::structural_mods! { // _mods, _pub_mods, _workspace_internals, _hidden
             // complex::_all::*,
             // fract::_all::*,
             // laws::_all::*,
+            no::*,
             // ops::_all::*,
             traits::_all::*,
         };

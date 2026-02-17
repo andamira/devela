@@ -12,8 +12,6 @@ crate::CONST! { pub(crate) _DOC_NUM_MODULES =
     crate::_doc!(modules: crate; num: dom, error, fin, grain, lin, prob, quant, symb);
 }
 
-mod absence; // NoNum
-
 pub mod dom; // Numeric domains and value representations
 pub mod error; // error types
 pub mod fin; // Finite and discrete numeric structures
@@ -27,10 +25,7 @@ pub mod prob; // Probability theory and statistical inference
 pub mod quant; // Quantification, measurement, and numerical relationships
 pub mod symb; // Symbolic numeric forms and manipulation
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _workspace_internals, _hidden
-    _mods {
-        pub use super::absence::*;
-    }
+crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals, _hidden
     _pub_mods {
         #[doc(inline)]
         pub use super::{

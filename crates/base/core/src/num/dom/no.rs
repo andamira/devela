@@ -1,4 +1,4 @@
-// devela_base_core::num::absence
+// devela_base_core::num::no
 //
 //! Allows the unit type [`()`] to represent the absence of a number.
 //
