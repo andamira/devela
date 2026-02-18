@@ -116,7 +116,7 @@ impl Mem {
         drop(_x);
     }
 
-    /// Takes ownership and “forgets” about `t` *without running its destructor*.
+    /// Takes ownership and "forgets" about `t` *without running its destructor*.
     ///
     /// See `core::mem::`[`forget`].
     pub fn forget<T>(t: T) {
@@ -292,7 +292,7 @@ impl Mem {
     #[must_use]
     pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
         // SAFETY: `v` is a valid, exclusive reference;
-        // u8’s alignment is 1, and size_of_val(v) bounds the mutable slice.
+        // u8's alignment is 1, and size_of_val(v) bounds the mutable slice.
         unsafe { from_raw_parts_mut(v as *mut _ as *mut u8, size_of_val(v)) }
     }
 

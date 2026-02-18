@@ -106,9 +106,9 @@ impl XWindow {
     }
 
     /// Fills a rectangle in the window
-    /// using the foreground pixel defined in the window’s graphics context.
+    /// using the foreground pixel defined in the window's graphics context.
     ///
-    /// Coordinates are relative to the window’s origin in the X11 pixel grid.
+    /// Coordinates are relative to the window's origin in the X11 pixel grid.
     pub fn fill_rect(&self, pos: Position<i16, 2>, ext: Extent<u16, 2>) {
         let rect = raw::xcb_rectangle_t::new(pos, ext);
         unsafe { raw::xcb_poly_fill_rectangle(self.display, self.win, self.gc, 1, &rect as *const _); }

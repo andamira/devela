@@ -15,7 +15,7 @@ use crate::{ConstInitCore, InvalidValue, is, whilst};
 #[doc = crate::_doc_location!("num/quant")]
 ///
 /// This enum models the mathematical signum function and is useful when
-/// representing or manipulating a value’s sign independently of its magnitude.
+/// representing or manipulating a value's sign independently of its magnitude.
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum Sign {

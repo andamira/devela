@@ -255,7 +255,7 @@ impl XkbState {
 
     /// Returns the logical (layout-dependent) key for the given X11 keycode.
     ///
-    /// This is the “semantic” key: the character or meaning according to the
+    /// This is the "semantic" key: the character or meaning according to the
     /// active keyboard layout (e.g., `'q'`, `'Q'`, `'é'`, `Left`, `F5`, etc.).
     #[inline(always)]
     pub fn key_semantic(&self, keycode: u8) -> Key {
@@ -278,8 +278,8 @@ impl XkbState {
 
     /// Returns the physical key for the given X11 keycode.
     ///
-    /// This is the “layout-independent” key: the actual physical scancode
-    /// (e.g., “key in row 2, column 1”), stable across layouts.
+    /// This is the "layout-independent" key: the actual physical scancode
+    /// (e.g., "key in row 2, column 1"), stable across layouts.
     ///
     /// Useful for games and universal keybindings.
     #[inline(always)]
@@ -370,7 +370,7 @@ impl XkbState {
         Some(k)
     }
 
-    /// Maps a physical scancode (“evdev code”) to a `Key`.
+    /// Maps a physical scancode ("evdev code") to a `Key`.
     ///
     /// Fallbacks to `Key::Unknown`.
     ///

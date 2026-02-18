@@ -16,46 +16,46 @@ pub enum Weekday {
     /// The first day of the week, according to the ISO-8601 standard.
     ///
     /// # Etymology
-    /// The name Monday comes from the Old English word “Monandæg”,
-    /// which means “Moon’s day”.
+    /// The name Monday comes from the Old English word "Monandæg",
+    /// which means "Moon's day".
     Monday = 0,
 
     ///
     /// # Etymology
-    /// The name Tuesday comes from the Old English word “Tiwesdæg”, which means
-    /// “Tiw’s day”. Tiw was an Anglo-Saxon god associated with war and combat.
+    /// The name Tuesday comes from the Old English word "Tiwesdæg", which means
+    /// "Tiw's day". Tiw was an Anglo-Saxon god associated with war and combat.
     Tuesday,
 
     ///
     /// # Etymology
-    /// The name Wednesday comes from the Old English word “Wodnesdæg”, which
-    /// means “Woden’s day”. Woden was the chief god in Norse mythology,
+    /// The name Wednesday comes from the Old English word "Wodnesdæg", which
+    /// means "Woden's day". Woden was the chief god in Norse mythology,
     /// associated with wisdom, war, and death.
     Wednesday,
 
     ///
     /// # Etymology
-    /// The name Thursday comes from the Old English word “Þunresdæg”, which
-    /// means “Thor’s day”. Thor was the Norse god of thunder and lightning.
+    /// The name Thursday comes from the Old English word "Þunresdæg", which
+    /// means "Thor's day". Thor was the Norse god of thunder and lightning.
     Thursday,
 
     ///
     /// # Etymology
-    /// The name Friday comes from the Old English word “Frīgedæg”, which means
-    /// “Frige’s day”. Frige was an Anglo-Saxon goddess associated with love,
+    /// The name Friday comes from the Old English word "Frīgedæg", which means
+    /// "Frige's day". Frige was an Anglo-Saxon goddess associated with love,
     /// fertility, and domestic life.
     Friday,
 
     ///
     /// # Etymology
-    /// The name Saturday comes from the Latin word “Saturni dies”, which means
-    /// “Saturn’s day”. Saturn was the Roman god of agriculture and wealth.
+    /// The name Saturday comes from the Latin word "Saturni dies", which means
+    /// "Saturn's day". Saturn was the Roman god of agriculture and wealth.
     Saturday,
 
     ///
     /// # Etymology
-    /// The name Sunday comes from the Old English word “Sunandæg”, which means
-    /// “Sun’s day”.
+    /// The name Sunday comes from the Old English word "Sunandæg", which means
+    /// "Sun's day".
     Sunday,
 }
 

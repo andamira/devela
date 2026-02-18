@@ -207,7 +207,7 @@ impl Ptr {
     }
 
     /// Converts an address back to a pointer,
-    /// picking up some previously ‘exposed’ *provenance*.
+    /// picking up some previously 'exposed' *provenance*.
     ///
     /// See `core::ptr::`[`with_exposed_provenance`]
     /// and `<ptr>::`[`expose_provenance`][pointer#method.expose_provenance].
@@ -216,7 +216,7 @@ impl Ptr {
         with_exposed_provenance(addr)
     }
     /// Converts an address back to a mutable pointer,
-    /// picking up some previously ‘exposed’ *provenance*.
+    /// picking up some previously 'exposed' *provenance*.
     ///
     /// See `core::ptr::`[`with_exposed_provenance_mut`]
     /// and `<ptr>::`[`expose_provenance`][pointer#method.expose_provenance].

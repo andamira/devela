@@ -283,7 +283,7 @@ macro_rules! define_arena {
             /// Pushes a `char`. Returns its handle on success.
             ///
             /// # Errors
-            /// Returns `None` if there’s insufficient capacity.
+            /// Returns `None` if there's insufficient capacity.
             $vis const fn push_bool(&mut self, val: bool) -> Option<$Handle> {
                 self.push_byte(val as u8)
             }
@@ -304,7 +304,7 @@ macro_rules! define_arena {
             /// Pushes a `char`. Returns its handle on success.
             ///
             /// # Errors
-            /// Returns `None` if there’s insufficient capacity.
+            /// Returns `None` if there's insufficient capacity.
             #[inline(always)]
             $vis const fn push_char(&mut self, val: char) -> Option<$Handle> {
                 self.push_u32(val as u32)
@@ -343,7 +343,7 @@ macro_rules! define_arena {
                 #[doc = "Pushes a `" $P "`. Returns its handle on success."]
                 ///
                 /// # Errors
-                /// Returns `None` if there’s insufficient capacity.
+                /// Returns `None` if there's insufficient capacity.
                 #[inline(always)]
                 $vis const fn [<push_ $P>](&mut self, val: $P) -> Option<$Handle> {
                     self.push_byte(val as u8)
@@ -367,7 +367,7 @@ macro_rules! define_arena {
                 #[doc = "Pushes a `" $P "` in little-endian order. Returns its handle on success."]
                 ///
                 /// # Errors
-                /// Returns `None` if there’s insufficient capacity.
+                /// Returns `None` if there's insufficient capacity.
                 #[inline(always)]
                 $vis const fn [<push_ $P>](&mut self, val: $P) -> Option<$Handle> {
                     self.push_bytes(&val.to_le_bytes())
@@ -402,7 +402,7 @@ macro_rules! define_arena {
                 /// Returns its handle on success.
                 ///
                 /// # Errors
-                /// Returns `None` if there’s insufficient capacity or the string is too long.
+                /// Returns `None` if there's insufficient capacity or the string is too long.
                 $vis const fn [<push_str_ $P>](&mut self, val: &str) -> Option<$Handle> {
                     let len = val.len();
                     if len <= <$P>::MAX as usize {

@@ -12,7 +12,7 @@ use ::core::arch::x86_64::{__rdtscp, _rdtsc};
 
 /// # X86 or X86_64 instructions
 impl Arch {
-    /// Reads the current value of the processor’s time-stamp counter.
+    /// Reads the current value of the processor's time-stamp counter.
     ///
     #[doc = concat!("See `::core::arch::", ARCH!(), "::`[`_rdtsc()`].")]
     #[must_use]
@@ -21,7 +21,7 @@ impl Arch {
         unsafe { _rdtsc() }
     }
 
-    /// Reads the current value of the processor’s time-stamp counter and the processor ID.
+    /// Reads the current value of the processor's time-stamp counter and the processor ID.
     ///
     /// The processor ID:
     /// - is a CPU core identifier (logical/core number), not a process ID.

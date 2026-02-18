@@ -93,7 +93,7 @@ macro_rules! const_assert {
         $crate::const_assert!($x $op $crate::capture_first!(expr $($y),+));
         $crate::const_assert!(@build $($y),+; $op);
     };
-    // (terminates recursion when there’s only one expression left)
+    // (terminates recursion when there's only one expression left)
     (@build $x:expr; $op:tt) => {};
 }
 #[doc(inline)]

@@ -94,13 +94,13 @@ pub(crate) struct XSizeRatio {
 
 /// Window gravity hint (ICCCCM).
 ///
-/// Controls how a window’s position should be interpreted when the
+/// Controls how a window's position should be interpreted when the
 /// window is resized or when its parent frame changes size.
 /// The gravity defines which point of the outer rectangle remains
 /// fixed relative to the parent.
 ///
 /// This hint does not move the window by itself; it only influences
-/// how the window manager interprets the window’s geometry.
+/// how the window manager interprets the window's geometry.
 ///
 /// Source: ICCCM §4.1.2.3 (XSizeHints.win_gravity)
 #[repr(i32)]

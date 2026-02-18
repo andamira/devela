@@ -8,7 +8,7 @@ use crate::{_reexport, _tags};
 /* mem structs */
 
 _reexport! { rust: core::mem, location: "sys/mem", tag: _tags!(mem),
-    doc: "A wrapper to inhibit compiler from automatically calling `T`’s destructor.",
+    doc: "A wrapper to inhibit compiler from automatically calling `T`'s destructor.",
     ManuallyDrop
 }
 _reexport! { rust: core::mem, location: "sys/mem", tag: _tags!(mem),

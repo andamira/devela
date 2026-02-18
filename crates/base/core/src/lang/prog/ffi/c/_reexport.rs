@@ -16,7 +16,7 @@ _reexport! { rust: core::ffi, location: "lang::prog::ffi::c", tag: _tags!(primit
 }
 
 _reexport! { rust: core::ffi, location: "lang::prog::ffi::c", tag: _tags!(primitive),
-    doc: "Equivalent to C’s void type when used as a [pointer].",
+    doc: "Equivalent to C's void type when used as a [pointer].",
     c_void
 }
 

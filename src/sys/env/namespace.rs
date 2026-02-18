@@ -540,7 +540,7 @@ impl Env {
         set_current_dir(path)
     }
 
-    /// Returns the path of the current user’s home directory if known.
+    /// Returns the path of the current user's home directory if known.
     ///
     /// See [home_dir].
     #[allow(deprecated, reason = "WAIT for official undeprecation")]

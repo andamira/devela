@@ -40,12 +40,12 @@ pub trait ThreadExt: Sealed {
         available_parallelism().map(|n|n.get())
     }
 
-    /// Blocks unless or until the current thread’s token is made available.
+    /// Blocks unless or until the current thread's token is made available.
     ///
     /// See `std::thread::`[park].
     fn park() { park() }
 
-    /// Blocks unless or until the current thread’s token is made available
+    /// Blocks unless or until the current thread's token is made available
     /// or the specified duration has been reached (may wake spuriously).
     ///
     /// See `std::thread::`[park_timeout].

@@ -1,11 +1,12 @@
-// devela::num::absence
+// devela::num::dom::no
 //
 //! Allows the unit type [`()`] to represent the absence of a number.
 //
 
+#[allow(unused_imports)]
 use crate::NoNum;
 
-#[rustfmt::skip]
+#[cfg(feature = "num")]
 impl super::Num for NoNum {
     type Inner = ();
     type Out = ();

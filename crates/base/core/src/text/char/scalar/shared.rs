@@ -31,7 +31,7 @@ macro_rules! impl_char {
 
             /// Converts the scalar to a digit in the given radix.
             ///
-            /// ‘Digit’ is defined to be only the following characters:
+            /// 'Digit' is defined to be only the following characters:
             /// `0-9`, `a-z`, `A-Z`.
             ///
             /// # Errors

@@ -9,7 +9,6 @@
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
 mod color; // Color
-// mod spectral;
 // #[cfg(feature = "linear")]
 // mod xyz; // Xyz
 
@@ -17,7 +16,6 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             color::*,
-            // spectral::*,
         };
         // #[cfg(feature = "linear")]
         // pub use super::xyz::*;

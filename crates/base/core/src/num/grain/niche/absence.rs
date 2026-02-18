@@ -199,7 +199,7 @@ macro_rules! impl_maybe {
             /// into a valid but *approximate* representation.
             ///
             /// This constructor performs a **lossy conversion**, applying a best-effort
-            /// fallback when the primitive violates the underlying type’s invariant:
+            /// fallback when the primitive violates the underlying type's invariant:
             ///
             /// - For `NonZero*` types, `0` becomes the smallest valid value (`MIN`).
             /// - For `NonValue*` types, conversion defers to their own

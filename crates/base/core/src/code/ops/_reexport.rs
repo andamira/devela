@@ -30,7 +30,7 @@ doc: "A range only bounded inclusively above (`..=end`).", RangeToInclusive }
 /* traits */
 
 _reexport! { rust: core::ops, location: "code/ops", tag: _TAG_QUANT!(),
-doc: "Implemented by Rust’s built-in range types", RangeBounds }
+doc: "Implemented by Rust's built-in range types", RangeBounds }
 
 // logic ops
 _reexport! { rust: core::ops, location: "code/ops", tag: _TAG_LOGIC!(),

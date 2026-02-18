@@ -69,7 +69,7 @@ impl<T: Sized> Hook for T {}
 /// `hook!` binds a value to a local mutable name, applies a sequence of
 /// side-effecting operations to it, and then returns the value.
 ///
-/// This macro preserves the value’s identity: steps may mutate it, but do not replace it.
+/// This macro preserves the value's identity: steps may mutate it, but do not replace it.
 ///
 /// This is the trait-free, const-capable mechanical form of [`Hook`].
 ///
@@ -184,7 +184,7 @@ impl<T: ?Sized, R> Morph<R> for T {}
 ///
 /// A single binding introduces the pipeline variable,
 /// which is reused implicitly by subsequent steps.
-/// Each step may change the value’s type.
+/// Each step may change the value's type.
 ///
 /// This macro is const-capable and does not create closures.
 /// It is the trait-free mechanical form of [`Morph`].

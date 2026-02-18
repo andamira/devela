@@ -8,7 +8,7 @@
 #[doc = crate::_doc_location!("work/process")]
 ///
 /// Grammar (informal):
-/// - The `=>` operator constructs a linear flow, connecting each command’s
+/// - The `=>` operator constructs a linear flow, connecting each command's
 ///   stdout to the stdin of the next.
 /// - Each segment is a command invocation:
 ///   - The first expression is the program.

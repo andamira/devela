@@ -510,7 +510,7 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 3 -- 2 3 1 ) `
             /// # Panics
-            /// Panics if the stack doesn’t contain at least 6 elements.
+            /// Panics if the stack doesn't contain at least 6 elements.
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```

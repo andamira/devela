@@ -25,7 +25,7 @@ _reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code lifetim
     // RefUnwindSafe
 }
 _reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code),
-    doc: "A marker trait which represents “panic safe” types in Rust.",
+    doc: "A marker trait which represents \"panic safe\" types in Rust.",
     @UnwindSafe as PanicUnwindSafe
     // UnwindSafe
 }

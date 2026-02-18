@@ -93,9 +93,9 @@ impl_arch! {
         byte_swap_i32(i: i32) -> i32;
         "Swap the bytes of the given 64-bit value.",
         byte_swap_i64(i: i64) -> i64;
-        "Reads the CPU’s timestamp counter value.",
+        "Reads the CPU's timestamp counter value.",
         read_timestamp_counter() -> u64;
-        "Reads the CPU’s timestamp counter value and store the processor signature.",
+        "Reads the CPU's timestamp counter value and store the processor signature.",
         read_timestamp_counter_p(aux: &mut u32) -> u64;
     }
 }
@@ -664,7 +664,7 @@ impl_arch! {
         mul_u64_low_bits_m256i(a: m256i, b: m256i) -> m256i;
         "This is dumb and weird.",
         mul_u8i8_add_horizontal_saturating_m256i(a: m256i, b: m256i) -> m256i;
-        "Computes eight `u16` “sum of absolute difference” values according to the
+        "Computes eight `u16` \"sum of absolute difference\" values according to the
         bytes selected.",
         multi_packed_sum_abs_diff_u8_m256i<const IMM: i32>(a: m256i, b: m256i) -> m256i;
         "Saturating convert `i16` to `i8`, and pack the values.",
@@ -807,7 +807,7 @@ impl_arch! {
         sub_saturating_u16_m256i(a: m256i, b: m256i) -> m256i;
         "Lanewise saturating `a - b` with lanes as `u8`.",
         sub_saturating_u8_m256i(a: m256i, b: m256i) -> m256i;
-        "Compute “sum of `u8` absolute differences”.",
+        "Compute \"sum of `u8` absolute differences\".",
         sum_of_u8_abs_diff_m256i(a: m256i, b: m256i) -> m256i;
         "Unpack and interleave high `i16` lanes of `a` and `b`.",
         unpack_high_i16_m256i(a: m256i, b: m256i) -> m256i;
@@ -972,7 +972,7 @@ impl_arch! {
     #[doc = "See: <https://en.wikipedia.org/wiki/CLMUL_instruction_set>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "pclmulqdq";
     arch_fn! {
-        "Performs a “carryless” multiplication of two `i64` values.",
+        "Performs a \"carryless\" multiplication of two `i64` values.",
         mul_i64_carryless_m128i<const IMM: i32>(a: m128i, b: m128i) -> m128i;
     }
 }
@@ -1573,7 +1573,7 @@ impl_arch! {
         sub_saturating_u16_m128i(a: m128i, b: m128i) -> m128i;
         "Lanewise saturating `a - b` with lanes as `u8`.",
         sub_saturating_u8_m128i(a: m128i, b: m128i) -> m128i;
-        "Compute “sum of `u8` absolute differences”.",
+        "Compute \"sum of `u8` absolute differences\".",
         sum_of_u8_abs_diff_m128i(a: m128i, b: m128i) -> m128i;
         "Truncate the `f32` lanes to `i32` lanes.",
         truncate_m128_to_m128i(a: m128) -> m128i;
@@ -1735,7 +1735,7 @@ impl_arch! {
         mul_32_m128i(a: m128i, b: m128i) -> m128i;
         "Multiplies the odd `i32` lanes and gives the widened (`i64`) results.",
         mul_widen_i32_odd_m128i(a: m128i, b: m128i) -> m128i;
-        "Computes eight `u16` “sum of absolute difference” values according to the bytes selected.",
+        "Computes eight `u16` \"sum of absolute difference\" values according to the bytes selected.",
         multi_packed_sum_abs_diff_u8_m128i<const IMM: i32>(a: m128i, b: m128i) -> m128i;
         "Saturating convert `i32` to `u16`, and pack the values.",
         pack_i32_to_u16_m128i(a: m128i, b: m128i) -> m128i;
@@ -1751,7 +1751,7 @@ impl_arch! {
         test_all_ones_m128i(a: m128i) -> i32;
         "Returns if all masked bits are 0, `(a &amp; mask) as u128 == 0`",
         test_all_zeroes_m128i(a: m128i, mask: m128i) -> i32;
-        "Returns if, among the masked bits, there’s both 0s and 1s",
+        "Returns if, among the masked bits, there's both 0s and 1s",
         test_mixed_ones_and_zeroes_m128i(a: m128i, mask: m128i) -> i32;
         "Compute the bitwise NOT of `a` and then AND with `b`,
         returns 1 if the result is zero, otherwise 0.",

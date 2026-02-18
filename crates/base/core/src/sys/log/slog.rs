@@ -29,7 +29,7 @@ macro_rules! guard {
 #[doc = crate::_doc_location!("sys/log")]
 ///
 /// Each logger is identified by its capacity (`CAP`) as the number of stored messages,
-/// and each message’s maximum length (`MSG_LEN`).
+/// and each message's maximum length (`MSG_LEN`).
 ///
 /// Use the [`slog!`] macro to define, log, clear, or iterate its messages.
 ///

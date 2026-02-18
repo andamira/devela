@@ -16,7 +16,6 @@ pub mod dom; // Numeric domains and value representations
 pub mod error; // error types
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values.
-
 #[cfg(feature = "lin")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
 pub mod lin; // Linear algebraic structures and methods.

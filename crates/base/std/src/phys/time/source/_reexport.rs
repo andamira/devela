@@ -11,6 +11,6 @@ _reexport! { rust: std::time, location: "phys/time/source", tag: _TAG_TIME!(),
     SystemTime
 }
 _reexport! { rust: std::time, location: "phys/time/source", tag: _TAG_TIME!(),
-    doc: "A [`SystemTime`] anchored to “1970-01-01 00:00:00 UTC”.",
+    doc: "A [`SystemTime`] anchored to \"1970-01-01 00:00:00 UTC\".",
     UNIX_EPOCH
 }

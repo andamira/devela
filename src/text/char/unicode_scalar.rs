@@ -77,7 +77,7 @@ pub trait UnicodeScalar {
     #[must_use]
     /// Converts the scalar to a digit in the given radix.
     ///
-    /// ‘Digit’ is defined to be only the following characters:
+    /// 'Digit' is defined to be only the following characters:
     /// `0-9`, `a-z`, `A-Z`.
     ///
     /// # Errors
@@ -90,14 +90,14 @@ pub trait UnicodeScalar {
     #[must_use]
     /// Makes a copy of the value in its ASCII upper case equivalent.
     ///
-    /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
+    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z', but non-ASCII letters
     /// are unchanged.
     fn to_ascii_uppercase(self) -> Self where Self: Sized;
 
     #[must_use]
     /// Makes a copy of the value in its ASCII lower case equivalent.
     ///
-    /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
+    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z', but non-ASCII letters
     /// are unchanged.
     fn to_ascii_lowercase(self) -> Self where Self: Sized;
 

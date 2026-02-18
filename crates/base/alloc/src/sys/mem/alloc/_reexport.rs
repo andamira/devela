@@ -14,6 +14,6 @@ _reexport! { rust: alloc::alloc, location: "sys/mem", tag: _TAG_ALLOCATION!() _T
     @LayoutError as MemLayoutError
 }
 _reexport! { rust: alloc::alloc, location: "sys/mem", tag: _TAG_ALLOCATION!(),
-    doc: "A memory allocator that can be registered as the standard library’s default.",
+    doc: "A memory allocator that can be registered as the standard library's default.",
     GlobalAlloc
 }

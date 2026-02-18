@@ -15,7 +15,7 @@
 pub mod rand; // Random number generation
 // pub mod stats; // Descriptive statistics
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         // pub use super::{
         //     dist::_all::*,

@@ -117,7 +117,7 @@ macro_rules! define_pcg {
         /// has stronger statistical properties while remaining small and fast.
         ///
         /// This implementation follows a canonical PCG output permutation
-        /// (XSH RR or XSL RR, depending on size), by Melissa O’Neill.
+        /// (XSH RR or XSL RR, depending on size), by Melissa O'Neill.
         ///
         /// This generator is deterministic and non-cryptographic.
         ///

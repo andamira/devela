@@ -88,7 +88,7 @@ impl AppConfig {
         parts.join(".")
     }
 
-    /// Returns a ‘unixy’ version of the application’s name, akin to what would
+    /// Returns a 'unixy' version of the application's name, akin to what would
     /// usually be used as a binary name.
     ///
     /// Replaces whitespaces with underscores.
@@ -147,25 +147,25 @@ pub trait AppEnv {
     // NOTE: they accept &Path instead of AsRef<OsStr> to be dyn-compatible.
     // Can be called using .as_ref(), from &str, String, OsStr and OsString.
 
-    /// Constructs a path inside your application’s configuration directory.
+    /// Constructs a path inside your application's configuration directory.
     #[must_use]
     fn app_in_config(&self, append: &Path) -> PathBuf {
         app_in(self.app_config(), append)
     }
 
-    /// Constructs a path inside your application’s data directory.
+    /// Constructs a path inside your application's data directory.
     #[must_use]
     fn app_in_data(&self, append: &Path) -> PathBuf {
         app_in(self.app_data(), append)
     }
 
-    /// Constructs a path inside your application’s cache directory.
+    /// Constructs a path inside your application's cache directory.
     #[must_use]
     fn app_in_cache(&self, append: &Path) -> PathBuf {
         app_in(self.app_cache(), append)
     }
 
-    /// Constructs a path inside your application’s state directory.
+    /// Constructs a path inside your application's state directory.
     ///
     /// Currently, only the [`Xdg`](struct.Xdg.html) & [`AppUnix`] environments support this.
     #[must_use]
@@ -173,7 +173,7 @@ pub trait AppEnv {
         self.app_state().map(|base| app_in(base, append))
     }
 
-    /// Constructs a path inside your application’s runtime directory.
+    /// Constructs a path inside your application's runtime directory.
     ///
     /// Currently, only the [`Xdg`](struct.Xdg.html) & [`AppUnix`] environments support this.
     #[must_use]
@@ -227,7 +227,7 @@ impl AppXdg {
             Some(Self { home, unixy_name: String::new() })
         }
     }
-    // Returns `None` if the path obtained from the env var isn’t absolute.
+    // Returns `None` if the path obtained from the env var isn't absolute.
     fn env_var_or_none(env_var: &str) -> Option<PathBuf> {
         Env::var_os(env_var).and_then(|path| {
             let path = PathBuf::from(path);

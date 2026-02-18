@@ -25,7 +25,7 @@ _reexport! { "dep_log", "log", log, location: "sys/log", tag: _TAG_LOG!(),
     @LevelFilter as LogLevelFilter
 }
 _reexport! { "dep_log", "log", log, location: "sys/log", tag: _TAG_LOG!(),
-    doc: "The “payload” of a log message.",
+    doc: "The \"payload\" of a log message.",
     @Record as LogRecord
 }
 _reexport! { "dep_log", "log", log, location: "sys/log", tag: _TAG_LOG!(),

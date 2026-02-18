@@ -148,7 +148,7 @@ macro_rules! impl_oneof {
                 ),+ )
             }}
 
-            /// Returns a tuple with the active variant’s inner value in its corresponding position
+            /// Returns a tuple with the active variant's inner value in its corresponding position
             /// and `Default::default()` for all others.
             pub fn into_tuple_defaults(self) -> ($($T),+) where $($T: Default),+ { $crate::paste! {
                 let index = self.variant_index();

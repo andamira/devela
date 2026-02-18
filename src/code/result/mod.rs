@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(flat:"code")]
 #![doc = crate::_doc!(extends: option, result)]
 //!
-//! Computation doesn’t just yield values, it organizes outcomes.
+//! Computation doesn't just yield values, it organizes outcomes.
 //! This module refines how results, selections, and structured alternatives
 //! are formed, owned, transformed, and resolved, ensuring that every outcome
 //! finds its place.

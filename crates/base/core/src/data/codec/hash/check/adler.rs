@@ -19,7 +19,7 @@ define_lane! {
 /// The final checksum packs `b` in the high 16 bits and `a` in the low 16 bits.
 ///
 /// Adler-32 is **byte-order sensitive**: the checksum reflects the exact
-/// sequence of input bytes. When used together with Rust’s `Hash` trait,
+/// sequence of input bytes. When used together with Rust's `Hash` trait,
 /// results may differ between little-endian and big-endian targets unless
 /// the input is serialized in a fixed byte order.
 ///

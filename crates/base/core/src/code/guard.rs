@@ -55,7 +55,7 @@ impl<T> ScopeGuard<T, fn(T, &bool), bool> {
 impl<T, F: FnOnce(T, &bool)> ScopeGuard<T, F, bool> {
     /// Dismisses the callback for a boolean state guard.
     ///
-    /// Once dismissed, the callback won’t be executed on drop.
+    /// Once dismissed, the callback won't be executed on drop.
     ///
     /// # Example
     /// ```

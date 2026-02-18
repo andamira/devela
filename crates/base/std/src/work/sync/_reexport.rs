@@ -33,7 +33,7 @@ _reexport! { rust: std::sync, location: "work/sync", tag: _TAG_CONCURRENCY!(),
     Mutex
 }
 _reexport! { rust: std::sync, location: "work/sync", tag: _TAG_CONCURRENCY!() _TAG_GUARD!(),
-    doc: "An RAII implementation of a “scoped lock” of a mutex.",
+    doc: "An RAII implementation of a \"scoped lock\" of a mutex.",
     MutexGuard
 }
 _reexport! { rust: std::sync, location: "work/sync", tag: _TAG_CONCURRENCY!(),
@@ -45,7 +45,7 @@ _reexport! { rust: std::sync, location: "work/sync", tag: _TAG_CONCURRENCY!(),
     OnceLock
 }
 _reexport! { rust: std::sync, location: "work/sync", tag: _TAG_CONCURRENCY!(),
-    doc: "State yielded to [`Once::call_once_force()`]’s closure parameter.",
+    doc: "State yielded to [`Once::call_once_force()`]'s closure parameter.",
     OnceState
 }
 _reexport! { rust: std::sync, location: "work/sync", tag: _TAG_CONCURRENCY!() _TAG_ERROR!(),

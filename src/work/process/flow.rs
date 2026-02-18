@@ -136,7 +136,7 @@ impl CommandFlow {
     /// Runs the flow and streams the stdout of the last command to a callback.
     ///
     /// The provided function `f` is invoked incrementally with chunks of bytes
-    /// as they become available from the final command’s standard output.
+    /// as they become available from the final command's standard output.
     ///
     /// This enables streaming consumption without buffering the full output in memory.
     ///

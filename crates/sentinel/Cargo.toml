@@ -1,7 +1,7 @@
 [workspace]
 [package]
 name = "devela_sentinel"
-description = "A downstream sentinel crate for validating devela’s public behavior."
+description = "A downstream sentinel crate for validating devela's public behavior."
 version = "0.1.0"
 edition = "2024"
 

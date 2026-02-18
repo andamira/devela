@@ -180,7 +180,7 @@ impl char16 {
 
     /// Makes a copy of the value in its ASCII upper case equivalent.
     ///
-    /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
+    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z', but non-ASCII letters
     /// are unchanged.
     pub const fn to_ascii_uppercase(self) -> char16 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
@@ -188,7 +188,7 @@ impl char16 {
 
     /// Makes a copy of the value in its ASCII lower case equivalent.
     ///
-    /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
+    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z', but non-ASCII letters
     /// are unchanged.
     pub const fn to_ascii_lowercase(self) -> char16 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))

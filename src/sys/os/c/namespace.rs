@@ -7,7 +7,7 @@ use super::raw;
 use crate::{c_char, c_int, c_mode_t, c_off_t, c_void};
 
 #[doc = crate::_tags!(platform namespace)]
-/// Raw C/POSIX system interfaces exposed through the platform’s libc.
+/// Raw C/POSIX system interfaces exposed through the platform's libc.
 #[doc = crate::_doc_location!("sys/os")]
 ///
 /// Thin, unsafe bindings that provide direct access to C ABI functions

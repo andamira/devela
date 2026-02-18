@@ -9,6 +9,7 @@
 // mod complex;
 mod frac;
 // mod laws;
+mod no;
 // mod ops;
 
 #[cfg(feature = "num")]

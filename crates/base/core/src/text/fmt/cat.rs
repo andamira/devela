@@ -30,7 +30,7 @@ use crate::{FmtNum, Slice};
 /// ```
 ///
 /// # Notes
-/// - When passed a literal offset (`fmtcat!(buf, 0, ...)`) it doesn’t update the variable.
+/// - When passed a literal offset (`fmtcat!(buf, 0, ...)`) it doesn't update the variable.
 /// - All writes append sequentially; if the buffer is too small,
 ///   the behavior depends on the helper functions.
 #[macro_export]

@@ -25,7 +25,7 @@ use crate::ConstInitCore;
 ///
 /// # Comparison with `Default`
 ///
-/// `Default` represents the type’s natural baseline, usually a neutral or zero-like state.
+/// `Default` represents the type's natural baseline, usually a neutral or zero-like state.
 /// `ConstInit` and `ConstInitCore` simply provide a valid const-time initializer,
 /// without requiring that meaning.
 ///

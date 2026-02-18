@@ -23,15 +23,15 @@ _reexport! { rust: std::process, location: "work/process", tag: _tags!(concurren
     @Child as Process
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(io),
-    doc: "A handle to a child process’s stderr.",
+    doc: "A handle to a child process's stderr.",
     @ChildStderr as ProcessStderr
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(io),
-    doc: "A handle to a child process’s standard input (stdin).",
+    doc: "A handle to a child process's standard input (stdin).",
     @ChildStdin as ProcessStdin
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(io),
-    doc: "A handle to a child process’s standard output (stdout).",
+    doc: "A handle to a child process's standard output (stdout).",
     @ChildStdout as ProcessStdout
 }
 _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform runtime),
