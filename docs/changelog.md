@@ -290,7 +290,7 @@ Many feature gates are removed in order to make most features make always availa
 ### layout
 - new module `data::layout`.
 - move here: `DataCollection`, `dst/`, `pool/`, `sort/`, `table/`.
-- move here: `list/` submodules: `array/`, `buf/`→`buffer/`, `link/`→`linked/`, `queue/`, `stack/`.
+- move here: `list/` submodules: `array/`, `buf/`→`buffer/`, `queue/`, `stack/`.
 
 #### array
 - move to [base]:
@@ -308,6 +308,10 @@ Many feature gates are removed in order to make most features make always availa
 #### buffer
 - new macros: `buffer_linear!`.
 - new example types: `BufferExample`, `BufferViewExample`.
+
+### topol
+- new module `data::topol`.
+- move here: `listlink/`→`linked/`.
 
 ### value
 - move here: `NoData`, `of/`, `tuple/`.

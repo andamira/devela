@@ -1,4 +1,4 @@
-// devela::data::topol
+// devela_base_alloc::data::topol
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_DATA_TOPOL!()] // public
@@ -8,14 +8,11 @@
 #![doc = crate::_QUO_DATA_TOPOL!()]
 //
 
-mod linked; // ConstList[Item], LinkedList
+mod linked;
 // mod ord;
 // mod span;
 
-// #[cfg(_graph··)]
 // pub mod graph;
-// #[cfg(_node··)]
-// pub mod node;
 // pub mod spatial;
 
 crate::structural_mods! { // _mods, _pub_mods
@@ -28,12 +25,8 @@ crate::structural_mods! { // _mods, _pub_mods
     }
     _pub_mods {
         // pub use super::{
+        //     graph::_all::*,
         //     spatial::_all::*,
         // };
-
-        // #[cfg(_graph··)]
-        // pub use super::graph::*;
-        // #[cfg(_node··)]
-        // pub use super::node::_all::*;
     }
 }

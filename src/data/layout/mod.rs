@@ -3,11 +3,11 @@
 #![doc = crate::_DOC_DATA_LAYOUT!()] // public
 #![doc = crate::_doc!(modules: crate::data; layout: array, dst)]
 #![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(extends: array, collections, vec)]
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //
 
 mod collection; // DataCollection
-mod linked; // ConstList[Item], LinkedList
 mod queue;
 mod stack;
 // mod view;
@@ -24,7 +24,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             collection::*,
-            linked::_all::*,
             queue::_all::*,
             stack::_all::*,
             // view::_all::*,

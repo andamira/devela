@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: access, codec, error, id, layout, value); // topol
+    crate::_doc!(modules: crate; data: access, codec, error, id, layout, topol, value);
 }
 
 pub mod access;
@@ -24,7 +24,7 @@ pub mod error {
 }
 pub mod id;
 pub mod layout;
-// pub mod topol;
+pub mod topol;
 pub mod value;
 
 crate::structural_mods! { // _pub_mods, _crate_internals
@@ -36,7 +36,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals
             error::*,
             id::_all::*,
             layout::_all::*,
-            // topol::_all::*,
+            topol::_all::*,
             value::_all::*,
         };
     }

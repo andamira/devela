@@ -1,7 +1,7 @@
-// devela::data::layout::linked
+// devela::data::topol::linked
 //
-#![doc = crate::_DOC_DATA_LAYOUT_LINKED!()] // private
-#![doc = crate::_doc!(modules: crate::data::layout; linked)]
+#![doc = crate::_DOC_DATA_TOPOL_LINKED!()] // private
+#![doc = crate::_doc!(modules: crate::data::topol; linked)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
@@ -10,7 +10,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/layout/linked/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/topol/linked/_reexport.rs
 
 // #[cfg(_list1··)]
 // mod l1;
@@ -25,7 +25,7 @@ crate::structural_mods! { // _mods, _reexports
     _reexports {
         #[cfg(feature = "alloc")]
         pub use super::_reexport_alloc::*;
-        pub use devela_base_core::data::layout::{
+        pub use devela_base_core::data::topol::{
             ConstList, ConstListIterator,
         };
     }

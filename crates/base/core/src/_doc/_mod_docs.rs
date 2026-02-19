@@ -80,7 +80,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _QUO_DATA_LAYOUT        = "> Determines how values are positioned and grouped.";
     _DOC_DATA_LAYOUT_ARRAY  = "Homogeneous, sequentially allocated, random-access structures.";
     _DOC_DATA_LAYOUT_DST    = "Dynamically-sized types stored without need of heap allocation.";
-    _DOC_DATA_LAYOUT_LINKED = "Homogeneous, sequentially accessed structures.";
     _DOC_DATA_LAYOUT_QUEUE  = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_FIFO!(), " order."];
     _DOC_DATA_LAYOUT_STACK  = concat!["Homogeneous data structures that process elements in ",
@@ -89,6 +88,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_SPACE         = "Spatial data structures.";
     _DOC_DATA_TOPOL         = "Relational topology over structured data.";
     _QUO_DATA_TOPOL         = "> Describes connectivity, adjacency, and ordered relations.";
+    _DOC_DATA_TOPOL_LINKED  = "Homogeneous, sequentially accessed structures.";
     _DOC_DATA_TOPOL_NODE    = "Abstractions for structured relationships.";
     _DOC_DATA_TOPOL_SPATIAL = "Spatial adjacency and partitioning structures over indexed data.";
     _QUO_DATA_TOPOL_SPATIAL = "> Organizes locality, neighborhood, and region-based relations.";
