@@ -97,7 +97,9 @@ unsafe = [
 #* Capability features *#
 default = ["alloc"]
 
-_docs_examples = [] # document examples and example generated items
+_docs_examples = [ # document examples and example generated items
+	"devela_base_core/_docs_examples",
+]
 _docs_min = [ # the minimum capabilities to document every item
 	"_docs_examples",
 	# modules

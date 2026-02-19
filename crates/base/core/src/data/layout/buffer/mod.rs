@@ -6,7 +6,7 @@
 mod linear; // buffer_linear!
 
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples;
+mod examples; // BufferStaticExample, BufferViewExample
 
 crate::structural_mods! { // _mods
     _mods {

@@ -307,7 +307,7 @@ Many feature gates are removed in order to make most features make always availa
 
 #### buffer
 - new macros: `buffer_linear!`.
-- new example types: `BufferExample`, `BufferViewExample`.
+- new example types: `BufferExample`, `BuffeAllocExample`, `BufferViewExample`.
 
 ### topol
 - new module `data::topol`.

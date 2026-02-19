@@ -46,7 +46,12 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
         #[doc(inline)]
         pub use devela_base_core::data::layout::buffer_linear;
         #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::data::layout::{BufferExample, BufferViewExample};
+        pub use devela_base_core::data::layout::{
+            BufferStaticExample, BufferViewExample,
+        };
+        #[cfg(feature = "alloc")]
+        #[cfg(feature = "_docs_examples")]
+        pub use devela_base_alloc::data::layout::BufferAllocExample;
 
         // sort
         #[doc(inline)]

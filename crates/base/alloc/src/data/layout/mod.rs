@@ -7,6 +7,7 @@
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //
 
+mod buffer;
 // mod pool;
 // mod queue;
 mod sort; // Sort
@@ -18,6 +19,7 @@ pub mod array;
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
+            buffer::_all::*,
             // pool::_all::*,
             // queue::_all::*,
             sort::_all::*,

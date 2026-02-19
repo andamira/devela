@@ -64,8 +64,4 @@ use crate::{Bare, Storage};
 #[must_use]
 pub struct Array<T, const CAP: usize, S: Storage = Bare> {
     pub(crate) data: S::Stored<[T; CAP]>,
-    // pub struct Array<T, const CAP: usize> {
-    // TODO WIP
-    // pub(crate) data: [T; CAP],
-    // len: u8; // TODO
 }
