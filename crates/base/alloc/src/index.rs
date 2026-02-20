@@ -24,6 +24,10 @@
 // #![cfg_attr(nightly_simd, feature(portable_simd))]
 
 extern crate alloc;
+// NOTE: for testing purposes only
+#[cfg(feature = "__std")]
+extern crate std;
+
 extern crate self as devela_base_alloc;
 macro_rules! __crate_name {
     () => {

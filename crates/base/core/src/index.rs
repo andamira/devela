@@ -44,6 +44,13 @@
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 // (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
 
+// https://doc.rust-lang.org/nightly/reference/names/preludes.html#extern-prelude
+// NOTE: for testing purposes only
+#[cfg(feature = "__std")]
+pub extern crate alloc;
+#[cfg(feature = "__std")]
+extern crate std;
+
 extern crate self as devela_base_core;
 macro_rules! __crate_name {
     () => {

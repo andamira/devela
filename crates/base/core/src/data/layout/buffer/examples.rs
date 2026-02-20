@@ -223,3 +223,10 @@ buffer_linear!(
     slice_mut,
     slice,
 );
+
+// NOTE: real example in devela_base_alloc
+// #[cfg(feature = "__std")]
+// mod alloc {
+//     #![allow(dead_code)]
+//     crate::buffer_linear!(struct BufferAllocExample: alloc (crate::NonValueU8<{u8::MAX}>); vec);
+// }

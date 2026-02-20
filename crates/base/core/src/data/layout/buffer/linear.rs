@@ -106,6 +106,24 @@
 /// assert_eq!(buf.peek_back(), Some(&4));
 /// ```
 ///
+/// ### Alloc buffer
+/// ```
+/// # #![cfg_attr(nightly_doc, feature(doc_cfg))] // reason = _devela_policy! emmiting doc(cfg)
+/// # #[cfg(feature = "__std")]
+/// # extern crate alloc;
+/// # #[cfg(feature = "__std")] {
+/// # use devela_base_core::buffer_linear;
+/// buffer_linear!(
+///     /// Dynamic linear buffer.
+///     pub struct BufferU8: alloc (u8); vec
+/// );
+/// let mut buf = BufferU8::new();
+/// buf.push_back(10);
+/// buf.push_back(20);
+/// assert_eq!(buf.as_slice(), &[10, 20]);
+/// # }
+/// ```
+///
 /// ### Separate implementation blocks
 /// ```
 /// # use devela_base_core::buffer_linear;
