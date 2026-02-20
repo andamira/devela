@@ -6,7 +6,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-devela_base_core = { version = "0.25.0-wip", path = "../base/core" }
+devela = { version = "0.25.0-wip", path = "../.." }
+# devela_base_core = { version = "0.25.0-wip", path = "../base/core" }
 
 [features]
 test_feature = []
