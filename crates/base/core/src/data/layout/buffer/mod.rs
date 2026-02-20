@@ -5,6 +5,8 @@
 
 mod linear; // buffer_linear!
 
+mod impls; // hidden macros for buffer variants
+
 #[cfg(any(test, feature = "_docs_examples"))]
 mod examples; // BufferStaticExample, BufferViewExample
 
