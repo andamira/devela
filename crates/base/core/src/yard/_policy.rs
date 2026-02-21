@@ -31,34 +31,42 @@
 macro_rules! __devela_policy {
     /* item-level safety policy */
 
-    // Defines an item whose availability differs between devela and external builds,
+    // Defines one or more items whose availability differs between devela and external builds,
     // enforcing internal safety policies without affecting the public API.
-    (safe:$safe:literal, unsafe:$unsafe:literal, $item:item) => {
+    (safe:$safe:literal, unsafe:$unsafe:literal, $($item:item)+) => {
         // external crates: emit item directly
-        #[$crate::compile(not(env(__DEVELA_MEMBER)))]
-        $item
+        $(
+            #[$crate::compile(not(env(__DEVELA_MEMBER)))]
+            $item
+        )+
 
         // devela only: delegate to internal arm
         #[$crate::compile(env(__DEVELA_MEMBER))]
-        $crate::_devela_policy!{%devela safe:$safe, unsafe:$unsafe, $item}
+        $crate::_devela_policy!{%devela safe:$safe, unsafe:$unsafe, $($item)+}
     };
-    (%devela safe:$safe:literal, unsafe:$unsafe:literal, $item:item) => {
-        #[cfg(all(not(feature = $safe), feature = $unsafe))]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE
-        $item
+    (%devela safe:$safe:literal, unsafe:$unsafe:literal, $($item:item)+) => {
+        $(
+            #[cfg(all(not(feature = $safe), feature = $unsafe))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE
+            $item
+        )+
     };
-    (unsafe:$unsafe:literal, $item:item) => {
+    (unsafe:$unsafe:literal, $($item:item)+) => {
         // external crates: emit item directly
-        #[$crate::compile(not(env(__DEVELA_MEMBER)))]
-        $item
+        $(
+            #[$crate::compile(not(env(__DEVELA_MEMBER)))]
+            $item
+        )+
 
         #[$crate::compile(env(__DEVELA_MEMBER))]
-        $crate::_devela_policy!{%devela unsafe:$unsafe, $item}
+        $crate::_devela_policy!{%devela unsafe:$unsafe, $($item)+}
     };
-    (%devela unsafe:$unsafe:literal, $item:item) => {
+    (%devela unsafe:$unsafe:literal, $($item:item)+) => {
         #[cfg(feature = $unsafe)]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE
-        $item
+        $(
+            #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE
+            $item
+        )+
     };
 
     /* expression-level branching */
