@@ -88,6 +88,7 @@
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
+        control_flow_ok,
         debug_closure_helpers,
         derive_coerce_pointee,
         fn_align,

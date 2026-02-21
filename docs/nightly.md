@@ -46,6 +46,7 @@ See also
 - 1.95: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.95: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
 - 1.95: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
+- 1.95: ` `[importing path-segment keyword with renaming](https://github.com/rust-lang/rust/pull/146972)
 - 1.95: ` `[improve pattern matching semantics](https://github.com/rust-lang/rust/pull/150681)
 - 1.95: `·`[more_conversion_trait_implsa](https://github.com/rust-lang/rust/pull/145504)
 - 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
@@ -75,6 +76,7 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
+- 1.??: `·`[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
@@ -91,6 +93,7 @@ See also
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
 - 1.??: `·`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
+- 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/issues/125687)
