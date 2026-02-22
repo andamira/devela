@@ -14,7 +14,7 @@ mod strided; // StridedIter, StridedIterMut
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            lending::*,
+            lending::_all::*,
             strided::*,
         };
     }

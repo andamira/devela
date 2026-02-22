@@ -1,4 +1,4 @@
-// devela_base_core::data::access::iter::lending
+// devela_base_core::data::access::iter::lending::definitions
 //
 //! Defines [`IteratorLending`],
 //! [`IteratorLendingDoubleEnded`],
@@ -345,7 +345,7 @@ pub trait IteratorLendingPeek: IteratorLending {
     /// next item. Otherwise, the iterator remains unchanged.
     fn next_if<F>(&mut self, pred: F) -> Option<Self::Item<'_>>
     where
-        F: FnOnce(&Self::Item<'_>) -> bool,
+        for<'a> F: FnOnce(&Self::Item<'a>) -> bool,
     {
         is![self.peek().is_some_and(|i| pred(&i)); self.next(); None]
     }
@@ -413,7 +413,7 @@ pub trait IteratorLendingPeekDoubleEnded: IteratorLendingPeek + IteratorLendingD
     /// next item. Otherwise, the iterator remains unchanged.
     fn next_back_if<F>(&mut self, pred: F) -> Option<Self::Item<'_>>
     where
-        F: FnOnce(&Self::Item<'_>) -> bool,
+        for<'a> F: FnOnce(&Self::Item<'a>) -> bool,
     {
         is![self.peek_back().is_some_and(|i| pred(&i)); self.next_back(); None]
     }
