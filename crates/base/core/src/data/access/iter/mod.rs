@@ -15,7 +15,7 @@ crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             lending::_all::*,
-            strided::*,
+            strided::_all::*,
         };
     }
     _reexports {
