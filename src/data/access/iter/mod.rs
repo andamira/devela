@@ -18,7 +18,7 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::_reexport_core::*;
         pub use devela_base_core::data::access::iter::{
             IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize,
-            IteratorLendingPeek,
+            IteratorLendingPeek, IteratorLendingPeekDoubleEnded,
             StridedIter, StridedIterMut,
         };
         pub use devela_base_core::sys::mem::{SliceIter, SliceIterMut};

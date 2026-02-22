@@ -248,7 +248,7 @@ Many feature gates are removed in order to make most features make always availa
 - move here `address` & `iter`.
 
 #### iter
-- new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
+- new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`, `IteratorLendingPeekDoubleEnded`.
 - new types: `StridedIter`, `StridedIterMut`.
 
 ### codec

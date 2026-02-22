@@ -1,7 +1,10 @@
 // devela_base_core::data::access::iter::lending
 //
-//! Defines [`IteratorLending`], [`IteratorLendingDoubleEnded`], [`IteratorLendingExactSize`],
-//! [`IteratorLendingPeek`].
+//! Defines [`IteratorLending`],
+//! [`IteratorLendingDoubleEnded`],
+//! [`IteratorLendingExactSize`],
+//! [`IteratorLendingPeek`],
+//! [`IteratorLendingPeekDoubleEnded`].
 //
 
 use crate::is;
@@ -15,10 +18,13 @@ use crate::is;
 /// and returns an item tied to that borrow. This enables iteration over
 /// memory-backed structures without copying or owning the underlying data.
 ///
+/// This is the borrowing analogue of [`Iterator`][crate::Iterator].
+///
 /// See also:
 /// - [`IteratorLendingDoubleEnded`]
 /// - [`IteratorLendingExactSize`]
 /// - [`IteratorLendingPeek`]
+/// - [`IteratorLendingPeekDoubleEnded`]
 #[rustfmt::skip]
 pub trait IteratorLending {
     /// The item yielded by this iterator.
@@ -241,7 +247,7 @@ pub trait IteratorLending {
 /// A lending iterator that can yield items from the back.
 #[doc = crate::_doc_location!("data/access/iter")]
 ///
-/// This is the borrowing analogue of [`DoubleEndedIterator`].
+/// This is the borrowing analogue of : [`IteratorDoubleEnded`][crate::IteratorDoubleEnded].
 pub trait IteratorLendingDoubleEnded: IteratorLending {
     /// Returns the next item from the back of the iterator.
     fn next_back<'a>(&'a mut self) -> Option<Self::Item<'a>>;
@@ -283,15 +289,24 @@ pub trait IteratorLendingDoubleEnded: IteratorLending {
 /// A lending iterator with a known remaining length.
 #[doc = crate::_doc_location!("data/access/iter")]
 ///
-/// Types implementing this trait can report how many items are left
-/// without consuming the iterator.
+/// This is the borrowing analogue of [`IteratorExactSize`][crate::IteratorExactSize].
+///
+/// # Contract
+/// Implementors must return a [`size_hint`][IteratorLending::size_hint] where:
+/// - the lower bound equals the upper bound, and
+/// - both equal the exact number of items remaining.
+///
+/// In other words, `size_hint()` must return `(len, Some(len))` at all times.
 pub trait IteratorLendingExactSize: IteratorLending {
     /* non-required methods */
 
     /// Returns the exact number of items remaining.
     ///
-    /// The default implementation derives this from `size_hint`, as per the
-    /// standard library's `ExactSizeIterator`.
+    /// The default implementation derives this from
+    /// [`size_hint`][IteratorLending::size_hint], matching the standard library.
+    ///
+    /// # Panics
+    /// In debug builds, panics if the upper bound returned by `size_hint` is not `Some(lower)`.
     fn len(&self) -> usize {
         let (lower, upper) = self.size_hint();
         debug_assert!(upper == Some(lower));
@@ -309,8 +324,11 @@ pub trait IteratorLendingExactSize: IteratorLending {
 #[doc = crate::_doc_location!("data/access/iter")]
 ///
 /// The returned reference is tied to the temporary mutable borrow of `self`
-/// created by this call. Implementations must not modify the iteration state
-/// (i.e., the next call to [`IteratorLending::next`] will still yield the same item, if any).
+/// created by this call. Implementations must not advance the iteration state
+/// (i.e., the next call to [`IteratorLending::next`] yields the same item, if any).
+///
+/// Implementations may internally buffer the next item to support peeking,
+/// but the externally observable iteration order must be unchanged.
 pub trait IteratorLendingPeek: IteratorLending {
     /// Returns the next item without advancing the iterator.
     ///
@@ -350,9 +368,9 @@ pub trait IteratorLendingPeek: IteratorLending {
     /// - `Err(e)` — the iterator is left unchanged and `Err(e)` is returned.
     /// If the iterator is exhausted, `Ok(None)` is returned.
     ///
-    /// `f` receives a temporary borrow of the next item. The borrow ends before
-    /// this method calls [`IteratorLending::next`], so advancing the iterator is
-    /// always sound.
+    /// `f` receives a temporary borrow of the next item.
+    /// The borrow ends before this method calls [`IteratorLending::next`],
+    /// so advancing the iterator is always sound.
     fn next_if_map<R, E, F>(&mut self, f: F) -> Result<Option<R>, E>
     where
         F: FnOnce(&Self::Item<'_>) -> Result<R, E>,
@@ -361,6 +379,75 @@ pub trait IteratorLendingPeek: IteratorLending {
             None => Ok(None),
             Some(Ok(r)) => {
                 self.next();
+                Ok(Some(r))
+            }
+            Some(Err(e)) => Err(e),
+        }
+    }
+}
+
+#[doc = crate::_tags!(iterator lifetime)]
+/// A lending iterator that can inspect the next item from the back, without advancing.
+#[doc = crate::_doc_location!("data/access/iter")]
+///
+/// The returned reference is tied to the temporary mutable borrow of `self`
+/// created by this call. Implementations must not modify the iteration state
+/// (i.e., the next call to [`IteratorLendingDoubleEnded::next_back`]
+/// will yield the same item as it would have without peeking).
+///
+/// Implementations may internally buffer the back item to support peeking,
+/// but the externally observable iteration order must be unchanged.
+pub trait IteratorLendingPeekDoubleEnded: IteratorLendingPeek + IteratorLendingDoubleEnded {
+    /// Returns the next item from the back, without advancing the iterator.
+    ///
+    /// Borrows `self` mutably so that both shared and exclusive lending
+    /// iterators can expose a peek. The reference remains valid until
+    /// `self` is borrowed again.
+    fn peek_back<'a>(&'a mut self) -> Option<Self::Item<'a>>;
+
+    /* non-required */
+
+    /// Returns the next item from the back if it matches the predicate.
+    ///
+    /// The iterator is advanced only when `pred` returns `true` for the
+    /// next item. Otherwise, the iterator remains unchanged.
+    fn next_back_if<F>(&mut self, pred: F) -> Option<Self::Item<'_>>
+    where
+        F: FnOnce(&Self::Item<'_>) -> bool,
+    {
+        is![self.peek_back().is_some_and(|i| pred(&i)); self.next_back(); None]
+    }
+
+    /// Returns the next item from the back if it is equal to `expected`.
+    ///
+    /// This is a convenience wrapper around [`next_back_if`][Self::next_back_if] using `PartialEq`.
+    fn next_back_if_eq<Q>(&mut self, expected: &Q) -> Option<Self::Item<'_>>
+    where
+        for<'a> Self::Item<'a>: PartialEq<Q>,
+        Q: ?Sized,
+    {
+        self.next_back_if(|item| item == expected)
+    }
+
+    /// Applies `f` to the next item from the back
+    /// without advancing the iterator unless `f` returns `Ok`.
+    ///
+    /// If `f` returns:
+    /// - `Ok(r)` — the iterator is advanced and `Ok(Some(r))` is returned.
+    /// - `Err(e)` — the iterator is left unchanged and `Err(e)` is returned.
+    /// If the iterator is exhausted, `Ok(None)` is returned.
+    ///
+    /// `f` receives a temporary borrow of the next item from the back.
+    /// The borrow ends before this method calls [`IteratorLendingDoubleEnded::next_back`],
+    /// so advancing the iterator is always sound.
+    fn next_back_if_map<R, E, F>(&mut self, f: F) -> Result<Option<R>, E>
+    where
+        F: FnOnce(&Self::Item<'_>) -> Result<R, E>,
+    {
+        match self.peek_back().map(|item| f(&item)) {
+            None => Ok(None),
+            Some(Ok(r)) => {
+                self.next_back();
                 Ok(Some(r))
             }
             Some(Err(e)) => Err(e),
