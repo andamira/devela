@@ -66,6 +66,7 @@
         cold_path,
         if_let_guard,
         more_conversion_trait_impls,
+        str_as_str,
     )
 )]
 #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature(push_mut,))]
@@ -104,7 +105,6 @@
         offset_of_enum,
         offset_of_slice,
         refcell_try_map,
-        str_as_str,
         substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,

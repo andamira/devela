@@ -53,6 +53,7 @@ See also
 - 1.95: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
 - 1.95: `·`[RangeInclusive, RangeInclusiveIter](https://github.com/rust-lang/rust/pull/150522) (new_range_api)
 - 1.95: ` `[rustdoc: sort stable items first](https://github.com/rust-lang/rust/pull/149460)
+- 1.95: `·`[str_as_str](https://github.com/rust-lang/rust/pull/151603)
 - 1.95: ` `[`TryFrom<integer>` for bool](https://github.com/rust-lang/rust/pull/147400)
 
 # 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
@@ -104,7 +105,6 @@ See also
 - 1.??: `·`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_base_macros`
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
-- 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/151603)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
