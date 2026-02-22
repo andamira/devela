@@ -9,11 +9,13 @@
 mod _reexport; // SYMLINK from /src/data/iter/_reexport_core.rs
 
 mod lending; // IteratorLending[DoubleEnded|ExactSize|Peek]
+mod strided; // StridedIter, StridedIterMut
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             lending::*,
+            strided::*,
         };
     }
     _reexports {

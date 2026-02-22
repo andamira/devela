@@ -249,6 +249,7 @@ Many feature gates are removed in order to make most features make always availa
 
 #### iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`.
+- new types: `StridedIter`, `StridedIterMut`.
 
 ### codec
 - move here: `bit/`.
