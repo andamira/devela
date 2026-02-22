@@ -6,8 +6,7 @@
 
 extern crate alloc;
 
-// use devela_base_core::buffer_linear;
-use devela::buffer_linear;
+use devela_base_core::buffer_linear;
 
 buffer_linear!(pub struct BufferLinearExample: (u8); array, uninit, option);
 buffer_linear!(pub struct BufferLinearViewExample: view (u8); slice_mut, slice);
