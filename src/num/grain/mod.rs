@@ -25,7 +25,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     }
     _reexports {
         pub use devela_base_core::num::grain::{
-            PrimScalar, PrimFitPtr, PrimInt, PrimSint, PrimUint, PrimFloat,
+            PrimScalar, PrimInt, PrimSint, PrimUint, PrimFloat,
         };
     }
     _hidden {

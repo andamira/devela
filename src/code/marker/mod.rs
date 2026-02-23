@@ -17,6 +17,9 @@ crate::structural_mods! { // _mods, _reexports
     _reexports {
         pub use super::_reexport_core::*;
         #[doc(inline)]
-        pub use devela_base_core::code::marker::type_marker;
+        pub use devela_base_core::code::marker::{
+            Prim, PrimFitPtr,
+            type_marker,
+        };
     }
 }

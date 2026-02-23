@@ -177,6 +177,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### marker
 - make `TypeResource` and `type_marker!` constructors *const*.
+- new traits: `Prim`, `PrimFitPtr`.
 
 ### ops
 - new macro: `punroll!`.
@@ -455,7 +456,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### grain
 - new module `num::grain`.
-- new traits `PrimScalar`, `PrimFitPtr`, `PrimInt`, `PrimSint`, `PrimUint`, `PrimFloat`.
+- new traits `PrimScalar`, `PrimInt`, `PrimSint`, `PrimUint`, `PrimFloat`.
 - move inside: `num::cast`, `num::niche`, `num::wide`.
 
 #### cast
