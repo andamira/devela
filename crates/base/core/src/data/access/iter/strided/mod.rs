@@ -3,25 +3,17 @@
 //!
 //
 
-// #[cfg(test)]
-// mod tests;
+#[cfg(test)]
+mod tests;
 
-mod core; // (StridedIterCore)
-
-mod r#mut; // StridedIterMut
-mod r#ref; // StridedIterMut
-
-// mod define; // strided_iter! WIP
+mod canonical; // StridedIter, StridedIterMut
+mod define; // strided_iter!
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            r#mut::*,
-            r#ref::*,
-            // define::*,
+            canonical::*,
+            define::*,
         };
-    }
-    _crate_internals {
-        pub(crate) use super::core::*;
     }
 }
