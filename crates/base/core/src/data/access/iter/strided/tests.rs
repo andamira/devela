@@ -1,5 +1,7 @@
 // devela_base_core::data::access::iter::strided::tests
 
+#![allow(dead_code)]
+
 crate::iter_strided! {
     /// 8-bit strided iterator for testing.
     struct StridedIterU8: ref (u8)
