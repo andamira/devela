@@ -7,6 +7,7 @@
 //
 
 mod cast; // Cast
+mod prim; // Prim* traits
 
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod wide; // define_lane!
@@ -16,6 +17,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
         #[doc(inline)]
         pub use super::{
             cast::_all::*,
+            prim::*,
         };
     }
     _pub_mods {

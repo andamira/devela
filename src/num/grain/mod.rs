@@ -10,7 +10,7 @@ mod cast; // (Cast), PrimitiveCast, PrimitiveJoin, PrimitiveSplit
 pub mod niche; // (MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, nz!)
 pub mod wide; // (define_lane!)
 
-crate::structural_mods! { // _mods, _pub_mods _hidden
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -21,6 +21,11 @@ crate::structural_mods! { // _mods, _pub_mods _hidden
         pub use super::{
             niche::_all::*,
             wide::_all::*,
+        };
+    }
+    _reexports {
+        pub use devela_base_core::num::grain::{
+            PrimScalar, PrimFitPtr, PrimInt, PrimSint, PrimUint, PrimFloat,
         };
     }
     _hidden {

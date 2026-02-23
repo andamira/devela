@@ -455,6 +455,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### grain
 - new module `num::grain`.
+- new traits `PrimScalar`, `PrimFitPtr`, `PrimInt`, `PrimSint`, `PrimUint`, `PrimFloat`.
 - move inside: `num::cast`, `num::niche`, `num::wide`.
 
 #### cast
