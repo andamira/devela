@@ -94,8 +94,8 @@ impl XDisplay {
     /// the program must remain responsive without waiting.
     #[inline(always)]
     pub fn poll_event(&mut self) -> Event {
-        is![let Some(ev) = self.queue.pop(); return ev]; // return pending events first
-        is![let Some(raw) = self.poll_raw_event(); return self.handle_raw_event(raw)];
+        is![let Some(ev) = self.queue.pop(), return ev]; // return pending events first
+        is![let Some(raw) = self.poll_raw_event(), return self.handle_raw_event(raw)];
         Event::None
     }
 
@@ -108,8 +108,8 @@ impl XDisplay {
     /// application should sleep until user input or a window notification arrives.
     #[inline(always)]
     pub fn wait_event(&mut self) -> Event {
-        is![let Some(ev) = self.queue.pop(); return ev]; // return pending events first
-        is![let Some(raw) = self.wait_raw_event(); self.handle_raw_event(raw); Event::None]
+        is![let Some(ev) = self.queue.pop(), return ev]; // return pending events first
+        is![let Some(raw) = self.wait_raw_event(), self.handle_raw_event(raw), Event::None]
     }
 
     /// Flushes pending XCB commands.

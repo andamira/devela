@@ -57,24 +57,24 @@ impl SixelChar {
 
     /// Returns the next sixel character in sequence, wrapping around from 63 to 0.
     pub const fn next(self) -> Self {
-        is![self.eq(Self::FULL); Self::EMPTY; Self(self.0 - 1)]
+        is![self.eq(Self::FULL), Self::EMPTY, Self(self.0 - 1)]
     }
 
     /// Returns the previous sixel character in sequence, wrapping around from 0 to 63.
     pub const fn prev(self) -> Self {
-        is![self.eq(Self::EMPTY); Self::FULL; Self(self.0 - 1)]
+        is![self.eq(Self::EMPTY), Self::FULL, Self(self.0 - 1)]
     }
 
     /// Returns the next sixel character in sequence, returning None if at maximum.
     #[must_use]
     pub const fn next_checked(self) -> Option<Self> {
-        is![self.eq(Self::FULL); None; Some(Self(self.0 + 1))]
+        is![self.eq(Self::FULL), None, Some(Self(self.0 + 1))]
     }
 
     /// Returns the previous sixel character in sequence, returning None if at minimum.
     #[must_use]
     pub const fn prev_checked(self) -> Option<Self> {
-        is![self.eq(Self::EMPTY); None; Some(Self(self.0 - 1))]
+        is![self.eq(Self::EMPTY), None, Some(Self(self.0 - 1))]
     }
 }
 
@@ -234,7 +234,8 @@ impl SixelChar {
         let mask = self.as_bitmask();
         let mut i = 0;
         while i < 6 {
-            is![mask & (1 << i) != 0; string.push('■'); string.push('□')];
+            is![mask & (1 << i) != 0, string.push('■'), string.push('□')];
+
             i += 1;
         }
         assert![string.len() == 18];

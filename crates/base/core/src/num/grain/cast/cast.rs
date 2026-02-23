@@ -246,10 +246,10 @@ macro_rules! impl_cast_fns {
     (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_overflow $f:$t]; )+ };
     (@can_overflow $f:ty:$t:ty) => { paste! {
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
-            is![p > <$t>::MAX as $f; Err(Overflow(Some(Positive))); Ok(p as $t)]
+            is![p > <$t>::MAX as $f, Err(Overflow(Some(Positive))), Ok(p as $t)]
         }
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
-            is![p > <$t>::MAX as $f; <$t>::MAX; p as $t]
+            is![p > <$t>::MAX as $f, <$t>::MAX, p as $t]
         }
         #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
@@ -260,11 +260,11 @@ macro_rules! impl_cast_fns {
     (@can_underflow $f:ty:$t:ty) => { paste! {
         #[inline(always)]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
-            is![p < 0; Err(Overflow(Some(Negative))); Ok(p as $t)]
+            is![p < 0, Err(Overflow(Some(Negative))), Ok(p as $t)]
         }
         #[inline(always)]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
-            is![p < 0; 0; p as $t]
+            is![p < 0, 0, p as $t]
         }
         #[inline(always)]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {

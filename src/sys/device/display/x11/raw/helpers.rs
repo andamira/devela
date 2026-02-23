@@ -55,7 +55,7 @@ pub(crate) fn change_property_u8(
     debug_assert!(format == 8 || format == 16 || format == 32);
 
     let unit = (format as usize) / 8;
-    let len_units = is![unit == 0; 0; data.len() as u32 / unit as u32];
+    let len_units = is![unit == 0, 0, data.len() as u32 / unit as u32];
 
     unsafe {
         xcb_change_property(

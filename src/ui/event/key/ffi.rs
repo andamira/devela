@@ -486,7 +486,7 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                is![Char(c).is_ascii(); return (Char(c).as_ascii_unchecked(), Std)];
+                is![Char(c).is_ascii(), return (Char(c).as_ascii_unchecked(), Std)];
                 ("Unknown", Std)
             },
             // NOTE: Javascript has no concept of scan codes, so everything else is unknown
@@ -624,7 +624,7 @@ impl KeyFfi {
             },
             K::Char(c) => {
                 // Returns the ASCII character, or Unknown otherwise
-                is![Char(c).is_ascii(); return (Char(c).as_ascii_unchecked(), Std)];
+                is![Char(c).is_ascii(), return (Char(c).as_ascii_unchecked(), Std)];
                 ("Unknown", Std)
                 // IMPROVE using a static atomic buffer
                 // (Char(c).to_utf8_str_unchecked(), Std)

@@ -29,7 +29,7 @@ macro_rules! __impl_fmt_num_float {
             pub const fn write(self, buf: &mut [u8], mut pos: usize, fract_len: u16) -> usize {
                 use $crate::{Digits, Float, is, whilst, write_at};
                 let f = Float(self.0);
-                let (neg, fabs) = is![f.is_sign_negative(); (true, f.abs()); (false, f)];
+                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
                 // integral part
                 let integ = fabs.trunc().0 as $u;
                 let integ_digits = Digits(integ).count_digits10() as usize;
@@ -65,7 +65,7 @@ macro_rules! __impl_fmt_num_float {
                 -> usize {
                 use $crate::{Cmp, Digits, Float, is, whilst, write_at};
                 let f = Float(self.0);
-                let (neg, fabs) = is![f.is_sign_negative(); (true, f.abs()); (false, f)];
+                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
                 let emit_sign = conf.sign.emit_sign(neg);
                 // digit count of integral part
                 let integ = fabs.trunc().0 as $u;
@@ -79,7 +79,7 @@ macro_rules! __impl_fmt_num_float {
                 let (sign_len, dot_len) = (emit_sign as usize, (conf.fract > 0) as usize);
                 let needed = sign_len + (left_digits as usize) + dot_len + (conf.fract as usize);
                 // emit sign, zero padding, int digits, dot and fract digits
-                if emit_sign { write_at![buf, +=pos, is![neg; b'-'; b'+']]; } // ←sign ↓zero-padding
+                if emit_sign { write_at![buf, +=pos, is![neg, b'-', b'+']]; } // ←sign ↓zero-padding
                 whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, +=pos, b'0']; }}
                 pos += Digits(integ).write_digits10(buf, pos); // integral digits
                 if conf.fract > 0 {
@@ -117,7 +117,7 @@ macro_rules! __impl_fmt_num_float {
                 }
                 let f = Float(self.0);
                 let neg = f.is_sign_negative();
-                let fabs = is![neg; f.abs(); f];
+                let fabs = is![neg, f.abs(), f];
 
                 /* left (integral) side */
 
@@ -145,7 +145,7 @@ macro_rules! __impl_fmt_num_float {
 
                 // Adjusted configuration.
                 let conf2 = $crate::FmtNumConf {
-                    int: is![conf.pad_sign && emit_sign; left_digits + 1; left_digits],
+                    int: is![conf.pad_sign && emit_sign, left_digits + 1, left_digits],
                     fract: right_digits,
                     ..conf
                 };
@@ -213,7 +213,7 @@ macro_rules! __impl_fmt_num_float {
             pub const fn measure(self, fract_len: u16) -> $crate::FmtNumShape {
                 use $crate::{Digits, Float, is};
                 let f = Float(self.0);
-                let (neg, fabs) = is![f.is_sign_negative(); (true, f.abs()); (false, f)];
+                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
                 let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
                 $crate::FmtNumShape::new(neg as u16, int_digits, fract_len)
             }
@@ -222,7 +222,7 @@ macro_rules! __impl_fmt_num_float {
             pub const fn measure_fmt(self, conf: $crate::FmtNumConf) -> $crate::FmtNumShape {
                 use $crate::{Cmp, Digits, Float, is};
                 let f = Float(self.0);
-                let (neg, fabs) = is![f.is_sign_negative(); (true, f.abs()); (false, f)];
+                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
                 let prefix = conf.sign.emit_sign(neg) as u16;
                 let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
                 let left = if conf.pad_sign && prefix > 0 { Cmp(int_digits + 1).max(conf.int) - 1 }
@@ -339,7 +339,7 @@ macro_rules! __impl_fmt_num_float {
             pub const fn as_str_into_checked<'b>(&self, buf: &'b mut [u8], fract_len: u16)
             -> Option<&'b str> {
                 let len = self.write(buf, 0, fract_len);
-                $crate::is![len == 0; None; Some(Self::_as_str($crate::Slice::range_to(buf, len)))]
+                $crate::is![len == 0, None, Some(Self::_as_str($crate::Slice::range_to(buf, len)))]
             }
             /// Formats the number into a provided buffer and returns it as a string slice,
             /// using the given formatting configuration.
@@ -352,7 +352,7 @@ macro_rules! __impl_fmt_num_float {
             pub const fn as_str_into_checked_fmt<'b>(&self, buf: &'b mut [u8],
                 conf: $crate::FmtNumConf) -> Option<&'b str> {
                 let len = self.write_fmt(buf, 0, conf);
-                $crate::is![len == 0; None; Some(Self::_as_str($crate::Slice::range_to(buf, len)))]
+                $crate::is![len == 0, None, Some(Self::_as_str($crate::Slice::range_to(buf, len)))]
             }
 
             /* as_string */

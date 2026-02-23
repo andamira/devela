@@ -149,11 +149,11 @@ macro_rules! buffer_linear {
     // STATIC (array, uninit, option)
     // struct definition + optional implementations
 
-        $(#[$struct_attr:meta])*                                 // attributes
+        $(#[$attr:meta])*                                        // attributes
         $vis:vis struct $name:ident : $(static)? ($($I:tt)+);    // visibility, name, index type
         $($rest:tt)*                                             // impls
     ) => {
-        $(#[$struct_attr])*
+        $(#[$attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name<T, S> {
             storage: S,
@@ -174,11 +174,11 @@ macro_rules! buffer_linear {
     // VIEW (slice_mut, slice)
     // struct definition + optional implementations
 
-        $(#[$struct_attr:meta])*                                 // attributes
+        $(#[$attr:meta])*                                        // attributes
         $vis:vis struct $name:ident : view ($($I:tt)+);          // visibility, name, index type
         $($rest:tt)*                                             // impls
     ) => {
-        $(#[$struct_attr])*
+        $(#[$attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name<'a, T, S> {
             storage: S,
@@ -199,11 +199,11 @@ macro_rules! buffer_linear {
     // ALLOC (vec)
     // struct definition + optional implementations
 
-        $(#[$struct_attr:meta])*                                 // attributes
+        $(#[$attr:meta])*                                        // attributes
         $vis:vis struct $name:ident : alloc ($($I:tt)+);         // visibility, name, index type
         $($rest:tt)*                                             // impls
     ) => {
-        $(#[$struct_attr])*
+        $(#[$attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name<T, S> {
             storage: S,

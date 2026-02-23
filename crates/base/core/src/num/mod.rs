@@ -19,7 +19,7 @@ pub mod grain; // Structural granularity and representation of numeric values.
 #[cfg(feature = "lin")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
 pub mod lin; // Linear algebraic structures and methods.
-
+// pub mod optim; // WIP
 pub mod prob; // Probability theory and statistical inference
 pub mod quant; // Quantification, measurement, and numerical relationships
 pub mod symb; // Symbolic numeric forms and manipulation
@@ -32,9 +32,10 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _workspace_internals, 
             error::*,
             fin::_all::*,
             grain::_all::*,
+            // optim::_all::*,
             prob::_all::*,
             quant::_all::*,
-            // symb::_all::*,
+            symb::_all::*,
         };
         #[cfg(feature = "lin")]
         pub use super::lin::_all::*;

@@ -128,8 +128,8 @@ macro_rules! impl_elem {
             /// ```
             pub const fn gcd(self, b: $t) -> Int<$t> {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
-                is![a == 0; return Int(b)];
-                is![b == 0; return Int(a)];
+                is![a == 0, return Int(b)];
+                is![b == 0, return Int(a)];
                 // Let k be the greatest power of 2 dividing both a and b:
                 let k = (a | b).trailing_zeros();
                 // Divide a and b by 2 until they become odd:
@@ -139,12 +139,12 @@ macro_rules! impl_elem {
                 while b != 0 {
                     b >>= b.trailing_zeros();
                     // ensure b >= a before subtraction:
-                    is![a > b; cswap!(mut: a, b); b -= a];
+                    is![a > b, cswap!(mut: a, b), b -= a];
                 }
                 Int(a << k)
 
                 // Euclid's algorithm:
-                // while a != b { is![a > b; a -= b; b -= a] }; a
+                // while a != b { is![a > b, a -= b, b -= a] }; a
             }
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
@@ -256,7 +256,7 @@ macro_rules! impl_elem {
             pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = (aup * bup).abs() / self.gcd(b).0 as $up;
-                is![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow(None))]
+                is![res <= $t::MAX as $up, Ok(Int(res as $t)), Err(Overflow(None))]
             }
 
             /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
@@ -283,12 +283,12 @@ macro_rules! impl_elem {
                 // MAYBE use the Scale::scale implementation.
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
-                let b_a = is![let Some(n) = b.checked_sub(a); n; return Err(Overflow(None))];
-                let v_min = is![let Some(n) = v.checked_sub(min); n; return Err(Overflow(None))];
-                let mul = is![let Some(n) = b_a.checked_mul(v_min); n; return Err(Overflow(None))];
-                let max_min = is![let Some(n) = max.checked_sub(min); n; return Err(Overflow(None))];
-                let div = is![let Some(n) = mul.checked_div(max_min); n; return Err(Overflow(None))];
-                let sum = is![let Some(n) = div.checked_add(a); n; return Err(Overflow(None))];
+                let b_a = is![let Some(n) = b.checked_sub(a), n, return Err(Overflow(None))];
+                let v_min = is![let Some(n) = v.checked_sub(min), n, return Err(Overflow(None))];
+                let mul = is![let Some(n) = b_a.checked_mul(v_min), n, return Err(Overflow(None))];
+                let max_min = is![let Some(n) = max.checked_sub(min), n, return Err(Overflow(None))];
+                let div = is![let Some(n) = mul.checked_div(max_min), n, return Err(Overflow(None))];
+                let sum = is![let Some(n) = div.checked_add(a), n, return Err(Overflow(None))];
                 match Cast(sum).[<checked_cast_to_ $t>]() {
                     Ok(n) => Ok(Int(n)),
                     Err(_) => Err(Overflow(None)), // Err(e) => Err(e), // TEMP FIX
@@ -409,8 +409,8 @@ macro_rules! impl_elem {
             /// ```
             pub const fn gcd(self, mut b: $t) -> Int<$t> {
                 let mut a = self.0;
-                is![a == 0; return Int(b)];
-                is![b == 0; return self];
+                is![a == 0, return Int(b)];
+                is![b == 0, return self];
                 // Let k be the greatest power of 2 dividing both a and b:
                 let k = (a | b).trailing_zeros();
                 // Divide a and b by 2 until they become odd:
@@ -420,12 +420,12 @@ macro_rules! impl_elem {
                 while b != 0 {
                     b >>= b.trailing_zeros();
                     // ensure b >= a before subtraction:
-                    is![a > b; cswap![mut: a, b]; b -= a];
+                    is![a > b, cswap![mut: a, b], b -= a];
                 }
                 Int(a << k)
 
                 // Euclid's algorithm:
-                // while a != b { is![a > b; a -= b; b -= a] }; a
+                // while a != b { is![a > b, a -= b, b -= a] }; a
             }
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
@@ -556,7 +556,7 @@ macro_rules! impl_elem {
             pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = aup * bup / self.gcd(b).0 as $up;
-                is![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow(None))]
+                is![res <= $t::MAX as $up, Ok(Int(res as $t)), Err(Overflow(None))]
             }
 
             /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
@@ -582,12 +582,12 @@ macro_rules! impl_elem {
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
-                let b_a = is![let Some(n) = b.checked_sub(a); n; return Err(Overflow(None))];
-                let v_min = is![let Some(n) = v.checked_sub(min); n; return Err(Overflow(None))];
-                let mul = is![let Some(n) = b_a.checked_mul(v_min); n; return Err(Overflow(None))];
-                let max_min = is![let Some(n) = max.checked_sub(min); n; return Err(Overflow(None))];
-                let div = is![let Some(n) = mul.checked_div(max_min); n; return Err(Overflow(None))];
-                let sum = is![let Some(n) = div.checked_add(a); n; return Err(Overflow(None))];
+                let b_a = is![let Some(n) = b.checked_sub(a), n, return Err(Overflow(None))];
+                let v_min = is![let Some(n) = v.checked_sub(min), n, return Err(Overflow(None))];
+                let mul = is![let Some(n) = b_a.checked_mul(v_min), n, return Err(Overflow(None))];
+                let max_min = is![let Some(n) = max.checked_sub(min), n, return Err(Overflow(None))];
+                let div = is![let Some(n) = mul.checked_div(max_min), n, return Err(Overflow(None))];
+                let sum = is![let Some(n) = div.checked_add(a), n, return Err(Overflow(None))];
                 match Cast(sum).[<checked_cast_to_ $t>]() {
                     Ok(n) => Ok(Int(n)),
                     Err(_) => Err(Overflow(None)), // Err(e) => Err(e), // TEMP FIX

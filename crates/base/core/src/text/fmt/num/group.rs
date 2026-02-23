@@ -158,11 +158,11 @@ impl FmtNumGroup {
         digit_count: u16,
         min_width: u16,
     ) -> u16 {
-        is![!self.side_enabled(side); return Cmp(digit_count).max(min_width)];
+        is![!self.side_enabled(side), return Cmp(digit_count).max(min_width)];
         let len = self.side_len(side) as u16;
         let mut digits = Cmp((min_width * len) / (len + 1)).max(digit_count);
         let seps = (digits.saturating_sub(1)) / len;
-        is![digits + seps < min_width; digits += 1];
+        is![digits + seps < min_width, digits += 1];
         digits
     }
 }

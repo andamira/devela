@@ -84,7 +84,7 @@ impl LinuxTermios {
         let res = unsafe {
             Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCGETS, state.as_mut_bytes_ptr())
         };
-        is![res >= 0; Ok(state); Err(LinuxError::Sys(res))]
+        is![res >= 0, Ok(state), Err(LinuxError::Sys(res))]
     }
 
     /// Sets the current termios `state`.
@@ -92,7 +92,7 @@ impl LinuxTermios {
         let res = unsafe {
             Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, state.as_mut_bytes_ptr())
         };
-        is![res >= 0; Ok(()); Err(LinuxError::Sys(res))]
+        is![res >= 0, Ok(()), Err(LinuxError::Sys(res))]
     }
 
     /// Returns `true` if we're in a terminal context.
@@ -131,6 +131,6 @@ impl LinuxTermios {
                 &mut winsize as *mut TermSize as *mut u8,
             )
         };
-        is![res >= 0; Ok(winsize); Err(LinuxError::Sys(res))]
+        is![res >= 0, Ok(winsize), Err(LinuxError::Sys(res))]
     }
 }

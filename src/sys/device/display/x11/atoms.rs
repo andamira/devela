@@ -40,7 +40,7 @@ impl XAtoms {
             let cookie = raw::xcb_intern_atom(conn, 0, name.len() as u16, name.as_ptr());
             let mut err: *mut raw::xcb_generic_error_t = Ptr::null_mut();
             let reply = raw::xcb_intern_atom_reply(conn, cookie, &mut err);
-            is![reply.is_null(); return 0];
+            is![reply.is_null(), return 0];
             let atom = (*reply).atom;
             Libc::free(reply as *mut _);
             atom

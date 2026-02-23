@@ -53,7 +53,7 @@ impl FmtNumShape {
     pub const fn total(&self) -> usize {
         self.prefix as usize
             + self.left as usize
-            + is![self.has_radix(); 1; 0]
+            + is![self.has_radix(), 1, 0]
             + self.right as usize
     }
 

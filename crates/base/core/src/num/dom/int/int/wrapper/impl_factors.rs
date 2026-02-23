@@ -82,7 +82,7 @@ macro_rules! impl_factors {
             #[must_use]
             pub const fn factors_prime_count(self) -> usize {
                 let mut n = self.0.abs();
-                is![n == 0; return 0];
+                is![n == 0, return 0];
                 let mut count = 0;
                 // Divide by 2 until the number is odd
                 while n % 2 == 0 {
@@ -99,7 +99,7 @@ macro_rules! impl_factors {
                     i += 2;
                 }
                 // If the remaining number is greater than 2, it's a prime factor
-                is![n > 2; count += 1];
+                is![n > 2, count += 1];
                 count
             }
 
@@ -114,20 +114,20 @@ macro_rules! impl_factors {
             #[must_use]
             pub const fn factors_prime_unique_count(self) -> usize {
                 let mut n = self.0.abs();
-                is![n == 0; return 0];
+                is![n == 0, return 0];
                 let mut count = 0;
                 let mut last = 0;
 
                 // Divide by 2 until the number is odd
                 while n % 2 == 0 {
-                    is![last != 2; { count += 1; last = 2 }];
+                    is![last != 2, { count += 1; last = 2 }];
                     n /= 2;
                 }
                 // Divide by odd numbers starting from 3
                 let mut i = 3;
                 while i * i <= n {
                     while n % i == 0 {
-                        is![last != i; { count += 1; last = i }];
+                        is![last != i, { count += 1; last = i }];
                         n /= i;
                     }
                     i += 2;
@@ -160,8 +160,8 @@ macro_rules! impl_factors {
             pub const fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
                 let n = self.0.abs();
-                is![n == 0; return Ok((0, 0))];
-                is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                is![n == 0, return Ok((0, 0))];
+                is![n == 1, { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 fbuf[f_count] = 1;
                 f_count += 1;
@@ -202,8 +202,8 @@ macro_rules! impl_factors {
             pub const fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
                 let n = self.0.abs();
-                is![n == 0; return Ok((0, 0))];
-                is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                is![n == 0, return Ok((0, 0))];
+                is![n == 1, { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
                 whilst! { i in 2..n; {
@@ -243,7 +243,7 @@ macro_rules! impl_factors {
             /// assert_eq![buf[..1], [7]];
             /// ```
             pub const fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
-                is![self.0 == 0; return Ok(0)];
+                is![self.0 == 0, return Ok(0)];
                 let (mut n, mut idx) = (self.0.abs(), 0);
                 while n % 2 == 0 {
                     if idx < buffer.len() {
@@ -361,7 +361,7 @@ macro_rules! impl_factors {
             pub const fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
             -> Result<usize> {
                 let prime_factors_count = unwrap![ok? self.factors_prime_buf(fbuffer)];
-                is![prime_factors_count == 0; return Ok(0)];
+                is![prime_factors_count == 0, return Ok(0)];
 
                 let mut current_factor = fbuffer[0]; // current factor
                 let mut unique_idx = 0; // current unique factor index
@@ -374,7 +374,7 @@ macro_rules! impl_factors {
                     } else {
                         // New factor found, store the previous factor and its exp_count
                         fbuffer[unique_idx] = current_factor;
-                        is![unique_idx >= ebuffer.len(); return Err(MismatchedSizes)];
+                        is![unique_idx >= ebuffer.len(), return Err(MismatchedSizes)];
                         ebuffer[unique_idx] = exp_count;
                         unique_idx += 1; // Move to the next unique factor
 
@@ -460,7 +460,7 @@ macro_rules! impl_factors {
             #[must_use]
             pub const fn factors_prime_count(self) -> usize {
                 let mut n = self.0;
-                is![n == 0; return 0];
+                is![n == 0, return 0];
                 let mut count = 0;
                 // Divide by 2 until the number is odd
                 while n % 2 == 0 {
@@ -477,7 +477,7 @@ macro_rules! impl_factors {
                     i += 2;
                 }
                 // If the remaining number is greater than 2, it's a prime factor
-                is![n > 2; count += 1];
+                is![n > 2, count += 1];
                 count
             }
 
@@ -491,20 +491,20 @@ macro_rules! impl_factors {
             #[must_use]
             pub const fn factors_prime_unique_count(self) -> usize {
                 let mut n = self.0;
-                is![n == 0; return 0];
+                is![n == 0, return 0];
                 let mut count = 0;
                 let mut last = 0;
 
                 // Divide by 2 until the number is odd
                 while n % 2 == 0 {
-                    is![last != 2; { count += 1; last = 2 }];
+                    is![last != 2, { count += 1; last = 2 }];
                     n /= 2;
                 }
                 // Divide by odd numbers starting from 3
                 let mut i = 3;
                 while i * i <= n {
                     while n % i == 0 {
-                        is![last != i; { count += 1; last = i }];
+                        is![last != i, { count += 1; last = i }];
                         n /= i;
                     }
                     i += 2;
@@ -536,8 +536,8 @@ macro_rules! impl_factors {
             /// ```
             pub const fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]) -> Result<(usize, usize)> {
                 let n = self.0;
-                is![n == 0; return Ok((0, 0))];
-                is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                is![n == 0, return Ok((0, 0))];
+                is![n == 1, { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 fbuf[f_count] = 1;
                 f_count += 1;
@@ -577,8 +577,8 @@ macro_rules! impl_factors {
             pub const fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]
             ) -> Result<(usize, usize)> {
                 let n = self.0;
-                is![n == 0; return Ok((0, 0))];
-                is![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                is![n == 0, return Ok((0, 0))];
+                is![n == 1, { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 let prime_factors_count = unwrap![ok? self.factors_prime_unique_buf(upfbuf)];
                 whilst! { i in 2..n; {
@@ -619,7 +619,7 @@ macro_rules! impl_factors {
             /// ```
             pub const fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
                 let n = self.0;
-                is![n == 0; return Ok(0)];
+                is![n == 0, return Ok(0)];
                 let (mut n, mut idx) = (n, 0);
                 while n % 2 == 0 {
                     if idx < buffer.len() {
@@ -737,7 +737,7 @@ macro_rules! impl_factors {
             pub const fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
             -> Result<usize> {
                 let prime_factors_count = unwrap![ok? self.factors_prime_buf(fbuffer)];
-                is![prime_factors_count == 0; return Ok(0)];
+                is![prime_factors_count == 0, return Ok(0)];
 
                 let mut current_factor = fbuffer[0]; // current factor
                 let mut unique_idx = 0; // current unique factor index
@@ -750,7 +750,7 @@ macro_rules! impl_factors {
                     } else {
                         // New factor found, store the previous factor and its exp_count
                         fbuffer[unique_idx] = current_factor;
-                        is![unique_idx >= ebuffer.len(); return Err(MismatchedSizes)];
+                        is![unique_idx >= ebuffer.len(), return Err(MismatchedSizes)];
                         ebuffer[unique_idx] = exp_count;
                         unique_idx += 1; // Move to the next unique factor
 

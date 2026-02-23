@@ -50,7 +50,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Uses the `unsafe_niche` feature to skip duplicated validation checks.
     #[must_use]
     pub const fn next_char(&mut self) -> Option<char> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let Some((ch, len)) = Char(self.bytes).to_char(self.pos) else { return None };
         self.pos += len;
         Some(ch)
@@ -64,9 +64,9 @@ impl<'a> CharIter<'a, &[u8]> {
     /// This is implemented via `Char::`[`to_char_lenient`][Char::to_char_lenient].
     #[must_use]
     pub const fn next_char_lenient(&mut self) -> Option<char> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
-        is![let Some(ch) = char::from_u32(cp); { self.pos += len; Some(ch) }; None]
+        is![let Some(ch) = char::from_u32(cp), { self.pos += len; Some(ch) }, None]
     }
 
     /// Returns the next Unicode scalar, without performing UTF-8 validation.
@@ -82,7 +82,7 @@ impl<'a> CharIter<'a, &[u8]> {
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_char_unchecked(&mut self) -> Option<char> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (ch, len) = unsafe { Char(self.bytes).to_char_unchecked(self.pos) };
         self.pos += len;
         Some(ch)
@@ -97,9 +97,16 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Uses the `unsafe_niche` feature to skip validation checks.
     #[must_use]
     pub const fn next_char7(&mut self) -> Option<char7> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let byte = self.bytes[0];
-        is![byte.is_ascii(); { self.pos += 1; Some(char7::new_unchecked(byte)) }; None]
+        is![
+            byte.is_ascii(),
+            {
+                self.pos += 1;
+                Some(char7::new_unchecked(byte))
+            },
+            None
+        ]
     }
 
     /// Returns the next 8-bit Unicode scalar.
@@ -108,7 +115,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// or if the next character can't fit in 1 byte.
     #[must_use]
     pub const fn next_char8(&mut self) -> Option<char8> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let Some((cp, len)) = Char(self.bytes).to_scalar(self.pos) else { return None };
         if Char(cp).len_bytes() == 1 {
             self.pos += len;
@@ -138,7 +145,14 @@ impl<'a> CharIter<'a, &[u8]> {
     #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_char8_unchecked(&mut self) -> Option<char8> {
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
-        is![Char(cp).len_bytes() == 1; { self.pos += len; Some(char8(cp as u8)) }; None]
+        is![
+            Char(cp).len_bytes() == 1,
+            {
+                self.pos += len;
+                Some(char8(cp as u8))
+            },
+            None
+        ]
     }
 
     /// Returns the next 16-bit Unicode scalar.
@@ -150,7 +164,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Uses the `unsafe_niche` feature to skip validation checks.
     #[must_use]
     pub const fn next_char16(&mut self) -> Option<char16> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let Some((cp, len)) = Char(self.bytes).to_scalar(self.pos) else { return None };
         if Char(cp).len_bytes() <= 2 {
             self.pos += len;
@@ -198,7 +212,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
     #[must_use] #[rustfmt::skip]
     pub const fn next_charu(&mut self) -> Option<charu> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (ch, len) = unwrap![some? charu::from_utf8_bytes_with_len(self.bytes)];
         self.pos += len as usize;
         Some(ch)
@@ -220,7 +234,7 @@ impl<'a> CharIter<'a, &[u8]> {
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_charu_unchecked(&mut self) -> Option<charu> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (ch, len) = unsafe { charu::from_utf8_bytes_with_len_unchecked(self.bytes) };
         self.pos += len as usize;
         Some(ch)
@@ -236,7 +250,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Uses the `unsafe_niche` feature to skip duplicated validation checks.
     #[must_use]
     pub const fn next_scalar(&mut self) -> Option<u32> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let Some((ch, len)) = Char(self.bytes).to_scalar(self.pos) else { return None };
         self.pos += len;
         Some(ch)
@@ -255,7 +269,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// It will panic if the index is out of bounds.
     #[must_use]
     pub const fn next_scalar_unchecked(&mut self) -> Option<u32> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (ch, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         self.pos += len;
         Some(ch)

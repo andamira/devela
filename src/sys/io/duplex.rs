@@ -25,7 +25,7 @@ pub trait IoDuplex: IoRead + IoWrite {
         let mut filled = 0;
         while filled < min {
             let n = self.read(&mut buf[filled..])?;
-            is![n == 0; break];
+            is![n == 0, break];
             filled += n;
         }
         Ok(filled)
@@ -38,7 +38,7 @@ pub trait IoDuplex: IoRead + IoWrite {
         let mut total = 0u64;
         loop {
             let n = self.read(&mut tmp)?;
-            is![n == 0; break];
+            is![n == 0, break];
             out.write_all(&tmp[..n])?;
             total += n as u64;
         }
@@ -54,10 +54,10 @@ pub trait IoDuplex: IoRead + IoWrite {
         for slot in out.iter_mut() {
             let mut b = [0];
             let n = self.read(&mut b)?;
-            is![n == 0; break];
+            is![n == 0, break];
             *slot = b[0];
             count += 1;
-            is![b[0] == delim; break];
+            is![b[0] == delim, break];
         }
         Ok(count)
     }

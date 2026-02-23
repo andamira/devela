@@ -75,7 +75,7 @@ pub trait IteratorLending {
     /// Advances the iterator by `n` items and returns the next one.
     fn nth<'a>(&'a mut self, mut n: usize) -> Option<Self::Item<'a>> {
         while n > 0 {
-            is![self.next().is_none(); return None];
+            is![self.next().is_none(), return None];
             n -= 1;
         }
         self.next()
@@ -181,7 +181,7 @@ pub trait IteratorLending {
     where
         P: FnMut(&Self::Item<'_>) -> bool,
     {
-        while let Some(item) = self.next() { is![!pred(&item); return false]; }
+        while let Some(item) = self.next() { is![!pred(&item), return false]; }
         true
     }
     /// Returns `true` if any item satisfies the predicate.
@@ -189,7 +189,7 @@ pub trait IteratorLending {
     where
         P: FnMut(&Self::Item<'_>) -> bool,
     {
-        while let Some(item) = self.next() { is![pred(&item); return true]; }
+        while let Some(item) = self.next() { is![pred(&item), return true]; }
         false
     }
 
@@ -205,7 +205,7 @@ pub trait IteratorLending {
     {
         let mut index = 0;
         while let Some(item) = self.next() {
-            is![pred(&item); return Some(index)];
+            is![pred(&item), return Some(index)];
             index += 1;
         }
         None
@@ -262,7 +262,7 @@ pub trait IteratorLendingDoubleEnded: IteratorLending {
     /// This is the reverse analogue of [`IteratorLending::nth`].
     fn nth_back<'a>(&'a mut self, mut n: usize) -> Option<Self::Item<'a>> {
         while n > 0 {
-            is![self.next_back().is_none(); return None];
+            is![self.next_back().is_none(), return None];
             n -= 1;
         }
         self.next_back()
@@ -347,7 +347,7 @@ pub trait IteratorLendingPeek: IteratorLending {
     where
         for<'a> F: FnOnce(&Self::Item<'a>) -> bool,
     {
-        is![self.peek().is_some_and(|i| pred(&i)); self.next(); None]
+        is![self.peek().is_some_and(|i| pred(&i)), self.next(), None]
     }
 
     /// Returns the next item if it is equal to `expected`.
@@ -415,7 +415,7 @@ pub trait IteratorLendingPeekDoubleEnded: IteratorLendingPeek + IteratorLendingD
     where
         for<'a> F: FnOnce(&Self::Item<'a>) -> bool,
     {
-        is![self.peek_back().is_some_and(|i| pred(&i)); self.next_back(); None]
+        is![self.peek_back().is_some_and(|i| pred(&i)), self.next_back(), None]
     }
 
     /// Returns the next item from the back if it is equal to `expected`.

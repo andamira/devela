@@ -28,7 +28,7 @@ macro_rules! impl_sort {
                 let mut arr = self.0;
                 whilst![i in 0..N; {
                     whilst![j in 0..N-i-1; {
-                        is![arr[j] > arr[j+1]; cswap!(xor arr[j], arr[j+1])];
+                        is![arr[j] > arr[j+1], cswap!(xor arr[j], arr[j+1])];
                     }];
                 }];
                 arr
@@ -55,7 +55,7 @@ macro_rules! impl_sort {
                 whilst![i in 0..N-1; {
                     let mut min_index = i;
                     whilst![j in (i+1),..N; {
-                        is![arr[j] < arr[min_index]; min_index = j];
+                        is![arr[j] < arr[min_index], min_index = j];
                     }];
                     cswap!(xor arr[min_index], arr[i]);
                 }];
@@ -72,7 +72,7 @@ macro_rules! impl_sort {
                 let mut arr = self.0;
                 whilst![i in 0..N; {
                     whilst![j in 0..N-i-1; {
-                        is![arr[j] > arr[j+1]; cswap!(xor: arr[j], arr[j+1])];
+                        is![arr[j] > arr[j+1], cswap!(xor: arr[j], arr[j+1])];
                     }];
                 }];
                 arr
@@ -99,7 +99,7 @@ macro_rules! impl_sort {
                 whilst![i in 0..N-1; {
                     let mut min_index = i;
                     whilst![j in (i+1),..N; {
-                        is![arr[j] < arr[min_index]; min_index = j];
+                        is![arr[j] < arr[min_index], min_index = j];
                     }];
                     cswap!(xor: arr[min_index], arr[i]);
                 }];
@@ -116,7 +116,7 @@ macro_rules! impl_sort {
                 let mut arr = self.0;
                 whilst![i in 0..N; {
                     whilst![j in 0..N-i-1; {
-                        is![Cmp(arr[j]).gt(arr[j+1]); cswap!(tmp: arr[j], arr[j+1])];
+                        is![Cmp(arr[j]).gt(arr[j+1]), cswap!(tmp: arr[j], arr[j+1])];
                     }];
                 }];
                 arr
@@ -143,7 +143,7 @@ macro_rules! impl_sort {
                 whilst![i in 0..N-1; {
                     let mut min_index = i;
                     whilst![j in (i+1),..N; {
-                        is![Cmp(arr[j]).lt(arr[min_index]); min_index = j];
+                        is![Cmp(arr[j]).lt(arr[min_index]), min_index = j];
                     }];
                     cswap!(tmp: arr[min_index], arr[i]);
                 }];

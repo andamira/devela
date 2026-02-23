@@ -373,7 +373,7 @@ impl Linux {
     pub fn clock_gettime(clock_id: LinuxClock) -> Result<LinuxTimespec> {
         let mut tp = LinuxTimespec::default();
         let ret = unsafe { Self::sys_clock_gettime(clock_id, tp.as_mut_ptr()) };
-        is![ret == 0; Ok(tp); Err(LinuxError::Sys(ret))]
+        is![ret == 0, Ok(tp), Err(LinuxError::Sys(ret))]
     }
 
     /// Suspends execution of calling thread for the given `duration`.
@@ -465,7 +465,7 @@ impl Linux {
     /// ```
     pub fn sig_handler(handler: fn(i32), signals: &[i32], flags: Option<&[usize]>) {
         extern "C" fn c_handler(sig: i32) {
-            is![sig < 1 || sig > LINUX_SIG_MAX as i32; return]; // Ignore invalid signals
+            is![sig < 1 || sig > LINUX_SIG_MAX as i32, return]; // Ignore invalid signals
             let handler = LINUX_SIG_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
                 #[expect(clippy::crosspointer_transmute, reason = "pointer to fn pointer")]
@@ -563,7 +563,7 @@ impl Linux {
         HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
 
         extern "C" fn c_handler_siginfo(sig: i32, info: LinuxSiginfo, context: *mut c_void) {
-            is![sig < 1 || sig > LINUX_SIG_MAX as i32; return]; // Ignore invalid signals
+            is![sig < 1 || sig > LINUX_SIG_MAX as i32, return]; // Ignore invalid signals
             let handler = HANDLER.load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
                 #[expect(clippy::crosspointer_transmute, reason = "pointer to fn pointer")]
@@ -634,7 +634,7 @@ macro_rules! impl_random_fns {
                 let n = unsafe { Linux::sys_getrandom(r.as_mut_ptr(), $len, Linux::RAND_FLAGS) };
                 if n == $len { break; } // ← hot path
                 else if n == -ERRNO::EAGAIN { // ←↓ cold paths
-                    is![!Linux::getrandom_try_again_cold(&mut attempts); break];
+                    is![!Linux::getrandom_try_again_cold(&mut attempts), break];
                 } else { return getrandom_failed_cold(n); } // n < 0
             }
             Ok($prim::from_ne_bytes(r))
@@ -664,7 +664,7 @@ impl Linux {
         while offset < buffer.len() {
             let n = unsafe { Linux::sys_getrandom(buffer[offset..].as_mut_ptr(),
                 buffer.len() - offset, Linux::RAND_FLAGS) };
-            if n == -ERRNO::EAGAIN { is![!Linux::getrandom_try_again_cold(&mut attempts); break]; }
+            if n == -ERRNO::EAGAIN { is![!Linux::getrandom_try_again_cold(&mut attempts), break]; }
             else if n < 0 { return getrandom_failed_cold(n); } // ←↑ cold paths
             else { offset += n as usize; } // ← hot path
         }

@@ -88,7 +88,7 @@ impl SixelColor {
         buf: &mut [u8],
         mut offset: usize,
     ) -> Option<usize> {
-        is![offset + 15 > buf.len(); return None];
+        is![offset + 15 > buf.len(), return None];
         let start = offset;
         write_at!(buf, +=offset, b'#');
         offset += Digits(idx).write_digits10_omit0(buf, offset);

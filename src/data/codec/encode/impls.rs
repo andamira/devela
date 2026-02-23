@@ -53,7 +53,7 @@ crate::items! {
             let mut byte = [0u8; 1];
             loop {
                 reader.read_exact(&mut byte)?;
-                is![byte[0] == 0; break];
+                is![byte[0] == 0, break];
                 buf.push(byte[0]);
             }
             CString::new(buf).map_err(|_|

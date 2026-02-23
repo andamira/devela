@@ -225,9 +225,9 @@ impl XEvent {
     #[inline(always)]
     pub(crate) const fn map_button_mask(state: u16) -> u8 {
         let (state, mut buttons) = (Bitwise(state), 0u8);
-        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_1); buttons |= 1]; // Left
-        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_3); buttons |= 2]; // Right
-        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_2); buttons |= 4]; // Middle
+        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_1), buttons |= 1]; // Left
+        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_3), buttons |= 2]; // Right
+        is![state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_2), buttons |= 4]; // Middle
         buttons
     }
 

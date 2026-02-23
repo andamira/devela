@@ -88,7 +88,7 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn factorial(self) -> Result<Int<$t>> {
                 let n = self.0;
-                is![n < 0; return Err(NonNegativeRequired)];
+                is![n < 0, return Err(NonNegativeRequired)];
                 let (mut n, mut result): ($t, $t) = (n.abs(), 1);
                 while n > 1 {
                     result = if let Some(res) = result.checked_mul(n) {
@@ -145,7 +145,7 @@ macro_rules! impl_combinatorics {
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
-                is![n < 0; return Err(NonNegativeRequired)];
+                is![n < 0, return Err(NonNegativeRequired)];
                 match n {
                     0 => Ok(Int(1)),
                     1 => Ok(Int(0)),
@@ -187,8 +187,8 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn combine(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                is![n < 0 || r < 0; return Err(NonNegativeRequired)];
-                is![r > n; return Err(MismatchedSizes)];
+                is![n < 0 || r < 0, return Err(NonNegativeRequired)];
+                is![r > n, return Err(MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 whilst![i in 0..r; {
                     num = if let Some(res) = num.checked_mul(n - i) {
@@ -227,7 +227,7 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn combine_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                is![n < 0 || r < 0; return Err(NonNegativeRequired)];
+                is![n < 0 || r < 0, return Err(NonNegativeRequired)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 whilst![i in 0..r; {
                     let Some(factor) = n.checked_add(r - 1 - i) else {
@@ -270,8 +270,8 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn permute(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                is![n < 0 || r < 0; return Err(NonNegativeRequired)];
-                is![r > n; return Err(MismatchedSizes)];
+                is![n < 0 || r < 0, return Err(NonNegativeRequired)];
+                is![r > n, return Err(MismatchedSizes)];
                 let mut result: $t = 1;
                 whilst![i in 0..r; {
                     result = if let Some(res) = result.checked_mul(n - i) {
@@ -303,7 +303,7 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                is![n < 0 || r < 0; return Err(NonNegativeRequired)];
+                is![n < 0 || r < 0, return Err(NonNegativeRequired)];
                 let Ok(r_u32) = Cast(r).checked_cast_to_u32() else {
                     return Err(Overflow(None));
                 };
@@ -445,7 +445,7 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn combine(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                is![r > n; return Err(MismatchedSizes)];
+                is![r > n, return Err(MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 whilst![i in 0..r; {
                     num = if let Some(res) = num.checked_mul(n - i) {
@@ -522,7 +522,7 @@ macro_rules! impl_combinatorics {
             /// ```
             pub const fn permute(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                is![r > n; return Err(MismatchedSizes)];
+                is![r > n, return Err(MismatchedSizes)];
                 let mut result: $t = 1;
                 whilst![i in 0..r; {
                     result = if let Some(res) = result.checked_mul(n - i) {

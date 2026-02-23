@@ -177,11 +177,11 @@ macro_rules! impl_non_value {
                 pub const fn new(value: $IP) -> Option<Self> {
                     if $IP::MIN == 0 && V == $IP::MAX { // unsigned::MAX optimization
                         if value == V { return None; }
-                        $crate::is![let Some(nz) = $crate::$n0::new(!value); Some(Self(nz)); None]
+                        $crate::is![let Some(nz) = $crate::$n0::new(!value), Some(Self(nz)), None]
                     } else { // default case: XOR
                         // NOTE: `i*::MIN` uses `LEA`-optimized `value ^ MIN`
                         // (equivalent to `value.wrapping_sub(MIN)`).
-                        $crate::is![let Some(nz) = $crate::$n0::new(value ^ V); Some(Self(nz)); None]
+                        $crate::is![let Some(nz) = $crate::$n0::new(value ^ V), Some(Self(nz)), None]
                     }
                 }
                 /// Creates a non-value integer, automatically converting the prohibited value `V`
@@ -208,7 +208,7 @@ macro_rules! impl_non_value {
                         !transformed
                     } else { // For MIN: choose MIN+1, for others: V-1
                         let transformed =
-                            $crate::is![value == V; $crate::is![V == $IP::MIN; V + 1; V - 1]; value];
+                            $crate::is![value == V, $crate::is![V == $IP::MIN, V + 1, V - 1], value];
                         transformed ^ V
                     };
 
@@ -317,7 +317,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V - 1`.
                 pub const fn saturating_add(&self, other: $IP) -> Self {
                     let res = self.get().saturating_add(other);
-                    $crate::unwrap![some Self::new($crate::is![res == V; res - 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V, res - 1, res])]
                 }
                 /// Saturating integer substration. Computes `self - rhs`.
                 ///
@@ -325,7 +325,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V + 1`.
                 pub const fn saturating_sub(&self, other: $IP) -> Self {
                     let res = self.get().saturating_sub(other);
-                    $crate::unwrap![some Self::new($crate::is![res == V; res + 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V, res + 1, res])]
                 }
 
                 /// Wraping integer addition. Computes `self + rhs`.
@@ -334,7 +334,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V + 1`.
                 pub const fn wrapping_add(&self, other: $IP) -> Self {
                     let res = self.get().wrapping_add(other);
-                    $crate::unwrap![some Self::new($crate::is![res == V; res + 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V, res + 1, res])]
                 }
                 /// Wraping integer subtraction. Computes `self - rhs`.
                 ///
@@ -342,7 +342,7 @@ macro_rules! impl_non_value {
                 /// If the result would equal `V` it will return `V - 1`.
                 pub const fn wrapping_sub(&self, other: $IP) -> Self {
                     let res = self.get().wrapping_sub(other);
-                    $crate::unwrap![some Self::new($crate::is![res == V; res - 1; res])]
+                    $crate::unwrap![some Self::new($crate::is![res == V, res - 1, res])]
                 }
             }
 

@@ -87,7 +87,7 @@ impl TimeUnixI64 {
             leap = is_leap_year(year);
             let days_in_year = if leap { 366 } else { 365 };
             secs_left -= (hours_per_day * mins_per_hour * secs_per_min * days_in_year) as i64;
-            is![self.seconds >= 0; year += 1; year -= 1];
+            is![self.seconds >= 0, year += 1, year -= 1];
         }
         let mut month = Month::January;
         while secs_left

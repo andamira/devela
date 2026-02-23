@@ -60,7 +60,7 @@ impl TextLayout {
 
         macro_rules! consume_whole {
             ($sym:ident) => {{
-                is![span_start.is_none(); span_start = Some(index)];
+                is![span_start.is_none(), span_start = Some(index)];
                 span_units += $sym.units;
                 consumed += $sym.units;
                 remaining -= $sym.units;
@@ -74,7 +74,7 @@ impl TextLayout {
                 // Elidable symbols may always be skipped.
                 TextCohesion::Elidable => index += 1,
                 // Atomic symbols must fit entirely or stop layout.
-                TextCohesion::Atomic => is![sym.units <= remaining; consume_whole!(sym); break],
+                TextCohesion::Atomic => is![sym.units <= remaining, consume_whole!(sym), break],
                 // Breakable symbols may be partially consumed if space runs out.
                 TextCohesion::Breakable => {
                     if sym.units <= remaining {
@@ -82,7 +82,7 @@ impl TextLayout {
                     } else {
                         // Partial consumption: consume remaining space,
                         // do not advance the symbol index.
-                        is![span_start.is_none(); span_start = Some(index)];
+                        is![span_start.is_none(), span_start = Some(index)];
                         span_units += remaining;
                         consumed += remaining;
                         partial_break = true;
@@ -96,7 +96,7 @@ impl TextLayout {
         // Finalize the span if any symbols were consumed.
         if let Some(start) = span_start {
             // A partial break still covers the logical symbol range [i, i+1).
-            let end = is![partial_break; (partial_index + 1) as u32; index as u32];
+            let end = is![partial_break, (partial_index + 1) as u32, index as u32];
             out_spans[0] = TextSpan::from_prim(start as u32, end, span_units);
             span_count = 1;
         }
@@ -156,7 +156,7 @@ impl TextLayout {
         let mut it = CharIter::<&str>::new(text);
         let mut len = 0;
         while let Some(ch) = it.next_char() {
-            is![len == out.len(); break];
+            is![len == out.len(), break];
             out[len] = f(ch);
             len += 1;
         }
@@ -177,7 +177,7 @@ impl TextLayout {
         let mut i = 0;
         let mut len = 0;
         while let Some(ch) = it.next_char() {
-            is![len == out.len(); break];
+            is![len == out.len(), break];
             out[len] = f(i, ch);
             i += 1;
             len += 1;

@@ -77,7 +77,7 @@ impl<'g> FontArt<'g> {
     pub const fn get_glyph(&self, c: char) -> Option<&'g [&'g str]> {
         let idx = (c as usize).wrapping_sub(self.first_glyph as usize);
         let max_idx = self.last_glyph as usize - self.first_glyph as usize;
-        is![idx <= max_idx; Some(self.glyphs[idx]); None]
+        is![idx <= max_idx, Some(self.glyphs[idx]), None]
     }
 
     /// Returns the glyph for the specified Unicode scalar, if available.
@@ -91,7 +91,7 @@ impl<'g> FontArt<'g> {
     pub const fn get_glyph_from_scalar(&self, c: u32) -> Option<&'g [&'g str]> {
         let idx = c.wrapping_sub(self.first_glyph as u32) as usize;
         let max_idx = self.last_glyph as usize - self.first_glyph as usize;
-        is![idx <= max_idx; Some(self.glyphs[idx]); None]
+        is![idx <= max_idx, Some(self.glyphs[idx]), None]
     }
     /// Returns the glyph for the specified Unicode scalar, if available.
     ///
@@ -105,7 +105,7 @@ impl<'g> FontArt<'g> {
         let idx = c.wrapping_sub(self.first_glyph as u32) as usize;
         self.glyphs[idx]
         // let max_idx = self.last_glyph as usize - self.first_glyph as usize;
-        // is![idx <= max_idx; Some(self.glyphs[idx]); None]
+        // is![idx <= max_idx, Some(self.glyphs[idx]), None]
     }
 
     // MAYBE RENAME? from_char? from_scalar?

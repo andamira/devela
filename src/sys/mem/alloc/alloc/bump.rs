@@ -55,7 +55,7 @@ unsafe impl GlobalAlloc for BumpAlloc {
             // Compute the next allocation pointer (may overflow)
             let next = aligned.checked_add(size).unwrap_or(self.end + 1);
             // If allocation would exceed the end of the memory region, fail
-            is![next > self.end; return Ptr::null_mut()];
+            is![next > self.end, return Ptr::null_mut()];
             // Attempt to atomically reserve the space by advancing the pointer
             match self.current.compare_exchange_weak(current, next, SeqCst, Relaxed) {
                 Ok(_) => return aligned as *mut u8, // Success: return aligned pointer

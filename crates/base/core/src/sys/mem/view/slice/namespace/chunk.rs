@@ -46,7 +46,7 @@ impl<T> Slice<T> {
     /// ```
     pub const fn chunk<const N: usize>(slice: &[T], idx: usize) -> Option<&[T]> {
         lets![start=idx*N, end=start+N];
-        is![end <= slice.len(); Some(Slice::range(slice, start, end)); None]
+        is![end <= slice.len(), Some(Slice::range(slice, start, end)), None]
     }
 
     /// Mutable counterpart to [`chunk`].
@@ -65,7 +65,7 @@ impl<T> Slice<T> {
     /// ```
     pub const fn chunk_mut<const N: usize>(slice: &mut [T], idx: usize) -> Option<&mut [T]> {
         lets![start=idx*N, end=start+N];
-        is![end <= slice.len(); Some(Slice::range_mut(slice, start, end)); None]
+        is![end <= slice.len(), Some(Slice::range_mut(slice, start, end)), None]
     }
 }
 
@@ -92,6 +92,6 @@ fn test_chunks() {
     assert!(Slice::chunk::<3>(&buf, 2).is_none());
 
     // chunk_mut
-    is![let Some(c0m) = Slice::chunk_mut::<3>(&mut buf, 0); c0m[0] = 99];
+    is![let Some(c0m) = Slice::chunk_mut::<3>(&mut buf, 0), c0m[0] = 99];
     assert_eq!(buf[0], 99);
 }

@@ -198,7 +198,7 @@ macro_rules! impl_str_u {
             pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
                 let bytes = Char(c).to_utf8_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
+                is![CAP < len, return Err(MismatchedCapacity::too_small(CAP, len))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.len = len as $t;
                 new.arr[0] = bytes[0];
@@ -224,7 +224,7 @@ macro_rules! impl_str_u {
             /// assert![StringU8::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
             /// ```
             pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
-                is![CAP == 0; return Err(MismatchedCapacity::too_small(CAP, 1))];
+                is![CAP == 0, return Err(MismatchedCapacity::too_small(CAP, 1))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.arr[0] = c.to_utf8_bytes()[0];
                 new.len = 1;
@@ -249,7 +249,7 @@ macro_rules! impl_str_u {
             pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
                 let bytes = c.to_utf8_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
+                is![CAP < len, return Err(MismatchedCapacity::too_small(CAP, len))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.len = len as $t;
                 new.arr[0] = bytes[0];
@@ -275,7 +275,7 @@ macro_rules! impl_str_u {
             pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
                 let bytes = c.to_utf8_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
+                is![CAP < len, return Err(MismatchedCapacity::too_small(CAP, len))];
                 let mut new = unwrap![ok? Self::new_checked()];
                 new.len = len as $t;
                 new.arr[0] = bytes[0];
@@ -571,7 +571,7 @@ macro_rules! impl_str_u {
             #[inline(always)]
             pub const fn eq(&self, other: &Self) -> bool {
                 self.len == other.len && {
-                    whilst![i in 0..self.len(); is![self.arr[i] != other.arr[i]; return false]];
+                    whilst![i in 0..self.len(); is![self.arr[i] != other.arr[i], return false]];
                     true
                 }
             }
@@ -605,7 +605,7 @@ macro_rules! impl_str_u {
             /// Returns a [`NotEnoughElements`] error
             /// if the capacity is not enough to hold the `character`.
             pub const fn try_pop(&mut self) -> Result<char, NotEnoughElements> {
-                is![self.is_empty(); Err(NotEnoughElements(Some(1))); Ok(self.pop_unchecked())]
+                is![self.is_empty(), Err(NotEnoughElements(Some(1))), Ok(self.pop_unchecked())]
             }
 
             /// Removes the last character and returns it.
@@ -712,7 +712,7 @@ macro_rules! impl_str_u {
             /// ```
             pub const fn push_str(&mut self, string: &str) -> usize {
                 let remaining_capacity = CAP - self.len as usize;
-                is! { remaining_capacity == 0; return 0 }
+                is! { remaining_capacity == 0, return 0 }
                 let string_len = string.len();
                 let bytes_to_write = if string_len <= remaining_capacity {
                     string_len
@@ -740,7 +740,7 @@ macro_rules! impl_str_u {
             /// In both cases, the bytes are appended to the buffer.
             pub const fn try_push_str(&mut self, string: &str) -> Result<usize, usize> {
                 let bytes_written = self.push_str(string);
-                is![bytes_written == string.len(); Ok(bytes_written); Err(bytes_written)]
+                is![bytes_written == string.len(), Ok(bytes_written), Err(bytes_written)]
             }
 
             /// Appends the entire `string` or nothing at all.
@@ -748,7 +748,7 @@ macro_rules! impl_str_u {
             /// Returns `Ok(bytes)` if the string fits completely, or `Err(0)` if it doesn't.
             /// No partial writes will occur to the buffer.
             pub const fn try_push_str_complete(&mut self, string: &str) -> Result<usize, usize> {
-                is![self.remaining_capacity() >= string.len(); Ok(self.push_str(string)); Err(0)]
+                is![self.remaining_capacity() >= string.len(), Ok(self.push_str(string)), Err(0)]
             }
         }
 
@@ -892,7 +892,7 @@ macro_rules! impl_str_u {
             /// assert_eq![s, "abc€"];
             /// ```
             fn extend<I: IntoIterator<Item=char>>(&mut self, iter: I) {
-                for i in iter { is![self.push(i) == 0; break]; }
+                for i in iter { is![self.push(i) == 0, break]; }
             }
         }
         impl<const CAP: usize> FromIterator<char> for $name<CAP> {

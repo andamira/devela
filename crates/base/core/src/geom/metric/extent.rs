@@ -53,7 +53,7 @@ macro_rules! impl_extent {
                 let mut boundary = 0;
                 whilst!(i in 0..D; {
                     let mut face_measure = 1;
-                    whilst!(j in 0..D; is![i != j; face_measure *= self.dim[j]]);
+                    whilst!(j in 0..D; is![i != j, face_measure *= self.dim[j]]);
                     boundary += face_measure;
                 });
                 2 * boundary // Each dimension's contribution is counted twice
@@ -119,7 +119,7 @@ macro_rules! impl_extent {
                 let mut boundary = 0.0;
                 whilst!(i in 0..D; {
                     let mut face_measure = 1.0;
-                    whilst!(j in 0..D; is![i != j; face_measure *= self.dim[j]]);
+                    whilst!(j in 0..D; is![i != j, face_measure *= self.dim[j]]);
                     boundary += face_measure;
                 });
                 2.0 * boundary // Each dimension's contribution is counted twice

@@ -18,7 +18,7 @@ impl<T: Ord> Sort<&mut [T]> {
     pub fn bubble(&mut self) {
         for i in 0..self.0.len() {
             for j in 0..self.0.len() - i - 1 {
-                is![self.0[j] > self.0[j + 1]; self.0.swap(j, j + 1)];
+                is![self.0[j] > self.0[j + 1], self.0.swap(j, j + 1)];
             }
         }
     }
@@ -109,7 +109,7 @@ impl<T: Ord> Sort<&mut [T]> {
         for i in 0..len - 1 {
             let mut min_index = i;
             for j in (i + 1)..len {
-                is![self.0[j] < self.0[min_index]; min_index = j];
+                is![self.0[j] < self.0[min_index], min_index = j];
             }
             self.0.swap(min_index, i);
         }
@@ -134,13 +134,13 @@ impl<T: Ord> Sort<&mut [T]> {
         while swapped {
             swapped = false;
             for i in start..end - 1 {
-                is![self.0[i] > self.0[i + 1]; { self.0.swap(i, i + 1); swapped = true; }];
+                is![self.0[i] > self.0[i + 1], { self.0.swap(i, i + 1); swapped = true; }];
             }
-            is![!swapped; break];
+            is![!swapped, break];
             swapped = false;
             end -= 1;
             for i in (start..end - 1).rev() {
-                is![self.0[i] > self.0[i + 1]; { self.0.swap(i, i + 1); swapped = true; }];
+                is![self.0[i] > self.0[i + 1], { self.0.swap(i, i + 1); swapped = true; }];
             }
             start += 1;
         }
@@ -175,7 +175,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     #[inline(always)] #[rustfmt::skip]
     pub fn quick_lomuto(&mut self) where T: Clone { Sort::quick_lomuto_internal(self.0); }
     fn quick_lomuto_internal(slice: &mut [T]) {
-        is![slice.len() < 2; return];
+        is![slice.len() < 2, return];
         let ipivot = helper::sort_quick_lomuto_partition(slice);
         Self::quick_lomuto_internal(&mut slice[0..ipivot]);
         Self::quick_lomuto_internal(&mut slice[ipivot + 1..]);
@@ -213,10 +213,10 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
         T: Clone,
     {
         let len = slice.len();
-        is![len < 2; return];
+        is![len < 2, return];
         let (lt, gt) = helper::sort_quick_3way_partition(slice);
         Self::quick_3way_internal(&mut slice[0..lt]);
-        is![gt < len; Self::quick_3way_internal(&mut slice[gt..])];
+        is![gt < len, Self::quick_3way_internal(&mut slice[gt..])];
     }
 
     /// Sorts a `slice` using quick sort with the Hoare partition scheme.
@@ -249,10 +249,10 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
         T: Clone,
     {
         let len = slice.len();
-        is![len < 2; return];
+        is![len < 2, return];
         let ipivot = helper::sort_quick_hoare_partition(slice);
-        is![ipivot > 0; Self::quick_hoare_internal(&mut slice[0..ipivot])];
-        is![ipivot + 1 < len; Self::quick_hoare_internal(&mut slice[ipivot + 1..])];
+        is![ipivot > 0, Self::quick_hoare_internal(&mut slice[0..ipivot])];
+        is![ipivot + 1 < len, Self::quick_hoare_internal(&mut slice[ipivot + 1..])];
     }
 }
 
@@ -266,7 +266,7 @@ mod helper {
         slice.swap(ipivot, len - 1);
         let mut i = 0;
         for j in 0..len - 1 {
-            is![slice[j] <= slice[len - 1]; { slice.swap(i, j); i += 1; }];
+            is![slice[j] <= slice[len - 1], { slice.swap(i, j); i += 1; }];
         }
         slice.swap(i, len - 1);
         i
@@ -302,7 +302,7 @@ mod helper {
                 while slice[i] < pivot { i += 1; }
                 while slice[j] > pivot { j -= 1; }
             }
-            is![i >= j; return j];
+            is![i >= j, return j];
             slice.swap(i, j);
         }
     }

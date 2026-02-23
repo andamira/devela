@@ -35,7 +35,7 @@ impl ByteSearch {
         return memchr(needle, haystack);
         #[cfg(not(feature = "dep_memchr"))]
         haystack.iter().enumerate()
-            .find_map(|(index, &byte)| is![byte == needle; Some(index); None])
+            .find_map(|(index, &byte)| is![byte == needle, Some(index), None])
     }
 
     /// Search for the first occurrence of two possible bytes in a haystack.
@@ -48,7 +48,7 @@ impl ByteSearch {
         return memchr2(needle1, needle2, haystack);
         #[cfg(not(feature = "dep_memchr"))]
         haystack.iter().enumerate()
-            .find_map(|(index, &byte)| is![byte == needle1 || byte == needle2; Some(index); None])
+            .find_map(|(index, &byte)| is![byte == needle1 || byte == needle2, Some(index), None])
     }
 
     /// Search for the first occurrence of three possible bytes in a haystack.
@@ -61,7 +61,7 @@ impl ByteSearch {
         return memchr3(needle1, needle2, needle3, haystack);
         #[cfg(not(feature = "dep_memchr"))]
         haystack.iter().enumerate().find_map(|(index, &byte)| {
-            is![byte == needle1 || byte == needle2 || byte == needle3; Some(index); None]
+            is![byte == needle1 || byte == needle2 || byte == needle3, Some(index), None]
         })
     }
 
@@ -75,7 +75,7 @@ impl ByteSearch {
         return memrchr(needle, haystack);
         #[cfg(not(feature = "dep_memchr"))]
         haystack.iter().enumerate().rev()
-            .find_map(|(index, &byte)| is![byte == needle; Some(index); None])
+            .find_map(|(index, &byte)| is![byte == needle, Some(index), None])
     }
 
     /// Search for the last occurrence of two possible bytes in a haystack.
@@ -88,7 +88,7 @@ impl ByteSearch {
         return memrchr2(needle1, needle2, haystack);
         #[cfg(not(feature = "dep_memchr"))]
         haystack.iter().enumerate().rev()
-            .find_map(|(index, &byte)| is![byte == needle1 || byte == needle2; Some(index); None])
+            .find_map(|(index, &byte)| is![byte == needle1 || byte == needle2, Some(index), None])
     }
 
     /// Search for the last occurrence of three possible bytes in a haystack.
@@ -100,8 +100,8 @@ impl ByteSearch {
         #[cfg(feature = "dep_memchr")]
         return memrchr3(needle1, needle2, needle3, haystack);
         #[cfg(not(feature = "dep_memchr"))]
-        haystack.iter().enumerate().rev()
-            .find_map(|(index, &byte)|
-                is![byte == needle1 || byte == needle2 || byte == needle3; Some(index); None])
+        haystack.iter().enumerate().rev().find_map(|(index, &byte)| {
+            is![byte == needle1 || byte == needle2 || byte == needle3, Some(index), None]
+        })
     }
 }

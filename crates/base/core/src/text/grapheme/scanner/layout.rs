@@ -16,7 +16,7 @@ macro_rules! impl_text_layout {
                 let mut scan = GraphemeScanner::<charu>::new(machine, text);
                 let mut len = 0;
                 while let Some(_g) = scan.next_grapheme_u8::<CAP>() {
-                    is![len == out.len(); break];
+                    is![len == out.len(), break];
                     out[len] = TextSymbol {
                         units: 1,
                         cohesion: Atomic, // IMPROVE: TEMP naive impl

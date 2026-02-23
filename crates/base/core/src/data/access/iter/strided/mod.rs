@@ -11,13 +11,14 @@ mod core; // (StridedIterCore)
 mod r#mut; // StridedIterMut
 mod r#ref; // StridedIterMut
 
-// mod define; // WIP
+// mod define; // strided_iter! WIP
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             r#mut::*,
             r#ref::*,
+            // define::*,
         };
     }
     _crate_internals {

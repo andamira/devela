@@ -45,7 +45,7 @@ impl Char<u8> {
     #[must_use]
     pub const fn len_utf8(self) -> Option<usize> {
         let width = self.len_utf8_unchecked();
-        is![width == 0; None; Some(width)]
+        is![width == 0, None, Some(width)]
     }
 
     /// Returns the expected UTF-8 byte length based on the given first byte, or `0` if invalid.
@@ -240,7 +240,7 @@ impl Char<&[u8]> {
         if !self.has_valid_continuation(index, len) { return None; } // malformed utf-8?
         if self.has_overlong_encoding(index, len) { return None; } // overlong encoding?
         let scalar = self.decode_scalar(index, len);
-        is![Char(scalar).is_valid_scalar(); Some((scalar, len)); None] // invalid scalar?
+        is![Char(scalar).is_valid_scalar(), Some((scalar, len)), None] // invalid scalar?
     }
 
     /// Decodes a UTF-8 scalar from the given byte slice, starting at `index`, without validation.
@@ -328,7 +328,7 @@ impl Char<&[u8]> {
     /// ```
     pub const fn has_valid_continuation(self, index: usize, len: usize) -> bool {
         let bytes = self.0;
-        is![bytes.len() < index + len; return false]; // ensure sufficient len
+        is![bytes.len() < index + len, return false]; // ensure sufficient len
         match len {
             1 => true, // no continuation bytes needed for ASCII
             2 => bytes[index + 1] & 0xC0 == 0x80,

@@ -227,7 +227,7 @@ impl Str {
         let s_len = s_bytes.len();
         let mut index = 0;
         whilst! { count in 0..n; {
-            is![index + s_len > buffer.len(); break];
+            is![index + s_len > buffer.len(), break];
             // buffer[index..index + s_len].copy_from_slice(s_bytes);
             slice![mut buffer, index, ..index + s_len].copy_from_slice(s_bytes);
             index += s_len;
@@ -283,7 +283,7 @@ impl Str {
                     num = index;
                     digits = Digits(num).count_digits10() as usize;
                 }
-                is![index == 0; break; index -= 1];
+                is![index == 0, break, index -= 1];
                 separator_turn = !separator_turn;
             }
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]

@@ -69,7 +69,7 @@ mod helper {
 
     pub(super) fn sort_merge_internal<T: Ord + Copy>(slice: &mut [T], buffer: &mut [T]) {
         let len = slice.len();
-        is![len <= 1; return];
+        is![len <= 1, return];
         let mid = len / 2;
         sort_merge_internal(&mut slice[..mid], buffer);
         sort_merge_internal(&mut slice[mid..], buffer);
@@ -79,13 +79,20 @@ mod helper {
     pub(super) fn sort_merge_merge<T: Ord + Copy>(left: &[T], right: &[T], slice: &mut [T]) {
         let (mut i, mut j, mut k) = (0, 0, 0);
         while i < left.len() && j < right.len() {
-            is![ left[i] < right[j] ;
-                { slice[k] = left[i]; i += 1; } ;
-                { slice[k] = right[j]; j += 1; }
+            is![
+                left[i] < right[j],
+                {
+                    slice[k] = left[i];
+                    i += 1;
+                },
+                {
+                    slice[k] = right[j];
+                    j += 1;
+                }
             ];
             k += 1;
         }
-        is![i < left.len(); slice[k..].copy_from_slice(&left[i..])];
-        is![j < right.len(); slice[k..].copy_from_slice(&right[j..])];
+        is![i < left.len(), slice[k..].copy_from_slice(&left[i..])];
+        is![j < right.len(), slice[k..].copy_from_slice(&right[j..])];
     }
 }

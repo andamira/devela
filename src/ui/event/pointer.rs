@@ -227,10 +227,10 @@ mod impl_js {
             WebEventMouse {
                 x: self.x as js_number,
                 y: self.y as js_number,
-                button: is![let Some(b) = self.button; b.to_js(); 255], // IMPROVE to_js
+                button: is![let Some(b) = self.button, b.to_js(), 255], // IMPROVE to_js
                 buttons: self.buttons, // already a bitmask, directly compatible
                 etype: self.state.to_js_as_mouse(),
-                timestamp: is![let Some(t) = self.timestamp; t.to_js(); JsInstant { ms: 0.0 }],
+                timestamp: is![let Some(t) = self.timestamp, t.to_js(), JsInstant { ms: 0.0 }],
             }
         }
     }

@@ -16,10 +16,10 @@ macro_rules! impl_text_layout {
             pub const fn fill_text_symbols(mut self, out: &mut [TextSymbol]) -> usize {
                 let mut len = 0;
                 while let Some(ch) = self.next_char() {
-                    is![len == out.len(); break];
+                    is![len == out.len(), break];
                     out[len] = TextSymbol {
                         units: 1,
-                        cohesion: is![ch.is_whitespace(); Breakable; Atomic],
+                        cohesion: is![ch.is_whitespace(), Breakable, Atomic],
                     };
                     len += 1;
                 }

@@ -133,7 +133,7 @@ impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
     pub const fn is_bare_empty(&self) -> bool {
         let mut n = 0;
         while n <= CAP {
-            is![self.as_bare_slice()[n].is_some(); return false];
+            is![self.as_bare_slice()[n].is_some(), return false];
             n += 1;
         }
         true
@@ -143,7 +143,7 @@ impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
     pub const fn is_bare_full(&self) -> bool {
         let mut n = 0;
         while n <= CAP {
-            is![self.as_bare_slice()[n].is_none(); return false];
+            is![self.as_bare_slice()[n].is_none(), return false];
             n += 1;
         }
         true

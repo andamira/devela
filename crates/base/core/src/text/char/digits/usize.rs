@@ -19,12 +19,12 @@ impl Digits<usize> {
     /// ```
     #[must_use]
     pub const fn count_digits10(self) -> u8 {
-        is![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
+        is![self.0 == 0, 1, self.0.ilog10() as u8 + 1]
     }
     #[doc = DOC_COUNT_DIGITS_16!()]
     #[must_use]
     pub const fn count_digits16(self) -> u8 {
-        is![self.0 == 0; 1; ((self.0.ilog2() + 4) / 4) as u8]
+        is![self.0 == 0, 1, ((self.0.ilog2() + 4) / 4) as u8]
     }
 
     /* digit_at_ */
@@ -35,7 +35,7 @@ impl Digits<usize> {
     #[must_use]
     #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
-        is![index >= self.count_digits10(); return b'0'];
+        is![index >= self.count_digits10(), return b'0'];
         let power = TextLut::POWERS10[index as usize] as usize;
         (self.0 / power % 10) as u8 + b'0'
     }
@@ -45,7 +45,7 @@ impl Digits<usize> {
     /// Returns `None` if the index is beyond the number's decimal digits.
     #[must_use]
     pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
-        is![index >= self.count_digits10(); return None];
+        is![index >= self.count_digits10(), return None];
         let power = TextLut::POWERS10[index as usize] as usize;
         Some((self.0 / power % 10) as u8 + b'0')
     }
@@ -65,7 +65,7 @@ impl Digits<usize> {
     /// For indices beyond the number's hexadecimal digits, returns `None`.
     #[must_use]
     pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
-        is![index >= self.count_digits16(); return None];
+        is![index >= self.count_digits16(), return None];
         let shift = index as u32 * 4;
         let digit = self.0.unbounded_shr(shift) & 0xF;
         Some(TextLut::DIGITS_BASE36[digit])
@@ -78,7 +78,7 @@ impl Digits<usize> {
     /// Returns `0` if the index is beyond the number's decimal digits.
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
-        is![index >= self.count_digits10(); return 0];
+        is![index >= self.count_digits10(), return 0];
         let power = TextLut::POWERS10[index as usize] as usize;
         (self.0 / power % 10) as u8
     }
@@ -87,7 +87,7 @@ impl Digits<usize> {
     /// Returns `None` if the index is beyond the number's decimal digits.
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
-        is![index >= self.count_digits10(); return None];
+        is![index >= self.count_digits10(), return None];
         let power = TextLut::POWERS10[index as usize] as usize;
         Some((self.0 / power % 10) as u8)
     }
@@ -106,7 +106,7 @@ impl Digits<usize> {
     /// Returns `None` if the index is beyond the number's hexadecimal digits.
     #[must_use]
     pub const fn digit_value_at_index16_checked(self, index: u8) -> Option<u8> {
-        is![index < self.count_digits16(); Some(self.digit_value_at_index16(index)); None]
+        is![index < self.count_digits16(), Some(self.digit_value_at_index16(index)), None]
     }
 
     //

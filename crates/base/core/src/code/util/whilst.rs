@@ -40,7 +40,7 @@
 ///
 /// // With let Some(x) syntax
 /// lets![mut val = Some(3), mut sum = 0, mut steps = 0];
-/// whilst![let Some(x) = val; {steps += 1; val = is![x>0; Some(x-1); None]} {
+/// whilst![let Some(x) = val; {steps += 1; val = is![x>0, Some(x-1), None]} {
 ///     sum += x;
 /// }];
 /// assert_eq!(steps, 4); // pre-step executed per iteration
@@ -273,7 +273,7 @@ mod tests {
         let mut val = Some(3);
         let mut sum = 0;
         let mut steps = 0;
-        whilst![let Some(x) = val; {steps += 1; val = is![x > 0; Some(x - 1); None]} {
+        whilst![let Some(x) = val; {steps += 1; val = is![x > 0, Some(x - 1), None]} {
             sum += x;
         }];
         assert_eq!(steps, 4); // pre-step executed per iteration

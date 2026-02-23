@@ -111,7 +111,7 @@ impl Ptr {
         let local_var = 0;
         let local_addr = &local_var as *const _ as usize;
         let obj_addr = address as *const _ as usize;
-        let addr_diff = is![local_addr > obj_addr; local_addr - obj_addr; obj_addr - local_addr];
+        let addr_diff = is![local_addr > obj_addr, local_addr - obj_addr, obj_addr - local_addr];
         addr_diff < stack_size
     }
 
@@ -182,7 +182,7 @@ impl Ptr {
     #[must_use]
     pub const fn size_ratio(other_size: usize) -> [usize; 2] {
         const fn gcd(m: usize, n: usize) -> usize {
-            is![n == 0; m; gcd(n, m % n)]
+            is![n == 0, m, gcd(n, m % n)]
         }
         let g = gcd(size_of::<usize>(), other_size);
         [size_of::<usize>() / g, other_size / g]

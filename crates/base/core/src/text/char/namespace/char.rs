@@ -74,7 +74,7 @@ impl Char<char> {
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]
     pub const fn as_ascii(self) -> &'static str {
-        is![self.0.is_ascii(); TextLut::ASCII_CHARS[self.0 as usize]; ""]
+        is![self.0.is_ascii(), TextLut::ASCII_CHARS[self.0 as usize], ""]
     }
 
     /// Returns the ASCII representation as a `&'static str`.

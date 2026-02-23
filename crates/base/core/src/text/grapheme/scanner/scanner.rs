@@ -66,10 +66,10 @@ impl<'a> GraphemeScanner<'a, charu> {
                 return Some(GraphemeU8(g)); // if split occurs return the previous grapheme
             }
             // add char to current grapheme, breaking if capacity is exceeded
-            is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(); break];
+            is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(), break];
             self.remain = slice![str self.remain, len as usize, ..];
         }
-        is![!g.is_empty(); Some(GraphemeU8(g)); None]
+        is![!g.is_empty(), Some(GraphemeU8(g)), None]
     }
     // TODO make another version exact non-truncating.
 
@@ -101,11 +101,11 @@ impl<'a> GraphemeScanner<'a, charu> {
                 return Some(GraphemeNonul(g)); // if split occurs return the previous grapheme
             }
             // add char to current grapheme, breaking if capacity is exceeded
-            is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(); break];
+            is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(), break];
             has_content = true; // we have now at least 1 code point
             self.remain = slice![str self.remain, len as usize, ..];
         }
-        is![has_content; Some(GraphemeNonul(g)); None]
+        is![has_content, Some(GraphemeNonul(g)), None]
     }
 }
 

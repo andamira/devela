@@ -20,7 +20,7 @@ use crate::{Slice, Str, is, lets, whilst};
 /// Panics on `enter` if the logger is already in use,
 /// reporting the calling method's name in the message.
 macro_rules! guard {
-    ($self:ident enter $msg:literal) => { is![$self.guard != 0; panic!($msg)]; $self.guard = 1; };
+    ($self:ident enter $msg:literal) => { is![$self.guard != 0, panic!($msg)]; $self.guard = 1; };
     ($self:ident leave) => { $self.guard = 0; };
 }
 
@@ -115,7 +115,7 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     #[must_use]
     pub const fn get(&mut self, i: usize) -> Option<(&str, usize)> {
         guard![self enter "LoggerStatic::get()"];
-        is! { i >= self.len; { guard![self leave]; return None; }}
+        is! { i >= self.len, { guard![self leave]; return None; }}
 
         let len = self.lens[i];
         let leftover = self.leftover[i];
@@ -162,7 +162,7 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     pub const fn any_truncated(&mut self) -> bool {
         guard![self enter "LoggerStatic::any_truncated()"];
         whilst! { i in 0..self.len; {
-            is![self.leftover[i] > 0; { guard![self leave]; return true; }];
+            is![self.leftover[i] > 0, { guard![self leave]; return true; }];
         }}
         guard![self leave];
         false
@@ -175,7 +175,7 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
         lets![mut count = 0,  mut total = 0];
         whilst! { i in 0..self.len; {
             let lost = self.leftover[i];
-            is! { lost > 0; { count += 1; total += lost; }}
+            is! { lost > 0, { count += 1; total += lost; }}
         }}
         guard![self leave];
         (count, total)

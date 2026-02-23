@@ -84,7 +84,7 @@ mod ffi {
                 physical: self.physical.to_ffi(),
                 state: self.state,
                 mods: self.mods,
-                timestamp: is![let Some(t) = self.timestamp; t.get_non_niche(); f32bits::INIT],
+                timestamp: is![let Some(t) = self.timestamp, t.get_non_niche(), f32bits::INIT],
             }
         }
         /// Converts `EventKeyFfi` to `EventKey`.

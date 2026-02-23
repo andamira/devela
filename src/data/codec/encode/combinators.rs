@@ -363,7 +363,7 @@ mod join {
             if let Some(sep) = &self.separator {
                 let mut is_first = true;
                 for encodable in self.encodable_iter.clone() {
-                    is![is_first; is_first = false; total += sep.encode(writer)?];
+                    is![is_first, is_first = false, total += sep.encode(writer)?];
                     total += encodable.encode(writer)?;
                 }
             } else {

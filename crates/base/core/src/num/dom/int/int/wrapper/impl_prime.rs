@@ -77,10 +77,10 @@ macro_rules! impl_prime {
                     ..=1 =>  false,
                     2..=3 => true,
                     _ => {
-                        is![self.0 % 2 == 0; return false];
-                        let limit = is![let Ok(s) = self.sqrt_floor(); s.0; unreachable!()];
+                        is![self.0 % 2 == 0, return false];
+                        let limit = is![let Ok(s) = self.sqrt_floor(), s.0, unreachable!()];
                         let mut i = 3;
-                        while i <= limit { is![self.0 % i == 0; return false]; i += 2; }
+                        while i <= limit { is![self.0 % i == 0, return false]; i += 2; }
                         true
                     }
                 }
@@ -107,10 +107,10 @@ macro_rules! impl_prime {
                 let [nth, mut count, mut i] = [self.0.abs(), 1, 2];
                 loop {
                     if Int(i).is_prime() {
-                        is![count - 1 == nth; return Ok(Int(i))];
+                        is![count - 1 == nth, return Ok(Int(i))];
                         count += 1;
                     }
-                    i = is![let Some(i) = i.checked_add(1); i; return Err(Overflow(None))];
+                    i = is![let Some(i) = i.checked_add(1), i, return Err(Overflow(None))];
                 }
             }
 
@@ -137,7 +137,7 @@ macro_rules! impl_prime {
             pub const fn prime_pi(self) -> usize {
                 let (mut prime_count, mut i) = (0_usize, 0 as $up);
                 while i <= self.0 as $up {
-                    is![Int(i as $t).is_prime(); prime_count += 1];
+                    is![Int(i as $t).is_prime(), prime_count += 1];
                     i += 1;
                 }
                 prime_count
@@ -172,7 +172,7 @@ macro_rules! impl_prime {
                     }
                     i += 1;
                 }
-                is![n > 1; result -= result / n];
+                is![n > 1, result -= result / n];
                 Int(result)
             }
         }
@@ -209,10 +209,10 @@ macro_rules! impl_prime {
                     ..=1 =>  false,
                     2..=3 => true,
                     _ => {
-                        is![self.0 % 2 == 0; return false];
+                        is![self.0 % 2 == 0, return false];
                         let limit = self.sqrt_floor().0;
                         let mut i = 3;
-                        while i <= limit { is![self.0 % i == 0; return false]; i += 2; }
+                        while i <= limit { is![self.0 % i == 0, return false]; i += 2; }
                         true
                     }
                 }
@@ -233,10 +233,10 @@ macro_rules! impl_prime {
                 let [nth, mut count, mut i] = [self.0, 1, 2];
                 loop {
                     if Int(i).is_prime() {
-                        is![count - 1 == nth; return Ok(Int(i))];
+                        is![count - 1 == nth, return Ok(Int(i))];
                         count += 1;
                     }
-                    i = is![let Some(i) = i.checked_add(1); i; return Err(Overflow(None))];
+                    i = is![let Some(i) = i.checked_add(1), i, return Err(Overflow(None))];
                 }
             }
 
@@ -262,7 +262,7 @@ macro_rules! impl_prime {
             pub const fn prime_pi(self) -> usize {
                 let (mut prime_count, mut i) = (0_usize, 0 as $up);
                 while i <= self.0 as $up {
-                    is![Int(i as $t).is_prime(); prime_count += 1];
+                    is![Int(i as $t).is_prime(), prime_count += 1];
                     i += 1;
                 }
                 prime_count
@@ -292,7 +292,7 @@ macro_rules! impl_prime {
                     }
                     i += 1;
                 }
-                is![n > 1; result -= result / n];
+                is![n > 1, result -= result / n];
                 Int(result)
             }
         }

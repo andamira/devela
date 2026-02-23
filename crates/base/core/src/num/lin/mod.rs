@@ -6,16 +6,18 @@
 #![doc = crate::_doc!(hr)]
 //
 
+// mod decomp;
 // mod matrix;
-// // mod optim;
+// mod solve;
 // mod vector;
 
 crate::structural_mods! { // _mods
     _mods {
         // #[doc(inline)]
         // pub use super::{
+        //     decomp::_all::*,
         //     matrix::_all::*,
-        //     // optim::_all::*,
+        //     solve::_all::*,
         //     vector::_all::*,
         // };
     }

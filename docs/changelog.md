@@ -226,7 +226,9 @@ Many feature gates are removed in order to make most features make always availa
 - update `const_assert!` macro:
   - add new arms: `ne_buf`, `ne_str`.
   - add support for comparing slices of primitives and slices of slices of primitives.
-- remove temporary value binding functionality from `is!` macro, unnecessary after rust v1.89.
+- update `is!` macro.
+  - change expr separators from `;` to `,`, to reduce potential ambiguity.
+  - remove temporary value binding functionality unnecessary after rust v1.89.
 - remove vendored macro `cfor!`, replace with `whilst!`.
 - remove deprecated `iif!` macro.
 

@@ -131,7 +131,7 @@ macro_rules! impl_matrix {
             /// # Panics
             /// - If called on a non-square matrix in debug mode, it will panic.
             pub const fn determinant(&self) -> Option<$T> {
-                is![R == C; Some(self.determinant_unchecked()); None]
+                is![R == C, Some(self.determinant_unchecked()), None]
             }
 
             /// Returns the determinant without checking matrix squareness.
@@ -176,10 +176,10 @@ macro_rules! impl_matrix {
                 debug_assert!(buffer.len() >= (n-1)*(n-1), "Buffer is too small");
                 let (mut idx, mut r) = (0, 0);
                 while r < n {
-                    is![r == row; { r += 1; continue; }];
+                    is![r == row, { r += 1; continue; }];
                     let mut c = 0;
                     while c < n {
-                        is![c == col; { c += 1; continue; }];
+                        is![c == col, { c += 1; continue; }];
                         buffer[idx] = matrix[r * n + c];
                         idx += 1;
                         c += 1;
@@ -207,8 +207,8 @@ macro_rules! impl_matrix {
             /// - Panics in debug mode if `buffer.len()` is insufficient.
             /// - Panics if matrix is not square (should never happen when used internally).
             pub const fn submatrix_determinant(dim: usize, matrix: &[$T], buffer: &mut [$T]) -> $T {
-                is![dim == 1; return matrix[0]];
-                is![dim == 2; return matrix[0] * matrix[3] - matrix[1] * matrix[2]];
+                is![dim == 1, return matrix[0]];
+                is![dim == 2, return matrix[0] * matrix[3] - matrix[1] * matrix[2]];
 
                 let required_size = (dim - 1) * (dim - 1) + (dim - 2) * (dim - 2);
                 debug_assert!(buffer.len() >= required_size, "buffer is too small");
@@ -251,7 +251,7 @@ macro_rules! impl_matrix {
             /// Returns `1` for even indices, and `-1` for odd indices.
             #[inline(always)]
             const fn parity_sign(i: usize) -> $T {
-                is![i % 2 == 0; <$T>::NUM_ONE.unwrap(); <$T>::NUM_NEG_ONE.unwrap()]
+                is![i % 2 == 0, <$T>::NUM_ONE.unwrap(), <$T>::NUM_NEG_ONE.unwrap()]
             }
         }
     };

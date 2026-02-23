@@ -173,7 +173,7 @@ impl<T: IoBufRead, U: IoBufRead> IoBufRead for IoChain<T, U> {
         self.second.fill_buf()
     }
     fn consume(&mut self, amt: usize) {
-        is![!self.done_first; self.first.consume(amt); self.second.consume(amt)];
+        is![!self.done_first, self.first.consume(amt), self.second.consume(amt)];
     }
 }
 
@@ -243,7 +243,7 @@ impl<T> IoTake<T> {
 impl<T: IoRead> IoRead for IoTake<T> {
     fn read(&mut self, buf: &mut [u8]) -> IoResult<usize> {
         // Don't call into inner reader at all at EOF because it may still block
-        is![self.limit == 0; return Ok(0)];
+        is![self.limit == 0, return Ok(0)];
         let max = cmp::min(buf.len() as u64, self.limit) as usize;
         let n = self.inner.read(&mut buf[..max])?;
         self.limit -= n as u64;
@@ -263,7 +263,7 @@ impl<T: IoRead> IoRead for IoTake<T> {
 impl<T: IoBufRead> IoBufRead for IoTake<T> {
     fn fill_buf(&mut self) -> IoResult<&[u8]> {
         // Don't call into inner reader at all at EOF because it may still block
-        is![self.limit == 0; return Ok(&[])];
+        is![self.limit == 0, return Ok(&[])];
         let buf = self.inner.fill_buf()?;
         let cap = cmp::min(buf.len() as u64, self.limit) as usize;
         Ok(&buf[..cap])
@@ -300,7 +300,7 @@ impl IoRead for &[u8] {
         // First check if the amount of bytes we want to read is small:
         // `copy_from_slice` will generally expand to a call to `memcpy`, and
         // for a single byte the overhead is significant.
-        is![amt == 1; buf[0] = a[0]; buf[..amt].copy_from_slice(a)];
+        is![amt == 1, buf[0] = a[0], buf[..amt].copy_from_slice(a)];
         *self = b;
         Ok(amt)
     }
@@ -310,7 +310,7 @@ impl IoRead for &[u8] {
         }
         let (a, b) = self.split_at(buf.len());
         // See equivalent comment in `read` method.
-        is![buf.len() == 1; buf[0] = a[0]; buf.copy_from_slice(a)];
+        is![buf.len() == 1, buf[0] = a[0], buf.copy_from_slice(a)];
         *self = b;
         Ok(())
     }
@@ -371,7 +371,7 @@ mod alloc_impls {
             && buf.capacity() - buf.len() < PROBE_SIZE
         {
             let read = small_probe_read(r, buf, PROBE_SIZE)?;
-            is![read == 0; return Ok(0)];
+            is![read == 0, return Ok(0)];
         }
         loop {
             if buf.len() == buf.capacity() {
@@ -432,7 +432,7 @@ mod alloc_impls {
             && buf.capacity() - buf.len() < PROBE_SIZE
         {
             let read = small_probe_read(r, buf, PROBE_SIZE)?;
-            is![read == 0; return Ok(0)];
+            is![read == 0, return Ok(0)];
         }
         loop {
             if buf.len() == buf.capacity() {

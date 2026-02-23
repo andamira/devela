@@ -41,13 +41,13 @@ macro_rules! impl_float_shared_series {
             pub const fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
                 let xabs = self.abs().0;
                 if xabs == 0.0 {
-                    is![Float(y).abs().0 == 0.0; Self::ONE; Self::ZERO]
+                    is![Float(y).abs().0 == 0.0, Self::ONE, Self::ZERO]
                 } else {
                     let ln_x = Float(xabs).ln_series(ln_x_terms).0;
                     let power = Float(y * ln_x);
                     let exp_y_terms = power.exp_series_terms();
                     let result = power.exp_series(exp_y_terms);
-                    is![self.is_sign_negative(); Float(-result.0); result]
+                    is![self.is_sign_negative(), Float(-result.0), result]
                 }
             }
 
@@ -58,7 +58,7 @@ macro_rules! impl_float_shared_series {
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
             pub const fn exp_series(self, terms: $ue) -> Float<$f> {
-                is![self.0 < 0.0; return Float(1.0 / Float(-self.0).exp_series(terms).0)];
+                is![self.0 < 0.0, return Float(1.0 / Float(-self.0).exp_series(terms).0)];
                 let (mut result, mut term) = (1.0, 1.0);
                 let mut i = 1;
                 while i <= terms {
@@ -192,7 +192,7 @@ macro_rules! impl_float_shared_series {
                 } else if Float(base - 1.0).abs().0 < Self::MEDIUM_MARGIN.0 { // + robust
                 // } else if base == 1.0 { // good enough for direct input
                     #[expect(clippy::float_cmp, reason = "we've already checked it with a margin")]
-                    { is![self.0 == 1.0; Self::NAN; Self::NEG_INFINITY] }
+                    { is![self.0 == 1.0, Self::NAN, Self::NEG_INFINITY] }
                 } else {
                     Float(self.ln_series(terms).0 / base).ln_series(terms)
                 }
@@ -239,7 +239,7 @@ macro_rules! impl_float_shared_series {
                 const PI: $f = Float::<$f>::PI.0;
                 const TAU: $f = Float::<$f>::TAU.0;
                 let x = self.0 % TAU; // Reduce angle to [-π, π] while preserving sign
-                let x = is![x > PI; x - TAU; is![x < -PI; x + TAU; x ]];
+                let x = is![x > PI, x - TAU, is![x < -PI, x + TAU, x ]];
                 let x_sq = x * x;
                 let (mut sin, mut term, mut factorial) = (x, x, 1.0);
                 let mut i = 1;
@@ -300,10 +300,10 @@ macro_rules! impl_float_shared_series {
                 const HALF_PI: $f = Float::<$f>::FRAC_PI_2.0;
                 const THRESHOLD: $f = 1e-6;
                 let x = self.0 % PI; // Reduce angle to [-π/2, π/2]
-                let x = is![x > HALF_PI; x - PI; is![x < -HALF_PI; x + PI; x]];
+                let x = is![x > HALF_PI, x - PI, is![x < -HALF_PI, x + PI, x]];
                 // Handle near-asymptote cases using absolute difference
                 let dist_to_asymptote = (x.abs() - HALF_PI).abs();
-                is![dist_to_asymptote < THRESHOLD; return Float(<$f>::INFINITY.copysign(x))];
+                is![dist_to_asymptote < THRESHOLD, return Float(<$f>::INFINITY.copysign(x))];
                 let (sin, cos) = Float(x).sin_cos_series(terms);
                 Float(sin.0 / cos.0)
             }
@@ -326,7 +326,7 @@ macro_rules! impl_float_shared_series {
                 const HALF_PI: $f = Float::<$f>::FRAC_PI_2.0;
                 const THRESHOLD: $f = 1.0 + Float::<$f>::MEDIUM_MARGIN.0;
                 // Clamp inputs to [-1,1] range (matches std's behavior):
-                let x = is![self.0 >= THRESHOLD; 1.0; is![self.0 <= -THRESHOLD; -1.0; self.0]];
+                let x = is![self.0 >= THRESHOLD, 1.0, is![self.0 <= -THRESHOLD, -1.0, self.0]];
                 // Exact values for endpoints:
                 #[allow(clippy::float_cmp)] {
                     if x == 1.0 { return Float(HALF_PI); }
@@ -370,7 +370,7 @@ macro_rules! impl_float_shared_series {
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
             pub const fn acos_series(self, terms: $ue) -> Float<$f> {
-                is![self.abs().0 > 1.0; return Self::NAN];
+                is![self.abs().0 > 1.0, return Self::NAN];
                 Float(Self::FRAC_PI_2.0 - self.asin_series(terms).0)
             }
 

@@ -31,7 +31,7 @@ impl StridedIterCore {
                 None => false,
             }
         }
-        let back = is![remaining == 0; start; start + stride.get() * (remaining - 1)];
+        let back = is![remaining == 0, start, start + stride.get() * (remaining - 1)];
         Self { front: start, back, stride }
     }
     /// Creates strided iteration state
@@ -94,10 +94,10 @@ impl StridedIterCore {
     }
     /// Returns the next index from the front without updating the iterator.
     pub(crate) const fn peek_next_front_index(&self) -> Option<usize> {
-        is![self.front > self.back; None; Some(self.front)]
+        is![self.front > self.back, None, Some(self.front)]
     }
     /// Returns the next index from the back without updating the iterator.
     pub(crate) const fn peek_next_back_index(&self) -> Option<usize> {
-        is![self.front > self.back; None; Some(self.back)]
+        is![self.front > self.back, None, Some(self.back)]
     }
 }

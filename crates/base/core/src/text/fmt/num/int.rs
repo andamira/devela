@@ -53,7 +53,7 @@ macro_rules! __impl_fmt_num_int {
                 use $crate::{Cmp, Digits, is, whilst, write_at};
                 let neg = self.0 < 0;
                 let emit_sign = conf.sign.emit_sign(neg);
-                let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
+                let abs = is![neg, self.0.wrapping_neg().cast_unsigned(), self.0.cast_unsigned()];
                 // digit count
                 let digit_count = Digits(abs).count_digits10() as u16;
                 let left_digits = if conf.pad_sign && emit_sign {
@@ -65,7 +65,7 @@ macro_rules! __impl_fmt_num_int {
                 let needed = (emit_sign as usize) + left_digits as usize;
                 if needed > buf.len().saturating_sub(pos) { return 0; }
                 // emit sign, zero padding and digits
-                if emit_sign { write_at![buf, +=pos, is![neg; b'-'; b'+']]; }
+                if emit_sign { write_at![buf, +=pos, is![neg, b'-', b'+']]; }
                 whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, +=pos, b'0']; }}
                 let _ = Digits(abs).write_digits10(buf, pos);
                 needed
@@ -92,7 +92,7 @@ macro_rules! __impl_fmt_num_int {
                 let emit_sign = conf.sign.emit_sign(neg);
 
                 // Absolute value and digit count of the numeric magnitude.
-                let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
+                let abs = is![neg, self.0.wrapping_neg().cast_unsigned(), self.0.cast_unsigned()];
                 let digit_count = Digits(abs).count_digits10() as u16;
 
                 // Target minimum width of the left block (excluding sign unless padded).
@@ -105,7 +105,7 @@ macro_rules! __impl_fmt_num_int {
                     digit_count, target_left);
 
                 // Translate back to write_fmt semantics.
-                let conf2_int = is![conf.pad_sign && emit_sign; left_digits + 1; left_digits];
+                let conf2_int = is![conf.pad_sign && emit_sign, left_digits + 1, left_digits];
                 let conf2 = conf.with_int(conf2_int);
 
                 // Measure final layout.
@@ -116,7 +116,7 @@ macro_rules! __impl_fmt_num_int {
 
                 // Write ungrouped number at the start.
                 let written = self.write_fmt(buf, pos, conf2);
-                is![written == 0; return 0];
+                is![written == 0, return 0];
 
                 // Backward expansion: insert grouping separators in place.
                 let (mut src, mut dst) = (pos + raw_len, pos + final_len);
@@ -158,7 +158,7 @@ macro_rules! __impl_fmt_num_int {
                 use $crate::{Cmp, Digits, is};
                 let neg = self.0 < 0;
                 let prefix = conf.sign.emit_sign(neg) as u16;
-                let abs = is![neg; self.0.wrapping_neg().cast_unsigned(); self.0.cast_unsigned()];
+                let abs = is![neg, self.0.wrapping_neg().cast_unsigned(), self.0.cast_unsigned()];
                 let digits = Digits(abs).count_digits10() as u16;
                 let left = if conf.pad_sign && prefix > 0 { Cmp(digits + 1).max(conf.int) - 1 }
                 else { Cmp(digits).max(conf.int) };
@@ -254,7 +254,7 @@ macro_rules! __impl_fmt_num_int {
 
                 // Write ungrouped number at the start.
                 let written = self.write_fmt(buf, pos, conf2);
-                is![written == 0; return 0];
+                is![written == 0, return 0];
 
                 // Backward expansion: insert grouping separators in place.
                 let (mut src, mut dst) = (pos + raw_len, pos + final_len);
@@ -345,7 +345,7 @@ macro_rules! __impl_fmt_num_int {
             #[inline(always)]
             pub const fn as_bytes_into_checked<'b>(&self, buf: &'b mut [u8]) -> Option<&'b [u8]> {
                 let len = self.write(buf, 0);
-                $crate::is![len == 0; None; Some($crate::Slice::range_to(buf, len))]
+                $crate::is![len == 0, None, Some($crate::Slice::range_to(buf, len))]
             }
             /// Formats the number into a provided buffer and returns it as some byte slice,
             /// using the given formatting configuration.
@@ -356,7 +356,7 @@ macro_rules! __impl_fmt_num_int {
             pub const fn as_bytes_into_checked_fmt<'b>(&self, buf: &'b mut [u8],
                 conf: $crate::FmtNumConf) -> Option<&'b [u8]> {
                 let len = self.write_fmt(buf, 0, conf);
-                $crate::is![len == 0; None; Some($crate::Slice::range_to(buf, len))]
+                $crate::is![len == 0, None, Some($crate::Slice::range_to(buf, len))]
             }
 
             /* as_str */

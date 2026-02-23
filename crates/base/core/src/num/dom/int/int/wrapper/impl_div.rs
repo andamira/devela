@@ -93,11 +93,11 @@ macro_rules! impl_div {
             // WAIT: [int_roundings](https://github.com/rust-lang/rust/issues/88581)
             pub const fn div_ceil(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
-                is![(r > 0 && b > 0) || (r < 0 && b < 0); Int(d + 1); Int(d)]
+                is![(r > 0 && b > 0) || (r < 0 && b < 0), Int(d + 1), Int(d)]
             }
             // alternative implementation:
             // pub const fn div_ceil(self, b: $t) -> $t {
-            //     let a = self.0; is![a > 0 && b > 0; ((a - 1) / b) + 1 ; a / b ]
+            //     let a = self.0; is![a > 0 && b > 0, ((a - 1) / b) + 1, a / b ]
             // }
 
             /// Returns the quotient, rounding the result towards negative infinity.
@@ -123,7 +123,7 @@ macro_rules! impl_div {
             // WAIT: [int_roundings](https://github.com/rust-lang/rust/issues/88581)
             pub const fn div_floor(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
-                is![(r > 0 && b < 0) || (r < 0 && b > 0); Int(d - 1); Int(d)]
+                is![(r > 0 && b < 0) || (r < 0 && b > 0), Int(d - 1), Int(d)]
             }
 
             /// Returns the quotient, rounding ties away from zero.
@@ -146,8 +146,8 @@ macro_rules! impl_div {
             /// ```
             pub const fn div_ties_away(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
-                is![2 * r.abs() >= b.abs();
-                    is![(a > 0) == (b > 0); Int(d + 1); Int(d - 1)]; Int(d)]
+                is![2 * r.abs() >= b.abs(),
+                    is![(a > 0) == (b > 0), Int(d + 1), Int(d - 1)], Int(d)]
             }
 
             /// Returns the quotient, rounding ties towards zero.
@@ -170,8 +170,8 @@ macro_rules! impl_div {
             /// ```
             pub const fn div_ties_towards(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
-                is![2 * r.abs() > b.abs();
-                    is![(a > 0) == (b > 0); Int(d + 1); Int(d - 1)]; Int(d)]
+                is![2 * r.abs() > b.abs(),
+                    is![(a > 0) == (b > 0), Int(d + 1), Int(d - 1)], Int(d)]
             }
 
             /// Returns the quotient, rounding ties to the nearest even number.
@@ -196,13 +196,13 @@ macro_rules! impl_div {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 // If the remainder is zero or the |remainder| is less than half of
                 // |b|, return the quotient.
-                is![r == 0 || 2 * r.abs() < b.abs(); Int(d);
+                is![r == 0 || 2 * r.abs() < b.abs(), Int(d),
                     // If the |remainder| is greater than half of b,
                     // return the quotient + the sign of a × the sign of b.
-                    is![2 * r.abs() > b.abs(); Int(d + a.signum() * b.signum());
+                    is![2 * r.abs() > b.abs(), Int(d + a.signum() * b.signum()),
                         // If the quotient is even return it, otherwise return
                         // the quotient + the sign of a × the sign of b.
-                        is![d % 2 == 0; Int(d); Int(d + a.signum() * b.signum())] ] ]
+                        is![d % 2 == 0, Int(d), Int(d + a.signum() * b.signum())] ] ]
             }
 
             /// Returns the quotient, rounding ties to the nearest odd number.
@@ -227,13 +227,13 @@ macro_rules! impl_div {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 // If the remainder is zero or the |remainder| is less than half of
                 // |b|, return the quotient.
-                is![r == 0 || 2 * r.abs() < b.abs(); Int(d);
+                is![r == 0 || 2 * r.abs() < b.abs(), Int(d),
                     // If the |remainder| is greater than half of b,
                     // return the quotient + the sign of a × the sign of b.
-                    is![2 * r.abs() > b.abs(); Int(d + a.signum() * b.signum());
+                    is![2 * r.abs() > b.abs(), Int(d + a.signum() * b.signum()),
                         // If the quotient is odd return it, otherwise return
                         // the quotient + the sign of a × the sign of b.
-                        is![d % 2 != 0; Int(d); Int(d + a.signum() * b.signum())] ] ]
+                        is![d % 2 != 0, Int(d), Int(d + a.signum() * b.signum())] ] ]
             }
         }
     }};
@@ -274,11 +274,11 @@ macro_rules! impl_div {
             // WAIT: [int_roundings](https://github.com/rust-lang/rust/issues/88581)
             pub const fn div_ceil(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
-                is![r > 0 && b > 0; Int(d + 1); Int(d)]
+                is![r > 0 && b > 0, Int(d + 1), Int(d)]
             }
             // alternative implementation:
             // pub const fn div_ceil(self, b: $t) -> $t {
-            //     let a = self.0; is![a > 0 && b > 0; ((a - 1) / b) + 1; a / b ]
+            //     let a = self.0; is![a > 0 && b > 0, ((a - 1) / b) + 1, a / b ]
             // }
 
             /// Returns the quotient, rounding the result towards negative infinity.
@@ -312,7 +312,7 @@ macro_rules! impl_div {
             /// ```
             pub const fn div_ties_away(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
-                is![2 * r >= b; is![a > b; Int(d + 1); Int(d - 1)]; Int(d)]
+                is![2 * r >= b, is![a > b, Int(d + 1), Int(d - 1)], Int(d)]
             }
 
             /// Returns the quotient, rounding ties towards zero.
@@ -328,7 +328,7 @@ macro_rules! impl_div {
             /// ```
             pub const fn div_ties_towards(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
-                is![2 * r > b; Int(d + 1); Int(d)]
+                is![2 * r > b, Int(d + 1), Int(d)]
             }
 
             /// Returns the quotient, rounding ties to the nearest even number.
@@ -347,9 +347,9 @@ macro_rules! impl_div {
                 // 1. If the remainder is zero or less than half of b, return the quotient.
                 // 2. If the remainder is greater than half of b, return the quotient + 1.
                 // 3. If the quotient is _EVEN_ return it, otherwise return the quotient + 1.
-                is![r == 0 || 2 * r < b; Int(d);
-                    is![2 * r > b; Int(d + 1);
-                        is![d % 2 == 0; Int(d); Int(d + 1)]]]
+                is![r == 0 || 2 * r < b, Int(d),
+                    is![2 * r > b, Int(d + 1),
+                        is![d % 2 == 0, Int(d), Int(d + 1)]]]
             }
 
             /// Returns the quotient, rounding ties to the nearest even number.
@@ -368,9 +368,9 @@ macro_rules! impl_div {
                 // 1. If the remainder is zero or less than half of b, return the quotient.
                 // 2. If the remainder is greater than half of b, return the quotient + 1.
                 // 3. If the quotient is _ODD_ return it, otherwise return the quotient + 1.
-                is![r == 0 || 2 * r < b; Int(d);
-                    is![2 * r > b; Int(d + 1);
-                        is![d % 2 != 0; Int(d); Int(d + 1)]]]
+                is![r == 0 || 2 * r < b, Int(d),
+                    is![2 * r > b, Int(d + 1),
+                        is![d % 2 != 0, Int(d), Int(d + 1)]]]
             }
         }
     }};

@@ -477,7 +477,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let rem = (self.0.rem_euclid(modulus));
-                    is![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
+                    is![rem == 0, Ok(Int(0)), Ok(Int(modulus - rem))]
                 }
             }
 
@@ -494,7 +494,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`.
             pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let rem = (self.0.rem_euclid(modulus));
-                is![rem == 0; Int(0); Int(modulus - rem)]
+                is![rem == 0, Int(0), Int(modulus - rem)]
             }
 
             /* modulo sub (signed) */
@@ -1144,7 +1144,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let rem = (self.0.rem_euclid(modulus));
-                    is![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
+                    is![rem == 0, Ok(Int(0)), Ok(Int(modulus - rem))]
                 }
             }
 
@@ -1161,7 +1161,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`.
             pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let rem = (self.0.rem_euclid(modulus));
-                is![rem == 0; Int(0); Int(modulus - rem)]
+                is![rem == 0, Int(0), Int(modulus - rem)]
             }
 
             /* modulo sub (unsigned) */

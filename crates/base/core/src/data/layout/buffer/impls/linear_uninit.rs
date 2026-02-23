@@ -43,6 +43,9 @@ macro_rules! __buffer_linear_impl_uninit {
 
             /// Creates a buffer from raw uninitialized storage.
             ///
+            /// # Panics
+            /// Panics in debug if `len > CAP`.
+            ///
             /// # Safety
             /// Caller must guarantee:
             /// - `storage[0..len]` are initialized

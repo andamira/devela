@@ -277,7 +277,7 @@ impl Str {
     #[must_use]
     #[inline(always)]
     pub const fn range_to_inclusive_checked(string: &str, end: usize) -> Option<&str> {
-        is![end < string.len(); Some(string.split_at(end + 1).0); None]
+        is![end < string.len(), Some(string.split_at(end + 1).0), None]
     }
 
     /// Returns an exclusive substring up to and including the given `end` index.
@@ -302,6 +302,6 @@ impl Str {
     #[must_use]
     #[inline(always)]
     pub const fn range_to_inclusive_mut_checked(string: &mut str, end: usize) -> Option<&mut str> {
-        is![end < string.len(); Some(string.split_at_mut(end + 1).0); None]
+        is![end < string.len(), Some(string.split_at_mut(end + 1).0), None]
     }
 }

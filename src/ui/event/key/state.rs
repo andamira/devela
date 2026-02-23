@@ -33,7 +33,7 @@ impl KeyState {
     #[must_use]
     pub const fn from_js(from: WebEventKind, repeat: bool) -> Option<KeyState> {
         match from {
-            WebEventKind::KeyDown => Some(is![repeat; KeyState::Repeat; KeyState::Press]),
+            WebEventKind::KeyDown => Some(is![repeat, KeyState::Repeat, KeyState::Press]),
             WebEventKind::KeyUp => Some(KeyState::Release),
             _ => None,
         }

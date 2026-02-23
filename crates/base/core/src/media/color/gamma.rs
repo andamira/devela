@@ -158,7 +158,7 @@ macro_rules! impl_gamma {
 
             /// Converts linear luminance to CIE lightness (L*)
             pub const fn const_luminance_to_lightness(y: $T) -> $T {
-                is![y <= Self::CIE_E; Self::CIE_K * y; 116.0 * Float(y).cbrt_nr().0 - 16.0]
+                is![y <= Self::CIE_E, Self::CIE_K * y, 116.0 * Float(y).cbrt_nr().0 - 16.0]
             }
 
             /// Converts CIE lightness (L*) to linear luminance

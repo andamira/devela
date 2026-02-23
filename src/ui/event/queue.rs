@@ -52,7 +52,7 @@ impl<const CAP: usize> EventQueue<CAP> {
     pub const fn len(&self) -> usize {
         let mut len = 0;
         whilst! { i in 0..CAP; {
-            is![self.slots[i].is_none(); return len; len += 1];
+            is![self.slots[i].is_none(), return len, len += 1];
         }}
         len
     }

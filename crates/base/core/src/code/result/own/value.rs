@@ -37,28 +37,28 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the `value` is `Err`.
     pub const fn v_assert_ok(self) -> Self {
-        is![let Ok(_) = self.v; self; panic![]]
+        is![let Ok(_) = self.v, self, panic![]]
     }
 
     /// Asserts the `value` is [`Ok`] and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the `value` is `Err`.
     pub const fn v_assert_ok_or(self, message: &'static str) -> Self {
-        is![let Ok(_) = self.v; self; panic!["{}", message]]
+        is![let Ok(_) = self.v, self, panic!["{}", message]]
     }
 
     /// Asserts the `value` is [`Err`] and returns `self`, otherwise panics.
     /// # Panics
     /// Panics if the `value` is `Ok`.
     pub const fn v_assert_err(self) -> Self {
-        is![let Err(_) = self.v; self; panic![]]
+        is![let Err(_) = self.v, self, panic![]]
     }
     /// Asserts the `value` is [`Err`] and returns `self`, otherwise panics with `message`.
     ///
     /// # Panics
     /// Panics if the `value` is `Ok`.
     pub const fn v_assert_err_or(self, message: &'static str) -> Self {
-        is![let Err(_) = self.v; self; panic!["{}", message]]
+        is![let Err(_) = self.v, self, panic!["{}", message]]
     }
 
     /* unwrap (3) */
@@ -67,7 +67,7 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Err`.
     pub fn v_unwrap(self) -> Own<S, V> {
-        is![let Ok(v) = self.v; Own::new(self.s, v); panic![]]
+        is![let Ok(v) = self.v, Own::new(self.s, v), panic![]]
     }
 
     /// Unwraps the contained `Ok(value)` or provides a `default`.
@@ -93,12 +93,12 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Err`.
     pub const fn v_const_unwrap(self) -> Own<S, V> {
-        is![let Ok(v) = self.v; Own::new(self.s, v); panic![]]
+        is![let Ok(v) = self.v, Own::new(self.s, v), panic![]]
     }
 
     /// Unwraps the contained `Ok(value)` or provides a `default`.
     pub const fn v_const_unwrap_or(self, default: V) -> Own<S, V> {
-        is![let Ok(v) = self.v; Own::new(self.s, v); Own::new(self.s, default)]
+        is![let Ok(v) = self.v, Own::new(self.s, v), Own::new(self.s, default)]
     }
 
     /// Unwraps the contained `Ok(value)` or panics with the given `message`.
@@ -106,7 +106,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Err`.
     pub const fn v_const_expect_const(self, message: &'static str) -> Own<S, V> {
-        is![let Ok(v) = self.v; Own::new(self.s, v); panic!["{}", message]]
+        is![let Ok(v) = self.v, Own::new(self.s, v), panic!["{}", message]]
     }
 }
 
@@ -138,21 +138,21 @@ impl<S, V> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `None`.
     pub const fn v_assert_some(self) -> Self {
-        is![let Some(_) = self.v; self; panic![]]
+        is![let Some(_) = self.v, self, panic![]]
     }
 
     /// Asserts the value is [`Some`] and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the value is `None`.
     pub const fn v_assert_some_or(self, message: &'static str) -> Self {
-        is![let Some(_) = self.v; self; panic!["{}", message]]
+        is![let Some(_) = self.v, self, panic!["{}", message]]
     }
 
     /// Asserts the value is [`None`] and returns `self`, otherwise panics.
     /// # Panics
     /// Panics if the value is `Some`.
     pub const fn v_assert_none(self) -> Self {
-        is![let None = self.v; self; panic![]]
+        is![let None = self.v, self, panic![]]
     }
 
     /// Asserts the value is [`None`] and returns `self`, otherwise panics with `message`.
@@ -160,7 +160,7 @@ impl<S, V> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `Some`.
     pub const fn v_assert_none_or(self, message: &'static str) -> Self {
-        is![let None = self.v; self; panic!["{}", message]]
+        is![let None = self.v, self, panic!["{}", message]]
     }
 
     /* unwrap (3) */
@@ -194,12 +194,12 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `None`.
     pub const fn v_const_unwrap(self) -> Own<S, V> {
-        is![let Some(v) = self.v; Own::new(self.s, v); panic![]]
+        is![let Some(v) = self.v, Own::new(self.s, v), panic![]]
     }
 
     /// Unwraps the contained `Some(value)` or provides a `default`.
     pub const fn v_const_unwrap_or(self, default: V) -> Own<S, V> {
-        is![let Some(v) = self.v; Own::new(self.s, v); Own::new(self.s, default)]
+        is![let Some(v) = self.v, Own::new(self.s, v), Own::new(self.s, default)]
     }
 
     /// Unwraps the contained `Some(value)` or panics with the given `message`.
@@ -207,6 +207,6 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `None`.
     pub const fn v_const_expect(self, message: &'static str) -> Own<S, V> {
-        is![let Some(v) = self.v; Own::new(self.s, v); panic!["{}", message]]
+        is![let Some(v) = self.v, Own::new(self.s, v), panic!["{}", message]]
     }
 }

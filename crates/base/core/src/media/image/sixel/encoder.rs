@@ -89,7 +89,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             // for each color, render with RLE compression
             let mut iter = self.palette.defined_colors();
             while let Some((idx, palette_color)) = iter.next() {
-                is![idx == 0; continue]; // Skip background
+                is![idx == 0, continue]; // Skip background
 
                 __dbg![slog!{sixel_encoder:64+64 "  Rendering color #", %idx, " in band."}];
                 off += unwrap![ok? Self::write_color_reference(slice![mut buf, off,..], idx)];
@@ -104,7 +104,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                     // RLE compression logic
                     // Handles lines longer than 255 by splitting long runs,
                     // outputting the current run and starting a new one with the same character
-                    let is_same_char = is![let Some(c) = current_char; sixel_char.eq(c); false];
+                    let is_same_char = is![let Some(c) = current_char, sixel_char.eq(c), false];
                     match (is_same_char, repeat_count == 255) {
                         (true, false) => {
                             repeat_count += 1;
@@ -133,10 +133,10 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                         Self::write_rle_run(slice![mut buf, off,..], char, repeat_count)];
                 }
                 // return to start for next color
-                is![idx != self.palette.len() as u16 - 1; write_at![buf, +=off, b'$']];
+                is![idx != self.palette.len() as u16 - 1, write_at![buf, +=off, b'$']];
             }
             band_y += 6;
-            is![band_y < height; write_at![buf, +=off, b'-']]; // move to next band?
+            is![band_y < height, write_at![buf, +=off, b'-']]; // move to next band?
         }
         off += unwrap![ok? Self::write_sixel_end(slice![mut buf, off,..])];
         Ok(off)
@@ -158,10 +158,10 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
         unwrap![ok? self.palette.add_color(SixelColor::BLACK)];
         lets![mut i = 0, total_pixels = w * h];
         while i < total_pixels {
-            // is![self.palette.is_full(); break]; // early termination MAYBE for another version
+            // is![self.palette.is_full(), break]; // early termination MAYBE for another version
             let idx = i * 3;
             let color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
-            is![!color.is_black(); { let _ = self.palette.find_or_add(color); }];
+            is![!color.is_black(), { let _ = self.palette.find_or_add(color); }];
             i += 1;
         }
         Ok(())
@@ -178,7 +178,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             // only process if within bounds
             if idx + 2 < rgb.len() {
                 let pixel_color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
-                is![pixel_color.is_similar_to(target_color); sixel_bits |= 1 << dy];
+                is![pixel_color.is_similar_to(target_color), sixel_bits |= 1 << dy];
             }
             dy += 1;
         }
@@ -202,7 +202,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
         height: usize,
     ) -> Result<usize, NotEnoughSpace> {
         let needed = 5 + 6 + 5 + 1 + 5; // assume we require 5+5 digits for raster dimensions
-        is![buf.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
+        is![buf.len() < needed, return Err(NotEnoughSpace(Some(needed)))];
 
         let (width_digits, height_digits) = (Digits(width), Digits(height));
         let mut offset = 0;
@@ -223,7 +223,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     }
     /// Write sixel sequence start with full raster attributes
     pub const fn write_sixel_start_simple(buf: &mut [u8]) -> Result<usize, NotEnoughSpace> {
-        is![buf.len() < 6; return Err(NotEnoughSpace(Some(6)))];
+        is![buf.len() < 6, return Err(NotEnoughSpace(Some(6)))];
         write_at!(
             buf, 0, b'\x1b', b'P', // CIS
             b';', b'1', b';', // p2 = 1 (transparent background)
@@ -234,17 +234,17 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
 
     /// Write sixel sequence end.
     pub const fn write_sixel_end(buf: &mut [u8]) -> Result<usize, NotEnoughSpace> {
-        is![buf.len() < 2; return Err(NotEnoughSpace(Some(2)))];
+        is![buf.len() < 2, return Err(NotEnoughSpace(Some(2)))];
         write_at!(buf, 0, b'\x1b', b'\\'); // string terminator C0 sequence
         Ok(2)
     }
 
     /// Write color reference (#NN)
     const fn write_color_reference(buffer: &mut [u8], index: u16) -> Result<usize, NotEnoughSpace> {
-        is![buffer.len() < 2; return Err(NotEnoughSpace(Some(2)))];
+        is![buffer.len() < 2, return Err(NotEnoughSpace(Some(2)))];
         buffer[0] = b'#';
         let digits_written = Digits(index).write_digits10_omit0(buffer, 1);
-        is![digits_written == 0; return Err(NotEnoughSpace(Some(2)))];
+        is![digits_written == 0, return Err(NotEnoughSpace(Some(2)))];
         Ok(1 + digits_written)
     }
 
@@ -259,7 +259,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             let digits = Digits(count);
             let dcount = digits.count_digits10();
             let needed = 1 + dcount as usize;
-            is![buffer.len() < needed; return Err(NotEnoughSpace(Some(needed)))];
+            is![buffer.len() < needed, return Err(NotEnoughSpace(Some(needed)))];
 
             write_at![buffer, +=off, b'!'];
             off += digits.write_digits10(buffer, 1);
@@ -271,7 +271,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
             "  NO RLE: ", %count, " times ", @sc.to_string_box()}];
             let mut _n = 0;
             while _n < count {
-                is![off >= buffer.len(); return Err(NotEnoughSpace(Some(buffer.len())))];
+                is![off >= buffer.len(), return Err(NotEnoughSpace(Some(buffer.len())))];
                 write_at![buffer, +=off, sc.as_byte()];
                 _n += 1;
             }

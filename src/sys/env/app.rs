@@ -244,23 +244,23 @@ impl AppEnv for AppXdg {
     }
     fn app_config(&self) -> PathBuf {
         let dir = self.env_var_or_default("XDG_CONFIG_HOME", ".config/");
-        is![self.unixy_name.is_empty(); dir; dir.join(&self.unixy_name)]
+        is![self.unixy_name.is_empty(), dir, dir.join(&self.unixy_name)]
     }
     fn app_data(&self) -> PathBuf {
         let dir = self.env_var_or_default("XDG_DATA_HOME", ".local/share/");
-        is![self.unixy_name.is_empty(); dir; dir.join(&self.unixy_name)]
+        is![self.unixy_name.is_empty(), dir, dir.join(&self.unixy_name)]
     }
     fn app_cache(&self) -> PathBuf {
         let dir = self.env_var_or_default("XDG_CACHE_HOME", ".cache/");
-        is![self.unixy_name.is_empty(); dir; dir.join(&self.unixy_name)]
+        is![self.unixy_name.is_empty(), dir, dir.join(&self.unixy_name)]
     }
     fn app_state(&self) -> Option<PathBuf> {
         let dir = self.env_var_or_default("XDG_STATE_HOME", ".local/state/");
-        Some(is![self.unixy_name.is_empty(); dir; dir.join(&self.unixy_name)])
+        Some(is![self.unixy_name.is_empty(), dir, dir.join(&self.unixy_name)])
     }
     fn app_runtime(&self) -> Option<PathBuf> {
         let dir = Self::env_var_or_none("XDG_RUNTIME_DIR");
-        is![self.unixy_name.is_empty(); dir; dir.map(|d| d.join(&self.unixy_name))]
+        is![self.unixy_name.is_empty(), dir, dir.map(|d| d.join(&self.unixy_name))]
     }
 }
 
@@ -328,15 +328,15 @@ impl AppEnv for AppApple {
     fn app_home(&self) -> &Path { &self.home }
     fn app_config(&self) -> PathBuf {
         let dir = self.home.join("Library/Preferences/");
-        is![self.bundle_id.is_empty(); dir; dir.join(&self.bundle_id)]
+        is![self.bundle_id.is_empty(), dir, dir.join(&self.bundle_id)]
     }
     fn app_data(&self) -> PathBuf {
         let dir = self.home.join("Library/Application Support/");
-        is![self.bundle_id.is_empty(); dir; dir.join(&self.bundle_id)]
+        is![self.bundle_id.is_empty(), dir, dir.join(&self.bundle_id)]
     }
     fn app_cache(&self) -> PathBuf {
         let dir = self.home.join("Library/Caches/");
-        is![self.bundle_id.is_empty(); dir; dir.join(&self.bundle_id)]
+        is![self.bundle_id.is_empty(), dir, dir.join(&self.bundle_id)]
     }
     fn app_state(&self) -> Option<PathBuf> { None }
     fn app_runtime(&self) -> Option<PathBuf> { None }
@@ -369,15 +369,15 @@ impl AppEnv for AppWindows {
     fn app_home(&self) -> &Path { &self.home }
     fn app_config(&self) -> PathBuf {
         let mut dir = self.home.join("AppData").join("Roaming");
-        is![let Some(app) = &self.app_path; {dir.push(app); dir.push("config"); dir }; dir]
+        is![let Some(app) = &self.app_path, {dir.push(app); dir.push("config"); dir }, dir]
     }
     fn app_data(&self) -> PathBuf {
         let mut dir = self.home.join("AppData").join("Roaming");
-        is![let Some(app) = &self.app_path; {dir.push(app); dir.push("data"); dir }; dir]
+        is![let Some(app) = &self.app_path, {dir.push(app); dir.push("data"); dir }, dir]
     }
     fn app_cache(&self) -> PathBuf {
         let mut dir = self.home.join("AppData").join("Local");
-        is![let Some(app) = &self.app_path; {dir.push(app); dir.push("cache"); dir }; dir]
+        is![let Some(app) = &self.app_path, {dir.push(app); dir.push("cache"); dir }, dir]
     }
     fn app_state(&self) -> Option<PathBuf> { None }
     fn app_runtime(&self) -> Option<PathBuf> { None }

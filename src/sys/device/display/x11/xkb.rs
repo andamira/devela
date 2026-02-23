@@ -39,7 +39,7 @@ impl KeyRepeatFilter {
     pub fn filter(&mut self, keycode: u8, is_press: bool) -> KeyState {
         if is_press {
             // is this a repeated press of the same key?
-            is![self.repeating && self.last_keycode == keycode; return KeyState::Repeat];
+            is![self.repeating && self.last_keycode == keycode, return KeyState::Repeat];
             // new press: start repeating for this key
             self.last_keycode = keycode;
             self.repeating = true;
@@ -166,15 +166,15 @@ impl XkbState {
     pub fn new(conn: *mut raw::xcb_connection_t) -> Result<Self, XError> {
         // context
         let ctx = unsafe { raw::xkb_context_new(0) };
-        is![ctx.is_null(); return Err(XError::ExtensionUnavailable("xkb-context"))];
+        is![ctx.is_null(), return Err(XError::ExtensionUnavailable("xkb-context"))];
 
         // find core keyboard device
         let device_id = unsafe { raw::xkb_x11_get_core_keyboard_device_id(conn) };
-        is![device_id < 0; return Err(XError::ExtensionUnavailable("xkb-core-keyboard"))];
+        is![device_id < 0, return Err(XError::ExtensionUnavailable("xkb-core-keyboard"))];
 
         // load keymap from device
         let keymap = unsafe { raw::xkb_x11_keymap_new_from_device(ctx, conn, device_id, 0) };
-        is![keymap.is_null(); return Err(XError::ExtensionUnavailable("xkb-keymap"))];
+        is![keymap.is_null(), return Err(XError::ExtensionUnavailable("xkb-keymap"))];
 
         // create XKB state
         let state = unsafe { raw::xkb_x11_state_new_from_device(keymap, conn, device_id) };
@@ -242,14 +242,14 @@ impl XkbState {
     /// Converts an X11 modifier bitmask into a [`KeyMods`] representation.
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
         let (x, mut m) = (Bitwise(xcb_modifiers), KeyMods::empty());
-        is![x.is_set_mask(raw::XCB_MOD_MASK_SHIFT); m.set_shift()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_CONTROL); m.set_control()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_LOCK); m.set_caps_lock()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_1); m.set_alt()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_2); m.set_num_lock()];
-        // is![x.is_set_mask(raw::XCB_MOD_MASK_3); unimplemented!()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_4); m.set_super()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_4); m.set_alt_gr()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_SHIFT), m.set_shift()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_CONTROL), m.set_control()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_LOCK), m.set_caps_lock()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_1), m.set_alt()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_2), m.set_num_lock()];
+        // is![x.is_set_mask(raw::XCB_MOD_MASK_3), unimplemented!()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_4), m.set_super()];
+        is![x.is_set_mask(raw::XCB_MOD_MASK_4), m.set_alt_gr()];
         m
     }
 

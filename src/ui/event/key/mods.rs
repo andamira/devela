@@ -69,15 +69,15 @@ impl ConstInit for KeyMods {
     const INIT: Self = Self(0);
 }
 impl_trait! { fmt::Debug for KeyMods |self, f| {
-    let c = is![self.has_control(); "C"; "-"];
-    let s = is![self.has_shift(); "S"; "-"];
-    let a = is![self.has_alt(); "A"; "-"];
-    let g = is![self.has_alt_gr(); "G"; "-"];
-    let u = is![self.has_super(); "U"; "-"];
-    let l = is![self.has_caps_lock(); "L"; "-"];
-    let n = is![self.has_num_lock(); "N"; "-"];
-    let r = is![self.is_repeating(); "R"; "-"];
-    let p = is![self.is_composing(); "P"; "-"];
+    let c = is![self.has_control(), "C", "-"];
+    let s = is![self.has_shift(), "S", "-"];
+    let a = is![self.has_alt(), "A", "-"];
+    let g = is![self.has_alt_gr(), "G", "-"];
+    let u = is![self.has_super(), "U", "-"];
+    let l = is![self.has_caps_lock(), "L", "-"];
+    let n = is![self.has_num_lock(), "N", "-"];
+    let r = is![self.is_repeating(), "R", "-"];
+    let p = is![self.is_composing(), "P", "-"];
     write![f, "{c}{s}{a}{g}{u}{l}{n}{r}{p}"]
 } }
 #[rustfmt::skip]

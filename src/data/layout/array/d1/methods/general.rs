@@ -87,7 +87,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `start >= CAP`.
     pub fn contains_from(&self, element: &T, start: usize) -> Result<bool, IndexOutOfBounds> {
-        is![start >= CAP; return Err(IndexOutOfBounds(Some(start)))];
+        is![start >= CAP, return Err(IndexOutOfBounds(Some(start)))];
         Ok(self.iter().skip(start).any(|n| n == element))
     }
 
@@ -97,7 +97,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// # Errors
     /// Returns [`IndexOutOfBounds`] if `end >= CAP`.
     pub fn contains_until(&self, element: &T, end: usize) -> Result<bool, IndexOutOfBounds> {
-        is![end >= CAP; return Err(IndexOutOfBounds(Some(end)))];
+        is![end >= CAP, return Err(IndexOutOfBounds(Some(end)))];
         Ok(self.iter().take(end + 1).any(|n| n == element))
     }
 
@@ -113,9 +113,9 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
         start: usize,
         end: usize,
     ) -> Result<bool, MismatchedBounds> {
-        is![start >= CAP; return Err(MismatchedBounds::IndexOutOfBounds(Some(start)))];
-        is![end >= CAP; return Err(MismatchedBounds::IndexOutOfBounds(Some(end)))];
-        is![start > end; return Err(MismatchedBounds::MismatchedIndices)];
+        is![start >= CAP, return Err(MismatchedBounds::IndexOutOfBounds(Some(start)))];
+        is![end >= CAP, return Err(MismatchedBounds::IndexOutOfBounds(Some(end)))];
+        is![start > end, return Err(MismatchedBounds::MismatchedIndices)];
         Ok(self.iter().skip(start).take(end - start + 1).any(|n| n == element))
     }
 

@@ -92,7 +92,7 @@ impl<T: Sized> Hook for T {}
 ///
 /// /* block syntax */
 /// const INPUT: [u8; 4] = [3, 0, 9, 1];
-/// const OUTPUT: [u8; 4] = hook!(INPUT, |v| { v[0] = 1; is!(v[2] >7 ; v[2] -= 7) } { v[3] += 5 });
+/// const OUTPUT: [u8; 4] = hook!(INPUT, |v| { v[0] = 1; is!(v[2] >7 , v[2] -= 7) } { v[3] += 5 });
 /// const_assert![eq_buf &OUTPUT, &[1, 0, 2, 6]];
 /// ```
 /// For transformations that replace the value, see [`morph!`].

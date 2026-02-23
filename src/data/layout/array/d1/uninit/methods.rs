@@ -57,7 +57,7 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// Returns [`IndexOutOfBounds`] if the index is larger than the initialized length.
     #[rustfmt::skip]
     pub const fn verify_index(&self, index: usize) -> Result<usize, IndexOutOfBounds> {
-        is![index < self.init_len; Ok(index); Err(IndexOutOfBounds(Some(index)))]
+        is![index < self.init_len, Ok(index), Err(IndexOutOfBounds(Some(index)))]
     }
 
     /* get */

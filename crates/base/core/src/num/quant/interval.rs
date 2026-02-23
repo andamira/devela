@@ -390,16 +390,16 @@ impl<T: PartialOrd> Interval<T> {
     {
         match (&self.lower, &self.upper) {
             (Bound::Included(l), Bound::Included(u)) => {
-                is![l <= u; Some(u.clone() - l.clone()); None]
+                is![l <= u, Some(u.clone() - l.clone()), None]
             }
             (Bound::Included(l), Bound::Excluded(u)) => {
-                is![l < u; Some(u.clone() - l.clone()); None]
+                is![l < u, Some(u.clone() - l.clone()), None]
             }
             (Bound::Excluded(l), Bound::Included(u)) => {
-                is![l < u; Some(u.clone() - l.clone()); None]
+                is![l < u, Some(u.clone() - l.clone()), None]
             }
             (Bound::Excluded(l), Bound::Excluded(u)) => {
-                is![l < u; Some(u.clone() - l.clone()); None]
+                is![l < u, Some(u.clone() - l.clone()), None]
             }
             _ => None, // Unbounded intervals don't have a finite size
         }

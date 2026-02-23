@@ -161,7 +161,7 @@ impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
                     let glyph: u64 = self.glyphs[glyph_index].into();
                     for row in 0..self.height {
                         let global_y = y + row as isize - self.baseline as isize;
-                        is![global_y < 0; continue];
+                        is![global_y < 0, continue];
                         for col in 0..self.width {
                             let global_x = x_pos + col as isize;
                             let bit_pos = row * self.width + col;

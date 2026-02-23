@@ -203,20 +203,20 @@ macro_rules! impl_oneof {
 
         #[doc = "Returns a shared reference to the inner value in variant `" $T "`, if present."]
         pub const fn [<as_ref $T>](&self) -> Option<&$T> {
-            $crate::is![let Self::$T($T) = self; Some($T); None]
+            $crate::is![let Self::$T($T) = self, Some($T), None]
         }
         #[doc = "Returns an exclusive reference to the inner value in variant`" $T "`, if present."]
         pub const fn [<as_mut $T>](&mut self) -> Option<&mut $T> {
-            $crate::is![let Self::$T($T) = self; Some($T); None]
+            $crate::is![let Self::$T($T) = self, Some($T), None]
         }
         #[doc = "Returns a copy of the value in variant `" $T "`, if present."]
         pub const fn [<copy $T >](self) -> Option<$T> where Self: Copy {
-            $crate::is![let Self::$T($T) = self; Some($T); None]
+            $crate::is![let Self::$T($T) = self, Some($T), None]
         }
         #[doc = "Returns the owned value in variant `" $T "`, if present."]
         #[doc = "<hr/>"] // separator after the last method
         pub fn [<into $T>](self) -> Option<$T> {
-            $crate::is![let Self::$T($T) = self; Some($T); None]
+            $crate::is![let Self::$T($T) = self, Some($T), None]
         }
     }};
     (

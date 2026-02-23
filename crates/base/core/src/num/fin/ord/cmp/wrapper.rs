@@ -196,7 +196,7 @@ macro_rules! impl_comparing {
             /// for consistency with floating-point comparisons.
             #[must_use]
             pub const fn total_cmp(self, other: $p) -> Ordering {
-                is![self.0 < other; Less; is![self.0 > other; Greater; Equal]]
+                is![self.0 < other, Less, is![self.0 > other, Greater, Equal]]
             }
 
             /// Compares and returns `self` clamped between `min` and `max`.
@@ -259,7 +259,7 @@ macro_rules! impl_comparing {
                 left ^= (((left >> $sh) as [<u $b>]) >> 1) as [<i $b>];
                 right ^= (((right >> $sh) as [<u $b>]) >> 1) as [<i $b>];
 
-                is![left < right; Less; is![left > right; Greater; Equal]]
+                is![left < right, Less, is![left > right, Greater, Equal]]
             }
 
             /// Compares and returns a clamped *total ordered* `self` between `min` and `max`.

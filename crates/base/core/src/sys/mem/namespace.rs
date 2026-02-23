@@ -194,7 +194,7 @@ impl Mem {
     #[must_use]
     pub const fn bytes_from_bits_saturating(bit_size: usize) -> usize {
         #[cold] const fn bytes_from_bits_cold() -> usize { usize::MAX >> 3 }
-        is![let Some(t) = bit_size.checked_add(7); t >> 3; bytes_from_bits_cold()]
+        is![let Some(t) = bit_size.checked_add(7), t >> 3, bytes_from_bits_cold()]
     }
 }
 

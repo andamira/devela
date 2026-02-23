@@ -167,7 +167,7 @@ impl LinuxError {
     /// Invalid values are converted to `INTERNAL_ERROR`.
     pub const fn to_exit_code(self) -> i32 {
         let code = self.to_raw_exit_code();
-        is![code >= EXIT::SUCCESS && code <= EXIT::MAX; code; EXIT::INTERNAL_ERROR]
+        is![code >= EXIT::SUCCESS && code <= EXIT::MAX, code, EXIT::INTERNAL_ERROR]
     }
 
     /// Convert the error to [`LINUX_EXIT`][EXIT] without validation.

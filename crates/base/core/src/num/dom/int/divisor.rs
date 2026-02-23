@@ -178,7 +178,7 @@ macro_rules! define_divisor {
             /// Returns the absolute value of the signed primitive as its unsigned equivalent.
             #[must_use]
             const fn abs(n: $t) -> $un {
-                $crate::is![n < 0; ((-1i8) as $un).wrapping_mul(n as $un); n as $un]
+                $crate::is![n < 0, ((-1i8) as $un).wrapping_mul(n as $un), n as $un]
             }
 
             /// Creates a divisor which can be used for faster computation
@@ -212,7 +212,7 @@ macro_rules! define_divisor {
                         } else {
                             magic *= 2;
                             let (doubled_rem, overflowed) = rem.overflowing_mul(2);
-                            $crate::is![doubled_rem >= ud || overflowed; magic += 1];
+                            $crate::is![doubled_rem >= ud || overflowed, magic += 1];
                             magic += 1;
                             if d > 0 {
                                 $crate::DivisorInner::MultiplyAddShift(d, magic as $t, shift)
@@ -313,17 +313,17 @@ macro_rules! define_divisor {
                     },
                     $crate::DivisorInner::MultiplyShift(_, magic, shift) => {
                         let q = Self::mulh(magic, n) >> shift;
-                        $crate::is![q < 0; q + 1; q]
+                        $crate::is![q < 0, q + 1, q]
                     },
                     $crate::DivisorInner::MultiplyAddShift(_, magic, shift) => {
                         let q = Self::mulh(magic, n);
                         let t = q.wrapping_add(n) >> shift;
-                        $crate::is![t < 0; t + 1; t]
+                        $crate::is![t < 0, t + 1, t]
                     },
                     $crate::DivisorInner::MultiplyAddShiftNegate(_, magic, shift) => {
                         let q = Self::mulh(magic, n);
                         let t = q.wrapping_add(n.wrapping_mul(-1)) >> shift;
-                        $crate::is![t < 0; t + 1; t]
+                        $crate::is![t < 0, t + 1, t]
                     }
                 }
             }

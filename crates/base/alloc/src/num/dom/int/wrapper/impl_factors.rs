@@ -75,8 +75,8 @@ macro_rules! impl_factors {
             #[must_use]
             pub fn factors(self) -> Vec<$t> {
                 let n = self.0.0.abs();
-                is![n == 0; return vec![];
-                is![n == 1; return vec![1]]];
+                is![n == 0, return vec![],
+                    is![n == 1, return vec![1]]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
@@ -85,7 +85,7 @@ macro_rules! impl_factors {
                     while x <= n {
                         for &num in &temp {
                             let new_num = num * x;
-                            is!{n % new_num == 0; {set.insert(new_num);} }
+                            is!{n % new_num == 0, {set.insert(new_num);} }
                         }
                         x *= p;
                     }
@@ -110,7 +110,7 @@ macro_rules! impl_factors {
             #[must_use]
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0.0.abs();
-                is![n == 0; return vec![]];
+                is![n == 0, return vec![]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
@@ -146,7 +146,7 @@ macro_rules! impl_factors {
             pub fn factors_prime(self) -> Vec<$t> {
                 let mut factors = Vec::new();
                 let mut n = self.0.0.abs();
-                is![n == 0; return factors];
+                is![n == 0, return factors];
 
                 // Divide by 2 until the number is odd
                 while n % 2 == 0 {
@@ -163,7 +163,7 @@ macro_rules! impl_factors {
                     i += 2;
                 }
                 // If the remaining number is greater than 2, it's a prime factor
-                is![n > 2; factors.push(n)];
+                is![n > 2, factors.push(n)];
                 factors
             }
 
@@ -247,7 +247,7 @@ macro_rules! impl_factors {
             #[must_use]
             pub fn factors(self) -> Vec<$t> {
                 let n = self.0.0;
-                is![n == 0; return vec![]; is![n == 1; return vec![1]]];
+                is![n == 0, return vec![], is![n == 1, return vec![1]]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
@@ -280,7 +280,7 @@ macro_rules! impl_factors {
             #[must_use]
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0.0;
-                is![n == 0; return vec![]];
+                is![n == 0, return vec![]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
@@ -315,7 +315,7 @@ macro_rules! impl_factors {
             pub fn factors_prime(self) -> Vec<$t> {
                 let mut factors = Vec::new();
                 let mut n = self.0.0;
-                is![n == 0; return factors];
+                is![n == 0, return factors];
 
                 // Divide by 2 until the number is odd
                 while n % 2 == 0 {
@@ -332,7 +332,7 @@ macro_rules! impl_factors {
                     i += 2;
                 }
                 // If the remaining number is greater than 2, it's a prime factor
-                is![n > 2; factors.push(n)];
+                is![n > 2, factors.push(n)];
                 factors
             }
 

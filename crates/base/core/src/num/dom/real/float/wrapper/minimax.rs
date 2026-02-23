@@ -78,7 +78,7 @@ macro_rules! impl_float_shared_minimax {
                     &_FloatInternals::<$f>::COS_COEFFS
                 ).0;
                 let c = 1.0 + x2 * poly;
-                Float(is![flip; -c; c])
+                Float(is![flip, -c, c])
             }
 
             #[inline(always)]

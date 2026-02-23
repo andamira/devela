@@ -88,7 +88,7 @@ macro_rules! impl_root {
             #[must_use]
             pub const fn is_square(self) -> bool {
                 let a = self.0;
-                is![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
+                is![let Ok(sqrt) = self.sqrt_floor(), sqrt.0 * sqrt.0 == a, false]
             }
 
             /// Returns the ceiled integer square root.
@@ -109,7 +109,7 @@ macro_rules! impl_root {
             pub const fn sqrt_ceil(self) -> Result<Int<$t>> {
                 let a = self.0;
                 if let Ok(floor) = self.sqrt_floor() {
-                    is![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))]
+                    is![floor.0 * floor.0 == a, Ok(floor), Ok(Int(floor.0 + 1))]
                 } else {
                     Err(NonNegativeRequired)
                 }
@@ -187,7 +187,7 @@ macro_rules! impl_root {
                     }
                     // do we have to round up?
                     let mul = upcasted_op![mul_err(x, x) $t => $up];
-                    is![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
+                    is![a - mul >= (x + 1) * (x + 1) - a, Ok(Int(x as $t + 1)), Ok(Int(x as $t))]
                 }
             }
 
@@ -339,7 +339,7 @@ macro_rules! impl_root {
             /// ```
             pub const fn sqrt_ceil(self) -> Int<$t> {
                 let a = self.0; let floor = self.sqrt_floor();
-                is![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
+                is![floor.0 * floor.0 == a, floor, Int(floor.0 + 1)]
             }
 
             /// Returns the floored integer square root.
@@ -407,7 +407,7 @@ macro_rules! impl_root {
                     }
                     // do we have to round up?
                     let mul = upcasted_op![mul_err(x, x) $t => $up];
-                    is![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
+                    is![a - mul >= (x + 1) * (x + 1) - a, Ok(Int(x as $t + 1)), Ok(Int(x as $t))]
                 }
             }
 
@@ -480,7 +480,7 @@ macro_rules! impl_root {
                 } else {
                     let mut x = 1 as $t;
                     while let Some(val) = x.checked_pow(nth) {
-                        is![val > self.0; break];
+                        is![val > self.0, break];
                         x += 1;
                     }
                     Ok(Int(x - 1))

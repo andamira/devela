@@ -87,10 +87,10 @@ macro_rules! impl_prim {
             /// Checks the equality of two slices of primitives in compile-time.
             #[must_use]
             pub const fn eq(a: &[$t], b: &[$t]) -> bool {
-                is! { a.len() != b.len(); return false }
+                is! { a.len() != b.len(), return false }
                 let mut i = 0;
                 while i < a.len() {
-                    is! { a[i] != b[i]; return false }
+                    is! { a[i] != b[i], return false }
                     i += 1;
                 }
                 true
@@ -100,10 +100,10 @@ macro_rules! impl_prim {
             /// Checks the equality of two slices of slices of primitives in compile-time.
             #[must_use]
             pub const fn eq(a: &[&[$t]], b: &[&[$t]]) -> bool {
-                is! { a.len() != b.len(); return false }
+                is! { a.len() != b.len(), return false }
                 let mut i = 0;
                 while i < a.len() {
-                    is! { !Slice::<$t>::eq(a[i], b[i]); return false }
+                    is! { !Slice::<$t>::eq(a[i], b[i]), return false }
                     i += 1;
                 }
                 true
@@ -125,10 +125,10 @@ impl Slice<&[&str]> {
     /// Checks the equality of two slices of string slices in compile-time.
     #[must_use]
     pub const fn eq(a: &[&str], b: &[&str]) -> bool {
-        is! { a.len() != b.len(); return false }
+        is! { a.len() != b.len(), return false }
         let mut i = 0;
         while i < a.len() {
-            is! { !Slice::<&str>::eq(a[i], b[i]); return false }
+            is! { !Slice::<&str>::eq(a[i], b[i]), return false }
             i += 1;
         }
         true

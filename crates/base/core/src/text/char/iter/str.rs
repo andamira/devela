@@ -60,7 +60,7 @@ impl<'a> CharIter<'a, &str> {
     /// Uses the `unsafe_str` feature to skip validation checks.
     #[must_use] #[rustfmt::skip]
     pub const fn next_char(&mut self) -> Option<char> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         let ch = {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -89,9 +89,16 @@ impl<'a> CharIter<'a, &str> {
     /// Uses the `unsafe_niche` feature to skip validation checks.
     #[must_use]
     pub const fn next_char7(&mut self) -> Option<char7> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let byte = self.bytes[self.pos];
-        is![byte.is_ascii(); { self.pos += 1; Some(char7::new_unchecked(byte)) }; None]
+        is![
+            byte.is_ascii(),
+            {
+                self.pos += 1;
+                Some(char7::new_unchecked(byte))
+            },
+            None
+        ]
     }
 
     /// Returns the next 8-bit Unicode scalar.
@@ -110,7 +117,7 @@ impl<'a> CharIter<'a, &str> {
     /// ```
     #[must_use]
     pub const fn next_char8(&mut self) -> Option<char8> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         if Char(cp).len_bytes() == 1 {
             self.pos += len;
@@ -139,7 +146,7 @@ impl<'a> CharIter<'a, &str> {
     /// Uses the `unsafe_niche` feature to skip validation checks.
     #[must_use]
     pub const fn next_char16(&mut self) -> Option<char16> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         if Char(cp).len_bytes() <= 2 {
             self.pos += len;
@@ -169,7 +176,7 @@ impl<'a> CharIter<'a, &str> {
     /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
     #[must_use] #[rustfmt::skip]
     pub const fn next_charu(&mut self) -> Option<charu> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let len = Char(self.bytes[self.pos]).len_utf8_unchecked();
         let ch = charu::decode_utf8(slice![self.bytes, self.pos,..], len);
         self.pos += len;
@@ -185,7 +192,7 @@ impl<'a> CharIter<'a, &str> {
     /// Returns `None` once there are no more characters left.
     #[must_use] #[rustfmt::skip]
     pub const fn next_scalar(&mut self) -> Option<u32> {
-        is![self.pos >= self.bytes.len(); return None];
+        is![self.pos >= self.bytes.len(), return None];
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         self.pos += len;
         Some(cp)
@@ -213,7 +220,7 @@ impl<'a> CharIter<'a, &str> {
         while self.pos < self.bytes.len() {
             let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
             self.pos += len;
-            is![Char(cp).is_ascii(); return Some(char7::new_unchecked(cp as u8))];
+            is![Char(cp).is_ascii(), return Some(char7::new_unchecked(cp as u8))];
         }
         None
     }
@@ -238,7 +245,7 @@ impl<'a> CharIter<'a, &str> {
         while self.pos < self.bytes.len() {
             let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
             self.pos += len;
-            is![Char(cp).len_bytes() == 1; return Some(char8(cp as u8))];
+            is![Char(cp).len_bytes() == 1, return Some(char8(cp as u8))];
         }
         None
     }
@@ -266,7 +273,7 @@ impl<'a> CharIter<'a, &str> {
         while self.pos < self.bytes.len() {
             let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
             self.pos += len;
-            is![Char(cp).len_bytes() <= 2; return Some(char16::new_unchecked(cp as u16))];
+            is![Char(cp).len_bytes() <= 2, return Some(char16::new_unchecked(cp as u16))];
         }
         None
     }

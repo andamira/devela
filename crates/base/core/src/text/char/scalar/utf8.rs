@@ -120,7 +120,7 @@ macro_rules! impl_charu {
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             pub const fn from_str(string: &str) -> Option<$name> {
-                is![string.is_empty(); None; Some($name::from_str_unchecked(string))]
+                is![string.is_empty(), None, Some($name::from_str_unchecked(string))]
             }
 
             #[doc = "Creates a `" $name "` from the first scalar value present in a string slice."]
@@ -146,7 +146,7 @@ macro_rules! impl_charu {
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             #[must_use]
             pub const fn from_str_with_len(string: &str) -> Option<($name, u32)> {
-                is![string.is_empty(); None; Some($name::from_str_with_len_unchecked(string))]
+                is![string.is_empty(), None, Some($name::from_str_with_len_unchecked(string))]
             }
 
             #[doc = "Creates a `" $name "` from the first scalar value present in a string slice."]
@@ -187,11 +187,11 @@ macro_rules! impl_charu {
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             #[must_use] #[rustfmt::skip]
             pub const fn from_utf8_bytes(bytes: &[u8]) -> Option<$name> {
-                is![bytes.is_empty(); return None];
+                is![bytes.is_empty(), return None];
                 let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
-                is![!Char(bytes).has_valid_continuation(0, len); return None]; // malformed utf-8?
-                is![Char(bytes).has_overlong_encoding(0, len); return None]; // overlong encoding?
-                is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0; return None]; // surrogate?
+                is![!Char(bytes).has_valid_continuation(0, len), return None]; // malformed utf-8?
+                is![Char(bytes).has_overlong_encoding(0, len), return None]; // overlong encoding?
+                is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0, return None]; // surrogate?
                 Some(Self::decode_utf8(bytes, len))
             }
 
@@ -240,11 +240,11 @@ macro_rules! impl_charu {
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             #[must_use] #[rustfmt::skip]
             pub const fn from_utf8_bytes_with_len(bytes: &[u8]) -> Option<($name, u32)> {
-                is![bytes.is_empty(); return None];
+                is![bytes.is_empty(), return None];
                 let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
-                is![!Char(bytes).has_valid_continuation(0, len); return None]; // malformed utf-8?
-                is![Char(bytes).has_overlong_encoding(0, len); return None]; // overlong encoding?
-                is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0; return None]; // surrogate?
+                is![!Char(bytes).has_valid_continuation(0, len), return None]; // malformed utf-8?
+                is![Char(bytes).has_overlong_encoding(0, len), return None]; // overlong encoding?
+                is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0, return None]; // surrogate?
                 Some((Self::decode_utf8(bytes, len), len as u32))
             }
 
@@ -289,9 +289,9 @@ macro_rules! impl_charu {
             #[rustfmt::skip]
             pub const fn from_utf8_byte_array(bytes: [u8; 4]) -> Option<$name> {
                 let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
-                is![!Char(&bytes).has_valid_continuation(0, len); return None]; // malformed utf-8?
-                is![Char(&bytes).has_overlong_encoding(0, len); return None]; // overlong encoding?
-                is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0; return None]; // surrogate?
+                is![!Char(&bytes).has_valid_continuation(0, len), return None]; // malformed utf-8?
+                is![Char(&bytes).has_overlong_encoding(0, len), return None]; // overlong encoding?
+                is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0, return None]; // surrogate?
                 Some(Self::decode_utf8(&bytes, len))
             }
 

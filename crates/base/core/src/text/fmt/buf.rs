@@ -106,7 +106,7 @@ impl<'a> FmtWriter<'a> {
     pub fn format(buf: &'a mut [u8], args: FmtArguments) -> Result<&'a str, &'a str> {
         let mut w = Self::new(buf);
         let _ = ::core::fmt::write(&mut w, args);
-        is![w.is_truncated(); Err(w.into_str()); Ok(w.into_str())]
+        is![w.is_truncated(), Err(w.into_str()), Ok(w.into_str())]
     }
 
     /// Writes formatted output into the given byte buffer, returning the number of written bytes.
@@ -127,7 +127,7 @@ impl<'a> FmtWriter<'a> {
     pub fn format_len(buf: &'a mut [u8], args: FmtArguments) -> Result<usize, usize> {
         let mut w = Self::new(buf);
         let _ = ::core::fmt::write(&mut w, args);
-        is![w.is_truncated(); Err(w.written_len()); Ok(w.written_len())]
+        is![w.is_truncated(), Err(w.written_len()), Ok(w.written_len())]
     }
 
     /// Writes formatted output into the given byte buffer, returning the number of written bytes.
@@ -158,7 +158,7 @@ impl<'a> FmtWriter<'a> {
         if n > 0 {
             slice![mut self.buf, self.len, ..self.len + n].copy_from_slice(slice![s_bytes, ..n]);
         }
-        is![n < s_bytes.len(); self.truncated = true];
+        is![n < s_bytes.len(), self.truncated = true];
         self.len += n;
         n
     }
@@ -169,12 +169,12 @@ impl<'a> FmtWriter<'a> {
     pub const fn write_str_truncate_checked(&mut self, s: &str) -> Result<&str, &str> {
         self.write_str_truncate(s);
         let written = self.as_str_const();
-        is![self.is_truncated(); Err(written); Ok(written)]
+        is![self.is_truncated(), Err(written), Ok(written)]
     }
     /// Writes a string slice, returning the number of the bytes actually written.
     pub const fn write_str_truncate_checked_len(&mut self, s: &str) -> Result<usize, usize> {
         let n = self.write_str_truncate(s);
-        is![self.is_truncated(); Err(n); Ok(n)]
+        is![self.is_truncated(), Err(n), Ok(n)]
     }
 
     #[must_use]

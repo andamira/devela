@@ -55,7 +55,7 @@ macro_rules! _impl_fmt {
             fn $array_method(&self, f: &mut Formatter) -> FmtResult<()> {
                 write!(f, "[")?;
                 for (index, element) in self.iter().enumerate() {
-                    is! { index > 0; write!(f, ", ")? }
+                    is! { index > 0, write!(f, ", ")? }
                     $fmt_trait::fmt(element, f)?;
                 }
                 write!(f, "]")

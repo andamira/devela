@@ -58,7 +58,7 @@ macro_rules! impl_gamma {
             /// \end{cases}
             /// $$
             pub fn encode_srgb(self, v: $T) -> $T {
-                is![v <= 0.003_130_8; 12.92 * v; 1.055 * v.powf(self.exp.recip()) - 0.055]
+                is![v <= 0.003_130_8, 12.92 * v, 1.055 * v.powf(self.exp.recip()) - 0.055]
             }
 
             /// Decodes the given `v`alue using the sRGB inverse transfer function.
@@ -74,7 +74,7 @@ macro_rules! impl_gamma {
             /// \end{cases}
             /// $$
             pub fn decode_srgb(self, v: $T) -> $T {
-                is![v <= 0.040_45; v / 12.92; ((v + 0.055) / (1.055)).powf(self.exp)]
+                is![v <= 0.040_45, v / 12.92, ((v + 0.055) / (1.055)).powf(self.exp)]
             }
         }
         /// Weighted RGB → luma conversion utilities using standard coefficients.
@@ -144,12 +144,12 @@ macro_rules! impl_gamma {
 
             /// Converts linear luminance to CIE lightness (L*)
             pub fn luminance_to_lightness(y: $T) -> $T {
-                is![y <= Self::CIE_E; Self::CIE_K * y; 116.0 * y.cbrt() - 16.0]
+                is![y <= Self::CIE_E, Self::CIE_K * y, 116.0 * y.cbrt() - 16.0]
             }
 
             /// Converts CIE lightness (L*) to linear luminance
             pub fn lightness_to_luminance(l_star: $T) -> $T {
-                is![l_star <= 8.0; l_star / Self::CIE_K; ((l_star + 16.0) / 116.0).powi(3)]
+                is![l_star <= 8.0, l_star / Self::CIE_K, ((l_star + 16.0) / 116.0).powi(3)]
             }
         }
     };

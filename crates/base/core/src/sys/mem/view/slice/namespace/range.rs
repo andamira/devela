@@ -108,7 +108,7 @@ impl<T> Slice<T> {
     #[must_use]
     #[inline(always)]
     pub const fn range_to_inclusive_checked(slice: &[T], end: usize) -> Option<&[T]> {
-        is![end < slice.len(); Some(slice.split_at(end + 1).0); None]
+        is![end < slice.len(), Some(slice.split_at(end + 1).0), None]
     }
 
     /// Returns an inclusive subslice up to the given `end` index.
@@ -146,7 +146,7 @@ impl<T> Slice<T> {
     #[must_use]
     #[inline(always)]
     pub const fn range_to_inclusive_mut_checked(slice: &mut [T], end: usize) -> Option<&mut [T]> {
-        is![end < slice.len(); Some(slice.split_at_mut(end + 1).0); None]
+        is![end < slice.len(), Some(slice.split_at_mut(end + 1).0), None]
     }
 
     /// Returns an inclusive subslice up to the given `end` index.

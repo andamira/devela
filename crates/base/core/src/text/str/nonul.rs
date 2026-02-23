@@ -181,7 +181,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     pub const fn len(&self) -> usize {
         let mut position = 0;
         while position < CAP {
-            is![self.arr[position] == 0; break];
+            is![self.arr[position] == 0, break];
             position += 1;
         }
         position
@@ -481,7 +481,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Uses the `unsafe_str` feature to skip validation checks.
     pub const fn try_push_str_complete(&mut self, string: &str) -> Result<usize, NotEnoughSpace> {
         lets![mut non_nul_len=0, bytes=string.as_bytes(), str_len=bytes.len()];
-        whilst!{ i in 0..str_len; { is![bytes[i] != 0; non_nul_len += 1] }} // count !0 bytes
+        whilst!{ i in 0..str_len; { is![bytes[i] != 0, non_nul_len += 1] }} // count !0 bytes
         if self.remaining_capacity() >= non_nul_len {
             Ok(self.push_str(string))
         } else {
@@ -512,7 +512,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         if c != '\0' {
             let bytes = Char(c).to_utf8_bytes();
             let len = Char(bytes[0]).len_utf8_unchecked();
-            is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
+            is![CAP < len, return Err(MismatchedCapacity::too_small(CAP, len))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
             if len > 2 { new.arr[2] = bytes[2]; }
@@ -541,7 +541,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// assert![StringNonul::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
     /// ```
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
-        is![CAP == 0; return Err(MismatchedCapacity::too_small(CAP, 1))];
+        is![CAP == 0, return Err(MismatchedCapacity::too_small(CAP, 1))];
         let mut new = unwrap![ok? Self::new_checked()];
         if !c.is_nul() {
             new.arr[0] = c.to_utf8_bytes()[0];
@@ -573,7 +573,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char(bytes[0]).len_utf8_unchecked();
-            is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
+            is![CAP < len, return Err(MismatchedCapacity::too_small(CAP, len))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
         }
@@ -604,7 +604,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = Char(bytes[0]).len_utf8_unchecked();
-            is![CAP < len; return Err(MismatchedCapacity::too_small(CAP, len))];
+            is![CAP < len, return Err(MismatchedCapacity::too_small(CAP, len))];
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
             if len > 2 { new.arr[2] = bytes[2]; }
@@ -878,7 +878,7 @@ mod trait_impls {
         /// ```
         fn extend<I: IntoIterator<Item = char>>(&mut self, iter: I) {
             for i in iter {
-                is![self.push(i) == 0; break];
+                is![self.push(i) == 0, break];
             }
         }
     }

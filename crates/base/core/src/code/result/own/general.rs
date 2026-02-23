@@ -124,28 +124,28 @@ impl<S, V> Own<S, V> {
     /// Panics if the predicate returns `false`.
     #[rustfmt::skip]
     pub fn s_assert<F: FnOnce(&S) -> bool>(self, predicate: F) -> Self {
-        is![predicate(&self.s); self; panic![]]
+        is![predicate(&self.s), self, panic![]]
     }
     /// Asserts the `state` matches the `predicate`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the predicate returns `false`.
     #[rustfmt::skip]
     pub fn s_assert_or<F: FnOnce(&S) -> bool>(self, predicate: F, message: &str) -> Self {
-        is![predicate(&self.s); self; panic!["{}", message]]
+        is![predicate(&self.s), self, panic!["{}", message]]
     }
     /// Asserts the `state` equals `expected` and returns `self`, otherwise panics.
     /// # Panics
     /// Panics if the `state` doesn't equal the `expected` state.
     #[rustfmt::skip]
     pub fn s_assert_eq(self, expected_state: &S) -> Self where S: PartialEq {
-        is![self.s == *expected_state; self; panic![]]
+        is![self.s == *expected_state, self, panic![]]
     }
     /// Asserts the `state` equals `expected` and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the `state` doesn't equal the `expected` state.
     #[rustfmt::skip]
     pub fn s_assert_eq_or(self, expected_state: &S, message: &str) -> Self where S: PartialEq {
-        is![self.s == *expected_state; self; panic!["{}", message]]
+        is![self.s == *expected_state, self, panic!["{}", message]]
     }
 
     /// Asserts the `value` matches the `predicate`, otherwise panics.
@@ -153,28 +153,28 @@ impl<S, V> Own<S, V> {
     /// Panics if the predicate returns `false`.
     #[rustfmt::skip]
     pub fn v_assert<F: FnOnce(&V) -> bool>(self, predicate: F) -> Self {
-        is![predicate(&self.v); self; panic![]]
+        is![predicate(&self.v), self, panic![]]
     }
     /// Asserts the `value` matches the `predicate`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the predicate returns `false`.
     #[rustfmt::skip]
     pub fn v_assert_or<F: FnOnce(&V) -> bool>(self, predicate: F, message: &str) -> Self {
-        is![predicate(&self.v); self; panic!["{}", message]]
+        is![predicate(&self.v), self, panic!["{}", message]]
     }
     /// Asserts the `value` equals `expected` and returns `self`, otherwise panics.
     /// # Panics
     /// Panics if the `value` doesn't equal the `expected` value.
     #[rustfmt::skip]
     pub fn v_assert_eq(self, expected_value: &V) -> Self where V: PartialEq {
-        is![self.v == *expected_value; self; panic![]]
+        is![self.v == *expected_value, self, panic![]]
     }
     /// Asserts the `value` equals `expected` and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the `value` doesn't equal the `expected` value.
     #[rustfmt::skip]
     pub fn v_assert_eq_or(self, expected_value: &V, message: &str) -> Self where V: PartialEq {
-        is![self.v == *expected_value; self; panic!["{}", message]]
+        is![self.v == *expected_value, self, panic!["{}", message]]
     }
 
     /// Asserts both the `state` and `value` matches the corresponding predicates,
@@ -184,7 +184,7 @@ impl<S, V> Own<S, V> {
     #[rustfmt::skip]
     pub fn sv_assert<F, G>(self, s_predicate: F, v_predicate: G) -> Self
     where F: FnOnce(&S) -> bool, G: FnOnce(&V) -> bool {
-        is![s_predicate(&self.s) && v_predicate(&self.v); self; panic![]]
+        is![s_predicate(&self.s) && v_predicate(&self.v), self, panic![]]
     }
     /// Asserts both the `state` and `value` matches the corresponding predicates,
     /// otherwise panics with `message`.
@@ -193,7 +193,7 @@ impl<S, V> Own<S, V> {
     #[rustfmt::skip]
     pub fn sv_assert_or<F, G>(self, s_predicate: F, v_predicate: G, message: &str) -> Self
     where F: FnOnce(&S) -> bool, G: FnOnce(&V) -> bool {
-        is![s_predicate(&self.s) && v_predicate(&self.v); self; panic!["{}", message]]
+        is![s_predicate(&self.s) && v_predicate(&self.v), self, panic!["{}", message]]
     }
     /// Asserts the `state` and `value` equals the corresponding expected ones,
     /// and returns `self`, otherwise panics.
@@ -202,7 +202,7 @@ impl<S, V> Own<S, V> {
     #[rustfmt::skip]
     pub fn sv_assert_eq(self, expected_state: &S, expected_value: &V) -> Self
     where S: PartialEq, V: PartialEq {
-        is![self.s == *expected_state && self.v == *expected_value; self; panic![]]
+        is![self.s == *expected_state && self.v == *expected_value, self, panic![]]
     }
     /// Asserts the `state` and `value` equals the corresponding expected ones,
     /// and returns `self`, otherwise panics with `message`
@@ -211,7 +211,7 @@ impl<S, V> Own<S, V> {
     #[rustfmt::skip]
     pub fn sv_assert_eq_or(self, expected_state: &S, expected_value: &V, message: &str) -> Self
     where S: PartialEq, V: PartialEq {
-        is![self.s == *expected_state && self.v == *expected_value; self; panic!["{}", message]]
+        is![self.s == *expected_state && self.v == *expected_value, self, panic!["{}", message]]
     }
 }
 

@@ -96,7 +96,7 @@ impl Sign {
         match self {
             Self::Zero => Self::Zero,
             Self::Positive => Self::Positive,
-            Self::Negative => is![n & 1 == 0; Self::Positive; Self::Negative],
+            Self::Negative => is![n & 1 == 0, Self::Positive, Self::Negative],
         }
     }
 

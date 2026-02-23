@@ -56,11 +56,11 @@ macro_rules! impl_scale {
                 let shift = irange.trailing_zeros();
                 if irange == (1 << shift) { // power-of-two fast path
                     let scaled = (v.abs_diff(imin as $UP).wrapping_mul(orange) >> shift) as $T;
-                    is![self.0 < imin; omin.wrapping_sub(scaled); omin.wrapping_add(scaled)]
+                    is![self.0 < imin, omin.wrapping_sub(scaled), omin.wrapping_add(scaled)]
 
                 } else { // general case
                     let scaled = (v.abs_diff(imin as $UP).wrapping_mul(orange) / irange) as $T;
-                    is![self.0 < imin; omin.wrapping_sub(scaled); omin.wrapping_add(scaled)]
+                    is![self.0 < imin, omin.wrapping_sub(scaled), omin.wrapping_add(scaled)]
                 }
             }
 
