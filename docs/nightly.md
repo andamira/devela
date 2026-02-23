@@ -44,6 +44,7 @@ See also
 
 - 1.95: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
 - 1.95: `·`[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
+- 1.95: `·`[cfg_select](https://github.com/rust-lang/rust/pull/149783)
 - 1.95: `·`[cold_path](https://github.com/rust-lang/rust/pull/151576)
 - 1.95: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
 - 1.95: ` `[importing path-segment keyword with renaming](https://github.com/rust-lang/rust/pull/146972)
@@ -70,7 +71,6 @@ See also
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
-- 1.??: `·`[cfg_select](https://github.com/rust-lang/rust/pull/149783)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`

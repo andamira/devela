@@ -63,6 +63,7 @@
     feature(
         assert_matches,
         atomic_try_update,
+        cfg_select,
         cold_path,
         if_let_guard,
         more_conversion_trait_impls,
@@ -81,7 +82,6 @@
     nightly_stable_later,
     feature(
         breakpoint,
-        cfg_select,
         cfg_version,
         const_array_from_ref,
         const_char_classify,
