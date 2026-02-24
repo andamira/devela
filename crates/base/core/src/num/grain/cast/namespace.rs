@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(num namespace)]
 /// Provides *const* casting, joining and splitting operations between primitives.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("num/grain")]
 //
 // See also the related traits: [`PrimitiveCast`], [`PrimitiveJoin`] and [`PrimitiveSplit`].
 //

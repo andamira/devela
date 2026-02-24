@@ -1,6 +1,6 @@
 // devela_base_core::num::grain::cast::join
 //
-//! construct an unsigned primitive by joining an array of smaller unsigned primitives.
+//! Construct an unsigned primitive by joining an array of smaller unsigned primitives.
 //
 
 use crate::Cast;

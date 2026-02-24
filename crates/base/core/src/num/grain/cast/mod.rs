@@ -6,6 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
+mod macros; // cast!
 mod namespace; // Cast
 mod cast;
 mod join;
@@ -16,6 +17,9 @@ mod tests;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::namespace::*;
+        pub use super::{
+            macros::*,
+            namespace::*,
+        };
     }
 }
