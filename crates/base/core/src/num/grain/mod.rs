@@ -7,12 +7,12 @@
 //
 
 mod cast; // Cast
-mod prim; // Prim* traits
+mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
 
 pub mod niche; // NonZero*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 pub mod wide; // define_lane!
 
-crate::structural_mods! { // _mods, _pub_mods, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _workspace_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{

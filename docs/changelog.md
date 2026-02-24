@@ -177,7 +177,7 @@ Many feature gates are removed in order to make most features make always availa
 
 ### marker
 - make `TypeResource` and `type_marker!` constructors *const*.
-- new traits: `Prim`, `PrimFitPtr`.
+- new traits: `Prim`, `PrimFitPtr`, `PrimIndex`.
 
 ### ops
 - new macro: `punroll!`.

@@ -21,12 +21,9 @@
 ///
 /// ## Index Type Parameter
 ///
-/// `$P` must be an unsigned integer primitive with a size less than or equal to `usize`.
-/// E.g. in x86_64 it can be: `u8`, `u16`, `u32`, `u64`, `usize`.
-///
-/// It controls:
-/// - the representable index range
-/// - the memory footprint of the iterator state
+/// `$P` must implement [`PrimIndex`][crate::PrimIndex], meaning:
+/// - an unsigned primitive integer
+/// - no wider than the target's pointer width
 ///
 /// Using smaller primitives (e.g. `u8`, `u16`) can reduce
 /// iterator size and encode domain constraints at the type level.
@@ -95,7 +92,7 @@ macro_rules! iter_strided {
     // only allow implementions over unsigned integers of size <= pointer-width
     (%guard_allowed_type $P:ty) => {
         const __GUARD_ALLOWED_TYPE: () = {
-            const fn __allowed_types<P: $crate::PrimUint + $crate::PrimFitPtr>() {}
+            const fn __allowed_types<P: $crate::PrimIndex>() {}
             __allowed_types::<$P>();
         };
     };
@@ -141,7 +138,7 @@ macro_rules! iter_strided {
                 remaining: $P,
                 stride: $NZ,
             ) -> Self {
-                $crate::is![remaining == 0, return Self { slice, front: 1, back: 0, stride }];
+                if remaining == 0 { return $crate::iter_strided!(%empty slice, stride) }
                 let off = stride.get().checked_mul(remaining - 1)
                     .expect("overflow in stride multiplication");
                 let back = start.checked_add(off).expect("overflow in back computation");
@@ -178,8 +175,7 @@ macro_rules! iter_strided {
             pub const fn from_parts(slice: &'a mut [T], front: $P, back: $P, stride: $NZ) -> Self {
                 if front <= back {
                     assert!((back - front) % stride.get() == 0, "bounds must be stride-aligned");
-                    let back_usize = $crate::Cast(back).saturating_cast_to_usize();
-                    assert!(back_usize < slice.len(), "index out of bounds");
+                    assert!((back as usize) < slice.len(), "index out of bounds");
                 }
                 Self { slice, front, back, stride }
             }
@@ -204,9 +200,7 @@ macro_rules! iter_strided {
             /// Returns the number of elements remaining in the iterator as a `usize`.
             /// # Panics
             /// Will only panic if the value can't fit in a `usize`.
-            pub const fn len_usize(&self) -> usize {
-                $crate::unwrap![ok $crate::Cast(self.len()).checked_cast_to_usize()]
-            }
+            pub const fn len_usize(&self) -> usize { self.len() as usize }
 
             /* state */
 
@@ -299,7 +293,7 @@ macro_rules! iter_strided {
                 remaining: $P,
                 stride: $NZ,
             ) -> Self {
-                $crate::is![remaining == 0, return Self { slice, front: 1, back: 0, stride }];
+                if remaining == 0 { return $crate::iter_strided!(%empty slice, stride) }
                 let off = stride.get().checked_mul(remaining - 1)
                     .expect("overflow in stride multiplication");
                 let back = start.checked_add(off).expect("overflow in back computation");
@@ -344,8 +338,7 @@ macro_rules! iter_strided {
             ) -> Self {
                 if front <= back {
                     assert!((back - front) % stride.get() == 0, "bounds must be stride-aligned");
-                    let back_usize = $crate::Cast(back).saturating_cast_to_usize();
-                    assert!(back_usize < slice.len(), "index out of bounds");
+                    assert!((back as usize) < slice.len(), "index out of bounds");
                 }
                 Self { slice, front, back, stride }
             }
@@ -370,9 +363,7 @@ macro_rules! iter_strided {
             /// Returns the number of elements remaining in the iterator as a `usize`.
             /// # Panics
             /// Will only panic if the value can't fit in a `usize`.
-            pub const fn len_usize(&self) -> usize {
-                $crate::unwrap![ok $crate::Cast(self.len()).checked_cast_to_usize()]
-            }
+            pub const fn len_usize(&self) -> usize { self.len() as usize }
 
             /* state */
 
@@ -454,7 +445,7 @@ macro_rules! iter_strided {
                 } else {
                     self.front += self.stride.get();
                 }
-                $crate::unwrap![ok_some $crate::Cast(idx).checked_cast_to_usize()]
+                Some(idx as usize)
             }
         }
         /// Advances the iterator and returns the next index from the back.
@@ -471,24 +462,21 @@ macro_rules! iter_strided {
                 } else {
                     self.back -= self.stride.get();
                 }
-                $crate::unwrap![ok_some $crate::Cast(idx).checked_cast_to_usize()]
+                Some(idx as usize)
             }
         }
         /// Returns the next index from the front without updating the iterator.
         const fn _peek_next_front_index(&self) -> Option<usize> {
-            if self.front > self.back { None }
-            else {
-                $crate::unwrap![ok_some $crate::Cast(self.front).checked_cast_to_usize()]
-            }
+            if self.front > self.back { None } else { Some(self.front as usize) }
         }
         /// Returns the next index from the back without updating the iterator.
         const fn _peek_next_back_index(&self) -> Option<usize> {
-            if self.front > self.back { None }
-            else {
-                $crate::unwrap![ok_some $crate::Cast(self.back).checked_cast_to_usize()]
-            }
+            if self.front > self.back { None } else { Some(self.back as usize) }
         }
-    }
+    };
+    (%empty $slice:expr, $stride:expr) => {
+        Self { slice: $slice, front: 1, back: 0, stride: $stride }
+    };
 }
 #[doc(inline)]
 pub use crate::iter_strided;
