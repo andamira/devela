@@ -21,8 +21,8 @@
 ///
 /// ## Index Type Parameter
 ///
-/// The index primitive `$P` must be an unsigned integer primitive
-/// (`u8`, `u16`, `u32`, `u64`, `u128`, `usize`).
+/// `$P` must be an unsigned integer primitive with a size less than or equal to `usize`.
+/// E.g. in x86_64 it can be: `u8`, `u16`, `u32`, `u64`, `usize`.
 ///
 /// It controls:
 /// - the representable index range
@@ -83,13 +83,21 @@ macro_rules! iter_strided {
     ) => {
         $crate::iter_strided!(%ref $(#[$attr])* $vis $name, $P, $crate::NonZero<$P>);
     };
+    // safe-guards
     // --------------------------------------------------------------------------------------------
-    /* safe-guards */
+    // needed: mut || ref
     ($(#[$attr:meta])* $vis:vis struct $name:ident $(:)? ($P:ty)) => {
         compile_error!(concat!(
             "iter_strided! requires either a `mut` or `ref` specifier before the index type.\n",
             "E.g.: `iter_strided![", stringify!($vis), " struct ", stringify!($name),
             " : ref (", stringify!($P), ")]`",));
+    };
+    // only allow implementions over unsigned integers of size <= pointer-width
+    (%guard_allowed_type $P:ty) => {
+        const __GUARD_ALLOWED_TYPE: () = {
+            const fn __allowed_types<P: $crate::PrimUint + $crate::PrimFitPtr>() {}
+            __allowed_types::<$P>();
+        };
     };
     // --------------------------------------------------------------------------------------------
     (%mut $(#[$attr:meta])* $vis:vis $name:ident, $P:ty, $NZ:ty) => {
@@ -102,6 +110,7 @@ macro_rules! iter_strided {
             stride: $NZ,
         }
         impl<'a, T> $name<'a, T> {
+            $crate::iter_strided!(%guard_allowed_type $P);
             $crate::iter_strided!(%common_indexing $P, $NZ);
             /* constructors */
 
@@ -258,6 +267,7 @@ macro_rules! iter_strided {
             stride: $NZ,
         }
         impl<'a, T> $name<'a, T> {
+            $crate::iter_strided!(%guard_allowed_type $P);
             $crate::iter_strided!(%common_indexing $P, $NZ);
 
             /* constructors */
