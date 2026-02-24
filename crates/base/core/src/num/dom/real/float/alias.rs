@@ -17,7 +17,7 @@ macro_rules! impl_fsize {
     ($float:ty , $pointer_width:literal) => {
         #[doc = crate::_tags!(primitive num)]
         /// A pointer-sized floating-point primitive.
-        #[doc = crate::_doc_location!("num/dom")]
+        #[doc = crate::_doc_location!("num/dom/real")]
         ///
         /// # Features
         /// Makes use of `nightly_float` in 16-bit architectures.

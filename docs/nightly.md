@@ -143,6 +143,7 @@ See also
         = `nightly_float` flag
 - 1.??: ` `[float_algebraic](https://github.com/rust-lang/rust/issues/136469)
 - 1.??: ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
+- 1.??: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
 - 1.??: ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.??: ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
 - 1.??: ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)

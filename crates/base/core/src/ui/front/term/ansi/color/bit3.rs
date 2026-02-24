@@ -6,7 +6,7 @@
 use super::C;
 use crate::{_ansi_consts, Ansi, Digits};
 
-#[doc = crate::_tags!(color term)]
+#[doc = crate::_tags!(term color)]
 /// ANSI 3-bit color codes, 8 colors.
 #[doc = crate::_doc_location!("ui/front/term")]
 #[repr(u8)]

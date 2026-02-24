@@ -22,7 +22,7 @@ use crate::{Deref, GcdReturn, IntResult as Result, Num, NumInt, NumRef, ValueQua
 
 #[doc = crate::_tags!(num lifetime)]
 /// Common auto-trait for referenced integer types.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("num/dom/int")]
 ///
 /// # Notes
 /// - This is automatically implemented for references of types implementing [`NumInt`].

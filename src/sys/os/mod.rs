@@ -19,20 +19,16 @@
 mod print; // os_[e]print[ln]!
 
 #[cfg(feature = "unsafe_syscall")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
 mod c; // Libc
 
 pub mod browser; // Web*
 pub mod fd;
 
 #[cfg(feature = "linux")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
 pub mod linux;
 // #[cfg(feature = "macos")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "macos")))]
 // pub mod macos;
 // #[cfg(feature = "windows")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "windows")))]
 // pub mod windows;
 
 crate::structural_mods! { // _mods, _pub_mods

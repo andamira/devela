@@ -6,7 +6,7 @@
 #[rustfmt::skip]
 #[doc = crate::_tags!(num)]
 /// Provides comparison operations using an operation-first syntax.
-#[doc = crate::_doc_location!("num/ord")]
+#[doc = crate::_doc_location!("num/fin/ord")]
 ///
 /// ```rust
 /// # use devela_base_core::{Cmp, cmp};

@@ -5,7 +5,7 @@ use crate::FloatExt;
 
 #[doc = crate::_tags!(num)]
 /// The prime number theorem formula.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("num/dom/int")]
 ///
 /// Returns the approximate count of primes less than the given `n`.
 ///

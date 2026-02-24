@@ -1,6 +1,9 @@
 // devela::ui::event
 //
-//! User interface events-related functionality.
+#![doc = crate::_DOC_UI_EVENT!()] // public
+#![doc = crate::_doc!(modules: crate::ui; event)]
+#![doc = crate::_doc!(flat:"ui")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod event; // Event

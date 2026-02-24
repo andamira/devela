@@ -58,6 +58,10 @@ mod ffi {
     #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
     pub struct EventKeyFfi {
         #[doc = crate::_tags!(ffi)]
+        /// The time stamp of when the event occurred.
+        pub timestamp: f32bits,
+
+        #[doc = crate::_tags!(ffi)]
         /// The key representing the human-readable code.
         pub semantic: KeyFfi,
 
@@ -70,10 +74,6 @@ mod ffi {
 
         /// The active modifiers of the key (e.g., Shift, Ctrl).
         pub mods: KeyMods,
-
-        #[doc = crate::_tags!(ffi)]
-        /// The time stamp of when the event occurred.
-        pub timestamp: f32bits,
     }
 
     impl EventKey {

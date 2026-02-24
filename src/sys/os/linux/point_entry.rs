@@ -11,7 +11,7 @@
 //! The implementations match the system's calling conventions and use architecture-specific
 //! syscall instructions for process termination.
 
-#[doc = crate::_tags!(code linux)]
+#[doc = crate::_tags!(linux code)]
 /// Defines the program entry point and main fn translation layer for Linux systems.
 #[doc = crate::_doc_location!("sys/os/linux")]
 ///

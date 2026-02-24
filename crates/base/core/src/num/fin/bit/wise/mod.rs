@@ -10,7 +10,7 @@ mod tests;
 
 #[doc = crate::_tags!(num namespace)]
 /// Provides constant bitwise operations on `T`.
-#[doc = crate::_doc_location!("num/bit")]
+#[doc = crate::_doc_location!("num/fin")]
 ///
 /// It's implemented for: [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
 ///

@@ -9,7 +9,7 @@ use crate::{
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over a shared slice.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_location!("sys/mem/view")]
 ///
 /// Yields elements by reference in index order. Produces `&T` without copying.
 #[derive(Debug)]
@@ -70,7 +70,7 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over an exclusive slice.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_location!("sys/mem/view")]
 ///
 /// Yields `&mut T` references in index order.
 /// The returned references may outlive the iterator borrow taken by `next`

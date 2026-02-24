@@ -55,7 +55,9 @@ macro_rules! generate_os_std_print_macros {
     $d:tt $name:ident + $name2:ident, $doc:literal, $doc_ln:literal, $newline:literal $(,)?
     ) => {
         $crate::paste! {
+            #[doc = crate::_tags!(platform io)]
             #[doc = $doc]
+            #[doc = crate::_doc_location!("sys/os")]
             #[doc = "\n\nLeverages [`" $name "`]]"]
             #[doc = ", [`format_buf`][crate::format_buf] and [`const_join!`][crate::const_join]."]
             ///

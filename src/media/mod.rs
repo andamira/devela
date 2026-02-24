@@ -9,23 +9,19 @@
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_MEDIA_MODULES =
-    crate::_doc!(modules: crate; media: audio, color, draw, font, image); // video
+    crate::_doc!(modules: crate; media: audio, color, font, image); // draw, video
 }
 
+#[cfg(feature = "draw")]
+mod draw;
+
 #[cfg(feature = "audio")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "audio")))]
 pub mod audio;
 #[cfg(feature = "color")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "color")))]
 pub mod color;
-#[cfg(feature = "draw")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "draw")))]
-pub mod draw;
 #[cfg(feature = "font")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "font")))]
 pub mod font;
 #[cfg(feature = "image")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
 pub mod image;
 // #[cfg(feature = "video")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "video")))]

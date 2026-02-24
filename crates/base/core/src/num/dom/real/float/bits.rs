@@ -18,7 +18,7 @@ macro_rules! impl_fbits {
 
         #[doc = crate::_tags!(num ffi)]
         #[doc = "Bitwise wrapper for `" $float "` providing `Eq`, `Ord`, and `Hash`."]
-        #[doc = crate::_doc_location!("num/dom")]
+        #[doc = crate::_doc_location!("num/dom/real")]
         ///
         #[doc = "This stores the raw IEEE-754 bits of a `" $float "` in a `" $bits "`."]
         /// Ordering and hashing operate on the raw bit pattern, not the numeric value.
@@ -65,6 +65,7 @@ macro_rules! impl_fbits {
 
         #[doc = crate::_tags!(num niche)]
         #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NE "`]."]
+        #[doc = crate::_doc_location!("num/dom/real")]
         ///
         /// This preserves all IEEE-754 bit patterns except the prohibited value.
         /// Ordering and hashing operate on the masked bit pattern.

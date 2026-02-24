@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(num namespace)]
 /// Provides comprehensive integer operations on `T`, all of them *const*.
-#[doc = crate::_doc_location!("num/dom")]
+#[doc = crate::_doc_location!("num/dom/int")]
 ///
 /// It's implemented for:
 /// - all the integer primitives: `i8`, …, `i128`, `u8`, …, `u128`.

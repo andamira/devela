@@ -19,7 +19,7 @@ mod bit3;
 mod bit8;
 pub use {bit3::*, bit8::*};
 
-#[doc = crate::_tags!(color term)]
+#[doc = crate::_tags!(term color)]
 /// Complete ANSI color selection
 #[doc = crate::_doc_location!("ui/front/term")]
 /// Covers all terminal color modes:

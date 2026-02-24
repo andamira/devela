@@ -6,7 +6,7 @@
 use crate::{_reexport, _tags};
 
 _reexport! { rust: core::num,
-    location: "num/dom",
+    location: "num/dom/real",
     tag: _tags!(NUM),
     doc: "A classification of floating point numbers.",
     @FpCategory as FloatCategory

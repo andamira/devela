@@ -17,7 +17,7 @@ use ::core::{f16, f128};
 
 #[doc = crate::_tags!(num namespace)] // by association with Float
 /// Extension trait for floating-point types. Associated constants.
-#[doc = crate::_doc_location!("num/dom")]
+#[doc = crate::_doc_location!("num/dom/real")]
 ///
 /// # Constants
 ///

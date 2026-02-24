@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code)]
 /// Joins multiple byte slices or string slices in compile-time.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_location!("sys/mem/view")]
 ///
 /// It leverages the [`ArrayFrom`][crate::ArrayFrom] struct.
 ///

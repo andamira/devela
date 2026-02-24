@@ -10,14 +10,15 @@
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_SYS_MODULES =
-    crate::_doc!(modules: crate; sys: arch, device, env, fs, hw, io, log, mem, net, os);
+    crate::_doc!(modules: crate; sys: arch, device, env, fs, io, log, mem, net, os); // hw
 }
+
+mod hw; // {audio, …} WIP
 
 pub mod arch; // Arch, *asm, detect_*, m128* m256*
 pub mod device; //
 pub mod env; // App*, Arg*, Env
 pub mod fs; // Fs, FsPath, PathExt
-pub mod hw; // {audio, …}
 pub mod io; // Io*
 pub mod log; // Log*
 pub mod mem; // Mem,
@@ -27,14 +28,18 @@ pub mod os; // Linux,
 // #[cfg(feature = "std")]
 // mod bench; // WIP
 
-crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+    _mods {
+        pub use super::{
+            hw::_all::*,
+        };
+    }
     _pub_mods {
         pub use super::{
             arch::_all::*,
             device::_all::*,
             env::_all::*,
             fs::_all::*,
-            hw::_all::*,
             io::_all::*,
             log::_all::*,
             mem::_all::*,

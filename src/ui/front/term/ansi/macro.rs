@@ -59,7 +59,7 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 // -----------------------------------------------------------------------------
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_location!("ui/front/term")]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -102,7 +102,7 @@ macro_rules! ansi {
 // -----------------------------------------------------------------------------
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_location!("ui/front/term")]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -155,7 +155,7 @@ macro_rules! ansi {
 // -----------------------------------------------------------------------------
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_location!("ui/front/term")]
 #[doc = DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

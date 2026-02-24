@@ -10,7 +10,7 @@ macro_rules! iusize_alias {
         $(
             #[doc = crate::_tags!(primitive num)]
             #[doc = $casted " pointer-sized " $sign " integer primitive."]
-            #[doc = crate::_doc_location!("num/dom")]
+            #[doc = crate::_doc_location!("num/dom/int")]
             #[cfg(target_pointer_width = $width)]
             pub type $ty = $cast;
         )+

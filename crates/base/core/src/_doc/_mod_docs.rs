@@ -267,6 +267,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_UI              = "Interactive surfaces, input semantics, and presentation state.";
     _QUO_UI              = "> How humans interact with what exists.";
     _DOC_UI_BACK         = "User interface backends.";
+    _DOC_UI_EVENT        = "User interface events-related functionality.";
     _DOC_UI_FRONT        = "User interface frontends.";
     _DOC_UI_FRONT_TERM   = "UI terminal functionality.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";

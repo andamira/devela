@@ -8,7 +8,7 @@ use crate::{Float, FloatConst, Sign};
 
 #[doc = crate::_tags!(num namespace)] // by association with Float
 /// Extension trait for floating-point types. Associated methods.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_location!("num/dom/real")]
 ///
 /// This trait can be more convenient to use than the [`Float`] struct,
 /// for non-const operations over primitive floating-point types.
