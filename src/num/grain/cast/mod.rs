@@ -16,8 +16,9 @@ crate::structural_mods! { // _mods, _reexports
         };
     }
     _reexports {
+        #[doc(inline)]
         pub use devela_base_core::num::grain::{ // cast
-            Cast,
+            Cast, cast,
         };
     }
 }

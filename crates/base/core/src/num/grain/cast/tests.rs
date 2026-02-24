@@ -1,6 +1,8 @@
 // devela_base_core::num::grain::cast::tests
 //
 // TOC
+// - saturating_cast
+// - wrapping_cast
 // - split_join_le
 // - split_join_be
 

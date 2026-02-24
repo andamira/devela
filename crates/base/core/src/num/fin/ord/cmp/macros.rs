@@ -8,6 +8,9 @@
 /// Provides comparison operations using an operation-first syntax.
 #[doc = crate::_doc_location!("num/fin/ord")]
 ///
+/// A thin macro wrapper over [`Cmp`][crate::Cmp].
+/// Expands directly to the corresponding `Cmp` method.
+///
 /// ```rust
 /// # use devela_base_core::{Cmp, cmp};
 /// let [a, b] = [1u8, 2];
@@ -16,8 +19,6 @@
 ///     Cmp(a).min(b)
 /// ];
 /// ```
-///
-/// It introduces no new comparison semantics and forwards directly to [Cmp][crate::Cmp].
 ///
 /// Notes:
 /// - `minmax` / `pminmax` return `(min, max)`.
