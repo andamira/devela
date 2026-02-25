@@ -10,7 +10,7 @@
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_MEDIA_MODULES =
-    crate::_doc!(modules: crate; media: audio, color, image); // draw, glyph, motion, plate, video
+    crate::_doc!(modules: crate; media: audio, color, image); // draw, font, motion, plate, video
 }
 
 crate::items! {
@@ -20,8 +20,8 @@ crate::items! {
     pub mod color;
     // #[cfg(feature = "draw")] #[cfg_attr(nightly_doc, doc(cfg(feature = "draw")))]
     // pub mod draw;
-    // #[cfg(feature = "glyph")] #[cfg_attr(nightly_doc, doc(cfg(feature = "glyph")))]
-    // pub mod glyph;
+    // #[cfg(feature = "font")] #[cfg_attr(nightly_doc, doc(cfg(feature = "font")))]
+    // pub mod font;
     #[cfg(feature = "image")] #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
     pub mod image;
     // #[cfg(feature = "motion")] #[cfg_attr(nightly_doc, doc(cfg(feature = "motion")))]
@@ -37,7 +37,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         #[cfg(feature = "audio")] pub use super::audio::_all::*;
         #[cfg(feature = "color")] pub use super::color::_all::*;
         // #[cfg(feature = "draw")] pub use super::draw::_all::*;
-        // #[cfg(feature = "glyph")] pub use super::glyph::_all::*;
+        // #[cfg(feature = "font")] pub use super::font::_all::*;
         #[cfg(feature = "image")] pub use super::image::_all::*;
         // pub use super::motion::_all::*;
         // pub use super::plate::_all::*;

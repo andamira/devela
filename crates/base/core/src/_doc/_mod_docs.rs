@@ -119,7 +119,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_GEOM_SPACE        = "Global organization, decomposition, and structure of space.";
     _DOC_GEOM_SPACE_FIELD  = "Scalar and vector quantities defined over space.";
     _DOC_GEOM_SPACE_GRID   = "Geometric grid systems using guides, modules, and spatial rhythm.";
-    _DOC_GEOM_SPACE_LAYOUT = "Spatial constraint-based layout and region resolution.";
+    _DOC_GEOM_SPACE_LAYOUT = "Constraint-based spatial resolution.";
     _DOC_GEOM_SPACE_MOTION = "Geometric motion and change of space over time.";
     _DOC_GEOM_SPACE_PART   = "Spatial partitioning, subdivision, and tessellation.";
     _DOC_GEOM_SPACE_TOPOL  = "Topological properties of space such as connectivity and boundaries.";
@@ -141,15 +141,16 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_LANG_SEM           = "Semantic relations, independent of form and execution.";
 
     // 5 (artifacts meant to be perceived)
-    _DOC_MEDIA           = "Media representation, processing, and synthesis.";
-    _DOC_MEDIA_AUDIO     = "Audio functionality.";
-    _DOC_MEDIA_COLOR     = "Chromatic functionality.";
-    _DOC_MEDIA_DRAW      = "Drawing functionality.";
-    _DOC_MEDIA_FONT      = "Font functionality.";
-    _DOC_MEDIA_IMAGE     = "Image functionality.";
-    _DOC_MEDIA_MOTION    = "Motion language.";
-    _DOC_MEDIA_PDF       = "Pdf generation.";
-    _DOC_MEDIA_VIDEO     = "Video functionality.";
+    _DOC_MEDIA              = "Media representation, processing, and synthesis.";
+    _DOC_MEDIA_AUDIO        = "Audio signal representation and processing.";
+    _DOC_MEDIA_COLOR        = "Color models and chromatic systems.";
+    _DOC_MEDIA_DRAW         = "Geometric drawing primitives and composition.";
+    _DOC_MEDIA_FONT         = "Font data, metrics, and shaping systems.";
+    _DOC_MEDIA_IMAGE        = "Raster image representation and processing.";
+    _DOC_MEDIA_MOTION       = "Perceptual motion and temporal sequencing.";
+    _DOC_MEDIA_PLATE        = "Retained, page-based document surfaces.";
+    _DOC_MEDIA_PLATE_PDF    = "PDF document generation.";
+    _DOC_MEDIA_VIDEO        = "Video stream representation and processing.";
 
     // 6 (formal systems of magnitude, order, and uncertainty)
     _DOC_NUM             = "Numerical types, structures, and operations.";
@@ -269,7 +270,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _QUO_UI         = "> How humans interact with what exists.";
     _DOC_UI_EVENT   = "User interface events-related functionality.";
     _DOC_UI_INTENT  = "Declarative user and device intent resolved against runtime capabilities.";
-    _DOC_UI_LAYOUT  = "Spatial negotiation vocabulary for arranging content.";
+    _DOC_UI_LAYOUT  = "Interactive spatial arrangement and negotiation.";
     _DOC_UI_VIEW    = "Stateful interactive projections.";
 
     // 13 (practices, capacities, and meanings of lived life)

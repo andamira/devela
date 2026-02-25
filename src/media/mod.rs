@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_MEDIA_MODULES =
-    crate::_doc!(modules: crate; media: audio, color, font, image); // draw, video
+    crate::_doc!(modules: crate; media: audio, color, font, image); // draw, plate, video
 }
 
 #[cfg(feature = "draw")]
