@@ -179,6 +179,30 @@ macro_rules! iter_strided {
                 }
                 Self { slice, front, back, stride }
             }
+            /// Like [`from_parts`][Self::from_parts] but takes `usize` arguments.
+            ///
+            /// # Panics
+            /// Panics if:
+            #[doc = concat!("- Any argument can't fit in a `", stringify!($P), "`.")]
+            /// - `front <= back` and `(back - front)` is not a multiple of `stride`.
+            /// - `back` is not a valid index in the `slice`.
+            pub const fn from_parts_usize(
+                slice: &'a mut [T],
+                front: usize,
+                back: usize,
+                stride: $crate::NonZero<usize>,
+            ) -> Self {
+                let front_p = $crate::cast![checked_expect front => $P,
+                    concat!("back doesn't fit in", stringify!($P))];
+                let back_p = $crate::cast![checked_expect back => $P,
+                    concat!("back doesn't fit in", stringify!($P))];
+                let s_p = $crate::cast![checked_expect stride.get() => $P,
+                    concat!("stride doesn't fit in", stringify!($P))];
+                // SAFETY: stride is NonZeroUsize; checked cast to unsigned $P preserves non-zero.
+                let stride_p = $crate::unwrap![some_guaranteed_or_ub <$NZ>::new(s_p)];
+                Self::from_parts(slice, front_p, back_p, stride_p)
+            }
+
             /// Decomposes the iterator into its structural components.
             ///
             /// Returns `(slice, front, back, stride)`.
@@ -188,6 +212,14 @@ macro_rules! iter_strided {
             /// transfer iteration state to another compatible type.
             pub const fn into_parts(self) -> (&'a mut [T], $P, $P, $NZ) {
                 (self.slice, self.front, self.back, self.stride)
+            }
+            /// Like [`into_parts`][Self::into_parts] but returns `usize` elements.
+            pub const fn into_parts_usize(self)
+                -> (&'a mut [T], usize, usize, $crate::NonZeroUsize) {
+                let s = self.stride.get() as usize;
+                // SAFETY: stride is NonZero<$P>; cast to usize preserves non-zero.
+                let stride = $crate::unwrap![some_guaranteed_or_ub $crate::NonZeroUsize::new(s)];
+                (self.slice, self.front as usize, self.back as usize, stride)
             }
 
             /* queries */
@@ -342,6 +374,30 @@ macro_rules! iter_strided {
                 }
                 Self { slice, front, back, stride }
             }
+            /// Like [`from_parts`][Self::from_parts] but takes `usize` arguments.
+            ///
+            /// # Panics
+            /// Panics if:
+            #[doc = concat!("- Any argument can't fit in `", stringify!($P), "`.")]
+            /// - `front <= back` and `(back - front)` is not a multiple of `stride`.
+            /// - `back` is not a valid index in the `slice`.
+            pub const fn from_parts_usize(
+                slice: &'a [T],
+                front: usize,
+                back: usize,
+                stride: $crate::NonZero<usize>,
+            ) -> Self {
+                let front_p = $crate::cast![checked_expect front => $P,
+                    concat!("front doesn't fit in ", stringify!($P))];
+                let back_p = $crate::cast![checked_expect back => $P,
+                    concat!("back doesn't fit in ", stringify!($P))];
+                let s_p = $crate::cast![checked_expect stride.get() => $P,
+                    concat!("stride doesn't fit in ", stringify!($P))];
+                // SAFETY: stride is NonZeroUsize; checked cast to unsigned $P preserves non-zero.
+                let stride_p = $crate::unwrap![some_guaranteed_or_ub <$NZ>::new(s_p)];
+                Self::from_parts(slice, front_p, back_p, stride_p)
+            }
+
             /// Decomposes the iterator into its structural components.
             ///
             /// Returns `(slice, front, back, stride)`.
@@ -351,6 +407,14 @@ macro_rules! iter_strided {
             /// transfer iteration state to another compatible type.
             pub const fn into_parts(self) -> (&'a [T], $P, $P, $NZ) {
                 (self.slice, self.front, self.back, self.stride)
+            }
+            /// Like [`into_parts`][Self::into_parts] but returns `usize` elements.
+            pub const fn into_parts_usize(self)
+                -> (&'a [T], usize, usize, $crate::NonZeroUsize) {
+                let s = self.stride.get() as usize;
+                // SAFETY: stride is NonZero<$P>; cast to usize preserves non-zero.
+                let stride = $crate::unwrap![some_guaranteed_or_ub $crate::NonZeroUsize::new(s)];
+                (self.slice, self.front as usize, self.back as usize, stride)
             }
 
             /* queries */
