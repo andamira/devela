@@ -249,7 +249,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_OS_BROWSER_WEB  = "Web APIs interfacing.";
     _DOC_SYS_OS_FD       = "Unix-like file descriptors.";
     _DOC_SYS_OS_LINUX    = "Linux-specific definitions.";
-    _DOC_SYS_OS_TERM     = "UI terminal functionality.";
+    _DOC_SYS_OS_TERM     = "Terminal supervisory environment and ANSI/TTY interfacing.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
     // 11 (symbolic sequences with cultural weight)
@@ -265,11 +265,12 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_STR        = "String types and related functionality.";
 
     // 12 (interaction structures, presentation state, and input semantics)
-    _DOC_UI              = "Interactive surfaces, input semantics, and presentation state.";
-    _QUO_UI              = "> How humans interact with what exists.";
-    _DOC_UI_BACK         = "User interface backends.";
-    _DOC_UI_EVENT        = "User interface events-related functionality.";
-    _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
+    _DOC_UI         = "Interactive surfaces, input semantics, and presentation state.";
+    _QUO_UI         = "> How humans interact with what exists.";
+    _DOC_UI_EVENT   = "User interface events-related functionality.";
+    _DOC_UI_INTENT  = "Declarative user and device intent resolved against runtime capabilities.";
+    _DOC_UI_LAYOUT  = "Spatial negotiation vocabulary for arranging content.";
+    _DOC_UI_VIEW    = "Stateful interactive projections.";
 
     // 13 (practices, capacities, and meanings of lived life)
     _DOC_VITA       = "Lived practices of embodied beings.";

@@ -1,6 +1,6 @@
-// devela::ui::back::definition
+// devela::run::regime::service
 //
-//! Defines the [`UiService`] trait.
+//! Defines the [`RunService`] trait.
 //
 
 use crate::RunCap;
@@ -8,7 +8,7 @@ use crate::RunCap;
 #[doc = crate::_tags!(ui)]
 /// Common trait for all UI services.
 #[doc = crate::_doc_location!("ui/back")]
-pub trait UiService {
+pub trait RunService {
     /// Returns the service capabilities.
     fn capabilities(&self) -> RunCap;
 

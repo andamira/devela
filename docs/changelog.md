@@ -546,12 +546,13 @@ Many feature gates are removed in order to make most features make always availa
 ## run
 - new `run` root module.
 
-### frame
-- new items: `RunTick`.
-
-### setup
+### regime
+- renme `UiService` to `RunService` and move here.
 - move capabilities from `ui::back::cap` to `run::setup::cap`.
   - rename `UiCap*` to `RunCap*`.
+
+### time
+- new items: `RunTick`.
 
 ---
 ## sys
@@ -807,7 +808,8 @@ Many feature gates are removed in order to make most features make always availa
 
 ---
 ## ui
-- remove module `ui::front`.
+- remove modules: `ui::back`, `ui::front`.
+- new modules: `ui::intent`, `ui::view`.
 
 ### event
 - new types: `DeviceId`, `Event`, `EventKind`, `EventQueue`, `EventTag`, `EventTarget`, `EventTimestampMode`, `EventWindow`, `KeyDead`, `WindowId`.

@@ -7,11 +7,13 @@
 #![doc = crate::_doc!(hr)]
 
 // mod cap; // Cap*
+// mod service;
 
 crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
         //     cap::*,
+        //     service::*,
         // };
     }
 }

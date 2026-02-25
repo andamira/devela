@@ -1,8 +1,8 @@
-// devela::ui::view
+// devela::ui::intent
 //
 #![doc = crate::_tags!(wip)]
-#![doc = crate::_DOC_UI_VIEW!()] // public
-#![doc = crate::_doc!(modules: crate::ui; view)]
+#![doc = crate::_DOC_UI_INTENT!()] // public
+#![doc = crate::_doc!(modules: crate::ui; intent)]
 #![doc = crate::_doc!(flat:"ui")]
 #![doc = crate::_doc!(hr)]
 

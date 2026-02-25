@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_run", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_RUN_MODULES =
-    crate::_doc!(modules: crate; run: regime, state, time);
+    crate::_doc!(modules: crate; run: regime, state, time); // cycle
 }
 
 // mod cycle;
@@ -20,6 +20,7 @@ pub mod time;
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
+            // cycle::_all::*,
             regime::_all::*,
             state::_all::*,
             time::_all::*,
